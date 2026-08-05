@@ -6,6 +6,25 @@
 
 ---
 
+## How to read this
+
+This document records **decisions and constraints**, not implementations. Where a constraint can
+be satisfied several ways, it is stated as a constraint and the choice of approach is named
+separately, so a better approach can replace it without the requirement having to be
+reconstructed from the code that happened to satisfy it.
+
+Code appears only where **the code is the decision**: data shapes that define what is stored
+(§4.2, §6.3), and interface boundaries that define what a subsystem may expose (§7.1). Short
+snippets elsewhere are illustrative of an argument — showing that an operation is atomic, or that
+a mechanism already exists — and are marked as such.
+
+Styling, component structure, and framework idiom are implementation. They are described by the
+properties they must have (§8.2), not prescribed line by line. Draft v4 got this wrong in §8 and
+prescribed a flexbox layout; the requirement it was protecting survived the correction, the code
+did not.
+
+---
+
 ## 0. Terminology
 
 | Term | Meaning |
@@ -152,17 +171,11 @@ reschedule history to maintain.
 ### 4.3 Why collections are arrays
 
 The PRD's movement table is the justification. `Next → Done` is the second most important
-interaction in the app, and with arrays it is one atomic operation in a single transaction:
+interaction in the app, and with arrays it is a delete from one array and a push to the other
+inside a single transaction — atomic, undoable as one step, and observable as one event. *(Shape
+shown to make the atomicity argument; not a prescribed implementation.)*
 
-```ts
-ydoc.transact(() => {
-  const [card] = day.get('next').slice(i, i + 1);
-  day.get('next').delete(i, 1);
-  day.get('done').push([card]);
-});
-```
-
-Correct, undoable, trivially observable. The same operation modelled as text ranges in a
+The same operation modelled as text ranges in a
 shared document is a delete-plus-insert whose concurrent-merge behaviour is exactly the weak
 spot of text CRDTs — concurrent move tends to duplicate or interleave.
 
@@ -255,21 +268,13 @@ import, bulk operations), and implicitly each device the human acts through. Age
 and require no structural change.
 
 **Every mutation carries its actor as the Yjs transaction origin.** This is not an addition to
-the write path; `ydoc.transact()` already takes an origin argument that the codebase would
-otherwise pass as `null`:
+the write path — `ydoc.transact()` already takes an origin argument that the codebase would
+otherwise pass as `null`, so attribution is a matter of populating an argument that exists rather
+than of threading new state through the write path. The origin carries the acting actor and the
+originating device.
 
-```ts
-ydoc.transact(() => { /* ... */ }, { actor: localActorId, device: deviceId });
-```
-
-**Undo is scoped by origin.** `Y.UndoManager` accepts `trackedOrigins`, so the user's undo stack
-tracks only origins whose `actor` is the local human:
-
-```ts
-new Y.UndoManager(scope, {
-  trackedOrigins: new Set([...]),   // local human only
-});
-```
+**Undo is scoped by origin.** `Y.UndoManager` accepts a `trackedOrigins` set, so the user's undo
+stack can be filtered to origins whose `actor` is the local human.
 
 This is required for v1 correctness independent of agents. Without it, undo after a compaction
 reverts the compaction, and undo after a bulk stale-item resolution unwinds dozens of card moves
@@ -482,49 +487,60 @@ plane; the breakpoint decides how many are simultaneously visible.
 | **Medium** | behind a trigger | panel | panel |
 | **Wide** | persistent panel | panel | panel |
 
-Today and Goals are independently scrollable regions constrained to viewport height —
-`100dvh` with `min-height: 0` on flex children so they scroll internally rather than growing
-the page. The document body never scrolls. Adjacent days render above and below Today as
-faded, rounded, dimmed panel edges that are also click targets.
+Only the current view plus immediate neighbors mount. Neighboring days render their static card
+lists — cards are static by default (§4.4), so a revealed neighbor shows real content at no
+editor cost.
 
-### 8.2 Today panel structure
+### 8.2 Layout constraints
 
-Resolved as of PRD §7.4: the menu trigger lives in the Today panel header. That makes the
-header a structural element with two consequences.
+Stated as constraints because they must hold under any implementation; §8.3 records the approach
+chosen to satisfy them.
 
-**The panel is a three-part column, and the scroll constraint applies to the body, not the
-panel.** Earlier drafts put `min-height: 0` on the panel itself, which is now wrong:
+- **The document never scrolls.** Only designated regions scroll internally.
+- **Panels are viewport-height bounded.** A panel's content length must never extend the page.
+  Use `dvh`, not `vh` — mobile browser chrome makes `vh` wrong exactly when it matters.
+- **The Today panel is four bands in order:** yesterday peek, header, body, tomorrow peek. Only
+  the body scrolls; the other three are fixed-size. The peeks bracket the header rather than
+  sitting inside the body — inverting this looks plausible and reads wrong (PRD §7.4).
+- **The header is pinned, not sticky.** It lives outside the scrolling region rather than
+  `position: sticky` within it. Sticky looks identical but leaves the trigger inside the
+  scrolled subtree, where it takes part in scroll repaints and is reachable by the gesture
+  handler's scroll logic (§8.4).
+- **Only the scrolling band may absorb slack.** The trap: both flex and grid give items an
+  automatic minimum size derived from content, so a content-sized floor silently defeats the
+  height bound and the panel grows past the viewport. The fix differs by system — `min-height: 0`
+  on a flex child, `minmax(0, 1fr)` on a grid track — which is why this is written as a
+  constraint rather than a rule. Earlier drafts stated it as flexbox `min-height: 0` *on the
+  panel*, which was both the wrong element and the wrong altitude.
+- **Static card render and mounted editor must be visually identical** (§4.4). This is a styling
+  constraint before it is a testing one.
 
-```
-.today-panel  { display: flex; flex-direction: column; height: 100dvh; }
-.day-peek     { flex: 0 0 auto; }          /* yesterday */
-.today-header { flex: 0 0 auto; }          /* pinned — date + menu trigger */
-.today-body   { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
-.day-peek     { flex: 0 0 auto; }          /* tomorrow */
-```
+### 8.3 CSS approach
 
-`min-height: 0` belongs on `.today-body` alone. Without it the body's content sets a floor on
-the flex basis and the panel grows past the viewport, which is the failure mode the original
-rule existed to prevent — the rule was right, the element it applied to was not.
+The shell is a **grid**, not nested flex. The three surfaces are named areas and each breakpoint
+is a different `grid-template-areas` — the breakpoint change becomes one declaration describing
+the layout, rather than a scattering of direction, order, and basis changes. The Today panel's
+four bands are likewise grid rows, where the scrolling band is the only `minmax(0, 1fr)` track.
+Flex is appropriate for one-dimensional runs inside components; it is not the shell.
 
-**The header is pinned, not sticky.** It sits outside `.today-body`'s scroll container rather
-than using `position: sticky` inside it. Sticky would work visually but leaves the trigger
-inside the scrolled subtree, where it participates in scroll-driven repaints and is reachable
-by the gesture handler's scroll logic (§8.3). Keeping it out of the scroll container avoids
-both.
+**Cascade layers** order the cascade explicitly: `reset, vendor, app, theme`. The concrete
+justification is CodeMirror — it ships its own stylesheet, and this app overrides it heavily for
+live preview (§5.2), card title/description treatment (§5.3), and pixel identity (§4.4). Without
+layers those overrides become a specificity contest against `.cm-*` selectors, won by escalation
+and lost the moment CodeMirror changes a selector. With `vendor` beneath `app`, plain selectors
+win by position.
 
-The peeks bracket the header — `[peek][header][body][peek]` — per PRD §7.4. Getting this
-inverted produces a layout that looks plausible and reads wrong.
+**Custom properties** carry the design tokens — type scale, line height, spacing, the
+title/description contrast pair. Their load-bearing job here is pixel identity: the static
+renderer and the mounted editor consume the same variables through the same markdown-to-HTML
+path, so the constraint is structural rather than a thing that has to be independently
+maintained in two stylesheets and caught by a test when it drifts.
 
-The trigger renders at narrow and medium, and is absent at wide. It is an ordinary child of the
-header; there is no portal or configurable mount slot, which draft v3 called for while the
-position was undecided. That indirection can go.
+**Container queries over viewport media queries for anything inside a panel.** Panel width and
+viewport width diverge across breakpoints, so a card that reacts to its own container stays
+correct when the shell changes around it.
 
-Only the current view plus immediate neighbors mount. Neighboring days render their static
-card lists — cards are static by default (§4.4), so a revealed neighbor shows real content at
-no editor cost.
-
-### 8.3 Gestures
+### 8.4 Gestures
 
 Pointer Events. **Swipe navigates; long-press-then-drag selects** (PRD §7.2).
 
@@ -543,7 +559,7 @@ keeping them clear of the system back gesture.
 Vertical drags inside a scrollable region scroll it, and navigate only at a scroll extent with
 continued motion in that direction.
 
-### 8.4 Keyboard
+### 8.5 Keyboard
 
 Desktop is keyboard-first. Bindings live in one table so they're discoverable and remappable
 later. `Cmd/Ctrl-K` opens a command palette backed by the SQLite index — which must degrade
