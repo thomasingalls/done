@@ -56,6 +56,48 @@ const lineBoxes = (page: Page): Promise<{ height: number; top: number }[]> =>
     }),
   );
 
+test.describe('empty editor geometry', () => {
+  test('the native caret matches each placeholder line', async ({ page }) => {
+    await page.goto('/');
+    const content = page.locator('.cm-content');
+    await expect(content).toBeVisible();
+    await content.click();
+
+    const line = page.locator('.cm-line');
+    const placeholder = page.locator('.cm-placeholder');
+    const buffer = page.locator('.cm-widgetBuffer');
+    await expect(placeholder).toBeVisible();
+    await expect(buffer).toBeAttached();
+
+    const lineGeometry = await line.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return {
+        fontSize: Number(style.fontSize.replace('px', '')),
+        lineHeight: Number(style.lineHeight.replace('px', '')),
+      };
+    });
+    const placeholderGeometry = await placeholder.evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      return {
+        lineHeight: Number(getComputedStyle(element).lineHeight.replace('px', '')),
+        top: rect.top,
+      };
+    });
+    const bufferGeometry = await buffer.evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      return { height: rect.height, top: rect.top };
+    });
+
+    // A native contenteditable caret uses the line-height at its insertion
+    // point. Each placeholder line and CodeMirror's zero-width widget buffer
+    // must occupy that same 1em box, even when the placeholder wraps.
+    expect(lineGeometry.lineHeight).toBeCloseTo(lineGeometry.fontSize, 2);
+    expect(placeholderGeometry.lineHeight).toBeCloseTo(lineGeometry.fontSize, 2);
+    expect(bufferGeometry.height).toBeCloseTo(lineGeometry.fontSize, 2);
+    expect(bufferGeometry.top).toBeCloseTo(placeholderGeometry.top, 2);
+  });
+});
+
 test.describe('live preview geometry', () => {
   test.beforeEach(async ({ page }) => seed(page));
 

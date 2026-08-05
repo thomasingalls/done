@@ -59,6 +59,18 @@ export const editorTheme = EditorView.theme({
   '.cm-line': {
     padding: '0',
   },
+  // The browser's native caret fills the line-height. Beside placeholder text
+  // that makes it look too tall, since the glyphs themselves are only 1em.
+  // Put the empty line's leading in padding so each placeholder line and the
+  // caret are both 1em tall. A single-line placeholder keeps the ordinary
+  // line's 1.6em total height; on narrow screens the placeholder may wrap.
+  '.cm-line:has(.cm-placeholder)': {
+    lineHeight: '1',
+    paddingBlock: '0.3em',
+  },
+  '.cm-line:has(.cm-placeholder) .cm-widgetBuffer': {
+    verticalAlign: 'top',
+  },
   // Block decorations that need `padding`, which CodeMirror also sets on
   // `.cm-line`. Negative margin cancels the content inset so the block reads
   // as flush with the prose while its background extends past it.
