@@ -487,17 +487,44 @@ Today and Goals are independently scrollable regions constrained to viewport hei
 the page. The document body never scrolls. Adjacent days render above and below Today as
 faded, rounded, dimmed panel edges that are also click targets.
 
-**The medium-breakpoint menu trigger has no specified position** (PRD §7.4). This is a real
-constraint on implementation, not a TODO: the Today/Goals panel layout must not reserve
-space for it, must not assume it sits inside either panel's header, and must not require
-re-layout when its position is decided. Build the trigger as a portal-mounted element whose
-mount point is a single configurable slot, so placement is one change in one file.
+### 8.2 Today panel structure
+
+Resolved as of PRD §7.4: the menu trigger lives in the Today panel header. That makes the
+header a structural element with two consequences.
+
+**The panel is a three-part column, and the scroll constraint applies to the body, not the
+panel.** Earlier drafts put `min-height: 0` on the panel itself, which is now wrong:
+
+```
+.today-panel  { display: flex; flex-direction: column; height: 100dvh; }
+.day-peek     { flex: 0 0 auto; }          /* yesterday */
+.today-header { flex: 0 0 auto; }          /* pinned — date + menu trigger */
+.today-body   { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+.day-peek     { flex: 0 0 auto; }          /* tomorrow */
+```
+
+`min-height: 0` belongs on `.today-body` alone. Without it the body's content sets a floor on
+the flex basis and the panel grows past the viewport, which is the failure mode the original
+rule existed to prevent — the rule was right, the element it applied to was not.
+
+**The header is pinned, not sticky.** It sits outside `.today-body`'s scroll container rather
+than using `position: sticky` inside it. Sticky would work visually but leaves the trigger
+inside the scrolled subtree, where it participates in scroll-driven repaints and is reachable
+by the gesture handler's scroll logic (§8.3). Keeping it out of the scroll container avoids
+both.
+
+The peeks bracket the header — `[peek][header][body][peek]` — per PRD §7.4. Getting this
+inverted produces a layout that looks plausible and reads wrong.
+
+The trigger renders at narrow and medium, and is absent at wide. It is an ordinary child of the
+header; there is no portal or configurable mount slot, which draft v3 called for while the
+position was undecided. That indirection can go.
 
 Only the current view plus immediate neighbors mount. Neighboring days render their static
 card lists — cards are static by default (§4.4), so a revealed neighbor shows real content at
 no editor cost.
 
-### 8.2 Gestures
+### 8.3 Gestures
 
 Pointer Events. **Swipe navigates; long-press-then-drag selects** (PRD §7.2).
 
@@ -516,7 +543,7 @@ keeping them clear of the system back gesture.
 Vertical drags inside a scrollable region scroll it, and navigate only at a scroll extent with
 continued motion in that direction.
 
-### 8.3 Keyboard
+### 8.4 Keyboard
 
 Desktop is keyboard-first. Bindings live in one table so they're discoverable and remappable
 later. `Cmd/Ctrl-K` opens a command palette backed by the SQLite index — which must degrade

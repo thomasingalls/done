@@ -174,14 +174,15 @@ unlocks; long-press in live text starts selection).
 
 ```
 ┌──────────┬─────────────────────────┬──────────────┐
-│          │   ┌───── yesterday ───┐ │              │
-│   MENU   │   ╰───────────────────╯ │    GOALS     │
-│          │  ┌─────────────────────┐│              │
-│ calendar │  │                     ││   master     │
-│ search   │  │       TODAY         ││   list       │
-│ settings │  │                     ││              │
+│          │   ╰──── yesterday ────╯ │              │
+│   MENU   │  ┌─────────────────────┐│    GOALS     │
+│          │  │ Wed 5 Aug           ││              │
+│ calendar │  ├─────────────────────┤│   master     │
+│ search   │  │                     ││   list       │
+│ settings │  │       TODAY         ││              │
+│          │  │                     ││              │
 │          │  └─────────────────────┘│              │
-│          │   ╭─── tomorrow ──────╮ │              │
+│          │   ╭──── tomorrow ─────╮ │              │
 └──────────┴─────────────────────────┴──────────────┘
 ```
 
@@ -189,29 +190,62 @@ Today and Goals each fill viewport height and scroll internally — the page its
 or overflows. Above and below Today, adjacent days peek through as faded, rounded, dimmed panel
 edges that hint at their existence and act as click targets to move a day.
 
-### 7.4 Medium — two panels, menu behind a trigger
+### 7.4 The Today panel header
 
-At half-screen width the menu collapses behind a trigger. Today and Goals stay side by side;
-half width is still enough for text-only content to remain usable in both.
+The Today panel is **header plus scrolling body**, in that order, with the day peeks bracketing
+the whole unit:
+
+```
+   ╰──── yesterday ────╯     ← faded peek, click target
+  ┌─────────────────────┐
+  │ ☰  Wed 5 Aug        │    ← header: pinned, never scrolls away
+  ├─────────────────────┤
+  │  journal / next /   │    ← body: scrolls internally
+  │  scheduled / done   │
+  └─────────────────────┘
+   ╭──── tomorrow ─────╮     ← faded peek, click target
+```
+
+The header shows **the date of the day being viewed** — which the app previously had nowhere to
+display, and which matters as soon as you can navigate to an arbitrary day.
+
+**The menu trigger lives in this header.** It is present at the narrow and medium breakpoints and
+absent at wide, where the menu is already a visible panel.
+
+The header is **pinned** — outside the scrolling region, not merely sticky within it. If it
+scrolled away, the menu would become unreachable from a scrolled position at exactly the
+breakpoints where it's the only non-gesture route to it.
+
+Ordering matters and is easy to get backwards: the yesterday peek sits *above* the header, not
+below. The header belongs to Today, so `[peek: Tue] / [header: Wed] / [body: Wed] / [peek: Thu]`
+reads correctly, where header-above-peek would not.
+
+*(Including the trigger at the narrow breakpoint is my extension — the decision was made for
+medium. It costs a little horizontal space in the tightest layout, and it buys a non-gesture path
+to the menu, which is otherwise reachable only by drag-right. Reversible.)*
+
+### 7.5 Medium — two panels, menu behind the trigger
+
+At half-screen width the menu collapses behind the header trigger. Today and Goals stay side by
+side; half width is still enough for text-only content to remain usable in both.
 
 ```
 ┌─────────────────────────┬──────────────┐
-│   ┌───── yesterday ───┐ │              │
+│   ╰──── yesterday ────╯ │              │
 │  ┌─────────────────────┐│    GOALS     │
+│  │ ☰  Wed 5 Aug        ││              │
+│  ├─────────────────────┤│   master     │
+│  │                     ││   list       │
 │  │       TODAY         ││              │
 │  └─────────────────────┘│              │
-│   ╭─── tomorrow ──────╮ │              │
+│   ╭──── tomorrow ─────╮ │              │
 └─────────────────────────┴──────────────┘
 ```
 
-**The menu trigger's location is deliberately unspecified.** It is the author's call and has
-not been made. No layout, component boundary, or spacing decision may assume a position for it.
-When the decision arrives it should not force a re-layout of anything above.
+The opened menu overlays rather than pushes — pushing would reflow Today and Goals, and at this
+width neither has room to give.
 
-The opened menu may overlay or push; that follows from the trigger decision and is likewise
-open.
-
-### 7.5 Keyboard
+### 7.6 Keyboard
 
 Desktop is keyboard-first: arrow keys or `h j k l` with a modifier move along the axes,
 `Cmd/Ctrl-K` opens a command palette, `t` returns to today.
@@ -356,10 +390,9 @@ tables. Distinct from Phase 5: Phase 5 reads and comments, Phase 6 writes.
 
 ## 14. Open questions
 
-1. **Menu trigger placement** (§7.4) — author's call, not yet made. Deliberately left open.
-2. **Card split threshold** (§10) — three returns is a starting guess.
-3. **Does the daily journal freeze?** §6 says no. Low-stakes and cheap to reverse, but it's my
+1. **Card split threshold** (§10) — three returns is a starting guess.
+2. **Does the daily journal freeze?** §6 says no. Low-stakes and cheap to reverse, but it's my
    call rather than a stated requirement.
-4. **Is document text attributed, or only cards?** §11.3 attributes cards. Per-character
+3. **Is document text attributed, or only cards?** §11.3 attributes cards. Per-character
    attribution inside documents is possible but costly (TRD §4.8) and probably not worth it
    until an agent is actually editing prose.
