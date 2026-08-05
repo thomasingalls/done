@@ -17,6 +17,8 @@
 | **Document** | A surface backed by one `Y.Text` (master, journal). |
 | **Collection** | A surface backed by `Y.Array<Card>` (next, scheduled, done). |
 | **Card** | One item in a collection; owns its own `Y.Text`. |
+| **Actor** | Anything that writes to the document: `human`, `agent`, or `system`. Not synonymous with "user" — see §4.8. |
+| **Origin** | A Yjs transaction's `origin` value, carrying the acting actor. Distinct from `Card.origin`, which is item provenance. |
 
 ---
 
@@ -129,9 +131,16 @@ Y.Doc (root)
 Card = Y.Map {
   id:        string     // 6-char, stable
   text:      Y.Text     // markdown; line 1 = title, remainder = description
-  origin:    string | null   // provenance: source card id or 'master'
+  origin:    string | null   // item provenance: source card id or 'master'
+  author:    string     // ActorId (§4.8)
   createdAt: string     // UTC ISO 8601
 }
+```
+
+`meta` additionally holds the actor roster:
+
+```
+meta.actors  Y.Map<ActorId, { kind: 'human'|'agent'|'system', name, color }>
 ```
 
 Day maps are created lazily on first write. An untouched day occupies nothing.
@@ -238,6 +247,56 @@ note is plain text, findable by search.
 | Card split (3 returns) | Truncate this card's `Y.Text`, insert new card after it, move focus |
 | Card merge (backspace at start) | Append this card's text to previous, delete this card |
 | Bulk stale-item resolution | Batched array moves in one transaction |
+
+### 4.8 Actors and attribution
+
+Per PRD §11: one user, several actors. Three exist in v1 — the human, the system (compaction,
+import, bulk operations), and implicitly each device the human acts through. Agents arrive later
+and require no structural change.
+
+**Every mutation carries its actor as the Yjs transaction origin.** This is not an addition to
+the write path; `ydoc.transact()` already takes an origin argument that the codebase would
+otherwise pass as `null`:
+
+```ts
+ydoc.transact(() => { /* ... */ }, { actor: localActorId, device: deviceId });
+```
+
+**Undo is scoped by origin.** `Y.UndoManager` accepts `trackedOrigins`, so the user's undo stack
+tracks only origins whose `actor` is the local human:
+
+```ts
+new Y.UndoManager(scope, {
+  trackedOrigins: new Set([...]),   // local human only
+});
+```
+
+This is required for v1 correctness independent of agents. Without it, undo after a compaction
+reverts the compaction, and undo after a bulk stale-item resolution unwinds dozens of card moves
+as a single confusing step. Both are system-actor operations that must never enter the user's
+undo stack. Agents later get the same treatment for free.
+
+**Awareness is wired from day one.** `y-protocols/awareness` carries the local actor's identity
+and cursor, and `yCollab` from `y-codemirror.next` already consumes it to render remote
+selections. With one actor connected nothing is drawn, but the plumbing exists and is exercised
+by multi-device sync in Phase 3 — where two of your own devices connected simultaneously is
+already the two-cursor case.
+
+**Storage split:**
+
+| What | Where | Synced |
+|---|---|---|
+| Actor roster | `meta.actors` in the Yjs doc | yes |
+| Which actor this client is | `localStorage` | no |
+| Device id and friendly name | `localStorage` | no |
+| Live cursor / presence | awareness protocol | ephemeral |
+
+**Attribution granularity is card-level, deliberately.** `Card.author` is one field and answers
+"who created this." Documents (`master`, `journal`) are *not* attributed per character: Yjs
+stores no author per item, so it would require a parallel mark structure maintained alongside
+every text edit — real cost on the keystroke path, for a question nobody asks until an agent is
+editing prose. Deferred (PRD §14 Q4). Note that transaction origins are still recorded in the
+update stream regardless, so coarse attribution is recoverable if it ever matters.
 
 ---
 
@@ -523,7 +582,25 @@ Browsers can evict origin storage. `persist()` reduces but doesn't eliminate the
 sync configured another replica exists; without it, export is the only backup — so prompt for
 an export periodically if sync has never been configured.
 
-### 10.6 Framework choice
+### 10.6 Permissions are unenforceable in this architecture
+
+Worth recording before anything is designed assuming otherwise. The relay treats updates as
+opaque binary and holds no authority (§2, §7.2); there is no server-side validation point. Yjs
+applies any well-formed update it receives. Therefore **any actor with access to the document can
+write anything to it**, and a rule like "the agent may edit the journal but not Done" is a
+property of the agent's own code, enforced by trust rather than by the data layer.
+
+This is acceptable — the agents in question are ones the author runs — but it constrains the
+Phase 6 design. Anything resembling a capability boundary has to live in the agent process, and
+the honest failure mode is a misbehaving agent corrupting frozen history. The mitigations
+available are ordinary ones: attribution makes damage attributable (§4.8), scoped undo makes it
+reversible, and export (§9) makes it recoverable. Enforcement is not among them.
+
+Introducing real enforcement would mean giving the relay schema awareness and update validation,
+which forfeits the "dumb pipe, no authority" property that §2 selected Yjs for. Not a trade worth
+making for this threat model.
+
+### 10.7 Framework choice
 
 React + Vite on ecosystem grounds; Svelte is defensible (smaller bundle, little component-tree
 complexity here). It barely matters — the editor is CodeMirror and state lives in Yjs, both
@@ -556,6 +633,11 @@ every supported markdown construct. Same test covers live-preview line-height st
 
 **Cap enforcement.** No sequence — paste, multi-line insert, undo, drag, concurrent
 insert-from-two-devices — produces four cards in `next`.
+
+**Undo scoping.** System-actor operations never enter the user's undo stack. Specifically: undo
+immediately after a compaction, an import, or a bulk stale-item resolution reverts the user's
+last *typed* change, not the system operation. This is the test that keeps §4.8 honest as the
+codebase grows new system operations.
 
 **Sync-absent.** Full suite passes with no sync provider constructed.
 
