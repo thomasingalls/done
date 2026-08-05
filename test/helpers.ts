@@ -1,6 +1,11 @@
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { ensureSyntaxTree } from '@codemirror/language';
-import { EditorSelection, EditorState, type StateCommand, type Transaction } from '@codemirror/state';
+import {
+  EditorSelection,
+  EditorState,
+  type StateCommand,
+  type Transaction,
+} from '@codemirror/state';
 import type { Decoration, DecorationSet } from '@codemirror/view';
 
 export const stateFor = (doc: string, cursor = 0): EditorState => {

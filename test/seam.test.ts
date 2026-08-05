@@ -11,7 +11,14 @@ import { extname, join, relative } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const SEAM = 'src/crdt/yjs.ts';
-const PACKAGES = ['yjs', 'y-indexeddb', 'y-protocols', 'y-codemirror.next', 'y-websocket', 'y-sweet'];
+const PACKAGES = [
+  'yjs',
+  'y-indexeddb',
+  'y-protocols',
+  'y-codemirror.next',
+  'y-websocket',
+  'y-sweet',
+];
 
 const sourceFiles = (directory: string): string[] =>
   readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -45,7 +52,13 @@ describe('the Yjs seam', () => {
 
   it('re-exports what the rest of the app needs, so there is no reason to reach past it', () => {
     const seam = readFileSync(SEAM, 'utf8');
-    for (const name of ['Y', 'IndexeddbPersistence', 'Awareness', 'yCollab', 'yUndoManagerKeymap']) {
+    for (const name of [
+      'Y',
+      'IndexeddbPersistence',
+      'Awareness',
+      'yCollab',
+      'yUndoManagerKeymap',
+    ]) {
       expect(seam).toContain(name);
     }
   });

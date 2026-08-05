@@ -1,9 +1,10 @@
 import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
+import react, { reactCompilerPreset } from '@vitejs/plugin-react';
+import babel from '@rolldown/plugin-babel';
 import { precacheServiceWorker } from './vite/precacheServiceWorker.ts';
 
 export default defineConfig({
-  plugins: [react(), precacheServiceWorker()],
+  plugins: [react(), babel({ presets: [reactCompilerPreset()] }), precacheServiceWorker()],
   build: {
     // The §12 budget is on the initial JS bundle; splitting it into many small
     // chunks would only hide the number the budget is about.

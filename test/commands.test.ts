@@ -88,16 +88,12 @@ describe('task toggling', () => {
 describe('list continuation', () => {
   it('continues a bullet on Enter', () => {
     const doc = '- one';
-    expect(run(at(doc, doc.length), continueList).state.doc.toString()).toBe(
-      '- one\n- ',
-    );
+    expect(run(at(doc, doc.length), continueList).state.doc.toString()).toBe('- one\n- ');
   });
 
   it('continues a task as an empty task', () => {
     const doc = '- [x] one';
-    expect(run(at(doc, doc.length), continueList).state.doc.toString()).toBe(
-      '- [x] one\n- [ ] ',
-    );
+    expect(run(at(doc, doc.length), continueList).state.doc.toString()).toBe('- [x] one\n- [ ] ');
   });
 
   it('ends the list on the first Enter on an empty item', () => {
@@ -112,9 +108,7 @@ describe('list continuation', () => {
 
   it('renumbers as it continues an ordered list', () => {
     const doc = '1. one';
-    expect(run(at(doc, doc.length), continueList).state.doc.toString()).toBe(
-      '1. one\n2. ',
-    );
+    expect(run(at(doc, doc.length), continueList).state.doc.toString()).toBe('1. one\n2. ');
   });
 });
 

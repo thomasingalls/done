@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * The geometry suite (TRD §5.2, §8.2).
  *
- * Separate from `npm test` because these assertions are about layout, and
+ * Separate from `pnpm test` because these assertions are about layout, and
  * layout needs a browser that lays things out. jsdom would pass them all
  * without measuring anything.
  */
@@ -12,7 +12,7 @@ export default defineConfig({
   fullyParallel: true,
   reporter: process.env['CI'] ? 'github' : 'list',
   webServer: {
-    command: 'npm run build && npx vite preview --port 4173 --strictPort',
+    command: 'pnpm build && pnpm exec vite preview --port 4173 --strictPort',
     url: 'http://localhost:4173',
     reuseExistingServer: !process.env['CI'],
     timeout: 120_000,

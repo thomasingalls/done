@@ -1,8 +1,8 @@
 node_modules/
 dist/
-*.tsbuildinfo
-
-# Playwright
-test-results/
+coverage/
 playwright-report/
-blob-report/
+test-results/
+.DS_Store
+.env.local
+tsconfig*.tsbuildinfo

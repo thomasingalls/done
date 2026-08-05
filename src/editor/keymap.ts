@@ -7,7 +7,10 @@
  */
 
 import { indentLess, indentMore } from '@codemirror/commands';
-import { deleteMarkupBackward, insertNewlineContinueMarkupCommand } from '@codemirror/lang-markdown';
+import {
+  deleteMarkupBackward,
+  insertNewlineContinueMarkupCommand,
+} from '@codemirror/lang-markdown';
 import { type Extension } from '@codemirror/state';
 import { type Command, type KeyBinding, keymap } from '@codemirror/view';
 import {

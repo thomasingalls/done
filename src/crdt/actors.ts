@@ -93,8 +93,7 @@ export const localDevice = (): Device => {
   return device;
 };
 
-const actorRoster = (doc: YDoc): YMap<Actor> =>
-  doc.getMap('meta').get('actors') as YMap<Actor>;
+const actorRoster = (doc: YDoc): YMap<Actor> => doc.getMap('meta').get('actors') as YMap<Actor>;
 
 /**
  * The set of actors the local human can see. Phase 1 shows none of this;

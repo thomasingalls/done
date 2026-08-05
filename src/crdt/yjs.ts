@@ -39,8 +39,7 @@ export const applyUpdate = (doc: YDoc, update: Uint8Array, origin?: unknown): vo
  * its actor (TRD §4.8). `transact` already takes an origin argument; this
  * wrapper only removes the option of passing `null`.
  */
-export const transact = <T>(doc: YDoc, origin: unknown, fn: () => T): T =>
-  doc.transact(fn, origin);
+export const transact = <T>(doc: YDoc, origin: unknown, fn: () => T): T => doc.transact(fn, origin);
 
 export const createUndoManager = (
   scope: YText | YMap<unknown> | YArray<unknown>,

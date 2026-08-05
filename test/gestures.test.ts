@@ -46,7 +46,9 @@ describe('swipe navigates', () => {
   it('hands back a drag along an axis with nowhere to go', () => {
     const recognizer = new GestureRecognizer({ navigable: ['x'] });
     down(recognizer);
-    expect(types(recognizer.handle({ kind: 'move', x: 101, y: 160, time: 30 }))).toEqual(['native']);
+    expect(types(recognizer.handle({ kind: 'move', x: 101, y: 160, time: 30 }))).toEqual([
+      'native',
+    ]);
     expect(recognizer.state).toBe('native');
   });
 

@@ -86,7 +86,12 @@ export const App = (): React.ReactElement => {
     >
       <Menu ref={menu} actor={store.actor} storage={storage} />
 
-      <div className="scrim" onClick={() => setMenu(false)} />
+      <button
+        type="button"
+        className="scrim"
+        aria-label="Close menu"
+        onClick={() => setMenu(false)}
+      />
 
       <main className="panel">
         <header className="panel-header">

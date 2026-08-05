@@ -55,7 +55,9 @@ console.log(
     `(${((total / BUDGET_BYTES) * 100).toFixed(0)}%)`,
 );
 
-const wasm = readdirSync(DIST, { recursive: true }).filter((name) => String(name).endsWith('.wasm'));
+const wasm = readdirSync(DIST, { recursive: true }).filter((name) =>
+  String(name).endsWith('.wasm'),
+);
 if (wasm.length > 0) console.log(`excluded from the budget: ${wasm.join(', ')}`);
 
 if (total > BUDGET_BYTES) {
