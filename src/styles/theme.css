@@ -1,0 +1,48 @@
+/*
+ * Colour, in the last layer so it wins over structure without escalating
+ * specificity. Light and dark both, following the system.
+ *
+ * The title/description contrast pair (--color-text / --color-text-dim) is the
+ * one Phase 2's cards read for their first line and the rest.
+ */
+@layer theme {
+  :root {
+    color-scheme: light dark;
+
+    --color-bg: #fdfcfa;
+    --color-surface: #f4f2ee;
+    --color-text: #1c1b19;
+    --color-text-dim: #57544e;
+    --color-text-faint: #8b877f;
+    --color-border: #e0ddd6;
+    --color-mark: #b3aea3;
+    --color-accent: #b4552a;
+    --color-accent-dim: #d9a68b;
+    --color-code-bg: #efece6;
+    --color-quote-bar: #d6d2c8;
+    --color-checkbox: #b3aea3;
+    --color-selection: #b4552a2e;
+    --color-scrim: rgb(28 27 25 / 0.32);
+    --shadow-panel: 0 0 40px rgb(28 27 25 / 0.18);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: #16161a;
+      --color-surface: #1e1e23;
+      --color-text: #e8e6e1;
+      --color-text-dim: #a3a09a;
+      --color-text-faint: #6f6c67;
+      --color-border: #2e2e34;
+      --color-mark: #5c5953;
+      --color-accent: #e0783f;
+      --color-accent-dim: #8a5335;
+      --color-code-bg: #202027;
+      --color-quote-bar: #3a3a42;
+      --color-checkbox: #55524c;
+      --color-selection: #e0783f33;
+      --color-scrim: rgb(0 0 0 / 0.45);
+      --shadow-panel: 0 0 40px rgb(0 0 0 / 0.5);
+    }
+  }
+}
