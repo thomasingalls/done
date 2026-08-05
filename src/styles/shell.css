@@ -1,0 +1,247 @@
+/*
+ * The responsive shell (TRD §8.1–§8.3).
+ *
+ * A grid with named areas: each breakpoint is one `grid-template-areas`
+ * declaration describing the layout, rather than a scattering of direction,
+ * order and basis changes. Flex is used for one-dimensional runs inside
+ * components; it is not the shell.
+ *
+ * Phase 1 has two surfaces, Menu and the master-list document. Today and Goals
+ * arrive in Phase 2 and become further areas in the same template. Narrow and
+ * medium are therefore identical here — the distinction in §8.1 is whether
+ * Goals stays beside Today, and there is no Goals yet.
+ */
+@layer app {
+  .shell {
+    display: grid;
+    grid-template-areas: 'doc';
+    grid-template-columns: minmax(0, 1fr);
+    block-size: 100dvh;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    /*
+     * Ours horizontally, the browser's vertically. TRD §8.4 says
+     * `touch-action: none` on navigable surfaces; in Phase 1 only the x axis
+     * leads anywhere and the editor has to scroll natively, so `pan-y` is that
+     * rule at the width the app actually has. It widens when the vertical axis
+     * starts navigating between days.
+     */
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Selection is off until the long press asks for it (TRD §8.4). */
+  .shell[data-select='off'] {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .shell[data-select='on'] {
+    user-select: text;
+    -webkit-user-select: text;
+  }
+
+  .shell:not([data-menu='dragging']) {
+    transition: --menu-progress var(--duration-snap) var(--ease-snap);
+  }
+
+  /* ---- Menu ------------------------------------------------------------- */
+
+  .menu {
+    grid-area: menu;
+    inline-size: var(--menu-width);
+    block-size: 100%;
+    min-block-size: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-4);
+    background: var(--color-surface);
+    border-inline-end: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  /*
+   * Overlays rather than pushes (PRD §7.5): pushing would reflow the panels,
+   * and at these widths none of them has room to give.
+   */
+  .shell[data-breakpoint='overlay'] .menu {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 2;
+    translate: calc((var(--menu-progress) - 1) * var(--menu-width)) 0;
+    box-shadow: var(--shadow-panel);
+  }
+
+  .scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--color-scrim);
+    opacity: var(--menu-progress);
+    pointer-events: none;
+  }
+
+  .shell[data-menu='open'] .scrim {
+    pointer-events: auto;
+  }
+
+  .shell[data-breakpoint='wide'] .scrim {
+    display: none;
+  }
+
+  /* ---- Panel ------------------------------------------------------------ */
+
+  /*
+   * Four bands in Phase 2 (yesterday peek, header, body, tomorrow peek); two
+   * here. What matters is which track absorbs slack: `minmax(0, 1fr)` on the
+   * body only. An `auto` track would take its automatic minimum size from its
+   * content and silently push the panel past the viewport (TRD §8.2).
+   */
+  .panel {
+    grid-area: doc;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    block-size: 100%;
+    min-block-size: 0;
+    overflow: hidden;
+    container: panel / inline-size;
+  }
+
+  /*
+   * Pinned, not sticky (TRD §8.2). It lives outside the scrolling region, so
+   * the menu trigger never takes part in scroll repaints and is never reachable
+   * by the gesture handler's scroll logic.
+   */
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    block-size: var(--header-height);
+    padding-inline: var(--space-3);
+    border-block-end: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+
+  .panel-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .panel-body {
+    min-block-size: 0;
+    overflow: hidden;
+    display: grid;
+  }
+
+  .editor-host {
+    min-block-size: 0;
+    block-size: 100%;
+    overflow: hidden;
+  }
+
+  .menu-trigger {
+    display: grid;
+    place-items: center;
+    inline-size: 2rem;
+    block-size: 2rem;
+    border-radius: var(--radius-2);
+    color: var(--color-text-dim);
+    flex: none;
+  }
+
+  .menu-trigger:hover {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  /* Absent at wide, where the menu is already a visible panel (PRD §7.4). */
+  .shell[data-breakpoint='wide'] .menu-trigger {
+    display: none;
+  }
+
+  /* ---- Menu contents ---------------------------------------------------- */
+
+  .menu-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .menu-heading {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-faint);
+  }
+
+  .menu-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    font-size: 0.875rem;
+    color: var(--color-text-dim);
+  }
+
+  .menu-value {
+    color: var(--color-text);
+    text-align: end;
+  }
+
+  .actor-swatch {
+    display: inline-block;
+    inline-size: 0.625rem;
+    block-size: 0.625rem;
+    border-radius: 50%;
+    margin-inline-end: var(--space-2);
+    background: var(--actor-color, var(--color-accent));
+  }
+
+  .menu-note {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-text-faint);
+  }
+
+  /* ---- Breakpoints ------------------------------------------------------ */
+
+  /*
+   * The breakpoint is set as an attribute by the shell rather than asked for
+   * twice — the gesture layer has to know it too (there is nothing to swipe to
+   * at wide), and a media query here plus a matchMedia there is two copies of
+   * one number that can disagree. `WIDE_MEDIA_QUERY` in useBreakpoint.ts is the
+   * copy. Nothing renders before React, so there is no unstyled first frame to
+   * protect.
+   */
+  .shell[data-breakpoint='wide'] {
+    grid-template-areas: 'menu doc';
+    grid-template-columns: var(--menu-width) minmax(0, 1fr);
+    touch-action: auto;
+  }
+
+  /* Shown while IndexedDB is read back; see App.tsx on why it is blank. */
+  .boot {
+    display: grid;
+    place-items: center;
+    block-size: 100dvh;
+    padding: var(--space-6);
+    text-align: center;
+    color: var(--color-text-dim);
+    gap: var(--space-2);
+  }
+
+  @container panel (max-width: 26rem) {
+    .panel-header {
+      padding-inline: var(--space-2);
+    }
+  }
+}

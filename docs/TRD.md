@@ -27,35 +27,35 @@ did not.
 
 ## 0. Terminology
 
-| Term | Meaning |
-|---|---|
-| **Journal** | A day's free-prose surface. Never "log" — in a Yjs codebase that name reads as the CRDT update log. |
-| **Update log** | Yjs internals only. Never a user-facing concept. |
-| **Freeze** | UX rule: a day's collections become read-only 3 days after its date. |
+| Term           | Meaning                                                                                                                                |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| **Journal**    | A day's free-prose surface. Never "log" — in a Yjs codebase that name reads as the CRDT update log.                                    |
+| **Update log** | Yjs internals only. Never a user-facing concept.                                                                                       |
+| **Freeze**     | UX rule: a day's collections become read-only 3 days after its date.                                                                   |
 | **Compaction** | Storage optimization: frozen collections collapse to flat text. No user-visible effect, different schedule, **independent of freeze**. |
-| **Document** | A surface backed by one `Y.Text` (master, journal). |
-| **Collection** | A surface backed by `Y.Array<Card>` (next, scheduled, done). |
-| **Card** | One item in a collection; owns its own `Y.Text`. |
-| **Actor** | Anything that writes to the document: `human`, `agent`, or `system`. Not synonymous with "user" — see §4.8. |
-| **Origin** | A Yjs transaction's `origin` value, carrying the acting actor. Distinct from `Card.origin`, which is item provenance. |
+| **Document**   | A surface backed by one `Y.Text` (master, journal).                                                                                    |
+| **Collection** | A surface backed by `Y.Array<Card>` (next, scheduled, done).                                                                           |
+| **Card**       | One item in a collection; owns its own `Y.Text`.                                                                                       |
+| **Actor**      | Anything that writes to the document: `human`, `agent`, or `system`. Not synonymous with "user" — see §4.8.                            |
+| **Origin**     | A Yjs transaction's `origin` value, carrying the acting actor. Distinct from `Card.origin`, which is item provenance.                  |
 
 ---
 
 ## 1. Summary of decisions
 
-| Concern | Decision |
-|---|---|
-| CRDT | Yjs v13 (pinned, see §10.1) |
-| Editor | CodeMirror 6, plain-markdown source of truth |
-| Live preview | Custom CM6 decoration extension (cursor-line syntax reveal) |
-| Document surfaces | One `Y.Text` each (master, journal) |
-| Collection surfaces | `Y.Array<Card>`, each card holding its own `Y.Text` |
-| Primary persistence | `y-indexeddb` |
-| Query/search index | SQLite-WASM (`opfs-sahpool` VFS) + FTS5, **derived and disposable** |
-| Sync transport | `y-websocket` or `y-sweet`, self-hosted, **optional** |
-| Doc partitioning | Single root doc; compaction bounds the structured working set (§4.5) |
-| PWA shell | Hand-rolled service worker, precache-only |
-| Targets | Android Chrome (primary), Desktop Chrome/Edge |
+| Concern             | Decision                                                             |
+| ------------------- | -------------------------------------------------------------------- |
+| CRDT                | Yjs v13 (pinned, see §10.1)                                          |
+| Editor              | CodeMirror 6, plain-markdown source of truth                         |
+| Live preview        | Custom CM6 decoration extension (cursor-line syntax reveal)          |
+| Document surfaces   | One `Y.Text` each (master, journal)                                  |
+| Collection surfaces | `Y.Array<Card>`, each card holding its own `Y.Text`                  |
+| Primary persistence | `y-indexeddb`                                                        |
+| Query/search index  | SQLite-WASM (`opfs-sahpool` VFS) + FTS5, **derived and disposable**  |
+| Sync transport      | `y-websocket` or `y-sweet`, self-hosted, **optional**                |
+| Doc partitioning    | Single root doc; compaction bounds the structured working set (§4.5) |
+| PWA shell           | Hand-rolled service worker, precache-only                            |
+| Targets             | Android Chrome (primary), Desktop Chrome/Edge                        |
 
 Two load-bearing decisions: **Yjs is the source of truth and SQLite is a cache**, and
 **structure follows the unit of interaction** — text where you edit documents, arrays where
@@ -114,7 +114,7 @@ You also don't get Obsidian-style syntax-visible editing from these without figh
 model — `**` becomes a bold mark, not two characters you can see and delete.
 
 **The card argument is weaker than it looks.** The usual reason to reach for a block editor
-is that blocks are hard *inside one big document*. That's not this architecture (§4.2): each
+is that blocks are hard _inside one big document_. That's not this architecture (§4.2): each
 card owns a separate `Y.Text` and gets its own small editor. There is no block-splitting
 inside a shared document model to implement — splitting a card is an array operation, not a
 document transformation. Most of what BlockNote would provide is work this design doesn't
@@ -129,7 +129,7 @@ and cards, plaintext markdown throughout, no serializer in the write path.
 
 ### 4.1 Principle
 
-There is no parallel structured representation of item *content*. All user-visible text
+There is no parallel structured representation of item _content_. All user-visible text
 lives in a `Y.Text` as markdown. What the CRDT tracks beyond text is only what the workflow
 requires the app to know: **membership and ordering of cards in collections.**
 
@@ -164,7 +164,7 @@ meta.actors  Y.Map<ActorId, { kind: 'human'|'agent'|'system', name, color }>
 
 Day maps are created lazily on first write. An untouched day occupies nothing.
 
-**A card carries no date.** The day whose collection holds it *is* its date (PRD §9).
+**A card carries no date.** The day whose collection holds it _is_ its date (PRD §9).
 Rescheduling is an array move between days; there is no date field to update and no
 reschedule history to maintain.
 
@@ -172,8 +172,8 @@ reschedule history to maintain.
 
 The PRD's movement table is the justification. `Next → Done` is the second most important
 interaction in the app, and with arrays it is a delete from one array and a push to the other
-inside a single transaction — atomic, undoable as one step, and observable as one event. *(Shape
-shown to make the atomicity argument; not a prescribed implementation.)*
+inside a single transaction — atomic, undoable as one step, and observable as one event. _(Shape
+shown to make the atomicity argument; not a prescribed implementation.)_
 
 The same operation modelled as text ranges in a
 shared document is a delete-plus-insert whose concurrent-merge behaviour is exactly the weak
@@ -249,17 +249,17 @@ note is plain text, findable by search.
 
 ### 4.7 Movement operations
 
-| Operation | Implementation |
-|---|---|
-| Next → Done | Array splice + push, one transaction (§4.3) |
-| Compose → Done | `done.push([newCard(text)])` |
-| Reschedule to another day | Array move between two days' collections. No date field to touch. |
-| Master → collection | Parse selected line(s), create card with `origin: 'master'`. **Does not modify master.** |
-| Remove from master | Separate explicit text deletion. Never bundled with the above. |
-| Journal line → Master | Assign `^id` if absent, append line to master `Y.Text` |
-| Card split (3 returns) | Truncate this card's `Y.Text`, insert new card after it, move focus |
-| Card merge (backspace at start) | Append this card's text to previous, delete this card |
-| Bulk stale-item resolution | Batched array moves in one transaction |
+| Operation                       | Implementation                                                                           |
+| ------------------------------- | ---------------------------------------------------------------------------------------- |
+| Next → Done                     | Array splice + push, one transaction (§4.3)                                              |
+| Compose → Done                  | `done.push([newCard(text)])`                                                             |
+| Reschedule to another day       | Array move between two days' collections. No date field to touch.                        |
+| Master → collection             | Parse selected line(s), create card with `origin: 'master'`. **Does not modify master.** |
+| Remove from master              | Separate explicit text deletion. Never bundled with the above.                           |
+| Journal line → Master           | Assign `^id` if absent, append line to master `Y.Text`                                   |
+| Card split (3 returns)          | Truncate this card's `Y.Text`, insert new card after it, move focus                      |
+| Card merge (backspace at start) | Append this card's text to previous, delete this card                                    |
+| Bulk stale-item resolution      | Batched array moves in one transaction                                                   |
 
 ### 4.8 Actors and attribution
 
@@ -289,15 +289,15 @@ already the two-cursor case.
 
 **Storage split:**
 
-| What | Where | Synced |
-|---|---|---|
-| Actor roster | `meta.actors` in the Yjs doc | yes |
-| Which actor this client is | `localStorage` | no |
-| Device id and friendly name | `localStorage` | no |
-| Live cursor / presence | awareness protocol | ephemeral |
+| What                        | Where                        | Synced    |
+| --------------------------- | ---------------------------- | --------- |
+| Actor roster                | `meta.actors` in the Yjs doc | yes       |
+| Which actor this client is  | `localStorage`               | no        |
+| Device id and friendly name | `localStorage`               | no        |
+| Live cursor / presence      | awareness protocol           | ephemeral |
 
 **Attribution granularity is card-level, deliberately.** `Card.author` is one field and answers
-"who created this." Documents (`master`, `journal`) are *not* attributed per character: Yjs
+"who created this." Documents (`master`, `journal`) are _not_ attributed per character: Yjs
 stores no author per item, so it would require a parallel mark structure maintained alongside
 every text edit — real cost on the keystroke path, for a question nobody asks until an agent is
 editing prose. Deferred (PRD §14 Q4). Note that transaction origins are still recorded in the
@@ -481,11 +481,11 @@ backup story.
 One layout system, three breakpoints. The same three surfaces (Menu / Today / Goals) sit on a
 plane; the breakpoint decides how many are simultaneously visible.
 
-| Breakpoint | Menu | Today | Goals |
-|---|---|---|---|
+| Breakpoint | Menu                        | Today      | Goals                       |
+| ---------- | --------------------------- | ---------- | --------------------------- |
 | **Narrow** | off-screen left, drag right | full width | off-screen right, drag left |
-| **Medium** | behind a trigger | panel | panel |
-| **Wide** | persistent panel | panel | panel |
+| **Medium** | behind a trigger            | panel      | panel                       |
+| **Wide**   | persistent panel            | panel      | panel                       |
 
 Only the current view plus immediate neighbors mount. Neighboring days render their static card
 lists — cards are static by default (§4.4), so a revealed neighbor shows real content at no
@@ -510,8 +510,8 @@ chosen to satisfy them.
   automatic minimum size derived from content, so a content-sized floor silently defeats the
   height bound and the panel grows past the viewport. The fix differs by system — `min-height: 0`
   on a flex child, `minmax(0, 1fr)` on a grid track — which is why this is written as a
-  constraint rather than a rule. Earlier drafts stated it as flexbox `min-height: 0` *on the
-  panel*, which was both the wrong element and the wrong altitude.
+  constraint rather than a rule. Earlier drafts stated it as flexbox `min-height: 0` _on the
+  panel_, which was both the wrong element and the wrong altitude.
 - **Static card render and mounted editor must be visually identical** (§4.4). This is a styling
   constraint before it is a testing one.
 
@@ -679,7 +679,7 @@ insert-from-two-devices — produces four cards in `next`.
 
 **Undo scoping.** System-actor operations never enter the user's undo stack. Specifically: undo
 immediately after a compaction, an import, or a bulk stale-item resolution reverts the user's
-last *typed* change, not the system operation. This is the test that keeps §4.8 honest as the
+last _typed_ change, not the system operation. This is the test that keeps §4.8 honest as the
 codebase grows new system operations.
 
 **Sync-absent.** Full suite passes with no sync provider constructed.
@@ -690,16 +690,16 @@ codebase grows new system operations.
 
 Build-failing thresholds, not aspirations.
 
-| Metric | Budget |
-|---|---|
-| Keystroke → paint | < 16 ms p95 |
-| Card focus → editable | < 50 ms |
-| Cold start → Today editable | < 2.5 s |
-| Warm start → Today editable | < 1.0 s |
-| Day-to-day navigation | < 100 ms |
-| Search results (10k items) | < 150 ms |
+| Metric                                | Budget           |
+| ------------------------------------- | ---------------- |
+| Keystroke → paint                     | < 16 ms p95      |
+| Card focus → editable                 | < 50 ms          |
+| Cold start → Today editable           | < 2.5 s          |
+| Warm start → Today editable           | < 1.0 s          |
+| Day-to-day navigation                 | < 100 ms         |
+| Search results (10k items)            | < 150 ms         |
 | Initial JS bundle (excl. sqlite wasm) | < 350 KB gzipped |
-| Yjs doc load (encoded state) | < 500 ms |
+| Yjs doc load (encoded state)          | < 500 ms         |
 
 The sqlite wasm binary sits outside the initial bundle budget because it loads lazily (§6.2);
 the app must be fully usable for writing before it arrives.

@@ -27,7 +27,7 @@ is not a general task manager and should not grow features to become one. Four m
 
 1. **A master list** of tasks and projects, loosely structured. No forced hierarchy, no
    mandatory metadata, no required dates.
-2. **A daily journal** recording *what actually got done*. What lands here is often not
+2. **A daily journal** recording _what actually got done_. What lands here is often not
    lifted from the master list — frequently it's a subtask, incidental work, or something
    that only became visible once the day started.
 3. **A Next list** for the current day: at most **three** items, task-shaped rather than
@@ -67,7 +67,7 @@ them; structure is whatever you typed. Strong structure makes them worse.
   someday-maybes, notes-to-self. Nesting allowed, never required.
 - **Daily journal** — free prose and lists describing what got done.
 
-Three are **collections**. The unit of interaction is the *item*. They have cardinality (≤3),
+Three are **collections**. The unit of interaction is the _item_. They have cardinality (≤3),
 membership that moves between them, per-item state, and per-item interaction.
 
 - **Next**, **Scheduled**, **Done**.
@@ -85,14 +85,14 @@ identity and ordering for you, and it does that solely where the workflow demand
 Moving items between surfaces is the workflow's actual mechanic, so flows are specified by
 difficulty on purpose.
 
-| From → To | Difficulty | Flow |
-|---|---|---|
-| *nothing* → Done | **Trivial. Non-negotiable.** | Persistent compose field at the foot of Done. Type, Enter, done. |
-| Next → Done | **Trivial.** | One gesture on the card. Single atomic move. |
-| Scheduled → Next / Done | Easy | One gesture. |
-| Master → Next / Scheduled / Done | Deliberate, two steps | **Copy-to** places a copy in the target; **Remove** separately deletes from master. Never one action. |
-| Journal line → Master | Deliberate | Explicit promote action. |
-| Done → editable | **Deliberately hard** | Long-press or explicit unlock. See §5. |
+| From → To                        | Difficulty                   | Flow                                                                                                  |
+| -------------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------- |
+| _nothing_ → Done                 | **Trivial. Non-negotiable.** | Persistent compose field at the foot of Done. Type, Enter, done.                                      |
+| Next → Done                      | **Trivial.**                 | One gesture on the card. Single atomic move.                                                          |
+| Scheduled → Next / Done          | Easy                         | One gesture.                                                                                          |
+| Master → Next / Scheduled / Done | Deliberate, two steps        | **Copy-to** places a copy in the target; **Remove** separately deletes from master. Never one action. |
+| Journal line → Master            | Deliberate                   | Explicit promote action.                                                                              |
+| Done → editable                  | **Deliberately hard**        | Long-press or explicit unlock. See §5.                                                                |
 
 The master list is **not** expected to stay 1:1 with what appears in daily views. Copying out
 of it does not remove from it. Clearing completed items from the master list is **manual
@@ -119,7 +119,7 @@ the past is not going to be read again; a freeze with an escape hatch isn't a fr
 
 The **daily journal stays editable indefinitely.** The journal is where writing happens and
 the freeze exists to protect commitment records from retroactive editing, not to lock the
-prose. *(Still my call rather than a stated requirement — cheap to reverse.)*
+prose. _(Still my call rather than a stated requirement — cheap to reverse.)_
 
 The **master list never freezes.** It is a living document with no date attached.
 
@@ -162,7 +162,7 @@ feel like moving a sheet of paper, not a page transition.
 
 ### 7.2 Gestures: swipe navigates, long-press-then-drag selects
 
-A plain swipe anywhere is navigation, including over text. Text *selection* requires long-press
+A plain swipe anywhere is navigation, including over text. Text _selection_ requires long-press
 first, then drag. Tapping to place a cursor is unaffected.
 
 This prioritizes the frequent action over the rare one, which is right for a phone. The cost is
@@ -216,13 +216,13 @@ The header is **pinned** — outside the scrolling region, not merely sticky wit
 scrolled away, the menu would become unreachable from a scrolled position at exactly the
 breakpoints where it's the only non-gesture route to it.
 
-Ordering matters and is easy to get backwards: the yesterday peek sits *above* the header, not
+Ordering matters and is easy to get backwards: the yesterday peek sits _above_ the header, not
 below. The header belongs to Today, so `[peek: Tue] / [header: Wed] / [body: Wed] / [peek: Thu]`
 reads correctly, where header-above-peek would not.
 
-*(Including the trigger at the narrow breakpoint is my extension — the decision was made for
+_(Including the trigger at the narrow breakpoint is my extension — the decision was made for
 medium. It costs a little horizontal space in the tightest layout, and it buys a non-gesture path
-to the menu, which is otherwise reachable only by drag-right. Reversible.)*
+to the menu, which is otherwise reachable only by drag-right. Reversible.)_
 
 ### 7.5 Medium — two panels, menu behind the trigger
 
@@ -330,7 +330,7 @@ now, and it happens to be the thing agents would need later.
 - Undo scoped to your own changes.
 - **No presence UI, no permissions, no actor management.** There is nothing to manage.
 
-Devices are a separate axis — an actor acts *through* a device. Device identity stays local and
+Devices are a separate axis — an actor acts _through_ a device. Device identity stays local and
 unsynced, and surfaces only as "last synced from ⟨device⟩" in the menu.
 
 ### 11.4 Agents, later
@@ -354,7 +354,7 @@ See TRD §10.6.
 
 - **No images**, ever. No attachments, embeds, or pasted screenshots.
 - **No human collaboration.** One person, own devices — no sharing, no multi-user accounts, no
-  comments. AI agents as collaborators *are* anticipated (§11.4) and are the reason the actor
+  comments. AI agents as collaborators _are_ anticipated (§11.4) and are the reason the actor
   model exists in v1, but nothing agent-facing ships in v1.
 - **No notifications or reminders.** This tool does not interrupt you.
 - **No time tracking, estimates, velocity, deadlines, or analytics.**
@@ -366,15 +366,15 @@ See TRD §10.6.
 ## 13. Phasing
 
 **Phase 1 — the editor.** Live-preview markdown, one document, local persistence. No sync, no
-navigation, no cards. *Exit: the author prefers it to a plain textarea, and the swipe-vs-select
-gesture model works on a real Android device.*
+navigation, no cards. _Exit: the author prefers it to a plain textarea, and the swipe-vs-select
+gesture model works on a real Android device._
 
 **Phase 2 — the workflow.** Documents, collections, cards, the three-cap, movement flows,
-spatial navigation, responsive layouts, actor attribution and scoped undo. *Exit: daily use for
-two weeks with no fallback to the previous system.*
+spatial navigation, responsive layouts, actor attribution and scoped undo. _Exit: daily use for
+two weeks with no fallback to the previous system._
 
-**Phase 3 — sync.** Relay deployment, multi-device. *Exit: phone and laptop consistent across a
-week including offline edits on both.*
+**Phase 3 — sync.** Relay deployment, multi-device. _Exit: phone and laptop consistent across a
+week including offline edits on both._
 
 **Phase 4 — retrieval.** Search and calendar picker, scoped by principle 6: search over the
 master list and recent days earns its place; deep-history search and backlink graphs probably
