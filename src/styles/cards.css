@@ -1,0 +1,247 @@
+/*
+ * Cards and the static render (PRD §3, TRD §4.4, §5.3).
+ *
+ * `.card-surface` owns the geometry — font, line height, padding — and both the
+ * static render and the mounted editor sit inside it. The card's CodeMirror
+ * theme (src/editor/theme.ts, `cardTheme`) does nothing but defer to it, which
+ * is what makes "static render and mounted editor must be pixel-identical" a
+ * property of one element rather than an agreement between two stylesheets.
+ *
+ * The one thing that cannot be shared is what CodeMirror's own base theme sets
+ * on `.cm-content` and `.cm-line`: it is injected unlayered at runtime, so an
+ * app stylesheet cannot reach it. `.md-line` therefore restates the wrapping
+ * and block-decoration rules — from the same custom properties — and
+ * test/geometry/cards.spec.ts measures the two renders against each other.
+ */
+@layer app {
+  /* ---- The static markdown render --------------------------------------- */
+
+  .md-render {
+    /*
+     * CodeMirror's `.cm-lineWrapping` values. Restated rather than referenced
+     * because there is nothing to reference: the rule lives in a stylesheet
+     * `style-mod` injects, and it has to hold identically here or a long card
+     * wraps in two different places.
+     */
+    white-space: break-spaces;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  .md-line {
+    display: block;
+    padding: 0;
+  }
+
+  /* The block decorations that need `padding`; see cardTheme for the twin. */
+  .md-line.cm-md-quote {
+    margin-inline-start: calc(var(--space-2) * -1);
+    padding-inline-start: var(--space-3);
+    border-inline-start: 2px solid var(--color-quote-bar);
+  }
+
+  .md-line.cm-md-codeblock {
+    margin-inline: calc(var(--space-2) * -1);
+    padding-inline: var(--space-2);
+    background: var(--color-code-bg);
+  }
+
+  /* ---- Collections ------------------------------------------------------ */
+
+  .collection,
+  .journal {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .collection-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-faint);
+  }
+
+  .collection-count {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+  }
+
+  .collection[data-full='true'] .collection-count {
+    color: var(--color-accent);
+  }
+
+  .collection-empty {
+    font-size: 0.8125rem;
+    color: var(--color-text-faint);
+  }
+
+  .collection-action {
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    color: var(--color-text-faint);
+    padding: 0.1rem var(--space-1);
+    border-radius: var(--radius-1);
+  }
+
+  .collection-action:hover {
+    color: var(--color-text);
+    background: var(--color-surface);
+  }
+
+  .card-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  /* ---- One card --------------------------------------------------------- */
+
+  .card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2);
+    background: var(--color-bg);
+    container: card / inline-size;
+  }
+
+  .card[data-editing='true'] {
+    border-color: var(--color-accent-dim);
+  }
+
+  .card[data-frozen='true'] {
+    background: var(--color-surface);
+  }
+
+  /*
+   * The one element whose box both renders share. Everything geometric is here
+   * and nowhere else (TRD §4.4).
+   */
+  .card-surface {
+    padding: var(--space-2) var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+    color: var(--color-text-dim);
+    cursor: text;
+  }
+
+  .card-surface:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -2px;
+    border-radius: var(--radius-2);
+  }
+
+  /*
+   * Line 1 is the title, the rest is the description (PRD §3, TRD §5.3).
+   * Presentation over markdown, not a schema: the card holds ordinary text and
+   * this only says which line gets the contrast.
+   */
+  .card-surface > .md-line:first-child,
+  .card-surface .cm-line:first-child {
+    color: var(--color-text);
+    font-weight: 550;
+  }
+
+  .card[data-guarded='true'] .card-surface {
+    cursor: default;
+  }
+
+  .card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    padding: 0 var(--space-2) var(--space-2);
+  }
+
+  .card-action {
+    font-size: 0.6875rem;
+    letter-spacing: 0.02em;
+    padding: 0.15rem var(--space-2);
+    border-radius: var(--radius-1);
+    border: 1px solid transparent;
+    color: var(--color-text-faint);
+  }
+
+  .card-action:hover:not(:disabled) {
+    color: var(--color-text);
+    background: var(--color-surface);
+    border-color: var(--color-border);
+  }
+
+  .card-action:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  .card-action-danger:hover:not(:disabled) {
+    color: var(--color-accent);
+  }
+
+  /* ---- Compose (PRD §4: trivial, non-negotiable) ------------------------ */
+
+  .compose {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-2);
+    padding-block-start: var(--space-1);
+  }
+
+  .compose-field {
+    flex: 1;
+    min-inline-size: 0;
+    resize: none;
+    font: inherit;
+    line-height: var(--line-height);
+    color: var(--color-text);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2);
+    padding: var(--space-2) var(--space-3);
+    field-sizing: content;
+  }
+
+  .compose-field:focus-visible {
+    outline: none;
+    border-color: var(--color-accent-dim);
+  }
+
+  .compose-field::placeholder {
+    color: var(--color-text-faint);
+  }
+
+  .compose-submit {
+    font-size: 0.75rem;
+    padding: 0.3rem var(--space-3);
+    border-radius: var(--radius-2);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-dim);
+  }
+
+  .compose-submit:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  /* ---- The journal ------------------------------------------------------ */
+
+  /*
+   * The journal takes its geometry from here for the same reason a card does:
+   * the mounted editor defers to its host, and the static render of a
+   * neighbouring day sits in the same box.
+   */
+  .journal-host {
+    min-block-size: 6rem;
+    font-family: var(--font-sans);
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+    color: var(--color-text);
+  }
+}

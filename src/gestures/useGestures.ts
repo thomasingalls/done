@@ -11,11 +11,40 @@
 import { useEffect, useRef, type RefObject } from 'react';
 import {
   type Axis,
+  type Direction,
   type GestureAction,
   type GestureConfig,
   GestureRecognizer,
   type PointerKind,
 } from './recognizer';
+
+/**
+ * The nearest ancestor that actually scrolls vertically. TRD §8.4: "vertical
+ * drags inside a scrollable region scroll it, and navigate only at a scroll
+ * extent with continued motion in that direction." Asked once, at the press, so
+ * a drag that begins mid-scroll stays a scroll for its whole life rather than
+ * turning into navigation the moment it reaches the end.
+ */
+const scrollableAt = (x: number, y: number): HTMLElement | null => {
+  let element = document.elementFromPoint(x, y) as HTMLElement | null;
+  while (element) {
+    const style = getComputedStyle(element);
+    const scrolls = /auto|scroll|overlay/.test(style.overflowY);
+    if (scrolls && element.scrollHeight > element.clientHeight + 1) return element;
+    element = element.parentElement;
+  }
+  return null;
+};
+
+/** Which vertical directions the plane may take, given where the press landed. */
+export const verticalRoom = (x: number, y: number): { up: boolean; down: boolean } => {
+  const region = scrollableAt(x, y);
+  if (!region) return { up: true, down: true };
+  const atTop = region.scrollTop <= 0;
+  const atBottom = region.scrollTop + region.clientHeight >= region.scrollHeight - 1;
+  // Dragging down reveals what is above, so it needs the region to be at its top.
+  return { up: atBottom, down: atTop };
+};
 
 export interface GestureHandlers {
   onNavigationStart?: (axis: Axis) => void;
@@ -40,18 +69,27 @@ export interface UseGesturesOptions {
    * because handing it back still costs a `preventDefault` on the way.
    */
   enabled?: boolean;
+  /**
+   * Whether a direction leads anywhere from the point the press landed on.
+   * Combined with the scroll-extent rule above, which the hook applies itself
+   * because it is a property of the DOM rather than of the app's state.
+   */
+  canNavigate?: (direction: Direction) => boolean;
 }
 
 export const useGestures = <T extends HTMLElement>({
   handlers,
   config,
   enabled = true,
+  canNavigate,
 }: UseGesturesOptions): RefObject<T | null> => {
   const ref = useRef<T>(null);
   const latest = useRef(handlers);
   latest.current = handlers;
   const isEnabled = useRef(enabled);
   isEnabled.current = enabled;
+  const allows = useRef(canNavigate);
+  allows.current = canNavigate;
 
   useEffect(() => {
     const element = ref.current;
@@ -135,6 +173,14 @@ export const useGestures = <T extends HTMLElement>({
 
       const pointer = pointerKind(event);
       allowSelection(pointer === 'mouse');
+
+      const room = verticalRoom(event.clientX, event.clientY);
+      recognizer.canNavigate = (direction) => {
+        if (allows.current?.(direction) === false) return false;
+        if (direction === 'up') return room.up;
+        if (direction === 'down') return room.down;
+        return true;
+      };
 
       apply(
         recognizer.handle({

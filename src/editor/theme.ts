@@ -95,3 +95,82 @@ export const editorTheme = EditorView.theme({
     backgroundColor: 'var(--color-selection)',
   },
 });
+
+/**
+ * The card surface (TRD §4.4).
+ *
+ * A card editor owns none of its own geometry: font, line height, measure and
+ * padding all come from the `.card-surface` wrapper, which the static render
+ * sits in too. That is what makes "static render and mounted editor must be
+ * pixel-identical" a property of one element rather than an agreement between
+ * two stylesheets.
+ *
+ * Everything below is either `inherit` — deferring to that wrapper — or a
+ * neutralisation of something CodeMirror's own base theme sets and an app
+ * stylesheet cannot reach (see the note at the top of this file). The block
+ * decorations repeat the values from the document theme above because they need
+ * `padding` on `.cm-line`, which is the one property in the same position.
+ * `src/styles/cards.css` states them a third time for `.md-line`, from the same
+ * tokens, and `test/geometry/cards.spec.ts` measures the three against
+ * each other.
+ */
+export const cardTheme = EditorView.theme({
+  '&': {
+    height: 'auto',
+    color: 'var(--color-text)',
+    backgroundColor: 'transparent',
+    fontFamily: 'inherit',
+    fontSize: 'inherit',
+  },
+  '&.cm-focused': {
+    outline: 'none',
+  },
+  '.cm-scroller': {
+    fontFamily: 'inherit',
+    lineHeight: 'inherit',
+    // A card grows with its content; the day's body is the scrolling region.
+    overflow: 'visible',
+  },
+  '.cm-content': {
+    padding: '0',
+    margin: '0',
+    maxWidth: 'none',
+    minHeight: '0',
+    caretColor: 'var(--color-accent)',
+    fontFamily: 'inherit',
+    lineHeight: 'inherit',
+  },
+  '.cm-line': {
+    padding: '0',
+  },
+  // The same caret-versus-placeholder correction the document theme makes, and
+  // for the same reason: the native caret fills the line height, and beside 1em
+  // glyphs that reads as too tall.
+  '.cm-line:has(.cm-placeholder)': {
+    lineHeight: '1',
+    paddingBlock: '0.3em',
+  },
+  '.cm-line:has(.cm-placeholder) .cm-widgetBuffer': {
+    verticalAlign: 'top',
+  },
+  '.cm-md-quote': {
+    marginInlineStart: 'calc(var(--space-2) * -1)',
+    paddingInlineStart: 'var(--space-3)',
+    borderInlineStart: '2px solid var(--color-quote-bar)',
+  },
+  '.cm-md-codeblock': {
+    marginInline: 'calc(var(--space-2) * -1)',
+    paddingInline: 'var(--space-2)',
+    backgroundColor: 'var(--color-code-bg)',
+  },
+  '.cm-cursor, .cm-dropCursor': {
+    borderLeftColor: 'var(--color-accent)',
+    borderLeftWidth: '2px',
+  },
+  '.cm-placeholder': {
+    color: 'var(--color-text-faint)',
+  },
+  '.cm-selectionBackground, &.cm-focused .cm-selectionBackground, & ::selection': {
+    backgroundColor: 'var(--color-selection)',
+  },
+});

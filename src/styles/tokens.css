@@ -37,7 +37,16 @@
     --radius-3: 12px;
 
     --menu-width: 17rem;
+    --goals-width: 21rem;
     --header-height: 3rem;
+
+    /*
+     * The neighbouring days' visible edges (PRD §7.3). Small enough to read as
+     * a hint rather than a third panel, large enough to be a comfortable tap
+     * target — they double as the click targets that move a day.
+     */
+    --peek-height: 0.75rem;
+    --peek-gap: 0.5rem;
 
     --duration-snap: 220ms;
     --ease-snap: cubic-bezier(0.2, 0.8, 0.2, 1);

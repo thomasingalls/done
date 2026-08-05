@@ -9,6 +9,10 @@
  * Every line here is short enough not to wrap. Wrapping legitimately changes a
  * line's height when hidden syntax shortens it, and that is not the failure
  * under test.
+ *
+ * The surface measured is the journal — the document editor on the day in
+ * focus. Phase 1 measured the only editor there was; there are several now, and
+ * the journal is the one present at every breakpoint.
  */
 
 import { expect, test, type Page } from '@playwright/test';
@@ -37,20 +41,25 @@ const DOCUMENT = [
   'closing line',
 ].join('\n');
 
+/** The journal on the day in focus. Neighbouring days render static, not live. */
+const JOURNAL = '.day-panel[data-active="true"] .journal';
+
+const content = (page: Page) => page.locator(`${JOURNAL} .cm-content`);
+const lines = (page: Page) => page.locator(`${JOURNAL} .cm-line`);
+
 const seed = async (page: Page): Promise<void> => {
   await page.goto('/');
-  const content = page.locator('.cm-content');
-  await expect(content).toBeVisible();
-  await content.click();
+  await expect(content(page)).toBeVisible();
+  await content(page).click();
   // insertText arrives as one input event, so list continuation and the other
   // Enter behaviours do not rewrite the fixture on the way in.
   await page.keyboard.insertText(DOCUMENT);
-  await expect(page.locator('.cm-line')).toHaveCount(DOCUMENT.split('\n').length);
+  await expect(lines(page)).toHaveCount(DOCUMENT.split('\n').length);
 };
 
 const lineBoxes = (page: Page): Promise<{ height: number; top: number }[]> =>
-  page.$$eval('.cm-line', (lines) =>
-    lines.map((line) => {
+  page.$$eval(`${JOURNAL} .cm-line`, (elements) =>
+    elements.map((line) => {
       const rect = line.getBoundingClientRect();
       return { height: Math.round(rect.height * 100) / 100, top: Math.round(rect.top * 100) / 100 };
     }),
@@ -59,13 +68,12 @@ const lineBoxes = (page: Page): Promise<{ height: number; top: number }[]> =>
 test.describe('empty editor geometry', () => {
   test('the native caret matches each placeholder line', async ({ page }) => {
     await page.goto('/');
-    const content = page.locator('.cm-content');
-    await expect(content).toBeVisible();
-    await content.click();
+    await expect(content(page)).toBeVisible();
+    await content(page).click();
 
-    const line = page.locator('.cm-line');
-    const placeholder = page.locator('.cm-placeholder');
-    const buffer = page.locator('.cm-widgetBuffer');
+    const line = lines(page);
+    const placeholder = page.locator(`${JOURNAL} .cm-placeholder`);
+    const buffer = page.locator(`${JOURNAL} .cm-widgetBuffer`);
     await expect(placeholder).toBeVisible();
     await expect(buffer).toBeAttached();
 
@@ -134,18 +142,18 @@ test.describe('live preview geometry', () => {
   test('the task checkbox does not grow its line', async ({ page }) => {
     await page.keyboard.press('Control+End');
     const boxes = await lineBoxes(page);
-    const lines = DOCUMENT.split('\n');
+    const source = DOCUMENT.split('\n');
 
-    const plain = boxes[lines.indexOf('plain line')]!.height;
-    expect(boxes[lines.indexOf('- [ ] open task')]!.height).toBe(plain);
-    expect(boxes[lines.indexOf('- [x] done task')]!.height).toBe(plain);
+    const plain = boxes[source.indexOf('plain line')]!.height;
+    expect(boxes[source.indexOf('- [ ] open task')]!.height).toBe(plain);
+    expect(boxes[source.indexOf('- [x] done task')]!.height).toBe(plain);
   });
 
   test('the horizontal rule keeps the height of an ordinary line', async ({ page }) => {
     await page.keyboard.press('Control+End');
     const boxes = await lineBoxes(page);
-    const lines = DOCUMENT.split('\n');
-    expect(boxes[lines.indexOf('---')]!.height).toBe(boxes[lines.indexOf('plain line')]!.height);
+    const source = DOCUMENT.split('\n');
+    expect(boxes[source.indexOf('---')]!.height).toBe(boxes[source.indexOf('plain line')]!.height);
   });
 
   test('syntax really is hidden when the cursor is away, and shown when it is not', async ({
@@ -153,7 +161,7 @@ test.describe('live preview geometry', () => {
   }) => {
     await page.keyboard.press('Control+End');
     // By index, not by text: the text is what changes.
-    const boldLine = page.locator('.cm-line').nth(DOCUMENT.split('\n').indexOf('with **bold**'));
+    const boldLine = lines(page).nth(DOCUMENT.split('\n').indexOf('with **bold**'));
     await expect(boldLine).toHaveText('with bold');
 
     await boldLine.click();

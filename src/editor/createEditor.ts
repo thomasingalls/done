@@ -32,7 +32,7 @@ import {
 } from '../crdt';
 import { doneKeymap } from './keymap';
 import { livePreview } from './livePreview';
-import { editorTheme } from './theme';
+import { cardTheme, editorTheme } from './theme';
 
 export interface EditorOptions {
   parent: HTMLElement;
@@ -49,9 +49,25 @@ export interface EditorOptions {
    * handles. Enabled only where multiple selections matter.
    */
   drawSelection?: boolean;
+  /**
+   * Extensions that must outrank the standard ones. Card editors put their
+   * `Enter` and `Backspace` bindings here: both keys have perfectly good
+   * document-level meanings, and the card boundary behaviours have to be asked
+   * first (TRD §5.4).
+   */
+  extra?: Extension[];
+  /**
+   * Which theme this surface takes. Exactly one is installed — a card theme
+   * layered over the document theme would leave which of the two wins up to
+   * `StyleModule` mount order, and the whole point of §4.4 is that a card's
+   * geometry is not in question.
+   */
+  surface?: 'document' | 'card';
 }
 
 export const editorExtensions = (options: Omit<EditorOptions, 'parent'>): Extension[] => [
+  ...(options.extra ?? []),
+
   // Ours first: keymap precedence follows extension order.
   doneKeymap(),
   keymap.of(yUndoManagerKeymap),
@@ -63,7 +79,7 @@ export const editorExtensions = (options: Omit<EditorOptions, 'parent'>): Extens
   highlightSpecialChars(),
   EditorState.allowMultipleSelections.of(true),
   livePreview(),
-  editorTheme,
+  options.surface === 'card' ? cardTheme : editorTheme,
   ...(options.placeholder === undefined ? [] : [placeholder(options.placeholder)]),
   ...(options.drawSelection ? [drawSelection()] : []),
 
@@ -93,10 +109,11 @@ export const editorExtensions = (options: Omit<EditorOptions, 'parent'>): Extens
  * This is the one place the binding's internals are reached into, and
  * `ySyncFacet` comes through the §10.1 seam so the Yjs v14 migration finds it.
  */
-const claimEditorOrigin = (state: EditorState, options: Omit<EditorOptions, 'parent'>): void => {
+const claimEditorOrigin = (state: EditorState, options: Omit<EditorOptions, 'parent'>): object => {
   const editorOrigin = state.facet(ySyncFacet) as unknown as Partial<Origin>;
   if (options.origin) Object.assign(editorOrigin, options.origin);
   options.undo.addTrackedOrigin(editorOrigin);
+  return editorOrigin as object;
 };
 
 /**
@@ -113,7 +130,32 @@ export const createEditorState = (options: Omit<EditorOptions, 'parent'>): Edito
   return state;
 };
 
-export const createEditor = (options: EditorOptions): EditorView => {
+export interface EditorHandle {
+  view: EditorView;
+  destroy: () => void;
+}
+
+/**
+ * Returns a handle rather than the view because the origin claimed above has to
+ * be given back. One document editor claiming one origin forever is invisible;
+ * card editors mount and unmount on every focus change (§4.4), and an undo
+ * manager accumulating a tracked origin per mount is a leak that grows with use
+ * rather than with data.
+ */
+export const createEditor = (options: EditorOptions): EditorHandle => {
   const { parent, ...rest } = options;
-  return new EditorView({ parent, state: createEditorState(rest) });
+  const state = EditorState.create({
+    doc: rest.text.toString(),
+    extensions: editorExtensions(rest),
+  });
+  const origin = claimEditorOrigin(state, rest);
+  const view = new EditorView({ parent, state });
+
+  return {
+    view,
+    destroy: () => {
+      view.destroy();
+      rest.undo.removeTrackedOrigin(origin);
+    },
+  };
 };

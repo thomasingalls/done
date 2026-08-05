@@ -1,14 +1,22 @@
 /**
  * The document tree (TRD §4.2).
  *
- * Phase 1 realises the part of the tree the editor needs: `meta` and the
- * `master` document. `days` is deliberately absent rather than stubbed —
- * Yjs creates root types lazily, so Phase 2 can add it without a migration,
- * and an empty `days` map now would only be a claim that isn't true yet.
+ * ```
+ * Y.Doc (root)
+ * ├── meta      Y.Map    { schemaVersion, createdAt, settings, actors }
+ * ├── master    Y.Text                          ← document, never freezes
+ * └── days      Y.Map<ISODate, Y.Map>           ← see days.ts
+ * ```
+ *
+ * Phase 1 left `days` out rather than stubbing it, on the grounds that Yjs
+ * creates root types lazily and an empty map would have been a claim that was
+ * not yet true. Phase 2 makes it true, and no migration was needed — which is
+ * the property that was being protected.
  */
 
 import { newMap, transact, type YDoc, type YMap, type YText } from './yjs';
 import type { Origin } from './actors';
+import { daysMap } from './days';
 
 export const SCHEMA_VERSION = 1;
 
@@ -24,6 +32,8 @@ export interface DocumentTree {
   meta: YMap<unknown>;
   /** The master list. A document, not a collection. Never freezes (PRD §6). */
   master: YText;
+  /** Days, created lazily on first write. An untouched day occupies nothing. */
+  days: YMap<unknown>;
 }
 
 /**
@@ -33,6 +43,7 @@ export interface DocumentTree {
 export const openTree = (doc: YDoc, origin: Origin): DocumentTree => {
   const meta = doc.getMap('meta');
   const master = doc.getText('master');
+  const days = daysMap(doc);
 
   transact(doc, origin, () => {
     if (!meta.has('schemaVersion')) meta.set('schemaVersion', SCHEMA_VERSION);
@@ -44,8 +55,19 @@ export const openTree = (doc: YDoc, origin: Origin): DocumentTree => {
     }
   });
 
-  return { doc, meta, master };
+  return { doc, meta, master, days };
 };
 
 export const readSchemaVersion = (meta: YMap<unknown>): number =>
   typeof meta.get('schemaVersion') === 'number' ? (meta.get('schemaVersion') as number) : 0;
+
+export const readSettings = (meta: YMap<unknown>): Settings => {
+  const stored = meta.get('settings') as YMap<unknown> | undefined;
+  const rolloverHour = stored?.get('rolloverHour');
+  return {
+    rolloverHour:
+      typeof rolloverHour === 'number' && rolloverHour >= 0 && rolloverHour < 24
+        ? rolloverHour
+        : DEFAULT_SETTINGS.rolloverHour,
+  };
+};
