@@ -12,7 +12,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import { type Extension } from '@codemirror/state';
+import { type EditorState, type Extension } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import {
   NEXT_CAP,
@@ -41,12 +41,15 @@ interface Selection {
 
 const EMPTY: Selection = { lines: [], text: [] };
 
-const selectedLines = (view: EditorView): Selection => {
-  const { state } = view;
+export const selectedLines = (state: EditorState): Selection => {
   const numbers = new Set<number>();
   for (const range of state.selection.ranges) {
     const first = state.doc.lineAt(range.from).number;
-    const last = state.doc.lineAt(range.to).number;
+    // Selection ranges are half-open. If a non-empty selection ends exactly at
+    // the next line's start, none of that line is selected and Copy/Remove must
+    // not include it.
+    const inclusiveEnd = range.empty ? range.to : Math.max(range.from, range.to - 1);
+    const last = state.doc.lineAt(inclusiveEnd).number;
     for (let line = first; line <= last; line++) numbers.add(line);
   }
   const lines = [...numbers].sort((a, b) => a - b);
@@ -70,7 +73,7 @@ export const Goals = ({ store, workspace, date, ref }: GoalsProps): React.ReactE
     if (!parent) return;
 
     const track: Extension = EditorView.updateListener.of((update) => {
-      if (update.selectionSet || update.docChanged) setSelection(selectedLines(update.view));
+      if (update.selectionSet || update.docChanged) setSelection(selectedLines(update.state));
     });
 
     const handle: EditorHandle = createEditor({
@@ -87,14 +90,14 @@ export const Goals = ({ store, workspace, date, ref }: GoalsProps): React.ReactE
             key: 'Mod-Shift-c',
             preventDefault: true,
             run: (view) => {
-              copyTo.current('next', selectedLines(view).text);
+              copyTo.current('next', selectedLines(view.state).text);
               return true;
             },
           },
         ]),
       ],
     });
-    setSelection(selectedLines(handle.view));
+    setSelection(selectedLines(handle.view.state));
 
     return () => handle.destroy();
   }, [store, workspace.origin]);

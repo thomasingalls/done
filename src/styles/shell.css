@@ -267,10 +267,30 @@
     min-block-size: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
+    /*
+     * Pointer Events decides whether the browser owns a touch sequence before
+     * the recognizer sees its direction. Let native scrolling own only a
+     * direction that has actual scroll room; the outward direction at either
+     * edge remains a day-navigation gesture. `pan-down` is a finger-up gesture
+     * in Chromium terminology, and `pan-up` is finger-down.
+     */
+    touch-action: none;
     padding: var(--space-4) var(--space-4) 30dvh;
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
+  }
+
+  .day-body[data-touch-scroll='top'] {
+    touch-action: pan-down;
+  }
+
+  .day-body[data-touch-scroll='middle'] {
+    touch-action: pan-y;
+  }
+
+  .day-body[data-touch-scroll='bottom'] {
+    touch-action: pan-up;
   }
 
   .goals-body {
@@ -328,6 +348,26 @@
   .menu-value {
     color: var(--color-text);
     text-align: end;
+  }
+
+  .menu-input {
+    min-inline-size: 0;
+    max-inline-size: 9rem;
+    padding: 0.2rem var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-1);
+    background: var(--color-bg);
+    color: var(--color-text);
+    text-align: end;
+  }
+
+  .menu-color {
+    inline-size: 2.5rem;
+    block-size: 1.5rem;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-1);
+    background: transparent;
   }
 
   .menu-days {

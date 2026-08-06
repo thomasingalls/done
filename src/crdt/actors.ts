@@ -164,3 +164,24 @@ export const listActors = (doc: YDoc): Array<{ id: ActorId } & Actor> => {
   if (!roster) return [];
   return [...roster.entries()].map(([id, actor]) => ({ id, ...actor }));
 };
+
+export const actorById = (doc: YDoc, id: ActorId): Actor | undefined => actorRoster(doc)?.get(id);
+
+export const updateActor = (
+  doc: YDoc,
+  origin: Origin,
+  id: ActorId,
+  patch: Partial<Pick<Actor, 'name' | 'color'>>,
+): Actor | null => {
+  const roster = actorRoster(doc);
+  const current = roster?.get(id);
+  if (!current || current.kind !== 'human') return null;
+
+  const name = patch.name ?? current.name;
+  const color = patch.color ?? current.color;
+  if (name.trim().length === 0 || !/^#[0-9a-f]{6}$/iu.test(color)) return null;
+
+  const next = { ...current, name, color };
+  transact(doc, origin, () => roster.set(id, next));
+  return next;
+};

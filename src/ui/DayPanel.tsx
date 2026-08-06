@@ -11,6 +11,7 @@
  * are static by default, so it costs no editor to have yesterday half on screen.
  */
 
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { SECTIONS, isFrozen, type Store, type Workspace } from '../crdt';
 import { formatDay, relativeDay, type ISODate } from '../lib/date';
 import { Collection } from './Collection';
@@ -30,6 +31,8 @@ export interface DayPanelProps {
   menuOpen: boolean;
 }
 
+type TouchScrollRoom = 'none' | 'top' | 'middle' | 'bottom';
+
 export const DayPanel = ({
   store,
   workspace,
@@ -43,6 +46,48 @@ export const DayPanel = ({
 }: DayPanelProps): React.ReactElement => {
   const active = offset === 0;
   const frozen = isFrozen(date, today);
+  const body = useRef<HTMLDivElement>(null);
+  const [touchScrollRoom, setTouchScrollRoom] = useState<TouchScrollRoom>('none');
+
+  const measureTouchScrollRoom = useCallback((): void => {
+    const element = body.current;
+    if (!element) return;
+    const maximum = element.scrollHeight - element.clientHeight;
+    const next: TouchScrollRoom =
+      maximum <= 1
+        ? 'none'
+        : element.scrollTop <= 1
+          ? 'top'
+          : element.scrollTop >= maximum - 1
+            ? 'bottom'
+            : 'middle';
+    setTouchScrollRoom((current) => (current === next ? current : next));
+  }, []);
+
+  useEffect(() => {
+    const element = body.current;
+    if (!element) return;
+
+    let frame: number | undefined;
+    const scheduleMeasurement = (): void => {
+      if (frame !== undefined) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(measureTouchScrollRoom);
+    };
+    const resize = new ResizeObserver(scheduleMeasurement);
+    const mutation = new MutationObserver(scheduleMeasurement);
+
+    resize.observe(element);
+    mutation.observe(element, { childList: true, characterData: true, subtree: true });
+    element.addEventListener('scroll', scheduleMeasurement, { passive: true });
+    measureTouchScrollRoom();
+
+    return () => {
+      if (frame !== undefined) cancelAnimationFrame(frame);
+      resize.disconnect();
+      mutation.disconnect();
+      element.removeEventListener('scroll', scheduleMeasurement);
+    };
+  }, [measureTouchScrollRoom]);
 
   return (
     <section
@@ -81,7 +126,7 @@ export const DayPanel = ({
         )}
       </header>
 
-      <div className="day-body" data-scroll="day">
+      <div className="day-body" data-scroll="day" data-touch-scroll={touchScrollRoom} ref={body}>
         <Journal store={store} workspace={workspace} date={date} active={active} />
         {SECTIONS.map((section) => (
           <Collection

@@ -41,7 +41,7 @@ const editor = (doc: string, cursor: number) => {
           },
           mergeBackwards: () => {
             calls.merges += 1;
-            return true;
+            return 0;
           },
           leave: () => {
             calls.leaves += 1;

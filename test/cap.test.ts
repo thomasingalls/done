@@ -20,6 +20,8 @@ import {
   countIn,
   enforceCap,
   moveCard,
+  newCard,
+  registerCard,
   cardId,
   splitCard,
 } from '../src/crdt';
@@ -32,6 +34,18 @@ const fillNext = (test: Harness): void => {
   for (let index = 0; index < NEXT_CAP; index++) {
     compose(test.me, { date: TODAY, section: 'next' }, `item ${index}`);
   }
+};
+
+const insertConcurrent = (doc: Y.Doc, id: string, body: string): void => {
+  const next = (doc.getMap('days').get(TODAY) as Y.Map<unknown>).get('next') as Y.Array<string>;
+  const card = newCard(body, 'elsewhere', { id });
+  doc.transact(
+    () => {
+      registerCard(doc, id, card, { date: TODAY, section: 'next' });
+      next.insert(next.length, [id]);
+    },
+    { actor: 'remote' },
+  );
 };
 
 describe('the cap refuses at the write path', () => {
@@ -94,16 +108,7 @@ describe('the cap is repaired where it cannot be refused', () => {
 
     // Neither device can see the other's third card, and both are legal.
     compose(context.me, { date: TODAY, section: 'next' }, 'phone third');
-    const laptopNext = (laptop.getMap('days').get(TODAY) as Y.Map<unknown>).get('next') as Y.Array<
-      Y.Map<unknown>
-    >;
-    const card = new Y.Map<unknown>();
-    card.set('id', 'lap001');
-    card.set('text', new Y.Text('laptop third'));
-    card.set('origin', null);
-    card.set('author', 'laptop');
-    card.set('createdAt', new Date().toISOString());
-    laptop.transact(() => laptopNext.insert(laptopNext.length, [card]));
+    insertConcurrent(laptop, 'lap001', 'laptop third');
 
     Y.applyUpdate(phone, Y.encodeStateAsUpdate(laptop));
     await settle();
@@ -125,18 +130,9 @@ describe('the cap is repaired where it cannot be refused', () => {
     context = await harness();
     fillNext(context);
 
-    const day = context.store.days.get(TODAY) as Y.Map<unknown>;
-    const next = day.get('next') as Y.Array<Y.Map<unknown>>;
-
     // A remote update is the shape this arrives in; forcing it directly is the
     // same thing with fewer moving parts.
-    const card = new Y.Map<unknown>();
-    card.set('id', 'over01');
-    card.set('text', new Y.Text('overflow'));
-    card.set('origin', null);
-    card.set('author', 'elsewhere');
-    card.set('createdAt', new Date().toISOString());
-    context.store.doc.transact(() => next.insert(next.length, [card]), { actor: 'remote' });
+    insertConcurrent(context.store.doc, 'over01', 'overflow');
 
     await settle();
     expect(countIn(context.store.doc, TODAY, 'next')).toBe(NEXT_CAP);
@@ -155,16 +151,7 @@ describe('the cap is repaired where it cannot be refused', () => {
     const b = new Y.Doc();
     Y.applyUpdate(b, Y.encodeStateAsUpdate(a));
 
-    const next = (b.getMap('days').get(TODAY) as Y.Map<unknown>).get('next') as Y.Array<
-      Y.Map<unknown>
-    >;
-    const card = new Y.Map<unknown>();
-    card.set('id', 'extra1');
-    card.set('text', new Y.Text('extra'));
-    card.set('origin', null);
-    card.set('author', 'b');
-    card.set('createdAt', new Date().toISOString());
-    b.transact(() => next.insert(next.length, [card]));
+    insertConcurrent(b, 'extra1', 'extra');
 
     Y.applyUpdate(a, Y.encodeStateAsUpdate(b));
     await settle();

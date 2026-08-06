@@ -27,7 +27,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { shouldCommit, type Direction } from '../gestures/recognizer';
 import { useGestures } from '../gestures/useGestures';
 import { addDays, todayFor, type ISODate } from '../lib/date';
-import { compactDueDays, scheduleCompaction, type Workspace } from '../crdt';
+import {
+  DEFAULT_SETTINGS,
+  compactDueDays,
+  readSettings,
+  scheduleCompaction,
+  type Workspace,
+} from '../crdt';
 import { DayPlane } from './DayPlane';
 import { Goals } from './Goals';
 import { Menu } from './Menu';
@@ -35,6 +41,7 @@ import { StaleBanner } from './StaleBanner';
 import { goalsIsPanel, menuIsPanel, useBreakpoint } from './useBreakpoint';
 import { useStore } from './useStore';
 import { useToday } from './useToday';
+import { useYValue } from './useYjs';
 
 const clamp = (value: number, min: number, max: number): number =>
   Math.min(max, Math.max(min, value));
@@ -48,7 +55,12 @@ type Lateral = 'menu' | 'goals';
 export const App = (): React.ReactElement => {
   const { store, storage, error } = useStore();
   const breakpoint = useBreakpoint();
-  const today = useToday(store?.settings.rolloverHour ?? 0);
+  const settings = useYValue(
+    store?.meta,
+    () => (store ? JSON.stringify(readSettings(store.meta)) : 'absent'),
+    () => (store ? readSettings(store.meta) : DEFAULT_SETTINGS),
+  );
+  const today = useToday(settings.rolloverHour);
 
   const [date, setDate] = useState<ISODate>(() => todayFor(new Date()));
   const [menuOpen, setMenuOpen] = useState(false);
@@ -66,6 +78,7 @@ export const App = (): React.ReactElement => {
   const dragTarget = useRef<Lateral | null>(null);
   const openAtDragStart = useRef(0);
   const started = useRef(false);
+  const settleTimer = useRef<number | undefined>(undefined);
 
   const menuOverlay = !menuIsPanel(breakpoint);
   const goalsOverlay = !goalsIsPanel(breakpoint);
@@ -80,11 +93,31 @@ export const App = (): React.ReactElement => {
     return (panel?.getBoundingClientRect().height ?? 600) + 8;
   }, []);
 
-  const goTo = useCallback((next: ISODate) => {
-    setSettling(false);
-    setDayShift(0);
-    setDate(next);
+  const clearSettlement = useCallback(() => {
+    if (settleTimer.current !== undefined) window.clearTimeout(settleTimer.current);
+    settleTimer.current = undefined;
   }, []);
+
+  const afterSettlement = useCallback(
+    (finish: () => void) => {
+      clearSettlement();
+      settleTimer.current = window.setTimeout(() => {
+        settleTimer.current = undefined;
+        finish();
+      }, SNAP_MS);
+    },
+    [clearSettlement],
+  );
+
+  const goTo = useCallback(
+    (next: ISODate) => {
+      clearSettlement();
+      setSettling(false);
+      setDayShift(0);
+      setDate(next);
+    },
+    [clearSettlement],
+  );
 
   /**
    * Move by whole days. The panels are keyed by date, so the movement is
@@ -94,15 +127,16 @@ export const App = (): React.ReactElement => {
   const step = useCallback(
     (days: number) => {
       if (days === 0) return;
+      clearSettlement();
       setSettling(true);
       setDayShift(-days * dayStep());
-      window.setTimeout(() => {
+      afterSettlement(() => {
         setSettling(false);
         setDayShift(0);
         setDate((current) => addDays(current, days));
-      }, SNAP_MS);
+      });
     },
-    [dayStep],
+    [afterSettlement, clearSettlement, dayStep],
   );
 
   const closeLateral = useCallback(() => {
@@ -127,7 +161,10 @@ export const App = (): React.ReactElement => {
     canNavigate,
     handlers: {
       onNavigationStart: (axis) => {
-        if (axis === 'y') setSettling(false);
+        if (axis === 'y') {
+          clearSettlement();
+          setSettling(false);
+        }
         dragTarget.current = null;
       },
 
@@ -166,17 +203,17 @@ export const App = (): React.ReactElement => {
           setSettling(true);
           if (!shouldCommit(delta, velocity, dayStep())) {
             setDayShift(0);
-            window.setTimeout(() => setSettling(false), SNAP_MS);
+            afterSettlement(() => setSettling(false));
             return;
           }
           // Dragging down reveals the day above it: the past.
           const days = delta > 0 ? -1 : 1;
           setDayShift(-days * dayStep());
-          window.setTimeout(() => {
+          afterSettlement(() => {
             setSettling(false);
             setDayShift(0);
             setDate((current) => addDays(current, days));
-          }, SNAP_MS);
+          });
           return;
         }
 
@@ -264,6 +301,8 @@ export const App = (): React.ReactElement => {
     if (!goalsOverlay) setGoalsOpen(false);
   }, [goalsOverlay, menuOverlay]);
 
+  useEffect(() => clearSettlement, [clearSettlement]);
+
   if (error) {
     return (
       <div className="boot" role="alert">
@@ -325,6 +364,7 @@ export const App = (): React.ReactElement => {
         ref={menu}
         store={store}
         storage={storage}
+        settings={settings}
         today={today}
         date={date}
         onGoTo={goTo}

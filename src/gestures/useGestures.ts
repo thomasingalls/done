@@ -8,7 +8,7 @@
  * those events at the source, which is the behaviour that was wanted anyway.
  */
 
-import { useEffect, useRef, type RefObject } from 'react';
+import { useCallback, useEffect, useRef, useState, type RefCallback } from 'react';
 import {
   type Axis,
   type Direction,
@@ -82,8 +82,17 @@ export const useGestures = <T extends HTMLElement>({
   config,
   enabled = true,
   canNavigate,
-}: UseGesturesOptions): RefObject<T | null> => {
-  const ref = useRef<T>(null);
+}: UseGesturesOptions): RefCallback<T> => {
+  /*
+   * The gesture surface is absent while IndexedDB is opening. A one-shot effect
+   * over an object ref runs too early in that case and never sees the real
+   * shell. A callback ref makes the DOM node state, so binding follows the
+   * element's actual mount/unmount lifetime.
+   */
+  const [element, setElement] = useState<T | null>(null);
+  const ref = useCallback<RefCallback<T>>((node) => {
+    setElement(node);
+  }, []);
   const latest = useRef(handlers);
   latest.current = handlers;
   const isEnabled = useRef(enabled);
@@ -92,8 +101,7 @@ export const useGestures = <T extends HTMLElement>({
   allows.current = canNavigate;
 
   useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
+    if (!element) return () => {};
 
     const recognizer = new GestureRecognizer(config);
     let timer: number | undefined;
@@ -247,8 +255,10 @@ export const useGestures = <T extends HTMLElement>({
       element.removeEventListener('pointerup', onPointerUp);
       element.removeEventListener('pointercancel', onPointerCancel);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- config is read once per binding
-  }, []);
+    // `config` is read once for each actual DOM binding. Inline option objects
+    // must not tear down an active pointer sequence on every React render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [element]);
 
   return ref;
 };

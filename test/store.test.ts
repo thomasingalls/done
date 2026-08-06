@@ -11,13 +11,21 @@
 
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
+  SCHEMA_VERSION,
+  Y,
+  actorById,
   cardBody,
   cardsIn,
   compose,
   moveAllNextTo,
   moveAllNextToMaster,
+  newCard,
   openStore,
+  readSchemaVersion,
+  readSettings,
+  setRolloverHour,
   transact,
+  updateActor,
   type Store,
   type Workspace,
 } from '../src/crdt';
@@ -178,5 +186,61 @@ describe('local persistence', () => {
     const roster = second.meta.get('actors') as unknown as { size: number };
     expect(roster.size).toBe(2); // the human and the system actor, not four
     second.destroy();
+  });
+});
+
+describe('editable settings', () => {
+  it('updates the rollover hour through an attributed mutation', async () => {
+    const store = await openStore({ persist: false });
+    expect(setRolloverHour(store.doc, store.meta, store.actor.origin, 4)).toBe(true);
+    expect(readSettings(store.meta).rolloverHour).toBe(4);
+    expect(setRolloverHour(store.doc, store.meta, store.actor.origin, 24)).toBe(false);
+    store.destroy();
+  });
+
+  it('updates the local human name and color without permitting an empty name', async () => {
+    const store = await openStore({ persist: false });
+    expect(
+      updateActor(store.doc, store.actor.origin, store.actor.id, { name: 'Thomas' }),
+    ).toMatchObject({ name: 'Thomas' });
+    expect(
+      updateActor(store.doc, store.actor.origin, store.actor.id, { color: '#123abc' }),
+    ).toMatchObject({ color: '#123abc' });
+    expect(updateActor(store.doc, store.actor.origin, store.actor.id, { name: '   ' })).toBeNull();
+    expect(actorById(store.doc, store.actor.id)).toMatchObject({
+      name: 'Thomas',
+      color: '#123abc',
+    });
+    store.destroy();
+  });
+});
+
+describe('schema migration', () => {
+  it('moves embedded v1 cards into the canonical registry without losing content', async () => {
+    const doc = new Y.Doc();
+    const meta = doc.getMap('meta');
+    const days = doc.getMap('days');
+    const day = new Y.Map<unknown>();
+    const next = new Y.Array<Y.Map<unknown>>();
+    const legacy = newCard('legacy card', 'human', { id: 'old001' });
+
+    doc.transact(() => {
+      meta.set('schemaVersion', 1);
+      day.set('journal', new Y.Text());
+      day.set('next', next);
+      day.set('scheduled', new Y.Array());
+      day.set('done', new Y.Array());
+      days.set('2026-08-05', day);
+      next.push([legacy]);
+    });
+
+    const store = await openStore({ doc, persist: false });
+    expect(readSchemaVersion(store.meta)).toBe(SCHEMA_VERSION);
+    expect(cardsIn(doc, '2026-08-05', 'next').map(cardBody)).toEqual(['legacy card']);
+    const migrated = (store.days.get('2026-08-05') as Y.Map<unknown>).get(
+      'next',
+    ) as Y.Array<string>;
+    expect(migrated.toArray()).toEqual(['old001']);
+    store.destroy();
   });
 });

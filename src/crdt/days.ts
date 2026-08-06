@@ -5,10 +5,12 @@
  * days  Y.Map<ISODate, Y.Map>
  *   └── "2026-08-05"
  *         ├── journal    Y.Text                 ← document, stays editable
- *         ├── next       Y.Array<Card>  (≤3)    ← collection
- *         ├── scheduled  Y.Array<Card>
- *         ├── done       Y.Array<Card>
+ *         ├── next       Y.Array<CardId> (≤3)   ← collection
+ *         ├── scheduled  Y.Array<CardId>
+ *         ├── done       Y.Array<CardId>
  *         └── archive    Y.Text | absent        ← set on compaction (§4.5)
+ * cards         Y.Map<CardId, Card>             ← canonical card content
+ * cardLocations Y.Map<CardId, "date:section">  ← canonical membership
  * ```
  *
  * The split between the two shapes is the load-bearing decision: text where the
@@ -16,8 +18,9 @@
  * is no parallel structured representation of item *content* — a card's text is
  * markdown in a `Y.Text` and nothing here parses it.
  *
- * **A card carries no date.** The day whose collection holds it is its date
- * (PRD §9), so rescheduling is an array move and there is no field to update.
+ * **A card carries no date.** Its canonical membership is kept separately so
+ * concurrent moves have one deterministic winner without duplicating the
+ * card's collaborative text. Day collections retain presentation order.
  */
 
 import type { ActorId } from './actors';
@@ -49,15 +52,31 @@ export const NEXT_CAP = 3;
  * avoid.
  */
 export type Card = YMap<unknown>;
-export type Collection = YArray<Card>;
+export type Collection = YArray<string>;
 export type Day = YMap<unknown>;
+
+export interface CardLocation {
+  date: ISODate;
+  section: Section;
+}
+
+const locationKey = ({ date, section }: CardLocation): string => `${date}:${section}`;
+
+const parseLocation = (value: unknown): CardLocation | null => {
+  if (typeof value !== 'string') return null;
+  const split = value.lastIndexOf(':');
+  if (split < 0) return null;
+  const date = value.slice(0, split);
+  const section = value.slice(split + 1);
+  if (!/^(?:next|scheduled|done)$/u.test(section)) return null;
+  return { date, section: section as Section };
+};
 
 export const cardId = (card: Card): string => card.get('id') as string;
 export const cardText = (card: Card): YText => card.get('text') as YText;
 export const cardAuthor = (card: Card): ActorId => card.get('author') as ActorId;
 export const cardOrigin = (card: Card): string | null => (card.get('origin') as string) ?? null;
 export const cardCreatedAt = (card: Card): string => card.get('createdAt') as string;
-
 export const cardBody = (card: Card): string => cardText(card).toString();
 
 /** Line 1 is the title, everything after is the description (PRD §3). */
@@ -71,9 +90,8 @@ export interface NewCardOptions {
 }
 
 /**
- * Builds a card, unattached. Attaching it is the caller's transaction, which is
- * what keeps a move to a single splice-and-insert rather than two steps a
- * reader has to know are atomic.
+ * Builds a card, unattached. Registering it and inserting its id belong to the
+ * caller's transaction, so creation is one atomic operation.
  */
 export const newCard = (text: string, author: ActorId, options: NewCardOptions = {}): Card => {
   const card: Card = newMap<unknown>();
@@ -92,6 +110,25 @@ export const copyCard = (card: Card): Card =>
     origin: cardOrigin(card),
     createdAt: cardCreatedAt(card),
   });
+
+/** Cards own their text once, here; collections contain only stable ids. */
+export const cardsMap = (doc: YDoc): YMap<Card> => doc.getMap('cards') as YMap<Card>;
+export const cardLocationsMap = (doc: YDoc): YMap<string> => doc.getMap('cardLocations');
+
+export const cardAt = (doc: YDoc, id: string): Card | undefined => cardsMap(doc).get(id);
+export const cardLocation = (doc: YDoc, id: string): CardLocation | null =>
+  parseLocation(cardLocationsMap(doc).get(id));
+export const setCardLocation = (doc: YDoc, id: string, location: CardLocation | null): void => {
+  if (location) cardLocationsMap(doc).set(id, locationKey(location));
+  else cardLocationsMap(doc).delete(id);
+};
+
+/** Attach a new canonical card. Must be called inside the owning operation's transaction. */
+export const registerCard = (doc: YDoc, id: string, card: Card, location: CardLocation): string => {
+  cardsMap(doc).set(id, card);
+  setCardLocation(doc, id, location);
+  return id;
+};
 
 /**
  * Typed `YMap<unknown>` rather than `YMap<Day>` because Yjs's generics are
@@ -127,7 +164,7 @@ export const ensureDay = (doc: YDoc, origin: unknown, date: ISODate): Day =>
     // is frozen several days over besides. Re-creating them here would undo
     // compaction from a write path that should never have reached this day.
     if (!isCompacted(day)) {
-      for (const section of SECTIONS) if (!day.has(section)) day.set(section, newArray<Card>());
+      for (const section of SECTIONS) if (!day.has(section)) day.set(section, newArray<string>());
     }
     return day;
   });
@@ -144,22 +181,27 @@ export const archiveOf = (day: Day | undefined): YText | undefined =>
 
 export const isCompacted = (day: Day | undefined): boolean => archiveOf(day) !== undefined;
 
-export const cardsIn = (doc: YDoc, date: ISODate, section: Section): Card[] =>
-  collectionOf(dayAt(doc, date), section)?.toArray() ?? [];
+export const cardsIn = (doc: YDoc, date: ISODate, section: Section): Card[] => {
+  const seen = new Set<string>();
+  return (collectionOf(dayAt(doc, date), section)?.toArray() ?? []).flatMap((id) => {
+    if (seen.has(id)) return [];
+    const card = cardAt(doc, id);
+    const location = card && cardLocation(doc, id);
+    if (!card || location?.date !== date || location.section !== section) return [];
+    seen.add(id);
+    return [card];
+  });
+};
 
 export const countIn = (doc: YDoc, date: ISODate, section: Section): number =>
-  collectionOf(dayAt(doc, date), section)?.length ?? 0;
+  cardsIn(doc, date, section).length;
 
 export const journalText = (doc: YDoc, date: ISODate): string =>
   journalOf(dayAt(doc, date))?.toString() ?? '';
 
 /** Index of a card in its collection, or -1. Identity, not equality: cards move. */
 export const indexOfCard = (collection: Collection, id: string): number => {
-  const cards = collection.toArray();
-  for (let index = 0; index < cards.length; index++) {
-    if (cardId(cards[index] as Card) === id) return index;
-  }
-  return -1;
+  return collection.toArray().indexOf(id);
 };
 
 /** True where a day has nothing in it — the state a merely-visited day is left in. */
@@ -168,4 +210,96 @@ export const isDayEmpty = (day: Day | undefined): boolean => {
   if ((journalOf(day)?.length ?? 0) > 0) return false;
   if ((archiveOf(day)?.length ?? 0) > 0) return false;
   return SECTIONS.every((section) => (collectionOf(day, section)?.length ?? 0) === 0);
+};
+
+/**
+ * Schema-v1 collections embedded each Card directly. Move them into the
+ * canonical registry and replace each array item with its id. This runs once on
+ * open, before editors or undo are constructed, and preserves existing local
+ * Phase 2 data.
+ */
+export const migrateCardsToRegistry = (doc: YDoc, origin: unknown): void => {
+  transact(doc, origin, () => {
+    const registry = cardsMap(doc);
+    for (const date of listDays(doc)) {
+      const day = dayAt(doc, date);
+      for (const section of SECTIONS) {
+        const collection = day?.get(section) as YArray<string | Card> | undefined;
+        if (!collection) continue;
+
+        const entries = collection.toArray();
+        for (let index = 0; index < entries.length; index++) {
+          const entry = entries[index];
+          if (typeof entry === 'string') {
+            if (registry.has(entry) && !cardLocation(doc, entry)) {
+              setCardLocation(doc, entry, { date, section });
+            }
+            continue;
+          }
+
+          const id = cardId(entry as Card);
+          if (!registry.has(id)) {
+            const canonical = copyCard(entry as Card);
+            registry.set(id, canonical);
+          }
+          if (!cardLocation(doc, id)) setCardLocation(doc, id, { date, section });
+          collection.delete(index, 1);
+          collection.insert(index, [id]);
+        }
+      }
+    }
+  });
+};
+
+/**
+ * Removes stale physical memberships left by concurrent moves. The card's
+ * canonical location map has one deterministic value per id, so concurrent
+ * assignments have one winner; arrays retain ordering but no longer decide
+ * which of two locations owns the item.
+ */
+export const repairCardMemberships = (doc: YDoc, origin: unknown): number => {
+  const removals: Array<{ collection: Collection; index: number }> = [];
+  const present = new Set<string>();
+
+  for (const date of listDays(doc)) {
+    const day = dayAt(doc, date);
+    for (const section of SECTIONS) {
+      const collection = collectionOf(day, section);
+      if (!collection) continue;
+      const seen = new Set<string>();
+      collection.toArray().forEach((id, index) => {
+        const card = cardAt(doc, id);
+        const location = card && cardLocation(doc, id);
+        const belongs = location?.date === date && location.section === section;
+        if (!card || !belongs || seen.has(id)) removals.push({ collection, index });
+        else {
+          seen.add(id);
+          present.add(`${locationKey(location)}:${id}`);
+        }
+      });
+    }
+  }
+
+  const missing: Array<{ collection: Collection; id: string }> = [];
+  for (const [id] of cardsMap(doc).entries()) {
+    const location = cardLocation(doc, id);
+    if (!location || present.has(`${locationKey(location)}:${id}`)) continue;
+    const collection = collectionOf(dayAt(doc, location.date), location.section);
+    if (collection) missing.push({ collection, id });
+  }
+
+  if (removals.length === 0 && missing.length === 0) return 0;
+  transact(doc, origin, () => {
+    const byCollection = new Map<Collection, number[]>();
+    for (const removal of removals) {
+      const indices = byCollection.get(removal.collection) ?? [];
+      indices.push(removal.index);
+      byCollection.set(removal.collection, indices);
+    }
+    for (const [collection, indices] of byCollection) {
+      for (const index of indices.sort((a, b) => b - a)) collection.delete(index, 1);
+    }
+    for (const { collection, id } of missing) collection.push([id]);
+  });
+  return removals.length + missing.length;
 };

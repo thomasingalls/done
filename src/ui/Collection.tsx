@@ -12,15 +12,19 @@
  * an error after the fact.
  */
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   NEXT_CAP,
+  archiveOf,
   cardId,
+  cardsIn,
   collectionOf,
   compose,
+  countIn,
   dayAt,
   mergeCardBackwards,
   moveCard,
+  parseCollections,
   removeCard,
   splitCard,
   type Card as CardType,
@@ -30,6 +34,7 @@ import {
   type Workspace,
 } from '../crdt';
 import type { CardHooks } from '../editor/cardCommands';
+import { renderStatic } from '../editor/staticRender';
 import { addDays, type ISODate } from '../lib/date';
 import { Card, type CardAction } from './Card';
 import { Compose } from './Compose';
@@ -39,6 +44,27 @@ const TITLES: Record<Section, string> = {
   next: 'Next',
   scheduled: 'Scheduled',
   done: 'Done',
+};
+
+/** A compacted card has deliberately shed identity and is permanently static. */
+const ArchivedCard = ({
+  body,
+  section,
+}: {
+  body: string;
+  section: Section;
+}): React.ReactElement => {
+  const host = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (host.current) renderStatic(host.current, body);
+  }, [body]);
+
+  return (
+    <article className="card" data-section={section} data-frozen="true">
+      <div className="card-surface md-render" ref={host} />
+    </article>
+  );
 };
 
 export interface CollectionProps {
@@ -69,25 +95,28 @@ export const Collection = ({
    * just been created holds an empty collection, and those two states have to
    * be distinguishable or the day's arrival is not a change.
    */
-  const { cards, nextIsFull } = useYValue(
+  const { cards, archived, nextIsFull } = useYValue(
     store.days,
     () => {
       const day = dayAt(store.doc, date);
       const live = collectionOf(day, section);
-      if (!live) return 'absent';
-      return `${collectionOf(day, 'next')?.length ?? 0}:${live.toArray().map(cardId).join(',')}`;
+      if (!live) return `archive:${archiveOf(day)?.toString() ?? 'absent'}:${section}`;
+      return `${countIn(store.doc, date, 'next')}:${live.toArray().join(',')}`;
     },
     () => {
       const day = dayAt(store.doc, date);
+      const live = collectionOf(day, section);
+      const archive = archiveOf(day);
       return {
-        cards: collectionOf(day, section)?.toArray() ?? [],
-        nextIsFull: (collectionOf(day, 'next')?.length ?? 0) >= NEXT_CAP,
+        cards: live ? cardsIn(store.doc, date, section) : [],
+        archived: !live && archive ? parseCollections(archive.toString())[section] : [],
+        nextIsFull: countIn(store.doc, date, 'next') >= NEXT_CAP,
       };
     },
   );
 
   // Set after a split so the card that was created opens with the caret in it.
-  const [focusCard, setFocusCard] = useState<string | null>(null);
+  const [focusCard, setFocusCard] = useState<{ id: string; at: number } | null>(null);
 
   const ref: Ref = useMemo(() => ({ date, section }), [date, section]);
 
@@ -95,13 +124,19 @@ export const Collection = ({
     (id: string): CardHooks => ({
       split: (at, tailFrom) => {
         const created = splitCard(workspace, ref, id, at, tailFrom);
-        if (created) setFocusCard(created);
+        if (created) setFocusCard({ id: created, at: 0 });
         return created !== null;
       },
-      mergeBackwards: () => mergeCardBackwards(workspace, ref, id) !== null,
-      leave: () => setFocusCard(null),
+      mergeBackwards: () => {
+        const index = cards.findIndex((card) => cardId(card) === id);
+        const previous = index > 0 ? cards[index - 1] : undefined;
+        const at = mergeCardBackwards(workspace, ref, id);
+        if (at !== null && previous) setFocusCard({ id: cardId(previous), at });
+        return at;
+      },
+      leave: () => setFocusCard((current) => (current?.id === id ? null : current)),
     }),
-    [workspace, ref],
+    [workspace, ref, cards],
   );
 
   const actionsFor = useCallback(
@@ -157,22 +192,23 @@ export const Collection = ({
 
   // An empty collection is noise except where it says something: Next carries
   // the cap, and Done carries the compose field.
-  if (cards.length === 0 && !(active && section !== 'scheduled')) return null;
+  const count = cards.length + archived.length;
+  if (count === 0 && !(active && section !== 'scheduled')) return null;
 
-  const full = section === 'next' && cards.length >= NEXT_CAP;
+  const full = section === 'next' && count >= NEXT_CAP;
 
   return (
     <section className="collection" data-section={section} data-full={full}>
       <h2 className="collection-heading">
         <span>{TITLES[section]}</span>
         {section === 'next' && (
-          <span className="collection-count" aria-label={`${cards.length} of ${NEXT_CAP}`}>
-            {cards.length}/{NEXT_CAP}
+          <span className="collection-count" aria-label={`${count} of ${NEXT_CAP}`}>
+            {count}/{NEXT_CAP}
           </span>
         )}
       </h2>
 
-      {cards.length === 0 ? (
+      {count === 0 ? (
         <p className="collection-empty">{section === 'done' ? 'Nothing yet.' : 'Empty.'}</p>
       ) : (
         <div className="card-list">
@@ -188,8 +224,11 @@ export const Collection = ({
               hooks={hooksFor(cardId(card))}
               editable={active}
               origin={workspace.origin}
-              autoFocus={focusCard === cardId(card)}
+              {...(focusCard?.id === cardId(card) ? { autoFocusAt: focusCard.at } : {})}
             />
+          ))}
+          {archived.map((body, index) => (
+            <ArchivedCard key={`${section}:${index}`} body={body} section={section} />
           ))}
         </div>
       )}

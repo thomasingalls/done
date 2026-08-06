@@ -11,8 +11,17 @@
  * (TRD §10.5), and "your data outlives the app" is a ranked principle.
  */
 
-import { downloadExport, type StoragePersistence, type Store } from '../crdt';
+import {
+  actorById,
+  downloadExport,
+  setRolloverHour,
+  updateActor,
+  type Settings,
+  type StoragePersistence,
+  type Store,
+} from '../crdt';
 import { addDays, formatDayLong, relativeDay, type ISODate } from '../lib/date';
+import { useYValue } from './useYjs';
 
 const STORAGE_LABEL: Record<StoragePersistence, string> = {
   granted: 'Persistent',
@@ -32,6 +41,7 @@ const STORAGE_NOTE: Record<StoragePersistence, string> = {
 export interface MenuProps {
   store: Store;
   storage: StoragePersistence;
+  settings: Settings;
   today: ISODate;
   date: ISODate;
   onGoTo: (date: ISODate) => void;
@@ -46,13 +56,29 @@ const NEARBY = [-7, -2, -1, 0, 1, 2, 7];
 export const Menu = ({
   store,
   storage,
+  settings,
   today,
   date,
   onGoTo,
   onClose,
   ref,
 }: MenuProps): React.ReactElement => {
-  const { actor } = store;
+  const actor = useYValue(
+    store.meta,
+    () => JSON.stringify(actorById(store.doc, store.actor.id) ?? store.actor.actor),
+    () => actorById(store.doc, store.actor.id) ?? store.actor.actor,
+  );
+
+  const changeActor = (patch: { name?: string; color?: string }): void => {
+    const next = updateActor(store.doc, store.actor.origin, store.actor.id, patch);
+    if (!next) return;
+    Object.assign(store.actor.actor, next);
+    store.awareness.setLocalStateField('user', {
+      name: next.name,
+      color: next.color,
+      colorLight: `${next.color}33`,
+    });
+  };
 
   return (
     <aside className="menu" id="menu" aria-label="Menu" ref={ref}>
@@ -103,15 +129,56 @@ export const Menu = ({
           <span className="menu-value">
             <span
               className="actor-swatch"
-              style={{ '--actor-color': actor.actor.color } as React.CSSProperties}
+              style={{ '--actor-color': actor.color } as React.CSSProperties}
             />
-            {actor.actor.name}
+            {actor.name}
           </span>
         </div>
         <div className="menu-row">
           <span>Device</span>
-          <span className="menu-value">{actor.device.name}</span>
+          <span className="menu-value">{store.actor.device.name}</span>
         </div>
+        <label className="menu-row">
+          <span>Name</span>
+          <input
+            className="menu-input"
+            value={actor.name}
+            aria-label="Actor name"
+            onChange={(event) => changeActor({ name: event.target.value })}
+          />
+        </label>
+        <label className="menu-row">
+          <span>Color</span>
+          <input
+            className="menu-color"
+            type="color"
+            value={actor.color}
+            aria-label="Actor color"
+            onChange={(event) => changeActor({ color: event.target.value })}
+          />
+        </label>
+        <label className="menu-row">
+          <span>Day rollover</span>
+          <select
+            className="menu-input"
+            value={settings.rolloverHour}
+            aria-label="Day rollover hour"
+            onChange={(event) => {
+              setRolloverHour(
+                store.doc,
+                store.meta,
+                store.actor.origin,
+                Number(event.target.value),
+              );
+            }}
+          >
+            {Array.from({ length: 24 }, (_, hour) => (
+              <option key={hour} value={hour}>
+                {String(hour).padStart(2, '0')}:00
+              </option>
+            ))}
+          </select>
+        </label>
       </section>
 
       <section className="menu-section">

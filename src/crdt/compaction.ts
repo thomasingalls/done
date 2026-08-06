@@ -28,7 +28,19 @@
 
 import { daysBetween, type ISODate } from '../lib/date';
 import type { Origin } from './actors';
-import { SECTIONS, archiveOf, collectionOf, dayAt, isCompacted, listDays, type Day } from './days';
+import {
+  SECTIONS,
+  archiveOf,
+  cardId,
+  cardsIn,
+  cardsMap,
+  setCardLocation,
+  collectionOf,
+  dayAt,
+  isCompacted,
+  listDays,
+  type Day,
+} from './days';
 import { parseCollections, readCollections, serializeCollections } from './serialize';
 import { newText, transact, type YDoc } from './yjs';
 
@@ -62,7 +74,7 @@ export const compactDay = (
   // headings. Nothing to reclaim, so nothing to risk.
   if (!hasCards(day)) return 'skipped';
 
-  const collections = readCollections(day);
+  const collections = readCollections(doc, date);
   const archive = serializeCollections(collections);
 
   const parsed = parseCollections(archive);
@@ -74,8 +86,13 @@ export const compactDay = (
   if (!matches) return 'deferred';
 
   transact(doc, systemOrigin, () => {
+    const ids = SECTIONS.flatMap((section) => cardsIn(doc, date, section).map(cardId));
     day.set('archive', newText(archive));
     for (const section of SECTIONS) day.delete(section);
+    for (const id of ids) {
+      cardsMap(doc).delete(id);
+      setCardLocation(doc, id, null);
+    }
   });
 
   return 'compacted';

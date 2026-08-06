@@ -87,9 +87,9 @@ describe('the freeze', () => {
     const past = { ...context.me, today: old };
     compose(past, { date: old, section: 'next' }, 'x');
 
-    const before = readCollections(context.store.days.get(old) as never);
+    const before = readCollections(context.store.doc, old);
     // A day freezes by the calendar moving, not by anything happening to it.
-    const after = readCollections(context.store.days.get(old) as never);
+    const after = readCollections(context.store.doc, old);
     expect(after).toEqual(before);
     expect(isCompacted(context.store.days.get(old) as never)).toBe(false);
   });
@@ -153,9 +153,9 @@ describe('compaction is independent of the freeze', () => {
     const old = ago(COMPACTION_DAYS);
     seed(context, old);
 
-    const before = readCollections(context.store.days.get(old) as never);
+    const before = readCollections(context.store.doc, old);
     compactDay(context.store.doc, context.store.actor.systemOrigin, old, TODAY);
-    const after = readCollections(context.store.days.get(old) as never);
+    const after = readCollections(context.store.doc, old);
 
     expect(after).toEqual(before);
   });
@@ -221,6 +221,6 @@ describe('compaction is independent of the freeze', () => {
     const before = cardsIn(context.store.doc, old, 'done').map(cardBody);
     compactDay(context.store.doc, context.store.actor.systemOrigin, old, TODAY);
 
-    expect(readCollections(context.store.days.get(old) as never).done).toEqual(before);
+    expect(readCollections(context.store.doc, old).done).toEqual(before);
   });
 });

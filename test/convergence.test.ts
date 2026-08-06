@@ -4,12 +4,10 @@
  * concurrent card moves** between collections, where array semantics are least
  * obvious."
  *
- * Least obvious is right. A move is a delete plus an insert, and two replicas
- * moving the same card produce two inserts and one effective delete — so the
- * card can arrive twice. That is a property of the data model rather than a bug
- * in a particular operation, and the point of testing it is to know which of
- * the two it is. It converges: both replicas agree on the same outcome,
- * whatever that outcome is, which is what a CRDT promises and all it promises.
+ * Collections contain references to canonical cards. A move changes the card's
+ * location and the ordering arrays in one transaction; concurrent location
+ * assignments converge to one Y.Map value, so the item has one visible home and
+ * concurrent edits stay attached to its one canonical Y.Text.
  */
 
 import { describe, expect, it } from 'vitest';
@@ -59,9 +57,10 @@ describe('concurrent card moves', () => {
     sync(a.doc, b.doc);
 
     expect(snapshot(a.doc)).toEqual(snapshot(b.doc));
-    // The card is gone from Next on both, which is the part that matters: it
-    // does not come back, and neither replica is left holding a different view.
     expect(cardsIn(a.doc, TODAY, 'next')).toEqual([]);
+    const visible = SECTIONS.flatMap((section) => cardsIn(a.doc, TODAY, section));
+    expect(visible).toHaveLength(1);
+    expect(cardId(visible[0]!)).toBe(id);
 
     a.destroy();
     b.destroy();
@@ -84,6 +83,9 @@ describe('concurrent card moves', () => {
     sync(a.doc, b.doc);
 
     expect(snapshot(a.doc)).toEqual(snapshot(b.doc));
+    expect(cardsIn(a.doc, TODAY, 'done').map(cardBody)).toEqual([
+      'call the dentist about the crown',
+    ]);
 
     a.destroy();
     b.destroy();
@@ -122,6 +124,8 @@ describe('concurrent card moves', () => {
       for (const update of updatesB) Y.applyUpdate(a.doc, update);
 
       expect(snapshot(a.doc)).toEqual(snapshot(b.doc));
+      const ids = snapshot(a.doc).map((entry) => entry.split(':')[1]);
+      expect(new Set(ids).size).toBe(ids.length);
 
       a.destroy();
       b.destroy();

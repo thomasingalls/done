@@ -28,7 +28,7 @@ export interface CardHooks {
    */
   split: (at: number, tailFrom: number) => boolean;
   /** Backspace at position 0. Returns the caret position in the previous card. */
-  mergeBackwards: () => boolean;
+  mergeBackwards: () => number | null;
   leave: () => void;
 }
 
@@ -59,7 +59,7 @@ const mergeAtStart =
   (view) => {
     const range = view.state.selection.main;
     if (!range.empty || range.from !== 0) return false;
-    return hooks.mergeBackwards();
+    return hooks.mergeBackwards() !== null;
   };
 
 /**

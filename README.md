@@ -56,8 +56,8 @@ writing a component here — see "reading the document" below.
 | Area           | Where                        | Notes                                                                                                                          |
 | -------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | Yjs seam       | `src/crdt/yjs.ts`            | The only file importing `yjs`, `y-indexeddb`, `y-protocols`, `y-codemirror.next` (TRD §10.1). Enforced by `test/seam.test.ts`. |
-| Document tree  | `src/crdt/doc.ts`            | `meta`, `master`, `days`.                                                                                                      |
-| Days and cards | `src/crdt/days.ts`           | `Y.Text` where you edit documents, `Y.Array<Card>` where you manipulate items (TRD §4.1–§4.3).                                 |
+| Document tree  | `src/crdt/doc.ts`            | `meta`, `master`, `days`, canonical `cards`, and separate card locations.                                                      |
+| Days and cards | `src/crdt/days.ts`           | `Y.Text` for documents, ordered card-id arrays for collections, one canonical `Y.Text` per card (TRD §4.1–§4.3).               |
 | Movement       | `src/crdt/moves.ts`          | The PRD §4 table, one transaction per operation, each naming its actor.                                                        |
 | The freeze     | `src/crdt/freeze.ts`         | Day + 3, permanent. A policy, and nothing about storage.                                                                       |
 | Compaction     | `src/crdt/compaction.ts`     | Day + 7, storage only. Verified round-trip; defers rather than deletes on mismatch.                                            |
@@ -100,6 +100,13 @@ anything added since, by anyone.
 land within half a second, which is right for typing and wrong for a move:
 pressing Done a moment after typing a card would otherwise make one undo revert
 both. Every structural operation brackets itself with `stopCapturing`.
+
+**Card content has one canonical home.** Collections order stable card IDs;
+the corresponding content and current collection location live in separate
+root maps. This keeps the no-date-on-card rule while making a concurrent move
+resolve to one visible location without copying or losing a simultaneous edit
+to the card's `Y.Text`. Existing Phase 2 documents migrate from embedded cards
+to this schema when opened.
 
 **The cap is enforced twice.** Every write path refuses to exceed three, which
 covers paste, multi-line insert and drag at the point of the mistake. Two

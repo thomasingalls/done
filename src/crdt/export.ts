@@ -27,7 +27,7 @@ export const exportEntries = (doc: YDoc, master: string): ZipEntry[] => {
   for (const date of listDays(doc)) {
     const day = dayAt(doc, date);
     if (isDayEmpty(day)) continue;
-    entries.push({ path: `days/${date}.md`, content: serializeDay(readDayContent(day)) });
+    entries.push({ path: `days/${date}.md`, content: serializeDay(readDayContent(doc, date)) });
   }
 
   return entries;

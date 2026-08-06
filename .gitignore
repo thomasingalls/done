@@ -3,6 +3,7 @@ dist/
 coverage/
 playwright-report/
 test-results/
+patches/
 .DS_Store
 .env.local
 tsconfig*.tsbuildinfo

@@ -48,15 +48,9 @@
  * serializes collections only and never touches the journal.
  */
 
-import {
-  SECTIONS,
-  archiveOf,
-  cardBody,
-  collectionOf,
-  journalOf,
-  type Day,
-  type Section,
-} from './days';
+import { SECTIONS, archiveOf, cardBody, cardsIn, dayAt, journalOf, type Section } from './days';
+import type { ISODate } from '../lib/date';
+import type { YDoc } from './yjs';
 
 export const JOURNAL_HEADING = '## Journal';
 
@@ -230,20 +224,21 @@ export const parseCollections = (source: string): Collections => {
 /* -------------------------------------------------------------------------- */
 /* Reading a live day                                                          */
 
-export const readCollections = (day: Day | undefined): Collections => {
+export const readCollections = (doc: YDoc, date: ISODate): Collections => {
+  const day = dayAt(doc, date);
   const archive = archiveOf(day);
   // A compacted day has no collections left; the archive is where they went.
   if (archive) return parseCollections(archive.toString());
 
   const content = emptyCollections();
   for (const name of SECTIONS) {
-    content[name] = (collectionOf(day, name)?.toArray() ?? []).map((card) => cardBody(card));
+    content[name] = cardsIn(doc, date, name).map(cardBody);
   }
   return content;
 };
 
 /** Reads a live day out of the CRDT into the shape the serializer takes. */
-export const readDayContent = (day: Day | undefined): DayContent => ({
-  journal: journalOf(day)?.toString() ?? '',
-  ...readCollections(day),
+export const readDayContent = (doc: YDoc, date: ISODate): DayContent => ({
+  journal: journalOf(dayAt(doc, date))?.toString() ?? '',
+  ...readCollections(doc, date),
 });

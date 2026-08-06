@@ -20,9 +20,9 @@
  *    `false` rather than throwing: a refused move is an ordinary outcome, not
  *    an exception.
  *
- * Yjs types cannot be re-parented, so a "move" is a copy plus a delete. The
- * copy keeps the card's id, so identity survives the move even though the
- * `Y.Map` holding it does not.
+ * Card content lives once in the canonical registry. A move changes ordered id
+ * membership and the separate canonical location, so concurrent text edits
+ * survive even when another replica moves the card at the same time.
  */
 
 import type { ISODate } from '../lib/date';
@@ -30,15 +30,21 @@ import { BLOCK_MARKER, newId } from '../lib/id';
 import type { ActorId, Origin } from './actors';
 import {
   NEXT_CAP,
+  cardAt,
   cardBody,
   cardId,
+  cardLocation,
   cardOrigin,
+  cardsIn,
+  cardsMap,
   collectionOf,
-  copyCard,
+  countIn,
   dayAt,
   ensureDay,
   indexOfCard,
   newCard,
+  registerCard,
+  setCardLocation,
   type Card,
   type Collection,
   type Section,
@@ -92,7 +98,7 @@ const writable = (workspace: Workspace, date: ISODate): boolean => !isFrozen(dat
 /** Capacity check for Next, from PRD §3. Every insert path goes through it. */
 const capacityFor = (doc: YDoc, ref: Ref): number => {
   if (ref.section !== 'next') return Number.POSITIVE_INFINITY;
-  return NEXT_CAP - (collectionOf(dayAt(doc, ref.date), 'next')?.length ?? 0);
+  return NEXT_CAP - countIn(doc, ref.date, 'next');
 };
 
 export const canAccept = (workspace: Workspace, ref: Ref, count = 1): boolean =>
@@ -133,8 +139,14 @@ export const compose = (
   const target = collectionAt(workspace, ref);
   if (!target) return false;
 
+  const id = newId();
+  const card = newCard(text, workspace.author, {
+    id,
+    origin: options.origin ?? null,
+  });
   return discrete(workspace, () => {
-    target.push([newCard(text, workspace.author, { origin: options.origin ?? null })]);
+    registerCard(workspace.doc, id, card, ref);
+    target.push([id]);
     return true;
   });
 };
@@ -160,15 +172,18 @@ export const moveCard = (
   if (!source) return false;
   const index = indexOfCard(source, id);
   if (index < 0) return false;
+  const card = cardAt(workspace.doc, id);
+  const location = card && cardLocation(workspace.doc, id);
+  if (!card || location?.date !== from.date || location.section !== from.section) return false;
 
   const target = collectionAt(workspace, to);
   if (!target) return false;
 
   return discrete(workspace, () => {
-    const card = copyCard(source.get(index) as Card);
     source.delete(index, 1);
     const at = toIndex ?? target.length;
-    target.insert(Math.min(Math.max(at, 0), target.length), [card]);
+    target.insert(Math.min(Math.max(at, 0), target.length), [id]);
+    setCardLocation(workspace.doc, id, to);
     return true;
   });
 };
@@ -183,9 +198,8 @@ export const reorderCard = (workspace: Workspace, ref: Ref, id: string, to: numb
   if (index < 0 || index === to) return false;
 
   discrete(workspace, () => {
-    const card = copyCard(collection.get(index) as Card);
     collection.delete(index, 1);
-    collection.insert(Math.min(Math.max(to, 0), collection.length), [card]);
+    collection.insert(Math.min(Math.max(to, 0), collection.length), [id]);
   });
   return true;
 };
@@ -198,7 +212,11 @@ export const removeCard = (workspace: Workspace, ref: Ref, id: string): boolean 
   const index = indexOfCard(collection, id);
   if (index < 0) return false;
 
-  discrete(workspace, () => collection.delete(index, 1));
+  discrete(workspace, () => {
+    collection.delete(index, 1);
+    cardsMap(workspace.doc).delete(id);
+    setCardLocation(workspace.doc, id, null);
+  });
   return true;
 };
 
@@ -235,8 +253,20 @@ export const copyFromMaster = (
   const target = collectionAt(workspace, ref);
   if (!target) return 0;
 
+  const cards = accepted.map((body) => {
+    const id = newId();
+    return {
+      id,
+      card: newCard(body, workspace.author, { id, origin: 'master' }),
+    };
+  });
   return discrete(workspace, () => {
-    target.push(accepted.map((body) => newCard(body, workspace.author, { origin: 'master' })));
+    target.push(
+      cards.map(({ id, card }) => {
+        registerCard(workspace.doc, id, card, ref);
+        return id;
+      }),
+    );
     return accepted.length;
   });
 };
@@ -342,7 +372,8 @@ export const splitCard = (
   // A split adds an item; in Next that is the cap, and the cap is unbreakable.
   if (capacityFor(workspace.doc, ref) < 1) return null;
 
-  const card = collection.get(index) as Card;
+  const card = cardAt(workspace.doc, id);
+  if (!card) return null;
   const text = card.get('text') as YText;
   const body = text.toString();
   const cut = Math.min(Math.max(at, 0), body.length);
@@ -350,14 +381,19 @@ export const splitCard = (
   // can start after the cut rather than at it.
   const tail = body.slice(Math.min(Math.max(tailFrom, cut), body.length));
 
-  const created = newCard(tail, workspace.author, { origin: cardId(card) });
+  const createdId = newId();
+  const created = newCard(tail, workspace.author, {
+    id: createdId,
+    origin: cardId(card),
+  });
 
   discrete(workspace, () => {
     text.delete(cut, body.length - cut);
-    collection.insert(index + 1, [created]);
+    registerCard(workspace.doc, createdId, created, ref);
+    collection.insert(index + 1, [createdId]);
   });
 
-  return created.get('id') as string;
+  return createdId;
 };
 
 /**
@@ -373,14 +409,19 @@ export const mergeCardBackwards = (workspace: Workspace, ref: Ref, id: string): 
   const index = indexOfCard(collection, id);
   if (index <= 0) return null;
 
-  const previous = collection.get(index - 1) as Card;
+  const previousId = collection.get(index - 1);
+  const previous = previousId && cardAt(workspace.doc, previousId);
+  const current = cardAt(workspace.doc, id);
+  if (!previous || !current) return null;
   const target = previous.get('text') as YText;
-  const body = cardBody(collection.get(index) as Card);
+  const body = cardBody(current);
   const join = target.length;
 
   discrete(workspace, () => {
     if (body.length > 0) target.insert(join, body);
     collection.delete(index, 1);
+    cardsMap(workspace.doc).delete(id);
+    setCardLocation(workspace.doc, id, null);
   });
 
   return join;
@@ -397,20 +438,25 @@ export const mergeCardBackwards = (workspace: Workspace, ref: Ref, id: string): 
  */
 export const moveAllNextTo = (workspace: Workspace, from: ISODate, to: Ref): number => {
   const source = collectionOf(dayAt(workspace.doc, from), 'next');
-  if (!source || source.length === 0) return 0;
+  const sourceCards = cardsIn(workspace.doc, from, 'next');
+  if (!source || sourceCards.length === 0) return 0;
   if (!writable(workspace, from) || !writable(workspace, to.date)) return 0;
 
   const capacity = capacityFor(workspace.doc, to);
-  const count = Math.min(source.length, capacity);
+  const count = Math.min(sourceCards.length, capacity);
   if (count < 1) return 0;
 
   const target = collectionAt(workspace, to);
   if (!target) return 0;
 
   return discrete(workspace, () => {
-    const cards = source.toArray().slice(0, count).map(copyCard);
-    source.delete(0, count);
-    target.push(cards);
+    const ids = sourceCards.slice(0, count).map(cardId);
+    for (const id of ids) {
+      const index = indexOfCard(source, id);
+      if (index >= 0) source.delete(index, 1);
+      if (cardAt(workspace.doc, id)) setCardLocation(workspace.doc, id, to);
+    }
+    target.push(ids);
     return count;
   });
 };
@@ -422,10 +468,11 @@ export const moveAllNextTo = (workspace: Workspace, from: ISODate, to: Ref): num
  */
 export const moveAllNextToMaster = (workspace: Workspace, master: YText, from: ISODate): number => {
   const source = collectionOf(dayAt(workspace.doc, from), 'next');
-  if (!source || source.length === 0) return 0;
+  if (!source) return 0;
   if (!writable(workspace, from)) return 0;
 
-  const cards = source.toArray();
+  const cards = cardsIn(workspace.doc, from, 'next');
+  if (cards.length === 0) return 0;
 
   discrete(workspace, () => {
     const current = master.toString();
@@ -437,7 +484,13 @@ export const moveAllNextToMaster = (workspace: Workspace, master: YText, from: I
       })
       .join('\n');
     master.insert(master.length, `${separator}${text}\n`);
-    source.delete(0, source.length);
+    for (const card of cards) {
+      const id = cardId(card);
+      const index = indexOfCard(source, id);
+      if (index >= 0) source.delete(index, 1);
+      cardsMap(workspace.doc).delete(id);
+      setCardLocation(workspace.doc, id, null);
+    }
   });
 
   return cards.length;
@@ -466,17 +519,22 @@ export const enforceCap = (doc: YDoc, systemOrigin: Origin, date: ISODate): numb
   const day = dayAt(doc, date);
   const next = collectionOf(day, 'next');
   const scheduled = collectionOf(day, 'scheduled');
-  if (!next || !scheduled || next.length <= NEXT_CAP) return 0;
+  const cards = cardsIn(doc, date, 'next');
+  if (!next || !scheduled || cards.length <= NEXT_CAP) return 0;
 
-  const overflow = next.length - NEXT_CAP;
+  const overflowCards = cards.slice(NEXT_CAP);
 
   transact(doc, systemOrigin, () => {
-    const cards = next.toArray().slice(NEXT_CAP).map(copyCard);
-    next.delete(NEXT_CAP, overflow);
-    scheduled.insert(0, cards);
+    const ids = overflowCards.map(cardId);
+    for (const id of ids) {
+      const index = indexOfCard(next, id);
+      if (index >= 0) next.delete(index, 1);
+      if (cardAt(doc, id)) setCardLocation(doc, id, { date, section: 'scheduled' });
+    }
+    scheduled.insert(0, ids);
   });
 
-  return overflow;
+  return overflowCards.length;
 };
 
 /** Provenance for the UI: where a card says it came from. */

@@ -53,8 +53,8 @@ export interface CardProps {
   /** False for a neighbouring day, which renders content but never edits it. */
   editable: boolean;
   origin: Origin;
-  /** Set by the list after a split, so the new card opens with the caret in it. */
-  autoFocus?: boolean;
+  /** Set after a split/merge so editing resumes at the structural join. */
+  autoFocusAt?: number;
 }
 
 /** Long enough to be deliberate, matching the gesture layer's own hold (TRD §8.4). */
@@ -70,14 +70,15 @@ export const Card = ({
   hooks,
   editable,
   origin,
-  autoFocus = false,
+  autoFocusAt,
 }: CardProps): React.ReactElement => {
   const text = useYText(cardText(card));
-  const [editing, setEditing] = useState(autoFocus);
+  const [editing, setEditing] = useState(autoFocusAt !== undefined);
   const staticHost = useRef<HTMLDivElement>(null);
   const editorHost = useRef<HTMLDivElement>(null);
   const view = useRef<EditorView | null>(null);
   const pendingCaret = useRef<{ x: number; y: number } | null>(null);
+  const pendingPosition = useRef<number | null>(autoFocusAt ?? null);
   const hold = useRef<number | undefined>(undefined);
 
   // Held in a ref because the parent rebuilds them each render, and a changed
@@ -118,14 +119,25 @@ export const Card = ({
     // which is where a keyboard-initiated edit wants to be anyway.
     const at = pendingCaret.current;
     pendingCaret.current = null;
-    const position = at ? handle.view.posAtCoords({ x: at.x, y: at.y }) : null;
-    handle.view.dispatch({ selection: { anchor: position ?? handle.view.state.doc.length } });
+    const pointed = at ? handle.view.posAtCoords({ x: at.x, y: at.y }) : null;
+    const requested = pendingPosition.current;
+    pendingPosition.current = null;
+    const position = pointed ?? requested ?? handle.view.state.doc.length;
+    handle.view.dispatch({
+      selection: { anchor: Math.min(Math.max(position, 0), handle.view.state.doc.length) },
+    });
 
     return () => {
       handle.destroy();
       view.current = null;
     };
   }, [editing, card, store, origin]);
+
+  useEffect(() => {
+    if (autoFocusAt === undefined || editing || frozen || !editable) return;
+    pendingPosition.current = autoFocusAt;
+    setEditing(true);
+  }, [autoFocusAt, editable, editing, frozen]);
 
   const open = useCallback(
     (at?: { x: number; y: number }) => {

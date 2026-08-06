@@ -10,7 +10,7 @@
 import { Awareness, createDoc, createUndoManager, type YDoc, type YUndoManager } from './yjs';
 import { resolveActor, type ActorContext } from './actors';
 import { openTree, readSettings, type DocumentTree, type Settings } from './doc';
-import { daysMap, listDays } from './days';
+import { daysMap, listDays, repairCardMemberships, SECTIONS } from './days';
 import { enforceCap } from './moves';
 import {
   openLocalStore,
@@ -78,12 +78,18 @@ const watchCap = (doc: YDoc, context: ActorContext): (() => void) => {
     const dates = sweep ? listDays(doc) : [...pending];
     pending.clear();
     sweep = false;
+    repairCardMemberships(doc, context.systemOrigin);
     for (const date of dates) enforceCap(doc, context.systemOrigin, date);
   };
 
   const observer = (events: { path: (string | number)[] }[]): void => {
     for (const event of events) {
       const date = event.path[0];
+      const field = event.path[1];
+      // Journal text cannot affect membership or the cap. Card text lives in
+      // the canonical registry and does not reach this observer at all.
+      if (field === 'journal') continue;
+      if (typeof field === 'string' && !SECTIONS.some((section) => section === field)) continue;
       // A change to the days map itself: a day arrived, so there is no path to
       // read a date out of. Rare enough to be worth a full pass.
       if (typeof date === 'string') pending.add(date);
@@ -112,6 +118,7 @@ export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> 
 
   const actor = resolveActor(doc, doc.getMap('meta'));
   const tree = openTree(doc, actor.systemOrigin);
+  repairCardMemberships(doc, actor.systemOrigin);
 
   const awareness = new Awareness(doc);
   awareness.setLocalStateField('user', {
@@ -120,7 +127,15 @@ export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> 
     colorLight: `${actor.actor.color}33`,
   });
 
-  const undo = createUndoManager([tree.master, tree.days], new Set([actor.origin]));
+  const undo = createUndoManager(
+    [
+      tree.master,
+      tree.days,
+      tree.cards as unknown as typeof tree.days,
+      tree.cardLocations as unknown as typeof tree.days,
+    ],
+    new Set([actor.origin]),
+  );
 
   const stopWatchingCap = watchCap(doc, actor);
   const stopPersistenceRequest = options.onStoragePersistence
