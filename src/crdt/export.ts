@@ -16,6 +16,8 @@
  * through the archive — compaction is invisible here too.
  */
 
+import { toISODate } from '../lib/date';
+import { nowLocal, type PlainDateTime } from '../lib/temporal';
 import { zip, type ZipEntry } from '../lib/zip';
 import { dayAt, isDayEmpty, listDays } from './days';
 import { readDayContent, serializeDay } from './serialize';
@@ -33,16 +35,21 @@ export const exportEntries = (doc: YDoc, master: string): ZipEntry[] => {
   return entries;
 };
 
-export const exportArchive = (doc: YDoc, master: string, now = new Date()): Uint8Array =>
-  zip(exportEntries(doc, master), now);
+export const exportArchive = (
+  doc: YDoc,
+  master: string,
+  now: PlainDateTime = nowLocal(),
+): Uint8Array => zip(exportEntries(doc, master), now);
 
 /** `done-2026-08-05.zip`. */
-export const exportFilename = (now = new Date()): string =>
-  `done-${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(
-    now.getDate(),
-  ).padStart(2, '0')}.zip`;
+export const exportFilename = (now: PlainDateTime = nowLocal()): string =>
+  `done-${toISODate(now)}.zip`;
 
-export const downloadExport = (doc: YDoc, master: string, now = new Date()): void => {
+export const downloadExport = (
+  doc: YDoc,
+  master: string,
+  now: PlainDateTime = nowLocal(),
+): void => {
   const blob = new Blob([exportArchive(doc, master, now) as BlobPart], {
     type: 'application/zip',
   });

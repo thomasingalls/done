@@ -3,10 +3,14 @@
 A local-first PWA for one person's task-management workflow.
 See [docs/PRD.md](docs/PRD.md) and [docs/TRD.md](docs/TRD.md).
 
-**This is Phase 2: the workflow.** Days, documents and collections, cards, the
-three-item cap, the movement flows, the freeze, spatial navigation, three
+**This is Phase 2: the workflow.** Days, the master list, collections, cards,
+the three-item cap, the movement flows, the freeze, spatial navigation, three
 responsive layouts, actor attribution and scoped undo. No sync and no search —
 those are Phase 3 and Phase 4.
+
+A day has three sections, and they are read in the order **Next, Done,
+Scheduled**: what you are doing, what you did, and the tail of intentions that
+have not come up yet. Done reads newest-first — anything completed goes on top.
 
 > **Exit criteria** (PRD §13): daily use for two weeks with no fallback to the
 > previous system. Nothing in this repository decides that. `pnpm dev --host`
@@ -96,6 +100,18 @@ keystroke or need a second editor to catch it.
 first write, undoing that write would take the whole day with it — including
 anything added since, by anyone.
 
+**Done reads newest-first; Next and Scheduled do not.** A record you only ever
+append to is read from the top, and the thing you just finished is the thing you
+want to see. Next and Scheduled are ordered by intent rather than by time, so an
+arrival goes to the end and the order stays yours. The compose field stays at
+the foot of Done, where PRD §4 puts it — worth a second look on a real device,
+since typing at the bottom now produces a card at the top.
+
+**Reading order is not storage order.** `DISPLAY_SECTIONS` is what the day panel
+renders; `SECTIONS` is what the serializer writes and what every iteration over
+a day's contents takes. Keeping them apart is what stops rearranging the layout
+from changing the file format.
+
 **A card move is its own undo step.** `Y.UndoManager` merges transactions that
 land within half a second, which is right for typing and wrong for a move:
 pressing Done a moment after typing a card would otherwise make one undo revert
@@ -114,6 +130,16 @@ devices each adding a third card while apart is not a mistake anyone made and
 still converges to four, so a system-actor repair moves the overflow to
 Scheduled on the same day. It never deletes: the overflow is something the user
 wrote.
+
+**Dates are Temporal, with a ponyfill for now.** A day key is a calendar date
+with no instant behind it, and `Date` has no type for that — every operation on
+one has to be talked out of applying a timezone. `Temporal.PlainDate` and
+`Temporal.PlainDateTime` say exactly what is meant. Neither Chromium 141 nor
+Node 22 ships Temporal yet, so `temporal-polyfill` stands in behind
+`src/lib/temporal.ts`, used as a value and never installed on `globalThis`. It
+costs about 21 kB gzipped (the initial bundle is 294.6 kB of the 350 kB §12
+budget); when the platform ships the API, deleting one import is the whole
+migration, and `test/seam.test.ts` keeps that true.
 
 **Export ships now, import does not.** Not named in the phase list, but the
 serializer exists for compaction, the exit criterion is two weeks of real data,
@@ -188,5 +214,5 @@ calendar picker, import, presence and agents. Each has a phase in PRD §13.
 What runs today: convergence including concurrent card moves, editor/`Y.Text`
 round-trip, serializer round-trip, compaction safety, freeze independence, cap
 enforcement, undo scoping across all three system operations, the movement
-table, the static render, live-preview geometry, pixel identity, layout, and the
-seam.
+table, section order and Done's newest-first rule, the static render,
+live-preview geometry, pixel identity, layout, and the seams.

@@ -91,11 +91,14 @@ test.describe('Phase 2 workflow', () => {
     await page.setViewportSize({ width: 420, height: 900 });
     await page.goto('/');
     const body = activeDay(page).locator('.day-body');
-    const journal = activeDay(page).locator('.journal .cm-content');
-    await journal.click();
+    // One tall card is enough to make the body scroll, and `insertText` puts the
+    // newlines in directly — Enter in the compose field would submit each line.
+    const compose = activeDay(page).getByRole('textbox', { name: 'What got done?' });
+    await compose.click();
     await page.keyboard.insertText(
       Array.from({ length: 100 }, (_, index) => `line ${index + 1}`).join('\n'),
     );
+    await compose.press('Enter');
 
     await body.evaluate((element) => {
       element.scrollTop = 0;
@@ -136,9 +139,11 @@ test.describe('Phase 2 workflow', () => {
     const day = activeDay(page);
     const compose = day.getByRole('textbox', { name: 'What got done?' });
 
-    await compose.fill('first');
-    await compose.press('Enter');
+    // Done reads newest-first, so composing in reverse puts them on screen in
+    // the order the merge below reads: `first` above `second`.
     await compose.fill('second');
+    await compose.press('Enter');
+    await compose.fill('first');
     await compose.press('Enter');
 
     const cards = day.locator('.card[data-section="done"]');

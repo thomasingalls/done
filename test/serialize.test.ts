@@ -24,7 +24,6 @@ import {
 import { prng } from './random';
 
 const day = (over: Partial<DayContent> = {}): DayContent => ({
-  journal: '',
   next: [],
   scheduled: [],
   done: [],
@@ -35,7 +34,6 @@ describe('the canonical day format', () => {
   it('reads the way TRD §9 describes', () => {
     const text = serializeDay(
       day({
-        journal: 'Reviewed the deploy.\nCalled the dentist.',
         next: ['Draft the migration plan\nstart from the schema'],
         done: ['Called the dentist'],
       }),
@@ -43,11 +41,6 @@ describe('the canonical day format', () => {
 
     expect(text).toBe(
       [
-        '## Journal',
-        '',
-        'Reviewed the deploy.',
-        'Called the dentist.',
-        '',
         '## Next',
         '',
         '- Draft the migration plan',
@@ -98,11 +91,13 @@ describe('round-trip', () => {
   });
 
   it('survives whitespace a formatter would eat', () => {
-    roundTrips(day({ journal: 'trailing   \n\tleading tab\n', done: ['  indented\n   \nend'] }));
+    roundTrips(
+      day({ done: ['  indented\n   \nend'], scheduled: ['trailing   \n\tleading tab\n'] }),
+    );
   });
 
   it('survives markdown a rich-text model would rewrite', () => {
-    roundTrips(day({ journal: 'a \\* b _c_ ~d~ [e](f)', next: ['# heading in a card'] }));
+    roundTrips(day({ next: ['# heading in a card', 'a \\* b _c_ ~d~ [e](f)'] }));
   });
 
   it('survives arbitrary generated content', () => {
@@ -115,7 +110,6 @@ describe('round-trip', () => {
     for (let attempt = 0; attempt < 200; attempt++) {
       roundTrips(
         day({
-          journal: body(),
           next: Array.from({ length: Math.floor(random() * 3) }, body),
           scheduled: Array.from({ length: Math.floor(random() * 3) }, body),
           done: Array.from({ length: Math.floor(random() * 4) }, body),
@@ -125,8 +119,8 @@ describe('round-trip', () => {
   });
 });
 
-describe('the collections-only form, which is what compaction stores', () => {
-  it('round-trips without a journal', () => {
+describe('the archive form, which is the same bytes', () => {
+  it('round-trips what compaction stored', () => {
     const collections = {
       next: ['one\n\ntwo'],
       scheduled: [],
@@ -139,20 +133,34 @@ describe('the collections-only form, which is what compaction stores', () => {
     expect(parseCollections(serializeCollections(emptyCollections()))).toEqual(emptyCollections());
   });
 
-  it('does not pick up a journal heading that is not there', () => {
-    const text = serializeCollections({ next: ['x'], scheduled: [], done: [] });
-    expect(text.startsWith('## Next')).toBe(true);
+  it('is the day file, not a different format', () => {
+    const content = { next: ['x'], scheduled: [], done: ['y'] };
+    expect(serializeCollections(content)).toBe(serializeDay(content));
+    expect(serializeCollections(content).startsWith('## Next')).toBe(true);
   });
 });
 
 describe('headings are matched in order', () => {
-  it('ignores a later heading appearing before its turn', () => {
-    // A journal is free prose and can say anything, including this.
+  it('is not fooled by a card whose text contains a later heading', () => {
+    // Every line of a card is indented, so this cannot reach column 0 in
+    // practice — the ordering rule is what makes that a belt as well as a brace.
     const content = parseDay(
-      ['## Journal', '', 'I wrote about ## Done today', '', '## Next', '', '- real', ''].join('\n'),
+      [
+        '## Next',
+        '',
+        '- real',
+        '  ## Done',
+        '',
+        '## Scheduled',
+        '',
+        '',
+        '## Done',
+        '',
+        '- later',
+        '',
+      ].join('\n'),
     );
-    expect(content.journal).toBe('I wrote about ## Done today');
-    expect(content.next).toEqual(['real']);
-    expect(content.done).toEqual([]);
+    expect(content.next).toEqual(['real\n## Done']);
+    expect(content.done).toEqual(['later']);
   });
 });

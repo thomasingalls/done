@@ -95,6 +95,17 @@ const discrete = <T>(workspace: Workspace, fn: () => T): T => {
 
 const writable = (workspace: Workspace, date: ISODate): boolean => !isFrozen(date, workspace.today);
 
+/**
+ * Where a card arriving in a collection lands.
+ *
+ * Done reads newest-first: the thing you just finished is the thing you want to
+ * see, and a record you only ever append to is read from the top. Next and
+ * Scheduled are ordered by intent rather than by time, so an arrival goes to
+ * the end and the order stays yours.
+ */
+const arrivalIndex = (section: Section, length: number): number =>
+  section === 'done' ? 0 : length;
+
 /** Capacity check for Next, from PRD §3. Every insert path goes through it. */
 const capacityFor = (doc: YDoc, ref: Ref): number => {
   if (ref.section !== 'next') return Number.POSITIVE_INFINITY;
@@ -146,7 +157,7 @@ export const compose = (
   });
   return discrete(workspace, () => {
     registerCard(workspace.doc, id, card, ref);
-    target.push([id]);
+    target.insert(arrivalIndex(ref.section, target.length), [id]);
     return true;
   });
 };
@@ -181,7 +192,7 @@ export const moveCard = (
 
   return discrete(workspace, () => {
     source.delete(index, 1);
-    const at = toIndex ?? target.length;
+    const at = toIndex ?? arrivalIndex(to.section, target.length);
     target.insert(Math.min(Math.max(at, 0), target.length), [id]);
     setCardLocation(workspace.doc, id, to);
     return true;
@@ -261,11 +272,15 @@ export const copyFromMaster = (
     };
   });
   return discrete(workspace, () => {
-    target.push(
-      cards.map(({ id, card }) => {
-        registerCard(workspace.doc, id, card, ref);
-        return id;
-      }),
+    const ids = cards.map(({ id, card }) => {
+      registerCard(workspace.doc, id, card, ref);
+      return id;
+    });
+    // Reversed where the section reads newest-first, so a multi-line copy keeps
+    // the order it had in master once each line has been put on top of the last.
+    target.insert(
+      arrivalIndex(ref.section, target.length),
+      ref.section === 'done' ? [...ids].reverse() : ids,
     );
     return accepted.length;
   });
@@ -305,45 +320,6 @@ export const removeFromMaster = (
     }
   });
   return true;
-};
-
-/**
- * Journal line → master (PRD §4). The line gains a stable id if it has none,
- * because now something points at it (TRD §4.6), and the *marked* line is what
- * lands in master so the two ends stay findable from each other.
- */
-export const promoteJournalLine = (
-  workspace: Workspace,
-  master: YText,
-  date: ISODate,
-  lineNumber: number,
-): string | null => {
-  const day = dayAt(workspace.doc, date);
-  const journal = day?.get('journal') as YText | undefined;
-  if (!journal) return null;
-
-  const lines = journal.toString().split('\n');
-  const line = lines[lineNumber];
-  if (line === undefined || line.trim().length === 0) return null;
-
-  const existing = BLOCK_MARKER.exec(line);
-  const id = existing?.[1] ?? newId();
-
-  discrete(workspace, () => {
-    if (!existing) {
-      let offset = 0;
-      for (let index = 0; index < lineNumber; index++)
-        offset += (lines[index] as string).length + 1;
-      journal.insert(offset + line.length, ` ^${id}`);
-    }
-
-    const marked = existing ? line : `${line} ^${id}`;
-    const current = master.toString();
-    const separator = current.length === 0 || current.endsWith('\n') ? '' : '\n';
-    master.insert(master.length, `${separator}${marked.trimStart()}\n`);
-  });
-
-  return id;
 };
 
 /* -------------------------------------------------------------------------- */
@@ -456,7 +432,10 @@ export const moveAllNextTo = (workspace: Workspace, from: ISODate, to: Ref): num
       if (index >= 0) source.delete(index, 1);
       if (cardAt(workspace.doc, id)) setCardLocation(workspace.doc, id, to);
     }
-    target.push(ids);
+    target.insert(
+      arrivalIndex(to.section, target.length),
+      to.section === 'done' ? [...ids].reverse() : ids,
+    );
     return count;
   });
 };

@@ -13,14 +13,15 @@
 
 import { useEffect, useState } from 'react';
 import { todayFor, untilRollover, type ISODate } from '../lib/date';
+import { nowLocal } from '../lib/temporal';
 
 export const useToday = (rolloverHour = 0): ISODate => {
-  const [today, setToday] = useState<ISODate>(() => todayFor(new Date(), rolloverHour));
+  const [today, setToday] = useState<ISODate>(() => todayFor(nowLocal(), rolloverHour));
 
   useEffect(() => {
     let timer: number | undefined;
 
-    const check = (): void => setToday(todayFor(new Date(), rolloverHour));
+    const check = (): void => setToday(todayFor(nowLocal(), rolloverHour));
 
     const arm = (): void => {
       window.clearTimeout(timer);
@@ -30,7 +31,7 @@ export const useToday = (rolloverHour = 0): ISODate => {
           check();
           arm();
         },
-        untilRollover(new Date(), rolloverHour) + 1000,
+        untilRollover(nowLocal(), rolloverHour) + 1000,
       );
     };
 

@@ -226,7 +226,6 @@ describe('schema migration', () => {
 
     doc.transact(() => {
       meta.set('schemaVersion', 1);
-      day.set('journal', new Y.Text());
       day.set('next', next);
       day.set('scheduled', new Y.Array());
       day.set('done', new Y.Array());

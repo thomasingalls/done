@@ -135,30 +135,26 @@ describe('concurrent card moves', () => {
   });
 });
 
-describe('concurrent journals', () => {
+describe('concurrent documents', () => {
   it('keeps both sides of the conflict the architecture exists for', () => {
     const a = replica('a');
     const b = replica('b');
 
-    // The same day's journal, edited on two devices, neither having seen the
+    // The same master list, edited on two devices, neither having seen the
     // other. A SQL sync engine resolves this by discarding one of them.
-    compose(a, { date: TODAY, section: 'done' }, 'seed');
+    const master = (doc: Y.Doc): Y.Text => doc.getText('master');
+
+    a.doc.transact(() => master(a.doc).insert(0, 'Reviewed the deploy\n'), a.origin);
     sync(a.doc, b.doc);
 
-    const journalOf = (doc: Y.Doc): Y.Text =>
-      (doc.getMap('days').get(TODAY) as Y.Map<unknown>).get('journal') as Y.Text;
-
-    a.doc.transact(() => journalOf(a.doc).insert(0, 'Reviewed the deploy\n'), a.origin);
-    sync(a.doc, b.doc);
-
-    a.doc.transact(() => journalOf(a.doc).insert(20, 'Called the dentist\n'), a.origin);
-    b.doc.transact(() => journalOf(b.doc).insert(20, 'Wrote the migration plan\n'), b.origin);
+    a.doc.transact(() => master(a.doc).insert(20, 'Called the dentist\n'), a.origin);
+    b.doc.transact(() => master(b.doc).insert(20, 'Wrote the migration plan\n'), b.origin);
 
     sync(a.doc, b.doc);
     sync(b.doc, a.doc);
 
-    const merged = journalOf(a.doc).toString();
-    expect(merged).toBe(journalOf(b.doc).toString());
+    const merged = master(a.doc).toString();
+    expect(merged).toBe(master(b.doc).toString());
     expect(merged).toContain('Called the dentist');
     expect(merged).toContain('Wrote the migration plan');
 

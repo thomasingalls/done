@@ -36,23 +36,15 @@
  *   a section heading. Parsing removes exactly one in each place, so a card that
  *   legitimately ends in a blank line keeps it.
  *
- * ## One ambiguity, recorded rather than hidden
- *
- * The journal is free prose dumped verbatim, so a journal line that reads
- * `## Next` is indistinguishable from the section heading. Headings are
- * therefore matched **in order** — `## Journal`, then `## Next` after it, and so
- * on — which removes every collision except a journal that contains the next
- * heading in sequence at column 0. That case is left standing rather than
- * papered over with an escape, because escaping would make the export no longer
- * verbatim, and because the destructive path does not run it: compaction
- * serializes collections only and never touches the journal.
+ * Headings are matched **in document order** rather than by search, so a card
+ * whose text happens to contain `## Done` cannot be mistaken for the section
+ * itself. Every line of a card is indented, so in practice no card line reaches
+ * column 0 at all — the ordering rule is belt to that brace.
  */
 
-import { SECTIONS, archiveOf, cardBody, cardsIn, dayAt, journalOf, type Section } from './days';
+import { SECTIONS, archiveOf, cardBody, cardsIn, dayAt, type Section } from './days';
 import type { ISODate } from '../lib/date';
 import type { YDoc } from './yjs';
-
-export const JOURNAL_HEADING = '## Journal';
 
 const HEADINGS: Record<Section, string> = {
   next: '## Next',
@@ -60,19 +52,25 @@ const HEADINGS: Record<Section, string> = {
   done: '## Done',
 };
 
-/** What a serialized day contains, independent of where it is stored. */
+/**
+ * What a serialized day contains, independent of where it is stored.
+ *
+ * A day *is* its three collections, so the day file and the `archive` a
+ * compacted day holds are the same format read by the same parser — which is
+ * what makes "exactly one serializer" (TRD §9) literally true rather than
+ * nearly true. `Collections` is the name compaction uses for the same shape.
+ */
 export interface DayContent {
-  journal: string;
   next: string[];
   scheduled: string[];
   done: string[];
 }
 
-export type Collections = Omit<DayContent, 'journal'>;
+export type Collections = DayContent;
 
 export const emptyCollections = (): Collections => ({ next: [], scheduled: [], done: [] });
 
-export const emptyDayContent = (): DayContent => ({ journal: '', ...emptyCollections() });
+export const emptyDayContent = emptyCollections;
 
 /* -------------------------------------------------------------------------- */
 /* Cards                                                                       */
@@ -134,23 +132,20 @@ const sectionLines = (heading: string, body: readonly string[]): string[] => [
   '',
 ];
 
-const collectionsLines = (content: Collections): string[] =>
-  SECTIONS.flatMap((name) => sectionLines(HEADINGS[name], collectionLines(content[name])));
-
-/** The three collections, in section order. This is what `archive` holds (§4.5). */
-export const serializeCollections = (content: Collections): string =>
-  collectionsLines(content).join('\n');
-
-/** A whole day: journal first, then the collections (TRD §9). */
+/**
+ * The three collections, in section order. This is a whole day file (TRD §9)
+ * and also what `archive` holds (§4.5) — the same bytes either way.
+ */
 export const serializeDay = (content: DayContent): string =>
-  [
-    ...sectionLines(JOURNAL_HEADING, content.journal.split('\n')),
-    ...collectionsLines(content),
-  ].join('\n');
+  SECTIONS.flatMap((name) => sectionLines(HEADINGS[name], collectionLines(content[name]))).join(
+    '\n',
+  );
+
+export const serializeCollections = serializeDay;
 
 /**
- * Heading positions, matched in document order so a stray `## Journal` inside a
- * card or a later section cannot be mistaken for the real one.
+ * Heading positions, matched in document order so a stray `## Done` inside a
+ * card cannot be mistaken for the section itself.
  */
 const findHeadings = (lines: readonly string[], headings: readonly string[]): number[] => {
   const found: number[] = [];
@@ -169,8 +164,8 @@ const findHeadings = (lines: readonly string[], headings: readonly string[]): nu
 
 /**
  * Strips the blank line the writer put after a heading and before the next one.
- * Exactly one at each end: a journal that genuinely ends in a blank line, or a
- * final card that does, has to survive.
+ * Exactly one at each end, so a final card that genuinely ends in a blank line
+ * keeps it.
  */
 const trimOneEachEnd = (lines: readonly string[]): string[] => {
   const out = [...lines];
@@ -191,23 +186,6 @@ const parseSections = (source: string, headings: readonly string[]): (string[] |
 };
 
 export const parseDay = (source: string): DayContent => {
-  const [journal, next, scheduled, done] = parseSections(source, [
-    JOURNAL_HEADING,
-    HEADINGS.next,
-    HEADINGS.scheduled,
-    HEADINGS.done,
-  ]);
-
-  return {
-    journal: journal?.join('\n') ?? '',
-    next: parseCollection(next ?? []),
-    scheduled: parseCollection(scheduled ?? []),
-    done: parseCollection(done ?? []),
-  };
-};
-
-/** The collections only — the shape compaction stored, read back. */
-export const parseCollections = (source: string): Collections => {
   const [next, scheduled, done] = parseSections(source, [
     HEADINGS.next,
     HEADINGS.scheduled,
@@ -221,10 +199,12 @@ export const parseCollections = (source: string): Collections => {
   };
 };
 
+export const parseCollections = parseDay;
+
 /* -------------------------------------------------------------------------- */
 /* Reading a live day                                                          */
 
-export const readCollections = (doc: YDoc, date: ISODate): Collections => {
+export const readDayContent = (doc: YDoc, date: ISODate): DayContent => {
   const day = dayAt(doc, date);
   const archive = archiveOf(day);
   // A compacted day has no collections left; the archive is where they went.
@@ -237,8 +217,4 @@ export const readCollections = (doc: YDoc, date: ISODate): Collections => {
   return content;
 };
 
-/** Reads a live day out of the CRDT into the shape the serializer takes. */
-export const readDayContent = (doc: YDoc, date: ISODate): DayContent => ({
-  journal: journalOf(dayAt(doc, date))?.toString() ?? '',
-  ...readCollections(doc, date),
-});
+export const readCollections = readDayContent;

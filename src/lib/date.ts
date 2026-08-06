@@ -5,81 +5,85 @@
  * `createdAt`; the day they live in is a local calendar day, because "which day
  * did I do this on" is a local question and always was.
  *
+ * That distinction is the whole reason this is built on `Temporal` (see
+ * lib/temporal.ts). `Temporal.PlainDate` is a calendar date with no timezone
+ * attached and no way to acquire one by accident, and `Temporal.PlainDateTime`
+ * is a wall-clock reading — which is exactly what "rollover happens in the
+ * user's last-known timezone" means. Neither can silently become an instant,
+ * so none of the arithmetic below has to be defended.
+ *
  * PRD §8 sets the standard for everything time-dependent: "any feature leaning
  * heavily on knowing precisely when the user's midnight is requires serious
- * justification." Nothing here leans on it. The freeze is three days wide and
- * compaction seven, so a day of timezone ambiguity is immaterial to both, and
- * that is why the arithmetic below can be plain calendar arithmetic rather than
- * anything that has to be right about instants.
+ * justification." Nothing here leans on it — the freeze is three days wide and
+ * compaction seven — which is also why DST is not modelled: a wall clock that
+ * skips or repeats an hour moves nothing across a three-day boundary.
  */
 
-/** `YYYY-MM-DD`. */
+import { Temporal, nowLocal, type PlainDate, type PlainDateTime } from './temporal';
+
+/** `YYYY-MM-DD`, which is what a day is keyed by and what sorts correctly. */
 export type ISODate = string;
 
 export const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
-const pad = (value: number): string => String(value).padStart(2, '0');
+export const plainDate = (iso: ISODate): PlainDate => Temporal.PlainDate.from(iso);
 
-/** The calendar date a `Date` falls on in the local timezone. */
-export const toISODate = (date: Date): ISODate =>
-  `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+/** The calendar date a wall-clock reading falls on. No timezone is applied. */
+export const toISODate = (at: PlainDateTime): ISODate => at.toPlainDate().toString();
 
-/**
- * Midnight UTC on the given calendar date. Used only as a canonical number for
- * comparing and stepping dates — never displayed, so the UTC choice is a
- * arithmetic convenience and not a claim about when the day started.
- */
-const epoch = (iso: ISODate): number => {
-  const [year, month, day] = iso.split('-').map(Number) as [number, number, number];
-  return Date.UTC(year, month - 1, day);
-};
-
-const DAY_MS = 86_400_000;
-
-export const addDays = (iso: ISODate, days: number): ISODate => {
-  const shifted = new Date(epoch(iso) + days * DAY_MS);
-  return `${shifted.getUTCFullYear()}-${pad(shifted.getUTCMonth() + 1)}-${pad(shifted.getUTCDate())}`;
-};
+export const addDays = (iso: ISODate, days: number): ISODate =>
+  plainDate(iso).add({ days }).toString();
 
 /** Whole days from `from` to `to`; negative when `to` is earlier. */
 export const daysBetween = (from: ISODate, to: ISODate): number =>
-  Math.round((epoch(to) - epoch(from)) / DAY_MS);
+  plainDate(from).until(plainDate(to), { largestUnit: 'day' }).days;
 
-export const compareDates = (a: ISODate, b: ISODate): number => epoch(a) - epoch(b);
+export const compareDates = (a: ISODate, b: ISODate): number =>
+  Temporal.PlainDate.compare(plainDate(a), plainDate(b));
 
 /**
  * Today, in the last-known timezone, honouring the configured rollover hour
  * (PRD §8). A rollover of 4 means 03:00 still belongs to yesterday — the hour
- * is subtracted before the calendar date is read, which is the whole mechanism.
+ * is subtracted from the wall clock before the calendar date is read, which is
+ * the whole mechanism.
  */
-export const todayFor = (now: Date, rolloverHour = 0): ISODate =>
-  toISODate(new Date(now.getTime() - rolloverHour * 3_600_000));
+export const todayFor = (now: PlainDateTime, rolloverHour = 0): ISODate =>
+  now.subtract({ hours: rolloverHour }).toPlainDate().toString();
+
+/** Today by the clock the app is actually running against. */
+export const currentDate = (rolloverHour = 0): ISODate => todayFor(nowLocal(), rolloverHour);
 
 /** Milliseconds until the next rollover, for scheduling the day flip. */
-export const untilRollover = (now: Date, rolloverHour = 0): number => {
-  const next = new Date(now);
-  next.setHours(rolloverHour, 0, 0, 0);
-  if (next.getTime() <= now.getTime()) next.setDate(next.getDate() + 1);
-  return next.getTime() - now.getTime();
+export const untilRollover = (now: PlainDateTime, rolloverHour = 0): number => {
+  const boundary = now.with({
+    hour: rolloverHour,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+    microsecond: 0,
+    nanosecond: 0,
+  });
+  const next =
+    Temporal.PlainDateTime.compare(boundary, now) > 0 ? boundary : boundary.add({ days: 1 });
+  return now.until(next).total({ unit: 'millisecond' });
 };
 
-const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 /**
- * `Wed 5 Aug` — the header format from PRD §7.4. Hand-rolled rather than
- * `Intl.DateTimeFormat` because the date is a calendar date with no timezone,
- * and handing one to `Intl` means constructing an instant and hoping it lands
- * on the right side of midnight.
+ * `Wed 5 Aug` — the header format from PRD §7.4. The names are a table rather
+ * than `Intl.DateTimeFormat` because the format is fixed and English, and
+ * handing a `PlainDate` to `Intl` means constructing an instant on the way.
+ * `dayOfWeek` is ISO-8601, so Monday is 1.
  */
 export const formatDay = (iso: ISODate): string => {
-  const [year, month, day] = iso.split('-').map(Number) as [number, number, number];
-  const weekday = WEEKDAYS[new Date(Date.UTC(year, month - 1, day)).getUTCDay()] as string;
-  return `${weekday} ${day} ${MONTHS[month - 1] as string}`;
+  const date = plainDate(iso);
+  return `${WEEKDAYS[date.dayOfWeek - 1] as string} ${date.day} ${MONTHS[date.month - 1] as string}`;
 };
 
 /** `Wed 5 Aug 2026`, for anywhere the year is not obvious from context. */
-export const formatDayLong = (iso: ISODate): string => `${formatDay(iso)} ${iso.slice(0, 4)}`;
+export const formatDayLong = (iso: ISODate): string => `${formatDay(iso)} ${plainDate(iso).year}`;
 
 /**
  * What to call a day relative to today. The header shows the date (PRD §7.4);

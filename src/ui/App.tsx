@@ -26,7 +26,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { shouldCommit, type Direction } from '../gestures/recognizer';
 import { useGestures } from '../gestures/useGestures';
-import { addDays, todayFor, type ISODate } from '../lib/date';
+import { addDays, currentDate, type ISODate } from '../lib/date';
 import {
   DEFAULT_SETTINGS,
   compactDueDays,
@@ -62,7 +62,7 @@ export const App = (): React.ReactElement => {
   );
   const today = useToday(settings.rolloverHour);
 
-  const [date, setDate] = useState<ISODate>(() => todayFor(new Date()));
+  const [date, setDate] = useState<ISODate>(currentDate);
   const [menuOpen, setMenuOpen] = useState(false);
   const [goalsOpen, setGoalsOpen] = useState(false);
 

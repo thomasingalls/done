@@ -17,7 +17,6 @@ import {
   copyFromMaster,
   mergeCardBackwards,
   moveCard,
-  promoteJournalLine,
   removeCard,
   removeFromMaster,
   splitCard,
@@ -33,11 +32,18 @@ const bodies = (test: Harness, section: 'next' | 'scheduled' | 'done', date = TO
   cardsIn(test.store.doc, date, section).map(cardBody);
 
 describe('nothing → Done', () => {
-  it('is one call, and lands at the foot of the list', async () => {
+  it('is one call, and lands at the top: Done reads newest-first', async () => {
     context = await harness();
     expect(compose(context.me, { date: TODAY, section: 'done' }, 'called the dentist')).toBe(true);
     expect(compose(context.me, { date: TODAY, section: 'done' }, 'and the plumber')).toBe(true);
-    expect(bodies(context, 'done')).toEqual(['called the dentist', 'and the plumber']);
+    expect(bodies(context, 'done')).toEqual(['and the plumber', 'called the dentist']);
+  });
+
+  it('appends in the sections ordered by intent rather than by time', async () => {
+    context = await harness();
+    compose(context.me, { date: TODAY, section: 'next' }, 'first');
+    compose(context.me, { date: TODAY, section: 'next' }, 'second');
+    expect(bodies(context, 'next')).toEqual(['first', 'second']);
   });
 
   it('records the author and the time (TRD §4.2)', async () => {
@@ -146,46 +152,6 @@ describe('master → collection is two steps', () => {
   });
 });
 
-describe('journal line → master', () => {
-  it('assigns an id, marks the journal line and appends the marked line', async () => {
-    context = await harness();
-    compose(context.me, { date: TODAY, section: 'done' }, 'seed the day');
-    const journal = context.store.days.get(TODAY) as {
-      get: (key: string) => { insert: (at: number, text: string) => void; toString: () => string };
-    };
-    const text = journal.get('journal');
-    transact(context.store.doc, context.me.origin, () =>
-      text.insert(0, 'looked into the retry storm\nand something else'),
-    );
-
-    const id = promoteJournalLine(context.me, context.store.master, TODAY, 0);
-
-    expect(id).toMatch(/^[a-z0-9]{6}$/);
-    expect(text.toString()).toBe(`looked into the retry storm ^${id}\nand something else`);
-    expect(context.store.master.toString()).toBe(`looked into the retry storm ^${id}\n`);
-  });
-
-  it('reuses an id the line already has', async () => {
-    context = await harness();
-    compose(context.me, { date: TODAY, section: 'done' }, 'seed');
-    const day = context.store.days.get(TODAY) as {
-      get: (key: string) => { insert: (at: number, text: string) => void; toString: () => string };
-    };
-    transact(context.store.doc, context.me.origin, () =>
-      day.get('journal').insert(0, 'already marked ^abc123'),
-    );
-
-    expect(promoteJournalLine(context.me, context.store.master, TODAY, 0)).toBe('abc123');
-    expect(day.get('journal').toString()).toBe('already marked ^abc123');
-  });
-
-  it('refuses a blank line', async () => {
-    context = await harness();
-    compose(context.me, { date: TODAY, section: 'done' }, 'seed');
-    expect(promoteJournalLine(context.me, context.store.master, TODAY, 0)).toBeNull();
-  });
-});
-
 describe('splitting and merging', () => {
   it('splits a card in two, leaving the returns behind', async () => {
     context = await harness();
@@ -209,8 +175,10 @@ describe('splitting and merging', () => {
 
   it('merges backwards, returning where the caret should land', async () => {
     context = await harness();
-    compose(context.me, { date: TODAY, section: 'done' }, 'first');
+    // Done is newest-first, so composing `second` then `first` puts them in
+    // that order on screen and the merge is of `second` into `first`.
     compose(context.me, { date: TODAY, section: 'done' }, 'second');
+    compose(context.me, { date: TODAY, section: 'done' }, 'first');
     const id = cardId(cardsIn(context.store.doc, TODAY, 'done')[1]!);
 
     expect(mergeCardBackwards(context.me, { date: TODAY, section: 'done' }, id)).toBe(5);

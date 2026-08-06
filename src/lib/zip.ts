@@ -11,6 +11,8 @@
  * central directory, then the end-of-central-directory record.
  */
 
+import { nowLocal, type PlainDateTime } from './temporal';
+
 const CRC_TABLE = (() => {
   const table = new Uint32Array(256);
   for (let index = 0; index < 256; index++) {
@@ -32,10 +34,10 @@ export interface ZipEntry {
   content: string;
 }
 
-/** MS-DOS date and time, which is what the format stores. */
-const dosStamp = (date: Date): { time: number; date: number } => ({
-  time: (date.getHours() << 11) | (date.getMinutes() << 5) | (date.getSeconds() >> 1),
-  date: ((date.getFullYear() - 1980) << 9) | ((date.getMonth() + 1) << 5) | date.getDate(),
+/** MS-DOS date and time, which is what the format stores — local, no timezone. */
+const dosStamp = (at: PlainDateTime): { time: number; date: number } => ({
+  time: (at.hour << 11) | (at.minute << 5) | (at.second >> 1),
+  date: ((at.year - 1980) << 9) | (at.month << 5) | at.day,
 });
 
 class Writer {
@@ -70,7 +72,7 @@ class Writer {
   }
 }
 
-export const zip = (entries: readonly ZipEntry[], now = new Date()): Uint8Array => {
+export const zip = (entries: readonly ZipEntry[], now: PlainDateTime = nowLocal()): Uint8Array => {
   const encoder = new TextEncoder();
   const stamp = dosStamp(now);
   const out = new Writer();

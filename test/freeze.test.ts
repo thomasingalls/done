@@ -65,20 +65,18 @@ describe('the freeze', () => {
     expect(countIn(context.store.doc, old, 'next')).toBe(1);
   });
 
-  it('leaves the journal editable, which is the point of it (PRD §6)', async () => {
+  it('never reaches the master list, which has no date to freeze on (PRD §6)', async () => {
     context = await harness();
     const old = ago(30);
     const past = { ...context.me, today: old };
-    compose(past, { date: old, section: 'done' }, 'seed the day');
+    compose(past, { date: old, section: 'done' }, 'seed a very old day');
 
-    const journal = context.store.days.get(old) as { get: (key: string) => unknown };
-    const text = journal.get('journal') as {
-      insert: (at: number, s: string) => void;
-      toString: () => string;
-    };
-    context.store.doc.transact(() => text.insert(0, 'still writing about it'), context.me.origin);
+    context.store.doc.transact(
+      () => context.store.master.insert(0, 'still a living document'),
+      context.me.origin,
+    );
 
-    expect(text.toString()).toBe('still writing about it');
+    expect(context.store.master.toString()).toBe('still a living document');
   });
 
   it('changes nothing about how the day is stored', async () => {

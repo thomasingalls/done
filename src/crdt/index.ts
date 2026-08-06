@@ -34,9 +34,9 @@ export interface Store extends DocumentTree {
   actor: ActorContext;
   awareness: Awareness;
   /**
-   * Scoped to the local human's origin (TRD §4.8), across both roots. Undo
-   * follows the actor rather than the surface: a card move and a line of
-   * journal are one history because one person made both. System-actor
+   * Scoped to the local human's origin (TRD §4.8), across every root. Undo
+   * follows the actor rather than the surface: a card move and a line of the
+   * master list are one history because one person made both. System-actor
    * operations — compaction, the cap repair, bulk moves — are excluded by
    * construction rather than by remembering to exclude them.
    */
@@ -86,9 +86,8 @@ const watchCap = (doc: YDoc, context: ActorContext): (() => void) => {
     for (const event of events) {
       const date = event.path[0];
       const field = event.path[1];
-      // Journal text cannot affect membership or the cap. Card text lives in
-      // the canonical registry and does not reach this observer at all.
-      if (field === 'journal') continue;
+      // Only membership can move the cap. Card *text* lives in the canonical
+      // registry and does not reach this observer at all.
       if (typeof field === 'string' && !SECTIONS.some((section) => section === field)) continue;
       // A change to the days map itself: a day arrived, so there is no path to
       // read a date out of. Rare enough to be worth a full pass.

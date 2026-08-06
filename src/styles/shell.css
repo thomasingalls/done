@@ -293,7 +293,15 @@
     touch-action: pan-up;
   }
 
+  /*
+   * The band that absorbs the slack in the Goals column (TRD §8.2). Without
+   * `flex: 1` it takes its size from its content, and its content is an editor
+   * asking for `100%` of it — so the master list collapsed to nothing. `flex`
+   * rather than `block-size: 100%` because the header and the actions row are
+   * in the same column and 100% would be 100% of all three.
+   */
   .goals-body {
+    flex: 1;
     min-block-size: 0;
     overflow: hidden;
     display: grid;

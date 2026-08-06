@@ -6,16 +6,19 @@
 
 import { expect, test, type Page } from '@playwright/test';
 
-const JOURNAL = '.day-panel[data-active="true"] .journal';
-
+/**
+ * Fills the day in focus with one very tall card. `insertText` puts the
+ * newlines in directly; Enter in the compose field would submit each line.
+ */
 const fill = async (page: Page, lines: number): Promise<void> => {
   await page.goto('/');
-  const content = page.locator(`${JOURNAL} .cm-content`);
-  await expect(content).toBeVisible();
-  await content.click();
+  const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+  await expect(compose).toBeVisible();
+  await compose.click();
   await page.keyboard.insertText(
     Array.from({ length: lines }, (_, index) => `- line number ${index + 1}`).join('\n'),
   );
+  await compose.press('Enter');
 };
 
 test.describe('layout', () => {
@@ -81,6 +84,35 @@ test.describe('layout', () => {
     expect(bands.body).toBeLessThan(bands.tomorrow);
   });
 
+  test('the master list fills the Goals column rather than collapsing', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto('/');
+
+    const editor = page.locator('.goals .cm-editor');
+    await expect(editor).toBeVisible();
+
+    const measurements = await page.evaluate(() => {
+      const height = (selector: string): number =>
+        (document.querySelector(selector) as HTMLElement).getBoundingClientRect().height;
+      return {
+        editor: height('.goals .cm-editor'),
+        body: height('.goals-body'),
+        panel: height('.goals'),
+        header: height('.goals .panel-header'),
+        actions: height('.goals-actions'),
+      };
+    });
+
+    // The band between the header and the actions row takes the slack, and the
+    // editor takes the band. Neither is allowed to be a sliver.
+    expect(measurements.body).toBeCloseTo(
+      measurements.panel - measurements.header - measurements.actions,
+      0,
+    );
+    expect(measurements.editor).toBeCloseTo(measurements.body, 0);
+    expect(measurements.editor).toBeGreaterThan(200);
+  });
+
   test('the menu is a panel at wide and behind a trigger below it', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto('/');
@@ -118,7 +150,7 @@ test.describe('layout', () => {
   test('the trigger opens and closes the menu', async ({ page }) => {
     await page.setViewportSize({ width: 420, height: 900 });
     await page.goto('/');
-    await expect(page.locator(`${JOURNAL} .cm-content`)).toBeVisible();
+    await expect(page.locator('.day-panel[data-active="true"] .compose-field')).toBeVisible();
 
     await page.locator('.menu-trigger').click();
     await expect(page.locator('.shell')).toHaveAttribute('data-menu', 'open');
@@ -128,6 +160,31 @@ test.describe('layout', () => {
 
     await page.locator('.scrim').click({ position: { x: 380, y: 400 } });
     await expect(page.locator('.shell')).toHaveAttribute('data-menu', 'closed');
+  });
+
+  test('the day reads Next, Done, Scheduled, in that order', async ({ page }) => {
+    await page.goto('/');
+    const day = page.locator('.day-panel[data-active="true"]');
+    await expect(day.locator('.collection')).toHaveCount(2); // Scheduled is hidden while empty
+
+    const compose = day.locator('.compose-field');
+    await compose.click();
+    await page.keyboard.insertText('something finished');
+    await compose.press('Enter');
+
+    // Seeding Scheduled needs the master list, which is the only way in.
+    await page.setViewportSize({ width: 1280, height: 900 });
+    const master = page.locator('.goals .cm-content');
+    await master.click();
+    await page.keyboard.insertText('a scheduled thing');
+    await page.locator('.goals').getByRole('button', { name: 'To Scheduled' }).click();
+
+    await expect(day.locator('.collection')).toHaveCount(3);
+    expect(
+      await day
+        .locator('.collection')
+        .evaluateAll((sections) => sections.map((section) => section.getAttribute('data-section'))),
+    ).toEqual(['next', 'done', 'scheduled']);
   });
 
   test('a peek is a click target that moves a day (PRD §7.3)', async ({ page }) => {

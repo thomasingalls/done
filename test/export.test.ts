@@ -10,6 +10,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { compactDay, compose, exportEntries, exportFilename, transact } from '../src/crdt';
 import { crc32, zip } from '../src/lib/zip';
+import { Temporal } from '../src/lib/temporal';
 import { addDays } from '../src/lib/date';
 import { harness, TODAY, type Harness } from './workspace';
 
@@ -21,7 +22,10 @@ const read32 = (bytes: Uint8Array, at: number): number =>
 
 describe('the zip container', () => {
   it('starts with a local file header and ends with the central directory', () => {
-    const bytes = zip([{ path: 'a.md', content: 'hello' }], new Date(2026, 7, 5, 12));
+    const bytes = zip(
+      [{ path: 'a.md', content: 'hello' }],
+      Temporal.PlainDateTime.from('2026-08-05T12:00'),
+    );
     expect(read32(bytes, 0)).toBe(0x04034b50);
 
     const eocdAt = bytes.length - 22;
@@ -40,7 +44,9 @@ describe('the zip container', () => {
   });
 
   it('names the file after the day it was taken', () => {
-    expect(exportFilename(new Date(2026, 7, 5))).toBe('done-2026-08-05.zip');
+    expect(exportFilename(Temporal.PlainDateTime.from('2026-08-05T09:00'))).toBe(
+      'done-2026-08-05.zip',
+    );
   });
 });
 

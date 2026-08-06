@@ -13,9 +13,9 @@
  *   TRD conflated them; §11 keeps a regression test for it. Nothing in this
  *   file may consult the stored representation, and nothing in compaction.ts
  *   may consult this one.
- * - **Not the journal.** The journal stays editable indefinitely (PRD §6): the
- *   freeze protects commitment records from retroactive editing, not the prose.
- *   The master list has no date and never freezes at all.
+ * - **Not the master list.** The freeze is a property of a *day*, and the
+ *   master list has no date attached, so there is nothing for it to be three
+ *   days past. It never freezes (PRD §6).
  */
 
 import { compareDates, daysBetween, type ISODate } from '../lib/date';

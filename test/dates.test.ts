@@ -18,6 +18,7 @@ import {
   todayFor,
   untilRollover,
 } from '../src/lib/date';
+import { Temporal, type PlainDateTime } from '../src/lib/temporal';
 
 describe('calendar arithmetic', () => {
   it('steps days across month and year boundaries', () => {
@@ -51,7 +52,9 @@ describe('calendar arithmetic', () => {
 });
 
 describe('the rollover hour', () => {
-  const at = (hours: number, minutes = 0): Date => new Date(2026, 7, 5, hours, minutes);
+  /** A wall-clock reading, which is what rollover is measured against. */
+  const at = (hour: number, minute = 0): PlainDateTime =>
+    Temporal.PlainDateTime.from({ year: 2026, month: 8, day: 5, hour, minute });
 
   it('is midnight by default', () => {
     expect(todayFor(at(0, 1))).toBe('2026-08-05');
@@ -72,12 +75,20 @@ describe('the rollover hour', () => {
   });
 });
 
-describe('local calendar dates', () => {
-  it('reads the local date rather than the UTC one', () => {
-    // Late in the evening local time is the next day in UTC for anything east
-    // of the meridian and the previous one to its west; the calendar date the
-    // app stores is the one the user is living in.
-    const evening = new Date(2026, 7, 5, 23, 30);
+describe('calendar dates carry no timezone', () => {
+  it('reads the wall clock, which is the only clock a day key has', () => {
+    // Late in the evening is the next day in UTC for anything east of the
+    // meridian and the previous one to its west. A `PlainDateTime` has no
+    // offset to apply, so there is nothing here to get wrong — which is the
+    // reason this is built on Temporal rather than on `Date`.
+    const evening = Temporal.PlainDateTime.from('2026-08-05T23:30');
     expect(toISODate(evening)).toBe('2026-08-05');
+  });
+
+  it('steps a day without an hour of DST changing the answer', () => {
+    // A wall clock that skips or repeats an hour moves nothing across a day
+    // boundary, because none of this arithmetic is in milliseconds.
+    expect(addDays('2026-03-29', 1)).toBe('2026-03-30');
+    expect(daysBetween('2026-03-28', '2026-03-30')).toBe(2);
   });
 });

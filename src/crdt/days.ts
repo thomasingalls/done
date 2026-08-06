@@ -4,7 +4,6 @@
  * ```
  * days  Y.Map<ISODate, Y.Map>
  *   └── "2026-08-05"
- *         ├── journal    Y.Text                 ← document, stays editable
  *         ├── next       Y.Array<CardId> (≤3)   ← collection
  *         ├── scheduled  Y.Array<CardId>
  *         ├── done       Y.Array<CardId>
@@ -35,12 +34,27 @@ import {
   type YText,
 } from './yjs';
 import { newId } from '../lib/id';
+import { Temporal } from '../lib/temporal';
 import type { ISODate } from '../lib/date';
 
 export type Section = 'next' | 'scheduled' | 'done';
 
-/** Ordered as they appear in a day, which is also the export order (TRD §9). */
+/**
+ * Storage order: how the sections are written to a day file and to `archive`
+ * (TRD §9), and the order every iteration over a day's contents takes.
+ */
 export const SECTIONS: readonly Section[] = ['next', 'scheduled', 'done'];
+
+/**
+ * Reading order, which is not the same thing. Next is what you are doing,
+ * Done is what you did, and Scheduled is the tail of intentions that have not
+ * come up yet — so it sits at the bottom where it can be scrolled past rather
+ * than between the two surfaces that are in use all day.
+ *
+ * Deliberately separate from `SECTIONS`: presentation must not be able to
+ * change the file format by being rearranged.
+ */
+export const DISPLAY_SECTIONS: readonly Section[] = ['next', 'done', 'scheduled'];
 
 /** PRD §3: at most three items in Next. Enforcing it is a core function. */
 export const NEXT_CAP = 3;
@@ -99,7 +113,7 @@ export const newCard = (text: string, author: ActorId, options: NewCardOptions =
   card.set('text', newText(text));
   card.set('origin', options.origin ?? null);
   card.set('author', author);
-  card.set('createdAt', options.createdAt ?? new Date().toISOString());
+  card.set('createdAt', options.createdAt ?? Temporal.Now.instant().toString());
   return card;
 };
 
@@ -159,7 +173,6 @@ export const ensureDay = (doc: YDoc, origin: unknown, date: ISODate): Day =>
       map.set(date, day);
     }
 
-    if (!day.has('journal')) day.set('journal', newText());
     // A compacted day has had its collections deleted on purpose (§4.5), and
     // is frozen several days over besides. Re-creating them here would undo
     // compaction from a write path that should never have reached this day.
@@ -168,9 +181,6 @@ export const ensureDay = (doc: YDoc, origin: unknown, date: ISODate): Day =>
     }
     return day;
   });
-
-export const journalOf = (day: Day | undefined): YText | undefined =>
-  day?.get('journal') as YText | undefined;
 
 export const collectionOf = (day: Day | undefined, section: Section): Collection | undefined =>
   day?.get(section) as Collection | undefined;
@@ -196,9 +206,6 @@ export const cardsIn = (doc: YDoc, date: ISODate, section: Section): Card[] => {
 export const countIn = (doc: YDoc, date: ISODate, section: Section): number =>
   cardsIn(doc, date, section).length;
 
-export const journalText = (doc: YDoc, date: ISODate): string =>
-  journalOf(dayAt(doc, date))?.toString() ?? '';
-
 /** Index of a card in its collection, or -1. Identity, not equality: cards move. */
 export const indexOfCard = (collection: Collection, id: string): number => {
   return collection.toArray().indexOf(id);
@@ -207,7 +214,6 @@ export const indexOfCard = (collection: Collection, id: string): number => {
 /** True where a day has nothing in it — the state a merely-visited day is left in. */
 export const isDayEmpty = (day: Day | undefined): boolean => {
   if (!day) return true;
-  if ((journalOf(day)?.length ?? 0) > 0) return false;
   if ((archiveOf(day)?.length ?? 0) > 0) return false;
   return SECTIONS.every((section) => (collectionOf(day, section)?.length ?? 0) === 0);
 };

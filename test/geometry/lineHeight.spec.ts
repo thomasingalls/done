@@ -10,9 +10,9 @@
  * line's height when hidden syntax shortens it, and that is not the failure
  * under test.
  *
- * The surface measured is the journal — the document editor on the day in
- * focus. Phase 1 measured the only editor there was; there are several now, and
- * the journal is the one present at every breakpoint.
+ * The surface measured is the master list, which is the app's one long-form
+ * document editor. At narrow it lives off-screen until asked for, so the seed
+ * opens it first.
  */
 
 import { expect, test, type Page } from '@playwright/test';
@@ -41,16 +41,25 @@ const DOCUMENT = [
   'closing line',
 ].join('\n');
 
-/** The journal on the day in focus. Neighbouring days render static, not live. */
-const JOURNAL = '.day-panel[data-active="true"] .journal';
+const MASTER = '.goals';
 
-const content = (page: Page) => page.locator(`${JOURNAL} .cm-content`);
-const lines = (page: Page) => page.locator(`${JOURNAL} .cm-line`);
+const content = (page: Page) => page.locator(`${MASTER} .cm-content`);
+const lines = (page: Page) => page.locator(`${MASTER} .cm-line`);
 
-const seed = async (page: Page): Promise<void> => {
+/** Goals is a panel from medium up and a drag away at narrow (PRD §7.1). */
+export const openMaster = async (page: Page): Promise<void> => {
   await page.goto('/');
+  const shell = page.locator('.shell');
+  if ((await shell.getAttribute('data-breakpoint')) === 'narrow') {
+    await page.keyboard.press('Alt+ArrowRight');
+    await expect(shell).toHaveAttribute('data-goals', 'open');
+  }
   await expect(content(page)).toBeVisible();
   await content(page).click();
+};
+
+const seed = async (page: Page): Promise<void> => {
+  await openMaster(page);
   // insertText arrives as one input event, so list continuation and the other
   // Enter behaviours do not rewrite the fixture on the way in.
   await page.keyboard.insertText(DOCUMENT);
@@ -58,7 +67,7 @@ const seed = async (page: Page): Promise<void> => {
 };
 
 const lineBoxes = (page: Page): Promise<{ height: number; top: number }[]> =>
-  page.$$eval(`${JOURNAL} .cm-line`, (elements) =>
+  page.$$eval(`${MASTER} .cm-line`, (elements) =>
     elements.map((line) => {
       const rect = line.getBoundingClientRect();
       return { height: Math.round(rect.height * 100) / 100, top: Math.round(rect.top * 100) / 100 };
@@ -67,13 +76,11 @@ const lineBoxes = (page: Page): Promise<{ height: number; top: number }[]> =>
 
 test.describe('empty editor geometry', () => {
   test('the native caret matches each placeholder line', async ({ page }) => {
-    await page.goto('/');
-    await expect(content(page)).toBeVisible();
-    await content(page).click();
+    await openMaster(page);
 
     const line = lines(page);
-    const placeholder = page.locator(`${JOURNAL} .cm-placeholder`);
-    const buffer = page.locator(`${JOURNAL} .cm-widgetBuffer`);
+    const placeholder = page.locator(`${MASTER} .cm-placeholder`);
+    const buffer = page.locator(`${MASTER} .cm-widgetBuffer`);
     await expect(placeholder).toBeVisible();
     await expect(buffer).toBeAttached();
 

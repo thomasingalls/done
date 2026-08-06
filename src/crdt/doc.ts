@@ -18,6 +18,7 @@
 
 import { newMap, transact, type YDoc, type YMap, type YText } from './yjs';
 import type { Origin } from './actors';
+import { Temporal } from '../lib/temporal';
 import { cardLocationsMap, cardsMap, daysMap, migrateCardsToRegistry } from './days';
 
 export const SCHEMA_VERSION = 2;
@@ -58,7 +59,7 @@ export const openTree = (doc: YDoc, origin: Origin): DocumentTree => {
 
   transact(doc, origin, () => {
     if (storedVersion < SCHEMA_VERSION) meta.set('schemaVersion', SCHEMA_VERSION);
-    if (!meta.has('createdAt')) meta.set('createdAt', new Date().toISOString());
+    if (!meta.has('createdAt')) meta.set('createdAt', Temporal.Now.instant().toString());
     if (!meta.has('settings')) {
       const settings = newMap<unknown>();
       for (const [key, value] of Object.entries(DEFAULT_SETTINGS)) settings.set(key, value);

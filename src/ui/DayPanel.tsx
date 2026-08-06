@@ -12,10 +12,9 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { SECTIONS, isFrozen, type Store, type Workspace } from '../crdt';
+import { DISPLAY_SECTIONS, isFrozen, type Store, type Workspace } from '../crdt';
 import { formatDay, relativeDay, type ISODate } from '../lib/date';
 import { Collection } from './Collection';
-import { Journal } from './Journal';
 
 export interface DayPanelProps {
   store: Store;
@@ -127,8 +126,7 @@ export const DayPanel = ({
       </header>
 
       <div className="day-body" data-scroll="day" data-touch-scroll={touchScrollRoom} ref={body}>
-        <Journal store={store} workspace={workspace} date={date} active={active} />
-        {SECTIONS.map((section) => (
+        {DISPLAY_SECTIONS.map((section) => (
           <Collection
             key={section}
             store={store}
