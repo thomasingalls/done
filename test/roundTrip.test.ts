@@ -141,7 +141,7 @@ describe('convergence', () => {
   });
 
   it('keeps both sides of the conflict the architecture exists for', () => {
-    // Same day's journal, edited on two devices, neither having seen the other.
+    // The same master list, edited on two devices, neither having seen the other.
     const phone = createDoc();
     const laptop = createDoc();
 

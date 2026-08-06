@@ -1,5 +1,6 @@
 /**
- * Assembles the local store: document tree, actor, undo, awareness, persistence.
+ * Assembles the local store: document tree, actor, undo, awareness, persistence,
+ * and the one thing the app does to itself on every write — the cap repair.
  *
  * There is no sync provider here and no place to put one that the read or
  * write path awaits (TRD §7.1). Phase 3 adds one behind the `SyncProvider`
@@ -8,7 +9,9 @@
 
 import { Awareness, createDoc, createUndoManager, type YDoc, type YUndoManager } from './yjs';
 import { resolveActor, type ActorContext } from './actors';
-import { openTree, type DocumentTree } from './doc';
+import { openTree, readSettings, type DocumentTree, type Settings } from './doc';
+import { daysMap, listDays, repairCardMemberships, SECTIONS } from './days';
+import { enforceCap } from './moves';
 import {
   openLocalStore,
   requestPersistenceOnFirstWrite,
@@ -19,18 +22,27 @@ import {
 export * from './yjs';
 export * from './actors';
 export * from './doc';
+export * from './days';
+export * from './freeze';
+export * from './moves';
+export * from './serialize';
+export * from './compaction';
+export * from './export';
 export * from './persistence';
 
 export interface Store extends DocumentTree {
   actor: ActorContext;
   awareness: Awareness;
   /**
-   * Scoped to the local human's origin (TRD §4.8). System-actor operations —
-   * compaction, import, bulk moves — are excluded by construction rather than
-   * by remembering to exclude them.
+   * Scoped to the local human's origin (TRD §4.8), across every root. Undo
+   * follows the actor rather than the surface: a card move and a line of the
+   * master list are one history because one person made both. System-actor
+   * operations — compaction, the cap repair, bulk moves — are excluded by
+   * construction rather than by remembering to exclude them.
    */
   undo: YUndoManager;
   local: LocalStore | null;
+  settings: Settings;
   destroy: () => void;
 }
 
@@ -41,6 +53,55 @@ export interface OpenStoreOptions {
   persist?: boolean;
   onStoragePersistence?: (status: StoragePersistence) => void;
 }
+
+/**
+ * The cap, repaired after the fact (TRD §11, and see `enforceCap`).
+ *
+ * Every write path refuses to exceed three, which covers paste, multi-line
+ * insert and drag at the point of the mistake. Two devices each inserting a
+ * third card while apart is not a mistake anyone made and still converges to
+ * four, so it is caught here instead. Undo is the other way in: re-inserting a
+ * card the user had moved out is a legal undo of a legal operation.
+ *
+ * Deferred to a microtask rather than run inside the observer, so the repair is
+ * its own transaction with its own (system) origin rather than an addition to
+ * whatever transaction happened to trip it.
+ */
+const watchCap = (doc: YDoc, context: ActorContext): (() => void) => {
+  const map = daysMap(doc);
+  let queued = false;
+  let sweep = false;
+  const pending = new Set<string>();
+
+  const flush = (): void => {
+    queued = false;
+    const dates = sweep ? listDays(doc) : [...pending];
+    pending.clear();
+    sweep = false;
+    repairCardMemberships(doc, context.systemOrigin);
+    for (const date of dates) enforceCap(doc, context.systemOrigin, date);
+  };
+
+  const observer = (events: { path: (string | number)[] }[]): void => {
+    for (const event of events) {
+      const date = event.path[0];
+      const field = event.path[1];
+      // Only membership can move the cap. Card *text* lives in the canonical
+      // registry and does not reach this observer at all.
+      if (typeof field === 'string' && !SECTIONS.some((section) => section === field)) continue;
+      // A change to the days map itself: a day arrived, so there is no path to
+      // read a date out of. Rare enough to be worth a full pass.
+      if (typeof date === 'string') pending.add(date);
+      else sweep = true;
+    }
+    if (queued) return;
+    queued = true;
+    queueMicrotask(flush);
+  };
+
+  map.observeDeep(observer);
+  return () => map.unobserveDeep(observer);
+};
 
 /**
  * Asynchronous on purpose: persisted state must be applied *before* the actor
@@ -56,6 +117,7 @@ export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> 
 
   const actor = resolveActor(doc, doc.getMap('meta'));
   const tree = openTree(doc, actor.systemOrigin);
+  repairCardMemberships(doc, actor.systemOrigin);
 
   const awareness = new Awareness(doc);
   awareness.setLocalStateField('user', {
@@ -64,8 +126,17 @@ export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> 
     colorLight: `${actor.actor.color}33`,
   });
 
-  const undo = createUndoManager(tree.master, new Set([actor.origin]));
+  const undo = createUndoManager(
+    [
+      tree.master,
+      tree.days,
+      tree.cards as unknown as typeof tree.days,
+      tree.cardLocations as unknown as typeof tree.days,
+    ],
+    new Set([actor.origin]),
+  );
 
+  const stopWatchingCap = watchCap(doc, actor);
   const stopPersistenceRequest = options.onStoragePersistence
     ? requestPersistenceOnFirstWrite(doc, actor.origin, options.onStoragePersistence)
     : () => {};
@@ -76,7 +147,9 @@ export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> 
     awareness,
     undo,
     local,
+    settings: readSettings(tree.meta),
     destroy: () => {
+      stopWatchingCap();
       stopPersistenceRequest();
       undo.destroy();
       awareness.destroy();

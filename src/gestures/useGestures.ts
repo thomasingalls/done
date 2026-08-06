@@ -8,19 +8,49 @@
  * those events at the source, which is the behaviour that was wanted anyway.
  */
 
-import { useEffect, useRef, type RefObject } from 'react';
+import { useCallback, useEffect, useRef, useState, type RefCallback } from 'react';
 import {
   type Axis,
+  type Direction,
   type GestureAction,
   type GestureConfig,
   GestureRecognizer,
   type PointerKind,
 } from './recognizer';
 
+/**
+ * The nearest ancestor that actually scrolls vertically. TRD §8.4: "vertical
+ * drags inside a scrollable region scroll it, and navigate only at a scroll
+ * extent with continued motion in that direction." Asked once, at the press, so
+ * a drag that begins mid-scroll stays a scroll for its whole life rather than
+ * turning into navigation the moment it reaches the end.
+ */
+const scrollableAt = (x: number, y: number): HTMLElement | null => {
+  let element = document.elementFromPoint(x, y) as HTMLElement | null;
+  while (element) {
+    const style = getComputedStyle(element);
+    const scrolls = /auto|scroll|overlay/.test(style.overflowY);
+    if (scrolls && element.scrollHeight > element.clientHeight + 1) return element;
+    element = element.parentElement;
+  }
+  return null;
+};
+
+/** Which vertical directions the plane may take, given where the press landed. */
+export const verticalRoom = (x: number, y: number): { up: boolean; down: boolean } => {
+  const region = scrollableAt(x, y);
+  if (!region) return { up: true, down: true };
+  const atTop = region.scrollTop <= 0;
+  const atBottom = region.scrollTop + region.clientHeight >= region.scrollHeight - 1;
+  // Dragging down reveals what is above, so it needs the region to be at its top.
+  return { up: atBottom, down: atTop };
+};
+
 export interface GestureHandlers {
   onNavigationStart?: (axis: Axis) => void;
   onNavigationMove?: (axis: Axis, delta: number) => void;
   onNavigationEnd?: (axis: Axis, delta: number, velocity: number) => void;
+  onNavigationCancel?: (axis: Axis) => void;
   onSelectionStart?: () => void;
   onTap?: (x: number, y: number) => void;
 }
@@ -29,6 +59,33 @@ const pointerKind = (event: PointerEvent): PointerKind =>
   event.pointerType === 'touch' || event.pointerType === 'pen'
     ? (event.pointerType as PointerKind)
     : 'mouse';
+
+/**
+ * A hold only resolves the shared gesture into selection when the press began
+ * on something that can actually select or edit text. Guarded Done cards join
+ * that set because their own matching hold mounts an editor under the pointer.
+ * Everywhere else, holding is inert and a later drag may still navigate.
+ */
+export const startsTextInteraction = (target: EventTarget | null): boolean => {
+  if (!(target instanceof Element)) return false;
+  return (
+    target.closest(
+      [
+        '[contenteditable="true"]',
+        'textarea',
+        'input:not([type])',
+        'input[type="email"]',
+        'input[type="number"]',
+        'input[type="password"]',
+        'input[type="search"]',
+        'input[type="tel"]',
+        'input[type="text"]',
+        'input[type="url"]',
+        '.card[data-guarded="true"]',
+      ].join(', '),
+    ) !== null
+  );
+};
 
 export interface UseGesturesOptions {
   handlers: GestureHandlers;
@@ -40,22 +97,39 @@ export interface UseGesturesOptions {
    * because handing it back still costs a `preventDefault` on the way.
    */
   enabled?: boolean;
+  /**
+   * Whether a direction leads anywhere from the point the press landed on.
+   * Combined with the scroll-extent rule above, which the hook applies itself
+   * because it is a property of the DOM rather than of the app's state.
+   */
+  canNavigate?: (direction: Direction) => boolean;
 }
 
 export const useGestures = <T extends HTMLElement>({
   handlers,
   config,
   enabled = true,
-}: UseGesturesOptions): RefObject<T | null> => {
-  const ref = useRef<T>(null);
+  canNavigate,
+}: UseGesturesOptions): RefCallback<T> => {
+  /*
+   * The gesture surface is absent while IndexedDB is opening. A one-shot effect
+   * over an object ref runs too early in that case and never sees the real
+   * shell. A callback ref makes the DOM node state, so binding follows the
+   * element's actual mount/unmount lifetime.
+   */
+  const [element, setElement] = useState<T | null>(null);
+  const ref = useCallback<RefCallback<T>>((node) => {
+    setElement(node);
+  }, []);
   const latest = useRef(handlers);
   latest.current = handlers;
   const isEnabled = useRef(enabled);
   isEnabled.current = enabled;
+  const allows = useRef(canNavigate);
+  allows.current = canNavigate;
 
   useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
+    if (!element) return () => {};
 
     const recognizer = new GestureRecognizer(config);
     let timer: number | undefined;
@@ -136,6 +210,14 @@ export const useGestures = <T extends HTMLElement>({
       const pointer = pointerKind(event);
       allowSelection(pointer === 'mouse');
 
+      const room = verticalRoom(event.clientX, event.clientY);
+      recognizer.canNavigate = (direction) => {
+        if (allows.current?.(direction) === false) return false;
+        if (direction === 'up') return room.up;
+        if (direction === 'down') return room.down;
+        return true;
+      };
+
       apply(
         recognizer.handle({
           kind: 'down',
@@ -147,7 +229,7 @@ export const useGestures = <T extends HTMLElement>({
         event,
       );
 
-      if (recognizer.awaitingLongPress) {
+      if (recognizer.awaitingLongPress && startsTextInteraction(event.target)) {
         clearTimer();
         timer = window.setTimeout(() => {
           timer = undefined;
@@ -186,7 +268,9 @@ export const useGestures = <T extends HTMLElement>({
     const onPointerCancel = (event: PointerEvent): void => {
       if (event.pointerId !== activePointer) return;
       clearTimer();
+      const axis = recognizer.state === 'navigating' ? recognizer.lockedAxis : null;
       apply(recognizer.handle({ kind: 'cancel' }), event);
+      if (axis) latest.current.onNavigationCancel?.(axis);
     };
 
     element.addEventListener('pointerdown', onPointerDown);
@@ -201,8 +285,10 @@ export const useGestures = <T extends HTMLElement>({
       element.removeEventListener('pointerup', onPointerUp);
       element.removeEventListener('pointercancel', onPointerCancel);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- config is read once per binding
-  }, []);
+    // `config` is read once for each actual DOM binding. Inline option objects
+    // must not tear down an active pointer sequence on every React render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [element]);
 
   return ref;
 };

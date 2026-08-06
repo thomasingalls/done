@@ -1,7 +1,7 @@
 # done — Technical Requirements
 
-**Status:** Draft v3
-**Date:** 2026-08-05
+**Status:** Draft v4
+**Date:** 2026-08-06
 **Companion to:** [PRD.md](./PRD.md)
 
 ---
@@ -19,9 +19,9 @@ snippets elsewhere are illustrative of an argument — showing that an operation
 a mechanism already exists — and are marked as such.
 
 Styling, component structure, and framework idiom are implementation. They are described by the
-properties they must have (§8.2), not prescribed line by line. Draft v4 got this wrong in §8 and
-prescribed a flexbox layout; the requirement it was protecting survived the correction, the code
-did not.
+properties they must have (§8.2), not prescribed line by line. An earlier draft got this wrong
+in §8 and prescribed a flexbox layout; the requirement it was protecting survived the
+correction, the code did not.
 
 ---
 
@@ -29,12 +29,11 @@ did not.
 
 | Term           | Meaning                                                                                                                                |
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| **Journal**    | A day's free-prose surface. Never "log" — in a Yjs codebase that name reads as the CRDT update log.                                    |
-| **Update log** | Yjs internals only. Never a user-facing concept.                                                                                       |
+| **Update log** | Yjs internals only. Never a user-facing concept, and nothing user-facing may be called a log.                                          |
 | **Freeze**     | UX rule: a day's collections become read-only 3 days after its date.                                                                   |
 | **Compaction** | Storage optimization: frozen collections collapse to flat text. No user-visible effect, different schedule, **independent of freeze**. |
-| **Document**   | A surface backed by one `Y.Text` (master, journal).                                                                                    |
-| **Collection** | A surface backed by `Y.Array<Card>` (next, scheduled, done).                                                                           |
+| **Document**   | A surface backed by one `Y.Text`. There is one: the master list.                                                                       |
+| **Collection** | A surface backed by an ordered `Y.Array<CardId>` (next, scheduled, done).                                                              |
 | **Card**       | One item in a collection; owns its own `Y.Text`.                                                                                       |
 | **Actor**      | Anything that writes to the document: `human`, `agent`, or `system`. Not synonymous with "user" — see §4.8.                            |
 | **Origin**     | A Yjs transaction's `origin` value, carrying the acting actor. Distinct from `Card.origin`, which is item provenance.                  |
@@ -43,19 +42,19 @@ did not.
 
 ## 1. Summary of decisions
 
-| Concern             | Decision                                                             |
-| ------------------- | -------------------------------------------------------------------- |
-| CRDT                | Yjs v13 (pinned, see §10.1)                                          |
-| Editor              | CodeMirror 6, plain-markdown source of truth                         |
-| Live preview        | Custom CM6 decoration extension (cursor-line syntax reveal)          |
-| Document surfaces   | One `Y.Text` each (master, journal)                                  |
-| Collection surfaces | `Y.Array<Card>`, each card holding its own `Y.Text`                  |
-| Primary persistence | `y-indexeddb`                                                        |
-| Query/search index  | SQLite-WASM (`opfs-sahpool` VFS) + FTS5, **derived and disposable**  |
-| Sync transport      | `y-websocket` or `y-sweet`, self-hosted, **optional**                |
-| Doc partitioning    | Single root doc; compaction bounds the structured working set (§4.5) |
-| PWA shell           | Hand-rolled service worker, precache-only                            |
-| Targets             | Android Chrome (primary), Desktop Chrome/Edge                        |
+| Concern             | Decision                                                                    |
+| ------------------- | --------------------------------------------------------------------------- |
+| CRDT                | Yjs v13 (pinned, see §10.1)                                                 |
+| Editor              | CodeMirror 6, plain-markdown source of truth                                |
+| Live preview        | Custom CM6 decoration extension (cursor-line syntax reveal)                 |
+| Document surface    | The master list, one `Y.Text`                                               |
+| Collection surfaces | Ordered `Y.Array<CardId>` references; each card owns one canonical `Y.Text` |
+| Primary persistence | `y-indexeddb`                                                               |
+| Query/search index  | SQLite-WASM (`opfs-sahpool` VFS) + FTS5, **derived and disposable**         |
+| Sync transport      | `y-websocket` or `y-sweet`, self-hosted, **optional**                       |
+| Doc partitioning    | Single root doc; compaction bounds the structured working set (§4.5)        |
+| PWA shell           | Hand-rolled service worker, precache-only                                   |
+| Targets             | Android Chrome (primary), Desktop Chrome/Edge                               |
 
 Two load-bearing decisions: **Yjs is the source of truth and SQLite is a cache**, and
 **structure follows the unit of interaction** — text where you edit documents, arrays where
@@ -68,10 +67,11 @@ you manipulate items.
 Zero, ElectricSQL, Replicache, RxDB, and Convex are the right family for a different
 problem, and one property rules them out.
 
-**The realistic conflict here is:** you add a line to today's journal on your phone, your
-laptop has the same day open from this morning, both sync. Every SQL-shaped sync engine
-resolves that at row or field granularity — one device's version of the whole text field
-wins, the other is discarded. Silent data loss on the app's core operation.
+**The realistic conflict here is:** you add a line to the master list on your phone, your
+laptop has had it open since this morning, both sync. Every SQL-shaped sync engine resolves
+that at row or field granularity — one device's version of the whole text field wins, the
+other is discarded. Silent data loss on the app's core operation. The same argument holds
+for a card: two devices editing one card's text is the same shape at a smaller scale.
 
 A text CRDT merges at character granularity and keeps both edits. That's the requirement.
 
@@ -89,9 +89,9 @@ authority, runs no application logic, and can be absent entirely.
 Loro benchmarks fastest, Automerge has a richer history model, but Yjs has the ecosystem
 this depends on — a maintained CodeMirror 6 binding, IndexedDB persistence, interchangeable
 providers. At single-user scale none of the performance differences are observable.
-Automerge's git-like history is attractive for a journal but costs performance and bundle
-for something the PRD doesn't ask for, and PRD principle 6 ("the past is written, not read")
-argues directly against paying for time-travel.
+Automerge's git-like history is attractive for a written record but costs performance and
+bundle for something the PRD doesn't ask for, and PRD principle 6 ("the past is written, not
+read") argues directly against paying for time-travel.
 
 ---
 
@@ -137,14 +137,15 @@ requires the app to know: **membership and ordering of cards in collections.**
 
 ```
 Y.Doc (root)
-├── meta      Y.Map    { schemaVersion, createdAt, settings }
-├── master    Y.Text                                    ← document, never freezes
-└── days      Y.Map<ISODate, Y.Map>
+├── meta          Y.Map    { schemaVersion, createdAt, settings }
+├── master        Y.Text                                ← document, never freezes
+├── cards         Y.Map<CardId, Card>                   ← canonical card content
+├── cardLocations Y.Map<CardId, "ISODate:section">     ← canonical membership
+└── days          Y.Map<ISODate, Y.Map>
       └── "2026-08-05"
-            ├── journal    Y.Text                       ← document, stays editable
-            ├── next       Y.Array<Card>   (≤3)         ← collection
-            ├── scheduled  Y.Array<Card>                ← collection
-            ├── done       Y.Array<Card>                ← collection
+            ├── next       Y.Array<CardId>   (≤3)       ← ordered collection
+            ├── scheduled  Y.Array<CardId>              ← ordered collection
+            ├── done       Y.Array<CardId>              ← ordered collection
             └── archive    Y.Text | absent              ← set on compaction (§4.5)
 
 Card = Y.Map {
@@ -164,16 +165,19 @@ meta.actors  Y.Map<ActorId, { kind: 'human'|'agent'|'system', name, color }>
 
 Day maps are created lazily on first write. An untouched day occupies nothing.
 
-**A card carries no date.** The day whose collection holds it _is_ its date (PRD §9).
-Rescheduling is an array move between days; there is no date field to update and no
-reschedule history to maintain.
+**A card carries no date.** Canonical membership is stored separately from the Card, keyed
+by its id. Day arrays retain presentation order. Rescheduling updates membership and the two
+ordering arrays atomically; there is no date field on the Card and no reschedule history.
+Keeping card content canonical means a concurrent edit and move operate on the same `Y.Text`,
+while concurrent moves resolve through the single map value to one visible location.
 
 ### 4.3 Why collections are arrays
 
 The PRD's movement table is the justification. `Next → Done` is the second most important
-interaction in the app, and with arrays it is a delete from one array and a push to the other
-inside a single transaction — atomic, undoable as one step, and observable as one event. _(Shape
-shown to make the atomicity argument; not a prescribed implementation.)_
+interaction in the app, and with arrays it is a delete of an id from one array and an insert
+into the other, plus its canonical membership update, inside a single transaction — atomic,
+undoable as one step, and observable as one event. _(Shape shown to make the atomicity
+argument; not a prescribed implementation.)_
 
 The same operation modelled as text ranges in a
 shared document is a delete-plus-insert whose concurrent-merge behaviour is exactly the weak
@@ -220,8 +224,8 @@ days first — more opportunity to notice a problem, and no coupling between a c
 critical deletion and a user-facing rule.
 
 Compaction is what keeps a single root document viable: structured card objects exist only
-for the ~7-day active window, and everything older is two flat `Y.Text`s (`journal` +
-`archive`). Object count is bounded by the window, not by history length.
+for the ~7-day active window, and everything older is one flat `Y.Text` (`archive`). Object
+count is bounded by the window, not by history length.
 
 Compaction runs opportunistically on idle, is idempotent, and must be safe to run
 concurrently on two devices — both produce identical archive text from identical source, and
@@ -230,9 +234,8 @@ date by 7 in the last-known timezone, never by comparing against a remote clock.
 
 ### 4.6 Item identity in documents
 
-Master and journal are plain markdown. Most lines are anonymous. A line gains a stable ID
-only when something points at it, as a trailing caret marker in Obsidian block-reference
-style:
+The master list is plain markdown. Most lines are anonymous. A line gains a stable ID only
+when something points at it, as a trailing caret marker in Obsidian block-reference style:
 
 ```markdown
 - [ ] Draft the migration plan ^k3f9x2
@@ -251,15 +254,14 @@ note is plain text, findable by search.
 
 | Operation                       | Implementation                                                                           |
 | ------------------------------- | ---------------------------------------------------------------------------------------- |
-| Next → Done                     | Array splice + push, one transaction (§4.3)                                              |
-| Compose → Done                  | `done.push([newCard(text)])`                                                             |
-| Reschedule to another day       | Array move between two days' collections. No date field to touch.                        |
+| Next → Done                     | Move the card id and update canonical membership, one transaction (§4.3)                 |
+| Compose → Done                  | Register one canonical card, then insert its id at the head of Done (§4.9)               |
+| Reschedule to another day       | Move the id between days and update separate membership; no date field on the Card       |
 | Master → collection             | Parse selected line(s), create card with `origin: 'master'`. **Does not modify master.** |
 | Remove from master              | Separate explicit text deletion. Never bundled with the above.                           |
-| Journal line → Master           | Assign `^id` if absent, append line to master `Y.Text`                                   |
-| Card split (3 returns)          | Truncate this card's `Y.Text`, insert new card after it, move focus                      |
+| Card split (3 returns)          | Truncate this card's `Y.Text`, insert a new canonical card id after it, move focus       |
 | Card merge (backspace at start) | Append this card's text to previous, delete this card                                    |
-| Bulk stale-item resolution      | Batched array moves in one transaction                                                   |
+| Bulk stale-item resolution      | Batched id and membership moves in one transaction                                       |
 
 ### 4.8 Actors and attribution
 
@@ -297,11 +299,28 @@ already the two-cursor case.
 | Live cursor / presence      | awareness protocol           | ephemeral |
 
 **Attribution granularity is card-level, deliberately.** `Card.author` is one field and answers
-"who created this." Documents (`master`, `journal`) are _not_ attributed per character: Yjs
-stores no author per item, so it would require a parallel mark structure maintained alongside
-every text edit — real cost on the keystroke path, for a question nobody asks until an agent is
-editing prose. Deferred (PRD §14 Q4). Note that transaction origins are still recorded in the
+"who created this." The master list is _not_ attributed per character: Yjs stores no author
+per item, so it would require a parallel mark structure maintained alongside every text edit
+— real cost on the keystroke path, for a question nobody asks until an agent is actually
+editing prose. Deferred (PRD §14 Q2). Note that transaction origins are still recorded in the
 update stream regardless, so coarse attribution is recoverable if it ever matters.
+
+### 4.9 Section order, and where an arrival lands
+
+Two different orders, and they must not be allowed to become one.
+
+**Storage order** is `next, scheduled, done`: how a day is written to a file and to `archive`
+(§9), and the order every iteration over a day's contents takes.
+
+**Reading order** is `next, done, scheduled` (PRD §3). It is a property of the day panel and
+of nothing else — rearranging the layout must not be able to change the file format, which is
+the coupling that makes an export stop round-tripping without anyone touching the serializer.
+
+Within a collection, **Done takes an arrival at index 0** and the other two append. That is
+the only place ordering is a rule rather than a user action: Done is a record read from the
+top, while Next and Scheduled are ordered by intent and keep whatever order they were given.
+A multi-line copy into Done is reversed on the way in, so a run of lines still reads in the
+order it had in the master list.
 
 ---
 
@@ -397,8 +416,8 @@ be used.
 
 ```sql
 CREATE TABLE docs (
-  doc_id     TEXT PRIMARY KEY,   -- 'master' | 'day:2026-08-05:journal' | 'day:2026-08-05:archive'
-  kind       TEXT NOT NULL,      -- 'master' | 'journal' | 'archive'
+  doc_id     TEXT PRIMARY KEY,   -- 'master' | 'day:2026-08-05:archive'
+  kind       TEXT NOT NULL,      -- 'master' | 'archive'
   date       TEXT,
   body       TEXT NOT NULL,
   updated_at TEXT NOT NULL
@@ -547,9 +566,14 @@ Pointer Events. **Swipe navigates; long-press-then-drag selects** (PRD §7.2).
 1. `pointerdown` records origin and starts a long-press timer (~400 ms).
 2. Movement past ~10 px before the timer fires → **navigation.** Lock to the dominant axis,
    capture the pointer, translate the container.
-3. Timer fires without movement → **selection mode.** Release the container, hand the pointer
-   to the editor (or, on a Done card, unlock it).
+3. Timer fires without movement → **selection mode** in live text. A static Done card instead
+   captures the pointer and arms reordering; subsequent movement drags it, while a stationary
+   release unlocks it.
 4. `pointerup` before either → **tap.** Place cursor, mounting an editor if needed (§4.4).
+
+On a fine pointer, Done cards expose a reorder grip. Dragging it starts the same collection-owned
+reorder interaction immediately, leaving ordinary mouse drag over card text available for text
+selection. Both paths write once, on release, through the atomic CRDT reorder operation.
 
 Requires `user-select: none` on the container with selection re-enabled on entering selection
 mode, and `touch-action: none` on navigable surfaces. `overscroll-behavior: contain` prevents
@@ -573,13 +597,21 @@ Export produces a zip of markdown, no server involved:
 
 ```
 master.md
-days/2026-08-05.md      # ## Journal / ## Next / ## Scheduled / ## Done
+days/2026-08-05.md      # ## Next / ## Scheduled / ## Done
 ```
 
-Documents (`master`, `journal`) are dumped verbatim — they are already markdown. Collections
-serialize as lists of cards separated by blank lines, which is the same transformation
-compaction performs (§4.5), so there is exactly one serializer and compaction exercises it
-continuously.
+The master list is dumped verbatim — it is already markdown. Collections serialize as lists of
+cards separated by blank lines, which is the same transformation compaction performs (§4.5).
+Since a day _is_ its collections, a day file and a compacted day's `archive` are the same
+bytes read by the same parser — so "exactly one serializer" is literal, and compaction
+exercises it continuously against something that deletes nothing.
+
+A card can itself contain a blank line, so blank-line-delimited blocks would be ambiguous and
+§11's "reproduces the original collections exactly" would not hold. Each card is therefore
+written as a markdown list item — first line after `- `, the rest indented — which makes card
+boundaries the only lines at column 0 whatever a card holds. The alternative, forbidding blank
+lines inside cards, would make the storage format depend on the split threshold, and PRD §10
+calls that a tunable.
 
 Import parses the same layout, splitting on canonical headings and re-splitting cards on blank
 lines. Round-tripping export → import → export must be byte-identical.
@@ -630,7 +662,7 @@ an export periodically if sync has never been configured.
 Worth recording before anything is designed assuming otherwise. The relay treats updates as
 opaque binary and holds no authority (§2, §7.2); there is no server-side validation point. Yjs
 applies any well-formed update it receives. Therefore **any actor with access to the document can
-write anything to it**, and a rule like "the agent may edit the journal but not Done" is a
+write anything to it**, and a rule like "the agent may edit the master list but not Done" is a
 property of the agent's own code, enforced by trust rather than by the data layer.
 
 This is acceptable — the agents in question are ones the author runs — but it constrains the

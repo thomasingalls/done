@@ -12,13 +12,19 @@
  */
 
 export type Axis = 'x' | 'y';
+export type Direction = 'left' | 'right' | 'up' | 'down';
+
+export const directionOf = (axis: Axis, delta: number): Direction => {
+  if (axis === 'x') return delta > 0 ? 'right' : 'left';
+  return delta > 0 ? 'down' : 'up';
+};
 
 export interface GestureConfig {
   /** Hold this long without moving and the gesture becomes a selection. */
   longPressMs: number;
   /** Move this far before that and the gesture becomes navigation. */
   moveThresholdPx: number;
-  /** Directions that lead somewhere. An axis with nowhere to go is `native`. */
+  /** Axes that can lead anywhere at all. An axis with nowhere to go is `native`. */
   navigable: readonly Axis[];
 }
 
@@ -58,6 +64,16 @@ interface Sample {
 
 export class GestureRecognizer {
   state: GestureState = 'idle';
+
+  /**
+   * Whether a particular direction leads anywhere *right now*. Set per press by
+   * the DOM half, which is the only thing that can answer it: at the wide
+   * breakpoint the menu is already a panel, and a downward drag inside a
+   * scrolled region belongs to the region rather than to the plane (TRD §8.4).
+   * Evaluated at the moment the axis is chosen, because that is the first
+   * moment the direction is known.
+   */
+  canNavigate: (direction: Direction) => boolean = () => true;
 
   private config: GestureConfig;
   private originX = 0;
@@ -120,7 +136,8 @@ export class GestureRecognizer {
       if (Math.hypot(dx, dy) < this.config.moveThresholdPx) return [];
 
       const axis: Axis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
-      if (!this.config.navigable.includes(axis)) {
+      const delta = axis === 'x' ? dx : dy;
+      if (!this.config.navigable.includes(axis) || !this.canNavigate(directionOf(axis, delta))) {
         // Nothing lies that way. Hand it back rather than swallowing the drag.
         this.state = 'native';
         return [{ type: 'native' }];
@@ -128,7 +145,6 @@ export class GestureRecognizer {
 
       this.state = 'navigating';
       this.axis = axis;
-      const delta = axis === 'x' ? dx : dy;
       this.track(delta, input.time);
       return [
         { type: 'navigation-start', axis },

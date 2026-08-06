@@ -9,6 +9,10 @@
  * Every line here is short enough not to wrap. Wrapping legitimately changes a
  * line's height when hidden syntax shortens it, and that is not the failure
  * under test.
+ *
+ * The surface measured is the master list, which is the app's one long-form
+ * document editor. At narrow it lives off-screen until asked for, so the seed
+ * opens it first.
  */
 
 import { expect, test, type Page } from '@playwright/test';
@@ -37,20 +41,34 @@ const DOCUMENT = [
   'closing line',
 ].join('\n');
 
-const seed = async (page: Page): Promise<void> => {
+const MASTER = '.goals';
+
+const content = (page: Page) => page.locator(`${MASTER} .cm-content`);
+const lines = (page: Page) => page.locator(`${MASTER} .cm-line`);
+
+/** Goals is a panel from medium up and a drag away at narrow (PRD §7.1). */
+export const openMaster = async (page: Page): Promise<void> => {
   await page.goto('/');
-  const content = page.locator('.cm-content');
-  await expect(content).toBeVisible();
-  await content.click();
+  const shell = page.locator('.shell');
+  if ((await shell.getAttribute('data-breakpoint')) === 'narrow') {
+    await page.keyboard.press('Alt+ArrowRight');
+    await expect(shell).toHaveAttribute('data-goals', 'open');
+  }
+  await expect(content(page)).toBeVisible();
+  await content(page).click();
+};
+
+const seed = async (page: Page): Promise<void> => {
+  await openMaster(page);
   // insertText arrives as one input event, so list continuation and the other
   // Enter behaviours do not rewrite the fixture on the way in.
   await page.keyboard.insertText(DOCUMENT);
-  await expect(page.locator('.cm-line')).toHaveCount(DOCUMENT.split('\n').length);
+  await expect(lines(page)).toHaveCount(DOCUMENT.split('\n').length);
 };
 
 const lineBoxes = (page: Page): Promise<{ height: number; top: number }[]> =>
-  page.$$eval('.cm-line', (lines) =>
-    lines.map((line) => {
+  page.$$eval(`${MASTER} .cm-line`, (elements) =>
+    elements.map((line) => {
       const rect = line.getBoundingClientRect();
       return { height: Math.round(rect.height * 100) / 100, top: Math.round(rect.top * 100) / 100 };
     }),
@@ -58,14 +76,11 @@ const lineBoxes = (page: Page): Promise<{ height: number; top: number }[]> =>
 
 test.describe('empty editor geometry', () => {
   test('the native caret matches each placeholder line', async ({ page }) => {
-    await page.goto('/');
-    const content = page.locator('.cm-content');
-    await expect(content).toBeVisible();
-    await content.click();
+    await openMaster(page);
 
-    const line = page.locator('.cm-line');
-    const placeholder = page.locator('.cm-placeholder');
-    const buffer = page.locator('.cm-widgetBuffer');
+    const line = lines(page);
+    const placeholder = page.locator(`${MASTER} .cm-placeholder`);
+    const buffer = page.locator(`${MASTER} .cm-widgetBuffer`);
     await expect(placeholder).toBeVisible();
     await expect(buffer).toBeAttached();
 
@@ -134,18 +149,18 @@ test.describe('live preview geometry', () => {
   test('the task checkbox does not grow its line', async ({ page }) => {
     await page.keyboard.press('Control+End');
     const boxes = await lineBoxes(page);
-    const lines = DOCUMENT.split('\n');
+    const source = DOCUMENT.split('\n');
 
-    const plain = boxes[lines.indexOf('plain line')]!.height;
-    expect(boxes[lines.indexOf('- [ ] open task')]!.height).toBe(plain);
-    expect(boxes[lines.indexOf('- [x] done task')]!.height).toBe(plain);
+    const plain = boxes[source.indexOf('plain line')]!.height;
+    expect(boxes[source.indexOf('- [ ] open task')]!.height).toBe(plain);
+    expect(boxes[source.indexOf('- [x] done task')]!.height).toBe(plain);
   });
 
   test('the horizontal rule keeps the height of an ordinary line', async ({ page }) => {
     await page.keyboard.press('Control+End');
     const boxes = await lineBoxes(page);
-    const lines = DOCUMENT.split('\n');
-    expect(boxes[lines.indexOf('---')]!.height).toBe(boxes[lines.indexOf('plain line')]!.height);
+    const source = DOCUMENT.split('\n');
+    expect(boxes[source.indexOf('---')]!.height).toBe(boxes[source.indexOf('plain line')]!.height);
   });
 
   test('syntax really is hidden when the cursor is away, and shown when it is not', async ({
@@ -153,7 +168,7 @@ test.describe('live preview geometry', () => {
   }) => {
     await page.keyboard.press('Control+End');
     // By index, not by text: the text is what changes.
-    const boldLine = page.locator('.cm-line').nth(DOCUMENT.split('\n').indexOf('with **bold**'));
+    const boldLine = lines(page).nth(DOCUMENT.split('\n').indexOf('with **bold**'));
     await expect(boldLine).toHaveText('with bold');
 
     await boldLine.click();

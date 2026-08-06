@@ -41,7 +41,14 @@ export const applyUpdate = (doc: YDoc, update: Uint8Array, origin?: unknown): vo
  */
 export const transact = <T>(doc: YDoc, origin: unknown, fn: () => T): T => doc.transact(fn, origin);
 
+export type UndoScope = YText | YMap<unknown> | YArray<unknown>;
+
+/**
+ * One undo manager over several roots. Scoping by *type* would give each
+ * surface its own history, which is not what PRD §11.3 asks for — undo is
+ * scoped to the actor, not to where they happened to be typing.
+ */
 export const createUndoManager = (
-  scope: YText | YMap<unknown> | YArray<unknown>,
+  scope: UndoScope | UndoScope[],
   trackedOrigins: Set<unknown>,
 ): YUndoManager => new Y.UndoManager(scope, { trackedOrigins });

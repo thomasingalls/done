@@ -52,7 +52,20 @@ const LIST_MARK = mark('cm-md-list-mark');
  * 1.6, neither the top nor the bottom of the inline box can reach past the
  * strut, so the widget cannot grow the line. `test/geometry` holds that down.
  */
-class TaskCheckbox extends WidgetType {
+/**
+ * Widgets that can render without a view, so the static card render (TRD §4.4)
+ * can walk the same decoration set the editor walks. `WidgetType.toDOM` takes
+ * an `EditorView`, and the static render has none — this is the narrow opening
+ * that lets both sides share one widget rather than two that look alike.
+ */
+export interface StaticWidget {
+  staticDOM: () => HTMLElement;
+}
+
+export const isStaticWidget = (widget: WidgetType): widget is WidgetType & StaticWidget =>
+  typeof (widget as Partial<StaticWidget>).staticDOM === 'function';
+
+class TaskCheckbox extends WidgetType implements StaticWidget {
   constructor(readonly checked: boolean) {
     super();
   }
@@ -61,13 +74,17 @@ class TaskCheckbox extends WidgetType {
     return other.checked === this.checked;
   }
 
-  override toDOM(): HTMLElement {
+  staticDOM(): HTMLElement {
     const el = document.createElement('span');
     el.className = 'cm-md-task';
     el.dataset['checked'] = String(this.checked);
     el.setAttribute('role', 'checkbox');
     el.setAttribute('aria-checked', String(this.checked));
     return el;
+  }
+
+  override toDOM(): HTMLElement {
+    return this.staticDOM();
   }
 
   /** Let the click reach the plugin's handler rather than being swallowed. */
@@ -103,12 +120,24 @@ const HEADING = /^(?:ATX|Setext)Heading([1-6])$/;
  * Pure so it can be tested without a view (TRD §11 keeps the live-preview
  * behaviour under test; a `ViewPlugin` would drag layout into those tests).
  */
+export interface DecorationOptions {
+  /**
+   * Whether the cursor's line reveals its syntax. False for the static card
+   * render (TRD §4.4), which has no cursor: the same decorations, computed once,
+   * with nothing revealed. Sharing this function is what makes the static render
+   * and the mounted editor one markdown-to-HTML path rather than two that have
+   * to be kept in step.
+   */
+  reveal?: boolean;
+}
+
 export const buildDecorations = (
   state: EditorState,
   ranges: readonly { from: number; to: number }[],
+  options: DecorationOptions = {},
 ): DecorationSet => {
   const decorations: Range<Decoration>[] = [];
-  const spans = activeSpans(state);
+  const spans = options.reveal === false ? [] : activeSpans(state);
   const tree = syntaxTree(state);
   const emitted = new Set<string>();
 

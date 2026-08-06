@@ -1,16 +1,12 @@
 # done — Product Requirements
 
-**Status:** Draft v4
-**Date:** 2026-08-05
+**Status:** Draft v6
+**Date:** 2026-08-06
 **Audience:** one user (the author). Single-tenant personal tool, not a product.
 
 ---
 
 ## 0. Terminology
-
-**"Journal"** is the day's free-prose surface — the record of what got done. Earlier drafts
-called this "the log"; that name is retired because in a Yjs project "log" unavoidably reads
-as the CRDT update log. Nothing in this document refers to Yjs internals.
 
 **"Freeze"** is a UX rule: a surface becomes read-only. **"Compaction"** is a storage
 optimization with no user-visible effect. They are deliberately independent — see §6.
@@ -27,11 +23,11 @@ is not a general task manager and should not grow features to become one. Four m
 
 1. **A master list** of tasks and projects, loosely structured. No forced hierarchy, no
    mandatory metadata, no required dates.
-2. **A daily journal** recording _what actually got done_. What lands here is often not
-   lifted from the master list — frequently it's a subtask, incidental work, or something
-   that only became visible once the day started.
-3. **A Next list** for the current day: at most **three** items, task-shaped rather than
+2. **A Next list** for the current day: at most **three** items, task-shaped rather than
    project-shaped.
+3. **A Done record** for the current day, of _what actually got done_. What lands here is
+   often not lifted from the master list — frequently it's a subtask, incidental work, or
+   something that only became visible once the day started.
 4. **Scheduled items** attached to specific days, today and forward.
 
 The entire value of the tool is in how well it supports **writing and reading text**.
@@ -60,17 +56,22 @@ Ranked. When two conflict, the higher wins.
 
 The central structural decision, and the answer to "how much structure where."
 
-Two surfaces are **documents**. The unit of interaction is the whole text; you write prose in
-them; structure is whatever you typed. Strong structure makes them worse.
+One surface is a **document**. The unit of interaction is the whole text; you write prose in
+it; structure is whatever you typed. Strong structure makes it worse.
 
 - **Master list** — freely-structured markdown outline. Everything: tasks, projects,
   someday-maybes, notes-to-self. Nesting allowed, never required.
-- **Daily journal** — free prose and lists describing what got done.
 
 Three are **collections**. The unit of interaction is the _item_. They have cardinality (≤3),
 membership that moves between them, per-item state, and per-item interaction.
 
 - **Next**, **Scheduled**, **Done**.
+
+A day shows them in the order **Next, Done, Scheduled**: what you are doing, what you did,
+and the tail of intentions that have not come up yet. **Done reads newest-first** — whatever
+was completed most recently is on top, and a record you only ever add to is read from the
+top. Next and Scheduled are ordered by intent rather than by time and keep the order you put
+them in.
 
 Collection items are **cards**: an independently-editable block of markdown with its own
 chrome. Within a card, the first line is the **title** (high contrast) and everything after is
@@ -91,8 +92,8 @@ difficulty on purpose.
 | Next → Done                      | **Trivial.**                 | One gesture on the card. Single atomic move.                                                          |
 | Scheduled → Next / Done          | Easy                         | One gesture.                                                                                          |
 | Master → Next / Scheduled / Done | Deliberate, two steps        | **Copy-to** places a copy in the target; **Remove** separately deletes from master. Never one action. |
-| Journal line → Master            | Deliberate                   | Explicit promote action.                                                                              |
 | Done → editable                  | **Deliberately hard**        | Long-press or explicit unlock. See §5.                                                                |
+| Done → reordered                 | Deliberate                   | Long-press then drag on touch/pen; drag from the reorder grip on desktop. Writable days only.         |
 
 The master list is **not** expected to stay 1:1 with what appears in daily views. Copying out
 of it does not remove from it. Clearing completed items from the master list is **manual
@@ -104,9 +105,9 @@ Done is a record. Once written, editing it should require intent.
 
 Creation is easy and editing is hard, and these don't conflict because they're different
 affordances. A done card renders as static text and does not become editable by tapping it;
-unlocking is a long-press (mobile) or explicit action (desktop). Meanwhile the compose field
-is always live at the foot of the list, so recording something new is a single uninterrupted
-keystroke path.
+unlocking is a stationary long-press (mobile) or explicit action (desktop). Moving after the
+hold reorders the card instead. Meanwhile the compose field is always live at the foot of the
+list, so recording something new is a single uninterrupted keystroke path.
 
 ## 6. Days go read-only
 
@@ -116,10 +117,6 @@ dropped, not prompted about.
 **Freeze:** three days after its date, a day's **Next, Scheduled, and Done become permanently
 read-only.** There is no unfreeze, no override, and none will be added later. Per principle 6,
 the past is not going to be read again; a freeze with an escape hatch isn't a freeze.
-
-The **daily journal stays editable indefinitely.** The journal is where writing happens and
-the freeze exists to protect commitment records from retroactive editing, not to lock the
-prose. _(Still my call rather than a stated requirement — cheap to reverse.)_
 
 The **master list never freezes.** It is a living document with no date attached.
 
@@ -155,7 +152,7 @@ semantics, no nested screens.
                     └──────────┘
 ```
 
-Days run vertically, journal-style: past above, future below. Menu (calendar picker, search,
+Days run vertically, diary-style: past above, future below. Menu (calendar picker, search,
 settings) sits left; Goals sits right. Movement is continuous and interruptible — the adjacent
 view is partially visible during the drag, and releasing below threshold snaps back. It should
 feel like moving a sheet of paper, not a page transition.
@@ -167,8 +164,9 @@ first, then drag. Tapping to place a cursor is unaffected.
 
 This prioritizes the frequent action over the rare one, which is right for a phone. The cost is
 that selection becomes a two-stage deliberate act, and the long-press entry point overlaps the
-Done-card unlock gesture — those disambiguate by context (Done cards are static, so long-press
-unlocks; long-press in live text starts selection).
+Done-card gestures — those disambiguate by context. Long-press in live text starts selection; a
+static Done card arms reordering, with movement dragging it and a stationary release unlocking
+it.
 
 ### 7.3 Wide — three panels
 
@@ -200,8 +198,8 @@ the whole unit:
   ┌─────────────────────┐
   │ ☰  Wed 5 Aug        │    ← header: pinned, never scrolls away
   ├─────────────────────┤
-  │  journal / next /   │    ← body: scrolls internally
-  │  scheduled / done   │
+  │  next / done /      │    ← body: scrolls internally
+  │  scheduled          │
   └─────────────────────┘
    ╭──── tomorrow ─────╮     ← faded peek, click target
 ```
@@ -345,7 +343,7 @@ additional structural cost.
 
 **Permissions do not follow, and won't.** In a local-first CRDT with a relay that treats updates
 as opaque, there is nothing positioned to reject a write. Any agent with document access can
-write anything. "The agent may edit the journal but not Done" is a property of the agent's own
+write anything. "The agent may edit the master list but not Done" is a property of the agent's own
 code, enforced by trust, not by the data layer. That is acceptable for agents you run yourself,
 and it should be understood before anything is designed on the assumption of enforcement.
 See TRD §10.6.
@@ -370,11 +368,13 @@ navigation, no cards. _Exit: the author prefers it to a plain textarea, and the 
 gesture model works on a real Android device._
 
 **Phase 2 — the workflow.** Documents, collections, cards, the three-cap, movement flows,
-spatial navigation, responsive layouts, actor attribution and scoped undo. _Exit: daily use for
-two weeks with no fallback to the previous system._
+spatial navigation, responsive layouts, actor attribution and scoped undo. _Exit: every core
+workflow and navigation path works on real Android and desktop devices without a
+workflow-blocking defect._
 
 **Phase 3 — sync.** Relay deployment, multi-device. _Exit: phone and laptop consistent across a
-week including offline edits on both._
+week including offline edits on both; daily use for a week without falling back to the previous
+system._
 
 **Phase 4 — retrieval.** Search and calendar picker, scoped by principle 6: search over the
 master list and recent days earns its place; deep-history search and backlink graphs probably
@@ -391,8 +391,6 @@ tables. Distinct from Phase 5: Phase 5 reads and comments, Phase 6 writes.
 ## 14. Open questions
 
 1. **Card split threshold** (§10) — three returns is a starting guess.
-2. **Does the daily journal freeze?** §6 says no. Low-stakes and cheap to reverse, but it's my
-   call rather than a stated requirement.
-3. **Is document text attributed, or only cards?** §11.3 attributes cards. Per-character
-   attribution inside documents is possible but costly (TRD §4.8) and probably not worth it
-   until an agent is actually editing prose.
+2. **Is document text attributed, or only cards?** §11.3 attributes cards. Per-character
+   attribution inside the master list is possible but costly (TRD §4.8) and probably not worth
+   it until an agent is actually editing prose.

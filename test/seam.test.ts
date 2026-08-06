@@ -10,15 +10,23 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { extname, join, relative } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-const SEAM = 'src/crdt/yjs.ts';
-const PACKAGES = [
-  'yjs',
-  'y-indexeddb',
-  'y-protocols',
-  'y-codemirror.next',
-  'y-websocket',
-  'y-sweet',
-];
+/**
+ * Each seam is one file, and it is the only file allowed to name its packages.
+ * Yjs is TRD §10.1; Temporal is the same argument for a different reason —
+ * the ponyfill is there only until the platform ships the API, and when it does
+ * the migration should be one import rather than a search.
+ */
+const SEAMS: Record<string, readonly string[]> = {
+  'src/crdt/yjs.ts': [
+    'yjs',
+    'y-indexeddb',
+    'y-protocols',
+    'y-codemirror.next',
+    'y-websocket',
+    'y-sweet',
+  ],
+  'src/lib/temporal.ts': ['temporal-polyfill'],
+};
 
 const sourceFiles = (directory: string): string[] =>
   readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -32,26 +40,28 @@ const importedPackages = (source: string): string[] =>
     (match) => match[1] as string,
   );
 
-describe('the Yjs seam', () => {
-  it('is the only file that imports a Yjs package', () => {
+describe.each(Object.entries(SEAMS))('the %s seam', (seam, packages) => {
+  it('is the only file that imports its packages', () => {
     const offenders: string[] = [];
 
     for (const file of sourceFiles('src')) {
       const path = relative('.', file).replaceAll('\\', '/');
-      if (path === SEAM) continue;
+      if (path === seam) continue;
       for (const specifier of importedPackages(readFileSync(file, 'utf8'))) {
         const packageName = specifier.startsWith('@')
           ? specifier.split('/').slice(0, 2).join('/')
           : (specifier.split('/')[0] as string);
-        if (PACKAGES.includes(packageName)) offenders.push(`${path} imports ${specifier}`);
+        if (packages.includes(packageName)) offenders.push(`${path} imports ${specifier}`);
       }
     }
 
     expect(offenders).toEqual([]);
   });
+});
 
+describe('the Yjs seam', () => {
   it('re-exports what the rest of the app needs, so there is no reason to reach past it', () => {
-    const seam = readFileSync(SEAM, 'utf8');
+    const seam = readFileSync('src/crdt/yjs.ts', 'utf8');
     for (const name of [
       'Y',
       'IndexeddbPersistence',
