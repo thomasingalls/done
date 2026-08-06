@@ -42,6 +42,36 @@ Then in the app: **menu → Sync**, endpoint `wss://your-host`, room `done`,
 token as above. Do the same on the other device with the same token, and the
 two devices are syncing.
 
+## In development, where there is no certificate
+
+`pnpm dev` serves the app over plain HTTP, and a page served over HTTP is
+allowed to open a plain `ws://` connection. So the development answer is that
+there is nothing to set up:
+
+| In the endpoint field  | What happens                                                                |
+| ---------------------- | --------------------------------------------------------------------------- |
+| `localhost:1234`       | becomes `ws://localhost:1234` — no certificate involved, and it works.      |
+| `ws://localhost:1234`  | the same thing, spelled out.                                                |
+| `wss://localhost:1234` | fails. Nothing on localhost has a certificate; the app says so.             |
+| `0.0.0.0:1234`         | refused. That is the address the relay _listens_ on, not one to connect to. |
+
+The app defaults a bare hostname to `wss://` — the token is a bearer credential
+— but makes one exception: **bare loopback on a page that is itself insecure
+becomes `ws://`**, because that combination is a laptop in development and
+nothing else. A LAN address or a real hostname still gets `wss://`.
+
+To reach the relay from a phone on the same network, load the app from the
+laptop's LAN address (`pnpm dev` already listens there) and use the same
+address for the relay: `ws://192.168.1.x:1234`. The scheme has to be typed —
+that is not loopback, and the app will not quietly downgrade a credential onto
+a network. **The token crosses that network in cleartext**, so use one you are
+willing to throw away, and keep the real one for the deployment behind TLS.
+
+If you need HTTPS end-to-end in development anyway — a service worker wants a
+secure context, so anything PWA-shaped on a phone does — put both the app and
+the relay behind one local reverse proxy with a certificate from `mkcert`, and
+the deployment section below applies unchanged.
+
 ## Configuration
 
 | Variable                | Default            | Meaning                                                                 |

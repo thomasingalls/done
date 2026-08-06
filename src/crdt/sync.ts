@@ -89,38 +89,88 @@ const PERSIST_INTERVAL_MS = 10_000;
 /* -------------------------------------------------------------------------- */
 /* Configuration                                                               */
 
+/** Just enough of `location` to decide a scheme, and mockable in a test. */
+export interface PageOrigin {
+  protocol: string;
+}
+
+const currentPage = (): PageOrigin | undefined =>
+  typeof window === 'undefined' ? undefined : window.location;
+
+/** `localhost`, the loopback block, and `::1`. Not "private" — actually local. */
+const LOOPBACK = /^(?:localhost|127(?:\.\d{1,3}){3}|\[::1\])$/iu;
+
+/** What you bind to, which is not what you connect to. A common first try. */
+const BIND_ANY = /^(?:0\.0\.0\.0|\[::\])$/u;
+
+export interface ParsedEndpoint {
+  url: string | null;
+  /** A sentence for the menu when `url` is null. */
+  reason: string | null;
+}
+
 /**
  * `relay.example` → `wss://relay.example`, `http://box.local:1234` →
- * `ws://box.local:1234`, and anything that isn't a websocket endpoint → null.
+ * `ws://box.local:1234`, and anything that isn't a websocket endpoint → a
+ * reason why.
  *
- * Defaulting a bare host to `wss:` rather than `ws:` is deliberate: the token
- * is a bearer credential and TRD §7.2 puts it over TLS. Plain `ws://` stays
- * available for a LAN box, but you have to have typed it.
+ * **The default scheme depends on where the page came from**, which is the one
+ * piece of cleverness here and it earns its place. A bare host normally becomes
+ * `wss:`, because the token is a bearer credential and TRD §7.2 puts it over
+ * TLS. But `localhost` on a page that is itself being served over plain HTTP is
+ * the development setup and nothing else, there is no certificate on either
+ * side of it, and defaulting that to `wss:` produces a connection that fails
+ * with nothing the browser is willing to explain. Loopback only: a LAN address
+ * or a real hostname still gets `wss:`, and plain `ws://` to either is
+ * available but has to be typed.
  */
-export const normalizeEndpoint = (raw: string): string | null => {
+export const parseEndpoint = (
+  raw: string,
+  page: PageOrigin | undefined = currentPage(),
+): ParsedEndpoint => {
   const trimmed = raw.trim();
-  if (trimmed.length === 0) return null;
+  if (trimmed.length === 0) return { url: null, reason: "Enter the relay's address." };
 
-  const withScheme = /^[a-z][a-z\d+.-]*:\/\//iu.test(trimmed) ? trimmed : `wss://${trimmed}`;
+  const typedScheme = /^[a-z][a-z\d+.-]*:\/\//iu.test(trimmed);
+  const securePage = page?.protocol === 'https:';
 
   let url: URL;
   try {
-    url = new URL(withScheme);
+    url = new URL(typedScheme ? trimmed : `wss://${trimmed}`);
   } catch {
-    return null;
+    return { url: null, reason: 'That is not an address.' };
   }
 
   if (url.protocol === 'http:') url.protocol = 'ws:';
   if (url.protocol === 'https:') url.protocol = 'wss:';
-  if (url.protocol !== 'ws:' && url.protocol !== 'wss:') return null;
-  if (url.hostname.length === 0) return null;
+  if (url.protocol !== 'ws:' && url.protocol !== 'wss:') {
+    return { url: null, reason: 'A relay is reached over ws:// or wss://.' };
+  }
+  if (url.hostname.length === 0) return { url: null, reason: 'That is not an address.' };
+
+  if (BIND_ANY.test(url.hostname)) {
+    return {
+      url: null,
+      reason: `${url.hostname} is an address to listen on, not one to connect to. Try localhost.`,
+    };
+  }
+
+  if (!typedScheme && !securePage && LOOPBACK.test(url.hostname)) url.protocol = 'ws:';
+
+  // A browser refuses this outright, and says so only in the console.
+  if (securePage && url.protocol === 'ws:') {
+    return { url: null, reason: 'A page served over HTTPS cannot open a ws:// connection.' };
+  }
 
   // The room is appended by the provider, so a query or fragment here would end
   // up in the middle of the URL it builds.
   url.search = '';
   url.hash = '';
-  return url.toString().replace(/\/+$/u, '');
+  return { url: url.toString().replace(/\/+$/u, ''), reason: null };
 };
+
+export const normalizeEndpoint = (raw: string, page?: PageOrigin): string | null =>
+  parseEndpoint(raw, page).url;
 
 /**
  * The room names a document, and it is going into a URL path. Anything that
@@ -204,11 +254,20 @@ export interface SyncOptions {
  * A websocket close code the relay chose, turned into a sentence. Everything
  * else — 1006 in a tunnel, 1001 on a laptop lid — is ordinary offline and gets
  * no message, because "you are offline" is not news in a local-first app.
+ *
+ * The exception is `wss://localhost`, where 1006 is nearly always a TLS
+ * handshake against a relay that speaks plain `ws`. The browser will not say
+ * which of the two it was, and both readings lead to the same advice, so the
+ * sentence covers them together rather than guessing.
  */
-const closeMessage = (code: number, reason: string): string | null => {
+const closeMessage = (code: number, reason: string, endpoint: string): string | null => {
   if (code === 4401) return 'The relay refused the token.';
   if (code === 4404) return 'The relay does not serve that room.';
   if (code === 4400) return reason || 'The relay rejected the connection.';
+
+  if (code === 1006 && /^wss:\/\/(?:localhost|127\.|\[::1\])/iu.test(endpoint)) {
+    return 'Could not reach it. Nothing on localhost usually has a TLS certificate — in development the address is ws://, not wss://.';
+  }
   return null;
 };
 
@@ -322,7 +381,7 @@ export const createSync = ({
       },
       onClose: (code, reason) => {
         if (mine !== generation) return;
-        error = closeMessage(code, reason);
+        error = closeMessage(code, reason, current.endpoint);
         emit();
       },
     })
@@ -404,16 +463,24 @@ export const createSync = ({
     },
 
     configure: (next) => {
-      const normalized = normalizeConfig(next);
-      if (next && !normalized) {
-        // Rejected before anything is stopped: a typo in the endpoint field of
-        // a working configuration should be refused, not acted on by taking
-        // the connection down and leaving the old settings on screen.
-        error = 'That is not a websocket endpoint.';
+      // Rejected before anything is stopped: a typo in the endpoint field of a
+      // working configuration should be refused, not acted on by taking the
+      // connection down and leaving the old settings on screen. The complaint
+      // names which field and why — "that is not an endpoint" is true of a
+      // dozen different mistakes and helps with none of them.
+      const problem = next
+        ? (parseEndpoint(next.endpoint ?? '').reason ??
+          (normalizeRoom(next.room ?? DEFAULT_ROOM) === null
+            ? 'A room name is letters, digits, dots, dashes and underscores.'
+            : null))
+        : null;
+      if (problem) {
+        error = problem;
         emit();
         return;
       }
 
+      const normalized = normalizeConfig(next);
       stop();
       config = normalized;
       writeSyncConfig(config);

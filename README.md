@@ -56,9 +56,11 @@ pnpm test           # starts the real process and drives the real client
 RELAY_TOKEN=$(openssl rand -base64 32) pnpm dev
 ```
 
-Then **menu → Sync** in the app: endpoint, room, token. See
-[relay/README.md](relay/README.md) for deployment, TLS, and why the token must
-stay out of your access log.
+Then **menu → Sync** in the app: endpoint `localhost:1234`, room `done`, token
+as above. In development that becomes `ws://localhost:1234` — a page served
+over plain HTTP may open a plain websocket, so there is no certificate to
+arrange. See [relay/README.md](relay/README.md) for the development table, for
+deployment and TLS, and for why the token must stay out of your access log.
 
 ## Development tooling
 
@@ -116,6 +118,17 @@ never syncs would still download the provider. `openWebsocket` is the only
 The seam test was widened to match dynamic imports, which it previously did not:
 a lazy import is exactly the kind that gets written somewhere else without
 anyone noticing, because it is not at the top of the file where a reader looks.
+
+**A bare loopback host defaults to `ws://` when the page is insecure.** The
+default scheme is otherwise `wss://`, because the token is a bearer credential
+and TRD §7.2 puts it over TLS. But `localhost` typed into a page that is itself
+being served over plain HTTP is a `pnpm dev` session and nothing else: there is
+no certificate on either side, and `wss://` there produces a connection that
+fails with nothing the browser is willing to explain. Loopback only — a LAN
+address or a real hostname still gets `wss://`, and downgrading either has to
+be typed. The same reasoning gives `0.0.0.0` its own refusal ("an address to
+listen on, not one to connect to") and turns an abnormal close on
+`wss://localhost` into the sentence that names the actual cause.
 
 **The sync configuration is local and unsynced.** It sits with the actor id and
 the device in `localStorage`, not in `meta.settings`. Two reasons, and the

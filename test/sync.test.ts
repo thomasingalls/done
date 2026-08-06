@@ -27,6 +27,7 @@ import {
   disabledSync,
   normalizeEndpoint,
   normalizeRoom,
+  parseEndpoint,
   openStore,
   readSyncConfig,
   transact,
@@ -79,8 +80,45 @@ beforeEach(() => {
 });
 
 describe('endpoints', () => {
+  const secure = { protocol: 'https:' };
+  const insecure = { protocol: 'http:' };
+
   it('defaults a bare host to wss, because the token is a bearer credential', () => {
-    expect(normalizeEndpoint('relay.example')).toBe('wss://relay.example');
+    expect(normalizeEndpoint('relay.example', secure)).toBe('wss://relay.example');
+    expect(normalizeEndpoint('relay.example', insecure)).toBe('wss://relay.example');
+    // A LAN address is not loopback and does not get the development default.
+    expect(normalizeEndpoint('192.168.1.10:1234', insecure)).toBe('wss://192.168.1.10:1234');
+  });
+
+  /**
+   * The development case, and the one worth being clever for: a page served
+   * over plain HTTP talking to a relay on the same machine. There is no
+   * certificate on either side, `wss:` fails with nothing the browser will
+   * explain, and this is the shape of every `pnpm dev` session.
+   */
+  it('defaults bare loopback to ws when the page itself is insecure', () => {
+    expect(normalizeEndpoint('localhost:1234', insecure)).toBe('ws://localhost:1234');
+    expect(normalizeEndpoint('127.0.0.1:1234', insecure)).toBe('ws://127.0.0.1:1234');
+    // Not on a page that is itself secure: that is a deployment, not a laptop.
+    expect(normalizeEndpoint('localhost:1234', secure)).toBe('wss://localhost:1234');
+    // And never over a scheme that was typed.
+    expect(normalizeEndpoint('wss://localhost:1234', insecure)).toBe('wss://localhost:1234');
+  });
+
+  it('refuses the address a relay listens on, which is not one to connect to', () => {
+    expect(parseEndpoint('wss://0.0.0.0:1234', insecure).reason).toContain('listen on');
+    expect(parseEndpoint('0.0.0.0:1234', insecure).url).toBeNull();
+    expect(parseEndpoint('[::]:1234', insecure).url).toBeNull();
+  });
+
+  it('refuses ws from a page the browser will not allow it from', () => {
+    expect(parseEndpoint('ws://relay.example', secure).reason).toContain('HTTPS');
+    expect(parseEndpoint('ws://relay.example', insecure).url).toBe('ws://relay.example');
+  });
+
+  it('says which mistake was made rather than that one was', () => {
+    expect(parseEndpoint('', insecure).reason).toBe("Enter the relay's address.");
+    expect(parseEndpoint('ftp://relay.example', insecure).reason).toContain('ws://');
   });
 
   it('keeps a plain ws endpoint that was asked for explicitly', () => {
@@ -264,6 +302,26 @@ describe('a configured relay', () => {
     doc.destroy();
   });
 
+  /**
+   * The one drop worth explaining. A browser reports a failed TLS handshake as
+   * an ordinary abnormal close, so `wss://localhost` failing looks exactly like
+   * being offline — and it is nearly always a relay speaking plain `ws` behind
+   * an address that promised otherwise.
+   */
+  it('explains a wss://localhost that will never connect', async () => {
+    const doc = new Y.Doc();
+    const { open, opened } = transport();
+    const sync = createSync({ doc, awareness: new Awareness(doc), open });
+    sync.configure({ ...CONFIG, endpoint: 'wss://localhost:1234' });
+    await settle();
+
+    optionsOf(opened[0]).onClose(1006, '');
+    expect(sync.state.error).toContain('ws://');
+
+    sync.destroy();
+    doc.destroy();
+  });
+
   it('pauses without forgetting, and a paused client opens nothing on start-up', async () => {
     const doc = new Y.Doc();
     const first = transport();
@@ -323,7 +381,7 @@ describe('a configured relay', () => {
     await settle();
 
     expect(sync.status).toBe('disabled');
-    expect(sync.state.error).toBe('That is not a websocket endpoint.');
+    expect(sync.state.error).toBe('That is not an address.');
     expect(opened).toHaveLength(0);
     expect(readSyncConfig()).toBeNull();
 
@@ -342,7 +400,7 @@ describe('a configured relay', () => {
     sync.configure({ endpoint: 'not a url', room: 'done', token: 'secret', enabled: true });
     await settle();
 
-    expect(sync.state.error).toBe('That is not a websocket endpoint.');
+    expect(sync.state.error).toBe('That is not an address.');
     expect(sync.status).toBe('connected');
     expect(opened).toHaveLength(1);
     expect(opened[0]?.destroyed).toBe(false);
