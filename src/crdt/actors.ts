@@ -14,6 +14,7 @@
  */
 
 import { newId } from '../lib/id';
+import { readLocal, readLocalJson, writeLocal, writeLocalJson } from '../lib/localStore';
 import { newMap, transact, type YDoc, type YMap } from './yjs';
 
 export type ActorKind = 'human' | 'agent' | 'system';
@@ -45,22 +46,6 @@ const COLORS = ['#e0662f', '#3f8fd6', '#5aab63', '#b45cc4', '#c9a227', '#3fa9a3'
 /** The system actor is a constant: it is the app, and it is the same app everywhere. */
 export const SYSTEM_ACTOR_ID: ActorId = 'system';
 
-const readLocal = (key: string): string | null => {
-  try {
-    return localStorage.getItem(key);
-  } catch {
-    return null; // Private mode, disabled storage. A generated id still works for the session.
-  }
-};
-
-const writeLocal = (key: string, value: string): void => {
-  try {
-    localStorage.setItem(key, value);
-  } catch {
-    /* see readLocal */
-  }
-};
-
 const guessDeviceName = (): string => {
   const ua = typeof navigator === 'undefined' ? '' : navigator.userAgent;
   if (/Android/i.test(ua)) return 'Android';
@@ -77,19 +62,25 @@ export interface Device {
 }
 
 export const localDevice = (): Device => {
-  const stored = readLocal(DEVICE_KEY);
-  if (stored) {
-    try {
-      const parsed: unknown = JSON.parse(stored);
-      if (parsed && typeof parsed === 'object' && 'id' in parsed && 'name' in parsed) {
-        return parsed as Device;
-      }
-    } catch {
-      /* fall through and regenerate */
-    }
+  const stored = readLocalJson(DEVICE_KEY);
+  if (typeof stored?.['id'] === 'string' && typeof stored['name'] === 'string') {
+    return { id: stored['id'], name: stored['name'] };
   }
   const device: Device = { id: newId(8), name: guessDeviceName() };
-  writeLocal(DEVICE_KEY, JSON.stringify(device));
+  writeLocalJson(DEVICE_KEY, device);
+  return device;
+};
+
+/**
+ * The device's friendly name, editable in settings. It is the label that shows
+ * up on the *other* device as "last synced from ⟨device⟩" (PRD §11.3), so it is
+ * worth being able to change from "Android" to something you recognise.
+ */
+export const renameLocalDevice = (name: string): Device | null => {
+  const trimmed = name.trim();
+  if (trimmed.length === 0) return null;
+  const device: Device = { ...localDevice(), name: trimmed };
+  writeLocalJson(DEVICE_KEY, device);
   return device;
 };
 

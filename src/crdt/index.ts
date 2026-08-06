@@ -1,10 +1,12 @@
 /**
  * Assembles the local store: document tree, actor, undo, awareness, persistence,
- * and the one thing the app does to itself on every write — the cap repair.
+ * sync, and the one thing the app does to itself on every write — the cap
+ * repair.
  *
- * There is no sync provider here and no place to put one that the read or
- * write path awaits (TRD §7.1). Phase 3 adds one behind the `SyncProvider`
- * interface; deleting it again must leave a working app.
+ * The sync controller is constructed unconditionally and constructs *nothing*
+ * unless an endpoint has been configured (TRD §7.1). Nothing below awaits it,
+ * and nothing below reads its state: the store is the same store whether the
+ * relay is reachable, unreachable, or has never been heard of.
  */
 
 import { Awareness, createDoc, createUndoManager, type YDoc, type YUndoManager } from './yjs';
@@ -12,6 +14,7 @@ import { resolveActor, type ActorContext } from './actors';
 import { openTree, readSettings, type DocumentTree, type Settings } from './doc';
 import { daysMap, listDays, repairCardMemberships, SECTIONS } from './days';
 import { enforceCap } from './moves';
+import { createSync, type SyncController, type SyncOptions } from './sync';
 import {
   openLocalStore,
   requestPersistenceOnFirstWrite,
@@ -29,6 +32,7 @@ export * from './serialize';
 export * from './compaction';
 export * from './export';
 export * from './persistence';
+export * from './sync';
 
 export interface Store extends DocumentTree {
   actor: ActorContext;
@@ -42,6 +46,11 @@ export interface Store extends DocumentTree {
    */
   undo: YUndoManager;
   local: LocalStore | null;
+  /**
+   * Disabled unless an endpoint has been configured, which is the state it is
+   * in for every test in the suite (TRD §11, "sync-absent").
+   */
+  sync: SyncController;
   settings: Settings;
   destroy: () => void;
 }
@@ -52,6 +61,8 @@ export interface OpenStoreOptions {
   /** Off for tests that have no business touching IndexedDB. */
   persist?: boolean;
   onStoragePersistence?: (status: StoragePersistence) => void;
+  /** Injected by tests; the default opens a real websocket when configured. */
+  openWebsocket?: SyncOptions['open'];
 }
 
 /**
@@ -125,6 +136,10 @@ export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> 
     color: actor.actor.color,
     colorLight: `${actor.actor.color}33`,
   });
+  // Ephemeral, like everything in awareness, which is what lets a device
+  // announce itself without its identity entering the synced document
+  // (TRD §4.8). It is what the other end reads for "last synced from ⟨device⟩".
+  awareness.setLocalStateField('device', { id: actor.device.id, name: actor.device.name });
 
   const undo = createUndoManager(
     [
@@ -141,16 +156,24 @@ export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> 
     ? requestPersistenceOnFirstWrite(doc, actor.origin, options.onStoragePersistence)
     : () => {};
 
+  const sync = createSync({
+    doc,
+    awareness,
+    ...(options.openWebsocket ? { open: options.openWebsocket } : {}),
+  });
+
   return {
     ...tree,
     actor,
     awareness,
     undo,
     local,
+    sync,
     settings: readSettings(tree.meta),
     destroy: () => {
       stopWatchingCap();
       stopPersistenceRequest();
+      sync.destroy();
       undo.destroy();
       awareness.destroy();
       local?.destroy();

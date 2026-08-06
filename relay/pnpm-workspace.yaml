@@ -1,0 +1,21 @@
+# The relay is its own workspace root, not a package of the app's.
+#
+# It ships separately (a container on a box somewhere), has a different
+# dependency set, and must stay installable and deployable on its own — the
+# app must build, test and run with this directory deleted, which is the same
+# property TRD §7.1 asks of the sync code inside the app.
+#
+# The seven-day quarantine on new releases is the app's policy and applies here
+# for the same reason: this process holds the only copy of a change that has
+# left one device and not yet reached the other.
+minimumReleaseAge: 10080
+packages:
+  - .
+
+# `@y/websocket-server` lists y-leveldb and an old ws among its *optional*
+# dependencies. Neither is used here — persistence is a file (src/persistence.ts)
+# and ws is a direct dependency at a current major — so the native build that
+# leveldown wants is refused rather than run. `pnpm install --no-optional`, which
+# is what the Dockerfile does, skips fetching them at all.
+allowBuilds:
+  leveldown: false

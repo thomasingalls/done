@@ -282,6 +282,18 @@ test.describe('Phase 2 workflow', () => {
     await expect(activeDay(page).getByRole('textbox', { name: 'What got done?' })).toHaveCount(0);
   });
 
+  test('the device name is editable, since it is what the other device sees', async ({ page }) => {
+    await page.setViewportSize({ width: 420, height: 900 });
+    await page.goto('/');
+    await openMenu(page);
+
+    await page.getByRole('textbox', { name: 'Device name' }).fill('Kitchen laptop');
+    await page.waitForTimeout(100);
+    await page.reload();
+    await openMenu(page);
+    await expect(page.getByRole('textbox', { name: 'Device name' })).toHaveValue('Kitchen laptop');
+  });
+
   test('actor and rollover settings are editable and persist locally', async ({ page }) => {
     await page.setViewportSize({ width: 420, height: 900 });
     await page.goto('/');

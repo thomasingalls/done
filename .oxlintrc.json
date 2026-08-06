@@ -26,5 +26,11 @@
     "vitest/expect-expect": "warn",
     "typescript/no-unnecessary-type-assertion": "warn"
   },
-  "ignorePatterns": ["dist/**", "playwright-report/**", "test-results/**"]
+  "ignorePatterns": [
+    "dist/**",
+    "playwright-report/**",
+    "test-results/**",
+    "relay/dist/**",
+    "relay/test/**"
+  ]
 }

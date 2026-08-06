@@ -35,10 +35,20 @@ const sourceFiles = (directory: string): string[] =>
     return ['.ts', '.tsx'].includes(extname(entry.name)) ? [path] : [];
   });
 
-const importedPackages = (source: string): string[] =>
-  [...source.matchAll(/^\s*(?:import|export)[\s\S]*?from\s+'([^']+)'/gm)].map(
+/**
+ * Static and dynamic alike. The sync transport is loaded with `import(...)`
+ * inside a function (TRD §7.1, so an unconfigured app never fetches it), and a
+ * dynamic import is exactly the kind that gets written somewhere else without
+ * anyone noticing — it does not appear at the top of a file where a reader
+ * would see it, and until this matched both forms it did not appear here
+ * either.
+ */
+const importedPackages = (source: string): string[] => [
+  ...[...source.matchAll(/^\s*(?:import|export)[\s\S]*?from\s+'([^']+)'/gm)].map(
     (match) => match[1] as string,
-  );
+  ),
+  ...[...source.matchAll(/\bimport\s*\(\s*'([^']+)'/g)].map((match) => match[1] as string),
+];
 
 describe.each(Object.entries(SEAMS))('the %s seam', (seam, packages) => {
   it('is the only file that imports its packages', () => {
@@ -68,8 +78,25 @@ describe('the Yjs seam', () => {
       'Awareness',
       'yCollab',
       'yUndoManagerKeymap',
+      'openWebsocket',
     ]) {
       expect(seam).toContain(name);
     }
+  });
+
+  it('catches a dynamic import as readily as a static one', () => {
+    const offenders = importedPackages("const p = await import('y-websocket');");
+    expect(offenders).toEqual(['y-websocket']);
+  });
+
+  /**
+   * TRD §7.1: "no provider is constructed until an endpoint is configured".
+   * Loading the transport lazily is what makes that true of the bundle and not
+   * only of the object graph, so the import stays dynamic on purpose.
+   */
+  it('loads the sync transport lazily', () => {
+    const seam = readFileSync('src/crdt/yjs.ts', 'utf8');
+    expect(seam).toContain("await import('y-websocket')");
+    expect(seam).not.toContain("from 'y-websocket'");
   });
 });
