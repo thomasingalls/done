@@ -17,6 +17,7 @@ import {
   copyFromMaster,
   mergeCardBackwards,
   moveCard,
+  reorderCard,
   removeCard,
   removeFromMaster,
   splitCard,
@@ -200,5 +201,31 @@ describe('removal', () => {
     const id = cardId(cardsIn(context.store.doc, TODAY, 'scheduled')[0]!);
     expect(removeCard(context.me, { date: TODAY, section: 'scheduled' }, id)).toBe(true);
     expect(bodies(context, 'scheduled')).toEqual([]);
+  });
+});
+
+describe('reordering', () => {
+  it('moves a card by final display index in one undoable transaction', async () => {
+    context = await harness();
+    compose(context.me, { date: TODAY, section: 'done' }, 'third');
+    compose(context.me, { date: TODAY, section: 'done' }, 'second');
+    compose(context.me, { date: TODAY, section: 'done' }, 'first');
+    const id = cardId(cardsIn(context.store.doc, TODAY, 'done')[0]!);
+
+    let updates = 0;
+    context.store.doc.on('update', () => (updates += 1));
+    expect(reorderCard(context.me, { date: TODAY, section: 'done' }, id, 2)).toBe(true);
+    expect(bodies(context, 'done')).toEqual(['second', 'third', 'first']);
+    expect(updates).toBe(1);
+
+    context.store.undo.undo();
+    expect(bodies(context, 'done')).toEqual(['first', 'second', 'third']);
+  });
+
+  it('does nothing when the card is already at the requested index', async () => {
+    context = await harness();
+    compose(context.me, { date: TODAY, section: 'done' }, 'only');
+    const id = cardId(cardsIn(context.store.doc, TODAY, 'done')[0]!);
+    expect(reorderCard(context.me, { date: TODAY, section: 'done' }, id, 0)).toBe(false);
   });
 });

@@ -24,6 +24,7 @@ import {
   isFrozen,
   moveCard,
   readCollections,
+  reorderCard,
   removeCard,
   staleDays,
 } from '../src/crdt';
@@ -77,6 +78,18 @@ describe('the freeze', () => {
     );
 
     expect(context.store.master.toString()).toBe('still a living document');
+  });
+
+  it('refuses to reorder cards after the day freezes', async () => {
+    context = await harness();
+    const old = ago(FREEZE_DAYS);
+    const past = { ...context.me, today: old };
+    compose(past, { date: old, section: 'done' }, 'second');
+    compose(past, { date: old, section: 'done' }, 'first');
+    const id = cardId(cardsIn(context.store.doc, old, 'done')[0]!);
+
+    expect(reorderCard(context.me, { date: old, section: 'done' }, id, 1)).toBe(false);
+    expect(cardsIn(context.store.doc, old, 'done').map(cardBody)).toEqual(['first', 'second']);
   });
 
   it('changes nothing about how the day is stored', async () => {

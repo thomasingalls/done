@@ -24,6 +24,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import type { EditorView } from '@codemirror/view';
 import { shouldCommit, type Direction } from '../gestures/recognizer';
 import { useGestures } from '../gestures/useGestures';
 import { addDays, currentDate, type ISODate } from '../lib/date';
@@ -74,11 +75,16 @@ export const App = (): React.ReactElement => {
 
   const menu = useRef<HTMLElement>(null);
   const goals = useRef<HTMLElement>(null);
+  const goalsEditor = useRef<EditorView | null>(null);
   const plane = useRef<HTMLDivElement>(null);
   const dragTarget = useRef<Lateral | null>(null);
   const openAtDragStart = useRef(0);
   const started = useRef(false);
   const settleTimer = useRef<number | undefined>(undefined);
+  const wheelTotal = useRef(0);
+  const wheelResetTimer = useRef<number | undefined>(undefined);
+  const wheelLockedUntil = useRef(0);
+  const goalsFocusTimer = useRef<number | undefined>(undefined);
 
   const menuOverlay = !menuIsPanel(breakpoint);
   const goalsOverlay = !goalsIsPanel(breakpoint);
@@ -109,6 +115,15 @@ export const App = (): React.ReactElement => {
     [clearSettlement],
   );
 
+  const clearGoalsFocus = useCallback(() => {
+    if (goalsFocusTimer.current !== undefined) window.clearTimeout(goalsFocusTimer.current);
+    goalsFocusTimer.current = undefined;
+  }, []);
+
+  const onGoalsEditorReady = useCallback((view: EditorView | null) => {
+    goalsEditor.current = view;
+  }, []);
+
   const goTo = useCallback(
     (next: ISODate) => {
       clearSettlement();
@@ -137,6 +152,60 @@ export const App = (): React.ReactElement => {
       });
     },
     [afterSettlement, clearSettlement, dayStep],
+  );
+
+  /**
+   * A wheel over Today walks the same vertical day axis as a touch drag. A
+   * genuinely long day keeps the wheel while it has content in that direction;
+   * once it reaches an edge, the next wheel gesture moves to the adjacent day.
+   */
+  const onDayWheel = useCallback(
+    (event: React.WheelEvent<HTMLDivElement>): void => {
+      if (
+        event.ctrlKey ||
+        !window.matchMedia('(any-pointer: fine)').matches ||
+        Math.abs(event.deltaY) <= Math.abs(event.deltaX)
+      ) {
+        return;
+      }
+
+      const target = event.target as HTMLElement;
+      const scrollRegion = target.closest<HTMLElement>('[data-scroll="day"]');
+      if (scrollRegion) {
+        const maximum = scrollRegion.scrollHeight - scrollRegion.clientHeight;
+        const canScroll =
+          maximum > 1 &&
+          (event.deltaY < 0 ? scrollRegion.scrollTop > 1 : scrollRegion.scrollTop < maximum - 1);
+        if (canScroll) {
+          wheelTotal.current = 0;
+          return;
+        }
+      }
+
+      event.preventDefault();
+      if (performance.now() < wheelLockedUntil.current) return;
+
+      const unit =
+        event.deltaMode === WheelEvent.DOM_DELTA_LINE
+          ? 16
+          : event.deltaMode === WheelEvent.DOM_DELTA_PAGE
+            ? (plane.current?.clientHeight ?? window.innerHeight)
+            : 1;
+      wheelTotal.current += event.deltaY * unit;
+
+      if (wheelResetTimer.current !== undefined) window.clearTimeout(wheelResetTimer.current);
+      wheelResetTimer.current = window.setTimeout(() => {
+        wheelResetTimer.current = undefined;
+        wheelTotal.current = 0;
+      }, 140);
+
+      if (Math.abs(wheelTotal.current) < 48) return;
+      const days = wheelTotal.current > 0 ? 1 : -1;
+      wheelTotal.current = 0;
+      wheelLockedUntil.current = performance.now() + SNAP_MS + 80;
+      step(days);
+    },
+    [step],
   );
 
   const closeLateral = useCallback(() => {
@@ -234,6 +303,21 @@ export const App = (): React.ReactElement => {
         dragTarget.current = null;
         setLateral(null);
       },
+
+      onNavigationCancel: (axis) => {
+        if (axis === 'y') {
+          setSettling(true);
+          setDayShift(0);
+          afterSettlement(() => setSettling(false));
+          return;
+        }
+
+        const target = dragTarget.current;
+        if (target === 'goals') setGoalsProgress(openAtDragStart.current);
+        if (target === 'menu') setMenuProgress(openAtDragStart.current);
+        dragTarget.current = null;
+        setLateral(null);
+      },
     },
   });
 
@@ -301,7 +385,37 @@ export const App = (): React.ReactElement => {
     if (!goalsOverlay) setGoalsOpen(false);
   }, [goalsOverlay, menuOverlay]);
 
-  useEffect(() => clearSettlement, [clearSettlement]);
+  /**
+   * A narrow Goals panel is an editing surface. Its keyboard must not resize
+   * the viewport while the panel is still moving, so focus only after the snap
+   * has landed. Blurring a committed close dismisses the keyboard while the
+   * mounted EditorView keeps its selection ready for the next open.
+   */
+  useEffect(() => {
+    clearGoalsFocus();
+    if (!goalsOverlay) return;
+
+    if (!goalsOpen) {
+      goalsEditor.current?.contentDOM.blur();
+      return;
+    }
+
+    goalsFocusTimer.current = window.setTimeout(() => {
+      goalsFocusTimer.current = undefined;
+      goalsEditor.current?.focus();
+    }, SNAP_MS);
+
+    return clearGoalsFocus;
+  }, [clearGoalsFocus, goalsOpen, goalsOverlay]);
+
+  useEffect(
+    () => () => {
+      clearSettlement();
+      clearGoalsFocus();
+      if (wheelResetTimer.current !== undefined) window.clearTimeout(wheelResetTimer.current);
+    },
+    [clearGoalsFocus, clearSettlement],
+  );
 
   if (error) {
     return (
@@ -373,7 +487,7 @@ export const App = (): React.ReactElement => {
 
       <button type="button" className="scrim" aria-label="Close" onClick={closeLateral} />
 
-      <div className="plane" ref={plane}>
+      <div className="plane" ref={plane} onWheel={onDayWheel}>
         <StaleBanner store={store} system={system} today={today} onGoTo={goTo} />
         <DayPlane
           store={store}
@@ -389,7 +503,13 @@ export const App = (): React.ReactElement => {
         />
       </div>
 
-      <Goals ref={goals} store={store} workspace={workspace} date={date} />
+      <Goals
+        ref={goals}
+        store={store}
+        workspace={workspace}
+        date={date}
+        onEditorReady={onGoalsEditorReady}
+      />
     </div>
   );
 };

@@ -11,6 +11,7 @@
  * (TRD §10.5), and "your data outlives the app" is a ranked principle.
  */
 
+import { useSyncExternalStore } from 'react';
 import {
   actorById,
   downloadExport,
@@ -21,6 +22,7 @@ import {
   type Store,
 } from '../crdt';
 import { addDays, formatDayLong, relativeDay, type ISODate } from '../lib/date';
+import { installHelp, readInstallState, requestInstall, subscribeToInstallState } from '../pwa';
 import { useYValue } from './useYjs';
 
 const STORAGE_LABEL: Record<StoragePersistence, string> = {
@@ -63,6 +65,11 @@ export const Menu = ({
   onClose,
   ref,
 }: MenuProps): React.ReactElement => {
+  const installState = useSyncExternalStore(
+    subscribeToInstallState,
+    readInstallState,
+    readInstallState,
+  );
   const actor = useYValue(
     store.meta,
     () => JSON.stringify(actorById(store.doc, store.actor.id) ?? store.actor.actor),
@@ -125,6 +132,16 @@ export const Menu = ({
       <section className="menu-section">
         <h2 className="menu-heading">This client</h2>
         <div className="menu-row">
+          <span>Version</span>
+          <span className="menu-value">{import.meta.env['VITE_APP_VERSION']}</span>
+        </div>
+        <div className="menu-row">
+          <span>Commit date</span>
+          <time className="menu-value" dateTime={import.meta.env['VITE_APP_COMMIT_DATE']}>
+            {import.meta.env['VITE_APP_COMMIT_DATE']}
+          </time>
+        </div>
+        <div className="menu-row">
           <span>Actor</span>
           <span className="menu-value">
             <span
@@ -180,6 +197,22 @@ export const Menu = ({
           </select>
         </label>
       </section>
+
+      {installState !== 'installed' && (
+        <section className="menu-section">
+          <h2 className="menu-heading">Install</h2>
+          <p className="menu-note">
+            {installState === 'available'
+              ? 'Give done its own app window and launch it directly from your home screen.'
+              : installHelp()}
+          </p>
+          {installState === 'available' && (
+            <button type="button" className="menu-button" onClick={() => void requestInstall()}>
+              Install app
+            </button>
+          )}
+        </section>
+      )}
 
       <section className="menu-section">
         <h2 className="menu-heading">Phase 2</h2>

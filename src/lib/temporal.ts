@@ -31,8 +31,15 @@ export const Temporal: TemporalApi = native ?? Ponyfill;
 /** Whether the platform supplied it, for the settings panel to be honest about. */
 export const temporalIsNative = native !== undefined;
 
-/** A wall-clock reading in the last-known timezone — what rollover is measured in. */
+/**
+ * A wall-clock reading in the last-known timezone — what rollover is measured
+ * in. The instant comes from `Date.now()` so fake-clock tooling has one stable
+ * seam even after browsers ship a native `Temporal.Now` implementation.
+ */
 export type PlainDateTime = Ponyfill.PlainDateTime;
 export type PlainDate = Ponyfill.PlainDate;
 
-export const nowLocal = (): PlainDateTime => Temporal.Now.plainDateTimeISO();
+export const nowLocal = (): PlainDateTime =>
+  Temporal.Instant.fromEpochMilliseconds(Date.now())
+    .toZonedDateTimeISO(Temporal.Now.timeZoneId())
+    .toPlainDateTime();

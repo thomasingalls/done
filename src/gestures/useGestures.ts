@@ -50,6 +50,7 @@ export interface GestureHandlers {
   onNavigationStart?: (axis: Axis) => void;
   onNavigationMove?: (axis: Axis, delta: number) => void;
   onNavigationEnd?: (axis: Axis, delta: number, velocity: number) => void;
+  onNavigationCancel?: (axis: Axis) => void;
   onSelectionStart?: () => void;
   onTap?: (x: number, y: number) => void;
 }
@@ -58,6 +59,33 @@ const pointerKind = (event: PointerEvent): PointerKind =>
   event.pointerType === 'touch' || event.pointerType === 'pen'
     ? (event.pointerType as PointerKind)
     : 'mouse';
+
+/**
+ * A hold only resolves the shared gesture into selection when the press began
+ * on something that can actually select or edit text. Guarded Done cards join
+ * that set because their own matching hold mounts an editor under the pointer.
+ * Everywhere else, holding is inert and a later drag may still navigate.
+ */
+export const startsTextInteraction = (target: EventTarget | null): boolean => {
+  if (!(target instanceof Element)) return false;
+  return (
+    target.closest(
+      [
+        '[contenteditable="true"]',
+        'textarea',
+        'input:not([type])',
+        'input[type="email"]',
+        'input[type="number"]',
+        'input[type="password"]',
+        'input[type="search"]',
+        'input[type="tel"]',
+        'input[type="text"]',
+        'input[type="url"]',
+        '.card[data-guarded="true"]',
+      ].join(', '),
+    ) !== null
+  );
+};
 
 export interface UseGesturesOptions {
   handlers: GestureHandlers;
@@ -201,7 +229,7 @@ export const useGestures = <T extends HTMLElement>({
         event,
       );
 
-      if (recognizer.awaitingLongPress) {
+      if (recognizer.awaitingLongPress && startsTextInteraction(event.target)) {
         clearTimer();
         timer = window.setTimeout(() => {
           timer = undefined;
@@ -240,7 +268,9 @@ export const useGestures = <T extends HTMLElement>({
     const onPointerCancel = (event: PointerEvent): void => {
       if (event.pointerId !== activePointer) return;
       clearTimer();
+      const axis = recognizer.state === 'navigating' ? recognizer.lockedAxis : null;
       apply(recognizer.handle({ kind: 'cancel' }), event);
+      if (axis) latest.current.onNavigationCancel?.(axis);
     };
 
     element.addEventListener('pointerdown', onPointerDown);

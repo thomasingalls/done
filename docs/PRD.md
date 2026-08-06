@@ -1,6 +1,6 @@
 # done — Product Requirements
 
-**Status:** Draft v5
+**Status:** Draft v6
 **Date:** 2026-08-06
 **Audience:** one user (the author). Single-tenant personal tool, not a product.
 
@@ -93,6 +93,7 @@ difficulty on purpose.
 | Scheduled → Next / Done          | Easy                         | One gesture.                                                                                          |
 | Master → Next / Scheduled / Done | Deliberate, two steps        | **Copy-to** places a copy in the target; **Remove** separately deletes from master. Never one action. |
 | Done → editable                  | **Deliberately hard**        | Long-press or explicit unlock. See §5.                                                                |
+| Done → reordered                 | Deliberate                   | Long-press then drag on touch/pen; drag from the reorder grip on desktop. Writable days only.         |
 
 The master list is **not** expected to stay 1:1 with what appears in daily views. Copying out
 of it does not remove from it. Clearing completed items from the master list is **manual
@@ -104,9 +105,9 @@ Done is a record. Once written, editing it should require intent.
 
 Creation is easy and editing is hard, and these don't conflict because they're different
 affordances. A done card renders as static text and does not become editable by tapping it;
-unlocking is a long-press (mobile) or explicit action (desktop). Meanwhile the compose field
-is always live at the foot of the list, so recording something new is a single uninterrupted
-keystroke path.
+unlocking is a stationary long-press (mobile) or explicit action (desktop). Moving after the
+hold reorders the card instead. Meanwhile the compose field is always live at the foot of the
+list, so recording something new is a single uninterrupted keystroke path.
 
 ## 6. Days go read-only
 
@@ -163,8 +164,9 @@ first, then drag. Tapping to place a cursor is unaffected.
 
 This prioritizes the frequent action over the rare one, which is right for a phone. The cost is
 that selection becomes a two-stage deliberate act, and the long-press entry point overlaps the
-Done-card unlock gesture — those disambiguate by context (Done cards are static, so long-press
-unlocks; long-press in live text starts selection).
+Done-card gestures — those disambiguate by context. Long-press in live text starts selection; a
+static Done card arms reordering, with movement dragging it and a stationary release unlocking
+it.
 
 ### 7.3 Wide — three panels
 
@@ -366,11 +368,13 @@ navigation, no cards. _Exit: the author prefers it to a plain textarea, and the 
 gesture model works on a real Android device._
 
 **Phase 2 — the workflow.** Documents, collections, cards, the three-cap, movement flows,
-spatial navigation, responsive layouts, actor attribution and scoped undo. _Exit: daily use for
-two weeks with no fallback to the previous system._
+spatial navigation, responsive layouts, actor attribution and scoped undo. _Exit: every core
+workflow and navigation path works on real Android and desktop devices without a
+workflow-blocking defect._
 
 **Phase 3 — sync.** Relay deployment, multi-device. _Exit: phone and laptop consistent across a
-week including offline edits on both._
+week including offline edits on both; daily use for a week without falling back to the previous
+system._
 
 **Phase 4 — retrieval.** Search and calendar picker, scoped by principle 6: search over the
 master list and recent days earns its place; deep-history search and backlink graphs probably

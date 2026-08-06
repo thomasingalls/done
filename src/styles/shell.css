@@ -25,6 +25,8 @@
     position: relative;
     isolation: isolate;
     overflow: hidden;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+      env(safe-area-inset-left);
     /*
      * Ours horizontally, the browser's vertically. TRD §8.4 asks for
      * `touch-action: none` on navigable surfaces; the day body keeps native
@@ -45,6 +47,26 @@
   .shell[data-select='on'] {
     user-select: text;
     -webkit-user-select: text;
+  }
+
+  /*
+   * Native text controls may be the nearest scroll target themselves, so the
+   * shell's pan-y never reaches them in the touch-action intersection. Their
+   * vertical behavior stays native; horizontal movement belongs to the shell.
+   */
+  .shell
+    :is(
+      textarea,
+      input:not([type]),
+      input[type='email'],
+      input[type='number'],
+      input[type='password'],
+      input[type='search'],
+      input[type='tel'],
+      input[type='text'],
+      input[type='url']
+    ) {
+    touch-action: pan-y;
   }
 
   .shell:not([data-menu='dragging']):not([data-goals='dragging']) {
@@ -69,6 +91,8 @@
     inline-size: var(--menu-width);
     overflow-y: auto;
     overscroll-behavior: contain;
+    /* The menu is its own scroll container; horizontal swipes still close it. */
+    touch-action: pan-y;
     padding: var(--space-4);
     gap: var(--space-5);
     border-inline-end: 1px solid var(--color-border);
@@ -275,7 +299,7 @@
      * in Chromium terminology, and `pan-up` is finger-down.
      */
     touch-action: none;
-    padding: var(--space-4) var(--space-4) 30dvh;
+    padding: var(--space-4);
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
@@ -473,12 +497,17 @@
    */
   .shell[data-breakpoint='medium'] {
     grid-template-areas: 'plane goals';
-    grid-template-columns: minmax(0, 1fr) minmax(14rem, var(--goals-width));
+    grid-template-columns: minmax(0, 2fr) minmax(14rem, 3fr);
   }
 
   .shell[data-breakpoint='wide'] {
     grid-template-areas: 'menu plane goals';
-    grid-template-columns: var(--menu-width) minmax(0, 1fr) var(--goals-width);
+    grid-template-columns: var(--menu-width) minmax(0, 2fr) minmax(24rem, 3fr);
+  }
+
+  .shell[data-breakpoint='medium'] .goals,
+  .shell[data-breakpoint='wide'] .goals {
+    inline-size: 100%;
   }
 
   /* Absent at wide, where the menu is already a visible panel (PRD §7.4). */

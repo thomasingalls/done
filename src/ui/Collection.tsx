@@ -36,8 +36,9 @@ import {
 import type { CardHooks } from '../editor/cardCommands';
 import { renderStatic } from '../editor/staticRender';
 import { addDays, type ISODate } from '../lib/date';
-import { Card, type CardAction } from './Card';
+import { Card, type CardAction, type CardReorder } from './Card';
 import { Compose } from './Compose';
+import { useCardReorder } from './useCardReorder';
 import { useYValue } from './useYjs';
 
 const TITLES: Record<Section, string> = {
@@ -119,6 +120,12 @@ export const Collection = ({
   const [focusCard, setFocusCard] = useState<{ id: string; at: number } | null>(null);
 
   const ref: Ref = useMemo(() => ({ date, section }), [date, section]);
+  const reorder = useCardReorder({
+    workspace,
+    ref,
+    cards,
+    enabled: section === 'done' && active && !frozen && cards.length > 1,
+  });
 
   const hooksFor = useCallback(
     (id: string): CardHooks => ({
@@ -191,9 +198,11 @@ export const Collection = ({
   );
 
   // An empty collection is noise except where it says something: Next carries
-  // the cap, and Done carries the compose field.
+  // the cap, and Done carries the compose field. Those two render for adjacent
+  // days too, so promoting an already-mounted neighbour does not change its
+  // layout after the movement lands.
   const count = cards.length + archived.length;
-  if (count === 0 && !(active && section !== 'scheduled')) return null;
+  if (count === 0 && section === 'scheduled') return null;
 
   const full = section === 'next' && count >= NEXT_CAP;
 
@@ -211,25 +220,47 @@ export const Collection = ({
       {count === 0 ? (
         <p className="collection-empty">{section === 'done' ? 'Nothing yet.' : 'Empty.'}</p>
       ) : (
-        <div className="card-list">
-          {cards.map((card) => (
-            <Card
-              key={cardId(card)}
-              store={store}
-              card={card}
-              section={section}
-              frozen={frozen}
-              guarded={section === 'done'}
-              actions={actionsFor(card)}
-              hooks={hooksFor(cardId(card))}
-              editable={active}
-              origin={workspace.origin}
-              {...(focusCard?.id === cardId(card) ? { autoFocusAt: focusCard.at } : {})}
-            />
-          ))}
+        <div className="card-list" ref={reorder.listRef} data-reordering={reorder.drag !== null}>
+          {cards.map((card) => {
+            const id = cardId(card);
+            const cardReorder: CardReorder | undefined = reorder.enabled
+              ? {
+                  dragging: reorder.drag?.id === id,
+                  offsetY: reorder.drag?.id === id ? reorder.drag.offsetY : 0,
+                  start: (clientY) => reorder.start(id, clientY),
+                  move: reorder.move,
+                  finish: reorder.finish,
+                  cancel: reorder.cancel,
+                  moveBy: (offset) => reorder.moveBy(id, offset),
+                }
+              : undefined;
+            return (
+              <Card
+                key={id}
+                store={store}
+                card={card}
+                section={section}
+                frozen={frozen}
+                guarded={section === 'done'}
+                actions={actionsFor(card)}
+                hooks={hooksFor(id)}
+                editable={active}
+                origin={workspace.origin}
+                {...(cardReorder ? { reorder: cardReorder } : {})}
+                {...(focusCard?.id === id ? { autoFocusAt: focusCard.at } : {})}
+              />
+            );
+          })}
           {archived.map((body, index) => (
             <ArchivedCard key={`${section}:${index}`} body={body} section={section} />
           ))}
+          {reorder.drag && (
+            <span
+              className="card-drop-indicator"
+              aria-hidden="true"
+              style={{ '--card-drop-y': `${reorder.drag.indicatorY}px` } as React.CSSProperties}
+            />
+          )}
         </div>
       )}
 
@@ -238,7 +269,7 @@ export const Collection = ({
        * It is always live, which is what lets Done cards be guarded without the
        * two rules fighting each other (PRD §5).
        */}
-      {section === 'done' && active && !frozen && (
+      {section === 'done' && !frozen && (
         <Compose
           placeholder="What got done?"
           onSubmit={(value) => compose(workspace, { date, section: 'done' }, value)}

@@ -113,6 +113,36 @@ test.describe('layout', () => {
     expect(measurements.editor).toBeGreaterThan(200);
   });
 
+  test('Goals is wider than Today whenever the two are panels', async ({ page }) => {
+    for (const width of [900, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/');
+      await expect(page.locator('.goals')).toBeVisible();
+
+      const widths = await page.evaluate(() => ({
+        today: (document.querySelector('.plane') as HTMLElement).getBoundingClientRect().width,
+        goals: (document.querySelector('.goals') as HTMLElement).getBoundingClientRect().width,
+      }));
+
+      expect(widths.goals).toBeGreaterThan(widths.today);
+    }
+  });
+
+  test('a short day has no phantom scrolling space', async ({ page }) => {
+    await page.setViewportSize({ width: 420, height: 900 });
+    await page.goto('/');
+    const body = page.locator('.day-panel[data-active="true"] .day-body');
+
+    const measurements = await body.evaluate((element) => ({
+      client: element.clientHeight,
+      scroll: element.scrollHeight,
+      paddingBottom: Number.parseFloat(getComputedStyle(element).paddingBottom),
+    }));
+
+    expect(measurements.scroll - measurements.client).toBeLessThanOrEqual(1);
+    expect(measurements.paddingBottom).toBeLessThan(32);
+  });
+
   test('the menu is a panel at wide and behind a trigger below it', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto('/');
@@ -194,5 +224,23 @@ test.describe('layout', () => {
 
     await page.locator('.day-peek[data-edge="bottom"]').click();
     await expect(title).not.toHaveText(today);
+  });
+
+  test('an adjacent day is fully laid out before it moves into focus', async ({ page }) => {
+    await page.setViewportSize({ width: 420, height: 900 });
+    await page.goto('/');
+
+    const next = page.locator('.day-panel[data-active="false"]').last();
+    await expect(next.locator('.collection')).toHaveCount(2);
+    await expect(next.locator('.compose-field')).toHaveCount(1);
+    await next.evaluate((element) => {
+      element.setAttribute('data-was-prerendered', 'true');
+    });
+
+    await page.locator('.day-peek[data-edge="bottom"]').click();
+    await expect(page.locator('.day-panel[data-active="true"]')).toHaveAttribute(
+      'data-was-prerendered',
+      'true',
+    );
   });
 });

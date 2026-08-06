@@ -43,6 +43,10 @@ export const editorTheme = EditorView.theme({
     lineHeight: 'var(--line-height)',
     overflowY: 'auto',
     overscrollBehavior: 'contain',
+    // This is the nearest scroll container for a press in Goals, so the outer
+    // shell's touch-action does not participate. Keep native vertical panning
+    // here while reserving horizontal movement for the navigation recognizer.
+    touchAction: 'pan-y',
   },
   '.cm-content': {
     // `dvh`, not `vh` (TRD §8.2): mobile browser chrome makes `vh` wrong

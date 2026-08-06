@@ -1,11 +1,13 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './ui/App';
-import { registerServiceWorker } from './pwa';
+import { prepareInstallPrompt, registerServiceWorker } from './pwa';
 import './styles/index.css';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('#root is missing from index.html');
+
+prepareInstallPrompt();
 
 createRoot(root).render(
   <StrictMode>

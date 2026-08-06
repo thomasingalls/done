@@ -566,9 +566,14 @@ Pointer Events. **Swipe navigates; long-press-then-drag selects** (PRD §7.2).
 1. `pointerdown` records origin and starts a long-press timer (~400 ms).
 2. Movement past ~10 px before the timer fires → **navigation.** Lock to the dominant axis,
    capture the pointer, translate the container.
-3. Timer fires without movement → **selection mode.** Release the container, hand the pointer
-   to the editor (or, on a Done card, unlock it).
+3. Timer fires without movement → **selection mode** in live text. A static Done card instead
+   captures the pointer and arms reordering; subsequent movement drags it, while a stationary
+   release unlocks it.
 4. `pointerup` before either → **tap.** Place cursor, mounting an editor if needed (§4.4).
+
+On a fine pointer, Done cards expose a reorder grip. Dragging it starts the same collection-owned
+reorder interaction immediately, leaving ordinary mouse drag over card text available for text
+selection. Both paths write once, on release, through the atomic CRDT reorder operation.
 
 Requires `user-select: none` on the container with selection re-enabled on entering selection
 mode, and `touch-action: none` on navigable surfaces. `overscroll-behavior: contain` prevents

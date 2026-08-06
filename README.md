@@ -12,10 +12,10 @@ A day has three sections, and they are read in the order **Next, Done,
 Scheduled**: what you are doing, what you did, and the tail of intentions that
 have not come up yet. Done reads newest-first — anything completed goes on top.
 
-> **Exit criteria** (PRD §13): daily use for two weeks with no fallback to the
-> previous system. Nothing in this repository decides that. `pnpm dev --host`
-> serves on the local network so a phone can reach it; installing it from
-> Chrome's menu gets the standalone shell and the real gesture surface.
+> **Phase 2 exit criteria** (PRD §13): every core workflow and navigation path
+> works on real Android and desktop devices without a workflow-blocking defect.
+> A week of daily use without falling back to the previous, multi-device system
+> is a Phase 3 criterion because it depends on sync.
 
 ## Running it
 
@@ -75,6 +75,7 @@ writing a component here — see "reading the document" below.
 | Card gestures  | `src/editor/cardCommands.ts` | Split, merge, leave. The threshold is a named constant.                                                                        |
 | Bindings       | `src/editor/keymap.ts`       | One table, with descriptions (TRD §8.5).                                                                                       |
 | Gestures       | `src/gestures/recognizer.ts` | Swipe navigates, long-press-then-drag selects. A pure state machine; `useGestures.ts` is the DOM half.                         |
+| Card reorder   | `src/ui/useCardReorder.ts`   | Collection-owned geometry; touch holds and desktop grips preview locally, then commit one atomic move on release.              |
 | Shell          | `src/ui/`, `src/styles/`     | Grid with named areas, cascade layers, custom properties.                                                                      |
 
 ## Decisions taken in this phase

@@ -71,6 +71,70 @@ test.describe('Phase 2 workflow', () => {
     await expect(shell).toHaveAttribute('data-menu', 'open');
   });
 
+  test('a canceled touch drag snaps back instead of remaining in progress', async ({ page }) => {
+    await page.setViewportSize({ width: 420, height: 900 });
+    await page.goto('/');
+
+    const shell = page.locator('.shell');
+    await shell.evaluate((element) => {
+      const pointer = (type: string, x: number): void => {
+        element.dispatchEvent(
+          new PointerEvent(type, {
+            bubbles: true,
+            cancelable: true,
+            clientX: x,
+            clientY: 300,
+            isPrimary: true,
+            pointerId: 42,
+            pointerType: 'touch',
+          }),
+        );
+      };
+      pointer('pointerdown', 300);
+      pointer('pointermove', 100);
+      pointer('pointercancel', 100);
+    });
+
+    await expect(shell).toHaveAttribute('data-goals', 'closed');
+  });
+
+  test('Goals swipes own the editor surface and restore its caret after reopening', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 420, height: 900 });
+    await page.goto('/');
+
+    const shell = page.locator('.shell');
+    const compose = activeDay(page).getByRole('textbox', { name: 'What got done?' });
+
+    // Begin over a live text input: movement still belongs to spatial navigation.
+    await touchSwipe(page, compose, { x: -220, y: 0 });
+    await expect(shell).toHaveAttribute('data-goals', 'open');
+
+    const editor = page.locator('.goals .cm-content');
+    await expect(page.locator('.goals .cm-scroller')).toHaveCSS('touch-action', 'pan-y');
+    await expect(editor).not.toBeFocused();
+    await expect(editor).toBeFocused();
+
+    await page.keyboard.insertText('abcd');
+    await editor.press('ArrowLeft');
+    await editor.press('ArrowLeft');
+
+    // The editor is the large hit target that previously triggered pointercancel.
+    await touchSwipe(page, editor, { x: 220, y: 0 });
+    await expect(shell).toHaveAttribute('data-goals', 'closed');
+    await expect(editor).not.toBeFocused();
+
+    // Let the close snap expose Today before starting the next real touch.
+    await page.waitForTimeout(250);
+    await touchSwipe(page, compose, { x: -220, y: 0 });
+    await expect(shell).toHaveAttribute('data-goals', 'open');
+    await expect(editor).toBeFocused();
+
+    await page.keyboard.insertText('X');
+    await expect(editor).toContainText('abXcd');
+  });
+
   test('a vertical swipe from the day body navigates instead of being cancelled', async ({
     page,
   }) => {
@@ -132,6 +196,42 @@ test.describe('Phase 2 workflow', () => {
     await page.waitForTimeout(300);
 
     await expect(activeDay(page)).toHaveAttribute('data-date', initial!);
+  });
+
+  test('a desktop wheel over Today moves between days', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'Mouse-wheel navigation is a desktop interaction.');
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto('/');
+    await expect(activeDay(page)).toBeVisible();
+    const initial = await activeDay(page).getAttribute('data-date');
+    const header = activeDay(page).locator('.panel-header');
+    const box = await header.boundingBox();
+    if (!box) throw new Error('Today header is not visible');
+
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.wheel(0, 120);
+
+    await expect(activeDay(page)).not.toHaveAttribute('data-date', initial!);
+  });
+
+  test('an install prompt is exposed in the menu', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto('/');
+    await page.evaluate(() => {
+      const event = new Event('beforeinstallprompt', { cancelable: true });
+      Object.assign(event, {
+        prompt: async () => {
+          document.documentElement.dataset['installPrompted'] = 'true';
+        },
+        userChoice: Promise.resolve({ outcome: 'accepted' }),
+      });
+      window.dispatchEvent(event);
+    });
+
+    const install = page.getByRole('button', { name: 'Install app' });
+    await expect(install).toBeVisible();
+    await install.click();
+    await expect(page.locator('html')).toHaveAttribute('data-install-prompted', 'true');
   });
 
   test('merging a card keeps focus at the join point', async ({ page }) => {

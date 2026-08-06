@@ -31,6 +31,8 @@ export interface GoalsProps {
   /** Copies land on the day in view, which is the one the user is looking at. */
   date: ISODate;
   ref?: React.Ref<HTMLElement>;
+  /** Lets the shell coordinate focus with the narrow panel's snap animation. */
+  onEditorReady?: (view: EditorView | null) => void;
 }
 
 interface Selection {
@@ -59,7 +61,13 @@ export const selectedLines = (state: EditorState): Selection => {
   };
 };
 
-export const Goals = ({ store, workspace, date, ref }: GoalsProps): React.ReactElement => {
+export const Goals = ({
+  store,
+  workspace,
+  date,
+  ref,
+  onEditorReady,
+}: GoalsProps): React.ReactElement => {
   const host = useRef<HTMLDivElement>(null);
   const [selection, setSelection] = useState<Selection>(EMPTY);
 
@@ -98,9 +106,13 @@ export const Goals = ({ store, workspace, date, ref }: GoalsProps): React.ReactE
       ],
     });
     setSelection(selectedLines(handle.view.state));
+    onEditorReady?.(handle.view);
 
-    return () => handle.destroy();
-  }, [store, workspace.origin]);
+    return () => {
+      onEditorReady?.(null);
+      handle.destroy();
+    };
+  }, [onEditorReady, store, workspace.origin]);
 
   const count = selection.text.filter((line) => line.trim().length > 0).length;
   const disabled = count === 0;

@@ -40,6 +40,16 @@ export interface CardAction {
   disabled?: boolean;
 }
 
+export interface CardReorder {
+  dragging: boolean;
+  offsetY: number;
+  start: (clientY: number) => boolean;
+  move: (clientY: number) => void;
+  finish: (commit: boolean) => void;
+  cancel: () => void;
+  moveBy: (offset: number) => void;
+}
+
 export interface CardProps {
   store: Store;
   card: CardType;
@@ -53,12 +63,26 @@ export interface CardProps {
   /** False for a neighbouring day, which renders content but never edits it. */
   editable: boolean;
   origin: Origin;
+  /** Present only for live Done cards on the active, writable day. */
+  reorder?: CardReorder;
   /** Set after a split/merge so editing resumes at the structural join. */
   autoFocusAt?: number;
 }
 
 /** Long enough to be deliberate, matching the gesture layer's own hold (TRD §8.4). */
 const UNLOCK_HOLD_MS = 400;
+const POINTER_SLOP_PX = 10;
+const DRAG_SLOP_PX = 4;
+
+interface ReorderPointer {
+  pointerId: number;
+  startX: number;
+  startY: number;
+  element: HTMLElement;
+  armed: boolean;
+  moved: boolean;
+  unlockOnRelease: boolean;
+}
 
 export const Card = ({
   store,
@@ -70,8 +94,10 @@ export const Card = ({
   hooks,
   editable,
   origin,
+  reorder,
   autoFocusAt,
 }: CardProps): React.ReactElement => {
+  const id = cardId(card);
   const text = useYText(cardText(card));
   const [editing, setEditing] = useState(autoFocusAt !== undefined);
   const staticHost = useRef<HTMLDivElement>(null);
@@ -80,11 +106,14 @@ export const Card = ({
   const pendingCaret = useRef<{ x: number; y: number } | null>(null);
   const pendingPosition = useRef<number | null>(autoFocusAt ?? null);
   const hold = useRef<number | undefined>(undefined);
+  const pointer = useRef<ReorderPointer | null>(null);
 
   // Held in a ref because the parent rebuilds them each render, and a changed
   // dependency here would tear the editor down mid-keystroke.
   const latestHooks = useRef(hooks);
   latestHooks.current = hooks;
+  const latestReorder = useRef(reorder);
+  latestReorder.current = reorder;
 
   useEffect(() => {
     if (editing) return;
@@ -153,16 +182,132 @@ export const Card = ({
     hold.current = undefined;
   }, []);
 
-  useEffect(() => clearHold, [clearHold]);
+  useEffect(
+    () => () => {
+      clearHold();
+      if (pointer.current?.armed) latestReorder.current?.cancel();
+      pointer.current = null;
+    },
+    [clearHold],
+  );
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>): void => {
-    if (!guarded || editing) return;
-    const { clientX: x, clientY: y } = event;
+    if (!guarded || editing || frozen || !editable || event.pointerType === 'mouse') return;
+    const { clientX: x, clientY: y, pointerId } = event;
     clearHold();
+    pointer.current = {
+      pointerId,
+      startX: x,
+      startY: y,
+      element: event.currentTarget,
+      armed: false,
+      moved: false,
+      unlockOnRelease: true,
+    };
     hold.current = window.setTimeout(() => {
       hold.current = undefined;
-      open({ x, y });
+      const active = pointer.current;
+      if (!active || active.pointerId !== pointerId) return;
+
+      const controller = latestReorder.current;
+      if (!controller || !controller.start(y)) {
+        pointer.current = null;
+        open({ x, y });
+        return;
+      }
+
+      active.armed = true;
+      try {
+        active.element.setPointerCapture(pointerId);
+      } catch {
+        controller.cancel();
+        pointer.current = null;
+      }
     }, UNLOCK_HOLD_MS);
+  };
+
+  const onHandlePointerDown = (event: React.PointerEvent<HTMLButtonElement>): void => {
+    if (!reorder || editing || event.button !== 0) return;
+    event.preventDefault();
+    clearHold();
+    const active: ReorderPointer = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      element: event.currentTarget,
+      armed: false,
+      moved: false,
+      unlockOnRelease: false,
+    };
+    pointer.current = active;
+    if (!reorder.start(event.clientY)) {
+      pointer.current = null;
+      return;
+    }
+    active.armed = true;
+    try {
+      active.element.setPointerCapture(active.pointerId);
+    } catch {
+      reorder.cancel();
+      pointer.current = null;
+    }
+  };
+
+  const onReorderPointerMove = (event: React.PointerEvent<HTMLElement>): void => {
+    const active = pointer.current;
+    if (!active || active.pointerId !== event.pointerId) return;
+    const distance = Math.hypot(event.clientX - active.startX, event.clientY - active.startY);
+
+    if (!active.armed) {
+      if (distance >= POINTER_SLOP_PX) {
+        clearHold();
+        pointer.current = null;
+      }
+      return;
+    }
+
+    // Once the hold has claimed the card, the shell must not reinterpret the
+    // first post-hold movement as day navigation or text selection.
+    event.preventDefault();
+    event.stopPropagation();
+    if (!active.moved && distance >= DRAG_SLOP_PX) active.moved = true;
+    if (active.moved) latestReorder.current?.move(event.clientY);
+  };
+
+  const onReorderPointerUp = (event: React.PointerEvent<HTMLElement>): void => {
+    const active = pointer.current;
+    if (!active || active.pointerId !== event.pointerId) return;
+    clearHold();
+    pointer.current = null;
+    if (!active.armed) return;
+
+    event.preventDefault();
+    latestReorder.current?.finish(active.moved);
+    if (!active.moved && active.unlockOnRelease) {
+      open({ x: active.startX, y: active.startY });
+    }
+  };
+
+  const onReorderPointerCancel = (event: React.PointerEvent<HTMLElement>): void => {
+    const active = pointer.current;
+    if (!active || active.pointerId !== event.pointerId) return;
+    clearHold();
+    pointer.current = null;
+    if (active.armed) latestReorder.current?.cancel();
+  };
+
+  const onReorderPointerLeave = (event: React.PointerEvent<HTMLElement>): void => {
+    const active = pointer.current;
+    if (!active || active.pointerId !== event.pointerId || active.armed) return;
+    clearHold();
+    pointer.current = null;
+  };
+
+  const onLostPointerCapture = (event: React.PointerEvent<HTMLElement>): void => {
+    const active = pointer.current;
+    if (!active || active.pointerId !== event.pointerId || !active.armed) return;
+    pointer.current = null;
+    latestReorder.current?.cancel();
   };
 
   const onClick = (event: React.MouseEvent<HTMLDivElement>): void => {
@@ -186,7 +331,13 @@ export const Card = ({
       data-editing={editing}
       data-guarded={guarded && !editing}
       data-frozen={frozen}
-      data-card={cardId(card)}
+      data-card={id}
+      data-reordering={reorder?.dragging === true}
+      style={
+        reorder?.dragging
+          ? ({ '--card-reorder-y': `${reorder.offsetY}px` } as React.CSSProperties)
+          : undefined
+      }
     >
       {/*
        * Keyed apart on purpose. Both branches are a `div` in the same position,
@@ -211,14 +362,37 @@ export const Card = ({
           onClick={onClick}
           onKeyDown={onKeyDown}
           onPointerDown={onPointerDown}
-          onPointerUp={clearHold}
-          onPointerCancel={clearHold}
-          onPointerLeave={clearHold}
+          onPointerMoveCapture={onReorderPointerMove}
+          onPointerUp={onReorderPointerUp}
+          onPointerCancel={onReorderPointerCancel}
+          onPointerLeave={onReorderPointerLeave}
+          onLostPointerCapture={onLostPointerCapture}
         />
       )}
 
-      {editable && !frozen && actions.length > 0 && (
+      {!frozen && actions.length > 0 && (
         <div className="card-actions">
+          {reorder && !editing && (
+            <button
+              type="button"
+              className="card-action card-reorder-handle"
+              title="Drag to reorder; use arrow keys to move"
+              aria-label={`Reorder ${label}`}
+              onClick={(event) => event.preventDefault()}
+              onKeyDown={(event) => {
+                if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+                event.preventDefault();
+                reorder.moveBy(event.key === 'ArrowUp' ? -1 : 1);
+              }}
+              onPointerDown={onHandlePointerDown}
+              onPointerMoveCapture={onReorderPointerMove}
+              onPointerUp={onReorderPointerUp}
+              onPointerCancel={onReorderPointerCancel}
+              onLostPointerCapture={onLostPointerCapture}
+            >
+              <GripIcon />
+            </button>
+          )}
           {guarded && !editing && (
             <button type="button" className="card-action" onClick={() => open()}>
               Unlock
@@ -242,3 +416,14 @@ export const Card = ({
     </article>
   );
 };
+
+const GripIcon = (): React.ReactElement => (
+  <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+    <path
+      d="M4.5 3h.01M9.5 3h.01M4.5 7h.01M9.5 7h.01M4.5 11h.01M9.5 11h.01"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
+  </svg>
+);
