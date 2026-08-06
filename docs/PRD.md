@@ -1,7 +1,7 @@
 # done — Product Requirements
 
-**Status:** Draft v4
-**Date:** 2026-08-05
+**Status:** Draft v5
+**Date:** 2026-08-06
 **Audience:** one user (the author). Single-tenant personal tool, not a product.
 
 ---

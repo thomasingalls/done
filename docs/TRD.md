@@ -1,7 +1,7 @@
 # done — Technical Requirements
 
-**Status:** Draft v3
-**Date:** 2026-08-05
+**Status:** Draft v4
+**Date:** 2026-08-06
 **Companion to:** [PRD.md](./PRD.md)
 
 ---
@@ -19,9 +19,9 @@ snippets elsewhere are illustrative of an argument — showing that an operation
 a mechanism already exists — and are marked as such.
 
 Styling, component structure, and framework idiom are implementation. They are described by the
-properties they must have (§8.2), not prescribed line by line. Draft v4 got this wrong in §8 and
-prescribed a flexbox layout; the requirement it was protecting survived the correction, the code
-did not.
+properties they must have (§8.2), not prescribed line by line. An earlier draft got this wrong
+in §8 and prescribed a flexbox layout; the requirement it was protecting survived the
+correction, the code did not.
 
 ---
 
