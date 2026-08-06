@@ -1,0 +1,17 @@
+version: 2
+
+updates:
+  # Keep immutable Action pins current without making workflow execution depend
+  # on mutable tags. Review each pin update independently before merging it.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Europe/Paris
+    open-pull-requests-limit: 3
+
+  # npm updates are deliberately omitted while GitHub documents pnpm support
+  # only through v10; this repository uses pnpm v11. Dependabot alerts and
+  # security updates can still be enabled in the repository settings.
