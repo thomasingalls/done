@@ -11,7 +11,7 @@
  * It is deliberately one small process:
  *
  *   - one HTTP server, for the upgrade and a health check
- *   - one websocket server, whose connection handler is upstream's
+ *   - one message loop, forked from upstream, in `connection.ts`
  *   - one authorization decision, in `auth.ts`
  *   - one file per room, in `persistence.ts`
  *
@@ -22,7 +22,7 @@
 
 import { createServer } from 'node:http';
 import { WebSocketServer, type WebSocket } from 'ws';
-import { docs, setPersistence, setupWSConnection } from '@y/websocket-server/utils';
+import { documents, setPersistence, setupConnection } from './connection.js';
 import { authorize, redactUrl, type RelayPolicy } from './auth.js';
 import { filePersistence, flush, type Persistence } from './persistence.js';
 
@@ -85,7 +85,7 @@ server.on('upgrade', (request, socket, head) => {
 
     console.log(`relay: ${decision.room} connected`);
     connection.once('close', () => console.log(`relay: ${decision.room} disconnected`));
-    setupWSConnection(connection, request, { docName: decision.room });
+    setupConnection(connection, decision.room);
   });
 });
 
@@ -100,7 +100,7 @@ const shutdown = (signal: string): void => {
   console.log(`relay: ${signal}, closing`);
   // Flush first: the debounce that keeps disk writes off the message path is a
   // few seconds of state to lose if the process just exits.
-  if (persistence) flush(persistence, docs);
+  if (persistence) flush(persistence, documents);
   for (const connection of websockets.clients) connection.close(1001, 'relay restarting');
   server.close(() => process.exit(0));
   // A client that ignores the close still holds a socket open. The state is

@@ -14,7 +14,7 @@ state directory loses nothing that isn't already on a phone and a laptop.
 
 | Concern         | Decision                                                                         |
 | --------------- | -------------------------------------------------------------------------------- |
-| Protocol        | `y-websocket`, via upstream's `@y/websocket-server` connection handler           |
+| Protocol        | `y-protocols` sync and awareness, in a message loop forked from upstream         |
 | Auth            | one shared bearer token, over TLS you terminate in front of it (`src/auth.ts`)   |
 | Rooms           | one per document; `RELAY_ROOMS` optionally pins the list                         |
 | State           | one file per room, written on idle and on last disconnect (`src/persistence.ts`) |
@@ -23,10 +23,13 @@ state directory loses nothing that isn't already on a phone and a laptop.
 ## Running it
 
 ```sh
-pnpm install --no-optional     # its own workspace: the app does not depend on this
+pnpm install     # its own workspace: the app does not depend on this
 pnpm build
 RELAY_TOKEN=$(openssl rand -base64 32) pnpm start
 ```
+
+Four dependencies, no build step beyond `tsc`, and nothing native — so it runs
+on whatever Node you have.
 
 Or with Docker:
 
@@ -86,21 +89,44 @@ pnpm test
 ```
 
 Starts the real process the way the Dockerfile does, connects the real client
-provider the app uses, and asserts the four things the app depends on: two
-devices converge; a device that was offline while the other wrote catches up on
-connect; a wrong token is refused with a close code the client can turn into a
-sentence; and the document survives a restart of the relay.
+provider the app uses, and asserts what the app depends on: two devices
+converge; awareness arrives and is cleared again when a device leaves; a device
+that was offline while the other wrote catches up on connect; a wrong token is
+refused with a close code the client can turn into a sentence; and the document
+survives a restart of the relay.
 
 The app's own suite does not start servers. It tests the authorization
 decisions directly (`test/relayAuth.test.ts` there imports `src/auth.ts` here)
 and everything else about sync against an injected transport.
 
-## Why upstream's connection handler
+## Why the message loop is a fork
 
-`@y/websocket-server` is the forkable descendant of the server that used to
-ship inside `y-websocket`, and its `setupWSConnection` is the sync and awareness
-message loop. Reimplementing it would be inventing a local-first technique,
-which PRD §12 lists as a non-goal. It is pinned at `0.1.1`, the last release
-built against Yjs v13; `0.1.2` moved to Yjs v14, which is the same migration
-`y-codemirror.next` is waiting on (TRD §10.1) and should happen at the same
-time, on both sides of the socket at once.
+`src/connection.ts` is `@y/websocket-server`'s `setupWSConnection` (MIT, Kevin
+Jahns), typed and trimmed. Depending on the package was the first choice, and
+it did not survive contact with a laptop.
+
+`@y/websocket-server@0.1.1` — the last release built against Yjs 13, which is
+what the client is pinned to (TRD §10.1) — imports `y-leveldb` at the top of
+the module, unconditionally, for a persistence backend this relay does not use.
+`y-leveldb` pulls in `leveldown`, a native module. Where a prebuilt binary
+exists for the running platform and ABI that is invisible; on Node 26 and an
+arm64 Mac, none does, and the relay does not start:
+
+```
+Error: No native build was found for platform=darwin arch=arm64 runtime=node abi=147
+```
+
+No install flag fixes it. The import is static, so the module loads whether or
+not the package is wanted, and skipping optional dependencies only changes
+which of the two failures you get. The release that removed the import also
+moved to Yjs 14 — a migration this codebase makes on both sides of the socket
+at once or not at all.
+
+Upstream's README describes this server as living in a forkable repository, and
+this is that fork. What is being _not_ reinvented is still not reinvented: the
+protocol is `y-protocols/sync` and `y-protocols/awareness`, imported, at the
+same versions the app uses. What the fork drops is the leveldb backend, the
+HTTP callback machinery, and the environment variables that configured them —
+none of which this relay was using. What it gains is that its dependencies are
+four packages of plain JavaScript, and the Yjs 14 migration happens when the
+client's does.

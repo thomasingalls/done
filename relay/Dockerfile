@@ -1,15 +1,14 @@
 # The relay, as one small process (TRD §7.2).
 #
 # Two stages so the runtime image carries neither the TypeScript compiler nor
-# the test client. `--no-optional` skips `@y/websocket-server`'s optional
-# y-leveldb (a native build this does not use — persistence here is a file) and
-# its optional ws@6 (superseded by the direct dependency).
+# the test client. Nothing here compiles a native module, which is why the
+# message loop is a fork rather than a dependency — see src/connection.ts.
 
 FROM node:22-alpine AS build
 WORKDIR /app
 RUN corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.json ./
-RUN pnpm install --frozen-lockfile --no-optional
+RUN pnpm install --frozen-lockfile
 COPY src ./src
 RUN pnpm build
 
@@ -18,7 +17,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 RUN corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile --no-optional --prod
+RUN pnpm install --frozen-lockfile --prod
 COPY --from=build /app/dist ./dist
 
 # The state directory is a volume in compose.yaml. It is a cache of what one

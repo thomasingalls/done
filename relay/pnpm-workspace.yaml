@@ -8,14 +8,10 @@
 # The seven-day quarantine on new releases is the app's policy and applies here
 # for the same reason: this process holds the only copy of a change that has
 # left one device and not yet reached the other.
+#
+# Nothing here builds a native module, and nothing should start to. The message
+# loop is a fork rather than a dependency precisely because the dependency
+# dragged one in (see src/connection.ts).
 minimumReleaseAge: 10080
 packages:
   - .
-
-# `@y/websocket-server` lists y-leveldb and an old ws among its *optional*
-# dependencies. Neither is used here — persistence is a file (src/persistence.ts)
-# and ws is a direct dependency at a current major — so the native build that
-# leveldown wants is refused rather than run. `pnpm install --no-optional`, which
-# is what the Dockerfile does, skips fetching them at all.
-allowBuilds:
-  leveldown: false

@@ -137,6 +137,34 @@ describe('the relay', () => {
     laptop.destroy();
   });
 
+  /**
+   * Awareness is ephemeral and never touches the document, so nothing else in
+   * either suite would notice if it stopped being carried — and it is what the
+   * app reads for "last synced from ⟨device⟩" and for remote cursors. It is
+   * also the half of the message loop this relay forks rather than imports
+   * (src/connection.ts), which makes it ours to keep working.
+   */
+  it('carries awareness, and clears it when a device leaves', async () => {
+    const phone = new Y.Doc();
+    const laptop = new Y.Doc();
+    const a = connect(phone);
+    const b = connect(laptop);
+    await until(() => a.synced && b.synced, 'neither client synced');
+
+    const named = (provider, name) =>
+      [...provider.awareness.getStates().values()].some((state) => state?.device?.name === name);
+
+    a.awareness.setLocalStateField('device', { id: 'p1', name: 'Phone' });
+    await until(() => named(b, 'Phone'), 'the laptop never saw the phone arrive');
+
+    a.destroy();
+    await until(() => !named(b, 'Phone'), 'the phone was still there after it left');
+
+    b.destroy();
+    phone.destroy();
+    laptop.destroy();
+  });
+
   it('holds what one device wrote until the other connects', async () => {
     const phone = new Y.Doc();
     const a = connect(phone);

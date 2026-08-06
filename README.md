@@ -51,7 +51,7 @@ on it:
 
 ```
 cd relay
-pnpm install --no-optional
+pnpm install
 pnpm test           # starts the real process and drives the real client
 RELAY_TOKEN=$(openssl rand -base64 32) pnpm dev
 ```
@@ -95,7 +95,7 @@ writing a component here — see "reading the document" below.
 | Persistence    | `src/crdt/persistence.ts`    | `y-indexeddb`, plus `navigator.storage.persist()` on the first write.                                                                                                   |
 | Sync           | `src/crdt/sync.ts`           | The §7.1 interface, a null implementation as the default, and the controller that only exists once an endpoint is configured.                                           |
 | Local settings | `src/lib/localStore.ts`      | The unsynced half of TRD §4.8: actor id, device, sync endpoint and token. Guarded — private mode throws on read too.                                                    |
-| The relay      | `relay/`                     | Its own package, its own lockfile, its own tests. A dumb pipe with one bearer token and one file per room (TRD §7.2).                                                   |
+| The relay      | `relay/`                     | Its own package, its own lockfile, its own tests. A dumb pipe with one bearer token and one file per room (TRD §7.2). Four dependencies, none native.                   |
 | Live preview   | `src/editor/livePreview.ts`  | Decorations over the Lezer tree. Nothing here mutates the document.                                                                                                     |
 | Static render  | `src/editor/staticRender.ts` | The same decorations, walked without a view. Half of the §4.4 pixel-identity constraint.                                                                                |
 | Commands       | `src/editor/commands.ts`     | Idempotent wrapping, task toggling.                                                                                                                                     |
@@ -163,12 +163,22 @@ invisible rather than a wait for the phone to come back. It is the difference
 between "eventually" and "when you open the laptop", and it is deleteable at any
 time.
 
-**`@y/websocket-server` is pinned at 0.1.1, the last Yjs v13 release.** Its
-`setupWSConnection` is the sync and awareness message loop; reimplementing it
-would be inventing a local-first technique, which PRD §12 lists as a non-goal.
-0.1.2 moved to Yjs v14 — the same migration `y-codemirror.next` is waiting on
-(TRD §10.1) — and the two should move together, on both sides of the socket at
-once. That is one more entry on an existing debt, not a new one.
+**The relay's message loop is a fork of `@y/websocket-server`, not a dependency
+on it.** Depending on the package was the first choice — PRD §12 rules out
+inventing local-first techniques, and `setupWSConnection` is the sync and
+awareness loop. It did not survive contact with a laptop: version 0.1.1, the
+last built against Yjs v13, statically imports `y-leveldb` for a persistence
+backend this relay does not use, and `y-leveldb` pulls in the native
+`leveldown`. On Node 26 and an arm64 Mac there is no prebuilt binary and the
+process does not start. No install flag helps — the import is static, so the
+module loads whether or not the package is wanted — and the release that
+removed it moved to Yjs v14, which is a migration to make on both sides of the
+socket at once (TRD §10.1) or not at all. Upstream describes the server as
+living in a forkable repository; `relay/src/connection.ts` is that fork, typed
+and trimmed. The protocol is still imported: `y-protocols/sync` and
+`y-protocols/awareness`, at the versions the client uses. What went is the
+leveldb backend, the webhook machinery, and the environment variables that
+configured them.
 
 **The device name is editable.** It was a read-only guess from the user agent in
 Phase 2, when nothing could see it. It is now the label that shows up on your
