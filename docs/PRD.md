@@ -8,10 +8,6 @@
 
 ## 0. Terminology
 
-**"Journal"** is the day's free-prose surface — the record of what got done. Earlier drafts
-called this "the log"; that name is retired because in a Yjs project "log" unavoidably reads
-as the CRDT update log. Nothing in this document refers to Yjs internals.
-
 **"Freeze"** is a UX rule: a surface becomes read-only. **"Compaction"** is a storage
 optimization with no user-visible effect. They are deliberately independent — see §6.
 
@@ -27,11 +23,11 @@ is not a general task manager and should not grow features to become one. Four m
 
 1. **A master list** of tasks and projects, loosely structured. No forced hierarchy, no
    mandatory metadata, no required dates.
-2. **A daily journal** recording _what actually got done_. What lands here is often not
-   lifted from the master list — frequently it's a subtask, incidental work, or something
-   that only became visible once the day started.
-3. **A Next list** for the current day: at most **three** items, task-shaped rather than
+2. **A Next list** for the current day: at most **three** items, task-shaped rather than
    project-shaped.
+3. **A Done record** for the current day, of _what actually got done_. What lands here is
+   often not lifted from the master list — frequently it's a subtask, incidental work, or
+   something that only became visible once the day started.
 4. **Scheduled items** attached to specific days, today and forward.
 
 The entire value of the tool is in how well it supports **writing and reading text**.
@@ -60,17 +56,22 @@ Ranked. When two conflict, the higher wins.
 
 The central structural decision, and the answer to "how much structure where."
 
-Two surfaces are **documents**. The unit of interaction is the whole text; you write prose in
-them; structure is whatever you typed. Strong structure makes them worse.
+One surface is a **document**. The unit of interaction is the whole text; you write prose in
+it; structure is whatever you typed. Strong structure makes it worse.
 
 - **Master list** — freely-structured markdown outline. Everything: tasks, projects,
   someday-maybes, notes-to-self. Nesting allowed, never required.
-- **Daily journal** — free prose and lists describing what got done.
 
 Three are **collections**. The unit of interaction is the _item_. They have cardinality (≤3),
 membership that moves between them, per-item state, and per-item interaction.
 
 - **Next**, **Scheduled**, **Done**.
+
+A day shows them in the order **Next, Done, Scheduled**: what you are doing, what you did,
+and the tail of intentions that have not come up yet. **Done reads newest-first** — whatever
+was completed most recently is on top, and a record you only ever add to is read from the
+top. Next and Scheduled are ordered by intent rather than by time and keep the order you put
+them in.
 
 Collection items are **cards**: an independently-editable block of markdown with its own
 chrome. Within a card, the first line is the **title** (high contrast) and everything after is
@@ -91,7 +92,6 @@ difficulty on purpose.
 | Next → Done                      | **Trivial.**                 | One gesture on the card. Single atomic move.                                                          |
 | Scheduled → Next / Done          | Easy                         | One gesture.                                                                                          |
 | Master → Next / Scheduled / Done | Deliberate, two steps        | **Copy-to** places a copy in the target; **Remove** separately deletes from master. Never one action. |
-| Journal line → Master            | Deliberate                   | Explicit promote action.                                                                              |
 | Done → editable                  | **Deliberately hard**        | Long-press or explicit unlock. See §5.                                                                |
 
 The master list is **not** expected to stay 1:1 with what appears in daily views. Copying out
@@ -116,10 +116,6 @@ dropped, not prompted about.
 **Freeze:** three days after its date, a day's **Next, Scheduled, and Done become permanently
 read-only.** There is no unfreeze, no override, and none will be added later. Per principle 6,
 the past is not going to be read again; a freeze with an escape hatch isn't a freeze.
-
-The **daily journal stays editable indefinitely.** The journal is where writing happens and
-the freeze exists to protect commitment records from retroactive editing, not to lock the
-prose. _(Still my call rather than a stated requirement — cheap to reverse.)_
 
 The **master list never freezes.** It is a living document with no date attached.
 
@@ -155,7 +151,7 @@ semantics, no nested screens.
                     └──────────┘
 ```
 
-Days run vertically, journal-style: past above, future below. Menu (calendar picker, search,
+Days run vertically, diary-style: past above, future below. Menu (calendar picker, search,
 settings) sits left; Goals sits right. Movement is continuous and interruptible — the adjacent
 view is partially visible during the drag, and releasing below threshold snaps back. It should
 feel like moving a sheet of paper, not a page transition.
@@ -200,8 +196,8 @@ the whole unit:
   ┌─────────────────────┐
   │ ☰  Wed 5 Aug        │    ← header: pinned, never scrolls away
   ├─────────────────────┤
-  │  journal / next /   │    ← body: scrolls internally
-  │  scheduled / done   │
+  │  next / done /      │    ← body: scrolls internally
+  │  scheduled          │
   └─────────────────────┘
    ╭──── tomorrow ─────╮     ← faded peek, click target
 ```
@@ -345,7 +341,7 @@ additional structural cost.
 
 **Permissions do not follow, and won't.** In a local-first CRDT with a relay that treats updates
 as opaque, there is nothing positioned to reject a write. Any agent with document access can
-write anything. "The agent may edit the journal but not Done" is a property of the agent's own
+write anything. "The agent may edit the master list but not Done" is a property of the agent's own
 code, enforced by trust, not by the data layer. That is acceptable for agents you run yourself,
 and it should be understood before anything is designed on the assumption of enforcement.
 See TRD §10.6.
@@ -391,8 +387,6 @@ tables. Distinct from Phase 5: Phase 5 reads and comments, Phase 6 writes.
 ## 14. Open questions
 
 1. **Card split threshold** (§10) — three returns is a starting guess.
-2. **Does the daily journal freeze?** §6 says no. Low-stakes and cheap to reverse, but it's my
-   call rather than a stated requirement.
-3. **Is document text attributed, or only cards?** §11.3 attributes cards. Per-character
-   attribution inside documents is possible but costly (TRD §4.8) and probably not worth it
-   until an agent is actually editing prose.
+2. **Is document text attributed, or only cards?** §11.3 attributes cards. Per-character
+   attribution inside the master list is possible but costly (TRD §4.8) and probably not worth
+   it until an agent is actually editing prose.
