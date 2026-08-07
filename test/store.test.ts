@@ -17,6 +17,7 @@ import {
   cardBody,
   cardsIn,
   compose,
+  listActors,
   moveAllNextTo,
   moveAllNextToMaster,
   newCard,
@@ -138,10 +139,7 @@ describe('bulk stale-item resolution stays out of the undo stack', () => {
 describe('the actor roster', () => {
   it('registers the human and the system actor', async () => {
     const store = await openStore({ persist: false });
-    const roster = store.meta.get('actors') as Map<string, { kind: string }>;
-    const kinds = [...(roster as unknown as { values(): Iterable<{ kind: string }> }).values()].map(
-      (actor) => actor.kind,
-    );
+    const kinds = listActors(store.doc).map((actor) => actor.kind);
     expect(kinds).toContain('human');
     expect(kinds).toContain('system');
     store.destroy();
@@ -183,8 +181,7 @@ describe('local persistence', () => {
     expect(second.actor.id).toBe(id);
     expect(second.actor.actor.color).toBe(color);
 
-    const roster = second.meta.get('actors') as unknown as { size: number };
-    expect(roster.size).toBe(2); // the human and the system actor, not four
+    expect(listActors(second.doc)).toHaveLength(2); // the human and the system actor, not four
     second.destroy();
   });
 });
@@ -216,6 +213,34 @@ describe('editable settings', () => {
 });
 
 describe('schema migration', () => {
+  it('flattens schema-v2 actor and settings maps without losing values', async () => {
+    const doc = new Y.Doc();
+    const meta = doc.getMap('meta');
+    const actors = new Y.Map<{ kind: 'human' | 'system'; name: string; color: string }>();
+    const settings = new Y.Map<unknown>();
+    doc.transact(() => {
+      meta.set('schemaVersion', 2);
+      actors.set('old-human', { kind: 'human', name: 'Thomas', color: '#123abc' });
+      actors.set('system', { kind: 'system', name: 'done', color: '#8a8a8a' });
+      settings.set('rolloverHour', 6);
+      meta.set('actors', actors);
+      meta.set('settings', settings);
+    });
+    localStorage.setItem('done.actor', 'old-human');
+
+    const store = await openStore({ doc, persist: false });
+    expect(readSchemaVersion(store.meta)).toBe(SCHEMA_VERSION);
+    expect(actorById(doc, 'old-human')).toEqual({
+      kind: 'human',
+      name: 'Thomas',
+      color: '#123abc',
+    });
+    expect(readSettings(store.meta).rolloverHour).toBe(6);
+    expect(store.meta.get('actor:old-human')).toBeDefined();
+    expect(store.meta.get('setting.rolloverHour')).toBe(6);
+    store.destroy();
+  });
+
   it('moves embedded v1 cards into the canonical registry without losing content', async () => {
     const doc = new Y.Doc();
     const meta = doc.getMap('meta');

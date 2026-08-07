@@ -36,12 +36,9 @@ const sourceFiles = (directory: string): string[] =>
   });
 
 /**
- * Static and dynamic alike. The sync transport is loaded with `import(...)`
- * inside a function (TRD §7.1, so an unconfigured app never fetches it), and a
- * dynamic import is exactly the kind that gets written somewhere else without
- * anyone noticing — it does not appear at the top of a file where a reader
- * would see it, and until this matched both forms it did not appear here
- * either.
+ * Static and dynamic alike. A dynamic import is exactly the kind that gets
+ * written somewhere else without anyone noticing, so the seam catches both
+ * forms even though the current websocket transport is intentionally eager.
  */
 const importedPackages = (source: string): string[] => [
   ...[...source.matchAll(/^\s*(?:import|export)[\s\S]*?from\s+'([^']+)'/gm)].map(
@@ -89,14 +86,9 @@ describe('the Yjs seam', () => {
     expect(offenders).toEqual(['y-websocket']);
   });
 
-  /**
-   * TRD §7.1: "no provider is constructed until an endpoint is configured".
-   * Loading the transport lazily is what makes that true of the bundle and not
-   * only of the object graph, so the import stays dynamic on purpose.
-   */
-  it('loads the sync transport lazily', () => {
+  it('keeps the temporary websocket transport eager', () => {
     const seam = readFileSync('src/crdt/yjs.ts', 'utf8');
-    expect(seam).toContain("await import('y-websocket')");
-    expect(seam).not.toContain("from 'y-websocket'");
+    expect(seam).toContain("from 'y-websocket'");
+    expect(seam).not.toContain("await import('y-websocket')");
   });
 });

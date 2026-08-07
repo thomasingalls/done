@@ -8,14 +8,14 @@
  * write path afterwards is how the compaction-reverts-on-undo bug happens.
  *
  * Storage split per TRD §4.8:
- *   - the roster lives in `meta.actors`, and syncs
+ *   - the roster lives in mergeable `meta[actor:<id>]` entries, and syncs
  *   - which actor this client is lives in localStorage, and does not
  *   - device identity lives in localStorage, and does not
  */
 
 import { newId } from '../lib/id';
 import { readLocal, readLocalJson, writeLocal, writeLocalJson } from '../lib/localStore';
-import { newMap, transact, type YDoc, type YMap } from './yjs';
+import { Y, transact, type YDoc, type YMap } from './yjs';
 
 export type ActorKind = 'human' | 'agent' | 'system';
 export type ActorId = string;
@@ -39,6 +39,7 @@ export interface Origin {
 
 const ACTOR_KEY = 'done.actor';
 const DEVICE_KEY = 'done.device';
+const ACTOR_PREFIX = 'actor:';
 
 /** Distinguishable at a glance and legible on both themes. */
 const COLORS = ['#e0662f', '#3f8fd6', '#5aab63', '#b45cc4', '#c9a227', '#3fa9a3'];
@@ -84,7 +85,41 @@ export const renameLocalDevice = (name: string): Device | null => {
   return device;
 };
 
-const actorRoster = (doc: YDoc): YMap<Actor> => doc.getMap('meta').get('actors') as YMap<Actor>;
+const actorKey = (id: ActorId): string => `${ACTOR_PREFIX}${id}`;
+
+const isActor = (value: unknown): value is Actor => {
+  if (!value || typeof value !== 'object') return false;
+  const actor = value as Record<string, unknown>;
+  return (
+    (actor['kind'] === 'human' || actor['kind'] === 'agent' || actor['kind'] === 'system') &&
+    typeof actor['name'] === 'string' &&
+    typeof actor['color'] === 'string'
+  );
+};
+
+/**
+ * Schema-v2 stored a nested `Y.Map` at `meta.actors`. Two fresh replicas could
+ * concurrently create different maps at that one key, and Yjs would retain one
+ * whole map rather than merge the entries inside them. Actor entries are flat
+ * values in `meta` now, so distinct ids are distinct CRDT keys and merge.
+ */
+const migrateLegacyRoster = (meta: YMap<unknown>): void => {
+  const legacy = meta.get('actors');
+  if (!(legacy instanceof Y.Map)) return;
+  for (const [id, value] of legacy.entries()) {
+    if (isActor(value) && !meta.has(actorKey(id))) meta.set(actorKey(id), value);
+  }
+};
+
+const actorFrom = (meta: YMap<unknown>, id: ActorId): Actor | undefined => {
+  const value = meta.get(actorKey(id));
+  if (isActor(value)) return value;
+
+  // Read old documents before their migration transaction has run.
+  const legacy = meta.get('actors');
+  const old = legacy instanceof Y.Map ? legacy.get(id) : undefined;
+  return isActor(old) ? old : undefined;
+};
 
 /**
  * The set of actors the local human can see. Phase 1 shows none of this;
@@ -122,12 +157,10 @@ export const resolveActor = (doc: YDoc, meta: YMap<unknown>): ActorContext => {
   // Roster registration is bookkeeping, not something the human typed, so it
   // is attributed to the system actor and stays out of the undo stack.
   transact(doc, systemOrigin, () => {
-    if (!meta.has('actors')) meta.set('actors', newMap<Actor>());
+    migrateLegacyRoster(meta);
   });
 
-  const roster = actorRoster(doc);
-
-  const existing = roster.get(id);
+  const existing = actorFrom(meta, id);
   const actor: Actor = existing ?? {
     kind: 'human',
     name: 'You',
@@ -135,9 +168,13 @@ export const resolveActor = (doc: YDoc, meta: YMap<unknown>): ActorContext => {
   };
 
   transact(doc, systemOrigin, () => {
-    if (!existing) roster.set(id as ActorId, actor);
-    if (!roster.has(SYSTEM_ACTOR_ID)) {
-      roster.set(SYSTEM_ACTOR_ID, { kind: 'system', name: 'done', color: '#8a8a8a' });
+    if (!existing) meta.set(actorKey(id as ActorId), actor);
+    if (!actorFrom(meta, SYSTEM_ACTOR_ID)) {
+      meta.set(actorKey(SYSTEM_ACTOR_ID), {
+        kind: 'system',
+        name: 'done',
+        color: '#8a8a8a',
+      });
     }
   });
 
@@ -151,12 +188,15 @@ export const resolveActor = (doc: YDoc, meta: YMap<unknown>): ActorContext => {
 };
 
 export const listActors = (doc: YDoc): Array<{ id: ActorId } & Actor> => {
-  const roster = actorRoster(doc);
-  if (!roster) return [];
-  return [...roster.entries()].map(([id, actor]) => ({ id, ...actor }));
+  const meta = doc.getMap('meta');
+  return [...meta.entries()].flatMap(([key, value]) => {
+    if (!key.startsWith(ACTOR_PREFIX) || !isActor(value)) return [];
+    return [{ id: key.slice(ACTOR_PREFIX.length), ...value }];
+  });
 };
 
-export const actorById = (doc: YDoc, id: ActorId): Actor | undefined => actorRoster(doc)?.get(id);
+export const actorById = (doc: YDoc, id: ActorId): Actor | undefined =>
+  actorFrom(doc.getMap('meta'), id);
 
 export const updateActor = (
   doc: YDoc,
@@ -164,8 +204,8 @@ export const updateActor = (
   id: ActorId,
   patch: Partial<Pick<Actor, 'name' | 'color'>>,
 ): Actor | null => {
-  const roster = actorRoster(doc);
-  const current = roster?.get(id);
+  const meta = doc.getMap('meta');
+  const current = actorFrom(meta, id);
   if (!current || current.kind !== 'human') return null;
 
   const name = patch.name ?? current.name;
@@ -173,6 +213,6 @@ export const updateActor = (
   if (name.trim().length === 0 || !/^#[0-9a-f]{6}$/iu.test(color)) return null;
 
   const next = { ...current, name, color };
-  transact(doc, origin, () => roster.set(id, next));
+  transact(doc, origin, () => meta.set(actorKey(id), next));
   return next;
 };

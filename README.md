@@ -109,15 +109,11 @@ writing a component here — see "reading the document" below.
 
 ## Decisions taken in this phase
 
-**The transport is imported lazily, not statically.** TRD §7.1 says no provider
-is constructed until an endpoint is configured. Loaded with a static import that
-would be true of the object graph and false of the bundle — every device that
-never syncs would still download the provider. `openWebsocket` is the only
-`import('y-websocket')` in the codebase and it is inside a function, so
-`y-websocket` builds as its own chunk and an unconfigured app never fetches it.
-The seam test was widened to match dynamic imports, which it previously did not:
-a lazy import is exactly the kind that gets written somewhere else without
-anyone noticing, because it is not at the top of the file where a reader looks.
+**The websocket transport is imported eagerly, but constructed conditionally.**
+TRD §7.1's invariant is that no provider exists until an endpoint is configured;
+`createSync` still enforces that. This transport is already scheduled for
+replacement, and keeping its small module in a separate lazy chunk was not worth
+special-casing that chunk in the service-worker precache and bundle accounting.
 
 **A bare loopback host defaults to `ws://` when the page is insecure.** The
 default scheme is otherwise `wss://`, because the token is a bearer credential
@@ -160,13 +156,13 @@ read-only mode, nothing that interrupts writing to report on a network. Someone
 who wants to know goes and looks. The one concession is that "offline" is drawn
 as an ordinary muted state rather than as a warning, because it is not one.
 
-**"Last synced from ⟨device⟩" comes from awareness, not from the document.** A
-device name in the synced document would contradict TRD §4.8, which keeps device
-identity local. Awareness is ephemeral and unsynced, so the local device
-publishes its name there and the other end reads it off the peer that is
-connected. When no peer is connected the change came out of the relay's own
-stored copy and there is no device to name — so it says how long ago, and
-nothing about where.
+**"Last synced from ⟨device⟩" comes from the update envelope, not the document.**
+A device name in the synced document would contradict TRD §4.8, which keeps
+device identity local. Each connection announces its local device metadata to
+the relay; the relay attaches that metadata when it forwards opaque update
+bytes, without inspecting them. Awareness still drives the current peer list.
+State loaded from the relay's stored copy has no originating live connection,
+so it says how long ago and nothing about where.
 
 **The relay keeps a file, and it is still not a backup.** Every device holds a
 full replica, so a relay that forgets everything loses nothing — the next device

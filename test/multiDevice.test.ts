@@ -22,11 +22,15 @@ import { describe, expect, it } from 'vitest';
 import {
   Y,
   archiveTextOf,
+  cardAuthor,
   cardBody,
   cardsIn,
   compactDay,
   compose,
+  listActors,
   openStore,
+  readSettings,
+  setRolloverHour,
   transact,
   type Store,
   type Workspace,
@@ -122,6 +126,40 @@ const bodies = (store: Store, section: 'next' | 'scheduled' | 'done'): string[] 
   cardsIn(store.doc, TODAY, section).map(cardBody);
 
 describe('through a relay', () => {
+  it('merges metadata from independently initialized browser profiles', async () => {
+    localStorage.clear();
+    const phone = await openStore({ persist: false });
+    expect(setRolloverHour(phone.doc, phone.meta, phone.actor.origin, 5)).toBe(true);
+    compose(workspaceFor(phone), { date: TODAY, section: 'done' }, 'from the phone');
+
+    // A second device has its own localStorage: actor and device identity do
+    // not sync, so sharing the test process's storage would mask this race.
+    localStorage.clear();
+    const laptop = await openStore({ persist: false });
+    compose(workspaceFor(laptop), { date: TODAY, section: 'done' }, 'from the laptop');
+    expect(phone.actor.id).not.toBe(laptop.actor.id);
+    expect(phone.actor.device.id).not.toBe(laptop.actor.device.id);
+
+    const net = hub();
+    net.attach(phone.doc);
+    net.attach(laptop.doc);
+    net.connect(phone.doc);
+    net.connect(laptop.doc);
+    await settle();
+    await settle();
+
+    const roster = new Set(listActors(phone.doc).map(({ id }) => id));
+    const authors = cardsIn(phone.doc, TODAY, 'done').map(cardAuthor);
+    expect(authors).toHaveLength(2);
+    expect(authors.every((id) => roster.has(id))).toBe(true);
+    expect(readSettings(phone.meta).rolloverHour).toBe(5);
+    expect(readSettings(laptop.meta).rolloverHour).toBe(5);
+
+    net.destroy();
+    phone.destroy();
+    laptop.destroy();
+  });
+
   it('carries a card from one device to the other', async () => {
     const { phone, laptop, net, destroy } = await devices();
     net.connect(phone.doc);

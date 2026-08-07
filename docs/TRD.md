@@ -137,7 +137,7 @@ requires the app to know: **membership and ordering of cards in collections.**
 
 ```
 Y.Doc (root)
-├── meta          Y.Map    { schemaVersion, createdAt, settings }
+├── meta          Y.Map    { schemaVersion, createdAt, setting.*, actor:* }
 ├── master        Y.Text                                ← document, never freezes
 ├── cards         Y.Map<CardId, Card>                   ← canonical card content
 ├── cardLocations Y.Map<CardId, "ISODate:section">     ← canonical membership
@@ -157,11 +157,16 @@ Card = Y.Map {
 }
 ```
 
-`meta` additionally holds the actor roster:
+`meta` additionally holds settings and actor records as flat CRDT keys:
 
 ```
-meta.actors  Y.Map<ActorId, { kind: 'human'|'agent'|'system', name, color }>
+meta['setting.rolloverHour']  number
+meta['actor:' + ActorId]      { kind: 'human'|'agent'|'system', name, color }
 ```
+
+They are deliberately not nested `Y.Map` values. Two new offline devices can
+initialize concurrently; independent flat keys merge, while two nested maps
+assigned to the same parent key would make one entire settings/actor branch win.
 
 Day maps are created lazily on first write. An untouched day occupies nothing.
 
@@ -291,12 +296,12 @@ already the two-cursor case.
 
 **Storage split:**
 
-| What                        | Where                        | Synced    |
-| --------------------------- | ---------------------------- | --------- |
-| Actor roster                | `meta.actors` in the Yjs doc | yes       |
-| Which actor this client is  | `localStorage`               | no        |
-| Device id and friendly name | `localStorage`               | no        |
-| Live cursor / presence      | awareness protocol           | ephemeral |
+| What                        | Where                 | Synced    |
+| --------------------------- | --------------------- | --------- |
+| Actor roster                | `meta['actor:' + id]` | yes       |
+| Which actor this client is  | `localStorage`        | no        |
+| Device id and friendly name | `localStorage`        | no        |
+| Live cursor / presence      | awareness protocol    | ephemeral |
 
 **Attribution granularity is card-level, deliberately.** `Card.author` is one field and answers
 "who created this." The master list is _not_ attributed per character: Yjs stores no author

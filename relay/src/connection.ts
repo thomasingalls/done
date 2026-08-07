@@ -40,6 +40,9 @@ import type { Persistence } from './persistence.js';
 
 const MESSAGE_SYNC = 0;
 const MESSAGE_AWARENESS = 1;
+/** App-specific envelope types, outside y-websocket's 0–3 range. */
+const MESSAGE_DEVICE = 4;
+const MESSAGE_DEVICE_UPDATE = 5;
 
 const WS_OPEN = 1;
 
@@ -51,6 +54,8 @@ export class SharedDoc extends Y.Doc {
   readonly name: string;
   /** Connection → the awareness client ids it controls, cleared when it goes. */
   readonly conns = new Map<WebSocket, Set<number>>();
+  /** Connection metadata used only to label the opaque updates it originated. */
+  readonly devices = new Map<WebSocket, { id: string; name: string }>();
   readonly awareness: awarenessProtocol.Awareness;
 
   constructor(name: string) {
@@ -90,10 +95,21 @@ export class SharedDoc extends Y.Doc {
       },
     );
 
-    this.on('update', (update: Uint8Array): void => {
+    this.on('update', (update: Uint8Array, origin: unknown): void => {
       const encoder = encoding.createEncoder();
-      encoding.writeVarUint(encoder, MESSAGE_SYNC);
-      syncProtocol.writeUpdate(encoder, update);
+      const device = this.devices.get(origin as WebSocket);
+      if (device) {
+        // The update remains opaque. This envelope records only which accepted
+        // connection supplied the bytes, so clients need not guess from the
+        // set of peers that happen to be online.
+        encoding.writeVarUint(encoder, MESSAGE_DEVICE_UPDATE);
+        encoding.writeVarString(encoder, device.id);
+        encoding.writeVarString(encoder, device.name);
+        encoding.writeVarUint8Array(encoder, update);
+      } else {
+        encoding.writeVarUint(encoder, MESSAGE_SYNC);
+        syncProtocol.writeUpdate(encoder, update);
+      }
       const message = encoding.toUint8Array(encoder);
       for (const conn of this.conns.keys()) send(this, conn, message);
     });
@@ -139,6 +155,7 @@ const closeConn = (doc: SharedDoc, conn: WebSocket): void => {
   const controlled = doc.conns.get(conn);
   if (controlled) {
     doc.conns.delete(conn);
+    doc.devices.delete(conn);
     awarenessProtocol.removeAwarenessStates(doc.awareness, [...controlled], null);
 
     if (doc.conns.size === 0) {
@@ -170,6 +187,17 @@ const readMessage = (doc: SharedDoc, conn: WebSocket, message: Uint8Array): void
         decoding.readVarUint8Array(decoder),
         conn,
       );
+      break;
+    }
+    case MESSAGE_DEVICE: {
+      const id = decoding.readVarString(decoder);
+      const name = decoding.readVarString(decoder);
+      // Identity is display metadata, not authorization. Bound it anyway: an
+      // authenticated but malformed client should not make the relay retain an
+      // unbounded label for the lifetime of the connection.
+      if (id.length > 0 && id.length <= 128 && name.length > 0 && name.length <= 256) {
+        doc.devices.set(conn, { id, name });
+      }
       break;
     }
     // Anything else is from a protocol this relay does not speak. Ignored

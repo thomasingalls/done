@@ -23,10 +23,14 @@ import { join } from 'node:path';
 import { after, before, describe, it } from 'node:test';
 import WebSocket from 'ws';
 import * as Y from 'yjs';
+import * as decoding from 'lib0/decoding';
+import * as encoding from 'lib0/encoding';
 import { WebsocketProvider } from 'y-websocket';
 
 const TOKEN = 'a-shared-secret';
 const ROOM = 'done';
+const MESSAGE_DEVICE = 4;
+const MESSAGE_DEVICE_UPDATE = 5;
 
 let port = 0;
 let dataDirectory = '';
@@ -70,13 +74,33 @@ const stopRelay = (child) =>
   });
 
 /** A client, shaped like the app's: one doc, one provider, one token. */
-const connect = (doc, token = TOKEN) =>
-  new WebsocketProvider(endpoint(), ROOM, doc, {
+const connect = (doc, token = TOKEN, device = { id: 'test', name: 'Test device' }) => {
+  const provider = new WebsocketProvider(endpoint(), ROOM, doc, {
     WebSocketPolyfill: WebSocket,
     params: { token },
     disableBc: true,
     maxBackoffTime: 250,
+    connect: false,
   });
+  provider.lastDevice = null;
+  provider.messageHandlers[MESSAGE_DEVICE_UPDATE] = (_encoder, decoder) => {
+    provider.lastDevice = {
+      id: decoding.readVarString(decoder),
+      name: decoding.readVarString(decoder),
+    };
+    Y.applyUpdate(doc, decoding.readVarUint8Array(decoder), provider);
+  };
+  provider.on('status', ({ status }) => {
+    if (status !== 'connected' || !provider.ws) return;
+    const encoder = encoding.createEncoder();
+    encoding.writeVarUint(encoder, MESSAGE_DEVICE);
+    encoding.writeVarString(encoder, device.id);
+    encoding.writeVarString(encoder, device.name);
+    provider.ws.send(encoding.toUint8Array(encoder));
+  });
+  provider.connect();
+  return provider;
+};
 
 const until = async (predicate, message, timeout = 5_000) => {
   const deadline = Date.now() + timeout;
@@ -111,8 +135,8 @@ describe('the relay', () => {
   it('carries changes between two devices', async () => {
     const phone = new Y.Doc();
     const laptop = new Y.Doc();
-    const a = connect(phone);
-    const b = connect(laptop);
+    const a = connect(phone, TOKEN, { id: 'phone', name: 'Phone' });
+    const b = connect(laptop, TOKEN, { id: 'laptop', name: 'Laptop' });
 
     await until(() => a.synced && b.synced, 'neither client synced');
 
@@ -121,12 +145,14 @@ describe('the relay', () => {
       () => laptop.getText('master').toString().includes('call the dentist'),
       'the laptop never saw the phone',
     );
+    assert.deepEqual(b.lastDevice, { id: 'phone', name: 'Phone' });
 
     laptop.getText('master').insert(0, 'draft the migration plan\n');
     await until(
       () => phone.getText('master').toString().includes('draft the migration plan'),
       'the phone never saw the laptop',
     );
+    assert.deepEqual(a.lastDevice, { id: 'laptop', name: 'Laptop' });
 
     // The conflict the whole architecture exists for: both sides kept.
     assert.equal(phone.getText('master').toString(), laptop.getText('master').toString());

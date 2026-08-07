@@ -17,6 +17,8 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import * as decoding from 'lib0/decoding';
+import * as encoding from 'lib0/encoding';
 import {
   Awareness,
   DEFAULT_ROOM,
@@ -27,6 +29,7 @@ import {
   disabledSync,
   normalizeEndpoint,
   normalizeRoom,
+  openWebsocket,
   parseEndpoint,
   openStore,
   readSyncConfig,
@@ -74,6 +77,52 @@ const settle = async (): Promise<void> => {
   await Promise.resolve();
   await Promise.resolve();
 };
+
+class FakeWebSocket {
+  static readonly CONNECTING = 0;
+  static readonly OPEN = 1;
+  static readonly CLOSING = 2;
+  static readonly CLOSED = 3;
+
+  readonly OPEN = FakeWebSocket.OPEN;
+  readonly url: string;
+  readyState = FakeWebSocket.CONNECTING;
+  binaryType: BinaryType = 'blob';
+  onopen: ((event: Event) => void) | null = null;
+  onclose: ((event: CloseEvent) => void) | null = null;
+  onmessage: ((event: MessageEvent<ArrayBuffer>) => void) | null = null;
+  onerror: ((event: Event) => void) | null = null;
+  readonly sent: Array<string | ArrayBufferLike | Blob | ArrayBufferView> = [];
+
+  constructor(url: string | URL) {
+    this.url = String(url);
+    fakeSockets.push(this);
+  }
+
+  send(data: string | ArrayBufferLike | Blob | ArrayBufferView): void {
+    this.sent.push(data);
+  }
+
+  close(): void {
+    this.readyState = FakeWebSocket.CLOSED;
+  }
+
+  open(): void {
+    this.readyState = FakeWebSocket.OPEN;
+    this.onopen?.(new Event('open'));
+  }
+
+  receive(data: Uint8Array): void {
+    this.onmessage?.(new MessageEvent('message', { data: data.buffer as ArrayBuffer }));
+  }
+
+  serverClose(code: number, reason: string): void {
+    this.readyState = FakeWebSocket.CLOSED;
+    this.onclose?.({ code, reason } as CloseEvent);
+  }
+}
+
+const fakeSockets: FakeWebSocket[] = [];
 
 beforeEach(() => {
   localStorage.clear();
@@ -184,6 +233,80 @@ describe('with nothing configured', () => {
   });
 });
 
+describe('the websocket seam', () => {
+  it('announces its device, preserves the sender, and stops after a terminal refusal', async () => {
+    vi.useFakeTimers();
+    fakeSockets.length = 0;
+    vi.stubGlobal('WebSocket', FakeWebSocket);
+
+    const doc = new Y.Doc();
+    const awareness = new Awareness(doc);
+    awareness.setLocalStateField('device', { id: 'phone-id', name: 'Phone' });
+    const onRemoteUpdate = vi.fn<WebsocketOptions['onRemoteUpdate']>();
+    const onClose = vi.fn<WebsocketOptions['onClose']>();
+    const session = await openWebsocket({
+      url: 'wss://relay.example',
+      room: 'done',
+      doc,
+      awareness,
+      token: 'wrong',
+      onStatus: () => {},
+      onSynced: () => {},
+      onRemoteUpdate,
+      onClose,
+    });
+
+    const socket = fakeSockets[0];
+    expect(socket).toBeDefined();
+    socket?.open();
+
+    const announced = decoding.createDecoder(socket?.sent[0] as Uint8Array);
+    expect(decoding.readVarUint(announced)).toBe(4);
+    expect(decoding.readVarString(announced)).toBe('phone-id');
+    expect(decoding.readVarString(announced)).toBe('Phone');
+
+    const sentBeforeRename = socket?.sent.length ?? 0;
+    awareness.setLocalStateField('device', { id: 'phone-id', name: 'Kitchen phone' });
+    expect(socket?.sent.length).toBeGreaterThan(sentBeforeRename);
+    const renamedMessage = socket?.sent.slice(sentBeforeRename).find((message) => {
+      const decoder = decoding.createDecoder(message as Uint8Array);
+      return decoding.readVarUint(decoder) === 4;
+    });
+    expect(renamedMessage).toBeDefined();
+    const renamed = decoding.createDecoder(renamedMessage as Uint8Array);
+    expect(decoding.readVarUint(renamed)).toBe(4);
+    expect(decoding.readVarString(renamed)).toBe('phone-id');
+    expect(decoding.readVarString(renamed)).toBe('Kitchen phone');
+
+    const remote = new Y.Doc();
+    remote.getText('master').insert(0, 'from tablet');
+    const envelope = encoding.createEncoder();
+    encoding.writeVarUint(envelope, 5);
+    encoding.writeVarString(envelope, 'tablet-id');
+    encoding.writeVarString(envelope, 'Tablet');
+    encoding.writeVarUint8Array(envelope, Y.encodeStateAsUpdate(remote));
+    socket?.receive(encoding.toUint8Array(envelope));
+    expect(doc.getText('master').toString()).toBe('from tablet');
+    expect(onRemoteUpdate).toHaveBeenCalledWith({ id: 'tablet-id', name: 'Tablet' });
+
+    socket?.serverClose(1006, '');
+    await vi.advanceTimersByTimeAsync(200);
+    expect(fakeSockets).toHaveLength(2); // ordinary offline still reconnects
+
+    const refused = fakeSockets[1];
+    refused?.open();
+    refused?.serverClose(4401, 'unauthorized');
+    expect(onClose).toHaveBeenCalledWith(4401, 'unauthorized');
+    await vi.advanceTimersByTimeAsync(30_000);
+    expect(fakeSockets).toHaveLength(2);
+
+    session.destroy();
+    awareness.destroy();
+    remote.destroy();
+    doc.destroy();
+  });
+});
+
 describe('the store, sync-absent', () => {
   it('opens, writes and undoes with no provider and no socket', async () => {
     // Not a stand-in for the transport: the point is that the *platform's*
@@ -273,11 +396,14 @@ describe('a configured relay', () => {
 
     // What the network does to awareness, done by hand: another device turns up.
     awareness.states.set(4242, { device: { id: 'zz', name: 'Laptop' } });
-    awareness.emit('change', [{ added: [4242], updated: [], removed: [] }, 'test']);
-    expect(sync.state.peers).toEqual(['Laptop']);
+    awareness.states.set(4343, { device: { id: 'yy', name: 'Tablet' } });
+    awareness.emit('change', [{ added: [4242, 4343], updated: [], removed: [] }, 'test']);
+    expect(sync.state.peers).toEqual(['Laptop', 'Tablet']);
 
-    options.onRemoteUpdate();
-    expect(sync.state.lastSyncedFrom).toBe('Laptop');
+    // Presence order is unrelated to update origin: the transport names the
+    // exact connection whose bytes the relay forwarded.
+    options.onRemoteUpdate({ id: 'yy', name: 'Tablet' });
+    expect(sync.state.lastSyncedFrom).toBe('Tablet');
 
     sync.destroy();
     doc.destroy();
@@ -520,5 +646,7 @@ describe('how long ago', () => {
 });
 
 afterEach(() => {
+  vi.useRealTimers();
+  vi.unstubAllGlobals();
   vi.restoreAllMocks();
 });

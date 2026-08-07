@@ -29,6 +29,7 @@ import {
   openWebsocket,
   type Awareness,
   type OpenWebsocket,
+  type TransportDevice,
   type WebsocketSession,
   type YDoc,
 } from './yjs';
@@ -301,8 +302,8 @@ export const createSync = ({
 
   /**
    * Bumped by every stop. An `open` in flight resolves into a controller that
-   * may have been reconfigured or destroyed since — a disconnect during the
-   * dynamic import is not a rare case, it is what leaving the menu looks like.
+   * may have been reconfigured or destroyed since — a disconnect before the
+   * asynchronously opened session settles is not a rare case.
    */
   let generation = 0;
 
@@ -324,15 +325,10 @@ export const createSync = ({
     for (const listener of listeners) listener();
   };
 
-  /**
-   * A change arrived from somewhere else. Which device it came from is not in
-   * the update — the relay forwards opaque bytes — so it is read off awareness,
-   * where the other client publishes its device name. With no peer connected
-   * the update came from the relay's stored copy, and `from` stays null.
-   */
-  const markSynced = (): void => {
+  /** A merge completed, optionally carrying the connection that originated it. */
+  const markSynced = (device: TransportDevice | null = null): void => {
     const at = new Date();
-    last = { at, from: peers[0] ?? null };
+    last = { at, from: device?.name ?? null };
     const now = at.getTime();
     if (now - persistedAt > PERSIST_INTERVAL_MS) {
       persistedAt = now;
@@ -375,9 +371,9 @@ export const createSync = ({
         error = null;
         markSynced();
       },
-      onRemoteUpdate: () => {
+      onRemoteUpdate: (device) => {
         if (mine !== generation) return;
-        markSynced();
+        markSynced(device);
       },
       onClose: (code, reason) => {
         if (mine !== generation) return;

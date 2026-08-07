@@ -3,7 +3,7 @@
  *
  * ```
  * Y.Doc (root)
- * ├── meta      Y.Map    { schemaVersion, createdAt, settings, actors }
+ * ├── meta      Y.Map    { schemaVersion, createdAt, setting.*, actor:* }
  * ├── master       Y.Text                       ← document, never freezes
  * ├── days         Y.Map<ISODate, Y.Map>        ← ordered card-id collections
  * ├── cards        Y.Map<CardId, Card>          ← canonical card content
@@ -16,12 +16,12 @@
  * the property that was being protected.
  */
 
-import { newMap, transact, type YDoc, type YMap, type YText } from './yjs';
+import { transact, type YDoc, type YMap, type YText } from './yjs';
 import type { Origin } from './actors';
 import { Temporal } from '../lib/temporal';
 import { cardLocationsMap, cardsMap, daysMap, migrateCardsToRegistry } from './days';
 
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 
 export interface Settings {
   /** Hour at which the day rolls over, in the last-known timezone (PRD §8). */
@@ -29,6 +29,17 @@ export interface Settings {
 }
 
 export const DEFAULT_SETTINGS: Settings = { rolloverHour: 0 };
+
+const ROLLOVER_HOUR_KEY = 'setting.rolloverHour';
+
+const validRolloverHour = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isInteger(value) && value >= 0 && value < 24;
+
+const legacyRolloverHour = (meta: YMap<unknown>): number | null => {
+  const settings = meta.get('settings') as YMap<unknown> | undefined;
+  const value = settings?.get('rolloverHour');
+  return validRolloverHour(value) ? value : null;
+};
 
 export interface DocumentTree {
   doc: YDoc;
@@ -60,11 +71,10 @@ export const openTree = (doc: YDoc, origin: Origin): DocumentTree => {
   transact(doc, origin, () => {
     if (storedVersion < SCHEMA_VERSION) meta.set('schemaVersion', SCHEMA_VERSION);
     if (!meta.has('createdAt')) meta.set('createdAt', Temporal.Now.instant().toString());
-    if (!meta.has('settings')) {
-      const settings = newMap<unknown>();
-      for (const [key, value] of Object.entries(DEFAULT_SETTINGS)) settings.set(key, value);
-      meta.set('settings', settings);
-    }
+    // Schema-v2 stored a nested settings map. Copy its value to a flat key so
+    // fresh replicas never race by assigning two different Y.Maps to one key.
+    const legacy = legacyRolloverHour(meta);
+    if (!meta.has(ROLLOVER_HOUR_KEY) && legacy !== null) meta.set(ROLLOVER_HOUR_KEY, legacy);
   });
 
   return { doc, meta, master, days, cards, cardLocations };
@@ -74,13 +84,10 @@ export const readSchemaVersion = (meta: YMap<unknown>): number =>
   typeof meta.get('schemaVersion') === 'number' ? (meta.get('schemaVersion') as number) : 0;
 
 export const readSettings = (meta: YMap<unknown>): Settings => {
-  const stored = meta.get('settings') as YMap<unknown> | undefined;
-  const rolloverHour = stored?.get('rolloverHour');
+  const direct = meta.get(ROLLOVER_HOUR_KEY);
+  const rolloverHour = validRolloverHour(direct) ? direct : legacyRolloverHour(meta);
   return {
-    rolloverHour:
-      typeof rolloverHour === 'number' && rolloverHour >= 0 && rolloverHour < 24
-        ? rolloverHour
-        : DEFAULT_SETTINGS.rolloverHour,
+    rolloverHour: rolloverHour ?? DEFAULT_SETTINGS.rolloverHour,
   };
 };
 
@@ -91,8 +98,7 @@ export const setRolloverHour = (
   hour: number,
 ): boolean => {
   if (!Number.isInteger(hour) || hour < 0 || hour > 23) return false;
-  const settings = meta.get('settings') as YMap<unknown> | undefined;
-  if (!settings || settings.get('rolloverHour') === hour) return false;
-  transact(doc, origin, () => settings.set('rolloverHour', hour));
+  if (readSettings(meta).rolloverHour === hour) return false;
+  transact(doc, origin, () => meta.set(ROLLOVER_HOUR_KEY, hour));
   return true;
 };
