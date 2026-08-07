@@ -1,7 +1,7 @@
 # done — Technical Requirements
 
-**Status:** Draft v4
-**Date:** 2026-08-06
+**Status:** Draft v5
+**Date:** 2026-08-07
 **Companion to:** [PRD.md](./PRD.md)
 
 ---
@@ -593,6 +593,70 @@ continued motion in that direction.
 Desktop is keyboard-first. Bindings live in one table so they're discoverable and remappable
 later. `Cmd/Ctrl-K` opens a command palette backed by the SQLite index — which must degrade
 gracefully when the index hasn't loaded (§6.2).
+
+### 8.6 Long-document projections
+
+Long-document navigation is a **view over the master `Y.Text`**, never another document model.
+No projection may copy a section into a second `EditorState`, persist a sliced `Y.Text`, or make
+the user choose a destination before ordinary text entry. Markdown remains the only source of
+heading structure and the master text remains byte-for-byte unchanged by navigation, focus, and
+folding.
+
+#### Scroll-aware breadcrumb
+
+The first implementation is the Goals header breadcrumb. Its active position is the first
+visible document line in the editor's scroll container. It is explicitly not:
+
+- the selection head, because moving the cursor while editing must not change the location label;
+- CodeMirror's `viewport.from`, because the rendered viewport includes overscan above the visible
+  scroll edge; or
+- a persisted CRDT value, because it describes one device's view, not shared document state.
+
+At that position, walk headings from the beginning of the document and maintain the ordinary
+markdown outline stack: a heading removes preceding headings of equal or deeper level, then
+becomes the deepest entry. The visible label is `Goals` followed by that stack. Text before the
+first heading has the root label only. Skipped levels are valid; structure remains opt-in and the
+breadcrumb reports what was authored rather than repairing it.
+
+The editor extension owns scroll measurement and heading derivation. DOM geometry is read in a
+CodeMirror measurement phase, after which it reports only changes in the derived path to React.
+React owns the pinned header rendering. Document edits, incremental parser progress, geometry
+changes, and scrolling can all invalidate the path. Heading labels omit structural markdown
+marks, normalize line breaks, and retain the authored text. At constrained widths the deepest
+location must remain visible; the complete path remains available to assistive technology and as
+the element title.
+
+This extension is installed only on the document surface. Card headings are presentation inside
+items and do not describe application location.
+
+#### Heading outline and focus
+
+The later outline consumes the same derived heading representation. Navigation dispatches a
+CodeMirror scroll effect without moving the selection or focusing the editor, which prevents an
+outline tap from summoning the mobile keyboard. Navigating and focusing remain separate commands.
+
+Focus is one editor showing one contiguous heading subtree. Its state is local and ephemeral; the
+initial implementation does not sync or encode it in markdown. Positions must map through editor
+transactions so concurrent edits before the subtree do not detach the view from its heading. The
+whole document and each ancestor are directly reachable from the pinned breadcrumb—this is a
+hierarchical lens, not a navigation stack or a collection of document routes.
+
+Do not implement focus by binding another editor to a substring. A substring has unstable CRDT
+boundaries, creates ambiguous insert behavior at both edges, and makes undo and remote edits
+depend on which projection happened to be mounted. Hiding ranges in the one bound editor keeps
+the document, selection, collaboration binding, and undo history singular.
+
+#### Folding, archive, search, and duplicate diagnostics
+
+- Folding uses CodeMirror view state and markdown heading ranges. It begins expanded, does not
+  sync, and never changes source text.
+- Archive is a user-initiated text move to a bottom document region, performed atomically and
+  undoably through the existing actor-aware CRDT operation boundary. It must not introduce an
+  authoritative per-line lifecycle field.
+- Search continues to use the derived SQLite index (§6.2). Archive remains indexed.
+- Duplicate diagnostics are derived and advisory. Exact-match normalization or later similarity
+  scoring may surface candidates, but neither is item identity. Diagnostics never merge text or
+  propagate completion automatically.
 
 ---
 

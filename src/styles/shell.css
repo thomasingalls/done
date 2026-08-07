@@ -326,6 +326,34 @@
     flex: 1;
   }
 
+  /*
+   * The root stays visible while the scrolled location gives width back from
+   * its oldest edge. `direction` puts the ellipsis on that edge, preserving
+   * the deepest (and therefore most useful) heading on a narrow Goals panel.
+   */
+  .goals-breadcrumbs {
+    display: flex;
+    column-gap: 0.3em;
+    min-inline-size: 0;
+  }
+
+  .goals-breadcrumb-root {
+    flex: none;
+  }
+
+  .goals-breadcrumb-trail {
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    direction: rtl;
+  }
+
+  .goals-breadcrumb-trail-text {
+    direction: ltr;
+    unicode-bidi: embed;
+  }
+
   .panel-action,
   .panel-badge {
     font-size: 0.75rem;

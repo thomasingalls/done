@@ -22,6 +22,7 @@ import {
   type Store,
   type Workspace,
 } from '../crdt';
+import { scrollAwareBreadcrumb, type DocumentHeading } from '../editor/breadcrumbs';
 import { createEditor, type EditorHandle } from '../editor/createEditor';
 import type { ISODate } from '../lib/date';
 
@@ -70,6 +71,7 @@ export const Goals = ({
 }: GoalsProps): React.ReactElement => {
   const host = useRef<HTMLDivElement>(null);
   const [selection, setSelection] = useState<Selection>(EMPTY);
+  const [headingPath, setHeadingPath] = useState<readonly DocumentHeading[]>([]);
 
   // A ref because the editor is built once and the binding inside it must not
   // capture the props of the render that happened to build it.
@@ -93,6 +95,7 @@ export const Goals = ({
       placeholder: 'Everything. Tasks, projects, someday-maybes, notes to self.',
       extra: [
         track,
+        scrollAwareBreadcrumb(setHeadingPath),
         keymap.of([
           {
             key: 'Mod-Shift-c',
@@ -111,16 +114,28 @@ export const Goals = ({
     return () => {
       onEditorReady?.(null);
       handle.destroy();
+      setHeadingPath([]);
     };
   }, [onEditorReady, store, workspace.origin]);
 
   const count = selection.text.filter((line) => line.trim().length > 0).length;
   const disabled = count === 0;
+  const breadcrumb = ['Goals', ...headingPath.map((heading) => heading.title)].join(' › ');
 
   return (
     <aside className="goals" aria-label="Goals" ref={ref}>
       <header className="panel-header">
-        <h2 className="panel-title">Goals</h2>
+        <h2 className="panel-title goals-breadcrumbs" aria-label={breadcrumb} title={breadcrumb}>
+          <span className="goals-breadcrumb-root">Goals</span>
+          {headingPath.length > 0 ? (
+            <span className="goals-breadcrumb-trail" aria-hidden="true">
+              <span className="goals-breadcrumb-trail-text">
+                {'› '}
+                {headingPath.map((heading) => heading.title).join(' › ')}
+              </span>
+            </span>
+          ) : null}
+        </h2>
       </header>
 
       <div className="goals-body">

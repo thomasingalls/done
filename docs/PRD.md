@@ -1,7 +1,7 @@
 # done — Product Requirements
 
-**Status:** Draft v6
-**Date:** 2026-08-06
+**Status:** Draft v7
+**Date:** 2026-08-07
 **Audience:** one user (the author). Single-tenant personal tool, not a product.
 
 ---
@@ -247,6 +247,53 @@ width neither has room to give.
 
 Desktop is keyboard-first: arrow keys or `h j k l` with a modifier move along the axes,
 `Cmd/Ctrl-K` opens a command palette, `t` returns to today.
+
+### 7.7 One document, temporary views
+
+The master list is expected to become long. That is not evidence that it should become a set of
+documents: choosing a document, its name, and the granularity of the thought before writing is
+exactly the organizational cost the one-document model avoids. The distinction is when structure
+is demanded:
+
+- Multiple documents ask **where does this belong?** before writing.
+- A temporary view asks **what do I need to see?** after the text and its optional structure
+  already exist.
+
+So the master list remains one physical markdown document and gains projections over that
+document as its authored structure earns them. Writing never requires choosing a projection
+first, projections never create another source of truth, and returning to the whole document is
+one action rather than back-navigation through a stack.
+
+The ordered product sequence is:
+
+1. **Location — scroll-aware breadcrumb and heading outline.** The pinned Goals title shows the
+   heading ancestry of the text at the top of the viewport. It follows scroll position, not the
+   cursor, so editing does not move the user's location label. The title eventually opens an
+   outline derived from the same headings; choosing a heading navigates without changing the
+   document or opening the mobile keyboard.
+2. **Attention — explicit section focus.** A heading subtree can become the temporary visible
+   working set. The title bar shows its ancestry and provides the one-action route back to any
+   ancestor or the whole document. Navigating to a heading and focusing it are distinct actions:
+   finding text must not silently change the shape of the editor around it.
+3. **Progressive disclosure — heading folding.** Manual folds hide a heading's subtree without
+   changing markdown. Everything begins expanded. Focus may remove enough noise that extensive
+   fold-state management is unnecessary, so folding follows rather than precedes it.
+4. **Lifecycle — archive as a destination.** Archiving deliberately moves selected markdown or a
+   heading subtree to an archive area at the bottom of the same document. It is not automatic,
+   not an invisible status flag, and not a second store. Archived text remains exportable and,
+   when search arrives, searchable; its default presentation may be de-emphasized or collapsed.
+5. **Retrieval — search.** Search over the master list and recent days remains Phase 4 work. It
+   answers a different question from the outline: known text rather than authored structure.
+6. **Trust — observe duplicates without inventing task identity.** Exact or similar occurrences
+   may eventually be surfaced for review, but are never automatically merged. Similar lines can
+   be separate intentions, contextual reminders for one intention, or accidental copies. The app
+   must not claim that a master-list line is complete merely because similar text appears in Done.
+
+The last constraint marks a product boundary. Authoritative completion propagation, duplicate
+merging, or relationships between occurrences require stable task identity. That would turn the
+master list from a document containing intentions into a task database rendered as text. Do not
+cross that boundary as a side effect of improving navigation; make it as a separate product
+decision if accumulated use eventually justifies it.
 
 ## 8. Time
 
