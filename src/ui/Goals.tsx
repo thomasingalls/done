@@ -11,7 +11,14 @@
  * this footer is that rule made visible.
  */
 
-import { useEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type MouseEvent,
+} from 'react';
 import { type EditorState, type Extension } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import {
@@ -22,9 +29,14 @@ import {
   type Store,
   type Workspace,
 } from '../crdt';
-import { scrollAwareBreadcrumb, type DocumentHeading } from '../editor/breadcrumbs';
+import {
+  documentHeadings,
+  scrollAwareBreadcrumb,
+  type DocumentHeading,
+} from '../editor/breadcrumbs';
 import { createEditor, type EditorHandle } from '../editor/createEditor';
 import type { ISODate } from '../lib/date';
+import { GoalsOutline } from './GoalsOutline';
 
 export interface GoalsProps {
   store: Store;
@@ -70,8 +82,13 @@ export const Goals = ({
   onEditorReady,
 }: GoalsProps): React.ReactElement => {
   const host = useRef<HTMLDivElement>(null);
+  const editor = useRef<EditorView | null>(null);
+  const outlineTrigger = useRef<HTMLButtonElement>(null);
+  const outlinePanel = useRef<HTMLElement>(null);
   const [selection, setSelection] = useState<Selection>(EMPTY);
   const [headingPath, setHeadingPath] = useState<readonly DocumentHeading[]>([]);
+  const [headingOutline, setHeadingOutline] = useState<readonly DocumentHeading[]>([]);
+  const [outlineOpen, setOutlineOpen] = useState(false);
 
   // A ref because the editor is built once and the binding inside it must not
   // capture the props of the render that happened to build it.
@@ -108,35 +125,115 @@ export const Goals = ({
         ]),
       ],
     });
+    editor.current = handle.view;
     setSelection(selectedLines(handle.view.state));
     onEditorReady?.(handle.view);
 
     return () => {
       onEditorReady?.(null);
+      editor.current = null;
       handle.destroy();
       setHeadingPath([]);
+      setHeadingOutline([]);
+      setOutlineOpen(false);
     };
   }, [onEditorReady, store, workspace.origin]);
+
+  useEffect(() => {
+    if (!outlineOpen) return;
+    const closeOutside = (event: PointerEvent): void => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (outlineTrigger.current?.contains(target) || outlinePanel.current?.contains(target))
+        return;
+      setOutlineOpen(false);
+    };
+    document.addEventListener('pointerdown', closeOutside, true);
+    return () => document.removeEventListener('pointerdown', closeOutside, true);
+  }, [outlineOpen]);
+
+  const toggleOutline = useCallback(() => {
+    if (!outlineOpen && editor.current) {
+      // Opening is an explicit, infrequent action, so finish the full-document
+      // heading projection here even if the incremental parser was still idle.
+      setHeadingOutline(documentHeadings(editor.current.state, 50));
+    }
+    setOutlineOpen((open) => !open);
+  }, [outlineOpen]);
+
+  const navigateFromOutline = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+    const from = Number(event.currentTarget.dataset['headingFrom']);
+    const view = editor.current;
+    if (!view || !Number.isFinite(from)) return;
+
+    view.dispatch({ effects: EditorView.scrollIntoView(from, { y: 'start', yMargin: 0 }) });
+    setOutlineOpen(false);
+  }, []);
+
+  const closeOutlineOnEscape = useCallback(
+    (event: KeyboardEvent<HTMLElement>) => {
+      if (event.key !== 'Escape' || !outlineOpen) return;
+      event.preventDefault();
+      event.stopPropagation();
+      setOutlineOpen(false);
+      outlineTrigger.current?.focus();
+    },
+    [outlineOpen],
+  );
 
   const count = selection.text.filter((line) => line.trim().length > 0).length;
   const disabled = count === 0;
   const breadcrumb = ['Goals', ...headingPath.map((heading) => heading.title)].join(' › ');
+  const activeHeading = headingPath.at(-1)?.from;
+
+  useEffect(() => {
+    if (!outlineOpen || activeHeading === undefined) return;
+    const frame = window.requestAnimationFrame(() => {
+      outlinePanel.current
+        ?.querySelector<HTMLElement>('[aria-current="location"]')
+        ?.scrollIntoView({ block: 'nearest' });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [activeHeading, outlineOpen]);
 
   return (
-    <aside className="goals" aria-label="Goals" ref={ref}>
+    <aside className="goals" aria-label="Goals" ref={ref} onKeyDownCapture={closeOutlineOnEscape}>
       <header className="panel-header">
-        <h2 className="panel-title goals-breadcrumbs" aria-label={breadcrumb} title={breadcrumb}>
-          <span className="goals-breadcrumb-root">Goals</span>
-          {headingPath.length > 0 ? (
-            <span className="goals-breadcrumb-trail" aria-hidden="true">
-              <span className="goals-breadcrumb-trail-text">
-                {'› '}
-                {headingPath.map((heading) => heading.title).join(' › ')}
+        <h2 className="panel-title">
+          <button
+            type="button"
+            className="goals-breadcrumbs"
+            aria-label={`${breadcrumb}. Open document outline`}
+            aria-expanded={outlineOpen}
+            aria-controls="goals-outline"
+            title={breadcrumb}
+            ref={outlineTrigger}
+            onClick={toggleOutline}
+          >
+            <span className="goals-breadcrumb-root">Goals</span>
+            {headingPath.length > 0 ? (
+              <span className="goals-breadcrumb-trail" aria-hidden="true">
+                <span className="goals-breadcrumb-trail-text">
+                  {'› '}
+                  {headingPath.map((heading) => heading.title).join(' › ')}
+                </span>
               </span>
+            ) : null}
+            <span className="goals-outline-indicator" aria-hidden="true">
+              <OutlineIcon />
             </span>
-          ) : null}
+          </button>
         </h2>
       </header>
+
+      {outlineOpen ? (
+        <GoalsOutline
+          headings={headingOutline}
+          activeHeading={activeHeading}
+          ref={outlinePanel}
+          onHeadingClick={navigateFromOutline}
+        />
+      ) : null}
 
       <div className="goals-body">
         <div className="editor-host" ref={host} />
@@ -190,3 +287,16 @@ export const Goals = ({
     </aside>
   );
 };
+
+const OutlineIcon = (): React.ReactElement => (
+  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+    <path
+      d="m3.5 5.75 4.5 4.5 4.5-4.5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);

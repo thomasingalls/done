@@ -59,6 +59,54 @@ const headingTitle = (state: EditorState, heading: SyntaxNodeRef, tree: Tree): s
   return title.replaceAll(/\s+/gu, ' ').trim() || 'Untitled';
 };
 
+const headingsThrough = (
+  state: EditorState,
+  through: number,
+  timeout = 10,
+): readonly DocumentHeading[] => {
+  const tree = ensureSyntaxTree(state, through, timeout) ?? syntaxTree(state);
+  const headings: DocumentHeading[] = [];
+
+  tree.iterate({
+    from: 0,
+    to: through,
+    enter: (node) => {
+      const match = HEADING.exec(node.name);
+      if (!match) return;
+      headings.push({
+        level: Number(match[1]),
+        title: headingTitle(state, node, tree),
+        from: node.from,
+      });
+    },
+  });
+
+  return headings;
+};
+
+/** Flat, source-ordered representation shared by the breadcrumb and outline. */
+export const documentHeadings = (
+  state: EditorState,
+  timeout?: number,
+): readonly DocumentHeading[] => headingsThrough(state, state.doc.length, timeout);
+
+export const headingPathFrom = (
+  headings: readonly DocumentHeading[],
+  position: number,
+): readonly DocumentHeading[] => {
+  const path: DocumentHeading[] = [];
+  for (const heading of headings) {
+    if (heading.from > position) break;
+    let parent = path.at(-1);
+    while (parent !== undefined && parent.level >= heading.level) {
+      path.pop();
+      parent = path.at(-1);
+    }
+    path.push(heading);
+  }
+  return path;
+};
+
 /**
  * Returns the markdown heading ancestry in force at `position`.
  *
@@ -70,34 +118,19 @@ const headingTitle = (state: EditorState, heading: SyntaxNodeRef, tree: Tree): s
 export const headingPathAt = (state: EditorState, position: number): readonly DocumentHeading[] => {
   const clamped = Math.max(0, Math.min(position, state.doc.length));
   const through = state.doc.lineAt(clamped).to;
-  const tree = ensureSyntaxTree(state, through, 10) ?? syntaxTree(state);
-  const path: DocumentHeading[] = [];
-
-  tree.iterate({
-    from: 0,
-    to: through,
-    enter: (node) => {
-      const match = HEADING.exec(node.name);
-      if (!match || node.from > clamped) return;
-
-      const level = Number(match[1]);
-      let parent = path.at(-1);
-      while (parent !== undefined && parent.level >= level) {
-        path.pop();
-        parent = path.at(-1);
-      }
-      path.push({ level, title: headingTitle(state, node, tree), from: node.from });
-    },
-  });
-
-  return path;
+  return headingPathFrom(headingsThrough(state, through), clamped);
 };
 
-const samePath = (first: readonly DocumentHeading[], second: readonly DocumentHeading[]): boolean =>
+const sameHeadings = (
+  first: readonly DocumentHeading[],
+  second: readonly DocumentHeading[],
+): boolean =>
   first.length === second.length &&
   first.every(
     (heading, index) =>
-      heading.level === second[index]?.level && heading.title === second[index]?.title,
+      heading.level === second[index]?.level &&
+      heading.title === second[index]?.title &&
+      heading.from === second[index]?.from,
   );
 
 class ScrollBreadcrumb {
@@ -132,7 +165,7 @@ class ScrollBreadcrumb {
       },
       write: (position, measured) => {
         const next = headingPathAt(measured.state, position);
-        if (samePath(this.path, next)) return;
+        if (sameHeadings(this.path, next)) return;
         this.path = next;
         this.listener(next);
       },

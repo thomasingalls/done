@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { headingPathAt } from '../src/editor/breadcrumbs';
+import { documentHeadings, headingPathAt } from '../src/editor/breadcrumbs';
 import { stateFor } from './helpers';
 
 const titlesAt = (doc: string, needle: string): string[] => {
@@ -61,5 +61,16 @@ describe('scroll-aware heading paths', () => {
   it('labels an empty authored heading without demanding content', () => {
     const doc = '#\nbody';
     expect(titlesAt(doc, 'body')).toEqual(['Untitled']);
+  });
+});
+
+describe('document outline', () => {
+  it('keeps every heading in source order with its authored level', () => {
+    const state = stateFor('# Work\nbody\n### Phase\nbody\n# Personal');
+    expect(documentHeadings(state).map(({ level, title }) => ({ level, title }))).toEqual([
+      { level: 1, title: 'Work' },
+      { level: 3, title: 'Phase' },
+      { level: 1, title: 'Personal' },
+    ]);
   });
 });
