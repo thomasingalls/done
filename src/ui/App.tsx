@@ -81,9 +81,6 @@ export const App = (): React.ReactElement => {
   const openAtDragStart = useRef(0);
   const started = useRef(false);
   const settleTimer = useRef<number | undefined>(undefined);
-  const wheelTotal = useRef(0);
-  const wheelResetTimer = useRef<number | undefined>(undefined);
-  const wheelLockedUntil = useRef(0);
   const goalsFocusTimer = useRef<number | undefined>(undefined);
 
   const menuOverlay = !menuIsPanel(breakpoint);
@@ -156,57 +153,33 @@ export const App = (): React.ReactElement => {
 
   /**
    * A wheel over Today walks the same vertical day axis as a touch drag. A
-   * genuinely long day keeps the wheel while it has content in that direction;
-   * once it reaches an edge, the next wheel gesture moves to the adjacent day.
+   * genuinely long day keeps the wheel while it has content in that direction.
+   * At an edge, native scroll chaining reaches the bounded three-day plane,
+   * which can expose only one neighbour in either direction.
    */
-  const onDayWheel = useCallback(
-    (event: React.WheelEvent<HTMLDivElement>): void => {
-      if (
-        event.ctrlKey ||
-        !window.matchMedia('(any-pointer: fine)').matches ||
-        Math.abs(event.deltaY) <= Math.abs(event.deltaX)
-      ) {
+  const onDayWheel = useCallback((event: React.WheelEvent<HTMLDivElement>): void => {
+    if (
+      event.ctrlKey ||
+      !window.matchMedia('(any-pointer: fine)').matches ||
+      Math.abs(event.deltaY) <= Math.abs(event.deltaX)
+    ) {
+      return;
+    }
+
+    const target = event.target as HTMLElement;
+    const scrollRegion = target.closest<HTMLElement>('[data-scroll="day"]');
+    if (scrollRegion) {
+      const maximum = scrollRegion.scrollHeight - scrollRegion.clientHeight;
+      const canScroll =
+        maximum > 1 &&
+        (event.deltaY < 0 ? scrollRegion.scrollTop > 1 : scrollRegion.scrollTop < maximum - 1);
+      if (canScroll) {
         return;
       }
+    }
 
-      const target = event.target as HTMLElement;
-      const scrollRegion = target.closest<HTMLElement>('[data-scroll="day"]');
-      if (scrollRegion) {
-        const maximum = scrollRegion.scrollHeight - scrollRegion.clientHeight;
-        const canScroll =
-          maximum > 1 &&
-          (event.deltaY < 0 ? scrollRegion.scrollTop > 1 : scrollRegion.scrollTop < maximum - 1);
-        if (canScroll) {
-          wheelTotal.current = 0;
-          return;
-        }
-      }
-
-      event.preventDefault();
-      if (performance.now() < wheelLockedUntil.current) return;
-
-      const unit =
-        event.deltaMode === WheelEvent.DOM_DELTA_LINE
-          ? 16
-          : event.deltaMode === WheelEvent.DOM_DELTA_PAGE
-            ? (plane.current?.clientHeight ?? window.innerHeight)
-            : 1;
-      wheelTotal.current += event.deltaY * unit;
-
-      if (wheelResetTimer.current !== undefined) window.clearTimeout(wheelResetTimer.current);
-      wheelResetTimer.current = window.setTimeout(() => {
-        wheelResetTimer.current = undefined;
-        wheelTotal.current = 0;
-      }, 140);
-
-      if (Math.abs(wheelTotal.current) < 48) return;
-      const days = wheelTotal.current > 0 ? 1 : -1;
-      wheelTotal.current = 0;
-      wheelLockedUntil.current = performance.now() + SNAP_MS + 80;
-      step(days);
-    },
-    [step],
-  );
+    target.closest<HTMLElement>('.day-plane')?.setAttribute('data-wheel-navigation', 'true');
+  }, []);
 
   const closeLateral = useCallback(() => {
     setMenuOpen(false);
@@ -412,7 +385,6 @@ export const App = (): React.ReactElement => {
     () => () => {
       clearSettlement();
       clearGoalsFocus();
-      if (wheelResetTimer.current !== undefined) window.clearTimeout(wheelResetTimer.current);
     },
     [clearGoalsFocus, clearSettlement],
   );

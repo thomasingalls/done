@@ -30,7 +30,8 @@ const scrollableAt = (x: number, y: number): HTMLElement | null => {
   while (element) {
     const style = getComputedStyle(element);
     const scrolls = /auto|scroll|overlay/.test(style.overflowY);
-    if (scrolls && element.scrollHeight > element.clientHeight + 1) return element;
+    const wheelOnly = element.hasAttribute('data-wheel-scroll-plane');
+    if (!wheelOnly && scrolls && element.scrollHeight > element.clientHeight + 1) return element;
     element = element.parentElement;
   }
   return null;

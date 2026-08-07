@@ -198,22 +198,6 @@ test.describe('Phase 2 workflow', () => {
     await expect(activeDay(page)).toHaveAttribute('data-date', initial!);
   });
 
-  test('a desktop wheel over Today moves between days', async ({ page, isMobile }) => {
-    test.skip(isMobile, 'Mouse-wheel navigation is a desktop interaction.');
-    await page.setViewportSize({ width: 1280, height: 900 });
-    await page.goto('/');
-    await expect(activeDay(page)).toBeVisible();
-    const initial = await activeDay(page).getAttribute('data-date');
-    const header = activeDay(page).locator('.panel-header');
-    const box = await header.boundingBox();
-    if (!box) throw new Error('Today header is not visible');
-
-    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-    await page.mouse.wheel(0, 120);
-
-    await expect(activeDay(page)).not.toHaveAttribute('data-date', initial!);
-  });
-
   test('an install prompt is exposed in the menu', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto('/');
@@ -280,6 +264,18 @@ test.describe('Phase 2 workflow', () => {
     await expect(activeDay(page).getByText('kept after compaction')).toBeVisible();
     await expect(activeDay(page).locator('.card[data-frozen="true"]')).toHaveCount(1);
     await expect(activeDay(page).getByRole('textbox', { name: 'What got done?' })).toHaveCount(0);
+  });
+
+  test('the device name is editable, since it is what the other device sees', async ({ page }) => {
+    await page.setViewportSize({ width: 420, height: 900 });
+    await page.goto('/');
+    await openMenu(page);
+
+    await page.getByRole('textbox', { name: 'Device name' }).fill('Kitchen laptop');
+    await page.waitForTimeout(100);
+    await page.reload();
+    await openMenu(page);
+    await expect(page.getByRole('textbox', { name: 'Device name' })).toHaveValue('Kitchen laptop');
   });
 
   test('actor and rollover settings are editable and persist locally', async ({ page }) => {

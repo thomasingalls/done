@@ -35,10 +35,17 @@ const sourceFiles = (directory: string): string[] =>
     return ['.ts', '.tsx'].includes(extname(entry.name)) ? [path] : [];
   });
 
-const importedPackages = (source: string): string[] =>
-  [...source.matchAll(/^\s*(?:import|export)[\s\S]*?from\s+'([^']+)'/gm)].map(
+/**
+ * Static and dynamic alike. A dynamic import is exactly the kind that gets
+ * written somewhere else without anyone noticing, so the seam catches both
+ * forms even though the current websocket transport is intentionally eager.
+ */
+const importedPackages = (source: string): string[] => [
+  ...[...source.matchAll(/^\s*(?:import|export)[\s\S]*?from\s+'([^']+)'/gm)].map(
     (match) => match[1] as string,
-  );
+  ),
+  ...[...source.matchAll(/\bimport\s*\(\s*'([^']+)'/g)].map((match) => match[1] as string),
+];
 
 describe.each(Object.entries(SEAMS))('the %s seam', (seam, packages) => {
   it('is the only file that imports its packages', () => {
@@ -68,8 +75,20 @@ describe('the Yjs seam', () => {
       'Awareness',
       'yCollab',
       'yUndoManagerKeymap',
+      'openWebsocket',
     ]) {
       expect(seam).toContain(name);
     }
+  });
+
+  it('catches a dynamic import as readily as a static one', () => {
+    const offenders = importedPackages("const p = await import('y-websocket');");
+    expect(offenders).toEqual(['y-websocket']);
+  });
+
+  it('keeps the temporary websocket transport eager', () => {
+    const seam = readFileSync('src/crdt/yjs.ts', 'utf8');
+    expect(seam).toContain("from 'y-websocket'");
+    expect(seam).not.toContain("await import('y-websocket')");
   });
 });

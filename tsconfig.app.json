@@ -25,5 +25,13 @@
     "noEmit": true,
     "composite": true
   },
-  "include": ["src", "test"]
+  /*
+   * `relay/src/auth.ts` is named explicitly, not by directory. The relay is a
+   * separate package with its own tsconfig and its own dependencies, and the
+   * app must build with that directory deleted — but its authorization rules
+   * are dependency-free on purpose so this project can typecheck and test them
+   * (test/relayAuth.test.ts). Naming the one file keeps the relay's server, and
+   * therefore `ws` and `@y/websocket-server`, out of the app's program.
+   */
+  "include": ["src", "test", "relay/src/auth.ts"]
 }

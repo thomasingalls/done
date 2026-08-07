@@ -36,6 +36,9 @@ importers:
       '@lezer/markdown':
         specifier: ^1.7.2
         version: 1.7.2
+      lib0:
+        specifier: ^0.2.109
+        version: 0.2.117
       react:
         specifier: ^19.2.8
         version: 19.2.8
@@ -54,6 +57,9 @@ importers:
       y-protocols:
         specifier: ^1.0.7
         version: 1.0.7(yjs@13.6.31)
+      y-websocket:
+        specifier: 3.0.0
+        version: 3.0.0(yjs@13.6.31)
       yjs:
         specifier: 13.6.31
         version: 13.6.31
@@ -1487,6 +1493,12 @@ packages:
     peerDependencies:
       yjs: ^13.0.0
 
+  y-websocket@3.0.0:
+    resolution: {integrity: sha512-mUHy7AzkOZ834T/7piqtlA8Yk6AchqKqcrCXjKW8J1w2lPtRDjz8W5/CvXz9higKAHgKRKqpI3T33YkRFLkPtg==}
+    engines: {node: '>=16.0.0', npm: '>=8.0.0'}
+    peerDependencies:
+      yjs: ^13.5.6
+
   yjs@13.6.31:
     resolution: {integrity: sha512-Eq+5BRfbeGyqGVrTJL3bEcr8gKkxPuyuoHmAwpk52fDb8kOVMrfVSTRPd6yiGgX5Fskb96qCRjzjbRjrL4YEnw==}
     engines: {node: '>=16.0.0', npm: '>=8.0.0'}
@@ -2619,6 +2631,12 @@ snapshots:
   y-protocols@1.0.7(yjs@13.6.31):
     dependencies:
       lib0: 0.2.117
+      yjs: 13.6.31
+
+  y-websocket@3.0.0(yjs@13.6.31):
+    dependencies:
+      lib0: 0.2.117
+      y-protocols: 1.0.7(yjs@13.6.31)
       yjs: 13.6.31
 
   yjs@13.6.31:

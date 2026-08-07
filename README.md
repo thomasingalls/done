@@ -3,19 +3,29 @@
 A local-first PWA for one person's task-management workflow.
 See [docs/PRD.md](docs/PRD.md) and [docs/TRD.md](docs/TRD.md).
 
-**This is Phase 2: the workflow.** Days, the master list, collections, cards,
-the three-item cap, the movement flows, the freeze, spatial navigation, three
-responsive layouts, actor attribution and scoped undo. No sync and no search —
-those are Phase 3 and Phase 4.
+**This is Phase 3: sync.** A self-hosted relay ([relay/](relay/)) carrying
+opaque binary updates between your own devices, behind an interface whose
+default implementation does nothing. Phase 2's workflow is unchanged: days, the
+master list, collections, cards, the three-item cap, the movement flows, the
+freeze, spatial navigation, three responsive layouts, actor attribution and
+scoped undo. No search yet — that is Phase 4.
+
+**Sync is optional and the app is complete without it.** With no endpoint
+configured no provider is constructed, the transport is never even fetched, and
+everything behaves exactly as it did in Phase 2. That is a requirement
+(TRD §7.1), not a courtesy, and `test/sync.test.ts` is where it is held to.
 
 A day has three sections, and they are read in the order **Next, Done,
 Scheduled**: what you are doing, what you did, and the tail of intentions that
 have not come up yet. Done reads newest-first — anything completed goes on top.
 
-> **Phase 2 exit criteria** (PRD §13): every core workflow and navigation path
-> works on real Android and desktop devices without a workflow-blocking defect.
-> A week of daily use without falling back to the previous, multi-device system
-> is a Phase 3 criterion because it depends on sync.
+> **Phase 3 exit criteria** (PRD §13): phone and laptop consistent across a
+> week including offline edits on both, and a week of daily use without falling
+> back to the previous system. Both are things only a week can establish. What
+> the suite can pin down is every mechanism they rest on — convergence through
+> a relay rather than pairwise, a device catching up after being away, the cap
+> and compaction repairing concurrently on two devices, and one device's undo
+> stack staying clear of the other's changes.
 
 ## Running it
 
@@ -35,6 +45,22 @@ Playwright matrix has a real desktop browser profile (`Desktop Chrome`) and a
 mobile emulation profile (`Pixel 7`); it is not only a small viewport. Where a
 Chromium is already on disk and `pnpm exec playwright install` is not wanted,
 set `CHROMIUM_PATH` to it.
+
+The relay is a separate package with its own install, and the app never depends
+on it:
+
+```
+cd relay
+pnpm install
+pnpm test           # starts the real process and drives the real client
+RELAY_TOKEN=$(openssl rand -base64 32) pnpm dev
+```
+
+Then **menu → Sync** in the app: endpoint `localhost:1234`, room `done`, token
+as above. In development that becomes `ws://localhost:1234` — a page served
+over plain HTTP may open a plain websocket, so there is no certificate to
+arrange. See [relay/README.md](relay/README.md) for the development table, for
+deployment and TLS, and for why the token must stay out of your access log.
 
 ## Development tooling
 
@@ -57,28 +83,122 @@ writing a component here — see "reading the document" below.
 
 ## What is here
 
-| Area           | Where                        | Notes                                                                                                                          |
-| -------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| Yjs seam       | `src/crdt/yjs.ts`            | The only file importing `yjs`, `y-indexeddb`, `y-protocols`, `y-codemirror.next` (TRD §10.1). Enforced by `test/seam.test.ts`. |
-| Document tree  | `src/crdt/doc.ts`            | `meta`, `master`, `days`, canonical `cards`, and separate card locations.                                                      |
-| Days and cards | `src/crdt/days.ts`           | `Y.Text` for documents, ordered card-id arrays for collections, one canonical `Y.Text` per card (TRD §4.1–§4.3).               |
-| Movement       | `src/crdt/moves.ts`          | The PRD §4 table, one transaction per operation, each naming its actor.                                                        |
-| The freeze     | `src/crdt/freeze.ts`         | Day + 3, permanent. A policy, and nothing about storage.                                                                       |
-| Compaction     | `src/crdt/compaction.ts`     | Day + 7, storage only. Verified round-trip; defers rather than deletes on mismatch.                                            |
-| Serializer     | `src/crdt/serialize.ts`      | One canonical markdown form, shared by compaction and export.                                                                  |
-| Export         | `src/crdt/export.ts`         | A zip of markdown, built in the page.                                                                                          |
-| Actors         | `src/crdt/actors.ts`         | The human, the system actor, transaction origins, scoped undo (TRD §4.8).                                                      |
-| Persistence    | `src/crdt/persistence.ts`    | `y-indexeddb`, plus `navigator.storage.persist()` on the first write.                                                          |
-| Live preview   | `src/editor/livePreview.ts`  | Decorations over the Lezer tree. Nothing here mutates the document.                                                            |
-| Static render  | `src/editor/staticRender.ts` | The same decorations, walked without a view. Half of the §4.4 pixel-identity constraint.                                       |
-| Commands       | `src/editor/commands.ts`     | Idempotent wrapping, task toggling.                                                                                            |
-| Card gestures  | `src/editor/cardCommands.ts` | Split, merge, leave. The threshold is a named constant.                                                                        |
-| Bindings       | `src/editor/keymap.ts`       | One table, with descriptions (TRD §8.5).                                                                                       |
-| Gestures       | `src/gestures/recognizer.ts` | Swipe navigates, long-press-then-drag selects. A pure state machine; `useGestures.ts` is the DOM half.                         |
-| Card reorder   | `src/ui/useCardReorder.ts`   | Collection-owned geometry; touch holds and desktop grips preview locally, then commit one atomic move on release.              |
-| Shell          | `src/ui/`, `src/styles/`     | Grid with named areas, cascade layers, custom properties.                                                                      |
+| Area           | Where                        | Notes                                                                                                                                                                   |
+| -------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Yjs seam       | `src/crdt/yjs.ts`            | The only file importing `yjs`, `y-indexeddb`, `y-protocols`, `y-codemirror.next`, `y-websocket` (TRD §10.1). Enforced by `test/seam.test.ts`, dynamic imports included. |
+| Document tree  | `src/crdt/doc.ts`            | `meta`, `master`, `days`, canonical `cards`, and separate card locations.                                                                                               |
+| Days and cards | `src/crdt/days.ts`           | `Y.Text` for documents, ordered card-id arrays for collections, one canonical `Y.Text` per card (TRD §4.1–§4.3).                                                        |
+| Movement       | `src/crdt/moves.ts`          | The PRD §4 table, one transaction per operation, each naming its actor.                                                                                                 |
+| The freeze     | `src/crdt/freeze.ts`         | Day + 3, permanent. A policy, and nothing about storage.                                                                                                                |
+| Compaction     | `src/crdt/compaction.ts`     | Day + 7, storage only. Verified round-trip; defers rather than deletes on mismatch.                                                                                     |
+| Serializer     | `src/crdt/serialize.ts`      | One canonical markdown form, shared by compaction and export.                                                                                                           |
+| Export         | `src/crdt/export.ts`         | A zip of markdown, built in the page.                                                                                                                                   |
+| Actors         | `src/crdt/actors.ts`         | The human, the system actor, transaction origins, scoped undo (TRD §4.8).                                                                                               |
+| Persistence    | `src/crdt/persistence.ts`    | `y-indexeddb`, plus `navigator.storage.persist()` on the first write.                                                                                                   |
+| Sync           | `src/crdt/sync.ts`           | The §7.1 interface, a null implementation as the default, and the controller that only exists once an endpoint is configured.                                           |
+| Local settings | `src/lib/localStore.ts`      | The unsynced half of TRD §4.8: actor id, device, sync endpoint and token. Guarded — private mode throws on read too.                                                    |
+| The relay      | `relay/`                     | Its own package, its own lockfile, its own tests. A dumb pipe with one bearer token and one file per room (TRD §7.2). Four dependencies, none native.                   |
+| Live preview   | `src/editor/livePreview.ts`  | Decorations over the Lezer tree. Nothing here mutates the document.                                                                                                     |
+| Static render  | `src/editor/staticRender.ts` | The same decorations, walked without a view. Half of the §4.4 pixel-identity constraint.                                                                                |
+| Commands       | `src/editor/commands.ts`     | Idempotent wrapping, task toggling.                                                                                                                                     |
+| Card gestures  | `src/editor/cardCommands.ts` | Split, merge, leave. The threshold is a named constant.                                                                                                                 |
+| Bindings       | `src/editor/keymap.ts`       | One table, with descriptions (TRD §8.5).                                                                                                                                |
+| Gestures       | `src/gestures/recognizer.ts` | Swipe navigates, long-press-then-drag selects. A pure state machine; `useGestures.ts` is the DOM half.                                                                  |
+| Card reorder   | `src/ui/useCardReorder.ts`   | Collection-owned geometry; touch holds and desktop grips preview locally, then commit one atomic move on release.                                                       |
+| Shell          | `src/ui/`, `src/styles/`     | Grid with named areas, cascade layers, custom properties.                                                                                                               |
 
 ## Decisions taken in this phase
+
+**The websocket transport is imported eagerly, but constructed conditionally.**
+TRD §7.1's invariant is that no provider exists until an endpoint is configured;
+`createSync` still enforces that. This transport is already scheduled for
+replacement, and keeping its small module in a separate lazy chunk was not worth
+special-casing that chunk in the service-worker precache and bundle accounting.
+
+**A bare loopback host defaults to `ws://` when the page is insecure.** The
+default scheme is otherwise `wss://`, because the token is a bearer credential
+and TRD §7.2 puts it over TLS. But `localhost` typed into a page that is itself
+being served over plain HTTP is a `pnpm dev` session and nothing else: there is
+no certificate on either side, and `wss://` there produces a connection that
+fails with nothing the browser is willing to explain. Loopback only — a LAN
+address or a real hostname still gets `wss://`, and downgrading either has to
+be typed. The same reasoning gives `0.0.0.0` its own refusal ("an address to
+listen on, not one to connect to") and turns an abnormal close on
+`wss://localhost` into the sentence that names the actual cause.
+
+**The sync configuration is local and unsynced.** It sits with the actor id and
+the device in `localStorage`, not in `meta.settings`. Two reasons, and the
+second is the one that settles it: a bearer token is a secret that belongs to
+the browser it was typed into, and an endpoint reachable from one device is not
+necessarily reachable from another — a laptop on the LAN and a phone on mobile
+data do not agree about `box.local`. The cost is that each device is set up by
+hand once, which is also the only way a token gets onto a device at all.
+
+**The relay is its own package, with its own lockfile and its own tests.** Not
+a workspace member of the app's. It ships separately, has a different dependency
+set, and — the property being protected — **the app builds, tests and runs with
+`relay/` deleted**, which is the same thing TRD §7.1 asks of the sync code
+inside the app. The one file the app does reach into is `relay/src/auth.ts`,
+which is dependency-free on purpose: authorization rules enforced only in a
+package nobody runs are rules that drift.
+
+**A refused connection is a completed handshake and then a close code.** The
+obvious implementation rejects the upgrade with a 401. A browser cannot see
+that: `WebSocket` reports a generic error and the provider retries forever, so a
+mistyped token is indistinguishable from a tunnel, and a device silently never
+syncs. Codes in the 4000–4999 range do reach the client, so the relay accepts
+the upgrade, sends nothing, and closes with 4401 — which the menu turns into
+"The relay refused the token."
+
+**Sync appears in the menu and nowhere else.** PRD principle 3 makes offline the
+normal state rather than a degraded one: no reconnecting banner, no spinner, no
+read-only mode, nothing that interrupts writing to report on a network. Someone
+who wants to know goes and looks. The one concession is that "offline" is drawn
+as an ordinary muted state rather than as a warning, because it is not one.
+
+**"Last synced from ⟨device⟩" comes from the update envelope, not the document.**
+A device name in the synced document would contradict TRD §4.8, which keeps
+device identity local. Each connection announces its local device metadata to
+the relay; the relay attaches that metadata when it forwards opaque update
+bytes, without inspecting them. Awareness still drives the current peer list.
+State loaded from the relay's stored copy has no originating live connection,
+so it says how long ago and nothing about where.
+
+**The relay keeps a file, and it is still not a backup.** Every device holds a
+full replica, so a relay that forgets everything loses nothing — the next device
+to connect hands it the document back. What the file buys is that a restart
+inside the window between "the phone wrote it" and "the laptop opened" is
+invisible rather than a wait for the phone to come back. It is the difference
+between "eventually" and "when you open the laptop", and it is deleteable at any
+time.
+
+**The relay's message loop is a fork of `@y/websocket-server`, not a dependency
+on it.** Depending on the package was the first choice — PRD §12 rules out
+inventing local-first techniques, and `setupWSConnection` is the sync and
+awareness loop. It did not survive contact with a laptop: version 0.1.1, the
+last built against Yjs v13, statically imports `y-leveldb` for a persistence
+backend this relay does not use, and `y-leveldb` pulls in the native
+`leveldown`. On Node 26 and an arm64 Mac there is no prebuilt binary and the
+process does not start. No install flag helps — the import is static, so the
+module loads whether or not the package is wanted — and the release that
+removed it moved to Yjs v14, which is a migration to make on both sides of the
+socket at once (TRD §10.1) or not at all. Upstream describes the server as
+living in a forkable repository; `relay/src/connection.ts` is that fork, typed
+and trimmed. The protocol is still imported: `y-protocols/sync` and
+`y-protocols/awareness`, at the versions the client uses. What went is the
+leveldb backend, the webhook machinery, and the environment variables that
+configured them.
+
+**The device name is editable.** It was a read-only guess from the user agent in
+Phase 2, when nothing could see it. It is now the label that shows up on your
+other device, and "Android" is a worse answer than "the phone in the kitchen".
+
+**The initial bundle is 300.3 kB gzipped**, of the 350 kB §12 budget — up 5.7 kB
+from Phase 2, none of which is the provider itself: `y-websocket` is a 2.3 kB
+lazy chunk, and what landed in the initial bundle is the `lib0` and `y-protocols`
+modules it shares with code that was already there.
+
+## Decisions carried from Phase 2
 
 **Cards are markdown list items when serialized.** TRD §9 says "collections
 serialize as lists of cards separated by blank lines." Read as blank-line
@@ -138,7 +258,7 @@ one has to be talked out of applying a timezone. `Temporal.PlainDate` and
 `Temporal.PlainDateTime` say exactly what is meant. Neither Chromium 141 nor
 Node 22 ships Temporal yet, so `temporal-polyfill` stands in behind
 `src/lib/temporal.ts`, used as a value and never installed on `globalThis`. It
-costs about 21 kB gzipped (the initial bundle is 294.6 kB of the 350 kB §12
+costs about 21 kB gzipped (the initial bundle is 300.3 kB of the 350 kB §12
 budget); when the platform ships the API, deleting one import is the whole
 migration, and `test/seam.test.ts` keeps that true.
 
@@ -146,7 +266,8 @@ migration, and `test/seam.test.ts` keeps that true.
 serializer exists for compaction, the exit criterion is two weeks of real data,
 and until sync exists the export is the only backup (TRD §10.5). Import needs
 the same parser, which is tested, plus file handling and a merge policy; it can
-wait for a phase that has a reason for it.
+wait for a phase that has a reason for it. _Sync does not change this: the relay
+is a pipe, not a backup, so the export is still the whole backup story._
 
 ## Three places the code departs from the TRD
 
@@ -209,10 +330,23 @@ component that touches the CRDT, because each of them was a bug first.
 
 ## Not in this phase
 
-Sync and the relay, the SQLite search index, the command palette, a full
-calendar picker, import, presence and agents. Each has a phase in PRD §13.
+The SQLite search index, the command palette, a full calendar picker, import,
+presence UI and agents. Each has a phase in PRD §13.
 
-What runs today: convergence including concurrent card moves, editor/`Y.Text`
+Presence is worth a word, since sync is the phase that makes it possible.
+Awareness carries the local actor and device and `yCollab` already consumes it,
+so two of your own devices editing at once is the two-cursor case and it works.
+What is deliberately absent is anything built _on top_ of that: no presence
+panel, no "also editing" chrome, no avatars. PRD §11.3 asks for none, and one
+person's two devices are rarely both in front of them.
+
+What runs today: convergence including concurrent card moves; convergence
+through a relay rather than pairwise, with offline edits on both sides, a device
+catching up after being away, the cap and compaction repairing concurrently on
+two devices, and one device's undo stack staying clear of the other's changes;
+the sync controller's states and the guarantee that nothing is constructed
+before an endpoint is; the relay's authorization decisions, and — in the relay's
+own suite — the real process refusing a real bad token; editor/`Y.Text`
 round-trip, serializer round-trip, compaction safety, freeze independence, cap
 enforcement, undo scoping across all three system operations, the movement
 table, section order and Done's newest-first rule, the static render,
