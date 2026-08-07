@@ -13,6 +13,7 @@
  * with the peeks bracketing the header rather than sitting inside the body.
  */
 
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import type { Store, Workspace } from '../crdt';
 import { addDays, relativeDay, type ISODate } from '../lib/date';
 import { DayPanel } from './DayPanel';
@@ -46,9 +47,96 @@ export const DayPlane = ({
 }: DayPlaneProps): React.ReactElement => {
   const previous = addDays(date, -1);
   const next = addDays(date, 1);
+  const scroller = useRef<HTMLElement>(null);
+  const center = useRef(0);
+
+  useLayoutEffect(() => {
+    const element = scroller.current;
+    if (!element) return;
+
+    const recenter = (): void => {
+      element.style.setProperty('--day-viewport-size', `${element.clientHeight}px`);
+      const panels = element.querySelectorAll<HTMLElement>('.day-panel');
+      if (panels.length < 2) return;
+      center.current = Math.abs(panels[1]!.offsetTop - panels[0]!.offsetTop);
+      element.style.setProperty('--day-scroll-step', `${center.current}px`);
+      delete element.dataset['wheelNavigation'];
+      element.scrollTop = center.current;
+    };
+
+    const resize = new ResizeObserver(recenter);
+    resize.observe(element);
+    recenter();
+    return () => resize.disconnect();
+  }, [date]);
+
+  const onScrollEnd = useCallback((): void => {
+    const element = scroller.current;
+    if (!element || center.current === 0) return;
+    const navigates = element.dataset['wheelNavigation'] === 'true';
+    delete element.dataset['wheelNavigation'];
+    const displacement = element.scrollTop - center.current;
+    if (!navigates || Math.abs(displacement) < center.current / 2) {
+      element.scrollTop = center.current;
+      return;
+    }
+    onGoTo(displacement > 0 ? next : previous);
+  }, [next, onGoTo, previous]);
+
+  useEffect(() => {
+    const element = scroller.current;
+    if (!element) return;
+
+    let touchPointer: number | null = null;
+    const restoreWheelScroll = (event: PointerEvent): void => {
+      if (event.pointerId !== touchPointer) return;
+      touchPointer = null;
+      element.style.removeProperty('overflow-y');
+      element.scrollTop = center.current;
+    };
+    const suspendWheelScroll = (event: PointerEvent): void => {
+      if (event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
+      touchPointer = event.pointerId;
+      element.style.overflowY = 'hidden';
+    };
+
+    element.addEventListener('scrollend', onScrollEnd);
+    element.addEventListener('pointerdown', suspendWheelScroll, { capture: true });
+    window.addEventListener('pointerup', restoreWheelScroll);
+    window.addEventListener('pointercancel', restoreWheelScroll);
+    return () => {
+      element.removeEventListener('scrollend', onScrollEnd);
+      element.removeEventListener('pointerdown', suspendWheelScroll, { capture: true });
+      window.removeEventListener('pointerup', restoreWheelScroll);
+      window.removeEventListener('pointercancel', restoreWheelScroll);
+    };
+  }, [onScrollEnd]);
 
   return (
-    <main className="day-plane" aria-label="Days">
+    <main ref={scroller} className="day-plane" data-wheel-scroll-plane aria-label="Days">
+      <div className="day-wheel-overlay">
+        <button
+          type="button"
+          className="day-peek"
+          data-edge="top"
+          aria-label={`Go to ${relativeDay(previous, today)}`}
+          onClick={() => onGoTo(previous)}
+        />
+        <button
+          type="button"
+          className="day-peek"
+          data-edge="bottom"
+          aria-label={`Go to ${relativeDay(next, today)}`}
+          onClick={() => onGoTo(next)}
+        />
+      </div>
+
+      <div className="day-scroll-range" aria-hidden="true">
+        <span className="day-scroll-stop" data-position="previous" />
+        <span className="day-scroll-stop" data-position="current" />
+        <span className="day-scroll-stop" data-position="next" />
+      </div>
+
       <div
         className="day-track"
         data-settling={settling}
@@ -72,26 +160,6 @@ export const DayPlane = ({
           />
         ))}
       </div>
-
-      {/*
-       * The peeks are the neighbouring panels themselves; these sit over their
-       * slivers to make them targets without putting a control inside a panel
-       * that is meant to be inert.
-       */}
-      <button
-        type="button"
-        className="day-peek"
-        data-edge="top"
-        aria-label={`Go to ${relativeDay(previous, today)}`}
-        onClick={() => onGoTo(previous)}
-      />
-      <button
-        type="button"
-        className="day-peek"
-        data-edge="bottom"
-        aria-label={`Go to ${relativeDay(next, today)}`}
-        onClick={() => onGoTo(next)}
-      />
     </main>
   );
 };

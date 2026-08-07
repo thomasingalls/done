@@ -50,12 +50,6 @@ const clamp = (value: number, min: number, max: number): number =>
 /** Matches `--duration-snap`; the swap happens once the movement has landed. */
 const SNAP_MS = 220;
 
-/** A deliberate wheel gesture, rather than a light trackpad brush. */
-const WHEEL_NAVIGATION_THRESHOLD = 96;
-
-/** Between-day movement has no native scroll lifecycle to tell us when its wheel stream ends. */
-const BETWEEN_DAY_WHEEL_IDLE_MS = 0;
-
 /** Which lateral surface a horizontal drag is moving. */
 type Lateral = 'menu' | 'goals';
 
@@ -87,11 +81,6 @@ export const App = (): React.ReactElement => {
   const openAtDragStart = useRef(0);
   const started = useRef(false);
   const settleTimer = useRef<number | undefined>(undefined);
-  const wheelTotal = useRef(0);
-  const wheelResetTimer = useRef<number | undefined>(undefined);
-  const wheelCommitted = useRef(false);
-  const withinDayWheelRegion = useRef<HTMLElement | null>(null);
-  const withinDayWheelCleanup = useRef<(() => void) | undefined>(undefined);
   const goalsFocusTimer = useRef<number | undefined>(undefined);
 
   const menuOverlay = !menuIsPanel(breakpoint);
@@ -128,46 +117,6 @@ export const App = (): React.ReactElement => {
     goalsFocusTimer.current = undefined;
   }, []);
 
-  const clearBetweenDayWheel = useCallback(() => {
-    if (wheelResetTimer.current !== undefined) window.clearTimeout(wheelResetTimer.current);
-    wheelResetTimer.current = undefined;
-    wheelTotal.current = 0;
-    wheelCommitted.current = false;
-  }, []);
-
-  const continueBetweenDayWheel = useCallback(() => {
-    if (wheelResetTimer.current !== undefined) window.clearTimeout(wheelResetTimer.current);
-    wheelResetTimer.current = window.setTimeout(() => {
-      wheelResetTimer.current = undefined;
-      wheelTotal.current = 0;
-      wheelCommitted.current = false;
-    }, BETWEEN_DAY_WHEEL_IDLE_MS);
-  }, []);
-
-  const clearWithinDayWheel = useCallback(() => {
-    withinDayWheelCleanup.current?.();
-    withinDayWheelCleanup.current = undefined;
-    withinDayWheelRegion.current = null;
-  }, []);
-
-  const beginWithinDayWheel = useCallback(
-    (region: HTMLElement) => {
-      clearWithinDayWheel();
-      clearBetweenDayWheel();
-
-      const finish = (): void => {
-        withinDayWheelCleanup.current = undefined;
-        withinDayWheelRegion.current = null;
-        wheelTotal.current = 0;
-      };
-
-      withinDayWheelRegion.current = region;
-      withinDayWheelCleanup.current = () => region.removeEventListener('scrollend', finish);
-      region.addEventListener('scrollend', finish, { once: true });
-    },
-    [clearBetweenDayWheel, clearWithinDayWheel],
-  );
-
   const onGoalsEditorReady = useCallback((view: EditorView | null) => {
     goalsEditor.current = view;
   }, []);
@@ -175,13 +124,11 @@ export const App = (): React.ReactElement => {
   const goTo = useCallback(
     (next: ISODate) => {
       clearSettlement();
-      clearBetweenDayWheel();
-      clearWithinDayWheel();
       setSettling(false);
       setDayShift(0);
       setDate(next);
     },
-    [clearBetweenDayWheel, clearSettlement, clearWithinDayWheel],
+    [clearSettlement],
   );
 
   /**
@@ -206,67 +153,33 @@ export const App = (): React.ReactElement => {
 
   /**
    * A wheel over Today walks the same vertical day axis as a touch drag. A
-   * genuinely long day keeps the wheel while it has content in that direction;
-   * if that wheel gesture reaches an edge, its momentum still belongs to the
-   * body until native scrolling ends. The next outward gesture then belongs to
-   * the day plane. Between-day movement has no native scroll lifecycle, so its
-   * own momentum remains guarded separately.
+   * genuinely long day keeps the wheel while it has content in that direction.
+   * At an edge, native scroll chaining reaches the bounded three-day plane,
+   * which can expose only one neighbour in either direction.
    */
-  const onDayWheel = useCallback(
-    (event: React.WheelEvent<HTMLDivElement>): void => {
-      if (
-        event.ctrlKey ||
-        !window.matchMedia('(any-pointer: fine)').matches ||
-        Math.abs(event.deltaY) <= Math.abs(event.deltaX)
-      ) {
+  const onDayWheel = useCallback((event: React.WheelEvent<HTMLDivElement>): void => {
+    if (
+      event.ctrlKey ||
+      !window.matchMedia('(any-pointer: fine)').matches ||
+      Math.abs(event.deltaY) <= Math.abs(event.deltaX)
+    ) {
+      return;
+    }
+
+    const target = event.target as HTMLElement;
+    const scrollRegion = target.closest<HTMLElement>('[data-scroll="day"]');
+    if (scrollRegion) {
+      const maximum = scrollRegion.scrollHeight - scrollRegion.clientHeight;
+      const canScroll =
+        maximum > 1 &&
+        (event.deltaY < 0 ? scrollRegion.scrollTop > 1 : scrollRegion.scrollTop < maximum - 1);
+      if (canScroll) {
         return;
       }
+    }
 
-      if (withinDayWheelRegion.current !== null) return;
-
-      if (wheelCommitted.current) {
-        event.preventDefault();
-        continueBetweenDayWheel();
-        return;
-      }
-
-      const target = event.target as HTMLElement;
-      const scrollRegion = target.closest<HTMLElement>('[data-scroll="day"]');
-      if (scrollRegion) {
-        const maximum = scrollRegion.scrollHeight - scrollRegion.clientHeight;
-        const canScroll =
-          maximum > 1 &&
-          (event.deltaY < 0 ? scrollRegion.scrollTop > 1 : scrollRegion.scrollTop < maximum - 1);
-        if (canScroll) {
-          beginWithinDayWheel(scrollRegion);
-          return;
-        }
-      }
-
-      event.preventDefault();
-      continueBetweenDayWheel();
-
-      const unit =
-        event.deltaMode === WheelEvent.DOM_DELTA_LINE
-          ? 16
-          : event.deltaMode === WheelEvent.DOM_DELTA_PAGE
-            ? (plane.current?.clientHeight ?? window.innerHeight)
-            : 1;
-      const delta = event.deltaY * unit;
-
-      if (wheelTotal.current !== 0 && Math.sign(wheelTotal.current) !== Math.sign(delta)) {
-        wheelTotal.current = 0;
-      }
-      wheelTotal.current += delta;
-
-      if (Math.abs(wheelTotal.current) < WHEEL_NAVIGATION_THRESHOLD) return;
-      const days = wheelTotal.current > 0 ? 1 : -1;
-      wheelTotal.current = 0;
-      wheelCommitted.current = true;
-      step(days);
-    },
-    [beginWithinDayWheel, continueBetweenDayWheel, step],
-  );
+    target.closest<HTMLElement>('.day-plane')?.setAttribute('data-wheel-navigation', 'true');
+  }, []);
 
   const closeLateral = useCallback(() => {
     setMenuOpen(false);
@@ -472,10 +385,8 @@ export const App = (): React.ReactElement => {
     () => () => {
       clearSettlement();
       clearGoalsFocus();
-      clearBetweenDayWheel();
-      clearWithinDayWheel();
     },
-    [clearBetweenDayWheel, clearGoalsFocus, clearSettlement, clearWithinDayWheel],
+    [clearGoalsFocus, clearSettlement],
   );
 
   if (error) {

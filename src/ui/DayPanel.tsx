@@ -11,7 +11,7 @@
  * are static by default, so it costs no editor to have yesterday half on screen.
  */
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { DISPLAY_SECTIONS, isFrozen, type Store, type Workspace } from '../crdt';
 import { formatDay, relativeDay, type ISODate } from '../lib/date';
 import { Collection } from './Collection';
@@ -62,6 +62,14 @@ export const DayPanel = ({
             : 'middle';
     setTouchScrollRoom((current) => (current === next ? current : next));
   }, []);
+
+  useLayoutEffect(() => {
+    const element = body.current;
+    if (!active && element && element.scrollTop !== 0) {
+      element.scrollTop = 0;
+      measureTouchScrollRoom();
+    }
+  }, [active, measureTouchScrollRoom]);
 
   useEffect(() => {
     const element = body.current;

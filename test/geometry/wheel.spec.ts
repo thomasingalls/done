@@ -1,33 +1,32 @@
-/** Desktop wheel-navigation regressions, including macOS-style momentum tails. */
+/** Desktop regressions for the bounded native three-day wheel surface. */
 
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { addDays, type ISODate } from '../../src/lib/date';
 
 const activeDay = (page: Page) => page.locator('.day-panel[data-active="true"]');
 
-const wheel = async (target: Locator, deltaY: number): Promise<void> => {
-  await target.evaluate((element, amount) => {
-    element.dispatchEvent(
-      new WheelEvent('wheel', {
-        bubbles: true,
-        cancelable: true,
-        deltaMode: WheelEvent.DOM_DELTA_PIXEL,
-        deltaY: amount,
-      }),
-    );
-  }, deltaY);
+const nativeWheel = async (page: Page, target: Locator, deltaY: number): Promise<void> => {
+  const box = await target.boundingBox();
+  if (!box) throw new Error('Wheel target is not visible');
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.wheel(0, deltaY);
 };
 
-const openDesktop = async (page: Page): Promise<{ header: Locator; initial: ISODate }> => {
+const openDesktop = async (
+  page: Page,
+): Promise<{ body: Locator; header: Locator; initial: ISODate }> => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto('/');
   await expect(activeDay(page)).toBeVisible();
   const initial = (await activeDay(page).getAttribute('data-date')) as ISODate;
-  return { header: activeDay(page).locator('.panel-header'), initial };
+  return {
+    body: activeDay(page).locator('.day-body'),
+    header: activeDay(page).locator('.panel-header'),
+    initial,
+  };
 };
 
-const makeDayScrollable = async (page: Page): Promise<Locator> => {
-  const body = activeDay(page).locator('.day-body');
+const makeDayScrollable = async (body: Locator): Promise<void> => {
   await body.evaluate((element) => {
     const filler = document.createElement('div');
     filler.style.flex = '0 0 2000px';
@@ -35,122 +34,82 @@ const makeDayScrollable = async (page: Page): Promise<Locator> => {
     element.scrollTop = 0;
   });
   await expect.poll(() => body.evaluate((element) => element.scrollHeight)).toBeGreaterThan(2000);
-  return body;
 };
+
+const moveToBottom = (target: Locator): Promise<void> =>
+  target.evaluate((element) => {
+    element.scrollTop = element.scrollHeight;
+  });
 
 test.describe('desktop wheel navigation', () => {
   test.skip(({ isMobile }) => isMobile, 'Mouse-wheel navigation is a desktop interaction.');
 
-  test('requires deliberate motion', async ({ page }) => {
+  test('an arbitrarily large wheel moves exactly one day', async ({ page }) => {
     const { header, initial } = await openDesktop(page);
 
-    await wheel(header, 60);
-    await page.waitForTimeout(100);
-    await expect(activeDay(page)).toHaveAttribute('data-date', initial);
+    await nativeWheel(page, header, 100_000);
 
-    await wheel(header, 120);
     await expect(activeDay(page)).toHaveAttribute('data-date', addDays(initial, 1));
   });
 
-  test('allows the next between-day gesture without an idle wait', async ({ page }) => {
+  test('a fresh gesture can immediately move one more day', async ({ page }) => {
     const { header, initial } = await openDesktop(page);
 
-    await wheel(header, 120);
+    await nativeWheel(page, header, 100_000);
     await expect(activeDay(page)).toHaveAttribute('data-date', addDays(initial, 1));
 
-    await wheel(header, 120);
+    await nativeWheel(page, activeDay(page).locator('.day-body'), 100_000);
     await expect(activeDay(page)).toHaveAttribute('data-date', addDays(initial, 2));
   });
 
-  test('moves at most one day through a momentum tail', async ({ page }) => {
+  test('a large upward wheel moves exactly one day into the past', async ({ page }) => {
     const { header, initial } = await openDesktop(page);
 
-    await wheel(header, 120);
-    await page.waitForTimeout(110);
-    await wheel(header, 40);
-    await page.waitForTimeout(110);
-    await wheel(header, 30);
-    await page.waitForTimeout(110);
-    await wheel(header, 60);
-    await page.waitForTimeout(110);
-    await wheel(header, 50);
-
-    await expect(activeDay(page)).toHaveAttribute('data-date', addDays(initial, 1));
-
-    await page.waitForTimeout(260);
-    await wheel(header, 120);
-    await expect(activeDay(page)).toHaveAttribute('data-date', addDays(initial, 2));
-  });
-
-  test('hands off from within-day only after native scrolling ends', async ({ page }) => {
-    const { initial } = await openDesktop(page);
-    const body = await makeDayScrollable(page);
-
-    await body.evaluate(async (element) => {
-      const scrollEnded = new Promise<void>((resolve) => {
-        element.addEventListener('scrollend', () => resolve(), { once: true });
-      });
-      const emitWheel = (deltaY: number): void => {
-        element.dispatchEvent(
-          new WheelEvent('wheel', {
-            bubbles: true,
-            cancelable: true,
-            deltaMode: WheelEvent.DOM_DELTA_PIXEL,
-            deltaY,
-          }),
-        );
-      };
-
-      emitWheel(120);
-      element.scrollTop = element.scrollHeight;
-      emitWheel(120);
-      emitWheel(120);
-      await scrollEnded;
-    });
-
-    await expect(activeDay(page)).toHaveAttribute('data-date', initial);
-
-    await wheel(body, 120);
-    await expect(activeDay(page)).toHaveAttribute('data-date', addDays(initial, 1));
-  });
-
-  test('a fresh native wheel at the boundary moves to the next day', async ({ page }) => {
-    const { initial } = await openDesktop(page);
-    const body = await makeDayScrollable(page);
-    const box = await body.boundingBox();
-    if (!box) throw new Error('Day body is not visible');
-
-    const scrollEnded = body.evaluate(
-      (element) =>
-        new Promise<void>((resolve) => {
-          element.addEventListener('scrollend', () => resolve(), { once: true });
-        }),
-    );
-    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-    await page.mouse.wheel(0, 4000);
-    await scrollEnded;
-
-    await expect(activeDay(page)).toHaveAttribute('data-date', initial);
-    await page.mouse.wheel(0, 120);
-    await expect(activeDay(page)).toHaveAttribute('data-date', addDays(initial, 1));
-  });
-
-  test('starts accumulation anew when direction reverses', async ({ page }) => {
-    const { header, initial } = await openDesktop(page);
-
-    await header.evaluate((element) => {
-      for (const deltaY of [60, -60, -40]) {
-        element.dispatchEvent(
-          new WheelEvent('wheel', {
-            bubbles: true,
-            cancelable: true,
-            deltaMode: WheelEvent.DOM_DELTA_PIXEL,
-            deltaY,
-          }),
-        );
-      }
-    });
+    await nativeWheel(page, header, -100_000);
 
     await expect(activeDay(page)).toHaveAttribute('data-date', addDays(initial, -1));
+  });
+
+  test('a wheel stays within a long day while it has scroll room', async ({ page }) => {
+    const { body, initial } = await openDesktop(page);
+    await makeDayScrollable(body);
+
+    await nativeWheel(page, body, 100);
+    await expect.poll(() => body.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+    await expect(activeDay(page)).toHaveAttribute('data-date', initial);
+  });
+
+  test('a fresh wheel at the end of a long day changes dates', async ({ page }) => {
+    const { body, initial } = await openDesktop(page);
+    await makeDayScrollable(body);
+    await moveToBottom(body);
+
+    await nativeWheel(page, body, 100_000);
+    await expect(activeDay(page)).toHaveAttribute('data-date', addDays(initial, 1));
+  });
+});
+
+test.describe('day scroll reset', () => {
+  test.skip(({ isMobile }) => isMobile, 'Mouse-wheel navigation is a desktop interaction.');
+
+  test('leaving a day resets its within-day scroll position', async ({ page }) => {
+    const { body, initial } = await openDesktop(page);
+    await makeDayScrollable(body);
+
+    await moveToBottom(body);
+
+    await nativeWheel(page, body, 100_000);
+    await expect(activeDay(page)).toHaveAttribute('data-date', addDays(initial, 1));
+    await expect.poll(() => body.evaluate((element) => element.scrollTop)).toBe(0);
+
+    await nativeWheel(page, activeDay(page).locator('.panel-header'), -100_000);
+    await expect(activeDay(page)).toHaveAttribute('data-date', initial);
+    await expect
+      .poll(() =>
+        activeDay(page)
+          .locator('.day-body')
+          .evaluate((element) => element.scrollTop),
+      )
+      .toBe(0);
   });
 });

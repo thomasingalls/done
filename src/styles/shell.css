@@ -174,17 +174,74 @@
   }
 
   .day-plane {
+    --day-scroll-step: 0px;
+    --day-viewport-size: 100%;
     grid-area: days;
     position: relative;
     overflow: hidden;
     min-block-size: 0;
     container: plane / inline-size;
+    overscroll-behavior-y: contain;
+    scrollbar-width: none;
+  }
+
+  .day-plane::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (any-pointer: fine) {
+    .day-plane {
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+    }
+  }
+
+  /*
+   * The overlay stays pinned while the native three-stop range moves beneath
+   * it. Its negative following margin keeps it from adding to that range.
+   */
+  .day-wheel-overlay {
+    position: sticky;
+    inset-block-start: 0;
+    block-size: var(--day-viewport-size);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .day-scroll-range {
+    position: relative;
+    block-size: calc(var(--day-viewport-size) + 2 * var(--day-scroll-step));
+    margin-block-start: calc(-1 * var(--day-viewport-size));
+    pointer-events: none;
+  }
+
+  .day-scroll-stop {
+    position: absolute;
+    inset-inline-start: 0;
+    block-size: 1px;
+    inline-size: 1px;
+    scroll-snap-align: start;
+  }
+
+  .day-scroll-stop[data-position='previous'] {
+    inset-block-start: 0;
+  }
+
+  .day-scroll-stop[data-position='current'] {
+    inset-block-start: var(--day-scroll-step);
+  }
+
+  .day-scroll-stop[data-position='next'] {
+    inset-block-start: calc(2 * var(--day-scroll-step));
   }
 
   .day-track {
     position: absolute;
-    inset: 0;
-    translate: 0 var(--day-shift, 0px);
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: var(--day-viewport-size);
+    z-index: 1;
+    translate: 0 calc(var(--day-scroll-step) + var(--day-shift, 0px));
   }
 
   .day-track[data-settling='true'] {
@@ -231,6 +288,7 @@
     block-size: calc(var(--peek-height) + var(--peek-gap));
     z-index: 1;
     touch-action: none;
+    pointer-events: auto;
   }
 
   .day-peek[data-edge='top'] {
@@ -315,6 +373,12 @@
 
   .day-body[data-touch-scroll='bottom'] {
     touch-action: pan-up;
+  }
+
+  @media (any-pointer: fine) {
+    .day-body {
+      overscroll-behavior-y: auto;
+    }
   }
 
   /*
