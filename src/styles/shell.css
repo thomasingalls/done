@@ -103,6 +103,7 @@
     inline-size: var(--goals-width);
     border-inline-start: 1px solid var(--color-border);
     overflow: hidden;
+    position: relative;
   }
 
   /*
@@ -326,6 +327,63 @@
     flex: 1;
   }
 
+  /* The breadcrumb reads from the same left edge as the document text. */
+  .goals-breadcrumbs {
+    display: flex;
+    align-items: center;
+    column-gap: 0.3em;
+    inline-size: 100%;
+    min-inline-size: 0;
+    border-radius: var(--radius-2);
+    text-align: start;
+  }
+
+  .goals-breadcrumbs:hover {
+    color: var(--color-text);
+  }
+
+  .goals-breadcrumb-root {
+    flex: none;
+  }
+
+  .goals-breadcrumb-trail {
+    flex: 1;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .goals-breadcrumb-trail-text {
+    text-align: start;
+  }
+
+  .goals-outline-indicator {
+    display: grid;
+    place-items: center;
+    flex: none;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    border-radius: var(--radius-2);
+    background: var(--color-surface);
+    color: var(--color-text-dim);
+  }
+
+  .goals-outline-indicator svg {
+    display: block;
+    transition: rotate var(--duration-snap) var(--ease-snap);
+  }
+
+  .goals-breadcrumbs:hover .goals-outline-indicator,
+  .goals-breadcrumbs[aria-expanded='true'] .goals-outline-indicator {
+    background: var(--color-selection);
+    color: var(--color-text);
+  }
+
+  .goals-breadcrumbs[aria-expanded='true'] .goals-outline-indicator svg {
+    rotate: 180deg;
+  }
+
   .panel-action,
   .panel-badge {
     font-size: 0.75rem;
@@ -399,6 +457,81 @@
     min-block-size: 0;
     block-size: 100%;
     overflow: hidden;
+  }
+
+  /*
+   * The outline overlays the document rather than reflowing it. Opening a
+   * navigation projection must not move the text it is helping locate.
+   */
+  .goals-outline {
+    position: absolute;
+    z-index: 2;
+    inset-block-start: var(--header-height);
+    inset-inline: 0;
+    max-block-size: min(65%, 32rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    padding: var(--space-2);
+    border-block-end: 1px solid var(--color-border);
+    background: var(--color-bg);
+    box-shadow: 0 0.75rem 1.5rem rgb(28 27 25 / 0.12);
+  }
+
+  .goals-outline-list {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .goals-outline-item {
+    display: block;
+    inline-size: 100%;
+    overflow: hidden;
+    padding: 0.35rem var(--space-2);
+    border-radius: var(--radius-2);
+    color: var(--color-text-dim);
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    text-align: start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .goals-outline-item:hover {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .goals-outline-item[aria-current='location'] {
+    background: var(--color-selection);
+    color: var(--color-text);
+  }
+
+  .goals-outline-item[data-level='2'] {
+    padding-inline-start: calc(var(--space-2) + var(--space-3));
+  }
+
+  .goals-outline-item[data-level='3'] {
+    padding-inline-start: calc(var(--space-2) + var(--space-5));
+  }
+
+  .goals-outline-item[data-level='4'] {
+    padding-inline-start: calc(var(--space-2) + var(--space-6));
+  }
+
+  .goals-outline-item[data-level='5'],
+  .goals-outline-item[data-level='6'] {
+    padding-inline-start: calc(var(--space-2) + var(--space-6) + var(--space-3));
+  }
+
+  .goals-outline-empty {
+    padding: var(--space-3);
+    color: var(--color-text-faint);
+    font-size: 0.8125rem;
+    line-height: 1.5;
   }
 
   .menu-trigger {
