@@ -339,6 +339,83 @@ describe('the store, sync-absent', () => {
   });
 });
 
+/**
+ * TRD §6.1 and §11, "load before connect".
+ *
+ * The most common data-loss report against Yjs in production is this ordering
+ * inverted. The socket syncs before `y-indexeddb` has finished loading, the
+ * relay and the other replicas are handed a document that looks empty because
+ * the disk read has not landed yet, and every replica converges on the empty
+ * one. Sync then propagates the loss rather than repairing it, which is what
+ * makes an ordering bug a data-loss bug.
+ *
+ * `openStore` gets this right with a single `await` before `createSync`
+ * (`src/crdt/index.ts`). It is one line, it is invisible when correct, and
+ * overlapping the disk read with the socket opening is a real start-up saving
+ * that someone will eventually propose. So the property is asserted rather than
+ * commented: what the transport is handed, at the moment it is constructed.
+ */
+describe('local state loads before the transport is constructed', () => {
+  const DB = 'done-test-load-before-connect';
+  const SEEDED = '# Master\n\n- the phone wrote this while the laptop was shut\n';
+
+  /** A document already on disk, as it would be on any reload after first use. */
+  const seed = async (): Promise<void> => {
+    const first = await openStore({ dbName: DB });
+    transact(first.doc, first.actor.origin, () => first.master.insert(0, SEEDED));
+    await first.local?.provider.whenSynced;
+    first.destroy();
+  };
+
+  /**
+   * Records what the document held at the instant `open` was called, rather
+   * than at the end of the test — by then the disk read has landed either way
+   * and both orderings look identical.
+   */
+  const observingTransport = (): { open: OpenWebsocket; seen: string[] } => {
+    const seen: string[] = [];
+    const { open } = transport();
+    return {
+      seen,
+      open: (options) => {
+        seen.push(options.doc.getText('master').toString());
+        return open(options);
+      },
+    };
+  };
+
+  it('hands the transport a document that already holds what was on disk', async () => {
+    await seed();
+    localStorage.setItem(SYNC_KEYS.config, JSON.stringify(CONFIG));
+
+    const { open, seen } = observingTransport();
+    const store = await openStore({ dbName: DB, openWebsocket: open });
+    await settle();
+
+    expect(seen).toEqual([SEEDED]);
+    store.destroy();
+  });
+
+  /**
+   * The same property stated as the failure it prevents. Without the await the
+   * transport is constructed against an empty document — which is the state
+   * that gets synced outwards — so an empty observation is the regression, not
+   * merely a different ordering.
+   */
+  it('never observes an empty document when local state exists', async () => {
+    await seed();
+    localStorage.setItem(SYNC_KEYS.config, JSON.stringify(CONFIG));
+
+    const { open, seen } = observingTransport();
+    const store = await openStore({ dbName: DB, openWebsocket: open });
+    await settle();
+
+    expect(seen).toHaveLength(1);
+    expect(seen[0]).not.toBe('');
+    store.destroy();
+  });
+});
+
 describe('a configured relay', () => {
   it('connects with what was configured, and remembers it', async () => {
     const doc = new Y.Doc();

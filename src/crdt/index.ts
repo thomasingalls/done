@@ -115,10 +115,21 @@ const watchCap = (doc: YDoc, context: ActorContext): (() => void) => {
 };
 
 /**
- * Asynchronous on purpose: persisted state must be applied *before* the actor
- * roster and `meta` are initialised, or every reload would re-register the
- * local actor against a document that already knows it and overwrite the
- * stored name and colour with fresh defaults.
+ * Asynchronous on purpose, for two independent reasons. The second is the one
+ * that would still hold if the first were ever solved another way, so removing
+ * the `await` needs both answered.
+ *
+ * 1. Persisted state must be applied *before* the actor roster and `meta` are
+ *    initialised, or every reload would re-register the local actor against a
+ *    document that already knows it and overwrite the stored name and colour
+ *    with fresh defaults.
+ * 2. **No transport may be constructed until the disk read has landed**
+ *    (TRD §6.1). A socket opened against a document that is still empty hands
+ *    the relay and every other replica an empty document, and they converge on
+ *    it — sync propagates the loss instead of repairing it. This is the most
+ *    common data-loss report against Yjs in production, and the reason
+ *    `createSync` is at the bottom of this function rather than the top.
+ *    Asserted in `test/sync.test.ts`, "load before connect".
  */
 export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> => {
   const doc = options.doc ?? createDoc();
