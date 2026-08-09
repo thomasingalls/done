@@ -356,12 +356,20 @@ describe('the store, sync-absent', () => {
  * commented: what the transport is handed, at the moment it is constructed.
  */
 describe('local state loads before the transport is constructed', () => {
-  const DB = 'done-test-load-before-connect';
   const SEEDED = '# Master\n\n- the phone wrote this while the laptop was shut\n';
 
+  /**
+   * A database per test, hence the counter. `fake-indexeddb` is installed once
+   * for the file and outlives the `beforeEach` that clears localStorage, so a
+   * shared name would let one test's seed land in the next one's document —
+   * which would still pass, and stop meaning what it says.
+   */
+  let databases = 0;
+  const nextDb = (): string => `done-test-load-before-connect-${++databases}`;
+
   /** A document already on disk, as it would be on any reload after first use. */
-  const seed = async (): Promise<void> => {
-    const first = await openStore({ dbName: DB });
+  const seed = async (dbName: string): Promise<void> => {
+    const first = await openStore({ dbName });
     transact(first.doc, first.actor.origin, () => first.master.insert(0, SEEDED));
     await first.local?.provider.whenSynced;
     first.destroy();
@@ -385,32 +393,18 @@ describe('local state loads before the transport is constructed', () => {
   };
 
   it('hands the transport a document that already holds what was on disk', async () => {
-    await seed();
+    const dbName = nextDb();
+    await seed(dbName);
     localStorage.setItem(SYNC_KEYS.config, JSON.stringify(CONFIG));
 
     const { open, seen } = observingTransport();
-    const store = await openStore({ dbName: DB, openWebsocket: open });
+    const store = await openStore({ dbName, openWebsocket: open });
     await settle();
 
+    // Exact rather than "not empty", which would also pass on a partial read.
+    // The empty string is the specific value that gets synced outwards when
+    // the ordering inverts, so it is worth naming as the regression.
     expect(seen).toEqual([SEEDED]);
-    store.destroy();
-  });
-
-  /**
-   * The same property stated as the failure it prevents. Without the await the
-   * transport is constructed against an empty document — which is the state
-   * that gets synced outwards — so an empty observation is the regression, not
-   * merely a different ordering.
-   */
-  it('never observes an empty document when local state exists', async () => {
-    await seed();
-    localStorage.setItem(SYNC_KEYS.config, JSON.stringify(CONFIG));
-
-    const { open, seen } = observingTransport();
-    const store = await openStore({ dbName: DB, openWebsocket: open });
-    await settle();
-
-    expect(seen).toHaveLength(1);
     expect(seen[0]).not.toBe('');
     store.destroy();
   });
