@@ -32,6 +32,7 @@ import {
   type YDoc,
   type YMap,
   type YText,
+  type YTransaction,
 } from './yjs';
 import { newId } from '../lib/id';
 import { nowInstant } from '../lib/temporal';
@@ -158,6 +159,44 @@ export const registerCard = (doc: YDoc, id: string, card: Card, location: CardLo
  * the accessors below, which is the only place it matters.
  */
 export const daysMap = (doc: YDoc): YMap<unknown> => doc.getMap('days');
+
+/**
+ * The exact transaction set that can change card membership or recovery.
+ * Repair and UI invalidation share this classifier so their understanding of
+ * the three-root model cannot drift apart.
+ */
+export const transactionAffectsMembership = (doc: YDoc, transaction: YTransaction): boolean => {
+  const cards: unknown = cardsMap(doc);
+  const locations: unknown = cardLocationsMap(doc);
+  const days: unknown = daysMap(doc);
+  for (const [changedType, changedKeys] of transaction.changed) {
+    const target: unknown = changedType;
+    if (target === cards || target === locations || target === days) return true;
+
+    const parent = changedType.parent;
+    if (parent === days) {
+      // A field on a day map matters only when it installs or removes one of
+      // the section collections. `archive` is deliberately excluded.
+      if (
+        [...changedKeys].some(
+          (field) => typeof field !== 'string' || SECTIONS.some((section) => section === field),
+        )
+      ) {
+        return true;
+      }
+      continue;
+    }
+
+    if (parent?.parent === days) {
+      // An edit below a day matters only when the changed type is one of its
+      // section arrays. Card and archive text take the same structural route
+      // but are not part of membership.
+      const day = parent as Day;
+      if (SECTIONS.some((section) => collectionOf(day, section) === target)) return true;
+    }
+  }
+  return false;
+};
 
 /** The day if it has ever been written to. Absent days occupy nothing (TRD §4.2). */
 export const dayAt = (doc: YDoc, date: ISODate): Day | undefined =>

@@ -34,6 +34,7 @@ import {
   readSettings,
   recoveryCards,
   scheduleCompaction,
+  transactionAffectsMembership,
   type RecoveryCard,
   type Workspace,
 } from '../crdt';
@@ -73,13 +74,14 @@ export const App = (): React.ReactElement => {
 
   const recovery = useYDocValue<RecoveryCard[]>(
     store?.doc,
-    () =>
+    () => (store ? recoveryCards(store.doc) : []),
+    (cards) =>
       store
-        ? recoveryCards(store.doc)
+        ? cards
             .map(({ id, location }) => `${id}:${location?.date ?? ''}:${location?.section ?? ''}`)
             .join('|')
         : 'absent',
-    () => (store ? recoveryCards(store.doc) : []),
+    (transaction) => Boolean(store && transactionAffectsMembership(store.doc, transaction)),
   );
 
   const [lateral, setLateral] = useState<Lateral | null>(null);

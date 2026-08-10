@@ -50,7 +50,7 @@
  */
 
 import { useCallback, useRef, useSyncExternalStore } from 'react';
-import type { YDoc, YText } from '../crdt';
+import type { YDoc, YText, YTransaction } from '../crdt';
 
 /**
  * Structural rather than `Y.Map<T>`, because Yjs's generics are invariant and
@@ -109,29 +109,44 @@ export const useYValue = <T>(
 };
 
 /**
- * A derived value spanning multiple Yjs roots. Recovery depends on the card
- * registry, canonical locations, and day arrays, so no one root is sufficient.
+ * A derived value spanning multiple Yjs roots. `shouldRefresh` can reject
+ * transactions that cannot affect the value before the potentially expensive
+ * document read runs. `keyOf` then preserves the previous value's identity
+ * when a relevant transaction leaves the derived result unchanged.
  */
-export const useYDocValue = <T>(doc: YDoc | undefined, key: () => string, select: () => T): T => {
+export const useYDocValue = <T>(
+  doc: YDoc | undefined,
+  select: () => T,
+  keyOf: (value: T) => string,
+  shouldRefresh?: (transaction: YTransaction) => boolean,
+): T => {
   'use no memo';
 
-  const keyRef = useRef(key);
   const selectRef = useRef(select);
-  keyRef.current = key;
+  const keyOfRef = useRef(keyOf);
+  const shouldRefreshRef = useRef(shouldRefresh);
   selectRef.current = select;
+  keyOfRef.current = keyOf;
+  shouldRefreshRef.current = shouldRefresh;
 
   const cache = useRef<{ doc: YDoc | undefined; key: string; value: T } | null>(null);
   if (!cache.current || cache.current.doc !== doc) {
-    cache.current = { doc, key: key(), value: select() };
+    const value = select();
+    cache.current = { doc, key: keyOf(value), value };
   }
 
   const subscribe = useCallback(
     (onChange: () => void) => {
-      const handler = (): void => {
-        const nextKey = keyRef.current();
+      const handler = (transaction?: YTransaction): void => {
+        if (transaction && shouldRefreshRef.current && !shouldRefreshRef.current(transaction)) {
+          return;
+        }
+
+        const value = selectRef.current();
+        const nextKey = keyOfRef.current(value);
         const current = cache.current;
         if (current && current.doc === doc && current.key === nextKey) return;
-        cache.current = { doc, key: nextKey, value: selectRef.current() };
+        cache.current = { doc, key: nextKey, value };
         onChange();
       };
       doc?.on('afterTransaction', handler);

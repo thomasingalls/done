@@ -9,10 +9,17 @@
  * relay is reachable, unreachable, or has never been heard of.
  */
 
-import { Awareness, createDoc, createUndoManager, type YDoc, type YUndoManager } from './yjs';
+import {
+  Awareness,
+  createDoc,
+  createUndoManager,
+  type YDoc,
+  type YTransaction,
+  type YUndoManager,
+} from './yjs';
 import { resolveActor, type ActorContext } from './actors';
 import { openTree, readSettings, type DocumentTree, type Settings } from './doc';
-import { cardLocationsMap, cardsMap, daysMap, repairCardMemberships, SECTIONS } from './days';
+import { repairCardMemberships, transactionAffectsMembership } from './days';
 import { createSync, type SyncController, type SyncOptions } from './sync';
 import {
   openLocalStore,
@@ -85,9 +92,6 @@ export interface OpenStoreOptions {
  * whatever transaction happened to trip it.
  */
 const watchMemberships = (doc: YDoc, context: ActorContext): (() => void) => {
-  const days = daysMap(doc);
-  const cards = cardsMap(doc);
-  const locations = cardLocationsMap(doc);
   let queued = false;
 
   const schedule = (): void => {
@@ -99,25 +103,13 @@ const watchMemberships = (doc: YDoc, context: ActorContext): (() => void) => {
     });
   };
 
-  const dayObserver = (events: { path: (string | number)[] }[]): void => {
-    // Only membership can leave the three roots disagreeing. Card *text* lives
-    // below entries in the registry, while that map is observed shallowly.
-    const membership = events.some((event) => {
-      const field = event.path[1];
-      // A change to the days map itself: a day arrived, which is a membership
-      // change in every sense that matters here.
-      return typeof field !== 'string' || SECTIONS.some((section) => section === field);
-    });
-    if (membership) schedule();
+  const afterTransaction = (transaction: YTransaction): void => {
+    if (transactionAffectsMembership(doc, transaction)) schedule();
   };
 
-  days.observeDeep(dayObserver);
-  cards.observe(schedule);
-  locations.observe(schedule);
+  doc.on('afterTransaction', afterTransaction);
   return () => {
-    days.unobserveDeep(dayObserver);
-    cards.unobserve(schedule);
-    locations.unobserve(schedule);
+    doc.off('afterTransaction', afterTransaction);
   };
 };
 
