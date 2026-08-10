@@ -14,8 +14,9 @@
  * every partition is symmetric and every replica has seen either all of a
  * change or none of it. With three, one replica can be *between* the other two:
  * it has the first half of what one of them did and none of the second, and it
- * runs the cap repair on that partial view. Whether two independently repairing
- * replicas agree is only a real question once a third can disagree with both.
+ * runs the membership repair on that partial view. Whether two independently
+ * repairing replicas agree is only a real question once a third can disagree
+ * with both.
  *
  * Each property names the defects it rules out. The gap — dangling ids and
  * orphaned cards, which survive convergence when the history buttons are in the
@@ -31,6 +32,7 @@ import {
   masterText,
   openFleet,
   placements,
+  settle,
   storedMembership,
   violations,
   type Defect,
@@ -38,21 +40,25 @@ import {
   type Replica,
 } from './replicas';
 import {
+  composeInto,
   opArbitraryAdditive,
   opArbitraryWithoutHistory,
+  refOf,
   runSchedule,
   scheduleArbitrary,
+  type Step,
 } from './operations';
 import {
   Y,
   applyUpdate,
+  cardBody,
+  cardsIn,
   compose,
-  enforceCap,
-  listDays,
   repairCardMemberships,
   type Origin,
   type YDoc,
 } from '../src/crdt';
+import type { ISODate } from '../src/lib/date';
 
 /** Enough generated schedules to be evidence, few enough that `pnpm test` stays quick. */
 const RUNS = 40;
@@ -65,15 +71,14 @@ const SYSTEM: Origin = Object.freeze({
 
 /**
  * A bare document fed a log of updates, then repaired exactly the way
- * `watchCap` repairs a live one. Bare rather than a whole store because the
- * question is about the repair functions and nothing else: given the same
- * updates in a different order, do they decide the same thing?
+ * `watchMemberships` repairs a live one. Bare rather than a whole store because
+ * the question is about the repair and nothing else: given the same updates in
+ * a different order, does it decide the same thing?
  */
 const repaired = (log: readonly Uint8Array[]): YDoc => {
   const doc = new Y.Doc();
   for (const update of log) applyUpdate(doc, update, 'replay');
   repairCardMemberships(doc, SYSTEM);
-  for (const date of listDays(doc)) enforceCap(doc, SYSTEM, date);
   return doc;
 };
 
@@ -81,7 +86,7 @@ const repaired = (log: readonly Uint8Array[]): YDoc => {
  * The defects concurrency alone can produce. Everything not listed is ruled out
  * separately, either with a narrower alphabet or with a named regression.
  */
-const CONCURRENCY_DEFECTS: Defect[] = ['cap exceeded', 'duplicate membership', 'stale membership'];
+const CONCURRENCY_DEFECTS: Defect[] = ['duplicate membership', 'stale membership'];
 
 /** Runs a generated schedule on a fresh fleet and hands the converged fleet back. */
 const played = async (
@@ -114,6 +119,43 @@ const view = (replica: Replica): unknown => ({
 const against = (fleet: Fleet): [unknown, unknown][] =>
   fleet.replicas.slice(1).map((other) => [view(other), view(fleet.replicas[0] as Replica)]);
 
+/**
+ * Runs a schedule of composes, naming each card after the device that wrote it
+ * and the position it wrote it in — `a#0`, `a#1`, `b#0`. The two properties at
+ * the end of this block are about *which device wrote what, and when*, and a
+ * generated body says neither; a name that carries both turns "in the order
+ * this device completed things" into an assertion about a list of strings.
+ *
+ * Returns what each day accepted, in the order it was written. Accepted rather
+ * than attempted, because a device at the cap refuses, and a refused compose is
+ * the cap working rather than a card to go looking for.
+ */
+const runComposes = async (
+  fleet: Fleet,
+  steps: readonly Step[],
+): Promise<Map<ISODate, string[]>> => {
+  const accepted = new Map<ISODate, string[]>();
+  const written = new Map<string, number>();
+
+  for (const step of steps) {
+    const replica = fleet.replicas[step.node % fleet.replicas.length] as Replica;
+    if (step.t === 'offline') fleet.net.disconnect(replica.store.doc);
+    if (step.t === 'online') fleet.net.connect(replica.store.doc);
+    if (step.t === 'op' && step.op.t === 'compose') {
+      const count = written.get(replica.name) ?? 0;
+      written.set(replica.name, count + 1);
+      const ref = refOf(step.op.day, step.op.section);
+      const body = `${replica.name}#${count}`;
+      if (compose(replica.workspace, ref, body)) {
+        accepted.set(ref.date, [...(accepted.get(ref.date) ?? []), body]);
+      }
+    }
+    await settle();
+  }
+
+  return accepted;
+};
+
 describe.each([2, 3])('%i devices through a relay', (size) => {
   it('converge on the same document, whatever they did while apart', async () => {
     await fc.assert(
@@ -127,13 +169,11 @@ describe.each([2, 3])('%i devices through a relay', (size) => {
   }, 300_000);
 
   /**
-   * TRD §11 lists "concurrent insert-from-two-devices" among the sequences the
-   * cap must survive, and the repair that catches it runs independently on
-   * every replica. This is the claim that independent repairs agree: no day
-   * shows four cards in Next, no collection holds an id twice, and no
-   * collection holds an id whose canonical location says it lives elsewhere.
+   * The membership repair runs independently on every replica, and this is the
+   * claim that independent repairs agree: no collection holds an id twice, and
+   * no collection holds an id whose canonical location says it lives elsewhere.
    */
-  it('keep the cap and the membership arrays sound', async () => {
+  it('keep the membership arrays sound', async () => {
     await fc.assert(
       fc.asyncProperty(fc.integer(), scheduleArbitrary(size), async (seed, steps) => {
         await played(size, seed, steps, (fleet) => {
@@ -230,6 +270,89 @@ describe.each([2, 3])('%i devices through a relay', (size) => {
       { numRuns: RUNS },
     );
   }, 300_000);
+
+  /**
+   * PRD §3, the answer to what happens when devices that have each filled Next
+   * meet: **keep everything**. Every card a device accepted into Next is in
+   * Next, on every device, whatever that adds up to — nothing is relocated to
+   * Scheduled, nothing is dropped, and the day is allowed to show more than
+   * three.
+   *
+   * The alphabet is composing into Next and nothing else, which is what makes
+   * "still in Next" unambiguous: with moves in it, a card leaving Next is the
+   * user's doing and the property would have to model the user. Each device
+   * refuses its own fourth (`localProperties.test.ts` is the standing claim for
+   * that), so a run reaches an expanded Next only by way of a partition, which
+   * is exactly the case being specified.
+   */
+  it('keep every device’s Next items, however many that makes', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.integer(),
+        scheduleArbitrary(size, { ops: composeInto('next') }),
+        async (seed, steps) => {
+          const fleet = await openFleet(size, seed);
+          try {
+            const accepted = await runComposes(fleet, steps);
+            await fleet.converge();
+
+            for (const replica of fleet.replicas) {
+              for (const [date, bodies] of accepted) {
+                expect(new Set(cardsIn(replica.store.doc, date, 'next').map(cardBody))).toEqual(
+                  new Set(bodies),
+                );
+              }
+            }
+          } finally {
+            fleet.destroy();
+          }
+        },
+      ),
+      { numRuns: RUNS },
+    );
+  }, 300_000);
+
+  /**
+   * PRD §3, the other half: Done reads newest-first, and that order is the
+   * record rather than a way of drawing it — so replication has to carry the
+   * order and not merely the cards.
+   *
+   * Two devices completing things at once have no order between them to get
+   * right, so what is claimed is per-device: whatever the schedule did, each
+   * device's own completions still read newest-first on every device. That is
+   * free while the array that holds them survives, and is precisely what is at
+   * stake when it does not — a day both devices create at once loses one of the
+   * two arrays outright, and its cards come back through the membership repair.
+   */
+  it('keep Done in the order each device completed things', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.integer(),
+        scheduleArbitrary(size, { ops: composeInto('done') }),
+        async (seed, steps) => {
+          const fleet = await openFleet(size, seed);
+          try {
+            const accepted = await runComposes(fleet, steps);
+            await fleet.converge();
+
+            for (const replica of fleet.replicas) {
+              for (const [date, bodies] of accepted) {
+                const shown = cardsIn(replica.store.doc, date, 'done').map(cardBody);
+                expect(new Set(shown)).toEqual(new Set(bodies));
+                for (const device of fleet.replicas) {
+                  const mine = (body: string): boolean => body.startsWith(`${device.name}#`);
+                  expect(shown.filter(mine)).toEqual(bodies.filter(mine).reverse());
+                }
+              }
+            }
+          } finally {
+            fleet.destroy();
+          }
+        },
+      ),
+      { numRuns: RUNS },
+    );
+  }, 300_000);
 });
 
 /**
@@ -246,18 +369,26 @@ describe.each([2, 3])('%i devices through a relay', (size) => {
  *
  * It is not a bug only because a card's content and canonical location live in
  * roots that merge by id and therefore survive, and because the membership
- * repair pushes anything located-but-unfiled back into the winning day. The
- * cost is presentation order: the loser's cards arrive at the end of the
- * collection rather than where they were left.
+ * repair puts anything located-but-unfiled back into the winning day.
+ *
+ * What the repair cannot recover is the array position, because the array that
+ * held it is the thing that was deleted — so it recomputes one from the
+ * section's ordering rule (see `rehomeIndex`). For Scheduled that is the
+ * arrival rule, which is to append. For Done it is newest-first, which is the
+ * case worth its own test: the losing device's record has to come back in the
+ * order it was written, not in whatever order the card registry is walked in.
  */
 describe('a day both devices create at once', () => {
+  const apart = (fleet: Fleet): void => {
+    // Neither device has ever written to this date, so neither has a day map.
+    for (const replica of fleet.replicas) fleet.net.disconnect(replica.store.doc);
+  };
+
   it('keeps the cards from the map that lost the key', async () => {
     const fleet = await openFleet(2, 5);
     try {
       const [phone, laptop] = fleet.replicas as [Replica, Replica];
-      // Neither device has ever written to this date, so neither has a day map.
-      fleet.net.disconnect(phone.store.doc);
-      fleet.net.disconnect(laptop.store.doc);
+      apart(fleet);
       const day = { date: '2026-08-05', section: 'scheduled' as const };
       compose(phone.workspace, day, 'from the phone');
       compose(laptop.workspace, day, 'from the laptop');
@@ -271,6 +402,39 @@ describe('a day both devices create at once', () => {
         expect(violations(replica.store.doc, ALL_DEFECTS)).toEqual([]);
       }
       expect(view(laptop)).toEqual(view(phone));
+    } finally {
+      fleet.destroy();
+    }
+  }, 60_000);
+
+  it('brings the losing device’s Done record back newest-first', async () => {
+    const fleet = await openFleet(2, 5);
+    try {
+      const [phone, laptop] = fleet.replicas as [Replica, Replica];
+      apart(fleet);
+      const day = { date: '2026-08-05', section: 'done' as const };
+      for (const index of [0, 1, 2]) {
+        compose(phone.workspace, day, `phone#${index}`);
+        compose(laptop.workspace, day, `laptop#${index}`);
+      }
+
+      await fleet.converge();
+
+      for (const replica of fleet.replicas) {
+        const shown = cardsIn(replica.store.doc, '2026-08-05', 'done').map(cardBody);
+        // One of these two lists came back through the repair; which one is
+        // decided by a client-id tie-break, and both have to read the same way.
+        expect(shown.filter((body) => body.startsWith('phone'))).toEqual([
+          'phone#2',
+          'phone#1',
+          'phone#0',
+        ]);
+        expect(shown.filter((body) => body.startsWith('laptop'))).toEqual([
+          'laptop#2',
+          'laptop#1',
+          'laptop#0',
+        ]);
+      }
     } finally {
       fleet.destroy();
     }

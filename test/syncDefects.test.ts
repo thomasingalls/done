@@ -118,12 +118,12 @@ describe('undo across devices', () => {
    * correctly; the *other* device's array entry stays, pointing at nothing.
    *
    * `repairCardMemberships` would remove it on sight. It never gets the chance,
-   * because `watchCap` observes the `days` map alone and that undo touched only
-   * `cards` and `cardLocations`. Nothing else will ever touch that day either,
-   * so the entry is permanent — invisible, since `cardsIn` filters it out, but
-   * counted by `collection.length`, which is what `arrivalIndex` and
-   * `reorderCard`'s clamp are computed from. A drag onto a collection carrying
-   * stale entries lands at the wrong index.
+   * because `watchMemberships` observes the `days` map alone and that undo
+   * touched only `cards` and `cardLocations`. Nothing else will ever touch that
+   * day either, so the entry is permanent — invisible, since `cardsIn` filters
+   * it out, but counted by `collection.length`, which is what `arrivalIndex`
+   * and `reorderCard`'s clamp are computed from. A drag onto a collection
+   * carrying stale entries lands at the wrong index.
    *
    * The fix is one line of trigger rather than one of logic: the repair reads
    * `cards` and `cardLocations`, so it has to be woken by them too.

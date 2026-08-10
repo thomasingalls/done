@@ -1,7 +1,7 @@
 # done — Product Requirements
 
-**Status:** Draft v7
-**Date:** 2026-08-07
+**Status:** Draft v8
+**Date:** 2026-08-10
 **Audience:** one user (the author). Single-tenant personal tool, not a product.
 
 ---
@@ -44,7 +44,8 @@ Ranked. When two conflict, the higher wins.
    no read-only mode when the network is gone.
 4. **Your data outlives the app.** Plain-markdown export is a requirement, not a checkbox.
 5. **Constraints are the feature.** The three-item cap is not a limitation to work around;
-   enforcing it is a core function.
+   enforcing it is a core function — by refusing the fourth item, never by rearranging what is
+   already there (§3).
 6. **The past is written, not read.** The value is in the act of recording, not in the
    archive. Assume history is essentially never revisited. This is why the freeze has no
    escape hatch (§6), why compaction is safe, and why retrieval is weighted toward recent
@@ -62,8 +63,9 @@ it; structure is whatever you typed. Strong structure makes it worse.
 - **Master list** — freely-structured markdown outline. Everything: tasks, projects,
   someday-maybes, notes-to-self. Nesting allowed, never required.
 
-Three are **collections**. The unit of interaction is the _item_. They have cardinality (≤3),
-membership that moves between them, per-item state, and per-item interaction.
+Three are **collections**. The unit of interaction is the _item_. They have a cardinality rule
+(Next takes at most three), membership that moves between them, per-item state, and per-item
+interaction.
 
 - **Next**, **Scheduled**, **Done**.
 
@@ -72,6 +74,23 @@ and the tail of intentions that have not come up yet. **Done reads newest-first*
 was completed most recently is on top, and a record you only ever add to is read from the
 top. Next and Scheduled are ordered by intent rather than by time and keep the order you put
 them in.
+
+**The cap bounds what you can add, not what a day can hold.** Three is a rule about the act of
+putting something in Next, and it is enforced by refusing: at three, the app does not take a
+fourth. It is not a length a day is trimmed back to. Two devices that have been apart can each
+have filled Next legitimately — each was under the cap every time it accepted a card — and when
+they meet, the day shows all of them. Keeping them is the decision: they are things you wrote,
+on your own devices, and relocating half of them would be the app overruling one device's
+afternoon on behalf of the other's. The rule itself does not soften. **An expanded Next accepts
+nothing new until it is back under three**, and the way back is to move items to Scheduled by
+hand, one at a time — the same deliberate act the cap exists to force.
+
+**Done's order is part of the record, not a way of drawing it.** Newest-first is what makes the
+list readable, so it has to survive replication rather than only hold on the device that did
+the writing: a day assembled from two devices reads as one record of what got done, with each
+device's completions still in the order that device completed them. Where there is genuinely no
+order to preserve — two devices finishing something in the same moment with no connection
+between them — the app may pick one, but it must pick the same one everywhere.
 
 Collection items are **cards**: an independently-editable block of markdown with its own
 chrome. Within a card, the first line is the **title** (high contrast) and everything after is
@@ -90,6 +109,7 @@ difficulty on purpose.
 | -------------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------- |
 | _nothing_ → Done                 | **Trivial. Non-negotiable.** | Persistent compose field at the foot of Done. Type, Enter, done.                                      |
 | Next → Done                      | **Trivial.**                 | One gesture on the card. Single atomic move.                                                          |
+| Next → Scheduled                 | Easy                         | One gesture on the card. Also the only way back under the cap once sync has expanded Next (§3).       |
 | Scheduled → Next / Done          | Easy                         | One gesture.                                                                                          |
 | Master → Next / Scheduled / Done | Deliberate, two steps        | **Copy-to** places a copy in the target; **Remove** separately deletes from master. Never one action. |
 | Done → editable                  | **Deliberately hard**        | Long-press or explicit unlock. See §5.                                                                |

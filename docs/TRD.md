@@ -1,7 +1,7 @@
 # done — Technical Requirements
 
-**Status:** Draft v6
-**Date:** 2026-08-09
+**Status:** Draft v7
+**Date:** 2026-08-10
 **Companion to:** [PRD.md](./PRD.md)
 
 ---
@@ -171,9 +171,9 @@ Y.Doc (root)
 ├── cardLocations Y.Map<CardId, "ISODate:section">     ← canonical membership
 └── days          Y.Map<ISODate, Y.Map>
       └── "2026-08-05"
-            ├── next       Y.Array<CardId>   (≤3)       ← ordered collection
+            ├── next       Y.Array<CardId>              ← ordered collection; ≤3 per device
             ├── scheduled  Y.Array<CardId>              ← ordered collection
-            ├── done       Y.Array<CardId>              ← ordered collection
+            ├── done       Y.Array<CardId>              ← ordered collection, newest first
             └── archive    Y.Text | absent              ← set on compaction (§4.5)
 
 Card = Y.Map {
@@ -219,6 +219,15 @@ spot of text CRDTs — concurrent move tends to duplicate or interleave.
 The three-item cap likewise becomes `next.length < 3` checked before insert, rather than a
 transaction filter parsing list structure out of prose — and the PRD requires that cap to be
 unbreakable by paste, multi-line insert, undo, and drag alike.
+
+**That check is the whole of the enforcement, and nothing corrects the merge afterwards.** Two
+devices each adding a third card while apart are both under the cap when they write; the merge
+is over it, and there is nowhere to reject either write (§10.6). PRD §3 keeps them all, so the
+merged Next simply holds more than three, `capacityFor` goes negative, and every write path
+already refuses on the same comparison it always made. An earlier draft ran a system-actor
+repair that moved the overflow to Scheduled. It was removed rather than tuned: it converged and
+it deleted nothing, but it was the app deciding which of two devices' legitimate writes stopped
+being Next, and that is a product decision the PRD has now made the other way.
 
 ### 4.4 Cards render static until focused
 
@@ -354,6 +363,32 @@ the only place ordering is a rule rather than a user action: Done is a record re
 top, while Next and Scheduled are ordered by intent and keep whatever order they were given.
 A multi-line copy into Done is reversed on the way in, so a run of lines still reads in the
 order it had in the master list.
+
+**Order has to survive replication** (PRD §3), and a sequence CRDT gives that for free while
+the array survives. The case where it does not is a day _neither_ device has written to before:
+both mint a `Y.Map` for the date, one wins the key outright, and the loser's arrays are deleted
+with it. The cards survive in the canonical registry and are put back by the membership repair
+(§4.2), which is therefore the one place an order is _recomputed_ rather than merged, because
+the entry that encoded the position no longer exists.
+
+It recomputes from the section's own rule. Next and Scheduled are ordered by intent, intent is
+not stored, and a returning card appends — the arrival rule. Done is ordered by time, so its
+order can be restored: a returning card goes back above everything completed before it, which
+puts a run of them back in newest-first order and interleaves it with what is already there
+instead of stacking it at one end. Two constraints make that safe to run independently on every
+replica: the ordering key is replicated data rather than anything local, and returning cards are
+processed oldest-first so a batch lands newest-first without depending on the order the card
+registry happens to iterate in.
+
+The key is `Card.createdAt`. It is the completion time exactly for the compose path — how most
+things reach Done — and the _writing_ time for something written earlier in Next and finished
+later, which is the known imprecision and the accepted one: PRD §9 rules out a completion
+timestamp, and this is a repair choosing a position, not the app recording when work finished.
+`createdAt` is therefore required to be **strictly increasing per device** rather than merely a
+clock reading, since `Date.now()` resolves to a millisecond and a device can write several cards
+inside one; equal timestamps would make a device's own order unrecoverable, which is the thing
+being protected. Two _devices_ may still tie, and there the tie is real — nothing happened first
+— so any deterministic choice is correct as long as every replica makes the same one.
 
 ---
 
@@ -826,8 +861,17 @@ full rebuild from the same document.
 **Pixel identity.** Static card render and mounted editor produce identical geometry across
 every supported markdown construct. Same test covers live-preview line-height stability.
 
-**Cap enforcement.** No sequence — paste, multi-line insert, undo, drag, concurrent
-insert-from-two-devices — produces four cards in `next`.
+**Cap enforcement.** No sequence on one device — paste, multi-line insert, undo, drag —
+produces four cards in `next`, checked after every operation rather than at the end, since
+nothing tidies up afterwards. Concurrent insert-from-two-devices is the exception and is
+specified the other way (§4.3): the merged Next may hold more than three, every card is still
+in Next on every device, none of them moved to Scheduled, and no write path adds another until
+the user has brought it back under three.
+
+**Done's order across replication.** Each device's own completions read newest-first on every
+device, for arbitrary generated schedules of concurrent completion and partition — including a
+day both devices create at once, where one of the two ordered arrays is destroyed by the merge
+and the order has to be recomputed (§4.9).
 
 **Undo scoping.** System-actor operations never enter the user's undo stack. Specifically: undo
 immediately after a compaction, an import, or a bulk stale-item resolution reverts the user's

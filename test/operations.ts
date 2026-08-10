@@ -55,7 +55,13 @@ const at = <T>(items: readonly T[], index: number): T | undefined =>
 
 const dayOf = (index: number): ISODate => DAYS[index % DAYS.length] as ISODate;
 const sectionOf = (index: number): Section => SECTIONS[index % SECTIONS.length] as Section;
-const refOf = (day: number, section: number): { date: ISODate; section: Section } => ({
+
+/**
+ * The surface an operation's two indices name. Exported because a test that
+ * interprets a generated schedule itself — `syncProperties.test.ts` does, to
+ * control the card bodies — still has to resolve them the way `applyOp` would.
+ */
+export const refOf = (day: number, section: number): { date: ISODate; section: Section } => ({
   date: dayOf(day),
   section: sectionOf(section),
 });
@@ -323,6 +329,20 @@ export const opArbitraryWithoutHistory: fc.Arbitrary<Op> = fc.oneof(
  * on the general one.
  */
 export const opArbitraryAdditive: fc.Arbitrary<Op> = fc.oneof(...ADDITIVE_OPS);
+
+/**
+ * Composing into one named section, and nothing else — the alphabet for the
+ * properties about *where a card ends up and in what order*. Anything that can
+ * move a card would make "still in Next" or "still newest-first" a question
+ * about what the generated user meant rather than about what sync did.
+ */
+export const composeInto = (section: Section): fc.Arbitrary<Op> =>
+  fc.record({
+    t: fc.constant('compose' as const),
+    day: smallDay,
+    section: fc.constant(SECTIONS.indexOf(section)),
+    text: cardBodyArbitrary,
+  });
 
 /**
  * A step in a networked run: somebody edits, or somebody's link goes up or
