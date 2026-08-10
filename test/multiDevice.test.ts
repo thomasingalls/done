@@ -13,9 +13,10 @@
  * both devices always talk to. Anything that converges pairwise but not through
  * a hub would pass the other file and fail in daily use.
  *
- * The system operations are the interesting ones. The cap repair and compaction
- * are the two things the *app* does to the document without being typed at, and
- * with two devices they run concurrently on both sides of the link.
+ * The system operations are the interesting ones. The membership repair and
+ * compaction are the two things the *app* does to the document without being
+ * typed at, and with two devices they run concurrently on both sides of the
+ * link.
  */
 
 import { describe, expect, it } from 'vitest';
@@ -24,6 +25,7 @@ import {
   archiveTextOf,
   cardAuthor,
   cardBody,
+  cardCreatedAt,
   cardText,
   cardsIn,
   compactDay,
@@ -36,6 +38,7 @@ import {
   type Store,
   type Workspace,
 } from '../src/crdt';
+import { compareInstants } from '../src/lib/date';
 import { settle } from './workspace';
 
 const TODAY = '2026-08-05';
@@ -225,14 +228,14 @@ describe('through a relay', () => {
   });
 
   /**
-   * TRD §11 lists "concurrent insert-from-two-devices" among the sequences the
-   * cap must survive, and it is the one case no write path can refuse: both
-   * devices are inside the cap when they write, and only the merge is over it
-   * (see `enforceCap`). Both replicas then repair independently, and the repair
-   * has to be deterministic enough that two of them are indistinguishable from
-   * one.
+   * The one case no write path can refuse: both devices are inside the cap when
+   * they write, and only the merge is over it. PRD §3 keeps every card — the
+   * expanded Next is what the two of them actually intended between them — and
+   * the app does nothing about it, which is the part worth a test, because the
+   * previous answer here was a system-actor repair that moved the overflow to
+   * Scheduled.
    */
-  it('repairs a cap broken by two devices, identically on both, losing nothing', async () => {
+  it('keeps both devices’ Next items when each fills it while apart', async () => {
     const { phone, laptop, net, destroy } = await devices();
     net.connect(phone.doc);
     net.connect(laptop.doc);
@@ -258,16 +261,76 @@ describe('through a relay', () => {
     await settle();
     await settle();
 
-    expect(bodies(phone, 'next')).toHaveLength(3);
-    expect(bodies(phone, 'next')).toEqual(bodies(laptop, 'next'));
-    expect(bodies(phone, 'scheduled')).toEqual(bodies(laptop, 'scheduled'));
-
-    // Nothing the user wrote was deleted: the overflow moved to Scheduled.
-    const everything = [...bodies(phone, 'next'), ...bodies(phone, 'scheduled')];
-    expect(everything).toHaveLength(4);
-    expect(new Set(everything)).toEqual(
+    expect(new Set(bodies(phone, 'next'))).toEqual(
       new Set(['one', 'two', 'from the phone', 'from the laptop']),
     );
+    expect(bodies(phone, 'next')).toEqual(bodies(laptop, 'next'));
+    expect(bodies(phone, 'scheduled')).toEqual([]);
+    expect(bodies(laptop, 'scheduled')).toEqual([]);
+
+    // The rule itself does not soften, on either device.
+    expect(compose(workspaceFor(phone), { date: TODAY, section: 'next' }, 'one too many')).toBe(
+      false,
+    );
+    expect(compose(workspaceFor(laptop), { date: TODAY, section: 'next' }, 'nor this')).toBe(false);
+
+    destroy();
+  });
+
+  /**
+   * PRD §3: Done reads newest-first, and that order is the record rather than a
+   * presentation choice — so replication has to carry it, not just the set of
+   * cards.
+   *
+   * The case that breaks it is not two devices completing things at once, which
+   * Yjs handles: it is a day *neither* device has written to before. Both mint
+   * a `Y.Map` for the date, one wins the key outright, and the loser's array —
+   * the thing that held its order — is deleted with it. Its cards survive in
+   * the canonical registry and are re-homed by the membership repair, which is
+   * where the order is either restored or lost, and used to be lost: they were
+   * appended, in registry order, to the bottom of a newest-first list.
+   */
+  it('keeps Done newest-first when both devices write to a day for the first time', async () => {
+    const { phone, laptop, net, destroy } = await devices();
+    const done = { date: TODAY, section: 'done' as const };
+
+    // Apart from the first keystroke, so neither has the other's day map.
+    compose(workspaceFor(phone), done, 'phone, first thing');
+    compose(workspaceFor(laptop), done, 'laptop, first thing');
+    compose(workspaceFor(phone), done, 'phone, second thing');
+    compose(workspaceFor(laptop), done, 'laptop, second thing');
+
+    net.connect(phone.doc);
+    net.connect(laptop.doc);
+    await settle();
+    await settle();
+
+    expect(new Set(bodies(phone, 'done'))).toEqual(
+      new Set([
+        'phone, first thing',
+        'phone, second thing',
+        'laptop, first thing',
+        'laptop, second thing',
+      ]),
+    );
+    expect(bodies(laptop, 'done')).toEqual(bodies(phone, 'done'));
+
+    // The two runs interleave by completion time rather than one being dumped
+    // under the other, so the day reads as one record of what got done. Stated
+    // as a sort because two devices can finish something in the same
+    // millisecond, and then there is no order between them to insist on — only
+    // that both devices show the same one.
+    const completed = cardsIn(phone.doc, TODAY, 'done').map(cardCreatedAt);
+    expect(completed).toEqual([...completed].sort((a, b) => compareInstants(b, a)));
+
+    // And each device's own two are still in the order it completed them.
+    const order = bodies(phone, 'done');
+    for (const device of ['phone', 'laptop']) {
+      expect(order.filter((body) => body.startsWith(device))).toEqual([
+        `${device}, second thing`,
+        `${device}, first thing`,
+      ]);
+    }
 
     destroy();
   });

@@ -38,8 +38,36 @@ export const temporalIsNative = native !== undefined;
  */
 export type PlainDateTime = Ponyfill.PlainDateTime;
 export type PlainDate = Ponyfill.PlainDate;
+export type Instant = Ponyfill.Instant;
 
 export const nowLocal = (): PlainDateTime =>
   Temporal.Instant.fromEpochMilliseconds(Date.now())
     .toZonedDateTimeISO(Temporal.Now.timeZoneId())
     .toPlainDateTime();
+
+let previous: Instant | null = null;
+
+/**
+ * A UTC instant, strictly increasing for as long as this device is running.
+ *
+ * `Date.now()` reads milliseconds, and a device can write several cards inside
+ * one of those. Two cards then carry the same `createdAt` — and `createdAt` is
+ * what puts Done back in newest-first order when a merge destroys the array
+ * that held it (see `repairCardMemberships`). Equal timestamps there mean the
+ * order this device did things in is simply not in the document to recover, so
+ * a reading that has not advanced is nudged one nanosecond past the last one.
+ *
+ * Instants carry nanoseconds, so this stays a timestamp rather than a counter
+ * dressed as one: it can run at most a nanosecond per card ahead of the clock,
+ * and it converges back the moment the clock catches up. Two *devices* can
+ * still tie, which is correct — nothing happened first there.
+ */
+export const nowInstant = (): Instant => {
+  const reading = Temporal.Instant.fromEpochMilliseconds(Date.now());
+  const next =
+    previous && Temporal.Instant.compare(reading, previous) <= 0
+      ? previous.add({ nanoseconds: 1 })
+      : reading;
+  previous = next;
+  return next;
+};

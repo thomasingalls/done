@@ -39,7 +39,7 @@ export const harness = async (today: string = TODAY): Promise<Harness> => {
   };
 };
 
-/** The cap repair runs on a microtask, so tests that provoke it wait for one. */
+/** The membership repair runs on a microtask, so tests that provoke it wait for one. */
 export const settle = async (): Promise<void> => {
   await Promise.resolve();
   await Promise.resolve();

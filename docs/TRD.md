@@ -1,7 +1,7 @@
 # done — Technical Requirements
 
-**Status:** Draft v5
-**Date:** 2026-08-07
+**Status:** Draft v7
+**Date:** 2026-08-10
 **Companion to:** [PRD.md](./PRD.md)
 
 ---
@@ -86,12 +86,40 @@ authority, runs no application logic, and can be absent entirely.
 
 ### 2.1 Why Yjs over Automerge or Loro
 
-Loro benchmarks fastest, Automerge has a richer history model, but Yjs has the ecosystem
-this depends on — a maintained CodeMirror 6 binding, IndexedDB persistence, interchangeable
-providers. At single-user scale none of the performance differences are observable.
-Automerge's git-like history is attractive for a written record but costs performance and
-bundle for something the PRD doesn't ask for, and PRD principle 6 ("the past is written, not
-read") argues directly against paying for time-travel.
+Loro benchmarks fastest and Automerge has a richer history model, but Yjs has the ecosystem
+this depends on — a CodeMirror 6 binding, IndexedDB persistence, interchangeable providers.
+
+**The performance argument is retired.** An earlier draft justified this partly on Automerge's
+cost in performance and bundle. Automerge 3.0 (August 2025) cut memory by more than 10x — a
+document the size of Moby Dick went from 700MB to 1.3MB — and load times on long histories
+collapsed with it. That gap is closed, and it was never load-bearing anyway: at single-user
+scale none of the performance differences were observable.
+
+Two arguments survive, and both are structural rather than a question of who is faster this
+year.
+
+**Undo.** §4.8 scopes undo to the actor rather than to the surface, so that a bulk resolution
+or a compaction cannot land in the human's undo stack. That is `Y.UndoManager` with tracked
+origins, and PRD §11.3 depends on it. Automerge has no first-class undo — the feature request
+has been open since November 2024, and the community answer works by rewriting document
+history and describes itself as experimental. Migrating would mean reimplementing the
+mechanism §4.8 rests on, on top of a dependency that says not to.
+
+**History retention is the thing being bought, and the PRD doesn't want it.** Compaction (§4.5)
+deletes card objects and expects the space back; Yjs reclaims it. Automerge keeps history by
+design — that is the feature — and history truncation remains an open ask upstream. PRD
+principle 6 ("the past is written, not read") argues directly against paying for time-travel,
+so the property Automerge charges for is the one this app has deliberately designed away.
+
+What would port cleanly, if this is ever revisited again: the canonical card registry and the
+separate `cardLocations` register (§4.2) are an ordinary last-write-wins map, not a Yjs
+construct. Automerge has no shipped list `move` operation either, so the same indirection
+would still be required.
+
+**Revisited 2026-08-09**, prompted by the observation that Yjs looked stalled. It is not:
+`yjs@13.6.32` shipped 2026-08-04, and v14 is in an active release-candidate series with the
+changeset and attribution work funded by ZenDiS and DINUM. What has stalled is the binding
+layer — that is §10.1, and it is stale on Automerge's side too.
 
 ---
 
@@ -143,9 +171,9 @@ Y.Doc (root)
 ├── cardLocations Y.Map<CardId, "ISODate:section">     ← canonical membership
 └── days          Y.Map<ISODate, Y.Map>
       └── "2026-08-05"
-            ├── next       Y.Array<CardId>   (≤3)       ← ordered collection
+            ├── next       Y.Array<CardId>              ← ordered collection; ≤3 per device
             ├── scheduled  Y.Array<CardId>              ← ordered collection
-            ├── done       Y.Array<CardId>              ← ordered collection
+            ├── done       Y.Array<CardId>              ← ordered collection, newest first
             └── archive    Y.Text | absent              ← set on compaction (§4.5)
 
 Card = Y.Map {
@@ -192,6 +220,15 @@ The three-item cap likewise becomes `next.length < 3` checked before insert, rat
 transaction filter parsing list structure out of prose — and the PRD requires that cap to be
 unbreakable by paste, multi-line insert, undo, and drag alike.
 
+**That check is the whole of the enforcement, and nothing corrects the merge afterwards.** Two
+devices each adding a third card while apart are both under the cap when they write; the merge
+is over it, and there is nowhere to reject either write (§10.6). PRD §3 keeps them all, so the
+merged Next simply holds more than three, `capacityFor` goes negative, and every write path
+already refuses on the same comparison it always made. An earlier draft ran a system-actor
+repair that moved the overflow to Scheduled. It was removed rather than tuned: it converged and
+it deleted nothing, but it was the app deciding which of two devices' legitimate writes stopped
+being Next, and that is a product decision the PRD has now made the other way.
+
 ### 4.4 Cards render static until focused
 
 A card is **not** a mounted editor by default. It renders as static HTML from its markdown.
@@ -229,6 +266,12 @@ returns `deferred` without writing or deleting anything. Legacy archives remain 
 Destructive compaction may only return when the protocol can prove every replica has observed
 the state being discarded, or when a new representation keeps concurrent nested edits
 reachable. The seven-day threshold remains independent of the three-day freeze.
+
+The pause deliberately gives up the intended bound on structured card objects: until a safe
+protocol replaces deletion, object count can grow with history. The four-day gap between
+freeze and the day + 7 validation threshold remains useful as policy separation, but does not
+make deletion safe. Any resumed compaction must be idempotent under concurrent devices and
+must guard against a wrong clock by comparing calendar dates in the last-known timezone.
 
 ### 4.6 Item identity in documents
 
@@ -319,6 +362,37 @@ top, while Next and Scheduled are ordered by intent and keep whatever order they
 A multi-line copy into Done is reversed on the way in, so a run of lines still reads in the
 order it had in the master list.
 
+**Order has to survive replication** (PRD §3), and a sequence CRDT gives that for free while
+the array survives. The case where it does not is a day _neither_ device has written to before:
+both mint a `Y.Map` for the date, one wins the key outright, and the loser's arrays are deleted
+with it. The cards survive in the canonical registry and are put back by the membership repair
+(§4.2), which is therefore the one place an order is _recomputed_ rather than merged, because
+the entry that encoded the position no longer exists.
+
+Everything from here to the end of this section is a **mitigation for a schema problem**, not a
+property of the data model, and §10.8 records the problem, the fix, and why it is deferred.
+Read it before extending any of this: if the day map stops being a concurrently-created
+container, none of what follows is needed.
+
+It recomputes from the section's own rule. Next and Scheduled are ordered by intent, intent is
+not stored, and a returning card appends — the arrival rule. Done is ordered by time, so its
+order can be restored: a returning card goes back above everything completed before it, which
+puts a run of them back in newest-first order and interleaves it with what is already there
+instead of stacking it at one end. Two constraints make that safe to run independently on every
+replica: the ordering key is replicated data rather than anything local, and returning cards are
+processed oldest-first so a batch lands newest-first without depending on the order the card
+registry happens to iterate in.
+
+The key is `Card.createdAt`. It is the completion time exactly for the compose path — how most
+things reach Done — and the _writing_ time for something written earlier in Next and finished
+later, which is the known imprecision and the accepted one: PRD §9 rules out a completion
+timestamp, and this is a repair choosing a position, not the app recording when work finished.
+`createdAt` is therefore required to be **strictly increasing per device** rather than merely a
+clock reading, since `Date.now()` resolves to a millisecond and a device can write several cards
+inside one; equal timestamps would make a device's own order unrecoverable, which is the thing
+being protected. Two _devices_ may still tie, and there the tie is real — nothing happened first
+— so any deterministic choice is correct as long as every replica makes the same one.
+
 ---
 
 ## 5. Editor
@@ -394,6 +468,17 @@ layer.
 
 Request `navigator.storage.persist()` on first successful write. Surface the granted/denied
 state in settings — a local-first app that can be silently evicted should say so.
+
+**Local state must finish loading before any transport is constructed.** This is the ordering
+behind the most common data-loss report against Yjs in production, and it fails in one
+direction: the socket syncs first, a document not yet populated from disk looks authoritative,
+and the near-empty state is what both ends converge on. Sync then propagates the loss to every
+replica, which is the property that makes it worth a constraint rather than a comment.
+
+It costs one `await` at start-up and is invisible when correct. The saving available from
+overlapping the disk read with the socket opening is real, and someone will eventually propose
+it; the cost is a class of bug that appears only for users who already have local state and a
+fast connection. Enforced by test (§11).
 
 ### 6.2 Derived: SQLite-WASM
 
@@ -698,12 +783,24 @@ lines. Round-tripping export → import → export must be byte-identical.
 
 ### 10.1 Yjs v13 / v14
 
-`y-codemirror.next@0.3.5` targets Yjs v13; its last npm release is roughly two years old. The
-repo's main branch develops `@y/codemirror` for Yjs v14, unreleased.
+`y-codemirror.next@0.3.5` targets Yjs v13 and was last published 2024-06-18. The repo's main
+branch develops `@y/codemirror` for Yjs v14, still on `0.0.0-x` pre-release tags as of
+2026-01-19. Yjs v14 itself remains in a release-candidate series.
 
 **Pin Yjs v13 and `y-codemirror.next@0.3.5`.** The binding is stable and narrow. Migration is
 planned debt, not a blocker. Isolate every Yjs import behind one internal module so the
-migration has a single seam.
+migration has a single seam — `src/crdt/yjs.ts`, enforced by `test/seam.test.ts`.
+
+**A stale binding is not a reason to change CRDT.** Recorded because the inference is tempting
+and does not hold: `@automerge/automerge-codemirror` is at `0.2.0`, last published 2025-07-21.
+Both candidates have a pre-1.0 CodeMirror binding that has gone a year or more without a
+release, and the Yjs _core_ ships regularly (§2.1). Judge the binding layer against the other
+binding layer, not against the health of the library underneath it.
+
+Note also what the seam does **not** cover. It holds imports, not semantics: undo scoping
+(§4.8), the compaction model (§4.5), and the relay's forked message loop all encode Yjs
+behaviour outside `src/crdt/yjs.ts`. The seam bounds a v13 → v14 migration, which is what it
+was built for. It does not bound a change of CRDT.
 
 ### 10.2 Many small editors
 
@@ -757,6 +854,69 @@ React + Vite on ecosystem grounds; Svelte is defensible (smaller bundle, little 
 complexity here). It barely matters — the editor is CodeMirror and state lives in Yjs, both
 framework-agnostic. Decide at Phase 1, don't revisit.
 
+### 10.8 A day's collections are containers created concurrently — deferred
+
+**Deferred, deliberately.** The mitigation in §4.9 holds and is tested. This records what the
+underlying problem is, what fixing it would take, and what it would let us delete, because the
+mitigation reads like a design choice and is really a workaround.
+
+**The mechanism.** `ensureDay` materialises a day as `days.set(date, new Y.Map())`. A `Y.Map`
+key is last-write-wins over whole values, so two devices writing to a date neither has touched
+before mint two different maps for one key, one wins outright, and **the loser's map is deleted
+with its three collection arrays and every id in them**. Nothing is merged, because there is
+nothing to merge against: the container the entries lived in no longer exists.
+
+This is the same failure `actors.ts` describes for the schema-v2 `meta.actors` map, which was
+fixed by flattening to independent keys. `days` still has the shape that causes it, and
+flattening does not fix it here: `days.set('2026-08-05:done', new Y.Array())` is the same
+last-write-wins on a fresh container, one level down.
+
+**Why nothing is lost today.** Card content and canonical location live in roots that merge by
+id (§4.2), so the cards survive; the membership repair puts them back. What does not survive is
+the array position, and §4.9 recomputes one from `Card.createdAt`. That mitigation is the
+reason `createdAt` has to be strictly increasing per device, and it is why Done's order is
+_reconstructed_ in this one case rather than simply carried.
+
+Recorded plainly: this is not a limit of the CRDT. Yjs's list ordering is exact and merges two
+devices' concurrent insertions without help. The order is lost because the schema lets a
+container be created twice, not because a sequence CRDT cannot order things.
+
+**The fix.** Make a day's collections **root types**, addressed by name — `day:ISODate:section`
+— rather than values set into a map. Root types are created lazily and deterministically from
+their name, so two devices creating one concurrently get the same logical type and their
+contents merge. No card is stranded, no array is destroyed, and Yjs's ordering carries Done's
+order with nothing recomputed.
+
+**What it would let us delete.** The Done branch of `rehomeIndex` (§4.9), the strictly-increasing
+requirement on `createdAt` and the monotonic clock behind it, and `compareInstants`.
+`repairCardMemberships` still has work to do — reconciling arrays with the canonical location
+map after concurrent moves — but its "located card that no array holds" branch would be reduced
+to the undo defect it also covers.
+
+**What it costs, and why this is not free.** Four things, in the order they matter:
+
+1. **Root types are never removed from `doc.share`.** Compaction can empty a day's arrays but
+   cannot take the root entries back. §4.5 rests on object count being "bounded by the window,
+   not by history length", and three empty root types per day is bounded by history. The
+   absolute numbers are small — on the order of 11k tiny entries after a decade — but the
+   property §4.5 asserts would no longer be true as stated, and it should be restated rather
+   than quietly falsified.
+2. **A schema migration**, run on open like `migrateCardsToRegistry`, moving every existing
+   day's arrays out of `days` and into root types.
+3. **`listDays` changes shape.** Days are currently the keys of one map; they would become a
+   filtered, parsed enumeration of `doc.share`, and "an untouched day occupies nothing" (§4.2)
+   needs re-checking against a store that has an entry for every day ever visited — day
+   materialisation on _view_ (not only on write) makes that a broader set than it sounds.
+4. **`ensureDay`, `dayAt`, `collectionOf`, compaction's deletion path and the `days` observer in
+   `watchMemberships` all address collections through the day map** and would each need
+   rewriting.
+
+**When to do it.** Not for correctness — the mitigation is tested and holds. Do it if either of
+these appears: the reconstructed Done order is visibly wrong in real use, which would show up as
+a card written in the morning and finished in the evening coming back low in the list after a
+merge; or something else needs the day map to stop being a concurrently-created container.
+Until then, §4.9 is the answer and this section is why it looks the way it does.
+
 ---
 
 ## 11. Testing
@@ -783,13 +943,26 @@ full rebuild from the same document.
 **Pixel identity.** Static card render and mounted editor produce identical geometry across
 every supported markdown construct. Same test covers live-preview line-height stability.
 
-**Cap enforcement.** No sequence — paste, multi-line insert, undo, drag, concurrent
-insert-from-two-devices — produces four cards in `next`.
+**Cap enforcement.** No sequence on one device — paste, multi-line insert, undo, drag —
+produces four cards in `next`, checked after every operation rather than at the end, since
+nothing tidies up afterwards. Concurrent insert-from-two-devices is the exception and is
+specified the other way (§4.3): the merged Next may hold more than three, every card is still
+in Next on every device, none of them moved to Scheduled, and no write path adds another until
+the user has brought it back under three.
+
+**Done's order across replication.** Each device's own completions read newest-first on every
+device, for arbitrary generated schedules of concurrent completion and partition — including a
+day both devices create at once, where one of the two ordered arrays is destroyed by the merge
+and the order has to be recomputed (§4.9).
 
 **Undo scoping.** System-actor operations never enter the user's undo stack. Specifically: undo
 immediately after a compaction, an import, or a bulk stale-item resolution reverts the user's
 last _typed_ change, not the system operation. This is the test that keeps §4.8 honest as the
 codebase grows new system operations.
+
+**Load before connect.** No transport is constructed until local persistence has finished
+loading into the document (§6.1). The regression test for the most common production data-loss
+mode in Yjs deployments, and for the start-up optimisation that would silently reintroduce it.
 
 **Sync-absent.** Full suite passes with no sync provider constructed.
 
@@ -823,3 +996,5 @@ the app must be fully usable for writing before it arrives.
 - [CodeMirror: hide markdown syntax](https://discuss.codemirror.net/t/hide-markdown-syntax/7602) · [atomic-editor](https://github.com/kenforthewin/atomic-editor) · [codemirror-live-markdown](https://github.com/blueberrycongee/codemirror-live-markdown)
 - [Tiptap bidirectional markdown](https://tiptap.dev/blog/release-notes/introducing-bidirectional-markdown-support-in-tiptap) · [markdown round-trip corruption report](https://github.com/wonderwhy-er/DesktopCommanderMCP/issues/440) · [rich text editor comparison, 2026](https://velt.dev/blog/best-rich-text-editors-react-comparison)
 - [Yjs vs Automerge vs Loro, 2026](https://www.pkgpulse.com/guides/yjs-vs-automerge-vs-loro-crdt-libraries-2026) · [crdt-benchmarks](https://github.com/dmonad/crdt-benchmarks)
+- §2.1 revisit, 2026-08-09: [Automerge 3.0](https://automerge.org/blog/automerge-3/) · [undo/revert request](https://github.com/automerge/automerge/issues/985) · [local-first feedback](https://github.com/automerge/automerge/issues/1231) · [automerge-codemirror](https://github.com/automerge/automerge-codemirror) · [Yjs 14 at FOSDEM 2026](https://fosdem.org/2026/schedule/event/8VKQXR-blocknote-yjs-prosemirror/)
+- §6.1 load-before-connect: [data loss with IndexedDB + websocket providers](https://discuss.yjs.dev/t/local-data-lost-with-indexeddb-websocket-providers/1816) · [rare data loss with y-prosemirror](https://discuss.yjs.dev/t/random-rare-data-loss-in-production-with-y-prosemirror/3728) · [y-indexeddb#20](https://github.com/yjs/y-indexeddb/issues/20)

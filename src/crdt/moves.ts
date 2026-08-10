@@ -109,7 +109,22 @@ const writable = (workspace: Workspace, date: ISODate): boolean => !isFrozen(dat
 const arrivalIndex = (section: Section, length: number): number =>
   section === 'done' ? 0 : length;
 
-/** Capacity check for Next, from PRD §3. Every insert path goes through it. */
+/**
+ * Capacity check for Next, from PRD §3. Every insert path goes through it, and
+ * it is the *only* place the cap is enforced: the cap is a rule about adding,
+ * and nothing in this file ever moves a card out of Next to satisfy it.
+ *
+ * That matters for the one case no write path can refuse. Two devices each
+ * adding a third card while apart are both inside the cap when they write, and
+ * a relay that holds no authority has nowhere to reject either (TRD §10.6) — so
+ * the merge shows six. Keeping them is the decision (PRD §3): they are six
+ * things the user wrote, and an app that quietly relocated three of them would
+ * be overruling one device on behalf of the other.
+ *
+ * Negative capacity is therefore an ordinary state, and it reads correctly
+ * everywhere it is used: every caller asks for at least one and gets nothing
+ * until the user has moved Next back under three.
+ */
 const capacityFor = (doc: YDoc, ref: Ref): number => {
   if (ref.section !== 'next') return Number.POSITIVE_INFINITY;
   return NEXT_CAP - countIn(doc, ref.date, 'next');
@@ -534,47 +549,6 @@ export const moveAllNextToMaster = (workspace: Workspace, master: YText, from: I
   });
 
   return cards.length;
-};
-
-/* -------------------------------------------------------------------------- */
-/* The cap, after the fact                                                     */
-
-/**
- * The cap has to be unbreakable by "paste, multi-line insert, undo, drag, and
- * concurrent insert-from-two-devices" (TRD §11). Every write path above refuses
- * to exceed it, which covers the first four at the point of the mistake. The
- * fifth cannot be prevented at write time: two devices each adding a third card
- * offline is a legal pair of operations that converges to four, and a CRDT with
- * a relay that holds no authority has nowhere to reject one of them (TRD §10.6).
- *
- * So the cap is *also* a repair, run after any change to a day. It keeps the
- * first `NEXT_CAP` cards in array order and moves the overflow to Scheduled on
- * the same day — never deletes, because the overflow is something the user
- * wrote — and it runs as the **system** actor so undo does not step through it.
- *
- * Deterministic by construction: both replicas see the same converged array and
- * compute the same overflow, so both produce the same result.
- */
-export const enforceCap = (doc: YDoc, systemOrigin: Origin, date: ISODate): number => {
-  const day = dayAt(doc, date);
-  const next = collectionOf(day, 'next');
-  const scheduled = collectionOf(day, 'scheduled');
-  const cards = cardsIn(doc, date, 'next');
-  if (!next || !scheduled || cards.length <= NEXT_CAP) return 0;
-
-  const overflowCards = cards.slice(NEXT_CAP);
-
-  transact(doc, systemOrigin, () => {
-    const ids = overflowCards.map(cardId);
-    for (const id of ids) {
-      const index = indexOfCard(next, id);
-      if (index >= 0) next.delete(index, 1);
-      if (cardAt(doc, id)) setCardLocation(doc, id, { date, section: 'scheduled' });
-    }
-    scheduled.insert(0, ids);
-  });
-
-  return overflowCards.length;
 };
 
 /** Provenance for the UI: where a card says it came from. */

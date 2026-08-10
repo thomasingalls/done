@@ -1,6 +1,6 @@
 /**
  * Assembles the local store: document tree, actor, undo, awareness, persistence,
- * sync, and the one thing the app does to itself on every write — the cap
+ * sync, and the one thing the app does to itself on every write — the membership
  * repair.
  *
  * The sync controller is constructed unconditionally and constructs *nothing*
@@ -12,8 +12,7 @@
 import { Awareness, createDoc, createUndoManager, type YDoc, type YUndoManager } from './yjs';
 import { resolveActor, type ActorContext } from './actors';
 import { openTree, readSettings, type DocumentTree, type Settings } from './doc';
-import { daysMap, listDays, repairCardMemberships, SECTIONS } from './days';
-import { enforceCap } from './moves';
+import { cardLocationsMap, cardsMap, daysMap, repairCardMemberships, SECTIONS } from './days';
 import { createSync, type SyncController, type SyncOptions } from './sync';
 import {
   openLocalStore,
@@ -41,8 +40,8 @@ export interface Store extends DocumentTree {
    * Scoped to the local human's origin (TRD §4.8), across every root. Undo
    * follows the actor rather than the surface: a card move and a line of the
    * master list are one history because one person made both. System-actor
-   * operations — compaction, the cap repair, bulk moves — are excluded by
-   * construction rather than by remembering to exclude them.
+   * operations — compaction, the membership repair, bulk moves — are excluded
+   * by construction rather than by remembering to exclude them.
    */
   undo: YUndoManager;
   local: LocalStore | null;
@@ -66,59 +65,77 @@ export interface OpenStoreOptions {
 }
 
 /**
- * The cap, repaired after the fact (TRD §11, and see `enforceCap`).
+ * Membership, repaired after the fact (TRD §4.2, and see
+ * `repairCardMemberships`).
  *
- * Every write path refuses to exceed three, which covers paste, multi-line
- * insert and drag at the point of the mistake. Two devices each inserting a
- * third card while apart is not a mistake anyone made and still converges to
- * four, so it is caught here instead. Undo is the other way in: re-inserting a
- * card the user had moved out is a legal undo of a legal operation.
+ * A card's identity is spread across three roots — the registry, the canonical
+ * location, and a day's ordered array — and concurrency can leave them
+ * disagreeing in both directions: an array holding an id whose location says
+ * somewhere else, and a located card no array holds. Neither is a mistake
+ * anybody made, and neither can be refused at the write path, so it is repaired
+ * here.
+ *
+ * The three-item cap is **not** among the things repaired. It is a rule about
+ * adding, enforced where adding happens; a Next that grew past three because
+ * two devices filled it while apart is kept as it is (PRD §3).
  *
  * Deferred to a microtask rather than run inside the observer, so the repair is
  * its own transaction with its own (system) origin rather than an addition to
  * whatever transaction happened to trip it.
  */
-const watchCap = (doc: YDoc, context: ActorContext): (() => void) => {
-  const map = daysMap(doc);
+const watchMemberships = (doc: YDoc, context: ActorContext): (() => void) => {
+  const days = daysMap(doc);
+  const cards = cardsMap(doc);
+  const locations = cardLocationsMap(doc);
   let queued = false;
-  let sweep = false;
-  const pending = new Set<string>();
 
-  const flush = (): void => {
-    queued = false;
-    const dates = sweep ? listDays(doc) : [...pending];
-    pending.clear();
-    sweep = false;
-    repairCardMemberships(doc, context.systemOrigin);
-    for (const date of dates) enforceCap(doc, context.systemOrigin, date);
-  };
-
-  const observer = (events: { path: (string | number)[] }[]): void => {
-    for (const event of events) {
-      const date = event.path[0];
-      const field = event.path[1];
-      // Only membership can move the cap. Card *text* lives in the canonical
-      // registry and does not reach this observer at all.
-      if (typeof field === 'string' && !SECTIONS.some((section) => section === field)) continue;
-      // A change to the days map itself: a day arrived, so there is no path to
-      // read a date out of. Rare enough to be worth a full pass.
-      if (typeof date === 'string') pending.add(date);
-      else sweep = true;
-    }
+  const schedule = (): void => {
     if (queued) return;
     queued = true;
-    queueMicrotask(flush);
+    queueMicrotask(() => {
+      queued = false;
+      repairCardMemberships(doc, context.systemOrigin);
+    });
   };
 
-  map.observeDeep(observer);
-  return () => map.unobserveDeep(observer);
+  const dayObserver = (events: { path: (string | number)[] }[]): void => {
+    // Only membership can leave the three roots disagreeing. Card *text* lives
+    // below entries in the registry, while that map is observed shallowly.
+    const membership = events.some((event) => {
+      const field = event.path[1];
+      // A change to the days map itself: a day arrived, which is a membership
+      // change in every sense that matters here.
+      return typeof field !== 'string' || SECTIONS.some((section) => section === field);
+    });
+    if (membership) schedule();
+  };
+
+  days.observeDeep(dayObserver);
+  cards.observe(schedule);
+  locations.observe(schedule);
+  return () => {
+    days.unobserveDeep(dayObserver);
+    cards.unobserve(schedule);
+    locations.unobserve(schedule);
+  };
 };
 
 /**
- * Asynchronous on purpose: persisted state must be applied *before* the actor
- * roster and `meta` are initialised, or every reload would re-register the
- * local actor against a document that already knows it and overwrite the
- * stored name and colour with fresh defaults.
+ * Asynchronous on purpose, for two independent reasons. The second is the one
+ * that would still hold if the first were ever solved another way, so removing
+ * the `await` needs both answered.
+ *
+ * 1. Persisted state must be applied *before* the actor roster and `meta` are
+ *    initialised, or every reload would re-register the local actor against a
+ *    document that already knows it and overwrite the stored name and colour
+ *    with fresh defaults.
+ * 2. **No transport may be constructed until the disk read has landed**
+ *    (TRD §6.1). A socket opened against a document that is still empty hands
+ *    the relay and every other replica an empty document, and they converge on
+ *    it — sync propagates the loss instead of repairing it. This is the most
+ *    common data-loss report against Yjs in production, and the reason
+ *    `createSync` is at the bottom of this function rather than the top.
+ *    Asserted in `test/sync.test.ts`, "load before connect".
  */
 export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> => {
   const doc = options.doc ?? createDoc();
@@ -151,7 +168,7 @@ export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> 
     new Set([actor.origin]),
   );
 
-  const stopWatchingCap = watchCap(doc, actor);
+  const stopWatchingMemberships = watchMemberships(doc, actor);
   const stopPersistenceRequest = options.onStoragePersistence
     ? requestPersistenceOnFirstWrite(doc, actor.origin, options.onStoragePersistence)
     : () => {};
@@ -171,7 +188,7 @@ export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> 
     sync,
     settings: readSettings(tree.meta),
     destroy: () => {
-      stopWatchingCap();
+      stopWatchingMemberships();
       stopPersistenceRequest();
       sync.destroy();
       undo.destroy();

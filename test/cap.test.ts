@@ -1,12 +1,19 @@
 /**
- * TRD §11, cap enforcement: "No sequence — paste, multi-line insert, undo,
- * drag, concurrent insert-from-two-devices — produces four cards in `next`."
+ * The three-item cap, on one device and across two (PRD §3, TRD §11).
  *
- * The first four are refused at the write path, at the point of the mistake.
- * The fifth cannot be: two devices each adding a third card while apart is a
- * legal pair of operations that converges to four, and a relay that holds no
- * authority has nowhere to reject one of them (TRD §10.6). So the cap is also a
- * repair, and this file tests both halves — the refusal and the recovery.
+ * The cap is a rule about **adding**. Every write path refuses a fourth card —
+ * paste, multi-line copy, drag, split, undo — at the point of the mistake, and
+ * that is the first half of this file.
+ *
+ * The second half is the case no write path can refuse, and it is where the
+ * rule stops being a number the day is held to. Two devices each adding a third
+ * card while apart are both inside the cap at the moment they write, and a
+ * relay that holds no authority has nowhere to reject either (TRD §10.6). The
+ * merge shows six, and **all six are kept**: they are six things the user
+ * wrote, on two devices that were each obeying the rule, and relocating three
+ * of them would mean overruling one device on behalf of the other. What does
+ * not soften is the rule itself — an expanded Next takes nothing new until the
+ * user has moved it back under three, one card at a time, to Scheduled.
  */
 
 import { afterEach, describe, expect, it } from 'vitest';
@@ -18,7 +25,6 @@ import {
   compose,
   copyFromMaster,
   countIn,
-  enforceCap,
   moveCard,
   newCard,
   registerCard,
@@ -95,8 +101,8 @@ describe('the cap refuses at the write path', () => {
   });
 });
 
-describe('the cap is repaired where it cannot be refused', () => {
-  it('survives two devices inserting a third card while apart', async () => {
+describe('the cap stretches where it cannot refuse', () => {
+  it('keeps both devices’ Next items when they fill it while apart', async () => {
     context = await harness();
     const phone = context.store.doc;
 
@@ -113,61 +119,70 @@ describe('the cap is repaired where it cannot be refused', () => {
     Y.applyUpdate(phone, Y.encodeStateAsUpdate(laptop));
     await settle();
 
-    expect(countIn(phone, TODAY, 'next')).toBe(NEXT_CAP);
-    // Nothing is deleted: the overflow lands in Scheduled on the same day.
-    const everything = [
-      ...cardsIn(phone, TODAY, 'next').map(cardBody),
-      ...cardsIn(phone, TODAY, 'scheduled').map(cardBody),
-    ];
-    expect(everything).toHaveLength(4);
-    expect(everything).toContain('laptop third');
-    expect(everything).toContain('phone third');
+    // Four in Next, and nothing was moved anywhere to get back to three.
+    expect(cardsIn(phone, TODAY, 'next').map(cardBody)).toHaveLength(NEXT_CAP + 1);
+    expect(new Set(cardsIn(phone, TODAY, 'next').map(cardBody))).toEqual(
+      new Set(['one', 'two', 'phone third', 'laptop third']),
+    );
+    expect(cardsIn(phone, TODAY, 'scheduled')).toHaveLength(0);
 
     laptop.destroy();
   });
 
-  it('runs as the system actor, so undo does not step through it', async () => {
+  it('still refuses to add while Next is over the cap', async () => {
     context = await harness();
     fillNext(context);
-
-    // A remote update is the shape this arrives in; forcing it directly is the
-    // same thing with fewer moving parts.
-    insertConcurrent(context.store.doc, 'over01', 'overflow');
-
+    insertConcurrent(context.store.doc, 'over01', 'a fourth from elsewhere');
     await settle();
-    expect(countIn(context.store.doc, TODAY, 'next')).toBe(NEXT_CAP);
 
-    // The repair is the system's work; undo reaches past it to the human's.
-    context.store.undo.undo();
-    expect(countIn(context.store.doc, TODAY, 'next')).toBe(NEXT_CAP - 1);
-    expect(cardsIn(context.store.doc, TODAY, 'scheduled').map(cardBody)).toEqual(['overflow']);
+    expect(countIn(context.store.doc, TODAY, 'next')).toBe(NEXT_CAP + 1);
+    expect(compose(context.me, { date: TODAY, section: 'next' }, 'a fifth')).toBe(false);
+    expect(copyFromMaster(context.me, { date: TODAY, section: 'next' }, ['also no'])).toBe(0);
+
+    const id = cardId(cardsIn(context.store.doc, TODAY, 'next')[0]!);
+    expect(splitCard(context.me, { date: TODAY, section: 'next' }, id, 2, 2)).toBeNull();
+    expect(countIn(context.store.doc, TODAY, 'next')).toBe(NEXT_CAP + 1);
   });
 
-  it('is deterministic, so two replicas repairing separately agree', async () => {
+  it('takes a new card again once the user has moved Next back under three', async () => {
     context = await harness();
-    const a = context.store.doc;
     fillNext(context);
-
-    const b = new Y.Doc();
-    Y.applyUpdate(b, Y.encodeStateAsUpdate(a));
-
-    insertConcurrent(b, 'extra1', 'extra');
-
-    Y.applyUpdate(a, Y.encodeStateAsUpdate(b));
+    insertConcurrent(context.store.doc, 'over01', 'a fourth from elsewhere');
     await settle();
 
-    const overflow = enforceCap(b, context.store.actor.systemOrigin, TODAY);
-    expect(overflow).toBe(1);
-
-    Y.applyUpdate(a, Y.encodeStateAsUpdate(b));
-    Y.applyUpdate(b, Y.encodeStateAsUpdate(a));
+    // The way out is the ordinary one: move items to Scheduled, one gesture
+    // each, until there is room. Two, because at three there is still none.
+    const [first, second] = cardsIn(context.store.doc, TODAY, 'next');
+    for (const card of [first, second]) {
+      expect(
+        moveCard(context.me, { date: TODAY, section: 'next' }, cardId(card!), {
+          date: TODAY,
+          section: 'scheduled',
+        }),
+      ).toBe(true);
+    }
     await settle();
 
-    expect(countIn(a, TODAY, 'next')).toBe(NEXT_CAP);
-    expect(cardsIn(a, TODAY, 'next').map(cardBody)).toEqual(
-      cardsIn(b, TODAY, 'next').map(cardBody),
-    );
+    expect(countIn(context.store.doc, TODAY, 'next')).toBe(NEXT_CAP - 1);
+    expect(compose(context.me, { date: TODAY, section: 'next' }, 'room for this')).toBe(true);
+    expect(countIn(context.store.doc, TODAY, 'next')).toBe(NEXT_CAP);
+    expect(compose(context.me, { date: TODAY, section: 'next' }, 'but not this')).toBe(false);
+  });
 
-    b.destroy();
+  it('leaves the overflow alone rather than making it a system operation to undo', async () => {
+    context = await harness();
+    fillNext(context);
+    insertConcurrent(context.store.doc, 'over01', 'from elsewhere');
+    await settle();
+
+    // Nothing ran on the app's behalf, so undo reaches straight past the merge
+    // to the human's own last write.
+    context.store.undo.undo();
+    expect(cardsIn(context.store.doc, TODAY, 'next').map(cardBody)).toEqual([
+      'item 0',
+      'item 1',
+      'from elsewhere',
+    ]);
+    expect(cardsIn(context.store.doc, TODAY, 'scheduled')).toHaveLength(0);
   });
 });
