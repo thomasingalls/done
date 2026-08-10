@@ -1,10 +1,9 @@
 /**
  * The canonical markdown form of a day (TRD §4.5, §9).
  *
- * There is exactly one serializer. Compaction writes it into `archive` and
- * export writes it into a file, which is the point: the destructive operation
- * and the one the user can inspect share a code path, so compaction is
- * continuously exercised by something safe (TRD §10.4).
+ * There is exactly one serializer. Export writes it into a file, and legacy
+ * compacted archives use the same form. Destructive compaction is currently
+ * safety-paused (TRD §10.4).
  *
  * ## Why cards are list items
  *
@@ -55,10 +54,10 @@ const HEADINGS: Record<Section, string> = {
 /**
  * What a serialized day contains, independent of where it is stored.
  *
- * A day *is* its three collections, so the day file and the `archive` a
- * compacted day holds are the same format read by the same parser — which is
- * what makes "exactly one serializer" (TRD §9) literally true rather than
- * nearly true. `Collections` is the name compaction uses for the same shape.
+ * A day *is* its three collections, so the day file and a legacy compacted
+ * day's `archive` are the same format read by the same parser — which is what
+ * makes "exactly one serializer" (TRD §9) literally true rather than nearly
+ * true. `Collections` is retained as the name for the same shape.
  */
 export interface DayContent {
   next: string[];
@@ -101,6 +100,10 @@ const collectionLines = (bodies: readonly string[]): string[] => {
   });
   return out;
 };
+
+/** Canonical list-item encoding, shared by day files and recovery export. */
+export const serializeCardList = (bodies: readonly string[]): string =>
+  collectionLines(bodies).join('\n');
 
 /**
  * Splits a section body into cards. The blank line before each card start is

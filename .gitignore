@@ -7,3 +7,6 @@ patches/
 .DS_Store
 .env.local
 tsconfig*.tsbuildinfo
+.gitsigners
+.cursor/
+relay/data/

@@ -70,6 +70,7 @@ const SYNC_NOTE: Record<SyncStatus, string> = {
 export interface MenuProps {
   store: Store;
   storage: StoragePersistence;
+  persistenceError: Error | null;
   settings: Settings;
   today: ISODate;
   date: ISODate;
@@ -85,6 +86,7 @@ const NEARBY = [-7, -2, -1, 0, 1, 2, 7];
 export const Menu = ({
   store,
   storage,
+  persistenceError,
   settings,
   today,
   date,
@@ -164,9 +166,15 @@ export const Menu = ({
         <h2 className="menu-heading">Storage</h2>
         <div className="menu-row">
           <span>Local data</span>
-          <span className="menu-value">{STORAGE_LABEL[storage]}</span>
+          <span className="menu-value">
+            {persistenceError ? 'Needs attention' : STORAGE_LABEL[storage]}
+          </span>
         </div>
-        <p className="menu-note">{STORAGE_NOTE[storage]}</p>
+        <p className="menu-note" role={persistenceError ? 'alert' : undefined}>
+          {persistenceError
+            ? `A local write could not be fully protected. Export before closing this page. ${persistenceError.message}`
+            : STORAGE_NOTE[storage]}
+        </p>
         <button
           type="button"
           className="menu-button"

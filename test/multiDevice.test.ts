@@ -26,6 +26,7 @@ import {
   cardAuthor,
   cardBody,
   cardCreatedAt,
+  cardText,
   cardsIn,
   compactDay,
   compose,
@@ -340,7 +341,7 @@ describe('through a relay', () => {
    * converges". Both devices reach the same idle moment on the same day, so
    * this is the ordinary case rather than a race worth engineering against.
    */
-  it('converges when both devices compact the same day', async () => {
+  it('preserves long-offline inserts and text edits when compaction becomes due', async () => {
     const { phone, laptop, net, destroy } = await devices();
     net.connect(phone.doc);
     net.connect(laptop.doc);
@@ -352,21 +353,33 @@ describe('through a relay', () => {
     await settle();
     expect(cardsIn(laptop.doc, old, 'done')).toHaveLength(2);
 
-    // Same source, two devices, no coordination.
+    // The laptop remains on the old local day while offline and makes both
+    // forms of write that destructive compaction used to strand.
     net.disconnect(phone.doc);
     net.disconnect(laptop.doc);
-    expect(compactDay(phone.doc, phone.actor.systemOrigin, old, TODAY)).toBe('compacted');
-    expect(compactDay(laptop.doc, laptop.actor.systemOrigin, old, TODAY)).toBe('compacted');
-    expect(archiveTextOf(phone.doc, old)).toBe(archiveTextOf(laptop.doc, old));
+    const laptopCards = cardsIn(laptop.doc, old, 'done');
+    const edited = laptopCards.find((card) => cardBody(card) === 'wrote the migration plan')!;
+    transact(laptop.doc, laptop.actor.origin, () =>
+      cardText(edited).insert(cardText(edited).length, ' — edited offline'),
+    );
+    compose({ ...workspaceFor(laptop), today: old }, past, 'created offline');
+
+    expect(compactDay(phone.doc, phone.actor.systemOrigin, old, TODAY)).toBe('deferred');
+    expect(archiveTextOf(phone.doc, old)).toBeUndefined();
 
     net.connect(phone.doc);
     net.connect(laptop.doc);
     await settle();
 
-    expect(archiveTextOf(phone.doc, old)).toBe(archiveTextOf(laptop.doc, old));
-    expect(archiveTextOf(phone.doc, old)).toContain('called the dentist');
-    expect(archiveTextOf(phone.doc, old)).toContain('wrote the migration plan');
-    expect(cardsIn(phone.doc, old, 'done')).toHaveLength(0);
+    expect(archiveTextOf(phone.doc, old)).toBeUndefined();
+    expect(cardsIn(phone.doc, old, 'done').map(cardBody)).toEqual([
+      'created offline',
+      'called the dentist',
+      'wrote the migration plan — edited offline',
+    ]);
+    expect(cardsIn(laptop.doc, old, 'done').map(cardBody)).toEqual(
+      cardsIn(phone.doc, old, 'done').map(cardBody),
+    );
 
     destroy();
   });

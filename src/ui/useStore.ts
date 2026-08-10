@@ -14,18 +14,25 @@ export interface StoreState {
   store: Store | null;
   storage: StoragePersistence;
   error: Error | null;
+  persistenceError: Error | null;
 }
 
 export const useStore = (): StoreState => {
   const [store, setStore] = useState<Store | null>(null);
   const [storage, setStorage] = useState<StoragePersistence>('unknown');
   const [error, setError] = useState<Error | null>(null);
+  const [persistenceError, setPersistenceError] = useState<Error | null>(null);
 
   useEffect(() => {
     let disposed = false;
     let opened: Store | null = null;
 
-    void openStore({ onStoragePersistence: setStorage })
+    void openStore({
+      onStoragePersistence: setStorage,
+      onLocalPersistenceError: (next) => {
+        if (!disposed) setPersistenceError(next);
+      },
+    })
       .then((next) => {
         if (disposed) {
           next.destroy();
@@ -51,5 +58,5 @@ export const useStore = (): StoreState => {
     });
   }, []);
 
-  return { store, storage, error };
+  return { store, storage, error, persistenceError };
 };

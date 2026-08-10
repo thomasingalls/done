@@ -50,7 +50,7 @@
  */
 
 import { useCallback, useRef, useSyncExternalStore } from 'react';
-import type { YText } from '../crdt';
+import type { YDoc, YText, YTransaction } from '../crdt';
 
 /**
  * Structural rather than `Y.Map<T>`, because Yjs's generics are invariant and
@@ -106,6 +106,60 @@ export const useYValue = <T>(
     cache.current = { key: snapshot, value: select() };
   }
   return cache.current.value;
+};
+
+/**
+ * A derived value spanning multiple Yjs roots. `shouldRefresh` can reject
+ * transactions that cannot affect the value before the potentially expensive
+ * document read runs. `keyOf` then preserves the previous value's identity
+ * when a relevant transaction leaves the derived result unchanged.
+ */
+export const useYDocValue = <T>(
+  doc: YDoc | undefined,
+  select: () => T,
+  keyOf: (value: T) => string,
+  shouldRefresh?: (transaction: YTransaction) => boolean,
+): T => {
+  'use no memo';
+
+  const selectRef = useRef(select);
+  const keyOfRef = useRef(keyOf);
+  const shouldRefreshRef = useRef(shouldRefresh);
+  selectRef.current = select;
+  keyOfRef.current = keyOf;
+  shouldRefreshRef.current = shouldRefresh;
+
+  const cache = useRef<{ doc: YDoc | undefined; key: string; value: T } | null>(null);
+  if (!cache.current || cache.current.doc !== doc) {
+    const value = select();
+    cache.current = { doc, key: keyOf(value), value };
+  }
+
+  const subscribe = useCallback(
+    (onChange: () => void) => {
+      const handler = (transaction?: YTransaction): void => {
+        if (transaction && shouldRefreshRef.current && !shouldRefreshRef.current(transaction)) {
+          return;
+        }
+
+        const value = selectRef.current();
+        const nextKey = keyOfRef.current(value);
+        const current = cache.current;
+        if (current && current.doc === doc && current.key === nextKey) return;
+        cache.current = { doc, key: nextKey, value };
+        onChange();
+      };
+      doc?.on('afterTransaction', handler);
+      // Close the render-to-subscribe gap: the document may have changed after
+      // the initial cache fill but before React installed this listener.
+      handler();
+      return () => doc?.off('afterTransaction', handler);
+    },
+    [doc],
+  );
+  const snapshot = useCallback(() => cache.current?.key ?? '', []);
+  useSyncExternalStore(subscribe, snapshot, snapshot);
+  return cache.current!.value;
 };
 
 /**

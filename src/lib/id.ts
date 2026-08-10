@@ -1,18 +1,18 @@
 /**
- * Short ids. Six lowercase alphanumeric characters is the format the block
- * marker syntax uses (TRD §4.6); the same generator serves anything else that
- * needs an opaque handle.
+ * Internal identities are UUIDs. They are opaque storage keys and never appear
+ * in user-authored text; previously stored short ids remain valid.
  */
+export const newId = (): string => {
+  if (typeof crypto.randomUUID === 'function') return crypto.randomUUID();
 
-const ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  // `randomUUID` is restricted to secure contexts, while `getRandomValues`
+  // deliberately remains available on plain HTTP. LAN development still needs
+  // durable, collision-resistant identities, so assemble an RFC 4122 v4 UUID
+  // from the same cryptographically secure source.
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  bytes[6] = (bytes[6]! & 0x0f) | 0x40;
+  bytes[8] = (bytes[8]! & 0x3f) | 0x80;
+  const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0'));
 
-export const newId = (length = 6): string => {
-  const bytes = new Uint8Array(length);
-  crypto.getRandomValues(bytes);
-  let out = '';
-  for (const byte of bytes) out += ALPHABET[byte % ALPHABET.length];
-  return out;
+  return `${hex.slice(0, 4).join('')}-${hex.slice(4, 6).join('')}-${hex.slice(6, 8).join('')}-${hex.slice(8, 10).join('')}-${hex.slice(10).join('')}`;
 };
-
-/** Matches a trailing block marker, e.g. `- [ ] Draft the plan ^k3f9x2`. */
-export const BLOCK_MARKER = /\s\^([a-z0-9]{6})\s*$/;

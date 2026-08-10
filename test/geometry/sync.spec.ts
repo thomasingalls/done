@@ -77,6 +77,29 @@ test.describe('sync', () => {
     await expect(activeDay(page).getByText('wrote this with the relay down')).toBeVisible();
   });
 
+  test('keeps a just-created card when reload starts before IndexedDB auto-commits', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 420, height: 900 });
+    await page.goto('/');
+    await openMenu(page);
+
+    await page.getByRole('textbox', { name: 'Relay endpoint' }).fill(UNREACHABLE);
+    await page.getByRole('button', { name: 'Connect' }).click();
+    await page.reload();
+
+    const compose = activeDay(page).getByRole('textbox', { name: 'What got done?' });
+    await compose.fill('survives an immediate offline reload');
+    await compose.evaluate((element) => {
+      element.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }),
+      );
+      window.location.reload();
+    });
+
+    await expect(activeDay(page).getByText('survives an immediate offline reload')).toBeVisible();
+  });
+
   test('forgets a relay completely', async ({ page }) => {
     await page.setViewportSize({ width: 420, height: 900 });
     await page.goto('/');

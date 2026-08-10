@@ -27,16 +27,16 @@ correction, the code did not.
 
 ## 0. Terminology
 
-| Term           | Meaning                                                                                                                                |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| **Update log** | Yjs internals only. Never a user-facing concept, and nothing user-facing may be called a log.                                          |
-| **Freeze**     | UX rule: a day's collections become read-only 3 days after its date.                                                                   |
-| **Compaction** | Storage optimization: frozen collections collapse to flat text. No user-visible effect, different schedule, **independent of freeze**. |
-| **Document**   | A surface backed by one `Y.Text`. There is one: the master list.                                                                       |
-| **Collection** | A surface backed by an ordered `Y.Array<CardId>` (next, scheduled, done).                                                              |
-| **Card**       | One item in a collection; owns its own `Y.Text`.                                                                                       |
-| **Actor**      | Anything that writes to the document: `human`, `agent`, or `system`. Not synonymous with "user" — see §4.8.                            |
-| **Origin**     | A Yjs transaction's `origin` value, carrying the acting actor. Distinct from `Card.origin`, which is item provenance.                  |
+| Term           | Meaning                                                                                                               |
+| -------------- | --------------------------------------------------------------------------------------------------------------------- |
+| **Update log** | Yjs internals only. Never a user-facing concept, and nothing user-facing may be called a log.                         |
+| **Freeze**     | UX rule: a day's collections become read-only 3 days after its date.                                                  |
+| **Compaction** | Planned storage optimization, currently safety-paused pending replica acknowledgements. **Independent of freeze**.    |
+| **Document**   | A surface backed by one `Y.Text`. There is one: the master list.                                                      |
+| **Collection** | A surface backed by an ordered `Y.Array<CardId>` (next, scheduled, done).                                             |
+| **Card**       | One item in a collection; owns its own `Y.Text`.                                                                      |
+| **Actor**      | Anything that writes to the document: `human`, `agent`, or `system`. Not synonymous with "user" — see §4.8.           |
+| **Origin**     | A Yjs transaction's `origin` value, carrying the acting actor. Distinct from `Card.origin`, which is item provenance. |
 
 ---
 
@@ -52,7 +52,7 @@ correction, the code did not.
 | Primary persistence | `y-indexeddb`                                                               |
 | Query/search index  | SQLite-WASM (`opfs-sahpool` VFS) + FTS5, **derived and disposable**         |
 | Sync transport      | `y-websocket` or `y-sweet`, self-hosted, **optional**                       |
-| Doc partitioning    | Single root doc; compaction bounds the structured working set (§4.5)        |
+| Doc partitioning    | Single root doc; destructive compaction is safety-paused (§4.5)             |
 | PWA shell           | Hand-rolled service worker, precache-only                                   |
 | Targets             | Android Chrome (primary), Desktop Chrome/Edge                               |
 
@@ -255,39 +255,35 @@ must stay that way.
 as a policy check in the UI layer: cards don't mount editors, mutation operations reject.
 Nothing about the stored representation changes. Permanent; no unfreeze (PRD §6).
 
-**Compaction — a storage optimization, day + 7.** Collections serialize to canonical
-markdown into `archive: Y.Text`; the arrays and their cards are deleted. Purely internal:
-by the time it runs the day has been read-only for four days, so no user-visible behavior
-can depend on whether it has happened yet. The window is a free tuning parameter.
+**Compaction — target storage optimization, day + 7, currently safety-paused.** The original
+implementation serialized collections into `archive: Y.Text` and deleted their arrays and
+cards. That is not safe in a local-first system without replica acknowledgements: a device can
+edit an existing nested `Y.Text` while offline, after which another device's deletion of its
+parent makes the converged edit unreachable.
 
-The four-day gap is deliberate. Compaction is the only destructive operation in the system,
-and separating it from the freeze means a frozen day sits in structured form for several
-days first — more opportunity to notice a problem, and no coupling between a correctness-
-critical deletion and a user-facing rule.
+Due days still run the canonical serialize → parse → compare validation, but the operation
+returns `deferred` without writing or deleting anything. Legacy archives remain readable.
+Destructive compaction may only return when the protocol can prove every replica has observed
+the state being discarded, or when a new representation keeps concurrent nested edits
+reachable. The seven-day threshold remains independent of the three-day freeze.
 
-Compaction is what keeps a single root document viable: structured card objects exist only
-for the ~7-day active window, and everything older is one flat `Y.Text` (`archive`). Object
-count is bounded by the window, not by history length. That bound is load-bearing and is the
-main thing standing against the schema change in §10.8, which would trade it for an empty root
-type per day.
-
-Compaction runs opportunistically on idle, is idempotent, and must be safe to run
-concurrently on two devices — both produce identical archive text from identical source, and
-Yjs converges. Guard against a wrong clock by requiring the local date to exceed the day's
-date by 7 in the last-known timezone, never by comparing against a remote clock.
+The pause deliberately gives up the intended bound on structured card objects: until a safe
+protocol replaces deletion, object count can grow with history. The four-day gap between
+freeze and the day + 7 validation threshold remains useful as policy separation, but does not
+make deletion safe. Any resumed compaction must be idempotent under concurrent devices and
+must guard against a wrong clock by comparing calendar dates in the last-known timezone.
 
 ### 4.6 Item identity in documents
 
-The master list is plain markdown. Most lines are anonymous. A line gains a stable ID only
-when something points at it, as a trailing caret marker in Obsidian block-reference style:
+The master list is plain markdown and its lines are anonymous. It contains no hidden identity
+syntax: the editor neither generates nor hides trailing caret suffixes, and caret text authored
+after the schema-v4 migration is ordinary text.
 
-```markdown
-- [ ] Draft the migration plan ^k3f9x2
-- [x] Call the dentist ^m2p8qq
-```
-
-IDs are 6 lowercase alphanumeric characters, generated on demand, collision-checked against
-the index. The marker is hidden by the editor decoration unless the cursor is on that line.
+Cards, actors, and devices have internal UUIDs. Card UUIDs are keys in the canonical registry and
+day collections; actor and device UUIDs support attribution. None are rendered into the master
+document or otherwise exposed as user-facing identifiers. Existing short identifiers remain
+valid when older documents are opened. Schema v4 removes the obsolete six-character trailing
+caret suffixes from pre-v4 master documents once, then treats any future caret text literally.
 
 Completion is `- [x]` and nothing more. **There is no `📅` scheduled-date syntax and no `✅`
 completion-timestamp syntax** — both were in draft v2 and both are cut per PRD §9, being
@@ -417,7 +413,7 @@ change:
 1. Walk the syntax tree over **visible ranges only** — never the whole document
    synchronously.
 2. For each node, compute ranges covering its syntax characters (`**`, `##`, backticks,
-   link brackets, `^id`).
+   link brackets).
 3. If the cursor or a selection range intersects the node's **line**, emit no replacement —
    raw syntax shows.
 4. Otherwise replace syntax ranges with zero-width decorations and `mark` the content range
@@ -453,8 +449,26 @@ The split threshold is a **named constant**, not a literal. The PRD expects it t
 
 ### 6.1 Primary: y-indexeddb
 
-Persists the Yjs document and is the durable local store. Also syncs updates across tabs of
-the same origin for free, removing any need for tab coordination on the write path.
+Persists the Yjs document and is the durable local store. The adapter keeps y-indexeddb's
+on-disk format, loading, ordinary writes, and compaction. `whenSynced` means only that stored
+updates have been applied in memory; it does not add a full-document write to the startup path.
+
+Every update is first written synchronously to localStorage as one immutable, per-page,
+per-database journal entry. A reload replays those idempotent Yjs deltas before IndexedDB is
+opened. At the end of a short batching window the adapter writes every captured delta in one relaxed
+IndexedDB transaction, waits for its `complete` event, and only then removes the corresponding
+journal entries. `whenDurable()` forces that batch immediately and resolves only after every Yjs
+update observed before the call has committed. Journal or batch failures remain observable and
+leave recoverable entries intact.
+
+The journal is a short-lived write-ahead log, not a second document representation or another
+authority. This closes the browser lifecycle gap where navigation can terminate the page between
+a Yjs transaction and IndexedDB's asynchronous commit without putting cumulative update merging,
+base64 encoding, or a strict disk flush on every keystroke.
+
+Opening another tab later reads the same database. y-indexeddb does not itself broadcast live
+updates between already-open tabs, so real-time cross-tab propagation is not a property of this
+layer.
 
 Request `navigator.storage.persist()` on first successful write. Surface the granted/denied
 state in settings — a local-first app that can be silently evicted should say so.
@@ -748,13 +762,13 @@ Export produces a zip of markdown, no server involved:
 ```
 master.md
 days/2026-08-05.md      # ## Next / ## Scheduled / ## Done
+recovery.md              # only when retained cards have no visible collection
 ```
 
 The master list is dumped verbatim — it is already markdown. Collections serialize as lists of
-cards separated by blank lines, which is the same transformation compaction performs (§4.5).
-Since a day _is_ its collections, a day file and a compacted day's `archive` are the same
-bytes read by the same parser — so "exactly one serializer" is literal, and compaction
-exercises it continuously against something that deletes nothing.
+cards separated by blank lines. Since a day _is_ its collections, a day file and a legacy
+compacted day's `archive` are the same bytes read by the same parser — so "exactly one
+serializer" remains literal while destructive compaction is safety-paused (§4.5).
 
 A card can itself contain a blank line, so blank-line-delimited blocks would be ambiguous and
 §11's "reproduces the original collections exactly" would not hold. Each card is therefore
@@ -804,14 +818,14 @@ Yjs-in-IndexedDB plus SQLite-in-OPFS means two things that can drift. Mitigation
 architectural: SQLite is strictly derived and the rebuild path runs routinely. If a bug ever
 makes the index authoritative for anything, that's the bug.
 
-### 10.4 Compaction is the only destructive operation
+### 10.4 Destructive compaction is safety-paused
 
-It deletes card objects, and a serializer bug would damage history seven days after the fact.
-Mitigations: the serializer is shared with export (§9) and therefore continuously exercised;
-compaction verifies round-trip (serialize → parse → compare) inside the same transaction and
-aborts on mismatch; a failed verification defers compaction indefinitely rather than retrying
-destructively; and because compaction is decoupled from freezing (§4.5), deferring it forever
-has no user-visible consequence beyond document size.
+Round-trip verification could protect against serializer mistakes but cannot establish that an
+offline replica has no unseen edits beneath a type about to be deleted. Compaction therefore
+defers indefinitely without serializing or mutating the day. The cost is unbounded document
+growth; the benefit is that elapsed time is never mistaken for evidence that all replicas have
+synchronized. Retained cards from legacy compaction are exposed in the Today recovery panel and
+in `recovery.md` exports.
 
 ### 10.5 Storage eviction
 
@@ -917,9 +931,10 @@ between collections, where array semantics are least obvious. Runs on every comm
 **Round-trip.** `export → import → export` byte-identical. Editor content equals stored
 `Y.Text` after arbitrary edit sequences.
 
-**Compaction safety.** For arbitrary day contents, `compact → parse` reproduces the original
-collections exactly. Concurrent compaction on two replicas converges. Verification failure
-defers rather than deletes.
+**Compaction safety.** For arbitrary day contents, serialize → parse reproduces the original
+collections exactly. A due compaction is mutation-free and defers. A replica that remains
+offline across the threshold can reconnect with both new cards and edits to existing card text
+without either becoming unreachable.
 
 **Freeze independence.** Freeze behavior is identical whether or not a day has been compacted,
 and compaction timing never affects what the UI permits. This is the regression test for the

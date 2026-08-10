@@ -75,10 +75,8 @@ describe('the static render', () => {
     expect(em?.querySelector('.cm-md-strong')?.textContent).toBe('both');
   });
 
-  it('hides a block marker, which is not markdown syntax', () => {
-    // The marker is hidden from the caret onwards; the space before it is
-    // ordinary text, which is what the editor does with it as well.
-    expect(render('a line ^k3f9x2').textContent).toBe('a line ');
+  it('renders caret notation as ordinary text', () => {
+    expect(render('a line ^k3f9x2').textContent).toBe('a line ^k3f9x2');
   });
 
   it('leaves image syntax raw, since images are a permanent non-goal', () => {

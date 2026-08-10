@@ -8,7 +8,18 @@
  */
 
 import { afterEach, describe, expect, it } from 'vitest';
-import { compactDay, compose, exportEntries, exportFilename, transact } from '../src/crdt';
+import {
+  cardId,
+  cardsIn,
+  collectionOf,
+  compactDay,
+  compose,
+  dayAt,
+  exportEntries,
+  exportFilename,
+  setCardLocation,
+  transact,
+} from '../src/crdt';
 import { crc32, zip } from '../src/lib/zip';
 import { Temporal } from '../src/lib/temporal';
 import { addDays } from '../src/lib/date';
@@ -73,16 +84,36 @@ describe('what goes in it', () => {
     );
   });
 
-  it('exports a compacted day identically to an uncompacted one', async () => {
+  it('exports a day identically when destructive compaction is safety-deferred', async () => {
     context = await harness();
     const old = addDays(TODAY, -7);
     const past = { ...context.me, today: old };
     compose(past, { date: old, section: 'done' }, 'finished\n\nwith a gap');
 
     const before = exportEntries(context.store.doc, '')[1]?.content;
-    compactDay(context.store.doc, context.store.actor.systemOrigin, old, TODAY);
+    expect(compactDay(context.store.doc, context.store.actor.systemOrigin, old, TODAY)).toBe(
+      'deferred',
+    );
     const after = exportEntries(context.store.doc, '')[1]?.content;
 
     expect(after).toBe(before);
+  });
+
+  it('includes retained cards and their provenance in recovery.md', async () => {
+    context = await harness();
+    compose(context.me, { date: TODAY, section: 'done' }, 'found\n\nwith context');
+    const card = cardsIn(context.store.doc, TODAY, 'done')[0]!;
+    const id = cardId(card);
+    const collection = collectionOf(dayAt(context.store.doc, TODAY), 'done')!;
+    transact(context.store.doc, context.store.actor.systemOrigin, () => {
+      collection.delete(collection.toArray().indexOf(id), 1);
+      setCardLocation(context.store.doc, id, null);
+    });
+
+    const recovery = exportEntries(context.store.doc, '').find(
+      (entry) => entry.path === 'recovery.md',
+    );
+    expect(recovery?.content).toContain('- found\n\n  with context');
+    expect(recovery?.content).toContain(`\`${id}\` — last known: unavailable`);
   });
 });

@@ -9,10 +9,17 @@
  * relay is reachable, unreachable, or has never been heard of.
  */
 
-import { Awareness, createDoc, createUndoManager, type YDoc, type YUndoManager } from './yjs';
+import {
+  Awareness,
+  createDoc,
+  createUndoManager,
+  type YDoc,
+  type YTransaction,
+  type YUndoManager,
+} from './yjs';
 import { resolveActor, type ActorContext } from './actors';
 import { openTree, readSettings, type DocumentTree, type Settings } from './doc';
-import { daysMap, repairCardMemberships, SECTIONS } from './days';
+import { repairCardMemberships, transactionAffectsMembership } from './days';
 import { createSync, type SyncController, type SyncOptions } from './sync';
 import {
   openLocalStore,
@@ -60,6 +67,7 @@ export interface OpenStoreOptions {
   /** Off for tests that have no business touching IndexedDB. */
   persist?: boolean;
   onStoragePersistence?: (status: StoragePersistence) => void;
+  onLocalPersistenceError?: (error: Error) => void;
   /** Injected by tests; the default opens a real websocket when configured. */
   openWebsocket?: SyncOptions['open'];
 }
@@ -84,19 +92,10 @@ export interface OpenStoreOptions {
  * whatever transaction happened to trip it.
  */
 const watchMemberships = (doc: YDoc, context: ActorContext): (() => void) => {
-  const map = daysMap(doc);
   let queued = false;
 
-  const observer = (events: { path: (string | number)[] }[]): void => {
-    // Only membership can leave the three roots disagreeing. Card *text* lives
-    // in the canonical registry and does not reach this observer at all.
-    const membership = events.some((event) => {
-      const field = event.path[1];
-      // A change to the days map itself: a day arrived, which is a membership
-      // change in every sense that matters here.
-      return typeof field !== 'string' || SECTIONS.some((section) => section === field);
-    });
-    if (!membership || queued) return;
+  const schedule = (): void => {
+    if (queued) return;
     queued = true;
     queueMicrotask(() => {
       queued = false;
@@ -104,8 +103,14 @@ const watchMemberships = (doc: YDoc, context: ActorContext): (() => void) => {
     });
   };
 
-  map.observeDeep(observer);
-  return () => map.unobserveDeep(observer);
+  const afterTransaction = (transaction: YTransaction): void => {
+    if (transactionAffectsMembership(doc, transaction)) schedule();
+  };
+
+  doc.on('afterTransaction', afterTransaction);
+  return () => {
+    doc.off('afterTransaction', afterTransaction);
+  };
 };
 
 /**
@@ -128,7 +133,16 @@ const watchMemberships = (doc: YDoc, context: ActorContext): (() => void) => {
 export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> => {
   const doc = options.doc ?? createDoc();
 
-  const local = options.persist === false ? null : openLocalStore(doc, options.dbName);
+  const local =
+    options.persist === false
+      ? null
+      : openLocalStore(
+          doc,
+          options.dbName,
+          options.onLocalPersistenceError
+            ? { onPersistenceError: options.onLocalPersistenceError }
+            : {},
+        );
   if (local) await local.whenSynced;
 
   const actor = resolveActor(doc, doc.getMap('meta'));

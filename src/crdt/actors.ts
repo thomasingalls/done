@@ -67,7 +67,7 @@ export const localDevice = (): Device => {
   if (typeof stored?.['id'] === 'string' && typeof stored['name'] === 'string') {
     return { id: stored['id'], name: stored['name'] };
   }
-  const device: Device = { id: newId(8), name: guessDeviceName() };
+  const device: Device = { id: newId(), name: guessDeviceName() };
   writeLocalJson(DEVICE_KEY, device);
   return device;
 };
@@ -144,7 +144,7 @@ export const resolveActor = (doc: YDoc, meta: YMap<unknown>): ActorContext => {
 
   let id = readLocal(ACTOR_KEY);
   if (!id) {
-    id = newId(8);
+    id = newId();
     writeLocal(ACTOR_KEY, id);
   }
 

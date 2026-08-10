@@ -36,7 +36,7 @@ const DOCUMENT = [
   '- [ ] open task',
   '- [x] done task',
   '> a quoted line',
-  'marked line ^k3f9x2',
+  'plain line',
   '---',
   'closing line',
 ].join('\n');

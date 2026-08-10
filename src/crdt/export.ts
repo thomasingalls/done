@@ -10,17 +10,16 @@
  * days/2026-08-05.md
  * ```
  *
- * Documents are dumped verbatim; collections go through the one serializer,
- * which is the same transformation compaction performs. A compacted day
- * exports identically to an uncompacted one, because `readDayContent` reads
- * through the archive — compaction is invisible here too.
+ * Documents are dumped verbatim; collections go through the one serializer.
+ * A day compacted by a legacy client exports identically to an uncompacted one,
+ * because `readDayContent` reads through the archive.
  */
 
 import { toISODate } from '../lib/date';
 import { nowLocal, type PlainDateTime } from '../lib/temporal';
 import { zip, type ZipEntry } from '../lib/zip';
-import { dayAt, isDayEmpty, listDays } from './days';
-import { readDayContent, serializeDay } from './serialize';
+import { cardBody, dayAt, isDayEmpty, listDays, recoveryCards } from './days';
+import { readDayContent, serializeCardList, serializeDay } from './serialize';
 import type { YDoc } from './yjs';
 
 export const exportEntries = (doc: YDoc, master: string): ZipEntry[] => {
@@ -30,6 +29,34 @@ export const exportEntries = (doc: YDoc, master: string): ZipEntry[] => {
     const day = dayAt(doc, date);
     if (isDayEmpty(day)) continue;
     entries.push({ path: `days/${date}.md`, content: serializeDay(readDayContent(doc, date)) });
+  }
+
+  const recovery = recoveryCards(doc);
+  if (recovery.length > 0) {
+    const cards = serializeCardList(recovery.map(({ card }) => cardBody(card)));
+    const provenance = recovery
+      .map(({ id, location }, index) => {
+        const lastKnown = location ? `${location.date} / ${location.section}` : 'unavailable';
+        return `${index + 1}. \`${id}\` — last known: ${lastKnown}`;
+      })
+      .join('\n');
+    entries.push({
+      path: 'recovery.md',
+      content: [
+        '# Recovery',
+        '',
+        'Cards retained because no normal collection can currently display them.',
+        '',
+        '## Cards',
+        '',
+        cards,
+        '',
+        '## Provenance',
+        '',
+        provenance,
+        '',
+      ].join('\n'),
+    });
   }
 
   return entries;

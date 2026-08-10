@@ -31,6 +31,9 @@ export interface DayPlaneProps {
   menuOpen: boolean;
   onOpenMenu: () => void;
   onGoTo: (date: ISODate) => void;
+  recoveryCount: number;
+  recoveryOpen: boolean;
+  onOpenRecovery: () => void;
 }
 
 export const DayPlane = ({
@@ -44,6 +47,9 @@ export const DayPlane = ({
   menuOpen,
   onOpenMenu,
   onGoTo,
+  recoveryCount,
+  recoveryOpen,
+  onOpenRecovery,
 }: DayPlaneProps): React.ReactElement => {
   const previous = addDays(date, -1);
   const next = addDays(date, 1);
@@ -157,6 +163,9 @@ export const DayPlane = ({
             menuOpen={menuOpen}
             onOpenMenu={onOpenMenu}
             onGoTo={onGoTo}
+            recoveryCount={recoveryCount}
+            recoveryOpen={recoveryOpen}
+            onOpenRecovery={onOpenRecovery}
           />
         ))}
       </div>

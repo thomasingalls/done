@@ -28,6 +28,9 @@ export interface DayPanelProps {
   onOpenMenu: () => void;
   onGoTo: (date: ISODate) => void;
   menuOpen: boolean;
+  recoveryCount: number;
+  recoveryOpen: boolean;
+  onOpenRecovery: () => void;
 }
 
 type TouchScrollRoom = 'none' | 'top' | 'middle' | 'bottom';
@@ -42,6 +45,9 @@ export const DayPanel = ({
   onOpenMenu,
   onGoTo,
   menuOpen,
+  recoveryCount,
+  recoveryOpen,
+  onOpenRecovery,
 }: DayPanelProps): React.ReactElement => {
   const active = offset === 0;
   const frozen = isFrozen(date, today);
@@ -121,6 +127,19 @@ export const DayPanel = ({
           </button>
         )}
         <h1 className="panel-title">{formatDay(date)}</h1>
+        {active && date === today && recoveryCount > 0 && (
+          <button
+            type="button"
+            className="recovery-trigger"
+            aria-label={`Recover ${recoveryCount} ${recoveryCount === 1 ? 'card' : 'cards'}`}
+            aria-expanded={recoveryOpen}
+            aria-controls="recovery-panel"
+            onClick={onOpenRecovery}
+          >
+            <WarningIcon />
+            <span>{recoveryCount}</span>
+          </button>
+        )}
         {date !== today && (
           <button type="button" className="panel-action" onClick={() => onGoTo(today)}>
             Today
@@ -158,5 +177,18 @@ const MenuIcon = (): React.ReactElement => (
       strokeWidth="1.5"
       strokeLinecap="round"
     />
+  </svg>
+);
+
+const WarningIcon = (): React.ReactElement => (
+  <svg width="15" height="15" viewBox="0 0 18 18" aria-hidden="true" focusable="false">
+    <path
+      d="M9 2.25 16 15H2L9 2.25Z"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinejoin="round"
+    />
+    <path d="M9 6.25v4.25M9 13.25h.01" stroke="currentColor" strokeLinecap="round" />
   </svg>
 );

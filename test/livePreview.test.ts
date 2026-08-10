@@ -109,9 +109,9 @@ describe('constructs', () => {
     expect(lineClasses(build(state), doc)).toContain('cm-md-hr');
   });
 
-  it('hides a block marker unless the cursor is on its line', () => {
+  it('treats caret notation as ordinary text', () => {
     const doc = '- [ ] Draft the migration plan ^k3f9x2\n\nelsewhere';
-    expect(hiddenText(build(stateAtLineOf(doc, 'elsewhere')), doc)).toContain('^k3f9x2');
+    expect(hiddenText(build(stateAtLineOf(doc, 'elsewhere')), doc)).not.toContain('^k3f9x2');
     expect(hiddenText(build(stateAtLineOf(doc, 'Draft')), doc)).not.toContain('^k3f9x2');
   });
 });
@@ -122,7 +122,7 @@ describe('the decoration set is well formed', () => {
     '',
     'Some **bold**, *italic*, ~~struck~~, `code`, [link](https://example.com).',
     '',
-    '- [ ] task ^abc123',
+    '- [ ] task',
     '- plain',
     '',
     '> quote',

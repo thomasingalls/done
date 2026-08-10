@@ -28,7 +28,7 @@ const CARDS = [
   '- [ ] an open task',
   '- [x] a done task',
   '> a quoted card',
-  'marked ^k3f9x2',
+  'plain text',
   'a card that is quite a lot longer than the panel is wide, so that it wraps at least once',
 ];
 

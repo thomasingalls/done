@@ -13,20 +13,28 @@ import { afterEach, describe, expect, it } from 'vitest';
 import {
   COMPACTION_DAYS,
   FREEZE_DAYS,
+  SECTIONS,
   archiveTextOf,
   cardBody,
   cardId,
   cardsIn,
+  cardsMap,
   compactDay,
   compose,
   countIn,
+  dayAt,
   isCompacted,
   isFrozen,
   moveCard,
+  newText,
   readCollections,
   reorderCard,
   removeCard,
+  serializeCollections,
+  setCardLocation,
   staleDays,
+  transact,
+  Y,
 } from '../src/crdt';
 import { addDays } from '../src/lib/date';
 import { harness, TODAY, type Harness } from './workspace';
@@ -129,7 +137,7 @@ describe('the stale-item indicator', () => {
   });
 });
 
-describe('compaction is independent of the freeze', () => {
+describe('compaction is safety-paused independently of the freeze', () => {
   const seed = (test: Harness, date: string): void => {
     const past = { ...test.me, today: date };
     compose(past, { date, section: 'next' }, 'planned\n\nwith a blank line');
@@ -147,19 +155,43 @@ describe('compaction is independent of the freeze', () => {
     expect(isCompacted(context.store.days.get(frozen) as never)).toBe(false);
   });
 
-  it('collapses the collections to text once it is due', async () => {
+  it('defers a due day without deleting its live Yjs types', async () => {
     context = await harness();
     const old = ago(COMPACTION_DAYS);
     seed(context, old);
 
     expect(compactDay(context.store.doc, context.store.actor.systemOrigin, old, TODAY)).toBe(
-      'compacted',
+      'deferred',
     );
-    expect(isCompacted(context.store.days.get(old) as never)).toBe(true);
-    expect(archiveTextOf(context.store.doc, old)).toContain('- planned');
+    expect(isCompacted(context.store.days.get(old) as never)).toBe(false);
+    expect(archiveTextOf(context.store.doc, old)).toBeUndefined();
+    expect(cardsIn(context.store.doc, old, 'next').map(cardBody)).toEqual([
+      'planned\n\nwith a blank line',
+    ]);
   });
 
-  it('reproduces the collections exactly, blank lines and all', async () => {
+  it('continues to read archives created by older clients', async () => {
+    context = await harness();
+    const old = ago(COMPACTION_DAYS);
+    seed(context, old);
+    const before = readCollections(context.store.doc, old);
+    const day = dayAt(context.store.doc, old)!;
+    const ids = SECTIONS.flatMap((section) => cardsIn(context.store.doc, old, section).map(cardId));
+
+    transact(context.store.doc, context.store.actor.systemOrigin, () => {
+      day.set('archive', newText(serializeCollections(before)));
+      for (const section of SECTIONS) day.delete(section);
+      for (const id of ids) {
+        cardsMap(context.store.doc).delete(id);
+        setCardLocation(context.store.doc, id, null);
+      }
+    });
+
+    expect(readCollections(context.store.doc, old)).toEqual(before);
+    expect(isCompacted(day)).toBe(true);
+  });
+
+  it('leaves every card intact without producing an archive', async () => {
     context = await harness();
     const old = ago(COMPACTION_DAYS);
     seed(context, old);
@@ -169,19 +201,23 @@ describe('compaction is independent of the freeze', () => {
     const after = readCollections(context.store.doc, old);
 
     expect(after).toEqual(before);
+    expect(archiveTextOf(context.store.doc, old)).toBeUndefined();
   });
 
-  it('is idempotent', async () => {
+  it('is a mutation-free, repeatable deferral', async () => {
     context = await harness();
     const old = ago(COMPACTION_DAYS);
     seed(context, old);
 
-    compactDay(context.store.doc, context.store.actor.systemOrigin, old, TODAY);
-    const archive = archiveTextOf(context.store.doc, old);
+    const before = Y.encodeStateAsUpdate(context.store.doc);
     expect(compactDay(context.store.doc, context.store.actor.systemOrigin, old, TODAY)).toBe(
-      'skipped',
+      'deferred',
     );
-    expect(archiveTextOf(context.store.doc, old)).toBe(archive);
+    expect(compactDay(context.store.doc, context.store.actor.systemOrigin, old, TODAY)).toBe(
+      'deferred',
+    );
+    expect(Y.encodeStateAsUpdate(context.store.doc)).toEqual(before);
+    expect(archiveTextOf(context.store.doc, old)).toBeUndefined();
   });
 
   it('leaves an empty day alone rather than trading arrays for headings', async () => {
@@ -206,8 +242,9 @@ describe('compaction is independent of the freeze', () => {
     compactDay(context.store.doc, context.store.actor.systemOrigin, old, TODAY);
     context.store.undo.undo();
 
-    // The compaction stands; the typed card is what came back.
-    expect(isCompacted(context.store.days.get(old) as never)).toBe(true);
+    // The safety deferral made no undo entry; the typed card is what came back.
+    expect(isCompacted(context.store.days.get(old) as never)).toBe(false);
+    expect(cardsIn(context.store.doc, old, 'done').map(cardBody)).toEqual(['finished']);
     expect(cardsIn(context.store.doc, TODAY, 'done')).toEqual([]);
   });
 
@@ -224,7 +261,7 @@ describe('compaction is independent of the freeze', () => {
     expect(refusedAfter).toBe(false);
   });
 
-  it('reads back through the archive, so the day looks the same either way', async () => {
+  it('keeps the live day readable exactly as it was', async () => {
     context = await harness();
     const old = ago(COMPACTION_DAYS);
     seed(context, old);

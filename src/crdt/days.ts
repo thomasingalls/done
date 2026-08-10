@@ -32,6 +32,7 @@ import {
   type YDoc,
   type YMap,
   type YText,
+  type YTransaction,
 } from './yjs';
 import { newId } from '../lib/id';
 import { nowInstant } from '../lib/temporal';
@@ -159,6 +160,44 @@ export const registerCard = (doc: YDoc, id: string, card: Card, location: CardLo
  */
 export const daysMap = (doc: YDoc): YMap<unknown> => doc.getMap('days');
 
+/**
+ * The exact transaction set that can change card membership or recovery.
+ * Repair and UI invalidation share this classifier so their understanding of
+ * the three-root model cannot drift apart.
+ */
+export const transactionAffectsMembership = (doc: YDoc, transaction: YTransaction): boolean => {
+  const cards: unknown = cardsMap(doc);
+  const locations: unknown = cardLocationsMap(doc);
+  const days: unknown = daysMap(doc);
+  for (const [changedType, changedKeys] of transaction.changed) {
+    const target: unknown = changedType;
+    if (target === cards || target === locations || target === days) return true;
+
+    const parent = changedType.parent;
+    if (parent === days) {
+      // A field on a day map matters only when it installs or removes one of
+      // the section collections. `archive` is deliberately excluded.
+      if (
+        [...changedKeys].some(
+          (field) => typeof field !== 'string' || SECTIONS.some((section) => section === field),
+        )
+      ) {
+        return true;
+      }
+      continue;
+    }
+
+    if (parent?.parent === days) {
+      // An edit below a day matters only when the changed type is one of its
+      // section arrays. Card and archive text take the same structural route
+      // but are not part of membership.
+      const day = parent as Day;
+      if (SECTIONS.some((section) => collectionOf(day, section) === target)) return true;
+    }
+  }
+  return false;
+};
+
 /** The day if it has ever been written to. Absent days occupy nothing (TRD §4.2). */
 export const dayAt = (doc: YDoc, date: ISODate): Day | undefined =>
   daysMap(doc).get(date) as Day | undefined;
@@ -191,6 +230,39 @@ export const ensureDay = (doc: YDoc, origin: unknown, date: ISODate): Day =>
 
 export const collectionOf = (day: Day | undefined, section: Section): Collection | undefined =>
   day?.get(section) as Collection | undefined;
+
+export interface RecoveryCard {
+  id: string;
+  card: Card;
+  /** Retained when the card's former day collection no longer exists. */
+  location: CardLocation | null;
+}
+
+/**
+ * Registry cards that no normal collection can currently show.
+ *
+ * This includes fully locationless orphans and cards whose last-known day was
+ * compacted by an older client. A location pointing at a missing collection is
+ * evidence, not corruption, so it is exposed to recovery instead of erased.
+ */
+export const recoveryCards = (doc: YDoc): RecoveryCard[] => {
+  const referenced = new Set<string>();
+  for (const date of listDays(doc)) {
+    const day = dayAt(doc, date);
+    for (const section of SECTIONS) {
+      for (const id of collectionOf(day, section)?.toArray() ?? []) referenced.add(id);
+    }
+  }
+
+  return [...cardsMap(doc).entries()]
+    .flatMap(([id, card]): RecoveryCard[] => {
+      const location = cardLocation(doc, id);
+      if (!location) return referenced.has(id) ? [] : [{ id, card, location: null }];
+      const collection = collectionOf(dayAt(doc, location.date), location.section);
+      return collection ? [] : [{ id, card, location }];
+    })
+    .sort((left, right) => left.id.localeCompare(right.id));
+};
 
 /** Set by compaction; its presence means the collections have been collapsed (§4.5). */
 export const archiveOf = (day: Day | undefined): YText | undefined =>
@@ -265,6 +337,99 @@ export const migrateCardsToRegistry = (doc: YDoc, origin: unknown): void => {
 };
 
 /**
+ * Membership skew the repair pass can observe. Visible cards are exactly the
+ * triple intersection of registry ∩ locations ∩ matching collection arrays
+ * (`cardsIn`); anything outside that triangle is an issue.
+ */
+export type MembershipIssue =
+  | { kind: 'card-without-location'; id: string }
+  | { kind: 'location-without-card'; id: string }
+  | { kind: 'invalid-location'; id: string; value: unknown }
+  | { kind: 'location-without-collection'; id: string; location: CardLocation }
+  | { kind: 'array-without-card'; id: string; date: ISODate; section: Section }
+  | {
+      kind: 'array-location-mismatch';
+      id: string;
+      date: ISODate;
+      section: Section;
+      location: CardLocation;
+    }
+  | { kind: 'duplicate-in-array'; id: string; date: ISODate; section: Section }
+  | { kind: 'missing-from-array'; id: string; location: CardLocation };
+
+/**
+ * Diagnostics for tests and audits. A successful repair can intentionally
+ * leave recoverable issues (`card-without-location` and
+ * `location-without-collection`) rather than deleting cards or provenance
+ * without evidence.
+ */
+export const cardMembershipIssues = (doc: YDoc): MembershipIssue[] => {
+  const issues: MembershipIssue[] = [];
+  const locations = cardLocationsMap(doc);
+  const present = new Set<string>();
+
+  for (const [id, value] of locations.entries()) {
+    if (!cardAt(doc, id)) {
+      issues.push({ kind: 'location-without-card', id });
+      continue;
+    }
+    const location = parseLocation(value);
+    if (!location) {
+      issues.push({ kind: 'invalid-location', id, value });
+      continue;
+    }
+    const collection = collectionOf(dayAt(doc, location.date), location.section);
+    if (!collection) issues.push({ kind: 'location-without-collection', id, location });
+  }
+
+  for (const [id] of cardsMap(doc).entries()) {
+    if (!locations.has(id)) {
+      issues.push({ kind: 'card-without-location', id });
+    }
+  }
+
+  for (const date of listDays(doc)) {
+    const day = dayAt(doc, date);
+    for (const section of SECTIONS) {
+      const collection = collectionOf(day, section);
+      if (!collection) continue;
+      const seen = new Set<string>();
+      for (const id of collection.toArray()) {
+        if (seen.has(id)) {
+          issues.push({ kind: 'duplicate-in-array', id, date, section });
+          continue;
+        }
+        seen.add(id);
+        const card = cardAt(doc, id);
+        if (!card) {
+          issues.push({ kind: 'array-without-card', id, date, section });
+          continue;
+        }
+        const location = cardLocation(doc, id);
+        if (!location) continue;
+        if (location.date !== date || location.section !== section) {
+          issues.push({ kind: 'array-location-mismatch', id, date, section, location });
+          continue;
+        }
+        present.add(`${locationKey(location)}:${id}`);
+      }
+    }
+  }
+
+  for (const [id] of cardsMap(doc).entries()) {
+    const location = cardLocation(doc, id);
+    if (!location) continue;
+    const collection = collectionOf(dayAt(doc, location.date), location.section);
+    if (!collection) continue;
+    if (!present.has(`${locationKey(location)}:${id}`)) {
+      issues.push({ kind: 'missing-from-array', id, location });
+    }
+  }
+
+  return issues;
+};
+
+/**
  * Where a card goes when it is re-homed — put back into the collection its
  * canonical location names, after the array entry that held its position was
  * destroyed (see `repairCardMemberships`).
@@ -305,10 +470,21 @@ const rehomeIndex = (doc: YDoc, collection: Collection, section: Section, card: 
  * The map has one deterministic value per id, so concurrent assignments have
  * one winner; arrays retain ordering but no longer decide which of two
  * locations owns the item.
+ *
+ * Repair policy:
+ * - array id with a card but no location → restore location from the first
+ *   array occurrence (day order, then `SECTIONS` order)
+ * - card with no location and no array evidence → retain it for recovery
+ * - location (or invalid location string) without a card → drop the location
+ * - location whose collection is gone (legacy compaction) → retain both the
+ *   card and its last-known location for recovery
+ * - otherwise reconcile arrays to the location map (drop strangers / duplicates,
+ *   re-home missing ids according to section ordering)
  */
 export const repairCardMemberships = (doc: YDoc, origin: unknown): number => {
   const removals: Array<{ collection: Collection; index: number }> = [];
   const present = new Set<string>();
+  const arrayHome = new Map<string, CardLocation>();
 
   for (const date of listDays(doc)) {
     const day = dayAt(doc, date);
@@ -318,23 +494,61 @@ export const repairCardMemberships = (doc: YDoc, origin: unknown): number => {
       const seen = new Set<string>();
       collection.toArray().forEach((id, index) => {
         const card = cardAt(doc, id);
-        const location = card && cardLocation(doc, id);
-        const belongs = location?.date === date && location.section === section;
-        if (!card || !belongs || seen.has(id)) removals.push({ collection, index });
-        else {
-          seen.add(id);
-          present.add(`${locationKey(location)}:${id}`);
+        if (!card) {
+          removals.push({ collection, index });
+          return;
         }
+
+        const location = cardLocation(doc, id);
+        if (!location) {
+          if (seen.has(id) || arrayHome.has(id)) {
+            removals.push({ collection, index });
+            return;
+          }
+          seen.add(id);
+          arrayHome.set(id, { date, section });
+          return;
+        }
+
+        const belongs = location.date === date && location.section === section;
+        if (!belongs || seen.has(id)) {
+          removals.push({ collection, index });
+          return;
+        }
+        seen.add(id);
+        present.add(`${locationKey(location)}:${id}`);
       });
     }
   }
 
+  const restoreLocations: Array<{ id: string; location: CardLocation }> = [];
+  const dropLocations = new Set<string>();
   const missing: Array<{ collection: Collection; section: Section; id: string; card: Card }> = [];
+
+  for (const [id, value] of cardLocationsMap(doc).entries()) {
+    if (!cardAt(doc, id)) {
+      dropLocations.add(id);
+      continue;
+    }
+    if (!parseLocation(value)) dropLocations.add(id);
+  }
+
   for (const [id, card] of cardsMap(doc).entries()) {
     const location = cardLocation(doc, id);
-    if (!location || present.has(`${locationKey(location)}:${id}`)) continue;
-    const collection = collectionOf(dayAt(doc, location.date), location.section);
-    if (collection) missing.push({ collection, section: location.section, id, card });
+    if (location) {
+      const collection = collectionOf(dayAt(doc, location.date), location.section);
+      if (!collection) continue;
+      if (!present.has(`${locationKey(location)}:${id}`)) {
+        missing.push({ collection, section: location.section, id, card });
+      }
+      continue;
+    }
+
+    const home = arrayHome.get(id);
+    if (home) {
+      restoreLocations.push({ id, location: home });
+      dropLocations.delete(id);
+    }
   }
 
   // Oldest first, because `rehomeIndex` puts each returning card above what was
@@ -348,7 +562,9 @@ export const repairCardMemberships = (doc: YDoc, origin: unknown): number => {
       (a.id < b.id ? -1 : a.id > b.id ? 1 : 0),
   );
 
-  if (removals.length === 0 && missing.length === 0) return 0;
+  const changes = removals.length + restoreLocations.length + dropLocations.size + missing.length;
+  if (changes === 0) return 0;
+
   transact(doc, origin, () => {
     const byCollection = new Map<Collection, number[]>();
     for (const removal of removals) {
@@ -359,11 +575,13 @@ export const repairCardMemberships = (doc: YDoc, origin: unknown): number => {
     for (const [collection, indices] of byCollection) {
       for (const index of indices.sort((a, b) => b - a)) collection.delete(index, 1);
     }
+    for (const id of dropLocations) cardLocationsMap(doc).delete(id);
+    for (const { id, location } of restoreLocations) setCardLocation(doc, id, location);
     // Indices are read here rather than above because the removals have landed
     // in between, and a returning card is placed among what is left.
     for (const { collection, section, id, card } of missing) {
       collection.insert(rehomeIndex(doc, collection, section, card), [id]);
     }
   });
-  return removals.length + missing.length;
+  return changes;
 };

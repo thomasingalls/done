@@ -119,8 +119,8 @@ describe('round-trip', () => {
   });
 });
 
-describe('the archive form, which is the same bytes', () => {
-  it('round-trips what compaction stored', () => {
+describe('the legacy archive form, which is the same bytes', () => {
+  it('round-trips what older compaction stored', () => {
     const collections = {
       next: ['one\n\ntwo'],
       scheduled: [],

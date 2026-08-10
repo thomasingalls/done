@@ -26,10 +26,11 @@
  */
 
 import type { ISODate } from '../lib/date';
-import { BLOCK_MARKER, newId } from '../lib/id';
+import { newId } from '../lib/id';
 import type { ActorId, Origin } from './actors';
 import {
   NEXT_CAP,
+  SECTIONS,
   cardAt,
   cardBody,
   cardId,
@@ -42,7 +43,9 @@ import {
   dayAt,
   ensureDay,
   indexOfCard,
+  listDays,
   newCard,
+  recoveryCards,
   registerCard,
   setCardLocation,
   type Card,
@@ -247,14 +250,99 @@ export const removeCard = (workspace: Workspace, ref: Ref, id: string): boolean 
 };
 
 /* -------------------------------------------------------------------------- */
+/* Recovery                                                                    */
+
+const recoveryCard = (workspace: Workspace, id: string) =>
+  recoveryCards(workspace.doc).find((entry) => entry.id === id);
+
+/** Deleting a retained card also deletes its frozen provenance, when it has one. */
+const canDeleteRecoveryCard = (workspace: Workspace, id: string): boolean => {
+  const entry = recoveryCard(workspace, id);
+  return entry !== undefined && (!entry.location || writable(workspace, entry.location.date));
+};
+
+/** Recovery may clean stale memberships, but never by rewriting frozen history. */
+const canDetachCard = (workspace: Workspace, id: string): boolean => {
+  for (const date of listDays(workspace.doc)) {
+    const day = dayAt(workspace.doc, date);
+    for (const section of SECTIONS) {
+      const collection = collectionOf(day, section);
+      if (collection && collection.toArray().includes(id) && !writable(workspace, date)) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+/** Remove every writable stale physical reference before assigning a recovered home. */
+const detachCard = (workspace: Workspace, id: string): void => {
+  for (const date of listDays(workspace.doc)) {
+    const day = dayAt(workspace.doc, date);
+    for (const section of SECTIONS) {
+      const collection = collectionOf(day, section);
+      if (!collection) continue;
+      for (let index = collection.length - 1; index >= 0; index--) {
+        if (collection.get(index) === id) collection.delete(index, 1);
+      }
+    }
+  }
+};
+
+/** Give an otherwise unreachable registry card a normal collection home. */
+export const recoverCardTo = (workspace: Workspace, id: string, to: Ref): boolean => {
+  if (!recoveryCard(workspace, id) || !canDetachCard(workspace, id) || !canAccept(workspace, to)) {
+    return false;
+  }
+  const target = collectionAt(workspace, to);
+  if (!target) return false;
+
+  return discrete(workspace, () => {
+    detachCard(workspace, id);
+    setCardLocation(workspace.doc, id, to);
+    target.insert(arrivalIndex(to.section, target.length), [id]);
+    return true;
+  });
+};
+
+const asMasterItem = (card: Card): string => {
+  const [title = '', ...rest] = cardBody(card).split('\n');
+  return [`- [ ] ${title}`, ...rest.map((line) => `  ${line}`)].join('\n');
+};
+
+/** Move a recovered card back to the free-form Goals document. */
+export const recoverCardToGoals = (workspace: Workspace, master: YText, id: string): boolean => {
+  const card = cardAt(workspace.doc, id);
+  if (!card || !canDeleteRecoveryCard(workspace, id) || !canDetachCard(workspace, id)) return false;
+
+  return discrete(workspace, () => {
+    const current = master.toString();
+    const separator = current.length === 0 || current.endsWith('\n') ? '' : '\n';
+    master.insert(master.length, `${separator}${asMasterItem(card)}\n`);
+    detachCard(workspace, id);
+    cardsMap(workspace.doc).delete(id);
+    setCardLocation(workspace.doc, id, null);
+    return true;
+  });
+};
+
+/** Explicitly discard a retained recovery card. */
+export const removeRecoveryCard = (workspace: Workspace, id: string): boolean => {
+  if (!canDeleteRecoveryCard(workspace, id) || !canDetachCard(workspace, id)) return false;
+  return discrete(workspace, () => {
+    detachCard(workspace, id);
+    cardsMap(workspace.doc).delete(id);
+    setCardLocation(workspace.doc, id, null);
+    return true;
+  });
+};
+
+/* -------------------------------------------------------------------------- */
 /* The master list                                                             */
 
-/** `- [ ] Draft the plan ^k3f9x2` → `Draft the plan`. */
+/** `- [ ] Draft the plan` → `Draft the plan`. */
 const stripLineMarkup = (line: string): string =>
-  line
-    .replace(BLOCK_MARKER, '')
-    .replace(/^\s*(?:[-*+]|\d+[.)])\s+(?:\[[ xX]\]\s+)?/, '')
-    .trimEnd();
+  line.replace(/^\s*(?:[-*+]|\d+[.)])\s+(?:\[[ xX]\]\s+)?/, '').trimEnd();
 
 /**
  * Copy-to (PRD §4). **Does not modify master.** The master list is not expected
@@ -471,12 +559,7 @@ export const moveAllNextToMaster = (workspace: Workspace, master: YText, from: I
   discrete(workspace, () => {
     const current = master.toString();
     const separator = current.length === 0 || current.endsWith('\n') ? '' : '\n';
-    const text = cards
-      .map((card) => {
-        const [title = '', ...rest] = cardBody(card).split('\n');
-        return [`- [ ] ${title}`, ...rest.map((line) => `  ${line}`)].join('\n');
-      })
-      .join('\n');
+    const text = cards.map((card) => asMasterItem(card)).join('\n');
     master.insert(master.length, `${separator}${text}\n`);
     for (const card of cards) {
       const id = cardId(card);

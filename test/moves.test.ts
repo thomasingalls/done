@@ -8,18 +8,27 @@
  */
 
 import { afterEach, describe, expect, it } from 'vitest';
+import { addDays } from '../src/lib/date';
 import {
   cardBody,
+  cardAt,
   cardId,
   cardOrigin,
   cardsIn,
+  collectionOf,
   compose,
   copyFromMaster,
+  dayAt,
   mergeCardBackwards,
   moveCard,
+  recoverCardTo,
+  recoverCardToGoals,
+  recoveryCards,
   reorderCard,
   removeCard,
   removeFromMaster,
+  removeRecoveryCard,
+  setCardLocation,
   splitCard,
   transact,
 } from '../src/crdt';
@@ -126,8 +135,11 @@ describe('master → collection is two steps', () => {
     ]);
 
     expect(copied).toBe(2);
-    // The list marker, the checkbox and the block marker are chrome, not content.
-    expect(bodies(context, 'next')).toEqual(['Draft the migration plan', 'Call the dentist']);
+    // Only list and checkbox markup is chrome; caret notation is ordinary text.
+    expect(bodies(context, 'next')).toEqual([
+      'Draft the migration plan ^k3f9x2',
+      'Call the dentist',
+    ]);
     expect(context.store.master.toString()).toContain('Draft the migration plan ^k3f9x2');
   });
 
@@ -162,7 +174,9 @@ describe('splitting and merging', () => {
     // The caret sits after the two returns; the split consumes them.
     const created = splitCard(context.me, { date: TODAY, section: 'done' }, id, 10, 12);
 
-    expect(created).toMatch(/^[a-z0-9]{6}$/);
+    expect(created).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/u,
+    );
     expect(bodies(context, 'done')).toEqual(['first half', 'second half']);
   });
 
@@ -201,6 +215,83 @@ describe('removal', () => {
     const id = cardId(cardsIn(context.store.doc, TODAY, 'scheduled')[0]!);
     expect(removeCard(context.me, { date: TODAY, section: 'scheduled' }, id)).toBe(true);
     expect(bodies(context, 'scheduled')).toEqual([]);
+  });
+});
+
+describe('recovery', () => {
+  const makeOrphan = (test: Harness, body: string): string => {
+    compose(test.me, { date: TODAY, section: 'done' }, body);
+    const id = cardId(cardsIn(test.store.doc, TODAY, 'done')[0]!);
+    const collection = collectionOf(dayAt(test.store.doc, TODAY), 'done')!;
+    transact(test.store.doc, test.store.actor.systemOrigin, () => {
+      collection.delete(collection.toArray().indexOf(id), 1);
+      setCardLocation(test.store.doc, id, null);
+    });
+    return id;
+  };
+
+  it('places a retained card into a normal collection as one undoable move', async () => {
+    context = await harness();
+    const id = makeOrphan(context, 'found again');
+
+    expect(recoveryCards(context.store.doc).map(({ id: recoveryId }) => recoveryId)).toEqual([id]);
+    expect(recoverCardTo(context.me, id, { date: TODAY, section: 'scheduled' })).toBe(true);
+    expect(bodies(context, 'scheduled')).toEqual(['found again']);
+    expect(recoveryCards(context.store.doc)).toEqual([]);
+
+    context.store.undo.undo();
+    expect(bodies(context, 'scheduled')).toEqual([]);
+    expect(recoveryCards(context.store.doc).map(({ id: recoveryId }) => recoveryId)).toEqual([id]);
+  });
+
+  it('can move retained content to Goals or remove it explicitly', async () => {
+    context = await harness();
+    const goalsId = makeOrphan(context, 'project idea\nwith context');
+    expect(recoverCardToGoals(context.me, context.store.master, goalsId)).toBe(true);
+    expect(context.store.master.toString()).toContain('- [ ] project idea\n  with context');
+    expect(cardAt(context.store.doc, goalsId)).toBeUndefined();
+
+    const removedId = makeOrphan(context, 'discard me');
+    expect(removeRecoveryCard(context.me, removedId)).toBe(true);
+    expect(cardAt(context.store.doc, removedId)).toBeUndefined();
+    expect(recoveryCards(context.store.doc)).toEqual([]);
+  });
+
+  it('refuses recovery that would detach a stale reference from a frozen day', async () => {
+    context = await harness();
+    const frozen = addDays(TODAY, -3);
+    const past = { ...context.me, today: frozen };
+    compose(past, { date: frozen, section: 'done' }, 'frozen evidence');
+    const id = cardId(cardsIn(context.store.doc, frozen, 'done')[0]!);
+
+    transact(context.store.doc, context.store.actor.systemOrigin, () => {
+      setCardLocation(context.store.doc, id, { date: '2026-07-01', section: 'done' });
+    });
+
+    expect(recoveryCards(context.store.doc).map((entry) => entry.id)).toEqual([id]);
+    expect(recoverCardTo(context.me, id, { date: TODAY, section: 'done' })).toBe(false);
+    expect(recoverCardToGoals(context.me, context.store.master, id)).toBe(false);
+    expect(removeRecoveryCard(context.me, id)).toBe(false);
+    expect(collectionOf(dayAt(context.store.doc, frozen), 'done')?.toArray()).toEqual([id]);
+    expect(cardAt(context.store.doc, id)).toBeDefined();
+  });
+
+  it('rescues frozen provenance without allowing it to be deleted outright', async () => {
+    context = await harness();
+    const frozen = addDays(TODAY, -3);
+    const past = { ...context.me, today: frozen };
+    compose(past, { date: frozen, section: 'done' }, 'legacy survivor');
+    const id = cardId(cardsIn(context.store.doc, frozen, 'done')[0]!);
+    transact(context.store.doc, context.store.actor.systemOrigin, () => {
+      dayAt(context.store.doc, frozen)?.delete('done');
+    });
+
+    expect(recoverCardToGoals(context.me, context.store.master, id)).toBe(false);
+    expect(removeRecoveryCard(context.me, id)).toBe(false);
+    expect(cardAt(context.store.doc, id)).toBeDefined();
+
+    expect(recoverCardTo(context.me, id, { date: TODAY, section: 'scheduled' })).toBe(true);
+    expect(bodies(context, 'scheduled')).toEqual(['legacy survivor']);
   });
 });
 
