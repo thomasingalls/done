@@ -113,15 +113,28 @@ recommendation actually lands.
 
 ### 3.2 SharedWorker
 
-One worker owns the document, IndexedDB, the socket, and later the SQLite/OPFS index; tabs become
-views that hold a thin replica and exchange updates over a `MessagePort`. Tabs still need their own
-`Y.Doc` — CodeMirror cannot bind to a document in a worker — so this does not remove the local
-replica, it adds a hub above it.
+One worker owns the document, IndexedDB and the socket; tabs become views that hold a thin replica
+and exchange updates over a `MessagePort`. Tabs still need their own `Y.Doc` — CodeMirror cannot bind
+to a document in a worker — so this does not remove the local replica, it adds a hub above it.
 
 It is the right shape for the single-writer problems: one socket, one writer, one compaction actor,
-one lock holder, and a socket that survives every tab being backgrounded. It is also the answer to
-the Phase 4 constraint in TRD §6.2 — instead of "a tab without the lock runs with search
-disabled", every tab gets search because the worker holds the lock.
+and a socket that survives every tab being backgrounded.
+
+**It cannot, however, hold the OPFS lock itself.** `createSyncAccessHandle()` is defined only on
+`DedicatedWorkerGlobalScope` — synchronous file I/O is kept off any thread that might be shared —
+and `opfs-sahpool` is built on sync access handles, so a SharedWorker has no more access to that VFS
+than a page does. Getting "every tab gets search" instead of TRD §6.2's "a tab without the lock runs
+with search disabled" therefore takes one more layer:
+
+```
+tabs  →  SharedWorker hub  →  dedicated SQLite/OPFS worker
+```
+
+Which matters for sequencing more than for feasibility: **Phase 4's dedicated worker and its RPC
+layer are needed either way.** Moving Yjs into a SharedWorker does not replace that work, it sits
+above it. So the hub is an optional layer on top of Phase 4 rather than a different way of doing
+Phase 4 — and it is worth checking that nested workers are available on the target browsers before
+counting on the arrangement at all.
 
 Support is no longer the objection it was. Safari has had SharedWorker since 16; Chrome for Android
 is shipping it in **148**, enabled for all users, along with `extendedLifetime: true` for a worker
@@ -222,12 +235,51 @@ silent, no split brain. A subscriber either exists or its tab is gone. That is n
 SharedWorker is wrong — it is an argument about what each option costs to make trustworthy, and it
 is the strongest single reason the ordering below is what it is.
 
-#### 3.2.2 Verdict on the worker
+#### 3.2.2 Two requirements a worker design inherits
+
+Both of these are load-bearing, and both are easy to discover late.
+
+**The synchronous journal cannot move into the worker.** `localStorage` does not exist in any worker
+context, and the journal in `persistence.ts` uses it for one specific property: a _synchronous_
+durable write, which is what closes the gap between a Yjs transaction and IndexedDB's asynchronous
+commit when navigation kills the page (TRD §6.1). IndexedDB is async everywhere and synchronous OPFS
+is dedicated-worker-only, so there is no substitute inside the worker. The journal therefore stays in
+the page, and the protocol becomes:
+
+1. the page journals the update synchronously, as it does now;
+2. the page sends it to the worker;
+3. the worker persists it and **acknowledges durability**;
+4. the page clears that journal entry, and not before.
+
+So the port protocol needs sequenced durability acknowledgements — which is the `whenDurable()`
+boundary the adapter already models, lifted across a port, with a pending set per page. There is a
+pleasing consequence: that pending set is exactly the recovery set for §3.2.1's silent death. The
+un-acked entries are the ones the dead worker may never have written, so the journal is already the
+backstop for the failure mode the heartbeat detects. Two problems, one answer.
+
+**The worker needs a stable script URL and a versioned port protocol.** SharedWorker identity is
+(script URL, name, origin). Vite content-hashes emitted assets by default, so a deploy would change
+the URL, and a tab loading the new build would connect to a _new_ worker while open tabs stay on the
+old one — two hubs, two IndexedDB writers, two sockets. That is §3.2.1's split brain caused by an
+ordinary deploy rather than a crash, which makes it the more likely trigger of the two.
+
+There is already precedent in this repo for the fix: `vite/precacheServiceWorker.ts` emits the
+service worker at a fixed `sw.js` via `emitFile`, and `src/pwa.ts` registers
+`${BASE_URL}sw.js` — unhashed on purpose, because a registration is an identity rather than an asset.
+A shared worker needs the same treatment, and then the version has to move inside the protocol: a
+handshake on connect, with the worker either serving an older client or telling it to reload. Putting
+a major version in the worker's `name` is the other option, and it trades an accidental split brain
+for a deliberate partition — which, with IndexedDB as the shared floor underneath, lands right back
+on two writers. `extendedLifetime` lengthens every overlap window here.
+
+#### 3.2.3 Verdict on the worker
 
 Not now — but on sequencing grounds, not architectural ones. Every prerequisite a SharedWorker needs
 is prescribed elsewhere: the worker build and RPC layer by TRD §6.2, the real-browser test
-environment by OPFS. Do it first and you pay for all of that, plus the ownership change, plus the
-heartbeat protocol §3.2.1 shows it needs, with no search index to show for it. Do it after Phase 4
+environment by OPFS, and the dedicated SQLite worker it has to sit above (§3.2). Do it first and you
+pay for all of that, plus the ownership change, plus three protocols it does not get for free — the
+heartbeat of §3.2.1, and the journal acknowledgements and version handshake of §3.2.2 — with no
+search index to show for it. Do it after Phase 4
 and the infrastructure is already bought, the tests already run in a browser, and the remaining work
 is the part that is actually about tabs. The BroadcastChannel path in the meantime is not a competing
 architecture; it is ~180 lines behind the seam that stop the app being wrong on screen today, and
@@ -255,8 +307,7 @@ a small injectable seam the way `SyncOptions.open` is one.
 ### 3.4 Existing solutions from Yjs
 
 - **y-websocket's built-in BroadcastChannel** is what is running today (§1), and it _can_ be
-  promoted into the answer — see §3.5, which is the most useful thing in this note and was wrong in
-  its first draft.
+  promoted into the answer — see §3.5, which is where the recommendation lands.
 - **`y-webrtc` with `signaling: []`** is the community's standard trick for BroadcastChannel-only
   sync, and it works. It also drags in the WebRTC provider, `simple-peer`, and room-key crypto for
   a channel we can open in sixty lines from dependencies already present, and its BroadcastChannel
@@ -289,7 +340,7 @@ constructor never touches the URL — `url` is a getter used only by `setupWS`. 
 // A channel, not a connection. Never call connect().
 const tabs = new WebsocketProvider('local://tabs', dbName, doc, {
   connect: false,
-  awareness: new Awareness(doc), // its own, so nothing in the app renders it
+  awareness, // the app's own, so session carets cross tabs (§4.1)
 });
 tabs.connectBc();
 ```
@@ -314,6 +365,12 @@ What it buys, all of it already written and tested upstream:
   none. Those are the four properties §4 asks for, and they are free rather than argued for.
 - **No echo.** `_bcSubscriber` ignores messages it published, and `_updateHandler` ignores updates
   whose origin is the provider itself, so a received update is applied and not re-broadcast.
+- **Session carets, without a second awareness model.** Sharing the app's `Awareness` is what makes
+  §4.1's per-session carets cross tabs, and it is the provider's default rather than a special
+  arrangement. Both providers then observe the same `Awareness`, so a sibling tab's presence also
+  reaches the relay via whichever tab has a socket — harmless duplication, because awareness state is
+  keyed by client id and last write wins. Teardown is handled too: `disconnectBc()` broadcasts a null
+  state for the local client, so a closed tab's caret disappears with no code of ours.
 - **A stable channel name, decoupled from relay configuration.** `bcChannel` is
   `serverUrl + '/' + roomname`, both fixed at construction, so passing a constant makes the channel
   a function of the _database_ rather than of the endpoint. This matters more than it looks: room
@@ -452,35 +509,55 @@ Decisions, with reasons:
   already holds changes nothing and therefore fires nothing — so the cost is upstream bytes, N per
   edit rather than one.
 
-### Phase 1b — one IndexedDB writer (strongly recommended, separable)
+### Phase 1b — one persistence path _per tab_ (separable, and not to be half-done)
 
-Every Yjs update currently produces **two** rows in the `updates` store: `y-indexeddb`'s own
-fire-and-forget `_storeUpdate` writes one, and the adapter's batched, transaction-complete write
-adds a second. Verified against this repo — one update in, two rows out. Multi-tab multiplies it by
-the number of open tabs, since every tab persists what it receives, which turns an invisible 2× into
-a 2N×.
+Note the title carefully: **this is not one writer.** Every Yjs update currently produces **two** rows
+in the `updates` store — `y-indexeddb`'s own fire-and-forget `_storeUpdate` writes one, and the
+adapter's batched, transaction-complete write adds a second. Verified against this repo: one update
+in, two rows out. With N tabs it is 2N, and removing the duplicate makes it N. There is still one
+writer per tab; a browser-wide single writer is Phase 2's leader, not this.
 
-It also leaves the trim race in place. `storeState` reads everything at or above `_dbref`, sets
-`_dbref` to the last key it saw, appends a full-document snapshot, and deletes everything below it.
-Whether a second tab's write can land inside that sequence depends on whether the IndexedDB
-transaction survives the promise chain between the `getAll` and the `getLastKey` — if it does not,
-there is a window in which a row is deleted without having been read. With one writer this is
-academic. With several tabs writing concurrently it is the one place in this design where a lost
-update looks possible. **I have not reproduced it; the analysis is from the source.** That is
-exactly the epistemic state in which you remove the concurrency rather than argue about the
-interleaving.
+#### The trim race, withdrawn
 
-Two ways to become the only writer:
+An earlier draft argued that `storeState`'s read-then-delete could drop a row written by another tab
+between its `getAll` and its `getLastKey`, and flagged it as source analysis rather than a reproduced
+bug. It is worth going further than that: **IndexedDB's rules appear to exclude the interleaving
+outright.** `lib0.transact()` defaults to `readwrite` (verified in `lib0/indexeddb.js`), and
+transactions with overlapping scope where either is `readwrite` are scheduled serially, across
+connections — so another tab cannot insert into `updates` in the middle of that transaction
+([IndexedDB transaction scheduling](https://www.w3.org/TR/IndexedDB/#transaction-scheduling)).
 
-1. `doc.off('update', provider._storeUpdate)` after construction. Three lines, reversible, and it
-   reaches into a `_`-prefixed field of a pinned dependency — so it needs a test asserting the
-   field exists, which fails loudly on upgrade rather than silently doubling the writes again.
-2. Fork `y-indexeddb`'s ~150 lines into the seam, keeping the on-disk format (`updates` with
-   `autoIncrement`, `custom`) so existing databases open unchanged. Drops a dependency, makes trim
-   ours to schedule under a lock, and has precedent: `relay/src/connection.ts` documents forking
-   `setupWSConnection` for a comparable reason.
+And the other branch is no worse. If the transaction does _not_ survive the promise chain, the later
+operations raise `TransactionInactiveError` rather than acting on stale state — so the delete never
+runs, and trim is inert rather than lossy. Either the read and the delete are in one serialized
+transaction, or the delete does not happen. There is no third case, and no lost update in either.
 
-Take (1) now. Take (2) when trim needs to be leader-aware, which is Phase 2.
+So the justification for touching persistence at all is the **measured write amplification**, not a
+hypothetical loss. That is a weaker reason, and it should be stated as the weaker reason it is.
+
+#### Why the cheap version is the wrong version
+
+`doc.off('update', provider._storeUpdate)` looks like a three-line fix. It is not, because
+`_storeUpdate` is the only thing that increments `_dbsize`, and `_dbsize` crossing
+`PREFERRED_TRIM_SIZE` is the only thing that ever schedules `storeState`. Detach it and
+**trimming stops happening at all**: the update log grows without bound, and every open replays every
+update the document has ever received. That trades an invisible 2× write cost for an unbounded
+start-up cost, which is the worse of the two.
+
+So: do not reach into the private field unless the same change supplies a tested trimming policy. The
+options that remain are
+
+1. **Leave it.** 2N writes, trim keeps working, and nothing is at risk — the loss argument is
+   withdrawn. Perfectly defensible until the amplification shows up in a measurement that matters.
+2. **Take ownership of the IndexedDB layer.** Fork `y-indexeddb`'s ~150 lines into the seam, keeping
+   the on-disk format (`updates` with `autoIncrement`, plus `custom`) so existing databases open
+   unchanged. One write per update, trim ours to schedule and to test, and leader-gateable later.
+   Precedent: `relay/src/connection.ts` documents forking `setupWSConnection` for a comparable
+   reason, and the format here is an autoincrementing store of opaque blobs.
+
+Recommendation: (1) now, (2) when there is a number, and never the detach on its own. Whichever
+happens, trim behaviour wants a real-browser test (§7.1) — the interesting assertions are about
+IndexedDB transaction semantics, and `fake-indexeddb` is not obliged to reproduce those faithfully.
 
 ### Phase 2 — leader election, when something needs it
 
@@ -501,16 +578,16 @@ Under one `navigator.locks` leader, in this order of value:
 
 ## 5. The work
 
-| File                      | Change                                                                                                                                                                                                                                                                                                                               |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `src/crdt/yjs.ts`         | `openTabChannel` behind the `TabSession` shape below. First cut: a `WebsocketProvider` with `connect: false`, its own `Awareness`, a constant channel name, and `connectBc()` (§3.5). Later, if needed: `lib0/broadcastchannel` plus `y-protocols/sync` directly. Either way, add `disableBc: true` to the relay provider's options. |
-| `src/crdt/tabs.ts` (new)  | Policy: visibility/bfcache `resync`, teardown, and nothing else. Injectable `open` for tests, like `SyncOptions.open`. No storage concerns, no relay concerns.                                                                                                                                                                       |
-| `src/crdt/persistence.ts` | Phase 1b: detach `provider._storeUpdate` so the adapter is the only writer.                                                                                                                                                                                                                                                          |
-| `src/crdt/index.ts`       | Construct the tab channel after `await local.whenSynced` and before `createSync`; add it to `Store` and to `destroy()`.                                                                                                                                                                                                              |
-| `src/crdt/index.ts`       | Also: `awareness.setLocalStateField('session', { id: newId() })`, beside the existing `device` field (§4.1).                                                                                                                                                                                                                         |
-| `src/crdt/sync.ts`        | Group the peer list by device id and drop this device's own entries, so two tabs are one peer (§4.1) — correct regardless of the tab channel, and currently masked by it.                                                                                                                                                            |
-| `src/ui/Menu.tsx`         | Optional: "2 tabs on this device", from a `hello`/`bye` count on the channel. Only if it earns the line.                                                                                                                                                                                                                             |
-| `docs/TRD.md`             | §9 below.                                                                                                                                                                                                                                                                                                                            |
+| File                      | Change                                                                                                                                                                                                                                                                                                                                     |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `src/crdt/yjs.ts`         | `openTabChannel` behind the `TabSession` shape below. First cut: a `WebsocketProvider` with `connect: false`, **the app's `Awareness`**, a constant channel name, and `connectBc()` (§3.5). Later, if needed: `lib0/broadcastchannel` plus `y-protocols/sync` directly. Either way, add `disableBc: true` to the relay provider's options. |
+| `src/crdt/tabs.ts` (new)  | Policy: visibility/bfcache `resync`, teardown, and nothing else. Injectable `open` for tests, like `SyncOptions.open`. No storage concerns, no relay concerns.                                                                                                                                                                             |
+| `src/crdt/persistence.ts` | Phase 1b only, and only as the full extraction — taking ownership of the IndexedDB layer with a trim policy of our own. Nothing here is required by Phase 1.                                                                                                                                                                               |
+| `src/crdt/index.ts`       | Construct the tab channel after `await local.whenSynced` and before `createSync`; add it to `Store` and to `destroy()`.                                                                                                                                                                                                                    |
+| `src/crdt/index.ts`       | Also: `awareness.setLocalStateField('session', { id: newId() })`, beside the existing `device` field (§4.1).                                                                                                                                                                                                                               |
+| `src/crdt/sync.ts`        | Group the peer list by device id and drop this device's own entries, so two tabs are one peer (§4.1) — correct regardless of the tab channel, and currently masked by it.                                                                                                                                                                  |
+| `src/ui/Menu.tsx`         | Optional: "2 tabs on this device", from a `hello`/`bye` count on the channel. Only if it earns the line.                                                                                                                                                                                                                                   |
+| `docs/TRD.md`             | §9 below.                                                                                                                                                                                                                                                                                                                                  |
 
 Sketch of the seam, for scale rather than for copying:
 
@@ -539,8 +616,9 @@ export type OpenTabChannel = (options: TabOptions) => TabSession;
 | ------------------------------------------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Frozen/bfcached tab misses messages and is never told                                 | new                       | `resync()` on visibility, `pageshow`/`persisted`, `wasDiscarded` (§4)                                                                                                     |
 | Echo between tabs                                                                     | new                       | Origin check before publishing                                                                                                                                            |
-| IndexedDB rows per update: 2 → 2N                                                     | worsened                  | Phase 1b, one writer                                                                                                                                                      |
-| `storeState` trim overlapping another tab's write                                     | worsened                  | Phase 1b, then leader-only trim                                                                                                                                           |
+| IndexedDB rows per update: 2 → 2N                                                     | worsened                  | Phase 1b, and only as a measured cost — one path per tab, not one writer                                                                                                  |
+| `storeState` trim overlapping another tab's write                                     | **withdrawn**             | Excluded by IndexedDB transaction scheduling; the failing branch is inert, not lossy (§4, Phase 1b)                                                                       |
+| Trim stops entirely if `_storeUpdate` is detached without replacing it                | new, self-inflicted       | Do not detach alone — `_dbsize` is the only trim trigger, so the log grows unbounded (§4, Phase 1b)                                                                       |
 | Relay receives each edit once per open tab                                            | new                       | Accept — the relay's `on('update')` broadcast is a natural dedupe                                                                                                         |
 | Membership repair ping-pong                                                           | new, bounded              | `repairCardMemberships` returns 0 and opens no transaction when nothing is wrong, so a repair that finds nothing emits no update and the exchange terminates in one round |
 | Peer list shows your own tabs as separate devices                                     | pre-existing              | Group by device rather than by awareness entry (§4.1). Not fixed by carrying less information                                                                             |
@@ -581,8 +659,9 @@ Mode is stable with a Playwright provider, and Playwright plus a Chromium are al
 geometry suite (`playwright.config.ts`, including a `CHROMIUM_PATH` escape hatch for images that
 ship one). Adding a browser-mode project means the same test files can run in a real browser, where
 `navigator.locks`, a real `BroadcastChannel`, OPFS and `SharedWorker` all exist — with real
-IndexedDB rather than `fake-indexeddb`, which is separately worth having given §4's Phase 1b is a
-claim about IndexedDB transaction semantics that `fake-indexeddb` is not obliged to reproduce.
+IndexedDB rather than `fake-indexeddb`, which is separately worth having: Phase 1b turns entirely on
+IndexedDB transaction semantics and trim behaviour, and `fake-indexeddb` is not obliged to reproduce
+either faithfully.
 
 Two limits to know before relying on it. Browser Mode gives one page per test file, so a genuine
 two-_tab_ test still wants Playwright with two pages in one context; a same-origin iframe is the
@@ -606,8 +685,11 @@ jsdom can hold.
    does not set `lastSyncedAt`; does not trigger `requestPersistenceOnFirstWrite`.
 4. **Termination.** A membership-affecting edit in one tab produces exactly one repair, not a
    ping-pong. Assert the second tab's repair returns 0.
-5. **Write amplification.** Count rows in the `updates` store per update, with one tab and with
-   two. A number in a test is what stops it drifting back.
+5. **Write amplification, and trim.** Count rows in the `updates` store per update, with one tab and
+   with two — a number in a test is what stops it drifting back, and it is now the _only_
+   justification for Phase 1b. Pair it with a trim assertion: cross `PREFERRED_TRIM_SIZE` and assert
+   the log actually shrinks, which is what catches a detached `_storeUpdate` disabling trim, and what
+   establishes whether trim works today at all. Real browser, not `fake-indexeddb` (§7.1).
 6. **Journal cross-talk.** A tab opening while another has un-flushed journal entries converges and
    leaves no orphaned keys.
 7. **Property test.** Add a "two tabs, one device, one relay" topology to `test/replicas.ts`: tabs
@@ -640,7 +722,9 @@ jsdom can hold.
 ## 8. Cost
 
 - Ten lines of seam for the borrowed provider (§3.5) or sixty for a hand-written one, ~80 of policy,
-  3 for the writer detach, and the suites above.
+  one awareness field for sessions (§4.1), and the suites above. **Phase 1b is not in this number and
+  is not required** — the loss argument that motivated it is withdrawn, and what remains is a measured
+  write cost with no deadline.
 - **No new dependencies** for Phase 1. `lib0/broadcastchannel`, `y-protocols/sync` and
   `y-websocket` are all already here, so the budget impact is the new code and nothing else. Phase 2
   adds one devDependency for browser-mode tests, which Phase 4 needs regardless (§7.1).
@@ -661,8 +745,16 @@ in, not about whether they are worth buying.
   sentence pointing at the tab channel as the layer that does provide it.
 - **§6.1**, load-before-connect — extend "any transport" explicitly to the tab channel, so the
   constraint reads as being about transports rather than about the socket.
-- **§6.2** — the `navigator.locks` guard stops being a one-off for `opfs-sahpool` and becomes the
-  shared leader-election mechanism §4's Phase 2 uses.
+- **§6.1**, the journal — add the constraint that makes it survive any future architecture: the
+  synchronous journal belongs to the **page**, because `localStorage` does not exist in a worker.
+  Anything that moves persistence into a worker journals in the page, sends, and clears on a
+  durability acknowledgement (§3.2.2). Written down now, it is a paragraph; discovered later, it is a
+  rewrite.
+- **§6.2** — two changes. The `navigator.locks` guard stops being a one-off for `opfs-sahpool` and
+  becomes the shared leader-election mechanism §4's Phase 2 uses. And it is worth recording that the
+  dedicated worker there is not optional or replaceable: `createSyncAccessHandle()` exists only in
+  dedicated workers, so no shared or service worker can hold that VFS, and any hub arrangement nests
+  a dedicated worker underneath rather than replacing it (§3.2).
 - **§7.1** — say that the tab channel is a _separate_ transport with its own null-by-default
   policy, and that deleting the sync configuration must not affect it. The current arrangement has
   it the other way round, which is the bug this note starts from.
