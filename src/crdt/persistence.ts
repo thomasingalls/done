@@ -20,7 +20,7 @@ export type StoragePersistence = 'granted' | 'denied' | 'unsupported' | 'unknown
 
 export interface LocalStore {
   provider: IndexeddbPersistence;
-  /** Resolves once the on-disk state has been loaded and durably checkpointed. */
+  /** Resolves once the on-disk state has been loaded into the document. */
   whenSynced: Promise<void>;
   /** Resolves when every document update observed before this call has committed. */
   whenDurable: () => Promise<void>;
@@ -157,7 +157,8 @@ export const openLocalStore = (doc: YDoc, name: string = DB_NAME): LocalStore =>
 
   doc.on('update', storeUpdate);
 
-  const whenSynced = provider.whenSynced.then(async () => {
+  const whenSynced = provider.whenSynced.then(() => {});
+  const initialDurability = provider.whenSynced.then(async () => {
     const database = provider.db;
     if (!database) throw new Error('IndexedDB opened without a database connection.');
     const observedRevision = revision;
@@ -171,7 +172,12 @@ export const openLocalStore = (doc: YDoc, name: string = DB_NAME): LocalStore =>
       ownJournalValue = null;
     }
   });
-  latestDurability = whenSynced;
+  latestDurability = initialDurability;
+  // Loading existing state is the start-up boundary. A redundant checkpoint
+  // that cannot be written (for example because quota is exhausted) must keep
+  // its recovery journal and remain observable through `whenDurable`, but it
+  // must not hide the in-memory document and its Export escape hatch.
+  void initialDurability.catch(() => {});
 
   return {
     provider,

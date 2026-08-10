@@ -9,7 +9,7 @@
  * mechanisms they belong to, in freeze.test.ts and cap.test.ts.
  */
 
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   SCHEMA_VERSION,
   Y,
@@ -17,6 +17,7 @@ import {
   cardBody,
   cardsIn,
   compose,
+  exportEntries,
   listActors,
   moveAllNextTo,
   moveAllNextToMaster,
@@ -194,6 +195,49 @@ describe('local persistence', () => {
 
     expect(listActors(second.doc)).toHaveLength(2); // the human and the system actor, not four
     second.destroy();
+  });
+
+  it('opens an in-memory, exportable store when the initial checkpoint aborts', async () => {
+    const commit = vi
+      .spyOn(IDBTransaction.prototype, 'commit')
+      .mockImplementation(function (this: IDBTransaction) {
+        this.abort();
+      });
+    let store: Store | undefined;
+
+    try {
+      const opened = await fresh('done-test-checkpoint-abort');
+      store = opened;
+      transact(opened.doc, opened.actor.origin, () => {
+        opened.master.insert(0, 'still exportable');
+      });
+
+      expect(exportEntries(opened.doc, opened.master.toString())).toContainEqual({
+        path: 'master.md',
+        content: 'still exportable',
+      });
+      if (!opened.local) throw new Error('The persistence test opened without a local store.');
+      await expect(opened.local.whenDurable()).rejects.toThrow();
+    } finally {
+      commit.mockRestore();
+      store?.destroy();
+    }
+  });
+
+  it('finishes loading when no database connection remains for the checkpoint', async () => {
+    const doc = new Y.Doc();
+    const local = openLocalStore(doc, 'done-test-checkpoint-without-db');
+    local.provider.on('synced', () => {
+      local.provider.db = null;
+    });
+
+    await expect(local.whenSynced).resolves.toBeUndefined();
+    await expect(local.whenDurable()).rejects.toThrow(
+      'IndexedDB opened without a database connection.',
+    );
+
+    local.destroy();
+    doc.destroy();
   });
 
   it('replays the synchronous journal when the final IndexedDB write never starts', async () => {
