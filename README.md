@@ -219,6 +219,14 @@ write several cards inside one, and two cards sharing a timestamp is that
 device's own order gone from the document. A reading that has not moved is nudged
 a nanosecond, which is a resolution instants have and clocks do not.
 
+_This is a mitigation, not a design._ Yjs orders concurrent insertions into one
+array exactly; the order is lost because the schema lets the array itself be
+created twice, and a `Y.Map` key is last-write-wins over whole values. Addressing
+a day's collections as root types (`day:ISODate:section`) would make them merge
+instead of race, and would let all of the above be deleted. It is deferred rather
+than rejected, with the costs written down in TRD §10.8 — the load-bearing one
+being that root types are never reclaimed, which is the bound TRD §4.5 rests on.
+
 **The initial bundle is 300.3 kB gzipped**, of the 350 kB §12 budget — up 5.7 kB
 from Phase 2, none of which is the provider itself: `y-websocket` is a 2.3 kB
 lazy chunk, and what landed in the initial bundle is the `lib0` and `y-protocols`

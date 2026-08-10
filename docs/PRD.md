@@ -461,3 +461,13 @@ tables. Distinct from Phase 5: Phase 5 reads and comments, Phase 6 writes.
 2. **Is document text attributed, or only cards?** §11.3 attributes cards. Per-character
    attribution inside the master list is possible but costly (TRD §4.8) and probably not worth
    it until an agent is actually editing prose.
+3. **Done's order is reconstructed in one case rather than carried, and could stop being.**
+   §3 requires the order to survive replication, and it does — except on a day that two devices
+   both write to for the first time while apart, where one device's list is rebuilt from when
+   each card was _written_ rather than when it was finished. Almost always the same instant,
+   since most things are typed straight into Done; visibly wrong for something written in Next
+   in the morning and finished in the evening, which would come back lower in the list than it
+   belongs. This is a storage-shape problem with a known fix that removes the reconstruction
+   entirely (TRD §10.8), deferred because the fix costs a property the storage design currently
+   rests on. **Watch for it in real use** — the imprecision is the signal to go and do it, and
+   nothing else about the app depends on the answer.

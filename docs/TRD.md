@@ -267,7 +267,9 @@ critical deletion and a user-facing rule.
 
 Compaction is what keeps a single root document viable: structured card objects exist only
 for the ~7-day active window, and everything older is one flat `Y.Text` (`archive`). Object
-count is bounded by the window, not by history length.
+count is bounded by the window, not by history length. That bound is load-bearing and is the
+main thing standing against the schema change in §10.8, which would trade it for an empty root
+type per day.
 
 Compaction runs opportunistically on idle, is idempotent, and must be safe to run
 concurrently on two devices — both produce identical archive text from identical source, and
@@ -370,6 +372,11 @@ both mint a `Y.Map` for the date, one wins the key outright, and the loser's arr
 with it. The cards survive in the canonical registry and are put back by the membership repair
 (§4.2), which is therefore the one place an order is _recomputed_ rather than merged, because
 the entry that encoded the position no longer exists.
+
+Everything from here to the end of this section is a **mitigation for a schema problem**, not a
+property of the data model, and §10.8 records the problem, the fix, and why it is deferred.
+Read it before extending any of this: if the day map stops being a concurrently-created
+container, none of what follows is needed.
 
 It recomputes from the section's own rule. Next and Scheduled are ordered by intent, intent is
 not stored, and a returning card appends — the arrival rule. Done is ordered by time, so its
@@ -835,6 +842,69 @@ making for this threat model.
 React + Vite on ecosystem grounds; Svelte is defensible (smaller bundle, little component-tree
 complexity here). It barely matters — the editor is CodeMirror and state lives in Yjs, both
 framework-agnostic. Decide at Phase 1, don't revisit.
+
+### 10.8 A day's collections are containers created concurrently — deferred
+
+**Deferred, deliberately.** The mitigation in §4.9 holds and is tested. This records what the
+underlying problem is, what fixing it would take, and what it would let us delete, because the
+mitigation reads like a design choice and is really a workaround.
+
+**The mechanism.** `ensureDay` materialises a day as `days.set(date, new Y.Map())`. A `Y.Map`
+key is last-write-wins over whole values, so two devices writing to a date neither has touched
+before mint two different maps for one key, one wins outright, and **the loser's map is deleted
+with its three collection arrays and every id in them**. Nothing is merged, because there is
+nothing to merge against: the container the entries lived in no longer exists.
+
+This is the same failure `actors.ts` describes for the schema-v2 `meta.actors` map, which was
+fixed by flattening to independent keys. `days` still has the shape that causes it, and
+flattening does not fix it here: `days.set('2026-08-05:done', new Y.Array())` is the same
+last-write-wins on a fresh container, one level down.
+
+**Why nothing is lost today.** Card content and canonical location live in roots that merge by
+id (§4.2), so the cards survive; the membership repair puts them back. What does not survive is
+the array position, and §4.9 recomputes one from `Card.createdAt`. That mitigation is the
+reason `createdAt` has to be strictly increasing per device, and it is why Done's order is
+_reconstructed_ in this one case rather than simply carried.
+
+Recorded plainly: this is not a limit of the CRDT. Yjs's list ordering is exact and merges two
+devices' concurrent insertions without help. The order is lost because the schema lets a
+container be created twice, not because a sequence CRDT cannot order things.
+
+**The fix.** Make a day's collections **root types**, addressed by name — `day:ISODate:section`
+— rather than values set into a map. Root types are created lazily and deterministically from
+their name, so two devices creating one concurrently get the same logical type and their
+contents merge. No card is stranded, no array is destroyed, and Yjs's ordering carries Done's
+order with nothing recomputed.
+
+**What it would let us delete.** The Done branch of `rehomeIndex` (§4.9), the strictly-increasing
+requirement on `createdAt` and the monotonic clock behind it, and `compareInstants`.
+`repairCardMemberships` still has work to do — reconciling arrays with the canonical location
+map after concurrent moves — but its "located card that no array holds" branch would be reduced
+to the undo defect it also covers.
+
+**What it costs, and why this is not free.** Four things, in the order they matter:
+
+1. **Root types are never removed from `doc.share`.** Compaction can empty a day's arrays but
+   cannot take the root entries back. §4.5 rests on object count being "bounded by the window,
+   not by history length", and three empty root types per day is bounded by history. The
+   absolute numbers are small — on the order of 11k tiny entries after a decade — but the
+   property §4.5 asserts would no longer be true as stated, and it should be restated rather
+   than quietly falsified.
+2. **A schema migration**, run on open like `migrateCardsToRegistry`, moving every existing
+   day's arrays out of `days` and into root types.
+3. **`listDays` changes shape.** Days are currently the keys of one map; they would become a
+   filtered, parsed enumeration of `doc.share`, and "an untouched day occupies nothing" (§4.2)
+   needs re-checking against a store that has an entry for every day ever visited — day
+   materialisation on _view_ (not only on write) makes that a broader set than it sounds.
+4. **`ensureDay`, `dayAt`, `collectionOf`, compaction's deletion path and the `days` observer in
+   `watchMemberships` all address collections through the day map** and would each need
+   rewriting.
+
+**When to do it.** Not for correctness — the mitigation is tested and holds. Do it if either of
+these appears: the reconstructed Done order is visibly wrong in real use, which would show up as
+a card written in the morning and finished in the evening coming back low in the list after a
+merge; or something else needs the day map to stop being a concurrently-created container.
+Until then, §4.9 is the answer and this section is why it looks the way it does.
 
 ---
 
