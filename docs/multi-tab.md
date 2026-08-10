@@ -105,6 +105,9 @@ support floor to defend.
 What it does not solve: nothing is centralised. Every tab still has its own socket, its own
 IndexedDB writes, and its own claim on any exclusive resource.
 
+Writing the sixty lines is one way to get this. §3.5 is the ten-line way, and is where the
+recommendation actually lands.
+
 ### 3.2 SharedWorker
 
 One worker owns the document, IndexedDB, the socket, and later the SQLite/OPFS index; tabs become
@@ -119,26 +122,61 @@ disabled", every tab gets search because the worker holds the lock.
 
 Support is no longer the objection it was. Safari has had SharedWorker since 16; Chrome for Android
 is shipping it in **148**, enabled for all users, along with `extendedLifetime: true` for a worker
-that outlives its clients. As of writing 148 is in beta, so the Android installed base is the
-lagging part — verify the current stable milestone before relying on it.
+that outlives its clients. As of writing 148 is in beta.
 
-The objections that remain are about this codebase rather than the platform:
+**And support percentages are the wrong instrument here.** There is no installed base to protect —
+nobody is running this but its author — and this project already ships on ES2022 (`vite.config.ts`),
+which is not at 100% either, because nothing is. The question is not what fraction of the web has
+SharedWorker; it is whether the two or three devices actually being used have it, which is a fact
+about a phone rather than a table. If the author's Android is on a Chrome older than 148 the answer
+is no for a population of one, and that matters more than any percentage. Check the devices, not
+caniuse.
 
-- **You build the BroadcastChannel path anyway**, as the fallback for browsers and installed-base
-  versions without a worker, and for the case where the worker fails to start. Two mechanisms, not
-  one.
-- **It relocates the load-before-connect constraint** (TRD §6.1, `openStore`'s second reason for
-  being `async`) from one `await` into a cross-context protocol. That ordering is the single
-  constraint in this codebase with a test written specifically to stop someone optimising it away.
-- **The seam gets much wider.** Today `src/crdt/yjs.ts` is the only file that names a Yjs package
-  and `test/seam.test.ts` enforces it. A worker moves persistence and transport behind a port,
-  which is a different architecture, not a different import.
-- **It is close to untestable at the unit level.** jsdom has no `SharedWorker` (verified: `typeof
-SharedWorker === 'undefined'` under this project's vitest environment), so everything moves to
-  Playwright.
+So the honest objections are narrower than the first draft of this note claimed. Three survive, and
+none of them is about the platform.
 
-Verdict: not now. Revisit when Phase 4 exists, because a single owner for the OPFS lock is the
-first reason to want one that is about function rather than tidiness.
+- **It changes who owns the document, which is a bigger blast radius than "the transport moved."**
+  A worker per tab is already prescribed for Phase 4 (TRD §6.2: OPFS needs a worker, all SQLite
+  access goes through it, with a hand-rolled RPC layer). A _shared_ worker is a different claim: not
+  "a worker owns the index" but "a worker owns the Yjs document." That forces a decision, per
+  subsystem, about which side of the port it lives on — the membership repair, undo, awareness,
+  compaction. The membership repair is the sharp one: it currently runs in every tab on
+  `afterTransaction`, and a hub is the opportunity to make it run once. Take the opportunity and
+  it's a rewrite of `watchMemberships`; skip it and you have added a hub without collecting its
+  benefit.
+- **Load-before-connect gets easier in one place and grows a new failure mode in another.** Inside
+  the worker the constraint is better than it is today: one process loads from IndexedDB and one
+  process opens the socket, so the ordering becomes a browser-wide truth rather than a per-tab one,
+  still expressed as one `await`. What is new is the gate in front of the _editor_. `useStore`
+  currently withholds the mount until `whenSynced` resolves, and that gate is a local promise which
+  cannot fail to settle. Behind a port it becomes a message that may never arrive: worker fails to
+  start, worker is killed mid-handshake, port silently drops. So the tab needs a timeout and a
+  degraded path — fall back to owning its own document — which is a second code path through
+  start-up, and start-up is where the data-loss bugs live. With `extendedLifetime` the constraint
+  also instantiates twice: load before accepting ports, _and_ load before connecting the socket,
+  because a worker that outlives its tabs can advance the document with nothing mounted. See §6 for
+  the bfcache consequence, which is the same requirement as the BroadcastChannel path except that
+  the authority is now in another context, so a stale tab cannot detect its own staleness.
+- **Testability, which is the objection worth taking seriously — but "untestable" was wrong.** It is
+  untestable _in jsdom_ (verified: `typeof SharedWorker === 'undefined'`, and `'locks' in
+navigator === false`). That is a statement about the environment, not about the design, and this
+  project is one devDependency from a better environment: it is already on **Vitest 4.1.10**, where
+  Browser Mode is stable with a Playwright provider, and Playwright and a Chromium are already here
+  for the geometry suite. In Browser Mode the same test files run in a real browser, where
+  `SharedWorker`, `navigator.locks`, a real `BroadcastChannel` and OPFS all exist. Two caveats:
+  Browser Mode gives one page per test file, so a genuine two-_tab_ test still wants Playwright with
+  two pages in one context (a same-origin iframe may serve as the second context — worth trying
+  before assuming it does not); and OPFS cannot be tested in jsdom either, so **Phase 4 needs this
+  environment regardless of what happens to SharedWorker.** See §7.
+
+Verdict: not now — but on sequencing grounds, not architectural ones. Every prerequisite a
+SharedWorker needs is prescribed elsewhere: the worker build and RPC layer by TRD §6.2, the
+real-browser test environment by OPFS. Do it first and you pay for all of that plus the ownership
+change in one change, with no search index to show for it. Do it after Phase 4 and the
+infrastructure is already bought, the tests already run in a browser, and the remaining work is the
+part that is actually about tabs. The BroadcastChannel path in the meantime is not a competing
+architecture; it is ~180 lines behind the seam that stop the app being wrong on screen today, and
+§8's last line is that deleting it is a two-file change.
 
 ### 3.3 Web Locks leader election
 
@@ -154,14 +192,14 @@ a small injectable seam the way `SyncOptions.open` is one.
 
 ### 3.4 Existing solutions from Yjs
 
-- **y-websocket's built-in BroadcastChannel** is what is running today (§1). It cannot be promoted
-  into the answer: `connectBc()` is only reachable through `connect()`, so getting the channel
-  without a socket means constructing a provider against a fake URL, and the channel name is
-  derived from the endpoint, so two tabs configured differently would not share one.
+- **y-websocket's built-in BroadcastChannel** is what is running today (§1), and it _can_ be
+  promoted into the answer — see §3.5, which is the most useful thing in this note and was wrong in
+  its first draft.
 - **`y-webrtc` with `signaling: []`** is the community's standard trick for BroadcastChannel-only
   sync, and it works. It also drags in the WebRTC provider, `simple-peer`, and room-key crypto for
   a channel we can open in sixty lines from dependencies already present, and its BroadcastChannel
-  layer carries peer discovery rather than just document updates.
+  layer carries peer discovery rather than just document updates. WebRTC may be interesting some
+  day; nothing about this project is near that day.
 - **`y-indexeddb` will not do this.** The source is unambiguous: `fetchUpdates` runs at open and
   inside `storeState`, and `_storeUpdate` schedules `storeState` only once `_dbsize` crosses 500.
   There is no listener and no channel.
@@ -175,6 +213,74 @@ a small injectable seam the way `SyncOptions.open` is one.
   is sitting there unused. It is the fallback and not the design: synchronous main-thread writes,
   a 5 MB quota, and no delivery to same-page listeners.
 
+### 3.5 Borrowing y-websocket's channel without a socket
+
+The obvious reading of §1 is that the built-in channel cannot be reused, because `connectBc()` looks
+reachable only through `connect()` and the channel name is derived from the endpoint — which leads
+straight to the idea of constructing against a placeholder URL like `wss://invalid.invalid` and
+swapping it for the real one on `online`, on configuration, and on whatever else turns out to
+matter. **That reading is wrong, and so is the workaround it implies.** `connectBc()` is an ordinary
+public method (`node_modules/y-websocket/src/y-websocket.js`), and with `connect: false` the
+constructor never touches the URL — `url` is a getter used only by `setupWS`. So:
+
+```ts
+// A channel, not a connection. Never call connect().
+const tabs = new WebsocketProvider('local://tabs', dbName, doc, {
+  connect: false,
+  awareness: new Awareness(doc), // its own, so nothing in the app renders it
+});
+tabs.connectBc();
+```
+
+There is no bogus endpoint, no failing socket that retries forever behind a `maxBackoffTime`, no
+placeholder to special-case through `sync.ts`'s status and `closeMessage` paths, and nothing to swap
+on `online`/`offline`. The URL problem only exists if you go through `connect()`, and nothing here
+needs to.
+
+What it buys, all of it already written and tested upstream:
+
+- **The handshake.** `connectBc()` publishes sync step1, step2, `queryAwareness` and the local
+  awareness state. §4's "handshake on open" requirement is satisfied by the call itself.
+- **`resync()` for free.** `connectBc()` re-publishes step1 and step2 every time it is called, and
+  guards only the `subscribe`. So `provider.connectBc()` _is_ the bfcache/visibility re-handshake
+  primitive, which is otherwise the fiddliest part of §4.
+- **Correct origin discipline, by construction.** Received messages are applied with this provider
+  as the transaction origin. It is a different object from the relay provider, so `sync.ts` does not
+  report tab traffic as a relay sync; the UndoManager does not track it (`trackedOrigins` matches by
+  identity); `persistence.ts` still persists it (it skips only `origin === provider`); and
+  `requestPersistenceOnFirstWrite` does not fire, because it matches `origin.actor` and there is
+  none. Those are the four properties §4 asks for, and they are free rather than argued for.
+- **No echo.** `_bcSubscriber` ignores messages it published, and `_updateHandler` ignores updates
+  whose origin is the provider itself, so a received update is applied and not re-broadcast.
+- **A stable channel name, decoupled from relay configuration.** `bcChannel` is
+  `serverUrl + '/' + roomname`, both fixed at construction, so passing a constant makes the channel
+  a function of the _database_ rather than of the endpoint. This matters more than it looks: room
+  names, token handling and room assignment are all still undefined UX, and every one of them will
+  change. A channel named after the relay would break cross-tab sync every time that UX moves, and
+  break it in the transient state where two tabs hold different configurations — which is exactly
+  the state a settings screen produces.
+
+What it costs:
+
+- **A 3-second timer that does nothing, forever.** The constructor starts `_checkInterval` at
+  `messageReconnectTimeout / 10` (30_000 / 10), whose body is a no-op while `wsconnected` is false.
+  Clearing it means touching `_checkInterval`, which is the same private-field trade as Phase 1b.
+- **An `Awareness` instance nobody reads**, to keep tab awareness out of the app's (§4 decides
+  against carrying cursors between tabs; this is how you get that with a provider that always
+  publishes them).
+- **Dependence on undocumented behaviour.** `connectBc()` without `connect()` works in 3.0.0. It is
+  not part of the documented API, and a minor version could reasonably make BroadcastChannel
+  subscription conditional on the socket. A test asserting cross-tab liveness with no relay
+  configured is what turns that from a silent regression into a build failure.
+- **A socket-capable object that never opens a socket**, which reads oddly and will invite someone
+  to "fix" it. It needs a comment saying why, in the voice of the one already above
+  `openWebsocket`.
+
+Both of these live entirely inside `src/crdt/yjs.ts`, so this is a seam-local choice that no other
+file can observe. That is what makes the sequencing easy: take the borrowed provider first, because
+it is a tenth of the code and immediately testable, and write the ~60-line channel only if one of
+the costs above actually bites.
+
 ---
 
 ## 4. Recommendation
@@ -185,32 +291,34 @@ Then stop, measure, and only add leader election when Phase 4 gives it a job.
 ### Phase 1 — the tab channel
 
 New `src/crdt/tabs.ts`, sitting beside `sync.ts` as a second policy layer over a second transport,
-with the transport itself in `src/crdt/yjs.ts` because `y-protocols` is seam-controlled.
+with the transport itself in `src/crdt/yjs.ts` — either the borrowed provider of §3.5 or a
+hand-written channel, and **start with the borrowed one**: it is ten lines against sixty, it comes
+with the handshake and the `resync` primitive already written, and swapping it out later is invisible
+outside the seam.
 
 Decisions, with reasons:
 
-- **Document updates only. No awareness.** The channel does not carry cursors. Two tabs of one
-  person do not need to see each other's carets, and _not_ carrying awareness is what fixes the
-  `Mac, Mac` peer list and the self-caret in one move rather than three. This is also why
-  `openWebsocket` should pass `disableBc: true` from now on: cross-tab behaviour should live in one
-  place, and that place should not be the relay transport.
-- **A sync handshake on open, not just a stream.** On subscribe, publish `syncStep1` with the local
-  state vector; answer an incoming step1 with step2. Without it, a tab that opens second is
-  correct only to the extent that IndexedDB and the journal happened to be current — which is
-  true today, and is exactly the kind of correctness that turns into a bug the moment flush timing
-  changes.
+- **Document updates only. No awareness in the app's `Awareness`.** The channel does not put cursors
+  on screen. Two tabs of one person do not need to see each other's carets, and keeping tab
+  awareness out is what fixes the `Mac, Mac` peer list and the self-caret in one move rather than
+  three. With the borrowed provider this means handing it an `Awareness` of its own (§3.5). This is
+  also why `openWebsocket` should pass `disableBc: true` from now on: cross-tab behaviour should
+  live in one place, and that place should not be the relay transport.
+- **A sync handshake on open, not just a stream.** Publish `syncStep1` with the local state vector
+  and answer an incoming step1 with step2. Without it, a tab that opens second is correct only to
+  the extent that IndexedDB and the journal happened to be current — which is true today, and is
+  exactly the kind of correctness that turns into a bug the moment flush timing changes.
+  `connectBc()` does this.
 - **Re-handshake after a freeze.** BroadcastChannel delivers nothing to a frozen or bfcached page,
   and the page gets no gap notification. So `resync()` on `visibilitychange` → visible, on
   `pageshow` when `event.persisted`, and at start-up when `document.wasDiscarded`. **This is the
   requirement most likely to be missed**, and its absence looks exactly like "multi-tab works,
-  except sometimes on my phone".
-- **A distinct transaction origin, carrying no actor.** Received updates are applied with a frozen
-  `{ tab: <id> }` origin. That single choice gets four behaviours right for free: the UndoManager
-  does not track them (`trackedOrigins` is matched by object identity), `persistence.ts` still
-  persists them (it skips only `origin === provider`), `sync.ts` does not report them as relay
-  syncs, and `requestPersistenceOnFirstWrite` does not fire on a sibling's edit, because it matches
-  `origin.actor` and there isn't one. It also has to be checked before re-publishing, or two tabs
-  echo forever — the same check y-websocket's `_bcSubscriber` makes.
+  except sometimes on my phone". A second `connectBc()` call is the whole implementation.
+- **A distinct transaction origin, carrying no actor.** Four behaviours depend on it — undo not
+  tracking tab traffic, persistence still storing it, `sync.ts` not reporting it as a relay sync,
+  and `requestPersistenceOnFirstWrite` not firing on a sibling's edit. The borrowed provider gets
+  all four by using itself as the origin; a hand-written channel needs a frozen `{ tab: <id> }` and
+  the same identity check before re-publishing, or two tabs echo forever.
 - **Constructed after `await local.whenSynced`, before `createSync`.** Same ordering and the same
   reason as TRD §6.1: a document that has not finished loading must not be the thing another
   replica is told about. It costs nothing here and keeps one rule rather than two.
@@ -270,15 +378,15 @@ Under one `navigator.locks` leader, in this order of value:
 
 ## 5. The work
 
-| File                      | Change                                                                                                                                                                                                                              |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/crdt/yjs.ts`         | `openTabChannel`, mirroring `openWebsocket`'s shape: `lib0/broadcastchannel` for the pipe, `y-protocols/sync` for the framing, a narrow `TabSession { destroy, resync }`. Add `disableBc: true` to the `WebsocketProvider` options. |
-| `src/crdt/tabs.ts` (new)  | Policy: handshake, visibility/bfcache `resync`, the tab origin, teardown. Injectable `open` for tests, like `SyncOptions.open`. No storage concerns, no relay concerns.                                                             |
-| `src/crdt/persistence.ts` | Phase 1b: detach `provider._storeUpdate` so the adapter is the only writer.                                                                                                                                                         |
-| `src/crdt/index.ts`       | Construct the tab channel after `await local.whenSynced` and before `createSync`; add it to `Store` and to `destroy()`.                                                                                                             |
-| `src/crdt/sync.ts`        | Dedupe the peer list by device id and drop entries whose device id is this device's — correct regardless of the tab channel, and no longer masked by it.                                                                            |
-| `src/ui/Menu.tsx`         | Optional: "2 tabs on this device", from a `hello`/`bye` count on the channel. Only if it earns the line.                                                                                                                            |
-| `docs/TRD.md`             | §9 below.                                                                                                                                                                                                                           |
+| File                      | Change                                                                                                                                                                                                                                                                                                                               |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `src/crdt/yjs.ts`         | `openTabChannel` behind the `TabSession` shape below. First cut: a `WebsocketProvider` with `connect: false`, its own `Awareness`, a constant channel name, and `connectBc()` (§3.5). Later, if needed: `lib0/broadcastchannel` plus `y-protocols/sync` directly. Either way, add `disableBc: true` to the relay provider's options. |
+| `src/crdt/tabs.ts` (new)  | Policy: visibility/bfcache `resync`, teardown, and nothing else. Injectable `open` for tests, like `SyncOptions.open`. No storage concerns, no relay concerns.                                                                                                                                                                       |
+| `src/crdt/persistence.ts` | Phase 1b: detach `provider._storeUpdate` so the adapter is the only writer.                                                                                                                                                                                                                                                          |
+| `src/crdt/index.ts`       | Construct the tab channel after `await local.whenSynced` and before `createSync`; add it to `Store` and to `destroy()`.                                                                                                                                                                                                              |
+| `src/crdt/sync.ts`        | Dedupe the peer list by device id and drop entries whose device id is this device's — correct regardless of the tab channel, and no longer masked by it.                                                                                                                                                                             |
+| `src/ui/Menu.tsx`         | Optional: "2 tabs on this device", from a `hello`/`bye` count on the channel. Only if it earns the line.                                                                                                                                                                                                                             |
+| `docs/TRD.md`             | §9 below.                                                                                                                                                                                                                                                                                                                            |
 
 Sketch of the seam, for scale rather than for copying:
 
@@ -290,11 +398,9 @@ export interface TabSession {
 }
 
 export interface TabOptions {
-  /** Names the document, not the relay: `done.tabs.<dbName>`. */
+  /** Names the document, not the relay — see §3.5 on why that distinction is load-bearing. */
   channel: string;
   doc: YDoc;
-  /** Frozen, actor-free, and the identity received updates are applied with. */
-  origin: object;
   onRemoteUpdate?: () => void;
 }
 
@@ -313,7 +419,7 @@ export type OpenTabChannel = (options: TabOptions) => TabSession;
 | `storeState` trim overlapping another tab's write                                     | worsened                  | Phase 1b, then leader-only trim                                                                                                                                           |
 | Relay receives each edit once per open tab                                            | new                       | Accept — the relay's `on('update')` broadcast is a natural dedupe                                                                                                         |
 | Membership repair ping-pong                                                           | new, bounded              | `repairCardMemberships` returns 0 and opens no transaction when nothing is wrong, so a repair that finds nothing emits no update and the exchange terminates in one round |
-| Peer list and remote carets show your own tabs                                        | pre-existing              | Awareness stays off the channel; dedupe peers by device id                                                                                                                |
+| Peer list and remote carets show your own tabs                                        | pre-existing              | Tab awareness goes to an `Awareness` nothing renders (§3.5); dedupe peers by device id                                                                                    |
 | `lastSyncedFrom` reports a same-device tab as a sync                                  | pre-existing              | `disableBc: true` plus the distinct origin                                                                                                                                |
 | Undo is per-tab while TRD §4.8 scopes undo to the _actor_, and two tabs are one actor | pre-existing, now visible | Per-tab is the right behaviour — undo follows the surface you are looking at — but the TRD sentence should say so instead of leaving it inferred                          |
 | Journal entries crossing tabs                                                         | pre-existing              | Benign (§1); pin it with a test rather than leaving it as folklore                                                                                                        |
@@ -335,10 +441,37 @@ much cheaper to test than expected:
 - `typeof BroadcastChannel === 'function'` under jsdom — it is Node's, which is shared across
   _worker threads in the same process_. **Channel names must be unique per test file** or files
   running in parallel will cross-talk. This will not announce itself; it will look like flake.
-- `'locks' in navigator === false` and `typeof SharedWorker === 'undefined'`. Leader election needs
-  an injectable seam to be unit-testable at all; SharedWorker would be Playwright-only.
+- `'locks' in navigator === false` and `typeof SharedWorker === 'undefined'` under jsdom. Leader
+  election needs an injectable seam to be unit-testable there at all.
 
-Suites:
+### 7.1 The environment is the real decision
+
+Everything above is about making jsdom do, which works for the BroadcastChannel path and does not
+extend. Three things this project has already committed to cannot be tested in jsdom at all: Web
+Locks (Phase 2), OPFS (Phase 4, TRD §6.2), and SharedWorker (§3.2). That is not three separate
+problems, it is one missing environment.
+
+The fix is small and mostly already paid for. This project is on **Vitest 4.1.10**, where Browser
+Mode is stable with a Playwright provider, and Playwright plus a Chromium are already here for the
+geometry suite (`playwright.config.ts`, including a `CHROMIUM_PATH` escape hatch for images that
+ship one). Adding a browser-mode project means the same test files can run in a real browser, where
+`navigator.locks`, a real `BroadcastChannel`, OPFS and `SharedWorker` all exist — with real
+IndexedDB rather than `fake-indexeddb`, which is separately worth having given §4's Phase 1b is a
+claim about IndexedDB transaction semantics that `fake-indexeddb` is not obliged to reproduce.
+
+Two limits to know before relying on it. Browser Mode gives one page per test file, so a genuine
+two-_tab_ test still wants Playwright with two pages in one context; a same-origin iframe is the
+obvious candidate for a second browsing context inside one browser-mode test, and it shares
+BroadcastChannel, IndexedDB and SharedWorker access, but **try it before designing around it**. And
+it is a third test command after `test` and `test:geometry`, so it needs a reason — which it has:
+without it, Phase 4 is untestable and §3.2's verdict rests on an environment gap rather than on
+anything true about the design.
+
+Sequencing follows from that. Stand up browser mode when the first thing that needs it arrives,
+which is Phase 2's leader election, not Phase 1's channel. Phase 1 is deliberately the part that
+jsdom can hold.
+
+### 7.2 Suites
 
 1. **Liveness, sync-absent.** Two stores, one `dbName`, no relay: an edit in one appears in the
    other with no reload. This is the test that fails today and is the whole point.
@@ -355,22 +488,29 @@ Suites:
 7. **Property test.** Add a "two tabs, one device, one relay" topology to `test/replicas.ts`: tabs
    share a channel and a database, each has a socket. The existing invariants should hold unchanged
    — the interesting outcome is if they don't.
-8. **Playwright** (`test/geometry/sync.spec.ts` is the neighbour): two pages in **one** browser
+8. **Cross-tab liveness with no relay configured**, as a regression test with a second job: it is
+   what catches an upstream change that makes `connectBc()` conditional on the socket (§3.5).
+9. **Playwright** (`test/geometry/sync.spec.ts` is the neighbour): two pages in **one** browser
    context, so they share origin, BroadcastChannel and IndexedDB. This is the only place the
-   freeze/bfcache re-handshake can actually be exercised.
+   freeze/bfcache re-handshake can actually be exercised — a jsdom test can fire a `pageshow` event,
+   but it cannot freeze a page.
 
 ---
 
 ## 8. Cost
 
-- Roughly 60 lines of seam, 120 of policy, 3 for the writer detach, and the suites above.
-- **No new dependencies.** `lib0/broadcastchannel` and `y-protocols/sync` are both already here, so
-  the budget impact is the new code and nothing else.
+- Ten lines of seam for the borrowed provider (§3.5) or sixty for a hand-written one, ~80 of policy,
+  3 for the writer detach, and the suites above.
+- **No new dependencies** for Phase 1. `lib0/broadcastchannel`, `y-protocols/sync` and
+  `y-websocket` are all already here, so the budget impact is the new code and nothing else. Phase 2
+  adds one devDependency for browser-mode tests, which Phase 4 needs regardless (§7.1).
 - No change to the on-disk format, no schema version bump, no migration.
-- Reversible: delete `tabs.ts` and drop `disableBc: true` and the behaviour returns to today's.
+- Reversible: delete `tabs.ts`, drop `disableBc: true`, and the behaviour returns to today's — a
+  two-file change, which is the argument for not treating this as a fork in the road.
 
-What it does not buy: one socket, one writer, a lock holder for Phase 4, or a document that
-survives every tab closing. Those are Phase 2, and §3.2 is the reason not to buy them now.
+What it does not buy: one socket, one writer, a lock holder for Phase 4, or a document that survives
+every tab closing. Those are Phase 2 and Phase 4, and §3.2's verdict is about the order to buy them
+in, not about whether they are worth buying.
 
 ---
 
@@ -388,5 +528,10 @@ survives every tab closing. Those are Phase 2, and §3.2 is the reason not to bu
   it the other way round, which is the bug this note starts from.
 - **§4.8** — one sentence: undo is scoped to the actor _within a page_, and two tabs are two
   histories.
-- **§11** — the sync-absent suite grows a multi-tab case, because sync-absent is precisely the
-  configuration in which multi-tab does not work today.
+- **§11** — two additions. The sync-absent suite grows a multi-tab case, because sync-absent is
+  precisely the configuration in which multi-tab does not work today. And the section should name a
+  third environment: jsdom for logic, Playwright for layout, and a real browser for the platform APIs
+  jsdom does not have — Web Locks, OPFS, SharedWorker (§7.1). The current two-environment split is
+  what makes Phase 4 look harder than it is.
+- **§12** — nothing changes, but worth noting that Phase 1 adds no dependency and therefore no
+  budget risk; the first thing in this note that could move the number is the Phase 2 socket work.
