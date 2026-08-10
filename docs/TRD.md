@@ -1,7 +1,7 @@
 # done — Technical Requirements
 
-**Status:** Draft v5
-**Date:** 2026-08-07
+**Status:** Draft v6
+**Date:** 2026-08-09
 **Companion to:** [PRD.md](./PRD.md)
 
 ---
@@ -86,12 +86,40 @@ authority, runs no application logic, and can be absent entirely.
 
 ### 2.1 Why Yjs over Automerge or Loro
 
-Loro benchmarks fastest, Automerge has a richer history model, but Yjs has the ecosystem
-this depends on — a maintained CodeMirror 6 binding, IndexedDB persistence, interchangeable
-providers. At single-user scale none of the performance differences are observable.
-Automerge's git-like history is attractive for a written record but costs performance and
-bundle for something the PRD doesn't ask for, and PRD principle 6 ("the past is written, not
-read") argues directly against paying for time-travel.
+Loro benchmarks fastest and Automerge has a richer history model, but Yjs has the ecosystem
+this depends on — a CodeMirror 6 binding, IndexedDB persistence, interchangeable providers.
+
+**The performance argument is retired.** An earlier draft justified this partly on Automerge's
+cost in performance and bundle. Automerge 3.0 (August 2025) cut memory by more than 10x — a
+document the size of Moby Dick went from 700MB to 1.3MB — and load times on long histories
+collapsed with it. That gap is closed, and it was never load-bearing anyway: at single-user
+scale none of the performance differences were observable.
+
+Two arguments survive, and both are structural rather than a question of who is faster this
+year.
+
+**Undo.** §4.8 scopes undo to the actor rather than to the surface, so that a bulk resolution
+or a compaction cannot land in the human's undo stack. That is `Y.UndoManager` with tracked
+origins, and PRD §11.3 depends on it. Automerge has no first-class undo — the feature request
+has been open since November 2024, and the community answer works by rewriting document
+history and describes itself as experimental. Migrating would mean reimplementing the
+mechanism §4.8 rests on, on top of a dependency that says not to.
+
+**History retention is the thing being bought, and the PRD doesn't want it.** Compaction (§4.5)
+deletes card objects and expects the space back; Yjs reclaims it. Automerge keeps history by
+design — that is the feature — and history truncation remains an open ask upstream. PRD
+principle 6 ("the past is written, not read") argues directly against paying for time-travel,
+so the property Automerge charges for is the one this app has deliberately designed away.
+
+What would port cleanly, if this is ever revisited again: the canonical card registry and the
+separate `cardLocations` register (§4.2) are an ordinary last-write-wins map, not a Yjs
+construct. Automerge has no shipped list `move` operation either, so the same indirection
+would still be required.
+
+**Revisited 2026-08-09**, prompted by the observation that Yjs looked stalled. It is not:
+`yjs@13.6.32` shipped 2026-08-04, and v14 is in an active release-candidate series with the
+changeset and attribution work funded by ZenDiS and DINUM. What has stalled is the binding
+layer — that is §10.1, and it is stale on Automerge's side too.
 
 ---
 
@@ -388,6 +416,17 @@ the same origin for free, removing any need for tab coordination on the write pa
 
 Request `navigator.storage.persist()` on first successful write. Surface the granted/denied
 state in settings — a local-first app that can be silently evicted should say so.
+
+**Local state must finish loading before any transport is constructed.** This is the ordering
+behind the most common data-loss report against Yjs in production, and it fails in one
+direction: the socket syncs first, a document not yet populated from disk looks authoritative,
+and the near-empty state is what both ends converge on. Sync then propagates the loss to every
+replica, which is the property that makes it worth a constraint rather than a comment.
+
+It costs one `await` at start-up and is invisible when correct. The saving available from
+overlapping the disk read with the socket opening is real, and someone will eventually propose
+it; the cost is a class of bug that appears only for users who already have local state and a
+fast connection. Enforced by test (§11).
 
 ### 6.2 Derived: SQLite-WASM
 
@@ -691,12 +730,24 @@ lines. Round-tripping export → import → export must be byte-identical.
 
 ### 10.1 Yjs v13 / v14
 
-`y-codemirror.next@0.3.5` targets Yjs v13; its last npm release is roughly two years old. The
-repo's main branch develops `@y/codemirror` for Yjs v14, unreleased.
+`y-codemirror.next@0.3.5` targets Yjs v13 and was last published 2024-06-18. The repo's main
+branch develops `@y/codemirror` for Yjs v14, still on `0.0.0-x` pre-release tags as of
+2026-01-19. Yjs v14 itself remains in a release-candidate series.
 
 **Pin Yjs v13 and `y-codemirror.next@0.3.5`.** The binding is stable and narrow. Migration is
 planned debt, not a blocker. Isolate every Yjs import behind one internal module so the
-migration has a single seam.
+migration has a single seam — `src/crdt/yjs.ts`, enforced by `test/seam.test.ts`.
+
+**A stale binding is not a reason to change CRDT.** Recorded because the inference is tempting
+and does not hold: `@automerge/automerge-codemirror` is at `0.2.0`, last published 2025-07-21.
+Both candidates have a pre-1.0 CodeMirror binding that has gone a year or more without a
+release, and the Yjs _core_ ships regularly (§2.1). Judge the binding layer against the other
+binding layer, not against the health of the library underneath it.
+
+Note also what the seam does **not** cover. It holds imports, not semantics: undo scoping
+(§4.8), the compaction model (§4.5), and the relay's forked message loop all encode Yjs
+behaviour outside `src/crdt/yjs.ts`. The seam bounds a v13 → v14 migration, which is what it
+was built for. It does not bound a change of CRDT.
 
 ### 10.2 Many small editors
 
@@ -783,6 +834,10 @@ immediately after a compaction, an import, or a bulk stale-item resolution rever
 last _typed_ change, not the system operation. This is the test that keeps §4.8 honest as the
 codebase grows new system operations.
 
+**Load before connect.** No transport is constructed until local persistence has finished
+loading into the document (§6.1). The regression test for the most common production data-loss
+mode in Yjs deployments, and for the start-up optimisation that would silently reintroduce it.
+
 **Sync-absent.** Full suite passes with no sync provider constructed.
 
 ---
@@ -815,3 +870,5 @@ the app must be fully usable for writing before it arrives.
 - [CodeMirror: hide markdown syntax](https://discuss.codemirror.net/t/hide-markdown-syntax/7602) · [atomic-editor](https://github.com/kenforthewin/atomic-editor) · [codemirror-live-markdown](https://github.com/blueberrycongee/codemirror-live-markdown)
 - [Tiptap bidirectional markdown](https://tiptap.dev/blog/release-notes/introducing-bidirectional-markdown-support-in-tiptap) · [markdown round-trip corruption report](https://github.com/wonderwhy-er/DesktopCommanderMCP/issues/440) · [rich text editor comparison, 2026](https://velt.dev/blog/best-rich-text-editors-react-comparison)
 - [Yjs vs Automerge vs Loro, 2026](https://www.pkgpulse.com/guides/yjs-vs-automerge-vs-loro-crdt-libraries-2026) · [crdt-benchmarks](https://github.com/dmonad/crdt-benchmarks)
+- §2.1 revisit, 2026-08-09: [Automerge 3.0](https://automerge.org/blog/automerge-3/) · [undo/revert request](https://github.com/automerge/automerge/issues/985) · [local-first feedback](https://github.com/automerge/automerge/issues/1231) · [automerge-codemirror](https://github.com/automerge/automerge-codemirror) · [Yjs 14 at FOSDEM 2026](https://fosdem.org/2026/schedule/event/8VKQXR-blocknote-yjs-prosemirror/)
+- §6.1 load-before-connect: [data loss with IndexedDB + websocket providers](https://discuss.yjs.dev/t/local-data-lost-with-indexeddb-websocket-providers/1816) · [rare data loss with y-prosemirror](https://discuss.yjs.dev/t/random-rare-data-loss-in-production-with-y-prosemirror/3728) · [y-indexeddb#20](https://github.com/yjs/y-indexeddb/issues/20)
