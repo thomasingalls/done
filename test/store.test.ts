@@ -251,6 +251,48 @@ describe('local persistence', () => {
     }
   });
 
+  it('leaves a failed batch dormant until an explicit durability retry', async () => {
+    const errors: Error[] = [];
+    const originalCommit = IDBTransaction.prototype.commit;
+    let attempts = 0;
+    const name = 'done-test-no-automatic-retry';
+    const doc = new Y.Doc();
+    const local = openLocalStore(doc, name, { onPersistenceError: (error) => errors.push(error) });
+
+    try {
+      await local.whenSynced;
+      const commit = vi
+        .spyOn(IDBTransaction.prototype, 'commit')
+        .mockImplementation(function (this: IDBTransaction) {
+          attempts += 1;
+          if (attempts === 1) this.abort();
+          else originalCommit.call(this);
+        });
+
+      try {
+        transact(doc, 'test', () => doc.getText('master').insert(0, 'retry me once asked'));
+
+        await vi.waitFor(() => expect(errors).toHaveLength(1));
+        expect(attempts).toBe(1);
+        expect(journalKeys(name)).toHaveLength(1);
+
+        // A re-armed flush would run after another 250 ms.
+        await new Promise<void>((resolve) => setTimeout(resolve, 300));
+        expect(attempts).toBe(1);
+        expect(journalKeys(name)).toHaveLength(1);
+
+        await expect(local.whenDurable()).resolves.toBeUndefined();
+        expect(attempts).toBe(2);
+        expect(journalKeys(name)).toEqual([]);
+      } finally {
+        commit.mockRestore();
+      }
+    } finally {
+      local.destroy();
+      doc.destroy();
+    }
+  });
+
   it('rejects durability when an observed update has no database connection', async () => {
     const doc = new Y.Doc();
     const local = openLocalStore(doc, 'done-test-checkpoint-without-db');

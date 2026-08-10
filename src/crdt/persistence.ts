@@ -218,6 +218,10 @@ export const openLocalStore = (
       })
       .finally(() => {
         if (activeFlush === flush) activeFlush = null;
+        // Deliberately do not re-arm the timer after failure. Quota and connection
+        // errors are often persistent, so an automatic retry would become a hot
+        // loop. The journal stays intact until a later update, `whenDurable()`, or
+        // the next open provides an explicit retry boundary.
         if (completed && pending.length > 0) scheduleFlush();
       });
     activeFlush = flush;
