@@ -7,3 +7,4 @@ patches/
 .DS_Store
 .env.local
 tsconfig*.tsbuildinfo
+relay/data/
