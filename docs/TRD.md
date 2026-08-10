@@ -339,7 +339,7 @@ change:
 1. Walk the syntax tree over **visible ranges only** — never the whole document
    synchronously.
 2. For each node, compute ranges covering its syntax characters (`**`, `##`, backticks,
-   link brackets, `^id`).
+   link brackets).
 3. If the cursor or a selection range intersects the node's **line**, emit no replacement —
    raw syntax shows.
 4. Otherwise replace syntax ranges with zero-width decorations and `mark` the content range
@@ -375,8 +375,22 @@ The split threshold is a **named constant**, not a literal. The PRD expects it t
 
 ### 6.1 Primary: y-indexeddb
 
-Persists the Yjs document and is the durable local store. Also syncs updates across tabs of
-the same origin for free, removing any need for tab coordination on the write path.
+Persists the Yjs document and is the durable local store. The adapter keeps y-indexeddb's
+on-disk format, loading, ordinary writes, and compaction, and adds a strict checkpoint whose
+transaction completion is observable. `whenDurable()` resolves only after every Yjs update
+observed before the call has committed in that checkpoint; `whenSynced` also includes an initial
+durable checkpoint rather than meaning only that stored updates were applied in memory.
+
+Every not-yet-committed update is additionally merged into a per-page, per-database synchronous
+localStorage journal. A reload replays those idempotent Yjs updates before IndexedDB is opened;
+the journal entry is removed only after the same state commits to IndexedDB. It is a short-lived
+write-ahead log, not a second document representation or another authority. This closes the
+browser lifecycle gap where navigation can terminate the page between a Yjs transaction and
+IndexedDB's asynchronous commit.
+
+Opening another tab later reads the same database. y-indexeddb does not itself broadcast live
+updates between already-open tabs, so real-time cross-tab propagation is not a property of this
+layer.
 
 Request `navigator.storage.persist()` on first successful write. Surface the granted/denied
 state in settings — a local-first app that can be silently evicted should say so.

@@ -21,6 +21,7 @@ import {
   moveAllNextTo,
   moveAllNextToMaster,
   newCard,
+  openLocalStore,
   openStore,
   openTree,
   readSchemaVersion,
@@ -172,7 +173,7 @@ describe('local persistence', () => {
   it('reads the document back after a reload', async () => {
     const first = await fresh('done-test-reload');
     transact(first.doc, first.actor.origin, () => first.master.insert(0, '# Master\n\n- one\n'));
-    await first.local?.provider.whenSynced;
+    await first.local?.whenDurable();
     first.destroy();
 
     const second = await fresh('done-test-reload');
@@ -184,7 +185,7 @@ describe('local persistence', () => {
     const first = await fresh('done-test-actor');
     const id = first.actor.id;
     const color = first.actor.actor.color;
-    await first.local?.provider.whenSynced;
+    await first.local?.whenDurable();
     first.destroy();
 
     const second = await fresh('done-test-actor');
@@ -193,6 +194,33 @@ describe('local persistence', () => {
 
     expect(listActors(second.doc)).toHaveLength(2); // the human and the system actor, not four
     second.destroy();
+  });
+
+  it('replays the synchronous journal when the final IndexedDB write never starts', async () => {
+    const journalKeys = (): string[] =>
+      Array.from({ length: localStorage.length }, (_, index) => localStorage.key(index)).flatMap(
+        (key) => (key?.startsWith('done.pending-update.done-test-interrupted-write.') ? [key] : []),
+      );
+    const firstDoc = new Y.Doc();
+    const first = openLocalStore(firstDoc, 'done-test-interrupted-write');
+    await first.whenSynced;
+
+    // Simulate a page being terminated after the Yjs transaction but before
+    // y-indexeddb can start its asynchronous write.
+    first.provider.db = null;
+    transact(firstDoc, 'test', () => firstDoc.getText('master').insert(0, 'survived reload'));
+    expect(journalKeys()).toHaveLength(1);
+    first.destroy();
+    firstDoc.destroy();
+
+    const secondDoc = new Y.Doc();
+    const second = openLocalStore(secondDoc, 'done-test-interrupted-write');
+    await second.whenSynced;
+    expect(secondDoc.getText('master').toString()).toBe('survived reload');
+    await second.whenDurable();
+    expect(journalKeys()).toEqual([]);
+    second.destroy();
+    secondDoc.destroy();
   });
 });
 
