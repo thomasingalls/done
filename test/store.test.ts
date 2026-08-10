@@ -41,6 +41,10 @@ const journalKeys = (name: string): string[] =>
     (key) => (key?.startsWith(`done.pending-update.${name}.`) ? [key] : []),
   );
 
+const failStorageWrite = (): never => {
+  throw new DOMException('storage full', 'QuotaExceededError');
+};
+
 beforeEach(() => {
   localStorage.clear();
 });
@@ -339,9 +343,10 @@ describe('local persistence', () => {
     const doc = new Y.Doc();
     const local = openLocalStore(doc, name, { onPersistenceError: (error) => errors.push(error) });
     await local.whenSynced;
-    const setItem = vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
-      throw new DOMException('storage full', 'QuotaExceededError');
-    });
+    const localSetItem = vi.spyOn(localStorage, 'setItem').mockImplementation(failStorageWrite);
+    const prototypeSetItem = vi
+      .spyOn(Storage.prototype, 'setItem')
+      .mockImplementation(failStorageWrite);
 
     try {
       transact(doc, 'test', () => doc.getText('master').insert(0, 'still reaches IndexedDB'));
@@ -350,7 +355,8 @@ describe('local persistence', () => {
       );
       await expect(local.whenDurable()).resolves.toBeUndefined();
     } finally {
-      setItem.mockRestore();
+      prototypeSetItem.mockRestore();
+      localSetItem.mockRestore();
       local.destroy();
       doc.destroy();
     }
