@@ -57,7 +57,7 @@ const SNAP_MS = 220;
 type Lateral = 'menu' | 'goals';
 
 export const App = (): React.ReactElement => {
-  const { store, storage, error } = useStore();
+  const { store, storage, error, persistenceError } = useStore();
   const breakpoint = useBreakpoint();
   const settings = useYValue(
     store?.meta,
@@ -486,6 +486,7 @@ export const App = (): React.ReactElement => {
         ref={menu}
         store={store}
         storage={storage}
+        persistenceError={persistenceError}
         settings={settings}
         today={today}
         date={date}

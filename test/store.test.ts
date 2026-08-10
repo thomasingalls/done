@@ -36,6 +36,11 @@ import {
 
 const fresh = async (dbName: string): Promise<Store> => openStore({ dbName });
 
+const journalKeys = (name: string): string[] =>
+  Array.from({ length: localStorage.length }, (_, index) => localStorage.key(index)).flatMap(
+    (key) => (key?.startsWith(`done.pending-update.${name}.`) ? [key] : []),
+  );
+
 beforeEach(() => {
   localStorage.clear();
 });
@@ -197,7 +202,23 @@ describe('local persistence', () => {
     second.destroy();
   });
 
-  it('opens an in-memory, exportable store when the initial checkpoint aborts', async () => {
+  it('does not add a full-document checkpoint during a clean open', async () => {
+    const commit = vi.spyOn(IDBTransaction.prototype, 'commit');
+    const doc = new Y.Doc();
+    const local = openLocalStore(doc, 'done-test-clean-open');
+
+    try {
+      await local.whenSynced;
+      await Promise.resolve();
+      expect(commit).not.toHaveBeenCalled();
+    } finally {
+      commit.mockRestore();
+      local.destroy();
+      doc.destroy();
+    }
+  });
+
+  it('keeps the in-memory store exportable when a durability batch aborts', async () => {
     const commit = vi
       .spyOn(IDBTransaction.prototype, 'commit')
       .mockImplementation(function (this: IDBTransaction) {
@@ -226,47 +247,113 @@ describe('local persistence', () => {
     }
   });
 
-  it('finishes loading when no database connection remains for the checkpoint', async () => {
+  it('rejects durability when an observed update has no database connection', async () => {
     const doc = new Y.Doc();
     const local = openLocalStore(doc, 'done-test-checkpoint-without-db');
-    local.provider.on('synced', () => {
-      local.provider.db = null;
-    });
-
     await expect(local.whenSynced).resolves.toBeUndefined();
+    local.provider.db = null;
+    transact(doc, 'test', () => doc.getText('master').insert(0, 'not yet in IndexedDB'));
     await expect(local.whenDurable()).rejects.toThrow(
       'IndexedDB opened without a database connection.',
     );
+    expect(journalKeys('done-test-checkpoint-without-db')).toHaveLength(1);
 
     local.destroy();
     doc.destroy();
   });
 
-  it('replays the synchronous journal when the final IndexedDB write never starts', async () => {
-    const journalKeys = (): string[] =>
-      Array.from({ length: localStorage.length }, (_, index) => localStorage.key(index)).flatMap(
-        (key) => (key?.startsWith('done.pending-update.done-test-interrupted-write.') ? [key] : []),
-      );
+  it('replays the synchronous journal across repeated interrupted opens', async () => {
+    const name = 'done-test-interrupted-write';
     const firstDoc = new Y.Doc();
-    const first = openLocalStore(firstDoc, 'done-test-interrupted-write');
+    const first = openLocalStore(firstDoc, name);
     await first.whenSynced;
 
-    // Simulate a page being terminated after the Yjs transaction but before
-    // y-indexeddb can start its asynchronous write.
+    // Fault injection for a page that cannot finish its asynchronous write.
     first.provider.db = null;
     transact(firstDoc, 'test', () => firstDoc.getText('master').insert(0, 'survived reload'));
-    expect(journalKeys()).toHaveLength(1);
+    expect(journalKeys(name)).toHaveLength(1);
     first.destroy();
     firstDoc.destroy();
 
     const secondDoc = new Y.Doc();
-    const second = openLocalStore(secondDoc, 'done-test-interrupted-write');
+    const second = openLocalStore(secondDoc, name);
     await second.whenSynced;
     expect(secondDoc.getText('master').toString()).toBe('survived reload');
-    await second.whenDurable();
-    expect(journalKeys()).toEqual([]);
+    // A second interruption must not clear recovery data merely because loading finished.
+    expect(journalKeys(name)).toHaveLength(1);
     second.destroy();
     secondDoc.destroy();
+
+    const thirdDoc = new Y.Doc();
+    const third = openLocalStore(thirdDoc, name);
+    await third.whenSynced;
+    expect(thirdDoc.getText('master').toString()).toBe('survived reload');
+    await third.whenDurable();
+    expect(journalKeys(name)).toEqual([]);
+    third.destroy();
+    thirdDoc.destroy();
+  });
+
+  it('journals immutable deltas and truncates them after one short batch', async () => {
+    const name = 'done-test-delta-journal';
+    const doc = new Y.Doc();
+    const local = openLocalStore(doc, name);
+    await local.whenSynced;
+
+    transact(doc, 'test', () => doc.getText('master').insert(0, 'a'));
+    transact(doc, 'test', () => doc.getText('master').insert(1, 'b'));
+
+    expect(journalKeys(name)).toHaveLength(2);
+    await vi.waitFor(() => expect(journalKeys(name)).toEqual([]), { timeout: 1000 });
+    await expect(local.whenDurable()).resolves.toBeUndefined();
+
+    local.destroy();
+    doc.destroy();
+  });
+
+  it('commits a burst in one relaxed transaction', async () => {
+    const commit = vi.spyOn(IDBTransaction.prototype, 'commit');
+    const doc = new Y.Doc();
+    const local = openLocalStore(doc, 'done-test-batched-transaction');
+
+    try {
+      await local.whenSynced;
+      commit.mockClear();
+      transact(doc, 'test', () => doc.getText('master').insert(0, 'a'));
+      transact(doc, 'test', () => doc.getText('master').insert(1, 'b'));
+
+      await local.whenDurable();
+
+      expect(commit).toHaveBeenCalledTimes(1);
+      expect((commit.mock.instances[0] as IDBTransaction | undefined)?.durability).toBe('relaxed');
+    } finally {
+      commit.mockRestore();
+      local.destroy();
+      doc.destroy();
+    }
+  });
+
+  it('reports a synchronous journal failure while still allowing an IndexedDB flush', async () => {
+    const errors: Error[] = [];
+    const name = 'done-test-journal-failure';
+    const doc = new Y.Doc();
+    const local = openLocalStore(doc, name, { onPersistenceError: (error) => errors.push(error) });
+    await local.whenSynced;
+    const setItem = vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
+      throw new DOMException('storage full', 'QuotaExceededError');
+    });
+
+    try {
+      transact(doc, 'test', () => doc.getText('master').insert(0, 'still reaches IndexedDB'));
+      expect(errors.map((error) => error.message)).toContain(
+        'Could not write the synchronous recovery journal.',
+      );
+      await expect(local.whenDurable()).resolves.toBeUndefined();
+    } finally {
+      setItem.mockRestore();
+      local.destroy();
+      doc.destroy();
+    }
   });
 });
 

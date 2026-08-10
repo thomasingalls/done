@@ -450,17 +450,21 @@ The split threshold is a **named constant**, not a literal. The PRD expects it t
 ### 6.1 Primary: y-indexeddb
 
 Persists the Yjs document and is the durable local store. The adapter keeps y-indexeddb's
-on-disk format, loading, ordinary writes, and compaction, and adds a strict checkpoint whose
-transaction completion is observable. `whenDurable()` resolves only after every Yjs update
-observed before the call has committed in that checkpoint; `whenSynced` also includes an initial
-durable checkpoint rather than meaning only that stored updates were applied in memory.
+on-disk format, loading, ordinary writes, and compaction. `whenSynced` means only that stored
+updates have been applied in memory; it does not add a full-document write to the startup path.
 
-Every not-yet-committed update is additionally merged into a per-page, per-database synchronous
-localStorage journal. A reload replays those idempotent Yjs updates before IndexedDB is opened;
-the journal entry is removed only after the same state commits to IndexedDB. It is a short-lived
-write-ahead log, not a second document representation or another authority. This closes the
-browser lifecycle gap where navigation can terminate the page between a Yjs transaction and
-IndexedDB's asynchronous commit.
+Every update is first written synchronously to localStorage as one immutable, per-page,
+per-database journal entry. A reload replays those idempotent Yjs deltas before IndexedDB is
+opened. At the end of a short batching window the adapter writes every captured delta in one relaxed
+IndexedDB transaction, waits for its `complete` event, and only then removes the corresponding
+journal entries. `whenDurable()` forces that batch immediately and resolves only after every Yjs
+update observed before the call has committed. Journal or batch failures remain observable and
+leave recoverable entries intact.
+
+The journal is a short-lived write-ahead log, not a second document representation or another
+authority. This closes the browser lifecycle gap where navigation can terminate the page between
+a Yjs transaction and IndexedDB's asynchronous commit without putting cumulative update merging,
+base64 encoding, or a strict disk flush on every keystroke.
 
 Opening another tab later reads the same database. y-indexeddb does not itself broadcast live
 updates between already-open tabs, so real-time cross-tab propagation is not a property of this

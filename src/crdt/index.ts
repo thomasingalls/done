@@ -60,6 +60,7 @@ export interface OpenStoreOptions {
   /** Off for tests that have no business touching IndexedDB. */
   persist?: boolean;
   onStoragePersistence?: (status: StoragePersistence) => void;
+  onLocalPersistenceError?: (error: Error) => void;
   /** Injected by tests; the default opens a real websocket when configured. */
   openWebsocket?: SyncOptions['open'];
 }
@@ -140,7 +141,16 @@ const watchMemberships = (doc: YDoc, context: ActorContext): (() => void) => {
 export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> => {
   const doc = options.doc ?? createDoc();
 
-  const local = options.persist === false ? null : openLocalStore(doc, options.dbName);
+  const local =
+    options.persist === false
+      ? null
+      : openLocalStore(
+          doc,
+          options.dbName,
+          options.onLocalPersistenceError
+            ? { onPersistenceError: options.onLocalPersistenceError }
+            : {},
+        );
   if (local) await local.whenSynced;
 
   const actor = resolveActor(doc, doc.getMap('meta'));

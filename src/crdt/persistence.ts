@@ -27,9 +27,15 @@ export interface LocalStore {
   destroy: () => void;
 }
 
+export interface LocalStoreOptions {
+  /** Reports a lost synchronous journal or a failed IndexedDB batch. */
+  onPersistenceError?: (error: Error) => void;
+}
+
 const UPDATES_STORE = 'updates';
 const JOURNAL_VERSION = '1:';
 const JOURNAL_PREFIX = 'done.pending-update.';
+const FLUSH_DELAY_MS = 250;
 
 interface JournalEntry {
   key: string;
@@ -37,12 +43,29 @@ interface JournalEntry {
   update: Uint8Array;
 }
 
-const journalStorage = (): Storage | null => {
-  if (typeof localStorage === 'undefined') return null;
+interface PendingEntry {
+  sequence: number;
+  key: string | null;
+  value: string | null;
+  update: Uint8Array;
+}
+
+const errorWithCause = (message: string, cause?: unknown): Error => {
+  const error = new Error(message);
+  if (cause !== undefined) error.cause = cause;
+  return error;
+};
+
+const journalStorage = (report: (error: Error) => void): Storage | null => {
+  if (typeof localStorage === 'undefined') {
+    report(new Error('Synchronous recovery journal is unavailable.'));
+    return null;
+  }
   try {
     void localStorage.length;
     return localStorage;
-  } catch {
+  } catch (cause) {
+    report(errorWithCause('Synchronous recovery journal is unavailable.', cause));
     return null;
   }
 };
@@ -75,50 +98,60 @@ const clearJournal = (storage: Storage | null, key: string, expected: string): v
   }
 };
 
-const writeJournal = (storage: Storage | null, key: string, update: Uint8Array): string | null => {
-  if (!storage) return null;
-  const value = `${JOURNAL_VERSION}${toBase64(update)}`;
+const writeJournal = (storage: Storage, key: string, update: Uint8Array): JournalEntry => {
   try {
+    const value = `${JOURNAL_VERSION}${toBase64(update)}`;
     storage.setItem(key, value);
-    return value;
-  } catch {
-    return null;
+    return { key, value, update: update.slice() };
+  } catch (cause) {
+    throw errorWithCause('Could not write the synchronous recovery journal.', cause);
   }
 };
 
-/** A write is durable at transaction completion, not at the request's success event. */
-const persistUpdate = (database: IDBDatabase, update: Uint8Array): Promise<void> =>
+/** A batch is durable at transaction completion, not at an add request's success event. */
+const persistUpdates = (database: IDBDatabase, updates: readonly Uint8Array[]): Promise<void> =>
   new Promise((resolve, reject) => {
     let transaction: IDBTransaction;
     try {
-      transaction = database.transaction(UPDATES_STORE, 'readwrite', { durability: 'strict' });
+      transaction = database.transaction(UPDATES_STORE, 'readwrite', { durability: 'relaxed' });
     } catch {
       transaction = database.transaction(UPDATES_STORE, 'readwrite');
     }
 
-    transaction.addEventListener('complete', () => resolve(), { once: true });
+    transaction.addEventListener(
+      'complete',
+      () => {
+        resolve();
+      },
+      { once: true },
+    );
     transaction.addEventListener(
       'abort',
-      () => reject(transaction.error ?? new Error('IndexedDB persistence transaction aborted.')),
+      () => {
+        reject(transaction.error ?? new Error('IndexedDB persistence transaction failed.'));
+      },
       { once: true },
     );
     transaction.addEventListener(
       'error',
-      () => reject(transaction.error ?? new Error('IndexedDB persistence transaction failed.')),
+      () => {
+        reject(transaction.error ?? new Error('IndexedDB persistence transaction failed.'));
+      },
       { once: true },
     );
-    transaction.objectStore(UPDATES_STORE).add(update);
+    const store = transaction.objectStore(UPDATES_STORE);
+    for (const update of updates) store.add(update);
     transaction.commit?.();
   });
 
-export const openLocalStore = (doc: YDoc, name: string = DB_NAME): LocalStore => {
+export const openLocalStore = (
+  doc: YDoc,
+  name: string = DB_NAME,
+  options: LocalStoreOptions = {},
+): LocalStore => {
   const provider = new IndexeddbPersistence(name, doc);
-  // The upstream listener starts an add request but exposes no transaction-
-  // complete boundary. The checkpoint below is intentionally redundant until
-  // y-indexeddb compacts the log: it retains the upstream implementation while
-  // giving this adapter a write whose transaction it can prove completed.
-
-  const storage = journalStorage();
+  const reportPersistenceError = (error: Error): void => options.onPersistenceError?.(error);
+  const storage = journalStorage(reportPersistenceError);
   const prefix = journalPrefix(name);
   const recovered = readJournal(storage, prefix).filter((entry) => {
     try {
@@ -128,62 +161,118 @@ export const openLocalStore = (doc: YDoc, name: string = DB_NAME): LocalStore =>
       return false;
     }
   });
-  const ownJournalKey = `${prefix}${newId()}`;
-  let ownJournalValue: string | null = null;
-  let pendingUpdate: Uint8Array | null = null;
-  let revision = 0;
-  let latestDurability: Promise<void> = Promise.resolve();
+  const journalSession = newId();
+  const whenSynced = provider.whenSynced.then(() => {});
+  let nextJournalKey = 0;
+  let observedSequence = 0;
+  let durableSequence = 0;
+  let destroyed = false;
+  let flushTimer: ReturnType<typeof setTimeout> | null = null;
+  let activeFlush: Promise<void> | null = null;
+  const pending: PendingEntry[] = recovered.map((entry) => ({
+    sequence: ++observedSequence,
+    key: entry.key,
+    value: entry.value,
+    update: entry.update,
+  }));
+
+  const scheduleFlush = (): void => {
+    if (destroyed || flushTimer !== null || pending.length === 0) return;
+    flushTimer = setTimeout(() => {
+      flushTimer = null;
+      const target = observedSequence;
+      void flushThrough(target).catch(() => {});
+    }, FLUSH_DELAY_MS);
+  };
+
+  const startFlush = (): Promise<void> => {
+    if (activeFlush) return activeFlush;
+    const batch = pending.splice(0);
+    if (batch.length === 0) return Promise.resolve();
+
+    let completed = false;
+    const flush = whenSynced
+      .then(() => {
+        const database = provider.db;
+        if (!database) throw new Error('IndexedDB opened without a database connection.');
+        return persistUpdates(
+          database,
+          batch.map((entry) => entry.update),
+        );
+      })
+      .then(() => {
+        completed = true;
+        durableSequence = batch.at(-1)?.sequence ?? durableSequence;
+        for (const entry of batch) {
+          if (entry.key !== null && entry.value !== null) {
+            clearJournal(storage, entry.key, entry.value);
+          }
+        }
+      })
+      .catch((cause: unknown) => {
+        pending.unshift(...batch);
+        const error =
+          cause instanceof Error ? cause : errorWithCause('IndexedDB persistence failed.', cause);
+        reportPersistenceError(error);
+        throw error;
+      })
+      .finally(() => {
+        if (activeFlush === flush) activeFlush = null;
+        if (completed && pending.length > 0) scheduleFlush();
+      });
+    activeFlush = flush;
+    void flush.catch(() => {});
+    return flush;
+  };
+
+  async function flushThrough(target: number): Promise<void> {
+    await whenSynced;
+    if (durableSequence >= target) return;
+    await (activeFlush ?? startFlush());
+    return flushThrough(target);
+  }
 
   const storeUpdate = (update: Uint8Array, origin: unknown): void => {
     if (origin === provider) return;
-    revision += 1;
-    const observedRevision = revision;
-    pendingUpdate = pendingUpdate ? Y.mergeUpdates([pendingUpdate, update]) : update.slice();
-    const toStore = pendingUpdate;
-    ownJournalValue = writeJournal(storage, ownJournalKey, toStore);
-
-    const database = provider.db;
-    if (!database) return;
-    const durable = persistUpdate(database, toStore).then(() => {
-      if (revision === observedRevision) {
-        pendingUpdate = null;
-        if (ownJournalValue) clearJournal(storage, ownJournalKey, ownJournalValue);
-        ownJournalValue = null;
+    const sequence = ++observedSequence;
+    let journal: JournalEntry | null = null;
+    if (storage) {
+      try {
+        journal = writeJournal(storage, `${prefix}${journalSession}.${nextJournalKey++}`, update);
+      } catch (cause) {
+        reportPersistenceError(
+          cause instanceof Error
+            ? cause
+            : errorWithCause('Could not write the synchronous recovery journal.', cause),
+        );
       }
+    }
+    pending.push({
+      sequence,
+      key: journal?.key ?? null,
+      value: journal?.value ?? null,
+      update: journal?.update ?? update.slice(),
     });
-    latestDurability = durable;
-    void durable.catch(() => {});
+    scheduleFlush();
   };
 
   doc.on('update', storeUpdate);
-
-  const whenSynced = provider.whenSynced.then(() => {});
-  const initialDurability = provider.whenSynced.then(async () => {
-    const database = provider.db;
-    if (!database) throw new Error('IndexedDB opened without a database connection.');
-    const observedRevision = revision;
-    // This checkpoint both proves the initial transaction has completed and
-    // makes every replayed journal update independently durable.
-    await persistUpdate(database, Y.encodeStateAsUpdate(doc));
-    for (const entry of recovered) clearJournal(storage, entry.key, entry.value);
-    if (revision === observedRevision && pendingUpdate) {
-      pendingUpdate = null;
-      if (ownJournalValue) clearJournal(storage, ownJournalKey, ownJournalValue);
-      ownJournalValue = null;
-    }
-  });
-  latestDurability = initialDurability;
-  // Loading existing state is the start-up boundary. A redundant checkpoint
-  // that cannot be written (for example because quota is exhausted) must keep
-  // its recovery journal and remain observable through `whenDurable`, but it
-  // must not hide the in-memory document and its Export escape hatch.
-  void initialDurability.catch(() => {});
+  scheduleFlush();
 
   return {
     provider,
     whenSynced,
-    whenDurable: () => latestDurability,
+    whenDurable: () => {
+      if (flushTimer !== null) {
+        clearTimeout(flushTimer);
+        flushTimer = null;
+      }
+      return flushThrough(observedSequence);
+    },
     destroy: () => {
+      destroyed = true;
+      if (flushTimer !== null) clearTimeout(flushTimer);
+      flushTimer = null;
       doc.off('update', storeUpdate);
       void provider.destroy();
     },
