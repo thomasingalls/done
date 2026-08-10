@@ -4,9 +4,9 @@
  * ```
  * days  Y.Map<ISODate, Y.Map>
  *   └── "2026-08-05"
- *         ├── next       Y.Array<CardId> (≤3)   ← collection
+ *         ├── next       Y.Array<CardId>        ← collection; ≤3 per device
  *         ├── scheduled  Y.Array<CardId>
- *         ├── done       Y.Array<CardId>
+ *         ├── done       Y.Array<CardId>        ← newest first
  *         └── archive    Y.Text | absent        ← set on compaction (§4.5)
  * cards         Y.Map<CardId, Card>             ← canonical card content
  * cardLocations Y.Map<CardId, "date:section">  ← canonical membership
@@ -34,8 +34,8 @@ import {
   type YText,
 } from './yjs';
 import { newId } from '../lib/id';
-import { Temporal } from '../lib/temporal';
-import type { ISODate } from '../lib/date';
+import { nowInstant } from '../lib/temporal';
+import { compareInstants, type ISODate } from '../lib/date';
 
 export type Section = 'next' | 'scheduled' | 'done';
 
@@ -56,7 +56,14 @@ export const SECTIONS: readonly Section[] = ['next', 'scheduled', 'done'];
  */
 export const DISPLAY_SECTIONS: readonly Section[] = ['next', 'done', 'scheduled'];
 
-/** PRD §3: at most three items in Next. Enforcing it is a core function. */
+/**
+ * PRD §3: at most three items in Next. Enforcing it is a core function, and
+ * what it means is that a device refuses to *add* a fourth — not that a day is
+ * held to three afterwards. Two devices can each fill Next while apart, and
+ * when they meet the day shows all of them (PRD §3, "the cap bounds what you
+ * can add"). The rule does not soften: an expanded Next takes nothing new until
+ * the user has moved it back under three.
+ */
 export const NEXT_CAP = 3;
 
 /**
@@ -113,7 +120,7 @@ export const newCard = (text: string, author: ActorId, options: NewCardOptions =
   card.set('text', newText(text));
   card.set('origin', options.origin ?? null);
   card.set('author', author);
-  card.set('createdAt', options.createdAt ?? Temporal.Now.instant().toString());
+  card.set('createdAt', options.createdAt ?? nowInstant().toString());
   return card;
 };
 
@@ -258,10 +265,46 @@ export const migrateCardsToRegistry = (doc: YDoc, origin: unknown): void => {
 };
 
 /**
- * Removes stale physical memberships left by concurrent moves. The card's
- * canonical location map has one deterministic value per id, so concurrent
- * assignments have one winner; arrays retain ordering but no longer decide
- * which of two locations owns the item.
+ * Where a card goes when it is re-homed — put back into the collection its
+ * canonical location names, after the array entry that held its position was
+ * destroyed (see `repairCardMemberships`).
+ *
+ * Its old index is not recoverable: the entry that encoded it is gone. So the
+ * position is recomputed from something every replica agrees on, and what that
+ * should be is the section's own ordering rule (PRD §3).
+ *
+ * Next and Scheduled are ordered by intent, and intent is not stored anywhere —
+ * an arrival appends, and so does a return.
+ *
+ * Done is ordered by time, so its order *can* be restored: the card goes back
+ * above everything completed before it, which puts a run of returning cards
+ * back in newest-first order and interleaves it with what is already there
+ * rather than dumping it at one end. The key is `createdAt`, which is the
+ * completion time exactly for the compose path — how most things reach Done —
+ * and the *writing* time for a card that was written earlier in Next and
+ * finished later. There is no completion timestamp to use instead, and PRD §9
+ * is clear that there should not be one; this is a repair choosing a position,
+ * not the app recording when anything was finished.
+ */
+const rehomeIndex = (doc: YDoc, collection: Collection, section: Section, card: Card): number => {
+  if (section !== 'done') return collection.length;
+  const createdAt = cardCreatedAt(card);
+  const entries = collection.toArray();
+  const older = entries.findIndex((id) => {
+    const other = cardAt(doc, id);
+    return other !== undefined && compareInstants(cardCreatedAt(other), createdAt) < 0;
+  });
+  return older < 0 ? entries.length : older;
+};
+
+/**
+ * Reconciles the ordered arrays with the canonical location map, in both
+ * directions: an array entry the map disowns is removed, and a card the map
+ * places somewhere no array holds is put back (`rehomeIndex` decides where).
+ *
+ * The map has one deterministic value per id, so concurrent assignments have
+ * one winner; arrays retain ordering but no longer decide which of two
+ * locations owns the item.
  */
 export const repairCardMemberships = (doc: YDoc, origin: unknown): number => {
   const removals: Array<{ collection: Collection; index: number }> = [];
@@ -286,13 +329,24 @@ export const repairCardMemberships = (doc: YDoc, origin: unknown): number => {
     }
   }
 
-  const missing: Array<{ collection: Collection; id: string }> = [];
-  for (const [id] of cardsMap(doc).entries()) {
+  const missing: Array<{ collection: Collection; section: Section; id: string; card: Card }> = [];
+  for (const [id, card] of cardsMap(doc).entries()) {
     const location = cardLocation(doc, id);
     if (!location || present.has(`${locationKey(location)}:${id}`)) continue;
     const collection = collectionOf(dayAt(doc, location.date), location.section);
-    if (collection) missing.push({ collection, id });
+    if (collection) missing.push({ collection, section: location.section, id, card });
   }
+
+  // Oldest first, because `rehomeIndex` puts each returning card above what was
+  // finished before it: run ascending and a batch lands newest-first. The sort
+  // is also what makes two replicas agree — this list is built by iterating the
+  // card registry, whose order is the order entries were *integrated*, so two
+  // replicas handed the same updates in a different order read it differently.
+  missing.sort(
+    (a, b) =>
+      compareInstants(cardCreatedAt(a.card), cardCreatedAt(b.card)) ||
+      (a.id < b.id ? -1 : a.id > b.id ? 1 : 0),
+  );
 
   if (removals.length === 0 && missing.length === 0) return 0;
   transact(doc, origin, () => {
@@ -305,7 +359,11 @@ export const repairCardMemberships = (doc: YDoc, origin: unknown): number => {
     for (const [collection, indices] of byCollection) {
       for (const index of indices.sort((a, b) => b - a)) collection.delete(index, 1);
     }
-    for (const { collection, id } of missing) collection.push([id]);
+    // Indices are read here rather than above because the removals have landed
+    // in between, and a returning card is placed among what is left.
+    for (const { collection, section, id, card } of missing) {
+      collection.insert(rehomeIndex(doc, collection, section, card), [id]);
+    }
   });
   return removals.length + missing.length;
 };

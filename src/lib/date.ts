@@ -41,6 +41,37 @@ export const daysBetween = (from: ISODate, to: ISODate): number =>
 export const compareDates = (a: ISODate, b: ISODate): number =>
   Temporal.PlainDate.compare(plainDate(a), plainDate(b));
 
+const epochNanoseconds = (instant: string): bigint | null => {
+  try {
+    return Temporal.Instant.from(instant).epochNanoseconds;
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * Two `createdAt` instants, oldest first.
+ *
+ * Comparing them as text is wrong and looks right, which is why this exists at
+ * all: `Temporal.Instant.toString()` emits fractional seconds only when it
+ * needs them, so `…:00.5Z` sorts *before* `…:00Z` as a string while being half
+ * a second later in time.
+ *
+ * Total on every input, including one this schema never wrote. It is used by a
+ * repair that runs on every document change (`repairCardMemberships`), where an
+ * exception would be a document the app cannot open — so an unparsable value
+ * sorts last and ties break as text rather than throwing.
+ */
+export const compareInstants = (a: string, b: string): number => {
+  const left = epochNanoseconds(a);
+  const right = epochNanoseconds(b);
+  if (left === null || right === null) {
+    if (left !== right) return left === null ? 1 : -1;
+    return a < b ? -1 : a > b ? 1 : 0;
+  }
+  return left < right ? -1 : left > right ? 1 : 0;
+};
+
 /**
  * Today, in the last-known timezone, honouring the configured rollover hour
  * (PRD §8). A rollover of 4 means 03:00 still belongs to yesterday — the hour

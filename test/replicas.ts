@@ -11,10 +11,10 @@
  * Three decisions are worth stating, because they are what makes the generated
  * cases mean anything:
  *
- * - **Whole stores, not bare documents.** `openStore` is what wires up the cap
- *   repair, the membership repair and the undo manager, and those are exactly
- *   the mechanisms that concurrency breaks. A property test against bare
- *   `Y.Doc`s would test Yjs rather than this app.
+ * - **Whole stores, not bare documents.** `openStore` is what wires up the
+ *   membership repair and the undo manager, and those are exactly the
+ *   mechanisms that concurrency breaks. A property test against bare `Y.Doc`s
+ *   would test Yjs rather than this app.
  * - **A hub, not pairwise exchange.** Devices only ever talk through the relay,
  *   which holds a replica of its own and forwards what it is given. Anything
  *   that converges pairwise but not through a hub passes the wrong test.
@@ -35,7 +35,6 @@ import {
   listDays,
   openStore,
   SECTIONS,
-  NEXT_CAP,
   type Section,
   type Store,
   type Workspace,
@@ -127,9 +126,9 @@ export const openReplica = async (name: string, clientId: number): Promise<Repli
 };
 
 /**
- * The cap repair and the membership repair run on a microtask, and each one can
- * queue the next. A macrotask boundary drains the whole cascade rather than one
- * link of it, which `await Promise.resolve()` does not.
+ * The membership repair runs on a microtask, and its own writes can queue
+ * another. A macrotask boundary drains the whole cascade rather than one link
+ * of it, which `await Promise.resolve()` does not.
  */
 export const settle = (): Promise<void> =>
   new Promise((resolve) => {
@@ -323,10 +322,14 @@ export const storedMembership = (doc: Y.Doc): string[] =>
  * below do not all claim all of them: which defects a given sequence can and
  * cannot produce is the result, and a property that asserted "nothing is wrong"
  * would state it less precisely than one that names what it rules out.
+ *
+ * A Next holding more than three cards is deliberately **not** here. It is a
+ * legal converged state (PRD §3): the cap refuses a fourth *addition*, and two
+ * devices that each filled Next while apart have both added legally. The
+ * property that replaces it is that nothing gets moved or dropped to tidy it up
+ * — see "keep every device's Next items" in `syncProperties.test.ts`.
  */
 export type Defect =
-  /** More than three cards visible in a day's Next (PRD §3). */
-  | 'cap exceeded'
   /** One id twice in the same collection — a repair that did not run. */
   | 'duplicate membership'
   /** A collection holds an id whose canonical location says somewhere else. */
@@ -337,7 +340,6 @@ export type Defect =
   | 'orphaned card';
 
 export const ALL_DEFECTS: readonly Defect[] = [
-  'cap exceeded',
   'duplicate membership',
   'stale membership',
   'dangling id',
@@ -362,10 +364,6 @@ export const violations = (doc: Y.Doc, defects: readonly Defect[] = ALL_DEFECTS)
   };
 
   for (const date of listDays(doc)) {
-    if (cardsIn(doc, date, 'next').length > NEXT_CAP) {
-      report('cap exceeded', `${date} shows more than ${NEXT_CAP} cards in next`);
-    }
-
     for (const section of SECTIONS) {
       const collection = collectionOf(dayAt(doc, date), section);
       if (!collection) continue;

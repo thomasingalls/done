@@ -17,15 +17,17 @@ everything behaves exactly as it did in Phase 2. That is a requirement
 
 A day has three sections, and they are read in the order **Next, Done,
 Scheduled**: what you are doing, what you did, and the tail of intentions that
-have not come up yet. Done reads newest-first — anything completed goes on top.
+have not come up yet. Done reads newest-first — anything completed goes on top,
+and that order is the record, so sync carries it rather than only the cards.
 
 > **Phase 3 exit criteria** (PRD §13): phone and laptop consistent across a
 > week including offline edits on both, and a week of daily use without falling
 > back to the previous system. Both are things only a week can establish. What
 > the suite can pin down is every mechanism they rest on — convergence through
-> a relay rather than pairwise, a device catching up after being away, the cap
-> and compaction repairing concurrently on two devices, and one device's undo
-> stack staying clear of the other's changes.
+> a relay rather than pairwise, a device catching up after being away, two
+> devices that each filled Next while apart keeping every card, Done still
+> reading newest-first afterwards, compaction running concurrently on both, and
+> one device's undo stack staying clear of the other's changes.
 
 ## Running it
 
@@ -193,6 +195,38 @@ configured them.
 Phase 2, when nothing could see it. It is now the label that shows up on your
 other device, and "Android" is a worse answer than "the phone in the kitchen".
 
+**The cap is enforced once, where adding happens.** Every write path refuses to
+exceed three, which covers paste, multi-line insert, split and drag at the point
+of the mistake. Two devices each adding a third card while apart is not a
+mistake anyone made — both were under the cap when they wrote — so PRD §3 keeps
+every card: the merged day shows more than three and nothing runs to tidy it up.
+The rule does not soften, and an expanded Next takes nothing new until the user
+has moved it back under three, one card at a time, to Scheduled. _Phase 2 shipped
+a system-actor repair that relocated the overflow to Scheduled by itself. It
+converged and it deleted nothing, but it was the app deciding which of two
+devices' legitimate writes stopped being Next, and the PRD has now decided that
+the other way._
+
+**A card whose position was destroyed goes back by the section's own rule.** The
+one place an order is recomputed rather than merged is a day two devices created
+at once: they mint a `Y.Map` each, one wins the key, and the loser's arrays are
+deleted with it. The cards survive in the canonical registry, and the membership
+repair puts them back — appending to Next and Scheduled, where intent is not
+stored anywhere, and above everything completed earlier in Done, where it is.
+That makes `Card.createdAt` load-bearing rather than decorative, and it has to be
+strictly increasing per device: `Date.now()` reads milliseconds, a device can
+write several cards inside one, and two cards sharing a timestamp is that
+device's own order gone from the document. A reading that has not moved is nudged
+a nanosecond, which is a resolution instants have and clocks do not.
+
+_This is a mitigation, not a design._ Yjs orders concurrent insertions into one
+array exactly; the order is lost because the schema lets the array itself be
+created twice, and a `Y.Map` key is last-write-wins over whole values. Addressing
+a day's collections as root types (`day:ISODate:section`) would make them merge
+instead of race, and would let all of the above be deleted. It is deferred rather
+than rejected, with the costs written down in TRD §10.8 — the load-bearing one
+being that root types are never reclaimed, which is the bound TRD §4.5 rests on.
+
 **The initial bundle is 300.3 kB gzipped**, of the 350 kB §12 budget — up 5.7 kB
 from Phase 2, none of which is the provider itself: `y-websocket` is a 2.3 kB
 lazy chunk, and what landed in the initial bundle is the `lib0` and `y-protocols`
@@ -244,13 +278,6 @@ root maps. This keeps the no-date-on-card rule while making a concurrent move
 resolve to one visible location without copying or losing a simultaneous edit
 to the card's `Y.Text`. Existing Phase 2 documents migrate from embedded cards
 to this schema when opened.
-
-**The cap is enforced twice.** Every write path refuses to exceed three, which
-covers paste, multi-line insert and drag at the point of the mistake. Two
-devices each adding a third card while apart is not a mistake anyone made and
-still converges to four, so a system-actor repair moves the overflow to
-Scheduled on the same day. It never deletes: the overflow is something the user
-wrote.
 
 **Dates are Temporal, with a ponyfill for now.** A day key is a calendar date
 with no instant behind it, and `Date` has no type for that — every operation on
@@ -342,12 +369,13 @@ person's two devices are rarely both in front of them.
 
 What runs today: convergence including concurrent card moves; convergence
 through a relay rather than pairwise, with offline edits on both sides, a device
-catching up after being away, the cap and compaction repairing concurrently on
-two devices, and one device's undo stack staying clear of the other's changes;
-the sync controller's states and the guarantee that nothing is constructed
-before an endpoint is; the relay's authorization decisions, and — in the relay's
-own suite — the real process refusing a real bad token; editor/`Y.Text`
-round-trip, serializer round-trip, compaction safety, freeze independence, cap
-enforcement, undo scoping across all three system operations, the movement
-table, section order and Done's newest-first rule, the static render,
-live-preview geometry, pixel identity, layout, and the seams.
+catching up after being away, two devices that each filled Next while apart
+keeping every card, Done still reading newest-first on both, compaction running
+concurrently on two devices, and one device's undo stack staying clear of the
+other's changes; the sync controller's states and the guarantee that nothing is
+constructed before an endpoint is; the relay's authorization decisions, and — in
+the relay's own suite — the real process refusing a real bad token;
+editor/`Y.Text` round-trip, serializer round-trip, compaction safety, freeze
+independence, cap enforcement, undo scoping across the system operations,
+the movement table, section order and Done's newest-first rule, the static
+render, live-preview geometry, pixel identity, layout, and the seams.

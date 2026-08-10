@@ -27,11 +27,13 @@ import {
 } from './replicas';
 import { applyOp, cardBodyArbitrary, opArbitrary } from './operations';
 import {
+  NEXT_CAP,
   SECTIONS,
   archiveTextOf,
   cardsIn,
   compactDay,
   compose,
+  countIn,
   parseDay,
   readDayContent,
   serializeDay,
@@ -152,9 +154,15 @@ describe('one device, any sequence', () => {
 
   /**
    * PRD §3 as a standing claim rather than a list of cases: whatever was done
-   * to it, a day shows at most three cards in Next once the repair has run.
+   * to it, one device never puts a fourth card in Next.
+   *
+   * Checked after every operation rather than at the end, and stated as a count
+   * rather than through `violations`, because nothing tidies up after the write
+   * paths any more: a Next over three is a legal converged state that two
+   * devices can reach (see `syncProperties.test.ts`), and one device reaching
+   * it alone is a write path that let something through.
    */
-  it('never shows a fourth card in Next', async () => {
+  it('never puts a fourth card in Next', async () => {
     await fc.assert(
       fc.asyncProperty(
         fc.integer(),
@@ -166,7 +174,9 @@ describe('one device, any sequence', () => {
             for (const op of ops) {
               applyOp(only, op);
               await settle();
-              expect(violations(only.store.doc, ['cap exceeded'])).toEqual([]);
+              for (const date of DAYS) {
+                expect(countIn(only.store.doc, date, 'next')).toBeLessThanOrEqual(NEXT_CAP);
+              }
             }
           } finally {
             fleet.destroy();
