@@ -115,21 +115,36 @@ export const useYValue = <T>(
 export const useYDocValue = <T>(doc: YDoc | undefined, key: () => string, select: () => T): T => {
   'use no memo';
 
+  const keyRef = useRef(key);
+  const selectRef = useRef(select);
+  keyRef.current = key;
+  selectRef.current = select;
+
+  const cache = useRef<{ doc: YDoc | undefined; key: string; value: T } | null>(null);
+  if (!cache.current || cache.current.doc !== doc) {
+    cache.current = { doc, key: key(), value: select() };
+  }
+
   const subscribe = useCallback(
     (onChange: () => void) => {
-      const handler = (): void => onChange();
+      const handler = (): void => {
+        const nextKey = keyRef.current();
+        const current = cache.current;
+        if (current && current.doc === doc && current.key === nextKey) return;
+        cache.current = { doc, key: nextKey, value: selectRef.current() };
+        onChange();
+      };
       doc?.on('afterTransaction', handler);
+      // Close the render-to-subscribe gap: the document may have changed after
+      // the initial cache fill but before React installed this listener.
+      handler();
       return () => doc?.off('afterTransaction', handler);
     },
     [doc],
   );
-  const snapshot = useSyncExternalStore(subscribe, key, key);
-  const cache = useRef<{ key: string; value: T } | null>(null);
-
-  if (!cache.current || cache.current.key !== snapshot) {
-    cache.current = { key: snapshot, value: select() };
-  }
-  return cache.current.value;
+  const snapshot = useCallback(() => cache.current?.key ?? '', []);
+  useSyncExternalStore(subscribe, snapshot, snapshot);
+  return cache.current!.value;
 };
 
 /**

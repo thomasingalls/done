@@ -191,7 +191,7 @@ describe('compaction is safety-paused independently of the freeze', () => {
     expect(isCompacted(day)).toBe(true);
   });
 
-  it('reproduces the collections exactly, blank lines and all', async () => {
+  it('leaves every card intact without producing an archive', async () => {
     context = await harness();
     const old = ago(COMPACTION_DAYS);
     seed(context, old);
@@ -201,6 +201,7 @@ describe('compaction is safety-paused independently of the freeze', () => {
     const after = readCollections(context.store.doc, old);
 
     expect(after).toEqual(before);
+    expect(archiveTextOf(context.store.doc, old)).toBeUndefined();
   });
 
   it('is a mutation-free, repeatable deferral', async () => {

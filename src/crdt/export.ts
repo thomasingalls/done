@@ -10,10 +10,9 @@
  * days/2026-08-05.md
  * ```
  *
- * Documents are dumped verbatim; collections go through the one serializer,
- * which is the same transformation compaction performs. A compacted day
- * exports identically to an uncompacted one, because `readDayContent` reads
- * through the archive — compaction is invisible here too.
+ * Documents are dumped verbatim; collections go through the one serializer.
+ * A day compacted by a legacy client exports identically to an uncompacted one,
+ * because `readDayContent` reads through the archive.
  */
 
 import { toISODate } from '../lib/date';

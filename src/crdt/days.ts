@@ -192,36 +192,12 @@ export const ensureDay = (doc: YDoc, origin: unknown, date: ISODate): Day =>
 export const collectionOf = (day: Day | undefined, section: Section): Collection | undefined =>
   day?.get(section) as Collection | undefined;
 
-export interface OrphanCard {
+export interface RecoveryCard {
   id: string;
   card: Card;
-}
-
-export interface RecoveryCard extends OrphanCard {
   /** Retained when the card's former day collection no longer exists. */
   location: CardLocation | null;
 }
-
-/**
- * Registry cards with neither a canonical location nor physical membership.
- *
- * Repair deliberately retains these: absence is not proof of deletion in a
- * partially synced document. Exposing the entries gives recovery and audit
- * surfaces access to their content without assigning them an invented home.
- */
-export const orphanCards = (doc: YDoc): OrphanCard[] => {
-  const referenced = new Set<string>();
-  for (const date of listDays(doc)) {
-    const day = dayAt(doc, date);
-    for (const section of SECTIONS) {
-      for (const id of collectionOf(day, section)?.toArray() ?? []) referenced.add(id);
-    }
-  }
-
-  return [...cardsMap(doc).entries()].flatMap(([id, card]) =>
-    !cardLocation(doc, id) && !referenced.has(id) ? [{ id, card }] : [],
-  );
-};
 
 /**
  * Registry cards that no normal collection can currently show.
@@ -368,12 +344,9 @@ export const cardMembershipIssues = (doc: YDoc): MembershipIssue[] => {
   }
 
   for (const [id] of cardsMap(doc).entries()) {
-    const raw = locations.get(id);
-    if (raw === undefined) {
+    if (!locations.has(id)) {
       issues.push({ kind: 'card-without-location', id });
-      continue;
     }
-    if (!parseLocation(raw)) continue;
   }
 
   for (const date of listDays(doc)) {
@@ -418,25 +391,6 @@ export const cardMembershipIssues = (doc: YDoc): MembershipIssue[] => {
 };
 
 /**
- * Removes stale physical memberships left by concurrent moves and deletes, and
- * heals locationless cards where array evidence supplies a safe home.
- *
- * The card's canonical location map has one deterministic value per id, so
- * concurrent assignments have one winner; arrays retain ordering but no longer
- * decide which of two locations owns the item.
- *
- * Repair policy:
- * - array id with a card but no location → restore location from the first
- *   array occurrence (day order, then `SECTIONS` order)
- * - card with no location and no array evidence → retain it for recovery
- * - location (or invalid location string) without a card → drop the location
- * - location whose collection is gone (legacy compaction) → retain both the
- *   card and its last-known location for recovery
- * - otherwise reconcile arrays to the location map (drop strangers / duplicates,
- *   re-home missing ids according to section ordering)
- */
-
-/**
  * Where a card goes when it is re-homed — put back into the collection its
  * canonical location names, after the array entry that held its position was
  * destroyed (see `repairCardMemberships`).
@@ -477,6 +431,16 @@ const rehomeIndex = (doc: YDoc, collection: Collection, section: Section, card: 
  * The map has one deterministic value per id, so concurrent assignments have
  * one winner; arrays retain ordering but no longer decide which of two
  * locations owns the item.
+ *
+ * Repair policy:
+ * - array id with a card but no location → restore location from the first
+ *   array occurrence (day order, then `SECTIONS` order)
+ * - card with no location and no array evidence → retain it for recovery
+ * - location (or invalid location string) without a card → drop the location
+ * - location whose collection is gone (legacy compaction) → retain both the
+ *   card and its last-known location for recovery
+ * - otherwise reconcile arrays to the location map (drop strangers / duplicates,
+ *   re-home missing ids according to section ordering)
  */
 export const repairCardMemberships = (doc: YDoc, origin: unknown): number => {
   const removals: Array<{ collection: Collection; index: number }> = [];
@@ -545,7 +509,6 @@ export const repairCardMemberships = (doc: YDoc, origin: unknown): number => {
     if (home) {
       restoreLocations.push({ id, location: home });
       dropLocations.delete(id);
-      present.add(`${locationKey(home)}:${id}`);
     }
   }
 

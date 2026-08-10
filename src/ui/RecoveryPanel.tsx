@@ -11,6 +11,7 @@ import {
   NEXT_CAP,
   cardId,
   countIn,
+  isFrozen,
   recoverCardTo,
   recoverCardToGoals,
   removeRecoveryCard,
@@ -21,6 +22,7 @@ import {
 import type { CardHooks } from '../editor/cardCommands';
 import { formatDayLong, type ISODate } from '../lib/date';
 import { Card, type CardAction } from './Card';
+import { useYValue } from './useYjs';
 
 const recoveryHooks: CardHooks = {
   split: () => false,
@@ -45,36 +47,46 @@ export const RecoveryPanel = ({
   open,
   onClose,
 }: RecoveryPanelProps): React.ReactElement => {
-  const nextIsFull = countIn(store.doc, today, 'next') >= NEXT_CAP;
+  const nextIsFull = useYValue(
+    store.days,
+    () => `${countIn(store.doc, today, 'next')}`,
+    () => countIn(store.doc, today, 'next') >= NEXT_CAP,
+  );
 
-  const actionsFor = (id: string): CardAction[] => [
-    {
-      label: 'Scheduled',
-      hint: 'Recover to Scheduled today',
-      run: () => void recoverCardTo(workspace, id, { date: today, section: 'scheduled' }),
-    },
-    {
-      label: 'Next',
-      hint: 'Recover to Next today',
-      disabled: nextIsFull,
-      run: () => void recoverCardTo(workspace, id, { date: today, section: 'next' }),
-    },
-    {
-      label: 'Done',
-      hint: 'Recover to Done today',
-      run: () => void recoverCardTo(workspace, id, { date: today, section: 'done' }),
-    },
-    {
-      label: 'Goals',
-      hint: 'Recover to Goals',
-      run: () => void recoverCardToGoals(workspace, store.master, id),
-    },
-    {
-      label: 'Remove',
-      hint: 'Remove this recovery card',
-      run: () => void removeRecoveryCard(workspace, id),
-    },
-  ];
+  const actionsFor = (entry: RecoveryCard): CardAction[] => {
+    const id = cardId(entry.card);
+    const deletionDisabled = entry.location ? isFrozen(entry.location.date, today) : false;
+    return [
+      {
+        label: 'Scheduled',
+        hint: 'Recover to Scheduled today',
+        run: () => void recoverCardTo(workspace, id, { date: today, section: 'scheduled' }),
+      },
+      {
+        label: 'Next',
+        hint: 'Recover to Next today',
+        disabled: nextIsFull,
+        run: () => void recoverCardTo(workspace, id, { date: today, section: 'next' }),
+      },
+      {
+        label: 'Done',
+        hint: 'Recover to Done today',
+        run: () => void recoverCardTo(workspace, id, { date: today, section: 'done' }),
+      },
+      {
+        label: 'Goals',
+        hint: 'Recover to Goals',
+        disabled: deletionDisabled,
+        run: () => void recoverCardToGoals(workspace, store.master, id),
+      },
+      {
+        label: 'Remove',
+        hint: 'Remove this recovery card',
+        disabled: deletionDisabled,
+        run: () => void removeRecoveryCard(workspace, id),
+      },
+    ];
+  };
 
   return (
     <aside
@@ -114,7 +126,7 @@ export const RecoveryPanel = ({
                   section="scheduled"
                   frozen={false}
                   guarded={false}
-                  actions={actionsFor(id)}
+                  actions={actionsFor(entry)}
                   hooks={recoveryHooks}
                   editable={true}
                   origin={workspace.origin}

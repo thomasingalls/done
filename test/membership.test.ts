@@ -21,7 +21,6 @@ import {
   ensureDay,
   moveCard,
   newCard,
-  orphanCards,
   registerCard,
   recoveryCards,
   removeCard,
@@ -99,7 +98,7 @@ describe('card membership repair', () => {
     expect(
       cardMembershipIssues(workspace.doc).some((issue) => issue.kind === 'card-without-location'),
     ).toBe(true);
-    expect(orphanCards(workspace.doc)).toEqual([]);
+    expect(recoveryCards(workspace.doc)).toEqual([]);
     expect(cardsIn(workspace.doc, TODAY, 'next')).toEqual([]);
 
     expect(repairCardMemberships(workspace.doc, workspace.systemOrigin)).toBeGreaterThan(0);
@@ -122,7 +121,7 @@ describe('card membership repair', () => {
     expect(cardMembershipIssues(workspace.doc)).toEqual([{ kind: 'card-without-location', id }]);
 
     expect(repairCardMemberships(workspace.doc, workspace.systemOrigin)).toBe(0);
-    expect(orphanCards(workspace.doc).map(({ card }) => cardBody(card))).toEqual([
+    expect(recoveryCards(workspace.doc).map(({ card }) => cardBody(card))).toEqual([
       'orphaned forever',
     ]);
     expect(cardAt(workspace.doc, id)).toBeDefined();
@@ -284,7 +283,7 @@ describe('dogfood membership recovery', () => {
         .sort(),
     ).toEqual(['card-without-location', 'card-without-location']);
     expect(
-      orphanCards(workspace.doc)
+      recoveryCards(workspace.doc)
         .map(({ id }) => id)
         .sort(),
     ).toEqual(['hlhtu5', 'mynkan']);

@@ -8,6 +8,7 @@
  */
 
 import { afterEach, describe, expect, it } from 'vitest';
+import { addDays } from '../src/lib/date';
 import {
   cardBody,
   cardAt,
@@ -254,6 +255,43 @@ describe('recovery', () => {
     expect(removeRecoveryCard(context.me, removedId)).toBe(true);
     expect(cardAt(context.store.doc, removedId)).toBeUndefined();
     expect(recoveryCards(context.store.doc)).toEqual([]);
+  });
+
+  it('refuses recovery that would detach a stale reference from a frozen day', async () => {
+    context = await harness();
+    const frozen = addDays(TODAY, -3);
+    const past = { ...context.me, today: frozen };
+    compose(past, { date: frozen, section: 'done' }, 'frozen evidence');
+    const id = cardId(cardsIn(context.store.doc, frozen, 'done')[0]!);
+
+    transact(context.store.doc, context.store.actor.systemOrigin, () => {
+      setCardLocation(context.store.doc, id, { date: '2026-07-01', section: 'done' });
+    });
+
+    expect(recoveryCards(context.store.doc).map((entry) => entry.id)).toEqual([id]);
+    expect(recoverCardTo(context.me, id, { date: TODAY, section: 'done' })).toBe(false);
+    expect(recoverCardToGoals(context.me, context.store.master, id)).toBe(false);
+    expect(removeRecoveryCard(context.me, id)).toBe(false);
+    expect(collectionOf(dayAt(context.store.doc, frozen), 'done')?.toArray()).toEqual([id]);
+    expect(cardAt(context.store.doc, id)).toBeDefined();
+  });
+
+  it('rescues frozen provenance without allowing it to be deleted outright', async () => {
+    context = await harness();
+    const frozen = addDays(TODAY, -3);
+    const past = { ...context.me, today: frozen };
+    compose(past, { date: frozen, section: 'done' }, 'legacy survivor');
+    const id = cardId(cardsIn(context.store.doc, frozen, 'done')[0]!);
+    transact(context.store.doc, context.store.actor.systemOrigin, () => {
+      dayAt(context.store.doc, frozen)?.delete('done');
+    });
+
+    expect(recoverCardToGoals(context.me, context.store.master, id)).toBe(false);
+    expect(removeRecoveryCard(context.me, id)).toBe(false);
+    expect(cardAt(context.store.doc, id)).toBeDefined();
+
+    expect(recoverCardTo(context.me, id, { date: TODAY, section: 'scheduled' })).toBe(true);
+    expect(bodies(context, 'scheduled')).toEqual(['legacy survivor']);
   });
 });
 

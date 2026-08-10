@@ -51,9 +51,8 @@ const dayContentArbitrary: fc.Arbitrary<DayContent> = fc.record({
 
 describe('the day serializer', () => {
   /**
-   * TRD §11 requires `compact → parse` to reproduce arbitrary collections
-   * exactly, and compaction is the one destructive operation in the system:
-   * everything it deletes, it deletes on the strength of this round trip.
+   * The archive format must reproduce arbitrary collections exactly before
+   * destructive compaction can ever be re-enabled.
    */
   it('round trips any collection of cards, byte for byte', () => {
     fc.assert(
@@ -76,11 +75,10 @@ describe('the day serializer', () => {
 
 describe('compaction', () => {
   /**
-   * The verification inside `compactDay` runs before the deletion, so a day is
-   * either archived losslessly or left alone. This is the property that makes
-   * the deletion safe rather than the code comment that says it is.
+   * Safety-paused compaction leaves arbitrary live days exactly as it found
+   * them. Serializer correctness is covered independently above.
    */
-  it('either defers or reproduces the day exactly', async () => {
+  it('defers without changing the day', async () => {
     await fc.assert(
       fc.asyncProperty(fc.integer(), dayContentArbitrary, async (seed, content) => {
         const fleet = await openFleet(1, seed);
@@ -99,20 +97,10 @@ describe('compaction', () => {
           compactDay(only.store.doc, only.store.actor.systemOrigin, old, '2026-08-05');
           const archive = archiveTextOf(only.store.doc, old);
 
-          // Whatever it decided, the day reads exactly as it did — a deferred
-          // day still has its collections, a compacted one reads through the
-          // archive, and compaction is invisible from here either way.
           expect(readDayContent(only.store.doc, old)).toEqual(before);
-
-          // And where it did write an archive, that archive is the day. Where
-          // it did not, this is the assertion above restated, which is the
-          // point: there is no third outcome in which something was lost.
-          expect(parseDay(archive ?? serializeDay(before))).toEqual(before);
-
-          // A compacted day has given its cards back; a deferred one has not
-          // touched them. The reading above is the same in both cases.
+          expect(archive).toBeUndefined();
           expect(SECTIONS.flatMap((section) => cardsIn(only.store.doc, old, section))).toHaveLength(
-            archive === undefined ? SECTIONS.flatMap((section) => before[section]).length : 0,
+            SECTIONS.flatMap((section) => before[section]).length,
           );
         } finally {
           fleet.destroy();

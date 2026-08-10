@@ -8,33 +8,22 @@
  * deleted. Yjs converges correctly, but the deleted parent makes that edit
  * unreachable.
  *
- * Compaction is therefore safety-paused. Due days still take the exact
- * serialize/parse verification path, then report `deferred` and remain live.
- * Existing archives from earlier versions stay readable; no new destructive
- * archive is produced until the protocol can prove every replica has observed
- * the state being discarded.
+ * Compaction is therefore safety-paused. Due, non-empty days report `deferred`
+ * and remain live. Existing archives from earlier versions stay readable; no
+ * new destructive archive is produced until the protocol can prove every
+ * replica has observed the state being discarded.
  *
  * **Nothing here may consult the freeze, and freeze.ts may not consult this.**
  * Draft v2 of the TRD conflated them and §11 keeps a regression test for it.
  *
- * This is the only destructive operation in the system, so it carries the
- * mitigations §10.4 asks for:
- *
- * - the serializer is shared with export, so it is exercised continuously by
- *   something that deletes nothing;
- * - the round trip is verified — serialize, parse, compare — and a mismatch
- *   leaves the day alone. Yjs has no transaction rollback, so the verification
- *   runs *before* the deletion inside the same transaction rather than after
- *   it: same guarantee, and one that does not depend on being able to undo;
- * - a failure defers indefinitely rather than retrying destructively;
- * - the clock is only ever the local one. A day is compacted when the local
- *   date exceeds it by seven in the last-known timezone; no remote clock is
- *   consulted, so a wrong clock elsewhere cannot delete anything here.
+ * The paused path performs no serialization and no mutation. If destructive
+ * compaction is re-enabled, its serializer checks and replica acknowledgement
+ * protocol belong in the same change; until then, repeating work whose result
+ * cannot affect this outcome only increases launch cost.
  */
 
 import { daysBetween, type ISODate } from '../lib/date';
 import { SECTIONS, archiveOf, collectionOf, dayAt, isCompacted, listDays, type Day } from './days';
-import { parseCollections, readCollections, serializeCollections } from './serialize';
 import type { Origin } from './actors';
 import type { YDoc } from './yjs';
 
@@ -68,19 +57,9 @@ export const compactDay = (
   // headings. Nothing to reclaim, so nothing to risk.
   if (!hasCards(day)) return 'skipped';
 
-  const collections = readCollections(doc, date);
-  const archive = serializeCollections(collections);
-
-  const parsed = parseCollections(archive);
-  const matches = SECTIONS.every(
-    (section) =>
-      parsed[section].length === collections[section].length &&
-      parsed[section].every((body, index) => body === collections[section][index]),
-  );
-  if (!matches) return 'deferred';
-
-  // Safety pause: serialization is known-good, but there is no proof that an
-  // offline replica has observed the nested Yjs types we would delete.
+  // Safety pause: there is no proof that an offline replica has observed the
+  // nested Yjs types we would delete. Serialization is deferred with deletion;
+  // validating an archive that cannot be written only adds launch-time work.
   return 'deferred';
 };
 

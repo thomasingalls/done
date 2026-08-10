@@ -762,10 +762,9 @@ recovery.md              # only when retained cards have no visible collection
 ```
 
 The master list is dumped verbatim — it is already markdown. Collections serialize as lists of
-cards separated by blank lines, which is the same transformation compaction performs (§4.5).
-Since a day _is_ its collections, a day file and a compacted day's `archive` are the same
-bytes read by the same parser — so "exactly one serializer" is literal, and compaction
-exercises it continuously against something that deletes nothing.
+cards separated by blank lines. Since a day _is_ its collections, a day file and a legacy
+compacted day's `archive` are the same bytes read by the same parser — so "exactly one
+serializer" remains literal while destructive compaction is safety-paused (§4.5).
 
 A card can itself contain a blank line, so blank-line-delimited blocks would be ambiguous and
 §11's "reproduces the original collections exactly" would not hold. Each card is therefore
@@ -817,12 +816,12 @@ makes the index authoritative for anything, that's the bug.
 
 ### 10.4 Destructive compaction is safety-paused
 
-Round-trip verification protects against serializer mistakes but cannot establish that an
+Round-trip verification could protect against serializer mistakes but cannot establish that an
 offline replica has no unseen edits beneath a type about to be deleted. Compaction therefore
-defers indefinitely after verification and leaves the live Yjs graph intact. The cost is
-unbounded document growth; the benefit is that elapsed time is never mistaken for evidence
-that all replicas have synchronized. Retained cards from legacy compaction are exposed in the
-Today recovery panel and in `recovery.md` exports.
+defers indefinitely without serializing or mutating the day. The cost is unbounded document
+growth; the benefit is that elapsed time is never mistaken for evidence that all replicas have
+synchronized. Retained cards from legacy compaction are exposed in the Today recovery panel and
+in `recovery.md` exports.
 
 ### 10.5 Storage eviction
 

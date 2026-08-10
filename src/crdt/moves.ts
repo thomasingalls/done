@@ -252,13 +252,33 @@ export const removeCard = (workspace: Workspace, ref: Ref, id: string): boolean 
 /* -------------------------------------------------------------------------- */
 /* Recovery                                                                    */
 
-const isRecoverable = (workspace: Workspace, id: string): boolean =>
-  recoveryCards(workspace.doc).some((entry) => entry.id === id);
+const recoveryCard = (workspace: Workspace, id: string) =>
+  recoveryCards(workspace.doc).find((entry) => entry.id === id);
 
-/** Remove every stale physical reference before assigning a recovered home. */
-const detachCard = (doc: YDoc, id: string): void => {
-  for (const date of listDays(doc)) {
-    const day = dayAt(doc, date);
+/** Deleting a retained card also deletes its frozen provenance, when it has one. */
+const canDeleteRecoveryCard = (workspace: Workspace, id: string): boolean => {
+  const entry = recoveryCard(workspace, id);
+  return entry !== undefined && (!entry.location || writable(workspace, entry.location.date));
+};
+
+/** Recovery may clean stale memberships, but never by rewriting frozen history. */
+const canDetachCard = (workspace: Workspace, id: string): boolean => {
+  for (const date of listDays(workspace.doc)) {
+    const day = dayAt(workspace.doc, date);
+    for (const section of SECTIONS) {
+      const collection = collectionOf(day, section);
+      if (collection && collection.toArray().includes(id) && !writable(workspace, date)) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+/** Remove every writable stale physical reference before assigning a recovered home. */
+const detachCard = (workspace: Workspace, id: string): void => {
+  for (const date of listDays(workspace.doc)) {
+    const day = dayAt(workspace.doc, date);
     for (const section of SECTIONS) {
       const collection = collectionOf(day, section);
       if (!collection) continue;
@@ -271,12 +291,14 @@ const detachCard = (doc: YDoc, id: string): void => {
 
 /** Give an otherwise unreachable registry card a normal collection home. */
 export const recoverCardTo = (workspace: Workspace, id: string, to: Ref): boolean => {
-  if (!isRecoverable(workspace, id) || !canAccept(workspace, to)) return false;
+  if (!recoveryCard(workspace, id) || !canDetachCard(workspace, id) || !canAccept(workspace, to)) {
+    return false;
+  }
   const target = collectionAt(workspace, to);
   if (!target) return false;
 
   return discrete(workspace, () => {
-    detachCard(workspace.doc, id);
+    detachCard(workspace, id);
     setCardLocation(workspace.doc, id, to);
     target.insert(arrivalIndex(to.section, target.length), [id]);
     return true;
@@ -291,13 +313,13 @@ const asMasterItem = (card: Card): string => {
 /** Move a recovered card back to the free-form Goals document. */
 export const recoverCardToGoals = (workspace: Workspace, master: YText, id: string): boolean => {
   const card = cardAt(workspace.doc, id);
-  if (!card || !isRecoverable(workspace, id)) return false;
+  if (!card || !canDeleteRecoveryCard(workspace, id) || !canDetachCard(workspace, id)) return false;
 
   return discrete(workspace, () => {
     const current = master.toString();
     const separator = current.length === 0 || current.endsWith('\n') ? '' : '\n';
     master.insert(master.length, `${separator}${asMasterItem(card)}\n`);
-    detachCard(workspace.doc, id);
+    detachCard(workspace, id);
     cardsMap(workspace.doc).delete(id);
     setCardLocation(workspace.doc, id, null);
     return true;
@@ -306,9 +328,9 @@ export const recoverCardToGoals = (workspace: Workspace, master: YText, id: stri
 
 /** Explicitly discard a retained recovery card. */
 export const removeRecoveryCard = (workspace: Workspace, id: string): boolean => {
-  if (!isRecoverable(workspace, id)) return false;
+  if (!canDeleteRecoveryCard(workspace, id) || !canDetachCard(workspace, id)) return false;
   return discrete(workspace, () => {
-    detachCard(workspace.doc, id);
+    detachCard(workspace, id);
     cardsMap(workspace.doc).delete(id);
     setCardLocation(workspace.doc, id, null);
     return true;

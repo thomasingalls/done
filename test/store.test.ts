@@ -217,7 +217,9 @@ describe('local persistence', () => {
         content: 'still exportable',
       });
       if (!opened.local) throw new Error('The persistence test opened without a local store.');
-      await expect(opened.local.whenDurable()).rejects.toThrow();
+      await expect(opened.local.whenDurable()).rejects.toThrow(
+        'IndexedDB persistence transaction failed.',
+      );
     } finally {
       commit.mockRestore();
       store?.destroy();
