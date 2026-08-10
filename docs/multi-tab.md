@@ -47,8 +47,9 @@ It also brings three artifacts, all of which read as bugs:
   provider as the transaction origin, which is exactly what `onRemoteUpdate` tests for. Editing in
   another tab sets `lastSyncedAt`; the menu reports "synced just now, from another device" about
   bytes that never left the machine.
-- **Your own caret appears as a collaborator's.** `yCollab` renders remote carets from awareness,
-  and the other tab's is one.
+- **Your own caret appears as a collaborator's.** `yCollab` renders remote carets from awareness, and
+  the other tab's is one. Note the shape of this one carefully: the caret appearing is _right_ (§4.1),
+  and what is wrong is that nothing distinguishes it from a second person's.
 
 ### 1.1 What actually goes wrong without it
 
@@ -77,8 +78,10 @@ Three things, in dependency order.
 
 1. **Liveness.** An edit in one tab appears in the others without a reload, whether or not sync is
    configured, and whether or not a relay exists.
-2. **Identity.** A tab is not a device. Peers, remote carets, `lastSyncedFrom` and undo all
-   currently conflate the two.
+2. **Identity.** There are three levels — actor, device, session — and the code has two. The actor
+   is a person and lives in the synced roster; the device is a machine and lives in localStorage;
+   the session is a tab and **does not exist**, so every surface that needs one borrows a level that
+   does not fit. That is the whole of the identity problem, and §4.1 is the fix.
 3. **Single-writer resources.** IndexedDB's trim, compaction, the relay socket, and — Phase 4 —
    the `opfs-sahpool` lock that TRD §6.2 already promises to guard.
 
@@ -157,6 +160,8 @@ none of them is about the platform.
   because a worker that outlives its tabs can advance the document with nothing mounted. See §6 for
   the bfcache consequence, which is the same requirement as the BroadcastChannel path except that
   the authority is now in another context, so a stale tab cannot detect its own staleness.
+- **A dead worker is silent, and two tabs can end up on two different workers.** This is the
+  objection with teeth, and it is measured rather than feared — see §3.2.1.
 - **Testability, which is the objection worth taking seriously — but "untestable" was wrong.** It is
   untestable _in jsdom_ (verified: `typeof SharedWorker === 'undefined'`, and `'locks' in
 navigator === false`). That is a statement about the environment, not about the design, and this
@@ -169,14 +174,71 @@ navigator === false`). That is a statement about the environment, not about the 
   before assuming it does not); and OPFS cannot be tested in jsdom either, so **Phase 4 needs this
   environment regardless of what happens to SharedWorker.** See §7.
 
-Verdict: not now — but on sequencing grounds, not architectural ones. Every prerequisite a
-SharedWorker needs is prescribed elsewhere: the worker build and RPC layer by TRD §6.2, the
-real-browser test environment by OPFS. Do it first and you pay for all of that plus the ownership
-change in one change, with no search index to show for it. Do it after Phase 4 and the
-infrastructure is already bought, the tests already run in a browser, and the remaining work is the
-part that is actually about tabs. The BroadcastChannel path in the meantime is not a competing
+#### 3.2.1 What a dead SharedWorker actually does — measured
+
+Port reliability is the right thing to be afraid of, and it is worth separating two fears that get
+filed together. **Service workers** have a lifecycle the browser controls and that is actively
+hostile to long-lived state: terminated when idle, restarted on demand, with `install`/`activate`,
+claiming, and update-on-navigation all able to move under you. **SharedWorkers** have none of that —
+one lives as long as a client holds a port, `extendedLifetime` aside — so most of the scar tissue
+does not transfer. What does transfer is the part that matters: a port that stops delivering without
+telling you.
+
+That part is real, and rather than assert it either way I ran it: two pages in one Playwright
+context, one SharedWorker, then kill the worker out from under them via CDP.
+
+| Question                                         | Result                                                        |
+| ------------------------------------------------ | ------------------------------------------------------------- |
+| Do two pages in one context share one worker?    | Yes — `port` count 2, messages relay between pages            |
+| Does CDP see the worker?                         | Yes — `Target.getTargets` returns `type: 'shared_worker'`     |
+| Can CDP kill it deterministically?               | Yes — `Target.closeTarget` → `{ success: true }`, 0 remaining |
+| Does `postMessage` on the orphaned port throw?   | **No — it returns normally**                                  |
+| Does the other page receive anything?            | **No**                                                        |
+| Any `onerror`, `onmessageerror`, or close event? | **None, on either page**                                      |
+| Does `new SharedWorker(...)` resurrect one?      | Yes — but a **fresh** one, with no state and no other clients |
+| Does the page that did not reconnect rejoin?     | **No** — its old port stays bound to the dead worker          |
+
+So the failure mode is worse than "the worker can die". The worker dies, **every send still reports
+success**, nothing anywhere raises, and the first tab to reconnect gets a brand-new empty worker
+while every other tab sits on a port that will never deliver again. That is not a stalled hub, it is
+a **split brain**: two tabs, two workers, each believing it has one.
+
+Two conclusions follow, and they point in opposite directions, which is why this subsection exists.
+
+**Against:** a SharedWorker design is not complete without an application-level heartbeat — ping,
+expect pong, on timeout tear down the port and reconnect _and re-handshake state_, because the new
+worker knows nothing. Liveness cannot be inferred from sends succeeding; it can only be inferred
+from receiving. That is a protocol, with its own timeouts and its own failure modes, and it is
+strictly additional to everything else in §3.2.
+
+**For:** the thing that made this untestable is gone. `Target.closeTarget` on a `shared_worker`
+target is a one-line test primitive, so "worker dies mid-edit, both tabs recover and converge" is an
+ordinary automated test rather than a manual ritual. The reason it used to take lots and lots of
+manual testing is that there was no way to cause the failure on purpose. There is now. CDP is
+Chromium-only, which matches where the geometry suite already runs.
+
+By contrast the BroadcastChannel path has no analogue of any of this: no hub to die, no port to go
+silent, no split brain. A subscriber either exists or its tab is gone. That is not an argument that
+SharedWorker is wrong — it is an argument about what each option costs to make trustworthy, and it
+is the strongest single reason the ordering below is what it is.
+
+#### 3.2.2 Verdict on the worker
+
+Not now — but on sequencing grounds, not architectural ones. Every prerequisite a SharedWorker needs
+is prescribed elsewhere: the worker build and RPC layer by TRD §6.2, the real-browser test
+environment by OPFS. Do it first and you pay for all of that, plus the ownership change, plus the
+heartbeat protocol §3.2.1 shows it needs, with no search index to show for it. Do it after Phase 4
+and the infrastructure is already bought, the tests already run in a browser, and the remaining work
+is the part that is actually about tabs. The BroadcastChannel path in the meantime is not a competing
 architecture; it is ~180 lines behind the seam that stop the app being wrong on screen today, and
 §8's last line is that deleting it is a two-file change.
+
+And on liking OPFS and SQLite but not this cost: they are separable. TRD §6.2 as written does not
+need a SharedWorker — a **dedicated** worker per tab plus the `navigator.locks` guard it already
+specifies gives search to the tab holding the lock and a stated degradation to the others, with no
+hub, no ports between tabs, and nothing to heartbeat. The SharedWorker upgrade buys "every tab gets
+search" and one relay socket. §3.2.1 is the price of that upgrade, and it is fair to decide the
+upgrade is not worth it and still ship the index.
 
 ### 3.3 Web Locks leader election
 
@@ -262,16 +324,30 @@ What it buys, all of it already written and tested upstream:
 
 What it costs:
 
-- **A 3-second timer that does nothing, forever.** The constructor starts `_checkInterval` at
+- **A watchdog timer with nothing to watch.** The constructor starts `_checkInterval` at
   `messageReconnectTimeout / 10` (30_000 / 10), whose body is a no-op while `wsconnected` is false.
-  Clearing it means touching `_checkInterval`, which is the same private-field trade as Phase 1b.
-- **An `Awareness` instance nobody reads**, to keep tab awareness out of the app's (§4 decides
-  against carrying cursors between tabs; this is how you get that with a provider that always
-  publishes them).
+
+  The obvious objection is that `wsconnected` changes are events — the provider does `emit('status')`
+  at every transition — so why a timer at all? Because this timer is not observing a transition. It
+  compares `wsLastMessageReceived` against 30 seconds: it watches for a socket that is open at the
+  TCP level and has gone quiet, which is the half-open connection a phone leaves behind when it
+  loses a tunnel. **Silence cannot be delivered as an event**, so a clock is the right instrument
+  for this particular job. What is wrong is that the clock is not _gated_ on the events — start the
+  watchdog on `connected`, clear it on `disconnected`, and a provider that never connects never
+  arms it. That is a five-line change upstream and worth sending, because it removes the private
+  field from this section for everyone.
+
+  Locally: `clearInterval(provider._checkInterval)` after construction, the same private-field trade
+  as Phase 1b — or nothing at all. Calling this a cost overstated it: browsers clamp background
+  timers to ≥1s and, after a few minutes hidden, to roughly once a minute, and in the foreground a
+  3-second no-op is invisible next to CodeMirror and React.
+
 - **Dependence on undocumented behaviour.** `connectBc()` without `connect()` works in 3.0.0. It is
   not part of the documented API, and a minor version could reasonably make BroadcastChannel
-  subscription conditional on the socket. A test asserting cross-tab liveness with no relay
-  configured is what turns that from a silent regression into a build failure.
+  subscription conditional on the socket — or make the constructor connect. A test asserting
+  cross-tab liveness with no relay configured, _and_ that no socket was opened, is what turns either
+  of those from a silent regression into a build failure. It is the load-bearing test of this whole
+  approach; see §7.2.8.
 - **A socket-capable object that never opens a socket**, which reads oddly and will invite someone
   to "fix" it. It needs a comment saying why, in the voice of the one already above
   `openWebsocket`.
@@ -288,7 +364,55 @@ the costs above actually bites.
 **A tab channel over BroadcastChannel, behind the existing seam, constructed unconditionally.**
 Then stop, measure, and only add leader election when Phase 4 gives it a job.
 
-### Phase 1 — the tab channel
+### 4.1 Sessions, first — because the alternative is deleting a feature to hide a bug
+
+An earlier draft of this note decided the channel should not carry cursors, on the grounds that two
+tabs of one person do not need to see each other's carets. That was wrong, and wrong in a specific
+way worth naming: it was not a UX judgement, it was a workaround for missing identity. The `Mac,
+Mac` peer list and the self-caret are the same defect — surfaces reading identity at a level that
+does not describe what they are showing — and "carry less information" made the symptom go away
+without touching it.
+
+The unsurprising behaviour is the one every editor with tabs already has. Two tabs of a Google Doc
+give you two carets, two scroll positions and two undo histories, and nobody finds that confusing,
+because **a caret is a place someone is looking, and two tabs are two places.** A person editing
+two days of their own task list is in two places on purpose.
+
+So: three levels, each with an owner.
+
+| Level       | Answers                   | Lives in                      | Synced        |
+| ----------- | ------------------------- | ----------------------------- | ------------- |
+| **actor**   | who is editing            | `meta[actor:<id>]`            | yes           |
+| **device**  | which machine             | `localStorage['done.device']` | no            |
+| **session** | which tab, this run of it | awareness only                | no, ephemeral |
+
+A session id is generated per store and never written down — it is the one identity that must _not_
+be in localStorage, because persisting it would make two tabs share a session and a reload keep a
+stale one. `awareness.setLocalStateField('session', { id: newId() })`, beside the `device` field
+already set in `openStore`.
+
+Then each surface reads the level that fits, and every current artifact resolves without removing
+anything:
+
+- **Peer list** groups by **device**: `Mac, iPhone`, not `Mac, Mac`. Two tabs on one machine are one
+  peer — optionally `Mac (2 tabs)`, which is information rather than noise.
+- **`lastSyncedFrom`** is a **device** question and stays one, so a sibling tab is never reported as
+  a sync — which the distinct transaction origin already handles.
+- **Remote carets** are per **session**. Your other tab's caret shows up, as it should.
+- **Colour** comes from the **actor**, so both of your carets are your colour and a genuinely
+  different actor is visibly different. This is what makes per-session carets legible rather than
+  confusing: sameness of colour says "this is also you."
+
+Undo stays per tab, which is the same model as the multiple undo histories in the comparison above,
+so nothing needs to change in the code — only the TRD sentence that scopes undo to the actor without
+saying "within a page" (§9). The rest of that conversation is deferred, as it should be.
+
+The payoff for §3.5: **awareness crossing the channel is now the desired behaviour rather than
+something to work around**, so the borrowed provider's default shared `Awareness` is simply correct,
+and the "an `Awareness` nobody reads" cost disappears from the list. `disconnectBc()` already
+broadcasts a null awareness state on teardown, so a closed tab's caret vanishes with no code.
+
+### 4.2 Phase 1 — the tab channel
 
 New `src/crdt/tabs.ts`, sitting beside `sync.ts` as a second policy layer over a second transport,
 with the transport itself in `src/crdt/yjs.ts` — either the borrowed provider of §3.5 or a
@@ -298,12 +422,11 @@ outside the seam.
 
 Decisions, with reasons:
 
-- **Document updates only. No awareness in the app's `Awareness`.** The channel does not put cursors
-  on screen. Two tabs of one person do not need to see each other's carets, and keeping tab
-  awareness out is what fixes the `Mac, Mac` peer list and the self-caret in one move rather than
-  three. With the borrowed provider this means handing it an `Awareness` of its own (§3.5). This is
-  also why `openWebsocket` should pass `disableBc: true` from now on: cross-tab behaviour should
-  live in one place, and that place should not be the relay transport.
+- **Updates and awareness, over the app's own `Awareness`** — per §4.1, so the borrowed provider
+  needs no special handling. `openWebsocket` still passes `disableBc: true`, not to suppress
+  awareness but because cross-tab behaviour should live in one place, and that place should not be
+  the relay transport: a channel named after the relay is a channel that breaks whenever the relay
+  configuration UX changes.
 - **A sync handshake on open, not just a stream.** Publish `syncStep1` with the local state vector
   and answer an incoming step1 with step2. Without it, a tab that opens second is correct only to
   the extent that IndexedDB and the journal happened to be current — which is true today, and is
@@ -384,7 +507,8 @@ Under one `navigator.locks` leader, in this order of value:
 | `src/crdt/tabs.ts` (new)  | Policy: visibility/bfcache `resync`, teardown, and nothing else. Injectable `open` for tests, like `SyncOptions.open`. No storage concerns, no relay concerns.                                                                                                                                                                       |
 | `src/crdt/persistence.ts` | Phase 1b: detach `provider._storeUpdate` so the adapter is the only writer.                                                                                                                                                                                                                                                          |
 | `src/crdt/index.ts`       | Construct the tab channel after `await local.whenSynced` and before `createSync`; add it to `Store` and to `destroy()`.                                                                                                                                                                                                              |
-| `src/crdt/sync.ts`        | Dedupe the peer list by device id and drop entries whose device id is this device's — correct regardless of the tab channel, and no longer masked by it.                                                                                                                                                                             |
+| `src/crdt/index.ts`       | Also: `awareness.setLocalStateField('session', { id: newId() })`, beside the existing `device` field (§4.1).                                                                                                                                                                                                                         |
+| `src/crdt/sync.ts`        | Group the peer list by device id and drop this device's own entries, so two tabs are one peer (§4.1) — correct regardless of the tab channel, and currently masked by it.                                                                                                                                                            |
 | `src/ui/Menu.tsx`         | Optional: "2 tabs on this device", from a `hello`/`bye` count on the channel. Only if it earns the line.                                                                                                                                                                                                                             |
 | `docs/TRD.md`             | §9 below.                                                                                                                                                                                                                                                                                                                            |
 
@@ -419,9 +543,10 @@ export type OpenTabChannel = (options: TabOptions) => TabSession;
 | `storeState` trim overlapping another tab's write                                     | worsened                  | Phase 1b, then leader-only trim                                                                                                                                           |
 | Relay receives each edit once per open tab                                            | new                       | Accept — the relay's `on('update')` broadcast is a natural dedupe                                                                                                         |
 | Membership repair ping-pong                                                           | new, bounded              | `repairCardMemberships` returns 0 and opens no transaction when nothing is wrong, so a repair that finds nothing emits no update and the exchange terminates in one round |
-| Peer list and remote carets show your own tabs                                        | pre-existing              | Tab awareness goes to an `Awareness` nothing renders (§3.5); dedupe peers by device id                                                                                    |
-| `lastSyncedFrom` reports a same-device tab as a sync                                  | pre-existing              | `disableBc: true` plus the distinct origin                                                                                                                                |
-| Undo is per-tab while TRD §4.8 scopes undo to the _actor_, and two tabs are one actor | pre-existing, now visible | Per-tab is the right behaviour — undo follows the surface you are looking at — but the TRD sentence should say so instead of leaving it inferred                          |
+| Peer list shows your own tabs as separate devices                                     | pre-existing              | Group by device rather than by awareness entry (§4.1). Not fixed by carrying less information                                                                             |
+| Two carets of your own, indistinguishable from a second person's                      | pre-existing              | Per-session carets are correct; actor-derived colour is what makes them legible (§4.1)                                                                                    |
+| `lastSyncedFrom` reports a same-device tab as a sync                                  | pre-existing              | `disableBc: true` plus the distinct transaction origin; `lastSyncedFrom` stays a device question                                                                          |
+| Undo is per-tab while TRD §4.8 scopes undo to the _actor_, and two tabs are one actor | pre-existing, now visible | Per-tab is right and matches every other tabbed editor — the TRD sentence should say "within a page" instead of leaving it inferred                                       |
 | Journal entries crossing tabs                                                         | pre-existing              | Benign (§1); pin it with a test rather than leaving it as folklore                                                                                                        |
 | Service-worker update with several tabs open                                          | adjacent                  | Out of scope; the worker is precache-only (`src/pwa.ts`)                                                                                                                  |
 
@@ -488,12 +613,27 @@ jsdom can hold.
 7. **Property test.** Add a "two tabs, one device, one relay" topology to `test/replicas.ts`: tabs
    share a channel and a database, each has a socket. The existing invariants should hold unchanged
    — the interesting outcome is if they don't.
-8. **Cross-tab liveness with no relay configured**, as a regression test with a second job: it is
-   what catches an upstream change that makes `connectBc()` conditional on the socket (§3.5).
-9. **Playwright** (`test/geometry/sync.spec.ts` is the neighbour): two pages in **one** browser
-   context, so they share origin, BroadcastChannel and IndexedDB. This is the only place the
-   freeze/bfcache re-handshake can actually be exercised — a jsdom test can fire a `pageshow` event,
-   but it cannot freeze a page.
+8. **No relay configured, and no socket opened.** The load-bearing test of §3.5: cross-tab liveness
+   with sync absent, plus an assertion that the borrowed provider opened no websocket. It is what
+   catches an upstream change that makes `connectBc()` conditional on the socket, or makes the
+   constructor connect. `openWebsocket` is already injectable in tests, so the socket assertion has
+   somewhere to hang.
+9. **Sessions.** Two stores produce two awareness entries with distinct session ids and the same
+   device id; the peer list reports one peer; both carets carry the actor's colour (§4.1).
+10. **Playwright** (`test/geometry/sync.spec.ts` is the neighbour): two pages in **one** browser
+    context, so they share origin, BroadcastChannel and IndexedDB. This is the only place the
+    freeze/bfcache re-handshake can actually be exercised — a jsdom test can dispatch a `pageshow`
+    event, but it cannot freeze a page.
+11. **Only if a SharedWorker is ever built** — and worth writing down now because it is the test that
+    was missing: kill the worker mid-edit with CDP and assert both tabs recover and converge.
+    ```js
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send('Target.setDiscoverTargets', { discover: true });
+    const { targetInfos } = await cdp.send('Target.getTargets');
+    const sw = targetInfos.find((t) => t.type === 'shared_worker');
+    await cdp.send('Target.closeTarget', { targetId: sw.targetId });
+    ```
+    Verified against Chromium in this repo's container; see §3.2.1 for what it exposed.
 
 ---
 
@@ -526,8 +666,10 @@ in, not about whether they are worth buying.
 - **§7.1** — say that the tab channel is a _separate_ transport with its own null-by-default
   policy, and that deleting the sync configuration must not affect it. The current arrangement has
   it the other way round, which is the bug this note starts from.
-- **§4.8** — one sentence: undo is scoped to the actor _within a page_, and two tabs are two
-  histories.
+- **§4.8** — two changes. Undo is scoped to the actor _within a page_, and two tabs are two
+  histories. And the identity model gains its third level: actor, device, **session** — with the rule
+  that a session id is ephemeral and never persisted, which is what distinguishes it from the two
+  above it (§4.1).
 - **§11** — two additions. The sync-absent suite grows a multi-tab case, because sync-absent is
   precisely the configuration in which multi-tab does not work today. And the section should name a
   third environment: jsdom for logic, Playwright for layout, and a real browser for the platform APIs
