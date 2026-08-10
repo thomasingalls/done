@@ -23,6 +23,7 @@ import {
   newCard,
   orphanCards,
   registerCard,
+  recoveryCards,
   removeCard,
   repairCardMemberships,
   setCardLocation,
@@ -126,6 +127,24 @@ describe('card membership repair', () => {
     ]);
     expect(cardAt(workspace.doc, id)).toBeDefined();
     expect(cardMembershipIssues(workspace.doc)).toEqual([{ kind: 'card-without-location', id }]);
+
+    workspace.destroy();
+  });
+
+  it('retains a last-known location when a legacy-compacted collection is gone', () => {
+    const workspace = replica('a');
+    compose(workspace, { date: TODAY, section: 'done' }, 'late offline card');
+    const id = cardId(cardsIn(workspace.doc, TODAY, 'done')[0]!);
+    workspace.doc.transact(() => {
+      dayAt(workspace.doc, TODAY)?.delete('done');
+    }, workspace.systemOrigin);
+
+    expect(repairCardMemberships(workspace.doc, workspace.systemOrigin)).toBe(0);
+    expect(cardLocation(workspace.doc, id)).toEqual({ date: TODAY, section: 'done' });
+    expect(recoveryCards(workspace.doc).map(({ id: recoveryId }) => recoveryId)).toEqual([id]);
+    expect(cardMembershipIssues(workspace.doc)).toEqual([
+      { kind: 'location-without-collection', id, location: { date: TODAY, section: 'done' } },
+    ]);
 
     workspace.destroy();
   });

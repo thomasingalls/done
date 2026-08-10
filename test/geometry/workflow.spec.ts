@@ -245,7 +245,7 @@ test.describe('Phase 2 workflow', () => {
     await expect(merged).toContainText('first|second');
   });
 
-  test('compacted cards remain visible as a frozen archive', async ({ page }) => {
+  test('safety-deferred cards remain visible after the compaction threshold', async ({ page }) => {
     await page.clock.install({ time: new Date('2026-08-01T12:00:00Z') });
     await page.goto('/');
     const compose = activeDay(page).getByRole('textbox', { name: 'What got done?' });

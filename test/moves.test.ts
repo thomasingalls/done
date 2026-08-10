@@ -10,16 +10,24 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import {
   cardBody,
+  cardAt,
   cardId,
   cardOrigin,
   cardsIn,
+  collectionOf,
   compose,
   copyFromMaster,
+  dayAt,
   mergeCardBackwards,
   moveCard,
+  recoverCardTo,
+  recoverCardToGoals,
+  recoveryCards,
   reorderCard,
   removeCard,
   removeFromMaster,
+  removeRecoveryCard,
+  setCardLocation,
   splitCard,
   transact,
 } from '../src/crdt';
@@ -201,6 +209,46 @@ describe('removal', () => {
     const id = cardId(cardsIn(context.store.doc, TODAY, 'scheduled')[0]!);
     expect(removeCard(context.me, { date: TODAY, section: 'scheduled' }, id)).toBe(true);
     expect(bodies(context, 'scheduled')).toEqual([]);
+  });
+});
+
+describe('recovery', () => {
+  const makeOrphan = (test: Harness, body: string): string => {
+    compose(test.me, { date: TODAY, section: 'done' }, body);
+    const id = cardId(cardsIn(test.store.doc, TODAY, 'done')[0]!);
+    const collection = collectionOf(dayAt(test.store.doc, TODAY), 'done')!;
+    transact(test.store.doc, test.store.actor.systemOrigin, () => {
+      collection.delete(collection.toArray().indexOf(id), 1);
+      setCardLocation(test.store.doc, id, null);
+    });
+    return id;
+  };
+
+  it('places a retained card into a normal collection as one undoable move', async () => {
+    context = await harness();
+    const id = makeOrphan(context, 'found again');
+
+    expect(recoveryCards(context.store.doc).map(({ id: recoveryId }) => recoveryId)).toEqual([id]);
+    expect(recoverCardTo(context.me, id, { date: TODAY, section: 'scheduled' })).toBe(true);
+    expect(bodies(context, 'scheduled')).toEqual(['found again']);
+    expect(recoveryCards(context.store.doc)).toEqual([]);
+
+    context.store.undo.undo();
+    expect(bodies(context, 'scheduled')).toEqual([]);
+    expect(recoveryCards(context.store.doc).map(({ id: recoveryId }) => recoveryId)).toEqual([id]);
+  });
+
+  it('can move retained content to Goals or remove it explicitly', async () => {
+    context = await harness();
+    const goalsId = makeOrphan(context, 'project idea\nwith context');
+    expect(recoverCardToGoals(context.me, context.store.master, goalsId)).toBe(true);
+    expect(context.store.master.toString()).toContain('- [ ] project idea\n  with context');
+    expect(cardAt(context.store.doc, goalsId)).toBeUndefined();
+
+    const removedId = makeOrphan(context, 'discard me');
+    expect(removeRecoveryCard(context.me, removedId)).toBe(true);
+    expect(cardAt(context.store.doc, removedId)).toBeUndefined();
+    expect(recoveryCards(context.store.doc)).toEqual([]);
   });
 });
 

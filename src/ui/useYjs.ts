@@ -50,7 +50,7 @@
  */
 
 import { useCallback, useRef, useSyncExternalStore } from 'react';
-import type { YText } from '../crdt';
+import type { YDoc, YText } from '../crdt';
 
 /**
  * Structural rather than `Y.Map<T>`, because Yjs's generics are invariant and
@@ -100,6 +100,30 @@ export const useYValue = <T>(
   'use no memo';
 
   const snapshot = useYWatch(target, key);
+  const cache = useRef<{ key: string; value: T } | null>(null);
+
+  if (!cache.current || cache.current.key !== snapshot) {
+    cache.current = { key: snapshot, value: select() };
+  }
+  return cache.current.value;
+};
+
+/**
+ * A derived value spanning multiple Yjs roots. Recovery depends on the card
+ * registry, canonical locations, and day arrays, so no one root is sufficient.
+ */
+export const useYDocValue = <T>(doc: YDoc | undefined, key: () => string, select: () => T): T => {
+  'use no memo';
+
+  const subscribe = useCallback(
+    (onChange: () => void) => {
+      const handler = (): void => onChange();
+      doc?.on('afterTransaction', handler);
+      return () => doc?.off('afterTransaction', handler);
+    },
+    [doc],
+  );
+  const snapshot = useSyncExternalStore(subscribe, key, key);
   const cache = useRef<{ key: string; value: T } | null>(null);
 
   if (!cache.current || cache.current.key !== snapshot) {

@@ -102,6 +102,10 @@ const collectionLines = (bodies: readonly string[]): string[] => {
   return out;
 };
 
+/** Canonical list-item encoding, shared by day files and recovery export. */
+export const serializeCardList = (bodies: readonly string[]): string =>
+  collectionLines(bodies).join('\n');
+
 /**
  * Splits a section body into cards. The blank line before each card start is
  * the separator this serializer wrote, so exactly one is removed — anything

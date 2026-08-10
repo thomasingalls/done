@@ -190,6 +190,11 @@ export interface OrphanCard {
   card: Card;
 }
 
+export interface RecoveryCard extends OrphanCard {
+  /** Retained when the card's former day collection no longer exists. */
+  location: CardLocation | null;
+}
+
 /**
  * Registry cards with neither a canonical location nor physical membership.
  *
@@ -209,6 +214,32 @@ export const orphanCards = (doc: YDoc): OrphanCard[] => {
   return [...cardsMap(doc).entries()].flatMap(([id, card]) =>
     !cardLocation(doc, id) && !referenced.has(id) ? [{ id, card }] : [],
   );
+};
+
+/**
+ * Registry cards that no normal collection can currently show.
+ *
+ * This includes fully locationless orphans and cards whose last-known day was
+ * compacted by an older client. A location pointing at a missing collection is
+ * evidence, not corruption, so it is exposed to recovery instead of erased.
+ */
+export const recoveryCards = (doc: YDoc): RecoveryCard[] => {
+  const referenced = new Set<string>();
+  for (const date of listDays(doc)) {
+    const day = dayAt(doc, date);
+    for (const section of SECTIONS) {
+      for (const id of collectionOf(day, section)?.toArray() ?? []) referenced.add(id);
+    }
+  }
+
+  return [...cardsMap(doc).entries()]
+    .flatMap(([id, card]): RecoveryCard[] => {
+      const location = cardLocation(doc, id);
+      if (!location) return referenced.has(id) ? [] : [{ id, card, location: null }];
+      const collection = collectionOf(dayAt(doc, location.date), location.section);
+      return collection ? [] : [{ id, card, location }];
+    })
+    .sort((left, right) => left.id.localeCompare(right.id));
 };
 
 /** Set by compaction; its presence means the collections have been collapsed (§4.5). */
@@ -306,8 +337,9 @@ export type MembershipIssue =
 
 /**
  * Diagnostics for tests and audits. A successful repair can intentionally
- * leave `card-without-location`: those cards are exposed by `orphanCards`
- * rather than deleted without evidence.
+ * leave recoverable issues (`card-without-location` and
+ * `location-without-collection`) rather than deleting cards or provenance
+ * without evidence.
  */
 export const cardMembershipIssues = (doc: YDoc): MembershipIssue[] => {
   const issues: MembershipIssue[] = [];
@@ -391,8 +423,8 @@ export const cardMembershipIssues = (doc: YDoc): MembershipIssue[] => {
  *   array occurrence (day order, then `SECTIONS` order)
  * - card with no location and no array evidence → retain it for recovery
  * - location (or invalid location string) without a card → drop the location
- * - location whose collection is gone (compacted) → drop the location but
- *   retain the card for recovery
+ * - location whose collection is gone (legacy compaction) → retain both the
+ *   card and its last-known location for recovery
  * - otherwise reconcile arrays to the location map (drop strangers / duplicates,
  *   append missing ids)
  */
@@ -452,10 +484,7 @@ export const repairCardMemberships = (doc: YDoc, origin: unknown): number => {
     const location = cardLocation(doc, id);
     if (location) {
       const collection = collectionOf(dayAt(doc, location.date), location.section);
-      if (!collection) {
-        dropLocations.add(id);
-        continue;
-      }
+      if (!collection) continue;
       if (!present.has(`${locationKey(location)}:${id}`)) missing.push({ collection, id });
       continue;
     }

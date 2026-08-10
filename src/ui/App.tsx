@@ -32,17 +32,20 @@ import {
   DEFAULT_SETTINGS,
   compactDueDays,
   readSettings,
+  recoveryCards,
   scheduleCompaction,
+  type RecoveryCard,
   type Workspace,
 } from '../crdt';
 import { DayPlane } from './DayPlane';
 import { Goals } from './Goals';
 import { Menu } from './Menu';
+import { RecoveryPanel } from './RecoveryPanel';
 import { StaleBanner } from './StaleBanner';
 import { goalsIsPanel, menuIsPanel, useBreakpoint } from './useBreakpoint';
 import { useStore } from './useStore';
 import { useToday } from './useToday';
-import { useYValue } from './useYjs';
+import { useYDocValue, useYValue } from './useYjs';
 
 const clamp = (value: number, min: number, max: number): number =>
   Math.min(max, Math.max(min, value));
@@ -66,6 +69,18 @@ export const App = (): React.ReactElement => {
   const [date, setDate] = useState<ISODate>(currentDate);
   const [menuOpen, setMenuOpen] = useState(false);
   const [goalsOpen, setGoalsOpen] = useState(false);
+  const [recoveryOpen, setRecoveryOpen] = useState(false);
+
+  const recovery = useYDocValue<RecoveryCard[]>(
+    store?.doc,
+    () =>
+      store
+        ? recoveryCards(store.doc)
+            .map(({ id, location }) => `${id}:${location?.date ?? ''}:${location?.section ?? ''}`)
+            .join('|')
+        : 'absent',
+    () => (store ? recoveryCards(store.doc) : []),
+  );
 
   const [lateral, setLateral] = useState<Lateral | null>(null);
   const [menuProgress, setMenuProgress] = useState(0);
@@ -200,6 +215,7 @@ export const App = (): React.ReactElement => {
 
   const shell = useGestures<HTMLDivElement>({
     config: { navigable: ['x', 'y'] },
+    enabled: !recoveryOpen,
     canNavigate,
     handlers: {
       onNavigationStart: (axis) => {
@@ -304,6 +320,11 @@ export const App = (): React.ReactElement => {
       const target = event.target as HTMLElement | null;
       const typing = target?.closest('.cm-editor, input, textarea') != null;
 
+      if (recoveryOpen) {
+        if (event.key === 'Escape') setRecoveryOpen(false);
+        return;
+      }
+
       if (event.key === 'Escape' && (menuOpen || goalsOpen)) {
         closeLateral();
         return;
@@ -336,7 +357,17 @@ export const App = (): React.ReactElement => {
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [closeLateral, goTo, goalsOpen, goalsOverlay, menuOpen, menuOverlay, step, today]);
+  }, [
+    closeLateral,
+    goTo,
+    goalsOpen,
+    goalsOverlay,
+    menuOpen,
+    menuOverlay,
+    recoveryOpen,
+    step,
+    today,
+  ]);
 
   /** Compaction, opportunistically, on idle. Never on the keystroke path. */
   useEffect(() => {
@@ -357,6 +388,10 @@ export const App = (): React.ReactElement => {
     if (!menuOverlay) setMenuOpen(false);
     if (!goalsOverlay) setGoalsOpen(false);
   }, [goalsOverlay, menuOverlay]);
+
+  useEffect(() => {
+    if (recovery.length === 0) setRecoveryOpen(false);
+  }, [recovery.length]);
 
   /**
    * A narrow Goals panel is an editing surface. Its keyboard must not resize
@@ -421,6 +456,7 @@ export const App = (): React.ReactElement => {
       data-breakpoint={breakpoint}
       data-menu={lateral === 'menu' ? 'dragging' : menuOpen ? 'open' : 'closed'}
       data-goals={lateral === 'goals' ? 'dragging' : goalsOpen ? 'open' : 'closed'}
+      data-recovery={recoveryOpen ? 'open' : 'closed'}
       // `data-select` is owned by useGestures — React must not re-assert it on
       // a render that happens to land mid-selection.
       // Derived rather than kept in step: the drag owns the number only while
@@ -457,6 +493,23 @@ export const App = (): React.ReactElement => {
         onClose={closeLateral}
       />
 
+      <RecoveryPanel
+        store={store}
+        workspace={workspace}
+        today={today}
+        cards={recovery}
+        open={recoveryOpen}
+        onClose={() => setRecoveryOpen(false)}
+      />
+
+      <button
+        type="button"
+        className="recovery-scrim"
+        aria-label="Close recovery"
+        tabIndex={recoveryOpen ? 0 : -1}
+        onClick={() => setRecoveryOpen(false)}
+      />
+
       <button type="button" className="scrim" aria-label="Close" onClick={closeLateral} />
 
       <div className="plane" ref={plane} onWheel={onDayWheel}>
@@ -472,6 +525,12 @@ export const App = (): React.ReactElement => {
           menuOpen={menuOpen}
           onOpenMenu={() => setMenuOpen((open) => !open)}
           onGoTo={goTo}
+          recoveryCount={recovery.length}
+          recoveryOpen={recoveryOpen}
+          onOpenRecovery={() => {
+            closeLateral();
+            setRecoveryOpen((open) => !open);
+          }}
         />
       </div>
 
