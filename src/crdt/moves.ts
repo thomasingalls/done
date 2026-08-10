@@ -26,7 +26,7 @@
  */
 
 import type { ISODate } from '../lib/date';
-import { BLOCK_MARKER, newId } from '../lib/id';
+import { newId } from '../lib/id';
 import type { ActorId, Origin } from './actors';
 import {
   NEXT_CAP,
@@ -303,12 +303,9 @@ export const removeRecoveryCard = (workspace: Workspace, id: string): boolean =>
 /* -------------------------------------------------------------------------- */
 /* The master list                                                             */
 
-/** `- [ ] Draft the plan ^k3f9x2` → `Draft the plan`. */
+/** `- [ ] Draft the plan` → `Draft the plan`. */
 const stripLineMarkup = (line: string): string =>
-  line
-    .replace(BLOCK_MARKER, '')
-    .replace(/^\s*(?:[-*+]|\d+[.)])\s+(?:\[[ xX]\]\s+)?/, '')
-    .trimEnd();
+  line.replace(/^\s*(?:[-*+]|\d+[.)])\s+(?:\[[ xX]\]\s+)?/, '').trimEnd();
 
 /**
  * Copy-to (PRD §4). **Does not modify master.** The master list is not expected

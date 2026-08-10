@@ -22,6 +22,7 @@ import {
   moveAllNextToMaster,
   newCard,
   openStore,
+  openTree,
   readSchemaVersion,
   readSettings,
   setRolloverHour,
@@ -156,6 +157,15 @@ describe('the actor roster', () => {
     expect(origins[0]).toMatchObject({ kind: 'human', device: store.actor.device.id });
     store.destroy();
   });
+
+  it('uses UUIDs for new actor and device identities', async () => {
+    const store = await openStore({ persist: false });
+    const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/u;
+
+    expect(store.actor.id).toMatch(uuid);
+    expect(store.actor.device.id).toMatch(uuid);
+    store.destroy();
+  });
 });
 
 describe('local persistence', () => {
@@ -213,6 +223,26 @@ describe('editable settings', () => {
 });
 
 describe('schema migration', () => {
+  it('removes legacy caret markers once, then treats caret text literally', async () => {
+    const doc = new Y.Doc();
+    const meta = doc.getMap('meta');
+    const master = doc.getText('master');
+    doc.transact(() => {
+      meta.set('schemaVersion', 3);
+      master.insert(0, '- [ ] Draft the migration ^abc123\nMath uses 2 ^ 3\nUppercase ^ABC123\n');
+    });
+
+    const store = await openStore({ doc, persist: false });
+    expect(master.toString()).toBe(
+      '- [ ] Draft the migration\nMath uses 2 ^ 3\nUppercase ^ABC123\n',
+    );
+
+    transact(doc, store.actor.origin, () => master.insert(master.length, 'Literal ^def456\n'));
+    openTree(doc, store.actor.systemOrigin);
+    expect(master.toString()).toContain('Literal ^def456\n');
+    store.destroy();
+  });
+
   it('flattens schema-v2 actor and settings maps without losing values', async () => {
     const doc = new Y.Doc();
     const meta = doc.getMap('meta');

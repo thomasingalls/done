@@ -134,8 +134,11 @@ describe('master → collection is two steps', () => {
     ]);
 
     expect(copied).toBe(2);
-    // The list marker, the checkbox and the block marker are chrome, not content.
-    expect(bodies(context, 'next')).toEqual(['Draft the migration plan', 'Call the dentist']);
+    // Only list and checkbox markup is chrome; caret notation is ordinary text.
+    expect(bodies(context, 'next')).toEqual([
+      'Draft the migration plan ^k3f9x2',
+      'Call the dentist',
+    ]);
     expect(context.store.master.toString()).toContain('Draft the migration plan ^k3f9x2');
   });
 
@@ -170,7 +173,9 @@ describe('splitting and merging', () => {
     // The caret sits after the two returns; the split consumes them.
     const created = splitCard(context.me, { date: TODAY, section: 'done' }, id, 10, 12);
 
-    expect(created).toMatch(/^[a-z0-9]{6}$/);
+    expect(created).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/u,
+    );
     expect(bodies(context, 'done')).toEqual(['first half', 'second half']);
   });
 

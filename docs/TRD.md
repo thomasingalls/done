@@ -232,16 +232,15 @@ reachable. The seven-day threshold remains independent of the three-day freeze.
 
 ### 4.6 Item identity in documents
 
-The master list is plain markdown. Most lines are anonymous. A line gains a stable ID only
-when something points at it, as a trailing caret marker in Obsidian block-reference style:
+The master list is plain markdown and its lines are anonymous. It contains no hidden identity
+syntax: the editor neither generates nor hides trailing caret suffixes, and caret text authored
+after the schema-v4 migration is ordinary text.
 
-```markdown
-- [ ] Draft the migration plan ^k3f9x2
-- [x] Call the dentist ^m2p8qq
-```
-
-IDs are 6 lowercase alphanumeric characters, generated on demand, collision-checked against
-the index. The marker is hidden by the editor decoration unless the cursor is on that line.
+Cards, actors, and devices have internal UUIDs. Card UUIDs are keys in the canonical registry and
+day collections; actor and device UUIDs support attribution. None are rendered into the master
+document or otherwise exposed as user-facing identifiers. Existing short identifiers remain
+valid when older documents are opened. Schema v4 removes the obsolete six-character trailing
+caret suffixes from pre-v4 master documents once, then treats any future caret text literally.
 
 Completion is `- [x]` and nothing more. **There is no `📅` scheduled-date syntax and no `✅`
 completion-timestamp syntax** — both were in draft v2 and both are cut per PRD §9, being

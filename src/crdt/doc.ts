@@ -21,7 +21,7 @@ import type { Origin } from './actors';
 import { Temporal } from '../lib/temporal';
 import { cardLocationsMap, cardsMap, daysMap, migrateCardsToRegistry } from './days';
 
-export const SCHEMA_VERSION = 3;
+export const SCHEMA_VERSION = 4;
 
 export interface Settings {
   /** Hour at which the day rolls over, in the last-known timezone (PRD §8). */
@@ -39,6 +39,23 @@ const legacyRolloverHour = (meta: YMap<unknown>): number | null => {
   const settings = meta.get('settings') as YMap<unknown> | undefined;
   const value = settings?.get('rolloverHour');
   return validRolloverHour(value) ? value : null;
+};
+
+/**
+ * Schema v3 treated a trailing six-character caret suffix as hidden identity
+ * syntax. Identity now lives only in the CRDT, so remove those legacy suffixes
+ * once and leave all caret text authored after the migration untouched.
+ */
+const removeLegacyBlockMarkers = (master: YText): void => {
+  const source = master.toString();
+  const ranges = [...source.matchAll(/[ \t]+\^[a-z0-9]{6}[ \t]*(?=\n|$)/gu)].map((match) => ({
+    from: match.index,
+    length: match[0].length,
+  }));
+  for (let index = ranges.length - 1; index >= 0; index -= 1) {
+    const range = ranges[index] as { from: number; length: number };
+    master.delete(range.from, range.length);
+  }
 };
 
 export interface DocumentTree {
@@ -69,6 +86,7 @@ export const openTree = (doc: YDoc, origin: Origin): DocumentTree => {
   if (storedVersion < 2) migrateCardsToRegistry(doc, origin);
 
   transact(doc, origin, () => {
+    if (storedVersion < 4) removeLegacyBlockMarkers(master);
     if (storedVersion < SCHEMA_VERSION) meta.set('schemaVersion', SCHEMA_VERSION);
     if (!meta.has('createdAt')) meta.set('createdAt', Temporal.Now.instant().toString());
     // Schema-v2 stored a nested settings map. Copy its value to a flat key so

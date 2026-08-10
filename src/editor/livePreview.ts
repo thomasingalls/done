@@ -32,7 +32,6 @@ import {
   WidgetType,
 } from '@codemirror/view';
 import type { SyntaxNodeRef } from '@lezer/common';
-import { BLOCK_MARKER } from '../lib/id';
 import { toggleTaskAt } from './commands';
 
 const HIDDEN = Decoration.replace({});
@@ -108,7 +107,7 @@ const activeSpans = (state: EditorState): LineSpan[] =>
 const spansIntersect = (spans: LineSpan[], first: number, last: number): boolean =>
   spans.some((span) => span.from <= last && span.to >= first);
 
-/** Extends a range rightwards over the single space that follows a block marker. */
+/** Extends a syntax range over the single space that follows it. */
 const withTrailingSpace = (state: EditorState, to: number): number =>
   state.doc.sliceString(to, to + 1) === ' ' ? to + 1 : to;
 
@@ -280,21 +279,6 @@ export const buildDecorations = (
 
   for (const range of ranges) {
     tree.iterate({ from: range.from, to: range.to, enter });
-
-    // Block markers (`^k3f9x2`, TRD §4.6) are not markdown syntax, so they are
-    // matched per line rather than walked in the tree.
-    let pos = range.from;
-    while (pos <= range.to) {
-      const line = state.doc.lineAt(pos);
-      const match = BLOCK_MARKER.exec(line.text);
-      if (match) {
-        const start = line.from + (match.index ?? 0) + 1;
-        push(start, line.to, MARK, 'mark');
-        hide(start, line.to);
-      }
-      if (line.to >= range.to) break;
-      pos = line.to + 1;
-    }
   }
 
   return Decoration.set(decorations, true);
