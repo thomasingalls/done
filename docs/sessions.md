@@ -1,6 +1,6 @@
 # done — Sessions and Identity: Product Requirements
 
-**Status:** Draft v3 — **13 of 22 decisions recorded**, the rest open. See §8.
+**Status:** Draft v4 — **15 of 24 decisions recorded**, the rest open. See §8.
 **Date:** 2026-08-10
 **Audience:** the author, deciding. Not an implementation plan.
 **Amends:** PRD §11 (Actors), PRD §12 (non-goals) — see §9.
@@ -489,8 +489,7 @@ one to pretend to be the other — which is what makes "always a new actor" the 
 a limitation, and it is why the roster having two entries is only a bug when the UI shows both to a
 human as though they were two people.
 
-**D-19. How does a device find the other devices that are yours?** _(Open, and it is the hole D-4 was
-circling.)_
+**D-19. How does a device find the other devices that are yours?** _(The hole D-4 was circling.)_
 
 Today the mechanism is three text fields typed identically on both devices, which Rule 1 forbids and
 which is also the only reason the two ever meet. So this is not a refinement of an existing flow; it is
@@ -503,11 +502,56 @@ a flow that does not exist yet. Options, all of which assume something about the
 | Pairing between devices        | Scans a code shown on the other device.              | Both devices present at once; a pairing protocol; no account.   |
 | Discovery on the local network | Nothing, on a shared network.                        | mDNS or similar, which a browser cannot do — so a relay anyway. |
 
-The middle two are the real candidates, and they differ in a way worth deciding deliberately: pairing
-needs no account and therefore keeps rung 1 useful, while sign-in needs an account and therefore makes
-cross-device sync a reason to climb the ladder. Both produce the same artifact at the end — a list of
-your own devices — which is the same list D-18 revokes from and the same one §1.2 calls the irreducible
-security surface.
+> **Decided: build both middle options.** A pairing flow that creates the discovery channel without
+> creating an account, and a sign-in flow for when there is one. The ladder does not merely permit both,
+> it requires them.
+
+**Why the ladder requires both, spelled out**, because this is what makes its rungs functional rather
+than decorative:
+
+| Rung             | Discovery mechanism | What it buys                                   |
+| ---------------- | ------------------- | ---------------------------------------------- |
+| **1. Generated** | none                | one device, local only                         |
+| **2. Named**     | **pairing**         | your devices find each other, with no account  |
+| **3. Account**   | **sign-in**         | the same, plus everything an account can carry |
+
+Without pairing, rung 2 cannot exist: cross-device sync would require an account, which collapses the
+ladder to "local or signed in" — the shape D-17 threatens as a fallback and which should not arrive by
+default. Without sign-in, rung 3 has nothing to authenticate. So the two mechanisms are the rungs, and
+building one is building half a ladder.
+
+**Both satisfy Rule 1, and it is worth seeing why in the same sentence: pairing _derives_ the room,
+sign-in _assigns_ it.** Under pairing, whatever the two devices agree on can also produce the channel
+identifier, so nobody types a room name. Under sign-in, the account determines it, so nobody types a
+room name. There is no third thing to configure in either case, which is the strongest evidence so far
+that "room" belongs at the wire level and nowhere near a user (D-11).
+
+**Three consequences, one of them a real asymmetry.**
+
+1. **Pairing needs both devices present at once, so rung 2 has no recovery story.** Lose your only
+   paired device and the group is gone with it — there is nothing to pair the replacement against. Rung
+   3 recovers by signing in. That sharpens what the rungs mean and is worth confirming as intended:
+   **rung 2 buys convenience, rung 3 buys durability.** It also gives D-12 the shape of an answer, since
+   what the app can offer after storage loss depends entirely on which rung the user was on.
+2. **Two mechanisms are two trust roots.** Pairing establishes device-to-device trust out of band, via a
+   human carrying a code between two things they physically hold, and needs the relay to know nothing.
+   Sign-in establishes device-to-server trust. The first is compatible with D-14 staying "no" and with
+   the stateless requirement of D-16; the second is what makes revocation possible at all (D-18). They
+   are not redundant, and neither subsumes the other.
+3. **The promotion path is new, and it is where this class of product loses data.** Pairing three devices
+   at rung 2 and later creating an account has to do something coherent with the group that already
+   exists. That is **D-24**, and it is not a detail.
+
+Both mechanisms end at the same artifact — a list of your own devices — which is the list D-18 revokes
+from and the one §1.2 calls the irreducible security surface. One screen, three jobs, reached two ways.
+
+**D-23. Does pairing alone trigger the name prompt?** _(Open — a refinement of D-1, not a re-opening.)_
+D-1 asks for a name when the user opts into cross-device sync or online backup. But pairing two of your
+own devices has no audience for a name: per D-2 every list shows one entry per person, and with one
+person that entry is you. The audience appears when someone else can see it — a second member in your
+room — or when an account needs a handle. So D-1's trigger may have bundled two events that D-19 has now
+separated, and the question is whether rung 2 has a name at all or whether the prompt belongs to sharing
+and account creation only. Cheap either way, and better answered before the first-run flow is drawn.
 
 **D-5. What should opting into sync for the first time do when the room already has a document?**
 Today it merges, silently and irreversibly (S10). This is the one moment where an ordinary settings
@@ -559,6 +603,27 @@ is visible. Two useful facts about feasibility:
 
 Which makes this splittable rather than off-topic: the card half is cheap and could ship with D-5, and
 the text half is a different question about attribution granularity.
+
+**D-24. How does a paired group become an account?** _(Open, and the highest-risk question in the
+document.)_
+
+D-19 builds both discovery mechanisms, so a user can arrive at rung 3 having already paired three devices
+at rung 2. What happens to the group is the promotion path, and promotion paths are where local-first
+products lose data. Three shapes, and they are not equally safe:
+
+- **The account adopts the group.** The existing devices and document carry over; the account is a new
+  credential over the same group. Safest, and it requires the account model to be able to accept an
+  identity that predates it — which is a constraint on D-14's design, not a detail of the UI.
+- **The account starts fresh and the group is abandoned.** Simplest to build and the one that loses a
+  month of someone's history. If this is where the implementation lands by default, that is the failure
+  mode to catch in review, not in use.
+- **They coexist.** Two groups, one device in both. Coherent only if D-11's "one user, one document" is
+  read per-credential rather than per-person, which is exactly the reading §5.4 flagged for confirmation.
+
+Note that this is D-5 again, at a different level: two histories meeting, with a decision about which
+survives. The four choices there — merge, theirs, ours, abort — are the same four, and so is the
+requirement to show what will happen before it happens irreversibly. Whichever way D-24 goes, it should
+reuse that flow rather than invent a second one.
 
 **D-6. Can a dead actor be pruned, and by whom?**
 
@@ -642,18 +707,30 @@ in one colour is clearer than four colours, not less clear, because the question
 whose it is. **So PR #18's rule — colour comes from the actor — is correct as written, and that branch
 needs no change.**
 
-**D-21. What does "the active caret" mean?** _(Open, and it matters because the two readings cost very
-differently.)_
+**D-21. What does "the active caret" mean?**
 
-- **Locally active** — the caret in the tab you are looking at, which is your own cursor. This is nearly
-  free and arguably already true: `yCollab` renders _remote_ carets as decorations while your own is
-  CodeMirror's native cursor, so "the one you are typing in looks different" may need no work at all,
-  only a check that the difference reads as deliberate.
-- **Globally most recent** — the one caret, across every session and person, that most recently received
-  input. This is a real feature: awareness has to carry a last-input timestamp, every client has to agree
-  on recency, and the highlight moves between devices. It is also the one that matches "a person is doing
-  input on exactly one device at a time", because it is the only reading that can show you where _your
-  other device_ is working.
+> **Decided: locally active.** The caret in the tab you are looking at — which is your own cursor.
+> Nothing about global recency is relevant to a caret.
+
+The cheap reading, and it is very nearly already true: `yCollab` renders _remote_ carets as decorations
+while your own is CodeMirror's native cursor, so "the one you are typing in looks different" may require
+no mechanism at all. What it does require is a design check rather than a decision — that the native
+cursor reads as deliberately distinct from the remote-caret decorations, in both themes, rather than
+merely happening to differ.
+
+What this decision buys is what it avoids: no last-input timestamp in awareness, no cross-client
+agreement about recency, no highlight that travels between devices. The observation that a person is
+doing input in one place at a time remains the _motivation_ for the design without needing to be
+_modelled_ — each tab already knows whether it is the one being typed in, and no tab needs to know
+anything about the others to render this.
+
+**A dependency D-21 makes visible.** D-8 says all of your carets share your colour, and colour today
+comes from the actor: `resolveActor` assigns a random one from a fixed palette per actor, and awareness
+carries it as `user.color`. Since an actor is per device (D-4), two devices mean two colours — so "all of
+your carets" only holds within one device until there is an account level to hang a colour on. Which
+means PR #18's rule is exactly right for the case it can see, one device with several tabs, and the
+cross-device half of D-8 is deferred by dependency rather than by choice. It arrives with D-19's pairing,
+not before.
 
 **D-9. Does the app ever tell you how many tabs you have open?**
 
@@ -932,25 +1009,31 @@ The three differ by two screens. That is roughly the whole budget this document 
 | **D-16** | Can cross-device sync be cheap and stateless enough to be free? | Open — research          | Rung 2 of the ladder cannot ship either way                                                                                                |
 | **D-17** | What does "reasonably secure" mean, concretely?                 | Open — research          | Cannot tell whether accounts are optional or mandatory                                                                                     |
 | **D-18** | Are sessions enumerable and revocable from a UI?                | Open                     | Signing in cannot invalidate anything                                                                                                      |
-| **D-19** | How does a device find the other devices that are yours?        | Open                     | Manual: the same three fields typed twice. Rule 1 forbids it                                                                               |
+| **D-19** | How does a device find the other devices that are yours?        | **Decided**              | Build both: pairing for rung 2, sign-in for rung 3. Pairing derives the room, sign-in assigns it                                           |
 | **D-20** | How is a member actually excluded?                              | Open                     | Not at all — and local refusal does not work (§5.2)                                                                                        |
-| **D-21** | What does "the active caret" mean — local, or globally recent?  | Open                     | Ambiguous, and the two readings cost very differently                                                                                      |
+| **D-21** | What does "the active caret" mean — local, or globally recent?  | **Decided**              | Locally active. No recency modelling; a design check that it reads as distinct                                                             |
 | **D-22** | Does merged content show its provenance?                        | Open                     | No. Cards could today; document text needs deferred attribution                                                                            |
+| **D-23** | Does pairing alone trigger the name prompt?                     | Open                     | A name is asked for at a moment that may have no audience                                                                                  |
+| **D-24** | How does a paired group become an account?                      | Open                     | Undefined — and the default implementation is the one that loses data                                                                      |
 
 Suggested order for the remainder, on dependency rather than importance. Note how much of it is now one
 cluster: nearly everything open is a consequence of not knowing what a credential is.
 
-1. **Confirm or reject §5.4's reading of D-11** — that a room is one document plus its member list, and
-   that room, document and account are therefore one thing. It is a small confirmation with a large
-   blast radius, and everything below assumes it.
+1. **Confirm or reject two readings this document derived rather than was told.** §5.4's, that a room is
+   one document plus its member list and therefore that room, document and account are one thing; and
+   §5.3's, that rung 2 buys convenience while rung 3 buys durability, which follows from pairing needing
+   both devices present. Both are small confirmations with large blast radii, and everything below
+   assumes them.
 2. **D-14**, then **D-17**, then **D-16** — what the relay may decide, what "secure enough" means, and
    whether rung 2 can be free. In that order, because D-17's bar can collapse the ladder to a single
-   rung, which would decide several questions below by removing them.
-3. **D-19**, then **D-18** — peer discovery and device revocation. Both are the same device list (§1.2),
-   both are downstream of the credential, and D-19 is what D-4 was actually about.
+   rung, and D-19 has now made that collapse expensive: it would strand the pairing flow, which is the
+   only reason rung 2 exists.
+3. **D-24**, then **D-12** — the two data-loss questions. D-24 is the promotion path from a paired group
+   to an account and is the highest-risk item here; D-12 is identity loss, whose answer is now shaped by
+   which rung the user was on.
 4. **D-20** — exclusion. Fork or encrypt, and the encryption branch is the one that keeps the relay dumb.
-5. **D-12** — identity loss, which needs D-19 to have anything to offer the user.
-6. **D-21**, **D-22**, and D-6's staleness interval — the three that are UI-shaped and block nothing.
+5. **D-18** — revocation, which needs D-14's credential to have anything to revoke.
+6. **D-22**, **D-23**, and D-6's staleness interval — UI-shaped, block nothing.
 
 **Unblocked now:** the multi-tab work was waiting on D-8, and D-8 is decided in the direction PR #18
 already assumed. No change is owed to that branch.
