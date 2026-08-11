@@ -6,6 +6,7 @@ test-results/
 patches/
 .DS_Store
 .env.local
+.dev/
 tsconfig*.tsbuildinfo
 .gitsigners
 .cursor/

@@ -35,11 +35,13 @@ and that order is the record, so sync carries it rather than only the cards.
 corepack enable
 pnpm install
 pnpm dev            # http://localhost:5173, also on the LAN
+pnpm dev:tailscale  # trusted HTTPS/WSS over MagicDNS; starts the whole stack
 pnpm build          # typecheck, bundle, and enforce the §12 budget
 pnpm lint           # oxlint with React, TypeScript, a11y, import, promise, and Vitest checks
 pnpm format         # oxfmt formatting check
 pnpm test           # unit tests
 pnpm test:geometry  # layout, line-height and pixel-identity tests, needs a browser
+pnpm test:https     # production build, service worker, offline shell and real WSS proxy
 ```
 
 `pnpm test:geometry` builds and previews the app, then drives Chromium. The
@@ -63,6 +65,34 @@ as above. In development that becomes `ws://localhost:1234` — a page served
 over plain HTTP may open a plain websocket, so there is no certificate to
 arrange. See [relay/README.md](relay/README.md) for the development table, for
 deployment and TLS, and for why the token must stay out of your access log.
+
+For trusted cross-device development, connect the machine to Tailscale, enable
+MagicDNS and HTTPS certificates for the tailnet, then run `pnpm dev:tailscale`
+from the repository root. No separate `tailscale serve` command is needed: the
+runner first checks or provisions this machine's certificate, then starts a
+foreground Serve proxy, Vite and the relay, and stops all three together. It
+prints the full `https://<machine>.<tailnet>.ts.net` app URL and sync settings
+only after that exact HTTPS URL has answered successfully.
+
+If certificate issuance fails, the command exits before publishing the app.
+Check the device's **TLS certificate** status in the Tailscale Machines page;
+`No certificate found` means the HTTPS endpoint cannot complete a handshake.
+Do not leave a browser retrying the URL while diagnosing ACME issuance, because
+each failed first-use attempt can create another certificate order.
+
+Tailscale terminates trusted HTTPS/WSS on port 443 and forwards plain HTTP to a
+loopback-only Vite. Vite removes the public `/relay` prefix and forwards that
+WebSocket to the loopback-only relay. Neither development process is directly
+reachable from the LAN or tailnet. Existing service-scoped Tailscale Serve
+routes are independent; the runner refuses to replace a pre-existing
+node-level web route. Enabling Tailscale HTTPS publishes the machine's
+`*.ts.net` certificate name in certificate-transparency logs, but does not make
+the service public.
+
+`pnpm test:https` requires OpenSSL and Chromium. It creates an ephemeral leaf
+certificate and grants only its fresh browser process access to that key, while
+still performing real HTTPS and WSS handshakes. It does not depend on
+Tailscale, mkcert or a host trust-store change.
 
 ## Development tooling
 
@@ -375,6 +405,9 @@ concurrently on two devices, and one device's undo stack staying clear of the
 other's changes; the sync controller's states and the guarantee that nothing is
 constructed before an endpoint is; the relay's authorization decisions, and — in
 the relay's own suite — the real process refusing a real bad token;
+the explicit HTTPS suite — a production build in a secure browser context,
+service-worker registration, an offline shell reload, a real WSS upgrade
+through Vite, and the relay's authorization close code across that proxy;
 editor/`Y.Text` round-trip, serializer round-trip, compaction safety, freeze
 independence, cap enforcement, undo scoping across the system operations,
 the movement table, section order and Done's newest-first rule, the static
