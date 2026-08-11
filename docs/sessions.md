@@ -1,6 +1,6 @@
 # done — Sessions and Identity: Product Requirements
 
-**Status:** Draft v2 — **7 of 18 decisions recorded**, the rest open. See §8.
+**Status:** Draft v3 — **13 of 22 decisions recorded**, the rest open. See §8.
 **Date:** 2026-08-10
 **Audience:** the author, deciding. Not an implementation plan.
 **Amends:** PRD §11 (Actors), PRD §12 (non-goals) — see §9.
@@ -58,32 +58,77 @@ doing now anyway:
 
 ---
 
-## 1. The four levels
+## 1. The levels
 
-| Level       | Answers                      | Example                       |
-| ----------- | ---------------------------- | ----------------------------- |
-| **Actor**   | _who_ is writing             | you; the app itself; an agent |
-| **Device**  | _where from_ — which install | your phone; your laptop       |
-| **Session** | _which view_, this run of it | the tab you are looking at    |
-| **Room**    | _which document_             | `done`; `work`; a shared one  |
+| Level       | Answers                                      | Example                       | Exists today               |
+| ----------- | -------------------------------------------- | ----------------------------- | -------------------------- |
+| **Account** | who you are, across devices                  | you                           | **No** — the missing level |
+| **Actor**   | one account's writing identity on one device | you-on-your-phone; the app    | Yes, and misnamed (§1.1)   |
+| **Device**  | which install                                | your phone                    | Yes                        |
+| **Session** | which tab, this run of it                    | the tab you are looking at    | No                         |
+| **Room**    | who is allowed (D-11)                        | your document and its members | As a settings field only   |
 
-The PRD has the first. The code has the first two. The multi-tab note argued for the third. The
-fourth already exists as a field in the sync settings, and is the one that has never been thought of
-as identity at all — which is why §2.2b is a surprise.
+Draft v1 and v2 put the missing level at the bottom. **It is at the top.** Sessions were the visible
+gap because multi-tab needed them, but the level that explains the rest — grouping your devices,
+finding your own peers, two people on one laptop — is the one above actor, and it does not exist
+because nothing in the app knows what an account is.
 
-**There may be a fifth.** If a room turns out to mean "who is allowed" rather than "which content",
-then content is its own level and the room stops implying it (§2.2b, D-11). The count is not settled,
-and it is one of the two things D-11 decides.
+### 1.1 Actor is the wrong word for what the code has
+
+The PRD's "actor" means "anything that can write" — you, the app, later an agent. The code's actor is
+narrower than that and nobody noticed: it is minted per browser profile and never travels, so what it
+identifies is **one account's writing identity on one device.** Two devices, two of them, permanently
+(§2.2a).
+
+D-4 decides that this is correct and should stay. Which means the naming problem is real: "actor" is
+being asked to carry both "who is writing" and "which install is writing", and those are different
+questions with different answers. Given D-4, the useful statements are:
+
+- **For humans, actor and device are one thing.** One per account per install. Calling them two levels
+  is bookkeeping, not a distinction anyone can observe. The two separate UUIDs in
+  `localStorage` — `done.actor` and `done.device` — are one fact stored twice.
+- **For non-humans they come apart**, which is why both levels survive. The system actor is a constant
+  (`SYSTEM_ACTOR_ID = 'system'`) shared by every device, and an agent would be an actor with no device
+  at all.
+- **The level that groups them is the account**, and the thing that supplies it is authentication.
+  Which is why D-4 turns out to be downstream of auth, exactly as suspected.
+
+A working name for the human case would help, since "actor" is taken and "device" is the install
+rather than the identity on it. This document uses **actor** throughout and flags where it means the
+per-install kind; naming it properly is worth doing before it reaches the UI.
 
 Each level is the right answer to different questions, and picking the wrong level is the whole
 category of bug this document is about:
 
-- Attribution ("who wrote this card") is **actor**.
+- Attribution ("who wrote this card") is **actor**. Cards already carry `author` (`newCard` sets it).
 - "Last synced from ⟨x⟩" is **device**.
-- A caret is **session** — a caret is a place someone is looking, and two tabs are two places.
-- Undo is **session** today, and the PRD describes it as **actor** (§9).
+- Anything shown to a human as "you" is **account** — which is why it cannot be built yet.
+- A caret is **session**: a caret is a place input is happening, and two tabs are two places (D-8).
+- Undo is **session**, per tab (D-7, D-15).
 - An exclusive resource — the search index's OPFS lock — is **session**, arbitrated per device.
-- Sync configuration is **device** today. Whether it should be is D-10.
+- Sync configuration is **device** today, and D-10 says the user should never have to think about it.
+
+### 1.2 Two rules that settle future cases
+
+Both came out of the decisions below and both generalise past them, so they are recorded here rather
+than buried in the decision that produced them. They rank beneath the PRD's principles and above
+anything in this document.
+
+**Rule 1. The user never manages rooms.** Room management is not a task to make pleasant; it is a task
+to remove. Anything that requires a person to know what a room is, name one, or copy one between
+devices has failed (D-10, D-11).
+
+**Rule 2. The UI never promises anything about a remote device that cannot be kept.** No auto-hiding a
+member as though they were gone, no "removed" that does not remove, no presence claim that outlives
+the connection it was inferred from. Where the truth is unknown, show it as unknown — a muted colour
+for a device not seen in a while is honest; omitting it is not (D-6).
+
+A corollary of Rule 1, worth stating because it cannot be fully achieved: **security cannot be hidden
+as completely as room management can.** Signal, WhatsApp and every serious attempt converge on a small
+irreducible surface — a way to verify a peer, a warning when a peer's identity changes, and a list of
+your own devices. Notably, that list is the same artifact D-18 wants for session invalidation and the
+same one D-19 wants for peer discovery, which suggests the irreducible security surface and the useful
+device surface are one screen rather than two.
 
 ---
 
@@ -142,9 +187,10 @@ and D-14 cannot be decided independently.
 
 And a distinction that D-11 was written without: **"which content" and "who is allowed" are not
 obviously the same axis.** A room could be a document, or it could be a membership boundary that
-contains documents. Under the second reading — the more natural one if the relay ever gains a notion
-of users — the four levels of §1 become five, because content gets its own level and stops being
-implied by the room. D-11 now asks that question directly rather than presupposing the answer.
+contains documents. D-11 now takes the second reading, which raised the possibility of content becoming
+a level of its own — and then closed it again, because "one logged-in user, one document" collapses room,
+document and account into one thing rather than separating them (§5.4). §1's table reflects the
+collapsed model; §5.4 is the reading that needs confirming.
 
 **c. The relay's token is not per room — and this is a target for change, not a constraint to design
 around.** `RelayPolicy` is one shared `token` plus an allowlist of `rooms`. Anyone holding the token
@@ -423,15 +469,134 @@ decision the most scenarios point at.
 | Transfer a secret          | A code or QR from the old device.                                   | Real friction, and a new thing to lose. Needs the old device present. |
 | Derive from the credential | Nothing — implied by the token used.                                | Requires per-user tokens, i.e. **D-14 first**.                        |
 
-**D-5. What should opting into sync for the first time do when the room already has a document?**
-Today it merges, silently and irreversibly (S10). Options: merge as now; merge but say so first;
-refuse and make the user pick which document survives; or treat a non-empty room as a different
-document entirely (which is D-11). The user-visible stake is high — this is the one moment where an
-ordinary settings action can produce an outcome that cannot be undone.
+> **Decided: no. A new device is a new actor, always.** Browser, profile, phone, computer — each
+> install that writes gets its own writing identity, and none of them ever claims another's.
 
-**D-6. Can a dead actor be pruned, and by whom?** Options: never (S32 forever); hidden from lists
-once it has no recent writes; explicitly deletable. Note what deletion cannot do: cards already
-attribute to that id, so removing the entry removes the _name_, not the attribution.
+The reason this looked complicated is that D-4 was two questions wearing one coat, and only one of
+them is about claiming:
+
+1. **"Which of these entries is me?"** — a _presentation_ question, and D-2 already answered it: one
+   entry per person in every list, the device never disclosed or reflected back. Nothing needs claiming
+   for that; it needs a level above actor to group by, which is §1's account.
+2. **"Which of these devices are mine at all?"** — a _discovery_ question, and it is the real hole.
+   Today the answer is entirely manual: you type the same endpoint, room and token into both devices,
+   and that act of typing _is_ the discovery mechanism. Under any account model it would be implied by
+   signing in. This is now **D-19**, and it is indeed downstream of auth.
+
+So the shape is: two independent installs, each writing under its own identity, that at some point
+learn they belong to the same person and thereafter share a history. Nothing about that requires either
+one to pretend to be the other — which is what makes "always a new actor" the clean answer rather than
+a limitation, and it is why the roster having two entries is only a bug when the UI shows both to a
+human as though they were two people.
+
+**D-19. How does a device find the other devices that are yours?** _(Open, and it is the hole D-4 was
+circling.)_
+
+Today the mechanism is three text fields typed identically on both devices, which Rule 1 forbids and
+which is also the only reason the two ever meet. So this is not a refinement of an existing flow; it is
+a flow that does not exist yet. Options, all of which assume something about the credential:
+
+| Option                         | The user does                                        | Needs                                                           |
+| ------------------------------ | ---------------------------------------------------- | --------------------------------------------------------------- |
+| Manual configuration (today)   | Types endpoint, room and token on each device.       | Nothing. Violates Rule 1.                                       |
+| Implied by signing in          | Signs in. Their devices are the ones on the account. | An account, so **D-14** and the ladder's rung 2 or 3 (§5.1.1).  |
+| Pairing between devices        | Scans a code shown on the other device.              | Both devices present at once; a pairing protocol; no account.   |
+| Discovery on the local network | Nothing, on a shared network.                        | mDNS or similar, which a browser cannot do — so a relay anyway. |
+
+The middle two are the real candidates, and they differ in a way worth deciding deliberately: pairing
+needs no account and therefore keeps rung 1 useful, while sign-in needs an account and therefore makes
+cross-device sync a reason to climb the ladder. Both produce the same artifact at the end — a list of
+your own devices — which is the same list D-18 revokes from and the same one §1.2 calls the irreducible
+security surface.
+
+**D-5. What should opting into sync for the first time do when the room already has a document?**
+Today it merges, silently and irreversibly (S10). This is the one moment where an ordinary settings
+action produces an outcome that cannot be undone.
+
+> **Decided, by case:**
+>
+> | Local | Remote | Behaviour                                                               |
+> | ----- | ------ | ----------------------------------------------------------------------- |
+> | empty | full   | Adopt remote wholesale.                                                 |
+> | full  | empty  | Adopt local wholesale.                                                  |
+> | empty | empty  | Nothing to discuss. Adopt local, as policy.                             |
+> | full  | full   | **Stop and ask**, with a preview, and never merge without confirmation. |
+>
+> And in every case the user may choose **merge · theirs · ours · abort**.
+
+The hard case is the one worth spending on: a preview of what the merge would produce — a room preview,
+a side-by-side, something that makes the outcome legible before it is irreversible — plus an explicit
+warning and an invitation to back up first. The motivation is right and worth recording, because it
+explains what "good" means here: a git-style flow where a large merge can be inspected and adjusted
+piece by piece is genuinely useful precisely when the merge is big, and the absence of anything like it
+is why silent convergence is unacceptable rather than merely impolite.
+
+**What the four choices cost, because they are not symmetric.** This is mechanics, not product, but the
+product choice should be made knowing it:
+
+- **merge** is free. It is what the CRDT does natively.
+- **abort** is free _if nothing has been exchanged yet_, and impossible afterwards — there is no
+  un-merge. So the preview has to be built from remote state fetched into a **separate** document and
+  rendered from there, with the real document untouched until confirmation. That is straightforward, and
+  it is the mechanism that makes abort a real option rather than a button that lies.
+- **theirs** is achievable locally: discard the local database and adopt the remote. Destructive on this
+  device, and only this device.
+- **ours** is the awkward one. In a CRDT you cannot remove another replica's history by pushing to it —
+  you can only add. So "ours" means either the relay supports truncating a room, or the local document
+  moves to a **new** room and the old one is abandoned. The second needs no new server capability and
+  is probably the honest implementation; the first is a third example of a capability the relay could
+  gain without gaining authority over content (§2.3, D-14).
+
+**D-22. Should merged content show its provenance?** _(Open, and worth keeping.)_ The idea: after a
+merge, tint cards by which device created them until the freeze window passes, so what needs rearranging
+is visible. Two useful facts about feasibility:
+
+- **For cards this is available now.** `newCard` records `author`, and per D-4 a human actor _is_ a
+  device, so "which device created this" is already stored on every card. No new data.
+- **For the master list and Goals it is not.** Per-character attribution inside a document is explicitly
+  deferred (PRD §14, open question 2) and is the costly thing there. So line-level tinting in Goals needs
+  that decision first, and the card version does not have to wait for it.
+
+Which makes this splittable rather than off-topic: the card half is cheap and could ship with D-5, and
+the text half is a different question about attribution granularity.
+
+**D-6. Can a dead actor be pruned, and by whom?**
+
+> **Decided, per Rule 2.** No auto-hiding — a member never silently disappears from a list because the
+> app inferred they were gone. Showing staleness is fine and honest: a device not seen for some interval
+> may be muted rather than removed. The interval is an open parameter.
+
+And what deletion could never do is worth keeping in view: cards carry an `author` id, so removing a
+roster entry removes the _name_, not the attribution. There is no version of pruning that unwrites
+history.
+
+**D-20. How is a member actually excluded?** _(Open, and larger than D-6.)_ "Any node may begin refusing
+updates from any other node" is a different and much bigger want than pruning a list, and the honest
+statement of the problem is that a CRDT with a forwarding relay has three mechanisms, of which only two
+work:
+
+1. **Local refusal.** A node filters incoming updates by their origin. Yjs updates are opaque but not
+   opaque _to_ us — client ids can be read out of an update — so this is mechanically possible. It does
+   not work, for two independent reasons: Yjs client ids are random per document instance rather than
+   stable per device, so there is nothing durable to filter on; and a filtered peer's changes arrive
+   anyway, transitively, through any other peer that did not filter. Local refusal is a preference, not
+   an exclusion.
+2. **Forking the room.** Copy the state to a new room the excluded member cannot reach, and tell the
+   remaining members. This works, needs nothing from the relay beyond a second room, and is the reason
+   the instinct in the review — "probably fork the room per membership edit" — is the correct instinct.
+   It costs a room name per membership change and it makes room identity churn, which collides with
+   Rule 1 unless the churn is entirely invisible.
+3. **Content encryption with key rotation.** Encrypt document content; on removal, rotate the key and
+   re-encrypt forward. The removed member holds a key that opens history and nothing newer. This is what
+   Keyhive does (§5.8), and the important observation for this project is that **it is the mechanism most
+   compatible with the relay staying a dumb pipe** — a relay forwarding ciphertext is exactly as dumb as
+   one forwarding plaintext, so D-14 can stay "no" or "partly" and exclusion still works. The costs are
+   real and land elsewhere: key management becomes the hard problem, and any future server-side feature
+   that needs to read content becomes impossible by construction.
+
+Under every mechanism, one thing stays true and Rule 2 requires saying it: **a member who has already
+synced keeps their copy forever.** Removal governs the future, never the past, and the UI must not
+suggest otherwise.
 
 **D-7. Should undo ever cross devices?**
 
@@ -446,34 +611,49 @@ What it does settle is the PRD: §11.3's "undo scoped to your own changes" canno
 actor may span devices, and cannot mean per actor if it may not (§2.2a makes actor and device the same
 thing today). Either way the sentence needs a level in it (§9).
 
-**D-15. Within one device, is undo per tab or shared across tabs?** _(Open — the floor D-7 left.)_
-Per tab is today's behaviour, is what tabbed editors do, and keeps two tabs from surprising each
-other. Shared-across-tabs would need a cross-tab undo protocol and would let a tab you are not looking
-at lose work you can see. The multi-tab note (PR #18) assumed per tab; this is the decision that
-confirms or overturns that assumption.
+**D-15. Within one device, is undo per tab or shared across tabs?**
+
+> **Decided: per tab.** "Per device" in the D-7 discussion was a misspeak; the ceiling is the device and
+> the floor is the tab.
+
+Which is today's behaviour, what tabbed editors do, and what keeps a tab you are not looking at from
+losing work you can see. PR #18's assumption stands, and nothing about undo needs to change.
 
 ### 5.3 Sessions — D-8, D-9
 
 **D-8. What is a session allowed to be seen doing?**
 
 > **Decided.** Any input surface in a document gets a caret showing where its cursor is — **one caret
-> per tab, including your own tabs, each in a different colour.** Labelled with the person's name, per
-> D-2, never with the device or the tab. And the peer list is **deduplicated**: it answers whether
-> someone is present, not how many times.
+> per tab, including your own tabs** — and **all of your carets share your colour.** Labelled with the
+> person's name per D-2, never with the device or the tab. Separately, **the caret where input is
+> actually happening gets a distinguished treatment**, and that treatment is the same for everyone
+> rather than per-person. The peer list is **deduplicated**: it answers whether someone is present, not
+> how many times.
 
-The principle underneath is worth keeping in the document, because it decides future cases without
-another meeting: **a caret represents an input device in the document, so it exists wherever input can
-happen.** Whether the input belongs to you is not part of the test.
+The principle underneath is worth keeping, because it decides future cases without another meeting: **a
+caret represents an input device in the document, so it exists wherever input can happen.** Whether the
+input belongs to you is not part of the test.
 
-⚠️ **This supersedes the multi-tab note.** PR #18 §4.1 argues for per-session carets in _the actor's_
-colour, so that sameness of colour reads as "this is also you". D-8 says colour distinguishes carets
-instead, and identity is carried by the name. That branch needs the colour rule corrected before it
-merges; the rest of its §4.1 — session ids in awareness, ephemeral and never persisted, peers grouped
-rather than listed — is unaffected and is what D-2 and D-8 both rest on.
+On colour: an intermediate draft of this document had colour distinguishing carets from each other
+rather than identifying their owner, and that was wrong. Google Docs is the reference and it settles it —
+a person is doing input in one place at a time, so a shared "active" treatment carries the "here is
+where the work is happening" signal, which frees colour to mean identity. Four tabs showing four carets
+in one colour is clearer than four colours, not less clear, because the question a caret answers is
+whose it is. **So PR #18's rule — colour comes from the actor — is correct as written, and that branch
+needs no change.**
 
-Left open by this: what colour a caret gets, given that colour is no longer the actor's. Per-session
-random risks two similar colours; a fixed rotation risks a caret changing colour between reloads,
-which is harmless but noticeable.
+**D-21. What does "the active caret" mean?** _(Open, and it matters because the two readings cost very
+differently.)_
+
+- **Locally active** — the caret in the tab you are looking at, which is your own cursor. This is nearly
+  free and arguably already true: `yCollab` renders _remote_ carets as decorations while your own is
+  CodeMirror's native cursor, so "the one you are typing in looks different" may need no work at all,
+  only a check that the difference reads as deliberate.
+- **Globally most recent** — the one caret, across every session and person, that most recently received
+  input. This is a real feature: awareness has to carry a last-input timestamp, every client has to agree
+  on recency, and the highlight moves between devices. It is also the one that matches "a person is doing
+  input on exactly one device at a time", because it is the only reading that can show you where _your
+  other device_ is working.
 
 **D-9. Does the app ever tell you how many tabs you have open?**
 
@@ -502,6 +682,21 @@ each browser profile is configured independently by hand (S13, S23). Options: ke
 belongs to the browser it was typed into, which is TRD §4.8's stated reason); sync the endpoint but
 not the token; sync everything but the token and prompt for that.
 
+> **Decided in principle, as Rule 1: the user never manages rooms.** The mechanism is open and depends
+> on the account model, but the target is that room management stops being a task rather than becoming
+> a nicer one.
+
+That rules something specific out, which is what makes it useful rather than aspirational: **the current
+settings panel is the thing being ruled out.** Three fields — endpoint, room, token — typed by hand on
+every device, is the maximal version of the task Rule 1 deletes. Whatever replaces it, the room name is
+not something a person types twice.
+
+It does not rule out a security surface, and §1.2's corollary says why: room management can disappear
+entirely, and security cannot. The irreducible minimum that Signal, WhatsApp and every serious system
+converges on is a way to verify a peer, a warning when a peer's identity changes, and a list of your own
+devices — and since D-18 and D-19 both want that same device list, the honest budget is one screen that
+serves all three, not zero screens.
+
 **D-11. What is a room?** The largest decision here, and the one §2.2b shows is already half-made in
 a direction nobody chose.
 
@@ -517,9 +712,40 @@ merge, was listed in draft v1 as an option; it is today's behaviour and it is a 
 reading of "room" makes converging two unrelated histories the desired outcome, so whichever row wins,
 changing a room must not merge.
 
-The two live readings differ in one word: whether a room is **content** or **permission**. That is
-worth settling before the rest, because it decides whether §1 has four levels or five, and because
-_(identity, document)_ rather than _(room)_ is what the local database would be keyed by (§2.2b).
+The two live readings differ in one word: whether a room is **content** or **permission**.
+
+> **Decided in principle: permission.** A room is a membership boundary. With three constraints
+> alongside it: **one logged-in user has exactly one document**; **one device may host several logged-in
+> users**; and **"room" must not become architectural**, because the transport it came from is going
+> away.
+
+Those three constraints do more work than they look like they do, and one consequence is worth confirming
+before it gets built on.
+
+**The constraints nearly determine the model.** If a room is permission, and one user has exactly one
+document, then a room cannot be a container of many users' documents without contradicting the second
+constraint. The reading that satisfies all three is: **a room is one document plus the list of who may
+reach it.** Sharing means adding a member to _your_ room, not joining a shared pool. Two people who each
+share with the other have two rooms, and each keeps their own Done list — which happens to match the
+app's premise that this is one person's workflow rather than a team's.
+
+If that is right, then **the fifth level collapses rather than appearing**: room, document and account
+are one thing seen from three sides, with membership as an attribute of it. §1's table is the model, and
+the count stays at five with account at the top rather than growing to six. **This is the reading to
+confirm or reject** — the alternative is that a room contains several members' separate documents, which
+is a different and larger system.
+
+**On "room" not becoming architectural: agreed, and the word is already the problem.** "Room" is
+provider vocabulary — `y-websocket` and `y-webrtc` both use it for the channel name that goes in a URL
+path, and other providers call the same thing a document id. It names a _channel_, which is why it
+carries transport assumptions, and it is not what the user owns. The product word should be the thing
+itself — the document, or the account's space — and "room" should survive only at the wire level, if the
+replacement transport even wants it. Renaming it in the product is cheap now and expensive after it
+reaches a settings screen.
+
+Also from §2.2b: the local database would be keyed by _(identity, document)_ rather than by room, which
+is forced by the second and third constraints together — two users on one browser profile need two local
+databases, and neither of them should be named after a channel.
 
 ### 5.5 Resets — D-12, D-13
 
@@ -686,40 +912,48 @@ The three differ by two screens. That is roughly the whole budget this document 
 
 ## 8. Decision register
 
-| ID       | Question                                                        | Status                   | Answer, or what happens without one                                                        |
-| -------- | --------------------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------ |
-| **D-1**  | Does the user tell the app who they are, and when?              | **Decided**              | Generated by default; a name when opting into backup or cross-device sync (§5.1.1)         |
-| **D-2**  | Is identity per person, per device, or a labelled pair?         | **Decided**              | Per device internally; per person in every list. Device never disclosed or reflected       |
-| **D-3**  | Are device names worth improving?                               | **Decided in principle** | Yes. Mechanism open — and it does not need a fingerprint                                   |
-| **D-4**  | Can a new device claim an existing actor?                       | Open                     | Every device is a new actor forever                                                        |
-| **D-5**  | What happens when sync first meets a non-empty room?            | Open                     | Silent irreversible merge                                                                  |
-| **D-6**  | Can dead actors be pruned?                                      | Open                     | The roster only grows                                                                      |
-| **D-7**  | Should undo ever cross devices?                                 | **Decided**              | No. Never leaves the device                                                                |
-| **D-8**  | What may a session be seen doing?                               | **Decided**              | A caret per tab, own tabs included, distinct colour, person's name. Peer list deduplicated |
-| **D-9**  | Does the app ever show a tab count?                             | **Decided**              | Never, save a high-bar exception that must be justified in writing                         |
-| **D-10** | Is sync configuration per device or per document?               | Open                     | Per device, configured by hand each time                                                   |
-| **D-11** | What is a room — content, or permission?                        | Open                     | "A share of one document", which nobody chose and which merges histories                   |
-| **D-12** | What happens when local identity is lost?                       | Open                     | Silent new identity                                                                        |
-| **D-13** | Is there a deliberate reset?                                    | **Decided**              | Yes. Whether it is sign-out, and what it clears, open                                      |
-| **D-14** | May the relay decide who connects? What is written?             | Open                     | Multi-tenancy stays cooperative-only and undeclared                                        |
-| **D-15** | Within a device, is undo per tab or shared?                     | Open                     | Per tab, as today and as PR #18 assumed                                                    |
-| **D-16** | Can cross-device sync be cheap and stateless enough to be free? | Open — research          | Rung 2 of the ladder cannot ship either way                                                |
-| **D-17** | What does "reasonably secure" mean, concretely?                 | Open — research          | Cannot tell whether accounts are optional or mandatory                                     |
-| **D-18** | Are sessions enumerable and revocable from a UI?                | Open                     | Signing in cannot invalidate anything                                                      |
+| ID       | Question                                                        | Status                   | Answer, or what happens without one                                                                                                        |
+| -------- | --------------------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| **D-1**  | Does the user tell the app who they are, and when?              | **Decided**              | Generated by default; a name when opting into backup or cross-device sync (§5.1.1)                                                         |
+| **D-2**  | Is identity per person, per device, or a labelled pair?         | **Decided**              | Per device internally; per person in every list. Device never disclosed or reflected                                                       |
+| **D-3**  | Are device names worth improving?                               | **Decided in principle** | Yes. Mechanism open — and it does not need a fingerprint                                                                                   |
+| **D-4**  | Can a new device claim an existing actor?                       | **Decided**              | No. A new device is always a new actor; the real question was D-19                                                                         |
+| **D-5**  | What happens when sync first meets a non-empty room?            | **Decided**              | By case; both-full stops and asks with a preview. merge · theirs · ours · abort                                                            |
+| **D-6**  | Can dead actors be pruned?                                      | **Decided**              | No auto-hiding. Staleness may be muted; the interval is open. Exclusion is D-20                                                            |
+| **D-7**  | Should undo ever cross devices?                                 | **Decided**              | No. Never leaves the device                                                                                                                |
+| **D-8**  | What may a session be seen doing?                               | **Decided**              | A caret per tab, own tabs included, **all yours in your colour**, person's name. Active caret distinguished (D-21). Peer list deduplicated |
+| **D-9**  | Does the app ever show a tab count?                             | **Decided**              | Never, save a high-bar exception that must be justified in writing                                                                         |
+| **D-10** | Is sync configuration per device or per document?               | **Decided in principle** | Rule 1: the user never manages rooms. Mechanism open; today's three fields are ruled out                                                   |
+| **D-11** | What is a room — content, or permission?                        | **Decided in principle** | Permission. One user, one document; a device may host several users; "room" stays off the architecture                                     |
+| **D-12** | What happens when local identity is lost?                       | Open                     | Silent new identity                                                                                                                        |
+| **D-13** | Is there a deliberate reset?                                    | **Decided**              | Yes. Whether it is sign-out, and what it clears, open                                                                                      |
+| **D-14** | May the relay decide who connects? What is written?             | Open                     | Multi-tenancy stays cooperative-only and undeclared                                                                                        |
+| **D-15** | Within a device, is undo per tab or shared?                     | **Decided**              | Per tab                                                                                                                                    |
+| **D-16** | Can cross-device sync be cheap and stateless enough to be free? | Open — research          | Rung 2 of the ladder cannot ship either way                                                                                                |
+| **D-17** | What does "reasonably secure" mean, concretely?                 | Open — research          | Cannot tell whether accounts are optional or mandatory                                                                                     |
+| **D-18** | Are sessions enumerable and revocable from a UI?                | Open                     | Signing in cannot invalidate anything                                                                                                      |
+| **D-19** | How does a device find the other devices that are yours?        | Open                     | Manual: the same three fields typed twice. Rule 1 forbids it                                                                               |
+| **D-20** | How is a member actually excluded?                              | Open                     | Not at all — and local refusal does not work (§5.2)                                                                                        |
+| **D-21** | What does "the active caret" mean — local, or globally recent?  | Open                     | Ambiguous, and the two readings cost very differently                                                                                      |
+| **D-22** | Does merged content show its provenance?                        | Open                     | No. Cards could today; document text needs deferred attribution                                                                            |
 
-Suggested order for the remainder, on dependency rather than importance:
+Suggested order for the remainder, on dependency rather than importance. Note how much of it is now one
+cluster: nearly everything open is a consequence of not knowing what a credential is.
 
-1. **D-11** and **D-14** — content-or-permission, and what the relay may decide. They constrain
-   everything left, and §2.2b shows they cannot be decided independently.
-2. **D-17**, then **D-16** — the two research gates. D-17 first, because if its bar needs accounts then
-   the ladder collapses to one rung and several questions below stop mattering.
-3. **D-4**, **D-5**, **D-12** — the flows a user actually walks through, all three of which are shaped
-   by whether D-4 has a credential to key on.
-4. **D-15** and **D-18** — the two floors left by decided ceilings (D-7 and D-2).
-5. **D-6**, **D-10** — the remainder, neither of which blocks anything.
+1. **Confirm or reject §5.4's reading of D-11** — that a room is one document plus its member list, and
+   that room, document and account are therefore one thing. It is a small confirmation with a large
+   blast radius, and everything below assumes it.
+2. **D-14**, then **D-17**, then **D-16** — what the relay may decide, what "secure enough" means, and
+   whether rung 2 can be free. In that order, because D-17's bar can collapse the ladder to a single
+   rung, which would decide several questions below by removing them.
+3. **D-19**, then **D-18** — peer discovery and device revocation. Both are the same device list (§1.2),
+   both are downstream of the credential, and D-19 is what D-4 was actually about.
+4. **D-20** — exclusion. Fork or encrypt, and the encryption branch is the one that keeps the relay dumb.
+5. **D-12** — identity loss, which needs D-19 to have anything to offer the user.
+6. **D-21**, **D-22**, and D-6's staleness interval — the three that are UI-shaped and block nothing.
 
-**Unblocked now:** the multi-tab work was waiting on D-8, which is decided, subject to the colour
-correction noted there.
+**Unblocked now:** the multi-tab work was waiting on D-8, and D-8 is decided in the direction PR #18
+already assumed. No change is owed to that branch.
 
 ---
 
@@ -729,9 +963,8 @@ correction noted there.
   in the code and none of them is defined in the document.
 - **§11.3** — "One human actor, created on first run" is true per device and false per person
   (§2.2a). Either the sentence changes or the behaviour does; today they disagree silently.
-- **§11.3** — "Undo scoped to your own changes" needs a level in it. Per D-7 it never crosses devices;
-  per D-15 the level inside a device is still open, and the sentence should not be rewritten until it
-  is.
+- **§11.3** — "Undo scoped to your own changes" needs a level in it, and now has one: **per tab**, never
+  crossing devices (D-7, D-15).
 - **§11.3** — "No presence UI" is no longer true as written. D-8 ships carets for every input surface,
   which is presence, deliberately, and the sentence's real intent — no actor management, nothing to
   administer — survives and should be what it says.
@@ -739,18 +972,18 @@ correction noted there.
   accounts" is what D-14 asks about. If D-14 is "no", this document narrows to single-tenant identity
   hygiene and the non-goal stands as written. If "yes" or "partly", the non-goal and the document's
   single-tenant framing both have to be rewritten, not footnoted.
-- **§14 Open questions** — D-1 through D-18 belong here, or here by reference, once decided.
+- **§14 Open questions** — D-1 through D-22 belong here, or here by reference, once decided.
 - **A new section, or this document promoted** — the levels of §1 are product surface, not an
-  implementation detail, and they are currently written down nowhere. Note that the count is not
-  settled: D-11 decides whether there are four or five.
+  implementation detail, and they are currently written down nowhere. The account level in particular is
+  the one the PRD talks around: "one user" appears throughout without ever being a thing the system has.
+- **§2 Design principles** — the two rules in §1.2 are of the same kind as the ranked principles there
+  and would sit better beside them than in a companion document.
 
-### 9.1 One change owed to the multi-tab branch
+### 9.1 Nothing is owed to the multi-tab branch
 
-PR #18 §4.1 specifies per-session carets in **the actor's** colour, arguing that sameness of colour
-reads as "this is also you". D-8 decides the opposite — a distinct colour per caret, with the person's
-name carrying identity — so that branch needs its colour rule corrected before it merges. Everything
-else in its §4.1 stands, including the session field in awareness, the never-persisted rule, and
-grouping peers rather than listing them, which D-8's deduplicated peer list confirms.
+An intermediate draft of this document had D-8 overturning PR #18's caret colour rule. It does not: all
+of your carets carry your colour, which is what that branch already specifies, and what changes instead
+is that the _active_ caret gets a shared treatment of its own (D-21). PR #18 needs no edit.
 
 ## 10. Out of scope for this document
 
