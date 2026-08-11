@@ -42,7 +42,7 @@ Then in the app: **menu → Sync**, endpoint `wss://your-host`, room `done`,
 token as above. Do the same on the other device with the same token, and the
 two devices are syncing.
 
-## In development, where there is no certificate
+## Development over HTTP
 
 `pnpm dev` serves the app over plain HTTP, and a page served over HTTP is
 allowed to open a plain `ws://` connection. So the development answer is that
@@ -67,10 +67,29 @@ that is not loopback, and the app will not quietly downgrade a credential onto
 a network. **The token crosses that network in cleartext**, so use one you are
 willing to throw away, and keep the real one for the deployment behind TLS.
 
-If you need HTTPS end-to-end in development anyway — a service worker wants a
-secure context, so anything PWA-shaped on a phone does — put both the app and
-the relay behind one local reverse proxy with a certificate from `mkcert`, and
-the deployment section below applies unchanged.
+## Development over HTTPS and WSS
+
+From the repository root, `pnpm dev:tailscale` provides the trusted
+cross-device path. It discovers this machine's MagicDNS certificate name,
+binds both development processes to loopback, and starts Tailscale Serve in the
+foreground:
+
+```text
+https://machine.tailnet.ts.net
+        └── wss://machine.tailnet.ts.net/relay/done?token=…
+                         ↓ Tailscale Serve, TLS terminated
+                   http://127.0.0.1:5173
+                         ↓ Vite proxy, /relay removed
+                   ws://127.0.0.1:1234/done?token=…
+```
+
+The command checks or provisions the machine certificate before starting and
+prints the exact app URL, WSS endpoint and generated development token only
+after the HTTPS URL answers. MagicDNS and HTTPS certificates must be enabled
+for the tailnet. Use the full `*.ts.net` name it prints, not the node's `100.x`
+address: the publicly trusted certificate covers the DNS name. The relay still
+does not terminate TLS; that remains the responsibility of its front end in
+development and production.
 
 ## Configuration
 
