@@ -1,6 +1,6 @@
 # done — Sessions and Identity: Product Requirements
 
-**Status:** Draft v7 — **25 of 26 decisions recorded**. Only D-17 remains open. See §8.
+**Status:** Draft v8 — **25 of 26 decisions recorded**. Only D-17 remains open. See §8.
 **Date:** 2026-08-10
 **Audience:** the author, deciding. Not an implementation plan.
 **Amends:** PRD §11 (Actors), PRD §12 (non-goals) — see §9.
@@ -46,7 +46,7 @@ This document drives toward a multi-tenant future, which contradicts that non-go
 contradiction should be resolved deliberately rather than by drift (§9). Two things make it worth
 doing now anyway:
 
-1. **Most of what is below is single-tenant work.** Sessions, devices, reinstall, room switching and
+1. **Most of what is below is single-tenant work.** Sessions, devices, reinstall, workspace switching and
    the roster-of-duplicate-Yous are all problems for one person with three devices. They do not need
    a second human to be real, and three of them are shipping today.
 2. **The multi-tenant question is two specific decisions**, not a diffuse direction: may the relay
@@ -60,18 +60,49 @@ doing now anyway:
 
 ## 1. The levels
 
-| Level       | Answers                                      | Example                       | Exists today               |
-| ----------- | -------------------------------------------- | ----------------------------- | -------------------------- |
-| **Account** | who you are, across devices                  | you                           | **No** — the missing level |
-| **Actor**   | one account's writing identity on one device | you-on-your-phone; the app    | Yes, and misnamed (§1.1)   |
-| **Device**  | which install                                | your phone                    | Yes                        |
-| **Session** | which tab, this run of it                    | the tab you are looking at    | No                         |
-| **Room**    | who is allowed (D-11)                        | your document and its members | As a settings field only   |
+| Level         | Answers                                      | Example                        | Exists today               |
+| ------------- | -------------------------------------------- | ------------------------------ | -------------------------- |
+| **Account**   | who you are to the service                   | you, with billing and settings | **No** — the missing level |
+| **Workspace** | which content, and who may reach it (D-11)   | your document and its members  | As a settings field only   |
+| **Actor**     | one account's writing identity on one device | you-on-your-phone; the app     | Yes, and misnamed (§1.1)   |
+| **Device**    | which install                                | your phone                     | Yes                        |
+| **Session**   | which tab, this run of it                    | the tab you are looking at     | No                         |
 
 Draft v1 and v2 put the missing level at the bottom. **It is at the top.** Sessions were the visible
 gap because multi-tab needed them, but the level that explains the rest — grouping your devices,
 finding your own peers, two people on one laptop — is the one above actor, and it does not exist
 because nothing in the app knows what an account is.
+
+**An account is more than the workspace it owns.** An earlier draft collapsed account, workspace and
+document into one thing, and that was wrong on the account side. A workspace is one document plus its
+member list; an account owns one of those _and_ carries a pile of things that have nothing to do with
+any document — billing, an email address to be contacted at, service settings, the device list (D-18),
+logs, backups, and more that will surface when it is actually designed. Keeping the two words separate
+is what stops that list from being quietly precluded by a tidy identity.
+
+**One account, one workspace is a current product decision, not an identity.** It is what the product
+spec says today; the model should not be built so that a second workspace is impossible, only so that
+none is offered.
+
+### 1.0 A word for it: workspace, not room
+
+"Room" is `y-websocket` and `y-webrtc` vocabulary for a channel name that goes in a URL path. It names
+a transport concept, it is not what a user owns, and it drags its origins with it — which is the
+argument for not letting it become architectural. So the product word is **workspace**.
+
+Why that one: it is understood without teaching (Slack, Notion, Linear, VS Code all use it), it
+connotes a container with members rather than a channel, and its usual multi-document, multi-member
+sense is a feature here — it precludes neither a second member nor a second document, so it does not
+have to be renamed again if either arrives. The honest objection is register: "workspace" is
+corporate-flavoured, and this app's voice is deliberately not that (PRD §1, §12). If that grates
+enough, **vault** is the strongest alternative — it fits the encryption decision in D-20 and reads as
+personal rather than professional — at the cost of connoting storage rather than membership. Avoid
+**journal**: the codebase already uses that word for the localStorage write-ahead log.
+
+**Scope of the rename.** Product and code use "workspace". The wire may keep "room" if the transport
+insists, since that is where the word belongs. This document uses "workspace" for the concept and
+keeps "room" only when describing what the code says today — `normalizeRoom`, `RELAY_ROOMS`, the
+settings field — because pretending otherwise would misdescribe the thing being changed.
 
 ### 1.1 Actor is the wrong word for what the code has
 
@@ -114,9 +145,9 @@ Both came out of the decisions below and both generalise past them, so they are 
 than buried in the decision that produced them. They rank beneath the PRD's principles and above
 anything in this document.
 
-**Rule 1. The user never manages rooms.** Room management is not a task to make pleasant; it is a task
-to remove. Anything that requires a person to know what a room is, name one, or copy one between
-devices has failed (D-10, D-11).
+**Rule 1. The user never manages workspaces.** It is not a task to make pleasant; it is a task to remove.
+Anything that requires a person to know what a workspace is, name one, or copy one between devices has
+failed (D-10, D-11).
 
 **Rule 2. The UI never promises anything about a remote device that cannot be kept.** No auto-hiding a
 member as though they were gone, no "removed" that does not remove, no presence claim that outlives
@@ -124,7 +155,7 @@ the connection it was inferred from. Where the truth is unknown, show it as unkn
 for a device not seen in a while is honest; omitting it is not (D-6).
 
 A corollary of Rule 1, worth stating because it cannot be fully achieved: **security cannot be hidden
-as completely as room management can.** Signal, WhatsApp and every serious attempt converge on a small
+as completely as workspace management can.** Signal, WhatsApp and every serious attempt converge on a small
 irreducible surface — a way to verify a peer, a warning when a peer's identity changes, and a list of
 your own devices. Notably, that list is the same artifact D-18 wants for session invalidation and the
 same one D-19 wants for peer discovery, which suggests the irreducible security surface and the useful
@@ -186,11 +217,12 @@ document)_ rather than by the room alone. This is not a decision to take here; i
 and D-14 cannot be decided independently.
 
 And a distinction that D-11 was written without: **"which content" and "who is allowed" are not
-obviously the same axis.** A room could be a document, or it could be a membership boundary that
-contains documents. D-11 now takes the second reading, which raised the possibility of content becoming
-a level of its own — and then closed it again, because "one logged-in user, one document" collapses room,
-document and account into one thing rather than separating them (§5.4). §1's table reflects the
-collapsed model; §5.4 is the reading that needs confirming.
+obviously the same axis.** The boundary could be a document, or a membership boundary containing
+documents. D-11 takes the second reading and calls the result a **workspace** (§1.0), which raised the
+possibility of content becoming a level of its own and then closed it again — a workspace holds exactly
+one document, so there is nothing for a content level to distinguish. The collapse stops there: the
+**account is a separate level**, since it carries billing, contact, settings and the device list that
+belong to no document (§5.4).
 
 **c. The relay's token is not per room — and this is a target for change, not a constraint to design
 around.** `RelayPolicy` is one shared `token` plus an allowlist of `rooms`. Anyone holding the token
@@ -423,16 +455,23 @@ what it collects.
 | **2. Paired**  | Several devices. **Still no name** (D-23). | Pairing a second device (D-19). No account, no server in the sync path.                           | No           |
 | **3. Account** | A name, a credential, durability           | Creating an account: paid durability, connecting an AI, **or every user if D-17's bar needs one** | Yes          |
 
-**Every rung boundary is a durability boundary.** This was not designed; it emerged, and it has now
-arrived independently four times, which is enough to promote it to the ladder's organising principle:
+**What actually distinguishes the rungs is durability and necessity — not price.** The rungs and the
+business model happen to line up, and it is worth keeping the two apart on purpose, because only one of
+them is a technical constraint. The technical statement:
 
-- D-16 puts the billing boundary at server-intermediated sync — updates without another device online.
-- D-19 makes rung 2's pairing require both devices present, so rung 2 has no recovery from a lost device.
-- D-25 routes an undurable context toward server sync when the browser cannot promise persistence.
-- D-26 has the free tier accept a bounded data loss that the paid tier prevents by construction.
+- **Rung 1 and rung 2 differ in how many devices hold a copy, not in what holds it.** Both are
+  device-only. A lost device at rung 1 is total loss; at rung 2 it is one replica, unless it was the last
+  one — and pairing needs another device present, so a group cannot be rebuilt from nothing (D-19).
+- **Rung 3 is where something other than your own devices holds or decides something.** That is the
+  boundary, and it is the point at which **an account becomes technically necessary** — a server-held copy
+  needs a stable identity to attach to and a credential to retrieve it, and revocation needs somewhere to
+  keep state (D-18). Not a pricing statement: a statement about what cannot work without an account.
 
-So the sentence that explains the whole ladder to a user is: **free keeps your data on your devices; paid
-keeps it when your devices do not.** Everything else is a consequence.
+The same line also happens to be where costs appear, which is why D-16 puts a billing boundary near it and
+why D-25 and D-26 both route toward it. **That coincidence is not a law.** Pricing could sit elsewhere —
+above rung 3 with server durability offered free at a loss, or on something orthogonal entirely — and
+nothing in this document should be read as having decided it. What this section fixes is only when an
+account is _required_; what it costs is a separate conversation with a separate answer.
 
 Three constraints on that ladder, stated as constraints rather than as questions:
 
@@ -524,7 +563,7 @@ a flow that does not exist yet. Options, all of which assume something about the
 
 | Option                         | The user does                                        | Needs                                                           |
 | ------------------------------ | ---------------------------------------------------- | --------------------------------------------------------------- |
-| Manual configuration (today)   | Types endpoint, room and token on each device.       | Nothing. Violates Rule 1.                                       |
+| Manual configuration (today)   | Types endpoint, room and token on each device.       | Nothing. Violates Rule 1, in today's words.                     |
 | Implied by signing in          | Signs in. Their devices are the ones on the account. | An account, so **D-14** and the ladder's rung 2 or 3 (§5.1.1).  |
 | Pairing between devices        | Scans a code shown on the other device.              | Both devices present at once; a pairing protocol; no account.   |
 | Discovery on the local network | Nothing, on a shared network.                        | mDNS or similar, which a browser cannot do — so a relay anyway. |
@@ -547,11 +586,11 @@ ladder to "local or signed in" — the shape D-17 threatens as a fallback and wh
 default. Without sign-in, rung 3 has nothing to authenticate. So the two mechanisms are the rungs, and
 building one is building half a ladder.
 
-**Both satisfy Rule 1, and it is worth seeing why in the same sentence: pairing _derives_ the room,
-sign-in _assigns_ it.** Under pairing, whatever the two devices agree on can also produce the channel
-identifier, so nobody types a room name. Under sign-in, the account determines it, so nobody types a
-room name. There is no third thing to configure in either case, which is the strongest evidence so far
-that "room" belongs at the wire level and nowhere near a user (D-11).
+**Both satisfy Rule 1, and it is worth seeing why in the same sentence: pairing _derives_ the workspace
+identifier, sign-in _assigns_ it.** Under pairing, whatever the two devices agree on can also produce the channel
+identifier, so nobody types a workspace identifier. Under sign-in the account determines it, so again nobody types
+one. There is no third thing to configure in either case, which is the strongest evidence so far that the
+identifier belongs at the wire level and nowhere near a user (§1.0).
 
 **Three consequences, one of them a real asymmetry.**
 
@@ -926,7 +965,7 @@ each browser profile is configured independently by hand (S13, S23). Options: ke
 belongs to the browser it was typed into, which is TRD §4.8's stated reason); sync the endpoint but
 not the token; sync everything but the token and prompt for that.
 
-> **Decided in principle, as Rule 1: the user never manages rooms.** The mechanism is open and depends
+> **Decided in principle, as Rule 1: the user never manages workspaces.** The mechanism is open and depends
 > on the account model, but the target is that room management stops being a task rather than becoming
 > a nicer one.
 
@@ -941,7 +980,7 @@ converges on is a way to verify a peer, a warning when a peer's identity changes
 devices — and since D-18 and D-19 both want that same device list, the honest budget is one screen that
 serves all three, not zero screens.
 
-**D-11. What is a room?** The largest decision here, and the one §2.2b shows is already half-made in
+**D-11. What is a workspace (formerly "room")?** The largest decision here, and the one §2.2b shows is already half-made in
 a direction nobody chose.
 
 | Option                                                                             | The user sees                                                            | Forces                                                                                                                                                                                                          |
@@ -958,7 +997,8 @@ changing a room must not merge.
 
 The two live readings differ in one word: whether a room is **content** or **permission**.
 
-> **Decided in principle: permission.** A room is a membership boundary. With three constraints
+> **Decided in principle: permission.** A workspace is a membership boundary, and it is called a
+> **workspace** rather than a room (§1.0). With three constraints
 > alongside it: **one logged-in user has exactly one document**; **one device may host several logged-in
 > users**; and **"room" must not become architectural**, because the transport it came from is going
 > away.
@@ -966,26 +1006,24 @@ The two live readings differ in one word: whether a room is **content** or **per
 Those three constraints do more work than they look like they do, and one consequence is worth confirming
 before it gets built on.
 
-**The constraints nearly determine the model.** If a room is permission, and one user has exactly one
-document, then a room cannot be a container of many users' documents without contradicting the second
-constraint. The reading that satisfies all three is: **a room is one document plus the list of who may
-reach it.** Sharing means adding a member to _your_ room, not joining a shared pool. Two people who each
-share with the other have two rooms, and each keeps their own Done list — which happens to match the
+**The constraints nearly determine the model.** If the boundary is permission, and one user has exactly
+one document, then it cannot be a container of many users' documents without contradicting the second
+constraint. The reading that satisfies all three: **a workspace is one document plus the list of who may
+reach it.** Sharing means adding a member to _your_ workspace, not joining a shared pool. Two people who
+each share with the other have two workspaces, and each keeps their own Done list — which matches the
 app's premise that this is one person's workflow rather than a team's.
 
-If that is right, then **the fifth level collapses rather than appearing**: room, document and account
-are one thing seen from three sides, with membership as an attribute of it. §1's table is the model, and
-the count stays at five with account at the top rather than growing to six. **This is the reading to
-confirm or reject** — the alternative is that a room contains several members' separate documents, which
-is a different and larger system.
+So **content does not become a level of its own** — a workspace already implies exactly one document, so
+there is nothing left for a separate content level to distinguish.
 
-**On "room" not becoming architectural: agreed, and the word is already the problem.** "Room" is
-provider vocabulary — `y-websocket` and `y-webrtc` both use it for the channel name that goes in a URL
-path, and other providers call the same thing a document id. It names a _channel_, which is why it
-carries transport assumptions, and it is not what the user owns. The product word should be the thing
-itself — the document, or the account's space — and "room" should survive only at the wire level, if the
-replacement transport even wants it. Renaming it in the product is cheap now and expensive after it
-reaches a settings screen.
+**But the collapse stops there, and an earlier draft took it one step too far.** Workspace and document
+are one thing; **the account is not.** An account owns a workspace and also carries billing, contact
+details, service settings, its device list, logs and backups — none of which belong to any document, and
+all of which would be quietly precluded by treating account and workspace as the same object. §1 keeps
+them as two levels for exactly that reason.
+
+And **one account, one workspace is what the product spec says today, not a property of the model.** The
+1:1 should not be built as an identity; a second workspace should be unoffered rather than impossible.
 
 Also from §2.2b: the local database would be keyed by _(identity, document)_ rather than by room, which
 is forced by the second and third constraints together — two users on one browser profile need two local
@@ -1406,13 +1444,13 @@ The three differ by two screens. That is roughly the whole budget this document 
 | **D-2**  | Is identity per person, per device, or a labelled pair?        | **Decided**              | Per device internally; per person in every list. Device never disclosed or reflected                                                       |
 | **D-3**  | Are device names worth improving?                              | **Decided in principle** | Yes. Mechanism open — and it does not need a fingerprint                                                                                   |
 | **D-4**  | Can a new device claim an existing actor?                      | **Decided**              | No. A new device is always a new actor; the real question was D-19                                                                         |
-| **D-5**  | What happens when sync first meets a non-empty room?           | **Decided**              | By case; both-full stops and asks with a preview. merge · theirs · ours · abort                                                            |
+| **D-5**  | What happens when sync first meets a non-empty workspace?      | **Decided**              | By case; both-full stops and asks with a preview. merge · theirs · ours · abort                                                            |
 | **D-6**  | Can dead actors be pruned?                                     | **Decided**              | No auto-hiding. Staleness may be muted; the interval is open. Exclusion is D-20                                                            |
 | **D-7**  | Should undo ever cross devices?                                | **Decided**              | No. Never leaves the device                                                                                                                |
 | **D-8**  | What may a session be seen doing?                              | **Decided**              | A caret per tab, own tabs included, **all yours in your colour**, person's name. Active caret distinguished (D-21). Peer list deduplicated |
 | **D-9**  | Does the app ever show a tab count?                            | **Decided**              | Never, save a high-bar exception that must be justified in writing                                                                         |
-| **D-10** | Is sync configuration per device or per document?              | **Decided in principle** | Rule 1: the user never manages rooms. Mechanism open; today's three fields are ruled out                                                   |
-| **D-11** | What is a room — content, or permission?                       | **Decided in principle** | Permission. One user, one document; a device may host several users; "room" stays off the architecture                                     |
+| **D-10** | Is sync configuration per device or per document?              | **Decided in principle** | Rule 1: the user never manages workspaces. Mechanism open; today's three fields are ruled out                                              |
+| **D-11** | What is a workspace — content, or permission?                  | **Decided in principle** | Permission. One user, one document; a device may host several users; "room" stays off the architecture                                     |
 | **D-12** | What happens when local identity is lost?                      | **Decided in principle** | The state is illegitimate. Never-synced may re-mint; ever-synced must not. The roster is the evidence                                      |
 | **D-13** | Is there a deliberate reset?                                   | **Decided**              | Yes. Whether it is sign-out, and what it clears, open                                                                                      |
 | **D-14** | May the relay decide who connects? What is written?            | **Decided in part**      | At least "partly"; "no" is ruled out. Whether it reaches content authority is open                                                         |
@@ -1436,13 +1474,18 @@ The three differ by two screens. That is roughly the whole budget this document 
    this professionally. It is still the only question that can collapse the ladder, and D-19 has made that
    collapse expensive — it would strand the pairing flow that rung 2 is made of.
 
-**Two derived readings still want confirming**, because a lot now rests on them and neither was stated
-outright in review:
+**Both derived readings have now been confirmed and corrected**, and the corrections are worth keeping
+visible because each removed an over-reach:
 
-- §5.4's, that a room is one document plus its member list, and therefore that room, document and account
-  are one thing seen from three sides.
-- §5.1.1's, that every rung boundary is a durability boundary — which arrived four separate times and is now
-  written as the ladder's organising principle rather than an observation.
+- **A workspace is one document plus its member list — confirmed.** But the collapse stopped one step short
+  of where an earlier draft put it: the **account is its own level**, carrying billing, contact, settings,
+  the device list, logs and backups that belong to no document. And one-account-one-workspace is a current
+  product decision rather than a property of the model.
+- **The rungs differ by durability and by when an account is _necessary_ — confirmed. That they also line up
+  with a price is a coincidence, not a law.** §5.1.1 now states the technical constraint and explicitly
+  disclaims the business model, which is a separate conversation with a separate answer.
+
+What remains genuinely unconfirmed is nothing structural — only D-17.
 
 **Residual sub-questions inside decided items.** None blocks anything, and none needs a meeting:
 
