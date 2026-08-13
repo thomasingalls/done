@@ -1,7 +1,7 @@
 # done — Sessions and Identity: Product Requirements
 
-**Status:** Draft v9 — **24 of 27 recorded dispositions**; four architecture-blocking questions open
-(D-12 mechanism, D-14 second half, D-17, D-27). **Not ready to promote into the PRD** — see §8.2.
+**Status:** Draft v10 — **26 of 27 recorded**; D-17 alone remains open, and it gates the one artifact still
+missing (the security contract, §8.1). **Not ready to promote into the PRD** — see §8.2.
 **Date:** 2026-08-10
 **Audience:** the author, deciding. Not an implementation plan.
 **Amends:** PRD §11 (Actors), PRD §12 (non-goals) — see §9.
@@ -1130,14 +1130,32 @@ it — two storage clears on a purely local document leave two orphaned human en
 indistinguishable from two devices having synced.
 
 The roster is mutable, unauthenticated and written by genesis, so it cannot be evidence of admission to
-anything. What the policy needs is a **monotonic, signed membership fact** — a workspace or membership
-generation that only advances when a member is admitted — which is the same epoch D-20's key rotation
-needs and the same one D-26's revocation ordering needs. One mechanism, three uses.
+anything. What the policy needs is a **monotonic, signed membership epoch** — a generation that advances
+only when a member is admitted, where **epoch 0 means never admitted**.
 
-**So D-12's policy shape stands and its mechanism is open.** Never-shared may re-mint silently;
-ever-shared must not; and there is currently no sound way to tell which is which. That makes D-12 open in
-substance rather than decided, and it is now blocked on the membership epoch rather than on a product
-choice.
+> **Decided in principle.** Never-admitted may re-mint silently; admitted must not; the two are
+> distinguished by a signed membership epoch rather than by the roster. What the app _does_ on detecting an
+> admitted document with no local identity is still open — see below.
+
+**And that epoch is not a new open question, which is worth being precise about, because two decisions
+already require the same object.** D-20's key rotation needs a generation so content knows which key
+version it is under. D-26's commit point needs a definite "revoked at epoch N". Neither of those requires
+the epoch to be **signed**, or to be **verifiable by a client holding no identity** — and that is the single
+property D-12 adds. So this is one object with three requirements, D-12's being the strictest, rather than
+three mechanisms:
+
+| Decision | What it needs from the epoch                                   |
+| -------- | -------------------------------------------------------------- |
+| D-20     | monotonic; advances on removal; content records its generation |
+| D-26     | a definite committed value, server-witnessed at rung 3         |
+| D-12     | **signed, and verifiable with no local identity**              |
+
+Designing it once is therefore not a deferral of D-12 so much as a consequence of D-20 and D-26 having been
+decided. It belongs in the security contract (§8.2) with the rest of the signing model.
+
+**What genuinely remains open in D-12 is a product question, not a mechanism:** on an admitted document with
+no local identity, does the app refuse to write, offer to re-pair (D-19), or quarantine the document until
+the human chooses? That is a UX decision about a rare and alarming state, and it blocks nothing.
 
 Related but separate, and now its own decision: whether the app tells the user that durability is not
 guaranteed. That is **D-25**.
@@ -1277,8 +1295,12 @@ Everything else in this document can be decided before the remaining half of D-1
 records which way it leans: D-4's roster picker, for instance, is fine under "partly" and a hole under
 "yes".
 
-**D-27. Is attribution authenticated, or advisory?** _(Open. New, and the one thing PRD §11.4 does not
-already cover.)_
+**D-27. Is attribution authenticated, or advisory?**
+
+> **Decided: authenticated.** The invariant is adopted — **every accepted mutation is authenticated to a
+> non-revoked device, and claimed authorship must match the authenticated signer.** Implementation is
+> deferred to the security contract (§8.2); what is settled is that the app makes this promise rather than
+> presenting a forgeable field as evidence.
 
 Today it is **advisory and undefended**: `Card.author` is a field, any writer can set it to any value, and
 `meta[actor:<id>]` is an ordinary map entry any member can overwrite. That is fine while the only writer is
@@ -1291,15 +1313,56 @@ not the agent" both become claims the document cannot substantiate.
 | **Authenticated writes**     | every update is signed; unsigned or badly signed is not applied | A signature per update, verified on receipt, plus key management D-20 needs anyway                                                   |
 | **Authenticated authorship** | the above, _plus_ claimed author must equal the signer          | Also requires inspecting what an update touched, or moving attribution out of the document and deriving it from the envelope instead |
 
-The third is the only one that makes the invariant true, and it is the expensive one — which is why this is
-a product decision rather than an implementation detail. The honest interim position is the first, **stated
-out loud**: if attribution is a label rather than evidence, the interface must not present it as evidence,
-and PRD §11.3's "cards record their author" needs the same qualifier PRD §11.4 already applies to
-permissions.
+The third is chosen. PRD §11.3's "cards record their author" then means what it appears to mean, which it
+does not today.
 
-One thing this gap does _not_ touch: undo. Undo is scoped by transaction origin, which is local and
-therefore trustworthy on the device that made it (D-7, D-15). It is cross-member attribution that is
-unsupported, not within-device history.
+#### 5.6.2 Does it fit the latency budget?
+
+Yes, and for a structural reason rather than because signatures are fast: **the trust boundary is not the
+keystroke.** TRD §12 budgets keystroke → paint at under 16 ms p95, and that path is CodeMirror applying a
+change into a Yjs transaction in memory. Signing has no business there and could not be put there by
+accident even if someone tried — `crypto.subtle.sign` returns a promise, so it cannot run inside a
+synchronous input handler at all.
+
+Where authentication belongs is the boundary where bytes leave the device or arrive from another one. Three
+consequences worth stating now, because they shape the design rather than following from it:
+
+- **The synchronous journal stays unsigned, and that is correct.** `persistence.ts` writes each update to
+  localStorage synchronously so a page kill between transaction and IndexedDB commit cannot lose it (TRD
+  §6.1), and it cannot wait for an async signature. It does not need to: the journal never leaves the
+  device, and an attacker who can write your IndexedDB can write your JavaScript. **Authentication is a
+  property of the transport boundary, not of local storage.**
+- **Local replay must not verify.** If every historical update had to be verified on load, the cost would
+  land on "Yjs doc load < 500 ms" and "cold start < 2.5 s" and would grow with history. Verify at receipt,
+  trust the disk thereafter, and the load path is untouched.
+- **Sign per outbound message, not per Yjs update.** The adapter already batches updates behind a 250 ms
+  window; one signature per batch is enough to bind a signer to exact bytes, and it keeps the per-keystroke
+  cost at zero rather than merely small. The volume that could actually hurt is inbound: a first sync
+  delivering a long history as thousands of envelopes. Granularity is the lever there too.
+
+So the latency question is settled and the real cost sits elsewhere: **in the "authorship matches signer"
+half**, which requires either inspecting what an update touched or deriving attribution from the envelope
+instead of trusting a field in the document. That is the design work being deferred, and it is design work
+rather than a performance problem.
+
+#### 5.6.3 Undo is an append, and is not exempt
+
+An earlier draft said this gap "does not touch undo", which was too loose. **Undo is input.** `Y.UndoManager`
+does not remove history; it appends a new transaction whose ops invert earlier ones. So an undo produces a
+mutation, that mutation crosses the boundary, and under D-27 **it is signed like any other write**. There is
+no exemption.
+
+The narrower thing that is true, and worth keeping because it is the reason undo is safe: **the undo stack
+is assembled from in-memory transaction origins, which never travel.** `trackedOrigins` matches origin
+objects by identity, those objects exist only in the page that made them, and — per the TRD §4.8 correction
+above — nothing about origin is encoded in an update. So no document content can insert an entry into your
+undo stack, no matter what it claims. **Origin is trustworthy precisely because it never leaves**, and that
+same property is exactly why it cannot serve as cross-device attribution. One mechanism, two conclusions
+that look contradictory until you notice which direction each runs.
+
+One thing this forecloses: because undo appends, **undoing a revoked member's content is not a way to
+exclude them.** An inverse op is just another op, and they can write again. Exclusion is D-20; undo is
+housekeeping.
 
 ### 5.7 The gates — D-16, D-17, D-18
 
@@ -1582,7 +1645,7 @@ does not.
 | **D-9**  | Does the app ever show a tab count?                            | **Decided**              | Never, save a high-bar exception that must be justified in writing                                                                         |
 | **D-10** | Is sync configuration per device or per document?              | **Decided in principle** | Rule 1: the user never manages workspaces. Mechanism open; today's three fields are ruled out                                              |
 | **D-11** | What is a workspace — content, or permission?                  | **Decided in principle** | Permission. One user, one document; a device may host several users; "room" stays off the architecture                                     |
-| **D-12** | What happens when local identity is lost?                      | **Open in substance**    | Policy shape agreed; the roster test withdrawn as unsound. Blocked on a signed membership epoch                                            |
+| **D-12** | What happens when local identity is lost?                      | **Decided in principle** | Never-admitted may re-mint; admitted must not. Distinguished by a signed epoch, not the roster. Response open                              |
 | **D-13** | Is there a deliberate reset?                                   | **Decided**              | Yes. Whether it is sign-out, and what it clears, open                                                                                      |
 | **D-14** | May the relay decide who connects? What is written?            | **Decided in part**      | At least "partly"; "no" is ruled out. Whether it reaches content authority is open                                                         |
 | **D-15** | Within a device, is undo per tab or shared?                    | **Decided**              | Per tab                                                                                                                                    |
@@ -1597,74 +1660,58 @@ does not.
 | **D-24** | How does a paired group become an account?                     | **Decided**              | The account adopts the group. Requires an account model that accepts a prior identity                                                      |
 | **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**              | Yes, prominently. Warn about the property, not the context. Offer the grant, else route to sync                                            |
 | **D-26** | Revocation learned late, history already diverged?             | **Decided**              | Free: sanction, discard, explain, offer the upgrade. Paid: prevented by construction. No filtered replay                                   |
-| **D-27** | Is attribution authenticated, or advisory?                     | **Open — blocking**      | Advisory and undefended today. Matters at the first agent member; the fix is signed updates                                                |
+| **D-27** | Is attribution authenticated, or advisory?                     | **Decided**              | Authenticated. Every mutation authenticated to a non-revoked device; claimed author must equal the signer                                  |
 
-### 8.1 What blocks work, and what does not
+### 8.1 One artifact remains, and D-17 gates it
 
-Review's fair complaint was that "only D-17 is open" flattened a real distinction. Separating them:
+An earlier draft said "only D-17 is open", which flattened a real distinction; the draft after it said "four
+blocking questions", which fragmented one. With D-27 adopted, the accurate statement is narrower than either:
+**the product decisions are made, and what is left is a single artifact that several of them all require.**
 
-**Architecture-blocking — a design that ignores these has to be redone:**
+**The security contract.** It has to specify:
 
-| Item                                             | Why it blocks                                                                                                     |
-| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| **D-17** — what "secure enough" means            | Can still collapse the ladder to accounts-only. Now with PRF's optionality and key recovery as named sub-problems |
-| **D-27** — authenticated or advisory attribution | Decides whether signed envelopes exist at all, which is a transport-shaped commitment                             |
-| **D-12's mechanism** — the membership epoch      | The roster test is withdrawn; a signed monotonic generation is needed, and D-20 and D-26 need the same one        |
-| **D-14's second half** — content authority       | Less urgent since D-20, but still shapes what the relay is                                                        |
+| Piece                          | Required by          | Because                                                                         |
+| ------------------------------ | -------------------- | ------------------------------------------------------------------------------- |
+| Device signing keys            | D-27, D-19, D-20     | nothing else can authenticate a mutation or admit a device                      |
+| **Signed membership epoch**    | **D-12, D-20, D-26** | one object, three requirements; D-12's is the strictest (§5.5)                  |
+| Signed update envelopes        | D-27                 | the invariant is not true without them                                          |
+| Attribution binding            | D-27                 | claimed author must equal signer, by inspection or by derivation                |
+| Revocation commit semantics    | D-26                 | "revoked" must mean committed, not requested                                    |
+| Content key wrapping, rotation | D-20                 | exclusion works by who receives the next key                                    |
+| Key recovery                   | **D-17, D-25**       | a lost key root makes data as gone as eviction, which D-25 makes promises about |
 
-**Live sub-questions inside recorded dispositions — worth doing, block nothing:**
+**D-17 gates all of it**, which answers whether everything now hinges on D-17: essentially yes. Every row
+above needs a key model, and D-17 is the key model — including the two sub-problems review named, PRF's
+optionality and the recovery path. The next steps are unchanged: evaluate WebAuthn PRF as the root with an
+explicit unsupported-authenticator path, and get §5.7.1's shape reviewed by someone who does this
+professionally.
 
-D-13's destructive semantics (what a reset clears, whether it equals sign-out) · D-18's revoked-device
-options and cleanup policy · D-16, deferred until two tiers have shipped and unit costs are real · D-6's
-staleness interval · D-3's disambiguation mechanism · D-20's awareness-leakage question · D-21's design
-check · D-22 and D-23's interface details.
+**The one item outside that cluster** is D-14's second half — whether the relay ever gains authority over
+content. Genuinely independent, and much less urgent since D-20 made exclusion work without it.
 
-**One mechanism now serves three decisions**, which is the most useful thing to fall out of this round: a
-**signed, monotonic membership epoch** is what D-12 needs to tell genesis from admission, what D-20's key
-rotation rotates against, and what D-26's commit point commits. Designing it once, deliberately, is
-cheaper than discovering it three times.
-
-**Suggested order:**
-
-1. **The membership epoch**, because three decisions are waiting on the same object.
-2. **D-27**, because it decides whether updates carry signatures — and if they do, the epoch and the
-   envelopes are one piece of design rather than two.
-3. **D-17**, with its two concrete steps: evaluate WebAuthn PRF as the key root including the
-   unsupported-authenticator and key-recovery paths, and get §5.7.1's shape reviewed by someone who does
-   this professionally.
-4. **D-14's second half**, which by then will mostly have answered itself.
-
-**Both derived readings were confirmed, and both needed correcting first** — each had over-reached, and the
-corrections are the substance:
-
-- **A workspace is one document plus its member list — confirmed.** But the collapse ran two steps too far.
-  The **account is its own level** (billing, contact, settings, device list, logs, backups — none of it
-  document-shaped), and the **member level sits below it**, because rung 2 groups devices before any account
-  exists (§1.0). One account, one workspace is a current product surface, not a property of the model
-  (§5.4.1).
-- **The rungs differ by durability and by when an account is _necessary_ — confirmed. That they also line up
-  with a price is a coincidence, not a law.** §5.1.1 states the technical constraint and disclaims the
-  business model.
-
-**One number worth gathering before pricing anything:** the fraction of real device pairs that fail to
-connect directly and fall back to TURN, measured on real networks rather than estimated.
-
-**Unblocked:** the multi-tab work was waiting on D-8, which is decided in the direction PR #18 already
-assumed. No change is owed to that branch.
+**Live sub-questions inside recorded dispositions.** Each is a UX or parameter choice and none blocks the
+contract: D-12's response on an admitted document with no identity · D-13's destructive semantics · D-18's
+revoked-device options and cleanup policy · D-6's staleness interval · D-3's disambiguation mechanism ·
+D-20's awareness-leakage question · D-21's design check · D-22 and D-23's interface details. D-16 stays
+deferred until two tiers have shipped and unit costs are real.
 
 ### 8.2 Not ready to promote, and what would make it ready
 
 This document should not be folded into the PRD or treated as implementation-ready yet, and the reason is
-now specific rather than cautious: the ontology changed in this revision, two decisions were reopened, and
-one mechanism that three decisions depend on has not been designed. Three artifacts would close it:
+now specific rather than cautious. Of the three artifacts review asked for, two exist and one does not:
 
 1. **The corrected ontology**, which §1 now has — account, member (principal or agent), actor, device,
    session, workspace — with the pre-account principal as the load-bearing addition.
 2. **Explicit cardinalities**, which §5.4.1 now has, separating architectural capacity from revealed
    surface.
-3. **A security contract**, which does not exist yet: authenticated mutations (D-27), membership epochs,
-   revocation commit semantics (D-26), and key recovery (D-17). That is the missing artifact, and it is
-   where the next round of work belongs.
+3. **A security contract**, which does not exist and is the whole of what is left: signed update envelopes
+   (D-27), the membership epoch (D-12, D-20, D-26), revocation commit semantics (D-26), content key wrapping
+   and rotation (D-20), and key recovery (D-17, D-25). §8.1 tabulates it. Every row needs a key model, so
+   D-17 is the gate, and it is where the next round of work belongs.
+
+The ontology and the cardinalities were the two things review said were missing or contradictory, and both
+are now written down. What changed in this round is that the remaining work stopped being a list of open
+questions and became one design task — which is a better place to stop than the last three drafts were.
 
 What should survive that round unchanged, because it has held up under three rounds of review: invisible
 workspace management (Rule 1), reads and writes never awaiting a credential, an account adopting an existing
