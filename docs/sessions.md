@@ -1,8 +1,10 @@
 # done — Sessions and Identity: Product Requirements
 
-**Status:** Draft v12 — **all 27 dispositions recorded**. D-17 is the only unresolved architecture gate,
-and it gates the one artifact still incomplete (the security contract, §8.1). **Not ready to promote into
-the PRD** — see §8.2.
+**Status:** Draft v13 — **all 30 dispositions recorded**, revised against a review that checked every
+claim this document makes about the codebase. Two unresolved architecture gates: **D-17** (the security
+contract, §8.1) and **D-28** (what carries the authorization protocol, §5.8.1), which the review
+promoted out of a prose implication because D-20, D-27 and the signed epoch have made it forced.
+**Not ready to promote into the PRD** — see §8.2.
 **Date:** 2026-08-13
 **Audience:** the author, deciding. Not an implementation plan.
 **Amends:** PRD §11 (Actors), PRD §12 (non-goals) — see §9.
@@ -174,6 +176,12 @@ anything in this document.
 Anything that requires a person to know what a workspace is, name one, or copy one between devices has
 failed (D-10, D-11).
 
+Rule 1 governs _routine_ management, and review found a case it does not cover: **D-5's merge · theirs ·
+ours · abort flow is the most demanding piece of workspace management in the product**, and it is
+deliberate. Two document histories meeting is not a task that can be removed, because the outcome is
+irreversible and the app cannot pick for the user. Whether that is an exception to Rule 1, a boundary
+inside it, or evidence that the rule needs a different formulation is **D-30**, and it is open.
+
 **Rule 2. The UI never promises anything about a remote device that cannot be kept.** No auto-hiding a
 member as though they were gone, no "removed" that does not remove, no presence claim that outlives
 the connection it was inferred from. Where the truth is unknown, show it as unknown — a muted colour
@@ -324,6 +332,39 @@ host" and "authenticate with a cookie" are one move rather than two, since reque
 plain HTTP is exactly where cookie auth is free and where hosting is cheapest. That belongs in its own
 spec.
 
+### 2.4 The installation that exists today
+
+Absent from every earlier draft, and the omission mattered: this document treats every transition
+between identity states as a data-loss hazard deserving a decision, while the first such transition the
+project will actually perform was not written down.
+
+**What is running.** Vite behind Tailscale on a laptop. Not a deployment — just enough to be in
+continuous daily use, which it has been for ten days, and it slid in with remarkably little friction.
+Sync is configured by hand on each device with the shared bearer token of §2.2c. There is no principal,
+no authorization epoch, and the relay's document is plaintext.
+
+**Which means the ladder has no rung for it.** Rung 1 is one device with no sync; rung 2 is pairing.
+The current installation is several devices, syncing, with none of the machinery either rung assumes.
+Everything below that talks about promotion assumes a starting point this installation does not occupy.
+
+**The plan, recorded so it can be argued with.** Build import; export from the development installation
+and import into the first real deployment; treat that as the migration rather than attempting to carry a
+live document across. Then a versioning and upgrade story, built preventatively rather than at the first
+incompatible change.
+
+**One consequence of that plan is a defect waiting to happen, and it is worth fixing before the
+migration rather than after.** The freeze is enforced in `moves.ts` through a `writable()` check on
+every app-level create, move and destroy — including the system-origin recovery path, which declines to
+rewrite frozen history on purpose. Import does not exist yet, so nothing has decided which side of that
+line it lands on. If it lands on the app-level side, **importing a ten-day export silently drops every
+day older than three**, which is most of it.
+
+The correct scope is the one §6 now records: the freeze binds the human's editing surface, not
+replication and not the app's own reconciliation. Replication already behaves that way — remote updates
+arrive through `Y.applyUpdate` and never consult `isFrozen`, so a frozen day merges normally today. It
+is the app-level paths that are gated for every actor, and import has to be deliberately placed among
+them.
+
 ---
 
 ## 3. The state space
@@ -336,18 +377,39 @@ session id should survive a reload — which is settled in §6.
 
 Levels also constrain each other. A new device implies a new session. An existing device implies a
 stored actor id already exists, so "existing device, new actor" only happens if something deliberate
-or destructive has occurred. So the interesting space is **actor × device**, crossed with **how you
+or destructive has occurred.
+
+**This section was written before §1.1 had a principal in it and before D-4 and D-12 were decided, and
+it was not re-derived; review caught that.** Two corrections, and they change what the space is:
+
+- **Actor is the wrong top axis.** D-4 decides a new device is _always_ a new actor and never claims an
+  existing one, so "existing actor on a new device" is not a state anything can arrive in. What varies
+  across devices is the **principal**, and the arrival question is whether this device's new actor
+  belongs to one that already exists.
+- **The authorization epoch is an arrival-time property, not a later one.** D-12 decides that epoch 0
+  may silently re-mint a lost identity and a later epoch must not. That decision is made _on arrival_,
+  which means the epoch belongs in the arrival space rather than in the discussion downstream of it.
+
+So the space is **principal × device**, crossed with the **authorization epoch** and with **how you
 arrived**.
 
-### 3.2 Arrival: actor × device
+### 3.2 Arrival: principal × device
 
-|                    | **New device**                                                                                                                                                                             | **Existing device**                                                                                                                                                       |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **New actor**      | **A. Genesis.** First run ever, or a new install with no sync. Today: mints both.                                                                                                          | **B. Reset or handoff.** Storage cleared, or a deliberate "I am someone else". Today: indistinguishable from Genesis, and the document keeps the abandoned actor forever. |
-| **Existing actor** | **C. Rejoin.** The same person on a second device, with the actor already in the document. **Today this is impossible** — there is no way to say "I am that one", so C silently becomes A. | **D. Ordinary launch.** Reads both from localStorage. The only well-served cell.                                                                                          |
+|                        | **New device**                                                                                                                                                     | **Existing device**                                                                                                                                                        |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **New principal**      | **A. Genesis.** First run ever, or a new install with no sync. Today: mints an actor and a device, and the principal is implicit in there being nothing else.       | **B. Reset or handoff.** Storage cleared, or a deliberate "I am someone else". Today: indistinguishable from Genesis, and the document keeps the abandoned actor forever. |
+| **Existing principal** | **C. Pairing.** A second device joining a principal that already exists. A new actor, always (D-4) — what is shared is the principal, not the writing identity.     | **D. Ordinary launch.** Reads actor and device from localStorage. The only well-served cell.                                                                              |
 
-Cell **C** is the hole. Cell **B** is the one that leaks. Cell **D** is the one that works, and it is
-the only one anyone has tested by using the app.
+Cell **C** is the hole, and naming the axis correctly says what kind of hole it is: earlier drafts
+called it "rejoin" and read it as a claiming problem, which sent D-4 looking for a way to say "I am
+that one." There is no such thing to say. C is a **discovery** problem — how a device learns which
+principal it belongs to — which is D-19, and it is why D-4's answer is "no" rather than a limitation.
+
+Cell **B** is the one that leaks, and the epoch is what decides how badly. At epoch 0 it is Genesis with
+extra steps and may re-mint silently. At any later epoch a fresh random identity appearing and beginning
+to write is the unapproved-writer problem, and the app must not mint one (D-12).
+
+Cell **D** is the one that works, and it is the only one anyone has tested by using the app.
 
 ### 3.3 Arrival modes
 
@@ -376,6 +438,14 @@ factual; the decisions are §5.
 | **S7** | Reinstall / cleared site data on a known device. | Cell B. New actor; the old one stays in the roster, attributed to past cards, with no owner.                                | **D-4**, D-12 |
 | **S8** | Private window.                                  | New actor and device on every launch, permanently recorded in the roster if it ever syncs (§2.2d).                          | D-12, D-13    |
 | **S9** | Installed PWA alongside browser tabs.            | Possibly a separate storage context, therefore possibly a separate actor and device, for the same person on the same phone. | D-2, D-13     |
+
+**Which of these are epoch 0, and which are not.** D-12's answer turns on this and the table above does
+not carry it. S1 and S5 are epoch 0 by construction. S8 and S9 are epoch 0 unless the context has been
+paired. **S7 is the interesting one and it is either**: a reinstall on a device that was never paired is
+epoch 0 and may re-mint silently, while a reinstall on a paired device is an admitted workspace with no
+local identity, which is the state D-12 says must not be papered over. The same split applies to S29 and
+S30. Nothing distinguishes them today, which is the point of requiring signed authorization state rather
+than inferring admission from the roster (§5.5).
 
 ### 4.2 Sync lifecycle
 
@@ -440,6 +510,15 @@ Added because the decisions in §5 created them. Every row is a promotion or dem
 | **S38** | Opens a device that has been revoked.                                                                                                     | **D-18**              |
 | **S39** | Loses the only device in a paired group.                                                                                                  | D-19, D-12            |
 | **S40** | Revokes a device while another of their own devices is offline — and that offline device has meanwhile been syncing with the revoked one. | **D-26**              |
+| **S51** | The account lapses — payment fails or the subscription expires — while every device is online.                                            | **D-29**              |
+| **S52** | The account lapses while a device is offline, and that device next opens after the grace period has run out.                              | **D-29**, D-18        |
+| **S53** | Deliberate downgrade: keeps the devices, stops paying.                                                                                    | **D-29**, D-24, S36   |
+
+The last three were missing, and their absence was structural rather than incidental. At rung 3 the
+account is the only authorization root (§5.7.2) and S36 already says deleting an account costs the
+pairings — so without D-29 a failed credit card is an event that severs a person's devices from each
+other. Every other promotion path in this document got a decision because promotion is where local-first
+products lose data; demotion driven by billing is the same hazard aimed at people who are not watching.
 
 ### 4.8 Security and recovery
 
@@ -496,8 +575,18 @@ what it collects.
 | Rung           | What the user has                          | Reached by                                                                                        | Costs money? |
 | -------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------- | ------------ |
 | **1. Local**   | No name, one device.                       | Opening the app. The default, forever, for anyone who never asks for more.                        | No           |
-| **2. Paired**  | Several devices. **Still no name** (D-23). | Pairing a second device (D-19). No account, no server in the sync path.                           | No           |
+| **2. Paired**  | Several devices. **Still no name** (D-23). | Pairing a second device (D-19). No account, and no relay carrying content.                        | No           |
 | **3. Account** | A name, a credential, durability           | Creating an account: paid durability, connecting an AI, **or every user if D-17's bar needs one** | Yes          |
+
+**A phrase this document kept getting wrong, corrected here and everywhere below.** Earlier drafts said
+rung 2 has "no server in the sync path", which is not true and was never what was meant: a browser
+cannot establish a peer connection without a signalling server, pairing and authorization traffic need a
+rendezvous point, and the app itself is served from somewhere. What rung 2 avoids is **a relay carrying
+content bytes** — the per-user, per-update bandwidth that is the part which scales with use and
+therefore the part that costs money. "No server" was shorthand for "no metered relay traffic, wherever
+that is technically achievable", and the imprecise version invites an architecture built to satisfy a
+constraint nobody has. Say **no relay**, or **no server-held content**, or **no metered bandwidth** —
+whichever is meant — and never "no server".
 
 **What actually distinguishes the rungs is durability and necessity — not price.** The rungs and the
 business model happen to line up, and it is worth keeping the two apart on purpose, because only one of
@@ -539,15 +628,29 @@ Three constraints on that ladder, stated as constraints rather than as questions
 | A labelled pair    | "Tom — phone", "Tom — laptop", grouped as one person in any list. | Keeps today's mechanism; changes only presentation. Needs a person-level name (D-1). |
 
 > **Decided. Identity is per device; presentation is per person.** The two are separable, and
-> separating them is what makes "per device" safe: the device is never disclosed to anyone else and
-> never reflected back at you. Any list shows one entry per person. Carets are per input surface
-> (D-8), labelled with the person's name and never with the device.
+> separating them is what makes "per device" safe: **the device is never disclosed to another
+> principal, and never appears in the ordinary presentation of who is present or who wrote
+> something.** Any list shows one entry per person. Carets are per input surface (D-8), labelled with
+> the person's name and never with the device.
 
 This is the arrangement Google Docs has, and it is worth naming why it works rather than only that it
 does: the device level exists to answer questions the _system_ has, and the person level exists to
-answer questions a _human_ has. Leaking the first into the UI is the whole bug in §2.2a. The two live
-reasons to keep the device level at all are both system questions: **telling multiple carets apart**,
-and **being able to invalidate a session from a UI when signing in** (D-18).
+answer questions a _human_ has. Leaking the first into the UI is the whole bug in §2.2a.
+
+**An earlier draft said the device is "never reflected back at you", and this document then contradicted
+itself three times.** The claim was too strong: your own devices are shown to you deliberately, in three
+places that are each decided elsewhere here. The rule is about disclosure to _another principal_ and
+about the ordinary case, not about hiding your own devices from you.
+
+| Surface                              | Shows the device to you    | Decided in            |
+| ------------------------------------ | -------------------------- | --------------------- |
+| "Last synced from ⟨device⟩"          | Yes, in the ordinary case  | §1.3, PRD §11.3       |
+| Merge provenance mode                | Yes, deliberately, rarely  | D-22                  |
+| The device list                      | Yes, and it must           | D-18, §1.4            |
+
+Which also corrects a count: the live reasons to keep the device level are not two but at least four —
+telling multiple carets apart, invalidating from a UI (D-18), naming a sync source, and answering "which
+of my devices put this here" (D-22).
 
 **D-3. Are device names worth improving?** Today they are user-agent guesses (`Mac`, `Android`) and
 two of the same kind collide.
@@ -683,6 +786,11 @@ action produces an outcome that cannot be undone.
 >
 > And in every case the user may choose **merge · theirs · ours · abort**.
 
+**This is the flow Rule 1 does not cover** (§1.4). Adjudicating two histories is workspace management of
+the most demanding kind, and it is here on purpose because the outcome is irreversible and the app has
+no basis to choose. Whether that makes it an exception, a boundary, or a reason to reformulate Rule 1 is
+**D-30**, open.
+
 The hard case is the one worth spending on: a preview of what the merge would produce — a room preview,
 a side-by-side, something that makes the outcome legible before it is irreversible — plus an explicit
 warning and an invitation to back up first. The motivation is right and worth recording, because it
@@ -763,6 +871,12 @@ reuse that flow rather than invent a second one.
 > app inferred they were gone. Showing staleness is fine and honest: a device not seen for some interval
 > may be muted rather than removed. The interval is an open parameter.
 
+**Which surface this governs, since D-2 rules out the obvious reading.** Staleness is a per-device fact,
+and D-2's person-level lists have no device in them — five devices of which three are stale are still
+exactly one "You", and there is nowhere in that entry to put a muted state. So D-6 governs **the device
+list (D-18) and the authorization roster**, which are the surfaces that have devices on them. The
+person-level surfaces have no staleness state because they have nothing to hang it on.
+
 And what deletion could never do is worth keeping in view: cards carry an `author` id, so removing a
 roster entry removes the _name_, not the attribution. There is no version of pruning that unwrites
 history.
@@ -827,7 +941,20 @@ with D-14 at "partly" instead of requiring "yes".
 - **Awareness leaks what content no longer does.** Presence carries names, colours and cursor positions,
   and if it stays in the clear the relay learns who is editing what and when while learning nothing about
   the text. Either awareness is encrypted too, or the threat model states plainly that presence metadata
-  is visible to the relay. This needs a deliberate answer rather than a default.
+  is visible to the relay. This needs a deliberate answer rather than a default, and it now has its own
+  row in the security contract (§8.1) so that it stops being a note inside a decision about something
+  else.
+
+**And one honest note about which direction this cuts, because it is the opposite of the others.**
+§5.7.2 establishes that under one symmetric content key **edit implies read**. Agents are the reason
+membership attaches to a principal or agent rather than to an account (§1.1). So granting an agent edit
+hands the plaintext of the entire workspace — every day, the whole master list, all of it — to that
+agent and to whatever service executes it. The relay is blinded by construction and the model provider
+is not, which is a strange place for a document this concerned with confidentiality to arrive at without
+saying so. It does not change any decision here: the agent feature is a future maybe, unspecified, and
+belongs to its own document (§10). But the interface that grants agent membership has to present it as
+what it is — disclosure of the whole workspace — and that requirement is recorded here so the agent
+document inherits it rather than rediscovering it.
 
 Under every mechanism one thing stays true, and Rule 2 requires saying it out loud: **a member who has
 already synced keeps their copy forever.** Removal governs the future, never the past.
@@ -928,7 +1055,8 @@ you revoked.**
 
 **And the structural insight still stands, now as a feature rather than a problem: this divergence is a
 peer-to-peer problem.** Server-mediated sync eliminates it, direct device-to-device creates it, so it lands
-precisely on the tier whose defining property is that there is no server in the path. It bites hardest where
+precisely on the tier whose defining property is that no relay carries the content (§5.1.1 — the
+signalling and authorization path still exists). It bites hardest where
 revocation is most wanted — at rung 2 the authorized peers are your own devices, the motivating case is a lost phone,
 and the window is "my laptop and the lost phone were online together while my other device was not." That is
 not an unlikely sequence, and being able to name it as the reason to pay is better than being unable to name
@@ -994,6 +1122,13 @@ agreement about recency, no highlight that travels between devices. The observat
 doing input in one place at a time remains the _motivation_ for the design without needing to be
 _modelled_ — each tab already knows whether it is the one being typed in, and no tab needs to know
 anything about the others to render this.
+
+**The peer list's deduplication carries the same dependency, and an earlier draft only noticed it for
+colour.** Deduplicating requires knowing which awareness states are the same _person_, and there is no
+principal to ask. Today `createSync` builds the list from awareness device names, which is why it says
+`Mac, Mac`. So: **dedupe by device id now** — awareness already publishes one, and it fixes the
+two-tabs case exactly — **by principal once D-19 lands**, and **never by name**, since D-3 exists
+precisely because two different Macs are both called `Mac`.
 
 **A dependency D-21 makes visible.** D-8 says all of your carets share your colour, and colour today
 comes from the actor: `resolveActor` assigns a random one from a fixed palette per actor, and awareness
@@ -1237,6 +1372,24 @@ A warning that can never be cleared is noise rather than information, so the esc
 persistence genuinely cannot be granted, the honest resolution is not a permanent banner but the route to
 server-side durability — which is the same funnel D-16 identifies as the paid capability.
 
+**Which produces a conflict with the ladder that this decision failed its own test on.** D-16 gives rung
+2 a durability of "none — the group is it", and D-19 gives it no recovery story at all. So for every
+free user the condition "durability is not guaranteed" is permanently true, never clears, and has
+exactly one remedy: payment. A prominent, persistent, unclearable warning whose only resolution is to
+pay is noise by D-25's own definition — and it reads as a dark pattern whatever the intent, which is not
+a thing to ship by accident in the document about serving real users responsibly.
+
+The two conditions are different in kind and must be treated differently:
+
+| Condition                                                            | Clears?                        | Treatment                                                       |
+| -------------------------------------------------------------------- | ------------------------------ | --------------------------------------------------------------- |
+| **This context is not durable** — `persisted()` false (S29, S30)     | Yes — grant it, or move        | D-25 as written: prominent, persistent, names the action        |
+| **This tier holds no server copy** — rungs 1 and 2                   | No — it is what the tier _is_  | Stated once where it is decided: at pairing, and in the device list |
+
+The first is a defect in the environment and warning about it is a service. The second is a property of
+the plan the user chose, belongs to the moment they choose it and to the surface that describes their
+setup, and must never become a recurring banner.
+
 **D-13. Is there a deliberate "start fresh" or "not me" action?**
 
 > **Decided: yes, such an action exists.** Whether it is the same thing as sign-out is open, and so is
@@ -1359,9 +1512,11 @@ does not today.
 
 It can, for a structural reason rather than because signatures are fast: **the trust boundary is not the
 keystroke.** TRD §12 budgets keystroke → paint at under 16 ms p95, and that path is CodeMirror applying a
-change into a Yjs transaction in memory. Signing has no business there and could not be put there by
-accident even if someone tried — `crypto.subtle.sign` returns a promise, so it cannot run inside a
-synchronous input handler at all.
+change into a Yjs transaction in memory. Signing has no business there, and the shape of the API makes
+that hard to get wrong by accident: `crypto.subtle.sign` returns a promise, so while it can be _called_
+from a synchronous input handler it cannot _complete_ before that handler returns, and a signature
+nobody waited for is not on the keystroke path. The load-bearing argument is the next paragraph's, not
+this one's.
 
 Where authentication belongs is the boundary where bytes leave the device or arrive from another one. Three
 consequences worth stating now, because they shape the design rather than following from it:
@@ -1422,6 +1577,13 @@ of them are now settled enough to act on; the middle one is not, and it is the o
 same time. Free is direct device-to-device while both are online. Plus whatever is unavoidably charged
 by payment processing and the ordinary cost of having a business online, which has to be counted too.
 
+**The strategy underneath it, stated plainly because it was implicit and it decides how to read the
+rest:** give away as much of the experience as is technically possible at low cost, and let the
+friction that remains be the motivating irritant that converts people who are already in and already
+attached to their data. That is a coherent and honest position — the free tier is not a demo, it is the
+product with a real limitation — and it is worth having written down, because the argument below is
+about the _price of building_ that limitation, not about whether the limitation is legitimate.
+
 That boundary lines up exactly with everything else in this section, which is the strongest argument for
 it:
 
@@ -1439,6 +1601,46 @@ the product side and the cost side.
 **And the sequencing satisfies the no-free-then-charge constraint** rather than colliding with it: shipping
 free-without-sync and paid-with-sync is not starting free and then charging, it is charging from the start
 for the part that costs money. That is what makes deferring this question safe.
+
+**The cost inversion, which review found, and which this decision has to answer before it is acted on.**
+The paid capability is already built. `relay/src/server.ts` says so in its own header — the process
+"exists because two devices that are never online at the same time still have to exchange bytes" — and
+`relay/src/persistence.ts` implements exactly that window, holding what one device sent until the other
+connects. Four dependencies, no native code, one file per room.
+
+The free tier, by contrast, exists nowhere and would require: a WebRTC transport, a signalling service,
+STUN, TURN for the 10–20% below, a second connection-establishment path, a second set of failure modes
+concentrated on the case most likely to fail, and — per D-26 — **a second revocation semantics**, since
+the whole sanctioned-lineage design exists only to handle a divergence that cannot form when a server is
+in the path.
+
+So the shape is inverted from the usual one. **The free tier is not the cheap version of the paid tier;
+it is a harder thing built specifically to be less useful**, and every part of it is a part the paid
+tier does not need and will not share. That does not invalidate the strategy above — a motivating
+irritant is a legitimate design — but it means this particular irritant is the most expensive one
+available, and its cost is currently counted as "TURN bandwidth" when the larger cost is two transports
+maintained in parallel forever.
+
+**A third option, which this decision never listed and should:**
+
+| Option                                            | Free tier gets                       | Cost to build                                    | Paid boundary                                     |
+| ------------------------------------------------- | ------------------------------------ | ------------------------------------------------ | ------------------------------------------------- |
+| Free P2P, paid relay _(the current plan)_         | Sync while both devices are awake    | A second transport, plus D-26's free-tier branch | Server-intermediated sync                        |
+| **Relay for everyone, boundary elsewhere**        | Sync that works like the paid one    | **Already built**                                | Retention depth, agent members, workspace count, or simply hosting |
+| Local-only free, paid relay                       | One device                           | Nothing                                          | Any sync at all                                   |
+
+The middle row deletes D-26's entire free-tier branch, the TURN question, and the two-transport burden,
+at the cost of the free cross-device story — which is a real cost and may well be the wrong trade. It is
+not currently on the table, and the version on the table is the expensive one, so it belongs here.
+
+**And one thing to establish before rung 2 is treated as a tier at all: that it is usable.** Rung 2
+syncs only while both devices are awake and connected at the same moment. The device pair is a phone and
+a laptop; the phone spends the day as a suspended PWA in a pocket with no background WebRTC. So the
+realistic experience may be that nothing converges until the user deliberately opens both devices and
+waits — which is not friction that motivates an upgrade, it is friction that reads as broken. **The
+test is a week of ordinary phone-and-laptop use converging without the user consciously performing a
+sync.** If rung 2 cannot pass it, rung 2 is a pairing _mechanism_ that rung 3 also needs, not a tier,
+and the boundary has to move regardless of what the unit costs turn out to be.
 
 **One cost risk, and the free-infrastructure question answered: STUN is free, TURN is not.**
 
@@ -1527,7 +1729,9 @@ can decrypt the document. A nominal write-only agent could sign a _proposal_ tha
 validates and encrypts, but then it is not independently editing while that device is offline. Achieving
 cryptographic write-without-read needs a different content construction, not a capability flag. So the
 agent feature may offer read and read+edit; it must not promise cryptographic write-only isolation while
-D-20 uses one symmetric document key.
+D-20 uses one symmetric document key. The product consequence of that — granting an agent is disclosing
+the whole workspace to it and to whatever runs it — is recorded in D-20 rather than left here as a
+capability footnote.
 
 > **Recorded constraint, clarified: exactly one functional _authorization root_ at a time.** At rung 2,
 > the paired group has a device-centric authorization root. At rung 3, the account becomes the only root
@@ -1815,6 +2019,73 @@ Three implications, none of which is a decision:
 3. **Watch rather than wait.** The principal/device work in this document does not depend on either, and
    D-14's "partly" branch is available regardless.
 
+#### 5.8.1 What carries the authorization protocol — D-28
+
+**D-28. Bespoke on Yjs, adopt the stack the prior art lives in, push it to the server, or reduce the
+promise?** _(Open. Promoted out of implication 1 above, which is where it was hiding.)_
+
+Recording it as an implication was right while D-20 and D-27 were open questions. They are not: D-20
+requires content encryption with key rotation, D-27 requires signed mutation envelopes with derived
+attribution, and §8.1 fixes the signed authorization epoch as a requirement rather than an option. So
+the app has committed to building signed delegation chains, per-credential key wrapping, epoch
+commitment and envelope verification **on a stack that supplies none of them**, while the serious work
+happens in an ecosystem it is not in. That is the largest engineering risk in this document and it
+should not live inside a bullet about prior art.
+
+| Option                                | What it costs                                                                                        | What it risks                                                                                     |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **Bespoke on Yjs**                    | Designing and getting reviewed a novel protocol, then maintaining it                                 | The failure mode is silent and cryptographic; §5.7.8's assurance bar becomes the whole budget      |
+| **Adopt the Automerge-adjacent stack** | A CRDT migration, on top of the v14 migration TRD §10.1 already treats as planned debt              | Rewrites the storage and editor seams; Keyhive is not finished either                             |
+| **Server-enforced (D-14's full "yes")** | The relay gains schema-level authority; a thinner client protocol                                   | Forfeits the strongest consequence of D-20 and contradicts what §2 selected Yjs for               |
+| **Reduce the promise**                | Drop D-27 to advisory, keep D-20's encryption and rotation                                           | Reopens the agent-accountability case D-27 exists for, and §5.6's Red Queen argument against it   |
+
+**It is forced by the moment §8.1's contract is drafted**, because the contract cannot say what an
+envelope is without knowing what produces and verifies one. Note also that TRD §10.1's planned Yjs v13 →
+v14 migration is sometimes read as covering this. It does not: v14 brings no authorization layer.
+
+### 5.9 Raised in review — D-29, D-30
+
+Two decisions this document needed and did not have. Placed at the end rather than folded into the
+sections they touch, so that the existing numbering and landmarks stay where they were.
+
+**D-29. What happens to a rung-3 account that lapses?** _(S51, S52, S53.)_
+
+At rung 3 the account is the only authorization root (§5.7.2), and S36 already establishes that
+retiring that root costs the pairings. Composed without a decision, a failed payment becomes an event
+that severs a person's devices from each other and requires re-pairing every one of them with both
+present — which is the worst possible outcome delivered to the least attentive moment.
+
+> **Decided: a grace period, then read-only.** A lapse does not retire the authorization root and does
+> not touch the pairings. During the grace period everything continues. After it, the account goes
+> **read-only**: the server-held copy is retained and readable, server-intermediated sync stops, and the
+> devices keep working locally exactly as they always did, because nothing on the read or write path
+> ever awaited a credential (§6).
+
+Three things that follow and should not be rediscovered later:
+
+- **Read-only means the service's copy, not the app.** PRD principle 3 is not negotiable, and a lapse is
+  a billing state rather than a network state. The app is fully writable on every device throughout.
+- **Retention has to be a stated number**, because "retained" without a duration is a promise nobody can
+  plan around, and D-25's durability copy depends on it.
+- **Deliberate downgrade (S53) is the same mechanism**, and it is the case that must not silently
+  become S36's account deletion. Stopping payment and deleting an account are different acts with
+  different consequences for the root, and the interface has to keep them apart.
+
+**D-30. Does Rule 1 have exceptions, or the wrong formulation?** _(Open. Raised by §1.4 and D-5.)_
+
+Rule 1 says the user never manages workspaces. D-5 then requires the user to adjudicate two document
+histories with a preview and four choices, which is workspace management at its most demanding. §1.4's
+corollary already concedes one exception — security cannot be hidden the way workspace management can —
+but it is written about security surfaces, and D-5 is not one.
+
+The available shapes: **Rule 1 governs routine management and yields to irreversibility**, which is
+probably the honest reading and makes D-5 and the security surface two instances of one principle;
+**Rule 1 is about the steady state and says nothing about transitions**, which is narrower and cleaner
+but leaves D-24's promotion path unclassified; or **Rule 1 needs reformulating** around what it is
+actually protecting, which is that nobody should have to hold a model of workspaces in their head to use
+the app on two devices. Deliberately left open — the implications reach D-5, D-10, D-11 and D-24, and it
+is worth the time.
+
 ---
 
 ## 6. Forced, for the record
@@ -1838,6 +2109,13 @@ Not decisions. Listed so they do not consume discussion.
   covers authentication.
 - **Actor ids do not collide.** UUIDv4.
 - **A restored or unfrozen tab must re-establish its view.** It has no way to know what it missed.
+- **The freeze binds the human's editing surface, not replication.** A frozen day still merges: remote
+  updates arrive through `Y.applyUpdate` and never consult `isFrozen`, so the freeze has never been a
+  barrier to another device's history. It is enforced in the app's own write paths, and it is enforced
+  there for every actor including the system one — the recovery path declines to rewrite frozen history
+  on purpose. **Import is the case that has to be placed deliberately** (§2.4): a migration import is
+  the app reconciling histories rather than a person editing the past, so gating it the way an edit is
+  gated would silently discard everything older than three days.
 
 ---
 
@@ -1910,6 +2188,9 @@ Decided carry live UX or parameter questions in their bodies. The column below s
 | **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**              | Yes, prominently. Warn about the property, not the context. Offer the grant, else route to sync                                            |
 | **D-26** | Revocation learned late, history already diverged?             | **Decided**              | Free: sanction, discard, explain, offer the upgrade. Paid: prevented by construction. No filtered replay                                   |
 | **D-27** | Is attribution authenticated, or advisory?                     | **Decided**              | Authenticated by an epoch-authorized credential; actor is derived or explicitly authorized for representation                              |
+| **D-28** | What carries the authorization protocol?                       | **Open**                 | Bespoke on Yjs · adopt the Automerge-adjacent stack · server-enforced · reduce the promise. Forced when §8.1 is drafted                    |
+| **D-29** | What happens to a rung-3 account that lapses?                  | **Decided**              | Grace period, then read-only: root and pairings survive, server sync stops, local use untouched. Retention duration open                   |
+| **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Open**                 | D-5's merge adjudication is workspace management by any reading. Routine-versus-irreversible is the likely shape                           |
 
 ### 8.1 One artifact remains, and D-17 gates it
 
@@ -1930,7 +2211,8 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | Signed mutation envelopes                  | Source-authenticated, workspace/epoch/credential/actor bound                          | Envelope and batching granularity, anti-replay/finalization rule and authenticated checkpoint construction |
 | Attribution binding                        | Actor is derived from the credential or explicitly authorized for representation      | How an update's affected attributed fields are inspected or derived                                        |
 | Revocation commit semantics                | Requested · committed · acknowledged; paid enforcement has no bypass path              | Protocol and recovery behaviour for interrupted rotation                                                    |
-| Content-key wrapping and rotation          | Symmetric generations wrapped per reader credential; edit implies read under this shape | Algorithms, generation retention and awareness-metadata treatment                                          |
+| Content-key wrapping and rotation          | Symmetric generations wrapped per reader credential; edit implies read under this shape | Algorithms and generation retention                                                                        |
+| **Awareness and presence metadata**        | Presence is outside the content encryption as currently designed                        | Encrypt awareness, or state in the threat boundary that the relay learns who edits what and when (D-20)     |
 | Account relationship to the content root   | One account authorization root supersedes the rung-2 root                             | Witness only, non-custodial encrypted recovery, device-approved access, or service escrow (§5.7.5)          |
 | Recovery                                   | Account, authority, content key and ciphertext are four separate recovery objects      | Factor(s), loss policy, unsupported-PRF path, warnings and account-deletion semantics (§5.7.6)              |
 | Web application and protocol assurance     | Same-origin code is inside the cryptographic boundary                                 | Versioned ASVS profile, independent design review, implementation audit and ongoing response bar (§5.7.8)  |
@@ -1945,11 +2227,23 @@ by someone who does this professionally.
 **The one item outside that cluster** is D-14's second half — whether the relay ever gains authority over
 content. Genuinely independent, and much less urgent since D-20 made exclusion work without it.
 
+**And one gate that is not D-17's and now sits beside it: D-28** (§5.8.1). The contract's envelope,
+epoch and checkpoint rows cannot be specified without knowing what implements and verifies them, so D-28
+is answered before or with the contract rather than after it — and its answer changes what the reviewer
+in §5.7.8 is being asked to review.
+
 **Live sub-questions inside recorded dispositions.** Each is a UX or parameter choice and none blocks the
 contract: D-12's response on an admitted document with no identity · D-13's destructive semantics · D-18's
 revoked-device options and cleanup policy · D-6's staleness interval · D-3's disambiguation mechanism ·
-D-20's awareness-leakage question · D-21's design check · D-22 and D-23's interface details. D-16 stays
-deferred until two tiers have shipped and unit costs are real.
+D-21's design check · D-22 and D-23's interface details · D-29's retention duration for a lapsed
+account. D-20's awareness-leakage question has left this list: it is now a contract row of its own,
+because "presence metadata is visible to the relay" is a threat-boundary claim rather than an interface
+detail.
+
+D-16 stays deferred, with one change of order: **the cost inversion is answered before anything is
+built, not after two tiers have shipped.** Measuring the fraction of users in each tier still needs both
+tiers to exist; deciding whether the free tier should be the one that requires a second transport does
+not, and it is cheap now and expensive later.
 
 ### 8.2 Not ready to promote, and what would make it ready
 
@@ -1977,6 +2271,15 @@ workspace management (Rule 1), reads and writes never awaiting a credential, an 
 paired group (D-24), honest durability warnings (D-25), and removal governing future access rather than
 pretending to erase copies already made.
 
+**On splitting this document, which the fourth review round proposed: not yet, and the order matters.**
+The proposal was to promote the single-principal half now — the roster showing one "You" per device, the
+`Mac, Mac` peer list, silent identity reissue where storage is denied, the invisible durability warning
+— on the grounds that none of it is gated by D-17 and several of them are defects shipping today. The
+argument is sound and the sequencing is not: **revisions land first, then a split is considered.** The
+landmarks in this document are load-bearing for the person using it, and moving them while corrections
+are still arriving costs more than the delay does. Nothing about promoting the product half gets harder
+by waiting one round.
+
 ---
 
 ## 9. PRD amendments this would require
@@ -2001,7 +2304,20 @@ pretending to erase copies already made.
 - **§11.4** — agent access should be expressed as workspace membership with explicit read/edit
   capabilities and authenticated attribution, not as an actor that can necessarily write everything.
   Under D-20's symmetric document key, edit cryptographically implies read; write-only would require a
-  proposal/approval flow or a different content construction rather than a capability label.
+  proposal/approval flow or a different content construction rather than a capability label. And the
+  consequence that follows from it should be stated where the feature is described: granting an agent
+  discloses the entire workspace to it and to whatever service runs it (D-20).
+- **§6 Freeze** — the freeze's scope needs writing into the sentence. It binds the human's editing
+  surface; it has never bound replication, and it must not bind a migration import (§2.4, §6).
+- **TRD §10.6** — now wrong, and not previously on this list although its product twin PRD §11.4 was.
+  It says permissions are unenforceable here and that real enforcement would require giving the relay
+  schema awareness, "which forfeits the 'dumb pipe, no authority' property" — which treats enforcement
+  and relay authority as one axis when they are two. D-20 and D-27 enforce exclusion and attribution
+  entirely client-side while the relay forwards ciphertext it cannot read. What survives is only the
+  semantic-capability case, and it survives because edit implies read under one content key (§5.7.2),
+  not because the relay is dumb. Left standing for now rather than corrected in place: it is a
+  technical-doc amendment that belongs with the rest of the promotion, not an ad-hoc edit alongside
+  this one.
 - **§14 Open questions** — D-1 through D-27 belong here, or here by reference, once ready to promote.
 - **A new section, or this document promoted** — the concepts in §1 are product surface, not an
   implementation detail, and they are currently written down nowhere. The principal in particular is
@@ -2027,3 +2343,10 @@ is that the _active_ caret gets a shared treatment of its own (D-21). PR #18 nee
   multi-workspace navigation and human permissions require a separate product document.
 - **Sharing a single day, a single card, or a link to anything.** Not raised by any scenario above,
   and a different feature.
+- **The operational and legal surface of running a service** — log retention, deletion on request and
+  what deletion can mean when other replicas are unreachable, breach notification, jurisdiction, minors.
+  **Absent because it has not been reached yet, not because it is unimportant.** It is deliberately out
+  of scope at this stage: letting legal shape the architecture before there is a product to shape it
+  around gets both wrong. It has to arrive before anything ships to anyone, and D-20 makes most of it
+  unusually easy — a service that cannot read content has a genuinely short privacy policy, which is
+  worth harvesting rather than merely surviving. Noted here so its absence reads as a decision.
