@@ -2309,13 +2309,13 @@ by waiting one round.
   discloses the entire workspace to it and to whatever service runs it (D-20).
 - **§6 Freeze** — the freeze's scope needs writing into the sentence. It binds the human's editing
   surface; it has never bound replication, and it must not bind a migration import (§2.4, §6).
-- **TRD §10.6** — now wrong, and not previously on this list although its product twin PRD §11.4 was.
-  It says permissions are unenforceable in this architecture and that real enforcement would require
-  giving the relay schema awareness, "which forfeits the 'dumb pipe, no authority' property". D-20
-  disproves the second half: content encryption with key rotation excludes a member entirely
-  client-side, and a relay forwarding ciphertext is exactly as dumb as one forwarding plaintext. It
-  should be corrected in the branch the way §4.8 was, since a future design reading it would conclude
-  the opposite of what this document decided.
+- **TRD §10.6 — corrected in this branch**, the way §4.8 was, and for the same reason: a future design
+  reading it would have concluded the opposite of what this document decided. It said permissions are
+  unenforceable here and that real enforcement would require giving the relay schema awareness, "which
+  forfeits the 'dumb pipe, no authority' property" — treating enforcement and relay authority as one
+  axis when they are two. D-20 and D-27 enforce exclusion and attribution entirely client-side while
+  the relay forwards ciphertext. What survives is only the semantic-capability row, and it survives
+  because edit implies read under one content key (§5.7.2), not because the relay is dumb.
 - **§14 Open questions** — D-1 through D-27 belong here, or here by reference, once ready to promote.
 - **A new section, or this document promoted** — the concepts in §1 are product surface, not an
   implementation detail, and they are currently written down nowhere. The principal in particular is

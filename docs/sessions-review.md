@@ -31,7 +31,7 @@ that have already been settled. Everything accepted is in `sessions.md` v13.
 | §3.5 D-8 dedup dependency                  | **Accepted**                                                                                             |
 | §3.6 Export before discarding              | **Noted, deliberately not acted on.** A nit; D-26's text is unchanged                                    |
 | §4 `crypto.subtle.sign` precision          | **Accepted**; sentence trimmed                                                                           |
-| §4 TRD §10.6                               | **Accepted**; added to §9's amendment list                                                              |
+| §4 TRD §10.6                               | **Accepted and corrected in the branch**, the way §4.8 was; recorded in §9                              |
 | §5 Legal and operational surface           | **Deferred deliberately**, and now says so in §10 — important, but not while it would dictate the tech  |
 | §5 Today's deployment                      | **Accepted**; §2.4 now records the installation, the export → import plan, and the versioning gap       |
 | §5 Rule 1's third exception                | **Accepted**; opened as D-30 rather than answered                                                       |

@@ -841,23 +841,51 @@ Browsers can evict origin storage. `persist()` reduces but doesn't eliminate the
 sync configured another replica exists; without it, export is the only backup — so prompt for
 an export periodically if sync has never been configured.
 
-### 10.6 Permissions are unenforceable in this architecture
+### 10.6 Permissions: what can be enforced, and what cannot
 
-Worth recording before anything is designed assuming otherwise. The relay treats updates as
-opaque binary and holds no authority (§2, §7.2); there is no server-side validation point. Yjs
-applies any well-formed update it receives. Therefore **any actor with access to the document can
-write anything to it**, and a rule like "the agent may edit the master list but not Done" is a
-property of the agent's own code, enforced by trust rather than by the data layer.
+**An earlier draft of this section said that introducing real enforcement would mean giving the
+relay schema awareness and update validation, and that this would forfeit the dumb-pipe property
+§2 selected Yjs for. That is wrong, and it is wrong in a direction that would foreclose the design
+actually chosen.** `docs/sessions.md` D-20 and D-27 establish that exclusion and attribution are
+both enforceable by the client, with the relay still forwarding bytes it cannot read — **a relay
+forwarding ciphertext is exactly as dumb as one forwarding plaintext**. Enforcement and relay
+authority are separate axes, and the earlier draft treated them as one. What survives of the
+original claim is narrower and is the last row of the table below.
 
-This is acceptable — the agents in question are ones the author runs — but it constrains the
-Phase 6 design. Anything resembling a capability boundary has to live in the agent process, and
-the honest failure mode is a misbehaving agent corrupting frozen history. The mitigations
-available are ordinary ones: attribution makes damage attributable (§4.8), scoped undo makes it
-reversible, and export (§9) makes it recoverable. Enforcement is not among them.
+**What is true today, in the shipped system.** The relay treats updates as opaque binary and holds
+no authority over content (§2, §7.2); there is no server-side validation point; Yjs applies any
+well-formed update it receives; and `Card.author` is an ordinary field any writer can set to any
+value (§4.8). So any actor with document access can write anything and attribute it to anyone.
+That is fine while the only writer is you. It stops being fine at the first agent member, because
+"the agent did this, not me" and "I did this, not the agent" both become claims the document cannot
+substantiate.
 
-Introducing real enforcement would mean giving the relay schema awareness and update validation,
-which forfeits the "dumb pipe, no authority" property that §2 selected Yjs for. Not a trade worth
-making for this threat model.
+**What the decided design enforces, and where:**
+
+| Concern                                                       | Enforced by                                                          | Relay's part                                                    |
+| ------------------------------------------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Exclusion — a removed device or agent stops reading new content | Content encryption with key rotation (D-20)                          | None. It forwards ciphertext it cannot read                     |
+| Attribution — a mutation's actor is derived from its credential | Signed mutation envelopes, verified on receipt (D-27)                | None required; refusing invalid envelopes is defence in depth   |
+| Membership, capabilities, key generations                     | A signed authorization epoch, verified client-side                   | Witness only, and only at the paid tier's commit point (D-26)   |
+| **Semantic capability** — "may edit master, but not Done"      | **Nothing, still** — see below                                       | Not a relay problem either                                       |
+
+**Why the last row survives, for a different reason than this section used to give.** Under D-20's
+single symmetric content key, **edit implies read**: a member able to construct a valid encrypted
+update can construct one touching anything in the document. A capability flag over that key is a
+label, not a boundary. Narrowing it needs a different content construction — per-surface keys — or
+a proposal/approval flow in which a read-capable device validates and encrypts what the agent
+proposed, at the cost of the agent being unable to work while that device is offline. Neither is a
+schema-aware relay.
+
+So the Phase 6 constraint stands with its reasoning repaired: a capability boundary finer than the
+content key lives in the agent process or in an approval step, and the honest failure mode is still
+a misbehaving agent corrupting frozen history. The mitigations, corrected: attribution makes damage
+attributable **once D-27 ships and not before**, scoped undo makes it reversible (§4.8), and export
+(§9) makes it recoverable.
+
+Whether the relay ever gains authority over the _meaning_ of a mutation is D-14's second half and
+is deliberately still open. It is also no longer urgent, because nothing above depends on the
+answer. See `docs/sessions.md` §5.6, D-20 and D-27.
 
 ### 10.7 Framework choice
 
