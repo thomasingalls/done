@@ -6,8 +6,52 @@
 **Method:** full read; every claim the document makes about this repository checked against the
 source; cross-read against `docs/PRD.md` v8 and `docs/TRD.md`.
 
-This is a review artifact, not a specification. It does not amend `sessions.md`; it says what
-should change and why, so the author can decide.
+This is a review artifact, not a specification. It records what should change and why; `sessions.md`
+draft v13 is where the decisions live.
+
+---
+
+## 0. Disposition
+
+The author's answers, recorded so this document does not sit in the repository advocating positions
+that have already been settled. Everything accepted is in `sessions.md` v13.
+
+| Finding                                     | Disposition                                                                                              |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| §2.1 Cost inversion in D-16                | **Accepted** as a finding; D-16 stays deferred. The third option and the inversion are now recorded in it |
+| §2.1 "No server" imprecision               | **Accepted, with a correction to the correction** — see below. Fixed everywhere in §5.1.1                |
+| §2.2 Rung 2 usability                      | **Accepted** as a test to run before rung 2 is treated as a tier                                         |
+| §2.3 Agents get the whole document         | **Accepted as a mention**, not a treatment. It is a future maybe and belongs to the agent document       |
+| §2.4 D-28, the protocol carrier            | **Accepted, fully.** Now a tracked decision, §5.8.1                                                     |
+| §2.5 Billing lifecycle                     | **Accepted and decided**: grace period, then read-only. D-29                                            |
+| §3.1 D-2's "never"                         | **Accepted**; the fix is applied as written                                                             |
+| §3.2 State space                           | **Accepted**; §3 rebuilt on principal × device × epoch                                                  |
+| §3.3 D-25's warning never clearing         | **Accepted**; context durability and tier durability are now separate                                   |
+| §3.4 D-6 staleness scope                   | **Accepted**                                                                                             |
+| §3.5 D-8 dedup dependency                  | **Accepted**                                                                                             |
+| §3.6 Export before discarding              | **Noted, deliberately not acted on.** A nit; D-26's text is unchanged                                    |
+| §4 `crypto.subtle.sign` precision          | **Accepted**; sentence trimmed                                                                           |
+| §4 TRD §10.6                               | **Accepted**; added to §9's amendment list                                                              |
+| §5 Legal and operational surface           | **Deferred deliberately**, and now says so in §10 — important, but not while it would dictate the tech  |
+| §5 Today's deployment                      | **Accepted**; §2.4 now records the installation, the export → import plan, and the versioning gap       |
+| §5 Rule 1's third exception                | **Accepted**; opened as D-30 rather than answered                                                       |
+| §5 Awareness leakage                       | **Accepted**; its own row in §8.1                                                                       |
+| §7 Split the document now                  | **Declined for now.** Revisions land first; a split is considered afterwards                            |
+
+**Two corrections to this review, from the author and from the code.**
+
+1. **"No server" was never meant to mean "no coordination server."** The intent behind rung 2 was to
+   avoid *metered relay bandwidth wherever technically possible* — not to avoid servers, which would be
+   incoherent in an app served over the web. §2.2's factual point stands and the language was worth
+   fixing, but the review read an architectural error into what was shorthand. `sessions.md` §5.1.1 now
+   states the precise version and bans the loose one.
+
+2. **The freeze does not block merges, and §3.6 overstated.** `writable()` gates the app's own write
+   paths; replication is not among them — remote updates arrive through `Y.applyUpdate` and never
+   consult `isFrozen`, so a frozen day merges normally today. What the review found is narrower and
+   more useful: *import* does not exist yet, and if it is built on the app-level side of that line, the
+   author's export-dev → import-prod migration plan silently drops every day older than three. That is
+   in `sessions.md` §2.4 and §6.
 
 ---
 
