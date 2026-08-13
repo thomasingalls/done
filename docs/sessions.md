@@ -1,6 +1,6 @@
 # done — Sessions and Identity: Product Requirements
 
-**Status:** Draft v4 — **15 of 24 decisions recorded**, the rest open. See §8.
+**Status:** Draft v5 — **19 of 25 decisions recorded**, the rest open. See §8.
 **Date:** 2026-08-10
 **Audience:** the author, deciding. Not an implementation plan.
 **Amends:** PRD §11 (Actors), PRD §12 (non-goals) — see §9.
@@ -369,6 +369,20 @@ factual; the decisions are §5.
 | **S32** | Roster accumulates dozens of dead actors.             | Nothing prunes it. Entries are small, and permanent.                                                         | D-6      |
 | **S33** | An actor entry is edited concurrently on two devices. | Last-writer-wins on the whole `{kind, name, color}` value.                                                   | —        |
 
+### 4.7 Ladder transitions (none of which exist yet)
+
+Added because the decisions in §5 created them. Every row is a promotion or demotion between rungs of
+§5.1.1, and every one moves data.
+
+| #       | Scenario                                            | Raises                |
+| ------- | --------------------------------------------------- | --------------------- |
+| **S34** | Pairs a second device, having never had an account. | D-19, D-23            |
+| **S35** | Creates an account, having already paired devices.  | **D-24** — the risk   |
+| **S36** | Deletes the account, keeping the devices.           | D-17, D-24 in reverse |
+| **S37** | Revokes a device that is currently offline.         | **D-18**              |
+| **S38** | Opens a device that has been revoked.               | **D-18**              |
+| **S39** | Loses the only device in a paired group.            | D-19, D-12            |
+
 ---
 
 ## 5. The decisions
@@ -413,8 +427,9 @@ Three constraints on that ladder, stated as constraints rather than as questions
 - **No free-then-charge.** If rung 2 cannot be sustained free, it does not ship free first. That rules
   out finding out later, which is what makes D-16 a gate rather than a preference.
 - **Cheap to host is a product requirement, not an implementation preference.** It decides whether
-  rung 2 exists at all. Cheap here means both dimensions: no per-user server cost that scales with
-  use, and no server state to keep alive (§2.3, point 3).
+  rung 2 exists at all. But "cheap" is not "zero marginal cost" — D-16 relaxes this: per-user cost that
+  scales with use is acceptable when the per-user quantities are tiny, and the real variable is what
+  fraction of users never cross into the paid tier.
 - **Rung 3 is reachable from several directions**, and one of them is not a feature: if the security
   bar (D-17) cannot be met without real accounts, then rung 3 is not the top of a ladder, it is the
   entry requirement, and rung 1 becomes a local-only mode rather than the default path. **This is the
@@ -617,8 +632,13 @@ products lose data. Three shapes, and they are not equally safe:
 - **The account starts fresh and the group is abandoned.** Simplest to build and the one that loses a
   month of someone's history. If this is where the implementation lands by default, that is the failure
   mode to catch in review, not in use.
-- **They coexist.** Two groups, one device in both. Coherent only if D-11's "one user, one document" is
-  read per-credential rather than per-person, which is exactly the reading §5.4 flagged for confirmation.
+- ~~**They coexist.**~~ **Ruled out by D-17's one-functional-trust-root-at-a-time constraint.** Two live
+  trust roots is exactly what that forbids, so a paired group cannot run alongside an account.
+
+So D-24 is down to one safe answer and one unsafe one, which makes it less a decision than a thing to not
+get wrong. The remaining question is the reverse direction: D-17 also says deleting an account means
+re-introducing your devices, so **demotion from rung 3 to rung 2 costs you your pairings** and needs the
+same care in the opposite direction (S34).
 
 Note that this is D-5 again, at a different level: two histories meeting, with a decision about which
 survives. The four choices there — merge, theirs, ours, abort — are the same four, and so is the
@@ -826,11 +846,86 @@ databases, and neither of them should be named after a channel.
 
 ### 5.5 Resets — D-12, D-13
 
-**D-12. What does the app do when local identity is gone but the document remembers it?** S7, S29,
-S30. Options: silently mint a new one (today); notice and offer D-4's claim flow; or notice and say
-so without offering anything, which is at least honest. Related: should the app ever _tell_ the user
-that storage is not durable? `requestPersistentStorage` already reports granted/denied and the menu
-already shows it, so there is a surface for this.
+**D-12. What does the app do when local identity is gone but the document remembers it?** S7, S29, S30.
+
+> **Decided in principle: treat the state as illegitimate.** Identity loss with a surviving document is
+> not a configuration to support gracefully. It should not be reachable, and where it is reached the app
+> should say so rather than paper over it by minting a replacement. What "say so" does next depends on the
+> distinction below.
+
+**How would we even get here?** The list is short, and the shape of the list is the argument:
+
+- a bug, including any sync-collision case that turns out to produce it — also a bug;
+- deliberate mischief, where someone deletes the identity keys and leaves the document;
+- **a feature we build carelessly** — a sign-out that clears identity but not state, or one that does not
+  wait for the document to finish being cleared, or an id scheme clever enough to keep local state while
+  re-linking identity.
+
+The third is the only one under our control, and it yields a constraint worth writing down: **sign-out
+must not be able to leave identity and document out of step.** Clearing IndexedDB is asynchronous and
+interruptible; a sign-out that navigates away mid-clear manufactures exactly this state on purpose.
+Whatever D-13 turns out to be, it is atomic with respect to these two facts or it is a bug generator.
+
+**The distinction that decides the policy is whether the document has ever been shared.**
+
+- **Never synced.** The actor id is a label with no audience. Nothing observable depends on it — the
+  name is "You" either way — so it could cycle on every keystroke and no user could tell. Minting a
+  replacement here is harmless, and is just the genesis case (S1) with extra steps.
+- **Ever synced.** The document is a shared artifact and membership means something. A fresh random
+  identity that appears and begins writing is precisely the unapproved-writer problem, and per D-4 and
+  D-19 membership is supposed to come from pairing or an account. So the app must **not** silently mint
+  one, and what it should do instead — refuse to write, offer to re-pair, quarantine the document — is
+  the part still open.
+
+**And the app can tell which case it is in, from the document rather than from local storage.** The actor
+roster lives in `meta[actor:<id>]` and syncs, so it survives localStorage loss. If local identity is
+absent but the roster holds human actors, this document has a history that predates the identity now
+asking to write. That is the evidence, it is already stored, and it needs no new mechanism.
+
+Related but separate, and now its own decision: whether the app tells the user that durability is not
+guaranteed. That is **D-25**.
+
+**D-25. Does the app tell the user when durability is not guaranteed?**
+
+> **Decided: yes, prominently and persistently.** An app whose central claim is local-first must not be
+> quiet about a context where the data is not durable. The warning names the reason and offers the action
+> — grant persistence where that is a real option, and otherwise route toward server sync.
+
+Today the storage state is reported into the menu, and the menu is a panel the codebase itself describes
+as usually closed. So the current arrangement is honest and invisible at the same time, which is the gap.
+
+**Warn about the property, not the diagnosis.** The instinct is to say "you are in private browsing", and
+that should be resisted: private-mode detection is unreliable, and every reliable-ish technique is a
+fingerprinting vector browsers are actively closing. What _is_ knowable is the consequence —
+`navigator.storage.persisted()` answers it directly, and that is the thing worth reporting. Likely causes
+can be offered as explanation without being claimed as fact.
+
+The reasons that need distinct copy, because they have different actions:
+
+| Situation                    | Detectable?                    | The action                         |
+| ---------------------------- | ------------------------------ | ---------------------------------- |
+| Persistence never requested  | yes                            | request it                         |
+| Requested and denied         | yes                            | explain; route to sync             |
+| Storage API absent           | yes                            | route to sync                      |
+| Insecure context             | yes (`isSecureContext`)        | fix the deployment; dev-only       |
+| Private or ephemeral context | **not reliably**               | report the property, not the cause |
+| Eviction risk on an old iOS  | engine-inferable, not directly | route to sync                      |
+
+**Two things worth knowing about the platform**, since they change how bleak this is:
+
+- **Modern iOS is fine.** The Storage API, including `persist()`, is fully supported from Safari 17 and
+  iOS 17. The 7-day cap on script-writable storage applies to origins that have _not_ been granted
+  persistence, so the grant is the exemption. There were reports that a grant may not survive a browser
+  restart and the documentation is thin, so the app should re-check on every launch rather than trust a
+  past grant — which `useStore` already does, calling `persisted()` on mount.
+- **The grant interaction is not ours to design.** Firefox shows a browser-controlled permission prompt
+  in a location we do not choose; Chrome decides silently on engagement heuristics; an installed Android
+  PWA may simply be persistent without ever asking. Standardising that is out of our hands, which is an
+  argument for the warning explaining the situation rather than pretending to drive it.
+
+A warning that can never be cleared is noise rather than information, so the escape hatch matters: where
+persistence genuinely cannot be granted, the honest resolution is not a permanent banner but the route to
+server-side durability — which is the same funnel D-16 identifies as the paid capability.
 
 **D-13. Is there a deliberate "start fresh" or "not me" action?**
 
@@ -879,32 +974,118 @@ picker, for instance, is fine under "no", fine under "partly", and a hole under 
 
 ### 5.7 The gates — D-16, D-17, D-18
 
-Three questions that decide the shape of the ladder in §5.1.1 and are not answerable by preference.
-They are research, and they belong to a different conversation; they are recorded here because the
-ladder is not real until they are answered.
+Three questions that decide the shape of the ladder in §5.1.1 and are not answerable by preference. Two
+of them are now settled enough to act on; the middle one is not, and it is the one that matters most.
 
-**D-16. Can cross-device sync be cheap enough, and stateless enough, to be free?** _(Open —
-research.)_ "Cheap" has two dimensions and both are hard requirements: no per-user cost that scales
-with use, and no server state that has to be kept alive. The no-free-then-charge constraint (§5.1.1)
-makes this a gate rather than a preference — it has to be answered before rung 2 ships, not after. Note
-the interaction: WebSockets are the expensive shape, so this question and "what replaces the relay's
-transport" are one investigation.
+**D-16. Can cross-device sync be cheap enough to be free?**
 
-**D-17. What does "reasonably secure" mean, concretely enough to test?** _(Open — and it is the
-largest branch in the document.)_ If the bar cannot be met without real accounts, then accounts are not
-rung 3, they are the entry requirement, and rung 1 becomes a local-only mode rather than the default
-path. That changes the first run for every user, so the bar needs to be written down as something
-checkable — at minimum: what an attacker with the relay URL can do, what they can do with a leaked
-credential, and what is true of data at rest on the server if there is one. §2.3 improves two of those
-independently of the answer.
+> **Deliberately deferred, and the framing was too strict.** "No per-user cost that scales with use" is
+> not the requirement — a Redis-like broadcast plus a bucket of encrypted backups scales per user, and the
+> per-user quantities are tiny. The real question is what _fraction_ of users sit in the dirt-cheap tier
+> versus the tier that is already paying, and that is a business-model question answerable with data
+> rather than by argument. Build the free/no-sync and paid/sync versions first, then measure.
 
-**D-18. Are sessions enumerable and revocable from a UI?** _(Open.)_ Wanted explicitly — "invalidate
-sessions upon logging in" is one of the two live reasons the device level exists at all (D-2). It is
-also in direct tension with D-16: revocation needs server state, statelessness is what makes hosting
-cheap, and short-expiry-plus-refresh is the usual compromise at the cost of a request the app must
-never block on (§2.3, point 3). Sub-questions: is the unit revoked a session or a device (they differ —
-a device outlives its tabs); does revoking reach a device that is offline, or only take effect when it
-next connects; and is "sign out" on an unrevokable credential honestly labelled (D-13).
+**The billing boundary is now identified, and it is a good one:** the paid capability is
+**server-intermediated sync** — getting updates without needing another of your devices online at the
+same time. Free is direct device-to-device while both are online. Plus whatever is unavoidably charged
+by payment processing and the ordinary cost of having a business online, which has to be counted too.
+
+That boundary lines up exactly with everything else in this section, which is the strongest argument for
+it:
+
+| Rung | Discovery (D-19) | Transport                     | Durability             | Cost |
+| ---- | ---------------- | ----------------------------- | ---------------------- | ---- |
+| 1    | none             | none                          | this device only       | free |
+| 2    | pairing          | device-to-device, both online | none — the group is it | free |
+| 3    | sign-in          | server-intermediated          | server-side copy       | paid |
+
+Note what that makes of the earlier derivation: **rung 2 having no recovery story (D-19) and rung 2 being
+free are the same fact.** There is no server-side copy, which is exactly why it costs nothing and exactly
+why losing your last device loses the group. Durability is the paid thing, arrived at independently from
+the product side and the cost side.
+
+**And the sequencing satisfies the no-free-then-charge constraint** rather than colliding with it: shipping
+free-without-sync and paid-with-sync is not starting free and then charging, it is charging from the start
+for the part that costs money. That is what makes deferring this question safe.
+
+**One cost risk worth flagging now, because it undermines "bandwidth will not run me out of business."**
+Direct device-to-device in a browser means WebRTC, and WebRTC does not always connect directly. Symmetric
+NAT and mobile carrier networks are the common failures, and the fallback is TURN — a relay, which is
+bandwidth, which is the cost being avoided. Phone-to-phone across two mobile networks is the case most
+likely to need it. So the free tier's unit cost depends on a connection-success rate that is measurable
+but not yet measured, and it should be measured on real devices on real networks rather than estimated.
+Note also that this puts WebRTC back on the table for the _transport_ after §3.4 dismissed it for
+cross-tab use — different job, different verdict.
+
+**D-17. What does "reasonably secure" mean, concretely enough to test?** _(Open, and the largest branch
+in the document — but with one constraint now recorded and one path narrowed.)_
+
+If the bar cannot be met without real accounts, then accounts are not rung 3, they are the entry
+requirement, rung 1 becomes a local-only mode, and the first run changes for every user. So the bar needs
+writing down as something checkable — at minimum: what an attacker with the relay URL can do, what they
+can do with a leaked credential, and what is true of data at rest if there is a server.
+
+> **Recorded constraint: exactly one functional trust root at a time.** Where a server account exists, the
+> device-to-device credentials do not remain independently functional. Deleting the account means
+> re-introducing your devices to each other to re-establish the device-centric path.
+
+That constraint does real work immediately: **it kills D-24's "they coexist" option.** If only one trust
+root can be live, a paired group cannot run alongside an account, so promotion must either adopt the group
+or abandon it — and abandoning it is the data-loss branch. D-24 is down to one safe answer.
+
+**On the discomfort about a web app minting its own secrets: it is well-founded, and there are two ways
+out.** The no-account path does require key material to exist client-side, and a browser is a worse
+keystore than a phone's. Two mitigations are real:
+
+- **Non-extractable keys.** WebCrypto `CryptoKey` objects created with `extractable: false` and stored in
+  IndexedDB cannot be read out by script, even by script that has already achieved XSS. An attacker can
+  _use_ the key while they are running; they cannot take it with them. That is a meaningful reduction in
+  blast radius, not a cure.
+- **Let the platform mint it instead.** The WebAuthn **PRF extension** derives a deterministic 32-byte
+  secret bound to a passkey, usable directly as symmetric key material via WebCrypto — so the authenticator
+  holds the root and the web app never invents one. Support has arrived: Safari 18+, Chrome 132+, Firefox
+  139, with iCloud Keychain on macOS 15 and the earlier iOS cross-device bugs fixed in 18.4. The known gap
+  is that Apple does not pass extension data to external roaming authenticators. This is the most promising
+  answer to "I do not want to mint secrets in a web app" and it should be evaluated properly.
+
+**And the basics are in scope for this decision, not adjacent to it.** In a design where the client holds
+key material, **an XSS is a key compromise**, not merely a stolen session — which is what promotes CSP,
+certificate hygiene, defence-in-depth against injection, sandboxing anything user-generated, and cookie
+attributes from good practice to load-bearing. The relevant OWASP items should be enumerated as part of
+the bar rather than assumed.
+
+**D-18. Are devices enumerable and revocable from a UI?**
+
+> **Decided, in most respects.** **The unit of revocation is the device, not the session.** A session is a
+> tab (§6), and revoking a tab is meaningless; the thing an actor with bad intentions uses is a device.
+> Invalidation must propagate to every online device quickly, and every device must check whether it has
+> been revoked on reconnect, before it syncs. The amount of server state this needs is not what makes
+> hosting expensive.
+
+**On offline devices, say the true thing.** A revocation cannot reach a device that is not connected, and
+Rule 2 forbids implying otherwise. Dropbox's phrasing is the model worth copying: the session is revoked,
+cleanup will be attempted when the device is next seen, and the honest caveat is that the data should be
+assumed already copied. That is three sentences, and all three are true.
+
+**On what happens to a revoked device, deliberately unsettled.** The shape is: freeze the interface, blur
+it, and offer the user options while cleanup work queues. What is _not_ decided — and should not be assumed
+— is that wiping local data is the right response. Someone arriving at a revoked device may be an owner who
+lost a phone, an owner who revoked the wrong device, or a person who should not have it, and those want
+different affordances. This needs its own thought rather than a default.
+
+**One ordering trap.** "Check for revocation before anything on reconnect" must not become "block startup
+on a network call", which would contradict PRD principle 3 and TRD §7.1. The resolution: the check gates
+**sync**, not the app. Unknown or offline means full local function; _known_ revoked is what triggers the
+freeze. Reading and writing locally never waits on the answer.
+
+Open within this: what the options on a revoked device are and whether cleanup is automatic; whether
+propagation needs anything cleverer than "the relay tells whoever is connected, and everyone asks on
+reconnect" — gossip is the obvious next step and is probably overkill at this scale; and whether "sign out"
+is honestly labelled when the credential behind it cannot be revoked (D-13), which is still unanswered.
+
+The device list this produces is the same artifact D-19's two flows converge on and the same one §1.2 calls
+the irreducible security surface. It may be deferrable: pairing could plausibly ship without a device list
+before there is stored, paid server sync to protect.
 
 ### 5.8 Prior art worth watching
 
@@ -916,14 +1097,27 @@ integration into Automerge Repo as an auth provider. The interesting part for th
 is designed so that _the server does not have to be the authority_ — capabilities travel with the
 data, which is the only known shape that gives D-14 a "yes" without giving up principle 3.
 
-Two implications, neither of which is a decision:
+**And there is a second project that is closer to D-19's pairing flow than Keyhive is.**
+`@localfirst/auth` (Herb Caudill; formerly Taco) does decentralised authentication and authorisation from
+a chain of signed cryptographic operations, explicitly for apps that do not want to depend on a
+centralised authentication server or key-management service. The parts that map directly onto decisions
+here: **device-level keys held in each device's own storage**, and **invitations via a Seitan token
+exchange**, where an invitee proves they were invited without revealing the invitation secret and any
+existing member — not only an admin — can validate the proof. That is the pairing flow of D-19 with the
+protocol already worked out, and it is worth reading before designing one.
 
-1. **It is Automerge's, not Yjs's.** Nothing equivalent exists behind this app's seam, so a real
-   authorisation story is either bespoke, server-side (which is the "yes" branch, with its costs), or a
-   reason to re-examine the CRDT choice — and TRD §10.1 already treats a Yjs v14 migration as planned
-   debt, so the cost of that re-examination is known rather than unbounded.
-2. **Watch it rather than wait for it.** The single-tenant work in this document does not depend on it,
-   and the "partly" branch above is available regardless.
+Three implications, none of which is a decision:
+
+1. **Both are Automerge-adjacent, not Yjs's.** Keyhive integrates with Automerge Repo, and
+   `@localfirst/auth` ships an Automerge Repo provider. Nothing equivalent exists behind this app's seam,
+   so a real authorisation story is bespoke, server-side (the "yes" branch, with its costs), or a reason
+   to re-examine the CRDT choice — and TRD §10.1 already treats a Yjs v14 migration as planned debt, so
+   that cost is known rather than unbounded.
+2. **The protocols are more portable than the integrations.** Signed delegation chains and token-based
+   device invitations are not Automerge-specific ideas; only the plumbing is. Reading them for the design
+   is available even if adopting the libraries is not.
+3. **Watch rather than wait.** The single-tenant work in this document does not depend on either, and
+   D-14's "partly" branch is available regardless.
 
 ---
 
@@ -989,32 +1183,33 @@ The three differ by two screens. That is roughly the whole budget this document 
 
 ## 8. Decision register
 
-| ID       | Question                                                        | Status                   | Answer, or what happens without one                                                                                                        |
-| -------- | --------------------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| **D-1**  | Does the user tell the app who they are, and when?              | **Decided**              | Generated by default; a name when opting into backup or cross-device sync (§5.1.1)                                                         |
-| **D-2**  | Is identity per person, per device, or a labelled pair?         | **Decided**              | Per device internally; per person in every list. Device never disclosed or reflected                                                       |
-| **D-3**  | Are device names worth improving?                               | **Decided in principle** | Yes. Mechanism open — and it does not need a fingerprint                                                                                   |
-| **D-4**  | Can a new device claim an existing actor?                       | **Decided**              | No. A new device is always a new actor; the real question was D-19                                                                         |
-| **D-5**  | What happens when sync first meets a non-empty room?            | **Decided**              | By case; both-full stops and asks with a preview. merge · theirs · ours · abort                                                            |
-| **D-6**  | Can dead actors be pruned?                                      | **Decided**              | No auto-hiding. Staleness may be muted; the interval is open. Exclusion is D-20                                                            |
-| **D-7**  | Should undo ever cross devices?                                 | **Decided**              | No. Never leaves the device                                                                                                                |
-| **D-8**  | What may a session be seen doing?                               | **Decided**              | A caret per tab, own tabs included, **all yours in your colour**, person's name. Active caret distinguished (D-21). Peer list deduplicated |
-| **D-9**  | Does the app ever show a tab count?                             | **Decided**              | Never, save a high-bar exception that must be justified in writing                                                                         |
-| **D-10** | Is sync configuration per device or per document?               | **Decided in principle** | Rule 1: the user never manages rooms. Mechanism open; today's three fields are ruled out                                                   |
-| **D-11** | What is a room — content, or permission?                        | **Decided in principle** | Permission. One user, one document; a device may host several users; "room" stays off the architecture                                     |
-| **D-12** | What happens when local identity is lost?                       | Open                     | Silent new identity                                                                                                                        |
-| **D-13** | Is there a deliberate reset?                                    | **Decided**              | Yes. Whether it is sign-out, and what it clears, open                                                                                      |
-| **D-14** | May the relay decide who connects? What is written?             | Open                     | Multi-tenancy stays cooperative-only and undeclared                                                                                        |
-| **D-15** | Within a device, is undo per tab or shared?                     | **Decided**              | Per tab                                                                                                                                    |
-| **D-16** | Can cross-device sync be cheap and stateless enough to be free? | Open — research          | Rung 2 of the ladder cannot ship either way                                                                                                |
-| **D-17** | What does "reasonably secure" mean, concretely?                 | Open — research          | Cannot tell whether accounts are optional or mandatory                                                                                     |
-| **D-18** | Are sessions enumerable and revocable from a UI?                | Open                     | Signing in cannot invalidate anything                                                                                                      |
-| **D-19** | How does a device find the other devices that are yours?        | **Decided**              | Build both: pairing for rung 2, sign-in for rung 3. Pairing derives the room, sign-in assigns it                                           |
-| **D-20** | How is a member actually excluded?                              | Open                     | Not at all — and local refusal does not work (§5.2)                                                                                        |
-| **D-21** | What does "the active caret" mean — local, or globally recent?  | **Decided**              | Locally active. No recency modelling; a design check that it reads as distinct                                                             |
-| **D-22** | Does merged content show its provenance?                        | Open                     | No. Cards could today; document text needs deferred attribution                                                                            |
-| **D-23** | Does pairing alone trigger the name prompt?                     | Open                     | A name is asked for at a moment that may have no audience                                                                                  |
-| **D-24** | How does a paired group become an account?                      | Open                     | Undefined — and the default implementation is the one that loses data                                                                      |
+| ID       | Question                                                       | Status                   | Answer, or what happens without one                                                                                                        |
+| -------- | -------------------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| **D-1**  | Does the user tell the app who they are, and when?             | **Decided**              | Generated by default; a name when opting into backup or cross-device sync (§5.1.1)                                                         |
+| **D-2**  | Is identity per person, per device, or a labelled pair?        | **Decided**              | Per device internally; per person in every list. Device never disclosed or reflected                                                       |
+| **D-3**  | Are device names worth improving?                              | **Decided in principle** | Yes. Mechanism open — and it does not need a fingerprint                                                                                   |
+| **D-4**  | Can a new device claim an existing actor?                      | **Decided**              | No. A new device is always a new actor; the real question was D-19                                                                         |
+| **D-5**  | What happens when sync first meets a non-empty room?           | **Decided**              | By case; both-full stops and asks with a preview. merge · theirs · ours · abort                                                            |
+| **D-6**  | Can dead actors be pruned?                                     | **Decided**              | No auto-hiding. Staleness may be muted; the interval is open. Exclusion is D-20                                                            |
+| **D-7**  | Should undo ever cross devices?                                | **Decided**              | No. Never leaves the device                                                                                                                |
+| **D-8**  | What may a session be seen doing?                              | **Decided**              | A caret per tab, own tabs included, **all yours in your colour**, person's name. Active caret distinguished (D-21). Peer list deduplicated |
+| **D-9**  | Does the app ever show a tab count?                            | **Decided**              | Never, save a high-bar exception that must be justified in writing                                                                         |
+| **D-10** | Is sync configuration per device or per document?              | **Decided in principle** | Rule 1: the user never manages rooms. Mechanism open; today's three fields are ruled out                                                   |
+| **D-11** | What is a room — content, or permission?                       | **Decided in principle** | Permission. One user, one document; a device may host several users; "room" stays off the architecture                                     |
+| **D-12** | What happens when local identity is lost?                      | **Decided in principle** | The state is illegitimate. Never-synced may re-mint; ever-synced must not. The roster is the evidence                                      |
+| **D-13** | Is there a deliberate reset?                                   | **Decided**              | Yes. Whether it is sign-out, and what it clears, open                                                                                      |
+| **D-14** | May the relay decide who connects? What is written?            | Open                     | Multi-tenancy stays cooperative-only and undeclared                                                                                        |
+| **D-15** | Within a device, is undo per tab or shared?                    | **Decided**              | Per tab                                                                                                                                    |
+| **D-16** | Can cross-device sync be cheap enough to be free?              | **Deferred on purpose**  | Paid boundary is server-intermediated sync. Ship both tiers, measure. TURN is the cost risk                                                |
+| **D-17** | What does "reasonably secure" mean, concretely?                | Open — research          | Cannot tell whether accounts are optional or mandatory                                                                                     |
+| **D-18** | Are devices enumerable and revocable from a UI?                | **Decided**              | Yes. The unit is the device. Gates sync, not startup. Freeze and offer options; no automatic wipe                                          |
+| **D-19** | How does a device find the other devices that are yours?       | **Decided**              | Build both: pairing for rung 2, sign-in for rung 3. Pairing derives the room, sign-in assigns it                                           |
+| **D-20** | How is a member actually excluded?                             | Open                     | Not at all — and local refusal does not work (§5.2)                                                                                        |
+| **D-21** | What does "the active caret" mean — local, or globally recent? | **Decided**              | Locally active. No recency modelling; a design check that it reads as distinct                                                             |
+| **D-22** | Does merged content show its provenance?                       | Open                     | No. Cards could today; document text needs deferred attribution                                                                            |
+| **D-23** | Does pairing alone trigger the name prompt?                    | Open                     | A name is asked for at a moment that may have no audience                                                                                  |
+| **D-24** | How does a paired group become an account?                     | Open — narrowed          | Coexistence ruled out by D-17; adopt-the-group is the only safe branch                                                                     |
+| **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**              | Yes, prominently. Warn about the property, not the context. Offer the grant, else route to sync                                            |
 
 Suggested order for the remainder, on dependency rather than importance. Note how much of it is now one
 cluster: nearly everything open is a consequence of not knowing what a credential is.
@@ -1024,16 +1219,21 @@ cluster: nearly everything open is a consequence of not knowing what a credentia
    §5.3's, that rung 2 buys convenience while rung 3 buys durability, which follows from pairing needing
    both devices present. Both are small confirmations with large blast radii, and everything below
    assumes them.
-2. **D-14**, then **D-17**, then **D-16** — what the relay may decide, what "secure enough" means, and
-   whether rung 2 can be free. In that order, because D-17's bar can collapse the ladder to a single
-   rung, and D-19 has now made that collapse expensive: it would strand the pairing flow, which is the
-   only reason rung 2 exists.
-3. **D-24**, then **D-12** — the two data-loss questions. D-24 is the promotion path from a paired group
-   to an account and is the highest-risk item here; D-12 is identity loss, whose answer is now shaped by
-   which rung the user was on.
-4. **D-20** — exclusion. Fork or encrypt, and the encryption branch is the one that keeps the relay dumb.
-5. **D-18** — revocation, which needs D-14's credential to have anything to revoke.
-6. **D-22**, **D-23**, and D-6's staleness interval — UI-shaped, block nothing.
+2. **D-17**, then **D-14** — what "secure enough" means, and what the relay may decide. D-17 first now:
+   it is the only remaining question that can collapse the ladder, and D-19 has made that collapse
+   expensive, since it would strand the pairing flow that rung 2 is made of. Its two concrete next steps
+   are evaluating WebAuthn PRF as the key root and writing the bar down as something checkable.
+3. **D-20** — exclusion. Fork or encrypt, and the encryption branch is the one that keeps the relay dumb,
+   which makes it the branch most compatible with everything already decided.
+4. **D-24** — narrowed to one safe answer by D-17's trust-root constraint, so this is now a thing to not
+   get wrong rather than a thing to decide. Worth a written note before the account model is built,
+   because the unsafe branch is the one that falls out of an ordinary implementation.
+5. **D-22**, **D-23**, D-6's staleness interval, and the open parts of D-18 — the options on a revoked
+   device, whether cleanup is automatic, and whether "sign out" is honestly labelled. UI-shaped, and none
+   of them block anything.
+
+**Deliberately not on this list:** D-16, deferred until there are two shipped tiers and real unit costs to
+look at. That deferral is safe because the sequencing charges for the expensive thing from the start.
 
 **Unblocked now:** the multi-tab work was waiting on D-8, and D-8 is decided in the direction PR #18
 already assumed. No change is owed to that branch.
