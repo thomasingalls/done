@@ -1,6 +1,6 @@
 # done — Sessions and Identity: Product Requirements
 
-**Status:** Draft v5 — **19 of 25 decisions recorded**, the rest open. See §8.
+**Status:** Draft v6 — **22 of 26 decisions recorded**, the rest open. See §8.
 **Date:** 2026-08-10
 **Audience:** the author, deciding. Not an implementation plan.
 **Amends:** PRD §11 (Actors), PRD §12 (non-goals) — see §9.
@@ -374,14 +374,15 @@ factual; the decisions are §5.
 Added because the decisions in §5 created them. Every row is a promotion or demotion between rungs of
 §5.1.1, and every one moves data.
 
-| #       | Scenario                                            | Raises                |
-| ------- | --------------------------------------------------- | --------------------- |
-| **S34** | Pairs a second device, having never had an account. | D-19, D-23            |
-| **S35** | Creates an account, having already paired devices.  | **D-24** — the risk   |
-| **S36** | Deletes the account, keeping the devices.           | D-17, D-24 in reverse |
-| **S37** | Revokes a device that is currently offline.         | **D-18**              |
-| **S38** | Opens a device that has been revoked.               | **D-18**              |
-| **S39** | Loses the only device in a paired group.            | D-19, D-12            |
+| #       | Scenario                                                                                                                                  | Raises                |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| **S34** | Pairs a second device, having never had an account.                                                                                       | D-19, D-23            |
+| **S35** | Creates an account, having already paired devices.                                                                                        | **D-24** — the risk   |
+| **S36** | Deletes the account, keeping the devices.                                                                                                 | D-17, D-24 in reverse |
+| **S37** | Revokes a device that is currently offline.                                                                                               | **D-18**              |
+| **S38** | Opens a device that has been revoked.                                                                                                     | **D-18**              |
+| **S39** | Loses the only device in a paired group.                                                                                                  | D-19, D-12            |
+| **S40** | Revokes a device while another of their own devices is offline — and that offline device has meanwhile been syncing with the revoked one. | **D-26**              |
 
 ---
 
@@ -619,26 +620,25 @@ is visible. Two useful facts about feasibility:
 Which makes this splittable rather than off-topic: the card half is cheap and could ship with D-5, and
 the text half is a different question about attribution granularity.
 
-**D-24. How does a paired group become an account?** _(Open, and the highest-risk question in the
-document.)_
+**D-24. How does a paired group become an account?**
+
+> **Decided: the account adopts the group.** Existing devices and document carry over; the account is a
+> new credential over the same group rather than a new group.
 
 D-19 builds both discovery mechanisms, so a user can arrive at rung 3 having already paired three devices
 at rung 2. What happens to the group is the promotion path, and promotion paths are where local-first
-products lose data. Three shapes, and they are not equally safe:
+products lose data. Three shapes were available, and they were not equally safe:
 
-- **The account adopts the group.** The existing devices and document carry over; the account is a new
-  credential over the same group. Safest, and it requires the account model to be able to accept an
-  identity that predates it — which is a constraint on D-14's design, not a detail of the UI.
-- **The account starts fresh and the group is abandoned.** Simplest to build and the one that loses a
-  month of someone's history. If this is where the implementation lands by default, that is the failure
-  mode to catch in review, not in use.
-- ~~**They coexist.**~~ **Ruled out by D-17's one-functional-trust-root-at-a-time constraint.** Two live
-  trust roots is exactly what that forbids, so a paired group cannot run alongside an account.
+- **The account adopts the group.** ✅ **Chosen.** The requirement it carries is worth stating because it
+  lands on the account model rather than the UI: **the account has to be able to accept an identity that
+  predates it.** A design where signing up mints a fresh identity and attaches storage to it cannot do
+  this, and that is the design that falls out of an ordinary implementation.
+- **The account starts fresh and the group is abandoned.** The one that loses a month of someone's
+  history — and the one an implementation drifts into if nobody wrote the sentence above down.
+- ~~**They coexist.**~~ Ruled out by D-17's one-functional-trust-root-at-a-time constraint.
 
-So D-24 is down to one safe answer and one unsafe one, which makes it less a decision than a thing to not
-get wrong. The remaining question is the reverse direction: D-17 also says deleting an account means
-re-introducing your devices, so **demotion from rung 3 to rung 2 costs you your pairings** and needs the
-same care in the opposite direction (S34).
+The reverse direction still needs the same care: D-17 also says deleting an account means re-introducing
+your devices, so **demotion from rung 3 to rung 2 costs you your pairings** (S36).
 
 Note that this is D-5 again, at a different level: two histories meeting, with a decision about which
 survives. The four choices there — merge, theirs, ours, abort — are the same four, and so is the
@@ -655,33 +655,109 @@ And what deletion could never do is worth keeping in view: cards carry an `autho
 roster entry removes the _name_, not the attribution. There is no version of pruning that unwrites
 history.
 
-**D-20. How is a member actually excluded?** _(Open, and larger than D-6.)_ "Any node may begin refusing
-updates from any other node" is a different and much bigger want than pruning a list, and the honest
-statement of the problem is that a CRDT with a forwarding relay has three mechanisms, of which only two
-work:
+**D-20. How is a member actually excluded?**
 
-1. **Local refusal.** A node filters incoming updates by their origin. Yjs updates are opaque but not
-   opaque _to_ us — client ids can be read out of an update — so this is mechanically possible. It does
-   not work, for two independent reasons: Yjs client ids are random per document instance rather than
-   stable per device, so there is nothing durable to filter on; and a filtered peer's changes arrive
-   anyway, transitively, through any other peer that did not filter. Local refusal is a preference, not
-   an exclusion.
-2. **Forking the room.** Copy the state to a new room the excluded member cannot reach, and tell the
-   remaining members. This works, needs nothing from the relay beyond a second room, and is the reason
-   the instinct in the review — "probably fork the room per membership edit" — is the correct instinct.
-   It costs a room name per membership change and it makes room identity churn, which collides with
-   Rule 1 unless the churn is entirely invisible.
-3. **Content encryption with key rotation.** Encrypt document content; on removal, rotate the key and
-   re-encrypt forward. The removed member holds a key that opens history and nothing newer. This is what
-   Keyhive does (§5.8), and the important observation for this project is that **it is the mechanism most
-   compatible with the relay staying a dumb pipe** — a relay forwarding ciphertext is exactly as dumb as
-   one forwarding plaintext, so D-14 can stay "no" or "partly" and exclusion still works. The costs are
-   real and land elsewhere: key management becomes the hard problem, and any future server-side feature
-   that needs to read content becomes impossible by construction.
+> **Decided: content encryption with key rotation.**
 
-Under every mechanism, one thing stays true and Rule 2 requires saying it: **a member who has already
-synced keeps their copy forever.** Removal governs the future, never the past, and the UI must not
-suggest otherwise.
+A correction first, because the previous draft said "local refusal does not work" and that was too broad.
+It is true of exactly one thing — **filtering incoming updates while remaining in the same document** —
+which fails for two independent reasons: Yjs client ids are random per document instance, so there is
+nothing durable to filter on, and a filtered peer's changes arrive transitively through any peer that did
+not filter. But **forking is also client-side refusal, and forking works.** The boundary genuinely can
+live on the client; what cannot work is staying in a document and declining to listen. Three mechanisms,
+then, not two:
+
+1. **Filter and stay.** Does not work, per above.
+2. **Fork.** Copy the state somewhere the excluded member cannot reach and tell the remaining members.
+   Works, entirely client-side, no server involvement — which is the point being made in review, and it is
+   correct.
+3. **Encrypt and rotate.** ✅ **Chosen.** Content is encrypted; on removal the key rotates and only
+   remaining devices get the new one. The removed device holds a key that opens history and nothing newer.
+
+**Rotation is fork's effect without fork's copy — and the difference that decides it is not the copy.**
+The mechanics differ in the right way: forking changes the document's _identifier_ and duplicates state,
+rotation keeps the identifier and changes _readability going forward_. But the deciding argument is
+Rule 1. A fork per membership edit is a new document identity per membership edit, which is room churn,
+which is the thing the user must never have to think about. Rotation leaves the user with the one document
+D-11 says they have. That is why this option is consistent with what is already decided and forking is
+not — the avoided history copy is a bonus.
+
+It also keeps the relay dumb: **a relay forwarding ciphertext is exactly as dumb as one forwarding
+plaintext.** Exclusion stops depending on the server having authority, which is what makes it compatible
+with D-14 at "partly" instead of requiring "yes".
+
+**The three UX questions this raises, answered as far as they can be.**
+
+- **The excluded device.** It keeps everything up to the rotation. Anything newer arrives as bytes it
+  cannot read — so from the user's side the document simply stops updating. **Silence is the wrong answer
+  and Rule 2 forbids it**: "no new changes" is a false statement, and an interface implying it is the
+  same defect as auto-hiding a member. So an excluded device has to be _told_, explicitly, which means the
+  rotation carries a signal the excluded device can still read even though the content is closed to it.
+  That is a protocol requirement falling directly out of a rule, and it is easy to miss because the crypto
+  works fine without it.
+- **Remaining members, between the rotation and receiving the new key.** They are not broken, only stale
+  on membership: still holding the old key, still accepting the excluded device's writes. This is where
+  D-26 comes from, and it is the hard part of the whole design.
+- **The excluder, before the new key propagates.** Their new content is unreadable by their own remaining
+  members until each of them has the key. So **rotation does not remove the propagation problem, it moves
+  it** — from "tell everyone the new room name" to "get the new key to every remaining device" — and that
+  new problem has exactly the same reachability constraints as everything else here, including needing the
+  other device online at rung 2.
+
+**Three costs to accept knowingly.**
+
+- **Key management becomes the hard problem.** It is the problem Keyhive and `@localfirst/auth` exist to
+  solve (§5.8), which is a reason to read them rather than to invent.
+- **Server-side anything that reads content becomes impossible**, permanently and by construction. Local
+  search (Phase 4, TRD §6.2) is unaffected because it is local. Server-side search, server-side export,
+  server-rendered anything: gone. That is probably a feature.
+- **Awareness leaks what content no longer does.** Presence carries names, colours and cursor positions,
+  and if it stays in the clear the relay learns who is editing what and when while learning nothing about
+  the text. Either awareness is encrypted too, or the threat model states plainly that presence metadata
+  is visible to the relay. This needs a deliberate answer rather than a default.
+
+Under every mechanism one thing stays true, and Rule 2 requires saying it out loud: **a member who has
+already synced keeps their copy forever.** Removal governs the future, never the past.
+
+**D-26. What happens when a revocation is learned late and the document has already diverged?**
+_(Open — and this is now the hardest question in the document.)_
+
+The case, which is not exotic: **A revokes C, then goes offline. B never hears about it and keeps syncing
+with C. A comes back.** Now B holds content from a device A has excluded, and merging is not a neutral act
+— it reintroduces exactly what the revocation was for.
+
+**First, the principle that has to hold regardless: membership reconciles before content.** Two devices
+settle who is a member before they exchange a single document update. This is the same shape as TRD §6.1's
+load-before-connect rule and deserves the same status. It is necessary and it is not sufficient — it stops
+B accepting _new_ C content, and does nothing about what B already merged.
+
+For what B already has, the options:
+
+- **Filtered replay.** Rebuild B's document from its update log, skipping C's updates after the revocation
+  point. Two useful facts: the material exists — the app already keeps an append-only log of updates in
+  IndexedDB, which is exactly what replay needs. And it has a hard limit: **you cannot remove one
+  participant's operations from a CRDT history without also losing whatever was built on top of them.**
+  Where contributions are independent it works; where they interleave it orphans B's own edits. In this
+  app that split is real and favourable — cards and days are separate structures, so card-level exclusion
+  is tractable, while the master list is one text where interleaving is likely.
+- **Keep both.** B ends up with two documents: the lineage that includes C, and the sanctioned one. This
+  is "your one document is now two", and it directly contradicts D-11's one-user-one-document rule. **That
+  contradiction is the finding**, not a detail: the multi-document business is not something to opt into,
+  it is where this edge case deposits you, and it will arrive eventually with or without a server.
+- **Sanction A's lineage and discard B's divergence.** Loses B's own honest work, which is a bad trade for
+  a personal tool.
+- **Prevent it by construction.** If every sync goes through a server that enforces revocation, C cannot
+  push after being revoked, so B never accepts post-revocation C content and the divergence never happens.
+
+That last option is the structural insight worth carrying: **this divergence is a peer-to-peer problem.**
+Server-mediated sync eliminates it; direct device-to-device creates it. Which means it lands precisely on
+D-16's free tier — the tier whose defining property is that there is no server in the path. And note where
+it bites hardest: at rung 2 the members are your own devices, so the motivating case for revocation is a
+_lost phone_, and the divergence window is "my laptop and the lost phone were online together while my
+other device was not." That is not an unlikely sequence.
+
+So D-26 is where the cheapest tier, the strongest security want, and the one-document rule all meet, and
+one of the three has to give.
 
 **D-7. Should undo ever cross devices?**
 
@@ -968,9 +1044,37 @@ reject a write** (PRD §11.4, TRD §10.6). So:
   short of authority over content does.
 
 So D-14 is really two questions — _may the relay decide who connects?_ and _may it decide what is
-written?_ — and they have different costs and different answers available. Everything else in this
-document can be decided before either, provided each choice records which way it leans: D-4's roster
-picker, for instance, is fine under "no", fine under "partly", and a hole under "yes".
+written?_ — and they have different costs and different answers available.
+
+> **Decided: at least "partly". "No" is ruled out.** The version where everyone in a document simply
+> trusts everyone else is rejected — including for one person syncing between their own devices. Identity,
+> membership and credentials are enforced even there. Whether it goes all the way to "yes", with the relay
+> holding authority over content, is still open.
+
+**On "is there any other option, if revocation is part of the story?" — yes, and it is D-20.** Once content
+is encrypted and keys rotate on removal, a revoked device can connect and receive bytes it cannot read. The
+exclusion is enforced by the key, not by the door. So relay-level refusal becomes **defence in depth rather
+than the mechanism**: still worth having, because it saves bandwidth and closes the write channel, but no
+longer the thing exclusion depends on. That is the strongest practical reason D-20's third option matters.
+
+**On where defence against a headstrong agent belongs — the same place, and this is the general answer.**
+In a CRDT with an opaque relay, nothing can validate a write, so there is no version of this that works by
+inspecting what an agent wrote (PRD §11.4 says so about permissions and the argument is unchanged). What is
+left is exactly one lever: **you cannot prevent a writer who holds the key; you can only control who holds
+the key.** So impersonation defence is key distribution — an agent gets its own device-level identity, its
+writes are attributable to it, and revoking it means rotating the key it no longer receives. Everything in
+this section converges on the same mechanism, which is a good sign.
+
+**And on the Red Queen worry** — that this is complexity insisted upon where it could be opted out of. Worth
+recording the counter-argument rather than only the instinct: the opt-out version is not "less security",
+it is "any process that can reach the document is you", and that includes a browser extension, a shared
+laptop, a stale session on a sold phone, and any agent given access for one purpose. The 1990s assumption
+that whoever is at the keyboard is the owner was defensible when the keyboard was the only way in. It is not
+the design that costs less; it is the design that has already made a decision.
+
+Everything else in this document can be decided before the remaining half of D-14, provided each choice
+records which way it leans: D-4's roster picker, for instance, is fine under "partly" and a hole under
+"yes".
 
 ### 5.7 The gates — D-16, D-17, D-18
 
@@ -1008,14 +1112,27 @@ the product side and the cost side.
 free-without-sync and paid-with-sync is not starting free and then charging, it is charging from the start
 for the part that costs money. That is what makes deferring this question safe.
 
-**One cost risk worth flagging now, because it undermines "bandwidth will not run me out of business."**
-Direct device-to-device in a browser means WebRTC, and WebRTC does not always connect directly. Symmetric
-NAT and mobile carrier networks are the common failures, and the fallback is TURN — a relay, which is
-bandwidth, which is the cost being avoided. Phone-to-phone across two mobile networks is the case most
-likely to need it. So the free tier's unit cost depends on a connection-success rate that is measurable
-but not yet measured, and it should be measured on real devices on real networks rather than estimated.
-Note also that this puts WebRTC back on the table for the _transport_ after §3.4 dismissed it for
-cross-tab use — different job, different verdict.
+**One cost risk, and the free-infrastructure question answered: STUN is free, TURN is not.**
+
+Direct device-to-device in a browser means WebRTC, and the two helper services it needs have completely
+different economics. **STUN** just tells a peer its own public address — one small exchange, no traffic
+through it — and free public servers do exist and are widely used, Google's among them. Depending on an
+unofficial endpoint with no SLA for a product is its own risk, but the cost is genuinely near zero.
+**TURN** is the opposite: it relays the actual traffic, so offering it free means paying for strangers'
+bandwidth, and consequently production-grade free TURN essentially does not exist. Development-tier free
+services exist; commercial or self-hosted `coturn` is what production means, and either way it is a
+bandwidth bill.
+
+How often it is needed is the number the free tier's unit cost depends on. Reported figures cluster around
+**10–20% of connections requiring TURN**, with roughly 8–10% attributed specifically to symmetric NAT and
+restrictive firewalls, and 85–90% of connections succeeding without it. Those are consumer-mix figures, and
+the mix here is unusually hostile: **phone-to-phone across two mobile carriers is the case most likely to
+fail**, and it is also the case a task-list-on-your-phone product will hit most. So the honest position is
+that the free tier's cost hinges on a success rate that is measurable but not yet measured, and it should be
+measured on real devices on real networks before it is priced.
+
+Note also that this puts WebRTC back on the table for the _transport_ after §3.4 dismissed it for cross-tab
+use — different job, different verdict.
 
 **D-17. What does "reasonably secure" mean, concretely enough to test?** _(Open, and the largest branch
 in the document — but with one constraint now recorded and one path narrowed.)_
@@ -1053,6 +1170,35 @@ key material, **an XSS is a key compromise**, not merely a stolen session — wh
 certificate hygiene, defence-in-depth against injection, sandboxing anything user-generated, and cookie
 attributes from good practice to load-bearing. The relevant OWASP items should be enumerated as part of
 the bar rather than assumed.
+
+#### 5.7.1 The shape the existing art converges on
+
+Written more directively than the rest of this document, at request: the author's stated position is that
+their imagination is not authoritative for cryptographic design, which makes a menu of options the wrong
+output here. So this is the shape that Keyhive, `@localfirst/auth` and the passkey ecosystem independently
+arrive at, with each piece's job named. **It needs review by someone who does this professionally before
+any of it is built** — the value below is in knowing what to ask them about, not in being right.
+
+| Piece                                              | Its job                                                              |
+| -------------------------------------------------- | -------------------------------------------------------------------- |
+| A signing keypair per device, non-extractable      | identifies the device; signs membership operations                   |
+| Out-of-band pairing with an invitation proof       | admits a device without a server (`@localfirst/auth`'s Seitan token) |
+| A signed chain of membership operations            | who is a member, derivable by anyone, no server needed               |
+| A symmetric content key, wrapped per member device | encrypts the document; rotation on removal is D-20                   |
+| A passkey with the PRF extension, at rung 3        | gives the account a hardware-held root the app never mints           |
+| A stateless attenuable bearer token                | lets the relay decide who connects without keeping session state     |
+
+Two notes on that last row, because it is the one that connects to the cost model. Attenuable capability
+tokens — fly.io's macaroons are the well-known instance — carry their own caveats and are verified by
+signature rather than by lookup, which is exactly the "relay decides who connects with no server state"
+shape D-16 wants. The unavoidable catch is the one already recorded in §2.3: statelessness and
+revocation-before-expiry are in tension, so short expiry plus refresh is the usual landing place.
+
+**And one thing not to build: forward secrecy.** Signal's ratcheting exists so that compromising a
+long-lived key does not decrypt past messages, which matters when the messages exist only in transit. Here
+the plaintext sits in IndexedDB on every device by design — that is what local-first means — so ratcheting
+would protect the wire while the disk stays open. It is real work spent on the wrong threat. Worth knowing
+so it can be ruled out deliberately rather than worried about indefinitely.
 
 **D-18. Are devices enumerable and revocable from a UI?**
 
@@ -1198,18 +1344,19 @@ The three differ by two screens. That is roughly the whole budget this document 
 | **D-11** | What is a room — content, or permission?                       | **Decided in principle** | Permission. One user, one document; a device may host several users; "room" stays off the architecture                                     |
 | **D-12** | What happens when local identity is lost?                      | **Decided in principle** | The state is illegitimate. Never-synced may re-mint; ever-synced must not. The roster is the evidence                                      |
 | **D-13** | Is there a deliberate reset?                                   | **Decided**              | Yes. Whether it is sign-out, and what it clears, open                                                                                      |
-| **D-14** | May the relay decide who connects? What is written?            | Open                     | Multi-tenancy stays cooperative-only and undeclared                                                                                        |
+| **D-14** | May the relay decide who connects? What is written?            | **Decided in part**      | At least "partly"; "no" is ruled out. Whether it reaches content authority is open                                                         |
 | **D-15** | Within a device, is undo per tab or shared?                    | **Decided**              | Per tab                                                                                                                                    |
 | **D-16** | Can cross-device sync be cheap enough to be free?              | **Deferred on purpose**  | Paid boundary is server-intermediated sync. Ship both tiers, measure. TURN is the cost risk                                                |
 | **D-17** | What does "reasonably secure" mean, concretely?                | Open — research          | Cannot tell whether accounts are optional or mandatory                                                                                     |
 | **D-18** | Are devices enumerable and revocable from a UI?                | **Decided**              | Yes. The unit is the device. Gates sync, not startup. Freeze and offer options; no automatic wipe                                          |
 | **D-19** | How does a device find the other devices that are yours?       | **Decided**              | Build both: pairing for rung 2, sign-in for rung 3. Pairing derives the room, sign-in assigns it                                           |
-| **D-20** | How is a member actually excluded?                             | Open                     | Not at all — and local refusal does not work (§5.2)                                                                                        |
+| **D-20** | How is a member actually excluded?                             | **Decided**              | Content encryption with key rotation. Keeps the relay dumb; key management is the cost                                                     |
 | **D-21** | What does "the active caret" mean — local, or globally recent? | **Decided**              | Locally active. No recency modelling; a design check that it reads as distinct                                                             |
 | **D-22** | Does merged content show its provenance?                       | Open                     | No. Cards could today; document text needs deferred attribution                                                                            |
 | **D-23** | Does pairing alone trigger the name prompt?                    | Open                     | A name is asked for at a moment that may have no audience                                                                                  |
-| **D-24** | How does a paired group become an account?                     | Open — narrowed          | Coexistence ruled out by D-17; adopt-the-group is the only safe branch                                                                     |
+| **D-24** | How does a paired group become an account?                     | **Decided**              | The account adopts the group. Requires an account model that accepts a prior identity                                                      |
 | **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**              | Yes, prominently. Warn about the property, not the context. Offer the grant, else route to sync                                            |
+| **D-26** | Revocation learned late, history already diverged?             | Open — hardest           | Undefined. Where the free tier, revocation, and one-user-one-document collide                                                              |
 
 Suggested order for the remainder, on dependency rather than importance. Note how much of it is now one
 cluster: nearly everything open is a consequence of not knowing what a credential is.
@@ -1219,18 +1366,20 @@ cluster: nearly everything open is a consequence of not knowing what a credentia
    §5.3's, that rung 2 buys convenience while rung 3 buys durability, which follows from pairing needing
    both devices present. Both are small confirmations with large blast radii, and everything below
    assumes them.
-2. **D-17**, then **D-14** — what "secure enough" means, and what the relay may decide. D-17 first now:
-   it is the only remaining question that can collapse the ladder, and D-19 has made that collapse
-   expensive, since it would strand the pairing flow that rung 2 is made of. Its two concrete next steps
-   are evaluating WebAuthn PRF as the key root and writing the bar down as something checkable.
-3. **D-20** — exclusion. Fork or encrypt, and the encryption branch is the one that keeps the relay dumb,
-   which makes it the branch most compatible with everything already decided.
-4. **D-24** — narrowed to one safe answer by D-17's trust-root constraint, so this is now a thing to not
-   get wrong rather than a thing to decide. Worth a written note before the account model is built,
-   because the unsafe branch is the one that falls out of an ordinary implementation.
-5. **D-22**, **D-23**, D-6's staleness interval, and the open parts of D-18 — the options on a revoked
-   device, whether cleanup is automatic, and whether "sign out" is honestly labelled. UI-shaped, and none
-   of them block anything.
+2. **D-26** — the late-revocation divergence. Now the hardest open question, and the one where three things
+   already decided pull against each other: the free tier is peer-to-peer, which is what creates the case;
+   revocation is wanted precisely for the lost-device scenario the case arises from; and D-11 says one user
+   has one document, which "keep both" contradicts. One of the three gives, and it is better to choose
+   which than to discover it.
+3. **D-17** — what "secure enough" means. Two concrete next steps rather than an open question: evaluate
+   WebAuthn PRF as the key root (§5.7.1), and get the shape in §5.7.1 reviewed by someone who does this
+   professionally. It remains the only question that can collapse the ladder, and D-19 has made that
+   collapse expensive since it would strand the pairing flow rung 2 is made of.
+4. **The second half of D-14** — whether the relay ever gains authority over content. Less urgent now:
+   D-20 means exclusion no longer depends on it.
+5. **D-22**, **D-23**, D-6's staleness interval, D-20's awareness-leakage question, and the open parts of
+   D-18 — the options on a revoked device, whether cleanup is automatic, and whether "sign out" is honestly
+   labelled. None of them block anything.
 
 **Deliberately not on this list:** D-16, deferred until there are two shipped tiers and real unit costs to
 look at. That deferral is safe because the sequencing charges for the expensive thing from the start.
