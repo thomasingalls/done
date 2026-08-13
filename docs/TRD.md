@@ -342,8 +342,16 @@ already the two-cursor case.
 "who created this." The master list is _not_ attributed per character: Yjs stores no author
 per item, so it would require a parallel mark structure maintained alongside every text edit
 — real cost on the keystroke path, for a question nobody asks until an agent is actually
-editing prose. Deferred (PRD §14 Q2). Note that transaction origins are still recorded in the
-update stream regardless, so coarse attribution is recoverable if it ever matters.
+editing prose. Deferred (PRD §14 Q2).
+
+**Nothing about attribution is recoverable from an update stream, and an earlier draft of this
+section said otherwise.** A transaction origin is an argument the _receiver_ passes to
+`Y.applyUpdate(doc, update, origin)`; it is a local property of the transaction and is never
+encoded in the update bytes. What the bytes do carry is the writing document's Yjs client id,
+which is random per `Y.Doc` instance — per tab, per page load — so it identifies neither a device
+nor an actor durably. `Card.author` is therefore the only attribution that exists, it is an
+ordinary field any writer can set to any value, and making it trustworthy needs authenticated
+writes rather than better forensics. See `docs/sessions.md` D-27.
 
 ### 4.9 Section order, and where an arrival lands
 

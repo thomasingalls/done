@@ -1,6 +1,7 @@
 # done — Sessions and Identity: Product Requirements
 
-**Status:** Draft v8 — **25 of 26 decisions recorded**. Only D-17 remains open. See §8.
+**Status:** Draft v9 — **24 of 27 recorded dispositions**; four architecture-blocking questions open
+(D-12 mechanism, D-14 second half, D-17, D-27). **Not ready to promote into the PRD** — see §8.2.
 **Date:** 2026-08-10
 **Audience:** the author, deciding. Not an implementation plan.
 **Amends:** PRD §11 (Actors), PRD §12 (non-goals) — see §9.
@@ -60,29 +61,42 @@ doing now anyway:
 
 ## 1. The levels
 
-| Level         | Answers                                      | Example                        | Exists today               |
-| ------------- | -------------------------------------------- | ------------------------------ | -------------------------- |
-| **Account**   | who you are to the service                   | you, with billing and settings | **No** — the missing level |
-| **Workspace** | which content, and who may reach it (D-11)   | your document and its members  | As a settings field only   |
-| **Actor**     | one account's writing identity on one device | you-on-your-phone; the app     | Yes, and misnamed (§1.1)   |
-| **Device**    | which install                                | your phone                     | Yes                        |
-| **Session**   | which tab, this run of it                    | the tab you are looking at     | No                         |
+| Level         | Answers                                                       | Example                       | Exists today             |
+| ------------- | ------------------------------------------------------------- | ----------------------------- | ------------------------ |
+| **Account**   | your _optional_ relationship with the service                 | billing, contact, recovery    | No                       |
+| **Member**    | who participates in a workspace — a **principal** or an agent | you; an agent you have added  | **No** — the missing one |
+| **Actor**     | one member writing through one device                         | you-on-your-phone; the app    | Yes, and misnamed (§1.1) |
+| **Device**    | which install                                                 | your phone                    | Yes                      |
+| **Session**   | which tab, this run of it                                     | the tab you are looking at    | No                       |
+| **Workspace** | one document, plus who may reach it (D-11)                    | your document and its members | As a settings field only |
 
-Draft v1 and v2 put the missing level at the bottom. **It is at the top.** Sessions were the visible
-gap because multi-tab needed them, but the level that explains the rest — grouping your devices,
-finding your own peers, two people on one laptop — is the one above actor, and it does not exist
-because nothing in the app knows what an account is.
+Two earlier drafts put the missing level in the wrong place. v1 and v2 put it at the bottom (session);
+v3 through v8 put it at the top and called it the **account**. The second was wrong in a way that
+contradicted a decision already made.
 
-**An account is more than the workspace it owns.** An earlier draft collapsed account, workspace and
-document into one thing, and that was wrong on the account side. A workspace is one document plus its
-member list; an account owns one of those _and_ carries a pile of things that have nothing to do with
-any document — billing, an email address to be contacted at, service settings, the device list (D-18),
-logs, backups, and more that will surface when it is actually designed. Keeping the two words separate
-is what stops that list from being quietly precluded by a tidy identity.
+### 1.0 The member level, and why an account cannot do its job
 
-**One account, one workspace is a current product decision, not an identity.** It is what the product
-spec says today; the model should not be built so that a second workspace is impossible, only so that
-none is offered.
+**An account cannot be the thing that groups your devices, because rung 2 groups them without one.**
+D-19 builds a pairing flow that needs no account, and D-2 says every list shows one entry per person in
+a shared colour — so at rung 2 there is already a person grouping several actors, with no account to
+hang the grouping on. An earlier draft asserted the account supplied "anything shown to a human as
+you", which contradicted the rung it had already agreed to build.
+
+So the grouping level is its own thing, and it comes before the account:
+
+- **Principal** — a human identity that groups its own actors. Exists from the moment a second device is
+  paired, with no account and no server involved. This is what "you" means in any list, and what a
+  caret's colour identifies.
+- **Member** — a participant in a workspace: either a **principal** or an **agent**. Membership attaches
+  here and deliberately not to the account, so adding an agent to your workspace does not require
+  inventing an account for the agent.
+- **Account** — _optional_, and about the service rather than the document: billing, an address to be
+  contacted at, recovery, service settings, logs, backups. **Account creation binds an existing
+  principal to a service account**, which is what makes D-24's "the account adopts the group" precise
+  rather than aspirational: there is already a principal there to adopt.
+
+The code half-anticipates this — `ActorKind` is already `human | agent | system`, so kinds of writer
+exist. What is missing is the level _above_ actor that says several actors are the same writer.
 
 ### 1.0 A word for it: workspace, not room
 
@@ -108,25 +122,26 @@ settings field — because pretending otherwise would misdescribe the thing bein
 
 The PRD's "actor" means "anything that can write" — you, the app, later an agent. The code's actor is
 narrower than that and nobody noticed: it is minted per browser profile and never travels, so what it
-identifies is **one account's writing identity on one device.** Two devices, two of them, permanently
-(§2.2a).
+identifies is **one member writing through one device.** Two devices, two of them, permanently (§2.2a).
 
 D-4 decides that this is correct and should stay. Which means the naming problem is real: "actor" is
 being asked to carry both "who is writing" and "which install is writing", and those are different
-questions with different answers. Given D-4, the useful statements are:
+questions with different answers.
 
-- **For humans, actor and device are one thing.** One per account per install. Calling them two levels
-  is bookkeeping, not a distinction anyone can observe. The two separate UUIDs in
-  `localStorage` — `done.actor` and `done.device` — are one fact stored twice.
-- **For non-humans they come apart**, which is why both levels survive. The system actor is a constant
-  (`SYSTEM_ACTOR_ID = 'system'`) shared by every device, and an agent would be an actor with no device
-  at all.
-- **The level that groups them is the account**, and the thing that supplies it is authentication.
-  Which is why D-4 turns out to be downstream of auth, exactly as suspected.
+**Actor and device are not the same fact, and an earlier draft was wrong to say so.** It claimed that
+for humans the two are "one fact stored twice" and the UUIDs could be merged. D-11 forbids it: a device
+may host several logged-in principals, so **`actor = member × device`**, and one install can carry
+several actors. The 1:1 that holds today holds only because there is exactly one member per install
+today. **Do not merge `done.actor` and `done.device`** — the apparent redundancy is the model already
+being shaped for something the product intends.
 
-A working name for the human case would help, since "actor" is taken and "device" is the install
-rather than the identity on it. This document uses **actor** throughout and flags where it means the
-per-install kind; naming it properly is worth doing before it reaches the UI.
+They come apart for non-humans too, which is the other reason both levels survive: the system actor is
+a constant (`SYSTEM_ACTOR_ID = 'system'`) shared by every device, and an agent may have no device at
+all.
+
+A working name for the human per-install case would still help, since "actor" is taken and "device" is
+the install rather than the identity on it. This document uses **actor** throughout and flags where it
+means the per-install kind; naming it properly is worth doing before it reaches the UI.
 
 Each level is the right answer to different questions, and picking the wrong level is the whole
 category of bug this document is about:
@@ -575,11 +590,11 @@ a flow that does not exist yet. Options, all of which assume something about the
 **Why the ladder requires both, spelled out**, because this is what makes its rungs functional rather
 than decorative:
 
-| Rung             | Discovery mechanism | What it buys                                   |
-| ---------------- | ------------------- | ---------------------------------------------- |
-| **1. Generated** | none                | one device, local only                         |
-| **2. Named**     | **pairing**         | your devices find each other, with no account  |
-| **3. Account**   | **sign-in**         | the same, plus everything an account can carry |
+| Rung           | Discovery mechanism | What it buys                                   |
+| -------------- | ------------------- | ---------------------------------------------- |
+| **1. Local**   | none                | one device, local only                         |
+| **2. Paired**  | **pairing**         | your devices find each other, with no account  |
+| **3. Account** | **sign-in**         | the same, plus everything an account can carry |
 
 Without pairing, rung 2 cannot exist: cross-device sync would require an account, which collapses the
 ladder to "local or signed in" — the shape D-17 threatens as a fallback and which should not arrive by
@@ -791,10 +806,29 @@ already synced keeps their copy forever.** Removal governs the future, never the
 >
 > - **Free:** sanction A's lineage, discard B's divergence, **tell the user exactly what happened and why**,
 >   and offer the paid tier as the thing that prevents it.
-> - **Paid:** prevented by construction. Server-mediated sync means the revoked device cannot push, so the
->   divergence never forms.
+> - **Paid:** prevented by construction, **from the moment the server has committed the revocation** — see
+>   the state machine below, which is the part "by construction" was hiding.
 >
 > Filtered replay is not built. It is interesting and it is unnecessary.
+
+**The paid guarantee needs a commit point, and the scenario names it: "A revokes C, _then goes offline_."**
+If A was offline when it revoked, the server has not heard, and C can still push. So "revoked" cannot mean
+"the owner pressed the button". Three states, and only the middle one is the guarantee:
+
+| State                               | What is true                                                             | What the UI may say               |
+| ----------------------------------- | ------------------------------------------------------------------------ | --------------------------------- |
+| **requested**                       | recorded locally; the server may not know; C can still push              | "Pending — not yet active"        |
+| **committed** (server, key rotated) | C cannot push; no new divergence can form from here                      | "Revoked"                         |
+| **acknowledged** by every device    | no remaining device is still accepting C; existing divergence is settled | "Revoked, all devices up to date" |
+
+Only **committed** may be presented as revoked, and a request that has not reached the server has to say
+that it is pending. This supersedes the acknowledgement display sketched below: acknowledgement is the third
+state, not the guarantee.
+
+**And the guarantee has a bypass condition worth stating.** It holds only if paid devices have no direct
+peer path that routes around server enforcement. If the paid tier keeps peer-to-peer sync for speed while
+relying on the server for revocation, the hole reopens exactly where it was closed — so either enforcement
+lives on every path, or the paid tier's sync is server-mediated in fact and not merely by default.
 
 This is the fourth time the free/paid boundary has landed on durability, and at this point that is the
 organising principle rather than a coincidence (§5.1.1). The case is only hard if the goal is to engineer
@@ -1006,24 +1040,50 @@ The two live readings differ in one word: whether a room is **content** or **per
 Those three constraints do more work than they look like they do, and one consequence is worth confirming
 before it gets built on.
 
-**The constraints nearly determine the model.** If the boundary is permission, and one user has exactly
-one document, then it cannot be a container of many users' documents without contradicting the second
-constraint. The reading that satisfies all three: **a workspace is one document plus the list of who may
-reach it.** Sharing means adding a member to _your_ workspace, not joining a shared pool. Two people who
-each share with the other have two workspaces, and each keeps their own Done list — which matches the
-app's premise that this is one person's workflow rather than a team's.
+**A workspace is one document plus the list of who may reach it.** So content does not become a level of
+its own — a workspace already implies exactly one document, and there is nothing left for a separate
+content level to distinguish.
 
-So **content does not become a level of its own** — a workspace already implies exactly one document, so
-there is nothing left for a separate content level to distinguish.
+#### 5.4.1 Architectural capacity versus revealed surface
 
-**But the collapse stops there, and an earlier draft took it one step too far.** Workspace and document
-are one thing; **the account is not.** An account owns a workspace and also carries billing, contact
-details, service settings, its device list, logs and backups — none of which belong to any document, and
-all of which would be quietly precluded by treating account and workspace as the same object. §1 keeps
-them as two levels for exactly that reason.
+The phrase "one logged-in user has exactly one document" read like a system invariant, and as an
+invariant it is **incoherent with sharing**: if Alice owns a workspace and joins Bob's, Alice reaches two
+documents, and mutual sharing produces two workspaces by construction. That contradiction is real, and it
+is resolved by separating two things the sentence was conflating.
 
-And **one account, one workspace is what the product spec says today, not a property of the model.** The
-1:1 should not be built as an identity; a second workspace should be unoffered rather than impossible.
+**Current product surface.** A principal is presented with exactly one home workspace, containing exactly
+one document. There is no workspace picker, no creation flow, no workspace management UI. This is
+deliberate and it is what Rule 1 is about.
+
+**Architectural model.** A workspace contains exactly one document; a member may own or belong to several
+workspaces; the client may hold several locally while showing one. The product reveals only the home
+workspace rather than making anything else impossible.
+
+The cardinalities, written down so they stop being inferred:
+
+| Relationship             | Today                  | Architecturally          |
+| ------------------------ | ---------------------- | ------------------------ |
+| account → principal      | 1 : 1                  | 1 : 1                    |
+| account → home workspace | at most 1              | at most 1                |
+| member → workspace       | 1 (the home one)       | **many**                 |
+| workspace → document     | 1                      | 1                        |
+| workspace → member       | 1 (later: plus agents) | **many**                 |
+| device → member          | 1                      | **many** (shared laptop) |
+| client → workspace shown | 1                      | 1, while storing several |
+
+**And membership is scoped deliberately, not by omission:**
+
+- **Currently in scope:** the human owner, and later **agent members** with read/edit capabilities that
+  are specified separately. Agents are why membership attaches to the member level rather than to the
+  account (§1.0) — an agent needs to be a member without being a customer.
+- **Not currently planned:** another human joining the workspace.
+- **Future human sharing is a separate document.** It exposes multi-workspace navigation, invitations,
+  permissions, and the accountless-versus-account membership question, and none of that should be smuggled
+  in through a cardinality. It is a distinct product decision, taken deliberately or not at all.
+
+That distinction is the whole resolution: **capacity in the model, restraint in the interface.** Building
+the 1:1 as an invariant would make human sharing a rewrite; revealing only the home workspace makes it a
+feature.
 
 Also from §2.2b: the local database would be keyed by _(identity, document)_ rather than by room, which
 is forced by the second and third constraints together — two users on one browser profile need two local
@@ -1062,10 +1122,22 @@ Whatever D-13 turns out to be, it is atomic with respect to these two facts or i
   one, and what it should do instead — refuse to write, offer to re-pair, quarantine the document — is
   the part still open.
 
-**And the app can tell which case it is in, from the document rather than from local storage.** The actor
-roster lives in `meta[actor:<id>]` and syncs, so it survives localStorage loss. If local identity is
-absent but the roster holds human actors, this document has a history that predates the identity now
-asking to write. That is the evidence, it is already stored, and it needs no new mechanism.
+**The test this document proposed for telling those apart does not work, and is withdrawn.** The claim was
+that a surviving human roster entry proves the document predates the missing identity and has been shared.
+It does not: `resolveActor` writes a `kind: 'human'` roster entry on **every ordinary first run**, before
+any sync exists, so a never-synced document already satisfies the test. Nor does counting entries rescue
+it — two storage clears on a purely local document leave two orphaned human entries, which is
+indistinguishable from two devices having synced.
+
+The roster is mutable, unauthenticated and written by genesis, so it cannot be evidence of admission to
+anything. What the policy needs is a **monotonic, signed membership fact** — a workspace or membership
+generation that only advances when a member is admitted — which is the same epoch D-20's key rotation
+needs and the same one D-26's revocation ordering needs. One mechanism, three uses.
+
+**So D-12's policy shape stands and its mechanism is open.** Never-shared may re-mint silently;
+ever-shared must not; and there is currently no sound way to tell which is which. That makes D-12 open in
+substance rather than decided, and it is now blocked on the membership epoch rather than on a product
+choice.
 
 Related but separate, and now its own decision: whether the app tells the user that durability is not
 guaranteed. That is **D-25**.
@@ -1166,13 +1238,33 @@ exclusion is enforced by the key, not by the door. So relay-level refusal become
 than the mechanism**: still worth having, because it saves bandwidth and closes the write channel, but no
 longer the thing exclusion depends on. That is the strongest practical reason D-20's third option matters.
 
-**On where defence against a headstrong agent belongs — the same place, and this is the general answer.**
-In a CRDT with an opaque relay, nothing can validate a write, so there is no version of this that works by
-inspecting what an agent wrote (PRD §11.4 says so about permissions and the argument is unchanged). What is
-left is exactly one lever: **you cannot prevent a writer who holds the key; you can only control who holds
-the key.** So impersonation defence is key distribution — an agent gets its own device-level identity, its
-writes are attributable to it, and revoking it means rotating the key it no longer receives. Everything in
-this section converges on the same mechanism, which is a good sign.
+**On where defence against a headstrong agent belongs — key distribution is necessary and not sufficient,
+and the earlier draft stopped a step short.** "You cannot prevent a writer who holds the key; you can only
+control who holds the key" is true of _confidentiality_ and of _exclusion_. It is not true of
+**attribution**, and the difference matters most in exactly the case that motivated the question.
+
+A **current member** holds the content key. Nothing about holding it stops that member producing perfectly
+valid ciphertext that edits another member's roster entry, or writes a card claiming someone else's
+`Card.author`. Signing _membership operations_ authenticates who is in the workspace; it says nothing about
+who authored a given mutation. So an agent member — precisely the writer the concern is about — can
+impersonate its owner inside the workspace, and rotation does not touch that.
+
+That gap needs an invariant, and it is a product promise rather than an implementation detail:
+
+> **Every accepted mutation is authenticated to a non-revoked device, and claimed authorship must match
+> the authenticated signer.**
+
+Which implies signed update envelopes or authenticated operations — a signature over each update, verified
+before it is applied — not only key rotation. **D-27** is the product question underneath it.
+
+**And one factual correction that this depends on.** TRD §4.8 currently says "transaction origins are still
+recorded in the update stream regardless, so coarse attribution is recoverable if it ever matters." That is
+not so. `Y.applyUpdate(doc, update, origin)` takes the origin as an argument supplied by the _receiver_;
+it is a local property of the transaction and is not encoded in the update bytes. What the bytes do carry
+is the writing document's Yjs **client id**, which is random per `Y.Doc` instance — per tab, per page
+load — so it identifies neither a device nor an actor durably. Nothing about attribution can be recovered
+from an update stream, and a design that assumed otherwise would be assuming a guarantee that does not
+exist (§9).
 
 **And on the Red Queen worry** — that this is complexity insisted upon where it could be opted out of. Worth
 recording the counter-argument rather than only the instinct: the opt-out version is not "less security",
@@ -1184,6 +1276,30 @@ the design that costs less; it is the design that has already made a decision.
 Everything else in this document can be decided before the remaining half of D-14, provided each choice
 records which way it leans: D-4's roster picker, for instance, is fine under "partly" and a hole under
 "yes".
+
+**D-27. Is attribution authenticated, or advisory?** _(Open. New, and the one thing PRD §11.4 does not
+already cover.)_
+
+Today it is **advisory and undefended**: `Card.author` is a field, any writer can set it to any value, and
+`meta[actor:<id>]` is an ordinary map entry any member can overwrite. That is fine while the only writer is
+you. It stops being fine at the first agent member, because "the agent did this, not me" and "I did this,
+not the agent" both become claims the document cannot substantiate.
+
+| Option                       | The promise                                                     | Cost                                                                                                                                 |
+| ---------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Advisory** (today)         | "written by" is a label, not a fact — and the UI says so        | None, but any agent accountability rests on a value anyone can forge                                                                 |
+| **Authenticated writes**     | every update is signed; unsigned or badly signed is not applied | A signature per update, verified on receipt, plus key management D-20 needs anyway                                                   |
+| **Authenticated authorship** | the above, _plus_ claimed author must equal the signer          | Also requires inspecting what an update touched, or moving attribution out of the document and deriving it from the envelope instead |
+
+The third is the only one that makes the invariant true, and it is the expensive one — which is why this is
+a product decision rather than an implementation detail. The honest interim position is the first, **stated
+out loud**: if attribution is a label rather than evidence, the interface must not present it as evidence,
+and PRD §11.3's "cards record their author" needs the same qualifier PRD §11.4 already applies to
+permissions.
+
+One thing this gap does _not_ touch: undo. Undo is scoped by transaction origin, which is local and
+therefore trustworthy on the device that made it (D-7, D-15). It is cross-member attribution that is
+unsupported, not within-device history.
 
 ### 5.7 The gates — D-16, D-17, D-18
 
@@ -1270,9 +1386,18 @@ keystore than a phone's. Two mitigations are real:
 - **Let the platform mint it instead.** The WebAuthn **PRF extension** derives a deterministic 32-byte
   secret bound to a passkey, usable directly as symmetric key material via WebCrypto — so the authenticator
   holds the root and the web app never invents one. Support has arrived: Safari 18+, Chrome 132+, Firefox
-  139, with iCloud Keychain on macOS 15 and the earlier iOS cross-device bugs fixed in 18.4. The known gap
-  is that Apple does not pass extension data to external roaming authenticators. This is the most promising
-  answer to "I do not want to mint secrets in a web app" and it should be evaluated properly.
+  139, with iCloud Keychain on macOS 15 and the earlier iOS cross-device bugs fixed in 18.4. Apple does not
+  pass extension data to external roaming authenticators.
+
+  **Two caveats that are requirements rather than footnotes.** PRF is an **optional** extension, so an
+  authenticator may simply not offer it — which means a design resting on it needs a defined path for
+  authenticators that do not support it, not a support matrix and a hope. And the derived secret is returned
+  **to the client**, which is what makes it usable and also what makes **recovery a first-class problem**:
+  if the content key descends from a passkey and the passkey is gone, the encrypted data is gone with it.
+  Combined with D-20's encryption, "lost passkey" becomes indistinguishable from "evicted storage" as far as
+  the user's data is concerned — which is a durability claim D-25 makes promises about, so the two have to
+  be answered together. Escrow, a recovery code, or a second enrolled authenticator: something has to be
+  chosen, and choosing nothing chooses data loss.
 
 **And the basics are in scope for this decision, not adjacent to it.** In a design where the client holds
 key material, **an XSS is a key compromise**, not merely a stolen session — which is what promotes CSP,
@@ -1438,9 +1563,15 @@ The three differ by two screens. That is roughly the whole budget this document 
 
 ## 8. Decision register
 
+**These are recorded dispositions, not closed decisions.** An earlier draft counted them as "25 of 26
+decided", and that overstated closure in a way review caught: several rows marked Decided carry live
+sub-questions in their bodies, and two of them are architecture-blocking rather than cosmetic. So the
+column below says what has been settled and the next table separates what still blocks work from what
+does not.
+
 | ID       | Question                                                       | Status                   | Answer, or what happens without one                                                                                                        |
 | -------- | -------------------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| **D-1**  | Does the user tell the app who they are, and when?             | **Decided**              | Generated by default; a name when opting into backup or cross-device sync (§5.1.1)                                                         |
+| **D-1**  | Does the user tell the app who they are, and when?             | **Decided**              | Generated by default; a name at account creation only, per D-23                                                                            |
 | **D-2**  | Is identity per person, per device, or a labelled pair?        | **Decided**              | Per device internally; per person in every list. Device never disclosed or reflected                                                       |
 | **D-3**  | Are device names worth improving?                              | **Decided in principle** | Yes. Mechanism open — and it does not need a fingerprint                                                                                   |
 | **D-4**  | Can a new device claim an existing actor?                      | **Decided**              | No. A new device is always a new actor; the real question was D-19                                                                         |
@@ -1451,7 +1582,7 @@ The three differ by two screens. That is roughly the whole budget this document 
 | **D-9**  | Does the app ever show a tab count?                            | **Decided**              | Never, save a high-bar exception that must be justified in writing                                                                         |
 | **D-10** | Is sync configuration per device or per document?              | **Decided in principle** | Rule 1: the user never manages workspaces. Mechanism open; today's three fields are ruled out                                              |
 | **D-11** | What is a workspace — content, or permission?                  | **Decided in principle** | Permission. One user, one document; a device may host several users; "room" stays off the architecture                                     |
-| **D-12** | What happens when local identity is lost?                      | **Decided in principle** | The state is illegitimate. Never-synced may re-mint; ever-synced must not. The roster is the evidence                                      |
+| **D-12** | What happens when local identity is lost?                      | **Open in substance**    | Policy shape agreed; the roster test withdrawn as unsound. Blocked on a signed membership epoch                                            |
 | **D-13** | Is there a deliberate reset?                                   | **Decided**              | Yes. Whether it is sign-out, and what it clears, open                                                                                      |
 | **D-14** | May the relay decide who connects? What is written?            | **Decided in part**      | At least "partly"; "no" is ruled out. Whether it reaches content authority is open                                                         |
 | **D-15** | Within a device, is undo per tab or shared?                    | **Decided**              | Per tab                                                                                                                                    |
@@ -1466,51 +1597,91 @@ The three differ by two screens. That is roughly the whole budget this document 
 | **D-24** | How does a paired group become an account?                     | **Decided**              | The account adopts the group. Requires an account model that accepts a prior identity                                                      |
 | **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**              | Yes, prominently. Warn about the property, not the context. Offer the grant, else route to sync                                            |
 | **D-26** | Revocation learned late, history already diverged?             | **Decided**              | Free: sanction, discard, explain, offer the upgrade. Paid: prevented by construction. No filtered replay                                   |
+| **D-27** | Is attribution authenticated, or advisory?                     | **Open — blocking**      | Advisory and undefended today. Matters at the first agent member; the fix is signed updates                                                |
 
-**One decision is open, and it is the one that cannot be answered by preference.**
+### 8.1 What blocks work, and what does not
 
-1. **D-17 — what "secure enough" means.** Two concrete next steps rather than an open-ended question:
-   evaluate the WebAuthn PRF extension as the key root, and get §5.7.1's shape reviewed by someone who does
-   this professionally. It is still the only question that can collapse the ladder, and D-19 has made that
-   collapse expensive — it would strand the pairing flow that rung 2 is made of.
+Review's fair complaint was that "only D-17 is open" flattened a real distinction. Separating them:
 
-**Both derived readings have now been confirmed and corrected**, and the corrections are worth keeping
-visible because each removed an over-reach:
+**Architecture-blocking — a design that ignores these has to be redone:**
 
-- **A workspace is one document plus its member list — confirmed.** But the collapse stopped one step short
-  of where an earlier draft put it: the **account is its own level**, carrying billing, contact, settings,
-  the device list, logs and backups that belong to no document. And one-account-one-workspace is a current
-  product decision rather than a property of the model.
+| Item                                             | Why it blocks                                                                                                     |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| **D-17** — what "secure enough" means            | Can still collapse the ladder to accounts-only. Now with PRF's optionality and key recovery as named sub-problems |
+| **D-27** — authenticated or advisory attribution | Decides whether signed envelopes exist at all, which is a transport-shaped commitment                             |
+| **D-12's mechanism** — the membership epoch      | The roster test is withdrawn; a signed monotonic generation is needed, and D-20 and D-26 need the same one        |
+| **D-14's second half** — content authority       | Less urgent since D-20, but still shapes what the relay is                                                        |
+
+**Live sub-questions inside recorded dispositions — worth doing, block nothing:**
+
+D-13's destructive semantics (what a reset clears, whether it equals sign-out) · D-18's revoked-device
+options and cleanup policy · D-16, deferred until two tiers have shipped and unit costs are real · D-6's
+staleness interval · D-3's disambiguation mechanism · D-20's awareness-leakage question · D-21's design
+check · D-22 and D-23's interface details.
+
+**One mechanism now serves three decisions**, which is the most useful thing to fall out of this round: a
+**signed, monotonic membership epoch** is what D-12 needs to tell genesis from admission, what D-20's key
+rotation rotates against, and what D-26's commit point commits. Designing it once, deliberately, is
+cheaper than discovering it three times.
+
+**Suggested order:**
+
+1. **The membership epoch**, because three decisions are waiting on the same object.
+2. **D-27**, because it decides whether updates carry signatures — and if they do, the epoch and the
+   envelopes are one piece of design rather than two.
+3. **D-17**, with its two concrete steps: evaluate WebAuthn PRF as the key root including the
+   unsupported-authenticator and key-recovery paths, and get §5.7.1's shape reviewed by someone who does
+   this professionally.
+4. **D-14's second half**, which by then will mostly have answered itself.
+
+**Both derived readings were confirmed, and both needed correcting first** — each had over-reached, and the
+corrections are the substance:
+
+- **A workspace is one document plus its member list — confirmed.** But the collapse ran two steps too far.
+  The **account is its own level** (billing, contact, settings, device list, logs, backups — none of it
+  document-shaped), and the **member level sits below it**, because rung 2 groups devices before any account
+  exists (§1.0). One account, one workspace is a current product surface, not a property of the model
+  (§5.4.1).
 - **The rungs differ by durability and by when an account is _necessary_ — confirmed. That they also line up
-  with a price is a coincidence, not a law.** §5.1.1 now states the technical constraint and explicitly
-  disclaims the business model, which is a separate conversation with a separate answer.
+  with a price is a coincidence, not a law.** §5.1.1 states the technical constraint and disclaims the
+  business model.
 
-What remains genuinely unconfirmed is nothing structural — only D-17.
+**One number worth gathering before pricing anything:** the fraction of real device pairs that fail to
+connect directly and fall back to TURN, measured on real networks rather than estimated.
 
-**Residual sub-questions inside decided items.** None blocks anything, and none needs a meeting:
+**Unblocked:** the multi-tab work was waiting on D-8, which is decided in the direction PR #18 already
+assumed. No change is owed to that branch.
 
-- D-6's staleness interval, and D-3's mechanism for disambiguating device names.
-- D-14's second half — whether the relay ever gains authority over _content_. Much less urgent now: D-20
-  means exclusion no longer depends on it.
-- D-18's options on a revoked device, whether cleanup is automatic, and whether "sign out" is honestly
-  labelled when the credential behind it cannot be revoked.
-- D-20's awareness question: encrypt presence too, or state plainly that the relay sees who is editing when.
-- D-21's design check that the local cursor reads as deliberately distinct from remote carets.
+### 8.2 Not ready to promote, and what would make it ready
 
-**Deliberately deferred:** D-16, until there are two shipped tiers and real unit costs to look at — a
-deferral made safe by the sequencing, which charges for the expensive thing from the start. And the one
-number worth gathering before pricing anything: the fraction of real device pairs that fail to connect
-directly and fall back to TURN, measured on real networks rather than estimated.
+This document should not be folded into the PRD or treated as implementation-ready yet, and the reason is
+now specific rather than cautious: the ontology changed in this revision, two decisions were reopened, and
+one mechanism that three decisions depend on has not been designed. Three artifacts would close it:
 
-**Unblocked now:** the multi-tab work was waiting on D-8, and D-8 is decided in the direction PR #18
-already assumed. No change is owed to that branch.
+1. **The corrected ontology**, which §1 now has — account, member (principal or agent), actor, device,
+   session, workspace — with the pre-account principal as the load-bearing addition.
+2. **Explicit cardinalities**, which §5.4.1 now has, separating architectural capacity from revealed
+   surface.
+3. **A security contract**, which does not exist yet: authenticated mutations (D-27), membership epochs,
+   revocation commit semantics (D-26), and key recovery (D-17). That is the missing artifact, and it is
+   where the next round of work belongs.
+
+What should survive that round unchanged, because it has held up under three rounds of review: invisible
+workspace management (Rule 1), reads and writes never awaiting a credential, an account adopting an existing
+paired group (D-24), honest durability warnings (D-25), and removal governing future access rather than
+pretending to erase copies already made.
 
 ---
 
 ## 9. PRD amendments this would require
 
-- **§0 Terminology** — add device, session and room beside actor, since three of the four are already
-  in the code and none of them is defined in the document.
+- **§0 Terminology** — add member, principal, device, session and workspace beside actor. Six levels, of
+  which the code has two and the document defines one.
+- **TRD §4.8 — corrected in this branch.** It claimed transaction origins are recorded in the update stream
+  and coarse attribution is therefore recoverable. Origins are supplied by the receiver to `Y.applyUpdate`
+  and are never in the bytes; the client id that _is_ in the bytes is random per `Y.Doc` instance. The
+  sentence has been replaced rather than left to mislead a future design, since D-27 depends on getting it
+  right.
 - **§11.3** — "One human actor, created on first run" is true per device and false per person
   (§2.2a). Either the sentence changes or the behaviour does; today they disagree silently.
 - **§11.3** — "Undo scoped to your own changes" needs a level in it, and now has one: **per tab**, never
