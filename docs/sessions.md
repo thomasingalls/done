@@ -1,9 +1,11 @@
 # done — Sessions and Identity: Product Requirements
 
-**Status:** Draft v13 — **all 30 dispositions recorded**, revised against a review that checked every
+**Status:** Draft v13 — **all 31 dispositions recorded**, revised against a review that checked every
 claim this document makes about the codebase. Two unresolved architecture gates: **D-17** (the security
 contract, §8.1) and **D-28** (what carries the authorization protocol, §5.8.1), which the review
-promoted out of a prose implication because D-20, D-27 and the signed epoch have made it forced.
+promoted out of a prose implication because D-20, D-27 and the signed epoch have made it forced. One
+answer withdrawn: **D-16** is re-opened on where the free/paid boundary sits, with the pricing half
+split off as D-31 and still deferred.
 **Not ready to promote into the PRD** — see §8.2.
 **Date:** 2026-08-13
 **Audience:** the author, deciding. Not an implementation plan.
@@ -38,8 +40,10 @@ PRD ranks, §5 says so and names the narrowing rather than skipping the question
 is not really one because mechanics settle it, it is in §6 so we do not spend a meeting on it.
 
 Each decision carries a status: **Decided**, **Decided in principle** (the answer is settled, the
-mechanism is not), or **Open**. A decided product direction may still depend on an open mechanism or
-security gate; §8 distinguishes recorded dispositions from implementation readiness.
+mechanism is not), **Open**, **Deferred on purpose** (answerable later, and nothing is foreclosed by
+waiting), or **Re-opened** (answered once, and new evidence has withdrawn the answer). A decided product
+direction may still depend on an open mechanism or security gate; §8 distinguishes recorded dispositions
+from implementation readiness.
 
 ### 0.2 The conflict with the PRD, stated up front
 
@@ -611,9 +615,10 @@ Three constraints on that ladder, stated as constraints rather than as questions
 - **No free-then-charge.** If rung 2 cannot be sustained free, it does not ship free first. That rules
   out finding out later, which is what makes D-16 a gate rather than a preference.
 - **Cheap to host is a product requirement, not an implementation preference.** It decides whether
-  rung 2 exists at all. But "cheap" is not "zero marginal cost" — D-16 relaxes this: per-user cost that
+  rung 2 exists at all. But "cheap" is not "zero marginal cost" — D-31 relaxes this: per-user cost that
   scales with use is acceptable when the per-user quantities are tiny, and the real variable is what
-  fraction of users never cross into the paid tier.
+  fraction of users never cross into the paid tier. Note that this constraint assumes rung 2 is the free
+  tier, which is what D-16 has re-opened.
 - **Rung 3 is reachable from several directions**, and one of them is not a feature: if the security
   bar (D-17) cannot be met without real accounts, then rung 3 is not the top of a ladder, it is the
   entry requirement, and rung 1 becomes a local-only mode rather than the default path. **This is the
@@ -1564,15 +1569,27 @@ housekeeping.
 Three questions that decide the shape of the ladder in §5.1.1 and are not answerable by preference. Two
 of them are now settled enough to act on; the middle one is not, and it is the one that matters most.
 
-**D-16. Can cross-device sync be cheap enough to be free?**
+**D-16. Where does the free/paid boundary sit?** _(Re-opened. Until review this and the pricing
+question were one row, and the conflation is what let a superseded instruction sit in the register.)_
 
-> **Deliberately deferred, and the framing was too strict.** "No per-user cost that scales with use" is
-> not the requirement — a Redis-like broadcast plus a bucket of encrypted backups scales per user, and the
-> per-user quantities are tiny. The real question is what _fraction_ of users sit in the dirt-cheap tier
-> versus the tier that is already paying, and that is a business-model question answerable with data
-> rather than by argument. Build free/direct sync and paid/server-intermediated sync first, then measure.
+> **Re-opened.** The earlier answer — paid is server-intermediated sync, free is direct
+> device-to-device while both are online — is demoted to a **candidate**, and the instruction it
+> carried, "build free/direct sync and paid/server-intermediated sync first, then measure", is
+> **withdrawn**. The cost inversion below is why: as drawn, the boundary requires building a second and
+> harder transport in order to have something worse to give away, while the capability it charges for is
+> already running.
 
-**The billing boundary is now identified, and it is a good one:** the paid capability is
+**Why this had to come apart from the price question, since one row carried both.** Price is
+**downstream** of boundary — the unit economics of a tier cannot be measured before the tier's shape is
+chosen — which is exactly why deferring the pricing question (now **D-31**) was safe and why deferring
+this one was not. The old row answered the cheap question and deferred the expensive one, which is the
+wrong way round.
+
+It is also decidable now. Nothing in the argument below waits on usage data: the relay's capability is a
+fact about code that exists, and the second transport's cost is a fact about code that does not. Both
+are available today, and deciding before anything WebRTC-shaped is built is the whole of the saving.
+
+**The candidate boundary, and why it looked right:** the paid capability is
 **server-intermediated sync** — getting updates without needing another of your devices online at the
 same time. Free is direct device-to-device while both are online. Plus whatever is unavoidably charged
 by payment processing and the ordinary cost of having a business online, which has to be counted too.
@@ -1600,7 +1617,8 @@ the product side and the cost side.
 
 **And the sequencing satisfies the no-free-then-charge constraint** rather than colliding with it: shipping
 free-without-sync and paid-with-sync is not starting free and then charging, it is charging from the start
-for the part that costs money. That is what makes deferring this question safe.
+for the part that costs money. That is what makes deferring the _pricing_ question safe (D-31), and it
+says nothing about deferring the boundary.
 
 **The cost inversion, which review found, and which this decision has to answer before it is acted on.**
 The paid capability is already built. `relay/src/server.ts` says so in its own header — the process
@@ -1641,6 +1659,25 @@ waits — which is not friction that motivates an upgrade, it is friction that r
 test is a week of ordinary phone-and-laptop use converging without the user consciously performing a
 sync.** If rung 2 cannot pass it, rung 2 is a pairing _mechanism_ that rung 3 also needs, not a tier,
 and the boundary has to move regardless of what the unit costs turn out to be.
+
+**D-31. What does the free tier cost, and what fraction of users never leave it?** _(Deferred on
+purpose. Split out of D-16 in review. Not a gate — it sits in this section because its material does.)_
+
+> **Deliberately deferred, and the earlier framing was too strict.** "No per-user cost that scales with
+> use" is not the requirement — a Redis-like broadcast plus a bucket of encrypted backups scales per
+> user, and the per-user quantities are tiny. The real question is what _fraction_ of users sit in the
+> dirt-cheap tier versus the tier that is already paying, and that is a business-model question
+> answerable with data rather than by argument.
+
+**What makes deferring this one safe, unlike D-16.** Nothing is foreclosed by not knowing the answer: no
+code is written differently, no promise is made that would have to be withdrawn, and the
+no-free-then-charge constraint is satisfied by charging from the start for the part that costs money. It
+becomes answerable when there are users, and not before.
+
+**And it is conditional on D-16 in a way the single row hid.** Everything below prices the candidate
+boundary. If D-16 moves the boundary — to retention, agent members, or simply hosting — the TURN
+question stops existing rather than getting a better answer, because there is no WebRTC in that design
+at all. So this material is worth keeping and is not worth acting on until D-16 lands.
 
 **One cost risk, and the free-infrastructure question answered: STUN is free, TURN is not.**
 
@@ -2176,7 +2213,7 @@ Decided carry live UX or parameter questions in their bodies. The column below s
 | **D-13** | Is there a deliberate reset?                                   | **Decided**              | Yes. Whether it is sign-out, and what it clears, open                                                                                      |
 | **D-14** | May the relay decide who connects? What is written?            | **Decided in part**      | Server sync authenticates connections/envelopes; schema-level content authority is open and not required by D-20/D-27                      |
 | **D-15** | Within a device, is undo per tab or shared?                    | **Decided**              | Per tab                                                                                                                                    |
-| **D-16** | Can cross-device sync be cheap enough to be free?              | **Deferred on purpose**  | Paid boundary is server-intermediated sync. Ship both tiers, measure. TURN is the cost risk                                                |
+| **D-16** | Where does the free/paid boundary sit?                         | **Re-opened**            | Server-intermediated sync is now a candidate, not the answer. "Build both tiers first" is withdrawn — see the cost inversion. Decidable now |
 | **D-17** | What does "reasonably secure" mean, concretely?                | **Open — decomposed**     | Minimum claims fixed; choose rung-2 authority/key storage, account custody, recovery/PRF fallback and assurance level                      |
 | **D-18** | Are devices enumerable and revocable from a UI?                | **Decided**              | Yes. The unit is the device. Gates sync, not startup. Freeze and offer options; no automatic wipe                                          |
 | **D-19** | How does a device find the other devices that are yours?       | **Decided**              | Build both: pairing for rung 2, sign-in for rung 3. Both bind devices to one principal and hide the wire identifier                        |
@@ -2191,6 +2228,7 @@ Decided carry live UX or parameter questions in their bodies. The column below s
 | **D-28** | What carries the authorization protocol?                       | **Open**                 | Bespoke on Yjs · adopt the Automerge-adjacent stack · server-enforced · reduce the promise. Forced when §8.1 is drafted                    |
 | **D-29** | What happens to a rung-3 account that lapses?                  | **Decided**              | Grace period, then read-only: root and pairings survive, server sync stops, local use untouched. Retention duration open                   |
 | **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Open**                 | D-5's merge adjudication is workspace management by any reading. Routine-versus-irreversible is the likely shape                           |
+| **D-31** | What does the free tier cost, and how many never leave it?     | **Deferred on purpose**  | Split from D-16. Downstream of it: answerable with usage data, and only for whichever boundary D-16 picks                                  |
 
 ### 8.1 One artifact remains, and D-17 gates it
 
@@ -2240,10 +2278,11 @@ account. D-20's awareness-leakage question has left this list: it is now a contr
 because "presence metadata is visible to the relay" is a threat-boundary claim rather than an interface
 detail.
 
-D-16 stays deferred, with one change of order: **the cost inversion is answered before anything is
-built, not after two tiers have shipped.** Measuring the fraction of users in each tier still needs both
-tiers to exist; deciding whether the free tier should be the one that requires a second transport does
-not, and it is cheap now and expensive later.
+**D-16 has split**, which is the change of order review's cost inversion forced. The boundary question
+is **re-opened and answered before anything is built**; the pricing question is **D-31** and stays
+deferred until there are users to measure. Measuring the fraction of users in each tier needs both tiers
+to exist; deciding whether the free tier should be the one that requires a second transport does not,
+and it is cheap now and expensive later. Neither half blocks the security contract.
 
 ### 8.2 Not ready to promote, and what would make it ready
 
