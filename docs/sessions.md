@@ -9,9 +9,18 @@ that licenses, promoting material that previously lived only in the durability a
 
 **D-5 is also answered rather than built**: a device joining a workspace does not keep its own history,
 so the merge · theirs · ours · abort adjudication is withdrawn and D-30's motivating case goes with it.
+The *rule* is a product decision; the *transition* is not free, and §5.2.1 records what it costs.
 
-Two unresolved architecture gates remain: **D-17** (the security contract, §8.1, now **four** selections
-rather than five) and **D-28** (what carries the authorization protocol, §5.8.1). Two readiness gates sit
+**Four corrections review found in the first v15 draft, recorded rather than quietly fixed**, because
+each was an over-claim in the direction of the decision this revision wanted to make: D-16 **narrowed**
+the accountless-authorization question to a break-glass one rather than deleting it (§5.7.3); the
+authorization root cannot both die with the service and appoint its successor, so §5.7.2 now chooses a
+model; relay refusal is not content finalization against a hostile relay (§5.2.2); and a device that has
+been offline keeps its **last replica**, not a complete copy (D-24, D-29).
+
+Two unresolved architecture gates remain: **D-17** (the security contract, §8.1 — still five selections;
+D-16 narrowed the authorization-authority question from an everyday mechanism to a break-glass one rather
+than deleting it) and **D-28** (what carries the authorization protocol, §5.8.1). Two readiness gates sit
 beside them: **D-32** (§5.10), the data-lifecycle and operational contract, and **D-33**, the
 survivability package. **D-31** (pricing) stays deferred and is now genuinely downstream.
 **Not ready to promote into the PRD** — see §8.2.
@@ -658,12 +667,14 @@ have **worked** — a phone asleep in a pocket does not sync peer-to-peer with a
 entire device pair the product has.
 
 **What survives the removal is the mechanism, not the tier.** D-19's out-of-band device-to-device proof
-is still how a second device gets the content key, because signing in proves who you are to the service
-and the service cannot hand out a key it does not hold (§5.7.5). So the ceremony a user performs — show
-a code on the laptop, scan it on the phone — may look much as it would have. What changed is that it now
-happens **under the account's authorization root with the server as witness**, rather than establishing
-a second, device-centric root of its own. That is the difference between a ceremony and a tier, and it is
-where nearly all of the deleted complexity lived.
+**remains one enrollment path** — not the only one — because signing in proves who you are to the service
+and the service cannot hand out a content key it does not hold (§5.7.5). A PRF-capable passkey or a saved
+recovery factor can deliver the key instead, and which of those exists is D-17's open selection. So the
+ceremony a user performs — show a code on the laptop, scan it on the phone — may look much as it would
+have, for whoever ends up needing it. What changed is that it now happens **under the account's
+authorization root with the server as witness**, rather than establishing a second, device-centric root
+of its own. That is the difference between a ceremony and a tier, and it is where nearly all of the
+deleted complexity lived.
 
 **A phrase this document kept getting wrong, retained because the correction still bites.** Earlier
 drafts said the middle rung had "no server in the sync path", which was never true: a browser cannot
@@ -745,14 +756,20 @@ The combinations that catch people out, and each one has bitten a draft of this 
 | Durability           | One device only                  | Encrypted server copy, retention stated (D-29)                     |
 | Recoverability       | Export only                      | **Depends on the recovery factor D-17 has not yet selected**       |
 | Portability          | Markdown export; import is owed  | Same, plus a fidelity archive (D-33)                               |
-| Service independence | **Total — there is no service**  | Requires the survival package (D-33)                               |
+| Service independence | Existing install: **total**. Reinstall/recovery: needs D-33 | Requires the survival package (D-33)                    |
 | Safety               | Nothing admitted, epoch 0        | Authorization root, signed epochs, revocation (D-18, D-20, D-26)   |
 | Confidentiality      | Local device only                | End-to-end; relay holds ciphertext; presence metadata is open      |
 
-Two rows are worth reading twice. **Recoverability at Account is not yet decided** — an encrypted server
-copy is not a recovery promise until D-17 selects a recovery factor, and D-25 must not describe it as one
-before then. And **service independence is highest at Local**, which is the reframing D-16 produces: the
-free product is not the degraded tier, it is the one with no dependency on this company at all.
+Two rows are worth reading twice, and the second needs a qualification a v15 draft omitted.
+**Recoverability at Account is not yet decided** — an encrypted server copy is not a recovery promise
+until D-17 selects a recovery factor, and D-25 must not describe it as one before then.
+
+And **service independence is highest at Local, for an installation that already exists.** That is the
+reframing D-16 produces and it is worth having. But the property as defined above includes surviving the
+loss of the **app origin**, and a Local user who clears their browser store or replaces their laptop needs
+somewhere to install the app from. So the honest split is: *existing installation, total independence;
+reinstallation and recovery, dependent on D-33's survival package.* Local removes the runtime dependency,
+not every dependency.
 
 **D-2. Is an identity per person, per device, or a labelled pair?**
 
@@ -902,9 +919,11 @@ jobs, now reached one way.
 > **Decided, and largely dissolved by D-16: the app asks for a name exactly once, at account creation.**
 > There is no longer an accountless multi-device state for the question to be about.
 
-D-1's trigger bundled two events that D-19 pulled apart, and D-16 has now put one of them back together:
-enrollment and account creation are the same moment, so "does pairing ask for a name" no longer names a
-distinct event. What survives is the substance — the name has an audience only when there is a service
+D-1's trigger bundled two events that D-19 pulled apart, and D-16 has now put one of them back together —
+**precisely, and only, at the first one**: account creation and the *first* hosted sync coincide, so
+"does pairing ask for a name" no longer names a distinct event. Later device enrollments do not coincide
+with anything, and ask for nothing: signing in on a fourth device is not a moment the product has a new
+question at. What survives is the substance — the name has an audience only when there is a service
 relationship to attach it to, and per D-2 every list shows one entry per person, which with one person is
 just you.
 
@@ -923,17 +942,69 @@ which is precisely the test the retired rung failed (D-16).
 _(Reframed in v15. It was "what should opting into sync for the first time do when the room already has
 a document" — a question about typing a room name, which D-11 removes and D-19 replaces with sign-in.)_
 
-> **Decided, and the four-way adjudication is withdrawn. The workspace's history is the list; a joining
-> device's history does not survive the join.**
+> **Decided. The workspace's history is the list; a joining device's history does not survive the join.
+> The four-way adjudication is withdrawn.**
 >
 > | Joining device | Workspace | Behaviour                                                                              |
 > | -------------- | --------- | -------------------------------------------------------------------------------------- |
 > | empty          | anything  | Adopt the workspace. Silent, no prompt — this is the good case and stays frictionless.  |
 > | full           | empty     | The workspace adopts this device's history. Nothing is lost, so nothing is asked.       |
-> | full           | full      | **Say what is about to go, offer the export, require confirmation, then adopt the workspace.** |
+> | full           | full      | **State what is about to go, write the export, require confirmation, then adopt.**      |
 >
-> No merge, no preview, no side-by-side, no abort. **Export is the escape hatch; import is how a
-> determined user brings the content across afterwards.**
+> **No choice of winning history, and no merge, preview or side-by-side.** There is a **cancel**, and it
+> leaves the device exactly as it was: not joined, nothing exported over, nothing replaced. Export is the
+> escape hatch; import is how a determined user brings the content across afterwards.
+
+**"No abort" was the wrong phrase and is corrected here.** v15's first draft said the flow has no abort,
+meaning there is no un-merge to offer after histories have been exchanged. That is true and it is not
+what a reader takes from the sentence: a confirmation prompt without a cancel is not a confirmation. The
+accurate statement is that **the user cannot choose which history wins, and can always decline to join.**
+Declining is cheap precisely because nothing has been exchanged yet — which is a requirement, not a
+convenience, and it is the next section.
+
+#### 5.2.1 The transition is not free, and today's code would get it wrong
+
+**This decision is a product decision; the transition it implies is machinery, and an earlier draft of
+this section wrongly said otherwise.** "Nothing in the CRDT, the relay or the protocol has to change"
+was true of the *rule* and false of *carrying it out*. What follows is the correction.
+
+**The hazard is that today the app would merge before anyone was asked.** `DB_NAME` is the module
+constant `'done'` (`src/crdt/persistence.ts`), and the room selects only what the one local document
+tries to converge with (§2.2b). So a provider constructed against the workspace would begin exchanging
+updates with the local document immediately, and the histories would be merged before the confirmation
+dialog could be drawn. **That is the exact defect D-5 exists to remove, arriving through the back door.**
+
+Four requirements follow, and they belong in the TRD rather than here, but they are recorded now because
+the decision is not implementable without them:
+
+1. **Preflight before the provider exists.** Whether the workspace and this device are both non-empty
+   must be determined *before* any sync provider is constructed. **The joining document must never
+   connect to the workspace before replacement is complete.** A connection is the merge.
+2. **The old database is preserved, not dropped in place.** The joining device's existing document is
+   retained until the switch has succeeded, so a failure leaves the user with their data rather than
+   with neither history.
+3. **The workspace gets its own database.** This is §2.2b's "`dbName` almost certainly has to become a
+   parameter" arriving with a concrete reason and a date: the local database is keyed by the workspace
+   (and, later, the principal), so adopting a workspace is opening a different database rather than
+   overwriting the only one.
+4. **The switch is crash-safe.** Which database is current is a single committed fact, and an interrupted
+   switch resolves to exactly one of the two states on next launch. A half-completed adoption that leaves
+   identity and document out of step is the state D-12 says must not be manufactured, and §5.5 already
+   names carelessly built features as the only cause of it under our control.
+
+**Automatic export is a requirement in the full/full case, not a suggestion.** An earlier draft recorded
+it as a cheap upgrade to consider; that was too weak for an irreversible step. `exportEntries` and
+`downloadExport` already exist (`src/crdt/export.ts`) and PRD principle 4 already commits to the format,
+so the file is written before the switch, unconditionally, and the confirmation names where it went. The
+user may then ignore it. What must not happen is someone declining an offer they did not understand and
+losing the only copy.
+
+**What "empty" means, since the table turns on it.** Empty is **no user-authored content**: no cards, no
+master-list or Goals text, no non-empty day. It is *not* "no document" and *not* "no history" — a fresh
+install has a document, a roster entry from `resolveActor` (§2.2d) and possibly days created by opening
+the app. Those are app-generated and carry nothing the user would miss. A device that has only ever been
+opened is empty; a device with one card is full. Where the test is uncertain, **treat the device as full**
+and ask: a needless confirmation costs a click, and a wrong "empty" costs someone their list.
 
 **Why the previous answer was wrong in its premise, not merely expensive.** v14 said two document
 histories meeting "is not a task that can be removed, because the outcome is irreversible and the app
@@ -942,17 +1013,13 @@ choice over. The second half of that sentence is false. **The app does have a ba
 creation establishes which history is the workspace (D-24), so at every subsequent join there is a
 definite answer to "which one is the list", and the joining device is by construction not it.
 
-Once that rule exists the machinery has nothing left to decide. The preview existed to make an
-irreversible merge legible — there is no merge. `abort` existed because a merge cannot be undone — there
-is nothing to undo. `ours` existed to let the joining device win — that is the case the rule refuses.
-What survives is `theirs`, which this decision's own mechanics note already identified as the cheap one:
-discard the local database and adopt the remote, destructive on that device and only that device.
+Once that rule exists the adjudication machinery has nothing left to decide. The preview existed to make
+an irreversible merge legible — there is no merge. `merge` and `ours` existed to let the joining device's
+history survive or win — that is the case the rule refuses. What survives is `theirs`, which this
+decision's own mechanics note already identified as the cheap one: adopt the remote, destructive on that
+device and only that device. **The saving is real but it is in the adjudication, not in the transition.**
 
-**This is a product question, and treating it as a technical one was the error.** The cost of the answer
-is entirely in what the user is told and when. Nothing in the CRDT, the relay or the protocol has to
-change to support it.
-
-**What is actually lost, stated exactly, because the messaging is the whole of this decision.**
+**What is actually lost, stated exactly, because the messaging is the other half of this decision.**
 
 - Everything written on the joining device before it joined: its days, its cards, its master list.
 - Not the attribution or identity — the device keeps its own credential and actor and becomes an
@@ -964,13 +1031,6 @@ create the account on the device whose list you want to keep.** That is the whol
 is memorable, and D-24 makes it true — account creation adopts the creating device's history. The
 interface should say it at the moment it is actionable, not after.
 
-**Export should probably be automatic rather than offered, and that is a cheap upgrade to consider.**
-`exportEntries` and `downloadExport` already exist (`src/crdt/export.ts`), and PRD principle 4 already
-commits to plain-markdown export. Writing the file unconditionally before adopting the workspace turns
-irreversible loss into a file on disk for roughly the cost of one existing call, and removes the failure
-mode where someone declines the offer without understanding it. Recorded as a suggestion; the decision
-above only requires that the option be present and the consequence be stated.
-
 **Import is the real escape hatch, and it is owed anyway.** A user who exported can bring that content
 into the workspace deliberately, as a file they chose to import, rather than through an automatic merge
 they had to adjudicate behind a preview. That is a better shape for the same outcome: the merge becomes
@@ -981,7 +1041,7 @@ than three days (§2.4, §6).
 
 **What this leaves of S10 and the old room behaviour.** Today's silent, irreversible convergence on a
 room change (S10, S14, §2.2b) is still a defect, and D-11 still removes it. What changes is that its
-replacement is a rule rather than a flow.
+replacement is a rule plus a careful transition, rather than a flow.
 
 **D-22. Should merged content show its provenance?**
 
@@ -1051,11 +1111,29 @@ Three shapes were available for the adoption itself, and they were not equally s
 - ~~**They coexist.**~~ Ruled out by D-17's one-functional-trust-root-at-a-time constraint.
 
 **The reverse direction is cleaner than it used to be, and worth stating because it is now a supported
-end state rather than a fall.** Deleting the account retires the authorization root, and there is no
-lower rung with its own root to fall back to — so each device becomes an independent **Local** install
-holding a complete copy of everything up to that moment, and they stop converging (S36). Nothing is lost
-and nothing is locked; what ends is synchronization. That is the free product, arrived at from above, and
-it is the same place a lapsed subscription eventually lands (D-29).
+end state rather than a fall.** Deleting the account retires the operative authorization root, so each
+device becomes an independent **Local** install and they stop converging (S36). Nothing is locked; what
+ends is synchronization. That is the free product, arrived at from above, and it is the same place a
+lapsed subscription eventually lands (D-29).
+
+**But "each device keeps a complete copy" is false, and a v15 draft said it.** A device holds **its last
+local replica** — whatever it had synced when it last connected. A device that has been offline for a
+month, or that was enrolled and then left in a drawer, is missing everything since. Once the root and the
+server-held copy are retired, there is nowhere left for it to get the remainder: the relay is gone, the
+other devices will not sync with it, and its gap is permanent. Rule 2 forbids describing that as a
+complete copy.
+
+Two requirements follow, and they are the price of account deletion being safe rather than merely
+available:
+
+- **Destructive deletion requires either a verified-current device or a fresh export.** Before the root
+  is retired, the app must be able to point at one replica it knows is up to date — or write the export
+  from one. Deleting an account while every reachable device is stale is a silent data loss with no
+  survivor, and it is the one shape of this that cannot be undone.
+- **A catch-up window before retirement is probably necessary**, not merely nice. Sync should continue
+  long enough for enrolled devices to converge before the root goes, and devices that never appear should
+  be named in the confirmation rather than quietly abandoned — the same honesty D-18 requires about
+  offline devices, applied to the moment it matters most.
 
 The one thing that must not be quiet about it is the divergence: from the moment sync stops, edits on the
 laptop and edits on the phone are two histories, and if the user ever pays again they meet through D-5.
@@ -1166,11 +1244,58 @@ already synced keeps their copy forever.** Removal governs the future, never the
 **D-26. What happens when a revocation is learned late and the document has already diverged?**
 
 > **Decided, and D-16 collapsed this from the hardest decision in the document to one of the easiest:
-> prevented by construction, from the moment the server has committed the revocation.** Every sync is
-> relay-mediated, so a revoked credential has no path to any other device. The divergence this decision
-> was named for cannot form.
+> the divergence is prevented from the moment the server has committed the revocation.** Every sync is
+> relay-mediated, so a revoked credential has no honest path to any other device, and the two-lineage
+> divergence this decision was named for cannot form.
 >
 > Nothing is discarded, no lineage is sanctioned over another, and filtered replay is not built.
+>
+> **The guarantee is against the relay refusing the write, which means it needs one more thing to hold
+> against a hostile relay — see §5.2.2 below.** "Prevented by construction" was too strong on its own.
+
+#### 5.2.2 Refusal at the relay is not the same as finalization
+
+**A v15 draft said the guarantee was unconditional, and it is not.** The threat model already contains a
+**malicious or compromised relay** (S42, §5.7.1), and relay-side refusal is exactly the control such a
+relay declines to apply. The attack does not require forging anything:
+
+1. Revoked credential C signs an update referencing epoch *n*, which it legitimately holds keys for.
+2. The hostile relay **withholds** it rather than refusing it, and delivers it to another device after the
+   revocation has committed at epoch *n+1*.
+3. The receiving client sees a validly signed envelope under a past epoch — and **must accept genuine
+   late-arriving old-epoch updates**, because a device that was offline across a rotation produces
+   exactly that shape. Local-first sync is asynchronous by design; "old epoch" is not evidence of
+   anything.
+
+**So the epoch field cannot distinguish "accepted before revocation" from "withheld until afterwards",
+and nothing else in the current design does either.** Signature verification passes, epoch verification
+passes, and the update lands.
+
+**What closes it is a content finalization boundary**, and the security contract has to specify one. Three
+shapes, all cheaper than the partition-tolerant machinery D-16 deleted, because there is a server to
+appeal to:
+
+| Mechanism                              | How it closes the hole                                                                      |
+| -------------------------------------- | -------------------------------------------------------------------------------------------- |
+| **Server acceptance receipts**         | The server signs what it accepted; clients admit only receipted envelopes, so a withheld unreceipted one is refused |
+| **Per-credential sequence cutoffs**    | The committed revocation records "C's accepted writes end at sequence *k*"; any C-signed envelope past *k* is refused by every client, whoever delivers it |
+| **A checkpoint covering the cutoff**   | The authenticated checkpoint at epoch *n+1* attests every accepted sequence before it; anything outside is not part of the document |
+
+The middle one is the closest fit to the structures already required: the revocation is already a
+committed authorization event, and adding a per-credential high-water mark to it makes the cutoff part of
+the same signed object every client must fetch anyway. It also composes with D-33's checkpoint manifest,
+which already binds an authorization head to a covered update range (§5.11.3).
+
+**Two things this does not do.** It does not reopen D-16 — the hole exists on any relay-mediated design
+and is far smaller than the sanctioned-lineage rule, precisely because a witness exists to issue the
+cutoff. And it does not make the relay trusted: the cutoff is signed under the authorization root and
+verified by clients, so a hostile relay can still delay or withhold, which is availability rather than
+integrity (§5.7.1).
+
+**The honest phrasing, which replaces "prevented by construction".** Against a relay that behaves,
+divergence cannot form. Against one that does not, divergence is prevented by the finalization boundary —
+**which is a security-contract requirement that is specified but not yet designed**, and is now a row in
+§8.1 and a test in §5.7.8.
 
 **What this decision used to be, recorded because the deletion is the point.** Until v15 there were two
 answers, one per tier. The free tier had no server in the content path, so a revoked device could keep
@@ -1859,7 +1984,7 @@ The saving is much larger than a transport, and v14 mis-accounted it by counting
 | WebRTC transport, signalling, STUN, TURN               | D-31                      | A second connection path, maintained in parallel forever |
 | The sanctioned-lineage rule and divergence discard     | D-26                      | **Partition-tolerant authorization** — the largest piece of bespoke cryptography in the plan |
 | Divergent authorization successors                     | S49                       | A fork-resolution semantics with no server witness       |
-| "Who may change authorization at rung 2"               | §5.7.3                    | One of D-17's five open selections, now four             |
+| The *everyday* accountless authorization authority     | §5.7.3                    | A root ordinary people had to use routinely. The **break-glass** version survives |
 | A second trust root and a second discovery flow        | D-19                      | Two protocols where one now suffices                     |
 | The free-tier branch of the revocation guarantee       | D-26, §5.7.1              | Every guarantee's qualifying clause                      |
 
@@ -1879,9 +2004,10 @@ configuration that would keep working if this company disappeared, and it was no
 signalling and a rendezvous point, and a peer group that continues through service absence needs a
 fork-resolution rule it did not have. That resemblance is probably part of why the tier survived four
 drafts of scrutiny. Real service independence comes from independent custody, portable software and
-authorization succession — **D-33** — and none of those is a transport property. Note also where
-independence actually now sits: **Local is the most service-independent configuration in the product**,
-it is free, and it already exists (§5.1.2).
+authorization succession — **D-33** — and none of those is a transport property. Note where independence
+actually now sits: **Local is the most service-independent configuration in the product** for an install
+that already exists, it is free, and it already exists. Reinstalling it still needs the survival package,
+which is a dependency the retired rung would not have removed either (§5.1.2).
 
 #### What would bring peer-to-peer back
 
@@ -1931,17 +2057,18 @@ in it. It becomes live again only under the conditions D-16 sets for reopening p
 **D-17. What does "reasonably secure" mean, concretely enough to test?** _(Open, but no longer one
 undifferentiated research question.)_
 
-The earlier framing made this sound like a choice between "browser keys" and "real accounts". It was six
-choices, and **D-16 has closed one of them**: what the product promises; ~~which credential may change
-authorization~~; where an ordinary device key lives; what an account adds; how recovery works; and what
-counts as evidence. An answer to only the first is an aspiration, and an answer to only the key-storage
-question is a mechanism without a threat model.
+The earlier framing made this sound like a choice between "browser keys" and "real accounts". It is six
+choices: **what the product promises; which authority may change authorization outside the service; where
+an ordinary device key lives; what an account adds; how recovery works; and what counts as evidence.** An
+answer to only the first is an aspiration, and an answer to only the key-storage question is a mechanism
+without a threat model.
 
-**What D-16 closed, and it was not a small one.** With no accountless synchronizing rung, there is no
-device-held authority that admits the next device on its own. The account is the authorization root from
-the first moment any credential is admitted, and everything below it signs and decrypts without being able
-to extend the membership. §5.7.3 previously laid out six options for that authority and is now a note
-recording why the question is gone.
+**What D-16 did to the second of those, precisely, because a v15 draft over-claimed it.** D-16 removed the
+*everyday* accountless authorization root — the device-held authority that admitted the next device
+routinely on the happy path. It did **not** remove the need for a break-glass authority that can outlive
+the service, which §5.7.2's root model and D-33's succession event both require. The question is narrowed
+from "design a comfortable everyday admin authority" to "select and threat-model a rare emergency one",
+which is a genuine saving and not a deletion (§5.7.3).
 
 Several options remain unavailable without reopening decisions. D-20 requires content encryption and key
 rotation, so transport encryption with plaintext at the relay is not enough. D-27 requires authenticated
@@ -1960,7 +2087,7 @@ row means reopening the decision named above.
 | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | Knows the relay URL and workspace identifier (S41)     | Cannot decrypt content, become a member or create an accepted mutation. A workspace identifier is an identifier, never a bearer secret.      | Cannot be prevented from reaching a public endpoint; rate and resource abuse are a service-availability problem.                            |
 | Passive network observer                               | Learns no content or reusable credential from traffic. Transport security still applies outside the content encryption.                      | Hiding that traffic exists, its rough volume, or the network addresses involved.                                                            |
-| Malicious or compromised relay (S42)                   | Cannot read content, forge an accepted mutation, silently change authorization, or make an already-witnessed older epoch look current.       | It can delay, omit, reorder or refuse bytes. End-to-end encryption supplies confidentiality and integrity, not availability.                |
+| Malicious or compromised relay (S42)                   | Cannot read content, forge an accepted mutation, silently change authorization, make an already-witnessed older epoch look current, **or land a revoked credential's withheld old-epoch write after the commit** (§5.2.2). | It can delay, omit, reorder or refuse bytes. End-to-end encryption supplies confidentiality and integrity, not availability.                |
 | Leaked relay bearer token (S43)                        | Does not decrypt content, sign a mutation, authorize a device or recover an account. It is scoped, expires and can be refused independently. | The holder may consume relay service and obtain ciphertext or metadata until refusal or expiry.                                             |
 | Compromised authorized device or agent (S44, S46)      | Cannot impersonate another actor, exceed its capability or survive revocation by inventing authority it was never granted.                   | It can read everything its capability permits, copy it forever, and make every malicious edit its capability permits until revoked.         |
 | Revoked credential                                     | After the applicable commit point, cannot add an accepted write or decrypt a later content-key generation.                                   | Erasure of any plaintext, key or ciphertext it obtained before revocation. Removal governs the future, as D-20 already says.                |
@@ -2003,47 +2130,88 @@ D-20 uses one symmetric document key. The product consequence of that — granti
 the whole workspace to it and to whatever runs it — is recorded in D-20 rather than left here as a
 capability footnote.
 
-> **Recorded constraint, and D-16 simplified it to the point of near-triviality: there is exactly one
-> _authorization root_, and it is the account.** At **Local** there is no authorization state beyond epoch
-> 0 — one device, nothing admitted, no credential to supersede. From the moment an account exists it is
-> the only root allowed to admit, revoke or supersede credentials. Device and agent credentials remain
+> **Recorded constraint: exactly one _operative_ authorization root, and the account is bound to it.** At
+> **Local** there is no authorization state beyond epoch 0 — one device, nothing admitted, no credential
+> to supersede. From the moment an account exists, exactly one authority may admit, revoke or supersede
+> credentials, and every ordinary operation goes through it. Device and agent credentials remain
 > functional beneath it for signing and decryption; they never become an independent way around it.
-> Deleting the account retires the root, and there is no lower root to fall back to: each device becomes an
-> independent local install (D-24).
 
-This is the meaning that kills D-24's "they coexist" option without accidentally saying that account
-creation disables every device key. Promotion adopts the existing credential beneath a new root; it does
-not replace the actor or signer. What v14 called demotion is now an exit rather than a descent — no
-replacement root is established, so the question of rotating authority into one does not arise.
+**A v15 draft said this root simply _is_ the account, and that is not compatible with D-33.** The
+contradiction is worth spelling out because it was not obvious: §5.11 requires an explicit **succession
+event** that can bind the workspace to a replacement witness after the service disappears, authorized by
+a saved recovery root, a quorum of surviving devices, or a transferable administration root. Whatever can
+do that is an authority the vanished service does not constitute. **A root that dies with the service
+cannot appoint the service's successor.**
 
-**Worth noticing what this removes rather than answers.** The one-root constraint used to be a rule
-policing a transition between two kinds of root, with a promotion path and a demotion path that each had
-to rotate keys correctly. It is now a description of a system that only ever has one. Root succession
-survives in exactly one place — replacing the *witness* if the service disappears — and that is D-33's
-problem, not the ladder's.
+So the document has to choose between two models rather than leave the phrase ambiguous:
 
-#### 5.7.3 Who may change authorization without an account? — closed by D-16
+| Model                                                        | What the service is                                          | What D-33 can then promise                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------- | --------------------------------------------------------------- |
+| **Portable root, service as witness** _(the intended one)_   | Orders epochs, enforces at the relay, proves account identity | The strong claim: succession is possible, so is last-device recovery |
+| **Service-embodied root**                                    | Constitutes the authority itself                              | Only the narrow claim. Succession is impossible by construction  |
 
-**This question is gone, and it was one of D-17's five open selections.** It asked who holds the authority
-to admit the next device when there is no account: every admitted device, one designated device, a
-transferable device-held root, a quorum, or a platform-authenticator ceremony. Six options, each with its
-own compromise and availability profile, and the last of them was "no device-held admin; account only" —
-noted at the time as the option that "deletes rung 2 and reopens D-19, D-23, D-24 and the free tier in
-D-16".
+> **Recorded, as the model this document proceeds on: the root is a user-recoverable cryptographic
+> authority, and the service _witnesses_ it rather than being it.** Sign-in proves control of the account;
+> the account is bound to the root; the relay enforces on the root's behalf. What the service holds is
+> ordering, enforcement and identity — not the authority itself.
 
-That is precisely what D-16 chose, on product and cost grounds, before this security question was
-answered. **The account is the authorization root from the first admitted credential**, so no device-held
-admin authority exists to design (§5.7.2).
+**Which corrects an over-claim in D-16 rather than reopening it.** D-16 removed the **everyday**
+accountless root — the device-held authority that had to admit the next device routinely, usably, by
+ordinary people, on the happy path. It did not remove the need for a **break-glass** authority that can
+outlive the service, and a v15 draft of §5.7.3 wrongly said the question was gone. It is narrowed, not
+deleted, and the narrowing is still worth a great deal: a rare, deliberate, explicitly-invoked authority
+is a far smaller design and UX problem than one sitting on the ordinary pairing path.
 
-Two things worth carrying forward from the deleted analysis, because they remain true elsewhere:
+**And it probably unifies two of D-17's open selections rather than adding a fifth.** The break-glass
+succession authority and the content-recovery factor of §5.7.5–§5.7.6 have the same shape: something the
+user holds, that the service cannot produce, that is exercised rarely and under duress. A single
+user-held root that can both unwrap the content key after total device loss **and** sanction a successor
+witness would answer both. That is the strongest candidate and it is not yet a decision — but D-17 should
+select them together rather than discovering later that it chose two different artifacts for one job.
+
+This is also the meaning that kills D-24's "they coexist" option without accidentally saying that account
+creation disables every device key. Promotion adopts the existing credential beneath the root; it does
+not replace the actor or signer. Deleting the account retires the operative root and its enforcement,
+and each device becomes an independent local install (D-24).
+
+#### 5.7.3 Who may change authorization outside the service? — narrowed by D-16, not closed
+
+**A v15 draft said D-16 deleted this question. It did not, and the correction matters.** What D-16
+removed is the **everyday** version: who admits the next device when a person is pairing two phones for
+free, routinely, with no account. That version had to be usable by ordinary people on the happy path,
+and its six candidate answers — every admitted device is an admin, one designated device, a transferable
+device-held root, a quorum, a platform-authenticator ceremony, or account-only — each carried a
+compromise and an availability profile that reached into D-19, D-23, D-24 and the free tier.
+
+**What survives is the break-glass version**, and §5.7.2 and D-33 both require it: when the service is
+gone, some authority must be able to sanction a replacement witness (S60), and after total device loss
+some authority must be able to enroll a replacement credential (S58, S47). The candidate answers are the
+same list minus the everyday constraint — a saved recovery root, a quorum of surviving devices, or a
+deliberately transferable administration root — and the requirement on them is different in kind:
+
+| The everyday question D-16 removed        | The break-glass question that remains                   |
+| ----------------------------------------- | -------------------------------------------------------- |
+| Exercised routinely, by anyone            | Exercised rarely, deliberately, usually under duress     |
+| Must be pleasant and near-invisible       | May be explicit, effortful and heavily warned            |
+| Failure mode: people cannot pair devices  | Failure mode: a revoked credential manufactures a successor |
+| Sat on the ordinary pairing path          | Sits beside the recovery factor and may be the same artifact (§5.7.2) |
+
+**So the saving is real and smaller than claimed.** D-17 still has to select and threat-model this
+authority; it no longer has to make it comfortable. The binding constraint on the selection is the one
+D-33 names: the succession event must bind the workspace to a replacement witness **without letting an
+old or revoked credential create an equally plausible successor.** That is a harder cryptographic
+property than admitting a device under a live witness, and it is why this cannot simply be inherited from
+whatever D-19's enrollment ceremony turns out to be.
+
+Two things carry forward from the removed everyday analysis, because they remain true here:
 
 - **The authorization chain, not the display roster, is the source of the device list.** A list showing
   only known devices is insufficient if a compromised credential could have admitted an unknown one. That
-  requirement now lands on D-18's list and the account root rather than on a peer group.
-- **Concentrating admission in one root centralizes ordering, rate limits and recovery policy**, which is
-  a security benefit and an availability dependency in the same breath. The dependency is real: with the
-  service unreachable, no device can be added or revoked. That is an accepted consequence, and D-33 is
-  where the succession story for it lives.
+  requirement now lands on D-18's list.
+- **Concentrating admission in one operative root centralizes ordering, rate limits and recovery
+  policy**, which is a security benefit and an availability dependency in the same breath. With the
+  service unreachable, no device can be added or revoked by the ordinary path — which is precisely why
+  the break-glass authority is not optional.
 
 #### 5.7.4 Where the ordinary device secret lives
 
@@ -2183,15 +2351,18 @@ than prose:
    loser refused rather than forked (S49).
 5. After a committed revocation and key rotation, the removed credential cannot decrypt a new generation
    or create a newly accepted write, while its historical local copy remains usable.
-6. A relay database snapshot contains ciphertext, public authorization material and the explicitly
+6. **A hostile relay withholds a previously unseen envelope signed by the revoked credential under the
+   pre-revocation epoch and delivers it after the commit; every client refuses it**, while a genuine
+   late-arriving old-epoch update from a still-authorized offline device is still accepted (§5.2.2).
+7. A relay database snapshot contains ciphertext, public authorization material and the explicitly
    accepted metadata — no content root, plaintext, reusable device secret or PRF output.
-7. Every recovery path is exercised after loss of one device, all devices, the primary passkey, the
+8. Every recovery path is exercised after loss of one device, all devices, the primary passkey, the
    account session and the service. The result is checked separately for all four recovery objects.
-8. Unsupported PRF, interrupted enrollment, duplicate recovery, concurrent authorization changes and a
+9. Unsupported PRF, interrupted enrollment, duplicate recovery, concurrent authorization changes and a
    half-completed account deletion fail closed without silently changing the confidentiality promise.
-9. Mutation verification and first-sync checkpoint verification meet the latency and history-size budgets
-   in §5.6.2 without moving cryptography onto the keystroke or local-replay path.
-10. The web application is verified as part of the cryptographic boundary: no unreviewed third-party script
+10. Mutation verification and first-sync checkpoint verification meet the latency and history-size budgets
+    in §5.6.2 without moving cryptography onto the keystroke or local-replay path.
+11. The web application is verified as part of the cryptographic boundary: no unreviewed third-party script
     executes in the key-holding origin; injection controls, CSP, Trusted Types where supported, dependency
     integrity, service-worker update integrity, cookie attributes and WebSocket origin checks are tested.
 
@@ -2211,16 +2382,17 @@ The available assurance levels are cumulative:
 | Independent implementation audit        | Review and testing of the shipped client, relay and deployment against the contract                  | Strongest launch evidence here; costs money and has to repeat after security-boundary changes                     |
 | Ongoing disclosure and response program | A vulnerability-reporting path, rotation/recovery runbook, dependency monitoring and incident drills | Treats security as an operating property; cannot compensate for an incoherent root or recovery model              |
 
-What remains open in D-17 is therefore specific, and D-16 struck the first item off the list: ~~the rung-2
-authorization holder~~; **the acceptable browser key-storage option; the account's relationship to the
-content root; the recovery option and unsupported-PRF policy; and the assurance level required before
-network sync ships.** Recording those **four** answers is what turns the tables above into the security
-contract §8.1 calls for.
+What remains open in D-17 is therefore specific: **the break-glass succession and enrollment authority;
+the acceptable browser key-storage option; the account's relationship to the content root; the recovery
+option and unsupported-PRF policy; and the assurance level required before network sync ships.** Recording
+those five answers is what turns the tables above into the security contract §8.1 calls for.
 
-Note which one now carries the most weight. With the authorization root settled by construction, the live
-centre of D-17 is **the account's relationship to the content root and the recovery factor beneath it** —
-§5.7.5 and §5.7.6. That is the pair that decides whether the paid product can honestly use the word
-recovery at all, and everything in §5.7.7 hangs off it.
+Note which of them now carries the most weight, and that two of them may be one. The live centre of D-17
+is **the account's relationship to the content root and the recovery factor beneath it** (§5.7.5,
+§5.7.6) — that pair decides whether the paid product can honestly use the word *recovery* at all, and
+everything in §5.7.7 hangs off it. **The break-glass authority has the same shape and may be the same
+artifact** (§5.7.2), so selecting them together is likely to be cheaper and is certainly safer than
+discovering afterwards that two different user-held secrets were chosen for one job.
 
 #### 5.7.9 The common core beneath the options
 
@@ -2398,8 +2570,14 @@ Three things that follow and should not be rediscovered later:
 
 **And D-16 gave this decision a floor it did not have.** Where a lapse ends, the user is in **Local** —
 which is now a complete, permanent, supported product rather than the bottom of a ladder they have fallen
-off. That materially improves what a lapse means: not a degraded state, but the free product, with every
-device holding a full copy and export available.
+off. That materially improves what a lapse means: not a degraded state, but the free product, with export
+available on every device.
+
+**With the same correction D-24 needs: each device retains its _last local replica_, not a full copy.**
+A device offline across the lapse holds what it had when it last synced and will never receive the rest.
+This is a second reason the grace period is a real mechanism rather than a courtesy — it is the window in
+which stale devices can still converge — and a reason retention should outlast it, so that a device
+reappearing shortly after the deadline is not silently short of a month's work.
 
 One thing must still be said out loud when sync stops, because Rule 2 requires it and because it is the
 part a user will not infer: **from that moment the devices stop converging, and each one's edits are its
@@ -2536,8 +2714,12 @@ from peer-to-peer either.
   (§5.7.5, §5.1.2). This is D-17's open recovery selection seen from the survivability side, and the two
   must be answered together.
 
-**Authorization continuity is the hardest and the one transport arguments miss.** With the account as the
-sole root (§5.7.2), the documents survive the service but the device group cannot safely evolve after it.
+**Authorization continuity is the hardest and the one transport arguments miss**, and §5.7.2 had to
+choose a root model before this section could be coherent. Under the chosen model the root is a
+user-recoverable cryptographic authority that the service *witnesses* rather than constitutes — which is
+what makes the paragraph below possible at all. Had the service embodied the root, the documents would
+survive it but the device group could never safely evolve after it, and the strong claim in §5.11.4 would
+be unreachable by construction rather than merely unbuilt.
 The protocol needs an explicit **succession event**: a saved recovery root, a quorum of surviving device
 credentials, or a deliberately transferable administration root, binding the workspace to a replacement
 witness without letting a revoked credential manufacture an equally plausible successor. Selecting the
@@ -2588,9 +2770,13 @@ The gate, demonstrated without production credentials or the original app origin
 6. Adopt the replacement authorization witness, then add and revoke a device.
 7. Converge edits made before, during and after the migration without accepting a revoked lineage.
 8. Repeat with the store holding the newest checkpoint unavailable, using the documented replica order.
+9. **Run tests 4 through 7 again with the entire original provider account unavailable** — not one store,
+   not one region, but every service the company operated — using only material the user already holds.
+   This is the test the survivability claim is actually about, and it is the one a within-provider replica
+   drill can pass while the real scenario still fails.
 
-**Tests 1–3 are cheap, near-term and cover most of the felt meaning of the promise; 4–8 are a serious
-program.** That asymmetry is the decision D-33 actually presents: how far up to invest, and when. What is
+**Tests 1–3 are cheap, near-term and cover most of the felt meaning of the promise; 4–9 are a serious
+program, and 9 is the one that cannot be faked.** That asymmetry is the decision D-33 actually presents: how far up to invest, and when. What is
 not optional is that the claim tracks the stage — an all-or-nothing gate creates pressure to make the
 whole claim early, which is the failure mode this decision exists to prevent.
 
@@ -2599,7 +2785,20 @@ whole claim early, which is the failure mode this decision exists to prevent.
 What "replaceable" concretely requires, so it can be scoped rather than admired: a documented, versioned
 envelope and checkpoint protocol; a small self-hostable relay and durable store; endpoints configurable
 without editing workspace content; export **and** import; a standalone recovery and inspection tool; a
-user-held recovery secret; and a tested operation for moving authorization to a new witness.
+user-held recovery secret; a tested operation for moving authorization to a new witness; and the item a
+v15 draft left out —
+
+- **A copy of the ciphertext that already exists outside this service.** Either a **verified encrypted
+  fidelity archive** the user has taken and the app has confirmed is restorable, or a **continuously
+  replicated user-controlled destination**. §5.11.3 argues that one independently controlled copy beats
+  three operator-controlled ones, and then the package listed only software — which is the gap. **Shipping
+  a self-hostable relay does not put any bytes in it.** Software you can run after the fact cannot
+  reconstruct data that only ever lived in an account that has been closed.
+
+That is the difference between *replaceable* and *survivable*, and it is the one requirement here with a
+recurring cost to the user's attention rather than a one-off engineering cost — which is why it needs to
+be designed as something the app drives (a periodic verified archive, or a destination configured once)
+rather than something the user is trusted to remember.
 
 Drawing those interfaces is cheap now and expensive later, and it does not require deploying five
 services. The first deployment may remain one small process, provided its **interfaces** already
@@ -2714,8 +2913,9 @@ Decided carry live UX or parameter questions in their bodies. The column below s
 §8.1 isolates the remaining architecture gates from those non-blocking details.
 
 **v15 changed nine rows from one decision.** D-16 landing moved D-19, D-23, D-24, D-25, D-26, D-29 and
-D-31, closed one of D-17's five open selections, and re-weighted D-28's options — which is the clearest
-evidence that the free/paid boundary was never only a pricing question.
+D-31, narrowed one of D-17's five open selections from an everyday mechanism to a break-glass one, and
+re-weighted D-28's options — which is the clearest evidence that the free/paid boundary was never only a
+pricing question.
 
 | ID       | Question                                                       | Status                    | Answer, or what happens without one                                                                                                         |
 | -------- | -------------------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -2723,7 +2923,7 @@ evidence that the free/paid boundary was never only a pricing question.
 | **D-2**  | Is identity per person, per device, or a labelled pair?        | **Decided**               | Per device internally; per person in every list. Device never disclosed or reflected                                                        |
 | **D-3**  | Are device names worth improving?                              | **Decided in principle**  | Yes. Mechanism open — and it does not need a fingerprint                                                                                    |
 | **D-4**  | Can a new device claim an existing actor?                      | **Decided**               | No. A new device is always a new actor; the real question was D-19                                                                          |
-| **D-5**  | What happens when a device with history joins a workspace?     | **Decided**               | The workspace's history wins. State the loss, offer the export, confirm, adopt. **No merge, preview or adjudication** — v15 withdrew them   |
+| **D-5**  | What happens when a device with history joins a workspace?     | **Decided**               | Workspace history wins; no adjudication. Cancel leaves the device untouched. Export is written first; the switch needs §5.2.1's mechanics   |
 | **D-6**  | Can dead actors be pruned?                                     | **Decided**               | No auto-hiding. Staleness may be muted; the interval is open. Exclusion is D-20                                                             |
 | **D-7**  | Should undo ever cross devices?                                | **Decided**               | No. Never leaves the device                                                                                                                 |
 | **D-8**  | What may a session be seen doing?                              | **Decided**               | A caret per tab, own tabs included, **all yours in your colour**, person's name. Active caret distinguished (D-21). Peer list deduplicated  |
@@ -2735,19 +2935,19 @@ evidence that the free/paid boundary was never only a pricing question.
 | **D-14** | May the relay decide who connects? What is written?            | **Decided in part**       | Server sync authenticates connections/envelopes; schema-level content authority is open and not required by D-20/D-27                       |
 | **D-15** | Within a device, is undo per tab or shared?                    | **Decided**               | Per tab                                                                                                                                     |
 | **D-16** | Where does the free/paid boundary sit?                         | **Decided**               | Hosted sync itself. Free is local-only and permanent; the Paired rung is retired; **peer-to-peer is not built**                             |
-| **D-17** | What does "reasonably secure" mean, concretely?                | **Open — decomposed**     | Minimum claims fixed. **Four** selections left: key storage, account custody, recovery/PRF fallback, assurance level. Root closed by D-16   |
+| **D-17** | What does "reasonably secure" mean, concretely?                | **Open — decomposed**     | Minimum claims fixed. Five selections: break-glass succession authority, key storage, account custody, recovery/PRF fallback, assurance    |
 | **D-18** | Are devices enumerable and revocable from a UI?                | **Decided**               | Yes. The unit is the device. Gates sync, not startup. Freeze and offer options; no automatic wipe                                           |
 | **D-19** | How does a device find the other devices that are yours?       | **Decided**               | Sign-in discovers; an out-of-band ceremony still delivers the content key. One root, one flow, wire identifier hidden                       |
 | **D-20** | How is a member actually excluded?                             | **Decided**               | Content encryption with key rotation. Keeps the relay dumb; key management is the cost                                                      |
 | **D-21** | What does "the active caret" mean — local, or globally recent? | **Decided**               | Locally active. No recency modelling; a design check that it reads as distinct                                                              |
 | **D-22** | Does merged content show its provenance?                       | **Decided**               | Yes, as a rarely-on mode. Settings toggle, off switch surfaced while active. Cards only, freeze-window bound                                |
 | **D-23** | Does pairing alone trigger the name prompt?                    | **Decided**               | Largely dissolved by D-16: one name prompt, at account creation, which is now the same moment as first sync                                 |
-| **D-24** | How does existing local history become an account?             | **Decided**               | The account adopts the creating device's history — which is what makes D-5 decidable. Needs a model accepting a prior identity              |
+| **D-24** | How does existing local history become an account?             | **Decided**               | Adopts the creating device's history, which makes D-5 decidable. Deletion leaves each device its **last replica**, not a full copy          |
 | **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**               | Yes, for the environment case. Warn about the property, not the cause. Offer the grant, then export, then sync                              |
-| **D-26** | Revocation learned late, history already diverged?             | **Decided**               | Prevented by construction from the server's commit point. No lineage rule, no discard, no filtered replay                                   |
+| **D-26** | Revocation learned late, history already diverged?             | **Decided**               | No lineage rule, no discard, no filtered replay. Needs a **finalization boundary** against a hostile relay (§5.2.2) — a contract row        |
 | **D-27** | Is attribution authenticated, or advisory?                     | **Decided**               | Authenticated by an epoch-authorized credential; actor is derived or explicitly authorized for representation                               |
 | **D-28** | What carries the authorization protocol?                       | **Open**                  | Bespoke on Yjs · adopt the Automerge-adjacent stack · server-enforced · reduce the promise. Forced when §8.1 is drafted                     |
-| **D-29** | What happens to an account that lapses?                        | **Decided**               | Grace period, then read-only: root survives, sync stops, local use untouched. Devices then diverge, and must be told. Retention open        |
+| **D-29** | What happens to an account that lapses?                        | **Decided**               | Grace period, then read-only: root survives, sync stops, local use untouched. Devices diverge and keep only their last replica              |
 | **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Open — weakened**       | Its motivating case was withdrawn with D-5's flow. "An apparent exception is usually a missing rule" is the likely shape                    |
 | **D-31** | What does a synced user cost, and what should it be priced at? | **Deferred on purpose**   | Rescoped by D-16 — free now costs nothing per user. Answerable with usage data; the boundary can only move down                             |
 | **D-32** | What may the service retain, observe and do?                   | **Open — readiness gate** | Produce the data and operations contract in §5.10 before service architecture is implementation-ready                                       |
@@ -2766,30 +2966,35 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | ---------------------------------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | Threat boundary and negative promises    | §5.7.1's attacker table; offline local use and availability limits                      | Any stronger claim, including local-device-at-rest or traffic-metadata protection                          |
 | Credential separation                    | Relay bearer, per-device/per-agent operational credentials, one authorization root      | Concrete credential formats, algorithms, key separation and crypto-agility                                 |
+| **Break-glass succession authority**     | Something the service does not constitute must be able to sanction a successor witness and enroll after total device loss | Saved recovery root, surviving-device quorum, or transferable administration root (§5.7.2, §5.7.3, D-33)   |
 | Browser key storage                      | WebAuthn cannot sit on every mutation; non-extractable WebCrypto is not an XSS boundary | Extractable, non-extractable, PRF-wrapped, recovery-wrapped, native, or account-required (§5.7.4)          |
 | **Signed authorization epoch**           | Binds membership, credentials, capabilities and key generation; the server witnesses and serializes successors | Chain-head discovery for a fresh device, checkpoint and downgrade rules. **Fork rules are no longer needed** (D-16) |
 | Signed mutation envelopes                | Source-authenticated, workspace/epoch/credential/actor bound                            | Envelope and batching granularity, anti-replay/finalization rule and authenticated checkpoint construction |
 | Attribution binding                      | Actor is derived from the credential or explicitly authorized for representation        | How an update's affected attributed fields are inspected or derived                                        |
-| Revocation commit semantics              | Requested · committed · acknowledged; enforcement has no bypass path, by construction   | Protocol and recovery behaviour for interrupted rotation                                                   |
+| Revocation commit semantics              | Requested · committed · acknowledged; no peer path bypasses the relay                   | Protocol and recovery behaviour for interrupted rotation                                                   |
+| **Content finalization boundary**        | Relay refusal is not finalization; a hostile relay can withhold and later deliver a valid old-epoch write | Acceptance receipts, per-credential sequence cutoffs, or checkpoint coverage (§5.2.2)                      |
 | Content-key wrapping and rotation        | Symmetric generations wrapped per reader credential; edit implies read under this shape | Algorithms and generation retention                                                                        |
 | **Awareness and presence metadata**      | Presence is outside the content encryption as currently designed                        | Encrypt awareness, or state in the threat boundary that the relay learns who edits what and when (D-20)    |
-| Account relationship to the content root | The account is the only authorization root; there is no lower root to supersede         | Witness only, non-custodial encrypted recovery, device-approved access, or service escrow (§5.7.5) — **now the live centre of D-17** |
+| Account relationship to the content root | One operative root; the service witnesses it rather than constituting it (§5.7.2)       | Witness only, non-custodial encrypted recovery, device-approved access, or service escrow (§5.7.5) — **the live centre of D-17** |
 | Recovery                                 | Account, authority, content key and ciphertext are four separate recovery objects       | Factor(s), loss policy, unsupported-PRF path, warnings and account-deletion semantics (§5.7.6)             |
 | Web application and protocol assurance   | Same-origin code is inside the cryptographic boundary                                   | Versioned ASVS profile, independent design review, implementation audit and ongoing response bar (§5.7.8)  |
 | **Durable store representation**         | A content-blind store cannot merge; recovery needs checkpoints, not a merged state      | Checkpoint construction and cadence, manifest binding, retention of superseded checkpoints (D-33, §5.11.3) |
 | **Portability and succession**           | Export, import, an independently obtainable build and a witness-succession operation are requirements, not roadmap | Formats, distribution mechanism, and which authority may sanction a successor witness (D-33)               |
 
 **D-17 gates the selections in the right-hand column, not the existence of every left-hand requirement.**
-The next step is no longer the vague "evaluate WebAuthn PRF as the root". It is to record **four** answers:
-what protects the operational device key; whether the account is witness, non-custodial recovery root or
-custodian; which recovery and unsupported-PRF path exists; and what evidence is required before sync
-ships. Then the common core in §5.7.9 can be turned into a protocol and reviewed by someone who does this
-professionally.
+The next step is no longer the vague "evaluate WebAuthn PRF as the root". It is to record **five**
+answers: which break-glass authority can sanction a successor witness; what protects the operational
+device key; whether the account is witness, non-custodial recovery root or custodian; which recovery and
+unsupported-PRF path exists; and what evidence is required before sync ships. Then the common core in
+§5.7.9 can be turned into a protocol and reviewed by someone who does this professionally.
 
-**The fifth answer — who administers authorization without an account — was struck by D-16 rather than
-chosen**, which is worth noticing as a pattern: a product decision closed a security question that six
-months of research would otherwise have had to answer. Scope removal and security work are the same
-currency more often than either discipline admits.
+**A v15 draft claimed D-16 struck the first of those from the list. It narrowed it instead**, and the
+correction is worth keeping visible: a product decision can remove the *everyday* form of a security
+question while leaving its emergency form entirely intact. That is still a large saving — an authority
+exercised rarely and under duress can be explicit and effortful where one on the pairing path cannot —
+but it is a saving in the user experience, not in the threat modelling. **The first and third answers may
+also turn out to be one artifact** (§5.7.2), which is the cheapest available outcome and should be tested
+for deliberately rather than stumbled into.
 
 **The one item outside that cluster** is D-14's second half — whether the relay ever gains authority over
 content. Genuinely independent, and much less urgent since D-20 made exclusion work without it.
@@ -2831,17 +3036,20 @@ specified but incomplete:
    surface.
 3. **A completed security contract**, whose requirements and open fields now exist but whose custody and
    recovery policy do not. §5.7 gives the threat claims, options, implications and tests; §8.1 separates
-   fixed requirements from selections. The remaining choices are **four**: browser key storage, account
-   custody, recovery and unsupported-PRF policy, and the assurance bar. D-17 is still the gate, but it is
-   no longer a request to "research security" in the abstract, and it can no longer change the product's
-   shape (§5.7.7).
+   fixed requirements from selections. The remaining choices are **five**: the break-glass succession
+   authority, browser key storage, account custody, recovery and unsupported-PRF policy, and the
+   assurance bar — with the first and third plausibly one artifact (§5.7.2). D-17 is still the gate, but
+   it is no longer a request to "research security" in the abstract, and it can no longer change the
+   product's shape (§5.7.7).
 4. **A service data and operations contract**, whose minimum contents are fixed by D-32 but whose data
    inventory, retention and deletion rules, operator authority and readiness evidence are not. This is
    separate from the cryptographic contract: encryption limits what the service can read, not what
    metadata it collects or what promises it makes.
 5. **A survivability package and staged claim**, fixed in outline by D-33 but unbuilt. Its near-term
    third — local operation with the service unreachable, export, and import into an independently served
-   build — is cheap and should not wait for the rest.
+   build — is cheap and should not wait for the rest. The item most easily mistaken for done is
+   independent custody: self-hostable software is not a copy of the data, and the package now requires
+   ciphertext that already exists outside this service (§5.11.5).
 
 The ontology and the cardinalities were the two things review said were missing or contradictory, and both
 are now written down. What changed in this round is larger: **a product decision (D-16) removed a rung,
