@@ -2139,10 +2139,26 @@ row means reopening the decision named above.
 | Leaked relay bearer token (S43)                        | Does not decrypt content, sign a mutation, authorize a device or recover an account. It is scoped, expires and can be refused independently. | The holder may consume relay service and obtain ciphertext or metadata until refusal or expiry.                                             |
 | Compromised authorized device or agent (S44, S46)      | Cannot impersonate another actor, exceed its capability or survive revocation by inventing authority it was never granted.                   | It can read everything its capability permits, copy it forever, and make every malicious edit its capability permits until revoked.         |
 | Revoked credential                                     | After the applicable commit point, cannot add an accepted write or decrypt a later content-key generation.                                   | Erasure of any plaintext, key or ciphertext it obtained before revocation. Removal governs the future, as D-20 already says.                |
-| Copied browser profile or unlocked device              | The product states the boundary accurately and revocation limits future access once another authorized root acts.                            | Protection from an attacker who can run the app as the user or read plaintext already stored by the app.                                    |
-| Same-origin XSS, compromised dependency or bad release | The incident is contained operationally as far as the selected root permits, and credentials can be rotated after it.                        | Confidentiality or integrity while hostile code is running with the app's own origin and privileges. Client-side encryption cannot do that. |
-| All devices and authenticators lost (S47)              | **The saved recovery code restores all four objects** — it enrolls a replacement credential under the administration root, unwraps the content root, and the service supplies the ciphertext (§5.7.6). | **Recovery without the code.** No party, this service included, holds material that substitutes for it. A server holding ciphertext alone does not hold the means to decrypt it. |
+| Copied browser profile                                 | On a PRF-wrapped device, the copied operational-key wrapper is unusable without the authenticator; a lower-tier device makes no such promise. Revocation limits future access once another authorized root acts. | Protection for plaintext document data copied with the profile (D-34), or after the attacker can invoke the key through an unlocked app. |
+| Unlocked device or running app                         | After another authorized root revokes its credential and rotates the content key, the attacker cannot extend access into the new generation. | Protection while the attacker can run the app as the user, read its plaintext or exercise its current device capabilities.                  |
+| Same-origin XSS, compromised dependency or bad release | The administration and content-recovery roots remain absent during ordinary operation. After hostile code is removed, the administration root can replace the delegate and revoke operational credentials; the content-recovery root lets a clean replacement regain content and rotate its keys. | Confidentiality or integrity while hostile code runs with the app's origin and privileges, including any recovery material entered then. Client-side encryption cannot provide that. |
+| All devices and authenticators lost while hosted ciphertext still exists (S47) | The saved code restores authorization authority and content-key access; account access is recovered separately; the hosted copy supplies the ciphertext. Together those paths complete workspace recovery (§5.7.6). | The code does not restore account access or missing ciphertext. No party, this service included, holds material that substitutes for the code. |
 | Service outage or disappearance (S50)                  | Existing local documents remain readable and writable; no local operation awaits the service.                                                | Server-mediated sync, server-held recovery material or a promise that the service's copy remains reachable after the service disappears.    |
+
+> **Decided as the minimum security promise.** A protocol that cannot meet every claim in the middle
+> column reopens the upstream decision that forced it. D-28 and the security contract select and review
+> the mechanism; they do not weaken this table by default.
+
+**The four recovery objects remain separate here as they do in §5.7.6.** The saved code supplies
+authorization authority and content-key access — objects 2 and 3. An account-recovery path supplies
+object 1, and a surviving device, hosted copy or archive supplies object 4. The service-disappearance
+path in D-33 may restore a workspace without restoring the former service account, but it still needs
+both the saved code and independently available ciphertext. Saying that the code itself restores all
+four would erase the distinction the recovery model was introduced to preserve.
+
+**Copied storage and a running device are different attackers.** The PRF wrap can make a copied profile's
+persisted device-key wrapper unusable; it cannot stop an attacker who can invoke the already-unlocked key.
+Neither fact decides whether the local document beside it is plaintext, which remains D-34.
 
 Two phrases in that table carry more work than they appear to. **Already-witnessed** is the bound on
 rollback protection: a returning client can remember the newest authorization head it has seen and reject
