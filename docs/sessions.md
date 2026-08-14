@@ -35,11 +35,11 @@ twice in this document as a premise and never actually decided — plaintext in 
 does today, and the browser's origin sandbox is a boundary between web origins, not an at-rest boundary.
 It is recorded as open rather than quietly settled (§5.7.4).
 
-**One unresolved architecture gate remains: D-28** (what carries the authorization protocol, §5.8.1),
-and it is now the gate on the security contract, since the protocol has to be named before a reviewer can
-review it. Two readiness gates sit beside it: **D-32** (§5.10), the data-lifecycle and operational
-contract, and **D-33**, the survivability package. **D-31** (pricing) stays deferred and is now genuinely
-downstream.
+**The remaining architecture gate is now closed: D-28** selects a service-authoritative envelope
+protocol around end-to-end-encrypted Yjs updates (§5.8.1). The exact formats and constructions belong in
+the TRD and then in independent protocol review. Two readiness gates remain: **D-32** (§5.10), the
+data-lifecycle and operational contract, and **D-33**, the survivability package. **D-31** (pricing) stays
+deferred and is now genuinely downstream.
 **Not ready to promote into the PRD** — see §8.2.
 **Date:** 2026-08-14
 **Audience:** the author, deciding. Not an implementation plan.
@@ -1778,18 +1778,18 @@ enforcement layer, not the only place enforcement can exist. So:
 So D-14 is really two questions — _may the relay decide who connects?_ and _may it decide what is
 written?_ — and they have different costs and different answers available.
 
-> **Decided: at least "partly", and after D-16 that covers every synchronized workspace rather than one
-> tier of them. "No" is ruled out.** The version where everyone simply trusts every received byte is
-> rejected — including for one person syncing between their own devices. Whether the relay goes all the way
-> to schema-level content authority is still open, but D-20 and D-27 mean neither exclusion nor attribution
-> depends on that answer.
+> **Decided: "partly", and after D-16 that covers every synchronized workspace rather than one tier of
+> them.** The service authenticates connections and authorization state; the relay validates opaque
+> envelope metadata and signatures. It does not receive plaintext, parse Yjs content or decide whether a
+> mutation is semantically allowed. "No" and schema-level content authority are both rejected; D-28 fixes
+> the boundary.
 
 **One thing D-16 changed here, worth noting because it makes the second half easier rather than harder.**
 While an accountless peer path existed, any authority given to the relay was authority that half the users' sync
 did not pass through, so relay-side enforcement could never be more than defence in depth. With one
 mediated path, relay-side checks are on every byte that crosses between devices. That does not decide the
-open half — client-side verification is still what the promises rest on, per D-20 and D-27 — but it means
-the relay's checks are now worth what they cost.
+content semantics — D-28 assigns those to clients — and client-side verification is still what the
+promises rest on, per D-20 and D-27. It does mean the relay's opaque checks are worth what they cost.
 
 **On "is there any other option, if revocation is part of the story?" — yes, and it is D-20.** Once content
 is encrypted and keys rotate on removal, a revoked device can connect and receive bytes it cannot read. The
@@ -1833,9 +1833,9 @@ laptop, a stale session on a sold phone, and any agent given access for one purp
 that whoever is at the keyboard is the owner was defensible when the keyboard was the only way in. It is not
 the design that costs less; it is the design that has already made a decision.
 
-Everything else in this document can be decided before the remaining half of D-14. D-20 and D-27 set the
-client-verifiable guarantees; giving the relay schema-level authority later may duplicate their enforcement
-as defence in depth, but does not change what the product promises.
+**D-28 now closes the remaining half of D-14.** D-20 and D-27 set the client-verifiable guarantees;
+schema-level relay authority is unnecessary defence in depth with a much larger confidentiality cost, so
+the selected service boundary stops at opaque metadata and authenticated acceptance evidence.
 
 #### 5.6.1 Authenticated attribution — D-27
 
@@ -2091,7 +2091,7 @@ task-list-on-your-phone product hits most. None of this bears on the current des
 in it. It becomes live again only under the conditions D-16 sets for reopening peer-to-peer.
 
 **D-17. What does "reasonably secure" mean, concretely enough to test?** _(Decided. All five selections
-recorded; the protocol that implements them is D-28's question, not this one's.)_
+recorded; D-28 selects the protocol architecture that implements them.)_
 
 The earlier framing made this sound like a choice between "browser keys" and "real accounts". It is six
 choices: **what the product promises; whether any authority may change authorization outside the service; where
@@ -2145,8 +2145,8 @@ row means reopening the decision named above.
 | Service outage or disappearance (S50)                  | Existing local documents remain readable and writable; no local operation awaits the service.                                                | Server-mediated sync, server-held recovery material or a promise that the service's copy remains reachable after the service disappears.    |
 
 > **Decided as the minimum security promise.** A protocol that cannot meet every claim in the middle
-> column reopens the upstream decision that forced it. D-28 and the security contract select and review
-> the mechanism; they do not weaken this table by default.
+> column reopens the upstream decision that forced it. D-28 selects the architecture boundary; the TRD
+> and security review specify and test the mechanism without weakening this table by default.
 
 **The four recovery objects remain separate here as they do in §5.7.6.** Account recovery supplies
 objects 1 and 2 — account access and the service's authorization of a replacement credential. The saved
@@ -2612,13 +2612,14 @@ The available assurance levels are cumulative:
 > - **Level 4, the independent implementation audit**, is required before either of two triggers: the
 >   phrase *end-to-end encrypted* appearing in marketing copy, or the escrow add-on holding a real key.
 
-**The sequencing constraint is real and it is not schedule padding.** §8.1 records that D-28's answer
-changes what a protocol reviewer is being asked to review, so **level 3 cannot be scheduled before D-28
-closes.** Booking a design review of an unnamed protocol buys an opinion about a sketch.
+**The sequencing constraint is real and it is not schedule padding.** D-28 now names the architecture a
+protocol reviewer will review, but level 3 waits until the TRD supplies concrete authorization state,
+envelopes, key rotation, finalization and test vectors. Booking a design review of product-level boundaries
+alone still buys an opinion about a sketch.
 
 **Why level 4 is triggered rather than required at ship**, which is the row most likely to be read as
 corner-cutting: an implementation audit has to repeat after security-boundary changes, and several are
-still pending — D-28, D-32, D-34 and the escrow add-on each move a boundary. Buying the audit before
+still pending — D-32, D-34 and the escrow add-on each move a boundary. Buying the audit before
 those settle purchases evidence about a system that will not be the shipped one. The triggers are chosen
 so that the audit lands before the two moments where its absence would make a claim dishonest rather than
 merely unproven: saying the words, and holding someone else's key.
@@ -2714,8 +2715,9 @@ not in the Yjs ecosystem. **Ink & Switch's Keyhive** is the serious effort: capa
 control designed for partition tolerance, with read/write/admin modelled as chains of signed
 delegations, group membership derived from those chains, revocation by the delegator, and an
 integration into Automerge Repo as an auth provider. The interesting part for this document is that it
-is designed so that _the server does not have to be the authority_ — capabilities travel with the
-data, which is the only known shape that gives D-14 a "yes" without giving up principle 3.
+is designed so that _the server does not have to be the authority_ — capabilities travel with the data.
+That solves the harder service-independent authorization problem this product has now rejected, while its
+credential separation and signed-operation patterns remain useful prior art.
 
 **And there is a second project that is closer to D-19's pairing flow than Keyhive is.**
 `@localfirst/auth` (Herb Caudill; formerly Taco) does decentralised authentication and authorisation from
@@ -2729,62 +2731,59 @@ protocol already worked out, and it is worth reading before designing one.
 Three implications, none of which is a decision:
 
 1. **Both are Automerge-adjacent, not Yjs's.** Keyhive integrates with Automerge Repo, and
-   `@localfirst/auth` ships an Automerge Repo provider. Nothing equivalent exists behind this app's seam,
-   so a real authorisation story is bespoke, server-side (the "yes" branch, with its costs), or a reason
-   to re-examine the CRDT choice — and TRD §10.1 already treats a Yjs v14 migration as planned debt, so
-   that cost is known rather than unbounded.
+   `@localfirst/auth` ships an Automerge Repo provider. Nothing equivalent exists behind this app's seam.
+   Their authorization patterns remain useful prior art, but adopting either integration would buy
+   decentralized authority the product no longer needs (§5.7.2) at the price of a CRDT migration.
 2. **The protocols are more portable than the integrations.** Signed delegation chains and token-based
    device invitations are not Automerge-specific ideas; only the plumbing is. Reading them for the design
    is available even if adopting the libraries is not.
 3. **Watch rather than wait.** The principal/device work in this document does not depend on either, and
-   D-14's "partly" branch is available regardless.
+   D-14's selected "partly" boundary does not require their decentralized authority.
 
 #### 5.8.1 What carries the authorization protocol — D-28
 
-**D-28. Bespoke on Yjs, adopt the stack the prior art lives in, push it to the server, or reduce the
-promise?** _(Open. Promoted out of implication 1 above, which is where it was hiding.)_
+**D-28. What carries authorization around encrypted Yjs updates?** _(Decided.)_
 
-Recording it as an implication was right while D-20 and D-27 were open questions. They are not: D-20
-requires content encryption with key rotation, D-27 requires signed mutation envelopes with derived
-attribution, and §8.1 fixes the signed authorization epoch as a requirement rather than an option. So
-the app has committed to building signed authorization state, per-credential key wrapping, epoch
-commitment and envelope verification **on a stack that supplies none of them**, while the serious work
-happens in an ecosystem it is not in. That is the largest engineering risk in this document and it
-should not live inside a bullet about prior art.
+The old four-way choice was inherited from a model in which authorization might have to survive without
+the service. §5.7.2 removed that requirement. Once the service is the sole authorization authority, the
+tractable shape is neither a decentralized capability system nor a schema-aware server: it is a narrow
+service-authoritative control plane around an end-to-end-encrypted Yjs data plane.
 
-| Option                                  | What it costs                                                                          | What it risks                                                                                   |
-| --------------------------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| **Bespoke on Yjs**                      | Designing and getting reviewed a novel protocol, then maintaining it                   | The failure mode is silent and cryptographic; §5.7.8's assurance bar becomes the whole budget   |
-| **Adopt the Automerge-adjacent stack**  | A CRDT migration, on top of the v14 migration TRD §10.1 already treats as planned debt | Rewrites the storage and editor seams; Keyhive is not finished either                           |
-| **Server-enforced (D-14's full "yes")** | The relay gains schema-level authority; a thinner client protocol                      | Forfeits the strongest consequence of D-20 and contradicts what §2 selected Yjs for             |
-| **Reduce the promise**                  | Drop D-27 to advisory, keep D-20's encryption and rotation                             | Reopens the agent-accountability case D-27 exists for, and §5.6's Red Queen argument against it |
+> **Decided: keep Yjs and add a service-authoritative envelope protocol around it.** The service owns
+> account authorization and signed authorization state. Clients own content keys, encrypt Yjs updates,
+> sign their envelopes and verify authorization and finalization evidence. The relay and durable store
+> handle only opaque envelopes and authenticated metadata. No service component parses document content
+> or receives a content key.
 
-**D-16 moved this decision without answering it, and the movement is worth recording because it runs
-against the prior art.** The hardest part of a bespoke protocol was never the signing — it was
-**partition-tolerant authorization**: deciding which of two concurrently produced authorization successors
-is real when no server saw either (S49), and what happens to content built on the losing one (D-26). With
-one relay-mediated path and a server authorization authority, that entire class is replaced by "the server serializes
-commits; the loser retries."
+The boundary is easiest to see by component:
 
-Two consequences pull in opposite directions:
+| Component | Responsible for | Must not become |
+| --------- | --------------- | --------------- |
+| **Authorization service** | Authenticate the account; admit and revoke device/agent credentials; assign capabilities; sign and serialize authorization epochs; issue authenticated acceptance/finalization evidence | A content-key holder, mutation signer or Yjs semantic authority |
+| **Client envelope layer** | Encrypt outbound Yjs updates; bind workspace, epoch, credential, actor and digest; sign envelopes; verify inbound authorization, signatures and acceptance evidence; wrap and rotate content keys | A second authorization authority or a network dependency on the local edit path |
+| **Relay and durable store** | Authenticate transport; validate opaque envelope fields, authorization epoch and signatures; sequence and store ciphertext; carry service-signed acceptance evidence | A plaintext processor, CRDT merger or source of authorization by itself |
+| **Yjs** | Represent and merge document content locally after an envelope has passed verification | An identity, authorization or recovery system |
 
-- **The bespoke option gets materially cheaper and less dangerous.** What remains is service-signed
-  authorization, per-credential key wrapping, envelope verification and epoch commitment — still novel
-  cryptography needing review, but no longer a distributed-consensus problem
-  wearing a CRDT hat.
-- **The Automerge-adjacent option loses much of its draw.** Keyhive and `@localfirst/auth` are valuable
-  precisely _because_ they solve authorization without a central authority. That is the property D-16 just
-  stopped needing. Paying a CRDT migration to acquire partition tolerance the product has decided not to
-  use is a poor trade; their protocols remain worth reading, which was always the more portable half
-  (§5.8, implication 2).
+This is still a bespoke **protocol integration**, and the distinction matters. The project owns the
+message schemas, state transitions, downgrade rules, key rotation and finalization construction. It does
+not invent cryptographic primitives, distributed authorization or a new CRDT. Standard reviewed
+signatures, authenticated encryption and key-wrapping constructions are inputs; §5.7.8's independent
+design review evaluates how they are composed.
 
-This does not settle D-28 — reduce-the-promise and server-enforced are untouched, and "cheaper bespoke
-cryptography" is still bespoke cryptography. It does mean the option set should be re-weighed rather than
-inherited from v14.
+The alternatives are rejected for reasons the later decisions make sharper:
 
-**It is forced by the moment §8.1's contract is drafted**, because the contract cannot say what an
-envelope is without knowing what produces and verifies one. Note also that TRD §10.1's planned Yjs v13 →
-v14 migration is sometimes read as covering this. It does not: v14 brings no authorization layer.
+- **A decentralized Yjs authorization system** solves service-absent lineage continuity, which migration
+  deliberately does not promise, while retaining the largest bespoke problem.
+- **The Automerge-adjacent stack** buys that same decentralized authority through a CRDT migration.
+- **Schema-aware server enforcement** gives the service content authority and breaks D-20's
+  confidentiality boundary.
+- **Reducing D-27 to advisory attribution** gives up the accountability property the agent case requires.
+
+**What remains is TRD work, not another product branch:** credential and algorithm selection; the exact
+authorization-state and envelope formats; batching; key wrapping and rotation; receipt, accepted-log or
+checkpoint finalization; downgrade and interrupted-rotation behavior; and concrete test vectors. TRD
+§10.1's planned Yjs v13 → v14 migration does not supply any of these, but neither does this decision make
+the CRDT migration larger than it already was.
 
 ### 5.9 Raised in review — D-29, D-30
 
@@ -3182,12 +3181,12 @@ second human, sharing UI or second visible document is implied by that architect
 
 **These are recorded dispositions, not claims that every mechanism is finished.** Several rows marked
 Decided carry live UX or parameter questions in their bodies. The column below says what has been settled;
-§8.1 isolates the remaining architecture gates from those non-blocking details.
+§8.1 isolates the remaining TRD parameters and readiness gates from those non-blocking details.
 
 **v15 changed nine rows from one decision.** D-16 landing moved D-19, D-23, D-24, D-25, D-26, D-29 and
-D-31, removed D-17's everyday user-held authorization mechanism, and re-weighted D-28's options — which
-is the clearest evidence that the account/service boundary was never a pricing question. §5.7.2 now
-closes the remaining authority question by choosing service authorization and migration.
+D-31, removed D-17's everyday user-held authorization mechanism, and first re-weighted D-28 — which is
+the clearest evidence that the account/service boundary was never a pricing question. §5.7.2's service
+authority decision then narrowed D-28 to the control-plane/data-plane split it now selects.
 
 | ID       | Question                                                       | Status                    | Answer, or what happens without one                                                                                                         |
 | -------- | -------------------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -3204,7 +3203,7 @@ closes the remaining authority question by choosing service authorization and mi
 | **D-11** | What is a workspace — content, or permission?                  | **Decided in principle**  | Permission. UI reveals one home workspace/document; architecture supports many memberships; "room" stays off the architecture               |
 | **D-12** | What happens when local identity is lost?                      | **Decided in principle**  | Authorization epoch 0 may re-mint; later epochs must not. Signed state, not roster. Response open                                           |
 | **D-13** | Is there a deliberate reset?                                   | **Decided**               | Yes. Whether it is sign-out, and what it clears, open                                                                                       |
-| **D-14** | May the relay decide who connects? What is written?            | **Decided in part**       | Server sync authenticates connections/envelopes; schema-level content authority is open and not required by D-20/D-27                       |
+| **D-14** | May the relay decide who connects? What is written?            | **Decided**               | Service authenticates connections and authorization; relay validates opaque envelopes; clients retain semantic authority; no service component reads Yjs content |
 | **D-15** | Within a device, is undo per tab or shared?                    | **Decided**               | Per tab                                                                                                                                     |
 | **D-16** | Where does the account/service boundary sit?                  | **Decided**               | Local is free and permanent; hosted sync requires an account; pricing is D-31; the Paired rung is retired; **peer-to-peer is not built**    |
 | **D-17** | What does "reasonably secure" mean, concretely?                | **Decided**               | Service authorization, user-held content recovery and migration; one independently saved code seals the content-recovery root; escrow excluded from the service; non-extractable PRF-wrapped device key; levels 1–3 before sync ships, 4 on trigger |
@@ -3218,7 +3217,7 @@ closes the remaining authority question by choosing service authorization and mi
 | **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**               | Yes, for the environment case. Warn about the property, not the cause. Offer the grant, then export, then sync                              |
 | **D-26** | Revocation learned late, history already diverged?             | **Decided**               | No lineage rule, no discard, no filtered replay. Needs a **finalization boundary** against a hostile relay (§5.2.2) — a contract row        |
 | **D-27** | Is attribution authenticated, or advisory?                     | **Decided**               | Authenticated by an epoch-authorized credential; actor is derived or explicitly authorized for representation                               |
-| **D-28** | What carries the authorization protocol?                       | **Open**                  | Bespoke on Yjs · adopt the Automerge-adjacent stack · server-enforced · reduce the promise. Forced when §8.1 is drafted                     |
+| **D-28** | What carries the authorization protocol?                       | **Decided**               | A service-authoritative control plane around end-to-end-encrypted Yjs updates; exact envelopes, finalization and key constructions belong in the TRD |
 | **D-29** | What happens if a paid account plan lapses?                    | **Decided conditionally** | If D-31 selects such a plan: grace period, then read-only. Content keys and local replicas survive; sync stops; local use is untouched       |
 | **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Open — weakened**       | Its motivating case was withdrawn with D-5's flow. "An apparent exception is usually a missing rule" is the likely shape                    |
 | **D-31** | What does hosted sync cost, and how should it be priced?       | **Deferred on purpose**   | Business-model question outside this document. D-16 requires an account but does not presume free, paid, bundled or metered                 |
@@ -3226,12 +3225,12 @@ closes the remaining authority question by choosing service authorization and mi
 | **D-33** | What survives the service, and what may be claimed?            | **Open — readiness gate** | Staged, evidence-gated claims. Narrow claim available now; the strong one needs the §5.11.4 tests and the survival package                  |
 | **D-34** | Is the local document encrypted at rest?                       | **Open — newly opened**   | Never decided, only assumed twice. Plaintext in IndexedDB today; the origin sandbox is not an at-rest boundary. Likely an opt-in device lock (§5.7.4) |
 
-### 8.1 The security artifact remains, and D-17 gates it
+### 8.1 The security contract is bounded; the TRD must instantiate it
 
 An earlier draft said "only D-17 is open", which flattened a real distinction; the draft after it said
-"four blocking questions", which fragmented one. The accurate statement is: **the other product
-dispositions are recorded, D-17 now has an explicit decision surface, and the output of deciding it is one
-security contract used by all of them.**
+"four blocking questions", which fragmented one. The accurate statement is: **D-17 fixes the security
+promise and authority split, D-28 fixes the protocol boundary, and the remaining mechanism choices are
+inputs to one TRD security contract rather than new product branches.**
 
 The contract now has both fixed requirements and deliberately unselected fields:
 
@@ -3239,6 +3238,7 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | ---------------------------------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | Threat boundary and negative promises    | §5.7.1's attacker table; offline local use and availability limits                      | Any stronger claim, including local-device-at-rest or traffic-metadata protection                          |
 | Credential separation                    | Relay bearer, per-device/per-agent operational credentials, service authorization authority and content-recovery root | Concrete credential formats, algorithms, key separation and crypto-agility                 |
+| **Protocol boundary**                     | **A service-authoritative control plane around client-encrypted Yjs updates**; service signs authorization/finalization, clients encrypt and sign content, relay/store handle opaque envelopes (D-28) | Exact message/state formats, verification APIs, batching and test vectors |
 | **Authorization and recovery boundary**  | **Selected: the service alone authorizes; the user-held root recovers content only; service disappearance starts a new lineage through migration** (§5.7.2, §5.7.3) | Account-recovery policy and the exact user-mediated proof that gates content-key delivery |
 | Browser key storage                      | **Selected: a non-extractable `CryptoKey`, PRF-wrapped where the authenticator supports it.** The tier is shown in the device list and is never silent; the unlock gates sync, not the app (§5.7.4) | PRF enrollment flow, and the copy shown for a device on the lower tier |
 | **Local storage at rest**                | Nothing is fixed. The workspace is plaintext in IndexedDB today, and the origin sandbox is not an at-rest boundary | Whether an opt-in device lock exists at all — **D-34**, newly opened and never previously decided (§5.7.4) |
@@ -3251,16 +3251,15 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | **Awareness and presence metadata**      | Presence is outside the content encryption as currently designed                        | Encrypt awareness, or state in the threat boundary that the relay learns who edits what and when (D-20)    |
 | Account relationship to the content root | **Selected: non-custodial encrypted recovery.** The service never receives the wrapping factor and cannot decrypt under any proof or order. Escrow is excluded from the service and survives only as an opt-in add-on operated by a separate legal entity, scoped to the content root (§5.7.5) | The add-on's operating boundary, and the copy that explains a two-party disclosure requirement |
 | Recovery                                 | **Selected: a mandatory high-entropy code saved outside the enrolling device, wrapped 1-of-N**, with optional independent PRF-passkey wraps (§5.7.6). Account, authorization, content key and ciphertext remain four separate objects | Code generation and confirmation, replacement policy, loss warnings and account-deletion semantics (D-13) |
-| Web application and protocol assurance   | **Selected: levels 1–3 before sync ships, 5 live at ship, 4 on a stated trigger.** Same-origin code is inside the cryptographic boundary; design review waits on D-28 (§5.7.8) | Which ASVS profile and version, who performs the design review, and the audit's scope |
+| Web application and protocol assurance   | **Selected: levels 1–3 before sync ships, 5 live at ship, 4 on a stated trigger.** Same-origin code is inside the cryptographic boundary; D-28 fixes the design-review scope at the architecture level (§5.7.8) | Which ASVS profile and version, who performs the design review, the audit's scope, and the concrete TRD protocol submitted for review |
 | **Durable store representation**         | A content-blind store cannot merge; recovery needs checkpoints, not a merged state      | Checkpoint construction and cadence, manifest binding, retention of superseded checkpoints (D-33, §5.11.3) |
 | **Portability and migration**            | Export, import, an independently obtainable build and creation of a fresh authorization lineage at a replacement service are requirements, not roadmap | Formats, distribution mechanism and migration flow (D-33) |
 
 **D-17 gated the selections in the right-hand column, not the existence of every left-hand requirement —
 and all five are now recorded.** The authorization/content boundary, the account's relationship to the
 content root, the recovery factor, the device key's storage, and the assurance bar. **D-17 is closed.** The common
-core in §5.7.9 can be turned into a protocol and put in front of someone who does this professionally,
-subject to one ordering constraint: **D-28 first**, because its answer determines what that reviewer is
-being asked to review (§5.7.8).
+core in §5.7.9 now has D-28's architecture boundary and can be specified in the TRD, then put in front of
+someone who does this professionally (§5.7.8).
 
 **Deciding it opened one new question rather than closing every one.** **D-34** — whether the local
 document is encrypted at rest — was assumed twice in this document and never decided (§5.7.4). It is not
@@ -3279,13 +3278,10 @@ removes both.** That is not a weakening of content survivability: the user retai
 root and can migrate the workspace. What does not survive is the old service's authorization lineage,
 which the product has no need to portray as continuous.
 
-**The one item outside that cluster** is D-14's second half — whether the relay ever gains authority over
-content. Genuinely independent, and much less urgent since D-20 made exclusion work without it.
-
-**And one gate that is not D-17's and now sits beside it: D-28** (§5.8.1). The contract's envelope,
-epoch and checkpoint rows cannot be specified without knowing what implements and verifies them, so D-28
-is answered before or with the contract rather than after it — and its answer changes what the reviewer
-in §5.7.8 is being asked to review.
+**D-28 closes D-14's second half with it.** The service owns authorization and opaque acceptance evidence;
+clients own content semantics and keys. The relay may validate metadata and signatures but never gains
+schema-level content authority. The contract's envelope, epoch and checkpoint rows now have an
+architecture to instantiate in the TRD and a defined boundary for §5.7.8's reviewer.
 
 **Live sub-questions inside recorded dispositions.** Each is a UX or parameter choice and none blocks the
 contract: D-12's response on an admitted document with no identity · D-13's destructive semantics · D-18's
@@ -3322,8 +3318,8 @@ specified but incomplete:
    remain. **D-17 is closed**: service authorization with content-only user recovery, a mandatory code
    saved independently of the enrolling device, migration to a fresh lineage after service disappearance,
    escrow excluded from the service, a non-extractable PRF-wrapped device key, and levels 1–3 of assurance
-   before sync ships. What gates the contract now is **D-28**, not D-17 — the
-   protocol has to be named before it can be reviewed. **D-34** is new and does not gate it.
+   before sync ships. **D-28 is closed**: the TRD now has to specify the selected service-authoritative
+   envelope protocol before it can be reviewed. **D-34** is new and does not gate it.
 4. **A service data and operations contract**, whose minimum contents are fixed by D-32 but whose data
    inventory, retention and deletion rules, operator authority and readiness evidence are not. This is
    separate from the cryptographic contract: encryption limits what the service can read, not what
