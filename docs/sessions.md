@@ -10,7 +10,8 @@ the durability appendix.
 
 **D-5 is also answered rather than built**: a device joining a workspace does not keep its own history,
 so the merge · theirs · ours · abort adjudication is withdrawn and D-30's motivating case goes with it.
-The *rule* is a product decision; the *transition* is not free, and §5.2.1 records what it costs.
+**D-30 is therefore closed with Rule 1 unchanged.** The *rule* is a product decision; the *transition* is
+not free, and §5.2.1 records what it costs.
 
 **Four corrections review found in the first v15 draft, recorded rather than quietly fixed**, because
 each was an over-claim in the direction of the decision this revision wanted to make: D-16 removed the
@@ -37,9 +38,10 @@ It is recorded as open rather than quietly settled (§5.7.4).
 
 **The remaining architecture gate is now closed: D-28** selects a service-authoritative envelope
 protocol around end-to-end-encrypted Yjs updates (§5.8.1). The exact formats and constructions belong in
-the TRD and then in independent protocol review. Two readiness gates remain: **D-32** (§5.10), the
-data-lifecycle and operational contract, and **D-33**, the survivability package. **D-31** (pricing) stays
-deferred and is now genuinely downstream.
+the TRD and then in independent protocol review. **D-32 is also closed at the product level:** immutable
+data-handling constraints precede the TRD, a living inventory follows the architecture, and an as-built
+review gates wider availability (§5.10). The remaining readiness gate is **D-33**, the survivability
+package. **D-31** (pricing) stays deferred and is now genuinely downstream.
 **Not ready to promote into the PRD** — see §8.2.
 **Date:** 2026-08-14
 **Audience:** the author, deciding. Not an implementation plan.
@@ -240,7 +242,7 @@ pick. The flow is gone and the user adjudicates nothing.
 The general lesson is worth keeping, because this document reached for a UI twice before noticing it:
 **an apparent exception to Rule 1 is usually a missing rule.** Where the app seems to need the user to
 choose between workspace states, the question to ask first is whether anything in the model already
-determines the answer. **D-30** remains open, but its motivating case has been withdrawn from under it.
+determines the answer. **D-30 closes with Rule 1 unchanged.**
 
 **Rule 2. The UI never promises anything about a remote device that cannot be kept.** No auto-hiding a
 member as though they were gone, no "removed" that does not remove, no presence claim that outlives
@@ -2232,8 +2234,8 @@ continuity, which is the promise D-33 now makes.
 
 Account deletion similarly ends the service authorization lineage and synchronization; it cannot erase
 content or recovery material already held by the user. Each device becomes an independent Local install
-with its last replica (D-24). D-13 and D-32 decide what local and service-held recovery material deletion
-actually clears.
+with its last replica (D-24). D-13 and D-32 constrain deletion; the TRD inventory records exactly which
+local and service-held recovery artifacts each deletion event clears.
 
 #### 5.7.3 Who may change authorization outside the service? — decided: nobody
 
@@ -2619,7 +2621,8 @@ alone still buys an opinion about a sketch.
 
 **Why level 4 is triggered rather than required at ship**, which is the row most likely to be read as
 corner-cutting: an implementation audit has to repeat after security-boundary changes, and several are
-still pending — D-32, D-34 and the escrow add-on each move a boundary. Buying the audit before
+still pending — D-34, the escrow add-on and D-32's evolving as-built data flows each move a boundary.
+Buying the audit before
 those settle purchases evidence about a system that will not be the shipped one. The triggers are chosen
 so that the audit lands before the two moments where its absence would make a claim dishonest rather than
 merely unproven: saying the words, and holding someone else's key.
@@ -2831,75 +2834,97 @@ keeps its history, and the others are told what they are about to lose and offer
 about the divergence would let someone believe their phone and laptop were still one list for weeks after
 they stopped being one — and then lose the difference without warning.
 
-**D-30. Does Rule 1 have exceptions, or the wrong formulation?** _(Open. Raised by §1.4 and D-5.)_
+**D-30. Does Rule 1 have exceptions, or the wrong formulation?** _(Decided.)_
 
 **The case that raised this has been withdrawn.** Rule 1 says the user never manages workspaces; v14's
 D-5 then required them to adjudicate two document histories with a preview and four choices, which was
 workspace management at its most demanding. v15's D-5 removes that flow entirely — the workspace's
 history wins by rule, and the user confirms a loss rather than choosing an outcome (§1.4).
 
-So the question is now asked on much weaker evidence, and it may be answerable. What is left pointing at
-it: §1.4's corollary that security cannot be hidden the way workspace management can, which is written
-about security surfaces and was always the sturdier of the two exceptions; and the residual fact that
-confirming an irreversible loss is still *something* the user has to understand about workspace state,
-even if they are not managing it.
+> **Decided: Rule 1 stands as written — the user never manages workspaces.** A workspace remains a real
+> architectural object: one document plus its authorization boundary. The product exposes the intentions
+> that act on it — devices, access, account recovery, export, import and migration — without asking the
+> user to name, select, reconcile or administer workspace containers.
 
-The available shapes: **Rule 1 stands as written**, now the strongest reading, with §1.4's security
-corollary as the single conceded exception and v15's D-5 as evidence that the other apparent exception
-dissolved once a rule replaced a flow; **Rule 1 governs routine management and yields to
-irreversibility**, which was the leading answer in v14 and is now carrying much less weight; **Rule 1 is
-about the steady state and says nothing about transitions**, narrower and cleaner but leaving D-24's
-promotion path unclassified; or **Rule 1 needs reformulating** around what it is actually protecting,
-which is that nobody should have to hold a model of workspaces in their head to use the app on two
-devices.
+The security corollary is not an exception. Revoking a phone is device and access management; saving a
+recovery factor is recovery; confirming replacement of a joining device's local history is consent to an
+irreversible data transition. Each changes workspace state underneath, but none requires the user to hold
+a workspace model. D-5 is the proof: once the product supplies the rule that selects the history, the
+workspace-management UI disappears and only the consequence needs explaining.
 
-Left open, but the useful reframing from v15 is recorded in §1.4 and is probably where the answer lives:
-**an apparent exception to Rule 1 is usually a missing rule.** If that generalises, Rule 1 stands and the
-exceptions are places the model has not been finished.
+Rule 1 would need reopening if the product introduced multiple visible workspaces and asked a person to
+name, choose between, move among or administer them. Current architectural capacity for multiple
+memberships does not do that; the revealed product remains one home workspace/document (§5.4.1).
 
-### 5.10 The service contract — D-32
+### 5.10 The service data boundary — D-32
 
-**D-32. What may the service retain, observe and do to an account or workspace?** _(Open. A gate to
-offering the product to real users, and an input to the TRD rather than launch paperwork.)_
+**D-32. What may the service retain, observe and do to an account or workspace?** _(Decided in
+principle; inventory evolves with the TRD and implementation.)_
 
-The previous draft put the operational and legal surface wholly out of scope and said it should arrive
-only before shipping. That is too late. The architecture will already have selected identifiers, logs,
-backups, billing records, recovery material, retention behaviour and operator tooling. A later policy can
-describe those choices, but it cannot make unnecessary collection disappear or add deletion boundaries
-that the storage model never recorded.
+The previous draft required a complete service data and operations contract before the service
+architecture was implementation-ready. That reverses the dependency: the concrete stores, queues, logs,
+backups and processors do not exist until the TRD and implementation choose them, so an exhaustive prior
+inventory would be speculative and would immediately drift. Building first and surveying only at the end
+is also too late where storage topology has already made deletion, isolation or least privilege expensive.
 
-D-20 reduces the sensitivity of the server's document copy; it does not make the service blind or the
-privacy contract short by construction. The service can still hold account and billing data, device and
-workspace identifiers, authorization history, ciphertext, connection metadata, abuse signals, support
-records and backups. End-to-end encryption also makes some user requests harder: an operator may be unable
-to inspect or repair content, while deleting the server copy cannot delete plaintext or ciphertext held
-by an offline replica. Those are product truths to state, not exceptions to hide in terms of service.
+> **Decided: fix the irreversible data-handling constraints now; maintain a living inventory as the TRD
+> and implementation introduce data; review the as-built inventory before external availability.** The
+> inventory is a view of the architecture, not a second architecture document, and it does not block
+> beginning the TRD.
 
-> **Open, with a fixed deliverable: a service data and operations contract must be approved before the
-> service architecture is implementation-ready.** It is jurisdiction-informed but not a substitute for
-> legal review. At minimum it records:
+#### 5.10.1 Constraints that precede the TRD
 
-1. **A data inventory and purpose for every class** the service receives or derives, including whether
-   it is content, account data, credential material, metadata, telemetry, support data or an abuse signal.
-2. **Collection and disclosure boundaries:** what is necessary, what is optional and consented, what is
-   never collected, which processors receive it, and what an operator can see or change.
-3. **Lifecycle rules:** creation, retention, backup expiry, export, correction and deletion for each
-   class, with the difference between account deletion, subscription lapse, local reset and workspace
-   deletion made explicit.
-4. **Honest replica semantics:** a server deletion can remove service-held material and future access; it
-   cannot recall data already copied to an offline device or an agent. The UI and policy use the same
-   language as D-20's future-access boundary.
-5. **Operational authority and due process:** support access, audit trails, abuse controls, rate limits,
-   suspension, appeal, legal-request handling and the rule that service suspension never makes an
-   existing local document unreadable or unwritable.
-6. **Readiness evidence:** owner and review cadence, incident and breach response, processor inventory,
-   deletion/export tests, accessibility and support paths, and jurisdiction- and audience-specific legal
-   review before availability is widened.
+These are product and architecture boundaries, not an attempted inventory:
 
-This does not require choosing a country, retention duration or vendor in this PRD. It requires admitting
-that those choices have architectural consequences and assigning them a reviewable artifact now. D-17
-answers what attackers and cryptographic authorities can do; D-32 answers what the service intentionally
-does, retains and promises. Neither substitutes for the other.
+1. **No synchronization, account or authorization component receives document plaintext, a content key
+   or a recovery factor.** A wrapped content root and ciphertext are not exceptions; the factor that
+   unwraps them remains with the user or the separately operated escrow add-on (§5.7.5). A user may still
+   deliberately send exported content to someone, including support; that is an explicit disclosure, not
+   a decryption capability in the service.
+2. **Every subject-bearing persisted record has a deletion scope.** Account-, workspace-, device- and
+   credential-related data must be attributable to the subject whose deletion, export or correction acts
+   on it. Aggregated operational measurements must not quietly retain subject identifiers.
+3. **No reusable credential or recovery secret enters logs, telemetry or support artifacts, and no
+   plaintext document content is collected there automatically.** Diagnostics use an explicit allowlist
+   rather than attempting to redact arbitrary objects after collection. User-supplied support material is
+   an explicit, separately scoped disclosure with its own retention rule.
+4. **Service suspension and service-side deletion never disable an existing local replica.** Deletion can
+   remove service-held material and future access; it cannot recall bytes already copied to an offline
+   device or agent (D-20, D-24, D-29).
+5. **Operator powers are explicit, least-privilege and auditable.** Support may diagnose service state but
+   cannot bypass content encryption; authorization changes, suspension and exceptional access to account
+   metadata leave an audit record.
+6. **Presence is not accidentally durable.** Awareness metadata is encrypted, kept ephemeral, or given an
+   explicit purpose and retention rule; it must not inherit the retention of workspace ciphertext merely
+   because both pass through the relay (D-20).
+
+These are the things expensive to retrofit. They constrain the TRD without prescribing its service split,
+tables, vendors, retention durations or backup mechanism.
+
+#### 5.10.2 The inventory follows the architecture
+
+As a store, queue, log, telemetry event, backup or processor is introduced, its design record adds one
+compact row:
+
+> **data class · purpose · subject/deletion scope · storage or recipient · retention · deletion event ·
+> operator visibility · third parties**
+
+That record lives beside the schema, service or infrastructure definition that makes it true and changes
+with it. The TRD starts the inventory with its proposed stores and flows; implementation reconciles it to
+what is actually deployed. Exact vendors, processors, backup behavior, log fields, support workflows and
+retention periods are discovered and decided there rather than guessed in this product document.
+
+#### 5.10.3 The as-built review is the readiness gate
+
+Before availability is widened beyond development or a deliberately bounded test audience, review the
+deployed inventory, processor list, operator roles, backup expiry, deletion/export behavior, incident
+path, and jurisdiction- and audience-specific legal surface. The evidence is generated deletion/export
+tests and a reconciliation against deployed infrastructure, not the existence of a long policy document.
+
+D-17 answers what attackers and cryptographic authorities can do; D-32 answers which constraints the
+service must preserve while its concrete data surface is discovered. Neither substitutes for the other,
+but only the constraints belong in the PRD. The inventory and operational program belong to the TRD,
+implementation and release review at the stages where they can be accurate.
 
 ### 5.11 What survives the service — D-33
 
@@ -3219,9 +3244,9 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-27** | Is attribution authenticated, or advisory?                     | **Decided**               | Authenticated by an epoch-authorized credential; actor is derived or explicitly authorized for representation                               |
 | **D-28** | What carries the authorization protocol?                       | **Decided**               | A service-authoritative control plane around end-to-end-encrypted Yjs updates; exact envelopes, finalization and key constructions belong in the TRD |
 | **D-29** | What happens if a paid account plan lapses?                    | **Decided conditionally** | If D-31 selects such a plan: grace period, then read-only. Content keys and local replicas survive; sync stops; local use is untouched       |
-| **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Open — weakened**       | Its motivating case was withdrawn with D-5's flow. "An apparent exception is usually a missing rule" is the likely shape                    |
+| **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Decided**               | Rule 1 stands: users manage devices, access, recovery and data transitions without managing or seeing workspace containers                 |
 | **D-31** | What does hosted sync cost, and how should it be priced?       | **Deferred on purpose**   | Business-model question outside this document. D-16 requires an account but does not presume free, paid, bundled or metered                 |
-| **D-32** | What may the service retain, observe and do?                   | **Open — readiness gate** | Produce the data and operations contract in §5.10 before service architecture is implementation-ready                                       |
+| **D-32** | What may the service retain, observe and do?                   | **Decided in principle**  | Fix irreversible constraints before the TRD; maintain a living inventory during design/build; reconcile and review the as-built surface before wider availability |
 | **D-33** | What survives the service, and what may be claimed?            | **Open — readiness gate** | Staged, evidence-gated claims. Narrow claim available now; the strong one needs the §5.11.4 tests and the survival package                  |
 | **D-34** | Is the local document encrypted at rest?                       | **Open — newly opened**   | Never decided, only assumed twice. Plaintext in IndexedDB today; the origin sandbox is not an at-rest boundary. Likely an opt-in device lock (§5.7.4) |
 
@@ -3295,6 +3320,11 @@ detail.
 anything was built, which was the whole of the saving; pricing is **D-31**, stays deferred, and changes
 nothing in D-16. Neither blocks the security contract, and the boundary's answer *shrank* it.
 
+**D-32 is settled at the only level this document can settle it.** The product constraints on custody,
+deletion scope, diagnostics, local continuity, operator power and presence retention are fixed. The
+inventory starts in the TRD, evolves with implementation and is reconciled before wider availability;
+inventing an exhaustive inventory here would be premature rather than prudent (§5.10).
+
 **And one gate that is new: D-33** (§5.11). It does not block the security contract either, but it shares
 two of its rows — the durable store's checkpoint representation and the migration operation — so the two
 should be drafted with sight of each other. D-33's near-term tests (local operation, export, import into
@@ -3302,9 +3332,10 @@ an independent build) are cheap and can proceed immediately.
 
 ### 8.2 Not ready to promote, and what would make it ready
 
-This document should not be folded into the PRD or treated as implementation-ready yet, and the reason is
-now specific rather than cautious. Of the five artifacts review requires, two exist and three are
-specified but incomplete:
+This document should not yet be folded into the PRD because **one product-level readiness gate remains:
+D-33's target survivability stage and claim.** It is not implementation-ready for the separate and
+ordinary reason that the TRD has not instantiated the selected architecture. Of the five artifacts review
+requires, four are now complete at the product-decision level and one remains open:
 
 1. **The corrected ontology**, which §1 now has — account, principal, workspace, member, actor, device
    and session — with the pre-account principal and workspace-scoped membership as the load-bearing
@@ -3312,18 +3343,14 @@ specified but incomplete:
    steady state for most users rather than a transitional rung (§1.1).
 2. **Explicit cardinalities**, which §5.4.1 now has, separating architectural capacity from revealed
    surface.
-3. **A completed security contract** — whose selections are now all made, and which therefore moves from
-   "specified but incomplete" to "written but unreviewed". §5.7 gives the threat claims, the decisions,
-   the implications and the conformance tests; §8.1 separates fixed requirements from the parameters that
-   remain. **D-17 is closed**: service authorization with content-only user recovery, a mandatory code
-   saved independently of the enrolling device, migration to a fresh lineage after service disappearance,
-   escrow excluded from the service, a non-extractable PRF-wrapped device key, and levels 1–3 of assurance
-   before sync ships. **D-28 is closed**: the TRD now has to specify the selected service-authoritative
-   envelope protocol before it can be reviewed. **D-34** is new and does not gate it.
-4. **A service data and operations contract**, whose minimum contents are fixed by D-32 but whose data
-   inventory, retention and deletion rules, operator authority and readiness evidence are not. This is
-   separate from the cryptographic contract: encryption limits what the service can read, not what
-   metadata it collects or what promises it makes.
+3. **A bounded security contract**, complete as product input and awaiting technical specification and
+   review. §5.7 gives the threat claims, decisions and conformance tests; D-28 selects the
+   service-authoritative envelope architecture; §8.1 separates fixed requirements from the parameters the
+   TRD must supply. **D-34** is new and explicitly does not gate it.
+4. **A service data boundary and staged inventory obligation**, now fixed by D-32. §5.10 records the
+   irreversible constraints that precede the TRD, the compact inventory row added as the architecture
+   introduces data, and the as-built reconciliation that gates wider availability. A speculative complete
+   inventory is no longer required before the services are designed.
 5. **A survivability package and staged claim**, fixed in outline by D-33 but unbuilt. Its near-term
    third — local operation with the service unreachable, export, and import into an independently served
    build — is cheap and should not wait for the rest. The item most easily mistaken for done is
@@ -3436,6 +3463,6 @@ is that the _active_ caret gets a shared treatment of its own (D-21). PR #18 nee
   building the self-hostable relay, the standalone restore tool and the distribution mechanism is
   engineering work with its own document.
 - **The implementation of the operational and legal program** — vendor contracts, jurisdiction-specific
-  notices, support playbooks and filing obligations do not belong in this product document. Their product
-  and architecture inputs are no longer out of scope: D-32 requires a data and operations contract before
-  implementation readiness, and jurisdiction- and audience-specific review before availability widens.
+  notices, support playbooks and filing obligations do not belong in this product document. D-32 fixes
+  the product constraints; the TRD and implementation maintain the living inventory; jurisdiction- and
+  audience-specific review occurs before availability widens.
