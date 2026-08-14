@@ -40,9 +40,11 @@ It is recorded as open rather than quietly settled (§5.7.4).
 protocol around end-to-end-encrypted Yjs updates (§5.8.1). The exact formats and constructions belong in
 the TRD and then in independent protocol review. **D-32 is also closed at the product level:** immutable
 data-handling constraints precede the TRD, a living inventory follows the architecture, and an as-built
-review gates wider availability (§5.10). The remaining readiness gate is **D-33**, the survivability
-package. **D-31** (pricing) stays deferred and is now genuinely downstream.
-**Not ready to promote into the PRD** — see §8.2.
+review gates wider availability (§5.10). **D-33 is now closed at the product level:** an independently
+runnable client and service stack is required; public open source is the preferred path and a triggered
+source release is an acceptable fallback; the corresponding claims wait for release evidence (§5.11).
+**No product-level readiness gate remains. D-31** (pricing) stays deferred and genuinely downstream.
+**Ready to promote into the PRD and begin the TRD; not implementation-ready** — see §8.2.
 **Date:** 2026-08-14
 **Audience:** the author, deciding. Not an implementation plan.
 **Amends:** PRD §11 (Actors), PRD §12 (non-goals) — see §9.
@@ -2929,8 +2931,8 @@ implementation and release review at the stages where they can be accurate.
 ### 5.11 What survives the service — D-33
 
 **D-33. What continues to work if this company stops existing, and what may the product claim about it?**
-_(Open, with a fixed deliverable. Promoted from the durability appendix, which analysed it as a transport
-question and concluded it was not one.)_
+_(Decided in principle. Promoted from the durability appendix, which analysed it as a transport question
+and concluded it was not one.)_
 
 **Why this is here rather than in an appendix, and why D-16 forced the promotion.** The appendix asked
 whether ordinary sync should be peer-to-peer, and found two concerns underneath: operating cost, and the
@@ -2945,10 +2947,16 @@ dependent on this service. It was never real (§5.7.3, D-16), but it was there. 
 user is on infrastructure this company operates, so the work below stops being a roadmap item and becomes
 the thing that makes the product's pitch true.
 
-> **Open, with a fixed deliverable: a survivability package and a staged claim.** The claim the product
-> makes must never exceed the stage that has been demonstrated. What is *decided* is that the claim is
-> staged and evidence-gated rather than asserted; what is *open* is how far up the stages to invest, and
-> when.
+> **Decided: software continuity comes from an independently runnable client and service stack, not from
+> preserving this operator.** Publicly available open source is the ordinary and preferred way to satisfy
+> that requirement. A triggered source-escrow or wind-down release with perpetual build-and-run rights is
+> an acceptable but weaker fallback. Binary availability alone is useful during an orderly handoff but
+> does not satisfy replacement-device continuity. Claims remain staged and evidence-gated at release;
+> building and proving the package is not a gate on the PRD or the start of the TRD.
+
+An orderly corporate succession may keep the hosted service running, and enough users may make that the
+commercially likely path. It is welcome operational continuity, not the architectural guarantee: the
+product must remain recoverable when there is no buyer, no cooperative wind-down and no original domain.
 
 #### 5.11.1 Decompose the scenario rather than answering it yes or no
 
@@ -2956,8 +2964,8 @@ the thing that makes the product's pitch true.
 | ------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------- |
 | Open and edit on a device that already has it     | Complete local replica; no read or write awaits network or credential                    | **Held** (§6, PRD principle 3)     |
 | Read the data without `done`                      | Plain, documented export format                                                          | **Substantially held** — Markdown export exists |
-| Reinstall on a replacement device                 | Independently obtainable static build; not dependent on the original origin              | Missing                            |
-| Continue syncing between existing devices         | Replacement service, new account authorization lineage and a documented migration path    | Missing                            |
+| Reinstall on a replacement device                 | Independently obtainable, legally runnable client source/build; not dependent on the original origin | **Plausible path selected:** public open source, or triggered source release; not yet shipped |
+| Continue syncing between existing devices         | Independently runnable authorization service, relay and store; configurable endpoints; documented migration | Same distribution path; unbuilt   |
 | Restore after losing every device                 | Independently held ciphertext, content-recovery factor and standalone restore path         | **No longer gated** — D-17 selected the factor (§5.7.6); archive and restore tool are unbuilt |
 | Admit or revoke a device                          | Account recovery or creation at the replacement service                                   | Missing as a migration flow       |
 | Move to another hosted or self-hosted service     | Restore content, create a new account and enroll devices under the new service's authority | Missing                            |
@@ -2975,10 +2983,15 @@ from peer-to-peer either.
   containing CRDT state and the material needed to resume is the exact restore format.** Neither may
   depend on an undocumented database layout or a live original service.
 - **Application continuity.** A cached PWA continues through an outage; it does not survive a cleared
-  browser store or a replacement device, and an expired origin serves nothing. This needs an
-  independently obtainable release — a downloadable static build with instructions and checksums, capable
-  of being served from another origin — and the requirement is only that reinstalling not depend on the
-  original domain.
+  browser store or a replacement device, and an expired origin serves nothing. The normal answer is a
+  publicly available source release under terms that permit anyone to build, serve and run it indefinitely,
+  with pinned dependencies, instructions, checksums and independently downloadable release artifacts.
+  A third-party source escrow or automatic wind-down release can satisfy the same requirement less
+  reliably if its trigger, license and contents are fixed in advance. A promise that a buyer may keep
+  existing binaries running helps an orderly succession but does not let an arbitrary user reinstall
+  after browsers, operating systems or signing requirements change. The release must cover the
+  authorization service, relay, durable store and migration tooling as well as the client; open-sourcing
+  only the UI preserves neither sync nor recovery.
 - **Cryptographic continuity.** Server-held ciphertext is not recoverable data unless the user can recover
   the decryption root. Restoring account access must never be described as restoring content-key access
   (§5.7.5, §5.1.2). This was D-17's recovery selection seen from the survivability side, and the two were
@@ -3024,11 +3037,19 @@ most of the category:
 > waits on us. Your data exports to ordinary Markdown at any time. Hosted synchronization,
 > fresh-device setup and any server-held recovery material stop being available.
 
-The claim that requires the package, and **must not ship before the tests below pass**:
+The claim enabled by the independently runnable software package, and **it must not ship before the
+corresponding tests below pass**:
 
 > If the hosted service disappears, your app and local data continue to work. Your data is available as
-> ordinary Markdown, and the encrypted workspace can be restored and moved to another compatible sync
-> service using recovery material that you hold.
+> ordinary Markdown. An independently runnable release can be installed without us, and a surviving
+> workspace replica can be moved to another compatible sync service under a new account.
+
+The stronger conjunction — the company is gone **and** every device is lost — adds one condition the
+software cannot create after the fact:
+
+> If you hold a verified encrypted archive and your recovery factor, the encrypted workspace can be
+> restored on a replacement device and moved to another compatible sync service without the original
+> provider.
 
 The gate, demonstrated without production credentials or the original app origin:
 
@@ -3049,17 +3070,29 @@ The gate, demonstrated without production credentials or the original app origin
    drill can pass while the real scenario still fails.
 
 **Tests 1–3 are cheap, near-term and cover most of the felt meaning of the promise; 4–9 are a serious
-program, and 9 is the one that cannot be faked.** That asymmetry is the decision D-33 actually presents: how far up to invest, and when. What is
-not optional is that the claim tracks the stage — an all-or-nothing gate creates pressure to make the
-whole claim early, which is the failure mode this decision exists to prevent.
+program, and 9 is the one that cannot be faked.** They gate the corresponding release claim, not PRD
+promotion or the start of the TRD. An open repository is evidence of availability, not evidence that the
+software builds, restores or migrates; those claims still wait for the tests. Conversely, an unbuilt test
+does not make the product architecture undecided.
 
 #### 5.11.5 The package
 
-What "replaceable" concretely requires, so it can be scoped rather than admired: a documented, versioned
-envelope and checkpoint protocol; a small self-hostable relay and durable store; endpoints configurable
-without editing workspace content; export **and** import; a standalone recovery and inspection tool; a
-user-held recovery secret; a tested migration that creates a new account and authorization lineage
-without importing the former service's authority; and the item a v15 draft left out —
+What "replaceable" concretely requires, so it can be scoped rather than admired: independently
+obtainable source and release artifacts for the client, authorization service, relay and durable store,
+under terms that permit indefinite independent operation; build and deployment instructions with pinned
+dependencies and checksums; a documented, versioned envelope and checkpoint protocol; endpoints
+configurable without editing workspace content; export **and** import; a standalone recovery and
+inspection tool; a user-held recovery secret; and a tested migration that creates a new account and
+authorization lineage without importing the former service's authority.
+
+**Public open source is the straightforward delivery mechanism.** A source escrow or automatic wind-down
+release counts only if it delivers the same source, rights and instructions without requiring the vanished
+operator to act. Perpetual rights to existing binaries are useful for a buyer or orderly succession, but
+they are a bridge rather than this package: they do not repair a build, support a new platform or give a
+user an independently installable replacement after the binary stops running.
+
+The exact-recovery claim for simultaneous company disappearance and total device loss additionally needs
+the item a v15 draft left out —
 
 - **A copy of the ciphertext that already exists outside this service.** Either a **verified encrypted
   fidelity archive** the user has taken and the app has confirmed is restorable, or a **continuously
@@ -3247,7 +3280,7 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Decided**               | Rule 1 stands: users manage devices, access, recovery and data transitions without managing or seeing workspace containers                 |
 | **D-31** | What does hosted sync cost, and how should it be priced?       | **Deferred on purpose**   | Business-model question outside this document. D-16 requires an account but does not presume free, paid, bundled or metered                 |
 | **D-32** | What may the service retain, observe and do?                   | **Decided in principle**  | Fix irreversible constraints before the TRD; maintain a living inventory during design/build; reconcile and review the as-built surface before wider availability |
-| **D-33** | What survives the service, and what may be claimed?            | **Open — readiness gate** | Staged, evidence-gated claims. Narrow claim available now; the strong one needs the §5.11.4 tests and the survival package                  |
+| **D-33** | What survives the service, and what may be claimed?            | **Decided in principle**  | Independently runnable client and service stack; open source preferred, triggered source release acceptable; binary-only continuity insufficient; claims gated by corresponding tests |
 | **D-34** | Is the local document encrypted at rest?                       | **Open — newly opened**   | Never decided, only assumed twice. Plaintext in IndexedDB today; the origin sandbox is not an at-rest boundary. Likely an opt-in device lock (§5.7.4) |
 
 ### 8.1 The security contract is bounded; the TRD must instantiate it
@@ -3325,17 +3358,18 @@ deletion scope, diagnostics, local continuity, operator power and presence reten
 inventory starts in the TRD, evolves with implementation and is reconciled before wider availability;
 inventing an exhaustive inventory here would be premature rather than prudent (§5.10).
 
-**And one gate that is new: D-33** (§5.11). It does not block the security contract either, but it shares
-two of its rows — the durable store's checkpoint representation and the migration operation — so the two
-should be drafted with sight of each other. D-33's near-term tests (local operation, export, import into
-an independent build) are cheap and can proceed immediately.
+**D-33 is settled at the product level too** (§5.11). Independently runnable client and service software
+is the continuity mechanism; open source is the preferred delivery path and a triggered source release is
+the fallback. Its checkpoint and migration requirements belong in the TRD, while the tests gate only the
+claims they demonstrate. The combined company-disappearance and total-device-loss claim additionally
+requires ciphertext already outside the service.
 
-### 8.2 Not ready to promote, and what would make it ready
+### 8.2 Ready to promote; the TRD and release evidence remain
 
-This document should not yet be folded into the PRD because **one product-level readiness gate remains:
-D-33's target survivability stage and claim.** It is not implementation-ready for the separate and
-ordinary reason that the TRD has not instantiated the selected architecture. Of the five artifacts review
-requires, four are now complete at the product-decision level and one remains open:
+**This document is ready to be folded into the PRD and translated into a TRD.** It is not
+implementation-ready for the separate and ordinary reason that the TRD has not yet instantiated the
+selected architecture, and none of the release evidence has yet been produced. All five artifacts review
+requires are complete at the product-decision level:
 
 1. **The corrected ontology**, which §1 now has — account, principal, workspace, member, actor, device
    and session — with the pre-account principal and workspace-scoped membership as the load-bearing
@@ -3351,11 +3385,11 @@ requires, four are now complete at the product-decision level and one remains op
    irreversible constraints that precede the TRD, the compact inventory row added as the architecture
    introduces data, and the as-built reconciliation that gates wider availability. A speculative complete
    inventory is no longer required before the services are designed.
-5. **A survivability package and staged claim**, fixed in outline by D-33 but unbuilt. Its near-term
-   third — local operation with the service unreachable, export, and import into an independently served
-   build — is cheap and should not wait for the rest. The item most easily mistaken for done is
-   independent custody: self-hostable software is not a copy of the data, and the package now requires
-   ciphertext that already exists outside this service (§5.11.5).
+5. **An independently runnable software requirement and staged release claim**, now fixed by D-33.
+   Public open source is the preferred path; a triggered source release with perpetual build-and-run
+   rights is an acceptable fallback; binary-only continuity is insufficient. The implementation and tests
+   remain, and independent ciphertext is additionally required only for the conjunction of company
+   disappearance and total device loss (§5.11.5).
 
 The ontology and the cardinalities were the two things review said were missing or contradictory, and both
 are now written down. What changed in this round is larger: **a product decision (D-16) removed a rung,
@@ -3376,14 +3410,11 @@ what remains to get right is the sentence the user reads and the ordering the in
 this proves worse in practice than it reads here, the thing to revisit is the messaging and the import
 path, not the boundary.
 
-**On splitting this document, which the fourth review round proposed: not yet, and the order matters.**
-The proposal was to promote the single-principal half now — the roster showing one "You" per device, the
-`Mac, Mac` peer list, silent identity reissue where storage is denied, the invisible durability warning
-— on the grounds that none of it is gated by D-17 and several of them are defects shipping today. The
-argument is sound and the sequencing is not: **revisions land first, then a split is considered.** The
-landmarks in this document are load-bearing for the person using it, and moving them while corrections
-are still arriving costs more than the delay does. Nothing about promoting the product half gets harder
-by waiting one round.
+**On splitting this document, which the fourth review round proposed: the ordering condition is now
+satisfied.** The revisions landed first; the product decisions can now be promoted into the PRD and the
+mechanism parameters into the TRD. Preserve the landmarks or a cross-reference while doing so—the
+argument is easier to split now, but its security, recovery and survivability decisions still depend on
+the shared ontology in §1.
 
 ---
 
@@ -3423,7 +3454,9 @@ by waiting one round.
   not because the relay is dumb. Left standing for now rather than corrected in place: it is a
   technical-doc amendment that belongs with the rest of the promotion, not an ad-hoc edit alongside
   this one.
-- **§14 Open questions** — D-1 through D-33 belong here, or here by reference, once ready to promote.
+- **§14 Open questions** — D-1 through D-33 are now dispositions to promote into the applicable product
+  sections or a referenced decision register, not open questions. Retain only their explicitly named live
+  UX/parameter details and D-34 as open items.
 - **§1 / §2, or wherever the product is described** — D-16 makes a claim the PRD does not currently
   contain: **Local is free and permanent, while hosted synchronization requires an account.** Whether
   that service is free or paid is D-31 and is not a product-shape claim here. PRD §12's non-goals should
