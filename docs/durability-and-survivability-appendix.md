@@ -1,8 +1,30 @@
 # done — Durability, Transport, and Service Survivability
 
-**Status:** Architecture appendix — analysis and recommendation, not a recorded disposition  
+**Status:** Architecture appendix — **its recommendation has now been adopted.** Retained as the working
+analysis behind two recorded dispositions, not as a live proposal.  
 **Date:** 2026-08-14  
-**Relates to:** [sessions.md](./sessions.md) D-16, D-17, D-25, D-28, D-31 and D-32; [security-decisions-appendix.md](./security-decisions-appendix.md) A.2.2 and A.4.1
+**Relates to:** [sessions.md](./sessions.md) D-16, D-17, D-25, D-26, D-28, D-31, D-32 and D-33; the
+security decision surface is [sessions.md](./sessions.md) §5.7 and §8.1
+
+> **Outcome, recorded 2026-08-14.** §8's recommendation was accepted in full and is now product decision
+> rather than analysis:
+>
+> - **§8.1 — one relay-mediated sync path, P2P not built first.** Recorded as **D-16**, which went further
+>   than this appendix proposed: rather than keeping peer-to-peer as a deferred optimization beneath a free
+>   tier, it removed the accountless tier altogether. Free is local-only and permanent; hosted sync is the
+>   paid capability. The reasoning is in sessions.md D-16, and it adds two grounds this appendix did not
+>   argue — the tier could not be described without a permanent upgrade nag, and it may not have worked at
+>   all on a phone-and-laptop pair.
+> - **§§1, 5, 6, 7, 8.3 and 9 — the survivability material.** Recorded as **D-33** (sessions.md §5.11),
+>   including the property table, the scenario→mechanism decomposition, the bounded recovery
+>   representation, the survival package and the staged claim with its acceptance tests.
+> - **§4's finding that a P2P tier needs its own fork-resolution rule** turned out to be the decisive cost
+>   argument rather than a caveat. Sessions.md D-26 records what its removal deleted.
+>
+> The one correction this appendix's §5 forced on sessions.md is worth naming: D-16's v14 draft claimed the
+> paid capability was "already built". It is not — the running relay merges a **plaintext** Yjs document
+> and cannot do so once content is encrypted. The conclusion survived on the narrower ground that the
+> relay's *shape* is proven while WebRTC's is not.
 
 ---
 
@@ -357,6 +379,10 @@ Only after those tests pass is a claim like this warranted:
 ---
 
 ## 10. Disposition
+
+**Adopted, and then exceeded — see the outcome note at the top of this document.** The recommended order
+below stands, with one change: step 6 has become "not on the plan" rather than "later", because D-16
+removed the tier that peer-to-peer was going to serve. Steps 1–5 are now sessions.md D-16 and D-33.
 
 The proposed architecture makes sense as **P2P live delivery plus a durable mailbox**, but it does not
 remove the relay role from asynchronous sync and it does not, on its own, satisfy service survivability.
