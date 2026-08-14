@@ -660,21 +660,19 @@ carrying content — was the free tier. D-16 removes it. The numbers went too: "
 only meaningful as positions on a three-step ladder, and leaving them in place would let a reader who
 knows the earlier drafts read the wrong thing. This document now says **Local** and **Account**.
 
-The full argument is D-16's. The summary is that Paired failed on three independent grounds, any one of
-which was sufficient: it was the **most expensive** thing to build rather than the cheapest, it could not
-be described to the user without a **permanent warning whose only remedy was payment**, and it may not
-have **worked** — a phone asleep in a pocket does not sync peer-to-peer with a laptop, which is the
-entire device pair the product has.
+The full argument is D-16's. The summary is that Paired failed on three reinforcing grounds: it was the
+**most expensive** thing to build rather than the cheapest, its durability limitation demanded recurring
+disclosure that risked reading as an upsell, and it may not have **worked** — a phone asleep in a pocket
+does not sync peer-to-peer with a laptop, which is the entire device pair the product has.
 
-**What survives the removal is the mechanism, not the tier.** D-19's out-of-band device-to-device proof
-**remains one enrollment path** — not the only one — because signing in proves who you are to the service
-and the service cannot hand out a content key it does not hold (§5.7.5). A PRF-capable passkey or a saved
-recovery factor can deliver the key instead, and which of those exists is D-17's open selection. So the
-ceremony a user performs — show a code on the laptop, scan it on the phone — may look much as it would
-have, for whoever ends up needing it. What changed is that it now happens **under the account's
-authorization root with the server as witness**, rather than establishing a second, device-centric root
-of its own. That is the difference between a ceremony and a tier, and it is where nearly all of the
-deleted complexity lived.
+**What may survive the removal is an enrollment mechanism, not a tier.** D-19's out-of-band
+device-to-device proof **remains one available enrollment path** if D-17 selects existing-device approval;
+it is not an invariant of enrollment. Signing in proves who you are to the service, while a PRF-capable
+passkey, a saved recovery factor, an existing device or service escrow can deliver the content key under
+the custody model D-17 selects (§5.7.5). If the device-to-device ceremony is used — show a code on the
+laptop, scan it on the phone — it happens **under the account's authorization root with the server as
+witness**, rather than establishing a second, device-centric root of its own. That is the difference
+between an enrollment option and a tier, and it is where nearly all of the deleted complexity lived.
 
 **A phrase this document kept getting wrong, retained because the correction still bites.** Earlier
 drafts said the middle rung had "no server in the sync path", which was never true: a browser cannot
@@ -867,17 +865,17 @@ a flow that does not exist yet. Options, all of which assume something about the
 | Pairing between devices        | Scans a code shown on the other device.                | Both devices present at once; a pairing protocol; no account.   |
 | Discovery on the local network | Nothing, on a shared network.                          | mDNS or similar, which a browser cannot do — so a relay anyway. |
 
-> **Decided, and simplified by D-16: one flow, in two parts.** Discovery is **implied by signing in**.
-> The accountless pairing flow is **not built as a separate mechanism or a separate trust root** — but the
-> out-of-band device-to-device ceremony survives inside enrollment, because sign-in cannot deliver a
-> content key.
+> **Decided, and simplified by D-16: one discovery flow, with a selected key-delivery path.** Discovery is
+> **implied by signing in**. The accountless pairing flow is **not built as a separate mechanism or a
+> separate trust root**. Enrollment obtains the content key through the custody path D-17 selects;
+> out-of-band approval by an existing device is one available path, not a requirement of every enrollment.
 
-**Why enrollment is two parts, and why this is not the old rung 2 wearing a hat.** Signing in on a new
-device proves to the service who you are. That is enough for the service to admit the device
-provisionally, hand it the workspace identifier and serve it ciphertext. It is **not** enough to read
-anything, because under D-20 the service does not hold the content key and cannot mint one (§5.7.5). So
-the second device still needs the key from somewhere, and the available somewheres are exactly D-17's
-open account-custody selection:
+**Why enrollment has two logical jobs, and why this is not the old rung 2 wearing a hat.** Signing in on a
+new device proves to the service who you are. That is enough for the service to admit the device
+provisionally, hand it the workspace identifier and serve it ciphertext. Under D-20's intended
+non-escrow shape it is **not** enough to read anything, because the service does not hold the content key
+and cannot mint one (§5.7.5). The second job is therefore obtaining that key through D-17's selected
+account-custody path:
 
 | Where the key comes from                    | What the user does                             | Selected in |
 | ------------------------------------------- | ---------------------------------------------- | ----------- |
@@ -885,11 +883,10 @@ open account-custody selection:
 | A non-custodial recovery factor unwraps it   | Present a passkey with PRF, or a saved code     | §5.7.5 row 2 |
 | The service holds it                         | Nothing — and the product stops being E2E      | §5.7.5 row 3, which reopens D-20 |
 
-**The first row is the old pairing ceremony, and keeping it is not a hedge.** It is the only shape that
-works when the user has two devices and has selected no recovery factor, and it is the cheapest thing to
-build. What it no longer does is establish an independent authorization root: the account root admits the
-device, the server witnesses the epoch, and the ceremony transfers a key beneath that. One root, always
-(§5.7.2).
+**If selected, the first row is the old pairing ceremony, and retaining it as an option is not a hedge.**
+It is the path that works when the user has two devices and has selected no recovery factor. What it no
+longer does is establish an independent authorization root: the account root admits the device, the
+server witnesses the epoch, and the ceremony transfers a key beneath that. One root, always (§5.7.2).
 
 **Rule 1 is satisfied because sign-in _assigns_ the workspace identifier.** The account determines it, so
 nobody types one, and there is no third thing to configure. That remains the strongest evidence that the
@@ -1087,7 +1084,8 @@ one that stops and asks.
 device's history does not survive.** The workspace's list is the list; the joining device is told what is
 about to go, offered the export, and asked to confirm. There is no merge and no adjudication.
 
-Three things follow, and none of them is a build:
+Three things follow. None requires merge or history-adjudication machinery, although adoption itself
+requires the transition machinery in §5.2.1:
 
 - **Account creation is the moment that decides which history survives**, because the creating device's
   history becomes the workspace. That makes one sentence load-bearing in the interface: *create the
@@ -1096,9 +1094,10 @@ Three things follow, and none of them is a build:
   enroll the others, and the destructive row never occurs — the enrolling devices are empty or their
   content was never wanted. The interface should make that ordering the path of least resistance rather
   than leaving it to chance.
-- **What is owed is messaging and import, not machinery.** The loss has to be stated before it happens
-  and the export has to be real; bringing the content across afterwards is import (§2.4, D-33), which is
-  already required for other reasons.
+- **What is owed is messaging, export/import and transition machinery — not adjudication machinery.** The
+  loss has to be stated before it happens and the export has to be real; bringing the content across
+  afterwards is import (§2.4, D-33), which is already required for other reasons. Preflight, separate
+  workspace databases and a crash-safe switch are the distinct implementation requirements in §5.2.1.
 
 Three shapes were available for the adoption itself, and they were not equally safe:
 
@@ -1141,10 +1140,11 @@ Rule 2 forbids implying otherwise.
 
 Note that this and D-5 are one question asked at two moments, and v15 gave them one answer. D-24 decides
 **which history becomes the workspace** — the creating device's. D-5 decides **what happens to every other
-history that later meets it** — it is stated, exported if wanted, and replaced. Neither needs a flow,
-because between them there is always a determinate answer to "which one is the list". An earlier draft
-proposed that D-24 reuse D-5's four-way adjudication; there is no longer one to reuse, and that is the
-saving.
+history that later meets it** — it is stated, exported and replaced. Neither needs an **adjudication**
+flow, because between them there is always a determinate answer to "which one is the list". D-5 still
+requires confirmation, automatic export and the crash-safe transition in §5.2.1; what disappears is only
+the choice over which history wins. An earlier draft proposed that D-24 reuse D-5's four-way adjudication;
+there is no longer one to reuse, and that is the saving.
 
 **D-6. Can a dead actor be pruned, and by whom?**
 
@@ -1244,14 +1244,17 @@ already synced keeps their copy forever.** Removal governs the future, never the
 **D-26. What happens when a revocation is learned late and the document has already diverged?**
 
 > **Decided, and D-16 collapsed this from the hardest decision in the document to one of the easiest:
-> the divergence is prevented from the moment the server has committed the revocation.** Every sync is
-> relay-mediated, so a revoked credential has no honest path to any other device, and the two-lineage
-> divergence this decision was named for cannot form.
+> the divergence is prevented from the moment the revocation is committed.** Here **committed** means one
+> atomic security boundary: the server has accepted the authorization successor, rotated the content key
+> and published an authenticated finalization boundary for the removed credential's accepted writes.
+> Every sync is relay-mediated, so a revoked credential has no honest path to any other device, and the
+> two-lineage divergence this decision was named for cannot form.
 >
 > Nothing is discarded, no lineage is sanctioned over another, and filtered replay is not built.
 >
-> **The guarantee is against the relay refusing the write, which means it needs one more thing to hold
-> against a hostile relay — see §5.2.2 below.** "Prevented by construction" was too strong on its own.
+> **Relay refusal alone is not this commit boundary.** The authenticated finalization component is what
+> makes the guarantee hold against a hostile relay — see §5.2.2 below. "Prevented by construction" was too
+> strong on its own.
 
 #### 5.2.2 Refusal at the relay is not the same as finalization
 
@@ -1259,9 +1262,10 @@ already synced keeps their copy forever.** Removal governs the future, never the
 **malicious or compromised relay** (S42, §5.7.1), and relay-side refusal is exactly the control such a
 relay declines to apply. The attack does not require forging anything:
 
-1. Revoked credential C signs an update referencing epoch *n*, which it legitimately holds keys for.
-2. The hostile relay **withholds** it rather than refusing it, and delivers it to another device after the
-   revocation has committed at epoch *n+1*.
+1. Credential C, or an attacker holding it, signs an update referencing epoch *n*, which the credential
+   legitimately holds keys for.
+2. The hostile relay **withholds it from the accepted set** rather than refusing it, and delivers it to
+   another device after C's revocation has committed at epoch *n+1*.
 3. The receiving client sees a validly signed envelope under a past epoch — and **must accept genuine
    late-arriving old-epoch updates**, because a device that was offline across a rotation produces
    exactly that shape. Local-first sync is asynchronous by design; "old epoch" is not evidence of
@@ -1271,26 +1275,38 @@ relay declines to apply. The attack does not require forging anything:
 and nothing else in the current design does either.** Signature verification passes, epoch verification
 passes, and the update lands.
 
-**What closes it is a content finalization boundary**, and the security contract has to specify one. Three
-shapes, all cheaper than the partition-tolerant machinery D-16 deleted, because there is a server to
-appeal to:
+**What closes it is authenticated acceptance evidence plus a content finalization boundary**, and the
+security contract has to specify both. Three shapes are available, all cheaper than the partition-tolerant
+machinery D-16 deleted because there is a witness to appeal to:
 
-| Mechanism                              | How it closes the hole                                                                      |
-| -------------------------------------- | -------------------------------------------------------------------------------------------- |
-| **Server acceptance receipts**         | The server signs what it accepted; clients admit only receipted envelopes, so a withheld unreceipted one is refused |
-| **Per-credential sequence cutoffs**    | The committed revocation records "C's accepted writes end at sequence *k*"; any C-signed envelope past *k* is refused by every client, whoever delivers it |
-| **A checkpoint covering the cutoff**   | The authenticated checkpoint at epoch *n+1* attests every accepted sequence before it; anything outside is not part of the document |
+| Mechanism                                      | How it closes the hole                                                                      |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| **Per-envelope acceptance receipts**           | The authorization witness signs each accepted envelope digest and sequence; clients admit only receipted envelopes, so the relay cannot turn a merely valid signature into an accepted write |
+| **An append-only accepted log with inclusion proofs** | The witness commits a gap-free, non-equivocating per-credential log; each delivered envelope carries proof under an authenticated log head, and revocation finalizes C's last accepted head |
+| **A checkpoint plus an authenticated suffix**  | A checkpoint attests the accepted prefix; every later envelope still carries a receipt or inclusion proof until the next checkpoint and the revocation cutoff |
 
-The middle one is the closest fit to the structures already required: the revocation is already a
-committed authorization event, and adding a per-credential high-water mark to it makes the cutoff part of
-the same signed object every client must fetch anyway. It also composes with D-33's checkpoint manifest,
-which already binds an authorization head to a covered update range (§5.11.3).
+The middle one is the closest fit to the structures already required, but **a numeric high-water mark by
+itself is not a finalization boundary.** A compromised credential can sign two different envelopes at the
+same sequence or fill a gap the witness never accepted; a hostile relay could then choose which valid
+envelope at or below *k* to show a client. The accepted stream therefore has to be non-equivocating from a
+client's point of view — for example, a gap-free per-credential hash chain whose final sequence and head
+digest are committed together, with inclusion proofs for the delivered envelopes. The revocation is
+already a committed authorization event, so adding that authenticated head makes the cutoff part of the
+same signed object every client must fetch anyway. It also composes with D-33's checkpoint manifest, which
+already binds an authorization head to a covered update range (§5.11.3).
+
+**The acceptance proof is needed before revocation too.** A cutoff learned at epoch *n+1* cannot prevent a
+stale client that still knows only epoch *n* from applying an unaccepted envelope while a hostile relay
+withholds the successor. Requiring a receipt or inclusion proof on every applied envelope closes that
+timing hole: the relay may hide the new authorization head, but it cannot supply acceptance evidence for
+the withheld write. The client refuses the write without needing to know yet that C was revoked. If the
+relay withholds the proof as well, synchronization stops; that is the availability failure §5.7.1 permits.
 
 **Two things this does not do.** It does not reopen D-16 — the hole exists on any relay-mediated design
-and is far smaller than the sanctioned-lineage rule, precisely because a witness exists to issue the
-cutoff. And it does not make the relay trusted: the cutoff is signed under the authorization root and
-verified by clients, so a hostile relay can still delay or withhold, which is availability rather than
-integrity (§5.7.1).
+and is far smaller than the sanctioned-lineage rule, precisely because a witness exists to attest
+acceptance and issue the cutoff. And it does not make the relay trusted: the acceptance evidence and
+cutoff are authenticated under authority the relay does not possess and are verified by clients, so a
+hostile relay can still delay or withhold, which is availability rather than integrity (§5.7.1).
 
 **The honest phrasing, which replaces "prevented by construction".** Against a relay that behaves,
 divergence cannot form. Against one that does not, divergence is prevented by the finalization boundary —
@@ -1314,28 +1330,32 @@ offline_."** If A was offline when it revoked, the server has not heard, and C c
 "revoked" cannot mean "the owner pressed the button". Three states, and only the middle one is the
 guarantee:
 
-| State                               | What is true                                                             | What the UI may say               |
-| ----------------------------------- | ------------------------------------------------------------------------ | --------------------------------- |
-| **requested**                       | recorded locally; the server may not know; C can still push              | "Pending — not yet active"        |
-| **committed** (server, key rotated) | C cannot push; no new divergence can form from here                      | "Revoked"                         |
-| **acknowledged** by every device    | no remaining device is still accepting C; existing divergence is settled | "Revoked, all devices up to date" |
+| State                                                 | What is true                                                              | What the UI may say               |
+| ----------------------------------------------------- | ------------------------------------------------------------------------- | --------------------------------- |
+| **requested**                                         | recorded locally; the server may not know; C can still push               | "Pending — not yet active"        |
+| **committed** (server, key rotated, cutoff finalized) | C cannot create an accepted write; no new divergence can form from here   | "Revoked"                         |
+| **acknowledged** by every device                      | no remaining device is still accepting C; all replicas know the boundary  | "Revoked, all devices up to date" |
 
-Only **committed** may be presented as revoked, and a request that has not reached the server has to say
-that it is pending. This supersedes the acknowledgement display sketched below: acknowledgement is the third
-state, not the guarantee.
+Only **committed**, with all three parts above, may be presented as revoked. A request that has not reached
+the server — or an authorization successor whose content cutoff has not been finalized — is still pending.
+The implementation may make the three parts one transaction; the product semantics may not omit one. This
+supersedes the acknowledgement display sketched below: acknowledgement is the third state, not the
+guarantee.
 
-**The bypass condition that used to qualify this guarantee is now satisfied by construction.** It held
-only if devices had no direct peer path routing around server enforcement — and after D-16 there is no
-peer path to have. Enforcement lives on every path because there is one path. This is the clearest
-instance of the general shape D-16 produced: several guarantees that previously needed a qualifying
-clause are now unconditional, and the qualifying clauses were where the protocol work lived.
+**The alternate-path bypass condition that used to qualify this guarantee is now satisfied by
+construction.** It held only if devices had no direct peer path routing around server enforcement — and
+after D-16 there is no peer path to have. Enforcement lives on every path because there is one path. That
+removes the old peer-path qualifier; it does **not** remove the hostile-relay qualifier, which is why the
+authenticated finalization boundary above remains part of the security contract.
 
 **What remains is a window, not a divergence.** Between **requested** and **committed** the server has not
-yet heard, so C's writes are still accepted and still reach B. Those writes are **kept**. Nothing is
-discarded and nobody loses work, because this is exactly what D-20 already says removal means: *removal
-governs the future, never the past.* A revoked device's history up to the commit point is part of the
-document in the same way a departed colleague's writing is part of a file. The old design's painful part
-was never this window — it was reconciling two lineages afterwards, and there are no longer two.
+finished the transaction: it may not have heard the request, or it may not yet have published the accepted
+set and cutoff. C's writes may still be accepted into that pre-commit set. Those writes are **kept**.
+Nothing accepted before the finalized cutoff is discarded, because this is exactly what D-20 already says
+removal means: *removal governs the future, never the past.* A revoked device's accepted history up to the
+cutoff is part of the document in the same way a departed colleague's writing is part of a file. The old
+design's painful part was never this window — it was reconciling two lineages afterwards, and there are no
+longer two.
 
 **The principle that has to hold regardless: authorization reconciles before content.** Two devices settle
 the current epoch, credentials and capabilities before they exchange a single document update. Same shape
@@ -1343,10 +1363,11 @@ as TRD §6.1's load-before-connect rule, and it deserves the same status. With o
 is now sufficient rather than merely necessary.
 
 **One display requirement survives, because the three states are still distinguishable and Rule 2 requires
-saying which one is true.** Once the server commits the new authorization epoch and rotates the key, the
-device is revoked; acknowledgement means every remaining replica has learned that fact. "Revoked — 2 of 3
-remaining devices are up to date" is honest and actionable. Before server commit the UI says "Pending — not
-yet active"; after commit, an unacknowledged device is stale rather than evidence that revocation failed.
+saying which one is true.** Once the server commits the new authorization epoch, rotates the key **and
+publishes the authenticated content cutoff**, the device is revoked; acknowledgement means every remaining
+replica has learned that fact. "Revoked — 2 of 3 remaining devices are up to date" is honest and actionable.
+Before that commit the UI says "Pending — not yet active"; after it, an unacknowledged device is stale rather
+than evidence that revocation failed.
 
 **Two mechanisms this decision used to need are now unnecessary, and should not be rebuilt by reflex.**
 _Filtered replay_ — rebuilding a document from its update log while skipping a revoked participant's
@@ -1356,11 +1377,13 @@ showing the user two lineages — would have violated D-11's deliberately singul
 produced it cannot occur.
 
 **And the structural insight, which now reads as the argument for the decision rather than a consolation:
-this divergence was a peer-to-peer problem.** Server-mediated sync eliminates it; direct device-to-device
-creates it. It bit hardest exactly where revocation is most wanted — the motivating case is a lost phone,
-and the window was "my laptop and the lost phone were online together while my other device was not",
-which is not an unlikely sequence. The old plan's answer was to name that risk as a reason to pay. The
-current plan's answer is that it does not happen.
+the hard form of this divergence was a peer-to-peer problem.** Direct device-to-device sync creates a
+partition-tolerant authorization problem; server-mediated sync supplies one place to serialize revocation
+and finalize accepted content, provided clients verify that boundary rather than trusting relay behaviour.
+It bit hardest exactly where revocation is most wanted — the motivating case is a lost phone, and the
+window was "my laptop and the lost phone were online together while my other device was not", which is not
+an unlikely sequence. The old plan's answer was to name that risk as a reason to pay. The current plan's
+answer is a single relay path plus a client-verifiable finalization boundary.
 
 **D-7. Should undo ever cross devices?**
 
@@ -1675,10 +1698,11 @@ sync, which is paid. Naming the free remedy first is not politeness — a warnin
 till is the thing this decision is trying not to be.
 
 **The conflict this decision previously failed its own test on, and what D-16 did to it.** In v14 the
-free tier was the Paired rung, whose durability was "none — the group is it" with no recovery story at
-all. So for every free user "durability is not guaranteed" was permanently true, never cleared, and had
-exactly one remedy: payment. A prominent, persistent, unclearable warning whose only resolution is to pay
-is noise by D-25's own definition, and it reads as a dark pattern whatever the intent.
+free tier was the Paired rung, whose live durability was "none — the group is it" with no automatic
+recovery story. Manual export remained an honest mitigation, but it did not keep a continuously current
+copy without repeated user action; hosted sync was the only automatic resolution. That does not make the
+tier logically impossible to describe. It does mean the limitation demands recurring disclosure that is
+likely to function as upgrade pressure, which this document rejects as a product choice.
 
 D-16 removed the manufactured half of that. **A single local device holding the only copy is not a
 limitation the product built; it is what a local application on one computer is.** The statement "this
@@ -1941,12 +1965,13 @@ cheaper than that service *plus* a second transport — but stating it as "alrea
 discovery of the rewrite and a conclusion that this decision rested on a false premise. It did not; it
 rested on a narrower and still-sufficient one.
 
-#### Ground 2: it could not be described honestly without a nag
+#### Ground 2: its honest description risked becoming an upsell
 
 D-25 requires the app to say when durability is not guaranteed. Under the candidate boundary, "your data
-exists on your devices only" was permanently true for every free user, never cleared, and had exactly one
-remedy: payment. D-25 worked this out itself and called the result what it is — noise by its own
-definition, and a dark pattern whatever the intent.
+exists on your devices only" was permanently true for every free user. A user could maintain current
+exports, but hosted sync was the only automatic remedy. That makes recurring disclosure likely to function
+as an upgrade prompt even if every sentence is accurate. This is a product-value objection, not a proof
+that no honest copy could be written.
 
 **The test that makes this precise, and it is worth keeping because it generalises past this decision:**
 *would you build this limitation if you had unlimited money and no business model?*
@@ -1957,10 +1982,10 @@ definition, and a dark pattern whatever the intent.
   property, while a transport without that property is already running" — **no.** Nobody builds that
   except to have something to charge for removing.
 
-A limitation that fails this test is not made acceptable by disclosing it clearly, and the tell is that it
-needed a persistent warning to be felt at all. **A constraint that requires a nag to be perceived is a
-constraint built for the nag.** The current boundary passes: local-only is not a degraded sync tier, it is
-an application on a computer, and D-25's copy for it is a description rather than a prompt.
+A limitation that fails this test is not made desirable merely by disclosing it clearly. **A constraint
+whose principal product surface is a recurring upgrade warning deserves suspicion.** The current boundary
+passes the product test: local-only is not a degraded sync tier, it is an application on a computer, and
+D-25's copy for it is a description rather than a prompt.
 
 #### Ground 3: it might not have worked
 
@@ -2100,10 +2125,10 @@ Two phrases in that table carry more work than they appear to. **Already-witness
 rollback protection: a returning client can remember the newest authorization head it has seen and reject
 an ancestor, but a brand-new client needs the selected trust root or another current device to tell it
 which head is current. And **accepted mutation** is stronger than "valid signature": a removed device can
-sign an update under an old epoch and lie about when it did so. **The answer is the server's committed
-ordering, and after D-16 that is the only answer needed** — there is no peer path requiring a
-sanctioned-lineage rule to settle which of two successors is real. A client-supplied timestamp is not an
-answer.
+sign an update under an old epoch and lie about when it did so. **The answer is authenticated acceptance
+evidence plus the witness's committed ordering, and after D-16 that is the only answer needed** — there is
+no peer path requiring a sanctioned-lineage rule to settle which of two successors is real. A
+client-supplied timestamp is not an answer.
 
 #### 5.7.2 Three credentials, not one key
 
@@ -2349,11 +2374,13 @@ than prose:
 4. A client that has witnessed epoch _n_ rejects an ancestor as current, and the server serializes
    successor commits so that two concurrently produced successors resolve to one accepted epoch with the
    loser refused rather than forked (S49).
-5. After a committed revocation and key rotation, the removed credential cannot decrypt a new generation
-   or create a newly accepted write, while its historical local copy remains usable.
-6. **A hostile relay withholds a previously unseen envelope signed by the revoked credential under the
-   pre-revocation epoch and delivers it after the commit; every client refuses it**, while a genuine
-   late-arriving old-epoch update from a still-authorized offline device is still accepted (§5.2.2).
+5. After a committed revocation — authorization successor, key rotation and finalized accepted-log cutoff —
+   the removed credential cannot decrypt a new generation or create a newly accepted write, while its
+   historical local copy remains usable.
+6. **A hostile relay withholds an envelope signed by the revoked credential that is absent from the
+   committed accepted set, then delivers it after revocation; every client refuses it.** An envelope from
+   that credential included in the pre-commit accepted set is still admitted, as is a genuine late-arriving
+   old-epoch update from a still-authorized offline device (§5.2.2).
 7. A relay database snapshot contains ciphertext, public authorization material and the explicitly
    accepted metadata — no content root, plaintext, reusable device secret or PRF output.
 8. Every recovery path is exercised after loss of one device, all devices, the primary passkey, the
@@ -2406,7 +2433,7 @@ review is reviewing.
 | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | Separate signing and key-agreement credentials per device      | authenticate its writes and receive content keys; storage protection is §5.7.4's choice    |
 | The same separation per agent member                           | authenticate an agent without pretending it is a device; receive keys only if read-capable |
-| Out-of-band pairing with a single-use invitation proof         | admit a device to a principal without treating the invitation as its permanent credential  |
+| A single-use enrollment proof from the selected custody path   | admit a device and deliver or wrap the content key without making that proof its permanent credential |
 | A signed chain or log of authorization operations              | bind memberships, credentials, capabilities, actors and content-key generations            |
 | One account authorization root, witnessed by the server        | identify which authority may extend that chain; enforce the one-root constraint            |
 | A symmetric content key, wrapped per reader credential         | encrypt the document; rotation on lost read access is D-20                                 |
@@ -2937,7 +2964,7 @@ pricing question.
 | **D-16** | Where does the free/paid boundary sit?                         | **Decided**               | Hosted sync itself. Free is local-only and permanent; the Paired rung is retired; **peer-to-peer is not built**                             |
 | **D-17** | What does "reasonably secure" mean, concretely?                | **Open — decomposed**     | Minimum claims fixed. Five selections: break-glass succession authority, key storage, account custody, recovery/PRF fallback, assurance    |
 | **D-18** | Are devices enumerable and revocable from a UI?                | **Decided**               | Yes. The unit is the device. Gates sync, not startup. Freeze and offer options; no automatic wipe                                           |
-| **D-19** | How does a device find the other devices that are yours?       | **Decided**               | Sign-in discovers; an out-of-band ceremony still delivers the content key. One root, one flow, wire identifier hidden                       |
+| **D-19** | How does a device find the other devices that are yours?       | **Decided**               | Sign-in discovers; D-17's selected custody path delivers the content key. Existing-device approval is one option. One root, one flow, wire identifier hidden |
 | **D-20** | How is a member actually excluded?                             | **Decided**               | Content encryption with key rotation. Keeps the relay dumb; key management is the cost                                                      |
 | **D-21** | What does "the active caret" mean — local, or globally recent? | **Decided**               | Locally active. No recency modelling; a design check that it reads as distinct                                                              |
 | **D-22** | Does merged content show its provenance?                       | **Decided**               | Yes, as a rarely-on mode. Settings toggle, off switch surfaced while active. Cards only, freeze-window bound                                |
@@ -2972,7 +2999,7 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | Signed mutation envelopes                | Source-authenticated, workspace/epoch/credential/actor bound                            | Envelope and batching granularity, anti-replay/finalization rule and authenticated checkpoint construction |
 | Attribution binding                      | Actor is derived from the credential or explicitly authorized for representation        | How an update's affected attributed fields are inspected or derived                                        |
 | Revocation commit semantics              | Requested · committed · acknowledged; no peer path bypasses the relay                   | Protocol and recovery behaviour for interrupted rotation                                                   |
-| **Content finalization boundary**        | Relay refusal is not finalization; a hostile relay can withhold and later deliver a valid old-epoch write | Acceptance receipts, per-credential sequence cutoffs, or checkpoint coverage (§5.2.2)                      |
+| **Content finalization boundary**        | A valid mutation is not accepted without witness evidence; a hostile relay can withhold and later deliver a valid old-epoch write | Per-envelope receipts, accepted-log inclusion proofs, or checkpoints with an authenticated suffix; every shape ends in a committed cutoff (§5.2.2) |
 | Content-key wrapping and rotation        | Symmetric generations wrapped per reader credential; edit implies read under this shape | Algorithms and generation retention                                                                        |
 | **Awareness and presence metadata**      | Presence is outside the content encryption as currently designed                        | Encrypt awareness, or state in the threat boundary that the relay learns who edits what and when (D-20)    |
 | Account relationship to the content root | One operative root; the service witnesses it rather than constituting it (§5.7.2)       | Witness only, non-custodial encrypted recovery, device-approved access, or service escrow (§5.7.5) — **the live centre of D-17** |
