@@ -1,6 +1,6 @@
 # done — Sessions and Identity: Product Requirements
 
-**Status:** Draft v15 — **33 dispositions recorded.** The largest change since v14: **D-16 is decided,
+**Status:** Draft v15 — **34 dispositions recorded.** The largest change since v14: **D-16 is decided,
 and the answer removes a rung.** The free/paid boundary is hosted synchronization itself; free is
 local-only and permanent; peer-to-peer is not built. The **Paired** rung — cross-device sync without an
 account — is retired, and with it the second transport, the second revocation semantics, and one of
@@ -25,13 +25,21 @@ disappears, and a **content recovery root** that unwraps the document after ever
 service witnesses both and holds neither, so it cannot decrypt a workspace under any proof or any order.
 Service escrow is **excluded by construction** and survives only as an opt-in add-on that must be operated
 by a separate legal entity, scoped to the content root — which makes compelled disclosure a two-party
-problem rather than a policy promise. Three of D-17's five selections are recorded (§5.7.2, §5.7.5–§5.7.6).
+problem rather than a policy promise. The device key is a non-extractable `CryptoKey`, PRF-wrapped where
+the authenticator supports it, and the assurance bar is independent protocol design review before sync
+ships with an implementation audit on a stated trigger. **All five selections are recorded, and D-17 is
+closed** (§5.7.2, §5.7.4–§5.7.6, §5.7.8).
 
-Two unresolved architecture gates remain: **D-17** (the security contract, §8.1 — two selections left,
-browser key storage and the assurance bar, neither of which can change what the product promises) and
-**D-28** (what carries the authorization protocol, §5.8.1). Two readiness gates sit beside them:
-**D-32** (§5.10), the data-lifecycle and operational contract, and **D-33**, the survivability package.
-**D-31** (pricing) stays deferred and is now genuinely downstream.
+**And closing it opened one thing: D-34.** Whether the local document is encrypted at rest was asserted
+twice in this document as a premise and never actually decided — plaintext in IndexedDB is what the app
+does today, and the browser's origin sandbox is a boundary between web origins, not an at-rest boundary.
+It is recorded as open rather than quietly settled (§5.7.4).
+
+**One unresolved architecture gate remains: D-28** (what carries the authorization protocol, §5.8.1),
+and it is now the gate on the security contract, since the protocol has to be named before a reviewer can
+review it. Two readiness gates sit beside it: **D-32** (§5.10), the data-lifecycle and operational
+contract, and **D-33**, the survivability package. **D-31** (pricing) stays deferred and is now genuinely
+downstream.
 **Not ready to promote into the PRD** — see §8.2.
 **Date:** 2026-08-14
 **Audience:** the author, deciding. Not an implementation plan.
@@ -1917,9 +1925,9 @@ housekeeping.
 
 Three questions that decided the shape of the ladder in §5.1.1 and were not answerable by preference.
 **Two are closed, and closing the first changed the third's job.** D-16 is decided and did most of the
-work in v15; D-18 was already decided and is now non-deferrable because of it; D-17 is **three-fifths
-decided** — the custody, recovery and break-glass selections are recorded in §5.7.2 and §5.7.5–§5.7.6,
-leaving browser key storage and the assurance bar, neither of which can reshape the product (§5.7.7).
+work in v15; D-18 was already decided and is now non-deferrable because of it; and **D-17 is now decided
+too**, all five selections recorded across §5.7.2, §5.7.4, §5.7.5–§5.7.6 and §5.7.8. Closing it opened
+**D-34** (§5.7.4), which is a smaller question than any it replaced.
 
 **D-16. Where does the free/paid boundary sit?** _(Decided, after one round re-opened. This and the
 pricing question were one row until v14, and the conflation is what let a superseded instruction sit in
@@ -2091,8 +2099,8 @@ hostile — phone-to-phone across two mobile carriers is both the case most like
 task-list-on-your-phone product hits most. None of this bears on the current design, which has no WebRTC
 in it. It becomes live again only under the conditions D-16 sets for reopening peer-to-peer.
 
-**D-17. What does "reasonably secure" mean, concretely enough to test?** _(Decided in part. Three of five
-selections recorded; two remain and neither is architectural.)_
+**D-17. What does "reasonably secure" mean, concretely enough to test?** _(Decided. All five selections
+recorded; the protocol that implements them is D-28's question, not this one's.)_
 
 The earlier framing made this sound like a choice between "browser keys" and "real accounts". It is six
 choices: **what the product promises; which authority may change authorization outside the service; where
@@ -2100,10 +2108,16 @@ an ordinary device key lives; what an account adds; how recovery works; and what
 answer to only the first is an aspiration, and an answer to only the key-storage question is a mechanism
 without a threat model.
 
-**The second, fourth and fifth are now answered, and they were answered as one** because §5.7.2 predicted
+**The second, fourth and fifth are answered, and they were answered as one** because §5.7.2 predicted
 they were one artifact and was half right. The result is a single user-saved recovery code that seals two
 separable keys — an administration root that can sanction a successor witness, and a content recovery
-root that unwraps the document. The service witnesses both and holds neither.
+root that unwraps the document. The service witnesses both and holds neither. The third is answered in
+§5.7.4 and the sixth in §5.7.8, which closes D-17.
+
+**The first — what the product promises — was never a free choice**, and it is worth saying why the list
+above puts it first anyway. §5.7.1 derives it from decisions already taken rather than selecting it, so
+the honest reading is that the promise was fixed by D-20, D-26, D-27 and D-18 before D-17 was opened, and
+D-17's job was to find a root and recovery path that could keep it. That is what the five selections do.
 
 **What D-16 did to the second of those, precisely, because a v15 draft over-claimed it.** D-16 removed the
 *everyday* accountless authorization root — the device-held authority that admitted the next device
@@ -2354,6 +2368,66 @@ output and unlock an ordinary device credential for use — not to invoke WebAut
 The output is deliberately returned to the client, which is why it strengthens storage at rest without
 changing the same-origin-code boundary.
 
+> **Decided: a non-extractable WebCrypto `CryptoKey`, wrapped by a passkey PRF where the authenticator
+> supports it.** Where PRF is absent the key persists non-extractable and unwrapped, and **the device list
+> shows which tier a device is on** (D-18). A two-tier bar is acceptable; a silent one is not (§5.7.6).
+>
+> The unlock **gates sync, not the app** — the same resolution D-18 reached for revocation checks. Reading
+> and writing locally never waits on it, because the local document does not need this key at all (D-34).
+
+**This was chosen against a much smaller threat than the table above implies, and the reason is worth
+stating.** After §5.7.2, a compromised device key cannot sanction a successor witness, cannot alter the
+administration root and cannot unwrap the content recovery root. What it can do is read what its capability
+permits and write as its actor until revoked (§5.7.1). So the question §5.7.4 is really answering is
+*how much should it cost to protect a write capability that revocation already bounds* — and the answer is
+"the cheap options, both of them", not "the one that changes the distribution model".
+
+**What the PRF wrap buys, precisely.** It protects the *persisted wrapper* against an attacker who has the
+browser profile but cannot produce a platform assertion — a stolen laptop, a copied profile, an OS backup.
+That is §5.7.1's "copied browser profile" row, and the value is concentrated in the window *before the
+owner knows to revoke*, since revocation already handles the noticed case. It buys nothing against live
+same-origin code, which the specification says outright and this document has already recorded.
+
+**And what it conspicuously does not buy: confidentiality of the document.** An attacker who copied the
+profile to steal the key also copied the plaintext workspace sitting beside it, and no option in the table
+above changes that. The key-storage question and the at-rest question are separate, and the second one has
+never actually been decided —
+
+**D-34. Is the local document encrypted at rest?** _(Open, and newly opened. It was asserted twice as a
+premise and never decided; recording that honestly is the point of this entry.)_
+
+The two assertions are §5.7.9's forward-secrecy aside — *"the plaintext sits in IndexedDB on every device
+by design — that is what local-first means"* — and §5.7.1's row conceding no protection from *"plaintext
+already stored by the app"*. Neither is a decision. The first is a premise inside an argument about
+ratcheting, and **"that is what local-first means" is doing unearned work**: local-first means the data is
+on your device, not that it is unencrypted on your device.
+
+**One thing this document implied and should retract.** PRD principle 3 does not forbid a device lock.
+Principle 3 is *"offline is the normal state, not a degraded one — no spinner, no reconnecting banner"*,
+which is about waiting on the **network**. A local unlock ceremony is not a network wait. What a device
+lock would actually cost is §5.1.2's "never awaits a credential" — this document's own formulation, and a
+weaker thing to be bound by than a PRD principle.
+
+What is genuinely at stake, so the decision can be taken on its merits later:
+
+- **The browser's origin sandbox is not an at-rest boundary.** It separates web origins. IndexedDB is
+  ordinary files in the profile directory, readable by any process running as the same OS user, by a copied
+  disk image, or through an OS backup. What protects that data today is **full-disk encryption and a locked
+  screen** — the platform's job, reasonably reliable on modern defaults, and absent or disabled more often
+  than one would like.
+- **End-to-end encryption that terminates in a plaintext database is a real property with a sharp edge**:
+  the relay cannot read the workspace and anything on the user's own machine can. D-25's honesty duty
+  probably reaches this, and §5.7.1's row states it accurately but quietly.
+
+The shape an answer would take, recorded so the question is not re-derived: opt-in per device rather than
+default; a PRF-derived or code-derived key; unlock at cold start; and explicit copy about what it does not
+protect, which is a running unlocked app. It interacts with **D-13** (what a reset clears), **D-18** (a
+revoked device still holding plaintext) and **D-25**.
+
+**Deliberately not decided here.** It surfaced at the end of a long round, it deserves its own, and
+§5.7.4's selection is unaffected either way — the device key is protected identically whether or not the
+document beside it is encrypted.
+
 #### 5.7.5 What an account can add — and what it cannot add by itself
 
 "Create an account" answers who the service recognizes. It does not by itself answer who can decrypt a
@@ -2601,23 +2675,44 @@ The available assurance levels are cumulative:
 | Independent implementation audit        | Review and testing of the shipped client, relay and deployment against the contract                  | Strongest launch evidence here; costs money and has to repeat after security-boundary changes                     |
 | Ongoing disclosure and response program | A vulnerability-reporting path, rotation/recovery runbook, dependency monitoring and incident drills | Treats security as an operating property; cannot compensate for an incoherent root or recovery model              |
 
-**Three of D-17's five selections are now recorded, and they were the three that were entangled.** The
-account's relationship to the content root is non-custodial encrypted recovery (§5.7.5); the recovery
-factor is a mandatory high-entropy code with optional additional wraps, which dissolves the
-unsupported-PRF policy rather than answering it (§5.7.6); and the break-glass authority is an
-administration root sealed under that same code, separable without re-keying (§5.7.2, §5.7.3).
+> **Decided: levels 1–3 before network sync ships, level 5 live from the day it ships, level 4 on a
+> stated trigger.**
+>
+> - **Before sync ships:** the project-owned threat model and conformance tests; a recorded, versioned
+>   ASVS profile; and an **independent protocol design review**.
+> - **From the day sync ships:** the disclosure and response program. A vulnerability-reporting path that
+>   does not exist when the first report arrives is the cheapest possible thing to get wrong.
+> - **Level 4, the independent implementation audit**, is required before either of two triggers: the
+>   phrase *end-to-end encrypted* appearing in marketing copy, or the escrow add-on holding a real key.
 
-**They were selected together, and the document was right that this mattered.** The hoped-for outcome was
-one artifact for two jobs; the actual outcome is one *ceremony* over two keys, which is better than either
-horn of the choice as it was framed. Selecting them in sequence would very likely have produced a single
-undifferentiated root — the cheap-looking answer — and made the enterprise custody split a migration
-instead of an unseal.
+**The sequencing constraint is real and it is not schedule padding.** §8.1 records that D-28's answer
+changes what a protocol reviewer is being asked to review, so **level 3 cannot be scheduled before D-28
+closes.** Booking a design review of an unnamed protocol buys an opinion about a sketch.
 
-**Two selections remain, and neither can change the product's shape or its promises:** the acceptable
-browser key-storage option (§5.7.4), and the assurance level required before network sync ships. The
-first is now a narrower question than it was, because a device key that is compromised no longer
-threatens succession or recovery — those live under an authority that is never online (§5.7.2). Recording
-both is what turns the tables above into the security contract §8.1 calls for.
+**Why level 4 is triggered rather than required at ship**, which is the row most likely to be read as
+corner-cutting: an implementation audit has to repeat after security-boundary changes, and several are
+still pending — D-28, D-32, D-34 and the escrow add-on each move a boundary. Buying the audit before
+those settle purchases evidence about a system that will not be the shipped one. The triggers are chosen
+so that the audit lands before the two moments where its absence would make a claim dishonest rather than
+merely unproven: saying the words, and holding someone else's key.
+
+**All five of D-17's selections are now recorded.** The account's relationship to the content root is
+non-custodial encrypted recovery (§5.7.5); the recovery factor is a mandatory high-entropy code with
+optional additional wraps, which dissolves the unsupported-PRF policy rather than answering it (§5.7.6);
+the break-glass authority is an administration root sealed under that same code, separable without
+re-keying (§5.7.2, §5.7.3); the device key is a non-extractable `CryptoKey`, PRF-wrapped where available
+(§5.7.4); and the assurance bar is above.
+
+**The middle three were selected together, and the document was right that this mattered.** The
+hoped-for outcome was one artifact for two jobs; the actual outcome is one *ceremony* over two keys, which
+is better than either horn of the choice as it was framed. Selecting them in sequence would very likely
+have produced a single undifferentiated root — the cheap-looking answer — and made the organizational
+custody split a migration instead of an unseal.
+
+**And deciding them surfaced a question this document had been assuming rather than answering**, which is
+recorded as **D-34** (§5.7.4): whether the local document is encrypted at rest. It is not a D-17
+selection and does not gate the contract, but it is the last place where "end-to-end encrypted" and what
+a user would understand by it can still come apart.
 
 #### 5.7.9 The common core beneath the options
 
@@ -3185,7 +3280,7 @@ pricing question.
 | **D-14** | May the relay decide who connects? What is written?            | **Decided in part**       | Server sync authenticates connections/envelopes; schema-level content authority is open and not required by D-20/D-27                       |
 | **D-15** | Within a device, is undo per tab or shared?                    | **Decided**               | Per tab                                                                                                                                     |
 | **D-16** | Where does the free/paid boundary sit?                         | **Decided**               | Hosted sync itself. Free is local-only and permanent; the Paired rung is retired; **peer-to-peer is not built**                             |
-| **D-17** | What does "reasonably secure" mean, concretely?                | **Decided in part**       | Non-custodial. One saved code seals an administration root and a content recovery root; escrow excluded from the service. Open: browser key storage, assurance bar |
+| **D-17** | What does "reasonably secure" mean, concretely?                | **Decided**               | All five selections recorded. Non-custodial; one saved code seals an administration root and a content recovery root; escrow excluded from the service; non-extractable PRF-wrapped device key; levels 1–3 before sync ships, 4 on trigger |
 | **D-18** | Are devices enumerable and revocable from a UI?                | **Decided**               | Yes. The unit is the device. Gates sync, not startup. Freeze and offer options; no automatic wipe                                           |
 | **D-19** | How does a device find the other devices that are yours?       | **Decided**               | Sign-in discovers; D-17's selected custody path delivers the content key. Existing-device approval is one option. One root, one flow, wire identifier hidden |
 | **D-20** | How is a member actually excluded?                             | **Decided**               | Content encryption with key rotation. Keeps the relay dumb; key management is the cost                                                      |
@@ -3202,6 +3297,7 @@ pricing question.
 | **D-31** | What does a synced user cost, and what should it be priced at? | **Deferred on purpose**   | Rescoped by D-16 — free now costs nothing per user. Answerable with usage data; the boundary can only move down                             |
 | **D-32** | What may the service retain, observe and do?                   | **Open — readiness gate** | Produce the data and operations contract in §5.10 before service architecture is implementation-ready                                       |
 | **D-33** | What survives the service, and what may be claimed?            | **Open — readiness gate** | Staged, evidence-gated claims. Narrow claim available now; the strong one needs the §5.11.4 tests and the survival package                  |
+| **D-34** | Is the local document encrypted at rest?                       | **Open — newly opened**   | Never decided, only assumed twice. Plaintext in IndexedDB today; the origin sandbox is not an at-rest boundary. Likely an opt-in device lock (§5.7.4) |
 
 ### 8.1 The security artifact remains, and D-17 gates it
 
@@ -3217,7 +3313,8 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | Threat boundary and negative promises    | §5.7.1's attacker table; offline local use and availability limits                      | Any stronger claim, including local-device-at-rest or traffic-metadata protection                          |
 | Credential separation                    | Relay bearer, per-device/per-agent operational credentials, one authorization root      | Concrete credential formats, algorithms, key separation and crypto-agility                                 |
 | **Break-glass succession authority**     | **Selected: a saved administration root**, sealed with the content recovery root under one code; only it may sanction a successor, and its online delegate may not (§5.7.2, §5.7.3) | Delegation credential format, succession message construction, and the transfer operation for the enterprise split |
-| Browser key storage                      | WebAuthn cannot sit on every mutation; non-extractable WebCrypto is not an XSS boundary | Extractable, non-extractable, PRF-wrapped, recovery-wrapped, native, or account-required (§5.7.4)          |
+| Browser key storage                      | **Selected: a non-extractable `CryptoKey`, PRF-wrapped where the authenticator supports it.** The tier is shown in the device list and is never silent; the unlock gates sync, not the app (§5.7.4) | PRF enrollment flow, and the copy shown for a device on the lower tier |
+| **Local storage at rest**                | Nothing is fixed. The workspace is plaintext in IndexedDB today, and the origin sandbox is not an at-rest boundary | Whether an opt-in device lock exists at all — **D-34**, newly opened and never previously decided (§5.7.4) |
 | **Signed authorization epoch**           | Binds membership, credentials, capabilities and key generation; the server witnesses and serializes successors | Chain-head discovery for a fresh device, checkpoint and downgrade rules. **Fork rules are no longer needed** (D-16) |
 | Signed mutation envelopes                | Source-authenticated, workspace/epoch/credential/actor bound                            | Envelope and batching granularity, anti-replay/finalization rule and authenticated checkpoint construction |
 | Attribution binding                      | Actor is derived from the credential or explicitly authorized for representation        | How an update's affected attributed fields are inspected or derived                                        |
@@ -3227,16 +3324,22 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | **Awareness and presence metadata**      | Presence is outside the content encryption as currently designed                        | Encrypt awareness, or state in the threat boundary that the relay learns who edits what and when (D-20)    |
 | Account relationship to the content root | **Selected: non-custodial encrypted recovery.** The service never receives the wrapping factor and cannot decrypt under any proof or order. Escrow is excluded from the service and survives only as an opt-in add-on operated by a separate legal entity, scoped to the content root (§5.7.5) | The add-on's operating boundary, and the copy that explains a two-party disclosure requirement |
 | Recovery                                 | **Selected: a mandatory high-entropy code, wrapped 1-of-N**, with optional additional PRF-passkey wraps; unsupported PRF is no longer a branch (§5.7.6). Account, authority, content key and ciphertext remain four separate objects | Code generation, confirmation, re-display and rotation policy; loss warnings; account-deletion semantics (D-13) |
-| Web application and protocol assurance   | Same-origin code is inside the cryptographic boundary                                   | Versioned ASVS profile, independent design review, implementation audit and ongoing response bar (§5.7.8)  |
+| Web application and protocol assurance   | **Selected: levels 1–3 before sync ships, 5 live at ship, 4 on a stated trigger.** Same-origin code is inside the cryptographic boundary; design review waits on D-28 (§5.7.8) | Which ASVS profile and version, who performs the design review, and the audit's scope |
 | **Durable store representation**         | A content-blind store cannot merge; recovery needs checkpoints, not a merged state      | Checkpoint construction and cadence, manifest binding, retention of superseded checkpoints (D-33, §5.11.3) |
 | **Portability and succession**           | Export, import, an independently obtainable build and a witness-succession operation are requirements, not roadmap | Formats, distribution mechanism, and which authority may sanction a successor witness (D-33)               |
 
-**D-17 gates the selections in the right-hand column, not the existence of every left-hand requirement.**
-Of the five answers it needed, **three are recorded**: the break-glass authority, the account's
-relationship to the content root, and the recovery factor. **Two remain** — what protects the operational
-device key, and what evidence is required before sync ships. Neither is architectural, and the common
-core in §5.7.9 can now be turned into a protocol and put in front of someone who does this
-professionally without waiting for either.
+**D-17 gated the selections in the right-hand column, not the existence of every left-hand requirement —
+and all five are now recorded.** The break-glass authority, the account's relationship to the content
+root, the recovery factor, the device key's storage, and the assurance bar. **D-17 is closed.** The common
+core in §5.7.9 can be turned into a protocol and put in front of someone who does this professionally,
+subject to one ordering constraint: **D-28 first**, because its answer determines what that reviewer is
+being asked to review (§5.7.8).
+
+**Deciding it opened one new question rather than closing every one.** **D-34** — whether the local
+document is encrypted at rest — was assumed twice in this document and never decided (§5.7.4). It is not
+a security-contract selection and does not gate the protocol, but it is the remaining place where the
+phrase *end-to-end encrypted* and a reasonable user's understanding of it can still diverge, so it belongs
+beside the contract rather than in the sub-questions list.
 
 **The three that landed were entangled and had to be taken together**, which the document predicted and
 half got right. §5.7.2 hoped they would prove to be one artifact; the outcome is one **ceremony** over two
@@ -3290,14 +3393,13 @@ specified but incomplete:
    steady state for most users rather than a transitional rung (§1.1).
 2. **Explicit cardinalities**, which §5.4.1 now has, separating architectural capacity from revealed
    surface.
-3. **A completed security contract**, whose requirements, custody policy and recovery policy now exist and
-   whose remaining fields are two. §5.7 gives the threat claims, options, implications and tests; §8.1
-   separates fixed requirements from selections. The remaining choices are **browser key storage** and
-   the **assurance bar**. The three that mattered most are recorded: non-custodial encrypted recovery, a
-   mandatory saved code wrapping two separable roots, and escrow excluded from the service. D-17 is still
-   the gate on the contract, but it is no longer a request to "research security" in the abstract, it can
-   no longer change the product's shape (§5.7.7), and what is left of it cannot change what the product
-   promises either.
+3. **A completed security contract** — whose selections are now all made, and which therefore moves from
+   "specified but incomplete" to "written but unreviewed". §5.7 gives the threat claims, the decisions,
+   the implications and the conformance tests; §8.1 separates fixed requirements from the parameters that
+   remain. **D-17 is closed**: non-custodial encrypted recovery, a mandatory saved code sealing two
+   separable roots, escrow excluded from the service, a non-extractable PRF-wrapped device key, and
+   levels 1–3 of assurance before sync ships. What gates the contract now is **D-28**, not D-17 — the
+   protocol has to be named before it can be reviewed. **D-34** is new and does not gate it.
 4. **A service data and operations contract**, whose minimum contents are fixed by D-32 but whose data
    inventory, retention and deletion rules, operator authority and readiness evidence are not. This is
    separate from the cryptographic contract: encryption limits what the service can read, not what
