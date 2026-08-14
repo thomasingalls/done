@@ -7,6 +7,9 @@ account — is retired, and with it the second transport, the second revocation 
 D-17's open selections. **D-33** (§5.11) records what survives the service disappearing and which claims
 that licenses, promoting material that previously lived only in the durability appendix.
 
+**D-5 is also answered rather than built**: a device joining a workspace does not keep its own history,
+so the merge · theirs · ours · abort adjudication is withdrawn and D-30's motivating case goes with it.
+
 Two unresolved architecture gates remain: **D-17** (the security contract, §8.1, now **four** selections
 rather than five) and **D-28** (what carries the authorization protocol, §5.8.1). Two readiness gates sit
 beside them: **D-32** (§5.10), the data-lifecycle and operational contract, and **D-33**, the
@@ -201,11 +204,17 @@ anything in this document.
 Anything that requires a person to know what a workspace is, name one, or copy one between devices has
 failed (D-10, D-11).
 
-Rule 1 governs _routine_ management, and review found a case it does not cover: **D-5's merge · theirs ·
-ours · abort flow is the most demanding piece of workspace management in the product**, and it is
-deliberate. Two document histories meeting is not a task that can be removed, because the outcome is
-irreversible and the app cannot pick for the user. Whether that is an exception to Rule 1, a boundary
-inside it, or evidence that the rule needs a different formulation is **D-30**, and it is open.
+Rule 1 looked for two drafts as though it had an exception, and v15 withdrew it. The exception was
+**D-5's merge · theirs · ours · abort flow**, described here as "the most demanding piece of workspace
+management in the product" and defended on the grounds that two histories meeting "is not a task that can
+be removed, because the outcome is irreversible and the app cannot pick for the user." **That last claim
+was false.** The app can pick, because D-24 establishes which history is the workspace, and D-5 now does
+pick. The flow is gone and the user adjudicates nothing.
+
+The general lesson is worth keeping, because this document reached for a UI twice before noticing it:
+**an apparent exception to Rule 1 is usually a missing rule.** Where the app seems to need the user to
+choose between workspace states, the question to ask first is whether anything in the model already
+determines the answer. **D-30** remains open, but its motivating case has been withdrawn from under it.
 
 **Rule 2. The UI never promises anything about a remote device that cannot be kept.** No auto-hiding a
 member as though they were gone, no "removed" that does not remove, no presence claim that outlives
@@ -533,7 +542,7 @@ Every row is a movement between **Local** and **Account** (§5.1.1), and every o
 | #       | Scenario                                                                                                       | Raises                    |
 | ------- | -------------------------------------------------------------------------------------------------------------- | ------------------------- |
 | **S34** | Signs in on a second device to enroll it, having created the account on the first.                             | D-19, D-24                |
-| **S35** | Creates an account having already used the app locally **on two devices**, each with its own history.          | **D-24, D-5** — the risk  |
+| **S35** | Creates an account having already used the app locally **on two devices**, each with its own history.          | **D-24, D-5**             |
 | **S36** | Deletes the account, keeping the devices.                                                                      | D-24 in reverse, D-13, D-29 |
 | **S37** | Revokes a device that is currently offline.                                                                    | **D-18**                  |
 | **S38** | Opens a device that has been revoked.                                                                          | **D-18**                  |
@@ -545,11 +554,12 @@ Every row is a movement between **Local** and **Account** (§5.1.1), and every o
 
 **Two rows changed character in v15, and in opposite directions.**
 
-**S35 got much worse, and it is now the main road.** It used to describe someone who had paired devices
-for free and then chose to pay — an uncommon, deliberate act by an engaged user. With no accountless
-sync, every multi-device user runs local-only on each device first, so the *typical* first sync is two
-non-empty histories meeting. That is D-5's hard row, arriving at onboarding rather than in a corner
-(D-24).
+**S35 became common, and D-5 made it cheap.** It used to describe someone who had paired devices for free
+and then chose to pay — an uncommon, deliberate act by an engaged user. With no accountless sync, every
+multi-device user runs local-only on each device first, so two non-empty histories meeting is now
+ordinary rather than exotic. D-5's answer is a rule rather than a flow: the workspace's history is the
+list, the joining device is told what it is about to lose and offered the export, and nothing is merged
+or adjudicated. What the scenario costs is messaging, not engineering (D-24).
 
 **S40 got much better, and used to be the hardest scenario in the document.** It described a revoked
 device continuing to sync with a peer that had not heard about the revocation, producing a divergence
@@ -909,53 +919,69 @@ the service that needs it, not before, and D-1's "never ask at first run" surviv
 the entire free product. And it is **not a manufactured obstacle** — nothing was made worse to create it,
 which is precisely the test the retired rung failed (D-16).
 
-**D-5. What should opting into sync for the first time do when the room already has a document?**
-Today it merges, silently and irreversibly (S10). This is the one moment where an ordinary settings
-action produces an outcome that cannot be undone.
+**D-5. What happens when a device with its own history joins a workspace that already has one?**
+_(Reframed in v15. It was "what should opting into sync for the first time do when the room already has
+a document" — a question about typing a room name, which D-11 removes and D-19 replaces with sign-in.)_
 
-> **Decided, by case:**
+> **Decided, and the four-way adjudication is withdrawn. The workspace's history is the list; a joining
+> device's history does not survive the join.**
 >
-> | Local | Remote | Behaviour                                                               |
-> | ----- | ------ | ----------------------------------------------------------------------- |
-> | empty | full   | Adopt remote wholesale.                                                 |
-> | full  | empty  | Adopt local wholesale.                                                  |
-> | empty | empty  | Nothing to discuss. Adopt local, as policy.                             |
-> | full  | full   | **Stop and ask**, with a preview, and never merge without confirmation. |
+> | Joining device | Workspace | Behaviour                                                                              |
+> | -------------- | --------- | -------------------------------------------------------------------------------------- |
+> | empty          | anything  | Adopt the workspace. Silent, no prompt — this is the good case and stays frictionless.  |
+> | full           | empty     | The workspace adopts this device's history. Nothing is lost, so nothing is asked.       |
+> | full           | full      | **Say what is about to go, offer the export, require confirmation, then adopt the workspace.** |
 >
-> And in every case the user may choose **merge · theirs · ours · abort**.
+> No merge, no preview, no side-by-side, no abort. **Export is the escape hatch; import is how a
+> determined user brings the content across afterwards.**
 
-**This is the flow Rule 1 does not cover** (§1.4). Adjudicating two histories is workspace management of
-the most demanding kind, and it is here on purpose because the outcome is irreversible and the app has
-no basis to choose. Whether that makes it an exception, a boundary, or a reason to reformulate Rule 1 is
-**D-30**, open.
+**Why the previous answer was wrong in its premise, not merely expensive.** v14 said two document
+histories meeting "is not a task that can be removed, because the outcome is irreversible and the app
+cannot pick for the user", and built a git-style preview with merge · theirs · ours · abort to hand the
+choice over. The second half of that sentence is false. **The app does have a basis to pick**: account
+creation establishes which history is the workspace (D-24), so at every subsequent join there is a
+definite answer to "which one is the list", and the joining device is by construction not it.
 
-**And D-16 moved this decision onto the critical path.** With the accountless middle rung gone, every
-multi-device user runs local-only on each device before paying, so "full · full" is no longer the rare
-row — it is what a substantial share of first syncs will look like (D-24). This flow now needs to be good
-on the day hosted sync ships rather than shortly afterwards.
+Once that rule exists the machinery has nothing left to decide. The preview existed to make an
+irreversible merge legible — there is no merge. `abort` existed because a merge cannot be undone — there
+is nothing to undo. `ours` existed to let the joining device win — that is the case the rule refuses.
+What survives is `theirs`, which this decision's own mechanics note already identified as the cheap one:
+discard the local database and adopt the remote, destructive on that device and only that device.
 
-The hard case is the one worth spending on: a preview of what the merge would produce — a room preview,
-a side-by-side, something that makes the outcome legible before it is irreversible — plus an explicit
-warning and an invitation to back up first. The motivation is right and worth recording, because it
-explains what "good" means here: a git-style flow where a large merge can be inspected and adjusted
-piece by piece is genuinely useful precisely when the merge is big, and the absence of anything like it
-is why silent convergence is unacceptable rather than merely impolite.
+**This is a product question, and treating it as a technical one was the error.** The cost of the answer
+is entirely in what the user is told and when. Nothing in the CRDT, the relay or the protocol has to
+change to support it.
 
-**What the four choices cost, because they are not symmetric.** This is mechanics, not product, but the
-product choice should be made knowing it:
+**What is actually lost, stated exactly, because the messaging is the whole of this decision.**
 
-- **merge** is free. It is what the CRDT does natively.
-- **abort** is free _if nothing has been exchanged yet_, and impossible afterwards — there is no
-  un-merge. So the preview has to be built from remote state fetched into a **separate** document and
-  rendered from there, with the real document untouched until confirmation. That is straightforward, and
-  it is the mechanism that makes abort a real option rather than a button that lies.
-- **theirs** is achievable locally: discard the local database and adopt the remote. Destructive on this
-  device, and only this device.
-- **ours** is the awkward one. In a CRDT you cannot remove another replica's history by pushing to it —
-  you can only add. So "ours" means either the relay supports truncating a room, or the local document
-  moves to a **new** room and the old one is abandoned. The second needs no new server capability and
-  is probably the honest implementation; the first is a third example of a capability the relay could
-  gain without gaining authority over content (§2.3, D-14).
+- Everything written on the joining device before it joined: its days, its cards, its master list.
+- Not the attribution or identity — the device keeps its own credential and actor and becomes an
+  ordinary member (D-4, D-19).
+- Not anything on the workspace side. This is never destructive to the list the user is keeping.
+
+**One sentence prevents most of it, and it belongs in the interface rather than in a support article:
+create the account on the device whose list you want to keep.** That is the whole of the mitigation, it
+is memorable, and D-24 makes it true — account creation adopts the creating device's history. The
+interface should say it at the moment it is actionable, not after.
+
+**Export should probably be automatic rather than offered, and that is a cheap upgrade to consider.**
+`exportEntries` and `downloadExport` already exist (`src/crdt/export.ts`), and PRD principle 4 already
+commits to plain-markdown export. Writing the file unconditionally before adopting the workspace turns
+irreversible loss into a file on disk for roughly the cost of one existing call, and removes the failure
+mode where someone declines the offer without understanding it. Recorded as a suggestion; the decision
+above only requires that the option be present and the consequence be stated.
+
+**Import is the real escape hatch, and it is owed anyway.** A user who exported can bring that content
+into the workspace deliberately, as a file they chose to import, rather than through an automatic merge
+they had to adjudicate behind a preview. That is a better shape for the same outcome: the merge becomes
+something the person performs and can inspect, not something the app does and must explain. Import is
+already required by the §2.4 migration and by D-33's continuity requirement, and **its placement against
+the freeze is the enabling decision** — an import gated like a human edit silently drops everything older
+than three days (§2.4, §6).
+
+**What this leaves of S10 and the old room behaviour.** Today's silent, irreversible convergence on a
+room change (S10, S14, §2.2b) is still a defect, and D-11 still removes it. What changes is that its
+replacement is a rule rather than a flow.
 
 **D-22. Should merged content show its provenance?**
 
@@ -979,8 +1005,8 @@ Two useful facts about feasibility:
   deferred (PRD §14, open question 2) and is the costly thing there. So line-level tinting in Goals needs
   that decision first, and the card version does not have to wait for it.
 
-Which makes this splittable rather than off-topic: the card half is cheap and could ship with D-5, and
-the text half is a different question about attribution granularity.
+Which makes this splittable rather than off-topic: the card half is cheap and could ship with sync
+itself, and the text half is a different question about attribution granularity.
 
 **D-24. How does existing local history become an account?** _(Renamed. It was "how does a paired group
 become an account", and after D-16 there are no paired groups — there is local history, which every
@@ -997,19 +1023,22 @@ local-only first, and many will run local-only on two devices before deciding to
 person ever performs is frequently **two non-empty histories meeting**, which is D-5's hard row and the
 one that stops and asks.
 
-That is a load-bearing consequence and it cuts against the removal, so it should not be buried: **D-16
-moved the product's most demanding, most irreversible flow onto its primary onboarding path.** Three
-things follow:
+**And D-5 answers what happens then, at the product level rather than the technical one: the joining
+device's history does not survive.** The workspace's list is the list; the joining device is told what is
+about to go, offered the export, and asked to confirm. There is no merge and no adjudication.
 
-- **D-5's preview-and-adjudicate flow is now critical path, not a corner.** It has to be built before
-  hosted sync ships, not after, and its quality is a first-run experience rather than a recovery
-  affordance.
-- **D-30 becomes more urgent.** Rule 1 says the user never manages workspaces; the first thing a paying
-  user may have to do is adjudicate two document histories. Whether that is an exception to Rule 1 or
-  evidence the rule is misformulated is now being asked at the worst possible moment.
-- **The empty-second-device case is worth protecting deliberately.** "Create the account on the device
-  with the history, then enroll the empty one" avoids the hard row entirely, and the interface should
-  make that the path of least resistance rather than leaving the order to chance.
+Three things follow, and none of them is a build:
+
+- **Account creation is the moment that decides which history survives**, because the creating device's
+  history becomes the workspace. That makes one sentence load-bearing in the interface: *create the
+  account on the device whose list you want to keep.*
+- **The order of operations is the whole mitigation.** Account on the device with the history, then
+  enroll the others, and the destructive row never occurs — the enrolling devices are empty or their
+  content was never wanted. The interface should make that ordering the path of least resistance rather
+  than leaving it to chance.
+- **What is owed is messaging and import, not machinery.** The loss has to be stated before it happens
+  and the export has to be real; bringing the content across afterwards is import (§2.4, D-33), which is
+  already required for other reasons.
 
 Three shapes were available for the adoption itself, and they were not equally safe:
 
@@ -1032,10 +1061,12 @@ The one thing that must not be quiet about it is the divergence: from the moment
 laptop and edits on the phone are two histories, and if the user ever pays again they meet through D-5.
 Rule 2 forbids implying otherwise.
 
-Note that this is D-5 again, at a different level: two histories meeting, with a decision about which
-survives. The four choices there — merge, theirs, ours, abort — are the same four, and so is the
-requirement to show what will happen before it happens irreversibly. Whichever way D-24 goes, it should
-reuse that flow rather than invent a second one.
+Note that this and D-5 are one question asked at two moments, and v15 gave them one answer. D-24 decides
+**which history becomes the workspace** — the creating device's. D-5 decides **what happens to every other
+history that later meets it** — it is stated, exported if wanted, and replaced. Neither needs a flow,
+because between them there is always a determinate answer to "which one is the list". An earlier draft
+proposed that D-24 reuse D-5's four-way adjudication; there is no longer one to reuse, and that is the
+saving.
 
 **D-6. Can a dead actor be pruned, and by whom?**
 
@@ -2372,23 +2403,36 @@ device holding a full copy and export available.
 
 One thing must still be said out loud when sync stops, because Rule 2 requires it and because it is the
 part a user will not infer: **from that moment the devices stop converging, and each one's edits are its
-own.** If the subscription resumes later, two histories meet and D-5's flow runs. Silence here would let
-someone believe their phone and laptop were still one list for weeks after they stopped being one.
+own.** If the subscription resumes later, D-5 applies: whichever device the workspace continues from
+keeps its history, and the others are told what they are about to lose and offered the export. Silence
+about the divergence would let someone believe their phone and laptop were still one list for weeks after
+they stopped being one — and then lose the difference without warning.
 
 **D-30. Does Rule 1 have exceptions, or the wrong formulation?** _(Open. Raised by §1.4 and D-5.)_
 
-Rule 1 says the user never manages workspaces. D-5 then requires the user to adjudicate two document
-histories with a preview and four choices, which is workspace management at its most demanding. §1.4's
-corollary already concedes one exception — security cannot be hidden the way workspace management can —
-but it is written about security surfaces, and D-5 is not one.
+**The case that raised this has been withdrawn.** Rule 1 says the user never manages workspaces; v14's
+D-5 then required them to adjudicate two document histories with a preview and four choices, which was
+workspace management at its most demanding. v15's D-5 removes that flow entirely — the workspace's
+history wins by rule, and the user confirms a loss rather than choosing an outcome (§1.4).
 
-The available shapes: **Rule 1 governs routine management and yields to irreversibility**, which is
-probably the honest reading and makes D-5 and the security surface two instances of one principle;
-**Rule 1 is about the steady state and says nothing about transitions**, which is narrower and cleaner
-but leaves D-24's promotion path unclassified; or **Rule 1 needs reformulating** around what it is
-actually protecting, which is that nobody should have to hold a model of workspaces in their head to use
-the app on two devices. Deliberately left open — the implications reach D-5, D-10, D-11 and D-24, and it
-is worth the time.
+So the question is now asked on much weaker evidence, and it may be answerable. What is left pointing at
+it: §1.4's corollary that security cannot be hidden the way workspace management can, which is written
+about security surfaces and was always the sturdier of the two exceptions; and the residual fact that
+confirming an irreversible loss is still *something* the user has to understand about workspace state,
+even if they are not managing it.
+
+The available shapes: **Rule 1 stands as written**, now the strongest reading, with §1.4's security
+corollary as the single conceded exception and v15's D-5 as evidence that the other apparent exception
+dissolved once a rule replaced a flow; **Rule 1 governs routine management and yields to
+irreversibility**, which was the leading answer in v14 and is now carrying much less weight; **Rule 1 is
+about the steady state and says nothing about transitions**, narrower and cleaner but leaving D-24's
+promotion path unclassified; or **Rule 1 needs reformulating** around what it is actually protecting,
+which is that nobody should have to hold a model of workspaces in their head to use the app on two
+devices.
+
+Left open, but the useful reframing from v15 is recorded in §1.4 and is probably where the answer lives:
+**an apparent exception to Rule 1 is usually a missing rule.** If that generalises, Rule 1 stands and the
+exceptions are places the model has not been finished.
 
 ### 5.10 The service contract — D-32
 
@@ -2613,10 +2657,10 @@ the user has no reason to care and no context to answer. Four constraints now de
    get a second device asks for a name (D-23) and for payment (D-16). That is a sharper edge than the
    retired ladder had, and it is the honest place to put it — the app asks when it starts doing something
    on your behalf that costs it money.
-4. **No text field may silently choose a document lineage.** If two non-empty histories meet, D-5's
-   preview and explicit merge · theirs · ours · abort flow runs before either history changes. **This is
-   now a first-run-adjacent path rather than a corner case** (D-24), which raises what "good" has to mean
-   for it.
+4. **Nothing silently discards a history.** Where a joining device's own history is about to be replaced
+   by the workspace's, D-5 requires that it be said plainly, that the export be offered, and that the
+   user confirm. **This is now a common path rather than a corner case** (D-24, S35) — which raises what
+   the copy has to be, not what the machinery has to do.
 
 ### A worked example of the chosen flow
 
@@ -2638,13 +2682,16 @@ authorization epoch, and the phone is enrolled — but it still cannot read anyt
 does not hold the content key (§5.7.5). So the laptop shows a code, the phone takes it, and the key
 arrives out of band (D-19). No workspace name, room or endpoint is typed anywhere (Rule 1).
 
-**Then the awkward part, and it is deliberate rather than incidental.** Both documents are non-empty, so
-D-5 stops and asks, with a preview and merge · theirs · ours · abort. Tom's week of phone notes and his
-month of laptop history are both real, and the app has no basis to choose between them. This is the most
-demanding thing the product will ever ask of him, it lands close to the moment he first pays, and D-16
-put it there. The mitigation available is ordering: had he created the account on the laptop and then
-installed the app fresh on the phone, the phone would have been empty and this step would not have
-occurred — so the interface should make that ordering the path of least resistance (D-24).
+**Then the part that costs something, and it is a sentence rather than a flow.** The phone has a week of
+its own notes and the workspace has the laptop's month. D-5 does not ask Tom to adjudicate: the workspace
+is the list. The phone tells him plainly that its own week will not be carried over, offers him the
+export, and waits for him to confirm. Then it adopts the laptop's history and the two are one list.
+
+He loses the week unless he took the file. That is a real cost and the interface has to be honest about
+it at the moment it happens rather than afterwards — but it is a messaging problem, not a merge problem,
+and the ordering that avoids it entirely is one instruction: **create the account on the device whose
+list you want to keep** (D-24). Had Tom installed the app on the phone after creating the account, the
+phone would have been empty and nothing would have been asked at all.
 
 Afterwards, the phone has a new human actor because attribution remains per member-per-device, but the
 interface groups both actors under the same principal: one "You", one colour. "Last synced from phone" may
@@ -2676,7 +2723,7 @@ evidence that the free/paid boundary was never only a pricing question.
 | **D-2**  | Is identity per person, per device, or a labelled pair?        | **Decided**               | Per device internally; per person in every list. Device never disclosed or reflected                                                        |
 | **D-3**  | Are device names worth improving?                              | **Decided in principle**  | Yes. Mechanism open — and it does not need a fingerprint                                                                                    |
 | **D-4**  | Can a new device claim an existing actor?                      | **Decided**               | No. A new device is always a new actor; the real question was D-19                                                                          |
-| **D-5**  | What happens when sync first meets a non-empty workspace?      | **Decided**               | By case; both-full stops and asks with a preview. merge · theirs · ours · abort. **Now on the primary onboarding path** (D-24)              |
+| **D-5**  | What happens when a device with history joins a workspace?     | **Decided**               | The workspace's history wins. State the loss, offer the export, confirm, adopt. **No merge, preview or adjudication** — v15 withdrew them   |
 | **D-6**  | Can dead actors be pruned?                                     | **Decided**               | No auto-hiding. Staleness may be muted; the interval is open. Exclusion is D-20                                                             |
 | **D-7**  | Should undo ever cross devices?                                | **Decided**               | No. Never leaves the device                                                                                                                 |
 | **D-8**  | What may a session be seen doing?                              | **Decided**               | A caret per tab, own tabs included, **all yours in your colour**, person's name. Active caret distinguished (D-21). Peer list deduplicated  |
@@ -2695,13 +2742,13 @@ evidence that the free/paid boundary was never only a pricing question.
 | **D-21** | What does "the active caret" mean — local, or globally recent? | **Decided**               | Locally active. No recency modelling; a design check that it reads as distinct                                                              |
 | **D-22** | Does merged content show its provenance?                       | **Decided**               | Yes, as a rarely-on mode. Settings toggle, off switch surfaced while active. Cards only, freeze-window bound                                |
 | **D-23** | Does pairing alone trigger the name prompt?                    | **Decided**               | Largely dissolved by D-16: one name prompt, at account creation, which is now the same moment as first sync                                 |
-| **D-24** | How does existing local history become an account?             | **Decided**               | The account adopts what is there. Needs an account model accepting a prior identity. **Promoted to the main road by D-16**                  |
+| **D-24** | How does existing local history become an account?             | **Decided**               | The account adopts the creating device's history — which is what makes D-5 decidable. Needs a model accepting a prior identity              |
 | **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**               | Yes, for the environment case. Warn about the property, not the cause. Offer the grant, then export, then sync                              |
 | **D-26** | Revocation learned late, history already diverged?             | **Decided**               | Prevented by construction from the server's commit point. No lineage rule, no discard, no filtered replay                                   |
 | **D-27** | Is attribution authenticated, or advisory?                     | **Decided**               | Authenticated by an epoch-authorized credential; actor is derived or explicitly authorized for representation                               |
 | **D-28** | What carries the authorization protocol?                       | **Open**                  | Bespoke on Yjs · adopt the Automerge-adjacent stack · server-enforced · reduce the promise. Forced when §8.1 is drafted                     |
 | **D-29** | What happens to an account that lapses?                        | **Decided**               | Grace period, then read-only: root survives, sync stops, local use untouched. Devices then diverge, and must be told. Retention open        |
-| **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Open**                  | D-5's merge adjudication is workspace management by any reading. Routine-versus-irreversible is the likely shape                            |
+| **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Open — weakened**       | Its motivating case was withdrawn with D-5's flow. "An apparent exception is usually a missing rule" is the likely shape                    |
 | **D-31** | What does a synced user cost, and what should it be priced at? | **Deferred on purpose**   | Rescoped by D-16 — free now costs nothing per user. Answerable with usage data; the boundary can only move down                             |
 | **D-32** | What may the service retain, observe and do?                   | **Open — readiness gate** | Produce the data and operations contract in §5.10 before service architecture is implementation-ready                                       |
 | **D-33** | What survives the service, and what may be claimed?            | **Open — readiness gate** | Staged, evidence-gated claims. Narrow claim available now; the strong one needs the §5.11.4 tests and the survival package                  |
@@ -2806,11 +2853,14 @@ management (Rule 1), reads and writes never awaiting a credential, an account ad
 predates it (D-24), honest durability warnings (D-25), and removal governing future access rather than
 pretending to erase copies already made.
 
-**One thing this revision should be watched for on the next pass.** D-16 simplified the architecture by
-moving cost and complexity out of the protocol — and it moved a little of it onto the user, in exactly one
-place: the person who runs local-only on two devices and then pays now meets D-5's adjudication flow at
-onboarding (D-24, S35). That is the single regression in this revision, it is deliberate, and if it proves
-worse in practice than it reads here, it is the thing to reconsider first — not the boundary.
+**Where this revision's cost actually landed.** D-16 moved complexity out of the protocol, and a little of
+it onto the user: someone who runs local-only on two devices and then pays loses the second device's
+history (D-5, D-24, S35). Two things about that are worth holding on to. It is **bounded and
+explicable** — one device, one moment, stated before it happens, with a file offered — rather than the
+open-ended adjudication v14 was heading toward. And it is **a copy problem, not an architecture problem**:
+what remains to get right is the sentence the user reads and the ordering the interface encourages. If
+this proves worse in practice than it reads here, the thing to revisit is the messaging and the import
+path, not the boundary.
 
 **On splitting this document, which the fourth review round proposed: not yet, and the order matters.**
 The proposal was to promote the single-principal half now — the roster showing one "You" per device, the
