@@ -1,9 +1,10 @@
 # done — Sessions and Identity: Product Requirements
 
-**Status:** Draft v13 — **all 31 dispositions recorded**, revised against a review that checked every
-claim this document makes about the codebase. Two unresolved architecture gates: **D-17** (the security
-contract, §8.1) and **D-28** (what carries the authorization protocol, §5.8.1), which the review
-promoted out of a prose implication because D-20, D-27 and the signed epoch have made it forced. One
+**Status:** Draft v14 — **all 32 dispositions recorded**, revised against a product-readiness review.
+Two unresolved architecture gates remain: **D-17** (the security contract, §8.1) and **D-28** (what
+carries the authorization protocol, §5.8.1). A separate service-readiness gate, **D-32** (§5.10), now
+records the data-lifecycle and operational contract that must constrain the architecture rather than
+being postponed until launch. One
 answer withdrawn: **D-16** is re-opened on where the free/paid boundary sits, with the pricing half
 split off as D-31 and still deferred.
 **Not ready to promote into the PRD** — see §8.2.
@@ -399,10 +400,10 @@ arrived**.
 
 ### 3.2 Arrival: principal × device
 
-|                        | **New device**                                                                                                                                                     | **Existing device**                                                                                                                                                        |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **New principal**      | **A. Genesis.** First run ever, or a new install with no sync. Today: mints an actor and a device, and the principal is implicit in there being nothing else.       | **B. Reset or handoff.** Storage cleared, or a deliberate "I am someone else". Today: indistinguishable from Genesis, and the document keeps the abandoned actor forever. |
-| **Existing principal** | **C. Pairing.** A second device joining a principal that already exists. A new actor, always (D-4) — what is shared is the principal, not the writing identity.     | **D. Ordinary launch.** Reads actor and device from localStorage. The only well-served cell.                                                                              |
+|                        | **New device**                                                                                                                                                  | **Existing device**                                                                                                                                                       |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **New principal**      | **A. Genesis.** First run ever, or a new install with no sync. Today: mints an actor and a device, and the principal is implicit in there being nothing else.   | **B. Reset or handoff.** Storage cleared, or a deliberate "I am someone else". Today: indistinguishable from Genesis, and the document keeps the abandoned actor forever. |
+| **Existing principal** | **C. Pairing.** A second device joining a principal that already exists. A new actor, always (D-4) — what is shared is the principal, not the writing identity. | **D. Ordinary launch.** Reads actor and device from localStorage. The only well-served cell.                                                                              |
 
 Cell **C** is the hole, and naming the axis correctly says what kind of hole it is: earlier drafts
 called it "rejoin" and read it as a claiming problem, which sent D-4 looking for a way to say "I am
@@ -530,18 +531,22 @@ These were implicit in D-17 and therefore absent from the state space even thoug
 depends on them. They are separated by **which credential is lost or compromised**, because "a leaked
 credential" has no useful meaning until the credential's authority is named.
 
-| #       | Scenario                                                                                  | Raises                |
-| ------- | ----------------------------------------------------------------------------------------- | --------------------- |
-| **S41** | An outsider knows the relay endpoint and workspace identifier, but has no credential.     | **D-17**, D-14        |
-| **S42** | The relay or its stored database is read, modified, rolled back or selectively withheld.  | **D-17**, D-20, D-27  |
-| **S43** | A short-lived relay connection token leaks, but no device key does.                       | **D-17**, D-14        |
-| **S44** | A device signing or decryption credential is copied or used by an attacker.               | **D-17**, D-18, D-20  |
-| **S45** | Malicious code runs in the app's own origin through XSS, a dependency or a bad release.    | **D-17**              |
-| **S46** | An authorized agent or device writes maliciously without exceeding its granted capability. | **D-17**, D-20, D-27  |
-| **S47** | Every device is lost while a paid server-side ciphertext copy still exists.               | **D-17**, D-25        |
-| **S48** | An attacker uses the account-recovery path rather than attacking the primary credential.  | **D-17**              |
-| **S49** | Two authorized devices concurrently produce different authorization successors.           | **D-17**, D-26        |
-| **S50** | The service is unavailable temporarily, or disappears permanently.                        | **D-17**, D-16, D-25  |
+| #       | Scenario                                                                                                      | Raises               |
+| ------- | ------------------------------------------------------------------------------------------------------------- | -------------------- |
+| **S41** | An outsider knows the relay endpoint and workspace identifier, but has no credential.                         | **D-17**, D-14       |
+| **S42** | The relay or its stored database is read, modified, rolled back or selectively withheld.                      | **D-17**, D-20, D-27 |
+| **S43** | A short-lived relay connection token leaks, but no device key does.                                           | **D-17**, D-14       |
+| **S44** | A device signing or decryption credential is copied or used by an attacker.                                   | **D-17**, D-18, D-20 |
+| **S45** | Malicious code runs in the app's own origin through XSS, a dependency or a bad release.                       | **D-17**             |
+| **S46** | An authorized agent or device writes maliciously without exceeding its granted capability.                    | **D-17**, D-20, D-27 |
+| **S47** | Every device is lost while a paid server-side ciphertext copy still exists.                                   | **D-17**, D-25       |
+| **S48** | An attacker uses the account-recovery path rather than attacking the primary credential.                      | **D-17**             |
+| **S49** | Two authorized devices concurrently produce different authorization successors.                               | **D-17**, D-26       |
+| **S50** | The service is unavailable temporarily, or disappears permanently.                                            | **D-17**, D-16, D-25 |
+| **S54** | The user deletes an account while server ciphertext, metadata, logs, backups and offline replicas exist.      | **D-32**, D-20, D-24 |
+| **S55** | The user asks what the service holds, exports it, corrects account data or requests deletion.                 | **D-32**             |
+| **S56** | Support or an operator needs to diagnose a tenant problem without gaining document access.                    | **D-32**, D-17       |
+| **S57** | The service detects abuse, receives a legal request or must suspend an account without destroying local data. | **D-32**, D-29       |
 
 ---
 
@@ -647,11 +652,11 @@ itself three times.** The claim was too strong: your own devices are shown to yo
 places that are each decided elsewhere here. The rule is about disclosure to _another principal_ and
 about the ordinary case, not about hiding your own devices from you.
 
-| Surface                              | Shows the device to you    | Decided in            |
-| ------------------------------------ | -------------------------- | --------------------- |
-| "Last synced from ⟨device⟩"          | Yes, in the ordinary case  | §1.3, PRD §11.3       |
-| Merge provenance mode                | Yes, deliberately, rarely  | D-22                  |
-| The device list                      | Yes, and it must           | D-18, §1.4            |
+| Surface                     | Shows the device to you   | Decided in      |
+| --------------------------- | ------------------------- | --------------- |
+| "Last synced from ⟨device⟩" | Yes, in the ordinary case | §1.3, PRD §11.3 |
+| Merge provenance mode       | Yes, deliberately, rarely | D-22            |
+| The device list             | Yes, and it must          | D-18, §1.4      |
 
 Which also corrects a count: the live reasons to keep the device level are not two but at least four —
 telling multiple carets apart, invalidating from a UI (D-18), naming a sync source, and answering "which
@@ -1386,10 +1391,10 @@ a thing to ship by accident in the document about serving real users responsibly
 
 The two conditions are different in kind and must be treated differently:
 
-| Condition                                                            | Clears?                        | Treatment                                                       |
-| -------------------------------------------------------------------- | ------------------------------ | --------------------------------------------------------------- |
-| **This context is not durable** — `persisted()` false (S29, S30)     | Yes — grant it, or move        | D-25 as written: prominent, persistent, names the action        |
-| **This tier holds no server copy** — rungs 1 and 2                   | No — it is what the tier _is_  | Stated once where it is decided: at pairing, and in the device list |
+| Condition                                                        | Clears?                       | Treatment                                                           |
+| ---------------------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------- |
+| **This context is not durable** — `persisted()` false (S29, S30) | Yes — grant it, or move       | D-25 as written: prominent, persistent, names the action            |
+| **This tier holds no server copy** — rungs 1 and 2               | No — it is what the tier _is_ | Stated once where it is decided: at pairing, and in the device list |
 
 The first is a defect in the environment and warning about it is a service. The second is a property of
 the plan the user chose, belongs to the moment they choose it and to the surface that describes their
@@ -1641,11 +1646,11 @@ maintained in parallel forever.
 
 **A third option, which this decision never listed and should:**
 
-| Option                                            | Free tier gets                       | Cost to build                                    | Paid boundary                                     |
-| ------------------------------------------------- | ------------------------------------ | ------------------------------------------------ | ------------------------------------------------- |
-| Free P2P, paid relay _(the current plan)_         | Sync while both devices are awake    | A second transport, plus D-26's free-tier branch | Server-intermediated sync                        |
-| **Relay for everyone, boundary elsewhere**        | Sync that works like the paid one    | **Already built**                                | Retention depth, agent members, workspace count, or simply hosting |
-| Local-only free, paid relay                       | One device                           | Nothing                                          | Any sync at all                                   |
+| Option                                     | Free tier gets                    | Cost to build                                    | Paid boundary                                                      |
+| ------------------------------------------ | --------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------ |
+| Free P2P, paid relay _(the current plan)_  | Sync while both devices are awake | A second transport, plus D-26's free-tier branch | Server-intermediated sync                                          |
+| **Relay for everyone, boundary elsewhere** | Sync that works like the paid one | **Already built**                                | Retention depth, agent members, workspace count, or simply hosting |
+| Local-only free, paid relay                | One device                        | Nothing                                          | Any sync at all                                                    |
 
 The middle row deletes D-26's entire free-tier branch, the TURN question, and the two-transport burden,
 at the cost of the free cross-device story — which is a real cost and may well be the wrong trade. It is
@@ -1724,18 +1729,18 @@ whether to make the promises.**
 already imply; choosing a stronger root may improve individual rows, but choosing one that cannot meet a
 row means reopening the decision named above.
 
-| Attacker or event                                      | What must remain true                                                                                                                                 | What is not promised                                                                                                                       |
-| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| Knows the relay URL and workspace identifier (S41)    | Cannot decrypt content, become a member or create an accepted mutation. A workspace identifier is an identifier, never a bearer secret.               | Cannot be prevented from reaching a public endpoint; rate and resource abuse are a service-availability problem.                           |
-| Passive network observer                               | Learns no content or reusable credential from traffic. Transport security still applies outside the content encryption.                              | Hiding that traffic exists, its rough volume, or the network addresses involved.                                                           |
-| Malicious or compromised relay (S42)                   | Cannot read content, forge an accepted mutation, silently change authorization, or make an already-witnessed older epoch look current.                | It can delay, omit, reorder or refuse bytes. End-to-end encryption supplies confidentiality and integrity, not availability.               |
-| Leaked relay bearer token (S43)                        | Does not decrypt content, sign a mutation, authorize a device or recover an account. It is scoped, expires and can be refused independently.           | The holder may consume relay service and obtain ciphertext or metadata until refusal or expiry.                                            |
-| Compromised authorized device or agent (S44, S46)      | Cannot impersonate another actor, exceed its capability or survive revocation by inventing authority it was never granted.                            | It can read everything its capability permits, copy it forever, and make every malicious edit its capability permits until revoked.        |
-| Revoked credential                                     | After the applicable commit point, cannot add an accepted write or decrypt a later content-key generation.                                            | Erasure of any plaintext, key or ciphertext it obtained before revocation. Removal governs the future, as D-20 already says.                |
-| Copied browser profile or unlocked device              | The product states the boundary accurately and revocation limits future access once another authorized root acts.                                     | Protection from an attacker who can run the app as the user or read plaintext already stored by the app.                                  |
-| Same-origin XSS, compromised dependency or bad release | The incident is contained operationally as far as the selected root permits, and credentials can be rotated after it.                                 | Confidentiality or integrity while hostile code is running with the app's own origin and privileges. Client-side encryption cannot do that. |
-| All devices and authenticators lost (S47)              | The UI says exactly which of account access, authorization, key access and ciphertext can be recovered under the selected option.                     | Recovery unless a recovery path is deliberately selected. A server holding ciphertext alone does not hold the means to decrypt it.         |
-| Service outage or disappearance (S50)                  | Existing local documents remain readable and writable; no local operation awaits the service.                                                         | Server-mediated sync, server-held recovery material or a promise that the service's copy remains reachable after the service disappears.   |
+| Attacker or event                                      | What must remain true                                                                                                                        | What is not promised                                                                                                                        |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Knows the relay URL and workspace identifier (S41)     | Cannot decrypt content, become a member or create an accepted mutation. A workspace identifier is an identifier, never a bearer secret.      | Cannot be prevented from reaching a public endpoint; rate and resource abuse are a service-availability problem.                            |
+| Passive network observer                               | Learns no content or reusable credential from traffic. Transport security still applies outside the content encryption.                      | Hiding that traffic exists, its rough volume, or the network addresses involved.                                                            |
+| Malicious or compromised relay (S42)                   | Cannot read content, forge an accepted mutation, silently change authorization, or make an already-witnessed older epoch look current.       | It can delay, omit, reorder or refuse bytes. End-to-end encryption supplies confidentiality and integrity, not availability.                |
+| Leaked relay bearer token (S43)                        | Does not decrypt content, sign a mutation, authorize a device or recover an account. It is scoped, expires and can be refused independently. | The holder may consume relay service and obtain ciphertext or metadata until refusal or expiry.                                             |
+| Compromised authorized device or agent (S44, S46)      | Cannot impersonate another actor, exceed its capability or survive revocation by inventing authority it was never granted.                   | It can read everything its capability permits, copy it forever, and make every malicious edit its capability permits until revoked.         |
+| Revoked credential                                     | After the applicable commit point, cannot add an accepted write or decrypt a later content-key generation.                                   | Erasure of any plaintext, key or ciphertext it obtained before revocation. Removal governs the future, as D-20 already says.                |
+| Copied browser profile or unlocked device              | The product states the boundary accurately and revocation limits future access once another authorized root acts.                            | Protection from an attacker who can run the app as the user or read plaintext already stored by the app.                                    |
+| Same-origin XSS, compromised dependency or bad release | The incident is contained operationally as far as the selected root permits, and credentials can be rotated after it.                        | Confidentiality or integrity while hostile code is running with the app's own origin and privileges. Client-side encryption cannot do that. |
+| All devices and authenticators lost (S47)              | The UI says exactly which of account access, authorization, key access and ciphertext can be recovered under the selected option.            | Recovery unless a recovery path is deliberately selected. A server holding ciphertext alone does not hold the means to decrypt it.          |
+| Service outage or disappearance (S50)                  | Existing local documents remain readable and writable; no local operation awaits the service.                                                | Server-mediated sync, server-held recovery material or a promise that the service's copy remains reachable after the service disappears.    |
 
 Two phrases in that table carry more work than they appear to. **Already-witnessed** is the bound on
 rollback protection: a returning client can remember the newest authorization head it has seen and reject
@@ -1750,11 +1755,11 @@ answer to either.
 The phrase "the credential" has hidden three different authorities. They must be different artifacts,
 because leaking one should not silently grant the other two:
 
-| Credential                                      | May do                                                                                  | Must not do                                                                                       |
-| ----------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| **Relay admission token**                       | Open a scoped transport connection for a bounded time                                   | Decrypt, sign content, admit a device, change capabilities or recover an account                  |
-| **Device or agent credential**                  | Sign mutations; unwrap content keys if read-capable                                     | Change authorization unless separately granted that capability; represent an arbitrary actor     |
-| **Authorization root or account authenticator** | Admit and revoke credentials, choose capabilities, establish the current epoch and recover if the policy allows | Sit on the hot mutation path, or become a shared writer credential copied to every device          |
+| Credential                                      | May do                                                                                                          | Must not do                                                                                  |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| **Relay admission token**                       | Open a scoped transport connection for a bounded time                                                           | Decrypt, sign content, admit a device, change capabilities or recover an account             |
+| **Device or agent credential**                  | Sign mutations; unwrap content keys if read-capable                                                             | Change authorization unless separately granted that capability; represent an arbitrary actor |
+| **Authorization root or account authenticator** | Admit and revoke credentials, choose capabilities, establish the current epoch and recover if the policy allows | Sit on the hot mutation path, or become a shared writer credential copied to every device    |
 
 The second row is itself two cryptographic jobs. Signing proves who sent an envelope; public-key
 encryption or key agreement lets a content key be wrapped for one reader. A single library may represent
@@ -1786,14 +1791,14 @@ content keys, rather than merely deleting a billing row.
 Pairing without an account means some device-held authority must be able to admit the next device. That
 fact is unavoidable; who holds it is not.
 
-| Option                                | The user sees                                                           | Security implication                                                                                                 | Availability implication                                                                                 |
-| ------------------------------------- | ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| Every admitted device is an admin     | Any current device can show the pairing code or revoke another          | Compromise of any device can add a durable hidden credential before it is revoked; the device list becomes critical | Pairing and recovery from one lost device work whenever any other device survives                        |
-| One designated admin device           | Pairing and revocation work only from one device, whether or not it is named as such | Fewer keys can change authorization; ordinary writer compromise does not become permanent enrollment                 | Losing or lacking that device freezes membership changes; design starts exposing device management       |
-| A transferable device-held root       | One device at a time is able to administer; authority can be handed over | Same smaller authority set, but transfer is itself a high-value authorization operation                              | A failed or half-completed transfer can strand the group; concurrent devices must agree who has the root |
-| A quorum of current devices           | A sensitive change needs approval on two or more devices                | One stolen device cannot add or revoke alone                                                                         | The common two-device case cannot revoke the lost device; the security win directly defeats the scenario |
-| A platform authenticator ceremony     | Pairing or revocation asks for a passkey/security-key interaction       | Keeps administration out of the ordinary device signing key; phishing-resistant when WebAuthn is used correctly      | Requires a supported authenticator and a policy for losing it; may create a service record without a named account |
-| No device-held admin; account only     | Cross-device setup begins with sign-in                                  | Centralizes ordering, rate limits and recovery policy                                                                | Deletes rung 2 and reopens D-19, D-23, D-24 and the free tier in D-16                                    |
+| Option                             | The user sees                                                                        | Security implication                                                                                                | Availability implication                                                                                           |
+| ---------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Every admitted device is an admin  | Any current device can show the pairing code or revoke another                       | Compromise of any device can add a durable hidden credential before it is revoked; the device list becomes critical | Pairing and recovery from one lost device work whenever any other device survives                                  |
+| One designated admin device        | Pairing and revocation work only from one device, whether or not it is named as such | Fewer keys can change authorization; ordinary writer compromise does not become permanent enrollment                | Losing or lacking that device freezes membership changes; design starts exposing device management                 |
+| A transferable device-held root    | One device at a time is able to administer; authority can be handed over             | Same smaller authority set, but transfer is itself a high-value authorization operation                             | A failed or half-completed transfer can strand the group; concurrent devices must agree who has the root           |
+| A quorum of current devices        | A sensitive change needs approval on two or more devices                             | One stolen device cannot add or revoke alone                                                                        | The common two-device case cannot revoke the lost device; the security win directly defeats the scenario           |
+| A platform authenticator ceremony  | Pairing or revocation asks for a passkey/security-key interaction                    | Keeps administration out of the ordinary device signing key; phishing-resistant when WebAuthn is used correctly     | Requires a supported authenticator and a policy for losing it; may create a service record without a named account |
+| No device-held admin; account only | Cross-device setup begins with sign-in                                               | Centralizes ordering, rate limits and recovery policy                                                               | Deletes rung 2 and reopens D-19, D-23, D-24 and the free tier in D-16                                              |
 
 The first option is the simplest shape for an accountless pairing protocol, either directly or through a
 delegation chain. That does not make it wrong, but it makes the promise precise: **at rung 2, possession
@@ -1806,14 +1811,14 @@ admitted an unknown one; the authorization chain, not the display roster, is the
 Every live option still needs an operational signing key available without putting a passkey prompt on
 every sync. The browser offers storage, not a general promise of a hardware-backed application keystore.
 
-| Option                                      | The user sees                                                | What it buys                                                                                       | What it does not buy                                                                                                                    |
-| ------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| Extractable key bytes in IndexedDB          | Nothing                                                      | Broad compatibility; backup and transfer are mechanically simple                                   | A profile copy or same-origin script can export the key permanently                                                                     |
-| Non-extractable WebCrypto `CryptoKey`       | Nothing                                                      | Prevents `exportKey`/`wrapKey` when disallowed and avoids casually serializing raw key bytes         | No hardware or encrypted-at-rest guarantee. WebCrypto permits structured-cloning a key across origins and explicitly warns that XSS can do so |
-| Software key wrapped by a passkey PRF       | A platform authentication when the key must be unlocked      | The persisted wrapper is useless without an assertion from that credential; useful protection while locked | PRF is optional; its output and the unwrapped software key reach same-origin code, so live XSS still wins                                |
-| Software key wrapped by a recovery secret   | A high-entropy code at enrollment and on a new or reset device | Portable across browser and authenticator ecosystems; no service can guess it if generated properly | The user becomes the keystore; copying, phishing or losing the code has the obvious consequence                                           |
-| Native or extension-backed OS keystore      | An install, extension or native-app permission               | Can supply an OS or hardware boundary unavailable to an ordinary web page                           | Changes the product and distribution model; does not protect an already-unlocked app from using the key                                 |
-| No accountless device key                   | Sign in before any network sync                              | Avoids claiming that browser storage meets the bar                                                   | Collapses the ladder to local-only or account and reopens the decisions listed above                                                      |
+| Option                                    | The user sees                                                  | What it buys                                                                                               | What it does not buy                                                                                                                          |
+| ----------------------------------------- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Extractable key bytes in IndexedDB        | Nothing                                                        | Broad compatibility; backup and transfer are mechanically simple                                           | A profile copy or same-origin script can export the key permanently                                                                           |
+| Non-extractable WebCrypto `CryptoKey`     | Nothing                                                        | Prevents `exportKey`/`wrapKey` when disallowed and avoids casually serializing raw key bytes               | No hardware or encrypted-at-rest guarantee. WebCrypto permits structured-cloning a key across origins and explicitly warns that XSS can do so |
+| Software key wrapped by a passkey PRF     | A platform authentication when the key must be unlocked        | The persisted wrapper is useless without an assertion from that credential; useful protection while locked | PRF is optional; its output and the unwrapped software key reach same-origin code, so live XSS still wins                                     |
+| Software key wrapped by a recovery secret | A high-entropy code at enrollment and on a new or reset device | Portable across browser and authenticator ecosystems; no service can guess it if generated properly        | The user becomes the keystore; copying, phishing or losing the code has the obvious consequence                                               |
+| Native or extension-backed OS keystore    | An install, extension or native-app permission                 | Can supply an OS or hardware boundary unavailable to an ordinary web page                                  | Changes the product and distribution model; does not protect an already-unlocked app from using the key                                       |
+| No accountless device key                 | Sign in before any network sync                                | Avoids claiming that browser storage meets the bar                                                         | Collapses the ladder to local-only or account and reopens the decisions listed above                                                          |
 
 The correction in the second row matters. `extractable: false` is a useful misuse guard, but it is not the
 XSS containment boundary the previous draft claimed. The WebCrypto security considerations explicitly
@@ -1835,12 +1840,12 @@ changing the same-origin-code boundary.
 "Create an account" answers who the service recognizes. It does not by itself answer who can decrypt a
 server-held document. These are the available account shapes:
 
-| Option                                   | What sign-in recovers                                                                    | Can the service read content? | What a new device still needs                                                                                  |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Authentication and revocation witness only | Account access, the device list, current authorization head and stored ciphertext         | No                            | An existing device or separate recovery factor to authorize it **and deliver the content root**                |
-| Non-custodial encrypted recovery         | All of the above, plus a wrapped content root and authority to enroll its replacement credential | No, if the wrapping factor never reaches the service | A PRF-capable passkey, recovery secret, or selected quorum that can unwrap the root                             |
-| Service escrow                           | Everything after the service accepts the recovery proof                                  | **Yes, in capability if not in routine operation** | Nothing else; the same capability that makes recovery smooth lets the service or its compromise decrypt        |
-| Account-required, device-approved access | Account access admits the device provisionally; another device must approve content access | No                            | A surviving authorized device every time; the account improves identity and revocation, not last-device recovery |
+| Option                                     | What sign-in recovers                                                                            | Can the service read content?                        | What a new device still needs                                                                                    |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Authentication and revocation witness only | Account access, the device list, current authorization head and stored ciphertext                | No                                                   | An existing device or separate recovery factor to authorize it **and deliver the content root**                  |
+| Non-custodial encrypted recovery           | All of the above, plus a wrapped content root and authority to enroll its replacement credential | No, if the wrapping factor never reaches the service | A PRF-capable passkey, recovery secret, or selected quorum that can unwrap the root                              |
+| Service escrow                             | Everything after the service accepts the recovery proof                                          | **Yes, in capability if not in routine operation**   | Nothing else; the same capability that makes recovery smooth lets the service or its compromise decrypt          |
+| Account-required, device-approved access   | Account access admits the device provisionally; another device must approve content access       | No                                                   | A surviving authorized device every time; the account improves identity and revocation, not last-device recovery |
 
 The first and fourth rows make a subtle product promise: **paid durability would mean durable ciphertext,
 not guaranteed recoverability.** That can be a coherent product, but only if D-25 says it plainly. The
@@ -1868,17 +1873,17 @@ No mechanism below supplies the fourth unless another device, an export or the p
 the bytes. A recovery code cannot recover a document that no longer exists; a server backup cannot recover
 one whose only decryption root is gone.
 
-| Recovery option                              | Restores                                                                                      | The user sees                                                       | Failure / attack implication                                                                                                    |
-| -------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| A surviving authorized device               | Authorization and content keys; ciphertext too if that device has it                          | Scan or approve from the old device                                 | The existing D-19 path. No all-device-loss recovery; compromise of that device has its full authority                            |
-| A synced copy of the same PRF-capable passkey | Account access and potentially the wrapped root; ciphertext only from the service              | Platform passkey selection                                         | Depends on authenticator ecosystem, sync state and PRF support; compromise/recovery of that ecosystem becomes part of this threat model |
-| A separately enrolled passkey                | Account access; content root only if it was separately wrapped to that credential              | Choose a backup passkey/security key                               | PRF output is per credential, so enrolling a second credential is not enough unless the root is wrapped for it                   |
-| A random saved recovery secret               | Authorization and content root if the secret wraps them; ciphertext only from another holder   | Save a long code or QR, then present it during recovery             | A bearer secret: phishable, copyable and losable. It must be high-entropy rather than a memorable password                       |
-| A password or passphrase                     | Whatever the design lets a derived key unwrap                                                 | Remember and type a secret                                         | A server copy permits offline guessing against wrapped data; an ordinary human password cannot simply be treated as a content key |
-| Email, support or another service proof      | Account access, and authorization only if the service is the authority                          | Recovery message, delay or support process                          | Becomes the weakest account-takeover path. Cannot reconstruct a non-custodial content key unless the service also has escrow      |
-| Service escrow                               | Account, authorization and content root; ciphertext if the service retained it                 | Familiar account recovery                                          | The service is a decryption principal. A service breach, legal compulsion or bad release can exercise the same power              |
-| Threshold / combination of factors           | Whatever root was split or multiply wrapped                                                    | Two-of-three devices, passkeys, codes or contacts                   | Avoids one weak recovery route, at the cost of setup, explanation and lockout when the threshold cannot be met                    |
-| No recovery                                  | Nothing beyond surviving local copies                                                          | An explicit warning and preferably a verified export               | No separate recovery principal holds a root; losing the last live root makes a paid ciphertext copy permanently unreadable        |
+| Recovery option                               | Restores                                                                                     | The user sees                                           | Failure / attack implication                                                                                                            |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| A surviving authorized device                 | Authorization and content keys; ciphertext too if that device has it                         | Scan or approve from the old device                     | The existing D-19 path. No all-device-loss recovery; compromise of that device has its full authority                                   |
+| A synced copy of the same PRF-capable passkey | Account access and potentially the wrapped root; ciphertext only from the service            | Platform passkey selection                              | Depends on authenticator ecosystem, sync state and PRF support; compromise/recovery of that ecosystem becomes part of this threat model |
+| A separately enrolled passkey                 | Account access; content root only if it was separately wrapped to that credential            | Choose a backup passkey/security key                    | PRF output is per credential, so enrolling a second credential is not enough unless the root is wrapped for it                          |
+| A random saved recovery secret                | Authorization and content root if the secret wraps them; ciphertext only from another holder | Save a long code or QR, then present it during recovery | A bearer secret: phishable, copyable and losable. It must be high-entropy rather than a memorable password                              |
+| A password or passphrase                      | Whatever the design lets a derived key unwrap                                                | Remember and type a secret                              | A server copy permits offline guessing against wrapped data; an ordinary human password cannot simply be treated as a content key       |
+| Email, support or another service proof       | Account access, and authorization only if the service is the authority                       | Recovery message, delay or support process              | Becomes the weakest account-takeover path. Cannot reconstruct a non-custodial content key unless the service also has escrow            |
+| Service escrow                                | Account, authorization and content root; ciphertext if the service retained it               | Familiar account recovery                               | The service is a decryption principal. A service breach, legal compulsion or bad release can exercise the same power                    |
+| Threshold / combination of factors            | Whatever root was split or multiply wrapped                                                  | Two-of-three devices, passkeys, codes or contacts       | Avoids one weak recovery route, at the cost of setup, explanation and lockout when the threshold cannot be met                          |
+| No recovery                                   | Nothing beyond surviving local copies                                                        | An explicit warning and preferably a verified export    | No separate recovery principal holds a root; losing the last live root makes a paid ciphertext copy permanently unreadable              |
 
 There is no honest "forgot password" flow for a content key that the service cannot recover. Email may
 prove control of an account and a server may then authorize a fresh device, but neither fact conjures the
@@ -1888,28 +1893,28 @@ make that happen and the design is custodial in the security sense, whatever the
 **PRF's optionality produces a product branch, not a compatibility footnote.** If non-custodial account
 recovery selects PRF, an authenticator that reports no PRF result has to land somewhere explicit:
 
-| Unsupported-PRF policy                 | What happens                                                                              | Implication                                                                                         |
-| -------------------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| Require it                             | Account creation or encrypted recovery is unavailable on that authenticator               | Clean promise, narrower device/authenticator support                                                |
-| Fall back to a saved recovery secret   | Account works after the user stores and confirms a code                                   | Portable and non-custodial; adds the largest deliberate security interaction in the product         |
-| Fall back to existing-device approval  | Account works, but a new device cannot decrypt after all devices are lost                 | Preserves confidentiality; downgrades "durability" to durable ciphertext                           |
-| Fall back to browser-stored key        | The device works with a visibly lower storage-assurance level                             | Preserves reach but makes the security bar device-dependent and must not be a silent downgrade       |
-| Fall back to service escrow            | Recovery works through the account                                                        | Changes who can decrypt and therefore changes the product promise, not merely the implementation     |
+| Unsupported-PRF policy                | What happens                                                                | Implication                                                                                      |
+| ------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Require it                            | Account creation or encrypted recovery is unavailable on that authenticator | Clean promise, narrower device/authenticator support                                             |
+| Fall back to a saved recovery secret  | Account works after the user stores and confirms a code                     | Portable and non-custodial; adds the largest deliberate security interaction in the product      |
+| Fall back to existing-device approval | Account works, but a new device cannot decrypt after all devices are lost   | Preserves confidentiality; downgrades "durability" to durable ciphertext                         |
+| Fall back to browser-stored key       | The device works with a visibly lower storage-assurance level               | Preserves reach but makes the security bar device-dependent and must not be a silent downgrade   |
+| Fall back to service escrow           | Recovery works through the account                                          | Changes who can decrypt and therefore changes the product promise, not merely the implementation |
 
 #### 5.7.7 What the options do to the ladder
 
 This is the product branch D-17 was originally pointing at. It is now possible to say exactly which
 choice collapses which rung.
 
-| Selected shape                                                                 | Effect on the ladder                                                                                                                       | Decisions that move                                                                                       |
-| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| Browser-held device credentials meet the rung-2 bar; recovery is another device | The current **Local → Paired → Account** ladder survives. Account adds server mediation and whichever recovery option is selected            | None automatically; D-25 must remain explicit that rung 2 has no last-device recovery                     |
-| A platform authenticator is required for authorization, but no app account is  | Rung 2 can survive as unnamed and accountless in product terms, but is no longer device-only and excludes unsupported authenticator paths    | D-19 pairing changes; D-23 can remain no-name; D-16 must count the authentication service if one is needed |
-| An app account is required for every networked workspace                       | Rung 2 disappears. The product becomes local-only or signed-in; pairing is an account device-enrollment flow                                | Reopens D-19, D-23, D-24 and the free direct-sync boundary in D-16                                       |
-| Account authentication exists but content recovery remains device-approved     | The ladder survives, but rung 3 buys server availability and revocation rather than recovery from loss of every device                      | D-25 copy and the word **durability** in §5.1.1 must be narrowed                                          |
-| Non-custodial PRF/code recovery is selected                                    | The ladder survives and rung 3 can recover a server copy without giving the service plaintext                                               | Adds a first-class enrollment, fallback and recovery flow; D-13 must distinguish sign-out from deleting roots |
-| Service escrow is selected                                                     | The familiar account ladder survives with the smoothest recovery                                                                            | Reopens D-20's server-confidentiality consequence and D-14's content-authority boundary                    |
-| No recovery is selected                                                        | The ladder survives, but rung 3 provides redundant storage, not protection from losing every decryption root                                | D-25 must warn at account creation, not only in ephemeral storage contexts                                |
+| Selected shape                                                                  | Effect on the ladder                                                                                                                      | Decisions that move                                                                                           |
+| ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Browser-held device credentials meet the rung-2 bar; recovery is another device | The current **Local → Paired → Account** ladder survives. Account adds server mediation and whichever recovery option is selected         | None automatically; D-25 must remain explicit that rung 2 has no last-device recovery                         |
+| A platform authenticator is required for authorization, but no app account is   | Rung 2 can survive as unnamed and accountless in product terms, but is no longer device-only and excludes unsupported authenticator paths | D-19 pairing changes; D-23 can remain no-name; D-16 must count the authentication service if one is needed    |
+| An app account is required for every networked workspace                        | Rung 2 disappears. The product becomes local-only or signed-in; pairing is an account device-enrollment flow                              | Reopens D-19, D-23, D-24 and the free direct-sync boundary in D-16                                            |
+| Account authentication exists but content recovery remains device-approved      | The ladder survives, but rung 3 buys server availability and revocation rather than recovery from loss of every device                    | D-25 copy and the word **durability** in §5.1.1 must be narrowed                                              |
+| Non-custodial PRF/code recovery is selected                                     | The ladder survives and rung 3 can recover a server copy without giving the service plaintext                                             | Adds a first-class enrollment, fallback and recovery flow; D-13 must distinguish sign-out from deleting roots |
+| Service escrow is selected                                                      | The familiar account ladder survives with the smoothest recovery                                                                          | Reopens D-20's server-confidentiality consequence and D-14's content-authority boundary                       |
+| No recovery is selected                                                         | The ladder survives, but rung 3 provides redundant storage, not protection from losing every decryption root                              | D-25 must warn at account creation, not only in ephemeral storage contexts                                    |
 
 #### 5.7.8 What would count as evidence
 
@@ -1947,13 +1952,13 @@ authorization or CRDT-envelope protocol.
 
 The available assurance levels are cumulative:
 
-| Option                                  | Evidence produced                                                                                 | Implication                                                                                                      |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Project-owned threat model and tests    | This contract, protocol vectors, negative tests and CI controls                                   | Necessary and cheapest; the same team that designed the protocol is also judging its omissions                   |
-| Versioned web-security baseline         | A recorded ASVS profile and repeatable verification of every applicable requirement               | Makes "the OWASP basics" concrete; still says little about the bespoke cryptographic protocol                   |
-| Independent protocol design review      | Review of roots, delegation, envelopes, epochs, rotation, recovery, downgrade and fork handling    | Catches architectural errors before implementation; does not prove the implementation follows the reviewed design |
-| Independent implementation audit        | Review and testing of the shipped client, relay and deployment against the contract                | Strongest launch evidence here; costs money and has to repeat after security-boundary changes                    |
-| Ongoing disclosure and response program | A vulnerability-reporting path, rotation/recovery runbook, dependency monitoring and incident drills | Treats security as an operating property; cannot compensate for an incoherent root or recovery model             |
+| Option                                  | Evidence produced                                                                                    | Implication                                                                                                       |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Project-owned threat model and tests    | This contract, protocol vectors, negative tests and CI controls                                      | Necessary and cheapest; the same team that designed the protocol is also judging its omissions                    |
+| Versioned web-security baseline         | A recorded ASVS profile and repeatable verification of every applicable requirement                  | Makes "the OWASP basics" concrete; still says little about the bespoke cryptographic protocol                     |
+| Independent protocol design review      | Review of roots, delegation, envelopes, epochs, rotation, recovery, downgrade and fork handling      | Catches architectural errors before implementation; does not prove the implementation follows the reviewed design |
+| Independent implementation audit        | Review and testing of the shipped client, relay and deployment against the contract                  | Strongest launch evidence here; costs money and has to repeat after security-boundary changes                     |
+| Ongoing disclosure and response program | A vulnerability-reporting path, rotation/recovery runbook, dependency monitoring and incident drills | Treats security as an operating property; cannot compensate for an incoherent root or recovery model              |
 
 What remains open in D-17 is therefore specific: **the rung-2 authorization holder; the acceptable browser
 key-storage option; the account's relationship to the content root; the recovery option and unsupported-PRF
@@ -1968,16 +1973,16 @@ actually supply is a common **shape** with swappable roots and recovery factors.
 review by someone who does this professionally before it is built; the value here is knowing what the
 review is reviewing.
 
-| Piece                                                        | Its job                                                                                      |
-| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
-| Separate signing and key-agreement credentials per device    | authenticate its writes and receive content keys; storage protection is §5.7.4's choice     |
-| The same separation per agent member                         | authenticate an agent without pretending it is a device; receive keys only if read-capable  |
-| Out-of-band pairing with a single-use invitation proof       | admit a device to a principal without treating the invitation as its permanent credential    |
-| A signed chain or log of authorization operations            | bind memberships, credentials, capabilities, actors and content-key generations              |
-| A selected device-centric root, then an account root at rung 3 | identify which authority may extend that chain; enforce the one-root constraint             |
-| A symmetric content key, wrapped per reader credential       | encrypt the document; rotation on lost read access is D-20                                   |
-| A selected recovery factor and unsupported-factor policy     | restore the root under exactly the custody promise chosen in §5.7.5–§5.7.7                  |
-| A scoped, expiring relay bearer token                        | let the relay decide who connects without granting document authority                        |
+| Piece                                                          | Its job                                                                                    |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Separate signing and key-agreement credentials per device      | authenticate its writes and receive content keys; storage protection is §5.7.4's choice    |
+| The same separation per agent member                           | authenticate an agent without pretending it is a device; receive keys only if read-capable |
+| Out-of-band pairing with a single-use invitation proof         | admit a device to a principal without treating the invitation as its permanent credential  |
+| A signed chain or log of authorization operations              | bind memberships, credentials, capabilities, actors and content-key generations            |
+| A selected device-centric root, then an account root at rung 3 | identify which authority may extend that chain; enforce the one-root constraint            |
+| A symmetric content key, wrapped per reader credential         | encrypt the document; rotation on lost read access is D-20                                 |
+| A selected recovery factor and unsupported-factor policy       | restore the root under exactly the custody promise chosen in §5.7.5–§5.7.7                 |
+| A scoped, expiring relay bearer token                          | let the relay decide who connects without granting document authority                      |
 
 Two notes on that last row, because it is the one that connects to the cost model. Attenuable capability
 tokens — fly.io's macaroons are the well-known instance — carry their own caveats and are verified by
@@ -2069,12 +2074,12 @@ commitment and envelope verification **on a stack that supplies none of them**, 
 happens in an ecosystem it is not in. That is the largest engineering risk in this document and it
 should not live inside a bullet about prior art.
 
-| Option                                | What it costs                                                                                        | What it risks                                                                                     |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **Bespoke on Yjs**                    | Designing and getting reviewed a novel protocol, then maintaining it                                 | The failure mode is silent and cryptographic; §5.7.8's assurance bar becomes the whole budget      |
-| **Adopt the Automerge-adjacent stack** | A CRDT migration, on top of the v14 migration TRD §10.1 already treats as planned debt              | Rewrites the storage and editor seams; Keyhive is not finished either                             |
-| **Server-enforced (D-14's full "yes")** | The relay gains schema-level authority; a thinner client protocol                                   | Forfeits the strongest consequence of D-20 and contradicts what §2 selected Yjs for               |
-| **Reduce the promise**                | Drop D-27 to advisory, keep D-20's encryption and rotation                                           | Reopens the agent-accountability case D-27 exists for, and §5.6's Red Queen argument against it   |
+| Option                                  | What it costs                                                                          | What it risks                                                                                   |
+| --------------------------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| **Bespoke on Yjs**                      | Designing and getting reviewed a novel protocol, then maintaining it                   | The failure mode is silent and cryptographic; §5.7.8's assurance bar becomes the whole budget   |
+| **Adopt the Automerge-adjacent stack**  | A CRDT migration, on top of the v14 migration TRD §10.1 already treats as planned debt | Rewrites the storage and editor seams; Keyhive is not finished either                           |
+| **Server-enforced (D-14's full "yes")** | The relay gains schema-level authority; a thinner client protocol                      | Forfeits the strongest consequence of D-20 and contradicts what §2 selected Yjs for             |
+| **Reduce the promise**                  | Drop D-27 to advisory, keep D-20's encryption and rotation                             | Reopens the agent-accountability case D-27 exists for, and §5.6's Red Queen argument against it |
 
 **It is forced by the moment §8.1's contract is drafted**, because the contract cannot say what an
 envelope is without knowing what produces and verifies one. Note also that TRD §10.1's planned Yjs v13 →
@@ -2122,6 +2127,50 @@ but leaves D-24's promotion path unclassified; or **Rule 1 needs reformulating**
 actually protecting, which is that nobody should have to hold a model of workspaces in their head to use
 the app on two devices. Deliberately left open — the implications reach D-5, D-10, D-11 and D-24, and it
 is worth the time.
+
+### 5.10 The service contract — D-32
+
+**D-32. What may the service retain, observe and do to an account or workspace?** _(Open. A gate to
+offering the product to real users, and an input to the TRD rather than launch paperwork.)_
+
+The previous draft put the operational and legal surface wholly out of scope and said it should arrive
+only before shipping. That is too late. The architecture will already have selected identifiers, logs,
+backups, billing records, recovery material, retention behaviour and operator tooling. A later policy can
+describe those choices, but it cannot make unnecessary collection disappear or add deletion boundaries
+that the storage model never recorded.
+
+D-20 reduces the sensitivity of the server's document copy; it does not make the service blind or the
+privacy contract short by construction. The service can still hold account and billing data, device and
+workspace identifiers, authorization history, ciphertext, connection metadata, abuse signals, support
+records and backups. End-to-end encryption also makes some user requests harder: an operator may be unable
+to inspect or repair content, while deleting the server copy cannot delete plaintext or ciphertext held
+by an offline replica. Those are product truths to state, not exceptions to hide in terms of service.
+
+> **Open, with a fixed deliverable: a service data and operations contract must be approved before the
+> service architecture is implementation-ready.** It is jurisdiction-informed but not a substitute for
+> legal review. At minimum it records:
+
+1. **A data inventory and purpose for every class** the service receives or derives, including whether
+   it is content, account data, credential material, metadata, telemetry, support data or an abuse signal.
+2. **Collection and disclosure boundaries:** what is necessary, what is optional and consented, what is
+   never collected, which processors receive it, and what an operator can see or change.
+3. **Lifecycle rules:** creation, retention, backup expiry, export, correction and deletion for each
+   class, with the difference between account deletion, subscription lapse, local reset and workspace
+   deletion made explicit.
+4. **Honest replica semantics:** a server deletion can remove service-held material and future access; it
+   cannot recall data already copied to an offline device or an agent. The UI and policy use the same
+   language as D-20's future-access boundary.
+5. **Operational authority and due process:** support access, audit trails, abuse controls, rate limits,
+   suspension, appeal, legal-request handling and the rule that service suspension never makes an
+   existing local document unreadable or unwritable.
+6. **Readiness evidence:** owner and review cadence, incident and breach response, processor inventory,
+   deletion/export tests, accessibility and support paths, and jurisdiction- and audience-specific legal
+   review before availability is widened.
+
+This does not require choosing a country, retention duration or vendor in this PRD. It requires admitting
+that those choices have architectural consequences and assigning them a reviewable artifact now. D-17
+answers what attackers and cryptographic authorities can do; D-32 answers what the service intentionally
+does, retains and promises. Neither substitutes for the other.
 
 ---
 
@@ -2196,41 +2245,42 @@ second human, sharing UI or second visible document is implied by that architect
 Decided carry live UX or parameter questions in their bodies. The column below says what has been settled;
 §8.1 isolates the one remaining architecture gate from those non-blocking details.
 
-| ID       | Question                                                       | Status                   | Answer, or what happens without one                                                                                                        |
-| -------- | -------------------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| **D-1**  | Does the user tell the app who they are, and when?             | **Decided**              | Generated by default; a name at account creation only, per D-23                                                                            |
-| **D-2**  | Is identity per person, per device, or a labelled pair?        | **Decided**              | Per device internally; per person in every list. Device never disclosed or reflected                                                       |
-| **D-3**  | Are device names worth improving?                              | **Decided in principle** | Yes. Mechanism open — and it does not need a fingerprint                                                                                   |
-| **D-4**  | Can a new device claim an existing actor?                      | **Decided**              | No. A new device is always a new actor; the real question was D-19                                                                         |
-| **D-5**  | What happens when sync first meets a non-empty workspace?      | **Decided**              | By case; both-full stops and asks with a preview. merge · theirs · ours · abort                                                            |
-| **D-6**  | Can dead actors be pruned?                                     | **Decided**              | No auto-hiding. Staleness may be muted; the interval is open. Exclusion is D-20                                                            |
-| **D-7**  | Should undo ever cross devices?                                | **Decided**              | No. Never leaves the device                                                                                                                |
-| **D-8**  | What may a session be seen doing?                              | **Decided**              | A caret per tab, own tabs included, **all yours in your colour**, person's name. Active caret distinguished (D-21). Peer list deduplicated |
-| **D-9**  | Does the app ever show a tab count?                            | **Decided**              | Never, save a high-bar exception that must be justified in writing                                                                         |
-| **D-10** | Is sync configuration per device or per document?              | **Decided in principle** | Rule 1: the user never manages workspaces. Mechanism open; today's three fields are ruled out                                              |
-| **D-11** | What is a workspace — content, or permission?                  | **Decided in principle** | Permission. UI reveals one home workspace/document; architecture supports many memberships; "room" stays off the architecture              |
-| **D-12** | What happens when local identity is lost?                      | **Decided in principle** | Authorization epoch 0 may re-mint; later epochs must not. Signed state, not roster. Response open                                          |
-| **D-13** | Is there a deliberate reset?                                   | **Decided**              | Yes. Whether it is sign-out, and what it clears, open                                                                                      |
-| **D-14** | May the relay decide who connects? What is written?            | **Decided in part**      | Server sync authenticates connections/envelopes; schema-level content authority is open and not required by D-20/D-27                      |
-| **D-15** | Within a device, is undo per tab or shared?                    | **Decided**              | Per tab                                                                                                                                    |
-| **D-16** | Where does the free/paid boundary sit?                         | **Re-opened**            | Server-intermediated sync is now a candidate, not the answer. "Build both tiers first" is withdrawn — see the cost inversion. Decidable now |
-| **D-17** | What does "reasonably secure" mean, concretely?                | **Open — decomposed**     | Minimum claims fixed; choose rung-2 authority/key storage, account custody, recovery/PRF fallback and assurance level                      |
-| **D-18** | Are devices enumerable and revocable from a UI?                | **Decided**              | Yes. The unit is the device. Gates sync, not startup. Freeze and offer options; no automatic wipe                                          |
-| **D-19** | How does a device find the other devices that are yours?       | **Decided**              | Build both: pairing for rung 2, sign-in for rung 3. Both bind devices to one principal and hide the wire identifier                        |
-| **D-20** | How is a member actually excluded?                             | **Decided**              | Content encryption with key rotation. Keeps the relay dumb; key management is the cost                                                     |
-| **D-21** | What does "the active caret" mean — local, or globally recent? | **Decided**              | Locally active. No recency modelling; a design check that it reads as distinct                                                             |
-| **D-22** | Does merged content show its provenance?                       | **Decided**              | Yes, as a rarely-on mode. Settings toggle, off switch surfaced while active. Cards only, freeze-window bound                               |
-| **D-23** | Does pairing alone trigger the name prompt?                    | **Decided**              | No at pairing; yes at account creation. Rung 2 has no name                                                                                 |
-| **D-24** | How does a paired group become an account?                     | **Decided**              | The account adopts the group. Requires an account model that accepts a prior identity                                                      |
-| **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**              | Yes, prominently. Warn about the property, not the context. Offer the grant, else route to sync                                            |
-| **D-26** | Revocation learned late, history already diverged?             | **Decided**              | Free: sanction, discard, explain, offer the upgrade. Paid: prevented by construction. No filtered replay                                   |
-| **D-27** | Is attribution authenticated, or advisory?                     | **Decided**              | Authenticated by an epoch-authorized credential; actor is derived or explicitly authorized for representation                              |
-| **D-28** | What carries the authorization protocol?                       | **Open**                 | Bespoke on Yjs · adopt the Automerge-adjacent stack · server-enforced · reduce the promise. Forced when §8.1 is drafted                    |
-| **D-29** | What happens to a rung-3 account that lapses?                  | **Decided**              | Grace period, then read-only: root and pairings survive, server sync stops, local use untouched. Retention duration open                   |
-| **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Open**                 | D-5's merge adjudication is workspace management by any reading. Routine-versus-irreversible is the likely shape                           |
-| **D-31** | What does the free tier cost, and how many never leave it?     | **Deferred on purpose**  | Split from D-16. Downstream of it: answerable with usage data, and only for whichever boundary D-16 picks                                  |
+| ID       | Question                                                       | Status                    | Answer, or what happens without one                                                                                                         |
+| -------- | -------------------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **D-1**  | Does the user tell the app who they are, and when?             | **Decided**               | Generated by default; a name at account creation only, per D-23                                                                             |
+| **D-2**  | Is identity per person, per device, or a labelled pair?        | **Decided**               | Per device internally; per person in every list. Device never disclosed or reflected                                                        |
+| **D-3**  | Are device names worth improving?                              | **Decided in principle**  | Yes. Mechanism open — and it does not need a fingerprint                                                                                    |
+| **D-4**  | Can a new device claim an existing actor?                      | **Decided**               | No. A new device is always a new actor; the real question was D-19                                                                          |
+| **D-5**  | What happens when sync first meets a non-empty workspace?      | **Decided**               | By case; both-full stops and asks with a preview. merge · theirs · ours · abort                                                             |
+| **D-6**  | Can dead actors be pruned?                                     | **Decided**               | No auto-hiding. Staleness may be muted; the interval is open. Exclusion is D-20                                                             |
+| **D-7**  | Should undo ever cross devices?                                | **Decided**               | No. Never leaves the device                                                                                                                 |
+| **D-8**  | What may a session be seen doing?                              | **Decided**               | A caret per tab, own tabs included, **all yours in your colour**, person's name. Active caret distinguished (D-21). Peer list deduplicated  |
+| **D-9**  | Does the app ever show a tab count?                            | **Decided**               | Never, save a high-bar exception that must be justified in writing                                                                          |
+| **D-10** | Is sync configuration per device or per document?              | **Decided in principle**  | Rule 1: the user never manages workspaces. Mechanism open; today's three fields are ruled out                                               |
+| **D-11** | What is a workspace — content, or permission?                  | **Decided in principle**  | Permission. UI reveals one home workspace/document; architecture supports many memberships; "room" stays off the architecture               |
+| **D-12** | What happens when local identity is lost?                      | **Decided in principle**  | Authorization epoch 0 may re-mint; later epochs must not. Signed state, not roster. Response open                                           |
+| **D-13** | Is there a deliberate reset?                                   | **Decided**               | Yes. Whether it is sign-out, and what it clears, open                                                                                       |
+| **D-14** | May the relay decide who connects? What is written?            | **Decided in part**       | Server sync authenticates connections/envelopes; schema-level content authority is open and not required by D-20/D-27                       |
+| **D-15** | Within a device, is undo per tab or shared?                    | **Decided**               | Per tab                                                                                                                                     |
+| **D-16** | Where does the free/paid boundary sit?                         | **Re-opened**             | Server-intermediated sync is now a candidate, not the answer. "Build both tiers first" is withdrawn — see the cost inversion. Decidable now |
+| **D-17** | What does "reasonably secure" mean, concretely?                | **Open — decomposed**     | Minimum claims fixed; choose rung-2 authority/key storage, account custody, recovery/PRF fallback and assurance level                       |
+| **D-18** | Are devices enumerable and revocable from a UI?                | **Decided**               | Yes. The unit is the device. Gates sync, not startup. Freeze and offer options; no automatic wipe                                           |
+| **D-19** | How does a device find the other devices that are yours?       | **Decided**               | Build both: pairing for rung 2, sign-in for rung 3. Both bind devices to one principal and hide the wire identifier                         |
+| **D-20** | How is a member actually excluded?                             | **Decided**               | Content encryption with key rotation. Keeps the relay dumb; key management is the cost                                                      |
+| **D-21** | What does "the active caret" mean — local, or globally recent? | **Decided**               | Locally active. No recency modelling; a design check that it reads as distinct                                                              |
+| **D-22** | Does merged content show its provenance?                       | **Decided**               | Yes, as a rarely-on mode. Settings toggle, off switch surfaced while active. Cards only, freeze-window bound                                |
+| **D-23** | Does pairing alone trigger the name prompt?                    | **Decided**               | No at pairing; yes at account creation. Rung 2 has no name                                                                                  |
+| **D-24** | How does a paired group become an account?                     | **Decided**               | The account adopts the group. Requires an account model that accepts a prior identity                                                       |
+| **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**               | Yes, prominently. Warn about the property, not the context. Offer the grant, else route to sync                                             |
+| **D-26** | Revocation learned late, history already diverged?             | **Decided**               | Free: sanction, discard, explain, offer the upgrade. Paid: prevented by construction. No filtered replay                                    |
+| **D-27** | Is attribution authenticated, or advisory?                     | **Decided**               | Authenticated by an epoch-authorized credential; actor is derived or explicitly authorized for representation                               |
+| **D-28** | What carries the authorization protocol?                       | **Open**                  | Bespoke on Yjs · adopt the Automerge-adjacent stack · server-enforced · reduce the promise. Forced when §8.1 is drafted                     |
+| **D-29** | What happens to a rung-3 account that lapses?                  | **Decided**               | Grace period, then read-only: root and pairings survive, server sync stops, local use untouched. Retention duration open                    |
+| **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Open**                  | D-5's merge adjudication is workspace management by any reading. Routine-versus-irreversible is the likely shape                            |
+| **D-31** | What does the free tier cost, and how many never leave it?     | **Deferred on purpose**   | Split from D-16. Downstream of it: answerable with usage data, and only for whichever boundary D-16 picks                                   |
+| **D-32** | What may the service retain, observe and do?                   | **Open — readiness gate** | Produce the data and operations contract in §5.10 before service architecture is implementation-ready                                       |
 
-### 8.1 One artifact remains, and D-17 gates it
+### 8.1 The security artifact remains, and D-17 gates it
 
 An earlier draft said "only D-17 is open", which flattened a real distinction; the draft after it said
 "four blocking questions", which fragmented one. The accurate statement is: **the other product
@@ -2239,21 +2289,21 @@ security contract used by all of them.**
 
 The contract now has both fixed requirements and deliberately unselected fields:
 
-| Piece                                      | Fixed by this document                                                                 | Still to select or specify                                                                                  |
-| ------------------------------------------ | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Threat boundary and negative promises      | §5.7.1's attacker table; offline local use and availability limits                     | Any stronger claim, including local-device-at-rest or traffic-metadata protection                           |
-| Credential separation                      | Relay bearer, per-device/per-agent operational credentials, one authorization root    | Concrete credential formats, algorithms, key separation and crypto-agility                                 |
-| Rung-2 authorization authority             | Some device-held or platform authority must admit the next device if rung 2 survives  | Every device, designated device, transferable root, quorum, platform authenticator, or no rung 2 (§5.7.3)  |
-| Browser key storage                        | WebAuthn cannot sit on every mutation; non-extractable WebCrypto is not an XSS boundary | Extractable, non-extractable, PRF-wrapped, recovery-wrapped, native, or account-required (§5.7.4)           |
-| **Signed authorization epoch**             | Binds membership, credentials, capabilities and key generation                        | Successor/fork rules, chain-head discovery for a fresh device, checkpoint and downgrade rules              |
-| Signed mutation envelopes                  | Source-authenticated, workspace/epoch/credential/actor bound                          | Envelope and batching granularity, anti-replay/finalization rule and authenticated checkpoint construction |
-| Attribution binding                        | Actor is derived from the credential or explicitly authorized for representation      | How an update's affected attributed fields are inspected or derived                                        |
-| Revocation commit semantics                | Requested · committed · acknowledged; paid enforcement has no bypass path              | Protocol and recovery behaviour for interrupted rotation                                                    |
-| Content-key wrapping and rotation          | Symmetric generations wrapped per reader credential; edit implies read under this shape | Algorithms and generation retention                                                                        |
-| **Awareness and presence metadata**        | Presence is outside the content encryption as currently designed                        | Encrypt awareness, or state in the threat boundary that the relay learns who edits what and when (D-20)     |
-| Account relationship to the content root   | One account authorization root supersedes the rung-2 root                             | Witness only, non-custodial encrypted recovery, device-approved access, or service escrow (§5.7.5)          |
-| Recovery                                   | Account, authority, content key and ciphertext are four separate recovery objects      | Factor(s), loss policy, unsupported-PRF path, warnings and account-deletion semantics (§5.7.6)              |
-| Web application and protocol assurance     | Same-origin code is inside the cryptographic boundary                                 | Versioned ASVS profile, independent design review, implementation audit and ongoing response bar (§5.7.8)  |
+| Piece                                    | Fixed by this document                                                                  | Still to select or specify                                                                                 |
+| ---------------------------------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Threat boundary and negative promises    | §5.7.1's attacker table; offline local use and availability limits                      | Any stronger claim, including local-device-at-rest or traffic-metadata protection                          |
+| Credential separation                    | Relay bearer, per-device/per-agent operational credentials, one authorization root      | Concrete credential formats, algorithms, key separation and crypto-agility                                 |
+| Rung-2 authorization authority           | Some device-held or platform authority must admit the next device if rung 2 survives    | Every device, designated device, transferable root, quorum, platform authenticator, or no rung 2 (§5.7.3)  |
+| Browser key storage                      | WebAuthn cannot sit on every mutation; non-extractable WebCrypto is not an XSS boundary | Extractable, non-extractable, PRF-wrapped, recovery-wrapped, native, or account-required (§5.7.4)          |
+| **Signed authorization epoch**           | Binds membership, credentials, capabilities and key generation                          | Successor/fork rules, chain-head discovery for a fresh device, checkpoint and downgrade rules              |
+| Signed mutation envelopes                | Source-authenticated, workspace/epoch/credential/actor bound                            | Envelope and batching granularity, anti-replay/finalization rule and authenticated checkpoint construction |
+| Attribution binding                      | Actor is derived from the credential or explicitly authorized for representation        | How an update's affected attributed fields are inspected or derived                                        |
+| Revocation commit semantics              | Requested · committed · acknowledged; paid enforcement has no bypass path               | Protocol and recovery behaviour for interrupted rotation                                                   |
+| Content-key wrapping and rotation        | Symmetric generations wrapped per reader credential; edit implies read under this shape | Algorithms and generation retention                                                                        |
+| **Awareness and presence metadata**      | Presence is outside the content encryption as currently designed                        | Encrypt awareness, or state in the threat boundary that the relay learns who edits what and when (D-20)    |
+| Account relationship to the content root | One account authorization root supersedes the rung-2 root                               | Witness only, non-custodial encrypted recovery, device-approved access, or service escrow (§5.7.5)         |
+| Recovery                                 | Account, authority, content key and ciphertext are four separate recovery objects       | Factor(s), loss policy, unsupported-PRF path, warnings and account-deletion semantics (§5.7.6)             |
+| Web application and protocol assurance   | Same-origin code is inside the cryptographic boundary                                   | Versioned ASVS profile, independent design review, implementation audit and ongoing response bar (§5.7.8)  |
 
 **D-17 gates the selections in the right-hand column, not the existence of every left-hand requirement.**
 The next step is no longer the vague "evaluate WebAuthn PRF as the root". It is to record five answers:
@@ -2287,7 +2337,7 @@ and it is cheap now and expensive later. Neither half blocks the security contra
 ### 8.2 Not ready to promote, and what would make it ready
 
 This document should not be folded into the PRD or treated as implementation-ready yet, and the reason is
-now specific rather than cautious. Of the three artifacts review asked for, two exist and the third is
+now specific rather than cautious. Of the four artifacts review now requires, two exist and two are
 specified but incomplete:
 
 1. **The corrected ontology**, which §1 now has — account, principal, workspace, member, actor, device
@@ -2299,6 +2349,10 @@ specified but incomplete:
    fixed requirements from selections. The remaining choices are rung-2 authority and key storage,
    account custody, recovery and unsupported-PRF policy, and the assurance bar. D-17 is still the gate,
    but it is no longer a request to "research security" in the abstract.
+4. **A service data and operations contract**, whose minimum contents are fixed by D-32 but whose data
+   inventory, retention and deletion rules, operator authority and readiness evidence are not. This is
+   separate from the cryptographic contract: encryption limits what the service can read, not what
+   metadata it collects or what promises it makes.
 
 The ontology and the cardinalities were the two things review said were missing or contradictory, and both
 are now written down. What changed in this round is that the remaining design task now has five named
@@ -2357,7 +2411,7 @@ by waiting one round.
   not because the relay is dumb. Left standing for now rather than corrected in place: it is a
   technical-doc amendment that belongs with the rest of the promotion, not an ad-hoc edit alongside
   this one.
-- **§14 Open questions** — D-1 through D-27 belong here, or here by reference, once ready to promote.
+- **§14 Open questions** — D-1 through D-32 belong here, or here by reference, once ready to promote.
 - **A new section, or this document promoted** — the concepts in §1 are product surface, not an
   implementation detail, and they are currently written down nowhere. The principal in particular is
   the thing the PRD talks around: "one user" appears throughout without ever being a thing the system has.
@@ -2382,10 +2436,7 @@ is that the _active_ caret gets a shared treatment of its own (D-21). PR #18 nee
   multi-workspace navigation and human permissions require a separate product document.
 - **Sharing a single day, a single card, or a link to anything.** Not raised by any scenario above,
   and a different feature.
-- **The operational and legal surface of running a service** — log retention, deletion on request and
-  what deletion can mean when other replicas are unreachable, breach notification, jurisdiction, minors.
-  **Absent because it has not been reached yet, not because it is unimportant.** It is deliberately out
-  of scope at this stage: letting legal shape the architecture before there is a product to shape it
-  around gets both wrong. It has to arrive before anything ships to anyone, and D-20 makes most of it
-  unusually easy — a service that cannot read content has a genuinely short privacy policy, which is
-  worth harvesting rather than merely surviving. Noted here so its absence reads as a decision.
+- **The implementation of the operational and legal program** — vendor contracts, jurisdiction-specific
+  notices, support playbooks and filing obligations do not belong in this product document. Their product
+  and architecture inputs are no longer out of scope: D-32 requires a data and operations contract before
+  implementation readiness, and jurisdiction- and audience-specific review before availability widens.
