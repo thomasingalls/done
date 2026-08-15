@@ -1091,9 +1091,16 @@ device and only that device. **The saving is real but it is in the adjudication,
 - Not anything on the workspace side. This is never destructive to the list the user is keeping.
 
 **One sentence prevents most of it, and it belongs in the interface rather than in a support article:
-create the account on the device whose list you want to keep.** That is the whole of the mitigation, it
-is memorable, and D-24 makes it true — account creation adopts the creating device's history. The
-interface should say it at the moment it is actionable, not after.
+create the account on the device whose list you want to keep.** It is memorable, and D-24 makes it true —
+account creation adopts the creating device's history. The interface should say it at the moment it is
+actionable, not after.
+
+**It is the memorable mitigation rather than the only one**, and the difference matters for what the
+interface has to allow. A second ordering is equally safe: create the account on a device that is
+*empty*, then enroll the one that has the history, which the empty workspace adopts (D-5, row 2). Both
+work because only a **populated** workspace refuses an incoming history. What has no safe ordering is two
+devices that both hold content the user wants — that one loses a history whichever way round it is done,
+and it is the case D-5 stops and asks about (D-24).
 
 **Import is the escape hatch, and it is owed anyway** — required by the §2.4 migration and by D-33's
 continuity requirement independently of D-5. Its placement against the freeze is one enabling decision
@@ -1857,7 +1864,8 @@ limitation the product built; it is what a local application on one computer is.
 is the only copy" is now a plain description of a configuration the user chose, of the same kind as a text
 editor saving to one disk — not a deficiency engineered so that a warning could point at it.
 
-What survives is the environment case, and the two conditions must still be treated differently:
+What survives is the environment case, and the three conditions must each be treated differently — only
+the first is a warning at all:
 
 | Condition                                                          | Clears?                        | Treatment                                                                 |
 | ------------------------------------------------------------------ | ------------------------------ | ------------------------------------------------------------------------- |
@@ -1892,14 +1900,29 @@ business model would still want to say it. "Your data is not safe until you crea
 > **Decided: yes, such an action exists.** Whether it is the same thing as sign-out is open, and so is
 > what it clears.
 
-**What it clears is now a three-way question, not a two-way one**, and D-17 added the third. Identity
-only, leaving the document; identity and document; or those plus the **content-recovery material** —
-this device's copy of the recovery code, any PRF wrap bound to it, and its content keys. The first three
-promises are very different: "I am someone else now", "there was never anyone here", and "this device can
-never open this workspace again, whatever it is later shown". Only the second is what a shared-laptop
-user means, and **only the third is safe to offer without a warning that names what it destroys** —
-clearing the last reachable copy of the code is the one action in the product that can make a hosted
-workspace permanently unreadable (§5.7.6, §5.7.7).
+**What it clears is four separate objects, and an earlier version of this paragraph collapsed two of
+them.** They can be cleared in combination, and the combinations are what the button is choosing between:
+
+1. **Identity** — `done.actor` and `done.device`. Display-level, and the only one an earlier draft
+   considered.
+2. **Capability** — this device's signing credential, any PRF wrap protecting it, and the content-key
+   generations it holds. This is what lets the device write as itself and read the workspace.
+3. **The document** — IndexedDB and the journal beside it.
+4. **Recovery material** — any copy of the recovery code the user stashed on this device, which §5.7.6
+   asks them not to do and some will do anyway.
+
+**Clearing 1 and 3 without 2 is the shape to avoid, and it was the shape the old two-way framing
+described.** "There was never anyone here" is what a shared-laptop user means, and it is not achieved by
+removing the name and the list while leaving an authorized credential and a live content key in the
+profile — that hands the next person at that machine a device that can still read and still write, and
+does it while telling the departing user the machine is clean. **So a shared-device reset clears 1, 2 and
+3 together**, and should revoke the credential at the service as well, since a machine you have handed
+over is exactly D-18's motivating case.
+
+**Object 4 is the one that needs a warning, because it is the only irreversible one.** Clearing the last
+reachable copy of the recovery code can make a hosted workspace permanently unreadable (§5.7.6, §5.7.7),
+and unlike the others it cannot be undone by signing in again. It must never ride along silently with a
+reset that is otherwise recoverable.
 
 **Whether it equals sign-out:** wherever there is an account, sign-out already has to exist, and a second
 nearby button that does almost the same thing is how people lose data they meant to keep. That is now
@@ -1911,8 +1934,9 @@ token cannot be revoked is a local action with no remote effect. Under §5.7.2 t
 revocable at the service and D-18 makes that the unit of revocation, so signing out *can* have a remote
 effect and the honest label is available. What genuinely cannot be revoked before it expires is the
 scoped relay bearer token (§2.3, §5.7.9), and that is a bounded window rather than a permanent gap. The
-open question is therefore not whether the label can be honest — it can — but **which of the three
-clearing semantics the button is**, and whether signing out revokes this device or merely stops using it.
+open question is therefore not whether the label can be honest — it can — but **which combination of the
+four objects each button clears**, and whether an ordinary sign-out revokes this device or merely stops
+using it. The shared-device case answers itself; the single-owner case is the one still open.
 
 ### 5.6 The service-authority question — D-14
 
@@ -3361,13 +3385,15 @@ Not decisions. Listed so they do not consume discussion.
   exists is **D-34**, and it is open.
 - **Actor ids do not collide.** UUIDv4.
 - **A restored or unfrozen tab must re-establish its view.** It has no way to know what it missed.
-- **The freeze binds the human's editing surface, not replication.** A frozen day still merges: remote
-  updates arrive through `Y.applyUpdate` and never consult `isFrozen`, so the freeze has never been a
-  barrier to another device's history. It is enforced in the app's own write paths, and it is enforced
-  there for every actor including the system one — the recovery path declines to rewrite frozen history
-  on purpose. **Import is the case that has to be placed deliberately** (§2.4): a migration import is
-  the app reconciling histories rather than a person editing the past, so gating it the way an edit is
-  gated would silently discard everything older than three days.
+- **The freeze governs operations that author the past — not replication, not compaction, not a
+  migration import.** A frozen day still merges: remote updates arrive through `Y.applyUpdate` and never
+  consult `isFrozen`, so the freeze has never been a barrier to another device's history. Compaction is
+  held independent of it by explicit design (`compaction.ts`, TRD §4.5, with a regression test). Within
+  the app's own write paths it binds every actor including the system one — the recovery path declines to
+  rewrite frozen history on purpose, and that is correct. **Import is the case that has to be placed
+  deliberately** (§2.4, §5.2.2): a migration import is the app reconciling histories rather than a person
+  editing the past, so gating it the way an edit is gated would silently discard everything older than
+  three days. Note the second gate on that path, which is not the freeze: `NEXT_CAP` (§5.2.2).
 
 ---
 
@@ -3476,7 +3502,7 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-10** | Is sync configuration per device or per document?              | **Decided in principle**  | Rule 1: the user never manages workspaces. Mechanism open; today's three fields are ruled out                                               |
 | **D-11** | What is a workspace — content, or permission?                  | **Decided in principle**  | Permission. UI reveals one home workspace/document; architecture supports many memberships; "room" stays off the architecture               |
 | **D-12** | What happens when local identity is lost?                      | **Decided in principle**  | Authorization epoch 0 may re-mint; later epochs must not. Signed state, not roster. Response open                                           |
-| **D-13** | Is there a deliberate reset?                                   | **Decided**               | Yes. Open: which of three clearing semantics it is — identity, identity+document, or those plus content-recovery material — and whether sign-out revokes the device |
+| **D-13** | Is there a deliberate reset?                                   | **Decided**               | Yes. Four clearable objects: identity, capability, document, recovery material. A shared-device reset clears the first three; open is what an ordinary sign-out clears and whether it revokes |
 | **D-14** | May the relay decide who connects? What is written?            | **Decided**               | Service authenticates connections and authorization; relay validates opaque envelopes; clients retain semantic authority; no service component reads Yjs content |
 | **D-15** | Within a device, is undo per tab or shared?                    | **Decided**               | Per tab                                                                                                                                     |
 | **D-16** | Where does the account/service boundary sit?                  | **Decided**               | Local is free and permanent; hosted sync requires an account; pricing is D-31; the Paired rung is retired; **peer-to-peer is not built**    |
