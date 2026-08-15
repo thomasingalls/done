@@ -1304,6 +1304,21 @@ device becomes an independent **Local** install and they stop converging (S36). 
 ends is synchronization. That is the free product, arrived at from above, and it is the same place a
 lapsed subscription would eventually land if D-31 later selects one (D-29).
 
+**The principal survives, and this document never said so although its own argument requires it.** §1.1's
+first ground is that the account *adopts* an identity that already exists; an identity that predates the
+account is not retired by ending it. §1.1's fourth ground says a lapse is a billing event rather than an
+identity event, and deletion is the same kind of event for the same reason — a service relationship
+ending is not the app forgetting who someone is. So each device keeps its principal, its actors stay
+grouped under it, and cards written on the phone still read as **You** on the laptop.
+
+**Which is the right outcome and not merely the tidy one.** The alternative — minting a fresh principal
+per device at deletion — would orphan every actor entry already in the document and reproduce §2.2a's
+roster of duplicate Yous, the defect this entire document exists to remove, arriving through a feature
+instead of a gap. Retaining it is also honest under Rule 2, because the principal is a claim about *who
+wrote what*, which stays true, rather than a claim that the devices are still one list, which does not.
+That second thing is what D-24 requires be said out loud, and the two are separable: **the same person,
+no longer the same list.**
+
 **But "each device keeps a complete copy" is false, and a v15 draft said it.** A device holds **its last
 local replica** — whatever it had synced when it last connected. A device that has been offline for a
 month, or that was enrolled and then left in a drawer, is missing everything since. Once the authorization lineage and the
@@ -2780,8 +2795,8 @@ recovery selects PRF, an authenticator that reports no PRF result has to land so
 > mandatory floor.**
 >
 > - At account creation the content root is wrapped to a **high-entropy code the user saves outside the
->   enrolling device**. Every account has one. Enrollment cannot count it as recovery until the user has
->   confirmed an independently available copy; there is no account without one.
+>   enrolling device**. Every account has one, and there is no account without one. Enrollment requires
+>   the user to **re-enter the code from wherever they put it** before the account completes.
 > - **Additional independent wraps may be added** — PRF-capable passkeys, preferably in more than one
 >   ecosystem. Each is a complete path to the same root only if it remains available after loss of the
 >   device it protects.
@@ -2791,7 +2806,19 @@ recovery selects PRF, an authenticator that reports no PRF result has to land so
 >   wearing a different label; and threshold splitting, which buys nothing over 1-of-N at this scale
 >   while adding setup, explanation and a new way to be locked out.
 
-**The unsupported-PRF question dissolves rather than getting an answer.** The five-row table above exists
+**What that re-entry actually establishes, since an earlier version of this decision claimed more.** It
+said enrollment must confirm "an independently available copy", which is not a checkable property: a user
+who pastes the code into a note on the same phone passes every test the app can run, and that is precisely
+§5.7.2's five-artifacts-one-failure-domain case. **Re-entry proves transcription and possession — that the
+code was recorded accurately and the user can reach it right now — and nothing about where.** Saying so is
+not a weakening; it is refusing to let a mechanism take credit for a property only the copy can carry.
+
+**Which puts the weight on the copy, and is the argument for one specific interface choice.** The moment
+of generation is the only moment the user is thinking about this, so it is where the *where* has to be
+said, in the terms that make it concrete — not on this device, not only in this browser, somewhere you
+would still have if this device were stolen tonight. And the app should assume it failed: §5.7.2 already
+treats a phone and everything bound to it as one loss event, so the device list, the recovery surface and
+D-25's copy should all be written for a user whose "independent" copy is on the device in their hand. The five-row table above exists
 because PRF was assumed load-bearing. Under a mandatory independently saved code it is not: an
 authenticator that returns no PRF result costs its owner an optional convenience wrap and nothing else.
 No branch, no device-dependent security bar, no silent downgrade — which were the three things that table
@@ -3694,7 +3721,7 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-21** | What does "the active caret" mean — local, or globally recent? | **Decided**               | Locally active. No recency modelling; a design check that it reads as distinct                                                              |
 | **D-22** | Does merged content show its provenance?                       | **Decided**               | Yes, as a rarely-on mode. Settings toggle, off switch surfaced while active. Cards only, freeze-window bound                                |
 | **D-23** | Does pairing alone trigger the name prompt?                    | **Decided**               | Largely dissolved by D-16: one name prompt, at account creation, which is now the same moment as first sync                                 |
-| **D-24** | How does existing local history become an account?             | **Decided**               | Adopts the creating device's history, which makes D-5 decidable. Deletion leaves each device its **last replica**, not a full copy          |
+| **D-24** | How does existing local history become an account?             | **Decided**               | Adopts the creating device's history, which makes D-5 decidable. Deletion leaves each device its **last replica**, not a full copy, and the principal survives it |
 | **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**               | Yes, for the environment case. Warn about the property, not the cause. Offer the grant, then export, then sync. Also owns the hosted copy's dependency on the saved code |
 | **D-26** | Revocation learned late, history already diverged?             | **Decided**               | No lineage rule, no discard, no filtered replay. Needs a **finalization boundary** against a hostile relay (§5.2.3) — a contract row        |
 | **D-27** | Is attribution authenticated, or advisory?                     | **Decided**               | Authenticated by an epoch-authorized credential; actor is derived or explicitly authorized for representation                               |
@@ -3731,7 +3758,7 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | Content-key wrapping and rotation        | Symmetric generations wrapped per reader credential; edit implies read under this shape | Algorithms and generation retention                                                                        |
 | **Awareness and presence metadata**      | Presence is outside the content encryption as currently designed                        | Encrypt awareness, or state in the threat boundary that the relay learns who edits what and when (D-20)    |
 | Account relationship to the content root | **Selected: non-custodial encrypted recovery.** The service never receives the wrapping factor and cannot decrypt under any proof or order. Escrow is excluded from the service and survives only as an opt-in add-on operated by a separate legal entity, scoped to the content root (§5.7.5) | The add-on's operating boundary, and the copy that explains a two-party disclosure requirement |
-| Recovery                                 | **Selected: a mandatory high-entropy code saved outside the enrolling device, wrapped 1-of-N**, with optional independent PRF-passkey wraps (§5.7.6). Account, authorization, content key and ciphertext remain four separate objects | Code generation and confirmation, replacement policy, loss warnings and account-deletion semantics (D-13) |
+| Recovery                                 | **Selected: a mandatory high-entropy code saved outside the enrolling device, wrapped 1-of-N**, with optional independent PRF-passkey wraps (§5.7.6). Re-entry at enrollment proves transcription and possession, never location — the copy carries independence, not the mechanism. Account, authorization, content key and ciphertext remain four separate objects | Code generation and confirmation, replacement policy, loss warnings and account-deletion semantics (D-13) |
 | Web application and protocol assurance   | **Selected: levels 1–3 before sync ships, 5 live at ship, 4 on a stated trigger.** Same-origin code is inside the cryptographic boundary; D-28 fixes the design-review scope at the architecture level (§5.7.8) | Which ASVS profile and version, who performs the design review, the audit's scope, and the concrete TRD protocol submitted for review |
 | **Durable store representation**         | A content-blind store cannot merge; recovery needs checkpoints, not a merged state      | Checkpoint construction and cadence, manifest binding, retention of superseded checkpoints (D-33, §5.11.3) |
 | **Portability and migration**            | Export, import, an independently obtainable build and creation of a fresh authorization lineage at a replacement service are requirements, not roadmap | Formats, distribution mechanism and migration flow (D-33) |
