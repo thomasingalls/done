@@ -1941,10 +1941,16 @@ over is exactly D-18's motivating case.
 **Two of the four can be irreversible, and an earlier version of this paragraph named only one.** Objects
 3 and 4 both destroy, under conditions the app is differently able to detect:
 
-- **Clearing the document** is harmless at Account with a current sync — the workspace comes back on the
-  next sign-in. It is **total loss at Local**, where this device is the only copy by definition (§5.1.1),
-  and it loses whatever has not yet synced at Account. The app knows which case it is in: whether an
-  account exists, and whether anything is pending.
+- **Clearing the document** is recoverable at Account with a current sync, and what it takes back depends
+  on whether object 2 went with it. **Document only:** the device keeps its credential and content keys,
+  reconnects, and decrypts what it re-receives. **Document and capability together** — which is the
+  shared-device combination above — signing in restores authorization and ciphertext and *not the ability
+  to read it*: the content key comes back through §5.7.2's second gate, from an existing device or the
+  recovery factor. "It comes back when you sign in" collapses the four recovery objects and this document
+  has made that mistake before (§5.7.6). It is **total loss at Local**, where this device is the only copy
+  by definition (§5.1.1), and it loses whatever has not yet synced at Account. The app knows which case it
+  is in: whether an account exists, whether anything is pending, and which objects the button is about to
+  clear.
 - **Clearing the recovery material** can make a hosted workspace permanently unreadable (§5.7.6, §5.7.7)
   and cannot be undone by signing in again. The app knows a hosted workspace exists; it cannot know
   whether another copy of the code survives, so this one has to warn pessimistically.
@@ -2351,6 +2357,7 @@ row means reopening the decision named above.
 | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | Knows the relay URL and workspace identifier (S41)     | Cannot decrypt content, become a member or create an accepted mutation. A workspace identifier is an identifier, never a bearer secret.      | Cannot be prevented from reaching a public endpoint; rate and resource abuse are a service-availability problem.                            |
 | Passive network observer                               | Learns no content or reusable credential from traffic. Transport security still applies outside the content encryption.                      | Hiding that traffic exists, its rough volume, or the network addresses involved.                                                            |
+| Relay reading envelope metadata                        | Learns no attributed actor: the actor binding is inside the seal (§5.8.1), so the relay cannot tell a human's write from an agent's, or one member's from another's. | Hiding **which credential** wrote when. Per-credential authorization means per-credential traffic analysis — write times, rates and volumes per device. That is not removable while the relay validates authorization at all. |
 | Malicious or compromised relay (S42)                   | Cannot read content, forge an accepted mutation, sign an authorization epoch, make an already-seen older epoch look current, **or land a revoked credential's withheld old-epoch write after the commit** (§5.2.3). | It can delay, omit, reorder or refuse bytes. End-to-end encryption supplies confidentiality and integrity, not availability.                |
 | Malicious or compromised authorization service        | Cannot decrypt content, forge an existing device's mutation or cause content-key delivery by authorizing a credential.                      | It can admit or revoke credentials, change capabilities, choose the authorization state it recognizes, suspend the account or deny service. |
 | Leaked relay bearer token (S43)                        | Does not decrypt content, sign a mutation, authorize a device or recover an account. It is scoped, expires and can be refused independently. | The holder may consume relay service and obtain ciphertext or metadata until refusal or expiry.                                             |
@@ -2990,7 +2997,7 @@ The boundary is easiest to see by component:
 | Component | Responsible for | Must not become |
 | --------- | --------------- | --------------- |
 | **Authorization service** | Authenticate the account; admit and revoke device/agent credentials; assign capabilities; sign and serialize authorization epochs; issue authenticated acceptance/finalization evidence | A content-key holder, mutation signer or Yjs semantic authority |
-| **Client envelope layer** | Encrypt outbound Yjs updates; bind workspace, epoch, credential, actor and digest; sign envelopes; verify inbound authorization, signatures and acceptance evidence; wrap and rotate content keys | A second authorization authority or a network dependency on the local edit path |
+| **Client envelope layer** | Encrypt outbound Yjs updates; bind workspace, epoch, credential and digest in the clear and **the attributed actor inside the seal**; sign envelopes over both; verify inbound authorization, signatures and acceptance evidence; wrap and rotate content keys | A second authorization authority, a network dependency on the local edit path, or a source of actor-level metadata for the relay |
 | **Relay and durable store** | Authenticate transport; validate opaque envelope fields, authorization epoch and signatures; sequence and store ciphertext; carry service-signed acceptance evidence | A plaintext processor, CRDT merger or source of authorization by itself |
 | **Yjs** | Represent and merge document content locally after an envelope has passed verification | An identity, authorization or recovery system |
 
@@ -3009,8 +3016,24 @@ The alternatives are rejected for reasons the later decisions make sharper:
   confidentiality boundary.
 - **Reducing D-27 to advisory attribution** gives up the accountability property the agent case requires.
 
+**Where the seal falls is a product constraint, not a TRD preference.** An earlier version of the table
+above bound the actor alongside the workspace, epoch and credential without saying which side of the
+encryption it sat on, which would have handed the relay a per-write record of *who* — human or agent,
+which member — for a workspace whose whole point is that the relay learns nothing. **D-14 already
+forecloses that**: its selected boundary lists what the relay may validate as workspace, epoch,
+credential, signature, replay and revocation, with attribution explicitly reserved to clients. So the
+actor binding goes inside the seal, verified by the clients that can already decrypt, and D-27's
+invariant is unaffected — attribution is checked by whoever reads the content, which is exactly who is
+entitled to check it.
+
+**What that does not buy, said plainly.** The relay still sees a **credential identifier** per envelope,
+because it validates per-credential authorization and cannot do that blind. So it learns which device
+wrote, when, how often and how much — traffic analysis at device granularity, unavoidable given D-14's
+"partly", and now a row in §5.7.1 rather than an omission.
+
 **What remains is TRD work, not another product branch:** credential and algorithm selection; the exact
-authorization-state and envelope formats; batching; key wrapping and rotation; receipt, accepted-log or
+authorization-state and envelope formats, including which fields are associated data and which are
+sealed; batching; key wrapping and rotation; receipt, accepted-log or
 checkpoint finalization; downgrade and interrupted-rotation behavior; and concrete test vectors. TRD
 §10.1's planned Yjs v13 → v14 migration does not supply any of these, but neither does this decision make
 the CRDT migration larger than it already was.
@@ -3244,6 +3267,26 @@ is restored under user-held recovery material, and the replacement service start
 authorization lineage. The product preserves the workspace, not the vanished service's device list,
 epochs or claim to authority. That is narrower than succession, easier for users to recognize as moving
 services, and sufficient for the claim in §5.11.4.
+
+**Which raises a question the two decisions were taken four hours apart and never reconciled: what makes
+the restored history admissible under a lineage that never accepted it?** §5.2.3 requires acceptance
+evidence on every applied envelope, and every historical envelope carries the *dead* service's — issued
+under a key the replacement has no reason to honour and clients have no reason to trust. Replaying them
+under the new lineage cannot work, and must not, or migration would be a way to launder unaccepted writes
+into a fresh workspace.
+
+**The checkpoint is the re-baseline point, and it is already required for other reasons.** §5.11.3's
+content-blind store already needs a client-produced authenticated checkpoint with a manifest binding it to
+an authorization head, key generation and covered range. At migration that checkpoint is what the
+replacement lineage admits: the restoring client attests the state it recovered, the new service accepts
+that attestation as the lineage's origin, and the prior envelope history is **archival rather than
+replayable** — kept for the record, never re-admitted. Every write after the checkpoint carries the new
+service's evidence in the ordinary way.
+
+So the accepted-set requirement and the migration boundary meet at a checkpoint rather than conflicting,
+and §5.11.4's test 7 — converging edits from before, during and after a migration — is passable because
+"before" arrives as attested state and not as a stream of foreign receipts. The construction is TRD work;
+that it exists, and that nothing else could serve, is the product-level part.
 
 The migration must keep the two enrollment gates separate. The replacement service may authorize a new
 credential, but only a surviving content-holding device or the content-recovery factor may deliver the
@@ -3503,11 +3546,17 @@ would have been empty and nothing would have been asked at all.
 
 **And two different things are being paid for here, which the paragraph above ran together.** That *one*
 history becomes the list is a product rule (D-5, D-24) — permanent, deliberate, and the thing that makes
-"one list" mean anything. That the other history is then **unrecoverable** is not the rule; it is the
-current scope of import (§5.2.2). With a fidelity format and a populated import, Tom could bring the week
-back deliberately, later, as a thing he did — still not merged for him, because that is the rule, but not
-gone. So the honest reading of this cost is: the rule is settled, and the permanence is a limitation the
-product currently accepts and could later lift.
+"one list" mean anything. That the week cannot be **put back into the joined workspace** is not the rule;
+it is the current scope of import (§5.2.2).
+
+**"Unrecoverable" is the wrong word for what Tom is left holding**, and precision matters because the
+interface has to describe it. The file is readable in any editor, and it can seed a *fresh* workspace. What
+it cannot do is rejoin the list it was replaced from. With a fidelity format and a populated import that
+last part becomes possible — and it would be a **merge Tom performs**, not one the app performs for him.
+That is what "no merge" has always meant in D-5: no *automatic adjudication*, no app deciding between two
+histories behind a preview. A user deliberately importing a file they kept is the opposite of the thing the
+rule refuses. So: the rule is settled, and the limitation is one the product currently accepts and could
+later lift without touching it.
 
 Afterwards, the phone has a new human actor because attribution remains per member-per-device, but the
 interface groups both actors under the same principal: one "You", one colour. "Last synced from phone" may
@@ -3563,7 +3612,7 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**               | Yes, for the environment case. Warn about the property, not the cause. Offer the grant, then export, then sync. Also owns the hosted copy's dependency on the saved code |
 | **D-26** | Revocation learned late, history already diverged?             | **Decided**               | No lineage rule, no discard, no filtered replay. Needs a **finalization boundary** against a hostile relay (§5.2.3) — a contract row        |
 | **D-27** | Is attribution authenticated, or advisory?                     | **Decided**               | Authenticated by an epoch-authorized credential; actor is derived or explicitly authorized for representation                               |
-| **D-28** | What carries the authorization protocol?                       | **Decided**               | A service-authoritative control plane around end-to-end-encrypted Yjs updates; exact envelopes, finalization and key constructions belong in the TRD |
+| **D-28** | What carries the authorization protocol?                       | **Decided**               | A service-authoritative control plane around end-to-end-encrypted Yjs updates; the attributed actor sits inside the seal, so the relay gets no actor-level metadata; exact envelopes, finalization and key constructions belong in the TRD |
 | **D-29** | What happens if a paid account plan lapses?                    | **Decided conditionally** | If D-31 selects such a plan: grace period, then read-only. Ciphertext and wrapped root are retained together so resuming works; local use is untouched; expiry is what destroys |
 | **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Decided**               | Rule 1 stands: users manage devices, access, recovery and data transitions without managing or seeing workspace containers                 |
 | **D-31** | What does hosted sync cost, and how should it be priced?       | **Deferred on purpose**   | Business-model question outside this document. D-16 requires an account but does not presume free, paid, bundled or metered                 |
@@ -3589,10 +3638,10 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | Browser key storage                      | **Selected: a non-extractable `CryptoKey`, PRF-wrapped where the authenticator supports it.** The tier is shown in the device list and is never silent; the unlock gates sync, not the app (§5.7.4) | PRF enrollment flow, and the copy shown for a device on the lower tier |
 | **Local storage at rest**                | Nothing is fixed. The workspace is plaintext in IndexedDB today, and the origin sandbox is not an at-rest boundary | Whether an opt-in device lock exists at all — **D-34**, newly opened and never previously decided (§5.7.4) |
 | **Signed authorization epoch**           | Binds membership, credentials, capabilities and key generation; the service signs and serializes successors | Chain-head discovery for a fresh device, checkpoint and downgrade rules. **Fork rules are no longer needed** (D-16) |
-| Signed mutation envelopes                | Source-authenticated, workspace/epoch/credential/actor bound                            | Envelope and batching granularity, anti-replay/finalization rule and authenticated checkpoint construction |
+| Signed mutation envelopes                | Source-authenticated; workspace/epoch/credential/digest in the clear, **attributed actor inside the seal** so the relay gets no actor-level metadata (§5.8.1) | Which fields are associated data, envelope and batching granularity, anti-replay/finalization rule and authenticated checkpoint construction |
 | Attribution binding                      | Actor is derived from the credential or explicitly authorized for representation        | How an update's affected attributed fields are inspected or derived                                        |
 | Revocation commit semantics              | Requested · committed · acknowledged; no peer path bypasses the relay                   | Protocol and recovery behaviour for interrupted rotation                                                   |
-| **Content finalization boundary**        | A valid mutation is not accepted without authorization-service evidence; a hostile relay can withhold and later deliver a valid old-epoch write | Per-envelope receipts, accepted-log inclusion proofs, or checkpoints with an authenticated suffix; every shape ends in a committed cutoff (§5.2.3) |
+| **Content finalization boundary**        | A valid mutation is not accepted without authorization-service evidence; a hostile relay can withhold and later deliver a valid old-epoch write. **Across a migration the checkpoint re-baselines admissibility** — prior envelopes are archival, not replayable (§5.11.2) | Per-envelope receipts, accepted-log inclusion proofs, or checkpoints with an authenticated suffix; every shape ends in a committed cutoff (§5.2.3) |
 | Content-key wrapping and rotation        | Symmetric generations wrapped per reader credential; edit implies read under this shape | Algorithms and generation retention                                                                        |
 | **Awareness and presence metadata**      | Presence is outside the content encryption as currently designed                        | Encrypt awareness, or state in the threat boundary that the relay learns who edits what and when (D-20)    |
 | Account relationship to the content root | **Selected: non-custodial encrypted recovery.** The service never receives the wrapping factor and cannot decrypt under any proof or order. Escrow is excluded from the service and survives only as an opt-in add-on operated by a separate legal entity, scoped to the content root (§5.7.5) | The add-on's operating boundary, and the copy that explains a two-party disclosure requirement |
