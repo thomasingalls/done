@@ -2190,6 +2190,12 @@ consequences worth stating now, because they shape the design rather than follow
   meant to establish. A source may batch its own mutations when actor, credential and authorization epoch
   are the same. Forwarded mutations retain their original envelopes. First sync therefore needs either the
   signed envelope history or an authenticated checkpoint whose construction preserves attribution.
+- **A device retains its own outbound envelopes**, at least back to the last checkpoint it has seen
+  admitted. This falls out of the rule above rather than being an extra: attribution lives in the
+  envelope, so an operation separated from its envelope can never be re-attributed — update bytes carry
+  only a random per-instance client id (§9). The migration cutover depends on it directly, since a device
+  rejoining under a new lineage replays its own envelopes rather than trying to filter them out of a
+  merged delta, which is not possible (§5.11.2).
 
 So the keystroke budget need not absorb signing, but the latency question is not completely settled until
 the security contract chooses envelope and checkpoint granularity. The harder design cost remains the
@@ -3527,24 +3533,39 @@ devices, and test 7's "edits made before, during and after" is a multi-device ca
   them and submits them as ordinary envelopes. Attribution is preserved because nothing is being
   re-attributed — the same credential and actor sign the same operations.
 
-  **But "its own window edits" is a claim the device has to prove, not assume, and the cutover contract
-  has to say how.** Two conditions, and both are mechanical:
+  **But "its own window edits" is a claim the device has to prove, not assume, and an earlier version of
+  this contract proposed two mechanisms that do not work.** Both failures are instructive, because each is
+  a property this document had already established elsewhere and then contradicted here.
 
-  **Descent.** The replica must descend from the admitted checkpoint — everything the checkpoint contains
-  is already in it — which the checkpoint's **Yjs state vector** establishes directly, and which the
-  manifest must therefore publish alongside the covered range (§5.11.3). A replica that does not descend
-  is not holding a suffix; it is a second history, and that is the next bullet.
+  **A state vector cannot establish descent.** It maps client to clock over *insertions*; deletions live
+  separately in the `DeleteSet`. Two replicas can carry identical state vectors and disagree about what
+  has been deleted, so "the checkpoint's state vector is dominated" does not mean "everything the
+  checkpoint contains is here". Coverage has to be authenticated over both halves — a full Yjs
+  **snapshot**, which is exactly the pair `{sv, ds}`, or a receipt for the specific checkpoint the device
+  has applied. The manifest publishes that, not a bare state vector (§5.11.3).
 
-  **Ownership.** The delta against that state vector is *everything* the replica has and the checkpoint
-  lacks — which is not the same as everything **this** device wrote. It may also contain operations from
-  other credentials that reached this device and never reached the archive. Re-signing those as its own
-  is precisely §5.6.2's forbidden shape, signing another credential's mutations as yourself. So the
-  device extracts the delta, keeps **only the operations its own credential authored**, and re-signs
-  those. Whatever remains belongs to the device that wrote it, and travels on that device's enrollment or
-  not at all.
+  **A delta cannot be filtered by signing credential.** Update bytes carry the writing `Y.Doc`'s client
+  id, which is random per document instance — this document says so in three places and had TRD §4.8
+  corrected for saying otherwise (§5.6, §5.6.3, §9). So "keep only the operations this credential
+  authored" asks the update stream for attribution it provably does not contain. The proposal was the
+  exact error the document exists to have caught.
 
-  Together those two make the safe case narrow and checkable: a descending replica re-signing its own
-  suffix. Everything outside it falls to the next bullet rather than being resolved quietly.
+  **What works instead is the envelope, and §5.6.2 already supplies the principle** — forwarded mutations
+  retain their original envelopes, because the envelope is where attribution lives. So a device does not
+  filter a merged delta at all: it retains **its own outbound signed envelopes** since the checkpoint,
+  which it has by construction because it signed them, and replays exactly those under the new lineage.
+  Attribution survives because the envelope is unchanged in every attributed part.
+
+  **Coverage is then a subtraction rather than a filter.** Checkpoint plus this device's own envelope
+  suffix accounts for some of its replica. Any residue — operations it *received* from another device
+  during the window, or content from before the archive that never reached it — is not this device's to
+  carry and it cannot honestly re-sign it. That residue follows the next bullet.
+
+  Which lands somewhere better than the version it replaces: another device's window edits are not lost
+  because this device happened to see them, they simply travel on **that** device's enrollment, replayed
+  from its own envelopes. A device that never enrolls loses its window, which is the same honesty D-24
+  requires when a device never appears for account deletion — name it in the confirmation rather than
+  abandoning it quietly.
 - **A device whose contributions the checkpoint does not cover** — it was offline before the archive was
   taken, so its pre-migration work never reached the restored state — is, from the new lineage's view, a
   device carrying history that the workspace does not have. That is **D-5**, with its confirmation and
@@ -3577,10 +3598,11 @@ authorization state at the destination instead of importing the vanished service
 Related, and it lands on the relay's design rather than on policy: a content-blind durable store cannot
 merge what it holds. **It therefore needs a bounded recovery representation** — immutable authenticated
 envelopes, a client-produced authenticated checkpoint, a manifest binding that checkpoint to its
-authorization head, content-key generation, covered range **and state vector**, the update suffix after
-it, and retention rules for superseded checkpoints. The state vector is what lets a device prove its
-replica descends from the checkpoint and extract exactly the part the checkpoint lacks, which the
-migration cutover depends on (§5.11.2). This is already implied by D-28 and §8.1; D-33 makes it a storage
+authorization head, content-key generation, covered range **and an authenticated coverage attestation**,
+the update suffix after it, and retention rules for superseded checkpoints. The attestation has to cover
+insertions *and* deletions — a Yjs snapshot's `{sv, ds}` pair, or a receipt for that specific checkpoint —
+because a bare state vector says nothing about the `DeleteSet` and so cannot establish that a replica
+contains what the checkpoint contains. The migration cutover depends on it (§5.11.2). This is already implied by D-28 and §8.1; D-33 makes it a storage
 requirement as well as a replay-performance one, and it is the concrete reason "the relay is already
 built" was too strong (D-16).
 
@@ -3912,7 +3934,7 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | Browser key storage                      | **Selected: a non-extractable `CryptoKey`, PRF-wrapped where the authenticator supports it.** The tier is shown in the device list and is never silent; the unlock gates sync, not the app (§5.7.4) | PRF enrollment flow, and the copy shown for a device on the lower tier |
 | **Local storage at rest**                | **Selected: if a device lock exists it is opt-in, user-held-factor-keyed, governs every store holding content, and accepts total loss on a forgotten factor.** Content is plaintext today in IndexedDB and the journal, with the Phase-4 index a planned third; the origin sandbox is not an at-rest boundary | Whether to build it at all — **D-34** (§5.7.4). Its answer also fixes whether account creation is a whole-document encryption pass (§5.2.1) |
 | **Signed authorization epoch**           | Binds membership, credentials, capabilities and key generation; the service signs and serializes successors | Chain-head discovery for a fresh device, checkpoint and downgrade rules. **Fork rules are no longer needed** (D-16) |
-| Signed mutation envelopes                | Source-authenticated; workspace/epoch/credential/digest in the clear, **attributed actor inside the seal** so no actor identifier crosses in the clear. Not unlinkability — the relay still infers member from credential via authorization state (§5.8.1) | Which fields are associated data, envelope and batching granularity, anti-replay/finalization rule and authenticated checkpoint construction |
+| Signed mutation envelopes                | Source-authenticated; workspace/epoch/credential/digest in the clear, **attributed actor inside the seal** so no actor identifier crosses in the clear. Not unlinkability — the relay still infers member from credential via authorization state (§5.8.1). **Devices retain their own outbound envelopes** back to the last admitted checkpoint (§5.6.2) | Which fields are associated data, envelope and batching granularity, anti-replay/finalization rule, authenticated checkpoint construction, and how far back retention runs |
 | Attribution binding                      | Actor is derived from the credential or explicitly authorized for representation        | How an update's affected attributed fields are inspected or derived                                        |
 | Revocation commit semantics              | Requested · committed · acknowledged; no peer path bypasses the relay                   | Protocol and recovery behaviour for interrupted rotation                                                   |
 | **Content finalization boundary**        | A valid mutation is not accepted without authorization-service evidence; a hostile relay can withhold and later deliver a valid old-epoch write. **Across a migration the checkpoint re-baselines admissibility** — prior envelopes are archival, not replayable (§5.11.2) | Per-envelope receipts, accepted-log inclusion proofs, or checkpoints with an authenticated suffix; every shape ends in a committed cutoff (§5.2.3) |
@@ -3921,8 +3943,8 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | Account relationship to the content root | **Selected: non-custodial encrypted recovery.** The service never receives the wrapping factor and cannot decrypt under any proof or order. Escrow is excluded from the service and survives only as an opt-in add-on operated by a separate legal entity, scoped to the content root (§5.7.5) | The add-on's operating boundary, and the copy that explains a two-party disclosure requirement |
 | Recovery                                 | **Selected: a mandatory high-entropy code saved outside the enrolling device, wrapped 1-of-N**, with optional independent PRF-passkey wraps (§5.7.6). Re-entry at enrollment proves transcription and possession, never location — the copy carries independence, not the mechanism. Account, authorization, content key and ciphertext remain four separate objects | Code generation and confirmation, replacement policy, loss warnings and account-deletion semantics (D-13) |
 | Web application and protocol assurance   | **Selected: levels 1–3 before sync ships, 5 live at ship, 4 on a stated trigger.** Same-origin code is inside the cryptographic boundary; D-28 fixes the design-review scope at the architecture level (§5.7.8) | Which ASVS profile and version, who performs the design review, the audit's scope, and the concrete TRD protocol submitted for review |
-| **Durable store representation**         | A content-blind store cannot merge; recovery needs checkpoints, not a merged state. The manifest publishes the checkpoint's **state vector**, so a device can prove descent and extract its suffix (§5.11.2) | Checkpoint construction and cadence, manifest binding, retention of superseded checkpoints (D-33, §5.11.3) |
-| **Portability and migration**            | Export, import, an independently obtainable build and creation of a fresh authorization lineage at a replacement service are requirements, not roadmap. **Migration carries attribution forward** (§5.11.2) | The historical-verification package — authenticated old trust root, enough old authorization history, original envelopes or an attribution-preserving checkpoint, and the content-key generations that open sealed actor bindings — plus the cutover contract: state-vector descent proof and credential-filtered suffix extraction (D-33) |
+| **Durable store representation**         | A content-blind store cannot merge; recovery needs checkpoints, not a merged state. The manifest publishes an **authenticated coverage attestation over insertions and deletions** — a snapshot's `{sv, ds}` or a checkpoint receipt — since a bare state vector cannot establish coverage (§5.11.2) | Checkpoint construction and cadence, manifest binding, retention of superseded checkpoints (D-33, §5.11.3) |
+| **Portability and migration**            | Export, import, an independently obtainable build and creation of a fresh authorization lineage at a replacement service are requirements, not roadmap. **Migration carries attribution forward** (§5.11.2) | The historical-verification package — authenticated old trust root, enough old authorization history, original envelopes or an attribution-preserving checkpoint, and the content-key generations that open sealed actor bindings — plus the cutover contract: authenticated coverage attestation, and each device replaying its own retained envelope suffix rather than filtering a merged delta (D-33) |
 
 **D-17 gated the selections in the right-hand column, not the existence of every left-hand requirement —
 and all five are now recorded.** The authorization/content boundary, the account's relationship to the
