@@ -50,7 +50,9 @@ data-handling constraints precede the TRD, a living inventory follows the archit
 review gates wider availability (§5.10). **D-33 is now closed at the product level:** an independently
 runnable client and service stack is required; public open source is the preferred path and a triggered
 source release is an acceptable fallback; the corresponding claims wait for release evidence (§5.11).
-**No product-level readiness gate remains. D-31** (pricing) stays deferred and genuinely downstream.
+**No product-level readiness gate remains** — the one that briefly opened, whether migration preserves
+historical attribution or reattributes the baseline, is decided in favour of preserving it (§5.11.2).
+**D-31** (pricing) stays deferred and genuinely downstream.
 **Ready to promote into the PRD and begin the TRD; not implementation-ready** — see §8.2.
 **Date:** 2026-08-15
 **Audience:** the author, deciding. Not an implementation plan.
@@ -3156,7 +3158,7 @@ The boundary is easiest to see by component:
 | Component | Responsible for | Must not become |
 | --------- | --------------- | --------------- |
 | **Authorization service** | Authenticate the account; admit and revoke device/agent credentials; assign capabilities; sign and serialize authorization epochs; issue authenticated acceptance/finalization evidence | A content-key holder, mutation signer or Yjs semantic authority |
-| **Client envelope layer** | Encrypt outbound Yjs updates; bind workspace, epoch, credential and digest in the clear and **the attributed actor inside the seal**; sign envelopes over both; verify inbound authorization, signatures and acceptance evidence; wrap and rotate content keys | A second authorization authority, a network dependency on the local edit path, or a source of actor-level metadata for the relay |
+| **Client envelope layer** | Encrypt outbound Yjs updates; bind workspace, epoch, credential and digest in the clear and **the attributed actor inside the seal**; sign envelopes over both; verify inbound authorization, signatures and acceptance evidence; wrap and rotate content keys | A second authorization authority, a network dependency on the local edit path, or a place where an actor identifier crosses in the clear |
 | **Relay and durable store** | Authenticate transport; validate opaque envelope fields, authorization epoch and signatures; sequence and store ciphertext; carry service-signed acceptance evidence | A plaintext processor, CRDT merger or source of authorization by itself |
 | **Yjs** | Represent and merge document content locally after an envelope has passed verification | An identity, authorization or recovery system |
 
@@ -3442,6 +3444,12 @@ authorization lineage. The product preserves the workspace, not the vanished ser
 epochs or claim to authority. That is narrower than succession, easier for users to recognize as moving
 services, and sufficient for the claim in §5.11.4.
 
+**One qualification, added because the attribution decision below needs it and the sentence above would
+otherwise read as forbidding it.** "Not the vanished service's epochs" means not as **authority** — the
+old lineage cannot admit, revoke or order anything after migration. Its **public** material is retained
+for a different job: verifying signatures on writes that were made while it *was* the authority. Nothing
+that verifies history authorizes a future, and the two uses of the same bytes should not be conflated.
+
 **Which raises a question the two decisions were taken four hours apart and never reconciled: what makes
 the restored history admissible under a lineage that never accepted it?** §5.2.3 requires acceptance
 evidence on every applied envelope, and every historical envelope carries the *dead* service's — issued
@@ -3472,18 +3480,43 @@ across a service boundary:**
 | **Carry attribution forward** | Historical writes stay attributable to the credential and actor that made them | The old lineage's public authorization material must be retained as **historical verification material** — not as current authority, which §5.7.3 forbids, but as the trust root against which pre-migration signatures still verify |
 | **Reattribute the baseline** | Nothing before the cutover is individually attributed; the whole baseline is one system-actor import by the migrating device | Cheaper, and honest only if said — D-22's provenance mode goes blank for everything older than the migration, and "who wrote this" becomes "restored on 3 March" |
 
-Neither is wrong. What is wrong is shipping the second while D-27 still promises the first, so **whichever
-is chosen, §5.7.1's table and D-27 have to say what attribution means either side of a migration.** Note
-that retaining old public material for verification is not succession: it proves who wrote history, it
-authorizes nothing, and §5.7.3's rule is about who may *change* authorization.
+> **Decided: carry attribution forward.** The migration retains the old lineage's **public** authorization
+> material as historical verification material, so pre-migration writes stay attributable to the
+> credential and actor that made them. Reattribution to the migration is rejected: D-27 promises
+> authenticated authorship and D-33 promises the workspace survives, and a migration that silently
+> converts every past write into "restored by this device" keeps the second promise by breaking the first.
+>
+> The cost is accepted: a migrated workspace carries a small archive of superseded public keys and
+> authorization heads, retained for verification only. **That is not succession** — it proves who wrote
+> history, it authorizes nothing, and §5.7.3's rule is about who may *change* authorization, which this
+> material cannot. D-27's invariant therefore reads the same either side of a migration, and §5.7.1's
+> table needs no migration-specific exception.
 
 **And "during" needs a rule, because §5.11.4's test 7 names it as a case.** A migration is a cutover: the
-checkpoint fixes a covered range, and an edit made after that range is computed but before the new lineage
-accepts anything belongs to neither side. The workable shape is that the restoring device stays writable
-throughout — nothing on the write path may await a service (§6) — and edits made during the window are
-**re-based onto the checkpoint and re-signed under the new lineage** as that device's own writes, which is
-attribution-preserving because they *are* its writes. Any other device is enrolling afresh and has no
-window to have written in.
+checkpoint fixes a covered range, and edits made after that range is computed but before the new lineage
+accepts anything belong to neither side.
+
+**Every enrolled device is in that window, not just the restoring one** — an earlier version of this
+paragraph said otherwise and was wrong on the document's own terms. Offline-first means every device keeps
+writing locally throughout (§6, PRD principle 3); a migration is a service event, and devices do not stop
+because the service is being replaced. So the window produces divergence on as many replicas as there are
+devices, and test 7's "edits made before, during and after" is a multi-device case by construction.
+
+**What is automatic, and what is not:**
+
+- **A device's own window edits are its own writes**, so on enrolling under the new lineage it re-signs
+  them and submits them as ordinary envelopes. Attribution is preserved because nothing is being
+  re-attributed — the same credential and actor sign the same operations. This covers the restoring
+  device and every device whose replica the checkpoint already covers.
+- **A device whose contributions the checkpoint does not cover** — it was offline before the archive was
+  taken, so its pre-migration work never reached the restored state — is, from the new lineage's view, a
+  device carrying history that the workspace does not have. That is **D-5**, with its confirmation and
+  its export, and it is the one case migration cannot resolve silently — and it is exactly what
+  §5.11.4's test 7 exercises, which is the test asking two devices to diverge while the former service is
+  unavailable and then enrolling the second one.
+- **The window should therefore be short, and that is a design requirement rather than an aspiration.**
+  Every day of it is another day of divergence on every device that has not yet enrolled, and the second
+  bullet's probability grows with it.
 
 So the accepted-set requirement and the migration boundary meet at a checkpoint rather than conflicting,
 and §5.11.4's test 7 — converging edits from before, during and after a migration — is passable because
@@ -3814,7 +3847,7 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**               | Yes, for the environment case. Warn about the property, not the cause. Offer the grant, then export, then sync. Also owns the hosted copy's dependency on the saved code |
 | **D-26** | Revocation learned late, history already diverged?             | **Decided**               | No lineage rule, no discard, no filtered replay. Needs a **finalization boundary** against a hostile relay (§5.2.3) — a contract row        |
 | **D-27** | Is attribution authenticated, or advisory?                     | **Decided**               | Authenticated by an epoch-authorized credential; actor is derived or explicitly authorized for representation                               |
-| **D-28** | What carries the authorization protocol?                       | **Decided**               | A service-authoritative control plane around end-to-end-encrypted Yjs updates; the attributed actor sits inside the seal, so the relay gets no actor-level metadata; exact envelopes, finalization and key constructions belong in the TRD |
+| **D-28** | What carries the authorization protocol?                       | **Decided**               | A service-authoritative control plane around end-to-end-encrypted Yjs updates; the attributed actor sits inside the seal, so no actor identifier crosses in the clear — the relay still maps credentials to members through authorization state (§5.7.1); exact envelopes, finalization and key constructions belong in the TRD |
 | **D-29** | What happens if a paid account plan lapses?                    | **Decided conditionally** | If D-31 selects such a plan: grace period, then read-only. Ciphertext and wrapped root are retained together so resuming works; local use is untouched; expiry is what destroys |
 | **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Decided**               | Rule 1 stands: users manage devices, access, recovery and data transitions without managing or seeing workspace containers                 |
 | **D-31** | What does hosted sync cost, and how should it be priced?       | **Deferred on purpose**   | Business-model question outside this document. D-16 requires an account but does not presume free, paid, bundled or metered                 |
@@ -3840,7 +3873,7 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | Browser key storage                      | **Selected: a non-extractable `CryptoKey`, PRF-wrapped where the authenticator supports it.** The tier is shown in the device list and is never silent; the unlock gates sync, not the app (§5.7.4) | PRF enrollment flow, and the copy shown for a device on the lower tier |
 | **Local storage at rest**                | **Selected: if a device lock exists it is opt-in, user-held-factor-keyed, governs every store holding content, and accepts total loss on a forgotten factor.** Content is plaintext today in IndexedDB and the journal, with the Phase-4 index a planned third; the origin sandbox is not an at-rest boundary | Whether to build it at all — **D-34** (§5.7.4). Its answer also fixes whether account creation is a whole-document encryption pass (§5.2.1) |
 | **Signed authorization epoch**           | Binds membership, credentials, capabilities and key generation; the service signs and serializes successors | Chain-head discovery for a fresh device, checkpoint and downgrade rules. **Fork rules are no longer needed** (D-16) |
-| Signed mutation envelopes                | Source-authenticated; workspace/epoch/credential/digest in the clear, **attributed actor inside the seal** so the relay gets no actor-level metadata (§5.8.1) | Which fields are associated data, envelope and batching granularity, anti-replay/finalization rule and authenticated checkpoint construction |
+| Signed mutation envelopes                | Source-authenticated; workspace/epoch/credential/digest in the clear, **attributed actor inside the seal** so no actor identifier crosses in the clear. Not unlinkability — the relay still infers member from credential via authorization state (§5.8.1) | Which fields are associated data, envelope and batching granularity, anti-replay/finalization rule and authenticated checkpoint construction |
 | Attribution binding                      | Actor is derived from the credential or explicitly authorized for representation        | How an update's affected attributed fields are inspected or derived                                        |
 | Revocation commit semantics              | Requested · committed · acknowledged; no peer path bypasses the relay                   | Protocol and recovery behaviour for interrupted rotation                                                   |
 | **Content finalization boundary**        | A valid mutation is not accepted without authorization-service evidence; a hostile relay can withhold and later deliver a valid old-epoch write. **Across a migration the checkpoint re-baselines admissibility** — prior envelopes are archival, not replayable (§5.11.2) | Per-envelope receipts, accepted-log inclusion proofs, or checkpoints with an authenticated suffix; every shape ends in a committed cutoff (§5.2.3) |
@@ -3850,7 +3883,7 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | Recovery                                 | **Selected: a mandatory high-entropy code saved outside the enrolling device, wrapped 1-of-N**, with optional independent PRF-passkey wraps (§5.7.6). Re-entry at enrollment proves transcription and possession, never location — the copy carries independence, not the mechanism. Account, authorization, content key and ciphertext remain four separate objects | Code generation and confirmation, replacement policy, loss warnings and account-deletion semantics (D-13) |
 | Web application and protocol assurance   | **Selected: levels 1–3 before sync ships, 5 live at ship, 4 on a stated trigger.** Same-origin code is inside the cryptographic boundary; D-28 fixes the design-review scope at the architecture level (§5.7.8) | Which ASVS profile and version, who performs the design review, the audit's scope, and the concrete TRD protocol submitted for review |
 | **Durable store representation**         | A content-blind store cannot merge; recovery needs checkpoints, not a merged state      | Checkpoint construction and cadence, manifest binding, retention of superseded checkpoints (D-33, §5.11.3) |
-| **Portability and migration**            | Export, import, an independently obtainable build and creation of a fresh authorization lineage at a replacement service are requirements, not roadmap | Formats, distribution mechanism and migration flow (D-33) |
+| **Portability and migration**            | Export, import, an independently obtainable build and creation of a fresh authorization lineage at a replacement service are requirements, not roadmap. **Migration carries attribution forward**, retaining the old lineage's public material as verification-only history (§5.11.2) | Formats, distribution mechanism, migration flow, and the cutover rule for window edits on every device (D-33) |
 
 **D-17 gated the selections in the right-hand column, not the existence of every left-hand requirement —
 and all five are now recorded.** The authorization/content boundary, the account's relationship to the
