@@ -673,7 +673,7 @@ than for what it collects.
 | Level       | What the user has                                                           | Reached by                                                                  | Service and price                         |
 | ----------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------- |
 | **Local**   | No name, one device, no service                                             | Opening the app. The default, permanently, for anyone who asks for no more  | No service; permanently free              |
-| **Account** | A name, a credential, hosted sync across devices, an encrypted server copy  | Creating an account (D-19, D-24)                                            | Hosted service; price is deferred to D-31 |
+| **Account** | A name, a credential, a saved recovery code, hosted sync across devices, an encrypted server copy | Creating an account (D-19, D-24), which requires confirming the code (§5.7.6) | Hosted service; price is deferred to D-31 |
 
 **The middle rung is retired, and the ordinals with it.** Until v15 there were three rungs, and the
 middle one — **Paired**, cross-device sync between your own devices with no account and no relay
@@ -950,10 +950,32 @@ your list on a second device, you are asked who you are and asked to create an a
 commercial step accompanies that event is D-31 and is not decided here. The account requirement is a
 sharper edge than the old ladder had, and it is the main thing the old ladder was buying.
 
-Two things make it defensible rather than merely accepted. It is **honest** — the question arrives with
-the service that needs it, not before, and D-1's "never ask at first run" survives completely intact for
-the entire free product. And it is **not a manufactured obstacle** — nothing was made worse to create it,
-which is precisely the test the retired rung failed (D-16).
+**And D-17 made that edge sharper again, which this paragraph did not originally account for.** The name
+is the small half. §5.7.6 makes a high-entropy recovery code mandatory at the same moment — generated,
+saved somewhere other than the device in hand, and **confirmed before the account exists**. So the
+accurate statement of the boundary is not "you are asked who you are"; it is **you are asked who you are,
+and required to take custody of something you must not lose.** §5.7.6's own options table calls that class
+of step the largest deliberate security interaction in the product, and it is now unavoidable rather than
+a fallback.
+
+That is a genuinely worse first experience than a name prompt, and it is worth being exact about why it
+is still the right shape: it is the **whole** of what non-custodial costs, paid once, at the only moment
+the user has a reason to care. The alternative is not a lighter version of the same product — it is
+§5.7.5's rejected rows, where either the service can decrypt or all-device loss is unrecoverable. There is
+no third option that keeps the promise and skips the ceremony.
+
+Three things make it defensible rather than merely accepted. It is **honest** — the questions arrive with
+the service that needs them, not before, and D-1's "never ask at first run" survives completely intact for
+the entire free product. It is **not a manufactured obstacle** — nothing was made worse to create it,
+which is precisely the test the retired rung failed (D-16). And it is **load-bearing rather than
+procedural**: unlike a name, the code is the thing that later makes *we cannot recover this for you* a
+true sentence instead of an evasion (§5.7.7).
+
+**Two consequences that belong to other decisions and should not be discovered inside them.** D-31 will be
+pricing a service whose signup has this gate in it, and the conversion cost of the gate is not the
+conversion cost of a name field. And D-25's copy now has to survive a user who has just been handed a code
+at the least motivated moment in the relationship — which is the same requirement §5.7.7 states from the
+recovery side, arriving here from the onboarding side.
 
 **D-5. What happens when a device with its own history joins a workspace that already has one?**
 _(Reframed in v15. It was "what should opting into sync for the first time do when the room already has
@@ -2106,8 +2128,9 @@ without a threat model.
 **The second, fourth and fifth are answered by separating authorization from content custody.** No
 authority changes authorization outside the service; account recovery restores the service relationship;
 and a single user-saved code seals the content-recovery root that unwraps the document. The service holds
-authorization authority and no content root. The third is answered in §5.7.4 and the sixth in §5.7.8,
-which closes D-17.
+authorization authority and **no content root it can open** — it may hold a wrapped one, which is not an
+exception because the factor that unwraps it never reaches the service (§5.10.1). The third is answered in
+§5.7.4 and the sixth in §5.7.8, which closes D-17.
 
 **The first — what the product promises — was never a free choice**, and it is worth saying why the list
 above puts it first anyway. §5.7.1 derives it from decisions already taken rather than selecting it, so
@@ -2145,7 +2168,7 @@ row means reopening the decision named above.
 | Copied browser profile                                 | On a PRF-wrapped device, the copied operational-key wrapper is unusable without the authenticator; a lower-tier device makes no such promise. Service revocation limits future access. | Protection for plaintext document data copied with the profile (D-34), or after the attacker can invoke the key through an unlocked app. |
 | Unlocked device or running app                         | After the service revokes its credential and the content key rotates, the attacker cannot extend access into the new generation.             | Protection while the attacker can run the app as the user, read its plaintext or exercise its current device capabilities.                  |
 | Same-origin XSS, compromised dependency or bad release | The content-recovery root remains absent during ordinary operation. After hostile code is removed, the service can revoke operational credentials and a clean device can recover content and rotate its keys. | Confidentiality or integrity while hostile code runs with the app's origin and privileges, including any recovery material entered then. Client-side encryption cannot provide that. |
-| All devices and authenticators lost while hosted ciphertext still exists (S47) | Account recovery restores authorization; the independently stored recovery factor restores content-key access; the hosted copy supplies the ciphertext. Together those paths complete workspace recovery (§5.7.6). | Authorization does not decrypt, the recovery factor does not restore the service account or missing ciphertext, and no party substitutes for a lost content-recovery factor. |
+| All devices and authenticators lost while hosted ciphertext still exists (S47) | Account recovery restores authorization; the independently stored recovery factor restores content-key access; the hosted copy supplies the ciphertext **and the wrapped content root the factor opens**. Together those paths complete workspace recovery (§5.7.6). | Authorization does not decrypt, the recovery factor does not restore the service account or missing ciphertext, and no party substitutes for a lost content-recovery factor. |
 | Service outage or disappearance (S50)                  | Existing local documents remain readable and writable; no local operation awaits the service.                                                | Server-mediated sync, server-held recovery material or a promise that the service's copy remains reachable after the service disappears.    |
 
 > **Decided as the minimum security promise.** A protocol that cannot meet every claim in the middle
@@ -2405,9 +2428,12 @@ specific ways that are easy to miss.
 > operate the account (§5.7.2).
 
 **The separation is a security property, not liability arrangement.** Split across two entities, the
-service holds ciphertext and no key; the escrow agent holds a wrapped root and no ciphertext. **Neither
-party alone can produce plaintext.** Compelled disclosure therefore requires two demands against two
-entities, potentially in two jurisdictions, and either one failing leaves the plaintext unreachable. That
+service holds ciphertext and a root wrapped only to the user's code; the escrow agent holds a root wrapped
+to the escrow key and no ciphertext. **Neither party alone can produce plaintext** — the service's wrap
+opens only for the user, so a demand against it yields ciphertext and a blob, and a demand against the
+escrow agent yields a key with nothing to apply it to. Compelled disclosure therefore requires two demands
+against two entities, potentially in two jurisdictions, and either one failing leaves the plaintext
+unreachable. That
 is a substantively better position than one company holding both halves and promising not to join them.
 
 **And on building it early rather than when it is asked for**, which is the part that looks like
@@ -2573,10 +2599,13 @@ than prose:
    replacement service under a new authorization lineage, and then admits and revokes a device. Nothing
    claims that the new service inherited the old service's authority (§5.11.4).
 9. A relay or durable-store snapshot contains ciphertext, public authorization material and the
-   explicitly accepted metadata — no content root, plaintext, reusable device secret or PRF output. The
-   authorization service has its own signing key and account state but no content root. **Repeated against
-   the escrow agent's store, which must contain a wrapped content root and no ciphertext** — the two-party
-   property of §5.7.5 is only real if neither store alone is sufficient.
+   explicitly accepted metadata — no **unwrapped** content root, plaintext, reusable device secret, PRF
+   output or recovery code. A content root wrapped to the user's code may be present and is not a finding;
+   what the test checks is that nothing in the snapshot opens it (§5.10.1). The authorization service has
+   its own signing key and account state, and no material that unwraps a root. **Repeated against the
+   escrow agent's store, which must contain a root wrapped to the escrow key and no ciphertext** — the
+   two-party property of §5.7.5 is real only if neither store alone is sufficient, so each store is tested
+   for what it can *open*, not for what it holds.
 10. Every recovery path is exercised after loss of one device, all devices, a device-bound passkey, an
     independently synced passkey, the account session and the service. The result is checked separately
     for all four recovery objects. A device plus every artifact stored or bound only to it is treated as
@@ -3107,18 +3136,29 @@ be designed as something the app drives (a periodic verified archive, or a desti
 rather than something the user is trusted to remember.
 
 **The scope of that requirement is narrower than the paragraph above implies, and the correction is worth
-making rather than leaving the stronger claim standing.** Every install already holds a complete local
-replica (§5.11.1, row 1), so an ordinary device *is* an independently controlled copy in §5.11.3's sense:
+making rather than leaving the stronger claim standing.** Every install already holds an **independently
+controlled** replica (§5.11.1, row 1) — the axis §5.11.3 cares about is custody, not currency — so an
+ordinary device *is* an independently controlled copy in that sense:
 
-| Service | Devices | Who holds usable bytes                     | Archive load-bearing? |
-| ------- | ------- | ------------------------------------------- | --------------------- |
-| Alive   | ≥1      | Both                                        | No                    |
-| Alive   | 0       | The service, unwrapped by the saved code    | No — this is §5.7.6   |
-| Gone    | ≥1      | The surviving device, migrated to a new service (§5.11.4 test 5) | No |
-| Gone    | 0       | Nobody                                      | **Only here**         |
+| Service | Devices     | Who holds usable bytes                     | Archive load-bearing? |
+| ------- | ----------- | ------------------------------------------- | --------------------- |
+| Alive   | ≥1          | Both                                        | No                    |
+| Alive   | 0           | The service, unwrapped by the saved code    | No — this is §5.7.6   |
+| Gone    | ≥1, current | The surviving device, migrated to a new service (§5.11.4 test 5) | No |
+| Gone    | ≥1, stale   | That device, minus everything since it last synced | **Partly — for the gap** |
+| Gone    | 0           | Nobody                                      | **Only here**         |
 
-So the archive earns its place in exactly one cell: **the conjunction of company disappearance and total
-device loss** — and, because that conjunction is usually reached through one of the other cells, its real
+**Deliberately not the word "complete".** D-24 and D-29 make *complete copy* mean something specific and
+false — a device holds its **last** replica, not the workspace as it last stood — and the argument here
+needs the custody sense instead. Hence the fourth row: a device that went in a drawer before the wind-down
+is an independently controlled copy that is still short a month, with the relay gone and no other device
+willing to sync with it. That is the same qualifier D-24 already puts on destructive account deletion,
+which requires *a verified-current device or a fresh export*, applied to the moment the service ends
+involuntarily rather than by request.
+
+So the archive earns its place in one cell outright — **the conjunction of company disappearance and total
+device loss** — and in part of a second, where the only surviving device is stale and the archive covers
+whatever it missed. Because that conjunction is usually reached through one of the other cells, its real
 job is protecting the user who was not paying attention during a wind-down window, or for whom the two
 events were not separated in time. That is a genuine requirement and not an obvious one; it is simply not
 the requirement "shipping a self-hostable relay does not put any bytes in it" appears to be arguing for,
@@ -3181,10 +3221,14 @@ the user has no reason to care and no context to answer. Four constraints now de
 2. **Local asks for nothing, ever.** After D-16, Local is not a trial or a first rung;
    it is a complete application that never requests a name, an address or a credential. D-1's promise
    therefore holds for the entire experience of every user who does not ask for a hosted service.
-3. **The first question arrives with the service that needs it**, and not before: creating an account to
-   get a second device asks for a name (D-23). Any commercial step is D-31 and outside this flow. The
-   account requirement is a sharper edge than the retired ladder had, and it is the honest place to put
-   it — the app asks when it starts doing something on the user's behalf through a service.
+3. **The questions arrive with the service that needs them**, and not before: creating an account to get
+   a second device asks for a name (D-23) **and requires a saved, confirmed recovery code** (§5.7.6).
+   Those are one moment and two different kinds of ask — the name is a label, the code is custody of the
+   only thing standing between the user and permanent loss. Any commercial step is D-31 and outside this
+   flow. The account requirement is a sharper edge than the retired ladder had, the code makes it sharper
+   still, and it is the honest place to put both — the app asks when it starts doing something on the
+   user's behalf through a service, and asks for custody at the moment it stops being able to recover
+   anything for them.
 4. **Nothing silently discards a history.** Where a joining device's own history is about to be replaced
    by the workspace's, D-5 requires that it be said plainly, that the export be offered, and that the
    user confirm. **This is now a common path rather than a corner case** (D-24, S35) — which raises what
@@ -3200,15 +3244,25 @@ He gets a new phone, installs the app, and uses it for a week before thinking ab
 has its own local genesis — its own principal, device, actor and history — and the two installs have no
 relationship at all (S5).
 
-Then he wants one list instead of two. **This is the moment the product asks for something**, and it asks
-once: he creates an account on the laptop and chooses a name (D-23). The account binds to
-the principal that already exists rather than minting a replacement, and adopts the laptop's document
+Then he wants one list instead of two. **This is the moment the product asks for something**, and it is
+the only moment it asks: he creates an account on the laptop and chooses a name (D-23). The account binds
+to the principal that already exists rather than minting a replacement, and adopts the laptop's document
 (D-24).
 
+**And it asks for one more thing, which is the heavier half.** Before the account exists, the laptop
+generates a recovery code, tells him it is the only way back to his list if he ever loses every device,
+and asks him to store it somewhere that is not this laptop and confirm it (§5.7.6). This is the largest
+deliberate security interaction in the product, it happens exactly once, and there is no version of the
+account without it — the alternative is a service that can read his list, which §5.7.5 rejects. What the
+interface owes him here is the reason, in a sentence, at the moment he is being asked: *we will not be
+able to recover this for you, so you have to be able to.*
+
 He signs in on the phone. The account admits the phone's device credential, the service signs the new
-authorization epoch, and the phone is enrolled — but it still cannot read anything, because the service
-does not hold the content key (§5.7.5). So the laptop shows a code, the phone takes it, and the key
-arrives out of band (D-19). No workspace name, room or endpoint is typed anywhere (Rule 1).
+authorization epoch, and the phone is enrolled — but it still cannot read anything, because authorizing a
+device does not deliver a content key (§5.7.2). So the laptop shows a pairing code, the phone takes it,
+and the key arrives out of band (D-19). He never needs the recovery code for this: it is the fallback for
+when no existing device survives, not a step in ordinary enrollment. No workspace name, room or endpoint
+is typed anywhere (Rule 1).
 
 **Then the part that costs something, and it is a sentence rather than a flow.** The phone has a week of
 its own notes and the workspace has the laptop's month. D-5 does not ask Tom to adjudicate: the workspace
