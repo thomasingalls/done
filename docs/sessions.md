@@ -19,7 +19,7 @@ each was an over-claim in the direction of the decision this revision wanted to 
 accountless authorization path but did not by itself decide who held account authority; §5.7.2 now does —
 the service authorizes, while the user holds the content-recovery root and migrates rather than preserving
 the old authorization lineage; relay refusal is not content finalization against a hostile relay
-(§5.2.2); and a device that has been offline keeps its **last replica**, not a complete copy (D-24, D-29).
+(§5.2.3); and a device that has been offline keeps its **last replica**, not a complete copy (D-24, D-29).
 
 **D-17's custody question is now answered, and it was the largest thing still open.** The product is
 **non-custodial for content**: the service controls account authorization, while at account creation the
@@ -134,7 +134,7 @@ has to be re-derived rather than inherited. It survives, on four grounds that do
    minted a fresh identity instead, D-24's data-loss hazard is exactly what happens — and after D-16 that
    promotion is no longer an edge case but the **only** way anyone ever reaches hosted sync.
 2. **"You" must be answerable with no network and no service.** PRD principle 3 forbids the read path
-   waiting on a credential, and a list that says "You" cannot consult an account to do it. A person is
+   waiting on the *network*, and a list that says "You" cannot consult an account to do it. A person is
    not a service relationship.
 3. **Membership attaches to a principal or an agent, not to an account**, so admitting an agent does not
    require inventing an account **for the agent**. The owner still needs one, because only the service
@@ -362,9 +362,11 @@ of that decision hides.
 **Cookies are inert offline, not hostile to it.** A cookie is a request-time mechanism: it is attached
 to HTTP requests, and offline there are no requests. So a cookie contributes nothing to what the app
 can do while offline — and takes nothing away either. The rule that keeps principle 3 ("offline is the
-normal state") intact is one sentence: **nothing on the read or write path may await a credential**,
-which is the constraint TRD §7.1 already imposes on sync state. An expired cookie has to degrade to
-"sync is offline", never to "the app is locked".
+normal state") intact is one sentence: **nothing on the read or write path may await a _network_
+credential**, which is the constraint TRD §7.1 already imposes on sync state. An expired cookie has to
+degrade to "sync is offline", never to "the app is locked". The qualifier matters: principle 3 is about
+waiting on the network, not about ceremonies as such, so this rule does not by itself forbid a local
+device unlock (D-34, §5.7.4).
 
 **Where a cookie is actively better than what exists.** Today the relay token travels as a query
 parameter, because `WebSocket` takes a URL and nothing else — the app's own comments say so. A cookie
@@ -1014,7 +1016,8 @@ a document" — a question about typing a room name, which D-11 removes and D-19
 >
 > **No choice of winning history, and no merge, preview or side-by-side.** There is a **cancel**, and it
 > leaves the device exactly as it was: not joined, nothing exported over, nothing replaced. Export is the
-> escape hatch; import is how a determined user brings the content across afterwards.
+> escape hatch, and it is a **file the user keeps**, readable elsewhere and importable into a fresh
+> install — not a way to fold the replaced history back into the workspace it joined (§5.2.2).
 
 **"No abort" was the wrong phrase and is corrected here.** v15's first draft said the flow has no abort,
 meaning there is no un-merge to offer after histories have been exchanged. That is true and it is not
@@ -1092,13 +1095,67 @@ create the account on the device whose list you want to keep.** That is the whol
 is memorable, and D-24 makes it true — account creation adopts the creating device's history. The
 interface should say it at the moment it is actionable, not after.
 
-**Import is the real escape hatch, and it is owed anyway.** A user who exported can bring that content
-into the workspace deliberately, as a file they chose to import, rather than through an automatic merge
-they had to adjudicate behind a preview. That is a better shape for the same outcome: the merge becomes
-something the person performs and can inspect, not something the app does and must explain. Import is
-already required by the §2.4 migration and by D-33's continuity requirement, and **its placement against
-the freeze is the enabling decision** — an import gated like a human edit silently drops everything older
-than three days (§2.4, §6).
+**Import is the escape hatch, and it is owed anyway** — required by the §2.4 migration and by D-33's
+continuity requirement independently of D-5. Its placement against the freeze is one enabling decision
+(§2.4, §6). But an earlier draft of this paragraph claimed more for it than it can carry, and the
+correction changes what D-5 may promise.
+
+#### 5.2.2 Import targets an empty workspace, and D-5's escape hatch is narrower than it read
+
+> **Decided, for now: import creates a workspace's contents; it does not merge into a populated one.**
+> That serves §2.4's migration and D-33's restore, which both target a clean install. It does **not**
+> let a user fold an export back into the workspace that replaced it.
+
+**Which means D-5 must stop implying that it does.** The claim that a determined user "brings the content
+across afterwards" described a merge into a live workspace, and that is not available. What the export
+actually buys the user whose history was replaced is a **readable file**, and a workspace they could
+build from it in a fresh install — not restoration into the list they just joined. D-5's copy has to
+offer the file as what it is. This is the one place in this document where the escape hatch was doing
+more work than the mechanism supports.
+
+**Four gates make merging-into-populated a different project, and only one of them was known.** The
+freeze was found (§2.4). The other three come from what `exportEntries` actually produces — a zip of
+`master.md` and `days/<date>.md`:
+
+1. **Days collide by construction**, since entries are keyed by date and both sides have that date.
+2. **No card identity survives the round trip.** Cards are Markdown list items; nothing distinguishes
+   re-importing the same file from importing new content, so import is not idempotent and duplicates on
+   every repeat.
+3. **`NEXT_CAP` is a second silent-drop gate on the same path.** A day already holding three Next items
+   cannot accept a fourth, and PRD principle 5 forbids resolving that by rearranging what is there — so
+   imported items would vanish exactly the way §2.4's frozen days would have. The document found one gate
+   of this shape and walked past the other.
+
+**Attribution is not a fourth gate, because it is already answered.** `Card.author` is absent from the
+export and D-27 requires an authenticated actor, but PRD §11.3 assigns the **system actor** to
+"compaction, import, and bulk operations", and §1.3 already permits an authorized credential the narrow
+ability to represent it. Imported content is a system write.
+
+**And this is where Markdown-for-everything reaches its limit, which is worth naming rather than
+patching around.** Plain Markdown is the right *escape* format — its job is that another program can read
+your writing, and PRD principle 4 commits to exactly that. It is the wrong *round-trip* format, because
+the identity the app needs to reconcile two histories is precisely what plain text does not carry. That
+is not a defect in the export; it is the format doing its own job and not a second one.
+
+**The second format already exists in this document, under a different name.** §5.11.2 requires an
+encrypted fidelity archive "containing CRDT state and the material needed to resume", and treats it
+purely as a survivability artifact. It is also the format that could carry import history, because CRDT
+state is what makes card identity survive. Recording that here means the eventual answer to non-empty
+import is a *format* question already on the roadmap rather than a new one — though note the archive as
+specified is encrypted to the content root, so a Local-level fidelity export needs its own answer.
+
+**What a non-empty import would look like if it is ever built**, recorded so the shape is not re-derived:
+
+- **The text half is easy and manual.** A second Goals or master list is appended beneath a horizontal
+  rule and a label saying where it came from, and the user cleans it up. No per-character merge, no
+  adjudication — the same instinct as D-5, applied one level down.
+- **The structured half is the unsolved part**: day collision, duplicate suppression without ids, and the
+  cap.
+- **A mechanical CRDT merge is available and meaningless, which is the argument against it.** Two
+  independent documents *can* be merged — `Y.applyUpdate` both into one — and §2.2b already describes
+  what that produces and calls it a defect: interleaved text and both sets of cards in arbitrary order.
+  So the objection is not that it is impossible. It is that the sophisticated version converges on the
+  manual version above, having first destroyed the thing it was meant to preserve.
 
 **What this leaves of S10 and the old room behaviour.** Today's silent, irreversible convergence on a
 room change (S10, S14, §2.2b) is still a defect, and D-11 still removes it. What changes is that its
@@ -1163,8 +1220,9 @@ requires the transition machinery in §5.2.1:
   is done, and that is the case D-5 stops and asks about. The interface should make a safe ordering the
   path of least resistance rather than leaving it to chance.
 - **What is owed is messaging, export/import and transition machinery — not adjudication machinery.** The
-  loss has to be stated before it happens and the export has to be real; bringing the content across
-  afterwards is import (§2.4, D-33), which is already required for other reasons. Preflight, separate
+  loss has to be stated before it happens and the export has to be real. Import is owed for its own
+  reasons (§2.4, D-33), but it targets an empty workspace and so does **not** bring the replaced history
+  back afterwards (§5.2.2) — which makes the messaging carry more weight, not less. Preflight, separate
   workspace databases and a crash-safe switch are the distinct implementation requirements in §5.2.1.
 
 Three shapes were available for the adoption itself, and they were not equally safe:
@@ -1323,10 +1381,10 @@ already synced keeps their copy forever.** Removal governs the future, never the
 > Nothing is discarded, no lineage is sanctioned over another, and filtered replay is not built.
 >
 > **Relay refusal alone is not this commit boundary.** The authenticated finalization component is what
-> makes the guarantee hold against a hostile relay — see §5.2.2 below. "Prevented by construction" was too
+> makes the guarantee hold against a hostile relay — see §5.2.3 below. "Prevented by construction" was too
 > strong on its own.
 
-#### 5.2.2 Refusal at the relay is not the same as finalization
+#### 5.2.3 Refusal at the relay is not the same as finalization
 
 **A v15 draft said the guarantee was unconditional, and it is not.** The threat model already contains a
 **malicious or compromised relay** (S42, §5.7.1), and relay-side refusal is exactly the control such a
@@ -2237,7 +2295,7 @@ row means reopening the decision named above.
 | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | Knows the relay URL and workspace identifier (S41)     | Cannot decrypt content, become a member or create an accepted mutation. A workspace identifier is an identifier, never a bearer secret.      | Cannot be prevented from reaching a public endpoint; rate and resource abuse are a service-availability problem.                            |
 | Passive network observer                               | Learns no content or reusable credential from traffic. Transport security still applies outside the content encryption.                      | Hiding that traffic exists, its rough volume, or the network addresses involved.                                                            |
-| Malicious or compromised relay (S42)                   | Cannot read content, forge an accepted mutation, sign an authorization epoch, make an already-seen older epoch look current, **or land a revoked credential's withheld old-epoch write after the commit** (§5.2.2). | It can delay, omit, reorder or refuse bytes. End-to-end encryption supplies confidentiality and integrity, not availability.                |
+| Malicious or compromised relay (S42)                   | Cannot read content, forge an accepted mutation, sign an authorization epoch, make an already-seen older epoch look current, **or land a revoked credential's withheld old-epoch write after the commit** (§5.2.3). | It can delay, omit, reorder or refuse bytes. End-to-end encryption supplies confidentiality and integrity, not availability.                |
 | Malicious or compromised authorization service        | Cannot decrypt content, forge an existing device's mutation or cause content-key delivery by authorizing a credential.                      | It can admit or revoke credentials, change capabilities, choose the authorization state it recognizes, suspend the account or deny service. |
 | Leaked relay bearer token (S43)                        | Does not decrypt content, sign a mutation, authorize a device or recover an account. It is scoped, expires and can be refused independently. | The holder may consume relay service and obtain ciphertext or metadata until refusal or expiry.                                             |
 | Compromised authorized device or agent (S44, S46)      | Cannot impersonate another actor, exceed its capability or survive revocation by inventing authority it was never granted.                   | It can read everything its capability permits, copy it forever, and make every malicious edit its capability permits until revoked.         |
@@ -2667,7 +2725,7 @@ than prose:
 6. **A hostile relay withholds an envelope signed by the revoked credential that is absent from the
    committed accepted set, then delivers it after revocation; every client refuses it.** An envelope from
    that credential included in the pre-commit accepted set is still admitted, as is a genuine late-arriving
-   old-epoch update from a still-authorized offline device (§5.2.2).
+   old-epoch update from a still-authorized offline device (§5.2.3).
 7. **Authorization alone cannot cause content-key delivery.** A malicious authorization service admits
    a credential it controls and presents a valid successor epoch; every existing client refuses to wrap
    or send a content key without a separate user-mediated content-delivery proof (§5.7.2).
@@ -3296,9 +3354,11 @@ Not decisions. Listed so they do not consume discussion.
   name, not the history.
 - **Changing a room must not converge two histories.** No reading of "room" makes that the wanted
   outcome, so it is a defect to remove rather than an option in D-11 (§2.2b).
-- **A cookie cannot be waited on.** Whatever the credential turns out to be, nothing on the read or
-  write path may await it — TRD §7.1 already says this about sync state, and §2.3 is why it now also
-  covers authentication.
+- **A cookie cannot be waited on.** Whatever the _network_ credential turns out to be, nothing on the
+  read or write path may await it — TRD §7.1 already says this about sync state, and §2.3 is why it now
+  also covers authentication. **This is scoped to the network deliberately.** It says nothing about a
+  local unlock ceremony, which is not a network wait and is not forced by anything here; whether one
+  exists is **D-34**, and it is open.
 - **Actor ids do not collide.** UUIDv4.
 - **A restored or unfrozen tab must re-establish its view.** It has no way to know what it missed.
 - **The freeze binds the human's editing surface, not replication.** A frozen day still merges: remote
@@ -3370,10 +3430,11 @@ its own notes and the workspace has the laptop's month. D-5 does not ask Tom to 
 is the list. The phone tells him plainly that its own week will not be carried over, offers him the
 export, and waits for him to confirm. Then it adopts the laptop's history and the two are one list.
 
-He loses the week unless he took the file. That is a real cost and the interface has to be honest about
-it at the moment it happens rather than afterwards — but it is a messaging problem, not a merge problem,
-and the ordering that avoids it entirely is one instruction: **create the account on the device whose
-list you want to keep** (D-24). Had Tom installed the app on the phone after creating the account, the
+He loses the week unless he took the file — and the file is something he can read, not something he can
+pour back into the list a week later (§5.2.2). That is a real cost and the interface has to be honest
+about it at the moment it happens rather than afterwards — but it is a messaging problem, not a merge
+problem, and the ordering that avoids it entirely is one instruction: **create the account on the device
+whose list you want to keep** (D-24). Had Tom installed the app on the phone after creating the account, the
 phone would have been empty and nothing would have been asked at all.
 
 Afterwards, the phone has a new human actor because attribution remains per member-per-device, but the
@@ -3407,7 +3468,7 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-2**  | Is identity per person, per device, or a labelled pair?        | **Decided**               | Per device internally; per person in ordinary lists. Own devices appear only on explicit device/security surfaces and are not disclosed to another principal |
 | **D-3**  | Are device names worth improving?                              | **Decided in principle**  | Yes. Mechanism open — and it does not need a fingerprint                                                                                    |
 | **D-4**  | Can a new device claim an existing actor?                      | **Decided**               | No. A new device is always a new actor; the real question was D-19                                                                          |
-| **D-5**  | What happens when a device with history joins a workspace?     | **Decided**               | An existing workspace history wins; an empty one adopts the first joiner's. No adjudication. Cancel leaves the device untouched. Export is written first; the switch needs §5.2.1's mechanics |
+| **D-5**  | What happens when a device with history joins a workspace?     | **Decided**               | An existing workspace history wins; an empty one adopts the first joiner's. No adjudication. Cancel leaves the device untouched. Export is written first; the switch needs §5.2.1's mechanics. Import does not undo it (§5.2.2) |
 | **D-6**  | Can dead actors be pruned?                                     | **Decided**               | No auto-hiding. Staleness may be muted; the interval is open. Exclusion is D-20                                                             |
 | **D-7**  | Should undo ever cross devices?                                | **Decided**               | No. Never leaves the device                                                                                                                 |
 | **D-8**  | What may a session be seen doing?                              | **Decided**               | A caret per tab, own tabs included, **all yours in your colour**, person's name. Active caret distinguished (D-21). Peer list deduplicated  |
@@ -3428,7 +3489,7 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-23** | Does pairing alone trigger the name prompt?                    | **Decided**               | Largely dissolved by D-16: one name prompt, at account creation, which is now the same moment as first sync                                 |
 | **D-24** | How does existing local history become an account?             | **Decided**               | Adopts the creating device's history, which makes D-5 decidable. Deletion leaves each device its **last replica**, not a full copy          |
 | **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**               | Yes, for the environment case. Warn about the property, not the cause. Offer the grant, then export, then sync. Also owns the hosted copy's dependency on the saved code |
-| **D-26** | Revocation learned late, history already diverged?             | **Decided**               | No lineage rule, no discard, no filtered replay. Needs a **finalization boundary** against a hostile relay (§5.2.2) — a contract row        |
+| **D-26** | Revocation learned late, history already diverged?             | **Decided**               | No lineage rule, no discard, no filtered replay. Needs a **finalization boundary** against a hostile relay (§5.2.3) — a contract row        |
 | **D-27** | Is attribution authenticated, or advisory?                     | **Decided**               | Authenticated by an epoch-authorized credential; actor is derived or explicitly authorized for representation                               |
 | **D-28** | What carries the authorization protocol?                       | **Decided**               | A service-authoritative control plane around end-to-end-encrypted Yjs updates; exact envelopes, finalization and key constructions belong in the TRD |
 | **D-29** | What happens if a paid account plan lapses?                    | **Decided conditionally** | If D-31 selects such a plan: grace period, then read-only. Ciphertext and wrapped root are retained together so resuming works; local use is untouched; expiry is what destroys |
@@ -3459,7 +3520,7 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | Signed mutation envelopes                | Source-authenticated, workspace/epoch/credential/actor bound                            | Envelope and batching granularity, anti-replay/finalization rule and authenticated checkpoint construction |
 | Attribution binding                      | Actor is derived from the credential or explicitly authorized for representation        | How an update's affected attributed fields are inspected or derived                                        |
 | Revocation commit semantics              | Requested · committed · acknowledged; no peer path bypasses the relay                   | Protocol and recovery behaviour for interrupted rotation                                                   |
-| **Content finalization boundary**        | A valid mutation is not accepted without authorization-service evidence; a hostile relay can withhold and later deliver a valid old-epoch write | Per-envelope receipts, accepted-log inclusion proofs, or checkpoints with an authenticated suffix; every shape ends in a committed cutoff (§5.2.2) |
+| **Content finalization boundary**        | A valid mutation is not accepted without authorization-service evidence; a hostile relay can withhold and later deliver a valid old-epoch write | Per-envelope receipts, accepted-log inclusion proofs, or checkpoints with an authenticated suffix; every shape ends in a committed cutoff (§5.2.3) |
 | Content-key wrapping and rotation        | Symmetric generations wrapped per reader credential; edit implies read under this shape | Algorithms and generation retention                                                                        |
 | **Awareness and presence metadata**      | Presence is outside the content encryption as currently designed                        | Encrypt awareness, or state in the threat boundary that the relay learns who edits what and when (D-20)    |
 | Account relationship to the content root | **Selected: non-custodial encrypted recovery.** The service never receives the wrapping factor and cannot decrypt under any proof or order. Escrow is excluded from the service and survives only as an opt-in add-on operated by a separate legal entity, scoped to the content root (§5.7.5) | The add-on's operating boundary, and the copy that explains a two-party disclosure requirement |
@@ -3619,7 +3680,10 @@ the shared ontology in §1.
   stop implying that sync is simply a feature the app has.
 - **§4 Export, and a new import commitment** — principle 4 promises plain-markdown export. D-33 makes
   **import** a requirement of equal standing, on two independent grounds: the §2.4 migration needs it, and
-  an export without an import preserves the writing but not the continuity of the application.
+  an export without an import preserves the writing but not the continuity of the application. Import
+  targets an empty workspace (§5.2.2), and the same amendment should record why: plain Markdown is the
+  right escape format and the wrong round-trip one, so a **second, fidelity export carrying CRDT state**
+  is what a populated import would eventually need (§5.11.2).
 - **A new section, or this document promoted** — the concepts in §1 are product surface, not an
   implementation detail, and they are currently written down nowhere. The principal in particular is
   the thing the PRD talks around: "one user" appears throughout without ever being a thing the system has.
