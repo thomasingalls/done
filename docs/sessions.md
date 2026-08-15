@@ -35,12 +35,13 @@ closed** (§5.7.2, §5.7.4–§5.7.6, §5.7.8).
 
 **And closing it opened one thing: D-34.** Whether **local user content** is encrypted at rest was
 asserted twice in this document as a premise and never actually decided — plaintext is what the app does
-today in **three** stores, not one (IndexedDB, the synchronous journal, the Phase-4 search index), and the
-browser's origin sandbox is a boundary between web origins, not an at-rest boundary. It is recorded as
-open rather than quietly settled, and it reaches further than it looks: its answer also fixes whether
-account creation is a whole-document encryption pass (§5.2.1), and the opt-in shape it points at accepts
-a new total-loss path at Local — forget the factor, lose everything, with nothing and nobody to recover
-from (§5.7.4).
+today in **two** stores (IndexedDB and the synchronous journal), with Phase 4's search index a planned
+third, and the browser's origin sandbox is a boundary between web origins, not an at-rest boundary.
+**Its shape is now decided and only its existence is open**: any device lock is opt-in, keyed from a
+user-held factor, governs every store holding content, and accepts that forgetting the factor loses the
+data — total and final at Local. It also reaches further than it looks, fixing whether account creation is
+a whole-document encryption pass (§5.2.1), and it is worth taking before Phase 4 builds the third store
+rather than after (§5.7.4).
 
 **The remaining architecture gate is now closed: D-28** selects a service-authoritative envelope
 protocol around end-to-end-encrypted Yjs updates (§5.8.1). The exact formats and constructions belong in
@@ -87,7 +88,9 @@ is not really one because mechanics settle it, it is in §6 so we do not spend a
 
 Each decision carries a status: **Decided**, **Decided in principle** (the answer is settled, the
 mechanism is not), **Decided conditionally** (the answer is settled, but it only takes effect if a
-deferred decision goes a particular way — D-29 is the only one), **Open**, **Deferred on purpose**
+deferred decision goes a particular way — D-29 is the only one), **Existence open; shape decided** (the
+constraints any *yes* must satisfy are fixed, and only whether to build it remains — D-34 is the only
+one), **Open**, **Deferred on purpose**
 (answerable later, and nothing is foreclosed by
 waiting), or **Re-opened** (answered once, and new evidence has withdrawn the answer). A decided product
 direction may still depend on an open mechanism or security gate; §8 distinguishes recorded dispositions
@@ -2444,7 +2447,7 @@ row means reopening the decision named above.
 | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | Knows the relay URL and workspace identifier (S41)     | Cannot decrypt content, become a member or create an accepted mutation. A workspace identifier is an identifier, never a bearer secret.      | Cannot be prevented from reaching a public endpoint; rate and resource abuse are a service-availability problem.                            |
 | Passive network observer                               | Learns no content or reusable credential from traffic. Transport security still applies outside the content encryption.                      | Hiding that traffic exists, its rough volume, or the network addresses involved.                                                            |
-| Relay reading envelope metadata                        | Learns no attributed actor: the actor binding is inside the seal (§5.8.1), so the relay cannot tell a human's write from an agent's, or one member's from another's. | Hiding **which credential** wrote when. Per-credential authorization means per-credential traffic analysis — write times, rates and volumes per device. That is not removable while the relay validates authorization at all. |
+| Relay reading envelope metadata                        | The attributed actor is not directly present in envelope metadata — it is inside the seal (§5.8.1), so no actor identifier crosses in the clear. | **Not unlinkability.** The relay sees a credential identifier per envelope and validates authorization state that binds credentials to members and capabilities, so it can generally tell which device or agent wrote, and therefore a human's writes from an agent's. Sealing the actor removes a field, not the inference. Write times, rates and volumes per credential are visible and are not removable while the relay validates authorization at all. |
 | Malicious or compromised relay (S42)                   | Cannot read content, forge an accepted mutation, sign an authorization epoch, make an already-seen older epoch look current, **or land a revoked credential's withheld old-epoch write after the commit** (§5.2.3). | It can delay, omit, reorder or refuse bytes. End-to-end encryption supplies confidentiality and integrity, not availability.                |
 | Malicious or compromised authorization service        | Cannot decrypt content, forge an existing device's mutation or cause content-key delivery by authorizing a credential.                      | It can admit or revoke credentials, change capabilities, choose the authorization state it recognizes, suspend the account or deny service. |
 | Leaked relay bearer token (S43)                        | Does not decrypt content, sign a mutation, authorize a device or recover an account. It is scoped, expires and can be refused independently. | The holder may consume relay service and obtain ciphertext or metadata until refusal or expiry.                                             |
@@ -2619,9 +2622,23 @@ profile to steal the key also copied the plaintext workspace sitting beside it, 
 above changes that. The key-storage question and the at-rest question are separate, and the second one has
 never actually been decided —
 
-**D-34. Is local user content encrypted at rest?** _(Open, and newly opened. It was asserted twice as a
-premise and never decided; recording that honestly is the point of this entry. "The local document" was
-too narrow — three stores hold content, and the journal is on the synchronous write path.)_
+**D-34. Is local user content encrypted at rest?** _(**Existence open; shape decided.** It was asserted
+twice as a premise and never decided. "The local document" was too narrow — content lands in more than one
+store, and the journal is on the synchronous write path.)_
+
+> **Decided, as constraints on any affirmative answer.** Whether a device lock exists at all is open. If
+> one does:
+>
+> - It is **opt-in per device**, never a default and never required to start using the app. Only a
+>   user-held factor protects anything (a key stored beside the data travels with a copied profile), and
+>   requiring one at first run contradicts D-1 and §7.
+> - It is keyed from a **user-held factor** — PRF-derived or code-derived — and unlocks at cold start.
+> - **Forgetting the factor loses the data**, and at Local that is total and final. Accepted knowingly,
+>   on the same terms as §5.7.6's recovery code: a non-custodial promise the user cannot break is custody
+>   under another name. The opt-in copy carries it.
+> - It governs **every store that holds user content**, not the document alone.
+>
+> What remains open is only whether to build it, and the constraints above are what any *yes* must satisfy.
 
 The two assertions are §5.7.9's forward-secrecy aside — *"the plaintext sits in IndexedDB on every device
 by design — that is what local-first means"* — and §5.7.1's copied-profile row, which concedes no protection
@@ -2637,18 +2654,19 @@ weaker thing to be bound by than a PRD principle.
 
 **The subject is local plaintext at rest, not the IndexedDB document alone**, and the difference is the
 first thing to get right because it sets the size of the question. This app writes user content to
-**three** places on disk, and encrypting one of them is theatre:
+**two** places on disk today, with a third planned, and encrypting one of them is theatre:
 
 | Store | What it holds | Where it is described |
 | ----- | ------------- | --------------------- |
 | IndexedDB (`done`) | The workspace document | §2.1 |
 | `localStorage` journal | Each update, written synchronously so a page kill between transaction and IndexedDB commit cannot lose it | §5.6.2, TRD §6.1 |
-| OPFS SQLite index | Phase 4's search index — the derived text of everything searchable | TRD §6.2 |
+| OPFS SQLite index | Phase 4's search index — the derived text of everything searchable. **Planned, not built**: `persistence.ts` records that it "belongs to Phase 4", and there is no SQLite dependency yet | TRD §6.2, PRD §13 |
 
 The journal is the sharp one: it exists precisely so that content survives a crash, which means it holds
 recent content by design, and it is written on the synchronous path where an async encryption step is
-exactly what §5.6.2 says cannot go. The search index is the largest, holds text rather than CRDT
-structure, and arrives with Phase 4 — so it is the one that can still be designed rather than retrofitted.
+exactly what §5.6.2 says cannot go. The search index is the largest and holds text rather than CRDT
+structure — and because it does not exist yet, it is the one D-34 can still **govern by design** rather
+than retrofit, which is an argument for deciding D-34 before Phase 4 rather than after.
 
 What is genuinely at stake, so the decision can be taken on its merits later:
 
@@ -3167,10 +3185,25 @@ actor binding goes inside the seal, verified by the clients that can already dec
 invariant is unaffected — attribution is checked by whoever reads the content, which is exactly who is
 entitled to check it.
 
-**What that does not buy, said plainly.** The relay still sees a **credential identifier** per envelope,
-because it validates per-credential authorization and cannot do that blind. So it learns which device
-wrote, when, how often and how much — traffic analysis at device granularity, unavoidable given D-14's
-"partly", and now a row in §5.7.1 rather than an omission.
+**What that does not buy, and an earlier version of this paragraph claimed too much.** It said sealing
+the actor stops the relay knowing *who* wrote. It does not. The relay sees a **credential identifier** per
+envelope, because it validates per-credential authorization and cannot do that blind — and the
+authorization state it validates is precisely what binds credentials to members and capabilities (§5.5).
+So a relay that can read the epoch can generally map credential to member, which means it can tell a
+device's writes from an agent's whether or not an actor field is present.
+
+**What sealing the actor actually achieves is narrower and still worth having:** no actor identifier
+crosses in the clear, so the relay is left inferring from authorization state rather than reading a label,
+and a workspace whose membership it has not seen change is correspondingly harder to attribute. The honest
+claim is **"the actor is not directly present in envelope metadata"**, not "the relay cannot tell who
+wrote".
+
+**Buying the stronger property would mean an unlinkable credential-to-member boundary** — the relay able
+to verify that a writer is authorized without learning which member it is. That is a different and much
+larger cryptographic commitment than anything else in this document, nobody has asked for it, and it is
+recorded here as the thing that would be required rather than quietly implied by a weaker mechanism.
+Traffic analysis at credential granularity — write times, rates, volumes — remains visible either way and
+is unavoidable given D-14's "partly".
 
 **What remains is TRD work, not another product branch:** credential and algorithm selection; the exact
 authorization-state and envelope formats, including which fields are associated data and which are
@@ -3423,6 +3456,34 @@ replacement lineage admits: the restoring client attests the state it recovered,
 that attestation as the lineage's origin, and the prior envelope history is **archival rather than
 replayable** — kept for the record, never re-admitted. Every write after the checkpoint carries the new
 service's evidence in the ordinary way.
+
+**But a checkpoint that re-baselines acceptance also re-signs everyone's history as one client, and
+§5.6.2 forbids exactly that.** Its rule is that a source "must not combine mutations from several
+credentials into new bytes and sign the result as itself; that would erase the property D-27 is meant to
+establish", and it requires first sync to use "either the signed envelope history or an authenticated
+checkpoint **whose construction preserves attribution**". A naive migration checkpoint is the forbidden
+shape: every card any device ever wrote, attested by whichever device happened to perform the restore.
+
+**So migration has to choose, and the choice is a product one because it decides what D-27 promises
+across a service boundary:**
+
+| Option | What survives | What it costs |
+| ------ | ------------- | ------------- |
+| **Carry attribution forward** | Historical writes stay attributable to the credential and actor that made them | The old lineage's public authorization material must be retained as **historical verification material** — not as current authority, which §5.7.3 forbids, but as the trust root against which pre-migration signatures still verify |
+| **Reattribute the baseline** | Nothing before the cutover is individually attributed; the whole baseline is one system-actor import by the migrating device | Cheaper, and honest only if said — D-22's provenance mode goes blank for everything older than the migration, and "who wrote this" becomes "restored on 3 March" |
+
+Neither is wrong. What is wrong is shipping the second while D-27 still promises the first, so **whichever
+is chosen, §5.7.1's table and D-27 have to say what attribution means either side of a migration.** Note
+that retaining old public material for verification is not succession: it proves who wrote history, it
+authorizes nothing, and §5.7.3's rule is about who may *change* authorization.
+
+**And "during" needs a rule, because §5.11.4's test 7 names it as a case.** A migration is a cutover: the
+checkpoint fixes a covered range, and an edit made after that range is computed but before the new lineage
+accepts anything belongs to neither side. The workable shape is that the restoring device stays writable
+throughout — nothing on the write path may await a service (§6) — and edits made during the window are
+**re-based onto the checkpoint and re-signed under the new lineage** as that device's own writes, which is
+attribution-preserving because they *are* its writes. Any other device is enrolling afresh and has no
+window to have written in.
 
 So the accepted-set requirement and the migration boundary meet at a checkpoint rather than conflicting,
 and §5.11.4's test 7 — converging edits from before, during and after a migration — is passable because
@@ -3759,7 +3820,7 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-31** | What does hosted sync cost, and how should it be priced?       | **Deferred on purpose**   | Business-model question outside this document. D-16 requires an account but does not presume free, paid, bundled or metered                 |
 | **D-32** | What may the service retain, observe and do?                   | **Decided in principle**  | Fix irreversible constraints before the TRD; maintain a living inventory during design/build; reconcile and review the as-built surface before wider availability |
 | **D-33** | What survives the service, and what may be claimed?            | **Decided in principle**  | Independently runnable client and service stack; open source preferred, triggered source release acceptable; binary-only continuity insufficient; claims gated by corresponding tests |
-| **D-34** | Is local user content encrypted at rest?                       | **Open — newly opened**   | Never decided, only assumed twice. Three plaintext stores, not one: IndexedDB, the synchronous journal, the Phase-4 search index. Opt-in rather than default, because only a user-held factor helps and asking a Local user for one contradicts D-1. Also settles when content encryption begins (§5.2.1) |
+| **D-34** | Is local user content encrypted at rest?                       | **Existence open; shape decided** | Two plaintext stores today, a third planned. Any lock is opt-in, user-held factor, governs every store, and accepts total loss if the factor is forgotten. Open only: whether to build it. Also settles when content encryption begins (§5.2.1) |
 
 ### 8.1 The security contract is bounded; the TRD must instantiate it
 
@@ -3777,7 +3838,7 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | **Protocol boundary**                     | **A service-authoritative control plane around client-encrypted Yjs updates**; service signs authorization/finalization, clients encrypt and sign content, relay/store handle opaque envelopes (D-28) | Exact message/state formats, verification APIs, batching and test vectors |
 | **Authorization and recovery boundary**  | **Selected: the service alone authorizes; the user-held root recovers content only; service disappearance starts a new lineage through migration** (§5.7.2, §5.7.3) | Account-recovery policy and the exact user-mediated proof that gates content-key delivery |
 | Browser key storage                      | **Selected: a non-extractable `CryptoKey`, PRF-wrapped where the authenticator supports it.** The tier is shown in the device list and is never silent; the unlock gates sync, not the app (§5.7.4) | PRF enrollment flow, and the copy shown for a device on the lower tier |
-| **Local storage at rest**                | Nothing is fixed. Content is plaintext in three stores — IndexedDB, the synchronous journal and the Phase-4 search index — and the origin sandbox is not an at-rest boundary | Whether an opt-in device lock exists at all — **D-34**, newly opened and never previously decided (§5.7.4). Its answer also fixes whether account creation is a whole-document encryption pass (§5.2.1) |
+| **Local storage at rest**                | **Selected: if a device lock exists it is opt-in, user-held-factor-keyed, governs every store holding content, and accepts total loss on a forgotten factor.** Content is plaintext today in IndexedDB and the journal, with the Phase-4 index a planned third; the origin sandbox is not an at-rest boundary | Whether to build it at all — **D-34** (§5.7.4). Its answer also fixes whether account creation is a whole-document encryption pass (§5.2.1) |
 | **Signed authorization epoch**           | Binds membership, credentials, capabilities and key generation; the service signs and serializes successors | Chain-head discovery for a fresh device, checkpoint and downgrade rules. **Fork rules are no longer needed** (D-16) |
 | Signed mutation envelopes                | Source-authenticated; workspace/epoch/credential/digest in the clear, **attributed actor inside the seal** so the relay gets no actor-level metadata (§5.8.1) | Which fields are associated data, envelope and batching granularity, anti-replay/finalization rule and authenticated checkpoint construction |
 | Attribution binding                      | Actor is derived from the credential or explicitly authorized for representation        | How an update's affected attributed fields are inspected or derived                                        |
@@ -3797,11 +3858,13 @@ content root, the recovery factor, the device key's storage, and the assurance b
 core in §5.7.9 now has D-28's architecture boundary and can be specified in the TRD, then put in front of
 someone who does this professionally (§5.7.8).
 
-**Deciding it opened one new question rather than closing every one.** **D-34** — whether the local
-document is encrypted at rest — was assumed twice in this document and never decided (§5.7.4). It is not
-a security-contract selection and does not gate the protocol, but it is the remaining place where the
-phrase *end-to-end encrypted* and a reasonable user's understanding of it can still diverge, so it belongs
-beside the contract rather than in the sub-questions list.
+**Deciding it opened one new question rather than closing every one.** **D-34** — whether local user
+content is encrypted at rest — was assumed twice in this document and never decided (§5.7.4). Its shape is
+now fixed and only its existence is open: opt-in, user-held factor, every store that holds content, and
+total loss accepted if the factor is forgotten. It is not a security-contract selection and does not gate
+the protocol, but it is the remaining place where the phrase *end-to-end encrypted* and a reasonable
+user's understanding of it can still diverge, so it belongs beside the contract rather than in the
+sub-questions list.
 
 **The authority and recovery selections were entangled and had to be taken together.** The service may
 replace and revoke devices without keeping an authoritative user device online, but its authorization
