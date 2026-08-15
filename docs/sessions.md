@@ -96,7 +96,7 @@ human joining a workspace is not, and gets a separate product document if it is 
 
 Two things make the account and membership work worth doing now anyway:
 
-1. **Most of what is below is single-principal product work.** Sessions, devices, reinstall, workspace switching and
+1. **Most of what is below is single-principal product work.** Sessions, devices, reinstall, workspace adoption and migration, and
    the roster-of-duplicate-Yous are all problems for one person with three devices. They do not need
    a second human to be real, and three of them are shipping today.
 2. **The service-authority question is two specific decisions**, not a diffuse direction: may the relay
@@ -109,7 +109,7 @@ Two things make the account and membership work worth doing now anyway:
 
 | Concept       | Answers                                                                   | Example                        | Exists today             |
 | ------------- | ------------------------------------------------------------------------- | ------------------------------ | ------------------------ |
-| **Account**   | your _optional_ relationship with the service                             | billing, contact, recovery     | No                       |
+| **Account**   | your _optional_ relationship with the service                             | contact, account recovery, billing if any | No                       |
 | **Principal** | which human several devices belong to                                     | you                            | **No** — the missing one |
 | **Workspace** | which document and authorization boundary                                 | your document                  | As a settings field only |
 | **Member**    | a workspace-scoped grant for a principal or agent, including capabilities | you as owner; an editing agent | No                       |
@@ -156,8 +156,9 @@ account:
   capabilities such as read or edit; being a member does not by itself mean being a writer. Membership
   deliberately does not attach to the account, so adding an agent does not require inventing an account
   for it.
-- **Account** — _optional_, and about the service rather than the document: billing, an address to be
-  contacted at, recovery, service settings, logs, backups. **Account creation binds an existing
+- **Account** — _optional_, and about the service rather than the document: an address to be contacted
+  at, account recovery, service settings, logs, backups, and billing if any. Content recovery is a
+  separate user-held power (D-17). **Account creation binds an existing
   principal to a service account**, which is what makes D-24's "the account adopts the group" precise
   rather than aspirational: there is already a principal there to adopt.
 
@@ -378,10 +379,11 @@ decision below.
    mechanisms doing two different jobs: a cookie that authenticates the connection, and a local record
    of who you are. Not a conflict so much as a thing to not conflate.
 2. **Setting a cookie requires a server that serves HTTP, not just a socket.** A login endpoint is a
-   request the relay has to answer. This is the middle position: **the relay can gain an authentication
-   surface without gaining document authority.** It can decide who may open a socket — it already
-   does — while still treating every byte through that socket as opaque, and therefore still being
-   unable to reject a write. D-14 as originally written asked one question; it is really two, and this
+   request the service has to answer. This is the middle position: **the service can gain an authentication
+   surface without gaining document-content authority.** It can decide who may open a socket while the
+   relay still treats content as opaque. Under D-28 it may also reject an envelope whose authorization,
+   signature, replay or finalization evidence is invalid; what it cannot do is reject one because of the
+   meaning of its Yjs mutation. D-14 as originally written asked one question; it is really two, and this
    is the first.
 3. **Stateless is cheap; revocation is not.** A signed token in a cookie needs no server-side session
    table, which is what makes it cheap to host and survivable across restarts. But nothing stateless
@@ -673,7 +675,7 @@ than for what it collects.
 | Level       | What the user has                                                           | Reached by                                                                  | Service and price                         |
 | ----------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------- |
 | **Local**   | No name, one device, no service                                             | Opening the app. The default, permanently, for anyone who asks for no more  | No service; permanently free              |
-| **Account** | A name, a credential, a saved recovery code, hosted sync across devices, an encrypted server copy | Creating an account (D-19, D-24), which requires confirming the code (§5.7.6) | Hosted service; price is deferred to D-31 |
+| **Account** | A name, an account credential, a saved recovery code, hosted sync across devices and an encrypted server copy | Creating an account (D-17, D-19, D-24), which requires confirming the independently held code (§5.7.6) | Hosted service; price is deferred to D-31 |
 
 **The middle rung is retired, and the ordinals with it.** Until v15 there were three rungs, and the
 middle one — **Paired**, cross-device sync between your own devices with no account and no relay
@@ -731,7 +733,7 @@ threatened to make it — which removes a dependency rather than resolving one (
 
 #### 5.1.2 Eight properties, not one promise
 
-Promoted from the durability appendix (§1 there), because the table above is exactly where this document
+Promoted from the former durability appendix, because the table above is exactly where this document
 kept compressing several different promises into the word **durability**, and D-25, D-16 and D-33 all
 route through the distinction.
 
@@ -755,7 +757,7 @@ The combinations that catch people out, and each one has bitten a draft of this 
 - A cloud copy improves **durability** without improving **recoverability** — ciphertext whose only
   decryption root is gone is not recovered data (§5.7.5, §5.7.6).
 - Plain-Markdown export provides **portability** without preserving CRDT identity or continued
-  **synchronization** (D-33, §7.1 of the appendix).
+  **synchronization** (D-33, §5.11.2).
 - A cached PWA provides **local availability** on a device that already has it, and no way to install on
   a replacement device (D-33).
 - Peer-to-peer provided **synchronization** without providing **service independence**, which is the
@@ -938,17 +940,18 @@ jobs, now reached one way.
 D-1's trigger bundled two events that D-19 pulled apart, and D-16 has now put one of them back together —
 **precisely, and only, at the first one**: account creation and the *first* hosted sync coincide, so
 "does pairing ask for a name" no longer names a distinct event. Later device enrollments do not coincide
-with anything, and ask for nothing: signing in on a fourth device is not a moment the product has a new
-question at. What survives is the substance — the name has an audience only when there is a service
-relationship to attach it to, and per D-2 every list shows one entry per person, which with one person is
-just you.
+with a new identity question, and ask for no new name: signing in on a fourth device is not a moment the
+product needs to learn who the user is again. Enrollment still performs account authentication and the
+separate content-key-delivery gate (D-17). What survives is the substance — the name has an audience only
+when there is a service relationship to attach it to, and per D-2 every list shows one entry per person,
+which with one person is just you.
 
 **The consequence D-16 creates, and it is a real cost worth stating rather than absorbing.** Under the old
-ladder the app's first question arrived at the third rung, and a user with two devices never had to answer
-it. Now the app's first question arrives at the boundary of the accountless product: **the moment you want
-your list on a second device, you are asked who you are and asked to create an account.** Whether any
-commercial step accompanies that event is D-31 and is not decided here. The account requirement is a
-sharper edge than the old ladder had, and it is the main thing the old ladder was buying.
+ladder the app's first identity question arrived at the third rung, and a user with two devices never had
+to answer it. Now that question arrives at the boundary of the accountless product: **the moment you want
+your list on a second device, you are asked who you are and asked to create an account.** No commercial
+step is implied, because D-31 remains undecided. The account requirement is a sharper edge than the old
+ladder had; D-17 adds the separate recovery cost below.
 
 **And D-17 made that edge sharper again, which this paragraph did not originally account for.** The name
 is the small half. §5.7.6 makes a high-entropy recovery code mandatory at the same moment — generated,
@@ -1232,9 +1235,11 @@ which is the thing the user must never have to think about. Rotation leaves the 
 home document D-11 says the current interface reveals. That is why this option is consistent with what is already decided and forking is
 not — the avoided history copy is a bonus.
 
-It also keeps the relay dumb: **a relay forwarding ciphertext is exactly as dumb as one forwarding
-plaintext.** Exclusion stops depending on the server having authority, which is what makes it compatible
-with D-14 at "partly" instead of requiring "yes".
+It also keeps the relay **content-blind**: forwarding ciphertext and validating its opaque envelope does
+not require parsing Yjs or learning plaintext. Cryptographic read exclusion therefore does not depend on
+schema-level service authority. D-28 still assigns account authorization and accepted-write finalization
+to the service and opaque validation to the relay; that is D-14's selected "partly" boundary, not the old
+"dumb pipe" model.
 
 **The three UX questions this raises, answered as far as they can be.**
 
@@ -1665,7 +1670,7 @@ indistinguishable from two devices having synced.
 The roster is mutable, unauthenticated and written by genesis, so it cannot be evidence of admission to
 anything. What the policy needs is a **monotonic, signed authorization epoch**. Epoch 0 means local genesis:
 no external credential admitted and no service authorization adopted. The epoch advances whenever the set or
-scope of authorized credentials changes — pairing or revoking a device, admitting or removing an agent or
+scope of authorized credentials changes — admitting or revoking a device, admitting or removing an agent or
 human member, changing a member's capabilities, or adopting service authorization.
 
 > **Decided in principle.** Epoch 0 may re-mint silently; a workspace at a later authorization epoch must
@@ -1674,7 +1679,7 @@ human member, changing a member's capabilities, or adopting service authorizatio
 
 **And that epoch is not a new open question: several decisions require the same signed authorization
 state.** Its payload has to bind the workspace's membership grants, device and agent credentials,
-capabilities, and content-key generation. The generation is broader than membership because pairing a
+capabilities, and content-key generation. The generation is broader than membership because admitting a
 second device changes authorization without creating a second member.
 
 | Decision | What it needs from the authorization state                                      |
@@ -1818,10 +1823,11 @@ content semantics — D-28 assigns those to clients — and client-side verifica
 promises rest on, per D-20 and D-27. It does mean the relay's opaque checks are worth what they cost.
 
 **On "is there any other option, if revocation is part of the story?" — yes, and it is D-20.** Once content
-is encrypted and keys rotate on removal, a revoked device can connect and receive bytes it cannot read. The
-exclusion is enforced by the key, not by the door. So relay-level refusal becomes **defence in depth rather
-than the mechanism**: still worth having, because it saves bandwidth and closes the write channel, but no
-longer the thing exclusion depends on. That is the strongest practical reason D-20's third option matters.
+is encrypted and keys rotate on removal, a revoked device can connect and receive bytes it cannot read. Read
+exclusion is enforced by the key, not by the door. Relay-level refusal alone is therefore **defence in
+depth** for confidentiality and bandwidth; it is not the accepted-write boundary. D-26 and D-28 separately
+require authorization-service acceptance and finalization evidence so clients reject the revoked
+credential's future writes without giving the service plaintext authority.
 
 **On where defence against a headstrong agent belongs — key distribution is necessary and not sufficient,
 and the earlier draft stopped a step short.** "You cannot prevent a writer who holds the key; you can only
@@ -1914,7 +1920,7 @@ consequences worth stating now, because they shape the design rather than follow
 - **Local replay must not verify.** If every historical update had to be verified on load, the cost would
   land on "Yjs doc load < 500 ms" and "cold start < 2.5 s" and would grow with history. Verify at receipt,
   trust the disk thereafter, and the load path is untouched.
-- **Preserve source-authenticated envelopes end to end.** A relay or peer must not combine mutations from
+- **Preserve source-authenticated envelopes end to end.** A relay, store or future transport must not combine mutations from
   several credentials into new bytes and sign the result as itself; that would erase the property D-27 is
   meant to establish. A source may batch its own mutations when actor, credential and authorization epoch
   are the same. Forwarded mutations retain their original envelopes. First sync therefore needs either the
@@ -2701,11 +2707,12 @@ that keeps hosting cheap (D-31). The unavoidable catch is the one already record
 and revocation-before-expiry are in tension, so short expiry plus refresh is the usual landing place — and
 D-18 makes revocation load-bearing, so the tension is real rather than theoretical.
 
-**And one thing not to build: forward secrecy.** Signal's ratcheting exists so that compromising a
-long-lived key does not decrypt past messages, which matters when the messages exist only in transit. Here
-the plaintext sits in IndexedDB on every device by design — that is what local-first means — so ratcheting
-would protect the wire while the disk stays open. It is real work spent on the wrong threat. Worth knowing
-so it can be ruled out deliberately rather than worried about indefinitely.
+**And one thing not required by the current promise: forward secrecy.** Signal's ratcheting protects past
+messages after a later key compromise. Here a read-capable device must be able to materialize the current
+workspace, including its accumulated content, whether that state is persisted as plaintext today or later
+placed behind a D-34 device lock. A per-update ratchet therefore does not hide the current workspace from
+an attacker controlling an unlocked authorized device. It should not be built by default; a future,
+stronger historical-confidentiality claim would have to reopen the question explicitly.
 
 **D-18. Are devices enumerable and revocable from a UI?**
 
@@ -2753,14 +2760,16 @@ is designed so that _the server does not have to be the authority_ — capabilit
 That solves the harder service-independent authorization problem this product has now rejected, while its
 credential separation and signed-operation patterns remain useful prior art.
 
-**And there is a second project that is closer to D-19's pairing flow than Keyhive is.**
+**And there is a second project that is closer to the retired accountless authorization flow than
+Keyhive is.**
 `@localfirst/auth` (Herb Caudill; formerly Taco) does decentralised authentication and authorisation from
 a chain of signed cryptographic operations, explicitly for apps that do not want to depend on a
 centralised authentication server or key-management service. The parts that map directly onto decisions
 here: **device-level keys held in each device's own storage**, and **invitations via a Seitan token
 exchange**, where an invitee proves they were invited without revealing the invitation secret and any
-existing member — not only an admin — can validate the proof. That is the pairing flow of D-19 with the
-protocol already worked out, and it is worth reading before designing one.
+existing member — not only an admin — can validate the proof. This product does not adopt that invitation
+as authorization: the service admits the device (D-19, §5.7.2). Its ceremony and credential-separation
+patterns may still inform the optional device-to-device content-key delivery step.
 
 Three implications, none of which is a decision:
 
@@ -2768,9 +2777,9 @@ Three implications, none of which is a decision:
    `@localfirst/auth` ships an Automerge Repo provider. Nothing equivalent exists behind this app's seam.
    Their authorization patterns remain useful prior art, but adopting either integration would buy
    decentralized authority the product no longer needs (§5.7.2) at the price of a CRDT migration.
-2. **The protocols are more portable than the integrations.** Signed delegation chains and token-based
-   device invitations are not Automerge-specific ideas; only the plumbing is. Reading them for the design
-   is available even if adopting the libraries is not.
+2. **The protocols are more portable than the integrations.** Signed operation chains and token-based
+   device ceremonies are not Automerge-specific ideas; only the plumbing is. They remain useful prior art
+   without importing decentralized authorization into the selected service-authoritative design.
 3. **Watch rather than wait.** The principal/device work in this document does not depend on either, and
    D-14's selected "partly" boundary does not require their decentralized authority.
 
@@ -2945,7 +2954,7 @@ with it. The TRD starts the inventory with its proposed stores and flows; implem
 what is actually deployed. Exact vendors, processors, backup behavior, log fields, support workflows and
 retention periods are discovered and decided there rather than guessed in this product document.
 
-#### 5.10.3 The as-built review is the readiness gate
+#### 5.10.3 The as-built review is a release gate, not a PRD gate
 
 Before availability is widened beyond development or a deliberately bounded test audience, review the
 deployed inventory, processor list, operator roles, backup expiry, deletion/export behavior, incident
@@ -2991,7 +3000,7 @@ product must remain recoverable when there is no buyer, no cooperative wind-down
 
 | After the service disappears, the user wants to… | Required mechanism                                                                     | State today                        |
 | ------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------- |
-| Open and edit on a device that already has it     | Complete local replica; no read or write awaits network or credential                    | **Held** (§6, PRD principle 3)     |
+| Open and edit on a device that already has it     | Its usable last local replica; no read or write awaits network or credential              | **Held** (§6, PRD principle 3)     |
 | Read the data without `done`                      | Plain, documented export format                                                          | **Substantially held** — Markdown export exists |
 | Reinstall on a replacement device                 | Independently obtainable, legally runnable client source/build; not dependent on the original origin | **Plausible path selected:** public open source, or triggered source release; not yet shipped |
 | Continue syncing between existing devices         | Independently runnable authorization service, relay and store; configurable endpoints; documented migration | Same distribution path; unbuilt   |
@@ -3062,8 +3071,9 @@ built" was too strong (D-16).
 The claim available **today**, and it should be made rather than held back — it is already stronger than
 most of the category:
 
-> Your existing installation keeps working with the service unreachable, and nothing you read or write
-> waits on us. Your data exports to ordinary Markdown at any time. Hosted synchronization,
+> Your existing installation and the last workspace replica it holds keep working with the service
+> unreachable, and nothing you read or write waits on us. That replica exports to ordinary Markdown at
+> any time. Hosted synchronization,
 > fresh-device setup and any server-held recovery material stop being available.
 
 The claim enabled by the independently runnable software package, and **it must not ship before the
@@ -3087,11 +3097,13 @@ The gate, demonstrated without production credentials or the original app origin
 3. Import that export into a clean, independently served build without silently losing frozen history
    (§2.4 — the freeze must not eat the import).
 4. Restore an encrypted workspace archive on a clean device using only saved recovery material.
-5. Start the documented self-hosted service and store, and migrate surviving devices without modifying
-   content.
+5. Start the documented self-hosted service and store, and migrate one surviving replica without modifying
+   its content.
 6. Create a new authorization lineage at the replacement service, then add and revoke a device.
-7. Converge edits made before, during and after the migration under the replacement lineage without
-   treating the former service's authorization state as current.
+7. With two devices diverged while the former service was unavailable, use one replica to establish the
+   replacement workspace; enroll the other under D-5, verify that its divergent local history is disclosed,
+   exported and replaced rather than silently merged, then converge edits made after enrollment under the
+   replacement lineage.
 8. Repeat with the store holding the newest checkpoint unavailable, using the documented replica order.
 9. **Run tests 4 through 7 again with the entire original provider account unavailable** — not one store,
    not one region, but every service the company operated — using only material the user already holds.
@@ -3136,17 +3148,17 @@ be designed as something the app drives (a periodic verified archive, or a desti
 rather than something the user is trusted to remember.
 
 **The scope of that requirement is narrower than the paragraph above implies, and the correction is worth
-making rather than leaving the stronger claim standing.** Every install already holds an **independently
-controlled** replica (§5.11.1, row 1) — the axis §5.11.3 cares about is custody, not currency — so an
-ordinary device *is* an independently controlled copy in that sense:
+making rather than leaving the stronger claim standing.** Every surviving install holds an independently
+controlled **last** local replica (§5.11.1, row 1) — the axis §5.11.3 cares about is custody, not currency.
+An offline replica may therefore be stale:
 
-| Service | Devices     | Who holds usable bytes                     | Archive load-bearing? |
-| ------- | ----------- | ------------------------------------------- | --------------------- |
-| Alive   | ≥1          | Both                                        | No                    |
-| Alive   | 0           | The service, unwrapped by the saved code    | No — this is §5.7.6   |
-| Gone    | ≥1, current | The surviving device, migrated to a new service (§5.11.4 test 5) | No |
-| Gone    | ≥1, stale   | That device, minus everything since it last synced | **Partly — for the gap** |
-| Gone    | 0           | Nobody                                      | **Only here**         |
+| Service | Devices     | Who holds usable bytes                                                     | Archive load-bearing?       |
+| ------- | ----------- | --------------------------------------------------------------------------- | --------------------------- |
+| Alive   | ≥1          | The service plus each device's last replica                                 | No                          |
+| Alive   | 0           | Service ciphertext and wrapped root, opened with the user's saved code      | No — this is §5.7.6         |
+| Gone    | ≥1, current | The surviving device, migrated to a new service (§5.11.4 test 5)            | No                          |
+| Gone    | ≥1, stale   | That device, minus everything since it last synced                          | **Partly — for the gap**    |
+| Gone    | 0           | Nothing, unless the user already holds an independent ciphertext archive    | **Yes — only here**         |
 
 **Deliberately not the word "complete".** D-24 and D-29 make *complete copy* mean something specific and
 false — a device holds its **last** replica, not the workspace as it last stood — and the argument here
@@ -3156,9 +3168,10 @@ willing to sync with it. That is the same qualifier D-24 already puts on destruc
 which requires *a verified-current device or a fresh export*, applied to the moment the service ends
 involuntarily rather than by request.
 
-So the archive earns its place in one cell outright — **the conjunction of company disappearance and total
-device loss** — and in part of a second, where the only surviving device is stale and the archive covers
-whatever it missed. Because that conjunction is usually reached through one of the other cells, its real
+So the archive is irreplaceable for any recovery in one cell — **the conjunction of company disappearance
+and total device loss** — and partly load-bearing in another, where the only surviving device is stale and
+the archive covers what it missed. Because the conjunction is usually reached through one of the other
+cells, the archive's main
 job is protecting the user who was not paying attention during a wind-down window, or for whom the two
 events were not separated in time. That is a genuine requirement and not an obvious one; it is simply not
 the requirement "shipping a self-hostable relay does not put any bytes in it" appears to be arguing for,
@@ -3172,7 +3185,8 @@ while a whole class of loss remains unaddressed.
 Drawing those interfaces is cheap now and expensive later, and it does not require deploying five
 services. The first deployment may remain one small process, provided its **interfaces** already
 distinguish rendezvous and connection authentication, ephemeral live fan-out and awareness, durable
-encrypted envelopes and checkpoints, authorization signing and accepted-set finalization, and account and billing storage. That
+encrypted envelopes and checkpoints, authorization signing and accepted-set finalization, and account
+storage (plus billing storage only if D-31 introduces it). That
 separation is what later lets retention, replacement and self-hosting boundaries be drawn without a
 rewrite — and it keeps ephemeral presence data from silently inheriting the retention policy of durable
 workspace state (D-32).
@@ -3222,13 +3236,12 @@ the user has no reason to care and no context to answer. Four constraints now de
    it is a complete application that never requests a name, an address or a credential. D-1's promise
    therefore holds for the entire experience of every user who does not ask for a hosted service.
 3. **The questions arrive with the service that needs them**, and not before: creating an account to get
-   a second device asks for a name (D-23) **and requires a saved, confirmed recovery code** (§5.7.6).
-   Those are one moment and two different kinds of ask — the name is a label, the code is custody of the
-   only thing standing between the user and permanent loss. Any commercial step is D-31 and outside this
-   flow. The account requirement is a sharper edge than the retired ladder had, the code makes it sharper
-   still, and it is the honest place to put both — the app asks when it starts doing something on the
-   user's behalf through a service, and asks for custody at the moment it stops being able to recover
-   anything for them.
+   a second device asks for a name (D-23) **and requires a saved, independently confirmed high-entropy
+   recovery code** (D-17, §5.7.6). Those are one moment and two different kinds of ask — the name is a
+   label, while the code is custody of the only thing standing between the user and permanent loss. Any
+   commercial step is D-31 and outside this flow. The account requirement is a sharper edge than the
+   retired ladder had, the code makes it sharper still, and this is the honest place to put both — when
+   the app starts holding ciphertext and acting on the user's behalf through a service.
 4. **Nothing silently discards a history.** Where a joining device's own history is about to be replaced
    by the workspace's, D-5 requires that it be said plainly, that the export be offered, and that the
    user confirm. **This is now a common path rather than a corner case** (D-24, S35) — which raises what
@@ -3244,10 +3257,8 @@ He gets a new phone, installs the app, and uses it for a week before thinking ab
 has its own local genesis — its own principal, device, actor and history — and the two installs have no
 relationship at all (S5).
 
-Then he wants one list instead of two. **This is the moment the product asks for something**, and it is
-the only moment it asks: he creates an account on the laptop and chooses a name (D-23). The account binds
-to the principal that already exists rather than minting a replacement, and adopts the laptop's document
-(D-24).
+Then he wants one list instead of two. **This is the boundary at which the product begins asking for
+something:** he starts creating an account on the laptop and chooses a name (D-23).
 
 **And it asks for one more thing, which is the heavier half.** Before the account exists, the laptop
 generates a recovery code, tells him it is the only way back to his list if he ever loses every device,
@@ -3257,12 +3268,15 @@ account without it — the alternative is a service that can read his list, whic
 interface owes him here is the reason, in a sentence, at the moment he is being asked: *we will not be
 able to recover this for you, so you have to be able to.*
 
+Once he confirms the independently held code, the account exists. It binds to the principal that already
+exists rather than minting a replacement, and adopts the laptop's document (D-24).
+
 He signs in on the phone. The account admits the phone's device credential, the service signs the new
 authorization epoch, and the phone is enrolled — but it still cannot read anything, because authorizing a
-device does not deliver a content key (§5.7.2). So the laptop shows a pairing code, the phone takes it,
-and the key arrives out of band (D-19). He never needs the recovery code for this: it is the fallback for
-when no existing device survives, not a step in ordinary enrollment. No workspace name, room or endpoint
-is typed anywhere (Rule 1).
+device does not deliver a content key (§5.7.2). So the laptop shows a one-time pairing QR, the phone scans
+it, and the key arrives out of band (D-19). He never needs the recovery code for this: it is the fallback
+for when no existing device survives, not a step in ordinary enrollment, and the QR does not create a
+second authorization path. No workspace name, room or endpoint is typed anywhere (Rule 1).
 
 **Then the part that costs something, and it is a sentence rather than a flow.** The phone has a week of
 its own notes and the workspace has the laptop's month. D-5 does not ask Tom to adjudicate: the workspace
@@ -3293,7 +3307,7 @@ second human, sharing UI or second visible document is implied by that architect
 
 **These are recorded dispositions, not claims that every mechanism is finished.** Several rows marked
 Decided carry live UX or parameter questions in their bodies. The column below says what has been settled;
-§8.1 isolates the remaining TRD parameters and readiness gates from those non-blocking details.
+§8.1 isolates the remaining TRD parameters and release gates from those non-blocking details.
 
 **v15 changed nine rows from one decision.** D-16 landing moved D-19, D-23, D-24, D-25, D-26, D-29 and
 D-31, removed D-17's everyday user-held authorization mechanism, and first re-weighted D-28 — which is
@@ -3303,7 +3317,7 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | ID       | Question                                                       | Status                    | Answer, or what happens without one                                                                                                         |
 | -------- | -------------------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | **D-1**  | Does the user tell the app who they are, and when?             | **Decided**               | Generated by default; a name at account creation only, per D-23                                                                             |
-| **D-2**  | Is identity per person, per device, or a labelled pair?        | **Decided**               | Per device internally; per person in every list. Device never disclosed or reflected                                                        |
+| **D-2**  | Is identity per person, per device, or a labelled pair?        | **Decided**               | Per device internally; per person in ordinary lists. Own devices appear only on explicit device/security surfaces and are not disclosed to another principal |
 | **D-3**  | Are device names worth improving?                              | **Decided in principle**  | Yes. Mechanism open — and it does not need a fingerprint                                                                                    |
 | **D-4**  | Can a new device claim an existing actor?                      | **Decided**               | No. A new device is always a new actor; the real question was D-19                                                                          |
 | **D-5**  | What happens when a device with history joins a workspace?     | **Decided**               | Workspace history wins; no adjudication. Cancel leaves the device untouched. Export is written first; the switch needs §5.2.1's mechanics   |
@@ -3318,10 +3332,10 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-14** | May the relay decide who connects? What is written?            | **Decided**               | Service authenticates connections and authorization; relay validates opaque envelopes; clients retain semantic authority; no service component reads Yjs content |
 | **D-15** | Within a device, is undo per tab or shared?                    | **Decided**               | Per tab                                                                                                                                     |
 | **D-16** | Where does the account/service boundary sit?                  | **Decided**               | Local is free and permanent; hosted sync requires an account; pricing is D-31; the Paired rung is retired; **peer-to-peer is not built**    |
-| **D-17** | What does "reasonably secure" mean, concretely?                | **Decided**               | Service authorization, user-held content recovery and migration; one independently saved code seals the content-recovery root; escrow excluded from the service; non-extractable PRF-wrapped device key; levels 1–3 before sync ships, 4 on trigger |
+| **D-17** | What does "reasonably secure" mean, concretely?                | **Decided**               | Service authorization, user-held content recovery and migration; one independently saved code seals the content-recovery root; escrow excluded from the service; non-extractable PRF-wrapped device key; levels 1–3 before sync ships, level 5 at ship, level 4 on trigger |
 | **D-18** | Are devices enumerable and revocable from a UI?                | **Decided**               | Yes. The unit is the device. Gates sync, not startup. Freeze and offer options; no automatic wipe                                           |
 | **D-19** | How does a device find the other devices that are yours?       | **Decided**               | Sign-in discovers and authorizes; an existing device or recovery factor separately delivers the content key. One account flow; wire identifier hidden |
-| **D-20** | How is a member actually excluded?                             | **Decided**               | Content encryption with key rotation. Keeps the relay dumb; key management is the cost                                                      |
+| **D-20** | How is a member actually excluded?                             | **Decided**               | Content encryption with key rotation. Keeps the relay content-blind; key management is the cost                                             |
 | **D-21** | What does "the active caret" mean — local, or globally recent? | **Decided**               | Locally active. No recency modelling; a design check that it reads as distinct                                                              |
 | **D-22** | Does merged content show its provenance?                       | **Decided**               | Yes, as a rarely-on mode. Settings toggle, off switch surfaced while active. Cards only, freeze-window bound                                |
 | **D-23** | Does pairing alone trigger the name prompt?                    | **Decided**               | Largely dissolved by D-16: one name prompt, at account creation, which is now the same moment as first sync                                 |
@@ -3335,7 +3349,7 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-31** | What does hosted sync cost, and how should it be priced?       | **Deferred on purpose**   | Business-model question outside this document. D-16 requires an account but does not presume free, paid, bundled or metered                 |
 | **D-32** | What may the service retain, observe and do?                   | **Decided in principle**  | Fix irreversible constraints before the TRD; maintain a living inventory during design/build; reconcile and review the as-built surface before wider availability |
 | **D-33** | What survives the service, and what may be claimed?            | **Decided in principle**  | Independently runnable client and service stack; open source preferred, triggered source release acceptable; binary-only continuity insufficient; claims gated by corresponding tests |
-| **D-34** | Is the local document encrypted at rest?                       | **Open — newly opened**   | Never decided, only assumed twice. Plaintext in IndexedDB today; the origin sandbox is not an at-rest boundary. Likely an opt-in device lock (§5.7.4) |
+| **D-34** | Is the local document encrypted at rest?                       | **Open — newly opened**   | Never decided, only assumed twice. Plaintext in IndexedDB today; the origin sandbox is not an at-rest boundary. Options include an opt-in device lock (§5.7.4) |
 
 ### 8.1 The security contract is bounded; the TRD must instantiate it
 
@@ -3502,8 +3516,9 @@ the shared ontology in §1.
 - **TRD §10.6** — now wrong, and not previously on this list although its product twin PRD §11.4 was.
   It says permissions are unenforceable here and that real enforcement would require giving the relay
   schema awareness, "which forfeits the 'dumb pipe, no authority' property" — which treats enforcement
-  and relay authority as one axis when they are two. D-20 and D-27 enforce exclusion and attribution
-  entirely client-side while the relay forwards ciphertext it cannot read. What survives is only the
+  and plaintext authority as one axis when they are two. D-20 makes read exclusion cryptographic; D-27
+  makes attribution client-verifiable; D-28 gives the service authorization and accepted-set authority
+  while the relay validates only opaque envelopes. What survives is only the
   semantic-capability case, and it survives because edit implies read under one content key (§5.7.2),
   not because the relay is dumb. Left standing for now rather than corrected in place: it is a
   technical-doc amendment that belongs with the rest of the promotion, not an ad-hoc edit alongside
