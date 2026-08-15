@@ -6,7 +6,8 @@ account; this document makes no pricing decision. Peer-to-peer is not built. The
 cross-device sync without an account — is retired, and with it the second transport, the second
 revocation semantics, and one of D-17's open selections. **D-33** (§5.11) records what survives the
 service disappearing and which claims that licenses, promoting material that previously lived only in
-the durability appendix.
+the durability appendix. **Both appendices have since been folded into this document and removed**; they
+remain in git history, and every reference to them below is historical.
 
 **D-5 is also answered rather than built**: where a workspace already has a history, that history is the
 list and the joining device's does not survive,
@@ -48,7 +49,8 @@ source release is an acceptable fallback; the corresponding claims wait for rele
 **Ready to promote into the PRD and begin the TRD; not implementation-ready** — see §8.2.
 **Date:** 2026-08-14
 **Audience:** the author, deciding. Not an implementation plan.
-**Amends:** PRD §11 (Actors), PRD §12 (non-goals) — see §9.
+**Amends:** PRD §0, §2, §4, §6, §11, §12 and §14, plus TRD §2, §4.8, §7.2 and §10.6 — the full list, with
+what each needs, is §9.
 
 ---
 
@@ -72,14 +74,17 @@ every scenario that moves through it.
 It **frames decisions** — options with what the user sees for each, and what each choice forces
 elsewhere.
 
-It **records decisions as they are made**, and does not make them. The product calls are the
-author's; §5 keeps the options and the consequences beside each answer so a recorded decision can be
+It **records decisions as they are made.** It did not start out doing that — v1 through v8 enumerated and
+framed without answering — and the shift is why §5 now reads as a register rather than a menu. The product
+calls remain the author's; §5 keeps the options and the consequences beside each answer so a recorded decision can be
 re-opened on the same evidence it was made on. Where a decision is already narrowed by something the
 PRD ranks, §5 says so and names the narrowing rather than skipping the question. Where a "decision"
 is not really one because mechanics settle it, it is in §6 so we do not spend a meeting on it.
 
 Each decision carries a status: **Decided**, **Decided in principle** (the answer is settled, the
-mechanism is not), **Open**, **Deferred on purpose** (answerable later, and nothing is foreclosed by
+mechanism is not), **Decided conditionally** (the answer is settled, but it only takes effect if a
+deferred decision goes a particular way — D-29 is the only one), **Open**, **Deferred on purpose**
+(answerable later, and nothing is foreclosed by
 waiting), or **Re-opened** (answered once, and new evidence has withdrawn the answer). A decided product
 direction may still depend on an open mechanism or security gate; §8 distinguishes recorded dispositions
 from implementation readiness.
@@ -664,7 +669,10 @@ own, and note that peer-to-peer would not have answered them either (D-16).
 
 ## 5. The decisions
 
-Options, with what the user sees and what each choice forces. **No recommendations.** Where a PRD
+Options, with what the user sees and what each choice forces, kept beside the answer rather than deleted
+by it — so a recorded decision can be re-opened on the evidence it was made on. **The options tables do
+not recommend**; the argument for the selection is stated after them, and several later decisions (D-26,
+D-28, D-32, D-33) have no options table at all because nothing was ever chosen between. Where a PRD
 principle narrows a decision, that is noted as a narrowing, not an answer.
 
 ### 5.1 Identifying yourself — D-1, D-2, D-3
@@ -694,7 +702,7 @@ than for what it collects.
 
 | Level       | What the user has                                                           | Reached by                                                                  | Service and price                         |
 | ----------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------- |
-| **Local**   | No name, one device, no service                                             | Opening the app. The default, permanently, for anyone who asks for no more  | No service; permanently free              |
+| **Local**   | No name, no service, and this install's copy is the only one                 | Opening the app. The default, permanently, for anyone who asks for no more  | No service; permanently free              |
 | **Account** | A name, an account credential, a saved recovery code, hosted sync across devices and an encrypted server copy | Creating an account (D-17, D-19, D-24), which requires confirming the independently held code (§5.7.6) | Hosted service; price is deferred to D-31 |
 
 **The middle rung is retired, and the ordinals with it.** Until v15 there were three rungs, and the
@@ -725,6 +733,12 @@ carrying content bytes**. The imprecise version invited an architecture built to
 nobody had, and it also let the tier borrow credibility for a property it did not have — see D-16 and
 D-33. Say **no relay**, or **no server-held content**, or **no metered bandwidth** — whichever is meant —
 and never "no server".
+
+**These are levels of an install, not of a person**, and the table reads as though they were the second
+until you notice. A person may hold several Local installs at once — that is exactly Tom's phone and
+laptop before he creates an account (§7, S5) — and may sit at Account on one device and Local on another
+for as long as the second is unenrolled. "Local" therefore describes *this copy's* relationship to the
+service, not a claim that its owner has one device.
 
 **What distinguishes the two levels is service participation, not price.** D-16 deliberately aligns
 durability with whether the service holds or decides anything, while D-31 remains free to price that
@@ -1105,18 +1119,23 @@ and it is the case D-5 stops and asks about (D-24).
 **Import is the escape hatch, and it is owed anyway** — required by the §2.4 migration and by D-33's
 continuity requirement independently of D-5. Its placement against the freeze is one enabling decision
 (§2.4, §6). But an earlier draft of this paragraph claimed more for it than it can carry, and the
-correction changes what D-5 may promise.
+scope this forces is a product decision rather than a correction.
 
-#### 5.2.2 Import targets an empty workspace, and D-5's escape hatch is narrower than it read
+#### 5.2.2 Import targets an empty workspace — a deliberate limit, not a tidy-up
 
 > **Decided, for now: import creates a workspace's contents; it does not merge into a populated one.**
 > That serves §2.4's migration and D-33's restore, which both target a clean install. It does **not**
 > let a user fold an export back into the workspace that replaced it.
+>
+> **The cost is accepted knowingly and belongs to the product, not to the implementation.** A user whose
+> history was replaced under D-5 receives a file they can read, and from which they can build a *fresh*
+> workspace. They cannot put it back into the list they just joined — not now, and not by trying harder.
+> That is a real reduction in what D-5's export is worth, taken because the alternative is a merge this
+> document is not ready to specify, and it should be defended as a choice rather than explained as a
+> consequence.
 
-**Which means D-5 must stop implying that it does.** The claim that a determined user "brings the content
-across afterwards" described a merge into a live workspace, and that is not available. What the export
-actually buys the user whose history was replaced is a **readable file**, and a workspace they could
-build from it in a fresh install — not restoration into the list they just joined. D-5's copy has to
+**Which means D-5 must stop implying otherwise.** The claim that a determined user "brings the content
+across afterwards" described a merge into a live workspace. D-5's copy has to
 offer the file as what it is. This is the one place in this document where the escape hatch was doing
 more work than the mechanism supports.
 
@@ -1919,10 +1938,23 @@ does it while telling the departing user the machine is clean. **So a shared-dev
 3 together**, and should revoke the credential at the service as well, since a machine you have handed
 over is exactly D-18's motivating case.
 
-**Object 4 is the one that needs a warning, because it is the only irreversible one.** Clearing the last
-reachable copy of the recovery code can make a hosted workspace permanently unreadable (§5.7.6, §5.7.7),
-and unlike the others it cannot be undone by signing in again. It must never ride along silently with a
-reset that is otherwise recoverable.
+**Two of the four can be irreversible, and an earlier version of this paragraph named only one.** Objects
+3 and 4 both destroy, under conditions the app is differently able to detect:
+
+- **Clearing the document** is harmless at Account with a current sync — the workspace comes back on the
+  next sign-in. It is **total loss at Local**, where this device is the only copy by definition (§5.1.1),
+  and it loses whatever has not yet synced at Account. The app knows which case it is in: whether an
+  account exists, and whether anything is pending.
+- **Clearing the recovery material** can make a hosted workspace permanently unreadable (§5.7.6, §5.7.7)
+  and cannot be undone by signing in again. The app knows a hosted workspace exists; it cannot know
+  whether another copy of the code survives, so this one has to warn pessimistically.
+
+**So both need warnings, and they are different warnings.** The document warning is conditional and
+checkable — say it when it is true, stay quiet when the service holds a current copy. The recovery-material
+warning cannot be conditioned on the fact that matters, so it says what it destroys and asks the user to
+confirm they still have the code elsewhere. Neither may ride along silently with a reset that is otherwise
+recoverable, which is the argument for keeping the four objects separable rather than shipping one button
+that clears everything.
 
 **Whether it equals sign-out:** wherever there is an account, sign-out already has to exist, and a second
 nearby button that does almost the same thing is how people lose data they meant to keep. That is now
@@ -2497,8 +2529,8 @@ never actually been decided —
 premise and never decided; recording that honestly is the point of this entry.)_
 
 The two assertions are §5.7.9's forward-secrecy aside — *"the plaintext sits in IndexedDB on every device
-by design — that is what local-first means"* — and §5.7.1's row conceding no protection from *"plaintext
-already stored by the app"*. Neither is a decision. The first is a premise inside an argument about
+by design — that is what local-first means"* — and §5.7.1's copied-profile row, which concedes no protection
+for plaintext document data sitting beside the key. Neither is a decision. The first is a premise inside an argument about
 ratcheting, and **"that is what local-first means" is doing unearned work**: local-first means the data is
 on your device, not that it is unencrypted on your device.
 
@@ -3138,10 +3170,10 @@ implementation and release review at the stages where they can be accurate.
 ### 5.11 What survives the service — D-33
 
 **D-33. What continues to work if this company stops existing, and what may the product claim about it?**
-_(Decided in principle. Promoted from the durability appendix, which analysed it as a transport question
+_(Decided in principle. Promoted from the former durability appendix, which analysed it as a transport question
 and concluded it was not one.)_
 
-**Why this is here rather than in an appendix, and why D-16 forced the promotion.** The appendix asked
+**Why this is here rather than in an appendix, and why D-16 forced the promotion.** That appendix had asked
 whether ordinary sync should be peer-to-peer, and found two concerns underneath: operating cost, and the
 wish that adopting a local-first tool should not require betting on the operator's survival. It concluded
 that **peer-to-peer answers the first, badly, and does not answer the second at all** — a durable node
@@ -3384,7 +3416,8 @@ Not decisions. Listed so they do not consume discussion.
   local unlock ceremony, which is not a network wait and is not forced by anything here; whether one
   exists is **D-34**, and it is open.
 - **Actor ids do not collide.** UUIDv4.
-- **A restored or unfrozen tab must re-establish its view.** It has no way to know what it missed.
+- **A restored or resumed tab must re-establish its view.** It has no way to know what it missed. (Tab
+  lifecycle, not the day freeze — the words collide and this one is the browser's.)
 - **The freeze governs operations that author the past — not replication, not compaction, not a
   migration import.** A frozen day still merges: remote updates arrive through `Y.applyUpdate` and never
   consult `isFrozen`, so the freeze has never been a barrier to another device's history. Compaction is
@@ -3458,10 +3491,23 @@ export, and waits for him to confirm. Then it adopts the laptop's history and th
 
 He loses the week unless he took the file — and the file is something he can read, not something he can
 pour back into the list a week later (§5.2.2). That is a real cost and the interface has to be honest
-about it at the moment it happens rather than afterwards — but it is a messaging problem, not a merge
-problem, and the ordering that avoids it entirely is one instruction: **create the account on the device
-whose list you want to keep** (D-24). Had Tom installed the app on the phone after creating the account, the
-phone would have been empty and nothing would have been asked at all.
+about it at the moment it happens rather than afterwards.
+
+**Note what the mitigation did and did not do here, because it is easy to state too well.** Tom *followed*
+the instruction — he created the account on the laptop, the device whose list he wanted — and he still
+lost the week. **Once two devices both hold content, no ordering preserves both.** What the instruction
+buys is that the *month* survives rather than the week; it chooses the winner, it does not avoid the loss.
+The only thing that avoids it entirely is earlier than any ordering: **create the account before the second
+device accumulates anything.** Had Tom installed the app on the phone after creating the account, the phone
+would have been empty and nothing would have been asked at all.
+
+**And two different things are being paid for here, which the paragraph above ran together.** That *one*
+history becomes the list is a product rule (D-5, D-24) — permanent, deliberate, and the thing that makes
+"one list" mean anything. That the other history is then **unrecoverable** is not the rule; it is the
+current scope of import (§5.2.2). With a fidelity format and a populated import, Tom could bring the week
+back deliberately, later, as a thing he did — still not merged for him, because that is the rule, but not
+gone. So the honest reading of this cost is: the rule is settled, and the permanence is a limitation the
+product currently accepts and could later lift.
 
 Afterwards, the phone has a new human actor because attribution remains per member-per-device, but the
 interface groups both actors under the same principal: one "You", one colour. "Last synced from phone" may
@@ -3685,8 +3731,19 @@ the shared ontology in §1.
   proposal/approval flow or a different content construction rather than a capability label. And the
   consequence that follows from it should be stated where the feature is described: granting an agent
   discloses the entire workspace to it and to whatever service runs it (D-20).
-- **§6 Freeze** — the freeze's scope needs writing into the sentence. It binds the human's editing
-  surface; it has never bound replication, and it must not bind a migration import (§2.4, §6).
+- **§6 Freeze** — the freeze's scope needs writing into the sentence, on the authoring-versus-maintenance
+  distinction rather than the looser "human editing surface" one. It governs operations that **author the
+  past**; it has never bound replication, it is deliberately independent of compaction (TRD §4.5), and it
+  must not bind a migration import (§2.4, §5.2.2, §6).
+- **TRD §2 and §7.2** — the relay they describe is no longer the relay this document selects, and neither
+  was previously on this list. §2 chooses Yjs "with the relay as a dumb pipe … It holds no authority, runs
+  no application logic, and can be absent entirely"; §7.2 specifies a shared bearer token over TLS on the
+  grounds that "the threat model is one person's task list", and says the relay is not a backup because
+  "every device holds a full replica". D-14 gives the relay envelope-metadata authority, D-28 gives it
+  authenticated acceptance evidence to carry, D-16 makes the hosted copy a server-held encrypted replica
+  rather than nothing, and D-24 corrects the full-replica claim to a **last** replica. The dumb-pipe
+  property survives only in the sense that matters — no service component reads content — and the
+  sentences should say that rather than the stronger thing they say now.
 - **TRD §10.6** — now wrong, and not previously on this list although its product twin PRD §11.4 was.
   It says permissions are unenforceable here and that real enforcement would require giving the relay
   schema awareness, "which forfeits the 'dumb pipe, no authority' property" — which treats enforcement
