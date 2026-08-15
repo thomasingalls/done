@@ -2291,6 +2291,24 @@ The saving is much larger than a transport, and v14 mis-accounted it by counting
 **The real cost of the accountless path was never TURN bandwidth; it was partition-tolerant authorization.**
 That is the finding, and it is why this decision was worth taking before anything WebRTC-shaped existed.
 
+**One entry belongs on the other side of that ledger, and it was written in the same commit as the ledger
+itself.** Removing the peer path is what forced D-33's promotion — §5.11 says so directly: the notional
+configuration in which a user depended on nobody is gone, so an **independently runnable client and
+service stack** stops being a roadmap item and becomes what makes the pitch true. That is not small:
+source and release artifacts for client, authorization service, relay and durable store under terms
+permitting indefinite independent operation, pinned dependencies and checksums, a documented versioned
+envelope and checkpoint protocol, a standalone restore tool, and a tested migration (§5.11.5). None of it
+appears in the table above, which counts only what the rejected path would have cost.
+
+**The conclusion survives the correction, and it is worth being explicit about why rather than asserting
+it.** The two costs are not the same kind. Partition-tolerant authorization was **bespoke cryptographic
+design** with no reference implementation, on the critical path, and load-bearing for a guarantee — the
+sort of work that is hard to scope and harder to be confident in. The survivability package is
+**packaging and documentation of software that has to exist anyway**: the client, service and relay are
+being built regardless, and D-33 obliges the project to make them independently runnable and to prove it
+once, rather than to invent anything. So the ledger still nets out in the same direction. What is no
+longer true is that the removal was pure saving.
+
 #### What is genuinely given up
 
 Two things, and only one of them is real.
@@ -2569,8 +2587,9 @@ profile to steal the key also copied the plaintext workspace sitting beside it, 
 above changes that. The key-storage question and the at-rest question are separate, and the second one has
 never actually been decided —
 
-**D-34. Is the local document encrypted at rest?** _(Open, and newly opened. It was asserted twice as a
-premise and never decided; recording that honestly is the point of this entry.)_
+**D-34. Is local user content encrypted at rest?** _(Open, and newly opened. It was asserted twice as a
+premise and never decided; recording that honestly is the point of this entry. "The local document" was
+too narrow — three stores hold content, and the journal is on the synchronous write path.)_
 
 The two assertions are §5.7.9's forward-secrecy aside — *"the plaintext sits in IndexedDB on every device
 by design — that is what local-first means"* — and §5.7.1's copied-profile row, which concedes no protection
@@ -2583,6 +2602,21 @@ Principle 3 is *"offline is the normal state, not a degraded one — no spinner,
 which is about waiting on the **network**. A local unlock ceremony is not a network wait. What a device
 lock would actually cost is §5.1.2's "never awaits a credential" — this document's own formulation, and a
 weaker thing to be bound by than a PRD principle.
+
+**The subject is local plaintext at rest, not the IndexedDB document alone**, and the difference is the
+first thing to get right because it sets the size of the question. This app writes user content to
+**three** places on disk, and encrypting one of them is theatre:
+
+| Store | What it holds | Where it is described |
+| ----- | ------------- | --------------------- |
+| IndexedDB (`done`) | The workspace document | §2.1 |
+| `localStorage` journal | Each update, written synchronously so a page kill between transaction and IndexedDB commit cannot lose it | §5.6.2, TRD §6.1 |
+| OPFS SQLite index | Phase 4's search index — the derived text of everything searchable | TRD §6.2 |
+
+The journal is the sharp one: it exists precisely so that content survives a crash, which means it holds
+recent content by design, and it is written on the synchronous path where an async encryption step is
+exactly what §5.6.2 says cannot go. The search index is the largest, holds text rather than CRDT
+structure, and arrives with Phase 4 — so it is the one that can still be designed rather than retrofitted.
 
 What is genuinely at stake, so the decision can be taken on its merits later:
 
@@ -3670,7 +3704,7 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-31** | What does hosted sync cost, and how should it be priced?       | **Deferred on purpose**   | Business-model question outside this document. D-16 requires an account but does not presume free, paid, bundled or metered                 |
 | **D-32** | What may the service retain, observe and do?                   | **Decided in principle**  | Fix irreversible constraints before the TRD; maintain a living inventory during design/build; reconcile and review the as-built surface before wider availability |
 | **D-33** | What survives the service, and what may be claimed?            | **Decided in principle**  | Independently runnable client and service stack; open source preferred, triggered source release acceptable; binary-only continuity insufficient; claims gated by corresponding tests |
-| **D-34** | Is the local document encrypted at rest?                       | **Open — newly opened**   | Never decided, only assumed twice. Plaintext in IndexedDB today; the origin sandbox is not an at-rest boundary. Opt-in rather than default, because only a user-held factor helps and asking a Local user for one contradicts D-1. Also settles when content encryption begins (§5.2.1) |
+| **D-34** | Is local user content encrypted at rest?                       | **Open — newly opened**   | Never decided, only assumed twice. Three plaintext stores, not one: IndexedDB, the synchronous journal, the Phase-4 search index. Opt-in rather than default, because only a user-held factor helps and asking a Local user for one contradicts D-1. Also settles when content encryption begins (§5.2.1) |
 
 ### 8.1 The security contract is bounded; the TRD must instantiate it
 
@@ -3688,7 +3722,7 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | **Protocol boundary**                     | **A service-authoritative control plane around client-encrypted Yjs updates**; service signs authorization/finalization, clients encrypt and sign content, relay/store handle opaque envelopes (D-28) | Exact message/state formats, verification APIs, batching and test vectors |
 | **Authorization and recovery boundary**  | **Selected: the service alone authorizes; the user-held root recovers content only; service disappearance starts a new lineage through migration** (§5.7.2, §5.7.3) | Account-recovery policy and the exact user-mediated proof that gates content-key delivery |
 | Browser key storage                      | **Selected: a non-extractable `CryptoKey`, PRF-wrapped where the authenticator supports it.** The tier is shown in the device list and is never silent; the unlock gates sync, not the app (§5.7.4) | PRF enrollment flow, and the copy shown for a device on the lower tier |
-| **Local storage at rest**                | Nothing is fixed. The workspace is plaintext in IndexedDB today, and the origin sandbox is not an at-rest boundary | Whether an opt-in device lock exists at all — **D-34**, newly opened and never previously decided (§5.7.4). Its answer also fixes whether account creation is a whole-document encryption pass (§5.2.1) |
+| **Local storage at rest**                | Nothing is fixed. Content is plaintext in three stores — IndexedDB, the synchronous journal and the Phase-4 search index — and the origin sandbox is not an at-rest boundary | Whether an opt-in device lock exists at all — **D-34**, newly opened and never previously decided (§5.7.4). Its answer also fixes whether account creation is a whole-document encryption pass (§5.2.1) |
 | **Signed authorization epoch**           | Binds membership, credentials, capabilities and key generation; the service signs and serializes successors | Chain-head discovery for a fresh device, checkpoint and downgrade rules. **Fork rules are no longer needed** (D-16) |
 | Signed mutation envelopes                | Source-authenticated; workspace/epoch/credential/digest in the clear, **attributed actor inside the seal** so the relay gets no actor-level metadata (§5.8.1) | Which fields are associated data, envelope and batching granularity, anti-replay/finalization rule and authenticated checkpoint construction |
 | Attribution binding                      | Actor is derived from the credential or explicitly authorized for representation        | How an update's affected attributed fields are inspected or derived                                        |
