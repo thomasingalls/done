@@ -429,11 +429,26 @@ rewrite frozen history on purpose. Import does not exist yet, so nothing has dec
 line it lands on. If it lands on the app-level side, **importing a ten-day export silently drops every
 day older than three**, which is most of it.
 
-The correct scope is the one §6 now records: the freeze binds the human's editing surface, not
-replication and not the app's own reconciliation. Replication already behaves that way — remote updates
-arrive through `Y.applyUpdate` and never consult `isFrozen`, so a frozen day merges normally today. It
-is the app-level paths that are gated for every actor, and import has to be deliberately placed among
-them.
+The correct scope is the one §6 now records, and it is a three-way split rather than a two-way one.
+**Replication is outside the freeze entirely** — remote updates arrive through `Y.applyUpdate` and never
+consult `isFrozen`, so a frozen day merges normally today. **Every app-level write path is inside it**,
+for every actor including the system one; the recovery path declines to rewrite frozen history on purpose,
+and that is correct rather than an oversight. **Import belongs outside it**, because a migration import is
+the app reconciling two histories rather than a person editing the past — and gating it the way an edit is
+gated is exactly the ten-day defect above.
+
+**Import is not a novel exception, and the precedent is worth naming, because it is the thing that makes
+the placement defensible rather than convenient.** Compaction is already an app-level system operation
+that sits outside the freeze by explicit design: `compaction.ts` says *"nothing here may consult the
+freeze, and freeze.ts may not consult this"*, TRD §4.5 makes their independence a rule, and
+`test/freeze.test.ts` keeps a regression test on it. So the code already distinguishes *authoring the
+past*, which the freeze governs, from *maintaining the store*, which it does not. Import is the second
+member of that second category, not a hole punched in the first.
+
+Which means import cannot be placed by asking whether it is app-level — it is — and the answer does not
+fall out of the replication/app-level split that settles the ordinary cases. It has to be decided on what
+import *is*, and decided before the code exists, because the default an ordinary implementation lands on
+is the gated one.
 
 ---
 
@@ -1849,10 +1864,11 @@ That gap needs an invariant, and it is a product promise rather than an implemen
 Which implies signed mutation envelopes or authenticated operations, verified before admission to the
 shared lineage, not only key rotation. **D-27** is the product question underneath it.
 
-**And one factual correction that this depends on.** TRD §4.8 currently says "transaction origins are still
-recorded in the update stream regardless, so coarse attribution is recoverable if it ever matters." That is
-not so. `Y.applyUpdate(doc, update, origin)` takes the origin as an argument supplied by the _receiver_;
-it is a local property of the transaction and is not encoded in the update bytes. What the bytes do carry
+**And one factual correction that this depends on.** TRD §4.8 said, until this branch corrected it in
+place, that "transaction origins are still recorded in the update stream regardless, so coarse attribution
+is recoverable if it ever matters." That is not so. `Y.applyUpdate(doc, update, origin)` takes the origin
+as an argument supplied by the _receiver_; it is a local property of the transaction and is not encoded in
+the update bytes. What the bytes do carry
 is the writing document's Yjs **client id**, which is random per `Y.Doc` instance — per tab, per page
 load — so it identifies neither a device nor an actor durably. Nothing about attribution can be recovered
 from an update stream, and a design that assumed otherwise would be assuming a guarantee that does not
