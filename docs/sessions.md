@@ -1070,6 +1070,21 @@ the decision is not implementable without them:
    identity and document out of step is the state D-12 says must not be manufactured, and §5.5 already
    names carelessly built features as the only cause of it under our control.
 
+**A fifth requirement is missing from that list and from the whole document: when does the content
+encryption exist?** Local is plaintext and Account is end-to-end encrypted (§5.1.2), so somewhere in this
+transition a workspace acquires a content key, a first generation, and a root wrapped to the user's
+recovery code. Nothing anywhere says where. The four requirements above were written after the
+Local/Account confidentiality split was already recorded, and are all about which database is current.
+
+**It is not an independent question, though — it is downstream of D-34, and either answer settles it.**
+If the local document is encrypted at rest from genesis, encryption never "begins": the key exists from
+first run, and account creation only wraps it to a recovery root and starts uploading ciphertext, which is
+a key-custody step rather than a data transformation. If the local document stays plaintext, then account
+creation *is* the moment encryption begins, and it is a whole-document transformation that has to be
+crash-safe on the same terms as requirement 4 — an interrupted encryption pass that leaves half a
+workspace unreadable is a worse failure than an interrupted database switch. **So D-34 should be decided
+knowing it also decides this**, which its own entry does not currently say (§5.7.4).
+
 **Automatic export is a requirement in the full/full case, not a suggestion.** An earlier draft recorded
 it as a cheap upgrade to consider; that was too weak for an irreversible step. `exportEntries` and
 `downloadExport` already exist (`src/crdt/export.ts`) and PRD principle 4 already commits to the format,
@@ -1259,7 +1274,29 @@ Three shapes were available for the adoption itself, and they were not equally s
   this, and that is the design that falls out of an ordinary implementation.
 - **The account starts fresh and the group is abandoned.** The one that loses a month of someone's
   history — and the one an implementation drifts into if nobody wrote the sentence above down.
-- ~~**They coexist.**~~ Ruled out by D-5's selection of one workspace history at the transition.
+- ~~**They coexist.**~~ **Deferred by the revealed surface, not foreclosed by the architecture** — and an
+  earlier version of this line said "ruled out by D-5's selection", which was both circular and wrong
+  about the mechanism. §5.4.1 deliberately keeps the capacity for a principal to hold several workspace
+  memberships and for a client to store several while showing one. So two histories *could* be two
+  workspaces. What stops it is that the product reveals exactly one home workspace, and exposing a second
+  means a picker — which Rule 1 forbids and which §5.4.1 assigns to the future human-sharing document
+  rather than smuggling in through a cardinality. **Worth keeping distinct**, because a design that ever
+  reveals multiple workspaces makes this option available again on the same day, and it should be
+  re-examined then rather than assumed dead.
+
+**Why the creating device's history becomes the workspace, since it reads as stipulation and is not.** At
+account creation there is exactly one device and therefore exactly one candidate history. It either
+becomes the workspace's or it is thrown away, and throwing it away is the second bullet above — the shape
+that loses a month of someone's work. So the rule is not chosen from a field of options; it is the only
+non-destructive thing available at that moment.
+
+**And that is what separates this decision from D-5's, which an earlier draft had leaning on each
+other.** D-24 sets an **initial condition**: the workspace acquires a history, from the only device that
+can supply one. D-5 states a **rule**: a workspace that has a history keeps it, one that has none adopts
+its first joiner's. The rule does not derive its justification from the initial condition — it stands on
+"one list, and the app must be able to pick without asking". What the initial condition supplies is the
+factual guarantee that by the time any second device arrives there *is* a definite answer to which history
+is the workspace's. Condition and rule, not premise and conclusion.
 
 **The reverse direction is cleaner than it used to be, and worth stating because it is now a supported
 end state rather than a fall.** Deleting the account retires the service authorization lineage, so each
@@ -2563,6 +2600,21 @@ default; a PRF-derived or code-derived key; unlock at cold start; and explicit c
 protect, which is a running unlocked app. It interacts with **D-13** (what a reset clears), **D-18** (a
 revoked device still holding plaintext) and **D-25**.
 
+**One thing D-34 decides beyond itself, which is worth knowing before it is taken.** It settles when the
+content encryption exists at all (§5.2.1). Encrypted from genesis means account creation only wraps an
+existing key to a recovery root; plaintext at Local means account creation is a whole-document encryption
+pass that has to be crash-safe. That is a real implementation difference falling out of what reads as a
+device-security question.
+
+**And the obvious instinct — encrypt at rest for everyone, account or not — runs into D-1 rather than
+into cost.** The key has to come from somewhere, and only a user-held factor helps: a key stored beside
+the data travels with a copied profile and is used by the browser in the copy, so it defeats reading the
+IndexedDB files and not the threat that motivates the question. A passphrase or a passkey ceremony does
+help, and asking a Local user for either contradicts *"the first run cannot ask who you are"* (D-1) and
+*"Local asks for nothing, ever"* (§7) — the strongest promise in the product. **That collision is the
+whole reason the shape above is opt-in rather than default**, and it means the real question D-34 answers
+is not "should local data be encrypted" but "what may the app ask a Local user for, and when".
+
 **Deliberately not decided here.** It surfaced at the end of a long round, it deserves its own, and
 §5.7.4's selection is unaffected either way — the device key is protected identically whether or not the
 document beside it is encrypted.
@@ -3618,7 +3670,7 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-31** | What does hosted sync cost, and how should it be priced?       | **Deferred on purpose**   | Business-model question outside this document. D-16 requires an account but does not presume free, paid, bundled or metered                 |
 | **D-32** | What may the service retain, observe and do?                   | **Decided in principle**  | Fix irreversible constraints before the TRD; maintain a living inventory during design/build; reconcile and review the as-built surface before wider availability |
 | **D-33** | What survives the service, and what may be claimed?            | **Decided in principle**  | Independently runnable client and service stack; open source preferred, triggered source release acceptable; binary-only continuity insufficient; claims gated by corresponding tests |
-| **D-34** | Is the local document encrypted at rest?                       | **Open — newly opened**   | Never decided, only assumed twice. Plaintext in IndexedDB today; the origin sandbox is not an at-rest boundary. Options include an opt-in device lock (§5.7.4) |
+| **D-34** | Is the local document encrypted at rest?                       | **Open — newly opened**   | Never decided, only assumed twice. Plaintext in IndexedDB today; the origin sandbox is not an at-rest boundary. Opt-in rather than default, because only a user-held factor helps and asking a Local user for one contradicts D-1. Also settles when content encryption begins (§5.2.1) |
 
 ### 8.1 The security contract is bounded; the TRD must instantiate it
 
@@ -3636,7 +3688,7 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | **Protocol boundary**                     | **A service-authoritative control plane around client-encrypted Yjs updates**; service signs authorization/finalization, clients encrypt and sign content, relay/store handle opaque envelopes (D-28) | Exact message/state formats, verification APIs, batching and test vectors |
 | **Authorization and recovery boundary**  | **Selected: the service alone authorizes; the user-held root recovers content only; service disappearance starts a new lineage through migration** (§5.7.2, §5.7.3) | Account-recovery policy and the exact user-mediated proof that gates content-key delivery |
 | Browser key storage                      | **Selected: a non-extractable `CryptoKey`, PRF-wrapped where the authenticator supports it.** The tier is shown in the device list and is never silent; the unlock gates sync, not the app (§5.7.4) | PRF enrollment flow, and the copy shown for a device on the lower tier |
-| **Local storage at rest**                | Nothing is fixed. The workspace is plaintext in IndexedDB today, and the origin sandbox is not an at-rest boundary | Whether an opt-in device lock exists at all — **D-34**, newly opened and never previously decided (§5.7.4) |
+| **Local storage at rest**                | Nothing is fixed. The workspace is plaintext in IndexedDB today, and the origin sandbox is not an at-rest boundary | Whether an opt-in device lock exists at all — **D-34**, newly opened and never previously decided (§5.7.4). Its answer also fixes whether account creation is a whole-document encryption pass (§5.2.1) |
 | **Signed authorization epoch**           | Binds membership, credentials, capabilities and key generation; the service signs and serializes successors | Chain-head discovery for a fresh device, checkpoint and downgrade rules. **Fork rules are no longer needed** (D-16) |
 | Signed mutation envelopes                | Source-authenticated; workspace/epoch/credential/digest in the clear, **attributed actor inside the seal** so the relay gets no actor-level metadata (§5.8.1) | Which fields are associated data, envelope and batching granularity, anti-replay/finalization rule and authenticated checkpoint construction |
 | Attribution binding                      | Actor is derived from the credential or explicitly authorized for representation        | How an update's affected attributed fields are inspected or derived                                        |
