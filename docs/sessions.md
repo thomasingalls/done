@@ -8,7 +8,8 @@ revocation semantics, and one of D-17's open selections. **D-33** (§5.11) recor
 service disappearing and which claims that licenses, promoting material that previously lived only in
 the durability appendix.
 
-**D-5 is also answered rather than built**: a device joining a workspace does not keep its own history,
+**D-5 is also answered rather than built**: where a workspace already has a history, that history is the
+list and the joining device's does not survive,
 so the merge · theirs · ours · abort adjudication is withdrawn and D-30's motivating case goes with it.
 **D-30 is therefore closed with Rule 1 unchanged.** The *rule* is a product decision; the *transition* is
 not free, and §5.2.1 records what it costs.
@@ -136,7 +137,9 @@ has to be re-derived rather than inherited. It survives, on four grounds that do
    waiting on a credential, and a list that says "You" cannot consult an account to do it. A person is
    not a service relationship.
 3. **Membership attaches to a principal or an agent, not to an account**, so admitting an agent does not
-   require inventing an account for it.
+   require inventing an account **for the agent**. The owner still needs one, because only the service
+   changes authorization (§5.4.1, §5.7.3); what this ground rules out is a customer record per
+   non-human member, not an account for the human.
 4. **A lapse is a billing event, not an identity event** (D-29). If the account were the principal, a
    failed card would be an act of forgetting who someone is.
 
@@ -999,8 +1002,9 @@ recovery side, arriving here from the onboarding side.
 _(Reframed in v15. It was "what should opting into sync for the first time do when the room already has
 a document" — a question about typing a room name, which D-11 removes and D-19 replaces with sign-in.)_
 
-> **Decided. The workspace's history is the list; a joining device's history does not survive the join.
-> The four-way adjudication is withdrawn.**
+> **Decided. Where the workspace has a history, it is the list and the joining device's does not survive
+> the join. Where it has none, the first joiner's history becomes it. The four-way adjudication is
+> withdrawn.**
 >
 > | Joining device | Workspace | Behaviour                                                                              |
 > | -------------- | --------- | -------------------------------------------------------------------------------------- |
@@ -1150,10 +1154,14 @@ requires the transition machinery in §5.2.1:
 - **Account creation is the moment that decides which history survives**, because the creating device's
   history becomes the workspace. That makes one sentence load-bearing in the interface: *create the
   account on the device whose list you want to keep.*
-- **The order of operations is the whole mitigation.** Account on the device with the history, then
-  enroll the others, and the destructive row never occurs — the enrolling devices are empty or their
-  content was never wanted. The interface should make that ordering the path of least resistance rather
-  than leaving it to chance.
+- **The order of operations is the whole mitigation, and there are two safe orders rather than one.**
+  Account on the device with the history, then enroll the others, and the destructive row never occurs —
+  the enrolling devices are empty or their content was never wanted. **Account on an empty device also
+  works**, because an empty workspace adopts its first joiner's history (D-5, row 2); the account can be
+  created on a device that has nothing and the one real list carried in afterwards. What has no safe
+  order is *two* devices that both have content the user wants: one of them loses, whichever way round it
+  is done, and that is the case D-5 stops and asks about. The interface should make a safe ordering the
+  path of least resistance rather than leaving it to chance.
 - **What is owed is messaging, export/import and transition machinery — not adjudication machinery.** The
   loss has to be stated before it happens and the export has to be real; bringing the content across
   afterwards is import (§2.4, D-33), which is already required for other reasons. Preflight, separate
@@ -1630,6 +1638,12 @@ The cardinalities, written down so they stop being inferred:
 - **Currently in scope:** the human owner, and later **agent members** with read/edit capabilities that
   are specified separately. Agents are why membership attaches to a principal or agent rather than to an
   account (§1.1) — an agent needs to be a member without being a customer.
+- **Agent membership requires the owner to have an account**, and this follows rather than being chosen:
+  admitting an agent changes authorization, only the service changes authorization (§5.7.3), and a Local
+  workspace has no service. So agents live at **Account** and the free product has none. That is a real
+  boundary on §7's "Local asks for nothing, ever" — Local asks for nothing and correspondingly delegates
+  nothing — and it should be stated wherever the agent feature is described rather than discovered when
+  someone tries to grant one from a local install.
 - **Not currently planned:** another human joining the workspace.
 - **Future human sharing is a separate document.** It exposes multi-workspace navigation, invitations,
   permissions, and the accountless-versus-account membership question, and none of that should be smuggled
@@ -1670,10 +1684,19 @@ Whatever D-13 turns out to be, it is atomic with respect to these two facts or i
 - **Authorization epoch 0 — local genesis.** No other credential has been admitted and no service
   authorization has been adopted. The actor id has no external audience, so minting a replacement is harmless and
   is just the genesis case (S1) with extra steps.
-- **Authorization epoch greater than 0 — admitted.** Pairing, agent admission or account adoption has
-  made the workspace a shared artifact whose authorization state means something. A fresh random identity
-  that appears and begins writing is precisely the unapproved-writer problem. The app must **not** silently
-  mint one; whether it refuses to write, offers re-pairing, or quarantines the workspace remains open.
+- **Authorization epoch greater than 0 — admitted.** The service has authorized something: a second
+  device, an agent member, a capability change. The workspace is now a shared artifact whose
+  authorization state means something. A fresh random identity that appears and begins writing is
+  precisely the unapproved-writer problem. The app must **not** silently mint one; whether it refuses to
+  write, offers to sign in again, or quarantines the workspace remains open.
+
+**Which is simpler than it looks, because after §5.7.3 the two cases are the two levels.** Only the
+service changes authorization, and agent membership requires an account (§5.4.1), so every event that
+advances the epoch requires one. **A Local workspace is always at epoch 0 and an Account workspace is
+always past it** — the epoch is not a third axis crossing the ladder, it is the ladder seen from the
+authorization side. That collapses the detection problem D-12 was worried about into one question with a
+definite answer: *is there signed service authorization state in this document?* Absent means Local
+genesis and re-minting is harmless; present means admitted and it is not.
 
 **The test this document proposed for telling those apart does not work, and is withdrawn.** The claim was
 that a surviving human roster entry proves the document predates the missing identity and has been shared.
@@ -1720,6 +1743,11 @@ guaranteed. That is **D-25**.
 > **Decided: yes, prominently and persistently.** An app whose central claim is local-first must not be
 > quiet about a context where the data is not durable. The warning names the reason and offers the action
 > — grant persistence where that is a real option, and otherwise route toward server sync.
+>
+> **And D-17 gave this decision a third condition, which is not a warning.** A hosted copy is recoverable
+> *by the user, with the code they saved*, and by nobody else including the service (§5.7.5, §5.7.6).
+> D-25 owns saying that at account creation, saying it without implying more, and being able to say
+> *the data is gone* to someone who has lost both their devices and the code.
 
 Today the storage state is reported into the menu, and the menu is a panel the codebase itself describes
 as usually closed. So the current arrangement is honest and invisible at the same time, which is the gap.
@@ -1777,10 +1805,24 @@ What survives is the environment case, and the two conditions must still be trea
 | ------------------------------------------------------------------ | ------------------------------ | ------------------------------------------------------------------------- |
 | **This context is not durable** — `persisted()` false (S29, S30)   | Yes — grant it, export, or move | D-25 as written: prominent, persistent, names the action                  |
 | **Only this device holds a copy** — Local, by definition           | No — it is what Local _is_     | Stated once, at the moments it is actionable; never a recurring banner    |
+| **The hosted copy needs your code** — Account, by construction     | No — it is what non-custodial _is_ | Stated once at account creation, and again wherever recovery is described |
 
 The first is a defect in the environment and warning about it is a service. The second is a property of
 the configuration the user is in, and it belongs to the surfaces that describe their setup — the storage
 section of the menu, and the moment they are about to do something that assumes a second copy exists.
+
+**The third row is the one that will be got wrong, because the mistake is silence rather than a false
+sentence.** Nothing has to claim "we can restore your data" for an account-holder to believe it; *"your
+list is backed up to our servers"* is true, and a reasonable person reads recovery into it. So the copy
+has to carry the dependency in the same breath as the reassurance — the hosted copy is real, and the code
+is what opens it — at account creation, in whatever describes the account's storage, and at the moment
+the code is generated (§5.7.7).
+
+**And the sentence that has to exist before it is needed.** For a user who has lost every device and
+cannot find the code, the true answer is that the workspace is unrecoverable. That sentence is only
+survivable if nothing earlier implied otherwise, which is why this row is a D-25 obligation rather than a
+support-article problem. Its own test applies: *would this sentence exist if the product had no business
+model?* It would — a non-custodial local-first app with no revenue would still owe it.
 
 **One test to apply to any copy written for the second row**, because it is the test v14 failed and the
 one the outside reading will apply: *would this sentence exist if the product had no business model?* "This is
@@ -1792,14 +1834,27 @@ business model would still want to say it. "Your data is not safe until you crea
 > **Decided: yes, such an action exists.** Whether it is the same thing as sign-out is open, and so is
 > what it clears.
 
-Two sub-questions left, both worth settling with D-14 rather than before it. **What it clears:**
-identity only, leaving the document; or identity and document. They are very different promises — the
-first is "I am someone else now", the second is "there was never anyone here" — and only the second is
-what a shared-laptop user means. **Whether it equals sign-out:** wherever there is an account, sign-out
-already has to exist, and a second nearby button that does almost the same thing is how people lose
-data they meant to keep. Under §2.3's stateless-token discussion, note that "sign out" on a device
-whose token cannot be revoked is a local action with no remote effect — which makes the honest label
-different from the expected one, and is exactly the kind of thing D-18 decides.
+**What it clears is now a three-way question, not a two-way one**, and D-17 added the third. Identity
+only, leaving the document; identity and document; or those plus the **content-recovery material** —
+this device's copy of the recovery code, any PRF wrap bound to it, and its content keys. The first three
+promises are very different: "I am someone else now", "there was never anyone here", and "this device can
+never open this workspace again, whatever it is later shown". Only the second is what a shared-laptop
+user means, and **only the third is safe to offer without a warning that names what it destroys** —
+clearing the last reachable copy of the code is the one action in the product that can make a hosted
+workspace permanently unreadable (§5.7.6, §5.7.7).
+
+**Whether it equals sign-out:** wherever there is an account, sign-out already has to exist, and a second
+nearby button that does almost the same thing is how people lose data they meant to keep. That is now
+sharper rather than softer, because the two buttons differ in a way the labels will not carry on their
+own — one ends a session, the other can end the workspace.
+
+**And the premise this paragraph used to rest on is gone.** It read that "sign out" on a device whose
+token cannot be revoked is a local action with no remote effect. Under §5.7.2 the device credential is
+revocable at the service and D-18 makes that the unit of revocation, so signing out *can* have a remote
+effect and the honest label is available. What genuinely cannot be revoked before it expires is the
+scoped relay bearer token (§2.3, §5.7.9), and that is a bounded window rather than a permanent gap. The
+open question is therefore not whether the label can be honest — it can — but **which of the three
+clearing semantics the button is**, and whether signing out revokes this device or merely stops using it.
 
 ### 5.6 The service-authority question — D-14
 
@@ -2756,8 +2811,10 @@ freeze. Reading and writing locally never waits on the answer.
 
 Open within this: what the options on a revoked device are and whether cleanup is automatic; whether
 propagation needs anything cleverer than "the relay tells whoever is connected, and everyone asks on
-reconnect" — gossip is the obvious next step and is probably overkill at this scale; and whether "sign out"
-is honestly labelled when the credential behind it cannot be revoked (D-13), which is still unanswered.
+reconnect" — gossip is the obvious next step and is probably overkill at this scale; and whether signing
+out revokes this device's credential or merely stops using it (D-13). That last one is a choice rather
+than a constraint: the credential *is* revocable at the service (§5.7.2), so both labels are honest and
+the question is which behaviour the button should have.
 
 The device list this produces is the same artifact D-19's enrollment ends at and the same one §1.4 calls
 the irreducible security surface. **It is no longer deferrable, and D-16 is why.** An earlier draft
@@ -2861,13 +2918,27 @@ outcome delivered to the least attentive moment.
 > **read-only**: the server-held copy is retained and readable, server-intermediated sync stops, and the
 > devices keep working locally exactly as they always did, because nothing on the read or write path
 > ever awaited a credential (§6).
+>
+> **Retention covers the wrapped content root on the same terms as the ciphertext**, because retaining
+> one without the other is retention that recovers nothing. **Resuming is not recovery**: a user who
+> starts paying again from a device they still have simply resumes sync, presenting no code and
+> performing no ceremony. The code is needed only if every device is gone as well — and that path has to
+> keep working for as long as the copy is retained, or read-only is a state in which the service holds
+> the user's bytes and cannot give them back.
 
-Three things that follow and should not be rediscovered later:
+Four things that follow and should not be rediscovered later:
 
 - **Read-only means the service's copy, not the app.** PRD principle 3 is not negotiable, and a lapse is
   a billing state rather than a network state. The app is fully writable on every device throughout.
 - **Retention has to be a stated number**, because "retained" without a duration is a promise nobody can
-  plan around, and D-25's durability copy depends on it.
+  plan around, and D-25's durability copy depends on it. The number bounds two different things at once —
+  how long resuming restores the hosted history, and how long a total-device-loss recovery remains
+  possible — and it is the same number for both, since both need the same retained objects.
+- **What expiry ends is the hosted copy, not the account.** When retention runs out the ciphertext and
+  the wrapped root go together, and a user who resumes after that is an account with no server-side
+  history: their devices' replicas are the workspace, and D-5 decides which one. This is the one moment
+  in the lapse path that destroys something, so it is the one that has to be said in advance rather than
+  discovered — the same honesty D-24 requires before account deletion, at the same kind of boundary.
 - **Deliberate downgrade (S53) is the same mechanism**, and it is the case that must not silently
   become S36's account deletion. Stopping payment and deleting an account are different acts with
   different consequences for service authorization and hosted retention, and the interface has to keep them apart.
@@ -3336,7 +3407,7 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-2**  | Is identity per person, per device, or a labelled pair?        | **Decided**               | Per device internally; per person in ordinary lists. Own devices appear only on explicit device/security surfaces and are not disclosed to another principal |
 | **D-3**  | Are device names worth improving?                              | **Decided in principle**  | Yes. Mechanism open — and it does not need a fingerprint                                                                                    |
 | **D-4**  | Can a new device claim an existing actor?                      | **Decided**               | No. A new device is always a new actor; the real question was D-19                                                                          |
-| **D-5**  | What happens when a device with history joins a workspace?     | **Decided**               | Workspace history wins; no adjudication. Cancel leaves the device untouched. Export is written first; the switch needs §5.2.1's mechanics   |
+| **D-5**  | What happens when a device with history joins a workspace?     | **Decided**               | An existing workspace history wins; an empty one adopts the first joiner's. No adjudication. Cancel leaves the device untouched. Export is written first; the switch needs §5.2.1's mechanics |
 | **D-6**  | Can dead actors be pruned?                                     | **Decided**               | No auto-hiding. Staleness may be muted; the interval is open. Exclusion is D-20                                                             |
 | **D-7**  | Should undo ever cross devices?                                | **Decided**               | No. Never leaves the device                                                                                                                 |
 | **D-8**  | What may a session be seen doing?                              | **Decided**               | A caret per tab, own tabs included, **all yours in your colour**, person's name. Active caret distinguished (D-21). Peer list deduplicated  |
@@ -3344,7 +3415,7 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-10** | Is sync configuration per device or per document?              | **Decided in principle**  | Rule 1: the user never manages workspaces. Mechanism open; today's three fields are ruled out                                               |
 | **D-11** | What is a workspace — content, or permission?                  | **Decided in principle**  | Permission. UI reveals one home workspace/document; architecture supports many memberships; "room" stays off the architecture               |
 | **D-12** | What happens when local identity is lost?                      | **Decided in principle**  | Authorization epoch 0 may re-mint; later epochs must not. Signed state, not roster. Response open                                           |
-| **D-13** | Is there a deliberate reset?                                   | **Decided**               | Yes. Whether it is sign-out, and what it clears, open                                                                                       |
+| **D-13** | Is there a deliberate reset?                                   | **Decided**               | Yes. Open: which of three clearing semantics it is — identity, identity+document, or those plus content-recovery material — and whether sign-out revokes the device |
 | **D-14** | May the relay decide who connects? What is written?            | **Decided**               | Service authenticates connections and authorization; relay validates opaque envelopes; clients retain semantic authority; no service component reads Yjs content |
 | **D-15** | Within a device, is undo per tab or shared?                    | **Decided**               | Per tab                                                                                                                                     |
 | **D-16** | Where does the account/service boundary sit?                  | **Decided**               | Local is free and permanent; hosted sync requires an account; pricing is D-31; the Paired rung is retired; **peer-to-peer is not built**    |
@@ -3356,11 +3427,11 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-22** | Does merged content show its provenance?                       | **Decided**               | Yes, as a rarely-on mode. Settings toggle, off switch surfaced while active. Cards only, freeze-window bound                                |
 | **D-23** | Does pairing alone trigger the name prompt?                    | **Decided**               | Largely dissolved by D-16: one name prompt, at account creation, which is now the same moment as first sync                                 |
 | **D-24** | How does existing local history become an account?             | **Decided**               | Adopts the creating device's history, which makes D-5 decidable. Deletion leaves each device its **last replica**, not a full copy          |
-| **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**               | Yes, for the environment case. Warn about the property, not the cause. Offer the grant, then export, then sync                              |
+| **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**               | Yes, for the environment case. Warn about the property, not the cause. Offer the grant, then export, then sync. Also owns the hosted copy's dependency on the saved code |
 | **D-26** | Revocation learned late, history already diverged?             | **Decided**               | No lineage rule, no discard, no filtered replay. Needs a **finalization boundary** against a hostile relay (§5.2.2) — a contract row        |
 | **D-27** | Is attribution authenticated, or advisory?                     | **Decided**               | Authenticated by an epoch-authorized credential; actor is derived or explicitly authorized for representation                               |
 | **D-28** | What carries the authorization protocol?                       | **Decided**               | A service-authoritative control plane around end-to-end-encrypted Yjs updates; exact envelopes, finalization and key constructions belong in the TRD |
-| **D-29** | What happens if a paid account plan lapses?                    | **Decided conditionally** | If D-31 selects such a plan: grace period, then read-only. Content keys and local replicas survive; sync stops; local use is untouched       |
+| **D-29** | What happens if a paid account plan lapses?                    | **Decided conditionally** | If D-31 selects such a plan: grace period, then read-only. Ciphertext and wrapped root are retained together so resuming works; local use is untouched; expiry is what destroys |
 | **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Decided**               | Rule 1 stands: users manage devices, access, recovery and data transitions without managing or seeing workspace containers                 |
 | **D-31** | What does hosted sync cost, and how should it be priced?       | **Deferred on purpose**   | Business-model question outside this document. D-16 requires an account but does not presume free, paid, bundled or metered                 |
 | **D-32** | What may the service retain, observe and do?                   | **Decided in principle**  | Fix irreversible constraints before the TRD; maintain a living inventory during design/build; reconcile and review the as-built surface before wider availability |
