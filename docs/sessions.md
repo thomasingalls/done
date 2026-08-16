@@ -3,7 +3,7 @@
 **Status:** Draft v16 — **34 dispositions recorded.** The largest change since v15: **D-5 is withdrawn,
 and nothing is destroyed at enrollment.** Signing in on a device that already holds a Local workspace
 opens the account workspace in **parallel storage**; the Local one keeps its principal, actor and history
-and is reached by signing out. The single question moves to **account creation** — *promote this list, or
+and stays reachable. The single question moves to **account creation** — *promote this list, or
 start fresh* — and D-24 now carries it alone. The destructive join, its confirmation, its automatic
 export and its preflight all go with the question they were answering.
 
@@ -29,8 +29,18 @@ service disappearing and which claims that licenses, promoting material that pre
 the durability appendix. **Both appendices have since been folded into this document and removed**; they
 remain in git history, and every reference to them below is historical.
 
-**D-30 is closed with Rule 1 unchanged**, and v16 strengthens rather than disturbs that: its motivating
-case was D-5's four-way adjudication, which v15 replaced with a rule and v16 removes entirely.
+**And D-30 is re-decided rather than reaffirmed — the first time an answer here has changed.** Its
+original motivating case, D-5's four-way adjudication, is gone. A real exception took its place: a device
+holding more than one local workspace has nothing in the model to rank them, so **Rule 1 is relaxed on
+one verb, `select`, under one condition** — a context indicator and a picker appear only once a second
+local workspace exists, reading as an account switcher. Name, reconcile and administer stay absolute, and
+multi-*membership* navigation stays reserved (§1.4, D-30, §5.4.1).
+
+**One more thing v16 settles that had been asked only half of.** §5.2.1 asked where content encryption
+*begins* and never where it ends. Leaving Account — by deletion, by retention expiry, by migration —
+**decrypts the workspace in place**, because Local is plaintext and the content key existed to blind a
+relay and a server copy the exit removes. That is decided without D-34, which governs the other
+direction only (D-24, §5.7.4).
 
 **Four corrections review found in the first v15 draft, recorded rather than quietly fixed**, because
 each was an over-claim in the direction of the decision this revision wanted to make: D-16 removed the
@@ -271,25 +281,39 @@ Both came out of the decisions below and both generalise past them, so they are 
 than buried in the decision that produced them. They rank beneath the PRD's principles and above
 anything in this document.
 
-**Rule 1. The user never manages workspaces.** It is not a task to make pleasant; it is a task to remove.
-Anything that requires a person to know what a workspace is, name one, or copy one between devices has
-failed (D-10, D-11).
+**Rule 1. The user never manages workspaces, and never chooses between them until they hold more than
+one.** It is not a task to make pleasant; it is a task to remove. Anything that requires a person to know
+what a workspace is, name one, reconcile two, or copy one between devices has failed (D-10, D-11).
+**Selecting between local workspaces a person already holds is the one exception**, it is conditional on
+a state they created deliberately, and it is D-30.
 
-Rule 1 looked for two drafts as though it had an exception, and it took two rounds to remove. The
-exception was **D-5's merge · theirs · ours · abort flow**, described here as "the most demanding piece of
-workspace management in the product" and defended on the grounds that two histories meeting "is not a task
-that can be removed, because the outcome is irreversible and the app cannot pick for the user." v15
-falsified the second half — the app *can* pick — and replaced the flow with a rule. **v16 falsified the
-first half too:** the two histories never had to meet at all, because they are two workspaces and local
-storage can hold both. D-5 is withdrawn and the user adjudicates nothing, confirms nothing and loses
-nothing (D-24, §5.2.1).
+**One verb moved, and only one.** D-30 forbade four things — name, select, reconcile, administer. *Select*
+is now permitted, under the condition above; the other three remain absolute, and they are what "know
+what a workspace is" actually consists of. A picker that reads as an account switcher asks which list is
+whose, not what a container is.
+
+Rule 1 looked for two drafts as though it had an exception, and it took two rounds to remove that one and
+a third to find a real one. The false exception was **D-5's merge · theirs · ours · abort flow**,
+described here as "the most demanding piece of workspace management in the product" and defended on the
+grounds that two histories meeting "is not a task that can be removed, because the outcome is irreversible
+and the app cannot pick for the user." v15 falsified the second half — the app *can* pick — and replaced
+the flow with a rule. **v16 falsified the first half too:** the two histories never had to meet at all,
+because they are two workspaces and local storage can hold both. D-5 is withdrawn and the user
+adjudicates nothing, confirms nothing and loses nothing (D-24, §5.2.1).
 
 The general lesson is worth keeping, because this document reached for a UI twice and then reached for a
 *rule* once before noticing it: **an apparent exception to Rule 1 is usually a missing rule.** Where the
 app seems to need the user to choose between workspace states, the question to ask first is whether
-anything in the model already determines the answer — and the second question, which v16 is the case for,
+anything in the model already determines the answer — and the second question, which D-5 is the case for,
 is whether the states are genuinely in conflict or have only been made to share a slot. D-5's conflict was
-manufactured by a single `DB_NAME` (§2.2b). **D-30 closes with Rule 1 unchanged.**
+manufactured by a single `DB_NAME` (§2.2b).
+
+**And the test is what identifies the real exception rather than waving it through.** Applied to two
+retained local workspaces it comes back empty: both are the user's, neither is more current, more
+authoritative or more recent in any sense the model records, and nothing about a principal, an epoch or a
+membership ranks them. There is no missing rule to find, which is exactly the difference from D-5 — where
+D-24's initial condition genuinely did determine the answer. **So the exception is real, the relaxation is
+D-30's, and the test is what proves it was needed rather than convenient.**
 
 **Rule 2. The UI never promises anything about a remote device that cannot be kept.** No auto-hiding a
 member as though they were gone, no "removed" that does not remove, no presence claim that outlives
@@ -1149,6 +1173,13 @@ decision is not implementable without them:
    the user's recovery code. Nothing anywhere says where. Requirements 1–3 are all about which database is
    which; this one is about what is in them.
 
+   **The entry is open and the exit is decided**, which is worth separating because this document asked
+   only half the question for four drafts. Where encryption *begins* is downstream of D-34 (below). Where
+   it **ends** is not: a workspace leaving Account is decrypted in place, because Local is plaintext and
+   the content key existed to blind a relay and a server copy that no longer exist. That covers account
+   deletion, lapse past retention and migration alike, and it is crash-safe on the same terms as
+   requirement 3 (D-24, D-29, §5.11.2).
+
 **The fourth is not an independent question — it is downstream of D-34, and either answer settles it.**
 If the local document is encrypted at rest from genesis, encryption never "begins": the key exists from
 first run, and account creation only wraps it to a recovery root and starts uploading ciphertext, which is
@@ -1300,8 +1331,9 @@ withdrawn.)_
 > - **Signing in on any device adopts, merges, replaces and re-parents nothing.** The account workspace
 >   opens in its own local database keyed by _(principal, workspace)_. Any Local workspace already on that
 >   device keeps its principal, its actor and its history (§2.2b, §5.2.1).
-> - **The visible list follows sign-in state.** Signed in shows the account workspace; signed out shows
->   the Local one. There is no picker, no switcher and no second list open at once.
+> - **One list is visible at a time.** With a single local workspace — every user who never signs in —
+>   there is no indicator and nothing to choose. Where a device holds more than one, a context indicator
+>   names the current list and a picker opens the others (**D-30**, which relaxes Rule 1 for exactly this).
 > - **The retained Local workspace ends by export or deletion**, offered where a person would look for
 >   their own old data rather than in anything resembling workspace administration (Rule 1, D-30).
 
@@ -1329,11 +1361,12 @@ Three shapes were available and only one is destructive:
 - **They coexist.** ✅ **Chosen for every device after the first, and for the "start fresh" branch on the
   first.** v15 struck this out on the grounds that "exposing a second means a picker — which Rule 1
   forbids", and left a note that it "should be re-examined" the day multiple workspaces become
-  revealable. The note was right and the reasoning was wrong: **sign-in state is not a picker.** One list
-  is visible at a time and which one it is follows from whether you are signed in — the same way it
-  follows in any application where signing out returns you to something. §5.4.1 already keeps the
-  capacity for a principal to hold several memberships and for a client to store several while showing
-  one; v16 uses it for one person rather than reserving it for a second.
+  revealable. The note was right, the premise was right, and **the conclusion was the thing to revisit**:
+  a picker is indeed required, and Rule 1 is what moved (D-30). A first draft of v16 tried to keep both
+  by making sign-in state the disambiguator; that survives exactly until an account is deleted and there
+  is no sign-in state left, which is the case that settled it. §5.4.1 already keeps the capacity for a
+  client to store several workspaces while showing one; v16 uses it for one person rather than reserving
+  it for a second.
 - **The account starts fresh and the local history is abandoned.** ❌ The one that loses a month of
   someone's history, and the one an implementation drifts into if nobody writes down that the other two
   exist.
@@ -1354,12 +1387,56 @@ lapsed subscription would eventually land if D-31 later selects one (D-29).
 
 **Which v16 makes one question sharper: a device may now come out of that with two Local workspaces.**
 The former account workspace becomes Local on every device that held it, and a device that also retained
-an anonymous workspace from before it signed in has both. **The former account workspace is the one that
-shows** — it is the live list, it is what the user was using a moment ago, and reverting the visible list
-to a workspace they abandoned months earlier would be the app forgetting on their behalf. The retained
-anonymous one stays reachable exactly as it was, on the same terms and through the same surface as
-before, and it is a good moment to offer its export or deletion since the user is already looking at what
-they keep.
+an anonymous workspace from before it signed in has both — with **no account left to distinguish them**.
+That is the case that forced D-30's relaxation: sign-in state was doing the disambiguating and account
+deletion destroys it. So the device shows the context indicator and the picker, the former account
+workspace is what is open when the dust settles because it is what the user was using a moment ago, and
+the anonymous one is one selection away rather than behind a stipulation. It is also a good moment to
+offer its export or deletion, since the user is already looking at what they keep.
+
+**Deletion says where the list continues; it does not prune the other devices.** The instinct is to have
+the user nominate one device to keep the workspace and clear it from the rest, and it is the wrong shape
+twice over. It is **destructive at a distance and can only be a request** — a device that is offline
+keeps its replica whatever was chosen, so this lands in D-18's requested · committed · acknowledged
+shape and Rule 2 forbids a confirmation that says "removed from your other devices". And it **concentrates
+the two-workspace case rather than diluting it**: the natural nominee is the device that created the
+account, which after a *start fresh* is exactly the device already carrying a retained anonymous
+workspace. So:
+
+- **Every device keeps its copy.** Most people deleting an account want to keep using the app, not to
+  consolidate onto one machine.
+- **The confirmation records which device the list continues on**, extending what D-24 already requires —
+  a verified-current device identified, stale ones named. The nominated device can then say *your list
+  continues here*; the others can say *copy as of ⟨date⟩; your list continues on ⟨device⟩* and offer their
+  own export and deletion.
+- **A device that was offline at deletion shows a copy with no pointer.** That is a missing label rather
+  than missing data, which is the acceptable failure mode and the reason this is informational rather
+  than destructive.
+
+**And the workspace stops being encrypted when it stops being an account workspace.** Local is plaintext
+(D-34's default) and the account content key exists to keep a relay and a server copy from reading the
+document — neither of which survives deletion. So the exit is a **decryption in place**, on the same
+crash-safety terms as §5.2.1's promotion, and it is the answer for every exit from Account: deletion,
+lapse past retention (D-29), and migration to a replacement service (§5.11.2), which re-encrypts under
+the new lineage rather than carrying the old key.
+
+Two things follow, and the first removes a hazard rather than adding one:
+
+- **Nothing on the device then depends on a content key it cannot replace.** The wrapped content root is
+  service-held (§5.7.1, D-29), so deletion takes it; a device left holding ciphertext openable only by
+  key material in its own profile would have no recovery path at all, and would be one storage corruption
+  from total loss. Decrypting at the exit means there is no key to lose and nothing needing the root.
+- **The decryption is opportunistic, not atomic**, and this is the same caveat as the continuation
+  pointer. A device offline across the deletion cannot be told, and cannot distinguish a deleted account
+  from an unreachable relay — which §5.7.1 requires it to treat as an outage that leaves local documents
+  readable. It keeps working from the key it holds and decrypts whenever it learns. A device that never
+  learns never decrypts, so the confirmation must not claim the deletion completed everywhere.
+
+**If D-34 later adds a device lock, this needs no special case.** The lock is keyed from a user-held
+factor and is a different key from the account's content key, so "stays encrypted" was never a no-op — it
+would be a re-key with a different failure mode. The exit is a decryption either way, and the resulting
+plaintext store falls under the lock like every other store on that device, which D-34's *governs every
+store that holds user content* already covers (§5.7.4).
 
 **The principal survives, and this document never said so although its own argument requires it.** §1.1's
 first ground is that the account *adopts* an identity that already exists; an identity that predates the
@@ -1819,11 +1896,18 @@ reveals only the home workspace rather than making anything else impossible.
 
 **v16 spends part of that capacity, and it is worth being precise about which part.** A device that has
 been used locally and then signs in **stores two workspaces and hosts two principals** — the anonymous
-one and the account one (D-24). It still *shows* one, and which one is determined by sign-in state rather
-than by a choice between containers, so "one workspace shown" survives and "the client may store several"
-stops being a reservation for a future feature and becomes the ordinary case. What remains unspent is
-what §5.4.1 was actually protecting: a principal holding memberships in several workspaces *at once*, and
-any surface that would let a person move between them. Those still belong to the human-sharing document.
+one and the account one (D-24). It still *shows* one at a time, and where there is more than one to show,
+D-30 permits a picker over them. So "the client may store several" stops being a reservation for a future
+feature and becomes the ordinary case, and "one workspace shown" survives as a statement about the
+interface rather than about storage.
+
+**What remains unspent is the axis §5.4.1 was actually protecting**, and the two are easy to confuse
+because they look identical in a list. D-30's picker is over **local workspaces on one device** — several
+dead-ended histories, one person, no memberships involved, nothing synced. What is still reserved for the
+human-sharing document is **several live memberships**: a principal reaching more than one workspace that
+the service authorizes, with invitations, permissions and navigation between them. The cardinality
+`principal → membership: many` is untouched by v16, and it must not be reached by growing the local
+picker into a membership list.
 
 The cardinalities, written down so they stop being inferred:
 
@@ -1840,7 +1924,7 @@ The cardinalities, written down so they stop being inferred:
 | device → human actor         | 1                      | **many** (one per principal on it) |
 | human actor → membership     | 1                      | 1                        |
 | client → workspace stored    | 1                      | **many** (D-24)          |
-| client → workspace shown     | 1                      | 1, by sign-in state      |
+| client → workspace shown     | 1                      | 1, selected where several are held (D-30) |
 
 **And membership is scoped deliberately, not by omission:**
 
@@ -2078,10 +2162,12 @@ workspace on the device**, or "there was never anyone here" hands the next perso
 list while truthfully reporting that the account is gone. That is the same defect as leaving a live
 credential behind, arriving through the store the reset did not think to look in.
 
-**Sign-out is the ordinary case and is not a reset at all.** It stops using the account workspace and
-returns the visible list to the retained Local one (D-24). Where a device never had one — a phone that
-was enrolled straight out of the box — sign-out lands on genesis, which is honest but worth saying in the
-copy rather than letting an empty list imply something was lost.
+**Sign-out is the ordinary case and is not a reset at all.** It stops using the account workspace, which
+stays on the device as one of the local workspaces D-30's picker lists — signing out is not deletion, and
+signing back in does not re-download what is already there. Where a device never had an anonymous
+workspace — a phone enrolled straight out of the box — sign-out leaves one workspace, so no picker
+appears and the list is simply the one that was there, now unsynced. What sign-out clears from the four
+objects above, and whether it revokes, is the question still open.
 
 **Two of the four can be irreversible, and an earlier version of this paragraph named only one.** Objects
 3 and 4 both destroy, under conditions the app is differently able to detect:
@@ -2764,10 +2850,18 @@ protect, which is a running unlocked app. It interacts with **D-13** (what a res
 revoked device still holding plaintext) and **D-25**.
 
 **One thing D-34 decides beyond itself, which is worth knowing before it is taken.** It settles when the
-content encryption exists at all (§5.2.1). Encrypted from genesis means account creation only wraps an
+content encryption *begins* (§5.2.1). Encrypted from genesis means account creation only wraps an
 existing key to a recovery root; plaintext at Local means account creation is a whole-document encryption
 pass that has to be crash-safe. That is a real implementation difference falling out of what reads as a
 device-security question.
+
+**It does not decide when encryption ends, and that is already settled without it.** A workspace leaving
+Account is decrypted in place (D-24), because the account content key exists to blind a relay and a
+server copy that the exit removes. A device lock is a **different key** — user-held factor, opt-in, its
+own failure mode — so "stays encrypted at the exit" was never available as a no-op; it would be a re-key.
+Whatever D-34 decides, the exit is a decryption, and the resulting plaintext store falls under the lock
+like every other store on that device under the clause above. **This is why D-34 governs one direction
+rather than both**, and the asymmetry is worth knowing so nobody re-opens the exit when D-34 is taken.
 
 **And the obvious instinct — encrypt at rest for everyone, account or not — runs into D-1 rather than
 into cost.** The key has to come from somewhere, and only a user-held factor helps: a key stored beside
@@ -3339,6 +3433,12 @@ Four things that follow and should not be rediscovered later:
   device that was offline across the whole lapse** — its replica is short everything since it last
   synced, and after expiry there is nowhere left to get the remainder. That is the same qualifier D-24
   puts on account deletion, at the same kind of boundary.
+
+  Expiry is also an **exit from Account**, so the workspace is decrypted in place on each device on the
+  same terms as deletion (D-24) — opportunistically, since a device that never learns keeps working from
+  the key it holds. Note the ordering this implies during read-only: the hosted copy and its wrapped root
+  are still retained, so the exit is at expiry rather than at the lapse, and a user who resumes before
+  then never leaves Account at all.
 - **Deliberate downgrade (S53) is the same mechanism**, and it is the case that must not silently
   become S36's account deletion. Stopping payment and deleting an account are different acts with
   different consequences for service authorization and hosted retention, and the interface has to keep them apart.
@@ -3362,35 +3462,59 @@ loss** — the replicas share an ancestor and Yjs converges them (§6) — so th
 come back together, and there will be a lot to come back together*, not a warning that something is at
 stake. D-22's provenance mode is what makes the result legible.
 
-**D-30. Does Rule 1 have exceptions, or the wrong formulation?** _(Decided.)_
+**D-30. Does Rule 1 have exceptions, or the wrong formulation?** _(Decided, and **reopened and re-decided
+in v16** — the first time the answer changed rather than being reaffirmed.)_
 
-**The case that raised this has been withdrawn twice over.** Rule 1 says the user never manages
-workspaces; v14's D-5 then required them to adjudicate two document histories with a preview and four
-choices, which was workspace management at its most demanding. v15 removed the flow and left a rule plus
-a confirmation of loss. **v16 removed the confirmation too** — nothing is lost, so there is nothing to
-consent to (§1.4, D-24).
+**The case that raised this originally has been withdrawn twice over.** Rule 1 says the user never
+manages workspaces; v14's D-5 then required them to adjudicate two document histories with a preview and
+four choices, which was workspace management at its most demanding. v15 removed the flow and left a rule
+plus a confirmation of loss. v16 removed the confirmation too — nothing is lost, so there is nothing to
+consent to (§1.4, D-24). **That case is gone and it was never a real exception.**
 
-> **Decided: Rule 1 stands as written — the user never manages workspaces.** A workspace remains a real
-> architectural object: one document plus its authorization boundary. The product exposes the intentions
-> that act on it — devices, access, account recovery, export, import and migration — without asking the
-> user to name, select, reconcile or administer workspace containers.
+**A real one arrived in its place, from the same decision.** D-24 leaves a device holding more than one
+local workspace: the anonymous one it used before signing in, plus the account one — and after account
+deletion, two local ones with no account to distinguish them. v16's first draft patched this with
+stipulations, a "current workspace" fact and a rule about how it was set. Those were compensating for an
+absent affordance rather than removing a task, which is the pattern §1.4 warns about running in reverse.
 
-The security corollary is not an exception. Revoking a phone is device and access management; saving a
-recovery factor is recovery. Each changes workspace state underneath, but none requires the user to hold
-a workspace model. D-5 is the proof, and the strongest available one: the workspace-management UI it
-demanded turned out to be answering a question the storage key made disappear.
+> **Decided: Rule 1 is relaxed on exactly one verb, under exactly one condition.** The user never has to
+> think about workspaces **until they hold more than one locally**, at which point the app shows a context
+> indicator naming the current list and a picker listing the local workspaces it can open.
+>
+> - **Permitted: select.** Choosing between local workspaces the person already holds.
+> - **Still absolute: name, reconcile, administer.** No workspace is named by a user, no two are ever
+>   merged or adjudicated, and nothing is created, configured or shared from a management surface.
+> - **The condition is a count the app can evaluate**, and it is reached only by an act the user took
+>   deliberately: creating an account and choosing *start fresh*, signing in on a device that had been
+>   used locally, or deleting an account (D-24). Below the threshold — where every user who never asks
+>   for a hosted service lives, permanently — Rule 1 is unchanged and no indicator or picker exists.
+> - **It should read as an account switcher, not as storage administration.** That is a UX statement with
+>   a product reason behind it: a switcher asks *whose list is this*, which is an identity question people
+>   already have a model for, while a workspace manager asks what a container is, which is the thing Rule
+>   1 exists to prevent anyone ever needing to know.
 
-**v16 adds one surface and it is the one to watch.** A device that signed in retains a Local workspace,
-and reaching it is a real affordance the product did not have before (D-24). It stays on the right side
-of Rule 1 for two reasons, both of which have to keep holding: **which list is visible follows sign-in
-state rather than a choice between containers**, so there is no picker; and the retained workspace is
-presented as *your data from before you signed in* with export and deletion, not as a second list to
-maintain. If either drifts — a switcher, two live lists, anything that asks the user which workspace they
-mean — this is where Rule 1 gets reopened, and the trigger below is exactly that drift.
+**Why this is an exception rather than a missing rule**, which is the test §1.4 requires and which the
+withdrawn case failed. Two retained local workspaces are both the user's; neither is more current, more
+authoritative or more recent in any sense the model records; no principal, epoch or membership ranks
+them. There is nothing to derive, so a rule that picked one would be a stipulation wearing a rule's
+clothes — which is precisely what v16's first draft wrote and what this replaces. D-5 was the opposite
+case and that is why it was withdrawn instead of accommodated.
 
-Rule 1 would need reopening if the product introduced multiple visible workspaces and asked a person to
-name, choose between, move among or administer them. Current architectural capacity for multiple
-memberships does not do that; the revealed product remains one home workspace/document (§5.4.1).
+**What this replaces, so it is not rebuilt.** The committed "current workspace" fact is not needed: the
+picker is the disambiguator, and what remains is only which workspace was open last, which is ordinary
+interface state rather than a product rule. Sign-in state stops being load-bearing for visibility — it
+was never going to survive account deletion, which is the case that exposed the whole problem.
+
+The security corollary is still not an exception. Revoking a phone is device and access management;
+saving a recovery factor is recovery. Neither requires the user to hold a workspace model.
+
+**The boundary that must not erode, and it is a different axis from the one just relaxed.** This picker is
+over **local workspaces on one device** — several dead-ended histories belonging to one person. It is not
+multi-workspace **navigation**, which means several live, synced, possibly shared workspaces reached
+through memberships, and which §5.4.1 reserves for the human-sharing document precisely so it is not
+smuggled in through a cardinality. The two look alike in a list and are nothing alike underneath: one is
+"which of my old lists", the other is "which of the workspaces I am a member of". Rule 1 would need
+reopening again if the second arrived by growing the first.
 
 ### 5.10 The service data boundary — D-32
 
@@ -3956,12 +4080,18 @@ The phone has a week of its own notes and the account workspace has the laptop's
 asked to give anything up, because the account workspace opens in its own local database and the week
 stays exactly where it is, in the anonymous workspace it was written into (§5.2.1). Tom sees the laptop's
 month, which is the list he asked for. His week is not gone, not exported to a file he has to keep, and
-not merged into anything — it is on the phone, under the phone's own principal, and signing out shows it.
+not merged into anything — it is on the phone, under the phone's own principal, one selection away.
 
-**What he does with it is his to decide and there is no deadline.** He can read it, export it, or delete
-it; the app should make that reachable where a person would look for their own earlier data, and should
-not dress it up as a second list he is meant to maintain (D-24, Rule 1). If he never touches it again, it
-sits there, costing storage and nothing else.
+**This is also the first moment the app has ever indicated a workspace to him, and the only kind of
+moment it ever will.** The phone now holds two, so it names the one he is looking at and offers the other
+— which reads as an account switcher rather than as storage administration, because that is what it is
+(D-30). Nothing was named, nothing is being reconciled, and on the laptop, which holds one workspace,
+nothing appears at all. Every user who never signs in sees none of this, ever.
+
+**What he does with the week is his to decide and there is no deadline.** He can read it, export it, or
+delete it; the app should make that reachable where a person would look for their own earlier data, and
+should not dress it up as a second list he is meant to maintain (D-24, Rule 1). If he never touches it
+again, it sits there, costing storage and nothing else.
 
 Afterwards, the phone has a new human actor in the account workspace because attribution remains per
 member-per-device, and the interface groups it with the laptop's under the same principal: one "You", one
@@ -4021,17 +4151,17 @@ which is deliberate (§0.1).
 | **D-21** | What does "the active caret" mean — local, or globally recent? | **Decided**               | Locally active. No recency modelling; a design check that it reads as distinct                                                              |
 | **D-22** | Does merged content show its provenance?                       | **Decided**               | Yes, as a rarely-on mode. Settings toggle, off switch surfaced while active. Cards only, bounded by the **divergence** rather than the freeze window — the merges it explains land outside three days (§5.2.2) |
 | **D-23** | Does pairing alone trigger the name prompt?                    | **Decided**               | Largely dissolved by D-16: one name prompt, at account creation, which is now the same moment as first sync — and as the recovery-code ceremony, which is the larger ask |
-| **D-24** | How does local history become an account, and what happens to it elsewhere? | **Decided**  | Account creation asks once — promote this list (a move) or start fresh; both are safe. Signing in adopts, merges, replaces and re-parents nothing: the account workspace opens in parallel storage and the Local one is retained, reached by signing out and ended by export or deletion. Deletion leaves each device its **last replica**, not a full copy, and the principal survives it |
+| **D-24** | How does local history become an account, and what happens to it elsewhere? | **Decided**  | Account creation asks once — promote this list (a move) or start fresh; both are safe. Signing in adopts, merges, replaces and re-parents nothing: the account workspace opens in parallel storage and the Local one is retained, reached through D-30's picker and ended by export or deletion. Deletion keeps every device's copy, records where the list continues rather than pruning, and **decrypts the workspace in place**. Each device keeps its **last replica**, not a full copy, and the principal survives it |
 | **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**               | Yes, for the environment case. Warn about the property, not the cause. Offer the grant, then export, then sync. Also owns the hosted copy's dependency on the saved code |
 | **D-26** | Revocation learned late, history already diverged?             | **Decided**               | No lineage rule, no discard, no filtered replay. Needs a **finalization boundary** against a hostile relay (§5.2.3) — a contract row        |
 | **D-27** | Is attribution authenticated, or advisory?                     | **Decided**               | Authenticated by an epoch-authorized credential; actor is derived or explicitly authorized for representation                               |
 | **D-28** | What carries the authorization protocol?                       | **Decided**               | A service-authoritative control plane around end-to-end-encrypted Yjs updates; the attributed actor sits inside the seal, so no actor identifier crosses in the clear — the relay still maps credentials to members through authorization state (§5.7.1); exact envelopes, finalization and key constructions belong in the TRD |
 | **D-29** | What happens if a paid account plan lapses?                    | **Decided conditionally** | If D-31 selects such a plan: grace period, then read-only. Ciphertext and wrapped root are retained together so resuming works; local use is untouched; expiry is what destroys |
-| **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Decided**               | Rule 1 stands: users manage devices, access, recovery and data transitions without managing or seeing workspace containers                 |
+| **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Decided** (re-decided in v16) | One real exception, one verb: **select**, and only where a device holds more than one local workspace — a context indicator plus a picker, reading as an account switcher. Name, reconcile and administer stay absolute, and multi-*membership* navigation stays with the human-sharing document (§5.4.1) |
 | **D-31** | What does hosted sync cost, and how should it be priced?       | **Deferred on purpose**   | Business-model question outside this document. D-16 requires an account but does not presume free, paid, bundled or metered                 |
 | **D-32** | What may the service retain, observe and do?                   | **Decided in principle**  | Fix irreversible constraints before the TRD; maintain a living inventory during design/build; reconcile and review the as-built surface before wider availability |
 | **D-33** | What survives the service, and what may be claimed?            | **Decided in principle**  | Independently runnable client and service stack; open source preferred, triggered source release acceptable; binary-only continuity insufficient; claims gated by corresponding tests |
-| **D-34** | Is local user content encrypted at rest?                       | **Existence open; shape decided** | Two plaintext stores today, a third planned. Any lock is opt-in, user-held factor, governs every store, and accepts total loss if the factor is forgotten. Open only: whether to build it. Also settles when content encryption begins (§5.2.1) |
+| **D-34** | Is local user content encrypted at rest?                       | **Existence open; shape decided** | Two plaintext stores today, a third planned, plus one per retained workspace. Any lock is opt-in, user-held factor, governs every store, and accepts total loss if the factor is forgotten. Open only: whether to build it. Also settles when content encryption **begins** (§5.2.1); where it **ends** is decided without it — leaving Account decrypts in place (D-24) |
 
 ### 8.1 The security contract is bounded; the TRD must instantiate it
 
@@ -4049,7 +4179,7 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | **Protocol boundary**                     | **A service-authoritative control plane around client-encrypted Yjs updates**; service signs authorization/finalization, clients encrypt and sign content, relay/store handle opaque envelopes (D-28) | Exact message/state formats, verification APIs, batching and test vectors |
 | **Authorization and recovery boundary**  | **Selected: the service alone authorizes; the user-held root recovers content only; service disappearance starts a new lineage through migration** (§5.7.2, §5.7.3) | Account-recovery policy and the exact user-mediated proof that gates content-key delivery |
 | Browser key storage                      | **Selected: a non-extractable `CryptoKey`, PRF-wrapped where the authenticator supports it.** The tier is shown in the device list and is never silent; the unlock gates sync, not the app (§5.7.4) | PRF enrollment flow, and the copy shown for a device on the lower tier |
-| **Local storage at rest**                | **Selected: if a device lock exists it is opt-in, user-held-factor-keyed, governs every store holding content, and accepts total loss on a forgotten factor.** Content is plaintext today in IndexedDB and the journal, with the Phase-4 index a planned third; the origin sandbox is not an at-rest boundary | Whether to build it at all — **D-34** (§5.7.4). Its answer also fixes whether account creation is a whole-document encryption pass (§5.2.1) |
+| **Local storage at rest**                | **Selected: if a device lock exists it is opt-in, user-held-factor-keyed, governs every store holding content, and accepts total loss on a forgotten factor.** Content is plaintext today in IndexedDB and the journal, with the Phase-4 index a planned third and one store per retained local workspace; the origin sandbox is not an at-rest boundary. **Leaving Account decrypts the workspace in place** — the exit does not wait on D-34 (D-24) | Whether to build the lock at all — **D-34** (§5.7.4). Its answer also fixes whether account creation is a whole-document encryption pass (§5.2.1) |
 | **Signed authorization epoch**           | Binds membership, credentials, capabilities and key generation; the service signs and serializes successors | Chain-head discovery for a fresh device, checkpoint and downgrade rules. **Fork rules are no longer needed** (D-16) |
 | Signed mutation envelopes                | Source-authenticated; workspace/epoch/credential/digest in the clear, **attributed actor inside the seal** so no actor identifier crosses in the clear. Not unlinkability — the relay still infers member from credential via authorization state (§5.8.1). **Devices retain their own outbound envelopes** back to the last admitted checkpoint (§5.6.2) | Which fields are associated data, envelope and batching granularity, anti-replay/finalization rule, authenticated checkpoint construction, and how far back retention runs |
 | Attribution binding                      | Actor is derived from the credential or explicitly authorized for representation        | How an update's affected attributed fields are inspected or derived                                        |
@@ -4152,7 +4282,8 @@ and with it a transport, a revocation semantics, a second authorization path and
 selections.** The remaining design task is correspondingly smaller than it was in v14.
 
 What should survive future rounds unchanged, because it has now held up under every one of them:
-invisible workspace management (Rule 1), reads and writes never awaiting a **network** credential —
+invisible workspace management (Rule 1, with v16's single audited exception in D-30), reads and writes
+never awaiting a **network** credential —
 the qualifier matters, and D-34 is why (§5.7.4) — an account adopting an identity that predates it
 (D-24), honest durability warnings (D-25), and removal governing future access rather than pretending to
 erase copies already made.
@@ -4261,7 +4392,9 @@ the shared ontology in §1.
   implementation detail, and they are currently written down nowhere. The principal in particular is
   the thing the PRD talks around: "one user" appears throughout without ever being a thing the system has.
 - **§2 Design principles** — the two rules in §1.4 are of the same kind as the ranked principles there
-  and would sit better beside them than in a companion document.
+  and would sit better beside them than in a companion document. Rule 1 must be promoted **with its
+  condition and its one permitted verb** (D-30), not in the unconditional form earlier drafts used: the
+  user never manages workspaces, and never selects between them until they hold more than one locally.
 
 ### 9.1 Nothing is owed to the multi-tab branch
 
