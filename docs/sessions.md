@@ -42,6 +42,14 @@ multi-*membership* navigation stays reserved (§1.4, D-30, §5.4.1).
 relay and a server copy the exit removes. That is decided without D-34, which governs the other
 direction only (D-24, §5.7.4).
 
+**And one question is closed by reading a PRD principle correctly rather than by deciding anything.**
+Migration's carry-attribution-forward cost looked as though it ran against principle 6 — *the past is
+written, not read*. It does not: principle 6 is about how the past is surfaced and what to build for it,
+not about whether a retained claim may become unverifiable, and the compaction it licenses is precisely
+the mechanism that **retires** an attribution claim. So the retention floor is "for the lifetime of the
+claim" rather than forever — bounded in principle, unbounded in practice only because destructive
+compaction is safety-paused (§5.11.2, TRD §10.4).
+
 **Four corrections review found in the first v15 draft, recorded rather than quietly fixed**, because
 each was an over-claim in the direction of the decision this revision wanted to make: D-16 removed the
 accountless authorization path but did not by itself decide who held account authority; §5.7.2 now does —
@@ -3731,6 +3739,55 @@ across a service boundary:**
 > the same either side of a migration, and §5.7.1's
 > table needs no migration-specific exception.
 
+**Whether PRD principle 6 argues against all of this, since it is a ranked principle and outranks
+everything here (§1.4).** *"The past is written, not read — assume history is essentially never
+revisited"* reads at first like a reason not to pay for historical attribution at all. It is not, and the
+reason is in what principle 6 actually licenses.
+
+**Principle 6 governs how the product treats the past, not whether a retained claim may become false.**
+It is a statement about user behaviour and what to build for it: weight retrieval toward recent days,
+do not build deep-history navigation, let the freeze be permanent, make compaction acceptable. None of
+those authorizes displaying an author the product can no longer verify. A claim the interface is still
+making is a present claim, whatever its subject's age.
+
+**And compaction is where the two meet, which turns principle 6 from an objection into the mechanism
+that bounds this.** Destructive compaction serializes a day's collections into `archive: Y.Text` and
+deletes the cards (TRD §4.5). A compacted day has no cards, therefore no `Card.author`, therefore **no
+attribution claim** — the export format says the same thing from the other side, since `Card.author`
+appears in none of `master.md`, `days/<date>.md` or `recovery.md` (TRD §9). So the product already has a
+sanctioned way to stop claiming, principle 6 is exactly what justifies it, and the floor above is not
+"forever" but **for the lifetime of the claim**.
+
+**Two things stop that being as reassuring as it sounds, and both should be said rather than discovered.**
+
+- **The bound is currently inert.** Destructive compaction is safety-paused and may never return; TRD
+  §10.4 accepts the consequence in terms — "the cost is unbounded document growth." Nothing else retires
+  a card. So in the shipping product every card ever written still carries a live attribution claim, and
+  the retention obligation is unbounded in practice. Reading principle 6 correctly **justifies** that cost;
+  it does not reduce it.
+- **Exporting discharges nothing.** The export drops attribution, but the workspace keeps showing the
+  author, and the workspace is what makes the claim. Only removal and compaction end one.
+
+**Which creates a sequencing consequence nobody has connected, and it belongs with whoever re-enables
+compaction.** Destructive compaction would be an **attribution-retirement event** as well as a storage
+one: the content-key generations that served only compacted days become droppable at that moment. TRD
+§4.5 and §10.4 treat compaction purely as a replica-safety problem and say nothing about attribution;
+§8.1's retention floor discusses generations and says nothing about compaction. The replica-acknowledgement
+protocol §10.4 requires before compaction can return is therefore gating two boundaries, not one (§9).
+
+**And the floor is smaller than "every generation" once the retained object is the right one.** Item 3
+above names an "attribution-preserving checkpoint" without saying what one is; the shape that satisfies
+both it and item 4 is an **attribution index** — per attributed unit, the actor, credential, epoch,
+envelope digest and *original* signature — carried forward and re-wrapped under the current content-key
+generation at each rotation. It re-signs nothing, so §5.6.2's prohibition on signing another credential's
+mutations as your own is untouched; the inner signatures still verify against the credentials that made
+them and only the confidentiality wrapper changes. It is bounded by attributed units rather than by
+update count, which is what §5.11.3 wants of any recovery representation. And it lets superseded
+generations be discarded once the index has moved past them, which collapses the floor to **the current
+generation plus one small sealed index**. The construction is TRD work and goes in front of §5.7.8's
+design reviewer; what belongs here is that it exists, so the floor stops reading as unbounded by
+construction.
+
 **And "during" needs a rule, because §5.11.4's test 7 names it as a case.** A migration is a cutover: the
 checkpoint fixes a covered range, and edits made after that range is computed but before the new lineage
 accepts anything belong to neither side.
@@ -4185,13 +4242,13 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | Attribution binding                      | Actor is derived from the credential or explicitly authorized for representation        | How an update's affected attributed fields are inspected or derived                                        |
 | Revocation commit semantics              | Requested · committed · acknowledged; no peer path bypasses the relay                   | Protocol and recovery behaviour for interrupted rotation                                                   |
 | **Content finalization boundary**        | A valid mutation is not accepted without authorization-service evidence; a hostile relay can withhold and later deliver a valid old-epoch write. **Across a migration the checkpoint re-baselines admissibility** — prior envelopes are archival, not replayable (§5.11.2) | Per-envelope receipts, accepted-log inclusion proofs, or checkpoints with an authenticated suffix; every shape ends in a committed cutoff (§5.2.3) |
-| Content-key wrapping and rotation        | Symmetric generations wrapped per reader credential; edit implies read under this shape. **Retention has a floor**: enough generations to open every sealed actor binding whose attribution the product still claims (§5.11.2) | Algorithms, and retention above that floor |
+| Content-key wrapping and rotation        | Symmetric generations wrapped per reader credential; edit implies read under this shape. **Retention has a floor**: enough to open every sealed actor binding whose attribution the product still claims — *for the lifetime of the claim*, not forever, since compaction and removal retire claims (§5.11.2). Carrying an **attribution index** re-wrapped forward at each rotation reduces the floor to the current generation plus that index | Algorithms; the index construction; retention above that floor. **Re-enabling destructive compaction moves this boundary** and is not only a storage change (TRD §4.5, §10.4) |
 | **Awareness and presence metadata**      | Presence is outside the content encryption as currently designed                        | Encrypt awareness, or state in the threat boundary that the relay learns who edits what and when (D-20)    |
 | Account relationship to the content root | **Selected: non-custodial encrypted recovery.** The service never receives the wrapping factor and cannot decrypt under any proof or order. Escrow is excluded from the service and survives only as an opt-in add-on operated by a separate legal entity, scoped to the content root (§5.7.5) | The add-on's operating boundary, and the copy that explains a two-party disclosure requirement |
 | Recovery                                 | **Selected: a mandatory high-entropy code saved outside the enrolling device, wrapped 1-of-N**, with optional independent PRF-passkey wraps (§5.7.6). Re-entry at enrollment proves transcription and possession, never location — the copy carries independence, not the mechanism. Account, authorization, content key and ciphertext remain four separate objects | Code generation and confirmation, replacement policy, loss warnings and account-deletion semantics (D-13) |
 | Web application and protocol assurance   | **Selected: levels 1–3 before sync ships, 5 live at ship, 4 on a stated trigger.** Same-origin code is inside the cryptographic boundary; D-28 fixes the design-review scope at the architecture level (§5.7.8) | Which ASVS profile and version, who performs the design review, the audit's scope, and the concrete TRD protocol submitted for review |
 | **Durable store representation**         | A content-blind store cannot merge; recovery needs checkpoints, not a merged state. The manifest publishes an **authenticated coverage attestation over insertions and deletions** — a snapshot's `{sv, ds}` or a checkpoint receipt — since a bare state vector cannot establish coverage (§5.11.2) | Checkpoint construction and cadence, manifest binding, retention of superseded checkpoints (D-33, §5.11.3) |
-| **Portability and migration**            | Export, import, an independently obtainable build and creation of a fresh authorization lineage at a replacement service are requirements, not roadmap. **Migration carries attribution forward** (§5.11.2) | The historical-verification package — authenticated old trust root, enough old authorization history, original envelopes or an attribution-preserving checkpoint, and the content-key generations that open sealed actor bindings — plus the cutover contract: authenticated coverage attestation, and each device replaying its own retained envelope suffix rather than filtering a merged delta (D-33) |
+| **Portability and migration**            | Export, import, an independently obtainable build and creation of a fresh authorization lineage at a replacement service are requirements, not roadmap. **Migration carries attribution forward** (§5.11.2), and PRD principle 6 does not argue against it — it governs how the past is surfaced, and licenses the compaction that retires a claim in the first place | The historical-verification package — authenticated old trust root, enough old authorization history, original envelopes or an **attribution index** carrying original signatures re-wrapped forward, and whatever generations that index still needs — plus the cutover contract: authenticated coverage attestation, and each device re-enveloping its own retained envelope suffix rather than filtering a merged delta (D-33) |
 
 **D-17 gated the selections in the right-hand column, not the existence of every left-hand requirement —
 and all five are now recorded.** The authorization/content boundary, the account's relationship to the
@@ -4344,6 +4401,18 @@ the shared ontology in §1.
   distinction rather than the looser "human editing surface" one. It governs operations that **author the
   past**; it has never bound replication, it is deliberately independent of compaction (TRD §4.5), and it
   must not bind a migration import (§2.4, §5.2.2, §6).
+- **§2 principle 6 — a clarification, not a change.** *"The past is written, not read"* is a statement
+  about user behaviour and what to build for it: weight retrieval toward recent work, do not build
+  deep-history navigation, keep the freeze permanent, treat compaction as acceptable. It is **not** an
+  integrity or retention rule, and should say so, because it has already been read once as licensing the
+  product to display an author claim it can no longer verify. It does not. What it licenses is *retiring
+  the claim* — which is what compaction does (§5.11.2).
+- **TRD §4.5 and §10.4 — destructive compaction is also an attribution-retirement event.** Both sections
+  treat the safety pause purely as a replica-acknowledgement problem. Compaction deletes cards, so it
+  deletes `Card.author`, so it discharges the historical-verification obligation for the days it
+  compacts and makes the corresponding content-key generations droppable (§8.1, §5.11.2). Whoever
+  re-enables it is moving a security boundary as well as a storage one, and the protocol §10.4 requires
+  is gating both.
 - **TRD §2 and §7.2** — the relay they describe is no longer the relay this document selects, and neither
   was previously on this list. §2 chooses Yjs "with the relay as a dumb pipe … It holds no authority, runs
   no application logic, and can be absent entirely"; §7.2 specifies a shared bearer token over TLS on the
