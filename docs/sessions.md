@@ -345,10 +345,21 @@ device surface are one screen rather than two.
 **Two of those three have no referent in this product, and the borrowed sentence hid it.** There are no
 peers but your own devices — human sharing is out of scope (§5.4.1) and agents are members rather than
 peers — and identity changes are the service's to attest, not another human's to compare fingerprints
-with. So the irreducible surface here is **one item, not three: the list of your own devices**, carrying
-what D-18 revokes from and what §5.7.4 shows as each device's key-storage tier. That is a smaller budget
-than the comparison implies, and the comparison should not be used to argue for more screens than the
-product has questions for.
+with. So the borrowed three do not apply, and the surface has to be counted from this product's own
+questions rather than from Signal's. **It came to one when this passage was written and it is now three**,
+because two decisions taken since each added one:
+
+- **The list of your own devices** — what D-18 revokes from, and what §5.7.4 shows as each device's
+  key-storage tier. This is the original one and it is still the load-bearing one.
+- **The recovery surface** — where the code is generated, confirmed and, if that is ever allowed,
+  replaced. D-17 made it mandatory and §5.7.7 promotes it from a detail of recovery to *being* recovery.
+- **The device-lock enrollment**, for anyone who opts into D-34's stronger key custody. Optional, so most
+  users never see it, but it exists and it is security surface.
+
+The lesson survives the recount, and is worth keeping in the sharper form: **the budget is set by the
+questions this product actually has, and each addition should have to name the decision that forced it.**
+All three above can. What the Signal comparison must not be used for is arguing that a fourth is normal
+because other systems have one.
 
 ---
 
@@ -366,6 +377,7 @@ Mechanics, included only because the decisions in §5 are not real without them.
 | Sync endpoint, room, token  | `localStorage['done.sync']`        | no     | per browser profile                   |
 | Last sync time and source   | `localStorage['done.sync.last']`   | no     | per browser profile                   |
 | The document itself         | IndexedDB database `done`          | —      | **per browser profile, not per room** |
+| Pending updates (the crash journal) | `localStorage['done.pending-update.*']` | no | per browser profile           |
 | Session                     | nowhere                            | —      | —                                     |
 
 Ids are UUIDv4, so collision is not a concern anywhere below. The menu already edits the actor's name
@@ -825,9 +837,9 @@ does not sync peer-to-peer with a laptop, which is the entire device pair the pr
 device-to-device proof **remains one available content-delivery path**; it is not an invariant of
 enrollment. Signing in proves who you are to the service, while a PRF-capable passkey, a saved recovery
 factor, an existing device or the separate escrow add-on can deliver the content key under D-17's selected
-custody model (§5.7.5). If the device-to-device ceremony is used — show a code on the
-laptop, scan it on the phone — it happens **after the service authorizes the new device**, rather than
-establishing a second, device-centric authority of its own. That is the difference
+custody model (§5.7.5). If the device-to-device ceremony is used — whichever of the two shapes D-19
+leaves to the TRD — it happens **after the service authorizes the new device**, rather than establishing
+a second, device-centric authority of its own. That is the difference
 between an enrollment option and a tier, and it is where nearly all of the deleted complexity lived.
 
 **A phrase this document kept getting wrong, retained because the correction still bites.** Earlier
@@ -907,9 +919,9 @@ The combinations that catch people out, and each one has bitten a draft of this 
 
 | Property             | Local                            | Account                                                            |
 | -------------------- | -------------------------------- | ------------------------------------------------------------------ |
-| Local availability   | Yes                              | Yes — never awaits a credential (§6)                               |
+| Local availability   | Yes                              | Yes — never awaits a *network* credential (§6)                     |
 | Synchronization      | No                               | Yes, relay-mediated, including devices never awake together        |
-| Durability           | One device only                  | Encrypted server copy, retention stated (D-29)                     |
+| Durability           | One device only                  | Encrypted server copy; retention has a stated duration only in D-29's conditional lapse path |
 | Recoverability       | Export only                      | Yes — the saved code unwraps the content root (§5.7.6)             |
 | Portability          | Markdown export; import is owed  | Same, plus a fidelity archive (D-33)                               |
 | Service independence | Existing install: **total**. Reinstall/recovery: needs D-33 | Requires the survival package (D-33)                    |
@@ -1039,7 +1051,7 @@ account-custody path:
 
 | Where the key comes from                    | What the user does                             | Selected in |
 | ------------------------------------------- | ---------------------------------------------- | ----------- |
-| An existing authorized device delivers it    | Show a code on the laptop, confirm on the phone | §5.7.2's second gate |
+| An existing authorized device delivers it    | An out-of-band ceremony between the two devices | §5.7.2's second gate |
 | A non-custodial recovery factor unwraps it   | Present a passkey with PRF, or a saved code     | §5.7.5 row 2 |
 | The service holds it                         | Nothing — and the product stops being E2E      | §5.7.5 row 3, which reopens D-20 |
 
@@ -1047,6 +1059,16 @@ account-custody path:
 hedge.** It is the convenient path when two devices are available. What it no longer does is establish
 authorization: the service admits the device and signs the epoch, while the ceremony transfers a key
 beneath that. Those are independent gates (§5.7.2).
+
+**Which ceremony it is remains a TRD selection, and this document has described it two ways without
+noticing they are different protocols.** *Show a QR on the laptop and scan it on the phone* is a one-way
+out-of-band transfer that carries the key itself. *Show a short code and confirm it on the other device*
+is a short-authentication-string check over an in-band key agreement, which needs the relay as a channel
+and has different failure modes and a different review scope (§5.7.8). Either satisfies the gate; they
+are not interchangeable in the security contract, so §8.1 names the choice rather than this section
+assuming it. Note also the direction constraint, which the worked example in §7 hides by choosing the
+easy case: the **existing** device delivers, so enrolling a laptop from a phone needs the laptop to be
+the one that can read a code.
 
 **Rule 1 is satisfied because sign-in _assigns_ the workspace identifier.** The account determines it, so
 nobody types one, and there is no third thing to configure. That remains the strongest evidence that the
@@ -2005,7 +2027,12 @@ service changes authorization, and agent membership requires an account (§5.4.1
 advances the epoch requires one. **A Local workspace is always at epoch 0 and an Account workspace is
 always past it** — the epoch is not a third axis crossing the ladder, it is the ladder seen from the
 authorization side. That collapses the detection problem D-12 was worried about into one question with a
-definite answer: *is there signed service authorization state in this document?* Absent means Local
+definite answer: *is there signed service authorization state for this workspace?* — which is a separate
+signed object beside the document, not a field in it: the relay validates the epoch (§5.8.1) so it sits
+outside the content seal, and §5.7.3 makes the service's signed state rather than the roster the source of
+the device list. Naming the store matters here more than usual, because the whole point of this test is
+that it must not read document-resident, mutable, unauthenticated data — which is the mistake the
+withdrawn roster test made. Absent means Local
 genesis and re-minting is harmless; present means admitted and it is not.
 
 **The epoch is a property of the workspace, not of the device, and v16 makes that distinction load-bearing
@@ -2162,7 +2189,11 @@ them.** They can be cleared in combination, and the combinations are what the bu
    generations it holds. This is what lets the device write as itself and read the workspace.
 3. **The document** — IndexedDB and the journal beside it.
 4. **Recovery material** — any copy of the recovery code the user stashed on this device, which §5.7.6
-   asks them not to do and some will do anyway.
+   asks them not to do and some will do anyway. **The app can rarely clear this and must not imply
+   otherwise**: §5.7.6 deliberately gives the code no home inside the app, so the copies that exist are
+   in a notes app, a password manager, a screenshot or on paper, none of which this button can reach. So
+   object 4 is a *warning* rather than an action — the reset says what a person may still be relying on
+   and asks them to check, and it claims to clear only what it can actually see.
 
 **Clearing 1 and 3 without 2 is the shape to avoid, and it was the shape the old two-way framing
 described.** "There was never anyone here" is what a shared-laptop user means, and it is not achieved by
@@ -2973,7 +3004,7 @@ server-held document. These are the available account shapes:
 | Option                                   | What sign-in recovers                                                                      | Can the service read content?                        | What a new device still needs                                                                               |
 | ---------------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | Service authorization only               | Account access, authorization, the device list, current authorization head and ciphertext | No                                                   | An existing device or separate recovery factor to deliver the content root                                 |
-| Non-custodial encrypted recovery         | All of the above, plus a wrapped content root                                               | No, if the wrapping factor never reaches the service | An independently available PRF-capable passkey, recovery secret or selected quorum that can unwrap the root |
+| Non-custodial encrypted recovery         | All of the above, plus a wrapped content root                                               | No, if the wrapping factor never reaches the service | An independently available PRF-capable passkey or recovery secret that can unwrap the root. (Quorum was available here and is **rejected** — §5.7.6 selects 1-of-N) |
 | Service escrow                           | Everything after the service accepts the recovery proof                                    | **Yes, in capability if not in routine operation**   | Nothing else; the same capability that makes recovery smooth lets the service or its compromise decrypt     |
 | Account-authorized, device-approved data | Account access authorizes the device; another device must approve content access            | No                                                   | A surviving content-holding device every time; the account improves identity and revocation, not recovery   |
 
@@ -3022,6 +3053,16 @@ specific ways that are easy to miss.
 > operates the service.** Its scope is the **content root only** — it holds a wrap of the content root and
 > nothing else. It may not admit or revoke credentials, change capabilities, sign authorization state or
 > operate the account (§5.7.2).
+
+**That answers the first objection and not the second, which should be said rather than left to look
+answered.** Two-party separation genuinely converts *we cannot for this one* back into an architectural
+inability, because neither entity alone can produce plaintext. It does nothing about the second: the
+escrow agent's public key still ships to every client, so a hostile or coerced release could wrap
+non-opted-in users' roots to it, and the two-demand story then reaches them too. **That residual is
+accepted, and what carries it is release integrity rather than custody** — §5.7.8's row 13 controls, the
+independent implementation audit that the add-on holding a real key triggers, and the reproducible,
+checksummed release artifacts D-33 requires for its own reasons. Those are the mitigation; naming them
+here is what stops the escrow section from reading as though the separation had answered both.
 
 **The separation is a security property, not liability arrangement.** Split across two entities, the
 service holds ciphertext and a root wrapped only to the user's code; the escrow agent holds a root wrapped
@@ -3093,7 +3134,9 @@ recovery selects PRF, an authenticator that reports no PRF result has to land so
 >
 > - At account creation the content root is wrapped to a **high-entropy code the user saves outside the
 >   enrolling device**. Every account has one, and there is no account without one. Enrollment requires
->   the user to **re-enter the code from wherever they put it** before the account completes.
+>   **account creation** to have the user **re-enter the code from wherever they put it** before the
+>   account exists. Later *device* enrollments ask for nothing (D-23, §7) — the two events are both called
+>   enrollment elsewhere in this document, and only this one involves the code.
 > - **Additional independent wraps may be added** — PRF-capable passkeys, preferably in more than one
 >   ecosystem. Each is a complete path to the same root only if it remains available after loss of the
 >   device it protects.
@@ -3486,7 +3529,9 @@ outcome delivered to the least attentive moment.
 
 > **Decided conditionally: a grace period, then read-only.** If a paid plan exists, a lapse does not retire the authorization lineage and does
 > not touch the enrolled devices. During the grace period everything continues. After it, the account goes
-> **read-only**: the server-held copy is retained and readable, server-intermediated sync stops, and the
+> **read-only**: the server-held copy is retained and remains **recoverable** — no device reads it during
+> read-only, since sync is what would have read it; what stays available is the total-device-loss recovery
+> path below. Server-intermediated sync stops, and the
 > devices keep working locally exactly as they always did, because nothing on the read or write path
 > ever awaited a credential (§6).
 >
@@ -4024,7 +4069,9 @@ The gate, demonstrated without production credentials or the original app origin
    divergent work and re-signs only its own credential's operations under the new lineage, then converge
    edits made after enrollment. Verify separately that operations from a third credential which never
    reached the archive are **not** re-signed by the enrolling device (§5.11.2).
-8. Repeat with the store holding the newest checkpoint unavailable, using the documented replica order.
+8. Repeat with the store holding the newest checkpoint unavailable, falling back to the next-newest
+   retained checkpoint and its suffix. The order of preference among retained checkpoints is part of
+   §5.11.3's retention rules and has to be documented there rather than assumed here.
 9. **Run tests 4 through 7 again with the entire original provider account unavailable** — not one store,
    not one region, but every service the company operated — using only material the user already holds.
    This is the test the survivability claim is actually about, and it is the one a within-provider replica
@@ -4226,9 +4273,10 @@ Once he confirms the independently held code, the account exists.
 He signs in on the phone. The account admits the phone's device credential, the service signs the new
 authorization epoch, and the phone is enrolled — but it still cannot read anything, because authorizing a
 device does not deliver a content key (§5.7.2). So the laptop shows a one-time pairing QR, the phone scans
-it, and the key arrives out of band (D-19). He never needs the recovery code for this: it is the fallback
-for when no existing device survives, not a step in ordinary enrollment, and the QR does not create a
-second authorization path. No workspace name, room or endpoint is typed anywhere (Rule 1).
+it, and the key arrives out of band — one of the two ceremony shapes D-19 leaves to the TRD, drawn here
+because it is the legible one and because the phone is the device with the camera. He never needs the
+recovery code for this: it is the fallback for when no existing device survives, not a step in ordinary
+enrollment, and the ceremony does not create a second authorization path. No workspace name, room or endpoint is typed anywhere (Rule 1).
 
 **And the part that used to cost something now costs nothing, which is the whole of what v16 changed.**
 The phone has a week of its own notes and the account workspace has the laptop's month. The phone is not
@@ -4332,7 +4380,7 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | Threat boundary and negative promises    | §5.7.1's attacker table; offline local use and availability limits                      | Any stronger claim, including local-device-at-rest or traffic-metadata protection                          |
 | Credential separation                    | Relay bearer, per-device/per-agent operational credentials, service authorization authority and content-recovery root | Concrete credential formats, algorithms, key separation and crypto-agility                 |
 | **Protocol boundary**                     | **A service-authoritative control plane around client-encrypted Yjs updates**; service signs authorization/finalization, clients encrypt and sign content, relay/store handle opaque envelopes (D-28) | Exact message/state formats, verification APIs, batching and test vectors |
-| **Authorization and recovery boundary**  | **Selected: the service alone authorizes; the user-held root recovers content only; service disappearance starts a new lineage through migration** (§5.7.2, §5.7.3) | Account-recovery policy and the exact user-mediated proof that gates content-key delivery |
+| **Authorization and recovery boundary**  | **Selected: the service alone authorizes; the user-held root recovers content only; service disappearance starts a new lineage through migration** (§5.7.2, §5.7.3) | Account-recovery policy, and the exact user-mediated proof that gates content-key delivery — including **which device-to-device ceremony** it is, since a QR carrying the key and a short-authentication-string check over an in-band agreement are different protocols with different review scopes (D-19) |
 | Browser key storage                      | **Selected: a non-extractable `CryptoKey`, PRF-wrapped where the authenticator supports it.** The tier is shown in the device list and is never silent; the unlock gates sync, not the app (§5.7.4) | PRF enrollment flow, and the copy shown for a device on the lower tier |
 | **Local storage at rest**                | **Selected: every app-managed persistent store holds authenticated ciphertext from genesis** — Yjs source of truth, crash journal, any persistent derived index, in every workspace on the device (D-34). Default key custody is app-managed: no prompt, and **no claim against an executable copied profile**. An optional user-held device lock supplies that stronger property, per device, accepting total loss on a forgotten factor. Account creation wraps the existing root; **no exit from Account decrypts** (§5.2.1, D-24) | The synchronous-journal AEAD and its low-end-device latency budget; the encrypted record format (version, nonce, generation, sequence); when a persistent search index may replace the in-memory one; the device-lock enrollment flow and its copy |
 | **Signed authorization epoch**           | Binds membership, credentials, capabilities and key generation; the service signs and serializes successors | Chain-head discovery for a fresh device, checkpoint and downgrade rules. **Fork rules are no longer needed** (D-16) |
@@ -4343,7 +4391,7 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | Content-key wrapping and rotation        | Symmetric generations wrapped per reader credential; edit implies read under this shape. **Retention has a floor**: enough to open every sealed actor binding whose attribution the product still claims — *for the lifetime of the claim*, not forever, since compaction and removal retire claims (§5.11.2). Carrying an **attribution index** re-wrapped forward at each rotation reduces the floor to the current generation plus that index | Algorithms; the index construction; retention above that floor. **Re-enabling destructive compaction moves this boundary** and is not only a storage change (TRD §4.5, §10.4) |
 | **Awareness and presence metadata**      | Presence is outside the content encryption as currently designed                        | Encrypt awareness, or state in the threat boundary that the relay learns who edits what and when (D-20)    |
 | Account relationship to the content root | **Selected: non-custodial encrypted recovery.** The service never receives the wrapping factor and cannot decrypt under any proof or order. Escrow is excluded from the service and survives only as an opt-in add-on operated by a separate legal entity, scoped to the content root (§5.7.5) | The add-on's operating boundary, and the copy that explains a two-party disclosure requirement |
-| Recovery                                 | **Selected: a mandatory high-entropy code saved outside the enrolling device, wrapped 1-of-N**, with optional independent PRF-passkey wraps (§5.7.6). Re-entry at enrollment proves transcription and possession, never location — the copy carries independence, not the mechanism. Account, authorization, content key and ciphertext remain four separate objects | Code generation and confirmation, replacement policy, loss warnings and account-deletion semantics (D-13) |
+| Recovery                                 | **Selected: a mandatory high-entropy code saved outside the enrolling device, wrapped 1-of-N**, with optional independent PRF-passkey wraps (§5.7.6). Re-entry at **account creation** proves transcription and possession, never location — the copy carries independence, not the mechanism. Account, authorization, content key and ciphertext remain four separate objects | Code generation and confirmation, replacement policy, loss warnings and account-deletion semantics (D-13) |
 | Web application and protocol assurance   | **Selected: levels 1–3 before sync ships, 5 live at ship, 4 on a stated trigger.** Same-origin code is inside the cryptographic boundary; D-28 fixes the design-review scope at the architecture level (§5.7.8) | Which ASVS profile and version, who performs the design review, the audit's scope, and the concrete TRD protocol submitted for review |
 | **Durable store representation**         | A content-blind store cannot merge; recovery needs checkpoints, not a merged state. The manifest publishes an **authenticated coverage attestation over insertions and deletions** — a snapshot's `{sv, ds}` or a checkpoint receipt — since a bare state vector cannot establish coverage (§5.11.2) | Checkpoint construction and cadence, manifest binding, retention of superseded checkpoints (D-33, §5.11.3) |
 | **Portability and migration**            | Export, import, an independently obtainable build and creation of a fresh authorization lineage at a replacement service are requirements, not roadmap. **Migration carries attribution forward** (§5.11.2), and PRD principle 6 does not argue against it — it governs how the past is surfaced, and licenses the compaction that retires a claim in the first place | The historical-verification package — authenticated old trust root, enough old authorization history, original envelopes or an **attribution index** carrying original signatures re-wrapped forward, and whatever generations that index still needs — plus the cutover contract: authenticated coverage attestation, and each device re-enveloping its own retained envelope suffix rather than filtering a merged delta (D-33) |
