@@ -3848,11 +3848,14 @@ across a service boundary:**
 >    the property this decision exists to preserve is forgeable by the person restoring it.
 > 2. **Enough of the old authorization history** to establish which credential held which capability at
 >    the referenced epoch, since D-27's invariant is about authorization *at* that epoch.
-> 3. **Either the original signed envelopes or a genuinely attribution-preserving checkpoint** — §5.6.2
+> 3. **Either the original signed envelopes or a validated attribution-preserving checkpoint** — §5.6.2
 >    already names those as the only two shapes, and a checkpoint that flattens them is the forbidden one.
->    **Read it as the second**, since the first grows without bound and would put an ever-larger file in
->    front of the user §5.11.5 asks to keep an archive. The concrete shape is the **attribution index**
->    below, which travels with the checkpoint as ordinary workspace content.
+>    **The target is the second**, since the first grows without bound and would put an ever-larger file
+>    in front of the user §5.11.5 asks to keep an archive. This document does not select its construction.
+>    Known cryptographic building blocks support a candidate family: sign a stable attribution record,
+>    then encrypt that complete signed object so its confidentiality wrapper can change at rotation without
+>    changing the attribution claim. That establishes a plausible path, not that any particular tuple is
+>    sufficient or already bound to the Yjs content it purports to describe.
 > 4. **The historical content-key generations**, because §5.8.1 puts the attributed actor *inside the
 >    seal*. Verifying authorship therefore requires decrypting, so a workspace that has rotated keys and
 >    discarded old generations has signatures it can still check and attribution it can no longer read.
@@ -3860,7 +3863,8 @@ across a service boundary:**
 > That fourth item is an interaction between two decisions taken in adjacent rounds and is easy to miss:
 > sealing the actor made historical attribution depend on content-key retention. §8.1's content-key row
 > already lists generation retention as unselected; it now has a hard floor — **retain enough to open
-> every generation whose attribution the product still claims**, or stop claiming it.
+> every generation whose attribution the product still claims**, or stop claiming it. A validated
+> attribution-preserving representation may lower that floor; the TRD may not assume that it has done so.
 >
 > **None of this is succession** — it proves who wrote history, it authorizes nothing, and §5.7.3's rule
 > is about who may *change* authorization, which this material cannot. D-27's invariant therefore reads
@@ -3903,18 +3907,23 @@ one: the content-key generations that served only compacted days become droppabl
 §8.1's retention floor discusses generations and says nothing about compaction. The replica-acknowledgement
 protocol §10.4 requires before compaction can return is therefore gating two boundaries, not one (§9).
 
-**And the floor is smaller than "every generation" once the retained object is the right one.** Item 3
-above names an "attribution-preserving checkpoint" without saying what one is; the shape that satisfies
-both it and item 4 is an **attribution index** — per attributed unit, the actor, credential, epoch,
-envelope digest and *original* signature — carried forward and re-wrapped under the current content-key
-generation at each rotation. It re-signs nothing, so §5.6.2's prohibition on signing another credential's
-mutations as your own is untouched; the inner signatures still verify against the credentials that made
-them and only the confidentiality wrapper changes. It is bounded by attributed units rather than by
-update count, which is what §5.11.3 wants of any recovery representation. And it lets superseded
-generations be discarded once the index has moved past them, which collapses the floor to **the current
-generation plus one small sealed index**. The construction is TRD work and goes in front of §5.7.8's
-design reviewer; what belongs here is that it exists, so the floor stops reading as unbounded by
-construction.
+**A smaller floor is known to be possible in principle, but its construction is not selected here.** A
+candidate family is a stable signed attribution record, encrypted as a complete signed object and
+re-encrypted under each new content-key generation. The signed record would need to bind, at minimum,
+the exact attributed unit or mutation, actor, credential, authorization epoch, and a canonical commitment
+to the content or operation. If a checkpoint collects those records under one commitment, verification
+also needs an authenticated proof binding each retained claim to that checkpoint. Merely copying an
+original envelope signature beside a newly assembled tuple does not work: that signature authenticates
+the original envelope and ciphertext, not the new tuple or its association with the current card.
+
+**That is bounded TRD protocol work, not another product decision and not a claim that novel research is
+required.** The TRD must select the attribution granularity, canonical signed record, binding to Yjs
+content, checkpoint commitment and proof, rotation and migration behaviour, and explicit storage bound;
+produce test vectors; and pass §5.7.8's independent design review. Until that construction is specified
+and validated, the conservative retention floor remains every content-key generation needed to open every
+attribution claim. A validated construction may reduce it to current-generation custody plus portable
+evidence whose size is bounded by the retained claims, but this document does not assert a particular
+index or call that evidence small.
 
 **And "during" needs a rule, because §5.11.4's test 7 names it as a case.** A migration is a cutover: the
 checkpoint fixes a covered range, and edits made after that range is computed but before the new lineage
@@ -4015,14 +4024,14 @@ contains what the checkpoint contains. The migration cutover depends on it (§5.
 requirement as well as a replay-performance one, and it is the concrete reason "the relay is already
 built" was too strong (D-16).
 
-**The attribution index is part of that representation, not a separate archive**, and saying so closes a
-gap between this subsection and §5.11.2 that made the package read as unbounded. The index is workspace
-content sealed to the content root, so it is checkpointed, stored and restored exactly like the rest of
-the workspace: it travels with the archive, it uploads with the checkpoint at migration, and a device
-enrolling fresh at the replacement service receives it from **that** service in the ordinary way. There is
-no separate channel, nothing the vanished operator has to still be alive to do, and nothing the user has
-to keep beyond what §5.11.5 already asks them to keep. Bounded by attributed units and carried as content
-is the whole answer to "how does historical verification survive a service that no longer exists".
+**Whatever attribution-preserving evidence the TRD selects is part of that representation, not a separate
+operator archive.** It is portable workspace material sealed to the content root, so it is checkpointed,
+stored and restored with the workspace: it travels with the archive, uploads with the checkpoint at
+migration, and a device enrolling fresh at the replacement service receives it from **that** service in
+the ordinary way. There is no separate channel, nothing the vanished operator has to still be alive to
+do, and nothing the user has to keep beyond what §5.11.5 already asks them to keep. This answers where the
+evidence lives and how it survives service disappearance; §5.11.2's TRD gate answers how it binds each
+claim and proves the promised storage bound.
 
 **And the question of who *serves* any of this after the company is gone is not this document's to
 answer, deliberately.** D-33's position is that continuity comes from independently runnable software and
@@ -4389,13 +4398,13 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | Attribution binding                      | Actor is derived from the credential or explicitly authorized for representation        | How an update's affected attributed fields are inspected or derived                                        |
 | Revocation commit semantics              | Requested · committed · acknowledged; no peer path bypasses the relay                   | Protocol and recovery behaviour for interrupted rotation                                                   |
 | **Content finalization boundary**        | A valid mutation is not accepted without authorization-service evidence; a hostile relay can withhold and later deliver a valid old-epoch write. **Across a migration the checkpoint re-baselines admissibility** — prior envelopes are archival, not replayable (§5.11.2) | Per-envelope receipts, accepted-log inclusion proofs, or checkpoints with an authenticated suffix; every shape ends in a committed cutoff (§5.2.3) |
-| Content-key wrapping and rotation        | Symmetric generations wrapped per reader credential; edit implies read under this shape. **Retention has a floor**: enough to open every sealed actor binding whose attribution the product still claims — *for the lifetime of the claim*, not forever, since compaction and removal retire claims (§5.11.2). Carrying an **attribution index** re-wrapped forward at each rotation reduces the floor to the current generation plus that index | Algorithms; the index construction; retention above that floor. **Re-enabling destructive compaction moves this boundary** and is not only a storage change (TRD §4.5, §10.4) |
+| Content-key wrapping and rotation        | Symmetric generations wrapped per reader credential; edit implies read under this shape. **Retention has a conservative floor**: enough to open every sealed actor binding whose attribution the product still claims — *for the lifetime of the claim*, not forever, since compaction and removal retire claims (§5.11.2). A validated attribution-preserving representation may reduce that floor, but no representation is selected here | Algorithms; a stable signed record or equivalent; its binding to the exact Yjs unit or mutation; checkpoint commitment and proof; rotation and migration behaviour; an explicit size bound; test vectors; and independent review. **Re-enabling destructive compaction moves this boundary** and is not only a storage change (TRD §4.5, §10.4) |
 | **Awareness and presence metadata**      | Presence is outside the content encryption as currently designed                        | Encrypt awareness, or state in the threat boundary that the relay learns who edits what and when (D-20)    |
 | Account relationship to the content root | **Selected: non-custodial encrypted recovery.** The service never receives the wrapping factor and cannot decrypt under any proof or order. Escrow is excluded from the service and survives only as an opt-in add-on operated by a separate legal entity, scoped to the content root (§5.7.5) | The add-on's operating boundary, and the copy that explains a two-party disclosure requirement |
 | Recovery                                 | **Selected: a mandatory high-entropy code saved outside the enrolling device, wrapped 1-of-N**, with optional independent PRF-passkey wraps (§5.7.6). Re-entry at **account creation** proves transcription and possession, never location — the copy carries independence, not the mechanism. Account, authorization, content key and ciphertext remain four separate objects | Code generation and confirmation, replacement policy, loss warnings and account-deletion semantics (D-13) |
 | Web application and protocol assurance   | **Selected: levels 1–3 before sync ships, 5 live at ship, 4 on a stated trigger.** Same-origin code is inside the cryptographic boundary; D-28 fixes the design-review scope at the architecture level (§5.7.8) | Which ASVS profile and version, who performs the design review, the audit's scope, and the concrete TRD protocol submitted for review |
 | **Durable store representation**         | A content-blind store cannot merge; recovery needs checkpoints, not a merged state. The manifest publishes an **authenticated coverage attestation over insertions and deletions** — a snapshot's `{sv, ds}` or a checkpoint receipt — since a bare state vector cannot establish coverage (§5.11.2) | Checkpoint construction and cadence, manifest binding, retention of superseded checkpoints (D-33, §5.11.3) |
-| **Portability and migration**            | Export, import, an independently obtainable build and creation of a fresh authorization lineage at a replacement service are requirements, not roadmap. **Migration carries attribution forward** (§5.11.2), and PRD principle 6 does not argue against it — it governs how the past is surfaced, and licenses the compaction that retires a claim in the first place | The historical-verification package — authenticated old trust root, enough old authorization history, original envelopes or an **attribution index** carrying original signatures re-wrapped forward, and whatever generations that index still needs — plus the cutover contract: authenticated coverage attestation, and each device re-enveloping its own retained envelope suffix rather than filtering a merged delta (D-33) |
+| **Portability and migration**            | Export, import, an independently obtainable build and creation of a fresh authorization lineage at a replacement service are requirements, not roadmap. **Migration carries attribution forward** (§5.11.2), and PRD principle 6 does not argue against it — it governs how the past is surfaced, and licenses the compaction that retires a claim in the first place | The historical-verification package — authenticated old trust root, enough old authorization history, original envelopes or a validated attribution-preserving representation, and whatever content-key generations that representation requires — plus the exact attribution binding and granularity, and the cutover contract: authenticated coverage attestation, and each device re-enveloping its own retained envelope suffix rather than filtering a merged delta (D-33) |
 
 **D-17 gated the selections in the right-hand column, not the existence of every left-hand requirement —
 and all five are now recorded.** The authorization/content boundary, the account's relationship to the
