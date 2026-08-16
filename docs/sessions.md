@@ -3804,6 +3804,9 @@ across a service boundary:**
 >    the referenced epoch, since D-27's invariant is about authorization *at* that epoch.
 > 3. **Either the original signed envelopes or a genuinely attribution-preserving checkpoint** — §5.6.2
 >    already names those as the only two shapes, and a checkpoint that flattens them is the forbidden one.
+>    **Read it as the second**, since the first grows without bound and would put an ever-larger file in
+>    front of the user §5.11.5 asks to keep an archive. The concrete shape is the **attribution index**
+>    below, which travels with the checkpoint as ordinary workspace content.
 > 4. **The historical content-key generations**, because §5.8.1 puts the attributed actor *inside the
 >    seal*. Verifying authorship therefore requires decrypting, so a workspace that has rotated keys and
 >    discarded old generations has signatures it can still check and attribution it can no longer read.
@@ -3965,6 +3968,22 @@ because a bare state vector says nothing about the `DeleteSet` and so cannot est
 contains what the checkpoint contains. The migration cutover depends on it (§5.11.2). This is already implied by D-28 and §8.1; D-33 makes it a storage
 requirement as well as a replay-performance one, and it is the concrete reason "the relay is already
 built" was too strong (D-16).
+
+**The attribution index is part of that representation, not a separate archive**, and saying so closes a
+gap between this subsection and §5.11.2 that made the package read as unbounded. The index is workspace
+content sealed to the content root, so it is checkpointed, stored and restored exactly like the rest of
+the workspace: it travels with the archive, it uploads with the checkpoint at migration, and a device
+enrolling fresh at the replacement service receives it from **that** service in the ordinary way. There is
+no separate channel, nothing the vanished operator has to still be alive to do, and nothing the user has
+to keep beyond what §5.11.5 already asks them to keep. Bounded by attributed units and carried as content
+is the whole answer to "how does historical verification survive a service that no longer exists".
+
+**And the question of who *serves* any of this after the company is gone is not this document's to
+answer, deliberately.** D-33's position is that continuity comes from independently runnable software and
+material the user already holds — not from the operator arranging anything at the moment of failure. A
+wind-down mechanism that mails people a download link is precisely the shape D-33 rejects as sufficient,
+because it requires the company to exist and act exactly when the scenario assumes it does not
+(§5.11.4's claim, and §5.11.5's package).
 
 #### 5.11.4 The claim, staged
 
