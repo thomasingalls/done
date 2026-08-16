@@ -1,7 +1,27 @@
 # done — Sessions and Identity: Product Requirements
 
-**Status:** Draft v15 — **34 dispositions recorded.** The largest change since v14: **D-16 is decided,
-and the answer removes a rung.** Local remains free and permanent; hosted synchronization requires an
+**Status:** Draft v16 — **34 dispositions recorded.** The largest change since v15: **D-5 is withdrawn,
+and nothing is destroyed at enrollment.** Signing in on a device that already holds a Local workspace
+opens the account workspace in **parallel storage**; the Local one keeps its principal, actor and history
+and is reached by signing out. The single question moves to **account creation** — *promote this list, or
+start fresh* — and D-24 now carries it alone. The destructive join, its confirmation, its automatic
+export and its preflight all go with the question they were answering.
+
+**The defect was one level below the product.** D-5 existed because §2.2b's single `DB_NAME` made two
+unrelated histories on one device a collision that something had to resolve. §2.2b had already identified
+the fix — key local storage by _(principal, workspace)_ — and deferred it as "not a decision to take
+here". Taking it dissolves the decision that was compensating for its absence, which is §1.4's own lesson
+one level down: **an apparent exception to Rule 1 is usually a missing rule.** The deferral is now
+discharged (§2.2b, D-24).
+
+**And a mechanical fact this document had been reasoning past**: Yjs merges divergent replicas that share
+an ancestor, which is the ordinary offline-sync case and works. Merging is meaningless only for histories
+with **no** common ancestor. Three places had sent common-ancestor cases to D-5 — a lapse past retention
+(D-29), the migration window (§5.11.2) and any long read-only period — and all three are ordinary merges.
+That fact is now in §6 rather than being re-derived.
+
+**The largest change since v14 remains D-16: it is decided, and the answer removes a rung.** Local
+remains free and permanent; hosted synchronization requires an
 account; this document makes no pricing decision. Peer-to-peer is not built. The **Paired** rung —
 cross-device sync without an account — is retired, and with it the second transport, the second
 revocation semantics, and one of D-17's open selections. **D-33** (§5.11) records what survives the
@@ -9,11 +29,8 @@ service disappearing and which claims that licenses, promoting material that pre
 the durability appendix. **Both appendices have since been folded into this document and removed**; they
 remain in git history, and every reference to them below is historical.
 
-**D-5 is also answered rather than built**: where a workspace already has a history, that history is the
-list and the joining device's does not survive,
-so the merge · theirs · ours · abort adjudication is withdrawn and D-30's motivating case goes with it.
-**D-30 is therefore closed with Rule 1 unchanged.** The *rule* is a product decision; the *transition* is
-not free, and §5.2.1 records what it costs.
+**D-30 is closed with Rule 1 unchanged**, and v16 strengthens rather than disturbs that: its motivating
+case was D-5's four-way adjudication, which v15 replaced with a rule and v16 removes entirely.
 
 **Four corrections review found in the first v15 draft, recorded rather than quietly fixed**, because
 each was an over-claim in the direction of the decision this revision wanted to make: D-16 removed the
@@ -54,10 +71,10 @@ source release is an acceptable fallback; the corresponding claims wait for rele
 historical attribution or reattributes the baseline, is decided in favour of preserving it (§5.11.2).
 **D-31** (pricing) stays deferred and genuinely downstream.
 **Ready to promote into the PRD and begin the TRD; not implementation-ready** — see §8.2.
-**Date:** 2026-08-15
+**Date:** 2026-08-16
 **Audience:** the author, deciding. Not an implementation plan.
-**Amends:** PRD §0, §2, §4, §6, §11, §12 and §14, plus TRD §2, §4.8, §7.2 and §10.6 — the full list, with
-what each needs, is §9.
+**Amends:** PRD §0, §2, §4, §6, §11, §12 and §14, plus TRD §2, §4.8, §6.1, §7.2, §9 and §10.6 — the full
+list, with what each needs, is §9.
 
 ---
 
@@ -94,7 +111,9 @@ deferred decision goes a particular way — D-29 is the only one), **Existence o
 constraints any *yes* must satisfy are fixed, and only whether to build it remains — D-34 is the only
 one), **Open**, **Deferred on purpose**
 (answerable later, and nothing is foreclosed by
-waiting), or **Re-opened** (answered once, and new evidence has withdrawn the answer). A decided product
+waiting), **Re-opened** (answered once, and new evidence has withdrawn the answer), or **Withdrawn** (the
+question dissolved rather than being answered — the state it was about can no longer occur, and the number
+is kept so the landmark survives; D-5 is the only one). A decided product
 direction may still depend on an open mechanism or security gate; §8 distinguishes recorded dispositions
 from implementation readiness.
 
@@ -143,10 +162,14 @@ changing the conclusion.** Until v15 the argument was that the Paired rung group
 account, so the grouping level had to precede the account. That rung is gone (§5.1.1), and the argument
 has to be re-derived rather than inherited. It survives, on four grounds that do not depend on a rung:
 
-1. **The account adopts a principal that already exists.** Every account-holder used the app locally
-   first, so there is always a prior identity and a prior document for the account to bind to. If sign-up
-   minted a fresh identity instead, D-24's data-loss hazard is exactly what happens — and after D-16 that
-   promotion is no longer an edge case but the **only** way anyone ever reaches hosted sync.
+1. **The account can adopt a principal that already exists.** Every account-holder used the app locally
+   first, so there is always a prior identity and a prior document available for the account to bind to,
+   and after D-16 that promotion is the road every synced user travels. D-24 makes the adoption a choice
+   at account creation rather than an automatism — *promote this list, or start fresh* — and the account
+   still has to be **able** to accept an identity that predates it, which is the capability this ground is
+   really about. What v16 removes is the hazard: because starting fresh leaves the Local workspace intact
+   rather than abandoning it, minting a new principal is no longer the shape that loses a month of
+   someone's history.
 2. **"You" must be answerable with no network and no service.** PRD principle 3 forbids the read path
    waiting on the *network*, and a list that says "You" cannot consult an account to do it. A person is
    not a service relationship.
@@ -252,17 +275,21 @@ anything in this document.
 Anything that requires a person to know what a workspace is, name one, or copy one between devices has
 failed (D-10, D-11).
 
-Rule 1 looked for two drafts as though it had an exception, and v15 withdrew it. The exception was
-**D-5's merge · theirs · ours · abort flow**, described here as "the most demanding piece of workspace
-management in the product" and defended on the grounds that two histories meeting "is not a task that can
-be removed, because the outcome is irreversible and the app cannot pick for the user." **That last claim
-was false.** The app can pick, because D-24 establishes which history is the workspace, and D-5 now does
-pick. The flow is gone and the user adjudicates nothing.
+Rule 1 looked for two drafts as though it had an exception, and it took two rounds to remove. The
+exception was **D-5's merge · theirs · ours · abort flow**, described here as "the most demanding piece of
+workspace management in the product" and defended on the grounds that two histories meeting "is not a task
+that can be removed, because the outcome is irreversible and the app cannot pick for the user." v15
+falsified the second half — the app *can* pick — and replaced the flow with a rule. **v16 falsified the
+first half too:** the two histories never had to meet at all, because they are two workspaces and local
+storage can hold both. D-5 is withdrawn and the user adjudicates nothing, confirms nothing and loses
+nothing (D-24, §5.2.1).
 
-The general lesson is worth keeping, because this document reached for a UI twice before noticing it:
-**an apparent exception to Rule 1 is usually a missing rule.** Where the app seems to need the user to
-choose between workspace states, the question to ask first is whether anything in the model already
-determines the answer. **D-30 closes with Rule 1 unchanged.**
+The general lesson is worth keeping, because this document reached for a UI twice and then reached for a
+*rule* once before noticing it: **an apparent exception to Rule 1 is usually a missing rule.** Where the
+app seems to need the user to choose between workspace states, the question to ask first is whether
+anything in the model already determines the answer — and the second question, which v16 is the case for,
+is whether the states are genuinely in conflict or have only been made to share a slot. D-5's conflict was
+manufactured by a single `DB_NAME` (§2.2b). **D-30 closes with Rule 1 unchanged.**
 
 **Rule 2. The UI never promises anything about a remote device that cannot be kept.** No auto-hiding a
 member as though they were gone, no "removed" that does not remove, no presence claim that outlives
@@ -332,12 +359,22 @@ _Today:_ **converging two histories is not a thing anyone wants**, under any rea
 is. It is not an option in D-11, it is a defect that D-11 has to stop producing. Recording it as a
 "maybe someone wants a merge" is wrong, and this paragraph said so in draft v1.
 
-_Ahead:_ **`dbName` almost certainly has to become a parameter**, and the axis is not only the room.
-If two people can authenticate with the relay separately, they can do it from the same browser
-profile — one shared laptop, one browser, two principals — and each needs their own local document, their
-own actor, and their own credential. So the local database is keyed by something like _(principal,
-document)_ rather than by the room alone. This is not a decision to take here; it is the reason D-11
-and D-14 cannot be decided independently.
+_Ahead:_ **`dbName` has to become a parameter**, and the axis is not only the room. If two people can
+authenticate with the relay separately, they can do it from the same browser profile — one shared laptop,
+one browser, two principals — and each needs their own local document, their own actor, and their own
+credential. So the local database is keyed by _(principal, workspace)_ rather than by the room alone. It
+is also the reason D-11 and D-14 cannot be decided independently.
+
+**The shared laptop is not the forcing case, and treating it as one is why this sat deferred through
+fifteen drafts.** The forcing case is one person: after D-16 every synced user has a Local workspace
+before they have an account, and many have one on each device. A device that signs in therefore holds an
+anonymous workspace **and** an account workspace, which is two principals on one browser profile with no
+second human anywhere near it. That is the ordinary path, not the exotic one — so the key is not
+speculative capacity for a future feature but the thing enrollment needs on day one.
+
+**Decided in D-24, and it removes a decision rather than adding one.** With the key in place, two
+unrelated histories on one device are two rows rather than a collision, and the destructive join D-5
+existed to govern has nothing left to govern (§5.2.1).
 
 And a distinction that D-11 was written without: **"which content" and "who is allowed" are not
 obviously the same axis.** The boundary could be a document, or a membership boundary containing
@@ -510,12 +547,17 @@ arrived**.
 |                        | **New device**                                                                                                                                                  | **Existing device**                                                                                                                                                       |
 | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **New principal**      | **A. Genesis.** First run ever, or a new install with no sync. Today: mints an actor and a device, and the principal is implicit in there being nothing else.   | **B. Reset or handoff.** Storage cleared, or a deliberate "I am someone else". Today: indistinguishable from Genesis, and the document keeps the abandoned actor forever. |
-| **Existing principal** | **C. Enrollment.** A second device joining a principal that already exists — which after D-16 always means signing in to an account. A new actor, always (D-4): what is shared is the principal, not the writing identity. | **D. Ordinary launch.** Reads actor and device from localStorage. The only well-served cell.                                                                              |
+| **Existing principal** | **C. Enrollment.** A second device joining a principal that already exists — which after D-16 always means signing in to an account. A new actor, always (D-4): what is shared is the principal, not the writing identity. The device may already host an anonymous principal of its own, which enrollment leaves alone (D-24). | **D. Ordinary launch.** Reads actor and device from localStorage. The only well-served cell.                                                                              |
 
 Cell **C** is the hole, and naming the axis correctly says what kind of hole it is: earlier drafts
 called it "rejoin" and read it as a claiming problem, which sent D-4 looking for a way to say "I am
 that one." There is no such thing to say. C is a **discovery** problem — how a device learns which
 principal it belongs to — which is D-19, and it is why D-4's answer is "no" rather than a limitation.
+
+**And "existing principal" is a property of the arrival, not of the device.** A device that has been used
+locally arrives at C already holding an anonymous principal; what makes the cell C rather than A is the
+principal it is arriving *into*. Both persist afterwards, in separate local databases (§2.2b, D-24), so C
+is additive rather than a transition the device passes through and leaves behind.
 
 Cell **B** is the one that leaks, and the epoch is what decides how badly. At epoch 0 it is Genesis with
 extra steps and may re-mint silently. At any later epoch a fresh random identity appearing and beginning
@@ -563,7 +605,7 @@ than inferring admission from the roster (§5.5).
 
 | #       | Scenario                                     | Today                                                                                                                 | Raises        |
 | ------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------- |
-| **S10** | Opts into sync for the first time.           | The local document merges with the room's. If the room has another document, the two converge into one — permanently. | **D-5**, D-11 |
+| **S10** | Opts into sync for the first time.           | The local document merges with the room's. If the room has another document, the two converge into one — permanently. | **D-11**, D-24 |
 | **S11** | Turns sync off, then on.                     | `enabled: false` keeps the configuration. Off is a pause, not a forget.                                               | —             |
 | **S12** | Forgets the sync configuration.              | Config and last-sync time removed. Actor and device survive; the document survives.                                   | D-12          |
 | **S13** | Changes endpoint, same room.                 | Reconnects to a different relay for the same document name.                                                           | D-10          |
@@ -616,7 +658,7 @@ Every row is a movement between **Local** and **Account** (§5.1.1), and every o
 | #       | Scenario                                                                                                       | Raises                    |
 | ------- | -------------------------------------------------------------------------------------------------------------- | ------------------------- |
 | **S34** | Signs in on a second device to enroll it, having created the account on the first.                             | D-19, D-24                |
-| **S35** | Creates an account having already used the app locally **on two devices**, each with its own history.          | **D-24, D-5**             |
+| **S35** | Creates an account having already used the app locally **on two devices**, each with its own history.          | **D-24**                  |
 | **S36** | Deletes the account, keeping the devices.                                                                      | D-24 in reverse, D-13, D-29 |
 | **S37** | Revokes a device that is currently offline.                                                                    | **D-18**                  |
 | **S38** | Opens a device that has been revoked.                                                                          | **D-18**                  |
@@ -626,14 +668,17 @@ Every row is a movement between **Local** and **Account** (§5.1.1), and every o
 | **S52** | The account lapses while a device is offline, and that device next opens after the grace period has run out.   | **D-29**, D-18            |
 | **S53** | Deliberate downgrade from a paid plan, if D-31 later selects one: keeps the devices, stops paying.             | **D-29**, D-24, S36       |
 
-**Two rows changed character in v15, and in opposite directions.**
+**Two rows changed character in v15, and in opposite directions. One of them changed again in v16.**
 
-**S35 became common, and D-5 made it cheap.** It used to describe someone who had paired devices without
-an account and then created one — an uncommon, deliberate act by an engaged user. With no accountless sync, every
-multi-device user runs local-only on each device first, so two non-empty histories meeting is now
-ordinary rather than exotic. D-5's answer is a rule rather than a flow: the workspace's history is the
-list, the joining device is told what it is about to lose and offered the export, and nothing is merged
-or adjudicated. What the scenario costs is messaging, not engineering (D-24).
+**S35 became common in v15, and stopped costing anything in v16.** It used to describe someone who had
+paired devices without an account and then created one — an uncommon, deliberate act by an engaged user.
+With no accountless sync, every multi-device user runs local-only on each device first, so two non-empty
+histories meeting is now ordinary rather than exotic. v15 answered it with a rule that replaced the
+joining device's history; **v16 answers it by not putting the two histories in the same place.** The
+second device's anonymous workspace stays where it is, in its own local database, and the account
+workspace opens beside it (D-24, §2.2b). The scenario now costs a sentence at account creation on the
+*first* device — promote this list, or start fresh — and nothing at all on the second. What used to be
+this document's most-cited data-loss path is no longer a data-loss path.
 
 **S40 got much better, and used to be the hardest scenario in the document.** It described a revoked
 device continuing to sync with a peer that had not heard about the revocation, producing a divergence
@@ -1037,157 +1082,140 @@ at the least motivated moment in the relationship — which is the same requirem
 recovery side, arriving here from the onboarding side.
 
 **D-5. What happens when a device with its own history joins a workspace that already has one?**
-_(Reframed in v15. It was "what should opting into sync for the first time do when the room already has
-a document" — a question about typing a room name, which D-11 removes and D-19 replaces with sign-in.)_
+_(Reframed in v15, **withdrawn in v16**. It began as "what should opting into sync for the first time do
+when the room already has a document" — a question about typing a room name, which D-11 removes and D-19
+replaces with sign-in. The number is kept so the landmark survives; what replaced it is D-24.)_
 
-> **Decided. Where the workspace has a history, it is the list and the joining device's does not survive
-> the join. Where it has none, the first joiner's history becomes it. The four-way adjudication is
-> withdrawn.**
->
-> | Joining device | Workspace | Behaviour                                                                              |
-> | -------------- | --------- | -------------------------------------------------------------------------------------- |
-> | empty          | anything  | Adopt the workspace. Silent, no prompt — this is the good case and stays frictionless.  |
-> | full           | empty     | The workspace adopts this device's history. Nothing is lost, so nothing is asked.       |
-> | full           | full      | **State what is about to go, write the export, require confirmation, then adopt.**      |
->
-> **No choice of winning history, and no merge, preview or side-by-side.** There is a **cancel**, and it
-> leaves the device exactly as it was: not joined, nothing exported over, nothing replaced. Export is the
-> escape hatch, and it is a **file the user keeps**, readable elsewhere and importable into a fresh
-> install — not a way to fold the replaced history back into the workspace it joined (§5.2.2).
+> **Withdrawn. The state this decision governed cannot occur.** Signing in does not make a device's own
+> history join anything. The account workspace opens in its own local database keyed by _(principal,
+> workspace)_, and the device's existing Local workspace stays exactly where it is, with its principal,
+> its actor and its history intact (§2.2b, D-24). There are two workspaces on that device and no contest
+> between them, so there is nothing to adjudicate, nothing to confirm, nothing to export first and
+> nothing to replace.
 
-**"No abort" was the wrong phrase and is corrected here.** v15's first draft said the flow has no abort,
-meaning there is no un-merge to offer after histories have been exchanged. That is true and it is not
-what a reader takes from the sentence: a confirmation prompt without a cancel is not a confirmation. The
-accurate statement is that **the user cannot choose which history wins, and can always decline to join.**
-Declining is cheap precisely because nothing has been exchanged yet — which is a requirement, not a
-convenience, and it is the next section.
+**What this withdrew, recorded because two rounds of machinery came off with it.** v14 answered the
+question with a git-style preview and a merge · theirs · ours · abort choice. v15 replaced that with a
+rule — the workspace's history wins, the joining device is told, offered an export and asked to confirm —
+plus the preflight, the automatic export and the crash-safe database switch §5.2.1 specified to carry it
+out. v16 removes the question those were answering. The rule was correct given a single local database;
+it was compensating for §2.2b's deferral rather than for anything the product wanted.
 
-#### 5.2.1 The transition is not free, and today's code would get it wrong
+**And the withdrawal is narrower than "no history ever meets another", which is the misreading to head
+off.** Two histories genuinely meet whenever they are **replicas of one workspace** that have diverged —
+two devices on the same account, one of them offline for a long time. That case merges, correctly and
+without loss, because the replicas share an ancestor; it is the ordinary offline-sync case and Yjs is
+chosen for it (§6, TRD §2). What has no meaningful merge is two histories with **no common ancestor**,
+and those are now two workspaces rather than one contested one. The distinction is mechanical, it is
+what makes this withdrawal safe, and it is recorded in §6 so it stops being re-derived.
 
-**This decision is a product decision; the transition it implies is machinery, and an earlier draft of
-this section wrongly said otherwise.** "Nothing in the CRDT, the relay or the protocol has to change"
-was true of the *rule* and false of *carrying it out*. What follows is the correction.
+**Three places had sent common-ancestor cases here and were wrong to.** A lapse past retention (D-29), the
+migration cutover window (§5.11.2) and any resume after a long read-only period each read as "two
+histories meet" and each was routed to D-5's replacement rule. All three are divergent replicas of one
+workspace, all three merge, and all three are corrected in place.
 
-**The hazard is that today the app would merge before anyone was asked.** `DB_NAME` is the module
+#### 5.2.1 Parallel storage is the mechanism, and today's code would get it wrong
+
+**The decision removes a flow, not the machinery.** Something still has to open a second local database
+and keep the two apart, and the hazard the previous draft identified is the reason parallel storage is a
+requirement rather than a preference.
+
+**The hazard is that today the app would merge without anyone deciding to.** `DB_NAME` is the module
 constant `'done'` (`src/crdt/persistence.ts`), and the room selects only what the one local document
-tries to converge with (§2.2b). So a provider constructed against the workspace would begin exchanging
-updates with the local document immediately, and the histories would be merged before the confirmation
-dialog could be drawn. **That is the exact defect D-5 exists to remove, arriving through the back door.**
+tries to converge with (§2.2b). So a provider constructed against the account workspace would begin
+exchanging updates with whatever document is already there, and the anonymous history and the account
+history would be one history before any screen was drawn. **That is the defect, and under v16 it arrives
+through sign-in rather than through a confirmation dialog that lost a race.** The fix is the same fix
+§2.2b named and is now unavoidable rather than eventual.
 
-Four requirements follow, and they belong in the TRD rather than here, but they are recorded now because
-the decision is not implementable without them:
+Four requirements follow. They belong in the TRD rather than here, but they are recorded now because the
+decision is not implementable without them:
 
-1. **Preflight before the provider exists.** Whether the workspace and this device are both non-empty
-   must be determined *before* any sync provider is constructed. **The joining document must never
-   connect to the workspace before replacement is complete.** A connection is the merge.
-2. **The old database is preserved, not dropped in place.** The joining device's existing document is
-   retained until the switch has succeeded, so a failure leaves the user with their data rather than
-   with neither history.
-3. **The workspace gets its own database.** This is §2.2b's "`dbName` almost certainly has to become a
-   parameter" arriving with a concrete reason and a date: the local database is keyed by the workspace
-   (and, later, the principal), so adopting a workspace is opening a different database rather than
-   overwriting the only one.
-4. **The switch is crash-safe.** Which database is current is a single committed fact, and an interrupted
-   switch resolves to exactly one of the two states on next launch. A half-completed adoption that leaves
-   identity and document out of step is the state D-12 says must not be manufactured, and §5.5 already
-   names carelessly built features as the only cause of it under our control.
+1. **Sign-in opens a different database, never the current one.** The account workspace is keyed by
+   _(principal, workspace)_ and the anonymous one keeps its own key. No provider is ever constructed
+   against a document that belongs to a different workspace. A connection is the merge, so the only
+   defence is that the two never share a store.
+2. **Neither workspace's provider may write to the other**, in either direction and including on
+   teardown, retry and error paths. This is the whole of the isolation guarantee and it is worth stating
+   as an invariant rather than leaving it implied by the key.
+3. **Promotion at account creation is a move, and is crash-safe.** When the user chooses to promote the
+   Local workspace (D-24), its contents become the account workspace's rather than being copied — a copy
+   leaves a stale duplicate that will be found later and believed. Which workspace a database belongs to
+   is a single committed fact, and an interrupted promotion resolves to exactly one of the two states on
+   next launch. A half-completed promotion that leaves identity and document out of step is the state
+   D-12 says must not be manufactured, and §5.5 already names carelessly built features as the only cause
+   of it under our control.
+4. **When does the content encryption exist?** Local is plaintext and Account is end-to-end encrypted
+   (§5.1.2), so somewhere a workspace acquires a content key, a first generation, and a root wrapped to
+   the user's recovery code. Nothing anywhere says where. Requirements 1–3 are all about which database is
+   which; this one is about what is in them.
 
-**A fifth requirement is missing from that list and from the whole document: when does the content
-encryption exist?** Local is plaintext and Account is end-to-end encrypted (§5.1.2), so somewhere in this
-transition a workspace acquires a content key, a first generation, and a root wrapped to the user's
-recovery code. Nothing anywhere says where. The four requirements above were written after the
-Local/Account confidentiality split was already recorded, and are all about which database is current.
-
-**It is not an independent question, though — it is downstream of D-34, and either answer settles it.**
+**The fourth is not an independent question — it is downstream of D-34, and either answer settles it.**
 If the local document is encrypted at rest from genesis, encryption never "begins": the key exists from
 first run, and account creation only wraps it to a recovery root and starts uploading ciphertext, which is
 a key-custody step rather than a data transformation. If the local document stays plaintext, then account
 creation *is* the moment encryption begins, and it is a whole-document transformation that has to be
-crash-safe on the same terms as requirement 4 — an interrupted encryption pass that leaves half a
-workspace unreadable is a worse failure than an interrupted database switch. **So D-34 should be decided
+crash-safe on the same terms as requirement 3 — an interrupted encryption pass that leaves half a
+workspace unreadable is a worse failure than an interrupted promotion. **So D-34 should be decided
 knowing it also decides this**, which its own entry does not currently say (§5.7.4).
 
-**Automatic export is a requirement in the full/full case, not a suggestion.** An earlier draft recorded
-it as a cheap upgrade to consider; that was too weak for an irreversible step. `exportEntries` and
-`downloadExport` already exist (`src/crdt/export.ts`) and PRD principle 4 already commits to the format,
-so the file is written before the switch, unconditionally, and the confirmation names where it went. The
-user may then ignore it. What must not happen is someone declining an offer they did not understand and
-losing the only copy.
+**And v16 puts two confidentiality regimes on one device, which is new and should not be discovered
+later.** After sign-in the account workspace is end-to-end encrypted and the retained Local workspace is
+whatever D-34 leaves it as — plaintext, by default. They sit in the same browser profile, and a copied
+profile takes both. Nothing about the account's encryption reaches backwards over the anonymous
+workspace, and no interface should imply that signing in protected anything that was already there. It
+also widens D-34's "every store that holds user content" by one store per retained workspace.
 
-**What "empty" means, since the table turns on it.** Empty is **no user-authored content**: no cards, no
-master-list or Goals text, no non-empty day. It is *not* "no document" and *not* "no history" — a fresh
-install has a document, a roster entry from `resolveActor` (§2.2d) and possibly days created by opening
-the app. Those are app-generated and carry nothing the user would miss. A device that has only ever been
-opened is empty; a device with one card is full. Where the test is uncertain, **treat the device as full**
-and ask: a needless confirmation costs a click, and a wrong "empty" costs someone their list.
+**Three things this section used to require and no longer does**, recorded because their absence is the
+point rather than an oversight:
 
-**Why the previous answer was wrong in its premise, not merely expensive.** v14 said two document
-histories meeting "is not a task that can be removed, because the outcome is irreversible and the app
-cannot pick for the user", and built a git-style preview with merge · theirs · ours · abort to hand the
-choice over. The second half of that sentence is false. **The app does have a basis to pick**: account
-creation establishes which history is the workspace (D-24), so at every subsequent join there is a
-definite answer to "which one is the list", and the joining device is by construction not it.
+- **The emptiness preflight is gone.** v15 required the app to establish whether the workspace and the
+  device were both non-empty before constructing a provider. That test was a *content* predicate — no
+  cards, no master-list or Goals text, no non-empty day — on a workspace the service is deliberately
+  blind to (D-20, D-28), so nothing short of fetching and decrypting could answer it, and a service that
+  answered it wrongly would walk a device into the silent merge the test existed to prevent. Nothing now
+  depends on the answer.
+- **The automatic export before the switch is gone**, because there is no switch and nothing is replaced.
+  Export remains what PRD principle 4 makes it and D-24 offers it on the retained workspace at the user's
+  convenience rather than as a safety net fired under time pressure.
+- **The ordering advice is gone.** "Create the account on the device whose list you want to keep" was
+  load-bearing in v15 and is now merely sensible: whichever device creates the account is offered the
+  promotion, and every other device keeps what it has. There is no ordering that loses anything, which is
+  the clearest single measure of what changed.
 
-Once that rule exists the adjudication machinery has nothing left to decide. The preview existed to make
-an irreversible merge legible — there is no merge. `merge` and `ours` existed to let the joining device's
-history survive or win — that is the case the rule refuses. What survives is `theirs`, which this
-decision's own mechanics note already identified as the cheap one: adopt the remote, destructive on that
-device and only that device. **The saving is real but it is in the adjudication, not in the transition.**
-
-**What is actually lost, stated exactly, because the messaging is the other half of this decision.**
-
-- Everything written on the joining device before it joined: its days, its cards, its master list.
-- Not the attribution or identity — the device keeps its own credential and actor and becomes an
-  ordinary member (D-4, D-19).
-- Not anything on the workspace side. This is never destructive to the list the user is keeping.
-
-**One sentence prevents most of it, and it belongs in the interface rather than in a support article:
-create the account on the device whose list you want to keep.** It is memorable, and D-24 makes it true —
-account creation adopts the creating device's history. The interface should say it at the moment it is
-actionable, not after.
-
-**It is the memorable mitigation rather than the only one**, and the difference matters for what the
-interface has to allow. A second ordering is equally safe: create the account on a device that is
-*empty*, then enroll the one that has the history, which the empty workspace adopts (D-5, row 2). Both
-work because only a **populated** workspace refuses an incoming history. What has no safe ordering is two
-devices that both hold content the user wants — that one loses a history whichever way round it is done,
-and it is the case D-5 stops and asks about (D-24).
-
-**Import is the escape hatch, and it is owed anyway** — required by the §2.4 migration and by D-33's
-continuity requirement independently of D-5. Its placement against the freeze is one enabling decision
-(§2.4, §6). But an earlier draft of this paragraph claimed more for it than it can carry, and the
-scope this forces is a product decision rather than a correction.
+**Import is still owed, and now for its own reasons only** — the §2.4 migration and D-33's continuity
+requirement, neither of which depends on this transition. Its placement against the freeze is the one
+enabling decision (§2.4, §6). What it is no longer doing is standing in as the escape hatch for a
+history the app replaced, which is the job §5.2.2 correctly said it could not do.
 
 #### 5.2.2 Import targets an empty workspace — a deliberate limit, not a tidy-up
 
 > **Decided, for now: import creates a workspace's contents; it does not merge into a populated one.**
-> That serves §2.4's migration and D-33's restore, which both target a clean install. It does **not**
-> let a user fold an export back into the workspace that replaced it.
+> That serves §2.4's migration and D-33's restore, which both target a clean install.
 >
-> **The cost is accepted knowingly and belongs to the product, not to the implementation.** A user whose
-> history was replaced under D-5 receives a file they can read, and from which they can build a *fresh*
-> workspace. They cannot put it back into the list they just joined — not now, and not by trying harder.
-> That is a real reduction in what D-5's export is worth, taken because the alternative is a merge this
-> document is not ready to specify, and it should be defended as a choice rather than explained as a
-> consequence.
+> **The cost is much smaller than it was, and v16 is why.** v15 accepted this limit knowing it left a
+> user whose history had been replaced holding a file they could read and could not put back. Nothing
+> replaces a history any more (D-5, withdrawn), so the limit no longer stands between anyone and their
+> own data — it is an ordinary scope choice about what import does, not a residual data-loss cost being
+> defended.
 
-**Which means D-5 must stop implying otherwise.** The claim that a determined user "brings the content
-across afterwards" described a merge into a live workspace. D-5's copy has to
-offer the file as what it is. This is the one place in this document where the escape hatch was doing
-more work than the mechanism supports.
-
-**Four gates make merging-into-populated a different project, and only one of them was known.** The
-freeze was found (§2.4). The other three come from what `exportEntries` actually produces — a zip of
-`master.md` and `days/<date>.md`:
+**Two gates make merging-into-populated a different project, and only one of them was known.** The freeze
+was found (§2.4). The other comes from what `exportEntries` produces — a zip of `master.md`,
+`days/<date>.md` and, where retained cards have no visible collection, `recovery.md` (TRD §9):
 
 1. **Days collide by construction**, since entries are keyed by date and both sides have that date.
 2. **No card identity survives the round trip.** Cards are Markdown list items; nothing distinguishes
    re-importing the same file from importing new content, so import is not idempotent and duplicates on
-   every repeat.
-3. **`NEXT_CAP` is a second silent-drop gate on the same path.** A day already holding three Next items
-   cannot accept a fourth, and PRD principle 5 forbids resolving that by rearranging what is there — so
-   imported items would vanish exactly the way §2.4's frozen days would have. The document found one gate
-   of this shape and walked past the other.
+   every repeat. Note that TRD §9 already requires export → import → export to be byte-identical, which
+   is a *format* fidelity requirement and not an identity one; it does not supply what this gate needs.
+
+**`NEXT_CAP` is not a gate, and an earlier draft was wrong to count it as one.** The cap is a commitment
+device for the user, not an invariant of the document. It binds the paths that *author* — `capacityFor`
+refuses the fourth item at creation (`moves.ts`), which is PRD principle 5's "by refusing the fourth item,
+never by rearranging what is already there" — and it does not bind replication, which is why *n* synced
+devices can already produce up to *n* × 3 Next items on one day and the interface simply shows more than
+three. That is deliberate existing behaviour, not a defect. Import sits on the same side of that line as
+replication, for exactly the reason §6 places it outside the freeze: it is the app reconciling histories
+rather than a person editing the past. So imported items do not silently vanish at the cap.
 
 **Attribution is not a fourth gate, because it is already answered.** `Card.author` is absent from the
 export and D-27 requires an authenticated actor, but PRD §11.3 assigns the **system actor** to
@@ -1211,9 +1239,9 @@ specified is encrypted to the content root, so a Local-level fidelity export nee
 
 - **The text half is easy and manual.** A second Goals or master list is appended beneath a horizontal
   rule and a label saying where it came from, and the user cleans it up. No per-character merge, no
-  adjudication — the same instinct as D-5, applied one level down.
-- **The structured half is the unsolved part**: day collision, duplicate suppression without ids, and the
-  cap.
+  adjudication — the same instinct D-24 applies at the workspace level, applied one level down.
+- **The structured half is the unsolved part**: day collision and duplicate suppression without ids. Not
+  the cap, which tolerates the overflow.
 - **A mechanical CRDT merge is available and meaningless, which is the argument against it.** Two
   independent documents *can* be merged — `Y.applyUpdate` both into one — and §2.2b already describes
   what that produces and calls it a defect: interleaved text and both sets of cards in arbitrary order.
@@ -1222,7 +1250,7 @@ specified is encrypted to the content root, so a Local-level fidelity export nee
 
 **What this leaves of S10 and the old room behaviour.** Today's silent, irreversible convergence on a
 room change (S10, S14, §2.2b) is still a defect, and D-11 still removes it. What changes is that its
-replacement is a rule plus a careful transition, rather than a flow.
+replacement is separate storage per workspace rather than a flow, a rule or a transition (§5.2.1).
 
 **D-22. Should merged content show its provenance?**
 
@@ -1233,9 +1261,17 @@ replacement is a rule plus a careful transition, rather than a flow.
 Niche but genuinely used; Google Docs' document history is the proof that people reach for this when a merge
 gets big. The boundary that keeps it small is worth writing down, because this is the point where the idea
 starts wanting to become a feature: **this is a post-merge orientation aid, not a history feature.** It
-answers "which of my devices put this here" for as long as that is a live question — the freeze window is
-the natural bound, since a frozen day is finished and nothing about it needs rearranging. It does not answer
+answers "which of my devices put this here" for as long as that is a live question. It does not answer
 "what did this look like last Tuesday", and building that is a different project.
+
+**The bound is the divergence, not the freeze window, and v16 corrects that.** An earlier draft made the
+freeze window the natural bound on the grounds that a frozen day is finished and nothing about it needs
+rearranging. That is true of *editing* and false of *reading*, and it picks exactly the wrong window: the
+merge this mode exists to explain is the one that follows a long divergence — a device offline for a
+month, a lapse (D-29), a migration cutover (§5.11.2) — and all of its mess lands **outside** three days,
+where a freeze-bounded mode would show nothing. The useful bound is *since this device last converged*,
+which is the same thing the merge itself is defined against. It stays a bound, so this remains an
+orientation aid rather than document history.
 
 Two useful facts about feasibility:
 
@@ -1249,82 +1285,81 @@ Two useful facts about feasibility:
 Which makes this splittable rather than off-topic: the card half is cheap and could ship with sync
 itself, and the text half is a different question about attribution granularity.
 
-**D-24. How does existing local history become an account?** _(Renamed. It was "how does a paired group
-become an account", and after D-16 there are no paired groups — there is local history, which every
-account-holder has.)_
+**D-24. How does existing local history become an account, and what happens to local history on every
+other device?** _(Renamed twice. It was "how does a paired group become an account"; after D-16 there are
+no paired groups. **v16 widened it to absorb D-5**, which asked the second half of this question and is
+withdrawn.)_
 
-> **Decided: the account adopts what is already there.** The existing principal, device credential,
-> home-workspace membership and document carry over; the account becomes the service binding and brings
-> the workspace under service authorization rather than minting a replacement identity.
+> **Decided: account creation asks once; signing in never asks.**
+>
+> - **At account creation the user chooses: promote this list, or start fresh.** Promoting moves the
+>   Local workspace's contents into the account workspace, and the existing principal, device credential,
+>   home-workspace membership and document carry over — the account becomes the service binding rather
+>   than minting a replacement identity. Starting fresh mints a new principal and workspace and **leaves
+>   the Local one untouched**.
+> - **Signing in on any device adopts, merges, replaces and re-parents nothing.** The account workspace
+>   opens in its own local database keyed by _(principal, workspace)_. Any Local workspace already on that
+>   device keeps its principal, its actor and its history (§2.2b, §5.2.1).
+> - **The visible list follows sign-in state.** Signed in shows the account workspace; signed out shows
+>   the Local one. There is no picker, no switcher and no second list open at once.
+> - **The retained Local workspace ends by export or deletion**, offered where a person would look for
+>   their own old data rather than in anything resembling workspace administration (Rule 1, D-30).
 
-**D-16 promoted this from an edge case to the main road, and that is the most important thing to record
-here.** Under the old ladder, a second device usually arrived early, empty, and without an account — so
-the common case was an empty device adopting an existing history, which is D-5's easy row. Now **every**
-user runs local-only first, and many will run local-only on two devices before creating an account. So the first sync a
-person ever performs is frequently **two non-empty histories meeting**, which is D-5's hard row and the
-one that stops and asks.
+**One question, at the only moment it means anything.** Account creation is the one point where the user
+has a list in front of them and is deciding whether it is the list they are taking with them. Everything
+after that is mechanical: a device signs in, gets the account workspace, and keeps whatever else it had.
 
-**And D-5 answers what happens then, at the product level rather than the technical one: the joining
-device's history does not survive.** The workspace's list is the list; the joining device is told what is
-about to go, offered the export, and asked to confirm. There is no merge and no adjudication.
+**Promotion is a move rather than a copy**, and the difference is not fastidiousness. A copy leaves a
+stale duplicate of the promoted list sitting in Local storage, which a user will find months later, after
+it has diverged from the account workspace by everything they have written since, and reasonably believe
+is a second copy of their data. Moving means signing out after promotion lands on a fresh genesis, which
+is honest: there is no earlier list on this device any more, because it became the account's.
 
-Three things follow. None requires merge or history-adjudication machinery, although adoption itself
-requires the transition machinery in §5.2.1:
+**And "start fresh" is safe for the first time.** §1.1 has always warned that a signup which mints a
+fresh identity is the shape that loses a month of someone's history. That was true when the alternative
+to adoption was abandonment. It is not true now — the Local workspace is still there, still openable,
+still exportable — so the choice can be offered honestly instead of being steered.
 
-- **Account creation is the moment that decides which history survives**, because the creating device's
-  history becomes the workspace. That makes one sentence load-bearing in the interface: *create the
-  account on the device whose list you want to keep.*
-- **The order of operations is the whole mitigation, and there are two safe orders rather than one.**
-  Account on the device with the history, then enroll the others, and the destructive row never occurs —
-  the enrolling devices are empty or their content was never wanted. **Account on an empty device also
-  works**, because an empty workspace adopts its first joiner's history (D-5, row 2); the account can be
-  created on a device that has nothing and the one real list carried in afterwards. What has no safe
-  order is *two* devices that both have content the user wants: one of them loses, whichever way round it
-  is done, and that is the case D-5 stops and asks about. The interface should make a safe ordering the
-  path of least resistance rather than leaving it to chance.
-- **What is owed is messaging, export/import and transition machinery — not adjudication machinery.** The
-  loss has to be stated before it happens and the export has to be real. Import is owed for its own
-  reasons (§2.4, D-33), but it targets an empty workspace and so does **not** bring the replaced history
-  back afterwards (§5.2.2) — which makes the messaging carry more weight, not less. Preflight, separate
-  workspace databases and a crash-safe switch are the distinct implementation requirements in §5.2.1.
+Three shapes were available and only one is destructive:
 
-Three shapes were available for the adoption itself, and they were not equally safe:
-
-- **The account adopts the group.** ✅ **Chosen.** The requirement it carries is worth stating because it
+- **The account adopts what is already there.** ✅ **Chosen as one branch.** The requirement it carries
   lands on the account model rather than the UI: **the account has to be able to accept an identity that
   predates it.** A design where signing up mints a fresh identity and attaches storage to it cannot do
   this, and that is the design that falls out of an ordinary implementation.
-- **The account starts fresh and the group is abandoned.** The one that loses a month of someone's
-  history — and the one an implementation drifts into if nobody wrote the sentence above down.
-- ~~**They coexist.**~~ **Deferred by the revealed surface, not foreclosed by the architecture** — and an
-  earlier version of this line said "ruled out by D-5's selection", which was both circular and wrong
-  about the mechanism. §5.4.1 deliberately keeps the capacity for a principal to hold several workspace
-  memberships and for a client to store several while showing one. So two histories *could* be two
-  workspaces. What stops it is that the product reveals exactly one home workspace, and exposing a second
-  means a picker — which Rule 1 forbids and which §5.4.1 assigns to the future human-sharing document
-  rather than smuggling in through a cardinality. **Worth keeping distinct**, because a design that ever
-  reveals multiple workspaces makes this option available again on the same day, and it should be
-  re-examined then rather than assumed dead.
+- **They coexist.** ✅ **Chosen for every device after the first, and for the "start fresh" branch on the
+  first.** v15 struck this out on the grounds that "exposing a second means a picker — which Rule 1
+  forbids", and left a note that it "should be re-examined" the day multiple workspaces become
+  revealable. The note was right and the reasoning was wrong: **sign-in state is not a picker.** One list
+  is visible at a time and which one it is follows from whether you are signed in — the same way it
+  follows in any application where signing out returns you to something. §5.4.1 already keeps the
+  capacity for a principal to hold several memberships and for a client to store several while showing
+  one; v16 uses it for one person rather than reserving it for a second.
+- **The account starts fresh and the local history is abandoned.** ❌ The one that loses a month of
+  someone's history, and the one an implementation drifts into if nobody writes down that the other two
+  exist.
 
-**Why the creating device's history becomes the workspace, since it reads as stipulation and is not.** At
-account creation there is exactly one device and therefore exactly one candidate history. It either
-becomes the workspace's or it is thrown away, and throwing it away is the second bullet above — the shape
-that loses a month of someone's work. So the rule is not chosen from a field of options; it is the only
-non-destructive thing available at that moment.
-
-**And that is what separates this decision from D-5's, which an earlier draft had leaning on each
-other.** D-24 sets an **initial condition**: the workspace acquires a history, from the only device that
-can supply one. D-5 states a **rule**: a workspace that has a history keeps it, one that has none adopts
-its first joiner's. The rule does not derive its justification from the initial condition — it stands on
-"one list, and the app must be able to pick without asking". What the initial condition supplies is the
-factual guarantee that by the time any second device arrives there *is* a definite answer to which history
-is the workspace's. Condition and rule, not premise and conclusion.
+**What v16 removed from this decision, since two rounds of it were about mitigating a loss.** There is no
+longer a sentence that has to appear in the interface at the right moment (*create the account on the
+device whose list you want to keep*), no safe and unsafe ordering to steer people between, and no case
+where two devices both hold content the user wants and one of them has to lose. Those were all real, and
+they were all consequences of a single local database rather than of anything the product wanted (§2.2b).
+What is still owed is one clear choice at account creation, the storage isolation in §5.2.1, and a place
+to reach the retained Local workspace.
 
 **The reverse direction is cleaner than it used to be, and worth stating because it is now a supported
 end state rather than a fall.** Deleting the account retires the service authorization lineage, so each
 device becomes an independent **Local** install and they stop converging (S36). Nothing is locked; what
 ends is synchronization. That is the free product, arrived at from above, and it is the same place a
 lapsed subscription would eventually land if D-31 later selects one (D-29).
+
+**Which v16 makes one question sharper: a device may now come out of that with two Local workspaces.**
+The former account workspace becomes Local on every device that held it, and a device that also retained
+an anonymous workspace from before it signed in has both. **The former account workspace is the one that
+shows** — it is the live list, it is what the user was using a moment ago, and reverting the visible list
+to a workspace they abandoned months earlier would be the app forgetting on their behalf. The retained
+anonymous one stays reachable exactly as it was, on the same terms and through the same surface as
+before, and it is a good moment to offer its export or deletion since the user is already looking at what
+they keep.
 
 **The principal survives, and this document never said so although its own argument requires it.** §1.1's
 first ground is that the account *adopts* an identity that already exists; an identity that predates the
@@ -1361,16 +1396,22 @@ available:
   offline devices, applied to the moment it matters most.
 
 The one thing that must not be quiet about it is the divergence: from the moment sync stops, edits on the
-laptop and edits on the phone are two histories, and if the user ever pays again they meet through D-5.
-Rule 2 forbids implying otherwise.
+laptop and edits on the phone stop reaching each other, and Rule 2 forbids implying otherwise.
 
-Note that this and D-5 are one question asked at two moments, and v15 gave them one answer. D-24 decides
-**which history becomes the workspace** — the creating device's. D-5 decides **what happens to every other
-history that later meets it** — it is stated, exported and replaced. Neither needs an **adjudication**
-flow, because between them there is always a determinate answer to "which one is the list". D-5 still
-requires confirmation, automatic export and the crash-safe transition in §5.2.1; what disappears is only
-the choice over which history wins. An earlier draft proposed that D-24 reuse D-5's four-way adjudication;
-there is no longer one to reuse, and that is the saving.
+**What happens if they are ever reconnected is a merge, not a contest.** Both replicas descend from the
+state the workspace was in when sync stopped, so Yjs converges them and nothing is chosen or discarded
+(§6). A long separation makes that merge *large* — both devices' cards on the shared dates, the master
+list merged at character granularity, more than three Next items on days where both devices used them —
+and large is the honest word for it rather than lossy. D-22's provenance mode exists for exactly this
+reading problem, bounded to the divergence.
+
+**This and D-5 were one question asked at two moments, and v16 discovered that only one of the moments
+was real.** v15 split them: D-24 decided which history becomes the workspace, and D-5 decided what
+happened to every other history that later met it. The second moment does not occur, because two
+histories only meet if they are made to share a store. So the whole question is asked once, at account
+creation, of the one device that has a list in front of it — and every later device keeps what it has.
+v14 proposed a four-way adjudication, v15 replaced it with a rule, and v16 finds there was nothing to
+rule on.
 
 **D-6. Can a dead actor be pruned, and by whom?**
 
@@ -1776,20 +1817,30 @@ deliberate and it is what Rule 1 is about.
 memberships in several workspaces; the client may hold several locally while showing one. The product
 reveals only the home workspace rather than making anything else impossible.
 
+**v16 spends part of that capacity, and it is worth being precise about which part.** A device that has
+been used locally and then signs in **stores two workspaces and hosts two principals** — the anonymous
+one and the account one (D-24). It still *shows* one, and which one is determined by sign-in state rather
+than by a choice between containers, so "one workspace shown" survives and "the client may store several"
+stops being a reservation for a future feature and becomes the ordinary case. What remains unspent is
+what §5.4.1 was actually protecting: a principal holding memberships in several workspaces *at once*, and
+any surface that would let a person move between them. Those still belong to the human-sharing document.
+
 The cardinalities, written down so they stop being inferred:
 
-| Relationship               | Today                  | Architecturally          |
-| -------------------------- | ---------------------- | ------------------------ |
-| account → principal        | none                   | 1 : 1                    |
-| principal → home workspace | 1                      | 1                        |
-| principal → membership     | 1 (the home one)       | **many**                 |
-| agent → membership         | none                   | **many**                 |
-| membership → workspace     | exactly 1              | exactly 1                |
-| workspace → document       | 1                      | 1                        |
-| workspace → membership     | 1 (later: plus agents) | **many**                 |
-| device → human actor       | 1                      | **many** (shared device) |
-| human actor → membership   | 1                      | 1                        |
-| client → workspace shown   | 1                      | 1, while storing several |
+| Relationship                 | Today                  | Architecturally          |
+| ---------------------------- | ---------------------- | ------------------------ |
+| account → principal          | none                   | 1 : 1                    |
+| principal → home workspace   | 1                      | 1                        |
+| principal → membership       | 1 (the home one)       | **many**                 |
+| agent → membership           | none                   | **many**                 |
+| membership → workspace       | exactly 1              | exactly 1                |
+| workspace → document         | 1                      | 1                        |
+| workspace → membership       | 1 (later: plus agents) | **many**                 |
+| device → principal           | 1                      | **many** (D-24; shared device) |
+| device → human actor         | 1                      | **many** (one per principal on it) |
+| human actor → membership     | 1                      | 1                        |
+| client → workspace stored    | 1                      | **many** (D-24)          |
+| client → workspace shown     | 1                      | 1, by sign-in state      |
 
 **And membership is scoped deliberately, not by omission:**
 
@@ -1855,6 +1906,14 @@ always past it** — the epoch is not a third axis crossing the ladder, it is th
 authorization side. That collapses the detection problem D-12 was worried about into one question with a
 definite answer: *is there signed service authorization state in this document?* Absent means Local
 genesis and re-minting is harmless; present means admitted and it is not.
+
+**The epoch is a property of the workspace, not of the device, and v16 makes that distinction load-bearing
+rather than pedantic.** A device that has signed in holds an anonymous workspace at epoch 0 and an account
+workspace past it, at the same time, in the same browser profile (D-24). So "is this device admitted" is
+not a question with an answer; "is *this workspace* admitted" is, and it is asked separately of each
+store the device holds. Losing local identity is likewise per workspace: the same storage clear can leave
+the anonymous workspace re-mintable and the account workspace in the state this decision says must not be
+papered over.
 
 **The test this document proposed for telling those apart does not work, and is withdrawn.** The claim was
 that a surviving human roster entry proves the document predates the missing identity and has been shared.
@@ -2011,6 +2070,18 @@ profile — that hands the next person at that machine a device that can still r
 does it while telling the departing user the machine is clean. **So a shared-device reset clears 1, 2 and
 3 together**, and should revoke the credential at the service as well, since a machine you have handed
 over is exactly D-18's motivating case.
+
+**And after v16 the four objects are per workspace, which gives that shape a second way to go wrong.** A
+device may hold an anonymous Local workspace and an account workspace at once (D-24), each with its own
+identity, document and — for the account one — capability. **A shared-device reset must clear every
+workspace on the device**, or "there was never anyone here" hands the next person a readable pre-sign-in
+list while truthfully reporting that the account is gone. That is the same defect as leaving a live
+credential behind, arriving through the store the reset did not think to look in.
+
+**Sign-out is the ordinary case and is not a reset at all.** It stops using the account workspace and
+returns the visible list to the retained Local one (D-24). Where a device never had one — a phone that
+was enrolled straight out of the box — sign-out lands on genesis, which is honest but worth saying in the
+copy rather than letting an empty list imply something was lost.
 
 **Two of the four can be irreversible, and an earlier version of this paragraph named only one.** Objects
 3 and 4 both destroy, under conditions the app is differently able to detect:
@@ -3255,9 +3326,19 @@ Four things that follow and should not be rediscovered later:
   possible — and it is the same number for both, since both need the same retained objects.
 - **What expiry ends is the hosted copy, not the account.** When retention runs out the ciphertext and
   the wrapped root go together, and a user who resumes after that is an account with no server-side
-  history: their devices' replicas are the workspace, and D-5 decides which one. This is the one moment
-  in the lapse path that destroys something, so it is the one that has to be said in advance rather than
-  discovered — the same honesty D-24 requires before account deletion, at the same kind of boundary.
+  history: their devices' replicas are the workspace. **They converge**, because they are replicas of one
+  workspace and share an ancestor — the state it was in when sync stopped (§6). Nothing chooses between
+  them and nothing is discarded; the merge is simply as large as the separation was, which is D-22's
+  problem rather than a data-loss one. **An earlier draft sent this to D-5 and was wrong to**: it reached
+  that conclusion through the *server's* emptiness, treating a workspace whose hosted copy had expired as
+  a workspace with no history, which would have replaced one device's months of work for no reason. The
+  relay losing its copy does not dissolve the ancestry between the devices.
+
+  What expiry genuinely destroys is narrower and still has to be said in advance: the **total-device-loss
+  recovery path** (there is no longer ciphertext for the saved code to open), and the **gap held by any
+  device that was offline across the whole lapse** — its replica is short everything since it last
+  synced, and after expiry there is nowhere left to get the remainder. That is the same qualifier D-24
+  puts on account deletion, at the same kind of boundary.
 - **Deliberate downgrade (S53) is the same mechanism**, and it is the case that must not silently
   become S36's account deletion. Stopping payment and deleting an account are different acts with
   different consequences for service authorization and hosted retention, and the interface has to keep them apart.
@@ -3275,17 +3356,19 @@ reappearing shortly after the deadline is not silently short of a month's work.
 
 One thing must still be said out loud when sync stops, because Rule 2 requires it and because it is the
 part a user will not infer: **from that moment the devices stop converging, and each one's edits are its
-own.** If the subscription resumes later, D-5 applies: whichever device the workspace continues from
-keeps its history, and the others are told what they are about to lose and offered the export. Silence
-about the divergence would let someone believe their phone and laptop were still one list for weeks after
-they stopped being one — and then lose the difference without warning.
+own.** Silence about the divergence would let someone believe their phone and laptop were still one list
+for weeks after they stopped being one. **What happens if the subscription resumes is a merge, not a
+loss** — the replicas share an ancestor and Yjs converges them (§6) — so the honest copy is *these will
+come back together, and there will be a lot to come back together*, not a warning that something is at
+stake. D-22's provenance mode is what makes the result legible.
 
 **D-30. Does Rule 1 have exceptions, or the wrong formulation?** _(Decided.)_
 
-**The case that raised this has been withdrawn.** Rule 1 says the user never manages workspaces; v14's
-D-5 then required them to adjudicate two document histories with a preview and four choices, which was
-workspace management at its most demanding. v15's D-5 removes that flow entirely — the workspace's
-history wins by rule, and the user confirms a loss rather than choosing an outcome (§1.4).
+**The case that raised this has been withdrawn twice over.** Rule 1 says the user never manages
+workspaces; v14's D-5 then required them to adjudicate two document histories with a preview and four
+choices, which was workspace management at its most demanding. v15 removed the flow and left a rule plus
+a confirmation of loss. **v16 removed the confirmation too** — nothing is lost, so there is nothing to
+consent to (§1.4, D-24).
 
 > **Decided: Rule 1 stands as written — the user never manages workspaces.** A workspace remains a real
 > architectural object: one document plus its authorization boundary. The product exposes the intentions
@@ -3293,10 +3376,17 @@ history wins by rule, and the user confirms a loss rather than choosing an outco
 > user to name, select, reconcile or administer workspace containers.
 
 The security corollary is not an exception. Revoking a phone is device and access management; saving a
-recovery factor is recovery; confirming replacement of a joining device's local history is consent to an
-irreversible data transition. Each changes workspace state underneath, but none requires the user to hold
-a workspace model. D-5 is the proof: once the product supplies the rule that selects the history, the
-workspace-management UI disappears and only the consequence needs explaining.
+recovery factor is recovery. Each changes workspace state underneath, but none requires the user to hold
+a workspace model. D-5 is the proof, and the strongest available one: the workspace-management UI it
+demanded turned out to be answering a question the storage key made disappear.
+
+**v16 adds one surface and it is the one to watch.** A device that signed in retains a Local workspace,
+and reaching it is a real affordance the product did not have before (D-24). It stays on the right side
+of Rule 1 for two reasons, both of which have to keep holding: **which list is visible follows sign-in
+state rather than a choice between containers**, so there is no picker; and the retained workspace is
+presented as *your data from before you signed in* with export and deletion, not as a second list to
+maintain. If either drifts — a switcher, two live lists, anything that asks the user which workspace they
+mean — this is where Rule 1 gets reopened, and the trigger below is exactly that drift.
 
 Rule 1 would need reopening if the product introduced multiple visible workspaces and asked a person to
 name, choose between, move among or administer them. Current architectural capacity for multiple
@@ -3537,12 +3627,20 @@ devices, and test 7's "edits made before, during and after" is a multi-device ca
   this contract proposed two mechanisms that do not work.** Both failures are instructive, because each is
   a property this document had already established elsewhere and then contradicted here.
 
-  **A state vector cannot establish descent.** It maps client to clock over *insertions*; deletions live
-  separately in the `DeleteSet`. Two replicas can carry identical state vectors and disagree about what
-  has been deleted, so "the checkpoint's state vector is dominated" does not mean "everything the
-  checkpoint contains is here". Coverage has to be authenticated over both halves — a full Yjs
-  **snapshot**, which is exactly the pair `{sv, ds}`, or a receipt for the specific checkpoint the device
-  has applied. The manifest publishes that, not a bare state vector (§5.11.3).
+  **Descent, established rather than tested.** The enrolling device verifies and **applies the admitted
+  checkpoint first**, and then descends from it by construction. A v15 draft evaluated descent at the
+  wrong moment — before the checkpoint had been received — and concluded that a device whose own work the
+  checkpoint did not cover "is not holding a suffix; it is a second history". It is not. Both are replicas
+  of one workspace and share an ancestor, so applying the checkpoint and merging is exactly what Yjs is
+  for (§6); the device's own pre-migration work is still there afterwards, alongside everything the
+  checkpoint brought. Descent is a state the device *reaches*, not a qualification it either has or lacks.
+
+  **But a state vector alone cannot authenticate that state.** It maps client to clock over *insertions*;
+  deletions live separately in the `DeleteSet`. Two replicas can carry identical state vectors and disagree
+  about what has been deleted, so "the checkpoint's state vector is dominated" does not mean "everything
+  the checkpoint contains is here". The manifest therefore authenticates coverage of both halves — a full
+  Yjs **snapshot**, which is exactly the pair `{sv, ds}`, or a receipt for the specific checkpoint the
+  device applied — rather than publishing a bare state vector (§5.11.3).
 
   **A delta cannot be filtered by signing credential.** Update bytes carry the writing `Y.Doc`'s client
   id, which is random per document instance — this document says so in three places and had TRD §4.8
@@ -3553,8 +3651,10 @@ devices, and test 7's "edits made before, during and after" is a multi-device ca
   **What works instead is the envelope, and §5.6.2 already supplies the principle** — forwarded mutations
   retain their original envelopes, because the envelope is where attribution lives. So a device does not
   filter a merged delta at all: it retains **its own outbound signed envelopes** since the checkpoint,
-  which it has by construction because it signed them, and replays exactly those under the new lineage.
-  Attribution survives because the envelope is unchanged in every attributed part.
+  which it has by construction because it signed them. Those envelopes identify the operations it may
+  carry; the device re-envelops and re-signs the same operations under the new epoch with the same
+  credential and actor. The old-lineage envelopes are evidence and input, not messages the replacement
+  service admits directly.
 
   **Coverage is then a subtraction rather than a filter.** Checkpoint plus this device's own envelope
   suffix accounts for some of its replica. Any residue — operations it *received* from another device
@@ -3566,15 +3666,15 @@ devices, and test 7's "edits made before, during and after" is a multi-device ca
   from its own envelopes. A device that never enrolls loses its window, which is the same honesty D-24
   requires when a device never appears for account deletion — name it in the confirmation rather than
   abandoning it quietly.
-- **A device whose contributions the checkpoint does not cover** — it was offline before the archive was
-  taken, so its pre-migration work never reached the restored state — is, from the new lineage's view, a
-  device carrying history that the workspace does not have. That is **D-5**, with its confirmation and
-  its export, and it is the one case migration cannot resolve silently — and it is exactly what
-  §5.11.4's test 7 exercises, which is the test asking two devices to diverge while the former service is
-  unavailable and then enrolling the second one.
+- **The one thing migration cannot carry, stated because it is a real loss and a small one.** Operations
+  from a credential that reached one device and never reached the archive travel on **that credential's**
+  enrollment or not at all. If the device that wrote them never enrolls at the replacement service, they
+  are gone — not replaced, not adjudicated, simply never re-signed under a lineage that would accept them.
+  §5.11.4's test 7 is what exercises this, and the loss is bounded by how much work a never-returning
+  device did inside the window.
 - **The window should therefore be short, and that is a design requirement rather than an aspiration.**
-  Every day of it is another day of divergence on every device that has not yet enrolled, and the second
-  bullet's probability grows with it.
+  Every day of it is another day of unsubmitted work on every device that has not yet enrolled, and the
+  previous bullet's exposure grows with it.
 
 So the accepted-set requirement and the migration boundary meet at a checkpoint rather than conflicting,
 and §5.11.4's test 7 — converging edits from before, during and after a migration — is passable because
@@ -3641,9 +3741,10 @@ The gate, demonstrated without production credentials or the original app origin
    its content.
 6. Create a new authorization lineage at the replacement service, then add and revoke a device.
 7. With two devices diverged while the former service was unavailable, use one replica to establish the
-   replacement workspace; enroll the other under D-5, verify that its divergent local history is disclosed,
-   exported and replaced rather than silently merged, then converge edits made after enrollment under the
-   replacement lineage.
+   replacement workspace; enroll the other, verify that it applies the checkpoint, retains its own
+   divergent work and re-signs only its own credential's operations under the new lineage, then converge
+   edits made after enrollment. Verify separately that operations from a third credential which never
+   reached the archive are **not** re-signed by the enrolling device (§5.11.2).
 8. Repeat with the store holding the newest checkpoint unavailable, using the documented replica order.
 9. **Run tests 4 through 7 again with the entire original provider account unavailable** — not one store,
    not one region, but every service the company operated — using only material the user already holds.
@@ -3755,6 +3856,26 @@ Not decisions. Listed so they do not consume discussion.
   local unlock ceremony, which is not a network wait and is not forced by anything here; whether one
   exists is **D-34**, and it is open.
 - **Actor ids do not collide.** UUIDv4.
+- **Replicas that share an ancestor merge; histories that do not share one cannot.** This is the single
+  mechanical fact underneath D-5's withdrawal and three corrections that came with it, and it kept being
+  re-derived. Two replicas of one workspace that have diverged — two devices on an account, one of them
+  offline for a month, a lapse, a migration cutover — descend from a common state, and Yjs converges them
+  without choosing or discarding anything. That is the ordinary offline-sync case and TRD §2 selects Yjs
+  for it. Two documents with **no** common ancestor also merge mechanically, and the result is meaningless:
+  interleaved text and both sets of cards in arbitrary order (§2.2b, §5.2.2). So "two histories meet" is
+  never by itself a problem statement — the question is always whether they share an ancestor, and the two
+  answers want opposite treatments. Since v16 the second case is two workspaces rather than one contested
+  one (D-24), which leaves the first as the only kind of meeting the product has.
+- **A long divergence produces a large merge, not a lossy one.** Nothing is at stake in it; what it costs
+  is legibility, which is D-22's job. Do not reach for a rule, a preview or a server here.
+- **`NEXT_CAP` binds authoring, not replication — so a day can hold more than three Next items.**
+  `capacityFor` refuses the fourth item at creation (`moves.ts`), which is PRD principle 5 enforced the
+  way principle 5 asks for it: by refusing, never by rearranging. Remote updates never consult it, so *n*
+  synced devices can produce up to *n* × 3 on one day and the interface shows what is there. **This is
+  deliberate.** The cap is a commitment device for the person writing, not an invariant of the document,
+  and an over-cap day is a true statement about what several devices did rather than a defect to repair.
+  Import sits on the replication side of that line for the same reason it sits outside the freeze (§2.4,
+  §5.2.2).
 - **A restored or resumed tab must re-establish its view.** It has no way to know what it missed. (Tab
   lifecycle, not the day freeze — the words collide and this one is the browser's.)
 - **The freeze governs operations that author the past — not replication, not compaction, not a
@@ -3765,7 +3886,8 @@ Not decisions. Listed so they do not consume discussion.
   rewrite frozen history on purpose, and that is correct. **Import is the case that has to be placed
   deliberately** (§2.4, §5.2.2): a migration import is the app reconciling histories rather than a person
   editing the past, so gating it the way an edit is gated would silently discard everything older than
-  three days. Note the second gate on that path, which is not the freeze: `NEXT_CAP` (§5.2.2).
+  three days. `NEXT_CAP` follows the identical split and is not a second gate on that path (§5.2.2, and
+  the bullet above).
 
 ---
 
@@ -3787,10 +3909,11 @@ the user has no reason to care and no context to answer. Four constraints now de
    commercial step is D-31 and outside this flow. The account requirement is a sharper edge than the
    retired ladder had, the code makes it sharper still, and this is the honest place to put both — when
    the app starts holding ciphertext and acting on the user's behalf through a service.
-4. **Nothing silently discards a history.** Where a joining device's own history is about to be replaced
-   by the workspace's, D-5 requires that it be said plainly, that the export be offered, and that the
-   user confirm. **This is now a common path rather than a corner case** (D-24, S35) — which raises what
-   the copy has to be, not what the machinery has to do.
+4. **Nothing discards a history at all.** v15 required a joining device's replacement of its own history
+   to be stated, exported and confirmed; **v16 removes the replacement** (D-5, withdrawn). Signing in
+   opens the account workspace beside whatever was already on the device, so the only history question
+   the product asks is the one at account creation — *promote this list, or start fresh* — and it is
+   asked once, of one device, with both answers safe (D-24).
 
 ### A worked example of the chosen flow
 
@@ -3813,8 +3936,13 @@ account without it — the alternative is a service that can read his list, whic
 interface owes him here is the reason, in a sentence, at the moment he is being asked: *we will not be
 able to recover this for you, so you have to be able to.*
 
-Once he confirms the independently held code, the account exists. It binds to the principal that already
-exists rather than minting a replacement, and adopts the laptop's document (D-24).
+**And one question about the list in front of him, asked once.** The laptop asks whether this is the list
+he is taking with him or whether he would rather start clean. He promotes it, so the account binds to the
+principal that already exists rather than minting a replacement, and the laptop's month becomes the
+account workspace's history (D-24). Had he chosen to start fresh, the month would still be on the laptop
+afterwards, reachable by signing out — the choice is real, and neither answer destroys anything.
+
+Once he confirms the independently held code, the account exists.
 
 He signs in on the phone. The account admits the phone's device credential, the service signs the new
 authorization epoch, and the phone is enrolled — but it still cannot read anything, because authorizing a
@@ -3823,40 +3951,23 @@ it, and the key arrives out of band (D-19). He never needs the recovery code for
 for when no existing device survives, not a step in ordinary enrollment, and the QR does not create a
 second authorization path. No workspace name, room or endpoint is typed anywhere (Rule 1).
 
-**Then the part that costs something, and it is a sentence rather than a flow.** The phone has a week of
-its own notes and the workspace has the laptop's month. D-5 does not ask Tom to adjudicate: the workspace
-is the list. The phone tells him plainly that its own week will not be carried over, offers him the
-export, and waits for him to confirm. Then it adopts the laptop's history and the two are one list.
+**And the part that used to cost something now costs nothing, which is the whole of what v16 changed.**
+The phone has a week of its own notes and the account workspace has the laptop's month. The phone is not
+asked to give anything up, because the account workspace opens in its own local database and the week
+stays exactly where it is, in the anonymous workspace it was written into (§5.2.1). Tom sees the laptop's
+month, which is the list he asked for. His week is not gone, not exported to a file he has to keep, and
+not merged into anything — it is on the phone, under the phone's own principal, and signing out shows it.
 
-He loses the week unless he took the file — and the file is something he can read, not something he can
-pour back into the list a week later (§5.2.2). That is a real cost and the interface has to be honest
-about it at the moment it happens rather than afterwards.
+**What he does with it is his to decide and there is no deadline.** He can read it, export it, or delete
+it; the app should make that reachable where a person would look for their own earlier data, and should
+not dress it up as a second list he is meant to maintain (D-24, Rule 1). If he never touches it again, it
+sits there, costing storage and nothing else.
 
-**Note what the mitigation did and did not do here, because it is easy to state too well.** Tom *followed*
-the instruction — he created the account on the laptop, the device whose list he wanted — and he still
-lost the week. **Once two devices both hold content, no ordering preserves both.** What the instruction
-buys is that the *month* survives rather than the week; it chooses the winner, it does not avoid the loss.
-The only thing that avoids it entirely is earlier than any ordering: **create the account before the second
-device accumulates anything.** Had Tom installed the app on the phone after creating the account, the phone
-would have been empty and nothing would have been asked at all.
-
-**And two different things are being paid for here, which the paragraph above ran together.** That *one*
-history becomes the list is a product rule (D-5, D-24) — permanent, deliberate, and the thing that makes
-"one list" mean anything. That the week cannot be **put back into the joined workspace** is not the rule;
-it is the current scope of import (§5.2.2).
-
-**"Unrecoverable" is the wrong word for what Tom is left holding**, and precision matters because the
-interface has to describe it. The file is readable in any editor, and it can seed a *fresh* workspace. What
-it cannot do is rejoin the list it was replaced from. With a fidelity format and a populated import that
-last part becomes possible — and it would be a **merge Tom performs**, not one the app performs for him.
-That is what "no merge" has always meant in D-5: no *automatic adjudication*, no app deciding between two
-histories behind a preview. A user deliberately importing a file they kept is the opposite of the thing the
-rule refuses. So: the rule is settled, and the limitation is one the product currently accepts and could
-later lift without touching it.
-
-Afterwards, the phone has a new human actor because attribution remains per member-per-device, but the
-interface groups both actors under the same principal: one "You", one colour. "Last synced from phone" may
-still name the device, and undo remains local to each tab.
+Afterwards, the phone has a new human actor in the account workspace because attribution remains per
+member-per-device, and the interface groups it with the laptop's under the same principal: one "You", one
+colour. The phone's *older* actor is still in its own workspace under its own principal, where it belongs
+and where nothing about the account can see it. "Last synced from phone" may still name the device, and
+undo remains local to each tab.
 
 If D-31 later makes hosted sync a subscription and Tom stops paying, a grace period passes and the account
 goes read-only: both devices keep working completely, holding everything they had, and they stop
@@ -3879,13 +3990,19 @@ D-31, removed D-17's everyday user-held authorization mechanism, and first re-we
 the clearest evidence that the account/service boundary was never a pricing question. §5.7.2's service
 authority decision then narrowed D-28 to the control-plane/data-plane split it now selects.
 
+**v16 removed a row instead of adding one.** Keying local storage by _(principal, workspace)_ — a step
+§2.2b had identified and deferred since v1 — dissolved **D-5** entirely, moved its surviving half into
+**D-24**, and corrected D-22, D-29 and §5.11.2, each of which had sent an ordinary CRDT merge to D-5's
+replacement rule. The register is one disposition lighter in substance and the same length in landmarks,
+which is deliberate (§0.1).
+
 | ID       | Question                                                       | Status                    | Answer, or what happens without one                                                                                                         |
 | -------- | -------------------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | **D-1**  | Does the user tell the app who they are, and when?             | **Decided**               | Generated by default; a name at account creation only, per D-23. The name is not the whole of that moment — the recovery code is asked for too (§5.7.6) |
 | **D-2**  | Is identity per person, per device, or a labelled pair?        | **Decided**               | Per device internally; per person in ordinary lists. Own devices appear only on explicit device/security surfaces and are not disclosed to another principal |
 | **D-3**  | Are device names worth improving?                              | **Decided in principle**  | Yes. Mechanism open — and it does not need a fingerprint                                                                                    |
 | **D-4**  | Can a new device claim an existing actor?                      | **Decided**               | No. A new device is always a new actor; the real question was D-19                                                                          |
-| **D-5**  | What happens when a device with history joins a workspace?     | **Decided**               | An existing workspace history wins; an empty one adopts the first joiner's. No adjudication. Cancel leaves the device untouched. Export is written first; the switch needs §5.2.1's mechanics. Import does not undo it (§5.2.2) |
+| **D-5**  | What happens when a device with history joins a workspace?     | **Withdrawn**             | The state cannot occur. Signing in opens the account workspace in its own local database and leaves any Local workspace on that device intact (D-24, §5.2.1). Nothing is adopted, merged, replaced or re-parented; there is no adjudication, confirmation, export-first or preflight. Divergent replicas of *one* workspace still merge, which is ordinary CRDT behaviour and not this question (§6) |
 | **D-6**  | Can dead actors be pruned?                                     | **Decided**               | No auto-hiding. Staleness may be muted; the interval is open. Exclusion is D-20                                                             |
 | **D-7**  | Should undo ever cross devices?                                | **Decided**               | No. Never leaves the device                                                                                                                 |
 | **D-8**  | What may a session be seen doing?                              | **Decided**               | A caret per tab, own tabs included, **all yours in your colour**, person's name. Active caret distinguished (D-21). Peer list deduplicated  |
@@ -3893,7 +4010,7 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-10** | Is sync configuration per device or per document?              | **Decided in principle**  | Rule 1: the user never manages workspaces. Mechanism open; today's three fields are ruled out                                               |
 | **D-11** | What is a workspace — content, or permission?                  | **Decided in principle**  | Permission. UI reveals one home workspace/document; architecture supports many memberships; "room" stays off the architecture               |
 | **D-12** | What happens when local identity is lost?                      | **Decided in principle**  | Authorization epoch 0 may re-mint; later epochs must not. Signed state, not roster. Since only the service advances the epoch, epoch 0 is Local and any later epoch is Account. Response open |
-| **D-13** | Is there a deliberate reset?                                   | **Decided**               | Yes. Four clearable objects: identity, capability, document, recovery material. A shared-device reset clears the first three; open is what an ordinary sign-out clears and whether it revokes |
+| **D-13** | Is there a deliberate reset?                                   | **Decided**               | Yes. Four clearable objects: identity, capability, document, recovery material — **per workspace**, so a shared-device reset must reach every workspace on the device (D-24). It clears the first three; open is what an ordinary sign-out clears and whether it revokes |
 | **D-14** | May the relay decide who connects? What is written?            | **Decided**               | Service authenticates connections and authorization; relay validates opaque envelopes; clients retain semantic authority; no service component reads Yjs content |
 | **D-15** | Within a device, is undo per tab or shared?                    | **Decided**               | Per tab                                                                                                                                     |
 | **D-16** | Where does the account/service boundary sit?                  | **Decided**               | Local is free and permanent; hosted sync requires an account; pricing is D-31; the Paired rung is retired; **peer-to-peer is not built**    |
@@ -3902,9 +4019,9 @@ authority decision then narrowed D-28 to the control-plane/data-plane split it n
 | **D-19** | How does a device find the other devices that are yours?       | **Decided**               | Sign-in discovers and authorizes; an existing device or recovery factor separately delivers the content key. One account flow; wire identifier hidden |
 | **D-20** | How is a member actually excluded?                             | **Decided**               | Content encryption with key rotation. Keeps the relay content-blind; key management is the cost                                             |
 | **D-21** | What does "the active caret" mean — local, or globally recent? | **Decided**               | Locally active. No recency modelling; a design check that it reads as distinct                                                              |
-| **D-22** | Does merged content show its provenance?                       | **Decided**               | Yes, as a rarely-on mode. Settings toggle, off switch surfaced while active. Cards only, freeze-window bound                                |
+| **D-22** | Does merged content show its provenance?                       | **Decided**               | Yes, as a rarely-on mode. Settings toggle, off switch surfaced while active. Cards only, bounded by the **divergence** rather than the freeze window — the merges it explains land outside three days (§5.2.2) |
 | **D-23** | Does pairing alone trigger the name prompt?                    | **Decided**               | Largely dissolved by D-16: one name prompt, at account creation, which is now the same moment as first sync — and as the recovery-code ceremony, which is the larger ask |
-| **D-24** | How does existing local history become an account?             | **Decided**               | Adopts the creating device's history, which makes D-5 decidable. Deletion leaves each device its **last replica**, not a full copy, and the principal survives it |
+| **D-24** | How does local history become an account, and what happens to it elsewhere? | **Decided**  | Account creation asks once — promote this list (a move) or start fresh; both are safe. Signing in adopts, merges, replaces and re-parents nothing: the account workspace opens in parallel storage and the Local one is retained, reached by signing out and ended by export or deletion. Deletion leaves each device its **last replica**, not a full copy, and the principal survives it |
 | **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**               | Yes, for the environment case. Warn about the property, not the cause. Offer the grant, then export, then sync. Also owns the hosted copy's dependency on the saved code |
 | **D-26** | Revocation learned late, history already diverged?             | **Decided**               | No lineage rule, no discard, no filtered replay. Needs a **finalization boundary** against a hostile relay (§5.2.3) — a contract row        |
 | **D-27** | Is attribution authenticated, or advisory?                     | **Decided**               | Authenticated by an epoch-authorized credential; actor is derived or explicitly authorized for representation                               |
@@ -3980,9 +4097,10 @@ architecture to instantiate in the TRD and a defined boundary for §5.7.8's revi
 contract: D-12's response on an admitted document with no identity · D-13's destructive semantics · D-18's
 revoked-device options and cleanup policy · D-6's staleness interval · D-3's disambiguation mechanism ·
 D-21's design check · D-22 and D-23's interface details · D-29's retention duration for a lapsed
-account. D-20's awareness-leakage question has left this list: it is now a contract row of its own,
-because "presence metadata is visible to the relay" is a threat-boundary claim rather than an interface
-detail.
+account · **D-24's surface for the retained Local workspace** — where it is reached from, what it is
+called, and whether it is readable or only exportable. D-20's awareness-leakage question has left this
+list: it is now a contract row of its own, because "presence metadata is visible to the relay" is a
+threat-boundary claim rather than an interface detail.
 
 **D-16 is settled and it did most of the work in this revision.** The boundary was decided before
 anything was built, which was the whole of the saving; pricing is **D-31**, stays deferred, and changes
@@ -4039,14 +4157,24 @@ the qualifier matters, and D-34 is why (§5.7.4) — an account adopting an iden
 (D-24), honest durability warnings (D-25), and removal governing future access rather than pretending to
 erase copies already made.
 
-**Where this revision's cost actually landed.** D-16 moved complexity out of the protocol, and a little of
-it onto the user: someone who runs local-only on two devices and then creates an account loses the second device's
-history (D-5, D-24, S35). Two things about that are worth holding on to. It is **bounded and
-explicable** — one device, one moment, stated before it happens, with a file offered — rather than the
-open-ended adjudication v14 was heading toward. And it is **a copy problem, not an architecture problem**:
-what remains to get right is the sentence the user reads and the ordering the interface encourages. If
-this proves worse in practice than it reads here, the thing to revisit is the messaging and the import
-path, not the boundary.
+**Where v15's cost landed, and why v16 did not have to pay it.** D-16 moved complexity out of the
+protocol and, v15 believed, a little of it onto the user: someone who ran local-only on two devices and
+then created an account lost the second device's history. v15 defended that as bounded, explicable and
+**a copy problem rather than an architecture problem** — what remained was the sentence the user read and
+the ordering the interface encouraged.
+
+**That diagnosis was half right and the wrong half was load-bearing.** It *was* an architecture problem,
+one layer below where the document was looking: a single `DB_NAME` forced two unrelated histories into
+one store, and every product rule above it was compensating. §2.2b had named the fix in v1 and filed it
+as "not a decision to take here" (§2.2b), so fifteen drafts refined the messaging around a loss that the
+storage key removes. **The cost of this revision is therefore not a user-facing loss at all** — it is one
+more local database, an isolation invariant, and a place to reach retained Local data (§5.2.1, D-24).
+
+The general lesson is §1.4's, and it is worth carrying into whatever the next hard call turns out to be:
+when a decision's whole content is *how gracefully do we lose something*, check first whether the loss is
+forced by the domain or manufactured by a mechanism. This document's own test for the same instinct
+already existed one decision over — D-16's *would you build this limitation with unlimited money and no
+business model?* — and D-5 would not have survived it.
 
 **On splitting this document, which the fourth review round proposed: the ordering condition is now
 satisfied.** The revisions landed first; the product decisions can now be promoted into the PRD and the
@@ -4105,8 +4233,9 @@ the shared ontology in §1.
   technical-doc amendment that belongs with the rest of the promotion, not an ad-hoc edit alongside
   this one.
 - **§14 Open questions** — D-1 through D-33 are now dispositions to promote into the applicable product
-  sections or a referenced decision register, not open questions. Retain only their explicitly named live
-  UX/parameter details and D-34 as open items.
+  sections or a referenced decision register, not open questions — except **D-31**, which is deferred
+  rather than decided, and **D-5**, which is withdrawn and needs no promotion beyond its landmark. Retain
+  only the explicitly named live UX/parameter details and D-34 as open items.
 - **§1 / §2, or wherever the product is described** — D-16 makes a claim the PRD does not currently
   contain: **Local is free and permanent, while hosted synchronization requires an account.** Whether
   that service is free or paid is D-31 and is not a product-shape claim here. PRD §12's non-goals should
@@ -4117,6 +4246,17 @@ the shared ontology in §1.
   targets an empty workspace (§5.2.2), and the same amendment should record why: plain Markdown is the
   right escape format and the wrong round-trip one, so a **second, fidelity export carrying CRDT state**
   is what a populated import would eventually need (§5.11.2).
+- **TRD §9 — not previously on this list, and it is where import already lives.** It specifies the export
+  layout (`master.md`, `days/<date>.md`, `recovery.md`), says import "parses the same layout", and
+  requires export → import → export to be byte-identical. Three things it does not say and now must: that
+  import is scoped to an empty workspace (§5.2.2), that it sits outside the freeze and outside `NEXT_CAP`
+  as a maintenance rather than an authoring operation (§2.4, §6), and that the byte-identical round trip
+  is a format guarantee which does **not** supply card identity — the gate that keeps merging into a
+  populated workspace a separate project.
+- **TRD §6.1 — the local store is no longer one database.** It describes `y-indexeddb` against the
+  module constant `DB_NAME`. D-24 requires the store to be keyed by _(principal, workspace)_, a device to
+  hold several at once, and providers never to cross between them (§5.2.1). That is the single largest
+  implementation consequence in this revision and the section that currently contradicts it.
 - **A new section, or this document promoted** — the concepts in §1 are product surface, not an
   implementation detail, and they are currently written down nowhere. The principal in particular is
   the thing the PRD talks around: "one user" appears throughout without ever being a thing the system has.
