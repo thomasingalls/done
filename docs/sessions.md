@@ -2180,8 +2180,9 @@ business model would still want to say it. "Your data is not safe until you crea
 > **Decided: yes, such an action exists.** Whether it is the same thing as sign-out is open, and so is
 > what it clears.
 
-**What it clears is four separate objects, and an earlier version of this paragraph collapsed two of
-them.** They can be cleared in combination, and the combinations are what the button is choosing between:
+**A reset has to account for four separate objects, and an earlier version of this paragraph collapsed
+two of them.** The first three can be cleared in combination; the fourth is something the app can only
+warn about, and the combination is what the button is choosing between:
 
 1. **Identity** — `done.actor` and `done.device`. Display-level, and the only one an earlier draft
    considered.
@@ -2843,10 +2844,10 @@ That is §5.7.1's "copied browser profile" row, and the value is concentrated in
 owner knows to revoke*, since revocation already handles the noticed case. It buys nothing against live
 same-origin code, which the specification says outright and this document has already recorded.
 
-**And what it conspicuously does not buy: confidentiality of the document.** An attacker who copied the
-profile to steal the key also copied the plaintext workspace sitting beside it, and no option in the table
-above changes that. The key-storage question and the at-rest question are separate, and the second one has
-never actually been decided —
+**And what it does not buy by itself: confidentiality of the document.** Before D-34, an attacker who
+copied the profile to steal the key also copied the plaintext workspace sitting beside it, and no option
+in the table above changed that. The key-storage question and the at-rest question are separate; D-34 now
+answers the second one —
 
 **D-34. Is local user content encrypted at rest?** _(**Decided: yes, from genesis.** It was asserted twice
 as a premise and never decided; then framed as a device lock, which conflated two separable properties and
@@ -4343,7 +4344,7 @@ which is deliberate (§0.1).
 | **D-10** | Is sync configuration per device or per document?              | **Decided in principle**  | Rule 1: the user never manages workspaces. Mechanism open; today's three fields are ruled out                                               |
 | **D-11** | What is a workspace — content, or permission?                  | **Decided in principle**  | Permission. UI reveals one home workspace/document; architecture supports many memberships; "room" stays off the architecture               |
 | **D-12** | What happens when local identity is lost?                      | **Decided in principle**  | Authorization epoch 0 may re-mint; later epochs must not. Signed state, not roster. Since only the service advances the epoch, epoch 0 is Local and any later epoch is Account. Response open |
-| **D-13** | Is there a deliberate reset?                                   | **Decided**               | Yes. Four clearable objects: identity, capability, document, recovery material — **per workspace**, so a shared-device reset must reach every workspace on the device (D-24). It clears the first three; open is what an ordinary sign-out clears and whether it revokes |
+| **D-13** | Is there a deliberate reset?                                   | **Decided**               | Yes. Four objects must be accounted for per workspace: identity, capability and document are clearable; externally stored recovery material is not, so the app warns rather than claiming to clear it. A shared-device reset must reach every workspace on the device (D-24). Open: what an ordinary sign-out clears and whether it revokes |
 | **D-14** | May the relay decide who connects? What is written?            | **Decided**               | Service authenticates connections and authorization; relay validates opaque envelopes; clients retain semantic authority; no service component reads Yjs content |
 | **D-15** | Within a device, is undo per tab or shared?                    | **Decided**               | Per tab                                                                                                                                     |
 | **D-16** | Where does the account/service boundary sit?                  | **Decided**               | Local is free and permanent; hosted sync requires an account; pricing is D-31; the Paired rung is retired; **peer-to-peer is not built**    |
@@ -4354,7 +4355,7 @@ which is deliberate (§0.1).
 | **D-21** | What does "the active caret" mean — local, or globally recent? | **Decided**               | Locally active. No recency modelling; a design check that it reads as distinct                                                              |
 | **D-22** | Does merged content show its provenance?                       | **Decided**               | Yes, as a rarely-on mode. Settings toggle, off switch surfaced while active. Cards only, bounded by the **divergence** rather than the freeze window — the merges it explains land outside three days (§5.2.2) |
 | **D-23** | Does pairing alone trigger the name prompt?                    | **Decided**               | Largely dissolved by D-16: one name prompt, at account creation, which is now the same moment as first sync — and as the recovery-code ceremony, which is the larger ask |
-| **D-24** | How does local history become an account, and what happens to it elsewhere? | **Decided**  | Account creation asks once — promote this list (a move) or start fresh; both are safe. Signing in adopts, merges, replaces and re-parents nothing: the account workspace opens in parallel storage and the Local one is retained, reached through D-30's picker and ended by export or deletion. Deletion keeps every device's copy, records where the list continues rather than pruning, and **decrypts the workspace in place**. Each device keeps its **last replica**, not a full copy, and the principal survives it |
+| **D-24** | How does local history become an account, and what happens to it elsewhere? | **Decided**  | Account creation asks once — promote this list (a move) or start fresh; both are safe. Signing in adopts, merges, replaces and re-parents nothing: the account workspace opens in parallel storage and the Local one is retained, reached through D-30's picker and ended by export or deletion. Deletion keeps every device's copy, records where the list continues rather than pruning, and retires the service wrap without decrypting the local store. Each device keeps its **last replica**, not a full copy, and the principal survives it |
 | **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**               | Yes, for the environment case. Warn about the property, not the cause. Offer the grant, then export, then sync. Also owns the hosted copy's dependency on the saved code |
 | **D-26** | Revocation learned late, history already diverged?             | **Decided**               | No lineage rule, no discard, no filtered replay. Needs a **finalization boundary** against a hostile relay (§5.2.3) — a contract row        |
 | **D-27** | Is attribution authenticated, or advisory?                     | **Decided**               | Authenticated by an epoch-authorized credential; actor is derived or explicitly authorized for representation                               |
