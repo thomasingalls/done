@@ -194,7 +194,7 @@ Two things make the account and membership work worth doing now anyway:
 | **Account**         | your _optional_ relationship with the service                             | contact, account recovery, billing if any | No                       |
 | **Local user slot** | whose retained local state this person may open on this installation      | Thomas's closed slot on a shared laptop  | No                       |
 | **Principal**       | which human several devices belong to                                     | you                                      | **No** — the missing one |
-| **Workspace**       | which document and authorization boundary                                 | your document                            | As a settings field only |
+| **Workspace**       | which content root and authorization boundary                             | your list and its grants                 | As a settings field only |
 | **Member**          | a workspace-scoped grant for a principal or agent, including capabilities | you as owner; an editing agent           | No                       |
 | **Actor**           | the concrete identity attributed with a write                             | you-on-your-phone; an agent              | Yes, and misnamed (§1.3) |
 | **Device**          | which install                                                             | your phone                               | Yes                      |
@@ -218,7 +218,7 @@ account, so the grouping level had to precede the account. That rung is gone (§
 has to be re-derived rather than inherited. It survives, on four grounds that do not depend on a rung:
 
 1. **The account can adopt a principal that already exists.** Every account-holder used the app locally
-   first, so there is always a prior identity and a prior document available for the account to bind to,
+   first, so there is always a prior identity and a prior workspace content root available for the account to bind to,
    and after D-16 that promotion is the road every synced user travels. D-24 makes the adoption a choice
    at account creation rather than an automatism — *promote this list, or start fresh* — and the account
    still has to be **able** to accept an identity that predates it, which is the capability this ground is
@@ -251,7 +251,7 @@ account:
   capabilities such as read or edit; being a member does not by itself mean being a writer. Membership
   deliberately does not attach to the account, so adding an agent does not require inventing an account
   for it.
-- **Account** — _optional_, and about the service rather than the document: an address to be contacted
+- **Account** — _optional_, and about the service rather than workspace content: an address to be contacted
   at, account recovery, service settings, logs, backups, and billing if any. Content recovery is a
   separate user-held power (D-17). **Account creation binds an existing
   principal to a service account**, which is what makes D-24's "the account adopts the group" precise
@@ -280,6 +280,14 @@ personal rather than professional — at the cost of connoting storage rather th
 insists, since that is where the word belongs. This document uses "workspace" for the concept and
 keeps "room" only when describing what the code says today — `normalizeRoom`, `RELAY_ROOMS`, the
 settings field — because pretending otherwise would misdescribe the thing being changed.
+
+**And one adjacent term has to remain narrower than earlier drafts made it.** The PRD and TRD use
+**document** for the master-list surface backed by one `Y.Text`; Next, Scheduled and Done are collections.
+The synchronized and persisted unit containing that document plus the daily collections is the
+**workspace content root** — currently one `Y.Doc`. Historical scenarios and option tables below retain
+"document" where that was the old model's word, and some mechanism discussion retains the code's older
+usage. The selected ontology, cardinalities and promotion requirements use **content root** for the whole
+workspace data set.
 
 ### 1.3 Actor is the wrong word for what the code has
 
@@ -468,10 +476,10 @@ reset removes all slots. Without that index, parallel storage would prevent merg
 the previous person's retained Local workspace through the picker.
 
 And a distinction that D-11 was written without: **"which content" and "who is allowed" are not
-obviously the same axis.** The boundary could be a document, or a membership boundary containing
-documents. D-11 takes the second reading and calls the result a **workspace** (§1.2), which raised the
+obviously the same axis.** The boundary could be a content root, or a membership boundary containing
+one. D-11 takes the second reading and calls the result a **workspace** (§1.2), which raised the
 possibility of content becoming a level of its own and then closed it again — a workspace holds exactly
-one document, so there is nothing for a content level to distinguish. The collapse stops there: the
+one content root, so there is nothing for a second content-container level to distinguish. The collapse stops there: the
 **principal and account remain separate**, since a principal groups one human's actors and devices even
 without a service, while an account carries billing, contact, recovery and service settings (§5.4).
 
@@ -1019,7 +1027,7 @@ a promise about every lifecycle axis:
 | Portability          | Markdown export; import is owed  | Same, plus a fidelity archive (D-33)                               |
 | Service independence | Existing install: **total**. Reinstall/recovery: needs D-33 | Requires the survival package (D-33)                    |
 | Safety               | No live admissions; lineage is either never established or terminally retired | Live service authorization, signed epochs, revocation (D-18, D-20, D-26) |
-| Confidentiality      | Ciphertext at rest, opened locally (D-34) | End-to-end; relay holds ciphertext; presence metadata is open |
+| Confidentiality      | Ciphertext at rest, opened locally (D-34) | End-to-end; relay holds ciphertext; live presence metadata is relay-visible and ephemeral by default |
 
 Two rows are worth reading twice. **Recoverability at Account is now decided and it is conditional** — an
 encrypted server copy became a recovery promise when D-17 selected a factor (§5.7.6), but the promise is
@@ -1286,7 +1294,7 @@ decision is not implementable without them:
 
 1. **Sign-in opens a different database, never the current one.** The account workspace is keyed by
    _(principal, workspace)_ and the anonymous one keeps its own key. No provider is ever constructed
-   against a document that belongs to a different workspace. A connection is the merge, so the only
+   against a content root that belongs to a different workspace. A connection is the merge, so the only
    defence is that the two never share a store.
 2. **Neither workspace's provider may write to the other**, in either direction and including on
    teardown, retry and error paths. This is the whole of the isolation guarantee and it is worth stating
@@ -1295,7 +1303,7 @@ decision is not implementable without them:
    never-established Local workspace (D-24), its contents become the account workspace's rather than being
    copied — a copy leaves a stale duplicate that will be found later and believed. Which workspace a
    database belongs to is a single committed fact, and an interrupted promotion resolves to exactly one
-   of the two states on next launch. A half-completed promotion that leaves identity and document out of
+   of the two states on next launch. A half-completed promotion that leaves identity and the content root out of
    step is the state D-12 says must not be manufactured, and §5.5 already names carelessly built features
    as the only cause of it under our control. A retired-lineage Local workspace uses §5.11.2's migration
    transaction instead; the UI choice is the same and the cryptographic transition is not.
@@ -1460,7 +1468,7 @@ withdrawn.)_
 >
 > - **At account creation the user chooses: promote this list, or start fresh.** Promoting moves the
 >   Local workspace's contents into the account workspace, and the existing principal, device identity,
->   home-workspace membership and document carry over — the account becomes the service binding rather
+>   home-workspace membership and content root carry over — the account becomes the service binding rather
 >   than minting a replacement identity. The account binds fresh signing and wrapping credentials to that
 >   device identity. Starting fresh mints a new principal and workspace and **leaves the Local one
 >   untouched**.
@@ -1744,12 +1752,12 @@ to the service and opaque validation to the relay; that is D-14's selected "part
 - **Server-side anything that reads content becomes impossible**, permanently and by construction. Local
   search (Phase 4, TRD §6.2) is unaffected because it is local. Server-side search, server-side export,
   server-rendered anything: gone. That is probably a feature.
-- **Awareness leaks what content no longer does.** Presence carries names, colours and cursor positions,
-  and if it stays in the clear the relay learns who is editing what and when while learning nothing about
-  the text. Either awareness is encrypted too, or the threat model states plainly that presence metadata
-  is visible to the relay. This needs a deliberate answer rather than a default, and it now has its own
-  row in the security contract (§8.1) so that it stops being a note inside a decision about something
-  else.
+- **Awareness exposes what content encryption does not.** Presence carries names, colours and cursor
+  positions. **The selected minimum is that awareness remains outside content encryption:** the relay may
+  learn who is editing which workspace and when while learning nothing about the text. It is ephemeral by
+  default and must not be durably retained. Encrypting awareness later is a permitted strengthening;
+  retaining it would require a separately stated product purpose and retention rule. This boundary has its
+  own row in the security contract (§8.1) so it cannot disappear inside a content-encryption decision.
 
 **And one honest note about which direction this cuts, because it is the opposite of the others.**
 §5.7.2 establishes that under one symmetric content key **edit implies read**. Agents are the reason
@@ -2038,7 +2046,7 @@ a direction nobody chose.
 | ------------------------------------------------------------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | A relay detail, typed once                                          | One document, forever. The room field is plumbing.                             | S21, S22, S24 are permanent non-goals. Simplest, and honest about today.                                                                                                                                        |
 | **A document** — a room names one                                   | Switching rooms shows a different document. Nothing merges.                    | The local database becomes room-derived; the existing `done` database happens to match the default room name, which makes the migration lucky rather than hard. Raises whether the actor is per room or global. |
-| **A membership boundary** — a workspace is one document plus grants | Switching workspaces changes both the document and its authorization boundary. | Introduces members and signed authorization state. Does not require the relay to read content, and does not require exposing a picker now.                                                                      |
+| **A membership boundary** — a workspace is one content root plus grants | Switching workspaces changes both the workspace data set and its authorization boundary. | Introduces members and signed authorization state. Does not require the relay to read content, and does not require exposing a picker now.                                                                      |
 | Several rooms at once                                               | A picker; multiple local documents; possibly several open editors.             | Architecturally permitted; exposing the picker and navigation is separate product work.                                                                                                                         |
 
 Note what is **not** in that table any more. "A share of one document", where switching re-points the
@@ -2050,15 +2058,16 @@ The two live readings differ in one word: whether a room is **content** or **per
 
 > **Decided in principle: permission.** A workspace is a membership boundary, and it is called a
 > **workspace** rather than a room (§1.2). The current interface reveals exactly one home workspace and
-> one document to a principal; a device may host several principals; and "room" must not become
+> its content root to a principal; a device may host several principals; and "room" must not become
 > architectural, because the transport it came from is going away. None of those UI constraints limits
 > how many workspace memberships the architecture can represent.
 
 Those constraints do more work than they look like they do, and one consequence is worth confirming
 before it gets built on.
 
-**A workspace is one document plus the list of who may reach it.** So content does not become a level of
-its own — a workspace already implies exactly one document, and there is nothing left for a separate
+**A workspace is one content root plus the list of who may reach it.** The root contains the master-list
+document and the daily collections described by the PRD/TRD. Content therefore does not become another
+container level — a workspace already implies exactly one root, and there is nothing left for a separate
 content level to distinguish.
 
 #### 5.4.1 Architectural capacity versus revealed surface
@@ -2069,19 +2078,19 @@ documents, and mutual sharing produces two workspaces by construction. That cont
 is resolved by separating two things the sentence was conflating.
 
 **Current product surface.** Inside an active local user slot, a principal is presented with exactly one
-home workspace, containing exactly one document. There is no workspace creation flow or management UI;
-the conditional local picker below is the only selection surface. This is deliberate and it is what Rule
-1 is about.
+home workspace at a time. That workspace has one content root containing the master-list document and its
+daily collections. There is no workspace creation flow or management UI; the conditional local picker
+below is the only selection surface. This is deliberate and it is what Rule 1 is about.
 
-**Architectural model.** A workspace contains exactly one document; a principal or agent may hold
-memberships in several workspaces; the client may hold several locally while showing one. The product
+**Architectural model.** A workspace contains exactly one content root; a principal or agent may hold
+memberships in several workspaces; an installation may hold several locally while showing one. The product
 reveals only the home workspace rather than making anything else impossible.
 
 **v17 spends part of that capacity, and it is worth being precise about which part.** A device that has
 been used locally and then signs in **stores two workspaces and hosts two principals** — the anonymous
 one and the account one (D-24) — in one local user slot. It still *shows* one at a time, and where that
 slot has more than one to show, D-30 permits a picker over them. A different person's slot is neither a
-picker entry nor a workspace count. So "the client may store several" stops being a reservation for a
+picker entry nor a workspace count. So "an installation may store several" stops being a reservation for a
 future feature and becomes the ordinary case, and "one workspace shown" survives as a statement about
 the interface rather than about storage.
 
@@ -2100,17 +2109,23 @@ The cardinalities, written down so they stop being inferred:
 | account → principal          | none                   | 1 : 1                    |
 | principal → home workspace   | 1                      | 1                        |
 | principal → membership       | 1 (the home one)       | **many**                 |
+| membership → principal or agent | implicit principal  | exactly 1                |
 | agent → membership           | none                   | **many**                 |
 | membership → workspace       | exactly 1              | exactly 1                |
-| workspace → document         | 1                      | 1                        |
+| workspace → content root     | 1                      | 1                        |
 | workspace → membership       | 1 (later: plus agents) | **many**                 |
 | device → local user slot     | implicit 1             | **many** (D-13; shared installation) |
 | local user slot → principal  | implicit 1             | **many** (D-24 start-fresh retention) |
 | local user slot → workspace  | implicit 1             | **many** (D-24, D-30)    |
+| local user slot → live account binding | none         | 0 or 1; retired evidence is not a live binding |
 | device → principal           | 1                      | **many** (D-24; shared device) |
-| device → human actor         | 1                      | **many** (one per principal on it) |
+| device → human actor         | 1                      | **many** (one per human membership represented on it) |
+| principal → human actor      | implicit 1             | **many** (one per membership × device) |
 | human actor → membership     | 1                      | 1                        |
-| client → workspace stored    | 1                      | **many** (D-24)          |
+| human actor → device         | exactly 1              | exactly 1                |
+| device → session             | implicit **many**       | **many**                 |
+| session → device             | exactly 1              | exactly 1                |
+| device → workspace stored    | 1                      | **many** (D-24)          |
 | active local user slot → workspace shown | implicit 1        | 1, selected where that slot holds several (D-30) |
 
 **And membership is scoped deliberately, not by omission:**
@@ -2882,6 +2897,7 @@ row means reopening the decision named above.
 | Knows the relay URL and workspace identifier (S41)     | Cannot decrypt content, become a member or create an accepted mutation. A workspace identifier is an identifier, never a bearer secret.      | Cannot be prevented from reaching a public endpoint; rate and resource abuse are a service-availability problem.                            |
 | Passive network observer                               | Learns no content or reusable credential from traffic. Transport security still applies outside the content encryption.                      | Hiding that traffic exists, its rough volume, or the network addresses involved.                                                            |
 | Relay reading envelope metadata                        | The attributed actor is not directly present in envelope metadata — it is inside the seal (§5.8.1), so no actor identifier crosses in the clear. | **Not unlinkability.** The relay sees a credential identifier per envelope and validates authorization state that binds credentials to members and capabilities, so it can generally tell which device or agent wrote, and therefore a human's writes from an agent's. Sealing the actor removes a field, not the inference. Write times, rates and volumes per credential are visible and are not removable while the relay validates authorization at all. |
+| Relay reading awareness metadata                       | Awareness contains no document plaintext or content key and is not persisted by default; its state expires with the live connection (§5.10.1). | Concealing names, colours, cursor positions, workspace association or connection timing from the relay while live. Encrypting awareness would be a stronger design. |
 | Malicious or compromised relay (S42)                   | Cannot read content, forge an accepted mutation, sign an authorization epoch, make an already-seen older epoch look current, **or land a revoked credential's withheld old-epoch write after the commit** (§5.2.3). | It can delay, omit, reorder or refuse bytes. End-to-end encryption supplies confidentiality and integrity, not availability.                |
 | Malicious or compromised authorization service        | Cannot decrypt content, forge an existing device's mutation or cause content-key delivery by authorizing a credential.                      | It can admit or revoke credentials, change capabilities, choose the authorization state it recognizes, suspend the account or deny service. |
 | Leaked relay bearer token (S43)                        | Does not decrypt content, sign a mutation, authorize a device or recover an account. It is scoped, expires and can be refused independently. | The holder may consume relay service and obtain ciphertext or metadata until refusal or expiry.                                             |
@@ -2966,7 +2982,7 @@ it and to whatever runs it (D-20).
 > `R_pub`. A Local workspace has either no lineage or a signed terminal record; neither is a live authority.
 
 **Promotion of a never-established Local workspace is therefore a finite key and admission operation,
-not a document transformation:** keep the workspace and its current `K0`; create the enrolling device's
+not a content transformation:** keep the workspace and its current `K0`; create the enrolling device's
 signing and wrapping keypairs; create `(R_pub, R_priv)`; seal `R_priv` to the confirmed high-entropy code
 and any independent optional factors; wrap `K0` to `R_pub` and to the device's wrapping public key; sign
 the authenticated genesis checkpoint described by D-27; establish the first authorization head; then
@@ -3192,7 +3208,7 @@ to **two** places on disk today, with a third planned, and encrypting one of the
 
 | Store | What it holds | Under this decision |
 | ----- | ------------- | ------------------- |
-| IndexedDB (`done`) | The workspace document | Each Yjs update stored as an authenticated encrypted record: ciphertext plus non-content routing metadata — format version, nonce, generation, sequence. `y-indexeddb` persists raw updates, so it needs an encrypted adapter or a replacement (`persistence.ts`) |
+| IndexedDB (`done`) | The workspace content root | Each Yjs update stored as an authenticated encrypted record: ciphertext plus non-content routing metadata — format version, nonce, generation, sequence. `y-indexeddb` persists raw updates, so it needs an encrypted adapter or a replacement (`persistence.ts`) |
 | `localStorage` journal | Each update, written synchronously so a page kill between transaction and IndexedDB commit cannot lose it | **The sharp edge.** See below |
 | Persistent derived index | Phase 4's search index — the derived text of everything searchable. **Planned, not built**: `persistence.ts` records that it "belongs to Phase 4", and there is no SQLite dependency yet | May ship only when its on-disk representation is encrypted. Start in memory (TRD §6.2, PRD §13) |
 
@@ -3991,9 +4007,17 @@ These are product and architecture boundaries, not an attempted inventory:
 5. **Operator powers are explicit, least-privilege and auditable.** Support may diagnose service state but
    cannot bypass content encryption; authorization changes, suspension and exceptional access to account
    metadata leave an audit record.
-6. **Presence is not accidentally durable.** Awareness metadata is encrypted, kept ephemeral, or given an
-   explicit purpose and retention rule; it must not inherit the retention of workspace ciphertext merely
-   because both pass through the relay (D-20).
+6. **The service's necessarily visible metadata surface is bounded and named.** To authenticate and route,
+   it may process account and workspace identifiers, credential/device/agent identifiers, membership and
+   capability state, authorization-lineage state, connection addresses, and per-credential connection and
+   write times, rates and volumes. Those facts are not content, but neither are they harmless or licensed
+   for blanket retention: every persisted use needs the purpose, subject/deletion scope and retention row
+   §5.10.2 requires.
+7. **Presence is relay-visible while live and ephemeral by default.** Awareness remains outside content
+   encryption in the selected baseline, so the relay may see names, colours, cursor positions and who is
+   active in which workspace while the connection exists. It is not persisted by default and must not
+   inherit the retention of workspace ciphertext. Encrypting it is a permitted strengthening; retaining it
+   requires an explicit product purpose and retention rule (D-20).
 
 These are the things expensive to retrofit. They constrain the TRD without prescribing its service split,
 tables, vendors, retention durations or backup mechanism.
@@ -4644,11 +4668,13 @@ undo remains local to each tab.
 
 If D-31 later makes hosted sync a subscription and Tom stops paying, a grace period passes and the account
 goes read-only: both devices keep working completely, holding everything they had, and they stop
-converging from that moment (D-29). He is back in Local, which is a place rather than a punishment.
+converging from that moment (D-29). The workspace remains **Account** because its authorization lineage is
+still live; only its entitlement and hosted-sync behavior changed. Local continuity is a property, not a
+label transition.
 
 If Tom later enables an agent, the agent receives its own workspace membership, capabilities and signing
 credential. Its edits are attributed to its agent actor; removing read access rotates the content key. No
-second human, sharing UI or second visible document is implied by that architectural capacity.
+second human, sharing UI or second visible workspace is implied by that architectural capacity.
 
 ---
 
@@ -4687,7 +4713,7 @@ content key.
 | **D-8**  | What may a session be seen doing?                              | **Decided**               | A caret per tab, own tabs included, **all yours in your colour**, person's name. Active caret distinguished (D-21). Peer list deduplicated  |
 | **D-9**  | Does the app ever show a tab count?                            | **Decided**               | Never, save a high-bar exception that must be justified in writing                                                                          |
 | **D-10** | Is sync configuration per device or per document?              | **Decided in principle**  | Rule 1: the user never manages workspaces. Mechanism open; today's three fields are ruled out                                               |
-| **D-11** | What is a workspace — content, or permission?                  | **Decided in principle**  | Permission. UI reveals one home workspace/document; architecture supports many memberships; "room" stays off the architecture               |
+| **D-11** | What is a workspace — content, or permission?                  | **Decided in principle**  | Permission. UI reveals one home workspace and its content root; architecture supports many memberships; "room" stays off the architecture               |
 | **D-12** | What happens when local identity is lost?                      | **Decided in principle**  | A never-established lineage may re-mint; a live head or signed terminal record must not. Authenticated lineage state, not roster or Local/Account label. Response open |
 | **D-13** | What do sign-out, remove-from-device and handoff reset each do? | **Decided**               | Sign-out closes and retains one local user slot without revoking; an account-bound local verifier may reopen it offline without creating a network session. Remove-from-device clears that slot and requests revocation, complete only at service commit; handoff reset clears every slot; external recovery copies cannot be recalled; remote revocation cannot promise wipe |
 | **D-14** | May the relay decide who connects? What is written?            | **Decided**               | Service authenticates connections and authorization; relay validates opaque envelopes; clients retain semantic authority; no service component reads Yjs content |
@@ -4708,7 +4734,7 @@ content key.
 | **D-29** | What happens if a paid account plan lapses?                    | **Decided conditionally** | If D-31 selects such a plan: grace, then hosted read-only. Lapse and content expiry never retire the account lineage. Expiry deletes ciphertext and generation wraps but retains dormant `R_pub` and code-sealed `R_priv`; a surviving device may re-seed without new recovery setup |
 | **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Decided** (re-decided in v16) | One real exception, one verb: **select**, only where the active local user slot holds more than one workspace. The picker never crosses people or signed-out slots. Name, reconcile and administer stay absolute; multi-membership navigation remains separate (§5.4.1) |
 | **D-31** | What does hosted sync cost, and how should it be priced?       | **Deferred on purpose**   | Business-model question outside this document. D-16 requires an account but does not presume free, paid, bundled or metered                 |
-| **D-32** | What may the service retain, observe and do?                   | **Decided in principle**  | Fix irreversible constraints before the TRD; maintain a living inventory during design/build; reconcile and review the as-built surface before wider availability |
+| **D-32** | What may the service retain, observe and do?                   | **Decided in principle**  | Fix irreversible constraints and the necessarily visible metadata baseline before the TRD; keep awareness relay-visible only while live and ephemeral by default; maintain a living inventory during design/build; reconcile and review the as-built surface before wider availability |
 | **D-33** | What survives the service, and what may be claimed?            | **Decided in principle**  | Independently runnable client and service stack; open source preferred, triggered source release acceptable; binary-only continuity insufficient; claims gated by corresponding tests |
 | **D-34** | Is local user content encrypted at rest?                       | **Decided**               | Yes: Local genesis creates `K0`, and every app-managed persistent store is ciphertext. Default custody is promptless and does not resist an executable copied profile; an optional device lock does. First promotion adds recovery/reader wraps; migration retains recovery identity where available and rotates the generation; no lifecycle event decrypts. The journal needs reviewed synchronous AEAD; a persistent search index may ship only encrypted (§5.7.4) |
 
@@ -4723,7 +4749,7 @@ The contract now has both fixed requirements and deliberately unselected fields:
 
 | Piece                                    | Fixed by this document                                                                  | Still to select or specify                                                                                 |
 | ---------------------------------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| Threat boundary and negative promises    | §5.7.1's attacker table; offline local use and availability limits                      | Any stronger claim, including local-device-at-rest or traffic-metadata protection                          |
+| Threat boundary and negative promises    | §5.7.1's attacker table; offline local use and availability limits; D-34's file-level ciphertext-at-rest boundary | Any stronger claim, including protection on the default tier against executing a copied profile, live same-origin compromise, or concealment of traffic metadata |
 | Credential separation                    | Account authenticator; device-local offline slot-unlock verifier; account session; relay bearer; distinct per-device/per-agent signing and wrapping credentials; local custody; content generations; `R_pub`; sealed `R_priv` | Account-credential and offline-verifier construction, including offline-guessing resistance; concrete key formats, algorithms, domain separation and crypto-agility |
 | **Protocol boundary**                     | **A service-authoritative control plane around client-encrypted Yjs updates**; clients generate content keys, wraps, ciphertext and signatures; service commits authorization, rotation packages and finalization; relay/store handle opaque envelopes (D-28) | Exact message/state formats, verification APIs, batching and test vectors |
 | **Authorization and recovery boundary**  | **Selected: the service alone authorizes; ordinarily absent `R_priv` recovers content only; service disappearance starts a new lineage around the same recovery identity where available** (§5.7.2, §5.7.3) | Account-recovery policy, and the exact user-mediated proof that gates content-key delivery — including **which device-to-device ceremony** it is, since a QR carrying the key and a short-authentication-string check over an in-band agreement are different protocols with different review scopes (D-19) |
@@ -4735,7 +4761,7 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | Revocation commit semantics              | Requested · committed · acknowledged; client produces the new key package, service commits it with successor and cutoff; no peer path bypasses the relay | Protocol and recovery behaviour for interrupted rotation |
 | **Content finalization boundary**        | A valid mutation is not accepted without authorization-service evidence; a hostile relay can withhold and later deliver a valid old-epoch write. **Across a migration the checkpoint re-baselines admissibility** — prior envelopes are archival, not replayable (§5.11.2) | Per-envelope receipts, accepted-log inclusion proofs, or checkpoints with an authenticated suffix; every shape ends in a committed cutoff (§5.2.3) |
 | Content-key wrapping and rotation        | Clients generate symmetric generation secret `K_g`, derive domain-separated content/store subkeys, wrap `K_g` per reader and to `R_pub`, and submit it for service commit; edit implies read. **Retention has a conservative floor**: enough to open every sealed actor binding whose attribution remains — for the lifetime of the claim, not forever (§5.11.2). A validated attribution-preserving representation may reduce that floor | KDF and AEAD algorithms; stable signed record; exact Yjs binding; checkpoint proof; interrupted rotation; size bound; vectors; independent review. **Re-enabling destructive compaction moves this boundary** (TRD §4.5, §10.4) |
-| **Awareness and presence metadata**      | Presence is outside the content encryption as currently designed                        | Encrypt awareness, or state in the threat boundary that the relay learns who edits what and when (D-20)    |
+| **Awareness and presence metadata**      | **Selected baseline:** outside content encryption, relay-visible while live, ephemeral and not persisted by default; the relay may learn who edits which workspace and when (§5.10.1) | A later encrypted-awareness strengthening; any durable use requires a new explicit purpose and retention rule (D-20) |
 | Account relationship to recovery         | **Selected: non-custodial asymmetric recovery.** Service may hold `R_pub`, generation wraps and sealed `R_priv`, but never an unsealing factor. Escrow is excluded from the service and survives only as a separately operated opt-in seal of `R_priv` (§5.7.5) | Add-on operating boundary and copy explaining the two-party disclosure requirement |
 | Recovery                                 | **Selected: mandatory high-entropy code saved outside the enrolling device seals `R_priv` 1-of-N**, with optional independent PRF-passkey seals (§5.7.6). Re-entry at account creation proves transcription and possession, never location. The code is never re-displayed; a surviving content-holding device may replace it by creating a new recovery keypair and rewrapping every required `K_g`. Account, authorization, `R_priv`, content keys and ciphertext remain separate objects | Code generation, step-up authentication and confirmation UX, and loss warnings |
 | Web application and protocol assurance   | **Selected: levels 1–3 before sync ships, 5 live at ship, 4 on a stated trigger.** Same-origin code is inside the cryptographic boundary; D-28 fixes the design-review scope at the architecture level (§5.7.8) | Which ASVS profile and version, who performs the design review, the audit's scope, and the concrete TRD protocol submitted for review |
@@ -4786,7 +4812,8 @@ anything was built, which was the whole of the saving; pricing is **D-31**, stay
 nothing in D-16. Neither blocks the security contract, and the boundary's answer *shrank* it.
 
 **D-32 is settled at the only level this document can settle it.** The product constraints on custody,
-deletion scope, diagnostics, local continuity, operator power and presence retention are fixed. The
+deletion scope, diagnostics, local continuity and operator power are fixed; so are the necessarily visible
+metadata classes and the relay-visible-but-ephemeral awareness baseline. The
 inventory starts in the TRD, evolves with implementation and is reconciled before wider availability;
 inventing an exhaustive inventory here would be premature rather than prudent (§5.10).
 
@@ -4803,9 +4830,10 @@ implementation-ready for the separate and ordinary reason that the TRD has not y
 selected architecture, and none of the release evidence has yet been produced. All five artifacts review
 requires are complete at the product-decision level:
 
-1. **The corrected ontology**, which §1 now has — account, principal, workspace, member, actor, device,
-   session and local user slot — with the pre-account principal, workspace-scoped membership and
-   device-local privacy boundary as the load-bearing additions. D-16 made the first of those more
+1. **The corrected ontology**, which §1 now has — account, principal, workspace, workspace content root,
+   member, actor, device, session and local user slot — with the pre-account principal, workspace-scoped
+   membership and device-local privacy boundary as the load-bearing additions. The content-root term keeps
+   the synchronized `Y.Doc` distinct from the PRD/TRD's master-list document surface. D-16 made the first of those more
    important, not less: principal-without-account is now the steady state for most users rather than a
    transitional rung (§1.1). D-13 made the last explicit: signing out closes a slot rather than deleting
    a workspace or revoking a device.
@@ -4820,8 +4848,9 @@ requires are complete at the product-decision level:
    D-24), and it hands the TRD the journal AEAD, the encrypted record format and the in-memory search
    index.
 4. **A service data boundary and staged inventory obligation**, now fixed by D-32. §5.10 records the
-   irreversible constraints that precede the TRD, the compact inventory row added as the architecture
-   introduces data, and the as-built reconciliation that gates wider availability. A speculative complete
+   irreversible constraints and necessarily visible metadata classes that precede the TRD, including the
+   relay-visible-but-ephemeral awareness baseline; the compact inventory row added as the architecture
+   introduces data; and the as-built reconciliation that gates wider availability. A speculative complete
    inventory is no longer required before the services are designed.
 5. **An independently runnable software requirement and staged release claim**, now fixed by D-33.
    Public open source is the preferred path; a triggered source release with perpetual build-and-run
@@ -4868,10 +4897,16 @@ the shared ontology in §1.
 
 ---
 
-## 9. PRD amendments this would require
+## 9. Promotion source notes — not a checklist
 
-- **§0 Terminology** — add account, principal, workspace, member, device, session and **local user slot**
-  beside actor. Eight concepts, with membership a relation rather than another synonym for a writer and
+These are amendments discovered while recording the decisions, not an exhaustive promotion matrix or a
+reliable target-section map. They deliberately mix PRD requirements with TRD consequences. Normalize and
+route them through the separate PRD and TRD promotion matrices; do not infer from absence here that a
+settled requirement needs no promotion.
+
+- **§0 Terminology** — add account, principal, workspace, **workspace content root**, member, device,
+  session and **local user slot** beside actor. Nine concepts in total, with membership a relation rather
+  than another synonym for a writer and
   the slot a device-local privacy/discovery boundary rather than a synced identity.
 - **§0 / lifecycle terminology** — define Local and Account from the authorization-lineage axis, not as
   stages in a ladder. Local means **no live service authorization lineage** — either never established or
@@ -4973,7 +5008,7 @@ the shared ontology in §1.
   contain: **Local is free and permanent, while hosted synchronization requires an account.** Whether
   that service is free or paid is D-31 and is not a product-shape claim here. PRD §12's non-goals should
   stop implying that sync is simply a feature the app has.
-- **§4 Export, and a new import commitment** — principle 4 promises plain-markdown export. D-33 makes
+- **§2 principle 4 (export), and a new import commitment** — principle 4 promises plain-markdown export. D-33 makes
   **import** a requirement of equal standing, on two independent grounds: the §2.4 migration needs it, and
   an export without an import preserves the writing but not the continuity of the application. Import
   targets an empty workspace (§5.2.2), and the same amendment should record why: plain Markdown is the
