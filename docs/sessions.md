@@ -36,11 +36,15 @@ one verb, `select`, under one condition** — a context indicator and a picker a
 local workspace exists, reading as an account switcher. Name, reconcile and administer stay absolute, and
 multi-*membership* navigation stays reserved (§1.4, D-30, §5.4.1).
 
-**One more thing v16 settles that had been asked only half of.** §5.2.1 asked where content encryption
-*begins* and never where it ends. Leaving Account — by deletion, by retention expiry, by migration —
-**decrypts the workspace in place**, because Local is plaintext and the content key existed to blind a
-relay and a server copy the exit removes. That is decided without D-34, which governs the other
-direction only (D-24, §5.7.4).
+**And D-34 is decided, which removes the last premise several other decisions were resting on.** Every
+workspace is encrypted from genesis, in every app-managed persistent store, under key custody the app
+manages silently — so *Local asks for nothing, ever* survives and the default correspondingly makes **no
+claim against an attacker who can execute the app's origin from a copied profile**. An optional
+per-device user-held lock supplies that stronger property. This settles §5.2.1's four-draft question
+about when encryption begins (always), and **reverses an answer taken earlier in v16** about when it
+ends: no exit from Account decrypts anything, because there is nothing to decrypt to (§5.7.4, D-24). The
+one genuinely new cryptographic obligation it creates is a reviewed **synchronous AEAD** for the crash
+journal, whose contract v16 preserves rather than redesigns.
 
 **And one question is closed by reading a PRD principle correctly rather than by deciding anything.**
 Migration's carry-attribution-forward cost looked as though it ran against principle 6 — *the past is
@@ -68,15 +72,18 @@ the authenticator supports it, and the assurance bar is independent protocol des
 ships with an implementation audit on a stated trigger. **All five selections are recorded, and D-17 is
 closed** (§5.7.2, §5.7.4–§5.7.6, §5.7.8).
 
-**And closing it opened one thing: D-34.** Whether **local user content** is encrypted at rest was
-asserted twice in this document as a premise and never actually decided — plaintext is what the app does
-today in **two** stores (IndexedDB and the synchronous journal), with Phase 4's search index a planned
-third, and the browser's origin sandbox is a boundary between web origins, not an at-rest boundary.
-**Its shape is now decided and only its existence is open**: any device lock is opt-in, keyed from a
-user-held factor, governs every store holding content, and accepts that forgetting the factor loses the
-data — total and final at Local. It also reaches further than it looks, fixing whether account creation is
-a whole-document encryption pass (§5.2.1), and it is worth taking before Phase 4 builds the third store
-rather than after (§5.7.4).
+**And closing it opened one thing, which v16 has now closed too: D-34.** Whether **local user content** is
+encrypted at rest was asserted twice in this document as a premise and never actually decided — plaintext
+was what the app did in **two** stores (IndexedDB and the synchronous journal), with Phase 4's search
+index a planned third, and the browser's origin sandbox is a boundary between web origins, not an at-rest
+boundary. **Decided: yes, from genesis, in every app-managed persistent store.** The question was
+undecidable while it bundled two separable properties — *is the store ciphertext* and *does opening it
+need a user-held factor*. Unbundled, the first is always yes and needs no prompt, so D-1 and §7's *Local
+asks for nothing, ever* survive intact; the second is an optional per-device strengthening. The default
+tier therefore makes **no claim against an attacker who can execute the app's origin from a copied
+profile**, and that scoping travels with the property everywhere it is described. It also settles
+§5.2.1's long-open question about when encryption begins — always — and reverses the previous round's
+answer about when it ends: no exit from Account decrypts anything (§5.7.4, D-24).
 
 **The remaining architecture gate is now closed: D-28** selects a service-authoritative envelope
 protocol around end-to-end-encrypted Yjs updates (§5.8.1). The exact formats and constructions belong in
@@ -125,9 +132,7 @@ is not really one because mechanics settle it, it is in §6 so we do not spend a
 
 Each decision carries a status: **Decided**, **Decided in principle** (the answer is settled, the
 mechanism is not), **Decided conditionally** (the answer is settled, but it only takes effect if a
-deferred decision goes a particular way — D-29 is the only one), **Existence open; shape decided** (the
-constraints any *yes* must satisfy are fixed, and only whether to build it remains — D-34 is the only
-one), **Open**, **Deferred on purpose**
+deferred decision goes a particular way — D-29 is the only one), **Open**, **Deferred on purpose**
 (answerable later, and nothing is foreclosed by
 waiting), **Re-opened** (answered once, and new evidence has withdrawn the answer), or **Withdrawn** (the
 question dissolved rather than being answered — the state it was about can no longer occur, and the number
@@ -280,7 +285,9 @@ category of bug this document is about:
 - Anything shown to a human as "you" is **principal**.
 - A caret is **session**: a caret is a place input is happening, and two tabs are two places (D-8).
 - Undo is **session**, per tab (D-7, D-15).
-- An exclusive resource — the search index's OPFS lock — is **session**, arbitrated per device.
+- An exclusive resource is **session**, arbitrated per device — the example was the search index's OPFS
+  lock, which D-34 defers by starting the index in memory (§5.7.4); the level is right, the instance is
+  not live yet.
 - Sync configuration is **device** today, and D-10 says the user should never have to think about it.
 
 ### 1.4 Two rules that settle future cases
@@ -907,7 +914,7 @@ The combinations that catch people out, and each one has bitten a draft of this 
 | Portability          | Markdown export; import is owed  | Same, plus a fidelity archive (D-33)                               |
 | Service independence | Existing install: **total**. Reinstall/recovery: needs D-33 | Requires the survival package (D-33)                    |
 | Safety               | Nothing admitted, epoch 0        | Service authorization, signed epochs, revocation (D-18, D-20, D-26) |
-| Confidentiality      | Local device only                | End-to-end; relay holds ciphertext; presence metadata is open      |
+| Confidentiality      | Ciphertext at rest, opened locally (D-34) | End-to-end; relay holds ciphertext; presence metadata is open |
 
 Two rows are worth reading twice. **Recoverability at Account is now decided and it is conditional** — an
 encrypted server copy became a recovery promise when D-17 selected a factor (§5.7.6), but the promise is
@@ -1176,33 +1183,31 @@ decision is not implementable without them:
    next launch. A half-completed promotion that leaves identity and document out of step is the state
    D-12 says must not be manufactured, and §5.5 already names carelessly built features as the only cause
    of it under our control.
-4. **When does the content encryption exist?** Local is plaintext and Account is end-to-end encrypted
-   (§5.1.2), so somewhere a workspace acquires a content key, a first generation, and a root wrapped to
-   the user's recovery code. Nothing anywhere says where. Requirements 1–3 are all about which database is
-   which; this one is about what is in them.
+4. **When does the content encryption exist? — answered: always** (D-34). Both workspaces are ciphertext
+   from genesis, so this requirement is discharged rather than pending. Account creation **wraps the
+   existing content root** to the recovery factor and starts uploading ciphertext; it is a key-custody
+   step, not a data transformation, and there is no whole-document encryption pass to make crash-safe.
+   Leaving Account is a rewrap or rotation for the same reason — there is nothing to decrypt *to*.
 
-   **The entry is open and the exit is decided**, which is worth separating because this document asked
-   only half the question for four drafts. Where encryption *begins* is downstream of D-34 (below). Where
-   it **ends** is not: a workspace leaving Account is decrypted in place, because Local is plaintext and
-   the content key existed to blind a relay and a server copy that no longer exist. That covers account
-   deletion, lapse past retention and migration alike, and it is crash-safe on the same terms as
-   requirement 3 (D-24, D-29, §5.11.2).
+   This was the fifth requirement for four drafts, framed as *"somewhere in this transition a workspace
+   acquires a content key"* on the premise that Local was plaintext. Removing the premise removes the
+   transition. Requirements 1–3 are about which database is which; this one is about what is in them, and
+   the answer is that they are all the same.
 
-**The fourth is not an independent question — it is downstream of D-34, and either answer settles it.**
-If the local document is encrypted at rest from genesis, encryption never "begins": the key exists from
-first run, and account creation only wraps it to a recovery root and starts uploading ciphertext, which is
-a key-custody step rather than a data transformation. If the local document stays plaintext, then account
-creation *is* the moment encryption begins, and it is a whole-document transformation that has to be
-crash-safe on the same terms as requirement 3 — an interrupted encryption pass that leaves half a
-workspace unreadable is a worse failure than an interrupted promotion. **So D-34 should be decided
-knowing it also decides this**, which its own entry does not currently say (§5.7.4).
+**Two rounds of this document treated the fourth as the hard one, and D-34 dissolved it rather than
+answering it.** Earlier drafts reasoned that if the local document were encrypted from genesis then
+encryption never "begins", and that if it stayed plaintext then account creation *is* a whole-document
+transformation needing crash-safety on requirement 3's terms — and then filed the choice under D-34. What
+made it look like a fork was the assumption that encryption-at-rest required a first-run prompt. It does
+not: the app can mint and manage the key silently, and the user-held factor is a separate optional
+strengthening (§5.7.4). Once that is separated, the first branch is simply true and the second never
+arises.
 
-**And v16 puts two confidentiality regimes on one device, which is new and should not be discovered
-later.** After sign-in the account workspace is end-to-end encrypted and the retained Local workspace is
-whatever D-34 leaves it as — plaintext, by default. They sit in the same browser profile, and a copied
-profile takes both. Nothing about the account's encryption reaches backwards over the anonymous
-workspace, and no interface should imply that signing in protected anything that was already there. It
-also widens D-34's "every store that holds user content" by one store per retained workspace.
+**And the two workspaces on one device share one storage invariant**, which is what makes them cheap to
+hold side by side. Both are ciphertext, both from their own genesis, each under its own content root.
+Nothing about signing in reaches backwards over the anonymous workspace and nothing needs to — it was
+already encrypted. What a copied profile takes is two ciphertext stores and, on the default tier, the
+means to open both; that is the honest statement and it is the same statement for each of them.
 
 **Three things this section used to require and no longer does**, recorded because their absence is the
 point rather than an oversight:
@@ -1421,30 +1426,32 @@ workspace. So:
   than missing data, which is the acceptable failure mode and the reason this is informational rather
   than destructive.
 
-**And the workspace stops being encrypted when it stops being an account workspace.** Local is plaintext
-(D-34's default) and the account content key exists to keep a relay and a server copy from reading the
-document — neither of which survives deletion. So the exit is a **decryption in place**, on the same
-crash-safety terms as §5.2.1's promotion, and it is the answer for every exit from Account: deletion,
-lapse past retention (D-29), and migration to a replacement service (§5.11.2), which re-encrypts under
-the new lineage rather than carrying the old key.
+**The workspace stays encrypted, and this reverses what a previous round of this document decided.** That
+round reasoned that Local was plaintext and the account content key existed only to blind a relay and a
+server copy the exit removes, and concluded that leaving Account meant **decrypting in place**. D-34
+removes the premise: Local is ciphertext too, from genesis, so there is nothing to decrypt *to*. The exit
+is a **rewrap or rotation** — the device keeps opening the workspace with the key custody it already has,
+and no exit from Account ever materializes a plaintext database. That holds for deletion, for lapse past
+retention (D-29) and for migration, which rotates under the new lineage rather than carrying the old key
+(§5.11.2).
 
-Two things follow, and the first removes a hazard rather than adding one:
+Two things follow, and both are better than the version they replace:
 
-- **Nothing on the device then depends on a content key it cannot replace.** The wrapped content root is
-  service-held (§5.7.1, D-29), so deletion takes it; a device left holding ciphertext openable only by
-  key material in its own profile would have no recovery path at all, and would be one storage corruption
-  from total loss. Decrypting at the exit means there is no key to lose and nothing needing the root.
-- **The decryption is opportunistic, not atomic**, and this is the same caveat as the continuation
-  pointer. A device offline across the deletion cannot be told, and cannot distinguish a deleted account
-  from an unreachable relay — which §5.7.1 requires it to treat as an outage that leaves local documents
-  readable. It keeps working from the key it holds and decrypts whenever it learns. A device that never
-  learns never decrypts, so the confirmation must not claim the deletion completed everywhere.
+- **Nothing on the device depends on a content key it cannot replace.** This was the hazard the
+  decrypt-in-place answer was invented to remove: the wrapped content root is service-held (§5.7.1,
+  D-29), so deletion takes it, and a device holding ciphertext openable only from its own profile would
+  have had no recovery path. Under D-34 the root was **minted locally at genesis** and the account merely
+  wrapped a copy of it for recovery. Deletion retires the wrap, not the root. The device keeps what it
+  always had.
+- **Nothing about the exit is opportunistic any more.** The decrypt-in-place answer had to be best-effort,
+  because a device offline across the deletion cannot be told and cannot distinguish a deleted account
+  from an unreachable relay (§5.7.1). Now there is nothing it needs to be told in order to keep working:
+  it opens its workspace exactly as before and simply stops syncing. The only thing an offline device
+  misses is the continuation pointer, which is a label rather than a capability.
 
-**If D-34 later adds a device lock, this needs no special case.** The lock is keyed from a user-held
-factor and is a different key from the account's content key, so "stays encrypted" was never a no-op — it
-would be a re-key with a different failure mode. The exit is a decryption either way, and the resulting
-plaintext store falls under the lock like every other store on that device, which D-34's *governs every
-store that holds user content* already covers (§5.7.4).
+**If the optional device lock is enabled, this still needs no special case.** The lock strengthens custody
+of a key that already exists rather than introducing one, so the exit is unchanged — the same store, the
+same root, one fewer wrap on it (§5.7.4).
 
 **The principal survives, and this document never said so although its own argument requires it.** §1.1's
 first ground is that the account *adopts* an identity that already exists; an identity that predates the
@@ -1831,9 +1838,11 @@ online it recovers silently and offline it fails — and the fix is cache retent
 not a tab count. Which is the shape the exception should always take: if a tab count is the answer,
 the question was probably wrong.
 
-The other candidate is Phase 4's search index, where one tab holds the OPFS lock and the others cannot
+The other candidate was Phase 4's search index, where one tab holds the OPFS lock and the others cannot
 search. TRD §6.2 already commits to saying so — but note that "search is unavailable in this tab" is
-the useful sentence, and it does not require a count either.
+the useful sentence, and it does not require a count either. **That candidate is not live**: D-34 starts
+the index in memory, so there is no lock to contend for until a persistent encrypted index exists
+(§5.7.4). The answer is unaffected, since it never rested on the example.
 
 ### 5.4 Rooms — D-10, D-11
 
@@ -2194,6 +2203,16 @@ objects above, and whether it revokes, is the question still open.
   and cannot be undone by signing in again. The app knows a hosted workspace exists; it cannot know
   whether another copy of the code survives, so this one has to warn pessimistically.
 
+**And D-34 adds a third irreversible combination, which is the mirror of the first and easy to miss.**
+Object 2 now includes the **content key that opens the local store**, not only the credential that signs
+for the network. So **clearing capability without the document orphans the document**: the ciphertext
+stays on disk and nothing can open it. At **Account** that is recoverable — sign in, and the content key
+returns through §5.7.2's second gate — but at **Local** it is total and final, with no service copy and
+no wrapped root behind it, exactly as forgetting a device-lock factor would be. The earlier warning was
+that clearing 1 and 3 without 2 leaves a live credential behind; this is the same list read in the other
+direction, and a reset that offers to "clear my identity" while leaving the data must not take the
+content key with it.
+
 **So both need warnings, and they are different warnings.** The document warning is conditional and
 checkable — say it when it is true, stay quiet when the service holds a current copy. The recovery-material
 warning cannot be conditioned on the fact that matters, so it says what it destroys and asks the user to
@@ -2392,7 +2411,7 @@ Three questions that decided the shape of the ladder in §5.1.1 and were not ans
 **Two are closed, and closing the first changed the third's job.** D-16 is decided and did most of the
 work in v15; D-18 was already decided and is now non-deferrable because of it; and **D-17 is now decided
 too**, all five selections recorded across §5.7.2, §5.7.4, §5.7.5–§5.7.6 and §5.7.8. Closing it opened
-**D-34** (§5.7.4), which is a smaller question than any it replaced.
+**D-34** (§5.7.4), a smaller question than any it replaced, **and v16 has since closed that as well.**
 
 **D-16. Where does the account/service boundary sit?** _(Decided, after one round re-opened. This and the
 pricing question were one row until v14; separating them is the correction. Pricing is D-31 and this
@@ -2626,7 +2645,7 @@ row means reopening the decision named above.
 | Leaked relay bearer token (S43)                        | Does not decrypt content, sign a mutation, authorize a device or recover an account. It is scoped, expires and can be refused independently. | The holder may consume relay service and obtain ciphertext or metadata until refusal or expiry.                                             |
 | Compromised authorized device or agent (S44, S46)      | Cannot impersonate another actor, exceed its capability or survive revocation by inventing authority it was never granted.                   | It can read everything its capability permits, copy it forever, and make every malicious edit its capability permits until revoked.         |
 | Revoked credential                                     | After the applicable commit point, cannot add an accepted write or decrypt a later content-key generation.                                   | Erasure of any plaintext, key or ciphertext it obtained before revocation. Removal governs the future, as D-20 already says.                |
-| Copied browser profile                                 | On a PRF-wrapped device, the copied operational-key wrapper is unusable without the authenticator; a lower-tier device makes no such promise. Service revocation limits future access. | Protection for plaintext document data copied with the profile (D-34), or after the attacker can invoke the key through an unlocked app. |
+| Copied browser profile                                 | Persisted user content is ciphertext in every store, so the profile's files do not yield plaintext to inspection, backup imaging or a forensic tool (D-34). On a PRF-wrapped device the copied operational-key wrapper is also unusable without the authenticator; with a device lock enabled, the content key is unusable without the factor. Service revocation limits future access. | **Protection on the default key-custody tier against an attacker who can execute the app's origin from the copied profile** — the content key handle travels with the data and opens it there. Ciphertext at rest is a file-level property, not a code-level one, and the device lock is what supplies the stronger claim (D-34). Nor protection after the attacker can invoke the key through an unlocked app. |
 | Unlocked device or running app                         | After the service revokes its credential and the content key rotates, the attacker cannot extend access into the new generation.             | Protection while the attacker can run the app as the user, read its plaintext or exercise its current device capabilities.                  |
 | Same-origin XSS, compromised dependency or bad release | The content-recovery root remains absent during ordinary operation. After hostile code is removed, the service can revoke operational credentials and a clean device can recover content and rotate its keys. | Confidentiality or integrity while hostile code runs with the app's origin and privileges, including any recovery material entered then. Client-side encryption cannot provide that. |
 | All devices and authenticators lost while hosted ciphertext still exists (S47) | Account recovery restores authorization; the independently stored recovery factor restores content-key access; the hosted copy supplies the ciphertext **and the wrapped content root the factor opens**. Together those paths complete workspace recovery (§5.7.6). | Authorization does not decrypt, the recovery factor does not restore the service account or missing ciphertext, and no party substitutes for a lost content-recovery factor. |
@@ -2642,9 +2661,11 @@ code or another independent wrap supplies object 3, content-key access. A surviv
 or archive supplies object 4, ciphertext. The service-disappearance path in D-33 creates a new account
 and authorization lineage, but it still needs independently available ciphertext and the content factor.
 
-**Copied storage and a running device are different attackers.** The PRF wrap can make a copied profile's
-persisted device-key wrapper unusable; it cannot stop an attacker who can invoke the already-unlocked key.
-Neither fact decides whether the content beside it is plaintext, which remains D-34.
+**Copied storage and a running device are different attackers**, and D-34 draws the line between them
+rather than leaving it to the key-storage tier. The content beside the key is ciphertext in every case, so
+a copied profile yields no plaintext to a reader of files. What a copied profile still yields, on the
+default custody tier, is the ability to *run* the app and open it — which is the code-level threat, is
+what the optional device lock addresses, and is why the row above disclaims it explicitly.
 
 Two phrases in that table carry more work than they appear to. **Already-seen** is the bound on
 rollback protection: a returning client can remember the newest authorization head it has seen and reject
@@ -2775,7 +2796,8 @@ changing the same-origin-code boundary.
 > shows which tier a device is on** (D-18). A two-tier bar is acceptable; a silent one is not (§5.7.6).
 >
 > The unlock **gates sync, not the app** — the same resolution D-18 reached for revocation checks. Reading
-> and writing locally never waits on it, because the local document does not need this key at all (D-34).
+> and writing locally never waits on it, because this key signs envelopes and does not open the local
+> store; the content key does that, and D-34 keeps its default custody promptless.
 
 **This was chosen against a much smaller threat than the table above implies, and the reason is worth
 stating.** After §5.7.2, a compromised device key cannot change service authorization and cannot unwrap
@@ -2795,29 +2817,59 @@ profile to steal the key also copied the plaintext workspace sitting beside it, 
 above changes that. The key-storage question and the at-rest question are separate, and the second one has
 never actually been decided —
 
-**D-34. Is local user content encrypted at rest?** _(**Existence open; shape decided.** It was asserted
-twice as a premise and never decided. "The local document" was too narrow — content lands in more than one
-store, and the journal is on the synchronous write path.)_
+**D-34. Is local user content encrypted at rest?** _(**Decided: yes, from genesis.** It was asserted twice
+as a premise and never decided; then framed as a device lock, which conflated two separable properties and
+made it undecidable. Separating them decides it.)_
 
-> **Decided, as constraints on any affirmative answer.** Whether a device lock exists at all is open. If
-> one does:
->
-> - It is **opt-in per device**, never a default and never required to start using the app. Only a
->   user-held factor protects anything (a key stored beside the data travels with a copied profile), and
->   requiring one at first run contradicts D-1 and §7.
-> - It is keyed from a **user-held factor** — PRF-derived or code-derived — and unlocks at cold start.
-> - **Forgetting the factor loses the data**, and at Local that is total and final. Accepted knowingly,
->   on the same terms as §5.7.6's recovery code: a non-custodial promise the user cannot break is custody
->   under another name. The opt-in copy carries it.
-> - It governs **every store that holds user content**, not the document alone.
->
-> What remains open is only whether to build it, and the constraints above are what any *yes* must satisfy.
+**The framing was the whole problem.** Earlier drafts asked one question — *is there a device lock?* —
+and that question bundles two properties that have different costs, different threats and different
+answers:
 
-The two assertions are §5.7.9's forward-secrecy aside — *"the plaintext sits in IndexedDB on every device
-by design — that is what local-first means"* — and §5.7.1's copied-profile row, which concedes no protection
-for plaintext document data sitting beside the key. Neither is a decision. The first is a premise inside an argument about
-ratcheting, and **"that is what local-first means" is doing unearned work**: local-first means the data is
-on your device, not that it is unencrypted on your device.
+| Property                                             | Answer                        |
+| ---------------------------------------------------- | ----------------------------- |
+| Persisted user content is ciphertext                 | **Always, from first run**    |
+| Opening it requires a **user-held factor**           | Optional, per device          |
+| Plaintext exists in memory while the workspace is open | Yes, unavoidably            |
+| A copied or executable profile is resisted           | Only on the device-lock tier  |
+
+Bundled, the question could not be answered: encryption-at-rest appeared to require a first-run prompt,
+which contradicts D-1 and §7's *Local asks for nothing, ever*. Unbundled, it answers itself — a key the
+app manages needs no prompt, and the factor is a separate, later, optional strengthening.
+
+> **Decided: every workspace has a content root and a generation-0 content key from genesis, and no
+> app-managed persistent store ever holds user-content plaintext.**
+>
+> - **From first run, silently.** Local genesis mints the workspace root and first content-key generation
+>   alongside the principal, device and actor. No prompt, no account, no factor. D-1 and §7 are untouched.
+> - **Every app-managed persistent store is authenticated ciphertext** — the Yjs source of truth, the
+>   crash journal, and any persistent derived index. Plaintext exists in memory while the workspace is
+>   open, and in exports the user explicitly asks for.
+> - **Default key custody does not resist a complete copied or executable profile.** The key handle lives
+>   beside the data, so an attacker who can run the app from that profile can open it. **This must be
+>   stated wherever the property is described**, because the gap between *the files are ciphertext* and
+>   *your data is protected* is exactly where a reader will over-read.
+> - **An optional user-held device lock supplies the stronger property**, per device, PRF- or
+>   code-derived, unlocking at cold start. It strengthens custody of a key that already exists; it is not
+>   the switch that turns encryption on. **Forgetting the factor loses the data**, and at Local that is
+>   total and final — accepted on §5.7.6's terms.
+> - **Account creation wraps the existing root** for recovery. It is never a whole-document encryption
+>   pass. **Account deletion, retention expiry and migration never decrypt persisted content**; they may
+>   rewrap or rotate, and the store stays ciphertext throughout.
+
+**What this buys and what it does not, said precisely because the difference is the decision.** It
+defeats **file-level** exposure: an OS backup, a disk image, a synced profile directory, a forensic tool,
+a support person with filesystem access, freed blocks after deletion, and the trivially-readable
+`localStorage` journal. It defeats **nothing at the code level**: same-origin script, a running unlocked
+app, or an attacker who reconstructs the profile and executes the origin. An earlier draft called the
+locally-keyed variant theatre on the second ground alone. That was right about the threat and wrong about
+the conclusion — a scoped property honestly described is not theatre, and the scoping sentence above is
+what earns it.
+
+The two assertions this retires are §5.7.9's forward-secrecy aside — *"the plaintext sits in IndexedDB on
+every device by design — that is what local-first means"* — and §5.7.1's copied-profile row, which
+conceded no protection for plaintext document data sitting beside the key. **"That is what local-first
+means" was doing unearned work**: local-first means the data is on your device, not that it is
+unencrypted on your device. Both are corrected in place.
 
 **One thing this document implied and should retract.** PRD principle 3 does not forbid a device lock.
 Principle 3 is *"offline is the normal state, not a degraded one — no spinner, no reconnecting banner"*,
@@ -2825,74 +2877,93 @@ which is about waiting on the **network**. A local unlock ceremony is not a netw
 lock would actually cost is §5.1.2's "never awaits a credential" — this document's own formulation, and a
 weaker thing to be bound by than a PRD principle.
 
-**The subject is local plaintext at rest, not the IndexedDB document alone**, and the difference is the
-first thing to get right because it sets the size of the question. This app writes user content to
-**two** places on disk today, with a third planned, and encrypting one of them is theatre:
+**The subject is every app-managed store, not the IndexedDB document alone.** This app writes user content
+to **two** places on disk today, with a third planned, and encrypting one of them is theatre:
 
-| Store | What it holds | Where it is described |
-| ----- | ------------- | --------------------- |
-| IndexedDB (`done`) | The workspace document | §2.1 |
-| `localStorage` journal | Each update, written synchronously so a page kill between transaction and IndexedDB commit cannot lose it | §5.6.2, TRD §6.1 |
-| OPFS SQLite index | Phase 4's search index — the derived text of everything searchable. **Planned, not built**: `persistence.ts` records that it "belongs to Phase 4", and there is no SQLite dependency yet | TRD §6.2, PRD §13 |
+| Store | What it holds | Under this decision |
+| ----- | ------------- | ------------------- |
+| IndexedDB (`done`) | The workspace document | Each Yjs update stored as an authenticated encrypted record: ciphertext plus non-content routing metadata — format version, nonce, generation, sequence. `y-indexeddb` persists raw updates, so it needs an encrypted adapter or a replacement (`persistence.ts`) |
+| `localStorage` journal | Each update, written synchronously so a page kill between transaction and IndexedDB commit cannot lose it | **The sharp edge.** See below |
+| Persistent derived index | Phase 4's search index — the derived text of everything searchable. **Planned, not built**: `persistence.ts` records that it "belongs to Phase 4", and there is no SQLite dependency yet | May ship only when its on-disk representation is encrypted. Start in memory (TRD §6.2, PRD §13) |
 
-The journal is the sharp one: it exists precisely so that content survives a crash, which means it holds
-recent content by design, and it is written on the synchronous path where an async encryption step is
-exactly what §5.6.2 says cannot go. The search index is the largest and holds text rather than CRDT
-structure — and because it does not exist yet, it is the one D-34 can still **govern by design** rather
-than retrofit, which is an argument for deciding D-34 before Phase 4 rather than after.
+**The journal is the one genuinely new cryptographic burden, and it is worth naming as such rather than
+absorbing.** It exists so that content survives a page kill, so it holds recent content by design, and it
+is written **synchronously** — while WebCrypto's `encrypt()` is promise-based and cannot complete inside
+the handler that must not return until the write has happened (§5.6.2, TRD §6.1). Two ways out, and the
+choice is a product one because it decides whether a guarantee survives:
 
-What is genuinely at stake, so the decision can be taken on its merits later:
+> **Decided: preserve the crash-safety contract.** A reviewed **synchronous AEAD** — JS or WASM — on this
+> one narrow path, with a low-end-device latency benchmark, is a TRD requirement. The alternative is a
+> deliberate redesign of the crash-safety contract, which trades a guarantee the product already makes
+> for an implementation convenience, and that is the wrong direction.
+
+This is the only place the decision adds a cryptographic primitive rather than composing reviewed ones,
+so §5.7.8's independent design review has to cover it specifically.
+
+**The search index needs no engine selection, which is worth stating because the instinct is to go
+shopping.** Row-level security is access control, not encryption; column encryption produces ciphertext
+columns that ordinary full-text indexing cannot index without decrypting. And the browser options do not
+currently supply transparent encrypted persistence: PGlite documents an in-memory filesystem but not
+encrypted browser persistence, Turso's page-level encryption is labelled experimental in its own manual,
+and official SQLite WASM builds expose transparent encryption only with the commercial SEE extension. So
+the first implementation is: **keep the index in memory, rebuild it lazily from the decrypted document
+after startup, measure the rebuild, and add an encrypted persistent representation only if measurement
+demands it.** The product requirement is one sentence — *a persistent search implementation may ship only
+when its on-disk representation is encrypted* — and it selects nothing.
+
+**One consequence of starting in memory, which lands outside this decision.** §1.3 lists "an exclusive
+resource — the search index's OPFS lock — is **session**, arbitrated per device", and D-9 uses the same
+lock as its second candidate for a tab count. **An in-memory index has no lock**, so that example
+evaporates and with it the document's only per-device exclusive resource. D-9's answer is unaffected — it
+was already "the useful sentence is *search is unavailable in this tab*, and it does not require a count"
+— but the example should not be cited as live until a persistent index exists to hold a lock.
+
+**Existing installations need a one-time migration, and possibly not.** The general shape is a finite
+state machine, not an open question: open the old plaintext database, mint the workspace root and content
+key, write and verify the encrypted store, atomically select it, remove the plaintext store only after
+verification, and resume safely after interruption. **But §2.4 has already chosen not to carry a live
+document across** — its plan is to export from the development installation and import into the first real
+deployment. There is exactly one installation. **If D-34 lands before any external user exists, §2.4's
+export/import *is* the migration and this state machine is never built.** That is a sequencing win rather
+than a design one, and it is only available in one direction.
+
+**What is at stake, now recorded as the reasoning behind the answer rather than as material for a future
+one:**
 
 - **The browser's origin sandbox is not an at-rest boundary.** It separates web origins. IndexedDB is
   ordinary files in the profile directory, readable by any process running as the same OS user, by a copied
-  disk image, or through an OS backup. What protects that data today is **full-disk encryption and a locked
-  screen** — the platform's job, reasonably reliable on modern defaults, and absent or disabled more often
-  than one would like.
-- **End-to-end encryption that terminates in a plaintext database is a real property with a sharp edge**:
-  the relay cannot read the workspace and anything on the user's own machine can. D-25's honesty duty
-  probably reaches this, and §5.7.1's row states it accurately but quietly.
+  disk image, or through an OS backup. What protected that data before this decision was **full-disk
+  encryption and a locked screen** — the platform's job, reasonably reliable on modern defaults, and absent
+  or disabled more often than one would like.
+- **End-to-end encryption terminating in a plaintext database was a real property with a sharp edge**: the
+  relay could not read the workspace and anything on the user's own machine could. That edge is now gone at
+  the file level and remains at the code level, which is what the scoping sentence exists to say.
 
-The shape an answer would take, recorded so the question is not re-derived: opt-in per device rather than
-default; a PRF-derived or code-derived key; unlock at cold start; and explicit copy about what it does not
-protect, which is a running unlocked app. It interacts with **D-13** (what a reset clears), **D-18** (a
-revoked device still holding plaintext) and **D-25**.
+**One thing D-34 decides beyond itself.** It settles when content encryption **begins** — at genesis — so
+account creation only wraps an existing root to a recovery factor and is never a whole-document
+transformation (§5.2.1). **And it now settles the other direction too**, which a previous round decided
+the opposite way and which this reverses: leaving Account is a **rewrap or rotation, never a decryption**.
+Local is ciphertext, so there is nothing to decrypt *to*. The invariant is the same on both sides of the
+boundary and at both ends of the lifecycle, which is most of what makes this decision worth its cost
+(D-24, D-29, §5.11.2).
 
-**One thing D-34 decides beyond itself, which is worth knowing before it is taken.** It settles when the
-content encryption *begins* (§5.2.1). Encrypted from genesis means account creation only wraps an
-existing key to a recovery root; plaintext at Local means account creation is a whole-document encryption
-pass that has to be crash-safe. That is a real implementation difference falling out of what reads as a
-device-security question.
+**PRD principle 3 never forbade any of this, and the retraction stands.** Principle 3 is *"offline is the
+normal state, not a degraded one — no spinner, no reconnecting banner"*, which is about waiting on the
+**network**. Nothing here waits on a network. The default tier adds no ceremony at all; the optional
+device lock adds a local one, which costs §5.1.2's "never awaits a credential" and not a PRD principle.
 
-**It does not decide when encryption ends, and that is already settled without it.** A workspace leaving
-Account is decrypted in place (D-24), because the account content key exists to blind a relay and a
-server copy that the exit removes. A device lock is a **different key** — user-held factor, opt-in, its
-own failure mode — so "stays encrypted at the exit" was never available as a no-op; it would be a re-key.
-Whatever D-34 decides, the exit is a decryption, and the resulting plaintext store falls under the lock
-like every other store on that device under the clause above. **This is why D-34 governs one direction
-rather than both**, and the asymmetry is worth knowing so nobody re-opens the exit when D-34 is taken.
+**The cost of the optional lock, accepted rather than discovered.** It introduces a way to lose everything
+by forgetting a factor, and at **Local** that loss is total and final — no service copy, no wrapped root,
+no recovery code, nobody to ask, all by construction (§5.1.1). So opting in can make the free product's
+one promise — your list is here and it stays here — untrue for someone who then forgets. **That
+consequence is accepted**, on the same terms as §5.7.6's recovery code and for the same reason: a
+non-custodial promise that cannot be broken by the user is not a non-custodial promise, it is custody by
+another name. What it obliges is the copy at the moment of opting in — this is the only copy, and we
+cannot open it for you either — which is D-25's third-row problem arriving at Local, where it is harder
+because there is no second copy anywhere to soften it.
 
-**And the obvious instinct — encrypt at rest for everyone, account or not — runs into D-1 rather than
-into cost.** The key has to come from somewhere, and only a user-held factor helps: a key stored beside
-the data travels with a copied profile and is used by the browser in the copy, so it defeats reading the
-IndexedDB files and not the threat that motivates the question. A passphrase or a passkey ceremony does
-help, and asking a Local user for either contradicts *"the first run cannot ask who you are"* (D-1) and
-*"Local asks for nothing, ever"* (§7) — the strongest promise in the product. **That collision is the
-whole reason the shape above is opt-in rather than default**, and it means the real question D-34 answers
-is not "should local data be encrypted" but "what may the app ask a Local user for, and when".
-
-**The cost of the opt-in shape, accepted rather than discovered.** A device lock introduces a way to lose
-everything by forgetting a factor, and at **Local** that loss is total and final — no service copy, no
-wrapped root, no recovery code, nobody to ask, all by construction (§5.1.1). So this feature can make the
-free product's one promise — your list is here and it stays here — untrue for a user who opts in and then
-forgets. **That consequence is accepted**, on the same terms as §5.7.6's recovery code and for the same
-reason: a non-custodial promise that cannot be broken by the user is not a non-custodial promise, it is
-custody by another name. What it obliges is the copy at the moment of opting in — this is the only copy,
-and we cannot open it for you either — which is D-25's third-row problem arriving at Local, where it is
-harder because there is no second copy anywhere to soften it.
-
-**Deliberately not decided here.** It surfaced at the end of a long round, it deserves its own, and
-§5.7.4's selection is unaffected either way — the device key is protected identically whether or not the
-document beside it is encrypted.
+**It interacts with D-13** (a reset that clears the key orphans the ciphertext), **D-18** (a revoked
+device still holds a readable replica, because it holds the key), and **D-25**.
 
 #### 5.7.5 What an account can add — and what it cannot add by itself
 
@@ -3152,11 +3223,19 @@ than prose:
     half-completed account deletion fail closed without silently changing the confidentiality promise.
 12. Mutation verification and first-sync checkpoint verification meet the latency and history-size budgets
     in §5.6.2 without moving cryptography onto the keystroke or local-replay path.
-13. The web application is verified as part of the cryptographic boundary: no unreviewed third-party script
+13. **No app-managed persistent store yields user-content plaintext** (D-34). A profile snapshot taken
+    after ordinary use — IndexedDB files, the `localStorage` journal, and any derived index — is inspected
+    for recognizable content, at genesis, at Local, at Account, and after every exit from Account. The
+    journal is checked specifically for an unencrypted window between transaction and commit, and the
+    synchronous AEAD is checked against its latency budget on a low-end device. The complementary negative
+    is asserted rather than omitted: on the default custody tier, a restored profile executing the app's
+    origin **does** open the workspace, and the test records that as expected behaviour so the claim's
+    scope is exercised rather than assumed.
+14. The web application is verified as part of the cryptographic boundary: no unreviewed third-party script
     executes in the key-holding origin; injection controls, CSP, Trusted Types where supported, dependency
     integrity, service-worker update integrity, cookie attributes and WebSocket origin checks are tested.
 
-The last row is unavoidable because **same-origin code is inside the end-to-end boundary.** A passkey is
+Row 14 is unavoidable because **same-origin code is inside the end-to-end boundary.** A passkey is
 phishing-resistant because it is bound to the relying-party origin; it does not distinguish the intended
 app from hostile script served at that legitimate origin. The baseline can be tied to a named, versioned
 standard such as the applicable OWASP ASVS 5.0 requirements, but that standard does not review a novel
@@ -3189,8 +3268,8 @@ alone still buys an opinion about a sketch.
 
 **Why level 4 is triggered rather than required at ship**, which is the row most likely to be read as
 corner-cutting: an implementation audit has to repeat after security-boundary changes, and several are
-still pending — D-34, the escrow add-on and D-32's evolving as-built data flows each move a boundary.
-Buying the audit before
+still pending — D-34's storage-encryption and journal-AEAD work, the escrow add-on, and D-32's evolving
+as-built data flows each move a boundary. Buying the audit before
 those settle purchases evidence about a system that will not be the shipped one. The triggers are chosen
 so that the audit lands before the two moments where its absence would make a claim dishonest rather than
 merely unproven: saying the words, and holding someone else's key.
@@ -3207,11 +3286,11 @@ old one without keeping an authoritative device online. It cannot deliver conten
 service authorized the replacement. The user-held factor does that second job, and migration — not an
 offline administration key — covers service disappearance.
 
-**And deciding them surfaced a question this document had been assuming rather than answering**, which is
-recorded as **D-34** (§5.7.4): whether local user content is encrypted at rest, in any of the three
-stores that hold it. It is not a D-17
-selection and does not gate the contract, but it is the last place where "end-to-end encrypted" and what
-a user would understand by it can still come apart.
+**And deciding them surfaced a question this document had been assuming rather than answering**, recorded
+as **D-34** (§5.7.4) and since decided: local user content is encrypted at rest, from genesis, in every
+app-managed store. It is not a D-17 selection and does not gate the contract, but it was the last place
+where *end-to-end encrypted* and what a user would understand by it could still come apart — and it now
+closes that gap at the file level while stating plainly what the default custody tier does not promise.
 
 #### 5.7.9 The common core beneath the options
 
@@ -3241,8 +3320,8 @@ D-18 makes revocation load-bearing, so the tension is real rather than theoretic
 
 **And one thing not required by the current promise: forward secrecy.** Signal's ratcheting protects past
 messages after a later key compromise. Here a read-capable device must be able to materialize the current
-workspace, including its accumulated content, whether that state is persisted as plaintext today or later
-placed behind a D-34 device lock. A per-update ratchet therefore does not hide the current workspace from
+workspace, including its accumulated content, which under D-34 is persisted as ciphertext the device can
+already open. A per-update ratchet therefore does not hide the current workspace from
 an attacker controlling an unlocked authorized device. It should not be built by default; a future,
 stronger historical-confidentiality claim would have to reopen the question explicitly.
 
@@ -3442,11 +3521,11 @@ Four things that follow and should not be rediscovered later:
   synced, and after expiry there is nowhere left to get the remainder. That is the same qualifier D-24
   puts on account deletion, at the same kind of boundary.
 
-  Expiry is also an **exit from Account**, so the workspace is decrypted in place on each device on the
-  same terms as deletion (D-24) — opportunistically, since a device that never learns keeps working from
-  the key it holds. Note the ordering this implies during read-only: the hosted copy and its wrapped root
-  are still retained, so the exit is at expiry rather than at the lapse, and a user who resumes before
-  then never leaves Account at all.
+  Expiry is also an **exit from Account**, and under D-34 that changes nothing about the devices' stores:
+  the workspace was ciphertext before the account and stays ciphertext after it, so expiry retires the
+  service's wrapped root rather than transforming anything locally (D-24). Note the ordering during
+  read-only: the hosted copy and its wrapped root are retained throughout, so the exit is at expiry rather
+  than at the lapse, and a user who resumes before then never leaves Account at all.
 - **Deliberate downgrade (S53) is the same mechanism**, and it is the case that must not silently
   become S36's account deletion. Stopping payment and deleting an account are different acts with
   different consequences for service authorization and hosted retention, and the interface has to keep them apart.
@@ -4034,8 +4113,8 @@ Not decisions. Listed so they do not consume discussion.
 - **A cookie cannot be waited on.** Whatever the _network_ credential turns out to be, nothing on the
   read or write path may await it — TRD §7.1 already says this about sync state, and §2.3 is why it now
   also covers authentication. **This is scoped to the network deliberately.** It says nothing about a
-  local unlock ceremony, which is not a network wait and is not forced by anything here; whether one
-  exists is **D-34**, and it is open.
+  local unlock ceremony, which is not a network wait. D-34 keeps the **default** free of one — storage is
+  ciphertext under an app-managed key — while making a user-held device lock available per device.
 - **Actor ids do not collide.** UUIDv4.
 - **Replicas that share an ancestor merge; histories that do not share one cannot.** This is the single
   mechanical fact underneath D-5's withdrawal and three corrections that came with it, and it kept being
@@ -4218,7 +4297,7 @@ which is deliberate (§0.1).
 | **D-31** | What does hosted sync cost, and how should it be priced?       | **Deferred on purpose**   | Business-model question outside this document. D-16 requires an account but does not presume free, paid, bundled or metered                 |
 | **D-32** | What may the service retain, observe and do?                   | **Decided in principle**  | Fix irreversible constraints before the TRD; maintain a living inventory during design/build; reconcile and review the as-built surface before wider availability |
 | **D-33** | What survives the service, and what may be claimed?            | **Decided in principle**  | Independently runnable client and service stack; open source preferred, triggered source release acceptable; binary-only continuity insufficient; claims gated by corresponding tests |
-| **D-34** | Is local user content encrypted at rest?                       | **Existence open; shape decided** | Two plaintext stores today, a third planned, plus one per retained workspace. Any lock is opt-in, user-held factor, governs every store, and accepts total loss if the factor is forgotten. Open only: whether to build it. Also settles when content encryption **begins** (§5.2.1); where it **ends** is decided without it — leaving Account decrypts in place (D-24) |
+| **D-34** | Is local user content encrypted at rest?                       | **Decided**               | Yes, from genesis, in every app-managed persistent store. Default key custody is app-managed and silent, so Local still asks for nothing — and correspondingly does **not** resist an executable copied profile; an optional user-held device lock supplies that. Account creation wraps the existing root; no exit from Account ever decrypts. The synchronous journal needs a reviewed sync AEAD; a persistent search index may ship only encrypted (§5.7.4) |
 
 ### 8.1 The security contract is bounded; the TRD must instantiate it
 
@@ -4236,7 +4315,7 @@ The contract now has both fixed requirements and deliberately unselected fields:
 | **Protocol boundary**                     | **A service-authoritative control plane around client-encrypted Yjs updates**; service signs authorization/finalization, clients encrypt and sign content, relay/store handle opaque envelopes (D-28) | Exact message/state formats, verification APIs, batching and test vectors |
 | **Authorization and recovery boundary**  | **Selected: the service alone authorizes; the user-held root recovers content only; service disappearance starts a new lineage through migration** (§5.7.2, §5.7.3) | Account-recovery policy and the exact user-mediated proof that gates content-key delivery |
 | Browser key storage                      | **Selected: a non-extractable `CryptoKey`, PRF-wrapped where the authenticator supports it.** The tier is shown in the device list and is never silent; the unlock gates sync, not the app (§5.7.4) | PRF enrollment flow, and the copy shown for a device on the lower tier |
-| **Local storage at rest**                | **Selected: if a device lock exists it is opt-in, user-held-factor-keyed, governs every store holding content, and accepts total loss on a forgotten factor.** Content is plaintext today in IndexedDB and the journal, with the Phase-4 index a planned third and one store per retained local workspace; the origin sandbox is not an at-rest boundary. **Leaving Account decrypts the workspace in place** — the exit does not wait on D-34 (D-24) | Whether to build the lock at all — **D-34** (§5.7.4). Its answer also fixes whether account creation is a whole-document encryption pass (§5.2.1) |
+| **Local storage at rest**                | **Selected: every app-managed persistent store holds authenticated ciphertext from genesis** — Yjs source of truth, crash journal, any persistent derived index, in every workspace on the device (D-34). Default key custody is app-managed: no prompt, and **no claim against an executable copied profile**. An optional user-held device lock supplies that stronger property, per device, accepting total loss on a forgotten factor. Account creation wraps the existing root; **no exit from Account decrypts** (§5.2.1, D-24) | The synchronous-journal AEAD and its low-end-device latency budget; the encrypted record format (version, nonce, generation, sequence); when a persistent search index may replace the in-memory one; the device-lock enrollment flow and its copy |
 | **Signed authorization epoch**           | Binds membership, credentials, capabilities and key generation; the service signs and serializes successors | Chain-head discovery for a fresh device, checkpoint and downgrade rules. **Fork rules are no longer needed** (D-16) |
 | Signed mutation envelopes                | Source-authenticated; workspace/epoch/credential/digest in the clear, **attributed actor inside the seal** so no actor identifier crosses in the clear. Not unlinkability — the relay still infers member from credential via authorization state (§5.8.1). **Devices retain their own outbound envelopes** back to the last admitted checkpoint (§5.6.2) | Which fields are associated data, envelope and batching granularity, anti-replay/finalization rule, authenticated checkpoint construction, and how far back retention runs |
 | Attribution binding                      | Actor is derived from the credential or explicitly authorized for representation        | How an update's affected attributed fields are inspected or derived                                        |
@@ -4256,13 +4335,14 @@ content root, the recovery factor, the device key's storage, and the assurance b
 core in §5.7.9 now has D-28's architecture boundary and can be specified in the TRD, then put in front of
 someone who does this professionally (§5.7.8).
 
-**Deciding it opened one new question rather than closing every one.** **D-34** — whether local user
-content is encrypted at rest — was assumed twice in this document and never decided (§5.7.4). Its shape is
-now fixed and only its existence is open: opt-in, user-held factor, every store that holds content, and
-total loss accepted if the factor is forgotten. It is not a security-contract selection and does not gate
-the protocol, but it is the remaining place where the phrase *end-to-end encrypted* and a reasonable
-user's understanding of it can still diverge, so it belongs beside the contract rather than in the
-sub-questions list.
+**Deciding it opened one new question, and v16 closed that too.** **D-34** — whether local user content
+is encrypted at rest — was assumed twice in this document and never decided (§5.7.4). It is now decided:
+yes, from genesis, in every app-managed persistent store, under app-managed key custody that asks the user
+for nothing and correspondingly promises nothing against an executable copied profile, with an optional
+per-device user-held lock for that stronger property. It is not a security-contract selection and does not
+gate the protocol, but it was the remaining place where *end-to-end encrypted* and a reasonable user's
+understanding of it could diverge, and it adds the one genuinely new cryptographic obligation in the plan:
+a reviewed **synchronous AEAD** for the crash journal, which §5.7.8's design review must cover.
 
 **The authority and recovery selections were entangled and had to be taken together.** The service may
 replace and revoke devices without keeping an authoritative user device online, but its authorization
@@ -4320,9 +4400,10 @@ requires are complete at the product-decision level:
 3. **A bounded security contract**, complete as product input and awaiting technical specification and
    review. §5.7 gives the threat claims, decisions and conformance tests; D-28 selects the
    service-authoritative envelope architecture; §8.1 separates fixed requirements from the parameters the
-   TRD must supply. **D-34** is new and does not gate the contract — though it does settle whether
-   account creation is a whole-document encryption pass (§5.2.1), which is a TRD input rather than a
-   product gate.
+   TRD must supply. **D-34** is now decided and does not gate the contract — it settles that account
+   creation is *not* a whole-document encryption pass and that no exit from Account decrypts (§5.2.1,
+   D-24), and it hands the TRD the journal AEAD, the encrypted record format and the in-memory search
+   index.
 4. **A service data boundary and staged inventory obligation**, now fixed by D-32. §5.10 records the
    irreversible constraints that precede the TRD, the compact inventory row added as the architecture
    introduces data, and the as-built reconciliation that gates wider availability. A speculative complete
@@ -4434,8 +4515,9 @@ the shared ontology in §1.
   this one.
 - **§14 Open questions** — D-1 through D-33 are now dispositions to promote into the applicable product
   sections or a referenced decision register, not open questions — except **D-31**, which is deferred
-  rather than decided, and **D-5**, which is withdrawn and needs no promotion beyond its landmark. Retain
-  only the explicitly named live UX/parameter details and D-34 as open items.
+  rather than decided, and **D-5**, which is withdrawn and needs no promotion beyond its landmark. **D-34
+  is now decided too**, so it is promoted rather than retained. Retain only the explicitly named live
+  UX/parameter details as open items.
 - **§1 / §2, or wherever the product is described** — D-16 makes a claim the PRD does not currently
   contain: **Local is free and permanent, while hosted synchronization requires an account.** Whether
   that service is free or paid is D-31 and is not a product-shape claim here. PRD §12's non-goals should
@@ -4453,6 +4535,18 @@ the shared ontology in §1.
   as a maintenance rather than an authoring operation (§2.4, §6), and that the byte-identical round trip
   is a format guarantee which does **not** supply card identity — the gate that keeps merging into a
   populated workspace a separate project.
+- **TRD §6.1 — the local store is also no longer plaintext.** D-34 requires every app-managed persistent
+  store to hold authenticated ciphertext from genesis, so `y-indexeddb`'s raw-update persistence needs an
+  encrypted adapter or a replacement, with each update stored as ciphertext plus non-content routing
+  metadata (format version, nonce, generation, sequence). The **synchronous crash journal** is the sharp
+  part: §6.1's guarantee is that a page kill between transaction and IndexedDB commit loses nothing, and
+  WebCrypto is promise-based, so preserving that contract requires a reviewed **synchronous AEAD** on that
+  path plus a low-end-device latency budget. The contract is preserved rather than redesigned (§5.7.4).
+- **TRD §6.2 — the search index starts in memory.** A persistent derived index may ship only when its
+  on-disk representation is encrypted, and no browser engine currently supplies that transparently. The
+  first implementation keeps the index in memory and rebuilds it lazily from the decrypted document after
+  startup — off the cold-start path in §12 — and measurement decides whether an encrypted persistent
+  representation is needed. This defers the OPFS lock §6.2 assumes, which §1.3 and D-9 both cite.
 - **TRD §6.1 — the local store is no longer one database.** It describes `y-indexeddb` against the
   module constant `DB_NAME`. D-24 requires the store to be keyed by _(principal, workspace)_, a device to
   hold several at once, and providers never to cross between them (§5.2.1). That is the single largest
