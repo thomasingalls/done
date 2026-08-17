@@ -25,8 +25,8 @@ they must have (§8.2), not prescribed line by line.
 
 **Section numbers §0–§12 are preserved deliberately.** PRD v9 cites `TRD §4.5`, `TRD §6.1`, `TRD §10.4` and
 others, and the codebase carries the same references in comments. Where a section's content changed, the
-number did not. New material is §13, §14 and §15. **§13 is a prerequisite for §6 and §7 and sits at the end
-anyway** — read it first if you are implementing storage or sync.
+number did not. New material is §13, §14, §15 and §16. **§13 is a prerequisite for §6 and §7 and sits at the
+end anyway** — read it first if you are implementing storage or sync.
 
 **Each subsection states its constraint, names the approach separately, says what must not happen, and ends
 with the test that keeps it honest.** The repetition between subsections is deliberate, for the same reason
@@ -36,11 +36,13 @@ it is deliberate in PRD v9: a subsection should be usable alone.
 §7.4 of PRD v9. Where PRD v9 states a product requirement this document must satisfy, the requirement is
 restated rather than pointed at.
 
-**Decision provenance has two records.** `docs/sessions.md` preserves the options, rejected paths and evidence
-behind the product and architecture settlement. `docs/sequencing.md` §5 preserves the three later
-implementation-order decisions and the open first-cutover attribution choice. This TRD and PRD v9 are the current
-normative requirements; the records explain how they were reached and are the place to re-open a question on its
-original evidence.
+**Decision provenance is one record.** `docs/sessions.md` preserves the options, rejected paths and evidence
+behind the product and architecture settlement. This document and PRD v9 are the current normative requirements;
+the record explains how they were reached and is the place to re-open a question on its original evidence.
+
+**The reference direction is one-way and deliberate.** PRD v9 stands alone. This document may read it. Anything
+that plans, orders or schedules the work reads both and is read by neither — an ordering is downstream of the
+requirements it orders, and a requirement that cites a schedule has acquired a premise it cannot defend.
 
 **What this document does not do is select the cryptographic protocol.** PRD §7.12 makes an independent
 protocol design review a gate before network sync ships, and that review needs concrete state, envelopes,

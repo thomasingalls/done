@@ -1,8 +1,7 @@
 # done — Product Requirements
 
 **Status:** Draft v9 — promotion draft. Consolidates PRD v8 with the settled product and architecture decisions
-recorded in `docs/sessions.md`, plus the later implementation-order record in `docs/sequencing.md`. Replaces PRD v8
-in full once reviewed.
+recorded in `docs/sessions.md`. Replaces PRD v8 in full once reviewed.
 **Date:** 2026-08-17
 **Audience:** the author, and any agent implementing or reviewing one part of this without reading
 the rest.
@@ -19,15 +18,19 @@ agent implementing device revocation should not have to reconstruct the honesty 
 and the lapse semantics from four other sections first.
 
 **References resolve inside this document unless they say TRD.** `§7.4` means §7.4 of this document;
-`TRD §4.5` means §4.5 of the technical requirements. Where a subsection ends with a **TRD** line, that line
-says what the companion technical document must carry. In the joint preview it is a cross-document verification
-target, not an assertion that TRD v8 still lacks the requirement.
+`TRD §4.5` means §4.5 of the technical requirements, which is the sole companion — there is no earlier
+technical draft to reconcile against and nothing here describes one. Where a subsection ends with a **TRD**
+line, that line names where the companion carries the requirement, or what it still leaves open. It never
+asserts that the companion is behind: the two documents are reviewed together and land together.
 
 **No decision register appears here.** `docs/sessions.md` records the options, arguments, withdrawn answers and
-history behind the product and architecture settlement consolidated from it. `docs/sequencing.md` §5 records the
-three later implementation-order decisions and the still-open cutover-attribution choice. Use the relevant record
-to re-open a decision on the evidence it was made on. Neither record is the place to find out what is currently
-true: this PRD and its companion TRD are normative, and the records preserve the reasoning.
+history behind the settlement consolidated into this document. Use it to re-open a decision on the evidence it was
+made on. It is not the place to find out what is currently true: this document is normative and the record
+preserves the reasoning.
+
+**This document stands alone.** It cites no plan, ordering or schedule, and nothing downstream of it may become a
+premise for it. An ordering document reads this one; this one does not read it back. The only upward reference
+here is to the companion TRD, and the only backward one is to the decision record above.
 
 ---
 
@@ -123,8 +126,9 @@ not a "multi-user account". Agent membership is anticipated (§5.8); another hum
 model, restraint in the interface (§2.5) — but nothing about the current product may be shaped as if it
 were coming.
 
-**TRD.** TRD §2 and TRD §7.2 describe a relay for a threat model of "one person's task list" with a single
-shared bearer token. That is no longer the deployment. See §7.5 below.
+**TRD.** TRD §2 and TRD §7.2 carry the relay this implies: one that authenticates per credential rather than
+through a single shared bearer token, which cannot separate tenants at all, and whose threat model is a
+multi-tenant service rather than "one person's task list". See §7.5 below.
 
 ### 2.3 Local and Account
 
@@ -179,8 +183,8 @@ pricing boundary, and only on measured evidence that relay egress is worth attac
 phone-and-laptop device pairs are simultaneously reachable often enough, and that a failed direct path
 falls back without changing document meaning.
 
-**TRD.** TRD §7.1's `SyncProvider` null-implementation default stays correct and becomes more important: a
-workspace with no live lineage constructs no provider at all.
+**TRD.** TRD §7.1's `SyncProvider` null-implementation default is what enforces this: a workspace with no live
+lineage constructs no provider at all, and the full suite runs with the provider absent.
 
 ### 2.4 Eight properties, not one promise
 
@@ -272,8 +276,9 @@ member of*.
 **Failure and lifecycle.** Building the 1:1s as invariants would make human sharing a rewrite. Revealing
 only the home workspace makes it a feature.
 
-**TRD.** TRD §4.2's document tree describes one workspace content root. Nothing about it changes; what
-changes is that a device may hold several of them, in separate stores (§6.7 below).
+**TRD.** TRD §4.2 describes one workspace content root and states the constraint that follows: the tree it
+draws is *a* workspace rather than *the* workspace, so a device may hold several of them in separate stores, and
+every code path addressing one takes a store handle (§6.7 below).
 
 ---
 
@@ -391,8 +396,8 @@ contrast). This is presentation over markdown, not a schema — the card contain
 Everything remains markdown at the bottom. The difference is only whether the app tracks identity and
 ordering for you, and it does that solely where the workflow demands it.
 
-**TRD.** TRD §4.2 (document tree), TRD §4.3 (why collections are arrays), TRD §4.9 (section order, and
-where an arrival lands).
+**TRD.** TRD §4.2 (the workspace content root), TRD §4.3 (why collections are arrays), TRD §4.9 (section
+order, and where an arrival lands).
 
 ### 4.2 Item movement
 
@@ -462,9 +467,10 @@ is (§4.6).
 no user-visible behaviour, it happens on a different schedule, and it must never be conflated with the
 freeze rule.
 
-**TRD.** TRD §4.5 and TRD §10.4 treat the compaction safety-pause purely as a replica-acknowledgement
-problem. Compaction deletes cards, therefore deletes `Card.author`, therefore **retires an attribution
-claim** — whoever re-enables it is moving a security boundary as well as a storage one (§7.4 below).
+**TRD.** TRD §4.5 carries the three-way split above as a table, and TRD §4.5 and TRD §10.4 both record the
+consequence that matters here: compaction deletes cards, therefore deletes `Card.author`, therefore **retires an
+attribution claim**, so whoever re-enables it is moving a security boundary as well as a storage one (§7.4
+below).
 
 ### 4.5 Layout and navigation
 
@@ -716,9 +722,9 @@ entry already written and reproduce the roster of duplicate "You"s that this mod
 What must be said out loud at that moment is the other half, and the two are separable: **the same person,
 no longer the same list.**
 
-**TRD.** TRD §4.8's storage split needs a principal row. The actor roster syncs; the local actor/device
-binding does not, and that stays correct — each install must know which credential and actor it actually
-controls rather than trusting the roster.
+**TRD.** TRD §4.8's storage split carries the principal row. The actor roster syncs; the local actor/device
+binding does not, and that is deliberate — each install must know which credential and actor it actually
+controls rather than trusting the roster, which TRD §4.8 also rules out as evidence of anything.
 
 ### 5.2 The actor is per member, per device — always
 
@@ -761,8 +767,9 @@ no version of pruning that unwrites history.
 **Naming.** "Actor" is being asked to carry both *who is writing* and *which install is writing*. A working
 name for the human per-install kind is owed before it reaches the UI (§11).
 
-**TRD.** TRD §0's Actor row and TRD §4.8 need the per-member-per-device formula, and the reminder that agents may
-have no device and the system actor is not a member.
+**TRD.** TRD §0's Actor row and TRD §4.8 carry the per-member-per-device formula, that an agent actor may have
+no device, that the system actor is not a member, and the prohibition on merging the actor and device
+identifiers.
 
 ### 5.3 Attribution is authenticated
 
@@ -812,11 +819,12 @@ Signing does not sit on the keystroke path, and the shape of the API makes that 
 accident: `crypto.subtle.sign` returns a promise and cannot complete before a synchronous input handler
 returns.
 
-**TRD.** TRD §4.8 previously said transaction origins are recorded in the update stream and coarse
-attribution is therefore recoverable. That has been corrected in place; the rest of TRD §4.8's attribution
-model needs the authenticated-envelope requirement written into it, and TRD §12's budgets need the
-verification boundary named
-(receipt and first-sync checkpoint, never keystroke or local replay).
+**TRD.** TRD §4.8 states that nothing about attribution is recoverable from an update stream, and draws the
+three consequences: `Card.author` is forgeable without authenticated writes, a delta cannot be filtered by
+signing credential, and origin is trustworthy only because it never leaves. TRD §7.4 carries the
+authenticated-envelope requirement and the table of where verification does and does not run; TRD §12 budgets it
+at the boundary only — envelope sign, envelope verify, first-sync checkpoint — never on the keystroke or
+local-replay path.
 
 ### 5.4 Sessions and undo
 
@@ -856,10 +864,10 @@ One thing this forecloses: because undo appends, **undoing a revoked member's co
 exclude them.** An inverse op is just another op, and they can write again. Exclusion is key rotation
 (§7.4); undo is housekeeping.
 
-**TRD.** TRD §0 needs a Session row. TRD §4.8's undo scoping is correct and gains a level: `trackedOrigins`
-filters to the local human *in this tab*. TRD §11's undo-scoping test — undo immediately after a compaction,
-an import or a bulk stale-item resolution reverts the user's last *typed* change — is what keeps this honest
-as the codebase grows new system operations, and it stays required.
+**TRD.** TRD §0 carries the Session row, and TRD §4.8 scopes undo by origin, to the local human, *in this
+tab*. TRD §11's undo-scoping test — undo immediately after a compaction, an import or a bulk stale-item
+resolution reverts the user's last *typed* change — is what keeps this honest as the codebase grows new system
+operations, and it stays required.
 
 ### 5.5 Carets
 
@@ -885,7 +893,8 @@ exists to hang a colour on. That arrives with device enrollment (§6.3), by depe
 A design check is owed rather than a decision: that the local native cursor reads as *deliberately* distinct
 from remote-caret decorations, in both themes, rather than merely happening to differ (§11).
 
-**TRD.** TRD §4.8's awareness plumbing is correct and is what this rides on.
+**TRD.** TRD §4.8's awareness plumbing is what this rides on, including the dedupe rule — by device id today,
+by principal once enrollment exists, never by name.
 
 ### 5.6 The peer list, and never a tab count
 
@@ -972,11 +981,11 @@ tedious to write by hand — tables being the clearest example, and the reason t
 The roles, delegation rules and management UI belong in the agent feature document. What this document fixes
 is the shape they must take.
 
-**TRD.** TRD §10.6 says permissions are unenforceable here and that real enforcement would require giving the
-relay schema awareness. That treats enforcement and plaintext authority as one axis when they are two. Read
-exclusion is cryptographic, attribution is client-verifiable, and the service holds authorization and
-accepted-set authority while the relay validates only opaque envelopes. What survives of TRD §10.6 is the
-semantic-capability case, and it survives because edit implies read — not because the relay is dumb.
+**TRD.** TRD §10.6 separates enforcement from plaintext authority, which are two axes rather than one, and
+names the three things that *are* enforceable without costing the relay's content-blindness: read exclusion
+cryptographically, attribution client-verifiably, and accepted-write authority at the service. What remains
+unenforceable is the semantic-capability case, and it is unenforceable because edit implies read — not because
+the relay is dumb.
 
 ---
 
@@ -1016,7 +1025,8 @@ manufactured obstacle** — nothing was made worse to create it. And it is **loa
 procedural** — unlike a name, the code is what later makes *we cannot recover this for you* a true sentence
 instead of an evasion.
 
-**TRD.** The account service is a new component; TRD §1's summary table has no row for it.
+**TRD.** The account and authorization service is a new component, and TRD §1's summary table, TRD §7.3's
+component split and TRD §13 all carry it.
 
 ### 6.2 Account creation: promote this list, or start fresh
 
@@ -1070,11 +1080,13 @@ the first authorization head; erase the unsealed recovery private key.
 to exactly one of the two states on next launch. A half-completed promotion that leaves identity and the
 content root out of step is precisely the state §6.11 says must never be manufactured.
 
-**TRD.** TRD §6.1 describes one `y-indexeddb` database against the module constant `DB_NAME`. Stores must be
-keyed by _(principal, workspace)_, a device must hold several at once, and no provider may ever be
-constructed against a content root belonging to a different workspace — in either direction, including on
-teardown, retry and error paths. This is the single largest implementation consequence of this document, and
-TRD §6.1 currently contradicts it.
+**TRD.** Stores are keyed by _(principal, workspace)_, a device holds several at once, and no provider may
+ever be constructed against a content root belonging to a different workspace — in either direction, including on
+teardown, retry and error paths. **This is the single largest implementation consequence of this document.** It
+is also why the store cannot merely be adapted: `y-indexeddb` persists raw update bytes and applies them back on
+load, so encrypting its records makes its own load path fail on its own data. TRD §6.1 replaces it with a
+first-party encrypted store keyed that way, and TRD §11.1 tests the isolation on teardown, retry and error
+paths.
 
 ### 6.3 Enrollment: adding a device
 
@@ -1116,10 +1128,11 @@ the device and signs the epoch, and the ceremony transfers a key beneath that.
 
 Enrollment ends at the same artifact revocation operates on — a list of your own devices (§6.4).
 
-**TRD.** Which ceremony it is remains a TRD selection with a real consequence: *show a QR and scan it* is a
+**TRD.** Which ceremony it is remains an open selection with a real consequence: *show a QR and scan it* is a
 one-way out-of-band transfer carrying the key, while *show a short code and confirm it* is a
-short-authentication-string check over an in-band key agreement needing the relay as a channel. Different
-failure modes, different review scope; they are not interchangeable in the security contract.
+short-authentication-string check over an in-band key agreement needing the relay as a channel. Different failure
+modes, different review scope; they are not interchangeable in the security contract. TRD §13.6 fixes the two
+gates and TRD §15 carries the choice as an open row.
 
 ### 6.4 The device list
 
@@ -1220,11 +1233,12 @@ commit completes it (§6.6).
 
 **Pending work that the service had not accepted by the cutoff stays only on the detached copy.**
 
-**TRD.** Revocation needs the authenticated finalization boundary specified: per-envelope acceptance
-receipts, an append-only accepted log with inclusion proofs, or a checkpoint plus an authenticated suffix.
-Every shape ends in a committed cutoff, and a bare numeric high-water mark is not one — a compromised
-credential can sign two envelopes at the same sequence, so the accepted stream must be non-equivocating from
-a client's point of view. See §7.5 below.
+**TRD.** Revocation needs the authenticated finalization boundary specified rather than merely required. TRD
+§7.5 states the constraint and names the three candidate shapes — per-envelope acceptance receipts, an
+append-only accepted log with inclusion proofs, or a checkpoint plus an authenticated suffix — and TRD §15 leaves
+the choice open as one of the rows to close first. Every shape ends in a committed cutoff, and a bare numeric
+high-water mark is not one: a compromised credential can sign two envelopes at the same sequence, so the accepted
+stream must be non-equivocating from a client's point of view. See §7.5 below.
 
 ### 6.6 Sign out, remove from this device, reset for handoff
 
@@ -1369,8 +1383,10 @@ need two non-overlapping slot views over those stores.
 Without the slot index, parallel storage would prevent merges while still leaking the previous person's
 retained Local workspace through the picker.
 
-**TRD.** TRD §4.8's storage-split table needs slot rows, and TRD §6.1 needs the per-(principal, workspace)
-key (§6.2 above).
+**TRD.** TRD §4.8's storage-split table carries the slot rows and TRD §6.1 the per-(principal, workspace) key
+(§6.2 above). TRD §6.5 is the slot index itself, including the store-naming rule that stops a picker enumerating
+by construction rather than by lookup — a name guessable from a workspace identifier would defeat the boundary
+the index exists to enforce.
 
 ### 6.8 Workspace selection
 
@@ -1583,7 +1599,9 @@ once is a consequence rather than a deferral. It must bind the workspace's membe
 agent credentials, capabilities, and content-key generation; be signed and verifiable without a local secret;
 carry enrollment admissions; be serialized by the authorization service so concurrent successors resolve to
 one accepted epoch; and leave a signed terminal record at deletion. Generation is broader than membership,
-because admitting a second device changes authorization without creating a second member.
+because admitting a second device changes authorization without creating a second member. TRD §13.5 designs it
+against exactly that list, and states the bound on rollback protection that comes with it: a returning client can
+reject an ancestor of the newest head it has seen, and a brand-new client cannot.
 
 ---
 
@@ -1648,9 +1666,9 @@ This is why the content key itself cannot be the structured-cloned non-extractab
 target cannot later be wrapped, and one primitive key must not be reused across the asynchronous and
 synchronous constructions.
 
-**TRD.** Three things TRD §6.1 and TRD §6.2 now owe. `y-indexeddb` persists raw updates, so it needs an encrypted
-adapter or a replacement, with each update stored as ciphertext plus format version, nonce, generation and
-sequence. **The journal is the one genuinely new cryptographic obligation in the plan**: it exists so content
+**TRD.** Three things TRD §6.1 and TRD §6.2 carry. `y-indexeddb` persists raw updates and cannot be retained at
+any layer, so TRD §6.1 replaces it, with each update stored as ciphertext plus format version, nonce, generation
+and sequence. **The journal is the one genuinely new cryptographic obligation in the plan**: it exists so content
 survives a page kill, so it holds recent content by design, and it is written *synchronously* while WebCrypto
 is promise-based. **The crash-safety contract is preserved rather than redesigned** — that requires a reviewed
 **synchronous AEAD**, JS or WASM, on that one narrow path, with a low-end-device latency benchmark. The
@@ -1696,8 +1714,8 @@ is no second copy anywhere to soften it.
 The lock changes nothing about account deletion, revocation or migration: the same store and the same locally
 held generations, gated differently.
 
-**TRD.** Derivation, enrollment migration and the copy shown are TRD parameters; the product policy above is
-not.
+**TRD.** Derivation, enrollment migration and the copy shown are open parameters (TRD §13.3, TRD §15); the
+product policy above is not.
 
 ### 7.3 The authority split: the service authorizes, the user recovers
 
@@ -1817,9 +1835,10 @@ destructive compaction is safety-paused and nothing else retires a card, so ever
 carries a live claim; and **exporting discharges nothing**, because the export drops attribution while the
 workspace keeps showing the author, and the workspace is what makes the claim.
 
-**TRD.** TRD §4.5 and TRD §10.4 treat the compaction safety-pause purely as a replica-acknowledgement
-problem. **Re-enabling destructive compaction is an attribution-retirement event as well as a storage one**,
-so the replica-acknowledgement protocol TRD §10.4 requires is gating two boundaries, not one.
+**TRD.** TRD §4.5, TRD §10.4 and TRD §13.7 all carry the consequence: **re-enabling destructive compaction is
+an attribution-retirement event as well as a storage one**, so the replica-acknowledgement protocol TRD §10.4
+requires is gating two boundaries rather than one. TRD §13.7 also keeps the two retention questions apart —
+local store retention and attribution retention are different objects, and conflating them over-retains.
 
 A smaller retention floor is possible in principle and is **not** selected here. A candidate family is a
 stable signed attribution record, encrypted as a complete signed object and re-encrypted under each new
@@ -1898,13 +1917,13 @@ credential can sign two different envelopes at the same sequence, or fill a gap 
 a hostile relay could then choose which to show. The accepted stream must be **non-equivocating** from a
 client's point of view.
 
-TRD v7 §2 and §7.2 described the relay as a dumb pipe that "holds no authority, runs no application logic, and can
-be absent entirely", secured by a shared bearer token because "the threat model is one person's task list", and
-said the relay was not a backup because "every device holds a full replica". **All four claims are retired.** The
-relay gains envelope-metadata authority and acceptance evidence to carry, the hosted copy is a server-held encrypted
-replica rather than nothing, and a device holds its **last** replica. Relay transport alone supplies no durable copy;
-the durable hosted store is a real recovery source while retained. The dumb-pipe property survives only in the
-sense that matters — **no service component reads content**.
+**Four things the relay is not**, each of which an ordinary local-first architecture assumes it is. It is not a
+dumb pipe holding no authority and running no application logic: it validates opaque envelope metadata and carries
+service-signed acceptance evidence. It is not absent-able for a workspace using hosted sync. It is not secured by
+a shared bearer token, which cannot separate tenants at all. And the hosted copy is not nothing: it is a
+server-held encrypted replica and a real recovery source while its retention window survives — though relay
+transport by itself supplies no durable copy, and a device holds its **last** replica rather than a full one.
+**The dumb-pipe property survives only in the sense that matters — no service component reads content.**
 
 ### 7.6 The recovery code
 
@@ -1967,7 +1986,8 @@ user is the separately operated opt-in escrow add-on (§7.3), and it is the only
 Every product that appears to serve that user without escrow is either custodial and not saying so, or is
 about to lose someone's data.
 
-**TRD.** Code generation, step-up authentication and confirmation UX, and loss warnings are parameters (§11 below).
+**TRD.** Code entropy and generation, step-up authentication, confirmation UX and loss warnings are open
+parameters (TRD §13.8, TRD §15); the entropy choice is what decides whether the code needs stretching at all.
 
 ### 7.7 Recovery: four separate objects
 
@@ -2208,8 +2228,9 @@ expiry, deletion/export behaviour, incident path, and jurisdiction- and audience
 evidence is generated deletion and export tests and a reconciliation against deployed infrastructure**, not the
 existence of a long policy document.
 
-**TRD.** The inventory starts with the TRD's proposed stores and flows — **TRD §16 is where it now lives**, with
-a row per store, queue, log, backup and processor that its architecture introduces. Implementation reconciles it
+**TRD.** The inventory starts with the TRD's proposed stores and flows: **TRD §16 is the register**, with a row
+per store, queue, log, backup and processor that its architecture introduces, scoped to service-held data
+because device-local stores are ciphertext under keys the service never holds. Implementation reconciles it
 to what is actually deployed, and moves each row beside the definition that makes it true. Vendors, processors,
 backup behaviour, log fields, support workflows and retention periods are decided there rather than guessed
 here; a row that says `unselected` is the placeholder this review checks against.
@@ -2342,8 +2363,8 @@ export → import → export round trip is a **format** guarantee and does not s
 **Failure and lifecycle.** Export is the free, immediate remedy offered first whenever durability is in
 question (§7.10), and it is what a user takes before a destructive local operation.
 
-**TRD.** TRD §9 is correct on layout and the byte-identical round trip. It needs the three things it does
-not say — see §8.2 below.
+**TRD.** TRD §9.1 specifies the layout and the byte-identical round trip, and enumerates the four fields the
+format deliberately drops — `id`, `author`, `origin` and `createdAt` — with the consequence of each.
 
 ### 8.2 Import
 
@@ -2383,10 +2404,11 @@ is not re-derived:
 **The eventual answer is a format question already on the roadmap**, not a new one: the encrypted fidelity
 archive carries CRDT state, which is what makes card identity survive (§8.3).
 
-**TRD.** TRD §9 specifies the layout, says import "parses the same layout", and requires a byte-identical
-round trip. Three things it does not say and now must: that import is scoped to an empty workspace; that it sits
-outside the freeze and outside the cap as a maintenance rather than an authoring operation; and that the
-byte-identical round trip is a format guarantee that does **not** supply card identity.
+**TRD.** TRD §9.2 carries all three: that import is scoped to an empty workspace; that it sits outside the
+freeze and outside the cap as a maintenance rather than an authoring operation, attributed to the system actor;
+and that the byte-identical round trip is a **format** guarantee which does not supply card identity. It also
+states the parsing rule that keeps the format unambiguous — column-zero `- ` list-item starts — so that a card may
+itself contain blank lines without becoming its own boundary.
 
 ### 8.3 The fidelity archive
 
@@ -2474,8 +2496,8 @@ services. **The first deployment may remain one small process, provided its inte
 rendezvous and connection authentication; ephemeral live fan-out and awareness; durable encrypted envelopes and
 checkpoints; authorization signing and accepted-set finalization; and account storage. That separation is what
 later lets retention, replacement and self-hosting boundaries be drawn without a rewrite — and it keeps
-ephemeral presence data from silently inheriting the retention policy of durable workspace state (§7.11
-above).
+ephemeral presence data from silently inheriting the retention policy of durable workspace state (§7.11 above).
+TRD §7.3 draws exactly those five interfaces.
 
 A **content-blind durable store cannot merge what it holds**, so it needs a bounded recovery representation:
 immutable authenticated envelopes; a client-produced authenticated checkpoint; a manifest binding that
