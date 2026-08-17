@@ -805,7 +805,17 @@ what a naive peer list mis-counts.
 
 **Undo is per tab, and never crosses devices.** The ceiling is the device; the floor is the tab.
 
-**What the user sees.** What every tabbed editor does. Undo in this tab undoes what happened in this tab.
+**Undo is scoped to the acting actor, so system operations are never in your stack.** Compaction, import and
+bulk stale-item resolution all mutate the workspace without you typing. If they shared an undo stack with
+your typing, pressing undo after a compaction would revert it — silently, and days after the fact — and undo
+after a bulk resolution would unwind dozens of card moves as one confusing step.
+
+**This is why every change carries its originating actor from v1, agents or no agents.** The actor model is
+not paying forward for a future feature; it is the correct solution to a problem that exists now, and it
+happens to be the thing agents need later.
+
+**What the user sees.** What every tabbed editor does. Undo in this tab undoes what happened in this tab —
+and only what *you* did in it.
 
 **Not promised.** No distributed undo, no cross-device undo stack, no undo of another device's work, and no
 count of how many tabs you have open (§5.6).
@@ -826,7 +836,9 @@ exclude them.** An inverse op is just another op, and they can write again. Excl
 (§7.4); undo is housekeeping.
 
 **TRD.** TRD §0 needs a Session row. TRD §4.8's undo scoping is correct and gains a level: `trackedOrigins`
-filters to the local human *in this tab*.
+filters to the local human *in this tab*. TRD §11's undo-scoping test — undo immediately after a compaction,
+an import or a bulk stale-item resolution reverts the user's last *typed* change — is what keeps this honest
+as the codebase grows new system operations, and it stays required.
 
 ### 5.5 Carets
 
@@ -1272,6 +1284,25 @@ identity, it merges nothing, and it makes no claim about identity elsewhere.
 
 **Encrypted local stores are keyed by _(principal, workspace)_.** A separate device-local slot index says
 which of those stores the currently authenticated person may discover and open.
+
+**Invariant — isolation.** **Neither workspace's provider may ever write to the other**, in either direction,
+including on teardown, retry and error paths. This is the whole of the isolation guarantee and is stated
+rather than left implied by the storage key, because **a connection *is* the merge**: the only defence is
+that two workspaces never share a store.
+
+**Two workspaces never merge; one workspace's replicas always do.** The distinction is mechanical rather than
+a policy choice, and it is what makes holding several workspaces on one device cheap:
+
+- **Replicas of one workspace that have diverged share an ancestor** — two devices on one account with one
+  offline for a month, a lapse, a migration cutover. The CRDT converges them without choosing or discarding
+  anything. That is the ordinary offline-sync case and it is what the CRDT was selected for. A long
+  separation makes the merge *large*, not lossy.
+- **Two histories with no common ancestor** can be merged mechanically, and the result is meaningless:
+  interleaved text and both sets of cards in arbitrary order. So they never are. They are two workspaces, in
+  two stores, and nothing points a provider at the wrong one.
+
+**"Two histories meet" is therefore never by itself a problem statement.** The question is always whether
+they share an ancestor, and the two answers want opposite treatments.
 
 **What the user sees.** Nothing, in the single-person case — which is every user who never signs in and most
 who do. On a shared installation, one person's picker never shows another's workspaces.
@@ -2731,34 +2762,46 @@ answer is *nothing*.
    until an agent is actually editing prose. It is what line-level provenance tinting in Goals would need
    (§5.7), and it is the one open question that would make that feature possible.
 
-8. **What is the per-install human actor kind called?** "Actor" is carrying both *who is writing* and *which
+8. **Is Done's reconstructed order good enough in practice?** Done's order survives replication except in
+   one case — a day *neither* device has written to before, where both mint the day container, one wins
+   outright, and the loser's ordering has to be rebuilt from when each card was *written* rather than when it
+   was finished. Almost always the same instant, since most things are typed straight into Done; visibly
+   wrong for something written in Next in the morning and finished in the evening, which comes back lower in
+   the list than it belongs. There is a known storage fix that removes the reconstruction entirely, deferred
+   because it costs a property the storage design currently rests on. **Watch for it in real use** — the
+   imprecision is the signal to go and do it, and nothing else about the app depends on the answer
+   (TRD §10.8).
+
+9. **What is the per-install human actor kind called?** "Actor" is carrying both *who is writing* and *which
    install is writing*, and those are different questions with different answers. Worth naming properly before
    it reaches the UI (§5.2).
 
 **Copy and interaction detail, each attached to a settled decision:**
 
-9. **The destructive-confirmation copy** for remove-from-device and reset for handoff — specifically, how it
-   distinguishes what the app can actually clear from external recovery material it cannot reach (§6.6).
+10. **The destructive-confirmation copy** for remove-from-device and reset for handoff — specifically, how
+    it distinguishes what the app can actually clear from external recovery material it cannot reach (§6.6).
 
-10. **The recovery-code generation, step-up authentication and confirmation UX**, including the replacement
-    flow and the loss warnings. This is not a detail of the recovery flow — **if the code is the only thing
-    between an account-holder and permanent loss, how it is generated, confirmed and replaced *is* the recovery
-    flow** (§7.6).
+11. **The account-creation flow's presentation** — how the name, the account credential and the recovery code
+    are sequenced in one moment without the code reading as optional (§6.1), and the recovery-code
+    generation, step-up authentication and confirmation UX, including the replacement flow and the loss
+    warnings. The latter is not a detail of the recovery flow — **if the code is the only thing between an
+    account-holder and permanent loss, how it is generated, confirmed and replaced *is* the recovery flow**
+    (§7.6).
 
-11. **The optional device-lock enrollment flow and its copy**, including the sentence at the moment of opting
+12. **The optional device-lock enrollment flow and its copy**, including the sentence at the moment of opting
     in: *this is the only copy, and we cannot open it for you either* (§7.2).
 
-12. **The provenance mode's interface** — where the settings toggle lives, and how the off switch surfaces
+13. **The provenance mode's interface** — where the settings toggle lives, and how the off switch surfaces
     while the mode is on (§5.7).
 
 **A design check rather than a decision:**
 
-13. **Does the local native cursor read as deliberately distinct from remote-caret decorations, in both
+14. **Does the local native cursor read as deliberately distinct from remote-caret decorations, in both
     themes** — rather than merely happening to differ (§5.5)?
 
 **An empirical question, worth confirming before anything relies on either answer:**
 
-14. **Is an installed PWA a separate storage context from browser tabs on the target platforms?** If it is, it
+15. **Is an installed PWA a separate storage context from browser tabs on the target platforms?** If it is, it
     is a separate *device* by this product's definition, with its own actor and its own local user slot.
 
 **Explicitly not open**, and listed because each has been mistaken for a live question at least once: whether
