@@ -1000,8 +1000,8 @@ instead of an evasion.
 
 ### 6.2 Account creation: promote this list, or start fresh
 
-**Invariant.** **Account creation asks once. Signing in never asks.** The account has to be able to accept
-an identity that predates it — a design where signing up mints a fresh identity and attaches storage to it
+**Invariant.** **Account creation asks the list question once. Signing in never asks it.** The account has to
+be able to accept an identity that predates it — a design where signing up mints a fresh identity and attaches storage to it
 cannot do this, and that is the design an ordinary implementation drifts into.
 
 **What the user sees.** One question, on the device that has a list in front of it: *promote this list, or
@@ -1076,9 +1076,15 @@ between the two devices delivers the key — the *existing* device delivers, so 
 phone needs the laptop to be the one that can read a code. If no device survives, the saved recovery code is
 the path (§7.6).
 
-**Not promised.** Signing in does not deliver content. Signing in does not ask for a name or a recovery code
-again — those belong to account creation and happen exactly once. Signing in does not adopt, merge, replace
-or re-parent anything already on that device (§6.2).
+**Not promised.** Signing in does not deliver content. Signing in does not adopt, merge, replace or re-parent
+anything already on that device (§6.2). And signing in never repeats **account setup**: the name and the
+recovery code are established once, at account creation, and no later enrollment asks for a name or generates
+a new code.
+
+**Setup and use are different, and conflating them is the easy mistake here.** Ordinary enrollment — where an
+existing device survives to deliver the key — never touches the recovery code at all. **Recovery enrollment,
+where no device survives, is the case the code exists for, and does ask the user to present it** (§7.6, §7.7).
+So *the app asks for the code exactly once* is true of generating and confirming it, and false of using it.
 
 **Failure and lifecycle.** A device that has been used locally arrives at enrollment already holding an
 anonymous workspace. Both persist afterwards, in separate local stores, so enrollment is **additive** rather
@@ -1884,9 +1890,13 @@ sense that matters — **no service component reads content**.
 **Invariant.** **At account creation, the recovery private key is sealed to a high-entropy code the user saves
 outside the enrolling device. Every account has one, and there is no account without one.**
 
-**What the user sees.** At account creation and nowhere else: a generated code, an explanation of what it is
-for, an instruction to store it somewhere that is not this device, and a **re-entry step before the account
-exists**.
+**What the user sees.** At account creation: a generated code, an explanation of what it is for, an instruction
+to store it somewhere that is not this device, and a **re-entry step before the account exists**.
+
+**That is the only moment the code is generated and confirmed, and it is not the only moment it is used.** No
+later enrollment generates a new one. But a user who has lost every device is asked to present the saved code on
+a replacement device, which is the whole reason it exists (§7.7); and ordinary enrollment, where a surviving
+device delivers the key, never asks for it at all (§6.3).
 
 **Additional independent seals may be added** — PRF-capable passkeys, preferably in more than one ecosystem.
 Each is a complete path to the same private key **only if it remains available after loss of the device it
