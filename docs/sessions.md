@@ -1,0 +1,5086 @@
+# done — Sessions and Identity: Product Requirements
+
+**Status:** Draft v17 — **34 dispositions recorded.** The largest change since v16 is a correction to
+the lifecycle and key hierarchy rather than a new disposition: **Local and Account are product labels,
+not the authorization state machine.** Authorization lineage, hosted-content retention, entitlement,
+replica attachment, local user slot and account session are independent axes. A lapse leaves a live
+lineage even after hosted content expires; account deletion retires one; migration replaces the current
+lineage and can retire the old one only while its authority remains reachable; and a revoked device holds
+a detached local copy rather than becoming a globally Local workspace (§5.1.1).
+
+**Sign-out is now decided too.** It closes one device-local user slot: account and relay sessions end,
+decrypted views and active key use stop, and another person opens a different slot. The encrypted local
+workspaces and enrolled device grant remain for the returning user. Removing this account from this
+device is the separate destructive action that clears that slot and requests revocation of its grant; a
+whole-device handoff clears every slot. Remote revocation still cannot promise remote erasure (§5.5,
+D-13, D-18).
+
+**And the symmetric recovery root is replaced by an asymmetric recovery keypair.** Ordinary clients may
+wrap each content-key generation to the recovery public key; the recovery private key is absent from
+ordinary operation and persists only sealed to the saved code or another independent factor. Content-key
+rotation is client-produced and service-committed, never performed by a service that is forbidden to
+hold plaintext keys. Retention expiry may delete hosted ciphertext and its generation wraps while keeping
+the dormant account's recovery identity; migration starts a new authorization lineage around the same
+recovery identity where available and a fresh content-key generation (§5.7.2–§5.7.6, D-29, §5.11.2).
+
+**The largest change since v15 was D-5's withdrawal:** nothing is destroyed at enrollment. Signing in on
+a device that already holds a Local workspace
+opens the account workspace in **parallel storage**; the Local one keeps its principal, actor and history
+and stays reachable. The single question moves to **account creation** — *promote this list, or
+start fresh* — and D-24 now carries it alone. The destructive join, its confirmation, its automatic
+export and its preflight all go with the question they were answering.
+
+**The defect was one level below the product.** D-5 existed because §2.2b's single `DB_NAME` made two
+unrelated histories on one device a collision that something had to resolve. §2.2b had already identified
+the fix — key local storage by _(principal, workspace)_ — and deferred it as "not a decision to take
+here". Taking it dissolves the decision that was compensating for its absence, which is §1.4's own lesson
+one level down: **an apparent exception to Rule 1 is usually a missing rule.** The deferral is now
+discharged (§2.2b, D-24).
+
+**And a mechanical fact this document had been reasoning past**: Yjs merges divergent replicas that share
+an ancestor, which is the ordinary offline-sync case and works. Merging is meaningless only for histories
+with **no** common ancestor. Three places had sent common-ancestor cases to D-5 — a lapse past retention
+(D-29), the migration window (§5.11.2) and any long read-only period — and all three are ordinary merges.
+That fact is now in §6 rather than being re-derived.
+
+**The largest change since v14 remains D-16: it is decided, and the answer removes a rung.** Local
+remains free and permanent; hosted synchronization requires an
+account; this document makes no pricing decision. Peer-to-peer is not built. The **Paired** rung —
+cross-device sync without an account — is retired, and with it the second transport, the second
+revocation semantics, and one of D-17's open selections. **D-33** (§5.11) records what survives the
+service disappearing and which claims that licenses, promoting material that previously lived only in
+the durability appendix. **Both appendices have since been folded into this document and removed**; they
+remain in git history, and every reference to them below is historical.
+
+**And D-30 is re-decided rather than reaffirmed — the first time an answer here has changed.** Its
+original motivating case, D-5's four-way adjudication, is gone. A real exception took its place: a device
+holding more than one local workspace has nothing in the model to rank them, so **Rule 1 is relaxed on
+one verb, `select`, under one condition** — a context indicator and a picker appear only once a second
+local workspace exists, reading as an account switcher. Name, reconcile and administer stay absolute, and
+multi-*membership* navigation stays reserved (§1.4, D-30, §5.4.1).
+
+**And D-34 is decided, which removes the last premise several other decisions were resting on.** Every
+workspace is encrypted from genesis, in every app-managed persistent store, under key custody the app
+manages silently — so *Local asks for nothing, ever* survives and the default correspondingly makes **no
+claim against an attacker who can execute the app's origin from a copied profile**. An optional
+per-device user-held lock supplies that stronger property. This settles §5.2.1's four-draft question
+about when encryption begins (always), and **reverses an answer taken earlier in v16** about when it
+ends: no lifecycle event decrypts persisted content, because there is no plaintext store to return to
+(§5.7.4, D-24). The one genuinely new cryptographic obligation it creates is a reviewed **synchronous
+AEAD** for the crash
+journal, whose contract v16 preserves rather than redesigns.
+
+**And one question is closed by reading a PRD principle correctly rather than by deciding anything.**
+Migration's carry-attribution-forward cost looked as though it ran against principle 6 — *the past is
+written, not read*. It does not: principle 6 is about how the past is surfaced and what to build for it,
+not about whether a retained claim may become unverifiable, and the compaction it licenses is precisely
+the mechanism that **retires** an attribution claim. So the retention floor is "for the lifetime of the
+claim" rather than forever — bounded in principle, unbounded in practice only because destructive
+compaction is safety-paused (§5.11.2, TRD §10.4).
+
+**Four corrections review found in the first v15 draft, recorded rather than quietly fixed**, because
+each was an over-claim in the direction of the decision this revision wanted to make: D-16 removed the
+accountless authorization path but did not by itself decide who held account authority; §5.7.2 now does —
+the service authorizes, while the user holds sealed `R_priv` and migrates rather than preserving
+the old authorization lineage; relay refusal is not content finalization against a hostile relay
+(§5.2.3); and a device that has been offline keeps its **last replica**, not a complete copy (D-24, D-29).
+
+**D-17's custody question is now answered, and it was the largest thing still open.** The product is
+**non-custodial for content**: the service controls account authorization, while at account creation the
+user saves one high-entropy recovery code that seals **`R_priv`**. Authorization alone
+never releases a content key, so the service cannot decrypt a workspace under any proof or any order.
+Service escrow is **excluded by construction** and survives only as an opt-in add-on that must be operated
+by a separate legal entity, scoped to the recovery private key — which makes compelled disclosure a two-party
+problem rather than a policy promise. Device private keys are non-extractable at runtime and, where PRF
+is available, persist as PRF-encrypted bytes; the assurance bar is independent protocol design review before sync
+ships with an implementation audit on a stated trigger. **All five selections are recorded, and D-17 is
+closed** (§5.7.2, §5.7.4–§5.7.6, §5.7.8).
+
+**And closing it opened one thing, which v16 has now closed too: D-34.** Whether **local user content** is
+encrypted at rest was asserted twice in this document as a premise and never actually decided — plaintext
+was what the app did in **two** stores (IndexedDB and the synchronous journal), with Phase 4's search
+index a planned third, and the browser's origin sandbox is a boundary between web origins, not an at-rest
+boundary. **Decided: yes, from genesis, in every app-managed persistent store.** The question was
+undecidable while it bundled two separable properties — *is the store ciphertext* and *does opening it
+need a user-held factor*. Unbundled, the first is always yes and needs no prompt, so D-1 and §7's *Local
+asks for nothing, ever* survive intact; the second is an optional per-device strengthening. The default
+tier therefore makes **no claim against an attacker who can execute the app's origin from a copied
+profile**, and that scoping travels with the property everywhere it is described. It also settles
+§5.2.1's long-open question about when encryption begins — always — and reverses the previous round's
+answer about when it ends: no lifecycle event decrypts persisted content (§5.7.4, D-24).
+
+**The remaining architecture gate is now closed: D-28** selects a service-authoritative envelope
+protocol around end-to-end-encrypted Yjs updates (§5.8.1). The exact formats and constructions belong in
+the TRD and then in independent protocol review. **D-32 is also closed at the product level:** immutable
+data-handling constraints precede the TRD, a living inventory follows the architecture, and an as-built
+review gates wider availability (§5.10). **D-33 is now closed at the product level:** an independently
+runnable client and service stack is required; public open source is the preferred path and a triggered
+source release is an acceptable fallback; the corresponding claims wait for release evidence (§5.11).
+**Within the lifecycle and key hierarchy no product-level branch remains.** Migration preserves
+historical attribution rather than reattributing the baseline (§5.11.2); the concrete protocol,
+retention durations and remaining UX parameters still belong where §8.1 records them.
+**D-31** (pricing) stays deferred and genuinely downstream.
+**Ready to promote into the PRD and begin the TRD; not implementation-ready** — see §8.2.
+**Date:** 2026-08-16
+**Audience:** the author, deciding. Not an implementation plan.
+**Amends:** PRD §0, §2, §4, §6, §11, §12 and §14, plus TRD §2, §4.8, §6.1, §7.2, §9 and §10.6 — the full
+list, with what each needs, is §9.
+
+**Note on the PRD and TRD references below, added at promotion.** This record is complete as of v17 and is not
+maintained after it. Its decisions have since been promoted: `docs/PRD.md` is now v9 and `docs/TRD.md` is now v8,
+and those are normative. **Every `PRD §x` below refers to PRD v8**, whose numbering the promotion did not
+preserve — the current PRD is organized differently and its section numbers will not match. **Every `TRD §x`
+refers to TRD v7**, whose numbering the current TRD *does* preserve deliberately, so those citations still
+resolve. Read this document for how a decision was reached and on what evidence; read the PRD and TRD for what is
+currently true.
+
+---
+
+## 0. Why this document exists
+
+The multi-tab work went looking for a place to put "which tab is this" and found that the app has
+no answer, and that two of the three answers it does have are load-bearing in ways nobody wrote
+down. The peer list saying `Mac, Mac`, a caret from your own second tab that looks like a stranger's,
+and a roster that quietly grows a new "You" for every device you have ever opened the app on are all
+one defect: **surfaces reading identity at a level that does not describe what they are showing.**
+
+Multi-tab was where it surfaced. It is not where it ends. The same missing model is what "switch
+rooms" would need, what a second person in a document would need, and what a reinstall on a phone
+already needs and does not have.
+
+### 0.1 What this document does, and does not do
+
+It **enumerates**: the levels of identity, everything that is true today, the full state space, and
+every scenario that moves through it.
+
+It **frames decisions** — options with what the user sees for each, and what each choice forces
+elsewhere.
+
+It **records decisions as they are made.** It did not start out doing that — v1 through v8 enumerated and
+framed without answering — and the shift is why §5 now reads as a register rather than a menu. The product
+calls remain the author's; §5 keeps the options and the consequences beside each answer so a recorded decision can be
+re-opened on the same evidence it was made on. Where a decision is already narrowed by something the
+PRD ranks, §5 says so and names the narrowing rather than skipping the question. Where a "decision"
+is not really one because mechanics settle it, it is in §6 so we do not spend a meeting on it.
+
+Each decision carries a status: **Decided**, **Decided in principle** (the answer is settled, the
+mechanism is not), **Decided conditionally** (the answer is settled, but it only takes effect if a
+deferred decision goes a particular way — D-29 is the only one), **Open**, **Deferred on purpose**
+(answerable later, and nothing is foreclosed by
+waiting), **Re-opened** (answered once, and new evidence has withdrawn the answer), or **Withdrawn** (the
+question dissolved rather than being answered — the state it was about can no longer occur, and the number
+is kept so the landmark survives; D-5 is the only one). A decided product
+direction may still depend on an open mechanism or security gate; §8 distinguishes recorded dispositions
+from implementation readiness.
+
+### 0.2 The conflict with the PRD, stated up front
+
+PRD §12 says **"No human collaboration. One person, own devices — no sharing, no multi-user
+accounts, no comments."** The header of that document says single-tenant, not a product.
+
+This document drives toward **a multi-tenant service**, which contradicts the PRD's single-tenant header
+and requires separating an individual service account from its "multi-user accounts" non-goal. It does
+**not** reopen human collaboration. Those are different axes: many isolated principals may each have an
+account and workspace without any two humans sharing one. Agent membership is in scope later; another
+human joining a workspace is not, and gets a separate product document if it is ever considered (§5.4.1, §9).
+
+Two things make the account and membership work worth doing now anyway:
+
+1. **Most of what is below is single-principal product work.** Sessions, devices, reinstall, workspace adoption and migration, and
+   the roster-of-duplicate-Yous are all problems for one person with three devices. They do not need
+   a second human to be real, and three of them are shipping today.
+2. **The service-authority question is two specific decisions**, not a diffuse direction: may the relay
+   decide _who connects_, and may it validate _what is accepted_ (D-14). They have different costs and
+   answers. Both arise for one human's devices and for agents before human sharing exists.
+
+---
+
+## 1. The identity levels and the workspace relation
+
+| Concept             | Answers                                                                   | Example                                  | Exists today             |
+| ------------------- | ------------------------------------------------------------------------- | ---------------------------------------- | ------------------------ |
+| **Account**         | your _optional_ relationship with the service                             | contact, account recovery, billing if any | No                       |
+| **Local user slot** | whose retained local state this person may open on this installation      | Thomas's closed slot on a shared laptop  | No                       |
+| **Principal**       | which human several devices belong to                                     | you                                      | **No** — the missing one |
+| **Workspace**       | which content root and authorization boundary                             | your list and its grants                 | As a settings field only |
+| **Member**          | a workspace-scoped grant for a principal or agent, including capabilities | you as owner; an editing agent           | No                       |
+| **Actor**           | the concrete identity attributed with a write                             | you-on-your-phone; an agent              | Yes, and misnamed (§1.3) |
+| **Device**          | which install                                                             | your phone                               | Yes                      |
+| **Session**         | which tab, this run of it                                                 | the tab you are looking at               | No                       |
+
+A **local user slot** is deliberately not another synced identity. It is a device-local privacy and
+selection boundary containing the workspaces, principals, credentials and keys one person may use on
+that installation. It may contain two principals after *start fresh* retains the earlier Local workspace;
+that grouping neither merges them nor makes a claim about their identity elsewhere. Sign-out closes the
+whole slot. A different person never reaches its workspace picker merely by becoming the active account.
+
+Two earlier drafts put the missing level in the wrong place. v1 and v2 put it at the bottom (session);
+v3 through v8 put it at the top and called it the **account**. The second was wrong in a way that
+contradicted a decision already made.
+
+### 1.1 Principal and membership, and why an account cannot do their jobs
+
+**An account cannot be the thing that groups your devices, and D-16's answer changed the reason without
+changing the conclusion.** Until v15 the argument was that the Paired rung grouped devices without an
+account, so the grouping level had to precede the account. That rung is gone (§5.1.1), and the argument
+has to be re-derived rather than inherited. It survives, on four grounds that do not depend on a rung:
+
+1. **The account can adopt a principal that already exists.** Every account-holder used the app locally
+   first, so there is always a prior identity and a prior workspace content root available for the account to bind to,
+   and after D-16 that promotion is the road every synced user travels. D-24 makes the adoption a choice
+   at account creation rather than an automatism — *promote this list, or start fresh* — and the account
+   still has to be **able** to accept an identity that predates it, which is the capability this ground is
+   really about. What v16 removes is the hazard: because starting fresh leaves the Local workspace intact
+   rather than abandoning it, minting a new principal is no longer the shape that loses a month of
+   someone's history.
+2. **"You" must be answerable with no network and no service.** PRD principle 3 forbids the read path
+   waiting on the *network*, and a list that says "You" cannot consult an account to do it. A person is
+   not a service relationship.
+3. **Membership attaches to a principal or an agent, not to an account**, so admitting an agent does not
+   require inventing an account **for the agent**. The owner still needs one, because only the service
+   changes authorization (§5.4.1, §5.7.3); what this ground rules out is a customer record per
+   non-human member, not an account for the human.
+4. **A lapse is a billing event, not an identity event** (D-29). If the account were the principal, a
+   failed card would be an act of forgetting who someone is.
+
+The first ground is the load-bearing one, and note what D-16 did to it: **most principals now never
+acquire an account at all**, because local-only is the whole free product. Principal-without-account is
+not a transitional rung any more; it is the steady state for everyone who never asks for a hosted
+service.
+
+So the grouping identity and the workspace relationship are their own things, and both precede the
+account:
+
+- **Principal** — an unnamed human identity that groups its actors. It exists from local genesis even
+  when it groups only one actor, and for most users it will only ever group one. No account or server is
+  required for it to exist; what an account adds is the ability to bind a *second* device to it (D-19).
+  This is what "you" means in any list, and what a caret's colour identifies.
+- **Member** — a workspace-scoped grant connecting a principal or an agent to a workspace. It carries
+  capabilities such as read or edit; being a member does not by itself mean being a writer. Membership
+  deliberately does not attach to the account, so adding an agent does not require inventing an account
+  for it.
+- **Account** — _optional_, and about the service rather than workspace content: an address to be contacted
+  at, account recovery, service settings, logs, backups, and billing if any. Content recovery is a
+  separate user-held power (D-17). **Account creation binds an existing
+  principal to a service account**, which is what makes D-24's "the account adopts the group" precise
+  rather than aspirational: there is already a principal there to adopt.
+
+The code half-anticipates this — `ActorKind` is already `human | agent | system`, so kinds of writer
+exist. What is missing is both the level above human actors that says several are the same person and
+the workspace-scoped grant that says which principals, agents and credentials are authorized.
+
+### 1.2 A word for it: workspace, not room
+
+"Room" is `y-websocket` and `y-webrtc` vocabulary for a channel name that goes in a URL path. It names
+a transport concept, it is not what a user owns, and it drags its origins with it — which is the
+argument for not letting it become architectural. So the product word is **workspace**.
+
+Why that one: it is understood without teaching (Slack, Notion, Linear, VS Code all use it), it
+connotes a container with members rather than a channel, and its usual multi-document, multi-member
+sense is useful here — it precludes neither another member nor a principal reaching another document,
+so it does not have to be renamed if either arrives. The honest objection is register: "workspace" is
+corporate-flavoured, and this app's voice is deliberately not that (PRD §1, §12). If that grates
+enough, **vault** is the strongest alternative — it fits the encryption decision in D-20 and reads as
+personal rather than professional — at the cost of connoting storage rather than membership. Avoid
+**journal**: the codebase already uses that word for the localStorage write-ahead log.
+
+**Scope of the rename.** Product and code use "workspace". The wire may keep "room" if the transport
+insists, since that is where the word belongs. This document uses "workspace" for the concept and
+keeps "room" only when describing what the code says today — `normalizeRoom`, `RELAY_ROOMS`, the
+settings field — because pretending otherwise would misdescribe the thing being changed.
+
+**And one adjacent term has to remain narrower than earlier drafts made it.** The PRD and TRD use
+**document** for the master-list surface backed by one `Y.Text`; Next, Scheduled and Done are collections.
+The synchronized and persisted unit containing that document plus the daily collections is the
+**workspace content root** — currently one `Y.Doc`. Historical scenarios and option tables below retain
+"document" where that was the old model's word, and some mechanism discussion retains the code's older
+usage. The selected ontology, cardinalities and promotion requirements use **content root** for the whole
+workspace data set.
+
+### 1.3 Actor is the wrong word for what the code has
+
+The PRD's "actor" means "anything that can write" — you, the app, later an agent. The code's human
+actor is narrower than that and nobody noticed: it is minted per browser profile and never travels, so
+what it identifies is **one human member writing through one device.** Two devices, two of them,
+permanently (§2.2a).
+
+D-4 decides that this is correct and should stay. Which means the naming problem is real: "actor" is
+being asked to carry both "who is writing" and "which install is writing", and those are different
+questions with different answers.
+
+**Actor and device are not the same fact, and an earlier draft was wrong to say so.** It claimed that
+for humans the two are "one fact stored twice" and the UUIDs could be merged. D-11 forbids it: a device
+may host several principals, so a **human actor is the writing identity for one member on one device**,
+and one install can carry several human actors. The 1:1 that holds today holds only because there is
+exactly one member per install today. **Do not merge `done.actor` and `done.device`** — the apparent
+redundancy is the model already being shaped for something the product intends.
+
+That formula is deliberately human-only. An agent actor acts for an agent member and needs its own
+credential but may have no device. The system actor is not a member at all: it is a constant
+(`SYSTEM_ACTOR_ID = 'system'`) used for app-generated operations, authenticated through an authorized
+credential when those operations replicate. D-27 has to cover all three rather than pretending every
+signer is a device.
+
+A working name for the human per-install case would still help, since "actor" is taken and "device" is
+the install rather than the identity on it. This document uses **actor** throughout and flags where it
+means the per-install kind; naming it properly is worth doing before it reaches the UI.
+
+Each level is the right answer to different questions, and picking the wrong level is the whole
+category of bug this document is about:
+
+- Attribution ("who wrote this card") is **actor**. Cards already carry `author` (`newCard` sets it).
+- "Last synced from ⟨x⟩" is **device**.
+- Anything shown to a human as "you" is **principal**.
+- A caret is **session**: a caret is a place input is happening, and two tabs are two places (D-8).
+- Undo is **session**, per tab (D-7, D-15).
+- An exclusive resource is **session**, arbitrated per device — the example was the search index's OPFS
+  lock, which D-34 defers by starting the index in memory (§5.7.4); the level is right, the instance is
+  not live yet.
+- Sync configuration is **device** today, and D-10 says the user should never have to think about it.
+
+### 1.4 Two rules that settle future cases
+
+Both came out of the decisions below and both generalise past them, so they are recorded here rather
+than buried in the decision that produced them. They rank beneath the PRD's principles and above
+anything in this document.
+
+**Rule 1. The user never manages workspaces, and never chooses between them until their active local user
+slot holds more than one.** It is not a task to make pleasant; it is a task to remove. Anything that requires a person to know
+what a workspace is, name one, reconcile two, or copy one between devices has failed (D-10, D-11).
+**Selecting between local workspaces that one slot already holds is the one exception**, it is conditional
+on a state the person created deliberately, and it is D-30. The picker never crosses slots.
+
+**One verb moved, and only one.** D-30 forbade four things — name, select, reconcile, administer. *Select*
+is now permitted, under the condition above; the other three remain absolute, and they are what "know
+what a workspace is" actually consists of. A picker that reads as an account switcher asks which list is
+whose, not what a container is.
+
+Rule 1 looked for two drafts as though it had an exception, and it took two rounds to remove that one and
+a third to find a real one. The false exception was **D-5's merge · theirs · ours · abort flow**,
+described here as "the most demanding piece of workspace management in the product" and defended on the
+grounds that two histories meeting "is not a task that can be removed, because the outcome is irreversible
+and the app cannot pick for the user." v15 falsified the second half — the app *can* pick — and replaced
+the flow with a rule. **v16 falsified the first half too:** the two histories never had to meet at all,
+because they are two workspaces and local storage can hold both. D-5 is withdrawn and the user
+adjudicates nothing, confirms nothing and loses nothing (D-24, §5.2.1).
+
+The general lesson is worth keeping, because this document reached for a UI twice and then reached for a
+*rule* once before noticing it: **an apparent exception to Rule 1 is usually a missing rule.** Where the
+app seems to need the user to choose between workspace states, the question to ask first is whether
+anything in the model already determines the answer — and the second question, which D-5 is the case for,
+is whether the states are genuinely in conflict or have only been made to share a slot. D-5's conflict was
+manufactured by a single `DB_NAME` (§2.2b).
+
+**And the test is what identifies the real exception rather than waving it through.** Applied to two
+retained local workspaces it comes back empty: both are the user's, neither is more current, more
+authoritative or more recent in any sense the model records, and nothing about a principal, an epoch or a
+membership ranks them. There is no missing rule to find, which is exactly the difference from D-5 — where
+D-24's initial condition genuinely did determine the answer. **So the exception is real, the relaxation is
+D-30's, and the test is what proves it was needed rather than convenient.**
+
+**Rule 2. The UI never promises anything about a remote device that cannot be kept.** No auto-hiding a
+member as though they were gone, no "removed" that does not remove, no presence claim that outlives
+the connection it was inferred from. Where the truth is unknown, show it as unknown — a muted colour
+for a device not seen in a while is honest; omitting it is not (D-6).
+
+A corollary of Rule 1, worth stating because it cannot be fully achieved: **security cannot be hidden
+as completely as workspace management can.** Signal, WhatsApp and every serious attempt converge on a small
+irreducible surface — a way to verify a peer, a warning when a peer's identity changes, and a list of
+your own devices. Notably, that list is the same artifact D-18 wants for session invalidation and the
+same one D-19 wants for peer discovery, which suggests the irreducible security surface and the useful
+device surface are one screen rather than two.
+
+**Two of those three have no referent in this product, and the borrowed sentence hid it.** There are no
+peers but your own devices — human sharing is out of scope (§5.4.1) and agents are members rather than
+peers — and identity changes are the service's to attest, not another human's to compare fingerprints
+with. So the borrowed three do not apply, and the surface has to be counted from this product's own
+questions rather than from Signal's. **It came to one when this passage was written and it is now three**,
+because two decisions taken since each added one:
+
+- **The list of your own devices** — what D-18 revokes from, and what §5.7.4 shows as each device's
+  key-storage tier. This is the original one and it is still the load-bearing one.
+- **The recovery surface** — where the code is generated, confirmed and, if that is ever allowed,
+  replaced. D-17 made it mandatory and §5.7.7 promotes it from a detail of recovery to *being* recovery.
+- **The device-lock enrollment**, for anyone who opts into D-34's stronger key custody. Optional, so most
+  users never see it, but it exists and it is security surface.
+
+The lesson survives the recount, and is worth keeping in the sharper form: **the budget is set by the
+questions this product actually has, and each addition should have to name the decision that forced it.**
+All three above can. What the Signal comparison must not be used for is arguing that a fourth is normal
+because other systems have one.
+
+---
+
+## 2. What is true today
+
+Mechanics, included only because the decisions in §5 are not real without them.
+
+### 2.1 What is stored where
+
+| Fact                        | Where                              | Synced | Scope                                 |
+| --------------------------- | ---------------------------------- | ------ | ------------------------------------- |
+| Actor roster (name, colour) | `meta[actor:<id>]` in the document | yes    | per document                          |
+| Which actor this client is  | `localStorage['done.actor']`       | no     | per browser profile                   |
+| Device id and name          | `localStorage['done.device']`      | no     | per browser profile                   |
+| Sync endpoint, room, token  | `localStorage['done.sync']`        | no     | per browser profile                   |
+| Last sync time and source   | `localStorage['done.sync.last']`   | no     | per browser profile                   |
+| The document itself         | IndexedDB database `done`          | —      | **per browser profile, not per room** |
+| Pending updates (the crash journal) | `localStorage['done.pending-update.*']` | no | per browser profile           |
+| Session                     | nowhere                            | —      | —                                     |
+
+Ids are UUIDv4, so collision is not a concern anywhere below. The menu already edits the actor's name
+and colour and renames the device, so an identity surface exists to extend.
+
+Note the phrase "per browser profile", which is what localStorage actually scopes to. **A device is
+not a machine.** Chrome and Firefox on one laptop are two devices. Two Chrome profiles are two
+devices. A private window is a third, and a fourth tomorrow.
+
+### 2.2 Five things that are consequences, not decisions
+
+These are not open questions. They are what the code does now, and each one constrains §5.
+
+**a. Every device becomes a new actor.** `resolveActor` reads `done.actor`; finding nothing, it mints
+a fresh id, registers `{kind: 'human', name: 'You', color: <random>}` into the synced roster, and
+that is your identity on that device forever. One person with a phone and a laptop is **two actors**
+in the document, with two colours, both called "You". PRD §11.3's "one human actor, created on first
+run" is true per device and false per person, and the gap is invisible until sync makes both actors
+visible in one roster.
+
+**b. The local database is room-independent, and single-identity.** `DB_NAME` is the constant `'done'`
+and nothing passes `dbName` outside tests. The room, meanwhile, lives only in the sync configuration.
+So the room does not select a document — it selects **who your one local document tries to merge
+with.** Changing the room in settings does not open a different document; it points your existing
+document at a different remote and converges the two.
+
+Two things follow, and the second is about the future rather than today.
+
+_Today:_ **converging two histories is not a thing anyone wants**, under any reading of what a room
+is. It is not an option in D-11, it is a defect that D-11 has to stop producing. Recording it as a
+"maybe someone wants a merge" is wrong, and this paragraph said so in draft v1.
+
+_Ahead:_ **`dbName` has to become a parameter**, and the axis is not only the room. If two people can
+authenticate with the relay separately, they can do it from the same browser profile — one shared laptop,
+one browser, two local user slots — and each needs their own local documents, actors and credentials. The
+encrypted databases remain keyed by _(principal, workspace)_ rather than by the room alone; a separate
+device-local slot index says which of those stores the currently authenticated person may discover and
+open. The index groups for local access only: it neither merges principals nor syncs as identity state.
+It is also the reason D-11 and D-14 cannot be decided independently.
+
+**The shared laptop is not the only forcing case, and treating it as exotic is why this sat deferred through
+fifteen drafts.** The forcing case is one person: after D-16 every synced user has a Local workspace
+before they have an account, and many have one on each device. A device that signs in therefore holds an
+anonymous workspace **and** an account workspace, which is two principals on one browser profile with no
+second human anywhere near it. That is the ordinary path, not the exotic one — so the key is not
+speculative capacity for a future feature but the thing enrollment needs on day one.
+
+**Decided in D-24, and it removes a decision rather than adding one.** With the key in place, two
+unrelated histories on one device are two rows rather than a collision, and the destructive join D-5
+existed to govern has nothing left to govern (§5.2.1).
+
+**D-13 adds the access boundary the database key alone cannot supply.** Every picker is scoped to the
+active local user slot. Signing out closes that slot without deleting its rows; authenticating a different
+person opens or creates another slot and exposes none of the first person's workspaces. A full handoff
+reset removes all slots. Without that index, parallel storage would prevent merges while still leaking
+the previous person's retained Local workspace through the picker.
+
+And a distinction that D-11 was written without: **"which content" and "who is allowed" are not
+obviously the same axis.** The boundary could be a content root, or a membership boundary containing
+one. D-11 takes the second reading and calls the result a **workspace** (§1.2), which raised the
+possibility of content becoming a level of its own and then closed it again — a workspace holds exactly
+one content root, so there is nothing for a second content-container level to distinguish. The collapse stops there: the
+**principal and account remain separate**, since a principal groups one human's actors and devices even
+without a service, while an account carries billing, contact, recovery and service settings (§5.4).
+
+**c. The relay's token is not per room — and this is a target for change, not a constraint to design
+around.** `RelayPolicy` is one shared `token` plus an allowlist of `rooms`. Anyone holding the token
+may connect to any allowed room. There is no per-principal or per-device credential and nothing that ties one to
+a room, so the current auth model **cannot separate tenants** — not weakly, not at all.
+
+Replacing it is part of why this document exists, which changes its status here: the rest of the
+document may assume the credential model is in play, and no decision below should be shaped to
+preserve a single shared token. What replaces it is D-14, and §2.3 is the mechanism question that
+turns out to sit underneath it.
+
+**d. Storage failure silently reissues identity.** Every localStorage access in `localStore.ts` is
+wrapped and swallows its error, deliberately, so the app starts even where storage is denied. Where
+there is no durable localStorage, **a new actor and a new device are minted silently**, and if that
+context ever syncs, each one leaves a permanent entry in the roster.
+
+Draft v1 filed private browsing under this and was wrong about the mechanics. Modern browsers do give
+private windows a working, ephemeral localStorage, so identity is stable _within_ a private context
+and discarded at the end — which is defensible behaviour rather than a defect. Safari goes further
+and does not share localStorage between private tabs, which means **each private Safari tab is its own
+device** by this app's definition. The genuine cases for this paragraph are narrower and worse:
+storage blocked outright by settings or an embedded context, and Safari's eviction of script-writable
+storage for a site not used in a week — which takes the document with it, not just the identity
+(S30).
+
+**e. There is no session.** `doc.clientID` is the only per-tab identity that exists, it is a Yjs
+implementation detail, it is random, and it is what the peer list is currently counting when it says
+`Mac, Mac`.
+
+### 2.3 Cookies and offline-first: less funny than it sounds
+
+The question is whether session cookies and offline-first are in conflict. They are not, and the
+reason is worth stating precisely, because it opens a middle position on D-14 that the binary version
+of that decision hides.
+
+**Cookies are inert offline, not hostile to it.** A cookie is a request-time mechanism: it is attached
+to HTTP requests, and offline there are no requests. So a cookie contributes nothing to what the app
+can do while offline — and takes nothing away either. The rule that keeps principle 3 ("offline is the
+normal state") intact is one sentence: **nothing on the read or write path may await a _network_
+credential**, which is the constraint TRD §7.1 already imposes on sync state. An expired cookie has to
+degrade to "sync is offline", never to "the app is locked". The qualifier matters: principle 3 is about
+waiting on the network, not about ceremonies as such, so this rule does not by itself forbid a local
+device unlock (D-34, §5.7.4).
+
+**Where a cookie is actively better than what exists.** Today the relay token travels as a query
+parameter, because `WebSocket` takes a URL and nothing else — the app's own comments say so. A cookie
+is the one credential a browser attaches to a WebSocket upgrade by itself, since the upgrade is an
+HTTP request. That means the credential can be `HttpOnly` (XSS cannot read it), `Secure`, and
+`SameSite`, and it stops appearing in relay access logs the way a query string does. It is also more
+durable than localStorage under Safari's ITP, which caps script-written storage rather than
+server-set cookies. All of that is a strict improvement on §2.2c, independent of every product
+decision below.
+
+**Where the real conflicts are.** Three, and they are specific:
+
+1. **A cookie cannot be the app's identity key.** `HttpOnly` means the app cannot read it — that is
+   the point of it. So identity-for-display still lives in local storage, and the app ends up with two
+   mechanisms doing two different jobs: a cookie that authenticates the connection, and a local record
+   of who you are. v17 adds a third device-local artifact for a closed account slot: an offline-verifiable
+   binding to the account authenticator. The cookie is neither that verifier nor a content key; sign-out
+   removes the cookie/session and retains the verifier inside the closed slot (D-13). Not a conflict so
+   much as a thing to not conflate.
+2. **Setting a cookie requires a server that serves HTTP, not just a socket.** A login endpoint is a
+   request the service has to answer. This is the middle position: **the service can gain an authentication
+   surface without gaining document-content authority.** It can decide who may open a socket while the
+   relay still treats content as opaque. Under D-28 it may also reject an envelope whose authorization,
+   signature, replay or finalization evidence is invalid; what it cannot do is reject one because of the
+   meaning of its Yjs mutation. D-14 as originally written asked one question; it is really two, and this
+   is the first.
+3. **Stateless is cheap; revocation is not.** A signed token in a cookie needs no server-side session
+   table, which is what makes it cheap to host and survivable across restarts. But nothing stateless
+   can be revoked before it expires — and "invalidate sessions from a UI upon logging in" is
+   explicitly wanted (D-2's rationale, now D-18). Short expiry plus refresh is the usual compromise,
+   and it reintroduces a request the app must never wait on. This tension is the sharpest thing in
+   this document that is not a product decision, and it is why D-16 and D-18 are separate questions
+   rather than details of D-14.
+
+None of this is a transport design. It does suggest that "drop WebSockets for something cheaper to
+host" and "authenticate with a cookie" are one move rather than two, since request/response sync over
+plain HTTP is exactly where cookie auth is free and where hosting is cheapest. That belongs in its own
+spec.
+
+### 2.4 The installation that exists today
+
+Absent from every earlier draft, and the omission mattered: this document treats every transition
+between identity states as a data-loss hazard deserving a decision, while the first such transition the
+project will actually perform was not written down.
+
+**What is running.** Vite behind Tailscale on a laptop. Not a deployment — just enough to be in
+continuous daily use, which it has been for ten days, and it slid in with remarkably little friction.
+Sync is configured by hand on each device with the shared bearer token of §2.2c. There is no principal,
+no authorization epoch, and the relay's document is plaintext.
+
+**Which means the product configurations have no supported place for it**, and D-16 did not change that.
+It has no authorization lineage, but it is not the Local product because a service carries content; it
+is not Account because there is no account credential or encrypted server copy. The current
+installation is several devices syncing through a shared token with none of the machinery either level
+assumes — it is, in effect, the thing D-16 declined to ship: multi-device sync with no account. It works
+because it has exactly one user, who trusts every device on his own tailnet, and it does not generalise
+past that. Everything below that talks about promotion assumes a starting point this installation does
+not occupy.
+
+**The plan, recorded so it can be argued with.** Build import; export from the development installation
+and import into the first real deployment; treat that as the migration rather than attempting to carry a
+live document across. Then a versioning and upgrade story, built preventatively rather than at the first
+incompatible change.
+
+**One consequence of that plan is a defect waiting to happen, and it is worth fixing before the
+migration rather than after.** The freeze is enforced in `moves.ts` through a `writable()` check on
+every app-level create, move and destroy — including the system-origin recovery path, which declines to
+rewrite frozen history on purpose. Import does not exist yet, so nothing has decided which side of that
+line it lands on. If it lands on the app-level side, **importing a ten-day export silently drops every
+day older than three**, which is most of it.
+
+The correct scope is the one §6 now records, and it is a three-way split rather than a two-way one.
+**Replication is outside the freeze entirely** — remote updates arrive through `Y.applyUpdate` and never
+consult `isFrozen`, so a frozen day merges normally today. **Every app-level write path is inside it**,
+for every actor including the system one; the recovery path declines to rewrite frozen history on purpose,
+and that is correct rather than an oversight. **Import belongs outside it**, because a migration import is
+the app reconciling two histories rather than a person editing the past — and gating it the way an edit is
+gated is exactly the ten-day defect above.
+
+**Import is not a novel exception, and the precedent is worth naming, because it is the thing that makes
+the placement defensible rather than convenient.** Compaction is already an app-level system operation
+that sits outside the freeze by explicit design: `compaction.ts` says *"nothing here may consult the
+freeze, and freeze.ts may not consult this"*, TRD §4.5 makes their independence a rule, and
+`test/freeze.test.ts` keeps a regression test on it. So the code already distinguishes *authoring the
+past*, which the freeze governs, from *maintaining the store*, which it does not. Import is the second
+member of that second category, not a hole punched in the first.
+
+Which means import cannot be placed by asking whether it is app-level — it is — and the answer does not
+fall out of the replication/app-level split that settles the ordinary cases. It has to be decided on what
+import *is*, and decided before the code exists, because the default an ordinary implementation lands on
+is the gated one.
+
+---
+
+## 3. The state space
+
+### 3.1 It is not a 2×2×2
+
+A session is always new: opening a tab creates one, and there is no such thing as arriving with an
+existing session. Reloading is the only case that even asks the question, and it asks whether a
+session id should survive a reload — which is settled in §6.
+
+Levels also constrain each other. A new device implies a new session. An existing device implies a
+stored actor id already exists, so "existing device, new actor" only happens if something deliberate
+or destructive has occurred.
+
+**This section was written before §1.1 had a principal in it and before D-4 and D-12 were decided, and
+it was not re-derived; review caught that.** Two corrections, and they change what the space is:
+
+- **Actor is the wrong top axis.** D-4 decides a new device is _always_ a new actor and never claims an
+  existing one, so "existing actor on a new device" is not a state anything can arrive in. What varies
+  across devices is the **principal**, and the arrival question is whether this device's new actor
+  belongs to one that already exists.
+- **Authorization-lineage history is an arrival-time property, not a later one.** D-12 decides that a
+  workspace whose lineage was never established may silently re-mint a lost identity, while one with a
+  live head or terminal retirement record must not. That decision is made _on arrival_, which means the
+  lineage state belongs in the arrival space rather than in the discussion downstream of it.
+
+So the space is **principal × device**, crossed with the **authorization-lineage state** and with **how you
+arrived**.
+
+### 3.2 Arrival: principal × device
+
+|                        | **New device**                                                                                                                                                  | **Existing device**                                                                                                                                                       |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **New principal**      | **A. Genesis.** First run ever, or a new install with no sync. Today: mints an actor and a device, and the principal is implicit in there being nothing else.   | **B. Reset or handoff.** Storage cleared, or a deliberate "I am someone else". Today: indistinguishable from Genesis, and the document keeps the abandoned actor forever. |
+| **Existing principal** | **C. Enrollment.** A second device joining a principal that already exists — which after D-16 always means signing in to an account. A new actor, always (D-4): what is shared is the principal, not the writing identity. The device may already host an anonymous principal of its own, which enrollment leaves alone (D-24). | **D. Ordinary launch.** Reads actor and device from localStorage. The only well-served cell.                                                                              |
+
+Cell **C** is the hole, and naming the axis correctly says what kind of hole it is: earlier drafts
+called it "rejoin" and read it as a claiming problem, which sent D-4 looking for a way to say "I am
+that one." There is no such thing to say. C is a **discovery** problem — how a device learns which
+principal it belongs to — which is D-19, and it is why D-4's answer is "no" rather than a limitation.
+
+**And "existing principal" is a property of the arrival, not of the device.** A device that has been used
+locally arrives at C already holding an anonymous principal; what makes the cell C rather than A is the
+principal it is arriving *into*. Both persist afterwards, in separate local databases (§2.2b, D-24), so C
+is additive rather than a transition the device passes through and leaves behind.
+
+Cell **B** is the one that leaks, and lineage history is what decides how badly. With no lineage it is
+Genesis with extra steps and may re-mint silently. With a live head or terminal retirement record, a
+fresh random identity appearing and beginning to write is the unapproved-writer problem, and the app must
+not mint one (D-12).
+
+Cell **D** is the one that works, and it is the only one anyone has tested by using the app.
+
+### 3.3 Arrival modes
+
+Crossed with the above: **first tab** on this device this session · **an additional tab** · **a
+reload** · **a bfcache or discarded-tab restore** · **a private window** · **an installed PWA
+launch** (which on iOS is a separate storage context from Safari's tabs in some configurations, and
+therefore potentially a separate _device_ — worth confirming before relying on either answer).
+
+---
+
+## 4. Enumerated scenarios
+
+Each scenario: what the user does, what happens today, and which decisions it raises. "Today" is
+factual; the decisions are §5.
+
+### 4.1 Genesis and arrival
+
+| #      | Scenario                                         | Today                                                                                                                       | Raises        |
+| ------ | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| **S1** | First run ever. No sync.                         | Actor + device minted. Never asked anything. Starts typing immediately.                                                     | D-1, D-2      |
+| **S2** | Opens a second tab.                              | Second Yjs client. No live sync unless a relay is configured. Peer list would say `Mac, Mac` if it were.                    | D-8, D-9      |
+| **S3** | Reloads a tab.                                   | Same actor, same device. Document reloads from IndexedDB and the journal.                                                   | §6            |
+| **S4** | Tab restored from bfcache, or after discard.     | Same identity; the document may be stale with no signal.                                                                    | §6            |
+| **S5** | New device, sync **not** configured.             | New actor, new device, **and a second independent document.** Two forks with no relationship.                               | D-2, D-11     |
+| **S6** | New device, sync configured immediately.         | New actor joins the existing document. Roster now has two "You"s in two colours.                                            | **D-4**, D-3  |
+| **S7** | Reinstall / cleared site data on a known device. | Cell B. New actor; the old one stays in the roster, attributed to past cards, with no owner.                                | **D-4**, D-12 |
+| **S8** | Private window.                                  | New actor and device on every launch, permanently recorded in the roster if it ever syncs (§2.2d).                          | D-12, D-13    |
+| **S9** | Installed PWA alongside browser tabs.            | Possibly a separate storage context, therefore possibly a separate actor and device, for the same person on the same phone. | D-2, D-13     |
+
+**Which of these have no lineage, and which carry live or terminal history.** D-12's answer turns on this
+and the table above does not carry it. S1 and S5 have no lineage by construction. S8 and S9 have none
+unless the workspace was enrolled or later retired. **S7 is the interesting one and it is either**: a
+reinstall around a workspace that was never enrolled may re-mint silently, while a surviving workspace
+with a live head or terminal record is historically admitted and must not be papered over. The same split
+applies to S29 and S30. Nothing distinguishes them today, which is the point of requiring authenticated
+lineage state rather than inferring admission from the roster (§5.5).
+
+### 4.2 Sync lifecycle
+
+| #       | Scenario                                     | Today                                                                                                                 | Raises        |
+| ------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------- |
+| **S10** | Opts into sync for the first time.           | The local document merges with the room's. If the room has another document, the two converge into one — permanently. | **D-11**, D-24 |
+| **S11** | Turns sync off, then on.                     | `enabled: false` keeps the configuration. Off is a pause, not a forget.                                               | —             |
+| **S12** | Forgets the sync configuration.              | Config and last-sync time removed. Actor and device survive; the document survives.                                   | D-12          |
+| **S13** | Changes endpoint, same room.                 | Reconnects to a different relay for the same document name.                                                           | D-10          |
+| **S14** | Changes the room.                            | **Does not switch documents** (§2.2b). Re-targets the merge.                                                          | **D-11**      |
+| **S15** | Token refused (4401) or room unknown (4404). | A sentence in the menu; the document is unaffected. No identity consequence.                                          | —             |
+
+### 4.3 Identity changes
+
+| #       | Scenario                                       | Today                                                                                                          | Raises       |
+| ------- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------ |
+| **S16** | Renames the device.                            | Local only. Shows up on other devices as "last synced from ⟨new name⟩".                                        | —            |
+| **S17** | Renames the actor, or changes its colour.      | Synced. Every device sees it. Only `kind: 'human'` actors are editable.                                        | D-1          |
+| **S18** | Sees two "You" entries and wants one.          | **No mechanism.** Cannot merge actors, cannot delete one, cannot claim one.                                    | **D-4**, D-6 |
+| **S19** | Wants to be a different person on this device. | No mechanism in the current UI. The architecture permits several principals per device, but exposes no switch. | D-11, D-13   |
+| **S20** | Wants to know which of their devices is which. | Device names are guesses from the user agent (`Android`, `Mac`) until renamed. Two Macs are both `Mac`.        | D-3          |
+
+### 4.4 Rooms
+
+| #       | Scenario                                      | Today                                                                                                  | Raises     |
+| ------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ---------- |
+| **S21** | Wants a second, separate document ("work").   | Not possible. One local database, one document, regardless of room.                                    | **D-11**   |
+| **S22** | Wants to move a document to a different room. | Change the room; the document follows because it never left. Merges with anything there.               | D-11       |
+| **S23** | Two tabs briefly hold different sync configs. | Possible mid-edit in settings. Each tab targets its own room; both merge into the same local document. | D-10, D-11 |
+| **S24** | Wants to open two rooms at once.              | Not possible.                                                                                          | D-11       |
+
+### 4.5 Service and sharing boundaries (all currently impossible)
+
+| #       | Scenario                             | Today                                                                                                              | Raises                   |
+| ------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------ |
+| **S25** | Two people in one workspace.         | Mechanically works as two actors, but has no human-membership, permission or authenticated-attribution model.      | Future sharing doc; D-27 |
+| **S26** | Inviting another human.              | No mechanism. Human sharing remains a separate product decision; handing over today's relay-wide token is not one. | Future sharing doc       |
+| **S27** | Someone claiming to be someone else. | Unpreventable today. Any writer can write any actor entry and attribute anything to any id.                        | **D-27**                 |
+| **S28** | Removing a device or agent.          | No mechanism today. Future exclusion is key rotation plus authorization enforcement.                               | **D-20**, D-26           |
+
+### 4.6 Degenerate and hostile
+
+| #       | Scenario                                              | Today                                                                                                        | Raises   |
+| ------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | -------- |
+| **S29** | localStorage denied or full.                          | Silent. New identity every launch (§2.2d), no indication.                                                    | **D-12** |
+| **S30** | Safari evicts storage after a week of not using it.   | The document is gone locally, not just the identity. Recovered from the relay if configured; otherwise gone. | D-12     |
+| **S31** | Same actor id live on two devices at once.            | Only reachable if D-4 allows claiming. CRDT-safe; makes "last synced from" and undo scoping ambiguous.       | D-4, D-7 |
+| **S32** | Roster accumulates dozens of dead actors.             | Nothing prunes it. Entries are small, and permanent.                                                         | D-6      |
+| **S33** | An actor entry is edited concurrently on two devices. | Last-writer-wins on the whole `{kind, name, color}` value.                                                   | —        |
+
+### 4.7 Lifecycle events (none of which exist yet)
+
+Added because the decisions in §5 created them, and **rewritten in v15 because D-16 deleted a level**.
+Earlier drafts called every row a movement between **Local** and **Account** and therefore made account
+session, authorization lineage, hosted retention and local storage move together. They do not. Each row
+below changes one or more of §5.1.1's independent axes; some move no data at all.
+
+| #       | Scenario                                                                                                       | Raises                    |
+| ------- | -------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| **S34** | Signs in on a second device to enroll it, having created the account on the first.                             | D-19, D-24                |
+| **S35** | Creates an account having already used the app locally **on two devices**, each with its own history.          | **D-24**                  |
+| **S36** | Deletes the account, keeping the devices.                                                                      | D-24 in reverse, D-13, D-29 |
+| **S37** | Revokes a device that is currently offline.                                                                    | **D-18**                  |
+| **S38** | Opens a device that has been revoked.                                                                          | **D-18**                  |
+| **S39** | Loses their only device, having never created an account.                                                      | D-25                      |
+| **S40** | Revokes a device while another of their own devices is offline.                                                | **D-26**, D-18            |
+| **S51** | The account lapses — payment fails or the subscription expires — while every device is online.                 | **D-29**                  |
+| **S52** | The account lapses while a device is offline, and that device next opens after the grace period has run out.   | **D-29**, D-18            |
+| **S53** | Deliberate downgrade from a paid plan, if D-31 later selects one: keeps the devices, stops paying.             | **D-29**, D-24, S36       |
+| **S61** | Signs out on a shared installation, retaining encrypted local state, and another person starts using it.      | **D-13**, D-24, D-34      |
+| **S62** | Removes this account from this device while the account and other devices continue.                           | **D-13**, D-18            |
+| **S63** | Resets an installation for handoff while it holds more than one local user slot and workspace.                | **D-13**, D-24            |
+
+**Two rows changed character in v15, and in opposite directions. One of them changed again in v16.**
+
+**S35 became common in v15, and stopped costing anything in v16.** It used to describe someone who had
+paired devices without an account and then created one — an uncommon, deliberate act by an engaged user.
+With no accountless sync, every multi-device user runs local-only on each device first, so two non-empty
+histories meeting is now ordinary rather than exotic. v15 answered it with a rule that replaced the
+joining device's history; **v16 answers it by not putting the two histories in the same place.** The
+second device's anonymous workspace stays where it is, in its own local database, and the account
+workspace opens beside it (D-24, §2.2b). The scenario now costs a sentence at account creation on the
+*first* device — promote this list, or start fresh — and nothing at all on the second. What used to be
+this document's most-cited data-loss path is no longer a data-loss path.
+
+**S40 got much better, and used to be the hardest scenario in the document.** It described a revoked
+device continuing to sync with a peer that had not heard about the revocation, producing a divergence
+that could only be resolved by discarding somebody's honest work. With one relay-mediated path the
+revoked device has no route to the offline device at all: it is refused at the relay from the commit
+point, and the offline device simply learns about the revocation when it reconnects. The scenario
+survives only as the ordinary question of what a stale device is told (D-18, D-26).
+
+**And two older rows were deleted rather than rewritten**, because the states they described no longer exist:
+pairing a second device with no account, and demoting from an account to a paired group. The second is
+now S36: it retires the live lineage and leaves independent **Local** replicas rather than landing on a
+rung below.
+
+### 4.8 Security and recovery
+
+These were implicit in D-17 and therefore absent from the state space even though the rest of the document
+depends on them. They are separated by **which credential is lost or compromised**, because "a leaked
+credential" has no useful meaning until the credential's authority is named.
+
+| #       | Scenario                                                                                                      | Raises               |
+| ------- | ------------------------------------------------------------------------------------------------------------- | -------------------- |
+| **S41** | An outsider knows the relay endpoint and workspace identifier, but has no credential.                         | **D-17**, D-14       |
+| **S42** | The relay or its stored database is read, modified, rolled back or selectively withheld.                      | **D-17**, D-20, D-27 |
+| **S43** | A short-lived relay connection token leaks, but no device key does.                                           | **D-17**, D-14       |
+| **S44** | A device signing or decryption credential is copied or used by an attacker.                                   | **D-17**, D-18, D-20 |
+| **S45** | Malicious code runs in the app's own origin through XSS, a dependency or a bad release.                       | **D-17**             |
+| **S46** | An authorized agent or device writes maliciously without exceeding its granted capability.                    | **D-17**, D-20, D-27 |
+| **S47** | Every device is lost while a hosted server-side ciphertext copy still exists.                                 | **D-17**, D-25, D-33 |
+| **S48** | An attacker uses the account-recovery path rather than attacking the primary credential.                      | **D-17**             |
+| **S49** | Two authorized devices concurrently produce different authorization successors.                               | **D-17**, D-26       |
+| **S50** | The service is unavailable temporarily, or disappears permanently.                                            | **D-33**, D-17, D-25 |
+| **S54** | The user deletes an account while server ciphertext, metadata, logs, backups and offline replicas exist.      | **D-32**, D-20, D-24 |
+| **S55** | The user asks what the service holds, exports it, corrects account data or requests deletion.                 | **D-32**             |
+| **S56** | Support or an operator needs to diagnose a tenant problem without gaining document access.                    | **D-32**, D-17       |
+| **S57** | The service detects abuse, receives a legal request or must suspend an account without destroying local data. | **D-32**, D-29       |
+| **S58** | Every device is lost and the user attempts restore from an encrypted archive plus held recovery material.     | **D-33**, D-17       |
+| **S59** | The original relay is gone; surviving devices are repointed at a replacement store without altering content.  | **D-33**             |
+| **S60** | The workspace migrates to a replacement service under a new authorization lineage, then admits and revokes a device. | **D-33**, D-17, D-18 |
+
+**S49 changed character in v15.** Without a server witness it was a genuine fork — two authorization
+lineages, each internally valid, with no rule to say which was real short of the sanctioned-lineage
+design D-26 no longer needs. With one relay-mediated path the server serializes successor commits, so
+concurrency resolves to *one accepted epoch and one refused attempt that retries*. It is a conflict, not
+a partition.
+
+**S58, S59 and S60 are new**, and they exist because D-33 promoted service survivability from an appendix
+thought-experiment to a decision. They are the rows that no amount of local persistence answers on its
+own, and note that peer-to-peer would not have answered them either (D-16).
+
+---
+
+## 5. The decisions
+
+Options, with what the user sees and what each choice forces, kept beside the answer rather than deleted
+by it — so a recorded decision can be re-opened on the evidence it was made on. **The options tables do
+not recommend**; the argument for the selection is stated after them, and several later decisions (D-26,
+D-28, D-32, D-33) have no options table at all because nothing was ever chosen between. Where a PRD
+principle narrows a decision, that is noted as a narrowing, not an answer.
+
+### 5.1 Identifying yourself — D-1, D-2, D-3
+
+**D-1. Does the user ever tell the app who they are, and when?**
+
+| Option                                         | The user sees                                               | Forces                                                            |
+| ---------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------- |
+| Never — always generated                       | Nothing, ever. "You" everywhere.                            | D-4 has nothing to key on. S18 stays unfixable.                   |
+| A name, at first run                           | A field before the first keystroke.                         | Directly contests PRD principles 1 and 2.                         |
+| A name, at the first moment it means something | One field, once, when a second device or person can see it. | Requires choosing the trigger: configuring sync? first peer seen? |
+| A real account                                 | Sign-in.                                                    | Requires D-14 and a relay with authority.                         |
+
+**Narrowing, not an answer:** principle 1 ("text entry is the product") and principle 2 ("structure
+is opt-in, never demanded") both cut against asking at first run. They do not settle the trigger, and
+the trigger is the actual decision.
+
+> **Decided.** Generated by default. A name is asked for at **account creation** and at no earlier point —
+> not at first run, not at first peer, and per D-23 not at device enrollment either.
+>
+> This answers the *name* only. Account creation asks for one other thing, and it is the heavier of the
+> two: a saved, re-entered recovery code (§5.7.6). D-1 governs when the app learns who you are; it does
+> not describe the whole of that moment.
+
+That answer generates a structure the rest of the document needs, so it is written out in §5.1.1.
+
+#### 5.1.1 Product labels over independent lifecycle axes
+
+D-1 still produces two user-facing configurations, but they are **derived labels rather than two states
+with one transition between them**. The distinction that matches the intended product boundary is whether
+the workspace has a live service authorization lineage:
+
+| Label       | Meaning                                                                                                        | Does not imply                                                                                                      |
+| ----------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Local**   | This workspace has **no live service authorization lineage**. It may never have had one, or a former one may be permanently retired. | Any particular epoch number; one historical device; plaintext storage; or that no other independent local replica exists |
+| **Account** | This workspace has a **live service authorization lineage** attached to an account.                            | An authenticated session, active billing, an extant hosted copy, working sync on this replica, or an attached grant |
+
+Local remains the complete, permanently free, no-service product. Account remains the only configuration
+that can use hosted synchronization, and its price remains D-31. What changes is the inference: a lapsed
+account whose hosted content has expired is still Account because its lineage is live; account deletion
+produces Local replicas with a **retired** lineage; and a revoked device holds a **detached local copy**
+of a workspace that may still be Account everywhere else. Calling that last copy Local would confuse a
+replica's attachment with the workspace's global authorization state.
+
+The internal state is the product of independent axes:
+
+| Axis                         | States                                                                                 | What changes it                                                        |
+| ---------------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| **Current authorization lineage** | never established · live · retired                                                | account creation, account deletion, migration                          |
+| **Hosted content**           | absent · current · retained read-only snapshot · expired                               | first upload, lapse, resumption, retention expiry, deletion            |
+| **Service entitlement**      | active · grace · suspended · ended                                                      | billing or service policy; never identity                              |
+| **Replica grant/attachment** | local-only · enrolled/attached · revoked/detached · removed                             | enrollment, revocation, local removal                                  |
+| **Local user slot**          | active · signed out/closed · removed                                                    | account-bound offline slot unlock or explicit local-profile unlock, sign-out, remove-from-device, whole-device reset |
+| **Account session**          | authenticated · expired · signed out                                                    | login/session management; never workspace custody by itself            |
+
+Authorization epochs belong **inside the lineage axis**. A never-established workspace has no
+authorization epoch at all and may re-mint identity if local identity is lost. A live or retired lineage
+has historical authorization meaning and must never be mistaken for genesis merely because its service
+relationship or hosted bytes are absent. Retirement therefore leaves a signed terminal record with the
+surviving replica; absence and retirement are different facts.
+
+The transitions can now be stated without smuggling one axis into another:
+
+| Event                           | Result                                                                                                                        |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Local genesis                   | Never-established lineage; absent hosted content; local-only replica; active local slot                                       |
+| Promote never-established Local at account creation | Same principal, workspace, history and `K0`; establish the first live lineage and recovery keypair; attach the device; upload ciphertext |
+| Start fresh at account creation | Establish a new account workspace and live lineage; keep the old Local workspace in the same local user slot                   |
+| Enroll another device           | Add a replica grant and deliver content keys separately; leave that device's existing local slots and workspaces untouched     |
+| Sign out                        | Close this local user slot and end account/relay sessions; retain its encrypted stores, keys and enrolled grant                |
+| Remove account from this device | Clear this slot's local stores and key material; request grant revocation, which is complete only at the service commit; the live lineage continues elsewhere |
+| Revoke a remote device          | Revoke its grant; the unreachable device cannot be wiped and its usable copy becomes detached at its last key generation       |
+| Lapse / retention expiry        | Suspend entitlement and eventually delete hosted content; keep the account and live lineage dormant for resumption             |
+| Delete account                  | Permanently retire the lineage and service material; surviving last replicas become independent Local workspaces               |
+| Migrate                         | Establish a fresh live lineage and make the old authority historical to this package; terminally retire the old lineage only if its service is reachable |
+
+**The middle rung is retired, and the ordinals with it.** Until v15 there were three rungs, and the
+middle one — **Paired**, cross-device sync between your own devices with no account and no relay
+carrying content — was the accountless sync rung. D-16 removes it. The numbers went too: "rung 2" and "rung 3" were
+only meaningful as positions on a three-step ladder, and leaving them in place would let a reader who
+knows the earlier drafts read the wrong thing. This document now says **Local** and **Account**.
+
+The full argument is D-16's. The summary is that Paired failed on three reinforcing grounds: it was the
+**most expensive** thing to build rather than the cheapest, its manufactured durability limitation
+demanded recurring disclosure, and it may not have **worked** — a phone asleep in a pocket
+does not sync peer-to-peer with a laptop, which is the entire device pair the product has.
+
+**What may survive the removal is an enrollment mechanism, not a tier.** D-19's out-of-band
+device-to-device proof **remains one available content-delivery path**; it is not an invariant of
+enrollment. Signing in proves who you are to the service, while a PRF-capable passkey, a saved recovery
+factor, an existing device or the separate escrow add-on can deliver the content key under D-17's selected
+custody model (§5.7.5). If the device-to-device ceremony is used — whichever of the two shapes D-19
+leaves to the TRD — it happens **after the service authorizes the new device**, rather than establishing
+a second, device-centric authority of its own. That is the difference
+between an enrollment option and a tier, and it is where nearly all of the deleted complexity lived.
+
+**A phrase this document kept getting wrong, retained because the correction still bites.** Earlier
+drafts said the middle rung had "no server in the sync path", which was never true: a browser cannot
+establish a peer connection without a signalling server, pairing and authorization traffic need a
+rendezvous point, and the app itself is served from somewhere. What that rung avoided was **a relay
+carrying content bytes**. The imprecise version invited an architecture built to satisfy a constraint
+nobody had, and it also let the tier borrow credibility for a property it did not have — see D-16 and
+D-33. Say **no relay**, or **no server-held content**, or **no metered bandwidth** — whichever is meant —
+and never "no server".
+
+**The labels apply to the workspace's live service relationship, not to a person, device or session.** A
+person may hold several Local workspaces; one installation may hold Local and Account workspaces side by
+side; and one local user slot may be closed while the Account lineage remains live. A replica's own
+relationship is described separately as attached, detached or removed.
+
+**What distinguishes the two levels is service participation, not price.** D-16 deliberately aligns
+durability with whether the service holds or decides anything, while D-31 remains free to price that
+service later or not at all:
+
+- **Local is where no live service authority holds or decides anything.** At never-admitted genesis the
+  current device is ordinarily the only copy; after account deletion several independent last replicas
+  may remain. D-25 describes the copies actually known rather than deriving a replica count from the label.
+- **Account is where a live service authority may hold or decide something.** That is the
+  point at which an account becomes **technically necessary** — a server-held copy needs a stable
+  identity to attach to and a credential to retrieve it, and revocation needs somewhere to keep state
+  (D-18). It is also the point at which the service starts incurring per-user cost, but what to do about
+  that cost is D-31 and is not part of the identity or synchronization decision.
+
+Two constraints survive:
+
+- **Local remains free and permanent.** An account is never required to keep using the complete local
+  application on one device.
+- **Cheap to host remains a product requirement**, but it no longer decides whether a rung exists. It
+  informs D-31, where pricing is deliberately deferred rather than smuggled into this ladder.
+
+And one constraint is **discharged**: earlier drafts warned that if D-17's security bar could not be met
+without real accounts, the ladder would collapse to "local-only or signed-in" and called this "the single
+largest branch in this document". That branch has now been taken for product reasons before the security
+research forced it. D-17 can no longer collapse the ladder, because the ladder is already the shape D-17
+threatened to make it — which removes a dependency rather than resolving one (§5.7.7).
+
+#### 5.1.2 Eight properties, not one promise
+
+Promoted from the former durability appendix, because the table above is exactly where this document
+kept compressing several different promises into the word **durability**, and D-25, D-16 and D-33 all
+route through the distinction.
+
+This is §1.3's argument applied to promises instead of identities: picking the wrong level is the whole
+category of bug. "Local-first", "synced" and "backed up" are each three or four of these at once, and a
+claim built out of them is not testable.
+
+| Property                 | The question it answers                                                                   |
+| ------------------------ | ----------------------------------------------------------------------------------------- |
+| **Local availability**   | Can an existing installation read and write with no network and no service?                |
+| **Synchronization**      | Can changes move between devices, including devices never online at the same time?         |
+| **Durability**           | Do usable bytes remain after one — or every — local device is lost?                        |
+| **Recoverability**       | Does the user hold both the ciphertext and the means to turn it back into a workspace?     |
+| **Portability**          | Can another program read the data, and can another installation of this one import it?     |
+| **Service independence** | Can the user continue after the app origin, relay, account service or company disappears?  |
+| **Safety**               | Can an unauthorized or revoked credential produce an accepted future write?                |
+| **Confidentiality**      | Who can turn stored or transmitted bytes into plaintext?                                   |
+
+The combinations that catch people out, and each one has bitten a draft of this document:
+
+- A cloud copy improves **durability** without improving **recoverability** — ciphertext whose content-key
+  wraps or recovery private key are gone is not recovered data (§5.7.5, §5.7.6).
+- Plain-Markdown export provides **portability** without preserving CRDT identity or continued
+  **synchronization** (D-33, §5.11.2).
+- A cached PWA provides **local availability** on a device that already has it, and no way to install on
+  a replacement device (D-33).
+- Peer-to-peer provided **synchronization** without providing **service independence**, which is the
+  specific error D-16 corrects: the retired middle rung looked like an independence mechanism and was
+  not one.
+
+**Where the two ordinary configurations land**, said in these terms rather than treating either label as
+a promise about every lifecycle axis:
+
+| Property             | Local                            | Account                                                            |
+| -------------------- | -------------------------------- | ------------------------------------------------------------------ |
+| Local availability   | Yes                              | Yes — never awaits a *network* credential (§6)                     |
+| Synchronization      | No live service path             | Relay-mediated while entitlement, hosted state and this replica's grant permit it |
+| Durability           | Surviving local replica(s) only  | Encrypted hosted copy while current or retained; otherwise surviving replicas only |
+| Recoverability       | A surviving replica or export    | A surviving content-holding device; otherwise only while ciphertext and an independently unsealable recovery private key both survive (§5.7.6) |
+| Portability          | Markdown export; import is owed  | Same, plus a fidelity archive (D-33)                               |
+| Service independence | Existing install: **total**. Reinstall/recovery: needs D-33 | Requires the survival package (D-33)                    |
+| Safety               | No live admissions; lineage is either never established or terminally retired | Live service authorization, signed epochs, revocation (D-18, D-20, D-26) |
+| Confidentiality      | Ciphertext at rest, opened locally (D-34) | End-to-end; relay holds ciphertext; live presence metadata is relay-visible and ephemeral by default |
+
+Two rows are worth reading twice. **Recoverability at Account is now decided and it is conditional** — an
+encrypted server copy became a recovery promise when D-17 selected a factor (§5.7.6), but the promise is
+*you can recover this, with the code you saved*, never *we can recover this for you*. D-25 must carry that
+conditional every time it uses the word, because the two readings differ only for the user who has lost
+everything, which is the only user who will ever test the sentence.
+
+And **service independence is highest at Local, for an installation that already exists.** That is the
+reframing D-16 produces and it is worth having. But the property as defined above includes surviving the
+loss of the **app origin**, and a Local user who clears their browser store or replaces their laptop needs
+somewhere to install the app from. So the honest split is: *existing installation, total independence;
+reinstallation and recovery, dependent on D-33's survival package.* Local removes the runtime dependency,
+not every dependency.
+
+**D-2. Is an identity per person, per device, or a labelled pair?**
+
+| Option             | The user sees                                                     | Forces                                                                               |
+| ------------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Per device (today) | One "You" per device; three devices, three colours.               | S18 is by design. Undo is per device, which is at least consistent.                  |
+| Per person         | One "You" everywhere, whatever device it came from.               | Needs D-4. Makes cross-device undo a real question (D-7).                            |
+| A labelled pair    | "Tom — phone", "Tom — laptop", grouped as one person in any list. | Keeps today's mechanism; changes only presentation. Needs a person-level name (D-1). |
+
+> **Decided. Identity is per device; presentation is per person.** The two are separable, and
+> separating them is what makes "per device" safe: **the device is never disclosed to another
+> principal, and never appears in the ordinary presentation of who is present or who wrote
+> something.** Any list shows one entry per person. Carets are per input surface (D-8), labelled with
+> the person's name and never with the device.
+
+This is the arrangement Google Docs has, and it is worth naming why it works rather than only that it
+does: the device level exists to answer questions the _system_ has, and the person level exists to
+answer questions a _human_ has. Leaking the first into the UI is the whole bug in §2.2a.
+
+**An earlier draft said the device is "never reflected back at you", and this document then contradicted
+itself three times.** The claim was too strong: your own devices are shown to you deliberately, in three
+places that are each decided elsewhere here. The rule is about disclosure to _another principal_ and
+about the ordinary case, not about hiding your own devices from you.
+
+| Surface                     | Shows the device to you   | Decided in      |
+| --------------------------- | ------------------------- | --------------- |
+| "Last synced from ⟨device⟩" | Yes, in the ordinary case | §1.3, PRD §11.3 |
+| Merge provenance mode       | Yes, deliberately, rarely | D-22            |
+| The device list             | Yes, and it must          | D-18, §1.4      |
+
+Which also corrects a count: the live reasons to keep the device level are not two but at least four —
+telling multiple carets apart, invalidating from a UI (D-18), naming a sync source, and answering "which
+of my devices put this here" (D-22).
+
+**D-3. Are device names worth improving?** Today they are user-agent guesses (`Mac`, `Android`) and
+two of the same kind collide.
+
+> **Decided in principle: yes.** The mechanism is open, with one guardrail below.
+
+The instinct is to append something derived from the device to disambiguate, and that instinct arrives
+at a fingerprint — deriving a stable identifier from device characteristics, which is the thing
+privacy budgets and every browser vendor are actively closing off, and which would be a poor look in
+a local-first app whose pitch is that your data stays yours.
+
+It is also unnecessary. **A stable random device id already exists** in `localStorage['done.device']`,
+minted by `newId()` and carrying no information about the machine. A suffix taken from it — four
+characters, or a deterministic word from a small list, `Mac (violet)` — disambiguates two Macs without
+deriving anything from the device at all. That leaves the real options as: a suffix from the existing
+random id; prompt for a name at the moment a second device appears; or both, with the generated name
+as the default the prompt pre-fills. Since the device name is never shown to anyone else (D-2), the
+audience for it is one person, which lowers the bar considerably.
+
+### 5.2 Rejoining and pruning — D-4, D-5, D-6, D-7
+
+**D-4. Can a new device claim an actor that already exists in the document?** Cell C of §3.2, and the
+decision the most scenarios point at.
+
+| Option                     | The user sees                                                       | Forces                                                                            |
+| -------------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| No — a device is an actor  | Nothing new. Accept S6, S7, S18.                                    | D-2 must be "per device" or "labelled pair".                                      |
+| Pick from the roster       | After first sync: "Which of these are you?" with names and colours. | Trivial to impersonate; incompatible with authenticated attribution.              |
+| Transfer a secret          | A code or QR from the old device.                                   | Real friction, and a new thing to lose. Needs the old device present.             |
+| Derive from the credential | Nothing — implied by the token used.                                | Collapses actor into principal and contradicts the chosen per-device actor model. |
+
+> **Decided: no. A new device is a new actor, always.** Browser, profile, phone, computer — each
+> install that writes gets its own writing identity, and none of them ever claims another's.
+
+The reason this looked complicated is that D-4 was two questions wearing one coat, and only one of
+them is about claiming:
+
+1. **"Which of these entries is me?"** — a _presentation_ question, and D-2 already answered it: one
+   entry per person in every list, the device never disclosed or reflected back. Nothing needs claiming
+   for that; it needs a level above actor to group by, which is §1.1's principal.
+2. **"Which of these devices are mine at all?"** — a _discovery_ question, and it is the real hole.
+   Today the answer is entirely manual: you type the same endpoint, room and token into both devices,
+   and that act of typing _is_ the discovery mechanism. Under any account model it would be implied by
+   signing in. This is now **D-19**, and it is indeed downstream of auth.
+
+So the shape is: two independent installs, each writing under its own identity, that at some point
+learn they belong to the same person and thereafter share a history. Nothing about that requires either
+one to pretend to be the other — which is what makes "always a new actor" the clean answer rather than
+a limitation, and it is why the roster having two entries is only a bug when the UI shows both to a
+human as though they were two people.
+
+**D-19. How does a device find the other devices that are yours?** _(The hole D-4 was circling.)_
+
+Today the mechanism is three text fields typed identically on both devices, which Rule 1 forbids and
+which is also the only reason the two ever meet. So this is not a refinement of an existing flow; it is
+a flow that does not exist yet. Options, all of which assume something about the credential:
+
+| Option                         | The user does                                          | Needs                                                           |
+| ------------------------------ | ------------------------------------------------------ | --------------------------------------------------------------- |
+| Manual configuration (today)   | Types endpoint, room and token on each device.         | Nothing. Violates Rule 1, in today's words.                     |
+| Implied by signing in          | Signs in. Their devices belong to the bound principal. | An account, so **D-14** and the Account level (§5.1.1).         |
+| Pairing between devices        | Scans a code shown on the other device.                | Both devices present at once; a pairing protocol; no account.   |
+| Discovery on the local network | Nothing, on a shared network.                          | mDNS or similar, which a browser cannot do — so a relay anyway. |
+
+> **Decided, and simplified by D-16: one discovery flow, with a selected key-delivery path.** Discovery is
+> **implied by signing in**. The accountless pairing flow is **not built as a separate mechanism or a
+> separate trust root**. Enrollment obtains the content key through the custody path D-17 selects;
+> out-of-band approval by an existing device is one available path, not a requirement of every enrollment.
+
+**Why enrollment has two logical jobs, and why this is not the old rung 2 wearing a hat.** Signing in on a
+new device proves to the service who you are. That is enough for the service to admit the device
+provisionally, hand it the workspace identifier and serve it ciphertext. Under D-20's intended
+non-escrow shape it is **not** enough to read anything, because the service does not hold the content key
+and cannot mint one (§5.7.5). The second job is therefore obtaining that key through D-17's selected
+account-custody path:
+
+| Where the key comes from                    | What the user does                             | Selected in |
+| ------------------------------------------- | ---------------------------------------------- | ----------- |
+| An existing authorized device delivers it    | An out-of-band ceremony between the two devices | §5.7.2's second gate |
+| A non-custodial recovery factor unwraps it   | Present a passkey with PRF, or a saved code     | §5.7.5 row 2 |
+| The service holds it                         | Nothing — and the product stops being E2E      | §5.7.5 row 3, which reopens D-20 |
+
+**The first row is the old pairing ceremony, and retaining it as a content-delivery option is not a
+hedge.** It is the convenient path when two devices are available. What it no longer does is establish
+authorization: the service admits the device and signs the epoch, while the ceremony transfers a key
+beneath that. Those are independent gates (§5.7.2).
+
+**Which ceremony it is remains a TRD selection, and this document has described it two ways without
+noticing they are different protocols.** *Show a QR on the laptop and scan it on the phone* is a one-way
+out-of-band transfer that carries the key itself. *Show a short code and confirm it on the other device*
+is a short-authentication-string check over an in-band key agreement, which needs the relay as a channel
+and has different failure modes and a different review scope (§5.7.8). Either satisfies the gate; they
+are not interchangeable in the security contract, so §8.1 names the choice rather than this section
+assuming it. Note also the direction constraint, which the worked example in §7 hides by choosing the
+easy case: the **existing** device delivers, so enrolling a laptop from a phone needs the laptop to be
+the one that can read a code.
+
+**Rule 1 is satisfied because sign-in _assigns_ the workspace identifier.** The account determines it, so
+nobody types one, and there is no third thing to configure. That remains the strongest evidence that the
+identifier belongs at the wire level and nowhere near a user (§1.2).
+
+**Three consequences, and the first is what D-16 bought.**
+
+1. **There is one authorization authority instead of two, and one recovery story instead of none.** The retired rung
+   had no recovery path at all — lose your only device and the group was gone, because pairing needs
+   something to pair against. Every synced user now has an account, so "sign in on the replacement" is
+   available for **authorization** through the service's recovery policy. **Content** comes from an
+   existing device or D-17's independently held recovery factor; §5.1.2 is explicit that those are
+   different properties. Do not let "sign in to recover" imply the second.
+2. **The device list is no longer deferrable.** An earlier draft suggested pairing could ship before a
+   device list existed, since there was no server-held copy to protect. There is now, from the first
+   synced user, so D-18's list arrives with sync rather than after it.
+3. **The promotion path is now the _only_ path, and it is where this class of product loses data.**
+   Every account-holder has local history on at least one device, and frequently on two. That is
+   **D-24**, and D-16 promoted it from an edge case to the main road.
+
+Enrollment ends at the same artifact the old two mechanisms did — a list of your own devices — which is
+the list D-18 revokes from and the one §1.4 calls the irreducible security surface. One screen, three
+jobs, now reached one way.
+
+**D-23. Does pairing alone trigger the name prompt?**
+
+> **Decided, and largely dissolved by D-16: the app asks for a name exactly once, at account creation.**
+> There is no longer an accountless multi-device state for the question to be about. "Exactly once" is
+> about the *name*; the same moment also requires the recovery code, which is the larger ask (§5.7.6).
+
+D-1's trigger bundled two events that D-19 pulled apart, and D-16 has now put one of them back together —
+**precisely, and only, at the first one**: account creation and the *first* hosted sync coincide, so
+"does pairing ask for a name" no longer names a distinct event. Later device enrollments do not coincide
+with a new identity question, and ask for no new name: signing in on a fourth device is not a moment the
+product needs to learn who the user is again. Enrollment still performs account authentication and the
+separate content-key-delivery gate (D-17). What survives is the substance — the name has an audience only
+when there is a service relationship to attach it to, and per D-2 every list shows one entry per person,
+which with one person is just you.
+
+**The consequence D-16 creates, and it is a real cost worth stating rather than absorbing.** Under the old
+ladder the app's first identity question arrived at the third rung, and a user with two devices never had
+to answer it. Now that question arrives at the boundary of the accountless product: **the moment you want
+your list on a second device, you are asked who you are and asked to create an account.** No commercial
+step is implied, because D-31 remains undecided. The account requirement is a sharper edge than the old
+ladder had; D-17 adds the separate recovery cost below.
+
+**And D-17 made that edge sharper again, which this paragraph did not originally account for.** The name
+is the small half. §5.7.6 makes a high-entropy recovery code mandatory at the same moment — generated,
+saved somewhere other than the device in hand, and **confirmed before the account exists**. So the
+accurate statement of the boundary is not "you are asked who you are"; it is **you are asked who you are,
+and required to take custody of something you must not lose.** §5.7.6's own options table calls that class
+of step the largest deliberate security interaction in the product, and it is now unavoidable rather than
+a fallback.
+
+That is a genuinely worse first experience than a name prompt, and it is worth being exact about why it
+is still the right shape: it is the **whole** of what non-custodial costs, paid once, at the only moment
+the user has a reason to care. The alternative is not a lighter version of the same product — it is
+§5.7.5's rejected rows, where either the service can decrypt or all-device loss is unrecoverable. There is
+no third option that keeps the promise and skips the ceremony.
+
+Three things make it defensible rather than merely accepted. It is **honest** — the questions arrive with
+the service that needs them, not before, and D-1's "never ask at first run" survives completely intact for
+the entire free product. It is **not a manufactured obstacle** — nothing was made worse to create it,
+which is precisely the test the retired rung failed (D-16). And it is **load-bearing rather than
+procedural**: unlike a name, the code is the thing that later makes *we cannot recover this for you* a
+true sentence instead of an evasion (§5.7.7).
+
+**Two consequences that belong to other decisions and should not be discovered inside them.** D-31 will be
+pricing a service whose signup has this gate in it, and the conversion cost of the gate is not the
+conversion cost of a name field. And D-25's copy now has to survive a user who has just been handed a code
+at the least motivated moment in the relationship — which is the same requirement §5.7.7 states from the
+recovery side, arriving here from the onboarding side.
+
+**D-5. What happens when a device with its own history joins a workspace that already has one?**
+_(Reframed in v15, **withdrawn in v16**. It began as "what should opting into sync for the first time do
+when the room already has a document" — a question about typing a room name, which D-11 removes and D-19
+replaces with sign-in. The number is kept so the landmark survives; what replaced it is D-24.)_
+
+> **Withdrawn. The state this decision governed cannot occur.** Signing in does not make a device's own
+> history join anything. The account workspace opens in its own local database keyed by _(principal,
+> workspace)_, and the device's existing Local workspace stays exactly where it is, with its principal,
+> its actor and its history intact (§2.2b, D-24). There are two workspaces on that device and no contest
+> between them, so there is nothing to adjudicate, nothing to confirm, nothing to export first and
+> nothing to replace.
+
+**What this withdrew, recorded because two rounds of machinery came off with it.** v14 answered the
+question with a git-style preview and a merge · theirs · ours · abort choice. v15 replaced that with a
+rule — the workspace's history wins, the joining device is told, offered an export and asked to confirm —
+plus the preflight, the automatic export and the crash-safe database switch §5.2.1 specified to carry it
+out. v16 removes the question those were answering. The rule was correct given a single local database;
+it was compensating for §2.2b's deferral rather than for anything the product wanted.
+
+**And the withdrawal is narrower than "no history ever meets another", which is the misreading to head
+off.** Two histories genuinely meet whenever they are **replicas of one workspace** that have diverged —
+two devices on the same account, one of them offline for a long time. That case merges, correctly and
+without loss, because the replicas share an ancestor; it is the ordinary offline-sync case and Yjs is
+chosen for it (§6, TRD §2). What has no meaningful merge is two histories with **no common ancestor**,
+and those are now two workspaces rather than one contested one. The distinction is mechanical, it is
+what makes this withdrawal safe, and it is recorded in §6 so it stops being re-derived.
+
+**Three places had sent common-ancestor cases here and were wrong to.** A lapse past retention (D-29), the
+migration cutover window (§5.11.2) and any resume after a long read-only period each read as "two
+histories meet" and each was routed to D-5's replacement rule. All three are divergent replicas of one
+workspace, all three merge, and all three are corrected in place.
+
+#### 5.2.1 Parallel storage is the mechanism, and today's code would get it wrong
+
+**The decision removes a flow, not the machinery.** Something still has to open a second local database
+and keep the two apart, and the hazard the previous draft identified is the reason parallel storage is a
+requirement rather than a preference.
+
+**The hazard is that today the app would merge without anyone deciding to.** `DB_NAME` is the module
+constant `'done'` (`src/crdt/persistence.ts`), and the room selects only what the one local document
+tries to converge with (§2.2b). So a provider constructed against the account workspace would begin
+exchanging updates with whatever document is already there, and the anonymous history and the account
+history would be one history before any screen was drawn. **That is the defect, and under v16 it arrives
+through sign-in rather than through a confirmation dialog that lost a race.** The fix is the same fix
+§2.2b named and is now unavoidable rather than eventual.
+
+Four requirements follow. They belong in the TRD rather than here, but they are recorded now because the
+decision is not implementable without them:
+
+1. **Sign-in opens a different database, never the current one.** The account workspace is keyed by
+   _(principal, workspace)_ and the anonymous one keeps its own key. No provider is ever constructed
+   against a content root that belongs to a different workspace. A connection is the merge, so the only
+   defence is that the two never share a store.
+2. **Neither workspace's provider may write to the other**, in either direction and including on
+   teardown, retry and error paths. This is the whole of the isolation guarantee and it is worth stating
+   as an invariant rather than leaving it implied by the key.
+3. **Promotion at account creation is a move, and is crash-safe.** When the user chooses to use a
+   never-established Local workspace (D-24), its contents become the account workspace's rather than being
+   copied — a copy leaves a stale duplicate that will be found later and believed. Which workspace a
+   database belongs to is a single committed fact, and an interrupted promotion resolves to exactly one
+   of the two states on next launch. A half-completed promotion that leaves identity and the content root out of
+   step is the state D-12 says must not be manufactured, and §5.5 already names carelessly built features
+   as the only cause of it under our control. A retired-lineage Local workspace uses §5.11.2's migration
+   transaction instead; the UI choice is the same and the cryptographic transition is not.
+4. **When does the content encryption exist? — answered: always** (D-34). Both workspaces are ciphertext
+   from genesis, so this requirement is discharged rather than pending. Never-established Local genesis
+   creates content-key generation `K0`. Its first account creation creates the recovery keypair, seals its
+   private key to the confirmed recovery code, creates and binds the enrolling device's signing and
+   wrapping credentials, wraps `K0` to the recovery public key and device wrapping key, admits an
+   authenticated genesis checkpoint, and starts uploading ciphertext. It is a key-custody and admission
+   step, not a data transformation, and there is no whole-document encryption pass to make crash-safe. A
+   retired-lineage Local workspace already has recovery and historical material and follows migration's
+   fresh-generation path. No lifecycle event decrypts persisted content.
+
+   This was the fifth requirement for four drafts, framed as *"somewhere in this transition a workspace
+   acquires a content key"* on the premise that Local was plaintext. Removing the premise removes the
+   transition. Requirements 1–3 are about which database is which; this one is about what is in them, and
+   the answer is that they are all the same.
+
+**Two rounds of this document treated the fourth as the hard one, and D-34 dissolved it rather than
+answering it.** Earlier drafts reasoned that if the local document were encrypted from genesis then
+encryption never "begins", and that if it stayed plaintext then account creation *is* a whole-document
+transformation needing crash-safety on requirement 3's terms — and then filed the choice under D-34. What
+made it look like a fork was the assumption that encryption-at-rest required a first-run prompt. It does
+not: the app can mint and manage the key silently, and the user-held factor is a separate optional
+strengthening (§5.7.4). Once that is separated, the first branch is simply true and the second never
+arises.
+
+**And the two workspaces on one device share one storage invariant**, which is what makes them cheap to
+hold side by side. Both are ciphertext, both from their own genesis, each under its own content-key
+generations.
+Nothing about signing in reaches backwards over the anonymous workspace and nothing needs to — it was
+already encrypted. What a copied profile takes is two ciphertext stores and, on the default tier, the
+means to open both; that is the honest statement and it is the same statement for each of them.
+
+**Three things this section used to require and no longer does**, recorded because their absence is the
+point rather than an oversight:
+
+- **The emptiness preflight is gone.** v15 required the app to establish whether the workspace and the
+  device were both non-empty before constructing a provider. That test was a *content* predicate — no
+  cards, no master-list or Goals text, no non-empty day — on a workspace the service is deliberately
+  blind to (D-20, D-28), so nothing short of fetching and decrypting could answer it, and a service that
+  answered it wrongly would walk a device into the silent merge the test existed to prevent. Nothing now
+  depends on the answer.
+- **The automatic export before the switch is gone**, because there is no switch and nothing is replaced.
+  Export remains what PRD principle 4 makes it and D-24 offers it on the retained workspace at the user's
+  convenience rather than as a safety net fired under time pressure.
+- **The ordering advice is gone.** "Create the account on the device whose list you want to keep" was
+  load-bearing in v15 and is now merely sensible: whichever device creates the account is offered the
+  promotion, and every other device keeps what it has. There is no ordering that loses anything, which is
+  the clearest single measure of what changed.
+
+**Import is still owed, and now for its own reasons only** — the §2.4 migration and D-33's continuity
+requirement, neither of which depends on this transition. Its placement against the freeze is the one
+enabling decision (§2.4, §6). What it is no longer doing is standing in as the escape hatch for a
+history the app replaced, which is the job §5.2.2 correctly said it could not do.
+
+#### 5.2.2 Import targets an empty workspace — a deliberate limit, not a tidy-up
+
+> **Decided, for now: import creates a workspace's contents; it does not merge into a populated one.**
+> That serves §2.4's migration and D-33's restore, which both target a clean install.
+>
+> **The cost is much smaller than it was, and v16 is why.** v15 accepted this limit knowing it left a
+> user whose history had been replaced holding a file they could read and could not put back. Nothing
+> replaces a history any more (D-5, withdrawn), so the limit no longer stands between anyone and their
+> own data — it is an ordinary scope choice about what import does, not a residual data-loss cost being
+> defended.
+
+**Two gates make merging-into-populated a different project, and only one of them was known.** The freeze
+was found (§2.4). The other comes from what `exportEntries` produces — a zip of `master.md`,
+`days/<date>.md` and, where retained cards have no visible collection, `recovery.md` (TRD §9):
+
+1. **Days collide by construction**, since entries are keyed by date and both sides have that date.
+2. **No card identity survives the round trip.** Cards are Markdown list items; nothing distinguishes
+   re-importing the same file from importing new content, so import is not idempotent and duplicates on
+   every repeat. Note that TRD §9 already requires export → import → export to be byte-identical, which
+   is a *format* fidelity requirement and not an identity one; it does not supply what this gate needs.
+
+**`NEXT_CAP` is not a gate, and an earlier draft was wrong to count it as one.** The cap is a commitment
+device for the user, not an invariant of the document. It binds the paths that *author* — `capacityFor`
+refuses the fourth item at creation (`moves.ts`), which is PRD principle 5's "by refusing the fourth item,
+never by rearranging what is already there" — and it does not bind replication, which is why *n* synced
+devices can already produce up to *n* × 3 Next items on one day and the interface simply shows more than
+three. That is deliberate existing behaviour, not a defect. Import sits on the same side of that line as
+replication, for exactly the reason §6 places it outside the freeze: it is the app reconciling histories
+rather than a person editing the past. So imported items do not silently vanish at the cap.
+
+**Attribution is not a fourth gate, because it is already answered.** `Card.author` is absent from the
+export and D-27 requires an authenticated actor, but PRD §11.3 assigns the **system actor** to
+"compaction, import, and bulk operations", and §1.3 already permits an authorized credential the narrow
+ability to represent it. Imported content is a system write.
+
+**And this is where Markdown-for-everything reaches its limit, which is worth naming rather than
+patching around.** Plain Markdown is the right *escape* format — its job is that another program can read
+your writing, and PRD principle 4 commits to exactly that. It is the wrong *round-trip* format, because
+the identity the app needs to reconcile two histories is precisely what plain text does not carry. That
+is not a defect in the export; it is the format doing its own job and not a second one.
+
+**The second format already exists in this document, under a different name.** §5.11.2 requires an
+encrypted fidelity archive "containing CRDT state and the material needed to resume", and treats it
+purely as a survivability artifact. It is also the format that could carry import history, because CRDT
+state is what makes card identity survive. Recording that here means the eventual answer to non-empty
+import is a *format* question already on the roadmap rather than a new one — though note the archive is
+encrypted under workspace content-key generations, so a Local-level fidelity export needs an explicit
+portable wrap rather than an account recovery keypair it does not have.
+
+**What a non-empty import would look like if it is ever built**, recorded so the shape is not re-derived:
+
+- **The text half is easy and manual.** A second Goals or master list is appended beneath a horizontal
+  rule and a label saying where it came from, and the user cleans it up. No per-character merge, no
+  adjudication — the same instinct D-24 applies at the workspace level, applied one level down.
+- **The structured half is the unsolved part**: day collision and duplicate suppression without ids. Not
+  the cap, which tolerates the overflow.
+- **A mechanical CRDT merge is available and meaningless, which is the argument against it.** Two
+  independent documents *can* be merged — `Y.applyUpdate` both into one — and §2.2b already describes
+  what that produces and calls it a defect: interleaved text and both sets of cards in arbitrary order.
+  So the objection is not that it is impossible. It is that the sophisticated version converges on the
+  manual version above, having first destroyed the thing it was meant to preserve.
+
+**What this leaves of S10 and the old room behaviour.** Today's silent, irreversible convergence on a
+room change (S10, S14, §2.2b) is still a defect, and D-11 still removes it. What changes is that its
+replacement is separate storage per workspace rather than a flow, a rule or a transition (§5.2.1).
+
+**D-22. Should merged content show its provenance?**
+
+> **Decided: yes, as a mode that is off nearly always.** Enabled from a settings menu — appropriately
+> buried, since it is niche. While it is on, the **off switch appears in the main interface** so it can be
+> dismissed immediately rather than hunted for. Not document history.
+
+Niche but genuinely used; Google Docs' document history is the proof that people reach for this when a merge
+gets big. The boundary that keeps it small is worth writing down, because this is the point where the idea
+starts wanting to become a feature: **this is a post-merge orientation aid, not a history feature.** It
+answers "which of my devices put this here" for as long as that is a live question. It does not answer
+"what did this look like last Tuesday", and building that is a different project.
+
+**The bound is the divergence, not the freeze window, and v16 corrects that.** An earlier draft made the
+freeze window the natural bound on the grounds that a frozen day is finished and nothing about it needs
+rearranging. That is true of *editing* and false of *reading*, and it picks exactly the wrong window: the
+merge this mode exists to explain is the one that follows a long divergence — a device offline for a
+month, a lapse (D-29), a migration cutover (§5.11.2) — and all of its mess lands **outside** three days,
+where a freeze-bounded mode would show nothing. The useful bound is *since this device last converged*,
+which is the same thing the merge itself is defined against. It stays a bound, so this remains an
+orientation aid rather than document history.
+
+Two useful facts about feasibility:
+
+- **For cards this is available now.** `newCard` records `author`, and a human actor is bound to one
+  member on one device (§1.3), so "which device created this" is already recoverable from that binding.
+  No new card data is needed.
+- **For the master list and Goals it is not.** Per-character attribution inside a document is explicitly
+  deferred (PRD §14, open question 2) and is the costly thing there. So line-level tinting in Goals needs
+  that decision first, and the card version does not have to wait for it.
+
+Which makes this splittable rather than off-topic: the card half is cheap and could ship with sync
+itself, and the text half is a different question about attribution granularity.
+
+**D-24. How does existing local history become an account, and what happens to local history on every
+other device?** _(Renamed twice. It was "how does a paired group become an account"; after D-16 there are
+no paired groups. **v16 widened it to absorb D-5**, which asked the second half of this question and is
+withdrawn.)_
+
+> **Decided: account creation asks once; signing in never asks.**
+>
+> - **At account creation the user chooses: promote this list, or start fresh.** Promoting moves the
+>   Local workspace's contents into the account workspace, and the existing principal, device identity,
+>   home-workspace membership and content root carry over — the account becomes the service binding rather
+>   than minting a replacement identity. The account binds fresh signing and wrapping credentials to that
+>   device identity. Starting fresh mints a new principal and workspace and **leaves the Local one
+>   untouched**.
+> - **Signing in on any device adopts, merges, replaces and re-parents nothing.** The account workspace
+>   opens in its own local database keyed by _(principal, workspace)_. Any Local workspace already on that
+>   device keeps its principal, its actor and its history (§2.2b, §5.2.1).
+> - **One list is visible at a time.** With a single local workspace — every user who never signs in —
+>   there is no indicator and nothing to choose. Where a device holds more than one, a context indicator
+>   names the current list and a picker opens the others (**D-30**, which relaxes Rule 1 for exactly this).
+> - **The retained Local workspace ends by export or deletion**, offered where a person would look for
+>   their own old data rather than in anything resembling workspace administration (Rule 1, D-30).
+
+**One question, at the only moment it means anything.** Account creation is the one point where the user
+has a list in front of them and is deciding whether it is the list they are taking with them. Everything
+after that is mechanical: a device signs in, gets the account workspace, and keeps whatever else it had.
+
+**The one product choice has two key paths, selected from authenticated lineage state rather than from
+the Local label.** A never-established Local workspace follows promotion: retain `K0`, create the first
+recovery keypair and authorization head, and admit its current state as the lineage's authenticated
+genesis checkpoint. A Local workspace with a signed terminal lineage record follows migration instead:
+preserve the historical-verification package, retain its recovery keypair where available, rotate to a
+fresh content-key generation and create a new lineage (§5.7.2, §5.11.2). Both read as *use this list*;
+the distinction exists so broadening Local to include retired workspaces does not make the old `K0`
+promotion procedure silently apply to them.
+
+**Promotion is a move rather than a copy**, and the difference is not fastidiousness. A copy leaves a
+stale duplicate of the promoted list sitting in Local storage, which a user will find months later, after
+it has diverged from the account workspace by everything they have written since, and reasonably believe
+is a second copy of their data. Moving means the same workspace and database acquire the live lineage;
+there is no earlier Local duplicate because that workspace became the account workspace. Signing out
+then closes its slot, and authenticating the same account reopens it; a different account opens a
+different slot rather than manufacturing a fresh genesis in the first person's place.
+
+**And "start fresh" is safe for the first time.** §1.1 has always warned that a signup which mints a
+fresh identity is the shape that loses a month of someone's history. That was true when the alternative
+to adoption was abandonment. It is not true now — the Local workspace is still there, still openable,
+still exportable — so the choice can be offered honestly instead of being steered.
+
+Three shapes were available and only one is destructive:
+
+- **The account adopts what is already there.** ✅ **Chosen as one branch.** The requirement it carries
+  lands on the account model rather than the UI: **the account has to be able to accept an identity that
+  predates it.** A design where signing up mints a fresh identity and attaches storage to it cannot do
+  this, and that is the design that falls out of an ordinary implementation.
+- **They coexist.** ✅ **Chosen for every device after the first, and for the "start fresh" branch on the
+  first.** v15 struck this out on the grounds that "exposing a second means a picker — which Rule 1
+  forbids", and left a note that it "should be re-examined" the day multiple workspaces become
+  revealable. The note was right, the premise was right, and **the conclusion was the thing to revisit**:
+  a picker is indeed required, and Rule 1 is what moved (D-30). A first draft of v16 tried to keep both
+  by making sign-in state the disambiguator; that survives exactly until an account is deleted and there
+  is no sign-in state left, which is the case that settled it. §5.4.1 already keeps the capacity for a
+  client to store several workspaces while showing one; v16 uses it for one person rather than reserving
+  it for a second.
+- **The account starts fresh and the local history is abandoned.** ❌ The one that loses a month of
+  someone's history, and the one an implementation drifts into if nobody writes down that the other two
+  exist.
+
+**What v16 removed from this decision, since two rounds of it were about mitigating a loss.** There is no
+longer a sentence that has to appear in the interface at the right moment (*create the account on the
+device whose list you want to keep*), no safe and unsafe ordering to steer people between, and no case
+where two devices both hold content the user wants and one of them has to lose. Those were all real, and
+they were all consequences of a single local database rather than of anything the product wanted (§2.2b).
+What is still owed is one clear choice at account creation, the storage isolation in §5.2.1, and a place
+to reach the retained Local workspace.
+
+**The reverse direction is cleaner than it used to be, and worth stating because it is now a supported
+end state rather than a fall.** Deleting the account retires the service authorization lineage, so each
+device becomes an independent **Local** install and they stop converging (S36). Nothing is locked; what
+ends is synchronization. That is the free product, arrived at from above. A lapse is deliberately
+different: it suspends entitlement and may expire hosted content, but leaves the account and authorization
+lineage live (D-29).
+
+**Which v17 makes one question sharper: one local user slot may now come out of that with two Local workspaces.**
+The former account workspace becomes Local on every device that held it, and a device that also retained
+an anonymous workspace from before it signed in has both — with **no account left to distinguish them**.
+That is the case that forced D-30's relaxation: sign-in state was doing the disambiguating and account
+deletion destroys it. The local user slot survives and supplies the privacy boundary instead. So inside
+that slot the device shows the context indicator and picker, the former account
+workspace is what is open when the dust settles because it is what the user was using a moment ago, and
+the anonymous one is one selection away rather than behind a stipulation. It is also a good moment to
+offer its export or deletion, since the user is already looking at what they keep.
+
+**Deletion says where the list continues; it does not prune the other devices.** The instinct is to have
+the user nominate one device to keep the workspace and clear it from the rest, and it is the wrong shape
+twice over. It is **destructive at a distance and can only be a request** — a device that is offline
+keeps its replica whatever was chosen, so this lands in D-18's requested · committed · acknowledged
+shape and Rule 2 forbids a confirmation that says "removed from your other devices". And it **concentrates
+the two-workspace case rather than diluting it**: the natural nominee is the device that created the
+account, which after a *start fresh* is exactly the device already carrying a retained anonymous
+workspace. So:
+
+- **Every device keeps its copy.** Most people deleting an account want to keep using the app, not to
+  consolidate onto one machine.
+- **The confirmation records which device the list continues on**, extending what D-24 already requires —
+  a verified-current device identified, stale ones named. The nominated device can then say *your list
+  continues here*; the others can say *copy as of ⟨date⟩; your list continues on ⟨device⟩* and offer their
+  own export and deletion.
+- **A device that was offline at deletion shows a copy with no pointer.** That is a missing label rather
+  than missing data, which is the acceptable failure mode and the reason this is informational rather
+  than destructive.
+- **A slot that was closed at deletion is a local-unlock/terminal-package case, not a service-sign-in
+  case.** The nominated active device is the ordinary continuation. A closed slot on an offline device may still be unlocked with its
+  account-bound local verifier, but that cannot restore an account session. Importing the signed terminal
+  package completes its Local status and historical evidence; if the ordinary unlock proof is lost, the
+  terminal package plus recovery factor may rebind it locally. The confirmation names those dependencies,
+  and a user who holds neither proof must reopen or export any device they intend to keep before deletion.
+
+**The workspace stays encrypted, and this reverses what a previous round of this document decided.** That
+round reasoned that Local was plaintext and the account content key existed only to blind a relay and a
+server copy the exit removes, and concluded that leaving Account meant **decrypting in place**. D-34
+removes the premise: Local is ciphertext too, from genesis, so there is nothing to decrypt *to*. Account
+deletion leaves each device opening its last replica with content-key generations it already holds; no
+account-lifecycle event ever materializes a plaintext database. Lapse expiry changes hosted custody, and migration creates a
+fresh generation under the new lineage (§5.11.2).
+
+Two things follow, and both are better than the version they replace:
+
+- **Nothing on the device depends on a service-held root.** Each device already holds the content-key
+  generations needed by its last replica. First promotion adds a recovery keypair and wraps each needed
+  content generation to its public key; a later migration retains or deliberately replaces that recovery
+  identity. The service never holds an unwrapped content key or the recovery private key. Enrollment
+  copies `R_pub` and the opaque code-sealed `R_priv` envelope into every workspace package, so account
+  deletion can remove the service copies while each device keeps those artifacts and the content keys its
+  last replica already had.
+- **Nothing about the exit is opportunistic any more.** The decrypt-in-place answer had to be best-effort,
+  because a device offline across the deletion cannot be told and cannot distinguish a deleted account
+  from an unreachable relay (§5.7.1). Now there is nothing it needs to be told in order to keep working:
+  an active slot, or a closed slot whose user still has its offline unlock proof, opens its workspace
+  exactly as before and simply stops syncing. An offline device may miss the continuation pointer,
+  terminal record and bounded historical package; those affect labeling and verifiable history rather
+  than its ability to use the content and keys it already holds.
+
+**If the optional device lock is enabled, this still needs no special case.** The lock strengthens custody
+of keys that already exist rather than introducing them, so the exit is unchanged — the same store and
+same locally held generations, with the service recovery material gone (§5.7.4).
+
+**Retirement remains distinguishable from genesis, including on a device that misses deletion.** Before
+the service deletes its copy, it commits a signed terminal lineage record. Every participating replica
+and the verified portable package receive that record plus `R_pub`, code-sealed `R_priv`, enough public
+authorization history, verification keys, accepted-set evidence and recovery wraps for every content-key
+generation needed to support the historical attribution claims they retain. Participating devices keep
+the corresponding locally held keys. Those artifacts travel with the workspace rather than
+requiring the deleted account to remain queryable. They verify the past and authorize no future. The
+opaque recovery envelope and public material therefore need to be synchronized before deletion, not
+invented during it.
+
+An offline replica cannot receive the new terminal package, and deletion must not pretend otherwise. It
+keeps its last signed **live** head, which is stale but still sufficient for D-12's safety rule: the
+workspace is historically admitted and must not silently re-mint identity. It keeps working as a
+detached last replica but cannot locally claim to have observed retirement or show the continuation
+pointer. Importing the terminal package later from the nominated device or portable archive upgrades its
+knowledge; lack of that import loses labeling and bounded verification material, not the data it already
+holds. The exact package and transfer are TRD work (§5.11.2, §8.1).
+
+**The principal survives, and this document never said so although its own argument requires it.** §1.1's
+first ground is that the account *adopts* an identity that already exists; an identity that predates the
+account is not retired by ending it. §1.1's fourth ground says a lapse is a billing event rather than an
+identity event, and deletion is the same kind of event for the same reason — a service relationship
+ending is not the app forgetting who someone is. So each device keeps its principal, its actors stay
+grouped under it, and cards written on the phone still read as **You** on the laptop.
+
+**Which is the right outcome and not merely the tidy one.** The alternative — minting a fresh principal
+per device at deletion — would orphan every actor entry already in the document and reproduce §2.2a's
+roster of duplicate Yous, the defect this entire document exists to remove, arriving through a feature
+instead of a gap. Retaining it is also honest under Rule 2, because the principal is a claim about *who
+wrote what*, which stays true, rather than a claim that the devices are still one list, which does not.
+That second thing is what D-24 requires be said out loud, and the two are separable: **the same person,
+no longer the same list.**
+
+**But "each device keeps a complete copy" is false, and a v15 draft said it.** A device holds **its last
+local replica** — whatever it had synced when it last connected. A device that has been offline for a
+month, or that was enrolled and then left in a drawer, is missing everything since. Once the authorization lineage and the
+server-held copy are retired, there is nowhere left for it to get the remainder: the relay is gone, the
+other devices will not sync with it, and its gap is permanent. Rule 2 forbids describing that as a
+complete copy.
+
+Two requirements follow, and they are the price of account deletion being safe rather than merely
+available:
+
+- **Destructive deletion requires either a verified-current device or a fresh export.** Before the service
+  authorization lineage and hosted copy are retired, the app must be able to point at one replica it knows is up to date — or write the export
+  from one. Deleting an account while every reachable device is stale is a silent data loss with no
+  survivor, and it is the one shape of this that cannot be undone.
+- **A catch-up window before retirement is probably necessary**, not merely nice. Sync should continue
+  long enough for enrolled devices to converge before the service copy goes, and devices that never appear should
+  be named in the confirmation rather than quietly abandoned — the same honesty D-18 requires about
+  offline devices, applied to the moment it matters most.
+
+The one thing that must not be quiet about it is the divergence: from the moment sync stops, edits on the
+laptop and edits on the phone stop reaching each other, and Rule 2 forbids implying otherwise.
+
+**What happens if they are ever reconnected is a merge, not a contest.** Both replicas descend from the
+state the workspace was in when sync stopped, so Yjs converges them and nothing is chosen or discarded
+(§6). A long separation makes that merge *large* — both devices' cards on the shared dates, the master
+list merged at character granularity, more than three Next items on days where both devices used them —
+and large is the honest word for it rather than lossy. D-22's provenance mode exists for exactly this
+reading problem, bounded to the divergence.
+
+**This and D-5 were one question asked at two moments, and v16 discovered that only one of the moments
+was real.** v15 split them: D-24 decided which history becomes the workspace, and D-5 decided what
+happened to every other history that later met it. The second moment does not occur, because two
+histories only meet if they are made to share a store. So the whole question is asked once, at account
+creation, of the one device that has a list in front of it — and every later device keeps what it has.
+v14 proposed a four-way adjudication, v15 replaced it with a rule, and v16 finds there was nothing to
+rule on.
+
+**D-6. Can a dead actor be pruned, and by whom?**
+
+> **Decided, per Rule 2.** No auto-hiding — a person, agent or actor never silently disappears from a list because the
+> app inferred they were gone. Showing staleness is fine and honest: a device not seen for some interval
+> may be muted rather than removed. The interval is an open parameter.
+
+**Which surface this governs, since D-2 rules out the obvious reading.** Staleness is a per-device fact,
+and D-2's person-level lists have no device in them — five devices of which three are stale are still
+exactly one "You", and there is nowhere in that entry to put a muted state. So D-6 governs **the device
+list (D-18) and the authorization roster**, which are the surfaces that have devices on them. The
+person-level surfaces have no staleness state because they have nothing to hang it on.
+
+And what deletion could never do is worth keeping in view: cards carry an `author` id, so removing a
+roster entry removes the _name_, not the attribution. There is no version of pruning that unwrites
+history.
+
+**D-20. How is a member actually excluded?**
+
+> **Decided: content encryption with key rotation.**
+
+A correction first, because the previous draft said "local refusal does not work" and that was too broad.
+It is true of exactly one thing — **filtering incoming updates while remaining in the same document** —
+which fails for two independent reasons: Yjs client ids are random per document instance, so there is
+nothing durable to filter on, and a filtered peer's changes arrive transitively through any peer that did
+not filter. But **forking is also client-side refusal, and forking works.** The boundary genuinely can
+live on the client; what cannot work is staying in a document and declining to listen. Three mechanisms,
+then, not two:
+
+1. **Filter and stay.** Does not work, per above.
+2. **Fork.** Copy the state somewhere the excluded member cannot reach and tell the remaining members.
+   Works, entirely client-side, no server involvement — which is the point being made in review, and it is
+   correct.
+3. **Encrypt and rotate.** ✅ **Chosen.** Content is encrypted; on lost read access the key rotates and is
+   generated by an authorized client, wrapped only for the remaining reader credentials and `R_pub`, and
+   committed by the service with the authorization successor. The removed member or device retains a key
+   that opens history and nothing newer.
+
+**Rotation is fork's effect without fork's copy — and the difference that decides it is not the copy.**
+The mechanics differ in the right way: forking changes the document's _identifier_ and duplicates state,
+rotation keeps the identifier and changes _readability going forward_. But the deciding argument is
+Rule 1. A fork per membership edit is a new document identity per membership edit, which is room churn,
+which is the thing the user must never have to think about. Rotation leaves the user with the one visible
+home document D-11 says the current interface reveals. That is why this option is consistent with what is already decided and forking is
+not — the avoided history copy is a bonus.
+
+It also keeps the relay **content-blind**: forwarding ciphertext and validating its opaque envelope does
+not require parsing Yjs or learning plaintext. Cryptographic read exclusion therefore does not depend on
+schema-level service authority. D-28 still assigns account authorization and accepted-write finalization
+to the service and opaque validation to the relay; that is D-14's selected "partly" boundary, not the old
+"dumb pipe" model.
+
+**The three UX questions this raises, answered as far as they can be.**
+
+- **The excluded member or device.** It keeps everything up to the rotation. Anything newer arrives as bytes it
+  cannot read — so from the user's side the document simply stops updating. **Silence is the wrong answer
+  and Rule 2 forbids it**: "no new changes" is a false statement, and an interface implying it is the
+  same defect as auto-hiding a member. So an excluded credential has to be _told_, explicitly, which means the
+  rotation carries a signal it can still read even though the content is closed to it.
+  That is a protocol requirement falling directly out of a rule, and it is easy to miss because the crypto
+  works fine without it.
+- **Remaining members, between the rotation and receiving the new key.** They are not broken, only stale
+  on authorization: still holding the old key, still accepting the excluded credential's writes. This is where
+  D-26 comes from, and it is the hard part of the whole design.
+- **The excluder, before the new key propagates.** Their new content is unreadable by their own remaining
+  members until each of them has the key. So **rotation does not remove the propagation problem, it moves
+  it** — from "tell everyone the new room name" to "get the new key to every remaining reader credential".
+  After D-16 that problem is much smaller than it was: every remaining credential is reachable through the
+  relay, which holds the wrapped key until the device next connects. It is a store-and-forward problem
+  rather than a both-devices-awake problem.
+
+**Three costs to accept knowingly.**
+
+- **Key management becomes the hard problem.** It is the problem Keyhive and `@localfirst/auth` exist to
+  solve (§5.8), which is a reason to read them rather than to invent.
+- **Server-side anything that reads content becomes impossible**, permanently and by construction. Local
+  search (Phase 4, TRD §6.2) is unaffected because it is local. Server-side search, server-side export,
+  server-rendered anything: gone. That is probably a feature.
+- **Awareness exposes what content encryption does not.** Presence carries names, colours and cursor
+  positions. **The selected minimum is that awareness remains outside content encryption:** the relay may
+  learn who is editing which workspace and when while learning nothing about the text. It is ephemeral by
+  default and must not be durably retained. Encrypting awareness later is a permitted strengthening;
+  retaining it would require a separately stated product purpose and retention rule. This boundary has its
+  own row in the security contract (§8.1) so it cannot disappear inside a content-encryption decision.
+
+**And one honest note about which direction this cuts, because it is the opposite of the others.**
+§5.7.2 establishes that under one symmetric content key **edit implies read**. Agents are the reason
+membership attaches to a principal or agent rather than to an account (§1.1). So granting an agent edit
+hands the plaintext of the entire workspace — every day, the whole master list, all of it — to that
+agent and to whatever service executes it. The relay is blinded by construction and the model provider
+is not, which is a strange place for a document this concerned with confidentiality to arrive at without
+saying so. It does not change any decision here: the agent feature is a future maybe, unspecified, and
+belongs to its own document (§10). But the interface that grants agent membership has to present it as
+what it is — disclosure of the whole workspace — and that requirement is recorded here so the agent
+document inherits it rather than rediscovering it.
+
+Under every mechanism one thing stays true, and Rule 2 requires saying it out loud: **a member who has
+already synced keeps their copy forever.** Removal governs the future, never the past.
+
+**D-26. What happens when a revocation is learned late and the document has already diverged?**
+
+> **Decided, and D-16 collapsed this from the hardest decision in the document to one of the easiest:
+> the divergence is prevented from the moment the revocation is committed.** Here **committed** means one
+> atomic security boundary: the server has accepted the authorization successor and a client-produced
+> content-key generation with its reader and recovery wraps, then published an authenticated finalization
+> boundary for the removed credential's accepted writes.
+> Every sync is relay-mediated, so a revoked credential has no honest path to any other device, and the
+> two-lineage divergence this decision was named for cannot form.
+>
+> Nothing is discarded, no lineage is sanctioned over another, and filtered replay is not built.
+>
+> **Relay refusal alone is not this commit boundary.** The authenticated finalization component is what
+> makes the guarantee hold against a hostile relay — see §5.2.3 below. "Prevented by construction" was too
+> strong on its own.
+
+#### 5.2.3 Refusal at the relay is not the same as finalization
+
+**A v15 draft said the guarantee was unconditional, and it is not.** The threat model already contains a
+**malicious or compromised relay** (S42, §5.7.1), and relay-side refusal is exactly the control such a
+relay declines to apply. The attack does not require forging anything:
+
+1. Credential C, or an attacker holding it, signs an update referencing epoch *n*, which the credential
+   legitimately holds keys for.
+2. The hostile relay **withholds it from the accepted set** rather than refusing it, and delivers it to
+   another device after C's revocation has committed at epoch *n+1*.
+3. The receiving client sees a validly signed envelope under a past epoch — and **must accept genuine
+   late-arriving old-epoch updates**, because a device that was offline across a rotation produces
+   exactly that shape. Local-first sync is asynchronous by design; "old epoch" is not evidence of
+   anything.
+
+**So the epoch field cannot distinguish "accepted before revocation" from "withheld until afterwards",
+and nothing else in the current design does either.** Signature verification passes, epoch verification
+passes, and the update lands.
+
+**What closes it is authenticated acceptance evidence plus a content finalization boundary**, and the
+security contract has to specify both. Three shapes are available, all cheaper than the partition-tolerant
+machinery D-16 deleted because there is one authorization service to commit the answer:
+
+| Mechanism                                      | How it closes the hole                                                                      |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| **Per-envelope acceptance receipts**           | The authorization service signs each accepted envelope digest and sequence; clients admit only receipted envelopes, so the relay cannot turn a merely valid signature into an accepted write |
+| **An append-only accepted log with inclusion proofs** | The authorization service commits a gap-free, non-equivocating per-credential log; each delivered envelope carries proof under an authenticated log head, and revocation finalizes C's last accepted head |
+| **A checkpoint plus an authenticated suffix**  | A checkpoint attests the accepted prefix; every later envelope still carries a receipt or inclusion proof until the next checkpoint and the revocation cutoff |
+
+The middle one is the closest fit to the structures already required, but **a numeric high-water mark by
+itself is not a finalization boundary.** A compromised credential can sign two different envelopes at the
+same sequence or fill a gap the authorization service never accepted; a hostile relay could then choose
+which valid envelope at or below *k* to show a client. The accepted stream therefore has to be non-equivocating from a
+client's point of view — for example, a gap-free per-credential hash chain whose final sequence and head
+digest are committed together, with inclusion proofs for the delivered envelopes. The revocation is
+already a committed authorization event, so adding that authenticated head makes the cutoff part of the
+same signed object every client must fetch anyway. It also composes with D-33's checkpoint manifest, which
+already binds an authorization head to a covered update range (§5.11.3).
+
+**The acceptance proof is needed before revocation too.** A cutoff learned at epoch *n+1* cannot prevent a
+stale client that still knows only epoch *n* from applying an unaccepted envelope while a hostile relay
+withholds the successor. Requiring a receipt or inclusion proof on every applied envelope closes that
+timing hole: the relay may hide the new authorization head, but it cannot supply acceptance evidence for
+the withheld write. The client refuses the write without needing to know yet that C was revoked. If the
+relay withholds the proof as well, synchronization stops; that is the availability failure §5.7.1 permits.
+
+**Two things this does not do.** It does not reopen D-16 — the hole exists on any relay-mediated design
+and is far smaller than the sanctioned-lineage rule, precisely because the authorization service attests
+acceptance and issues the cutoff. And it does not make the relay trusted: the acceptance evidence and
+cutoff are authenticated under authority the relay does not possess and are verified by clients, so a
+hostile relay can still delay or withhold, which is availability rather than integrity (§5.7.1).
+
+**The honest phrasing, which replaces "prevented by construction".** Against a relay that behaves,
+divergence cannot form. Against one that does not, divergence is prevented by the finalization boundary —
+**which is a security-contract requirement that is specified but not yet designed**, and is now a row in
+§8.1 and a test in §5.7.8.
+
+**What this decision used to be, recorded because the deletion is the point.** Until v15 there were two
+answers, one per path. The accountless path had no server in the content path, so a revoked device could keep
+syncing with a peer that had not yet heard about the revocation, and the answer was to **sanction the
+revoker's lineage and discard the divergence** — which cost the receiving device its own honest work,
+required an export-before-discard consolation, and needed a sanctioned-lineage rule in the protocol to
+decide which of two authorization successors was real (S49). That rule was the single largest piece of
+bespoke cryptographic design in the plan, and it existed **only** to serve the accountless path D-16 has now removed.
+It is gone with it.
+
+That is worth stating plainly for the cost accounting: **the accountless path's real cost was never TURN
+bandwidth, it was partition-tolerant authorization.** D-16 counted the transport and undercounted this.
+
+**The guarantee still needs a commit point, and the scenario names it: "A revokes C, _then goes
+offline_."** If A was offline when it revoked, the server has not heard, and C can still push. So
+"revoked" cannot mean "the owner pressed the button". Three states, and only the middle one is the
+guarantee:
+
+| State                                                 | What is true                                                              | What the UI may say               |
+| ----------------------------------------------------- | ------------------------------------------------------------------------- | --------------------------------- |
+| **requested**                                         | recorded locally; the server may not know; C can still push               | "Pending — not yet active"        |
+| **committed** (service accepted client-produced key package and finalized cutoff) | C cannot create an accepted write or receive the new key; no new divergence can form from here | "Revoked" |
+| **acknowledged** by every device                      | no remaining device is still accepting C; all replicas know the boundary  | "Revoked, all devices up to date" |
+
+Only **committed**, with all three parts above, may be presented as revoked. A request that has not reached
+the server — or an authorization successor whose content cutoff has not been finalized — is still pending.
+The implementation may make the three parts one transaction; the product semantics may not omit one. This
+supersedes the acknowledgement display sketched below: acknowledgement is the third state, not the
+guarantee.
+
+**The alternate-path bypass condition that used to qualify this guarantee is now satisfied by
+construction.** It held only if devices had no direct peer path routing around server enforcement — and
+after D-16 there is no peer path to have. Enforcement lives on every path because there is one path. That
+removes the old peer-path qualifier; it does **not** remove the hostile-relay qualifier, which is why the
+authenticated finalization boundary above remains part of the security contract.
+
+**What remains is a window, not a divergence.** Between **requested** and **committed** the server has not
+finished the transaction: it may not have heard the request, or it may not yet have published the accepted
+set and cutoff. C's writes may still be accepted into that pre-commit set. Those writes are **kept**.
+Nothing accepted before the finalized cutoff is discarded, because this is exactly what D-20 already says
+removal means: *removal governs the future, never the past.* A revoked device's accepted history up to the
+cutoff is part of the document in the same way a departed colleague's writing is part of a file. The old
+design's painful part was never this window — it was reconciling two lineages afterwards, and there are no
+longer two.
+
+**The principle that has to hold regardless: authorization reconciles before content.** Two devices settle
+the current epoch, credentials and capabilities before they exchange a single document update. Same shape
+as TRD §6.1's load-before-connect rule, and it deserves the same status. With one relay-mediated path this
+is now sufficient rather than merely necessary.
+
+**One display requirement survives, because the three states are still distinguishable and Rule 2 requires
+saying which one is true.** Once the service commits the new authorization epoch, client-produced key
+generation and wraps, **and publishes the authenticated content cutoff**, the device is revoked;
+acknowledgement means every remaining
+replica has learned that fact. "Revoked — 2 of 3 remaining devices are up to date" is honest and actionable.
+Before that commit the UI says "Pending — not yet active"; after it, an unacknowledged device is stale rather
+than evidence that revocation failed.
+
+**Two mechanisms this decision used to need are now unnecessary, and should not be rebuilt by reflex.**
+_Filtered replay_ — rebuilding a document from its update log while skipping a revoked participant's
+operations — was always limited by the fact that you cannot remove one participant's operations from a CRDT
+history without losing what was built on top of them. It is not needed and is not built. _Keep both_ —
+showing the user two lineages — would have violated D-11's deliberately singular surface, and the case that
+produced it cannot occur.
+
+**And the structural insight, which now reads as the argument for the decision rather than a consolation:
+the hard form of this divergence was a peer-to-peer problem.** Direct device-to-device sync creates a
+partition-tolerant authorization problem; server-mediated sync supplies one place to serialize revocation
+and finalize accepted content, provided clients verify that boundary rather than trusting relay behaviour.
+It bit hardest exactly where revocation is most wanted — the motivating case is a lost phone, and the
+window was "my laptop and the lost phone were online together while my other device was not", which is not
+an unlikely sequence. The old plan's answer was to name that risk as a reason to adopt hosted sync. The current plan's
+answer is a single relay path plus a client-verifiable finalization boundary.
+
+**D-7. Should undo ever cross devices?**
+
+> **Decided: no. Distributed undo is a bad idea, and undo never leaves the device it happened on.**
+
+This settles the ceiling and leaves the floor to D-15: within one device, undo is currently per tab,
+which is what every tabbed editor does and what the Google Docs comparison in D-2 also gives. Nothing
+here decides between per-tab and per-device, and the phrase "undo per device" is doing ceiling work
+rather than floor work.
+
+What it does settle is the PRD: §11.3's "undo scoped to your own changes" cannot use actor as a synonym
+for principal. One principal has several per-device actors, while undo remains per session and never
+crosses devices. The sentence needs the level written into it (§9).
+
+**D-15. Within one device, is undo per tab or shared across tabs?**
+
+> **Decided: per tab.** "Per device" in the D-7 discussion was a misspeak; the ceiling is the device and
+> the floor is the tab.
+
+Which is today's behaviour, what tabbed editors do, and what keeps a tab you are not looking at from
+losing work you can see. PR #18's assumption stands, and nothing about undo needs to change.
+
+### 5.3 Sessions — D-8, D-9
+
+**D-8. What is a session allowed to be seen doing?**
+
+> **Decided.** Any input surface in a document gets a caret showing where its cursor is — **one caret
+> per tab, including your own tabs** — and **all of your carets share your colour.** Labelled with the
+> person's name per D-2, never with the device or the tab. Separately, **the caret where input is
+> actually happening gets a distinguished treatment**, and that treatment is the same for everyone
+> rather than per-person. The peer list is **deduplicated**: it answers whether someone is present, not
+> how many times.
+
+The principle underneath is worth keeping, because it decides future cases without another meeting: **a
+caret represents an input device in the document, so it exists wherever input can happen.** Whether the
+input belongs to you is not part of the test.
+
+On colour: an intermediate draft of this document had colour distinguishing carets from each other
+rather than identifying their owner, and that was wrong. Google Docs is the reference and it settles it —
+a person is doing input in one place at a time, so a shared "active" treatment carries the "here is
+where the work is happening" signal, which frees colour to mean identity. Four tabs showing four carets
+in one colour is clearer than four colours, not less clear, because the question a caret answers is
+whose it is. **So PR #18's rule — colour comes from the actor — is correct as written, and that branch
+needs no change.**
+
+**D-21. What does "the active caret" mean?**
+
+> **Decided: locally active.** The caret in the tab you are looking at — which is your own cursor.
+> Nothing about global recency is relevant to a caret.
+
+The cheap reading, and it is very nearly already true: `yCollab` renders _remote_ carets as decorations
+while your own is CodeMirror's native cursor, so "the one you are typing in looks different" may require
+no mechanism at all. What it does require is a design check rather than a decision — that the native
+cursor reads as deliberately distinct from the remote-caret decorations, in both themes, rather than
+merely happening to differ.
+
+What this decision buys is what it avoids: no last-input timestamp in awareness, no cross-client
+agreement about recency, no highlight that travels between devices. The observation that a person is
+doing input in one place at a time remains the _motivation_ for the design without needing to be
+_modelled_ — each tab already knows whether it is the one being typed in, and no tab needs to know
+anything about the others to render this.
+
+**The peer list's deduplication carries the same dependency, and an earlier draft only noticed it for
+colour.** Deduplicating requires knowing which awareness states are the same _person_, and there is no
+principal to ask. Today `createSync` builds the list from awareness device names, which is why it says
+`Mac, Mac`. So: **dedupe by device id now** — awareness already publishes one, and it fixes the
+two-tabs case exactly — **by principal once D-19 lands**, and **never by name**, since D-3 exists
+precisely because two different Macs are both called `Mac`.
+
+**A dependency D-21 makes visible.** D-8 says all of your carets share your colour, and colour today
+comes from the actor: `resolveActor` assigns a random one from a fixed palette per actor, and awareness
+carries it as `user.color`. Since an actor is per device (D-4), two devices mean two colours — so "all of
+your carets" only holds within one device until there is a principal to hang a colour on. Which
+means PR #18's rule is exactly right for the case it can see, one device with several tabs, and the
+cross-device half of D-8 is deferred by dependency rather than by choice. It arrives with D-19's enrollment,
+not before.
+
+**D-9. Does the app ever tell you how many tabs you have open?**
+
+> **Decided: never — with a deliberately high-bar exception.** A count may be shown only when it
+> explains something the user is otherwise owed, _and_ the justification is strong enough to write
+> down at the time. Preference is to solve the underlying thing invisibly instead.
+
+The candidate exception raised is a PWA that cannot update because other tabs are open, so it is worth
+recording what is actually true of this app: the service worker calls `skipWaiting()` on install and
+`clients.claim()` on activate (`vite/precacheServiceWorker.ts`), so **it does not wait for tabs to
+close** and the classic "quit every tab to update" problem does not exist here. The residual case is
+narrower: activate also deletes the previous cache, so an open tab running the old build that later
+requests a lazily-loaded chunk finds it evicted. The fetch handler falls through to the network, so
+online it recovers silently and offline it fails — and the fix is cache retention or a reload prompt,
+not a tab count. Which is the shape the exception should always take: if a tab count is the answer,
+the question was probably wrong.
+
+The other candidate was Phase 4's search index, where one tab holds the OPFS lock and the others cannot
+search. TRD §6.2 already commits to saying so — but note that "search is unavailable in this tab" is
+the useful sentence, and it does not require a count either. **That candidate is not live**: D-34 starts
+the index in memory, so there is no lock to contend for until a persistent encrypted index exists
+(§5.7.4). The answer is unaffected, since it never rested on the example.
+
+### 5.4 Rooms — D-10, D-11
+
+**D-10. Is sync configuration a property of the device or of the document?** Today: the device, and
+each browser profile is configured independently by hand (S13, S23). Options: keep it local (a token
+belongs to the browser it was typed into, which is TRD §4.8's stated reason); sync the endpoint but
+not the token; sync everything but the token and prompt for that.
+
+> **Decided in principle, as Rule 1: the user never manages workspaces.** The mechanism is open and depends
+> on the principal/account credential model, but the target is that room management stops being a task rather than becoming
+> a nicer one.
+
+That rules something specific out, which is what makes it useful rather than aspirational: **the current
+settings panel is the thing being ruled out.** Three fields — endpoint, room, token — typed by hand on
+every device, is the maximal version of the task Rule 1 deletes. Whatever replaces it, the room name is
+not something a person types twice.
+
+It does not rule out a security surface, and §1.4's corollary says why: room management can disappear
+entirely, and security cannot. The irreducible minimum that Signal, WhatsApp and every serious system
+converges on is a way to verify a peer, a warning when a peer's identity changes, and a list of your own
+devices — and since D-18 and D-19 both want that same device list, the honest budget is one screen that
+serves all three, not zero screens.
+
+**D-11. What is a workspace (formerly "room")?** The largest decision here, and the one §2.2b shows is already half-made in
+a direction nobody chose.
+
+| Option                                                              | The user sees                                                                  | Forces                                                                                                                                                                                                          |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A relay detail, typed once                                          | One document, forever. The room field is plumbing.                             | S21, S22, S24 are permanent non-goals. Simplest, and honest about today.                                                                                                                                        |
+| **A document** — a room names one                                   | Switching rooms shows a different document. Nothing merges.                    | The local database becomes room-derived; the existing `done` database happens to match the default room name, which makes the migration lucky rather than hard. Raises whether the actor is per room or global. |
+| **A membership boundary** — a workspace is one content root plus grants | Switching workspaces changes both the workspace data set and its authorization boundary. | Introduces members and signed authorization state. Does not require the relay to read content, and does not require exposing a picker now.                                                                      |
+| Several rooms at once                                               | A picker; multiple local documents; possibly several open editors.             | Architecturally permitted; exposing the picker and navigation is separate product work.                                                                                                                         |
+
+Note what is **not** in that table any more. "A share of one document", where switching re-points the
+merge, was listed in draft v1 as an option; it is today's behaviour and it is a defect (§2.2b). No
+reading of "room" makes converging two unrelated histories the desired outcome, so whichever row wins,
+changing a room must not merge.
+
+The two live readings differ in one word: whether a room is **content** or **permission**.
+
+> **Decided in principle: permission.** A workspace is a membership boundary, and it is called a
+> **workspace** rather than a room (§1.2). The current interface reveals exactly one home workspace and
+> its content root to a principal; a device may host several principals; and "room" must not become
+> architectural, because the transport it came from is going away. None of those UI constraints limits
+> how many workspace memberships the architecture can represent.
+
+Those constraints do more work than they look like they do, and one consequence is worth confirming
+before it gets built on.
+
+**A workspace is one content root plus the list of who may reach it.** The root contains the master-list
+document and the daily collections described by the PRD/TRD. Content therefore does not become another
+container level — a workspace already implies exactly one root, and there is nothing left for a separate
+content level to distinguish.
+
+#### 5.4.1 Architectural capacity versus revealed surface
+
+The phrase "one logged-in user has exactly one document" read like a system invariant, and as an
+invariant it is **incoherent with sharing**: if Alice owns a workspace and joins Bob's, Alice reaches two
+documents, and mutual sharing produces two workspaces by construction. That contradiction is real, and it
+is resolved by separating two things the sentence was conflating.
+
+**Current product surface.** Inside an active local user slot, a principal is presented with exactly one
+home workspace at a time. That workspace has one content root containing the master-list document and its
+daily collections. There is no workspace creation flow or management UI; the conditional local picker
+below is the only selection surface. This is deliberate and it is what Rule 1 is about.
+
+**Architectural model.** A workspace contains exactly one content root; a principal or agent may hold
+memberships in several workspaces; an installation may hold several locally while showing one. The product
+reveals only the home workspace rather than making anything else impossible.
+
+**v17 spends part of that capacity, and it is worth being precise about which part.** A device that has
+been used locally and then signs in **stores two workspaces and hosts two principals** — the anonymous
+one and the account one (D-24) — in one local user slot. It still *shows* one at a time, and where that
+slot has more than one to show, D-30 permits a picker over them. A different person's slot is neither a
+picker entry nor a workspace count. So "an installation may store several" stops being a reservation for a
+future feature and becomes the ordinary case, and "one workspace shown" survives as a statement about
+the interface rather than about storage.
+
+**What remains unspent is the axis §5.4.1 was actually protecting**, and the two are easy to confuse
+because they look identical in a list. D-30's picker is over **local workspaces in one active user slot** —
+several retained histories for one person, without crossing an account/session boundary. What is still reserved for the
+human-sharing document is **several live memberships**: a principal reaching more than one workspace that
+the service authorizes, with invitations, permissions and navigation between them. The cardinality
+`principal → membership: many` is untouched by v16, and it must not be reached by growing the local
+picker into a membership list.
+
+The cardinalities, written down so they stop being inferred:
+
+| Relationship                 | Today                  | Architecturally          |
+| ---------------------------- | ---------------------- | ------------------------ |
+| account → principal          | none                   | 1 : 1                    |
+| principal → home workspace   | 1                      | 1                        |
+| principal → membership       | 1 (the home one)       | **many**                 |
+| membership → principal or agent | implicit principal  | exactly 1                |
+| agent → membership           | none                   | **many**                 |
+| membership → workspace       | exactly 1              | exactly 1                |
+| workspace → content root     | 1                      | 1                        |
+| workspace → membership       | 1 (later: plus agents) | **many**                 |
+| device → local user slot     | implicit 1             | **many** (D-13; shared installation) |
+| local user slot → principal  | implicit 1             | **many** (D-24 start-fresh retention) |
+| local user slot → workspace  | implicit 1             | **many** (D-24, D-30)    |
+| local user slot → live account binding | none         | 0 or 1; retired evidence is not a live binding |
+| device → principal           | 1                      | **many** (D-24; shared device) |
+| device → human actor         | 1                      | **many** (one per human membership represented on it) |
+| principal → human actor      | implicit 1             | **many** (one per membership × device) |
+| human actor → membership     | 1                      | 1                        |
+| human actor → device         | exactly 1              | exactly 1                |
+| device → session             | implicit **many**       | **many**                 |
+| session → device             | exactly 1              | exactly 1                |
+| device → workspace stored    | 1                      | **many** (D-24)          |
+| active local user slot → workspace shown | implicit 1        | 1, selected where that slot holds several (D-30) |
+
+**And membership is scoped deliberately, not by omission:**
+
+- **Currently in scope:** the human owner, and later **agent members** with read/edit capabilities that
+  are specified separately. Agents are why membership attaches to a principal or agent rather than to an
+  account (§1.1) — an agent needs to be a member without being a customer.
+- **Agent membership requires the owner to have an account**, and this follows rather than being chosen:
+  admitting an agent changes authorization, only the service changes authorization (§5.7.3), and a Local
+  workspace has no service. So agents live at **Account** and the free product has none. That is a real
+  boundary on §7's "Local asks for nothing, ever" — Local asks for nothing and correspondingly delegates
+  nothing — and it should be stated wherever the agent feature is described rather than discovered when
+  someone tries to grant one from a local install.
+- **Not currently planned:** another human joining the workspace.
+- **Future human sharing is a separate document.** It exposes multi-workspace navigation, invitations,
+  permissions, and the accountless-versus-account membership question, and none of that should be smuggled
+  in through a cardinality. It is a distinct product decision, taken deliberately or not at all.
+
+That distinction is the whole resolution: **capacity in the model, restraint in the interface.** Building
+the 1:1 as an invariant would make human sharing a rewrite; revealing only the home workspace makes it a
+feature.
+
+Also from §2.2b: the encrypted local databases are keyed by _(principal, workspace)_ rather than by room,
+while the device-local user-slot index controls which stores an authenticated local user may discover.
+Two principals on one browser profile need two databases, and neither should be named after a channel;
+two people on one installation additionally need two non-overlapping slot views over those databases.
+
+### 5.5 Resets — D-12, D-13
+
+**D-12. What does the app do when local identity is gone but the document remembers it?** S7, S29, S30.
+
+> **Decided in principle: treat the state as illegitimate.** Identity loss with a surviving document is
+> not a configuration to support gracefully. It should not be reachable, and where it is reached the app
+> should say so rather than paper over it by minting a replacement. What "say so" does next depends on the
+> distinction below.
+
+**How would we even get here?** The list is short, and the shape of the list is the argument:
+
+- a bug, including any sync-collision case that turns out to produce it — also a bug;
+- deliberate mischief, where someone deletes the identity keys and leaves the document;
+- **a feature we build carelessly** — a sign-out that deletes identity or slot membership while retaining
+  an undiscoverable document, a remove-from-device operation interrupted between keys and ciphertext, or
+  an id scheme clever enough to keep local state while re-linking identity.
+
+The third is the only one under our control, and it yields a constraint worth writing down: **sign-out
+does not clear identity, capability or document at all; it atomically closes their local user slot.** The
+destructive remove and reset operations do clear, and must be crash-safe across the slot index, keys and
+encrypted stores. Clearing IndexedDB is asynchronous and interruptible; navigating away mid-clear must
+resume or roll back rather than manufacturing this state.
+
+**The distinction that decides the policy is whether an authorization lineage has ever existed.**
+
+- **No authorization lineage — local genesis.** No other credential has been admitted and no service
+  authorization has been adopted. There is no authorization epoch. The actor id has no external audience,
+  so minting a replacement is harmless and is just the genesis case (S1) with extra steps.
+- **Live or retired authorization lineage — historically admitted.** The service has authorized something: a second
+  device, an agent member, a capability change. The workspace is now a shared artifact whose
+  authorization state means something. A fresh random identity that appears and begins writing is
+  precisely the unapproved-writer problem. The app must **not** silently mint one. A live lineage may
+  offer sign-in; a retired one cannot pretend the old service relationship can be resumed. The exact
+  quarantine or recovery surface remains open.
+
+**The old shortcut from the product label to the epoch is withdrawn.** Only the service changes a live
+lineage, but Local now includes both never-admitted genesis and replicas whose former lineage is retired.
+The detection question is therefore: *is there authenticated lineage state for this workspace, and is it
+live or terminal?* It is a separate signed object beside the document, not a field in it: the relay
+validates live epochs (§5.8.1), while a signed terminal record prevents a surviving replica from confusing
+retirement with absence. The state sits
+outside the content seal, and §5.7.3 makes the service's signed state rather than the roster the source of
+the device list. Naming the store matters here more than usual, because the whole point of this test is
+that it must not read document-resident, mutable, unauthenticated data — which is the mistake the
+withdrawn roster test made. **Absent means never-admitted genesis; a signed live head or terminal record
+means historically admitted.** Only the first may re-mint silently.
+
+**The lineage is a property of the workspace, not of the device, and v17 makes that distinction load-bearing
+rather than pedantic.** A device that has signed in can hold a lineage-absent Local workspace and a
+live-lineage Account workspace at the same time, in the same browser profile (D-24). So "is this device admitted" is
+not a question with an answer; "is *this workspace* admitted" is, and it is asked separately of each
+store the device holds. Revoking that device changes its replica attachment and does not erase the
+workspace's live lineage. Losing local identity is likewise per workspace: the same storage clear can
+leave a never-admitted workspace re-mintable and a live or retired one in the state this decision says
+must not be papered over.
+
+**The test this document proposed for telling those apart does not work, and is withdrawn.** The claim was
+that a surviving human roster entry proves the document predates the missing identity and has been shared.
+It does not: `resolveActor` writes a `kind: 'human'` roster entry on **every ordinary first run**, before
+any sync exists, so a never-synced document already satisfies the test. Nor does counting entries rescue
+it — two storage clears on a purely local document leave two orphaned human entries, which is
+indistinguishable from two devices having synced.
+
+The roster is mutable, unauthenticated and written by genesis, so it cannot be evidence of admission to
+anything. What the policy needs is a **monotonic, signed authorization lineage composed of epochs**. A
+never-established workspace has no authorization epoch. Account creation commits the first live head;
+later epochs advance whenever the set or scope of authorized credentials changes — admitting or revoking
+a device, admitting or removing an agent or human member, or changing a member's capabilities. Account
+deletion commits the terminal record rather than another live epoch.
+
+> **Decided in principle.** A workspace with no authorization lineage may re-mint silently; a workspace
+> with a live head or signed terminal record must not. The cases are distinguished by authenticated
+> lineage state rather than by the roster. What the app _does_ on detecting a historically admitted
+> document with no local identity is still open — see below.
+
+**And that epoch is not a new open question: several decisions require the same signed authorization
+state.** Its payload has to bind the workspace's membership grants, device and agent credentials,
+capabilities, and content-key generation. The generation is broader than membership because admitting a
+second device changes authorization without creating a second member.
+
+| Decision | What it needs from the authorization state                                      |
+| -------- | ------------------------------------------------------------------------------- |
+| D-12     | **signed, and verifiable without a local secret**                               |
+| D-19     | an enrollment admission binding the new device to the existing principal        |
+| D-20     | key rotation when a read-capable credential loses access                        |
+| D-26     | a definite committed epoch, signed and serialized by the authorization service  |
+| D-27     | the credential, capabilities and represented actor authorized for each mutation |
+
+Designing it once is therefore not a deferral of D-12 so much as a consequence of the decisions sharing
+one security object. It belongs in the security contract (§8.1) with the rest of the signing model.
+
+**What genuinely remains open in D-12 is a product question, not a mechanism:** on a historically admitted
+document with no local identity, does the app refuse to write, offer sign-in or recovery where the lineage
+is live, or quarantine the document until the human chooses? That is a UX decision about a rare and
+alarming state, and it blocks nothing.
+
+Related but separate, and now its own decision: whether the app tells the user that durability is not
+guaranteed. That is **D-25**.
+
+**D-25. Does the app tell the user when durability is not guaranteed?**
+
+> **Decided: yes, prominently and persistently.** An app whose central claim is local-first must not be
+> quiet about a context where the data is not durable. The warning names the reason and offers the action
+> — grant persistence where that is a real option, and otherwise route toward server sync.
+>
+> **And D-17 gave this decision a third condition, which is not a warning.** A hosted copy is recoverable
+> *by the user, with the code they saved*, and by nobody else including the service (§5.7.5, §5.7.6).
+> D-25 owns saying that at account creation, saying it without implying more, and being able to say
+> *the data is gone* to someone who has lost both their devices and the code.
+
+Today the storage state is reported into the menu, and the menu is a panel the codebase itself describes
+as usually closed. So the current arrangement is honest and invisible at the same time, which is the gap.
+
+**Warn about the property, not the diagnosis.** The instinct is to say "you are in private browsing", and
+that should be resisted: private-mode detection is unreliable, and every reliable-ish technique is a
+fingerprinting vector browsers are actively closing. What _is_ knowable is the consequence —
+`navigator.storage.persisted()` answers it directly, and that is the thing worth reporting. Likely causes
+can be offered as explanation without being claimed as fact.
+
+The reasons that need distinct copy, because they have different actions:
+
+| Situation                    | Detectable?                    | The action                         |
+| ---------------------------- | ------------------------------ | ---------------------------------- |
+| Persistence never requested  | yes                            | request it                         |
+| Requested and denied         | yes                            | explain; route to sync             |
+| Storage API absent           | yes                            | route to sync                      |
+| Insecure context             | yes (`isSecureContext`)        | fix the deployment; dev-only       |
+| Private or ephemeral context | **not reliably**               | report the property, not the cause |
+| Eviction risk on an old iOS  | engine-inferable, not directly | route to sync                      |
+
+**Two things worth knowing about the platform**, since they change how bleak this is:
+
+- **Modern iOS is fine.** The Storage API, including `persist()`, is fully supported from Safari 17 and
+  iOS 17. The 7-day cap on script-writable storage applies to origins that have _not_ been granted
+  persistence, so the grant is the exemption. There were reports that a grant may not survive a browser
+  restart and the documentation is thin, so the app should re-check on every launch rather than trust a
+  past grant — which `useStore` already does, calling `persisted()` on mount.
+- **The grant interaction is not ours to design.** Firefox shows a browser-controlled permission prompt
+  in a location we do not choose; Chrome decides silently on engagement heuristics; an installed Android
+  PWA may simply be persistent without ever asking. Standardising that is out of our hands, which is an
+  argument for the warning explaining the situation rather than pretending to drive it.
+
+A warning that can never be cleared is noise rather than information, so the escape hatch matters. Where
+persistence genuinely cannot be granted there are **two** honest resolutions, and an earlier draft named
+only the second: **export**, which is free, immediate and already built (PRD principle 4); and hosted
+sync, whose price is outside this decision. Naming the local remedy first matters — a storage warning
+must not function only as an account-acquisition surface.
+
+**The conflict this decision previously failed its own test on, and what D-16 did to it.** In v14 the
+accountless sync rung was Paired, whose live durability was "none — the group is it" with no automatic
+recovery story. Manual export remained an honest mitigation, but it did not keep a continuously current
+copy without repeated user action; hosted sync was the only automatic resolution. That does not make the
+tier logically impossible to describe. It does mean a transport choice manufactures a limitation that
+then demands recurring disclosure, which this document rejects as a product choice.
+
+D-16 removed the manufactured half of that. **A single local device holding the only copy is not a
+limitation the product built; it is what a local application on one computer is.** The statement "this
+is the only copy" is now a plain description of a configuration the user chose, of the same kind as a text
+editor saving to one disk — not a deficiency engineered so that a warning could point at it.
+
+What survives is the environment case, and the three conditions must each be treated differently — only
+the first is a warning at all:
+
+| Condition                                                          | Clears?                        | Treatment                                                                 |
+| ------------------------------------------------------------------ | ------------------------------ | ------------------------------------------------------------------------- |
+| **This context is not durable** — `persisted()` false (S29, S30)   | Yes — grant it, export, or move | D-25 as written: prominent, persistent, names the action                  |
+| **Only this device is known to hold a copy**                       | No — export or sync creates another | Stated once, at the moments it is actionable; never a recurring banner |
+| **The hosted copy needs your code** — Account, by construction     | No — it is what non-custodial _is_ | Stated once at account creation, and again wherever recovery is described |
+
+The first is a defect in the environment and warning about it is a service. The second is a measured or
+known property of this workspace, not something inferred from the Local label, and it belongs to the surfaces that describe their setup — the storage
+section of the menu, and the moment they are about to do something that assumes a second copy exists.
+
+**The third row is the one that will be got wrong, because the mistake is silence rather than a false
+sentence.** Nothing has to claim "we can restore your data" for an account-holder to believe it; *"your
+list is backed up to our servers"* is true, and a reasonable person reads recovery into it. So the copy
+has to carry the dependency in the same breath as the reassurance — the hosted copy is real, and the code
+is what opens it — at account creation, in whatever describes the account's storage, and at the moment
+the code is generated (§5.7.7).
+
+**And the sentence that has to exist before it is needed.** For a user who has lost every device and
+cannot find the code, the true answer is that the workspace is unrecoverable. That sentence is only
+survivable if nothing earlier implied otherwise, which is why this row is a D-25 obligation rather than a
+support-article problem. Its own test applies: *would this sentence exist if the product had no business
+model?* It would — a non-custodial local-first app with no revenue would still owe it.
+
+**One test to apply to any copy written for the second row**, because it is the test v14 failed and the
+one the outside reading will apply: *would this sentence exist if the product had no business model?* "This is
+the only copy of your data — export it, or turn on sync" passes; it is true, and a local-only app with no
+business model would still want to say it. "Your data is not safe until you create an account" does not.
+
+**D-13. What do sign-out, remove-from-device and handoff reset each do?**
+
+> **Decided: four operations have distinct semantics.**
+>
+> - **Sign out** ends account and relay sessions and closes this person's local user slot. It retains the
+>   slot's encrypted workspaces, identity, device credentials and content keys, and does not revoke the
+>   device grant.
+> - **Remove this account from this device** clears that person's local slot and requests revocation of
+>   this device's account grant. Local clearing is immediate; revocation is complete only at the service
+>   commit. The operation leaves the account lineage live elsewhere.
+> - **Reset for handoff** clears every local user slot on the installation and requests revocation of all
+>   account grants it can identify. It is the honest "there was never anyone here" action.
+> - **Remote revocation** withdraws a device grant but cannot promise erasure on the remote device; D-18
+>   leaves its last usable copy detached.
+
+**Those operations have to account for six separate local facts, and the earlier four-object framing
+omitted the first two.** The first five are under the app's control; the sixth is usually something the app
+can only warn about:
+
+1. **Account and relay session** — cookies, refresh state, scoped bearer tokens and in-memory account state.
+2. **Local user slot** — the device-local index that makes one person's retained stores discoverable and
+   keeps another person's stores outside their picker.
+3. **Identity** — `done.actor` and `done.device`. Display-level, and the only one an earlier draft
+   considered.
+4. **Capability** — this device's signing and wrapping credentials, any seals protecting them, and the
+   content-key generations it holds. This is what lets the device write as itself and read the workspace.
+5. **The document** — IndexedDB and the journal beside it.
+6. **External recovery material** — any copy of the recovery code the user stashed on this device, which §5.7.6
+   asks them not to do and some will do anyway. **The app can rarely clear this and must not imply
+   otherwise**: §5.7.6 deliberately gives the code no home inside the app, so the copies that exist are
+   in a notes app, a password manager, a screenshot or on paper, none of which this button can reach. So
+   object 6 is a *warning* rather than an action — the reset says what a person may still be relying on
+   and asks them to check, and it claims to clear only what it can actually see.
+
+**Clearing identity and document without capability is the shape to avoid, and it was the shape the old two-way framing
+described.** "There was never anyone here" is what a shared-laptop user means, and it is not achieved by
+removing the name and the list while leaving an authorized credential and a live content key in the
+profile — that hands the next person at that machine a device that can still read and still write, and
+does it while telling the departing user the machine is clean. **So a shared-device reset clears the
+session, slot, identity, capability and document together**, and should revoke account credentials at the service as well, since a machine you have handed
+over is exactly D-18's motivating case.
+
+**And after v17 the controlled objects live inside user slots, which gives that shape a second way to go wrong.** A
+device may hold an anonymous Local workspace and an account workspace at once (D-24), each with its own
+identity, document and capability. **Removing an account clears one person's slot; a shared-device reset
+clears every slot on the device.** Otherwise "there was never anyone here" hands the next person a
+readable pre-sign-in list while truthfully reporting that the account is gone. That is the same defect as
+leaving a live credential behind, arriving through the store the reset did not think to look in.
+
+**Sign-out is the ordinary case and is not a reset at all.** It clears session state, stops synchronization,
+removes decrypted views and active keys from memory, and closes the whole local user slot. Its encrypted
+stores and persisted key custody remain in that slot, and its device grant remains enrolled. Signing back
+into the same account discovers and reopens the existing slot rather than downloading or adopting it
+again. Signing into a different account opens or creates a different slot; D-30's picker is scoped inside
+that slot and cannot reveal the signed-out person's account workspace or retained pre-account Local one.
+
+**The account credential supplies the ordinary gate back into a closed slot, and that gate is local.**
+Account enrollment leaves an offline-verifiable slot-unlock binding on this device. Reopening requires
+proof of the same account credential, plus the optional device-lock factor if that slot uses one; knowing
+that a closed slot exists is not enough. That proof reopens already-local state and grants no relay token,
+account session or authorization change. When the service is reachable it separately authenticates the
+account and restores those network capabilities. This separation is why account session and local slot
+are different axes, and it preserves offline local use after sign-out without pretending a cookie is a
+content key. The exact credential and verifier construction — including offline-guessing resistance — is
+a security-contract parameter.
+
+A purely accountless Local slot has no account credential, so the baseline product does not present
+account sign-out as though it could protect that slot. On a shared installation its honest handoff
+operation is export if needed and reset, unless a separate local-profile unlock is deliberately added
+later. A retained pre-account Local workspace inside an account holder's slot is discoverable again
+through that account-bound slot, not through a global workspace picker.
+
+If the account is deleted from another device while this slot is closed, the retained local verifier may
+still reopen the slot offline; it cannot restore the deleted service relationship. The signed terminal
+package is then needed to prove retirement and complete the Local/historical-verification package, not to
+make local bytes readable. If the ordinary slot-unlock proof is also lost, importing that terminal
+package from the nominated device or archive and presenting the recovery factor is the fallback local
+rebind. The recovery factor grants no service authority. Account deletion must warn about and name
+signed-out or offline devices before committing because an offline one may have neither observed the
+terminal record nor retained an unlock proof its user can still present.
+
+**Local clearing and service revocation are two commits.** When the service is reachable, remove-from-
+device commits revocation first and then clears the slot. If it is unavailable, the app may still clear
+the local slot for a handoff, but it must report *local data removed; revocation not confirmed* and direct
+the user to revoke that device from another signed-in device when possible. Destroying the only local
+credential makes this copy inert; it does not revoke a credential that may already have been copied.
+The handoff reset applies the same status independently to every account grant it can identify. Neither a
+queued request nor a button press may be labeled **revoked** before D-26's service commit.
+
+This is an application/session boundary under D-34's default custody tier, not a new promise against a
+hostile person who can execute the app's origin from the same browser profile. The optional device lock
+cryptographically seals the persisted content-key custody for that stronger case. An untrusted handoff
+uses **remove this account from this device** or the whole-device reset rather than over-reading sign-out
+as erasure.
+
+**Two retained artifacts can be irreversible, and an earlier version of this paragraph named only one.**
+The document and external recovery material both destroy under conditions the app is differently able to detect:
+
+- **Clearing the document** is recoverable while Account still has current or retained hosted ciphertext,
+  and what it takes back depends on whether capability went with it. **Document only:** the device keeps its credential and content keys,
+  reconnects, and decrypts what it re-receives. **Document and capability together** — which is the
+  shared-device combination above — signing in restores authorization and ciphertext and *not the ability
+  to read it*: the content key comes back through §5.7.2's second gate, from an existing device or the
+  recovery factor. "It comes back when you sign in" collapses the four recovery objects and this document
+  has made that mistake before (§5.7.6). It is **total loss for any Local workspace whose last readable
+  replica this is**, and it loses whatever has not yet reached the hosted accepted set at Account. The app
+  knows the lineage, hosted state, pending work and local replicas it can see, and warns from those facts
+  rather than from the Local/Account label alone.
+- **External recovery material usually cannot be cleared by the app at all.** Losing every independent
+  wrap of the recovery private key can make hosted ciphertext permanently unreadable (§5.7.6, §5.7.7),
+  and signing in cannot undo that. The app cannot know whether another copy of the code survives, so a
+  destructive local removal or account deletion warns pessimistically without claiming to erase it.
+
+**And D-34 adds a third irreversible combination, which is the mirror of the first and easy to miss.**
+Capability includes the **content key that opens the local store**, not only the credential that signs
+for the network. So **clearing capability without the document orphans the document**: the ciphertext
+stays on disk and nothing can open it. At **Account** that is recoverable — sign in, and the content key
+returns through §5.7.2's second gate while hosted ciphertext and a recovery path survive — but at a
+never-admitted Local workspace it is total and final, exactly as forgetting a device-lock factor would
+be. The earlier warning was that clearing identity and document without capability leaves a live
+credential behind; this is the same list read in the other direction, and a reset that offers to "clear
+my identity" while leaving the data must not take the content key with it.
+
+**So both need warnings, and they are different warnings.** The document warning is conditional and
+checkable — say it when it is true, stay quiet when the service holds a current copy. The recovery-material
+warning cannot be conditioned on the fact that matters, so it says what it destroys and asks the user to
+confirm they still have the code elsewhere. Neither may ride along silently with a reset that is otherwise
+recoverable, which is the argument for keeping the six facts separable rather than shipping one button
+that clears everything.
+
+**The labels must carry the difference rather than trying to make two buttons converge.** Sign out says
+that this person's local data stays on the device and can be reopened by signing back in. Remove from this
+device says which local-only or unsynced work will be destroyed, clears the named slot, and revokes its
+grant only through the service commit — otherwise it says revocation is unconfirmed. Reset says
+every slot is cleared, warns that external recovery-code copies cannot be recalled, and
+never promises that an offline remote device was wiped. The actions overlap in no destructive side effect.
+
+### 5.6 The service-authority question — D-14
+
+**D-14. Does the relay stop being a dumb pipe?**
+
+This was originally framed as the decision that S25–S28 all reduce to. D-20 and D-27 expose why that
+was too broad: an opaque relay can carry ciphertext plus verifiable authorization metadata, while clients
+enforce key access and authenticated attribution. The relay's content authority is therefore one possible
+enforcement layer, not the only place enforcement can exist. So:
+
+- **No.** The relay forwards opaque bytes without deciding who connects or validating their envelopes.
+  This can still be secure at the document layer if clients verify authorization state, signatures and
+  key generations, but today's shared relay token supplies none of that and cannot separate tenants.
+- **Yes.** The relay gains plaintext or schema-level authority and becomes able to decide whether the
+  meaning of a mutation is allowed. That is a different system from the one TRD §2 describes and would
+  sacrifice the strongest consequence of client-side content encryption.
+- **Partly — and this is the position §2.3 uncovered.** The relay authenticates connections and can
+  validate opaque envelope metadata — workspace, authorization epoch, credential, signature, replay and
+  revocation — without reading document content. Clients remain authoritative for semantic capability and
+  attribution checks. Rooms become separable by credential; S27 is answered by D-27 and S28 by D-20/D-26.
+
+So D-14 is really two questions — _may the relay decide who connects?_ and _may it decide what is
+written?_ — and they have different costs and different answers available.
+
+> **Decided: "partly", and after D-16 that covers every synchronized workspace rather than one tier of
+> them.** The service authenticates connections and authorization state; the relay validates opaque
+> envelope metadata and signatures. It does not receive plaintext, parse Yjs content or decide whether a
+> mutation is semantically allowed. "No" and schema-level content authority are both rejected; D-28 fixes
+> the boundary.
+
+**One thing D-16 changed here, worth noting because it makes the second half easier rather than harder.**
+While an accountless peer path existed, any authority given to the relay was authority that half the users' sync
+did not pass through, so relay-side enforcement could never be more than defence in depth. With one
+mediated path, relay-side checks are on every byte that crosses between devices. That does not decide the
+content semantics — D-28 assigns those to clients — and client-side verification is still what the
+promises rest on, per D-20 and D-27. It does mean the relay's opaque checks are worth what they cost.
+
+**On "is there any other option, if revocation is part of the story?" — yes, and it is D-20.** Once content
+is encrypted and keys rotate on removal, a revoked device can connect and receive bytes it cannot read. Read
+exclusion is enforced by the key, not by the door. Relay-level refusal alone is therefore **defence in
+depth** for confidentiality and bandwidth; it is not the accepted-write boundary. D-26 and D-28 separately
+require authorization-service acceptance and finalization evidence so clients reject the revoked
+credential's future writes without giving the service plaintext authority.
+
+**On where defence against a headstrong agent belongs — key distribution is necessary and not sufficient,
+and the earlier draft stopped a step short.** "You cannot prevent a writer who holds the key; you can only
+control who holds the key" is true of _confidentiality_ and of _exclusion_. It is not true of
+**attribution**, and the difference matters most in exactly the case that motivated the question.
+
+A **read-capable member** can obtain the content key. Nothing about holding it stops an edit-capable member
+producing perfectly valid ciphertext that edits another actor's roster entry, or writes a card claiming
+someone else's `Card.author`. Signing _authorization operations_ authenticates who is in the workspace;
+it says nothing about who authored a given mutation. So an agent member — precisely the writer the concern is about — can
+impersonate its owner inside the workspace, and rotation does not touch that.
+
+That gap needs an invariant, and it is a product promise rather than an implementation detail:
+
+> **Every mutation admitted to the shared lineage is authenticated by a credential authorized at the
+> referenced authorization epoch. Its attributed actor is derived from that credential, or is an actor
+> that epoch explicitly authorizes the credential to represent.**
+
+Which implies signed mutation envelopes or authenticated operations, verified before admission to the
+shared lineage, not only key rotation. **D-27** is the product question underneath it.
+
+**And one factual correction that this depends on.** TRD §4.8 said, until this branch corrected it in
+place, that "transaction origins are still recorded in the update stream regardless, so coarse attribution
+is recoverable if it ever matters." That is not so. `Y.applyUpdate(doc, update, origin)` takes the origin
+as an argument supplied by the _receiver_; it is a local property of the transaction and is not encoded in
+the update bytes. What the bytes do carry
+is the writing document's Yjs **client id**, which is random per `Y.Doc` instance — per tab, per page
+load — so it identifies neither a device nor an actor durably. Nothing about attribution can be recovered
+from an update stream, and a design that assumed otherwise would be assuming a guarantee that does not
+exist (§9).
+
+**And on the Red Queen worry** — that this is complexity insisted upon where it could be opted out of. Worth
+recording the counter-argument rather than only the instinct: the opt-out version is not "less security",
+it is "any process that can reach the document is you", and that includes a browser extension, a shared
+laptop, a stale session on a sold phone, and any agent given access for one purpose. The 1990s assumption
+that whoever is at the keyboard is the owner was defensible when the keyboard was the only way in. It is not
+the design that costs less; it is the design that has already made a decision.
+
+**D-28 now closes the remaining half of D-14.** D-20 and D-27 set the client-verifiable guarantees;
+schema-level relay authority is unnecessary defence in depth with a much larger confidentiality cost, so
+the selected service boundary stops at opaque metadata and authenticated acceptance evidence.
+
+#### 5.6.1 Authenticated attribution — D-27
+
+**D-27. Is attribution authenticated, or advisory?**
+
+> **Decided: authenticated.** The invariant is adopted — **every mutation admitted to the shared lineage
+> is authenticated by a credential authorized at the referenced authorization epoch, and its attributed
+> actor is derived from that credential or explicitly authorized for it to represent.** Implementation is
+> deferred to the security contract (§8.1); what is settled is that the app makes this promise rather than
+> presenting a forgeable field as evidence.
+
+Today it is **advisory and undefended**: `Card.author` is a field, any writer can set it to any value, and
+`meta[actor:<id>]` is an ordinary map entry any edit-capable member can overwrite. That is fine while the only writer is
+you. It stops being fine at the first agent member, because "the agent did this, not me" and "I did this,
+not the agent" both become claims the document cannot substantiate.
+
+The indirection is deliberate. A human write is signed by a device credential and attributed to the human
+actor bound to that device and membership. An agent write is signed by the agent member's own credential
+and attributed to its agent actor; it does not need a device. A system operation is not a workspace member,
+but an authorized device, agent or hosting credential may be granted the narrow ability to represent the
+system actor. "Actor equals signer" would fail all three cases by collapsing an attributed identity into a key.
+
+| Option                       | The promise                                                       | Cost                                                                                                     |
+| ---------------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **Advisory** (today)         | "written by" is a label, not a fact — and the UI says so          | None, but any agent accountability rests on a value anyone can forge                                     |
+| **Authenticated writes**     | every mutation envelope is signed; invalid envelopes are rejected | Signatures verified on receipt, plus the authorization state D-20 needs anyway                           |
+| **Authenticated authorship** | the above, _plus_ the actor is derived or authorized              | Requires inspecting what an update touched, or deriving attribution from authenticated envelope metadata |
+
+The third is chosen. PRD §11.3's "cards record their author" then means what it appears to mean, which it
+does not today.
+
+**Promotion has one bounded exception to per-mutation source envelopes and it is not an attribution
+exception.** A never-established Local workspace has never put a mutation onto a shared lineage, so its
+local journal need not have been signed. When it first becomes Account, the enrolling device signs an
+authenticated genesis checkpoint over the existing state and binds the pre-account human actor and
+permitted system actor to its newly admitted credential. That device is attesting the one-device Local
+history it is promoting; future shared mutations use ordinary source envelopes. A workspace with a
+retired lineage cannot use this shortcut, because its historical writes already have several admitted
+sources: it uses migration's attribution-preserving package (§5.11.2). This is the attribution-side reason
+promotion and migration must inspect lineage history rather than treating every Local workspace alike.
+
+#### 5.6.2 Does it fit the latency budget?
+
+It can, for a structural reason rather than because signatures are fast: **the trust boundary is not the
+keystroke.** TRD §12 budgets keystroke → paint at under 16 ms p95, and that path is CodeMirror applying a
+change into a Yjs transaction in memory. Signing has no business there, and the shape of the API makes
+that hard to get wrong by accident: `crypto.subtle.sign` returns a promise, so while it can be _called_
+from a synchronous input handler it cannot _complete_ before that handler returns, and a signature
+nobody waited for is not on the keystroke path. The load-bearing argument is the next paragraph's, not
+this one's.
+
+Where authentication belongs is the boundary where bytes leave the device or arrive from another one. Three
+consequences worth stating now, because they shape the design rather than following from it:
+
+- **The synchronous journal stays unsigned, and that is correct.** `persistence.ts` writes each update to
+  localStorage synchronously so a page kill between transaction and IndexedDB commit cannot lose it (TRD
+  §6.1), and it cannot wait for an async signature. It does not need to: the journal never leaves the
+  device, and an attacker who can write your IndexedDB can write your JavaScript. **Authentication is a
+  property of the transport boundary, not of local storage.**
+- **Local replay must not verify.** If every historical update had to be verified on load, the cost would
+  land on "Yjs doc load < 500 ms" and "cold start < 2.5 s" and would grow with history. Verify at receipt,
+  trust the disk thereafter, and the load path is untouched.
+- **Preserve source-authenticated envelopes end to end.** A relay, store or future transport must not combine mutations from
+  several credentials into new bytes and sign the result as itself; that would erase the property D-27 is
+  meant to establish. A source may batch its own mutations when actor, credential and authorization epoch
+  are the same. Forwarded mutations retain their original envelopes. First sync therefore needs either the
+  signed envelope history or an authenticated checkpoint whose construction preserves attribution.
+- **A device retains its own outbound envelopes**, at least back to the last checkpoint it has seen
+  admitted. This falls out of the rule above rather than being an extra: attribution lives in the
+  envelope, so an operation separated from its envelope can never be re-attributed — update bytes carry
+  only a random per-instance client id (§9). The migration cutover depends on it directly, since a device
+  rejoining under a new lineage replays its own envelopes rather than trying to filter them out of a
+  merged delta, which is not possible (§5.11.2).
+
+So the keystroke budget need not absorb signing, but the latency question is not completely settled until
+the security contract chooses envelope and checkpoint granularity. The harder design cost remains the
+attribution half: either inspect what an update touched or derive attribution from authenticated envelope
+metadata instead of trusting a field in the document.
+
+#### 5.6.3 Undo is an append, and is not exempt
+
+An earlier draft said this gap "does not touch undo", which was too loose. **Undo is input.** `Y.UndoManager`
+does not remove history; it appends a new transaction whose ops invert earlier ones. So an undo produces a
+mutation, that mutation crosses the boundary, and under D-27 **it is signed like any other write**. There is
+no exemption.
+
+The narrower thing that is true, and worth keeping because it is the reason undo is safe: **the undo stack
+is assembled from in-memory transaction origins, which never travel.** `trackedOrigins` matches origin
+objects by identity, those objects exist only in the page that made them, and — per the TRD §4.8 correction
+above — nothing about origin is encoded in an update. So no document content can insert an entry into your
+undo stack, no matter what it claims. **Origin is trustworthy precisely because it never leaves**, and that
+same property is exactly why it cannot serve as cross-device attribution. One mechanism, two conclusions
+that look contradictory until you notice which direction each runs.
+
+One thing this forecloses: because undo appends, **undoing a revoked member's content is not a way to
+exclude them.** An inverse op is just another op, and they can write again. Exclusion is D-20; undo is
+housekeeping.
+
+### 5.7 The gates — D-16, D-17, D-18
+
+Three questions that decided the shape of the ladder in §5.1.1 and were not answerable by preference.
+**Two are closed, and closing the first changed the third's job.** D-16 is decided and did most of the
+work in v15; D-18 was already decided and is now non-deferrable because of it; and **D-17 is now decided
+too**, all five selections recorded across §5.7.2, §5.7.4, §5.7.5–§5.7.6 and §5.7.8. Closing it opened
+**D-34** (§5.7.4), a smaller question than any it replaced, **and v16 has since closed that as well.**
+
+**D-16. Where does the account/service boundary sit?** _(Decided, after one round re-opened. This and the
+pricing question were one row until v14; separating them is the correction. Pricing is D-31 and this
+decision does not anticipate its answer.)_
+
+> **Decided: hosted synchronization is the account boundary.**
+>
+> - **Local remains free and permanent.** The complete application on each surviving local replica, with
+>   export. No live account lineage, no service and no server-held copy.
+> - **Hosted sync requires an account** — relay-mediated, end-to-end encrypted, across devices that are
+>   never awake together, with a server-held encrypted copy. Whether that service is free or paid is D-31.
+> - **Peer-to-peer is not built.** Not as a tier, not as a separate authorization path, and not yet as a
+>   transport optimization.
+>
+> The prior candidate — direct device-to-device sync as an accountless rung beside hosted sync — is
+> **rejected**, and the "build both paths, then measure" instruction it carried stays withdrawn.
+
+**The derivation does not need a business model.** An account is necessary when the service first holds
+or decides something for a principal: a server copy needs an identity and retrieval credential, and
+revocation needs service-signed state. Accountless peer sync would add a second transport, discovery flow and
+authorization semantics without removing the signalling service or supplying survivability. The choice
+is therefore between one hosted path whose role is clear and two paths with different failure semantics;
+pricing does not decide between them.
+
+**The rejected candidate had a real product intention underneath it, and it should be recorded rather
+than dismissed:** let people synchronize their own devices without first establishing a service
+relationship. That is coherent. It failed on three independent execution grounds, any one of which is
+sufficient.
+
+#### Ground 1: the cost inversion
+
+**The accountless path was the expensive one.** The hosted path's shape is already running: `relay/src/server.ts`
+describes its own purpose as existing "because two devices that are never online at the same time still
+have to exchange bytes", and `relay/src/persistence.ts` implements exactly that window — one file per
+room, four dependencies, no native code.
+
+The accountless path existed nowhere and would have required a WebRTC transport, a signalling service, STUN,
+TURN for the 10–20% of connections that cannot connect directly, a second connection-establishment path,
+a second set of failure modes concentrated on the case most likely to fail, and a second revocation
+semantics (D-26).
+
+**One correction to how that argument was stated in v14, because the conclusion survives and the phrasing
+does not.** "The hosted capability is already built" is too strong. The relay that exists holds and applies
+a **plaintext** Yjs document — `Y.applyUpdate` on load, `Y.encodeStateAsUpdate(doc)` on write — and under
+D-20 it can do neither. A content-blind durable store needs client-produced authenticated checkpoints, a
+manifest binding each checkpoint to its authorization head and content-key generation, the update suffix
+after it, and retention rules for superseded checkpoints (D-33). Add D-27's envelope verification and
+D-26's commit point and the relay required is a substantially different program from the one running.
+
+The honest claim is therefore: **the shape is proven and the operating model is known**, whereas WebRTC's
+is neither. That is still decisive — a store-and-forward service whose failure modes are understood is far
+cheaper than that service *plus* a second transport — but stating it as "already built" invites a later
+discovery of the rewrite and a conclusion that this decision rested on a false premise. It did not; it
+rested on a narrower and still-sufficient one.
+
+#### Ground 2: its limitation would have dominated the product surface
+
+D-25 requires the app to say when durability is not guaranteed. Under the candidate path, "your data
+exists on your devices only" was permanently true for every accountless synced user. A user could maintain
+current exports, but hosted sync was the only automatic remedy. The result is a recurring warning created
+by a transport choice rather than by an unavoidable property of local use. This is a product-value
+objection, not a proof that no honest copy could be written.
+
+**The test that makes this precise, and it is worth keeping because it generalises past this decision:**
+*would you build this limitation if you had unlimited money and no business model?*
+
+- "We do not keep a copy of your data unless you ask us to" — **yes.** That is a privacy position, and a
+  well-funded local-first project would still hold it.
+- "Your two devices sync only while both are awake, over a transport built specifically to have that
+  property, while a transport without that property is already running" — **no.** It manufactures a
+  limitation without advancing privacy, independence or the product's core experience.
+
+A limitation that fails this test is not made desirable merely by disclosing it clearly. **A constraint
+whose principal product surface is a recurring warning deserves suspicion.** The current boundary
+passes the product test: local-only is not a degraded sync tier, it is an application on a computer, and
+D-25's copy for it is a description rather than a prompt.
+
+#### Ground 3: it might not have worked
+
+The retired rung synced only while both devices were awake and connected at the same moment. The device
+pair this product actually has is a phone and a laptop, and the phone spends the day as a suspended PWA
+in a pocket with no background WebRTC. The realistic experience is that nothing converges until the user
+deliberately opens both devices and waits — which is not a usable synchronization experience, it is
+friction that reads as broken.
+
+The test was to be a week of ordinary phone-and-laptop use converging without the user consciously
+performing a sync. **It is now moot, and worth recording as unrun**: the decision did not need it, but
+anyone reopening this should know the path was never demonstrated to be usable, and that the burden of
+that demonstration falls on whoever proposes it again.
+
+#### What the removal actually deletes
+
+The saving is much larger than a transport, and v14 mis-accounted it by counting bandwidth:
+
+| Deleted with the accountless path                      | Where it lived            | What it was                                              |
+| ------------------------------------------------------ | ------------------------- | -------------------------------------------------------- |
+| WebRTC transport, signalling, STUN, TURN               | D-31                      | A second connection path, maintained in parallel forever |
+| The sanctioned-lineage rule and divergence discard     | D-26                      | **Partition-tolerant authorization** — the largest piece of bespoke cryptography in the plan |
+| Divergent authorization successors                     | S49                       | A fork-resolution semantics with no server witness       |
+| The accountless authorization authority                | §5.7.3                    | A user-held root ordinary people would have had to operate and recover             |
+| A second trust root and a second discovery flow        | D-19                      | Two protocols where one now suffices                     |
+| The accountless branch of the revocation guarantee     | D-26, §5.7.1              | Every guarantee's qualifying clause                      |
+
+**The real cost of the accountless path was never TURN bandwidth; it was partition-tolerant authorization.**
+That is the finding, and it is why this decision was worth taking before anything WebRTC-shaped existed.
+
+**One entry belongs on the other side of that ledger, and it was written in the same commit as the ledger
+itself.** Removing the peer path is what forced D-33's promotion — §5.11 says so directly: the notional
+configuration in which a user depended on nobody is gone, so an **independently runnable client and
+service stack** stops being a roadmap item and becomes what makes the pitch true. That is not small:
+source and release artifacts for client, authorization service, relay and durable store under terms
+permitting indefinite independent operation, pinned dependencies and checksums, a documented versioned
+envelope and checkpoint protocol, a standalone restore tool, and a tested migration (§5.11.5). None of it
+appears in the table above, which counts only what the rejected path would have cost.
+
+**The conclusion survives the correction, and it is worth being explicit about why rather than asserting
+it.** The two costs are not the same kind. Partition-tolerant authorization was **bespoke cryptographic
+design** with no reference implementation, on the critical path, and load-bearing for a guarantee — the
+sort of work that is hard to scope and harder to be confident in. The survivability package is
+**packaging and documentation of software that has to exist anyway**: the client, service and relay are
+being built regardless, and D-33 obliges the project to make them independently runnable and to prove it
+once, rather than to invent anything. So the ledger still nets out in the same direction. What is no
+longer true is that the removal was pure saving.
+
+#### What is genuinely given up
+
+Two things, and only one of them is real.
+
+**An accountless cross-device story.** This is the true cost and it should not be minimised: a person with
+a phone and a laptop who does not want an account has two independent copies of the app. That trade belongs
+to D-16 regardless of how hosted sync is eventually priced.
+
+**The appearance of service independence, which was never real.** The retired rung looked like a
+configuration that would keep working if this company disappeared, and it was not one: browser peers need
+signalling and a rendezvous point, and a peer group that continues through service absence needs a
+fork-resolution rule it did not have. That resemblance is probably part of why the path survived four
+drafts of scrutiny. Real service independence comes from independent custody, portable software and a
+tested migration path — **D-33** — and none of those is a transport property. Note where independence
+actually now sits: **Local is the most service-independent configuration in the product** for an install
+that already exists, it is free, and it already exists. Reinstalling it still needs the survival package,
+which is a dependency the retired rung would not have removed either (§5.1.2).
+
+#### What would bring peer-to-peer back
+
+Deferred, not refuted. It returns as an **optimization beneath one envelope protocol** — never as a tier,
+a pricing boundary or a separate authorization semantics — and only when all of the following hold:
+measured relay egress is actually a cost worth attacking; measured device-pair overlap shows enough
+simultaneous reachability for a direct path to fire often; direct-connect success on the real
+phone-and-laptop network mix is high enough that TURN is not the common case; and a failed direct path
+falls back to the relay without changing document meaning. An emergency service-absent peer mode is a
+different feature again, belongs to D-33, and needs replaceable signalling plus migration to a replacement
+authorization service. It is not permission to continue the vanished service's lineage.
+
+**D-31. What does a synced user cost, and how should hosted sync be priced?** _(Deferred on purpose and
+split from D-16. It is a business-model question, not an identity or synchronization decision.)_
+
+> **Deliberately deferred and out of scope here.** D-16 requires an account for hosted sync and says
+> nothing about what that account costs. Hosted sync may be free, paid, bundled or metered without
+> changing any identity, authorization or transport decision in this document.
+
+**What makes deferring this safe.** Nothing architectural is foreclosed by not knowing the answer, and
+no sentence elsewhere in this document may rely on one. The eventual decision should use measured relay
+egress, durable-store writes, retained ciphertext, checkpoint volume, recovery downloads, payment costs
+and the ordinary economics of operating the service.
+
+**What to measure, when there are users**, since the list is short and the instrumentation is cheap to
+add before it is needed:
+
+- update-envelope bytes per active workspace at p50, p95 and p99;
+- relay egress, durable-store writes, retained bytes and recovery downloads;
+- checkpoint frequency and size (D-33's bounded recovery representation drives both);
+- the fraction of users who never create an account at all.
+
+**And one body of research this decision no longer needs, recorded so nobody repeats it.** The candidate
+boundary's unit cost hinged on WebRTC, whose two helper services have opposite economics: **STUN** merely
+tells a peer its own public address, and free public endpoints exist and are widely used; **TURN** relays
+the actual traffic, so offering it free means paying for strangers' bandwidth, and production-grade free
+TURN essentially does not exist. Reported figures cluster around **10–20% of connections requiring TURN**,
+with 8–10% attributed to symmetric NAT and restrictive firewalls. The mix here would have been unusually
+hostile — phone-to-phone across two mobile carriers is both the case most likely to fail and the case a
+task-list-on-your-phone product hits most. None of this bears on the current design, which has no WebRTC
+in it. It becomes live again only under the conditions D-16 sets for reopening peer-to-peer.
+
+**D-17. What does "reasonably secure" mean, concretely enough to test?** _(Decided. All five selections
+recorded; D-28 selects the protocol architecture that implements them.)_
+
+The earlier framing made this sound like a choice between "browser keys" and "real accounts". It is six
+choices: **what the product promises; whether any authority may change authorization outside the service; where
+an ordinary device key lives; what an account adds; how recovery works; and what counts as evidence.** An
+answer to only the first is an aspiration, and an answer to only the key-storage question is a mechanism
+without a threat model.
+
+**The second, fourth and fifth are answered by separating authorization from content custody.** No
+authority changes authorization outside the service; account recovery restores the service relationship;
+and a single user-saved code seals the recovery private key that unwraps content-key generations. The
+service holds authorization authority, the recovery public key and opaque wraps, and **no private or
+symmetric key that opens content** (§5.10.1). The third is answered in
+§5.7.4 and the sixth in §5.7.8, which closes D-17.
+
+**The first — what the product promises — was never a free choice**, and it is worth saying why the list
+above puts it first anyway. §5.7.1 derives it from decisions already taken rather than selecting it, so
+the honest reading is that the promise was fixed by D-20, D-26, D-27 and D-18 before D-17 was opened, and
+D-17's job was to assign each authority and recovery path without collapsing them. That is what the five
+selections do.
+
+**What D-16 did to the second of those, precisely.** D-16 removed the everyday accountless authority;
+the migration decision now removes the break-glass successor as well. The account service is the only
+authorization authority. If it disappears, the content moves to a new service under a new lineage rather
+than trying to prove that the new authority is the old one's legitimate successor (§5.7.2–§5.7.3).
+
+Several options remain unavailable without reopening decisions. D-20 requires content encryption and key
+rotation, so transport encryption with plaintext at the relay is not enough. D-27 requires authenticated
+attribution, so a shared room secret that lets every holder write as anyone is not enough. D-18 requires
+device-level revocation, so a principal-wide key copied unchanged to every device is not enough. D-26
+requires a server commit point, so a relay that merely forwards whatever arrives is not enough. The
+selected split is service authorization plus user-held content recovery; D-28 chooses its protocol shape.
+
+#### 5.7.1 The minimum promise already forced by the other decisions
+
+"Secure" without an attacker is not testable. This table is the minimum claim the recorded decisions
+already imply; choosing a stronger mechanism may improve individual rows, but choosing one that cannot meet a
+row means reopening the decision named above.
+
+| Attacker or event                                      | What must remain true                                                                                                                        | What is not promised                                                                                                                        |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Knows the relay URL and workspace identifier (S41)     | Cannot decrypt content, become a member or create an accepted mutation. A workspace identifier is an identifier, never a bearer secret.      | Cannot be prevented from reaching a public endpoint; rate and resource abuse are a service-availability problem.                            |
+| Passive network observer                               | Learns no content or reusable credential from traffic. Transport security still applies outside the content encryption.                      | Hiding that traffic exists, its rough volume, or the network addresses involved.                                                            |
+| Relay reading envelope metadata                        | The attributed actor is not directly present in envelope metadata — it is inside the seal (§5.8.1), so no actor identifier crosses in the clear. | **Not unlinkability.** The relay sees a credential identifier per envelope and validates authorization state that binds credentials to members and capabilities, so it can generally tell which device or agent wrote, and therefore a human's writes from an agent's. Sealing the actor removes a field, not the inference. Write times, rates and volumes per credential are visible and are not removable while the relay validates authorization at all. |
+| Relay reading awareness metadata                       | Awareness contains no document plaintext or content key and is not persisted by default; its state expires with the live connection (§5.10.1). | Concealing names, colours, cursor positions, workspace association or connection timing from the relay while live. Encrypting awareness would be a stronger design. |
+| Malicious or compromised relay (S42)                   | Cannot read content, forge an accepted mutation, sign an authorization epoch, make an already-seen older epoch look current, **or land a revoked credential's withheld old-epoch write after the commit** (§5.2.3). | It can delay, omit, reorder or refuse bytes. End-to-end encryption supplies confidentiality and integrity, not availability.                |
+| Malicious or compromised authorization service        | Cannot decrypt content, forge an existing device's mutation or cause content-key delivery by authorizing a credential.                      | It can admit or revoke credentials, change capabilities, choose the authorization state it recognizes, suspend the account or deny service. |
+| Leaked relay bearer token (S43)                        | Does not decrypt content, sign a mutation, authorize a device or recover an account. It is scoped, expires and can be refused independently. | The holder may consume relay service and obtain ciphertext or metadata until refusal or expiry.                                             |
+| Compromised authorized device or agent (S44, S46)      | Cannot impersonate another actor, exceed its capability or survive revocation by inventing authority it was never granted.                   | It can read everything its capability permits, copy it forever, and make every malicious edit its capability permits until revoked.         |
+| Revoked credential                                     | After the applicable commit point, cannot add an accepted write or decrypt a later content-key generation.                                   | Erasure of any plaintext, key or ciphertext it obtained before revocation. Removal governs the future, as D-20 already says.                |
+| Copied browser profile                                 | Persisted user content is ciphertext in every store, so the profile's files do not yield plaintext to inspection, backup imaging or a forensic tool (D-34). On a PRF-protected device the copied encrypted operational-key bytes are unusable without the authenticator; with a device lock enabled, the local content-key envelopes are unusable without the factor. Service revocation limits future access. | **Protection on the default key-custody tier against an attacker who can execute the app's origin from the copied profile** — the promptless local-custody key handle travels with the encrypted content-key envelopes and opens them there. Ciphertext at rest is a file-level property, not a code-level one, and the device lock is what supplies the stronger claim (D-34). Nor protection after the attacker can invoke the key through an unlocked app. |
+| Unlocked device or running app                         | After the service revokes its credential and the content key rotates, the attacker cannot extend access into the new generation.             | Protection while the attacker can run the app as the user, read its plaintext or exercise its current device capabilities.                  |
+| Same-origin XSS, compromised dependency or bad release | `R_priv` remains absent during ordinary operation. After hostile code is removed, the service can revoke operational credentials and a clean device can recover content and rotate its keys. | Confidentiality or integrity while hostile code runs with the app's origin and privileges, including any recovery material entered then. Client-side encryption cannot provide that. |
+| All devices and authenticators lost while hosted ciphertext still exists (S47) | Account recovery restores authorization; the independently stored recovery factor unseals `R_priv`; the hosted copy supplies ciphertext and content-key generations wrapped to `R_pub`. Together those paths complete workspace recovery (§5.7.6). | Authorization does not decrypt, the recovery factor does not restore the service account or missing ciphertext, and no party substitutes for a lost content-recovery factor. |
+| Service outage or disappearance (S50)                  | Existing local documents remain readable and writable; no local operation awaits the service.                                                | Server-mediated sync, server-held recovery material or a promise that the service's copy remains reachable after the service disappears.    |
+
+> **Decided as the minimum security promise.** A protocol that cannot meet every claim in the middle
+> column reopens the upstream decision that forced it. D-28 selects the architecture boundary; the TRD
+> and security review specify and test the mechanism without weakening this table by default.
+
+**The four recovery objects remain separate here as they do in §5.7.6.** Account recovery supplies
+objects 1 and 2 — account access and the service's authorization of a replacement credential. The saved
+code or another independent wrap supplies object 3, content-key access. A surviving device, hosted copy
+or archive supplies object 4, ciphertext. The service-disappearance path in D-33 creates a new account
+and authorization lineage, but it still needs independently available ciphertext and the content factor.
+
+**Copied storage and a running device are different attackers**, and D-34 draws the line between them
+rather than leaving it to the key-storage tier. The content beside the key is ciphertext in every case, so
+a copied profile yields no plaintext to a reader of files. What a copied profile still yields, on the
+default custody tier, is the ability to *run* the app and open it — which is the code-level threat, is
+what the optional device lock addresses, and is why the row above disclaims it explicitly.
+
+Two phrases in that table carry more work than they appear to. **Already-seen** is the bound on
+rollback protection: a returning client can remember the newest authorization head it has seen and reject
+an ancestor, but a brand-new client trusts the authorization service to identify the current head. And
+**accepted mutation** is stronger than "valid signature": a removed device can
+sign an update under an old epoch and lie about when it did so. **The answer is authenticated acceptance
+evidence plus the authorization service's committed ordering, and after D-16 that is the only answer needed** — there is
+no peer path requiring a sanctioned-lineage rule to settle which of two successors is real. A
+client-supplied timestamp is not an answer.
+
+#### 5.7.2 Service authorization, user-held content recovery
+
+The previous model made a user-held administration root portable so that the same authorization lineage
+could survive the service. That is more continuity than the product needs. **D-33 now requires migration
+of the data, not succession of the former service's authority.** Once that distinction is accepted, the
+authorization authority can live where the ordinary account experience already puts it: at the service. The
+recovery private key remains with the user, because authorization and decryption are different powers.
+
+| Artifact                                  | May do                                                                                                  | Must not do                                                                                              | Held by                         |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| **Account authenticator / local verifier** | Authenticate the person to the account service; prove locally that a closed slot belongs to them       | Decrypt content, sign mutations, create a relay session while offline or change authorization by itself  | User/authenticator; verifier in the device slot |
+| **Relay admission token**                 | Open a scoped transport connection for a bounded time                                                   | Decrypt, sign content, admit a device, change capabilities or recover an account                         | Device temporarily; service issues |
+| **Device or agent signing credential**    | Sign mutations as its authorized actor                                                                  | Receive a content key merely because it can sign; change service authorization                           | The device or agent             |
+| **Device or agent wrapping credential**   | Unwrap content keys if read-capable                                                                      | Sign mutations, change service authorization or represent an arbitrary actor                             | The device or agent             |
+| **Promptless local-custody key `L_local`** | Open this slot's encrypted local `K_g` envelopes on the default tier                                    | Sign, authenticate an account, unwrap `R_priv` or travel to another device                               | This device-local slot          |
+| **Optional device-lock custody**           | Replace promptless opening of local `K_g` envelopes with a user-factor gate                             | Sign, authenticate an account, unwrap `R_priv` or become a recovery factor implicitly                    | User factor plus this device    |
+| **Service authorization authority**       | Admit and revoke credentials, choose capabilities, sign authorization epochs and finalize accepted sets | Decrypt content, sign a device's mutations, represent its actor or deliver a content key by authorization alone | The account service             |
+| **Content-key generation secret `K_g`**   | Derive domain-separated encryption subkeys for one workspace generation                                  | Admit or revoke anything; authorize its own distribution; reuse one primitive key across stores/protocols | Current readers; only wrapped at services |
+| **Recovery public key `R_pub`**           | Wrap each `K_g` for recovery                                                                             | Unwrap any generation or authorize anything                                                               | Clients and service; public     |
+| **Recovery private key `R_priv`**         | Unwrap recovery copies of `K_g` after device loss                                                        | Admit or revoke anything, sign mutations or recover the service account                                  | Absent ordinarily; persisted only sealed to user-held factors |
+
+The device rows make the two cryptographic jobs explicit. Signing proves who sent an envelope; public-key
+encryption or key agreement lets a content key be wrapped for one reader. A library may represent them
+together, but the contract cannot assume that a signing key can also receive an encrypted key.
+
+**The asymmetric recovery shape is load-bearing.** A symmetric root present on every ordinary device
+would let a later-revoked device derive future generations; a symmetric root absent from ordinary devices
+could not wrap those generations without being re-entered. `R_pub` resolves the contradiction: an
+authorized client can create a new random `K_g` and make a recovery wrap during ordinary operation, while
+only sealed `R_priv` can open it. The service may retain `R_pub`, ciphertext and wraps without acquiring
+content custody.
+
+**The symmetric content key also collapses one apparently available capability distinction: edit implies
+read.** An agent cannot construct an encrypted Yjs update without the content key, and a holder of that key
+can decrypt the document. A nominal write-only agent could sign a _proposal_ that a read-capable device
+validates and encrypts, but then it is not independently editing while that device is offline. Achieving
+cryptographic write-without-read needs a different content construction, not a capability flag. So the
+agent feature may offer read and read+edit; it must not promise cryptographic write-only isolation while
+D-20 uses one symmetric document key. Granting an agent edit therefore discloses the whole workspace to
+it and to whatever runs it (D-20).
+
+> **Decided: the service is the authorization authority; the user holds the sealed recovery private
+> key.** Account creation binds the existing principal, device and workspace to a service-controlled live
+> authorization lineage. The service admits and revokes credentials, assigns capabilities and signs the
+> current authorization state. `R_priv` does one job only: recover content-key generations wrapped to
+> `R_pub`. A Local workspace has either no lineage or a signed terminal record; neither is a live authority.
+
+**Promotion of a never-established Local workspace is therefore a finite key and admission operation,
+not a content transformation:** keep the workspace and its current `K0`; create the enrolling device's
+signing and wrapping keypairs; create `(R_pub, R_priv)`; seal `R_priv` to the confirmed high-entropy code
+and any independent optional factors; wrap `K0` to `R_pub` and to the device's wrapping public key; sign
+the authenticated genesis checkpoint described by D-27; establish the first authorization head; then
+erase unsealed `R_priv`. The service receives only public keys, sealed private-key envelopes, wrapped
+content keys, ciphertext and signed admission evidence. A retired-lineage Local workspace is migration,
+not this operation: it retains the recovery identity where available and starts a fresh content-key
+generation under a new lineage (§5.11.2).
+
+**Rotation is client-produced and service-committed.** An authorized owner device generates fresh
+`K_(g+1)`, wraps it to every remaining reader wrapping key and to `R_pub`, and submits those wraps with the
+authorization successor and accepted-set cutoff. The service atomically commits and signs that package;
+it does not generate or rotate a plaintext content key. Removed credentials receive no wrap. Interrupted
+rotation and proposal races are protocol work, but no construction may give the service the key in order
+to simplify its commit.
+
+This model deliberately trusts the service for **authorization integrity and availability**, while not
+trusting it for content confidentiality or attributed mutation integrity. A compromised authorization
+service can admit or revoke credentials, change capabilities, freeze an account or lie about which
+authorization state it currently recognizes. It still cannot decrypt the workspace, forge an existing
+device's signature or produce a meaningful encrypted mutation without obtaining a content key. Those are
+different promises, and §5.7.1 must name both rather than treating "the server" as one undifferentiated
+attacker.
+
+**Enrollment therefore has two independent gates:**
+
+1. **Authorization.** Account authentication lets the service admit the new device credential and sign a
+   successor authorization epoch. No old or designated device needs to remain online.
+2. **Content-key delivery.** The new device receives a content key from an existing device or unwraps it
+   with an independent recovery factor. **Service authorization alone must never cause an existing client
+   to release a content key.** Otherwise a malicious service could authorize its own credential and turn
+   authorization authority into decryption authority through the back door.
+
+The second gate is where correlated loss matters. A phone, its device credential, a device-bound passkey,
+its local ciphertext and a recovery code stored on that phone may be five artifacts and one failure
+domain. A passkey wrap counts as recovery only when it is available outside the lost device; text or an
+archive stored only on that device does not. §5.7.6 carries that requirement into the recovery decision.
+
+**Migration replaces succession.** If the service disappears, a surviving device — or a clean device
+holding independently available ciphertext and the content-recovery factor — restores the content and
+creates a new account under a replacement service. That service establishes a new authorization lineage;
+the user's other devices enroll again. The migration retains the same `(R_pub, R_priv)` recovery identity
+when the user holds it, generates a fresh content-key generation for the new lineage, and wraps that
+generation to `R_pub` and the newly enrolled readers. The old service's public authorization history is
+retained only to verify historical claims; its device list and epochs do not continue as authority. This
+is enough for data and application continuity, which is the promise D-33 now makes.
+
+Account deletion similarly retires the service authorization lineage and synchronization; it cannot erase
+content or recovery material already held by the user. Before deletion, a signed terminal record and the
+bounded public evidence needed by retained attribution claims travel to participating replicas and the
+verified portable package. An offline replica may retain only its last live head and previously synced
+recovery artifacts; D-24 records how it later imports the terminal package. The service then deletes
+hosted ciphertext, generation wraps, account grants and its copy of `R_pub` and sealed `R_priv`; each
+device keeps an independent Local last replica with whatever keys and package material it actually held.
+D-13 and D-32 constrain deletion; the TRD inventory records exactly which local and service-held
+artifacts each deletion event clears.
+
+#### 5.7.3 Who may change authorization outside the service? — decided: nobody
+
+> **Decided: no credential changes authorization outside the service.** While the account service exists,
+> it is the sole authority for admission, revocation, capabilities and epoch ordering. If it disappears,
+> migration cannot extend its lineage: recovery creates a new service relationship and a new lineage; it
+> does not appoint a successor to the unavailable authority. If the old service later returns, it may
+> still evolve its own isolated copy until that authority commits retirement (§5.11.2).
+
+This closes the question that the portable administration root was introduced to answer. There is no
+break-glass administration secret, surviving-device quorum, delegated administration credential or
+witness-succession operation. The recovery code protects `R_priv` only. Account recovery
+restores the service's willingness to authorize; content recovery separately restores the ability to
+decrypt.
+
+The authorization service's signed state — not the mutable display roster — remains the source of the
+device list. A relay process that lacks the service authorization key cannot invent an epoch, but the
+service authority itself is trusted to do so honestly. That trust boundary is narrower and more familiar
+than the previous root model, and it must be stated rather than hidden behind the word "witness".
+
+#### 5.7.4 Where ordinary device secrets live
+
+Every live option still needs operational signing and wrapping credentials available without putting a
+passkey prompt on every sync. The browser offers storage, not a general promise of a hardware-backed
+application keystore.
+
+| Option                                    | The user sees                                                  | What it buys                                                                                               | What it does not buy                                                                                                                          |
+| ----------------------------------------- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Extractable key bytes in IndexedDB        | Nothing                                                        | Broad compatibility; backup and transfer are mechanically simple                                           | A profile copy or same-origin script can export the key permanently                                                                           |
+| Non-extractable WebCrypto `CryptoKey`     | Nothing                                                        | Prevents `exportKey`/`wrapKey` when disallowed and avoids casually serializing raw key bytes               | No hardware or encrypted-at-rest guarantee. WebCrypto permits structured-cloning a key across origins and explicitly warns that XSS can do so |
+| Software key wrapped by a passkey PRF     | A platform authentication when the key must be unlocked        | The persisted wrapper is useless without an assertion from that credential; useful protection while locked | PRF is optional; its output and the unwrapped software key reach same-origin code, so live XSS still wins                                     |
+| Software key wrapped by a recovery secret | A high-entropy code at enrollment and on a new or reset device | Portable across browser and authenticator ecosystems; no service can guess it if generated properly        | The user becomes the keystore; copying, phishing or losing the code has the obvious consequence                                               |
+| Native or extension-backed OS keystore    | An install, extension or native-app permission                 | Can supply an OS or hardware boundary unavailable to an ordinary web page                                  | Changes the product and distribution model; does not protect an already-unlocked app from using the key                                       |
+| No persisted device key at all            | Re-authenticate to obtain a fresh credential each session      | Avoids claiming that browser storage meets the bar for a long-lived key                                    | Puts a service round-trip in front of sync on every launch, and still leaves the live credential reachable by same-origin code while in use   |
+
+The correction in the second row matters. `extractable: false` is a useful misuse guard, but it is not the
+XSS containment boundary the previous draft claimed. The WebCrypto security considerations explicitly
+allow a `CryptoKey` to be shared across origins with structured clone and warn that injected script may
+post it to an attacker-controlled origin, which can then keep using it. The specification also makes no
+normative promise that the underlying key material is hardware-backed, encrypted on disk or inaccessible
+to another process with the user's privileges. **Non-extractable means one API refuses to export the raw
+bytes; it does not mean the capability cannot leave.**
+
+WebAuthn does provide an authenticator-held credential, but it is not a drop-in mutation-signing key.
+Assertions are user-agent-mediated ceremonies over a challenge. The PRF extension can return a deterministic
+32-byte output for the same credential and input, so the workable shape is to derive a wrapping key from that
+output and unlock an ordinary device credential for use — not to invoke WebAuthn for every CRDT update.
+The output is deliberately returned to the client, which is why it strengthens storage at rest without
+changing the same-origin-code boundary.
+
+> **Decided: non-extractable at runtime, with two honest persisted representations.** Where PRF is absent,
+> each signing or wrapping private key persists as a structured-cloned non-extractable `CryptoKey`. Where
+> PRF is available, encrypted private-key bytes persist under a PRF-derived wrapping key and are imported
+> as non-extractable runtime `CryptoKey`s after unlock. A non-extractable target key is not described as
+> "wrapped": WebCrypto wrapping is an export operation and cannot wrap a key whose extractability forbids
+> export. **The device list shows which tier a device is on** (D-18). A two-tier bar is acceptable; a
+> silent one is not (§5.7.6).
+>
+> This **operational-key PRF unlock gates sync, not the app** — the same resolution D-18 reached for
+> revocation checks. It is neither D-13's slot-unlock proof nor D-34's optional device lock. Reading and
+> writing locally never waits on it, because these credentials sign envelopes and receive new keys; they
+> do not open the local store. D-34's separate local custody does that and remains promptless by default.
+
+The account authenticator/local slot verifier, device-key PRF, optional content device lock and optional
+recovery-factor PRF are distinct roles even if one authenticator ceremony supplies more than one. Their
+outputs are domain-separated and never substituted: opening a slot is not creating an account session,
+unlocking an operational signing key is not recovering `R_priv`, and recovering `R_priv` is not an
+account assertion. Sign-out clears their live outputs with the rest of the slot's in-memory state; it
+does not destroy their persisted representations (D-13).
+
+**This was chosen against a much smaller threat than the table above implies, and the reason is worth
+stating.** After §5.7.2, a compromised device key cannot change service authorization and cannot unseal
+`R_priv`. What it can do is read what its capability permits and write as its actor until
+revoked (§5.7.1). So the question §5.7.4 is really answering is
+*how much should it cost to protect a write capability that revocation already bounds* — and the answer is
+"the cheap options, both of them", not "the one that changes the distribution model".
+
+**What the PRF wrap buys, precisely.** It protects the *persisted wrapper* against an attacker who has the
+browser profile but cannot produce a platform assertion — a stolen laptop, a copied profile, an OS backup.
+That is §5.7.1's "copied browser profile" row, and the value is concentrated in the window *before the
+owner knows to revoke*, since revocation already handles the noticed case. It buys nothing against live
+same-origin code, which the specification says outright and this document has already recorded.
+
+**And what it does not buy by itself: confidentiality of the document.** Before D-34, an attacker who
+copied the profile to steal the key also copied the plaintext workspace sitting beside it, and no option
+in the table above changed that. The key-storage question and the at-rest question are separate; D-34 now
+answers the second one —
+
+**D-34. Is local user content encrypted at rest?** _(**Decided: yes, from genesis.** It was asserted twice
+as a premise and never decided; then framed as a device lock, which conflated two separable properties and
+made it undecidable. Separating them decides it.)_
+
+**The framing was the whole problem.** Earlier drafts asked one question — *is there a device lock?* —
+and that question bundles two properties that have different costs, different threats and different
+answers:
+
+| Property                                             | Answer                        |
+| ---------------------------------------------------- | ----------------------------- |
+| Persisted user content is ciphertext                 | **Always, from first run**    |
+| Opening it requires a **user-held factor**           | Optional, per device          |
+| Plaintext exists in memory while the workspace is open | Yes, unavoidably            |
+| A copied or executable profile is resisted           | Only on the device-lock tier  |
+
+Bundled, the question could not be answered: encryption-at-rest appeared to require a first-run prompt,
+which contradicts D-1 and §7's *Local asks for nothing, ever*. Unbundled, it answers itself — a key the
+app manages needs no prompt, and the factor is a separate, later, optional strengthening.
+
+> **Decided: every workspace has a generation-0 content key from genesis, and no
+> app-managed persistent store ever holds user-content plaintext.**
+>
+> - **From first run, silently.** Local genesis mints `K0` and a separate local-custody key alongside the
+>   principal, device and actor. No prompt, no account, no factor. D-1 and §7 are untouched.
+> - **Every app-managed persistent store is authenticated ciphertext** — the Yjs source of truth, the
+>   crash journal, and any persistent derived index. Plaintext exists in memory while the workspace is
+>   open, and in exports the user explicitly asks for.
+> - **Default key custody does not resist a complete copied or executable profile.** The local-custody key
+>   handle lives beside the data, so an attacker who can run the app from that profile can open it. **This must be
+>   stated wherever the property is described**, because the gap between *the files are ciphertext* and
+>   *your data is protected* is exactly where a reader will over-read.
+> - **The content-key representation is explicit and separate from device credentials.** By default,
+>   the local-custody key persists as a structured-cloned non-extractable `CryptoKey`, and every locally
+>   needed `K_g` persists only as bytes sealed under it. Opening a workspace briefly unseals those bytes
+>   and derives domain-separated subkeys for IndexedDB/content envelopes, the synchronous journal and any
+>   later encrypted index. Async-use subkeys are imported as non-extractable runtime `CryptoKey`s; only the
+>   journal subkey remains in the narrow JS/WASM runtime form its synchronous AEAD requires. Promotion,
+>   rotation and recovery may use the same brief plaintext-`K_g` interval to create reader and `R_pub`
+>   wraps before erasing it. This is why `K_g` itself cannot be the structured-cloned non-extractable key:
+>   WebCrypto cannot later wrap a non-extractable target, and one primitive key must not be reused across
+>   the async and synchronous constructions.
+> - **With the optional device lock, factor-gated local custody replaces the promptless handle.** The
+>   factor gates the local content-key envelopes; no default handle capable of opening them remains. The
+>   local-custody role neither signs mutations, unwraps `R_priv` nor authenticates an account. Its exact
+>   derivation, enrollment migration and UX remain TRD parameters.
+> - **An optional user-held device lock supplies the stronger property**, per device, PRF- or
+>   high-entropy-code-derived, unlocking at cold start. It strengthens custody of a key that already
+>   exists; it is not the switch that turns encryption on. **Forgetting the factor loses this device's
+>   readable copy**; at a never-established Local workspace whose last readable replica this is, that is
+>   total and final — accepted on §5.7.6's terms.
+> - **First promotion creates the recovery keypair and wraps existing content-key generations to
+>   `R_pub`; migration retains that recovery identity where available and creates a fresh generation.**
+>   Neither is a whole-document encryption pass. **Account deletion, retention expiry and
+>   migration never decrypt persisted content**; deletion retains local keys, expiry changes only hosted
+>   custody, migration rotates to a fresh generation, and the stores stay ciphertext throughout.
+
+**What this buys and what it does not, said precisely because the difference is the decision.** It
+defeats **file-level** exposure: an OS backup, a disk image, a synced profile directory, a forensic tool,
+a support person with filesystem access, freed blocks after deletion, and the trivially-readable
+`localStorage` journal. It defeats **nothing at the code level**: same-origin script, a running unlocked
+app, or an attacker who reconstructs the profile and executes the origin. An earlier draft called the
+locally-keyed variant theatre on the second ground alone. That was right about the threat and wrong about
+the conclusion — a scoped property honestly described is not theatre, and the scoping sentence above is
+what earns it.
+
+The two assertions this retires are §5.7.9's forward-secrecy aside — *"the plaintext sits in IndexedDB on
+every device by design — that is what local-first means"* — and §5.7.1's copied-profile row, which
+conceded no protection for plaintext document data sitting beside the key. **"That is what local-first
+means" was doing unearned work**: local-first means the data is on your device, not that it is
+unencrypted on your device. Both are corrected in place.
+
+**One thing this document implied and should retract.** PRD principle 3 does not forbid a device lock.
+Principle 3 is *"offline is the normal state, not a degraded one — no spinner, no reconnecting banner"*,
+which is about waiting on the **network**. A local unlock ceremony is not a network wait. What a device
+lock would actually cost is §5.1.2's "never awaits a credential" — this document's own formulation, and a
+weaker thing to be bound by than a PRD principle.
+
+**The subject is every app-managed store, not the IndexedDB document alone.** This app writes user content
+to **two** places on disk today, with a third planned, and encrypting one of them is theatre:
+
+| Store | What it holds | Under this decision |
+| ----- | ------------- | ------------------- |
+| IndexedDB (`done`) | The workspace content root | Each Yjs update stored as an authenticated encrypted record: ciphertext plus non-content routing metadata — format version, nonce, generation, sequence. `y-indexeddb` persists raw updates, so it needs an encrypted adapter or a replacement (`persistence.ts`) |
+| `localStorage` journal | Each update, written synchronously so a page kill between transaction and IndexedDB commit cannot lose it | **The sharp edge.** See below |
+| Persistent derived index | Phase 4's search index — the derived text of everything searchable. **Planned, not built**: `persistence.ts` records that it "belongs to Phase 4", and there is no SQLite dependency yet | May ship only when its on-disk representation is encrypted. Start in memory (TRD §6.2, PRD §13) |
+
+**The journal is the one genuinely new cryptographic burden, and it is worth naming as such rather than
+absorbing.** It exists so that content survives a page kill, so it holds recent content by design, and it
+is written **synchronously** — while WebCrypto's `encrypt()` is promise-based and cannot complete inside
+the handler that must not return until the write has happened (§5.6.2, TRD §6.1). Two ways out, and the
+choice is a product one because it decides whether a guarantee survives:
+
+> **Decided: preserve the crash-safety contract.** A reviewed **synchronous AEAD** — JS or WASM — on this
+> one narrow path, with a low-end-device latency benchmark, is a TRD requirement. The alternative is a
+> deliberate redesign of the crash-safety contract, which trades a guarantee the product already makes
+> for an implementation convenience, and that is the wrong direction.
+
+The synchronous construction receives a domain-separated journal subkey derived while `K_g` is briefly
+unsealed, not the WebCrypto key used for IndexedDB or network envelopes. That subkey exists only in live
+slot memory, is cleared at sign-out/lock, and is re-derived at unlock. This is the narrow exception to
+non-extractable runtime keys forced by the synchronous contract; it does not put `K_g`, a device private
+credential or the recovery key into the journal implementation.
+
+This is the only place the decision adds a cryptographic primitive rather than composing reviewed ones,
+so §5.7.8's independent design review has to cover it specifically.
+
+**The search index needs no engine selection, which is worth stating because the instinct is to go
+shopping.** Row-level security is access control, not encryption; column encryption produces ciphertext
+columns that ordinary full-text indexing cannot index without decrypting. And the browser options do not
+currently supply transparent encrypted persistence: PGlite documents an in-memory filesystem but not
+encrypted browser persistence, Turso's page-level encryption is labelled experimental in its own manual,
+and official SQLite WASM builds expose transparent encryption only with the commercial SEE extension. So
+the first implementation is: **keep the index in memory, rebuild it lazily from the decrypted document
+after startup, measure the rebuild, and add an encrypted persistent representation only if measurement
+demands it.** The product requirement is one sentence — *a persistent search implementation may ship only
+when its on-disk representation is encrypted* — and it selects nothing.
+
+**One consequence of starting in memory, which lands outside this decision.** §1.3 lists "an exclusive
+resource — the search index's OPFS lock — is **session**, arbitrated per device", and D-9 uses the same
+lock as its second candidate for a tab count. **An in-memory index has no lock**, so that example
+evaporates and with it the document's only per-device exclusive resource. D-9's answer is unaffected — it
+was already "the useful sentence is *search is unavailable in this tab*, and it does not require a count"
+— but the example should not be cited as live until a persistent index exists to hold a lock.
+
+**Existing installations need a one-time migration, and possibly not.** The general shape is a finite
+state machine, not an open question: open the old plaintext database, mint `K0`, write and verify the
+encrypted store, atomically select it, remove the plaintext store only after
+verification, and resume safely after interruption. **But §2.4 has already chosen not to carry a live
+document across** — its plan is to export from the development installation and import into the first real
+deployment. There is exactly one installation. **If D-34 lands before any external user exists, §2.4's
+export/import *is* the migration and this state machine is never built.** That is a sequencing win rather
+than a design one, and it is only available in one direction.
+
+**What is at stake, now recorded as the reasoning behind the answer rather than as material for a future
+one:**
+
+- **The browser's origin sandbox is not an at-rest boundary.** It separates web origins. IndexedDB is
+  ordinary files in the profile directory, readable by any process running as the same OS user, by a copied
+  disk image, or through an OS backup. What protected that data before this decision was **full-disk
+  encryption and a locked screen** — the platform's job, reasonably reliable on modern defaults, and absent
+  or disabled more often than one would like.
+- **End-to-end encryption terminating in a plaintext database was a real property with a sharp edge**: the
+  relay could not read the workspace and anything on the user's own machine could. That edge is now gone at
+  the file level and remains at the code level, which is what the scoping sentence exists to say.
+
+**One thing D-34 decides beyond itself.** It settles when content encryption **begins** — at genesis — so
+account creation only adds recovery and reader wraps for existing content-key generations and is never a
+whole-document transformation (§5.2.1). It settles every later lifecycle event too: deletion retains
+locally held keys, lapse expiry changes only hosted custody, and migration rotates to a fresh generation;
+none decrypts persisted content. Local is ciphertext, so there is nothing to decrypt *to*. The invariant
+holds across every axis in §5.1.1 (D-24, D-29, §5.11.2).
+
+**PRD principle 3 never forbade any of this, and the retraction stands.** Principle 3 is *"offline is the
+normal state, not a degraded one — no spinner, no reconnecting banner"*, which is about waiting on the
+**network**. Nothing here waits on a network. The default tier adds no ceremony at all; the optional
+device lock adds a local one, which costs §5.1.2's "never awaits a credential" and not a PRD principle.
+
+**The cost of the optional lock, accepted rather than discovered.** It introduces a way to lose everything
+by forgetting a factor, and at never-admitted **Local** that loss is total and final — no service copy,
+no recovery keypair, nobody to ask, all by construction (§5.1.1). So opting in can make the free product's
+one promise — your list is here and it stays here — untrue for someone who then forgets. **That
+consequence is accepted**, on the same terms as §5.7.6's recovery code and for the same reason: a
+non-custodial promise that cannot be broken by the user is not a non-custodial promise, it is custody by
+another name. What it obliges is the copy at the moment of opting in — this is the only copy, and we
+cannot open it for you either — which is D-25's third-row problem arriving at Local, where it is harder
+because there is no second copy anywhere to soften it.
+
+**It interacts with D-13** (a reset that clears the key orphans the ciphertext), **D-18** (a revoked
+device still holds a readable replica, because it holds the key), and **D-25**.
+
+#### 5.7.5 What an account can add — and what it cannot add by itself
+
+"Create an account" answers who the service recognizes. It does not by itself answer who can decrypt a
+server-held document. These are the available account shapes:
+
+| Option                                   | What sign-in recovers                                                                      | Can the service read content?                        | What a new device still needs                                                                               |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Service authorization only               | Account access, authorization, the device list, current authorization head and ciphertext | No                                                   | An existing device to deliver the needed content-key generations                                           |
+| Non-custodial encrypted recovery         | All of the above, plus each generation wrapped to `R_pub` and `R_priv` sealed to user factors | No, if no private-key factor reaches the service   | An independently available PRF-capable passkey or recovery code that can unseal `R_priv`. (Quorum was available here and is **rejected** — §5.7.6 selects 1-of-N) |
+| Service escrow                           | Everything after the service accepts the recovery proof                                    | **Yes, in capability if not in routine operation**   | Nothing else; the same capability that makes recovery smooth lets the service or its compromise decrypt     |
+| Account-authorized, device-approved data | Account access authorizes the device; another device must approve content access            | No                                                   | A surviving content-holding device every time; the account improves identity and revocation, not recovery   |
+
+The first and fourth rows make a subtle product promise: **hosted durability would mean durable ciphertext,
+not guaranteed recoverability.** That can be a coherent product, but only if D-25 says it plainly. The
+second row is the only shape that combines all-device-loss recovery with a server that cannot decrypt,
+and it therefore pushes all of the problem into the recovery factor. The third is operationally familiar
+and cryptographically contrary to D-20's recorded consequence that server-side content reading is gone;
+choosing it reopens D-20 and the content-authority half of D-14.
+
+A passkey used only to authenticate to the account is the first or fourth row, not the second. WebAuthn
+sign-in proves control of a credential to the service; it does not materialize the document key. The PRF
+extension is what makes a passkey potentially useful for non-custodial decryption, and that is a separate
+capability with separate support and recovery properties.
+
+> **Decided: non-custodial encrypted recovery — row 2.** Each content-key generation is wrapped to
+> `R_pub`, and `R_priv` is sealed to a factor the user holds. The service never receives that factor or an
+> unsealed private key, so it cannot decrypt a workspace whatever proof it is shown and whatever it is
+> ordered to do.
+>
+> Rows 1 and 4 are **rejected**: both foreclose all-device-loss restore, including D-33's migration from
+> an independently held archive, and both put D-25 in the position of saying *we cannot recover your
+> data* at account creation — which §5.7.7 already identifies as the harder copy problem, not the easier
+> one. Row 3 is **rejected by construction**, for the reason below.
+
+**Why service escrow is excluded, and why the reason is not cryptographic taste.** The objection is not
+that escrow is inelegant; it is that a decryption capability is a *compellable* capability. A service that
+can turn a customer's ciphertext into plaintext can be ordered to, and the order arrives with a gag
+attached. Escrow's convenience and its liability are the same mechanism seen from two directions, and no
+amount of internal policy separates them — policy is exactly what a court overrides.
+
+**The opt-in variant deserves its own rejection, because it is the form the idea comes back in.** Making
+escrow per-user and optional does preserve the default: a demand naming a user who never opted in cannot
+be satisfied, and that is a real property rather than a rhetorical one. But it degrades the answer in two
+specific ways that are easy to miss.
+
+1. It converts an **architectural inability** into a **per-user policy**. *We cannot* and *we cannot for
+   this one* are different answers under pressure, and only the first survives an adversary who is
+   patient.
+2. The client code that seals `R_priv` to an escrow key ships to **every** user. Enabling it for someone who
+   did not opt in becomes a configuration change rather than an attack. §5.7.1's last row already concedes
+   that hostile code at the app's origin defeats everything — but escrow makes that a one-line flip with a
+   key already waiting at the receiving end, which is a materially different posture from *the receiving
+   end does not exist*.
+
+> **Recorded: an escrow add-on may be built, opt-in, and it must not be operated by the legal entity that
+> operates the service.** Its scope is **recovery only** — it holds a separately sealed copy of `R_priv` and
+> nothing else. It may not admit or revoke credentials, change capabilities, sign authorization state or
+> operate the account (§5.7.2).
+
+**That answers the first objection and not the second, which should be said rather than left to look
+answered.** Two-party separation genuinely converts *we cannot for this one* back into an architectural
+inability, because neither entity alone can produce plaintext. It does nothing about the second: the
+escrow agent's public key still ships to every client, so a hostile or coerced release could seal
+non-opted-in users' `R_priv` to it during account creation or recovery, and the two-demand story then
+reaches them too. **That residual is
+accepted, and what carries it is release integrity rather than custody** — §5.7.8's row 13 controls, the
+independent implementation audit that the add-on holding a real key triggers, and the reproducible,
+checksummed release artifacts D-33 requires for its own reasons. Those are the mitigation; naming them
+here is what stops the escrow section from reading as though the separation had answered both.
+
+**The separation is a security property, not liability arrangement.** Split across two entities, the
+service holds ciphertext, generation wraps to `R_pub`, and `R_priv` sealed only to the user's code; the
+escrow agent holds a separately sealed `R_priv` and no ciphertext. **Neither party alone can produce
+plaintext** — a demand against the service yields ciphertext and opaque envelopes, and a demand against
+the escrow agent yields recovery capability with nothing to apply it to. Compelled disclosure therefore requires two demands
+against two entities, potentially in two jurisdictions, and either one failing leaves the plaintext
+unreachable. That
+is a substantively better position than one company holding both halves and promising not to join them.
+
+**And on building it early rather than when it is asked for**, which is the part that looks like
+over-engineering and is not: the situation that produces demand for escrow is an enterprise buyer with an
+administrative-recovery requirement, mid-sale. Designing custody for the most security-sensitive code path
+in the product under contract schedule pressure is the worst available condition for that work. The
+choice is not *build it now* versus *build it never* — it is *build it deliberately* versus *build it
+hurriedly, later, badly*. Recording the boundary now costs a section; discovering it during a sale costs
+the boundary.
+
+#### 5.7.6 Recovery: four objects and nine options
+
+Recovery is where the previous framing was least complete. Four different things may be missing:
+
+1. **Account access** — can the service recognize the person again?
+2. **Authorization** — will the service admit the new credential as a legitimate member/device and
+   establish a new epoch?
+3. **Content-key access** — can it decrypt the current and stored document generations?
+4. **Ciphertext availability** — does any copy of the encrypted document still exist?
+
+No mechanism below supplies the fourth unless another device, an export or the hosted service actually has
+the bytes. A recovery code cannot recover a document that no longer exists; a server backup cannot recover
+one whose only recovery private key is gone.
+
+**Artifacts count by independent failure domain, not by name.** A lost phone commonly takes its device
+credential, a device-bound passkey, its local ciphertext and any recovery text saved on that phone with
+it. Those are four artifacts but one loss event. A recovery path counts here only if it remains available
+after the loss it is supposed to recover from; several wraps synchronized by one credential ecosystem are
+similarly not several independent paths.
+
+| Recovery option                               | Restores                                                                                     | The user sees                                           | Failure / attack implication                                                                                                            |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| A surviving authorized device                 | Content keys; ciphertext too if that device has it                                           | Transfer or approve from the old device                 | The service separately authorizes the replacement. No all-device-loss recovery; compromise exposes that device's content and capability |
+| A synced copy of the same PRF-capable passkey | Account access and potentially `R_priv` if it was independently sealed to that PRF; ciphertext only from another holder | Platform passkey selection | Counts only if the passkey remains available after device loss; its ecosystem's compromise and recovery enter this threat model          |
+| A separately enrolled passkey                 | Account access; `R_priv` only if it was separately sealed to that credential                  | Choose a backup passkey/security key                    | PRF output is per credential, and a passkey bound to the lost device is not a backup                                                     |
+| A random saved recovery secret                | `R_priv`, and through it wrapped content-key generations; ciphertext only from another holder | Save a long code or QR, then present it during recovery | A bearer secret: phishable, copyable and losable. A copy kept only on the enrolled device is not recovery                                |
+| A password or passphrase                      | Whatever the design lets a derived key unwrap                                                | Remember and type a secret                              | A server copy permits offline guessing against wrapped data; an ordinary human password cannot simply be treated as a content key       |
+| Email, support or another service proof       | Account access and, through it, service authorization                                         | Recovery message, delay or support process              | Becomes the weakest account-takeover path. Cannot reconstruct a non-custodial content key unless an escrow holder also cooperates        |
+| Service escrow                                | `R_priv`; account and authorization still follow the service's recovery policy                 | Familiar account recovery                               | The escrow holder is a decryption principal. If it is the service, breach or compulsion reaches both halves                             |
+| Threshold / combination of factors            | Whatever recovery private key was split or multiply sealed                                    | Two-of-three devices, passkeys, codes or contacts       | Only independent factors add resilience; one shared failure domain still counts as one, and thresholds add a lockout mode               |
+| No recovery                                   | Nothing beyond surviving local copies                                                        | An explicit warning and preferably a verified export    | No separate recovery principal holds `R_priv`; losing the last live content keys makes a hosted ciphertext copy permanently unreadable  |
+
+There is no honest "forgot password" flow for a content key that the service cannot recover. Email may
+prove control of an account and a server may then authorize a fresh device, but neither fact conjures the
+old recovery private key. If a fresh device can decrypt after email alone, the service had enough capability to
+make that happen and the design is custodial in the security sense, whatever the UI calls it.
+
+**PRF's optionality produces a product branch, not a compatibility footnote.** If non-custodial account
+recovery selects PRF, an authenticator that reports no PRF result has to land somewhere explicit:
+
+| Unsupported-PRF policy                | What happens                                                                | Implication                                                                                      |
+| ------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Require it                            | Account creation or encrypted recovery is unavailable on that authenticator | Clean promise, narrower device/authenticator support                                             |
+| Fall back to a saved recovery secret  | Account works after the user stores and confirms a code                     | Portable and non-custodial; adds the largest deliberate security interaction in the product      |
+| Fall back to existing-device approval | Account works, but a new device cannot decrypt after all devices are lost   | Preserves confidentiality; downgrades "durability" to durable ciphertext                         |
+| Fall back to browser-stored key       | The device works with a visibly lower storage-assurance level               | Preserves reach but makes the security bar device-dependent and must not be a silent downgrade   |
+| Fall back to service escrow           | Recovery works through the account                                          | Changes who can decrypt and therefore changes the product promise, not merely the implementation |
+
+> **Decided: `R_priv` is sealed 1-of-N, and a high-entropy recovery code is the
+> mandatory floor.**
+>
+> - At account creation `R_priv` is sealed to a **high-entropy code the user saves outside the
+>   enrolling device**. Every account has one, and there is no account without one. Enrollment requires
+>   **account creation** to have the user **re-enter the code from wherever they put it** before the
+>   account exists. Later *device* enrollments do not repeat name or recovery setup (D-23, §7) — the two
+>   events are both called enrollment elsewhere in this document, and only account creation involves the
+>   code. A later device may still perform D-19's content-key transfer ceremony.
+> - **Additional independent seals may be added** — PRF-capable passkeys, preferably in more than one
+>   ecosystem. Each is a complete path to the same `R_priv` only if it remains available after loss of the
+>   device it protects.
+> - This is **1-of-N, not k-of-n**. No threshold, no quorum, no lockout when a threshold cannot be met.
+> - **Rejected as recovery-private-key factors:** a password or passphrase, because server-held sealed data
+>   permits offline guessing; email or support proof, because §5.7.6's own prose shows it is escrow
+>   wearing a different label; and threshold splitting, which buys nothing over 1-of-N at this scale
+>   while adding setup, explanation and a new way to be locked out.
+
+**What that re-entry actually establishes, since an earlier version of this decision claimed more.** It
+said enrollment must confirm "an independently available copy", which is not a checkable property: a user
+who pastes the code into a note on the same phone passes every test the app can run, and that is precisely
+§5.7.2's five-artifacts-one-failure-domain case. **Re-entry proves transcription and possession — that the
+code was recorded accurately and the user can reach it right now — and nothing about where.** Saying so is
+not a weakening; it is refusing to let a mechanism take credit for a property only the copy can carry.
+
+**Which puts the weight on the copy, and is the argument for one specific interface choice.** The moment
+of generation is the only moment the user is thinking about this, so it is where the *where* has to be
+said, in the terms that make it concrete — not on this device, not only in this browser, somewhere you
+would still have if this device were stolen tonight. And the app should assume it failed: §5.7.2 already
+treats a phone and everything bound to it as one loss event, so the device list, the recovery surface and
+D-25's copy should all be written for a user whose "independent" copy is on the device in their hand. The five-row table above exists
+because PRF was assumed load-bearing. Under a mandatory independently saved code it is not: an
+authenticator that returns no PRF result costs its owner an optional convenience wrap and nothing else.
+No branch, no device-dependent security bar, no silent downgrade — which were the three things that table
+was trying to protect against. **The row it would have selected is "require it"; the reason it needn't is
+that recovery does not depend on it.** A device-bound PRF wrap may still protect that device's persisted
+key without being counted as an all-device-loss recovery factor.
+
+**And one artifact that is not a recovery factor, recorded because a draft of this document treated it as
+one.** The verified encrypted fidelity archive (§5.11.5) answers **object 4** — does any ciphertext still
+exist — and never **object 3**. Encrypted under content-key generations it needs those keys to read;
+carrying recovery wraps plus sealed `R_priv` still needs the code; carrying plaintext keys makes the file
+a bearer secret with the code's
+failure modes, larger and likelier to be kept in a cloud drive. It improves **durability** and
+**portability**, not **recoverability** — the exact distinction §5.1.2 exists to hold. It stays in D-33's
+package on its own merits, doing its own job.
+
+**What this leaves genuinely unserved, said plainly rather than engineered around.** A user who will not
+take custody of anything has no non-custodial recovery path — not from a second code, not from a second
+passkey, not from an archive. That is not a gap in this design; it is what non-custodial *means*. The
+answer for that user is the opt-in escrow add-on of §5.7.5, operated by a separate entity, and it is the
+only honest answer that exists. Every product that appears to serve that user without escrow is either
+custodial and not saying so, or is about to lose someone's data.
+
+#### 5.7.7 What the options do to the promise
+
+**This subsection used to be about what D-17 does to the ladder, and D-16 emptied it of that job.** The
+third row of the old table — "an app account is required for every networked workspace" — was the outcome
+D-17 was feared to force, and the product chose it first, for cost and honesty reasons, before the
+security research arrived. So no remaining selection can collapse a level, reopen D-19 or D-23, or move
+the Local/Account boundary. **D-17 can no longer change the shape of the product; it can only change what the
+Account level is able to promise** — a much smaller blast radius, and the reason this decision stopped
+being the largest branch in the document.
+
+What the selection moved is **recoverability**: one row of §5.1.2's property table, and the one that was
+marked undecided until §5.7.5–§5.7.6 closed. It is now decided, and this table records what was chosen
+against what was refused rather than presenting a live menu.
+
+| Shape                                    | What Account would buy                                                                  | Disposition                                                                                                        |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Non-custodial saved-code recovery**    | Recovery after losing every device, without the service ever holding plaintext            | **Selected.** Adds a first-class enrollment and recovery flow; D-13 distinguishes sign-out from destroying local key custody |
+| Content recovery remains device-approved | Server availability, sync and revocation — **durable ciphertext, not recoverability**     | **Rejected.** Forecloses all-device-loss restore and makes D-25 say *we cannot recover your data* at account creation |
+| No recovery                              | Redundant storage, not protection from losing every recovery-private-key seal             | **Rejected**, same grounds, more starkly                                                                            |
+| Service escrow                           | The smoothest recovery, with the service as a decryption principal                        | **Rejected by construction** (§5.7.5). Survives only as an opt-in add-on operated by a separate legal entity        |
+
+**One consequence of D-16 lands on the selected row rather than the rejected one, and it did not go away
+with the rejection — it moved.** An account-holder may reasonably read "your data is on our servers" as
+a recovery promise, whatever the account costs. Under a device-approved shape the burden was to explain an absence; under
+the selected shape it is to explain a **dependency**: the copy on our servers is recoverable *by you, with
+the code you saved*, and by nobody else including us. That is a better sentence to have to write, and it
+is still a hard one. **The test is unchanged: it is a coherent product only if D-25's language survives
+contact with someone who has just lost their only phone** — and now the interesting case is the person who
+lost the phone *and* cannot find the code, for whom the true answer is that the data is gone. D-25 must
+be able to say that without having implied otherwise at signup.
+
+**Which promotes one interface question out of the "live sub-questions" list.** If the code is the only
+thing between an account-holder and permanent loss, then how it is generated, confirmed and replaced is
+not a detail of the recovery flow — it is the recovery flow. **Re-display and replacement are different
+operations, and only replacement exists.** Re-display would require retaining a recoverable copy of the
+code, which this design deliberately does not do. Replacement is allowed only from a device that already
+has content access: after fresh account authentication and an explicit confirmation, it creates a new
+recovery keypair, seals the new `R_priv` to a newly confirmed code and optional independent factors,
+rewraps every required content-key generation to the new `R_pub`, and asks the service to atomically
+replace the old recovery public key, wraps and sealed envelope. It cannot help after the last content key
+and old code are both gone. The exact step-up authentication and confirmation UX remain TRD parameters;
+the product policy does not. Calling replacement "recovery" would hide the distinction that resolved
+§5.7.2.
+
+#### 5.7.8 What would count as evidence
+
+A threat table still does not make the claim true. The contract needs conformance tests for its own
+invariants and a declared level of independent scrutiny. At minimum, the following are test cases rather
+than prose:
+
+1. A client with only an endpoint and workspace id cannot retrieve usable content or add an accepted
+   envelope.
+2. A relay token cannot be used as a mutation credential, content-wrapping key or recovery proof; expiry
+   and refusal do not block local use.
+3. Changing the workspace id, actor, capability, epoch, ciphertext or update digest invalidates an
+   envelope; an envelope cannot be replayed into another workspace.
+4. A client that has witnessed epoch _n_ rejects an ancestor as current, and the server serializes
+   successor commits so that two concurrently produced successors resolve to one accepted epoch with the
+   loser refused rather than forked (S49).
+5. After a committed revocation — authorization successor, key rotation and finalized accepted-log cutoff —
+   the removed credential cannot decrypt a new generation or create a newly accepted write, while its
+   historical local copy remains usable.
+6. **A hostile relay withholds an envelope signed by the revoked credential that is absent from the
+   committed accepted set, then delivers it after revocation; every client refuses it.** An envelope from
+   that credential included in the pre-commit accepted set is still admitted, as is a genuine late-arriving
+   old-epoch update from a still-authorized offline device (§5.2.3).
+7. **Authorization alone cannot cause content-key delivery.** A malicious authorization service admits
+   a credential it controls and presents a valid successor epoch; every existing client refuses to wrap
+   or send a content key without a separate user-mediated content-delivery proof (§5.7.2).
+8. **A workspace is migrated, not succeeded, with the original service unreachable.** A clean device
+   restores independently held ciphertext using the content-recovery factor, creates an account at a
+   replacement service under a new authorization lineage, and then admits and revokes a device. Nothing
+   claims that the new service inherited the old service's authority (§5.11.4).
+9. A relay or durable-store snapshot contains ciphertext, `R_pub`, content-key wraps, public authorization
+   material and explicitly accepted metadata — no unwrapped content key, plaintext, reusable device
+   secret, PRF output, recovery code or unsealed `R_priv`. `R_priv` sealed to the user's code may be
+   present and is not a finding; what the test checks is that nothing in the snapshot opens it (§5.10.1).
+   The authorization service has its own signing key and account state, and no material that unseals
+   `R_priv`. **Repeated against the escrow agent's store, which must contain a separately sealed `R_priv`
+   and no ciphertext** — the
+   two-party property of §5.7.5 is real only if neither store alone is sufficient, so each store is tested
+   for what it can *open*, not for what it holds.
+10. Every recovery path is exercised after loss of one device, all devices, a device-bound passkey, an
+    independently synced passkey, the account session and the service. The result is checked separately
+    for all four recovery objects. A device plus every artifact stored or bound only to it is treated as
+    one correlated loss; loss of every independent content factor is an expected permanent-loss outcome,
+    not a bug.
+11. Unsupported PRF, interrupted enrollment, duplicate recovery, concurrent authorization changes and a
+    half-completed account deletion fail closed without silently changing the confidentiality promise.
+12. Mutation verification and first-sync checkpoint verification meet the latency and history-size budgets
+    in §5.6.2 without moving cryptography onto the keystroke or local-replay path.
+13. **No app-managed persistent store yields user-content plaintext** (D-34). A profile snapshot taken
+    after ordinary use — IndexedDB files, the `localStorage` journal, and any derived index — is inspected
+    for recognizable content, at genesis, at Local, at Account, and after deletion, expiry and migration. The
+    journal is checked specifically for an unencrypted window between transaction and commit, and the
+    synchronous AEAD is checked against its latency budget on a low-end device. The complementary negative
+    is asserted rather than omitted: on the default custody tier, a restored profile executing the app's
+    origin **does** open the workspace, and the test records that as expected behaviour so the claim's
+    scope is exercised rather than assumed.
+14. The web application is verified as part of the cryptographic boundary: no unreviewed third-party script
+    executes in the key-holding origin; injection controls, CSP, Trusted Types where supported, dependency
+    integrity, service-worker update integrity, cookie attributes and WebSocket origin checks are tested.
+15. **Promotion and migration cannot be confused.** A never-established Local workspace is admitted under
+    a device-signed genesis checkpoint that binds its pre-account actors, retains `K0` and creates the
+    first recovery keypair. Repeating the flow with a terminal lineage package instead preserves its
+    historical attribution, retains the recovery identity where available, rotates to a fresh `K_g` and
+    creates a new lineage. Neither path copies the source database or accepts an old-lineage envelope into
+    the new accepted set.
+
+Row 14 is unavoidable because **same-origin code is inside the end-to-end boundary.** A passkey is
+phishing-resistant because it is bound to the relying-party origin; it does not distinguish the intended
+app from hostile script served at that legitimate origin. The baseline can be tied to a named, versioned
+standard such as the applicable OWASP ASVS 5.0 requirements, but that standard does not review a novel
+authorization or CRDT-envelope protocol.
+
+The available assurance levels are cumulative:
+
+| Option                                  | Evidence produced                                                                                    | Implication                                                                                                       |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Project-owned threat model and tests    | This contract, protocol vectors, negative tests and CI controls                                      | Necessary and cheapest; the same team that designed the protocol is also judging its omissions                    |
+| Versioned web-security baseline         | A recorded ASVS profile and repeatable verification of every applicable requirement                  | Makes "the OWASP basics" concrete; still says little about the bespoke cryptographic protocol                     |
+| Independent protocol design review      | Review of authorization, key delivery, envelopes, epochs, rotation, recovery and downgrade handling   | Catches architectural errors before implementation; does not prove the implementation follows the reviewed design |
+| Independent implementation audit        | Review and testing of the shipped client, relay and deployment against the contract                  | Strongest launch evidence here; costs money and has to repeat after security-boundary changes                     |
+| Ongoing disclosure and response program | A vulnerability-reporting path, rotation/recovery runbook, dependency monitoring and incident drills | Treats security as an operating property; cannot compensate for an incoherent key hierarchy or recovery model     |
+
+> **Decided: levels 1–3 before network sync ships, level 5 live from the day it ships, level 4 on a
+> stated trigger.**
+>
+> - **Before sync ships:** the project-owned threat model and conformance tests; a recorded, versioned
+>   ASVS profile; and an **independent protocol design review**.
+> - **From the day sync ships:** the disclosure and response program. A vulnerability-reporting path that
+>   does not exist when the first report arrives is the cheapest possible thing to get wrong.
+> - **Level 4, the independent implementation audit**, is required before either of two triggers: the
+>   phrase *end-to-end encrypted* appearing in marketing copy, or the escrow add-on holding a real key.
+
+**The sequencing constraint is real and it is not schedule padding.** D-28 now names the architecture a
+protocol reviewer will review, but level 3 waits until the TRD supplies concrete authorization state,
+envelopes, key rotation, finalization and test vectors. Booking a design review of product-level boundaries
+alone still buys an opinion about a sketch.
+
+**Why level 4 is triggered rather than required at ship**, which is the row most likely to be read as
+corner-cutting: an implementation audit has to repeat after security-boundary changes, and several are
+still pending — D-34's storage-encryption and journal-AEAD work, the escrow add-on, and D-32's evolving
+as-built data flows each move a boundary. Buying the audit before
+those settle purchases evidence about a system that will not be the shipped one. The triggers are chosen
+so that the audit lands before the two moments where its absence would make a claim dishonest rather than
+merely unproven: saying the words, and holding someone else's key.
+
+**All five of D-17's selections are now recorded.** The service is the sole authorization authority and
+migration starts a new lineage (§5.7.2–§5.7.3); the account's relationship to content recovery is
+non-custodial encrypted recovery (§5.7.5); the recovery factor is a mandatory, independently saved
+high-entropy code with optional independent wraps (§5.7.6); device private keys are non-extractable at
+runtime and persist either as structured-cloned keys or PRF-encrypted bytes (§5.7.4); and the assurance bar is above.
+
+**The authority and recovery selections were made together because authorization and decryption must not
+silently collapse into one power.** The familiar account path can replace a lost device and revoke the
+old one without keeping an authoritative device online. It cannot deliver content merely because the
+service authorized the replacement. The user-held factor does that second job, and migration — not an
+offline administration key — covers service disappearance.
+
+**And deciding them surfaced a question this document had been assuming rather than answering**, recorded
+as **D-34** (§5.7.4) and since decided: local user content is encrypted at rest, from genesis, in every
+app-managed store. It is not a D-17 selection and does not gate the contract, but it was the last place
+where *end-to-end encrypted* and what a user would understand by it could still come apart — and it now
+closes that gap at the file level while stating plainly what the default custody tier does not promise.
+
+#### 5.7.9 The common core beneath the options
+
+The previous draft said a menu of options was the wrong output and then fixed a passkey PRF into the
+answer. That skipped the product choices above. What Keyhive, `@localfirst/auth` and the passkey ecosystem
+actually supply is a common **shape** with separable authorities, key roles and recovery factors. Each piece still needs
+review by someone who does this professionally before it is built; the value here is knowing what the
+review is reviewing.
+
+| Piece                                                          | Its job                                                                                    |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Separate signing and wrapping credentials per device           | authenticate its writes and receive content keys; storage protection is §5.7.4's choice    |
+| The same separation per agent member                           | authenticate an agent without pretending it is a device; receive keys only if read-capable |
+| Separate authorization and content-delivery proofs             | let the service admit a device without thereby causing a client to deliver or wrap the content key |
+| A signed chain or log of authorization operations              | bind memberships, credentials, capabilities, actors and content-key generations            |
+| A service-held authorization signing authority                 | extend and order that chain; sign admissions, revocations, capabilities and accepted-set finalization (§5.7.2) |
+| A symmetric content key, wrapped per reader credential         | encrypt the document; rotation on lost read access is D-20                                 |
+| A recovery keypair: public `R_pub` wraps every content-key generation; high-entropy code seals `R_priv` 1-of-N with optional independent passkey seals | restore content keys under the non-custodial promise selected in §5.7.5–§5.7.6 |
+| A scoped, expiring relay bearer token                          | let the relay decide who connects without granting document authority                      |
+
+Two notes on that last row, because it is the one that connects to the cost model. Attenuable capability
+tokens — fly.io's macaroons are the well-known instance — carry their own caveats and are verified by
+signature rather than by lookup, which is the "relay decides who connects with little server state" shape
+that keeps hosting cheap (D-31). The unavoidable catch is the one already recorded in §2.3: statelessness
+and revocation-before-expiry are in tension, so short expiry plus refresh is the usual landing place — and
+D-18 makes revocation load-bearing, so the tension is real rather than theoretical.
+
+**And one thing not required by the current promise: forward secrecy.** Signal's ratcheting protects past
+messages after a later key compromise. Here a read-capable device must be able to materialize the current
+workspace, including its accumulated content, which under D-34 is persisted as ciphertext the device can
+already open. A per-update ratchet therefore does not hide the current workspace from
+an attacker controlling an unlocked authorized device. It should not be built by default; a future,
+stronger historical-confidentiality claim would have to reopen the question explicitly.
+
+**D-18. Are devices enumerable and revocable from a UI?**
+
+> **Decided.** **The unit of revocation is the device, not the session.** A session is a
+> tab (§6), and revoking a tab is meaningless; the thing an actor with bad intentions uses is a device.
+> Invalidation must propagate to every online device quickly, and every device must check whether it has
+> been revoked on reconnect, before it syncs. The amount of server state this needs is not what makes
+> hosting expensive.
+
+**On offline devices, say the true thing.** A revocation cannot reach a device that is not connected, and
+Rule 2 forbids implying otherwise. The service revokes the grant and stops accepting future work from its
+credential at the committed boundary; it does not claim to wipe bytes already copied. A local clear can
+be performed only by a device that actually receives and honours a cleanup request, so it is never part of
+the remote guarantee.
+
+**The revoked device becomes a detached local copy.** It keeps its last replica and every content-key
+generation it already held, remains readable and writable locally, can export, and receives neither new
+generations nor synchronization. There is no remote freeze, blur, disable or automatic wipe. This is the
+realistic bonus of local-first rather than a promise the service cannot keep: revocation governs the
+shared future, not already-held local use. Pending work that the service had not accepted by the committed
+cutoff stays only on that detached copy.
+
+**One ordering trap.** "Check for revocation before anything on reconnect" must not become "block startup
+on a network call", which would contradict PRD principle 3 and TRD §7.1. The resolution: the check gates
+**sync**, not the app. Unknown or offline means full local function; _known revoked_ detaches the replica
+and explains that it no longer converges. Reading and writing locally never waits on the answer. Sign-out
+is separately decided not to revoke (D-13); remove from this device clears only the local slot on the
+device performing it and requests revocation, whose status follows D-26's requested · committed ·
+acknowledged states.
+
+The device list this produces is the same artifact D-19's enrollment ends at and the same one §1.4 calls
+the irreducible security surface. **It is no longer deferrable, and D-16 is why.** An earlier draft
+suggested pairing could ship before a device list existed, since there was nothing stored on a server to
+protect. After D-16 the first device to enroll is also the first byte of ciphertext on a server, so the
+list and the thing it protects arrive together.
+
+### 5.8 Prior art worth watching
+
+The problem of authentication and authorisation for local-first CRDTs is being actively worked on, and
+not in the Yjs ecosystem. **Ink & Switch's Keyhive** is the serious effort: capability-based access
+control designed for partition tolerance, with read/write/admin modelled as chains of signed
+delegations, group membership derived from those chains, revocation by the delegator, and an
+integration into Automerge Repo as an auth provider. The interesting part for this document is that it
+is designed so that _the server does not have to be the authority_ — capabilities travel with the data.
+That solves the harder service-independent authorization problem this product has now rejected, while its
+credential separation and signed-operation patterns remain useful prior art.
+
+**And there is a second project that is closer to the retired accountless authorization flow than
+Keyhive is.**
+`@localfirst/auth` (Herb Caudill; formerly Taco) does decentralised authentication and authorisation from
+a chain of signed cryptographic operations, explicitly for apps that do not want to depend on a
+centralised authentication server or key-management service. The parts that map directly onto decisions
+here: **device-level keys held in each device's own storage**, and **invitations via a Seitan token
+exchange**, where an invitee proves they were invited without revealing the invitation secret and any
+existing member — not only an admin — can validate the proof. This product does not adopt that invitation
+as authorization: the service admits the device (D-19, §5.7.2). Its ceremony and credential-separation
+patterns may still inform the optional device-to-device content-key delivery step.
+
+Three implications, none of which is a decision:
+
+1. **Both are Automerge-adjacent, not Yjs's.** Keyhive integrates with Automerge Repo, and
+   `@localfirst/auth` ships an Automerge Repo provider. Nothing equivalent exists behind this app's seam.
+   Their authorization patterns remain useful prior art, but adopting either integration would buy
+   decentralized authority the product no longer needs (§5.7.2) at the price of a CRDT migration.
+2. **The protocols are more portable than the integrations.** Signed operation chains and token-based
+   device ceremonies are not Automerge-specific ideas; only the plumbing is. They remain useful prior art
+   without importing decentralized authorization into the selected service-authoritative design.
+3. **Watch rather than wait.** The principal/device work in this document does not depend on either, and
+   D-14's selected "partly" boundary does not require their decentralized authority.
+
+#### 5.8.1 What carries the authorization protocol — D-28
+
+**D-28. What carries authorization around encrypted Yjs updates?** _(Decided.)_
+
+The old four-way choice was inherited from a model in which authorization might have to survive without
+the service. §5.7.2 removed that requirement. Once the service is the sole authorization authority, the
+tractable shape is neither a decentralized capability system nor a schema-aware server: it is a narrow
+service-authoritative control plane around an end-to-end-encrypted Yjs data plane.
+
+> **Decided: keep Yjs and add a service-authoritative envelope protocol around it.** The service owns
+> account authorization and signed authorization state. Clients own content keys, encrypt Yjs updates,
+> sign their envelopes and verify authorization and finalization evidence. The relay and durable store
+> handle only opaque envelopes and authenticated metadata. No service component parses document content
+> or receives a content key.
+
+The boundary is easiest to see by component:
+
+| Component | Responsible for | Must not become |
+| --------- | --------------- | --------------- |
+| **Authorization service** | Authenticate the account; admit and revoke device/agent credentials; assign capabilities; sign and serialize authorization epochs; issue authenticated acceptance/finalization evidence | A content-key holder, mutation signer or Yjs semantic authority |
+| **Client envelope layer** | Encrypt outbound Yjs updates; bind workspace, epoch, credential and digest in the clear and **the attributed actor inside the seal**; sign envelopes over both; verify inbound authorization, signatures and acceptance evidence; wrap and rotate content keys | A second authorization authority, a network dependency on the local edit path, or a place where an actor identifier crosses in the clear |
+| **Relay and durable store** | Authenticate transport; validate opaque envelope fields, authorization epoch and signatures; sequence and store ciphertext; carry service-signed acceptance evidence | A plaintext processor, CRDT merger or source of authorization by itself |
+| **Yjs** | Represent and merge document content locally after an envelope has passed verification | An identity, authorization or recovery system |
+
+This is still a bespoke **protocol integration**, and the distinction matters. The project owns the
+message schemas, state transitions, downgrade rules, key rotation and finalization construction. It does
+not invent cryptographic primitives, distributed authorization or a new CRDT. Standard reviewed
+signatures, authenticated encryption and key-wrapping constructions are inputs; §5.7.8's independent
+design review evaluates how they are composed.
+
+The alternatives are rejected for reasons the later decisions make sharper:
+
+- **A decentralized Yjs authorization system** solves service-absent lineage continuity, which migration
+  deliberately does not promise, while retaining the largest bespoke problem.
+- **The Automerge-adjacent stack** buys that same decentralized authority through a CRDT migration.
+- **Schema-aware server enforcement** gives the service content authority and breaks D-20's
+  confidentiality boundary.
+- **Reducing D-27 to advisory attribution** gives up the accountability property the agent case requires.
+
+**Where the seal falls is a product constraint, not a TRD preference.** An earlier version of the table
+above bound the actor alongside the workspace, epoch and credential without saying which side of the
+encryption it sat on, which would have handed the relay a per-write record of *who* — human or agent,
+which member — for a workspace whose whole point is that the relay learns nothing. **D-14 already
+forecloses that**: its selected boundary lists what the relay may validate as workspace, epoch,
+credential, signature, replay and revocation, with attribution explicitly reserved to clients. So the
+actor binding goes inside the seal, verified by the clients that can already decrypt, and D-27's
+invariant is unaffected — attribution is checked by whoever reads the content, which is exactly who is
+entitled to check it.
+
+**What that does not buy, and an earlier version of this paragraph claimed too much.** It said sealing
+the actor stops the relay knowing *who* wrote. It does not. The relay sees a **credential identifier** per
+envelope, because it validates per-credential authorization and cannot do that blind — and the
+authorization state it validates is precisely what binds credentials to members and capabilities (§5.5).
+So a relay that can read the epoch can generally map credential to member, which means it can tell a
+device's writes from an agent's whether or not an actor field is present.
+
+**What sealing the actor actually achieves is narrower and still worth having:** no actor identifier
+crosses in the clear, so the relay is left inferring from authorization state rather than reading a label,
+and a workspace whose membership it has not seen change is correspondingly harder to attribute. The honest
+claim is **"the actor is not directly present in envelope metadata"**, not "the relay cannot tell who
+wrote".
+
+**Buying the stronger property would mean an unlinkable credential-to-member boundary** — the relay able
+to verify that a writer is authorized without learning which member it is. That is a different and much
+larger cryptographic commitment than anything else in this document, nobody has asked for it, and it is
+recorded here as the thing that would be required rather than quietly implied by a weaker mechanism.
+Traffic analysis at credential granularity — write times, rates, volumes — remains visible either way and
+is unavoidable given D-14's "partly".
+
+**What remains is TRD work, not another product branch:** credential and algorithm selection; the exact
+authorization-state and envelope formats, including which fields are associated data and which are
+sealed; batching; key wrapping and rotation; receipt, accepted-log or
+checkpoint finalization; downgrade and interrupted-rotation behavior; and concrete test vectors. TRD
+§10.1's planned Yjs v13 → v14 migration does not supply any of these, but neither does this decision make
+the CRDT migration larger than it already was.
+
+### 5.9 Raised in review — D-29, D-30
+
+Two decisions this document needed and did not have. Placed at the end rather than folded into the
+sections they touch, so that the existing numbering and landmarks stay where they were.
+
+**D-29. What happens if D-31 later gives an account a paid plan that lapses?** _(S51, S52, S53.)_
+
+The account service is the sole authorization authority (§5.7.2), and S36 establishes that retiring its
+lineage ends synchronization between a person's devices. If D-31 later selects subscription pricing, a failed payment must not become an event
+that severs a person's devices from each other and starts two histories diverging — the worst possible
+outcome delivered to the least attentive moment.
+
+> **Decided conditionally: a grace period, then read-only.** If a paid plan exists, a lapse does not retire the authorization lineage and does
+> not touch the enrolled devices. During the grace period everything continues. After it, the account goes
+> **read-only**: the server-held copy is retained and remains **recoverable**. Ordinary synchronization
+> transfer stops; an explicit recovery may still download the retained ciphertext and wraps. The
+> devices keep working locally exactly as they always did, because nothing on the read or write path
+> ever awaited a credential (§6).
+>
+> **During content retention, ciphertext, every needed `K_g` wrap to `R_pub`, and `R_priv` sealed to the
+> saved code are retained together**, because omitting any of them produces a copy nobody can recover.
+> **Resuming is not recovery**: a user who
+> starts paying again from a device they still have simply resumes sync, presenting no code and
+> performing no ceremony. The code is needed only if every device is gone as well — and that path has to
+> keep working for as long as the copy is retained, or read-only is a state in which the service holds
+> the user's bytes and cannot give them back.
+
+Four things that follow and should not be rediscovered later:
+
+- **Read-only means the service's copy, not the app.** PRD principle 3 is not negotiable, and a lapse is
+  a billing state rather than a network state. The app is fully writable on every device throughout.
+- **Retention has to be a stated number**, because "retained" without a duration is a promise nobody can
+  plan around, and D-25's durability copy depends on it. The number bounds two different things at once —
+  how long resuming restores the hosted history, and how long the **service-hosted** total-device-loss
+  recovery path remains possible — and it is the same number for both, since both need the same retained
+  objects. An independently held fidelity archive is a separate ciphertext source under D-33 and does
+  not inherit this deadline.
+- **What expiry ends is the hosted copy, not the account or lineage.** When retention runs out, hosted
+  ciphertext and its per-generation wraps are deleted. The dormant account retains `R_pub` and the
+  code-sealed `R_priv` envelope, so a surviving device can later re-seed the hosted workspace, wrap its
+  current generation to the same `R_pub`, and resume without creating or confirming a new recovery code.
+  A user who resumes after that is initially an account with no server-side history: their devices'
+  replicas are the workspace. **They converge**, because they are replicas of one
+  workspace and share an ancestor — the state it was in when sync stopped (§6). Nothing chooses between
+  them and nothing is discarded; the merge is simply as large as the separation was, which is D-22's
+  problem rather than a data-loss one. **An earlier draft sent this to D-5 and was wrong to**: it reached
+  that conclusion through the *server's* emptiness, treating a workspace whose hosted copy had expired as
+  a workspace with no history, which would have replaced one device's months of work for no reason. The
+  relay losing its copy does not dissolve the ancestry between the devices.
+
+  What expiry genuinely destroys is narrower and still has to be said in advance: the **service-hosted
+  total-device-loss recovery path** (there is no longer hosted ciphertext for the saved code and `R_priv`
+  to open; an independent D-33 archive remains a separate path), and the **gap held by any
+  device that was offline across the whole lapse** — its replica is short everything since it last
+  synced, and after expiry there is nowhere left to get the remainder. That is the same qualifier D-24
+  puts on account deletion, at the same kind of boundary.
+
+  Expiry **does not change the workspace's Account label**. The authorization lineage remains live but dormant, hosted
+  content is absent, and the devices' stores remain ciphertext exactly as before. This is the case that
+  proves hosted content and authorization lineage are different axes (§5.1.1).
+- **Deliberate downgrade (S53) is the same mechanism**, and it is the case that must not silently
+  become S36's account deletion. Stopping payment and deleting an account are different acts with
+  different consequences for service authorization and hosted retention, and the interface has to keep them apart.
+
+**And D-16 gave this conditional decision a floor it did not have without changing the label.** Throughout
+the lapse the user keeps the complete local application and export on every surviving device, while the
+workspace remains **Account** because its authorization lineage is live. Local continuity is a product
+property, not evidence that the account lifecycle ended.
+
+**With the same correction D-24 needs: each device retains its _last local replica_, not a full copy.**
+A device offline across the lapse holds what it had when it last synced and will never receive the rest.
+This is a second reason the grace period is a real mechanism rather than a courtesy — it is the window in
+which stale devices can still converge — and a reason retention should outlast it, so that a device
+reappearing shortly after the deadline is not silently short of a month's work.
+
+One thing must still be said out loud when sync stops, because Rule 2 requires it and because it is the
+part a user will not infer: **from that moment the devices stop converging, and each one's edits are its
+own.** Silence about the divergence would let someone believe their phone and laptop were still one list
+for weeks after they stopped being one. **What happens if the subscription resumes is a merge, not a
+loss** — the replicas share an ancestor and Yjs converges them (§6) — so the honest copy is *these will
+come back together, and there will be a lot to come back together*, not a warning that something is at
+stake. D-22's provenance mode is what makes the result legible.
+
+**D-30. Does Rule 1 have exceptions, or the wrong formulation?** _(Decided, and **reopened and re-decided
+in v16** — the first time the answer changed rather than being reaffirmed.)_
+
+**The case that raised this originally has been withdrawn twice over.** Rule 1 says the user never
+manages workspaces; v14's D-5 then required them to adjudicate two document histories with a preview and
+four choices, which was workspace management at its most demanding. v15 removed the flow and left a rule
+plus a confirmation of loss. v16 removed the confirmation too — nothing is lost, so there is nothing to
+consent to (§1.4, D-24). **That case is gone and it was never a real exception.**
+
+**A real one arrived in its place, from the same decision.** D-24 leaves one local user slot holding more
+than one local workspace: the anonymous one it used before signing in, plus the account one — and after account
+deletion, two local ones with no account to distinguish them. v16's first draft patched this with
+stipulations, a "current workspace" fact and a rule about how it was set. Those were compensating for an
+absent affordance rather than removing a task, which is the pattern §1.4 warns about running in reverse.
+
+> **Decided: Rule 1 is relaxed on exactly one verb, under exactly one condition.** The user never has to
+> think about workspaces **until their active local user slot holds more than one**, at which point the app
+> shows a context indicator naming the current list and a picker listing the local workspaces in that slot.
+>
+> - **Permitted: select.** Choosing between local workspaces the person already holds.
+> - **Still absolute: name, reconcile, administer.** No workspace is named by a user, no two are ever
+>   merged or adjudicated, and nothing is created, configured or shared from a management surface.
+> - **The condition is a slot-local count the app can evaluate**, and it is reached only by an act the user took
+>   deliberately: creating an account and choosing *start fresh*, signing in on a device that had been
+>   used locally, or deleting an account (D-24). Below the threshold — where every user who never asks
+>   for a hosted service lives, permanently — Rule 1 is unchanged and no indicator or picker exists.
+> - **It should read as an account switcher, not as storage administration.** That is a UX statement with
+>   a product reason behind it: a switcher asks *whose list is this*, which is an identity question people
+>   already have a model for, while a workspace manager asks what a container is, which is the thing Rule
+>   1 exists to prevent anyone ever needing to know.
+
+**Why this is an exception rather than a missing rule**, which is the test §1.4 requires and which the
+withdrawn case failed. Two retained local workspaces in one slot are both the user's; neither is more current, more
+authoritative or more recent in any sense the model records; no principal, epoch or membership ranks
+them. There is nothing to derive, so a rule that picked one would be a stipulation wearing a rule's
+clothes — which is precisely what v16's first draft wrote and what this replaces. D-5 was the opposite
+case and that is why it was withdrawn instead of accommodated.
+
+**What this replaces, so it is not rebuilt.** The committed "current workspace" fact is not needed: the
+picker is the disambiguator inside an active slot, and what remains is only which workspace was open last,
+which is ordinary interface state rather than a product rule. Account sign-in state stops being
+load-bearing for workspace selection; **local slot state** is load-bearing for whose workspaces may be
+discovered at all. Account deletion removes the former and leaves the latter.
+
+The security corollary is still not an exception. Revoking a phone is device and access management;
+saving a recovery factor is recovery. Neither requires the user to hold a workspace model.
+
+**The boundary that must not erode, and it is a different axis from the one just relaxed.** This picker is
+over **local workspaces in one active user slot** — several retained histories belonging to one person.
+It never lists a signed-out slot or another account's local state. It is not
+multi-workspace **navigation**, which means several live, synced, possibly shared workspaces reached
+through memberships, and which §5.4.1 reserves for the human-sharing document precisely so it is not
+smuggled in through a cardinality. The two look alike in a list and are nothing alike underneath: one is
+"which of my old lists", the other is "which of the workspaces I am a member of". Rule 1 would need
+reopening again if the second arrived by growing the first.
+
+### 5.10 The service data boundary — D-32
+
+**D-32. What may the service retain, observe and do to an account or workspace?** _(Decided in
+principle; inventory evolves with the TRD and implementation.)_
+
+The previous draft required a complete service data and operations contract before the service
+architecture was implementation-ready. That reverses the dependency: the concrete stores, queues, logs,
+backups and processors do not exist until the TRD and implementation choose them, so an exhaustive prior
+inventory would be speculative and would immediately drift. Building first and surveying only at the end
+is also too late where storage topology has already made deletion, isolation or least privilege expensive.
+
+> **Decided: fix the irreversible data-handling constraints now; maintain a living inventory as the TRD
+> and implementation introduce data; review the as-built inventory before external availability.** The
+> inventory is a view of the architecture, not a second architecture document, and it does not block
+> beginning the TRD.
+
+#### 5.10.1 Constraints that precede the TRD
+
+These are product and architecture boundaries, not an attempted inventory:
+
+1. **No synchronization, account or authorization component receives document plaintext, a content key,
+   unsealed `R_priv` or a recovery factor.** Ciphertext, `R_pub`, generation wraps and sealed `R_priv`
+   envelopes are not exceptions; the factors that unseal the private key remain with the user or the
+   separately operated escrow add-on (§5.7.5). A user may still
+   deliberately send exported content to someone, including support; that is an explicit disclosure, not
+   a decryption capability in the service.
+2. **Every subject-bearing persisted record has a deletion scope.** Account-, workspace-, device- and
+   credential-related data must be attributable to the subject whose deletion, export or correction acts
+   on it. Aggregated operational measurements must not quietly retain subject identifiers.
+3. **No reusable credential or recovery secret enters logs, telemetry or support artifacts, and no
+   plaintext document content is collected there automatically.** Diagnostics use an explicit allowlist
+   rather than attempting to redact arbitrary objects after collection. User-supplied support material is
+   an explicit, separately scoped disclosure with its own retention rule.
+4. **Service suspension and service-side deletion never disable an existing local replica.** Deletion can
+   remove service-held material and future access; it cannot recall bytes already copied to an offline
+   device or agent (D-20, D-24, D-29).
+5. **Operator powers are explicit, least-privilege and auditable.** Support may diagnose service state but
+   cannot bypass content encryption; authorization changes, suspension and exceptional access to account
+   metadata leave an audit record.
+6. **The service's necessarily visible metadata surface is bounded and named.** To authenticate and route,
+   it may process account and workspace identifiers, credential/device/agent identifiers, membership and
+   capability state, authorization-lineage state, connection addresses, and per-credential connection and
+   write times, rates and volumes. Those facts are not content, but neither are they harmless or licensed
+   for blanket retention: every persisted use needs the purpose, subject/deletion scope and retention row
+   §5.10.2 requires.
+7. **Presence is relay-visible while live and ephemeral by default.** Awareness remains outside content
+   encryption in the selected baseline, so the relay may see names, colours, cursor positions and who is
+   active in which workspace while the connection exists. It is not persisted by default and must not
+   inherit the retention of workspace ciphertext. Encrypting it is a permitted strengthening; retaining it
+   requires an explicit product purpose and retention rule (D-20).
+
+These are the things expensive to retrofit. They constrain the TRD without prescribing its service split,
+tables, vendors, retention durations or backup mechanism.
+
+#### 5.10.2 The inventory follows the architecture
+
+As a store, queue, log, telemetry event, backup or processor is introduced, its design record adds one
+compact row:
+
+> **data class · purpose · subject/deletion scope · storage or recipient · retention · deletion event ·
+> operator visibility · third parties**
+
+That record lives beside the schema, service or infrastructure definition that makes it true and changes
+with it. The TRD starts the inventory with its proposed stores and flows; implementation reconciles it to
+what is actually deployed. Exact vendors, processors, backup behavior, log fields, support workflows and
+retention periods are discovered and decided there rather than guessed in this product document.
+
+#### 5.10.3 The as-built review is a release gate, not a PRD gate
+
+Before availability is widened beyond development or a deliberately bounded test audience, review the
+deployed inventory, processor list, operator roles, backup expiry, deletion/export behavior, incident
+path, and jurisdiction- and audience-specific legal surface. The evidence is generated deletion/export
+tests and a reconciliation against deployed infrastructure, not the existence of a long policy document.
+
+D-17 answers what attackers and cryptographic authorities can do; D-32 answers which constraints the
+service must preserve while its concrete data surface is discovered. Neither substitutes for the other,
+but only the constraints belong in the PRD. The inventory and operational program belong to the TRD,
+implementation and release review at the stages where they can be accurate.
+
+### 5.11 What survives the service — D-33
+
+**D-33. What continues to work if this company stops existing, and what may the product claim about it?**
+_(Decided in principle. Promoted from the former durability appendix, which analysed it as a transport question
+and concluded it was not one.)_
+
+**Why this is here rather than in an appendix, and why D-16 forced the promotion.** That appendix had asked
+whether ordinary sync should be peer-to-peer, and found two concerns underneath: operating cost, and the
+wish that adopting a local-first tool should not require betting on the operator's survival. It concluded
+that **peer-to-peer answers the first, badly, and does not answer the second at all** — a durable node
+that returns what a sleeping device missed is a relay whatever it is called, and independence comes from
+custody, portable software and tested migration rather than from the route bytes take.
+
+D-16 then removed the peer path, which has a consequence this document has to own: **the fig leaf is
+gone.** While an accountless peer path existed, there was notionally a configuration in which users were not
+dependent on this service. It was never real (§5.7.3, D-16), but it was there. Now every synchronizing
+user is on infrastructure this company operates, so the work below stops being a roadmap item and becomes
+the thing that makes the product's pitch true.
+
+> **Decided: software continuity comes from an independently runnable client and service stack, not from
+> preserving this operator.** Publicly available open source is the ordinary and preferred way to satisfy
+> that requirement. A triggered source-escrow or wind-down release with perpetual build-and-run rights is
+> an acceptable but weaker fallback. Binary availability alone is useful during an orderly handoff but
+> does not satisfy replacement-device continuity. Claims remain staged and evidence-gated at release;
+> building and proving the package is not a gate on the PRD or the start of the TRD.
+
+An orderly corporate succession may keep the hosted service running, and enough users may make that the
+commercially likely path. It is welcome operational continuity, not the architectural guarantee: the
+product must remain recoverable when there is no buyer, no cooperative wind-down and no original domain.
+
+#### 5.11.1 Decompose the scenario rather than answering it yes or no
+
+| After the service disappears, the user wants to… | Required mechanism                                                                     | State today                        |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------- |
+| Open and edit on a device that already has it     | Its usable last local replica; no read or write awaits network or credential              | **Held** (§6, PRD principle 3)     |
+| Read the data without `done`                      | Plain, documented export format                                                          | **Substantially held** — Markdown export exists |
+| Reinstall on a replacement device                 | Independently obtainable, legally runnable client source/build; not dependent on the original origin | **Plausible path selected:** public open source, or triggered source release; not yet shipped |
+| Continue syncing between existing devices         | Independently runnable authorization service, relay and store; configurable endpoints; documented migration | Same distribution path; unbuilt   |
+| Restore after losing every device                 | Independently held ciphertext, content-recovery factor and standalone restore path         | **No longer gated** — D-17 selected the factor (§5.7.6); archive and restore tool are unbuilt |
+| Admit or revoke a device                          | Account recovery or creation at the replacement service                                   | Missing as a migration flow       |
+| Move to another hosted or self-hosted service     | Restore content, create a new account and enroll devices under the new service's authority | Missing                            |
+
+The first two rows are most of what a user means by "outlives the company", and they are the two that are
+substantially in hand. The rest do not follow from local persistence, and none of them would have followed
+from peer-to-peer either.
+
+#### 5.11.2 Three continuities, each of which can fail alone
+
+- **Data continuity.** Export must be paired with **import**, or the Markdown archive preserves the
+  user's writing without preserving continuity of this application. Import is already owed for the §2.4
+  migration; this makes it a survivability requirement too. Beyond it, the stronger story needs a second
+  artifact with a different job: **Markdown is the permanent escape format; an encrypted fidelity archive
+  containing CRDT state, retained content-key generations, `R_pub`, sealed `R_priv` where an account
+  recovery identity exists, and the material needed to resume is the exact restore format.** A purely
+  Local archive needs its own explicit portable wrap because it has no account recovery keypair. Neither may
+  depend on an undocumented database layout or a live original service.
+- **Application continuity.** A cached PWA continues through an outage; it does not survive a cleared
+  browser store or a replacement device, and an expired origin serves nothing. The normal answer is a
+  publicly available source release under terms that permit anyone to build, serve and run it indefinitely,
+  with pinned dependencies, instructions, checksums and independently downloadable release artifacts.
+  A third-party source escrow or automatic wind-down release can satisfy the same requirement less
+  reliably if its trigger, license and contents are fixed in advance. A promise that a buyer may keep
+  existing binaries running helps an orderly succession but does not let an arbitrary user reinstall
+  after browsers, operating systems or signing requirements change. The release must cover the
+  authorization service, relay, durable store and migration tooling as well as the client; open-sourcing
+  only the UI preserves neither sync nor recovery.
+- **Cryptographic continuity.** Server-held ciphertext is not recoverable data unless the user can unseal
+  the recovery private key and the corresponding content-key wraps still exist. Restoring account access
+  must never be described as restoring content-key access
+  (§5.7.5, §5.1.2). This was D-17's recovery selection seen from the survivability side, and the two were
+  answered together: the saved code unseals **`R_priv`**, which opens content-key generations wrapped to
+  `R_pub` and thereby makes server-held ciphertext recoverable data. The secret capability is held by the
+  user, so it survives the service by construction rather than by arrangement.
+
+**Authorization is deliberately not continuous across service disappearance.** §5.7.2 chooses the
+service as the authorization authority and migration as the boundary: the old lineage stops governing
+the migrated package, the content is restored under user-held recovery material, the client rotates to a
+fresh content-key generation, and the replacement service starts a new account and authorization
+lineage. The existing recovery keypair is reused when the user holds it: the new generation is wrapped to
+the same `R_pub`, while `R_priv` remains sealed to the same confirmed recovery factors. The product
+preserves the workspace and recovery identity, not the vanished service's device list, epochs or claim to
+authority over the migrated package. That is narrower than succession, easier for users to recognize as
+moving services, and sufficient for the claim in §5.11.4.
+
+**Two qualifications keep that boundary honest.** First, "not the vanished service's epochs" means not
+as authority **inside the migrated package**. Its **public** material is retained for a different job:
+verifying signatures on writes that were made while it governed the old package. Nothing that verifies
+history authorizes a future in the new lineage, and the two uses of the same bytes should not be
+conflated.
+
+Second, migration cannot manufacture a terminal record from an authority that has vanished. If the old
+service is reachable, migration requests account deletion or a signed terminal commit. If it is not, the
+portable cutover package marks that lineage superseded for this restored workspace and the fresh lineage
+identifier plus accepted checkpoint prevents any old envelope from replaying into it. The old service,
+if it later returns, may still regard its own copy and credentials as live; migration has isolated that
+copy, not remotely revoked it. The product must say so and offer deletion if contact returns. This is why
+"migration starts a new lineage" is a security boundary while "migration retires the old lineage" is
+only a conditional cleanup claim.
+
+**Which raises a question the two decisions were taken four hours apart and never reconciled: what makes
+the restored history admissible under a lineage that never accepted it?** §5.2.3 requires acceptance
+evidence on every applied envelope, and every historical envelope carries the *former* service's — issued
+under a key the replacement has no reason to honour and clients have no reason to trust. Replaying them
+under the new lineage cannot work, and must not, or migration would be a way to launder unaccepted writes
+into a fresh workspace.
+
+**The checkpoint is the re-baseline point, and it is already required for other reasons.** §5.11.3's
+content-blind store already needs a client-produced authenticated checkpoint with a manifest binding it to
+an authorization head, key generation and covered range. At migration that checkpoint is what the
+replacement lineage admits: the restoring client attests the state it recovered, the new service accepts
+that attestation as the lineage's origin, and the prior envelope history is **archival rather than
+replayable** — kept for the record, never re-admitted. Every write after the checkpoint carries the new
+service's evidence in the ordinary way.
+
+**But a checkpoint that re-baselines acceptance also re-signs everyone's history as one client, and
+§5.6.2 forbids exactly that.** Its rule is that a source "must not combine mutations from several
+credentials into new bytes and sign the result as itself; that would erase the property D-27 is meant to
+establish", and it requires first sync to use "either the signed envelope history or an authenticated
+checkpoint **whose construction preserves attribution**". A naive migration checkpoint is the forbidden
+shape: every card any device ever wrote, attested by whichever device happened to perform the restore.
+
+**So migration has to choose, and the choice is a product one because it decides what D-27 promises
+across a service boundary:**
+
+| Option | What survives | What it costs |
+| ------ | ------------- | ------------- |
+| **Carry attribution forward** | Historical writes stay attributable to the credential and actor that made them | The old lineage's public authorization material must be retained as **historical verification material** — not as current authority, which §5.7.3 forbids, but as the trust root against which pre-migration signatures still verify |
+| **Reattribute the baseline** | Nothing before the cutover is individually attributed; the whole baseline is one system-actor import by the migrating device | Cheaper, and honest only if said — D-22's provenance mode goes blank for everything older than the migration, and "who wrote this" becomes "restored on 3 March" |
+
+> **Decided: carry attribution forward.** The migration retains the old lineage's **public** authorization
+> material as historical verification material, so pre-migration writes stay attributable to the
+> credential and actor that made them. Reattribution to the migration is rejected: D-27 promises
+> authenticated authorship and D-33 promises the workspace survives, and a migration that silently
+> converts every past write into "restored by this device" keeps the second promise by breaking the first.
+>
+> The cost is accepted, and it is **not** the "small archive of public keys" an earlier draft of this
+> paragraph called it. Verifying a pre-migration write end to end needs four things, and the TRD has to
+> specify the package rather than assume it:
+>
+> 1. **An authenticated old trust root.** The vanished service's authorization signing key, bound so that
+>    it cannot be substituted — otherwise whoever can write the archive can rewrite who wrote what, and
+>    the property this decision exists to preserve is forgeable by the person restoring it.
+> 2. **Enough of the old authorization history** to establish which credential held which capability at
+>    the referenced epoch, since D-27's invariant is about authorization *at* that epoch.
+> 3. **Either the original signed envelopes or a validated attribution-preserving checkpoint** — §5.6.2
+>    already names those as the only two shapes, and a checkpoint that flattens them is the forbidden one.
+>    **The target is the second**, since the first grows without bound and would put an ever-larger file
+>    in front of the user §5.11.5 asks to keep an archive. This document does not select its construction.
+>    Known cryptographic building blocks support a candidate family: sign a stable attribution record,
+>    then encrypt that complete signed object so its confidentiality wrapper can change at rotation without
+>    changing the attribution claim. That establishes a plausible path, not that any particular tuple is
+>    sufficient or already bound to the Yjs content it purports to describe.
+> 4. **The historical content-key generations**, because §5.8.1 puts the attributed actor *inside the
+>    seal*. Verifying authorship therefore requires decrypting, so a workspace that has rotated keys and
+>    discarded old generations has signatures it can still check and attribution it can no longer read.
+>
+> That fourth item is an interaction between two decisions taken in adjacent rounds and is easy to miss:
+> sealing the actor made historical attribution depend on content-key retention. §8.1's content-key row
+> already lists generation retention as unselected; it now has a hard floor — **retain enough to open
+> every generation whose attribution the product still claims**, or stop claiming it. A validated
+> attribution-preserving representation may lower that floor; the TRD may not assume that it has done so.
+>
+> **None of this is succession** — it proves who wrote history, it authorizes nothing, and §5.7.3's rule
+> is about who may *change* authorization, which this material cannot. D-27's invariant therefore reads
+> the same either side of a migration, and §5.7.1's
+> table needs no migration-specific exception.
+
+**Whether PRD principle 6 argues against all of this, since it is a ranked principle and outranks
+everything here (§1.4).** *"The past is written, not read — assume history is essentially never
+revisited"* reads at first like a reason not to pay for historical attribution at all. It is not, and the
+reason is in what principle 6 actually licenses.
+
+**Principle 6 governs how the product treats the past, not whether a retained claim may become false.**
+It is a statement about user behaviour and what to build for it: weight retrieval toward recent days,
+do not build deep-history navigation, let the freeze be permanent, make compaction acceptable. None of
+those authorizes displaying an author the product can no longer verify. A claim the interface is still
+making is a present claim, whatever its subject's age.
+
+**And compaction is where the two meet, which turns principle 6 from an objection into the mechanism
+that bounds this.** Destructive compaction serializes a day's collections into `archive: Y.Text` and
+deletes the cards (TRD §4.5). A compacted day has no cards, therefore no `Card.author`, therefore **no
+attribution claim** — the export format says the same thing from the other side, since `Card.author`
+appears in none of `master.md`, `days/<date>.md` or `recovery.md` (TRD §9). So the product already has a
+sanctioned way to stop claiming, principle 6 is exactly what justifies it, and the floor above is not
+"forever" but **for the lifetime of the claim**.
+
+**Two things stop that being as reassuring as it sounds, and both should be said rather than discovered.**
+
+- **The bound is currently inert.** Destructive compaction is safety-paused and may never return; TRD
+  §10.4 accepts the consequence in terms — "the cost is unbounded document growth." Nothing else retires
+  a card. So in the shipping product every card ever written still carries a live attribution claim, and
+  the retention obligation is unbounded in practice. Reading principle 6 correctly **justifies** that cost;
+  it does not reduce it.
+- **Exporting discharges nothing.** The export drops attribution, but the workspace keeps showing the
+  author, and the workspace is what makes the claim. Only removal and compaction end one.
+
+**Which creates a sequencing consequence nobody has connected, and it belongs with whoever re-enables
+compaction.** Destructive compaction would be an **attribution-retirement event** as well as a storage
+one: the content-key generations that served only compacted days become droppable at that moment. TRD
+§4.5 and §10.4 treat compaction purely as a replica-safety problem and say nothing about attribution;
+§8.1's retention floor discusses generations and says nothing about compaction. The replica-acknowledgement
+protocol §10.4 requires before compaction can return is therefore gating two boundaries, not one (§9).
+
+**A smaller floor is known to be possible in principle, but its construction is not selected here.** A
+candidate family is a stable signed attribution record, encrypted as a complete signed object and
+re-encrypted under each new content-key generation. The signed record would need to bind, at minimum,
+the exact attributed unit or mutation, actor, credential, authorization epoch, and a canonical commitment
+to the content or operation. If a checkpoint collects those records under one commitment, verification
+also needs an authenticated proof binding each retained claim to that checkpoint. Merely copying an
+original envelope signature beside a newly assembled tuple does not work: that signature authenticates
+the original envelope and ciphertext, not the new tuple or its association with the current card.
+
+**That is bounded TRD protocol work, not another product decision and not a claim that novel research is
+required.** The TRD must select the attribution granularity, canonical signed record, binding to Yjs
+content, checkpoint commitment and proof, rotation and migration behaviour, and explicit storage bound;
+produce test vectors; and pass §5.7.8's independent design review. Until that construction is specified
+and validated, the conservative retention floor remains every content-key generation needed to open every
+attribution claim. A validated construction may reduce it to current-generation custody plus portable
+evidence whose size is bounded by the retained claims, but this document does not assert a particular
+index or call that evidence small.
+
+**And "during" needs a rule, because §5.11.4's test 7 names it as a case.** A migration is a cutover: the
+checkpoint fixes a covered range, and edits made after that range is computed but before the new lineage
+accepts anything belong to neither side.
+
+**Every enrolled device is in that window, not just the restoring one** — an earlier version of this
+paragraph said otherwise and was wrong on the document's own terms. Offline-first means every device keeps
+writing locally throughout (§6, PRD principle 3); a migration is a service event, and devices do not stop
+because the service is being replaced. So the window produces divergence on as many replicas as there are
+devices, and test 7's "edits made before, during and after" is a multi-device case by construction.
+
+**What is automatic, and what is not:**
+
+- **A device's own window edits are its own writes**, so on enrolling under the new lineage it re-signs
+  them and submits them as ordinary envelopes. Attribution is preserved because nothing is being
+  re-attributed — the same credential and actor sign the same operations.
+
+  **But "its own window edits" is a claim the device has to prove, not assume, and an earlier version of
+  this contract proposed two mechanisms that do not work.** Both failures are instructive, because each is
+  a property this document had already established elsewhere and then contradicted here.
+
+  **Descent, established rather than tested.** The enrolling device verifies and **applies the admitted
+  checkpoint first**, and then descends from it by construction. A v15 draft evaluated descent at the
+  wrong moment — before the checkpoint had been received — and concluded that a device whose own work the
+  checkpoint did not cover "is not holding a suffix; it is a second history". It is not. Both are replicas
+  of one workspace and share an ancestor, so applying the checkpoint and merging is exactly what Yjs is
+  for (§6); the device's own pre-migration work is still there afterwards, alongside everything the
+  checkpoint brought. Descent is a state the device *reaches*, not a qualification it either has or lacks.
+
+  **But a state vector alone cannot authenticate that state.** It maps client to clock over *insertions*;
+  deletions live separately in the `DeleteSet`. Two replicas can carry identical state vectors and disagree
+  about what has been deleted, so "the checkpoint's state vector is dominated" does not mean "everything
+  the checkpoint contains is here". The manifest therefore authenticates coverage of both halves — a full
+  Yjs **snapshot**, which is exactly the pair `{sv, ds}`, or a receipt for the specific checkpoint the
+  device applied — rather than publishing a bare state vector (§5.11.3).
+
+  **A delta cannot be filtered by signing credential.** Update bytes carry the writing `Y.Doc`'s client
+  id, which is random per document instance — this document says so in three places and had TRD §4.8
+  corrected for saying otherwise (§5.6, §5.6.3, §9). So "keep only the operations this credential
+  authored" asks the update stream for attribution it provably does not contain. The proposal was the
+  exact error the document exists to have caught.
+
+  **What works instead is the envelope, and §5.6.2 already supplies the principle** — forwarded mutations
+  retain their original envelopes, because the envelope is where attribution lives. So a device does not
+  filter a merged delta at all: it retains **its own outbound signed envelopes** since the checkpoint,
+  which it has by construction because it signed them. Those envelopes identify the operations it may
+  carry; the device re-envelops and re-signs the same operations under the new epoch with the same
+  credential and actor. The old-lineage envelopes are evidence and input, not messages the replacement
+  service admits directly.
+
+  **Coverage is then a subtraction rather than a filter.** Checkpoint plus this device's own envelope
+  suffix accounts for some of its replica. Any residue — operations it *received* from another device
+  during the window, or content from before the archive that never reached it — is not this device's to
+  carry and it cannot honestly re-sign it. That residue follows the next bullet.
+
+  Which lands somewhere better than the version it replaces: another device's window edits are not lost
+  because this device happened to see them, they simply travel on **that** device's enrollment, replayed
+  from its own envelopes. A device that never enrolls loses its window, which is the same honesty D-24
+  requires when a device never appears for account deletion — name it in the confirmation rather than
+  abandoning it quietly.
+- **The one thing migration cannot carry, stated because it is a real loss and a small one.** Operations
+  from a credential that reached one device and never reached the archive travel on **that credential's**
+  enrollment or not at all. If the device that wrote them never enrolls at the replacement service, they
+  are gone — not replaced, not adjudicated, simply never re-signed under a lineage that would accept them.
+  §5.11.4's test 7 is what exercises this, and the loss is bounded by how much work a never-returning
+  device did inside the window.
+- **The window should therefore be short, and that is a design requirement rather than an aspiration.**
+  Every day of it is another day of unsubmitted work on every device that has not yet enrolled, and the
+  previous bullet's exposure grows with it.
+
+So the accepted-set requirement and the migration boundary meet at a checkpoint rather than conflicting,
+and §5.11.4's test 7 — converging edits from before, during and after a migration — is passable because
+"before" arrives as attested state and not as a stream of foreign receipts. The construction is TRD work;
+that it exists, and that nothing else could serve, is the product-level part.
+
+The migration must keep the two enrollment gates separate. The replacement service may authorize a new
+credential, but only a surviving content-holding device or `R_priv` unsealed by a recovery factor may
+deliver the old content keys (§5.7.2). An authorized client then generates the new lineage's fresh key,
+wraps it to new readers and the existing `R_pub`, and submits that package for the replacement service to
+commit. Possession of restored content does not prove continuity of the former account; it creates a new
+one.
+
+#### 5.11.3 Custody is not replica count
+
+Three processes, machines or buckets under one provider account, billing relationship, domain and operator
+improve availability against machine and regional failure. They do nothing about closure of the account,
+loss of the domain, or a deliberate shutdown. **For this decision one independently controlled copy is
+worth more than three operator-controlled ones.** Immutable encrypted blobs can be copied to independent
+stores and verified by digest without moving authorization authority. Migration creates fresh
+authorization state at the destination instead of importing the vanished service's signing authority.
+
+Related, and it lands on the relay's design rather than on policy: a content-blind durable store cannot
+merge what it holds. **It therefore needs a bounded recovery representation** — immutable authenticated
+envelopes, a client-produced authenticated checkpoint, a manifest binding that checkpoint to its
+authorization head, content-key generation, covered range **and an authenticated coverage attestation**,
+the update suffix after it, and retention rules for superseded checkpoints. The attestation has to cover
+insertions *and* deletions — a Yjs snapshot's `{sv, ds}` pair, or a receipt for that specific checkpoint —
+because a bare state vector says nothing about the `DeleteSet` and so cannot establish that a replica
+contains what the checkpoint contains. The migration cutover depends on it (§5.11.2). This is already implied by D-28 and §8.1; D-33 makes it a storage
+requirement as well as a replay-performance one, and it is the concrete reason "the relay is already
+built" was too strong (D-16).
+
+**Whatever attribution-preserving evidence the TRD selects is part of that representation, not a separate
+operator archive.** It is portable workspace material encrypted under retained content-key generations,
+so it is checkpointed,
+stored and restored with the workspace: it travels with the archive, uploads with the checkpoint at
+migration, and a device enrolling fresh at the replacement service receives it from **that** service in
+the ordinary way. There is no separate channel, nothing the vanished operator has to still be alive to
+do, and nothing the user has to keep beyond what §5.11.5 already asks them to keep. This answers where the
+evidence lives and how it survives service disappearance; §5.11.2's TRD gate answers how it binds each
+claim and proves the promised storage bound.
+
+**And the question of who *serves* any of this after the company is gone is not this document's to
+answer, deliberately.** D-33's position is that continuity comes from independently runnable software and
+material the user already holds — not from the operator arranging anything at the moment of failure. A
+wind-down mechanism that mails people a download link is precisely the shape D-33 rejects as sufficient,
+because it requires the company to exist and act exactly when the scenario assumes it does not
+(§5.11.4's claim, and §5.11.5's package).
+
+#### 5.11.4 The claim, staged
+
+The claim available **today**, and it should be made rather than held back — it is already stronger than
+most of the category:
+
+> Your existing installation and the last workspace replica it holds keep working with the service
+> unreachable, and nothing you read or write waits on us. That replica exports to ordinary Markdown at
+> any time. Hosted synchronization,
+> fresh-device setup and any server-held recovery material stop being available.
+
+The claim enabled by the independently runnable software package, and **it must not ship before the
+corresponding tests below pass**:
+
+> If the hosted service disappears, your app and local data continue to work. Your data is available as
+> ordinary Markdown. An independently runnable release can be installed without us, and a surviving
+> workspace replica can be moved to another compatible sync service under a new account.
+
+The stronger conjunction — the company is gone **and** every device is lost — adds one condition the
+software cannot create after the fact:
+
+> If you hold a verified encrypted archive and your recovery factor, the encrypted workspace can be
+> restored on a replacement device and moved to another compatible sync service without the original
+> provider.
+
+The gate, demonstrated without production credentials or the original app origin:
+
+1. Start an existing installation with app and relay origins unreachable; read and edit normally.
+2. Export to Markdown and inspect every user-authored item with ordinary tools.
+3. Import that export into a clean, independently served build without silently losing frozen history
+   (§2.4 — the freeze must not eat the import).
+4. Restore an encrypted workspace archive on a clean device using only saved recovery material.
+5. Start the documented self-hosted service and store, and migrate one surviving replica without modifying
+   its content.
+6. Create a new authorization lineage at the replacement service, then add and revoke a device.
+7. With two devices diverged while the former service was unavailable, use one replica to establish the
+   replacement workspace; enroll the other, verify that it applies the checkpoint, retains its own
+   divergent work and re-signs only its own credential's operations under the new lineage, then converge
+   edits made after enrollment. Verify separately that operations from a third credential which never
+   reached the archive are **not** re-signed by the enrolling device (§5.11.2).
+8. Repeat with the store holding the newest checkpoint unavailable, falling back to the next-newest
+   retained checkpoint and its suffix. The order of preference among retained checkpoints is part of
+   §5.11.3's retention rules and has to be documented there rather than assumed here.
+9. **Run tests 4 through 7 again with the entire original provider account unavailable** — not one store,
+   not one region, but every service the company operated — using only material the user already holds.
+   This is the test the survivability claim is actually about, and it is the one a within-provider replica
+   drill can pass while the real scenario still fails.
+
+**Tests 1–3 are cheap, near-term and cover most of the felt meaning of the promise; 4–9 are a serious
+program, and 9 is the one that cannot be faked.** They gate the corresponding release claim, not PRD
+promotion or the start of the TRD. An open repository is evidence of availability, not evidence that the
+software builds, restores or migrates; those claims still wait for the tests. Conversely, an unbuilt test
+does not make the product architecture undecided.
+
+#### 5.11.5 The package
+
+What "replaceable" concretely requires, so it can be scoped rather than admired: independently
+obtainable source and release artifacts for the client, authorization service, relay and durable store,
+under terms that permit indefinite independent operation; build and deployment instructions with pinned
+dependencies and checksums; a documented, versioned envelope and checkpoint protocol; endpoints
+configurable without editing workspace content; export **and** import; a standalone recovery and
+inspection tool; a user-held recovery secret; and a tested migration that creates a new account and
+authorization lineage without importing the former service's authority.
+
+**Public open source is the straightforward delivery mechanism.** A source escrow or automatic wind-down
+release counts only if it delivers the same source, rights and instructions without requiring the vanished
+operator to act. Perpetual rights to existing binaries are useful for a buyer or orderly succession, but
+they are a bridge rather than this package: they do not repair a build, support a new platform or give a
+user an independently installable replacement after the binary stops running.
+
+The exact-recovery claim for simultaneous company disappearance and total device loss additionally needs
+the item a v15 draft left out —
+
+- **A copy of the ciphertext that already exists outside this service.** Either a **verified encrypted
+  fidelity archive** the user has taken and the app has confirmed is restorable, or a **continuously
+  replicated user-controlled destination**. §5.11.3 argues that one independently controlled copy beats
+  three operator-controlled ones, and then the package listed only software — which is the gap. **Shipping
+  a self-hostable relay does not put any bytes in it.** Software you can run after the fact cannot
+  reconstruct data that only ever lived in an account that has been closed.
+
+That is the difference between *replaceable* and *survivable*, and it is the one requirement here with a
+recurring cost to the user's attention rather than a one-off engineering cost — which is why it needs to
+be designed as something the app drives (a periodic verified archive, or a destination configured once)
+rather than something the user is trusted to remember.
+
+**The scope of that requirement is narrower than the paragraph above implies, and the correction is worth
+making rather than leaving the stronger claim standing.** Every surviving install holds an independently
+controlled **last** local replica (§5.11.1, row 1) — the axis §5.11.3 cares about is custody, not currency.
+An offline replica may therefore be stale:
+
+| Service | Devices     | Who holds usable bytes                                                     | Archive load-bearing?       |
+| ------- | ----------- | --------------------------------------------------------------------------- | --------------------------- |
+| Alive   | ≥1          | The service plus each device's last replica                                 | No                          |
+| Alive   | 0           | Service ciphertext and generation wraps, opened with code-sealed `R_priv`   | No — this is §5.7.6         |
+| Gone    | ≥1, current | The surviving device, migrated to a new service (§5.11.4 test 5)            | No                          |
+| Gone    | ≥1, stale   | That device, minus everything since it last synced                          | **Partly — for the gap**    |
+| Gone    | 0           | Nothing, unless the user already holds an independent ciphertext archive    | **Yes — only here**         |
+
+**Deliberately not the word "complete".** D-24 and D-29 make *complete copy* mean something specific and
+false — a device holds its **last** replica, not the workspace as it last stood — and the argument here
+needs the custody sense instead. Hence the fourth row: a device that went in a drawer before the wind-down
+is an independently controlled copy that is still short a month, with the relay gone and no other device
+willing to sync with it. That is the same qualifier D-24 already puts on destructive account deletion,
+which requires *a verified-current device or a fresh export*, applied to the moment the service ends
+involuntarily rather than by request.
+
+So the archive is irreplaceable for any recovery in one cell — **the conjunction of company disappearance
+and total device loss** — and partly load-bearing in another, where the only surviving device is stale and
+the archive covers what it missed. Because the conjunction is usually reached through one of the other
+cells, the archive's main
+job is protecting the user who was not paying attention during a wind-down window, or for whom the two
+events were not separated in time. That is a genuine requirement and not an obvious one; it is simply not
+the requirement "shipping a self-hostable relay does not put any bytes in it" appears to be arguing for,
+since in the third row the bytes are already on a machine the user owns.
+
+**And it is not a recovery factor.** The archive answers §5.7.6's fourth object — does ciphertext still
+exist — and never the third. A user who holds an archive and has lost the code has an encrypted file and
+no way in (§5.7.6). Keeping those two objects distinct is what stops the package from looking complete
+while a whole class of loss remains unaddressed.
+
+Drawing those interfaces is cheap now and expensive later, and it does not require deploying five
+services. The first deployment may remain one small process, provided its **interfaces** already
+distinguish rendezvous and connection authentication, ephemeral live fan-out and awareness, durable
+encrypted envelopes and checkpoints, authorization signing and accepted-set finalization, and account
+storage (plus billing storage only if D-31 introduces it). That
+separation is what later lets retention, replacement and self-hosting boundaries be drawn without a
+rewrite — and it keeps ephemeral presence data from silently inheriting the retention policy of durable
+workspace state (D-32).
+
+---
+
+## 6. Forced, for the record
+
+Not decisions. Listed so they do not consume discussion.
+
+- **A session id is ephemeral and never persisted.** Persisting it would make two tabs share one
+  session and a reload keep a stale one, which is the opposite of what it is for.
+- **A session id is not the Yjs client id.** That is an implementation detail, random per document
+  instance, and already the thing the peer list mis-counts.
+- **A device is a browser profile.** Not a machine. Two browsers on one laptop are two devices
+  because localStorage says so, and no product decision changes that.
+- **The actor roster syncs; the local actor/device binding does not.** Already TRD §4.8, and correct:
+  each install must know which credential and actor it actually controls rather than trusting the roster.
+- **Attribution cannot be revoked.** Cards carry an actor id. Deleting a roster entry deletes the
+  name, not the history.
+- **Changing a room must not converge two histories.** No reading of "room" makes that the wanted
+  outcome, so it is a defect to remove rather than an option in D-11 (§2.2b).
+- **A cookie cannot be waited on.** Whatever the _network_ credential turns out to be, nothing on the
+  read or write path may await it — TRD §7.1 already says this about sync state, and §2.3 is why it now
+  also covers authentication. **This is scoped to the network deliberately.** It says nothing about a
+  local unlock ceremony, which is not a network wait. D-34 keeps the **default** free of one — storage is
+  ciphertext under an app-managed key — while making a user-held device lock available per device.
+- **Actor ids do not collide.** UUIDv4.
+- **Replicas that share an ancestor merge; histories that do not share one cannot.** This is the single
+  mechanical fact underneath D-5's withdrawal and three corrections that came with it, and it kept being
+  re-derived. Two replicas of one workspace that have diverged — two devices on an account, one of them
+  offline for a month, a lapse, a migration cutover — descend from a common state, and Yjs converges them
+  without choosing or discarding anything. That is the ordinary offline-sync case and TRD §2 selects Yjs
+  for it. Two documents with **no** common ancestor also merge mechanically, and the result is meaningless:
+  interleaved text and both sets of cards in arbitrary order (§2.2b, §5.2.2). So "two histories meet" is
+  never by itself a problem statement — the question is always whether they share an ancestor, and the two
+  answers want opposite treatments. Since v16 the second case is two workspaces rather than one contested
+  one (D-24), which leaves the first as the only kind of meeting the product has.
+- **A long divergence produces a large merge, not a lossy one.** Nothing is at stake in it; what it costs
+  is legibility, which is D-22's job. Do not reach for a rule, a preview or a server here.
+- **`NEXT_CAP` binds authoring, not replication — so a day can hold more than three Next items.**
+  `capacityFor` refuses the fourth item at creation (`moves.ts`), which is PRD principle 5 enforced the
+  way principle 5 asks for it: by refusing, never by rearranging. Remote updates never consult it, so *n*
+  synced devices can produce up to *n* × 3 on one day and the interface shows what is there. **This is
+  deliberate.** The cap is a commitment device for the person writing, not an invariant of the document,
+  and an over-cap day is a true statement about what several devices did rather than a defect to repair.
+  Import sits on the replication side of that line for the same reason it sits outside the freeze (§2.4,
+  §5.2.2).
+- **A restored or resumed tab must re-establish its view.** It has no way to know what it missed. (Tab
+  lifecycle, not the day freeze — the words collide and this one is the browser's.)
+- **The freeze governs operations that author the past — not replication, not compaction, not a
+  migration import.** A frozen day still merges: remote updates arrive through `Y.applyUpdate` and never
+  consult `isFrozen`, so the freeze has never been a barrier to another device's history. Compaction is
+  held independent of it by explicit design (`compaction.ts`, TRD §4.5, with a regression test). Within
+  the app's own write paths it binds every actor including the system one — the recovery path declines to
+  rewrite frozen history on purpose, and that is correct. **Import is the case that has to be placed
+  deliberately** (§2.4, §5.2.2): a migration import is the app reconciling histories rather than a person
+  editing the past, so gating it the way an edit is gated would silently discard everything older than
+  three days. `NEXT_CAP` follows the identical split and is not a second gate on that path (§5.2.2, and
+  the bullet above).
+
+---
+
+## 7. What this costs the first experience
+
+The initial experience is where identity decisions are most expensive, because it is the only moment
+the user has no reason to care and no context to answer. Four constraints now define it:
+
+1. **The first run cannot ask who you are** — principle 1 and principle 2 both point this way (D-1).
+   Local genesis creates an unnamed principal, home-workspace membership, device and human actor without
+   exposing any of those concepts.
+2. **Local asks for nothing, ever.** After D-16, Local is not a trial or a first rung;
+   it is a complete application that never requests a name, an address or a credential. D-1's promise
+   therefore holds for the entire experience of every user who does not ask for a hosted service.
+3. **The questions arrive with the service that needs them**, and not before: creating an account to get
+   a second device asks for a name (D-23), establishes an account-authentication credential, and
+   **requires a saved, independently confirmed high-entropy recovery code** (D-17, §5.7.6). Those are one
+   moment and three distinct jobs — the name is a label, the account credential proves identity to the
+   service and leaves an offline-verifiable local slot-unlock binding on enrolled devices, and the code
+   seals a content-recovery power the service never receives. Local unlock grants no network session. Any
+   commercial step is D-31 and outside this flow. The account requirement is a sharper edge than the
+   retired ladder had, the code makes it sharper still, and this is the honest place to put both — when
+   the app starts holding ciphertext and acting on the user's behalf through a service.
+4. **Nothing discards a history at all.** v15 required a joining device's replacement of its own history
+   to be stated, exported and confirmed; **v16 removes the replacement** (D-5, withdrawn). Signing in
+   opens the account workspace beside whatever was already on the device, so the only history question
+   the product asks is the one at account creation — *promote this list, or start fresh* — and it is
+   asked once, of one device, with both answers safe (D-24).
+
+### A worked example of the chosen flow
+
+Tom has been using `done` on his laptop for a month. He has never been asked for anything: no name, no
+account, no sync configuration. His data is on his laptop and nowhere else, and the storage section of the
+menu says so plainly and without alarm (D-25).
+
+He gets a new phone, installs the app, and uses it for a week before thinking about sync. That phone now
+has its own local genesis — its own principal, device, actor and history — and the two installs have no
+relationship at all (S5).
+
+Then he wants the laptop list synchronized to the phone without losing the phone's week. **This is the
+boundary at which the product begins asking for something:** he starts creating an account on the laptop,
+chooses a name and establishes the account-authentication credential plus its device-local offline slot
+verifier (D-13, D-23).
+
+**And it asks for one more thing, which is the heavier half.** Before the account exists, the laptop
+creates `(R_pub, R_priv)` and a recovery code, seals `R_priv` to that code, tells him the code is the only
+way back to his list if he ever loses every device and independent passkey wrap, and asks him to store it
+somewhere that is not this laptop and confirm it (§5.7.6). This is the largest
+deliberate security interaction in the product, it happens exactly once, and there is no version of the
+account without it — the alternative is a service that can read his list, which §5.7.5 rejects. What the
+interface owes him here is the reason, in a sentence, at the moment he is being asked: *we will not be
+able to recover this for you, so you have to be able to.*
+
+**And one question about the list in front of him, asked once.** The laptop asks whether this is the list
+he is taking with him or whether he would rather start clean. He promotes it, so the account binds to the
+principal that already exists rather than minting a replacement, the laptop's month becomes the account
+workspace's history, and its existing `K0` is wrapped to `R_pub` and the enrolled device wrapping key
+(D-24). Had he chosen to start fresh, the month would still be in the same local user slot, reachable
+through that slot's picker; signing out would close both until he signs back in. The choice is real, and
+neither answer destroys anything.
+
+Once he confirms the code and the account credential, the client erases unsealed `R_priv` and the account
+exists with only its public key, sealed private-key envelope, content-key wraps and ciphertext hosted.
+
+He signs in on the phone. The account admits the phone's device credential, the service signs the new
+authorization epoch, and the phone is enrolled — but it still cannot read anything, because authorizing a
+device does not deliver a content key (§5.7.2). So the laptop shows a one-time pairing QR, the phone scans
+it, and the key arrives out of band — one of the two ceremony shapes D-19 leaves to the TRD, drawn here
+because it is the legible one and because the phone is the device with the camera. He never needs the
+recovery code for this: it is the fallback for when no existing device survives, not a step in ordinary
+enrollment, and the ceremony does not create a second authorization path. No workspace name, room or endpoint is typed anywhere (Rule 1).
+
+**And the part that used to cost something now costs nothing, which is the whole of what v16 changed.**
+The phone has a week of its own notes and the account workspace has the laptop's month. The phone is not
+asked to give anything up, because the account workspace opens in its own local database and the week
+stays exactly where it is, in the anonymous workspace it was written into (§5.2.1). Tom sees the laptop's
+month, which is the list he asked for. His week is not gone, not exported to a file he has to keep, and
+not merged into anything — it is on the phone, under the phone's own principal, one selection away.
+
+**This is also the first moment the app has ever indicated a workspace to him, and the only kind of
+moment it ever will.** The phone now holds two, so it names the one he is looking at and offers the other
+— which reads as an account switcher rather than as storage administration, because that is what it is
+(D-30). Nothing was named, nothing is being reconciled, and on the laptop, which holds one workspace,
+nothing appears at all. Every user who never signs in sees none of this, ever.
+
+**What he does with the week is his to decide and there is no deadline.** He can read it, export it, or
+delete it; the app should make that reachable where a person would look for their own earlier data, and
+should not dress it up as a second list he is meant to maintain (D-24, Rule 1). If he never touches it
+again, it sits there, costing storage and nothing else.
+
+Afterwards, the phone has a new human actor in the account workspace because attribution remains per
+member-per-device, and the interface groups it with the laptop's under the same principal: one "You", one
+colour. The phone's *older* actor is still in its own workspace under its own principal, where it belongs
+and where nothing about the account can see it. "Last synced from phone" may still name the device, and
+undo remains local to each tab.
+
+If D-31 later makes hosted sync a subscription and Tom stops paying, a grace period passes and the account
+goes read-only: both devices keep working completely, holding everything they had, and they stop
+converging from that moment (D-29). The workspace remains **Account** because its authorization lineage is
+still live; only its entitlement and hosted-sync behavior changed. Local continuity is a property, not a
+label transition.
+
+If Tom later enables an agent, the agent receives its own workspace membership, capabilities and signing
+credential. Its edits are attributed to its agent actor; removing read access rotates the content key. No
+second human, sharing UI or second visible workspace is implied by that architectural capacity.
+
+---
+
+## 8. Decision register
+
+**These are recorded dispositions, not claims that every mechanism is finished.** Several rows marked
+Decided carry live UX or parameter questions in their bodies. The column below says what has been settled;
+§8.1 isolates the remaining TRD parameters and release gates from those non-blocking details.
+
+**v15 changed nine rows from one decision.** D-16 landing moved D-19, D-23, D-24, D-25, D-26, D-29 and
+D-31, removed D-17's everyday user-held authorization mechanism, and first re-weighted D-28 — which is
+the clearest evidence that the account/service boundary was never a pricing question. §5.7.2's service
+authority decision then narrowed D-28 to the control-plane/data-plane split it now selects.
+
+**v16 removed a row instead of adding one.** Keying local storage by _(principal, workspace)_ — a step
+§2.2b had identified and deferred since v1 — dissolved **D-5** entirely, moved its surviving half into
+**D-24**, and corrected D-22, D-29 and §5.11.2, each of which had sent an ordinary CRDT merge to D-5's
+replacement rule. The register is one disposition lighter in substance and the same length in landmarks,
+which is deliberate (§0.1).
+
+**v17 corrects the axes underneath ten rows without adding a disposition.** Local and Account are derived
+from whether a live authorization lineage exists, not from epoch, billing, hosted retention, device
+attachment or login session. D-12, D-13, D-18, D-20, D-24, D-26, D-29, D-30 and D-34 now use those axes;
+D-17's asymmetric recovery keypair makes their key transitions possible without giving the service a
+content key.
+
+| ID       | Question                                                       | Status                    | Answer, or what happens without one                                                                                                         |
+| -------- | -------------------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **D-1**  | Does the user tell the app who they are, and when?             | **Decided**               | Generated by default; a name at account creation only, per D-23. The name is not the whole of that moment — an account credential and the recovery code are established too (§5.7.6, §7) |
+| **D-2**  | Is identity per person, per device, or a labelled pair?        | **Decided**               | Per device internally; per person in ordinary lists. Own devices appear only on explicit device/security surfaces and are not disclosed to another principal |
+| **D-3**  | Are device names worth improving?                              | **Decided in principle**  | Yes. Mechanism open — and it does not need a fingerprint                                                                                    |
+| **D-4**  | Can a new device claim an existing actor?                      | **Decided**               | No. A new device is always a new actor; the real question was D-19                                                                          |
+| **D-5**  | What happens when a device with history joins a workspace?     | **Withdrawn**             | The state cannot occur. Signing in opens the account workspace in its own local database and leaves any Local workspace on that device intact (D-24, §5.2.1). Nothing is adopted, merged, replaced or re-parented; there is no adjudication, confirmation, export-first or preflight. Divergent replicas of *one* workspace still merge, which is ordinary CRDT behaviour and not this question (§6) |
+| **D-6**  | Can dead actors be pruned?                                     | **Decided**               | No auto-hiding. Staleness may be muted; the interval is open. Exclusion is D-20                                                             |
+| **D-7**  | Should undo ever cross devices?                                | **Decided**               | No. Never leaves the device                                                                                                                 |
+| **D-8**  | What may a session be seen doing?                              | **Decided**               | A caret per tab, own tabs included, **all yours in your colour**, person's name. Active caret distinguished (D-21). Peer list deduplicated  |
+| **D-9**  | Does the app ever show a tab count?                            | **Decided**               | Never, save a high-bar exception that must be justified in writing                                                                          |
+| **D-10** | Is sync configuration per device or per document?              | **Decided in principle**  | Rule 1: the user never manages workspaces. Mechanism open; today's three fields are ruled out                                               |
+| **D-11** | What is a workspace — content, or permission?                  | **Decided in principle**  | Permission. UI reveals one home workspace and its content root; architecture supports many memberships; "room" stays off the architecture               |
+| **D-12** | What happens when local identity is lost?                      | **Decided in principle**  | A never-established lineage may re-mint; a live head or signed terminal record must not. Authenticated lineage state, not roster or Local/Account label. Response open |
+| **D-13** | What do sign-out, remove-from-device and handoff reset each do? | **Decided**               | Sign-out closes and retains one local user slot without revoking; an account-bound local verifier may reopen it offline without creating a network session. Remove-from-device clears that slot and requests revocation, complete only at service commit; handoff reset clears every slot; external recovery copies cannot be recalled; remote revocation cannot promise wipe |
+| **D-14** | May the relay decide who connects? What is written?            | **Decided**               | Service authenticates connections and authorization; relay validates opaque envelopes; clients retain semantic authority; no service component reads Yjs content |
+| **D-15** | Within a device, is undo per tab or shared?                    | **Decided**               | Per tab                                                                                                                                     |
+| **D-16** | Where does the account/service boundary sit?                  | **Decided**               | Local is free and permanent; hosted sync requires an account; pricing is D-31; the Paired rung is retired; **peer-to-peer is not built**    |
+| **D-17** | What does "reasonably secure" mean, concretely?                | **Decided**               | Service authorization plus client-held content keys; `R_pub` wraps generations and a saved code seals ordinarily absent `R_priv`; escrow excluded from the service; device keys non-extractable at runtime with structured-clone or PRF-encrypted persistence; levels 1–3 before sync ships, level 5 at ship, level 4 on trigger |
+| **D-18** | Are devices enumerable and revocable from a UI?                | **Decided**               | Yes. The unit is the device. Revocation gates sync, not startup or local use. A revoked device keeps a usable detached last replica, receives no future keys, and is never promised remote wipe. Sign-out does not request revocation; local removal does, and only the service commit completes it (D-13, D-26) |
+| **D-19** | How does a device find the other devices that are yours?       | **Decided**               | Sign-in discovers and authorizes; an existing device or recovery factor separately delivers the content key. One account flow; wire identifier hidden |
+| **D-20** | How is a member actually excluded?                             | **Decided**               | Content encryption with client-produced, service-committed key rotation. New generations wrap only to remaining readers and `R_pub`; the service remains content-blind |
+| **D-21** | What does "the active caret" mean — local, or globally recent? | **Decided**               | Locally active. No recency modelling; a design check that it reads as distinct                                                              |
+| **D-22** | Does merged content show its provenance?                       | **Decided**               | Yes, as a rarely-on mode. Settings toggle, off switch surfaced while active. Cards only, bounded by the **divergence** rather than the freeze window — the merges it explains land outside three days (§5.2.2) |
+| **D-23** | Does pairing alone trigger the name prompt?                    | **Decided**               | Largely dissolved by D-16: the name and account credential are established at account creation alongside the recovery-code ceremony. Later device enrollment repeats neither, though content transfer may require D-19's ceremony |
+| **D-24** | How does local history become an account, and what happens to it elsewhere? | **Decided**  | Account creation asks once — use this list (a move) or start fresh; both are safe. A never-established Local list is promoted with `K0`; a retired-lineage Local list uses migration. Signing in opens parallel storage inside the same local user slot and changes no existing workspace. Deletion commits a terminal record, gives participating replicas and the portable package bounded verification material, deletes service material and never decrypts local stores; an offline device keeps its **last replica**, principal, recovery envelope and last live head until it imports that package |
+| **D-25** | Does the app warn when durability is not guaranteed?           | **Decided**               | Yes, for the environment case. Warn about the property, not the cause. Offer the grant, then export, then sync. Also owns the hosted copy's dependency on the saved code |
+| **D-26** | Revocation learned late, history already diverged?             | **Decided**               | No lineage rule, no discard, no filtered replay. Needs a **finalization boundary** against a hostile relay (§5.2.3) — a contract row        |
+| **D-27** | Is attribution authenticated, or advisory?                     | **Decided**               | Authenticated by an epoch-authorized credential; actor is derived or explicitly authorized for representation                               |
+| **D-28** | What carries the authorization protocol?                       | **Decided**               | A service-authoritative control plane around end-to-end-encrypted Yjs updates; the attributed actor sits inside the seal, so no actor identifier crosses in the clear — the relay still maps credentials to members through authorization state (§5.7.1); exact envelopes, finalization and key constructions belong in the TRD |
+| **D-29** | What happens if a paid account plan lapses?                    | **Decided conditionally** | If D-31 selects such a plan: grace, then hosted read-only. Lapse and content expiry never retire the account lineage. Expiry deletes ciphertext and generation wraps but retains dormant `R_pub` and code-sealed `R_priv`; a surviving device may re-seed without new recovery setup |
+| **D-30** | Does Rule 1 have exceptions, or the wrong formulation?         | **Decided** (re-decided in v16) | One real exception, one verb: **select**, only where the active local user slot holds more than one workspace. The picker never crosses people or signed-out slots. Name, reconcile and administer stay absolute; multi-membership navigation remains separate (§5.4.1) |
+| **D-31** | What does hosted sync cost, and how should it be priced?       | **Deferred on purpose**   | Business-model question outside this document. D-16 requires an account but does not presume free, paid, bundled or metered                 |
+| **D-32** | What may the service retain, observe and do?                   | **Decided in principle**  | Fix irreversible constraints and the necessarily visible metadata baseline before the TRD; keep awareness relay-visible only while live and ephemeral by default; maintain a living inventory during design/build; reconcile and review the as-built surface before wider availability |
+| **D-33** | What survives the service, and what may be claimed?            | **Decided in principle**  | Independently runnable client and service stack; open source preferred, triggered source release acceptable; binary-only continuity insufficient; claims gated by corresponding tests |
+| **D-34** | Is local user content encrypted at rest?                       | **Decided**               | Yes: Local genesis creates `K0`, and every app-managed persistent store is ciphertext. Default custody is promptless and does not resist an executable copied profile; an optional device lock does. First promotion adds recovery/reader wraps; migration retains recovery identity where available and rotates the generation; no lifecycle event decrypts. The journal needs reviewed synchronous AEAD; a persistent search index may ship only encrypted (§5.7.4) |
+
+### 8.1 The security contract is bounded; the TRD must instantiate it
+
+An earlier draft said "only D-17 is open", which flattened a real distinction; the draft after it said
+"four blocking questions", which fragmented one. The accurate statement is: **D-17 fixes the security
+promise and authority split, D-28 fixes the protocol boundary, and the remaining mechanism choices are
+inputs to one TRD security contract rather than new product branches.**
+
+The contract now has both fixed requirements and deliberately unselected fields:
+
+| Piece                                    | Fixed by this document                                                                  | Still to select or specify                                                                                 |
+| ---------------------------------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Threat boundary and negative promises    | §5.7.1's attacker table; offline local use and availability limits; D-34's file-level ciphertext-at-rest boundary | Any stronger claim, including protection on the default tier against executing a copied profile, live same-origin compromise, or concealment of traffic metadata |
+| Credential separation                    | Account authenticator; device-local offline slot-unlock verifier; account session; relay bearer; distinct per-device/per-agent signing and wrapping credentials; local custody; content generations; `R_pub`; sealed `R_priv` | Account-credential and offline-verifier construction, including offline-guessing resistance; concrete key formats, algorithms, domain separation and crypto-agility |
+| **Protocol boundary**                     | **A service-authoritative control plane around client-encrypted Yjs updates**; clients generate content keys, wraps, ciphertext and signatures; service commits authorization, rotation packages and finalization; relay/store handle opaque envelopes (D-28) | Exact message/state formats, verification APIs, batching and test vectors |
+| **Authorization and recovery boundary**  | **Selected: the service alone authorizes; ordinarily absent `R_priv` recovers content only; service disappearance starts a new lineage around the same recovery identity where available** (§5.7.2, §5.7.3) | Account-recovery policy, and the exact user-mediated proof that gates content-key delivery — including **which device-to-device ceremony** it is, since a QR carrying the key and a short-authentication-string check over an in-band agreement are different protocols with different review scopes (D-19) |
+| Browser key storage                      | **Selected: non-extractable at runtime.** Without PRF, structured-cloned non-extractable private `CryptoKey`s persist; with PRF, encrypted private-key bytes persist and are imported non-extractable after unlock. The tier is shown and never silent (§5.7.4) | PRF enrollment flow, algorithms, and the copy shown for a device on the lower tier |
+| **Local storage at rest**                | **Selected: every app-managed persistent store holds authenticated ciphertext from genesis** under content-key generations — Yjs source of truth, crash journal and any persistent derived index (D-34). Each `K_g` persists as an encrypted local envelope under a separate promptless local-custody handle; the optional device lock replaces that promptless opening path with factor-gated custody. Default custody makes **no claim against an executable copied profile**. First promotion adds recovery and reader wraps; migration rotates rather than decrypting; no lifecycle event decrypts persisted content (§5.2.1, D-24) | The synchronous-journal AEAD and latency budget; encrypted record and local-key-envelope formats; when a persistent search index may replace the in-memory one; device-lock derivation, enrollment flow and copy |
+| **Signed authorization lineage**         | Binds membership, credentials, capabilities and key generation; service signs and serializes live successors; deletion leaves a signed terminal record | Chain-head discovery for a fresh device, terminal-package format, checkpoint and downgrade rules. **Fork rules are no longer needed** (D-16) |
+| Signed mutation envelopes                | Source-authenticated; workspace/epoch/credential/digest in the clear, **attributed actor inside the seal** so no actor identifier crosses in the clear. Not unlinkability — the relay still infers member from credential via authorization state (§5.8.1). **Devices retain their own outbound envelopes** back to the last admitted checkpoint (§5.6.2) | Which fields are associated data, envelope and batching granularity, anti-replay/finalization rule, authenticated checkpoint construction, and how far back retention runs |
+| Attribution binding                      | Actor is derived from the credential or explicitly authorized for representation        | How an update's affected attributed fields are inspected or derived                                        |
+| Revocation commit semantics              | Requested · committed · acknowledged; client produces the new key package, service commits it with successor and cutoff; no peer path bypasses the relay | Protocol and recovery behaviour for interrupted rotation |
+| **Content finalization boundary**        | A valid mutation is not accepted without authorization-service evidence; a hostile relay can withhold and later deliver a valid old-epoch write. **Across a migration the checkpoint re-baselines admissibility** — prior envelopes are archival, not replayable (§5.11.2) | Per-envelope receipts, accepted-log inclusion proofs, or checkpoints with an authenticated suffix; every shape ends in a committed cutoff (§5.2.3) |
+| Content-key wrapping and rotation        | Clients generate symmetric generation secret `K_g`, derive domain-separated content/store subkeys, wrap `K_g` per reader and to `R_pub`, and submit it for service commit; edit implies read. **Retention has a conservative floor**: enough to open every sealed actor binding whose attribution remains — for the lifetime of the claim, not forever (§5.11.2). A validated attribution-preserving representation may reduce that floor | KDF and AEAD algorithms; stable signed record; exact Yjs binding; checkpoint proof; interrupted rotation; size bound; vectors; independent review. **Re-enabling destructive compaction moves this boundary** (TRD §4.5, §10.4) |
+| **Awareness and presence metadata**      | **Selected baseline:** outside content encryption, relay-visible while live, ephemeral and not persisted by default; the relay may learn who edits which workspace and when (§5.10.1) | A later encrypted-awareness strengthening; any durable use requires a new explicit purpose and retention rule (D-20) |
+| Account relationship to recovery         | **Selected: non-custodial asymmetric recovery.** Service may hold `R_pub`, generation wraps and sealed `R_priv`, but never an unsealing factor. Escrow is excluded from the service and survives only as a separately operated opt-in seal of `R_priv` (§5.7.5) | Add-on operating boundary and copy explaining the two-party disclosure requirement |
+| Recovery                                 | **Selected: mandatory high-entropy code saved outside the enrolling device seals `R_priv` 1-of-N**, with optional independent PRF-passkey seals (§5.7.6). Re-entry at account creation proves transcription and possession, never location. The code is never re-displayed; a surviving content-holding device may replace it by creating a new recovery keypair and rewrapping every required `K_g`. Account, authorization, `R_priv`, content keys and ciphertext remain separate objects | Code generation, step-up authentication and confirmation UX, and loss warnings |
+| Web application and protocol assurance   | **Selected: levels 1–3 before sync ships, 5 live at ship, 4 on a stated trigger.** Same-origin code is inside the cryptographic boundary; D-28 fixes the design-review scope at the architecture level (§5.7.8) | Which ASVS profile and version, who performs the design review, the audit's scope, and the concrete TRD protocol submitted for review |
+| **Durable store representation**         | A content-blind store cannot merge; recovery needs checkpoints, not a merged state. The manifest publishes an **authenticated coverage attestation over insertions and deletions** — a snapshot's `{sv, ds}` or a checkpoint receipt — since a bare state vector cannot establish coverage (§5.11.2) | Checkpoint construction and cadence, manifest binding, retention of superseded checkpoints (D-33, §5.11.3) |
+| **Portability and migration**            | Export, import, independently obtainable build and a fresh authorization lineage are requirements. Migration retains the recovery keypair where available, rotates to a fresh `K_g`, and carries attribution forward; old authority becomes historical verification only (§5.11.2) | Historical-verification and conditional terminal/cutover package; exact attribution binding; cutover coverage attestation; each device re-enveloping its own suffix rather than filtering a merged delta (D-33) |
+
+**D-17 gated the selections in the right-hand column, not the existence of every left-hand requirement —
+and all five are now recorded.** The authorization/content boundary, the asymmetric recovery keypair,
+the recovery factors, device-key persistence and the assurance bar. **D-17 is closed.** The common
+core in §5.7.9 now has D-28's architecture boundary and can be specified in the TRD, then put in front of
+someone who does this professionally (§5.7.8).
+
+**Deciding it opened one new question, and v16 closed that too.** **D-34** — whether local user content
+is encrypted at rest — was assumed twice in this document and never decided (§5.7.4). It is now decided:
+yes, from genesis, in every app-managed persistent store, under app-managed key custody that asks the user
+for nothing and correspondingly promises nothing against an executable copied profile, with an optional
+per-device user-held lock for that stronger property. It is not a security-contract selection and does not
+gate the protocol, but it was the remaining place where *end-to-end encrypted* and a reasonable user's
+understanding of it could diverge, and it adds the one genuinely new cryptographic obligation in the plan:
+a reviewed **synchronous AEAD** for the crash journal, which §5.7.8's design review must cover.
+
+**The authority and recovery selections were entangled and had to be taken together.** The service may
+replace and revoke devices without keeping an authoritative user device online, but its authorization
+must never deliver the content key by itself. The independently saved content factor supplies that second
+power. When the service disappears, migration creates a new lineage instead of asking the factor to
+become an administration credential.
+
+**A v15 draft preserved a break-glass user authority after D-16 removed the everyday one. §5.7.2 now
+removes both.** That is not a weakening of content survivability: the user retains sealed `R_priv` and can
+migrate the workspace. What does not survive is the old service's authorization lineage,
+which the product has no need to portray as continuous.
+
+**D-28 closes D-14's second half with it.** The service owns authorization and opaque acceptance evidence;
+clients own content semantics and keys. The relay may validate metadata and signatures but never gains
+schema-level content authority. The contract's envelope, epoch and checkpoint rows now have an
+architecture to instantiate in the TRD and a defined boundary for §5.7.8's reviewer.
+
+**Live sub-questions inside recorded dispositions.** Each is a UX or parameter choice and none blocks the
+contract: D-12's response on a historically admitted document with no identity · D-6's staleness interval · D-3's disambiguation mechanism ·
+D-21's design check · D-22 and D-23's interface details · D-29's retention duration for a lapsed
+account · D-13's destructive confirmation copy · recovery-replacement step-up and confirmation copy ·
+D-34's optional device-lock flow. D-20's awareness-leakage question has left this
+list: it is now a contract row of its own, because "presence metadata is visible to the relay" is a
+threat-boundary claim rather than an interface detail.
+
+**D-16 is settled and it did most of the work in this revision.** The boundary was decided before
+anything was built, which was the whole of the saving; pricing is **D-31**, stays deferred, and changes
+nothing in D-16. Neither blocks the security contract, and the boundary's answer *shrank* it.
+
+**D-32 is settled at the only level this document can settle it.** The product constraints on custody,
+deletion scope, diagnostics, local continuity and operator power are fixed; so are the necessarily visible
+metadata classes and the relay-visible-but-ephemeral awareness baseline. The
+inventory starts in the TRD, evolves with implementation and is reconciled before wider availability;
+inventing an exhaustive inventory here would be premature rather than prudent (§5.10).
+
+**D-33 is settled at the product level too** (§5.11). Independently runnable client and service software
+is the continuity mechanism; open source is the preferred delivery path and a triggered source release is
+the fallback. Its checkpoint and migration requirements belong in the TRD, while the tests gate only the
+claims they demonstrate. The combined company-disappearance and total-device-loss claim additionally
+requires ciphertext already outside the service.
+
+### 8.2 Ready to promote; the TRD and release evidence remain
+
+**This document is ready to be folded into the PRD and translated into a TRD.** It is not
+implementation-ready for the separate and ordinary reason that the TRD has not yet instantiated the
+selected architecture, and none of the release evidence has yet been produced. All five artifacts review
+requires are complete at the product-decision level:
+
+1. **The corrected ontology**, which §1 now has — account, principal, workspace, workspace content root,
+   member, actor, device, session and local user slot — with the pre-account principal, workspace-scoped
+   membership and device-local privacy boundary as the load-bearing additions. The content-root term keeps
+   the synchronized `Y.Doc` distinct from the PRD/TRD's master-list document surface. D-16 made the first of those more
+   important, not less: principal-without-account is now the steady state for most users rather than a
+   transitional rung (§1.1). D-13 made the last explicit: signing out closes a slot rather than deleting
+   a workspace or revoking a device.
+2. **Explicit cardinalities**, which §5.4.1 now has, separating architectural capacity from revealed
+   surface.
+3. **A bounded security contract**, complete as product input and awaiting technical specification and
+   review. §5.7 gives the threat claims, decisions and conformance tests; D-28 selects the
+   service-authoritative envelope architecture; §8.1 separates fixed requirements from the parameters the
+   TRD must supply. **D-34** is now decided and does not gate the contract — it settles that account
+   creation is *not* a whole-document encryption pass and that no lifecycle event decrypts persisted
+   content (§5.2.1,
+   D-24), and it hands the TRD the journal AEAD, the encrypted record format and the in-memory search
+   index.
+4. **A service data boundary and staged inventory obligation**, now fixed by D-32. §5.10 records the
+   irreversible constraints and necessarily visible metadata classes that precede the TRD, including the
+   relay-visible-but-ephemeral awareness baseline; the compact inventory row added as the architecture
+   introduces data; and the as-built reconciliation that gates wider availability. A speculative complete
+   inventory is no longer required before the services are designed.
+5. **An independently runnable software requirement and staged release claim**, now fixed by D-33.
+   Public open source is the preferred path; a triggered source release with perpetual build-and-run
+   rights is an acceptable fallback; binary-only continuity is insufficient. The implementation and tests
+   remain, and independent ciphertext is additionally required only for the conjunction of company
+   disappearance and total device loss (§5.11.5).
+
+The ontology and the cardinalities were the two things review said were missing or contradictory, and both
+are now written down. What changed in this round is larger: **a product decision (D-16) removed a rung,
+and with it a transport, a revocation semantics, a second authorization path and one of the security contract's open
+selections.** The remaining design task is correspondingly smaller than it was in v14.
+
+What should survive future rounds unchanged, because it has now held up under every one of them:
+invisible workspace management (Rule 1, with v16's single audited exception in D-30), reads and writes
+never awaiting a **network** credential —
+the qualifier matters, and D-34 is why (§5.7.4) — an account adopting an identity that predates it
+(D-24), honest durability warnings (D-25), and removal governing future access rather than pretending to
+erase copies already made.
+
+**Where v15's cost landed, and why v16 did not have to pay it.** D-16 moved complexity out of the
+protocol and, v15 believed, a little of it onto the user: someone who ran local-only on two devices and
+then created an account lost the second device's history. v15 defended that as bounded, explicable and
+**a copy problem rather than an architecture problem** — what remained was the sentence the user read and
+the ordering the interface encouraged.
+
+**That diagnosis was half right and the wrong half was load-bearing.** It *was* an architecture problem,
+one layer below where the document was looking: a single `DB_NAME` forced two unrelated histories into
+one store, and every product rule above it was compensating. §2.2b had named the fix in v1 and filed it
+as "not a decision to take here" (§2.2b), so fifteen drafts refined the messaging around a loss that the
+storage key removes. **The cost of this revision is therefore not a user-facing loss at all** — it is one
+more local database, an isolation invariant, and a place to reach retained Local data (§5.2.1, D-24).
+
+The general lesson is §1.4's, and it is worth carrying into whatever the next hard call turns out to be:
+when a decision's whole content is *how gracefully do we lose something*, check first whether the loss is
+forced by the domain or manufactured by a mechanism. This document's own test for the same instinct
+already existed one decision over — D-16's *would you build this limitation with unlimited money and no
+business model?* — and D-5 would not have survived it.
+
+**On splitting this document, which the fourth review round proposed: the ordering condition is now
+satisfied.** The revisions landed first; the product decisions can now be promoted into the PRD and the
+mechanism parameters into the TRD. Preserve the landmarks or a cross-reference while doing so—the
+argument is easier to split now, but its security, recovery and survivability decisions still depend on
+the shared ontology in §1.
+
+---
+
+## 9. Promotion source notes — not a checklist
+
+These are amendments discovered while recording the decisions, not an exhaustive promotion matrix or a
+reliable target-section map. They deliberately mix PRD requirements with TRD consequences. Normalize and
+route them through the separate PRD and TRD promotion matrices; do not infer from absence here that a
+settled requirement needs no promotion.
+
+- **§0 Terminology** — add account, principal, workspace, **workspace content root**, member, device,
+  session and **local user slot** beside actor. Nine concepts in total, with membership a relation rather
+  than another synonym for a writer and
+  the slot a device-local privacy/discovery boundary rather than a synced identity.
+- **§0 / lifecycle terminology** — define Local and Account from the authorization-lineage axis, not as
+  stages in a ladder. Local means **no live service authorization lineage** — either never established or
+  permanently retired — while Account means a live lineage. Record hosted-content retention, service
+  entitlement, replica attachment, local-user-slot state and account-session state as independent axes;
+  none may silently stand in for another (§5.1.1).
+- **Account and device controls** — give four operations distinct names and consequences. **Sign out**
+  ends account/relay sessions and closes one local user slot while retaining its encrypted data, identity
+  and enrolled grant. Reopening already-local data uses an account-bound offline slot verifier; it does
+  not require the service or create a network session. **Remove this account from this device** clears that slot and requests revocation of
+  its grant. **Reset for handoff** clears every slot and requests every corresponding revocation. Remote
+  revocation stops future sync and key delivery but cannot promise deletion of an unreachable copy
+  (D-13, D-18).
+- **Account lifecycle** — lapse, read-only retention and hosted-content expiry do not retire the account
+  lineage or turn its workspace into Local. Account deletion does: it commits a signed terminal lineage
+  record, deletes service-held material, and leaves surviving device packages as independent Local
+  workspaces. One active/current device is nominated as the ordinary continuation. A closed slot on an
+  offline device may reopen through its account-bound offline verifier; the terminal package proves
+  retirement, and the package plus recovery factor is the fallback if that ordinary unlock proof is
+  lost. Neither path restores a deleted account session. A revoked device instead holds a detached
+  replica of whatever global workspace remains (D-18, D-24, D-29). Migration always establishes a fresh current lineage and prevents cross-lineage
+  replay; it retires the old lineage only if the old authority is reachable, otherwise recording it as
+  historical and superseded for the migrated package (§5.11.2).
+- **Security and recovery terminology** — replace the symmetric “content/recovery root” with content-key
+  generation secrets `K_g`, their domain-separated store/journal subkeys, and an asymmetric recovery
+  keypair. `R_pub` may wrap every generation and be stored by the service; ordinarily absent `R_priv` is
+  sealed to the saved recovery code and optional independent PRF factors. Device signing credentials,
+  device wrapping credentials, promptless local-custody key and any optional device-lock key remain
+  separate roles (§5.7.2, §5.7.4–§5.7.6).
+- **Authorization, promotion and rotation** — Local genesis has no authorization epoch. Promoting a
+  never-established Local workspace retains `K0`, admits a device-signed genesis checkpoint and creates
+  the first signed authorization head; a retired-lineage Local workspace instead uses migration's fresh
+  generation and historical-verification package. For ordinary rotation an authorized client generates
+  the next `K_g` and its reader/recovery wraps, and the service atomically commits that package with the
+  authorization successor and finalized cutoff. The service never generates or learns a content key
+  (D-12, D-20, D-24, D-26).
+- **TRD §4.8 — corrected in this branch.** It claimed transaction origins are recorded in the update stream
+  and coarse attribution is therefore recoverable. Origins are supplied by the receiver to `Y.applyUpdate`
+  and are never in the bytes; the client id that _is_ in the bytes is random per `Y.Doc` instance. The
+  sentence has been replaced rather than left to mislead a future design, since D-27 depends on getting it
+  right.
+- **§11.3** — "One human actor, created on first run" is true per device and false per person
+  (§2.2a). Either the sentence changes or the behaviour does; today they disagree silently.
+- **§11.3** — "Undo scoped to your own changes" needs a level in it, and now has one: **per tab**, never
+  crossing devices (D-7, D-15).
+- **§11.3** — "No presence UI" is no longer true as written. D-8 ships carets for every input surface,
+  which is presence, deliberately, and the sentence's real intent — no actor management, nothing to
+  administer — survives and should be what it says.
+- **§12** — keep "No human collaboration" as the current product boundary, but separate it from service
+  multi-tenancy and agent membership. Many isolated principals may hold accounts without sharing a
+  workspace; an agent may be a member without implying another human or a multi-user account.
+- **§11.4** — agent access should be expressed as workspace membership with explicit read/edit
+  capabilities and authenticated attribution, not as an actor that can necessarily write everything.
+  Under D-20's symmetric document key, edit cryptographically implies read; write-only would require a
+  proposal/approval flow or a different content construction rather than a capability label. And the
+  consequence that follows from it should be stated where the feature is described: granting an agent
+  discloses the entire workspace to it and to whatever service runs it (D-20).
+- **§6 Freeze** — the freeze's scope needs writing into the sentence, on the authoring-versus-maintenance
+  distinction rather than the looser "human editing surface" one. It governs operations that **author the
+  past**; it has never bound replication, it is deliberately independent of compaction (TRD §4.5), and it
+  must not bind a migration import (§2.4, §5.2.2, §6).
+- **§2 principle 6 — a clarification, not a change.** *"The past is written, not read"* is a statement
+  about user behaviour and what to build for it: weight retrieval toward recent work, do not build
+  deep-history navigation, keep the freeze permanent, treat compaction as acceptable. It is **not** an
+  integrity or retention rule, and should say so, because it has already been read once as licensing the
+  product to display an author claim it can no longer verify. It does not. What it licenses is *retiring
+  the claim* — which is what compaction does (§5.11.2).
+- **TRD §4.5 and §10.4 — destructive compaction is also an attribution-retirement event.** Both sections
+  treat the safety pause purely as a replica-acknowledgement problem. Compaction deletes cards, so it
+  deletes `Card.author`, so it discharges the historical-verification obligation for the days it
+  compacts and makes the corresponding content-key generations droppable (§8.1, §5.11.2). Whoever
+  re-enables it is moving a security boundary as well as a storage one, and the protocol §10.4 requires
+  is gating both.
+- **TRD §2 and §7.2** — the relay they describe is no longer the relay this document selects, and neither
+  was previously on this list. §2 chooses Yjs "with the relay as a dumb pipe … It holds no authority, runs
+  no application logic, and can be absent entirely"; §7.2 specifies a shared bearer token over TLS on the
+  grounds that "the threat model is one person's task list", and says the relay is not a backup because
+  "every device holds a full replica". D-14 gives the relay envelope-metadata authority, D-28 gives it
+  authenticated acceptance evidence to carry, D-16 makes the hosted copy a server-held encrypted replica
+  rather than nothing, and D-24 corrects the full-replica claim to a **last** replica. The dumb-pipe
+  property survives only in the sense that matters — no service component reads content — and the
+  sentences should say that rather than the stronger thing they say now.
+- **TRD §10.6** — now wrong, and not previously on this list although its product twin PRD §11.4 was.
+  It says permissions are unenforceable here and that real enforcement would require giving the relay
+  schema awareness, "which forfeits the 'dumb pipe, no authority' property" — which treats enforcement
+  and plaintext authority as one axis when they are two. D-20 makes read exclusion cryptographic; D-27
+  makes attribution client-verifiable; D-28 gives the service authorization and accepted-set authority
+  while the relay validates only opaque envelopes. What survives is only the
+  semantic-capability case, and it survives because edit implies read under one content key (§5.7.2),
+  not because the relay is dumb. Left standing for now rather than corrected in place: it is a
+  technical-doc amendment that belongs with the rest of the promotion, not an ad-hoc edit alongside
+  this one.
+- **§14 Open questions** — D-1 through D-33 are now dispositions to promote into the applicable product
+  sections or a referenced decision register, not open questions — except **D-31**, which is deferred
+  rather than decided, and **D-5**, which is withdrawn and needs no promotion beyond its landmark. **D-34
+  is now decided too**, so it is promoted rather than retained. Retain only the explicitly named live
+  UX/parameter details as open items.
+- **§1 / §2, or wherever the product is described** — D-16 makes a claim the PRD does not currently
+  contain: **Local is free and permanent, while hosted synchronization requires an account.** Whether
+  that service is free or paid is D-31 and is not a product-shape claim here. PRD §12's non-goals should
+  stop implying that sync is simply a feature the app has.
+- **§2 principle 4 (export), and a new import commitment** — principle 4 promises plain-markdown export. D-33 makes
+  **import** a requirement of equal standing, on two independent grounds: the §2.4 migration needs it, and
+  an export without an import preserves the writing but not the continuity of the application. Import
+  targets an empty workspace (§5.2.2), and the same amendment should record why: plain Markdown is the
+  right escape format and the wrong round-trip one, so a **second, fidelity export carrying CRDT state**
+  is what a populated import would eventually need (§5.11.2).
+- **TRD §9 — not previously on this list, and it is where import already lives.** It specifies the export
+  layout (`master.md`, `days/<date>.md`, `recovery.md`), says import "parses the same layout", and
+  requires export → import → export to be byte-identical. Three things it does not say and now must: that
+  import is scoped to an empty workspace (§5.2.2), that it sits outside the freeze and outside `NEXT_CAP`
+  as a maintenance rather than an authoring operation (§2.4, §6), and that the byte-identical round trip
+  is a format guarantee which does **not** supply card identity — the gate that keeps merging into a
+  populated workspace a separate project.
+- **TRD §6.1 — the local store is also no longer plaintext.** D-34 requires every app-managed persistent
+  store to hold authenticated ciphertext from genesis, so `y-indexeddb`'s raw-update persistence needs an
+  encrypted adapter or a replacement, with each update stored as ciphertext plus non-content routing
+  metadata (format version, nonce, generation, sequence). Each `K_g` is itself sealed under the separate
+  local-custody key; unlock derives domain-separated store and journal subkeys. The **synchronous crash
+  journal** is the sharp part: §6.1's guarantee is that a page kill between transaction and IndexedDB
+  commit loses nothing, and WebCrypto is promise-based, so preserving that contract requires a reviewed
+  **synchronous AEAD** and a narrow synchronous-runtime journal subkey on that path, plus a low-end-device
+  latency budget. The contract is preserved rather than redesigned (§5.7.4).
+- **TRD §6.2 — the search index starts in memory.** A persistent derived index may ship only when its
+  on-disk representation is encrypted, and no browser engine currently supplies that transparently. The
+  first implementation keeps the index in memory and rebuilds it lazily from the decrypted document after
+  startup — off the cold-start path in §12 — and measurement decides whether an encrypted persistent
+  representation is needed. This defers the OPFS lock §6.2 assumes, which §1.3 and D-9 both cite.
+- **TRD §6.1 — the local store is no longer one database.** It describes `y-indexeddb` against the
+  module constant `DB_NAME`. D-24 requires the store to be keyed by _(principal, workspace)_, a device to
+  hold several at once, and providers never to cross between them (§5.2.1). That is the single largest
+  implementation consequence in this revision and the section that currently contradicts it.
+- **A new section, or this document promoted** — the concepts in §1 are product surface, not an
+  implementation detail, and they are currently written down nowhere. The principal in particular is
+  the thing the PRD talks around: "one user" appears throughout without ever being a thing the system has.
+- **§2 Design principles** — the two rules in §1.4 are of the same kind as the ranked principles there
+  and would sit better beside them than in a companion document. Rule 1 must be promoted **with its
+  condition and its one permitted verb** (D-30), not in the unconditional form earlier drafts used: the
+  user never manages workspaces, and never selects between them until they hold more than one locally.
+
+### 9.1 Nothing is owed to the multi-tab branch
+
+An intermediate draft of this document had D-8 overturning PR #18's caret colour rule. It does not: all
+of your carets carry your colour, which is what that branch already specifies, and what changes instead
+is that the _active_ caret gets a shared treatment of its own (D-21). PR #18 needs no edit.
+
+## 10. Out of scope for this document
+
+- **How any of it is built.** No storage shapes, no protocols, no migrations beyond noting where one
+  would be needed. That is the TRD's, once the decisions exist.
+- **The multi-tab implementation**, which is specified separately (PR #18) and which needs D-8 and
+  nothing else here.
+- **The detailed capability model.** This document requires workspace-scoped read/edit grants for agents,
+  but the roles, delegation rules and management UI belong in the agent feature document.
+- **Human collaboration.** The architecture must not make it impossible, but invitations, sharing,
+  multi-workspace navigation and human permissions require a separate product document.
+- **Sharing a single day, a single card, or a link to anything.** Not raised by any scenario above,
+  and a different feature.
+- **Peer-to-peer transport**, removed from the plan by D-16 rather than deferred vaguely. It returns only
+  as an optimization beneath one envelope protocol, under the measured conditions D-16 records — never as
+  a tier, a pricing boundary or a second authorization semantics. An emergency service-absent peer mode is
+  a different feature and belongs to D-33.
+- **The implementation of the survivability package.** D-33 fixes what must exist and what may be claimed;
+  building the self-hostable relay, the standalone restore tool and the distribution mechanism is
+  engineering work with its own document.
+- **The implementation of the operational and legal program** — vendor contracts, jurisdiction-specific
+  notices, support playbooks and filing obligations do not belong in this product document. D-32 fixes
+  the product constraints; the TRD and implementation maintain the living inventory; jurisdiction- and
+  audience-specific review occurs before availability widens.
