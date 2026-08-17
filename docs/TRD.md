@@ -932,9 +932,30 @@ Until then, §4.9 is the answer and this section is why it looks the way it does
 
 ## 11. Testing
 
-**Convergence (property-based).** Random concurrent edit sequences against two replicas,
-applied in both orders, assert identical final state. Must include **concurrent card moves**
-between collections, where array semantics are least obvious. Runs on every commit.
+**Convergence (property-based).** A fleet of N stores around one relay that holds a
+replica of its own, driven by generated schedules of edits, partitions and reconnections.
+Runs on every commit.
+
+**It runs at two devices and at three, and three is not a bigger two.** With two, every
+partition is symmetric and every replica has seen either all of a change or none of it. With
+three, one replica can sit _between_ the other two — holding the first half of what one of
+them did and none of the second — and runs the membership repair on that partial view.
+Whether two independently repairing replicas agree is only a real question once a third can
+disagree with both. Two is kept alongside three because it shrinks to smaller counterexamples.
+
+Exchange is **through the hub, not pairwise**: anything that converges pairwise but not
+through a relay passes the wrong test. The fleet opens **whole stores**, because the
+membership repair and the undo manager are what concurrency breaks and a test against bare
+`Y.Doc`s tests Yjs rather than this app. **Both delivery orders** are covered at three
+replicas by replaying the recorded update log forwards and reversed — not because Yjs might
+diverge, but because `repairCardMemberships` walks the card registry in integration order,
+which differs between replicas that received the same updates in different orders, and the
+repair has to be indifferent to that. Every run is replayable from the property's seed, with
+client ids drawn rather than numbered so that tie-breaking is exercised in both directions.
+
+Must include **concurrent card moves** between collections, where array semantics are least
+obvious. Hand-written two-replica scenarios remain alongside the fleet: named cases with a
+readable failure, not coverage.
 
 **Round-trip.** `export → import → export` byte-identical. Editor content equals stored
 `Y.Text` after arbitrary edit sequences.

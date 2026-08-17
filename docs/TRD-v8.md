@@ -1355,8 +1355,44 @@ than an aspiration (§12).
 
 ## 11. Testing
 
-**Convergence (property-based).** Random concurrent edit sequences against two replicas, applied in both orders,
-assert identical final state. Must include **concurrent card moves** between collections. Runs on every commit.
+**Convergence (property-based).** A fleet of N stores around one relay that holds a replica of its own, driven by
+generated schedules of edits, partitions and reconnections. Runs on every commit. Six properties of the fleet are
+requirements rather than implementation, because each rules out a way of passing the wrong test.
+
+**It runs at two devices and at three, and three is not a bigger two.** With two, every partition is symmetric and
+every replica has seen either all of a change or none of it. With three, one replica can sit *between* the other
+two — holding the first half of what one of them did and none of the second — and runs the membership repair on
+that partial view. **Whether two independently repairing replicas agree is only a real question once a third can
+disagree with both.** Two is kept alongside three because it shrinks to smaller counterexamples, not because it
+covers the space.
+
+**Through a hub, not pairwise.** Devices exchange only through the relay, which holds a replica of its own and
+forwards what it is given. Anything that converges pairwise but not through a hub passes the wrong test — and this
+matters more in v8 than it did, because every sync path is now relay-mediated (§7.3) and the relay is the component
+§11.2's tests attack.
+
+**Whole stores, not bare documents.** The membership repair and the undo manager are exactly what concurrency
+breaks, so the fleet opens real stores. A property test against bare `Y.Doc`s tests Yjs rather than this app.
+
+**Both delivery orders, at three replicas.** The recorded update log is replayed forwards and reversed into fresh
+documents, and the repairs must decide the same thing. TCP does not reorder, but a device that has been away
+receives a week in one batch while a device that was present received it a keystroke at a time. The interesting
+half is not that Yjs converges — it does — but that `repairCardMemberships` iterates the card registry in
+*integration* order, which differs between two replicas that received the same updates in different orders. The
+repair has to be indifferent to that.
+
+**Convergence is a fixpoint, and the round count is part of the result.** Reconnect rounds run until no state
+vector anywhere moves. A repair that provokes a repair on the far side shows up as a network that takes several
+rounds to go quiet; one that never settles shows up as the bound.
+
+**Every run is replayable.** Card ids and client ids both come from the property's seed. Client ids are *drawn*
+rather than numbered 1, 2, 3, because their order is what breaks every tie Yjs has to break, and a fixed order
+would test one direction of every conflict.
+
+**Must include concurrent card moves** between collections, where array semantics are least obvious.
+
+Hand-written two-replica scenarios remain alongside the fleet and are a different job: named cases with a readable
+failure, not coverage.
 
 **Round-trip.** `export → import → export` byte-identical. Editor content equals stored `Y.Text` after arbitrary
 edit sequences.
