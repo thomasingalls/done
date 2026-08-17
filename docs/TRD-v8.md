@@ -381,7 +381,12 @@ update stream. The first is true per device and false per person; the second is 
 
 **Eight levels, and picking the wrong one is the whole category of bug this replaces.** Account · local user
 slot · principal · workspace · member · actor · device · session. PRD §1 defines them; what this section fixes
-is which level answers which question in code:
+is which level answers which question in code.
+
+**Eight here, nine there, and the difference is not a discrepancy.** PRD §1's vocabulary is nine terms: these
+eight plus **workspace content root**, which is a data set rather than an identity level — it is what a
+workspace *holds* (§4.2), not something a question about identity can be answered at. The count differs
+because the two lists are doing different jobs; the vocabulary is the same one.
 
 | Question                          | Level                                   |
 | --------------------------------- | ----------------------------------------- |
@@ -1530,7 +1535,9 @@ These are the product's stated conformance tests. They are listed here so the su
 7. **Authorization alone cannot cause content-key delivery.** A malicious authorization service admits a credential
    it controls and presents a valid successor epoch; every existing client refuses to wrap or send a content key
    without a separate user-mediated content-delivery proof.
-8. **A workspace is migrated, not succeeded, with the original service unreachable.** Nothing claims the new service
+8. **A workspace is migrated, not succeeded, with the original service unreachable.** A clean device restores
+   independently held ciphertext using the content-recovery factor, creates an account at a replacement service
+   under a new authorization lineage, and then admits and revokes a device. Nothing claims the new service
    inherited the old service's authority.
 9. A relay or durable-store snapshot contains ciphertext, `R_pub`, wraps, public authorization material and accepted
    metadata — no unwrapped content key, plaintext, reusable device secret, PRF output, recovery code or unsealed
@@ -2135,7 +2142,7 @@ is what lets encryption at rest land before the protocol is specified.
 | 13 | Device-lock derivation, enrollment migration and copy | §13.3                                                                                  |
 | 14 | Recovery-code entropy, generation, step-up authentication and confirmation UX | Decides whether stretching is needed at all (§13.10) |
 | 15 | Interrupted-rotation and downgrade behaviour   | Must fail closed without changing the confidentiality promise (§11.2 test 11)                  |
-| 16 | Hosted-content retention duration after a lapse | One number bounds both resume and total-device-loss recovery (PRD §6.10)                      |
+| 16 | Hosted-content retention duration after a lapse | One number bounds both resume and total-device-loss recovery. **Conditional** — arises only if PRD §11's pricing question selects a plan that can lapse (PRD §6.10) |
 | 17 | Which web-security baseline profile and version | §10.9, §13.11 level 2                                                                         |
 | 18 | Whether a persistent encrypted search index is needed at all | Deferred; gates neither review nor cutover; measure the in-memory rebuild first (§6.2, §12) |
 | 19 | Root-type day collections (§10.8)              | Deferred; one of its four costs has lapsed and should be re-counted                            |

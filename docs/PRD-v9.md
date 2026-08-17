@@ -162,7 +162,10 @@ Three consequences that fall out of keeping them apart, and each has been got wr
 - A **revoked device** holds a detached local copy of a workspace that may still be Account everywhere
   else. Calling that copy Local would confuse a replica's attachment with the workspace's global state.
 
-**Failure and lifecycle.** Every transition is enumerated in §6. Two constraints hold across all of them:
+**Failure and lifecycle.** Every transition is enumerated in §6 — genesis, promotion, start-fresh,
+enrollment, sign-out, remove-from-device, revocation, lapse and expiry, deletion — except **migration**,
+which changes the same axes and is enumerated with the rest of service continuity in §8.5. Two constraints
+hold across all of them:
 **Local is free and permanent** — an account is never required to keep using the complete local
 application on one device — and **hosted synchronization requires an account**, because a server-held copy
 needs a stable identity to attach to, a credential to retrieve it, and somewhere to keep revocation state.
@@ -683,10 +686,26 @@ to it.
 **What the user sees.** "You", everywhere a human is named. One entry per person in every ordinary list,
 whatever device the writing came from, however many devices there are.
 
+**Where the name and the colour live, since exactly one surface owns them.** Both are facts about the
+**person**, not about the install, and the settings menu is where they are changed — the same menu that
+edits them today, reading one level up. Before an account there is no name to change: "You" is what every
+list says, and only the colour is set, generated and editable. Account creation is where a name first
+exists (§6.1), and **it is editable afterwards like any other setting** — asking once is a rule about when
+the app *demands* an answer, not a rule that the answer is frozen. The device name is a separate axis with
+a separate home, the device list (§6.4), because it answers a different question for a different audience
+(§5.2).
+
+Colour reaches the person level by dependency rather than immediately: it is stored per actor today, so it
+is one colour per device until enrollment gives it a principal to hang on, which is the same dependency
+the caret rule carries (§5.5).
+
 **Not promised.** The principal is not an account and never becomes one. It is not named at first run, not
 named at first sync, and carries no address, credential or service relationship. Most principals never
 acquire an account at all — local-only is the whole free product, and principal-without-account is the
 steady state rather than a transitional rung.
+
+**Not promised.** Editing a name or colour is the whole of the identity surface. There is no roster to
+administer, nothing to add or remove, and no actor management of any kind (§9).
 
 **Failure and lifecycle.** The principal survives events that end service relationships. Deleting an
 account retires the workspace's service lineage; it does not retire the person. Each device keeps its
@@ -967,7 +986,8 @@ semantic-capability case, and it survives because edit implies read — not beca
 
 **Invariant.** The app never asks who you are until there is a service relationship to attach the answer to.
 **Account creation is the only moment a name is requested**, and there is no earlier one — not at first run,
-not at first peer, and not at any later device enrollment.
+not at first peer, and not at any later device enrollment. *Requested* is the operative word: the name is
+an ordinary setting afterwards and can be changed whenever the person wants (§5.1).
 
 **What the user sees.** First run asks nothing and starts in the editor. Local genesis silently creates an
 unnamed principal, a home-workspace membership, a device, a human actor and the workspace's first
@@ -1111,8 +1131,9 @@ product's irreducible security surface.
 it is on — because a two-tier assurance bar is acceptable and a silent one is not (§7.9). A device not seen for a
 while may be shown **muted**.
 
-Device names are currently user-agent guesses (`Mac`, `Android`) and two of the same kind collide. They are
-worth improving, and the mechanism is open with one guardrail: **not by fingerprinting.** Deriving a stable
+Device names are currently user-agent guesses (`Mac`, `Android`), **renameable from this list and local to
+the device that holds them**, and two of the same kind collide. They are worth improving, and the mechanism
+is open with one guardrail: **not by fingerprinting.** Deriving a stable
 identifier from device characteristics is the thing browser vendors are actively closing off and would be a
 poor look in an app whose pitch is that your data stays yours. A stable random device id already exists and
 carries no information about the machine; a suffix taken from it — four characters, or a deterministic word,
@@ -2628,6 +2649,13 @@ start of technical design.
 
 - **No workspace management.** No creation flow, no naming, no reconciliation, no administration surface.
   Selecting between local workspaces one person already holds is the single permitted exception (§6.8).
+
+- **No actor management. There is nothing to administer.** Actors are minted by the app and never claimed,
+  merged, pruned or picked from a list (§5.2); the only identity a person edits is their own name and colour
+  (§5.1) and their own device names (§6.4). The older form of this non-goal said *no presence UI, no
+  permissions, no actor management* — the first clause is retired, because carets for every input surface are
+  presence and are shipped deliberately (§5.5), and the second is superseded by agent membership and
+  capabilities (§5.8). **What survives is this clause, and it survives intact.**
 
 - **No sharing a single day, a single card, or a link to anything.**
 
