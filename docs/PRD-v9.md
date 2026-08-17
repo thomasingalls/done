@@ -1482,7 +1482,7 @@ which the service holds the user's bytes and cannot give them back.
   share an ancestor — the state the workspace was in when sync stopped — and they merge. Nothing is
   discarded. The merge is as large as the separation was, which is a legibility problem rather than a data
   one. Treating a workspace whose hosted copy expired as a workspace with no history would replace one
-  device's months of work for no reason; **the relay losing its copy does not dissolve the ancestry between
+  device's months of work for no reason; **the hosted store losing its copy does not dissolve the ancestry between
   the devices.**
 - **What expiry genuinely destroys** is narrower and still has to be said in advance: the service-hosted
   total-device-loss recovery path, and the gap held by any device that was offline across the whole lapse —
@@ -1865,13 +1865,13 @@ credential can sign two different envelopes at the same sequence, or fill a gap 
 a hostile relay could then choose which to show. The accepted stream must be **non-equivocating** from a
 client's point of view.
 
-TRD §2 and TRD §7.2 describe the relay as a dumb pipe that "holds no authority, runs no application logic, and can
+TRD v7 §2 and §7.2 described the relay as a dumb pipe that "holds no authority, runs no application logic, and can
 be absent entirely", secured by a shared bearer token because "the threat model is one person's task list", and
-say the relay is not a backup because "every device holds a full replica". All four claims need amending: the
-relay gains envelope-metadata authority and acceptance evidence to carry, the hosted copy is a server-held
-encrypted replica rather than nothing, and a device holds its **last** replica. The dumb-pipe property survives
-only in the sense that matters — **no service component reads content** — and the sentences should say that
-rather than the stronger thing they say now.
+said the relay was not a backup because "every device holds a full replica". **All four claims are retired.** The
+relay gains envelope-metadata authority and acceptance evidence to carry, the hosted copy is a server-held encrypted
+replica rather than nothing, and a device holds its **last** replica. Relay transport alone supplies no durable copy;
+the durable hosted store is a real recovery source while retained. The dumb-pipe property survives only in the
+sense that matters — **no service component reads content**.
 
 ### 7.6 The recovery code
 

@@ -840,7 +840,12 @@ expiring admission credential issued by the authorization service (§13.4).
 absent-able for a workspace using hosted sync; and "every device holds a full replica" is wrong — a device holds
 its **last** replica, which is the distinction every deletion, lapse and migration warning depends on.
 
-**The relay is still not a backup.** The export (§9) and the fidelity archive (§9.3) are the backup story.
+**Relay transport is not by itself a backup; the durable hosted store is a real retained recovery source.** The
+relay's live fan-out supplies no durable copy. The hosted store does: while its ciphertext, generation wraps and
+retention window survive, it can supply recovery object 4 and the saved code can open the recovery key needed for
+object 3 (§13.8). That is a server-held encrypted replica, not an independently controlled backup, and it disappears
+with retention or the service. Markdown export (§9.1) and the fidelity archive (§9.3) are the user-controlled
+portability and backup artifacts; only the latter preserves exact workspace state.
 
 ### 7.3 Component split
 
