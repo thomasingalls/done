@@ -3,7 +3,7 @@
 **Status:** The ordering is a proposal. **The three decisions in §5.1–§5.3 are taken** and reflected below;
 the cutover-attribution choice in §5.4 remains open and gates Stage 2.
 **Date:** 2026-08-17
-**Companion to:** [TRD-v8.md](./TRD-v8.md), [PRD-v9.md](./PRD-v9.md)
+**Companion to:** [PRD.md](./PRD.md), [TRD.md](./TRD.md)
 
 ---
 
@@ -23,9 +23,9 @@ What this asserts is sequence and dependency.
 
 **References and precedence:** `TRD §x` and `PRD §x` resolve to those documents. A bare `§x` is this one.
 `docs/sessions.md` is the earlier product-and-architecture decision history; §5 here is the record for the later
-sequencing decisions and cutover choice. Their current consequences are propagated into PRD v9 and TRD v8. If a
-record and the candidate requirements disagree, the candidate PRD/TRD state what is currently true and the record
-preserves the reasoning to revisit.
+sequencing decisions and cutover choice. Their current consequences are propagated into the PRD and TRD. If a
+record and the requirements disagree, the PRD and TRD state what is currently true and the record preserves the
+reasoning to revisit.
 
 ---
 

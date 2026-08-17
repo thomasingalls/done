@@ -126,6 +126,14 @@ retention durations and remaining UX parameters still belong where §8.1 records
 **Amends:** PRD §0, §2, §4, §6, §11, §12 and §14, plus TRD §2, §4.8, §6.1, §7.2, §9 and §10.6 — the full
 list, with what each needs, is §9.
 
+**Note on the PRD and TRD references below, added at promotion.** This record is complete as of v17 and is not
+maintained after it. Its decisions have since been promoted: `docs/PRD.md` is now v9 and `docs/TRD.md` is now v8,
+and those are normative. **Every `PRD §x` below refers to PRD v8**, whose numbering the promotion did not
+preserve — the current PRD is organized differently and its section numbers will not match. **Every `TRD §x`
+refers to TRD v7**, whose numbering the current TRD *does* preserve deliberately, so those citations still
+resolve. Read this document for how a decision was reached and on what evidence; read the PRD and TRD for what is
+currently true.
+
 ---
 
 ## 0. Why this document exists
