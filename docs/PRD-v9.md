@@ -1136,7 +1136,7 @@ tab is meaningless; the thing someone with bad intentions uses is a device.
 | ------------------------------ | -------------------------------------------------------------------------------------------------- | --------------------------------- |
 | **requested**                  | recorded locally; the service may not know; the device can still push                              | "Pending — not yet active"        |
 | **committed**                  | the service accepted the authorization successor **and** a client-produced content-key generation with its reader and recovery wraps, **and** published an authenticated finalization boundary for the removed credential's accepted writes | "Revoked" |
-| **acknowledged** by every device | no remaining device is still accepting that credential; all replicas know the boundary            | "Revoked, all devices up to date" |
+| **acknowledged** by every device | every remaining replica holds the new generation and knows the finalized cutoff                   | "Revoked, all devices up to date" |
 
 The implementation may make the three parts of *committed* one transaction; the product semantics may not
 omit one. A request that has not reached the service — or a successor whose content cutoff has not been
@@ -1175,10 +1175,14 @@ CRDT history without losing what was built on them) and no two-lineage adjudicat
   changes" is a false statement. Silence is the wrong answer, so the rotation carries a signal the excluded
   credential can still read even though the content is closed to it. That is a protocol requirement falling
   directly out of an honesty rule, and it is easy to miss because the cryptography works fine without it.
-- **Remaining devices are stale, not broken**, between the rotation and receiving the new key: still holding
-  the old key, still accepting the removed credential's writes. Every remaining credential is reachable
-  through the relay, which holds the wrapped key until that device next connects — a store-and-forward
-  problem rather than a both-devices-awake problem.
+- **Remaining devices are stale on authorization, not broken**, between the rotation and receiving the new
+  key. They still hold the old generation, and they may still apply the removed credential's **pre-cutoff,
+  acceptance-proven** writes — which is correct rather than a gap, because nothing accepted before the cutoff
+  is discarded. **What a stale device does not do is apply an unaccepted write**, even before it has learned
+  of the revocation: every applied envelope requires authorization-service evidence that it entered the
+  accepted set, and a relay that withheld a write from that set cannot manufacture evidence for it. Every
+  remaining credential is reachable through the relay, which holds the wrapped key until that device next
+  connects — a store-and-forward problem rather than a both-devices-awake problem.
 - **Checking for revocation gates sync, not startup.** "Check before anything on reconnect" must never
   become "block startup on a network call". Unknown or offline means full local function; *known revoked*
   detaches the replica and explains that it no longer converges. Reading and writing locally never waits on
