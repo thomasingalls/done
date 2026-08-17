@@ -1147,8 +1147,8 @@ blank lines. Since a day _is_ its collections, a day file and a legacy compacted
 read by the same parser — so "exactly one serializer" remains literal.
 
 A card can itself contain a blank line, so blank-line-delimited blocks would be ambiguous. Each card is therefore
-written as a markdown list item — first line after `- `, the rest indented — which makes card boundaries the only
-lines at column 0 whatever a card holds. The alternative, forbidding blank lines inside cards, would make the
+written as a markdown list item — first line after `- `, the rest indented — which makes a column-zero `- ` line an
+unambiguous card start whatever a card holds. The alternative, forbidding blank lines inside cards, would make the
 storage format depend on the split threshold, which the PRD calls a tunable.
 
 **What the format carries is what the user wrote, and nothing the app tracked.** `readDayContent` maps a day's
@@ -1176,7 +1176,11 @@ written (§13.7).
 **Constraint.** Import is a requirement of equal standing with export. It **creates a workspace's contents; it
 does not merge into a populated one.**
 
-Import parses the same layout, splitting on canonical headings and re-splitting cards on blank lines. Round-tripping
+Import parses the same layout by recognizing canonical headings and, within each collection, **column-zero `- `
+list-item starts**. After the first line, lines bearing the serializer's canonical continuation indentation belong
+to that card, and the parser removes exactly that indentation. This includes indentation-only lines representing
+blank lines inside the card body. Unindented blank lines are separators and are discarded; they are never used to
+infer a card body boundary. The next column-zero list-item start or canonical heading ends the card. Round-tripping
 export → import → export must be byte-identical.
 
 **Three things v7 did not say and this document must:**
@@ -1202,7 +1206,7 @@ So the honest statement of what import restores is: **everything the user wrote,
 **Must not happen.** No import into a populated workspace until identity survives the format. No silent truncation
 at the freeze or the cap.
 
-**Test.** §11, round-trip; import outside freeze and cap.
+**Test.** §11, round-trip — including cards with one or several embedded blank lines; import outside freeze and cap.
 
 ### 9.3 The fidelity archive
 
@@ -1431,8 +1435,8 @@ would test one direction of every conflict.
 Hand-written two-replica scenarios remain alongside the fleet and are a different job: named cases with a readable
 failure, not coverage.
 
-**Round-trip.** `export → import → export` byte-identical. Editor content equals stored `Y.Text` after arbitrary
-edit sequences.
+**Round-trip.** `export → import → export` byte-identical, including card bodies containing one or several blank
+lines. Editor content equals stored `Y.Text` after arbitrary edit sequences.
 
 **Import placement.** A ten-day export imports into a clean store with **every** day present, including days older
 than the freeze window, and including days whose Next holds more than three items. Import writes as the system
