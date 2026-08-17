@@ -1276,9 +1276,11 @@ open those claims is retained. Reading principle 6 correctly **justifies** that 
 
 ### 10.5 Storage eviction
 
-Browsers can evict origin storage. `persist()` reduces but doesn't eliminate the risk. With sync configured another
-replica exists; without it, export is the only backup — so prompt for an export periodically if sync has never been
-configured.
+Browsers can evict origin storage. `persist()` reduces but doesn't eliminate the risk. Re-check the grant on every
+launch and keep the prominent environment warning visible while persistence is not granted (§6.1, PRD §7.10). That
+warning is separate from copy count: when only this device is known to hold a copy, state the fact once on a setup
+surface or when the user is about to rely on a second copy. Export or sync creates another copy; **never turn the
+single-copy fact into a periodic prompt or recurring banner.**
 
 ### 10.6 What is and is not enforceable
 
