@@ -652,7 +652,8 @@ Request `navigator.storage.persist()` on the first human write. Surface the gran
 **Must not happen.** No plaintext user content in any app-managed persistent store, at any lifecycle point —
 genesis, Local, Account, after deletion, after retention expiry, after migration. No provider constructed against
 a content root belonging to a different workspace, in either direction, including on teardown, retry and error
-paths. No key material of any kind in the journal implementation.
+paths. The journal implementation receives only its domain-separated journal subkey — never `K_g` itself, a
+device private credential, recovery material, or a key used by the content store or network envelopes.
 
 **Test.** §11, no-plaintext-at-rest; journal replay ordering; store isolation; trim crash-safety; load before
 connect.
