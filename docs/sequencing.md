@@ -77,27 +77,29 @@ lands. What they buy is the absence of three migrations, and that is only purcha
 
 Levels 1–3 gate network sync, and **level 3 is an independent protocol design review by someone outside the
 project.** Booking it, waiting for it and answering it is elapsed time that working harder does not compress.
-TRD §13.11 adds that it waits until TRD §15 is closed, because reviewing an architecture alone buys an opinion
-about a sketch.
+TRD §13.11 adds that each review waits until its own TRD §15 scope is closed, because reviewing an architecture
+alone buys an opinion about a sketch.
 
-So the single highest-leverage scheduling act is **starting TRD §15 immediately**, so the review is in flight
-while the client work happens rather than beginning after it.
+So the single highest-leverage scheduling act is **starting TRD §15's review-scoped selections immediately**, so
+each review is in flight while the corresponding implementation happens rather than beginning after it.
 
-### 2.3 TRD §15 splits, and only half of it gates sync
+### 2.3 TRD §15 has four scopes
 
-The twenty unselected rows are not one body of work. **Six are needed to encrypt a local store; the rest are
-needed to move an envelope over a network.**
+The twenty-one unselected rows are not one body of work. **Two scopes feed reviews; one is empirical; one is the
+cutover choice.**
 
-| TRD §15 rows                              | Needed for                    | Blocks   |
-| ----------------------------------------- | ----------------------------- | -------- |
-| 1, 2, 3, 13, 18, and part of 14           | Local encryption at rest      | Stage 1  |
-| 4–12, 15, 16, 17, 19, 20                  | The service and the wire      | Stage 4  |
+| Scope             | TRD §15 rows                                      | Needed for                            | Blocks                                      |
+| ----------------- | ------------------------------------------------- | ------------------------------------- | ------------------------------------------- |
+| Storage review 3a | 1, 2, 3, 13, and the storage-facing part of 14    | Local encryption and journal design   | Rows 1–3 block Stage 1; closed scope and review 3a block Stage 2 |
+| Protocol review 3b | 4–12, 15–17, 20, and the network-facing part of 14 | The service and the wire              | Closed scope and review 3b block Stage 4    |
+| Empirical         | 18, 19                                            | Search persistence and root-type trigger decisions | Their stated measurements or triggers only |
+| Migration         | 21                                                | First-deployment attribution carrier   | Stage 2                                     |
 
 **That split had a consequence, and §5.2 has resolved it.** The synchronous journal AEAD is row 2, it is the
 only new primitive in the plan (TRD §10.10), and it ships in Stage 1 — well before network sync. "Levels 1–3
 before network sync ships" therefore did not cover the one construction the review most needs to see, at the
 time it lands. **The review is now split in two**: a narrow storage-and-journal review answered before Stage 2,
-and the full protocol review answered before Stage 4.
+and the full protocol review answered before Stage 4. Rows 18, 19 and 21 enter neither review.
 
 ### 2.4 What is genuinely independent
 
@@ -127,12 +129,12 @@ Four bodies of work touch neither the on-disk shape nor the protocol, and can la
 
 Three things, none of which is application code, all of which get more expensive the later they start.
 
-**Select TRD §15's storage half.** Rows 1, 2 and 3 are what Stage 1 cannot begin without: the algorithm suite,
+**Select TRD §15's storage-review scope.** Rows 1, 2 and 3 are what Stage 1 cannot begin without: the algorithm suite,
 the synchronous journal AEAD **and its nonce discipline**, and the encrypted record format. Row 2 is the one to
 spend real thought on — a counter-based nonce whose last value was not durably recorded can repeat after
 exactly the crash the journal exists to survive.
 
-**Draft TRD §15's network half.** It blocks nothing here, and it is what the reviewer needs.
+**Draft TRD §15's protocol-review scope.** It blocks nothing here, and it is what the reviewer needs.
 
 **Build a latency harness and take the baseline while the store is still plaintext.** Today the budget script
 enforces initial JS and nothing else; keystroke → paint, cold start, warm start and content-root load have no
@@ -294,10 +296,10 @@ at wider availability (PRD §7.11).
 ## 4. The critical path
 
 ```
-Now ─ select TRD §15 storage half ─▶ Stage 1 ────────────▶ Stage 2 ─────────┐
+Now ─ select TRD §15 storage scope ─▶ Stage 1 ───────────▶ Stage 2 ─────────┐
       book review 3a ──────────────▶ 3a in flight ─▶ answered ┘             │
                                                                             ├──▶ Stage 4 ──▶ Stage 5
-Now ─ draft TRD §15 network half ─▶ book review 3b ─▶ 3b in flight ─▶ answered
+Now ─ draft TRD §15 protocol scope ─▶ book review 3b ─▶ 3b in flight ─▶ answered
                                                           │
                                                     Stage 3 runs here
 ```
