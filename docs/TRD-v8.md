@@ -865,6 +865,9 @@ them is fixed and neither may absorb the other.
 | **Relay and durable store** | Authenticate transport; validate opaque envelope fields, epoch and signatures; sequence and store ciphertext; carry service-signed acceptance evidence                     | A plaintext processor, CRDT merger, or source of authorization by itself            |
 | **Yjs**                     | Represent and merge content locally **after** an envelope has passed verification                                                                                          | An identity, authorization or recovery system                                       |
 
+**Every component here owes inventory rows, and §16 has them.** A component that stores, forwards, logs or backs
+up anything acquires a row at the moment its definition exists, not at review time.
+
 **Interfaces are drawn now even though the first deployment may remain one process.** That deployment must
 already distinguish: rendezvous and connection authentication; ephemeral live fan-out and awareness; durable
 encrypted envelopes and checkpoints; authorization signing and accepted-set finalization; and account storage.
@@ -1571,6 +1574,31 @@ nothing else:
 
 Tests 1–3 are cheap and near-term; 4–9 are a serious program, and 9 is the one that cannot be faked.
 
+### 11.4 Service data handling
+
+Generated tests rather than a policy document, because that is the evidence standard the as-built review applies
+(PRD §7.11). Each of these checks a claim §16 makes.
+
+**Every inventory row's deletion event is exercised.** For each row in §16, perform its named event and assert the
+data is absent from its named store. **A row whose deletion event cannot be exercised is a defect in the row**, not
+an exemption from the test.
+
+**Backups do not outlive their source.** A row deleted at its deletion event does not reappear from a backup taken
+before it and restored after.
+
+**Subject enumeration, export and correction.** For each subject — account, workspace, device credential — the data
+attributable to it can be enumerated and exported, and no aggregate measurement returns a subject identifier that
+the subject's deletion did not clear.
+
+**Diagnostics carry no secret.** Logs, telemetry and support artifacts are generated under load and inspected for
+reusable credentials, recovery material and plaintext content. The allowlist is the mechanism; the test is that
+nothing outside it appears.
+
+**Presence is not persisted.** After a connection closes, no store contains awareness payloads (§7.7).
+
+**Service-side deletion does not disable a local replica.** After account deletion and after suspension, a device
+that was offline throughout still opens its last replica and still exports.
+
 ---
 
 ## 12. Performance budgets
@@ -2117,6 +2145,89 @@ is what lets encryption at rest land before the protocol is specified.
 **Rows 2, 5 and 11 are the ones to close first.** Row 2 is the only new primitive and it is on the crash path. Row 5 is
 what makes revocation hold against a hostile relay, and the whole guarantee is currently specified-but-not-designed.
 Row 11 changes what the design review is reviewing.
+
+---
+
+## 16. The service data inventory
+
+**This is the living inventory the product decision requires this document to start** (PRD §7.11). It is a view of
+the architecture, not a second architecture document: every store, queue, log, backup or processor that §7 and §13
+introduce gets one row. As implementation makes each definition real, the row moves to live beside the schema,
+service or infrastructure definition that makes it true, and changes with it. Implementation reconciles the whole
+against what is actually deployed, and that reconciliation gates wider availability.
+
+**The row format is fixed and is not negotiable per row:**
+
+> **data class · purpose · subject/deletion scope · storage or recipient · retention · deletion event ·
+> operator visibility · third parties**
+
+**Scope: service-held data.** Device-local stores are §6, and are ciphertext under keys the service never holds
+(§13.2); they appear here only where the service learns something about them. **The seven constraints in PRD §7.11
+bind every row below** — no component receives plaintext, a content key, an unsealed `R_priv` or a recovery factor;
+every subject-bearing record has a deletion scope; no reusable credential or recovery secret enters logs; deletion
+never disables a local replica; operator powers are least-privilege and audited.
+
+**Two columns are deliberately incomplete, and a row that says so is doing its job.** Retention durations are
+unselected (§15 rows 7 and 16), and vendors and processors do not exist until deployment chooses them. `unselected`
+is the placeholder the as-built review checks against, not an omission.
+
+### 16.1 Authorization service
+
+| Data class | Purpose | Subject / deletion scope | Storage or recipient | Retention | Deletion event | Operator visibility | Third parties |
+| ---------- | ------- | ------------------------ | -------------------- | --------- | -------------- | ------------------- | -------------- |
+| Account record — identifier, contact address, service settings | Authenticate and contact the account holder | Account | Authorization service store | Life of the account | Account deletion | Support may read; audited | None in the base design |
+| Account authenticator public material and slot-verifier parameters (§13.9) | Verify sign-in; anchor the device-local slot binding | Account | Authorization service store | Life of the account | Account deletion | None — public material | None |
+| Signed authorization lineage — epochs, membership grants, credential ids, capabilities, generation ids (§13.5) | Admit and revoke, order successors, prove historical admission | Workspace | Authorization service store | Life of the lineage | Account deletion commits the terminal record, then removes service copies | Support may read; authorization changes are audited | None |
+| Terminal lineage record | Let a surviving replica distinguish retirement from genesis (§13.5) | Workspace | Authorization service store, then replicas and the portable package | Propagated before deletion; not retained by the service afterwards | Account deletion | Support may read; audited | None |
+| Acceptance evidence — per-credential accepted-set log, head digests, cutoffs (§7.5) | Let clients refuse writes the service never accepted | Workspace × credential | Authorization service store | **Unselected** (§15 rows 5, 7) | Account deletion | Support may read; audited | None |
+| Recovery material — `R_pub`, per-generation wraps, code-sealed `R_priv` envelope | Non-custodial recovery after total device loss (§13.8) | Workspace | Authorization service store | Life of the account; separately bounded by hosted-content retention during a lapse | Account deletion; retention expiry deletes the wraps and keeps `R_pub` and the sealed envelope (PRD §6.10) | None — opaque to every operator by construction | Escrow agent, **only** where the opt-in add-on exists (§16.5) |
+| Relay admission tokens issued (§13.2) | Scope and time-bound a transport session | Device credential | Issued to the device; service-side issuance state only if the selected shape needs it | Short by construction | Expiry, revocation, account deletion | Support may read issuance state; audited | None |
+
+### 16.2 Relay
+
+| Data class | Purpose | Subject / deletion scope | Storage or recipient | Retention | Deletion event | Operator visibility | Third parties |
+| ---------- | ------- | ------------------------ | -------------------- | --------- | -------------- | ------------------- | -------------- |
+| Live connection state — credential id, network address, connect and disconnect times | Authenticate transport and route envelopes | Device credential | Relay process memory; logged only through PRD §7.11's allowlist | Connection lifetime | Disconnect; log expiry | Operational; audited | Hosting provider observes network addresses |
+| Awareness and presence — name, colour, cursor position, workspace association (§7.7) | Live presence display | Principal × workspace | Relay process memory | Connection lifetime. **Not persisted by default**, and must not inherit workspace-ciphertext retention | Disconnect | Operational, live only | Hosting provider |
+| Per-credential write times, rates and volumes | Validate authorization, rate-limit, and account for cost | Device credential | Relay metrics | **Unselected.** Any *persisted* use needs its own purpose, subject scope and retention before it is added (PRD §7.11 constraint 6) | Account deletion | Operational | A metrics processor, if one is chosen |
+
+### 16.3 Durable store
+
+| Data class | Purpose | Subject / deletion scope | Storage or recipient | Retention | Deletion event | Operator visibility | Third parties |
+| ---------- | ------- | ------------------------ | -------------------- | --------- | -------------- | ------------------- | -------------- |
+| Authenticated envelopes — ciphertext plus clear routing metadata (§7.4) | Store-and-forward between devices never awake together | Workspace | Durable store | Until superseded by a checkpoint, then per the checkpoint rule below | Account deletion; hosted-content retention expiry (PRD §6.10) | None — opaque | Storage provider |
+| Checkpoints and manifests, including the coverage attestation (§7.6) | The bounded recovery representation a content-blind store needs | Workspace | Durable store | **Unselected** (§15 row 7) | Account deletion; retention expiry | None — opaque | Storage provider |
+| Superseded checkpoints | Fallback when the newest is unavailable (§11.3 test 8) | Workspace | Durable store | **Unselected** (§15 row 7) | Account deletion; retention expiry | None — opaque | Storage provider |
+| Attribution-preserving evidence (§7.6, §13.7) | Verify historical authorship across rotation and migration | Workspace | Durable store, as part of the recovery representation | Bounded by the attribution retention floor — for the lifetime of the claim | Account deletion; compaction retires the claims it covers (§4.5) | None — encrypted under content-key generations | Storage provider |
+
+### 16.4 Operational
+
+| Data class | Purpose | Subject / deletion scope | Storage or recipient | Retention | Deletion event | Operator visibility | Third parties |
+| ---------- | ------- | ------------------------ | -------------------- | --------- | -------------- | ------------------- | -------------- |
+| Diagnostics and logs | Diagnose service faults | Per field, attributed to the subject it concerns; an aggregate must not quietly retain subject identifiers | Log store | **Unselected** | Log expiry; subject deletion for attributed rows | Operational; audited | A log processor, if one is chosen |
+| Backups | Restore service state | Mirrors the subject of whatever it copies | Backup store | **Unselected**, and **must not outlive the deletion event of the row it copies** | Backup expiry following the source deletion | Operational; audited | A backup provider |
+| User-supplied support material | Diagnose a problem the user has chosen to disclose | Account, as an explicit and separately scoped disclosure | Support system | **Unselected**, and separate from every other row | Ticket closure or user request | Support; audited | A support-desk provider |
+| Billing records | **Conditional** — exists only if PRD §11's pricing question selects a paid plan | Account | Payment processor | Statutory | Account deletion, less any statutory hold | Finance; audited | Payment processor |
+
+### 16.5 Escrow agent — conditional, and deliberately not us
+
+| Data class | Purpose | Subject / deletion scope | Storage or recipient | Retention | Deletion event | Operator visibility | Third parties |
+| ---------- | ------- | ------------------------ | -------------------- | --------- | -------------- | ------------------- | -------------- |
+| A separately sealed copy of `R_priv`, **and no ciphertext** | Opt-in recovery for a user who will not take custody (§13.8) | Account | **A separate legal entity**, never this service | Life of the opt-in | Opt-out; account deletion | The escrow operator only | The escrow entity is itself the third party |
+
+**This row exists to be tested rather than trusted.** The two-party property is real only if neither store alone
+suffices, so §11.2 test 9 inspects each store for what it can *open*, not for what it holds: the service's snapshot
+must contain no material that unseals `R_priv`, and the escrow agent's must contain no ciphertext.
+
+### 16.6 What this inventory is checked against
+
+- **Every row's deletion event is exercised**, not asserted. §11.2 test 9 inspects service snapshots; the as-built
+  review's evidence is generated deletion and export tests reconciled against deployed infrastructure, not the
+  existence of a policy document (PRD §7.11).
+- **A row appearing with no deletion scope is a defect**, because the constraint that every subject-bearing record
+  has one is what makes deletion, export and correction implementable at all.
+- **`unselected` is bounded, not open-ended.** Each occurrence above points at the §15 row that closes it, and none
+  may survive into the as-built review.
 
 ---
 

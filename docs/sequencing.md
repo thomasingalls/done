@@ -295,6 +295,13 @@ at wider availability (PRD §7.11).
 | 5 — disclosure and response program       | Live the day Stage 4 ships. A reporting path that does not exist when the first report arrives is the cheapest thing to get wrong |
 | 4 — implementation audit                  | On trigger: *end-to-end encrypted* in marketing copy, or the escrow add-on holding a real key |
 
+**The service data inventory runs alongside all of it, and is not a review-time task.** TRD §16 already carries a
+row for every store, queue, log, backup and processor its architecture introduces. Stage 4 adds rows as it makes
+each one real and moves them beside the definitions that make them true; Stage 5 does the same for the durable
+store and the archive. The as-built reconciliation is a *check* on that work, and the evidence it wants is
+generated deletion and export tests (TRD §11.4) rather than a document. Every `unselected` cell in TRD §16 points at
+the TRD §15 row that closes it, and none may survive to the review.
+
 ---
 
 ## 4. The critical path

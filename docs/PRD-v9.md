@@ -2187,9 +2187,11 @@ expiry, deletion/export behaviour, incident path, and jurisdiction- and audience
 evidence is generated deletion and export tests and a reconciliation against deployed infrastructure**, not the
 existence of a long policy document.
 
-**TRD.** The inventory starts with the TRD's proposed stores and flows; implementation reconciles it to what is
-actually deployed. Vendors, processors, backup behaviour, log fields, support workflows and retention periods
-are decided there rather than guessed here.
+**TRD.** The inventory starts with the TRD's proposed stores and flows — **TRD §16 is where it now lives**, with
+a row per store, queue, log, backup and processor that its architecture introduces. Implementation reconciles it
+to what is actually deployed, and moves each row beside the definition that makes it true. Vendors, processors,
+backup behaviour, log fields, support workflows and retention periods are decided there rather than guessed
+here; a row that says `unselected` is the placeholder this review checks against.
 
 ### 7.12 What counts as evidence
 
