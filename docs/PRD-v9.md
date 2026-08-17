@@ -1,7 +1,8 @@
 # done — Product Requirements
 
-**Status:** Draft v9 — promotion draft. Consolidates PRD v8 with every settled decision from
-`docs/sessions.md`. Replaces PRD v8 in full once reviewed.
+**Status:** Draft v9 — promotion draft. Consolidates PRD v8 with the settled product and architecture decisions
+recorded in `docs/sessions.md`, plus the later implementation-order record in `docs/sequencing.md`. Replaces PRD v8
+in full once reviewed.
 **Date:** 2026-08-17
 **Audience:** the author, and any agent implementing or reviewing one part of this without reading
 the rest.
@@ -19,13 +20,14 @@ and the lapse semantics from four other sections first.
 
 **References resolve inside this document unless they say TRD.** `§7.4` means §7.4 of this document;
 `TRD §4.5` means §4.5 of the technical requirements. Where a subsection ends with a **TRD** line, that line
-says what the technical document owes — usually an amendment rather than a pointer, because TRD v7 predates
-most of what follows.
+says what the companion technical document must carry. In the joint preview it is a cross-document verification
+target, not an assertion that TRD v8 still lacks the requirement.
 
-**No decision register appears here.** `docs/sessions.md` records the options, the arguments, the
-withdrawn answers and the history behind every decision below, and it remains the place to re-open one
-on the evidence it was made on. It is not the place to find out what is currently true. Where the two
-disagree, this document is the product and that one is the reasoning.
+**No decision register appears here.** `docs/sessions.md` records the options, arguments, withdrawn answers and
+history behind the product and architecture settlement consolidated from it. `docs/sequencing.md` §5 records the
+three later implementation-order decisions and the still-open cutover-attribution choice. Use the relevant record
+to re-open a decision on the evidence it was made on. Neither record is the place to find out what is currently
+true: this PRD and its companion TRD are normative, and the records preserve the reasoning.
 
 ---
 

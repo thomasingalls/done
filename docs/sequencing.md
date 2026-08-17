@@ -1,7 +1,7 @@
 # done — Implementation Sequencing
 
-**Status:** The ordering is a proposal. **The three decisions in §5 are taken**, and the stages below already
-reflect them.
+**Status:** The ordering is a proposal. **The three decisions in §5.1–§5.3 are taken** and reflected below;
+the cutover-attribution choice in §5.4 remains open and gates Stage 2.
 **Date:** 2026-08-17
 **Companion to:** [TRD-v8.md](./TRD-v8.md), [PRD-v9.md](./PRD-v9.md)
 
@@ -13,15 +13,19 @@ reflect them.
 has to exist before what, where the order is forced rather than chosen, and where waiting costs more than
 working. There is one place where the two disagree, and §3.4 argues for taking the disagreement.
 
-**The ordering is not a decision; §5's three answers are.** Everything except §5 is a proposal about sequence.
-§5 records three questions that were the author's to settle, and their answers are now load-bearing: they fix
-what *ships* means, split the design review in two, and consciously pass one deferred change's only cheap
-window.
+**Most of the ordering is not a decision.** §5.1–§5.3 record three answers that were the author's to settle and
+are now load-bearing: they fix what *ships* means, split the design review in two, and consciously pass one
+deferred change's only cheap window. §5.4 records a fourth question that remains open and names exactly what it
+blocks. Everything else is a proposal about sequence and dependency.
 
 **No durations.** There is no basis for any, and inventing them would make an ordering look like a schedule.
 What this asserts is sequence and dependency.
 
-**References:** `TRD §x` and `PRD §x` resolve to those documents. A bare `§x` is this one.
+**References and precedence:** `TRD §x` and `PRD §x` resolve to those documents. A bare `§x` is this one.
+`docs/sessions.md` is the earlier product-and-architecture decision history; §5 here is the record for the later
+sequencing decisions and cutover choice. Their current consequences are propagated into PRD v9 and TRD v8. If a
+record and the candidate requirements disagree, the candidate PRD/TRD state what is currently true and the record
+preserves the reasoning to revisit.
 
 ---
 
@@ -314,7 +318,7 @@ Stage 2 cannot run.
 
 ---
 
-## 5. Decisions
+## 5. Decision record
 
 §5.1–§5.3 were the author's to settle and are settled; the stages above already reflect them. **§5.4 is open**,
 and surfaced after the other three while confirming what the export format actually carries.

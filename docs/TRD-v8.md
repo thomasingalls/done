@@ -36,6 +36,12 @@ it is deliberate in PRD v9: a subsection should be usable alone.
 §7.4 of PRD v9. Where PRD v9 states a product requirement this document must satisfy, the requirement is
 restated rather than pointed at.
 
+**Decision provenance has two records.** `docs/sessions.md` preserves the options, rejected paths and evidence
+behind the product and architecture settlement. `docs/sequencing.md` §5 preserves the three later
+implementation-order decisions and the open first-cutover attribution choice. This TRD and PRD v9 are the current
+normative requirements; the records explain how they were reached and are the place to re-open a question on its
+original evidence.
+
 **What this document does not do is select the cryptographic protocol.** PRD §7.12 makes an independent
 protocol design review a gate before network sync ships, and that review needs concrete state, envelopes,
 rotation, finalization and test vectors to be worth buying. §13 fixes the architecture, the roles, the
