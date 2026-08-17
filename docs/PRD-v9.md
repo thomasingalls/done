@@ -1629,8 +1629,9 @@ composing reviewed ones, so the independent design review must cover it specific
 **One sequencing win, available in one direction only.** Existing installations would need a one-time
 migration — open the old plaintext store, mint the key, write and verify the encrypted store, atomically
 select it, remove the plaintext store only after verification, resume safely after interruption. But the
-transition plan is already export-from-development, import-into-first-deployment (§10). **If this lands before
-any external user exists, that export/import *is* the migration and the state machine is never built.**
+transition plan already cuts over from the development installation into a clean first deployment, with the
+carrier still open in question 10 (§10). **If encryption at rest lands before any external user exists, that
+cutover *is* the migration and the state machine is never built, whichever carrier question 10 selects.**
 
 ### 7.2 The optional device lock
 
@@ -2658,13 +2659,17 @@ behind Tailscale on a laptop in continuous daily use, with sync configured by ha
 shared bearer token, a plaintext relay document, and no principal or authorization lineage. **That
 installation occupies no supported configuration** — it is multi-device sync with no account, which works
 because it has exactly one user who trusts every device on his own tailnet, and it does not generalise past
-that. **The plan is to export from the development installation and import into the first real deployment, and
-to treat that as the migration** rather than attempting to carry a live document across; then a versioning and
-upgrade story, built preventatively rather than at the first incompatible change.
+that. **The proposed cutover is to export from the development installation and import into the first real
+deployment, and to treat that as the migration** rather than attempting to carry a live document across. It is
+not yet the selected cutover: question 10 must first decide whether re-attributing the imported history to the
+system actor is acceptable or whether the fidelity archive has to arrive early and carry the CRDT state instead.
+Adding hidden authorship fields to the Markdown escape format is not an option. After cutover comes a versioning
+and upgrade story, built preventatively rather than at the first incompatible change.
 
 Two consequences worth stating: the import must not be gated by the freeze, or a ten-day export silently loses
-everything older than three days (§4.4); and **if encryption-at-rest lands before any external user exists,
-that export/import *is* its migration and no in-place encryption state machine is ever built** (§7.1).
+everything older than three days (§4.4); and **if question 10 selects export/import and encryption-at-rest lands
+before any external user exists, that export/import *is* its migration and no in-place encryption state machine
+is ever built** (§7.1).
 
 **Phase 3 — accounts and sync.** The largest phase, and it is not "relay deployment" any more.
 
@@ -2787,32 +2792,39 @@ answer is *nothing*.
    install is writing*, and those are different questions with different answers. Worth naming properly before
    it reaches the UI (§5.2).
 
+10. **Does the first-deployment cutover accept system attribution for all pre-cutover cards, or does the
+    fidelity archive arrive early and preserve their CRDT identity?** The Markdown export deliberately carries
+    bodies rather than `id`, `author`, `origin` or `createdAt`, and import is a system-actor write (§8.2). Accepting
+    that makes provenance blank before cutover; preserving it pulls the fidelity archive (§8.3) into the cutover.
+    Adding `author` to the Markdown escape format is rejected. **Blocks the first deployment cutover in §10 and
+    nothing else.**
+
 **Copy and interaction detail, each attached to a settled decision:**
 
-10. **The destructive-confirmation copy** for remove-from-device and reset for handoff — specifically, how
+11. **The destructive-confirmation copy** for remove-from-device and reset for handoff — specifically, how
     it distinguishes what the app can actually clear from external recovery material it cannot reach (§6.6).
 
-11. **The account-creation flow's presentation** — how the name, the account credential and the recovery code
+12. **The account-creation flow's presentation** — how the name, the account credential and the recovery code
     are sequenced in one moment without the code reading as optional (§6.1), and the recovery-code
     generation, step-up authentication and confirmation UX, including the replacement flow and the loss
     warnings. The latter is not a detail of the recovery flow — **if the code is the only thing between an
     account-holder and permanent loss, how it is generated, confirmed and replaced *is* the recovery flow**
     (§7.6).
 
-12. **The optional device-lock enrollment flow and its copy**, including the sentence at the moment of opting
+13. **The optional device-lock enrollment flow and its copy**, including the sentence at the moment of opting
     in: *this is the only copy, and we cannot open it for you either* (§7.2).
 
-13. **The provenance mode's interface** — where the settings toggle lives, and how the off switch surfaces
+14. **The provenance mode's interface** — where the settings toggle lives, and how the off switch surfaces
     while the mode is on (§5.7).
 
 **A design check rather than a decision:**
 
-14. **Does the local native cursor read as deliberately distinct from remote-caret decorations, in both
+15. **Does the local native cursor read as deliberately distinct from remote-caret decorations, in both
     themes** — rather than merely happening to differ (§5.5)?
 
 **An empirical question, worth confirming before anything relies on either answer:**
 
-15. **Is an installed PWA a separate storage context from browser tabs on the target platforms?** If it is, it
+16. **Is an installed PWA a separate storage context from browser tabs on the target platforms?** If it is, it
     is a separate *device* by this product's definition, with its own actor and its own local user slot.
 
 **Explicitly not open**, and listed because each has been mistaken for a live question at least once: whether

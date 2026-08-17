@@ -1357,7 +1357,7 @@ concurrently-created container.
 
 **Its one cheap window was passed deliberately, and this is recorded so the lapsed cost above is not mistaken for
 an oversight.** Costs 2 and 3 arise only where there is existing data to migrate and enumerate, so the change was
-at its cheapest before the first deployment, when the export/import cutover (§14.6) would have absorbed the
+at its cheapest before the first deployment, when the first-deployment cutover (§14.6) would have absorbed the
 migration for free. It was declined there on risk grounds: that release already carries the largest correctness
 risk in the client — replacing the persistence layer — and an unrelated schema change in the same diff trades a
 certain increase in risk for a saving on work that may never be done. After the cutover the change costs all four
@@ -2028,11 +2028,13 @@ hand on each device against a shared bearer token and a **plaintext** relay docu
 authorization lineage, and it occupies no supported configuration — it is multi-device sync with no account, which
 works because it has exactly one user who trusts every device on his own tailnet.
 
-**The plan is to export from the development installation and import into the first real deployment, and to treat that
-as the migration** rather than carrying a live document across. Then a versioning and upgrade story, built
-preventatively rather than at the first incompatible change.
+**The proposed cutover is to export from the development installation and import into the first real deployment, and
+to treat that as the migration** rather than carrying a live document across. It is not selected until §15 row 21
+decides whether the resulting system attribution is acceptable; if it is not, the fidelity archive moves forward and
+carries the CRDT state instead. Then comes a versioning and upgrade story, built preventatively rather than at the
+first incompatible change.
 
-**One consequence has to be decided rather than discovered: the cutover re-attributes everything.** Import is a
+**One consequence has to be decided rather than discovered: the Markdown cutover re-attributes everything.** Import is a
 system-actor write and the export carries no `author` (§9.1), so every card written before the cutover arrives
 attributed to the system actor, and provenance mode (PRD §5.7) shows nothing for any of it. For a single-user
 development installation where the answer to *who wrote this* is always the same, that may be an acceptable price
@@ -2047,23 +2049,27 @@ direction for the dependency to run.
 
 1. **The import must not be gated by the freeze** (§4.5, §9.2), or a ten-day export silently loses everything older
    than three days.
-2. **If encryption-at-rest lands before any external user exists, that export/import _is_ its migration.** The
-   alternative is a one-time in-place conversion state machine — open the old plaintext store, mint `K0`, write and
-   verify the encrypted store, atomically select it, remove the plaintext store only after verification, resume safely
-   after interruption. That machine is well-understood and entirely avoidable, and it is only avoidable now.
+2. **If encryption-at-rest lands before any external user exists, the first-deployment cutover _is_ its migration,
+   whichever carrier row 21 selects.** The alternative is a one-time in-place conversion state machine — open the old
+   plaintext store, mint `K0`, write and verify the encrypted store, atomically select it, remove the plaintext store
+   only after verification, resume safely after interruption. That machine is well-understood and entirely avoidable,
+   and it is only avoidable now.
 
 ---
 
 ## 15. What this document has not selected
 
-Everything above is fixed. Everything here is open, and **the design reviews wait on it** (§13.11). Each row names
-what must be chosen and where the constraint on it lives.
+The constraints above are fixed; the selections enumerated here are open. **The design reviews wait on the
+selections in their scope, and the cutover waits separately on row 21** (§13.11, §14.6). Each row names what must be
+chosen and where the constraint on it lives.
 
-**The register splits in two, and the halves have different deadlines.** Rows **1, 2, 3, 13, 18** and part of 14
+**The register has three deadlines.** Rows **1, 2, 3, 13, 18** and part of 14
 are what a local encrypted store needs; they gate the storage work and are the scope of review **3a**, answered
-before the first deployment cutover. Everything else is what moving an envelope over a network needs; it gates the
-service and is the scope of review **3b**, answered before network sync ships. Closing the first half does not
-require the second, which is what lets encryption at rest land before the protocol is specified.
+before the first deployment cutover. Rows **4–12, 15–17 and 20**, plus the network-facing part of 14, are what moving
+an envelope over a network needs; they gate the service and are the scope of review **3b**, answered before network
+sync ships. Row **19** retains its own empirical triggers. Row **21** is the migration choice: it gates cutover but
+neither design review. Closing one scope does not require another, which is what lets encryption at rest land before
+the protocol is specified.
 
 | # | Unselected                                    | Constrained by                                                                                 |
 | - | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
@@ -2087,6 +2093,7 @@ require the second, which is what lets encryption at rest land before the protoc
 | 18 | Whether a persistent encrypted search index is needed at all | Measure the in-memory rebuild first (§6.2, §12)                                 |
 | 19 | Root-type day collections (§10.8)              | Deferred; one of its four costs has lapsed and should be re-counted                            |
 | 20 | Test vectors for every construction above      | §11.2; required before level 3 review                                                          |
+| 21 | First-deployment cutover attribution: accept system attribution, or bring the fidelity archive forward | §14.6; must be selected before cutover; adding authorship fields to Markdown is rejected (§9.1) |
 
 **Rows 2, 5 and 11 are the ones to close first.** Row 2 is the only new primitive and it is on the crash path. Row 5 is
 what makes revocation hold against a hostile relay, and the whole guarantee is currently specified-but-not-designed.

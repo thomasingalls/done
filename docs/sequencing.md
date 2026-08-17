@@ -192,16 +192,18 @@ holding, or shows a number the budget has been consciously revised to.
 
 Small, one-way, and named separately because it is where §2.1's deadline actually falls.
 
-Export from the development installation; import into the first real deployment; turn the old relay off. Then
-the versioning and upgrade story, built preventatively rather than at the first incompatible change.
+Use the carrier selected in §5.4 to move from the development installation into the first real deployment —
+Markdown export/import if system attribution is accepted, the fidelity archive otherwise — and turn the old relay
+off. Then the versioning and upgrade story, built preventatively rather than at the first incompatible change.
 
-Two things must be true before this runs. **Import must not be gated by the freeze**, or a ten-day export
-silently loses everything older than three days. And **Stage 1's on-disk shape must be final**, because this is
-the moment it stops being free to change.
+Two things must be true before this runs. **Stage 1's on-disk shape must be final**, because this is the moment it
+stops being free to change. And, if §5.4 selects Markdown as the carrier, **import must not be gated by the
+freeze**, or a ten-day export silently loses everything older than three days.
 
-**And one thing has to be decided rather than discovered: the cutover re-attributes the entire pre-deployment
-history to the system actor** (§5.4). The export carries card bodies and nothing the app tracked — no `id`, no
-`author`, no `origin`, no `createdAt` — and import is a system write.
+**And one thing has to be decided rather than discovered: the Markdown cutover re-attributes the entire
+pre-deployment history to the system actor** (§5.4). The export carries card bodies and nothing the app tracked —
+no `id`, no `author`, no `origin`, no `createdAt` — and import is a system write. **Stage 2 must not begin until
+the choice in §5.4 is recorded; it gates this cutover and neither design review.**
 
 **Exit:** daily use is on the new installation with encrypted stores; the development relay is off.
 
@@ -389,6 +391,9 @@ does not carry — but it is a decision, and Stage 2 is when it gets taken wheth
 say so at the time. But note the shape of the alternative before dismissing it: the fidelity archive is the
 artifact that carries CRDT state, TRD §9.3 already owes it, and the cutover is the one moment where having it
 early would pay for itself twice — once for attribution and once for a verified restore of the migration itself.
+
+**Status and gate:** open; recorded as TRD §15 row 21 and PRD §11 question 10. It blocks Stage 2 cutover and
+neither review engagement.
 
 ---
 
