@@ -199,6 +199,10 @@ Two things must be true before this runs. **Import must not be gated by the free
 silently loses everything older than three days. And **Stage 1's on-disk shape must be final**, because this is
 the moment it stops being free to change.
 
+**And one thing has to be decided rather than discovered: the cutover re-attributes the entire pre-deployment
+history to the system actor** (§5.4). The export carries card bodies and nothing the app tracked — no `id`, no
+`author`, no `origin`, no `createdAt` — and import is a system write.
+
 **Exit:** daily use is on the new installation with encrypted stores; the development relay is off.
 
 ### 3.4 Stage 3 — retrieval, brought forward
@@ -305,10 +309,10 @@ Stage 2 cannot run.
 
 ---
 
-## 5. Three decisions, taken
+## 5. Decisions
 
-These were the author's to settle and are settled. The stages above already reflect them; this section records
-what was decided and what each one now binds.
+§5.1–§5.3 were the author's to settle and are settled; the stages above already reflect them. **§5.4 is open**,
+and surfaced after the other three while confirming what the export format actually carries.
 
 ### 5.1 *Ships* means someone else's data — decided
 
@@ -365,6 +369,27 @@ decision is effectively final unless one of its triggers fires: the reconstructe
 real use, or something else needing the day map to stop being a concurrently-created container. TRD §10.8 now
 records the pass, so a future reader who notices the lapsed cost finds the reason rather than an oversight.
 
+### 5.4 What happens to attribution at the cutover — open
+
+The export carries card **bodies** and nothing the app tracked. `readDayContent` maps a day's collections through
+`cardBody`, so `id`, `author`, `origin` and `createdAt` are all absent, and import is a **system-actor** write
+(TRD §9.1). **So every card written before the cutover arrives attributed to the system actor**, and provenance
+mode shows nothing for any of it.
+
+This is not a defect in the export — plain Markdown is the escape format and identity is exactly what plain text
+does not carry — but it is a decision, and Stage 2 is when it gets taken whether or not anyone notices.
+
+| Option                                              | Cost                                                                                 |
+| --------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| **Accept it.** Pre-cutover history reads as system-written | Provenance mode is blank before the cutover, permanently                        |
+| Migrate through the fidelity archive instead        | Pulls a Stage 5 item into Stage 2; the only route that carries identity              |
+| Add `author` to the day files                       | **Rejected.** TRD §4.6 removed hidden per-item identity syntax from the format once already |
+
+**Suggested: accept it**, for a single-user development installation where *who wrote this* has one answer, and
+say so at the time. But note the shape of the alternative before dismissing it: the fidelity archive is the
+artifact that carries CRDT state, TRD §9.3 already owes it, and the cutover is the one moment where having it
+early would pay for itself twice — once for attribution and once for a verified restore of the migration itself.
+
 ---
 
 ## 6. Deferred, with triggers
@@ -418,7 +443,10 @@ One per stage — the thing that says it is going wrong before the exit criteria
 - **Stage 3 might not fill the hole.** If the review comes back quickly, retrieval is half-built when Stage 4
   wants to start. That is a good problem and the work is not wasted — but the plan is presenting a convenience
   as though it were a fit, and it should be read as the former.
-- **§2.1's "free before, expensive after" is a simplification.** It is free only if the export → import path is
-  genuinely lossless for everything the author cares about, which is TRD §11.3 test 3 and is currently unbuilt.
-  If that path turns out to lose something, Stage 1's deadline argument weakens and the migration state machine
-  comes back into scope.
+- **§2.1's "free before, expensive after" was stated too loosely, and the correction is worth keeping.** An
+  earlier draft made it conditional on the export → import path being "genuinely lossless", as though that were
+  an open empirical question. It is not: the path's losses are known and enumerable (TRD §9.1), and *lossless*
+  was doing two jobs. **Byte-identical round-tripping is a format guarantee, required and testable.
+  Workspace-preserving is a different claim and is false** — `id`, `author`, `origin` and `createdAt` do not
+  survive. So §2.1's argument holds for everything on-disk-shaped, and what is genuinely open is the narrower
+  question in §5.4: whether losing those four fields at the cutover is acceptable.

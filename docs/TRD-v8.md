@@ -1150,8 +1150,25 @@ written as a markdown list item — first line after `- `, the rest indented —
 lines at column 0 whatever a card holds. The alternative, forbidding blank lines inside cards, would make the
 storage format depend on the split threshold, which the PRD calls a tunable.
 
-**`Card.author` is not in the export.** That is deliberate and has a consequence recorded elsewhere: exporting
-does not discharge an attribution claim, because the workspace keeps making it (§13.7).
+**What the format carries is what the user wrote, and nothing the app tracked.** `readDayContent` maps a day's
+collections through `cardBody`, so a day file holds card **bodies**, in section order, and the date comes from the
+filename. Four fields are therefore absent from every ordinary card: **`id`, `author`, `origin` and `createdAt`.**
+
+That is the format doing its job rather than a defect, and each omission has a consequence worth naming once:
+
+| Absent      | Consequence                                                                                            |
+| ----------- | -------------------------------------------------------------------------------------------------------- |
+| `id`        | Import is not idempotent and cannot merge into a populated workspace (§9.2)                            |
+| `author`    | Imported content is a **system-actor** write; pre-import authorship is not recoverable from the export |
+| `origin`    | Item provenance — which master line a card came from — does not survive                                |
+| `createdAt` | Reconstructed Done order (§4.9) restarts from import time; visible order survives because file order does |
+
+**`recovery.md` is the one exception and is not a loophole.** It prints each retained card's id and last-known
+location as prose, for a human reading a recovery file. It is not a parseable identity field and import must not
+treat it as one.
+
+**Exporting does not discharge an attribution claim**, because the workspace keeps making it after the export is
+written (§13.7).
 
 ### 9.2 Import
 
@@ -1172,6 +1189,14 @@ export → import → export must be byte-identical.
    keeps merging into a populated workspace a separate project — days collide by construction because entries are
    keyed by date, and nothing distinguishes re-importing the same file from importing new content, so import is not
    idempotent and would duplicate on every repeat.
+
+**Two claims about losslessness are true and one is not, and they are easy to run together.** *Export → import →
+export is byte-identical* is a **format** guarantee: required, testable, and about the bytes. *Export → import
+restores the workspace* is **false and knowably so**: the four fields in §9.1 do not survive, and no amount of
+testing the round trip will surface that, because the round trip is between two files rather than between two
+workspaces.
+
+So the honest statement of what import restores is: **everything the user wrote, and nothing the app tracked.**
 
 **Must not happen.** No import into a populated workspace until identity survives the format. No silent truncation
 at the freeze or the cap.
@@ -2007,7 +2032,18 @@ works because it has exactly one user who trusts every device on his own tailnet
 as the migration** rather than carrying a live document across. Then a versioning and upgrade story, built
 preventatively rather than at the first incompatible change.
 
-**Two consequences, and the second is a sequencing win available in one direction only:**
+**One consequence has to be decided rather than discovered: the cutover re-attributes everything.** Import is a
+system-actor write and the export carries no `author` (§9.1), so every card written before the cutover arrives
+attributed to the system actor, and provenance mode (PRD §5.7) shows nothing for any of it. For a single-user
+development installation where the answer to *who wrote this* is always the same, that may be an acceptable price
+for using the escape format as the migration path; it is not something to find out afterwards. The alternative is
+to bring the fidelity archive (§9.3) forward and migrate through **it** instead, since CRDT state is what carries
+identity and attribution — which costs a continuity item early and is the only route that does not put metadata
+into the markdown. Adding `author` to the day files is rejected on §4.6's grounds: the format has already had
+hidden per-item identity syntax removed once, and putting it back to serve a one-off migration is the wrong
+direction for the dependency to run.
+
+**Two further consequences, and the second is a sequencing win available in one direction only:**
 
 1. **The import must not be gated by the freeze** (§4.5, §9.2), or a ten-day export silently loses everything older
    than three days.
