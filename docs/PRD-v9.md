@@ -6,7 +6,7 @@ in full once reviewed.
 **Date:** 2026-08-17
 **Audience:** the author, and any agent implementing or reviewing one part of this without reading
 the rest.
-**Companion to:** [TRD.md](./TRD.md)
+**Companion to:** [TRD-v8.md](./TRD-v8.md)
 
 ---
 
