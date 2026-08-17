@@ -220,7 +220,7 @@ much of Goals' unbuilt projections (focus, folding, archive) as earns its place.
 **The PRD's phase numbers are a statement about what matters, not a schedule.** Doing this earlier reorders no
 priorities; it fills time that would otherwise be spent waiting. The index is in memory, rebuilt lazily off the
 cold-start path, and measurement of that rebuild is what later decides whether a persistent encrypted index is
-needed at all (TRD §15 row 18).
+needed at all (TRD §15 row 18). **That later empirical choice gates neither review 3a nor Stage 2 cutover.**
 
 ### 3.5 Stage 4 — the service
 
@@ -347,7 +347,8 @@ specifically, and it ships in Stage 1 — long before network sync. Holding Stag
 forfeit the migration saving Stage 1 exists to capture (§2.1).
 
 **What review 3a covers:** the encrypted record format, the local half of the key hierarchy, and the
-synchronous journal AEAD with its nonce discipline. TRD §15 rows 1, 2, 3, 13 and 18.
+synchronous journal AEAD with its nonce discipline. TRD §15 rows 1, 2, 3 and 13, plus the storage-facing part of
+row 14. Row 18 is deliberately absent: it follows measurement in Stage 3 and gates neither this review nor cutover.
 
 **What it gates:** cutover, not Stage 1. Stage 1 is implemented while the review of its design is in flight. A
 defect found then costs a rework; the same defect found after Stage 2 has written a real deployment's data

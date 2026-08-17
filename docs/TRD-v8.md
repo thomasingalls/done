@@ -1918,13 +1918,14 @@ audience sits between the two.
 journal AEAD is the only new primitive in the plan (§10.10) and it lands with the local store, so one combined
 review would either arrive too late to protect it or hold the storage work until the protocol was specified.
 
-- **3a — storage and journal**, covering §15 rows 1, 2, 3, 13 and 18. Answered **before the first deployment
-  cutover** (§14.6), not before the storage work begins: a defect found during implementation costs a rework,
+- **3a — storage and journal**, covering §15 rows 1, 2, 3, 13 and the storage-facing part of 14. Answered
+  **before the first deployment cutover** (§14.6), not before the storage work begins: a defect found during implementation costs a rework,
   whereas the same defect found after cutover has written a real deployment's data under a broken construction,
   and a nonce-reuse fault is retroactive.
-- **3b — the protocol**, covering the rest of §15. Answered **before network sync ships.**
+- **3b — the protocol**, covering §15 rows 4–12, 15–17 and 20, plus the network-facing part of 14. Answered
+  **before network sync ships.** Rows 18, 19 and 21 belong to neither review (§15).
 
-**Both wait on their half of §15 being closed.** Booking a design review of architecture alone buys an opinion about
+**Both wait on their scope in §15 being closed.** Booking a design review of architecture alone buys an opinion about
 a sketch; the reviewer needs concrete state, envelopes, rotation, finalization and test vectors. That sequencing is
 the main reason §15 exists as a list rather than as prose.
 
@@ -2070,13 +2071,13 @@ The constraints above are fixed; the selections enumerated here are open. **The 
 selections in their scope, and the cutover waits separately on row 21** (§13.11, §14.6). Each row names what must be
 chosen and where the constraint on it lives.
 
-**The register has three deadlines.** Rows **1, 2, 3, 13, 18** and part of 14
-are what a local encrypted store needs; they gate the storage work and are the scope of review **3a**, answered
+**The register has two review scopes and two independent scopes.** Rows **1, 2, 3 and 13**, plus the storage-facing
+part of 14, are what a local encrypted store needs; they gate the storage work and are the scope of review **3a**, answered
 before the first deployment cutover. Rows **4–12, 15–17 and 20**, plus the network-facing part of 14, are what moving
 an envelope over a network needs; they gate the service and are the scope of review **3b**, answered before network
-sync ships. Row **19** retains its own empirical triggers. Row **21** is the migration choice: it gates cutover but
-neither design review. Closing one scope does not require another, which is what lets encryption at rest land before
-the protocol is specified.
+sync ships. Rows **18 and 19** retain their own empirical triggers and gate neither review nor cutover. Row **21** is
+the migration choice: it gates cutover but neither design review. Closing one scope does not require another, which
+is what lets encryption at rest land before the protocol is specified.
 
 | # | Unselected                                    | Constrained by                                                                                 |
 | - | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
@@ -2097,7 +2098,7 @@ the protocol is specified.
 | 15 | Interrupted-rotation and downgrade behaviour   | Must fail closed without changing the confidentiality promise (§11.2 test 11)                  |
 | 16 | Hosted-content retention duration after a lapse | One number bounds both resume and total-device-loss recovery (PRD §6.10)                      |
 | 17 | Which web-security baseline profile and version | §10.9, §13.11 level 2                                                                         |
-| 18 | Whether a persistent encrypted search index is needed at all | Measure the in-memory rebuild first (§6.2, §12)                                 |
+| 18 | Whether a persistent encrypted search index is needed at all | Deferred; gates neither review nor cutover; measure the in-memory rebuild first (§6.2, §12) |
 | 19 | Root-type day collections (§10.8)              | Deferred; one of its four costs has lapsed and should be re-counted                            |
 | 20 | Test vectors for every construction above      | §11.2; required before level 3 review                                                          |
 | 21 | First-deployment cutover attribution: accept system attribution, or bring the fidelity archive forward | §14.6; must be selected before cutover; adding authorship fields to Markdown is rejected (§9.1) |

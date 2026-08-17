@@ -2708,7 +2708,8 @@ no browser engine currently supplies that transparently — row-level security i
 encryption, column encryption produces ciphertext ordinary full-text indexing cannot index, and the available
 browser SQLite options either document no encrypted persistence, label it experimental, or gate it behind a
 commercial extension. Measure the in-memory rebuild and add a persistent encrypted representation only if
-measurement demands it.
+measurement demands it. **That empirical decision gates neither the first deployment nor the storage-and-journal
+review.**
 
 **Phase 5 — deferred: advisory LLM assistance.** Scope-checking Next for project-shaped items. Out of scope
 until the above are in daily use, and it must remain advisory — never blocking, never rewriting user text.
