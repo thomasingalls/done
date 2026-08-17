@@ -2250,8 +2250,19 @@ from hostile script served at that legitimate origin.
 
 **Levels 1–3 before network sync ships. Level 5 live from the day it ships. Level 4 on a stated trigger.**
 
+**"Ships" means the first deployment that carries data belonging to anyone but the author** — a deliberately
+bounded test audience included — **or any public description of the security properties.** The author
+synchronizing his own devices through his own service is development and precedes every gate. This is a
+narrower boundary than §7.11's as-built data review, which binds later, at *wider* availability; a bounded test
+audience sits between the two.
+
 - **Before sync ships:** the project-owned threat model and conformance tests; a recorded, versioned
   web-security baseline profile; and an **independent protocol design review**.
+- **Level 3 is two engagements**, because encryption at rest ships well before network sync and the synchronous
+  journal AEAD is the only new construction in the plan. A narrow **storage and journal review** is answered
+  before the first deployment writes real data under that construction; the **protocol review** is answered
+  before sync ships. One combined review would either arrive too late to protect the storage work or hold it
+  until the protocol was specified.
 - **From the day sync ships:** the disclosure and response program. A vulnerability-reporting path that does
   not exist when the first report arrives is the cheapest possible thing to get wrong.
 - **Level 4 is required before either of two triggers:** the phrase *end-to-end encrypted* appearing in

@@ -1330,6 +1330,14 @@ concurrently get the same logical type and their contents merge.
 reconstructed Done order is visibly wrong in real use, or something else needs the day map to stop being a
 concurrently-created container.
 
+**Its one cheap window was passed deliberately, and this is recorded so the lapsed cost above is not mistaken for
+an oversight.** Costs 2 and 3 arise only where there is existing data to migrate and enumerate, so the change was
+at its cheapest before the first deployment, when the export/import cutover (§14.6) would have absorbed the
+migration for free. It was declined there on risk grounds: that release already carries the largest correctness
+risk in the client — replacing the persistence layer — and an unrelated schema change in the same diff trades a
+certain increase in risk for a saving on work that may never be done. After the cutover the change costs all four
+of its costs, permanently, and only the triggers above should reopen it.
+
 ### 10.9 The cryptographic boundary is a web origin
 
 **Same-origin code is inside the end-to-end boundary**, and no key-storage choice changes that. A passkey is
@@ -1347,9 +1355,10 @@ baseline covers, and they are a gate before sync ships (§13.11).
 
 Everything in §13 composes reviewed constructions except one: the **synchronous AEAD** for the crash journal
 (§6.1). It is the only place the design adds a primitive rather than selecting one, it sits on the path whose whole
-purpose is surviving a page kill, and its nonce discipline has to survive the same kill. The independent design
-review must cover it specifically, and the latency benchmark on a low-end device is a build-failing budget rather
-than an aspiration (§12).
+purpose is surviving a page kill, and its nonce discipline has to survive the same kill. **Review 3a covers it
+specifically, and is answered before the first deployment cutover rather than before network sync** (§13.11) —
+because this construction lands with the local store, which is far earlier. The latency benchmark on a low-end
+device is a build-failing budget rather than an aspiration (§12).
 
 ---
 
@@ -1859,16 +1868,33 @@ Five cumulative levels; three gates.
 | ------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
 | 1. Project-owned threat model and tests    | This document's constraints, §11.2's vectors, negative tests, CI controls                          |
 | 2. Versioned web-security baseline         | A recorded profile and repeatable verification of every applicable requirement (§10.9)             |
-| 3. Independent protocol design review      | Authorization, key delivery, envelopes, epochs, rotation, recovery, downgrade — and the journal AEAD |
+| 3a. Independent storage and journal review | The encrypted record format, the local key hierarchy, and the synchronous journal AEAD with its nonce discipline (§6.1, §13.2, §13.3) |
+| 3b. Independent protocol design review     | Authorization, key delivery, envelopes, epochs, rotation, recovery, downgrade                       |
 | 4. Independent implementation audit        | The shipped client, relay and deployment against this contract                                     |
 | 5. Ongoing disclosure and response program | Reporting path, rotation/recovery runbook, dependency monitoring, incident drills                  |
 
 **Levels 1–3 before network sync ships. Level 5 live from the day it ships. Level 4 on a stated trigger** — the phrase
 *end-to-end encrypted* appearing in marketing copy, or the escrow add-on holding a real key.
 
-**Level 3 waits on §15 being closed.** Booking a design review of architecture alone buys an opinion about a sketch;
-the reviewer needs concrete state, envelopes, rotation, finalization and test vectors. That sequencing is the main
-reason §15 exists as a list rather than as prose.
+**"Ships" is defined, because it had to be.** It means the first deployment that carries data belonging to anyone
+but the author — a deliberately bounded test audience included — or any public description of the security
+properties. **The author synchronizing his own devices through his own service is development and precedes every
+gate.** PRD §7.11's as-built data review is a separate and later gate, at wider availability, so a bounded test
+audience sits between the two.
+
+**Level 3 is two engagements with different deadlines, because encryption at rest ships before network sync.** The
+journal AEAD is the only new primitive in the plan (§10.10) and it lands with the local store, so one combined
+review would either arrive too late to protect it or hold the storage work until the protocol was specified.
+
+- **3a — storage and journal**, covering §15 rows 1, 2, 3, 13 and 18. Answered **before the first deployment
+  cutover** (§14.6), not before the storage work begins: a defect found during implementation costs a rework,
+  whereas the same defect found after cutover has written a real deployment's data under a broken construction,
+  and a nonce-reuse fault is retroactive.
+- **3b — the protocol**, covering the rest of §15. Answered **before network sync ships.**
+
+**Both wait on their half of §15 being closed.** Booking a design review of architecture alone buys an opinion about
+a sketch; the reviewer needs concrete state, envelopes, rotation, finalization and test vectors. That sequencing is
+the main reason §15 exists as a list rather than as prose.
 
 ---
 
@@ -1994,8 +2020,14 @@ preventatively rather than at the first incompatible change.
 
 ## 15. What this document has not selected
 
-Everything above is fixed. Everything here is open, and **level 3 review waits on it** (§13.11). Each row names what
-must be chosen and where the constraint on it lives.
+Everything above is fixed. Everything here is open, and **the design reviews wait on it** (§13.11). Each row names
+what must be chosen and where the constraint on it lives.
+
+**The register splits in two, and the halves have different deadlines.** Rows **1, 2, 3, 13, 18** and part of 14
+are what a local encrypted store needs; they gate the storage work and are the scope of review **3a**, answered
+before the first deployment cutover. Everything else is what moving an envelope over a network needs; it gates the
+service and is the scope of review **3b**, answered before network sync ships. Closing the first half does not
+require the second, which is what lets encryption at rest land before the protocol is specified.
 
 | # | Unselected                                    | Constrained by                                                                                 |
 | - | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |

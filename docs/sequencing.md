@@ -1,6 +1,7 @@
 # done — Implementation Sequencing
 
-**Status:** Suggested, not decided. A proposal for the order in which TRD v8's requirements get built.
+**Status:** The ordering is a proposal. **The three decisions in §5 are taken**, and the stages below already
+reflect them.
 **Date:** 2026-08-17
 **Companion to:** [TRD-v8.md](./TRD-v8.md), [PRD-v9.md](./PRD-v9.md)
 
@@ -12,8 +13,10 @@
 has to exist before what, where the order is forced rather than chosen, and where waiting costs more than
 working. There is one place where the two disagree, and §3.4 argues for taking the disagreement.
 
-**Nothing here is a decision.** Three sequencing questions are genuinely the author's; they are collected in
-§5 with a suggested answer each, rather than assumed silently.
+**The ordering is not a decision; §5's three answers are.** Everything except §5 is a proposal about sequence.
+§5 records three questions that were the author's to settle, and their answers are now load-bearing: they fix
+what *ships* means, split the design review in two, and consciously pass one deferred change's only cheap
+window.
 
 **No durations.** There is no basis for any, and inventing them would make an ordering look like a schedule.
 What this asserts is sequence and dependency.
@@ -90,10 +93,11 @@ needed to move an envelope over a network.**
 | 1, 2, 3, 13, 18, and part of 14           | Local encryption at rest      | Stage 1  |
 | 4–12, 15, 16, 17, 19, 20                  | The service and the wire      | Stage 4  |
 
-**That split has a consequence.** The synchronous journal AEAD is row 2, it is the only new primitive in the
-plan (TRD §10.10), and it ships in Stage 1 — well before network sync. So "levels 1–3 before network sync
-ships" does not cover the one construction the review most needs to see, at the time it lands. §5.2 is that
-question.
+**That split had a consequence, and §5.2 has resolved it.** The synchronous journal AEAD is row 2, it is the
+only new primitive in the plan (TRD §10.10), and it ships in Stage 1 — well before network sync. "Levels 1–3
+before network sync ships" therefore did not cover the one construction the review most needs to see, at the
+time it lands. **The review is now split in two**: a narrow storage-and-journal review answered before Stage 2,
+and the full protocol review answered before Stage 4.
 
 ### 2.4 What is genuinely independent
 
@@ -136,10 +140,22 @@ harness. TRD §12 already names cold start as the budget at risk, since it will 
 unseal and per-record decryption. **Without a recorded baseline, a regression from the encrypted store is both
 invisible and unattributable**, and the budget conversation afterwards has nothing to argue from.
 
-**Book the design review.** Lead time is the constraint, not readiness.
+**Book both design reviews** (§5.2). Lead time is the constraint, not readiness, and there are now two
+engagements with different scopes and different deadlines:
 
-**Exit:** rows 1–3 selected with test vectors; a latency harness with recorded plaintext numbers; a reviewer
-engaged and a date held.
+| Review                          | Scope                                                                        | Answered before |
+| ------------------------------- | ------------------------------------------------------------------------------ | --------------- |
+| **Storage and journal**         | The record format, the key hierarchy's local half, and the synchronous journal AEAD with its nonce discipline | **Stage 2**     |
+| **Protocol**                    | Authorization, key delivery, envelopes, epochs, rotation, recovery, downgrade | **Stage 4**     |
+
+The storage review reads the construction selected here, so it can be booked now and answered while Stage 1 is
+being implemented. It gates **cutover** rather than Stage 1 itself: a defect found during Stage 1 costs a
+rework, whereas the same defect found after Stage 2 has written the first deployment's data under a broken
+construction — and a nonce-reuse fault is retroactive, so ciphertext already written stays broken. The author's
+own development data inside Stage 1 is the accepted exposure.
+
+**Exit:** rows 1–3 selected with test vectors; a latency harness with recorded plaintext numbers; **both**
+reviewers engaged, with the storage review's date inside Stage 1.
 
 ### 3.2 Stage 1 — everything that changes what is on disk
 
@@ -225,6 +241,12 @@ whole point.
 **Neither milestone is a ship boundary.** A device list that cannot revoke is worse than no device list, and
 revocation is not honest until 8.
 
+**And neither waits on the protocol review, because §5.1 has defined what *ships* means.** The author
+synchronizing his own devices through his own service is development. The gate binds at the first byte of
+anyone else's data — a bounded test audience included — and at any public description of the security
+properties. So milestones 5 and 6 are reached, and dogfooded, while the review is still out; what waits for the
+answer is exposing another person to it.
+
 **One reuse worth planning for.** `test/replicas.ts` already builds a fleet around a relay hub that holds a
 replica of its own. TRD §11.2's hostile-relay tests need exactly that shape with the relay able to misbehave —
 withhold, reorder, deliver late. Extending `relayNetwork()` is far cheaper than a second harness.
@@ -246,68 +268,102 @@ buildability.
 
 ### 3.7 Continuous — assurance
 
-| Level                              | When                                                                          |
-| ---------------------------------- | -------------------------------------------------------------------------------- |
-| 1 — threat model, conformance tests | Written alongside Stages 1 and 4; the tests are TRD §11                       |
-| 2 — web-security baseline           | Profile selected in Now; verified before Stage 4 ships                        |
-| 3 — protocol design review          | Booked in Now, in flight through Stage 3, answered before Stage 4 ships       |
-| 5 — disclosure and response program | Live the day Stage 4 ships. A reporting path that does not exist when the first report arrives is the cheapest thing to get wrong |
-| 4 — implementation audit            | On trigger: *end-to-end encrypted* in marketing copy, or the escrow add-on holding a real key |
+**"Ships" means the first deployment that carries data belonging to anyone but the author** (§5.1) — a bounded
+test audience counts — **or any public description of the security properties.** The author's own multi-device
+dogfooding is development and precedes every gate below. The as-built data review is a separate and later gate,
+at wider availability (PRD §7.11).
+
+| Level                                     | When                                                                          |
+| ----------------------------------------- | -------------------------------------------------------------------------------- |
+| 1 — threat model, conformance tests       | Written alongside Stages 1 and 4; the tests are TRD §11                       |
+| 2 — web-security baseline                 | Profile selected in Now; verified before Stage 4 ships                        |
+| **3a — storage and journal design review** | **Booked in Now, in flight through Stage 1, answered before Stage 2** (§5.2)  |
+| 3b — protocol design review               | Booked in Now, in flight through Stage 3, answered before Stage 4 ships       |
+| 5 — disclosure and response program       | Live the day Stage 4 ships. A reporting path that does not exist when the first report arrives is the cheapest thing to get wrong |
+| 4 — implementation audit                  | On trigger: *end-to-end encrypted* in marketing copy, or the escrow add-on holding a real key |
 
 ---
 
 ## 4. The critical path
 
 ```
-Now ── select TRD §15 storage half ──▶ Stage 1 ──▶ Stage 2 ──────────────┐
-                                     (largest client risk)            │
-                                                                      ├──▶ Stage 4 ──▶ Stage 5
-Now ── draft TRD §15 network half ──▶ book review ──▶ review in flight ──▶ answered
-                                                        │
-                                                   Stage 3 runs here
+Now ─ select TRD §15 storage half ─▶ Stage 1 ────────────▶ Stage 2 ─────────┐
+      book review 3a ──────────────▶ 3a in flight ─▶ answered ┘             │
+                                                                            ├──▶ Stage 4 ──▶ Stage 5
+Now ─ draft TRD §15 network half ─▶ book review 3b ─▶ 3b in flight ─▶ answered
+                                                          │
+                                                    Stage 3 runs here
 ```
 
-The path is **storage selections → on-disk shape → cutover → service → continuity**, with the review running
-beside it and gating Stage 4's ship.
+The path is **storage selections → on-disk shape → cutover → service → continuity**. Each review runs beside
+the stage it reviews and gates the stage *after* it: 3a gates cutover, 3b gates the service.
 
-**If the review is booked late it becomes the critical path**, and every other thing waits on it. That single
-failure mode is what this ordering exists to avoid, and it is avoided in the first week or not at all.
+**If either review is booked late it becomes the critical path**, and everything else waits on it. That single
+failure mode is what this ordering exists to avoid, and it is avoided in the first week or not at all. Review 3a
+is the easier one to leave late, because Stage 1 does not feel like it is waiting on anything — right up until
+Stage 2 cannot run.
 
 ---
 
-## 5. Three decisions this document cannot take
+## 5. Three decisions, taken
 
-### 5.1 Does the assurance gate bind the author's own dogfooding?
+These were the author's to settle and are settled. The stages above already reflect them; this section records
+what was decided and what each one now binds.
 
-"Levels 1–3 before network sync ships" needs a definition of *ships*. The author syncing his own two devices
-through his own service is not obviously it — the current development installation already does multi-device
-sync with no account and no encryption at all.
+### 5.1 *Ships* means someone else's data — decided
 
-Deciding this late means deciding it under schedule pressure, which is the condition under which it gets
-decided wrongly.
+> **The assurance gate binds at the first deployment that carries data belonging to anyone but the author,
+> a deliberately bounded test audience included, and at any public description of the security properties.
+> The author synchronizing his own devices through his own service is development, and precedes every gate.**
 
-**Suggested:** the gate binds anything that carries another person's data or is described publicly.
-Dogfooding is Stage 4's internal milestone and does not wait. Write the answer down either way.
+The question was what "levels 1–3 before network sync ships" means, since the current development installation
+already does multi-device sync with no account and no encryption at all.
 
-### 5.2 Is the design review split, or does storage encryption wait for it?
+**What it binds.** Levels 1–3 at the first byte of anyone else's data. Level 5 — the disclosure path — from the
+same moment, because a reporting path that does not exist when the first report arrives is the cheapest thing
+to get wrong. Level 4 on its own two triggers.
 
-The journal AEAD is the only new primitive in the plan, TRD §10.10 says the review must cover it specifically,
-and it ships in Stage 1 — long before network sync. Two options: a **narrow early review** of the storage and
-journal construction plus the full protocol review later, or **hold Stage 1** until one review covers both.
+**What it does not bind.** Stage 4's internal milestones (§3.5). First ciphertext round trip and two devices
+converging are reached and dogfooded while review 3b is out.
 
-**Suggested: split it.** Holding Stage 1 forfeits the migration saving that Stage 1 exists to capture (§2.1),
-and a storage construction is a much smaller review than a protocol. The cost is buying two engagements rather
-than one.
+**The neighbouring gate is deliberately later and should not be collapsed into this one.** PRD §7.11's as-built
+data review binds at *wider availability*, beyond development or a bounded test audience. So the order is:
+dogfooding → levels 1–3 and 5 → bounded audience → as-built review → wider availability. Two gates, two
+audiences, and a bounded test audience sits between them.
 
-### 5.3 Does the root-type change (TRD §10.8) go into Stage 1?
+### 5.2 The design review is split in two — decided
 
-It is deferred and its trigger conditions have not fired. But two of its four costs are paid only if there is
-data to migrate, and a third has already lapsed — so Stage 1 is the cheapest this will ever be, and after
-Stage 2 it is a schema migration forever.
+> **A narrow storage-and-journal review, answered before Stage 2. The full protocol review, answered before
+> Stage 4. Two engagements.**
 
-**Suggested: no**, on risk grounds. Stage 1 already carries the largest correctness risk in the client, and
-this adds an unrelated schema change to the same diff. But **the deadline should be a conscious pass rather
-than an oversight**, which is why it is here rather than only in §6.
+The journal AEAD is the only new primitive in the plan, TRD §10.10 requires the review to cover it
+specifically, and it ships in Stage 1 — long before network sync. Holding Stage 1 for one combined review would
+forfeit the migration saving Stage 1 exists to capture (§2.1).
+
+**What review 3a covers:** the encrypted record format, the local half of the key hierarchy, and the
+synchronous journal AEAD with its nonce discipline. TRD §15 rows 1, 2, 3, 13 and 18.
+
+**What it gates:** cutover, not Stage 1. Stage 1 is implemented while the review of its design is in flight. A
+defect found then costs a rework; the same defect found after Stage 2 has written a real deployment's data
+under a broken construction, and a nonce-reuse fault is retroactive.
+
+**The cost, accepted:** two engagements rather than one, and the author's own Stage 1 development data is
+exposed to whatever review 3a eventually finds.
+
+### 5.3 The root-type change does not go into Stage 1 — decided, as a conscious pass
+
+> **No. TRD §10.8 stays deferred on its existing trigger conditions, and its one cheap window is passed
+> deliberately rather than missed.**
+
+Two of its four costs are paid only if there is data to migrate and a third has already lapsed, so Stage 1 is
+the cheapest this will ever be. It is still declined, on risk grounds: Stage 1 already carries the largest
+correctness risk in the client, and adding an unrelated schema change to that diff trades a certain increase in
+risk for a saving on work that may never be done.
+
+**What this means afterwards.** From Stage 2 the change costs all four of its costs, permanently, and the
+decision is effectively final unless one of its triggers fires: the reconstructed Done order visibly wrong in
+real use, or something else needing the day map to stop being a concurrently-created container. TRD §10.8 now
+records the pass, so a future reader who notices the lapsed cost finds the reason rather than an oversight.
 
 ---
 
@@ -315,7 +371,7 @@ than an oversight**, which is why it is here rather than only in §6.
 
 | Item                              | Trigger                                                                                                     |
 | --------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Root-type day collections         | Reconstructed Done order visibly wrong in real use, or something else needs the day map to stop being a concurrently-created container. **Its cost changes permanently at Stage 2** (§5.3) |
+| Root-type day collections         | Reconstructed Done order visibly wrong in real use, or something else needs the day map to stop being a concurrently-created container. **Its cheap window was passed deliberately** (§5.3); from Stage 2 it costs all four of its costs, permanently |
 | Yjs v13 → v14                     | A stable v14 binding release. **Not during Stage 4** — the seam bounds imports, and Stage 4 adds Yjs coupling outside it (TRD §10.1) |
 | Persistent encrypted search index | Measurement of the in-memory rebuild demands it (TRD §6.2)                                                  |
 | Destructive compaction            | A replica-acknowledgement protocol — which also retires attribution claims and drops content-key generations, so it moves two boundaries (TRD §4.5, TRD §10.4) |
@@ -339,6 +395,8 @@ One per stage — the thing that says it is going wrong before the exit criteria
   diff, and the data-loss risk is entirely in the second one.
 - **Stage 1.** Tests are green and nobody has checked whether the fleet is running with `persist: true`. It
   defaults to false, and a green suite over a broken store is the exact shape of this stage's failure.
+- **Stage 1.** Review 3a has not been booked because Stage 1 "isn't waiting on it". It is not — Stage 2 is,
+  and by then the lead time is unrecoverable (§5.2).
 - **Stage 2.** Anything other than export → import is being considered for carrying the development
   installation across.
 - **Stage 4.** The relay is being *extended* rather than replaced. It holds a plaintext `Y.Doc`; extending it
