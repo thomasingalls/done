@@ -67,7 +67,7 @@ TRD §14.6 already makes this argument for one item. It applies to two more:
 | Change                                        | Before the deployment                                  | After                                        |
 | --------------------------------------------- | -------------------------------------------------------- | ---------------------------------------------- |
 | Store keyed by _(principal, workspace)_       | Free — a new install has nothing to rename              | A store-rename migration, run on open        |
-| Content encryption at rest                    | Free — export → import **is** the migration (TRD §14.6) | The in-place conversion state machine        |
+| Content encryption at rest                    | Free — the clean cutover **is** the migration, whichever carrier §5.4 selects | The in-place conversion state machine        |
 | Root-type day collections (TRD §10.8)         | Two of its four costs never arise                       | All of them, forever                         |
 
 **This is a deadline, not a priority.** None of these makes the product better for the author on the day it
