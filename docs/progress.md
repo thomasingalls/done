@@ -57,8 +57,9 @@ checked for staleness by `pnpm vectors:check`, which `pnpm check` now runs.
     run against WebCrypto on every invocation.
   - **Open:** Ed25519's availability is asserted, not verified — this project has no written browser support
     floor. It is first used in Stage 4, so the row records the gap rather than closing it by omission.
-- **Row 2 — the synchronous journal AEAD and its nonce discipline.** in flight — construction proposed with
-  vectors, in [selections/row-2-journal-aead.md](./selections/row-2-journal-aead.md).
+- **Row 2 — the synchronous journal AEAD and its nonce discipline.** in flight — construction selected with
+  vectors and folded, in [selections/row-2-journal-aead.md](./selections/row-2-journal-aead.md). **One
+  measurement outstanding, and it is the only thing in this slice with a physical lead time.**
   - **XChaCha20-Poly1305; 24 random bytes per record; no counter, no durable state.** The width is the
     point: a 96-bit nonce would also hold at this journal's volumes, and that is the objection to it — the
     guarantee would become a claim about application behaviour that a later change can silently invalidate,
@@ -66,10 +67,10 @@ checked for staleness by `pnpm vectors:check`, which `pnpm check` now runs.
   - **The vectors prove themselves.** `test/vectors/journal-aead.json` — the draft-irtf-cfrg-xchacha §A.3.1
     KAT, four composition vectors, six negatives. The generator round-trips every vector and asserts every
     negative fails, on each run, so a "must fail" list cannot quietly stop failing.
-  - **Two things before it closes.** The `< 1 ms p95` budget is specified on a **low-end device** and has
+  - **One thing before it closes.** The `< 1 ms p95` budget is specified on a **low-end device** and has
     only been measured on a Mac — 7.8 µs p95 at the 18-byte common case, so about 128× of margin, which is a
-    strong prior and not the measurement. And it is not yet folded into the TRD. **Sourcing a handset is the
-    only item in this slice with a physical lead time.**
+    strong prior and not the measurement. **TRD §12 now says so in the document itself**, so the gap is
+    disclosed to the reviewer whether or not a handset arrives first.
 - **Row 3 — the encrypted record and local key-envelope formats.** selected — construction with vectors, in
   [selections/row-3-record-format.md](./selections/row-3-record-format.md).
   - **Both formats, because they are one construction a level apart** — the envelope holds the key that derives
@@ -133,11 +134,10 @@ checked for staleness by `pnpm vectors:check`, which `pnpm check` now runs.
   - **Open:** the PRF availability floor is asserted, not verified — **the same gap row 1 recorded for
     Ed25519**, and it should be closed once for both rather than twice.
 
-_Exit: rows 1–3 selected, with test vectors._ **Met for 1 and 3**; row 2 has the two loose ends above.
-**The review's scope is the wider one** (TRD §15): 13 and the storage-facing half of 14 had to be closed by
-the 24th as well, even though Stage 1 does not wait on them. **Both are now met.** So every row in 3a's
-scope is selected except row 2's handset measurement, and **what is left before the 24th is the fold into
-the TRD** — see the last warning sign below.
+_Exit: rows 1–3 selected, with test vectors._ **Met**, and the wider scope the review actually reads
+(TRD §15) — 13 and the storage-facing half of 14 — **is met too, and folded into the TRD.** **Nothing in
+3a's scope is now outstanding except row 2's low-end-device measurement**, which is disclosed in TRD §12
+rather than pending silently.
 
 **Six things rows 1, 3, 13 and 14 turned up that are not selections.**
 
@@ -245,15 +245,14 @@ From [sequencing.md](./sequencing.md) §7 — the things that say it is going wr
   plaintext numbers are recorded.
 - ~~Review 3a has not been booked because Stage 1 "isn't waiting on it".~~ **Closed** — booked for the week
   of 2026-08-24.
-- **Five selections exist and none of them is in the TRD, and this is now the only thing left before the
-  24th.** Rows 1, 2, 3, 13 and 14 all sit in [selections/](./selections/) marked "not yet folded into the
-  TRD", so §15 still lists all twenty-one rows as unselected and a reviewer reading the TRD alone sees five
-  open questions beside a folder they were not pointed at. **The fold is one act for all five** and should
-  happen before the 24th rather than per row. Three things it has to carry beyond §15:
+- ~~Five selections exist and none of them is in the TRD.~~ **Closed** — all five are folded, and a reviewer
+  reading the TRD alone now sees the constructions rather than five open questions beside a folder they were
+  not pointed at. §15 is a register with a **Selected** half and an **Unselected** half; §13.10 carries the
+  suite instead of candidates. **Three things the fold had to carry beyond §15, all of them landed:**
   - §13.10's "Argon2id, or none" line is answered twice and differently — **none** for row 14's
-    service-held envelope, and **none again for row 13 but on a stronger argument**, since a local seal
-    makes guessing free rather than merely possible. §13.10's slot-verifier row is the one that survives.
-  - Row 14's invariant that **the code is generated and never user-chosen, user-extended or truncated**,
-    which is what both no-stretching decisions rest on.
-  - Row 13's **`CustodyRecord` at genesis**, which is a Stage 1 obligation rather than a §15 answer and so
-    belongs in §6.1 rather than §15 — the one part of the fold that changes what Stage 1 builds.
+    service-held envelope, and **none again for row 13 on a stronger argument**, since a local seal makes
+    guessing free rather than merely possible. §13.10's slot-verifier row is the one that survives.
+  - Row 14's invariant that **the code is generated and never user-chosen, user-extended or truncated**, in
+    §13.10 where both no-stretching decisions can point at it, and in PRD §7.6.
+  - Row 13's **custody record at genesis**, which is a Stage 1 obligation rather than a §15 answer and so
+    went into §6.1 — the one part of the fold that changes what Stage 1 builds.

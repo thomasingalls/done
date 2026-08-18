@@ -102,7 +102,7 @@ each review is in flight while the corresponding implementation happens rather t
 
 ### 2.3 TRD §15 has four scopes
 
-The twenty-one unselected rows are not one body of work. **Two scopes feed reviews; one is empirical; one is the
+The twenty-one rows are not one body of work. **Two scopes feed reviews; one is empirical; one is the
 cutover choice.**
 
 | Scope             | TRD §15 rows                                      | Needed for                            | Blocks                                      |

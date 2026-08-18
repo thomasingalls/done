@@ -13,6 +13,9 @@ pnpm dev:tailscale  # trusted HTTPS/WSS over MagicDNS; starts the whole stack
 pnpm build          # typecheck, bundle, and enforce the §12 budget
 pnpm lint           # oxlint with React, TypeScript, a11y, import, promise, and Vitest checks
 pnpm format         # oxfmt formatting check
+pnpm vectors        # regenerate the TRD §15 test vectors
+pnpm vectors:check  # fail if any vector file has drifted from its generator
+pnpm check          # typecheck, lint, format, vectors, unit and geometry tests
 pnpm test           # unit tests
 pnpm test:geometry  # layout, line-height and pixel-identity tests, needs a browser
 pnpm test:latency   # TRD §12's latency budgets, measured; not part of `pnpm check`
@@ -24,6 +27,18 @@ Playwright matrix has a real desktop browser profile (`Desktop Chrome`) and a
 mobile emulation profile (`Pixel 7`); it is not only a small viewport. Where a
 Chromium is already on disk and `pnpm exec playwright install` is not wanted,
 set `CHROMIUM_PATH` to it.
+
+`pnpm vectors` writes [`test/vectors/`](../test/vectors/) from the generators in
+[`scripts/`](../scripts/), one file per selected TRD §15 row. **The generators
+are the executable half of the selection documents** in
+[selections/](./selections/): each verifies itself on every run — round-tripping
+every vector, asserting every negative still fails to authenticate, and checking
+its published must-fail list against what it actually asserted — so the failure
+is loud rather than a file that quietly stops matching its own specification.
+`pnpm vectors:check` is the same run without the write, and it is part of
+`pnpm check`. **If it fails, regenerate rather than editing the JSON**: the file
+is output, and a hand-edited vector is a specification with no generator behind
+it.
 
 `pnpm test:latency` is a **separate Playwright config** and a separate
 discipline. It measures rather than asserts, so it runs one worker with no

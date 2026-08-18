@@ -1,6 +1,7 @@
 # Selection — TRD §15 row 14: recovery-code entropy, generation, step-up and confirmation
 
-**Status:** proposed, and not yet folded into the TRD. **Date:** 2026-08-18
+**Status:** selected, and folded into the TRD — the storage-facing half; §5's step-up
+construction is drafted for review 3b and is not folded. **Date:** 2026-08-18
 **Closes:** TRD §15 row 14, storage-facing part · **Scope of:** review 3a (storage and journal); the
 step-up construction in §5 is drafted here and belongs to review 3b
 **Constrained by:** TRD §13.8, §13.10, §13.2 · PRD §7.6, §7.7, §6.2 · **Stage:** [sequencing.md](../sequencing.md) §3.1

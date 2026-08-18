@@ -48,9 +48,9 @@ requirements it orders, and a requirement that cites a schedule has acquired a p
 **What this document does not do is select the cryptographic protocol.** PRD §7.12 makes an independent
 protocol design review a gate before network sync ships, and that review needs concrete state, envelopes,
 rotation, finalization and test vectors to be worth buying. §13 fixes the architecture, the roles, the
-negative constraints and the criteria; §13.10 lists candidate constructions **as candidates**; §15 is the
-register of everything still unselected. Filling §15 in and passing it to review is the work between this
-draft and an implementable one.
+negative constraints and the criteria; §13.10 carries the selected suite and the one role still a candidate;
+§15 is the selection register. **Its storage-facing scope is closed and its protocol scope is not**, so filling
+the rest in and passing it to review remains the work between this draft and an implementable one.
 
 ---
 
@@ -609,6 +609,13 @@ Constraints on it:
 **Two version numbers exist and must not be conflated.** `StoredRecord.v` versions the on-disk envelope;
 `meta.schemaVersion` versions the document tree. A change to either must not be read as a change to the other.
 
+**The concrete format is selected** (§15 row 3). AES-256-GCM under a domain-separated store subkey of `K_g`, with
+12 random nonce bytes per record. **Every cleartext field is in the associated data — `v`, `gen`, `seq` and `kind`,
+plus the principal and workspace ids** — and `kind` is why that matters rather than being thorough: IndexedDB holds
+a structured clone whose properties the load path trusts, a `state` record supersedes everything before it, and an
+editable `kind` is therefore a way to make the store delete its own history through its own trim path. **`seq` does
+not reset at trim**, because the nonce budget is argued from it.
+
 **The journal, and why it is the sharp edge.** Every update is first written synchronously to localStorage as one
 immutable, per-page, per-store journal entry. A reload replays those idempotent Yjs deltas. At the end of a short
 batching window the adapter writes every captured delta in one relaxed IndexedDB transaction, waits for its
@@ -639,7 +646,8 @@ Three constraints on that construction, and the third is the one that is easy to
    recorded can repeat after a crash, which for most AEADs is catastrophic — and this is precisely the path whose
    whole purpose is to survive crashes. Either use random nonces with a space large enough that collision is
    negligible without state, or derive a fresh journal subkey per page session so a repeated counter lands under
-   a different key. §13.10 names candidates; the review selects.
+   a different key. **Selected** (§15 row 2): XChaCha20-Poly1305 with 24 random bytes per record, so there is no
+   counter and no durable state for a crash to lose.
 
 **Start-up order changes, and this is a concrete consequence nothing upstream states.** Today `openLocalStore`
 constructs the provider and then replays the journal **synchronously**, before the IndexedDB load resolves.
@@ -650,6 +658,12 @@ Encrypted, the journal cannot be read without the journal subkey, which needs `K
 open key store → unseal K_g (and prompt, only if a device lock is enabled)
   → derive store + journal subkeys → replay journal → load content records → construct transport
 ```
+
+**The key store carries a custody record per slot, written at genesis.** On the default tier it says promptless and
+nothing reads it; it is what §13.3's device lock later moves. It is required from the first version that writes a
+key store, because a store whose tier is implied by what is present would need a migration over key material to
+gain an explicit one — the class of migration §14.6 exists to avoid. It also makes *this slot is on the default
+tier* something §11.1 can assert in both directions rather than an absence.
 
 Journal replay is no longer synchronous at open. Two consequences: the cold-start budget absorbs a key store
 read and an unseal before any content is available (§12), and the load-before-connect rule below gains a step in
@@ -1638,7 +1652,10 @@ says the budget cannot hold, the honest responses are fewer stored records (more
 revised budget — not moving verification onto a lazy path where it silently stops happening.
 
 **The journal budget is a correctness budget in disguise.** The synchronous AEAD runs inside a handler that must not
-return until the write has happened, so exceeding it does not make the app slow, it makes typing stutter.
+return until the write has happened, so exceeding it does not make the app slow, it makes typing stutter. **It is
+specified on a low-end device and has not been measured on one.** The selected primitive seals the measured
+common-case payload in 7.8 µs p95 on a development Mac, which is a strong prior and not the measurement this row
+asks for; see [performance.md](./performance.md).
 
 The lazily-loaded wasm sits outside the initial bundle budget; the app must be fully usable for writing before it
 arrives.
@@ -1648,7 +1665,7 @@ arrives.
 ## 13. Keys, credentials and authorization
 
 New in v8. This section fixes the architecture, the roles and the negative constraints. **It does not select the
-protocol** — §13.10 names candidates and §15 is the register of what is unselected.
+protocol** — §13.10 carries the suite that is selected and §15 is the register of what is not.
 
 ### 13.1 What is fixed before anything is chosen
 
@@ -1667,7 +1684,7 @@ Everything below is downstream of that, and any construction that violates it is
 | **Device / agent signing credential**      | Sign mutations as its authorized actor                                                                | Receive a content key merely because it can sign; change authorization                          |
 | **Device / agent wrapping credential**     | Unwrap content keys if read-capable                                                                   | Sign mutations, change authorization, represent an arbitrary actor                              |
 | **Local-custody key `L_local`**            | Open this slot's encrypted `K_g` envelopes on the default tier                                       | Sign, authenticate an account, unwrap `R_priv`, travel to another device                        |
-| **Optional device-lock custody**           | Replace promptless opening of those envelopes with a user-factor gate                                | Sign, authenticate an account, become a recovery factor implicitly                              |
+| **Optional device-lock custody `L_lock`**  | Replace promptless opening of those envelopes with a user-factor gate (§13.3)                        | Sign, authenticate an account, become a recovery factor implicitly, be opened by recovery       |
 | **Service authorization authority**        | Admit and revoke credentials, choose capabilities, sign epochs, finalize accepted sets               | Decrypt, sign a device's mutations, represent its actor, deliver a content key by authorization alone |
 | **Content-key generation `K_g`**           | Derive domain-separated subkeys for one workspace generation                                          | Admit or revoke anything; authorize its own distribution; be reused across stores or protocols  |
 | **Recovery public key `R_pub`**            | Wrap each `K_g` for recovery                                                                          | Unwrap any generation, authorize anything                                                       |
@@ -1702,8 +1719,31 @@ sealed under it. Opening a workspace briefly unseals those bytes and derives the
 recovery may use the same brief plaintext interval to create reader and `R_pub` wraps before erasing it.
 
 **With the optional device lock, factor-gated custody replaces the promptless handle.** No default handle capable of
-opening the envelopes remains. It is per device, PRF- or high-entropy-code-derived, and unlocks at cold start. It
-**strengthens custody of a key that already exists**; it is not the switch that turns encryption on.
+opening the envelopes remains. It unlocks at cold start, and it **strengthens custody of a key that already exists**;
+it is not the switch that turns encryption on.
+
+**The construction, selected** (§15 row 13). A **generated 125-bit code is always enrolled and is the root**; a
+WebAuthn PRF output, where the platform supplies one, is an **additional seal of the same key** rather than an
+alternative to it — §13.8's rule that PRF's optionality is not a product branch, applied a second time. A
+user-chosen passphrase is **rejected**: the seal sits in the profile beside the ciphertext it protects, so guessing
+is offline and unrateable for the attacker this feature exists to resist, and a browser origin has no rate-limiting
+anchor except the authenticator.
+
+**Factors seal a random `L_lock`, which takes `L_local`'s place in §6.1's key envelope** — same format, same AAD,
+different key. So adding, replacing or removing a factor is one 32-byte seal that moves no content and no content
+key. **The separation between §13.4's four factor roles lives inside the PRF evaluation input**, not in a derivation
+label applied afterwards: one evaluation and four labels would leave whoever holds that output holding all four keys.
+The input binds the role and the slot, so one assertion yields one slot's key for one role.
+
+**Enrollment reseals and then rotates.** `L_local` is non-extractable, so the lock cannot adopt it: enrollment
+generates `L_lock`, seals it under every factor, reseals each retained generation's envelope, and deletes `L_local`
+and swaps the envelopes **in one transaction** — the state that must never exist is no `L_local` and unresealed
+envelopes. **It then rotates the content key forward**, because resealing leaves `K_g` unchanged and a profile copy
+taken before enrollment would otherwise keep opening content written after it. Rotation is forward-only: history is
+not re-keyed, because the copy that motivates the rotation already holds it.
+
+**The custody record is written at genesis on the default tier**, saying promptless, and is read by nothing until a
+lock is enrolled. Adding it later would be a migration over the first deployment's key material.
 
 **What this buys and what it does not.** It defeats **file-level** exposure: an OS backup, a disk image, a synced
 profile directory, a forensic tool, a support person with filesystem access, freed blocks after deletion, and a
@@ -1711,9 +1751,15 @@ trivially-readable plaintext journal. It defeats **nothing at the code level**.
 
 **Failure.** Forgetting the device-lock factor loses this device's readable copy. At a never-admitted Local workspace
 whose last readable replica this is, that is total and final — accepted, on the same terms as the recovery code.
+**The disclosure at enrollment is therefore two texts, not one**, because the consequence has two sizes: at an account
+workspace the workspace survives and the device re-enrolls, and at Local there is no second copy anywhere.
+
+**The copy must not claim the lock is retroactive.** A backup or profile copy made before enrollment was made without
+it and stays readable; what rotation buys is everything written from that point on.
 
 **Must not happen.** `L_local` may not sign, authenticate an account, unwrap `R_priv`, or leave the device. No
-lifecycle event may materialize a plaintext store.
+lifecycle event may materialize a plaintext store. **Recovery may not open a locked slot**: a device whose factor is
+lost re-enrolls as a device, and a lock that `R_priv` can bypass is a preference rather than a lock.
 
 **Test.** §11.1, no plaintext at rest.
 
@@ -1872,7 +1918,14 @@ or its association with the current card.
 
 **`R_priv` is sealed 1-of-N, and a high-entropy code saved outside the enrolling device is the mandatory floor.**
 Every account has one; there is no account without one. Account creation requires the user to **re-enter it before the
-account exists**. Additional independent seals may be added — PRF-capable passkeys, preferably in more than one
+account exists**.
+
+**The code is selected** (§15 row 14): **125 bits, Crockford Base32, five groups of five, and no stretching at all.**
+The alphabet omits `I`, `L`, `O` and `U`, which is what lets the input field map `O` to `0` and `I`/`L` to `1`
+without collision — a correct transcription of a badly rendered code still opens the workspace. The envelope seals
+`R_priv` under HKDF-SHA-256 of the code with a fresh per-seal salt, so exactly one message is ever encrypted under
+that key and nonce reuse is structurally unreachable. **The no-stretching decision rests on the invariant in
+§13.10**: the code is generated at full width and is never user-chosen, user-extended or truncated. Additional independent seals may be added — PRF-capable passkeys, preferably in more than one
 ecosystem — and each is a complete path only if it remains available after loss of the device it protects.
 
 **No threshold, no quorum, no lockout when a threshold cannot be met.**
@@ -1921,25 +1974,44 @@ though it could protect it. Its honest handoff on a shared installation is expor
 **The verifier construction must resist offline guessing**, since it is checkable without the network by anyone
 holding the profile. It is an unselected field (§15).
 
-### 13.10 Candidate constructions — **not selected**
+### 13.10 The selected suite, and the one role still a candidate
 
-Listed so the design review has a starting point and so §15 has something concrete to close. **None of these is a
-decision.** The criteria matter more than the names: reviewed and widely implemented; available in browsers without a
-polyfill where possible; and no primitive reused across the asynchronous and synchronous paths.
+**Suite 1, selected as a whole** (§15 row 1). The criteria it was selected against still govern anything added to
+it: reviewed and widely implemented; available in browsers without a polyfill where possible; and **no primitive
+reused across the asynchronous and synchronous paths** (§13.2).
 
-| Role                                    | Candidate                                    | Why it is a candidate                                                             |
-| --------------------------------------- | -------------------------------------------- | ----------------------------------------------------------------------------------- |
-| Envelope and store AEAD                 | AES-256-GCM via WebCrypto                    | Native, hardware-accelerated, no dependency                                        |
-| **Synchronous journal AEAD**            | **A reviewed JS/WASM XChaCha20-Poly1305**    | 192-bit nonces make random nonces safe **without durable counter state**, which is the property §6.1 needs on a crash path |
-| Mutation signatures                     | Ed25519 via WebCrypto where available        | Small, fast, widely reviewed; fallback path needed where unavailable               |
-| Wrapping a key to a public key          | HPKE (RFC 9180)                              | Standard, reviewed, covers the `R_pub` and per-reader wrap cases uniformly         |
-| Subkey derivation                       | HKDF with explicit domain-separation labels  | Native; labels are the mechanism that keeps §13.2's separation real                |
-| Recovery-code stretching                | Argon2id, or none                            | A **generated** high-entropy code needs little stretching; a typed one does. Which applies depends on the code's entropy, so this is a genuine selection |
-| Slot verifier                           | Argon2id-derived verifier                    | Must resist offline guessing by a profile holder (§13.9)                           |
+| Role                                    | Selected                                     | Path  |
+| --------------------------------------- | -------------------------------------------- | ----- |
+| Content store, key envelope and network envelope AEAD | AES-256-GCM via WebCrypto      | async |
+| **Synchronous journal AEAD**            | **XChaCha20-Poly1305**, pinned `@noble/ciphers` | sync  |
+| Subkey derivation                       | HKDF-SHA-256 via WebCrypto, domain-separated labels | async |
+| Mutation signatures                     | Ed25519 via WebCrypto                        | async |
+| Wrapping a key to a public key          | HPKE base mode (RFC 9180), DHKEM(X25519, HKDF-SHA256) / HKDF-SHA256 / AES-256-GCM | async |
+| Hash                                    | SHA-256                                      | —     |
+| **Recovery-code and device-lock stretching** | **None.** HKDF only                     | —     |
+| Slot verifier                           | **Still a candidate** — an Argon2id-derived verifier. Must resist offline guessing by a profile holder (§13.9) | — |
 
-**Two selections are more consequential than they look.** The journal AEAD is the only new primitive in the plan and
-sits on the crash path (§10.10). And the recovery-code stretching choice is really a choice about the code's entropy
-and presentation, not about the KDF.
+**Agility is a carrier version, not a per-record algorithm field.** A version selects the entire suite, so there is
+nothing to negotiate and nothing to downgrade, and every carrier authenticates its own version — a renumbered record
+fails to open rather than selecting a weaker suite.
+
+**The §13.2 separation rule is machine-checked rather than asserted.** Row 1's generator buckets every role above by
+path and fails if any primitive appears in both.
+
+**"Argon2id, or none" is answered, twice, and the second answer is the stronger one.** For the recovery code, an
+attacker must first fetch a service-held envelope, after which guessing is offline (§13.8). For the device lock the
+seal sits in the profile beside the ciphertext it protects, so guessing is offline from the start (§13.3). **In both
+cases the code is generated at 125 bits and the deficit a work factor exists to cover does not exist.** A work factor
+would multiply an already unreachable number while trading an unconditional argument for one that decays with
+hardware.
+
+**That answer rests on one invariant, which is therefore normative rather than incidental: every such code is
+generated by the app at full width, and is never user-chosen, never user-extended, and never displayed or accepted
+in a truncated form.** If any of those changes, the stretching question reopens that day, and it reopens as a real
+one.
+
+**The slot verifier is the row that keeps the candidate.** It is assigned to review 3b (§15 row 12), and §13.3's
+selected threat model is the one it would be answered under.
 
 ### 13.11 Assurance
 
@@ -1967,7 +2039,8 @@ audience sits between the two.
 journal AEAD is the only new primitive in the plan (§10.10) and it lands with the local store, so one combined
 review would either arrive too late to protect it or hold the storage work until the protocol was specified.
 
-- **3a — storage and journal**, covering §15 rows 1, 2, 3, 13 and the storage-facing part of 14. Answered
+- **3a — storage and journal**, covering §15 rows 1, 2, 3, 13 and the storage-facing part of 14 — **that scope
+  is closed** (§15.1), so this review reads constructions and vectors rather than a register. Answered
   **before the first deployment cutover** (§14.6), not before the storage work begins: a defect found during implementation costs a rework,
   whereas the same defect found after cutover has written a real deployment's data under a broken construction,
   and a nonce-reuse fault is retroactive.
@@ -2114,25 +2187,41 @@ direction for the dependency to run.
 
 ---
 
-## 15. What this document has not selected
+## 15. The selection register
 
-The constraints above are fixed; the selections enumerated here are open. **The design reviews wait on the
-selections in their scope, and the cutover waits separately on row 21** (§13.11, §14.6). Each row names what must be
-chosen and where the constraint on it lives.
+The constraints above are fixed; this is the register of the constructions built on them. **Five rows are
+selected and sixteen are open.** **The design reviews wait on the selections in their scope, and the cutover
+waits separately on row 21** (§13.11, §14.6).
 
 **The register has two review scopes and two independent scopes.** Rows **1, 2, 3 and 13**, plus the storage-facing
 part of 14, are what a local encrypted store needs; they gate the storage work and are the scope of review **3a**, answered
-before the first deployment cutover. Rows **4–12, 15–17 and 20**, plus the network-facing part of 14, are what moving
-an envelope over a network needs; they gate the service and are the scope of review **3b**, answered before network
-sync ships. Rows **18 and 19** retain their own empirical triggers and gate neither review nor cutover. Row **21** is
-the migration choice: it gates cutover but neither design review. Closing one scope does not require another, which
-is what lets encryption at rest land before the protocol is specified.
+before the first deployment cutover — **that scope is now closed.** Rows **4–12, 15–17 and 20**, plus the network-facing
+part of 14, are what moving an envelope over a network needs; they gate the service and are the scope of review **3b**,
+answered before network sync ships. Rows **18 and 19** retain their own empirical triggers and gate neither review nor
+cutover. Row **21** is the migration choice: it gates cutover but neither design review. Closing one scope does not
+require another, which is what lets encryption at rest land before the protocol is specified.
+
+### 15.1 Selected
+
+**Each construction is argued at length in a record under `docs/selections/`, and summarized in one line here.**
+The records preserve the reasoning, including what was rejected and why; **this document states what is currently
+true**, and where the two disagree this one wins.
+
+| # | Selected | The construction | Record |
+| - | -------- | ---------------- | ------ |
+| 1 | Algorithm suite and crypto-agility | **Suite 1** — AES-256-GCM on every asynchronous path, XChaCha20-Poly1305 on the synchronous one, HKDF-SHA-256, Ed25519, HPKE base with X25519, SHA-256. **A carrier version selects the whole suite**: no per-record algorithm field, so nothing to negotiate and nothing to downgrade | [row 1](./selections/row-1-algorithm-suite.md) |
+| 2 | Synchronous journal AEAD and its nonce discipline | **XChaCha20-Poly1305**, 24 random bytes per record, **no counter and no durable state** — so there is nothing for a crash to lose. Subkey derived once at open from `K_g` | [row 2](./selections/row-2-journal-aead.md) |
+| 3 | Encrypted record and local key-envelope formats | AES-256-GCM under domain-separated subkeys; **every cleartext field is in the AAD**, because IndexedDB holds a structured clone whose properties the load path trusts. 12 random nonce bytes under a per-generation budget that `seq` bounds — **so `seq` does not reset at trim** | [row 3](./selections/row-3-record-format.md) |
+| 13 | Device-lock derivation, enrollment migration and copy | A **generated 125-bit code always**, with WebAuthn PRF as an additional seal of the same `L_lock` rather than an alternative to it. Enrollment reseals the key envelopes and **rotates the content key forward** (§13.3) | [row 13](./selections/row-13-device-lock.md) |
+| 14 | Recovery-code entropy and generation — **storage-facing half** | 125 bits, Crockford Base32, five groups of five, **and no stretching at all**. Step-up authentication is drafted in the same record and belongs to review 3b | [row 14](./selections/row-14-recovery-code.md) |
+
+**Row 20 — test vectors — is closed for these five and open for the rest.** Each carries a generated,
+self-verifying vector file; `pnpm vectors:check` fails the build if any has drifted from its generator.
+
+### 15.2 Unselected
 
 | # | Unselected                                    | Constrained by                                                                                 |
 | - | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| 1 | Concrete algorithm suite and crypto-agility   | §13.10's candidates; no primitive reused across async and sync paths (§13.2)                   |
-| 2 | **Synchronous journal AEAD and its nonce discipline** | Must survive a page kill without durable counter state; latency budget in §12 (§6.1, §10.10) |
-| 3 | Encrypted record and local key-envelope formats | §6.1's `StoredRecord` shape and AAD binding                                                   |
 | 4 | Envelope wire format: which fields are associated data, batching granularity | Actor inside the seal; source batching only (§7.4)         |
 | 5 | **Finalization shape** — receipts, accepted log, or checkpoint plus suffix | Must be non-equivocating per credential; ends in a committed cutoff (§7.5) |
 | 6 | Anti-replay rule and envelope retention depth  | Devices retain their own outbound envelopes to the last admitted checkpoint (§7.4)             |
@@ -2142,19 +2231,20 @@ is what lets encryption at rest land before the protocol is specified.
 | 10 | Terminal-package and portable cutover-package formats | Must travel with the workspace, not require the old operator (§14.2, §14.4)             |
 | 11 | **Which device-to-device ceremony** — QR carrying the key, or a short-authentication-string check over an in-band agreement | Different protocols, different failure modes, different review scope (§13.6) |
 | 12 | Account-credential and slot-verifier construction, including offline-guessing resistance | §13.9 |
-| 13 | Device-lock derivation, enrollment migration and copy | §13.3                                                                                  |
-| 14 | Recovery-code entropy, generation, step-up authentication and confirmation UX | Decides whether stretching is needed at all (§13.10) |
+| 14 | Recovery-code **step-up authentication** and confirmation UX — the network-facing half | §13.8; the storage-facing half is selected above |
 | 15 | Interrupted-rotation and downgrade behaviour   | Must fail closed without changing the confidentiality promise (§11.2 test 11)                  |
 | 16 | Hosted-content retention duration after a lapse | One number bounds both resume and total-device-loss recovery. **Conditional** — arises only if PRD §11's pricing question selects a plan that can lapse (PRD §6.10) |
 | 17 | Which web-security baseline profile and version | §10.9, §13.11 level 2                                                                         |
 | 18 | Whether a persistent encrypted search index is needed at all | Deferred; gates neither review nor cutover; measure the in-memory rebuild first (§6.2, §12) |
 | 19 | Root-type day collections (§10.8)              | Deferred; one of its four costs has lapsed and should be re-counted                            |
-| 20 | Test vectors for every construction above      | §11.2; required before level 3 review                                                          |
+| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the five selected above**, each of which carries a generated, self-verifying vector file |
 | 21 | First-deployment cutover attribution: accept system attribution, or bring the fidelity archive forward | §14.6; must be selected before cutover; adding authorship fields to Markdown is rejected (§9.1) |
 
-**Rows 2, 5 and 11 are the ones to close first.** Row 2 is the only new primitive and it is on the crash path. Row 5 is
-what makes revocation hold against a hostile relay, and the whole guarantee is currently specified-but-not-designed.
-Row 11 changes what the design review is reviewing.
+**Rows 5 and 11 are the ones to close next.** Row 5 is what makes revocation hold against a hostile relay, and the
+whole guarantee is currently specified-but-not-designed. Row 11 changes what review 3b is reviewing, so leaving it
+late costs more than the work in it. **Row 12 is worth reading beside §13.3 before it is answered**: a verifier
+resisting offline guessing by a profile holder has the threat model the device lock was selected under, and that
+argument now lives in a record assigned to the other review.
 
 ---
 
@@ -2252,4 +2342,4 @@ must contain no material that unseals `R_priv`, and the escrow agent's must cont
 - §2.1 revisit, 2026-08-09: [Automerge 3.0](https://automerge.org/blog/automerge-3/) · [undo/revert request](https://github.com/automerge/automerge/issues/985) · [local-first feedback](https://github.com/automerge/automerge/issues/1231) · [automerge-codemirror](https://github.com/automerge/automerge-codemirror) · [Yjs 14 at FOSDEM 2026](https://fosdem.org/2026/schedule/event/8VKQXR-blocknote-yjs-prosemirror/)
 - §6.1 load-before-connect: [data loss with IndexedDB + websocket providers](https://discuss.yjs.dev/t/local-data-lost-with-indexeddb-websocket-providers/1816) · [rare data loss with y-prosemirror](https://discuss.yjs.dev/t/random-rare-data-loss-in-production-with-y-prosemirror/3728) · [y-indexeddb#20](https://github.com/yjs/y-indexeddb/issues/20)
 - §13 prior art, watched rather than adopted: [Ink & Switch Keyhive](https://www.inkandswitch.com/keyhive/notebook/) · [@localfirst/auth](https://github.com/local-first-web/auth). Both are Automerge-adjacent and solve service-independent authorization, which §13.1 deliberately does not need; their credential-separation and signed-operation patterns remain useful input to the design review.
-- §13.10 candidates: [HPKE, RFC 9180](https://www.rfc-editor.org/rfc/rfc9180.html) · [WebCrypto security considerations](https://www.w3.org/TR/WebCryptoAPI/#security-considerations) · [WebAuthn PRF extension](https://w3c.github.io/webauthn/#prf-extension)
+- §13.10 suite: [HPKE, RFC 9180](https://www.rfc-editor.org/rfc/rfc9180.html) · [WebCrypto security considerations](https://www.w3.org/TR/WebCryptoAPI/#security-considerations) · [WebAuthn PRF extension](https://w3c.github.io/webauthn/#prf-extension)
