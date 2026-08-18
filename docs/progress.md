@@ -106,28 +106,67 @@ checked for staleness by `pnpm vectors:check`, which `pnpm check` now runs.
     a public key to a private one proves nothing if the vector's own halves are unrelated.
   - **Step-up is a bound challenge, not a freshness window**, and that half is drafted for **review 3b**
     rather than closed here — TRD §15 splits row 14 between the reviews and the document respects the split.
-- **Row 13 — device-lock derivation, enrollment migration and copy.** not started. **In review 3a's scope
-  but not in Stage 1's path**, so nothing but the 24th puts a date on it. **It is now the only unstarted
-  row before the 24th.** It will touch §13.3's PRF-or-code framing, which is adjacent to row 14's
-  presentation question, so the two should be read together.
+- **Row 13 — device-lock derivation, enrollment migration and copy.** selected — construction with vectors,
+  in [selections/row-13-device-lock.md](./selections/row-13-device-lock.md). **In review 3a's scope but not
+  in Stage 1's path**, so nothing but the 24th put a date on it.
+  - **A generated 125-bit code always; WebAuthn PRF, where available, as an additional seal of the same
+    key; a user-chosen passphrase rejected.** §13.3's "PRF- or high-entropy-code-derived" reads as a menu
+    and is not one. **Row 14's deciding sentence applies here with _server-held_ deleted** — the seal sits
+    in the profile beside the ciphertext it protects, so for the attacker this feature exists to resist,
+    guessing is offline and free. Disk encryptors accept a memorable secret because a TPM or a Secure
+    Enclave rate-limits it; **a browser origin's only equivalent anchor is the authenticator.**
+  - **Making the code the root rather than the fallback is §13.4's own value reused** — _PRF's optionality
+    is not a product branch_ — and PRD §7.6 already builds the recovery keypair that way. One enrollment
+    flow, one failure mode, no device-dependent surface. A random `L_lock` in between means adding,
+    replacing or removing a factor is one 32-byte seal that moves no content and no content key.
+  - **The §13.4 separation has to live inside the PRF evaluation input, and the natural reading does not.**
+    One assertion plus four HKDF labels leaves whoever holds that output holding all four roles' keys — an
+    assertion approved for _unlock your signing key_ yields the material that opens content. Four
+    evaluation inputs give four unrelated outputs. The property is about the bytes the authenticator
+    returns, so **the vectors are the only place it is checkable at all.**
+  - **Enrollment must rotate the content key, and that is the row's finding.** Resealing the envelopes
+    leaves `K_g` unchanged, so a profile copy taken _before_ enrollment — an OS backup, the synced
+    directory §13.3 names — keeps opening it, and therefore keeps opening content written _after_ the lock
+    was enabled. Without rotation the lock buys its intended audience almost nothing while telling them
+    otherwise. **This is the part most likely to come back changed from 3a**: rotation is unilateral and
+    free until Stage 4 gives the workspace other devices.
+  - **Open:** the PRF availability floor is asserted, not verified — **the same gap row 1 recorded for
+    Ed25519**, and it should be closed once for both rather than twice.
 
 _Exit: rows 1–3 selected, with test vectors._ **Met for 1 and 3**; row 2 has the two loose ends above.
-**The review's scope is the wider one** (TRD §15): 13 and the storage-facing half of 14 have to be closed by
-the 24th as well, even though Stage 1 does not wait on them. **14 is now met**; 13 is not started.
+**The review's scope is the wider one** (TRD §15): 13 and the storage-facing half of 14 had to be closed by
+the 24th as well, even though Stage 1 does not wait on them. **Both are now met.** So every row in 3a's
+scope is selected except row 2's handset measurement, and **what is left before the 24th is the fold into
+the TRD** — see the last warning sign below.
 
-**Four things rows 1, 3 and 14 turned up that are not selections.**
+**Six things rows 1, 3, 13 and 14 turned up that are not selections.**
 
 - **The old plaintext `done` database has to be deleted by Stage 1, not orphaned.** Stores get
   per-_(principal, workspace)_ names, so the new code will never open `done` (`src/crdt/persistence.ts:17`) and
   it will sit there full of plaintext content. §11.1's no-plaintext-at-rest test inspects every store, so this
   is a test failure rather than a subtlety — but the kind that gets found at the end of Stage 1 rather than
   planned into it.
-- **Row 12 (the slot verifier) is assigned to review 3b, and that is worth a second look.** A local verifier
-  resisting offline guessing by a profile holder is storage-shaped, and 3a is the review that will have the
-  context. Reassigning it is a change to TRD §15, not something a selection document should do quietly.
+- **Row 12 (the slot verifier) is assigned to review 3b, and that is worth a second look — now with two rows
+  pointing at it rather than one.** A local verifier resisting offline guessing by a profile holder is
+  storage-shaped, and 3a is the review that will have the context. **Row 13 sharpened this**: §13.9 names the
+  verifier and the device lock in one sentence, and row 13's §1 is the threat model row 12 would be selected
+  under — so 3b currently holds a construction whose reasoning lives in a document 3b's reviewer will not
+  have read. Reassigning it is a change to TRD §15, not something a selection document should do quietly.
 - **Nothing was checking the vector files for staleness** — not `pnpm check`, not CI — including row 2's, which
   shipped in the previous commit. All four are now checked together. A stale vector file is a specification
-  that has quietly stopped matching its own generator.
+  that has quietly stopped matching its own generator. **Row 13's file is now the fifth.**
+- **A negative that changes two things at once tests neither, and three of row 13's did.** `factor`,
+  `principal_id` and `workspace_id` are bound in the HKDF `info` _and_ in the AAD, so the obvious negative —
+  change the field, re-derive the key, watch it fail — passes whether or not the AAD binds anything. Deleting
+  `factor` from row 13's AAD entirely left every negative still failing correctly. **The rule adopted:
+  every field in an AAD needs a negative that changes that field and nothing else**, and row 13's generator
+  is mutation-checked against it. **Rows 2 and 3's vector files have not been checked against this rule**,
+  and they should be, before the 24th — it is the kind of gap a reviewer finds in ten minutes.
+- **Stage 1 owes row 13 one record it will never read: the `CustodyRecord`, written at genesis, saying
+  `'promptless'` forever.** A key store with no custody record has its tier implied by what is present, and
+  adding an explicit one after the first deployment is a migration over key material — precisely the class
+  [sequencing.md](./sequencing.md) §2.1 exists to avoid. About forty bytes, and it also turns _this slot is on
+  the default tier_ into something §11.1's test can assert in both directions instead of an absence.
 - ~~**`recovery` already means something else in the tree, and Stage 4 is about to overload it.**~~
   **Closed** — the membership-repair surface is now **unfiled** (`UnfiledCard`, `fileCardTo`,
   `UnfiledPanel`), and the crash journal is called that rather than a "recovery journal", so the word means
@@ -176,8 +215,9 @@ _Exit: a latency harness with recorded plaintext numbers._ **Met.**
 - **Review 3b — protocol.** not started. Answered before **Stage 4**.
 
 **Booking 3a dated item 1; it did not clear an item.** TRD §13.11 holds each review until its own scope is
-closed, because booking a review of architecture alone buys an opinion about a sketch. So the 24th is now
-the deadline on rows 1, 2, 3, 13 and the storage-facing part of 14 — none of which is started.
+closed, because booking a review of architecture alone buys an opinion about a sketch. So the 24th is the
+deadline on rows 1, 2, 3, 13 and the storage-facing part of 14 — **all of which are now selected**, leaving
+row 2's handset measurement and the fold into the TRD.
 
 _Exit: both reviewers engaged, with the storage review's date inside Stage 1._ **Half met.** As booked, 3a
 runs before Stage 1 rather than beside it, which is early rather than late and costs only that the reviewer
@@ -195,20 +235,25 @@ otherwise be discovered at the cutover instead. Recorded as TRD §15 row 21 and 
 
 From [sequencing.md](./sequencing.md) §7 — the things that say it is going wrong before the exit criteria do:
 
-- TRD §15 rows are being answered with "the TRD will decide" rather than a construction and a test vector.
-  **Now narrowed to row 13**, the only unstarted one. ~~Row 14 was the easier of the two to answer as an
-  intention.~~ **Closed** — and the warning was accurate about the shape of the trap: "Argon2id or none" did
-  read like a selection, and the answer only appeared once the entropy and presentation underneath it were
-  designed. The KDF was never the question.
+- ~~TRD §15 rows are being answered with "the TRD will decide" rather than a construction and a test vector.~~
+  **Closed** — every row in 3a's scope now has a construction and vectors. The warning was accurate about the
+  shape of the trap twice over: row 14's "Argon2id or none" read like a selection until the entropy and
+  presentation underneath it were designed, and row 13's "PRF- or high-entropy-code-derived" read like one
+  until the threat model underneath it was written down. **Neither question was the one the row appeared to
+  ask.**
 - ~~The latency harness is being deferred to "when we need it".~~ **Closed** — the harness exists and the
   plaintext numbers are recorded.
 - ~~Review 3a has not been booked because Stage 1 "isn't waiting on it".~~ **Closed** — booked for the week
   of 2026-08-24.
-- **Four selections exist and none of them is in the TRD.** Rows 1, 2, 3 and 14 all sit in
-  [selections/](./selections/) marked "not yet folded into the TRD", so §15 still lists them as unselected and a
-  reviewer reading the TRD alone sees four open questions beside a folder they were not pointed at. **The fold
-  is one act for all four** and should happen before the 24th rather than per row. Row 14 adds two things the
-  fold has to carry beyond §15: §13.10's "Argon2id, or none" line is now answered, and the invariant that
-  **the code is generated and never user-chosen, user-extended or truncated** is what the no-stretching
-  decision rests on — it has to be written down, or a later change reopens the question without anyone
-  noticing it was closed.
+- **Five selections exist and none of them is in the TRD, and this is now the only thing left before the
+  24th.** Rows 1, 2, 3, 13 and 14 all sit in [selections/](./selections/) marked "not yet folded into the
+  TRD", so §15 still lists all twenty-one rows as unselected and a reviewer reading the TRD alone sees five
+  open questions beside a folder they were not pointed at. **The fold is one act for all five** and should
+  happen before the 24th rather than per row. Three things it has to carry beyond §15:
+  - §13.10's "Argon2id, or none" line is answered twice and differently — **none** for row 14's
+    service-held envelope, and **none again for row 13 but on a stronger argument**, since a local seal
+    makes guessing free rather than merely possible. §13.10's slot-verifier row is the one that survives.
+  - Row 14's invariant that **the code is generated and never user-chosen, user-extended or truncated**,
+    which is what both no-stretching decisions rest on.
+  - Row 13's **`CustodyRecord` at genesis**, which is a Stage 1 obligation rather than a §15 answer and so
+    belongs in §6.1 rather than §15 — the one part of the fold that changes what Stage 1 builds.

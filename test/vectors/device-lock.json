@@ -1,0 +1,268 @@
+{
+  "$schema": "https://done.invalid/vectors/device-lock/1",
+  "generated_by": "scripts/generate-device-lock-vectors.mjs",
+  "selection": "docs/selections/row-13-device-lock.md",
+  "trd_row": 13,
+  "construction": {
+    "tiers": "CustodyRecord = { v, state: 'promptless' | 'enrolling' | 'locked', seals: LockSeal[], rotation_owed }. Written at genesis on the default tier, so enabling the lock is never a schema change",
+    "factors": "A generated 125-bit code is mandatory and is the root; WebAuthn PRF outputs are additional seals of the same L_lock. A user-chosen passphrase is rejected: the seal sits beside the ciphertext it protects, so guessing is offline and free, and a browser origin has no rate-limiting anchor except the authenticator",
+    "indirection": "Factors seal a random 32-byte L_lock; L_lock opens row 3s KeyEnvelope in place of L_local. Adding, replacing or removing a factor is one 32-byte seal and moves no content and no content key",
+    "kdf": "K_factor = HKDF-SHA256(ikm, salt = salt[16], info = LP(\"done/devicelock/v1\") || LP(principal_id) || LP(workspace_id) || LP(factor), L = 32)",
+    "aad": "LP(\"done/devicelock/v1\") || LP(principal_id) || LP(workspace_id) || LP(decimal v) || LP(factor) || LP(id)",
+    "prf_eval_input": "SHA-256( LP(role label) || LP(principal_id) || LP(workspace_id) ). The separation between §13.4s four factor roles lives in this input, not in an HKDF label afterwards: four labels give four unrelated outputs, where one output and four labels gives whoever holds it all four keys",
+    "length_prefix": "uint16be(byteLength) || utf8 -- injective, so no field can shift another",
+    "seal": "LockSeal = { v: 1, factor, id, salt: 16 bytes, nonce: 12 bytes, ct: AES-256-GCM over the 32-byte L_lock, tag included }",
+    "salt_note": "A fresh 16-byte salt per seal means a fresh K_factor per seal and exactly one message under it, so nonce reuse is structurally unreachable rather than avoided by discipline (row 14 §4)",
+    "enrollment": "Seal L_lock under every factor and write state enrolling; reseal each retained generations KeyEnvelope under L_lock, staged; then one transaction swaps staged over live, deletes L_local and writes state locked. The state that must never exist -- no L_local and unresealed envelopes -- is unreachable because the delete and the swap are the same transaction",
+    "rotation": "Enrollment then rotates the content key forward, tracked by rotation_owed. Without it a profile copy taken before enrollment keeps opening K_g, and therefore keeps opening content written after the lock was enabled. Forward-only: history is not re-keyed, because the copy that motivated the rotation already holds it",
+    "not_carried": "The lock never signs, never authenticates an account, never unwraps R_priv and never becomes a recovery factor. Recovery may not open a locked slot; a lost factor re-enrolls as a device"
+  },
+  "separation_vectors": [
+    {
+      "name": "slot-verifier--this-slot",
+      "role": "slot-verifier",
+      "label": "done/slot-verifier-prf/v1",
+      "selected_by": "row 12 (review 3b)",
+      "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+      "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+      "eval_first": "bcef685d36edf52dc16fd72440561d67b36fb5dacccb87abfa14159a926d0815"
+    },
+    {
+      "name": "slot-verifier--other-slot",
+      "role": "slot-verifier",
+      "label": "done/slot-verifier-prf/v1",
+      "selected_by": "row 12 (review 3b)",
+      "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+      "workspace_id": "ws_01J0000000000000000000000A",
+      "eval_first": "2cfcbe7b24c03edb276aeee3b0e4b6686cde81fbf757e32d400e9443c13d126b"
+    },
+    {
+      "name": "device-key--this-slot",
+      "role": "device-key",
+      "label": "done/device-key-prf/v1",
+      "selected_by": "rows 4-12 (review 3b)",
+      "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+      "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+      "eval_first": "70e9532c96691ae14f2b626bd09050848ce3983732d0d60a91399415ad03b24c"
+    },
+    {
+      "name": "device-key--other-slot",
+      "role": "device-key",
+      "label": "done/device-key-prf/v1",
+      "selected_by": "rows 4-12 (review 3b)",
+      "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+      "workspace_id": "ws_01J0000000000000000000000A",
+      "eval_first": "c37ce1fe16808938d39aad1869c313bb9db3b0d9f5deb1c193731f44f1f1d923"
+    },
+    {
+      "name": "device-lock--this-slot",
+      "role": "device-lock",
+      "label": "done/devicelock-prf/v1",
+      "selected_by": "row 13 -- this document",
+      "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+      "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+      "eval_first": "171000f1ec35dd43e6051d1f008a9cf6e990d65d223a9ff92e204976b5f450f8"
+    },
+    {
+      "name": "device-lock--other-slot",
+      "role": "device-lock",
+      "label": "done/devicelock-prf/v1",
+      "selected_by": "row 13 -- this document",
+      "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+      "workspace_id": "ws_01J0000000000000000000000A",
+      "eval_first": "ec70f1736b4e3dc603f89cc234351b238ca2cf8c78f943727896c94704f27c4c"
+    },
+    {
+      "name": "recovery-factor--this-slot",
+      "role": "recovery-factor",
+      "label": "done/recovery-prf/v1",
+      "selected_by": "row 14 (review 3b half)",
+      "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+      "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+      "eval_first": "587e1ea15ae8ba020d3d21ef5c555ba7f119de076f0927ba1a56c6eab6460940"
+    },
+    {
+      "name": "recovery-factor--other-slot",
+      "role": "recovery-factor",
+      "label": "done/recovery-prf/v1",
+      "selected_by": "row 14 (review 3b half)",
+      "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+      "workspace_id": "ws_01J0000000000000000000000A",
+      "eval_first": "2b14b4242117d747d1b33baa6acbd07e8fe0de99a609f20bcb90788a390c6938"
+    }
+  ],
+  "separation_note": "All eight inputs are distinct, and the generator fails if any two collide. Only the device-lock label is selected by row 13; the other three are provisional stand-ins owned by review 3bs rows, and what is asserted is that they differ rather than what they are",
+  "seal_vectors": [
+    {
+      "name": "code-seal",
+      "why": "L_lock sealed under the mandatory code. Always present: §2 of the selection makes the code the root and PRF an addition, so this is the seal every locked slot has.",
+      "inputs": {
+        "l_lock": "c8b45e17390a6df2841becd05a37f629e0741c9b3d85a2f60e19c47b5d08a3e2",
+        "factor": "code",
+        "id": "code",
+        "ikm": "415a433532514b3946454843364d37565330314a4441334e59",
+        "ikm_note": "utf8 of the canonical 25-symbol code -- the characters, not the bits packed down (row 14 §3)",
+        "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "v": 1,
+        "salt": "000102030405060708090a0b0c0d0e0f",
+        "nonce": "202122232425262728292a2b"
+      },
+      "derived": {
+        "hkdf_info": "0012646f6e652f6465766963656c6f636b2f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e37440004636f6465",
+        "k_factor": "569095be85f6a5b6441f55e524682002e2a70b4440d1aa0ba7a3e400143995ae",
+        "aad": "0012646f6e652f6465766963656c6f636b2f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e37440001310004636f64650004636f6465"
+      },
+      "expected": {
+        "ct": "3dbdd7c550f06a53aa8213f4de35c10fda77d11eb6137a721d616d41a96498047e978c4f514a19746f9fe7e257524e0b",
+        "lock_seal": {
+          "v": 1,
+          "factor": "code",
+          "id": "code",
+          "salt": "000102030405060708090a0b0c0d0e0f",
+          "nonce": "202122232425262728292a2b",
+          "ct": "3dbdd7c550f06a53aa8213f4de35c10fda77d11eb6137a721d616d41a96498047e978c4f514a19746f9fe7e257524e0b"
+        }
+      }
+    },
+    {
+      "name": "prf-seal",
+      "why": "The same L_lock, sealed under a PRF output. Same key, second factor: this is the property a single-factor test cannot see.",
+      "inputs": {
+        "l_lock": "c8b45e17390a6df2841becd05a37f629e0741c9b3d85a2f60e19c47b5d08a3e2",
+        "factor": "prf",
+        "id": "k3Yb2Qm8T1pXvA0sRfJ7Lw",
+        "ikm": "1d4f8ba26c05397ee1348a0fbd672c95430e8f17ca9b2d6034e58170af9c62db",
+        "ikm_note": "the 32 bytes the authenticator returns for the evaluation input above",
+        "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "v": 1,
+        "salt": "101112131415161718191a1b1c1d1e1f",
+        "nonce": "303132333435363738393a3b"
+      },
+      "derived": {
+        "hkdf_info": "0012646f6e652f6465766963656c6f636b2f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e37440003707266",
+        "k_factor": "eb182e387e99fd1c2e3ed62133c286fb338e7c9440177b6270b3c69e5628bf96",
+        "aad": "0012646f6e652f6465766963656c6f636b2f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e3744000131000370726600166b33596232516d38543170587641307352664a374c77"
+      },
+      "expected": {
+        "ct": "32cd05fcbd04063cda673bebafa36207035f27bf7281795789a9a4dd9a697f10f9528304d863fdebe1afe125e7dbc544",
+        "lock_seal": {
+          "v": 1,
+          "factor": "prf",
+          "id": "k3Yb2Qm8T1pXvA0sRfJ7Lw",
+          "salt": "101112131415161718191a1b1c1d1e1f",
+          "nonce": "303132333435363738393a3b",
+          "ct": "32cd05fcbd04063cda673bebafa36207035f27bf7281795789a9a4dd9a697f10f9528304d863fdebe1afe125e7dbc544"
+        }
+      }
+    },
+    {
+      "name": "code-seal-other-slot",
+      "why": "The same code in the other workspace on one profile. Different info, different key, different ciphertext -- so a seal cannot be carried between slots.",
+      "inputs": {
+        "l_lock": "c8b45e17390a6df2841becd05a37f629e0741c9b3d85a2f60e19c47b5d08a3e2",
+        "factor": "code",
+        "id": "code",
+        "ikm": "415a433532514b3946454843364d37565330314a4441334e59",
+        "ikm_note": "as above",
+        "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "workspace_id": "ws_01J0000000000000000000000A",
+        "v": 1,
+        "salt": "000102030405060708090a0b0c0d0e0f",
+        "nonce": "202122232425262728292a2b"
+      },
+      "derived": {
+        "hkdf_info": "0012646f6e652f6465766963656c6f636b2f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f30314a30303030303030303030303030303030303030303030410004636f6465",
+        "k_factor": "7613e1d722568c43a829d8f3f5b8112174e5c5c369758ae46d0d52525e8e0d3d",
+        "aad": "0012646f6e652f6465766963656c6f636b2f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f30314a30303030303030303030303030303030303030303030410001310004636f64650004636f6465"
+      },
+      "expected": {
+        "ct": "626bfdf878944a65bb388ba261433620994230c1cb318e420d7d024f15eee37cbf79084a23dc4b0499c34d1413dd2646",
+        "lock_seal": {
+          "v": 1,
+          "factor": "code",
+          "id": "code",
+          "salt": "000102030405060708090a0b0c0d0e0f",
+          "nonce": "202122232425262728292a2b",
+          "ct": "626bfdf878944a65bb388ba261433620994230c1cb318e420d7d024f15eee37cbf79084a23dc4b0499c34d1413dd2646"
+        }
+      }
+    }
+  ],
+  "custody_vectors": [
+    {
+      "name": "envelope-under-l-local",
+      "why": "The default tier. Row 3s vector, reproduced here so the two rows are checked against each other in one file.",
+      "tier": "promptless",
+      "opened_by": "l_local",
+      "key": "7f2a91c30bd4e685af0132c974e5b8d206a3f47e91c85d3b0e6a248f5c71d9b0",
+      "aad": "000e646f6e652f6b6579656e762f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e3744000131000131000b636f6e74656e742d6b6579",
+      "ct": "5609f54860c59b16adde7df8e3dcc24eafc610239c51f937a65a0dc8c5f3081b0b87c0eaa9f90314fefd3a4b7845cab7"
+    },
+    {
+      "name": "envelope-under-l-lock",
+      "why": "The lock tier. Same format, same AAD, same K_g, different key -- which is what \"no default handle capable of opening the envelopes remains\" costs in bytes.",
+      "tier": "locked",
+      "opened_by": "l_lock",
+      "key": "c8b45e17390a6df2841becd05a37f629e0741c9b3d85a2f60e19c47b5d08a3e2",
+      "aad": "000e646f6e652f6b6579656e762f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e3744000131000131000b636f6e74656e742d6b6579",
+      "ct": "ecd833ad81bbabc89f82ad53b34d3c6f44bf8203171201ea392f53d8554580e4c417921fac265a795bce4125ebe220fa"
+    }
+  ],
+  "custody_note": "One KeyEnvelope, row 3s AAD byte for byte, under each tiers key. The generator reproduces row 3s published ciphertext from its published inputs and fails if either has changed, and separately asserts that L_local does not open the lock tiers envelope",
+  "must_fail": [
+    {
+      "name": "wrong-code",
+      "why": "A different code. The ordinary failure, and the one the copy speaks to."
+    },
+    {
+      "name": "wrong-prf-output",
+      "why": "A different authenticator, or the right one on a different evaluation input."
+    },
+    {
+      "name": "code-seal-as-prf",
+      "why": "A code seal opened as a prf seal. The factor kind is in both the info and the AAD, so this fails twice."
+    },
+    {
+      "name": "prf-seal-as-code",
+      "why": "The reverse. Stated separately because an implementation can bind one direction and not the other."
+    },
+    {
+      "name": "seal-moved-to-other-workspace",
+      "why": "A seal lifted into the other workspace on the same profile -- PRD §6.7s ordinary two-principal case, not an attack."
+    },
+    {
+      "name": "seal-moved-to-other-principal",
+      "why": "The same, across principals."
+    },
+    {
+      "name": "seal-rebound-to-other-credential",
+      "why": "A prf seal presented under another credential id, which is how a removed passkey would be made to look enrolled."
+    },
+    {
+      "name": "downgraded-version",
+      "why": "v is in the AAD for row 1s reason: a carrier version selects the whole suite, so a renumbered seal must fail to open rather than select a weaker one."
+    },
+    {
+      "name": "flipped-tag-bit",
+      "why": "The AEAD doing its own job."
+    },
+    {
+      "name": "truncated-ciphertext",
+      "why": "The same, from the other end."
+    },
+    {
+      "name": "aad-only-mislabelled-factor",
+      "why": "The correct key, with a factor the AAD disagrees about -- what an implementation that builds the AAD from a different variable than the derivation produces. Isolates the AADs binding of factor from the HKDF infos."
+    },
+    {
+      "name": "aad-only-other-workspace",
+      "why": "The same isolation for workspace_id: correct key, AAD naming the other slot."
+    },
+    {
+      "name": "aad-only-other-principal",
+      "why": "The same isolation for principal_id."
+    }
+  ]
+}
