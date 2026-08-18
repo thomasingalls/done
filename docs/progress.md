@@ -36,10 +36,10 @@ they start. Stage 1 cannot begin without the first; the last is calendar time th
 compress. (The harness turned out to need four boot marks in the app — the one exception, and about 100
 bytes of it.)
 
-### 1. Select TRD §15's storage-review scope — not started
+### 1. Select TRD §15's storage-review scope — not started, and now dated
 
-What Stage 1 cannot begin without. TRD §15 rows 1–3, each needing a construction and test vectors rather
-than an intention.
+What Stage 1 cannot begin without, and now also what review 3a reads in the week of **2026-08-24** (item 4).
+Each row needs a construction and test vectors rather than an intention.
 
 - **Row 1 — the algorithm suite.** not started
 - **Row 2 — the synchronous journal AEAD and its nonce discipline.** not started
@@ -47,8 +47,12 @@ than an intention.
     recorded can repeat after exactly the crash the journal exists to survive.
   - It is the only new primitive in the plan (TRD §10.10), and it ships in Stage 1.
 - **Row 3 — the encrypted record format.** not started
+- **Row 13 — device-lock derivation, enrollment migration and copy**, and the storage-facing part of
+  **row 14** — recovery-code entropy, generation, step-up authentication. not started. **In review 3a's
+  scope but not in Stage 1's path**, so until now nothing put a date on them.
 
-_Exit: rows 1–3 selected, with test vectors._
+_Exit: rows 1–3 selected, with test vectors._ **The review's scope is the wider one** (TRD §15): 13 and the
+storage-facing half of 14 have to be closed by the 24th as well, even though Stage 1 does not wait on them.
 
 ### 2. Draft TRD §15's protocol-review scope — not started
 
@@ -80,15 +84,20 @@ _Exit: a latency harness with recorded plaintext numbers._ **Met.**
 - **Headroom is large but not uniform.** On the throttled profile `card focus → editable` is 22.6 ms of
   50 ms and navigation settled is 40.8 ms of 100 ms, against a cold start using 9% of its budget.
 
-### 4. Book both design reviews — not started
+### 4. Book both design reviews — in flight
 
 **Lead time is the constraint, not readiness.** Two engagements, different scopes, different deadlines.
 
-- **Review 3a — storage and journal.** not started. Answered before **Stage 2**. Can be booked now and run
-  while Stage 1 is implemented.
+- **Review 3a — storage and journal.** **Booked for the week of 2026-08-24.** Answered before **Stage 2**.
 - **Review 3b — protocol.** not started. Answered before **Stage 4**.
 
-_Exit: both reviewers engaged, with the storage review's date inside Stage 1._
+**Booking 3a dated item 1; it did not clear an item.** TRD §13.11 holds each review until its own scope is
+closed, because booking a review of architecture alone buys an opinion about a sketch. So the 24th is now
+the deadline on rows 1, 2, 3, 13 and the storage-facing part of 14 — none of which is started.
+
+_Exit: both reviewers engaged, with the storage review's date inside Stage 1._ **Half met.** As booked, 3a
+runs before Stage 1 rather than beside it, which is early rather than late and costs only that the reviewer
+reads a specification — the shape [sequencing.md](./sequencing.md) §8 already flags as an assumption.
 
 ---
 
@@ -105,5 +114,6 @@ From [sequencing.md](./sequencing.md) §7 — the things that say it is going wr
 - TRD §15 rows are being answered with "the TRD will decide" rather than a construction and a test vector.
 - ~~The latency harness is being deferred to "when we need it".~~ **Closed** — the harness exists and the
   plaintext numbers are recorded.
-- Review 3a has not been booked because Stage 1 "isn't waiting on it". It is not — **Stage 2 is**, and by
-  then the lead time is unrecoverable.
+- ~~Review 3a has not been booked because Stage 1 "isn't waiting on it".~~ **Closed** — booked for the week
+  of 2026-08-24. What replaces it is the sign above, now with a date: the 24th arrives and rows 1–3 are
+  answered as intentions rather than as constructions with test vectors.
