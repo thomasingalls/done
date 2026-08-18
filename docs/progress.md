@@ -36,16 +36,25 @@ they start. Stage 1 cannot begin without the first; the last is calendar time th
 compress. (The harness turned out to need four boot marks in the app — the one exception, and about 100
 bytes of it.)
 
-### 1. Select TRD §15's storage-review scope — not started, and now dated
+### 1. Select TRD §15's storage-review scope — in flight
 
 What Stage 1 cannot begin without, and now also what review 3a reads in the week of **2026-08-24** (item 4).
-Each row needs a construction and test vectors rather than an intention.
+Each row needs a construction and test vectors rather than an intention. Selections live in
+[selections/](./selections/), one file per row.
 
 - **Row 1 — the algorithm suite.** not started
-- **Row 2 — the synchronous journal AEAD and its nonce discipline.** not started
-  - **This is the one to spend real thought on.** A counter-based nonce whose last value was not durably
-    recorded can repeat after exactly the crash the journal exists to survive.
-  - It is the only new primitive in the plan (TRD §10.10), and it ships in Stage 1.
+- **Row 2 — the synchronous journal AEAD and its nonce discipline.** in flight — construction proposed with
+  vectors, in [selections/row-2-journal-aead.md](./selections/row-2-journal-aead.md).
+  - **XChaCha20-Poly1305; 24 random bytes per record; no counter, no durable state.** The width is the
+    point: a 96-bit nonce would also hold at this journal's volumes, and that is the objection to it — the
+    guarantee would become a claim about application behaviour that a later change can silently invalidate,
+    and nonce-reuse faults are retroactive and silent.
+  - **The vectors prove themselves.** `test/vectors/journal-aead.json` — the draft-irtf-cfrg-xchacha §A.3.1
+    KAT, four composition vectors, six negatives. The generator round-trips every vector and asserts every
+    negative fails, on each run, so a "must fail" list cannot quietly stop failing.
+  - **Two things before it closes.** The `< 1 ms p95` budget is specified on a **low-end device** and has
+    only been measured on a Mac — 7.8 µs p95 at the 18-byte common case, so about 128× of margin, which is a
+    strong prior and not the measurement. And it is not yet folded into the TRD.
 - **Row 3 — the encrypted record format.** not started
 - **Row 13 — device-lock derivation, enrollment migration and copy**, and the storage-facing part of
   **row 14** — recovery-code entropy, generation, step-up authentication. not started. **In review 3a's
