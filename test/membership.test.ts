@@ -1,7 +1,7 @@
 /**
  * Card membership invariants: registry, locations, and collection arrays must
  * agree. `cardsIn` is the triple intersection; repair heals skew where the
- * document supplies evidence and retains unplaced cards for recovery.
+ * document supplies evidence and retains unplaced cards as unfiled.
  */
 
 import { describe, expect, it } from 'vitest';
@@ -22,7 +22,7 @@ import {
   moveCard,
   newCard,
   registerCard,
-  recoveryCards,
+  unfiledCards,
   removeCard,
   repairCardMemberships,
   setCardLocation,
@@ -98,7 +98,7 @@ describe('card membership repair', () => {
     expect(
       cardMembershipIssues(workspace.doc).some((issue) => issue.kind === 'card-without-location'),
     ).toBe(true);
-    expect(recoveryCards(workspace.doc)).toEqual([]);
+    expect(unfiledCards(workspace.doc)).toEqual([]);
     expect(cardsIn(workspace.doc, TODAY, 'next')).toEqual([]);
 
     expect(repairCardMemberships(workspace.doc, workspace.systemOrigin)).toBeGreaterThan(0);
@@ -109,7 +109,7 @@ describe('card membership repair', () => {
     workspace.destroy();
   });
 
-  it('retains a locationless card with no array evidence for recovery', () => {
+  it('retains a locationless card with no array evidence as unfiled', () => {
     const workspace = replica('a');
     const id = 'orphan1';
     workspace.doc.transact(() => {
@@ -121,7 +121,7 @@ describe('card membership repair', () => {
     expect(cardMembershipIssues(workspace.doc)).toEqual([{ kind: 'card-without-location', id }]);
 
     expect(repairCardMemberships(workspace.doc, workspace.systemOrigin)).toBe(0);
-    expect(recoveryCards(workspace.doc).map(({ card }) => cardBody(card))).toEqual([
+    expect(unfiledCards(workspace.doc).map(({ card }) => cardBody(card))).toEqual([
       'orphaned forever',
     ]);
     expect(cardAt(workspace.doc, id)).toBeDefined();
@@ -140,7 +140,7 @@ describe('card membership repair', () => {
 
     expect(repairCardMemberships(workspace.doc, workspace.systemOrigin)).toBe(0);
     expect(cardLocation(workspace.doc, id)).toEqual({ date: TODAY, section: 'done' });
-    expect(recoveryCards(workspace.doc).map(({ id: recoveryId }) => recoveryId)).toEqual([id]);
+    expect(unfiledCards(workspace.doc).map(({ id: unfiledId }) => unfiledId)).toEqual([id]);
     expect(cardMembershipIssues(workspace.doc)).toEqual([
       { kind: 'location-without-collection', id, location: { date: TODAY, section: 'done' } },
     ]);
@@ -252,7 +252,7 @@ describe('concurrent remove vs move', () => {
   });
 });
 
-describe('dogfood membership recovery', () => {
+describe('dogfood membership repair', () => {
   it('flags the orphan-card shape found in dogfood before repair', () => {
     const workspace = replica('a');
     ensureDay(workspace.doc, workspace.systemOrigin, TODAY);
@@ -283,7 +283,7 @@ describe('dogfood membership recovery', () => {
         .sort(),
     ).toEqual(['card-without-location', 'card-without-location']);
     expect(
-      recoveryCards(workspace.doc)
+      unfiledCards(workspace.doc)
         .map(({ id }) => id)
         .sort(),
     ).toEqual(['hlhtu5', 'mynkan']);

@@ -293,14 +293,14 @@ erasure is on an interruptible path — the same crash-safety shape TRD §6.5 gi
 an interrupted creation must resolve to _no account_ rather than to an account whose recovery envelope was
 never written.
 
-**A terminology collision, found while writing this and worth fixing before Stage 4 rather than after.**
-`recovery` already means something in this codebase, and it is not this. `RecoveryCard`, `recoveryCards`,
-`recoverCardTo`, `canDeleteRecoveryCard` and `src/ui/RecoveryPanel.tsx` are all the **membership repair**
-surface — cards retained because their collection membership can no longer be shown. Stage 4 introduces
-`R_priv`, the recovery code and the recovery envelope alongside them, at which point one word carries two
-unrelated meanings in one tree and a reader has to know which is which from context. Renaming the older one
-is cheap now and gets steadily less so; it is a naming decision rather than a selection, so it is recorded
-here and belongs in [decisions.md](../decisions.md).
+**A terminology collision, found while writing this and since fixed.** `recovery` already meant something
+in this codebase, and it was not this: the **membership repair** surface — cards retained because their
+collection membership can no longer be shown. A third sense had appeared too, the synchronous log that
+`persistence.ts` called a "recovery journal" while row 2 called it the crash journal. Stage 4 was about to
+add `R_priv`, the recovery code and the recovery envelope to that, so the card sense is now **unfiled** and
+the log is the **crash journal**. The rename reached the export archive — `recovery.md` became `unfiled.md`
+— which §2.1's argument makes free today and a format change after Stage 2. Recorded in
+[decisions.md](../decisions.md).
 
 **Not in this row.** The device lock's own derivation and enrollment migration are row 13, which is the
 remaining unstarted row in review 3a's scope. Row 13 will touch §13.3's PRF-or-code framing, which is adjacent

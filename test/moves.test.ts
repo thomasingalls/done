@@ -21,13 +21,13 @@ import {
   dayAt,
   mergeCardBackwards,
   moveCard,
-  recoverCardTo,
-  recoverCardToGoals,
-  recoveryCards,
+  fileCardTo,
+  fileCardToGoals,
+  unfiledCards,
   reorderCard,
   removeCard,
   removeFromMaster,
-  removeRecoveryCard,
+  removeUnfiledCard,
   setCardLocation,
   splitCard,
   transact,
@@ -218,7 +218,7 @@ describe('removal', () => {
   });
 });
 
-describe('recovery', () => {
+describe('filing unfiled cards', () => {
   const makeOrphan = (test: Harness, body: string): string => {
     compose(test.me, { date: TODAY, section: 'done' }, body);
     const id = cardId(cardsIn(test.store.doc, TODAY, 'done')[0]!);
@@ -234,30 +234,30 @@ describe('recovery', () => {
     context = await harness();
     const id = makeOrphan(context, 'found again');
 
-    expect(recoveryCards(context.store.doc).map(({ id: recoveryId }) => recoveryId)).toEqual([id]);
-    expect(recoverCardTo(context.me, id, { date: TODAY, section: 'scheduled' })).toBe(true);
+    expect(unfiledCards(context.store.doc).map(({ id: unfiledId }) => unfiledId)).toEqual([id]);
+    expect(fileCardTo(context.me, id, { date: TODAY, section: 'scheduled' })).toBe(true);
     expect(bodies(context, 'scheduled')).toEqual(['found again']);
-    expect(recoveryCards(context.store.doc)).toEqual([]);
+    expect(unfiledCards(context.store.doc)).toEqual([]);
 
     context.store.undo.undo();
     expect(bodies(context, 'scheduled')).toEqual([]);
-    expect(recoveryCards(context.store.doc).map(({ id: recoveryId }) => recoveryId)).toEqual([id]);
+    expect(unfiledCards(context.store.doc).map(({ id: unfiledId }) => unfiledId)).toEqual([id]);
   });
 
   it('can move retained content to Goals or remove it explicitly', async () => {
     context = await harness();
     const goalsId = makeOrphan(context, 'project idea\nwith context');
-    expect(recoverCardToGoals(context.me, context.store.master, goalsId)).toBe(true);
+    expect(fileCardToGoals(context.me, context.store.master, goalsId)).toBe(true);
     expect(context.store.master.toString()).toContain('- [ ] project idea\n  with context');
     expect(cardAt(context.store.doc, goalsId)).toBeUndefined();
 
     const removedId = makeOrphan(context, 'discard me');
-    expect(removeRecoveryCard(context.me, removedId)).toBe(true);
+    expect(removeUnfiledCard(context.me, removedId)).toBe(true);
     expect(cardAt(context.store.doc, removedId)).toBeUndefined();
-    expect(recoveryCards(context.store.doc)).toEqual([]);
+    expect(unfiledCards(context.store.doc)).toEqual([]);
   });
 
-  it('refuses recovery that would detach a stale reference from a frozen day', async () => {
+  it('refuses filing that would detach a stale reference from a frozen day', async () => {
     context = await harness();
     const frozen = addDays(TODAY, -3);
     const past = { ...context.me, today: frozen };
@@ -268,10 +268,10 @@ describe('recovery', () => {
       setCardLocation(context.store.doc, id, { date: '2026-07-01', section: 'done' });
     });
 
-    expect(recoveryCards(context.store.doc).map((entry) => entry.id)).toEqual([id]);
-    expect(recoverCardTo(context.me, id, { date: TODAY, section: 'done' })).toBe(false);
-    expect(recoverCardToGoals(context.me, context.store.master, id)).toBe(false);
-    expect(removeRecoveryCard(context.me, id)).toBe(false);
+    expect(unfiledCards(context.store.doc).map((entry) => entry.id)).toEqual([id]);
+    expect(fileCardTo(context.me, id, { date: TODAY, section: 'done' })).toBe(false);
+    expect(fileCardToGoals(context.me, context.store.master, id)).toBe(false);
+    expect(removeUnfiledCard(context.me, id)).toBe(false);
     expect(collectionOf(dayAt(context.store.doc, frozen), 'done')?.toArray()).toEqual([id]);
     expect(cardAt(context.store.doc, id)).toBeDefined();
   });
@@ -286,11 +286,11 @@ describe('recovery', () => {
       dayAt(context.store.doc, frozen)?.delete('done');
     });
 
-    expect(recoverCardToGoals(context.me, context.store.master, id)).toBe(false);
-    expect(removeRecoveryCard(context.me, id)).toBe(false);
+    expect(fileCardToGoals(context.me, context.store.master, id)).toBe(false);
+    expect(removeUnfiledCard(context.me, id)).toBe(false);
     expect(cardAt(context.store.doc, id)).toBeDefined();
 
-    expect(recoverCardTo(context.me, id, { date: TODAY, section: 'scheduled' })).toBe(true);
+    expect(fileCardTo(context.me, id, { date: TODAY, section: 'scheduled' })).toBe(true);
     expect(bodies(context, 'scheduled')).toEqual(['legacy survivor']);
   });
 });

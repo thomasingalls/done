@@ -27,7 +27,7 @@ import {
   cardsIn,
   compose,
   moveCard,
-  recoveryCards,
+  unfiledCards,
   removeCard,
   repairCardMemberships,
   type Section,
@@ -198,8 +198,8 @@ describe('membership invariants under generated concurrent edits', () => {
 
           expect(cardMembershipIssues(real.a.doc)).toEqual([]);
           expect(cardMembershipIssues(real.b.doc)).toEqual([]);
-          expect(recoveryCards(real.a.doc)).toEqual([]);
-          expect(recoveryCards(real.b.doc)).toEqual([]);
+          expect(unfiledCards(real.a.doc)).toEqual([]);
+          expect(unfiledCards(real.b.doc)).toEqual([]);
           expect(snapshot(real.a.doc)).toEqual(snapshot(real.b.doc));
 
           const surviving = visibleCards(real.a.doc);

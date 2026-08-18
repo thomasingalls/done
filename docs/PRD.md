@@ -2353,7 +2353,7 @@ words, and holding someone else's key.**
 replica. Plain markdown is the permanent **escape** format: its job is that another program can read your
 writing.
 
-**What the user sees.** `master.md`, one file per day, and `recovery.md` where retained cards have no visible
+**What the user sees.** `master.md`, one file per day, and `unfiled.md` where retained cards have no visible
 collection. The master list is dumped verbatim — it is already markdown.
 
 **Not promised.** **Plain markdown is the wrong *round-trip* format**, and this is the format doing its own

@@ -360,3 +360,42 @@ afterwards can show that cold start is 3 s but not that it used to be 1.2 s.
 
 **The cost, accepted:** a file that must be appended to by hand until the latency harness exists, and which
 will be forgotten at least once. That is worth less than the baseline is.
+
+### Membership repair is called _unfiled_, so `recovery` can mean one thing
+
+**Date:** 2026-08-18 · **Commit:** on `claude/project-next-steps-e36a77` · **Against:** PRD v9 / TRD v8
+
+**Orientation.** Selecting TRD §15 row 14 — the recovery code's entropy — put the words `R_priv`,
+_recovery envelope_ and _recovery code_ next to a tree in which `recovery` already meant something else
+entirely. `RecoveryCard`, `recoveryCards`, `recoverCardTo` and `RecoveryPanel` were the **membership
+repair** surface: cards retained because no collection can currently show them. A third use had also
+appeared without anyone choosing it — `persistence.ts` called the synchronous write-ahead log a _recovery
+journal_, while row 2's selection and its commit both call it the **crash journal**.
+
+So one word carried three unrelated meanings, none of which was wrong on its own, and Stage 4 was about to
+make the most load-bearing of them ambiguous. The account sense could not move: _recovery code_, _recovery
+keypair_ and PRD §7.7's _four recovery objects_ are standard vocabulary already threaded through the PRD,
+the TRD and `sessions.md`, and renaming them would be renaming the domain rather than our code.
+
+**Decision.** The card sense becomes **unfiled** — `UnfiledCard`, `unfiledCards`, `fileCardTo`,
+`UnfiledPanel`, the `unfiled-*` classes — and the journal becomes the **crash journal**, which is what its
+own selection document already called it. `recovery` now means account recovery and nothing else.
+
+**The verb is the reason for that particular word.** The panel's entire job is putting a card into Next,
+Scheduled, Done or Goals, which is _filing_ it, so the noun and the verb come from one root and the copy
+reads as an inbox rather than an incident: **Unfiled 3**, _File into Next today_.
+
+**The export filename changed with it, and that is the only one-way part.** The archive now writes
+`unfiled.md` rather than `recovery.md` — normative in PRD §8.1 and TRD §9.1. [sequencing.md](./sequencing.md)
+§2.1's argument applies exactly: a format change is free before the first deployment carries anyone's data
+and a compatibility question afterwards. There is no deployed data, so it was free today and would not have
+been after Stage 2.
+
+**The cost, accepted:** a rename touching twenty files and every user-visible string on that surface, taken
+for a collision that had not yet caused a defect. It is bought against Stage 4, which introduces the second
+meaning into the same tree; the alternative was qualifying every use forever (`cardRecovery` /
+`accountRecovery`) and still shipping an archive whose filename said the wrong thing.
+
+**[completed.md](./completed.md) is deliberately not rewritten.** Its 2026-08-10 row still reads "membership
+repair, recovery, and local durability", because that is what shipped that day under that name, and a record
+that gets retro-edited to match current vocabulary is not a record.

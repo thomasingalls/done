@@ -161,7 +161,7 @@ export const registerCard = (doc: YDoc, id: string, card: Card, location: CardLo
 export const daysMap = (doc: YDoc): YMap<unknown> => doc.getMap('days');
 
 /**
- * The exact transaction set that can change card membership or recovery.
+ * The exact transaction set that can change card membership or filing.
  * Repair and UI invalidation share this classifier so their understanding of
  * the three-root model cannot drift apart.
  */
@@ -231,7 +231,7 @@ export const ensureDay = (doc: YDoc, origin: unknown, date: ISODate): Day =>
 export const collectionOf = (day: Day | undefined, section: Section): Collection | undefined =>
   day?.get(section) as Collection | undefined;
 
-export interface RecoveryCard {
+export interface UnfiledCard {
   id: string;
   card: Card;
   /** Retained when the card's former day collection no longer exists. */
@@ -243,9 +243,9 @@ export interface RecoveryCard {
  *
  * This includes fully locationless orphans and cards whose last-known day was
  * compacted by an older client. A location pointing at a missing collection is
- * evidence, not corruption, so it is exposed to recovery instead of erased.
+ * evidence, not corruption, so it is surfaced as unfiled instead of erased.
  */
-export const recoveryCards = (doc: YDoc): RecoveryCard[] => {
+export const unfiledCards = (doc: YDoc): UnfiledCard[] => {
   const referenced = new Set<string>();
   for (const date of listDays(doc)) {
     const day = dayAt(doc, date);
@@ -255,7 +255,7 @@ export const recoveryCards = (doc: YDoc): RecoveryCard[] => {
   }
 
   return [...cardsMap(doc).entries()]
-    .flatMap(([id, card]): RecoveryCard[] => {
+    .flatMap(([id, card]): UnfiledCard[] => {
       const location = cardLocation(doc, id);
       if (!location) return referenced.has(id) ? [] : [{ id, card, location: null }];
       const collection = collectionOf(dayAt(doc, location.date), location.section);
@@ -474,10 +474,10 @@ const rehomeIndex = (doc: YDoc, collection: Collection, section: Section, card: 
  * Repair policy:
  * - array id with a card but no location → restore location from the first
  *   array occurrence (day order, then `SECTIONS` order)
- * - card with no location and no array evidence → retain it for recovery
+ * - card with no location and no array evidence → retain it as unfiled
  * - location (or invalid location string) without a card → drop the location
  * - location whose collection is gone (legacy compaction) → retain both the
- *   card and its last-known location for recovery
+ *   card and its last-known location as unfiled
  * - otherwise reconcile arrays to the location map (drop strangers / duplicates,
  *   re-home missing ids according to section ordering)
  */

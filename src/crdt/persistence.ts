@@ -2,7 +2,7 @@
  * Local persistence (TRD §6.1).
  *
  * `y-indexeddb` supplies the durable local store. This adapter adds an explicit
- * transaction-complete boundary and a short-lived recovery journal around its
+ * transaction-complete boundary and a short-lived crash journal around its
  * deliberately fire-and-forget write path.
  *
  * SQLite/OPFS (TRD §6.2) is a derived search index and belongs to Phase 4.
@@ -58,14 +58,14 @@ const errorWithCause = (message: string, cause?: unknown): Error => {
 
 const journalStorage = (report: (error: Error) => void): Storage | null => {
   if (typeof localStorage === 'undefined') {
-    report(new Error('Synchronous recovery journal is unavailable.'));
+    report(new Error('Synchronous crash journal is unavailable.'));
     return null;
   }
   try {
     void localStorage.length;
     return localStorage;
   } catch (cause) {
-    report(errorWithCause('Synchronous recovery journal is unavailable.', cause));
+    report(errorWithCause('Synchronous crash journal is unavailable.', cause));
     return null;
   }
 };
@@ -104,7 +104,7 @@ const writeJournal = (storage: Storage, key: string, update: Uint8Array): Journa
     storage.setItem(key, value);
     return { key, value, update: update.slice() };
   } catch (cause) {
-    throw errorWithCause('Could not write the synchronous recovery journal.', cause);
+    throw errorWithCause('Could not write the synchronous crash journal.', cause);
   }
 };
 
@@ -247,7 +247,7 @@ export const openLocalStore = (
         reportPersistenceError(
           cause instanceof Error
             ? cause
-            : errorWithCause('Could not write the synchronous recovery journal.', cause),
+            : errorWithCause('Could not write the synchronous crash journal.', cause),
         );
       }
     }

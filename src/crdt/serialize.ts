@@ -101,7 +101,7 @@ const collectionLines = (bodies: readonly string[]): string[] => {
   return out;
 };
 
-/** Canonical list-item encoding, shared by day files and recovery export. */
+/** Canonical list-item encoding, shared by day files and the unfiled export. */
 export const serializeCardList = (bodies: readonly string[]): string =>
   collectionLines(bodies).join('\n');
 

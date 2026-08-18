@@ -128,11 +128,12 @@ the 24th as well, even though Stage 1 does not wait on them. **14 is now met**; 
 - **Nothing was checking the vector files for staleness** — not `pnpm check`, not CI — including row 2's, which
   shipped in the previous commit. All four are now checked together. A stale vector file is a specification
   that has quietly stopped matching its own generator.
-- **`recovery` already means something else in the tree, and Stage 4 is about to overload it.**
-  `RecoveryCard`, `recoveryCards`, `recoverCardTo` and `src/ui/RecoveryPanel.tsx` are the membership-repair
-  surface; `R_priv`, the recovery code and the recovery envelope arrive beside them. Renaming the older one
-  is cheap now and gets less so every stage. A naming decision rather than a selection, so it belongs in
-  [decisions.md](./decisions.md).
+- ~~**`recovery` already means something else in the tree, and Stage 4 is about to overload it.**~~
+  **Closed** — the membership-repair surface is now **unfiled** (`UnfiledCard`, `fileCardTo`,
+  `UnfiledPanel`), and the crash journal is called that rather than a "recovery journal", so the word means
+  account recovery and nothing else. It turned out to be three senses rather than two, and to reach the
+  export archive: `recovery.md` is now `unfiled.md`, which was free today and a format change after Stage 2.
+  Recorded in [decisions.md](./decisions.md).
 
 ### 2. Draft TRD §15's protocol-review scope — not started
 

@@ -45,7 +45,7 @@ import {
   indexOfCard,
   listDays,
   newCard,
-  recoveryCards,
+  unfiledCards,
   registerCard,
   setCardLocation,
   type Card,
@@ -250,18 +250,18 @@ export const removeCard = (workspace: Workspace, ref: Ref, id: string): boolean 
 };
 
 /* -------------------------------------------------------------------------- */
-/* Recovery                                                                    */
+/* Unfiled cards                                                               */
 
-const recoveryCard = (workspace: Workspace, id: string) =>
-  recoveryCards(workspace.doc).find((entry) => entry.id === id);
+const unfiledCard = (workspace: Workspace, id: string) =>
+  unfiledCards(workspace.doc).find((entry) => entry.id === id);
 
 /** Deleting a retained card also deletes its frozen provenance, when it has one. */
-const canDeleteRecoveryCard = (workspace: Workspace, id: string): boolean => {
-  const entry = recoveryCard(workspace, id);
+const canDeleteUnfiledCard = (workspace: Workspace, id: string): boolean => {
+  const entry = unfiledCard(workspace, id);
   return entry !== undefined && (!entry.location || writable(workspace, entry.location.date));
 };
 
-/** Recovery may clean stale memberships, but never by rewriting frozen history. */
+/** Filing may clean stale memberships, but never by rewriting frozen history. */
 const canDetachCard = (workspace: Workspace, id: string): boolean => {
   for (const date of listDays(workspace.doc)) {
     const day = dayAt(workspace.doc, date);
@@ -275,7 +275,7 @@ const canDetachCard = (workspace: Workspace, id: string): boolean => {
   return true;
 };
 
-/** Remove every writable stale physical reference before assigning a recovered home. */
+/** Remove every writable stale physical reference before assigning a new home. */
 const detachCard = (workspace: Workspace, id: string): void => {
   for (const date of listDays(workspace.doc)) {
     const day = dayAt(workspace.doc, date);
@@ -290,8 +290,8 @@ const detachCard = (workspace: Workspace, id: string): void => {
 };
 
 /** Give an otherwise unreachable registry card a normal collection home. */
-export const recoverCardTo = (workspace: Workspace, id: string, to: Ref): boolean => {
-  if (!recoveryCard(workspace, id) || !canDetachCard(workspace, id) || !canAccept(workspace, to)) {
+export const fileCardTo = (workspace: Workspace, id: string, to: Ref): boolean => {
+  if (!unfiledCard(workspace, id) || !canDetachCard(workspace, id) || !canAccept(workspace, to)) {
     return false;
   }
   const target = collectionAt(workspace, to);
@@ -310,10 +310,10 @@ const asMasterItem = (card: Card): string => {
   return [`- [ ] ${title}`, ...rest.map((line) => `  ${line}`)].join('\n');
 };
 
-/** Move a recovered card back to the free-form Goals document. */
-export const recoverCardToGoals = (workspace: Workspace, master: YText, id: string): boolean => {
+/** Move an unfiled card back to the free-form Goals document. */
+export const fileCardToGoals = (workspace: Workspace, master: YText, id: string): boolean => {
   const card = cardAt(workspace.doc, id);
-  if (!card || !canDeleteRecoveryCard(workspace, id) || !canDetachCard(workspace, id)) return false;
+  if (!card || !canDeleteUnfiledCard(workspace, id) || !canDetachCard(workspace, id)) return false;
 
   return discrete(workspace, () => {
     const current = master.toString();
@@ -326,9 +326,9 @@ export const recoverCardToGoals = (workspace: Workspace, master: YText, id: stri
   });
 };
 
-/** Explicitly discard a retained recovery card. */
-export const removeRecoveryCard = (workspace: Workspace, id: string): boolean => {
-  if (!canDeleteRecoveryCard(workspace, id) || !canDetachCard(workspace, id)) return false;
+/** Explicitly discard a retained unfiled card. */
+export const removeUnfiledCard = (workspace: Workspace, id: string): boolean => {
+  if (!canDeleteUnfiledCard(workspace, id) || !canDetachCard(workspace, id)) return false;
   return discrete(workspace, () => {
     detachCard(workspace, id);
     cardsMap(workspace.doc).delete(id);

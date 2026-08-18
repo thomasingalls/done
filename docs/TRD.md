@@ -1161,7 +1161,7 @@ Export produces a zip of markdown, no server involved, from the decrypted conten
 ```
 master.md
 days/2026-08-05.md      # ## Next / ## Scheduled / ## Done
-recovery.md              # only when retained cards have no visible collection
+unfiled.md               # only when retained cards have no visible collection
 ```
 
 The master list is dumped verbatim — it is already markdown. Collections serialize as lists of cards separated by
@@ -1186,8 +1186,8 @@ That is the format doing its job rather than a defect, and each omission has a c
 | `origin`    | Item provenance — which master line a card came from — does not survive                                |
 | `createdAt` | Reconstructed Done order (§4.9) restarts from import time; visible order survives because file order does |
 
-**`recovery.md` is the one exception and is not a loophole.** It prints each retained card's id and last-known
-location as prose, for a human reading a recovery file. It is not a parseable identity field and import must not
+**`unfiled.md` is the one exception and is not a loophole.** It prints each retained card's id and last-known
+location as prose, for a human reading the file. It is not a parseable identity field and import must not
 treat it as one.
 
 **Exporting does not discharge an attribution claim**, because the workspace keeps making it after the export is
@@ -1289,7 +1289,7 @@ Round-trip verification could protect against serializer mistakes but cannot est
 no unseen edits beneath a type about to be deleted. Compaction therefore defers indefinitely without serializing or
 mutating the day. The cost is unbounded document growth; the benefit is that elapsed time is never mistaken for
 evidence that all replicas have synchronized. Retained cards from legacy compaction are exposed in the Today
-recovery panel and in `recovery.md` exports.
+unfiled panel and in `unfiled.md` exports.
 
 **New: the replica-acknowledgement protocol this section requires is gating an attribution boundary too.**
 Compaction deletes cards and therefore `Card.author`, which retires the attribution claim for those days and makes

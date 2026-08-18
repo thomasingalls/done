@@ -28,9 +28,9 @@ export interface DayPanelProps {
   onOpenMenu: () => void;
   onGoTo: (date: ISODate) => void;
   menuOpen: boolean;
-  recoveryCount: number;
-  recoveryOpen: boolean;
-  onOpenRecovery: () => void;
+  unfiledCount: number;
+  unfiledOpen: boolean;
+  onOpenUnfiled: () => void;
 }
 
 type TouchScrollRoom = 'none' | 'top' | 'middle' | 'bottom';
@@ -45,9 +45,9 @@ export const DayPanel = ({
   onOpenMenu,
   onGoTo,
   menuOpen,
-  recoveryCount,
-  recoveryOpen,
-  onOpenRecovery,
+  unfiledCount,
+  unfiledOpen,
+  onOpenUnfiled,
 }: DayPanelProps): React.ReactElement => {
   const active = offset === 0;
   const frozen = isFrozen(date, today);
@@ -127,17 +127,17 @@ export const DayPanel = ({
           </button>
         )}
         <h1 className="panel-title">{formatDay(date)}</h1>
-        {active && date === today && recoveryCount > 0 && (
+        {active && date === today && unfiledCount > 0 && (
           <button
             type="button"
-            className="recovery-trigger"
-            aria-label={`Recover ${recoveryCount} ${recoveryCount === 1 ? 'card' : 'cards'}`}
-            aria-expanded={recoveryOpen}
-            aria-controls="recovery-panel"
-            onClick={onOpenRecovery}
+            className="unfiled-trigger"
+            aria-label={`File ${unfiledCount} ${unfiledCount === 1 ? 'card' : 'cards'}`}
+            aria-expanded={unfiledOpen}
+            aria-controls="unfiled-panel"
+            onClick={onOpenUnfiled}
           >
             <WarningIcon />
-            <span>{recoveryCount}</span>
+            <span>{unfiledCount}</span>
           </button>
         )}
         {date !== today && (

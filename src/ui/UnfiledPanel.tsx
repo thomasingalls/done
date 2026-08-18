@@ -1,7 +1,7 @@
 /**
  * Cards retained because their collection membership can no longer be shown.
  *
- * This is intentionally a card surface, not a diagnostic table: recovery is a
+ * This is intentionally a card surface, not a diagnostic table: filing a card is a
  * normal workflow decision with the same content rendering and destinations as
  * every other card. The last-known location is context only; no action trusts
  * it as a live source collection.
@@ -12,10 +12,10 @@ import {
   cardId,
   countIn,
   isFrozen,
-  recoverCardTo,
-  recoverCardToGoals,
-  removeRecoveryCard,
-  type RecoveryCard,
+  fileCardTo,
+  fileCardToGoals,
+  removeUnfiledCard,
+  type UnfiledCard,
   type Store,
   type Workspace,
 } from '../crdt';
@@ -24,93 +24,93 @@ import { formatDayLong, type ISODate } from '../lib/date';
 import { Card, type CardAction } from './Card';
 import { useYValue } from './useYjs';
 
-const recoveryHooks: CardHooks = {
+const unfiledHooks: CardHooks = {
   split: () => false,
   mergeBackwards: () => null,
   leave: () => {},
 };
 
-export interface RecoveryPanelProps {
+export interface UnfiledPanelProps {
   store: Store;
   workspace: Workspace;
   today: ISODate;
-  cards: readonly RecoveryCard[];
+  cards: readonly UnfiledCard[];
   open: boolean;
   onClose: () => void;
 }
 
-export const RecoveryPanel = ({
+export const UnfiledPanel = ({
   store,
   workspace,
   today,
   cards,
   open,
   onClose,
-}: RecoveryPanelProps): React.ReactElement => {
+}: UnfiledPanelProps): React.ReactElement => {
   const nextIsFull = useYValue(
     store.days,
     () => `${countIn(store.doc, today, 'next')}`,
     () => countIn(store.doc, today, 'next') >= NEXT_CAP,
   );
 
-  const actionsFor = (entry: RecoveryCard): CardAction[] => {
+  const actionsFor = (entry: UnfiledCard): CardAction[] => {
     const id = cardId(entry.card);
     const deletionDisabled = entry.location ? isFrozen(entry.location.date, today) : false;
     return [
       {
         label: 'Scheduled',
-        hint: 'Recover to Scheduled today',
-        run: () => void recoverCardTo(workspace, id, { date: today, section: 'scheduled' }),
+        hint: 'File into Scheduled today',
+        run: () => void fileCardTo(workspace, id, { date: today, section: 'scheduled' }),
       },
       {
         label: 'Next',
-        hint: 'Recover to Next today',
+        hint: 'File into Next today',
         disabled: nextIsFull,
-        run: () => void recoverCardTo(workspace, id, { date: today, section: 'next' }),
+        run: () => void fileCardTo(workspace, id, { date: today, section: 'next' }),
       },
       {
         label: 'Done',
-        hint: 'Recover to Done today',
-        run: () => void recoverCardTo(workspace, id, { date: today, section: 'done' }),
+        hint: 'File into Done today',
+        run: () => void fileCardTo(workspace, id, { date: today, section: 'done' }),
       },
       {
         label: 'Goals',
-        hint: 'Recover to Goals',
+        hint: 'File into Goals',
         disabled: deletionDisabled,
-        run: () => void recoverCardToGoals(workspace, store.master, id),
+        run: () => void fileCardToGoals(workspace, store.master, id),
       },
       {
         label: 'Remove',
-        hint: 'Remove this recovery card',
+        hint: 'Remove this unfiled card',
         disabled: deletionDisabled,
-        run: () => void removeRecoveryCard(workspace, id),
+        run: () => void removeUnfiledCard(workspace, id),
       },
     ];
   };
 
   return (
     <aside
-      className="recovery-panel"
-      id="recovery-panel"
-      aria-label="Card recovery"
+      className="unfiled-panel"
+      id="unfiled-panel"
+      aria-label="Unfiled cards"
       aria-hidden={!open}
       inert={!open}
     >
       <header className="panel-header">
-        <h2 className="panel-title">Recovery</h2>
-        <span className="recovery-count">{cards.length}</span>
+        <h2 className="panel-title">Unfiled</h2>
+        <span className="unfiled-count">{cards.length}</span>
         <button type="button" className="panel-action" onClick={onClose}>
           Close
         </button>
       </header>
 
-      <div className="recovery-body">
-        <p className="recovery-note">
+      <div className="unfiled-body">
+        <p className="unfiled-note">
           These cards were retained because their original collection can no longer display them.
           Choose a new home or remove them explicitly.
         </p>
 
-        <div className="recovery-list">
+        <div className="unfiled-list">
           {cards.map((entry) => {
             const id = cardId(entry.card);
             const location = entry.location;
@@ -118,8 +118,8 @@ export const RecoveryPanel = ({
               ? `Last seen in ${location.section}, ${formatDayLong(location.date)}`
               : 'Original location unavailable';
             return (
-              <section className="recovery-item" key={id}>
-                <p className="recovery-origin">{provenance}</p>
+              <section className="unfiled-item" key={id}>
+                <p className="unfiled-origin">{provenance}</p>
                 <Card
                   store={store}
                   card={entry.card}
@@ -127,7 +127,7 @@ export const RecoveryPanel = ({
                   frozen={false}
                   guarded={false}
                   actions={actionsFor(entry)}
-                  hooks={recoveryHooks}
+                  hooks={unfiledHooks}
                   editable={true}
                   origin={workspace.origin}
                 />

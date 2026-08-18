@@ -5,7 +5,7 @@
  * A card's identity is spread across three roots — `cards`, `cardLocations`
  * and a day's ordered arrays. Membership repair now observes all three roots,
  * restores a missing location when an array supplies evidence, and retains
- * truly locationless cards for explicit recovery. Compaction no longer deletes
+ * truly locationless cards as explicitly unfiled. Compaction no longer deletes
  * shared types without proof that offline replicas have observed them.
  */
 

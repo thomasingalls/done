@@ -106,9 +106,9 @@
     position: relative;
   }
 
-  /* Recovery is always an overlay: it is exceptional and must remain reachable
+  /* Unfiled is always an overlay: it is exceptional and must remain reachable
    * without permanently taking space from any of the three primary surfaces. */
-  .recovery-panel {
+  .unfiled-panel {
     position: absolute;
     inset-block: 0;
     inset-inline-start: 0;
@@ -125,11 +125,11 @@
     transition: translate var(--duration-snap) var(--ease-snap);
   }
 
-  .shell[data-recovery='open'] .recovery-panel {
+  .shell[data-unfiled='open'] .unfiled-panel {
     translate: 0 0;
   }
 
-  .recovery-scrim {
+  .unfiled-scrim {
     position: absolute;
     inset: 0;
     z-index: 4;
@@ -139,12 +139,12 @@
     transition: opacity var(--duration-snap) var(--ease-snap);
   }
 
-  .shell[data-recovery='open'] .recovery-scrim {
+  .shell[data-unfiled='open'] .unfiled-scrim {
     opacity: 1;
     pointer-events: auto;
   }
 
-  .recovery-body {
+  .unfiled-body {
     min-block-size: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -152,29 +152,29 @@
     padding: var(--space-4);
   }
 
-  .recovery-note {
+  .unfiled-note {
     margin-block-end: var(--space-4);
     color: var(--color-text-dim);
     font-size: 0.8125rem;
     line-height: 1.5;
   }
 
-  .recovery-list {
+  .unfiled-list {
     display: grid;
     gap: var(--space-4);
   }
 
-  .recovery-item {
+  .unfiled-item {
     display: grid;
     gap: var(--space-1);
   }
 
-  .recovery-origin {
+  .unfiled-origin {
     color: var(--color-text-faint);
     font-size: 0.6875rem;
   }
 
-  .recovery-count {
+  .unfiled-count {
     min-inline-size: 1.5rem;
     padding: 0.1rem var(--space-1);
     border-radius: 999px;
@@ -628,7 +628,7 @@
     color: var(--color-text);
   }
 
-  .recovery-trigger {
+  .unfiled-trigger {
     display: inline-flex;
     align-items: center;
     gap: var(--space-1);
@@ -643,8 +643,8 @@
     font-variant-numeric: tabular-nums;
   }
 
-  .recovery-trigger:hover,
-  .recovery-trigger[aria-expanded='true'] {
+  .unfiled-trigger:hover,
+  .unfiled-trigger[aria-expanded='true'] {
     box-shadow: 0 0 0 2px var(--color-warning-surface);
   }
 

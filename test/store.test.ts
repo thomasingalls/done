@@ -325,7 +325,7 @@ describe('local persistence', () => {
     const second = openLocalStore(secondDoc, name);
     await second.whenSynced;
     expect(secondDoc.getText('master').toString()).toBe('survived reload');
-    // A second interruption must not clear recovery data merely because loading finished.
+    // A second interruption must not clear journal data merely because loading finished.
     expect(journalKeys(name)).toHaveLength(1);
     second.destroy();
     secondDoc.destroy();
@@ -393,7 +393,7 @@ describe('local persistence', () => {
     try {
       transact(doc, 'test', () => doc.getText('master').insert(0, 'still reaches IndexedDB'));
       expect(errors.map((error) => error.message)).toContain(
-        'Could not write the synchronous recovery journal.',
+        'Could not write the synchronous crash journal.',
       );
       await expect(local.whenDurable()).resolves.toBeUndefined();
     } finally {

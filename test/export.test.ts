@@ -99,7 +99,7 @@ describe('what goes in it', () => {
     expect(after).toBe(before);
   });
 
-  it('includes retained cards and their provenance in recovery.md', async () => {
+  it('includes retained cards and their provenance in unfiled.md', async () => {
     context = await harness();
     compose(context.me, { date: TODAY, section: 'done' }, 'found\n\nwith context');
     const card = cardsIn(context.store.doc, TODAY, 'done')[0]!;
@@ -110,10 +110,10 @@ describe('what goes in it', () => {
       setCardLocation(context.store.doc, id, null);
     });
 
-    const recovery = exportEntries(context.store.doc, '').find(
-      (entry) => entry.path === 'recovery.md',
+    const unfiled = exportEntries(context.store.doc, '').find(
+      (entry) => entry.path === 'unfiled.md',
     );
-    expect(recovery?.content).toContain('- found\n\n  with context');
-    expect(recovery?.content).toContain(`\`${id}\` — last known: unavailable`);
+    expect(unfiled?.content).toContain('- found\n\n  with context');
+    expect(unfiled?.content).toContain(`\`${id}\` — last known: unavailable`);
   });
 });
