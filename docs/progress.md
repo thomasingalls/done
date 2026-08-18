@@ -29,11 +29,12 @@ that is no longer active.
 
 ## Active slice: Stage 0 — select, measure, book
 
-**Status:** not started · **Plan:** [sequencing.md](./sequencing.md) §3.1 · **Updated:** 2026-08-18
+**Status:** in flight · **Plan:** [sequencing.md](./sequencing.md) §3.1 · **Updated:** 2026-08-18
 
-Three bodies of work, none of which is application code, all of which get more expensive the later they
-start. Stage 1 cannot begin without the first; the third is calendar time that working harder does not
-compress.
+Three bodies of work, almost none of which is application code, all of which get more expensive the later
+they start. Stage 1 cannot begin without the first; the last is calendar time that working harder does not
+compress. (The harness turned out to need four boot marks in the app — the one exception, and about 100
+bytes of it.)
 
 ### 1. Select TRD §15's storage-review scope — not started
 
@@ -54,19 +55,30 @@ _Exit: rows 1–3 selected, with test vectors._
 Rows 4–12, 15–17, 20, and the network-facing part of 14. **Blocks nothing in this stage**, and is what the
 reviewer needs in order to be booked at all.
 
-### 3. Build a latency harness and take the plaintext baseline — not started
+### 3. Build a latency harness and take the plaintext baseline — done
 
-Today `scripts/check-budget.mjs` enforces initial JS and nothing else. Keystroke → paint, cold start, warm
-start and content-root load have no harness.
+- **Harness for TRD §12's latency rows.** done. `pnpm test:latency` (`test/latency/`,
+  `playwright.latency.config.ts`), with `pnpm latency:record` for append-ready rows. Two profiles: desktop,
+  and a Pixel 7 under a 4× CPU throttle — emulation alone changes the viewport and the user agent and
+  nothing else, so an unthrottled mobile project measures the development machine twice.
+- **Record the baseline while the store is still plaintext.** done. **Six of TRD §12's thirteen latency
+  rows now have numbers**, in [performance.md](./performance.md). The other seven measure things that do
+  not exist yet and arrive with their features.
+- **Four boot marks in the app** (`src/lib/marks.ts`), for the one row with no DOM signal — content-root
+  load. **That seam is what Stage 1 extends**: the same marks will bracket a key-store read, an unseal and
+  per-record decryption. About 100 bytes of initial JS; the bundle went 306.2 → 306.3 kB.
 
-- **Harness for TRD §12's latency rows.** not started
-- **Record the baseline while the store is still plaintext.** not started
-  - The window closes at Stage 1. Cold start will absorb a key-store read, an unseal and per-record
-    decryption; without a before-number the regression is invisible and unattributable.
-  - Numbers land in [performance.md](./performance.md), which is seeded with the one row that has a
-    harness today.
+_Exit: a latency harness with recorded plaintext numbers._ **Met.**
 
-_Exit: a latency harness with recorded plaintext numbers._
+**Two things it turned up that are not measurements.**
+
+- **TRD §12's day-to-day navigation row is one row over two paths.** `goTo` (a peek, the menu, `t`) swaps
+  the date immediately; `step` (a drag, Alt-Arrow) animates for `SNAP_MS` — 220 ms — and swaps underneath
+  once it lands, so its settled figure **cannot be under 100 ms by construction**. §12 does not say which
+  path it means, or whether "navigation" is the app responding or the day being in place. A definition to
+  settle, not a budget to fail.
+- **Headroom is large but not uniform.** On the throttled profile `card focus → editable` is 22.6 ms of
+  50 ms and navigation settled is 40.8 ms of 100 ms, against a cold start using 9% of its budget.
 
 ### 4. Book both design reviews — not started
 
@@ -91,6 +103,7 @@ otherwise be discovered at the cutover instead. Recorded as TRD §15 row 21 and 
 From [sequencing.md](./sequencing.md) §7 — the things that say it is going wrong before the exit criteria do:
 
 - TRD §15 rows are being answered with "the TRD will decide" rather than a construction and a test vector.
-- The latency harness is being deferred to "when we need it".
+- ~~The latency harness is being deferred to "when we need it".~~ **Closed** — the harness exists and the
+  plaintext numbers are recorded.
 - Review 3a has not been booked because Stage 1 "isn't waiting on it". It is not — **Stage 2 is**, and by
   then the lead time is unrecoverable.

@@ -15,6 +15,7 @@ pnpm lint           # oxlint with React, TypeScript, a11y, import, promise, and 
 pnpm format         # oxfmt formatting check
 pnpm test           # unit tests
 pnpm test:geometry  # layout, line-height and pixel-identity tests, needs a browser
+pnpm test:latency   # TRD §12's latency budgets, measured; not part of `pnpm check`
 pnpm test:https     # production build, service worker, offline shell and real WSS proxy
 ```
 
@@ -23,6 +24,16 @@ Playwright matrix has a real desktop browser profile (`Desktop Chrome`) and a
 mobile emulation profile (`Pixel 7`); it is not only a small viewport. Where a
 Chromium is already on disk and `pnpm exec playwright install` is not wanted,
 set `CHROMIUM_PATH` to it.
+
+`pnpm test:latency` is a **separate Playwright config** and a separate
+discipline. It measures rather than asserts, so it runs one worker with no
+parallelism and no retries — two measurements at once measure the contention,
+and a retried measurement is a second sample reported as the first. Its mobile
+profile adds a 4× CPU throttle, because emulation alone changes the viewport and
+the user agent and nothing else. It is **deliberately absent from `pnpm check`**;
+`pnpm latency:record` turns a run into rows for
+[performance.md](./performance.md), which is where the method and the numbers
+live.
 
 The relay is a separate package with its own install, and the app never depends
 on it:

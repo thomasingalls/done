@@ -20,6 +20,7 @@ import {
 import { resolveActor, type ActorContext } from './actors';
 import { openTree, readSettings, type DocumentTree, type Settings } from './doc';
 import { repairCardMemberships, transactionAffectsMembership } from './days';
+import { CONTENT_ROOT, STORE_OPEN, STORE_READY, mark } from '../lib/marks';
 import { createSync, type SyncController, type SyncOptions } from './sync';
 import {
   openLocalStore,
@@ -131,6 +132,7 @@ const watchMemberships = (doc: YDoc, context: ActorContext): (() => void) => {
  *    Asserted in `test/sync.test.ts`, "load before connect".
  */
 export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> => {
+  mark(STORE_OPEN);
   const doc = options.doc ?? createDoc();
 
   const local =
@@ -143,7 +145,13 @@ export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> 
             ? { onPersistenceError: options.onLocalPersistenceError }
             : {},
         );
-  if (local) await local.whenSynced;
+  if (local) {
+    await local.whenSynced;
+    // Only when there is a store to read. With `persist: false` there is no
+    // content root to load, and marking it anyway would report a zero that
+    // looks like a very fast read (TRD §12).
+    mark(CONTENT_ROOT);
+  }
 
   const actor = resolveActor(doc, doc.getMap('meta'));
   const tree = openTree(doc, actor.systemOrigin);
@@ -180,6 +188,8 @@ export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> 
     awareness,
     ...(options.openWebsocket ? { open: options.openWebsocket } : {}),
   });
+
+  mark(STORE_READY);
 
   return {
     ...tree,

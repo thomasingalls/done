@@ -19,6 +19,8 @@
     "test:https": "pnpm build && pnpm --dir relay build && node scripts/test-https.mjs",
     "test:watch": "vitest",
     "test:geometry": "playwright test",
+    "test:latency": "playwright test --config playwright.latency.config.ts",
+    "latency:record": "node scripts/record-latency.mjs",
     "budget": "node scripts/check-budget.mjs"
   },
   "dependencies": {
