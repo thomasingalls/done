@@ -9,6 +9,7 @@
  * design, which is also why the SQLite wasm binary (Phase 4) will not count.
  */
 
+import { execFileSync } from 'node:child_process';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { join } from 'node:path';
@@ -59,6 +60,27 @@ const wasm = readdirSync(DIST, { recursive: true }).filter((name) =>
   String(name).endsWith('.wasm'),
 );
 if (wasm.length > 0) console.log(`excluded from the budget: ${wasm.join(', ')}`);
+
+// `--record` prints a row ready to paste into docs/performance.md. Recording is
+// manual on purpose: appending on every build would write a row per local rebuild.
+if (process.argv.includes('--record')) {
+  let commit = 'unknown';
+  try {
+    commit = execFileSync('git', ['rev-parse', '--short', 'HEAD'], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+  } catch {
+    // Not a git checkout, or git is unavailable. The row still records the number.
+  }
+  const date = new Date().toLocaleDateString('en-CA'); // local YYYY-MM-DD, not UTC
+  const used = ((total / BUDGET_BYTES) * 100).toFixed(0);
+  console.log(
+    `\nappend to docs/performance.md:\n` +
+      `| ${date} | \`${commit}\` | ${kb(total)} | ${kb(BUDGET_BYTES)} | ` +
+      `${kb(BUDGET_BYTES - total)} (${used}% used) | plaintext |  |`,
+  );
+}
 
 if (total > BUDGET_BYTES) {
   console.error(`\nbudget exceeded by ${kb(total - BUDGET_BYTES)} (TRD §12).`);
