@@ -22,8 +22,8 @@
     "test:latency": "playwright test --config playwright.latency.config.ts",
     "latency:record": "node scripts/record-latency.mjs",
     "budget": "node scripts/check-budget.mjs",
-    "vectors": "node scripts/generate-suite-vectors.mjs && node scripts/generate-record-vectors.mjs && node scripts/generate-journal-vectors.mjs",
-    "vectors:check": "node scripts/generate-suite-vectors.mjs --check && node scripts/generate-record-vectors.mjs --check && node scripts/generate-journal-vectors.mjs --check"
+    "vectors": "node scripts/generate-suite-vectors.mjs && node scripts/generate-record-vectors.mjs && node scripts/generate-journal-vectors.mjs && node scripts/generate-recovery-vectors.mjs",
+    "vectors:check": "node scripts/generate-suite-vectors.mjs --check && node scripts/generate-record-vectors.mjs --check && node scripts/generate-journal-vectors.mjs --check && node scripts/generate-recovery-vectors.mjs --check"
   },
   "dependencies": {
     "@codemirror/commands": "^6.10.4",

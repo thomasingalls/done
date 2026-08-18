@@ -86,17 +86,36 @@ checked for staleness by `pnpm vectors:check`, which `pnpm check` now runs.
     **This pins something §6.1 left open: `seq` does not reset at trim.**
   - **Eleven negatives, and the must-fail list cannot drift** — the generator compares what it published against
     what it actually asserted, in both directions.
-- **Row 13 — device-lock derivation, enrollment migration and copy**, and the storage-facing part of
-  **row 14** — recovery-code entropy, generation, step-up authentication. not started. **In review 3a's
-  scope but not in Stage 1's path**, so until now nothing put a date on them. **These are now the only
-  unstarted rows before the 24th**, and row 14 is really a question about the code's entropy and
-  presentation, from which the Argon2id-or-none answer falls out.
+- **Row 14 — recovery-code entropy, generation, step-up authentication and confirmation UX.** selected,
+  storage-facing part — construction with vectors, in
+  [selections/row-14-recovery-code.md](./selections/row-14-recovery-code.md).
+  - **125 bits, Crockford Base32, five groups of five, and no stretching at all.** The row's stated
+    question — _does this need Argon2id?_ — turned out to be answered by a sentence PRD §7.6 had already
+    written while rejecting passwords: _server-held sealed data permits offline guessing_. That fixes the
+    threat model, and what was left was a number.
+  - **Stretching is declined on the same grounds row 2 declined a 96-bit nonce.** It converts entropy you
+    do not have into time you hope an attacker will not spend; at 125 generated bits there is no deficit,
+    and adding a work factor would trade an unconditional argument for one that decays with hardware.
+    It also costs a WASM dependency against 43.7 kB of headroom, and this way costs nothing.
+  - **The entropy claim is machine-checked rather than asserted.** The generator counts the preimages of
+    every symbol under `byte & 0x1f` and requires exactly eight — 256 = 8 × 32 — so a changed alphabet or
+    a modulo where a mask belongs fails the build instead of silently producing weaker codes that still
+    seal and still open.
+  - **The keypair in the vectors checks itself.** It is RFC 7748 §6.1's, and the generator derives the
+    public key from the private scalar and refuses to write the file unless they match. An AAD that binds
+    a public key to a private one proves nothing if the vector's own halves are unrelated.
+  - **Step-up is a bound challenge, not a freshness window**, and that half is drafted for **review 3b**
+    rather than closed here — TRD §15 splits row 14 between the reviews and the document respects the split.
+- **Row 13 — device-lock derivation, enrollment migration and copy.** not started. **In review 3a's scope
+  but not in Stage 1's path**, so nothing but the 24th puts a date on it. **It is now the only unstarted
+  row before the 24th.** It will touch §13.3's PRF-or-code framing, which is adjacent to row 14's
+  presentation question, so the two should be read together.
 
 _Exit: rows 1–3 selected, with test vectors._ **Met for 1 and 3**; row 2 has the two loose ends above.
 **The review's scope is the wider one** (TRD §15): 13 and the storage-facing half of 14 have to be closed by
-the 24th as well, even though Stage 1 does not wait on them.
+the 24th as well, even though Stage 1 does not wait on them. **14 is now met**; 13 is not started.
 
-**Three things rows 1 and 3 turned up that are not selections.**
+**Four things rows 1, 3 and 14 turned up that are not selections.**
 
 - **The old plaintext `done` database has to be deleted by Stage 1, not orphaned.** Stores get
   per-_(principal, workspace)_ names, so the new code will never open `done` (`src/crdt/persistence.ts:17`) and
@@ -107,13 +126,21 @@ the 24th as well, even though Stage 1 does not wait on them.
   resisting offline guessing by a profile holder is storage-shaped, and 3a is the review that will have the
   context. Reassigning it is a change to TRD §15, not something a selection document should do quietly.
 - **Nothing was checking the vector files for staleness** — not `pnpm check`, not CI — including row 2's, which
-  shipped in the previous commit. All three are now checked together. A stale vector file is a specification
+  shipped in the previous commit. All four are now checked together. A stale vector file is a specification
   that has quietly stopped matching its own generator.
+- **`recovery` already means something else in the tree, and Stage 4 is about to overload it.**
+  `RecoveryCard`, `recoveryCards`, `recoverCardTo` and `src/ui/RecoveryPanel.tsx` are the membership-repair
+  surface; `R_priv`, the recovery code and the recovery envelope arrive beside them. Renaming the older one
+  is cheap now and gets less so every stage. A naming decision rather than a selection, so it belongs in
+  [decisions.md](./decisions.md).
 
 ### 2. Draft TRD §15's protocol-review scope — not started
 
 Rows 4–12, 15–17, 20, and the network-facing part of 14. **Blocks nothing in this stage**, and is what the
-reviewer needs in order to be booked at all.
+reviewer needs in order to be booked at all. **One piece of it is already drafted**: row 14's step-up
+construction, in [selections/row-14-recovery-code.md](./selections/row-14-recovery-code.md) §5, along with the
+two things it hands to 3b — whether the service rate-limits envelope fetch, and the atomic-replace semantics
+at the service boundary.
 
 ### 3. Build a latency harness and take the plaintext baseline — done
 
@@ -168,14 +195,19 @@ otherwise be discovered at the cutover instead. Recorded as TRD §15 row 21 and 
 From [sequencing.md](./sequencing.md) §7 — the things that say it is going wrong before the exit criteria do:
 
 - TRD §15 rows are being answered with "the TRD will decide" rather than a construction and a test vector.
-  **Now narrowed to rows 13 and 14**, which are the only unstarted ones — and 14 is the easier of the two to
-  answer as an intention, because "Argon2id or none" reads like a selection while the entropy and presentation
-  it depends on stay undesigned.
+  **Now narrowed to row 13**, the only unstarted one. ~~Row 14 was the easier of the two to answer as an
+  intention.~~ **Closed** — and the warning was accurate about the shape of the trap: "Argon2id or none" did
+  read like a selection, and the answer only appeared once the entropy and presentation underneath it were
+  designed. The KDF was never the question.
 - ~~The latency harness is being deferred to "when we need it".~~ **Closed** — the harness exists and the
   plaintext numbers are recorded.
 - ~~Review 3a has not been booked because Stage 1 "isn't waiting on it".~~ **Closed** — booked for the week
   of 2026-08-24.
-- **Three selections exist and none of them is in the TRD.** Rows 1, 2 and 3 all sit in
+- **Four selections exist and none of them is in the TRD.** Rows 1, 2, 3 and 14 all sit in
   [selections/](./selections/) marked "not yet folded into the TRD", so §15 still lists them as unselected and a
-  reviewer reading the TRD alone sees three open questions beside a folder they were not pointed at. **The fold
-  is one act for all three** and should happen before the 24th rather than per row.
+  reviewer reading the TRD alone sees four open questions beside a folder they were not pointed at. **The fold
+  is one act for all four** and should happen before the 24th rather than per row. Row 14 adds two things the
+  fold has to carry beyond §15: §13.10's "Argon2id, or none" line is now answered, and the invariant that
+  **the code is generated and never user-chosen, user-extended or truncated** is what the no-stretching
+  decision rests on — it has to be written down, or a later change reopens the question without anyone
+  noticing it was closed.
