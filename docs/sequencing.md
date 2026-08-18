@@ -4,6 +4,7 @@
 the cutover-attribution choice in §5.4 remains open and gates Stage 2.
 **Date:** 2026-08-17
 **Companion to:** [PRD.md](./PRD.md), [TRD.md](./TRD.md)
+**Current position:** [progress.md](./progress.md) — this document does not say which stage is running.
 
 ---
 
@@ -21,9 +22,16 @@ blocks. Everything else is a proposal about sequence and dependency.
 **No durations.** There is no basis for any, and inventing them would make an ordering look like a schedule.
 What this asserts is sequence and dependency.
 
+**This document says what has to happen before what. It does not say where the project is.** Every stage
+below is written as a body of work with an exit condition, in a fixed order, and none of it changes when the
+project moves — which is exactly why it must not carry current status. **Stage 0 was called "Now" in an
+earlier draft**, and that was a trap: "now" is true on the day it is written and false immediately after,
+with nothing in the document to say so. The active slice lives in [progress.md](./progress.md), which is
+rewritten wholesale rather than amended; what has closed lives in [completed.md](./completed.md).
+
 **References and precedence:** `TRD §x` and `PRD §x` resolve to those documents. A bare `§x` is this one.
-`docs/sessions.md` is the earlier product-and-architecture decision history; §5 here is the record for the later
-sequencing decisions and cutover choice. Their current consequences are propagated into the PRD and TRD. If a
+`docs/sessions.md` is the earlier product-and-architecture decision history; `docs/decisions.md` is the
+implementation decision journal; §5 here is the record for the later sequencing decisions and cutover choice. Their current consequences are propagated into the PRD and TRD. If a
 record and the requirements disagree, the PRD and TRD state what is currently true and the record preserves the
 reasoning to revisit.
 
@@ -32,6 +40,11 @@ reasoning to revisit.
 ## 1. Where the code is today
 
 Checked against the tree rather than remembered.
+
+**This section is a dated snapshot, and it is the one part of this document that decays.** It is kept
+because the ordering below is argued *from* it — the stages are justified by what already exists and what
+does not — so removing it would leave the reasoning unsupported. Read it as of this document's date. For
+what is true now, see [progress.md](./progress.md) and [completed.md](./completed.md).
 
 **Built and working.** The editor: live preview, card decorations, static render, the geometry tests that keep
 them pixel-identical. The workflow: cards, collections, movement, the cap, freeze, the canonical card registry,
@@ -121,7 +134,7 @@ Four bodies of work touch neither the on-disk shape nor the protocol, and can la
 
 | Stage                    | PRD §10 phase          | What it is                                                    |
 | ------------------------ | ---------------------- | --------------------------------------------------------------- |
-| **Now**                  | —                      | Select, measure, book                                          |
+| **0. Select, measure, book** | —                  | Selections, the latency baseline, and booking both reviews     |
 | **1. On-disk shape**     | 2, and part of 3       | Everything that changes what is written to disk                |
 | **2. Cutover**           | between 2 and 3        | The first real deployment                                      |
 | **3. Retrieval**         | 4, **brought forward** | Search, palette, the unbuilt Goals projections                 |
@@ -129,7 +142,7 @@ Four bodies of work touch neither the on-disk shape nor the protocol, and can la
 | **5. Continuity**        | —                      | Fidelity archive, migration, the independently runnable package |
 | **Continuous**           | —                      | Assurance                                                      |
 
-### 3.1 Now — select, measure, book
+### 3.1 Stage 0 — select, measure, book
 
 Three things, none of which is application code, all of which get more expensive the later they start.
 
@@ -289,9 +302,9 @@ at wider availability (PRD §7.11).
 | Level                                     | When                                                                          |
 | ----------------------------------------- | -------------------------------------------------------------------------------- |
 | 1 — threat model, conformance tests       | Written alongside Stages 1 and 4; the tests are TRD §11                       |
-| 2 — web-security baseline                 | Profile selected in Now; verified before Stage 4 ships                        |
-| **3a — storage and journal design review** | **Booked in Now, in flight through Stage 1, answered before Stage 2** (§5.2)  |
-| 3b — protocol design review               | Booked in Now, in flight through Stage 3, answered before Stage 4 ships       |
+| 2 — web-security baseline                 | Profile selected in Stage 0; verified before Stage 4 ships                    |
+| **3a — storage and journal design review** | **Booked in Stage 0, in flight through Stage 1, answered before Stage 2** (§5.2) |
+| 3b — protocol design review               | Booked in Stage 0, in flight through Stage 3, answered before Stage 4 ships    |
 | 5 — disclosure and response program       | Live the day Stage 4 ships. A reporting path that does not exist when the first report arrives is the cheapest thing to get wrong |
 | 4 — implementation audit                  | On trigger: *end-to-end encrypted* in marketing copy, or the escrow add-on holding a real key |
 
@@ -307,12 +320,12 @@ the TRD §15 row that closes it, and none may survive to the review.
 ## 4. The critical path
 
 ```
-Now ─ select TRD §15 storage scope ─▶ Stage 1 ───────────▶ Stage 2 ─────────┐
-      book review 3a ──────────────▶ 3a in flight ─▶ answered ┘             │
+Stage 0 ─ select storage scope ──▶ Stage 1 ──────────────▶ Stage 2 ─────────┐
+          book review 3a ──────▶ 3a in flight ─▶ answered ┘                 │
                                                                             ├──▶ Stage 4 ──▶ Stage 5
-Now ─ draft TRD §15 protocol scope ─▶ book review 3b ─▶ 3b in flight ─▶ answered
-                                                          │
-                                                    Stage 3 runs here
+Stage 0 ─ draft protocol scope ──▶ book review 3b ─▶ 3b in flight ─▶ answered
+                                                           │
+                                               Stage 3 runs here
 ```
 
 The path is **storage selections → on-disk shape → cutover → service → continuity**. Each review runs beside
@@ -432,9 +445,9 @@ neither review engagement.
 
 One per stage — the thing that says it is going wrong before the exit criteria do.
 
-- **Now.** TRD §15 rows are being answered with "the TRD will decide" rather than a construction and a test vector.
+- **Stage 0.** TRD §15 rows are being answered with "the TRD will decide" rather than a construction and a test vector.
   The review will bounce that.
-- **Now.** The latency harness is being deferred to "when we need it". After Stage 1 there is no baseline, and
+- **Stage 0.** The latency harness is being deferred to "when we need it". After Stage 1 there is no baseline, and
   the cold-start budget becomes unarguable in either direction.
 - **Stage 1.** The store-handle refactor is landing in the same commits as the encryption. Two changes, one
   diff, and the data-loss risk is entirely in the second one.
