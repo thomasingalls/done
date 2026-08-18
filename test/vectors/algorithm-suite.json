@@ -1,0 +1,238 @@
+{
+  "$schema": "https://done.invalid/vectors/algorithm-suite/1",
+  "generated_by": "scripts/generate-suite-vectors.mjs",
+  "selection": "docs/selections/row-1-algorithm-suite.md",
+  "trd_row": 1,
+  "rule": {
+    "statement": "A carrier version selects an entire suite. There is no per-record algorithm identifier, no negotiation, and therefore nothing to downgrade.",
+    "reader": "A reader knows a fixed compiled-in set of (carrier, version) pairs, accepts exactly those, and refuses everything else including versions above its own.",
+    "refusal": "Refusal is reported and the carrier is left intact. Never skipped silently, never deleted by the read path.",
+    "binding": "Every carrier authenticates its own version in its associated data, so a renumbered record fails to open rather than selecting a weaker suite.",
+    "label": "done/<carrier>/v<suite> -- the trailing integer is the suite, not the carrier framing."
+  },
+  "suites": {
+    "1": {
+      "roles": {
+        "content-store-aead": {
+          "primitive": "AES-256-GCM",
+          "provider": "WebCrypto",
+          "path": "async",
+          "nonce": "96-bit, random per record",
+          "why": "Native and hardware-accelerated, so it adds no bundle. Forced to differ from the journal by §13.2."
+        },
+        "local-key-envelope-aead": {
+          "primitive": "AES-256-GCM",
+          "provider": "WebCrypto",
+          "path": "async",
+          "nonce": "96-bit, random per envelope",
+          "why": "Same path, same primitive; L_local is a non-extractable AES-GCM CryptoKey (§13.3)."
+        },
+        "network-envelope-aead": {
+          "primitive": "AES-256-GCM",
+          "provider": "WebCrypto",
+          "path": "async",
+          "nonce": "96-bit, random per envelope",
+          "why": "Named here so the suite is complete. Its wire format is row 4 and review 3b."
+        },
+        "journal-aead": {
+          "primitive": "XChaCha20-Poly1305",
+          "provider": "@noble/ciphers",
+          "path": "sync",
+          "nonce": "192-bit, random per record",
+          "why": "Selected by row 2. The only primitive the platform does not supply, and the only one on the crash path."
+        },
+        "subkey-derivation": {
+          "primitive": "HKDF-SHA-256",
+          "provider": "WebCrypto deriveBits",
+          "path": "async",
+          "why": "Derivation happens once at open, where async is free. Labels are what keep §13.2 separation real."
+        },
+        "mutation-signature": {
+          "primitive": "Ed25519",
+          "provider": "WebCrypto",
+          "path": "async",
+          "why": "Small, fast, widely reviewed. Availability is now broad enough that the fallback path §13.10 anticipated is a compatibility question, not a design one."
+        },
+        "public-key-wrap": {
+          "primitive": "HPKE base mode, DHKEM(X25519, HKDF-SHA256) / HKDF-SHA256 / AES-256-GCM",
+          "provider": "library, unselected",
+          "path": "async",
+          "ids": {
+            "kem": "0x0020",
+            "kdf": "0x0001",
+            "aead": "0x0002"
+          },
+          "why": "RFC 9180 with the most widely implemented ciphersuite. Covers the R_pub and per-reader wrap cases uniformly (§13.2)."
+        },
+        "hash": {
+          "primitive": "SHA-256",
+          "provider": "WebCrypto",
+          "path": "both",
+          "why": "One hash everywhere HKDF, signatures and commitments need one."
+        }
+      },
+      "deferred": {
+        "recovery-code-stretching": {
+          "owner": "TRD §15 row 14",
+          "why": "A choice about the code’s entropy and presentation, not about the KDF (§13.10). Argon2id or none falls out of that, and the row is not started."
+        },
+        "slot-verifier": {
+          "owner": "TRD §15 row 12",
+          "why": "Must resist offline guessing by a profile holder (§13.9). Assigned to review 3b by §15, so it is not this row’s to take."
+        },
+        "device-lock-derivation": {
+          "owner": "TRD §15 row 13",
+          "why": "Which factor replaces the promptless handle (§13.3). Row 3 defines the envelope format; row 13 decides what opens it."
+        }
+      }
+    }
+  },
+  "carriers": [
+    {
+      "name": "content-record",
+      "version": 1,
+      "encoding": "StoredRecord.v (a structured-clone field)",
+      "suite": 1,
+      "label": "done/store/v1",
+      "selected_by": "row 3",
+      "in_aad": true
+    },
+    {
+      "name": "journal-entry",
+      "version": 2,
+      "encoding": "the \"2:\" string prefix on the localStorage value",
+      "suite": 1,
+      "label": "done/jrnl/v1",
+      "selected_by": "row 2",
+      "in_aad": true,
+      "note": "Version 2 under suite 1 is not an inconsistency. The leading integer is the carrier framing, which counted from 1 when the journal was plaintext; the trailing v1 in the label is the suite. §4 of the row 1 document explains why both axes exist."
+    },
+    {
+      "name": "local-key-envelope",
+      "version": 1,
+      "encoding": "KeyEnvelope.v (a structured-clone field)",
+      "suite": 1,
+      "label": "done/keyenv/v1",
+      "selected_by": "row 3",
+      "in_aad": true
+    },
+    {
+      "name": "network-envelope",
+      "version": null,
+      "encoding": "unselected",
+      "suite": null,
+      "label": null,
+      "selected_by": "row 4, review 3b",
+      "in_aad": null
+    }
+  ],
+  "acceptance": [
+    {
+      "carrier": "content-record",
+      "version": 1,
+      "verdict": "accept",
+      "why": "The only version this suite defines."
+    },
+    {
+      "carrier": "content-record",
+      "version": 0,
+      "verdict": "refuse-and-report",
+      "why": "No version 0 was ever written. A record claiming one is malformed or hostile."
+    },
+    {
+      "carrier": "content-record",
+      "version": 2,
+      "verdict": "refuse-and-report",
+      "why": "Above what this reader knows. A newer writer touched this store; guessing at its framing is how a store gets corrupted."
+    },
+    {
+      "carrier": "journal-entry",
+      "version": 2,
+      "verdict": "accept",
+      "why": "The encrypted journal."
+    },
+    {
+      "carrier": "journal-entry",
+      "version": 1,
+      "verdict": "refuse-and-report",
+      "why": "A plaintext entry from a pre-encryption build. Replaying it means shipping a plaintext reader, which §6.1 forbids and §11.1 tests for."
+    },
+    {
+      "carrier": "local-key-envelope",
+      "version": 1,
+      "verdict": "accept",
+      "why": "The only version this suite defines."
+    },
+    {
+      "carrier": "local-key-envelope",
+      "version": 2,
+      "verdict": "refuse-and-report",
+      "why": "Above what this reader knows. Refusing a key envelope closes the workspace; opening it wrongly loses it."
+    }
+  ],
+  "separation_check": {
+    "async": [
+      "AES-256-GCM",
+      "Ed25519",
+      "HKDF-SHA-256",
+      "HPKE base mode, DHKEM(X25519, HKDF-SHA256) / HKDF-SHA256 / AES-256-GCM"
+    ],
+    "sync": [
+      "XChaCha20-Poly1305"
+    ],
+    "shared": []
+  },
+  "domain_labels": {
+    "done/store/v1": {
+      "lp_hex": "000d646f6e652f73746f72652f7631",
+      "carrier": "content-record"
+    },
+    "done/jrnl/v1": {
+      "lp_hex": "000c646f6e652f6a726e6c2f7631",
+      "carrier": "journal-entry"
+    },
+    "done/keyenv/v1": {
+      "lp_hex": "000e646f6e652f6b6579656e762f7631",
+      "carrier": "local-key-envelope"
+    }
+  },
+  "primitive_kats": [
+    {
+      "role": "content-store-aead / local-key-envelope-aead / network-envelope-aead",
+      "primitive": "AES-256-GCM",
+      "source": "McGrew & Viega, \"The Galois/Counter Mode of Operation (GCM)\", Test Case 16",
+      "key": "feffe9928665731c6d6a8f9467308308feffe9928665731c6d6a8f9467308308",
+      "iv": "cafebabefacedbaddecaf888",
+      "aad": "feedfacedeadbeeffeedfacedeadbeefabaddad2",
+      "plaintext": "d9313225f88406e5a55909c5aff5269a86a7a9531534f7da2e4c303d8a318a721c3c0c95956809532fcf0e2449a6b525b16aedf5aa0de657ba637b39",
+      "ciphertext": "522dc1f099567d07f47f37a32a84427d643a8cdcbfe5c0c97598a2bd2555d1aa8cb08e48590dbb3da7b08b1056828838c5f61e6393ba7a0abcc9f662",
+      "tag": "76fc6ece0f4e1768cddf8853bb2d551b"
+    },
+    {
+      "role": "subkey-derivation",
+      "primitive": "HKDF-SHA-256",
+      "source": "RFC 5869 Appendix A, Test Case 1",
+      "ikm": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+      "salt": "000102030405060708090a0b0c",
+      "info": "f0f1f2f3f4f5f6f7f8f9",
+      "length_bytes": 42,
+      "okm": "3cb25f25faacd57a90434f64d0362f2a2d2d0a90cf1a5a4c5db02d56ecc4c5bf34007208d5b887185865"
+    },
+    {
+      "role": "mutation-signature",
+      "primitive": "Ed25519",
+      "source": "RFC 8032 §7.1, TEST 1",
+      "seed": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
+      "public_key": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+      "message": "",
+      "signature": "e5564300c360ac729086e2cc806e828a84877f1eb8e5d974d873e065224901555fb8821590a33bacc61e39701cf9b46bd25bf5f0595bbe24655141438e7a100b"
+    },
+    {
+      "role": "hash",
+      "primitive": "SHA-256",
+      "source": "FIPS 180-4, one-block message \"abc\"",
+      "message_utf8": "abc",
+      "digest": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+    }
+  ]
+}

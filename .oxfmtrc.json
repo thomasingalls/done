@@ -4,5 +4,5 @@
   "singleQuote": true,
   "trailingComma": "all",
   "semi": true,
-  "ignorePatterns": ["dist/**", "playwright-report/**", "test-results/**"]
+  "ignorePatterns": ["dist/**", "playwright-report/**", "test-results/**", "test/vectors/**"]
 }

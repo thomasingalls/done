@@ -1,0 +1,277 @@
+{
+  "$schema": "https://done.invalid/vectors/record-format/1",
+  "generated_by": "scripts/generate-record-vectors.mjs",
+  "selection": "docs/selections/row-3-record-format.md",
+  "trd_row": 3,
+  "construction": {
+    "aead": "AES-256-GCM via WebCrypto (suite 1, row 1)",
+    "primitive_kat": "test/vectors/algorithm-suite.json -- row 1 selects the primitive, row 3 the composition",
+    "kdf": "HKDF-SHA256 via WebCrypto deriveBits, at open",
+    "store_hkdf_info": "LP(\"done/store/v1\") || LP(workspace_id)",
+    "store_aad": "LP(\"done/store/v1\") || LP(principal_id) || LP(workspace_id) || LP(dec v) || LP(dec gen) || LP(dec seq) || LP(kind)",
+    "envelope_aad": "LP(\"done/keyenv/v1\") || LP(principal_id) || LP(workspace_id) || LP(dec v) || LP(dec gen) || LP(purpose)",
+    "length_prefix": "uint16be(byteLength) || utf8 -- injective, so no field can shift another",
+    "stored_record": "{ v, gen, seq, kind, nonce[12], ct } as a structured clone; ct carries the 16-byte tag",
+    "key_envelope": "{ v, gen, nonce[12], ct } as a structured clone; ct carries the 16-byte tag",
+    "nonce": "12 bytes from crypto.getRandomValues() per record, under a 2^32-per-generation budget bounded by seq",
+    "nonce_caveat": "Nonces are fixed inputs in these vectors so the composition is testable. Production generates them randomly; the fixed nonce is not the discipline.",
+    "l_local_caveat": "L_local is raw bytes here because a vector needs bytes. In production it is a structured-cloned non-extractable CryptoKey with no extractable representation (§13.3)."
+  },
+  "vectors": [
+    {
+      "name": "update-record",
+      "why": "The common case: one keystroke-sized Yjs update under the first generation.",
+      "inputs": {
+        "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "v": 1,
+        "gen": 1,
+        "seq": 1,
+        "kind": "update",
+        "nonce": "000102030405060708090a0b",
+        "plaintext": "01010101a8e0c9d20500042101087903c0a8"
+      },
+      "derived": {
+        "hkdf_info": "000d646f6e652f73746f72652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
+        "k_store": "67d27fc947b2b1c074b1fb1f46189b75839eed7714dae7b19086ebec5946dbd5",
+        "aad": "000d646f6e652f73746f72652f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e37440001310001310001310006757064617465"
+      },
+      "expected": {
+        "ct": "9c735bcb85165f2e7fa9941dbaeae3085028b763d71a26424f71c6af3716226479cd",
+        "stored_record": {
+          "v": 1,
+          "gen": 1,
+          "seq": 1,
+          "kind": "update",
+          "nonce": "000102030405060708090a0b",
+          "ct": "9c735bcb85165f2e7fa9941dbaeae3085028b763d71a26424f71c6af3716226479cd"
+        }
+      }
+    },
+    {
+      "name": "state-record",
+      "why": "Same store, same generation, kind=state. Proves kind is bound: a state record supersedes every record before it, so a record whose kind can be edited can delete the store.",
+      "inputs": {
+        "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "v": 1,
+        "gen": 1,
+        "seq": 2,
+        "kind": "state",
+        "nonce": "0c0d0e0f1011121314151617",
+        "plaintext": "0102a8e0c9d2050004210108790301010101a8e0c9d2050004210108790301010101a8e0c9d205000421010879030101010101010101010101010101010101010101010101010101010101010101"
+      },
+      "derived": {
+        "hkdf_info": "000d646f6e652f73746f72652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
+        "k_store": "67d27fc947b2b1c074b1fb1f46189b75839eed7714dae7b19086ebec5946dbd5",
+        "aad": "000d646f6e652f73746f72652f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e374400013100013100013200057374617465"
+      },
+      "expected": {
+        "ct": "f2db277ff7f7b1be834afc64a48d9e12bebbcaf6223734e3234218388141c634bb48ae30a25fed927fd4d4f8441abc3e5ad853bc83ea50a84bf0b1f622bcd28b7a3e122cbe0d95f772693ccd5c7b60f2c499772a6c15d55ce9fc5b21c567",
+        "stored_record": {
+          "v": 1,
+          "gen": 1,
+          "seq": 2,
+          "kind": "state",
+          "nonce": "0c0d0e0f1011121314151617",
+          "ct": "f2db277ff7f7b1be834afc64a48d9e12bebbcaf6223734e3234218388141c634bb48ae30a25fed927fd4d4f8441abc3e5ad853bc83ea50a84bf0b1f622bcd28b7a3e122cbe0d95f772693ccd5c7b60f2c499772a6c15d55ce9fc5b21c567"
+        }
+      }
+    },
+    {
+      "name": "empty-update",
+      "why": "A zero-length plaintext still authenticates; framing and tag must not depend on payload length.",
+      "inputs": {
+        "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "v": 1,
+        "gen": 1,
+        "seq": 3,
+        "kind": "update",
+        "nonce": "18191a1b1c1d1e1f20212223",
+        "plaintext": ""
+      },
+      "derived": {
+        "hkdf_info": "000d646f6e652f73746f72652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
+        "k_store": "67d27fc947b2b1c074b1fb1f46189b75839eed7714dae7b19086ebec5946dbd5",
+        "aad": "000d646f6e652f73746f72652f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e37440001310001310001330006757064617465"
+      },
+      "expected": {
+        "ct": "fedf3c008bc19acce3f146058a5e55d8",
+        "stored_record": {
+          "v": 1,
+          "gen": 1,
+          "seq": 3,
+          "kind": "update",
+          "nonce": "18191a1b1c1d1e1f20212223",
+          "ct": "fedf3c008bc19acce3f146058a5e55d8"
+        }
+      }
+    },
+    {
+      "name": "rotated-generation",
+      "why": "A different K_g, so a different K_store. The cleartext gen is what selects which; it is in the AAD, so it cannot be edited to point at a generation the record was not sealed under.",
+      "inputs": {
+        "k_g": "91c4e7a2035fd8b16e4a0c93d75218fe6b3a94c05d2e871f4a6b0938cd5e2107",
+        "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "v": 1,
+        "gen": 2,
+        "seq": 4,
+        "kind": "update",
+        "nonce": "2425262728292a2b2c2d2e2f",
+        "plaintext": "01010101a8e0c9d20500042101087903c0a8"
+      },
+      "derived": {
+        "hkdf_info": "000d646f6e652f73746f72652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
+        "k_store": "ad696b933b45a1c47a3ef73dffd68e486afbc5b70ef3aef549685e1955e8f8af",
+        "aad": "000d646f6e652f73746f72652f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e37440001310001320001340006757064617465"
+      },
+      "expected": {
+        "ct": "b94fb903cea00de40d47d29bd6de0694e664cf4b0e39c1a85174a92f6dc9dc585637",
+        "stored_record": {
+          "v": 1,
+          "gen": 2,
+          "seq": 4,
+          "kind": "update",
+          "nonce": "2425262728292a2b2c2d2e2f",
+          "ct": "b94fb903cea00de40d47d29bd6de0694e664cf4b0e39c1a85174a92f6dc9dc585637"
+        }
+      }
+    },
+    {
+      "name": "second-workspace",
+      "why": "Same K_g, same nonce, same plaintext, different workspace. Proves the subkey is workspace-bound by derivation, not only by AAD.",
+      "inputs": {
+        "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "workspace_id": "ws_01J0000000000000000000000A",
+        "v": 1,
+        "gen": 1,
+        "seq": 1,
+        "kind": "update",
+        "nonce": "000102030405060708090a0b",
+        "plaintext": "01010101a8e0c9d20500042101087903c0a8"
+      },
+      "derived": {
+        "hkdf_info": "000d646f6e652f73746f72652f7631001d77735f30314a3030303030303030303030303030303030303030303041",
+        "k_store": "abbad16e51c57b59438320e5afb49f9a4ff6c4ae0a09fa7475a2e15c46f6340d",
+        "aad": "000d646f6e652f73746f72652f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f30314a30303030303030303030303030303030303030303030410001310001310001310006757064617465"
+      },
+      "expected": {
+        "ct": "4c7d7792070cc3f0cdf13fea7d24b4eb81f170f7cead4c94edfe3cd8b60df61647d3",
+        "stored_record": {
+          "v": 1,
+          "gen": 1,
+          "seq": 1,
+          "kind": "update",
+          "nonce": "000102030405060708090a0b",
+          "ct": "4c7d7792070cc3f0cdf13fea7d24b4eb81f170f7cead4c94edfe3cd8b60df61647d3"
+        }
+      }
+    }
+  ],
+  "envelopes": [
+    {
+      "name": "key-envelope",
+      "why": "K_g sealed under L_local. This is what the key store holds and what §6.1 opens before anything else; every content record above is unreadable until this one opens.",
+      "inputs": {
+        "l_local": "7f2a91c30bd4e685af0132c974e5b8d206a3f47e91c85d3b0e6a248f5c71d9b0",
+        "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "v": 1,
+        "gen": 1,
+        "purpose": "content-key",
+        "nonce": "303132333435363738393a3b",
+        "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36"
+      },
+      "derived": {
+        "aad": "000e646f6e652f6b6579656e762f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e3744000131000131000b636f6e74656e742d6b6579"
+      },
+      "expected": {
+        "ct": "5609f54860c59b16adde7df8e3dcc24eafc610239c51f937a65a0dc8c5f3081b0b87c0eaa9f90314fefd3a4b7845cab7",
+        "key_envelope": {
+          "v": 1,
+          "gen": 1,
+          "nonce": "303132333435363738393a3b",
+          "ct": "5609f54860c59b16adde7df8e3dcc24eafc610239c51f937a65a0dc8c5f3081b0b87c0eaa9f90314fefd3a4b7845cab7"
+        }
+      }
+    },
+    {
+      "name": "key-envelope-rotated",
+      "why": "The second generation, sealed under the same L_local. A device holds one envelope per generation its records still use (§6.1, §13.7).",
+      "inputs": {
+        "l_local": "7f2a91c30bd4e685af0132c974e5b8d206a3f47e91c85d3b0e6a248f5c71d9b0",
+        "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "v": 1,
+        "gen": 2,
+        "purpose": "content-key",
+        "nonce": "3c3d3e3f4041424344454647",
+        "k_g": "91c4e7a2035fd8b16e4a0c93d75218fe6b3a94c05d2e871f4a6b0938cd5e2107"
+      },
+      "derived": {
+        "aad": "000e646f6e652f6b6579656e762f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e3744000131000132000b636f6e74656e742d6b6579"
+      },
+      "expected": {
+        "ct": "4e9584c2745993be4666c04574203982f907eb4e0b6f04cbbeeda084d69561ecf65396d7ba1271e02594fbb934594720",
+        "key_envelope": {
+          "v": 1,
+          "gen": 2,
+          "nonce": "3c3d3e3f4041424344454647",
+          "ct": "4e9584c2745993be4666c04574203982f907eb4e0b6f04cbbeeda084d69561ecf65396d7ba1271e02594fbb934594720"
+        }
+      }
+    }
+  ],
+  "must_fail": [
+    {
+      "name": "wrong-workspace-subkey",
+      "mutate": "Derive K_store for a different workspace id."
+    },
+    {
+      "name": "wrong-principal",
+      "mutate": "Authenticate with a different principal in the AAD."
+    },
+    {
+      "name": "wrong-workspace-aad",
+      "mutate": "Authenticate with a different workspace in the AAD, subkey unchanged."
+    },
+    {
+      "name": "wrong-generation",
+      "mutate": "Claim gen=2 in the AAD for a record sealed under gen=1."
+    },
+    {
+      "name": "kind-swapped",
+      "mutate": "Reinterpret an update record as a state record."
+    },
+    {
+      "name": "seq-edited",
+      "mutate": "Renumber seq from 1 to 99 to reorder the trim."
+    },
+    {
+      "name": "version-downgraded",
+      "mutate": "Renumber v from 1 to 0 to select a suite this reader does not have."
+    },
+    {
+      "name": "flipped-tag-bit",
+      "mutate": "Flip the low bit of the final tag byte."
+    },
+    {
+      "name": "truncated-ciphertext",
+      "mutate": "Drop the final byte of ct."
+    },
+    {
+      "name": "envelope-aad-on-record",
+      "mutate": "Open a content record with a key-envelope AAD."
+    },
+    {
+      "name": "record-aad-on-envelope",
+      "mutate": "Open a key envelope with a content-record AAD."
+    }
+  ]
+}

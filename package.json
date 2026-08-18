@@ -14,14 +14,16 @@
     "lint:fix": "oxlint --type-aware --fix",
     "format": "oxfmt --check .",
     "format:fix": "oxfmt --write .",
-    "check": "pnpm typecheck && pnpm lint && pnpm format && pnpm test && pnpm test:geometry",
+    "check": "pnpm typecheck && pnpm lint && pnpm format && pnpm vectors:check && pnpm test && pnpm test:geometry",
     "test": "vitest run",
     "test:https": "pnpm build && pnpm --dir relay build && node scripts/test-https.mjs",
     "test:watch": "vitest",
     "test:geometry": "playwright test",
     "test:latency": "playwright test --config playwright.latency.config.ts",
     "latency:record": "node scripts/record-latency.mjs",
-    "budget": "node scripts/check-budget.mjs"
+    "budget": "node scripts/check-budget.mjs",
+    "vectors": "node scripts/generate-suite-vectors.mjs && node scripts/generate-record-vectors.mjs && node scripts/generate-journal-vectors.mjs",
+    "vectors:check": "node scripts/generate-suite-vectors.mjs --check && node scripts/generate-record-vectors.mjs --check && node scripts/generate-journal-vectors.mjs --check"
   },
   "dependencies": {
     "@codemirror/commands": "^6.10.4",
