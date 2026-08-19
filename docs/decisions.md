@@ -595,3 +595,91 @@ _names_ live one indirection away from the encoding, which stays in the file a r
 subprocess, because a generator seals and asserts in one pass and re-running a mutation means re-running the
 process; 31 node starts is 0.3 s wall clock against the eight-way pool, which is cheap enough to sit in
 `pnpm check` without anyone weighing whether to skip it.
+
+### The finalization shape is a per-credential chain, and §7.5's three candidates were two
+
+**Date:** 2026-08-19 · **Commit:** on `claude/project-next-steps-742b29` · **Against:** PRD v9 / TRD v8
+
+**Orientation.** Stage 0's item 2 — drafting review 3b's scope — was the only body of work left in the slice
+and the one [sequencing.md](./sequencing.md) §4 names as most likely to become the critical path. §15 already
+said which rows to take first: row 5, because revocation's guarantee against a hostile relay was
+specified-but-not-designed, and row 11, because it changes what 3b is reviewing. §7.5 listed three candidate
+shapes for row 5 and called the middle "the closest fit", which is a preference rather than a construction.
+
+**Decision.** **An append-only per-credential accepted chain of SHA-256 links, with service-signed heads
+amortized over a batch.** `final: true` on a head is the finalization boundary. A separate acceptance-signing
+key `K_accept`, certified by the authorization key in the epoch, because evidence is required before a client
+applies anything and whatever signs heads is therefore on the delivery path — the key that admits and revokes
+credentials should not have to be there.
+
+**The three candidates turned out to be two, and that reframing is the useful part.** Writing the shapes side
+by side shows that the checkpoint-plus-suffix candidate _is_ the chain with a checkpoint carrying the head
+vector, and per-envelope receipts are the chain with the chain removed. So the real question was never
+three-way: it was whether evidence for position _n_ says anything about position _n-1_. A bag of independent
+receipts has the defect that every subset of it is as well-formed as the whole, which is §7.5's own argument
+against a numeric high-water mark, one level along.
+
+**The cost, accepted.** Two carriers gain a field — the epoch payload and the checkpoint manifest each carry
+the accepted-head vector — and neither is on-disk, so §2.1's deadline does not apply. Thirty-two bytes per
+envelope on the wire, one SHA-256 per envelope on the client, no bundle at all.
+
+**Non-equivocation is bounded, and the bound is stated rather than left to be discovered.** The chain is
+non-equivocating per credential and within one client's view. A service maintaining two consistent forks and
+showing each device only its own is undetectable by cryptographic means alone. What narrows it is that the
+epoch binds the head vector, so sustaining a fork means forking the serialized authorization lineage; what
+does not narrow it is anything selected here. A transparency log or client gossip would close it and is
+declined as a larger commitment than the rest of the design, for a workspace with two devices and one person.
+This is §13.5's treatment of rollback applied to the same class of problem — the protection holds within a
+view and detects across views rather than preventing forks.
+
+**One thing it surfaced that is not a selection: §12 has no row for the latency this creates.** An envelope
+arriving ahead of the head covering it is held, so _remote edit → visible on the second device_ is bounded
+below by head cadence, a service parameter. §12's `envelope verify on receipt < 2 ms` measures the client,
+which is not where the cost is. That is the shape of budget that gets discovered after it is missed: every
+existing row green, the client fast, the product slow.
+
+### The enrollment ceremony is a typed short string, and QR is an accelerator rather than a root
+
+**Date:** 2026-08-19 · **Commit:** on `claude/project-next-steps-742b29` · **Against:** PRD v9 / TRD v8
+
+**Orientation.** §15 row 11 offered a QR code carrying the key or a short-authentication-string check over an
+in-band agreement, and noted they are "different protocols, different failure modes". §13.6's second gate is
+what either has to discharge: service authorization alone must never cause an existing client to release a
+content key.
+
+**Decision.** **A short authentication string over an in-band agreement, with both nonces committed before
+either is revealed, five Crockford Base32 symbols displayed on the new device and typed into the existing
+one.** The wrap is HPKE base with `info` binding the transcript hash, so a wrap made for one ceremony opens
+under no other. **QR is an accelerator of the same transcript where `BarcodeDetector` exists, never a second
+protocol** — same bits, same failure mode, no forked security argument.
+
+**QR is declined as the root on row 13's own reasoning, applied a third time.** Row 13 found WebAuthn PRF's
+availability to be "a matrix of OS, browser and authenticator kind rather than a version" and concluded that a
+capability that ragged cannot be a root. Camera access is the same shape and worse: `BarcodeDetector` is in
+neither Safari nor Firefox, so the product would ship a JS decoder against **43.7 kB of gzipped headroom that
+row 2's WASM candidate already wants 24.3 kB of** — competing for headroom with the fix for a measured defect.
+And the direction is wrong: the device that must be convinced is the existing one, which is the laptop, which
+is the device least likely to have a usable camera pointed the right way.
+
+**Typed rather than compared is a real decision and not presentation.** A comparison is satisfied by pressing
+the affirmative button, which is what a person enrolling their own phone does. A transcription is not: the
+check moves from _did you compare_ to _can you produce_. It costs one input field that row 14 already built,
+at one group of five instead of five — so one alphabet, one normalization, one uniformity proof, rather than a
+second short-code format invented later that happens to include `O`.
+
+**The commitment is what makes 25 bits mean 25 bits, and the vectors demonstrate it rather than assert it.**
+Whoever reveals second and is uncommitted can grind their nonce until the string comes out as they like. The
+generator does exactly that with the substituted wrapping key in place and **forces the honest ceremony's
+first two symbols in 1 881 tries**; all five is the same search at 2²⁵, which is seconds. Without commit-reveal
+the string carries zero bits against a service that speaks second, and zero is the arithmetic rather than a
+rhetorical flourish.
+
+**The strength is per admitted credential, not per attempt**, which is what makes 25 bits enough: a mismatch
+refuses the enrollment and spends the credential, so a second attempt is a second admitted credential and a
+second visible failure in front of the person who just watched the first one. That requires the refusal path
+to reach the authorization service rather than merely close a dialog, and Stage 4 owes that.
+
+**The cost, accepted.** Enrollment needs both devices awake, where §13.7's rotation is deliberately
+store-and-forward. That asymmetry is the price of an out-of-band channel made of a person looking at two
+screens, and the escape hatch is already in §13.6's gate 2 — an independent recovery factor needs no second
+device.

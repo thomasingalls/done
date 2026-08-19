@@ -254,7 +254,7 @@ Internal order, each item needing the one before:
 4. **Device signing and wrapping credentials**, both persistence tiers, with the tier shown in the UI.
 5. **Envelope layer, relay rewrite, content-blind durable store, checkpoints and manifests.** Relay transport is
    ephemeral; the durable hosted ciphertext is the retained recovery source while its retention window survives.
-6. **Enrollment's two gates** and whichever ceremony TRD §15 row 11 selects.
+6. **Enrollment's two gates** and the ceremony TRD §15 row 11 selects.
 7. **The device list.**
 8. **Rotation, revocation, acceptance evidence, and the finalization boundary.**
 9. **Sign out / remove / reset**, the workspace picker, provenance mode for cards.

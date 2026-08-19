@@ -1,0 +1,123 @@
+{
+  "$schema": "https://done.invalid/vectors/enrollment-ceremony/1",
+  "generated_by": "scripts/generate-enrollment-vectors.mjs",
+  "selection": "docs/selections/row-11-enrollment-ceremony.md",
+  "trd_row": 11,
+  "construction": {
+    "shape": "Short authentication string over an in-band agreement, committed before revealed, typed rather than compared",
+    "commitment": "SHA-256( LP(\"done/enroll-commit/v1\") || LP(role) || LP(hex nonce) ), role in {existing, new}",
+    "transcript": "LP(\"done/enroll/v1\") || LP(workspace_id) || LP(dec epoch) || LP(existing_credential_id) || LP(new_credential_id) || LP(hex new_wrapping_key) || LP(hex nonce_existing) || LP(hex nonce_new)",
+    "transcript_hash": "SHA-256(T). The ceremony’s identity, and what a wrap is bound to.",
+    "sas": "HKDF-SHA256(ikm = T, salt = \"\", info = LP(\"done/enroll-sas/v1\"), L = 5); symbol i = ALPHABET[byte_i & 0x1f]",
+    "alphabet": "Crockford Base32: 0123456789ABCDEFGHJKMNPQRSTVWXYZ (no I, L, O, U) — row 14’s, reused",
+    "entropy": "25 bits. One guess per admitted credential, not per attempt; see the selection document §4.",
+    "direction": "Displayed on the new device, typed into the existing one. The existing device is the one deciding whether to release a content key, so it is the one that must be given evidence.",
+    "wrap_info": "LP(\"done/enroll-wrap/v1\") || LP(hex transcript_hash), as HPKE base-mode info",
+    "length_prefix": "uint16be(byteLength) || utf8 — injective, so no field can shift another",
+    "nonce_caveat": "Nonces are fixed inputs in these vectors so the composition is testable. Production generates 32 fresh bytes per side; the fixed nonce is not the discipline, the commitment is.",
+    "not_here": {
+      "primitives": "SHA-256, HKDF and X25519 KATs are row 1’s, in test/vectors/algorithm-suite.json.",
+      "wrap": "The HPKE seal itself is row 1’s primitive and row 4’s framing. This row pins only its `info`.",
+      "admission": "Admitting the new credential and signing the successor epoch is §13.6’s first gate, and rows 9 and 12."
+    }
+  },
+  "keypairs": {
+    "new_device": {
+      "role": "The new device’s wrapping keypair. Its public half is what the SAS authenticates.",
+      "source": "RFC 7748 §6.1, Alice",
+      "scalar": "77076d0a7318a57d3c16c17251b26645df4c2f87ebc0992ab177fba51db92c2a",
+      "public_key": "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a"
+    },
+    "substituted": {
+      "role": "A key the service controls, offered in the new device’s place. §11.2 test 7’s attack, as a value.",
+      "source": "RFC 7748 §6.1, Bob",
+      "scalar": "5dab087e624a8a4b79e17f8b83800ee66f3bb1292618b6fd1c2f8b27ff88e0eb",
+      "public_key": "de9edb7d7b7dc1b4d35b61c2ece435373f8343c85b78674dadfc7e146f882b4f"
+    }
+  },
+  "vectors": [
+    {
+      "name": "honest-enrollment",
+      "why": "A laptop enrolling a phone at epoch 9. Both sides derive this transcript and this string.",
+      "inputs": {
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "epoch": 9,
+        "existing_credential_id": "cred_01HZXR0000000000000000LAPT",
+        "new_credential_id": "cred_01HZXR0000000000000000PHON",
+        "new_wrapping_key": "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a",
+        "nonce_existing": "5f0e1d2c3b4a59687786958493a2b1c0cfdeed0c1b2a39485766758493a2b1c0",
+        "nonce_new": "a0b1c2d3e4f50617283949596a7b8c9dae0f1e2d3c4b5a69788796a5b4c3d2e1"
+      },
+      "derived": {
+        "commitment_existing": "56826dc582649f1bb3367bab151e766139906a60a2eab26a2715679078122dee",
+        "commitment_new": "1de8f32cd0055a9a03155956c27cb64fa2b6b8e2ba72f08b7c388089e77cdb0c",
+        "transcript": "000e646f6e652f656e726f6c6c2f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744000139001f637265645f3031485a5852303030303030303030303030303030304c415054001f637265645f3031485a58523030303030303030303030303030303050484f4e004038353230663030393839333061373534373438623764646362343365663735613064626633613064323633383161663465626134613938656161396234653661004035663065316432633362346135393638373738363935383439336132623163306366646565643063316232613339343835373636373538343933613262316330004061306231633264336534663530363137323833393439353936613762386339646165306631653264336334623561363937383837393661356234633364326531",
+        "transcript_hash": "21c4558aa14620cc13aec15be04ce29ef834cc1a248831b7548038844d9dd226",
+        "wrap_info": "0013646f6e652f656e726f6c6c2d777261702f7631004032316334353538616131343632306363313361656331356265303463653239656638333463633161323438383331623735343830333838343464396464323236"
+      },
+      "expected": {
+        "sas": "Q9S7P"
+      }
+    }
+  ],
+  "grinding_demonstration": {
+    "why": "The reason the nonces are committed before they are revealed. A service that reveals second and is not committed can search its nonce until the string comes out as it likes.",
+    "method": "Candidate i is SHA-256(\"done/grind-demo\" || uint32be(i)), so the count is a fact about the construction rather than about this run. The substituted wrapping key is in place throughout.",
+    "target_symbols": 2,
+    "target": "Q9",
+    "tries": 1881,
+    "nonce_found": "b574604bf9f689ef206d5aaf88b05c4f40ccd0fe37a2e3ed3b31874ac5574860",
+    "sas_produced": "Q9012",
+    "extrapolation": "Forcing all five symbols is the same search at 2^25 — seconds of work. The commitment is what makes 25 bits mean 25 bits."
+  },
+  "must_fail": [
+    {
+      "name": "commitment-opened-with-wrong-nonce",
+      "mutate": "Reveal a nonce other than the one committed to. This is the whole point of the commit phase: whoever reveals second cannot choose."
+    },
+    {
+      "name": "commitment-role-echoed",
+      "mutate": "Present the existing device’s commitment as the new device’s. Without `role` in the commitment the two are structurally identical and this succeeds."
+    },
+    {
+      "name": "aad-only-renumbered-commit-label",
+      "mutate": "Open the commitment under \"done/enroll-commit/v2\"."
+    },
+    {
+      "name": "substituted-wrapping-key",
+      "mutate": "The service offers its own X25519 public key in the new device’s place. **This is §11.2 test 7**, and the SAS not matching is the whole of §13.6’s second gate."
+    },
+    {
+      "name": "wrong-workspace",
+      "mutate": "Run the ceremony against a different workspace id."
+    },
+    {
+      "name": "wrong-epoch",
+      "mutate": "Replay the transcript under a later epoch. An authorization successor does not carry a completed ceremony forward with it."
+    },
+    {
+      "name": "wrong-existing-credential",
+      "mutate": "Name a different existing device as the one releasing the key."
+    },
+    {
+      "name": "wrong-new-credential",
+      "mutate": "Name a different credential as the one enrolling. The credential id is minted per enrollment, so this is what stops a whole ceremony being replayed."
+    },
+    {
+      "name": "wrong-existing-nonce",
+      "mutate": "Substitute the existing device’s revealed nonce."
+    },
+    {
+      "name": "wrong-new-nonce",
+      "mutate": "Substitute the new device’s revealed nonce."
+    },
+    {
+      "name": "transposed-nonces",
+      "mutate": "Exchange the two nonces. The transcript binds them in fixed positions, so the ceremony is role-ordered and swapping the devices is a different ceremony."
+    },
+    {
+      "name": "aad-only-renumbered-transcript-label",
+      "mutate": "Derive the SAS under \"done/enroll/v2\". The label is where this carrier authenticates its own version (row 1)."
+    }
+  ]
+}

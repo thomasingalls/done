@@ -1,0 +1,206 @@
+{
+  "$schema": "https://done.invalid/vectors/finalization/1",
+  "generated_by": "scripts/generate-finalization-vectors.mjs",
+  "selection": "docs/selections/row-5-finalization.md",
+  "trd_row": 5,
+  "construction": {
+    "shape": "Append-only per-credential accepted chain, with amortized service-signed heads",
+    "link": "SHA-256( LP(\"done/accept/v1\") || LP(workspace_id) || LP(credential_id) || LP(dec seq) || LP(dec epoch) || LP(hex digest) || LP(hex prev) )",
+    "empty_chain": "32 zero bytes. Position 1 binds label, workspace and credential itself.",
+    "head": "Ed25519 over LP(\"done/accept-head/v1\") || LP(workspace_id) || LP(credential_id) || LP(dec seq) || LP(hex link) || LP(dec epoch) || LP(\"true\"|\"false\")",
+    "signing_key": "A separate acceptance-signing key, certified by the authorization key in the epoch it appears in. It is hot because it signs on the delivery path; the epoch key need not be.",
+    "length_prefix": "uint16be(byteLength) || utf8 — injective, so no field can shift another",
+    "client_rules": [
+      "Verify a head against the link you replayed yourself, never the link the head claims.",
+      "Admit no envelope without a signed head at or above its position.",
+      "First-seen-wins per (credential, position). A second link at a held position is equivocation, and a valid signature is not an answer to it.",
+      "Above the newest head, hold rather than discard. Missing evidence is availability, not integrity (§7.5)."
+    ],
+    "not_here": {
+      "primitives": "SHA-256 and Ed25519 KATs are row 1’s, in test/vectors/algorithm-suite.json.",
+      "wire": "How a link and a head travel beside an envelope is row 4’s framing.",
+      "retention": "How deep a device keeps its own chain is row 6.",
+      "checkpoint": "The head vector a checkpoint manifest carries is §7.6’s, and its construction is row 7."
+    }
+  },
+  "keys": {
+    "service": {
+      "role": "The acceptance-signing key. Hot, because it signs on the delivery path.",
+      "source": "RFC 8032 §7.1, TEST 2",
+      "seed": "4ccd089b28ff96da9db6c346ec114e0f5b8a319f35aba624da8cf6ed4fb8a6fb",
+      "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
+    },
+    "impostor": {
+      "role": "Not the service. Present so \"signed by the wrong key\" is a vector rather than a sentence.",
+      "source": "RFC 8032 §7.1, TEST 1",
+      "seed": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
+      "public_key": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a"
+    }
+  },
+  "vectors": [
+    {
+      "name": "first-accepted",
+      "why": "Position 1 of a fresh credential. `prev` is the empty chain, so the first link still binds label, workspace and credential.",
+      "inputs": {
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "credential_id": "cred_01HZXR0000000000000000LAPT",
+        "seq": 1,
+        "epoch": 7,
+        "digest": "9f2c4e6a08b1d3f57902a4c6e8b0d2f4160738a5c9eb2d4f6081a3c5e7092b4d",
+        "prev": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "expected": {
+        "link": "438e2c9707e0992b4289cfaad16615570794015f564320814f2a5d60f27a81c6"
+      }
+    },
+    {
+      "name": "second-accepted",
+      "why": "Position 2, same epoch. The link is the only thing carrying the fact that position 1 exists.",
+      "inputs": {
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "credential_id": "cred_01HZXR0000000000000000LAPT",
+        "seq": 2,
+        "epoch": 7,
+        "digest": "a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90",
+        "prev": "438e2c9707e0992b4289cfaad16615570794015f564320814f2a5d60f27a81c6"
+      },
+      "expected": {
+        "link": "1a7c5fd3c6844b67fca832b09fb2759b888c7388aa5e120ce4ae47b128dc1918"
+      }
+    },
+    {
+      "name": "across-an-epoch",
+      "why": "Position 3 references epoch 8. A genuine late-arriving old-epoch update is legitimate (§7.5), so epoch is bound per position rather than per chain.",
+      "inputs": {
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "credential_id": "cred_01HZXR0000000000000000LAPT",
+        "seq": 3,
+        "epoch": 8,
+        "digest": "00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff",
+        "prev": "1a7c5fd3c6844b67fca832b09fb2759b888c7388aa5e120ce4ae47b128dc1918"
+      },
+      "expected": {
+        "link": "9b56061a1e713609e6768cdc8992d1e2c02a9c0ee5cddb45c45023bbe511ae6c"
+      }
+    },
+    {
+      "name": "other-credential-same-position",
+      "why": "The phone at its own position 1, carrying the laptop’s position-1 digest. Same workspace, same position, same bytes, different chain.",
+      "inputs": {
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "credential_id": "cred_01HZXR0000000000000000PHON",
+        "seq": 1,
+        "epoch": 7,
+        "digest": "9f2c4e6a08b1d3f57902a4c6e8b0d2f4160738a5c9eb2d4f6081a3c5e7092b4d",
+        "prev": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "expected": {
+        "link": "c72f9344c1746db1ac2fdbd2604ef45a9ef6b53a322d6ad59d70d0b8f657f165"
+      }
+    }
+  ],
+  "heads": [
+    {
+      "name": "live-head-at-2",
+      "why": "One signature covering positions 1 and 2. This is the amortization: the chain reaches back, so the service need not sign every position.",
+      "head": {
+        "workspace": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "credential": "cred_01HZXR0000000000000000LAPT",
+        "seq": 2,
+        "link": "1a7c5fd3c6844b67fca832b09fb2759b888c7388aa5e120ce4ae47b128dc1918",
+        "epoch": 7,
+        "final": false
+      },
+      "derived": {
+        "message": "0013646f6e652f6163636570742d686561642f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c415054000132004031613763356664336336383434623637666361383332623039666232373539623838386337333838616135653132306365346165343762313238646331393138000137000566616c7365"
+      },
+      "signature": "6fb7e3b5ea8b5b068e83c53936d395f9e860018a238c03f0c5f6fa367894ebba06994ffbef14f01331e599cb00548b9f0787f85ad7b9a38369df91fbe7784109"
+    },
+    {
+      "name": "finalized-head-at-3",
+      "why": "The cutoff. `final: true` says no position above 3 will ever be accepted for this credential, which is one third of what revocation commits (§7.5).",
+      "head": {
+        "workspace": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "credential": "cred_01HZXR0000000000000000LAPT",
+        "seq": 3,
+        "link": "9b56061a1e713609e6768cdc8992d1e2c02a9c0ee5cddb45c45023bbe511ae6c",
+        "epoch": 8,
+        "final": true
+      },
+      "derived": {
+        "message": "0013646f6e652f6163636570742d686561642f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c415054000133004039623536303631613165373133363039653637363863646338393932643165326330326139633065653563646462343563343530323362626535313161653663000138000474727565"
+      },
+      "signature": "acfaa169a826cc0aeeab74cdc0f516e55279123d0d7cdc05c73da8cff731f09a73d3e8170cb1353118caced25050e6f4c13d852469454ff91aec3af7f2462306"
+    }
+  ],
+  "must_fail": [
+    {
+      "name": "wrong-workspace",
+      "mutate": "Replay the chain under a different workspace id. An envelope accepted in one workspace is not evidence in another."
+    },
+    {
+      "name": "wrong-credential",
+      "mutate": "Replay the laptop’s chain as the phone’s. Chains are per credential, so a position in one is not a position in the other."
+    },
+    {
+      "name": "wrong-sequence",
+      "mutate": "Replay position 2 as position 3. A link cannot be moved along its own chain."
+    },
+    {
+      "name": "wrong-epoch",
+      "mutate": "Replay position 2 under epoch 8. This is the field §7.5 says the epoch alone cannot carry, so it is bound where acceptance is recorded instead."
+    },
+    {
+      "name": "wrong-digest",
+      "mutate": "Replay position 2 over a different update digest. Substituting the envelope under an accepted position is what the digest binding exists for."
+    },
+    {
+      "name": "reordered-chain",
+      "mutate": "Compute position 3 over position 1’s link, skipping position 2. Isolates `prev`, the only field that makes the chain a chain."
+    },
+    {
+      "name": "renumbered-link-label",
+      "mutate": "Replay under \"done/accept/v2\". The label is where this carrier authenticates its own version, so a renumbered chain must fail to verify rather than select another suite (row 1). **Deliberately not named `aad-only-`**: no link-layer negative can isolate one field, because eliding the head’s `link` rescues every one of them. That is the pin between the two layers, not a coverage gap — see the selection document."
+    },
+    {
+      "name": "head-signed-by-impostor",
+      "mutate": "A well-formed head over the correct link, signed with RFC 8032 TEST 1’s key instead of the service key."
+    },
+    {
+      "name": "head-wrong-sequence",
+      "mutate": "Verify the head as though it were signed at position 3. Isolates the head’s `seq`, which is what bounds how far the evidence reaches."
+    },
+    {
+      "name": "head-wrong-link",
+      "mutate": "The service signed a head over a different link at this position. The client verifies against the link it replayed itself, so the signature does not open."
+    },
+    {
+      "name": "head-wrong-workspace",
+      "mutate": "Verify the head under a different workspace id."
+    },
+    {
+      "name": "head-wrong-credential",
+      "mutate": "Verify the laptop’s head as the phone’s. A head is per credential for the same reason the chain is."
+    },
+    {
+      "name": "head-wrong-epoch",
+      "mutate": "Verify the head under a different epoch."
+    },
+    {
+      "name": "head-final-flag-flipped",
+      "mutate": "Verify the live head as though it were final. **This is the finalization boundary itself**: flipped one way it freezes a still-authorized credential, the other way it keeps a revoked one’s writes admissible."
+    },
+    {
+      "name": "aad-only-renumbered-head-label",
+      "mutate": "Verify the head under \"done/accept-head/v2\"."
+    },
+    {
+      "name": "forked-link-at-same-position",
+      "mutate": "A second, properly signed head over a different link at a position the client already holds. First-seen-wins per (credential, position) refuses it — the service equivocated, and a valid signature is not an answer to that."
+    },
+    {
+      "name": "envelope-beyond-signed-head",
+      "mutate": "Position 3 offered with only the head signed at position 2. Evidence is required on every applied envelope (§7.5), so this one is held rather than applied."
+    }
+  ]
+}
