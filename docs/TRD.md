@@ -910,6 +910,41 @@ represent.
 **in the clear**, because the relay validates them. **The attributed actor is inside the seal**, because the
 relay is not entitled to a per-write record of which member wrote. The signature covers both.
 
+**The format is selected** (§15 row 4):
+
+```
+Clear header  v, workspace_id, credential_id, epoch, gen, seq, nonce[12], digest
+Sealed body   LP("done/env-body/v1") || LP(actor_id) || LP(actor_kind)
+              || u32be(count) || ( u32be(len) || update )*
+
+K_net = HKDF-SHA256(ikm = K_g, salt = "", info = LP("done/envelope/v1") || LP(workspace_id), L = 32)
+AAD   = LP("done/env/v1") || LP(dec v) || LP(workspace_id) || LP(credential_id)
+        || LP(dec epoch) || LP(dec gen) || LP(dec seq)
+ct    = AES-256-GCM(K_net; body, AAD)
+sig   = Ed25519( device signing credential ; LP("done/env-sig/v1") || <the AAD's fields>
+        || LP(hex nonce) || LP(hex digest) )
+```
+
+**There are two bound field lists because one of them structurally cannot do the whole job.** The nonce is the
+AEAD's own input and `digest` is a function of the ciphertext the AAD helps produce, so neither can be inside
+the AAD — and both are fields a reader trusts. **The signature is what reaches them**, which is why its message
+is a separate list rather than the header repeated.
+
+**`digest` is SHA-256 of the ciphertext**, not the plaintext, so §7.2's relay validates it with no content key
+and §7.5's accepted chain binds the same value the relay checked.
+
+**`seq` is the credential's own outbound position and its accepted position, as one number, and that is forced
+by §7.5 rather than chosen here.** A client can only replay its own chain if it can compute each position
+unaided; a service-assigned position would mean it cannot verify anything until told where its own writes
+landed. The cost is that a client cannot skip — a refused envelope stalls that credential's chain until it is
+re-minted at the same position — and the benefit beyond §7.5 is that `seq` bounds the 12-byte random nonce's
+per-generation budget in one comparison, exactly as it does in §6.1.
+
+**Batching closes at a change of actor, credential, epoch or generation; at a flush interval that must not be
+shorter than the acceptance-head cadence, since §7.5 holds the envelope regardless; or at a byte cap.** One
+envelope carries one actor by construction, so batching costs no attribution granularity at all. The interval
+and the cap are tunables with grounds rather than constants with authority.
+
 **What that buys, precisely, so nobody claims more.** No actor identifier crosses in the clear. It is **not**
 unlinkability: the relay sees a credential identifier per envelope — it cannot validate per-credential
 authorization blind — and the authorization state it validates binds credentials to members, so it can generally
@@ -1955,8 +1990,34 @@ This is asked **per workspace**, never per device: one device can hold a lineage
 live-lineage Account workspace in the same profile.
 
 **Rollback protection is bounded and the bound must be stated.** A returning client remembers the newest head it has
-seen and rejects an ancestor. A **brand-new** client trusts the service to identify the current head; there is no
-mechanism that fixes that, and chain-head discovery for a fresh device is an unselected field (§15).
+seen and rejects an ancestor. A **brand-new** client trusts the service to identify the current head, and no
+construction fixes that.
+
+**What is selected is how far *brand-new* reaches, and what is left when it stops** (§15 row 9). **Two of the
+three arrival paths are not brand-new.** A device enrolling through §13.6 receives the head **through the
+person** — row 11's transcript binds the epoch head, so the typed symbols authenticate where the lineage is as
+well as whose wrapping key it is. A device restoring from a user-held migration package or fidelity archive has
+an anchor from outside the service for the same reason, and §14's package formats owe a signed head because of
+it. **The third — recovery with no surviving device (§13.8) — asks:**
+
+```
+Assertion = Ed25519( K_auth ; LP("done/head-assert/v1") || LP(workspace_id) || LP(dec epoch)
+              || LP(hex epoch_head) || LP(hex client_nonce) || LP(dec issued_at) )
+```
+
+**The nonce separates a hostile relay from a hostile authorization service**, which is §7.3's own boundary:
+without it an assertion is a standing artifact any intermediary may re-serve forever, and replay needs no key at
+all. `issued_at` is bound and **displayed rather than enforced** — a device recovering after total loss has no
+trustworthy clock — and the recovery screen showing the epoch, its age and the device list it implies is part of
+the construction rather than copy around it. A device records its head at first contact; from then on the
+ancestor rule above applies and this mechanism is finished.
+
+**The residual, and its bound.** A hostile authorization service can serve a recovering device a stale,
+self-consistent head at first contact. **It cannot also show current content**: §7.5 makes revocation atomic
+with rotation, so a hidden revocation is a hidden generation, and a device held on the stale generation cannot
+read anything written after it. The attack degrades to a partition — availability rather than integrity — and
+its symptom is the one thing a person running a recovery is looking at. That bound is weakest on a workspace
+with little history since the rotation, and it is a bound rather than a guarantee.
 
 **Test.** §11.2 tests 4 and 15.
 
@@ -1975,7 +2036,10 @@ and a recovery code saved on that phone are five artifacts and **one** failure d
 
 **The ceremony that discharges the second gate is selected** (§15 row 11): a **short authentication string over
 an in-band agreement**, with both nonces **committed before either is revealed**, derived from a transcript
-binding the workspace, epoch, both credential ids and the new device's wrapping public key. Five Crockford
+binding the workspace, the epoch **and its head**, both credential ids and the new device's wrapping public key.
+**The head is bound because §15 row 9 asked for it**: a device enrolling here is talking to one that already
+knows where the lineage is, so the same typed symbols authenticate that too and §13.5's brand-new case never
+reaches this path. Five Crockford
 Base32 symbols — row 14's alphabet, mask and normalization, reused — **displayed on the new device and typed
 into the existing one**, because the existing device is the one deciding whether to release a content key and a
 comparison is satisfied by pressing the affirmative button. The wrap is HPKE base with
@@ -2251,6 +2315,12 @@ ordinary way.
    target, since retaining every envelope grows without bound.
 4. **The historical content-key generations**, because the attributed actor is inside the seal (§13.7).
 
+**A fifth thing is owed for a different reason, and §15 row 9 is why.** The package must carry **the old
+lineage's signed head at the moment it was made**, because a restoring device is otherwise brand-new in §13.5's
+sense and has to ask the replacement service where the lineage stood. A user-held package is the one artifact
+that can answer that from outside any service, and it costs one signature it is already carrying the key to
+verify. Row 10 selects the format; this is the requirement on it.
+
 **None of this is succession.** It proves who wrote history and authorizes nothing. The rule that nobody changes
 authorization outside the service is untouched by material that cannot change anything.
 
@@ -2346,15 +2416,15 @@ direction for the dependency to run.
 
 ## 15. The selection register
 
-The constraints above are fixed; this is the register of the constructions built on them. **Seven rows are
-selected and fourteen are open.** **The design reviews wait on the selections in their scope, and the cutover
+The constraints above are fixed; this is the register of the constructions built on them. **Nine rows are
+selected and twelve are open.** **The design reviews wait on the selections in their scope, and the cutover
 waits separately on row 21** (§13.11, §14.6).
 
 **The register has two review scopes and two independent scopes.** Rows **1, 2, 3 and 13**, plus the storage-facing
 part of 14, are what a local encrypted store needs; they gate the storage work and are the scope of review **3a**, answered
 before the first deployment cutover — **that scope is now closed.** Rows **4–12, 15–17 and 20**, plus the network-facing
 part of 14, are what moving an envelope over a network needs; they gate the service and are the scope of review **3b**,
-answered before network sync ships — **that scope is open, with rows 5 and 11 now selected out of it.** Rows **18 and 19**
+answered before network sync ships — **that scope is open, with rows 4, 5, 9 and 11 now selected out of it.** Rows **18 and 19**
 retain their own empirical triggers and gate neither review nor
 cutover. Row **21** is the migration choice: it gates cutover but neither design review. Closing one scope does not
 require another, which is what lets encryption at rest land before the protocol is specified.
@@ -2373,7 +2443,9 @@ true**, and where the two disagree this one wins.
 | 13 | Device-lock derivation, enrollment migration and copy | A **generated 125-bit code always**, with WebAuthn PRF as an additional seal of the same `L_lock` rather than an alternative to it. Enrollment reseals the key envelopes and **rotates the content key forward** (§13.3) | [row 13](./selections/row-13-device-lock.md) |
 | 14 | Recovery-code entropy and generation — **storage-facing half** | 125 bits, Crockford Base32, five groups of five, **and no stretching at all**. Step-up authentication is drafted in the same record and belongs to review 3b | [row 14](./selections/row-14-recovery-code.md) |
 | 5 | Finalization shape | An **append-only per-credential accepted chain** of SHA-256 links, with **service-signed heads amortized over a batch** rather than one receipt per envelope. A separate hot acceptance-signing key, certified by the authorization key in the epoch. `final: true` is the cutoff. The epoch payload and the checkpoint manifest each gain the head vector (§7.5, §7.6, §13.5) | [row 5](./selections/row-5-finalization.md) |
-| 11 | Device-to-device ceremony | A **short authentication string over an in-band agreement**, nonces **committed before revealed**, five Crockford Base32 symbols **typed** from the new device into the existing one. QR is an accelerator of the same transcript where a decoder exists, never a second protocol. The wrap's HPKE `info` binds the transcript hash (§13.6) | [row 11](./selections/row-11-enrollment-ceremony.md) |
+| 11 | Device-to-device ceremony | A **short authentication string over an in-band agreement**, nonces **committed before revealed**, five Crockford Base32 symbols **typed** from the new device into the existing one. QR is an accelerator of the same transcript where a decoder exists, never a second protocol. The transcript binds the epoch head as well as the wrapping key, and the wrap's HPKE `info` binds the transcript hash (§13.6) | [row 11](./selections/row-11-enrollment-ceremony.md) |
+| 4 | Envelope wire format and batching granularity | Clear header — `v`, workspace, credential, epoch, generation, `seq`, nonce, `digest` — under AES-256-GCM with a network subkey, the actor inside the seal, and **two bound field lists**: an AAD for what the reader trusts, and a signature reaching the nonce and digest the AAD structurally cannot. `digest` is of the **ciphertext**, so the relay validates it with no content key. **`seq` is the credential's own position and the accepted position both**, because row 5 requires the client to compute its chain unaided (§7.4) | [row 4](./selections/row-4-envelope-format.md) |
+| 9 | Chain-head discovery for a brand-new device | **Two of three arrival paths are not brand-new**: enrollment carries the head through the person (row 11), and migration carries it in a user-held package. The third — recovery with no surviving device — gets a **nonce-bound signed head assertion**, which moves replay from *anyone in the path* to *the authorization service itself*. The residual is bounded: a hidden revocation is a hidden rotation, so a stale head cannot come with current content (§13.5) | [row 9](./selections/row-9-chain-head-discovery.md) |
 
 **Row 20 — test vectors — is closed for these seven and open for the rest.** Each carries a generated,
 self-verifying vector file; `pnpm vectors:check` fails the build if any has drifted from its generator, and
@@ -2383,11 +2455,9 @@ self-verifying vector file; `pnpm vectors:check` fails the build if any has drif
 
 | # | Unselected                                    | Constrained by                                                                                 |
 | - | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| 4 | Envelope wire format: which fields are associated data, batching granularity | Actor inside the seal; source batching only (§7.4)         |
 | 6 | Anti-replay rule and envelope retention depth  | Devices retain their own outbound envelopes to the last admitted checkpoint (§7.4)             |
 | 7 | Checkpoint construction, cadence, and retention of superseded checkpoints | Must preserve attribution; manifest carries `{sv, ds}` or a receipt (§7.6) |
 | 8 | Attribution-preserving representation and its storage bound | §13.7's candidate family; a copied envelope signature does not work            |
-| 9 | Chain-head discovery for a brand-new device    | Rollback protection is bounded for a client with no history (§13.5)                            |
 | 10 | Terminal-package and portable cutover-package formats | Must travel with the workspace, not require the old operator (§14.2, §14.4)             |
 | 12 | Account-credential and slot-verifier construction, including offline-guessing resistance | §13.9 |
 | 14 | Recovery-code **step-up authentication** and confirmation UX — the network-facing half | §13.8; the storage-facing half is selected above |
@@ -2396,15 +2466,19 @@ self-verifying vector file; `pnpm vectors:check` fails the build if any has drif
 | 17 | Which web-security baseline profile and version | §10.9, §13.11 level 2                                                                         |
 | 18 | Whether a persistent encrypted search index is needed at all | Deferred; gates neither review nor cutover; measure the in-memory rebuild first (§6.2, §12) |
 | 19 | Root-type day collections (§10.8)              | Deferred; one of its four costs has lapsed and should be re-counted                            |
-| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the seven selected above**, each of which carries a generated, self-verifying vector file |
+| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the nine selected above**, each of which carries a generated, self-verifying vector file |
 | 21 | First-deployment cutover attribution: accept system attribution, or bring the fidelity archive forward | §14.6; must be selected before cutover; adding authorship fields to Markdown is rejected (§9.1) |
 
-**Rows 4 and 9 are the ones to close next, and rows 5 and 11 are why.** Row 4 now carries two selected
-constructions rather than none: the accepted chain's link and head travel beside an envelope, and the enrollment
-wrap is an HPKE seal whose framing row 4 owns. Row 9 is the harder one — **row 5's guarantee is stated relative
-to a head the client believes is current, and row 9 is what decides how a device with no history comes to
-believe that.** §13.5 already records that a brand-new client trusts the service there with no mechanism to fix
-it, so row 9 is where that bound is either narrowed or written down as accepted.
+**Rows 8 and 7 are the ones to close next, in that order, and the order is forced.** Row 7's constraint already
+says a checkpoint must preserve attribution, and **row 8 is what that attribution is made of** — §13.7's
+candidate family, still unselected, with the warning that copying an original envelope signature beside a newly
+assembled tuple does not work. Designing the checkpoint before the thing it must carry would be designing a
+container for an unspecified object. Row 7 then closes carrying three obligations rather than one: §7.6's
+coverage attestation, row 5's accepted-head vector, and whatever row 8 selects.
+
+**Two smaller debts are now owed rather than open.** Row 6 inherits one number from row 4 rather than two, since
+a credential's outbound position and its accepted position are the same number. And **row 10 owes a signed head
+in the migration package**, which row 9 requires and does not itself provide.
 
 **Row 12 is worth reading beside §13.3 before it is answered**: a verifier
 resisting offline guessing by a profile holder has the threat model the device lock was selected under, and that

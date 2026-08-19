@@ -1,0 +1,133 @@
+{
+  "$schema": "https://done.invalid/vectors/head-discovery/1",
+  "generated_by": "scripts/generate-head-discovery-vectors.mjs",
+  "selection": "docs/selections/row-9-chain-head-discovery.md",
+  "trd_row": 9,
+  "construction": {
+    "shape": "Narrow what \"brand-new\" covers, then bound what is left. Two of three arrival paths carry an anchor from outside the service; the third asks, with a nonce.",
+    "paths": {
+      "enrollment": "The head arrives through the person. Row 11’s transcript binds the epoch head, so the five typed symbols authenticate where the lineage is as well as whose key it is. No service trust at all.",
+      "migration": "A user-held package or fidelity archive carries a signed head (rows 10, §9.3, §14). Same in kind as enrollment: the anchor came from outside the service.",
+      "recovery": "No surviving device. The only genuinely brand-new case, and what the assertion below is for."
+    },
+    "assertion": "Ed25519( K_auth ; LP(\"done/head-assert/v1\") || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(hex client_nonce) || LP(dec issued_at) )",
+    "client_nonce": "32 fresh bytes from the arriving device, per request",
+    "issued_at": "Seconds. Displayed to the person, never enforced — a recovering device has no trustworthy clock",
+    "rules": [
+      "Refuse an assertion answering a nonce this device did not send.",
+      "Record the head at first contact; from then on §13.5’s ancestor rule applies and this row is finished.",
+      "Show the person the epoch, its age and the device list it implies, because on the recovery path that display is the only remaining check."
+    ],
+    "residual": "A hostile authorization service can serve a recovering device a stale, self-consistent head at first contact. It cannot also show current content: revocation is atomic with rotation (§7.5), so a hidden revocation is a hidden generation, and a device on the stale generation cannot read anything written after it. The attack degrades to a partition, which is availability rather than integrity.",
+    "not_here": {
+      "primitives": "Ed25519 and SHA-256 KATs are row 1’s, in test/vectors/algorithm-suite.json.",
+      "epoch_head": "How an epoch head is computed is §13.5’s and row 7’s. This row consumes it as an opaque digest, which is all it is entitled to assume.",
+      "transport": "How the request and answer are framed is row 4’s."
+    }
+  },
+  "keys": {
+    "authorization": {
+      "role": "K_auth — the authorization signing key that signs epochs (§13.5). Not row 5’s K_accept.",
+      "source": "RFC 8032 §7.1, TEST 2",
+      "seed": "4ccd089b28ff96da9db6c346ec114e0f5b8a319f35aba624da8cf6ed4fb8a6fb",
+      "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
+    },
+    "other_service_key": {
+      "role": "Another key the deployment holds. §13.2 forbids one key doing two jobs, and this is that rule as a vector.",
+      "source": "RFC 8032 §7.1, TEST 1",
+      "seed": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
+      "public_key": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a"
+    }
+  },
+  "vectors": [
+    {
+      "name": "current-head",
+      "why": "What a recovering device with no surviving device receives, answering the nonce it sent.",
+      "inputs": {
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "epoch": 9,
+        "epoch_head": "2b7f0a9c14e6d3850fa2c51e86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "client_nonce": "7c1e5a3f9d2b8064e5a7c9b1d3f507294e6a8c0b2d4f6183a5c7e9b1d3f50729",
+        "issued_at": 1787270400
+      },
+      "derived": {
+        "message": "0013646f6e652f686561642d6173736572742f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744000139004032623766306139633134653664333835306661326335316538366434303733626239653063316632346438613633373539653062326634633761316438653336004037633165356133663964326238303634653561376339623164336635303732393465366138633062326434663631383361356337653962316433663530373239000a31373837323730343030"
+      },
+      "expected": {
+        "signature": "d720cb6e3553241660072289e24313ed89cd5a353726aff3db4995a4154d44e7a362f4f4b2a2fc868f49c25d37d8f278e6fc21f2b41e360454376f74d8da3d0d"
+      }
+    },
+    {
+      "name": "same-head-second-device",
+      "why": "The same head for a second arriving device. A different nonce means a different signature, which is what makes the first one unreplayable.",
+      "inputs": {
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "epoch": 9,
+        "epoch_head": "2b7f0a9c14e6d3850fa2c51e86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "client_nonce": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "issued_at": 1787270400
+      },
+      "derived": {
+        "message": "0013646f6e652f686561642d6173736572742f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744000139004032623766306139633134653664333835306661326335316538366434303733626239653063316632346438613633373539653062326634633761316438653336004065336230633434323938666331633134396166626634633839393666623932343237616534316534363439623933346361343935393931623738353262383535000a31373837323730343030"
+      },
+      "expected": {
+        "signature": "3259e6edc199d75c2fff87e9a3eb69eaedc6a3f9b00abb6642f962b02a017114ba8fc7d7fe1e9d4056e0dd876204eb9c350b33ac2273811732136962ee53640c"
+      }
+    },
+    {
+      "name": "ancestor-head",
+      "why": "A genuine assertion for the previous epoch. Correctly signed and correctly nonced — refused only by §13.5’s ancestor rule, and only by a device that already has a head.",
+      "inputs": {
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "epoch": 8,
+        "epoch_head": "c4e1a6b3d0f295847e3b1c0d9a8f7e6d5c4b3a29180f7e6d5c4b3a2918f0e7d6",
+        "client_nonce": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "issued_at": 1787270400
+      },
+      "derived": {
+        "message": "0013646f6e652f686561642d6173736572742f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744000138004063346531613662336430663239353834376533623163306439613866376536643563346233613239313830663765366435633462336132393138663065376436004065336230633434323938666331633134396166626634633839393666623932343237616534316534363439623933346361343935393931623738353262383535000a31373837323730343030"
+      },
+      "expected": {
+        "signature": "401ddcd53ab7351add36a8f19ace37eaa6b68804f97f3526f202ff2260febcfd432651b6dc3a2cd072f4fe2b2753c3bfe9ed560c448d7fa8209a48a5ec374d07"
+      }
+    }
+  ],
+  "must_fail": [
+    {
+      "name": "replayed-under-another-nonce",
+      "mutate": "The assertion a first device received, offered to a second device that sent its own nonce. **This is the row’s reason to exist**: without the nonce a captured assertion is a standing artifact any relay may re-serve forever, and replay stops requiring the authorization key."
+    },
+    {
+      "name": "aad-only-nonce-rewritten-to-match",
+      "mutate": "The captured assertion with its carried nonce **rewritten** to the second device’s, so the device’s own comparison passes and only the signature can refuse it. `replayed-under-another-nonce` above tests the client rule and does not test this: it fails on a string comparison whether or not the nonce is signed at all. The coverage audit found that gap on the one field this row exists for."
+    },
+    {
+      "name": "aad-only-stale-head",
+      "mutate": "A current epoch number paired with the previous epoch’s head. Isolates `epoch_head`, and is the attack the whole row is bounding — a self-consistent past served to a device with no history."
+    },
+    {
+      "name": "aad-only-wrong-epoch",
+      "mutate": "The current head paired with a different epoch number. Both are bound although the head commits to the number, so neither can be moved against the other."
+    },
+    {
+      "name": "aad-only-wrong-workspace",
+      "mutate": "Verify the assertion against another workspace. A device may hold several (§6.1), so this is an ordinary confusion rather than an exotic one."
+    },
+    {
+      "name": "aad-only-altered-issued-at",
+      "mutate": "Change the timestamp the device displays. It is not enforced — a recovering device has no trustworthy clock — but it is shown to a person, so it is signed."
+    },
+    {
+      "name": "aad-only-renumbered-label",
+      "mutate": "Verify under \"done/head-assert/v2\". The label is where this carrier authenticates its own version (row 1)."
+    },
+    {
+      "name": "signed-by-another-service-key",
+      "mutate": "A well-formed assertion signed with a different key the deployment holds. §13.2 forbids one key doing two jobs; row 5’s acceptance key in particular is hot and this one need not be."
+    },
+    {
+      "name": "ancestor-offered-after-first-contact",
+      "mutate": "A correctly signed, correctly nonced assertion for epoch 8, offered to a device that has already recorded epoch 9. **The exposure is first contact only** — §13.5’s ancestor rule takes over the moment a head is recorded, and this is that boundary as a vector rather than a sentence."
+    }
+  ]
+}

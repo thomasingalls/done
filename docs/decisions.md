@@ -670,7 +670,7 @@ second short-code format invented later that happens to include `O`.
 **The commitment is what makes 25 bits mean 25 bits, and the vectors demonstrate it rather than assert it.**
 Whoever reveals second and is uncommitted can grind their nonce until the string comes out as they like. The
 generator does exactly that with the substituted wrapping key in place and **forces the honest ceremony's
-first two symbols in 1 881 tries**; all five is the same search at 2²⁵, which is seconds. Without commit-reveal
+first two symbols in 566 tries**; all five is the same search at 2²⁵, which is seconds. Without commit-reveal
 the string carries zero bits against a service that speaks second, and zero is the arithmetic rather than a
 rhetorical flourish.
 
@@ -683,3 +683,79 @@ to reach the authorization service rather than merely close a dialog, and Stage 
 store-and-forward. That asymmetry is the price of an out-of-band channel made of a person looking at two
 screens, and the escape hatch is already in §13.6's gate 2 — an independent recovery factor needs no second
 device.
+
+### The envelope carries one position, because row 5 cannot verify anything otherwise
+
+**Date:** 2026-08-19 · **Commit:** on `claude/project-next-steps-742b29` · **Against:** PRD v9 / TRD v8
+
+**Orientation.** §7.4 had already settled the envelope's hard part as a product constraint — clear routing for
+the relay, the actor inside the seal, one signature over both — so row 4 looked like an encoding task with
+row 3's conventions to inherit. Two things in it were not.
+
+**Decision.** **Two bound field lists rather than one, and `seq` as a single number meaning both the
+credential's outbound position and its accepted position.**
+
+**The second list exists because the first structurally cannot reach two fields.** The nonce is the AEAD's own
+input and the digest is a function of the ciphertext the AAD helps produce, so neither can sit inside the AAD —
+and both are cleartext a reader trusts, which is precisely what row 3's rule says must be authenticated. The
+signature is what covers them, so its message is a separate list rather than the header repeated, and the
+negatives come in two families: a header differing from what was **sealed** is one attack, differing from what
+was **signed** is another.
+
+**The one number is forced by row 5 and would have been a mistake to decide on its own merits.** Row 5's first
+client rule is _verify a head against the link you replayed yourself_, and a client can only replay unaided if
+it computes each chain position itself. A service-assigned position would mean it cannot verify anything until
+told where its own writes landed — the exact trust the rule exists to remove. **Two numbers would quietly undo
+row 5**, and nothing local to row 4 would have shown that.
+
+**The cost, accepted.** A client cannot skip. A refused envelope stalls that credential's chain until it is
+re-minted at the same position; what is stuck is the position rather than the bytes, and the case where it
+cannot be re-minted is a revoked credential, whose chain is finalized anyway. In exchange `seq` also bounds the
+12-byte random nonce's per-generation budget in one comparison, which is §6.1's argument transferring unchanged
+and conservatively.
+
+### Chain-head discovery narrows what brand-new means, and states what is left
+
+**Date:** 2026-08-19 · **Commit:** on `claude/project-next-steps-742b29` · **Against:** PRD v9 / TRD v8
+
+**Orientation.** §13.5 records that a brand-new client trusts the service to identify the current head and that
+no mechanism fixes it. That was a footnote about fresh installs until the accepted chain was selected, at which
+point the whole finalization guarantee came to be stated relative to a head the client believes.
+
+**Decision.** **Narrow what _brand-new_ covers, then bound what is left — and do not present either as a fix.**
+Two of the three arrival paths turn out not to be brand-new at all. A device enrolling through §13.6 is talking
+to one that already knows where the lineage is, so **row 11's transcript is amended to bind the epoch head** and
+the five typed symbols now authenticate that too. A device restoring from a user-held migration package has an
+anchor from outside the service for the same reason, and §14.2 gains that requirement. What is left is recovery
+with no surviving device, and it gets a **nonce-bound signed head assertion**.
+
+**The nonce buys a boundary rather than a guarantee.** It does not stop a service holding the authorization key
+from signing whatever it likes. What it removes is the standing artifact: without it, an assertion is signed
+once and re-servable forever by any relay, cache or intermediary, so **replay requires no key at all**. With it,
+replay requires the authorization key — which moves the residual from _anyone in the path_ to _the
+authorization service itself_. That is the same move §7.5 makes, and it is the pattern this design keeps
+reaching for: not eliminating a trusted party, but shrinking the set until only the one already named remains.
+
+**The residual is bounded by §7.5 rather than by anything invented here.** Revocation is atomic with rotation,
+so **a hidden revocation is a hidden generation**: a device served a stale head is served a stale key and cannot
+read anything written since. The attack cannot present a stale authorization state and current content at the
+same time; it degrades to a partition, which is availability, and whose symptom is exactly what a person running
+a recovery is looking at. **It is weakest on a workspace quiet since the rotation, and it is a bound rather than
+a guarantee.**
+
+**Three narrowings were declined.** Two independent sources, because §16 has one operator behind both and
+§11.3 test 9 exists because the provider account is a single failure domain. A user-held fingerprint the person
+compares, on row 11's own reasoning and worse — on this path there is nothing to compare against. Binding the
+head into the recovery envelope, which is impossible rather than unwise: the envelope is sealed once at account
+creation and the head advances, which is why no static user-held secret can carry freshness.
+
+**Amending row 11 one commit after selecting it was the cheap moment and is recorded as such.** Nothing has been
+built, so it cost a regenerated vector file and a changed short string. After the first deployment it would have
+cost a protocol version.
+
+**And the coverage audit earned itself again, on the field this row exists for.** The obvious replay negative —
+offer a device an assertion answering another device's nonce — fails on a string comparison between what was
+sent and what is carried, **which fails whether or not the nonce is signed at all.** It was testing the client
+rule and nothing about the binding. The isolating negative rewrites the carried nonce to match so only the
+signature can refuse it, which is also the actual attack, since an unsigned nonce could simply be overwritten in
+transit.

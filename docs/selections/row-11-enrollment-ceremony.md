@@ -8,6 +8,8 @@
 **Companions:** [row 14](./row-14-recovery-code.md) supplies the alphabet, the mask and the normalization, reused
 whole; [row 13](./row-13-device-lock.md) established the rule this row applies to cameras;
 [row 5](./row-5-finalization.md) is the other half of what a hostile service must not be able to do.
+**Amended by:** [row 9](./row-9-chain-head-discovery.md) — the transcript binds the epoch head, so the typed
+symbols authenticate where the lineage is as well as whose key it is. The short string changed with it.
 
 ---
 
@@ -27,6 +29,7 @@ Commit                  before either nonce is revealed
 The transcript
 
   T = LP("done/enroll/v1") || LP(workspace_id) || LP(dec epoch)
+      || LP(hex epoch_head)
       || LP(existing_credential_id) || LP(new_credential_id)
       || LP(hex W_pub) || LP(hex n_E) || LP(hex n_N)
 
@@ -37,7 +40,7 @@ The transcript
 The string
 
   SAS = HKDF-SHA256(ikm = T, salt = "", info = LP("done/enroll-sas/v1"), L = 5)
-        symbol i = ALPHABET[byte_i & 0x1f]        e.g. Q9S7P
+        symbol i = ALPHABET[byte_i & 0x1f]        e.g. R9RH2
 
   Alphabet, mask and normalization are row 14's, unchanged: Crockford Base32
   without I, L, O, U; 256 = 8 x 32 so the mask is uniform; O -> 0, I -> 1,
@@ -121,8 +124,8 @@ The conventional SAS flow shows the string on both devices and asks the person t
 enrolling their own phone and have no expectation of an attack. The step that is meant to be the entire security
 boundary is the step most likely to be discharged without being performed.
 
-**Transcription is not skippable in the same way.** The person cannot type `Q9S7P` into the laptop without
-having read `Q9S7P` off the phone. The check moves from _did you compare_ to _can you produce_, and only the
+**Transcription is not skippable in the same way.** The person cannot type `R9RH2` into the laptop without
+having read `R9RH2` off the phone. The check moves from _did you compare_ to _can you produce_, and only the
 second is evidence.
 
 **It costs one input field that already exists.** Row 14 built the recovery-code input: Crockford Base32,
@@ -158,7 +161,7 @@ the SAS is a deterministic function of a transcript that side is still choosing.
 that, with the substituted wrapping key in place, and searches for the first two symbols of the honest
 ceremony's string:
 
-> **Target `Q9`, found in 1 881 tries.**
+> **Target `R9`, found in 566 tries.**
 
 Ten bits, so the count is what probability predicts, and the search is deterministic — candidate _i_ is
 `SHA-256("done/grind-demo" || i)` — so that number is a fact about the construction rather than about the
@@ -232,15 +235,22 @@ starting at the empty chain — is [row 5](./row-5-finalization.md).
 ## 8. The vectors
 
 `node scripts/generate-enrollment-vectors.mjs` writes them; `--check` fails if they are stale, and `pnpm check`
-now runs it with the other six.
+now runs it with the other eight.
 
-**One honest ceremony and twelve negatives.** A laptop enrolling a phone at epoch 9, with both commitments, the
-transcript, its hash, the wrap `info` and the string `Q9S7P`. Then every bound field of both constructions, one
+**One honest ceremony and thirteen negatives.** A laptop enrolling a phone at epoch 9, with both commitments, the
+transcript, its hash, the wrap `info` and the string `R9RH2`. Then every bound field of both constructions, one
 at a time.
 
 **`substituted-wrapping-key` is §11.2 test 7 as a value.** The keypairs are RFC 7748 §6.1's — Alice is the new
 device, Bob is the key the service offers in her place — and the generator derives each public key from its own
 scalar and refuses to write the file unless they match, which is row 14's rule.
+
+**`stale-epoch-head` arrived with [row 9](./row-9-chain-head-discovery.md), one commit after this row was
+selected.** The transcript gained the epoch head beside the epoch number, because a device enrolling here is
+talking to one that already knows where the lineage is — so the five symbols disagree when a service feeds the
+new device a stale head, and row 9 never has to reach this arrival path. **Nothing had been built, so the
+amendment cost a regenerated vector file and a changed short string.** After the first deployment it would have
+cost a protocol version, which is the general case [sequencing.md](../sequencing.md) §2.1 is about.
 
 **`transposed-nonces` is the one that is not obvious.** Exchanging `n_E` and `n_N` must produce a different
 string, because otherwise the transcript is a set rather than a sequence and the ceremony has no roles. Fixed
@@ -248,8 +258,8 @@ positions under length prefixes give that; the negative is what proves it, and i
 survives a rewrite only if something is watching.
 
 **Every field is isolated, and here that claim is exact.** `pnpm vectors:coverage` elides each bound field in
-turn and confirms exactly one negative stops failing — 11 fields across the two constructions, contributing to
-the tree's 52. Unlike [row 5](./row-5-finalization.md), which has two layers and therefore a field that rescues
+turn and confirms exactly one negative stops failing — 12 fields across the two constructions, contributing to
+the tree's 75. Unlike [row 5](./row-5-finalization.md), which has two layers and therefore a field that rescues
 every negative in the layer below it, **this construction is flat**: the SAS is a function of the transcript and
 nothing else, so a per-field negative isolates a per-field binding and the `aad-only-` naming means what it
 says.

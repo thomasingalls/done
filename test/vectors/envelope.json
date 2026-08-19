@@ -1,0 +1,247 @@
+{
+  "$schema": "https://done.invalid/vectors/envelope/1",
+  "generated_by": "scripts/generate-envelope-vectors.mjs",
+  "selection": "docs/selections/row-4-envelope-format.md",
+  "trd_row": 4,
+  "construction": {
+    "clear_header": "v, workspace_id, credential_id, epoch, gen, seq, nonce[12], digest",
+    "sealed_body": "LP(\"done/env-body/v1\") || LP(actor_id) || LP(actor_kind) || u32be(count) || ( u32be(len) || update )*",
+    "hkdf_info": "LP(\"done/envelope/v1\") || LP(workspace_id)",
+    "aad": "LP(\"done/env/v1\") || LP(dec v) || LP(workspace_id) || LP(credential_id) || LP(dec epoch) || LP(dec gen) || LP(dec seq)",
+    "signature": "Ed25519 over LP(\"done/env-sig/v1\") || LP(dec v) || LP(workspace_id) || LP(credential_id) || LP(dec epoch) || LP(dec gen) || LP(dec seq) || LP(hex nonce) || LP(hex digest)",
+    "digest": "SHA-256(ciphertext) — validated by the relay without a content key (§7.2)",
+    "nonce": "12 bytes from crypto.getRandomValues() per envelope, under a 2^32-per-generation budget that `seq` already bounds — row 3’s argument, unchanged",
+    "seq": "The credential’s own monotonic position. The service’s accepted position must equal it, which is what makes row 5’s chain gap-free by construction rather than by assertion",
+    "batching": "One envelope carries one actor. A batch closes at a change of actor, credential, epoch or generation; at a flush interval that must not be shorter than the acceptance-head cadence, since the envelope waits for a head regardless (§7.5); or at a byte cap. The interval and cap are tunables with grounds, not constants with authority",
+    "length_prefix": "uint16be(byteLength) || utf8 for text; uint32be for update bytes",
+    "not_here": {
+      "primitives": "AES-256-GCM, HKDF, SHA-256 and Ed25519 KATs are row 1’s, in test/vectors/algorithm-suite.json.",
+      "acceptance": "The link and head that travel beside an envelope are row 5’s, in test/vectors/finalization.json.",
+      "retention": "How deep a device retains its own outbound envelopes is row 6."
+    }
+  },
+  "keys": {
+    "device": {
+      "role": "The device signing credential (§13.4). Signs; never receives a content key for signing alone.",
+      "source": "RFC 8032 §7.1, TEST 2",
+      "seed": "4ccd089b28ff96da9db6c346ec114e0f5b8a319f35aba624da8cf6ed4fb8a6fb",
+      "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
+    },
+    "other_credential": {
+      "role": "A different admitted credential. Present so \"signed by another credential\" is a vector rather than a sentence.",
+      "source": "RFC 8032 §7.1, TEST 1",
+      "seed": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
+      "public_key": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a"
+    }
+  },
+  "vectors": [
+    {
+      "name": "single-update",
+      "why": "One 18-byte Yjs update — the measured size of a keystroke — from a human actor. The common case.",
+      "inputs": {
+        "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "v": 1,
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "credential_id": "cred_01HZXR0000000000000000LAPT",
+        "epoch": 7,
+        "gen": 1,
+        "seq": 2,
+        "nonce": "404142434445464748494a4b",
+        "actor_id": "act_01HZXQ8H0M4N2P6R9T3V5W7Y1B",
+        "actor_kind": "human",
+        "updates": [
+          "01010101a8e0c9d20500042101087903c0a8"
+        ]
+      },
+      "derived": {
+        "hkdf_info": "0010646f6e652f656e76656c6f70652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
+        "aad": "000b646f6e652f656e762f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c415054000137000131000132",
+        "body": "0010646f6e652f656e762d626f64792f7631001e6163745f3031485a58513848304d344e3250365239543356355737593142000568756d616e000000010000001201010101a8e0c9d20500042101087903c0a8",
+        "signature_message": "000f646f6e652f656e762d7369672f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c4150540001370001310001320018343034313432343334343435343634373438343934613462004036356438663365663731313537333961643035626666333966303762343037623331326335306634393933373534656139343439366364623566626362373033"
+      },
+      "expected": {
+        "ciphertext": "91a2746477093460ac6fe4f10fa421e4226703bde03ec64a60108af08f4475da8d4a7acee84dbef9bb049fcf2f560dbd5df271ed12aad531af183c25b28b0d74f0d570d6af8f391df3d30c26cade1768068d6cb5657d15311a75e60002f6d4efe69292",
+        "digest": "65d8f3ef7115739ad05bff39f07b407b312c50f4993754ea94496cdb5fbcb703",
+        "signature": "e0b5d51acc4e080ba7f89c0ae581c065a030a90bb5181efff29935b6319f05e753bbcf3e3c51a75999b11ce096dd7d9f50e9bde98d564ed8ddfa4c37366a470f"
+      }
+    },
+    {
+      "name": "batched-updates",
+      "why": "Three updates from the same actor, credential, epoch and generation, in one envelope. §7.4 permits exactly this batching and no other.",
+      "inputs": {
+        "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "v": 1,
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "credential_id": "cred_01HZXR0000000000000000LAPT",
+        "epoch": 7,
+        "gen": 1,
+        "seq": 3,
+        "nonce": "404142434445464748494a4b",
+        "actor_id": "act_01HZXQ8H0M4N2P6R9T3V5W7Y1B",
+        "actor_kind": "human",
+        "updates": [
+          "01010101a8e0c9d20500042101087903c0a8",
+          "01010101a8e0c9d2060004210108790cc0a9",
+          "01010101a8e0c9d2070004210108791dc0aa"
+        ]
+      },
+      "derived": {
+        "hkdf_info": "0010646f6e652f656e76656c6f70652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
+        "aad": "000b646f6e652f656e762f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c415054000137000131000133",
+        "body": "0010646f6e652f656e762d626f64792f7631001e6163745f3031485a58513848304d344e3250365239543356355737593142000568756d616e000000030000001201010101a8e0c9d20500042101087903c0a80000001201010101a8e0c9d2060004210108790cc0a90000001201010101a8e0c9d2070004210108791dc0aa",
+        "signature_message": "000f646f6e652f656e762d7369672f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c4150540001370001310001330018343034313432343334343435343634373438343934613462004063303539356261633132646430656661626265346638636663326133613037626534633963306533316361623065313164376232333533643966616339383164"
+      },
+      "expected": {
+        "ciphertext": "91a2746477093460ac6fe4f10fa421e4226703bde03ec64a60108af08f4475da8d4a7acee84dbef9bb049fcf2f560dbd5df271ed12aad531af183c25b08b0d74f0d570d6af8f391df3d30c26cade1768068d6c9b44c1b65b9325bdd0fc801f34e62c2123655710e1d023a9aa6ad1b08c2fb04fc9e4edc87c2d579bd94676e864dabd4f8abe6c019ba376d4e0427bab",
+        "digest": "c0595bac12dd0efabbe4f8cfc2a3a07be4c9c0e31cab0e11d7b2353d9fac981d",
+        "signature": "c899122fbd1bbdeaaae7d0cb3ff8d8a15be323be2863262bc9d96e88adf3c796a6921d794f6e6e941c49b1eb8dbb02fd8a13e9fd778fa71f8007ca78ea711305"
+      }
+    },
+    {
+      "name": "system-actor",
+      "why": "An import, attributed to the system actor (§9.2). The actor is a sealed field, so its kind is invisible to the relay.",
+      "inputs": {
+        "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "v": 1,
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "credential_id": "cred_01HZXR0000000000000000LAPT",
+        "epoch": 7,
+        "gen": 1,
+        "seq": 4,
+        "nonce": "404142434445464748494a4b",
+        "actor_id": "act_system",
+        "actor_kind": "system",
+        "updates": [
+          "01010101a8e0c9d20800042101087a2ec0ab"
+        ]
+      },
+      "derived": {
+        "hkdf_info": "0010646f6e652f656e76656c6f70652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
+        "aad": "000b646f6e652f656e762f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c415054000137000131000134",
+        "body": "0010646f6e652f656e762d626f64792f7631000a6163745f73797374656d000673797374656d000000010000001201010101a8e0c9d20800042101087a2ec0ab",
+        "signature_message": "000f646f6e652f656e762d7369672f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c4150540001370001310001340018343034313432343334343435343634373438343934613462004062333139306333646430633530366539363533636530343262383065353036636261316333633164666332666561613063613236396233663039313263396365"
+      },
+      "expected": {
+        "ciphertext": "91a2746477093460ac6fe4f10fa421e4226703a9e03ec64a2358b1deb2784d94ce7e3df4bf7088ab8251ac991a133be56db1d908b30db050c5393d2dc9a5cddff31c75510f8c4be9ad611d80e4eaf6bf",
+        "digest": "b3190c3dd0c506e9653ce042b80e506cba1c3c1dfc2feaa0ca269b3f0912c9ce",
+        "signature": "53efb1d637f65f163b9766b64398313ef83a24abdb7a1aeadd43885bc5c5cc881825506a25fb495580bb4275e32b819a32a05609b225e00ca6602acf022cfd09"
+      }
+    },
+    {
+      "name": "rotated-generation",
+      "why": "The same bytes under generation 2. `gen` selects which K_g the subkey comes from, so it is bound in both lists.",
+      "inputs": {
+        "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "v": 1,
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "credential_id": "cred_01HZXR0000000000000000LAPT",
+        "epoch": 7,
+        "gen": 2,
+        "seq": 5,
+        "nonce": "404142434445464748494a4b",
+        "actor_id": "act_01HZXQ8H0M4N2P6R9T3V5W7Y1B",
+        "actor_kind": "human",
+        "updates": [
+          "01010101a8e0c9d20500042101087903c0a8"
+        ]
+      },
+      "derived": {
+        "hkdf_info": "0010646f6e652f656e76656c6f70652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
+        "aad": "000b646f6e652f656e762f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c415054000137000132000135",
+        "body": "0010646f6e652f656e762d626f64792f7631001e6163745f3031485a58513848304d344e3250365239543356355737593142000568756d616e000000010000001201010101a8e0c9d20500042101087903c0a8",
+        "signature_message": "000f646f6e652f656e762d7369672f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c4150540001370001320001350018343034313432343334343435343634373438343934613462004036643635636336306638313535363264626161333432393633376330346237326631373463393935623635356466643133353732386132646130346437626531"
+      },
+      "expected": {
+        "ciphertext": "91a2746477093460ac6fe4f10fa421e4226703bde03ec64a60108af08f4475da8d4a7acee84dbef9bb049fcf2f560dbd5df271ed12aad531af183c25b28b0d74f0d570d6af8f391df3d30c26cade1768068d6cca2a59d7f9b4f8fa0deeced9ccc57ee9",
+        "digest": "6d65cc60f815562dbaa3429637c04b72f174c995b655dfd135728a2da04d7be1",
+        "signature": "2ec39dbfe0ede5755e260ef173d776f6c8d18a0721a1cca8f63cf2cb3997ee1c7b964911ca613bc3711e0acab984e150c57f87ec89b3d530cabb7caedd5f6405"
+      }
+    }
+  ],
+  "must_fail": [
+    {
+      "name": "aad-only-label",
+      "mutate": "The label is where this carrier authenticates its own version, so a renumbered envelope must fail to open rather than select another suite (row 1)."
+    },
+    {
+      "name": "aad-only-v",
+      "mutate": "Claim format version 2 for bytes sealed as version 1."
+    },
+    {
+      "name": "aad-only-workspace_id",
+      "mutate": "Open the envelope as though it belonged to another workspace, subkey unchanged. This is the AAD half of §11.2 test 3’s cross-workspace replay; the subkey half is `wrong-workspace-subkey`."
+    },
+    {
+      "name": "aad-only-credential_id",
+      "mutate": "Attribute the envelope to another credential. The credential is what the epoch binds capabilities to, so this is where §11.2 test 3’s capability change lands."
+    },
+    {
+      "name": "aad-only-epoch",
+      "mutate": "Move the envelope to a later epoch — the field §7.5 shows cannot by itself distinguish accepted from withheld, and which therefore must at least be immovable."
+    },
+    {
+      "name": "aad-only-gen",
+      "mutate": "Claim a content-key generation the envelope was not sealed under."
+    },
+    {
+      "name": "aad-only-seq",
+      "mutate": "Renumber the envelope’s position. Row 5’s accepted chain binds this position, so a movable `seq` would move a link."
+    },
+    {
+      "name": "sig-only-label",
+      "mutate": "Verify under a renumbered signature label."
+    },
+    {
+      "name": "sig-only-v",
+      "mutate": "Verify as though the header claimed format version 2."
+    },
+    {
+      "name": "sig-only-workspace_id",
+      "mutate": "Verify against another workspace id."
+    },
+    {
+      "name": "sig-only-credential_id",
+      "mutate": "Verify as another credential’s envelope."
+    },
+    {
+      "name": "sig-only-epoch",
+      "mutate": "Verify against a later epoch."
+    },
+    {
+      "name": "sig-only-gen",
+      "mutate": "Verify against another generation."
+    },
+    {
+      "name": "sig-only-seq",
+      "mutate": "Verify against another position."
+    },
+    {
+      "name": "sig-only-nonce",
+      "mutate": "Verify against a different nonce. **The AAD structurally cannot bind this**, so the signature is the only thing that does."
+    },
+    {
+      "name": "sig-only-digest",
+      "mutate": "Verify against a different ciphertext digest. **The AAD structurally cannot bind this either** — it is a function of the ciphertext the AAD helped produce — so a substituted body is caught here or nowhere."
+    },
+    {
+      "name": "wrong-workspace-subkey",
+      "mutate": "Derive K_net for another workspace and open with it. Tests the HKDF info binding; the AAD half is `aad-only-workspace_id`."
+    },
+    {
+      "name": "signed-by-other-credential",
+      "mutate": "A well-formed signature over the correct message, produced by a different admitted credential. §7.4 forbids re-signing another credential’s operations, and this is the check that notices."
+    },
+    {
+      "name": "flipped-tag-bit",
+      "mutate": "Flip the low bit of the final tag byte."
+    },
+    {
+      "name": "truncated-ciphertext",
+      "mutate": "Drop the final byte of the ciphertext."
+    },
+    {
+      "name": "digest-not-of-ciphertext",
+      "mutate": "A header whose `digest` is not SHA-256 of the ciphertext beside it. The relay validates this without a content key (§7.2), so it is refused before any client sees it."
+    }
+  ]
+}

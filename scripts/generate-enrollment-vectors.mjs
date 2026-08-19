@@ -88,17 +88,28 @@ const commit = async (role, nonce, label = COMMIT_LABEL) =>
   hex(await sha256(concat(...aadFields('nonce commitment', { label, role, nonce }).map(lp))));
 
 /**
- * T = LP("done/enroll/v1") || LP(workspace_id) || LP(dec epoch)
+ * T = LP("done/enroll/v1") || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head)
  *     || LP(existing_credential_id) || LP(new_credential_id)
  *     || LP(hex new_wrapping_key) || LP(hex nonce_existing) || LP(hex nonce_new)
  *
  * `new_wrapping_key` is the field the whole ceremony exists to authenticate.
  * The two credential ids are bound in fixed positions, which is what makes the
  * transcript role-ordered: swapping the devices is a different ceremony.
+ *
+ * **`epoch_head` is here because row 9 asked for it.** §13.5 records that a
+ * brand-new client trusts the service to identify the current head, with no
+ * mechanism to fix it — and a device enrolling through this ceremony is talking
+ * to one that already knows. Binding the head costs nothing on either side and
+ * makes the five typed symbols authenticate *where the lineage is* as well as
+ * *whose key this is*, so a service that feeds the new device a stale head gets
+ * a mismatch. Both the number and the digest are bound although the head commits
+ * to the number: two bytes, and a current-looking number can never be paired
+ * with an older head.
  */
 const transcript = ({
   workspace,
   epoch,
+  epochHead,
   existingCredential,
   newCredential,
   wrappingKey,
@@ -111,6 +122,7 @@ const transcript = ({
       label,
       workspace_id: workspace,
       epoch: String(epoch),
+      epoch_head: epochHead,
       existing_credential_id: existingCredential,
       new_credential_id: newCredential,
       new_wrapping_key: wrappingKey,
@@ -245,6 +257,15 @@ const LAPTOP = 'cred_01HZXR0000000000000000LAPT';
 const PHONE = 'cred_01HZXR0000000000000000PHON';
 
 /**
+ * The authorization head at epoch 9, and its ancestor. Deliberately the same two
+ * digests row 9's file uses, so the two records are visibly about one lineage.
+ * Their construction is §13.5's and row 7's; this ceremony consumes them as
+ * opaque digests, which is all it needs.
+ */
+const HEAD_9 = '2b7f0a9c14e6d3850fa2c51e86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36';
+const HEAD_8 = 'c4e1a6b3d0f295847e3b1c0d9a8f7e6d5c4b3a29180f7e6d5c4b3a2918f0e7d6';
+
+/**
  * Nonces are inputs here. In production each is 32 fresh bytes from
  * crypto.getRandomValues(); a vector has to fix one to be a vector at all, and
  * that fixing is not the discipline — the discipline is the commitment.
@@ -255,6 +276,7 @@ const NONCE_NEW = 'a0b1c2d3e4f50617283949596a7b8c9dae0f1e2d3c4b5a69788796a5b4c3d
 const HONEST = {
   workspace: WORKSPACE,
   epoch: EPOCH,
+  epochHead: HEAD_9,
   existingCredential: LAPTOP,
   newCredential: PHONE,
   wrappingKey: KEYPAIRS.new_device.public_key,
@@ -294,6 +316,11 @@ const NEGATIVES = [
     name: 'wrong-epoch',
     mutate:
       'Replay the transcript under a later epoch. An authorization successor does not carry a completed ceremony forward with it.',
+  },
+  {
+    name: 'stale-epoch-head',
+    mutate:
+      'The current epoch number paired with the previous epoch’s head — what a service feeds a new device that has no history of its own. **This is row 9 discharged through the person**: the existing device knows where the lineage is, so the five symbols disagree.',
   },
   {
     name: 'wrong-existing-credential',
@@ -345,6 +372,7 @@ const verify = async (honestSas, honestCommitments) => {
     ['substituted-wrapping-key', { wrappingKey: KEYPAIRS.substituted.public_key }],
     ['wrong-workspace', { workspace: 'ws_01J0000000000000000000000A' }],
     ['wrong-epoch', { epoch: EPOCH + 1 }],
+    ['stale-epoch-head', { epochHead: HEAD_8 }],
     ['wrong-existing-credential', { existingCredential: 'cred_01HZXR0000000000000000DESK' }],
     ['wrong-new-credential', { newCredential: 'cred_01HZXR0000000000000000TABL' }],
     ['wrong-existing-nonce', { nonceExisting: NONCE_NEW }],
@@ -432,7 +460,9 @@ const main = async () => {
       commitment:
         'SHA-256( LP("done/enroll-commit/v1") || LP(role) || LP(hex nonce) ), role in {existing, new}',
       transcript:
-        'LP("done/enroll/v1") || LP(workspace_id) || LP(dec epoch) || LP(existing_credential_id) || LP(new_credential_id) || LP(hex new_wrapping_key) || LP(hex nonce_existing) || LP(hex nonce_new)',
+        'LP("done/enroll/v1") || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(existing_credential_id) || LP(new_credential_id) || LP(hex new_wrapping_key) || LP(hex nonce_existing) || LP(hex nonce_new)',
+      epoch_head:
+        'Bound because row 9 asked for it. A device enrolling here is talking to one that already knows where the lineage is, so the typed symbols authenticate the head as well as the wrapping key — and row 9 never reaches this arrival path.',
       transcript_hash: 'SHA-256(T). The ceremony’s identity, and what a wrap is bound to.',
       sas: 'HKDF-SHA256(ikm = T, salt = "", info = LP("done/enroll-sas/v1"), L = 5); symbol i = ALPHABET[byte_i & 0x1f]',
       alphabet: `Crockford Base32: ${ALPHABET} (no I, L, O, U) — row 14’s, reused`,
@@ -460,6 +490,7 @@ const main = async () => {
         inputs: {
           workspace_id: WORKSPACE,
           epoch: EPOCH,
+          epoch_head: HEAD_9,
           existing_credential_id: LAPTOP,
           new_credential_id: PHONE,
           new_wrapping_key: KEYPAIRS.new_device.public_key,

@@ -225,7 +225,7 @@ brand-new client trusts the service for that with no mechanism to fix it.
 ## 8. The vectors
 
 `node scripts/generate-finalization-vectors.mjs` writes them; `--check` fails if they are stale, and
-`pnpm check` now runs it with the other six.
+`pnpm check` now runs it with the other eight.
 
 **The primitive KATs are not here, and their absence is structural** — SHA-256 and Ed25519 are row 1's, and
 [row 1's vectors](../../test/vectors/algorithm-suite.json) carry FIPS 180-4 and RFC 8032. What this file carries

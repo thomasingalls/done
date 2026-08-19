@@ -22,8 +22,8 @@
     "test:latency": "playwright test --config playwright.latency.config.ts",
     "latency:record": "node scripts/record-latency.mjs",
     "budget": "node scripts/check-budget.mjs",
-    "vectors": "node scripts/generate-suite-vectors.mjs && node scripts/generate-record-vectors.mjs && node scripts/generate-journal-vectors.mjs && node scripts/generate-recovery-vectors.mjs && node scripts/generate-device-lock-vectors.mjs && node scripts/generate-finalization-vectors.mjs && node scripts/generate-enrollment-vectors.mjs",
-    "vectors:check": "node scripts/generate-suite-vectors.mjs --check && node scripts/generate-record-vectors.mjs --check && node scripts/generate-journal-vectors.mjs --check && node scripts/generate-recovery-vectors.mjs --check && node scripts/generate-device-lock-vectors.mjs --check && node scripts/generate-finalization-vectors.mjs --check && node scripts/generate-enrollment-vectors.mjs --check && pnpm vectors:coverage",
+    "vectors": "node scripts/generate-suite-vectors.mjs && node scripts/generate-record-vectors.mjs && node scripts/generate-journal-vectors.mjs && node scripts/generate-recovery-vectors.mjs && node scripts/generate-device-lock-vectors.mjs && node scripts/generate-finalization-vectors.mjs && node scripts/generate-enrollment-vectors.mjs && node scripts/generate-envelope-vectors.mjs && node scripts/generate-head-discovery-vectors.mjs",
+    "vectors:check": "node scripts/generate-suite-vectors.mjs --check && node scripts/generate-record-vectors.mjs --check && node scripts/generate-journal-vectors.mjs --check && node scripts/generate-recovery-vectors.mjs --check && node scripts/generate-device-lock-vectors.mjs --check && node scripts/generate-finalization-vectors.mjs --check && node scripts/generate-enrollment-vectors.mjs --check && node scripts/generate-envelope-vectors.mjs --check && node scripts/generate-head-discovery-vectors.mjs --check && pnpm vectors:coverage",
     "vectors:coverage": "node scripts/check-aad-coverage.mjs"
   },
   "dependencies": {

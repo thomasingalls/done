@@ -6,7 +6,8 @@
   "construction": {
     "shape": "Short authentication string over an in-band agreement, committed before revealed, typed rather than compared",
     "commitment": "SHA-256( LP(\"done/enroll-commit/v1\") || LP(role) || LP(hex nonce) ), role in {existing, new}",
-    "transcript": "LP(\"done/enroll/v1\") || LP(workspace_id) || LP(dec epoch) || LP(existing_credential_id) || LP(new_credential_id) || LP(hex new_wrapping_key) || LP(hex nonce_existing) || LP(hex nonce_new)",
+    "transcript": "LP(\"done/enroll/v1\") || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(existing_credential_id) || LP(new_credential_id) || LP(hex new_wrapping_key) || LP(hex nonce_existing) || LP(hex nonce_new)",
+    "epoch_head": "Bound because row 9 asked for it. A device enrolling here is talking to one that already knows where the lineage is, so the typed symbols authenticate the head as well as the wrapping key — and row 9 never reaches this arrival path.",
     "transcript_hash": "SHA-256(T). The ceremony’s identity, and what a wrap is bound to.",
     "sas": "HKDF-SHA256(ikm = T, salt = \"\", info = LP(\"done/enroll-sas/v1\"), L = 5); symbol i = ALPHABET[byte_i & 0x1f]",
     "alphabet": "Crockford Base32: 0123456789ABCDEFGHJKMNPQRSTVWXYZ (no I, L, O, U) — row 14’s, reused",
@@ -42,6 +43,7 @@
       "inputs": {
         "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
         "epoch": 9,
+        "epoch_head": "2b7f0a9c14e6d3850fa2c51e86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
         "existing_credential_id": "cred_01HZXR0000000000000000LAPT",
         "new_credential_id": "cred_01HZXR0000000000000000PHON",
         "new_wrapping_key": "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a",
@@ -51,12 +53,12 @@
       "derived": {
         "commitment_existing": "56826dc582649f1bb3367bab151e766139906a60a2eab26a2715679078122dee",
         "commitment_new": "1de8f32cd0055a9a03155956c27cb64fa2b6b8e2ba72f08b7c388089e77cdb0c",
-        "transcript": "000e646f6e652f656e726f6c6c2f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744000139001f637265645f3031485a5852303030303030303030303030303030304c415054001f637265645f3031485a58523030303030303030303030303030303050484f4e004038353230663030393839333061373534373438623764646362343365663735613064626633613064323633383161663465626134613938656161396234653661004035663065316432633362346135393638373738363935383439336132623163306366646565643063316232613339343835373636373538343933613262316330004061306231633264336534663530363137323833393439353936613762386339646165306631653264336334623561363937383837393661356234633364326531",
-        "transcript_hash": "21c4558aa14620cc13aec15be04ce29ef834cc1a248831b7548038844d9dd226",
-        "wrap_info": "0013646f6e652f656e726f6c6c2d777261702f7631004032316334353538616131343632306363313361656331356265303463653239656638333463633161323438383331623735343830333838343464396464323236"
+        "transcript": "000e646f6e652f656e726f6c6c2f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744000139004032623766306139633134653664333835306661326335316538366434303733626239653063316632346438613633373539653062326634633761316438653336001f637265645f3031485a5852303030303030303030303030303030304c415054001f637265645f3031485a58523030303030303030303030303030303050484f4e004038353230663030393839333061373534373438623764646362343365663735613064626633613064323633383161663465626134613938656161396234653661004035663065316432633362346135393638373738363935383439336132623163306366646565643063316232613339343835373636373538343933613262316330004061306231633264336534663530363137323833393439353936613762386339646165306631653264336334623561363937383837393661356234633364326531",
+        "transcript_hash": "732505d726fb0adcbf1cd8edd4b1f4cfb47b2118f5f0b4be29ac6398be525bb9",
+        "wrap_info": "0013646f6e652f656e726f6c6c2d777261702f7631004037333235303564373236666230616463626631636438656464346231663463666234376232313138663566306234626532396163363339386265353235626239"
       },
       "expected": {
-        "sas": "Q9S7P"
+        "sas": "R9RH2"
       }
     }
   ],
@@ -64,10 +66,10 @@
     "why": "The reason the nonces are committed before they are revealed. A service that reveals second and is not committed can search its nonce until the string comes out as it likes.",
     "method": "Candidate i is SHA-256(\"done/grind-demo\" || uint32be(i)), so the count is a fact about the construction rather than about this run. The substituted wrapping key is in place throughout.",
     "target_symbols": 2,
-    "target": "Q9",
-    "tries": 1881,
-    "nonce_found": "b574604bf9f689ef206d5aaf88b05c4f40ccd0fe37a2e3ed3b31874ac5574860",
-    "sas_produced": "Q9012",
+    "target": "R9",
+    "tries": 566,
+    "nonce_found": "c22bdcbada0b772e2b1244e15c8c421875e93fbfbd268ba9f1c7b1a5366ada94",
+    "sas_produced": "R9NGC",
     "extrapolation": "Forcing all five symbols is the same search at 2^25 — seconds of work. The commitment is what makes 25 bits mean 25 bits."
   },
   "must_fail": [
@@ -94,6 +96,10 @@
     {
       "name": "wrong-epoch",
       "mutate": "Replay the transcript under a later epoch. An authorization successor does not carry a completed ceremony forward with it."
+    },
+    {
+      "name": "stale-epoch-head",
+      "mutate": "The current epoch number paired with the previous epoch’s head — what a service feeds a new device that has no history of its own. **This is row 9 discharged through the person**: the existing device knows where the lineage is, so the five symbols disagree."
     },
     {
       "name": "wrong-existing-credential",
