@@ -759,3 +759,87 @@ sent and what is carried, **which fails whether or not the nonce is signed at al
 rule and nothing about the binding. The isolating negative rewrites the carried nonce to match so only the
 signature can refuse it, which is also the actual attack, since an unsigned nonce could simply be overwritten in
 transit.
+
+### Attribution moves into the content root, and the unbounded retention floor closes
+
+**Date:** 2026-08-19 · **Commit:** on `claude/project-next-steps-742b29` · **Against:** PRD v9 / TRD v8
+
+**Orientation.** §15 named rows 8 and 7 as next and said the order was forced: a checkpoint must preserve
+attribution, and nothing yet said what that attribution was made of. §13.7 had a candidate family and a warning
+that the obvious shape — copying an original envelope signature beside a newly assembled tuple — does not work,
+because that signature authenticates the original envelope rather than the new tuple. §10.4 recorded the cost of
+having no answer: **the retention floor was unbounded in practice**, since nothing retires a card and verifying
+any claim meant opening the envelope that made it.
+
+**Decision.** **A standing signed claim, minted by the writing credential at card creation, living in the content
+root beside the card it attributes.** The record binds the card, actor, actor kind, credential, epoch and a
+commitment to the body as created; the writing credential signs the tuple directly.
+
+**Two constraints fix the minting moment between them, which is most of the design.** §13.7 says the claim
+cannot be extracted from an envelope later, so it must be signed over the tuple; §7.4 says a source may sign
+only its own operations. So the claim is made by its author at the time of the write, and **no checkpointing
+device can mint these afterwards** — which is the same rule §7.6 states for checkpoints, arriving from the other
+direction.
+
+**The residence is the result, and §7.6 had already written it while talking about something else.** It requires
+attribution evidence to be portable workspace material — checkpointed, stored and restored with the workspace,
+with no separate channel and nothing the vanished operator must still be alive to do. **Taken literally that
+says put it in the content root**, and doing so deletes the separate store, the sixth subkey, the
+re-encryption-per-generation machinery and the separate migration path this row was expected to need. §6.1's
+trim collapses the store to one state record under the current generation and the records come with it, so
+**verifying historical authorship stops requiring historical generations** and §13.7's two retention questions
+stop being different sizes — one of them shrank to the other.
+
+**The body commitment is for falsifiability, not unforgeability**, and that distinction is the row's other
+useful half. The card id already stops a record being moved to another card. What the commitment adds is a
+checkable statement the product currently cannot make: §4.8's attribution answers _who created this_, so a card
+rewritten wholesale still shows its creator. `verified` and `exact` are reported separately, and **provenance
+mode owes three states rather than two.**
+
+**One binding was declined that row 3's rule would ordinarily take.** The envelope's accepted position is not
+bound: verifying it would tie every claim to row 5's chain and therefore force chain retention, and **a binding
+whose verification forces retention is not free in a row whose purpose is to reduce retention.** It is also
+unnecessary — a record only reaches the content root through an accepted envelope. Row 3's rule is about
+costless bindings, and this one has a cost that is not measured in bytes.
+
+**The cost, accepted.** One Ed25519 signature per card creation — not per keystroke, not per update — and about
+260 bytes per card. Attribution becomes a constant multiple of what the cards already cost, and retires on
+exactly the event §4.5 already names: compaction deleting the card. One trigger rather than two that must agree.
+
+### The checkpoint is a container its producer signs, and nothing inside it
+
+**Date:** 2026-08-19 · **Commit:** on `claude/project-next-steps-742b29` · **Against:** PRD v9 / TRD v8
+
+**Orientation.** §7.6 sets three _must not happen_ rules for the checkpoint, and the third — no checkpoint that
+re-signs another credential's operations — is described there as the forbidden shape _"arriving through a
+performance optimization"_, which is to say a rule somebody has to remember every time.
+
+**Decision.** **One full snapshot sealed under one generation, plus a manifest signed by the producing
+credential** binding the epoch and its head, the generation, the checkpoint digest, `sv` and `ds` separately,
+row 5's accepted-head vector and the producer's own name.
+
+**The third rule is discharged by row 8 rather than by anything here, and stops being a rule.** With attribution
+as standing records each signed by its own author, sitting in the content the snapshot covers, the producer
+signs the container and nothing inside it. There is no step at which anything could be re-signed, so the
+forbidden shape is unreachable rather than prohibited. That is the whole justification for taking row 8 first,
+and it held.
+
+**Both coverage halves are bound, separately, and the audit is what forced the pair.** §7.6 is explicit that two
+replicas can agree on a state vector and disagree about deletions. The first pass had a negative changing `ds`
+alone and none changing `sv` alone — **reproducing the exact asymmetry §7.6 warns about, inside the file written
+to test for it.** Both are also bound _opaquely_, so §10.1's deferred Yjs v13 → v14 upgrade changes what the
+bytes say rather than what this format is.
+
+**One cadence rule is forced and the rest are honestly tunable.** A checkpoint is openable only while its
+generation is retained, so **a rotation must produce a checkpoint under the new generation before the old one may
+be dropped** — otherwise dropping a key destroys the recovery path in the course of tidying up. It is an
+ordering constraint between two operations that look independent, and it is the kind found at a restore rather
+than at a review. The other triggers are a position count and an interval whose ground is first-sync cost, and
+naming numbers before there is a service to measure would give them an authority nothing supports.
+
+**Retention is at least two, because §11.3 test 8 requires falling back to the next-newest.** A policy of one
+makes that test unpassable by construction, which is worth checking a policy against before writing it.
+
+**And the head-vector sort is load-bearing rather than tidy.** Two devices checkpointing the same accepted state
+must produce the same digest; a map iterated in insertion order would not, and the disagreement would present as
+a corrupt manifest rather than as a canonicalization bug.

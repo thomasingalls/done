@@ -235,7 +235,7 @@ starting at the empty chain — is [row 5](./row-5-finalization.md).
 ## 8. The vectors
 
 `node scripts/generate-enrollment-vectors.mjs` writes them; `--check` fails if they are stale, and `pnpm check`
-now runs it with the other eight.
+now runs it with the other ten.
 
 **One honest ceremony and thirteen negatives.** A laptop enrolling a phone at epoch 9, with both commitments, the
 transcript, its hash, the wrap `info` and the string `R9RH2`. Then every bound field of both constructions, one
@@ -259,7 +259,7 @@ survives a rewrite only if something is watching.
 
 **Every field is isolated, and here that claim is exact.** `pnpm vectors:coverage` elides each bound field in
 turn and confirms exactly one negative stops failing — 12 fields across the two constructions, contributing to
-the tree's 75. Unlike [row 5](./row-5-finalization.md), which has two layers and therefore a field that rescues
+the tree's 100. Unlike [row 5](./row-5-finalization.md), which has two layers and therefore a field that rescues
 every negative in the layer below it, **this construction is flat**: the SAS is a function of the transcript and
 nothing else, so a per-field negative isolates a per-field binding and the `aad-only-` naming means what it
 says.

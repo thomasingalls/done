@@ -339,10 +339,14 @@ deletion, object count grows with history.
 
 **New in v8: re-enabling destructive compaction moves a security boundary as well as a storage one.**
 Compaction deletes cards, therefore deletes `Card.author`, therefore **retires the attribution claim** for the
-days it compacts — and the content-key generations that served only compacted days become droppable at that
-moment (§13.7). PRD principle 6 is what licenses that retirement; it does not license displaying an author the
+days it compacts. PRD principle 6 is what licenses that retirement; it does not license displaying an author the
 product can no longer verify. So the replica-acknowledgement protocol §10.4 requires is gating two boundaries,
 and whoever re-enables compaction owns both.
+
+**§15 row 8 simplifies the second boundary without removing it.** The attribution record lives beside the card
+it attributes, so compaction deletes the claim in the same operation that deletes the card — **one trigger
+rather than two that have to agree** — and the generation-dropping question it used to carry is settled
+separately by §13.7's record living under the current generation anyway.
 
 **Must not happen.** Freeze must not bind replication, compaction or import. Compaction must not consult the
 freeze. Neither may be justified by elapsed time as evidence that replicas have synchronized.
@@ -1097,6 +1101,42 @@ one signature by whichever client produced it is the forbidden shape — it is e
 rule prohibits, arriving through a performance optimization. First sync needs either the signed envelope history
 or an attribution-preserving checkpoint, and the second is the target because the first grows without bound.
 
+**That constraint is discharged by §15 row 8 rather than by the checkpoint** — and it stops being a rule anyone
+has to remember. Attribution is a set of standing records, each signed by the credential that made the claim,
+living in the content the snapshot covers. **The producing credential signs the container and nothing inside it**,
+so there is no step at which the forbidden shape could arise.
+
+**The construction is selected** (§15 row 7):
+
+```
+ct = AES-256-GCM( K_cp ; a Yjs full snapshot of the content root, AAD )
+K_cp = HKDF-SHA256(ikm = K_g, salt = "", info = LP("done/checkpoint/v1") || LP(workspace_id), L = 32)
+AAD  = LP("done/cp/v1") || LP(dec v) || LP(workspace_id) || LP(dec gen) || LP(dec epoch)
+
+M    = Ed25519( producing credential ; LP("done/cp-manifest/v1") || LP(dec v)
+       || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(dec gen)
+       || LP(hex checkpoint_digest) || LP(hex sv) || LP(hex ds)
+       || LP(hex head_vector_digest) || LP(producing_credential) )
+
+head_vector = for each credential ASCENDING BY ID: LP(credential_id) || LP(dec seq) || LP(hex link)
+```
+
+`checkpoint_digest` is SHA-256 of the ciphertext, so the durable store validates it with no content key, exactly
+as the relay validates an envelope's (§7.2, §7.4). **`sv` and `ds` are bound separately and as opaque bytes** —
+separately because either alone is the claim this section says is not a coverage claim, and opaquely because
+their content is Yjs's and §10.1's deferred upgrade would change it. **The sort is the canonicalization**: two
+devices checkpointing the same accepted state must produce the same head-vector digest.
+
+**Cadence has one forced rule and two tunables.** **A rotation produces a checkpoint under the new generation
+before the old generation may be dropped** — a checkpoint is openable only while its generation is retained, so
+dropping the key would destroy the recovery path in the course of tidying up. The other triggers are an
+accepted-position count and an elapsed interval, whichever comes first; their ground is first-sync cost (§12),
+and neither can be set honestly before there is a service to measure.
+
+**Retention is at least two checkpoints and their suffixes**, because §11.3 test 8 requires falling back to the
+next-newest, and **no checkpoint may be dropped whose generation any retained checkpoint still needs.** Those two
+sentences are the whole interlock between checkpoint retention and key retention.
+
 **Whatever attribution-preserving evidence is selected is part of this representation, not a separate operator
 archive.** It is portable workspace material encrypted under retained generations, so it is checkpointed, stored
 and restored with the workspace: it travels with the archive, uploads with the checkpoint at migration, and a
@@ -1392,9 +1432,12 @@ Compaction deletes cards and therefore `Card.author`, which retires the attribut
 the content-key generations serving only them droppable (§4.5, §13.7). Whoever designs the acknowledgement protocol
 is designing the trigger for a key-retention change, and should know it.
 
-**One consequence worth naming plainly: the retention floor is currently unbounded in practice.** Nothing else
-retires a card, so every card ever written still carries a live attribution claim, and every generation needed to
-open those claims is retained. Reading principle 6 correctly **justifies** that cost; it does not reduce it.
+~~**One consequence worth naming plainly: the retention floor is currently unbounded in practice.**~~ **Closed by
+§15 row 8.** It was unbounded because verifying a claim meant opening the envelope that made it, and every card
+ever written still carries a live claim. The selected attribution record is a standing signed object living in
+the content root, so §6.1's trim re-seals it under the current generation and **historical generations are no
+longer needed to verify historical authorship** (§13.7). What is still true is the storage half of this section:
+nothing retires a card, so object count still grows with history.
 
 ### 10.5 Storage eviction
 
@@ -1856,7 +1899,9 @@ could not wrap new generations without being re-entered. `R_pub` resolves the co
 creates a new random `K_g` and makes a recovery wrap during ordinary operation, while only sealed `R_priv` opens it.
 
 **Subkeys are domain-separated from `K_g`, never `K_g` itself.** At minimum: a content-store subkey (§6.1), a
-synchronous-journal subkey (§6.1), a network-envelope subkey (§7.4), and later an index subkey. **One primitive key
+synchronous-journal subkey (§6.1), a network-envelope subkey (§7.4), a checkpoint subkey (§7.6), and later an
+index subkey. **All of them differ by label alone**, which is what makes this separation a property of the labels
+rather than of five constructions a reviewer has to compare by hand. **One primitive key
 must not be reused across the asynchronous and synchronous constructions**, which is also why `K_g` cannot itself be
 the structured-cloned non-extractable key — WebCrypto cannot later wrap a non-extractable target.
 
@@ -2116,13 +2161,37 @@ silence (§15 row 5).
 Conflating those two will over-retain. A device may legitimately trim its local store while still holding older
 generations for attribution, and vice versa.
 
-**A smaller attribution floor is possible in principle and is not selected here.** A candidate family is a stable
-signed attribution record, encrypted as a complete signed object and re-encrypted under each new generation. The
-signed record would need to bind at minimum the attributed unit or mutation, actor, credential, epoch, and a canonical
-commitment to the content; if a checkpoint collects those under one commitment, verification also needs an
-authenticated proof binding each claim to that checkpoint. **Copying an original envelope signature beside a newly
-assembled tuple does not work** — that signature authenticates the original envelope and ciphertext, not the new tuple
-or its association with the current card.
+**A smaller attribution floor is selected** (§15 row 8), **and it closes the unbounded one.** The representation is
+a standing signed claim, minted by the **writing** credential at card creation:
+
+```
+R = LP("done/attrib/v1") || LP(dec v) || LP(workspace_id) || LP(card_id) || LP(actor_id)
+    || LP(actor_kind) || LP(credential_id) || LP(dec epoch) || LP(hex content_commitment)
+sig = Ed25519( the writing device's signing credential ; R )
+content_commitment = SHA-256( LP("done/attrib-body/v1") || LP(card_id) || LP(body at creation) )
+```
+
+**Copying an original envelope signature beside a newly assembled tuple does not work** — that signature
+authenticates the original envelope and ciphertext, not the new tuple or its association with the current card —
+so the claim is signed over the tuple directly, at write time, by the credential making it. §7.4 permits a source
+to sign only its own operations, and a claim is one; **no later party can mint these.**
+
+**The records live in the content root**, in a write-once map keyed by card id, which is what §7.6 already
+requires of attribution evidence: portable workspace material, checkpointed, stored and restored with the
+workspace rather than held in a separate channel. **That is what closes the floor.** §6.1's trim collapses the
+store to one state record under the current generation and the records come with it, so verifying historical
+authorship no longer requires historical generations, and the two retention questions above stop being different
+sizes. What remains is the local-store question, which the trim already discharges.
+
+**The signature and the commitment answer different questions and the product must not merge them.** The
+signature says a credential made this claim; the commitment says whether the card still holds what was claimed
+about. **A card edited after creation verifies and is not exact**, which is the honest reading of §4.8's
+card-creation attribution rather than a defect in it, and provenance mode owes three states rather than two.
+
+**A claim retires when its card does, and on no other event.** §4.5 already says compaction deletes cards,
+therefore retires the attribution claim; putting the record beside the card means there is one trigger rather
+than two that must agree. The storage bound is one record per card, minted once: **a constant multiple of what
+the cards already cost**, not a new growth class.
 
 **Test.** §11.2 test 5.
 
@@ -2417,14 +2486,14 @@ direction for the dependency to run.
 ## 15. The selection register
 
 The constraints above are fixed; this is the register of the constructions built on them. **Nine rows are
-selected and twelve are open.** **The design reviews wait on the selections in their scope, and the cutover
+selected and ten are open.** **The design reviews wait on the selections in their scope, and the cutover
 waits separately on row 21** (§13.11, §14.6).
 
 **The register has two review scopes and two independent scopes.** Rows **1, 2, 3 and 13**, plus the storage-facing
 part of 14, are what a local encrypted store needs; they gate the storage work and are the scope of review **3a**, answered
 before the first deployment cutover — **that scope is now closed.** Rows **4–12, 15–17 and 20**, plus the network-facing
 part of 14, are what moving an envelope over a network needs; they gate the service and are the scope of review **3b**,
-answered before network sync ships — **that scope is open, with rows 4, 5, 9 and 11 now selected out of it.** Rows **18 and 19**
+answered before network sync ships — **that scope is open, with rows 4, 5, 7, 8, 9 and 11 now selected out of it.** Rows **18 and 19**
 retain their own empirical triggers and gate neither review nor
 cutover. Row **21** is the migration choice: it gates cutover but neither design review. Closing one scope does not
 require another, which is what lets encryption at rest land before the protocol is specified.
@@ -2446,6 +2515,8 @@ true**, and where the two disagree this one wins.
 | 11 | Device-to-device ceremony | A **short authentication string over an in-band agreement**, nonces **committed before revealed**, five Crockford Base32 symbols **typed** from the new device into the existing one. QR is an accelerator of the same transcript where a decoder exists, never a second protocol. The transcript binds the epoch head as well as the wrapping key, and the wrap's HPKE `info` binds the transcript hash (§13.6) | [row 11](./selections/row-11-enrollment-ceremony.md) |
 | 4 | Envelope wire format and batching granularity | Clear header — `v`, workspace, credential, epoch, generation, `seq`, nonce, `digest` — under AES-256-GCM with a network subkey, the actor inside the seal, and **two bound field lists**: an AAD for what the reader trusts, and a signature reaching the nonce and digest the AAD structurally cannot. `digest` is of the **ciphertext**, so the relay validates it with no content key. **`seq` is the credential's own position and the accepted position both**, because row 5 requires the client to compute its chain unaided (§7.4) | [row 4](./selections/row-4-envelope-format.md) |
 | 9 | Chain-head discovery for a brand-new device | **Two of three arrival paths are not brand-new**: enrollment carries the head through the person (row 11), and migration carries it in a user-held package. The third — recovery with no surviving device — gets a **nonce-bound signed head assertion**, which moves replay from *anyone in the path* to *the authorization service itself*. The residual is bounded: a hidden revocation is a hidden rotation, so a stale head cannot come with current content (§13.5) | [row 9](./selections/row-9-chain-head-discovery.md) |
+| 8 | Attribution-preserving representation and its storage bound | A **standing signed claim, minted by the writing credential at card creation and living in the content root** beside the card it attributes — so §6.1's trim re-seals it under the current generation and **verifying historical authorship stops requiring historical generations**. The body commitment makes the claim falsifiable, not unforgeable: a card edited since creation verifies and is not exact. One record per card, retiring on exactly the event §4.5 already says retires a claim (§13.7) | [row 8](./selections/row-8-attribution-record.md) |
+| 7 | Checkpoint construction, cadence and retention | One **full snapshot under one generation** plus a signed manifest binding the epoch and its head, the generation, the checkpoint digest, **`sv` and `ds` separately**, row 5's accepted-head vector and the producing credential. **Attribution is preserved by row 8 rather than here**, so §7.6's forbidden re-signing shape is unreachable. **A rotation forces a checkpoint before the old generation may be dropped**; at least two are retained (§7.6) | [row 7](./selections/row-7-checkpoint.md) |
 
 **Row 20 — test vectors — is closed for these seven and open for the rest.** Each carries a generated,
 self-verifying vector file; `pnpm vectors:check` fails the build if any has drifted from its generator, and
@@ -2456,8 +2527,6 @@ self-verifying vector file; `pnpm vectors:check` fails the build if any has drif
 | # | Unselected                                    | Constrained by                                                                                 |
 | - | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | 6 | Anti-replay rule and envelope retention depth  | Devices retain their own outbound envelopes to the last admitted checkpoint (§7.4)             |
-| 7 | Checkpoint construction, cadence, and retention of superseded checkpoints | Must preserve attribution; manifest carries `{sv, ds}` or a receipt (§7.6) |
-| 8 | Attribution-preserving representation and its storage bound | §13.7's candidate family; a copied envelope signature does not work            |
 | 10 | Terminal-package and portable cutover-package formats | Must travel with the workspace, not require the old operator (§14.2, §14.4)             |
 | 12 | Account-credential and slot-verifier construction, including offline-guessing resistance | §13.9 |
 | 14 | Recovery-code **step-up authentication** and confirmation UX — the network-facing half | §13.8; the storage-facing half is selected above |
@@ -2466,19 +2535,19 @@ self-verifying vector file; `pnpm vectors:check` fails the build if any has drif
 | 17 | Which web-security baseline profile and version | §10.9, §13.11 level 2                                                                         |
 | 18 | Whether a persistent encrypted search index is needed at all | Deferred; gates neither review nor cutover; measure the in-memory rebuild first (§6.2, §12) |
 | 19 | Root-type day collections (§10.8)              | Deferred; one of its four costs has lapsed and should be re-counted                            |
-| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the nine selected above**, each of which carries a generated, self-verifying vector file |
+| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the eleven selected above**, each of which carries a generated, self-verifying vector file |
 | 21 | First-deployment cutover attribution: accept system attribution, or bring the fidelity archive forward | §14.6; must be selected before cutover; adding authorship fields to Markdown is rejected (§9.1) |
 
-**Rows 8 and 7 are the ones to close next, in that order, and the order is forced.** Row 7's constraint already
-says a checkpoint must preserve attribution, and **row 8 is what that attribution is made of** — §13.7's
-candidate family, still unselected, with the warning that copying an original envelope signature beside a newly
-assembled tuple does not work. Designing the checkpoint before the thing it must carry would be designing a
-container for an unspecified object. Row 7 then closes carrying three obligations rather than one: §7.6's
-coverage attestation, row 5's accepted-head vector, and whatever row 8 selects.
+**Rows 6 and 10 are the ones to close next, and both are now largely determined rather than open.** Row 6 has
+accumulated three inbound constraints and needs to reconcile them into one depth: §7.4's outbound envelope
+retention to the last admitted checkpoint, row 4's single position number, and row 7's rule that a suffix is
+never shorter than the oldest retained checkpoint's head vector. **Row 10 has two stated requirements and no
+format**: it must carry the checkpoint and manifest row 7 selects, and the signed lineage head row 9 requires and
+does not supply (§14.2).
 
-**Two smaller debts are now owed rather than open.** Row 6 inherits one number from row 4 rather than two, since
-a credential's outbound position and its accepted position are the same number. And **row 10 owes a signed head
-in the migration package**, which row 9 requires and does not itself provide.
+**What remains after those is not sync.** Rows 12 and the network half of 14 are account and credential work,
+15 is failure behaviour, and 16 and 17 are a number and a profile. The core — envelope, acceptance, checkpoint,
+attribution, enrollment, discovery — closes with row 6.
 
 **Row 12 is worth reading beside §13.3 before it is answered**: a verifier
 resisting offline guessing by a profile holder has the threat model the device lock was selected under, and that

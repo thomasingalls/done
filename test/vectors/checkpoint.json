@@ -1,0 +1,160 @@
+{
+  "$schema": "https://done.invalid/vectors/checkpoint/1",
+  "generated_by": "scripts/generate-checkpoint-vectors.mjs",
+  "selection": "docs/selections/row-7-checkpoint.md",
+  "trd_row": 7,
+  "construction": {
+    "checkpoint": "AES-256-GCM(K_cp; a Yjs full snapshot of the content root, AAD) — the snapshot includes row 8’s attribution records",
+    "hkdf_info": "LP(\"done/checkpoint/v1\") || LP(workspace_id)",
+    "checkpoint_aad": "LP(\"done/cp/v1\") || LP(dec v) || LP(workspace_id) || LP(dec gen) || LP(dec epoch)",
+    "manifest": "Ed25519( producing credential ; LP(\"done/cp-manifest/v1\") || LP(dec v) || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(dec gen) || LP(hex checkpoint_digest) || LP(hex sv) || LP(hex ds) || LP(hex head_vector_digest) || LP(producing_credential) )",
+    "head_vector": "For each credential ascending by id: LP(credential_id) || LP(dec seq) || LP(hex link). Digest = SHA-256( LP(\"done/headvec/v1\") || head_vector ). The sort is the canonicalization",
+    "coverage": "`sv` and `ds` bound separately, as opaque bytes. §7.6 forbids a bare state vector as a coverage claim; opacity means §10.1’s deferred Yjs upgrade changes what the bytes say rather than what this construction is",
+    "attribution": "Preserved by row 8 rather than by anything here. Each claim is signed by its own author and lives in the snapshotted content; the producer signs the container and nothing inside it, so §7.6’s forbidden shape is unreachable",
+    "cadence": [
+      "A rotation forces a checkpoint under the new generation **before the old generation may be dropped** — a checkpoint is only openable while its generation is retained.",
+      "Otherwise: whichever comes first of an accepted-position count since the last checkpoint, or elapsed time. Both are tunables whose ground is first-sync cost (§12’s 1.5 s checkpoint verify), and neither can be set honestly before there is a service to measure."
+    ],
+    "retention": [
+      "At least two checkpoints and their suffixes, because §11.3 test 8 requires falling back to the next-newest when the newest is unavailable.",
+      "Never drop a checkpoint whose generation is the newest one any retained checkpoint uses."
+    ],
+    "not_here": {
+      "primitives": "AES-256-GCM, HKDF, SHA-256 and Ed25519 KATs are row 1’s, in test/vectors/algorithm-suite.json.",
+      "attribution": "The records inside the snapshot are row 8’s.",
+      "heads": "The links and heads the vector collects are row 5’s.",
+      "packages": "What a migration or terminal package carries is row 10’s."
+    }
+  },
+  "keys": {
+    "producer": {
+      "role": "The credential that produced this checkpoint. It signs the container and nothing inside it.",
+      "source": "RFC 8032 §7.1, TEST 2",
+      "seed": "4ccd089b28ff96da9db6c346ec114e0f5b8a319f35aba624da8cf6ed4fb8a6fb",
+      "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
+    },
+    "other_credential": {
+      "role": "Another admitted credential, present so \"produced by somebody else\" is a vector rather than a sentence.",
+      "source": "RFC 8032 §7.1, TEST 1",
+      "seed": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
+      "public_key": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a"
+    }
+  },
+  "vectors": [
+    {
+      "name": "checkpoint-at-epoch-9",
+      "why": "A laptop checkpointing a two-device workspace at epoch 9, generation 3. The snapshot includes row 8’s attribution records, which is what makes this preserve attribution without anyone re-signing anything.",
+      "inputs": {
+        "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "v": 1,
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "epoch": 9,
+        "epoch_head": "2b7f0a9c14e6d3850fa2c51e86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "gen": 3,
+        "nonce": "404142434445464748494a4b",
+        "producing_credential": "cred_01HZXR0000000000000000LAPT",
+        "sv": "01a8e0c9d20503b1c4f70a02",
+        "ds": "02a8e0c9d2050107b1c4f70a0304",
+        "accepted_heads": [
+          {
+            "credential": "cred_01HZXR0000000000000000PHON",
+            "seq": 4,
+            "link": "7f3e1d0c9b8a5647382910fedcba98765432100fedcba9876543210fedcba987"
+          },
+          {
+            "credential": "cred_01HZXR0000000000000000LAPT",
+            "seq": 12,
+            "link": "a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90"
+          }
+        ],
+        "snapshot_utf8": "a Yjs full snapshot of the content root, including row 8’s attribution records"
+      },
+      "derived": {
+        "hkdf_info": "0012646f6e652f636865636b706f696e742f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
+        "checkpoint_aad": "000a646f6e652f63702f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744000133000139",
+        "head_vector": "001f637265645f3031485a5852303030303030303030303030303030304c41505400023132004061316232633364346535663630373138323933613462356336643765386639306131623263336434653566363037313832393361346235633664376538663930001f637265645f3031485a58523030303030303030303030303030303050484f4e000134004037663365316430633962386135363437333832393130666564636261393837363534333231303066656463626139383736353433323130666564636261393837",
+        "head_vector_digest": "80a7a2ba1317655e2cacbc7426b5b531f2a46b762c4ddaf742b5989b0be5bbd7",
+        "manifest_message": "0013646f6e652f63702d6d616e69666573742f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e37440001390040326237663061396331346536643338353066613263353165383664343037336262396530633166323464386136333735396530623266346337613164386533360001330040313631386262653466346534366238323864376539333062646366613962663830643036373831373662613239623034363032323835636138306631366339390018303161386530633964323035303362316334663730613032001c30326138653063396432303530313037623163346637306130333034004038306137613262613133313736353565326361636263373432366235623533316632613436623736326334646461663734326235393839623062653562626437001f637265645f3031485a5852303030303030303030303030303030304c415054"
+      },
+      "expected": {
+        "ciphertext": "d7781bf60189709fb72237142669adac7f3db537b7a0f97d868ec9e84f5651cb374ec9818f6210c6ef0f18a833dc91d178effbef2ac9fee1fe7e2f8aac2758b393f33380f3d361549f8e205464dc4dc3fb1fda0e19e440238e8661fcaf4061de",
+        "checkpoint_digest": "1618bbe4f4e46b828d7e930bdcfa9bf80d0678176ba29b04602285ca80f16c99",
+        "signature": "0e32d13681426c5850cdce501fdc33263fce943e416fb19b50aff31e4a4936cf0dbdee1de588b3b08b4bf8f5ebdf8f1150228a85e2fa020d7a3739630ab9b707"
+      }
+    }
+  ],
+  "must_fail": [
+    {
+      "name": "coverage-ignores-deletions",
+      "mutate": "A manifest whose delete set differs while its state vector is identical. **This is §7.6’s stated failure as a vector**: two replicas can agree on `sv` and disagree about what has been deleted, so a bare state vector is not a coverage claim and `ds` has to be bound on its own."
+    },
+    {
+      "name": "coverage-ignores-insertions",
+      "mutate": "The same manifest with a different state vector and the same delete set — the mirror of the negative above. Both halves are bound independently, so neither can be moved against the other, and the pair is published as a pair because §7.6’s point is that one of them alone is not a coverage claim."
+    },
+    {
+      "name": "substituted-checkpoint-digest",
+      "mutate": "The manifest’s own digest field altered while the bytes beside it are untouched — a manifest pointing at a checkpoint nobody signed for. Distinct from `substituted-checkpoint`, which is the store’s keyless hash check: this is the signature, and only it survives a store that does not run the check."
+    },
+    {
+      "name": "reordered-head-vector",
+      "mutate": "Serialize the accepted-head vector in insertion order rather than ascending by credential id. Isolates `head_vector_digest`, and the sort is what makes two devices checkpointing the same state agree."
+    },
+    {
+      "name": "produced-by-another-credential",
+      "mutate": "A well-formed manifest signed by a different admitted credential. The producing credential is named in the message, so this fails on the binding and not only on the key."
+    },
+    {
+      "name": "substituted-checkpoint",
+      "mutate": "A manifest paired with checkpoint bytes it does not digest. The durable store can check this without a content key, exactly as the relay checks an envelope’s digest (§7.2)."
+    },
+    {
+      "name": "wrong-workspace",
+      "mutate": "Verify the manifest against another workspace."
+    },
+    {
+      "name": "wrong-generation",
+      "mutate": "Claim a generation the checkpoint was not sealed under. **A checkpoint is only openable while its generation is retained**, which is why rotation forces a new one before the old generation may be dropped."
+    },
+    {
+      "name": "wrong-epoch",
+      "mutate": "Move the manifest to another epoch number."
+    },
+    {
+      "name": "stale-epoch-head",
+      "mutate": "A current epoch number paired with an older head. Row 9’s pairing, applied to the artifact a recovering device reads first."
+    },
+    {
+      "name": "wrong-version",
+      "mutate": "Claim manifest version 2 for a version-1 manifest."
+    },
+    {
+      "name": "aad-only-renumbered-manifest-label",
+      "mutate": "Verify under \"done/cp-manifest/v2\"."
+    },
+    {
+      "name": "cp-aad-only-workspace",
+      "mutate": "Open the checkpoint as though it belonged to another workspace, subkey unchanged."
+    },
+    {
+      "name": "cp-aad-only-generation",
+      "mutate": "Open it claiming another generation."
+    },
+    {
+      "name": "cp-aad-only-epoch",
+      "mutate": "Open it claiming another epoch."
+    },
+    {
+      "name": "cp-aad-only-version",
+      "mutate": "Open it claiming another format version."
+    },
+    {
+      "name": "cp-aad-only-renumbered-label",
+      "mutate": "Open it under \"done/cp/v2\"."
+    },
+    {
+      "name": "wrong-workspace-subkey",
+      "mutate": "Derive K_cp for another workspace. The AAD half is `cp-aad-only-workspace`."
+    }
+  ]
+}

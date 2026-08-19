@@ -214,7 +214,7 @@ package carries is **row 10**'s, and the requirement that it carry a signed head
 ## 8. The vectors
 
 `node scripts/generate-head-discovery-vectors.mjs` writes them; `--check` fails if they are stale, and
-`pnpm check` now runs it with the other eight.
+`pnpm check` now runs it with the other ten.
 
 **Three assertions and nine negatives.** The current head answering the nonce that was sent; the same head for a
 second device, which is what makes the first one unreplayable; and a genuine assertion for the previous epoch,

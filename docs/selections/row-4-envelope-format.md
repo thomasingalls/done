@@ -224,7 +224,7 @@ and always was (§7.7).
 ## 8. The vectors
 
 `node scripts/generate-envelope-vectors.mjs` writes them; `--check` fails if they are stale, and `pnpm check`
-now runs it with the other eight.
+now runs it with the other ten.
 
 **The primitive KATs are not here, and their absence is structural** — AES-256-GCM, HKDF, SHA-256 and Ed25519
 are row 1's. What this file carries is composition.
