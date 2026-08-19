@@ -92,8 +92,8 @@ const deriveJournalKey = async (kg, workspaceId) => {
 };
 
 /** AAD = LP(label) || LP(workspace) || LP(gen) || LP(journalKey) */
-const aadFor = (workspaceId, gen, journalKey) =>
-  concat(lp(AAD_LABEL), lp(workspaceId), lp(String(gen)), lp(journalKey));
+const aadFor = (workspaceId, gen, journalKey, label = AAD_LABEL) =>
+  concat(lp(label), lp(workspaceId), lp(String(gen)), lp(journalKey));
 
 /** Record = "2:" || base64( u32be(gen) || nonce[24] || ciphertext || tag[16] ) */
 const seal = (journalKey, nonce, aad, plaintext, gen) =>
@@ -169,7 +169,11 @@ const CASES = [
 ];
 
 const NEGATIVES = [
-  { name: 'wrong-workspace', mutate: 'Derive the subkey for a different workspace id.' },
+  {
+    name: 'wrong-workspace',
+    mutate:
+      'Derive the subkey for a different workspace id. Tests the HKDF info binding only -- the AAD half is aad-only-other-workspace.',
+  },
   {
     name: 'wrong-generation',
     mutate: 'Authenticate with gen=2 in the AAD against a record written under gen=1.',
@@ -183,6 +187,26 @@ const NEGATIVES = [
   {
     name: 'wrong-version-prefix',
     mutate: 'Replace the "2:" prefix with "1:" (a pre-encryption plaintext entry).',
+  },
+  // The AAD-only group. Every field in the AAD needs an entry here or its
+  // binding is untested: workspace_id is bound in the HKDF info as well, so a
+  // negative that changes the derived key proves only that one of the two
+  // works. That gap was real -- removing LP(workspace_id) from the AAD passed
+  // every negative above it.
+  {
+    name: 'aad-only-other-workspace',
+    mutate:
+      'Authenticate with the other workspace in the AAD, subkey unchanged. Isolates the AAD binding from the HKDF info.',
+  },
+  {
+    name: 'aad-only-hkdf-label',
+    mutate:
+      'Authenticate with the HKDF label in the AAD label position -- what one constant reached for twice produces.',
+  },
+  {
+    name: 'aad-only-renumbered-label',
+    mutate:
+      'Authenticate with "done/jrnl/v2". The label is where this carrier authenticates its own version, so a renumbered record must fail to open rather than select another suite (row 1).',
   },
 ];
 
@@ -200,7 +224,11 @@ const open = (journalKey, record, aad) => {
   return { gen, plaintext: xchacha20poly1305(journalKey, nonce, aad).decrypt(sealed) };
 };
 
+/** Negatives that appear in the published must_fail list are recorded as they run. */
+const asserted = new Set();
+
 const refuses = (label, fn) => {
+  asserted.add(label);
   let failed = false;
   try {
     fn();
@@ -246,6 +274,25 @@ const verify = async (vectors) => {
   refuses('wrong-version-prefix', () =>
     open(kj, '1:' + rec.slice(RECORD_VERSION.length), aadFor(ws, gen, jk)),
   );
+
+  // The AAD-only group: the correct K_journal throughout, one bound field changed.
+  refuses('aad-only-other-workspace', () =>
+    open(kj, rec, aadFor('ws_01J0000000000000000000000A', gen, jk)),
+  );
+  refuses('aad-only-hkdf-label', () => open(kj, rec, aadFor(ws, gen, jk, HKDF_LABEL)));
+  refuses('aad-only-renumbered-label', () => open(kj, rec, aadFor(ws, gen, jk, 'done/jrnl/v2')));
+
+  // The published list and the executed checks must be the same list, in both
+  // directions. A "must fail" entry that quietly stops failing is the defect
+  // this file was written to prevent; one that is published but never run is
+  // the same defect a level up, and it is invisible without this comparison.
+  const published = new Set(NEGATIVES.map((n) => n.name));
+  const unrun = [...published].filter((n) => !asserted.has(n));
+  const unpublished = [...asserted].filter((n) => !published.has(n));
+  if (unrun.length > 0)
+    throw new Error(`Negatives published but never asserted: ${unrun.join(', ')}`);
+  if (unpublished.length > 0)
+    throw new Error(`Negatives asserted but not published: ${unpublished.join(', ')}`);
 };
 
 const main = async () => {

@@ -159,9 +159,17 @@ rather than pending silently.
   `principal_id` and `workspace_id` are bound in the HKDF `info` _and_ in the AAD, so the obvious negative —
   change the field, re-derive the key, watch it fail — passes whether or not the AAD binds anything. Deleting
   `factor` from row 13's AAD entirely left every negative still failing correctly. **The rule adopted:
-  every field in an AAD needs a negative that changes that field and nothing else**, and row 13's generator
-  is mutation-checked against it. **Rows 2 and 3's vector files have not been checked against this rule**,
-  and they should be, before the 24th — it is the kind of gap a reviewer finds in ten minutes.
+  every field in an AAD needs a negative that changes that field and nothing else.**
+  ~~Rows 2 and 3's vector files have not been checked against this rule.~~ **Closed** — all four composition
+  generators were audited by removing each field from each AAD and re-running, and **thirteen `aad-only-*`
+  negatives were missing**, in every file rather than the two the note named. **The domain-separation label
+  was untested in all five constructions**, and row 3's key envelope had no isolating negative for any of its
+  six fields — including `purpose`, whose whole justification is that §13.4's credentials share `L_local`
+  and are otherwise structurally identical. Rows 2 and 14 also gained the published-versus-asserted
+  reconciliation rows 3 and 13 already had. The rule now lives in [decisions.md](./decisions.md) rather than
+  in this file, which is disposable. **What is still open is that the audit is not in the build**:
+  `pnpm vectors:check` proves every published negative still fails, not that the negatives cover every bound
+  field, so a future construction can still arrive with an untested one.
 - **Stage 1 owes row 13 one record it will never read: the `CustodyRecord`, written at genesis, saying
   `'promptless'` forever.** A key store with no custody record has its tier implied by what is present, and
   adding an explicit one after the first deployment is a migration over key material — precisely the class

@@ -145,8 +145,8 @@ const deriveRecoveryKey = async (code, salt, principalId) => {
 };
 
 /** AAD = LP(label) || LP(principal_id) || LP(dec v) || LP(hex r_pub) */
-const aadFor = (principalId, v, rPub) =>
-  concat(lp(LABEL), lp(principalId), lp(String(v)), lp(hex(rPub)));
+const aadFor = (principalId, v, rPub, label = LABEL) =>
+  concat(lp(label), lp(principalId), lp(String(v)), lp(hex(rPub)));
 
 const seal = async (kRec, nonce, aad, rPriv) => {
   const key = await crypto.subtle.importKey('raw', kRec, 'AES-GCM', false, ['encrypt']);
@@ -309,7 +309,11 @@ const REJECTED = [
 const MUST_FAIL = [
   { name: 'wrong-code', mutate: 'Change one symbol of the code, then derive and unseal.' },
   { name: 'wrong-salt', mutate: 'Derive with a salt of 16 zero bytes.' },
-  { name: 'wrong-principal', mutate: 'Derive and authenticate against a second principal id.' },
+  {
+    name: 'wrong-principal',
+    mutate:
+      'Derive and authenticate against a second principal id. Changes both halves at once -- the AAD half alone is aad-only-other-principal.',
+  },
   {
     name: 'rebound-public-key',
     mutate:
@@ -318,13 +322,34 @@ const MUST_FAIL = [
   { name: 'downgraded-version', mutate: 'Authenticate with v=0 in the AAD.' },
   { name: 'flipped-tag-bit', mutate: 'Flip the low bit of the final tag byte.' },
   { name: 'truncated-ciphertext', mutate: 'Drop the final byte of the sealed envelope.' },
+  // The AAD-only group. Every field in the AAD needs an entry here or its
+  // binding is untested: principal_id is bound in the derivation as well, so a
+  // negative that changes both proves only that one of the two works.
+  {
+    name: 'aad-only-other-principal',
+    mutate:
+      'The correct K_rec, with the AAD naming a second principal. Isolates the AAD binding from the derivation.',
+  },
+  {
+    name: 'aad-only-devicelock-label',
+    mutate:
+      "Authenticate with row 13's device-lock label. Both constructions seal a key under a 125-bit generated code, so the label is what stops a local device-lock seal being presented as this service-held envelope.",
+  },
 ];
 
 // RFC 7748 §6.1 Bob, used only as a public key that is not ours.
 const OTHER_PUB = unhex('de9edb7d7b7dc1b4d35b61c2ece435373f8343c85b78674dadfc7e146f882b4f');
 const OTHER_PRINCIPAL = 'pr_01J0000000000000000000000A';
 
+/**
+ * Negatives that appear in the published must_fail list are recorded as they
+ * run. The normalization rejections share this helper but are generated from
+ * their own case list, so they are excluded from the reconciliation below.
+ */
+const asserted = new Set();
+
 const refuses = async (label, fn) => {
+  asserted.add(label);
   let failed = false;
   try {
     await fn();
@@ -475,6 +500,26 @@ const main = async () => {
   flipped[flipped.length - 1] ^= 0x01;
   await refuses('flipped-tag-bit', () => unseal(kRec, NONCE, aad, flipped));
   await refuses('truncated-ciphertext', () => unseal(kRec, NONCE, aad, ct.subarray(0, -1)));
+
+  // The AAD-only group: the correct K_rec throughout, one bound field changed.
+  await refuses('aad-only-other-principal', () =>
+    unseal(kRec, NONCE, aadFor(OTHER_PRINCIPAL, ENVELOPE_VERSION, rPub), ct),
+  );
+  await refuses('aad-only-devicelock-label', () =>
+    unseal(kRec, NONCE, aadFor(PRINCIPAL, ENVELOPE_VERSION, rPub, 'done/devicelock/v1'), ct),
+  );
+
+  // The published list and the executed checks must be the same list, in both
+  // directions. An entry that is published but never run is as invisible as one
+  // that has quietly stopped failing.
+  const published = new Set(MUST_FAIL.map((m) => m.name));
+  const sealAsserted = [...asserted].filter((n) => !n.startsWith('rejected: '));
+  const unrun = [...published].filter((n) => !asserted.has(n));
+  const unpublished = sealAsserted.filter((n) => !published.has(n));
+  if (unrun.length > 0)
+    throw new Error(`Negatives published but never asserted: ${unrun.join(', ')}`);
+  if (unpublished.length > 0)
+    throw new Error(`Negatives asserted but not published: ${unpublished.join(', ')}`);
 
   const challenge = await replacementChallenge(PRINCIPAL, OTHER_PUB);
 

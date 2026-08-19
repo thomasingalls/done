@@ -263,6 +263,10 @@
     {
       "name": "aad-only-other-principal",
       "why": "The same isolation for principal_id."
+    },
+    {
+      "name": "aad-only-envelope-label",
+      "why": "The same isolation for the label, and it is the field with the least margin. This AAD and row 3's key envelope are both six length-prefixed fields with principal, workspace and v in the same three positions; the label is the whole of what separates a device-lock seal from a key envelope."
     }
   ]
 }

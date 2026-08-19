@@ -399,3 +399,70 @@ meaning into the same tree; the alternative was qualifying every use forever (`c
 **[completed.md](./completed.md) is deliberately not rewritten.** Its 2026-08-10 row still reads "membership
 repair, recovery, and local durability", because that is what shipped that day under that name, and a record
 that gets retro-edited to match current vocabulary is not a record.
+
+### Every field in an AAD gets a negative that changes that field and nothing else
+
+**Date:** 2026-08-19 · **Commit:** on `claude/project-next-steps-8c0460` · **Against:** PRD v9 / TRD v8
+
+**Orientation.** Selecting TRD §15 row 13 turned up a defect in the shape of the vector files rather than in
+any construction: **a negative that changes two things at once tests neither.** `factor`, `principal_id` and
+`workspace_id` are bound in the HKDF `info` _and_ in the AAD, so the obvious negative — change the field,
+re-derive the key, watch it fail — passes whether or not the AAD binds anything. Deleting `factor` from row
+13's AAD entirely left every one of its negatives still failing correctly. Row 13 was fixed by hand and the
+rule was written down in [progress.md](./progress.md), which is the file that gets deleted and rewritten;
+the same note recorded that **rows 2 and 3 had never been checked against it**, five days before review 3a.
+
+**Decision.** The rule is a convention of record rather than a note in a disposable file: **every field bound
+in an AAD needs a published negative that changes that field and nothing else**, named `aad-only-*` so the
+group is visible in `must_fail`. All four composition generators were audited against it by removing each
+field from each AAD in turn and re-running, and the thirteen negatives that were missing were added —
+bringing the `aad-only-*` group to sixteen across the four files.
+
+**What the audit found, and it was worse than the two rows the note named.**
+
+| Construction              | Fields with no isolating negative |
+| ------------------------- | --------------------------------- |
+| Row 2, journal record     | the label, `workspace_id`         |
+| Row 3, content record     | the label                         |
+| Row 3, **key envelope**   | **all six**                       |
+| Row 13, device-lock seal  | the label                         |
+| Row 14, recovery envelope | the label, `principal_id`         |
+
+**Two patterns, and neither was visible from any one file.** The **domain-separation label was untested in
+every construction** — the one field whose only job is separation. And row 2's `workspace_id` and row 14's
+`principal_id` were untested for exactly row 13's reason, each having a negative that changed the derived key
+instead; row 3 had already got that case right, with `wrong-workspace-subkey` and `wrong-workspace-aad` as
+separate entries, so the correct pattern was in the tree the whole time and had not been generalized.
+
+**Row 3's key envelope is the finding that matters.** Its only negatives were whole-AAD swaps against the
+content record — which change every field at once and keep failing on the structural difference whether or
+not any individual field contributes anything. So `purpose` was untested, and `purpose` is the field whose
+justification in the generator's own comment is that **§13.4's device credentials share `L_local` and are
+otherwise structurally identical to this envelope**. The claim was written down and never exercised. A second
+purpose (`device-signing-key`) now exists solely so the substitution it prevents can be performed and fail.
+
+**Each label negative substitutes another construction's real label rather than a nonsense string**, because
+that names the confusion the label actually prevents. Row 13's seal AAD and row 3's key envelope are the
+sharpest case: both are six length-prefixed fields with `principal`, `workspace` and `v` in the same three
+positions after the label, so the label is the whole of what separates a device-lock seal from a key
+envelope — and row 13's seal is now offered row 3's envelope label and must fail. Row 3's two carriers are
+crossed against each other, and row 14's envelope against row 13's device-lock label, since both seal a key
+under a 125-bit generated code.
+
+**Row 2 is the exception and gets two**, because it has no other construction's label to borrow inside its own
+file: one substitutes its own HKDF label, which is what a single constant reached for twice produces, and one
+renumbers it. The second matters because **that construction has no separate `v` field** — its label is the
+only cryptographic binding of its version, and `wrong-version-prefix` tests the `"2:"` prefix by parse rather
+than by tag.
+
+**Rows 2 and 14 also gained the published-versus-asserted reconciliation** that rows 3 and 13 already had.
+Row 2 established that a `must_fail` entry which quietly stops failing is worse than no entry, and then never
+checked the converse — that every published entry is actually run. Sixteen new entries is exactly when that
+gap starts to matter.
+
+**The cost, accepted, and it is the honest limit of this entry.** The audit was performed by mechanically
+removing each field and re-running, but **that procedure is not in the build**: `pnpm vectors:check` proves
+every published negative still fails, not that the set of negatives covers every bound field. A future
+construction can still arrive with an untested field and a green check. Making the mutation pass automatic is
+the obvious follow-on and is deliberately not taken here — it is a change to how every generator is
+structured, and Stage 0 is five days from a review that reads these files as they are.

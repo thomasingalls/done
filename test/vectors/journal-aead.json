@@ -108,7 +108,7 @@
   "must_fail": [
     {
       "name": "wrong-workspace",
-      "mutate": "Derive the subkey for a different workspace id."
+      "mutate": "Derive the subkey for a different workspace id. Tests the HKDF info binding only -- the AAD half is aad-only-other-workspace."
     },
     {
       "name": "wrong-generation",
@@ -129,6 +129,18 @@
     {
       "name": "wrong-version-prefix",
       "mutate": "Replace the \"2:\" prefix with \"1:\" (a pre-encryption plaintext entry)."
+    },
+    {
+      "name": "aad-only-other-workspace",
+      "mutate": "Authenticate with the other workspace in the AAD, subkey unchanged. Isolates the AAD binding from the HKDF info."
+    },
+    {
+      "name": "aad-only-hkdf-label",
+      "mutate": "Authenticate with the HKDF label in the AAD label position -- what one constant reached for twice produces."
+    },
+    {
+      "name": "aad-only-renumbered-label",
+      "mutate": "Authenticate with \"done/jrnl/v2\". The label is where this carrier authenticates its own version, so a renumbered record must fail to open rather than select another suite (row 1)."
     }
   ]
 }

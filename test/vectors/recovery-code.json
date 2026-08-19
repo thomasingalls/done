@@ -227,7 +227,7 @@
     },
     {
       "name": "wrong-principal",
-      "mutate": "Derive and authenticate against a second principal id."
+      "mutate": "Derive and authenticate against a second principal id. Changes both halves at once -- the AAD half alone is aad-only-other-principal."
     },
     {
       "name": "rebound-public-key",
@@ -244,6 +244,14 @@
     {
       "name": "truncated-ciphertext",
       "mutate": "Drop the final byte of the sealed envelope."
+    },
+    {
+      "name": "aad-only-other-principal",
+      "mutate": "The correct K_rec, with the AAD naming a second principal. Isolates the AAD binding from the derivation."
+    },
+    {
+      "name": "aad-only-devicelock-label",
+      "mutate": "Authenticate with row 13's device-lock label. Both constructions seal a key under a 125-bit generated code, so the label is what stops a local device-lock seal being presented as this service-held envelope."
     }
   ],
   "replacement_challenge_example": {

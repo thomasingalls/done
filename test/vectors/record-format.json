@@ -272,6 +272,34 @@
     {
       "name": "record-aad-on-envelope",
       "mutate": "Open a key envelope with a content-record AAD."
+    },
+    {
+      "name": "record-aad-only-label",
+      "mutate": "Authenticate a content record with the key-envelope label, every record field unchanged. Isolates the labels contribution from the field difference the whole-AAD swaps also carry."
+    },
+    {
+      "name": "envelope-aad-only-label",
+      "mutate": "Authenticate a key envelope with the content-record label, every envelope field unchanged."
+    },
+    {
+      "name": "envelope-aad-only-principal",
+      "mutate": "A key envelope claiming the other principal on the same profile (PRD §6.7s ordinary case)."
+    },
+    {
+      "name": "envelope-aad-only-workspace",
+      "mutate": "A key envelope claiming the other workspace. L_local is a device key, not a workspace key, so nothing but the AAD separates the two slots."
+    },
+    {
+      "name": "envelope-aad-only-version",
+      "mutate": "A key envelope renumbered to v=0. The carrier version selects the whole suite (row 1), so it must fail to open rather than select a weaker one."
+    },
+    {
+      "name": "envelope-aad-only-generation",
+      "mutate": "A gen=1 envelope claiming gen=2, which is how a superseded content key would be made to look current."
+    },
+    {
+      "name": "envelope-aad-only-purpose",
+      "mutate": "A content-key envelope opened as a device-signing-key envelope. This is the substitution purpose exists to prevent, and nothing tested it."
     }
   ]
 }

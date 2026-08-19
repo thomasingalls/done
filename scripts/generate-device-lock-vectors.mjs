@@ -203,8 +203,8 @@ const deriveFactorKey = async (ikm, salt, principal, workspace, factor) => {
   return new Uint8Array(bits);
 };
 
-const aadForSeal = ({ principal, workspace, v, factor, id }) =>
-  concat(lp(LABEL), lp(principal), lp(workspace), lp(String(v)), lp(factor), lp(id));
+const aadForSeal = ({ principal, workspace, v, factor, id, label = LABEL }) =>
+  concat(lp(label), lp(principal), lp(workspace), lp(String(v)), lp(factor), lp(id));
 
 const aadForEnvelope = ({ principal, workspace, v, gen, purpose }) =>
   concat(
@@ -304,6 +304,10 @@ const MUST_FAIL = [
     why: 'The same isolation for workspace_id: correct key, AAD naming the other slot.',
   },
   { name: 'aad-only-other-principal', why: 'The same isolation for principal_id.' },
+  {
+    name: 'aad-only-envelope-label',
+    why: "The same isolation for the label, and it is the field with the least margin. This AAD and row 3's key envelope are both six length-prefixed fields with principal, workspace and v in the same three positions; the label is the whole of what separates a device-lock seal from a key envelope.",
+  },
 ];
 
 const mustNotOpen = async (name, fn) => {
@@ -679,6 +683,21 @@ const main = async () => {
         v: SEAL_VERSION,
         factor: 'code',
         id: 'code',
+      }),
+      baseCt,
+    ),
+  );
+  await refuses('aad-only-envelope-label', () =>
+    openGcm(
+      kCode,
+      SEAL_NONCE_CODE,
+      aadForSeal({
+        principal: PRINCIPAL,
+        workspace: WORKSPACE,
+        v: SEAL_VERSION,
+        factor: 'code',
+        id: 'code',
+        label: ENVELOPE_LABEL,
       }),
       baseCt,
     ),

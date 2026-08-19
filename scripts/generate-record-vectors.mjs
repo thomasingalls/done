@@ -41,6 +41,13 @@ const ENVELOPE_LABEL = 'done/keyenv/v1';
 const RECORD_VERSION = 1;
 const ENVELOPE_VERSION = 1;
 const ENVELOPE_PURPOSE = 'content-key';
+/**
+ * A second purpose, present only so the negatives can substitute one envelope
+ * for another. §13.4's device credentials are the concrete other tenant of
+ * L_local: on the tier that seals them locally, their envelope has this
+ * construction's exact shape and differs in this field alone.
+ */
+const OTHER_PURPOSE = 'device-signing-key';
 
 const utf8 = (s) => new TextEncoder().encode(s);
 const hex = (u) => Buffer.from(u).toString('hex');
@@ -109,9 +116,9 @@ const deriveStoreKey = async (kg, workspaceId) => {
  * trusts. `v` selects the suite, `gen` selects the key, `seq` orders the trim,
  * `kind` decides whether a record supersedes every other one.
  */
-const aadForRecord = ({ principal, workspace, v, gen, seq, kind }) =>
+const aadForRecord = ({ principal, workspace, v, gen, seq, kind, label = STORE_LABEL }) =>
   concat(
-    lp(STORE_LABEL),
+    lp(label),
     lp(principal),
     lp(workspace),
     lp(String(v)),
@@ -130,15 +137,8 @@ const aadForRecord = ({ principal, workspace, v, gen, seq, kind }) =>
  * shares it. Without `purpose` those envelopes are structurally identical to
  * this one and can be substituted for it.
  */
-const aadForEnvelope = ({ principal, workspace, v, gen, purpose }) =>
-  concat(
-    lp(ENVELOPE_LABEL),
-    lp(principal),
-    lp(workspace),
-    lp(String(v)),
-    lp(String(gen)),
-    lp(purpose),
-  );
+const aadForEnvelope = ({ principal, workspace, v, gen, purpose, label = ENVELOPE_LABEL }) =>
+  concat(lp(label), lp(principal), lp(workspace), lp(String(v)), lp(String(gen)), lp(purpose));
 
 const sealGcm = async (keyBytes, nonce, aad, plaintext) => {
   const k = await crypto.subtle.importKey('raw', keyBytes, 'AES-GCM', false, [
@@ -281,6 +281,46 @@ const NEGATIVES = [
   { name: 'truncated-ciphertext', mutate: 'Drop the final byte of ct.' },
   { name: 'envelope-aad-on-record', mutate: 'Open a content record with a key-envelope AAD.' },
   { name: 'record-aad-on-envelope', mutate: 'Open a key envelope with a content-record AAD.' },
+  // The AAD-only group. Every field in an AAD needs an entry that changes that
+  // field and nothing else, or its binding is untested. The two whole-AAD swaps
+  // above do not do this job: they change every field at once, so they keep
+  // failing on the structural difference whether or not the label contributes
+  // anything -- and the envelope's six fields had no isolating negative at all.
+  {
+    name: 'record-aad-only-label',
+    mutate:
+      'Authenticate a content record with the key-envelope label, every record field unchanged. Isolates the labels contribution from the field difference the whole-AAD swaps also carry.',
+  },
+  {
+    name: 'envelope-aad-only-label',
+    mutate:
+      'Authenticate a key envelope with the content-record label, every envelope field unchanged.',
+  },
+  {
+    name: 'envelope-aad-only-principal',
+    mutate:
+      'A key envelope claiming the other principal on the same profile (PRD §6.7s ordinary case).',
+  },
+  {
+    name: 'envelope-aad-only-workspace',
+    mutate:
+      'A key envelope claiming the other workspace. L_local is a device key, not a workspace key, so nothing but the AAD separates the two slots.',
+  },
+  {
+    name: 'envelope-aad-only-version',
+    mutate:
+      'A key envelope renumbered to v=0. The carrier version selects the whole suite (row 1), so it must fail to open rather than select a weaker one.',
+  },
+  {
+    name: 'envelope-aad-only-generation',
+    mutate:
+      'A gen=1 envelope claiming gen=2, which is how a superseded content key would be made to look current.',
+  },
+  {
+    name: 'envelope-aad-only-purpose',
+    mutate:
+      'A content-key envelope opened as a device-signing-key envelope. This is the substitution purpose exists to prevent, and nothing tested it.',
+  },
 ];
 
 /**
@@ -370,6 +410,30 @@ const verify = async (records, envelopes) => {
   await refuses('record-aad-on-envelope', () =>
     openGcm(L_LOCAL, unhex(env.inputs.nonce), aadForRecord(f), unhex(env.expected.ct)),
   );
+
+  // The AAD-only group: the correct key throughout, one bound field changed.
+  await refuses('record-aad-only-label', () =>
+    openGcm(ks, nonce, aadForRecord({ ...f, label: ENVELOPE_LABEL }), ct),
+  );
+
+  const envNonce = unhex(env.inputs.nonce);
+  const envCt = unhex(env.expected.ct);
+  const e = {
+    principal: PRINCIPAL,
+    workspace: WORKSPACE,
+    v: ENVELOPE_VERSION,
+    gen: 1,
+    purpose: ENVELOPE_PURPOSE,
+  };
+  const envRefuses = (name, over) =>
+    refuses(name, () => openGcm(L_LOCAL, envNonce, aadForEnvelope({ ...e, ...over }), envCt));
+
+  await envRefuses('envelope-aad-only-label', { label: STORE_LABEL });
+  await envRefuses('envelope-aad-only-principal', { principal: OTHER_PRINCIPAL });
+  await envRefuses('envelope-aad-only-workspace', { workspace: OTHER_WORKSPACE });
+  await envRefuses('envelope-aad-only-version', { v: 0 });
+  await envRefuses('envelope-aad-only-generation', { gen: 2 });
+  await envRefuses('envelope-aad-only-purpose', { purpose: OTHER_PURPOSE });
 
   // The published list and the executed checks must be the same list. Row 2
   // established that a "must fail" entry which quietly stops failing is worse
