@@ -16,6 +16,15 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './test/latency',
+  /**
+   * Playwright clears its `outputDir` before every run, and the default is
+   * `test-results/` — which is also where `record()` appends the measurements.
+   * So an unrelated run would delete numbers that had been taken and not yet
+   * pasted into `docs/performance.md`, including numbers taken on a device that
+   * is no longer to hand. Giving Playwright a subdirectory of its own leaves
+   * `test-results/latency.jsonl` alone.
+   */
+  outputDir: './test-results/playwright',
   globalSetup: './test/latency/global-setup.ts',
   fullyParallel: false,
   workers: 1,

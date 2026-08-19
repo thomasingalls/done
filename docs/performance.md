@@ -220,6 +220,52 @@ else, and §12's statistic needed hardware.
 same module and the same constants as the Playwright suite, to any device that can reach a trustworthy origin —
 `adb reverse`, or a Tailscale MagicDNS URL. Results post back into the same file.
 
+### Which XChaCha20-Poly1305 implementation
+
+**The 4 kB breach above had two candidate causes and they wanted different fixes.** Either pure-JS 32-bit
+arithmetic is inherently slow on this hardware, or V8 on ARM handles one library's particular code shape
+badly. The first needs a WASM dependency against 43.7 kB of bundle headroom; the second needs a different
+import. A second pure-JS implementation is the cheap discriminator, and a WASM one is the ceiling.
+
+**Every candidate reproduces row 2's published vector byte for byte before it is measured**, and the page
+refuses to run if one does not — all of them are the same construction on the wire, so a swap would be an
+implementation change with no format consequence, but that is a claim and the vector is what checks it.
+Means on the Pixel 9a, 2026-08-19:
+
+| Implementation                            | 18 B       | 419 B       | 4 kB        | vs noble at 4 kB |
+| ----------------------------------------- | ---------- | ----------- | ----------- | ---------------- |
+| `@noble/ciphers` (selected)               | 84.7 µs    | 190.6 µs    | 1 247.8 µs  | 1.00×            |
+| `@stablelib/xchacha20poly1305`            | 62.3 µs    | 169.8 µs    | 1 237.5 µs  | **0.99×**        |
+| **libsodium (WASM)**                      | **6.2 µs** | **11.3 µs** | **51.5 µs** | **0.04×**        |
+| `@noble` ChaCha20-Poly1305, 12-byte nonce | 53.3 µs    | 166.0 µs    | 1 269.2 µs  | 1.02×            |
+
+**The discriminator answered cleanly: it is not the library.** Two independent pure-JS implementations land
+within 1% of each other at 4 kB. **Pure-JS arithmetic is the wall on this hardware**, so the cheap fix — swap
+the import — does not exist.
+
+**WASM buys 24× at 4 kB**, 14× at the common case, and would resolve the breach with room:
+
+| Payload | full write today | with a WASM seal | margin |
+| ------- | ---------------- | ---------------- | ------ |
+| 18 B    | 101 µs           | **15 µs**        | 66×    |
+| 419 B   | 235 µs           | **44 µs**        | 23×    |
+| 4 kB    | 1 498 µs         | **274 µs**       | 3.6×   |
+
+**The fix that works is not the fix that is available.** libsodium is 550 kB unpacked against 43.7 kB of
+headroom, so it cannot ship — it is here as a ceiling, to price the option before anyone builds a small
+module. What it establishes is that the ceiling is high enough to be worth the work.
+
+**Its instantiation cost is 37 ms from bundle evaluation to callable**, measured from the module rather than
+from the `await`, since an earlier version timed the await and reported 0.0 ms — true, useless, and hiding
+the number that matters. **That window is one in which a crash journal cannot seal**, which is why an inlined
+module compiled synchronously is the only shape worth considering (TRD §12). 37 ms is libsodium's whole
+library; a minimal module would be far less.
+
+**One result vindicates a selection rather than questioning it.** The 12-byte-nonce reference costs 0.63× at
+18 B and **1.02× at 4 kB**, so XChaCha's extra HChaCha20 block is about a third of a small seal and nothing at
+all where the budget actually breaks. Row 2 chose the 24-byte nonce on grounds that had nothing to do with
+speed, and it turns out to cost nothing where speed matters.
+
 ### Still absent
 
 | Metric (TRD §12)                         | Budget                           | Why there is no number  |

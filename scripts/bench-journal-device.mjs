@@ -28,7 +28,7 @@
  * Usage: node scripts/bench-journal-device.mjs [--port 4180]
  */
 
-import { appendFileSync, mkdirSync } from 'node:fs';
+import { appendFileSync, mkdirSync, readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -49,8 +49,8 @@ const port = Number(argument('--port', '4180'));
 if (!Number.isInteger(port) || port < 1 || port > 65535)
   throw new Error('--port must be a TCP port');
 
-/** Bundle the device entry, which imports the same module the spec measures. */
-const bundle = async () => {
+/** Bundle one device entry, which imports the same modules the spec measures. */
+const bundle = async (entryFile, name) => {
   const output = await build({
     root,
     configFile: false,
@@ -59,17 +59,43 @@ const bundle = async () => {
       write: false,
       minify: false,
       lib: {
-        entry: join(root, 'test/latency/journal-bench.device.ts'),
+        entry: join(root, entryFile),
         formats: ['iife'],
-        name: 'journalBenchDevice',
+        name,
         fileName: () => 'device.js',
       },
     },
   });
   const chunks = (Array.isArray(output) ? output : [output]).flatMap((one) => one.output);
   const entry = chunks.find((chunk) => chunk.type === 'chunk' && chunk.isEntry);
-  if (!entry?.code) throw new Error('no entry chunk in the device bundle');
+  if (!entry?.code) throw new Error(`no entry chunk in the ${name} bundle`);
   return entry.code;
+};
+
+/**
+ * The vector the cipher page checks its candidates against.
+ *
+ * Served from the published file rather than inlined into the page, so the check
+ * is against what the generator actually publishes. A copy would be one more
+ * thing that can quietly stop matching, which is the failure this whole vector
+ * discipline exists to prevent.
+ */
+const vector = () => {
+  const file = join(root, 'test/vectors/journal-aead.json');
+  const found = JSON.parse(readFileSync(file, 'utf8')).vectors.find(
+    (one) => one.name === 'keystroke-update',
+  );
+  if (!found) throw new Error('the keystroke-update vector is missing');
+  // The record is "2:" || base64(u32be(gen) || nonce[24] || ct); the candidates
+  // produce the ciphertext alone, so the expectation is decoded back out of it.
+  const raw = Buffer.from(found.expected.record.slice(2), 'base64');
+  return {
+    k_journal: found.derived.k_journal,
+    nonce: found.inputs.nonce,
+    aad: found.derived.aad,
+    plaintext: found.inputs.plaintext,
+    ciphertext: raw.subarray(4 + 24).toString('hex'),
+  };
 };
 
 const page = (script) => `<!doctype html>
@@ -128,8 +154,11 @@ const recordRows = (payload) => {
   return rows.length;
 };
 
-const script = await bundle();
-const html = page(script);
+const journalHtml = page(
+  await bundle('test/latency/journal-bench.device.ts', 'journalBenchDevice'),
+);
+const cipherHtml = page(await bundle('test/latency/cipher-bench.device.ts', 'cipherBenchDevice'));
+const vectorJson = JSON.stringify(vector());
 
 const server = createServer((request, response) => {
   if (request.method === 'POST' && request.url === '/results') {
@@ -146,8 +175,16 @@ const server = createServer((request, response) => {
     return;
   }
 
+  if (request.method === 'GET' && request.url === '/vector') {
+    response
+      .writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', ...ISOLATION })
+      .end(vectorJson);
+    return;
+  }
+
   if (request.method === 'GET') {
-    response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', ...ISOLATION }).end(html);
+    const body = request.url?.startsWith('/cipher') ? cipherHtml : journalHtml;
+    response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', ...ISOLATION }).end(body);
     return;
   }
 
@@ -159,7 +196,9 @@ server.listen(port, '0.0.0.0', () => {
   console.log('Reach it from the phone with a trustworthy origin — one of:\n');
   console.log(`  adb reverse tcp:${port} tcp:${port}   then open  http://localhost:${port}`);
   console.log(`  tailscale serve --bg ${port}          then open the MagicDNS URL\n`);
-  console.log('The page says whether it got the fine clock before it measures.');
+  console.log(`  /          the journal write, by level and payload`);
+  console.log(`  /cipher    which XChaCha20-Poly1305 implementation\n`);
+  console.log('Each page says whether it got the fine clock before it measures.');
   console.log('Results post back here and land in test-results/latency.jsonl.\n');
   console.log('Ctrl-C when the phone reports "Recorded".\n');
 });

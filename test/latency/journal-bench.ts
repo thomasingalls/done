@@ -160,6 +160,77 @@ const sealRecord = (
  * browser, and hard-coding 100 µs would make the bound above a claim about
  * Chrome's documentation instead of about the machine the run happened on.
  */
+export interface Measured {
+  /** Per-operation milliseconds, one entry per batch. */
+  perOperation: number[];
+  /** Derived from `targetBatchMs`, and reported so a run can be reproduced. */
+  perBatch: number;
+  /** Individually-timed operations, which is where a tail can come from. */
+  singles: number[];
+  /** The observed clock granularity, so the numbers above have a unit. */
+  resolutionMs: number;
+  /** Whether the page got the fine clock. */
+  isolated: boolean;
+}
+
+/**
+ * Time one operation, however it is composed.
+ *
+ * **Exported because a second benchmark exists and must not measure
+ * differently.** The cipher comparison asks a different question from the
+ * journal levels, but an answer produced by a different batching rule or a
+ * different warm-up is not comparable to this file's numbers, and the whole
+ * point of comparing implementations is that the comparison is fair.
+ */
+export const measure = (
+  operation: () => void,
+  { batches, targetBatchMs, singles }: Omit<RunOptions, 'bytes'>,
+): Measured => {
+  const resolutionMs = clockResolution();
+
+  // Warm up before anything is timed, so the first batch is not measuring JIT
+  // compilation, and so the probe below sizes against warm code.
+  for (let index = 0; index < 200; index += 1) operation();
+
+  /**
+   * Size a batch from a probe rather than a constant.
+   *
+   * The probe is run long enough to cross several ticks so its own answer is
+   * not quantized into uselessness, which is the mistake it exists to avoid
+   * one level down.
+   */
+  const probeCount = 200;
+  const probeStart = performance.now();
+  for (let index = 0; index < probeCount; index += 1) operation();
+  const probeMs = Math.max(performance.now() - probeStart, resolutionMs);
+  const perBatch = Math.max(50, Math.ceil((targetBatchMs * probeCount) / probeMs));
+
+  const perOperation: number[] = [];
+  for (let batch = 0; batch < batches; batch += 1) {
+    const start = performance.now();
+    for (let index = 0; index < perBatch; index += 1) operation();
+    perOperation.push((performance.now() - start) / perBatch);
+  }
+
+  // The individually-timed pass, which is the only one that can see a tail. A
+  // batch mean averages an outlier away by construction, and the budget this
+  // feeds is written as a p95 of one write rather than as a mean.
+  const singleTimes: number[] = [];
+  for (let index = 0; index < singles; index += 1) {
+    const start = performance.now();
+    operation();
+    singleTimes.push(performance.now() - start);
+  }
+
+  return {
+    perOperation,
+    perBatch,
+    singles: singleTimes,
+    resolutionMs,
+    isolated: globalThis.crossOriginIsolated,
+  };
+};
+
 const clockResolution = (): number => {
   let smallest = Number.POSITIVE_INFINITY;
   for (let probe = 0; probe < 20; probe += 1) {
@@ -226,55 +297,12 @@ export const bench = (): Bench => {
     localStorage.setItem(slot, framed);
   };
 
-  const run: Bench['run'] = (level, { bytes, batches, targetBatchMs, singles }) => {
+  const run: Bench['run'] = (level, { bytes, ...options }) => {
     const payload = crypto.getRandomValues(new Uint8Array(bytes));
     const slot = 'done.pending-update.bench';
-    const resolutionMs = clockResolution();
-
-    // Warm up before anything is timed, so the first batch is not measuring JIT
-    // compilation, and so the probe below sizes against warm code.
-    for (let index = 0; index < 200; index += 1) operation(level, payload, slot);
-
-    /**
-     * Size a batch from a probe rather than a constant.
-     *
-     * The probe is run long enough to cross several ticks so its own answer is
-     * not quantized into uselessness, which is the mistake it exists to avoid
-     * one level down.
-     */
-    const probeCount = 200;
-    const probeStart = performance.now();
-    for (let index = 0; index < probeCount; index += 1) operation(level, payload, slot);
-    const probeMs = Math.max(performance.now() - probeStart, resolutionMs);
-    const perBatch = Math.max(50, Math.ceil((targetBatchMs * probeCount) / probeMs));
-
-    const perOperation: number[] = [];
-    for (let batch = 0; batch < batches; batch += 1) {
-      const start = performance.now();
-      for (let index = 0; index < perBatch; index += 1) operation(level, payload, slot);
-      perOperation.push((performance.now() - start) / perBatch);
-    }
-
-    // The individually-timed pass, which is the only one that can see a tail.
-    // A batch mean averages an outlier away by construction, and the budget
-    // this feeds is written as a p95 of one write rather than as a mean.
-    const singleTimes: number[] = [];
-    for (let index = 0; index < singles; index += 1) {
-      const start = performance.now();
-      operation(level, payload, slot);
-      singleTimes.push(performance.now() - start);
-    }
-
+    const measured = measure(() => operation(level, payload, slot), options);
     localStorage.removeItem(slot);
-    return {
-      level,
-      bytes,
-      perOperation,
-      perBatch,
-      singles: singleTimes,
-      resolutionMs,
-      isolated: globalThis.crossOriginIsolated,
-    };
+    return { level, bytes, ...measured };
   };
 
   return { verify, run };

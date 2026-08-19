@@ -84,6 +84,17 @@ checked for staleness by `pnpm vectors:check`, which `pnpm check` now runs.
     pastes and large documents are outside what the spec currently treats, and settling the payload qualifier
     ahead of that thinking would answer the easy half of the question. Recorded in
     [decisions.md](./decisions.md), and TRD §12 states the breach itself.
+  - **The cause is the language, not the library, and WASM would fix it.** Four XChaCha20-Poly1305
+    implementations compared on the same phone, each checked against row 2's vector first:
+    `@stablelib` lands within **1%** of `@noble` at 4 kB, so pure-JS arithmetic is the wall and swapping the
+    import is not a fix. **libsodium in WASM is 24× faster**, which would take the 4 kB write from 1 498 µs to
+    a projected 274 µs — inside budget with 3.6× margin. **But the fix that works is not one that is
+    available**: libsodium is 550 kB unpacked against 43.7 kB of headroom, so it prices the option rather than
+    supplying it, and a small module would mean shipping a hand-rolled primitive against row 1's own "reviewed
+    and widely implemented" criterion. **Open, and it belongs to review 3a's scope.** Recorded in
+    [performance.md](./performance.md).
+  - **A side result that vindicates a selection.** XChaCha's extra HChaCha20 block costs 1.02× at 4 kB, so
+    row 2's 24-byte nonce — chosen on grounds unrelated to speed — costs nothing where the budget breaks.
   - **The emulated profile was wrong, not conservative, and that is the transferable finding.** The 4× CPU
     throttle predicted 266 µs at 4 kB against an actual 1 498 µs. Against desktop the phone runs the **cipher**
     12×, 19× and 43× slower as the payload grows and the **base64-and-storage** path only 1.3×, 2.3× and 5.3×

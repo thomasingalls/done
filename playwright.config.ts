@@ -8,6 +8,9 @@ import { defineConfig, devices } from '@playwright/test';
  * without measuring anything.
  */
 export default defineConfig({
+  // Playwright clears `outputDir` each run and the default is `test-results/`,
+  // where the latency harness keeps measurements. See the latency config.
+  outputDir: './test-results/playwright',
   testDir: './test/geometry',
   fullyParallel: true,
   reporter: process.env['CI'] ? 'github' : 'list',
