@@ -311,7 +311,7 @@ wasm-bindgen, is **6 465 bytes raw**. What follows measures it rather than estim
 
 ### The WASM seal, built and measured
 
-**Date:** 2026-08-19 · **Commit:** on `claude/project-next-steps-0e4db2` · Crate: `wasm/journal-seal`, pinned
+**Date:** 2026-08-19 · **Commit:** `9b49b74` · Crate: `wasm/journal-seal`, pinned
 `chacha20poly1305` 0.10.1 / `chacha20` 0.9.1 / `poly1305` 0.8.0.
 
 `no_std`, no allocator, no wasm-bindgen, fixed static buffers, one exported `seal`. It is checked against

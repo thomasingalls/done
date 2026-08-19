@@ -971,7 +971,7 @@ question is the author's, and its other half is about attribution rather than co
 
 ### The journal's cipher becomes a compiled wasm module, and the 4 kB breach closes
 
-**Date:** 2026-08-19 · **Commit:** on `claude/project-next-steps-0e4db2` · **Against:** PRD v9 / TRD v8
+**Date:** 2026-08-19 · **Commit:** `9b49b74` · **Against:** PRD v9 / TRD v8
 
 **Orientation.** The entry above carried §12's 4 kB journal breach into review 3a as a defect with a known cause
 and no known fix: 1 930 µs p95 against a 1 ms budget, caused by pure-JS 32-bit arithmetic rather than by one
