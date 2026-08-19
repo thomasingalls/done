@@ -321,11 +321,20 @@ to lock out its owner.
 
 ## 9. What is still open, and what Stage 4 owes
 
-**The PRF availability floor is asserted, not verified — the same gap row 1 recorded for Ed25519, and it
-should be closed once for both.** This project has no written browser support floor, so "where available" is
-doing work that no document defines. It does not block: the code is mandatory and PRF is additive, so an
-absent PRF costs a convenience and nothing else — which is §13.4's line, and is the reason this row can record
-the gap rather than close it.
+~~**The PRF availability floor is asserted, not verified — the same gap row 1 recorded for Ed25519, and it
+should be closed once for both.**~~ **Closed on 2026-08-19**, in TRD §10.11, and closed once for both as this
+row asked. The answer for PRF is not the one the phrasing expected: **there is no floor to state.**
+
+**PRF's availability is not a browser version, so no version can be named.** It is a matrix of operating system,
+browser and authenticator kind — Baseline has no feature for PRF or for any WebAuthn extension, and roaming
+authenticators cannot be reached from iOS or iPadOS at all, because the platform does not pass extension data to
+external keys whatever the key supports.
+
+**Which is a result in this row's favour rather than an obstacle.** §5's argument was that PRF's optionality must
+not become a product branch, and that the code has to be the root; a capability whose availability is this ragged
+is precisely one that cannot be a root. **A design that had made PRF the root would need a floor that does not
+exist.** The gap this row recorded was real, and closing it strengthened the construction rather than qualifying
+it.
 
 **Whether enrollment can rotate unilaterally after Stage 4 is the construction's soft joint** (§5). Named
 here, and offered to review 3a as the thing most likely to come back changed.

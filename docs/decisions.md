@@ -466,3 +466,44 @@ every published negative still fails, not that the set of negatives covers every
 construction can still arrive with an untested field and a green check. Making the mutation pass automatic is
 the obvious follow-on and is deliberately not taken here — it is a change to how every generator is
 structured, and Stage 0 is five days from a review that reads these files as they are.
+
+### The browser support floor is Baseline newly available, and it does not answer either question that wanted it
+
+**Date:** 2026-08-19 · **Commit:** on `claude/project-next-steps-8c0460` · **Against:** PRD v9 / TRD v8
+
+**Orientation.** Two selection rows independently recorded the same gap and both asked for it to be closed once
+rather than twice: row 1 could not verify that Ed25519 is available, and row 13 could not verify that WebAuthn
+PRF is, because the project had never written down which browsers it supports. `docs/development.md` names a
+Playwright profile, which is a test target and not a floor. So "shipped across the current engines" and "where
+available" were both doing work that no document defined, five days before a review that reads both records.
+
+**Decision.** The floor is **Baseline _newly available_** — supported in the current stable release of Chrome,
+Edge, Firefox and Safari, desktop and mobile — rather than _widely available_, which is the same bar thirty
+months later. There is no installed base to strand, so the stricter floor costs nothing; it keeps the design out
+of polyfills for capabilities the platform is about to supply, which was already one of §13.10's selection
+criteria; and it **bounds the device population from below**, which is the only thing §12's low-end journal
+budget can be argued against now that the handset it names will not be acquired.
+
+**The floor does not resolve either question that asked for it, and that is the finding.** Baseline tracks
+`web-cryptography` as a single feature, widely available since 2015 — a decade before Ed25519 was in it — and has
+no per-algorithm entries. It tracks `webauthn` as a single feature since 2021 and has **no entry for PRF or for
+any WebAuthn extension**. So the rule both rows wanted written down answers the platform question and neither of
+theirs. TRD §10.11 therefore carries a second rule: where Baseline does not resolve a capability the design
+depends on, the floor is stated for that capability specifically, with its evidence and the date it was taken.
+
+**Ed25519 clears the floor** — Chrome and Edge 137, Firefox 129, Safari 17.0 on desktop and iOS — so the fallback
+path an earlier §13.10 anticipated is not a state that exists, and there is nothing to select for it.
+
+**PRF has no floor to state, and that is a result in the design's favour rather than an obstacle.** Its
+availability is not a browser version but a matrix of operating system, browser and authenticator kind, and
+roaming authenticators cannot be reached from iOS or iPadOS at all, because the platform does not pass extension
+data to external keys whatever the key supports. Row 13 had already made the generated code the root and the PRF
+output an additional seal of the same key, on the argument that PRF's optionality must not become a product
+branch. **A design that had made PRF the root would need a floor that does not exist.** The gap was real and
+closing it strengthened the construction instead of qualifying it.
+
+**The cost, accepted.** The floor is a statement of intent and a record of evidence, not a test: nothing in the
+build asserts Ed25519 is present, and row 1's owed item is therefore only half closed — the floor is written, the
+primitive is still unchecked against it. Signatures are first used in Stage 4 and that conformance test belongs
+there. **_Newly available_ is also a moving bar**, so the section is dated and will need re-reading rather than
+trusting, which is why the evidence is recorded beside the rule instead of behind it.

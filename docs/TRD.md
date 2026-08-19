@@ -1428,6 +1428,62 @@ specifically, and is answered before the first deployment cutover rather than be
 because this construction lands with the local store, which is far earlier. The latency benchmark on a low-end
 device is a build-failing budget rather than an aspiration (§12).
 
+### 10.11 The browser support floor, and where Baseline stops resolving
+
+**The floor is Baseline _newly available_**: a platform feature is in scope once it is supported in the current
+stable release of every core browser — Chrome, Edge, Firefox and Safari, desktop and mobile. Not _widely
+available_, which is the same bar thirty months later.
+
+**The stricter floor is affordable because there is no installed base to strand**, and it buys two things beyond
+tidiness. It keeps the design out of polyfills for capabilities the platform is about to supply anyway, which is
+already one of §13.10's selection criteria. And it **bounds the device population from below**, which is the only
+thing §12's low-end journal budget can be argued against once it is accepted that the handset it names will not be
+acquired: a device running a current stable browser is not a device from the era that would make that budget
+interesting.
+
+**Baseline does not resolve either of the two capabilities this design actually asks about, and that is the part
+worth writing down.** Checked against the Baseline data rather than assumed, on 2026-08-19:
+
+| Baseline feature   | Status           | Since      | What it does not say                                                                               |
+| ------------------ | ---------------- | ---------- | -------------------------------------------------------------------------------------------------- |
+| `web-cryptography` | widely available | 2015-07-29 | Which algorithms `SubtleCrypto` accepts. The API predates Ed25519 in it by a decade                |
+| `webauthn`         | widely available | 2021-09-07 | Anything about extensions. **There is no Baseline feature for PRF, or for any WebAuthn extension** |
+
+So the floor answers the platform question and neither of §13's. **Where Baseline does not resolve a capability the
+design depends on, the floor is stated for that capability specifically, with its evidence and the date the
+evidence was taken, and the design says what happens when it is absent.** Two such statements follow, and they are
+the whole of the current list.
+
+**Ed25519 is in scope, and needs no fallback path.** Support, from the MDN compatibility data behind
+`SubtleCrypto.sign` with `Ed25519`:
+
+| Chrome | Edge | Firefox | Safari | Safari iOS |
+| ------ | ---- | ------- | ------ | ---------- |
+| 137    | 137  | 129     | 17.0   | 17.0       |
+
+The binding constraint is Chrome and Edge at 137, which is the most recent of the four; every core engine has
+shipped it, so it satisfies the floor. **This closes what row 1 recorded as open**, in the terms that record set:
+it asked for the support floor to be written down, and noted that an earlier draft of §13.10 anticipated a
+fallback path for unavailability without selecting one. Under this floor there is no such state to select for.
+Signatures are first used in Stage 4, so the conformance test that turns this from a statement into a check
+belongs there (§11.2), not here.
+
+**WebAuthn PRF cannot be a floor capability at all**, and this is a fact about the feature rather than a gap in the
+research. Its availability is not a browser version: it is a matrix of operating system, browser and authenticator
+kind. Platform authenticators are reachable in current Safari on macOS and iOS through iCloud Keychain, in Chrome
+on Android through Google Password Manager, and in Chrome, Edge and Firefox on Windows; **roaming authenticators
+are not reachable from iOS or iPadOS at all**, because the platform does not pass extension data to external keys,
+regardless of what the key supports.
+
+**This is why §13.3 makes the generated code the root and the PRF output an additional seal of the same key.** The
+design already treats PRF as absent by default, so a matrix this ragged costs a convenience on some combinations
+and never a capability on any — and there is no floor to state, because there is no version at which the answer
+becomes yes everywhere. **A design that had made PRF the root would need this section to say something it cannot.**
+
+**What this section is not.** It is a statement of intent and a record of evidence, not a test: nothing in the build
+asserts that Ed25519 is present, and the Baseline set moves as browsers ship, so the dates above are the point
+rather than decoration.
+
 ---
 
 ## 11. Testing
@@ -1723,7 +1779,8 @@ opening the envelopes remains. It unlocks at cold start, and it **strengthens cu
 it is not the switch that turns encryption on.
 
 **The construction, selected** (§15 row 13). A **generated 125-bit code is always enrolled and is the root**; a
-WebAuthn PRF output, where the platform supplies one, is an **additional seal of the same key** rather than an
+WebAuthn PRF output, where the platform supplies one (§10.11 — and it is a matrix rather than a version), is an
+**additional seal of the same key** rather than an
 alternative to it — §13.8's rule that PRF's optionality is not a product branch, applied a second time. A
 user-chosen passphrase is **rejected**: the seal sits in the profile beside the ciphertext it protects, so guessing
 is offline and unrateable for the attacker this feature exists to resist, and a browser origin has no rate-limiting

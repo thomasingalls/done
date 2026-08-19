@@ -197,12 +197,21 @@ compaction and it happens to be exactly the right shape.
 
 ## 7. What is still open, and what this row owes
 
-**Ed25519's availability is asserted, not verified.** WebCrypto Ed25519 shipped across the current engines,
-but this project has **no written browser support matrix** — `docs/development.md` names a Playwright profile,
-not a floor — so the claim has nothing here to check against. §13.10 anticipated "a fallback path needed where
-unavailable" and this row does not select one. **It does not have to yet:** signatures are first used in Stage
-4, and the row that consumes them is review 3b's. What this row owes is that the question is recorded rather
-than closed by omission. Closing it means writing the support floor down and testing the primitive against it.
+~~**Ed25519's availability is asserted, not verified.**~~ **Closed on 2026-08-19**, in TRD §10.11. The gap
+this row recorded was that the project had **no written browser support matrix** — `docs/development.md` named a
+Playwright profile, not a floor — so the availability claim had nothing to check against, and §13.10 anticipated
+"a fallback path needed where unavailable" without this row selecting one.
+
+**The floor is Baseline _newly available_, and Ed25519 clears it**: Chrome and Edge 137, Firefox 129, Safari 17.0
+on desktop and iOS, with Chrome and Edge the binding constraint. Under that floor there is no unavailable state,
+so the fallback path §13.10 anticipated is not a thing to select.
+
+**What closing it turned up is worth more than the answer.** Baseline has one feature for `web-cryptography`,
+widely available since 2015 — a decade before Ed25519 was in it — and none per algorithm. So the floor rule this
+row wanted written down **cannot resolve this row's own question**, and TRD §10.11 states per-capability floors
+separately for exactly that reason. **Half of this row's owed item survives**: the support floor is written, and
+the primitive is still not tested against it. Signatures are first used in Stage 4 and the conformance test
+belongs there (§11.2).
 
 **HPKE has no vector here**, for the reason in §2. It is pinned by ciphersuite identifier and lands with 3b.
 

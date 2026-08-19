@@ -55,8 +55,9 @@ checked for staleness by `pnpm vectors:check`, which `pnpm check` now runs.
   - **The §13.2 separation rule is machine-checked, not asserted.** The generator buckets every role by path and
     fails if any primitive appears in both. Four published KATs (GCM Test Case 16, RFC 5869, RFC 8032, FIPS 180-4)
     run against WebCrypto on every invocation.
-  - **Open:** Ed25519's availability is asserted, not verified — this project has no written browser support
-    floor. It is first used in Stage 4, so the row records the gap rather than closing it by omission.
+  - ~~**Open:** Ed25519's availability is asserted, not verified.~~ **Closed** — the floor is Baseline
+    _newly available_, written in TRD §10.11, and Ed25519 clears it (Chrome and Edge 137, Firefox 129,
+    Safari 17.0). Testing the primitive against the floor is still Stage 4's (§11.2).
 - **Row 2 — the synchronous journal AEAD and its nonce discipline.** in flight — construction selected with
   vectors and folded, in [selections/row-2-journal-aead.md](./selections/row-2-journal-aead.md). **One
   measurement outstanding, and it is the only thing in this slice with a physical lead time.**
@@ -131,8 +132,10 @@ checked for staleness by `pnpm vectors:check`, which `pnpm check` now runs.
     was enabled. Without rotation the lock buys its intended audience almost nothing while telling them
     otherwise. **This is the part most likely to come back changed from 3a**: rotation is unilateral and
     free until Stage 4 gives the workspace other devices.
-  - **Open:** the PRF availability floor is asserted, not verified — **the same gap row 1 recorded for
-    Ed25519**, and it should be closed once for both rather than twice.
+  - ~~**Open:** the PRF availability floor is asserted, not verified.~~ **Closed** — once for both, as the
+    row asked, and **the answer for PRF is that there is no floor to state**: its availability is a matrix of
+    OS, browser and authenticator kind rather than a version. That is a result in the construction's favour —
+    a capability this ragged is precisely one that cannot be a root, which is what §5 already argued.
 
 _Exit: rows 1–3 selected, with test vectors._ **Met**, and the wider scope the review actually reads
 (TRD §15) — 13 and the storage-facing half of 14 — **is met too, and folded into the TRD.** **Nothing in
