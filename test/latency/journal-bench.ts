@@ -33,6 +33,40 @@ const AAD_LABEL = 'done/jrnl/v1';
 
 export type Level = 'plaintext' | 'seal' | 'framed' | 'stored';
 
+/**
+ * The measurement's shape, exported so every runner uses one definition.
+ *
+ * The harness already argues that a baseline is only worth having if the run
+ * compared against it did the same thing. That applies twice as hard here,
+ * because the whole purpose of the device run is to be compared against the
+ * desktop one — two copies of these constants would be two experiments.
+ */
+export const SIZES: readonly { bytes: number; why: string }[] = [
+  { bytes: 18, why: 'one keystroke — the measured common case for this path' },
+  { bytes: 419, why: 'a 400-character paste' },
+  { bytes: 4096, why: 'a large single update' },
+];
+
+export const LEVELS: readonly { level: Level; label: string }[] = [
+  { level: 'plaintext', label: 'plaintext write (today)' },
+  { level: 'seal', label: 'seal only' },
+  { level: 'framed', label: 'seal + base64' },
+  { level: 'stored', label: 'seal + base64 + setItem' },
+];
+
+/**
+ * Batches, how long each should last, and how many single writes to time.
+ *
+ * The batch is sized from a duration rather than a count: a fixed count
+ * quantizes to whatever the clock allows, and on a 100 µs clock that made two
+ * adjacent levels report the same number. The singles are what the tail comes
+ * from, and the tail is the statistic the budget in TRD §12 actually names.
+ */
+export const RUN_DEFAULTS = { batches: 30, targetBatchMs: 20, singles: 4000 } as const;
+
+/** The budget under test (TRD §12), in milliseconds. */
+export const BUDGET_MS = 1;
+
 export interface RunOptions {
   /** Plaintext size in bytes. Row 2 measured 18, 419 and 4096. */
   bytes: number;

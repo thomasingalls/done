@@ -28,43 +28,23 @@ import { fileURLToPath } from 'node:url';
 import { expect, test, type Browser, type Page } from '@playwright/test';
 import { build } from 'vite';
 import { CPU_THROTTLE, percentile, record } from './measure';
-import type { Level, RunResult } from './journal-bench';
+import {
+  BUDGET_MS,
+  LEVELS,
+  RUN_DEFAULTS,
+  SIZES,
+  type Level,
+  type RunResult,
+} from './journal-bench';
 
 test.describe.configure({ mode: 'serial' });
 
-/** The payload sizes row 2 measured, so its figures and these are comparable. */
-const SIZES = [
-  { bytes: 18, why: 'one keystroke — the measured common case for this path' },
-  { bytes: 419, why: 'a 400-character paste' },
-  { bytes: 4096, why: 'a large single update' },
-] as const;
-
-const LEVELS: readonly { level: Level; label: string }[] = [
-  { level: 'plaintext', label: 'plaintext write (today)' },
-  { level: 'seal', label: 'seal only' },
-  { level: 'framed', label: 'seal + base64' },
-  { level: 'stored', label: 'seal + base64 + setItem' },
-];
-
 /**
- * How a batch is sized, and why it is a duration rather than a count.
- *
- * A single seal is a few microseconds and `performance.now()` is coarsened to
- * far more than that, so one operation cannot be timed on its own — a batch is
- * timed and divided. **The first version of this fixed the batch at 100
- * operations and that was wrong in a way worth recording**: on a 100 µs clock
- * it quantized every result to a whole microsecond, which made `seal` and
- * `seal + base64` report the same number and let noise put them in the wrong
- * order. Sizing to a target duration bounds the quantization instead of leaving
- * it to whatever the level happens to cost.
+ * How many single writes back the tail, named locally only because the record
+ * note quotes it. Everything else about the measurement's shape is imported,
+ * so the device runner and this one cannot drift apart.
  */
-const BATCHES = 30;
-const TARGET_BATCH_MS = 20;
-/** Individually-timed operations, for the tail and the crossing estimate. */
-const SINGLES = 4000;
-
-/** The budget under test (TRD §12), in milliseconds. */
-const BUDGET_MS = 1;
+const SINGLES = RUN_DEFAULTS.singles;
 
 let page: Page;
 let project: string;
@@ -217,7 +197,7 @@ test('one journal record, by level and payload size', async () => {
         (input) => window.journalBench.run(input.level, input.options),
         {
           level,
-          options: { bytes, batches: BATCHES, targetBatchMs: TARGET_BATCH_MS, singles: SINGLES },
+          options: { bytes, ...RUN_DEFAULTS },
         },
       );
       results.push(result);
@@ -233,8 +213,8 @@ test('one journal record, by level and payload size', async () => {
         project,
         metric: `journal write, ${label}, ${bytes} B`,
         value: mean,
-        samples: BATCHES * result.perBatch,
-        note: `${why}; batch mean over ${BATCHES}×${result.perBatch} on a ${result.resolutionMs.toFixed(3)} ms clock; p95 of ${SINGLES} single writes ${(tail * 1000).toFixed(0)} µs${throttled ? ' (not attributable — CPU throttled)' : ''}`,
+        samples: RUN_DEFAULTS.batches * result.perBatch,
+        note: `${why}; batch mean over ${RUN_DEFAULTS.batches}×${result.perBatch} on a ${result.resolutionMs.toFixed(3)} ms clock; p95 of ${SINGLES} single writes ${(tail * 1000).toFixed(0)} µs${throttled ? ' (not attributable — CPU throttled)' : ''}`,
       });
     }
   }
@@ -272,7 +252,7 @@ test('one journal record, by level and payload size', async () => {
     project,
     metric: 'journal write, encryption overhead, 18 B',
     value: added,
-    samples: BATCHES,
+    samples: RUN_DEFAULTS.batches,
     note: 'batch mean of the full encrypted write minus the plaintext write that exists today; means rather than tails, because the difference of two tails is not the tail of a difference',
   });
 });

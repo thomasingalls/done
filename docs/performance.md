@@ -159,54 +159,66 @@ the wrong construction produces numbers that look exactly like the right ones.
 
 **Four cumulative levels, because the difference is the interesting quantity.** §12's row names the AEAD, but
 what a keystroke waits for is the whole synchronous write, and today's journal already pays for base64 and a
-`localStorage.setItem`. Batch means, taken on 2026-08-19 against `bd87655` plus this harness:
+`localStorage.setItem`. Batch means, taken on 2026-08-19 against `66a7c6a` plus the device runner, with the
+p95 of a single write in the last column — **that column is the budget's own statistic and only the Pixel 9a
+supplies it honestly**, for the reason under the table:
 
-| Level                         | Payload | android      | desktop     |
-| ----------------------------- | ------- | ------------ | ----------- |
-| plaintext write, as today     | 18 B    | 9.4 µs       | 6.0 µs      |
-| seal                          | 18 B    | 27.4 µs      | 7.6 µs      |
-| seal + base64                 | 18 B    | 33.0 µs      | 9.2 µs      |
-| **seal + base64 + `setItem`** | 18 B    | **48.2 µs**  | **12.2 µs** |
-| plaintext write, as today     | 419 B   | 22.0 µs      | 8.7 µs      |
-| seal                          | 419 B   | 38.9 µs      | 11.3 µs     |
-| seal + base64                 | 419 B   | 54.1 µs      | 15.2 µs     |
-| **seal + base64 + `setItem`** | 419 B   | **75.0 µs**  | **18.9 µs** |
-| plaintext write, as today     | 4 kB    | 127.2 µs     | 30.7 µs     |
-| seal                          | 4 kB    | 125.9 µs     | 29.1 µs     |
-| seal + base64                 | 4 kB    | 230.2 µs     | 54.6 µs     |
-| **seal + base64 + `setItem`** | 4 kB    | **266.1 µs** | **64.1 µs** |
+| Level                         | Payload | desktop     | 4× throttle  | Pixel 9a      | 9a p95      |
+| ----------------------------- | ------- | ----------- | ------------ | ------------- | ----------- |
+| plaintext write, as today     | 18 B    | 5.9 µs      | 9.6 µs       | 4.9 µs        | 10 µs       |
+| seal                          | 18 B    | 7.4 µs      | 26.4 µs      | 91.8 µs       | 120 µs      |
+| seal + base64                 | 18 B    | 8.9 µs      | 29.9 µs      | 90.0 µs       | 125 µs      |
+| **seal + base64 + `setItem`** | 18 B    | **12.8 µs** | **49.1 µs**  | **100.7 µs**  | **145 µs**  |
+| plaintext write, as today     | 419 B   | 8.8 µs      | 21.6 µs      | 19.9 µs       | 30 µs       |
+| seal                          | 419 B   | 10.5 µs     | 39.0 µs      | 203.0 µs      | 225 µs      |
+| seal + base64                 | 419 B   | 13.9 µs     | 52.2 µs      | 220.8 µs      | 250 µs      |
+| **seal + base64 + `setItem`** | 419 B   | **18.0 µs** | **72.4 µs**  | **235.5 µs**  | **295 µs**  |
+| plaintext write, as today     | 4 kB    | 30.5 µs     | 125.9 µs     | 161.0 µs      | 175 µs      |
+| seal                          | 4 kB    | 29.7 µs     | 120.0 µs     | 1275.6 µs     | 1515 µs     |
+| seal + base64                 | 4 kB    | 53.6 µs     | 221.5 µs     | 1447.8 µs     | 1785 µs     |
+| **seal + base64 + `setItem`** | 4 kB    | **63.8 µs** | **265.7 µs** | **1498.3 µs** | **1930 µs** |
 
-**The budget holds by about twenty times at the common payload size**, on the throttled profile, against
-`< 1 ms p95`. That is the headline and it is not the interesting part.
+**The budget is met at the payloads the journal actually sees and exceeded by about twice at 4 kB.** 145 µs and
+295 µs against 1 ms at 18 and 419 bytes; **1 930 µs at 4 kB.** This is recorded as a Stage 1 defect rather than
+as a budget revision — see [decisions.md](./decisions.md).
 
-**Encryption doubles an 18-byte journal write on desktop and quintuples it throttled** — 6.0 → 12.2 µs, and
-9.4 → 48.2 µs. The asymmetry is the finding: the AEAD is CPU-bound and a CPU throttle hits it in full, while
-`setItem` is not and does not scale the same way. Anything that reasons about this cost from the desktop
-figure alone will understate it on a phone by more than a factor of two.
+**Two runs, and the ordering was checked rather than assumed.** Every level reproduces within 1.4% across two
+independent runs on the phone. Because sizes are measured smallest-first, the largest payload is also the
+latest, so the device runner repeats the 18 B and 4 kB seals at the end: they came back 7% and 2% slower, well
+inside the 15% threshold. **The 4 kB figure is a payload effect and not a warm phone.**
 
-**At 4 kB the AEAD is no longer the biggest term.** base64 costs 25.5 µs on desktop against the seal's 29.1,
-and 104.3 µs throttled — so the row's name points at the term that stops dominating exactly where the budget
-would start to matter. Stage 1 should not optimize the cipher first.
+**The 4× CPU throttle was not conservative — it was wrong.** It predicted 265.7 µs at 4 kB against an actual
+1 498.3 µs, understating by 5.6×, and it understates the common case by 2×. An emulated profile would have let
+this breach ship. The reason is visible in the ratios: against desktop, the 9a runs the **cipher** 12×, 19×
+and 43× slower as the payload grows, while the **base64-and-storage** path runs only 1.3×, 2.3× and 5.3×
+slower. A phone is not uniformly N× slower, which is exactly what row 2's extrapolation assumed — the pure-JS
+arithmetic degrades and the paths that reach native code do not.
+
+**Why no faster path exists today.** The journal write is synchronous by construction, WebCrypto is async, so
+there is no hardware-accelerated route to reach for. That is TRD §10.10's "one new primitive, and it is on the
+crash path", now with a number against it.
 
 **Row 2's Node figure survives contact with the browser.** It recorded 7.8 µs for an 18-byte seal in Node on
-this machine; Chrome gives 7.6 µs. So the two caveats row 2 raised against its own number — Node's
-`Buffer.from().toString('base64')`, and V8-in-Node — turn out not to have mattered _for the seal_. They
-matter one level up, which is why base64 is a level here rather than an assumption.
+this machine; Chrome gives 7.4 µs. So the two caveats row 2 raised against its own number — Node's
+`Buffer.from().toString('base64')`, and V8-in-Node — turn out not to have mattered _for the seal_. They matter
+one level up, which is why base64 is a level here rather than an assumption.
 
 **How it is measured, and the two things that had to be fixed.** Batches are sized from a probe to a target
 duration rather than fixed at a count: a fixed 100 quantized every result to a whole microsecond on a 100 µs
 clock, which made two adjacent levels report the same number and let noise put them in the wrong order. And
-the page is served cross-origin isolated, because Chrome coarsens `performance.now()` to 100 µs without it
-and 5 µs with it, and a 12 µs write is invisible at the former. The spec asserts isolation rather than hoping
-for it.
+every runner serves the page cross-origin isolated, because Chrome coarsens `performance.now()` to 100 µs
+without it and 5 µs with it, and a 12 µs write is invisible at the former. Both runners assert isolation rather
+than hoping for it.
 
-**The tail is recorded but is only attributable unthrottled, and that is what still wants a real device.**
-CDP's CPU throttle stalls the thread rather than simulating a slower core, so its stalls land _inside_
-individually-timed operations and become the tail. This is demonstrated rather than asserted: on the
-throttled profile the plaintext level, which performs no cryptography at all, shows the same five-fold
-tail-to-mean ratio as the sealed levels. **§12's budget is a p95 of one write**, so a throttled profile
-cannot produce the statistic the budget names — an unthrottled handset is the only place that number is both
-slow enough to matter and honest.
+**The p95 column comes only from the phone, and that is structural.** CDP's CPU throttle stalls the thread
+rather than simulating a slower core, so its stalls land _inside_ individually-timed operations and become the
+tail — demonstrated rather than asserted, since on the throttled profile the plaintext level shows the same
+five-fold tail inflation while performing no cryptography at all. So the throttled column is a mean and nothing
+else, and §12's statistic needed hardware.
+
+**Taking it needs no cable.** `node scripts/bench-journal-device.mjs` serves the same construction, from the
+same module and the same constants as the Playwright suite, to any device that can reach a trustworthy origin —
+`adb reverse`, or a Tailscale MagicDNS URL. Results post back into the same file.
 
 ### Still absent
 

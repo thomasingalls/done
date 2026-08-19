@@ -1710,18 +1710,26 @@ revised budget — not moving verification onto a lazy path where it silently st
 **The journal budget is a correctness budget in disguise.** The synchronous AEAD runs inside a handler that must not
 return until the write has happened, so exceeding it does not make the app slow, it makes typing stutter.
 
-**It is now measured in a browser, and still not on the device it names.** The full synchronous write — seal, base64
-and the `localStorage.setItem` the journal already performs — is 12.2 µs on a development Mac and 48.2 µs under a 4×
-CPU throttle, against a 1 ms budget. Two things the measurement changed rather than confirmed. **The row names the
-AEAD, and at 4 kB the AEAD is no longer the largest term**: base64 costs about as much. And **encryption doubles the
-write on a desktop but quintuples it throttled**, because the cipher is CPU-bound and `setItem` is not, so the
-desktop figure understates the mobile cost by more than a factor of two.
+**It is now measured, on hardware, and it is exceeded at 4 kB.** The full synchronous write — seal, base64 and the
+`localStorage.setItem` the journal already performs — is **145 µs p95 at the 18-byte common case and 295 µs at
+419 bytes on a Pixel 9a, against 1 ms; at 4 kB it is 1 930 µs.** The breach reproduces within 1.4% across two runs
+and survives a drift check, so it is a payload effect rather than a warm phone. **This is carried as a defect Stage 1
+must answer rather than as a revision of this budget**, and the reasoning is in `docs/decisions.md`; large pastes and
+unusually large documents are outside what this specification currently treats, and the budget's payload qualifier
+should not be settled ahead of that.
 
-**What remains unmeasured is the budget's own statistic, and a throttle cannot supply it.** This row is a p95 of one
-write; CPU throttling under CDP stalls the thread rather than simulating a slower core, so its stalls land inside
-individually-timed operations and become the tail — demonstrably, since the plaintext path shows the same tail
-inflation while performing no cryptography. An unthrottled real device is therefore not a realism preference but the
-only place this row's statistic can be taken honestly; see [performance.md](./performance.md).
+**Two findings sit underneath it and outlive the number.** The row names the AEAD, and **at 4 kB the AEAD is no longer
+the largest term** — base64 costs about as much. And **an emulated CPU throttle is not a conservative stand-in for a
+device**: a 4× throttle predicted 266 µs where the phone measures 1 498 µs, understating by 5.6×, because a phone is
+not uniformly slower — its pure-JS arithmetic degrades 43× while paths reaching native code degrade 5×. §15 row 2's
+extrapolation from a desktop margin was therefore unsound in kind, not merely in degree.
+
+**There is no faster path available today, and that is structural.** This write is synchronous by construction and
+WebCrypto is async, so no hardware-accelerated route exists to reach for — which is §10.10's point, now with a number
+against it. A WASM cipher would keep the call synchronous, since compilation has a synchronous form and exported
+functions are ordinary synchronous calls, provided the module is inlined rather than fetched: a fetched module opens a
+window between the app accepting an edit and the journal being able to seal it, which is the window this journal
+exists to close. See [performance.md](./performance.md).
 
 The lazily-loaded wasm sits outside the initial bundle budget; the app must be fully usable for writing before it
 arrives.

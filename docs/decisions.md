@@ -507,3 +507,44 @@ build asserts Ed25519 is present, and row 1's owed item is therefore only half c
 primitive is still unchecked against it. Signatures are first used in Stage 4 and that conformance test belongs
 there. **_Newly available_ is also a moving bar**, so the section is dated and will need re-reading rather than
 trusting, which is why the evidence is recorded beside the rule instead of behind it.
+
+### The journal budget is exceeded at 4 kB, and that is a Stage 1 defect rather than a revision
+
+**Date:** 2026-08-19 · **Commit:** on `claude/project-next-steps-8c0460` · **Against:** PRD v9 / TRD v8
+
+**Orientation.** TRD §12's `< 1 ms p95` journal budget was specified on a low-end device and had never been
+measured on one. A browser benchmark closed the Node caveats but could not supply the budget's own
+statistic — a p95 of one write — because CPU throttling stalls the thread and its stalls become the tail. A
+Pixel 9a on the tailnet supplied it. **The budget is met at the payloads the journal actually sees and
+exceeded by about twice at 4 kB**: 145 µs and 295 µs at 18 and 419 bytes, and **1 930 µs at 4 kB**.
+
+**The result is not an artifact, and both ways it could have been one were checked.** Every level reproduces
+within 1.4% across two independent runs. Sizes are measured smallest-first, so the largest payload is also
+the latest and a warming phone would look exactly like a payload effect — so the runner now repeats the 18 B
+and 4 kB seals at the end. They came back 7% and 2% slower, well inside threshold. The 4 kB figure is the
+payload.
+
+**Decision.** **Record it as a defect Stage 1 must answer, not as a budget revision.** [performance.md](./performance.md)
+already offers the revision route — a budget is met or consciously revised — and this deliberately declines it
+for now. Large pastes and unusually large documents are outside what the specification currently considers,
+and they will have to be treated eventually; deciding the budget's payload qualifier before that thinking has
+happened would be settling the easy half of a question whose hard half is still open. **The caveat is recorded
+with the defect: a specification revision may turn out to be the right answer, and this is not a finding that
+it is not.**
+
+**What Stage 1 inherits, therefore, is a defect with a known cause and no known fix.** The journal write is
+synchronous by construction, WebCrypto is async, so no hardware-accelerated route exists — TRD §10.10's "one
+new primitive, and it is on the crash path", now with a number against it.
+
+**The emulated profile was not conservative, it was wrong, and that is the transferable finding.** The 4×
+CPU throttle predicted 265.7 µs at 4 kB against an actual 1 498.3 µs — understating by 5.6× — and understates
+the common case by 2×. It would have let this breach ship. The ratios say why: against desktop the phone runs
+the **cipher** 12×, 19× and 43× slower as the payload grows, while the **base64-and-storage** path runs only
+1.3×, 2.3× and 5.3× slower. **A phone is not uniformly N× slower**, which is precisely what row 2's
+extrapolation assumed when it reasoned from a 128× margin. Pure-JS arithmetic degrades on a phone; paths that
+reach native code do not. No single scalar could have predicted this, so no amount of care with the
+extrapolation would have caught it.
+
+**The cost, accepted.** A budget that is currently exceeded is carried into review 3a rather than resolved
+before it. That is the intended trade: the reviewer reads a measured breach with a known mechanism, which is a
+better artifact than a budget quietly revised to fit the first number that failed it.

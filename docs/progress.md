@@ -76,13 +76,20 @@ checked for staleness by `pnpm vectors:check`, which `pnpm check` now runs.
     18-byte write on a Mac but quintuples it throttled, so the desktop figure understates mobile by more
     than 2×; and §5's Node figure survived — 7.6 µs against 7.8 — so neither Node caveat mattered for the
     seal itself.
-  - **One thing before it closes, and its shape is now sharper.** The margin is measured at two points —
-    82× on a Mac, 21× under a 4× CPU throttle — but **a throttle cannot produce the statistic the budget
-    names.** §12 is a p95 of one write, and CDP throttling stalls the thread, so its stalls land inside
-    individually-timed operations and become the tail; the plaintext level shows the same inflation while
-    doing no cryptography, which is proof rather than suspicion. So an unthrottled real device is not a
-    realism preference — it is the only place this row's own statistic is honest. **TRD §12 says all of
-    this in the document itself**, so the gap is disclosed to the reviewer either way.
+  - ~~**One thing before it closes.**~~ **Measured on a Pixel 9a on 2026-08-19, and the budget is
+    exceeded at 4 kB.** 145 µs p95 at the 18-byte common case and 295 µs at 419 B against 1 ms; **1 930 µs at
+    4 kB.** It reproduces within 1.4% across two runs and survives a drift check that repeats the first and
+    last seals, so it is a payload effect and not a warm phone. **Carried as a Stage 1 defect rather than a
+    budget revision**, with the caveat that a specification revision may still be the right answer — large
+    pastes and large documents are outside what the spec currently treats, and settling the payload qualifier
+    ahead of that thinking would answer the easy half of the question. Recorded in
+    [decisions.md](./decisions.md), and TRD §12 states the breach itself.
+  - **The emulated profile was wrong, not conservative, and that is the transferable finding.** The 4× CPU
+    throttle predicted 266 µs at 4 kB against an actual 1 498 µs. Against desktop the phone runs the **cipher**
+    12×, 19× and 43× slower as the payload grows and the **base64-and-storage** path only 1.3×, 2.3× and 5.3×
+    slower — so **a phone is not uniformly N× slower**, which is exactly what §5's 128×-margin extrapolation
+    assumed. No amount of care with that extrapolation would have caught this.
+
 - **Row 3 — the encrypted record and local key-envelope formats.** selected — construction with vectors, in
   [selections/row-3-record-format.md](./selections/row-3-record-format.md).
   - **Both formats, because they are one construction a level apart** — the envelope holds the key that derives
