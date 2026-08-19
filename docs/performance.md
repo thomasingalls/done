@@ -59,9 +59,11 @@ headroom is what Stage 1's cryptography and Stage 4's envelope layer have to fit
 
 ## Latency budgets
 
-**Six of TRD §12's thirteen latency rows now have numbers.** The other seven measure things that do not
-exist yet — search, the key store, the journal AEAD, the envelope layer, the in-memory index — and they
-arrive with their features, where their first measurement _is_ their baseline.
+**Seven of TRD §12's thirteen latency rows now have numbers.** The other six measure things that do not
+exist yet — search, the key store, the envelope layer, the in-memory index — and they arrive with their
+features, where their first measurement _is_ their baseline. **The journal write is the exception and has
+its own section below**: it is the one row that gates a _selection_ rather than a feature, so it is measured
+before the code exists, from the specification.
 
 Run it, then turn the run into rows:
 
@@ -147,17 +149,75 @@ paths: the compose field is a plain textarea with nothing to mount (PRD §4), an
 the live-preview decoration path. The editor is the slower one and the sustained-typing surface, so it is
 the number to watch; both are comfortably inside 16 ms even throttled.
 
+### One journal record, and what encryption adds
+
+**This is the only §12 row that gates a selection rather than a feature**, so it is measured before Stage 1
+builds it — a number that arrives after the construction is chosen cannot influence the choice. The
+benchmark therefore bundles the construction from row 2's specification rather than importing it from the
+app, and **reproduces a published vector byte for byte before it measures anything**, because a benchmark of
+the wrong construction produces numbers that look exactly like the right ones.
+
+**Four cumulative levels, because the difference is the interesting quantity.** §12's row names the AEAD, but
+what a keystroke waits for is the whole synchronous write, and today's journal already pays for base64 and a
+`localStorage.setItem`. Batch means, taken on 2026-08-19 against `bd87655` plus this harness:
+
+| Level                         | Payload | android      | desktop     |
+| ----------------------------- | ------- | ------------ | ----------- |
+| plaintext write, as today     | 18 B    | 9.4 µs       | 6.0 µs      |
+| seal                          | 18 B    | 27.4 µs      | 7.6 µs      |
+| seal + base64                 | 18 B    | 33.0 µs      | 9.2 µs      |
+| **seal + base64 + `setItem`** | 18 B    | **48.2 µs**  | **12.2 µs** |
+| plaintext write, as today     | 419 B   | 22.0 µs      | 8.7 µs      |
+| seal                          | 419 B   | 38.9 µs      | 11.3 µs     |
+| seal + base64                 | 419 B   | 54.1 µs      | 15.2 µs     |
+| **seal + base64 + `setItem`** | 419 B   | **75.0 µs**  | **18.9 µs** |
+| plaintext write, as today     | 4 kB    | 127.2 µs     | 30.7 µs     |
+| seal                          | 4 kB    | 125.9 µs     | 29.1 µs     |
+| seal + base64                 | 4 kB    | 230.2 µs     | 54.6 µs     |
+| **seal + base64 + `setItem`** | 4 kB    | **266.1 µs** | **64.1 µs** |
+
+**The budget holds by about twenty times at the common payload size**, on the throttled profile, against
+`< 1 ms p95`. That is the headline and it is not the interesting part.
+
+**Encryption doubles an 18-byte journal write on desktop and quintuples it throttled** — 6.0 → 12.2 µs, and
+9.4 → 48.2 µs. The asymmetry is the finding: the AEAD is CPU-bound and a CPU throttle hits it in full, while
+`setItem` is not and does not scale the same way. Anything that reasons about this cost from the desktop
+figure alone will understate it on a phone by more than a factor of two.
+
+**At 4 kB the AEAD is no longer the biggest term.** base64 costs 25.5 µs on desktop against the seal's 29.1,
+and 104.3 µs throttled — so the row's name points at the term that stops dominating exactly where the budget
+would start to matter. Stage 1 should not optimize the cipher first.
+
+**Row 2's Node figure survives contact with the browser.** It recorded 7.8 µs for an 18-byte seal in Node on
+this machine; Chrome gives 7.6 µs. So the two caveats row 2 raised against its own number — Node's
+`Buffer.from().toString('base64')`, and V8-in-Node — turn out not to have mattered _for the seal_. They
+matter one level up, which is why base64 is a level here rather than an assumption.
+
+**How it is measured, and the two things that had to be fixed.** Batches are sized from a probe to a target
+duration rather than fixed at a count: a fixed 100 quantized every result to a whole microsecond on a 100 µs
+clock, which made two adjacent levels report the same number and let noise put them in the wrong order. And
+the page is served cross-origin isolated, because Chrome coarsens `performance.now()` to 100 µs without it
+and 5 µs with it, and a 12 µs write is invisible at the former. The spec asserts isolation rather than hoping
+for it.
+
+**The tail is recorded but is only attributable unthrottled, and that is what still wants a real device.**
+CDP's CPU throttle stalls the thread rather than simulating a slower core, so its stalls land _inside_
+individually-timed operations and become the tail. This is demonstrated rather than asserted: on the
+throttled profile the plaintext level, which performs no cryptography at all, shows the same five-fold
+tail-to-mean ratio as the sealed levels. **§12's budget is a p95 of one write**, so a throttled profile
+cannot produce the statistic the budget names — an unthrottled handset is the only place that number is both
+slow enough to matter and honest.
+
 ### Still absent
 
-| Metric (TRD §12)                         | Budget                           | Why there is no number                                                   |
-| ---------------------------------------- | -------------------------------- | ------------------------------------------------------------------------ |
-| Search results (10k items)               | < 150 ms                         | No search yet — Stage 3                                                  |
-| Key store open → `K_g` unsealed          | < 100 ms                         | No key store — Stage 1                                                   |
-| Journal AEAD write, low-end device       | < 1 ms p95                       | No AEAD yet — Stage 1, and it wants a real device rather than a throttle |
-| Envelope sign (async, off the edit path) | < 5 ms p95                       | Stage 4                                                                  |
-| Envelope verify on receipt               | < 2 ms p95                       | Stage 4                                                                  |
-| First-sync checkpoint verify             | < 1.5 s                          | Stage 4                                                                  |
-| In-memory index first build              | < 1.5 s, off the cold-start path | Stage 3                                                                  |
+| Metric (TRD §12)                         | Budget                           | Why there is no number  |
+| ---------------------------------------- | -------------------------------- | ----------------------- |
+| Search results (10k items)               | < 150 ms                         | No search yet — Stage 3 |
+| Key store open → `K_g` unsealed          | < 100 ms                         | No key store — Stage 1  |
+| Envelope sign (async, off the edit path) | < 5 ms p95                       | Stage 4                 |
+| Envelope verify on receipt               | < 2 ms p95                       | Stage 4                 |
+| First-sync checkpoint verify             | < 1.5 s                          | Stage 4                 |
+| In-memory index first build              | < 1.5 s, off the cold-start path | Stage 3                 |
 
 **These are not waiting on the harness.** They arrive with their features, and their first measurement is
 their baseline — which is the one thing the six rows above could not have said if they had been left until

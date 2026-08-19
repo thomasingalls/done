@@ -1708,10 +1708,20 @@ says the budget cannot hold, the honest responses are fewer stored records (more
 revised budget — not moving verification onto a lazy path where it silently stops happening.
 
 **The journal budget is a correctness budget in disguise.** The synchronous AEAD runs inside a handler that must not
-return until the write has happened, so exceeding it does not make the app slow, it makes typing stutter. **It is
-specified on a low-end device and has not been measured on one.** The selected primitive seals the measured
-common-case payload in 7.8 µs p95 on a development Mac, which is a strong prior and not the measurement this row
-asks for; see [performance.md](./performance.md).
+return until the write has happened, so exceeding it does not make the app slow, it makes typing stutter.
+
+**It is now measured in a browser, and still not on the device it names.** The full synchronous write — seal, base64
+and the `localStorage.setItem` the journal already performs — is 12.2 µs on a development Mac and 48.2 µs under a 4×
+CPU throttle, against a 1 ms budget. Two things the measurement changed rather than confirmed. **The row names the
+AEAD, and at 4 kB the AEAD is no longer the largest term**: base64 costs about as much. And **encryption doubles the
+write on a desktop but quintuples it throttled**, because the cipher is CPU-bound and `setItem` is not, so the
+desktop figure understates the mobile cost by more than a factor of two.
+
+**What remains unmeasured is the budget's own statistic, and a throttle cannot supply it.** This row is a p95 of one
+write; CPU throttling under CDP stalls the thread rather than simulating a slower core, so its stalls land inside
+individually-timed operations and become the tail — demonstrably, since the plaintext path shows the same tail
+inflation while performing no cryptography. An unthrottled real device is therefore not a realism preference but the
+only place this row's statistic can be taken honestly; see [performance.md](./performance.md).
 
 The lazily-loaded wasm sits outside the initial bundle budget; the app must be fully usable for writing before it
 arrives.

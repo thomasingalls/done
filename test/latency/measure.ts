@@ -40,6 +40,21 @@ export const TITLE = '.day-panel[data-active="true"] .panel-title';
 export const CORPUS = { days: 20, cardsPerDay: 15, masterLines: 400 } as const;
 
 /**
+ * What the `android` project throttles the CPU by.
+ *
+ * Device emulation on its own changes the viewport and the user agent and
+ * nothing else, so an unthrottled Pixel 7 project measures the development
+ * machine twice and reports it as two devices. Four times slower is the
+ * convention Lighthouse uses for a mid-tier phone; it is a stated convention
+ * rather than a measurement of any particular handset, and TRD §12's low-end
+ * journal budget will still want a real one.
+ *
+ * It lives here rather than in one spec because two suites now throttle, and a
+ * constant that has to agree in two places is a constant that will not.
+ */
+export const CPU_THROTTLE = 4;
+
+/**
  * What was actually on disk when a start-up number was taken.
  *
  * Recorded because the number is meaningless without it: cold start is

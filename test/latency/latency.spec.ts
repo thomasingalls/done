@@ -24,6 +24,7 @@ import {
   CARD_EDITOR,
   COMPOSE,
   CORPUS,
+  CPU_THROTTLE,
   TITLE,
   install,
   marks,
@@ -61,18 +62,6 @@ const typeSlowly = async (target: Page, key: string): Promise<void> => {
     await target.waitForTimeout(KEYSTROKE_GAP_MS);
   }
 };
-
-/**
- * What the `android` project throttles the CPU by.
- *
- * Device emulation on its own changes the viewport and the user agent and
- * nothing else, so an unthrottled Pixel 7 project measures the development
- * machine twice and reports it as two devices. Four times slower is the
- * convention Lighthouse uses for a mid-tier phone; it is a stated convention
- * rather than a measurement of any particular handset, and TRD §12's low-end
- * journal budget will still want a real one.
- */
-const CPU_THROTTLE = 4;
 
 let page: Page;
 let project: string;

@@ -66,12 +66,23 @@ checked for staleness by `pnpm vectors:check`, which `pnpm check` now runs.
     guarantee would become a claim about application behaviour that a later change can silently invalidate,
     and nonce-reuse faults are retroactive and silent.
   - **The vectors prove themselves.** `test/vectors/journal-aead.json` — the draft-irtf-cfrg-xchacha §A.3.1
-    KAT, four composition vectors, six negatives. The generator round-trips every vector and asserts every
+    KAT, four composition vectors, nine negatives. The generator round-trips every vector and asserts every
     negative fails, on each run, so a "must fail" list cannot quietly stop failing.
-  - **One thing before it closes.** The `< 1 ms p95` budget is specified on a **low-end device** and has
-    only been measured on a Mac — 7.8 µs p95 at the 18-byte common case, so about 128× of margin, which is a
-    strong prior and not the measurement. **TRD §12 now says so in the document itself**, so the gap is
-    disclosed to the reviewer whether or not a handset arrives first.
+  - **The browser benchmark exists now** — `test/latency/journal.spec.ts`, recorded in
+    [performance.md](./performance.md). It bundles the construction from the specification and reproduces a
+    published vector before measuring, because Stage 1 has not built the journal and a benchmark of the
+    wrong construction produces numbers that look right. **Three things it changed rather than confirmed:**
+    the AEAD stops being the largest term at 4 kB, where base64 costs about as much; encryption doubles an
+    18-byte write on a Mac but quintuples it throttled, so the desktop figure understates mobile by more
+    than 2×; and §5's Node figure survived — 7.6 µs against 7.8 — so neither Node caveat mattered for the
+    seal itself.
+  - **One thing before it closes, and its shape is now sharper.** The margin is measured at two points —
+    82× on a Mac, 21× under a 4× CPU throttle — but **a throttle cannot produce the statistic the budget
+    names.** §12 is a p95 of one write, and CDP throttling stalls the thread, so its stalls land inside
+    individually-timed operations and become the tail; the plaintext level shows the same inflation while
+    doing no cryptography, which is proof rather than suspicion. So an unthrottled real device is not a
+    realism preference — it is the only place this row's own statistic is honest. **TRD §12 says all of
+    this in the document itself**, so the gap is disclosed to the reviewer either way.
 - **Row 3 — the encrypted record and local key-envelope formats.** selected — construction with vectors, in
   [selections/row-3-record-format.md](./selections/row-3-record-format.md).
   - **Both formats, because they are one construction a level apart** — the envelope holds the key that derives
