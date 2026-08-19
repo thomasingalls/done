@@ -24,6 +24,36 @@
 
 import { xchacha20poly1305 } from '@noble/ciphers/chacha.js';
 import { toBase64 } from 'lib0/buffer';
+import { createJournalSeal, type JournalSeal } from '../../wasm/journal-seal/seal.generated';
+
+/**
+ * The WASM seal, instantiated once and timed.
+ *
+ * It lives here rather than in `cipher-bench.ts` so both benchmarks measure the
+ * same instance: two would double the instantiation cost and leave it ambiguous
+ * which one a reported figure belonged to.
+ *
+ * Lazy rather than at module scope so the cost is attributable — instantiating
+ * during this module's evaluation would fold it into whatever else the bundle is
+ * doing and leave nothing to report.
+ */
+let wasmInstance: JournalSeal | undefined;
+let wasmMs = 0;
+
+export const wasmSeal = (): JournalSeal => {
+  if (wasmInstance === undefined) {
+    const started = performance.now();
+    wasmInstance = createJournalSeal();
+    wasmMs = performance.now() - started;
+  }
+  return wasmInstance;
+};
+
+/** How long the synchronous instantiation took, in milliseconds. */
+export const wasmInstantiationMs = (): number => {
+  wasmSeal();
+  return wasmMs;
+};
 
 /** The framing selected in row 2: `"2:" || base64(u32be(gen) || nonce[24] || ct || tag[16])`. */
 const RECORD_VERSION = '2:';
@@ -31,7 +61,14 @@ const RECORD_VERSION = '2:';
 const PLAINTEXT_VERSION = '1:';
 const AAD_LABEL = 'done/jrnl/v1';
 
-export type Level = 'plaintext' | 'seal' | 'framed' | 'stored';
+export type Level =
+  | 'plaintext'
+  | 'seal'
+  | 'framed'
+  | 'stored'
+  | 'wasm-seal'
+  | 'wasm-framed'
+  | 'wasm-stored';
 
 /**
  * The measurement's shape, exported so every runner uses one definition.
@@ -52,6 +89,18 @@ export const LEVELS: readonly { level: Level; label: string }[] = [
   { level: 'seal', label: 'seal only' },
   { level: 'framed', label: 'seal + base64' },
   { level: 'stored', label: 'seal + base64 + setItem' },
+  /*
+   * The same three levels over the WASM seal (§15 row 2, docs/performance.md).
+   *
+   * Three rather than one, because the 4 kB breach is not all cipher: base64 is
+   * about as large a term there, so a faster seal moves the `wasm-seal` row a long
+   * way and the `wasm-stored` row — which is the one §12's budget is actually
+   * stated against — by less. Measuring only the cipher would answer the
+   * interesting question and not the binding one.
+   */
+  { level: 'wasm-seal', label: 'wasm seal only' },
+  { level: 'wasm-framed', label: 'wasm seal + base64' },
+  { level: 'wasm-stored', label: 'wasm seal + base64 + setItem' },
 ];
 
 /**
@@ -150,6 +199,23 @@ const sealRecord = (
 ): Uint8Array => {
   const nonce = crypto.getRandomValues(new Uint8Array(24));
   return concat(u32be(gen), nonce, xchacha20poly1305(key, nonce, aad).encrypt(plaintext));
+};
+
+/**
+ * The same record, sealed by the WASM module instead of `@noble`.
+ *
+ * Deliberately identical in every other respect — same nonce source, same framing,
+ * same allocation shape — so the difference between a `seal` row and a `wasm-seal`
+ * row is the cipher and nothing else.
+ */
+const sealRecordWasm = (
+  key: Uint8Array,
+  aad: Uint8Array,
+  plaintext: Uint8Array,
+  gen: number,
+): Uint8Array => {
+  const nonce = crypto.getRandomValues(new Uint8Array(24));
+  return concat(u32be(gen), nonce, wasmSeal().seal(key, nonce, aad, plaintext));
 };
 
 /**
@@ -290,10 +356,13 @@ export const bench = (): Bench => {
       localStorage.setItem(slot, PLAINTEXT_VERSION + toBase64(payload));
       return;
     }
-    const sealed = sealRecord(key, aad, payload, gen);
-    if (level === 'seal') return;
+    const wasm = level.startsWith('wasm-');
+    const sealed = wasm
+      ? sealRecordWasm(key, aad, payload, gen)
+      : sealRecord(key, aad, payload, gen);
+    if (level === 'seal' || level === 'wasm-seal') return;
     const framed = RECORD_VERSION + toBase64(sealed);
-    if (level === 'framed') return;
+    if (level === 'framed' || level === 'wasm-framed') return;
     localStorage.setItem(slot, framed);
   };
 

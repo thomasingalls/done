@@ -1,0 +1,12 @@
+# WebAssembly SIMD, which is what takes this module past libsodium.
+#
+# Measured: 11.7 µs → 10.1 µs for a 4 kB seal, against libsodium's 10.9 µs, and
+# the module is *smaller* with it on (6 465 B against 6 903 B raw).
+#
+# **A module compiled with `simd128` fails to instantiate where SIMD is absent
+# rather than running slowly**, so this is a support-floor commitment and not an
+# optimisation. It is inside the floor TRD §10.11 already states: wasm SIMD is
+# Baseline from Safari 16.4 (March 2023), where the floor's binding constraint is
+# Ed25519 at Safari 17.0. Anything that can run this app already has it.
+[build]
+rustflags = ["-C", "target-feature=+simd128"]

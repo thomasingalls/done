@@ -184,8 +184,9 @@ supplies it honestly**, for the reason under the table:
 | **seal + base64 + `setItem`** | 4 kB    | **63.8 µs** | **265.7 µs** | **1498.3 µs** | **1930 µs** |
 
 **The budget is met at the payloads the journal actually sees and exceeded by about twice at 4 kB.** 145 µs and
-295 µs against 1 ms at 18 and 419 bytes; **1 930 µs at 4 kB.** This is recorded as a Stage 1 defect rather than
-as a budget revision — see [decisions.md](./decisions.md).
+295 µs against 1 ms at 18 and 419 bytes; **1 930 µs at 4 kB.** This was recorded as a Stage 1 defect rather than
+as a budget revision — see [decisions.md](./decisions.md). **It has since been resolved by a built and measured
+WASM seal**, and the numbers are below; this table is left as the baseline the fix is measured against.
 
 **Two runs, and the ordering was checked rather than assumed.** Every level reproduces within 1.4% across two
 independent runs on the phone. Because sizes are measured smallest-first, the largest payload is also the
@@ -301,6 +302,111 @@ But the RustCrypto `chacha20poly1305` crate is audited and carries `XChaCha20Pol
 and `wasm-pack` are already on the development machine — so the question is whether compiling a reviewed
 implementation through a second toolchain satisfies that criterion, which is a question for review 3a rather
 than a fact this file can settle. **Nothing here has been built; these are sizes, not a working seal.**
+
+**All of the above is superseded by a built module, and the size estimate was wrong by 6×.** The proxy weighed a
+package exposing only the 12-byte-nonce construction; the real 24-byte-nonce module, compiled purpose-made without
+wasm-bindgen, is **6 465 bytes raw**. What follows measures it rather than estimating it.
+
+---
+
+### The WASM seal, built and measured
+
+**Date:** 2026-08-19 · **Commit:** on `claude/project-next-steps-0e4db2` · Crate: `wasm/journal-seal`, pinned
+`chacha20poly1305` 0.10.1 / `chacha20` 0.9.1 / `poly1305` 0.8.0.
+
+`no_std`, no allocator, no wasm-bindgen, fixed static buffers, one exported `seal`. It is checked against
+draft-irtf-cfrg-xchacha-03 §A.3.1 and all four of row 2's composition vectors by `pnpm wasm:verify`, which runs
+inside `pnpm check` — and it verifies the **generated module** rather than the crate's `target/` artifact, so the
+thing checked is the thing that ships and no Rust toolchain is needed to check it.
+
+#### The budget row
+
+Journal write on a Pixel 9a, p95 of 4 000 single writes, against §12's 1 ms. Both columns come from the same
+device session, so this is a paired comparison rather than two measurements:
+
+| Payload  | JS today (`@noble`) | **WASM seal** | Speed-up | Against the budget |
+| -------- | ------------------- | ------------- | -------- | ------------------ |
+| 18 B     | 145 µs              | **35 µs**     | 4.1×     | 28.6× margin       |
+| 419 B    | 295 µs              | **65 µs**     | 4.5×     | 15.4× margin       |
+| **4 kB** | **1 915 µs** ✗      | **240 µs** ✓  | **8.0×** | **4.2× margin**    |
+
+**The JS baseline reproduces the recorded breach to 0.8%** — 1 915 µs here against the 1 930 µs above — so this is
+the same measurement re-taken, not a rerun that drifted. **The breach is closed at every payload measured.**
+
+#### Which implementation, second run
+
+Means on the Pixel 9a, same session. Every comparable candidate reproduces row 2's published vector before it is
+measured, and the page refuses to run if one does not:
+
+| Implementation                            | 18 B       | 419 B      | 4 kB        | vs noble   | Instantiation           |
+| ----------------------------------------- | ---------- | ---------- | ----------- | ---------- | ----------------------- |
+| `@noble/ciphers` (ships today)            | 86.3 µs    | 195.7 µs   | 1 258.1 µs  | 1.00×      | —                       |
+| `@stablelib/xchacha20poly1305`            | 61.8 µs    | 169.4 µs   | 1 235.4 µs  | 1.02×      | —                       |
+| libsodium (WASM)                          | 6.2 µs     | 11.3 µs    | 51.8 µs     | 24.27×     | 36.4 ms, **awaited**    |
+| **`journal-seal` (Rust wasm, inlined)**   | **4.4 µs** | **9.6 µs** | **45.3 µs** | **27.79×** | **1.5 ms, synchronous** |
+| `@noble` ChaCha20-Poly1305, 12-byte nonce | 53.8 µs    | 165.6 µs   | 1 274.6 µs  | 0.99×      | —                       |
+
+**It beats the ceiling.** libsodium was measured to price what any WASM cipher could buy; the purpose-built module
+is faster than it — 45.3 µs against 51.8 — at **1/34th of the bundle cost**.
+
+**The two instantiation figures are different in kind, and the difference is the point.** libsodium's 36.4 ms is a
+window in which the bundle has evaluated and the journal cannot seal. The 1.5 ms here is not a window at all: it is
+paid synchronously inside bundle evaluation, so there is no interval in which the app can accept an edit that the
+journal cannot write.
+
+#### What it costs the bundle, measured through the bundler
+
+Same method as the estimates above — one entry importing a single sealing function, minified, then gzipped:
+
+| Implementation                          | minified   | gzipped    | against 43.7 kB of headroom                        |
+| --------------------------------------- | ---------- | ---------- | -------------------------------------------------- |
+| `@noble/ciphers` (ships today)          | 15.5 kB    | 5.2 kB     | fits                                               |
+| `@stablelib/xchacha20poly1305`          | 17.7 kB    | 4.7 kB     | fits                                               |
+| libsodium-wrappers                      | 458.2 kB   | 152.8 kB   | 3.5× the entire headroom                           |
+| **`journal-seal` (Rust wasm, inlined)** | **9.4 kB** | **4.5 kB** | **fits, and is 0.7 kB less than what it replaces** |
+
+**Adopting it reduces the bundle**, which is the result nobody predicted: the WASM question was framed throughout
+as buying speed with bytes, and at 4.5 kB against `@noble`'s 5.2 kB there is no trade to make. The `@noble` and
+libsodium rows reproduce the earlier measurement within a few percent, which is what says the method is the same.
+
+**The initial-JS row in this file does not move yet**, because nothing in `src/` imports the module — the journal is
+Stage 1's to build. The table above is what that integration will cost, and it is negative.
+
+#### Two things that were asserted and are now checked
+
+**§12 says compilation has a synchronous form. It does, with three orders of magnitude to spare.** This was worth
+checking rather than trusting, because a cap on synchronous main-thread compilation would have invalidated the
+argument entirely. **Chromium's cap is 8 MB**, reported by its own `RangeError`; the module is 6 465 bytes.
+Synchronous instantiation succeeds and reproduces the published KAT in **Chromium (0.9 ms), Firefox (3.0 ms) and
+WebKit (2.0 ms)**.
+
+**`opt-level` was the whole difference, and optimising for size was spending the wrong currency.** The first build
+used `opt-level = "z"` and reached only 1.17× over `@noble`. Sweeping the setting showed size barely responds while
+speed doubles, so the crate is built at `opt-level = 3` with `+simd128`:
+
+| Build               | raw wasm    | gzipped     | 4 kB seal (Node) |
+| ------------------- | ----------- | ----------- | ---------------- |
+| `opt-level = "z"`   | 5 247 B     | 2 451 B     | 20.7 µs          |
+| `opt-level = "s"`   | 5 257 B     | 2 709 B     | 12.9 µs          |
+| `opt-level = 2`     | 6 595 B     | 3 037 B     | 11.7 µs          |
+| `opt-level = 3`     | 6 903 B     | 3 146 B     | 11.7 µs          |
+| **`3` + `simd128`** | **6 465 B** | **3 076 B** | **10.1 µs**      |
+
+**`+simd128` is a support-floor commitment rather than an optimisation**, because a module compiled with it fails
+to instantiate where SIMD is absent instead of running slowly. It is inside the floor §10.11 already states: wasm
+SIMD is Baseline from Safari 16.4, where that floor's binding constraint is Ed25519 at Safari 17.0. Verified
+rather than assumed — 73 SIMD-prefix bytes emitted against 1 without the flag, and all three engines instantiate it.
+
+#### What the numbers say next
+
+**The cipher has stopped being the dominant term, exactly as predicted.** At 4 kB the full write is 240 µs p95 of
+which the seal is 70 µs, so base64 and `setItem` are now roughly 170 µs — **more than twice the cryptography.** The
+earlier run called this inversion while the cipher still dominated; it is now the measured state, and further work
+against this budget is base64 work rather than crypto work.
+
+**The projection was slightly conservative, which is worth more than if it had been exact.** 274 µs was projected
+for the 4 kB write from libsodium's ceiling; the actual is 240 µs p95. The reasoning that produced the estimate was
+sound, which is the part that generalizes.
 
 ### Still absent
 

@@ -11,3 +11,4 @@ tsconfig*.tsbuildinfo
 .gitsigners
 .cursor/
 relay/data/
+wasm/journal-seal/target/

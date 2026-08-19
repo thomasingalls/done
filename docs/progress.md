@@ -62,9 +62,9 @@ checked for staleness by `pnpm vectors:check`, which `pnpm check` now runs.
     _newly available_, written in TRD §10.11, and Ed25519 clears it (Chrome and Edge 137, Firefox 129,
     Safari 17.0). Testing the primitive against the floor is still Stage 4's (§11.2).
 - **Row 2 — the synchronous journal AEAD and its nonce discipline.** selected — construction with vectors
-  and folded, in [selections/row-2-journal-aead.md](./selections/row-2-journal-aead.md). **The measurement it
-  owed has been taken, and it found a budget breach that Stage 1 inherits** — the selection stands, the
-  budget does not.
+  and folded, in [selections/row-2-journal-aead.md](./selections/row-2-journal-aead.md). ~~The measurement it
+  owed has been taken, and it found a budget breach that Stage 1 inherits.~~ **The breach is closed** — the
+  seal is built, measured on the handset that raised it, and both the selection and the budget stand.
   - **XChaCha20-Poly1305; 24 random bytes per record; no counter, no durable state.** The width is the
     point: a 96-bit nonce would also hold at this journal's volumes, and that is the objection to it — the
     guarantee would become a claim about application behaviour that a later change can silently invalidate,
@@ -80,27 +80,41 @@ checked for staleness by `pnpm vectors:check`, which `pnpm check` now runs.
     18-byte write on a Mac but quintuples it throttled, so the desktop figure understates mobile by more
     than 2×; and §5's Node figure survived — 7.6 µs against 7.8 — so neither Node caveat mattered for the
     seal itself.
-  - ~~**One thing before it closes.**~~ **Measured on a Pixel 9a on 2026-08-19, and the budget is
-    exceeded at 4 kB.** 145 µs p95 at the 18-byte common case and 295 µs at 419 B against 1 ms; **1 930 µs at
-    4 kB.** It reproduces within 1.4% across two runs and survives a drift check that repeats the first and
-    last seals, so it is a payload effect and not a warm phone. **Carried as a Stage 1 defect rather than a
-    budget revision**, with the caveat that a specification revision may still be the right answer — large
-    pastes and large documents are outside what the spec currently treats, and settling the payload qualifier
-    ahead of that thinking would answer the easy half of the question. Recorded in
-    [decisions.md](./decisions.md), and TRD §12 states the breach itself.
-  - **The cause is the language, not the library, and WASM would fix it.** Four XChaCha20-Poly1305
-    implementations compared on the same phone, each checked against row 2's vector first:
-    `@stablelib` lands within **1%** of `@noble` at 4 kB, so pure-JS arithmetic is the wall and swapping the
-    import is not a fix. **libsodium in WASM is 24× faster**, which would take the 4 kB write from 1 498 µs to
-    a projected 274 µs — inside budget with 3.6× margin. **And a small module fits the budget**, which
-    was the open question: libsodium is **149.2 kB gzipped** against 43.7 kB of headroom and cannot ship — its
-    standard build is already the reduced one, so a subset needs emscripten and would still carry that
-    runtime's fixed cost — but a **Rust-compiled wasm ChaCha20-Poly1305 measures 24.3 kB gzipped
-    base64-inlined**, which is what a synchronous compile needs, leaving 19.4 kB spare. **What remains is not a
-    size question but a criterion one**: §13.10 asks for _reviewed and widely implemented_, and whether
-    compiling the audited RustCrypto crate through a second toolchain satisfies that is review 3a's to say.
-    **Nothing has been built** — these are sizes, not a working seal. Recorded in
-    [performance.md](./performance.md).
+  - ~~**Measured on a Pixel 9a on 2026-08-19, and the budget is exceeded at 4 kB.**~~ **Closed on the same
+    day it was found.** The breach was real — 145 µs and 295 µs at 18 B and 419 B against 1 ms, and **1 930 µs
+    at 4 kB**, reproducing within 1.4% across two runs and surviving a drift check, so a payload effect and not
+    a warm phone. **The WASM seal closes it at every payload: 35 µs, 65 µs and 240 µs p95**, the last with 4.2×
+    of margin, measured on the same handset in a session whose JS baseline reproduces the breach to 0.8%. TRD
+    §12 now states the resolution rather than the breach.
+  - **The payload qualifier is still open, and that was the point of not revising the budget.** Large pastes
+    and large documents remain outside what the spec treats. Declining to settle it early left the question
+    where it belongs instead of answering the easy half; what has changed is that it is no longer forced by a
+    failing number.
+  - **The cause was the language rather than the library, and the WASM seal is built.** `@stablelib` lands
+    within **1%** of `@noble` at 4 kB, so pure-JS arithmetic was the wall and swapping the import was never a
+    fix. `wasm/journal-seal` compiles the audited RustCrypto crate to a `no_std` module — no allocator, no
+    wasm-bindgen, base64-inlined, instantiated synchronously — and it **beats libsodium**, the ceiling that
+    priced the option: 45.3 µs against 51.8 at 4 kB, on 1/34th of the bundle.
+  - ~~**A Rust-compiled module measures 24.3 kB gzipped base64-inlined, leaving 19.4 kB spare.**~~ **That
+    figure was a proxy and it was wrong by 6×.** It weighed a package exposing only the 12-byte-nonce
+    construction, where row 2 selected the 24-byte nonce and the width is load-bearing. The real module is
+    **4.5 kB gzipped through the bundler — 0.7 kB _less_ than the `@noble/ciphers` it replaces.** The whole
+    question had been framed as buying speed with bytes, and there is no trade.
+  - **Optimising for size was spending the wrong currency**, and the first build got it wrong: `opt-level = "z"`
+    reached only 1.17× over `@noble` — a module that would have fitted and not fixed the defect. Size barely
+    responds to the setting while speed doubles, so the crate is built at `opt-level = 3` with `+simd128`.
+    **That flag is a support-floor commitment rather than an optimisation**, since a SIMD module fails to
+    instantiate rather than running slowly; it is inside TRD §10.11's floor and now says so.
+  - **Two things TRD §12 asserted are checked rather than trusted.** Compilation does have a synchronous form —
+    Chromium's cap is 8 MB against a 6 465-byte module, verified instantiating in Chromium, Firefox and WebKit.
+    And the 1.5 ms instantiation is **not a window**, unlike libsodium's 36.4 ms behind an `await`: it is paid
+    inside bundle evaluation, so no interval exists where the app accepts an edit the journal cannot write.
+  - **What remains is a criterion rather than a construction**, and it is the only such item in 3a's scope:
+    §13.10 asks for _reviewed and widely implemented_, and whether compiling the audited crate through a second
+    toolchain satisfies that is review 3a's to say. What could be done about it was done — the crate is pinned,
+    the module regenerates reproducibly, and `pnpm wasm:verify` runs inside `pnpm check` against
+    draft-irtf-cfrg-xchacha-03 §A.3.1 and row 2's composition vectors. Recorded in
+    [performance.md](./performance.md) and [decisions.md](./decisions.md).
   - **A side result that vindicates a selection.** XChaCha's extra HChaCha20 block costs 1.02× at 4 kB, so
     row 2's 24-byte nonce — chosen on grounds unrelated to speed — costs nothing where the budget breaks.
   - **The emulated profile was wrong, not conservative, and that is the transferable finding.** The 4× CPU
@@ -176,11 +190,12 @@ checked for staleness by `pnpm vectors:check`, which `pnpm check` now runs.
 
 _Exit: rows 1–3 selected, with test vectors._ **Met**, and the wider scope the review actually reads
 (TRD §15) — 13 and the storage-facing half of 14 — **is met too, and folded into the TRD.** **Every selection
-in 3a's scope is closed and its measurement taken.** What 3a now receives that it would not have received a
-week ago is a **measured budget breach with a known mechanism and a priced fix** (row 2), and **one question
-that is a criterion rather than a construction**: whether an audited implementation reached through a second
-toolchain satisfies §13.10's _reviewed and widely implemented_. Neither is a selection left undone, and both
-are better in front of the reviewer than behind them.
+in 3a's scope is closed and its measurement taken.** ~~What 3a now receives is a measured budget breach with a
+known mechanism and a priced fix.~~ **The fix is built and the breach is closed**, so what 3a receives is a
+budget that holds on hardware and **exactly one open question, which is a criterion rather than a
+construction**: whether an audited implementation reached through a second toolchain satisfies §13.10's
+_reviewed and widely implemented_. That is the right thing to be asking a reviewer, and it is the only thing
+left to ask them.
 
 **Six things rows 1, 3, 13 and 14 turned up that are not selections.**
 

@@ -27,7 +27,13 @@
 import { chacha20poly1305, xchacha20poly1305 } from '@noble/ciphers/chacha.js';
 import { XChaCha20Poly1305 } from '@stablelib/xchacha20poly1305';
 import sodium from 'libsodium-wrappers';
-import { RUN_DEFAULTS, measure, type Measured } from './journal-bench';
+import {
+  RUN_DEFAULTS,
+  measure,
+  wasmInstantiationMs,
+  wasmSeal,
+  type Measured,
+} from './journal-bench';
 
 /**
  * When this module finished evaluating.
@@ -94,6 +100,26 @@ export const CANDIDATES: readonly Candidate[] = [
     },
     seal: (key, nonce, aad, plaintext) =>
       sodium.crypto_aead_xchacha20poly1305_ietf_encrypt(plaintext, aad, null, nonce, key),
+  },
+  {
+    name: 'journal-seal (Rust wasm, inlined)',
+    kind: 'wasm',
+    /*
+     * The candidate, as opposed to the ceiling. The audited RustCrypto
+     * `chacha20poly1305` crate compiled to a 5.2 kB module with no wasm-bindgen
+     * glue, inlined as base64 and instantiated synchronously — which is what
+     * §12 requires and what libsodium, at 37 ms behind an await, cannot offer.
+     */
+    why: 'The candidate. Audited RustCrypto crate, compiled small enough to inline and instantiated synchronously.',
+    comparable: true,
+    /*
+     * Reported like the others for comparability, but it is a different kind of
+     * cost and the difference matters: this is paid *inside* bundle evaluation
+     * rather than after it, so there is no window in which the bundle has run and
+     * the journal cannot seal. libsodium's figure is a window; this one is not.
+     */
+    ready: () => Promise.resolve(wasmInstantiationMs()),
+    seal: (key, nonce, aad, plaintext) => wasmSeal().seal(key, nonce, aad, plaintext),
   },
   {
     name: '@noble ChaCha20-Poly1305 (12-byte nonce)',

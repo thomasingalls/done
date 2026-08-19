@@ -1894,13 +1894,17 @@ revised budget — not moving verification onto a lazy path where it silently st
 **The journal budget is a correctness budget in disguise.** The synchronous AEAD runs inside a handler that must not
 return until the write has happened, so exceeding it does not make the app slow, it makes typing stutter.
 
-**It is now measured, on hardware, and it is exceeded at 4 kB.** The full synchronous write — seal, base64 and the
-`localStorage.setItem` the journal already performs — is **145 µs p95 at the 18-byte common case and 295 µs at
-419 bytes on a Pixel 9a, against 1 ms; at 4 kB it is 1 930 µs.** The breach reproduces within 1.4% across two runs
-and survives a drift check, so it is a payload effect rather than a warm phone. **This is carried as a defect Stage 1
-must answer rather than as a revision of this budget**, and the reasoning is in `docs/decisions.md`; large pastes and
-unusually large documents are outside what this specification currently treats, and the budget's payload qualifier
-should not be settled ahead of that.
+**It was measured on hardware, found exceeded at 4 kB, and is now met at every payload measured.** The full
+synchronous write — seal, base64 and the `localStorage.setItem` the journal already performs — was **145 µs p95 at
+the 18-byte common case and 295 µs at 419 bytes on a Pixel 9a, against 1 ms; at 4 kB it was 1 930 µs.** The breach
+reproduced within 1.4% across two runs and survived a drift check, so it was a payload effect rather than a warm
+phone. **It is closed by a WASM seal** (§15 row 2), measured on the same handset: **35 µs, 65 µs and 240 µs p95**,
+the last with 4.2× of margin. The paired JS baseline in that session reproduced the breach to 0.8%, so the two
+columns are one comparison rather than two measurements. See `docs/performance.md`.
+
+**The payload qualifier is still not settled, and closing the breach did not settle it.** Large pastes and unusually
+large documents remain outside what this specification treats. What has changed is that the question is no longer
+forced by a failing number.
 
 **Two findings sit underneath it and outlive the number.** The row names the AEAD, and **at 4 kB the AEAD is no longer
 the largest term** — base64 costs about as much. And **an emulated CPU throttle is not a conservative stand-in for a
@@ -1908,12 +1912,17 @@ device**: a 4× throttle predicted 266 µs where the phone measures 1 498 µs, u
 not uniformly slower — its pure-JS arithmetic degrades 43× while paths reaching native code degrade 5×. §15 row 2's
 extrapolation from a desktop margin was therefore unsound in kind, not merely in degree.
 
-**There is no faster path available today, and that is structural.** This write is synchronous by construction and
+**No faster path exists in JavaScript, and that is structural.** This write is synchronous by construction and
 WebCrypto is async, so no hardware-accelerated route exists to reach for — which is §10.10's point, now with a number
-against it. A WASM cipher would keep the call synchronous, since compilation has a synchronous form and exported
-functions are ordinary synchronous calls, provided the module is inlined rather than fetched: a fetched module opens a
-window between the app accepting an edit and the journal being able to seal it, which is the window this journal
-exists to close. See [performance.md](./performance.md).
+against it. Two independent pure-JS implementations measure within 1% of each other, so the wall is the language
+rather than one library's code shape.
+
+**A WASM cipher keeps the call synchronous, and this is now built rather than argued.** Compilation has a synchronous
+form — Chromium caps synchronous main-thread compilation at 8 MB and the module is 6 465 bytes — and exported
+functions are ordinary synchronous calls, provided the module is **inlined rather than fetched**: a fetched module
+opens a window between the app accepting an edit and the journal being able to seal it, which is the window this
+journal exists to close. Inlined and compiled synchronously there is no such window at all, because instantiation is
+paid inside bundle evaluation. See [performance.md](./performance.md).
 
 The lazily-loaded wasm sits outside the initial bundle budget; the app must be fully usable for writing before it
 arrives.
@@ -2343,7 +2352,7 @@ reused across the asynchronous and synchronous paths** (§13.2).
 | Role                                    | Selected                                     | Path  |
 | --------------------------------------- | -------------------------------------------- | ----- |
 | Content store, key envelope and network envelope AEAD | AES-256-GCM via WebCrypto      | async |
-| **Synchronous journal AEAD**            | **XChaCha20-Poly1305**, pinned `@noble/ciphers` | sync  |
+| **Synchronous journal AEAD**            | **XChaCha20-Poly1305**, from the audited RustCrypto `chacha20poly1305` crate compiled to an inlined wasm module (`wasm/journal-seal`), instantiated synchronously | sync  |
 | Subkey derivation                       | HKDF-SHA-256 via WebCrypto, domain-separated labels | async |
 | Mutation signatures                     | Ed25519 via WebCrypto                        | async |
 | Wrapping a key to a public key          | HPKE base mode (RFC 9180), DHKEM(X25519, HKDF-SHA256) / HKDF-SHA256 / AES-256-GCM | async |
@@ -2357,6 +2366,21 @@ fails to open rather than selecting a weaker suite.
 
 **The §13.2 separation rule is machine-checked rather than asserted.** Row 1's generator buckets every role above by
 path and fails if any primitive appears in both.
+
+**The journal AEAD reaches its implementation through a second toolchain, and that is the one open criterion
+question.** "Reviewed and widely implemented" is satisfied by the RustCrypto `chacha20poly1305` crate; what it does
+not obviously settle is whether compiling that reviewed source through `rustc` and `wasm32-unknown-unknown` inherits
+the property, since the artifact a user runs is not the artifact anyone reviewed. **This is review 3a's to answer,
+and it is the only item in 3a's scope that is a criterion rather than a construction.** What the project can do
+about it, it has done: the module is built from a pinned crate, regenerated reproducibly by
+`node scripts/build-wasm-seal.mjs`, and checked on every `pnpm check` against draft-irtf-cfrg-xchacha-03 §A.3.1 and
+row 2's composition vectors — so a compiled artifact that computes something other than XChaCha20-Poly1305 fails the
+build rather than shipping.
+
+**It also adds one platform dependency, which is inside the floor and stated because it is a hard failure.** The
+module is compiled with `+simd128`, and a SIMD module **fails to instantiate** where SIMD is absent rather than
+running slowly. WebAssembly SIMD is Baseline from Safari 16.4, well inside the §10.11 floor whose binding constraint
+is Ed25519 at Safari 17.0 — so no device that can run this app lacks it, and there is no fallback state to design.
 
 **"Argon2id, or none" is answered, twice, and the second answer is the stronger one.** For the recovery code, an
 attacker must first fetch a service-held envelope, after which guessing is offline (§13.8). For the device lock the
@@ -2613,7 +2637,7 @@ true**, and where the two disagree this one wins.
 | # | Selected | The construction | Record |
 | - | -------- | ---------------- | ------ |
 | 1 | Algorithm suite and crypto-agility | **Suite 1** — AES-256-GCM on every asynchronous path, XChaCha20-Poly1305 on the synchronous one, HKDF-SHA-256, Ed25519, HPKE base with X25519, SHA-256. **A carrier version selects the whole suite**: no per-record algorithm field, so nothing to negotiate and nothing to downgrade | [row 1](./selections/row-1-algorithm-suite.md) |
-| 2 | Synchronous journal AEAD and its nonce discipline | **XChaCha20-Poly1305**, 24 random bytes per record, **no counter and no durable state** — so there is nothing for a crash to lose. Subkey derived once at open from `K_g` | [row 2](./selections/row-2-journal-aead.md) |
+| 2 | Synchronous journal AEAD and its nonce discipline | **XChaCha20-Poly1305**, 24 random bytes per record, **no counter and no durable state** — so there is nothing for a crash to lose. Subkey derived once at open from `K_g`. **The implementation is the audited RustCrypto crate compiled to a 6.5 kB inlined wasm module**, instantiated synchronously, which closes §12's measured 4 kB breach and costs 0.7 kB _less_ than the pure-JS library it replaces (§13.10) | [row 2](./selections/row-2-journal-aead.md) |
 | 3 | Encrypted record and local key-envelope formats | AES-256-GCM under domain-separated subkeys; **every cleartext field is in the AAD**, because IndexedDB holds a structured clone whose properties the load path trusts. 12 random nonce bytes under a per-generation budget that `seq` bounds — **so `seq` does not reset at trim** | [row 3](./selections/row-3-record-format.md) |
 | 13 | Device-lock derivation, enrollment migration and copy | A **generated 125-bit code always**, with WebAuthn PRF as an additional seal of the same `L_lock` rather than an alternative to it. Enrollment reseals the key envelopes and **rotates the content key forward** (§13.3) | [row 13](./selections/row-13-device-lock.md) |
 | 14 | Recovery-code entropy and generation — **storage-facing half** | 125 bits, Crockford Base32, five groups of five, **and no stretching at all**. Step-up authentication is drafted in the same record and belongs to review 3b | [row 14](./selections/row-14-recovery-code.md) |

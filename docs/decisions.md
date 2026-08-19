@@ -968,3 +968,60 @@ first deployment through the fidelity archive as _pulls a Stage 5 item into Stag
 than it was written — the archive is one state of a format Stage 4 builds regardless, so the marginal cost is
 that state and an export path rather than a whole artifact. **§5.4 is not thereby decided**: it is one input, the
 question is the author's, and its other half is about attribution rather than cost.
+
+### The journal's cipher becomes a compiled wasm module, and the 4 kB breach closes
+
+**Date:** 2026-08-19 · **Commit:** on `claude/project-next-steps-0e4db2` · **Against:** PRD v9 / TRD v8
+
+**Orientation.** The entry above carried §12's 4 kB journal breach into review 3a as a defect with a known cause
+and no known fix: 1 930 µs p95 against a 1 ms budget, caused by pure-JS 32-bit arithmetic rather than by one
+library's code shape, on a write that is synchronous by construction where WebCrypto is async. libsodium in wasm
+had priced the ceiling at 24× and was 3.4× too large to ship. A Rust-compiled module had been _sized_ at 24.3 kB
+gzipped and judged to fit — but **that figure came from an off-the-shelf package exposing only the 12-byte-nonce
+construction**, where row 2 selected the 24-byte nonce and the width is load-bearing. `performance.md` said so
+plainly and called it a proxy for what the category weighs, not a candidate. Nothing had been built.
+
+**Decision.** **Build it.** `wasm/journal-seal` compiles the audited RustCrypto `chacha20poly1305` crate to a
+`no_std` module with no allocator, no wasm-bindgen, fixed static buffers and one exported `seal`, inlined as
+base64 and instantiated synchronously. **The measured result closes the breach at every payload**: on the same
+Pixel 9a, in a session that reproduces the JS baseline to 0.8%, the full write is **35 µs, 65 µs and 240 µs p95**
+against 1 930 µs, the last with 4.2× of margin.
+
+**The size estimate was wrong by 6×, and wrong in the direction nobody was defending against.** The real module is
+6 465 bytes raw and **4.5 kB gzipped through the bundler — 0.7 kB _less_ than the `@noble/ciphers` it replaces.**
+The whole WASM question had been framed as buying speed with bytes, and there is no trade: it is faster and
+smaller. It is also faster than the ceiling that priced it, at 45.3 µs against libsodium's 51.8 at 4 kB, on
+1/34th of the bundle.
+
+**Optimising for size was spending the wrong currency, and the first build got it wrong.** `opt-level = "z"`
+reached only 1.17× over `@noble` — a module that would have fitted the bundle and not fixed the defect. Sweeping
+the setting showed size barely responds (5.2 kB to 6.9 kB raw across the whole range) while speed doubles. **The
+transferable form of this is that a size-first default is a speed decision taken silently**, and it is taken in a
+file nobody reads twice.
+
+**Two things §12 asserted are now checked rather than trusted.** Compilation _does_ have a synchronous form:
+Chromium caps synchronous main-thread compilation at 8 MB and the module is 6 465 bytes, with instantiation
+verified in Chromium, Firefox and WebKit. And the resulting instantiation cost is **not a window** — 1.5 ms paid
+inside bundle evaluation, against libsodium's 36.4 ms behind an `await`. The difference is the whole reason an
+inlined synchronous module was the only shape worth considering: there is no interval in which the app can accept
+an edit the journal cannot write.
+
+**The cost, accepted, is a second toolchain in the trusted path**, and it is left in front of the reviewer rather
+than argued away. §13.10 asks for _reviewed and widely implemented_; the crate is both, and the artifact a user
+runs is not the artifact anyone reviewed. **That is a criterion question and it is review 3a's**, now the only
+item in 3a's scope that is not a construction. What could be done about it was done: the crate is pinned, the
+module regenerates reproducibly, and `pnpm wasm:verify` runs inside `pnpm check` against
+draft-irtf-cfrg-xchacha-03 §A.3.1 and row 2's composition vectors — so an artifact computing something other than
+XChaCha20-Poly1305 fails the build rather than shipping. **The check verifies the generated module rather than the
+crate's build output**, so it needs no Rust toolchain and the thing checked is the thing that ships.
+
+**One platform dependency is added, and it fails hard rather than degrading.** `+simd128` is what takes the module
+past libsodium, and a SIMD module _fails to instantiate_ where SIMD is absent. It is inside §10.11's floor — wasm
+SIMD is Baseline from Safari 16.4 against that floor's binding constraint of Ed25519 at Safari 17.0 — so there is
+no fallback state to design, but it is a floor commitment and is recorded as one.
+
+**What this does not settle.** §12's payload qualifier is still open: large pastes and unusually large documents
+remain outside what the specification treats, and the previous entry's reasoning for not settling it early still
+holds. What has changed is that the question is no longer forced by a failing number. **And the cipher has stopped
+being the dominant term** — at 4 kB the write is 240 µs of which the seal is 70 µs, so base64 and `setItem` are
+now more than twice the cryptography. Further work against this budget is base64 work.
