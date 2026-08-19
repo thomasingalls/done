@@ -843,3 +843,128 @@ makes that test unpassable by construction, which is worth checking a policy aga
 **And the head-vector sort is load-bearing rather than tidy.** Two devices checkpointing the same accepted state
 must produce the same digest; a map iterated in insertion order would not, and the disagreement would present as
 a corrupt manifest rather than as a canonicalization bug.
+
+### The anti-replay rule needs four conditions and a mark, not five and a log
+
+**Date:** 2026-08-19 · **Commit:** on `claude/project-next-steps-97c4e1` · **Against:** PRD v9 / TRD v8
+
+**Orientation.** §7.5's _must not happen_ list ends with **no second link accepted at a position already held,
+however well signed**. Written out as a client rule that reads as a condition needing its own state — a record
+of every link ever admitted at every position — and a client that believed it would keep a log growing with
+every accepted write, forever, beside a chain the same section says may be replayed from a checkpoint.
+
+**Decision.** **Four conditions**: the envelope verifies; the position is exactly one past the mark; the link is
+computed from the link the client itself holds; and a signed head at that position verifies against **that**
+link rather than the one it carries. **The fifth is implied and is deleted.** A second envelope at position _n_
+can only arrive when the mark is at _n_ or beyond, and the second condition refuses anything that is not exactly
+one past it. There is no moment at which a client holding a mark has to consult a history.
+
+**So the carrier is one `(seq, link)` per credential**, in a §6.1 record with `kind: 'heads'` — and that
+proportion is the result rather than the rule being weakened. The rule as stated sounds like it needs the log;
+what needs it is nothing.
+
+**The mark carries a link and not just a number, and that is the same sentence §7.5 already wrote one level
+up.** _A numeric high-water mark is not a finalization boundary_ — and one position down, a numeric mark is not
+an anti-replay state either: a client that advanced a counter without keeping what it replayed cannot tell a
+chain it walked from one it did not. There is a negative for exactly that client.
+
+**The theorem underneath all of it is published as the first vector.** A chain replayed from genesis and the
+same chain replayed from a checkpoint's head vector reach the same link at the same position. It reads as
+bookkeeping and it is the entire justification for the retention floors: the chain has no memory beyond its last
+link, so **a checkpoint's head vector is a chain state rather than a summary of one**, and replaying from a
+checkpoint is the same loop with a different starting value rather than a second code path.
+
+**Row 3 had already paid for the carrier.** It bound `kind` in the record AAD against a stated attack — a
+`state` record supersedes everything before it, and IndexedDB properties are editable by anyone holding the
+profile — and that binding is what lets a third kind arrive at no cost and what stops a heads record being
+reinterpreted as a `state` record and swept into the trim. No sixth subkey, no new format. Row 8 declined a
+sixth subkey by finding where its records already belonged; this is that move at a smaller object.
+
+**Two consequences that are not the selection.**
+
+**§7.4's retention depth was one checkpoint too shallow, and the correction needs no protocol field.** It said a
+device retains its own outbound envelopes _at least back to the last checkpoint it has seen admitted_. §7.6
+retains **two**, because §11.3 test 8 falls back to the next-newest; §14.3 has each device re-envelop its own
+suffix from whichever checkpoint it applied. Compose them and the ordinary case breaks: everyone falls back to
+the next-newest and a device trimmed to the newest cannot supply its suffix. The fix is that a device counts
+two locally — no retention parameter on the wire — and the failure it prevents appears at a restore rather than
+at a review, which is where the last three of these have been.
+
+**And the obvious recovery from row 4's stall is what breaks the chain permanently.** Row 4 recorded that a
+refused envelope stalls a credential until it is re-minted at the same position, and priced that as a delay. A
+client that minted position 7, waited, heard nothing and re-minted over fresher content produces a second link
+at a position the service may already have accepted — which every other device refuses under §7.5 and reads as
+a compromised credential. **An honest client frames itself, and nothing distinguishes it from the attack,
+because there is nothing to distinguish them by.** So _a definite refusal is the only thing that licenses a
+re-mint, and a timeout is not one_ is a **must not happen** in §7.4 rather than a note in an implementation.
+
+**One residual is published as a demonstration rather than as a negative, because it succeeds.** A heads record
+can be rolled back to an earlier, genuinely sealed one; an AAD authenticates a record and cannot order two valid
+ones. It routes into a bound that already exists rather than adding one — exploiting it needs a second link
+accepted at a re-opened position, which needs the service to sign one, which is §7.5's stated equivocation bound.
+Worth noting that §6.1's _an attacker who can write your journal can write your JavaScript_ does **not** dispose
+of it: §13.3's profile-copy attacker never runs the origin's code.
+
+### One package format at three lineage states, anchored where the user holds something
+
+**Date:** 2026-08-19 · **Commit:** on `claude/project-next-steps-97c4e1` · **Against:** PRD v9 / TRD v8
+
+**Orientation.** §15 row 10 asks for _terminal-package and portable cutover-package formats_, plural, and §9.3
+describes a fidelity archive with its own contents list. Three artifacts, two of them owed by §14 and one by §9.
+
+**Decision.** **One format, at §13.5's three lineage states** — never established, live, retired — and the TRD
+had already said so twice without the sentence being collected. §14.4 does not describe a second artifact; it
+describes the service _populating the portable package_: "every participating replica **and the verified
+portable package** receive that record plus…". And its offline replica "keeps its last signed **live** head"
+until "importing the package later **upgrades** its knowledge" — upgrades, not replaces. §9.3's archive is the
+same list minus the parts a lineage would have supplied. The saving is not the format count: it is that §11.3
+tests 4, 5, 7, 8 and 9 exercise one code path, and that the state a device is holding is a field it reads rather
+than a shape it infers from which parts are present.
+
+**The real work was §14.2 item 1: the old trust root, _bound so it cannot be substituted_.** Every other item in
+that list is service-signed, so a forger who supplies their own authorization key can re-sign the epochs, and the
+credentials come from the epochs, and row 8's attribution claims verify under the credentials. The result is an
+internally consistent package that says whatever the forger likes about who wrote what. **A signature over the
+package does not help, because it is signed by something the same substitution replaces.**
+
+**So the chain has to terminate in material the user holds, and §13.8 makes exactly one thing mandatory.** The
+recovery code opens `R_priv`; `R_priv` opens the generation wraps. Bind the root in the **HPKE `info` of every
+generation wrap** and a substituted root derives a different key schedule, so the wrap opens nothing and there is
+no content left to re-attribute. **Two fields in an `info` that had none specified** — no new key, no new
+signature scheme, no new secret, and row 14's envelope untouched.
+
+**In `info` rather than in the AEAD's associated data, deliberately.** `info` is never transmitted: a reader must
+**supply** the root it believes, so a wrong belief fails to open where an AAD would let the reader take the root
+out of the package and fail only to match. Row 11 bound its transcript hash the same way for the same reason.
+
+**Per generation, which §14.1 makes correct rather than convenient.** Migration rotates forward under a new
+lineage, so generations written before it stay anchored to the root that was in force when they were written —
+which is the root their attribution should be verified against. A per-package binding would have had to pick one
+root for material written under two.
+
+**And the anchor is needed by exactly one reader, which is row 9's argument a fourth time.** A surviving device
+knows the root from its own enrollment; a device enrolled through §13.6 receives it through the person. Recovery
+with no surviving device is the case that asks, and it is the case that must hold the code. **The anchor and its
+audience arrive together**, which is what makes the construction available rather than circular.
+
+**Row 8 deleted a part, and that is where the size went.** §14.2 item 3 implied an attribution part with its own
+digest, retention rule and disagreement-with-the-snapshot question. With the claims in the content root they are
+inside the checkpoint already carried, and all three stop existing — which is what §7.6 had required of
+attribution evidence in the first place. Item 4's generations are **not** deleted by it, and the distinction is
+worth keeping: row 8 closed the _attribution_ floor, while the package still needs generations to open the
+ciphertext it carries, which is §6.1's separate question and §13.7's warning against conflating the two.
+
+**HPKE is implemented in the generator rather than pinned as a string, and that is a change from row 11.** Row 11
+pinned only its `info` because its claim was about the transcript rather than the seal. This row's claim _is_ a
+binding inside the seal, so a pinned string would be the claim asserted rather than tested and the coverage audit
+could not reach it. The generator carries RFC 9180 base mode and **reproduces A.1.1 before using it**, on every
+invocation — the same discipline row 2's benchmark used when it bundled a construction that did not exist yet.
+A.1.1 is an AES-128-GCM vector against this suite's AES-256-GCM, which is a reason to run it rather than not: the
+AEAD identifier is inside `suite_id`, so reproducing it exercises every label, length prefix and schedule step,
+and the only thing left unchecked is the constant the file passes for its own AEAD.
+
+**One thing this changes that is not in its scope.** [sequencing.md](./sequencing.md) §5.4 prices migrating the
+first deployment through the fidelity archive as _pulls a Stage 5 item into Stage 2_. That price is now smaller
+than it was written — the archive is one state of a format Stage 4 builds regardless, so the marginal cost is
+that state and an export path rather than a whole artifact. **§5.4 is not thereby decided**: it is one input, the
+question is the author's, and its other half is about attribution rather than cost.

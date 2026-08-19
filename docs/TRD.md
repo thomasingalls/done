@@ -586,8 +586,8 @@ trimming of accumulated updates into one state record.
 StoredRecord = {
   v:      number       // store format version — NOT the document schemaVersion (§4.2)
   gen:    number       // content-key generation this record is sealed under
-  seq:    number       // monotonic per store, for trim ordering and diagnostics
-  kind:   'update' | 'state'
+  seq:    number       // monotonic per (principal, workspace), for trim ordering and diagnostics
+  kind:   'update' | 'state' | 'heads'
   nonce:  Uint8Array
   ct:     Uint8Array   // AEAD(K_gen-derived store subkey; plaintext = one Yjs update)
 }
@@ -605,10 +605,27 @@ Constraints on it:
   different objects and conflating them will over-retain.
 - **Trimming is crash-safe in that order**: write one `kind: 'state'` record under the current generation, wait
   for its transaction to complete, and only then delete the records it supersedes in a second transaction. A
-  crash between the two leaves duplicate coverage, which is harmless; the reverse order loses data.
+  crash between the two leaves duplicate coverage, which is harmless; the reverse order loses data. **The trim
+  covers content records only** — a `heads` record is not superseded by a state record and is not swept by it.
 - **Trim discharges old generations locally.** Once a single state record under the current generation covers
   everything, older generations are droppable from this device's local custody — subject to nothing else needing
   them.
+
+**A third `kind` exists and it is not a content record** (§15 row 6). `heads` carries the anti-replay high-water
+mark §7.5 requires — one `(seq, link)` per credential — in **its own object store**, under the same store subkey,
+so the content load path never meets a record it cannot apply as a Yjs update. Sharing the subkey is safe rather
+than merely economical because `kind` is in the associated data: reinterpreting a heads record as a `state`
+record is exactly the attack that binding was written for, one object along. Three constraints on it:
+
+- **`seq` is not per object store.** One sequence per _(principal, workspace)_ spans both, so the nonce budget
+  above stays the single comparison it was argued as rather than a sum over two sequences.
+- **The content batch commits first and the heads record after it.** The same direction as the trim, for the
+  same reason: a crash in this order re-delivers admitted positions, which is idempotent, while the reverse
+  advances the mark past an operation that was never applied and leaves it below the baseline forever.
+- **The store is created empty at genesis**, before any workspace has a lineage to fill it. IndexedDB creates
+  object stores only inside a version-change transaction, so adding it in Stage 4 is a version bump over a real
+  deployment's data — §14.6's class of migration, and this one costs a line now. Like the custody record above,
+  it also makes its own absence something §11.1 can assert.
 
 **Two version numbers exist and must not be conflated.** `StoredRecord.v` versions the on-disk envelope;
 `meta.schemaVersion` versions the document tree. A change to either must not be read as a change to the other.
@@ -961,9 +978,23 @@ mutations from several credentials into new bytes and sign the result as itself;
 invariant establishes. A source **may** batch its own mutations when actor, credential and epoch are the same.
 Forwarded mutations retain their original envelopes.
 
-**A device retains its own outbound envelopes**, at least back to the last checkpoint it has seen admitted. This
-falls out of the rule rather than being an extra: attribution lives in the envelope, so an operation separated
-from its envelope can never be re-attributed. The migration cutover depends on it directly (§14.3).
+**A device retains its own outbound envelopes.** This falls out of the rule rather than being an extra:
+attribution lives in the envelope, so an operation separated from its envelope can never be re-attributed. The
+migration cutover depends on it directly (§14.3).
+
+**The depth is the second-newest checkpoint it has seen admitted, not the last** (§15 row 6). An earlier draft
+said the last, and that is one checkpoint too shallow: §7.6 retains **two**, because §11.3 test 8 falls back to
+the next-newest, and §14.3 has each device re-envelop its own suffix from whichever checkpoint it applied. A
+device trimmed to the newest cannot supply the suffix for the checkpoint everyone has just fallen back to.
+Counting two locally needs no retention field on the wire, and the failure it prevents appears at a restore
+rather than at a review.
+
+**One consequence of the single position number is a trap rather than a delay, so it is a rule.** A refused
+envelope stalls that credential's chain until it is re-minted at the same position — and the obvious recovery
+from a stall is what breaks the chain permanently. Re-minting position *n* over fresher content produces a
+second, different link at a position the service may already have accepted, which every other device refuses
+under §7.5 and reads as a compromised credential. **A definite refusal is the only thing that licenses a
+re-mint; silence is not one**, and a timeout is silence.
 
 **Where verification does and does not run:**
 
@@ -977,7 +1008,8 @@ from its envelope can never be re-attributed. The migration cutover depends on i
 | First sync                | **Verify** the checkpoint, or the signed envelope history (§7.6)                            |
 
 **Must not happen.** No actor identifier in clear metadata. No re-signing of another credential's operations. No
-verification on the keystroke or local-replay path.
+verification on the keystroke or local-replay path. **No re-mint at a position without a definite refusal for
+it**, however long the wait has been.
 
 **Test.** §11, envelope binding; attribution authenticity; verification latency.
 
@@ -1059,6 +1091,23 @@ which valid envelope at or below *k* to show a client. **The accepted stream mus
 client's point of view**, which is what the selected chain supplies: the gap-free per-credential links, and a
 final sequence and head digest committed together in one signed head.
 
+**The client's side of that is four conditions, and the fifth one it looks like it needs is implied** (§15
+row 6). Admit an envelope at *(credential, n)* iff it verifies; *n* is exactly one past the position this client
+holds for that credential; `link_n` is computed from the link **the client itself holds**; and a signed head at
+*n* verifies against that link. Otherwise **hold** — the position or its head has not arrived — or **refuse**.
+*No second link at a position already held* needs no state of its own: a second envelope at *n* arrives when the
+mark is already at *n* or beyond, and the position check refuses it. **That is why the anti-replay state is one
+`(seq, link)` per credential rather than a log** — and why it carries the link: one level down from the
+paragraph above, a numeric mark is not an anti-replay state either.
+
+**Evidence is per run rather than per envelope, and that is not a relaxation of the rule.** A head at position
+*n* covers every position beneath it through the chain, so a client walks a run to *n*, verifies one signature
+there, and applies the whole run or none of it. Nothing is applied without evidence; the evidence is simply not
+one signature per update, which is what *amortized over a batch* means seen from the client.
+
+**A device persists that state because it cannot recompute it** — the links are functions of envelope digests
+and it retains only its own outbound envelopes. Where it lives is §6.1's.
+
 **Revocation is three states and only the middle may be shown as revoked** (PRD §6.5): *requested* ·
 *committed* · *acknowledged*. **Committed** means one atomic security boundary: the service accepted the
 authorization successor **and** a client-produced content-key generation with its reader and recovery wraps,
@@ -1131,7 +1180,10 @@ devices checkpointing the same accepted state must produce the same head-vector 
 before the old generation may be dropped** — a checkpoint is openable only while its generation is retained, so
 dropping the key would destroy the recovery path in the course of tidying up. The other triggers are an
 accepted-position count and an elapsed interval, whichever comes first; their ground is first-sync cost (§12),
-and neither can be set honestly before there is a service to measure.
+and neither can be set honestly before there is a service to measure. **They have a second ground, which §15
+row 6 added**: a checkpoint's head vector is a chain state above any gap beneath it, so cadence also bounds how
+long a lost envelope can stall a credential (§7.5). Still not a number this can set — but two inputs rather than
+one, and the second is availability rather than cost.
 
 **Retention is at least two checkpoints and their suffixes**, because §11.3 test 8 requires falling back to the
 next-newest, and **no checkpoint may be dropped whose generation any retained checkpoint still needs.** Those two
@@ -1384,6 +1436,13 @@ the user is trusted to remember, because it is the one requirement here with a r
 
 It is also the format that could eventually carry a non-empty import, since CRDT state is what makes card identity
 survive (§9.2).
+
+**It is not a separate artifact from §14's package: it is that format at the never-established lineage state**
+(§15 row 10, §13.5). The two constraints above are what that state *means* rather than exceptions to it — no
+lineage, so no trust root to anchor and no epochs, head or suffix to carry, and the explicit portable wrap is the
+one the absent recovery keypair would otherwise have supplied. **The archive's own signature is integrity within
+something already opened**, not an authority: what authenticates a Local archive is the code that opens it, which
+is the same sentence as *it answers does ciphertext still exist and never can you decrypt it*.
 
 ---
 
@@ -2134,6 +2193,17 @@ credentials receive no wrap.
 
 **No construction may give the service the key in order to simplify its commit.**
 
+**Every wrap to `R_pub` binds the lineage it was made under** (§15 row 10):
+
+```
+info = LP("done/gen-wrap/v1") || LP(workspace_id) || LP(lineage_id) || LP(hex auth_root) || LP(dec gen)
+```
+
+as HPKE base-mode `info`. It is §14.2's trust-root anchor, and it lives here because here is where the wrap is
+made. The binding is **per generation**, which §14.1 makes correct rather than convenient: a migration rotates
+forward under a new lineage, so generations written before it stay anchored to the root that was in force when
+they were written. For a never-established workspace both lineage fields are empty (§9.3).
+
 **Rotation moves the propagation problem, it does not remove it** — from "tell everyone the new identifier" to "get
 the new key to every remaining reader". Every remaining credential is reachable through the relay, which holds the
 wrapped key until that device next connects: store-and-forward, not both-devices-awake.
@@ -2384,11 +2454,24 @@ ordinary way.
    target, since retaining every envelope grows without bound.
 4. **The historical content-key generations**, because the attributed actor is inside the seal (§13.7).
 
+**Item 1's binding is selected, and it is the only one of the five that could not be a part of the package**
+(§15 row 10). Every other item is service-signed, so a forger supplying their own root can re-sign all of it and
+produce something internally consistent that says whatever it likes about who wrote what. The chain has to
+terminate in material the user holds, and §13.8 makes exactly one thing mandatory: the recovery code. So the
+root is bound in the **HPKE `info` of every generation wrap** (§13.7) — a substituted root derives a different
+key schedule, the wrap opens nothing, and there is no content left to re-attribute. In `info` rather than in the
+AEAD's associated data, because `info` is never transmitted: a reader must **supply** the root it believes
+rather than read one out of the package.
+
+**Only one reader needs that anchor, which is §15 row 9's argument again.** A surviving device knows the root
+from its own enrollment, and a device enrolled through §13.6 receives it through the person. Recovery with no
+surviving device is the case that asks — and it is the case that must hold the code.
+
 **A fifth thing is owed for a different reason, and §15 row 9 is why.** The package must carry **the old
 lineage's signed head at the moment it was made**, because a restoring device is otherwise brand-new in §13.5's
 sense and has to ask the replacement service where the lineage stood. A user-held package is the one artifact
 that can answer that from outside any service, and it costs one signature it is already carrying the key to
-verify. Row 10 selects the format; this is the requirement on it.
+verify. Row 10 selects the format, and this is the package's `head` part.
 
 **None of this is succession.** It proves who wrote history and authorizes nothing. The rule that nobody changes
 authorization outside the service is untouched by material that cannot change anything.
@@ -2421,6 +2504,29 @@ gone — not replaced, not adjudicated, simply never re-signed under a lineage t
 **Test.** §11.3 test 7.
 
 ### 14.4 Account deletion and the terminal package
+
+**There is one package format, at §13.5's three lineage states, rather than two formats** (§15 row 10). What
+this section describes is the service *populating the portable package* of §14.2 before deletion, not producing
+a second artifact — and *importing the package later upgrades its knowledge*, below, is a live package moving to
+retired rather than being replaced. §9.3's fidelity archive is the third state, of a workspace whose lineage was
+never established. One format, one importer, one verifier:
+
+```
+Manifest = Ed25519( assembler ; LP("done/pkg/v1") || LP(dec v) || LP(workspace_id) || LP(lineage_id)
+             || LP(lineage_state) || LP(hex auth_root) || LP(hex lineage_head_digest)
+             || LP(dec epoch) || LP(hex parts_digest) || LP(assembled_by) )
+
+parts    = checkpoint · epochs · suffix · generations · head · recovery
+           ASCENDING BY NAME: LP(name) || LP(dec count) || LP(hex digest), digested under
+           LP("done/pkg-parts/v1")
+```
+
+**There is no attribution part, and §15 row 8 is why**: the claims live in the content root, so they are inside
+the checkpoint the package already carries — which is what §7.6 required of attribution evidence in the first
+place. **There is no separate part count either**, because each part's count is already inside `parts_digest`,
+and a second binding of the same fact could disagree with it. `assembled_by` names a credential resolvable from
+the epochs the package carries, or the trust root itself when the service assembled it here, or — where there is
+no lineage — the archiving device, which nothing external certifies and §9.3 already says so.
 
 **Before the service deletes anything it commits a signed terminal lineage record.** Every participating replica and
 the verified portable package receive that record plus `R_pub`, the code-sealed `R_priv`, enough public authorization
@@ -2485,15 +2591,15 @@ direction for the dependency to run.
 
 ## 15. The selection register
 
-The constraints above are fixed; this is the register of the constructions built on them. **Nine rows are
-selected and ten are open.** **The design reviews wait on the selections in their scope, and the cutover
+The constraints above are fixed; this is the register of the constructions built on them. **Thirteen rows are
+selected and nine are open**, with rows 14 and 20 appearing in both halves because each is split. **The design reviews wait on the selections in their scope, and the cutover
 waits separately on row 21** (§13.11, §14.6).
 
 **The register has two review scopes and two independent scopes.** Rows **1, 2, 3 and 13**, plus the storage-facing
 part of 14, are what a local encrypted store needs; they gate the storage work and are the scope of review **3a**, answered
 before the first deployment cutover — **that scope is now closed.** Rows **4–12, 15–17 and 20**, plus the network-facing
 part of 14, are what moving an envelope over a network needs; they gate the service and are the scope of review **3b**,
-answered before network sync ships — **that scope is open, with rows 4, 5, 7, 8, 9 and 11 now selected out of it.** Rows **18 and 19**
+answered before network sync ships — **that scope is open, with rows 4, 5, 6, 7, 8, 9, 10 and 11 now selected out of it — its whole sync core.** Rows **18 and 19**
 retain their own empirical triggers and gate neither review nor
 cutover. Row **21** is the migration choice: it gates cutover but neither design review. Closing one scope does not
 require another, which is what lets encryption at rest land before the protocol is specified.
@@ -2517,8 +2623,10 @@ true**, and where the two disagree this one wins.
 | 9 | Chain-head discovery for a brand-new device | **Two of three arrival paths are not brand-new**: enrollment carries the head through the person (row 11), and migration carries it in a user-held package. The third — recovery with no surviving device — gets a **nonce-bound signed head assertion**, which moves replay from *anyone in the path* to *the authorization service itself*. The residual is bounded: a hidden revocation is a hidden rotation, so a stale head cannot come with current content (§13.5) | [row 9](./selections/row-9-chain-head-discovery.md) |
 | 8 | Attribution-preserving representation and its storage bound | A **standing signed claim, minted by the writing credential at card creation and living in the content root** beside the card it attributes — so §6.1's trim re-seals it under the current generation and **verifying historical authorship stops requiring historical generations**. The body commitment makes the claim falsifiable, not unforgeable: a card edited since creation verifies and is not exact. One record per card, retiring on exactly the event §4.5 already says retires a claim (§13.7) | [row 8](./selections/row-8-attribution-record.md) |
 | 7 | Checkpoint construction, cadence and retention | One **full snapshot under one generation** plus a signed manifest binding the epoch and its head, the generation, the checkpoint digest, **`sv` and `ds` separately**, row 5's accepted-head vector and the producing credential. **Attribution is preserved by row 8 rather than here**, so §7.6's forbidden re-signing shape is unreachable. **A rotation forces a checkpoint before the old generation may be dropped**; at least two are retained (§7.6) | [row 7](./selections/row-7-checkpoint.md) |
+| 6 | Anti-replay rule and envelope retention depth | Admit at *n* iff the position is **one past the mark**, the link is computed from the link the client itself holds, and a signed head verifies against **that** link. §7.5's *no second link at a held position* needs no fifth condition — it arrives at or below the mark — so the carrier is one `(seq, link)` per credential, a §6.1 record with `kind: 'heads'`. **Outbound: re-mint only on a definite refusal**, never on silence. Retention is three different depths, and a device keeps its own envelopes back to the **second-newest** admitted checkpoint (§7.4, §7.5) | [row 6](./selections/row-6-antireplay-retention.md) |
+| 10 | Terminal and portable cutover-package formats | **One format at §13.5's three lineage states**, not two: §14.2's cutover package, §14.4's terminal package and §9.3's fidelity archive, with a live package *upgraded* to retired by importing the terminal record. §14.2's trust root is bound in the **HPKE `info` of every generation wrap**, so a substituted root opens no generation and there is nothing to re-attribute — the one anchor that terminates in user-held material rather than in a service signature (§14.2, §14.4) | [row 10](./selections/row-10-portable-package.md) |
 
-**Row 20 — test vectors — is closed for these seven and open for the rest.** Each carries a generated,
+**Row 20 — test vectors — is closed for these thirteen and open for the rest.** Each carries a generated,
 self-verifying vector file; `pnpm vectors:check` fails the build if any has drifted from its generator, and
 `pnpm vectors:coverage` fails it if any field bound in one is isolated by no published negative.
 
@@ -2526,8 +2634,6 @@ self-verifying vector file; `pnpm vectors:check` fails the build if any has drif
 
 | # | Unselected                                    | Constrained by                                                                                 |
 | - | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| 6 | Anti-replay rule and envelope retention depth  | Devices retain their own outbound envelopes to the last admitted checkpoint (§7.4)             |
-| 10 | Terminal-package and portable cutover-package formats | Must travel with the workspace, not require the old operator (§14.2, §14.4)             |
 | 12 | Account-credential and slot-verifier construction, including offline-guessing resistance | §13.9 |
 | 14 | Recovery-code **step-up authentication** and confirmation UX — the network-facing half | §13.8; the storage-facing half is selected above |
 | 15 | Interrupted-rotation and downgrade behaviour   | Must fail closed without changing the confidentiality promise (§11.2 test 11)                  |
@@ -2535,19 +2641,13 @@ self-verifying vector file; `pnpm vectors:check` fails the build if any has drif
 | 17 | Which web-security baseline profile and version | §10.9, §13.11 level 2                                                                         |
 | 18 | Whether a persistent encrypted search index is needed at all | Deferred; gates neither review nor cutover; measure the in-memory rebuild first (§6.2, §12) |
 | 19 | Root-type day collections (§10.8)              | Deferred; one of its four costs has lapsed and should be re-counted                            |
-| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the eleven selected above**, each of which carries a generated, self-verifying vector file |
+| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the thirteen selected above**, each of which carries a generated, self-verifying vector file |
 | 21 | First-deployment cutover attribution: accept system attribution, or bring the fidelity archive forward | §14.6; must be selected before cutover; adding authorship fields to Markdown is rejected (§9.1) |
 
-**Rows 6 and 10 are the ones to close next, and both are now largely determined rather than open.** Row 6 has
-accumulated three inbound constraints and needs to reconcile them into one depth: §7.4's outbound envelope
-retention to the last admitted checkpoint, row 4's single position number, and row 7's rule that a suffix is
-never shorter than the oldest retained checkpoint's head vector. **Row 10 has two stated requirements and no
-format**: it must carry the checkpoint and manifest row 7 selects, and the signed lineage head row 9 requires and
-does not supply (§14.2).
-
-**What remains after those is not sync.** Rows 12 and the network half of 14 are account and credential work,
-15 is failure behaviour, and 16 and 17 are a number and a profile. The core — envelope, acceptance, checkpoint,
-attribution, enrollment, discovery — closes with row 6.
+**Rows 12 and 15 are the ones to close next, and the character of the scope has changed.** With row 6 the
+sync core is closed — envelope, acceptance, retention, checkpoint, attribution, enrollment, discovery, and the
+package that carries all of it out. **What remains is not sync**: row 12 and the network half of 14 are account
+and credential work, 15 is failure behaviour, and 16 and 17 are a number and a profile.
 
 **Row 12 is worth reading beside §13.3 before it is answered**: a verifier
 resisting offline guessing by a profile holder has the threat model the device lock was selected under, and that

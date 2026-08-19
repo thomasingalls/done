@@ -1,0 +1,242 @@
+{
+  "$schema": "https://done.invalid/vectors/antireplay/1",
+  "generated_by": "scripts/generate-antireplay-vectors.mjs",
+  "selection": "docs/selections/row-6-antireplay-retention.md",
+  "trd_row": 6,
+  "construction": {
+    "admit": "Admit an envelope at (credential, n) iff: (1) it verifies, row 4; (2) n == held(c).seq + 1; (3) link_n is computed from the link the client itself holds, row 5; (4) a signed head at position >= n verifies against **that** link rather than the one it carries. Otherwise HOLD — the position or the head is not yet available — or REFUSE. A second link at a position already held needs no fifth condition: it arrives at or below the mark and condition 2 refuses it",
+    "mint": "Mint at own_held + 1. On a **definite refusal** at n, re-mint at the same n — row 4 forbids skipping. On no answer, wait. Re-minting a position that may have been accepted is self-equivocation, and the rule above refuses it permanently on every other device",
+    "baseline": "held(c) starts at the adopted checkpoint's head-vector entry for c, or at (0, 32 zero bytes). Replaying from a checkpoint and replaying from genesis are the same operation, which is what makes a checkpoint a retention floor",
+    "heads_record": "Row 3’s record format with kind = 'heads', in its own object store under the same store subkey, sharing the content store’s `seq` sequence. plaintext = LP(\"done/heads/v1\") || head_vector, with row 7’s serialization verbatim",
+    "write_order": "The content batch commits first and the heads record after it. A crash between them re-delivers admitted positions, which is idempotent; the reverse order advances the mark past an operation that was never applied, and that operation is then below the baseline forever. Same direction as §6.1’s trim, for the same reason",
+    "retention": {
+      "own_outbound_envelopes": "Each device retains its own outbound envelopes back to the **second-newest** checkpoint it has seen admitted, not the newest. §11.3 test 8 falls back to the next-newest checkpoint and §14.3 re-envelops this device’s suffix from whichever checkpoint it applied; a device trimmed to the newest cannot supply that. Counting two locally needs no service field and no retention parameter on the wire",
+      "suffix_beside_a_checkpoint": "The durable store retains each retained checkpoint’s suffix from that checkpoint’s head vector forward. Row 7 retains at least two checkpoints, so it retains at least two suffixes",
+      "local_head_vector": "A high-water mark, not a log: one entry per credential, replaced in place. No depth, and no growth beyond the credential count"
+    },
+    "not_here": {
+      "primitives": "SHA-256, HKDF, AES-256-GCM and Ed25519 KATs are row 1’s, in test/vectors/algorithm-suite.json.",
+      "links": "The link and head constructions are row 5’s and are audited in finalization.json.",
+      "serialization": "The head-vector serialization and its digest are row 7’s.",
+      "envelope": "The envelope whose digest each link binds is row 4’s."
+    }
+  },
+  "keys": {
+    "k_accept": {
+      "role": "The service's hot acceptance-signing key (row 5). It signs heads and nothing else.",
+      "source": "RFC 8032 §7.1, TEST 2",
+      "seed": "4ccd089b28ff96da9db6c346ec114e0f5b8a319f35aba624da8cf6ed4fb8a6fb",
+      "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
+    }
+  },
+  "vectors": [
+    {
+      "name": "twelve-positions-and-a-baseline-at-nine",
+      "why": "The phone's chain through a rotation between positions 9 and 10, checkpointed at 9. Replayed from genesis and replayed from the checkpoint's baseline it reaches the same link at position 12, which is the whole of why everything below a checkpoint may be dropped.",
+      "inputs": {
+        "principal_id": "prn_01HZXP5T3J8W1Q4X7Z9C2M6K0B",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "credential_id": "cred_01HZXR0000000000000000PHON",
+        "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "run": [
+          {
+            "seq": 1,
+            "epoch": 8,
+            "digest": "0101010101010101010101010101010101010101010101010101010101010101"
+          },
+          {
+            "seq": 2,
+            "epoch": 8,
+            "digest": "0202020202020202020202020202020202020202020202020202020202020202"
+          },
+          {
+            "seq": 3,
+            "epoch": 8,
+            "digest": "0303030303030303030303030303030303030303030303030303030303030303"
+          },
+          {
+            "seq": 4,
+            "epoch": 8,
+            "digest": "0404040404040404040404040404040404040404040404040404040404040404"
+          },
+          {
+            "seq": 5,
+            "epoch": 8,
+            "digest": "0505050505050505050505050505050505050505050505050505050505050505"
+          },
+          {
+            "seq": 6,
+            "epoch": 8,
+            "digest": "0606060606060606060606060606060606060606060606060606060606060606"
+          },
+          {
+            "seq": 7,
+            "epoch": 8,
+            "digest": "0707070707070707070707070707070707070707070707070707070707070707"
+          },
+          {
+            "seq": 8,
+            "epoch": 8,
+            "digest": "0808080808080808080808080808080808080808080808080808080808080808"
+          },
+          {
+            "seq": 9,
+            "epoch": 8,
+            "digest": "0909090909090909090909090909090909090909090909090909090909090909"
+          },
+          {
+            "seq": 10,
+            "epoch": 9,
+            "digest": "0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
+          },
+          {
+            "seq": 11,
+            "epoch": 9,
+            "digest": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b"
+          },
+          {
+            "seq": 12,
+            "epoch": 9,
+            "digest": "0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c"
+          }
+        ],
+        "baseline_at": 9,
+        "signed_head": {
+          "seq": 12,
+          "epoch": 9,
+          "final": false
+        },
+        "heads_record": {
+          "principal": "prn_01HZXP5T3J8W1Q4X7Z9C2M6K0B",
+          "workspace": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+          "v": 1,
+          "gen": 3,
+          "seq": 4102,
+          "kind": "heads",
+          "nonce": "505152535455565758595a5b"
+        },
+        "accepted_heads": [
+          {
+            "credential": "cred_01HZXR0000000000000000LAPT",
+            "seq": 12,
+            "link": "a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90"
+          },
+          {
+            "credential": "cred_01HZXR0000000000000000PHON",
+            "seq": 12,
+            "link": "201e5aeeeb991bc162f4d6a18084184fa53de8fefa0ba158889fc032782c4c6f"
+          }
+        ]
+      },
+      "derived": {
+        "link_at_6": "16c2892d1b7c96bb3909a1381a6ee27c8df3ae2ae38d79d9cd0e761fa13d2516",
+        "link_at_7": "2c87282b7764fb81a72886040bccb02dd7356d58b5302d5f071224a36ed084ac",
+        "link_at_baseline": "5cacce1cdb388cc209a9e5eac93a4363a931dd5d199ad00d7ff4f7f2f3e94eff",
+        "link_at_10": "185e970b90ce1c1d998b44fd5b8dc77a8c5e03758a36fa08757e2c160bf037b1",
+        "head_message": "0013646f6e652f6163636570742d686561642f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a58523030303030303030303030303030303050484f4e00023132004032303165356165656562393931626331363266346436613138303834313834666135336465386665666130626131353838383966633033323738326334633666000139000566616c7365",
+        "heads_record_aad": "000d646f6e652f73746f72652f7631001e70726e5f3031485a58503554334a385731513458375a3943324d364b3042001d77735f3031485a5851374d344b395032523654385630593342354e374400013100013300043431303200056865616473",
+        "heads_record_body": "000d646f6e652f68656164732f7631001f637265645f3031485a5852303030303030303030303030303030304c41505400023132004061316232633364346535663630373138323933613462356336643765386639306131623263336434653566363037313832393361346235633664376538663930001f637265645f3031485a58523030303030303030303030303030303050484f4e00023132004032303165356165656562393931626331363266346436613138303834313834666135336465386665666130626131353838383966633033323738326334633666",
+        "head_vector": "001f637265645f3031485a5852303030303030303030303030303030304c41505400023132004061316232633364346535663630373138323933613462356336643765386639306131623263336434653566363037313832393361346235633664376538663930001f637265645f3031485a58523030303030303030303030303030303050484f4e00023132004032303165356165656562393931626331363266346436613138303834313834666135336465386665666130626131353838383966633033323738326334633666",
+        "head_vector_digest": "672d7fd102589c5889b2c6b3fe23b143df2c0736c3bac3cceea350e1765b212a"
+      },
+      "expected": {
+        "links": [
+          "7d4423c03678d44a0215f171c9512c0d332b623b2fe41b1cb196d794365023d6",
+          "7d82733c384e6d446219c3bad9fcb64dc31c85a6b0ca5426cda8fc2c2ba6a3fb",
+          "2961e746ef78b921b418f1cf99c5f783ab1dd93902a0ddae5d6cb8611144430c",
+          "524d70206714065ddfce78c37225b300faa5b240653a8d4a619fa5470201d3c9",
+          "a1bc2d089b0778ec29cf10197db0ba0f4446b679ac438a8dfddc58ceb0a537d6",
+          "16c2892d1b7c96bb3909a1381a6ee27c8df3ae2ae38d79d9cd0e761fa13d2516",
+          "2c87282b7764fb81a72886040bccb02dd7356d58b5302d5f071224a36ed084ac",
+          "f2aca07471e1bad75c459b5d49257bf269d586395e25f070df5989b5e28975c5",
+          "5cacce1cdb388cc209a9e5eac93a4363a931dd5d199ad00d7ff4f7f2f3e94eff",
+          "185e970b90ce1c1d998b44fd5b8dc77a8c5e03758a36fa08757e2c160bf037b1",
+          "d8c165cd478e8a17f3cdbe05837d151f94e665a9e7d1d7e3e3d74736df2cfa21",
+          "201e5aeeeb991bc162f4d6a18084184fa53de8fefa0ba158889fc032782c4c6f"
+        ],
+        "link_at_12": "201e5aeeeb991bc162f4d6a18084184fa53de8fefa0ba158889fc032782c4c6f",
+        "head_signature": "d6476f1e91aacac917bd1c147beb3ed52a268d8f8569f60d4dbf73aa87dc02c973ea1c61ab4aaf4c6d7fa38f29bed714806618f59ed6c50d3218157ed6eca006",
+        "head_signature_at_7": "600fb3289ba6639e3dd81b1ee00f96d752710eac7569cb0568242fe4b3041718f9074e0ee41531ea5e7d913e18ff17a1cf4497908a276a2a7b369b03e2090e0e",
+        "heads_record_ct": "e1aab207b902a873c62983a6e9c0c4587de273651d1b0d5e08f2cbc8bb5608310831f2292fab79de5be7801e1d74d7b30f073e9a37b0455903d645aaa3efa595c85b4f23bed257a4a09d3c2a219c24a6cd2de63ea54e4dc2c3ac9afce9d4b5371eee68b9da1be1a46fbd8becc16375557662ba0c53ed04b03e007dafed59e48639387f0ba273d79c5e5282e5e62517fb280234be8bbb30b5cfac0ab5dc6e8c2d2da2f3f2f4a0c469b6eea1e89425c7dd1e2798f86421c27f145c9664a7944b7edd4952b90e5ef286268d30bc3d72550d5390999eca0e4173816270b80fc75561edec515fe570171eb8bdc40494"
+      }
+    }
+  ],
+  "demonstrations": {
+    "self_equivocation": {
+      "why": "The same credential at the same position with a different update, so that “a different link at a held position” is a value rather than a description. Nothing distinguishes this from an attacker holding the credential, which is why an honest client that re-mints without a definite refusal breaks its own chain permanently.",
+      "position": 7,
+      "accepted_link": "2c87282b7764fb81a72886040bccb02dd7356d58b5302d5f071224a36ed084ac",
+      "equivocated_link": "6aab662209a3024cb3b309ac8a6abf92e8b7cd344df0788e2006216e0840984d"
+    },
+    "head_checked_against_its_carried_link": {
+      "why": "§7.5’s *must not happen*, shown succeeding. A client at a divergent position 11 computes a different link at 12; checking the head against the link the **head** carries admits it anyway, because that check is satisfied by the head being well-formed and says nothing about what the client replayed. The negative `numeric-mark-without-its-link` is the same inputs under the correct check.",
+      "held": {
+        "seq": 11,
+        "link_is_actually_position": 10
+      },
+      "admitted_link_under_the_defective_check": "cc61b22a031c67302ba9f5eee39841d0b4efe725c3e895051779a1fe38243efd",
+      "correct_link_at_12": "201e5aeeeb991bc162f4d6a18084184fa53de8fefa0ba158889fc032782c4c6f"
+    },
+    "local_rollback": {
+      "why": "An earlier heads record, genuinely sealed under the same subkey and the same AAD shape. It **opens**, and it is published here rather than in must_fail because it does: an AAD authenticates a record and cannot order two valid ones. The bound is in the selection document — a rollback is exploitable only in collusion with a service willing to sign a second link at a held position, which is the bound §7.5 already states for equivocation.",
+      "earlier_record_seq": 3990,
+      "earlier_record_nonce": "404142434445464748494a4b",
+      "earlier_record_ct": "724b1c11f3d2a5996cc28d634eb1465891837a7b978bf28aa61ddbf3f2d8bfcaf7b7271999582b0dd0cc2c2310e7e9d66ef47f2eea5873608c952d1ca35accd7736be12d5d144edc2400d4052a51e4a6b003903540119a0901eb4c00cee4fb398c4bc50c74090ed65ed986bd9182ed1273af0766694bcf8bc9711dd3eded67ea948b64f22a06a6c4d63897c0fa656013c9496cd5a17dc1102e3cf8310f1936c814c7a687b662c290c32d75ef9de3cb2536c48df7f818cb93ab6c1910e9acea38965a453c57995e09d75244d26159e19856b2672aa3a1d2adb09d30cea1aa4a54c667d8bdfb9ba594c644edbb",
+      "earlier_body": "000d646f6e652f68656164732f7631001f637265645f3031485a5852303030303030303030303030303030304c41505400023132004061316232633364346535663630373138323933613462356336643765386639306131623263336434653566363037313832393361346235633664376538663930001f637265645f3031485a58523030303030303030303030303030303050484f4e000139004035636163636531636462333838636332303961396535656163393361343336336139333164643564313939616430306437666634663766326633653934656666"
+    }
+  },
+  "must_fail": [
+    {
+      "name": "position-does-not-follow",
+      "mutate": "Offer position 12 while the mark is at 10. Refused before any hashing. **Row 4 is what makes this a refusal rather than a policy**: `seq` is the credential’s own outbound position and its accepted position as one number, so a client computes every link itself and cannot be told where a chain got to."
+    },
+    {
+      "name": "numeric-mark-without-its-link",
+      "mutate": "A mark whose *number* is 11 and whose *link* is position 10’s — a client that advanced a counter without keeping what it replayed. The position check passes and the computed link is wrong, so no signed head covers it. **This is the argument for the carrier’s shape**: §7.5 says a numeric high-water mark is not a finalization boundary, and one level down it is not an anti-replay state either."
+    },
+    {
+      "name": "equivocated-position-below-the-mark",
+      "mutate": "The equivocated position 7 offered while the mark is at 12. Refused by the position check alone — which is why *no second link at a held position* needs no state of its own and the carrier can be a mark rather than a log."
+    },
+    {
+      "name": "equivocated-position-at-the-mark",
+      "mutate": "The equivocated position 7 offered while the mark is at 6, so the position check passes and the link is computed honestly. It differs from the accepted one, and the service signed a head over the accepted one. **This is also the shape an honest client produces if it re-mints at a position it never learned was refused**, which is why the outbound rule waits rather than retries."
+    },
+    {
+      "name": "baseline-from-another-checkpoint",
+      "mutate": "Replay positions 10 through 12 from a head vector that is not the adopted checkpoint’s. The links diverge from the first position onward, so a substituted baseline cannot be walked forward into agreement with a signed head."
+    },
+    {
+      "name": "heads-record-read-as-state",
+      "mutate": "Open the heads record with `kind` claimed as `state`. **Row 3’s attack with a second victim**: a `state` record supersedes everything before it, so a heads record reinterpretable as one would be a way to make the trim delete content through its own path — and, here, to drop the anti-replay baseline while doing it."
+    },
+    {
+      "name": "heads-aad-only-principal",
+      "mutate": "Open the heads record as though it belonged to another principal on the same profile."
+    },
+    {
+      "name": "heads-aad-only-workspace",
+      "mutate": "Open it as though it belonged to another workspace."
+    },
+    {
+      "name": "heads-aad-only-version",
+      "mutate": "Open it claiming another record format version."
+    },
+    {
+      "name": "heads-aad-only-generation",
+      "mutate": "Open it claiming another content-key generation."
+    },
+    {
+      "name": "heads-aad-only-seq",
+      "mutate": "Open it claiming another store sequence number. `seq` is shared with the content store rather than restarting here, so row 3’s per-generation nonce budget stays one comparison over one sequence."
+    },
+    {
+      "name": "heads-aad-only-renumbered-label",
+      "mutate": "Open it under \"done/store/v2\"."
+    },
+    {
+      "name": "wrong-store-subkey",
+      "mutate": "Derive the store subkey for another workspace. The AAD half is `heads-aad-only-workspace`."
+    }
+  ]
+}
