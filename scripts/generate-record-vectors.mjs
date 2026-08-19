@@ -34,6 +34,8 @@
 import { writeFileSync, readFileSync } from 'node:fs';
 import { webcrypto as crypto } from 'node:crypto';
 
+import { aadFields, assertedNames, refuses, reportAudit } from './lib/aad-coverage.mjs';
+
 const OUT = new URL('../test/vectors/record-format.json', import.meta.url);
 
 const STORE_LABEL = 'done/store/v1';
@@ -118,13 +120,15 @@ const deriveStoreKey = async (kg, workspaceId) => {
  */
 const aadForRecord = ({ principal, workspace, v, gen, seq, kind, label = STORE_LABEL }) =>
   concat(
-    lp(label),
-    lp(principal),
-    lp(workspace),
-    lp(String(v)),
-    lp(String(gen)),
-    lp(String(seq)),
-    lp(kind),
+    ...aadFields('content record', {
+      label,
+      principal,
+      workspace,
+      v: String(v),
+      gen: String(gen),
+      seq: String(seq),
+      kind,
+    }).map(lp),
   );
 
 /**
@@ -138,7 +142,16 @@ const aadForRecord = ({ principal, workspace, v, gen, seq, kind, label = STORE_L
  * this one and can be substituted for it.
  */
 const aadForEnvelope = ({ principal, workspace, v, gen, purpose, label = ENVELOPE_LABEL }) =>
-  concat(lp(label), lp(principal), lp(workspace), lp(String(v)), lp(String(gen)), lp(purpose));
+  concat(
+    ...aadFields('key envelope', {
+      label,
+      principal,
+      workspace,
+      v: String(v),
+      gen: String(gen),
+      purpose,
+    }).map(lp),
+  );
 
 const sealGcm = async (keyBytes, nonce, aad, plaintext) => {
   const k = await crypto.subtle.importKey('raw', keyBytes, 'AES-GCM', false, [
@@ -328,19 +341,6 @@ const NEGATIVES = [
  * round-trip is a typo, and a "must fail" list whose entries quietly succeed is
  * worse than no list at all -- so both are asserted here rather than in prose.
  */
-const asserted = new Set();
-
-const refuses = async (label, fn) => {
-  asserted.add(label);
-  let failed = false;
-  try {
-    await fn();
-  } catch {
-    failed = true;
-  }
-  if (!failed) throw new Error(`Negative vector "${label}" authenticated when it must not.`);
-};
-
 const verify = async (records, envelopes) => {
   for (const v of records) {
     const got = await openGcm(
@@ -440,8 +440,9 @@ const verify = async (records, envelopes) => {
   // than no entry; an entry that is published but never run is the same defect
   // one level up, and it is invisible without this comparison.
   const published = new Set(NEGATIVES.map((n) => n.name));
-  const unrun = [...published].filter((n) => !asserted.has(n));
-  const unpublished = [...asserted].filter((n) => !published.has(n));
+  const asserted = assertedNames();
+  const unrun = [...published].filter((n) => !asserted.includes(n));
+  const unpublished = asserted.filter((n) => !published.has(n));
   if (unrun.length > 0)
     throw new Error(`Negatives published but never asserted: ${unrun.join(', ')}`);
   if (unpublished.length > 0)
@@ -527,6 +528,7 @@ const main = async () => {
   }
 
   await verify(records, envelopes);
+  reportAudit(NEGATIVES.map((n) => n.name));
 
   const doc = {
     $schema: 'https://done.invalid/vectors/record-format/1',

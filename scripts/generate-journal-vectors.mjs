@@ -28,6 +28,8 @@ import { writeFileSync, readFileSync } from 'node:fs';
 import { webcrypto as crypto } from 'node:crypto';
 import { xchacha20poly1305 } from '@noble/ciphers/chacha.js';
 
+import { aadFields, assertedNames, refuses, reportAudit } from './lib/aad-coverage.mjs';
+
 const OUT = new URL('../test/vectors/journal-aead.json', import.meta.url);
 
 const HKDF_LABEL = 'done/journal/v1';
@@ -91,9 +93,22 @@ const deriveJournalKey = async (kg, workspaceId) => {
   return new Uint8Array(bits);
 };
 
-/** AAD = LP(label) || LP(workspace) || LP(gen) || LP(journalKey) */
+/**
+ * AAD = LP(label) || LP(workspace) || LP(gen) || LP(journalKey)
+ *
+ * The field list goes through aadFields so scripts/check-aad-coverage.mjs can
+ * remove one field at a time and prove a negative below is testing it. The
+ * encoding stays here, because it is what the selection document specifies.
+ */
 const aadFor = (workspaceId, gen, journalKey, label = AAD_LABEL) =>
-  concat(lp(label), lp(workspaceId), lp(String(gen)), lp(journalKey));
+  concat(
+    ...aadFields('journal record', {
+      label,
+      workspace_id: workspaceId,
+      gen: String(gen),
+      journal_storage_key: journalKey,
+    }).map(lp),
+  );
 
 /** Record = "2:" || base64( u32be(gen) || nonce[24] || ciphertext || tag[16] ) */
 const seal = (journalKey, nonce, aad, plaintext, gen) =>
@@ -224,20 +239,6 @@ const open = (journalKey, record, aad) => {
   return { gen, plaintext: xchacha20poly1305(journalKey, nonce, aad).decrypt(sealed) };
 };
 
-/** Negatives that appear in the published must_fail list are recorded as they run. */
-const asserted = new Set();
-
-const refuses = (label, fn) => {
-  asserted.add(label);
-  let failed = false;
-  try {
-    fn();
-  } catch {
-    failed = true;
-  }
-  if (!failed) throw new Error(`Negative vector "${label}" authenticated when it must not.`);
-};
-
 const verify = async (vectors) => {
   for (const v of vectors) {
     const kj = unhex(v.derived.k_journal);
@@ -256,39 +257,42 @@ const verify = async (vectors) => {
   const rec = base.expected.record;
 
   const otherKey = await deriveJournalKey(KG, 'ws_01J0000000000000000000000A');
-  refuses('wrong-workspace', () => open(otherKey, rec, aadFor(ws, gen, jk)));
-  refuses('wrong-generation', () => open(kj, rec, aadFor(ws, gen + 1, jk)));
-  refuses('moved-slot', () => open(kj, rec, aadFor(ws, gen, 'done.pending-update.done.8')));
+  await refuses('wrong-workspace', () => open(otherKey, rec, aadFor(ws, gen, jk)));
+  await refuses('wrong-generation', () => open(kj, rec, aadFor(ws, gen + 1, jk)));
+  await refuses('moved-slot', () => open(kj, rec, aadFor(ws, gen, 'done.pending-update.done.8')));
 
   const flipped = Buffer.from(rec.slice(RECORD_VERSION.length), 'base64');
   flipped[flipped.length - 1] ^= 0x01;
-  refuses('flipped-tag-bit', () =>
+  await refuses('flipped-tag-bit', () =>
     open(kj, RECORD_VERSION + flipped.toString('base64'), aadFor(ws, gen, jk)),
   );
 
   const truncated = Buffer.from(rec.slice(RECORD_VERSION.length), 'base64').subarray(0, -1);
-  refuses('truncated-record', () =>
+  await refuses('truncated-record', () =>
     open(kj, RECORD_VERSION + Buffer.from(truncated).toString('base64'), aadFor(ws, gen, jk)),
   );
 
-  refuses('wrong-version-prefix', () =>
+  await refuses('wrong-version-prefix', () =>
     open(kj, '1:' + rec.slice(RECORD_VERSION.length), aadFor(ws, gen, jk)),
   );
 
   // The AAD-only group: the correct K_journal throughout, one bound field changed.
-  refuses('aad-only-other-workspace', () =>
+  await refuses('aad-only-other-workspace', () =>
     open(kj, rec, aadFor('ws_01J0000000000000000000000A', gen, jk)),
   );
-  refuses('aad-only-hkdf-label', () => open(kj, rec, aadFor(ws, gen, jk, HKDF_LABEL)));
-  refuses('aad-only-renumbered-label', () => open(kj, rec, aadFor(ws, gen, jk, 'done/jrnl/v2')));
+  await refuses('aad-only-hkdf-label', () => open(kj, rec, aadFor(ws, gen, jk, HKDF_LABEL)));
+  await refuses('aad-only-renumbered-label', () =>
+    open(kj, rec, aadFor(ws, gen, jk, 'done/jrnl/v2')),
+  );
 
   // The published list and the executed checks must be the same list, in both
   // directions. A "must fail" entry that quietly stops failing is the defect
   // this file was written to prevent; one that is published but never run is
   // the same defect a level up, and it is invisible without this comparison.
   const published = new Set(NEGATIVES.map((n) => n.name));
-  const unrun = [...published].filter((n) => !asserted.has(n));
-  const unpublished = [...asserted].filter((n) => !published.has(n));
+  const asserted = assertedNames();
+  const unrun = [...published].filter((n) => !asserted.includes(n));
+  const unpublished = asserted.filter((n) => !published.has(n));
   if (unrun.length > 0)
     throw new Error(`Negatives published but never asserted: ${unrun.join(', ')}`);
   if (unpublished.length > 0)
@@ -326,6 +330,7 @@ const main = async () => {
   }
 
   await verify(vectors);
+  reportAudit(NEGATIVES.map((n) => n.name));
 
   const doc = {
     $schema: 'https://done.invalid/vectors/journal-aead/1',

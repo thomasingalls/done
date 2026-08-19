@@ -41,6 +41,8 @@ rules you have to know before writing a component. **How to run it** is
 | Journal benchmark | `test/latency/journal-bench.ts`    | The §15 row 2 write, measured **before Stage 1 builds it**, so the number can still influence the selection. Bundled from the specification rather than imported from `src/`, and it reproduces a published vector before it will measure anything.                 |
 | Cipher comparison | `test/latency/cipher-bench.ts`     | Four XChaCha20-Poly1305 implementations against each other, each checked against the same vector first. Established that the journal's 4 kB cost is the language and not the library (docs/performance.md).                                                         |
 | Device benchmark  | `scripts/bench-journal-device.mjs` | Serves both benchmarks to a real phone over `adb reverse` or Tailscale, cross-origin isolated for the fine clock, with results posting back into the harness's own file. **A CPU throttle cannot produce a p95 of one operation**; this is how that row gets taken. |
+| Vector generators | `scripts/generate-*-vectors.mjs`   | The executable half of [selections/](./selections/), one per selected TRD §15 row. Each verifies itself on every run and reconciles its published `must_fail` list against what it actually asserted.                                                               |
+| AAD coverage      | `scripts/check-aad-coverage.mjs`   | Elides each bound AAD field in turn and watches which negatives stop failing, so a field bound by a construction and tested by nothing fails the build. Generators are **discovered by glob**, since a hand-kept list is how the next one would arrive untested.    |
 
 ## Three places the code departs from the TRD
 

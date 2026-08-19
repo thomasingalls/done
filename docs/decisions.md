@@ -548,3 +548,50 @@ extrapolation would have caught it.
 **The cost, accepted.** A budget that is currently exceeded is carried into review 3a rather than resolved
 before it. That is the intended trade: the reviewer reads a measured breach with a known mechanism, which is a
 better artifact than a budget quietly revised to fit the first number that failed it.
+
+### The AAD coverage audit goes into the build, by eliding each field and watching the negatives
+
+**Date:** 2026-08-19 · **Commit:** on `claude/project-next-steps-cc23b5` · **Against:** PRD v9 / TRD v8
+
+**Orientation.** The entry above that adopted the rule — every field bound in an AAD needs a published
+negative that changes that field and nothing else — closed by naming its own limit. The audit behind it had
+been performed by hand, by removing each field from each AAD in turn and re-running, and that procedure was
+not in the build. `pnpm vectors:check` proves every published negative still fails; it cannot see a field that
+no negative ever touches. The follow-on was deliberately declined at the time on the grounds that it changes
+how every generator is structured and Stage 0 was five days from a review that reads those files as they are.
+
+**Decision.** **Take it now, and mechanize the hand procedure rather than a proxy for it.**
+`scripts/check-aad-coverage.mjs` runs each generator once per bound field with that field removed from the
+AAD, at seal time and open time alike, and watches which negatives stop failing. A negative that stops failing
+differed from the base vector in that field and nothing else, which is what _isolating_ means; a field where
+none stops failing is bound by the construction and tested by nothing. It is wired into `pnpm vectors:check`,
+so it is inside `pnpm check`.
+
+**A cheaper structural alternative was considered and rejected.** The AAD encoding is injective, so the
+published AADs could be parsed and compared field by field with no cryptography at all. It is faster and it is
+weaker: it counts a negative that changes the derived key _and_ one AAD field as isolating that field, which
+is exactly the confusion that produced the rule — row 13's `factor` was bound in the HKDF `info` as well, and
+its obvious negative passed whether or not the AAD bound anything.
+
+**The converse is checked too, because it was free once the first was.** A negative named `aad-only-` must be
+rescued by exactly one field. One rescued by none is isolating nothing — it is failing on a wrong key, or on a
+second field it also changes — and its name asserts the opposite. That is the original defect, and it now
+fails the build instead of waiting for someone to notice.
+
+**Generators are discovered rather than listed**, by glob over `scripts/generate-*-vectors.mjs`, and one that
+does not report its constructions fails the audit. A hand-maintained list is precisely how the next
+construction would arrive untested, which is the thing this exists to prevent. The suite generator has no AAD
+composition and reports that emptiness rather than staying silent, because silence and omission are otherwise
+the same signal.
+
+**It agrees with the hand audit**, which is the only result available on the first run: 27 fields across five
+constructions, each isolated by a published negative. Both failure shapes were confirmed by injecting them —
+a new AAD field with no negative, and an `aad-only-` negative rewired to fail on a wrong key. **No published
+vector changed**; all five files regenerate byte for byte, which was the constraint worth keeping three
+working days before review 3a reads them.
+
+**The cost, accepted.** Four generators now route their AAD field lists through a shared module, so the field
+_names_ live one indirection away from the encoding, which stays in the file a reviewer reads. Each audit is a
+subprocess, because a generator seals and asserts in one pass and re-running a mutation means re-running the
+process; 31 node starts is 0.3 s wall clock against the eight-way pool, which is cheap enough to sit in
+`pnpm check` without anyone weighing whether to skip it.

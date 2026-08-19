@@ -207,9 +207,17 @@ are better in front of the reviewer than behind them.
   six fields — including `purpose`, whose whole justification is that §13.4's credentials share `L_local`
   and are otherwise structurally identical. Rows 2 and 14 also gained the published-versus-asserted
   reconciliation rows 3 and 13 already had. The rule now lives in [decisions.md](./decisions.md) rather than
-  in this file, which is disposable. **What is still open is that the audit is not in the build**:
-  `pnpm vectors:check` proves every published negative still fails, not that the negatives cover every bound
-  field, so a future construction can still arrive with an untested one.
+  in this file, which is disposable. ~~**What is still open is that the audit is not in the build.**~~
+  **Closed** — `pnpm vectors:coverage` is the hand procedure mechanized, and runs inside `pnpm vectors:check`
+  and therefore inside `pnpm check`. It elides each bound field in turn and watches which negatives stop
+  failing: one that stops differed from the base vector in that field and nothing else, and a field where none
+  stops is bound by the construction and tested by nothing. **It agrees with the hand audit** — 27 fields
+  across five constructions, each isolated — and **no published vector changed**, which was the constraint
+  worth keeping three working days before 3a reads them. **Two things it adds beyond confirming the audit.**
+  It checks the converse, so a negative named `aad-only-*` that is rescued by no field — one failing on a
+  wrong key rather than on the binding, which is the original defect — now fails the build. And it
+  **discovers generators by glob rather than from a list**, because a hand-maintained list is exactly how the
+  next construction would arrive untested. Recorded in [decisions.md](./decisions.md).
 - **Stage 1 owes row 13 one record it will never read: the `CustodyRecord`, written at genesis, saying
   `'promptless'` forever.** A key store with no custody record has its tier implied by what is present, and
   adding an explicit one after the first deployment is a migration over key material — precisely the class

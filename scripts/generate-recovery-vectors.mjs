@@ -33,6 +33,8 @@
 import { writeFileSync, readFileSync } from 'node:fs';
 import { webcrypto as crypto, createPrivateKey, createPublicKey } from 'node:crypto';
 
+import { aadFields, assertedNames, refuses, reportAudit } from './lib/aad-coverage.mjs';
+
 const OUT = new URL('../test/vectors/recovery-code.json', import.meta.url);
 
 const LABEL = 'done/recovery/v1';
@@ -146,7 +148,14 @@ const deriveRecoveryKey = async (code, salt, principalId) => {
 
 /** AAD = LP(label) || LP(principal_id) || LP(dec v) || LP(hex r_pub) */
 const aadFor = (principalId, v, rPub, label = LABEL) =>
-  concat(lp(label), lp(principalId), lp(String(v)), lp(hex(rPub)));
+  concat(
+    ...aadFields('recovery envelope', {
+      label,
+      principal_id: principalId,
+      v: String(v),
+      r_pub: hex(rPub),
+    }).map(lp),
+  );
 
 const seal = async (kRec, nonce, aad, rPriv) => {
   const key = await crypto.subtle.importKey('raw', kRec, 'AES-GCM', false, ['encrypt']);
@@ -341,23 +350,9 @@ const MUST_FAIL = [
 const OTHER_PUB = unhex('de9edb7d7b7dc1b4d35b61c2ece435373f8343c85b78674dadfc7e146f882b4f');
 const OTHER_PRINCIPAL = 'pr_01J0000000000000000000000A';
 
-/**
- * Negatives that appear in the published must_fail list are recorded as they
- * run. The normalization rejections share this helper but are generated from
- * their own case list, so they are excluded from the reconciliation below.
- */
-const asserted = new Set();
-
-const refuses = async (label, fn) => {
-  asserted.add(label);
-  let failed = false;
-  try {
-    await fn();
-  } catch {
-    failed = true;
-  }
-  if (!failed) throw new Error(`Negative vector "${label}" succeeded when it must not.`);
-};
+// Negatives that appear in the published must_fail list are recorded as they
+// run. The normalization rejections share `refuses` but are generated from
+// their own case list, so they are excluded from the reconciliation below.
 
 const main = async () => {
   checkAlphabet();
@@ -513,13 +508,16 @@ const main = async () => {
   // directions. An entry that is published but never run is as invisible as one
   // that has quietly stopped failing.
   const published = new Set(MUST_FAIL.map((m) => m.name));
-  const sealAsserted = [...asserted].filter((n) => !n.startsWith('rejected: '));
-  const unrun = [...published].filter((n) => !asserted.has(n));
+  const asserted = assertedNames();
+  const sealAsserted = asserted.filter((n) => !n.startsWith('rejected: '));
+  const unrun = [...published].filter((n) => !asserted.includes(n));
   const unpublished = sealAsserted.filter((n) => !published.has(n));
   if (unrun.length > 0)
     throw new Error(`Negatives published but never asserted: ${unrun.join(', ')}`);
   if (unpublished.length > 0)
     throw new Error(`Negatives asserted but not published: ${unpublished.join(', ')}`);
+
+  reportAudit(MUST_FAIL.map((m) => m.name));
 
   const challenge = await replacementChallenge(PRINCIPAL, OTHER_PUB);
 

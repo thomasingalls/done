@@ -14,7 +14,8 @@ pnpm build          # typecheck, bundle, and enforce the §12 budget
 pnpm lint           # oxlint with React, TypeScript, a11y, import, promise, and Vitest checks
 pnpm format         # oxfmt formatting check
 pnpm vectors        # regenerate the TRD §15 test vectors
-pnpm vectors:check  # fail if any vector file has drifted from its generator
+pnpm vectors:check  # fail if any vector file has drifted, or any AAD field is untested
+pnpm vectors:coverage  # just the AAD coverage half of the above
 pnpm check          # typecheck, lint, format, vectors, unit and geometry tests
 pnpm test           # unit tests
 pnpm test:geometry  # layout, line-height and pixel-identity tests, needs a browser
@@ -39,6 +40,18 @@ is loud rather than a file that quietly stops matching its own specification.
 `pnpm check`. **If it fails, regenerate rather than editing the JSON**: the file
 is output, and a hand-edited vector is a specification with no generator behind
 it.
+
+`pnpm vectors:coverage` asks the question the paragraph above cannot: not
+whether every published negative still fails, but whether the negatives **cover
+every field the AAD binds**. It runs each generator once per bound field with
+that field removed from the AAD, and watches which negatives stop failing — a
+negative that stops differed from the base vector in that field and nothing
+else, and a field where none stops is bound by the construction and tested by
+nothing. It is part of `pnpm vectors:check`. **Generators are discovered by
+glob**, so a new `scripts/generate-*-vectors.mjs` is audited without being added
+anywhere; one that does not call `reportAudit()` from
+[`scripts/lib/aad-coverage.mjs`](../scripts/lib/aad-coverage.mjs) fails rather
+than being skipped.
 
 `pnpm test:latency` is a **separate Playwright config** and a separate
 discipline. It measures rather than asserts, so it runs one worker with no

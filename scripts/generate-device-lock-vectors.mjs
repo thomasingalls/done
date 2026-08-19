@@ -37,6 +37,8 @@
 import { writeFileSync, readFileSync } from 'node:fs';
 import { webcrypto as crypto } from 'node:crypto';
 
+import { aadFields, assertedNames, refuses, reportAudit } from './lib/aad-coverage.mjs';
+
 const OUT = new URL('../test/vectors/device-lock.json', import.meta.url);
 const ROW_3 = new URL('../test/vectors/record-format.json', import.meta.url);
 const ROW_14 = new URL('../test/vectors/recovery-code.json', import.meta.url);
@@ -204,8 +206,25 @@ const deriveFactorKey = async (ikm, salt, principal, workspace, factor) => {
 };
 
 const aadForSeal = ({ principal, workspace, v, factor, id, label = LABEL }) =>
-  concat(lp(label), lp(principal), lp(workspace), lp(String(v)), lp(factor), lp(id));
+  concat(
+    ...aadFields('lock seal', {
+      label,
+      principal,
+      workspace,
+      v: String(v),
+      factor,
+      id,
+    }).map(lp),
+  );
 
+/**
+ * Row 3's key-envelope AAD, reproduced here to show the format is indifferent
+ * to which key opens it. It is deliberately *not* registered for the coverage
+ * audit: the construction belongs to row 3 and is audited against row 3's
+ * negatives, which are the ones written to isolate its fields. Eliding a field
+ * here would only prove that this file's negatives -- which are about the lock
+ * seal -- do not test a neighbouring construction they never claimed to.
+ */
 const aadForEnvelope = ({ principal, workspace, v, gen, purpose }) =>
   concat(
     lp(ENVELOPE_LABEL),
@@ -321,12 +340,9 @@ const mustNotOpen = async (name, fn) => {
   if (opened) throw new Error(`Negative "${name}" opened. It must not.`);
 };
 
-/** Negatives that appear in the published must_fail list are recorded as they run. */
-const asserted = [];
-const refuses = async (name, fn) => {
-  await mustNotOpen(name, fn);
-  asserted.push(name);
-};
+// Negatives that appear in the published must_fail list are recorded as they
+// run, by the shared `refuses`. `mustNotOpen` stays for the checks that are not
+// published negatives.
 
 // --- main ----------------------------------------------------------------------
 
@@ -713,12 +729,14 @@ const main = async () => {
   // The published list and the asserted list must agree in both directions, or
   // a "must fail" entry can quietly stop being tested.
   const published = MUST_FAIL.map((m) => m.name).sort();
-  const actual = [...asserted].sort();
+  const actual = assertedNames().sort();
   if (published.join('|') !== actual.join('|')) {
     throw new Error(
       `must_fail and the assertions disagree.\n  published: ${published.join(', ')}\n  asserted:  ${actual.join(', ')}`,
     );
   }
+
+  reportAudit(MUST_FAIL.map((m) => m.name));
 
   const doc = {
     $schema: 'https://done.invalid/vectors/device-lock/1',

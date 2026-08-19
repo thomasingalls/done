@@ -26,6 +26,8 @@
 import { writeFileSync, readFileSync } from 'node:fs';
 import { webcrypto as crypto } from 'node:crypto';
 
+import { reportAudit } from './lib/aad-coverage.mjs';
+
 const OUT = new URL('../test/vectors/algorithm-suite.json', import.meta.url);
 
 const utf8 = (s) => new TextEncoder().encode(s);
@@ -390,6 +392,12 @@ const main = async () => {
   const separation = checkSeparation();
   checkCarriers();
   checkCoverage();
+
+  // No AAD composition lives in this file -- it carries published KATs and the
+  // carrier-version table -- but it reports that emptiness rather than staying
+  // silent, because scripts/check-aad-coverage.mjs discovers generators instead
+  // of being given a list, and cannot tell "no AAD" from "forgot to report".
+  reportAudit();
 
   const doc = {
     $schema: 'https://done.invalid/vectors/algorithm-suite/1',
