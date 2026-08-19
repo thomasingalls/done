@@ -266,6 +266,37 @@ library; a minimal module would be far less.
 all where the budget actually breaks. Row 2 chose the 24-byte nonce on grounds that had nothing to do with
 speed, and it turns out to cost nothing where speed matters.
 
+### What a WASM seal would cost the bundle
+
+**Measured rather than estimated, because the 550 kB figure quoted above is unpacked size and the budget
+counts gzipped bytes.** Bundled with a single function imported, so the tree-shaker has every chance:
+
+|                                        | minified | gzipped      | against 43.7 kB of headroom     |
+| -------------------------------------- | -------- | ------------ | ------------------------------- |
+| `@noble/ciphers` (selected today)      | 15.2 kB  | **5.1 kB**   | fits, and is what ships now     |
+| libsodium-wrappers                     | 447.4 kB | **149.2 kB** | **3.4× the entire headroom**    |
+| A Rust-compiled wasm ChaCha20-Poly1305 | 49.9 kB  | **17.5 kB**  | fits                            |
+| …the same, base64-inlined              | 63.2 kB  | **24.3 kB**  | **fits, with 19.4 kB to spare** |
+
+**A libsodium subset build is not the way through.** 149.2 kB is already its _standard_ build rather than the
+sumo one, so the reduction has been applied; going further needs an emscripten toolchain, and emscripten's
+runtime glue is a fixed cost that does not obviously fall under 43.7 kB. libsodium priced the option and is
+not the option.
+
+**A purpose-built module does fit, and the inlined figure is the one that matters.** Synchronous compilation
+needs the bytes present rather than fetched (§12), which means base64 in the bundle and a third more raw size —
+and it still lands at 24.3 kB, a little over half the headroom. **The 17.5 kB row is measured from an
+off-the-shelf package that is not itself adoptable**: it exposes only the 12-byte-nonce construction, where row
+2 selected the 24-byte nonce and the width is load-bearing. It is a proxy for what the category weighs, not a
+candidate.
+
+**Which changes the shape of the remaining objection rather than removing it.** The concern was that a small
+module means shipping a hand-rolled primitive, against §13.10's criterion of _reviewed and widely implemented_.
+But the RustCrypto `chacha20poly1305` crate is audited and carries `XChaCha20Poly1305`, and `rustc`, `cargo`
+and `wasm-pack` are already on the development machine — so the question is whether compiling a reviewed
+implementation through a second toolchain satisfies that criterion, which is a question for review 3a rather
+than a fact this file can settle. **Nothing here has been built; these are sizes, not a working seal.**
+
 ### Still absent
 
 | Metric (TRD §12)                         | Budget                           | Why there is no number  |

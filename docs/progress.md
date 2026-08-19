@@ -88,10 +88,14 @@ checked for staleness by `pnpm vectors:check`, which `pnpm check` now runs.
     implementations compared on the same phone, each checked against row 2's vector first:
     `@stablelib` lands within **1%** of `@noble` at 4 kB, so pure-JS arithmetic is the wall and swapping the
     import is not a fix. **libsodium in WASM is 24× faster**, which would take the 4 kB write from 1 498 µs to
-    a projected 274 µs — inside budget with 3.6× margin. **But the fix that works is not one that is
-    available**: libsodium is 550 kB unpacked against 43.7 kB of headroom, so it prices the option rather than
-    supplying it, and a small module would mean shipping a hand-rolled primitive against row 1's own "reviewed
-    and widely implemented" criterion. **Open, and it belongs to review 3a's scope.** Recorded in
+    a projected 274 µs — inside budget with 3.6× margin. **And a small module fits the budget**, which
+    was the open question: libsodium is **149.2 kB gzipped** against 43.7 kB of headroom and cannot ship — its
+    standard build is already the reduced one, so a subset needs emscripten and would still carry that
+    runtime's fixed cost — but a **Rust-compiled wasm ChaCha20-Poly1305 measures 24.3 kB gzipped
+    base64-inlined**, which is what a synchronous compile needs, leaving 19.4 kB spare. **What remains is not a
+    size question but a criterion one**: §13.10 asks for _reviewed and widely implemented_, and whether
+    compiling the audited RustCrypto crate through a second toolchain satisfies that is review 3a's to say.
+    **Nothing has been built** — these are sizes, not a working seal. Recorded in
     [performance.md](./performance.md).
   - **A side result that vindicates a selection.** XChaCha's extra HChaCha20 block costs 1.02× at 4 kB, so
     row 2's 24-byte nonce — chosen on grounds unrelated to speed — costs nothing where the budget breaks.
