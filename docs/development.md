@@ -50,6 +50,35 @@ the user agent and nothing else. It is **deliberately absent from `pnpm check`**
 [performance.md](./performance.md), which is where the method and the numbers
 live.
 
+Some rows cannot be taken that way at all. A CPU throttle stalls the thread
+rather than modelling a slower core, so its stalls land inside individually
+timed operations and become the tail — which makes any budget written as a p95
+of _one_ operation unmeasurable on an emulated profile. Those need hardware:
+
+```
+node scripts/bench-journal-device.mjs
+```
+
+It serves the journal benchmark at `/` and the cipher comparison at `/cipher`,
+and prints the two ways to reach it from a phone. Both need an origin the
+browser considers trustworthy, because **cross-origin isolation is what buys
+the 5 µs clock instead of 100 µs** and a 12 µs write is invisible at the latter:
+
+```
+adb reverse tcp:4180 tcp:4180
+```
+
+```
+tailscale serve --bg --https=8443 4180
+```
+
+The first gives the phone `http://localhost:4180`, which is trustworthy without
+a certificate. The second serves the MagicDNS URL over TLS to the tailnet only —
+remember `tailscale serve --https=8443 off` afterwards. Each page reports
+whether it got the fine clock _before_ it will measure, and the cipher page
+refuses to run at all unless every candidate reproduces the published vector.
+Results post back and land in the same file `pnpm latency:record` reads.
+
 The relay is a separate package with its own install, and the app never depends
 on it:
 

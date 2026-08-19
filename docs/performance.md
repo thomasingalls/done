@@ -13,8 +13,13 @@ start, so **without a recorded plaintext baseline a regression from encryption i
 unattributable**, and the budget conversation afterwards has nothing to argue from.
 
 **The window closes at Stage 1.** Every plaintext number that is not recorded before the encrypted store
-lands is a number that can never be taken again. **Six of the latency rows were taken before it closed**;
-the rest measure things that do not exist yet and arrive with their features.
+lands is a number that can never be taken again. **Six of the latency rows were taken before it closed.**
+
+**The seventh did not need the window and could not have used it.** The journal write measures a
+construction the app does not contain, from its specification, because it gates a _selection_ rather than a
+feature — a number that arrives after the construction is chosen cannot influence the choice. It is the only
+row here taken that way, and it is the one that found a budget exceeded. The remaining six measure things
+that do not exist yet and arrive with their features.
 
 ## How to record a measurement
 

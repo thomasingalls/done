@@ -29,14 +29,14 @@ that is no longer active.
 
 ## Active slice: Stage 0 — select, measure, book
 
-**Status:** in flight · **Plan:** [sequencing.md](./sequencing.md) §3.1 · **Updated:** 2026-08-18
+**Status:** in flight · **Plan:** [sequencing.md](./sequencing.md) §3.1 · **Updated:** 2026-08-19
 
-Three bodies of work, almost none of which is application code, all of which get more expensive the later
+Four bodies of work, almost none of which is application code, all of which get more expensive the later
 they start. Stage 1 cannot begin without the first; the last is calendar time that working harder does not
 compress. (The harness turned out to need four boot marks in the app — the one exception, and about 100
 bytes of it.)
 
-### 1. Select TRD §15's storage-review scope — in flight
+### 1. Select TRD §15's storage-review scope — done
 
 What Stage 1 cannot begin without, and now also what review 3a reads in the week of **2026-08-24** (item 4).
 Each row needs a construction and test vectors rather than an intention. Selections live in
@@ -58,9 +58,10 @@ checked for staleness by `pnpm vectors:check`, which `pnpm check` now runs.
   - ~~**Open:** Ed25519's availability is asserted, not verified.~~ **Closed** — the floor is Baseline
     _newly available_, written in TRD §10.11, and Ed25519 clears it (Chrome and Edge 137, Firefox 129,
     Safari 17.0). Testing the primitive against the floor is still Stage 4's (§11.2).
-- **Row 2 — the synchronous journal AEAD and its nonce discipline.** in flight — construction selected with
-  vectors and folded, in [selections/row-2-journal-aead.md](./selections/row-2-journal-aead.md). **One
-  measurement outstanding, and it is the only thing in this slice with a physical lead time.**
+- **Row 2 — the synchronous journal AEAD and its nonce discipline.** selected — construction with vectors
+  and folded, in [selections/row-2-journal-aead.md](./selections/row-2-journal-aead.md). **The measurement it
+  owed has been taken, and it found a budget breach that Stage 1 inherits** — the selection stands, the
+  budget does not.
   - **XChaCha20-Poly1305; 24 random bytes per record; no counter, no durable state.** The width is the
     point: a 96-bit nonce would also hold at this journal's volumes, and that is the objection to it — the
     guarantee would become a claim about application behaviour that a later change can silently invalidate,
@@ -171,9 +172,12 @@ checked for staleness by `pnpm vectors:check`, which `pnpm check` now runs.
     a capability this ragged is precisely one that cannot be a root, which is what §5 already argued.
 
 _Exit: rows 1–3 selected, with test vectors._ **Met**, and the wider scope the review actually reads
-(TRD §15) — 13 and the storage-facing half of 14 — **is met too, and folded into the TRD.** **Nothing in
-3a's scope is now outstanding except row 2's low-end-device measurement**, which is disclosed in TRD §12
-rather than pending silently.
+(TRD §15) — 13 and the storage-facing half of 14 — **is met too, and folded into the TRD.** **Every selection
+in 3a's scope is closed and its measurement taken.** What 3a now receives that it would not have received a
+week ago is a **measured budget breach with a known mechanism and a priced fix** (row 2), and **one question
+that is a criterion rather than a construction**: whether an audited implementation reached through a second
+toolchain satisfies §13.10's _reviewed and widely implemented_. Neither is a selection left undone, and both
+are better in front of the reviewer than behind them.
 
 **Six things rows 1, 3, 13 and 14 turned up that are not selections.**
 
@@ -232,9 +236,19 @@ at the service boundary.
   `playwright.latency.config.ts`), with `pnpm latency:record` for append-ready rows. Two profiles: desktop,
   and a Pixel 7 under a 4× CPU throttle — emulation alone changes the viewport and the user agent and
   nothing else, so an unthrottled mobile project measures the development machine twice.
-- **Record the baseline while the store is still plaintext.** done. **Six of TRD §12's thirteen latency
-  rows now have numbers**, in [performance.md](./performance.md). The other seven measure things that do
-  not exist yet and arrive with their features.
+- **And a third profile that Playwright cannot reach: a real device.** `node scripts/bench-journal-device.mjs`
+  serves the same constructions, from the same modules and constants as the specs, to any phone that can
+  reach a trustworthy origin — over `adb reverse` or a Tailscale URL — and the results post back into the
+  same file. **It exists because a CPU throttle cannot produce a p95 of one operation**: it stalls the thread,
+  so its stalls land inside individually-timed operations and become the tail.
+- **A data-loss bug in the harness, found by being bitten.** Measurements are appended under `test-results/`,
+  which Playwright clears before every run — so an unrelated run silently destroyed numbers taken on a device
+  that was no longer to hand. Playwright now has a subdirectory of its own.
+- **Record the baseline while the store is still plaintext.** done. **Seven of TRD §12's thirteen latency
+  rows now have numbers**, in [performance.md](./performance.md). The other six measure things that do not
+  exist yet and arrive with their features. The seventh is the journal write, which is the exception in kind:
+  it was measured **before** the code exists, from the specification, because it gates a selection rather
+  than a feature.
 - **Four boot marks in the app** (`src/lib/marks.ts`), for the one row with no DOM signal — content-root
   load. **That seam is what Stage 1 extends**: the same marks will bracket a key-store read, an unseal and
   per-record decryption. About 100 bytes of initial JS; the bundle went 306.2 → 306.3 kB.
@@ -259,9 +273,12 @@ _Exit: a latency harness with recorded plaintext numbers._ **Met.**
 - **Review 3b — protocol.** not started. Answered before **Stage 4**.
 
 **Booking 3a dated item 1; it did not clear an item.** TRD §13.11 holds each review until its own scope is
-closed, because booking a review of architecture alone buys an opinion about a sketch. So the 24th is the
-deadline on rows 1, 2, 3, 13 and the storage-facing part of 14 — **all of which are now selected**, leaving
-row 2's handset measurement and the fold into the TRD.
+closed, because booking a review of architecture alone buys an opinion about a sketch. So the 24th was the
+deadline on rows 1, 2, 3, 13 and the storage-facing part of 14 — **all selected, all folded into the TRD, and
+row 2's handset measurement taken.** Nothing in 3a's scope is now waiting on work.
+
+**3b is what is actually left in this slice.** It is not started, it blocks nothing today, and that is exactly
+why [sequencing.md](./sequencing.md) §4 names it as the thing most likely to become the critical path.
 
 _Exit: both reviewers engaged, with the storage review's date inside Stage 1._ **Half met.** As booked, 3a
 runs before Stage 1 rather than beside it, which is early rather than late and costs only that the reviewer
