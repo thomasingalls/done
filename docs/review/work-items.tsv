@@ -1,0 +1,17 @@
+id	phase	depends_on	artifact	title
+F-01	foundation	-	docs/review/analysis/original-contract.md	Extract the original contract without later-selection anchoring
+F-02	foundation	-	docs/review/analysis/end-state-model.md	Model the end state and its claimed guarantees independently
+B-01	reverse-walk	F-01,F-02	docs/review/analysis/batches/B-01.md	Review commits 1-13: late protocol closure and amendments
+B-02	reverse-walk	B-01	docs/review/analysis/batches/B-02.md	Review commits 14-19: protocol core and WASM seal
+B-03	reverse-walk	B-02	docs/review/analysis/batches/B-03.md	Review commits 20-27: evidence and empirical course corrections
+B-04	reverse-walk	B-03	docs/review/analysis/batches/B-04.md	Review commits 28-35: initial storage selections and baseline
+X-01	cross-cutting	B-04	docs/review/analysis/seams/X-01-crypto-key-custody.md	Re-derive algorithm suite, key hierarchy, custody and agility
+X-02	cross-cutting	B-04	docs/review/analysis/seams/X-02-crash-persistence.md	Re-derive journal, record format, nonce and crash consistency
+X-03	cross-cutting	B-04	docs/review/analysis/seams/X-03-accepted-state.md	Re-derive envelopes, finalization, replay and checkpoints
+X-04	cross-cutting	B-04	docs/review/analysis/seams/X-04-lifecycle.md	Re-derive enrollment, recovery, transition and revocation lifecycle
+X-05	cross-cutting	B-04	docs/review/analysis/seams/X-05-continuity.md	Re-derive attribution, retention, portability and migration
+X-06	cross-cutting	B-04	docs/review/analysis/seams/X-06-platform-evidence.md	Audit browser floor, WASM, performance and evidence independence
+P-01	reconciliation	X-01,X-02,X-03,X-04,X-05,X-06	docs/review/analysis/propagation-audit.md	Trace original constraints through records, requirements and evidence
+S-01	reconciliation	X-01,X-02,X-03,X-04,X-05	docs/review/analysis/adversarial-scenarios.md	Replay adversarial crash, compromise and lifecycle scenarios
+V-01	validation	P-01,S-01	docs/review/analysis/finding-challenges.md	Challenge findings and load-bearing affirmative conclusions independently
+Z-01	synthesis	V-01	docs/review/analysis/final-synthesis.md	Reach and calibrate the overall conclusions

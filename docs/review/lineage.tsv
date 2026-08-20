@@ -1,0 +1,36 @@
+order	batch	commit	initial_treatment	subject
+1	B-01	9edd9300adebcec3abd2234c946f1dcccdc17eef	traceability	Point row 14's decision record at the commit that carries it
+2	B-01	ff0b48f8ce7f1878ac6abb9c849380800b55370c	substantive	Give the step-up a nonce, and bind the transition rather than the key
+3	B-01	d357664cc9c5db8d0e57ef39ee49bd47a64df39a	traceability	Point row 16's decision record at the commit that carries it
+4	B-01	cdd206952b7cc0c6511fc1ee6ccc740c1b129407	substantive	Select twelve months of hosted retention, and audit 16's cells
+5	B-01	dba43e6ce52836df525e48b086f3a82cd50c1bb7	traceability	Point the deferral entry at the commit that carries the check
+6	B-01	449db30107b3c1cc49082d5a02789c4539b1db19	evidence	Check a deferral against the register rather than its own owner string
+7	B-01	83fe22cf0e4561de0770df147ae994c3168a73e8	substantive	Publish the seal rather than the library it replaced
+8	B-01	228034187b72f9ccabd5000e75ba078e77e61d26	traceability	Point row 17's decision record at the commit that carries it
+9	B-01	5bd9552b38d12e2c8b51bd490d2b78c64351eaa7	substantive	Select ASVS 5.0.0 as a floor, and record what it does not cover
+10	B-01	102f3f30e09186dd94705dc8e47f4b173bd44cf3	traceability	Point row 15's decision record at the commit that carries it
+11	B-01	4259822828060fe2b9592fa525cd9a17170af285	substantive	Settle transitions with one signed outcome, and narrow revocation
+12	B-01	677fea2a5cb8153a97ffe7031c8fd15d5e34c8eb	traceability	Point the decision record at the commit that carries the selection
+13	B-01	b9ff071ddb4ee67e47179e549b5ad22a429ac5ee	substantive	Select the account credential, and anchor the key its verifier checks
+14	B-02	130757dd4e79545352f71670311f819677800ce1	traceability	Point the two records at the commit that carries the seal
+15	B-02	9b49b743cb03cb8827682d79fc66405f458cf29b	substantive	Build the journal's seal in wasm, and close the 4 kB breach
+16	B-02	745e332b061e0e964ae655e853f2f3b393667c66	substantive	Keep a mark rather than a log, and one package rather than two
+17	B-02	b997cdb6bfaabc0e73cbecbb444dc0df84044d71	substantive	Move attribution into the content root, and close the retention floor
+18	B-02	992bc9113093fe04d20df0247aa118d0f8ba365f	substantive	Select the envelope format, and narrow what brand-new means
+19	B-02	a073574fcb90f9f2a70fa1be2bae5dc1d9c364f3	substantive	Select the accepted chain and the enrollment ceremony
+20	B-03	f58e0dea2188e1dd663275165467f7acab46f39c	evidence	Put the AAD coverage audit in the build, by eliding each field
+21	B-03	ffd90e3de9c19112cbe92486871a8f73654dacd2	maintenance	Catch the working documents up with the week's measurements
+22	B-03	6b021c46995379be79d459432f8bc514f72dbcfc	measurement	Price a WASM seal against the bundle, and rule libsodium out
+23	B-03	138a5f81ac07d505d9494a899ccf546e383a0684	measurement	Find the journal's cipher is bound by the language, not the library
+24	B-03	36705919dacc9b9053c8b5612264fb6f2a8ddc5d	measurement	Measure the journal budget on hardware, and find it exceeded at 4 kB
+25	B-03	66a7c6a85cc743896568a0ffc678431c1ebaf579	measurement	Measure the whole journal write, not the AEAD the budget names
+26	B-03	bd876553c8a2be17ff55c399f416d7eed9075935	substantive	Set the browser support floor, and state what Baseline cannot
+27	B-03	98f2a83136b242d7a48802585d7296447afa9d84	evidence	Test every AAD field alone, since a paired negative tests neither
+28	B-04	dbfd01f54cdfcab994ac7df2298ba0da0bbe7da9	propagation	Fold the five storage selections into the requirements
+29	B-04	f5def83ac6f21873ab7fb589247dd116fc2febd9	substantive	Select the device lock's factor, and rotate the content key with it
+30	B-04	d3ef2dcb03f251bca1097db7c55d170f5176bf0c	maintenance	Rename membership repair to unfiled, freeing recovery for accounts
+31	B-04	8d7d783d53a5a848dd2c55162fcafe1f11609731	substantive	Select the recovery code's entropy, and with it no stretching at all
+32	B-04	3bea0e69469e47b790fe6214d7fbed42bcf84441	substantive	Select the algorithm suite and the formats built out of it
+33	B-04	9860a0bc1611b01eac76abcc5584afc51f5ed959	substantive	Select XChaCha20-Poly1305 for the synchronous crash journal
+34	B-04	e41b0d0fc9bafe960ad8a3b699846f1f8655a4ae	planning	Date the storage-review selections by booking review 3a
+35	B-04	caee157305d3080ec870ca0959bd49c61a714f3b	measurement	Measure the latency budgets while the store is still plaintext

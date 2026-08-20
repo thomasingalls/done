@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "base": "c6116669030eedeea3d599bca0da3547114e6930",
+  "tip": "9edd9300adebcec3abd2234c946f1dcccdc17eef",
+  "expected_commit_count": 35,
+  "expected_source_count": 37,
+  "expected_work_item_count": 16,
+  "expected_work_item_ids": [
+    "F-01",
+    "F-02",
+    "B-01",
+    "B-02",
+    "B-03",
+    "B-04",
+    "X-01",
+    "X-02",
+    "X-03",
+    "X-04",
+    "X-05",
+    "X-06",
+    "P-01",
+    "S-01",
+    "V-01",
+    "Z-01"
+  ],
+  "expected_batches": ["B-01", "B-02", "B-03", "B-04"],
+  "manifest_sha256": {
+    "lineage.tsv": "8ed7aef28b28deaf8f31f69cd3f6adf98a789f08c261eeb01f23a35e1701e708",
+    "source-manifest.tsv": "5f095781b27c86493c67aec9f5571226f17d55c8efddf8e9aa18f38844426022",
+    "work-items.tsv": "acbac4904da3f799e4f3c12a4aeba421ea0c154dd82c67b5b307187da953caf2"
+  },
+  "review_order": "reverse-chronological",
+  "created_on": "2026-08-21",
+  "orientation_head": "dbfd01f54cdfcab994ac7df2298ba0da0bbe7da9"
+}
