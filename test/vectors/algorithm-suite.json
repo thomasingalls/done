@@ -36,7 +36,7 @@
         },
         "journal-aead": {
           "primitive": "XChaCha20-Poly1305",
-          "provider": "@noble/ciphers",
+          "provider": "audited RustCrypto chacha20poly1305 crate, compiled to an inlined wasm module (wasm/journal-seal), instantiated synchronously",
           "path": "sync",
           "nonce": "192-bit, random per record",
           "why": "Selected by row 2. The only primitive the platform does not supply, and the only one on the crash path."
