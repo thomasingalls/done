@@ -1030,7 +1030,7 @@ now more than twice the cryptography. Further work against this budget is base64
 
 ### The slot verifier checks a signature, so there is no secret to stretch and one to substitute
 
-**Date:** 2026-08-20 · **Commit:** _this one_ · **Against:** PRD v9 / TRD v8
+**Date:** 2026-08-20 · **Commit:** `b9ff071` · **Against:** PRD v9 / TRD v8
 
 **Orientation.** §13.10 carried one role as a candidate — "an Argon2id-derived verifier" — and §15 row 12 asked
 for the account-credential and slot-verifier construction "including offline-guessing resistance". Read together
