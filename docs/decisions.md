@@ -1191,7 +1191,7 @@ resolved by the same three-way rule, at the cost of one wasted keypair.
 
 ### The web-security baseline is ASVS 5.0.0 at L2 as a floor, and the exclusions are the profile
 
-**Date:** 2026-08-20 · **Commit:** _this one_ · **Against:** PRD v9 / TRD v8
+**Date:** 2026-08-20 · **Commit:** `5bd9552` · **Against:** PRD v9 / TRD v8
 
 **Orientation.** §15 row 17 asked which web-security baseline profile and version, constrained by §10.9 and by
 §13.11's level 2, which wants "a recorded profile and repeatable verification of every applicable requirement".
