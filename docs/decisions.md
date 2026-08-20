@@ -1388,7 +1388,7 @@ invited to disagree with.
 
 ### The step-up challenge gets a nonce and binds the transition id, which closes review 3b's scope
 
-**Date:** 2026-08-20 · **Commit:** _this one_ · **Against:** PRD v9 / TRD v8
+**Date:** 2026-08-20 · **Commit:** `ff0b48f` · **Against:** PRD v9 / TRD v8
 
 **Orientation.** One row was left in 3b's scope — the network-facing half of row 14, the step-up that gates
 recovery replacement — and both the register and the working file described what remained as _a fold rather than
