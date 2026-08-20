@@ -37,8 +37,8 @@ Reader     A fixed compiled-in set of (carrier, version) pairs. Accept exactly
            those; refuse everything else, including versions above your own.
            Refusal is reported and leaves the carrier intact.
 
-Deferred   Recovery-code stretching → row 14. Slot verifier → row 12.
-           Device-lock derivation → row 13. Network envelope framing → row 4.
+Deferred   Nothing. Rows 4, 12, 13 and 14 have taken every role this row
+           deferred, and their answers are in the suite above.
 ```
 
 Everything below is why, and what it cost.
@@ -119,6 +119,10 @@ caught. That is the whole reason the suite is data in a script rather than a tab
 Two smaller invariants are checked the same way: every carrier maps to a defined suite and authenticates its
 own version, and every role is either selected or deferred to a **named row**, so nothing falls through the
 gap between the two lists.
+
+**Naming a row turned out not to be enough, and §7 records what that cost.** The check read the owner string,
+which stays true-looking forever; it now reads TRD §15.1 and fails if a deferred role points at a row that has
+since been selected.
 
 ---
 
@@ -220,6 +224,19 @@ belongs there (§11.2).
 
 **HPKE has no vector here**, for the reason in §2. It is pinned by ciphersuite identifier and lands with 3b.
 
+~~**Four roles are deferred to named rows.**~~ **Closed on 2026-08-20, and it closed badly before it closed
+well.** All four rows were answered — 4, 12, 13 and 14 — and **this file went on publishing three of the roles as
+unfilled**, because the coverage check asserted only that a deferral named a row, never that the row was still
+open. A reviewer reading `algorithm-suite.json` in the week of the 24th would have found the slot verifier
+described as _assigned to review 3b, not this row's to take_ by a document that row 12 had already answered.
+
+**It is the same drift as the journal provider name, in the same file**, and finding it twice is what makes the
+shape worth naming: **a fact about another document, copied here, with nothing checking the copy.** The
+provider name was one; the deferral list was three. So the fix is not another correction — `checkCoverage`
+now reads §15.1 out of the TRD and fails the build if any deferred role's owning row appears in the selected
+half. The two roles §13.10 carries and this file lacked, both answering _none_, are now in the suite:
+credential stretching (rows 13 and 14) and slot-verifier stretching (row 12).
+
 **The `devDependency` move is no longer owed**, per §2. Row 2's compiled seal is what ships, so nothing moves
 to `dependencies` and Stage 1 inherits nothing here.
 
@@ -262,7 +279,8 @@ each is listed in the vector file with its owning row so the omission reads as a
 `node scripts/generate-suite-vectors.mjs` writes them; `--check` fails if they are stale, and `pnpm check` now
 runs it. **The generator verifies itself on every run**, in four ways: every primitive KAT is executed against
 WebCrypto, the §13.2/§13.10 separation is asserted over the suite, every carrier is checked against the
-registry, and every role is checked to be selected or deferred to a named row.
+registry, and every role is checked to be selected or deferred to a named row **whose §15 entry is still
+open** — read out of the TRD rather than trusted to the owner string (§7).
 
 **The KATs are copied, never generated.** AES-256-GCM is Test Case 16 from McGrew and Viega's GCM paper;
 HKDF-SHA-256 is RFC 5869 Appendix A Test Case 1; Ed25519 is RFC 8032 §7.1 TEST 1; SHA-256 is FIPS 180-4's

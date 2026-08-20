@@ -2519,7 +2519,9 @@ nothing to negotiate and nothing to downgrade, and every carrier authenticates i
 fails to open rather than selecting a weaker suite.
 
 **The §13.2 separation rule is machine-checked rather than asserted.** Row 1's generator buckets every role above by
-path and fails if any primitive appears in both.
+path and fails if any primitive appears in both. **It also checks its own deferrals against §15**, and fails if a
+role it publishes as unfilled points at a row that has since been selected — which had happened to three of them
+before the check existed.
 
 **The journal AEAD reaches its implementation through a second toolchain, and that is the one open criterion
 question.** "Reviewed and widely implemented" is satisfied by the RustCrypto `chacha20poly1305` crate; what it does

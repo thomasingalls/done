@@ -71,6 +71,18 @@
           },
           "why": "RFC 9180 with the most widely implemented ciphersuite. Covers the R_pub and per-reader wrap cases uniformly (§13.2)."
         },
+        "credential-stretching": {
+          "primitive": "None. HKDF-SHA-256 only",
+          "provider": "WebCrypto",
+          "path": "none",
+          "why": "Selected by rows 13 and 14, and §13.10 answers it as one row for both: the recovery code and the device-lock code are generated at 125 bits, so the entropy deficit a work factor exists to cover does not exist. It rests on the invariant that such a code is never user-chosen, user-extended or truncated (§13.10)."
+        },
+        "slot-verifier-stretching": {
+          "primitive": "None, and nothing to stretch",
+          "provider": "—",
+          "path": "none",
+          "why": "Selected by row 12, on a stronger argument than the two above: the verifier checks a signature rather than a secret, so there is no secret in the profile to grind (§13.9)."
+        },
         "hash": {
           "primitive": "SHA-256",
           "provider": "WebCrypto",
@@ -78,20 +90,7 @@
           "why": "One hash everywhere HKDF, signatures and commitments need one."
         }
       },
-      "deferred": {
-        "recovery-code-stretching": {
-          "owner": "TRD §15 row 14",
-          "why": "A choice about the code’s entropy and presentation, not about the KDF (§13.10). Argon2id or none falls out of that, and the row is not started."
-        },
-        "slot-verifier": {
-          "owner": "TRD §15 row 12",
-          "why": "Must resist offline guessing by a profile holder (§13.9). Assigned to review 3b by §15, so it is not this row’s to take."
-        },
-        "device-lock-derivation": {
-          "owner": "TRD §15 row 13",
-          "why": "Which factor replaces the promptless handle (§13.3). Row 3 defines the envelope format; row 13 decides what opens it."
-        }
-      }
+      "deferred": {}
     }
   },
   "carriers": [

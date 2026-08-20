@@ -29,6 +29,7 @@ import { webcrypto as crypto } from 'node:crypto';
 import { reportAudit } from './lib/aad-coverage.mjs';
 
 const OUT = new URL('../test/vectors/algorithm-suite.json', import.meta.url);
+const TRD = new URL('../docs/TRD.md', import.meta.url);
 
 const utf8 = (s) => new TextEncoder().encode(s);
 const hex = (u) => Buffer.from(u).toString('hex');
@@ -115,6 +116,18 @@ const SUITE_1 = {
     ids: { kem: '0x0020', kdf: '0x0001', aead: '0x0002' },
     why: 'RFC 9180 with the most widely implemented ciphersuite. Covers the R_pub and per-reader wrap cases uniformly (§13.2).',
   },
+  'credential-stretching': {
+    primitive: 'None. HKDF-SHA-256 only',
+    provider: 'WebCrypto',
+    path: 'none',
+    why: 'Selected by rows 13 and 14, and §13.10 answers it as one row for both: the recovery code and the device-lock code are generated at 125 bits, so the entropy deficit a work factor exists to cover does not exist. It rests on the invariant that such a code is never user-chosen, user-extended or truncated (§13.10).',
+  },
+  'slot-verifier-stretching': {
+    primitive: 'None, and nothing to stretch',
+    provider: '—',
+    path: 'none',
+    why: 'Selected by row 12, on a stronger argument than the two above: the verifier checks a signature rather than a secret, so there is no secret in the profile to grind (§13.9).',
+  },
   hash: {
     primitive: 'SHA-256',
     provider: 'WebCrypto',
@@ -124,21 +137,19 @@ const SUITE_1 = {
 };
 
 /** Roles this row deliberately does not fill, each with the row that owns it. */
-const DEFERRED = {
-  'recovery-code-stretching': {
-    owner: 'TRD §15 row 14',
-    why: 'A choice about the code’s entropy and presentation, not about the KDF (§13.10). Argon2id or none falls out of that, and the row is not started.',
-  },
-  'slot-verifier': {
-    owner: 'TRD §15 row 12',
-    why: 'Must resist offline guessing by a profile holder (§13.9). Assigned to review 3b by §15, so it is not this row’s to take.',
-  },
-  'device-lock-derivation': {
-    owner: 'TRD §15 row 13',
-    why: 'Which factor replaces the promptless handle (§13.3). Row 3 defines the envelope format; row 13 decides what opens it.',
-  },
-};
-
+/**
+ * Roles named in §13.10 but not selected by row 1.
+ *
+ * **Empty, and it was not always.** It carried the recovery-code stretching,
+ * the slot verifier and the device-lock derivation, each pointing at the §15
+ * row that owned it. All three of those rows have since been answered, and
+ * their answers are in SUITE_1 above -- but nothing here noticed, so this file
+ * went on publishing three roles as unfilled after they were filled. That is
+ * the same drift row 2's provider name had, in the same file, and it is the
+ * reason `checkCoverage` below now reads §15 rather than trusting the owner
+ * string to stay true.
+ */
+const DEFERRED = {};
 // --- the carrier registry, which is the agility mechanism ----------------------
 
 /**
@@ -390,8 +401,32 @@ const checkCoverage = () => {
   const roles = [...Object.keys(SUITE_1), ...Object.keys(DEFERRED)];
   const dupes = roles.filter((r, i) => roles.indexOf(r) !== i);
   if (dupes.length > 0) throw new Error(`Role selected and deferred at once: ${dupes.join(', ')}`);
+
+  // A deferral is a claim about §15, so it is checked against §15 rather than
+  // against the owner string, which stays true-looking forever. Naming a row is
+  // not enough: the row has to still be open. A deferral that outlives its row
+  // publishes a role as unfilled after it was filled, and the only reader who
+  // would catch it is the reviewer this file exists to inform.
+  const trd = readFileSync(TRD, 'utf8');
+  const selected = new Set(
+    [
+      ...trd
+        .slice(trd.indexOf('### 15.1 Selected'), trd.indexOf('### 15.2 Unselected'))
+        .matchAll(/^\| (\d+) \|/gmu),
+    ].map((m) => m[1]),
+  );
+  if (selected.size === 0) throw new Error('§15.1 has no rows; the register cannot be read.');
+
   for (const [role, d] of Object.entries(DEFERRED)) {
-    if (!/row \d+/.test(d.owner)) throw new Error(`Deferred role ${role} names no owning row.`);
+    const row = /row (\d+)/u.exec(d.owner)?.[1];
+    if (row === undefined) throw new Error(`Deferred role ${role} names no owning row.`);
+    if (selected.has(row)) {
+      throw new Error(
+        `Deferred role ${role} points at §15 row ${row}, which is selected.\n` +
+          '  The deferral has outlived its row: this file publishes the role as unfilled\n' +
+          '  while §15.1 says it is answered. Move it into SUITE_1 or into the row that took it.',
+      );
+    }
   }
 };
 

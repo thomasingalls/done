@@ -1264,3 +1264,44 @@ longer addendum_ rather than a different standard, which is the sort of question
 The CSP directive set is where A1, A2 and V3.4.3 meet and is a Stage 4 artifact. And the 218 in-scope
 requirements are still to be verified, which is level 2's cost rather than this row's: **selecting the profile is
 Stage 0 and verifying it is a gate before Stage 4 ships.**
+
+---
+
+### A deferral that outlives its row is checked against the register, not against its own owner string
+
+**Date:** 2026-08-20 · **Commit:** _this one_ · **Against:** PRD v9 / TRD v8
+
+**Orientation.** A separate branch fixed a stale provider name in row 1's vector file: §13.10 had said the journal
+cipher was the RustCrypto crate compiled to wasm since `9b49b74`, and `algorithm-suite.json` still published the
+pure-JS library it replaced. Bringing that commit into this branch made the same class visible one field over, and
+it had three instances rather than one.
+
+**What was wrong.** `SUITE_1` carried the selected roles and `DEFERRED` carried the ones row 1 had passed to a
+later §15 row: recovery-code stretching to row 14, the slot verifier to row 12, device-lock derivation to row 13.
+**All three rows have since been answered** — 13 and 14 some time ago, 12 in `b9ff071` — and nothing noticed, so
+the file went on publishing three roles as unfilled after they were filled. A reviewer opening
+`algorithm-suite.json` in the week of the 24th would have read the slot verifier described as _assigned to review
+3b, so it is not this row's to take_ by a document that row 12 had already taken it out of.
+
+**Decision.** **`DEFERRED` is empty, the two roles §13.10 carries and this file lacked are in the suite, and
+`checkCoverage` reads §15.1 out of the TRD.** A deferred role whose owning row appears in the register's selected
+half now fails the build, with the reason spelled out rather than a bare assertion.
+
+**The interesting part is why the old check did not catch it.** It asserted that a deferral _named a row_ —
+`/row \d+/` against the owner string. That is a check on the sentence rather than on the claim: a row number
+stays well-formed forever, and the thing that goes stale is whether the row is still open. **A fact about another
+document, copied here, with nothing checking the copy** — which is exactly what the provider name was, and
+finding two of them in one file within a day of each other is what makes the shape worth naming rather than the
+instances worth fixing.
+
+**It is the row-17 rule arriving from the other direction.** That row required every addendum control to cite a
+section that exists in the TRD, and refused the profile when one claimed a check with no address. The same
+argument applies to a deferral: a claim about §15 is checkable against §15, and anything less is a comment.
+
+**What it cost:** two roles added to the suite, both answering _none_ — credential stretching from rows 13 and 14,
+slot-verifier stretching from row 12 — and one read of `docs/TRD.md` in a generator that already reads two other
+files. The primitive set, the separation check and every published vector are unchanged.
+
+**What it does not settle.** `DEFERRED` is now empty, so the new check has no subject and is a guard rather than
+a result. That is the honest description of it, and it is the same standing the separation check had on the day
+it was written: nothing shared a primitive across the two paths then either.

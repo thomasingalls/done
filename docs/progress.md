@@ -753,6 +753,15 @@ From [sequencing.md](./sequencing.md) §7 — the things that say it is going wr
   consistent substitution**, or to notice — as row 12's `alg` turned out to be — that the field is not
   independent and should not be there. Three of row 12's fields and four of row 15's.
 
+- **A third, and it is the one that actually reached a published file twice in a day.** A generator states a
+  fact about another document — a provider name, a row assignment — and nothing checks the copy. Row 1's
+  `algorithm-suite.json` published the superseded journal library after §13.10 had replaced it, and published
+  three roles as deferred to §15 rows that had all since been answered. **The old check asserted the deferral
+  _named_ a row, which is a check on the sentence rather than on the claim**: a row number stays well-formed
+  forever and the thing that goes stale is whether the row is open. `checkCoverage` now reads §15.1 out of the
+  TRD. **The tell is a generator holding a string that describes a state somewhere else**, and the fix is
+  always to read the somewhere else.
+
 - **And a second one row 15 turned up, subtler, with no distinctive signal in the audit's output.** A negative
   built by mutating a _near neighbour_ — an object differing from the base vector in one field — is isolated by
   that field as well as by the one it claims to test, and the audit reports it as changing two. **Build
