@@ -1310,7 +1310,7 @@ it was written: nothing shared a primitive across the two paths then either.
 
 ### Hosted retention is twelve months, and the row was conditional on one bit of the pricing question
 
-**Date:** 2026-08-20 · **Commit:** _this one_ · **Against:** PRD v9 / TRD v8
+**Date:** 2026-08-20 · **Commit:** `cdd2069` · **Against:** PRD v9 / TRD v8
 
 **Orientation.** Review 3b is booked for the week of the 24th and §13.11 holds each review until its own scope is
 closed. Two rows of that scope were open: the network half of 14, which is a fold, and row 16 — the
