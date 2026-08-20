@@ -1,0 +1,317 @@
+{
+  "$schema": "https://done.invalid/vectors/transition/1",
+  "generated_by": "scripts/generate-transition-vectors.mjs",
+  "selection": "docs/selections/row-15-transitions.md",
+  "trd_row": 15,
+  "construction": {
+    "one_protocol": "One intent-and-outcome protocol at three kinds -- rotate, replace-recovery, retire -- because §11.2 test 11s list is one class: a multi-step transition whose interrupted middle can be mistaken for a completed *lesser* transition.",
+    "intent": "Intent = LP(\"done/transition/v1\") || LP(dec v) || LP(kind) || LP(workspace_id) || LP(lineage_id) || LP(dec parent_epoch) || LP(dec target) || LP(hex payload_digest), signed by the requesting device credential. id = SHA-256(Intent).",
+    "outcome": "Outcome = LP(\"done/transition-out/v1\") || LP(dec v) || LP(kind) || LP(workspace_id) || LP(lineage_id) || LP(dec target) || LP(dec epoch) || LP(hex committed_id), signed by the lineage authorization key.",
+    "kind_binding": "PRD §6.10s \"deliberate downgrade must not silently become account deletion\" is a binding requirement rather than an interface one. rotate and retire are otherwise the same eight fields, and an unbound kind is a way to submit one and commit the other. Row 3s editable-kind finding at a third object.",
+    "no_from_gen": "There is no from_gen field. §13.5s epoch binds the current content-key generation, so the generation being rotated from is a function of parent_epoch. Row 10 left out a part count and row 12 an algorithm field on the same rule: a second binding of a derivable fact is a thing that can disagree with it.",
+    "idempotency": "The service commits at most one intent per (lineage_id, kind, target). A retry is the same bytes: the payload digest sorts its parts, so rebuilding from inputs in a different order reproduces the id exactly.",
+    "three_way_rule": "Silence: wait, then resubmit the identical bytes. Outcome with committed_id == id: committed, apply. Outcome with committed_id != id: superseded, discard and rebuild against the new epoch -- never resubmit, because the exclusion set was computed against an epoch that has moved. Everything that is not a verified outcome is silence.",
+    "authenticated_refusal": "Row 6 established that a definite refusal licenses a re-mint and silence does not, and did not say the refusal must be authenticated. Here it must: the third case discards a live content key, and anything that can withhold an outcome can fabricate one.",
+    "no_state_field": "Whether you won is committed_id == your id. A state flag would be a second binding of the same fact that could disagree with it, and an implementation reading the flag rather than comparing would discard a live key. Row 10s rule about the part count.",
+    "no_nonce": "(lineage, kind, target) names an immutable pair, so an outcome re-served forever is the truth rather than a replay. The contrast with row 9s head assertion, which needed a nonce because a head moves.",
+    "local_order": "The pending intent is persisted before the first network byte. No content is written under the target generation before a verified committed outcome, and none under the previous generation after it -- the commit is one transition point and neither half may precede it. On restart a pending intent is resubmitted, never rebuilt.",
+    "retention": "The previous generation is retained until the outcome is committed, a checkpoint under the new generation is admitted (row 7), and the local trim holds a state record under it (§6.1). Dropping on fewer than three is the failure found at a restore rather than at a review.",
+    "length_prefix": "uint16be(byteLength) || utf8 -- injective, so no field can shift another."
+  },
+  "keys": {
+    "authorization": {
+      "role": "The lineage's authorization key (§13.5). Signs epochs, and signs the outcome that settles a transition.",
+      "source": "RFC 8032 §7.1, TEST 3",
+      "seed": "c5aa8df43f9f837bedb7442f31dcb7b166d38535076f094b85ce3a2e0b4458f7",
+      "public_key": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025"
+    },
+    "owner": {
+      "role": "The rotating device's signing credential (§13.4). Produces the intent; §13.7 forbids the service producing the key.",
+      "source": "RFC 8032 §7.1, TEST 2",
+      "seed": "4ccd089b28ff96da9db6c346ec114e0f5b8a319f35aba624da8cf6ed4fb8a6fb",
+      "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
+    },
+    "impostor": {
+      "role": "Neither. A relay that can withhold can also fabricate, and a fabricated refusal is what this row has to refuse.",
+      "source": "RFC 8032 §7.1, TEST 1",
+      "seed": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
+      "public_key": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a"
+    }
+  },
+  "intent_vectors": [
+    {
+      "name": "rotate",
+      "why": "The row's central case: a fresh generation, its wraps, the excluded credential and row 5s cutoff. Persisted before the first network byte, which is what makes the crash resolvable rather than ambiguous.",
+      "inputs": {
+        "v": 1,
+        "kind": "rotate",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "lineage_id": "ln_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "parent_epoch": 7,
+        "target": 5,
+        "payload_digest": "73aa4bf52a7ce0fcb81f070217f3c22eb641518c612872d86e047041f601f4e1",
+        "payload_parts": [
+          {
+            "name": "cutoff",
+            "value": "cred_01HZXR00000000000000000PHN:12:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb|cred_01HZXR0000000000000000LAPT:41:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa|cred_01HZXR000000000000000TABL:7:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          {
+            "name": "excluded",
+            "value": "cred_01HZXR000000000000000TABL"
+          },
+          {
+            "name": "recovery-wrap",
+            "value": "00112233445566778899aabbccddeeff"
+          },
+          {
+            "name": "wraps",
+            "value": "cred_01HZXR00000000000000000PHN:f9e8d7c6b5a4938271605f4e3d2c1b0a|cred_01HZXR0000000000000000LAPT:0a1b2c3d4e5f60718293a4b5c6d7e8f9"
+          }
+        ]
+      },
+      "derived": {
+        "message": "0012646f6e652f7472616e736974696f6e2f76310001310006726f74617465001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000137000135004037336161346266353261376365306663623831663037303231376633633232656236343135313863363132383732643836653034373034316636303166346531"
+      },
+      "expected": {
+        "id": "172e784d53d5a9246140a93990eddedb7e3535b15e71e0060285c22c3a488045",
+        "signature": "950f659fad36b48639657bc6bf24aa915fe972f2c2c1c985a09863b03805c14efef929c76cabeaa88f6e3e93be1eaf319cc83df4e0663376471fda6fc4ff1501",
+        "signed_by": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
+      }
+    },
+    {
+      "name": "retire",
+      "why": "Account deletion (§14.4). **Identical to the rotate above in every field but `kind` and its payload**, which is why PRD §6.10s warning is a binding requirement rather than an interface one.",
+      "inputs": {
+        "v": 1,
+        "kind": "retire",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "lineage_id": "ln_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "parent_epoch": 7,
+        "target": 5,
+        "payload_digest": "547200f65a747bcdf2c13d07e61dd90730200c394e319cee0aab7facd77721e0"
+      },
+      "derived": {
+        "message": "0012646f6e652f7472616e736974696f6e2f76310001310006726574697265001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000137000135004035343732303066363561373437626364663263313364303765363164643930373330323030633339346533313963656530616162376661636437373732316530"
+      },
+      "expected": {
+        "id": "65c3aa25a27f3edbe2a022c0f37f7e93b68f04c6187d223832c666e204dcf665",
+        "signature": "2e286868ac03c90d198e67b6edc14d41d5f6c8110d5facc33b190b34fdbf60e4e9fc0908a4fbfc662f087cabb8159bb39380496fad7d39baef30731225a0be0f",
+        "signed_by": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
+      }
+    },
+    {
+      "name": "replace-recovery",
+      "why": "The atomic replace §13.8 requires and row 14 §5 handed to this review. Same shape: an interruption must leave exactly the old envelope or exactly the new, because two live recovery envelopes means the old code still opens content.",
+      "inputs": {
+        "v": 1,
+        "kind": "replace-recovery",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "lineage_id": "ln_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "parent_epoch": 7,
+        "target": 1,
+        "payload_digest": "dbdc561f464fd0fe022b54edb6e00a5356e0123c88b3ee662d0ec11c09c64817"
+      },
+      "derived": {
+        "message": "0012646f6e652f7472616e736974696f6e2f763100013100107265706c6163652d7265636f76657279001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000137000131004064626463353631663436346664306665303232623534656462366530306135333536653031323363383862336565363632643065633131633039633634383137"
+      },
+      "expected": {
+        "id": "d55ba635d4d40aebc6a0a25322490e1bc187b28333f9353b2f1f030ab3997c8f",
+        "signature": "29fd18757c04d0cc0bdb281df69e54f74f3a668d042f9e67ce0d6be6ba9e84c0bce56a8303b4dc0911366eafbdd62618c0ce5d1fb3b389c2c051e88f4fb7ad08",
+        "signed_by": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
+      }
+    }
+  ],
+  "outcome_vectors": [
+    {
+      "name": "rotate--committed",
+      "why": "The settlement that licenses applying the transition. Signed by the lineage authorization key, because discarding or applying a content key on the strength of an unsigned answer is what this row refuses.",
+      "inputs": {
+        "v": 1,
+        "kind": "rotate",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "lineage_id": "ln_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "target": 5,
+        "epoch": 8,
+        "committed_id": "172e784d53d5a9246140a93990eddedb7e3535b15e71e0060285c22c3a488045"
+      },
+      "derived": {
+        "message": "0016646f6e652f7472616e736974696f6e2d6f75742f76310001310006726f74617465001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000135000138004031373265373834643533643561393234363134306139333939306564646564623765333533356231356537316530303630323835633232633361343838303435"
+      },
+      "expected": {
+        "signature": "56f31ab9cd92a58bb83a7f2ba9c908ea7282bb32dd57ae776b4d8f91de25052ef3692223ab082509ebc28937b928c1de68545a60aded380151b859b5ead24108",
+        "signed_by": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025",
+        "verdict": "committed"
+      }
+    },
+    {
+      "name": "retire--committed",
+      "why": "The settlement that licenses applying the transition. Signed by the lineage authorization key, because discarding or applying a content key on the strength of an unsigned answer is what this row refuses.",
+      "inputs": {
+        "v": 1,
+        "kind": "retire",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "lineage_id": "ln_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "target": 5,
+        "epoch": 8,
+        "committed_id": "65c3aa25a27f3edbe2a022c0f37f7e93b68f04c6187d223832c666e204dcf665"
+      },
+      "derived": {
+        "message": "0016646f6e652f7472616e736974696f6e2d6f75742f76310001310006726574697265001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000135000138004036356333616132356132376633656462653261303232633066333766376539336236386630346336313837643232333833326336363665323034646366363635"
+      },
+      "expected": {
+        "signature": "2670609b3de96726dbe09e1c06b06235839578c84b074167f047258f5c761ef6e9343bb8b6eef65f13f033673e6e466b8ace6ef4ad31e8ee7428970c0ce27507",
+        "signed_by": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025",
+        "verdict": "committed"
+      }
+    },
+    {
+      "name": "replace-recovery--committed",
+      "why": "The settlement that licenses applying the transition. Signed by the lineage authorization key, because discarding or applying a content key on the strength of an unsigned answer is what this row refuses.",
+      "inputs": {
+        "v": 1,
+        "kind": "replace-recovery",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "lineage_id": "ln_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "target": 1,
+        "epoch": 8,
+        "committed_id": "d55ba635d4d40aebc6a0a25322490e1bc187b28333f9353b2f1f030ab3997c8f"
+      },
+      "derived": {
+        "message": "0016646f6e652f7472616e736974696f6e2d6f75742f763100013100107265706c6163652d7265636f76657279001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000131000138004064353562613633356434643430616562633661306132353332323439306531626331383762323833333366393335336232663166303330616233393937633866"
+      },
+      "expected": {
+        "signature": "fbec67308e1eacf45e2558d52a9cc8e610d3b8a095632de2cf5933db19f697806093d08ab8c57ba3f997db6cf08959ac9b53672d1ff337255ad660d937c0c200",
+        "signed_by": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025",
+        "verdict": "committed"
+      }
+    },
+    {
+      "name": "rotate--superseded",
+      "why": "The third case, and the one that only exists because a transition carries an exclusion set. Another owner device rotated to the same generation first and excluded a *different* credential. The loser must not resubmit -- its exclusion set was computed against an epoch that has moved -- so this is the one answer that licenses discarding a live key, and the one an attacker would forge.",
+      "inputs": {
+        "v": 1,
+        "kind": "rotate",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "lineage_id": "ln_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "target": 5,
+        "epoch": 8,
+        "committed_id": "ac4e7688e6ba3bbcf777d90d4945ac1a1764a5c0425a7a66a03e52e3b2328de9",
+        "note": "The rival intent differs from ours only in its excluded set, which is why its id differs and its payload digest is published beside it.",
+        "rival_payload_digest": "26ac224ce84dfb565decffda0f5819683996715d7567885a95de1db90e3026f5"
+      },
+      "derived": {
+        "message": "0016646f6e652f7472616e736974696f6e2d6f75742f76310001310006726f74617465001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000135000138004061633465373638386536626133626263663737376439306434393435616331613137363461356330343235613761363661303365353265336232333238646539"
+      },
+      "expected": {
+        "signature": "62d3aa7975cfa58c634414684d0faabd2ab259a4c5a16cf7e5510e29fec0411e0612ecc523b81fe3d16eefc64d9bdc802eeae76a4b5904da92dbd33495485d09",
+        "signed_by": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025",
+        "verdict": "superseded"
+      }
+    }
+  ],
+  "demonstrations": [
+    {
+      "name": "an-outcome-re-served-is-not-a-replay",
+      "why": "Row 9's head assertion needed a nonce because a head is a statement about a moving lineage, so re-serving one is a replay. `(lineage, kind, target)` names an immutable pair -- generations are monotone and a target is reached once -- so this statement does not go stale and there is nothing to bind freshness to. Verifying the same outcome a second time yields the same verdict, deliberately.",
+      "verdict": "committed",
+      "expected": "the same verdict, forever"
+    },
+    {
+      "name": "a-retry-is-the-same-bytes",
+      "why": "The idempotency key is SHA-256 of the intent message, and the payload digest sorts its parts, so rebuilding the intent from inputs in a different order reproduces it exactly. That is what makes \"resubmit on silence\" safe: the resubmission cannot accidentally be a second, different transition.",
+      "intent_id": "172e784d53d5a9246140a93990eddedb7e3535b15e71e0060285c22c3a488045",
+      "expected": "byte-identical to the first submission"
+    },
+    {
+      "name": "a-rotation-and-a-retirement-differ-in-one-field",
+      "why": "PRD §6.10 says a deliberate downgrade must not silently become account deletion. These two intents are the same workspace, lineage, parent epoch and target; the messages diverge at `kind` and again at the payload it selects. Published side by side because the sentence reads as interface guidance and is a binding requirement.",
+      "rotate_message": "0012646f6e652f7472616e736974696f6e2f76310001310006726f74617465001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000137000135004037336161346266353261376365306663623831663037303231376633633232656236343135313863363132383732643836653034373034316636303166346531",
+      "retire_message": "0012646f6e652f7472616e736974696f6e2f76310001310006726574697265001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000137000135004035343732303066363561373437626364663263313364303765363164643930373330323030633339346533313963656530616162376661636437373732316530",
+      "first_difference_byte": 26,
+      "expected": "neither message opens as the other"
+    }
+  ],
+  "must_fail": [
+    {
+      "name": "fabricated-refusal",
+      "why": "The attack row 6 left open. A definite refusal licenses discarding a live content key and rebuilding; silence does not. Row 6 stated the rule and did not say the refusal must be authenticated -- so anything that can withhold an outcome can fabricate one, and induce a rotation to be thrown away and rebuilt against an epoch of the attacker's choosing. Signed by a key that is not the lineage's authorization key."
+    },
+    {
+      "name": "unsigned-outcome",
+      "why": "The same at its most ordinary: an error body with no signature at all. It is silence, and the client waits."
+    },
+    {
+      "name": "outcome-from-an-older-epoch",
+      "why": "An outcome whose epoch is at or below the intent parent. It cannot be settling this intent, because the intent was built against that parent."
+    },
+    {
+      "name": "flipped-signature-bit",
+      "why": "The signature doing its own job."
+    },
+    {
+      "name": "aad-only-intent-label",
+      "why": "The domain-separation label, isolated. It is the whole of what stops a signed statement of another kind being read as a transition intent."
+    },
+    {
+      "name": "aad-only-intent-version",
+      "why": "Row 1's rule: a carrier version selects the suite, so a renumbered intent must fail rather than select a weaker one."
+    },
+    {
+      "name": "aad-only-intent-kind",
+      "why": "PRD §6.10 as bytes. A rotate and a retire are otherwise the same eight fields; unbound, `kind` is how a deliberate downgrade commits as an account deletion. Row 3's editable-`kind` finding at a third object."
+    },
+    {
+      "name": "aad-only-intent-workspace-id",
+      "why": "An intent lifted between workspaces on one profile -- PRD §6.7s two-principal case, not an attack."
+    },
+    {
+      "name": "aad-only-intent-lineage-id",
+      "why": "The lineage a migration replaces (§14.1). Unbound, a pre-migration intent could commit against the successor lineage, which is exactly what §14.2 forbids replaying."
+    },
+    {
+      "name": "aad-only-intent-parent-epoch",
+      "why": "Which epoch the exclusion set was computed against. It is what makes a stale intent detectable rather than merely wrong."
+    },
+    {
+      "name": "aad-only-intent-target",
+      "why": "The generation being rotated to, and half the idempotency key. Unbound, a retry could commit at a different generation than the one it was built for."
+    },
+    {
+      "name": "aad-only-intent-payload-digest",
+      "why": "The wraps, the exclusion set and the cutoff. Unbound, the service commits an epoch whose excluded set is not the one the client signed -- a revocation that revokes someone else."
+    },
+    {
+      "name": "aad-only-outcome-label",
+      "why": "The same isolation for the outcome, and the two labels differ so an intent can never be presented as its own settlement."
+    },
+    {
+      "name": "aad-only-outcome-version",
+      "why": "The outcome carrier version, isolated from the intent version, because they are separate carriers."
+    },
+    {
+      "name": "aad-only-outcome-kind",
+      "why": "An outcome for a retire presented as the settlement of a rotate. The client would apply a generation switch on the strength of a signature over something else."
+    },
+    {
+      "name": "aad-only-outcome-workspace-id",
+      "why": "Another workspace's settlement on the same device."
+    },
+    {
+      "name": "aad-only-outcome-lineage-id",
+      "why": "The same across lineages, which is the migration boundary."
+    },
+    {
+      "name": "aad-only-outcome-target",
+      "why": "Which generation was settled. Unbound, an old settlement licenses discarding a key for a rotation still in flight."
+    },
+    {
+      "name": "aad-only-outcome-epoch",
+      "why": "Which epoch committed it. Isolated by using two epochs the same authorization key signs -- §13.5 rotates `K_accept` and not the authorization key, which is what makes the field varyable without varying the verifier."
+    },
+    {
+      "name": "aad-only-outcome-committed-id",
+      "why": "The field the whole three-way rule turns on. Unbound, an attacker flips a commit into a supersede and the client discards a content key the service holds wraps for -- the interrupted state masquerading as a completed lesser one, which is this rows whole subject. The substituted id is another kinds intent rather than the rival rotations, because the rival differs in one field and eliding that field would rescue this negative for the wrong reason."
+    }
+  ],
+  "primitive_kats": "Ed25519 and SHA-256 KATs are row 1's, in test/vectors/algorithm-suite.json. This generator checks that row 1 still selects Ed25519 for signatures, so the two documents fail apart rather than drift apart."
+}

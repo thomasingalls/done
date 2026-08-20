@@ -1211,6 +1211,16 @@ device's accepted history up to the cutoff is part of the document in the same w
 writing is part of a file. There is no filtered replay (you cannot remove one participant's operations from a
 CRDT history without losing what was built on them) and no two-lineage adjudication.
 
+**Not promised, and it is one propagation delay wide.** *Removal governs the future* is not quite the whole
+sentence, and the remainder has to be said rather than discovered. Your other devices start sealing content
+away from the revoked one **when each of them learns the revocation happened**, not at the instant it is
+committed — a phone that is asleep or in a tunnel keeps writing under the key the revoked device already
+holds, and those writes are readable by it. This cannot be closed without a device refusing to accept your
+edits whenever it is unsure whether it is current, which is the local-first promise inverted (§2.3). **So
+the honest form is: from the moment a device learns of the revocation, what that device writes is closed to
+the removed one.** The window is a device being out of contact, and it ends when that device reconnects
+(TRD §13.7).
+
 **Failure and lifecycle.** Three behaviours follow and each is easy to miss:
 
 - **The excluded credential has to be told.** From its side the document simply stops updating, and "no new
@@ -1546,7 +1556,11 @@ which the service holds the user's bytes and cannot give them back.
   should outlast it.
 - **Deliberate downgrade is the same mechanism**, and it must not silently become account deletion.
   Stopping payment and deleting an account are different acts with different consequences, and the interface
-  has to keep them apart.
+  has to keep them apart. **That is a binding requirement and not only an interface one** (TRD §13.7): a
+  downgrade and a deletion differ in exactly one artifact — the terminal lineage record — and the two
+  requests are otherwise the same fields, so the kind of transition is authenticated in the request and in
+  its settlement. An interrupted deletion leaves a retired lineage whose hosted content is still there; the
+  reverse order would leave a lapse that is not one.
 
 **One thing must be said out loud when sync stops**, because it is the part a user will not infer: **from
 that moment the devices stop converging, and each one's edits are its own.** The honest copy for what happens

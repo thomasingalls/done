@@ -1103,3 +1103,86 @@ measurement it would need (§10.11); the service's challenge-issuance and rate-l
 things row 14 §5 already handed over; and account-credential recovery is deliberately unspecified, because
 §13.8's four-object table is what lets it be ordinary — **email can restore an account and can never restore a
 content key**, which is the same separation that makes the recovery code mandatory.
+
+---
+
+### An interrupted transition must not be able to read as a completed lesser one
+
+**Date:** 2026-08-20 · **Commit:** _this one_ · **Against:** PRD v9 / TRD v8
+
+**Orientation.** §15 row 15 asked for "interrupted-rotation and downgrade behaviour", constrained to "fail closed
+without changing the confidentiality promise (§11.2 test 11)". Test 11's list reads as five unrelated failures:
+unsupported PRF, interrupted enrollment, duplicate recovery, concurrent authorization changes, a half-completed
+account deletion. Written out side by side they are one shape.
+
+**Decision.** **One intent-and-outcome protocol at three kinds** — `rotate`, `replace-recovery`, `retire` — because
+every item in that list is a multi-step transition **whose interrupted middle can be mistaken for a completed
+_lesser_ transition.** A rotation that did not settle reads as no rotation being needed; an unsettled revocation
+reads as still authorized; a deliberate downgrade reads as account deletion. **So _fail closed_ is one property
+rather than five**: the intermediate state must be representable, distinguishable and resolvable, and must never be
+a valid representation of an endpoint. Three constructions would have argued the same argument three times and got
+it right two of them.
+
+**PRD §6.10's sentence turned out to be a binding requirement rather than interface guidance.** _Deliberate
+downgrade is the same mechanism, and it must not silently become account deletion_ reads as a warning about a
+screen. A `rotate` and a `retire` intent are **the same eight fields** — same workspace, lineage, parent epoch and
+target — differing in `kind` and in the payload it selects, so an unbound `kind` is a way to submit one and commit
+the other. **Row 3 found this about a `StoredRecord`'s `kind`** and the trim path; this is that finding at a third
+object, one level larger: there a store deletes its own history, here a lapse retires a lineage that §13.5 says
+stays live. The vectors publish both messages with the byte at which they first diverge, because the claim is
+easier to believe as a diff than as an assertion.
+
+**Row 6's outbound rule extends by one case, and the new case is why the answer must be signed.** Row 6 had two
+states — a definite refusal licenses a re-mint, silence does not. A transition has three, because it carries an
+**exclusion set**: the loser of a concurrent rotation must _discard and rebuild_, never resubmit, since its
+exclusion set was computed against an epoch that has moved and resubmitting would revoke the wrong credential.
+
+**That closed a gap row 6 left, and left by its own rule rather than by oversight.** Row 6 never said where a
+definite refusal comes from. For an envelope the cost of a forged one is bounded. **Here a fabricated _superseded_
+outcome makes an honest client discard a live content key** and rebuild against an epoch the attacker timed;
+repeated, it is a rotation that never completes, so a credential the owner is excluding stays able to read while
+the interface reports progress. **That is test 11's confidentiality promise changing silently, achieved with no key
+material at all.** So the outcome is signed by the lineage authorization key and **everything that is not a
+verified outcome is silence** — a timeout, a reset, an unsigned error body. Folded back into §7.4 beside row 6's
+rule, which is where an implementer will look.
+
+**A client that cannot reach the service stays pending, and that is the fail-closed direction.** Timing out and
+rebuilding is the same attack performed by the network instead of by an attacker. It is a liveness cost and it is
+taken deliberately.
+
+**The rotation promise is narrower than the obvious one, and PRD §6.5 was not quite right.** _Removal governs the
+future, never the past_ omits the propagation window: a device that has not observed the commit keeps writing under
+the old generation, §11.2 test 6 requires admitting a late old-epoch update from a still-authorized offline device,
+and an excluded credential can read those writes. **It cannot be closed without a device refusing to accept edits
+while it is unsure whether it is current**, which is §7.1's rule inverted and PRD §2.3's promise with it. So the
+honest form is written into both documents: _from the moment a device learns of the revocation, what that device
+writes is closed to the removed one_, with the window bounded by that device being out of contact.
+
+**Two fields are absent for the third instance of one rule**, and it is now a rule rather than a coincidence. No
+`from_gen`, because §13.5's epoch already binds the current generation. No `state` flag, because whether a client
+won is `committed_id == its own id`. Row 10 left out a part count and row 12 an algorithm field on the same
+argument: **a second binding of a derivable fact is a thing that can disagree with it**, and an implementation
+reading the flag rather than comparing would discard a live key.
+
+**Row 7's cadence rule is violated by exactly this class.** _A rotation must produce a checkpoint under the new
+generation before the old one may be dropped_ is easy to satisfy in the happy path and easy to break in the
+interrupted one, because the obvious implementation clears the obligation when the epoch commits — which is before
+the checkpoint exists. The retention condition is therefore three rather than one, and row 7's warning that its
+rule is found at a restore rather than at a review is what makes writing the third one down worth doing.
+
+**The coverage audit refused three passes, and the third is a new failure mode worth recording.** Four intent
+negatives failed twice because the settlement rule compares four fields across both messages — **row 12's fix,
+needed a second time**, which settles that a field read on both sides of a comparison is the ordinary case rather
+than an unusual one. Then `aad-only-outcome-committed-id` was rescued by _two_ fields: the substituted id was the
+rival rotation's, and the rival differs from the base intent in `payload_digest` alone, so eliding that one field
+made the two ids equal and the negative passed for a reason unrelated to the signature it was testing. **A negative
+built from a near neighbour is isolated by the neighbourhood.** The fix is to substitute an object two fields away,
+and the tell is a rescue list with an unexpected second entry rather than an empty one — which the audit reports
+but does not name.
+
+**What this does not settle.** Whether the service rate-limits intent submission joins the two service behaviours
+rows 12 and 14 have already handed to 3b, and the three are one question about what the account service promises.
+How long a pending transition may stay pending before the product says something is copy with a cryptographic floor
+of _forever_, and is deliberately not a timeout. And `replace-recovery`'s target counter is treated as
+client-chosen and monotone, which is enough for at-most-once and leaves two devices able to race to counter 1 —
+resolved by the same three-way rule, at the cost of one wasted keypair.

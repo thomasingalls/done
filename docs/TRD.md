@@ -996,6 +996,11 @@ second, different link at a position the service may already have accepted, whic
 under §7.5 and reads as a compromised credential. **A definite refusal is the only thing that licenses a
 re-mint; silence is not one**, and a timeout is silence.
 
+**And a definite refusal has to be authenticated, or forging one is the attack** (§15 row 15). This rule licenses
+a client to act on a refusal, so anything that can withhold an answer can manufacture one; §13.7 makes the same
+point where the consequence is larger — there the client discards a live content key. **Everything that is not an
+authenticated refusal is silence**, including an unsigned error body.
+
 **Where verification does and does not run:**
 
 | Path                      | Verify?                                                                                     |
@@ -1823,6 +1828,10 @@ These are the product's stated conformance tests. They are listed here so the su
     expected permanent-loss outcome, not a bug.
 11. Unsupported PRF, interrupted enrollment, duplicate recovery, concurrent authorization changes and a
     half-completed account deletion fail closed without silently changing the confidentiality promise.
+    **Specifically** (§13.7, §15 row 15): a fabricated or unsigned refusal never causes a pending transition to be
+    rebuilt; a client that resubmits after a lost response commits at most once at its target; the loser of a
+    concurrent rotation rebuilds rather than resubmits; a `retire` intent cannot be committed against a `rotate`
+    submission or the reverse; and no generation is dropped before its successor's checkpoint is admitted.
 12. Mutation verification and first-sync checkpoint verification meet §12's budgets without moving cryptography onto
     the keystroke or local-replay path.
 13. No app-managed persistent store yields user-content plaintext (§11.1).
@@ -2223,6 +2232,43 @@ credentials receive no wrap.
 
 **No construction may give the service the key in order to simplify its commit.**
 
+**The transition protocol is selected** (§15 row 15), **and it is one protocol at three kinds** — `rotate`,
+`replace-recovery` (§13.8) and `retire` (§14.4) — because §11.2 test 11's list is one class: a multi-step
+transition whose interrupted middle can be mistaken for a completed **lesser** transition. A rotation that did not
+settle reads as no rotation being needed; a deliberate downgrade reads as account deletion (PRD §6.10).
+
+> `Intent  = LP("done/transition/v1") || LP(dec v) || LP(kind) || LP(workspace_id) || LP(lineage_id) || LP(dec parent_epoch) || LP(dec target) || LP(hex payload_digest)`
+> `Outcome = LP("done/transition-out/v1") || LP(dec v) || LP(kind) || LP(workspace_id) || LP(lineage_id) || LP(dec target) || LP(dec epoch) || LP(hex committed_id)`
+
+The intent is signed by the requesting device credential and `id = SHA-256(Intent)`; the outcome is signed by the
+lineage authorization key. **`kind` is bound in both, and PRD §6.10 is why**: a `rotate` and a `retire` are
+otherwise the same eight fields, so an unbound `kind` is a way to submit one and commit the other. That is §6.1's
+editable-`kind` finding at a third object, and here the consequence is that a lapse retires a lineage. **There is
+no `from_gen` and no `state` flag**: the epoch already binds the current generation, and whether a client won is
+`committed_id == its own id` — a second binding of a derivable fact is a thing that can disagree with it (§15
+rows 10 and 12).
+
+**The client rule has three cases, and the third is why the outcome must be signed.** Silence: wait, then
+resubmit the **identical bytes** — the payload digest sorts its parts, so a rebuild reproduces the id exactly, and
+the service commits at most one intent per `(lineage_id, kind, target)`. `committed_id` equal to its own id:
+apply. `committed_id` different: **discard and rebuild against the new epoch, never resubmit**, because the
+exclusion set was computed against an epoch that has moved and resubmitting would revoke the wrong credential.
+**Everything that is not a verified outcome is silence** — a timeout, a reset, an unsigned error body — because
+the third case discards a live content key and anything that can withhold an outcome can fabricate one. §7.4's
+rule that a definite refusal licenses a re-mint and silence does not is the same rule; **what this adds is where a
+definite refusal comes from.**
+
+**Neither half of a rotation may precede the commit.** No content is written under the target generation before a
+verified committed outcome and none under the previous generation after it, so the atomic commit is one transition
+point rather than a window in which the excluded credential can still read new writes. **The pending intent is
+persisted before the first network byte**, which is what makes a crash between commit and local switch resolvable:
+the client resubmits and is told its own id. **Three states must never exist** — a committed transition with no
+local record it was intended, content under a generation no committed epoch names, and a dropped generation with
+no checkpoint under its successor.
+
+**A client that cannot reach the service stays pending, and that is the fail-closed direction.** Timing out and
+rebuilding is the attack above performed by the network.
+
 **Every wrap to `R_pub` binds the lineage it was made under** (§15 row 10):
 
 ```
@@ -2248,10 +2294,24 @@ credential's last accepted position — is signed over public material and needs
 device can verify *the workspace stopped accepting your writes at position n* instead of inferring it from
 silence (§15 row 5).
 
+**A rotation's honest promise is narrower than the obvious one, and the product owes the narrow version**
+(§15 row 15). A device that has not yet observed the committed outcome keeps writing under the previous
+generation, and §11.2 test 6 requires admitting a genuine late-arriving old-epoch update from a still-authorized
+offline device — so an excluded credential can read those writes. It cannot be closed without refusing to write
+while possibly stale, which is §7.1's rule inverted. **The promise is therefore: from the commit, content written
+by devices that have observed it is closed to that credential** — not that the workspace is closed to it, which
+was never true of its history. The window is one device's propagation delay, the exclusion is legible to the
+excluded credential through the finalized head, and obtaining the ciphertext at all is what the finalization
+boundary refuses (§11.2 test 6).
+
 **Two retention questions exist and they are different objects.**
 
 - **Local store retention** (§6.1): a device needs every generation its own records are sealed under. Trimming to one
-  state record under the current generation discharges the rest.
+  state record under the current generation discharges the rest. **The previous generation is droppable only when
+  three things hold** (§15 row 15): the transition is settled, a checkpoint under the new generation is admitted
+  (§7.6), and the local trim holds a state record under it. An interrupted rotation is exactly what violates
+  §7.6's cadence rule, because the obvious implementation clears the obligation when the epoch commits — which is
+  before the checkpoint exists.
 - **Attribution retention**: the attributed actor sits **inside the seal**, so verifying historical authorship
   requires decrypting. **Retain enough to open every generation whose attribution the product still claims — or stop
   claiming it.** The floor is *for the lifetime of the claim*, not forever, and destructive compaction is the
@@ -2337,7 +2397,9 @@ security bar, no silent downgrade.
 Replacement is allowed only from a device that already has content access: after fresh account authentication and an
 explicit confirmation, it creates a new recovery keypair, seals the new `R_priv` to a newly confirmed code and optional
 factors, rewraps every required generation to the new `R_pub`, and asks the service to atomically replace the old
-public key, wraps and sealed envelope. **It cannot help after the last content key and the old code are both gone.**
+public key, wraps and sealed envelope. **That replacement is §13.7's transition protocol at `kind:
+'replace-recovery'`** (§15 row 15), so an interruption leaves exactly the old envelope or exactly the new — never
+both live, which would leave the old code still opening content. **It cannot help after the last content key and the old code are both gone.**
 
 **Escrow is excluded from the service by construction**, because a decryption capability is a compellable capability.
 An opt-in add-on may exist only if operated by a **separate legal entity** and scoped to a separately sealed `R_priv`
@@ -2629,6 +2691,12 @@ and a second binding of the same fact could disagree with it. `assembled_by` nam
 the epochs the package carries, or the trust root itself when the service assembled it here, or — where there is
 no lineage — the archiving device, which nothing external certifies and §9.3 already says so.
 
+**That commit is §13.7's transition protocol at `kind: 'retire'`, and the ordering is the fail-closed property
+rather than an implementation detail** (§15 row 15). A downgrade and a deletion differ in exactly one artifact —
+the terminal record — so an interrupted deletion must leave a **retired lineage whose hosted content is still
+present**, which is honest and recoverable-looking. The reverse order would leave content deleted under a live
+lineage: a lapse that is not one, and PRD §6.10's warning realized.
+
 **Before the service deletes anything it commits a signed terminal lineage record.** Every participating replica and
 the verified portable package receive that record plus `R_pub`, the code-sealed `R_priv`, enough public authorization
 history, verification keys, accepted-set evidence and recovery wraps for every generation needed by the attribution
@@ -2692,8 +2760,8 @@ direction for the dependency to run.
 
 ## 15. The selection register
 
-The constraints above are fixed; this is the register of the constructions built on them. **Fourteen rows are
-selected and eight are open**, with rows 14 and 20 appearing in both halves because each is split. **The design reviews wait on the selections in their scope, and the cutover
+The constraints above are fixed; this is the register of the constructions built on them. **Fifteen rows are
+selected and seven are open**, with rows 14 and 20 appearing in both halves because each is split. **The design reviews wait on the selections in their scope, and the cutover
 waits separately on row 21** (§13.11, §14.6).
 
 **The register has two review scopes and two independent scopes.** Rows **1, 2, 3 and 13**, plus the storage-facing
@@ -2703,8 +2771,9 @@ suite (§13.10), under row 1's own criteria and on the asynchronous path only; *
 3b row amended**, which is the first time the two scopes have crossed and is said here rather than left to be
 noticed. Rows **4–12, 15–17 and 20**, plus the network-facing
 part of 14, are what moving an envelope over a network needs; they gate the service and are the scope of review **3b**,
-answered before network sync ships — **that scope is open, with rows 4, 5, 6, 7, 8, 9, 10, 11 and 12 now selected out of it — its whole sync core, and
-the account credential everything else authenticates against.** Rows **18 and 19**
+answered before network sync ships — **that scope is open, with rows 4, 5, 6, 7, 8, 9, 10, 11, 12 and 15 now selected out of it — its whole sync core,
+the account credential everything else authenticates against, and the rule for what happens when any of it is
+interrupted.** Rows **18 and 19**
 retain their own empirical triggers and gate neither review nor
 cutover. Row **21** is the migration choice: it gates cutover but neither design review. Closing one scope does not
 require another, which is what lets encryption at rest land before the protocol is specified.
@@ -2729,10 +2798,11 @@ true**, and where the two disagree this one wins.
 | 8 | Attribution-preserving representation and its storage bound | A **standing signed claim, minted by the writing credential at card creation and living in the content root** beside the card it attributes — so §6.1's trim re-seals it under the current generation and **verifying historical authorship stops requiring historical generations**. The body commitment makes the claim falsifiable, not unforgeable: a card edited since creation verifies and is not exact. One record per card, retiring on exactly the event §4.5 already says retires a claim (§13.7) | [row 8](./selections/row-8-attribution-record.md) |
 | 7 | Checkpoint construction, cadence and retention | One **full snapshot under one generation** plus a signed manifest binding the epoch and its head, the generation, the checkpoint digest, **`sv` and `ds` separately**, row 5's accepted-head vector and the producing credential. **Attribution is preserved by row 8 rather than here**, so §7.6's forbidden re-signing shape is unreachable. **A rotation forces a checkpoint before the old generation may be dropped**; at least two are retained (§7.6) | [row 7](./selections/row-7-checkpoint.md) |
 | 6 | Anti-replay rule and envelope retention depth | Admit at *n* iff the position is **one past the mark**, the link is computed from the link the client itself holds, and a signed head verifies against **that** link. §7.5's *no second link at a held position* needs no fifth condition — it arrives at or below the mark — so the carrier is one `(seq, link)` per credential, a §6.1 record with `kind: 'heads'`. **Outbound: re-mint only on a definite refusal**, never on silence. Retention is three different depths, and a device keeps its own envelopes back to the **second-newest** admitted checkpoint (§7.4, §7.5) | [row 6](./selections/row-6-antireplay-retention.md) |
+| 15 | Interrupted-rotation and downgrade behaviour | **One intent-and-outcome protocol at three kinds** — rotate, replace-recovery, retire — because §11.2 test 11's list is one class: an interrupted middle that reads as a completed **lesser** transition. `kind` is bound in both messages, which makes PRD §6.10's *a downgrade must not silently become account deletion* a field rather than a screen. Three client cases: silence means resubmit the identical bytes, a matching `committed_id` means apply, and a differing one means **discard and rebuild** — so **the outcome must be signed**, since the third case throws away a live content key (§13.7, §14.4) | [row 15](./selections/row-15-transitions.md) |
 | 12 | Account-credential and slot-verifier construction | The account credential is a **WebAuthn discoverable credential** and the verifier **checks a signature rather than a secret** — so §13.10's Argon2id candidate answers *none* for the third time and on the strongest argument: there is no secret in the profile to grind. Each credential gets a **service-signed binding** in the slot index, because an asymmetric verifier trades a guessable secret for a **substitutable public key** and §6.5's index is a structured clone. The unlock assertion is bound to the slot and the credential, never to a clock; the signature counter is read and ignored (§13.9) | [row 12](./selections/row-12-account-credential.md) |
 | 10 | Terminal and portable cutover-package formats | **One format at §13.5's three lineage states**, not two: §14.2's cutover package, §14.4's terminal package and §9.3's fidelity archive, with a live package *upgraded* to retired by importing the terminal record. §14.2's trust root is bound in the **HPKE `info` of every generation wrap**, so a substituted root opens no generation and there is nothing to re-attribute — the one anchor that terminates in user-held material rather than in a service signature (§14.2, §14.4) | [row 10](./selections/row-10-portable-package.md) |
 
-**Row 20 — test vectors — is closed for these fourteen and open for the rest.** Each carries a generated,
+**Row 20 — test vectors — is closed for these fifteen and open for the rest.** Each carries a generated,
 self-verifying vector file; `pnpm vectors:check` fails the build if any has drifted from its generator, and
 `pnpm vectors:coverage` fails it if any field bound in one is isolated by no published negative.
 
@@ -2741,19 +2811,20 @@ self-verifying vector file; `pnpm vectors:check` fails the build if any has drif
 | # | Unselected                                    | Constrained by                                                                                 |
 | - | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | 14 | Recovery-code **step-up authentication** and confirmation UX — the network-facing half | §13.8; the storage-facing half is selected above |
-| 15 | Interrupted-rotation and downgrade behaviour   | Must fail closed without changing the confidentiality promise (§11.2 test 11)                  |
 | 16 | Hosted-content retention duration after a lapse | One number bounds both resume and total-device-loss recovery. **Conditional** — arises only if PRD §11's pricing question selects a plan that can lapse (PRD §6.10) |
 | 17 | Which web-security baseline profile and version | §10.9, §13.11 level 2                                                                         |
 | 18 | Whether a persistent encrypted search index is needed at all | Deferred; gates neither review nor cutover; measure the in-memory rebuild first (§6.2, §12) |
 | 19 | Root-type day collections (§10.8)              | Deferred; one of its four costs has lapsed and should be re-counted                            |
-| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the fourteen selected above**, each of which carries a generated, self-verifying vector file |
+| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the fifteen selected above**, each of which carries a generated, self-verifying vector file |
 | 21 | First-deployment cutover attribution: accept system attribution, or bring the fidelity archive forward | §14.6; must be selected before cutover; adding authorship fields to Markdown is rejected (§9.1) |
 
-**Row 15 is the one to close next, and what remains after it is not cryptography.** With rows 6 and 12 the scope's
-substance is closed — envelope, acceptance, retention, checkpoint, attribution, enrollment, discovery, the package
-that carries all of it out, and the credential the account is reached by. **What is left**: the network half of 14
-is one construction already drafted in row 14 §5, 15 is failure behaviour, 16 is conditional on a pricing question
-that is deferred and blocks nothing, and 17 is a published profile and a version.
+**Nothing cryptographic is left in this scope.** With rows 6, 12 and 15 the substance is closed — envelope,
+acceptance, retention, checkpoint, attribution, enrollment, discovery, the package that carries all of it out, the
+credential the account is reached by, and the rule for what happens when any of it is interrupted. **What remains
+is three rows and one of them does not arise**: 16 is conditional on PRD §11's pricing question, which is deferred
+and which no sentence may depend on; 17 is a published web-security profile and a version, owed to Stage 0 by
+§13.11's own table; and the network half of 14 is a construction already drafted in row 14 §5, **whose
+atomic-replace half row 15 has since closed** as `kind: 'replace-recovery'`.
 
 **Row 12 answered the open question about which review should hold it, rather than being reassigned.** It looked
 storage-shaped because *offline-guessing resistance* implied a secret at rest, and §13.3's threat model was the one
@@ -2796,6 +2867,7 @@ is the placeholder the as-built review checks against, not an omission.
 | Terminal lineage record | Let a surviving replica distinguish retirement from genesis (§13.5) | Workspace | Authorization service store, then replicas and the portable package | Propagated before deletion; not retained by the service afterwards | Account deletion | Support may read; audited | None |
 | Acceptance evidence — per-credential accepted-set log, head digests, cutoffs (§7.5) | Let clients refuse writes the service never accepted | Workspace × credential | Authorization service store | **Unselected** (§15 rows 5, 7) | Account deletion | Support may read; audited | None |
 | Recovery material — `R_pub`, per-generation wraps, code-sealed `R_priv` envelope | Non-custodial recovery after total device loss (§13.8) | Workspace | Authorization service store | Life of the account; separately bounded by hosted-content retention during a lapse | Account deletion; retention expiry deletes the wraps and keeps `R_pub` and the sealed envelope (PRD §6.10) | None — opaque to every operator by construction | Escrow agent, **only** where the opt-in add-on exists (§16.5) |
+| Committed-transition table — `(lineage, kind, target)` to committed intent id and signed outcome (§13.7) | Commit each rotation, recovery replacement and retirement at most once, and answer a resubmission with the same outcome | Workspace | Authorization service store | Life of the lineage | Account deletion commits the terminal record, then removes service copies | Support may read; audited | None |
 | Relay admission tokens issued (§13.2) | Scope and time-bound a transport session | Device credential | Issued to the device; service-side issuance state only if the selected shape needs it | Short by construction | Expiry, revocation, account deletion | Support may read issuance state; audited | None |
 
 ### 16.2 Relay
