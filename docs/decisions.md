@@ -1269,7 +1269,7 @@ Stage 0 and verifying it is a gate before Stage 4 ships.**
 
 ### A deferral that outlives its row is checked against the register, not against its own owner string
 
-**Date:** 2026-08-20 · **Commit:** _this one_ · **Against:** PRD v9 / TRD v8
+**Date:** 2026-08-20 · **Commit:** `449db30` · **Against:** PRD v9 / TRD v8
 
 **Orientation.** A separate branch fixed a stale provider name in row 1's vector file: §13.10 had said the journal
 cipher was the RustCrypto crate compiled to wasm since `9b49b74`, and `algorithm-suite.json` still published the
