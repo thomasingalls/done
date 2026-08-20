@@ -2388,6 +2388,13 @@ the cards already cost**, not a new growth class.
 | 3. Content-key access    | The saved code or another independent wrap of `R_priv`               |
 | 4. Ciphertext            | A surviving device, the hosted copy, or a fidelity archive (§9.3)    |
 
+**Object 4's three sources do not share a lifetime, and the middle one has a deadline.** During a lapse the
+hosted copy is retained for **twelve months** from the moment synchronization stops, which bounds this whole
+path: after expiry the hosted ciphertext and its per-generation wraps are gone, while `R_pub` and the
+code-sealed `R_priv` envelope remain, so a surviving device can re-seed without a new code ceremony
+(§15 row 16, PRD §6.10). **A fidelity archive does not inherit that deadline** and is the reason the deadline
+is tolerable.
+
 **`R_priv` is sealed 1-of-N, and a high-entropy code saved outside the enrolling device is the mandatory floor.**
 Every account has one; there is no account without one. Account creation requires the user to **re-enter it before the
 account exists**.
@@ -2788,8 +2795,8 @@ direction for the dependency to run.
 
 ## 15. The selection register
 
-The constraints above are fixed; this is the register of the constructions built on them. **Sixteen rows are
-selected and six are open**, with rows 14 and 20 appearing in both halves because each is split. **The design reviews wait on the selections in their scope, and the cutover
+The constraints above are fixed; this is the register of the constructions built on them. **Seventeen rows are
+selected and five are open**, with rows 14 and 20 appearing in both halves because each is split. **The design reviews wait on the selections in their scope, and the cutover
 waits separately on row 21** (§13.11, §14.6).
 
 **The register has two review scopes and two independent scopes.** Rows **1, 2, 3 and 13**, plus the storage-facing
@@ -2799,9 +2806,10 @@ suite (§13.10), under row 1's own criteria and on the asynchronous path only; *
 3b row amended**, which is the first time the two scopes have crossed and is said here rather than left to be
 noticed. Rows **4–12, 15–17 and 20**, plus the network-facing
 part of 14, are what moving an envelope over a network needs; they gate the service and are the scope of review **3b**,
-answered before network sync ships — **that scope is open, with rows 4, 5, 6, 7, 8, 9, 10, 11, 12, 15 and 17 now selected out of it — its whole sync
+answered before network sync ships — **that scope is open, with rows 4, 5, 6, 7, 8, 9, 10, 11, 12 and 15–17 now selected out of it — its whole sync
 core, the account credential everything else authenticates against, the rule for what happens when any of it is
-interrupted, and the web-security baseline that §13.11 level 2 owes separately.** Rows **18 and 19**
+interrupted, the web-security baseline that §13.11 level 2 owes separately, and the one retention in the design
+that is a duration rather than a position.** Rows **18 and 19**
 retain their own empirical triggers and gate neither review nor
 cutover. Row **21** is the migration choice: it gates cutover but neither design review. Closing one scope does not
 require another, which is what lets encryption at rest land before the protocol is specified.
@@ -2829,11 +2837,15 @@ true**, and where the two disagree this one wins.
 | 17 | Which web-security baseline profile and version | **OWASP ASVS 5.0.0 at L2 as a floor**, plus 8 named L3 pull-ups, 5 addendum controls and 1 recorded deviation. **A level is a floor rather than a profile** — §10.9's controls are spread across all three. The standard has **one** requirement mentioning browser storage and **none** mentioning Trusted Types, service workers or offline operation, so `V14.3.3` is a recorded deviation against §6.1 rather than a disposition. Generated and self-checking; A1 (no remote subresource) is build-failing today (§10.9, §13.11) | [row 17](./selections/row-17-web-security-baseline.md) |
 | 15 | Interrupted-rotation and downgrade behaviour | **One intent-and-outcome protocol at three kinds** — rotate, replace-recovery, retire — because §11.2 test 11's list is one class: an interrupted middle that reads as a completed **lesser** transition. `kind` is bound in both messages, which makes PRD §6.10's *a downgrade must not silently become account deletion* a field rather than a screen. Three client cases: silence means resubmit the identical bytes, a matching `committed_id` means apply, and a differing one means **discard and rebuild** — so **the outcome must be signed**, since the third case throws away a live content key (§13.7, §14.4) | [row 15](./selections/row-15-transitions.md) |
 | 12 | Account-credential and slot-verifier construction | The account credential is a **WebAuthn discoverable credential** and the verifier **checks a signature rather than a secret** — so §13.10's Argon2id candidate answers *none* for the third time and on the strongest argument: there is no secret in the profile to grind. Each credential gets a **service-signed binding** in the slot index, because an asymmetric verifier trades a guessable secret for a **substitutable public key** and §6.5's index is a structured clone. The unlock assertion is bound to the slot and the credential, never to a clock; the signature counter is read and ignored (§13.9) | [row 12](./selections/row-12-account-credential.md) |
+| 16 | Hosted-content retention duration after a lapse | **Twelve months**, from the moment hosted synchronization stops rather than from the missed payment, so grace is not deducted from it. **A floor on the promise and a ceiling on the data**: a plan may offer longer and none may offer shorter, and at expiry the ciphertext and wraps are *deleted*. One number for two paths because both are gated by one artifact — the ciphertext — so a shorter recovery window would save nothing and produce the state §6.10 refuses. **The condition was one bit of PRD §11's pricing question**, not its answer (PRD §6.10, §16) | [row 16](./selections/row-16-hosted-retention.md) |
 | 10 | Terminal and portable cutover-package formats | **One format at §13.5's three lineage states**, not two: §14.2's cutover package, §14.4's terminal package and §9.3's fidelity archive, with a live package *upgraded* to retired by importing the terminal record. §14.2's trust root is bound in the **HPKE `info` of every generation wrap**, so a substituted root opens no generation and there is nothing to re-attribute — the one anchor that terminates in user-held material rather than in a service signature (§14.2, §14.4) | [row 10](./selections/row-10-portable-package.md) |
 
-**Row 20 — test vectors — is closed for these sixteen and open for the rest.** Row 17 is the one whose artifact is
-not a vector file in the same sense: it records a profile rather than a construction, and it earns its place in
-the same way — generated, self-checking, and build-failing when it stops agreeing with the standard it names. Each carries a generated,
+**Row 20 — test vectors — is closed for these seventeen and open for the rest.** Rows 16 and 17 are the two whose
+artifacts are not vector files in the same sense — a number and a profile rather than constructions — and each
+earns its place the same way: checked against what it names rather than restating it, and build-failing when the
+two stop agreeing. Row 17's profile is generated from a pinned index of the standard; row 16's number is read
+back out of this document and the PRD by `scripts/check-retention.mjs`, which also audits §16's `unselected`
+cells against §15.1. Each carries a generated,
 self-verifying vector file; `pnpm vectors:check` fails the build if any has drifted from its generator, and
 `pnpm vectors:coverage` fails it if any field bound in one is isolated by no published negative.
 
@@ -2842,19 +2854,22 @@ self-verifying vector file; `pnpm vectors:check` fails the build if any has drif
 | # | Unselected                                    | Constrained by                                                                                 |
 | - | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | 14 | Recovery-code **step-up authentication** and confirmation UX — the network-facing half | §13.8; the storage-facing half is selected above |
-| 16 | Hosted-content retention duration after a lapse | One number bounds both resume and total-device-loss recovery. **Conditional** — arises only if PRD §11's pricing question selects a plan that can lapse (PRD §6.10) |
 | 18 | Whether a persistent encrypted search index is needed at all | Deferred; gates neither review nor cutover; measure the in-memory rebuild first (§6.2, §12) |
 | 19 | Root-type day collections (§10.8)              | Deferred; one of its four costs has lapsed and should be re-counted                            |
-| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the sixteen selected above**, each of which carries a generated, self-verifying file |
+| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the seventeen selected above** — fifteen carry a generated, self-verifying vector file, and rows 16 and 17 carry the checked artifact their subject admits instead |
 | 21 | First-deployment cutover attribution: accept system attribution, or bring the fidelity archive forward | §14.6; must be selected before cutover; adding authorship fields to Markdown is rejected (§9.1) |
 
-**Two rows remain in this scope, and one of them does not arise.** Row 16 is conditional on PRD §11's pricing
-question, which is deferred and which no sentence in that document may depend on, so what it needs is to be
-presented to the reviewer as conditional rather than closed. The network half of 14 is a construction already
-drafted in row 14 §5, **whose atomic-replace half row 15 has since closed** as `kind: 'replace-recovery'`; what
-is left of it is a fold. Everything else — envelope, acceptance, retention, checkpoint, attribution, enrollment,
-discovery, the package that carries all of it out, the credential the account is reached by, the rule for what
-happens when any of it is interrupted, and the web-security baseline — is selected.
+**One row remains in this scope.** The network half of 14 is a construction already drafted in row 14 §5,
+**whose atomic-replace half row 15 has since closed** as `kind: 'replace-recovery'`; what is left of it is a
+fold. Everything else — envelope, acceptance, retention, checkpoint, attribution, enrollment, discovery, the
+package that carries all of it out, the credential the account is reached by, the rule for what happens when any
+of it is interrupted, the web-security baseline, and the hosted-retention duration — is selected.
+
+**Row 16 was taken on a binary rather than on the question it was filed under, and a reviewer should be told
+which.** It was recorded as conditional on PRD §11's pricing question; it needed only whether a lapsed-but-retained
+state can exist, which is one bit of that question and carries no price in it. Answering it leaves every pricing
+sentence in PRD §11 as deferred as it was. **This is the fourth row in the scope whose apparent question was not
+its real one**, after rows 5, 12 and 15.
 
 **Row 12 answered the open question about which review should hold it, rather than being reassigned.** It looked
 storage-shaped because *offline-guessing resistance* implied a secret at rest, and §13.3's threat model was the one
@@ -2883,9 +2898,15 @@ bind every row below** — no component receives plaintext, a content key, an un
 every subject-bearing record has a deletion scope; no reusable credential or recovery secret enters logs; deletion
 never disables a local replica; operator powers are least-privilege and audited.
 
-**Two columns are deliberately incomplete, and a row that says so is doing its job.** Retention durations are
-unselected (§15 rows 7 and 16), and vendors and processors do not exist until deployment chooses them. `unselected`
-is the placeholder the as-built review checks against, not an omission.
+**Two columns are deliberately incomplete, and a row that says so is doing its job.** Some retentions are still
+unselected, and vendors and processors do not exist until deployment chooses them. `unselected` is the placeholder
+the as-built review checks against, not an omission.
+
+**`unselected` has two kinds and a cell must say which** (§16.6). One waits on a **§15 row**, and that row has to
+still be open. The other waits on a **deployment** choice — a metrics store, a log processor, a backup provider —
+which no selection was ever going to close. **Every retention bounded by a selection now carries its answer**, and
+they are of two shapes: the positional ones rows 6, 7 and 8 fix by the artifacts themselves, and the single
+duration row 16 fixes by a clock — twelve months of hosted content after a lapse (§13.8, PRD §6.10).
 
 ### 16.1 Authorization service
 
@@ -2895,8 +2916,8 @@ is the placeholder the as-built review checks against, not an omission.
 | Account authenticator public material and slot-verifier parameters — credential ids, public keys, and the signed slot bindings issued for them (§13.9) | Verify sign-in; anchor the device-local slot binding | Account | Authorization service store | Life of the account | Account deletion | None — public material | None |
 | Signed authorization lineage — epochs, membership grants, credential ids, capabilities, generation ids (§13.5) | Admit and revoke, order successors, prove historical admission | Workspace | Authorization service store | Life of the lineage | Account deletion commits the terminal record, then removes service copies | Support may read; authorization changes are audited | None |
 | Terminal lineage record | Let a surviving replica distinguish retirement from genesis (§13.5) | Workspace | Authorization service store, then replicas and the portable package | Propagated before deletion; not retained by the service afterwards | Account deletion | Support may read; audited | None |
-| Acceptance evidence — per-credential accepted-set log, head digests, cutoffs (§7.5) | Let clients refuse writes the service never accepted | Workspace × credential | Authorization service store | **Unselected** (§15 rows 5, 7) | Account deletion | Support may read; audited | None |
-| Recovery material — `R_pub`, per-generation wraps, code-sealed `R_priv` envelope | Non-custodial recovery after total device loss (§13.8) | Workspace | Authorization service store | Life of the account; separately bounded by hosted-content retention during a lapse | Account deletion; retention expiry deletes the wraps and keeps `R_pub` and the sealed envelope (PRD §6.10) | None — opaque to every operator by construction | Escrow agent, **only** where the opt-in add-on exists (§16.5) |
+| Acceptance evidence — the per-credential accepted mark `(seq, link)`, batch head signatures and finalization cutoffs (§7.5) | Let clients refuse writes the service never accepted | Workspace × credential | Authorization service store | Life of the lineage — **a mark, not a log**: one `(seq, link)` per credential and its cutoff, which is all the chain has any memory of (§15 rows 5, 6) | Account deletion | Support may read; audited | None |
+| Recovery material — `R_pub`, per-generation wraps, code-sealed `R_priv` envelope | Non-custodial recovery after total device loss (§13.8) | Workspace | Authorization service store | Life of the account; during a lapse the wraps are separately bounded by hosted-content retention — **twelve months** from the moment synchronization stops (§15 row 16) | Account deletion; retention expiry deletes the wraps and keeps `R_pub` and the sealed envelope (PRD §6.10) | None — opaque to every operator by construction | Escrow agent, **only** where the opt-in add-on exists (§16.5) |
 | Committed-transition table — `(lineage, kind, target)` to committed intent id and signed outcome (§13.7) | Commit each rotation, recovery replacement and retirement at most once, and answer a resubmission with the same outcome | Workspace | Authorization service store | Life of the lineage | Account deletion commits the terminal record, then removes service copies | Support may read; audited | None |
 | Relay admission tokens issued (§13.2) | Scope and time-bound a transport session | Device credential | Issued to the device; service-side issuance state only if the selected shape needs it | Short by construction | Expiry, revocation, account deletion | Support may read issuance state; audited | None |
 
@@ -2906,24 +2927,24 @@ is the placeholder the as-built review checks against, not an omission.
 | ---------- | ------- | ------------------------ | -------------------- | --------- | -------------- | ------------------- | -------------- |
 | Live connection state — credential id, network address, connect and disconnect times | Authenticate transport and route envelopes | Device credential | Relay process memory; logged only through PRD §7.11's allowlist | Connection lifetime | Disconnect; log expiry | Operational; audited | Hosting provider observes network addresses |
 | Awareness and presence — name, colour, cursor position, workspace association (§7.7) | Live presence display | Principal × workspace | Relay process memory | Connection lifetime. **Not persisted by default**, and must not inherit workspace-ciphertext retention | Disconnect | Operational, live only | Hosting provider |
-| Per-credential write times, rates and volumes | Validate authorization, rate-limit, and account for cost | Device credential | Relay metrics | **Unselected.** Any *persisted* use needs its own purpose, subject scope and retention before it is added (PRD §7.11 constraint 6) | Account deletion | Operational | A metrics processor, if one is chosen |
+| Per-credential write times, rates and volumes | Validate authorization, rate-limit, and account for cost | Device credential | Relay metrics | **Unselected, pending deployment.** Any *persisted* use needs its own purpose, subject scope and retention before it is added (PRD §7.11 constraint 6) | Account deletion | Operational | A metrics processor, if one is chosen |
 
 ### 16.3 Durable store
 
 | Data class | Purpose | Subject / deletion scope | Storage or recipient | Retention | Deletion event | Operator visibility | Third parties |
 | ---------- | ------- | ------------------------ | -------------------- | --------- | -------------- | ------------------- | -------------- |
 | Authenticated envelopes — ciphertext plus clear routing metadata (§7.4) | Store-and-forward between devices never awake together | Workspace | Durable store | Until superseded by a checkpoint, then per the checkpoint rule below | Account deletion; hosted-content retention expiry (PRD §6.10) | None — opaque | Storage provider |
-| Checkpoints and manifests, including the coverage attestation (§7.6) | The bounded recovery representation a content-blind store needs | Workspace | Durable store | **Unselected** (§15 row 7) | Account deletion; retention expiry | None — opaque | Storage provider |
-| Superseded checkpoints | Fallback when the newest is unavailable (§11.3 test 8) | Workspace | Durable store | **Unselected** (§15 row 7) | Account deletion; retention expiry | None — opaque | Storage provider |
+| Checkpoints and manifests, including the coverage attestation (§7.6) | The bounded recovery representation a content-blind store needs | Workspace | Durable store | **Two**, and never one whose generation another retained checkpoint still needs (§7.6, §15 row 7) | Account deletion; retention expiry | None — opaque | Storage provider |
+| Superseded checkpoints | Fallback when the newest is unavailable (§11.3 test 8) | Workspace | Durable store | The second-newest, with its suffix from that checkpoint's head vector forward — required by §11.3 test 8 and §14.3 both (§15 rows 6, 7) | Account deletion; retention expiry | None — opaque | Storage provider |
 | Attribution-preserving evidence (§7.6, §13.7) | Verify historical authorship across rotation and migration | Workspace | Durable store, as part of the recovery representation | Bounded by the attribution retention floor — for the lifetime of the claim | Account deletion; compaction retires the claims it covers (§4.5) | None — encrypted under content-key generations | Storage provider |
 
 ### 16.4 Operational
 
 | Data class | Purpose | Subject / deletion scope | Storage or recipient | Retention | Deletion event | Operator visibility | Third parties |
 | ---------- | ------- | ------------------------ | -------------------- | --------- | -------------- | ------------------- | -------------- |
-| Diagnostics and logs | Diagnose service faults | Per field, attributed to the subject it concerns; an aggregate must not quietly retain subject identifiers | Log store | **Unselected** | Log expiry; subject deletion for attributed rows | Operational; audited | A log processor, if one is chosen |
-| Backups | Restore service state | Mirrors the subject of whatever it copies | Backup store | **Unselected**, and **must not outlive the deletion event of the row it copies** | Backup expiry following the source deletion | Operational; audited | A backup provider |
-| User-supplied support material | Diagnose a problem the user has chosen to disclose | Account, as an explicit and separately scoped disclosure | Support system | **Unselected**, and separate from every other row | Ticket closure or user request | Support; audited | A support-desk provider |
+| Diagnostics and logs | Diagnose service faults | Per field, attributed to the subject it concerns; an aggregate must not quietly retain subject identifiers | Log store | **Unselected, pending deployment** | Log expiry; subject deletion for attributed rows | Operational; audited | A log processor, if one is chosen |
+| Backups | Restore service state | Mirrors the subject of whatever it copies | Backup store | **Unselected, pending deployment**, and **must not outlive the deletion event of the row it copies** | Backup expiry following the source deletion | Operational; audited | A backup provider |
+| User-supplied support material | Diagnose a problem the user has chosen to disclose | Account, as an explicit and separately scoped disclosure | Support system | **Unselected, pending deployment**, and separate from every other row | Ticket closure or user request | Support; audited | A support-desk provider |
 | Billing records | **Conditional** — exists only if PRD §11's pricing question selects a paid plan | Account | Payment processor | Statutory | Account deletion, less any statutory hold | Finance; audited | Payment processor |
 
 ### 16.5 Escrow agent — conditional, and deliberately not us
@@ -2943,8 +2964,13 @@ must contain no material that unseals `R_priv`, and the escrow agent's must cont
   existence of a policy document (PRD §7.11).
 - **A row appearing with no deletion scope is a defect**, because the constraint that every subject-bearing record
   has one is what makes deletion, export and correction implementable at all.
-- **`unselected` is bounded, not open-ended.** Each occurrence above points at the §15 row that closes it, and none
-  may survive into the as-built review.
+- **`unselected` is bounded, not open-ended, and it has two kinds.** One waits on a **§15 row**, which must still be
+  open; the other waits on a **deployment** choice, which no selection closes and which the as-built review is what
+  closes. A cell must declare which. **The rule as first written recognized only the first kind, and was therefore
+  false of four cells in its own table** — metrics, logs, backups and support material, none of which any §15 row
+  was ever going to answer, while four others still pointed at rows that had since been selected.
+  `scripts/check-retention.mjs` now enforces both halves: every cell declares its kind, and a cell naming a §15 row
+  names one §15.1 does not list. Neither kind may survive into the as-built review.
 
 ---
 

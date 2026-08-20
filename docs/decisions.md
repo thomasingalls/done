@@ -1305,3 +1305,81 @@ files. The primitive set, the separation check and every published vector are un
 **What it does not settle.** `DEFERRED` is now empty, so the new check has no subject and is a guard rather than
 a result. That is the honest description of it, and it is the same standing the separation check had on the day
 it was written: nothing shared a primitive across the two paths then either.
+
+---
+
+### Hosted retention is twelve months, and the row was conditional on one bit of the pricing question
+
+**Date:** 2026-08-20 · **Commit:** _this one_ · **Against:** PRD v9 / TRD v8
+
+**Orientation.** Review 3b is booked for the week of the 24th and §13.11 holds each review until its own scope is
+closed. Two rows of that scope were open: the network half of 14, which is a fold, and row 16 — the
+hosted-content retention duration after a lapse. Row 16 was filed in §15.2 as **conditional** on PRD §11's
+pricing question, which is deferred, blocks nothing, and which no sentence in the PRD may be written to depend
+on. Read that way it could not be taken at all until a business model existed, and the plan was to present it to
+the reviewer as conditional rather than closed.
+
+**The condition was on a larger question than the row needed.** Question 1 asks what hosted sync costs and how it
+should be priced. Row 16 needs only whether a **lapsed-but-retained state can exist** — one bit, with no price in
+it. Taking that bit closes the row and leaves every pricing sentence exactly as deferred as it was. **This is the
+fourth row in 3b's scope whose apparent question was not its real one**, after row 5's three candidates that were
+two, row 12's secret that did not exist, and row 15's operation that was a class. The habit worth keeping: when a
+row is filed as conditional, check whether it is conditional on the _whole_ of the thing it names.
+
+**Decision. Twelve months, measured from the moment hosted synchronization stops** — the end of the grace period,
+not the missed payment, so grace is not deducted from retention. Argued from the failure rather than from a cost
+model: the scenario is conjunctive, _lapsed **and** every device gone_, and someone in it is not reading email
+from a service they stopped paying. A shorter number optimises storage the service cannot read against a loss
+that is total and permanent, and the retained artifact is ciphertext under a key the service never holds — so
+what a long retention costs is bytes and a promise, not the accumulation of readable personal data that the rest
+of §16 is shaped to prevent. Beyond a year the protection falls off rather than the cost rising: a workspace
+untouched for twelve months either has a fidelity archive or does not, and §9.3's archive **does not inherit this
+deadline**, which is what bounds the whole question.
+
+**A floor alone would have been a defect, so it is a ceiling too.** The decision was taken as a floor a plan may
+lengthen and may not shorten, which is right about the promise and, alone, wrong about the data: a retention
+stated only as a floor is unbounded above, and §16.6 requires every row's deletion event to be _exercised_, of
+which there is none in _at least twelve months_. So the same number binds both directions — the promise floors,
+the data ceilings, and expiry **deletes** rather than making the copy eligible for deletion.
+
+**One number for two paths, and the reason is not that they happen to be equal.** Three things are retained
+together: ciphertext, wraps, sealed `R_priv`. Resuming needs the first; total-device-loss recovery needs all
+three; only the first is expensive. So a shorter recovery window saves nothing and produces exactly the state
+§6.10 refuses — the service holding bytes it will not return — and the second promise is free once the first is
+made.
+
+**A number has no vectors, so the artifact is a check on its copies.** `scripts/check-retention.mjs` reads the
+requirements rather than restating them: every place the PRD or TRD states a hosted-retention duration must state
+this one, and every `unselected` cell in §16 must be bounded and must not point at a closed row. That second half
+extends `checkCoverage`'s rule — _read the somewhere else_ — from row 1's deferral entries to the data inventory,
+where §16.6 and [sequencing.md](./sequencing.md) §3.7 already required it and nothing was enforcing it. Both
+halves are demonstrated against mutations rather than asserted: a changed number, a deleted one, a cell repointed
+at a selected row, and a cell declaring no kind.
+
+**It found more than it was written for, which is the argument for writing it before the fold rather than after.**
+Four cells pointed at §15 rows that had since been selected — the preamble's rows 7 and 16, acceptance evidence's
+rows 5 and 7, and both checkpoint rows. Rows 6 and 7 had answered them **positionally**: _two checkpoints_, _that
+checkpoint's head vector forward_, _a mark, not a log_. And the acceptance-evidence row still described a
+per-credential accepted-set **log** — a data class row 6 had replaced with a mark. **A stale pointer is the small
+version of this; a data class the design has deleted, sitting in the inventory a reviewer reads, is the large
+one.**
+
+**And §16.6's own rule was already false of its own table.** It said each `unselected` occurrence points at the
+§15 row that closes it; four cells named no row, because a metrics, log, backup or support-material retention is
+bounded by a **deployment** choice that no selection was ever going to close. So `unselected` now has two declared
+kinds and the check enforces the declaration. **This is row 17's A4 finding a second time** — a control true in
+spirit with no address in fact, refused until it named one.
+
+**What it cost.** One binary taken early: if hosted sync is never priced, §6.10 and this row become dead code in
+the requirements rather than wrong, which is the cheap direction. A promise the service must be built to keep and
+to execute. A number argued rather than measured — §4 of the record is honest that there is nothing to measure
+yet, and that it is falsifiable only in one direction, by an incident. **No protocol field, no key, no format, no
+client change**: nothing in §6, §7 or §13 moves.
+
+**What it does not settle, and one thing it asserts that no row stated.** The grace period's own duration stays
+open and is a billing parameter; the only constraint placed on it is that retention starts when it ends. The
+disclosure copy belongs with PRD §11 question 11's. And closing the acceptance-evidence cell required writing a
+retention that rows 5 and 6 **imply but never state** — one `(seq, link)` per credential plus its cutoff, for the
+life of the lineage, on row 6's theorem that the chain has no memory beyond its last link. It is recorded here
+rather than presented as a quotation from those rows, and it is the one line in the fold a reviewer should be
+invited to disagree with.

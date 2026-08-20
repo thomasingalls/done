@@ -1522,7 +1522,14 @@ ever awaited a credential.
 nobody can plan around. That number bounds two things at once and is the same number for both: how long
 resuming restores the hosted history, and how long the service-hosted total-device-loss recovery path remains
 possible. An independently held fidelity archive is a separate ciphertext source and does not inherit this
-deadline (§8.3). The duration itself is open (§11).
+deadline (§8.3).
+
+**The duration is twelve months** (TRD §15 row 16), and it is measured **from the moment hosted synchronization
+stops** — the end of the grace period — rather than from the missed payment, so grace is not deducted from
+retention. It binds in both directions, and both are promises: **a floor**, in that a plan may offer longer
+retention and none may offer shorter; and **a ceiling**, in that at expiry the hosted copy is *deleted* rather
+than merely eligible for deletion. A retention stated only as a floor would be unbounded above, which is the
+one thing §7.11's inventory calls a defect rather than an omission.
 
 **During retention, three things are retained together** — ciphertext, every needed content-key wrap to the
 recovery public key, and the recovery private key sealed to the saved code — because omitting any of them
@@ -1565,7 +1572,9 @@ which the service holds the user's bytes and cannot give them back.
 **One thing must be said out loud when sync stops**, because it is the part a user will not infer: **from
 that moment the devices stop converging, and each one's edits are its own.** The honest copy for what happens
 on resumption is *these will come back together, and there will be a lot to come back together* — not a
-warning that something is at stake.
+warning that something is at stake. **The twelve-month deadline belongs in that same moment**, because a
+duration measured from an event nobody observes is not something anyone can plan around, and *plannable* is
+what makes it a number rather than a reassurance.
 
 ### 6.11 Local identity is gone but the workspace remembers it
 
@@ -2843,6 +2852,10 @@ Everything else in this document is settled. These are the questions that are ge
 precisely enough that answering it is a bounded act, with what it blocks named — because for most of them the
 answer is *nothing*.
 
+**An answered question keeps its number and is struck through in place.** Renumbering would silently invalidate
+every reference made to it while it was open — TRD §15 and [sequencing.md](./sequencing.md) both cite these by
+number — so the list is allowed to carry its own answers rather than shrinking.
+
 **Deferred deliberately, and downstream of everything here:**
 
 1. **What does hosted sync cost, and how should it be priced?** Free, paid, bundled or metered — none of which
@@ -2868,10 +2881,11 @@ answer is *nothing*.
    guardrail is settled — **not by fingerprinting** — and the audience is one person, which lowers the bar
    (§6.4).
 
-5. **What is the hosted-content retention duration after a lapse?** It must be a stated number, and it is the
-   same number for two things: how long resuming restores the hosted history, and how long the service-hosted
-   total-device-loss recovery path remains possible (§6.10). *Conditional on question 1 selecting a plan at
-   all.*
+5. ~~**What is the hosted-content retention duration after a lapse?**~~ **Answered: twelve months**, from the
+   moment hosted synchronization stops, as a floor on the promise and a ceiling on the data (§6.10, TRD §15
+   row 16). It was filed as conditional on question 1, and it was conditional on **one bit** of question 1 —
+   whether a lapse can exist at all — rather than on what a plan costs. That binary is taken; nothing here
+   depends on the price, and question 1 stays exactly as deferred as it was.
 
 6. **What is the card split threshold?** Three consecutive returns is a starting guess — likely too
    undiscoverable, and expected to drop to two or one once the interaction proves out. A tunable, not a
