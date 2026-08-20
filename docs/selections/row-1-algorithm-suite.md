@@ -15,12 +15,14 @@
 ```
 Suite 1
 
-  Content store AEAD         AES-256-GCM                       WebCrypto        async
-  Local key envelope AEAD    AES-256-GCM                       WebCrypto        async
-  Network envelope AEAD      AES-256-GCM                       WebCrypto        async
-  Synchronous journal AEAD   XChaCha20-Poly1305                @noble/ciphers   sync   [row 2]
-  Subkey derivation          HKDF-SHA-256                      WebCrypto        async
-  Mutation signatures        Ed25519                           WebCrypto        async
+  Content store AEAD         AES-256-GCM                       WebCrypto           async
+  Local key envelope AEAD    AES-256-GCM                       WebCrypto           async
+  Network envelope AEAD      AES-256-GCM                       WebCrypto           async
+  Synchronous journal AEAD   XChaCha20-Poly1305                wasm/journal-seal   sync   [row 2]
+                             audited RustCrypto chacha20poly1305, compiled to an
+                             inlined wasm module, instantiated synchronously
+  Subkey derivation          HKDF-SHA-256                      WebCrypto           async
+  Mutation signatures        Ed25519                           WebCrypto           async
   Public-key wrap            HPKE base mode (RFC 9180)
                              DHKEM(X25519, HKDF-SHA256) / HKDF-SHA256 / AES-256-GCM
                              = 0x0020 / 0x0001 / 0x0002
@@ -68,24 +70,27 @@ exist in the codebase and the plan, invented separately and meaning different th
 
 ## 2. The suite, role by role
 
-| Role                     | Selected                                           | Why this one                                                                                                           |
-| ------------------------ | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Content store AEAD       | AES-256-GCM, WebCrypto                             | The only AEAD the platform supplies; hardware-accelerated on every target; no bundle                                   |
-| Local key envelope AEAD  | AES-256-GCM, WebCrypto                             | Same path, and `L_local` is already an AES-GCM `CryptoKey` under §13.3                                                 |
-| Network envelope AEAD    | AES-256-GCM, WebCrypto                             | Named so the suite is complete; its **wire format** is row 4 and review 3b                                             |
-| Synchronous journal AEAD | XChaCha20-Poly1305, `@noble/ciphers`               | [Row 2](./row-2-journal-aead.md). The only primitive the platform does not supply, and the only one on the crash path  |
-| Subkey derivation        | HKDF-SHA-256, WebCrypto `deriveBits`               | Derivation is once-per-open, where async is free. The labels are what make §13.2's separation real rather than nominal |
-| Mutation signatures      | Ed25519, WebCrypto                                 | Small, fast, widely reviewed. §7 records what still has to be confirmed about availability                             |
-| Public-key wrap          | HPKE base mode, X25519 / HKDF-SHA256 / AES-256-GCM | RFC 9180's most widely implemented ciphersuite; covers the `R_pub` and per-reader wrap cases uniformly (§13.2)         |
-| Hash                     | SHA-256                                            | One hash wherever HKDF, signatures and commitments need one                                                            |
+| Role                     | Selected                                                                   | Why this one                                                                                                           |
+| ------------------------ | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Content store AEAD       | AES-256-GCM, WebCrypto                                                     | The only AEAD the platform supplies; hardware-accelerated on every target; no bundle                                   |
+| Local key envelope AEAD  | AES-256-GCM, WebCrypto                                                     | Same path, and `L_local` is already an AES-GCM `CryptoKey` under §13.3                                                 |
+| Network envelope AEAD    | AES-256-GCM, WebCrypto                                                     | Named so the suite is complete; its **wire format** is row 4 and review 3b                                             |
+| Synchronous journal AEAD | XChaCha20-Poly1305, RustCrypto crate as inlined wasm (`wasm/journal-seal`) | [Row 2](./row-2-journal-aead.md). The only primitive the platform does not supply, and the only one on the crash path  |
+| Subkey derivation        | HKDF-SHA-256, WebCrypto `deriveBits`                                       | Derivation is once-per-open, where async is free. The labels are what make §13.2's separation real rather than nominal |
+| Mutation signatures      | Ed25519, WebCrypto                                                         | Small, fast, widely reviewed. §7 records what still has to be confirmed about availability                             |
+| Public-key wrap          | HPKE base mode, X25519 / HKDF-SHA256 / AES-256-GCM                         | RFC 9180's most widely implemented ciphersuite; covers the `R_pub` and per-reader wrap cases uniformly (§13.2)         |
+| Hash                     | SHA-256                                                                    | One hash wherever HKDF, signatures and commitments need one                                                            |
 
 **Three roles are named here but used only past this review**, and naming them is the point: the envelope
 AEAD, signatures and HPKE all belong to review 3b's rows, and leaving their primitives unnamed until then
 would mean the separation rule in §3 could only be checked over half the system.
 
-**`@noble/ciphers` is currently a `devDependency`**, because until now only the vector generator imported it.
-Selecting it as a shipping primitive means Stage 1 moves it to `dependencies`. It has not been moved yet —
-moving it before any application code imports it would misdescribe what ships.
+**The synchronous role adds no runtime dependency at all, and `@noble/ciphers` stays a `devDependency`.** An
+earlier draft of this row had it shipping, and said Stage 1 would move it to `dependencies`. Row 2 then measured
+the pure-JS library over the §12 budget and replaced it with the compiled seal (row 2 §7), so what ships is an
+inlined wasm module and nothing is moved. **`@noble` kept a job, and it is a better one:** it is the independent
+implementation the journal vectors are generated from, which is what makes `scripts/check-wasm-seal.mjs` a
+cross-implementation check rather than the shipped module agreeing with itself.
 
 **One role is named without a test vector, deliberately.** HPKE has published vectors in RFC 9180 §A, but
 Node's WebCrypto has no HPKE and no library is selected, so a vector here would be transcribed rather than
@@ -215,7 +220,19 @@ belongs there (§11.2).
 
 **HPKE has no vector here**, for the reason in §2. It is pinned by ciphersuite identifier and lands with 3b.
 
-**The `devDependency` move is Stage 1's**, per §2.
+**The `devDependency` move is no longer owed**, per §2. Row 2's compiled seal is what ships, so nothing moves
+to `dependencies` and Stage 1 inherits nothing here.
+
+**One of this row's own criteria is not obviously satisfied by the journal role, and it is review 3a's to answer.**
+The criteria are _reviewed and widely implemented_, _available without a polyfill where possible_, and §13.2
+separation. The RustCrypto `chacha20poly1305` crate satisfies the first; what it does not settle is whether
+compiling that reviewed source through `rustc` and `wasm32-unknown-unknown` inherits the property, since **the
+artifact a user runs is not the artifact anyone reviewed**. TRD §13.10 records this as the only item in 3a's
+scope that is a criterion rather than a construction, which is why it sits in this row rather than row 2. What
+the project can do about it, it has done: the module is built from a pinned crate, regenerated reproducibly by
+`node scripts/build-wasm-seal.mjs`, and checked on every `pnpm check` against draft-irtf-cfrg-xchacha-03 §A.3.1
+and row 2's composition vectors — so a compiled artifact that computes something other than XChaCha20-Poly1305
+fails the build rather than shipping.
 
 **Nothing in this row is measured.** Row 2 carried bundle and latency figures because it was adding a
 dependency to a budgeted path. This row adds no code — AES-GCM, HKDF, Ed25519 and SHA-256 are all platform —
