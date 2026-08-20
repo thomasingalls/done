@@ -1108,7 +1108,7 @@ content key**, which is the same separation that makes the recovery code mandato
 
 ### An interrupted transition must not be able to read as a completed lesser one
 
-**Date:** 2026-08-20 · **Commit:** _this one_ · **Against:** PRD v9 / TRD v8
+**Date:** 2026-08-20 · **Commit:** `4259822` · **Against:** PRD v9 / TRD v8
 
 **Orientation.** §15 row 15 asked for "interrupted-rotation and downgrade behaviour", constrained to "fail closed
 without changing the confidentiality promise (§11.2 test 11)". Test 11's list reads as five unrelated failures:
