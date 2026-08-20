@@ -22,7 +22,7 @@
       "name": "slot-verifier--this-slot",
       "role": "slot-verifier",
       "label": "done/slot-verifier-prf/v1",
-      "selected_by": "row 12 (review 3b)",
+      "selected_by": "row 12 (review 3b) -- selected, and it uses no PRF: the verifier checks a signature rather than deriving a key, so this label is reserved and unused",
       "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
       "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
       "eval_first": "bcef685d36edf52dc16fd72440561d67b36fb5dacccb87abfa14159a926d0815"
@@ -31,7 +31,7 @@
       "name": "slot-verifier--other-slot",
       "role": "slot-verifier",
       "label": "done/slot-verifier-prf/v1",
-      "selected_by": "row 12 (review 3b)",
+      "selected_by": "row 12 (review 3b) -- selected, and it uses no PRF: the verifier checks a signature rather than deriving a key, so this label is reserved and unused",
       "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
       "workspace_id": "ws_01J0000000000000000000000A",
       "eval_first": "2cfcbe7b24c03edb276aeee3b0e4b6686cde81fbf757e32d400e9443c13d126b"
@@ -91,7 +91,7 @@
       "eval_first": "2b14b4242117d747d1b33baa6acbd07e8fe0de99a609f20bcb90788a390c6938"
     }
   ],
-  "separation_note": "All eight inputs are distinct, and the generator fails if any two collide. Only the device-lock label is selected by row 13; the other three are provisional stand-ins owned by review 3bs rows, and what is asserted is that they differ rather than what they are",
+  "separation_note": "All eight inputs are distinct, and the generator fails if any two collide. Only the device-lock label is selected by row 13; the others are stand-ins owned by review 3bs rows, and what is asserted is that they differ rather than what they are. Row 12 has since been selected and derives nothing from a PRF output at all, so its label is reserved and unused -- §13.4s separation is satisfied structurally for that role rather than by these bytes",
   "seal_vectors": [
     {
       "name": "code-seal",

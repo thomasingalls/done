@@ -100,6 +100,13 @@ const SUITE_1 = {
     path: 'async',
     why: 'Small, fast, widely reviewed. Availability is now broad enough that the fallback path §13.10 anticipated is a compatibility question, not a design one.',
   },
+  'account-credential-signature': {
+    primitive: 'ES256 (ECDSA P-256 with SHA-256)',
+    provider: 'WebAuthn authenticator; verified in WebCrypto',
+    path: 'async',
+    also_accepted: 'Ed25519, already selected above for mutation-signature',
+    why: "Selected by row 12, and the one role this suite does not choose: WebAuthn credential creation is a negotiation and the authenticator picks from the offered list. The offer is [-8 Ed25519, -7 ES256] and is frozen at creation inside a service-signed binding, so nothing renegotiates afterwards. ES256 is the addition; it meets §13.10's criteria and is async-path only, so §13.2 is untouched. No KAT here: its verification is exercised end to end by row 12's vectors, whose keypair checks its own halves.",
+  },
   'public-key-wrap': {
     primitive: 'HPKE base mode, DHKEM(X25519, HKDF-SHA256) / HKDF-SHA256 / AES-256-GCM',
     provider: 'library, unselected',

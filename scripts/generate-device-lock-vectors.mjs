@@ -119,7 +119,12 @@ const SEAL_NONCE_PRF = unhex('303132333435363738393a3b');
  * them eventually are.
  */
 const ROLES = [
-  { role: 'slot-verifier', label: 'done/slot-verifier-prf/v1', selected_by: 'row 12 (review 3b)' },
+  {
+    role: 'slot-verifier',
+    label: 'done/slot-verifier-prf/v1',
+    selected_by:
+      'row 12 (review 3b) -- selected, and it uses no PRF: the verifier checks a signature rather than deriving a key, so this label is reserved and unused',
+  },
   { role: 'device-key', label: 'done/device-key-prf/v1', selected_by: 'rows 4-12 (review 3b)' },
   { role: 'device-lock', label: PRF_LABEL, selected_by: 'row 13 -- this document' },
   {
@@ -767,7 +772,7 @@ const main = async () => {
     },
     separation_vectors: separationVectors,
     separation_note:
-      'All eight inputs are distinct, and the generator fails if any two collide. Only the device-lock label is selected by row 13; the other three are provisional stand-ins owned by review 3bs rows, and what is asserted is that they differ rather than what they are',
+      'All eight inputs are distinct, and the generator fails if any two collide. Only the device-lock label is selected by row 13; the others are stand-ins owned by review 3bs rows, and what is asserted is that they differ rather than what they are. Row 12 has since been selected and derives nothing from a PRF output at all, so its label is reserved and unused -- §13.4s separation is satisfied structurally for that role rather than by these bytes',
     seal_vectors: sealVectors,
     custody_vectors: custodyVectors,
     custody_note:

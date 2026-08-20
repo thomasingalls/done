@@ -1025,3 +1025,81 @@ remain outside what the specification treats, and the previous entry's reasoning
 holds. What has changed is that the question is no longer forced by a failing number. **And the cipher has stopped
 being the dominant term** — at 4 kB the write is 240 µs of which the seal is 70 µs, so base64 and `setItem` are
 now more than twice the cryptography. Further work against this budget is base64 work.
+
+---
+
+### The slot verifier checks a signature, so there is no secret to stretch and one to substitute
+
+**Date:** 2026-08-20 · **Commit:** _this one_ · **Against:** PRD v9 / TRD v8
+
+**Orientation.** §13.10 carried one role as a candidate — "an Argon2id-derived verifier" — and §15 row 12 asked
+for the account-credential and slot-verifier construction "including offline-guessing resistance". Read together
+they ask how much stretching. **They only ask that if the verifier is a function of a secret held in the profile**,
+and interrogating that premise was most of the row. It is the third time a row's apparent question was not its
+real one: row 14's "Argon2id or none" and row 13's "PRF- or high-entropy-code-derived" both read as menus until
+the thing underneath them was designed.
+
+**Decision.** **The account credential is a WebAuthn discoverable credential, and the verifier checks a signature
+rather than a secret.** No stretching, no KDF, no password, and — for the first time in the three rows that have
+answered this question — **nothing in the profile to grind at all.** Rows 13 and 14 said _none_ because a
+generated 125-bit code leaves no entropy deficit; this row says _none_ because the private key is in the
+authenticator and "guessing" the verifier means forging Ed25519.
+
+**§16.1 had already decided half of it, in a table nobody was reading as a selection.** The inventory row says the
+service stores "Account authenticator **public material** and slot-verifier parameters", visibility "None — public
+material". A password verifier is a server-held secret, not public material. **The inventory foreclosed the
+shared-secret shape before the row was asked**, the same way row 2 had already spent the synchronous slot before
+row 1 noticed it had one primitive left to choose. The transferable form: _a data inventory is a design
+constraint, not a compliance artifact, and it can answer questions the design has not got to yet._
+
+**The clause about offline guessing protects the network credential rather than the slot, which is why it sits in
+§13.9.** A grindable local verifier would let a profile holder recover the thing that authenticates to the
+service — §13.2 forbids this artifact supplying that offline. The local gate against the person at a shared
+keyboard is a lesser and different thing, and §13.3's scoping sentence already applies to it.
+
+**Removing a secret introduces a substitutable public key, and that is where the work went.** The slot index is
+IndexedDB — a structured clone whose properties the load path trusts — so an unbound public key is one property
+edit from a slot that opens under the attacker's own passkey. Row 3's rule about editable fields applies at a
+different store. **Each credential therefore gets a service-signed binding**, verified against the lineage §13.5
+already has the client retaining, which makes substitution need the service's private key rather than write access
+to IndexedDB. **The gate is then stronger than the custody beside it**: `L_local` yields to anyone who can run the
+origin and the binding does not.
+
+**One role can root on the authenticator where §13.3's could not, and the distinction is worth keeping.** Rows 11
+and 13 both concluded that a ragged capability cannot be a root. **PRF is an extension; a signature is the core of
+the API**, and this row uses no extension at all. Underneath that: the device lock needs _key material_, which
+only PRF returns, and this row needs a _proof_. **A signature is checkable offline without being guessable
+offline; a derived key is not.** One consequence — one of §13.4's four factor roles turns out not to consume a
+factor output, so row 13's reserved `done/slot-verifier-prf/v1` label is now recorded as unused. That cost a
+regenerated comment string in a published vector file and no vector value, on row 11's precedent.
+
+**Row 1's agility rule bends here, once, and is preserved rather than abandoned.** WebAuthn credential creation
+_is_ a negotiation: the relying party offers an ordered `pubKeyCredParams` and the authenticator picks. So the
+suite gains **ES256**, under §13.10's own criteria and on the asynchronous path only, and the offer
+`[-8 Ed25519, -7 ES256]` is part of the carrier version. **What replaces _no algorithm field_ is _one algorithm
+field, signed, written once_** — frozen at creation inside the binding, so nothing renegotiates afterwards. This
+is the first time a 3b row has amended a 3a row, and §15 says so rather than leaving it to be noticed.
+
+**The coverage audit removed a field, on the argument it was built to make.** An earlier draft bound `alg` beside
+the public key. `pnpm vectors:coverage` reported it _bound in the AAD and isolated by no negative_, and it was
+right: the algorithm is a function of the key encoding, so changing it alone leaves a key that verifies nothing
+and changing it consistently changes the key too. **A field that cannot be varied independently is not an
+independent binding.** Storing SubjectPublicKeyInfo puts the algorithm inside bytes already bound, and the audit
+went from complaining to silent with nothing argued at it. **Two more fields — `rp_id` and `public_key` — failed
+for the neighbouring reason**: both are read by the verifier as well as bound in the signed message, so the
+obvious negative fails twice and proves neither. Each was fixed by supplying a _consistent_ ceremony for the
+substituted value, which is also what the real attacker would do. **`aad-only-binding-public-key` is the negative
+this whole row exists to justify, and its first version was passing for the wrong reason** — row 9's finding,
+holding a fourth time.
+
+**Which review holds it is answered rather than reassigned.** `progress.md` had carried the question with two rows
+pointing at it: the verifier looked storage-shaped and 3a is the engagement with the context. It looked
+storage-shaped because _offline-guessing resistance_ implied a secret at rest. There is none. What the row
+contains is network-facing throughout, so it stays in **3b** and **3a's closed scope stays closed** — the outcome
+worth having with both reviews three working days out.
+
+**What this does not settle.** Whether a usable authenticator deserves a floor statement is offered to 3b with the
+measurement it would need (§10.11); the service's challenge-issuance and rate-limiting semantics join the two
+things row 14 §5 already handed over; and account-credential recovery is deliberately unspecified, because
+§13.8's four-object table is what lets it be ordinary — **email can restore an account and can never restore a
+content key**, which is the same separation that makes the recovery code mandatory.

@@ -48,7 +48,7 @@ requirements it orders, and a requirement that cites a schedule has acquired a p
 **What this document does not do is select the cryptographic protocol.** PRD §7.12 makes an independent
 protocol design review a gate before network sync ships, and that review needs concrete state, envelopes,
 rotation, finalization and test vectors to be worth buying. §13 fixes the architecture, the roles, the
-negative constraints and the criteria; §13.10 carries the selected suite and the one role still a candidate;
+negative constraints and the criteria; §13.10 carries the selected suite, which no longer holds a candidate;
 §15 is the selection register. **Its storage-facing scope is closed and its protocol scope is not**, so filling
 the rest in and passing it to review remains the work between this draft and an implementable one.
 
@@ -1635,8 +1635,8 @@ worth writing down.** Checked against the Baseline data rather than assumed, on 
 
 So the floor answers the platform question and neither of §13's. **Where Baseline does not resolve a capability the
 design depends on, the floor is stated for that capability specifically, with its evidence and the date the
-evidence was taken, and the design says what happens when it is absent.** Two such statements follow, and they are
-the whole of the current list.
+evidence was taken, and the design says what happens when it is absent.** Three such statements follow, and they
+are the whole of the current list.
 
 **Ed25519 is in scope, and needs no fallback path.** Support, from the MDN compatibility data behind
 `SubtleCrypto.sign` with `Ed25519`:
@@ -1663,6 +1663,18 @@ regardless of what the key supports.
 design already treats PRF as absent by default, so a matrix this ragged costs a convenience on some combinations
 and never a capability on any — and there is no floor to state, because there is no version at which the answer
 becomes yes everywhere. **A design that had made PRF the root would need this section to say something it cannot.**
+
+**A usable authenticator is a runtime condition rather than a version, and §13.9 depends on one.** `webauthn` above
+is Baseline *widely available*, which answers the API and says nothing about whether the device in front of the user
+has a platform authenticator or a security key attached. That is PRF's problem one step less severe: the API is
+uniform, the hardware is not. **The design says what happens when it is absent** — the account credential cannot be
+created on that device, and its slot has no local verifier, which §13.9 handles with the sentence it already had for
+a purely accountless Local slot: sign-out is not presented as though it could protect the slot, and the honest
+handoff is export then reset. The runtime check is
+`PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()`. **Unlike the two statements above, this one
+carries no evidence table**, because presence is not a fact about a browser version. What is worth measuring is
+which current-stable platform-and-browser combinations expose one, and that measurement is offered to review 3b
+(§15 row 12) rather than asserted here.
 
 **What this section is not.** It is a statement of intent and a record of evidence, not a test: nothing in the build
 asserts that Ed25519 is present, and the Baseline set moves as browsers ship, so the dates above are the point
@@ -1772,6 +1784,11 @@ closed. Enumeration never falls back to a database listing.
 back, never leaving a store without identity or capability without a store. An interrupted promotion resolves to
 exactly one of its two states on next launch.
 
+**Slot reopening, with no network.** A closed slot reopens only on a user-verified assertion from a credential its
+binding names. The binding is refused if **any** of its bound fields is altered, including the case that matters:
+a public key replaced with one whose authenticator is present and asserting. A presence-only assertion is refused,
+and a stale signature counter is not (§13.9).
+
 ### 11.2 Protocol conformance
 
 These are the product's stated conformance tests. They are listed here so the suite owns them.
@@ -1815,6 +1832,10 @@ These are the product's stated conformance tests. They are listed here so the su
     keypair. Repeating with a terminal lineage package instead preserves historical attribution, retains the recovery
     identity where available, rotates to a fresh generation and creates a new lineage. Neither path copies the source
     database or accepts an old-lineage envelope into the new accepted set.
+16. **A slot-unlock assertion is not an account assertion.** The client mints its challenge under its own label and
+    the service refuses it as a sign-in; an assertion collected for one slot opens no other slot and no other
+    credential; and the offered `pubKeyCredParams` is the compiled-in list, so a credential outside it is never
+    created and a stored key outside the two accepted encodings is refused rather than guessed at (§13.9).
 
 ### 11.3 Continuity gate
 
@@ -2327,7 +2348,7 @@ reproducible, checksummed artifacts and the implementation audit the add-on trig
 
 **Test.** §11.2 tests 9 and 10.
 
-### 13.9 The local slot verifier
+### 13.9 The account credential and the local slot verifier
 
 **Constraint.** Reopening a closed slot requires proof, it is local, and it grants nothing on the network.
 
@@ -2338,16 +2359,64 @@ authorization change.** When the service is reachable it separately authenticate
 capabilities.
 
 **A purely accountless Local slot has no account credential**, so the product does not present account sign-out as
-though it could protect it. Its honest handoff on a shared installation is export then reset.
+though it could protect it. Its honest handoff on a shared installation is export then reset. **A device with no
+usable authenticator has no local verifier either, and gets the same sentence** — the degradation is stated rather
+than replaced by a weaker gate.
 
-**The verifier construction must resist offline guessing**, since it is checkable without the network by anyone
-holding the profile. It is an unselected field (§15).
+**The construction, selected** (§15 row 12). The account credential is a **WebAuthn discoverable credential** on the
+account service's RP ID, created at account creation, and the verifier **checks a signature rather than a secret**.
+`pubKeyCredParams` is fixed, ordered and part of the carrier version: Ed25519 (COSE -8) preferred, ES256 (COSE -7)
+accepted; both verify in WebCrypto, so the offline verifier needs no polyfill. **The row uses no WebAuthn
+extension**, which is why this role can root on the authenticator where §13.3's device lock could not: PRF is an
+extension whose availability is a matrix (§10.11), and a signature is the core of the API.
 
-### 13.10 The selected suite, and the one role still a candidate
+**Offline-guessing resistance is satisfied by absence rather than by cost.** There is no secret in the profile to
+grind: the private key is in the authenticator, and "guessing" the verifier means forging a signature. This is
+§13.10's third answer of _none_ to the stretching question and the strongest of them — rows 13 and 14 argued that a
+generated 125-bit code leaves no entropy deficit, and here there is no deficit **and no secret**.
 
-**Suite 1, selected as a whole** (§15 row 1). The criteria it was selected against still govern anything added to
-it: reviewed and widely implemented; available in browsers without a polyfill where possible; and **no primitive
-reused across the asynchronous and synchronous paths** (§13.2).
+**The clause protects the network credential rather than the slot, and that is why it is in this section.** A
+verifier that was a checkable function of a low-entropy secret would let a profile holder recover the credential
+that authenticates to the *service* — which §13.2 forbids this artifact supplying while offline. The local gate
+against the person at a shared keyboard is a different and lesser thing, and §13.3's scoping sentence applies to it
+unchanged.
+
+**Each credential gets a service-signed binding in the slot index, and that anchor is load-bearing.** An asymmetric
+verifier removes the guessable secret and introduces a **substitutable public key**, and §6.5's index holds a
+structured clone whose properties the load path trusts — §6.1's rule about editable fields, at a different store.
+The binding is signed by the authorization key of the epoch it names (§13.5) over
+
+> `LP("done/slotbind/v1") || LP(dec v) || LP(account_id) || LP(principal_id) || LP(rp_id) || LP(dec epoch) || LP(cred_id) || LP(hex public_key)`
+
+so substituting a key requires the service's private key rather than write access to IndexedDB. **The public key is
+stored as SubjectPublicKeyInfo and there is no separate algorithm field**: the encoding names its own algorithm, the
+accepted encodings are a compiled-in set of two, and an unrecognized one is refused rather than guessed at.
+
+**The unlock assertion is bound to the operation, not to a clock** — the rule row 14 §5 selects for step-up, whose
+network half is still open (§15), reused here where it is already settled:
+
+> `challenge = SHA-256( LP("done/slotunlock/v1") || LP(dec v) || LP(principal_id) || LP(cred_id) || LP(hex nonce) )`
+
+with 32 fresh random nonce bytes per attempt. **The label is the purpose**, and it is what stops a slot-unlock
+assertion being presented to the service as a sign-in; the service's own challenges being service-issued and
+single-use is the second and independent refusal. Verification checks the binding first, then the returned
+credential id, then the client data — **parsed, never rebuilt** — then `rpIdHash` and both the UP and UV flags, then
+the assertion signature. **The signature counter is read and ignored**, because a synced passkey cannot maintain one
+and a verifier enforcing monotonicity refuses the ordinary case while detecting nothing.
+
+**Two bounds, stated rather than left to be found.** A binding signed in one epoch still verifies on a device that
+has not seen the epoch revoking its credential — bounded by this section's own guarantee, since what a stale binding
+opens is already-local state and nothing on the network, and closed by §13.5's lineage the moment the device is
+online. And **recovery is the fallback for this gate only**: §13.3's prohibition stands, so a locked slot still
+requires its device-lock factor afterwards.
+
+**Test.** §11.1, slot reopening; §11.2 test 16.
+
+### 13.10 The selected suite
+
+**Suite 1, selected as a whole** (§15 row 1), and **no role is a candidate any more.** The criteria it was selected
+against still govern anything added to it: reviewed and widely implemented; available in browsers without a
+polyfill where possible; and **no primitive reused across the asynchronous and synchronous paths** (§13.2).
 
 | Role                                    | Selected                                     | Path  |
 | --------------------------------------- | -------------------------------------------- | ----- |
@@ -2358,7 +2427,8 @@ reused across the asynchronous and synchronous paths** (§13.2).
 | Wrapping a key to a public key          | HPKE base mode (RFC 9180), DHKEM(X25519, HKDF-SHA256) / HKDF-SHA256 / AES-256-GCM | async |
 | Hash                                    | SHA-256                                      | —     |
 | **Recovery-code and device-lock stretching** | **None.** HKDF only                     | —     |
-| Slot verifier                           | **Still a candidate** — an Argon2id-derived verifier. Must resist offline guessing by a profile holder (§13.9) | — |
+| **Account credential and slot verifier** | **A WebAuthn assertion**, offered as Ed25519 (COSE -8) then **ES256 (COSE -7)** and verified in WebCrypto. No extension, so no PRF dependency (§13.9, §15 row 12) | async |
+| **Slot-verifier stretching**            | **None, and nothing to stretch** — the verifier holds a public key, not a secret | — |
 
 **Agility is a carrier version, not a per-record algorithm field.** A version selects the entire suite, so there is
 nothing to negotiate and nothing to downgrade, and every carrier authenticates its own version — a renumbered record
@@ -2382,20 +2452,27 @@ module is compiled with `+simd128`, and a SIMD module **fails to instantiate** w
 running slowly. WebAssembly SIMD is Baseline from Safari 16.4, well inside the §10.11 floor whose binding constraint
 is Ed25519 at Safari 17.0 — so no device that can run this app lacks it, and there is no fallback state to design.
 
-**"Argon2id, or none" is answered, twice, and the second answer is the stronger one.** For the recovery code, an
-attacker must first fetch a service-held envelope, after which guessing is offline (§13.8). For the device lock the
-seal sits in the profile beside the ciphertext it protects, so guessing is offline from the start (§13.3). **In both
-cases the code is generated at 125 bits and the deficit a work factor exists to cover does not exist.** A work factor
-would multiply an already unreachable number while trading an unconditional argument for one that decays with
-hardware.
+**"Argon2id, or none" is answered three times, and each answer rests on less than the one before.** For the recovery
+code, an attacker must first fetch a service-held envelope, after which guessing is offline (§13.8). For the device
+lock the seal sits in the profile beside the ciphertext it protects, so guessing is offline from the start (§13.3).
+**In both cases the code is generated at 125 bits and the deficit a work factor exists to cover does not exist.** A
+work factor would multiply an already unreachable number while trading an unconditional argument for one that decays
+with hardware. **For the slot verifier there is no secret in the profile at all** (§13.9), so the question a work
+factor answers is not asked: nothing is being checked against a guess.
 
 **That answer rests on one invariant, which is therefore normative rather than incidental: every such code is
 generated by the app at full width, and is never user-chosen, never user-extended, and never displayed or accepted
 in a truncated form.** If any of those changes, the stretching question reopens that day, and it reopens as a real
 one.
 
-**The slot verifier is the row that keeps the candidate.** It is assigned to review 3b (§15 row 12), and §13.3's
-selected threat model is the one it would be answered under.
+**One role's primitive is not this document's to select, and that is a fact about WebAuthn rather than a gap.**
+Credential creation is a negotiation: the relying party offers an ordered `pubKeyCredParams` and the authenticator
+picks. **The agility rule above survives in a different form** — the negotiation happens once, at creation, and its
+result is frozen inside a service-signed binding, so no assertion renegotiates anything and there is no
+per-assertion algorithm field. What replaces *no algorithm field* is *one algorithm field, signed, written once*,
+and it is carried by the key encoding rather than stored beside it. **ES256 is the one primitive added to the suite
+since it was selected**, under the criteria above rather than around them, and it is added because the authenticator
+chooses it. RS256 is not offered.
 
 ### 13.11 Assurance
 
@@ -2615,15 +2692,19 @@ direction for the dependency to run.
 
 ## 15. The selection register
 
-The constraints above are fixed; this is the register of the constructions built on them. **Thirteen rows are
-selected and nine are open**, with rows 14 and 20 appearing in both halves because each is split. **The design reviews wait on the selections in their scope, and the cutover
+The constraints above are fixed; this is the register of the constructions built on them. **Fourteen rows are
+selected and eight are open**, with rows 14 and 20 appearing in both halves because each is split. **The design reviews wait on the selections in their scope, and the cutover
 waits separately on row 21** (§13.11, §14.6).
 
 **The register has two review scopes and two independent scopes.** Rows **1, 2, 3 and 13**, plus the storage-facing
 part of 14, are what a local encrypted store needs; they gate the storage work and are the scope of review **3a**, answered
-before the first deployment cutover — **that scope is now closed.** Rows **4–12, 15–17 and 20**, plus the network-facing
+before the first deployment cutover — **that scope is now closed.** Row 12 has since added one primitive to row 1's
+suite (§13.10), under row 1's own criteria and on the asynchronous path only; **3a therefore reads a row 1 that a
+3b row amended**, which is the first time the two scopes have crossed and is said here rather than left to be
+noticed. Rows **4–12, 15–17 and 20**, plus the network-facing
 part of 14, are what moving an envelope over a network needs; they gate the service and are the scope of review **3b**,
-answered before network sync ships — **that scope is open, with rows 4, 5, 6, 7, 8, 9, 10 and 11 now selected out of it — its whole sync core.** Rows **18 and 19**
+answered before network sync ships — **that scope is open, with rows 4, 5, 6, 7, 8, 9, 10, 11 and 12 now selected out of it — its whole sync core, and
+the account credential everything else authenticates against.** Rows **18 and 19**
 retain their own empirical triggers and gate neither review nor
 cutover. Row **21** is the migration choice: it gates cutover but neither design review. Closing one scope does not
 require another, which is what lets encryption at rest land before the protocol is specified.
@@ -2648,9 +2729,10 @@ true**, and where the two disagree this one wins.
 | 8 | Attribution-preserving representation and its storage bound | A **standing signed claim, minted by the writing credential at card creation and living in the content root** beside the card it attributes — so §6.1's trim re-seals it under the current generation and **verifying historical authorship stops requiring historical generations**. The body commitment makes the claim falsifiable, not unforgeable: a card edited since creation verifies and is not exact. One record per card, retiring on exactly the event §4.5 already says retires a claim (§13.7) | [row 8](./selections/row-8-attribution-record.md) |
 | 7 | Checkpoint construction, cadence and retention | One **full snapshot under one generation** plus a signed manifest binding the epoch and its head, the generation, the checkpoint digest, **`sv` and `ds` separately**, row 5's accepted-head vector and the producing credential. **Attribution is preserved by row 8 rather than here**, so §7.6's forbidden re-signing shape is unreachable. **A rotation forces a checkpoint before the old generation may be dropped**; at least two are retained (§7.6) | [row 7](./selections/row-7-checkpoint.md) |
 | 6 | Anti-replay rule and envelope retention depth | Admit at *n* iff the position is **one past the mark**, the link is computed from the link the client itself holds, and a signed head verifies against **that** link. §7.5's *no second link at a held position* needs no fifth condition — it arrives at or below the mark — so the carrier is one `(seq, link)` per credential, a §6.1 record with `kind: 'heads'`. **Outbound: re-mint only on a definite refusal**, never on silence. Retention is three different depths, and a device keeps its own envelopes back to the **second-newest** admitted checkpoint (§7.4, §7.5) | [row 6](./selections/row-6-antireplay-retention.md) |
+| 12 | Account-credential and slot-verifier construction | The account credential is a **WebAuthn discoverable credential** and the verifier **checks a signature rather than a secret** — so §13.10's Argon2id candidate answers *none* for the third time and on the strongest argument: there is no secret in the profile to grind. Each credential gets a **service-signed binding** in the slot index, because an asymmetric verifier trades a guessable secret for a **substitutable public key** and §6.5's index is a structured clone. The unlock assertion is bound to the slot and the credential, never to a clock; the signature counter is read and ignored (§13.9) | [row 12](./selections/row-12-account-credential.md) |
 | 10 | Terminal and portable cutover-package formats | **One format at §13.5's three lineage states**, not two: §14.2's cutover package, §14.4's terminal package and §9.3's fidelity archive, with a live package *upgraded* to retired by importing the terminal record. §14.2's trust root is bound in the **HPKE `info` of every generation wrap**, so a substituted root opens no generation and there is nothing to re-attribute — the one anchor that terminates in user-held material rather than in a service signature (§14.2, §14.4) | [row 10](./selections/row-10-portable-package.md) |
 
-**Row 20 — test vectors — is closed for these thirteen and open for the rest.** Each carries a generated,
+**Row 20 — test vectors — is closed for these fourteen and open for the rest.** Each carries a generated,
 self-verifying vector file; `pnpm vectors:check` fails the build if any has drifted from its generator, and
 `pnpm vectors:coverage` fails it if any field bound in one is isolated by no published negative.
 
@@ -2658,24 +2740,26 @@ self-verifying vector file; `pnpm vectors:check` fails the build if any has drif
 
 | # | Unselected                                    | Constrained by                                                                                 |
 | - | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| 12 | Account-credential and slot-verifier construction, including offline-guessing resistance | §13.9 |
 | 14 | Recovery-code **step-up authentication** and confirmation UX — the network-facing half | §13.8; the storage-facing half is selected above |
 | 15 | Interrupted-rotation and downgrade behaviour   | Must fail closed without changing the confidentiality promise (§11.2 test 11)                  |
 | 16 | Hosted-content retention duration after a lapse | One number bounds both resume and total-device-loss recovery. **Conditional** — arises only if PRD §11's pricing question selects a plan that can lapse (PRD §6.10) |
 | 17 | Which web-security baseline profile and version | §10.9, §13.11 level 2                                                                         |
 | 18 | Whether a persistent encrypted search index is needed at all | Deferred; gates neither review nor cutover; measure the in-memory rebuild first (§6.2, §12) |
 | 19 | Root-type day collections (§10.8)              | Deferred; one of its four costs has lapsed and should be re-counted                            |
-| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the thirteen selected above**, each of which carries a generated, self-verifying vector file |
+| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the fourteen selected above**, each of which carries a generated, self-verifying vector file |
 | 21 | First-deployment cutover attribution: accept system attribution, or bring the fidelity archive forward | §14.6; must be selected before cutover; adding authorship fields to Markdown is rejected (§9.1) |
 
-**Rows 12 and 15 are the ones to close next, and the character of the scope has changed.** With row 6 the
-sync core is closed — envelope, acceptance, retention, checkpoint, attribution, enrollment, discovery, and the
-package that carries all of it out. **What remains is not sync**: row 12 and the network half of 14 are account
-and credential work, 15 is failure behaviour, and 16 and 17 are a number and a profile.
+**Row 15 is the one to close next, and what remains after it is not cryptography.** With rows 6 and 12 the scope's
+substance is closed — envelope, acceptance, retention, checkpoint, attribution, enrollment, discovery, the package
+that carries all of it out, and the credential the account is reached by. **What is left**: the network half of 14
+is one construction already drafted in row 14 §5, 15 is failure behaviour, 16 is conditional on a pricing question
+that is deferred and blocks nothing, and 17 is a published profile and a version.
 
-**Row 12 is worth reading beside §13.3 before it is answered**: a verifier
-resisting offline guessing by a profile holder has the threat model the device lock was selected under, and that
-argument now lives in a record assigned to the other review.
+**Row 12 answered the open question about which review should hold it, rather than being reassigned.** It looked
+storage-shaped because *offline-guessing resistance* implied a secret at rest, and §13.3's threat model was the one
+it seemed to need. There is no secret at rest. What the row actually contains — an account credential, a service
+signature, an epoch, a challenge and a cross-protocol replay boundary — is network-facing throughout, so it stays in
+**3b** and 3a's closed scope stays closed.
 
 ---
 
@@ -2707,7 +2791,7 @@ is the placeholder the as-built review checks against, not an omission.
 | Data class | Purpose | Subject / deletion scope | Storage or recipient | Retention | Deletion event | Operator visibility | Third parties |
 | ---------- | ------- | ------------------------ | -------------------- | --------- | -------------- | ------------------- | -------------- |
 | Account record — identifier, contact address, service settings | Authenticate and contact the account holder | Account | Authorization service store | Life of the account | Account deletion | Support may read; audited | None in the base design |
-| Account authenticator public material and slot-verifier parameters (§13.9) | Verify sign-in; anchor the device-local slot binding | Account | Authorization service store | Life of the account | Account deletion | None — public material | None |
+| Account authenticator public material and slot-verifier parameters — credential ids, public keys, and the signed slot bindings issued for them (§13.9) | Verify sign-in; anchor the device-local slot binding | Account | Authorization service store | Life of the account | Account deletion | None — public material | None |
 | Signed authorization lineage — epochs, membership grants, credential ids, capabilities, generation ids (§13.5) | Admit and revoke, order successors, prove historical admission | Workspace | Authorization service store | Life of the lineage | Account deletion commits the terminal record, then removes service copies | Support may read; authorization changes are audited | None |
 | Terminal lineage record | Let a surviving replica distinguish retirement from genesis (§13.5) | Workspace | Authorization service store, then replicas and the portable package | Propagated before deletion; not retained by the service afterwards | Account deletion | Support may read; audited | None |
 | Acceptance evidence — per-credential accepted-set log, head digests, cutoffs (§7.5) | Let clients refuse writes the service never accepted | Workspace × credential | Authorization service store | **Unselected** (§15 rows 5, 7) | Account deletion | Support may read; audited | None |

@@ -1007,7 +1007,9 @@ that moment the app asks for three distinct things in one flow:
 
 1. **A name** — a label, and the small half.
 2. **An account credential** — proves identity to the service, and leaves an offline-verifiable local
-   slot-unlock binding on this device.
+   slot-unlock binding on this device. **It is a passkey rather than a password** (TRD §13.9): the ceremony is
+   the device's own — a fingerprint, a face, a PIN — and there is no password to choose, reuse, or be phished
+   for. This is the same refusal §7.6 makes about recovery, arriving one step earlier.
 3. **A saved, re-entered, high-entropy recovery code** — seals a content-recovery power the service never
    receives (§7.6). This is the heavy half.
 
@@ -1373,6 +1375,10 @@ sign-out without pretending a cookie is a content key.
 **A purely accountless Local slot has no account credential**, so the product does not present account
 sign-out as though it could protect it. On a shared installation its honest handoff operation is export if
 needed, then reset — unless a separate local-profile unlock is deliberately added later.
+
+**A device with no usable authenticator gets the same sentence rather than a weaker gate.** An account cannot
+be created there, and a slot on it has no local verifier; the product says so instead of offering a
+password-shaped stand-in that would protect nothing while looking as though it did (TRD §13.9, §10.11).
 
 **Two forcing cases, and the ordinary one is not the shared laptop.** After the account boundary, every synced
 user has a Local workspace before they have an account, and often one on each device. A device that signs in
