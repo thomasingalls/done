@@ -1608,6 +1608,28 @@ key-holding origin; CSP and Trusted Types where supported; dependency integrity;
 cookie attributes; and origin checks on the transport upgrade. These are the controls a versioned web-security
 baseline covers, and they are a gate before sync ships (§13.11).
 
+**The baseline is selected** (§15 row 17): **OWASP ASVS 5.0.0 at L2 as a floor**, plus eight named L3
+requirements pulled up, five addendum controls, and one recorded deviation — 218 of the standard's 345
+requirements in scope, 55 excluded with reasons. **A level is a floor rather than a profile**, because the
+controls listed above are scattered across L1, L2 and L3: external-asset integrity, CSP reporting,
+Cross-Origin-Opener-Policy and dependency provenance are all L3 in a standard whose L2 most applications take.
+
+**The addendum exists because the standard does not model an application of this shape**, and the measurement is
+blunt: ASVS 5.0.0 has **one** requirement mentioning browser storage and **none** mentioning Trusted Types,
+service workers or offline operation. So `V14.3.3` — no sensitive data in browser storage — is **recorded as a
+deviation with a compensating control** rather than dispositioned away, since the entire content of this
+application is user data in IndexedDB and §6.1 is what makes that safe. The addendum's first control is stronger
+than the requirement it supersedes: **no remote subresource at all**, rather than external hosting with
+Subresource Integrity, because SRI pins a byte string and does not remove the party.
+
+**The profile is generated and checks itself**, in
+[`test/vectors/web-security-baseline.json`](../test/vectors/web-security-baseline.json): chapters are discovered
+from a pinned index of the standard rather than from a list, every exclusion carries a reason and every
+conditional one a trigger, every pulled-up requirement is checked to exist and to be L3, and every addendum
+control has to cite a section of this document — and, where it claims CI verification, name a check that exists.
+**One control is verified now**: `pnpm build` fails if any built file fetches a subresource from outside the
+origin.
+
 ### 10.10 One new primitive, and it is on the crash path
 
 Everything in §13 composes reviewed constructions except one: the **synchronous AEAD** for the crash journal
@@ -2543,7 +2565,7 @@ Five cumulative levels; three gates.
 | Level                                      | Evidence produced                                                                                  |
 | ------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
 | 1. Project-owned threat model and tests    | This document's constraints, §11.2's vectors, negative tests, CI controls                          |
-| 2. Versioned web-security baseline         | A recorded profile and repeatable verification of every applicable requirement (§10.9)             |
+| 2. Versioned web-security baseline         | **OWASP ASVS 5.0.0 at L2 as a floor**, plus 8 pulled-up L3 requirements, 5 addendum controls and 1 recorded deviation — the profile is generated and self-checking (§10.9, §15 row 17) |
 | 3a. Independent storage and journal review | The encrypted record format, the local key hierarchy, and the synchronous journal AEAD with its nonce discipline (§6.1, §13.2, §13.3) |
 | 3b. Independent protocol design review     | Authorization, key delivery, envelopes, epochs, rotation, recovery, downgrade                       |
 | 4. Independent implementation audit        | The shipped client, relay and deployment against this contract                                     |
@@ -2570,7 +2592,11 @@ review would either arrive too late to protect it or hold the storage work until
 - **3b — the protocol**, covering §15 rows 4–12, 15–17 and 20, plus the network-facing part of 14. Answered
   **before network sync ships.** Rows 18, 19 and 21 belong to neither review (§15).
 
-**Both wait on their scope in §15 being closed.** Booking a design review of architecture alone buys an opinion about
+**Level 2's profile is selected in Stage 0 and verified before Stage 4 ships**, and the split is the same one
+level 3 uses: recording which requirements apply is worth doing while the answer is cheap to change, and most of
+the 218 in scope are about a service that does not exist yet.
+
+**Both design reviews wait on their scope in §15 being closed.** Booking a design review of architecture alone buys an opinion about
 a sketch; the reviewer needs concrete state, envelopes, rotation, finalization and test vectors. That sequencing is
 the main reason §15 exists as a list rather than as prose.
 
@@ -2760,8 +2786,8 @@ direction for the dependency to run.
 
 ## 15. The selection register
 
-The constraints above are fixed; this is the register of the constructions built on them. **Fifteen rows are
-selected and seven are open**, with rows 14 and 20 appearing in both halves because each is split. **The design reviews wait on the selections in their scope, and the cutover
+The constraints above are fixed; this is the register of the constructions built on them. **Sixteen rows are
+selected and six are open**, with rows 14 and 20 appearing in both halves because each is split. **The design reviews wait on the selections in their scope, and the cutover
 waits separately on row 21** (§13.11, §14.6).
 
 **The register has two review scopes and two independent scopes.** Rows **1, 2, 3 and 13**, plus the storage-facing
@@ -2771,9 +2797,9 @@ suite (§13.10), under row 1's own criteria and on the asynchronous path only; *
 3b row amended**, which is the first time the two scopes have crossed and is said here rather than left to be
 noticed. Rows **4–12, 15–17 and 20**, plus the network-facing
 part of 14, are what moving an envelope over a network needs; they gate the service and are the scope of review **3b**,
-answered before network sync ships — **that scope is open, with rows 4, 5, 6, 7, 8, 9, 10, 11, 12 and 15 now selected out of it — its whole sync core,
-the account credential everything else authenticates against, and the rule for what happens when any of it is
-interrupted.** Rows **18 and 19**
+answered before network sync ships — **that scope is open, with rows 4, 5, 6, 7, 8, 9, 10, 11, 12, 15 and 17 now selected out of it — its whole sync
+core, the account credential everything else authenticates against, the rule for what happens when any of it is
+interrupted, and the web-security baseline that §13.11 level 2 owes separately.** Rows **18 and 19**
 retain their own empirical triggers and gate neither review nor
 cutover. Row **21** is the migration choice: it gates cutover but neither design review. Closing one scope does not
 require another, which is what lets encryption at rest land before the protocol is specified.
@@ -2798,11 +2824,14 @@ true**, and where the two disagree this one wins.
 | 8 | Attribution-preserving representation and its storage bound | A **standing signed claim, minted by the writing credential at card creation and living in the content root** beside the card it attributes — so §6.1's trim re-seals it under the current generation and **verifying historical authorship stops requiring historical generations**. The body commitment makes the claim falsifiable, not unforgeable: a card edited since creation verifies and is not exact. One record per card, retiring on exactly the event §4.5 already says retires a claim (§13.7) | [row 8](./selections/row-8-attribution-record.md) |
 | 7 | Checkpoint construction, cadence and retention | One **full snapshot under one generation** plus a signed manifest binding the epoch and its head, the generation, the checkpoint digest, **`sv` and `ds` separately**, row 5's accepted-head vector and the producing credential. **Attribution is preserved by row 8 rather than here**, so §7.6's forbidden re-signing shape is unreachable. **A rotation forces a checkpoint before the old generation may be dropped**; at least two are retained (§7.6) | [row 7](./selections/row-7-checkpoint.md) |
 | 6 | Anti-replay rule and envelope retention depth | Admit at *n* iff the position is **one past the mark**, the link is computed from the link the client itself holds, and a signed head verifies against **that** link. §7.5's *no second link at a held position* needs no fifth condition — it arrives at or below the mark — so the carrier is one `(seq, link)` per credential, a §6.1 record with `kind: 'heads'`. **Outbound: re-mint only on a definite refusal**, never on silence. Retention is three different depths, and a device keeps its own envelopes back to the **second-newest** admitted checkpoint (§7.4, §7.5) | [row 6](./selections/row-6-antireplay-retention.md) |
+| 17 | Which web-security baseline profile and version | **OWASP ASVS 5.0.0 at L2 as a floor**, plus 8 named L3 pull-ups, 5 addendum controls and 1 recorded deviation. **A level is a floor rather than a profile** — §10.9's controls are spread across all three. The standard has **one** requirement mentioning browser storage and **none** mentioning Trusted Types, service workers or offline operation, so `V14.3.3` is a recorded deviation against §6.1 rather than a disposition. Generated and self-checking; A1 (no remote subresource) is build-failing today (§10.9, §13.11) | [row 17](./selections/row-17-web-security-baseline.md) |
 | 15 | Interrupted-rotation and downgrade behaviour | **One intent-and-outcome protocol at three kinds** — rotate, replace-recovery, retire — because §11.2 test 11's list is one class: an interrupted middle that reads as a completed **lesser** transition. `kind` is bound in both messages, which makes PRD §6.10's *a downgrade must not silently become account deletion* a field rather than a screen. Three client cases: silence means resubmit the identical bytes, a matching `committed_id` means apply, and a differing one means **discard and rebuild** — so **the outcome must be signed**, since the third case throws away a live content key (§13.7, §14.4) | [row 15](./selections/row-15-transitions.md) |
 | 12 | Account-credential and slot-verifier construction | The account credential is a **WebAuthn discoverable credential** and the verifier **checks a signature rather than a secret** — so §13.10's Argon2id candidate answers *none* for the third time and on the strongest argument: there is no secret in the profile to grind. Each credential gets a **service-signed binding** in the slot index, because an asymmetric verifier trades a guessable secret for a **substitutable public key** and §6.5's index is a structured clone. The unlock assertion is bound to the slot and the credential, never to a clock; the signature counter is read and ignored (§13.9) | [row 12](./selections/row-12-account-credential.md) |
 | 10 | Terminal and portable cutover-package formats | **One format at §13.5's three lineage states**, not two: §14.2's cutover package, §14.4's terminal package and §9.3's fidelity archive, with a live package *upgraded* to retired by importing the terminal record. §14.2's trust root is bound in the **HPKE `info` of every generation wrap**, so a substituted root opens no generation and there is nothing to re-attribute — the one anchor that terminates in user-held material rather than in a service signature (§14.2, §14.4) | [row 10](./selections/row-10-portable-package.md) |
 
-**Row 20 — test vectors — is closed for these fifteen and open for the rest.** Each carries a generated,
+**Row 20 — test vectors — is closed for these sixteen and open for the rest.** Row 17 is the one whose artifact is
+not a vector file in the same sense: it records a profile rather than a construction, and it earns its place in
+the same way — generated, self-checking, and build-failing when it stops agreeing with the standard it names. Each carries a generated,
 self-verifying vector file; `pnpm vectors:check` fails the build if any has drifted from its generator, and
 `pnpm vectors:coverage` fails it if any field bound in one is isolated by no published negative.
 
@@ -2812,19 +2841,18 @@ self-verifying vector file; `pnpm vectors:check` fails the build if any has drif
 | - | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | 14 | Recovery-code **step-up authentication** and confirmation UX — the network-facing half | §13.8; the storage-facing half is selected above |
 | 16 | Hosted-content retention duration after a lapse | One number bounds both resume and total-device-loss recovery. **Conditional** — arises only if PRD §11's pricing question selects a plan that can lapse (PRD §6.10) |
-| 17 | Which web-security baseline profile and version | §10.9, §13.11 level 2                                                                         |
 | 18 | Whether a persistent encrypted search index is needed at all | Deferred; gates neither review nor cutover; measure the in-memory rebuild first (§6.2, §12) |
 | 19 | Root-type day collections (§10.8)              | Deferred; one of its four costs has lapsed and should be re-counted                            |
-| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the fifteen selected above**, each of which carries a generated, self-verifying vector file |
+| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the sixteen selected above**, each of which carries a generated, self-verifying file |
 | 21 | First-deployment cutover attribution: accept system attribution, or bring the fidelity archive forward | §14.6; must be selected before cutover; adding authorship fields to Markdown is rejected (§9.1) |
 
-**Nothing cryptographic is left in this scope.** With rows 6, 12 and 15 the substance is closed — envelope,
-acceptance, retention, checkpoint, attribution, enrollment, discovery, the package that carries all of it out, the
-credential the account is reached by, and the rule for what happens when any of it is interrupted. **What remains
-is three rows and one of them does not arise**: 16 is conditional on PRD §11's pricing question, which is deferred
-and which no sentence may depend on; 17 is a published web-security profile and a version, owed to Stage 0 by
-§13.11's own table; and the network half of 14 is a construction already drafted in row 14 §5, **whose
-atomic-replace half row 15 has since closed** as `kind: 'replace-recovery'`.
+**Two rows remain in this scope, and one of them does not arise.** Row 16 is conditional on PRD §11's pricing
+question, which is deferred and which no sentence in that document may depend on, so what it needs is to be
+presented to the reviewer as conditional rather than closed. The network half of 14 is a construction already
+drafted in row 14 §5, **whose atomic-replace half row 15 has since closed** as `kind: 'replace-recovery'`; what
+is left of it is a fold. Everything else — envelope, acceptance, retention, checkpoint, attribution, enrollment,
+discovery, the package that carries all of it out, the credential the account is reached by, the rule for what
+happens when any of it is interrupted, and the web-security baseline — is selected.
 
 **Row 12 answered the open question about which review should hold it, rather than being reassigned.** It looked
 storage-shaped because *offline-guessing resistance* implied a secret at rest, and §13.3's threat model was the one

@@ -1186,3 +1186,81 @@ How long a pending transition may stay pending before the product says something
 of _forever_, and is deliberately not a timeout. And `replace-recovery`'s target counter is treated as
 client-chosen and monotone, which is enough for at-most-once and leaves two devices able to race to counter 1 —
 resolved by the same three-way rule, at the cost of one wasted keypair.
+
+---
+
+### The web-security baseline is ASVS 5.0.0 at L2 as a floor, and the exclusions are the profile
+
+**Date:** 2026-08-20 · **Commit:** _this one_ · **Against:** PRD v9 / TRD v8
+
+**Orientation.** §15 row 17 asked which web-security baseline profile and version, constrained by §10.9 and by
+§13.11's level 2, which wants "a recorded profile and repeatable verification of every applicable requirement".
+It reads as picking a name and a number, and [progress.md](./progress.md) had been describing it that way — a
+published profile and a version — while listing it beside two rows that genuinely are not work.
+
+**Decision.** **OWASP ASVS 5.0.0, at L2 as a floor**, plus eight named L3 requirements pulled up, five addendum
+controls, and one recorded deviation. 218 of the standard's 345 requirements in scope; 55 excluded with reasons,
+two of the three exclusions conditional with a trigger.
+
+**There is one real candidate, and finding that out was the cheap part.** ASVS is the only requirement-level,
+versioned, levelled, machine-readable option: the Top 10 is an awareness document with nothing to verify, SSDF is
+process rather than product, CIS is infrastructure, SOC 2 and ISO 27001 audit an organisation, MASVS is mobile.
+**All of the row's actual content is in the three things a version and a level do not say** — which requirements
+apply, what happens where the product cannot satisfy one, and what the standard does not cover at all.
+
+**A level is a floor rather than a profile.** §10.9 already lists the controls that matter here, and in ASVS
+5.0.0 they land at L1, L2 **and L3**: external-asset integrity, CSP violation reporting,
+Cross-Origin-Opener-Policy and dependency provenance are all L3 in a standard whose L2 most applications take.
+So eight L3 requirements are pulled up by name. **Going to L3 wholesale is worse than it looks** — it adds 92
+requirements weighted toward chapters this product structurally does not have, producing a higher number and more
+unrecorded inapplicabilities, which is the direction that makes a baseline decorative.
+
+**The exclusions are the profile, and one is a tenth of the standard.** V10 OAuth and OIDC is 36 requirements
+dropped on one sentence — there is no third-party identity provider anywhere in the design — and that sentence is
+written down for exactly that reason. **The assurance value of a baseline is in the exclusions being recorded,
+not in the inclusions passing**, and an unrecorded exclusion is how a profile becomes decoration. V6
+Authentication is the largest applicability question and is deliberately left for verification, because many of
+its requirements are inapplicable **not because the feature is absent but because row 12 chose a shape they do not
+contemplate** — and "we do not do that" and "we do something the requirement did not anticipate" are recorded
+differently.
+
+**The measurement that decided the shape, and it is blunt.** Searched against the published requirement text,
+ASVS 5.0.0 mentions browser storage in **one** requirement and Trusted Types, service workers and offline
+operation in **none**. **The standard does not model an application of this shape** — a fact about what it is for
+rather than a criticism, since it is written for applications with a server that holds and processes user data,
+and here the server is content-blind by construction and frequently absent. So `V14.3.3`, which forbids sensitive
+data in browser storage, is **a recorded deviation with a compensating control** rather than a disposition: it is
+the one requirement the standard has about the thing this product structurally is, and the product formally fails
+it. The honest response is that plus a named addendum, **not a level chosen high enough to look thorough**.
+
+**The addendum was already written, in §10.9**, which is most of the argument for it — five controls the standard
+carries at no level, none of them invented here. **A1 is stronger than the requirement it supersedes**: no remote
+subresource at all, rather than external hosting with Subresource Integrity, because SRI pins a byte string and
+does not remove the party from a boundary that same-origin code is already inside.
+
+**"Repeatable" is the word doing the work, so the profile is generated rather than written.** Chapters are
+discovered from a pinned index rather than a list beside it — the argument that made `check-aad-coverage.mjs`
+glob for generators; every exclusion needs a reason and every conditional one a trigger; every pull-up must
+exist, be genuinely L3 and sit in a chapter that is in scope; every addendum control must cite a section that
+exists in the TRD and, where it claims CI verification, name a check that exists. **That last rule bit during
+construction**: A4 was written as a Stage 1 CI control with no check named, which was true in spirit and a claim
+with no address in fact, and the generator refused the profile until it named the §11.1 test it is waiting for.
+
+**One control is verified now rather than promised**, and it is the one §10.9 names first.
+`scripts/check-origin-isolation.mjs` runs inside `pnpm build` and fails if any built file fetches a subresource
+from outside the origin. It scans the built output rather than the source, because a dependency that injects a
+CDN URL at build time is the case a source scan misses; it was tested in both directions. `check-budget.mjs` is
+the precedent for a build-failing check that needs the built artifact.
+
+**The standard is pinned, not fetched, and that is deliberate.** `pnpm check` never reaches the network — a build
+step that does turns a third party's release schedule into a build failure. `pnpm asvs:pin` compares against the
+published file when someone wants to know. **Identifiers and levels are pinned; requirement text is not**: ASVS
+is CC BY-SA 4.0, a derived index of identifiers is what the profile needs, and reproducing the prose would be an
+obligation taken on for nothing.
+
+**What this does not settle.** Whether ASVS is the right instrument at all, given the measurement above, is
+offered to 3b — and if a reviewer thinks it is not, the alternative is probably _no external standard and a
+longer addendum_ rather than a different standard, which is the sort of question level 2 exists to have asked.
+The CSP directive set is where A1, A2 and V3.4.3 meet and is a Stage 4 artifact. And the 218 in-scope
+requirements are still to be verified, which is level 2's cost rather than this row's: **selecting the profile is
+Stage 0 and verifying it is a gate before Stage 4 ships.**

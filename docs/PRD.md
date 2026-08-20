@@ -2334,7 +2334,7 @@ from hostile script served at that legitimate origin.
 | Level                                       | Evidence produced                                                                                  |
 | ------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | 1. Project-owned threat model and tests     | This contract, protocol vectors, negative tests and CI controls                                     |
-| 2. Versioned web-security baseline          | A recorded profile and repeatable verification of every applicable requirement                      |
+| 2. Versioned web-security baseline          | **OWASP ASVS 5.0.0 at L2 as a floor**, plus named higher-level requirements and an addendum for what the standard does not cover (TRD §10.9) |
 | 3. Independent protocol design review       | Review of authorization, key delivery, envelopes, epochs, rotation, recovery and downgrade handling |
 | 4. Independent implementation audit         | Review and testing of the shipped client, relay and deployment against the contract                 |
 | 5. Ongoing disclosure and response program  | A vulnerability-reporting path, rotation/recovery runbook, dependency monitoring, incident drills   |
@@ -2348,7 +2348,12 @@ narrower boundary than §7.11's as-built data review, which binds later, at *wid
 audience sits between the two.
 
 - **Before sync ships:** the project-owned threat model and conformance tests; a recorded, versioned
-  web-security baseline profile; and an **independent protocol design review**.
+  web-security baseline profile; and an **independent protocol design review**. **The baseline profile is
+  selected** — OWASP ASVS 5.0.0, at L2 as a floor rather than as a target, because a standard written for
+  applications with a server that holds user data covers this one's actual surface thinly: it has a single
+  requirement about browser storage and none at all about offline operation. What that costs is a recorded
+  deviation and a short addendum, both of which are better than a level chosen high enough to look thorough
+  (TRD §10.9).
 - **Level 3 is two engagements**, because encryption at rest ships well before network sync and the synchronous
   journal AEAD is the only new construction in the plan. A narrow **storage and journal review** is answered
   before the first deployment writes real data under that construction; the **protocol review** is answered
