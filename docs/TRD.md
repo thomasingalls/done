@@ -2430,6 +2430,35 @@ public key, wraps and sealed envelope. **That replacement is §13.7's transition
 'replace-recovery'`** (§15 row 15), so an interruption leaves exactly the old envelope or exactly the new — never
 both live, which would leave the old code still opening content. **It cannot help after the last content key and the old code are both gone.**
 
+**"Fresh account authentication" is a bound challenge, not a freshness window** (§15 row 14). Three gates, and two of
+them are free: **content access** is proven by use, since replacement must rewrap every required generation to the new
+`R_pub` and has therefore already opened them; **the device lock** is implied where the slot has one, because §13.3
+makes it the gate on opening `K_g` envelopes and the first gate opens them. An implementation that adds a second
+prompt has misread where the lock sits. The third gate is an assertion from the account credential (§13.9) over
+
+> `challenge = SHA-256( LP("done/recovery-replace/v1") || LP(dec v) || LP(hex intent_id) || LP(hex nonce) )`
+
+with **32 fresh nonce bytes per attempt, issued by the service and retired on use**. A five-minute window is a
+parameter with no principled value, and what it approximates is *this assertion was collected for this operation* — so
+the operation is bound directly and there is no clock to skew. **The nonce is what makes single-use true rather than
+said**: without it the challenge is a pure function of the operation, and an assertion collected for a replacement
+that never completed stays presentable indefinitely — §13.5's standing artifact, replayable with no key at all.
+
+**It binds the §13.7 transition id rather than the new public key.** The id covers `kind`, the lineage, the parent
+epoch and the payload — the new key among them — so binding the key beside it would be a second binding of a fact
+already inside it, and it means a `replace-recovery` step-up cannot be redirected to a `retire`. **It binds no
+principal or credential id**, where §13.9's slot-unlock challenge binds both: that challenge is client-constructed for
+a device-local gate and names device-local things, this one is service-issued for a service operation and names the
+operation as the service knows it. Binding a credential id would also forbid answering from a second passkey the
+account has registered.
+
+**The old code is deliberately not required**, because replacement exists for the holder who still has their devices
+and has lost or exposed the code, and demanding the lost object is the one requirement guaranteed to be unmeetable
+exactly when the flow is needed. **The residual is stated rather than left to be found:** a party holding a device
+*and* the account credential can replace the envelope and destroy the owner's recovery path. That party already has
+content access, so this widens no confidentiality boundary — it is an availability loss, strictly less than deleting
+the account outright, and PRD §7.6's explicit confirmation is where it is surfaced.
+
 **Escrow is excluded from the service by construction**, because a decryption capability is a compellable capability.
 An opt-in add-on may exist only if operated by a **separate legal entity** and scoped to a separately sealed `R_priv`
 and nothing else. Split that way, the service holds ciphertext, wraps and a code-sealed private key while the escrow
@@ -2483,8 +2512,8 @@ so substituting a key requires the service's private key rather than write acces
 stored as SubjectPublicKeyInfo and there is no separate algorithm field**: the encoding names its own algorithm, the
 accepted encodings are a compiled-in set of two, and an unrecognized one is refused rather than guessed at.
 
-**The unlock assertion is bound to the operation, not to a clock** — the rule row 14 §5 selects for step-up, whose
-network half is still open (§15), reused here where it is already settled:
+**The unlock assertion is bound to the operation, not to a clock** — the rule row 14 §5 selects for step-up (§13.8),
+reused here at a challenge with different provenance and therefore a different field list:
 
 > `challenge = SHA-256( LP("done/slotunlock/v1") || LP(dec v) || LP(principal_id) || LP(cred_id) || LP(hex nonce) )`
 
@@ -2598,8 +2627,11 @@ review would either arrive too late to protect it or hold the storage work until
   **before the first deployment cutover** (§14.6), not before the storage work begins: a defect found during implementation costs a rework,
   whereas the same defect found after cutover has written a real deployment's data under a broken construction,
   and a nonce-reuse fault is retroactive.
-- **3b — the protocol**, covering §15 rows 4–12, 15–17 and 20, plus the network-facing part of 14. Answered
-  **before network sync ships.** Rows 18, 19 and 21 belong to neither review (§15).
+- **3b — the protocol**, covering §15 rows 4–12, 15–17 and 20, plus the network-facing part of 14 — **that scope is
+  closed too** (§15.1), so this review also reads constructions and vectors rather than a register. What it is
+  additionally *asked* is whether the service rate-limits envelope fetch, which is a service-hardening question
+  rather than a construction and is put to the reviewer as one. Answered **before network sync ships.** Rows 18, 19
+  and 21 belong to neither review (§15).
 
 **Level 2's profile is selected in Stage 0 and verified before Stage 4 ships**, and the split is the same one
 level 3 uses: recording which requirements apply is worth doing while the answer is cheap to change, and most of
@@ -2795,8 +2827,8 @@ direction for the dependency to run.
 
 ## 15. The selection register
 
-The constraints above are fixed; this is the register of the constructions built on them. **Seventeen rows are
-selected and five are open**, with rows 14 and 20 appearing in both halves because each is split. **The design reviews wait on the selections in their scope, and the cutover
+The constraints above are fixed; this is the register of the constructions built on them. **Eighteen rows are
+selected and four are open**, with row 20 appearing in both halves because it is split. **The design reviews wait on the selections in their scope, and the cutover
 waits separately on row 21** (§13.11, §14.6).
 
 **The register has two review scopes and two independent scopes.** Rows **1, 2, 3 and 13**, plus the storage-facing
@@ -2806,10 +2838,13 @@ suite (§13.10), under row 1's own criteria and on the asynchronous path only; *
 3b row amended**, which is the first time the two scopes have crossed and is said here rather than left to be
 noticed. Rows **4–12, 15–17 and 20**, plus the network-facing
 part of 14, are what moving an envelope over a network needs; they gate the service and are the scope of review **3b**,
-answered before network sync ships — **that scope is open, with rows 4, 5, 6, 7, 8, 9, 10, 11, 12 and 15–17 now selected out of it — its whole sync
-core, the account credential everything else authenticates against, the rule for what happens when any of it is
-interrupted, the web-security baseline that §13.11 level 2 owes separately, and the one retention in the design
-that is a duration rather than a position.** Rows **18 and 19**
+answered before network sync ships — **that scope is now closed too**: rows 4–12 and 15–17 are selected, and row 14's
+network-facing half — the step-up challenge — is selected with them. Between them they carry the whole sync core, the
+account credential everything else authenticates against, the rule for what happens when any of it is interrupted, the
+web-security baseline that §13.11 level 2 owes separately, and the one retention in the design that is a duration
+rather than a position. **What is left for the reviewer is one question rather than one row**: whether the service
+rate-limits envelope fetch, which changes nothing about the code's entropy because the attacker who matters has
+already fetched (§15 row 14's record, §5). Rows **18 and 19**
 retain their own empirical triggers and gate neither review nor
 cutover. Row **21** is the migration choice: it gates cutover but neither design review. Closing one scope does not
 require another, which is what lets encryption at rest land before the protocol is specified.
@@ -2826,7 +2861,7 @@ true**, and where the two disagree this one wins.
 | 2 | Synchronous journal AEAD and its nonce discipline | **XChaCha20-Poly1305**, 24 random bytes per record, **no counter and no durable state** — so there is nothing for a crash to lose. Subkey derived once at open from `K_g`. **The implementation is the audited RustCrypto crate compiled to a 6.5 kB inlined wasm module**, instantiated synchronously, which closes §12's measured 4 kB breach and costs 0.7 kB _less_ than the pure-JS library it replaces (§13.10) | [row 2](./selections/row-2-journal-aead.md) |
 | 3 | Encrypted record and local key-envelope formats | AES-256-GCM under domain-separated subkeys; **every cleartext field is in the AAD**, because IndexedDB holds a structured clone whose properties the load path trusts. 12 random nonce bytes under a per-generation budget that `seq` bounds — **so `seq` does not reset at trim** | [row 3](./selections/row-3-record-format.md) |
 | 13 | Device-lock derivation, enrollment migration and copy | A **generated 125-bit code always**, with WebAuthn PRF as an additional seal of the same `L_lock` rather than an alternative to it. Enrollment reseals the key envelopes and **rotates the content key forward** (§13.3) | [row 13](./selections/row-13-device-lock.md) |
-| 14 | Recovery-code entropy and generation — **storage-facing half** | 125 bits, Crockford Base32, five groups of five, **and no stretching at all**. Step-up authentication is drafted in the same record and belongs to review 3b | [row 14](./selections/row-14-recovery-code.md) |
+| 14 | Recovery-code entropy, generation, step-up and confirmation UX | 125 bits, Crockford Base32, five groups of five, **and no stretching at all**. Step-up is **a bound challenge rather than a freshness window** — `SHA-256( LP("done/recovery-replace/v1") \|\| LP(dec v) \|\| LP(hex intent_id) \|\| LP(hex nonce) )`, answered by the account credential, with 32 service-issued nonce bytes retired on use. **It binds §13.7's transition id, not the new public key**, so a `replace-recovery` step-up cannot be redirected to a `retire`; and no principal or credential id, because a service-issued challenge names the operation as the service knows it (§13.8) | [row 14](./selections/row-14-recovery-code.md) |
 | 5 | Finalization shape | An **append-only per-credential accepted chain** of SHA-256 links, with **service-signed heads amortized over a batch** rather than one receipt per envelope. A separate hot acceptance-signing key, certified by the authorization key in the epoch. `final: true` is the cutoff. The epoch payload and the checkpoint manifest each gain the head vector (§7.5, §7.6, §13.5) | [row 5](./selections/row-5-finalization.md) |
 | 11 | Device-to-device ceremony | A **short authentication string over an in-band agreement**, nonces **committed before revealed**, five Crockford Base32 symbols **typed** from the new device into the existing one. QR is an accelerator of the same transcript where a decoder exists, never a second protocol. The transcript binds the epoch head as well as the wrapping key, and the wrap's HPKE `info` binds the transcript hash (§13.6) | [row 11](./selections/row-11-enrollment-ceremony.md) |
 | 4 | Envelope wire format and batching granularity | Clear header — `v`, workspace, credential, epoch, generation, `seq`, nonce, `digest` — under AES-256-GCM with a network subkey, the actor inside the seal, and **two bound field lists**: an AAD for what the reader trusts, and a signature reaching the nonce and digest the AAD structurally cannot. `digest` is of the **ciphertext**, so the relay validates it with no content key. **`seq` is the credential's own position and the accepted position both**, because row 5 requires the client to compute its chain unaided (§7.4) | [row 4](./selections/row-4-envelope-format.md) |
@@ -2840,7 +2875,7 @@ true**, and where the two disagree this one wins.
 | 16 | Hosted-content retention duration after a lapse | **Twelve months**, from the moment hosted synchronization stops rather than from the missed payment, so grace is not deducted from it. **A floor on the promise and a ceiling on the data**: a plan may offer longer and none may offer shorter, and at expiry the ciphertext and wraps are *deleted*. One number for two paths because both are gated by one artifact — the ciphertext — so a shorter recovery window would save nothing and produce the state §6.10 refuses. **The condition was one bit of PRD §11's pricing question**, not its answer (PRD §6.10, §16) | [row 16](./selections/row-16-hosted-retention.md) |
 | 10 | Terminal and portable cutover-package formats | **One format at §13.5's three lineage states**, not two: §14.2's cutover package, §14.4's terminal package and §9.3's fidelity archive, with a live package *upgraded* to retired by importing the terminal record. §14.2's trust root is bound in the **HPKE `info` of every generation wrap**, so a substituted root opens no generation and there is nothing to re-attribute — the one anchor that terminates in user-held material rather than in a service signature (§14.2, §14.4) | [row 10](./selections/row-10-portable-package.md) |
 
-**Row 20 — test vectors — is closed for these seventeen and open for the rest.** Rows 16 and 17 are the two whose
+**Row 20 — test vectors — is closed for these eighteen and open for the rest.** Rows 16 and 17 are the two whose
 artifacts are not vector files in the same sense — a number and a profile rather than constructions — and each
 earns its place the same way: checked against what it names rather than restating it, and build-failing when the
 two stop agreeing. Row 17's profile is generated from a pinned index of the standard; row 16's number is read
@@ -2853,17 +2888,20 @@ self-verifying vector file; `pnpm vectors:check` fails the build if any has drif
 
 | # | Unselected                                    | Constrained by                                                                                 |
 | - | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| 14 | Recovery-code **step-up authentication** and confirmation UX — the network-facing half | §13.8; the storage-facing half is selected above |
 | 18 | Whether a persistent encrypted search index is needed at all | Deferred; gates neither review nor cutover; measure the in-memory rebuild first (§6.2, §12) |
 | 19 | Root-type day collections (§10.8)              | Deferred; one of its four costs has lapsed and should be re-counted                            |
-| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the seventeen selected above** — fifteen carry a generated, self-verifying vector file, and rows 16 and 17 carry the checked artifact their subject admits instead |
+| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the eighteen selected above** — sixteen carry a generated, self-verifying vector file, and rows 16 and 17 carry the checked artifact their subject admits instead |
 | 21 | First-deployment cutover attribution: accept system attribution, or bring the fidelity archive forward | §14.6; must be selected before cutover; adding authorship fields to Markdown is rejected (§9.1) |
 
-**One row remains in this scope.** The network half of 14 is a construction already drafted in row 14 §5,
-**whose atomic-replace half row 15 has since closed** as `kind: 'replace-recovery'`; what is left of it is a
-fold. Everything else — envelope, acceptance, retention, checkpoint, attribution, enrollment, discovery, the
-package that carries all of it out, the credential the account is reached by, the rule for what happens when any
-of it is interrupted, the web-security baseline, and the hosted-retention duration — is selected.
+**No row remains in this scope.** Envelope, acceptance, retention, checkpoint, attribution, enrollment, discovery,
+the package that carries all of it out, the credential the account is reached by, the rule for what happens when any
+of it is interrupted, the web-security baseline, the hosted-retention duration and the step-up that gates recovery
+replacement are all selected, each with a construction and a self-verifying artifact.
+
+**What remains is a question put *to* the reviewer rather than a row left open for them**, and the distinction is
+worth drawing since §13.11 gates on the second: whether the service rate-limits envelope fetch. It changes nothing
+about the code's entropy — the attacker who matters has already fetched the envelope — so it is a service-hardening
+question rather than a construction, and it is asked rather than answered.
 
 **Row 16 was taken on a binary rather than on the question it was filed under, and a reviewer should be told
 which.** It was recorded as conditional on PRD §11's pricing question; it needed only whether a lapsed-but-retained

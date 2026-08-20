@@ -36,6 +36,14 @@ import { writeFileSync, readFileSync } from 'node:fs';
 import { webcrypto as crypto } from 'node:crypto';
 
 import { aadFields, assertedNames, refuses, reportAudit } from './lib/aad-coverage.mjs';
+import {
+  FLAG_UP,
+  FLAG_UV,
+  authenticatorData,
+  b64url,
+  clientDataJSON,
+  signedBytes,
+} from './lib/webauthn.mjs';
 
 const OUT = new URL('../test/vectors/account-credential.json', import.meta.url);
 const ROW_1 = new URL('../test/vectors/algorithm-suite.json', import.meta.url);
@@ -72,14 +80,9 @@ const SPKI = {
   },
 };
 
-/** WebAuthn authenticator-data flag bits. UP is presence; UV is verification. */
-const FLAG_UP = 0x01;
-const FLAG_UV = 0x04;
-
 const utf8 = (s) => new TextEncoder().encode(s);
 const hex = (u) => Buffer.from(u).toString('hex');
 const unhex = (s) => new Uint8Array(Buffer.from(s, 'hex'));
-const b64url = (u) => Buffer.from(u).toString('base64url');
 
 const concat = (...parts) => {
   const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));
@@ -97,9 +100,6 @@ const lp = (s) => {
   if (bytes.length > 0xffff) throw new Error(`Field too long to length-prefix: ${bytes.length}`);
   return concat(new Uint8Array([bytes.length >> 8, bytes.length & 0xff]), bytes);
 };
-
-const u32be = (n) =>
-  new Uint8Array([(n >>> 24) & 0xff, (n >>> 16) & 0xff, (n >>> 8) & 0xff, n & 0xff]);
 
 const sha256 = async (bytes) => new Uint8Array(await crypto.subtle.digest('SHA-256', bytes));
 
@@ -353,33 +353,6 @@ const unlockChallenge = async ({ label = UNLOCK_LABEL, v, principal, credId, non
   );
 
 // --- the ceremony ----------------------------------------------------------------
-
-/**
- * authenticatorData = rpIdHash(32) || flags(1) || signCount(4, big-endian)
- *
- * No attested credential data and no extensions: this is an assertion, not a
- * registration, and the row uses no WebAuthn extension at all. That absence is
- * why this role can root on the authenticator where §13.3's device lock could
- * not -- PRF is an extension whose availability is a matrix of OS, browser and
- * authenticator kind, and a signature is the core of the API.
- */
-const authenticatorData = async ({ rpId, flags, signCount }) =>
-  concat(await sha256(utf8(rpId)), new Uint8Array([flags]), u32be(signCount));
-
-/**
- * clientDataJSON, as the user agent serializes it.
- *
- * **The verifier must hash the bytes it received and parse them for fields.**
- * It may not re-serialize this object and compare: the exact bytes are the user
- * agent's, key order and whitespace included, and they are inside the
- * signature. Reconstructing them is the WebAuthn implementation error that
- * looks correct until a browser adds a member.
- */
-const clientDataJSON = ({ type, challenge, origin }) =>
-  utf8(JSON.stringify({ type, challenge: b64url(challenge), origin, crossOrigin: false }));
-
-/** What the credential signs: authenticatorData || SHA-256(clientDataJSON). */
-const signedBytes = async (authData, clientData) => concat(authData, await sha256(clientData));
 
 /**
  * The verifier, and every vector in this file runs through it.

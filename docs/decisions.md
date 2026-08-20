@@ -1383,3 +1383,83 @@ retention that rows 5 and 6 **imply but never state** — one `(seq, link)` per 
 life of the lineage, on row 6's theorem that the chain has no memory beyond its last link. It is recorded here
 rather than presented as a quotation from those rows, and it is the one line in the fold a reviewer should be
 invited to disagree with.
+
+---
+
+### The step-up challenge gets a nonce and binds the transition id, which closes review 3b's scope
+
+**Date:** 2026-08-20 · **Commit:** _this one_ · **Against:** PRD v9 / TRD v8
+
+**Orientation.** One row was left in 3b's scope — the network-facing half of row 14, the step-up that gates
+recovery replacement — and both the register and the working file described what remained as _a fold rather than
+a construction_. It was not. Part of it had already been folded, and the part that landed had two defects that
+only showed on reading the tree rather than the summary.
+
+**What was wrong.** `test/vectors/recovery-code.json` published
+`SHA-256( LP("done/recovery-replace/v1") || LP(principal_id) || LP(hex SHA-256(new r_pub)) )` and described it in
+the same file as **a single-use service challenge**. Every field of it is a function of the operation, so it is
+the same challenge every time it is asked for: there is nothing for the service to retire, and nothing an
+assertion can be fresh relative to. An assertion collected for a replacement that never completed stays
+presentable indefinitely. **That is row 9's finding at a different message** — without a nonce a signed artifact
+is a standing artifact and replay needs no key at all — and §13.9's slot-unlock challenge, written _later_ and
+citing row 14 §5 as its source, already carried `LP(hex nonce)` with 32 fresh bytes per attempt. The omission was
+visible from the other end of the design before it was visible from this one.
+
+**And its bound fields were isolated by nothing.** The generator declared one construction to the coverage audit,
+`'recovery envelope'`, so the challenge was one worked example with no negatives at all. **The audit could not
+catch this one, because the construction had never been declared to it** — the gap rows 9, 12 and 15 each found
+from the inside, here found from the outside for the first time.
+
+**Decision, and three parts of it.** The challenge is
+`SHA-256( LP("done/recovery-replace/v1") || LP(dec v) || LP(hex intent_id) || LP(hex nonce) )`, answered by an
+assertion from the account credential, with 32 service-issued nonce bytes retired on use.
+
+- **The nonce makes _single-use_ true rather than said.** It is the whole of the defect and most of the fix.
+- **It binds row 15's transition id rather than the new public key**, which is a change from §5's draft and is
+  row 15's doing: when §5 was written the operation had no name, so it named the operation's target instead. The
+  id already covers `kind`, workspace, lineage, parent epoch, target and the payload digest — the new public key
+  among them — so binding the key beside it would be **a second binding of a fact already inside it**, which rows
+  10, 12 and 15 each refused. What it buys beyond tidiness: `kind` is inside the id, so a `replace-recovery`
+  step-up **cannot be redirected to a `retire`**. That is PRD §6.10's _a deliberate downgrade must not silently
+  become account deletion_, one level further out than row 15 took it.
+- **It binds no principal and no credential id, where §13.9's slot-unlock challenge binds both.** That reads as an
+  inconsistency and is a difference in provenance: the slot-unlock challenge is client-constructed for a
+  device-local gate and names device-local things, while this one is service-issued for a service operation and
+  names the operation as the service knows it. A service-issued challenge naming a device-local identifier takes
+  the client's word for it, which is the shape row 12 spent its length removing. Binding a credential id would
+  also forbid answering from a second passkey the account has registered, which is a feature rather than an
+  attack.
+
+**Every negative rewrites `clientDataJSON`, and that is row 9's other lesson made structural.** An assertion
+collected over the wrong challenge, presented unmodified, is refused by a **string comparison** between the
+challenge it carries and the one the service issued — a comparison that would refuse it just as readily if the
+challenge were signed by nobody. Each of the four `aad-only-stepup-` negatives rewrites the carried challenge to
+the one the service wants, which forces the refusal onto the signature and is also exactly what a real attacker
+would do. The unmodified replay is published as a **demonstration** with the message it stops at asserted on every
+run, because the four are only legible beside the check they are deliberately not making.
+
+**The ceremony moved to `scripts/lib/webauthn.mjs` rather than being copied.** Two rows now put an assertion in
+front of an operation — row 12's slot unlock and this — and they are different challenges over one ceremony.
+`authenticatorData`, `clientDataJSON` and what the credential signs are shared; **row 12's published vectors are
+byte-identical across the extraction**, which is what makes it a move rather than a change. Neither challenge
+moved: a challenge is the selection, it is what each row's negatives isolate field by field, and it belongs beside
+the record that argues it.
+
+**The audit refused the first run, and on a failure mode nothing had hit before.** Not a binding — the four
+isolations passed first time, because rows 9, 12 and 15's lessons were applied while writing rather than after.
+What broke was the **demonstration's own assertion**: it requires two challenges to differ, and with the nonce
+elided they do not, so the subprocess threw and the audit reported a crash with a stack trace where it expected a
+rescue. `refuses` was already elision-aware and nothing else was. **`eliding()` is now exported**, and the rule is
+recorded: an assertion about a _difference_ guards on it, an assertion about a fixed fact does not.
+
+**What it closed.** 3b's scope, with three working days before the week it was booked into. Eighteen rows are
+selected and four are open, and row 20 is the only row left appearing in both halves of §15. **What is left for
+3b is a question rather than a row**, and the difference matters because §13.11 gates on the second: whether the
+service rate-limits envelope fetch. It should, and it changes nothing about the code's entropy, because the
+attacker who matters has already fetched the envelope. It is put to the reviewer as a question rather than left in
+the register as an open row.
+
+**What it does not settle.** The confirmation and mismatch copy is still PRD §11 question 12's, and it is the part
+Stage 4 will get wrong first. The residual §5 names is unchanged and accepted: a party holding a device _and_ the
+account credential can replace the recovery envelope and destroy the owner's recovery path — an availability loss,
+strictly less than deleting the account outright, surfaced at the explicit confirmation rather than prevented.

@@ -133,6 +133,22 @@ export const refuses = async (name, fn) => {
 export const assertedNames = () => [...asserted];
 
 /**
+ * True while the driver is eliding a field.
+ *
+ * `refuses` is already elision-aware — under an elision it collects a negative
+ * that authenticates instead of throwing, because that is the result the audit
+ * is looking for. **A generator's own consistency assertions are not**, and any
+ * assertion that two constructions differ becomes a crash the moment the audit
+ * elides the field they differ in. A crashed subprocess reports as an audit
+ * failure with a stack trace rather than as a rescue, which is a confusing way
+ * to learn that the audit is working.
+ *
+ * So an assertion about a *difference* guards on this; an assertion about a
+ * fixed fact — a width, an alphabet, a published keypair — does not need to.
+ */
+export const eliding = () => elision !== null;
+
+/**
  * Report to the driver and stop, or return and let an ordinary run finish.
  *
  * Call this once, after the last negative has been asserted and before the
