@@ -1,6 +1,6 @@
 # Stage 0 lineage review — coordinator checkpoint
 
-**Checkpoint:** 2026-08-25 · **Audit status:** foundations, full 35-commit reverse walk, and X-01 through X-03 complete
+**Checkpoint:** 2026-08-25 · **Audit status:** foundations, full 35-commit reverse walk, and X-01 through X-04 complete
 
 This is a human summary, not the mechanical source of truth. Run `node scripts/review-status.mjs` before relying
 on it.
@@ -11,7 +11,7 @@ Only the coordinating task updates this file after accepting a material checkpoi
 - Base: `c6116669030eedeea3d599bca0da3547114e6930`
 - Tip: `9edd9300adebcec3abd2234c946f1dcccdc17eef`
 - Range: 35 linear, non-merge commits, reviewed newest to oldest
-- Checkout observed at this checkpoint: `299cf3c` (outside the pinned range); the review used exact
+- Checkout observed at this checkpoint: `fa81d2d` (outside the pinned range); the review used exact
   Git objects and did not move it
 - Pre-existing unrelated working-tree state: untracked `.opencode/`; preserve it
 - Expected uncommitted machinery: modified `package.json`, untracked `docs/review/`, and untracked
@@ -26,7 +26,7 @@ Only the coordinating task updates this file after accepting a material checkpoi
 | `F-01` original contract | complete | 83-claim original-contract matrix |
 | `F-02` end-state model | complete | End-state claims/state machines plus one candidate contradiction |
 | Reverse commit walk | complete | 35 of 35 commit cards; B-01 through B-04 complete |
-| Cross-cutting seams | in progress | 3 of 6; X-01 cryptography/key custody, X-02 crash/persistence, and X-03 accepted state complete |
+| Cross-cutting seams | in progress | 4 of 6; X-01 cryptography/key custody, X-02 crash/persistence, X-03 accepted state, and X-04 lifecycle complete |
 | Propagation and scenarios | pending | — |
 | Independent challenge | pending | — |
 | Synthesis | pending | — |
@@ -92,12 +92,20 @@ Only the coordinating task updates this file after accepting a material checkpoi
   `--check` remains green while carrier agility is incomplete.
 - Review 3a is only claimed booked; the repository contains no reviewer identity, response, or result. All source/test
   membership terminology is cleanly migrated from recovery to unfiled.
-- Twenty-nine findings remain candidates, not validated conclusions. “Stage 0 is ready to close” remains under
+- Enrollment authenticates the new operational reader and head, but not the recovery public key that the device will
+  later use during rotation. A malicious authority can substitute that delayed recovery recipient while allowing the
+  immediate SAS/key-delivery ceremony to succeed.
+- Replacing an exposed recovery code rewraps the existing generations without a successor generation, so retained
+  old recovery material can continue opening future same-generation ciphertext. The published replacement digest
+  also names the generations but omits the exact envelope and wrap bytes that should be committed.
+- Retirement preserves the correct terminal-before-deletion direction, but no selected durable acknowledgement proves
+  that a current survivor, export, or portable package safely received the terminal state before hosted deletion.
+- Thirty-three findings remain candidates, not validated conclusions. “Stage 0 is ready to close” remains under
   review.
 
 ## Next action
 
-Run `node scripts/review-status.mjs`, then claim `X-04`, lifecycle. Carry forward X-03's local generation-switch
-`applying` order and the missing durable reader-eligibility object through enrollment, recovery, revocation, stale-
-device return, and total-device-loss scenarios. `X-05` and `X-06` remain independently dependency-ready, but first-
-ready ordering is `X-04`.
+Run `node scripts/review-status.mjs`, then claim `X-05`, continuity. Carry X-04's enrollment recovery-recipient,
+recovery replacement/forward-rotation, and retirement survivor-gate candidates through package portability,
+attribution/root binding, lapse/deletion continuity, and total-loss restoration. `X-06` remains independently
+dependency-ready, but first-ready ordering is `X-05`.
