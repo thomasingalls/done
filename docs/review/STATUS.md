@@ -1,6 +1,6 @@
 # Stage 0 lineage review — coordinator checkpoint
 
-**Checkpoint:** 2026-08-21 · **Audit status:** foundations, full 35-commit reverse walk, and X-01/X-02 complete
+**Checkpoint:** 2026-08-25 · **Audit status:** foundations, full 35-commit reverse walk, and X-01 through X-03 complete
 
 This is a human summary, not the mechanical source of truth. Run `node scripts/review-status.mjs` before relying
 on it.
@@ -11,7 +11,7 @@ Only the coordinating task updates this file after accepting a material checkpoi
 - Base: `c6116669030eedeea3d599bca0da3547114e6930`
 - Tip: `9edd9300adebcec3abd2234c946f1dcccdc17eef`
 - Range: 35 linear, non-merge commits, reviewed newest to oldest
-- Checkout observed at this checkpoint: `d127e5e` (outside the pinned range); the review used exact
+- Checkout observed at this checkpoint: `299cf3c` (outside the pinned range); the review used exact
   Git objects and did not move it
 - Pre-existing unrelated working-tree state: untracked `.opencode/`; preserve it
 - Expected uncommitted machinery: modified `package.json`, untracked `docs/review/`, and untracked
@@ -26,7 +26,7 @@ Only the coordinating task updates this file after accepting a material checkpoi
 | `F-01` original contract | complete | 83-claim original-contract matrix |
 | `F-02` end-state model | complete | End-state claims/state machines plus one candidate contradiction |
 | Reverse commit walk | complete | 35 of 35 commit cards; B-01 through B-04 complete |
-| Cross-cutting seams | in progress | 2 of 6; X-01 cryptography/key custody and X-02 crash/persistence complete |
+| Cross-cutting seams | in progress | 3 of 6; X-01 cryptography/key custody, X-02 crash/persistence, and X-03 accepted state complete |
 | Propagation and scenarios | pending | — |
 | Independent challenge | pending | — |
 | Synthesis | pending | — |
@@ -36,6 +36,15 @@ Only the coordinating task updates this file after accepting a material checkpoi
 - The accepted per-credential link chain needs only a persisted `(seq, link)` within one view; content-before-mark,
   definite-refusal-only re-mint, and second-newest retention address distinct crash/fallback cases. Service split
   view remains possible until views meet.
+- Ordinary-envelope retry cannot yet implement that theorem: no signed refusal carrier identifies bytes that were
+  never accepted, and no durable outbound spool preserves exact random-nonce envelope bytes across a lost reply or
+  crash. Acting on an unsigned error risks self-equivocation; refusing to act can stall one credential indefinitely.
+- Checkpoint field bindings are coherent but the semantic coverage oracle still does not relate snapshot, `{sv,ds}`
+  and accepted heads. The key-retention mirror rule also names dropping a checkpoint rather than retaining the
+  generation opener its fallback needs, while row 15's three-part deletion gate permits the old generation to leave.
+- Row 15's signed mine/other/silence verdicts remain sound abstractly, but local `applying` has no selected ordering
+  for successor-`KeyEnvelope` installation, active-generation switch, pending cleanup, old journal/batch coverage,
+  and accepted-but-unacknowledged old envelopes.
 - Row 10's portable-package root anchor is reopened: a package writer can HPKE-seal attacker content to the genuine
   recovery public key while choosing a substituted root. Row 8 mutable attribution and row 7 semantic checkpoint
   coverage are also reopened dependencies.
@@ -83,12 +92,12 @@ Only the coordinating task updates this file after accepting a material checkpoi
   `--check` remains green while carrier agility is incomplete.
 - Review 3a is only claimed booked; the repository contains no reviewer identity, response, or result. All source/test
   membership terminology is cleanly migrated from recovery to unfiled.
-- Twenty-five findings remain candidates, not validated conclusions. “Stage 0 is ready to close” remains under
+- Twenty-nine findings remain candidates, not validated conclusions. “Stage 0 is ready to close” remains under
   review.
 
 ## Next action
 
-Run `node scripts/review-status.mjs`, then claim `X-03`, accepted state. Carry forward X-02's explicit joints: the
-content-before-heads crash direction, durable successor-`KeyEnvelope` installation, already-journalled deltas at a
-generation switch, and sequence allocation where accepted heads share the store. `X-04` through `X-06` remain
-independently dependency-ready, but first-ready ordering is `X-03`.
+Run `node scripts/review-status.mjs`, then claim `X-04`, lifecycle. Carry forward X-03's local generation-switch
+`applying` order and the missing durable reader-eligibility object through enrollment, recovery, revocation, stale-
+device return, and total-device-loss scenarios. `X-05` and `X-06` remain independently dependency-ready, but first-
+ready ordering is `X-04`.
