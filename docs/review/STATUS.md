@@ -1,6 +1,6 @@
 # Stage 0 lineage review — coordinator checkpoint
 
-**Checkpoint:** 2026-08-25 · **Audit status:** foundations, full 35-commit reverse walk, and X-01 through X-04 complete
+**Checkpoint:** 2026-08-25 · **Audit status:** foundations, full 35-commit reverse walk, and X-01 through X-05 complete
 
 This is a human summary, not the mechanical source of truth. Run `node scripts/review-status.mjs` before relying
 on it.
@@ -11,7 +11,7 @@ Only the coordinating task updates this file after accepting a material checkpoi
 - Base: `c6116669030eedeea3d599bca0da3547114e6930`
 - Tip: `9edd9300adebcec3abd2234c946f1dcccdc17eef`
 - Range: 35 linear, non-merge commits, reviewed newest to oldest
-- Checkout observed at this checkpoint: `fa81d2d` (outside the pinned range); the review used exact
+- Checkout observed at this checkpoint: `fbe576b` (outside the pinned range); the review used exact
   Git objects and did not move it
 - Pre-existing unrelated working-tree state: untracked `.opencode/`; preserve it
 - Expected uncommitted machinery: modified `package.json`, untracked `docs/review/`, and untracked
@@ -26,8 +26,8 @@ Only the coordinating task updates this file after accepting a material checkpoi
 | `F-01` original contract | complete | 83-claim original-contract matrix |
 | `F-02` end-state model | complete | End-state claims/state machines plus one candidate contradiction |
 | Reverse commit walk | complete | 35 of 35 commit cards; B-01 through B-04 complete |
-| Cross-cutting seams | in progress | 4 of 6; X-01 cryptography/key custody, X-02 crash/persistence, X-03 accepted state, and X-04 lifecycle complete |
-| Propagation and scenarios | pending | — |
+| Cross-cutting seams | in progress | 5 of 6; X-01 cryptography/key custody, X-02 crash/persistence, X-03 accepted state, X-04 lifecycle, and X-05 continuity complete |
+| Propagation and scenarios | pending | S-01 is dependency-ready; P-01 still waits on X-06 |
 | Independent challenge | pending | — |
 | Synthesis | pending | — |
 
@@ -100,12 +100,25 @@ Only the coordinating task updates this file after accepting a material checkpoi
   also names the generations but omits the exact envelope and wrap bytes that should be committed.
 - Retirement preserves the correct terminal-before-deletion direction, but no selected durable acknowledgement proves
   that a current survivor, export, or portable package safely received the terminal state before hosted deletion.
-- Thirty-three findings remain candidates, not validated conclusions. “Stage 0 is ready to close” remains under
+- Row 8's body commitment correctly distinguishes verified creation from an edited current body, and content-root
+  residence lets trim carry claims into the current generation. A mutable CRDT map still cannot prove first creation
+  after a later credential installs a self-consistent replacement and compaction removes the earlier history.
+- The never-established Local fidelity-archive vector has no selected portable opener: it signs opaque part digests
+  but never constructs a Local saved-factor-to-generation path. The common live/retired format also cannot perform
+  its claimed terminal-record-only upgrade, because state, head, epoch, parts digest, assembler, and signature all
+  change; a complete service-signed retired package is a coherent narrower path.
+- Row 15 says product downgrade is mechanically bound but defines no lapse kind—only rotate, replace-recovery, and
+  retire. A separate durable billing state machine could preserve live-dormant semantics, but the selected carrier
+  and its vector do not close that requirement or join it to the twelve-month clock.
+- First-deployment Markdown loss remains explicit and correctly open in row 21: byte-identical text round trip drops
+  `id`, `author`, `origin`, and `createdAt`, while using an early fidelity archive would inherit the package and
+  checkpoint candidates rather than automatically make cutover exact.
+- Thirty-six findings remain candidates, not validated conclusions. “Stage 0 is ready to close” remains under
   review.
 
 ## Next action
 
-Run `node scripts/review-status.mjs`, then claim `X-05`, continuity. Carry X-04's enrollment recovery-recipient,
-recovery replacement/forward-rotation, and retirement survivor-gate candidates through package portability,
-attribution/root binding, lapse/deletion continuity, and total-loss restoration. `X-06` remains independently
-dependency-ready, but first-ready ordering is `X-05`.
+Run `node scripts/review-status.mjs`, then claim first-ready `X-06`, platform and evidence. Carry forward X-05's
+distinction between current generated carriers and absent clean-device/lifecycle execution, especially the Local
+archive opener, package upgrade, and lapse carrier. `S-01` is also dependency-ready, but first-ready ordering is
+`X-06`; P-01 still waits for it.
