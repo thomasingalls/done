@@ -1,6 +1,6 @@
 # Stage 0 lineage review — coordinator checkpoint
 
-**Checkpoint:** 2026-08-25 · **Audit status:** foundations, full 35-commit reverse walk, and X-01 through X-05 complete
+**Checkpoint:** 2026-08-26 · **Audit status:** foundations, full 35-commit reverse walk, and X-01 through X-06 complete
 
 This is a human summary, not the mechanical source of truth. Run `node scripts/review-status.mjs` before relying
 on it.
@@ -11,7 +11,7 @@ Only the coordinating task updates this file after accepting a material checkpoi
 - Base: `c6116669030eedeea3d599bca0da3547114e6930`
 - Tip: `9edd9300adebcec3abd2234c946f1dcccdc17eef`
 - Range: 35 linear, non-merge commits, reviewed newest to oldest
-- Checkout observed at this checkpoint: `fbe576b` (outside the pinned range); the review used exact
+- Checkout observed at this checkpoint: `a8e58dc` (outside the pinned range); the review used exact
   Git objects and did not move it
 - Pre-existing unrelated working-tree state: untracked `.opencode/`; preserve it
 - Expected uncommitted machinery: modified `package.json`, untracked `docs/review/`, and untracked
@@ -26,8 +26,8 @@ Only the coordinating task updates this file after accepting a material checkpoi
 | `F-01` original contract | complete | 83-claim original-contract matrix |
 | `F-02` end-state model | complete | End-state claims/state machines plus one candidate contradiction |
 | Reverse commit walk | complete | 35 of 35 commit cards; B-01 through B-04 complete |
-| Cross-cutting seams | in progress | 5 of 6; X-01 cryptography/key custody, X-02 crash/persistence, X-03 accepted state, X-04 lifecycle, and X-05 continuity complete |
-| Propagation and scenarios | pending | S-01 is dependency-ready; P-01 still waits on X-06 |
+| Cross-cutting seams | complete | 6 of 6; X-01 cryptography/key custody through X-06 platform/evidence complete |
+| Propagation and scenarios | ready | P-01 and S-01 are dependency-ready; first-ready ordering is P-01 |
 | Independent challenge | pending | — |
 | Synthesis | pending | — |
 
@@ -59,6 +59,13 @@ Only the coordinating task updates this file after accepting a material checkpoi
   not define a hardware-performance floor, so smaller-payload support-population closure remains open.
 - Bundle arithmetic rejects the recorded libsodium package, but the earlier narrow-nonce WASM proxy is not
   reproducible from its commit. Baseline's capability inventory also omits the selected HPKE X25519 dependency.
+- Current browser data supports the selected Ed25519 and X25519 primitives, but compatibility is not a hardware
+  performance floor and the moving support policy still omits X25519 from its build-time inventory. WebAuthn PRF
+  and platform-authenticator absence remain optional runtime conditions rather than recovery lockout.
+- The ASVS 5.0.0 profile is versioned and honest about its L2/L3/addendum boundary, while its present evidence is
+  mostly structural. Official primitive KAT provenance is sound; project composition remains a shared-model oracle.
+  A direct counterexample also shows normal WASM verification can stay green after the reviewed Rust source drifts
+  from the checked-in blob because source/artifact freshness is a separate, non-required command.
 - The first five-selection fold preserves most construction nuance but loses three caveats: device-lock copy is
   unconditional while `rotation_owed` remains reachable, the normative record format omits its numeric
   rotate-before-write ceiling, and row 20 closes before row 1 has executable HPKE evidence.
@@ -113,12 +120,11 @@ Only the coordinating task updates this file after accepting a material checkpoi
 - First-deployment Markdown loss remains explicit and correctly open in row 21: byte-identical text round trip drops
   `id`, `author`, `origin`, and `createdAt`, while using an early fidelity archive would inherit the package and
   checkpoint candidates rather than automatically make cutover exact.
-- Thirty-six findings remain candidates, not validated conclusions. “Stage 0 is ready to close” remains under
+- Thirty-seven findings remain candidates, not validated conclusions. “Stage 0 is ready to close” remains under
   review.
 
 ## Next action
 
-Run `node scripts/review-status.mjs`, then claim first-ready `X-06`, platform and evidence. Carry forward X-05's
-distinction between current generated carriers and absent clean-device/lifecycle execution, especially the Local
-archive opener, package upgrade, and lapse carrier. `S-01` is also dependency-ready, but first-ready ordering is
-`X-06`; P-01 still waits for it.
+Run `node scripts/review-status.mjs`, then claim first-ready `P-01`, forward propagation. Carry the six seam passes'
+surviving invariants and candidates through downstream requirements, selections, vectors, and status claims without
+treating candidates as validated conclusions. `S-01` is also dependency-ready, but first-ready ordering is `P-01`.
