@@ -69,12 +69,12 @@ diverges — so `P-8` reverts to its natural slack: it is not needed until `S0-5
 finishes. The binding constraint was therefore `P-2` and `P-6`, which together with the decided `P-1` are the three
 inputs `S0-2` waits on, and `S0-2` is the widest action on the path.
 
-**`P-1`, `P-2` and `P-6` are all decided, so `S0-2` is unblocked and is the next thing to build.** It is the
-widest action on the path and three further actions wait on it. `P-8` may be settled any time before `S0-2`
-closes — it is not needed until `S0-5` — and `P-3`/`P-5`/`P-4` remain off the path entirely; nothing waits on
-them until `S0-8`, so they can run in parallel with `S0-2` or after it.
+**`P-1`, `P-2`, `P-6` and `P-8` are decided, so `S0-2` is unblocked and is the next thing to build.** It is the
+widest action on the path and three further actions wait on it; `S0-5` now waits on `S0-2` alone. `P-3`, `P-5`
+and `P-4` remain off the path entirely — nothing waits on them until `S0-8`, so they can run in parallel with
+`S0-2` or after it.
 
-Remaining decisions, none of them blocking `S0-2`: `P-3`, `P-4`, `P-5`, `P-8`.
+Remaining decisions, none of them blocking `S0-2` or `S0-5`: `P-3`, `P-4`, `P-5`.
 
 ### Exact artifact key
 
@@ -237,6 +237,14 @@ pinned tip.
 
 ### `P-8` — choose checkpoint semantic authority and immutable creation authority
 
+> **Decided 2026-08-26: `RC-5A` + `RC-5C`.** A producer proposes and an eligible client signs a
+> `SemanticAdmission` before trim; snapshot-to-coverage consistency is re-derived locally by every restorer and
+> is mandatory, while the accepted-head baseline trusts the admitting credential, with self-admission permitted
+> and recorded where no second eligible client exists. Card ids commit to the creating credential. Record and
+> reasoning: [`decisions/P-8-checkpoint-and-creation-authority.md`](./decisions/P-8-checkpoint-and-creation-authority.md).
+> That record also keeps the portable-witness alternative explicitly open, with the two obstacles that would have
+> to clear for it to reopen this decision at `S0-5`. Twelve falsifiers are in the record.
+
 This node was previously the only Stage-0-blocking decision left inside its consuming action rather than hoisted
 here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`, `B+C`, `B+D`.
 
@@ -355,9 +363,9 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 
 ### `S0-5` — select semantic checkpoint, admission/install, and immutable creation authority
 
-- **Prerequisite decisions:** `P-8`, which carries the `RC-5A/B` and `RC-5C/D` choices, the exact verifier/order
-  authority, what proof inputs survive trim, and how incomparable chains resolve; plus accepted-head/recipient
-  inputs from `S0-2`.
+- **Prerequisite decisions:** `P-8` — **satisfied** — which carries the `RC-5A/B` and `RC-5C/D` choices, the
+  verifier authority, what survives trim, and how incomparable chains resolve; plus accepted-head/recipient inputs
+  from `S0-2`, which is now the only thing this action waits on.
 - **Exact affected artifacts:** PRD provenance/continuity; TRD §§4.5/4.8/7.6/10.4/13.7/14; rows 5/7/8/10/15;
   checkpoint/attribution generators/vectors; suffix/trim/compaction requirements; restore/migration tests.
 - **Type:** design + documentation + executable evidence.
