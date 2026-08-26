@@ -124,12 +124,13 @@
     },
     {
       "name": "network-envelope",
-      "version": null,
-      "encoding": "unselected",
-      "suite": null,
-      "label": null,
-      "selected_by": "row 4, review 3b",
-      "in_aad": null
+      "version": 1,
+      "encoding": "the clear header's `v` field (row 4 §3)",
+      "suite": 1,
+      "label": "done/env/v1",
+      "selected_by": "row 4",
+      "in_aad": true,
+      "note": "This row read \"unselected\" for as long as row 4 was open, and stayed that way after row 4 closed. The registry is the suite's inventory of every carrier, so an entry that is stale in the safe-looking direction is the one worth guarding: `checkCarriers` lets a null suite through on the strength of a named owner, which is exactly what a closed row no longer needs."
     }
   ],
   "acceptance": [
@@ -174,6 +175,24 @@
       "version": 2,
       "verdict": "refuse-and-report",
       "why": "Above what this reader knows. Refusing a key envelope closes the workspace; opening it wrongly loses it."
+    },
+    {
+      "carrier": "network-envelope",
+      "version": 1,
+      "verdict": "accept",
+      "why": "The only version this suite defines."
+    },
+    {
+      "carrier": "network-envelope",
+      "version": 0,
+      "verdict": "refuse-and-report",
+      "why": "No version 0 was ever minted. The relay validates the clear header (§7.2), so a malformed version is refused before any content key is involved."
+    },
+    {
+      "carrier": "network-envelope",
+      "version": 2,
+      "verdict": "refuse-and-report",
+      "why": "Above what this reader knows. Row 4 binds `v` in both the AAD and the signature, so a receiver that guessed at a newer framing would be authenticating bytes it cannot parse."
     }
   ],
   "separation_check": {
@@ -201,6 +220,10 @@
     "done/keyenv/v1": {
       "lp_hex": "000e646f6e652f6b6579656e762f7631",
       "carrier": "local-key-envelope"
+    },
+    "done/env/v1": {
+      "lp_hex": "000b646f6e652f656e762f7631",
+      "carrier": "network-envelope"
     }
   },
   "primitive_kats": [

@@ -83,6 +83,21 @@ export interface JournalSeal {
   maxPlaintext: number;
 }
 
+/**
+ * XChaCha20-Poly1305's widths, which belong to the construction rather than to
+ * this module: a 32-byte key and a 24-byte nonce.
+ *
+ * **The check has to be here, because this is the only boundary that can see a
+ * length.** The Rust side reads fixed statics and is handed two lengths, neither
+ * of which is the key's or the nonce's; \`memory.set\` of a short input leaves the
+ * tail of the previous call in place. An empty nonce after a real one therefore
+ * repeats that nonce under the same key, which is precisely what row 2's
+ * random-nonce argument may never allow, and a short key produces a record the
+ * derived key cannot reopen after a crash. Both are silent without this.
+ */
+const KEY_BYTES = 32;
+const NONCE_BYTES = 24;
+
 export const createJournalSeal = (): JournalSeal => {
   const exports = instantiate().exports as unknown as Exports;
   const maxAad = exports.max_aad();
@@ -100,6 +115,10 @@ export const createJournalSeal = (): JournalSeal => {
     maxAad,
     maxPlaintext,
     seal: (key, nonce, aad, plaintext) => {
+      if (key.length !== KEY_BYTES)
+        throw new RangeError('journal seal: key must be exactly 32 bytes');
+      if (nonce.length !== NONCE_BYTES)
+        throw new RangeError('journal seal: nonce must be exactly 24 bytes');
       if (aad.length > maxAad || plaintext.length > maxPlaintext)
         throw new RangeError('journal seal: input exceeds the module buffers');
       memory.set(key, keyAt);

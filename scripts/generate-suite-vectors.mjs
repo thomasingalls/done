@@ -23,7 +23,7 @@
  * Usage: node scripts/generate-suite-vectors.mjs [--check]
  */
 
-import { writeFileSync, readFileSync } from 'node:fs';
+import { writeFileSync, readFileSync, readdirSync } from 'node:fs';
 import { webcrypto as crypto } from 'node:crypto';
 
 import { reportAudit } from './lib/aad-coverage.mjs';
@@ -190,12 +190,13 @@ const CARRIERS = [
   },
   {
     name: 'network-envelope',
-    version: null,
-    encoding: 'unselected',
-    suite: null,
-    label: null,
-    selected_by: 'row 4, review 3b',
-    in_aad: null,
+    version: 1,
+    encoding: "the clear header's `v` field (row 4 §3)",
+    suite: 1,
+    label: 'done/env/v1',
+    selected_by: 'row 4',
+    in_aad: true,
+    note: 'This row read "unselected" for as long as row 4 was open, and stayed that way after row 4 closed. The registry is the suite\'s inventory of every carrier, so an entry that is stale in the safe-looking direction is the one worth guarding: `checkCarriers` lets a null suite through on the strength of a named owner, which is exactly what a closed row no longer needs.',
   },
 ];
 
@@ -237,6 +238,24 @@ const ACCEPTANCE = [
     version: 2,
     verdict: 'refuse-and-report',
     why: 'Above what this reader knows. Refusing a key envelope closes the workspace; opening it wrongly loses it.',
+  },
+  {
+    carrier: 'network-envelope',
+    version: 1,
+    verdict: 'accept',
+    why: 'The only version this suite defines.',
+  },
+  {
+    carrier: 'network-envelope',
+    version: 0,
+    verdict: 'refuse-and-report',
+    why: 'No version 0 was ever minted. The relay validates the clear header (§7.2), so a malformed version is refused before any content key is involved.',
+  },
+  {
+    carrier: 'network-envelope',
+    version: 2,
+    verdict: 'refuse-and-report',
+    why: 'Above what this reader knows. Row 4 binds `v` in both the AAD and the signature, so a receiver that guessed at a newer framing would be authenticating bytes it cannot parse.',
   },
 ];
 
@@ -370,11 +389,38 @@ const checkSeparation = () => {
 };
 
 /** Every carrier must name a defined suite, or be explicitly unselected with an owner. */
+const SELECTIONS = new URL('../docs/selections/', import.meta.url);
+
+/**
+ * An unselected carrier's owning row, read from the selection record rather than
+ * from this file.
+ *
+ * A carrier may legitimately sit unselected while the row that owns it is still
+ * open. What it may not do is stay that way after the row closes — and that is
+ * not a hypothetical: `network-envelope` read "unselected, row 4" for the whole
+ * interval after row 4 was selected, and every check in this file passed the
+ * entire time, because the null branch below asks only whether an owner is
+ * *named*. Naming an owner is not a reason; the owner still being open is. So
+ * the reason is now checked against the owner's own status line.
+ */
+const ownerRowIsClosed = (selectedBy) => {
+  const row = /row (\d+)/u.exec(selectedBy ?? '')?.[1];
+  if (!row) return false;
+  const file = readdirSync(SELECTIONS).find((n) => n.startsWith(`row-${row}-`));
+  if (!file) return false; // no selection record: the row is genuinely open
+  return /^\*\*Status:\*\*\s*selected/mu.test(readFileSync(new URL(file, SELECTIONS), 'utf8'));
+};
+
 const checkCarriers = () => {
   for (const c of CARRIERS) {
     if (c.suite === null) {
       if (!c.selected_by)
         throw new Error(`Carrier ${c.name} is unselected and names no owning row.`);
+      if (ownerRowIsClosed(c.selected_by))
+        throw new Error(
+          `Carrier ${c.name} is still marked unselected, but ${c.selected_by} is selected. ` +
+            `Fill in its version, suite, label and AAD binding from that row.`,
+        );
       continue;
     }
     if (c.suite !== 1)

@@ -66,9 +66,9 @@
     },
     {
       "name": "rotated-generation",
-      "why": "Generation is a cleartext header field, so it is in the AAD. A record claiming gen=2 cannot be replayed as gen=1.",
+      "why": "A record written under generation 2, from generation 2's own root. Generation is a cleartext header field and is in the AAD, so a record claiming gen=2 cannot be replayed as gen=1; and because the root differs, generation-1's subkey does not open it either.",
       "inputs": {
-        "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "k_g": "b7e4319d0c5a86f21e73d4b085c9a6f31d2e708b4c95a37e6f81d0b2c4a95e73",
         "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
         "gen": 2,
         "journal_storage_key": "done.pending-update.done.7",
@@ -77,11 +77,11 @@
       },
       "derived": {
         "hkdf_info": "000f646f6e652f6a6f75726e616c2f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
-        "k_journal": "5fd6bb3014308b7e32bf572d0fa36432723ae5d1e7b6f1ab352ef35807052797",
+        "k_journal": "0279f64575e06d6122b8c1fa1b03ad63c4f50449b3c40c4bf2650e05e7a6b88b",
         "aad": "000c646f6e652f6a726e6c2f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744000132001a646f6e652e70656e64696e672d7570646174652e646f6e652e37"
       },
       "expected": {
-        "record": "2:AAAAAkBBQkNERUZHSElKS0xNTk9QUVJTVFVWV22psFM7aZbgkDNubPSmLiTGFeaWknf6FN0nsmFFpI0Q6BY="
+        "record": "2:AAAAAkBBQkNERUZHSElKS0xNTk9QUVJTVFVWVx8CWcvE/6EBLwgrLokkiJeYIdpuq7S+3/bYB0DHlk4m9Jw="
       }
     },
     {
@@ -113,6 +113,10 @@
     {
       "name": "wrong-generation",
       "mutate": "Authenticate with gen=2 in the AAD against a record written under gen=1."
+    },
+    {
+      "name": "wrong-generation-key",
+      "mutate": "Open the generation-2 record with generation 1's subkey, under generation 2's own correct AAD. The AAD half of the binding is satisfied, so only the key lookup can refuse this -- which is the half `wrong-generation` cannot reach."
     },
     {
       "name": "moved-slot",

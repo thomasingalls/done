@@ -103,6 +103,48 @@ try {
   failures.push(`the largest accepted input was refused: ${error.message}`);
 }
 
+/* The key and the nonce have no length argument, so the module cannot check
+ * them and the wrapper is the only place that can. Every width other than the
+ * construction's own is refused before a single byte reaches WASM memory. */
+for (const [what, key, nonce] of [
+  ['an empty key', 0, 24],
+  ['a short key', 31, 24],
+  ['a long key', 33, 24],
+  ['an empty nonce', 32, 0],
+  ['a short nonce', 32, 23],
+  ['a long nonce', 32, 25],
+]) {
+  checked += 1;
+  try {
+    seal(new Uint8Array(key), new Uint8Array(nonce), new Uint8Array(0), new Uint8Array(8));
+    failures.push(`${what} was accepted`);
+  } catch {
+    /* expected */
+  }
+}
+
+/* The regression this guard exists for, stated as the sequence that produced it:
+ * a real call stages 32 key bytes and 24 nonce bytes into statics that nothing
+ * clears, so a following call with an empty nonce reused all 24 of them and
+ * returned byte-identical ciphertext under the same key. That is nonce reuse
+ * with no symptom. It must now refuse, and the first call must still be intact
+ * afterwards. */
+checked += 1;
+{
+  const key = new Uint8Array(32).fill(7);
+  const nonce = new Uint8Array(24).fill(9);
+  const plaintext = new Uint8Array(8).fill(1);
+  const first = hex(seal(key, nonce, new Uint8Array(0), plaintext));
+  try {
+    seal(key, new Uint8Array(0), new Uint8Array(0), plaintext);
+    failures.push('an empty nonce after a real one was accepted — stale nonce bytes are reachable');
+  } catch {
+    /* expected */
+  }
+  if (hex(seal(key, nonce, new Uint8Array(0), plaintext)) !== first)
+    failures.push('a refused call disturbed the staged state of the next good one');
+}
+
 if (failures.length > 0) {
   console.error(`journal seal: ${failures.length} of ${checked} checks FAILED`);
   for (const failure of failures) console.error(`  ${failure}`);
@@ -110,5 +152,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `journal seal: ${checked} checks pass — the published KAT, ${published.vectors.length} composition vectors, and the length guard in both directions.`,
+  `journal seal: ${checked} checks pass — the published KAT, ${published.vectors.length} composition vectors, the length guard in both directions, and the key/nonce width guard.`,
 );

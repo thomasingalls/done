@@ -351,27 +351,70 @@ export const bench = (): Bench => {
     return { ok: got === vector.record, got };
   };
 
-  const operation = (level: Level, payload: Uint8Array, slot: string): void => {
+  /** Returns whether the level actually occupied `slot`, so the caller need not
+   * keep a second list of which levels store — one that would go stale the first
+   * time a level is added. */
+  const operation = (level: Level, payload: Uint8Array, slot: string): boolean => {
     if (level === 'plaintext') {
       localStorage.setItem(slot, PLAINTEXT_VERSION + toBase64(payload));
-      return;
+      return true;
     }
     const wasm = level.startsWith('wasm-');
     const sealed = wasm
       ? sealRecordWasm(key, aad, payload, gen)
       : sealRecord(key, aad, payload, gen);
-    if (level === 'seal' || level === 'wasm-seal') return;
+    if (level === 'seal' || level === 'wasm-seal') return false;
     const framed = RECORD_VERSION + toBase64(sealed);
-    if (level === 'framed' || level === 'wasm-framed') return;
+    if (level === 'framed' || level === 'wasm-framed') return false;
     localStorage.setItem(slot, framed);
+    return true;
+  };
+
+  /**
+   * Every write goes to a slot of its own, because that is what the journal does.
+   *
+   * **This measured one hot key until it did not.** `setItem` over an
+   * already-present value of the same length is the cheap case: the key exists,
+   * the store does not grow, and nothing accumulates. §12's journal writes an
+   * immutable record per update into a distinct slot, and those slots stay until
+   * an asynchronous batch commit clears them — so new-key insertion, key
+   * construction and a store that is growing under the write are all in the real
+   * cost and were all absent from the measured one. A p95 taken over the hot-key
+   * case cannot be generalised to the append it is quoted about.
+   *
+   * The drain is deliberately **not** inside the timed operation: production
+   * clears these asynchronously, off the write path, so timing it here would
+   * charge the synchronous budget for work the synchronous path never does.
+   */
+  const slots: string[] = [];
+  const drain = (): void => {
+    for (const slot of slots) localStorage.removeItem(slot);
+    slots.length = 0;
   };
 
   const run: Bench['run'] = (level, { bytes, ...options }) => {
     const payload = crypto.getRandomValues(new Uint8Array(bytes));
-    const slot = 'done.pending-update.bench';
-    const measured = measure(() => operation(level, payload, slot), options);
-    localStorage.removeItem(slot);
-    return { level, bytes, ...measured };
+    drain();
+    let next = 0;
+    try {
+      const measured = measure(() => {
+        const slot = `done.pending-update.bench.${next}`;
+        next += 1;
+        if (operation(level, payload, slot)) slots.push(slot);
+      }, options);
+      return { level, bytes, ...measured };
+    } catch (error) {
+      /* Quota is a result, not a crash: it says the occupancy this level reaches
+       * is past what the origin will hold, which is exactly the term the hot-key
+       * harness could never reach. Report where it stopped rather than losing it. */
+      throw new Error(
+        `${level} at ${bytes} B stopped after ${next} writes (${slots.length} outstanding): ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
+    } finally {
+      drain();
+    }
   };
 
   return { verify, run };

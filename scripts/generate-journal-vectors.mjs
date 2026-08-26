@@ -147,6 +147,18 @@ const checkPrimitiveKat = () => {
 const WORKSPACE = 'ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D';
 const KG = unhex('4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36');
 
+/**
+ * Generation 2's root, and it is a different key rather than a relabelled one.
+ *
+ * `gen` is a cleartext header field bound in the AAD, so a record written under
+ * one generation cannot be *authenticated* as another — that is the negative
+ * below. What the AAD cannot do is choose which `K_g` to derive from, and a
+ * rotated fixture that reuses generation 1's root cannot tell the two apart:
+ * every vector would still pass if the writer looked the generation up wrongly
+ * and got the same bytes back. Rotation is only exercised when the roots differ.
+ */
+const KG2 = unhex('b7e4319d0c5a86f21e73d4b085c9a6f31d2e708b4c95a37e6f81d0b2c4a95e73');
+
 const CASES = [
   {
     name: 'empty-update',
@@ -166,8 +178,9 @@ const CASES = [
   },
   {
     name: 'rotated-generation',
-    why: 'Generation is a cleartext header field, so it is in the AAD. A record claiming gen=2 cannot be replayed as gen=1.',
+    why: "A record written under generation 2, from generation 2's own root. Generation is a cleartext header field and is in the AAD, so a record claiming gen=2 cannot be replayed as gen=1; and because the root differs, generation-1's subkey does not open it either.",
     gen: 2,
+    kg: KG2,
     journalKey: 'done.pending-update.done.7',
     nonce: '404142434445464748494a4b4c4d4e4f5051525354555657',
     plaintext: '01010101a8e0c9d20500042101087903c0a8',
@@ -192,6 +205,11 @@ const NEGATIVES = [
   {
     name: 'wrong-generation',
     mutate: 'Authenticate with gen=2 in the AAD against a record written under gen=1.',
+  },
+  {
+    name: 'wrong-generation-key',
+    mutate:
+      "Open the generation-2 record with generation 1's subkey, under generation 2's own correct AAD. The AAD half of the binding is satisfied, so only the key lookup can refuse this -- which is the half `wrong-generation` cannot reach.",
   },
   {
     name: 'moved-slot',
@@ -261,6 +279,16 @@ const verify = async (vectors) => {
   await refuses('wrong-generation', () => open(kj, rec, aadFor(ws, gen + 1, jk)));
   await refuses('moved-slot', () => open(kj, rec, aadFor(ws, gen, 'done.pending-update.done.8')));
 
+  // The key-lookup half, which needs the rotated vector rather than this one:
+  // correct AAD for generation 2, but the subkey derived from generation 1's
+  // root. Nothing in the AAD refuses this, so if it opens, the record's `gen`
+  // field is decoration.
+  const rotated = vectors.find((v) => v.name === 'rotated-generation');
+  const genOneKey = await deriveJournalKey(KG, rotated.inputs.workspace_id);
+  await refuses('wrong-generation-key', () =>
+    open(genOneKey, rotated.expected.record, unhex(rotated.derived.aad)),
+  );
+
   const flipped = Buffer.from(rec.slice(RECORD_VERSION.length), 'base64');
   flipped[flipped.length - 1] ^= 0x01;
   await refuses('flipped-tag-bit', () =>
@@ -305,7 +333,8 @@ const main = async () => {
   const vectors = [];
   for (const c of CASES) {
     const workspace = c.workspace ?? WORKSPACE;
-    const journalKeyBytes = await deriveJournalKey(KG, workspace);
+    const kg = c.kg ?? KG;
+    const journalKeyBytes = await deriveJournalKey(kg, workspace);
     const nonce = unhex(c.nonce);
     const plaintext = unhex(c.plaintext);
     const aad = aadFor(workspace, c.gen, c.journalKey);
@@ -313,7 +342,7 @@ const main = async () => {
       name: c.name,
       why: c.why,
       inputs: {
-        k_g: hex(KG),
+        k_g: hex(kg),
         workspace_id: workspace,
         gen: c.gen,
         journal_storage_key: c.journalKey,
