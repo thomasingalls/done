@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-f5def83-device-lock-reader-key-bypass
-status: candidate
+status: validated
 type: guarantee-overstatement
 severity: medium
 confidence: high
 introduced_by: f5def83ac6f21873ab7fb589247dd116fc2febd9
 work_item: X-01
 created_by: /root
-updated: 2026-08-21
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 

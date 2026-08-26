@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-66a7c6a-journal-benchmark-overwrites-one-slot
-status: candidate
+status: validated
 type: evidence-weakness
 severity: medium
 confidence: high
 introduced_by: 66a7c6a85cc743896568a0ffc678431c1ebaf579
 work_item: B-03
 created_by: /root
-updated: 2026-08-21
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 

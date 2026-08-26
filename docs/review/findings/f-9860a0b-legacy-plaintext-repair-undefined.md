@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-9860a0b-legacy-plaintext-repair-undefined
-status: candidate
+status: validated
 type: contradiction
 severity: low
 confidence: high
 introduced_by: 9860a0bc1611b01eac76abcc5584afc51f5ed959
 work_item: X-02
 created_by: /root
-updated: 2026-08-21
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 

@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-bd87655-x25519-support-floor-omitted
-status: candidate
+status: validated
 type: contradiction
 severity: low
 confidence: high
 introduced_by: bd876553c8a2be17ff55c399f416d7eed9075935
 work_item: B-03
 created_by: /root
-updated: 2026-08-21
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 

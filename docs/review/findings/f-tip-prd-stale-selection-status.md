@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-tip-prd-stale-selection-status
-status: candidate
+status: validated
 type: contradiction
 severity: low
 confidence: high
 introduced_by: a073574fcb90f9f2a70fa1be2bae5dc1d9c364f3
 work_item: F-02
 created_by: /root/f_02
-updated: 2026-08-21
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 
@@ -68,4 +68,4 @@ I tested whether the PRD paragraphs could be read as historical rationale. That 
 
 ## Disposition
 
-Clarify: update the PRD to name the selected constructions and leave only genuinely open confirmation UX, or explicitly reopen the affected TRD rows and propagate that reopening to their records, artifacts, and review scopes. This remains a candidate until a different agent challenges it.
+Validated by `V-01`. Update the PRD to name the selected constructions and leave only genuinely open confirmation UX, or explicitly reopen the affected TRD rows and propagate that reopening to their records, artifacts, and review scopes.

@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-b9ff071-webauthn-cross-origin-policy
-status: candidate
+status: validated
 type: implementation-hazard
 severity: low
 confidence: high
 introduced_by: b9ff071ddb4ee67e47179e549b5ad22a429ac5ee
 work_item: B-01
 created_by: /root
-updated: 2026-08-21
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 
@@ -81,6 +81,6 @@ is part of these selected verifiers and its as-built enforcement is future work.
 
 ## Disposition
 
-Candidate for V-01 challenge. Add the missing ceremony-policy check and negative vectors, or demonstrate a
+Validated by `V-01`. Add the missing ceremony-policy check and negative vectors, or demonstrate a
 deployment invariant that makes cross-origin WebAuthn invocation unreachable and bind that invariant into the
 row-17 verification evidence.

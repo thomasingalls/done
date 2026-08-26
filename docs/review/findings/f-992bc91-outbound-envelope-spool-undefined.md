@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-992bc91-outbound-envelope-spool-undefined
-status: candidate
+status: validated
 type: implementation-hazard
 severity: medium
 confidence: high
 introduced_by: 992bc9113093fe04d20df0247aa118d0f8ba365f
 work_item: X-03
 created_by: /root
-updated: 2026-08-25
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 

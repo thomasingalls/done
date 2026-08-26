@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-caee157-plaintext-baseline-points-to-parent
-status: candidate
+status: validated
 type: evidence-weakness
 severity: low
 confidence: high
 introduced_by: caee157305d3080ec870ca0959bd49c61a714f3b
 work_item: B-04
 created_by: /root
-updated: 2026-08-21
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 

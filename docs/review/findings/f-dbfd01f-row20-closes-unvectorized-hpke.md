@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-dbfd01f-row20-closes-unvectorized-hpke
-status: candidate
+status: validated
 type: contradiction
 severity: low
 confidence: high
 introduced_by: dbfd01f54cdfcab994ac7df2298ba0da0bbe7da9
 work_item: B-04
 created_by: /root
-updated: 2026-08-21
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 

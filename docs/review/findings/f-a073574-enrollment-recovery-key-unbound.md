@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-a073574-enrollment-recovery-key-unbound
-status: candidate
+status: validated
 type: implementation-hazard
 severity: high
 confidence: high
 introduced_by: a073574fcb90f9f2a70fa1be2bae5dc1d9c364f3
 work_item: X-04
 created_by: /root
-updated: 2026-08-25
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 

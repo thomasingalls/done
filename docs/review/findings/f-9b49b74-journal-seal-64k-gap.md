@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-9b49b74-journal-seal-64k-gap
-status: candidate
+status: validated
 type: contradiction
 severity: medium
 confidence: high
 introduced_by: 9b49b743cb03cb8827682d79fc66405f458cf29b
 work_item: X-02
 created_by: /root
-updated: 2026-08-21
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 

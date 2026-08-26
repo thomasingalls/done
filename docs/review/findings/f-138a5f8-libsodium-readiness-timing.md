@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-138a5f8-libsodium-readiness-timing
-status: candidate
+status: validated
 type: evidence-weakness
 severity: low
 confidence: high
 introduced_by: 138a5f81ac07d505d9494a899ccf546e383a0684
 work_item: B-03
 created_by: /root
-updated: 2026-08-21
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 

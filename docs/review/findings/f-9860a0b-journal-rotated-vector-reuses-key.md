@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-9860a0b-journal-rotated-vector-reuses-key
-status: candidate
+status: validated
 type: evidence-weakness
 severity: medium
 confidence: high
 introduced_by: 9860a0bc1611b01eac76abcc5584afc51f5ed959
 work_item: B-04
 created_by: /root
-updated: 2026-08-21
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 

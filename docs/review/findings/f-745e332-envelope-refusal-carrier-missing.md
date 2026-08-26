@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-745e332-envelope-refusal-carrier-missing
-status: candidate
+status: validated
 type: implementation-hazard
 severity: medium
 confidence: high
 introduced_by: 745e332b061e0e964ae655e853f2f3b393667c66
 work_item: X-03
 created_by: /root
-updated: 2026-08-25
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 

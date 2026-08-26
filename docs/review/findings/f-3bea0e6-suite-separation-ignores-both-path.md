@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-3bea0e6-suite-separation-ignores-both-path
-status: candidate
+status: validated
 type: evidence-weakness
 severity: medium
 confidence: high
 introduced_by: 3bea0e69469e47b790fe6214d7fbed42bcf84441
 work_item: B-04
 created_by: /root
-updated: 2026-08-21
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 

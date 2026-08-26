@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-c611666-rotation-reader-eligibility-missing
-status: candidate
+status: validated
 type: implementation-hazard
 severity: high
 confidence: high
 introduced_by: c6116669030eedeea3d599bca0da3547114e6930
 work_item: X-01
 created_by: /root
-updated: 2026-08-21
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 

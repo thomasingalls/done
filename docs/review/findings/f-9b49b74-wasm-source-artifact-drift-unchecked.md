@@ -2,7 +2,7 @@
 schema: 1
 kind: finding
 id: f-9b49b74-wasm-source-artifact-drift-unchecked
-status: candidate
+status: validated
 type: evidence-weakness
 severity: low
 confidence: high
@@ -10,7 +10,7 @@ introduced_by: 9b49b743cb03cb8827682d79fc66405f458cf29b
 work_item: X-06
 created_by: /root
 updated: 2026-08-26
-challenged_by: none
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 
@@ -71,6 +71,6 @@ bind source to artifact.
 
 ## Disposition
 
-Candidate for `V-01`. Make source-to-artifact freshness mandatory in the normal check and add reproducible or
+Validated by `V-01`. Make source-to-artifact freshness mandatory in the normal check and add reproducible or
 attested toolchain provenance. Preserve `wasm:verify` as an independent behavioral check; it catches a different
 class of failure.

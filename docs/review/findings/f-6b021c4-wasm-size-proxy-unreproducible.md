@@ -2,15 +2,15 @@
 schema: 1
 kind: finding
 id: f-6b021c4-wasm-size-proxy-unreproducible
-status: candidate
+status: validated
 type: evidence-weakness
 severity: low
 confidence: high
 introduced_by: 6b021c46995379be79d459432f8bc514f72dbcfc
 work_item: B-03
 created_by: /root
-updated: 2026-08-21
-challenged_by: none
+updated: 2026-08-26
+challenged_by: root-v01-20260826
 superseded_by: none
 ---
 
