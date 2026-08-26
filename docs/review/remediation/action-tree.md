@@ -60,10 +60,15 @@ action closes.
 off that chain entirely — `P-3` gates only `S0-3` and `P-5` only `S0-1`, and neither is consumed again before
 `S0-8` — while `P-4` gates only `S0-7`, the last action before evidence regeneration. A reader working the list in
 number order will therefore spend the critical path's slack on decisions nothing is waiting for. Taken one at a
-time, the order that minimises rework is **`P-1`, `P-8`, `P-6`, `P-2`, then `P-3`/`P-5`/`P-4` in any order** —
-`P-1` is decided, so `P-8` is next:
-`P-1` constrains `P-2` by its own prerequisites and reaches rows 5/9/11/15, and `P-8` shares `P-1`'s quorum
-question, so answering `P-1` first stops both from being decided twice.
+time, the order is **`P-1` first**, because it constrains `P-2` by its own prerequisites, reaches rows 5/9/11/15,
+and shares its quorum question with `P-8` — answering it first stops that question being decided twice.
+
+**`P-1` is decided, and that changes what comes next.** Before it was taken, `P-8` was second precisely because of
+the shared quorum question. That coupling is now discharged — `P-1` answered single-owner and `P-8` adopts or
+diverges — so `P-8` reverts to its natural slack: it is not needed until `S0-5`, which cannot begin until `S0-2`
+finishes. The binding constraint is now **`P-2` and `P-6`**, which together with the decided `P-1` are the three
+inputs `S0-2` waits on, and `S0-2` is the widest action on the path. Take them in either order, settle `P-8` any
+time before `S0-2` closes, and leave `P-3`/`P-5`/`P-4` for whenever — nothing waits on them until `S0-8`.
 
 ### Exact artifact key
 
