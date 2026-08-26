@@ -354,6 +354,9 @@ export const bench = (): Bench => {
   /** Returns whether the level actually occupied `slot`, so the caller need not
    * keep a second list of which levels store — one that would go stale the first
    * time a level is added. */
+  /** How many journal entries may be outstanding at once — see the eviction note below. */
+  const OUTSTANDING = 256;
+
   const operation = (level: Level, payload: Uint8Array, slot: string): boolean => {
     if (level === 'plaintext') {
       localStorage.setItem(slot, PLAINTEXT_VERSION + toBase64(payload));
@@ -396,19 +399,41 @@ export const bench = (): Bench => {
     const payload = crypto.getRandomValues(new Uint8Array(bytes));
     drain();
     let next = 0;
+    let evicted = 0;
     try {
       const measured = measure(() => {
         const slot = `done.pending-update.bench.${next}`;
         next += 1;
-        if (operation(level, payload, slot)) slots.push(slot);
+        if (operation(level, payload, slot)) {
+          slots.push(slot);
+          /* Bound the outstanding set to something production-shaped.
+           *
+           * Unbounded accumulation is not the journal's behaviour and measuring
+           * it answers the wrong question: entries live only until the next
+           * asynchronous batch commit, so the store this writes into is small
+           * and roughly steady, not growing without limit. Left unbounded, an
+           * 18 B level reaches the origin's localStorage quota after ~92k
+           * entries and the run dies before it can report anything.
+           *
+           * The eviction is a `removeItem` inside the timed operation, which
+           * production does not do on the write path. It therefore lands on
+           * about one sample in OUTSTANDING — 0.4% here, far out in the tail
+           * and nowhere near p95 — and `evicted` is reported so the reader can
+           * see how many samples carry it rather than having to trust that. */
+          if (slots.length > OUTSTANDING) {
+            const oldest = slots.shift();
+            if (oldest !== undefined) localStorage.removeItem(oldest);
+            evicted += 1;
+          }
+        }
       }, options);
-      return { level, bytes, ...measured };
+      return { level, bytes, evicted, ...measured };
     } catch (error) {
       /* Quota is a result, not a crash: it says the occupancy this level reaches
        * is past what the origin will hold, which is exactly the term the hot-key
        * harness could never reach. Report where it stopped rather than losing it. */
       throw new Error(
-        `${level} at ${bytes} B stopped after ${next} writes (${slots.length} outstanding): ${
+        `${level} at ${bytes} B stopped after ${next} writes (${slots.length} outstanding, ${evicted} evicted): ${
           error instanceof Error ? error.message : String(error)
         }`,
       );
