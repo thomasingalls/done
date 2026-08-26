@@ -66,9 +66,12 @@ and shares its quorum question with `P-8` — answering it first stops that ques
 **`P-1` is decided, and that changes what comes next.** Before it was taken, `P-8` was second precisely because of
 the shared quorum question. That coupling is now discharged — `P-1` answered single-owner and `P-8` adopts or
 diverges — so `P-8` reverts to its natural slack: it is not needed until `S0-5`, which cannot begin until `S0-2`
-finishes. The binding constraint is now **`P-2` and `P-6`**, which together with the decided `P-1` are the three
-inputs `S0-2` waits on, and `S0-2` is the widest action on the path. Take them in either order, settle `P-8` any
-time before `S0-2` closes, and leave `P-3`/`P-5`/`P-4` for whenever — nothing waits on them until `S0-8`.
+finishes. The binding constraint was therefore `P-2` and `P-6`, which together with the decided `P-1` are the three
+inputs `S0-2` waits on, and `S0-2` is the widest action on the path.
+
+**`P-2` is now decided too, leaving `P-6` as the last input `S0-2` waits on.** After that, `S0-2` can begin;
+settle `P-8` any time before `S0-2` closes, and leave `P-3`/`P-5`/`P-4` for whenever — nothing waits on them
+until `S0-8`.
 
 ### Exact artifact key
 
@@ -128,8 +131,13 @@ pinned tip.
 
 ### `P-2` — choose locked-device future-generation gating
 
-- **Prerequisites:** `P-1` recipient authority — **satisfied**, so this node is unblocked and is the next decision
-  on the critical path. Retain the factor-gated future-copy promise or explicitly reopen the product guarantee.
+> **Decided 2026-08-26: `RC-2A`, replace the operational wrapping credential at lock enable**, with the old
+> credential valid until the certified-set successor and generation winner are durably known. Record and
+> reasoning: [`decisions/P-2-device-lock-gating.md`](./decisions/P-2-device-lock-gating.md). The factor-gated
+> future-copy promise is **retained**, not narrowed. `S0-2` consolidates it; ten falsifiers are in that record.
+
+- **Prerequisites:** `P-1` recipient authority — **satisfied**. Retain the factor-gated future-copy promise or
+  explicitly reopen the product guarantee.
 - **Affected artifacts:** PRD §7.2; TRD §§13.3–13.4/13.7; rows 13/15; device-lock and transition vectors; operational
   credential custody and device-list behavior.
 - **Type:** product work + design.
