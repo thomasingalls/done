@@ -69,9 +69,12 @@ diverges — so `P-8` reverts to its natural slack: it is not needed until `S0-5
 finishes. The binding constraint was therefore `P-2` and `P-6`, which together with the decided `P-1` are the three
 inputs `S0-2` waits on, and `S0-2` is the widest action on the path.
 
-**`P-2` is now decided too, leaving `P-6` as the last input `S0-2` waits on.** After that, `S0-2` can begin;
-settle `P-8` any time before `S0-2` closes, and leave `P-3`/`P-5`/`P-4` for whenever — nothing waits on them
-until `S0-8`.
+**`P-1`, `P-2` and `P-6` are all decided, so `S0-2` is unblocked and is the next thing to build.** It is the
+widest action on the path and three further actions wait on it. `P-8` may be settled any time before `S0-2`
+closes — it is not needed until `S0-5` — and `P-3`/`P-5`/`P-4` remain off the path entirely; nothing waits on
+them until `S0-8`, so they can run in parallel with `S0-2` or after it.
+
+Remaining decisions, none of them blocking `S0-2`: `P-3`, `P-4`, `P-5`, `P-8`.
 
 ### Exact artifact key
 
@@ -199,6 +202,12 @@ pinned tip.
 
 ### `P-6` — choose Local archive factor/root UX
 
+> **Decided 2026-08-26: `RC-6A` accepted; archive identity is per workspace; the factor is typed back once per
+> workspace before any archive is called restorable; the Local identity is retired to legacy at promotion; and
+> replacement is forward-only.** Record and reasoning:
+> [`decisions/P-6-local-archive-factor.md`](./decisions/P-6-local-archive-factor.md). `S0-6` consolidates it;
+> seven falsifiers are in that record.
+
 - **Prerequisites:** accept `RC-6A` root commitment/full retired-package direction; decide whether the archive identity
   is per workspace or per archive and how factor confirmation/replacement is presented.
 - **Affected artifacts:** PRD §§7.6–7.7/8.3; TRD §§9.3/13.8/14; rows 10/14; package/recovery vectors; archive/export UI
@@ -284,7 +293,7 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 
 ### `S0-2` — select recipient authority and the complete generation/custody transition
 
-- **Prerequisite decisions:** `P-1`, `P-2`; package/root input from `P-6`; common `RC-2` core.
+- **Prerequisite decisions:** `P-1`, `P-2`, and package/root input from `P-6` — **all satisfied**; plus the common `RC-2` core, which is design work in this action rather than a further decision.
 - **Exact affected artifacts:** PRD §§6.3–6.5/7.2–7.4/7.6; TRD §§6.1/7.3–7.6/13.2–13.8; rows 3/5/7/9/11/13/14/15;
   enrollment, recovery, transition, device-lock, record/checkpoint generators/vectors; credential/key/service
   inventories and UI copy.
