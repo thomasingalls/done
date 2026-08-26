@@ -637,6 +637,22 @@ a structured clone whose properties the load path trusts, a `state` record super
 editable `kind` is therefore a way to make the store delete its own history through its own trim path. **`seq` does
 not reset at trim**, because the nonce budget is argued from it.
 
+**That budget has a number and an action, and the writer needs both.** NIST SP 800-38D §8.3 bounds a key to 2^32
+invocations when its nonces are random, which is what holds the collision probability at or below 2^-32. `K_store`
+is per generation, so the budget is per generation: **a store whose next write would be the 2^32nd invocation under
+the current generation rotates before that write rather than after it.** Equality is the first disallowed value,
+and the writer rotates or refuses rather than proceeding. This is one comparison in front of a field that exists
+for other reasons, and it is the whole enforcement behind the conditional argument the random nonce rests on — a
+counter that is observed but never compared enforces nothing.
+
+**What row 3 has not selected is the count that comparison reads, and the gap is not cosmetic.** `seq` is monotonic
+across the store and does not reset, while the budget is per generation; the two agree only for the first
+generation. A literal `next seq ≥ 2^32` test would therefore be conservative until the first rotation and then
+refuse every write for the rest of the store's life. The comparison needs a per-generation baseline — a
+generation-start watermark, or an invocation count that also counts encryptions abandoned before commit — and
+selecting it is the same open decision as the multi-tab sequence allocator (§15 row 3). Until that is selected, an
+implementation cannot derive this branch from the register alone.
+
 **The journal, and why it is the sharp edge.** Every update is first written synchronously to localStorage as one
 immutable, per-page, per-store journal entry. A reload replays those idempotent Yjs deltas. At the end of a short
 batching window the adapter writes every captured delta in one relaxed IndexedDB transaction, waits for its
@@ -1191,8 +1207,12 @@ long a lost envelope can stall a credential (§7.5). Still not a number this can
 one, and the second is availability rather than cost.
 
 **Retention is at least two checkpoints and their suffixes**, because §11.3 test 8 requires falling back to the
-next-newest, and **no checkpoint may be dropped whose generation any retained checkpoint still needs.** Those two
-sentences are the whole interlock between checkpoint retention and key retention.
+next-newest, and **no generation may be dropped while any retained checkpoint is sealed under it.** Those two
+sentences are the whole interlock between checkpoint retention and key retention. The subject is the generation:
+a rule that instead forbade dropping *a checkpoint whose generation a retained checkpoint needs* constrains each
+checkpoint only by reference to itself, and would leave the mandated fallback authentic but unopenable once its
+generation was dropped. **Which objects constitute an opener — the local key envelope, a retained recovery wrap,
+a reader wrap — is still open** (§13.7, §15 row 15), and the deletion predicate must read that whole set.
 
 **Whatever attribution-preserving evidence is selected is part of this representation, not a separate operator
 archive.** It is portable workspace material encrypted under retained generations, so it is checkpointed, stored
@@ -1662,7 +1682,7 @@ worth writing down.** Checked against the Baseline data rather than assumed, on 
 
 So the floor answers the platform question and neither of §13's. **Where Baseline does not resolve a capability the
 design depends on, the floor is stated for that capability specifically, with its evidence and the date the
-evidence was taken, and the design says what happens when it is absent.** Three such statements follow, and they
+evidence was taken, and the design says what happens when it is absent.** Four such statements follow, and they
 are the whole of the current list.
 
 **Ed25519 is in scope, and needs no fallback path.** Support, from the MDN compatibility data behind
@@ -1678,6 +1698,39 @@ it asked for the support floor to be written down, and noted that an earlier dra
 fallback path for unavailability without selecting one. Under this floor there is no such state to select for.
 Signatures are first used in Stage 4, so the conformance test that turns this from a statement into a check
 belongs there (§11.2), not here.
+
+**X25519 is in scope on the same terms as Ed25519, and it was missing from this list.** §13.10 selects HPKE base
+mode with DHKEM(X25519, HKDF-SHA-256) for every public-key wrap — the recovery envelope's `R_pub`, the per-reader
+generation wrap, and the package generation wrap — so rows 10, 11 and 14 are all load-bearing on it. Row 14 §8
+flagged it as the same class of assumption as Ed25519 and asked for it to be answered once here rather than three
+times in three rows; this section closed for Ed25519 and did not close for X25519, which is the omission being
+corrected.
+
+**The dependency is on the primitive, not on HPKE**, and the distinction matters for what has to be checked. No
+engine exposes HPKE through `SubtleCrypto`; the key schedule is built above the primitive, which is why
+`scripts/generate-package-vectors.mjs` implements RFC 9180 base mode itself and reproduces A.1.1 before using it.
+What the platform must supply is exactly four operations:
+
+| Operation                          | Used by                                        |
+| ---------------------------------- | ---------------------------------------------- |
+| `generateKey('X25519')`            | the ephemeral sender key in every HPKE seal    |
+| `importKey('raw'\|'spki', 'X25519')` | the recipient public key `R_pub` / `W_pub`     |
+| `importKey('pkcs8', 'X25519')`     | the recovery scalar `R_priv` once unsealed     |
+| `deriveBits({ name: 'X25519' })`   | the DH inside DHKEM                            |
+
+**The absence behaviour, which is the part no compatibility table supplies.** Unlike PRF there is no degraded
+mode: a device without these operations cannot be wrapped a content generation, cannot open a recovery envelope,
+and cannot import a package. It is therefore **a refusal at the capability check rather than a failure part-way
+through a ceremony** — the device reports that it cannot join this workspace, and no enrollment, recovery or
+import is begun that it could not finish. That is the same shape as §13.9's answer for a missing authenticator,
+and for the same reason: an operation that cannot complete must not consume a credential, a nonce or a transition
+id on the way to discovering it.
+
+**The evidence table is deliberately empty, and that is the remaining work.** This section's own rule is a floor
+with evidence and the date it was taken; asserting a version row from memory would be worse than the omission it
+replaces, because §10.11's dates are the point rather than decoration. A dated `SubtleCrypto` readback of the four
+operations above, across the four core engines, is required before Stage 0 closes — and it is the same measurement
+row 12's authenticator survey is already offered to review 3b for, so it belongs in that pass.
 
 **WebAuthn PRF cannot be a floor capability at all**, and this is a fact about the feature rather than a gap in the
 research. Its availability is not a browser version: it is a matrix of operating system, browser and authenticator
@@ -2859,7 +2912,7 @@ true**, and where the two disagree this one wins.
 | - | -------- | ---------------- | ------ |
 | 1 | Algorithm suite and crypto-agility | **Suite 1** — AES-256-GCM on every asynchronous path, XChaCha20-Poly1305 on the synchronous one, HKDF-SHA-256, Ed25519, HPKE base with X25519, SHA-256. **A carrier version selects the whole suite**: no per-record algorithm field, so nothing to negotiate and nothing to downgrade | [row 1](./selections/row-1-algorithm-suite.md) |
 | 2 | Synchronous journal AEAD and its nonce discipline | **XChaCha20-Poly1305**, 24 random bytes per record, **no counter and no durable state** — so there is nothing for a crash to lose. Subkey derived once at open from `K_g`. **The implementation is the audited RustCrypto crate compiled to a 6.5 kB inlined wasm module**, instantiated synchronously, which closes §12's measured 4 kB breach and costs 0.7 kB _less_ than the pure-JS library it replaces (§13.10) | [row 2](./selections/row-2-journal-aead.md) |
-| 3 | Encrypted record and local key-envelope formats | AES-256-GCM under domain-separated subkeys; **every cleartext field is in the AAD**, because IndexedDB holds a structured clone whose properties the load path trusts. 12 random nonce bytes under a per-generation budget that `seq` bounds — **so `seq` does not reset at trim** | [row 3](./selections/row-3-record-format.md) |
+| 3 | Encrypted record and local key-envelope formats | AES-256-GCM under domain-separated subkeys; **every cleartext field is in the AAD**, because IndexedDB holds a structured clone whose properties the load path trusts. 12 random nonce bytes under a per-generation budget that `seq` bounds — **so `seq` does not reset at trim**. The budget is NIST SP 800-38D §8.3's 2^32 invocations per key: **the store rotates before the 2^32nd write under a generation**, equality being the first disallowed value. The per-generation count that comparison reads, and the crash-safe allocator that issues `seq` across tabs, are **still open** (§6.1) | [row 3](./selections/row-3-record-format.md) |
 | 13 | Device-lock derivation, enrollment migration and copy | A **generated 125-bit code always**, with WebAuthn PRF as an additional seal of the same `L_lock` rather than an alternative to it. Enrollment reseals the key envelopes and **rotates the content key forward** (§13.3) | [row 13](./selections/row-13-device-lock.md) |
 | 14 | Recovery-code entropy, generation, step-up and confirmation UX | 125 bits, Crockford Base32, five groups of five, **and no stretching at all**. Step-up is **a bound challenge rather than a freshness window** — `SHA-256( LP("done/recovery-replace/v1") \|\| LP(dec v) \|\| LP(hex intent_id) \|\| LP(hex nonce) )`, answered by the account credential, with 32 service-issued nonce bytes retired on use. **It binds §13.7's transition id, not the new public key**, so a `replace-recovery` step-up cannot be redirected to a `retire`; and no principal or credential id, because a service-issued challenge names the operation as the service knows it (§13.8) | [row 14](./selections/row-14-recovery-code.md) |
 | 5 | Finalization shape | An **append-only per-credential accepted chain** of SHA-256 links, with **service-signed heads amortized over a batch** rather than one receipt per envelope. A separate hot acceptance-signing key, certified by the authorization key in the epoch. `final: true` is the cutoff. The epoch payload and the checkpoint manifest each gain the head vector (§7.5, §7.6, §13.5) | [row 5](./selections/row-5-finalization.md) |

@@ -50,7 +50,7 @@ Cadence
 Retention
 
   At least two checkpoints and their suffixes (§11.3 test 8).
-  Never drop a checkpoint whose generation any retained checkpoint still needs.
+  Never drop a generation while any retained checkpoint is sealed under it.
 
                 LP(s) = uint16be(byteLength(utf8 s)) || utf8 s
 ```
@@ -146,10 +146,24 @@ holding the newest checkpoint unavailable, falling back to the next-newest retai
 A retention policy of one makes that test unpassable by construction, which is the sort of thing worth checking
 a policy against before writing it rather than after.
 
-**And: never drop a checkpoint whose generation any retained checkpoint still needs.** This is the mirror of §4's
+**And: never drop a generation while any retained checkpoint is sealed under it.** This is the mirror of §4's
 forced rule and closes the same hole from the other side. Together they are the whole interlock between
 checkpoint retention and key retention, which §13.7 warns must not be conflated with local-store retention — and
 now needs one sentence in each direction rather than a general caution.
+
+**The subject of that sentence is the generation, and it has to be.** An earlier wording made it the checkpoint —
+*never drop a checkpoint whose generation any retained checkpoint still needs* — which reads as an interlock and
+is not one: the only checkpoint that needs `g` is the one sealed under `g`, so the rule constrained a checkpoint
+by reference to itself and said nothing at all about the key. §4's forced rule guarantees that a checkpoint exists
+under the new generation before the old one is dropped; it does not keep the **second-newest** checkpoint
+openable, and that is exactly the one §11.3 test 8 falls back to. Dropping `g` while `C_g` is still the mandated
+fallback leaves an authentic, intact, undecryptable checkpoint and fails that test by construction.
+
+**What still needs selecting is what counts as an opener.** A local `KeyEnvelope` is not the only path to `K_g` —
+a retained recovery wrap or reader wrap may keep a generation openable after the local envelope is gone — so
+"dropping a generation" has to name the set of objects whose removal actually ends access, and §13.7's deletion
+predicate has to read that set rather than a single carrier. That inventory belongs with the generation-reference
+accounting that rotate, revoke and replace-recovery all need (§15 row 15), and it is not settled here.
 
 ---
 
