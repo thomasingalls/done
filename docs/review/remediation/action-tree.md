@@ -1,5 +1,32 @@
 # Action tree from the pinned state
 
+## Repairs already applied on this branch
+
+Eight findings were repaired directly on the pinned tip before any `P-` decision was taken, because none of them
+needed one. They are recorded here so the actions below do not overstate what remains; **no finding file's
+`status:` was touched**, since `S0-10` reserves disposition changes for the separately authorized
+validation/remediation workflow. The population in
+[`end-state-materiality.md`](./end-state-materiality.md) is likewise unchanged and still reads 19/9/5/4.
+
+| Finding | Owning action | State | What remains |
+| --- | --- | --- | --- |
+| `f-9b49b74-wasm-glue-key-nonce-lengths` | `S0-3` | **Closed, falsifier in place.** Exact 32/24 widths enforced before any byte reaches WASM memory; 7 negatives, each mutation-tested. | Nothing. |
+| `f-9860a0b-journal-rotated-vector-reuses-key` | `S0-3` | **Closed, falsifier in place.** Generation 2 has its own root; `wrong-generation-key` opens the gen-2 record with gen-1's subkey under gen-2's correct AAD. | Nothing. |
+| `f-992bc91-network-carrier-registry-stale` | `S0-4` | **Closed, falsifier in place.** Carrier filled in from row 4 with three acceptance rows; `checkCarriers` now reads the owning row's own status line. | Nothing. |
+| `f-tip-prd-stale-selection-status` | `S0-1` | **Closed by document repair.** All three PRD subsections report the selection; row 14's confirmation UX is still open and still says so. | No executable cross-document oracle. That is `S0-1`'s bidirectional coverage work and still needs `P-5`. |
+| `f-dbfd01f-record-nonce-ceiling-omitted` | `S0-3` | **Closed by document repair.** TRD §6.1 and §15 row 3 carry SP 800-38D §8.3's 2^32 and rotate-before-write, equality first disallowed. | The build-failing boundary test the finding asks for. It cannot be written until `P-3` selects the per-generation count the comparison reads — which the TRD now says explicitly rather than implying the rule is complete. |
+| `f-b997cdb-checkpoint-key-retention-inverted` | `S0-2` | **Closed by document repair.** Subject corrected to the generation in row 7 twice and TRD §7.6 once. | Which objects constitute an opener — local key envelope, retained recovery wrap, reader wrap. That is `RC-2` generation-reference accounting, gated on `P-1`/`P-2`. |
+| `f-bd87655-x25519-support-floor-omitted` | `S0-1` | **Partially closed.** §10.11 gains the fourth statement with the four exact `SubtleCrypto` operations and the absence behaviour — a refusal at the capability check, so no ceremony consumes a credential, nonce or transition id on its way to failing. | The dated evidence table. Left empty deliberately: §10.11's own rule is a floor *with evidence and a date*, and an asserted version row would be worse than the omission. Required before `S0-10`. |
+| `f-66a7c6a-journal-benchmark-overwrites-one-slot` | `S0-3` / `L-4` | **Partially closed.** Each write now takes its own slot; the drain stays outside the timed operation because production clears asynchronously; quota is reported with the write count. | The measurement itself. It is now a one-command run rather than a harness rewrite, so the immutable-append probe should be taken before `S0-10` rather than deferred to `L-4` — it can still invalidate a Stage 0 premise. |
+
+**One incidental defect, found while applying these and not in the finding population.** The pinned tip does not
+pass its own gate: `pnpm check` fails at `9edd930` on both `lint` and `format`, on files unrelated to any repair.
+Worse, the documented remedy is harmful — `pnpm format:fix` reformats four markdown documents and breaks the TRD
+§15.1 register parser, which silently takes `scripts/generate-suite-vectors.mjs` down with it. Every document diff
+on this branch is therefore surgical and the formatter was not run. This belongs with `RC-9`'s gate governance and
+`L-4`'s CI evidence: a tip asserting Stage 0 is ready to close while failing its own check script is the same
+class of defect as a green oracle that cannot see what it claims to check.
+
 ## Dependency graph
 
 ```text
@@ -7,7 +34,7 @@ P-1, P-2, P-6 -> S0-2 recipient + generation authority
 P-3            -> S0-3 local write machine
 P-5            -> S0-1 closure authority
 S0-1, S0-2     -> S0-4 exact-byte outbound spool/refusal
-S0-2            -> S0-5 checkpoint semantics + creation authority
+S0-2, P-8      -> S0-5 checkpoint semantics + creation authority
 S0-2, S0-5, P-6 -> S0-6 package/portable authority
 S0-2, S0-6, P-4 -> S0-7 lifecycle/deletion design
 S0-1..S0-7      -> S0-8 regenerated evidence
@@ -24,8 +51,18 @@ Non-blocking history
 ```
 
 The graph is ordered by authority rather than file-edit convenience. `S0-1`, `S0-2`, and `S0-3` can begin after
-their decisions; `S0-4` waits for `S0-1/2`; `S0-5` waits for `S0-2`; `S0-6` waits for `S0-2/5`; and `S0-7` waits for
-`S0-2/6`. Schema prototyping may run in parallel, but those interfaces converge before their consuming action closes.
+their decisions; `S0-4` waits for `S0-1/2`; `S0-5` waits for `S0-2` and `P-8`; `S0-6` waits for `S0-2/5`; and `S0-7`
+waits for `S0-2/6`. Schema prototyping may run in parallel, but those interfaces converge before their consuming
+action closes.
+
+**The `P-` nodes are not peers, and the numbering does not say so.** The longest chain is
+`P-1 → P-2 → S0-2 → S0-5 → S0-6 → S0-7 → S0-8 → S0-9 → S0-10`, with `P-8` entering at `S0-5`. `P-3` and `P-5` sit
+off that chain entirely — `P-3` gates only `S0-3` and `P-5` only `S0-1`, and neither is consumed again before
+`S0-8` — while `P-4` gates only `S0-7`, the last action before evidence regeneration. A reader working the list in
+number order will therefore spend the critical path's slack on decisions nothing is waiting for. Taken one at a
+time, the order that minimises rework is **`P-1`, `P-8`, `P-6`, `P-2`, then `P-3`/`P-5`/`P-4` in any order**:
+`P-1` constrains `P-2` by its own prerequisites and reaches rows 5/9/11/15, and `P-8` shares `P-1`'s quorum
+question, so answering `P-1` first stops both from being decided twice.
 
 ### Exact artifact key
 
@@ -170,6 +207,37 @@ pinned tip.
 - **Rollback/reconsideration:** before their named implementation gates.
 - **No-action consequence:** none for corrected Stage 0; row 21 still blocks irreversible cutover.
 
+### `P-8` — choose checkpoint semantic authority and immutable creation authority
+
+This node was previously the only Stage-0-blocking decision left inside its consuming action rather than hoisted
+here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`, `B+C`, `B+D`.
+
+- **Prerequisites:** `P-1`, because `RC-5A` asks whether a quorum of clients admits checkpoint semantics and `P-1`
+  already asks whether client approval is single-owner or quorum-like — the same question in two places, and it
+  must be answered once. Then decide **who authenticates that a checkpoint means the accepted snapshot it claims**
+  — a retained replay witness plus client/quorum `SemanticAdmission` (`RC-5A`), or a content-aware accepted-event
+  root with a portable replay/equivalence proof (`RC-5B`) — and **what makes first creation immutable** — a
+  creator-committed card identity (`RC-5C`), or an append-only first-write/order certificate (`RC-5D`).
+- **Affected artifacts:** PRD provenance/continuity; TRD §§4.5/4.8/7.6/10.4/13.7/14; rows 5/7/8/10/15;
+  `scripts/generate-checkpoint-vectors.mjs` and `scripts/generate-attribution-vectors.mjs` with their vectors;
+  suffix/trim/compaction requirements; restore and migration tests.
+- **Type:** design + product/architecture.
+- **Safe parallel work:** real Yjs `{sv,ds}` derivation from a materialised snapshot, staged checkpoint
+  install/fallback, and opener-reference accounting all proceed against the common tuple without selecting a
+  branch. Admission/proof and creation-authority schemas stay branch prototypes until the shared accepted-order
+  interface is fixed.
+- **Acceptance/falsifiers:** a checkpoint omitting an accepted insertion or deletion fails admission; a head vector
+  beyond the snapshot fails; a whole valid self-replacement of another source's creation claim fails; a fresh
+  restorer verifies the selected authority after the pre-checkpoint envelopes are trimmed; incomparable producers
+  and incomparable first writes resolve without wall-clock ordering.
+- **Downstream invalidated if changed:** `S0-5` in full, then `S0-6`'s package format and `S0-7`'s terminal
+  payload, Stage 4 first sync/restore, migration, generation cleanup, and row 21's archive cost.
+- **Rollback/reconsideration:** before package vectors depend on the chosen authority or order domain. After that a
+  branch switch is a format migration, not a decision.
+- **No-action consequence:** `S0-5` cannot start, and with it `S0-6` and `S0-7` — three of the seven Stage 0
+  actions, on the critical path. Authentic checkpoint bytes can still omit accepted content, and a later credential
+  can still replace the recorded creator of a card once the original event has been trimmed.
+
 ## Actions required before Stage 0 may close
 
 ### `S0-1` — establish the selected closure authority and reconcile current policy/status
@@ -190,8 +258,9 @@ pinned tip.
   `S0-8` and external review intake.
 - **Rollback/reconsideration:** if the selected representation hides narrative exceptions, duplicates authority, or
   cannot prove both mapping directions, return to `P-5` before declaring projections authoritative.
-- **Consequence of no action:** the five `RC-8` closure defects remain; other closure defects stay owned by their
-  domain actions, and green cross-artifact status/coverage remains unreliable.
+- **Consequence of no action:** three of the five `RC-8` closure defects remain; the PRD/TRD status contradiction
+  and the X25519 support floor are already repaired above, the latter still owing its dated evidence table. Other
+  closure defects stay owned by their domain actions, and green cross-artifact status/coverage remains unreliable.
 
 ### `S0-2` — select recipient authority and the complete generation/custody transition
 
@@ -212,7 +281,8 @@ pinned tip.
 - **Rollback/reconsideration:** before recipient/generation carrier bytes are frozen; after that, a branch switch is
   a protocol/version migration.
 - **Consequence of no action:** three high and several medium authority/durability findings survive; no conforming
-  implementation can derive safe rotation/replacement/lock behavior.
+  implementation can derive safe rotation/replacement/lock behavior. The checkpoint fallback rule is already
+  corrected above, but its opener set is exactly what this action must still enumerate.
 
 ### `S0-3` — select total local-write admission, allocator, and trim budget
 
@@ -228,8 +298,10 @@ pinned tip.
 - **Downstream invalidated if action changes:** Stage 1 adapter, accepted-head local store, generation cleanup,
   checkpoint watermarking, performance support policy, `S0-8`.
 - **Rollback/reconsideration:** after feasibility/performance results but before row-2/3 vector format is re-frozen.
-- **Consequence of no action:** two design defects and three closure defects remain; the separate benchmark finding
-  remains a later gate. Later integration can lose local work or delete uncovered state.
+- **Consequence of no action:** the allocator and oversize-admission design defects remain, and later integration
+  can lose local work or delete uncovered state. Three of this cluster's closure defects — the glue widths, the
+  rotated-generation fixture and the missing nonce ceiling — are repaired above; the ceiling still owes its
+  build-failing boundary test, which this action's selected count makes writable.
 
 ### `S0-4` — select exact-byte outbound spool and refusal protocol
 
@@ -250,12 +322,13 @@ pinned tip.
 - **Rollback/reconsideration:** before changing row-4 carrier bytes; spool schema may change without cryptographic
   migration while row 4 stays stable.
 - **Consequence of no action:** ordinary sync has no safe crash/lost-reply path despite sound accepted-chain math.
+  The stale carrier registry row is already repaired above and is not part of this.
 
 ### `S0-5` — select semantic checkpoint, admission/install, and immutable creation authority
 
-- **Prerequisite decisions:** accepted-head/recipient inputs from `S0-2`; choose verifier-admission versus content-
-  aware event proof (`RC-5A/B`), creator-bound id versus ordered first-write certificate (`RC-5C/D`), the exact
-  verifier/order authority, what proof inputs survive trim, and how incomparable chains resolve.
+- **Prerequisite decisions:** `P-8`, which carries the `RC-5A/B` and `RC-5C/D` choices, the exact verifier/order
+  authority, what proof inputs survive trim, and how incomparable chains resolve; plus accepted-head/recipient
+  inputs from `S0-2`.
 - **Exact affected artifacts:** PRD provenance/continuity; TRD §§4.5/4.8/7.6/10.4/13.7/14; rows 5/7/8/10/15;
   checkpoint/attribution generators/vectors; suffix/trim/compaction requirements; restore/migration tests.
 - **Type:** design + documentation + executable evidence.
@@ -449,9 +522,9 @@ pinned tip.
 
 The critical path is:
 
-`P-1/P-2/P-3/P-4/P-5/P-6`
+`P-1/P-2/P-3/P-4/P-5/P-6/P-8`
 → `S0-1/S0-2/S0-3`
-→ (`S0-1 + S0-2`) `S0-4` in parallel with `S0-2` → `S0-5`
+→ `S0-4` (needs `S0-1 + S0-2`) and `S0-5` (needs `S0-2 + P-8`), which run in parallel with each other
 → (`S0-2 + S0-5 + P-6`) `S0-6`
 → (`S0-2 + S0-6 + P-4`) `S0-7`
 → all `S0-1..S0-7`

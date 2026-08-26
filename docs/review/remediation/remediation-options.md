@@ -365,7 +365,10 @@ The evidence preserves full snapshots, two fallbacks, signed carrier fields, bod
 integrity, but it does not select a semantic-admission trust model, acceptable replay retention/privacy cost, or a
 first-write ordering domain. Evaluate `A+C`, `A+D`, `B+C`, and `B+D`; reject combinations whose authorities conflict.
 No RC-5 branch is recommended until a packet names who authenticates semantics, what survives trim, how a fresh
-restorer verifies it, and how incomparable chains resolve “first.”
+restorer verifies it, and how incomparable chains resolve “first.” That packet is `P-8` in
+[`action-tree.md`](./action-tree.md), which also records its dependency on `P-1`: `RC-5A`'s quorum question and
+`P-1`'s single-owner-versus-quorum question are the same question, and answering them separately is how two
+authorities end up disagreeing.
 
 ## `RC-6` — converged portable-root and deletion-handoff construction
 
