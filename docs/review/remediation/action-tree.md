@@ -60,7 +60,8 @@ action closes.
 off that chain entirely — `P-3` gates only `S0-3` and `P-5` only `S0-1`, and neither is consumed again before
 `S0-8` — while `P-4` gates only `S0-7`, the last action before evidence regeneration. A reader working the list in
 number order will therefore spend the critical path's slack on decisions nothing is waiting for. Taken one at a
-time, the order that minimises rework is **`P-1`, `P-8`, `P-6`, `P-2`, then `P-3`/`P-5`/`P-4` in any order**:
+time, the order that minimises rework is **`P-1`, `P-8`, `P-6`, `P-2`, then `P-3`/`P-5`/`P-4` in any order** —
+`P-1` is decided, so `P-8` is next:
 `P-1` constrains `P-2` by its own prerequisites and reaches rows 5/9/11/15, and `P-8` shares `P-1`'s quorum
 question, so answering `P-1` first stops both from being decided twice.
 
@@ -99,6 +100,11 @@ pinned tip.
 
 ### `P-1` — choose the `RecipientAuthority` representation
 
+> **Decided 2026-08-26: `RC-1B`, client-certified recipient set inside each authorization successor, with
+> single-owner approval.** Record and reasoning:
+> [`decisions/P-1-recipient-authority.md`](./decisions/P-1-recipient-authority.md). `S0-2` consolidates it;
+> nothing is implemented yet. The eleven falsifiers `S0-2` must satisfy are in that record.
+
 - **Prerequisites:** accept the common `RC-1` invariant; decide whether client approval of recipient changes is
   single-owner or quorum-like and how recovery works when no current device survives.
 - **Affected artifacts:** `docs/PRD.md` §§6.3/7.3–7.4; `docs/TRD.md` §§7.3/13.2/13.5–13.8/15; selections rows
@@ -117,8 +123,8 @@ pinned tip.
 
 ### `P-2` — choose locked-device future-generation gating
 
-- **Prerequisites:** `P-1` recipient authority; retain the factor-gated future-copy promise or explicitly reopen the
-  product guarantee.
+- **Prerequisites:** `P-1` recipient authority — **satisfied**, so this node is unblocked and is the next decision
+  on the critical path. Retain the factor-gated future-copy promise or explicitly reopen the product guarantee.
 - **Affected artifacts:** PRD §7.2; TRD §§13.3–13.4/13.7; rows 13/15; device-lock and transition vectors; operational
   credential custody and device-list behavior.
 - **Type:** product work + design.
@@ -214,7 +220,8 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 
 - **Prerequisites:** `P-1`, because `RC-5A` asks whether a quorum of clients admits checkpoint semantics and `P-1`
   already asks whether client approval is single-owner or quorum-like — the same question in two places, and it
-  must be answered once. Then decide **who authenticates that a checkpoint means the accepted snapshot it claims**
+  must be answered once. **`P-1` answered it single-owner**, so this node adopts that or explicitly diverges from
+  it, with reasons; it does not decide independently. Then decide **who authenticates that a checkpoint means the accepted snapshot it claims**
   — a retained replay witness plus client/quorum `SemanticAdmission` (`RC-5A`), or a content-aware accepted-event
   root with a portable replay/equivalence proof (`RC-5B`) — and **what makes first creation immutable** — a
   creator-committed card identity (`RC-5C`), or an append-only first-write/order certificate (`RC-5D`).
