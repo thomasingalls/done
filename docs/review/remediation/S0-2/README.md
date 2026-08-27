@@ -25,10 +25,27 @@ cannot be reviewed, and because the stages have a real dependency order rather t
 | | Stage | Output | Status |
 | --- | --- | --- | --- |
 | **A** | Durable record schemas | exact field lists for every new record, in the project's own `LP()` notation, composing with the existing intent/outcome/epoch/custody carriers | **done** — [`A-schemas.md`](./A-schemas.md) |
-| **B** | Normative construction | TRD §§6.1/7.3–7.6/13.2–13.8: how a certified set is produced and consumed, how a transition applies locally, when an opener may be retired | not started |
+| **B** | Normative construction | TRD §§13.2/13.4/13.5/13.6/13.7/13.8 | **done** — see below |
 | **C** | Selection rows | rows 3/5/7/9/11/13/14/15 amended to match | not started |
 | **D** | Executable evidence | generators, vectors, and one isolated falsifier per closed finding | not started |
 | **E** | Product surface | PRD §§6.3–6.5/7.2–7.4/7.6 and UI copy, including truthful `rotation_owed` | not started |
+
+### What Stage B changed, and what it deliberately did not
+
+| TRD | Change |
+| --- | --- |
+| §13.2 | The certified recipient set and the recovery-bootstrap signer enter the authority table, each with its own *must not* column |
+| §13.4 | The two custody tiers are keyed on PRF availability; a locked slot needs a third. States why the existing credential cannot be re-sealed and must be replaced |
+| §13.5 | The epoch carries a client-approved certified recipient set. States that this does not change what the head vector is or who asserts it |
+| §13.6 | A successful ceremony *produces* the set successor; the transcript binds the recovery recipient; the six enrollment states are named and only the last is reader-eligible |
+| §13.7 | Rotation consumes the certified set rather than a roster; `applying` becomes eight durable steps with step 5 as the commit point; the generation-drop gate gains its fourth clause |
+| §13.8 | Replacement binds exact envelope and wrap bytes, and carries `successor-generation` so exposure rotates forward |
+
+**Not changed, and why.** §6.1's local-store retention is reached through §13.7's opener predicate rather than
+restated there, and its writer belongs to `P-3`/`S0-3`. §§7.3–7.6 needed no amendment once §13.5 established that
+accepted positions remain the service's to assert and the approvals ride inside the epoch as bytes it cannot
+forge — the row-5 exposure P-1 created turned out to be a clarification rather than a change. If `S0-8` disagrees
+with that reading, §7.5 is where it reopens.
 
 **The order is a dependency order.** A fixes the interfaces B and C describe; D cannot write a falsifier for a
 field that does not exist; E states in product terms what B and C made true, and stating it earlier would be

@@ -304,7 +304,10 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 > **Started 2026-08-27.** Staged, because a single pass over eight rows, two normative documents and five
 > generator/vector pairs cannot be reviewed. Plan and status: [`S0-2/README.md`](./S0-2/README.md). **Stage A
 > (durable record schemas) is done** — [`S0-2/A-schemas.md`](./S0-2/A-schemas.md) — with fourteen falsifiers
-> mapped to the records they test. Stages B–E not started.
+> mapped to the records they test. **Stage B (normative construction) is done**: TRD §§13.2/13.4/13.5/13.6/13.7/
+> 13.8 now carry the certified recipient set, its production at enrollment, the durable `applying` record, the
+> four-clause generation-drop gate, the byte-exact replacement payload, and the locked-slot custody tier. Stages
+> C–E not started.
 
 - **Prerequisite decisions:** `P-1`, `P-2`, and package/root input from `P-6` — **all satisfied**; plus the common `RC-2` core, which is design work in this action rather than a further decision.
 - **Exact affected artifacts:** PRD §§6.3–6.5/7.2–7.4/7.6; TRD §§6.1/7.3–7.6/13.2–13.8; rows 3/5/7/9/11/13/14/15;

@@ -2055,6 +2055,8 @@ Everything below is downstream of that, and any construction that violates it is
 | **Relay admission token**                  | Open a scoped transport connection for a bounded time                                                | Decrypt, sign content, admit a device, change capabilities, recover an account                  |
 | **Device / agent signing credential**      | Sign mutations as its authorized actor                                                                | Receive a content key merely because it can sign; change authorization                          |
 | **Device / agent wrapping credential**     | Unwrap content keys if read-capable                                                                   | Sign mutations, change authorization, represent an arbitrary actor                              |
+| **Certified recipient set** (§13.5)        | Name the exact `(credential, W_pub)` pairs and the `R_pub` a rotator may wrap to                     | Be authored or amended by the service; grant capability; assert accepted positions              |
+| **Recovery-bootstrap signer** (§13.8)      | Authenticate one successor binding when no eligible client survives, from the factor-opened recovery object | Be held by the service; exist outside the content factor's seal; be reused for a second binding |
 | **Local-custody key `L_local`**            | Open this slot's encrypted `K_g` envelopes on the default tier                                       | Sign, authenticate an account, unwrap `R_priv`, travel to another device                        |
 | **Optional device-lock custody `L_lock`**  | Replace promptless opening of those envelopes with a user-factor gate (§13.3)                        | Sign, authenticate an account, become a recovery factor implicitly, be opened by recovery       |
 | **Service authorization authority**        | Admit and revoke credentials, choose capabilities, sign epochs, finalize accepted sets               | Decrypt, sign a device's mutations, represent its actor, deliver a content key by authorization alone |
@@ -2150,6 +2152,21 @@ persisted representations:
 A non-extractable target key is **not** described as "wrapped": WebCrypto wrapping is an export operation and cannot
 wrap a key whose extractability forbids export.
 
+**Those two tiers are keyed on PRF availability, and a locked slot needs a third** (`S0-2`, `P-2`). Where PRF is
+absent the wrapping private key persists as a structured-cloned non-extractable `CryptoKey` — promptless, and
+therefore usable from a copied profile. §13.3's lock protects the `KeyEnvelope` and leaves that credential
+untouched, so rotation publishes a reader wrap the pre-lock copy can open: the lock is bypassed without being
+attacked, on the tier the code factor makes the common one (§10.11).
+
+**Enabling the lock therefore replaces the wrapping credential rather than re-sealing it**, and the sentence above
+is why it must: the existing key cannot be exported, so it cannot be brought under a factor. The replacement is
+generated as extractable bytes, sealed under `L_lock`, and imported as a non-extractable runtime key after unlock
+— the PRF tier's own pattern with `L_lock` as the factor source, not a new carrier. Its introduction is a
+certified-set successor (§13.5), so every future rotator wraps to the replacement automatically. **The predecessor
+stays valid until that successor and the generation winner are both durably known**, which keeps an interrupted
+lock recoverable; the interval in which a pre-lock copy still holds `K_g` is exactly what `rotation_owed` exists
+to state, and no interface may claim future-copy protection while it is true.
+
 **The device list shows which tier a device is on.** A two-tier assurance bar is acceptable; a silent one is not.
 
 **This unlock gates sync, not the app** (§7.1). These credentials sign envelopes and receive new keys; they do not
@@ -2188,6 +2205,33 @@ It must:
 current content-key generation, **the acceptance-signing key `K_accept` in force, and the accepted-head vector**
 — `(credential, position, link)` for every credential as of that epoch (§7.5, §15 row 5). **Generation is broader
 than membership**, because admitting a second device changes authorization without creating a second member.
+
+**A service-signed epoch does not by itself license key delivery, and that is the correction §15 row 11 forced**
+(`S0-2`). The epoch is simultaneously the roster a rotator reads and a document only the service signs, which is
+how account authorization alone could cause *delayed* content-key delivery: a credential the service admitted and
+no person enrolled is indistinguishable, at the next unrelated rotation, from one whose ceremony succeeded. The
+epoch therefore additionally carries a **certified recipient set**, which the service serialises and cannot author:
+
+> `CertifiedSet = LP("done/certified-set/v1") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(dec parent_epoch) || LP(dec next_epoch) || LP(hex members_digest) || LP(hex recovery_state_digest)`
+>
+> `members_digest = SHA-256( LP("done/certified-members/v1") || ( LP(credential_id) || LP(hex W_pub) )* sorted by credential_id )`
+>
+> `recovery_state_digest = SHA-256( LP("done/recovery-state/v1") || LP(dec counter) || LP(hex R_pub) || LP(hex recovery_envelope_digest) || LP(hex root_commitment) )`
+
+**The binding is credential-to-exact-wrapping-key, not credential-to-boolean**, because the roster was never the
+thing that was missing — the service does enumerate credentials. What was missing is an approval of the exact key
+a rotator will encrypt to, so a service-admitted credential has no approved `(credential, W_pub)` pair and
+receives no wrap. The recovery recipient sits in the same object for the same reason: substituting `R_pub` is that
+attack through a second carrier, and one approval covers both.
+
+**One eligible content-holding client's signature suffices** (`P-1`). `approvals[]` is a list, so a threshold is
+later a verifier policy change rather than a format migration; a hard quorum is not selected, because it would
+make a one-device workspace unable to enroll its second device.
+
+**This does not change what the head vector is or who asserts it.** The epoch stays service-signed as a whole and
+the approvals ride inside it as bytes the service cannot forge; accepted positions remain the service's to assert,
+because positions are exactly what it is authoritative over. Verifiers check the epoch signature as before and
+additionally check the approvals over `members_digest` and `recovery_state_digest` (§7.5, §15 row 5).
 
 **The head vector is what makes an equivocating service have to fork the lineage**, rather than merely withhold.
 The epoch already says which credentials exist; this says where each one had got to, so a device shown a
@@ -2252,6 +2296,25 @@ The second gate is the one that stops a malicious service turning authorization 
 It is also where correlated loss bites: a phone, its device credential, a device-bound passkey, its local ciphertext
 and a recovery code saved on that phone are five artifacts and **one** failure domain.
 
+**That gate held for the immediate release and not for the delayed one, which is what `S0-2` repairs.** The
+ceremony below stops an existing client releasing `K_g` to a service-admitted credential *now*. It did not stop
+that credential being wrapped `K_(g+1)` at the next unrelated rotation, because nothing durable recorded which
+credentials a person had actually enrolled — so the rotator fell back on the epoch roster. **A successful
+ceremony therefore produces a certified recipient-set successor** (§13.5), signed by the existing device that
+released the key and countersigned by the new credential on install. That record, not the roster, is what a
+future rotator reads.
+
+**The transcript binds the recovery recipient as well as the wrapping key**, for the same reason at a second
+carrier: a service that supplies the new device an attacker-controlled `R_pub` and a matching opaque envelope
+gets the honest new device to wrap future generations to it. The `recovery_state_digest` the new device installs
+is inside what the typed symbols authenticate, so an existing client cannot be induced to certify a recovery
+recipient it does not itself hold.
+
+**Enrollment is not complete at admission, and the states are distinct**: service-admitted, ceremony-committed,
+SAS-confirmed, key-and-recovery-state-delivered, installed-and-countersigned, certified. Only the last is
+reader-eligible. A crash resumes the same transcript or restarts with a fresh credential; a mismatch spends the
+credential.
+
 **The ceremony that discharges the second gate is selected** (§15 row 11): a **short authentication string over
 an in-band agreement**, with both nonces **committed before either is revealed**, derived from a transcript
 binding the workspace, the epoch **and its head**, both credential ids and the new device's wrapping public key.
@@ -2301,9 +2364,13 @@ stale duplicate that diverges and is later believed.
 ### 13.7 Rotation and generation retention
 
 **Constraint.** Rotation is **client-produced and service-committed**. An authorized owner device generates fresh
-`K_(g+1)`, wraps it to every remaining reader wrapping key and to `R_pub`, and submits those wraps with the
-authorization successor and accepted-set cutoff. The service atomically commits and signs that package. Removed
-credentials receive no wrap.
+`K_(g+1)`, wraps it to **exactly the `(credential, W_pub)` pairs in the certified recipient set of its parent
+epoch and to exactly that set's `R_pub`** (§13.5), and submits those wraps with the authorization successor and
+accepted-set cutoff. The service atomically commits and signs that package. Removed credentials receive no wrap.
+
+**A rotator reads the certified set, never a roster, a service-supplied key, or a capability flag.** That sentence
+is the whole of the delayed-delivery repair: an authorized-but-uncertified credential is not a recipient, so
+authorization alone cannot cause key delivery either immediately or later.
 
 **No construction may give the service the key in order to simplify its commit.**
 
@@ -2337,7 +2404,21 @@ definite refusal comes from.**
 verified committed outcome and none under the previous generation after it, so the atomic commit is one transition
 point rather than a window in which the excluded credential can still read new writes. **The pending intent is
 persisted before the first network byte**, which is what makes a crash between commit and local switch resolvable:
-the client resubmits and is told its own id. **Three states must never exist** — a committed transition with no
+the client resubmits and is told its own id.
+
+**A verified outcome begins local application rather than completing it, and `applying` is a durable record**
+(§15 row 15 names the state; `S0-2` makes it a record). A matching winner is not a state change, it is the
+licence to start one, and every step between is a crash point:
+
+> 1 outcome verified and persisted · 2 successor opener installed · 3 old-generation objects classified ·
+> 4 permissible local work covered under `g+1` · **5 active epoch/generation advanced — the commit point** ·
+> 6 successor checkpoint admitted and local content trimmed · 7 old openers retired under this section's
+> predicate · 8 the apply record itself discharged
+
+Each step is idempotent and restart resumes at the recorded step. Steps 1–4 are reversible; step 5 is not, and it
+may only be taken once no new write can select `g` and `g+1` is reopenable. **Device lock (§13.3) and recovery
+replacement (§13.8) apply through this same machine** rather than each defining its own, which is what stops a
+committed transition, a locked device and a replaced recovery set from having three different crash semantics. **Three states must never exist** — a committed transition with no
 local record it was intended, content under a generation no committed epoch names, and a dropped generation with
 no checkpoint under its successor.
 
@@ -2383,8 +2464,14 @@ boundary refuses (§11.2 test 6).
 
 - **Local store retention** (§6.1): a device needs every generation its own records are sealed under. Trimming to one
   state record under the current generation discharges the rest. **The previous generation is droppable only when
-  three things hold** (§15 row 15): the transition is settled, a checkpoint under the new generation is admitted
-  (§7.6), and the local trim holds a state record under it. An interrupted rotation is exactly what violates
+  four things hold** — §15 row 15's three, plus the one that discharges §7.6's fallback: the transition is
+  settled, a checkpoint under the new generation is admitted (§7.6), the local trim holds a state record under it,
+  **and every retained checkpoint still sealed under the previous generation has at least one surviving authorized
+  opener**. The first three permit the drop; only the fourth keeps the second-newest checkpoint openable, which is
+  what §11.3 test 8 falls back to. **The predicate is stated over openers rather than over the local key
+  envelope**, because deleting that envelope does not necessarily end access — a retained recovery or reader wrap
+  may still open the generation — so a reference ledger over journals, batches, outbound envelopes, accepted
+  marks, checkpoints, suffixes, packages and wraps is what the drop consults. An interrupted rotation is exactly what violates
   §7.6's cadence rule, because the obvious implementation clears the obligation when the epoch commits — which is
   before the checkpoint exists.
 - **Attribution retention**: the attributed actor sits **inside the seal**, so verifying historical authorship
@@ -2482,6 +2569,19 @@ factors, rewraps every required generation to the new `R_pub`, and asks the serv
 public key, wraps and sealed envelope. **That replacement is §13.7's transition protocol at `kind:
 'replace-recovery'`** (§15 row 15), so an interruption leaves exactly the old envelope or exactly the new — never
 both live, which would leave the old code still opening content. **It cannot help after the last content key and the old code are both gone.**
+
+**"Exactly the new" is a claim about bytes, so the bytes are in the signature** (`S0-2`). The replacement intent's
+payload binds the counter, the new `R_pub`, **the exact sealed envelope bytes including its tag**, the root
+commitment (§14.2), and **the exact wrap bytes for every rewrapped generation** — the same shape `rotate` already
+uses, rather than a list of generation numbers. A digest over which generations were rewrapped, and not over what
+they were rewrapped to, cannot make atomicity mean that one exact complete set won.
+
+**Replacement after exposure rotates forward, and the payload says which.** Resealing leaves `K_g` unchanged, so an
+exposed `R_priv` still opens current content after a replacement that only re-encrypts it — the same shape as
+§13.3's reason for rotating after a device lock. The payload therefore carries a `successor-generation`, and the
+only way not to rotate is the explicit value `none-lost-not-copied`, available solely where the product can
+distinguish *lost* from *copied* and say so to the user. **Replacement described as the answer to an exposed code
+must rotate**, or the promise is not kept.
 
 **"Fresh account authentication" is a bound challenge, not a freshness window** (§15 row 14). Three gates, and two of
 them are free: **content access** is proven by use, since replacement must rewrap every required generation to the new
