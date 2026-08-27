@@ -83,6 +83,31 @@
       }
     }
   ],
+  "retention_interlock": {
+    "why": "The rule read \"never drop a checkpoint whose generation any retained checkpoint still needs\", which constrains each checkpoint by reference to itself -- the only checkpoint that needs g is the one sealed under g -- and never constrains the generation. §13.7 forces a checkpoint under the new generation before the old one is dropped; it says nothing about whether the second-newest stays openable, and that is the one §11.3 test 8 falls back to.",
+    "subject": "the generation, not the checkpoint",
+    "stated_over": "the opener set, not the local key envelope -- a retained recovery or reader wrap may still open a generation whose envelope is gone",
+    "after_two_rotations": {
+      "retained": [
+        {
+          "gen": 5,
+          "role": "newest"
+        },
+        {
+          "gen": 4,
+          "role": "second-newest, the mandated fallback"
+        }
+      ],
+      "droppable": [
+        3
+      ],
+      "not_droppable": [
+        4,
+        5
+      ]
+    },
+    "expected": "a generation is droppable only when no retained checkpoint is sealed under it, and one opener is retirable only while another survives"
+  },
   "must_fail": [
     {
       "name": "coverage-ignores-deletions",

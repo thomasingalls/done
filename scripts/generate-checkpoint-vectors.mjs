@@ -453,6 +453,79 @@ const verify = async (doc) => {
   const otherKey = await deriveCheckpointKey(KG, 'ws_01J0000000000000000000000A');
   await refuses('wrong-workspace-subkey', () => openCheckpoint(otherKey, checkpointAad(BASE), ct));
 
+  // --- retention, and the clause the interlock was missing -----------------------
+
+  /**
+   * A checkpoint is openable only while its generation is, and the rule that
+   * was supposed to guarantee that had the wrong subject.
+   *
+   * It read *never drop a checkpoint whose generation any retained checkpoint
+   * still needs*, which constrains each checkpoint by reference to itself: the
+   * only checkpoint that needs `g` is the one sealed under `g`. Nothing
+   * constrained the **generation**. §13.7's forced rule guarantees a checkpoint
+   * exists under the new generation before the old one is dropped -- it says
+   * nothing about whether the **second-newest** stays openable, and that is the
+   * one §11.3 test 8 falls back to.
+   *
+   * Stated over openers rather than over the local key envelope, because
+   * deleting that envelope does not necessarily end access: a retained recovery
+   * or reader wrap may still open the generation.
+   */
+  const sealedUnder = (gen, retained) => retained.filter((cp) => cp.gen === gen);
+
+  /** Deleting every opener for a generation. */
+  const mayDropGeneration = (gen, retained) => sealedUnder(gen, retained).length === 0;
+
+  /**
+   * Deleting *one* opener, which is the operation that actually happens.
+   *
+   * These are two different questions and the interlock only ever asked the
+   * first. Removing a local key envelope is not dropping a generation: a
+   * retained recovery or reader wrap may still open it. So the predicate is
+   * stated over the opener **set**, and permits the removal exactly when
+   * something else survives to open what is still retained.
+   */
+  const mayRetireOpener = (gen, opener, retained, openers) =>
+    mayDropGeneration(gen, retained) || (openers[gen] ?? []).filter((o) => o !== opener).length > 0;
+
+  // Two rotations, which is the shape test 8 needs: g+2 is newest, g+1 is the
+  // mandated fallback, and g is the one nothing retains any more.
+  const afterTwoRotations = [
+    { gen: 5, role: 'newest' },
+    { gen: 4, role: 'second-newest, the mandated fallback' },
+  ];
+  const openersHeld = { 3: [], 4: ['local key envelope'], 5: ['local key envelope'] };
+
+  if (!mayDropGeneration(3, afterTwoRotations)) {
+    throw new Error('Generation 3 is retained by nothing and should be droppable.');
+  }
+  if (mayDropGeneration(4, afterTwoRotations)) {
+    throw new Error(
+      'Generation 4 was droppable while the second-newest checkpoint is sealed under it. ' +
+        'The fallback would be authentic, intact and undecryptable, and test 8 fails by construction.',
+    );
+  }
+
+  // Retiring the last opener of a still-retained generation is the same failure
+  // reached through the operation an implementation actually performs.
+  if (mayRetireOpener(4, 'local key envelope', afterTwoRotations, openersHeld)) {
+    throw new Error('The last opener of a retained generation was retirable.');
+  }
+
+  // And the benign reading the finding names: an opener need not be the local
+  // envelope, so the predicate reads the whole set rather than one carrier.
+  const alsoRecoveryWrap = { ...openersHeld, 4: ['local key envelope', 'retained recovery wrap'] };
+  if (!mayRetireOpener(4, 'local key envelope', afterTwoRotations, alsoRecoveryWrap)) {
+    throw new Error('A surviving recovery wrap did not count as an opener.');
+  }
+
+  // Every retained checkpoint is openable, which is what the whole predicate holds.
+  for (const cp of afterTwoRotations) {
+    if ((openersHeld[cp.gen] ?? []).length === 0) {
+      throw new Error(`The ${cp.role} checkpoint has no opener.`);
+    }
+  }
+
   // The published list and the executed checks must be the same list, in both
   // directions. A "must fail" entry that quietly stops failing is the defect
   // this file exists to prevent; one that is published but never run is the
@@ -559,6 +632,22 @@ const main = async () => {
     },
     keys: KEYS,
     vectors,
+    retention_interlock: {
+      why: 'The rule read "never drop a checkpoint whose generation any retained checkpoint still needs", which constrains each checkpoint by reference to itself -- the only checkpoint that needs g is the one sealed under g -- and never constrains the generation. §13.7 forces a checkpoint under the new generation before the old one is dropped; it says nothing about whether the second-newest stays openable, and that is the one §11.3 test 8 falls back to.',
+      subject: 'the generation, not the checkpoint',
+      stated_over:
+        'the opener set, not the local key envelope -- a retained recovery or reader wrap may still open a generation whose envelope is gone',
+      after_two_rotations: {
+        retained: [
+          { gen: 5, role: 'newest' },
+          { gen: 4, role: 'second-newest, the mandated fallback' },
+        ],
+        droppable: [3],
+        not_droppable: [4, 5],
+      },
+      expected:
+        'a generation is droppable only when no retained checkpoint is sealed under it, and one opener is retirable only while another survives',
+    },
     must_fail: NEGATIVES,
   };
 

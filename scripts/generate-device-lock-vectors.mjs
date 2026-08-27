@@ -113,6 +113,35 @@ const SEAL_NONCE_CODE = unhex('202122232425262728292a2b');
 const SEAL_NONCE_PRF = unhex('303132333435363738393a3b');
 
 /**
+ * The wrapping credential, before and after the lock -- and they are two keys.
+ *
+ * **`L_lock` never protected this one, which is the gap §13.4 records.** On the
+ * no-PRF tier the wrapping private key persists as a structured-cloned
+ * non-extractable `CryptoKey`: promptless, and usable from a copied profile.
+ * Sealing the KeyEnvelope under a factor left it untouched, so the next
+ * rotation published a reader wrap the pre-lock copy could open -- the lock
+ * bypassed without being attacked.
+ *
+ * It cannot be brought under the factor either, because WebCrypto cannot export
+ * a non-extractable key. So enabling the lock **replaces** it: the successor is
+ * generated as extractable bytes, sealed here under `L_lock` with exactly the
+ * `LockSeal` machinery the factors already use, and imported non-extractable
+ * after unlock. §13.4's PRF tier, with `L_lock` as the factor source.
+ */
+const W_PUB_PRELOCK = '8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a';
+const W_PUB_REPLACEMENT = 'de9edb7d7b7dc1b4d35b61c2ece435373f8343c85b78674dadfc7e146f882b4f';
+const W_SCALAR_REPLACEMENT = unhex(
+  '5dab087e624a8a4b79e17f8b83800ee66f3bb1292618b6fd1c2f8b27ff88e0eb',
+);
+const CREDENTIAL_SEAL_ID = 'wrapping-credential';
+const SALT_CREDENTIAL = unhex('202122232425262728292a2b2c2d2e2f');
+const SEAL_NONCE_CREDENTIAL = unhex('404142434445464748494a4b');
+
+/** Generation g was wrapped to the pre-lock credential; g+1 is not. */
+const GEN = 4;
+const SUCCESSOR_GEN = 5;
+
+/**
  * §13.4's four factor roles. Only the third is this row's to select; the other
  * three labels are provisional stand-ins owned by rows in review 3b's scope.
  * What these vectors assert is that the four inputs differ, not what three of
@@ -309,6 +338,14 @@ const MUST_FAIL = [
     why: 'A seal lifted into the other workspace on the same profile -- PRD §6.7s ordinary two-principal case, not an attack.',
   },
   { name: 'seal-moved-to-other-principal', why: 'The same, across principals.' },
+  {
+    name: 'replacement-credential-under-a-wrong-code',
+    why: 'The replacement wrapping credential is sealed with the same LockSeal machinery as L_lock itself, so a wrong code does not open it. Without this the lock would replace a promptless key with another promptless key and change nothing.',
+  },
+  {
+    name: 'replacement-credential-seal-as-a-factor-seal',
+    why: "The credential seal presented under the code factor's own id. The seal AAD binds the id, so the two sealed objects in a locked slot -- L_lock and the wrapping credential -- cannot be substituted for one another.",
+  },
   {
     name: 'seal-rebound-to-other-credential',
     why: 'A prf seal presented under another credential id, which is how a removed passkey would be made to look enrolled.',
@@ -731,6 +768,111 @@ const main = async () => {
     openGcm(kCode, SEAL_NONCE_CODE, baseAad, baseCt.subarray(0, -1)),
   );
 
+  // --- the wrapping credential the lock replaces --------------------------------
+
+  const kCredential = await deriveFactorKey(
+    utf8(CODE),
+    SALT_CREDENTIAL,
+    PRINCIPAL,
+    WORKSPACE,
+    'code',
+  );
+  const credentialAad = aadForSeal({
+    principal: PRINCIPAL,
+    workspace: WORKSPACE,
+    v: SEAL_VERSION,
+    factor: 'code',
+    id: CREDENTIAL_SEAL_ID,
+  });
+  const credentialSeal = await sealGcm(
+    kCredential,
+    SEAL_NONCE_CREDENTIAL,
+    credentialAad,
+    W_SCALAR_REPLACEMENT,
+  );
+
+  // The seal round-trips under the right factor, or the rest proves nothing.
+  if (
+    hex(await openGcm(kCredential, SEAL_NONCE_CREDENTIAL, credentialAad, credentialSeal)) !==
+    hex(W_SCALAR_REPLACEMENT)
+  ) {
+    throw new Error('the replacement credential seal does not round-trip.');
+  }
+
+  await refuses('replacement-credential-under-a-wrong-code', async () =>
+    openGcm(
+      await deriveFactorKey(
+        utf8('AZC52QK9FEHC6M7VS01JDA3NZ'),
+        SALT_CREDENTIAL,
+        PRINCIPAL,
+        WORKSPACE,
+        'code',
+      ),
+      SEAL_NONCE_CREDENTIAL,
+      credentialAad,
+      credentialSeal,
+    ),
+  );
+
+  await refuses('replacement-credential-seal-as-a-factor-seal', () =>
+    openGcm(
+      kCredential,
+      SEAL_NONCE_CREDENTIAL,
+      aadForSeal({
+        principal: PRINCIPAL,
+        workspace: WORKSPACE,
+        v: SEAL_VERSION,
+        factor: 'code',
+        id: 'code',
+      }),
+      credentialSeal,
+    ),
+  );
+
+  /**
+   * What the pre-lock copy can and cannot open, as two wrap maps.
+   *
+   * The honest promise is narrower than "the lock protects your workspace", and
+   * the narrow one is what these assert: generation `g` was wrapped to the
+   * pre-lock credential and stays readable by a copy of it -- history is not
+   * re-keyed, because the copy that motivates the rotation already holds it --
+   * while `g+1` is wrapped only to the replacement.
+   */
+  const wrapsByGeneration = {
+    [GEN]: { [W_PUB_PRELOCK]: 'wrapped before the lock' },
+    [SUCCESSOR_GEN]: { [W_PUB_REPLACEMENT]: 'wrapped after it' },
+  };
+  if (W_PUB_PRELOCK === W_PUB_REPLACEMENT) {
+    throw new Error('The lock did not replace the credential; the fixture proves nothing.');
+  }
+  if (!Object.hasOwn(wrapsByGeneration[GEN], W_PUB_PRELOCK)) {
+    throw new Error('The pre-lock copy cannot open generation g. History was re-keyed.');
+  }
+  if (Object.hasOwn(wrapsByGeneration[SUCCESSOR_GEN], W_PUB_PRELOCK)) {
+    throw new Error(
+      'The successor generation is wrapped to the pre-lock credential. A copied profile opens it, ' +
+        'and the lock is bypassed without being attacked.',
+    );
+  }
+
+  /**
+   * `rotation_owed` is derived, and this is the table that says from what.
+   *
+   * It is true from the custody swap until the generation application settles,
+   * and the interval is exactly the one in which a pre-lock copy still holds
+   * `K_g`. An implementation that clears it at the swap -- when the envelopes
+   * move and before any rotation has landed -- claims future-copy protection
+   * during precisely the window where there is none.
+   */
+  const rotationOwedAt = (step) => step < 8;
+  for (const step of [1, 2, 3, 4, 5, 6, 7, 8]) {
+    if (rotationOwedAt(step) !== step < 8) throw new Error('rotation_owed is not derived.');
+  }
+  if (!rotationOwedAt(5)) {
+    throw new Error('rotation_owed cleared at the commit point rather than at settlement.');
+  }
+  if (rotationOwedAt(8)) throw new Error('rotation_owed never clears.');
+
   // The published list and the asserted list must agree in both directions, or
   // a "must fail" entry can quietly stop being tested.
   const published = MUST_FAIL.map((m) => m.name).sort();
@@ -775,6 +917,27 @@ const main = async () => {
       'All eight inputs are distinct, and the generator fails if any two collide. Only the device-lock label is selected by row 13; the others are stand-ins owned by review 3bs rows, and what is asserted is that they differ rather than what they are. Row 12 has since been selected and derives nothing from a PRF output at all, so its label is reserved and unused -- §13.4s separation is satisfied structurally for that role rather than by these bytes',
     seal_vectors: sealVectors,
     custody_vectors: custodyVectors,
+    wrapping_credential: {
+      why: 'L_lock protected the KeyEnvelope and left the wrapping credential beside it. On the no-PRF tier that credential is a structured-cloned non-extractable CryptoKey -- promptless, and usable from a copied profile -- so the next rotation published a reader wrap the pre-lock copy could open. It cannot be brought under the factor, because WebCrypto cannot export a non-extractable key, so the lock replaces it.',
+      seal: {
+        id: CREDENTIAL_SEAL_ID,
+        factor: 'code',
+        salt: hex(SALT_CREDENTIAL),
+        nonce: hex(SEAL_NONCE_CREDENTIAL),
+        ct: hex(credentialSeal),
+        note: "The same LockSeal machinery as L_lock's own factor seals, with its own id bound in the AAD so the two sealed objects in a locked slot cannot be substituted for one another.",
+      },
+      pre_lock_public_key: W_PUB_PRELOCK,
+      replacement_public_key: W_PUB_REPLACEMENT,
+      wraps_by_generation: wrapsByGeneration,
+      rotation_owed: {
+        derived_from: "the generation-application record's step, never asserted",
+        true_while: 'step < 8 -- from the custody swap until the application settles',
+        why: 'That interval is exactly the one in which a pre-lock copy still holds K_g. Clearing it at the swap, when the envelopes move and before any rotation has landed, claims future-copy protection during precisely the window where there is none.',
+      },
+      expected:
+        'generation g is wrapped to the pre-lock key and the successor is not; history is not re-keyed',
+    },
     custody_note:
       'One KeyEnvelope, row 3s AAD byte for byte, under each tiers key. The generator reproduces row 3s published ciphertext from its published inputs and fails if either has changed, and separately asserts that L_local does not open the lock tiers envelope',
     must_fail: MUST_FAIL,

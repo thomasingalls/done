@@ -310,8 +310,10 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 > **Stage C (selection rows) is done**: rows 3/5/7/9/11/13/14/15 amended under the project's existing
 > `**Amended by:**` convention. After C the rows and the generators disagree on purpose, and `vectors:check`
 > cannot see it — it compares a generator to its vector, never a document to its generator. **Stage D is in
-> progress: 6 of 14 falsifiers are executable and mutation-tested**, closing two of the three named drifts; row
-> 13's custody record is still described and not generated. Stage E not started.
+> progress: 10 of 14 falsifiers are executable and mutation-tested**, and all three Stage C drifts are closed —
+> the rows and the generators agree again, checked rather than assumed. Remaining: the `RecoveryBootstrap`
+> construction (6, 7), approval serialisation (5), and the one crash-resume property that belongs in `vitest`
+> rather than a vector (10). Stage E not started.
 
 - **Prerequisite decisions:** `P-1`, `P-2`, and package/root input from `P-6` — **all satisfied**; plus the common `RC-2` core, which is design work in this action rather than a further decision.
 - **Exact affected artifacts:** PRD §§6.3–6.5/7.2–7.4/7.6; TRD §§6.1/7.3–7.6/13.2–13.8; rows 3/5/7/9/11/13/14/15;

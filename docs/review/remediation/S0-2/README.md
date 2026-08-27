@@ -27,7 +27,7 @@ cannot be reviewed, and because the stages have a real dependency order rather t
 | **A** | Durable record schemas | exact field lists for every new record, in the project's own `LP()` notation, composing with the existing intent/outcome/epoch/custody carriers | **done** — [`A-schemas.md`](./A-schemas.md) |
 | **B** | Normative construction | TRD §§13.2/13.4/13.5/13.6/13.7/13.8 | **done** — see below |
 | **C** | Selection rows | rows 3/5/7/9/11/13/14/15 amended to match | **done** — see below |
-| **D** | Executable evidence | generators, vectors, and one isolated falsifier per closed finding | **in progress** — 6 of 14, see below |
+| **D** | Executable evidence | generators, vectors, and one isolated falsifier per closed finding | **in progress** — 10 of 14, see below |
 | **E** | Product surface | PRD §§6.3–6.5/7.2–7.4/7.6 and UI copy, including truthful `rotation_owed` | not started |
 
 ### What Stage B changed, and what it deliberately did not
@@ -60,11 +60,10 @@ vector and never a document to its generator.** That is precisely the shape of
 recorded here rather than discovered later: the green result after Stage C proves self-consistency, not
 agreement with the rows.
 
-**Stage D closes it progressively.** Two of the three named drifts are now closed: the enrollment generator binds
-`recovery_state_digest`, and the transition generator emits byte-exact `replace-recovery` parts. **Row 13's custody
-record is still described and not generated** — the device-lock generator does not yet produce a
-`wrapping_credential`. Until it does, row 13 is the authority and `device-lock.json` is evidence for the
-superseded construction. `S0-8`'s traceability matrix is where the two are required to meet.
+**All three named drifts are now closed.** The enrollment generator binds `recovery_state_digest`, the transition
+generator emits byte-exact `replace-recovery` parts, and the device-lock generator produces the
+`wrapping_credential` row 13 describes. The rows and the generators agree again, and this time the agreement was
+checked rather than assumed.
 
 ### Stage D progress
 
@@ -83,14 +82,20 @@ diagnosis, and the guard is restored.
 | 8 | Eliding any byte of the envelope or any wrap changes the digest | **done** | `transition` — five complete variants, each asserted distinct; the superseded numbers-only digest published beside them |
 | 9 | An exposed code does not open content after replacement | **done** *(binding half)* | `transition` — `successor-generation` is in the signed payload and asserted to change the digest. That it *opens nothing* is a runtime property for `L-2` |
 | 10 | A kill at each `GenerationApply` step resumes | not started | a state machine, not a byte format — belongs in `vitest`, not a vector file |
-| 11 | No opener retired while a retained checkpoint lacks one | not started | `checkpoint` |
-| 12 | Checkpoint fallback survives two rotations | not started | `checkpoint` |
-| 13 | A pre-lock no-PRF profile cannot open `g+1` after a settled lock | not started | `device-lock` |
-| 14 | The same profile still opens up to `g`; `rotation_owed` spans the exact interval | not started | `device-lock` + `vitest` |
+| 11 | No opener retired while a retained checkpoint lacks one | **done** | `checkpoint` — the superseded wording is encoded as a mutation and reproduces the failure |
+| 12 | Checkpoint fallback survives two rotations | **done** | `checkpoint` — g+2 newest, g+1 the mandated fallback, g droppable |
+| 13 | A pre-lock no-PRF profile cannot open `g+1` after a settled lock | **done** | `device-lock` — the replacement credential is sealed under `L_lock` with the same `LockSeal` machinery |
+| 14 | The same profile still opens up to `g`; `rotation_owed` spans the exact interval | **done** | `device-lock` — wraps by generation, and `rotation_owed` asserted derived from the apply step |
 
-**Falsifier 10 is worth flagging now rather than at the end.** It is a crash-resume property of a local state
-machine, and every other item here is a property of bytes. It cannot be a vector, so it belongs in the test suite
-rather than in a generator — and that is a different kind of work from the rest of Stage D.
+**What remains is 5, 6, 7 and 10, and they are not the same kind of work.**
+
+- **5** is nearly discharged: the approval binds `parent_epoch`, so a stale set cannot win. What is not separately
+  exercised is serialisation itself, and that is row 15's existing three-way rule rather than new machinery.
+- **6 and 7** need a `RecoveryBootstrap` construction that does not exist in any generator yet. It is the last new
+  byte format in `S0-2`, and it belongs beside row 9's signed head assertion.
+- **10 cannot be a vector.** A kill at each `GenerationApply` step is a crash-resume property of a local state
+  machine; every other item here is a property of bytes. It belongs in `vitest`, and it is the one item in Stage D
+  that is a different kind of work from the rest.
 
 ### What Stage C changed
 

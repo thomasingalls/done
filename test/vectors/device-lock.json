@@ -210,6 +210,33 @@
       "ct": "ecd833ad81bbabc89f82ad53b34d3c6f44bf8203171201ea392f53d8554580e4c417921fac265a795bce4125ebe220fa"
     }
   ],
+  "wrapping_credential": {
+    "why": "L_lock protected the KeyEnvelope and left the wrapping credential beside it. On the no-PRF tier that credential is a structured-cloned non-extractable CryptoKey -- promptless, and usable from a copied profile -- so the next rotation published a reader wrap the pre-lock copy could open. It cannot be brought under the factor, because WebCrypto cannot export a non-extractable key, so the lock replaces it.",
+    "seal": {
+      "id": "wrapping-credential",
+      "factor": "code",
+      "salt": "202122232425262728292a2b2c2d2e2f",
+      "nonce": "404142434445464748494a4b",
+      "ct": "31afb3aee6b268df75a2af1da86d4472fed53052492e725379f451741836ab1d6db64ed59bc145a0e7717257c98e86e1",
+      "note": "The same LockSeal machinery as L_lock's own factor seals, with its own id bound in the AAD so the two sealed objects in a locked slot cannot be substituted for one another."
+    },
+    "pre_lock_public_key": "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a",
+    "replacement_public_key": "de9edb7d7b7dc1b4d35b61c2ece435373f8343c85b78674dadfc7e146f882b4f",
+    "wraps_by_generation": {
+      "4": {
+        "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a": "wrapped before the lock"
+      },
+      "5": {
+        "de9edb7d7b7dc1b4d35b61c2ece435373f8343c85b78674dadfc7e146f882b4f": "wrapped after it"
+      }
+    },
+    "rotation_owed": {
+      "derived_from": "the generation-application record's step, never asserted",
+      "true_while": "step < 8 -- from the custody swap until the application settles",
+      "why": "That interval is exactly the one in which a pre-lock copy still holds K_g. Clearing it at the swap, when the envelopes move and before any rotation has landed, claims future-copy protection during precisely the window where there is none."
+    },
+    "expected": "generation g is wrapped to the pre-lock key and the successor is not; history is not re-keyed"
+  },
   "custody_note": "One KeyEnvelope, row 3s AAD byte for byte, under each tiers key. The generator reproduces row 3s published ciphertext from its published inputs and fails if either has changed, and separately asserts that L_local does not open the lock tiers envelope",
   "must_fail": [
     {
@@ -235,6 +262,14 @@
     {
       "name": "seal-moved-to-other-principal",
       "why": "The same, across principals."
+    },
+    {
+      "name": "replacement-credential-under-a-wrong-code",
+      "why": "The replacement wrapping credential is sealed with the same LockSeal machinery as L_lock itself, so a wrong code does not open it. Without this the lock would replace a promptless key with another promptless key and change nothing."
+    },
+    {
+      "name": "replacement-credential-seal-as-a-factor-seal",
+      "why": "The credential seal presented under the code factor's own id. The seal AAD binds the id, so the two sealed objects in a locked slot -- L_lock and the wrapping credential -- cannot be substituted for one another."
     },
     {
       "name": "seal-rebound-to-other-credential",
