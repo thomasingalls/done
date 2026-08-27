@@ -173,6 +173,58 @@ const manifestMessage = ({
     }).map(lp),
   );
 
+/**
+ * The admission, which is what the producer's signature does not say.
+ *
+ * **Publishing `{sv, ds}` is not deriving them.** The manifest's signature says
+ * *this producer made this manifest*; it does not say the pair inside describes
+ * the snapshot the manifest names, nor that the head vector stops where the
+ * snapshot stops. An authentic manifest whose coverage is wrong is worse than
+ * an unsigned one, because it is believed.
+ *
+ * Two questions, and only one is a matter of trust. **Coverage is re-derived
+ * locally by every restorer** -- decrypt, materialise, recompute, compare --
+ * needing no signature and no second party, which is why the assertions below
+ * do that first and without consulting one. **The accepted-head baseline is the
+ * part trim removes the evidence for**, so an eligible client that checked it
+ * signs this before any pre-checkpoint envelope may be dropped, and a fresh
+ * restorer's confidence in the baseline is exactly its confidence in that
+ * credential.
+ */
+const ADMIT_LABEL = 'done/cp-admit/v1';
+const DERIVATION_VERSION = 'yjs-v13-sv-ds';
+
+const admissionMessage = ({
+  v = 1,
+  workspace,
+  checkpointDigest,
+  manifestDigest,
+  derivedSv,
+  derivedDs,
+  headBaselineDigest,
+  derivationVersion = DERIVATION_VERSION,
+  admittingCredential,
+  selfAdmitted,
+  decisionParent,
+  label = ADMIT_LABEL,
+}) =>
+  concat(
+    ...aadFields('checkpoint admission', {
+      label,
+      v: String(v),
+      workspace_id: workspace,
+      checkpoint_digest: checkpointDigest,
+      manifest_digest: manifestDigest,
+      derived_sv: derivedSv,
+      derived_ds: derivedDs,
+      head_baseline_digest: headBaselineDigest,
+      derivation_version: derivationVersion,
+      admitting_credential: admittingCredential,
+      self_admitted: selfAdmitted ? '1' : '0',
+      decision_parent: decisionParent,
+    }).map(lp),
+  );
+
 // --- keys ---------------------------------------------------------------------------
 
 const KEYS = {
@@ -260,6 +312,81 @@ const BASE = {
   credential: LAPTOP,
 };
 const NONCE = '404142434445464748494a4b';
+
+const ADMISSION_NEGATIVES = [
+  {
+    name: 'admission-derived-sv-disagrees',
+    why: "The check that needs nobody's signature. A restorer materialises the snapshot, derives {sv, ds} itself, and compares against BOTH the manifest and the admission. A disagreement is a refusal reached without trusting anyone, and it is mandatory even when every signature verifies -- an encoding or selection bug produces this as readily as a malicious producer.",
+  },
+  {
+    name: 'admission-derived-ds-disagrees',
+    why: "The same at the deletion half, which is bound separately for §7.6's reason: two replicas can carry identical state vectors and disagree about what has been deleted.",
+  },
+  {
+    name: 'admission-signed-over-a-wrong-derivation',
+    why: 'The case the local re-derivation exists for, and the only one that proves it runs. Here the admitter signs an admission whose derived coverage genuinely disagrees with the snapshot -- a colluding admitter, or an honest one with a bug. Every signature verifies. The refusal has to come from the restorer recomputing {sv, ds} itself, which is why that check is first and why it is mandatory even when the admission is valid. The sibling negatives above cannot show this: with the local check removed they still fail, on the signature, which is the fails-twice-isolates-nothing shape.',
+  },
+  {
+    name: 'admission-of-another-manifest',
+    why: 'An admission lifted onto a different manifest. It binds the manifest digest, so a checked coverage claim cannot be moved to a checkpoint nobody checked.',
+  },
+  {
+    name: 'admission-with-a-substituted-head-baseline',
+    why: 'The one trusted field, doing its job. Proving the head vector does not reach past the snapshot needs the accepted events that trim removes, so the baseline is what the admitter attests to and it may not be swapped afterwards.',
+  },
+  {
+    name: 'admission-under-an-unimplemented-derivation-version',
+    why: "sv and ds are a library's opaque encoding. Unversioned, a change to it turns every stored admission into a silent mismatch that reads as corruption; versioned, it is a legible refusal that names its cause.",
+  },
+  {
+    name: 'admission-signed-by-a-credential-that-did-not-admit',
+    why: 'The admitting credential is named in the message, so this fails on the binding rather than only on the key.',
+  },
+  {
+    name: 'admission-forked-from-another-parent',
+    why: "Incomparable proposals serialise by an authenticated decision parent and never by wall clock, which is row 7's own rule at the object that now settles it.",
+  },
+  {
+    name: 'aad-only-admission-label',
+    why: 'The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature.',
+  },
+  {
+    name: 'aad-only-admission-version',
+    why: 'The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature.',
+  },
+  {
+    name: 'aad-only-admission-workspace-id',
+    why: 'The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature.',
+  },
+  {
+    name: 'aad-only-admission-checkpoint-digest',
+    why: 'The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature.',
+  },
+  {
+    name: 'aad-only-admission-manifest-digest',
+    why: 'The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature.',
+  },
+  {
+    name: 'aad-only-admission-derived-sv',
+    why: 'The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature.',
+  },
+  {
+    name: 'aad-only-admission-derived-ds',
+    why: 'The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature.',
+  },
+  {
+    name: 'aad-only-admission-derivation-version',
+    why: 'The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature.',
+  },
+  {
+    name: 'aad-only-admission-admitting-credential',
+    why: 'The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature.',
+  },
+  {
+    name: 'aad-only-admission-self-admitted',
+    why: 'The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature.',
+  },
+];
 
 const NEGATIVES = [
   {
@@ -453,6 +580,198 @@ const verify = async (doc) => {
   const otherKey = await deriveCheckpointKey(KG, 'ws_01J0000000000000000000000A');
   await refuses('wrong-workspace-subkey', () => openCheckpoint(otherKey, checkpointAad(BASE), ct));
 
+  // --- the admission, and the two questions it keeps apart -----------------------
+
+  const admitVerifier = await importVerifier(KEYS.other_credential.public_key);
+  const manifestDigest = hex(await sha256(manifestMessage(manifest)));
+  const headBaseline = manifest.headVecDigest;
+
+  const ADMISSION = {
+    workspace: WORKSPACE,
+    checkpointDigest: manifest.checkpointDigest,
+    manifestDigest,
+    derivedSv: SV,
+    derivedDs: DS,
+    headBaselineDigest: headBaseline,
+    admittingCredential: PHONE,
+    selfAdmitted: false,
+    decisionParent: '00'.repeat(32),
+  };
+  const admissionSig = new Uint8Array(
+    await crypto.subtle.sign(
+      { name: 'Ed25519' },
+      await importSigner(KEYS.other_credential.seed),
+      admissionMessage(ADMISSION),
+    ),
+  );
+
+  /**
+   * The restorer, in the order §7.6 states -- and the first check consults no
+   * signature at all, which is the point of doing it first.
+   */
+  const admit = async ({
+    fields = ADMISSION,
+    sig = admissionSig,
+    derivation = DERIVATION_VERSION,
+  }) => {
+    if (fields.derivationVersion !== undefined && fields.derivationVersion !== derivation) {
+      throw new Error(`derivation ${fields.derivationVersion} is not implemented here`);
+    }
+    // 1. Local re-derivation. No key, no signature, no second party.
+    if (fields.derivedSv !== SV) throw new Error('derived sv disagrees with the local derivation');
+    if (fields.derivedDs !== DS) throw new Error('derived ds disagrees with the local derivation');
+    if (fields.manifestDigest !== manifestDigest)
+      throw new Error('admission names another manifest');
+    // 2. Only then, the trusted half.
+    const ok = await crypto.subtle.verify(
+      { name: 'Ed25519' },
+      admitVerifier,
+      sig,
+      admissionMessage(fields),
+    );
+    if (!ok) throw new Error('admission does not verify under the credential it names');
+    return { baseline: fields.headBaselineDigest, selfAdmitted: fields.selfAdmitted };
+  };
+
+  const admitted = await admit({});
+  if (admitted.baseline !== headBaseline)
+    throw new Error('the admission does not carry the baseline.');
+  if (admitted.selfAdmitted !== false) throw new Error('this admission is not self-admitted.');
+
+  // A self-admitted checkpoint is ACCEPTED and its provenance is legible. §13.5
+  // selects single-owner authority, so the only eligible client may be the
+  // producer; requiring a second would leave a one-device workspace unable to
+  // checkpoint at all, and therefore retaining envelopes without bound.
+  const selfFields = { ...ADMISSION, admittingCredential: LAPTOP, selfAdmitted: true };
+  const selfSig = new Uint8Array(
+    await crypto.subtle.sign(
+      { name: 'Ed25519' },
+      await importSigner(KEYS.producer.seed),
+      admissionMessage(selfFields),
+    ),
+  );
+  const selfAdmitted = await (async () => {
+    const saved = admitVerifier;
+    void saved;
+    // verified under the producer, since that is who admitted it
+    if (
+      !(await crypto.subtle.verify(
+        { name: 'Ed25519' },
+        await importVerifier(KEYS.producer.public_key),
+        selfSig,
+        admissionMessage(selfFields),
+      ))
+    ) {
+      throw new Error('the self-admission does not verify under its producer.');
+    }
+    return selfFields.selfAdmitted;
+  })();
+  if (selfAdmitted !== true) throw new Error('a self-admission must say that it is one.');
+
+  // Validly signed, and wrong. Nothing but the local derivation can refuse it.
+  await refuses('admission-signed-over-a-wrong-derivation', async () => {
+    const wrong = { ...ADMISSION, derivedSv: SV_AHEAD };
+    const properlySigned = new Uint8Array(
+      await crypto.subtle.sign(
+        { name: 'Ed25519' },
+        await importSigner(KEYS.other_credential.seed),
+        admissionMessage(wrong),
+      ),
+    );
+    // The signature is genuine; assert that before relying on the refusal below.
+    if (
+      !(await crypto.subtle.verify(
+        { name: 'Ed25519' },
+        admitVerifier,
+        properlySigned,
+        admissionMessage(wrong),
+      ))
+    ) {
+      throw new Error('the fixture is not validly signed; the negative proves nothing');
+    }
+    await admit({ fields: wrong, sig: properlySigned });
+  });
+
+  await refuses('admission-derived-sv-disagrees', () =>
+    admit({ fields: { ...ADMISSION, derivedSv: SV_AHEAD } }),
+  );
+  await refuses('admission-derived-ds-disagrees', () =>
+    admit({ fields: { ...ADMISSION, derivedDs: DS_MORE_DELETED } }),
+  );
+  await refuses('admission-of-another-manifest', () =>
+    admit({ fields: { ...ADMISSION, manifestDigest: 'ab'.repeat(32) } }),
+  );
+  await refuses('admission-with-a-substituted-head-baseline', () =>
+    admit({ fields: { ...ADMISSION, headBaselineDigest: 'cd'.repeat(32) } }),
+  );
+  await refuses('admission-under-an-unimplemented-derivation-version', () =>
+    admit({ fields: { ...ADMISSION, derivationVersion: 'yjs-v14-sv-ds' } }),
+  );
+  await refuses('admission-signed-by-a-credential-that-did-not-admit', async () =>
+    admit({
+      sig: new Uint8Array(
+        await crypto.subtle.sign(
+          { name: 'Ed25519' },
+          await importSigner(KEYS.producer.seed),
+          admissionMessage(ADMISSION),
+        ),
+      ),
+    }),
+  );
+  await refuses('admission-forked-from-another-parent', () =>
+    admit({ fields: { ...ADMISSION, decisionParent: '11'.repeat(32) } }),
+  );
+
+  /**
+   * The bindings, isolated.
+   *
+   * `admit` above checks the local re-derivation first and on purpose -- that
+   * is the half needing no signature. The consequence is that its semantic
+   * negatives stop there and never reach the binding, which is the
+   * fails-twice-isolates-nothing shape the coverage audit exists to catch. So
+   * each of these carries exactly what the restorer expects and changes one
+   * signed field, forcing the refusal onto the signature alone.
+   */
+  const signatureOnly = async (fields) => {
+    const ok = await crypto.subtle.verify(
+      { name: 'Ed25519' },
+      admitVerifier,
+      admissionSig,
+      admissionMessage(fields),
+    );
+    if (!ok) throw new Error('admission signature does not cover this message');
+    return ok;
+  };
+
+  await refuses('aad-only-admission-label', () =>
+    signatureOnly({ ...ADMISSION, label: 'done/cp-admit/v2' }),
+  );
+  await refuses('aad-only-admission-version', () => signatureOnly({ ...ADMISSION, v: 0 }));
+  await refuses('aad-only-admission-workspace-id', () =>
+    signatureOnly({ ...ADMISSION, workspace: 'ws_01J0000000000000000000000A' }),
+  );
+  await refuses('aad-only-admission-checkpoint-digest', () =>
+    signatureOnly({ ...ADMISSION, checkpointDigest: 'ee'.repeat(32) }),
+  );
+  await refuses('aad-only-admission-manifest-digest', () =>
+    signatureOnly({ ...ADMISSION, manifestDigest: 'ab'.repeat(32) }),
+  );
+  await refuses('aad-only-admission-derived-sv', () =>
+    signatureOnly({ ...ADMISSION, derivedSv: SV_AHEAD }),
+  );
+  await refuses('aad-only-admission-derived-ds', () =>
+    signatureOnly({ ...ADMISSION, derivedDs: DS_MORE_DELETED }),
+  );
+  await refuses('aad-only-admission-derivation-version', () =>
+    signatureOnly({ ...ADMISSION, derivationVersion: 'yjs-v14-sv-ds' }),
+  );
+  await refuses('aad-only-admission-admitting-credential', () =>
+    signatureOnly({ ...ADMISSION, admittingCredential: LAPTOP }),
+  );
+  await refuses('aad-only-admission-self-admitted', () =>
+    signatureOnly({ ...ADMISSION, selfAdmitted: true }),
+  );
+
   // --- retention, and the clause the interlock was missing -----------------------
 
   /**
@@ -530,7 +849,7 @@ const verify = async (doc) => {
   // directions. A "must fail" entry that quietly stops failing is the defect
   // this file exists to prevent; one that is published but never run is the
   // same defect a level up, and it is invisible without this comparison.
-  const published = new Set(NEGATIVES.map((n) => n.name));
+  const published = new Set([...NEGATIVES, ...ADMISSION_NEGATIVES].map((n) => n.name));
   const asserted = assertedNames();
   const unrun = [...published].filter((n) => !asserted.includes(n));
   const unpublished = asserted.filter((n) => !published.has(n));
@@ -648,7 +967,7 @@ const main = async () => {
       expected:
         'a generation is droppable only when no retained checkpoint is sealed under it, and one opener is retirable only while another survives',
     },
-    must_fail: NEGATIVES,
+    must_fail: [...NEGATIVES, ...ADMISSION_NEGATIVES],
   };
 
   await verify(doc);
@@ -670,7 +989,7 @@ const main = async () => {
 
   writeFileSync(OUT, json);
   console.log(
-    `Wrote ${vectors.length} checkpoint vector and ${NEGATIVES.length} negatives to test/vectors/checkpoint.json`,
+    `Wrote ${vectors.length} checkpoint vector and ${NEGATIVES.length + ADMISSION_NEGATIVES.length} negatives to test/vectors/checkpoint.json`,
   );
 };
 

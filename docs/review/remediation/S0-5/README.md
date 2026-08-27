@@ -22,7 +22,7 @@ first.
 | **A** | Durable record schemas | `SemanticAdmission`, `CreationCertificate`, and the card-id derivation that makes replacement structurally impossible | **done** — [`A-schemas.md`](./A-schemas.md) |
 | **B** | Normative construction | TRD §§4.8/7.6/10.4 | **done** — §7.6 splits local re-derivation from the trusted baseline; §4.8 derives `card_id` from its creator; §10.4 keeps card and certificate joint |
 | **C** | Selection rows | rows 5/7/8/10/15 | **done** — rows 7 and 8 gain constructions; 5, 10 and 15 take header notes |
-| **D** | Executable evidence | checkpoint and attribution generators, one isolated falsifier per property | not started |
+| **D** | Executable evidence | checkpoint and attribution generators, one isolated falsifier per property | **done** — 36 checkpoint negatives, 13 attribution; 181 AAD fields suite-wide, each isolated |
 | **E** | Product surface | PRD provenance and continuity | not started |
 
 **§4.5 and §13.7 needed no change.** §4.5 separates freeze from compaction and is untouched by any of this;
@@ -47,6 +47,29 @@ and never a document to its generator.
    what the snapshot represents needs the accepted events — exactly what trim removes.
 
 Everything in `A` follows from keeping those apart.
+
+### What Stage D found
+
+**My own test had the defect the coverage audit exists to catch, and a mutation caught it.** The first
+`admission-derived-sv-disagrees` negative fell through to the signature, which also refuses — so with the local
+re-derivation deleted it *still failed*, and the test could not tell whether that check ran at all. Falsifier 8
+requires the local half to refuse **without consulting a signature**, and nothing was proving it.
+
+The repair is `admission-signed-over-a-wrong-derivation`: the admitter properly signs an admission whose derived
+coverage genuinely disagrees with the snapshot — a colluding admitter, or an honest one with a bug. Every
+signature verifies. The refusal can only come from the restorer recomputing `{sv, ds}` itself. The fixture
+asserts its own signature is genuine first, so the negative cannot pass for the wrong reason.
+
+**The coverage audit then demanded ten more.** `admit()` checks the local derivation first, on purpose, so its
+semantic negatives stop there and never reach the bindings. Ten `aad-only-admission-*` negatives carry exactly
+what the restorer expects and change one signed field each, forcing the refusal onto the signature alone. The
+suite went from 169 isolated AAD fields to 181.
+
+**Attribution needed no negative for its central case, and that is the result.** Under the superseded scheme
+the phone could mint a valid claim naming itself. It still can — but the certificate hashes to a *different card
+id*, so what it produces is a different card rather than a replacement. `card_5B46KSTYGCJ0A1BX` for the laptop,
+`card_SX178ARRP7FKM66N` for the phone's attempt. **There is nothing to refuse at the claim layer**, which is
+what "structural rather than adjudicated" means when it is executable.
 
 ## Not in scope
 

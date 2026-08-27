@@ -180,6 +180,78 @@
     {
       "name": "wrong-workspace-subkey",
       "mutate": "Derive K_cp for another workspace. The AAD half is `cp-aad-only-workspace`."
+    },
+    {
+      "name": "admission-derived-sv-disagrees",
+      "why": "The check that needs nobody's signature. A restorer materialises the snapshot, derives {sv, ds} itself, and compares against BOTH the manifest and the admission. A disagreement is a refusal reached without trusting anyone, and it is mandatory even when every signature verifies -- an encoding or selection bug produces this as readily as a malicious producer."
+    },
+    {
+      "name": "admission-derived-ds-disagrees",
+      "why": "The same at the deletion half, which is bound separately for §7.6's reason: two replicas can carry identical state vectors and disagree about what has been deleted."
+    },
+    {
+      "name": "admission-signed-over-a-wrong-derivation",
+      "why": "The case the local re-derivation exists for, and the only one that proves it runs. Here the admitter signs an admission whose derived coverage genuinely disagrees with the snapshot -- a colluding admitter, or an honest one with a bug. Every signature verifies. The refusal has to come from the restorer recomputing {sv, ds} itself, which is why that check is first and why it is mandatory even when the admission is valid. The sibling negatives above cannot show this: with the local check removed they still fail, on the signature, which is the fails-twice-isolates-nothing shape."
+    },
+    {
+      "name": "admission-of-another-manifest",
+      "why": "An admission lifted onto a different manifest. It binds the manifest digest, so a checked coverage claim cannot be moved to a checkpoint nobody checked."
+    },
+    {
+      "name": "admission-with-a-substituted-head-baseline",
+      "why": "The one trusted field, doing its job. Proving the head vector does not reach past the snapshot needs the accepted events that trim removes, so the baseline is what the admitter attests to and it may not be swapped afterwards."
+    },
+    {
+      "name": "admission-under-an-unimplemented-derivation-version",
+      "why": "sv and ds are a library's opaque encoding. Unversioned, a change to it turns every stored admission into a silent mismatch that reads as corruption; versioned, it is a legible refusal that names its cause."
+    },
+    {
+      "name": "admission-signed-by-a-credential-that-did-not-admit",
+      "why": "The admitting credential is named in the message, so this fails on the binding rather than only on the key."
+    },
+    {
+      "name": "admission-forked-from-another-parent",
+      "why": "Incomparable proposals serialise by an authenticated decision parent and never by wall clock, which is row 7's own rule at the object that now settles it."
+    },
+    {
+      "name": "aad-only-admission-label",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-version",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-workspace-id",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-checkpoint-digest",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-manifest-digest",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-derived-sv",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-derived-ds",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-derivation-version",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-admitting-credential",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-self-admitted",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
     }
   ]
 }

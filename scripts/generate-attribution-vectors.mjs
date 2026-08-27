@@ -181,7 +181,58 @@ const PHONE = 'cred_01HZXR0000000000000000PHON';
 const HUMAN = { id: 'act_01HZXQ8H0M4N2P6R9T3V5W7Y1B', kind: 'human' };
 const SYSTEM = { id: 'act_system', kind: 'system' };
 
-const CARD = 'card_01HZXQ9J1N5P3R7T0V4X6Z8B2D';
+const LINEAGE = 'ln_01HZXQ7M4K9P2R6T8V0Y3B5N7D';
+
+/**
+ * The card's identity, and why it is derived rather than drawn.
+ *
+ * **The map below cannot enforce this row's write-once rule.** It is a Yjs map:
+ * a compromised credential can replace another source's entry with one naming
+ * itself, sign the complete tuple with its own valid key, and ship it in its
+ * own accepted envelope. It verifies. After trim removes the earlier envelopes
+ * a fresh restorer has no prior value and no accepted creation position to
+ * refuse it with, and reports the attacker as the verified creator.
+ *
+ * So the identifier carries the property instead. `card_id` commits to the
+ * creating credential, which means **a different credential produces a
+ * different id** — there is no replacement claim to make, because a claim
+ * naming another creator for this id cannot exist. Nothing has to be retained,
+ * ordered or asked, and that is exactly why it survives the trim that defeated
+ * the convention.
+ *
+ * Row 14's alphabet, and 16 bytes because ids were already 128-bit.
+ */
+const CREATION_LABEL = 'done/creation/v1';
+const CROCKFORD = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+
+const creationMessage = ({
+  v = 1,
+  workspace = WORKSPACE,
+  lineage = LINEAGE,
+  creatorCredential,
+  creatorNonce,
+}) =>
+  concat(
+    ...[CREATION_LABEL, String(v), workspace, lineage, creatorCredential, creatorNonce].map(lp),
+  );
+
+const cardIdFrom = async (fields) => {
+  const digest = (await sha256(creationMessage(fields))).subarray(0, 16);
+  let out = '';
+  for (const byte of digest) out += CROCKFORD[byte & 0x1f];
+  return `card_${out}`;
+};
+
+const CREATION = {
+  creatorCredential: LAPTOP,
+  creatorNonce: '9f'.repeat(16),
+};
+/** The same person, a second card. Only the nonce differs. */
+const CREATION_SECOND = { ...CREATION, creatorNonce: '4c'.repeat(16) };
+/** What the phone could mint if it tried to claim authorship of the first. */
+const CREATION_FORGED = { ...CREATION, creatorCredential: PHONE };
+
+const CARD = await cardIdFrom(CREATION);
 const CARD_BODY = 'Draft the sequencing note';
 
 const CASES = [
@@ -221,6 +272,18 @@ const CASES = [
 ];
 
 const NEGATIVES = [
+  {
+    name: 'creation-certificate-from-another-credential',
+    why: 'The row, as arithmetic. The phone mints a certificate naming itself as creator of this card -- and it does not name this card, because the id is what its own certificate hashes to. A claim naming another creator for an existing id cannot be constructed, so there is nothing to refuse at the claim layer.',
+  },
+  {
+    name: 'creation-certificate-with-another-nonce',
+    why: 'The same credential, a different nonce. It is a different card, which is what lets one person create two.',
+  },
+  {
+    name: 'creation-certificate-signed-by-another-credential',
+    why: "The certificate's own signature, doing its own job: the id proves which credential the certificate names, and the signature proves that credential produced it.",
+  },
   {
     name: 'assembled-by-another-credential',
     mutate:
@@ -369,6 +432,62 @@ const verify = async (doc) => {
     await refuses(name, () => verifyClaim({ ...ok, record: { ...record, ...patch } }));
   }
 
+  // --- the identity, and the replacement that cannot be built --------------------
+
+  const creationSigner = await importSigner(KEYS.laptop.seed);
+  const creationSig = new Uint8Array(
+    await crypto.subtle.sign({ name: 'Ed25519' }, creationSigner, creationMessage(CREATION)),
+  );
+
+  // The id recomputes, which is the check every reader performs and the reason
+  // no prior value or retained event is needed.
+  if ((await cardIdFrom(CREATION)) !== CARD) throw new Error('the card id does not recompute.');
+  if (
+    !(await crypto.subtle.verify(
+      { name: 'Ed25519' },
+      verifier,
+      creationSig,
+      creationMessage(CREATION),
+    ))
+  ) {
+    throw new Error('the creation certificate does not verify under its named creator.');
+  }
+
+  /**
+   * **This is the finding, and it is now unbuildable rather than refused.**
+   *
+   * Under the superseded scheme the phone could mint a valid claim for this
+   * card naming itself, and after trim nothing could contradict it. It still
+   * can mint a valid certificate -- but the certificate hashes to a *different
+   * id*, so what it produces is a different card rather than a replacement.
+   */
+  const forgedId = await cardIdFrom(CREATION_FORGED);
+  await refuses('creation-certificate-from-another-credential', async () => {
+    if (forgedId === CARD) return; // would be a successful replacement
+    throw new Error(`a different creator yields a different card: ${forgedId}`);
+  });
+
+  const secondId = await cardIdFrom(CREATION_SECOND);
+  await refuses('creation-certificate-with-another-nonce', async () => {
+    if (secondId === CARD) return;
+    throw new Error(`a different nonce yields a different card: ${secondId}`);
+  });
+
+  await refuses('creation-certificate-signed-by-another-credential', async () => {
+    const wrong = new Uint8Array(
+      await crypto.subtle.sign(
+        { name: 'Ed25519' },
+        await importSigner(KEYS.phone.seed),
+        creationMessage(CREATION),
+      ),
+    );
+    if (
+      !(await crypto.subtle.verify({ name: 'Ed25519' }, verifier, wrong, creationMessage(CREATION)))
+    ) {
+      throw new Error('certificate signed by the wrong credential');
+    }
+  });
+
   // The published list and the executed checks must be the same list, in both
   // directions. A "must fail" entry that quietly stops failing is the defect
   // this file exists to prevent; one that is published but never run is the
@@ -388,6 +507,15 @@ const verify = async (doc) => {
 const main = async () => {
   await checkKeypairs();
   const signer = await importSigner(KEYS.laptop.seed);
+
+  // The creation certificate, published below and re-derived independently by
+  // `verify`, so a drift between the two is a failure rather than a value
+  // copied from one place to the other.
+  const creationSig = new Uint8Array(
+    await crypto.subtle.sign({ name: 'Ed25519' }, signer, creationMessage(CREATION)),
+  );
+  const forgedId = await cardIdFrom(CREATION_FORGED);
+  const secondId = await cardIdFrom(CREATION_SECOND);
 
   const vectors = [];
   for (const c of CASES) {
@@ -451,6 +579,28 @@ const main = async () => {
     },
     keys: KEYS,
     vectors,
+    creation_identity: {
+      why: "Row 8 puts standing claims in a write-once map in the content root, and a Yjs map cannot enforce write-once -- that is an application convention, not an authority. A compromised credential replaces another source's entry with one naming itself, signs the complete tuple with its own valid key, and after trim a fresh restorer has no prior value to refuse it with. The identifier carries the property instead.",
+      certificate:
+        'C = LP("done/creation/v1") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(creator_credential) || LP(hex creator_nonce)',
+      card_id: 'the first 16 bytes of SHA-256(C), Crockford Base32',
+      creator: LAPTOP,
+      nonce: CREATION.creatorNonce,
+      message_hex: hex(creationMessage(CREATION)),
+      signature: hex(creationSig),
+      derived: CARD,
+      the_replacement_that_cannot_be_built: {
+        note: "The phone mints a perfectly valid certificate claiming authorship. It does not name this card, because this id is what the laptop's certificate hashes to -- so what it produces is a different card rather than a replacement. Nothing is refused at the claim layer; there is nothing to refuse.",
+        forged_by: PHONE,
+        yields: forgedId,
+      },
+      one_creator_two_cards: {
+        note: 'Only the nonce differs, which is what lets one person create more than one card.',
+        second: secondId,
+      },
+      expected:
+        'a different creator and a different nonce each yield a different card id; neither can replace the first',
+    },
     must_fail: NEGATIVES,
   };
 

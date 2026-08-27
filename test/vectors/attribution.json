@@ -39,7 +39,7 @@
       "inputs": {
         "v": 1,
         "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
-        "card_id": "card_01HZXQ9J1N5P3R7T0V4X6Z8B2D",
+        "card_id": "card_5B46KSTYGCJ0A1BX",
         "actor_id": "act_01HZXQ8H0M4N2P6R9T3V5W7Y1B",
         "actor_kind": "human",
         "credential_id": "cred_01HZXR0000000000000000LAPT",
@@ -47,11 +47,11 @@
         "body_at_creation": "Draft the sequencing note"
       },
       "derived": {
-        "content_commitment": "8493ed42f29407c8c4627ce2a86f73cdc134c8a16bec47baa4130041b1ef9802",
-        "message": "000e646f6e652f6174747269622f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744001f636172645f3031485a5851394a314e35503352375430563458365a38423244001e6163745f3031485a58513848304d344e3250365239543356355737593142000568756d616e001f637265645f3031485a5852303030303030303030303030303030304c415054000137004038343933656434326632393430376338633436323763653261383666373363646331333463386131366265633437626161343133303034316231656639383032"
+        "content_commitment": "54ae20b7f9a602fb7c54135255b6b4024c6fec9b262fd7c219112e9190304bc6",
+        "message": "000e646f6e652f6174747269622f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e37440015636172645f354234364b53545947434a3041314258001e6163745f3031485a58513848304d344e3250365239543356355737593142000568756d616e001f637265645f3031485a5852303030303030303030303030303030304c415054000137004035346165323062376639613630326662376335343133353235356236623430323463366665633962323632666437633231393131326539313930333034626336"
       },
       "expected": {
-        "signature": "09c340437b8219cb2d24cca3988fd5487a4937a091ba581f16466637044abf0415749ad7dfd022dab7fec290d3d96246e8d4c41be6d5f9c1ce0a3cbee137c607"
+        "signature": "eb9f68c48d624f8b3f45ccf9da270fcb38f654d57bc576851becfd49be8dc8d54cc9fdf2ba0d149cacadc7ffab9a7b27caa7f72f45d4cbd5d999b8bb4c7dfd0c"
       }
     },
     {
@@ -97,7 +97,39 @@
       }
     }
   ],
+  "creation_identity": {
+    "why": "Row 8 puts standing claims in a write-once map in the content root, and a Yjs map cannot enforce write-once -- that is an application convention, not an authority. A compromised credential replaces another source's entry with one naming itself, signs the complete tuple with its own valid key, and after trim a fresh restorer has no prior value to refuse it with. The identifier carries the property instead.",
+    "certificate": "C = LP(\"done/creation/v1\") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(creator_credential) || LP(hex creator_nonce)",
+    "card_id": "the first 16 bytes of SHA-256(C), Crockford Base32",
+    "creator": "cred_01HZXR0000000000000000LAPT",
+    "nonce": "9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f",
+    "message_hex": "0010646f6e652f6372656174696f6e2f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c41505400203966396639663966396639663966396639663966396639663966396639663966",
+    "signature": "20c9259fa1f055b06e90ac433144310b10fb34ea04a47597afcaf4ece8952da9200c8b02a69bacfc4942c2e9db296b8822fa816a2fc62233e6a6f949f6f50b00",
+    "derived": "card_5B46KSTYGCJ0A1BX",
+    "the_replacement_that_cannot_be_built": {
+      "note": "The phone mints a perfectly valid certificate claiming authorship. It does not name this card, because this id is what the laptop's certificate hashes to -- so what it produces is a different card rather than a replacement. Nothing is refused at the claim layer; there is nothing to refuse.",
+      "forged_by": "cred_01HZXR0000000000000000PHON",
+      "yields": "card_SX178ARRP7FKM66N"
+    },
+    "one_creator_two_cards": {
+      "note": "Only the nonce differs, which is what lets one person create more than one card.",
+      "second": "card_QAKE457CSJ7W9C1R"
+    },
+    "expected": "a different creator and a different nonce each yield a different card id; neither can replace the first"
+  },
   "must_fail": [
+    {
+      "name": "creation-certificate-from-another-credential",
+      "why": "The row, as arithmetic. The phone mints a certificate naming itself as creator of this card -- and it does not name this card, because the id is what its own certificate hashes to. A claim naming another creator for an existing id cannot be constructed, so there is nothing to refuse at the claim layer."
+    },
+    {
+      "name": "creation-certificate-with-another-nonce",
+      "why": "The same credential, a different nonce. It is a different card, which is what lets one person create two."
+    },
+    {
+      "name": "creation-certificate-signed-by-another-credential",
+      "why": "The certificate's own signature, doing its own job: the id proves which credential the certificate names, and the signature proves that credential produced it."
+    },
     {
       "name": "assembled-by-another-credential",
       "mutate": "The phone signs a claim about a card the laptop created. **This is §13.7’s named failure** — a newly assembled tuple beside somebody else’s work — and it fails because the record is signed over the tuple by the credential making the claim rather than copied from an envelope."

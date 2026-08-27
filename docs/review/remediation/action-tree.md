@@ -383,8 +383,9 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 ### `S0-5` — select semantic checkpoint, admission/install, and immutable creation authority
 
 > **Started 2026-08-27.** Staged as `S0-2` was; plan and status: [`S0-5/README.md`](./S0-5/README.md).
-> **Stages A–C are done** — schemas in [`S0-5/A-schemas.md`](./S0-5/A-schemas.md) with fifteen falsifiers,
-> TRD §§4.8/7.6/10.4, and rows 5/7/8/10/15 amended. Stages D and E not started.
+> **Stages A–D are done** — schemas in [`S0-5/A-schemas.md`](./S0-5/A-schemas.md), TRD §§4.8/7.6/10.4, rows
+> 5/7/8/10/15, and executable evidence: 36 checkpoint negatives and 13 attribution ones, with the suite at 181
+> isolated AAD fields. Stage E not started.
 
 - **Prerequisite decisions:** `P-8` — **satisfied** — which carries the `RC-5A/B` and `RC-5C/D` choices, the
   verifier authority, what survives trim, and how incomparable chains resolve; plus accepted-head/recipient inputs
