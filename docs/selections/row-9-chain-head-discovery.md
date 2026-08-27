@@ -9,6 +9,9 @@
 [row 11](./row-11-enrollment-ceremony.md) discharges two thirds of it and gained a bound field doing so;
 [row 4](./row-4-envelope-format.md) frames the request.
 **Amends:** [row 11](./row-11-enrollment-ceremony.md)'s transcript, which now binds the epoch head.
+**Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-27) — the nonce-bound signed head assertion this row selects is what a `RecoveryBootstrap` consumes
+when no eligible client survives (TRD §13.8). The freshness bound is unchanged — a hostile service can withhold,
+not forge — and the bootstrap adds no fifth independently held object, since its signer is sealed beside `R_priv`.
 
 ---
 

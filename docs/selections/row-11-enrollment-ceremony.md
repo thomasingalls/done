@@ -10,6 +10,9 @@ whole; [row 13](./row-13-device-lock.md) established the rule this row applies t
 [row 5](./row-5-finalization.md) is the other half of what a hostile service must not be able to do.
 **Amended by:** [row 9](./row-9-chain-head-discovery.md) — the transcript binds the epoch head, so the typed
 symbols authenticate where the lineage is as well as whose key it is. The short string changed with it.
+**Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-27) — a successful ceremony now **produces a certified recipient-set successor** (TRD §§13.5–13.6), and
+the transcript binds the recovery recipient as well as the wrapping key. The ceremony was sound for the immediate
+release and silent about the delayed one; that is what this amendment repairs.
 
 ---
 
@@ -31,11 +34,31 @@ The transcript
   T = LP("done/enroll/v1") || LP(workspace_id) || LP(dec epoch)
       || LP(hex epoch_head)
       || LP(existing_credential_id) || LP(new_credential_id)
-      || LP(hex W_pub) || LP(hex n_E) || LP(hex n_N)
+      || LP(hex W_pub) || LP(hex recovery_state_digest)
+      || LP(hex n_E) || LP(hex n_N)
 
   W_pub  the new device's X25519 wrapping public key (§13.4) — the value this
          whole ceremony exists to authenticate.
+  recovery_state_digest
+         the recovery recipient the new device will install (TRD §13.5). Bound
+         here because substituting R_pub is this row's attack at a second
+         carrier: a service that hands the new device an attacker-controlled
+         R_pub and a matching opaque envelope gets the HONEST new device to
+         wrap future generations to it. The existing device cannot be induced
+         to certify a recovery recipient it does not itself hold.
   th     = SHA-256(T), the ceremony's identity.
+
+On success              the existing device signs a CERTIFIED RECIPIENT-SET
+                        SUCCESSOR (TRD §§13.5-13.6) naming (new_credential_id,
+                        W_pub) and this recovery state; the new credential
+                        countersigns on install. That record, not the epoch
+                        roster, is what a future rotator reads.
+
+                        This ceremony was sound for the IMMEDIATE release and
+                        silent about the delayed one. Without the successor,
+                        an unrelated rotation later wraps K_(g+1) to every
+                        credential in a service-signed roster -- which is
+                        authorization causing key delivery after all.
 
 The string
 

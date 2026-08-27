@@ -13,6 +13,9 @@ KATs; [row 3](./row-3-record-format.md) established the length-prefix and bindin
 they now share; [row 15](./row-15-transitions.md) supplies the transition id §5 binds, and closed the
 atomic-replace half §5 had left open.
 **Answers:** the `Recovery-code stretching — Argon2id, or none` line of TRD §13.10.
+**Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-27) — the `replace-recovery` payload binds **exact bytes** — the sealed envelope including its tag, and
+every per-generation wrap — rather than a list of generation numbers, and carries a `successor-generation` so that
+replacement offered as the answer to an exposed code rotates forward (TRD §13.8).
 
 ---
 
@@ -65,6 +68,22 @@ Replacement  (PRD §7.6; the protocol half is review 3b's)
                      device-local gate and names device-local things.
   Gate 3  The device lock, where the slot uses one — implied by gate 1.
   Not required: the old code.
+
+  The payload  row 15's replace-recovery parts, and every value is EXACT
+               bytes: counter, new R_pub, the sealed envelope including its
+               tag, the root commitment, and the wrap for every rewrapped
+               generation. Not a list of generation numbers -- a digest over
+               WHICH generations were rewrapped, and not over what they were
+               rewrapped TO, cannot make "exactly the old or exactly the new"
+               mean one exact complete set won.
+
+  Exposure     the payload carries successor-generation. Resealing leaves K_g
+               unchanged, so an exposed R_priv still opens current content
+               after a replacement that only re-encrypts it. Since this flow
+               exists for the user who has lost -- OR EXPOSED -- the code, it
+               rotates forward. The only way not to is the explicit value
+               'none-lost-not-copied', available solely where the product can
+               distinguish lost from copied and says so to the user.
 
                 LP(s) = uint16be(byteLength(utf8 s)) || utf8 s
 ```

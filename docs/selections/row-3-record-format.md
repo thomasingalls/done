@@ -7,6 +7,8 @@
 [`scripts/generate-record-vectors.mjs`](../../scripts/generate-record-vectors.mjs)
 **Companions:** [row 1](./row-1-algorithm-suite.md) selects the primitives; [row 2](./row-2-journal-aead.md)
 selects the synchronous journal, which is the third carrier under the same binding rules.
+**Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-27) — the generation opener a `KeyEnvelope` holds is no longer the only thing a drop consults; TRD §13.7's
+reference ledger counts every object still sealed under a generation before its opener may be retired.
 
 ---
 

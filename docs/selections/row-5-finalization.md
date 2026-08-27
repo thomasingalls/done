@@ -8,6 +8,9 @@
 **Companions:** [row 1](./row-1-algorithm-suite.md) selects SHA-256 and Ed25519 and carries their published KATs;
 [row 3](./row-3-record-format.md) established the length-prefix and binding conventions followed here;
 [row 11](./row-11-enrollment-ceremony.md) is the other half of what a hostile service must not be able to do.
+**Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-27) — the epoch payload this row rides gains a client-approved certified recipient set (TRD §13.5).
+**Accepted positions are unchanged and remain the service's to assert** — the approvals ride inside the epoch as
+bytes it cannot forge, so this row's accepted-head vector, its links and its cutoff are untouched.
 
 ---
 

@@ -26,7 +26,7 @@ cannot be reviewed, and because the stages have a real dependency order rather t
 | --- | --- | --- | --- |
 | **A** | Durable record schemas | exact field lists for every new record, in the project's own `LP()` notation, composing with the existing intent/outcome/epoch/custody carriers | **done** — [`A-schemas.md`](./A-schemas.md) |
 | **B** | Normative construction | TRD §§13.2/13.4/13.5/13.6/13.7/13.8 | **done** — see below |
-| **C** | Selection rows | rows 3/5/7/9/11/13/14/15 amended to match | not started |
+| **C** | Selection rows | rows 3/5/7/9/11/13/14/15 amended to match | **done** — see below |
 | **D** | Executable evidence | generators, vectors, and one isolated falsifier per closed finding | not started |
 | **E** | Product surface | PRD §§6.3–6.5/7.2–7.4/7.6 and UI copy, including truthful `rotation_owed` | not started |
 
@@ -46,6 +46,39 @@ restated there, and its writer belongs to `P-3`/`S0-3`. §§7.3–7.6 needed no 
 accepted positions remain the service's to assert and the approvals ride inside the epoch as bytes it cannot
 forge — the row-5 exposure P-1 created turned out to be a clarification rather than a change. If `S0-8` disagrees
 with that reading, §7.5 is where it reopens.
+
+### After Stage C the rows and the generators disagree, on purpose
+
+**This is a known intermediate state, and `pnpm vectors:check` cannot see it.** Row 11 now describes a transcript
+that binds `recovery_state_digest`; `scripts/generate-enrollment-vectors.mjs` still builds the old one. Row 15
+describes byte-exact `replace-recovery` parts; the generator still emits `rewrapped-generations: "1|2|3|4|5"`.
+Row 13 describes a custody record with a wrapping credential the device-lock generator does not produce.
+
+The check reports `enrollment-ceremony.json is current` throughout, because **it compares a generator to its
+vector and never a document to its generator.** That is precisely the shape of
+`f-992bc91-network-carrier-registry-stale`, where a registry passed every check while being stale, so it is
+recorded here rather than discovered later: the green result after Stage C proves self-consistency, not
+agreement with the rows.
+
+**Stage D closes it, and should follow promptly for that reason.** Until it does, the selection rows are the
+authority on these constructions and the vectors are evidence for the superseded ones. `S0-8`'s traceability
+matrix is where the two are required to meet.
+
+### What Stage C changed
+
+| Row | Change |
+| --- | --- |
+| 3 | Header note only: a `KeyEnvelope`'s opener is no longer the only thing a generation drop consults |
+| 5 | Header note only: the epoch gains a client-approved sub-object; **accepted positions are unchanged** |
+| 7 | The interlock line gains the surviving-opener clause, stated over openers rather than the local envelope |
+| 9 | Header note only: the signed head assertion is what a `RecoveryBootstrap` consumes; no fifth object |
+| 11 | The transcript binds `recovery_state_digest`; success produces a certified recipient-set successor |
+| 13 | `CustodyRecord` gains `wrapping_credential`; enrollment stages the replacement and introduces it through a certified-set successor |
+| 14 | Replacement binds exact bytes and carries `successor-generation`, so exposure rotates forward |
+| 15 | Per-kind payload parts made explicit and byte-exact; `applying` becomes eight durable steps; the drop gate gains its fourth clause |
+
+Every amendment follows the project's existing `**Amended by:**` convention (row 9 → row 11 set the precedent),
+naming `S0-2` and the date rather than a peer row, since the amender here is a remediation action.
 
 **The order is a dependency order.** A fixes the interfaces B and C describe; D cannot write a falsifier for a
 field that does not exist; E states in product terms what B and C made true, and stating it earlier would be

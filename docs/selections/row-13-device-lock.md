@@ -8,6 +8,10 @@
 **Companions:** [row 3](./row-3-record-format.md) selects the envelope whose custody this changes, and hands this
 row the question; [row 14](./row-14-recovery-code.md) selects the code generator reused here verbatim;
 [row 1](./row-1-algorithm-suite.md) selects the primitives.
+**Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-27) — enabling the lock **replaces the wrapping credential** rather than only reseal the envelopes
+(TRD §§13.4, 13.7). `L_lock` protected the `KeyEnvelope` and left a promptless credential beside it, so a pre-lock
+profile copy could open the reader wrap a later rotation published. The custody record gains that credential, and
+`rotation_owed` is derived from the apply record rather than asserted.
 
 ---
 
@@ -17,7 +21,18 @@ row the question; [row 14](./row-14-recovery-code.md) selects the code generator
 Custody, per (principal, workspace) slot
 
   CustodyRecord = { v: 1, state: 'promptless' | 'enrolling' | 'locked',
-                    seals: LockSeal[], rotation_owed: boolean }
+                    seals: LockSeal[], rotation_owed: boolean,
+                    wrapping_credential: {
+                      id,
+                      custody: 'promptless' | 'staged' | 'factor-sealed',
+                      sealed: LockSeal-shaped | absent,
+                      predecessor_id | absent } }
+
+  The wrapping credential is here because L_lock never protected it. On the
+  no-PRF tier it persists as a structured-cloned non-extractable CryptoKey --
+  promptless, and usable from a copied profile -- so rotation published a
+  reader wrap the pre-lock copy could open. It cannot be resealed: WebCrypto
+  cannot export a non-extractable key. So the lock REPLACES it.
 
   Default tier   state 'promptless', seals empty. L_local is a structured-cloned
                  non-extractable CryptoKey and opens row 3's KeyEnvelope directly.
@@ -60,7 +75,15 @@ Enrollment
      L_local and the live envelopes are untouched.
   2. Reseal each retained generation's KeyEnvelope under L_lock, staged.
   3. One transaction: swap staged over live, delete L_local, state 'locked'.
-  4. Rotate the content key forward. rotation_owed until it lands.
+     Stage a replacement wrapping credential as extractable bytes, sealed
+     under L_lock, imported non-extractable after unlock -- which is §13.4's
+     PRF-tier pattern with L_lock as the factor source, not a new carrier.
+  4. Rotate the content key forward, and introduce the replacement through a
+     certified recipient-set successor (row 5, TRD §13.5), so every future
+     rotator wraps to it. The predecessor stays valid until that successor
+     and the generation winner are both durably known.
+     rotation_owed until it lands -- derived from the apply record's step,
+     never asserted. No interface claims future-copy protection while true.
 
   Disable      reverses 1-3 under a fresh L_local, and rotates again.
   Add/remove   one seal written or deleted. No envelope moves.

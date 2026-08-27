@@ -11,6 +11,9 @@ leaves one gap in; [row 7](./row-7-checkpoint.md) supplies the cadence rule an i
 [row 3](./row-3-record-format.md) supplies the finding about an editable `kind`;
 [row 10](./row-10-portable-package.md) supplies the rule against binding a derivable fact twice;
 [row 12](./row-12-account-credential.md) supplies the shape of an isolating negative for a field read twice.
+**Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-27) — three changes. The `replace-recovery` payload parts become byte-exact and mirror `rotate`'s shape;
+`applying` becomes a durable eight-step record rather than a named state; and the generation-drop gate gains a
+fourth clause for retained-checkpoint openers (TRD §§13.7–13.8).
 
 ---
 
@@ -31,6 +34,20 @@ One intent-and-outcome protocol, at three kinds
 
     payload_digest  the kind's own parts, sorted by name under
                     LP("done/transition-payload/v1")
+
+      rotate            cutoff, excluded, recovery-wrap, wraps
+      replace-recovery  counter, new-recovery-public-key, recovery-envelope,
+                        root-commitment, successor-generation, wraps
+      retire            reason, terminal-head
+
+      Every wrap and envelope value is the EXACT bytes, tag included --
+      never a count, an id list or a generation number. A digest over
+      WHICH generations were rewrapped, and not over what they were
+      rewrapped TO, cannot make atomicity mean one exact set won.
+
+      successor-generation is dec g+1, or the explicit string
+      'none-lost-not-copied'. Replacement offered as the answer to an
+      EXPOSED code must rotate: resealing leaves K_g unchanged.
 
   No from_gen: the epoch already binds the current generation.
 
@@ -64,8 +81,19 @@ Local order
 
   No content under the target generation before a committed outcome.
   None under the previous generation after it.
+  applying is a DURABLE RECORD, not a label. Eight ordered idempotent steps:
+    1 outcome verified   2 successor opener installed   3 old objects classified
+    4 work covered under g+1   5 ACTIVE MARKER ADVANCED -- the commit point
+    6 successor checkpoint admitted, local content trimmed
+    7 old openers retired   8 apply record discharged
+  Restart resumes at the recorded step. 1-4 reversible; 5 is not.
+  Device lock and replace-recovery apply through this same machine.
+
   The previous generation is retained until settled AND a checkpoint under
-  the new one is admitted AND the local trim holds a state record under it.
+  the new one is admitted AND the local trim holds a state record under it
+  AND every retained checkpoint still sealed under it has a surviving
+  authorized opener. The fourth clause is what keeps the second-newest
+  checkpoint openable; the first three only permit the drop.
 
                 LP(s) = uint16be(byteLength(utf8 s)) || utf8 s
 ```

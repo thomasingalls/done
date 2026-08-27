@@ -8,6 +8,9 @@
 **Companions:** [row 8](./row-8-attribution-record.md) had to be selected first, and discharges this row's
 hardest constraint; [row 5](./row-5-finalization.md) supplies the head vector the manifest carries;
 [row 9](./row-9-chain-head-discovery.md) supplies the epoch-head pairing.
+**Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-27) — the retention interlock gains a fourth clause. Its subject was corrected from the checkpoint to
+the generation, and TRD §13.7 now states the predicate that enforces it: no generation is dropped while a retained
+checkpoint sealed under it lacks a surviving authorized opener. That is what keeps §11.3 test 8's fallback openable.
 
 ---
 
@@ -50,7 +53,10 @@ Cadence
 Retention
 
   At least two checkpoints and their suffixes (§11.3 test 8).
-  Never drop a generation while any retained checkpoint is sealed under it.
+  Never drop a generation while any retained checkpoint is sealed under it
+  and has no surviving authorized opener. Stated over OPENERS rather than
+  the local KeyEnvelope: a retained recovery or reader wrap may still open a
+  generation whose envelope is gone (TRD §13.7).
 
                 LP(s) = uint16be(byteLength(utf8 s)) || utf8 s
 ```
