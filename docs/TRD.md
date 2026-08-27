@@ -2294,6 +2294,11 @@ Certifying `K_accept` here is what lets the hot acceptance key rotate without to
 signs successors. *Retired* — a signed terminal record exists and no successor will. The terminal record is what
 lets a surviving replica prove its workspace was historically admitted after the service is gone.
 
+**Hosted content is a second axis and not a fourth state here** (§14.7). A workspace whose payment lapsed, whose
+hosted copy has expired, or whose hosted store is empty is **`live` on this axis** — the lineage keeps signing
+successors and the devices keep writing. Only `retire` moves this axis, and reading a stopped hosted copy as a
+retired lineage is the confusion §14.7 exists to prevent.
+
 **It lives beside the content root, not inside it.** It is a separate signed object; the relay validates live epochs
 and clients verify them. **It must never be read from document-resident, mutable, unauthenticated data** — which is
 exactly the mistake a roster-based test makes (§4.8).
@@ -2429,7 +2434,9 @@ authorization alone cannot cause key delivery either immediately or later.
 **The transition protocol is selected** (§15 row 15), **and it is one protocol at three kinds** — `rotate`,
 `replace-recovery` (§13.8) and `retire` (§14.4) — because §11.2 test 11's list is one class: a multi-step
 transition whose interrupted middle can be mistaken for a completed **lesser** transition. A rotation that did not
-settle reads as no rotation being needed; a deliberate downgrade reads as account deletion (PRD §6.10).
+settle reads as no rotation being needed; a half-finished retirement reads as a workspace that merely stopped
+syncing (PRD §6.10). **Lapse is not a fourth kind and deliberately not in this grammar** — it is a billing fact
+carried by §14.7's retention machine, which is why this list is three and stays three.
 
 > `Intent  = LP("done/transition/v1") || LP(dec v) || LP(kind) || LP(workspace_id) || LP(lineage_id) || LP(dec parent_epoch) || LP(dec target) || LP(hex payload_digest)`
 > `Outcome = LP("done/transition-out/v1") || LP(dec v) || LP(kind) || LP(workspace_id) || LP(lineage_id) || LP(dec target) || LP(dec epoch) || LP(hex committed_id)`
@@ -2437,7 +2444,10 @@ settle reads as no rotation being needed; a deliberate downgrade reads as accoun
 The intent is signed by the requesting device credential and `id = SHA-256(Intent)`; the outcome is signed by the
 lineage authorization key. **`kind` is bound in both, and PRD §6.10 is why**: a `rotate` and a `retire` are
 otherwise the same eight fields, so an unbound `kind` is a way to submit one and commit the other. That is §6.1's
-editable-`kind` finding at a third object, and here the consequence is that a lapse retires a lineage. **There is
+editable-`kind` finding at a third object, and here the consequence is that a rotation retires a lineage.
+**What that closes is exactly the pair it names, and not lapse**: no field of a `rotate` expresses a payment
+lapse, a synchronization stop or a retention deadline, so binding `kind` cannot protect a state the grammar has
+no way to say. §14.7 carries that state, and §15 row 15 records the narrowing. **There is
 no `from_gen` and no `state` flag**: the epoch already binds the current generation, and whether a client won is
 `committed_id == its own id` — a second binding of a derivable fact is a thing that can disagree with it (§15
 rows 10 and 12).
@@ -2991,10 +3001,16 @@ the epochs the package carries, or the trust root itself when the service assemb
 no lineage — the archiving device, which nothing external certifies and §9.3 already says so.
 
 **That commit is §13.7's transition protocol at `kind: 'retire'`, and the ordering is the fail-closed property
-rather than an implementation detail** (§15 row 15). A downgrade and a deletion differ in exactly one artifact —
+rather than an implementation detail** (§15 row 15). A lapse and a deletion differ in exactly one artifact —
 the terminal record — so an interrupted deletion must leave a **retired lineage whose hosted content is still
-present**, which is honest and recoverable-looking. The reverse order would leave content deleted under a live
-lineage: a lapse that is not one, and PRD §6.10's warning realized.
+present**, which is honest and recoverable-looking.
+
+**The reverse order is not merely untidy, and §14.7 is what makes that precise.** Hosted content deleted under a
+live lineage is a legitimate state — it is what expiry produces — but a legitimate one carries a signed retention
+mark that says when synchronization stopped, when the deadline fell, and that the recovery anchor was kept. A
+deletion that ran before its terminal record leaves the same absence with **nothing accounting for it**, and is
+indistinguishable to every surviving device from an expiry that was never disclosed. That is PRD §6.10's warning
+realized, and the artifact that separates the two cases is the mark rather than the intent.
 
 **Before the service deletes anything it commits a signed terminal lineage record.** Every participating replica and
 the verified portable package receive that record plus `R_pub`, the code-sealed `R_priv`, enough public authorization
@@ -3028,12 +3044,18 @@ time for evidence, which §10.4 already refuses elsewhere. A receiving client si
 the terminal head, the exact retired-package digest, its own prior head, and either an empty catch-up or a
 verified transcript from that prior head with **exact known absences enumerated rather than summarised**.
 
-**Only a durable handoff authorizes a hosted deletion class**, one class at a time — primary objects, replicas,
-wraps, checkpoints, declared backups — so a partial deletion resumes rather than restarting or over-deleting.
-**A lost acknowledgement retains the bytes**, deliberately: keeping data nobody wanted is recoverable and
-deleting data somebody needed is not, so the ambiguous case keeps it and the audit record says the handoff
-never completed rather than claiming it did. An offline replica remains a stale detached copy and is **never
-counted as a survivor for this gate**.
+**Only a durable handoff authorizes a hosted deletion class**, one class at a time, so a partial deletion resumes
+rather than restarting or over-deleting. **The classes are §14.7's**, and retirement is the cause that reaches
+all six — a second copy of that list here is a thing that could disagree with it. **A lost acknowledgement
+retains the bytes**, deliberately: keeping data nobody wanted is recoverable and deleting data somebody needed is
+not, so the ambiguous case keeps it and the audit record says the handoff never completed rather than claiming it
+did. An offline replica remains a stale detached copy and is **never counted as a survivor for this gate**.
+
+**That retention is bounded by the same deadline as everything else** (§14.7). Retirement stops hosted
+synchronization, which starts the one clock, so a retirement whose survivor never appears keeps its bytes until
+the ceiling and no longer. Without that bound the gate above would be an unbounded retention, which §16.6 calls a
+defect rather than an omission — the two rules were written in different sections and only disagree once they are
+composed.
 
 ### 14.5 Custody is not replica count
 
@@ -3076,6 +3098,121 @@ direction for the dependency to run.
    plaintext store, mint `K0`, write and verify the encrypted store, atomically select it, remove the plaintext store
    only after verification, resume safely after interruption. That machine is well-understood and entirely avoidable,
    and it is only avoidable now.
+
+### 14.7 Lapse, expiry and the hosted-retention machine
+
+**Constraint.** There are three ways a workspace stops being hosted here — it migrates (§14.1), it is deleted
+(§14.4), or its hosted copy expires — and only the first two had a construction. **A lapse is not a transition
+kind** (§15 rows 15, 16). §13.7's grammar has `rotate`, `replace-recovery` and `retire`, and none of them
+represents a live-dormant state; PRD §6.10 says why in its own first line, *a failed payment is a billing event,
+not an identity event*. So entitlement and hosted retention live **outside** the authorization lineage, and only
+a signed service record stops synchronization or starts expiry.
+
+**Two axes, and the confusion between them is what this section exists to prevent.** §13.5 gives the lineage
+three states — never established, live, retired. Hosted content has its own, and **a lapsed workspace is `live`
+on the first axis**. No retention state below is spelled with a lineage word, deliberately: a shared vocabulary
+is how the two get read as one.
+
+| State | Sync | Clock | Meaning |
+| ----- | ---- | ----- | ------- |
+| `hosted` | running | none | Ordinary operation |
+| `grace` | **running** | none | A lapse is recorded and nothing has stopped yet |
+| `stopped` | stopped | **running** | Hosted synchronization has stopped; every hosted byte is still present |
+| `clearing` | stopped | running | Destructive progress has begun and the ledger is partway through |
+| `cleared` | stopped | done | The class set for this cause is complete |
+
+> `RetentionMark = LP("done/retention/v1") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(dec revision) || LP(hex prior_mark_digest) || LP(state) || LP(dec stopped_at) || LP(dec deadline) || LP(cause) || LP(hex ledger_digest)`
+>
+> `sig = Ed25519( the retention service's signing key ; RetentionMark )`, with `cause` one of `none`,
+> `entitlement`, `retirement`
+
+**The signer is not the lineage authorization key.** This service can stop hosting and cannot admit, revoke,
+rotate or retire anything, and that separation is the whole bound on the trust it is given — see *what a
+compromise reaches*, below.
+
+**One clock, and whichever event stops synchronization first creates it.** `stopped_at` is written exactly once
+per entry into `stopped`, under a compare-and-set on `revision`: concurrent writers do not each write one, the
+loser observes the written value, and a retry is idempotent rather than a second clock. `deadline` is computed
+at that same moment from §15 row 16's twelve months and is **never recomputed**, because a deadline that can be
+recalculated is a deadline that can move. A resume clears both with the same revision advance, so a workspace
+that lapses again gets a new and strictly later clock rather than a resurrected one.
+
+**The clock does not move the machine — the ledger does.** Passing the deadline changes no state; it changes
+what the ledger is permitted to do. That is deliberately generous: between the deadline and the first
+destructive act every byte is still present, and a resume still restores all of it.
+
+**Clients see these marks, and that is PRD §6.10's disclosure rather than interface copy.** *From this moment
+the devices stop converging* and the deadline itself are fields of a signed record, so what the user is told is
+what the service committed to. A client that has seen `revision` n rejects a mark at revision ≤ n whose contents
+differ — §13.5's ancestor rule at a second object, which is what `prior_mark_digest` is for.
+
+**The entitlement event is selected in shape and its wire waits on PRD §11 question 1**, which is deferred on
+purpose. It is a service-signed record over `(account_id, sequence, effect, effective_at)` with `effect` one of
+`grace-begins`, `sync-stops` or `restored`; `sequence` is monotonic per account, so a replayed stop cannot
+re-stop a resumed account. **`effective_at` is bound and is not the clock** — the machine timestamps its own
+transition and never copies that field, because a biller with a wrong clock could otherwise backdate the
+deadline, which is early deletion dressed as bookkeeping. Binding a time and refusing to enforce it is §13.5's
+treatment of `issued_at` at a third object.
+
+**Deletion is one ledger over six classes, and the cause selects the set.**
+
+| # | Class | Holds | `expiry` | `retire` |
+| - | ----- | ----- | -------- | -------- |
+| 1 | `primary` | Accepted envelopes and hosted content objects (§16.3) | delete | delete |
+| 2 | `replicas` | Hosted replicas of those objects (§14.5) | delete | delete |
+| 3 | `checkpoints` | Checkpoints, manifests, superseded checkpoints and their suffixes (§7.6) | delete | delete |
+| 4 | `wraps` | Per-generation content-key wraps to `R_pub` (§13.8) | delete | delete |
+| 5 | `backups` | Declared backups of any of the above (§16.4) | delete | delete |
+| 6 | `recovery-anchor` | `R_pub` and the code-sealed `R_priv` envelope (§13.8) | **keep** | delete |
+
+**Class 6 is the entire difference between the two causes, and PRD §6.10's re-seed promise is why.** A surviving
+device re-seeds the hosted workspace and wraps its current generation to the same recovery public key *without
+creating or confirming a new code* — which is true only if the anchor outlives expiry. Keeping the right things
+is as much of the assertion as deleting the rest.
+
+**One class at a time, each advanced under the same compare-and-set**, so a partial run resumes at the first
+class that is not `done` and neither restarts nor over-deletes. `ledger_digest` is inside the signed mark, so
+the ledger and the mark cannot drift apart. **The ledger's subject is hosted content for one workspace**;
+retiring the lineage itself is §14.4's own ordered sequence and runs before this, because a gate cannot also be
+an item in the thing it gates.
+
+**The deadline is a floor on expiry deletion and a ceiling on both.** Expiry may delete nothing before it.
+Retirement may delete as soon as a `TerminalHandoff` authorizes a class, because the user asked. **Neither may
+leave anything after it** — and that resolves a contradiction the two source rules were never composed closely
+enough to show. §14.4 retains bytes on a lost acknowledgement, because deleting data somebody needed is
+unrecoverable. §16.6 calls an unbounded retention a defect rather than an omission, because there is no deletion
+event in *at least twelve months*. **A lost acknowledgement therefore keeps the bytes until the ceiling and no
+longer**, and the audit record still says the handoff never completed rather than claiming it did.
+
+**Resume is free before destructive progress and needs a re-seed after it.** From `grace` or `stopped` a resume
+returns the machine to `hosted` and nothing is rebuilt, because nothing is missing. From `clearing` or `cleared`
+it requires a committed re-seed session — signed by the **device**, since what it asserts is what that device
+holds, and naming `(lineage_id, epoch, prior_head)` so the result is a **branch of the live lineage and never a
+genesis**. §13.5's detection rule already refuses to mint a replacement identity where a signed live head
+exists, and a lapsed lineage is live. Two divergent survivors each present their own `prior_head` and converge
+exactly as PRD §6.10 says they do; the re-seed does not choose between them. It carries the retention revision
+it was built against, so a re-seed racing a running deletion is refused and rebuilt rather than silently
+reactivating — §15 row 15's three-way rule at a fourth object.
+
+**Retirement wins the race in both orders, by one rule.** `cause` is set once with `stopped_at`; retirement may
+overwrite `entitlement` and **nothing may overwrite `retirement`**. Retire-then-lapse: the entitlement event is
+recorded and changes nothing, and a `restored` event is refused because the lineage is terminal. Lapse-then-
+retire: the class set widens to include class 6 and the gate becomes the handoff, while `stopped_at` and
+`deadline` do not move, because it is the same stop. The outcome is a function of the recorded `cause` rather
+than of arrival order, so it is replayable after a lost response.
+
+**What a compromise of the entitlement signer reaches, as a bound rather than a guarantee.** It can move the
+machine to `grace` and `stopped`, denying hosted synchronization — and every device keeps working locally,
+because nothing on the read or write path ever awaited a credential. It **cannot** commit terminal lineage,
+which needs a client-signed `retire` intent and the lineage authorization key. It cannot delete before the
+deadline, which the retention machine computes from its own clock. It cannot reach class 6, because the class
+set follows `cause`. So the attack is a long, loud read-only state ending in the deletion §15 row 16 already
+promises, with the devices' replicas intact and an independently held fidelity archive outside the deadline
+entirely (§9.3). A signer that could also suppress the marks above would make it quieter, which is why they are
+signed and version-ordered.
+
+**Test.** §11.2 test 11 and §11.4's generated deletion tests; the state machine's own model is
+`test/hostedRetention.test.ts`.
 
 ---
 
@@ -3124,9 +3261,9 @@ true**, and where the two disagree this one wins.
 | 7 | Checkpoint construction, cadence and retention | One **full snapshot under one generation** plus a signed manifest binding the epoch and its head, the generation, the checkpoint digest, **`sv` and `ds` separately**, row 5's accepted-head vector and the producing credential. **Attribution is preserved by row 8 rather than here**, so §7.6's forbidden re-signing shape is unreachable. **A rotation forces a checkpoint before the old generation may be dropped**; at least two are retained (§7.6) | [row 7](./selections/row-7-checkpoint.md) |
 | 6 | Anti-replay rule and envelope retention depth | Admit at *n* iff the position is **one past the mark**, the link is computed from the link the client itself holds, and a signed head verifies against **that** link. §7.5's *no second link at a held position* needs no fifth condition — it arrives at or below the mark — so the carrier is one `(seq, link)` per credential, a §6.1 record with `kind: 'heads'`. **Outbound: re-mint only on a definite refusal**, never on silence. Retention is three different depths, and a device keeps its own envelopes back to the **second-newest** admitted checkpoint (§7.4, §7.5) | [row 6](./selections/row-6-antireplay-retention.md) |
 | 17 | Which web-security baseline profile and version | **OWASP ASVS 5.0.0 at L2 as a floor**, plus 8 named L3 pull-ups, 5 addendum controls and 1 recorded deviation. **A level is a floor rather than a profile** — §10.9's controls are spread across all three. The standard has **one** requirement mentioning browser storage and **none** mentioning Trusted Types, service workers or offline operation, so `V14.3.3` is a recorded deviation against §6.1 rather than a disposition. Generated and self-checking; A1 (no remote subresource) is build-failing today (§10.9, §13.11) | [row 17](./selections/row-17-web-security-baseline.md) |
-| 15 | Interrupted-rotation and downgrade behaviour | **One intent-and-outcome protocol at three kinds** — rotate, replace-recovery, retire — because §11.2 test 11's list is one class: an interrupted middle that reads as a completed **lesser** transition. `kind` is bound in both messages, which makes PRD §6.10's *a downgrade must not silently become account deletion* a field rather than a screen. Three client cases: silence means resubmit the identical bytes, a matching `committed_id` means apply, and a differing one means **discard and rebuild** — so **the outcome must be signed**, since the third case throws away a live content key (§13.7, §14.4) | [row 15](./selections/row-15-transitions.md) |
+| 15 | Interrupted-rotation and downgrade behaviour | **One intent-and-outcome protocol at three kinds** — rotate, replace-recovery, retire — because §11.2 test 11's list is one class: an interrupted middle that reads as a completed **lesser** transition. `kind` is bound in both messages, so a `rotate` cannot commit as a `retire` — **and that pair is what it closes, not lapse**: no field of a rotation expresses a payment lapse, a synchronization stop or a retention deadline, so §14.7's retention machine carries that state and this grammar stays at three (`S0-7`). Three client cases: silence means resubmit the identical bytes, a matching `committed_id` means apply, and a differing one means **discard and rebuild** — so **the outcome must be signed**, since the third case throws away a live content key (§13.7, §14.4) | [row 15](./selections/row-15-transitions.md) |
 | 12 | Account-credential and slot-verifier construction | The account credential is a **WebAuthn discoverable credential** and the verifier **checks a signature rather than a secret** — so §13.10's Argon2id candidate answers *none* for the third time and on the strongest argument: there is no secret in the profile to grind. Each credential gets a **service-signed binding** in the slot index, because an asymmetric verifier trades a guessable secret for a **substitutable public key** and §6.5's index is a structured clone. The unlock assertion is bound to the slot and the credential, never to a clock; the signature counter is read and ignored (§13.9) | [row 12](./selections/row-12-account-credential.md) |
-| 16 | Hosted-content retention duration after a lapse | **Twelve months**, from the moment hosted synchronization stops rather than from the missed payment, so grace is not deducted from it. **A floor on the promise and a ceiling on the data**: a plan may offer longer and none may offer shorter, and at expiry the ciphertext and wraps are *deleted*. One number for two paths because both are gated by one artifact — the ciphertext — so a shorter recovery window would save nothing and produce the state §6.10 refuses. **The condition was one bit of PRD §11's pricing question**, not its answer (PRD §6.10, §16) | [row 16](./selections/row-16-hosted-retention.md) |
+| 16 | Hosted-content retention duration after a lapse | **Twelve months**, from the moment hosted synchronization stops rather than from the missed payment, so grace is not deducted from it. **A floor on the promise and a ceiling on the data**: a plan may offer longer and none may offer shorter, and at expiry the ciphertext and wraps are *deleted*. One number for two paths because both are gated by one artifact — the ciphertext — so a shorter recovery window would save nothing and produce the state §6.10 refuses. **The condition was one bit of PRD §11's pricing question**, not its answer. **§14.7 is the machine that executes it** — one clock, created by whichever event stops synchronization; a six-class ledger whose cause decides whether the recovery anchor is kept; and the deadline as a **floor on expiry deletion and a ceiling on both causes**, which is what bounds §14.4's lost acknowledgement (`S0-7`) (PRD §6.10, §16) | [row 16](./selections/row-16-hosted-retention.md) |
 | 10 | Terminal and portable cutover-package formats | **One format at §13.5's three lineage states**, not two: §14.2's cutover package, §14.4's terminal package and §9.3's fidelity archive. A **retired package is a complete package signed by the terminal authority**, not a live manifest upgraded in place — `lineage_state` is inside what the assembler signs, so there is no in-place upgrade to verify. §14.2's trust root is bound in the **HPKE `info` of every generation wrap** *and* committed in a digest **sealed beside `R_priv` under the recovery code**: `info` alone stops a wrap being reinterpreted and not one being minted, since base mode needs only the public `R_pub`. The commitment is the anchor that terminates in user-held material; the importer checks it before any unwrap. §9.3's archive uses the same shape under its own per-workspace code (§14.2, §14.4, `S0-6`) | [row 10](./selections/row-10-portable-package.md) |
 
 **Row 20 — test vectors — is closed for these eighteen and open for the rest.** Rows 16 and 17 are the two whose
@@ -3198,9 +3335,16 @@ the as-built review checks against, not an omission.
 still be open. The other waits on a **deployment** choice — a metrics store, a log processor, a backup provider —
 which no selection was ever going to close. **Every retention bounded by a selection now carries its answer**, and
 they are of two shapes: the positional ones rows 6, 7 and 8 fix by the artifacts themselves, and the single
-duration row 16 fixes by a clock — twelve months of hosted content after a lapse (§13.8, PRD §6.10).
+duration row 16 fixes by a clock — twelve months of hosted content after a lapse (§13.8, PRD §6.10). **§14.7 is
+the machine that runs that clock and executes the deletion**, which is what turns the row's ceiling from a
+promise into a deletion event this inventory can be checked against.
 
-### 16.1 Authorization service
+### 16.1 Authorization and retention services
+
+**Two authorities share this store boundary and do not share a key.** The lineage authorization key admits,
+revokes, rotates and retires; the retention key stops hosted synchronization and runs §14.7's deletion ledger and
+can do nothing else. Grouping them here is a fact about where the rows live, not a claim that one may act for the
+other — a compromise of the retention key reaches availability and never lineage.
 
 | Data class | Purpose | Subject / deletion scope | Storage or recipient | Retention | Deletion event | Operator visibility | Third parties |
 | ---------- | ------- | ------------------------ | -------------------- | --------- | -------------- | ------------------- | -------------- |
@@ -3209,9 +3353,12 @@ duration row 16 fixes by a clock — twelve months of hosted content after a lap
 | Signed authorization lineage — epochs, membership grants, credential ids, capabilities, generation ids (§13.5) | Admit and revoke, order successors, prove historical admission | Workspace | Authorization service store | Life of the lineage | Account deletion commits the terminal record, then removes service copies | Support may read; authorization changes are audited | None |
 | Terminal lineage record | Let a surviving replica distinguish retirement from genesis (§13.5) | Workspace | Authorization service store, then replicas and the portable package | Propagated before deletion; not retained by the service afterwards | Account deletion | Support may read; audited | None |
 | Acceptance evidence — the per-credential accepted mark `(seq, link)`, batch head signatures and finalization cutoffs (§7.5) | Let clients refuse writes the service never accepted | Workspace × credential | Authorization service store | Life of the lineage — **a mark, not a log**: one `(seq, link)` per credential and its cutoff, which is all the chain has any memory of (§15 rows 5, 6) | Account deletion | Support may read; audited | None |
-| Recovery material — `R_pub`, per-generation wraps, code-sealed `R_priv` envelope | Non-custodial recovery after total device loss (§13.8) | Workspace | Authorization service store | Life of the account; during a lapse the wraps are separately bounded by hosted-content retention — **twelve months** from the moment synchronization stops (§15 row 16) | Account deletion; retention expiry deletes the wraps and keeps `R_pub` and the sealed envelope (PRD §6.10) | None — opaque to every operator by construction | Escrow agent, **only** where the opt-in add-on exists (§16.5) |
+| Recovery material — `R_pub`, per-generation wraps, code-sealed `R_priv` envelope | Non-custodial recovery after total device loss (§13.8) | Workspace | Authorization service store | Life of the account; during a lapse the wraps are separately bounded by hosted-content retention — **twelve months** from the moment synchronization stops (§15 row 16) | Account deletion; retention expiry deletes the wraps (§14.7 class 4) and **refuses** `R_pub` and the sealed envelope (class 6), which is what makes PRD §6.10's re-seed without a new code true | None — opaque to every operator by construction | Escrow agent, **only** where the opt-in add-on exists (§16.5) |
 | Committed-transition table — `(lineage, kind, target)` to committed intent id and signed outcome (§13.7) | Commit each rotation, recovery replacement and retirement at most once, and answer a resubmission with the same outcome | Workspace | Authorization service store | Life of the lineage | Account deletion commits the terminal record, then removes service copies | Support may read; audited | None |
 | Relay admission tokens issued (§13.2) | Scope and time-bound a transport session | Device credential | Issued to the device; service-side issuance state only if the selected shape needs it | Short by construction | Expiry, revocation, account deletion | Support may read issuance state; audited | None |
+| Hosted-retention marks and the deletion ledger — state, `stopped_at`, deadline, revision and per-class progress (§14.7) | Stop hosted synchronization without touching the lineage; bound hosted content by one deadline; make a partial deletion resumable rather than restartable | Workspace | Retention service store, signed by the retention key and served to clients as PRD §6.10's disclosure | Life of the hosted copy; the marks alone survive it, because the record of a deletion has to outlast the bytes it accounts for | Account deletion | Support may read; every state change is audited | None |
+| Entitlement events — account, sequence, effect and effective time (§14.7). **Conditional** — exists only if PRD §11's pricing question selects a paid plan | Authorize a synchronization stop or restore, and nothing else | Account | Entitlement service store; never the lineage authorization key | Life of the account | Account deletion | Finance and support may read; audited | The payment processor, if one is chosen |
+| Committed re-seed sessions — lineage, epoch, seeding credential, generation, prior head (§14.7) | Let a survivor rebuild an expired hosted copy as a **branch of the live lineage** rather than as a new workspace | Workspace | Authorization service store | Life of the lineage | Account deletion | Support may read; audited | None |
 
 ### 16.2 Relay
 

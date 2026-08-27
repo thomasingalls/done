@@ -18,6 +18,9 @@ fourth clause for retained-checkpoint openers (TRD §§13.7–13.8).
 produced. A signed manifest alone no longer discharges it (TRD §7.6, `S0-2` Stage A).
 **Amended by:** [`S0-6`](../review/remediation/S0-6/README.md) (2026-08-27) — `retire` commits terminal lineage, and hosted deletion now waits on a durable
 `TerminalHandoff` from a verified-current receiver rather than on an elapsed window (TRD §14.4).
+**Amended by:** [`S0-7`](../review/remediation/S0-7/README.md) (2026-08-27) — §8's _product downgrade_ cell is
+narrowed. Binding `kind` closes the `rotate`/`retire` pair and does not close lapse, which this grammar cannot
+express; lapse is carried by TRD §14.7's retention machine and the three kinds stay three.
 
 ---
 
@@ -148,6 +151,16 @@ larger: there, a store loses its history; here, a lapse retires a lineage that P
 The vectors publish the two intents side by side, with the byte at which their messages first diverge, because
 the sentence is easier to believe as a diff than as a claim.
 
+**What that diff reaches, and where this row overclaimed it** (`S0-7`). It proves a `rotate` cannot commit as a
+`retire`, which is real and is the pair PRD §6.10's sentence is about at the protocol layer. It does **not**
+reach lapse, because **there is no lapse intent to diverge from**: the grammar has three kinds and none of them
+carries a payment state, a synchronization stop or a retention deadline. Read as _product downgrade is closed_,
+this row was standing a true local statement in for a total one — the shape row 4's carrier registry was caught
+in — and an implementation reading it would have had to misuse `rotate`, use `retire` and destroy the
+live-lineage guarantee, or invent state the register calls common and never defined. **TRD §14.7 defines that
+state**, on a second axis and under a signer that is not the lineage key, and this row's contribution is
+unchanged: the ordering is the fail-closed property, and `kind` has a negative.
+
 ---
 
 ## 3. Row 6's rule extends by one case, and the third case is the dangerous one
@@ -264,16 +277,24 @@ its own rule.
 | Sense                    | Status                                                                                                                                     |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Suite downgrade**      | Closed by row 1. A carrier version selects the whole suite, every carrier authenticates its own version, and there is nothing to negotiate |
-| **Product downgrade**    | PRD §6.10, and §2 above makes its one requirement a bound field                                                                            |
+| **Product downgrade**    | **Not this row's, and it was wrong to file it here** — §2 closes the `rotate`/`retire` pair; TRD §14.7 carries the lapse state (`S0-7`)    |
 | **Generation downgrade** | **Open, irreducibly, and bounded rather than closed** — §9                                                                                 |
 
-**The middle one has a cryptographic answer that is smaller than it looks.** A downgrade and a deletion differ in
-exactly one artifact: the terminal record. §13.5's three lineage states make a lapse _live but dormant_ and a
-deletion _retired_, and §14.4 already commits the terminal record **before** anything is deleted. So the
-fail-closed direction is already the specified one — an interrupted deletion leaves a retired lineage with its
-hosted content still present, which is honest and recoverable-looking, while the reverse would be a lapse that is
-not one. **This row's contribution is to say that the ordering is the fail-closed property rather than an
-implementation detail, and to give `kind` a negative.**
+**The middle one has a cryptographic answer that is smaller than it looks, and a carrier this row does not
+supply.** A lapse and a deletion differ in exactly one artifact: the terminal record. §13.5's three lineage
+states make a lapse _live but dormant_ and a deletion _retired_, and §14.4 already commits the terminal record
+**before** anything is deleted. So the fail-closed direction is already the specified one — an interrupted
+deletion leaves a retired lineage with its hosted content still present, which is honest and
+recoverable-looking. **This row's contribution is to say that the ordering is the fail-closed property rather
+than an implementation detail, and to give `kind` a negative.**
+
+**What it is not is a lapse.** _Live but dormant_ names a state; naming a state is not carrying it, and this
+protocol has no message that says a workspace is in one. §14.7 supplies the carrier — a signed retention mark on
+a second axis, one clock created by whichever event stops synchronization, and a deletion ledger whose cause
+decides whether the recovery anchor survives. **Retirement wins the race with a lapse in both orders**, by one
+rule rather than an arbitration table: `cause` is set once, retirement may overwrite an entitlement cause, and
+nothing overwrites retirement. That keeps this grammar at three kinds, which matters beyond tidiness — §3's
+three-way rule, §2's wire theorem and the idempotency argument were all argued about three.
 
 ---
 

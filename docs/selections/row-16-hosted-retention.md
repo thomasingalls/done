@@ -7,6 +7,9 @@
 **Companions:** [row 7](./row-7-checkpoint.md) and [row 6](./row-6-antireplay-retention.md) hold every _other_
 retention in the design, and none of them is a duration; [row 10](./row-10-portable-package.md) is the artifact
 that does not inherit this deadline.
+**Amended by:** [`S0-7`](../review/remediation/S0-7/README.md) (2026-08-27) — the clock gains the machine it was
+selected without. TRD §14.7 carries the lapse state, executes the deletion as a six-class ledger, and makes the
+deadline a **floor** on expiry deletion as well as a ceiling on both causes.
 
 ---
 
@@ -33,6 +36,12 @@ Survives   R_pub and the code-sealed R_priv envelope, so a surviving device
 
 Condition  Arises if a lapse can exist at all. That binary is taken. The price
            is not, and no sentence anywhere depends on it.
+
+Machine    TRD 14.7 (S0-7). One clock, created by whichever event stops hosted
+           synchronization and never recomputed. A six-class deletion ledger
+           whose CAUSE decides whether the recovery anchor survives: expiry
+           keeps it, retirement does not. The deadline is a FLOOR on expiry
+           deletion and a CEILING on both causes.
 ```
 
 Everything below is why, and what it cost.
@@ -86,6 +95,13 @@ freshness window.** There the five-minute timer was an approximation of _this as
 operation_, so binding the operation directly removed the number. Here there is nothing the number approximates.
 PRD §6.10 requires a stated one, because _retained_ without one is a promise nobody can plan around — so the
 number has to be argued from the failure it protects against, and that is §4.
+
+**And a duration needs something to hold it, which this row selected without** (`S0-7`). Every positional
+retention above is held by an artifact that already exists — a mark, a checkpoint, a head vector. This one was
+held by nothing: the row said _the clock starts when hosted synchronization stops_ and no selected object
+recorded that it had. Row 15's grammar could not say it either, so the two rows between them credited a state
+neither carried. **TRD §14.7 is the artifact**, on a second axis from the lineage and under a signer that is not
+the lineage key, and with it the number becomes a field of a signed record rather than a sentence about one.
 
 ---
 
@@ -252,7 +268,13 @@ policy and a sentence in the interface; nothing in §6, §7 or §13 moves.
 - **The deletion is a test, not a policy.** §16.6 and PRD §7.11 both require the deletion event be exercised;
   expiry deletes hosted ciphertext and wraps while keeping `R_pub` and the sealed envelope, and _keeping the
   right things_ is as much of the assertion as deleting the rest. It belongs with §11.4's generated deletion and
-  export tests.
+  export tests. **`S0-7` turned that from a note into a class the ledger refuses to touch** — class 6 — so what
+  Stage 4 owes is the worker, not the rule.
+- **The composition with retirement's gate was owed and nobody was holding it** (`S0-7`). `S0-6` selected _a
+  lost acknowledgement retains the bytes_, and this row selected _at expiry the copy is deleted_. In different
+  sections those are both right; composed, a retirement whose survivor never appears retains bytes forever under
+  one and twelve months under the other. §14.7 resolves it as the ceiling binding whatever the cause, and the
+  audit record still saying the handoff never completed.
 - **Nothing here waits on review 3b**, and 3b should be told that this row was taken on a binary rather than on
   question 1's answer, so a reviewer who reads the register's old conditionality is not left wondering what
   changed.
