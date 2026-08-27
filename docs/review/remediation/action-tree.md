@@ -415,7 +415,9 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 > register cell, and rows 7/8/10/14/15. **Stage D is done: all 16 falsifiers**, plus one the writing
 > found — the archive envelope's identity binding, which nothing was testing. 31 published negatives across the
 > fresh-rewrap attack, a clean-device archive restore from the code alone, the retired package's signature in
-> both directions, and the deletion gate at all five hosted classes. Stage E is the only stage left.
+> both directions, and the deletion gate at all five hosted classes. **`S0-6` is complete** across all five stages. Its four
+> findings — three of them high — are repaired in design, normative text, selection records, executable evidence
+> and product copy, pending `S0-8` regeneration and `S0-9` challenge.
 
 - **Prerequisite decisions:** `P-6`; `S0-2` recovery/recipient state; `S0-5` checkpoint/creation state; recommended
   `RC-6A`.

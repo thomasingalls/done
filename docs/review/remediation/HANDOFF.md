@@ -42,11 +42,11 @@ read it as "nothing to do", and do not edit those files to make it say otherwise
 **Outstanding decisions (3):** `P-3` write admission · `P-4` lapse authority · `P-5` policy and closure
 authority. **None blocks anything until `S0-8`.** They are genuinely parallel work.
 
-**Actions:** `S0-2` and `S0-5` are **complete** across all five stages — see [`S0-2/README.md`](./S0-2/README.md)
-and [`S0-5/README.md`](./S0-5/README.md). `S0-1`, `S0-3`, `S0-4`, `S0-6` and `S0-7` are not started. **`S0-6`
-is now unblocked**, having waited on `S0-2` and `S0-5`.
+**Actions:** `S0-2`, `S0-5` and `S0-6` are **complete** across all five stages. `S0-1`, `S0-3`, `S0-4` and
+`S0-7` are not started. **`S0-7` is now unblocked on its action dependencies** — it had `S0-2` and `S0-6` —
+but still needs `P-4`, which is undecided.
 
-**Findings repaired: 10 of 37.** Three with mutation-tested falsifiers, three by document repair, two partial —
+**Findings repaired: 14 of 37**, including five of the six high-severity ones. Three with mutation-tested falsifiers, three by document repair, two partial —
 graded individually in [`action-tree.md`](./action-tree.md).
 
 **Evidence:** 313 tests · 16/16 generators current · 169 AAD fields each isolated · 15 WASM checks · the blob
@@ -54,10 +54,10 @@ reproduces from the crate at 6,465 B.
 
 ## What is ready to pick up, in order
 
-1. **`S0-6`** — package root, Local opener, full retired package and terminal handoff. Unblocked: `P-6` decided
-   its UX, and `S0-2` and `S0-5` were its other two dependencies. It closes four findings, three of them high,
-   and is the largest remaining action.
-2. **`S0-7`** — lifecycle and destructive deletion, which waits on `S0-6` and `P-4`.
+1. **`P-4`** — lapse authority. It is now the *only* thing standing between here and `S0-7`, and it is a small
+   decision beside the ones already taken: who initiates a lapse, and who wins a lapse-versus-retire race.
+2. **`S0-7`** — lifecycle and destructive deletion, which consumes `P-4` and `S0-6`'s `TerminalHandoff`.
+3. **`S0-1`, `S0-3`, `S0-4`** — each needs its own decision first (`P-5`, `P-3`, and `S0-1`/`S0-2` respectively).
 3. **`P-3`, `P-5`, `P-4`** — parallel, any order, any time, by anyone. `P-3` now has evidence attached: the
    journal probe measured a hard `localStorage` quota wall at ~92k entries, which its oversize and
    storage-failure branch has to handle. See [`probes/journal-append-probe.md`](./probes/journal-append-probe.md).

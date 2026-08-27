@@ -1543,6 +1543,19 @@ generation needed to support the historical attribution claims they retain. Thos
 workspace rather than requiring the deleted account to remain queryable. They verify the past and authorize
 no future — so they must be synchronized before deletion, not invented during it.
 
+**And something has to have *received* them, which is now a receipt rather than a wait** (`S0-6`). Sending is
+not receiving, and a window that has merely elapsed is time being read as evidence — so hosted bytes were
+previously destroyable while every remaining copy was stale, incomplete, or absent. A device is counted as
+having the workspace only when it can show either that it already holds the final state, or a verifiable
+account of what it was missing **with the gaps named rather than summarised**. It signs that, and only that
+signature releases each class of hosted data.
+
+**If the acknowledgement is lost, the bytes stay.** That direction is chosen rather than accidental: keeping
+data nobody asked to keep is a recoverable mistake and deleting data somebody still needed is not, so the
+ambiguous case keeps it and the record says the handoff never completed rather than claiming it did. **A
+device that never appears is named and never counted**, which is the promise §6.9 already makes about the
+confirmation screen, now true of the deletion underneath it.
+
 ### 6.10 Lapse, grace and hosted read-only
 
 **Invariant.** *Conditional: this applies only if hosted sync is ever priced as a subscription (§11).* **A
@@ -2532,12 +2545,33 @@ the exact restore format.**
 once — rather than something the user is trusted to remember. This is the one requirement here with a recurring
 cost to the user's attention rather than a one-off engineering cost.
 
-**Not promised.** **It is not a recovery factor.** It answers *does any ciphertext still exist* and never *can
-you decrypt it*. A user who holds an archive and has lost the code has an encrypted file and no way in. It
+**Not promised.** **It is not a recovery factor**, and having its own code does not make it one. It answers
+*does any ciphertext still exist* and never *can you decrypt it*. A user who holds an archive and has lost the code has an encrypted file and no way in. It
 improves **durability** and **portability**, not **recoverability** (§2.4).
 
-**Not promised.** A purely **Local** fidelity archive has no account recovery keypair, so it needs its own
-explicit portable wrap rather than one it does not have.
+**A purely Local archive has its own code, and until now it had nothing** (`S0-6`, `P-6`). It has no account
+recovery keypair to borrow, so it holds a key of its own, sealed under a generated code of its own — and
+without that, a Local archive was an encrypted file that **nobody could ever open**, including its owner, in
+precisely the situation it exists for. That was not a gap in the copy; it was a gap in the design, and the
+paragraph that used to sit here described the hole rather than filling it.
+
+**One code per workspace, not one per archive.** Archiving is meant to be something the app drives on a
+schedule, and a code per run would be the recurring attention cost this section already refuses. One code
+covers every archive of that workspace, saved once.
+
+**The app asks for it back once, before it calls any archive restorable.** Until then, the honest description
+of an archive is the one above: ciphertext, and no way in. A show-once warning would leave the app claiming
+restorability on no evidence, and the consequence of being wrong here is total. Because the code is
+per-workspace, that ceremony is paid once and never again.
+
+**Replacing the code protects future archives, not past ones**, and the copy has to say so. Files already
+written are bytes at a destination the app may not be able to reach, rewrite, or even list. A user who changes
+the code will otherwise assume the old files rotated with it — the same misunderstanding §7.6 has to head off
+about the recovery code, in a place where nothing can compensate afterwards.
+
+**When a Local workspace becomes an account, the archive code retires to legacy.** New archives are ordinary
+packages under the account recovery identity; the old code keeps opening the archives written before, and the
+product says which is which rather than leaving two live codes to tell apart.
 
 **Failure and lifecycle. The archive is load-bearing in exactly one cell and partly in one more**, which is
 narrower than "you must keep an archive":
@@ -2651,7 +2685,12 @@ breaking the authorship one.
 pre-migration write end to end needs four things:
 
 1. **An authenticated old trust root** — the vanished service's authorization signing key, bound so it cannot
-   be substituted. Otherwise whoever can write the archive can rewrite who wrote what.
+   be substituted. Otherwise whoever can write the archive can rewrite who wrote what. **What holds that
+   binding down is the user's own code** (`S0-6`): the archive commits to its trust root behind the same
+   factor that opens it, so an archive assembled by somebody else names a root the code does not vouch for and
+   is refused before anything is decrypted. Every other item on this list is service-signed and therefore
+   re-signable by whoever supplies the signing key; this one terminates in something only the user holds,
+   which is the whole reason it can be trusted after the service is gone.
 2. **Enough of the old authorization history** to establish which credential held which capability at the
    referenced epoch.
 3. **Either the original signed envelopes or a validated attribution-preserving checkpoint.** A checkpoint that

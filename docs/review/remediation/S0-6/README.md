@@ -40,7 +40,7 @@ fails. It never attempts the fresh rewrap, so `--check` has always passed.
 | **B** | Normative construction | TRD §§9.3/13.8/14 | **done** — plus §15 row 10's register cell, which carried both corrected claims |
 | **C** | Selection rows | rows 7/8/10/14/15 | **done** — row 10 gains the fresh-mint attack and its repair; the rest take header notes |
 | **D** | Executable evidence | package and recovery generators; **the paired fresh-rewrap negative is the one that matters** | **done** — 16 of 16, plus one the writing found |
-| **E** | Product surface | PRD §§6.9/7.6–7.7/8 and archive UX | not started |
+| **E** | Product surface | PRD §§6.9/7.6–7.7/8 and archive UX | **done** — §8.3 gains the archive's own code and its three UX consequences; §6.9 gains the receipt; §7.7's trust root names what holds it down |
 
 Same dependency order and the same expected intermediate state after `C` as `S0-2` and `S0-5`.
 
@@ -88,6 +88,25 @@ this stage that was not on the original list.
 restarting or over-deleting, and four mutations confirm each guard: deleting without a receipt, treating a
 behind receiver as current, accepting a catch-up that does not chain from the prior head, and dropping the
 package binding so one retirement's receipt authorizes another's deletion.
+
+### What Stage E changed
+
+**§8.3's "not promised" became a promise.** The paragraph saying a Local archive *"needs its own explicit
+portable wrap rather than one it does not have"* described the hole rather than filling it — and the hole meant
+a Local archive was an encrypted file **nobody could ever open, including its owner**, in exactly the situation
+it exists for. It now has its own code, with `P-6`'s three consequences stated in product terms: one code per
+workspace rather than per archive, typed back once before anything is called restorable, and **replacement that
+protects future archives and not past ones** — the same misunderstanding §7.6 heads off about the recovery code,
+in a place where nothing can compensate afterwards.
+
+**§6.9 gained the receipt.** Sending is not receiving, and a window that has merely elapsed is time being read
+as evidence. A device counts as having the workspace only when it can show it holds the final state, or a
+verifiable account of what it was missing **with the gaps named rather than summarised**. A lost acknowledgement
+keeps the bytes, deliberately.
+
+**§7.7's trust root now says what holds it down.** The list already required the root *"bound so it cannot be
+substituted"* and left the mechanism unstated — so the sweep added the product-visible half: it is the user's
+own code, and that is the whole reason the archive can still be trusted after the service is gone.
 
 ## Not in scope
 
