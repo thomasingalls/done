@@ -2033,6 +2033,19 @@ than integrity.
 **Against a relay that behaves, divergence cannot form. Against one that does not, divergence is prevented by
 the finalization boundary**, which is a specified requirement rather than a designed mechanism.
 
+**A relay can also lie in the other direction, and that one costs the user their writes rather than their
+privacy.** Withholding an acceptance and returning an error is a claim that a write was refused — and a client
+that believes it re-sends different bytes for the same position, which every other device reads as a credential
+signing two things at once. **So an error is not an answer.** Only a signed refusal from the service, naming
+that exact write, licenses a second attempt; everything else means *unknown*, and the client re-sends **the
+same bytes** rather than new ones (TRD §§7.4–7.5, `S0-4`).
+
+**That is why a device keeps its own outbound writes rather than only the edits behind them.** An edit can be
+re-made; the write that carried it cannot be re-made identically, because part of it is random. A device that
+kept only the edit would have nothing safe to re-send after a crash, and its choices would be to stall or to
+equivocate. **A write is retained until it is answered**, and after that for as long as §8.5's migration needs
+it — which is the same store, not a second one.
+
 **One principle holds regardless: authorization reconciles before content.** Two devices settle the current
 epoch, credentials and capabilities before they exchange a single document update — the same shape as the
 load-before-connect rule, and it deserves the same status.
@@ -2410,7 +2423,10 @@ where it cannot test the whole claim, it names what covers the rest.
    credential cannot decrypt a new generation or create a newly accepted write, while its historical local copy
    remains usable.
 6. **A hostile relay withholds an envelope signed by the revoked credential that is absent from the committed
-   accepted set, then delivers it after revocation; every client refuses it.** An envelope from that credential
+   accepted set, then delivers it after revocation; every client refuses it.** **The mirror case is tested
+   too** (`S0-4`): the relay withholds an acceptance and returns an error instead, and the sender re-sends the
+   identical bytes rather than re-minting — a crash between minting and sending, and between sending and the
+   reply, each resolve to one accepted write and never two. An envelope from that credential
    included in the pre-commit accepted set is still admitted, as is a genuine late-arriving old-epoch update
    from a still-authorized offline device.
 7. **Authorization alone cannot cause content-key delivery.** A malicious authorization service admits a

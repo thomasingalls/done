@@ -7,6 +7,10 @@
 [`scripts/generate-record-vectors.mjs`](../../scripts/generate-record-vectors.mjs)
 **Companions:** [row 1](./row-1-algorithm-suite.md) selects the primitives; [row 2](./row-2-journal-aead.md)
 selects the synchronous journal, which is the third carrier under the same binding rules.
+**Amended by:** [`S0-4`](../review/remediation/S0-4/README.md) (2026-08-27) — **two kinds this row never
+published.** Row 6 added `heads` and the TRD has carried it since; this record — the format's own home — still
+said `'update' | 'state'`. `S0-4` adds `outbound` and both are now here. Neither changes a byte: `kind` is
+already in the AAD, and that binding is what makes a fourth kind safe in the same store subkey.
 **Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-27) — the generation opener a `KeyEnvelope` holds is no longer the only thing a drop consults; TRD §13.7's
 reference ledger counts every object still sealed under a generation before its opener may be retired.
 
@@ -17,8 +21,12 @@ reference ledger counts every object still sealed under a generation before its 
 ```
 Content record  (IndexedDB, structured clone)
 
-  StoredRecord = { v: 1, gen, seq, kind: 'update' | 'state',
+  StoredRecord = { v: 1, gen, seq,
+                   kind: 'update' | 'state' | 'heads' | 'outbound',
                    nonce: Uint8Array(12), ct: Uint8Array }   // ct carries the 16-byte tag
+
+                   'heads'    row 6's anti-replay mark, in its own object store
+                   'outbound' row 4's minted envelopes, in its own object store
 
   K_store = HKDF-SHA256(ikm = K_g, salt = "",
                         info = LP("done/store/v1") || LP(workspace_id), L = 32)

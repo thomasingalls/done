@@ -44,25 +44,24 @@ by implication. Nothing decides it; every action has to keep obeying it.
 
 **Outstanding decisions: none.** Every remaining item is an action, and no action is waiting on a choice.
 
-**Actions:** `S0-1`, `S0-2`, `S0-5`, `S0-6` and `S0-7` are **complete** across all five stages. `S0-3` is
-unblocked and not started; `S0-4` needs `S0-1` and `S0-2`, which are both now done.
+**Actions:** `S0-1`, `S0-2`, `S0-4`, `S0-5`, `S0-6` and `S0-7` are **complete** across all five stages.
+**`S0-3` is the only action left before `S0-8`**, and it is unblocked.
 
-**Findings repaired: 18 of 37**, including five of the six high-severity ones. Seven with mutation-tested
+**Findings repaired: 20 of 37**, including five of the six high-severity ones. Nine with mutation-tested
 falsifiers, three by document repair, two partial — graded individually in
 [`action-tree.md`](./action-tree.md).
 
-**Evidence:** 336 tests · 16/16 generators current · 181 AAD fields each isolated · 15 WASM checks · the blob
+**Evidence:** 353 tests · 16/16 generators current · 190 AAD fields each isolated · 15 WASM checks · the blob
 reproduces from the crate at 6,465 B · **two document-to-artifact checkers**, `pnpm retention:check` and
 `pnpm status:check`, plus the suite generator's own reading of row 1 and §13.10.
 
 ## What is ready to pick up, in order
 
-1. **`S0-3`** — total local-write admission, the allocator and the trim budget. Unblocked: `P-3` is decided.
-   It is also where three already-applied repairs finish — the glue widths, the rotated-generation fixture and
-   the nonce ceiling, the last of which still owes the build-failing boundary test that `P-3`'s
-   `reserved[gen]` count now makes writable.
-2. **`S0-4`** — the exact-byte outbound spool and refusal protocol. Unblocked: it needed `S0-1` and `S0-2`, and
-   both are done. Independent of `S0-3`, so the two can run in either order or together.
+1. **`S0-3`** — total local-write admission, the allocator and the trim budget, and **the last action before
+   `S0-8`**. Unblocked: `P-3` is decided. It is also where three already-applied repairs finish — the glue
+   widths, the rotated-generation fixture and the nonce ceiling, the last of which still owes the
+   build-failing boundary test that `P-3`'s `reserved[gen]` count now makes writable. **`S0-4` found that
+   §7.4's nonce budget inherited the same defect by citation**, so the repair there and here is one shape.
 4. **`S0-8`** — regeneration and the traceability matrix, then `S0-9`'s challenge and `S0-10`'s closure.
    `P-5` gives the matrix a criterion — one home per fact, read rather than restated, checked in both
    directions by a third party — so it is a readback rather than a survey.

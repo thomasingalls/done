@@ -65,6 +65,8 @@ const HEADVEC_LABEL = 'done/headvec/v1';
 const STORE_LABEL = 'done/store/v1';
 /** This row's only new label, and it names a plaintext body rather than a key. */
 const HEADS_LABEL = 'done/heads/v1';
+/** The other answer `K_accept` gives (`S0-4`, TRD §7.5, §15 rows 4 and 6). */
+const REFUSE_LABEL = 'done/position-refuse/v1';
 
 /** The empty chain. Row 5's. */
 const EMPTY_CHAIN = '00'.repeat(32);
@@ -127,6 +129,83 @@ const headMessage = ({ workspace, credential, seq, link: lnk, epoch, final }) =>
       final ? 'true' : 'false',
     ].map(lp),
   );
+
+/**
+ * The refusal message, and why every field is in it (`S0-4`).
+ *
+ * §7.4 makes a definite refusal the only license to re-mint a position and
+ * requires it be authenticated; until `S0-4` nothing could express one. Row 15's
+ * transition `Outcome` names a `(kind, workspace, lineage, target)` — a
+ * transition, not an envelope — so it cannot say which credential, which
+ * position, or which exact digest was never accepted.
+ *
+ * **`refused_digest` is what makes it permanent rather than a status.** A
+ * refusal closes that exact digest forever, so a delayed original cannot be
+ * accepted behind a licensed successor and leave two links at one position.
+ *
+ * **`parent_refusal` is what makes the chain linear.** One refusal licenses one
+ * successor; a successor names the refusal that licensed it, and the first
+ * attempt at a position names zeros.
+ */
+const refuseMessage = ({
+  workspace,
+  credential,
+  v,
+  position,
+  digest,
+  epoch,
+  reason,
+  parent,
+  label = REFUSE_LABEL,
+}) =>
+  concat(
+    ...aadFields('position refusal', {
+      label,
+      v: String(v),
+      workspace,
+      credential,
+      position: String(position),
+      refused_digest: digest,
+      epoch: String(epoch),
+      reason,
+      parent_refusal: parent,
+    }).map(lp),
+  );
+
+/**
+ * What a client does with a response, which is §7.4's three-way rule at a third
+ * object — row 15 selected it for transitions, row 6 for positions.
+ *
+ * **Everything that is not a verified answer over your own digest is silence**,
+ * and silence resubmits the identical bytes rather than re-minting. That is safe
+ * whichever unknown it was: at most one digest is ever accepted at a position,
+ * so a request lost before arrival and a reply lost after acceptance need not be
+ * told apart.
+ */
+const decide = async ({ mine, response, verifier }) => {
+  if (response.kind === 'unsigned') return 'resubmit';
+  if (response.kind === 'refusal') {
+    const message = refuseMessage(response.refusal);
+    const ok = await crypto.subtle.verify(
+      { name: 'Ed25519' },
+      verifier,
+      unhex(response.signature),
+      message,
+    );
+    if (!ok) return 'resubmit';
+    const r = response.refusal;
+    // A genuine signature over somebody else's position is still not an answer
+    // about mine. These are separate from the field-binding negatives: there the
+    // signature breaks, here it verifies and the fields do not match.
+    if (r.workspace !== mine.workspace || r.credential !== mine.credential) return 'resubmit';
+    if (r.position !== mine.position || r.digest !== mine.digest) return 'resubmit';
+    return 're-mint';
+  }
+  if (response.kind === 'head') {
+    return response.digest === mine.digest ? 'accepted' : 'equivocation';
+  }
+  return 'resubmit';
+};
 
 // --- row 7's head-vector serialization, reused ----------------------------------------
 
@@ -438,6 +517,63 @@ const NEGATIVES = [
     mutate:
       'Derive the store subkey for another workspace. The AAD half is `heads-aad-only-workspace`.',
   },
+
+  // --- the refusal (`S0-4`) ---------------------------------------------------
+  //
+  // Nine bound fields, one at a time, with the client's own envelope following
+  // each patch so the subject agrees and only the signature can refuse it. Four
+  // of these are read twice -- once by the signature and once by *is this about
+  // me?* -- and a negative that changed only the message would refuse on the
+  // mismatch and prove nothing about the binding.
+  {
+    name: 'aad-only-refusal-label',
+    mutate: 'Renumber the message label to "done/position-refuse/v2".',
+  },
+  { name: 'aad-only-refusal-version', mutate: 'Claim v = 2.' },
+  { name: 'aad-only-refusal-workspace', mutate: 'A refusal minted for another workspace.' },
+  { name: 'aad-only-refusal-credential', mutate: "Another credential's position." },
+  { name: 'aad-only-refusal-position', mutate: 'Position 14 rather than 13.' },
+  {
+    name: 'aad-only-refusal-digest',
+    mutate:
+      'Another envelope digest. This is the field that makes the refusal permanent rather than a status, so it is the one an attacker would move.',
+  },
+  { name: 'aad-only-refusal-epoch', mutate: 'Claim a later epoch.' },
+  { name: 'aad-only-refusal-reason', mutate: '"policy" rather than "stale-epoch".' },
+  {
+    name: 'aad-only-refusal-parent',
+    mutate:
+      'Name a parent refusal that was never issued. Binding it is what makes a re-mint require a licence at all, and what stops a licence for position n being spent at n+1.',
+  },
+
+  // Genuine signatures, wrong subject: the service really did sign these, and
+  // they are not about this envelope. The field negatives above cannot reach
+  // this case, because there the signature is what breaks.
+  {
+    name: 'refusal-for-another-position',
+    mutate:
+      'A validly signed refusal for position 14, presented to a client waiting at 13. It verifies, and it licenses nothing here.',
+  },
+  {
+    name: 'refusal-for-another-digest',
+    mutate:
+      'A validly signed refusal for a different digest at this position — the shape a service would produce for an attempt this client never made.',
+  },
+  {
+    name: 'refusal-for-another-credential',
+    mutate: "A validly signed refusal for another credential's position 13.",
+  },
+
+  {
+    name: 'unsigned-error-body',
+    mutate:
+      'An error body with no signature, which §7.4 calls silence in as many words. The client resubmits the identical bytes from its spool rather than re-minting — and that is safe whichever unknown it was, because at most one digest is ever accepted at a position.',
+  },
+  {
+    name: 'refusal-under-an-uncertified-key',
+    mutate:
+      'The same refusal signed by a key no epoch certifies. Anything that can withhold an answer can manufacture one, which is why §7.4 requires the refusal be authenticated rather than merely definite.',
+  },
 ];
 
 // --- verification -------------------------------------------------------------------------
@@ -532,6 +668,94 @@ const verify = async (doc) => {
   const otherKey = await deriveStoreKey(KG, OTHER_WORKSPACE);
   await refuses('wrong-store-subkey', () =>
     openRecord(otherKey, NONCE, aad, unhex(v.expected.heads_record_ct)),
+  );
+
+  // --- the refusal, which is the answer row 6 required and nothing could send --
+  //
+  // Position 13 is the one after the signed head at 12, so the envelope under
+  // discussion is the credential's next write rather than a settled one.
+  const { refusal, signature: refusalSig, wrong_subject: wrongSubject } = doc.refusal;
+  const refusedDigest = refusal.digest;
+  const mine = {
+    workspace: WORKSPACE,
+    credential: PHONE,
+    position: 13,
+    digest: refusedDigest,
+  };
+  const verdict = async (response) => decide({ mine, response, verifier });
+
+  // The positive: a verified refusal over this client's own digest licenses
+  // exactly one successor at the same position.
+  if ((await verdict({ kind: 'refusal', refusal, signature: refusalSig })) !== 're-mint') {
+    throw new Error('an honest refusal over this position did not license a re-mint');
+  }
+
+  /** A negative here is a response that fails to license a re-mint. */
+  const mustReMint = async (response) => {
+    if ((await verdict(response)) !== 're-mint') throw new Error('not a license to re-mint');
+  };
+
+  // Each of the nine bound fields, one at a time. The signature is the honest
+  // one and exactly one field of the message changes, so each fails on the
+  // binding rather than on anything downstream.
+  for (const [name, patch] of [
+    ['aad-only-refusal-label', { label: 'done/position-refuse/v2' }],
+    ['aad-only-refusal-version', { v: 2 }],
+    ['aad-only-refusal-workspace', { workspace: OTHER_WORKSPACE }],
+    ['aad-only-refusal-credential', { credential: LAPTOP }],
+    ['aad-only-refusal-position', { position: 14 }],
+    ['aad-only-refusal-digest', { digest: hex(await sha256(utf8('some other envelope'))) }],
+    ['aad-only-refusal-epoch', { epoch: 10 }],
+    ['aad-only-refusal-reason', { reason: 'policy' }],
+    ['aad-only-refusal-parent', { parent: hex(await sha256(utf8('a refusal never issued'))) }],
+  ]) {
+    // **The client's own envelope follows the patch.** Four of these fields are
+    // read twice -- once by the signature and once by "is this about me?" -- so
+    // a negative that changed only the message would refuse on the mismatch and
+    // prove nothing about the binding. This way the subject agrees and the
+    // signature is the only thing left to refuse it.
+    const patched = { ...refusal, ...patch };
+    const theirs = {
+      workspace: patched.workspace,
+      credential: patched.credential,
+      position: patched.position,
+      digest: patched.digest,
+    };
+    await refuses(name, async () => {
+      const got = await decide({
+        mine: theirs,
+        response: { kind: 'refusal', refusal: patched, signature: refusalSig },
+        verifier,
+      });
+      if (got !== 're-mint') throw new Error('not a license to re-mint');
+    });
+  }
+
+  // Genuine signatures, wrong subject. These are the attack the field negatives
+  // above cannot reach: the service really did sign this, and it is not about
+  // this envelope.
+  for (const entry of wrongSubject) {
+    // Verified here rather than trusted: a published "genuine signature" that is
+    // not one would make each of these refuse for the wrong reason.
+    const ok = await crypto.subtle.verify(
+      { name: 'Ed25519' },
+      verifier,
+      unhex(entry.signature),
+      refuseMessage(entry.refusal),
+    );
+    if (!ok) throw new Error(`${entry.name}: its signature is supposed to be genuine and is not`);
+    await refuses(entry.name, () =>
+      mustReMint({ kind: 'refusal', refusal: entry.refusal, signature: entry.signature }),
+    );
+  }
+
+  // An unsigned error body is silence, and so is a refusal under a key no epoch
+  // certifies. Both resubmit rather than re-mint.
+  await refuses('unsigned-error-body', () =>
+    mustReMint({ kind: 'unsigned', body: '{"error":"stale epoch"}' }),
+  );
+  await refuses('refusal-under-an-uncertified-key', () =>
+    mustReMint({ kind: 'refusal', refusal, signature: doc.refusal.uncertified_signature }),
   );
 
   // The two demonstrations. Neither is a negative, because both succeed — and
@@ -668,6 +892,41 @@ const main = async () => {
     },
   ];
 
+  // --- the refusal `S0-4` selects, signed once here and checked in verify() ----
+  const refusedDigest = hex(await sha256(utf8('envelope at position 13')));
+  const refusalBase = {
+    workspace: WORKSPACE,
+    credential: PHONE,
+    v: 1,
+    position: 13,
+    digest: refusedDigest,
+    epoch: 9,
+    reason: 'stale-epoch',
+    parent: EMPTY_CHAIN,
+  };
+  const signRefusal = async (r) =>
+    hex(new Uint8Array(await crypto.subtle.sign({ name: 'Ed25519' }, signer, refuseMessage(r))));
+
+  const wrongSubject = [];
+  for (const [name, patch] of [
+    ['refusal-for-another-position', { position: 14 }],
+    ['refusal-for-another-digest', { digest: hex(await sha256(utf8('a different envelope'))) }],
+    ['refusal-for-another-credential', { credential: LAPTOP }],
+  ]) {
+    const r = { ...refusalBase, ...patch };
+    wrongSubject.push({ name, refusal: r, signature: await signRefusal(r) });
+  }
+
+  // RFC 8032 §7.1 TEST 3's seed: a key no epoch certifies.
+  const impostor = await importSigner(
+    'c5aa8df43f9f837bedb7442f31dcb7b166d38535076f094b85ce3a2e0b4458f7',
+  );
+  const uncertifiedSignature = hex(
+    new Uint8Array(
+      await crypto.subtle.sign({ name: 'Ed25519' }, impostor, refuseMessage(refusalBase)),
+    ),
+  );
+
   const doc = {
     $schema: 'https://done.invalid/vectors/antireplay/1',
     generated_by: 'scripts/generate-antireplay-vectors.mjs',
@@ -700,6 +959,20 @@ const main = async () => {
       },
     },
     keys: KEYS,
+    refusal: {
+      why: "§7.4 makes a definite refusal the only license to re-mint a position and requires it be authenticated. Nothing could express one: row 15's transition Outcome names a transition, not an envelope (S0-4, f-745e332-envelope-refusal-carrier-missing). K_accept signs it, because acceptance and refusal are two answers from one decision domain -- a separate refusal key would be an authority that can induce a re-mint without being able to accept anything, and a compromised K_accept can already forge heads.",
+      message:
+        'Refuse = LP("done/position-refuse/v1") || LP(dec v) || LP(workspace_id) || LP(credential_id) || LP(dec position) || LP(hex refused_digest) || LP(dec epoch) || LP(reason) || LP(hex parent_refusal), signed by K_accept. refusal_id = SHA-256(Refuse).',
+      permanence:
+        'A refusal closes (workspace, credential, position, refused_digest) forever. Without that a client could re-mint on a refusal and have its original accepted behind it -- two links at one position, which §7.5 reads as a compromised credential.',
+      chain:
+        "A successor names the refusal_id that licensed it, and that refusal licenses its own position and no other -- a successor at n+1 under a refusal for n is the skipping row 4 forbids. The first attempt at a position names 32 zero bytes. A successor may itself be refused, and nothing caps the chain. Nothing caps the attempts either: RC-4A proposed a sole successor slot per refusal, and every attempt at a position competes for the one digest that position will ever accept, so at most one accepted digest per position already permits only one to win. Removing the slot from the executable model changed no result (S0-4).",
+      refusal: refusalBase,
+      signature: await signRefusal(refusalBase),
+      wrong_subject: wrongSubject,
+      uncertified_signature: uncertifiedSignature,
+      uncertified_key: 'RFC 8032 §7.1 TEST 3 -- a key no epoch certifies.',
+    },
     vectors,
     demonstrations: {
       self_equivocation: {

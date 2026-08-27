@@ -98,6 +98,24 @@ the signed head is what refuses it.
 
 ## 3. The re-mint hazard, which is this row's sharp edge
 
+**Amended by [`S0-4`](../review/remediation/S0-4/README.md) (2026-08-27): the refusal this section requires had
+no carrier.** It pointed at row 15's transition `Outcome`, which names a `(kind, workspace, lineage, target)` —
+a transition, not an envelope — so it cannot say which credential, which position, or which exact digest was
+never accepted (`f-745e332-envelope-refusal-carrier-missing`). TRD §7.5's `Refuse` is that object, signed by
+`K_accept`, **permanent** over `(credential, position, digest)`, and licensing a successor that binds its
+`refusal_id` — **at that refusal's own position and no other**, or skipping arrives through the back door. A
+successor may itself be refused, and nothing caps the chain, or a credential stalls the second time an epoch
+moves under it.
+
+**`RC-4A` also proposed capping the *attempts* at one per refusal, and `S0-4` dropped it.** Every attempt at a
+position competes for the one digest that position will ever accept, so this row's own rule already permits only
+one of them to win. Removing the cap from the executable model changed no result — which is what *not
+load-bearing* looks like when it is measured rather than argued.
+
+**And _wait_ now has something to wait with.** This row said _never re-mint_ and left the client holding a
+delta it cannot re-envelope identically; row 4's spool is where the exact bytes are, so silence means
+**resubmit them**, which is safe whether the request was lost before arrival or the reply after acceptance.
+
 [Row 4](./row-4-envelope-format.md) made `seq` the credential's outbound position and its accepted position as
 one number, and recorded the cost: _a refused envelope stalls that credential's chain until it is re-minted at
 the same position._ Read as a cost that is a delay. It is also a trap.
@@ -110,10 +128,10 @@ An honest client has framed itself.
 
 So the outbound rule has to distinguish two states that look identical from the client's side:
 
-| What the client sees      | What it means                          | What it does                           |
-| ------------------------- | -------------------------------------- | -------------------------------------- |
-| A definite refusal at _n_ | The service never accepted _n_         | Re-mint at _n_. Row 4 forbids skipping |
-| No answer at _n_          | Unknown — accepted, in flight, or lost | **Wait.** Never re-mint                |
+| What the client sees      | What it means                          | What it does                                              |
+| ------------------------- | -------------------------------------- | --------------------------------------------------------- |
+| A definite refusal at _n_ | The service never accepted _n_         | Re-mint at _n_. Row 4 forbids skipping                    |
+| No answer at _n_          | Unknown — accepted, in flight, or lost | **Wait**, and resubmit the identical bytes. Never re-mint |
 
 A timeout is the second row, not the first. That distinction is invisible until it happens and retroactive
 when it does, which is the same shape as row 2's nonce-reuse argument and deserves the same treatment: it is a

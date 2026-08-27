@@ -600,7 +600,7 @@ StoredRecord = {
   v:      number       // store format version — NOT the document schemaVersion (§4.2)
   gen:    number       // content-key generation this record is sealed under
   seq:    number       // monotonic per (principal, workspace), for trim ordering and diagnostics
-  kind:   'update' | 'state' | 'heads'
+  kind:   'update' | 'state' | 'heads' | 'outbound'
   nonce:  Uint8Array
   ct:     Uint8Array   // AEAD(K_gen-derived store subkey; plaintext = one Yjs update)
 }
@@ -624,14 +624,20 @@ Constraints on it:
   everything, older generations are droppable from this device's local custody — subject to nothing else needing
   them.
 
-**A third `kind` exists and it is not a content record** (§15 row 6). `heads` carries the anti-replay high-water
-mark §7.5 requires — one `(seq, link)` per credential — in **its own object store**, under the same store subkey,
+**Two of the four kinds are not content records** (§15 rows 6 and 4). `heads` carries the anti-replay high-water
+mark §7.5 requires — one `(seq, link)` per credential — and **`outbound` carries this device's own minted
+envelopes** (§7.4, `S0-4`). Each lives in **its own object store**, under the same store subkey,
 so the content load path never meets a record it cannot apply as a Yjs update. Sharing the subkey is safe rather
 than merely economical because `kind` is in the associated data: reinterpreting a heads record as a `state`
-record is exactly the attack that binding was written for, one object along. Three constraints on it:
+record is exactly the attack that binding was written for, one object along, and it covers the fourth kind the
+same way. Three constraints on `heads`:
 
-- **`seq` is not per object store.** One sequence per _(principal, workspace)_ spans both, so the nonce budget
-  above stays the single comparison it was argued as rather than a sum over two sequences.
+- **`seq` is not per object store.** One sequence per _(principal, workspace)_ spans the content and `heads`
+  stores, so the nonce budget above stays the single comparison it was argued as rather than a sum over two
+  sequences. **It is not §7.4's `seq`**, which is a credential's outbound and accepted *position* in the shared
+  lineage — a different number with a different owner, a different reservation and a different budget
+  (`S0-4`). They share a name and nothing else, and an implementation that reserves one where it needed the
+  other mints envelopes at positions no other device will accept.
 - **The content batch commits first and the heads record after it.** The same direction as the trim, for the
   same reason: a crash in this order re-delivers admitted positions, which is idempotent, while the reverse
   advances the mark past an operation that was never applied and leaves it below the baseline forever.
@@ -990,6 +996,20 @@ landed. The cost is that a client cannot skip — a refused envelope stalls that
 re-minted at the same position — and the benefit beyond §7.5 is that `seq` bounds the 12-byte random nonce's
 per-generation budget in one comparison, exactly as it does in §6.1.
 
+**Which means it inherited §6.1's defect along with its mechanism, and `S0-4` is where that is said.** This
+`seq` is per credential and does not reset at rotation either, so a literal `seq ≥ 2^32` test is conservative
+until the first rotation and then refuses every write for the rest of the credential's life. The count the
+comparison reads is positions **reserved** under the current generation — SP 800-38D bounds invocations, and a
+mint abandoned before send is one. *Exactly as it does in §6.1* is now true of the repair as well as of the
+idea.
+
+**And the position is reserved before the envelope exists**, because `seq` is inside both bound field lists
+above. Two tabs that each read the highest position they have sent choose the same next one. One durable
+`PositionCounter` per _(workspace, credential)_ grants it in a transaction, which is what serializes them —
+and a gap left by a crash between reservation and minting is not a hole to fill: §7.5's chain links *n* to
+*n-1*, so an unoccupied position stalls the chain exactly as a refused one does, and it is resolved the same
+way rather than by a third mechanism.
+
 **Batching closes at a change of actor, credential, epoch or generation; at a flush interval that must not be
 shorter than the acceptance-head cadence, since §7.5 holds the envelope regardless; or at a byte cap.** One
 envelope carries one actor by construction, so batching costs no attribution granularity at all. The interval
@@ -1011,6 +1031,18 @@ Forwarded mutations retain their original envelopes.
 attribution lives in the envelope, so an operation separated from its envelope can never be re-attributed. The
 migration cutover depends on it directly (§14.3).
 
+**Where they are retained is §6.1's store at `kind: 'outbound'`, and it is the same store the *pending* ones
+live in** (`S0-4`, `f-992bc91-outbound-envelope-spool-undefined`). Nothing selected one, and the exact bytes are
+load-bearing: a random nonce, a signature over it, a digest of the ciphertext. After a crash the journal and the
+content record still hold the Yjs delta and **cannot reproduce the envelope** — re-enveloping the same delta
+produces different bytes at that position, and choosing the next position leaves a gap. So the bytes are
+persisted **before the first network byte**, which is §13.7's transition rule at a second object.
+
+**One store rather than a queue and an archive.** The pending set and the retained suffix are the same records
+at different states — `minted`, `sent`, `accepted`, `closed` — so what distinguishes them is a field rather than
+a location. **Nothing unresolved is ever trimmed**, and a resolved record is trimmed only below the
+second-newest checkpoint, which is the floor above and not a new one.
+
 **The depth is the second-newest checkpoint it has seen admitted, not the last** (§15 row 6). An earlier draft
 said the last, and that is one checkpoint too shallow: §7.6 retains **two**, because §11.3 test 8 falls back to
 the next-newest, and §14.3 has each device re-envelop its own suffix from whichever checkpoint it applied. A
@@ -1029,6 +1061,14 @@ re-mint; silence is not one**, and a timeout is silence.
 a client to act on a refusal, so anything that can withhold an answer can manufacture one; §13.7 makes the same
 point where the consequence is larger — there the client discards a live content key. **Everything that is not an
 authenticated refusal is silence**, including an unsigned error body.
+
+**That refusal had no carrier until `S0-4`, and row 15's `Outcome` is not one**
+(`f-745e332-envelope-refusal-carrier-missing`). An outcome names `(kind, workspace, lineage, target)` — a
+transition, not an envelope — so it cannot say which credential, which position, or which exact digest was never
+accepted. The object is §7.5's `Refuse`, signed by the same `K_accept` that signs acceptance heads: acceptance
+and refusal are two answers from one decision domain, and a separate refusal key would be an authority that can
+induce a re-mint without being able to accept anything. A compromised `K_accept` can already forge acceptance
+heads, which is strictly worse, so this adds no reachable power.
 
 **Where verification does and does not run:**
 
@@ -1096,6 +1136,34 @@ in.** Evidence is required before a client applies anything, so whatever signs h
 splitting the keys keeps the one that admits and revokes credentials off it. Rotating `K_accept` is an ordinary
 epoch event.
 
+**The same key signs the other answer, and until `S0-4` there was no other answer** (§15 rows 4, 6). §7.4 makes
+a definite refusal the only license to re-mint a position and requires it be authenticated; nothing could
+express one. So `K_accept` signs a second object from the same decision domain:
+
+> `Refuse = LP("done/position-refuse/v1") || LP(dec v) || LP(workspace_id) || LP(credential_id) || LP(dec position) || LP(hex refused_digest) || LP(dec epoch) || LP(reason) || LP(hex parent_refusal)`
+>
+> `sig = Ed25519( K_accept ; Refuse )`, `refusal_id = SHA-256(Refuse)`, and `parent_refusal` is 32 zero bytes
+> for the first attempt at a position
+
+**A refusal is permanent, and that is the entire content of the word _definite_.** It closes
+`(workspace, credential, position, refused_digest)` forever: the service never accepts that digest afterwards,
+however delayed its arrival, and answers a late resubmission with the same refusal. Without permanence a client
+could re-mint on a refusal and have its original accepted behind it — two links at one position, which rule 3
+below reads as a compromised credential.
+
+**A successor names the refusal that licensed it, and that refusal licenses its own position and no other.** A
+successor naming no refusal the service issued is refused, and one naming a refusal for a different position is
+refused — that would be the skipping §7.4 forbids, arriving through the back door. **A successor may itself be
+refused**, licensing one more; nothing caps the chain, because capping it would stall a credential the second
+time an epoch moves under it.
+
+**Nothing caps the number of attempts either, and that is a correction rather than an omission** (`S0-4`).
+`RC-4A` proposed a *sole successor slot* per refusal. Every attempt at a position competes for the one digest
+that position will ever accept, so **at most one accepted digest per position already permits only one of them
+to win** — the slot forbids nothing the design did not forbid, and removing it from the executable model changed
+no result, which is how it was found. What the binding actually buys is that a re-mint needs a licence at all,
+and that a licence for *n* cannot be spent at *n+1*.
+
 **Four client rules, and the first is the one that is easy to get wrong.**
 
 1. **Verify a head against the link you replayed yourself, never against the link the head claims.** A client
@@ -1105,6 +1173,10 @@ epoch event.
 3. **First-seen-wins per (credential, position).** A second link at a position already held is equivocation, and
    a valid signature is not an answer to it.
 4. Above the newest head, **hold rather than discard**.
+5. **Everything that is not a verified `Head_n` or a verified `Refuse` over your own digest is silence, and
+   silence means resubmit the identical bytes** (§7.4, `S0-4`). Identical resubmission is safe whether the first
+   request was lost before arrival or its reply was lost after acceptance, because at most one digest is ever
+   accepted at a position — which is what makes *wait* a complete answer rather than a stall.
 
 **Non-equivocation here is per credential and within a view, and the bound is stated rather than left to be
 discovered.** A service maintaining two consistent forks and showing each device only its own equivocates

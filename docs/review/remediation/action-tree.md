@@ -426,6 +426,24 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 
 ### `S0-4` — select exact-byte outbound spool and refusal protocol
 
+> **Started and completed 2026-08-27.** Plan: [`S0-4/README.md`](./S0-4/README.md); schemas in
+> [`S0-4/A-schemas.md`](./S0-4/A-schemas.md) with nineteen falsifiers. `RC-4A` taken as recommended. Two
+> findings, **one position number**: row 4 made the exact bytes load-bearing without selecting anywhere to keep
+> them, and row 6 made a definite refusal the only licence to re-mint while pointing at a transition `Outcome`
+> that cannot name an envelope. **Stage D: 15 published negatives and 190 AAD fields, plus 17 model tests and
+> 12 mutations.**
+>
+> **A mutation deleted a rule and nothing failed.** Stage A had kept `RC-4A`'s *sole successor slot* per
+> refusal; removing it changed no result, because every attempt at a position competes for the one digest that
+> position will ever accept and row 5's *at most one accepted digest per position* already permits only one to
+> win. What replaced it does forbid something — **a refusal licenses its own position and no other** — and has
+> a falsifier that isolates.
+>
+> **Three drifts surfaced from making the edits.** Row 3's own record format still published two kinds when the
+> TRD has carried three since row 6 added `heads`; §7.4's nonce budget said *exactly as it does in §6.1* and so
+> **inherited the defect `P-3` had just repaired there**; and §6.1's `seq` and §7.4's `seq` are different
+> numbers with the same name, which nothing said.
+
 - **Prerequisite decisions:** recipient/epoch fields from `S0-2`; suite registry shape from `S0-1`; use recommended
   `RC-4A` unless new evidence establishes a need for deterministic carrier redesign.
 - **Exact affected artifacts:** TRD §§6.1/7.4–7.5/13.10; rows 1/4/5/6; suite/envelope/finalization/antireplay

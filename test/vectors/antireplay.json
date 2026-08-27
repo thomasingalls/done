@@ -29,6 +29,69 @@
       "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
     }
   },
+  "refusal": {
+    "why": "§7.4 makes a definite refusal the only license to re-mint a position and requires it be authenticated. Nothing could express one: row 15's transition Outcome names a transition, not an envelope (S0-4, f-745e332-envelope-refusal-carrier-missing). K_accept signs it, because acceptance and refusal are two answers from one decision domain -- a separate refusal key would be an authority that can induce a re-mint without being able to accept anything, and a compromised K_accept can already forge heads.",
+    "message": "Refuse = LP(\"done/position-refuse/v1\") || LP(dec v) || LP(workspace_id) || LP(credential_id) || LP(dec position) || LP(hex refused_digest) || LP(dec epoch) || LP(reason) || LP(hex parent_refusal), signed by K_accept. refusal_id = SHA-256(Refuse).",
+    "permanence": "A refusal closes (workspace, credential, position, refused_digest) forever. Without that a client could re-mint on a refusal and have its original accepted behind it -- two links at one position, which §7.5 reads as a compromised credential.",
+    "chain": "A successor names the refusal_id that licensed it, and that refusal licenses its own position and no other -- a successor at n+1 under a refusal for n is the skipping row 4 forbids. The first attempt at a position names 32 zero bytes. A successor may itself be refused, and nothing caps the chain. Nothing caps the attempts either: RC-4A proposed a sole successor slot per refusal, and every attempt at a position competes for the one digest that position will ever accept, so at most one accepted digest per position already permits only one to win. Removing the slot from the executable model changed no result (S0-4).",
+    "refusal": {
+      "workspace": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+      "credential": "cred_01HZXR0000000000000000PHON",
+      "v": 1,
+      "position": 13,
+      "digest": "85c083e704cfb5fa188927b6b5e0f7e680f0cf47e93f2f491bdeb67f04512d18",
+      "epoch": 9,
+      "reason": "stale-epoch",
+      "parent": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "signature": "d425cb28b225ecdd6c1d0bcbdc8a292df232a6198e90f2671ad42ab8a12bb7ed35631c715a52ad1e98c94b9f5902f294e8ba6b796ad26d2597a8630bbfe61b07",
+    "wrong_subject": [
+      {
+        "name": "refusal-for-another-position",
+        "refusal": {
+          "workspace": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+          "credential": "cred_01HZXR0000000000000000PHON",
+          "v": 1,
+          "position": 14,
+          "digest": "85c083e704cfb5fa188927b6b5e0f7e680f0cf47e93f2f491bdeb67f04512d18",
+          "epoch": 9,
+          "reason": "stale-epoch",
+          "parent": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "signature": "860218e830e5132326f9ca962b2b278b2042ca2fe0e416e455f08bf485ba4c68b9268e3211a3f92789a060683be314c2ac5b6af9d196384a683b323abc198206"
+      },
+      {
+        "name": "refusal-for-another-digest",
+        "refusal": {
+          "workspace": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+          "credential": "cred_01HZXR0000000000000000PHON",
+          "v": 1,
+          "position": 13,
+          "digest": "0606be10c69b03c7ae1803f168df4e9f4fbfc4d83c80ab824b04e934e6cfd9f9",
+          "epoch": 9,
+          "reason": "stale-epoch",
+          "parent": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "signature": "0732856695eba543eb2bfaca35166826c31a91716adb203d36b10f6ba010d22edf2380f28f9328d8eef279c93f70fe9b2c54bc27914ece741c6413059b894405"
+      },
+      {
+        "name": "refusal-for-another-credential",
+        "refusal": {
+          "workspace": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+          "credential": "cred_01HZXR0000000000000000LAPT",
+          "v": 1,
+          "position": 13,
+          "digest": "85c083e704cfb5fa188927b6b5e0f7e680f0cf47e93f2f491bdeb67f04512d18",
+          "epoch": 9,
+          "reason": "stale-epoch",
+          "parent": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "signature": "491f7953b91bd4770d534d82d84faece2474f6609db19c16a271adce36b654da300249491afea6971a85e6f40f2942a2c95404f208b4baf456e08ca81646ae0f"
+      }
+    ],
+    "uncertified_signature": "9608ba825c0ce1bd1f3c8b23184b1b716d0750ce34a565083c4a37f7702da0a297dc5900fd66b1f5d7951481869f60bf8d5a973b410ef2e3b31ca54e792f9f0f",
+    "uncertified_key": "RFC 8032 §7.1 TEST 3 -- a key no epoch certifies."
+  },
   "vectors": [
     {
       "name": "twelve-positions-and-a-baseline-at-nine",
@@ -237,6 +300,62 @@
     {
       "name": "wrong-store-subkey",
       "mutate": "Derive the store subkey for another workspace. The AAD half is `heads-aad-only-workspace`."
+    },
+    {
+      "name": "aad-only-refusal-label",
+      "mutate": "Renumber the message label to \"done/position-refuse/v2\"."
+    },
+    {
+      "name": "aad-only-refusal-version",
+      "mutate": "Claim v = 2."
+    },
+    {
+      "name": "aad-only-refusal-workspace",
+      "mutate": "A refusal minted for another workspace."
+    },
+    {
+      "name": "aad-only-refusal-credential",
+      "mutate": "Another credential's position."
+    },
+    {
+      "name": "aad-only-refusal-position",
+      "mutate": "Position 14 rather than 13."
+    },
+    {
+      "name": "aad-only-refusal-digest",
+      "mutate": "Another envelope digest. This is the field that makes the refusal permanent rather than a status, so it is the one an attacker would move."
+    },
+    {
+      "name": "aad-only-refusal-epoch",
+      "mutate": "Claim a later epoch."
+    },
+    {
+      "name": "aad-only-refusal-reason",
+      "mutate": "\"policy\" rather than \"stale-epoch\"."
+    },
+    {
+      "name": "aad-only-refusal-parent",
+      "mutate": "Name a parent refusal that was never issued. Binding it is what makes a re-mint require a licence at all, and what stops a licence for position n being spent at n+1."
+    },
+    {
+      "name": "refusal-for-another-position",
+      "mutate": "A validly signed refusal for position 14, presented to a client waiting at 13. It verifies, and it licenses nothing here."
+    },
+    {
+      "name": "refusal-for-another-digest",
+      "mutate": "A validly signed refusal for a different digest at this position — the shape a service would produce for an attempt this client never made."
+    },
+    {
+      "name": "refusal-for-another-credential",
+      "mutate": "A validly signed refusal for another credential's position 13."
+    },
+    {
+      "name": "unsigned-error-body",
+      "mutate": "An error body with no signature, which §7.4 calls silence in as many words. The client resubmits the identical bytes from its spool rather than re-minting — and that is safe whichever unknown it was, because at most one digest is ever accepted at a position."
+    },
+    {
+      "name": "refusal-under-an-uncertified-key",
+      "mutate": "The same refusal signed by a key no epoch certifies. Anything that can withhold an answer can manufacture one, which is why §7.4 requires the refusal be authenticated rather than merely definite."
     }
   ]
 }
