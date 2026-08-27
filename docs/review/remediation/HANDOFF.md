@@ -36,14 +36,13 @@ read it as "nothing to do", and do not edit those files to make it say otherwise
 
 ## State
 
-**Decided (6 of the 7 that are choices):** `P-1` recipient authority · `P-2` device-lock gating · `P-3` write
-admission · `P-4` lapse authority · `P-6` Local archive factor · `P-8` checkpoint and creation authority.
-Records in [`decisions/`](./decisions/), each with its falsifiers. **`P-7` is the eighth node and is not a choice** — it
+**Decided — all 7 of the nodes that are choices:** `P-1` recipient authority · `P-2` device-lock gating ·
+`P-3` write admission · `P-4` lapse authority · `P-5` closure authority · `P-6` Local archive factor · `P-8`
+checkpoint and creation authority. Records in [`decisions/`](./decisions/), each with its falsifiers. **`P-7` is the eighth node and is not a choice** — it
 is the standing rule that rows 18, 19 and 21 stay at their own gates and no remediation artifact selects them
 by implication. Nothing decides it; every action has to keep obeying it.
 
-**Outstanding decisions (1):** `P-5` policy and closure authority, which gates `S0-1` and through it `S0-4`.
-It is the last decision anywhere in the plan.
+**Outstanding decisions: none.** Every remaining item is an action, and no action is waiting on a choice.
 
 **Actions:** `S0-2`, `S0-5`, `S0-6` and `S0-7` are **complete** across all five stages. `S0-1`, `S0-3` and
 `S0-4` are not started, and each waits on a decision or on another action rather than on capacity.
@@ -61,10 +60,12 @@ reproduces from the crate at 6,465 B · `pnpm retention:check` now cross-checks 
    It is also where three already-applied repairs finish — the glue widths, the rotated-generation fixture and
    the nonce ceiling, the last of which still owes the build-failing boundary test that `P-3`'s
    `reserved[gen]` count now makes writable.
-2. **`P-5`** — the last decision, and then **`S0-1`**, and then **`S0-4`**, which needs `S0-1` plus `S0-2` and
-   `S0-2` is done. So `P-5` unblocks the whole remaining tail.
-3. **`S0-8`** — regeneration and the traceability matrix. Not startable until `S0-1`–`S0-7` are stable, which
-   now means until `S0-1`, `S0-3` and `S0-4` are: the other four are complete.
+2. **`S0-1`** — the closure authority and the current policy/status reconciliation. Unblocked: `P-5` is
+   decided. It is independent of `S0-3`, so the two can run in either order or together.
+3. **`S0-4`** — the exact-byte outbound spool and refusal protocol, once `S0-1` lands; `S0-2` is already done.
+4. **`S0-8`** — regeneration and the traceability matrix, then `S0-9`'s challenge and `S0-10`'s closure.
+   `P-5` gives the matrix a criterion — one home per fact, read rather than restated, checked in both
+   directions by a third party — so it is a readback rather than a survey.
 
 ## The exact next command
 

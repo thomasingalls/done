@@ -58,8 +58,10 @@ action closes.
 **The `P-` nodes are not peers, and the numbering does not say so.** The longest chain is
 `P-1 → P-2 → S0-2 → S0-5 → S0-6 → S0-7 → S0-8 → S0-9 → S0-10`, with `P-8` entering at `S0-5`. `P-3` and `P-5` sit
 off that chain entirely — `P-3` gates only `S0-3` and `P-5` only `S0-1`, and neither is consumed again before
-`S0-8`. `P-4` gated only `S0-7`, the last action before evidence regeneration, and **both are now done**.
-**`P-3` is decided too**, so `S0-3` is startable and `P-5` is the only decision left anywhere in the plan. A reader working the list in
+`S0-8`. `P-4` gated only `S0-7`, the last action before evidence regeneration. **Every `P-` node is now
+decided**, so the ordering advice above is history: what remains is `S0-1`, `S0-3` and `S0-4`, and then `S0-8`
+onward. `S0-1` and `S0-3` are startable now and are independent of each other; `S0-4` needs `S0-1` plus `S0-2`,
+which is done. A reader working the list in
 number order will therefore spend the critical path's slack on decisions nothing is waiting for. Taken one at a
 time, the order is **`P-1` first**, because it constrains `P-2` by its own prerequisites, reaches rows 5/9/11/15,
 and shares its quorum question with `P-8` — answering it first stops that question being decided twice.
@@ -211,6 +213,26 @@ pinned tip.
 - **No-action consequence:** row 15/16 closure remains false and expiry/reseed behavior remains ad hoc.
 
 ### `P-5` — choose policy semantics and closure-authority representation
+
+> **Decided 2026-08-27: `RC-8C`, targeted repairs under one stated rule** — no new registry and no coverage
+> manifest. Record and reasoning:
+> [`decisions/P-5-closure-authority.md`](./decisions/P-5-closure-authority.md). **Branch A cannot hold what
+> these documents are** — §15's row-15 cell is three sentences of argument — and **Branch B is the defect it
+> means to fix**, since a canonical second copy of every mapping is *a generator holding a string that describes
+> a state somewhere else* with a maintainer attached. The project already converged on a third pattern four
+> separate times: **one home per fact, every consumer reads the home, and where two artifacts must agree the
+> agreement is checked in both directions by something that is neither of them.** The third clause is the
+> independent coverage the plan asked for.
+>
+> **The four policy questions.** Suite separation takes the **stronger primitive rule**, because the narrow
+> key-reuse rule cannot be asserted from a table of primitives at all; `path` becomes an exhaustive
+> execution-path enum, `both` is refused as a violation asserting itself, and the general defect is that
+> `bucket()` is a filter — anything unrecognised silently enters no bucket. WebAuthn is **same-origin only**,
+> with `crossOrigin` and `topOrigin` checked separately because a client can contradict itself. The origin
+> scanner **inverts to allowlist-by-default** — measured first: the current build has exactly one remote origin
+> and every occurrence is an XML namespace identifier — and its printed claim narrows to what it proves, with
+> CSP named as the runtime control for constructed URLs. External observations carry a source, a date and an
+> expiry. Fourteen falsifiers are in that record.
 
 - **Prerequisites:** decide strong no-shared-primitive versus narrow key/domain separation; decide same-origin-only
   WebAuthn versus an approved `topOrigin` allowlist; decide runtime origin-graph enforcement versus a narrowly scoped
