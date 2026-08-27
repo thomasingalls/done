@@ -15,6 +15,8 @@ checkpoint sealed under it lacks a surviving authorized opener. That is what kee
 the accepted-head baseline gains a `SemanticAdmission` signed before any pre-checkpoint envelope may be
 trimmed. A producer may admit its own proposal where no second eligible client exists, and the record says
 so (TRD §7.6).
+**Amended by:** [`S0-6`](../review/remediation/S0-6/README.md) (2026-08-27) — a checkpoint travelling in a package is admitted through the same path as one restored
+locally: coverage re-derived by the importer, then the admission verified (TRD §7.6).
 
 ---
 

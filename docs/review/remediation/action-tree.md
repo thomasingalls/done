@@ -409,6 +409,11 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 
 ### `S0-6` — select package root, Local opener, full retired package, and handoff receipt
 
+> **Started 2026-08-27.** Staged as `S0-2` and `S0-5` were; plan and status:
+> [`S0-6/README.md`](./S0-6/README.md). **Stages A–C are done** — schemas in
+> [`S0-6/A-schemas.md`](./S0-6/A-schemas.md) with sixteen falsifiers, TRD §§9.3/13.8/14 and the §15 row 10
+> register cell, and rows 7/8/10/14/15. Stages D and E not started.
+
 - **Prerequisite decisions:** `P-6`; `S0-2` recovery/recipient state; `S0-5` checkpoint/creation state; recommended
   `RC-6A`.
 - **Exact affected artifacts:** PRD §§6.9/7.6–7.7/8; TRD §§9.3/13.8/14/15; rows 7/8/10/14/15; package/recovery/

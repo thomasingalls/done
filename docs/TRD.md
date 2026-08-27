@@ -1493,7 +1493,12 @@ generations, `R_pub`, sealed `R_priv` where an account recovery identity exists,
 Two constraints on it:
 
 - **A purely Local archive has no account recovery keypair**, so it needs its own explicit portable wrap rather
-  than one it does not have.
+  than one it does not have. **That wrap is now constructed rather than only required** (`S0-6`, `P-6`): the
+  workspace holds one archive keypair, its private half sealed under a generated 125-bit archive code — row
+  14's generator, alphabet and normalizer unchanged — beside the same root commitment §14.2 uses, with the
+  archive identity's own public key in the slot a lineage would otherwise fill. **One code per workspace, typed
+  back once before any archive is described as restorable**, retired to legacy when the workspace is promoted.
+  Generations are wrapped to that identity, so import is one path rather than two.
 - **It is not a recovery factor.** It answers *does ciphertext still exist* and never *can you decrypt it*. A user
   holding an archive and no code has an encrypted file and no way in.
 
@@ -2589,8 +2594,10 @@ account exists**.
 **The code is selected** (§15 row 14): **125 bits, Crockford Base32, five groups of five, and no stretching at all.**
 The alphabet omits `I`, `L`, `O` and `U`, which is what lets the input field map `O` to `0` and `I`/`L` to `1`
 without collision — a correct transcription of a badly rendered code still opens the workspace. The envelope seals
-`R_priv` under HKDF-SHA-256 of the code with a fresh per-seal salt, so exactly one message is ever encrypted under
-that key and nonce reuse is structurally unreachable. **The no-stretching decision rests on the invariant in
+`R_priv` **and §14.2's root commitment** under HKDF-SHA-256 of the code with a fresh per-seal salt, so exactly one
+message is ever encrypted under that key and nonce reuse is structurally unreachable. **The commitment rides here
+rather than in its own object** because it must be protected by exactly what protects `R_priv` and must be
+available at exactly the moment `R_priv` is: one AEAD, one seal, and nothing further for the user to keep. **The no-stretching decision rests on the invariant in
 §13.10**: the code is generated at full width and is never user-chosen, user-extended or truncated. Additional independent seals may be added — PRF-capable passkeys, preferably in more than one
 ecosystem — and each is a complete path only if it remains available after loss of the device it protects.
 
@@ -2884,6 +2891,31 @@ ordinary way.
    target, since retaining every envelope grows without bound.
 4. **The historical content-key generations**, because the attributed actor is inside the seal (§13.7).
 
+**`info` is not that binding, and `S0-6` corrects it.** HPKE base mode is anonymous: sealing needs only the
+recipient's public key, and `R_pub` travels in the package. Every field in `info` — workspace, lineage,
+`auth_root`, generation — is public or attacker-chosen. So binding the root there stops a wrap being
+*reinterpreted* under a different root and does nothing about one being *minted*: an attacker picks their own
+`auth_root'`, signs a fabricated history under it, wraps their own generation key to the **genuine** `R_pub`
+with `info` naming `auth_root'`, and the victim's own recovery code opens it. Everything verifies, under a root
+the attacker chose. **The published negative mutates `info` on existing ciphertext, which of course fails, and
+never attempts the fresh wrap.**
+
+**The correction is the one this section already asks for: put it behind the code.** The recovery envelope
+seals a root commitment beside `R_priv`:
+
+> `RootCommitment = SHA-256( LP("done/pkg-root/v1") || LP(workspace_id) || LP(lineage_id) || LP(hex auth_root) )`
+
+An importer opens the envelope with the user's code, recomputes the commitment from the manifest's own three
+fields, and **refuses a mismatch before attempting a single generation unwrap**. An attacker cannot produce the
+matching sealed commitment, because sealing it requires the code — which is exactly "the chain terminates in
+material the user holds", made structural instead of asserted. The `info` binding stays as it is; it defeats
+cross-lineage and cross-generation reuse, which is a different attack and a real one.
+
+**HPKE `mode_auth` was the other candidate and is declined for a product reason rather than a cryptographic
+one.** It binds a sender's static key, and the legitimate assembler here is not a fixed identity — any
+authorized device, or the service assembling a terminal package — so there is no single key an importer could
+pin. The factor is the one thing the user holds across all of them.
+
 **Item 1's binding is selected, and it is the only one of the five that could not be a part of the package**
 (§15 row 10). Every other item is service-signed, so a forger supplying their own root can re-sign all of it and
 produce something internally consistent that says whatever it likes about who wrote what. The chain has to
@@ -2977,9 +3009,31 @@ signed **live** head — stale, but sufficient to prove the workspace is histori
 re-mint identity (§13.5). It works as a detached last replica and cannot locally claim to have observed retirement.
 Importing the package later upgrades its knowledge.
 
+**That upgrade is of the device's knowledge and never of the package's manifest** (`S0-6`). A live manifest
+cannot become a retired one: `lineage_state` is inside the message the assembler signs, so changing it leaves a
+signature that no longer covers what it names. **A retired package is therefore a complete package, assembled
+and signed by the service's terminal authority at `lineage_state = 'retired'`** — not a live manifest with a
+field rewritten, and never one an importer synthesises for itself from a terminal record. A terminal record may
+be displayed beside a stale live package; it does not rewrite it. The cost is real and belongs here: a full
+re-assembly rather than a delta, and the service must be reachable to produce one.
+
 **Two requirements make deletion safe rather than merely available:** a verified-current device or a fresh export
 before the lineage and hosted copy are retired, and a catch-up window during which enrolled devices can converge, with
 devices that never appear named rather than quietly abandoned.
+
+**"Verified-current" is a durable receipt rather than an elapsed interval, and `S0-6` selects it.** Nothing
+previously proved a survivor had *received* terminal state, so deletion could proceed while every remaining
+copy was stale, incomplete, or absent — and a window that has merely elapsed is the definition of mistaking
+time for evidence, which §10.4 already refuses elsewhere. A receiving client signs a `TerminalHandoff` binding
+the terminal head, the exact retired-package digest, its own prior head, and either an empty catch-up or a
+verified transcript from that prior head with **exact known absences enumerated rather than summarised**.
+
+**Only a durable handoff authorizes a hosted deletion class**, one class at a time — primary objects, replicas,
+wraps, checkpoints, declared backups — so a partial deletion resumes rather than restarting or over-deleting.
+**A lost acknowledgement retains the bytes**, deliberately: keeping data nobody wanted is recoverable and
+deleting data somebody needed is not, so the ambiguous case keeps it and the audit record says the handoff
+never completed rather than claiming it did. An offline replica remains a stale detached copy and is **never
+counted as a survivor for this gate**.
 
 ### 14.5 Custody is not replica count
 
@@ -3073,7 +3127,7 @@ true**, and where the two disagree this one wins.
 | 15 | Interrupted-rotation and downgrade behaviour | **One intent-and-outcome protocol at three kinds** — rotate, replace-recovery, retire — because §11.2 test 11's list is one class: an interrupted middle that reads as a completed **lesser** transition. `kind` is bound in both messages, which makes PRD §6.10's *a downgrade must not silently become account deletion* a field rather than a screen. Three client cases: silence means resubmit the identical bytes, a matching `committed_id` means apply, and a differing one means **discard and rebuild** — so **the outcome must be signed**, since the third case throws away a live content key (§13.7, §14.4) | [row 15](./selections/row-15-transitions.md) |
 | 12 | Account-credential and slot-verifier construction | The account credential is a **WebAuthn discoverable credential** and the verifier **checks a signature rather than a secret** — so §13.10's Argon2id candidate answers *none* for the third time and on the strongest argument: there is no secret in the profile to grind. Each credential gets a **service-signed binding** in the slot index, because an asymmetric verifier trades a guessable secret for a **substitutable public key** and §6.5's index is a structured clone. The unlock assertion is bound to the slot and the credential, never to a clock; the signature counter is read and ignored (§13.9) | [row 12](./selections/row-12-account-credential.md) |
 | 16 | Hosted-content retention duration after a lapse | **Twelve months**, from the moment hosted synchronization stops rather than from the missed payment, so grace is not deducted from it. **A floor on the promise and a ceiling on the data**: a plan may offer longer and none may offer shorter, and at expiry the ciphertext and wraps are *deleted*. One number for two paths because both are gated by one artifact — the ciphertext — so a shorter recovery window would save nothing and produce the state §6.10 refuses. **The condition was one bit of PRD §11's pricing question**, not its answer (PRD §6.10, §16) | [row 16](./selections/row-16-hosted-retention.md) |
-| 10 | Terminal and portable cutover-package formats | **One format at §13.5's three lineage states**, not two: §14.2's cutover package, §14.4's terminal package and §9.3's fidelity archive, with a live package *upgraded* to retired by importing the terminal record. §14.2's trust root is bound in the **HPKE `info` of every generation wrap**, so a substituted root opens no generation and there is nothing to re-attribute — the one anchor that terminates in user-held material rather than in a service signature (§14.2, §14.4) | [row 10](./selections/row-10-portable-package.md) |
+| 10 | Terminal and portable cutover-package formats | **One format at §13.5's three lineage states**, not two: §14.2's cutover package, §14.4's terminal package and §9.3's fidelity archive. A **retired package is a complete package signed by the terminal authority**, not a live manifest upgraded in place — `lineage_state` is inside what the assembler signs, so there is no in-place upgrade to verify. §14.2's trust root is bound in the **HPKE `info` of every generation wrap** *and* committed in a digest **sealed beside `R_priv` under the recovery code**: `info` alone stops a wrap being reinterpreted and not one being minted, since base mode needs only the public `R_pub`. The commitment is the anchor that terminates in user-held material; the importer checks it before any unwrap. §9.3's archive uses the same shape under its own per-workspace code (§14.2, §14.4, `S0-6`) | [row 10](./selections/row-10-portable-package.md) |
 
 **Row 20 — test vectors — is closed for these eighteen and open for the rest.** Rows 16 and 17 are the two whose
 artifacts are not vector files in the same sense — a number and a profile rather than constructions — and each

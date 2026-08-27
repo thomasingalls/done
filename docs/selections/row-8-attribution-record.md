@@ -12,6 +12,8 @@
 creator for an existing id cannot be constructed. The record's fields are unchanged; what changed is that
 `card_id` is derived rather than arbitrary, because a Yjs map cannot enforce this row's write-once rule
 (TRD §§4.8, 10.4).
+**Amended by:** [`S0-6`](../review/remediation/S0-6/README.md) (2026-08-27) — an importer recomputes every card id from its creation certificate, so authorship survives
+the package the same way it survives trim.
 
 ---
 

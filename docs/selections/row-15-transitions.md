@@ -16,6 +16,8 @@ leaves one gap in; [row 7](./row-7-checkpoint.md) supplies the cadence rule an i
 fourth clause for retained-checkpoint openers (TRD §§13.7–13.8).
 **Amended by:** [`S0-5`](../review/remediation/S0-5/README.md) (2026-08-27) — the generation-application record's checkpoint step means **semantically admitted**, not merely
 produced. A signed manifest alone no longer discharges it (TRD §7.6, `S0-2` Stage A).
+**Amended by:** [`S0-6`](../review/remediation/S0-6/README.md) (2026-08-27) — `retire` commits terminal lineage, and hosted deletion now waits on a durable
+`TerminalHandoff` from a verified-current receiver rather than on an elapsed window (TRD §14.4).
 
 ---
 

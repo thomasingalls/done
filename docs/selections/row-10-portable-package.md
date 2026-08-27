@@ -11,6 +11,11 @@ supplies this row's reasoning a second time; [row 7](./row-7-checkpoint.md) is t
 whole thing terminates; [row 6](./row-6-antireplay-retention.md) sets one part's depth.
 **Amended by:** [`S0-5`](../review/remediation/S0-5/README.md) (2026-08-27) — a package carries checkpoints, so it carries their admissions. An importer re-derives
 coverage locally and reads `self_admitted` rather than discarding it; the package's own shape is unchanged.
+**Amended by:** [`S0-6`](../review/remediation/S0-6/README.md) (2026-08-27) — three corrections. The trust root gains a **commitment sealed beside `R_priv` under the
+recovery code**, because HPKE base mode is anonymous and `info` alone stops a wrap being reinterpreted rather
+than minted. A never-established archive gains its **own identity and code** (`P-6`). And a retired package is
+a **complete package signed by the terminal authority** rather than a live one upgraded in place — the
+assembler signs `lineage_state`, so there was never an in-place upgrade to verify (TRD §§9.3, 14.2, 14.4).
 
 ---
 
@@ -23,8 +28,13 @@ ONE format, at THREE lineage states — not two formats             §13.5
   live                §14.2's portable cutover package
   retired             §14.4's terminal package
 
-  A live package is UPGRADED to a retired one by importing the
-  terminal record. It is not replaced.
+  A retired package is a COMPLETE package signed by the terminal
+  authority. It is NOT a live manifest upgraded in place: lineage_state
+  is inside what the assembler signs, so changing it leaves a signature
+  that no longer covers the message. A terminal record may be DISPLAYED
+  beside a stale live package; it never rewrites one. The cost is a full
+  re-assembly and a reachable service, and it buys the only version of
+  this that can be verified.
 
 The parts
 
@@ -56,8 +66,31 @@ The trust-root anchor — the only thing here that is not an encoding
   info = LP("done/gen-wrap/v1") || LP(workspace_id) || LP(lineage_id)
          || LP(hex auth_root) || LP(dec gen)
 
-  A substituted root derives a different key schedule, so the wrap
-  opens nothing, so there is no content to re-attribute.
+  A substituted root derives a different key schedule, so an EXISTING
+  wrap opens nothing under it. That is not the whole attack.
+
+  HPKE base mode is ANONYMOUS: sealing needs only R_pub, which travels
+  in the package, and every field of info is public or attacker-chosen.
+  So an attacker mints a FRESH wrap -- their own generation key, to the
+  genuine R_pub, with info naming their own auth_root -- signs a
+  fabricated history under it, and the victim's own code opens it.
+  info stops reinterpretation. It cannot stop minting.
+
+  So the root is also COMMITTED behind the code:
+
+    RootCommitment = SHA-256( LP("done/pkg-root/v1") || LP(workspace_id)
+                              || LP(lineage_id) || LP(hex auth_root) )
+
+  sealed beside R_priv in row 14's envelope. The importer opens it with
+  the user's code, recomputes it from the manifest's own three fields,
+  and REFUSES A MISMATCH BEFORE ANY UNWRAP. Sealing it requires the
+  code, which the attacker does not have.
+
+  For a never-established archive the same shape holds under the
+  archive's own per-workspace code, with archive_pub in the slot a
+  lineage would fill -- so §9.3's "what authenticates a Local archive
+  is the code that opens it" becomes a construction rather than a
+  sentence.
 
                 LP(s) = uint16be(byteLength(utf8 s)) || utf8 s
 ```

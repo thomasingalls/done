@@ -16,6 +16,9 @@ atomic-replace half §5 had left open.
 **Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-27) — the `replace-recovery` payload binds **exact bytes** — the sealed envelope including its tag, and
 every per-generation wrap — rather than a list of generation numbers, and carries a `successor-generation` so that
 replacement offered as the answer to an exposed code rotates forward (TRD §13.8).
+**Amended by:** [`S0-6`](../review/remediation/S0-6/README.md) (2026-08-27) — the recovery envelope's plaintext is `R_priv` **and** §14.2's root commitment. One AEAD, one
+seal: the commitment must be protected by exactly what protects `R_priv` and available at exactly the moment it
+is (TRD §13.8).
 
 ---
 
