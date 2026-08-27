@@ -215,7 +215,8 @@ places: row 1's `algorithm-suite.json` published a superseded library, and its d
 had since been answered. The recorded tell is exact — _a generator holding a string that describes a state
 somewhere else_ — and the recorded fix is always to read the somewhere else.
 
-So the check is [`scripts/check-retention.mjs`](../../scripts/check-retention.mjs), and it does two things.
+So the check is [`scripts/check-retention.mjs`](../../scripts/check-retention.mjs), and it does three things —
+the third added by [`S0-7`](../review/remediation/S0-7/README.md), which is the one `RC-7` says was missing.
 
 **1. The duration is stated once and agreed everywhere.** It reads every hosted-retention duration stated in the
 PRD and the TRD and requires them to be the same number, and that number to be this row's. A future edit that
@@ -233,6 +234,26 @@ positionally — _two checkpoints_, _that checkpoint's head vector forward_, _a 
 further than a retention: the acceptance-evidence row still described a per-credential accepted-set **log**, and
 row 6's selection replaced the log with a mark. **A stale pointer is the small version of that finding; a data
 class the design has since deleted is the large one**, and it was sitting in the inventory a reviewer reads.
+
+**3. The lapse carrier and the transition grammar stay disjoint** (`S0-7`). `RC-7`'s diagnosis of this row's
+half of `f-4259822-lapse-transition-kind-missing` is precise about the mechanism: _two independent checkers each
+pass because neither cross-checks the policy state against a durable transition._ That was exactly true. Row
+15's grammar had a checker, this row had a checker, and the state they jointly claimed to cover existed in
+neither. The third check is the one that would have caught it:
+
+- **No transition kind may name a retention state, and no retention state may be spelled with a §13.5 lineage
+  word.** The kinds are read from `test/vectors/transition.json` — the generator's own output rather than a
+  string describing it — and the states from §14.7's table. A future `lapse` kind, or a state renamed `retired`,
+  fails the build with the decision it would be reversing.
+- **§13.7's count and the generator's must agree.** _One protocol at three kinds_ against a published list of
+  three. A grammar that grows without the document saying so is how a lapse kind arrives unreviewed.
+- **§14.7's tables and the executable model must agree.** `pnpm vectors:check` compares a generator to its
+  vector and never a document to either, which is the shape of row 4's stale carrier registry and of this
+  finding too. A state or a deletion class in `test/hostedRetention.test.ts` and not in §14.7 means one of them
+  describes a machine that does not exist.
+- **Expiry must keep exactly one deletion class, and it must be the recovery anchor.** PRD §6.10's _re-seed
+  without creating or confirming a new code_ is true only while that holds, and it is one table cell away from
+  not holding.
 
 **And it found that §16.6's own rule was already false.** The rule says each `unselected` occurrence points at
 the §15 row that closes it — and four cells name no row at all, because a metrics retention, a log retention, a

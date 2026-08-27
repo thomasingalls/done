@@ -1133,6 +1133,7 @@ const main = async () => {
         'licensed_recipients equals wrapped_by_this_rotation, and admitted_but_uncertified appears in roster and in neither',
     },
     construction: {
+      kinds: ['rotate', 'replace-recovery', 'retire'],
       one_protocol:
         'One intent-and-outcome protocol at three kinds -- rotate, replace-recovery, retire -- because §11.2 test 11s list is one class: a multi-step transition whose interrupted middle can be mistaken for a completed *lesser* transition.',
       intent:
@@ -1141,6 +1142,8 @@ const main = async () => {
         'Outcome = LP("done/transition-out/v1") || LP(dec v) || LP(kind) || LP(workspace_id) || LP(lineage_id) || LP(dec target) || LP(dec epoch) || LP(hex committed_id), signed by the lineage authorization key.',
       kind_binding:
         'PRD §6.10s "deliberate downgrade must not silently become account deletion" is a binding requirement rather than an interface one. rotate and retire are otherwise the same eight fields, and an unbound kind is a way to submit one and commit the other. Row 3s editable-kind finding at a third object.',
+      lapse_is_not_a_kind:
+        'What the binding above closes is the rotate/retire pair, and not lapse (S0-7). No field of a rotation expresses a payment lapse, a synchronization stop or a retention deadline, so binding kind cannot protect a state this grammar has no way to say. TRD §14.7 carries it, on a second axis, under a signer that is not the lineage authorization key. scripts/check-retention.mjs enforces that the two vocabularies stay disjoint.',
       no_from_gen:
         'There is no from_gen field. §13.5s epoch binds the current content-key generation, so the generation being rotated from is a function of parent_epoch. Row 10 left out a part count and row 12 an algorithm field on the same rule: a second binding of a derivable fact is a thing that can disagree with it.',
       idempotency:

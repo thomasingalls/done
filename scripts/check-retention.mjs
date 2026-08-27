@@ -26,6 +26,17 @@
  * originally written recognized only the first and was therefore false of four
  * cells in its own table.
  *
+ * **3. The lapse carrier and the transition grammar stay disjoint** (`S0-7`).
+ * `RC-7`'s diagnosis of `f-4259822-lapse-transition-kind-missing` is that two
+ * independent checkers each passed because *neither cross-checked the policy
+ * state against a durable transition*. Row 15's grammar and row 16's clock were
+ * jointly credited with covering a lapse and neither carried it. §14.7 carries
+ * it now, on a second axis, and the invariant that keeps the two apart is a
+ * vocabulary rule: **no transition kind may name a retention state, and no
+ * retention state may be spelled with a lineage word.** A future `lapse` kind,
+ * or a retention state renamed to `retired`, fails here rather than reaching a
+ * reviewer — which is the check that did not exist when the finding was made.
+ *
  * **The honest limit of the scan**, stated rather than discovered: it catches a
  * *different* number, in digits or in the spellings below. A duration phrased in
  * a form it does not recognize is not matched and not rejected. What catches a
@@ -37,6 +48,10 @@ import { readFileSync } from 'node:fs';
 
 const PRD = new URL('../docs/PRD.md', import.meta.url);
 const TRD = new URL('../docs/TRD.md', import.meta.url);
+/** The generator's own output, so the grammar is read rather than restated. */
+const TRANSITION = new URL('../test/vectors/transition.json', import.meta.url);
+/** The executable model, for the same reason: read it, do not restate it. */
+const MODEL = new URL('../test/hostedRetention.test.ts', import.meta.url);
 
 /**
  * The selection (docs/selections/row-16-hosted-retention.md).
@@ -65,6 +80,7 @@ const ANCHORS = [
   },
   { file: 'PRD', from: '## 11.', to: '## 12.', why: 'question 5, which the selection answers' },
   { file: 'TRD', from: '### 13.8', to: '### 13.9', why: 'the recovery path the number bounds' },
+  { file: 'TRD', from: '### 14.7', to: '## 15.', why: 'the machine that runs the clock' },
   { file: 'TRD', from: '### 15.1', to: '### 15.2', why: "the register's own statement of row 16" },
   { file: 'TRD', from: '## 16.', to: '## Sources', why: 'the inventory rows that carry it' },
 ];
@@ -190,6 +206,146 @@ for (const line of inventory.split('\n')) {
   }
 }
 
+// --- 3. the lapse carrier is not, and may not become, a transition kind -------
+
+const machine = slice('TRD', '### 14.7', '## 15.');
+if (machine === null) throw new Error('TRD §14.7 not found; the retention machine cannot be read.');
+
+const grammar = slice('TRD', '### 13.7', '### 13.8');
+if (grammar === null)
+  throw new Error('TRD §13.7 not found; the transition grammar cannot be read.');
+
+const published = JSON.parse(readFileSync(TRANSITION, 'utf8'));
+const kinds = published.construction?.kinds;
+if (!Array.isArray(kinds) || kinds.length === 0) {
+  throw new Error('transition.json publishes no construction.kinds; regenerate it.');
+}
+
+/**
+ * §14.7's state table. Its rows begin with a backticked identifier; the class
+ * table's begin with a number, which is what separates them.
+ */
+const states = [...machine.matchAll(/^\| `([a-z][a-z-]*)` \| /gmu)].map((m) => m[1]);
+const classes = [...machine.matchAll(/^\| (\d) \| `([a-z][a-z-]*)` \|(.*)$/gmu)].map((m) => ({
+  n: Number(m[1]),
+  name: m[2],
+  cells: m[3].split('|').map((c) => c.trim()),
+}));
+
+// A disjointness check over an empty set proves nothing, so a table that stops
+// parsing is a failure rather than a pass.
+if (states.length < 3 || classes.length < 3) {
+  failures.push(
+    `TRD §14.7: parsed ${states.length} states and ${classes.length} deletion classes. ` +
+      `The tables did not read — and a vocabulary check over an empty set passes without meaning anything.`,
+  );
+}
+
+/**
+ * **The model and the document must agree, and nothing else was checking that.**
+ * `pnpm vectors:check` compares a generator to its vector and never a document
+ * to either — which is the exact shape of `f-992bc91-network-carrier-registry-
+ * stale`, and the shape of this finding too. §14.7 is normative and
+ * `test/hostedRetention.test.ts` is what proves it holds; a state or a deletion
+ * class in one and not the other means one of them is describing a machine that
+ * does not exist.
+ */
+const model = readFileSync(MODEL, 'utf8');
+const union = (name) => {
+  const m = new RegExp(`type ${name} =([^;]+);`, 'u').exec(model);
+  return m === null ? null : [...m[1].matchAll(/'([a-z][a-z-]*)'/gu)].map((x) => x[1]);
+};
+const array = (name) => {
+  const m = new RegExp(`const ${name} = \\[([^\\]]+)\\]`, 'u').exec(model);
+  return m === null ? null : [...m[1].matchAll(/'([a-z][a-z-]*)'/gu)].map((x) => x[1]);
+};
+
+const agree = (what, fromDoc, fromModel) => {
+  if (fromModel === null) {
+    failures.push(
+      `${MODEL.pathname.split('/').pop()}: could not read the ${what}; the model cross-check is not running.`,
+    );
+    return;
+  }
+  const only = (a, b) => a.filter((x) => !b.includes(x));
+  const missing = only(fromDoc, fromModel);
+  const extra = only(fromModel, fromDoc);
+  if (missing.length > 0 || extra.length > 0) {
+    const sides = [];
+    if (missing.length > 0) sides.push(`document-only [${missing.join(', ')}]`);
+    if (extra.length > 0) sides.push(`model-only [${extra.join(', ')}]`);
+    failures.push(
+      `TRD §14.7 and the executable model disagree on the ${what}: ${sides.join(' ')}. ` +
+        `One of them describes a machine that does not exist.`,
+    );
+  }
+};
+
+agree('retention states', states, union('Retention'));
+agree(
+  'deletion classes',
+  classes.map((c) => c.name),
+  array('CLASSES'),
+);
+
+/** The rule from `S0-7` Stage A §0: the two axes may not share words. */
+const LINEAGE_WORDS = new Set(['live', 'retired']);
+for (const state of states) {
+  if (kinds.includes(state)) {
+    failures.push(
+      `TRD §14.7: retention state \`${state}\` is also a transition kind. The whole of ` +
+        `f-4259822-lapse-transition-kind-missing is these two axes being read as one.`,
+    );
+  }
+  if (LINEAGE_WORDS.has(state)) {
+    failures.push(
+      `TRD §14.7: retention state \`${state}\` is a §13.5 lineage word. A lapsed workspace is ` +
+        `\`live\` on that axis, and a shared vocabulary is how the confusion gets made.`,
+    );
+  }
+}
+
+for (const kind of kinds) {
+  if (/lapse|downgrade|suspend|expir/iu.test(kind)) {
+    failures.push(
+      `transition.json publishes kind \`${kind}\`. P-4 selected the opposite: lapse is a billing fact ` +
+        `carried by §14.7 and not a fourth kind. Reversing that decision means revisiting rows 15 and 16, ` +
+        `§13.7 and §14.7 together — not adding a kind.`,
+    );
+  }
+  if (!grammar.includes(`\`${kind}\``)) {
+    failures.push(`TRD §13.7 does not name the published transition kind \`${kind}\`.`);
+  }
+}
+
+const counted = /one protocol at (\w+) kinds/iu.exec(grammar);
+if (counted === null) {
+  failures.push(
+    'TRD §13.7 no longer says how many kinds the protocol has; the count cannot be checked.',
+  );
+} else if (WORDS[counted[1].toLowerCase()] !== kinds.length) {
+  failures.push(
+    `TRD §13.7 says "${counted[1]} kinds" and transition.json publishes ${kinds.length}. ` +
+      `A grammar that grows without the document saying so is how a lapse kind arrives unreviewed.`,
+  );
+}
+
+/**
+ * Class 6 is the entire difference between the two causes, and PRD §6.10's
+ * re-seed *without creating or confirming a new code* is only true while it is.
+ */
+const kept = classes.filter((c) => /keep/iu.test(c.cells[1] ?? ''));
+if (kept.length !== 1 || kept[0].name !== 'recovery-anchor') {
+  failures.push(
+    `TRD §14.7: expiry must keep exactly one deletion class and it must be \`recovery-anchor\` — ` +
+      `found [${kept.map((c) => c.name).join(', ') || 'none'}]. Deleting the anchor at expiry makes ` +
+      `PRD §6.10's re-seed without a new recovery code impossible.`,
+  );
+}
+if (classes.some((c) => /keep/iu.test(c.cells[2] ?? ''))) {
+  failures.push('TRD §14.7: retirement keeps a deletion class. Retirement reaches all six.');
+}
+
 // --- report -------------------------------------------------------------------
 
 if (failures.length > 0) {
@@ -201,5 +357,7 @@ if (failures.length > 0) {
 
 console.log(
   `retention: ${MONTHS} months stated consistently across ${ANCHORS.length} anchors; ` +
-    `every §16 unselected cell is bounded and open.`,
+    `every §16 unselected cell is bounded and open; ` +
+    `§14.7's ${states.length} states and ${classes.length} deletion classes match the executable model ` +
+    `and stay disjoint from §13.7's ${kinds.length} kinds and from §13.5's lineage words.`,
 );
