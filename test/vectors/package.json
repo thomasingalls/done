@@ -3,6 +3,20 @@
   "generated_by": "scripts/generate-package-vectors.mjs",
   "selection": "docs/selections/row-10-portable-package.md",
   "trd_row": 10,
+  "root_commitment": {
+    "why": "info binds the root and cannot stop it being minted. HPKE base mode is anonymous -- sealing needs only R_pub, which travels in the package -- so an attacker picks their own auth_root, signs a fabricated history under it, and wraps their own generation key to the GENUINE R_pub. Every signature verifies and the wrap opens. The published substituted-trust-root negative mutates info on existing ciphertext and never attempts this.",
+    "digest": "RootCommitment = SHA-256( LP(\"done/pkg-root/v1\") || LP(workspace_id) || LP(lineage_id) || LP(hex auth_root) )",
+    "sealed": "beside R_priv in row 14's envelope, under the same recovery code",
+    "checked": "recomputed from the manifest and compared BEFORE any generation unwrap",
+    "honest": "6b0fbdc3bd4de98b738532b6c831435c75b129edf19b61e80b52c74cf7cfeef2",
+    "under_attacker_root": "83ccbbc4489721a49c39d1cd46f8a0007263fb926e4c0dbac6fff905fef9fc3a",
+    "the_attackers_package": {
+      "note": "Internally consistent, and it opens. That is the point: the ciphertext is not the problem, and no amount of checking it helps. Only a value the attacker cannot seal separates this from a real package.",
+      "auth_root": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+      "wrap_opens_under_genuine_r_priv": true
+    },
+    "expected": "the commitment differs, and the refusal happens before HPKE is exercised at all"
+  },
   "construction": {
     "one_format": "§14.2's cutover package, §14.4's terminal package and §9.3's fidelity archive are one format at §13.5's three lineage states — never-established, live, retired. §14.4 describes the service *populating the portable package* rather than producing a second artifact, and a live package is upgraded to a retired one by importing the terminal record",
     "manifest": "Ed25519( assembler ; LP(\"done/pkg/v1\") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(lineage_state) || LP(hex auth_root) || LP(hex lineage_head_digest) || LP(dec epoch) || LP(hex parts_digest) || LP(assembled_by) )",
@@ -299,6 +313,18 @@
     {
       "name": "aad-only-renumbered-manifest-label",
       "mutate": "Verify the manifest under \"done/pkg/v2\"."
+    },
+    {
+      "name": "freshly-minted-package-under-an-attacker-root",
+      "why": "The attack `substituted-trust-root` cannot reach, and the reason this row needed reopening. HPKE base mode is anonymous: the attacker needs only R_pub, which travels in the package. So they pick their own auth_root, sign a fabricated history under it, and wrap their OWN generation key to the GENUINE R_pub with info naming their own root. Every signature verifies, under a root they minted, and the wrap opens -- nothing in the ciphertext is wrong. What refuses it is the root commitment sealed beside R_priv, which the attacker cannot produce without the code."
+    },
+    {
+      "name": "attacker-root-refused-before-any-unwrap",
+      "why": "Order, not just outcome. The commitment is checked against the manifest before a single generation is unwrapped, so a package whose root is wrong is refused without exercising HPKE at all. An implementation that unwrapped first and checked afterwards would still have opened attacker-chosen content before noticing."
+    },
+    {
+      "name": "root-commitment-for-another-lineage",
+      "why": "The commitment binds all three fields, so a genuine commitment from one lineage does not authenticate a package claiming another."
     }
   ]
 }

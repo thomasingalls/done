@@ -368,6 +368,27 @@ const manifestMessage = ({
 
 // --- keys -------------------------------------------------------------------------------
 
+/**
+ * The trust root, committed behind the code rather than only bound in `info`.
+ *
+ * **HPKE base mode is anonymous, and that is the whole finding.** Sealing needs
+ * only the recipient's public key, and `R_pub` travels in the package; every
+ * field of `info` is public or attacker-chosen. So binding the root there stops
+ * a wrap being *reinterpreted* under a different root and does nothing about
+ * one being *minted*. The published `substituted-trust-root` negative mutates
+ * `info` on an existing ciphertext, which of course fails -- and never tries the
+ * fresh wrap, which is why `--check` has always passed.
+ *
+ * This digest is sealed beside `R_priv` in row 14's envelope. The importer
+ * opens it with the user's code, recomputes it from the manifest's own three
+ * fields, and refuses a mismatch **before attempting a single unwrap**. Sealing
+ * it requires the code, which the attacker does not have.
+ */
+const ROOT_LABEL = 'done/pkg-root/v1';
+
+const rootCommitment = async ({ workspace, lineage, authRoot }) =>
+  hex(await sha256(concat(...[ROOT_LABEL, workspace, lineage, authRoot].map(lp))));
+
 const KEYS = {
   k_auth: {
     role: "The vanished service's authorization signing key — §14.2's trust root, and the thing this row exists to bind. It also signs a terminal package's own manifest.",
@@ -476,6 +497,21 @@ const ARCHIVE_PARTS = [
   { name: 'recovery', count: 1, digest: '88'.repeat(32) },
 ];
 
+const ROOT_NEGATIVES = [
+  {
+    name: 'freshly-minted-package-under-an-attacker-root',
+    why: 'The attack `substituted-trust-root` cannot reach, and the reason this row needed reopening. HPKE base mode is anonymous: the attacker needs only R_pub, which travels in the package. So they pick their own auth_root, sign a fabricated history under it, and wrap their OWN generation key to the GENUINE R_pub with info naming their own root. Every signature verifies, under a root they minted, and the wrap opens -- nothing in the ciphertext is wrong. What refuses it is the root commitment sealed beside R_priv, which the attacker cannot produce without the code.',
+  },
+  {
+    name: 'attacker-root-refused-before-any-unwrap',
+    why: 'Order, not just outcome. The commitment is checked against the manifest before a single generation is unwrapped, so a package whose root is wrong is refused without exercising HPKE at all. An implementation that unwrapped first and checked afterwards would still have opened attacker-chosen content before noticing.',
+  },
+  {
+    name: 'root-commitment-for-another-lineage',
+    why: 'The commitment binds all three fields, so a genuine commitment from one lineage does not authenticate a package claiming another.',
+  },
+];
+
 const NEGATIVES = [
   {
     name: 'substituted-trust-root',
@@ -558,6 +594,88 @@ const verify = async (doc) => {
   // service-signed and therefore re-signable; this step is not.
   const opened = await hpkeOpen(wrap.enc, rPriv, wrapInfo(base), wrap.ct);
   if (hex(opened) !== hex(K_G3)) throw new Error('the generation wrap does not round-trip.');
+
+  /**
+   * The attack the existing negative cannot reach, built end to end.
+   *
+   * Nothing here is malformed. The attacker's package is internally consistent,
+   * its wrap opens under the genuine `R_priv`, and its history verifies under
+   * the root it names. That is the point: **the ciphertext is not the problem
+   * and no amount of checking it will help.** Only a value the attacker cannot
+   * seal -- because sealing needs the user's code -- separates this from a real
+   * package.
+   */
+  const honestCommitment = await rootCommitment(base);
+  const attackerBase = { ...base, authRoot: KEYS.forged_root.public_key };
+  const attackerKey = unhex('0f'.repeat(32));
+  const attackerWrap = await hpkeSeal(
+    unhex('5d'.repeat(32)),
+    unhex(KEYS.recovery.r_pub), // the GENUINE recovery key. It is public.
+    wrapInfo(attackerBase),
+    attackerKey,
+  );
+
+  // It opens. That is not in dispute and is asserted rather than assumed, or
+  // the negative below would be proving the wrong thing.
+  const attackerOpened = await hpkeOpen(
+    attackerWrap.enc,
+    rPriv,
+    wrapInfo(attackerBase),
+    attackerWrap.ct,
+  );
+  if (hex(attackerOpened) !== hex(attackerKey)) {
+    throw new Error('the attacker package does not round-trip; the negative would prove nothing.');
+  }
+
+  /** The importer: commitment first, unwrap second. */
+  const importPackage = async (manifestFields, sealedCommitment, unwrap) => {
+    const claimed = await rootCommitment(manifestFields);
+    if (claimed !== sealedCommitment) {
+      throw new Error('root commitment does not match the manifest; refused before unwrap');
+    }
+    return unwrap();
+  };
+
+  await refuses('freshly-minted-package-under-an-attacker-root', () =>
+    importPackage(attackerBase, honestCommitment, () =>
+      hpkeOpen(attackerWrap.enc, rPriv, wrapInfo(attackerBase), attackerWrap.ct),
+    ),
+  );
+
+  /**
+   * Order, and it has to be observed rather than inferred.
+   *
+   * A negative whose unwrap *throws* proves nothing about ordering: it refuses
+   * either way, and an implementation that unwrapped first would satisfy it
+   * while opening attacker-chosen content. So the unwrap here **succeeds**, and
+   * what is asserted is that it never ran.
+   */
+  let unwrapReached = false;
+  await refuses('attacker-root-refused-before-any-unwrap', () =>
+    importPackage(attackerBase, honestCommitment, () => {
+      unwrapReached = true;
+      return true;
+    }),
+  );
+  if (unwrapReached) {
+    throw new Error(
+      'The unwrap ran before the commitment was checked. A package under an attacker-chosen root ' +
+        'would have been opened before anything noticed.',
+    );
+  }
+
+  await refuses('root-commitment-for-another-lineage', async () =>
+    importPackage(
+      base,
+      await rootCommitment({ ...base, lineage: 'lin_01J000000000000000000OTHR' }),
+      () => true,
+    ),
+  );
+
+  // The honest package still imports, or the check is simply refusing everything.
+  if (!(await importPackage(base, honestCommitment, () => true))) {
+    throw new Error('the honest package no longer imports.');
+  }
 
   for (const [name, patch] of [
     ['substituted-trust-root', { authRoot: KEYS.forged_root.public_key }],
@@ -665,7 +783,7 @@ const verify = async (doc) => {
     throw new Error('dropping a whole part left the parts digest unchanged.');
   }
 
-  const published = new Set(NEGATIVES.map((n) => n.name));
+  const published = new Set([...NEGATIVES, ...ROOT_NEGATIVES].map((n) => n.name));
   const asserted = assertedNames();
   const unrun = [...published].filter((n) => !asserted.includes(n));
   const unpublished = asserted.filter((n) => !published.has(n));
@@ -795,6 +913,21 @@ const main = async () => {
     generated_by: 'scripts/generate-package-vectors.mjs',
     selection: 'docs/selections/row-10-portable-package.md',
     trd_row: 10,
+    root_commitment: {
+      why: 'info binds the root and cannot stop it being minted. HPKE base mode is anonymous -- sealing needs only R_pub, which travels in the package -- so an attacker picks their own auth_root, signs a fabricated history under it, and wraps their own generation key to the GENUINE R_pub. Every signature verifies and the wrap opens. The published substituted-trust-root negative mutates info on existing ciphertext and never attempts this.',
+      digest:
+        'RootCommitment = SHA-256( LP("done/pkg-root/v1") || LP(workspace_id) || LP(lineage_id) || LP(hex auth_root) )',
+      sealed: "beside R_priv in row 14's envelope, under the same recovery code",
+      checked: 'recomputed from the manifest and compared BEFORE any generation unwrap',
+      honest: await rootCommitment(base),
+      under_attacker_root: await rootCommitment({ ...base, authRoot: KEYS.forged_root.public_key }),
+      the_attackers_package: {
+        note: 'Internally consistent, and it opens. That is the point: the ciphertext is not the problem, and no amount of checking it helps. Only a value the attacker cannot seal separates this from a real package.',
+        auth_root: KEYS.forged_root.public_key,
+        wrap_opens_under_genuine_r_priv: true,
+      },
+      expected: 'the commitment differs, and the refusal happens before HPKE is exercised at all',
+    },
     construction: {
       one_format:
         "§14.2's cutover package, §14.4's terminal package and §9.3's fidelity archive are one format at §13.5's three lineage states — never-established, live, retired. §14.4 describes the service *populating the portable package* rather than producing a second artifact, and a live package is upgraded to a retired one by importing the terminal record",
@@ -842,7 +975,7 @@ const main = async () => {
         intact: liveParts,
       },
     },
-    must_fail: NEGATIVES,
+    must_fail: [...NEGATIVES, ...ROOT_NEGATIVES],
   };
 
   await verify(doc);
@@ -864,7 +997,7 @@ const main = async () => {
 
   writeFileSync(OUT, json);
   console.log(
-    `Wrote ${vectors.length} package vectors and ${NEGATIVES.length} negatives to test/vectors/package.json`,
+    `Wrote ${vectors.length} package vectors and ${NEGATIVES.length + ROOT_NEGATIVES.length} negatives to test/vectors/package.json`,
   );
 };
 
