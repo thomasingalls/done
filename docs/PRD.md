@@ -780,6 +780,19 @@ that epoch explicitly authorizes the credential to represent.**
 **What the user sees.** "Written by" means what it appears to mean. Cards record their author, and that
 record is evidence rather than a label.
 
+**And it stays evidence after the history that produced it is gone**, which is the part that needed work
+(`S0-5`). The record lives in the shared document, and a document entry can be overwritten by anyone who may
+write to the document — so a compromised device could replace an author entry with one naming itself, sign it
+perfectly well, and once older history had been trimmed away nothing remaining would contradict it. **A card's
+identifier is therefore derived from its creator**: a different device produces a different card rather than a
+replacement claim on an existing one. Nothing has to be kept in order to check it, which is exactly why it
+survives the trimming that defeated the previous arrangement.
+
+**What that does not change.** A card edited after creation still reads as *written by X, and edited since* —
+the honest answer, and unchanged. Attribution remains card-level. Nor does this make a first author
+undeletable: a card and its authorship are destroyed together or not at all, and whether a card may be
+destroyed remains a separate question (§4.5's paused compaction).
+
 The indirection is deliberate and covers three cases that "actor equals signer" would collapse:
 
 - A **human** write is signed by a device credential and attributed to the human actor bound to that device
@@ -811,6 +824,12 @@ storage. Three consequences:
   batch its own mutations when actor, credential and epoch are the same; forwarded mutations retain their
   original envelopes. First sync therefore needs either the signed envelope history or an authenticated
   checkpoint whose construction preserves attribution.
+- **A device restoring from a checkpoint checks that checkpoint's coverage itself**, rather than believing the
+  claim attached to it. A signature proves who assembled a checkpoint; it does not prove the checkpoint
+  contains everything it says it does, and a wrong-but-signed answer is worse than an unsigned one because it
+  is believed. The one thing a restoring device cannot recompute — that nothing accepted was left out — is
+  attested by another device that checked it while the evidence still existed. **Where no second device
+  exists, the product says so rather than implying a second opinion it never had.**
 - **A device retains its own outbound envelopes**, at least back to the last checkpoint it has seen
   admitted. Attribution lives in the envelope, so an operation separated from its envelope can never be
   re-attributed.

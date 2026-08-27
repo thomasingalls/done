@@ -42,10 +42,11 @@ read it as "nothing to do", and do not edit those files to make it say otherwise
 **Outstanding decisions (3):** `P-3` write admission · `P-4` lapse authority · `P-5` policy and closure
 authority. **None blocks anything until `S0-8`.** They are genuinely parallel work.
 
-**Actions:** `S0-2` is **complete** across all five stages — see [`S0-2/README.md`](./S0-2/README.md).
-`S0-1`, `S0-3`–`S0-7` are not started. `S0-5` is unblocked (it waited on `S0-2` alone).
+**Actions:** `S0-2` and `S0-5` are **complete** across all five stages — see [`S0-2/README.md`](./S0-2/README.md)
+and [`S0-5/README.md`](./S0-5/README.md). `S0-1`, `S0-3`, `S0-4`, `S0-6` and `S0-7` are not started. **`S0-6`
+is now unblocked**, having waited on `S0-2` and `S0-5`.
 
-**Findings repaired: 8 of 37.** Three with mutation-tested falsifiers, three by document repair, two partial —
+**Findings repaired: 10 of 37.** Three with mutation-tested falsifiers, three by document repair, two partial —
 graded individually in [`action-tree.md`](./action-tree.md).
 
 **Evidence:** 313 tests · 16/16 generators current · 169 AAD fields each isolated · 15 WASM checks · the blob
@@ -53,9 +54,10 @@ reproduces from the crate at 6,465 B.
 
 ## What is ready to pick up, in order
 
-1. **`S0-5`** — semantic checkpoint and creation authority. Unblocked; `P-8` decided it and `S0-2` cleared its
-   only dependency. The largest remaining action on the critical path.
-2. **`S0-6`** then **`S0-7`** — both wait on `S0-5`.
+1. **`S0-6`** — package root, Local opener, full retired package and terminal handoff. Unblocked: `P-6` decided
+   its UX, and `S0-2` and `S0-5` were its other two dependencies. It closes four findings, three of them high,
+   and is the largest remaining action.
+2. **`S0-7`** — lifecycle and destructive deletion, which waits on `S0-6` and `P-4`.
 3. **`P-3`, `P-5`, `P-4`** — parallel, any order, any time, by anyone. `P-3` now has evidence attached: the
    journal probe measured a hard `localStorage` quota wall at ~92k entries, which its oversize and
    storage-failure branch has to handle. See [`probes/journal-append-probe.md`](./probes/journal-append-probe.md).

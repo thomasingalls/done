@@ -23,7 +23,7 @@ first.
 | **B** | Normative construction | TRD §§4.8/7.6/10.4 | **done** — §7.6 splits local re-derivation from the trusted baseline; §4.8 derives `card_id` from its creator; §10.4 keeps card and certificate joint |
 | **C** | Selection rows | rows 5/7/8/10/15 | **done** — rows 7 and 8 gain constructions; 5, 10 and 15 take header notes |
 | **D** | Executable evidence | checkpoint and attribution generators, one isolated falsifier per property | **done** — 36 checkpoint negatives, 13 attribution; 181 AAD fields suite-wide, each isolated |
-| **E** | Product surface | PRD provenance and continuity | not started |
+| **E** | Product surface | PRD provenance and continuity | **done** — §5.3 says authorship stays evidence after the history that produced it is gone, and that a restorer checks coverage itself |
 
 **§4.5 and §13.7 needed no change.** §4.5 separates freeze from compaction and is untouched by any of this;
 §13.7's opener predicate was already corrected during `S0-2`, and the checkpoint step it gates now means
