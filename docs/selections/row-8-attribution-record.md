@@ -8,6 +8,10 @@
 **Companions:** [row 7](./row-7-checkpoint.md) is what this row had to be selected before;
 [row 5](./row-5-finalization.md) supplies the acceptance this record deliberately does not bind;
 [row 4](./row-4-envelope-format.md) is where the actor sits today.
+**Amended by:** [`S0-5`](../review/remediation/S0-5/README.md) (2026-08-27) — the card identifier now **commits to its creating credential**, so a claim naming another
+creator for an existing id cannot be constructed. The record's fields are unchanged; what changed is that
+`card_id` is derived rather than arbitrary, because a Yjs map cannot enforce this row's write-once rule
+(TRD §§4.8, 10.4).
 
 ---
 
@@ -28,8 +32,24 @@ The record
   content_commitment
       = SHA-256( LP("done/attrib-body/v1") || LP(card_id) || LP(body at creation) )
 
+The identity           what makes "write once" true rather than asserted
+
+  C = LP("done/creation/v1") || LP(dec v) || LP(workspace_id)
+      || LP(lineage_id) || LP(creator_credential) || LP(hex creator_nonce)
+
+  card_id  = first 16 bytes of SHA-256(C), Crockford Base32
+  cert_sig = Ed25519( the creating credential ; C )
+
+  A DIFFERENT credential produces a DIFFERENT id, so there is no replacement
+  claim to make. The map below cannot enforce write-once -- it is a CRDT map
+  and that is an application convention -- so the identifier carries the
+  property instead, structurally, with nothing retained, ordered or asked.
+  16 bytes because ids were already 128-bit; creator_nonce distinguishes two
+  cards made by one credential.
+
 Residence   A write-once map in the content root, keyed by card id. Not a
-            separate store, not an operator archive.
+            separate store, not an operator archive. The map is where the
+            claim LIVES; it is no longer what makes the claim exclusive.
 
 Two questions, kept apart
 

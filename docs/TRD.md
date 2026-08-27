@@ -453,6 +453,19 @@ credential and actor it actually controls rather than trusting the roster.
 run before any sync exists. It may not be used to decide whether a workspace has ever been admitted anywhere;
 that test reads authenticated lineage state (§13.5).
 
+**A card's identifier commits to its creator, and that is what makes first authorship immutable** (`S0-5`,
+§15 row 8). The attribution record lives in a Yjs map, and **a CRDT map cannot enforce "write once"** — that is
+an application convention, not an authority. A compromised credential could replace another source's entry
+with one naming itself, sign the complete tuple with its own valid key, and ship it in its own accepted
+envelope; it verifies, and after trim a fresh restorer has no prior value and no accepted creation position to
+refuse it with. So the id is derived instead: `card_id` is the first 16 bytes of
+`SHA-256( LP("done/creation/v1") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(creator_credential) || LP(hex creator_nonce) )`.
+
+**A different credential produces a different id, so there is no replacement claim to make.** The property is
+structural rather than adjudicated: nothing has to be retained, ordered or asked, which is why it survives the
+trim that defeated the convention. The width is unchanged — ids were already 128-bit — and a card edited after
+creation still *verifies and is not exact*, which remains the honest reading.
+
 **Attribution granularity is card-level, deliberately.** `Card.author` is one field and answers "who created
 this." The master list is not attributed per character: Yjs stores no author per item, so it would require a
 parallel mark structure maintained alongside every text edit — real cost on the keystroke path, for a question
@@ -1166,6 +1179,34 @@ identical state vectors and disagree about what has been deleted, so "the checkp
 does not mean "everything the checkpoint contains is here". The manifest therefore publishes a full snapshot's
 `{sv, ds}` pair, or a receipt for the specific checkpoint a device applied.
 
+**Publishing that pair is not deriving it, and the difference is the whole of `S0-5`.** A producer's signature
+says *this producer made this manifest*. It does not say the `{sv, ds}` inside describe the snapshot the
+manifest names, nor that the accepted-head vector stops where the snapshot stops — and an authentic manifest
+whose coverage is wrong is worse than an unsigned one, because it is believed. **Two different checks answer
+those two questions, and only one of them is a matter of trust.**
+
+**Coverage is re-derived locally, by everyone, always.** The checkpoint carries the snapshot, so any restorer
+can decrypt it, materialise it, derive `{sv, ds}` itself and compare. That needs no witness, no signature and
+no second party, and it is **mandatory even when the admission verifies** — an encoding or selection bug
+produces the mismatch as readily as a malicious producer. The derivation names its version, because `sv` and
+`ds` are a library's opaque encoding and an unversioned change turns every stored attestation into a silent
+mismatch that reads as corruption.
+
+**The accepted-head baseline is the part that cannot be re-derived, and therefore the part that is trusted.**
+Establishing that the head vector did not advance past the snapshot requires the accepted events, which is
+exactly what trim removes. An eligible client that checked it signs a `SemanticAdmission` before any
+pre-checkpoint envelope may be trimmed, and **a fresh restorer's confidence in that baseline is exactly its
+confidence in the admitting credential**. The design says so rather than implying the head proves it.
+
+**A producer may admit its own proposal, and the record says when it did.** §13.5 selects single-owner client
+authority, so the only eligible client may be the producer itself. Requiring a second admitter would leave a
+one-device workspace unable to checkpoint at all — and therefore retaining envelopes without bound, which is
+the condition checkpoints exist to end. **A second eligible client admits where one exists; otherwise the
+admission is marked self-admitted**, and a restorer that can see the weaker provenance can act on it.
+
+**Incomparable proposals are ordered by an authenticated decision parent and never by wall clock**, which is
+§15 row 7's own rule carried to the object that now settles it.
+
 **Checkpoint construction must preserve attribution.** A checkpoint that flattens several credentials' work into
 one signature by whichever client produced it is the forbidden shape — it is exactly what §7.4's no-re-signing
 rule prohibits, arriving through a performance optimization. First sync needs either the signed envelope history
@@ -1522,6 +1563,12 @@ ever written still carries a live claim. The selected attribution record is a st
 the content root, so §6.1's trim re-seals it under the current generation and **historical generations are no
 longer needed to verify historical authorship** (§13.7). What is still true is the storage half of this section:
 nothing retires a card, so object count still grows with history.
+
+**When a card is eventually retired, its creation certificate goes with it, and neither goes alone** (`S0-5`).
+Since §4.8 derives `card_id` from that certificate, destroying the certificate by itself would leave a card
+whose identity no longer recomputes — a worse state than either keeping both or destroying both, and one that
+would look like corruption rather than a deletion. **This constrains the shape of a future compaction and not
+its schedule:** whether a card may be destroyed at all remains this section's paused question.
 
 ### 10.5 Storage eviction
 

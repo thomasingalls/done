@@ -14,6 +14,8 @@ leaves one gap in; [row 7](./row-7-checkpoint.md) supplies the cadence rule an i
 **Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-27) — three changes. The `replace-recovery` payload parts become byte-exact and mirror `rotate`'s shape;
 `applying` becomes a durable eight-step record rather than a named state; and the generation-drop gate gains a
 fourth clause for retained-checkpoint openers (TRD §§13.7–13.8).
+**Amended by:** [`S0-5`](../review/remediation/S0-5/README.md) (2026-08-27) — the generation-application record's checkpoint step means **semantically admitted**, not merely
+produced. A signed manifest alone no longer discharges it (TRD §7.6, `S0-2` Stage A).
 
 ---
 

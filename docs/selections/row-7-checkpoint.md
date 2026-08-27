@@ -11,6 +11,10 @@ hardest constraint; [row 5](./row-5-finalization.md) supplies the head vector th
 **Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-27) — the retention interlock gains a fourth clause. Its subject was corrected from the checkpoint to
 the generation, and TRD §13.7 now states the predicate that enforces it: no generation is dropped while a retained
 checkpoint sealed under it lacks a surviving authorized opener. That is what keeps §11.3 test 8's fallback openable.
+**Amended by:** [`S0-5`](../review/remediation/S0-5/README.md) (2026-08-27) — the manifest's `{sv, ds}` is **re-derived locally by every restorer** rather than believed, and
+the accepted-head baseline gains a `SemanticAdmission` signed before any pre-checkpoint envelope may be
+trimmed. A producer may admit its own proposal where no second eligible client exists, and the record says
+so (TRD §7.6).
 
 ---
 
@@ -37,7 +41,38 @@ The manifest            signed by the producing credential
       || LP(hex head_vector_digest) || LP(producing_credential)
 
   checkpoint_digest = SHA-256(ct)   — the durable store checks it with no key
-  sv, ds            — opaque bytes; BOTH bound, and separately
+  sv, ds            — opaque bytes; BOTH bound, and separately. PUBLISHED here,
+                      DERIVED by whoever reads: a restorer materialises the
+                      snapshot, recomputes them, and refuses a mismatch. That
+                      check needs no signature and is not optional.
+
+The admission           what the producer's signature does NOT say
+
+  A = LP("done/cp-admit/v1") || LP(dec v) || LP(workspace_id)
+      || LP(hex checkpoint_digest) || LP(hex manifest_digest)
+      || LP(hex derived_sv) || LP(hex derived_ds)
+      || LP(hex head_baseline_digest) || LP(derivation_version)
+      || LP(admitting_credential) || LP(dec self_admitted)
+      || LP(hex decision_parent)
+
+  sig = Ed25519( the admitting client's signing credential ; A )
+
+  Signed BEFORE any pre-checkpoint envelope may be trimmed.
+
+  derived_sv/ds     what the admitter got by materialising the snapshot, not
+                    copied from the manifest. Restorer, admitter and manifest
+                    must all three agree.
+  head_baseline     the one trusted field. Proving the head vector does not
+                    reach past the snapshot needs the accepted events, which
+                    trim removes -- so confidence in it IS confidence in the
+                    admitting credential, and nothing here pretends otherwise.
+  derivation_version  sv and ds are a library's encoding. Unversioned, a change
+                      to it turns every stored admission into a silent mismatch.
+  self_admitted     single-owner authority (row 11, §13.5) means the only
+                    eligible client may be the producer. A second one admits
+                    where it exists; otherwise this says so. Requiring two would
+                    leave a one-device workspace unable to checkpoint at all.
+  decision_parent   incomparable proposals serialise here. NEVER by wall clock.
   head_vector       = for each credential ASCENDING BY ID:
                         LP(credential_id) || LP(dec seq) || LP(hex link)
                       digest = SHA-256( LP("done/headvec/v1") || head_vector )

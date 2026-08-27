@@ -9,6 +9,8 @@
 supplies this row's reasoning a second time; [row 7](./row-7-checkpoint.md) is the largest part;
 [row 8](./row-8-attribution-record.md) **deleted** a part; [row 14](./row-14-recovery-code.md) is where the
 whole thing terminates; [row 6](./row-6-antireplay-retention.md) sets one part's depth.
+**Amended by:** [`S0-5`](../review/remediation/S0-5/README.md) (2026-08-27) — a package carries checkpoints, so it carries their admissions. An importer re-derives
+coverage locally and reads `self_admitted` rather than discarding it; the package's own shape is unchanged.
 
 ---
 

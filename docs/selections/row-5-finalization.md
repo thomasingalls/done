@@ -11,6 +11,9 @@
 **Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-27) — the epoch payload this row rides gains a client-approved certified recipient set (TRD §13.5).
 **Accepted positions are unchanged and remain the service's to assert** — the approvals ride inside the epoch as
 bytes it cannot forge, so this row's accepted-head vector, its links and its cutoff are untouched.
+**Amended by:** [`S0-5`](../review/remediation/S0-5/README.md) (2026-08-27) — the accepted-head vector this row selects is what a checkpoint's `SemanticAdmission` names as
+its baseline (TRD §7.6). The chain, its links and its cutoff are unchanged; what is new is a second party
+attesting that a snapshot actually covers the vector a manifest claims.
 
 ---
 
