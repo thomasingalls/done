@@ -58,7 +58,8 @@ action closes.
 **The `P-` nodes are not peers, and the numbering does not say so.** The longest chain is
 `P-1 → P-2 → S0-2 → S0-5 → S0-6 → S0-7 → S0-8 → S0-9 → S0-10`, with `P-8` entering at `S0-5`. `P-3` and `P-5` sit
 off that chain entirely — `P-3` gates only `S0-3` and `P-5` only `S0-1`, and neither is consumed again before
-`S0-8` — while `P-4` gates only `S0-7`, the last action before evidence regeneration. A reader working the list in
+`S0-8`. `P-4` gated only `S0-7`, the last action before evidence regeneration, and **both are now done**, so
+what remains off the chain is `P-3` and `P-5` and what remains on it is `S0-8` onward. A reader working the list in
 number order will therefore spend the critical path's slack on decisions nothing is waiting for. Taken one at a
 time, the order is **`P-1` first**, because it constrains `P-2` by its own prerequisites, reaches rows 5/9/11/15,
 and shares its quorum question with `P-8` — answering it first stops that question being decided twice.
@@ -444,6 +445,25 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
   finding survive.
 
 ### `S0-7` — select lapse/expiry and terminal destructive-deletion state machines
+
+> **Started and completed 2026-08-27.** Staged as `S0-2`, `S0-5` and `S0-6` were; plan and status:
+> [`S0-7/README.md`](./S0-7/README.md). Schemas in [`S0-7/A-schemas.md`](./S0-7/A-schemas.md) with eighteen
+> falsifiers; **TRD §14.7 is new** and §§13.5/13.7/14.4/16 are joined to it; rows 15 and 16 amended — row 15's
+> product-downgrade cell stops claiming a closure it never had, and row 16's clock gains the machine it was
+> selected without. **Stage D:** `test/hostedRetention.test.ts`, 23 tests with all eighteen guards
+> mutation-tested, plus the cross-check `RC-7` names as missing — `scripts/check-retention.mjs` now reads the
+> transition kinds from the generator's own output and requires them to stay disjoint from §14.7's states and
+> from §13.5's lineage words, with the executable model and the document cross-checked against each other.
+> **`S0-7` is complete** across all five stages.
+>
+> **Two composition results are worth carrying forward.** The deadline is a **floor** on expiry deletion and a
+> **ceiling on both causes** — which resolves a contradiction `S0-6` and row 16 only have once composed: a lost
+> acknowledgement retained bytes forever under one rule and twelve months under the other. And **retirement wins
+> the race with a lapse in both orders by one rule** rather than an arbitration table: `cause` is set once,
+> retirement may overwrite an entitlement cause, and nothing overwrites retirement.
+>
+> **Scope, per `P-4`:** the entitlement record's exact wire and signer are gated on `D-31` and are not built.
+> Everything that does not depend on who initiates is. PRD §11 question 1 now records what that leaves.
 
 - **Prerequisite decisions:** `P-4`; terminal handoff from `S0-6`; generation/reference rules from `S0-2`.
 - **Exact affected artifacts:** PRD §§6.9–6.10; TRD §§13.5/13.8/14.4–14.5/16; rows 10/15/16; transition/retention

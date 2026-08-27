@@ -3184,6 +3184,14 @@ unrecoverable. §16.6 calls an unbounded retention a defect rather than an omiss
 event in *at least twelve months*. **A lost acknowledgement therefore keeps the bytes until the ceiling and no
 longer**, and the audit record still says the handoff never completed rather than claiming it did.
 
+**For a retirement the ceiling is a backstop and not a target**, and the difference should not have to be
+inferred. A retirement whose survivor appears deletes in the ordinary course, within whatever the catch-up
+window turns out to be; the ceiling binds only the case where no survivor ever appears, which is the case that
+would otherwise retain forever. **Whether a user-initiated deletion deserves a shorter backstop than a lapse is
+a live product question and not a settled one** (§15 row 16). Selecting one would mean a second duration, which
+row 16 §3 argues against for reasons that were about lapse; the argument has not been made for this case, and
+this section does not make it by implication.
+
 **Resume is free before destructive progress and needs a re-seed after it.** From `grace` or `stopped` a resume
 returns the machine to `hosted` and nothing is rebuilt, because nothing is missing. From `clearing` or `cleared`
 it requires a committed re-seed session — signed by the **device**, since what it asserts is what that device

@@ -9,7 +9,7 @@ state it is in, and what is ready to pick up.
 
 | | |
 | --- | --- |
-| Branch | `claude/stage0-remediation`, 28 commits off `9edd930`, all signed |
+| Branch | `claude/stage0-remediation`, 40 commits off `9edd930`, all signed |
 | Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, and the decisions |
 | Not on it | nothing — this branch is the whole picture, deliberately |
 | Superseded | `claude/remediation-findings-review-997ab5` holds the review workspace at its original SHAs. Redundant once this branch is accepted |
@@ -36,33 +36,36 @@ read it as "nothing to do", and do not edit those files to make it say otherwise
 
 ## State
 
-**Decided (5 of 8):** `P-1` recipient authority · `P-2` device-lock gating · `P-4` lapse authority · `P-6`
-Local archive factor · `P-8` checkpoint and creation authority. Records in [`decisions/`](./decisions/), each
-with its falsifiers.
+**Decided (5 of the 7 that are choices):** `P-1` recipient authority · `P-2` device-lock gating · `P-4` lapse
+authority · `P-6` Local archive factor · `P-8` checkpoint and creation authority. Records in
+[`decisions/`](./decisions/), each with its falsifiers. **`P-7` is the eighth node and is not a choice** — it
+is the standing rule that rows 18, 19 and 21 stay at their own gates and no remediation artifact selects them
+by implication. Nothing decides it; every action has to keep obeying it.
 
 **Outstanding decisions (2):** `P-3` write admission · `P-5` policy and closure authority. `P-3` gates `S0-3`
-and `P-5` gates `S0-1`; both feed `S0-8`. They are genuinely parallel work.
+and `P-5` gates `S0-1`; both feed `S0-8`. They are genuinely parallel work, and **they are now the only two
+things standing between here and `S0-8`.**
 
-**Actions:** `S0-2`, `S0-5` and `S0-6` are **complete** across all five stages. `S0-1`, `S0-3`, `S0-4` and
-`S0-7` are not started. **`S0-7` is now unblocked on its action dependencies** — it had `S0-2` and `S0-6` —
-but still needs `P-4`, which is undecided.
+**Actions:** `S0-2`, `S0-5`, `S0-6` and `S0-7` are **complete** across all five stages. `S0-1`, `S0-3` and
+`S0-4` are not started, and each waits on a decision or on another action rather than on capacity.
 
-**Findings repaired: 14 of 37**, including five of the six high-severity ones. Three with mutation-tested falsifiers, three by document repair, two partial —
-graded individually in [`action-tree.md`](./action-tree.md).
+**Findings repaired: 15 of 37**, including five of the six high-severity ones. Four with mutation-tested
+falsifiers, three by document repair, two partial — graded individually in
+[`action-tree.md`](./action-tree.md).
 
-**Evidence:** 313 tests · 16/16 generators current · 169 AAD fields each isolated · 15 WASM checks · the blob
-reproduces from the crate at 6,465 B.
+**Evidence:** 336 tests · 16/16 generators current · 181 AAD fields each isolated · 15 WASM checks · the blob
+reproduces from the crate at 6,465 B · `pnpm retention:check` now cross-checks three things instead of two.
 
 ## What is ready to pick up, in order
 
-1. **`S0-7`** — lifecycle and destructive deletion. Fully unblocked: `P-4` is decided and `S0-6` supplies the
-   `TerminalHandoff` it gates on. Note the scope decision in `P-4`: the common invariants are built now and the
-   entitlement wire waits on `D-31`, which the project defers on purpose.
-3. **`S0-1`, `S0-3`, `S0-4`** — each needs its own decision first (`P-5`, `P-3`, and `S0-1`/`S0-2` respectively).
-3. **`P-3`, `P-5`, `P-4`** — parallel, any order, any time, by anyone. `P-3` now has evidence attached: the
-   journal probe measured a hard `localStorage` quota wall at ~92k entries, which its oversize and
-   storage-failure branch has to handle. See [`probes/journal-append-probe.md`](./probes/journal-append-probe.md).
-4. **`S0-8`** — regeneration and the traceability matrix. Not startable until `S0-1`–`S0-7` are stable.
+1. **`P-3` and `P-5`** — parallel, any order, any time, by anyone, and now on the critical path rather than
+   beside it. **`P-3` has evidence attached**: the journal probe measured a hard `localStorage` quota wall at
+   ~92k entries, which its oversize and storage-failure branch has to handle. See
+   [`probes/journal-append-probe.md`](./probes/journal-append-probe.md).
+2. **`S0-3`** the moment `P-3` lands, and **`S0-1`** the moment `P-5` does. **`S0-4`** then waits on `S0-1`
+   plus `S0-2`, which is already done — so `S0-1` unblocks two actions rather than one.
+3. **`S0-8`** — regeneration and the traceability matrix. Not startable until `S0-1`–`S0-7` are stable, which
+   now means until `S0-1`, `S0-3` and `S0-4` are: the other four are complete.
 
 ## The exact next command
 

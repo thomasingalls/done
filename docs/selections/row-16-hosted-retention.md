@@ -291,6 +291,12 @@ policy and a sentence in the interface; nothing in §6, §7 or §13 moves.
   right things_ is as much of the assertion as deleting the rest. It belongs with §11.4's generated deletion and
   export tests. **`S0-7` turned that from a note into a class the ledger refuses to touch** — class 6 — so what
   Stage 4 owes is the worker, not the rule.
+- **Whether a user-initiated deletion deserves a shorter backstop is open** (`S0-7`). §14.7 makes this row's
+  deadline a ceiling on retirement too, because the alternative — a retirement whose survivor never appears —
+  is an unbounded retention. Twelve months is the number that was already there, and using it was the
+  conservative move rather than an argued one. A shorter backstop for deletion the user asked for is
+  defensible and would mean a **second duration**, which §3 argues against on grounds that were about lapse
+  and resumption. Those grounds do not obviously carry, and nobody should read §14.7 as having decided it.
 - **The composition with retirement's gate was owed and nobody was holding it** (`S0-7`). `S0-6` selected _a
   lost acknowledgement retains the bytes_, and this row selected _at expiry the copy is deleted_. In different
   sections those are both right; composed, a retirement whose survivor never appears retains bytes forever under

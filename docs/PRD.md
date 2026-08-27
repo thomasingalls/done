@@ -1556,6 +1556,14 @@ ambiguous case keeps it and the record says the handoff never completed rather t
 device that never appears is named and never counted**, which is the promise §6.9 already makes about the
 confirmation screen, now true of the deletion underneath it.
 
+**They do not stay forever, and the confirmation has to say which.** *Deleted* cannot quietly mean *kept
+because nobody confirmed* — that is the product holding data the user asked it to destroy, and holding it for
+a reason the user never hears. So deletion also stops hosted synchronization, which starts the same
+retention clock a lapse does (§6.10), and the hosted copy goes **at that deadline whatever happened to the
+handoff** (TRD §14.7). The confirmation says both halves: the bytes go as soon as a device confirms it has
+them, and by the deadline in any case. **A user who wants them gone sooner than that has one lever and it is
+the honest one** — open a device, let it converge, and confirm.
+
 ### 6.10 Lapse, grace and hosted read-only
 
 **Invariant.** *Conditional: this applies only if hosted sync is ever priced as a subscription (§11).* **A
@@ -1597,7 +1605,9 @@ which the service holds the user's bytes and cannot give them back.
   per-generation wraps are deleted. The dormant account retains the recovery public key and the code-sealed
   recovery private key, so a surviving device can later re-seed the hosted workspace, wrap its current
   generation to the same recovery public key, and resume **without creating or confirming a new recovery
-  code**.
+  code**. **That is a rule the deletion machinery refuses to break rather than a convention it observes**:
+  the recovery material is a deletion class of its own, and expiry is not allowed to reach it (TRD §14.7).
+  Deleting it would make this promise false in the one situation it exists for.
 - **Expiry does not change the Account label.** The lineage remains live but dormant, hosted content is
   absent, and the devices' stores remain ciphertext exactly as before. This is the case that proves hosted
   content and authorization lineage are different axes (§2.3).
@@ -1612,16 +1622,33 @@ which the service holds the user's bytes and cannot give them back.
   its replica is short everything since it last synced, and after expiry there is nowhere left to get the
   remainder. This is why the grace period is a real mechanism rather than a courtesy, and why retention
   should outlast it.
-- **Deliberate downgrade is the same mechanism**, and it must not silently become account deletion.
-  Stopping payment and deleting an account are different acts with different consequences, and the interface
-  has to keep them apart. **That is a binding requirement and not only an interface one** (TRD §13.7): a
-  downgrade and a deletion differ in exactly one artifact — the terminal lineage record — and the two
-  requests are otherwise the same fields, so the kind of transition is authenticated in the request and in
-  its settlement. An interrupted deletion leaves a retired lineage whose hosted content is still there; the
-  reverse order would leave a lapse that is not one.
+- **Deliberate downgrade must not silently become account deletion.** Stopping payment and deleting an
+  account are different acts with different consequences, and the interface has to keep them apart. **That is
+  a binding requirement and not only an interface one**, and it is now carried by a mechanism rather than
+  asserted about one (TRD §14.7). A lapse and a deletion differ in exactly one artifact — the terminal
+  lineage record — and **a lapse is not a request at all**: it is a signed service record on a separate axis,
+  which is what *a failed payment is a billing event, not an identity event* means once it is built rather
+  than stated. An interrupted deletion leaves a retired lineage whose hosted content is still there; the
+  reverse order would leave hosted content missing with nothing signed to account for it, which is
+  indistinguishable from an expiry nobody was told about.
+- **What resuming costs depends on one thing: whether anything was deleted yet.** Before the deadline, and
+  after it right up until the first byte goes, resuming restores everything and asks for nothing. Once
+  deletion has started, resuming rebuilds the hosted copy from a device that still has one — the workspace is
+  not gone, but the hosted copy has to be re-seeded rather than switched back on, and a device has to be
+  present to do it. **Both cases keep the account and the lineage**; only the second involves work.
+- **A billing failure cannot delete anything early, and cannot end the lineage.** The service that records
+  entitlement can stop hosted synchronization and can do nothing else: the deadline is measured by the
+  retention machine from the moment sync actually stopped rather than from any date the billing side supplies,
+  and the recovery material it would take to lock someone out is the one thing expiry is forbidden to touch.
+  **So the worst a billing mistake reaches is read-only** — loudly, with every device still writable and every
+  deadline stated — rather than anything permanent.
 
 **One thing must be said out loud when sync stops**, because it is the part a user will not infer: **from
-that moment the devices stop converging, and each one's edits are its own.** The honest copy for what happens
+that moment the devices stop converging, and each one's edits are its own.** **What is shown is a signed
+record rather than a sentence the interface composed** (TRD §14.7): the date sync stopped and the date the
+copy goes are fields the service committed to, so what the user is told and what the service will act on
+cannot drift apart, and a device that has already seen a later version of that record will not accept an
+earlier one. The honest copy for what happens
 on resumption is *these will come back together, and there will be a lot to come back together* — not a
 warning that something is at stake. **The twelve-month deadline belongs in that same moment**, because a
 duration measured from an event nobody observes is not something anyone can plan around, and *plannable* is
@@ -2971,6 +2998,11 @@ number — so the list is allowed to carry its own answers rather than shrinking
    bytes and recovery downloads; checkpoint frequency and size; and the fraction of users who never create an
    account at all. Note that the signup this would be pricing has a recovery-code ceremony in it, and the
    conversion cost of that gate is not the conversion cost of a name field.
+   **What is left to build if the answer is ever *paid* is smaller than it was.** The lapse machine itself —
+   the states, the one clock, the deletion ledger, the resume and re-seed rules, and how it races with
+   deletion — is selected and depends on no price (TRD §14.7). What still waits here is the entitlement
+   record's exact wire and its signer: the part that says *this account's plan lapsed*. Everything the rest of
+   the product has to promise about a lapse is decided without it.
 
 **Open, with a real product answer owed:**
 
