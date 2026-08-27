@@ -664,13 +664,30 @@ and the writer rotates or refuses rather than proceeding. This is one comparison
 for other reasons, and it is the whole enforcement behind the conditional argument the random nonce rests on — a
 counter that is observed but never compared enforces nothing.
 
-**What row 3 has not selected is the count that comparison reads, and the gap is not cosmetic.** `seq` is monotonic
+**The count that comparison reads is now selected, and it is not `seq`** (`P-3`, `S0-3`). `seq` is monotonic
 across the store and does not reset, while the budget is per generation; the two agree only for the first
-generation. A literal `next seq ≥ 2^32` test would therefore be conservative until the first rotation and then
-refuse every write for the rest of the store's life. The comparison needs a per-generation baseline — a
-generation-start watermark, or an invocation count that also counts encryptions abandoned before commit — and
-selecting it is the same open decision as the multi-tab sequence allocator (§15 row 3). Until that is selected, an
-implementation cannot derive this branch from the register alone.
+generation, so a literal `next seq ≥ 2^32` test would be conservative until the first rotation and then refuse
+every write for the rest of the store's life. **It reads `reserved[gen]`** — the sequences reserved under the
+current generation — and the reason is stronger than the arithmetic: **SP 800-38D bounds invocations**, and an
+encryption abandoned before commit is one. A count recovered from committed records cannot see it; reserving
+before encrypting counts it by construction, because the gap a crash leaves *is* the record of an invocation
+that happened.
+
+**And `seq` is reserved rather than read, which is the same decision from the other side** (§15 row 3). It is
+inside the AAD, so it is fixed before encryption and cannot come from an auto-increment key — and two tabs each
+reading the highest committed value choose the same next one. One durable `SeqCounter` per _(principal,
+workspace)_ grants a batch's whole range in one transaction, which is what serializes them, and adds `k` to
+`reserved[gen]` in the same transaction. **Per batch and exactly sized**: the adapter already writes a batch in
+one transaction and already knows how many sequences it needs, so neither a transaction per record nor a
+per-tab lease is the alternative it looked like. A batch that finds a newer generation active **re-reserves**
+under it, and the abandoned range stays counted against the old one.
+
+**What the allocator gives the trimmer is uniqueness, not a watermark**, and the difference is worth stating
+because the obvious reading is the other one. A trim deletes what its state record covered; *what it covered*
+is expressible only because one `seq` is issued once. Two tabs each choosing `max + 1` produce two records at
+one number, and then no rule stated over numbers — a covered set, a boundary, anything — can separate the one
+the snapshot saw from the one it did not. **The race `f-3bea0e6` names is upstream of the trim's rule, in the
+numbering**, which is why the repair is the allocator and not a cleverer trim.
 
 **The journal, and why it is the sharp edge.** Every update is first written synchronously to localStorage as one
 immutable, per-page, per-store journal entry. A reload replays those idempotent Yjs deltas. At the end of a short
@@ -682,6 +699,37 @@ remain observable and leave recoverable entries intact.
 The journal is a short-lived write-ahead log, not a second document representation. It closes the browser
 lifecycle gap where navigation can terminate the page between a Yjs transaction and IndexedDB's asynchronous
 commit.
+
+**Every update means every *locally originated* update, and the narrowing is a repair rather than a
+concession** (`S0-3`). The journal exists so a page kill cannot lose **accepted local work**. A remote update is
+not local work, and the ordering above already protects it by a stronger mechanism: the content batch commits
+before the heads record, so a crash beforehand leaves the accepted mark below that position and **sync
+re-delivers it**. Journalling remote updates would add synchronous main-thread cost on the receive path to
+duplicate a guarantee the ordering already makes — and it removes the one case that cannot be bounded, since a
+peer's large paste arrives as one update whose size this device does not control.
+
+**What bounds the rest is an operation limit, not a bigger buffer** (`P-3`,
+`f-9b49b74-journal-seal-64k-gap`). The seal refuses above 65,536 bytes and throws **after** the Yjs transaction
+has produced the update, so the document has the change and nothing durable does. The guard was never the
+binding constraint: **§12's budget runs out at about 20 kB**, so an update reaching 64 KiB has already breached
+a budget §12 calls a correctness property. So **no operation may produce an update above `MAX_UPDATE`** — paste,
+import, migration and bulk maintenance apply in bounded slices, each its own transaction, each journalled, each
+durable before the next — and an admission check in front of the seal is the backstop for whatever slicing did
+not catch. **Nothing is refused to the user**: the limit is on updates rather than operations, so a very large
+paste appears progressively, and a kill part-way through leaves a resumable prefix rather than nothing.
+
+**And when the journal cannot take a write at all, that is one state rather than three.** Oversize, an
+exhausted quota and unavailable storage differ only in cause: the store is marked **not durable**, the batch is
+forced, and **the edit is not acknowledged until IndexedDB commits**. PRD §7.10 already governs this — *an app
+whose central claim is local-first must not be quiet about a context where the data is not durable* — and what
+is withheld is the acknowledgement rather than a new warning, because §7.10's own rule is that a warning nobody
+can clear is noise.
+
+**Back-pressure is measured in stored characters, never in entries.** The append probe measured this origin's
+wall at about 5.3 M UTF-16 characters — roughly 60,000 entries at the common keystroke size and about **241** at
+`MAX_UPDATE`. A watermark counted in entries is wrong by two orders of magnitude at the size that matters.
+Entries live only until the next batch commit, so nearing the wall means the batch is not committing, and the
+writer forces a flush well below quota rather than discovering it at `setItem`.
 
 **It now holds content, so it is encrypted — and WebCrypto cannot do it.** `crypto.subtle.encrypt` is
 promise-based and cannot complete inside a handler that must not return until the write has happened.
@@ -1790,7 +1838,13 @@ to any static scan. **That residual's control is CSP** — `default-src 'self'`,
 
 Everything in §13 composes reviewed constructions except one: the **synchronous AEAD** for the crash journal
 (§6.1). It is the only place the design adds a primitive rather than selecting one, it sits on the path whose whole
-purpose is surviving a page kill, and its nonce discipline has to survive the same kill. **Review 3a covers it
+purpose is surviving a page kill, and its nonce discipline has to survive the same kill.
+
+**Its refusal boundary is on that path too, and it is admission's job rather than the module's** (`S0-3`). The
+seal refuses above 65,536 bytes by throwing, after the Yjs transaction that produced the update — so a module
+that behaves exactly as specified can still leave the document holding a change nothing durable records.
+§6.1 bounds what an operation may produce so that boundary is never reached; a build that reaches it is a defect
+in admission, and §11.1 asserts that rather than trusting it. **Review 3a covers it
 specifically, and is answered before the first deployment cutover rather than before network sync** (§13.11) —
 because this construction lands with the local store, which is far earlier. The latency benchmark on a low-end
 device is a build-failing budget rather than an aspiration (§12).
@@ -2150,9 +2204,28 @@ phone. **It is closed by a WASM seal** (§15 row 2), measured on the same handse
 the last with 4.2× of margin. The paired JS baseline in that session reproduced the breach to 0.8%, so the two
 columns are one comparison rather than two measurements. See `docs/performance.md`.
 
-**The payload qualifier is still not settled, and closing the breach did not settle it.** Large pastes and unusually
-large documents remain outside what this specification treats. What has changed is that the question is no longer
-forced by a failing number.
+**The payload qualifier is settled now, and it is settled by this budget rather than beside it** (`P-3`,
+`S0-3`). Closing the breach did not answer *how large may an update be* — and the answer turns out to be a
+consequence of the number above rather than a separate choice. Fitting the two larger measurements gives
+**0.0476 µs per byte**, so the budget is exhausted at about **20 kB**:
+
+| Update | Synchronous write, extrapolated | Against the budget |
+| ------ | ------------------------------- | ------------------ |
+| 8 kB   | 435 µs                          | 0.43×              |
+| 16 kB  | 825 µs                          | 0.82×              |
+| 19.6 kB | ≈ 1 000 µs                     | the budget, exactly |
+| 64 kB  | 3 164 µs                        | **3.2× over**      |
+
+**So `MAX_UPDATE` is derived, never chosen**: it is the largest update whose complete synchronous write fits
+this budget on the declared support population. Two things follow. §6.1's operation slicing keeps ordinary work
+under it, and **the WASM seal's 65,536-byte guard is about three times past a budget this section calls a
+correctness property** — which is why §6.1 bounds the operation rather than enlarging the buffer, and why a
+segmented WAL would not have helped: chunking seals the same bytes on the same thread inside the same handler.
+
+**The number waits on the population, and the rule does not.** The extrapolation above is three points on one
+device — enough to establish *about 20 kB, not 64 kB*, and not a measurement of the constant.
+`f-bd87655-baseline-not-performance-floor` is what supplies the population, at `L-4`; 16 kB is the interim floor
+to build against.
 
 **Two findings sit underneath it and outlive the number.** The row names the AEAD, and **at 4 kB the AEAD is no longer
 the largest term** — base64 costs about as much. And **an emulated CPU throttle is not a conservative stand-in for a

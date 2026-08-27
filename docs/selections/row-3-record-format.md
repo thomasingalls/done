@@ -35,7 +35,13 @@ Content record  (IndexedDB, structured clone)
             || LP(dec v) || LP(dec gen) || LP(dec seq) || LP(kind)
 
   Nonce   12 bytes from crypto.getRandomValues() per record, under a
-          2^32-per-generation budget that `seq` already bounds.
+          2^32-per-generation budget the SeqCounter's reserved[gen] counts.
+          NOT `seq`, which does not reset -- see §3 (S0-3).
+
+  seq     RESERVED before encryption, per batch, in one IndexedDB
+          transaction that also adds k to reserved[gen]. It is in the AAD,
+          so it is fixed before the record exists and two tabs would
+          otherwise choose the same one (S0-3).
 
 Local key envelope  (the key store, structured clone)
 
@@ -121,10 +127,35 @@ collision probability at or below 2^-32. `K_store` is per generation, so the bud
 **What makes it unconditional here is that the condition is checkable, and row 2's was not.** The journal had
 no durable counter by definition — that was the whole premise of the row — so its safety would have rested on
 "this journal never holds many entries", a claim about behaviour with no enforcement point anywhere in the
-code. The content store already carries `seq`, monotonic per store, in every record. **The check is one
-comparison against a field that exists for other reasons:** a store whose next `seq` would cross 2^32 must
-rotate its generation before writing. `seq` counts every record ever written to the store while the budget
-only counts records under the current generation, so using it is conservative in the safe direction.
+code. The content store already carries `seq`, monotonic per store, in every record. **The check is one comparison** — a store whose next write would be the 2^32nd invocation under the current
+generation rotates before that write rather than after it, and equality is the first disallowed value.
+
+**But the field it reads is not `seq`, and this row said it was** (`S0-3`,
+`f-dbfd01f-record-nonce-ceiling-omitted`). The sentence that used to stand here — _`seq` counts every record
+ever written while the budget only counts records under the current generation, so using it is conservative in
+the safe direction_ — is true exactly until the first rotation, and false forever afterwards: `seq` does not
+reset, the budget does, so a literal `seq ≥ 2^32` test refuses every write for the rest of the store's life.
+Conservative in the safe direction is what it looks like from generation one.
+
+**The count is `reserved[gen]`, and the reason is stronger than the arithmetic.** NIST SP 800-38D bounds
+**invocations**, and an encryption abandoned before commit is an invocation. A count recovered from committed
+records cannot see it. Reserving before encrypting counts it by construction: **the gap a crash leaves is the
+record of an invocation that happened.**
+
+**And `seq` is reserved rather than read, which this row needed and did not select** (`S0-3`,
+`f-3bea0e6-store-sequence-allocation-undefined`). §2 above rejects a derived counter nonce because _two tabs on
+one origin can open the same store, and both would compute the same next counter_ — and then leaves `seq`
+itself to the same two tabs. It is inside the AAD, so it is fixed before encryption and cannot come from an
+auto-increment key. One durable `SeqCounter` per _(principal, workspace)_ grants a whole batch's range in one
+transaction, which is what serializes them, and adds `k` to `reserved[gen]` in the same transaction.
+
+**Per batch, exactly sized**, which is neither of the two options the review offered: the adapter already
+writes a batch in one transaction and already knows how many sequences it needs, so a transaction per record
+would be one per keystroke and a per-tab lease introduces ranges that can be abandoned in part. **And what it gives the
+trimmer is uniqueness rather than a watermark** — a trim deletes what its state record covered, and *what it
+covered* is expressible only because one `seq` is issued once. Two tabs both writing at `max + 1` put two
+records at one number, and no rule stated over numbers can then separate them. The race is upstream of the
+trim's rule, in the numbering.
 
 **One consequence this pins that §6.1 left open: `seq` does not reset at trim.** §6.1 specifies the trim's
 crash-safe ordering but says nothing about numbering, and a `seq` that restarted after each trim would be

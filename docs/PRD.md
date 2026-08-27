@@ -1759,6 +1759,13 @@ unencrypted on your device.** And the browser's origin sandbox is a boundary bet
 at-rest boundary: the database is ordinary files in the profile directory, readable by any process running as
 the same OS user.
 
+**A very large paste or import arrives in pieces, and that is a promise rather than an implementation
+detail** (`S0-3`, TRD §6.1). Every edit is made durable before the app accepts the next one, and the work that
+guarantees it has a size beyond which it stops fitting inside a keystroke. So an operation larger than that is
+applied in bounded pieces — **nothing is refused**, a very large paste appears progressively rather than all at
+once, and an interruption part-way leaves the pieces that finished rather than nothing at all. The alternative
+was a single operation too large to make durable, which fails silently and completely.
+
 **Failure and lifecycle.** **No lifecycle event decrypts persisted content.** Account creation adds recovery
 and reader wraps for generations that already exist and is never a whole-document transformation. Account
 deletion retains locally held keys. Retention expiry changes only hosted custody. Migration rotates to a fresh
@@ -2282,6 +2289,14 @@ is not durable. Three conditions, and only the first is a warning at all:
 | **This context is not durable** — persistence not granted  | Yes — grant it, export, or move     | Prominent, persistent, names the reason and the action                       |
 | **Only this device is known to hold a copy**               | No — export or sync creates another | Stated once, at the moments it is actionable; never a recurring banner       |
 | **The hosted copy needs your code** — by construction      | No — it is what non-custodial *is*  | Stated once at account creation, and again wherever recovery is described    |
+
+**A single edit can be in the first condition too, and the right response is silence rather than a warning**
+(`S0-3`). The crash journal is what makes an edit durable the moment it is accepted; when it cannot take one —
+an operation too large, an exhausted store, storage that is not there — that edit is *not durable yet*, and it
+becomes durable when the database commits a moment later. **So what is withheld is the acknowledgement, not a
+banner shown.** A warning for a condition that clears in milliseconds would be exactly the noise the table
+above refuses; a *saved* that is not yet true is the thing this section exists to prevent. The three causes
+reach one state deliberately, so no path can handle two of them and believe it has handled the case.
 
 **Warn about the property, not the diagnosis.** "You are in private browsing" should be resisted: private-mode
 detection is unreliable and every reliable-ish technique is a fingerprinting vector browsers are closing.

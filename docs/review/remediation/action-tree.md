@@ -407,6 +407,27 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 
 ### `S0-3` — select total local-write admission, allocator, and trim budget
 
+> **Started and completed 2026-08-27.** Plan: [`S0-3/README.md`](./S0-3/README.md); schemas in
+> [`S0-3/A-schemas.md`](./S0-3/A-schemas.md) with fifteen falsifiers. `RC-3C`, per `P-3`. **The seal's 64 KiB
+> guard was never the constraint**: §12's budget runs out at 19.6 kB, so the guard sits about 3.2× past a budget
+> the design calls a correctness property. The repair bounds what an *operation* produces — nothing is refused,
+> because the limit is on updates — and the module does not change. **Stage D: `check-update-limit.mjs`
+> recomputes §12's whole extrapolation from the published measurements (7 mutations), plus 18 model tests and
+> 12 more.**
+>
+> **A mutation deleted a claim that was in three documents.** Stage A said the allocator *hands the trimmer an
+> exact watermark*; swapping a covered-set trim for a range trim changed no result, because with unique
+> sequences the two agree. What the allocator buys the trimmer is **uniqueness** — *what my state record
+> covered* is expressible only because one `seq` is issued once — so the race is upstream of the trim's rule, in
+> the numbering. TRD §6.1, row 3 and Stage A were all corrected. **Second time this session a mutation retired
+> an unfalsifiable rule**, after `S0-4`'s sole-successor slot.
+>
+> **And it caught its own author**: §12's table said *~20 kB ≈ 1 000 µs* where the derivation gives 1 020 µs, a
+> rounding the prose could carry and the table could not.
+>
+> With this, **`f-dbfd01f-record-nonce-ceiling-omitted`'s owed boundary test exists**: it was unwritable until
+> `P-3` selected the count the comparison reads.
+
 - **Prerequisite decisions:** `P-3`; suite policy from `P-5` only if the journal carrier changes.
 - **Exact affected artifacts:** PRD persistence/operation limits; TRD §§6.1/10.10/12; rows 2/3; WASM Rust/glue/build;
   journal/record generators/vectors; local adapter contract; store/trim/page-kill/performance test specifications.

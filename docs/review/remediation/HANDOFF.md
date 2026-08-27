@@ -44,27 +44,33 @@ by implication. Nothing decides it; every action has to keep obeying it.
 
 **Outstanding decisions: none.** Every remaining item is an action, and no action is waiting on a choice.
 
-**Actions:** `S0-1`, `S0-2`, `S0-4`, `S0-5`, `S0-6` and `S0-7` are **complete** across all five stages.
-**`S0-3` is the only action left before `S0-8`**, and it is unblocked.
+**Actions: all seven are complete** across all five stages — `S0-1` through `S0-7`. **`S0-8` is what remains**,
+then `S0-9`'s independent challenge and `S0-10`'s closure.
 
-**Findings repaired: 20 of 37**, including five of the six high-severity ones. Nine with mutation-tested
-falsifiers, three by document repair, two partial — graded individually in
-[`action-tree.md`](./action-tree.md).
+**Findings: 29 of 37 are addressed** by the seven actions plus the eight direct repairs, and **all six
+high-severity ones are among them**. Two remain partial and are owed at `L-4`: `f-bd87655`'s dated evidence
+table, and `f-66a7c6a`'s append burst on a declared device population.
 
-**Evidence:** 353 tests · 16/16 generators current · 190 AAD fields each isolated · 15 WASM checks · the blob
-reproduces from the crate at 6,465 B · **two document-to-artifact checkers**, `pnpm retention:check` and
-`pnpm status:check`, plus the suite generator's own reading of row 1 and §13.10.
+**The other 8 are outside Stage 0 by design** — 4 historical-only corrections belonging to `H-1`'s append-only
+ledger, and 4 later gates (`f-9860a0b` legacy cutover at `L-2`; the RustCrypto audit gap, the source/artifact
+drift check and the support-population floor at `L-4`). No action was ever meant to touch them, and
+[`end-state-materiality.md`](./end-state-materiality.md) still reads 19/9/5/4 because no disposition changed.
+
+**Evidence:** 371 tests · 16/16 generators current · 190 AAD fields each isolated · 15 WASM checks · the blob
+reproduces from the crate at 6,465 B · **three document-to-artifact checkers** — `pnpm retention:check`,
+`pnpm status:check` and `pnpm limit:check`, the last of which recomputes §12's extrapolation rather than
+comparing a string — plus the suite generator's own reading of row 1 and §13.10.
 
 ## What is ready to pick up, in order
 
-1. **`S0-3`** — total local-write admission, the allocator and the trim budget, and **the last action before
-   `S0-8`**. Unblocked: `P-3` is decided. It is also where three already-applied repairs finish — the glue
-   widths, the rotated-generation fixture and the nonce ceiling, the last of which still owes the
-   build-failing boundary test that `P-3`'s `reserved[gen]` count now makes writable. **`S0-4` found that
-   §7.4's nonce budget inherited the same defect by citation**, so the repair there and here is one shape.
-4. **`S0-8`** — regeneration and the traceability matrix, then `S0-9`'s challenge and `S0-10`'s closure.
-   `P-5` gives the matrix a criterion — one home per fact, read rather than restated, checked in both
-   directions by a third party — so it is a readback rather than a survey.
+1. **`S0-8`** — regenerate the evidence and build the traceability matrix, then `S0-9`'s independent challenge
+   and `S0-10`'s closure. `P-5` gives the matrix a criterion rather than a survey: **one home per fact, read
+   rather than restated, checked in both directions by something that is neither end.** The open question at
+   the bottom of this file is the thing to do first — the per-action falsifier tables exist and nothing
+   collects them.
+2. **`L-1` through `L-4` and `H-1`** are the rest of the plan and are outside Stage 0. Two partial findings and
+   four later gates wait there; `H-1`'s append-only ledger holds the four historical-only corrections, and
+   `docs/decisions.md`'s stale *eighteen rows are selected* belongs to it rather than to a silent edit.
 
 ## The exact next command
 

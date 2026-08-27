@@ -241,6 +241,23 @@ payload grows, while base64 and the storage write run only 1.3×, 2.3× and 5.3�
 degrades and paths reaching native code do not. There is no single scalar to be careful with, so no more careful
 version of the extrapolation would have reached the right answer.
 
+**The oversize question is answered, and not by this row's module** (`S0-3`, `P-3`,
+`f-9b49b74-journal-seal-64k-gap`). The seal refuses above 65,536 bytes by throwing — **after** the Yjs
+transaction that produced the update — so the document holds a change nothing durable records, and §5's
+measurements stop at 4 kB with the boundary left to Stage 1.
+
+**The buffer was never the binding constraint.** TRD §12's budget is exhausted at about **20 kB** on the
+handset this row measured, so an update reaching 64 KiB has already breached a budget §12 calls a correctness
+property. Enlarging the buffer moves a wall that is in the wrong place; **chunking does not help either**,
+because a segmented WAL seals the same bytes on the same thread inside the same handler. So the repair is
+TRD §6.1's: **no operation may produce an update above `MAX_UPDATE`**, with an admission check in front of the
+seal as the backstop. **This module does not change**, and its guard becomes a boundary admission makes
+unreachable.
+
+**And the journal's contract narrowed to locally originated updates.** A remote update is protected by §6.1's
+content-batch-before-heads ordering, which re-delivers it after a crash — a stronger guarantee than this
+journal offers, and the only case whose size this device does not control.
+
 **A judgment call Stage 1 has to take, flagged here rather than discovered there:** what happens to `1:`
 entries — plaintext journal records written by the current build — when the encrypted journal first opens.
 The recommendation is **refuse and report, do not replay**. A `1:` entry is by definition plaintext content
