@@ -312,8 +312,13 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 > cannot see it — it compares a generator to its vector, never a document to its generator. **Stage D is done: all 14 falsifiers are
 > executable and mutation-tested**, all three Stage C drifts are closed, and the AAD coverage audit proves 169
 > fields each isolated by a published negative. Falsifier 10 is an executable model in `vitest` rather than a
-> vector, since a kill at each `GenerationApply` step is a property of a sequence rather than of bytes. **Stage E
-> (PRD and UI copy) is the only stage left.**
+> vector, since a kill at each `GenerationApply` step is a property of a sequence rather than of bytes.
+> **Stage E is done, and with it `S0-2`**: the PRD now states that admission is not enrollment, that the lock's
+> promise begins when the rotation lands, that rotation wraps to the certified set rather than a roster, and
+> that replacing an exposed code rotates forward. The two authority tables match.
+>
+> **`S0-2` is complete pending `S0-8` regeneration and `S0-9` challenge.** Its eight findings are repaired in
+> design, normative text, selection records, executable evidence and product copy.
 
 - **Prerequisite decisions:** `P-1`, `P-2`, and package/root input from `P-6` — **all satisfied**; plus the common `RC-2` core, which is design work in this action rather than a further decision.
 - **Exact affected artifacts:** PRD §§6.3–6.5/7.2–7.4/7.6; TRD §§6.1/7.3–7.6/13.2–13.8; rows 3/5/7/9/11/13/14/15;

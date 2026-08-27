@@ -104,10 +104,13 @@ const applyStep = (w: World, step: Step): World => {
         apply: rec(6),
       };
     case 7: {
+      // Decide first, then delete: mutating the set being iterated is legal and
+      // is exactly the kind of clever that a retirement predicate should not be.
+      const retirable = [...w.openers].filter(
+        (gen) => gen !== w.activeGen && mayDropGeneration(gen, w.checkpoints),
+      );
       const openers = new Set(w.openers);
-      for (const gen of [...openers]) {
-        if (gen !== w.activeGen && mayDropGeneration(gen, w.checkpoints)) openers.delete(gen);
-      }
+      for (const gen of retirable) openers.delete(gen);
       return { ...w, openers, apply: rec(7) };
     }
     case 8:
@@ -143,9 +146,8 @@ describe('GenerationApply — a kill at every step', () => {
     for (const k of STEPS) {
       const resumed = resume(killAfter(k));
       expect(resumed.activeGen, `killed after step ${k}`).toBe(settled.activeGen);
-      expect([...resumed.openers].toSorted(), `killed after step ${k}`).toEqual(
-        [...settled.openers].toSorted(),
-      );
+      // Sets compare structurally, which avoids ordering the comparison at all.
+      expect(resumed.openers, `killed after step ${k}`).toEqual(settled.openers);
       expect(resumed.apply?.settled, `killed after step ${k}`).toBe(true);
     }
   });

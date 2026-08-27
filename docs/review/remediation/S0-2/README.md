@@ -28,7 +28,7 @@ cannot be reviewed, and because the stages have a real dependency order rather t
 | **B** | Normative construction | TRD §§13.2/13.4/13.5/13.6/13.7/13.8 | **done** — see below |
 | **C** | Selection rows | rows 3/5/7/9/11/13/14/15 amended to match | **done** — see below |
 | **D** | Executable evidence | generators, vectors, and one isolated falsifier per closed finding | **done** — 14 of 14 |
-| **E** | Product surface | PRD §§6.3–6.5/7.2–7.4/7.6 and UI copy, including truthful `rotation_owed` | not started |
+| **E** | Product surface | PRD §§6.3–6.5/7.2–7.4/7.6 and UI copy, including truthful `rotation_owed` | **done** — see below |
 
 ### What Stage B changed, and what it deliberately did not
 
@@ -129,6 +129,24 @@ that fails twice isolates nothing**, and this file now has one of each.
 
 Every amendment follows the project's existing `**Amended by:**` convention (row 9 → row 11 set the precedent),
 naming `S0-2` and the date rather than a peer row, since the amender here is a remediation action.
+
+### What Stage E changed
+
+| PRD | Change |
+| --- | --- |
+| §6.3 | Signing in does not make a device a recipient of content keys **later**, either. An interrupted sign-in leaves a device that can sign in and cannot read, which is the honest outcome rather than a failure |
+| §6.4 | The device list shows an admitted-but-not-enrolled device as such, since a list that shows it identically to an enrolled one is not honest — and it is the screen a person would use to notice a device they do not recognise |
+| §6.5 | Exclusion wraps to the devices a person actually enrolled, not to a service roster |
+| §7.2 | *From now on* begins when the rotation **lands**, not when the factor is set; the interface may not claim protection from copies while `rotation_owed` is true. Enabling the lock also replaces the device's content-receiving credential |
+| §7.3 | The certified recipient set and the recovery-bootstrap authority enter the product authority table, mirroring TRD §13.2 |
+| §7.4 | Rotation wraps to exactly the certified set, never to a roster of everyone the service has admitted |
+| §7.6 | Replacing an **exposed** code rotates forward; replacing a merely **lost** one need not, but only if the product can tell them apart and says which it did |
+
+**Three of these were found by a sweep rather than by the plan.** The action tree named §§6.3–6.5/7.2–7.4/7.6,
+but not which sentences. Grepping the PRD for the language TRD §13.7 had used before Stage B corrected it —
+"every remaining reader" — found three passages that would have left the two documents contradicting each other
+in exactly the way `f-tip-prd-stale-selection-status` describes. The authority tables are now the same length,
+which is a cheap thing to check and would not have been true otherwise.
 
 **The order is a dependency order.** A fixes the interfaces B and C describe; D cannot write a falsifier for a
 field that does not exist; E states in product terms what B and C made true, and stating it earlier would be
