@@ -412,9 +412,10 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 > **Started 2026-08-27.** Staged as `S0-2` and `S0-5` were; plan and status:
 > [`S0-6/README.md`](./S0-6/README.md). **Stages A–C are done** — schemas in
 > [`S0-6/A-schemas.md`](./S0-6/A-schemas.md) with sixteen falsifiers, TRD §§9.3/13.8/14 and the §15 row 10
-> register cell, and rows 7/8/10/14/15. **Stage D is in progress: 4 of 16 falsifiers**, covering the high
-> package-root finding — the paired fresh-rewrap attack is built end to end and mutation-tested. The Local
-> archive, retired package and `TerminalHandoff` falsifiers remain. Stage E not started.
+> register cell, and rows 7/8/10/14/15. **Stage D is done: all 16 falsifiers**, plus one the writing
+> found — the archive envelope's identity binding, which nothing was testing. 31 published negatives across the
+> fresh-rewrap attack, a clean-device archive restore from the code alone, the retired package's signature in
+> both directions, and the deletion gate at all five hosted classes. Stage E is the only stage left.
 
 - **Prerequisite decisions:** `P-6`; `S0-2` recovery/recipient state; `S0-5` checkpoint/creation state; recommended
   `RC-6A`.

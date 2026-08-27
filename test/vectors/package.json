@@ -325,6 +325,58 @@
     {
       "name": "root-commitment-for-another-lineage",
       "why": "The commitment binds all three fields, so a genuine commitment from one lineage does not authenticate a package claiming another."
+    },
+    {
+      "name": "archive-under-a-wrong-code",
+      "why": "The archive keypair is sealed under the code and nothing else. A wrong code opens neither the identity nor the commitment beside it, which is what \"the code that opens it\" has to mean once it is a construction rather than a sentence."
+    },
+    {
+      "name": "archive-envelope-repaired-with-another-identity",
+      "why": "Row 14's own negative, at the archive: an envelope presented alongside a public key that is not the one it was sealed for. The identity is in the envelope's AAD, so the pairing is authenticated rather than assumed -- without it, an archive's sealed private half could be offered beside somebody else's public half."
+    },
+    {
+      "name": "archive-root-commitment-mismatch",
+      "why": "The same anchor as an account package, at the state that has no external authority to appeal to. The archive identity's own public key fills the slot a lineage would, so a manifest naming a different identity does not match the commitment the code unsealed."
+    },
+    {
+      "name": "archive-wrap-from-another-workspace",
+      "why": "The generation wrap binds the workspace, so an archive of one Local workspace opens no generation of another. Independent of the factor and of the root, which is what makes the four failures separable rather than one check wearing four hats."
+    },
+    {
+      "name": "archive-wrap-of-another-generation",
+      "why": "And the generation, for the same reason."
+    },
+    {
+      "name": "live-manifest-relabelled-as-retired",
+      "why": "Row 10 said a live package is UPGRADED to a retired one by importing the terminal record, and not replaced. There was never an upgrade to verify: lineage_state is inside the message the assembler signs, so relabelling it leaves a signature that no longer covers what it names. This is that claim, executed -- the honest live signature against a manifest calling itself retired."
+    },
+    {
+      "name": "retired-manifest-under-the-assembling-credential",
+      "why": "And the other direction. A complete retired package is signed by the terminal authority, so it does not verify under the device that assembled the live one -- which is what makes \"complete package\" mean something rather than being a label on the same bytes."
+    },
+    {
+      "name": "deletion-without-a-handoff",
+      "why": "The gate. No hosted class is destroyed on an elapsed window, a request, or a terminal record the service wrote itself. Something a receiver signed has to exist first."
+    },
+    {
+      "name": "handoff-from-a-receiver-behind-the-terminal-head",
+      "why": "A receiver whose accepted head is not the terminal head is not current, and saying so is the whole point -- otherwise 'verified-current' means 'was reachable recently'. It may still qualify, but only by presenting a transcript."
+    },
+    {
+      "name": "handoff-with-an-unverifiable-catchup",
+      "why": "A transcript that does not chain from the prior head the receiver authenticated. Without the prior head bound, any transcript would do, and the catch-up would be a formality."
+    },
+    {
+      "name": "handoff-with-unenumerated-absences",
+      "why": "A transcript that admits things are missing without naming them. 'Some updates could not be recovered' is not a known-absence list, and a deletion authorized on it destroys the only copy of what was never enumerated."
+    },
+    {
+      "name": "handoff-for-another-retired-package",
+      "why": "The receipt binds the exact package digest, so acknowledging one retirement does not authorize deleting the bytes of another."
+    },
+    {
+      "name": "handoff-signed-by-a-non-receiver",
+      "why": "The receiver is named in the message, so a service that can assemble the package cannot also sign for having received it."
     }
   ]
 }
