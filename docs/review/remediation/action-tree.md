@@ -327,6 +327,23 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 
 ### `S0-1` — establish the selected closure authority and reconcile current policy/status
 
+> **Started and completed 2026-08-27.** Plan and status: [`S0-1/README.md`](./S0-1/README.md); the policy
+> objects are in [`S0-1/A-policies.md`](./S0-1/A-policies.md) with sixteen falsifiers. **Every artifact in this
+> action was already passing** — three oracles reported green while enforcing less than they claimed, and the
+> work was making the claim and the enforcement the same size. TRD §§10.9/10.11/13.2/13.9–13.10, rows 1/12/14/17,
+> PRD §7.12. **Stage D: four checks, twenty mutations**, all caught but the one that is the stated limit.
+>
+> **Three defects were found by writing the checks rather than by the review.** Row 1 §3's separation set listed
+> four asynchronous primitives against the suite's six — ES256 and HPKE arrived with later rows and never came
+> back to the sentence that publishes the argument. **§15's own arithmetic was wrong three times from one
+> mistake**: *eighteen rows are selected* against a table of seventeen, propagated into row 20's cell as
+> *sixteen carry a vector file* where fifteen do. And a mutation found the inverted origin scanner still blind
+> to `wss://`, because the pattern knew only `http`.
+>
+> **One mutation deliberately survives**: a URL assembled from parts. No static scan can see it, which is why
+> row 17 A1's claim narrowed to what it proves and CSP is named for the rest rather than the check being tuned
+> until the old sentence came true.
+
 - **Prerequisite decisions:** `P-5`; use its selected central, distributed, or targeted bidirectional closure
   authority without treating that representation as evidence-selected.
 - **Exact affected artifacts:** `docs/PRD.md`; `docs/TRD.md`; `docs/selections/row-1-algorithm-suite.md`, rows 4, 5,

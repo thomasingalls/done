@@ -44,15 +44,16 @@ by implication. Nothing decides it; every action has to keep obeying it.
 
 **Outstanding decisions: none.** Every remaining item is an action, and no action is waiting on a choice.
 
-**Actions:** `S0-2`, `S0-5`, `S0-6` and `S0-7` are **complete** across all five stages. `S0-1`, `S0-3` and
-`S0-4` are not started, and each waits on a decision or on another action rather than on capacity.
+**Actions:** `S0-1`, `S0-2`, `S0-5`, `S0-6` and `S0-7` are **complete** across all five stages. `S0-3` is
+unblocked and not started; `S0-4` needs `S0-1` and `S0-2`, which are both now done.
 
-**Findings repaired: 15 of 37**, including five of the six high-severity ones. Four with mutation-tested
+**Findings repaired: 18 of 37**, including five of the six high-severity ones. Seven with mutation-tested
 falsifiers, three by document repair, two partial — graded individually in
 [`action-tree.md`](./action-tree.md).
 
 **Evidence:** 336 tests · 16/16 generators current · 181 AAD fields each isolated · 15 WASM checks · the blob
-reproduces from the crate at 6,465 B · `pnpm retention:check` now cross-checks three things instead of two.
+reproduces from the crate at 6,465 B · **two document-to-artifact checkers**, `pnpm retention:check` and
+`pnpm status:check`, plus the suite generator's own reading of row 1 and §13.10.
 
 ## What is ready to pick up, in order
 
@@ -60,9 +61,8 @@ reproduces from the crate at 6,465 B · `pnpm retention:check` now cross-checks 
    It is also where three already-applied repairs finish — the glue widths, the rotated-generation fixture and
    the nonce ceiling, the last of which still owes the build-failing boundary test that `P-3`'s
    `reserved[gen]` count now makes writable.
-2. **`S0-1`** — the closure authority and the current policy/status reconciliation. Unblocked: `P-5` is
-   decided. It is independent of `S0-3`, so the two can run in either order or together.
-3. **`S0-4`** — the exact-byte outbound spool and refusal protocol, once `S0-1` lands; `S0-2` is already done.
+2. **`S0-4`** — the exact-byte outbound spool and refusal protocol. Unblocked: it needed `S0-1` and `S0-2`, and
+   both are done. Independent of `S0-3`, so the two can run in either order or together.
 4. **`S0-8`** — regeneration and the traceability matrix, then `S0-9`'s challenge and `S0-10`'s closure.
    `P-5` gives the matrix a criterion — one home per fact, read rather than restated, checked in both
    directions by a third party — so it is a readback rather than a survey.

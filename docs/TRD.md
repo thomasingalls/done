@@ -1699,8 +1699,20 @@ Subresource Integrity, because SRI pins a byte string and does not remove the pa
 from a pinned index of the standard rather than from a list, every exclusion carries a reason and every
 conditional one a trigger, every pulled-up requirement is checked to exist and to be L3, and every addendum
 control has to cite a section of this document — and, where it claims CI verification, name a check that exists.
-**One control is verified now**: `pnpm build` fails if any built file fetches a subresource from outside the
-origin.
+**One control is verified now**, and `S0-1` corrected both what it checks and what it claims. `pnpm build`
+previously failed on **seven literal fetch syntaxes** and logged every other remote URL as a passing *mention* —
+so `fetch("https://third.example")`, a `WebSocket`, a `setAttribute`, or a worker constructor was green — while
+the script printed *the key-holding origin is first-party only*
+(`f-5bd9552-origin-scan-static-forms`). **The default now inverts**: every remote origin in built output is a
+violation unless it is allowlisted with a reason. The allowlist was already empty, so the syntax list never had
+a policy behind it, and the inversion costs **one entry** — `http://www.w3.org`, every occurrence an XML
+namespace identifier the DOM requires by name, which is a category rather than a party.
+
+**And the claim narrowed to its evidence**: *no literal remote URL appears in built output, other than
+allowlisted namespace identifiers.* A URL assembled from parts, or code fetched and then evaluated, is invisible
+to any static scan. **That residual's control is CSP** — `default-src 'self'`, `connect-src 'self'`,
+`frame-ancestors 'none'` — selected here, read back at deployment, and the third directive is also what makes
+§13.9's framed ceremony unreachable. One header, two findings.
 
 ### 10.10 One new primitive, and it is on the crash path
 
@@ -1736,6 +1748,13 @@ So the floor answers the platform question and neither of §13's. **Where Baseli
 design depends on, the floor is stated for that capability specifically, with its evidence and the date the
 evidence was taken, and the design says what happens when it is absent.** Four such statements follow, and they
 are the whole of the current list.
+
+**A date needs an expiry beside it, or it is a claim about a browser version nobody is running** (`S0-1`). An
+observation about the outside world has no home in this repository to be read from, so the discipline that keeps
+everything else honest — one home, read rather than restated — does not reach it. What replaces that is
+**source, date and expiry**, with an expired observation failing at the gate that consumes it rather than at
+every build. An observation recorded once and never re-checked is the unbounded retention §16.6 calls a defect,
+at a different object.
 
 **Ed25519 is in scope, and needs no fallback path.** Support, from the MDN compatibility data behind
 `SubtleCrypto.sign` with `Ed25519`:
@@ -2131,6 +2150,13 @@ index subkey. **All of them differ by label alone**, which is what makes this se
 rather than of five constructions a reviewer has to compare by hand. **One primitive key
 must not be reused across the asynchronous and synchronous constructions**, which is also why `K_g` cannot itself be
 the structured-cloned non-extractable key — WebCrypto cannot later wrap a non-extractable target.
+
+**§13.10 states this rule more strongly — no primitive at all across the two paths — and the stronger one is
+what is enforced** (`S0-1`, §15 row 1). Two readings standing beside each other with only one oracle is how a
+row comes to claim a check it does not have, and the choice between them is not about strength: **a suite names
+primitives and does not name keys**, so *no primitive key reused* cannot be asserted from that data at all — it
+needs a derivation graph. The rule this artifact can actually assert is the one selected, nothing in the suite
+violates it, and the narrow rule above follows from it.
 
 **Edit implies read.** Under one symmetric key per generation there is no cryptographic write-without-read. This is a
 capability limit, not a policy one, and the agent feature inherits it (§10.6).
@@ -2738,7 +2764,19 @@ with 32 fresh random nonce bytes per attempt. **The label is the purpose**, and 
 assertion being presented to the service as a sign-in; the service's own challenges being service-issued and
 single-use is the second and independent refusal. Verification checks the binding first, then the returned
 credential id, then the client data — **parsed, never rebuilt** — then `rpIdHash` and both the UP and UV flags, then
-the assertion signature. **The signature counter is read and ignored**, because a synced passkey cannot maintain one
+the assertion signature.
+
+**The embedding policy is same-origin only, and it is two checks rather than one** (`S0-1`, §15 rows 12 and 14).
+`crossOrigin` must not be `true` and `topOrigin` must be absent. The specification emits `topOrigin` only when
+`crossOrigin` is true, so client data carrying `crossOrigin: false` **and** a `topOrigin` is a client
+contradicting itself, and a verifier reading only the boolean accepts an embedding recorded in the bytes it just
+checked. **Absent is not false**: the member is optional, a missing one is the ordinary case, so the test is
+`!== true`. There is no allowlist because there is no embedding partner — §10.9's boundary is this origin, row
+17 forbids third parties inside it, and a mechanism with no current use has its failure modes before its
+benefits. **The exact `origin` and `rpIdHash` checks do not make this redundant**: in a delegated frame the
+caller is still the legitimate app origin while the top-level one differs. CSP `frame-ancestors 'none'` makes
+that frame unreachable and is selected in §10.9; this is the half that can be verified from the repository, and
+the policy lives once in the shared ceremony helper rather than twice in the two generators that consume it. **The signature counter is read and ignored**, because a synced passkey cannot maintain one
 and a verifier enforcing monotonicity refuses the ordinary case while detecting nothing.
 
 **Two bounds, stated rather than left to be found.** A binding signed in one epoch still verifies on a device that
@@ -2762,19 +2800,33 @@ polyfill where possible; and **no primitive reused across the asynchronous and s
 | Subkey derivation                       | HKDF-SHA-256 via WebCrypto, domain-separated labels | async |
 | Mutation signatures                     | Ed25519 via WebCrypto                        | async |
 | Wrapping a key to a public key          | HPKE base mode (RFC 9180), DHKEM(X25519, HKDF-SHA256) / HKDF-SHA256 / AES-256-GCM | async |
-| Hash                                    | SHA-256                                      | —     |
-| **Recovery-code and device-lock stretching** | **None.** HKDF only                     | —     |
+| Hash                                    | SHA-256                                      | async |
+| **Recovery-code and device-lock stretching** | **None.** HKDF only                     | none  |
 | **Account credential and slot verifier** | **A WebAuthn assertion**, offered as Ed25519 (COSE -8) then **ES256 (COSE -7)** and verified in WebCrypto. No extension, so no PRF dependency (§13.9, §15 row 12) | async |
-| **Slot-verifier stretching**            | **None, and nothing to stretch** — the verifier holds a public key, not a secret | — |
+| **Slot-verifier stretching**            | **None, and nothing to stretch** — the verifier holds a public key, not a secret | none |
 
 **Agility is a carrier version, not a per-record algorithm field.** A version selects the entire suite, so there is
 nothing to negotiate and nothing to downgrade, and every carrier authenticates its own version — a renumbered record
 fails to open rather than selecting a weaker suite.
 
-**The §13.2 separation rule is machine-checked rather than asserted.** Row 1's generator buckets every role above by
-path and fails if any primitive appears in both. **It also checks its own deferrals against §15**, and fails if a
-role it publishes as unfilled points at a row that has since been selected — which had happened to three of them
-before the check existed.
+**`Path` says where the primitive *executes*, and the column has exactly three values** (`S0-1`): `async`,
+`sync`, and `none` for a role that selects no primitive at all. **Execution, not consumption** — HKDF-SHA-256
+derives the journal subkey, a key used synchronously, and is `async` because the derivation runs at open. Without
+that stated, *it produces something the sync path uses* is a live reading, and it is how a fourth value arrives.
+
+**The §13.2 separation rule is machine-checked rather than asserted.** Row 1's generator classifies every role
+above by path and fails if any primitive appears on both. **It also checks its own deferrals against §15**, and
+fails if a role it publishes as unfilled points at a row that has since been selected — which had happened to
+three of them before the check existed.
+
+**The classification is total, and it was not** (`S0-1`, `f-3bea0e6-suite-separation-ignores-both-path`). It
+selected each bucket by matching a label, so a role whose label matched neither entered neither — and a role in
+neither bucket cannot be in their intersection. `hash` carried a fourth value, `both`, for the whole life of the
+check, which is why the row above now reads `async` and agrees with what row 1 §3 always said in words.
+**`both` is now refused with the rule it violates**: a primitive on both paths is the violation, so a label
+asserting it is a violation asserting itself. An unknown value is refused too, because a classification that
+drops what it does not recognise can only pass — `'Async'` and `'sync '` failed exactly as silently. And a role
+at `none` must name no primitive, or `none` becomes the next hatch for hiding one from the check.
 
 **The journal AEAD reaches its implementation through a second toolchain, and that is the one open criterion
 question.** "Reviewed and widely implemented" is satisfied by the RustCrypto `chacha20poly1305` crate; what it does
@@ -3226,8 +3278,12 @@ signed and version-ordered.
 
 ## 15. The selection register
 
-The constraints above are fixed; this is the register of the constructions built on them. **Eighteen rows are
-selected and four are open**, with row 20 appearing in both halves because it is split. **The design reviews wait on the selections in their scope, and the cutover
+The constraints above are fixed; this is the register of the constructions built on them. **Seventeen rows are
+selected and four are open**, with row 20 split — closed for the seventeen, open for the rest. **That count said
+*eighteen* until `S0-1`, and §15.1 has always listed seventeen**: the prose counted row 20's closed half as a
+selected row while the table did not, and the arithmetic below inherited it. A count stated in words beside a
+table it does not match is the smallest version of this section's own subject, so `scripts/check-selection-status.mjs`
+now reads the table and fails when the two disagree. **The design reviews wait on the selections in their scope, and the cutover
 waits separately on row 21** (§13.11, §14.6).
 
 **The register has two review scopes and two independent scopes.** Rows **1, 2, 3 and 13**, plus the storage-facing
@@ -3274,7 +3330,7 @@ true**, and where the two disagree this one wins.
 | 16 | Hosted-content retention duration after a lapse | **Twelve months**, from the moment hosted synchronization stops rather than from the missed payment, so grace is not deducted from it. **A floor on the promise and a ceiling on the data**: a plan may offer longer and none may offer shorter, and at expiry the ciphertext and wraps are *deleted*. One number for two paths because both are gated by one artifact — the ciphertext — so a shorter recovery window would save nothing and produce the state §6.10 refuses. **The condition was one bit of PRD §11's pricing question**, not its answer. **§14.7 is the machine that executes it** — one clock, created by whichever event stops synchronization; a six-class ledger whose cause decides whether the recovery anchor is kept; and the deadline as a **floor on expiry deletion and a ceiling on both causes**, which is what bounds §14.4's lost acknowledgement (`S0-7`) (PRD §6.10, §16) | [row 16](./selections/row-16-hosted-retention.md) |
 | 10 | Terminal and portable cutover-package formats | **One format at §13.5's three lineage states**, not two: §14.2's cutover package, §14.4's terminal package and §9.3's fidelity archive. A **retired package is a complete package signed by the terminal authority**, not a live manifest upgraded in place — `lineage_state` is inside what the assembler signs, so there is no in-place upgrade to verify. §14.2's trust root is bound in the **HPKE `info` of every generation wrap** *and* committed in a digest **sealed beside `R_priv` under the recovery code**: `info` alone stops a wrap being reinterpreted and not one being minted, since base mode needs only the public `R_pub`. The commitment is the anchor that terminates in user-held material; the importer checks it before any unwrap. §9.3's archive uses the same shape under its own per-workspace code (§14.2, §14.4, `S0-6`) | [row 10](./selections/row-10-portable-package.md) |
 
-**Row 20 — test vectors — is closed for these eighteen and open for the rest.** Rows 16 and 17 are the two whose
+**Row 20 — test vectors — is closed for these seventeen and open for the rest.** Rows 16 and 17 are the two whose
 artifacts are not vector files in the same sense — a number and a profile rather than constructions — and each
 earns its place the same way: checked against what it names rather than restating it, and build-failing when the
 two stop agreeing. Row 17's profile is generated from a pinned index of the standard; row 16's number is read
@@ -3289,7 +3345,7 @@ self-verifying vector file; `pnpm vectors:check` fails the build if any has drif
 | - | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | 18 | Whether a persistent encrypted search index is needed at all | Deferred; gates neither review nor cutover; measure the in-memory rebuild first (§6.2, §12) |
 | 19 | Root-type day collections (§10.8)              | Deferred; one of its four costs has lapsed and should be re-counted                            |
-| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the eighteen selected above** — sixteen carry a generated, self-verifying vector file, and rows 16 and 17 carry the checked artifact their subject admits instead |
+| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the seventeen selected above** — fifteen carry a generated, self-verifying vector file, and rows 16 and 17 carry the checked artifact their subject admits instead |
 | 21 | First-deployment cutover attribution: accept system attribution, or bring the fidelity archive forward | §14.6; must be selected before cutover; adding authorship fields to Markdown is rejected (§9.1) |
 
 **No row remains in this scope.** Envelope, acceptance, retention, checkpoint, attribution, enrollment, discovery,

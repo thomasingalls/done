@@ -2386,6 +2386,16 @@ here; a row that says `unselected` is the placeholder this review checks against
 **Invariant.** A threat table does not make a claim true. The contract needs conformance tests for its own
 invariants and a declared level of independent scrutiny.
 
+**And a passing check does not make a claim true either, if the claim is larger than the check.** That is the
+same failure one step along, and it is harder to see, because the evidence is real — it is simply evidence for
+something narrower than the sentence printed beside it. Three of this project's own controls had it at once
+(`S0-1`): the suite's separation check classified roles by matching labels, so a role labelled with a word it
+did not recognise entered no bucket and could not be caught; the origin scan failed on seven ways of writing a
+remote URL and passed a `fetch()`; and the WebAuthn verifiers read three fields of client data and not the two
+the specification adds for a relying party to judge. **Every one of them reported green while enforcing less
+than it said.** So the rule this section owes itself is that **a check's conclusion states what it tested**, and
+where it cannot test the whole claim, it names what covers the rest.
+
 **Fifteen test cases, stated as tests rather than prose:**
 
 1. A client with only an endpoint and workspace id cannot retrieve usable content or add an accepted envelope.
@@ -2433,7 +2443,12 @@ invariants and a declared level of independent scrutiny.
     expected behaviour so the claim's scope is exercised rather than assumed.
 14. The web application is verified as part of the cryptographic boundary: no unreviewed third-party script
     executes in the key-holding origin; injection controls, CSP, Trusted Types where supported, dependency
-    integrity, service-worker update integrity, cookie attributes and origin checks are tested.
+    integrity, service-worker update integrity, cookie attributes and origin checks are tested. **Two halves,
+    and each names what it does not cover** (`S0-1`): the build fails on any remote origin appearing literally
+    in shipped output, and **CSP is what covers a URL assembled at runtime or code fetched and evaluated**,
+    which no static scan can see. **Origin checks include the embedding policy** — an assertion collected in a
+    delegated frame is refused by the verifier and made unreachable by `frame-ancestors`, and the two are
+    independent on purpose.
 15. **Promotion and migration cannot be confused.** A never-established Local workspace is admitted under a
     device-signed genesis checkpoint binding its pre-account actors, retaining its existing generation and
     creating the first recovery keypair. Repeating with a terminal lineage package instead preserves historical

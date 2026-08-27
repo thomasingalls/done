@@ -66,8 +66,53 @@ export const authenticatorData = async ({ rpId, flags, signCount }) =>
  * signature. Reconstructing them is the WebAuthn implementation error that
  * looks correct until a browser adds a member.
  */
-export const clientDataJSON = ({ type, challenge, origin }) =>
-  utf8(JSON.stringify({ type, challenge: b64url(challenge), origin, crossOrigin: false }));
+export const clientDataJSON = ({ type, challenge, origin, crossOrigin = false, topOrigin = null }) =>
+  utf8(
+    JSON.stringify({
+      type,
+      challenge: b64url(challenge),
+      origin,
+      // `null` means OMIT the member, which is a case the policy below has to
+      // accept: `crossOrigin` is optional in the serialization and a missing one
+      // is the ordinary same-origin ceremony. The defaults reproduce the bytes
+      // both rows already publish.
+      ...(crossOrigin === null ? {} : { crossOrigin }),
+      ...(topOrigin === null ? {} : { topOrigin }),
+    }),
+  );
+
+/**
+ * The selected embedding policy: **same-origin only** (`S0-1`, `P-5`, TRD §13.9).
+ *
+ * Neither verifier read these two members, so an assertion collected in a
+ * delegated iframe — this exact origin, this RP ID, this challenge — verified.
+ * The `origin` check does not cover it: in a cross-origin frame the caller is
+ * still the legitimate app origin while the top-level one differs
+ * (`f-b9ff071-webauthn-cross-origin-policy`).
+ *
+ * **Two checks, because a client can contradict itself.** `topOrigin` appears
+ * only when `crossOrigin` is true, so client data carrying `crossOrigin: false`
+ * *and* a `topOrigin` is malformed — and a verifier reading only the boolean
+ * accepts an embedding recorded in the bytes it just hashed.
+ *
+ * **Absent is not false.** The member is optional, so the test is `!== true`.
+ *
+ * There is no allowlist: there is no embedding partner, §10.9's boundary is this
+ * origin, and a list with no entries is failure modes arriving before benefits.
+ * CSP `frame-ancestors 'none'` makes the frame unreachable and is row 17's; this
+ * is the half that can be verified from the repository.
+ *
+ * It lives here rather than in the two generators because **the omission was in
+ * both of them**, which is exactly the drift this file was extracted to stop.
+ */
+export const checkEmbedding = (cd) => {
+  if (cd.crossOrigin === true) {
+    throw new Error('client data says crossOrigin: the ceremony was performed in a frame');
+  }
+  if (cd.topOrigin !== undefined) {
+    throw new Error(`client data claims an embedding origin: topOrigin ${cd.topOrigin}`);
+  }
+};
 
 /** What the credential signs: authenticatorData || SHA-256(clientDataJSON). */
 export const signedBytes = async (authData, clientData) =>

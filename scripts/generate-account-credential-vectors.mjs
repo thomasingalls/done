@@ -41,6 +41,7 @@ import {
   FLAG_UV,
   authenticatorData,
   b64url,
+  checkEmbedding,
   clientDataJSON,
   signedBytes,
 } from './lib/webauthn.mjs';
@@ -386,6 +387,9 @@ const verifyUnlock = async ({
   const cd = JSON.parse(new TextDecoder().decode(clientData));
   if (cd.type !== 'webauthn.get') throw new Error(`client data type ${cd.type}`);
   if (cd.origin !== ORIGIN) throw new Error(`client data origin ${cd.origin}`);
+  // Same-origin only, and it is two checks. The shared helper holds the policy
+  // because row 14 §5's step-up needs the same one and had the same omission.
+  checkEmbedding(cd);
   const wanted = await unlockChallenge({
     v: expect.challengeVersion,
     principal: expect.principal,
@@ -445,6 +449,14 @@ const MUST_FAIL = [
   {
     name: 'wrong-client-data-type',
     why: 'A registration ceremony presented as an assertion. webauthn.create and webauthn.get sign the same shape.',
+  },
+  {
+    name: 'framed-ceremony',
+    why: 'A complete, correctly signed assertion collected in a delegated iframe: this origin, this RP ID, this challenge, crossOrigin true. The origin check does not cover it -- in a cross-origin frame the caller IS the legitimate app origin while the top-level one differs -- and the policy is same-origin only (S0-1, P-5). CSP frame-ancestors none makes the frame unreachable and is row 17s; this is the half the repository can verify.',
+  },
+  {
+    name: 'embedding-origin-claimed',
+    why: 'Client data carrying crossOrigin false AND a topOrigin, signed over its own bytes. The specification emits topOrigin only when crossOrigin is true, so this is a client contradicting itself -- and a verifier reading only the boolean accepts an embedding recorded in the bytes it just hashed. Separate from the one above on purpose: a negative setting both would pass with either check present and prove neither.',
   },
   { name: 'flipped-signature-bit', why: 'The signature doing its own job.' },
   {
@@ -682,6 +694,8 @@ const main = async () => {
     nonce = NONCE,
     seed = ED_KEYS.passkey.seed,
     signCount = SIGN_COUNT,
+    crossOrigin = false,
+    topOrigin = null,
   }) => {
     const challenge = await unlockChallenge({
       v: UNLOCK_VERSION,
@@ -690,7 +704,13 @@ const main = async () => {
       nonce: hex(nonce),
     });
     const authData = await authenticatorData({ rpId, flags: FLAG_UP | FLAG_UV, signCount });
-    const clientData = clientDataJSON({ type: 'webauthn.get', challenge, origin: ORIGIN });
+    const clientData = clientDataJSON({
+      type: 'webauthn.get',
+      challenge,
+      origin: ORIGIN,
+      crossOrigin,
+      topOrigin,
+    });
     const signature = await edSign(seed, await signedBytes(authData, clientData));
     return { authData, clientData, signature };
   };
@@ -754,6 +774,36 @@ const main = async () => {
       }),
     }),
   );
+  // --- the embedding policy, same-origin only (`S0-1`) --------------------------
+  //
+  // Each is a COMPLETE ceremony signed over its own hostile client data, so the
+  // signature verifies and only the policy can refuse it. Presenting rewritten
+  // bytes under the original signature would refuse at step 5 whether or not
+  // step 3 read these members at all -- failing twice and isolating nothing.
+  //
+  // And they are separated. A negative carrying `crossOrigin: true` AND a
+  // `topOrigin` would pass with either check present and neither would be
+  // proved.
+  {
+    const framed = await ceremony({ crossOrigin: true });
+    await refuses('framed-ceremony', () =>
+      attempt({ clientData: framed.clientData, signature: framed.signature }),
+    );
+
+    const claimed = await ceremony({ crossOrigin: false, topOrigin: OTHER_ORIGIN });
+    await refuses('embedding-origin-claimed', () =>
+      attempt({ clientData: claimed.clientData, signature: claimed.signature }),
+    );
+
+    // Absent is not false: the member is optional and a missing one is the
+    // ordinary same-origin ceremony, so the policy must accept it.
+    const omitted = await ceremony({ crossOrigin: null });
+    if (JSON.parse(new TextDecoder().decode(omitted.clientData)).crossOrigin !== undefined) {
+      throw new Error('the omitted-crossOrigin ceremony still carries the member');
+    }
+    await attempt({ clientData: omitted.clientData, signature: omitted.signature });
+  }
+
   const flipped = Uint8Array.from(baseAssertion.signature);
   flipped[flipped.length - 1] ^= 0x01;
   await refuses('flipped-signature-bit', () => attempt({ signature: flipped }));

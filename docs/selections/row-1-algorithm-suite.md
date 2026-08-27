@@ -108,13 +108,43 @@ The two statements of the rule are not the same sentence:
 >
 > §13.10 — "no **primitive** reused across the asynchronous and synchronous paths."
 
-The second is strictly stronger, and the suite satisfies it: `{AES-256-GCM, HKDF-SHA-256, Ed25519, SHA-256}`
-on the asynchronous path, `{XChaCha20-Poly1305}` on the synchronous one, intersection empty.
+The second is strictly stronger, and the suite satisfies it — intersection empty:
 
-**The generator asserts that intersection rather than this document claiming it.** `checkSeparation()` buckets
-every role by path and fails the build if any primitive appears in both. A later edit that satisfies only the
-weaker reading — same primitive, different keys — fails there instead of being caught by a reviewer, or not
-caught. That is the whole reason the suite is data in a script rather than a table in prose.
+| Path             | Primitives                                                                                                                                                              |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **asynchronous** | AES-256-GCM · ES256 (ECDSA P-256 with SHA-256) · Ed25519 · HKDF-SHA-256 · HPKE base mode, DHKEM(X25519, HKDF-SHA256) / HKDF-SHA256 / AES-256-GCM · SHA-256 |
+| **synchronous**  | XChaCha20-Poly1305                                                                                                                                                      |
+
+**This was a sentence listing four primitives, and the suite had grown to six** (`S0-1`). ES256 arrived with row
+12 and HPKE with row 10's wraps; neither edit came back here, so the set this row published as the separation
+argument had not been true for some time. It is a table now because a table is what the generator can read — the
+sets are compared against `SUITE_1` in both directions on every `pnpm check`, so the next role added fails here
+rather than quietly narrowing the claim.
+
+**The generator asserts that intersection rather than this document claiming it.** `checkSeparation()`
+classifies every role by path and fails the build if any primitive appears on both. A later edit that satisfies
+only the weaker reading — same primitive, different keys — fails there instead of being caught by a reviewer, or
+not caught. That is the whole reason the suite is data in a script rather than a table in prose.
+
+**Which of the two is enforced was never decided until now, and it is not decided on strength**
+([`S0-1`](../review/remediation/S0-1/README.md)). The stronger reading wins because **a suite names primitives
+and does not name keys**: _no primitive key reused_ cannot be asserted from this data at all — it needs a
+derivation graph — so selecting it would mean an oracle enforcing nothing while this row says it does. §13.2's
+rule follows from §13.10's, one rule is enforced, and nothing in the suite violates it.
+
+**`path` says where a primitive _executes_, and the column has three values.** `async`, `sync`, and `none` for a
+role selecting no primitive at all. HKDF-SHA-256 derives the journal subkey — a key used synchronously — and is
+`async` because the derivation runs at open. Stating that is not pedantry: _it produces something the sync path
+uses_ is a live reading, and it is how a fourth value gets added.
+
+**And the check was passing on a fourth value the whole time** (`f-3bea0e6-suite-separation-ignores-both-path`).
+`checkSeparation()` selected each bucket by matching a label, so a role matching neither entered neither — and a
+role in neither bucket cannot be in their intersection. `hash` was labelled `both`, so **the set listed above was
+this document's claim and not the generator's**, for the entire life of a check written to stop exactly that.
+Nothing on the synchronous path hashes, so `hash` is `async` and the two agree now. `both` is refused with the
+rule it violates rather than as an unknown value, an unrecognised label is refused because **a classification
+that drops what it does not recognise can only pass**, and a `none` role naming a real primitive is refused
+before `none` becomes the next hatch.
 
 Two smaller invariants are checked the same way: every carrier maps to a defined suite and authenticates its
 own version, and every role is either selected or deferred to a **named row**, so nothing falls through the

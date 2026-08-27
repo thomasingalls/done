@@ -86,7 +86,7 @@
         "hash": {
           "primitive": "SHA-256",
           "provider": "WebCrypto",
-          "path": "both",
+          "path": "async",
           "why": "One hash everywhere HKDF, signatures and commitments need one."
         }
       },
@@ -201,7 +201,8 @@
       "ES256 (ECDSA P-256 with SHA-256)",
       "Ed25519",
       "HKDF-SHA-256",
-      "HPKE base mode, DHKEM(X25519, HKDF-SHA256) / HKDF-SHA256 / AES-256-GCM"
+      "HPKE base mode, DHKEM(X25519, HKDF-SHA256) / HKDF-SHA256 / AES-256-GCM",
+      "SHA-256"
     ],
     "sync": [
       "XChaCha20-Poly1305"

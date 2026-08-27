@@ -169,13 +169,13 @@ Five controls the standard does not carry at any level. **None of them is invent
 argument for them: §10.9 wrote the list while explaining why the cryptographic boundary is a web origin, and
 the addendum is the part of that list ASVS has no requirement for.
 
-| #   | Control                                                                         | Method | Where it is verified                          |
-| --- | ------------------------------------------------------------------------------- | ------ | --------------------------------------------- |
-| A1  | **No remote subresource in the key-holding origin.** Not "with SRI" — none      | CI     | `scripts/check-origin-isolation.mjs`, **now** |
-| A2  | Trusted Types enforced where the platform supports it                           | CI     | §11.2 test 14, at Stage 4                     |
-| A3  | Service-worker update integrity                                                 | review | Stage 4                                       |
-| A4  | Everything an app-managed store holds is ciphertext, from genesis, every device | CI     | §11.1's no-plaintext-at-rest test             |
-| A5  | No control may be weakened by being offline, or require the network to hold     | review | Stage 4                                       |
+| #   | Control                                                                                                         | Method | Where it is verified                          |
+| --- | --------------------------------------------------------------------------------------------------------------- | ------ | --------------------------------------------- |
+| A1  | **No remote origin referenced in built output**, allowlisted namespace identifiers aside. Not "with SRI" — none | CI     | `scripts/check-origin-isolation.mjs`, **now** |
+| A2  | Trusted Types enforced where the platform supports it                                                           | CI     | §11.2 test 14, at Stage 4                     |
+| A3  | Service-worker update integrity                                                                                 | review | Stage 4                                       |
+| A4  | Everything an app-managed store holds is ciphertext, from genesis, every device                                 | CI     | §11.1's no-plaintext-at-rest test             |
+| A5  | No control may be weakened by being offline, or require the network to hold                                     | review | Stage 4                                       |
 
 **A1 is stronger than the requirement it supersedes, and the difference is the point.** V3.6.1 permits external
 hosting with Subresource Integrity. SRI pins a byte string; it does not remove the party. Under §10.9 a
@@ -243,9 +243,28 @@ Stage 4 ships (sequencing §3.7). What Stage 4 has to produce is the per-require
 with V6's dispositions carrying §3's distinction, plus the four remaining addendum controls.
 
 **One thing is discharged now and should be**, because it was the one control that could be. `pnpm build`
-fails if any built file fetches a subresource from outside the origin, and the check was tested in both
-directions — a `fonts.googleapis.com` stylesheet added to `dist/index.html` fails it, and removing it passes
-again. It is the control §10.9 names first and the one a font link would regress silently.
+fails if any built file references a remote origin, and the check was tested in both directions — a
+`fonts.googleapis.com` stylesheet added to `dist/index.html` fails it, and removing it passes again. It is the
+control §10.9 names first and the one a font link would regress silently.
+
+**It was doing less than this sentence said, and `S0-1` fixed the check rather than the sentence**
+(`f-5bd9552-origin-scan-static-forms`). The scanner failed on **seven literal fetch syntaxes** — `src`, `href`,
+`url()`, `@import`, static and dynamic imports, `importScripts` — and classified every other remote URL as a
+non-failing _mention_, while printing _the key-holding origin is first-party only_. So a
+`fetch("https://third.example/code")`, a `WebSocket`, a URL handed to `setAttribute`, or a worker constructor
+passed. **A font link was the case it was written for and the case it caught; the ones that matter more were
+outside the list.**
+
+**The default inverts, and the measurement is why that is cheap.** Every remote origin in built output is now a
+violation unless allowlisted with a reason. `ALLOWED_ORIGINS` was already empty — no remote origin may be
+referenced at all — so the fetching/mention distinction never had a policy behind it. Scanning the current
+build finds **one** remote origin, `http://www.w3.org`, and every occurrence is an XML namespace identifier the
+DOM requires by name. **One entry, and it is a category rather than a party.**
+
+**A1's claim is now the size of its evidence.** What the check proves is that no literal remote URL appears in
+built output; what it cannot see is a URL assembled from parts, or code fetched and then evaluated. That
+residual belongs to CSP — `default-src 'self'`, `connect-src 'self'`, `frame-ancestors 'none'` — which is
+listed below as open and which A1 now explicitly leans on rather than implying it has covered.
 
 **Open, and offered to 3b rather than answered here.**
 
@@ -257,4 +276,8 @@ again. It is the control §10.9 names first and the one a font link would regres
   argues they carry a distinction that only makes sense against a built flow; a reviewer may reasonably think
   the distinction is clear enough now.
 - **CSP's actual directive set**, which is where A1, A2 and V3.4.3 meet and is a Stage 4 artifact rather than a
-  selection.
+  selection. **Three directives are now load-bearing rather than merely advisable** (`S0-1`):
+  `default-src 'self'` and `connect-src 'self'` are what covers the runtime half A1's static scan cannot see,
+  and `frame-ancestors 'none'` is what makes TRD §13.9's framed WebAuthn ceremony unreachable. The as-built
+  readback of all three is a release gate, and until it exists both controls stand on their repository-side
+  halves alone — which is stated here rather than assumed.

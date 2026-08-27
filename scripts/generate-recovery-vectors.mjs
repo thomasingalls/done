@@ -39,6 +39,7 @@ import {
   FLAG_UV,
   authenticatorData,
   b64url,
+  checkEmbedding,
   clientDataJSON,
   signedBytes,
 } from './lib/webauthn.mjs';
@@ -62,6 +63,8 @@ const GROUP = 5;
  */
 const RP_ID = 'app.done.invalid';
 const ORIGIN = 'https://app.done.invalid';
+/** A top-level origin this app is not embedded by, and is not approved to be (`S0-1`). */
+const EMBEDDING_ORIGIN = 'https://portal.example.invalid';
 
 /** Row 12's slot-unlock label, used here only as a label that is not this one. */
 const UNLOCK_LABEL = 'done/slotunlock/v1';
@@ -318,10 +321,16 @@ const edVerify = async (publicHex, sig, message) =>
 const assertOver = async (
   seedHex,
   challenge,
-  { flags = FLAG_UP | FLAG_UV, signCount = 0 } = {},
+  { flags = FLAG_UP | FLAG_UV, signCount = 0, crossOrigin = false, topOrigin = null } = {},
 ) => {
   const authData = await authenticatorData({ rpId: RP_ID, flags, signCount });
-  const clientData = clientDataJSON({ type: 'webauthn.get', challenge, origin: ORIGIN });
+  const clientData = clientDataJSON({
+    type: 'webauthn.get',
+    challenge,
+    origin: ORIGIN,
+    crossOrigin,
+    topOrigin,
+  });
   return {
     authData,
     clientData,
@@ -360,6 +369,7 @@ const verifyStepUp = async ({ publicHex = ACCOUNT_CREDENTIAL.public_key, wanted,
 
   if (cd.type !== 'webauthn.get') throw new Error('not an assertion');
   if (cd.origin !== ORIGIN) throw new Error('assertion collected on another origin');
+  checkEmbedding(cd);
   if (cd.challenge !== b64url(challenge)) throw new Error('challenge is not the one issued');
   if (hex(assertion.authData.subarray(0, 32)) !== hex(await sha256(utf8(RP_ID)))) {
     throw new Error('assertion is for another relying party');
@@ -535,6 +545,16 @@ const MUST_FAIL = [
     name: 'stepup-other-passkey',
     mutate:
       'The correct challenge, signed by a passkey the account does not know. Not an aad-only: it tests that the credential matters, which is the thing every other step-up negative holds constant.',
+  },
+  {
+    name: 'stepup-framed-ceremony',
+    mutate:
+      'The correct challenge, the right passkey, and crossOrigin true: a step-up collected in a delegated iframe. The origin check does not cover it, because in a cross-origin frame the caller IS this origin while the top-level one differs. Same-origin only is the selected policy (S0-1, P-5), and this omission was in row 12s verifier and this one identically -- one gap in two files, which is what scripts/lib/webauthn.mjs exists to prevent.',
+  },
+  {
+    name: 'stepup-embedding-origin-claimed',
+    mutate:
+      'crossOrigin false with a topOrigin present, signed over its own bytes. The specification emits topOrigin only when crossOrigin is true, so this is a client contradicting itself, and a verifier reading only the boolean accepts an embedding recorded in the bytes it just hashed. Deliberately separate from the negative above: one setting both members would pass with either check present and prove neither.',
   },
   {
     name: 'aad-only-stepup-label',
@@ -761,6 +781,39 @@ const main = async () => {
       assertion: await assertOver(OTHER_PASSKEY.seed, stepUpChallengeBytes),
     }),
   );
+
+  // The embedding policy (`S0-1`), which row 12 had missing in exactly the same
+  // way -- one omission in two files, which is the drift `scripts/lib/webauthn.mjs`
+  // was extracted to stop. Each assertion is signed over its own hostile client
+  // data, so the signature verifies and only the policy refuses it; and the two
+  // members are separated, because a negative setting both would prove neither.
+  await refuses('stepup-framed-ceremony', async () =>
+    verifyStepUp({
+      wanted,
+      assertion: await assertOver(ACCOUNT_CREDENTIAL.seed, stepUpChallengeBytes, {
+        crossOrigin: true,
+      }),
+    }),
+  );
+  await refuses('stepup-embedding-origin-claimed', async () =>
+    verifyStepUp({
+      wanted,
+      assertion: await assertOver(ACCOUNT_CREDENTIAL.seed, stepUpChallengeBytes, {
+        crossOrigin: false,
+        topOrigin: EMBEDDING_ORIGIN,
+      }),
+    }),
+  );
+  // Absent is not false: an omitted member is the ordinary ceremony.
+  {
+    const omitted = await assertOver(ACCOUNT_CREDENTIAL.seed, stepUpChallengeBytes, {
+      crossOrigin: null,
+    });
+    if (JSON.parse(new TextDecoder().decode(omitted.clientData)).crossOrigin !== undefined) {
+      throw new Error('the omitted-crossOrigin step-up still carries the member');
+    }
+    await verifyStepUp({ wanted, assertion: omitted });
+  }
 
   /** Collected over `over`, then presented as though it were `wanted`. */
   const misboundAs = async (over) =>

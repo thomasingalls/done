@@ -58,7 +58,8 @@ Verification, offline, in this order
   1. sig verifies over the message above, under the epoch's authorization key.
   2. The returned credential id is the one this binding names.
   3. clientDataJSON: parsed, never rebuilt. type == "webauthn.get";
-     origin == this origin; challenge == the one just minted.
+     origin == this origin; challenge == the one just minted;
+     crossOrigin != true; topOrigin absent. (S0-1)
   4. authenticatorData: rpIdHash == SHA-256(rp_id); UP set; UV set.
      signCount is read and ignored.
   5. The assertion signature verifies over authenticatorData ||
@@ -104,6 +105,24 @@ written down. **Neither was the question the row appeared to ask, and neither wa
 was _what is an account credential_, which PRD:1009 defines by what it does — proves identity to the service,
 leaves an offline-verifiable local slot-unlock binding — and never by what it is, while rows 4, 5, 6, 9 and 10
 all bind to "credential" as a settled term.
+
+**The embedding policy is same-origin only, and it was missing** (`S0-1`,
+`f-b9ff071-webauthn-cross-origin-policy`). Step 3 read `type`, `origin` and `challenge`, and the two members
+the specification adds _for the relying party to judge_ were not in the list — so an assertion collected in a
+delegated iframe, with this exact origin and RP ID, verified. **The exact `origin` check does not cover it**:
+in a cross-origin frame the caller is still the legitimate app origin while the top-level one differs.
+
+**Two checks rather than one.** `topOrigin` appears only when `crossOrigin` is true, so client data carrying
+`crossOrigin: false` **and** a `topOrigin` is a client contradicting itself, and a verifier reading only the
+boolean accepts an embedding recorded in the bytes it just hashed. **Absent is not false** — the member is
+optional and a missing one is the ordinary case — so the test is `!== true`, and the positive vectors that omit
+it must still verify.
+
+**No allowlist, because there is no embedding partner.** §10.9's boundary is this origin and row 17 forbids
+third parties inside it; a list with no entries is failure modes arriving before benefits. CSP
+`frame-ancestors 'none'` makes the frame unreachable and is row 17's, which leaves this the half that can be
+tested from the repository. The policy lives once, in `scripts/lib/webauthn.mjs`, because row 14 §5 needs the
+same one.
 
 **And half of it was already decided, in a table nobody was reading as a selection.** §16.1's inventory row
 says the authorization service stores "Account authenticator **public material** and slot-verifier parameters",

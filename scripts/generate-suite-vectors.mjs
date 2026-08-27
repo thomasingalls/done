@@ -131,7 +131,12 @@ const SUITE_1 = {
   hash: {
     primitive: 'SHA-256',
     provider: 'WebCrypto',
-    path: 'both',
+    // Was `both` (S0-1, f-3bea0e6-suite-separation-ignores-both-path). `path`
+    // says where a primitive EXECUTES, and nothing on the synchronous path
+    // hashes -- the seal is XChaCha20-Poly1305 and base64. `both` also entered
+    // neither bucket below, so it was published as separated for the whole life
+    // of a check written to prevent exactly that.
+    path: 'async',
     why: 'One hash everywhere HKDF, signatures and commitments need one.',
   },
 };
@@ -368,15 +373,61 @@ const checkPrimitiveKats = async () => {
  * stronger one -- which is what this asserts, so a later edit that satisfies
  * only the weaker one fails here rather than at the review.
  */
+/**
+ * The three values `path` may take, and what they mean (`S0-1`, TRD §13.10).
+ *
+ * **`path` says where a primitive EXECUTES**, not what its output is later used
+ * for. HKDF-SHA-256 derives the journal subkey -- a key consumed synchronously
+ * -- and is `async` because the derivation runs at open. Writing that down is
+ * not pedantry: *it produces something the sync path uses* is a live reading,
+ * and it is how a fourth value gets added.
+ */
+const PATHS = new Set(['async', 'sync', 'none']);
+
+/**
+ * Separation, as a TOTAL classification rather than a filter.
+ *
+ * **The filter was the defect, not the value it missed.** This selected each
+ * bucket with `filter(r => r.path === want)`, so a role whose label matched
+ * neither entered neither -- and a role in no bucket cannot be in the
+ * intersection. `hash` carried `both` for the whole life of the check and was
+ * published as separated throughout. `'Async'`, `'sync '` and `'shared'` would
+ * have passed identically: **a classification that drops what it does not
+ * recognise can only pass.**
+ */
 const checkSeparation = () => {
-  const bucket = (want) =>
-    new Set(
-      Object.values(SUITE_1)
-        .filter((r) => r.path === want)
-        .map((r) => r.primitive),
-    );
-  const asyncPath = bucket('async');
-  const syncPath = bucket('sync');
+  const asyncPath = new Set();
+  const syncPath = new Set();
+  for (const [role, r] of Object.entries(SUITE_1)) {
+    switch (r.path) {
+      case 'async':
+        asyncPath.add(r.primitive);
+        break;
+      case 'sync':
+        syncPath.add(r.primitive);
+        break;
+      case 'none':
+        // Otherwise `none` is the next `both`: a way to hold a real primitive
+        // where the separation check cannot see it.
+        if (!/^none\b/iu.test(r.primitive)) {
+          throw new Error(
+            `Role "${role}" is path "none" but names the primitive "${r.primitive}". ` +
+              '"none" means this role selects no primitive; a role that selects one has a path.',
+          );
+        }
+        break;
+      case 'both':
+        throw new Error(
+          `Role "${role}" is path "both". TRD §13.10 forbids a primitive on both paths, so this ` +
+            'label asserts the violation rather than describing a state the suite may be in.',
+        );
+      default:
+        throw new Error(
+          `Role "${role}" has path "${r.path}", which is not one of ${[...PATHS].join(', ')}. ` +
+            'An unclassified role is an unchecked one.',
+        );
+    }
+  }
   const shared = [...asyncPath].filter((p) => syncPath.has(p));
   if (shared.length > 0) {
     throw new Error(
@@ -476,11 +527,92 @@ const checkCoverage = () => {
   }
 };
 
+const ROW_1 = new URL('../docs/selections/row-1-algorithm-suite.md', import.meta.url);
+
+/**
+ * The suite's paths, checked against the two documents that state them
+ * (`S0-1`, `P-5`'s `RC-8C`).
+ *
+ * **`SUITE_1` is the home of this fact and both documents restate it**, so the
+ * agreement needs checking in both directions rather than assuming the data is
+ * right. It was not: `hash` was `both` in the data while row 1 §3 listed SHA-256
+ * on the asynchronous path and §13.10's table printed an em-dash. Three
+ * representations, three answers, and every check green -- because the only
+ * check that existed read the data and never a document.
+ */
+const checkSuiteDocuments = ({ async: asyncSet, sync: syncSet }) => {
+  const row1 = readFileSync(ROW_1, 'utf8');
+  // A `·`-separated cell rather than a prose list: the HPKE ciphersuite carries
+  // its own commas, so a comma-separated sentence cannot hold the suite the
+  // rows have grown it into. That is why this stopped being a sentence.
+  const cell = (want) => {
+    const m = new RegExp(`^\\|\\s*\\*\\*${want}\\*\\*\\s*\\|([^|]+)\\|`, 'mu').exec(row1);
+    return m === null
+      ? null
+      : m[1]
+          .split('·')
+          .map((x) => x.trim())
+          .filter(Boolean)
+          .toSorted();
+  };
+  const statedAsync = cell('asynchronous');
+  const statedSync = cell('synchronous');
+  if (statedAsync === null || statedSync === null) {
+    throw new Error('row 1 §3 no longer states the two path sets as a table; the cross-check cannot run.');
+  }
+  const differs = (a, b) => a.length !== b.length || a.some((x, i) => x !== b[i]);
+  if (differs(statedAsync, asyncSet)) {
+    throw new Error(
+      `row 1 §3 lists the asynchronous set as {${statedAsync.join(', ')}} and SUITE_1 computes ` +
+        `{${asyncSet.join(', ')}}. One of them is describing a suite that does not exist.`,
+    );
+  }
+  if (differs(statedSync, syncSet)) {
+    throw new Error(
+      `row 1 §3 lists the synchronous set as {${statedSync.join(', ')}} and SUITE_1 computes ` +
+        `{${syncSet.join(', ')}}.`,
+    );
+  }
+
+  // TRD §13.10's own table. Its role names are coarser than SUITE_1's -- one row
+  // covers three AEAD uses -- so what is compared is the Path column's vocabulary
+  // and the one row the separation argument rests on.
+  const trd = readFileSync(TRD, 'utf8');
+  const table = trd.slice(trd.indexOf('### 13.10'), trd.indexOf('### 13.11'));
+  const rows = [...table.matchAll(/^\|(?!\s*(?:Role|-))([^|]+)\|([^|]+)\|([^|]+)\|\s*$/gmu)].map(
+    (m) => ({ role: m[1].trim(), selected: m[2].trim(), path: m[3].trim() }),
+  );
+  if (rows.length === 0) throw new Error('TRD §13.10 has no role table; the cross-check cannot run.');
+  for (const r of rows) {
+    if (!PATHS.has(r.path)) {
+      throw new Error(
+        `TRD §13.10 row "${r.role}" has path "${r.path}", which is not one of ` +
+          `${[...PATHS].join(', ')}. The document and SUITE_1 must speak the same vocabulary.`,
+      );
+    }
+  }
+  const syncRows = rows.filter((r) => r.path === 'sync');
+  if (syncRows.length !== 1) {
+    throw new Error(
+      `TRD §13.10 marks ${syncRows.length} roles "sync"; the separation argument rests on exactly one.`,
+    );
+  }
+  for (const primitive of syncSet) {
+    if (!syncRows[0].selected.includes(primitive)) {
+      throw new Error(
+        `SUITE_1 puts ${primitive} on the synchronous path and TRD §13.10's sync row does not name it.`,
+      );
+    }
+  }
+  return { statedAsync, statedSync, trdRoles: rows.length };
+};
+
 const main = async () => {
   await checkPrimitiveKats();
   const separation = checkSeparation();
   checkCarriers();
   checkCoverage();
+  checkSuiteDocuments(separation);
 
   // No AAD composition lives in this file -- it carries published KATs and the
   // carrier-version table -- but it reports that emptiness rather than staying

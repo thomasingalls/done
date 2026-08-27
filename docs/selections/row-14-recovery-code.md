@@ -439,6 +439,12 @@ value of the four is only legible beside the check they are deliberately not mak
 published vectors are byte-identical across the extraction. Two challenges, one ceremony, one place for it to
 be true — §9's own rule about primitive KATs, applied to a ceremony instead.
 
+**The embedding policy now lives there too, and that is the extraction earning its keep** (`S0-1`). Neither
+verifier read `crossOrigin` or `topOrigin`, so a step-up assertion collected in a delegated iframe — this
+origin, this RP ID, this challenge — replaced a recovery envelope. **The same omission was in both files**,
+which is precisely the drift the shared helper was created to stop; one predicate now refuses it for both, and
+each ceremony's negatives exercise it separately rather than trusting the other's.
+
 **Two structural assertions do work no example can.** The generator counts the preimages of every symbol and
 requires exactly eight, which is the 125-bit claim itself rather than an illustration of it. And each
 normalization variant must **differ** from the canonical display form — so if a regenerated code ever contains
