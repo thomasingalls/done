@@ -27,7 +27,7 @@ cannot be reviewed, and because the stages have a real dependency order rather t
 | **A** | Durable record schemas | exact field lists for every new record, in the project's own `LP()` notation, composing with the existing intent/outcome/epoch/custody carriers | **done** — [`A-schemas.md`](./A-schemas.md) |
 | **B** | Normative construction | TRD §§13.2/13.4/13.5/13.6/13.7/13.8 | **done** — see below |
 | **C** | Selection rows | rows 3/5/7/9/11/13/14/15 amended to match | **done** — see below |
-| **D** | Executable evidence | generators, vectors, and one isolated falsifier per closed finding | **in progress** — 13 of 14, see below |
+| **D** | Executable evidence | generators, vectors, and one isolated falsifier per closed finding | **done** — 14 of 14 |
 | **E** | Product surface | PRD §§6.3–6.5/7.2–7.4/7.6 and UI copy, including truthful `rotation_owed` | not started |
 
 ### What Stage B changed, and what it deliberately did not
@@ -81,15 +81,30 @@ diagnosis, and the guard is restored.
 | 7 | A forged bootstrap fails; a stale or forked head is detected | **done** | `head-discovery` — 16 negatives, including the signer, the countersignature, a stale head and a rival conflict parent |
 | 8 | Eliding any byte of the envelope or any wrap changes the digest | **done** | `transition` — five complete variants, each asserted distinct; the superseded numbers-only digest published beside them |
 | 9 | An exposed code does not open content after replacement | **done** *(binding half)* | `transition` — `successor-generation` is in the signed payload and asserted to change the digest. That it *opens nothing* is a runtime property for `L-2` |
-| 10 | A kill at each `GenerationApply` step resumes | not started | a state machine, not a byte format — belongs in `vitest`, not a vector file |
+| 10 | A kill at each `GenerationApply` step resumes | **done** | [`test/generationApply.test.ts`](../../../../test/generationApply.test.ts) — eight assertions over an executable model, six mutations each caught by the invariant written for it |
 | 11 | No opener retired while a retained checkpoint lacks one | **done** | `checkpoint` — the superseded wording is encoded as a mutation and reproduces the failure |
 | 12 | Checkpoint fallback survives two rotations | **done** | `checkpoint` — g+2 newest, g+1 the mandated fallback, g droppable |
 | 13 | A pre-lock no-PRF profile cannot open `g+1` after a settled lock | **done** | `device-lock` — the replacement credential is sealed under `L_lock` with the same `LockSeal` machinery |
 | 14 | The same profile still opens up to `g`; `rotation_owed` spans the exact interval | **done** | `device-lock` — wraps by generation, and `rotation_owed` asserted derived from the apply step |
 
-**Only falsifier 10 remains, and it cannot be a vector.** A kill at each `GenerationApply` step is a crash-resume
-property of a local state machine; every other item here is a property of bytes. It belongs in `vitest`, and it is
-the one piece of Stage D that is a different kind of work from the rest.
+### Stage D is complete, and writing it changed two things
+
+**`settled_at` is load-bearing, and the model proved it by my leaving it out.** I first modelled step 8 as deleting
+the apply record. `null` then meant both *never started* and *finished*, so a restart after a completed transition
+could not tell them apart and began a second one — advancing a generation nobody had asked to advance. The record
+is settled first and cleaned afterwards. `A-schemas.md` already carried `settled_at`; the model confirmed why,
+rather than the schema being changed to suit the model.
+
+**Checkpoint admission has to be idempotent by construction, not by convention.** Step 6 prepending
+unconditionally would, on a replay, evict the second-newest checkpoint — destroying the fallback while resuming
+the very transition meant to preserve it. Admitting a checkpoint that is already newest is now a no-op.
+
+Both were found by assertions written before the model was, which is the point of writing them that way.
+
+**What falsifier 10 does not claim.** It models the decisions the transition worker makes. It says nothing about
+whether IndexedDB, the journal or the relay behave as modelled — those are `L-1` and `L-2` integration concerns —
+and it is only as good as the model. Each invariant is therefore written as the sentence it comes from rather than
+as a bare assertion, so a reviewer can check the model against the design rather than only against itself.
 
 **The AAD coverage audit caught a real mistake while this was being written**, and it is worth recording because
 it is the machinery working as designed. The first `service_nonce` negative failed on the comparison between the
