@@ -36,15 +36,14 @@ read it as "nothing to do", and do not edit those files to make it say otherwise
 
 ## State
 
-**Decided (5 of the 7 that are choices):** `P-1` recipient authority · `P-2` device-lock gating · `P-4` lapse
-authority · `P-6` Local archive factor · `P-8` checkpoint and creation authority. Records in
-[`decisions/`](./decisions/), each with its falsifiers. **`P-7` is the eighth node and is not a choice** — it
+**Decided (6 of the 7 that are choices):** `P-1` recipient authority · `P-2` device-lock gating · `P-3` write
+admission · `P-4` lapse authority · `P-6` Local archive factor · `P-8` checkpoint and creation authority.
+Records in [`decisions/`](./decisions/), each with its falsifiers. **`P-7` is the eighth node and is not a choice** — it
 is the standing rule that rows 18, 19 and 21 stay at their own gates and no remediation artifact selects them
 by implication. Nothing decides it; every action has to keep obeying it.
 
-**Outstanding decisions (2):** `P-3` write admission · `P-5` policy and closure authority. `P-3` gates `S0-3`
-and `P-5` gates `S0-1`; both feed `S0-8`. They are genuinely parallel work, and **they are now the only two
-things standing between here and `S0-8`.**
+**Outstanding decisions (1):** `P-5` policy and closure authority, which gates `S0-1` and through it `S0-4`.
+It is the last decision anywhere in the plan.
 
 **Actions:** `S0-2`, `S0-5`, `S0-6` and `S0-7` are **complete** across all five stages. `S0-1`, `S0-3` and
 `S0-4` are not started, and each waits on a decision or on another action rather than on capacity.
@@ -58,12 +57,12 @@ reproduces from the crate at 6,465 B · `pnpm retention:check` now cross-checks 
 
 ## What is ready to pick up, in order
 
-1. **`P-3` and `P-5`** — parallel, any order, any time, by anyone, and now on the critical path rather than
-   beside it. **`P-3` has evidence attached**: the journal probe measured a hard `localStorage` quota wall at
-   ~92k entries, which its oversize and storage-failure branch has to handle. See
-   [`probes/journal-append-probe.md`](./probes/journal-append-probe.md).
-2. **`S0-3`** the moment `P-3` lands, and **`S0-1`** the moment `P-5` does. **`S0-4`** then waits on `S0-1`
-   plus `S0-2`, which is already done — so `S0-1` unblocks two actions rather than one.
+1. **`S0-3`** — total local-write admission, the allocator and the trim budget. Unblocked: `P-3` is decided.
+   It is also where three already-applied repairs finish — the glue widths, the rotated-generation fixture and
+   the nonce ceiling, the last of which still owes the build-failing boundary test that `P-3`'s
+   `reserved[gen]` count now makes writable.
+2. **`P-5`** — the last decision, and then **`S0-1`**, and then **`S0-4`**, which needs `S0-1` plus `S0-2` and
+   `S0-2` is done. So `P-5` unblocks the whole remaining tail.
 3. **`S0-8`** — regeneration and the traceability matrix. Not startable until `S0-1`–`S0-7` are stable, which
    now means until `S0-1`, `S0-3` and `S0-4` are: the other four are complete.
 

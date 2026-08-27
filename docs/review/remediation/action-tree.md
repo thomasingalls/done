@@ -58,8 +58,8 @@ action closes.
 **The `P-` nodes are not peers, and the numbering does not say so.** The longest chain is
 `P-1 → P-2 → S0-2 → S0-5 → S0-6 → S0-7 → S0-8 → S0-9 → S0-10`, with `P-8` entering at `S0-5`. `P-3` and `P-5` sit
 off that chain entirely — `P-3` gates only `S0-3` and `P-5` only `S0-1`, and neither is consumed again before
-`S0-8`. `P-4` gated only `S0-7`, the last action before evidence regeneration, and **both are now done**, so
-what remains off the chain is `P-3` and `P-5` and what remains on it is `S0-8` onward. A reader working the list in
+`S0-8`. `P-4` gated only `S0-7`, the last action before evidence regeneration, and **both are now done**.
+**`P-3` is decided too**, so `S0-3` is startable and `P-5` is the only decision left anywhere in the plan. A reader working the list in
 number order will therefore spend the critical path's slack on decisions nothing is waiting for. Taken one at a
 time, the order is **`P-1` first**, because it constrains `P-2` by its own prerequisites, reaches rows 5/9/11/15,
 and shares its quorum question with `P-8` — answering it first stops that question being decided twice.
@@ -156,6 +156,24 @@ pinned tip.
   overstates the pending interval.
 
 ### `P-3` — choose write-admission behavior for oversize/storage failure
+
+> **Decided 2026-08-27: `RC-3C`, bound the operation rather than the write-ahead log.** Record and reasoning:
+> [`decisions/P-3-write-admission.md`](./decisions/P-3-write-admission.md). **Neither branch's premise held.**
+> The 64 KiB seal buffer is not the binding constraint — §12's 1 ms journal budget runs out at about **20 kB**
+> on the measured handset, so the guard sits about **3.2× past** a budget the design calls a correctness
+> property. And Branch B does not remove the cap: chunking seals the same bytes on the same thread, and the
+> append probe measured this origin's real ceiling at ~5.3 M stored characters. So one update is always one
+> entry, **no operation may produce an update above `MAX_UPDATE`** — paste, import, migration and bulk
+> maintenance slice instead — remote updates leave the journal's contract because §6.1's accepted-head ordering
+> already covers them, and quota plus unavailability collapse into the one not-durable state PRD §7.10 already
+> governs. Allocation is **per batch, exactly sized**, and the 2^32 comparison reads sequences **reserved**
+> under a generation rather than committed. Thirteen falsifiers are in that record.
+>
+> **Nothing is refused and the WASM module does not change.** The limit is on updates, not operations, so a
+> large paste appears progressively rather than failing — which is the blocking progress state Branch B says
+> large writes need, without the group-commit machinery. `MAX_UPDATE`'s exact value is derived from the budget
+> on the declared support population and is therefore downstream of
+> `f-bd87655-baseline-not-performance-floor`; 16 kB is an interim floor to build against.
 
 - **Prerequisites:** decide whether the product permits a pre-mutation operation/update ceiling. Obtain feasibility
   measurements for staged arbitrary-size WAL and for per-write versus range allocation.

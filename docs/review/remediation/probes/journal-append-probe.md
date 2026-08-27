@@ -74,6 +74,13 @@ be journalled at all*. That is the same total-write-admission gap `RC-3` describ
 for storage failure, now with a measured boundary attached rather than a hypothesised one: a stalled or failing
 batch commit has a hard ceiling, and what the writer does on reaching it is unselected.
 
+**`P-3` used it twice** ([`decisions/P-3-write-admission.md`](../decisions/P-3-write-admission.md), 2026-08-27).
+It disposes of Branch B's premise that a segmented WAL removes the cap — the cap is the origin's quota and this
+number is it — and it turned the back-pressure watermark into a **character** budget rather than an entry
+count. 92,176 entries is the 18-byte figure; at the admitted maximum the same quota holds a couple of hundred,
+so a design that bounds outstanding entries by count is wrong by two orders of magnitude at the size that
+matters.
+
 ## Reproducing
 
 ```bash
