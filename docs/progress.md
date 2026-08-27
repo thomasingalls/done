@@ -29,17 +29,40 @@ that is no longer active.
 
 ## Active slice: Stage 0 — select, measure, book
 
-**Status:** in flight · **Plan:** [sequencing.md](./sequencing.md) §3.1 · **Updated:** 2026-08-19
+**Status:** reopened · **Plan:** [sequencing.md](./sequencing.md) §3.1 · **Updated:** 2026-08-27
 
 Four bodies of work, almost none of which is application code, all of which get more expensive the later
 they start. Stage 1 cannot begin without the first; the last is calendar time that working harder does not
 compress. (The harness turned out to need four boot marks in the app — the one exception, and about 100
 bytes of it.)
 
-**All four are done**, three working days before the reviews they were racing. Both scopes are closed, both
-reviews are booked into the week of 2026-08-24, and what each reviewer receives is constructions and vectors
-rather than a register with open rows in it. **The slice is ready to close** — which means writing its outcome
-into [completed.md](./completed.md) and rewriting this file for Stage 1, in that order.
+**All four were done**, three working days before the reviews they were racing. Both scopes were closed, both
+reviews were booked into the week of 2026-08-24, and what each reviewer would receive was constructions and
+vectors rather than a register with open rows in it.
+
+**The slice was then reviewed as a lineage, and it is not ready to close.** A review of the whole range from
+the branch point to the intended end state produced **37 validated findings** — 19 current design defects, 9
+current closure or evidence defects, 5 later implementation or release gates, and 4 historical-only
+corrections. Three of the design defects are high severity, and two of those are the same failure in two
+carriers: **account authorization alone could cause delayed content-key delivery**, which is the guarantee
+this whole stage exists to make true. The review record is [`docs/review/`](./review/); the repair plan is
+[`docs/review/remediation/`](./review/remediation/).
+
+**What that does not mean.** The selections were mostly sound; the review says so explicitly and preserved the
+validated theorems. What it found is a set of joints between them — where an ephemeral ceremony was later
+consumed as durable authority, where a signed digest covered a count instead of the bytes it named, where an
+interlock's sentence had the wrong subject. Those are repairs, not a redesign.
+
+**The repair is in flight and is tracked separately.** Six decisions were required before any of it could
+start; four are taken (`P-1`, `P-2`, `P-6`, `P-8`) and three remain (`P-3`, `P-4`, `P-5`), none of them
+blocking. `S0-2` — the widest action, closing eight findings across the PRD, the TRD, eight selection rows and
+five generator/vector pairs — is complete. Eight findings are repaired outright.
+
+**Closing this slice now requires the corrected evidence to be regenerated (`S0-8`), independently challenged
+(`S0-9`), and the closure recorded (`S0-10`).** A booking is not a reviewer's result, and this file should not
+say the slice is ready again until those three have happened. See
+[`docs/review/remediation/HANDOFF.md`](./review/remediation/HANDOFF.md) for where the work lives and what is
+ready to pick up.
 
 ### 1. Select TRD §15's storage-review scope — done
 
