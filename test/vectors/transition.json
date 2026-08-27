@@ -3,6 +3,41 @@
   "generated_by": "scripts/generate-transition-vectors.mjs",
   "selection": "docs/selections/row-15-transitions.md",
   "trd_row": 15,
+  "certified_recipient_set": {
+    "why": "A rotator wraps to the certified set, never to the epoch roster. The roster enumerates every credential the service admitted; the certified set names the exact (credential, W_pub) pairs a person enrolled, and the exact recovery recipient. Without it, account authorization alone causes delayed content-key delivery: at the next unrelated rotation nothing distinguishes an admitted credential from one whose ceremony succeeded.",
+    "message": "CertifiedSet = LP(\"done/certified-set/v1\") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(dec parent_epoch) || LP(dec next_epoch) || LP(hex members_digest) || LP(hex recovery_state_digest)",
+    "members_digest": "SHA-256( LP(\"done/certified-members/v1\") || ( LP(credential_id) || LP(hex W_pub) )* sorted by credential_id )",
+    "approved_by": "One eligible content-holding client (P-1, single-owner). approvals[] is a list, so a threshold is later a verifier policy change rather than a format migration.",
+    "roster": [
+      "cred_01HZXR0000000000000000LAPT",
+      "cred_01HZXR00000000000000000PHN",
+      "cred_01HZXR000000000000000TABL",
+      "cred_01HZXR000000000000INTRUDR"
+    ],
+    "certified_members": {
+      "cred_01HZXR0000000000000000LAPT": "1111111111111111111111111111111111111111111111111111111111111111",
+      "cred_01HZXR00000000000000000PHN": "2222222222222222222222222222222222222222222222222222222222222222",
+      "cred_01HZXR000000000000000TABL": "3333333333333333333333333333333333333333333333333333333333333333"
+    },
+    "admitted_but_uncertified": "cred_01HZXR000000000000INTRUDR",
+    "excluded_by_this_rotation": [
+      "cred_01HZXR000000000000000TABL"
+    ],
+    "licensed_recipients": [
+      "cred_01HZXR00000000000000000PHN",
+      "cred_01HZXR0000000000000000LAPT"
+    ],
+    "wrapped_by_this_rotation": [
+      "cred_01HZXR00000000000000000PHN",
+      "cred_01HZXR0000000000000000LAPT"
+    ],
+    "members_digest_value": "70b4065eb298f704bb3646def7eed405199c0dfc818bbd3bdd3d15a70f03f5dc",
+    "recovery_state_digest": "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+    "message_hex": "0015646f6e652f6365727469666965642d7365742f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000137000138004037306234303635656232393866373034626233363436646566376565643430353139396330646663383138626264336264643364313561373066303366356463004063646364636463646364636463646364636463646364636463646364636463646364636463646364636463646364636463646364636463646364636463646364",
+    "approval": "26d0996befa9f399cc162c3355be3783d935c15d02ee5c6cf0184a98109a28adeaebe0c4e79aff7282b38d3a6bbc9d964b34d7a8e4320e010e4cd403208c7605",
+    "approver_public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+    "expected": "licensed_recipients equals wrapped_by_this_rotation, and admitted_but_uncertified appears in roster and in neither"
+  },
   "construction": {
     "one_protocol": "One intent-and-outcome protocol at three kinds -- rotate, replace-recovery, retire -- because §11.2 test 11s list is one class: a multi-step transition whose interrupted middle can be mistaken for a completed *lesser* transition.",
     "intent": "Intent = LP(\"done/transition/v1\") || LP(dec v) || LP(kind) || LP(workspace_id) || LP(lineage_id) || LP(dec parent_epoch) || LP(dec target) || LP(hex payload_digest), signed by the requesting device credential. id = SHA-256(Intent).",
@@ -109,14 +144,40 @@
         "lineage_id": "ln_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
         "parent_epoch": 7,
         "target": 1,
-        "payload_digest": "dbdc561f464fd0fe022b54edb6e00a5356e0123c88b3ee662d0ec11c09c64817"
+        "payload_digest": "e7839b9f64bb7aea12229c02a7d7c889a4de7fccb899ace4a2c9d95360ce5ecc",
+        "payload_parts": [
+          {
+            "name": "counter",
+            "value": "1"
+          },
+          {
+            "name": "new-recovery-public-key",
+            "value": "abababababababababababababababababababababababababababababababab"
+          },
+          {
+            "name": "recovery-envelope",
+            "value": "0f1e2d3c4b5a69788796a5b4c3d2e1f0112233445566778899aabbcc4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36fedcba98765432100123456789abcdef"
+          },
+          {
+            "name": "root-commitment",
+            "value": "7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c"
+          },
+          {
+            "name": "successor-generation",
+            "value": "6"
+          },
+          {
+            "name": "wraps",
+            "value": "1:1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a|2:2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b|3:3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c|4:4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d|5:5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e"
+          }
+        ]
       },
       "derived": {
-        "message": "0012646f6e652f7472616e736974696f6e2f763100013100107265706c6163652d7265636f76657279001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000137000131004064626463353631663436346664306665303232623534656462366530306135333536653031323363383862336565363632643065633131633039633634383137"
+        "message": "0012646f6e652f7472616e736974696f6e2f763100013100107265706c6163652d7265636f76657279001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000137000131004065373833396239663634626237616561313232323963303261376437633838396134646537666363623839396163653461326339643935333630636535656363"
       },
       "expected": {
-        "id": "d55ba635d4d40aebc6a0a25322490e1bc187b28333f9353b2f1f030ab3997c8f",
-        "signature": "29fd18757c04d0cc0bdb281df69e54f74f3a668d042f9e67ce0d6be6ba9e84c0bce56a8303b4dc0911366eafbdd62618c0ce5d1fb3b389c2c051e88f4fb7ad08",
+        "id": "767b02eaaa1987f7182baf775c165db09de167bf8bd209eb82194721b199e16f",
+        "signature": "2d232f570d06aab05efbfcd26892fa0de1298a60f9976fe0d712654e8497a778f113d36f2cfd0e03c5abad241ec2e1c4eb6072a795ebea8f2e3fab7aca4bb70e",
         "signed_by": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
       }
     }
@@ -174,13 +235,13 @@
         "lineage_id": "ln_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
         "target": 1,
         "epoch": 8,
-        "committed_id": "d55ba635d4d40aebc6a0a25322490e1bc187b28333f9353b2f1f030ab3997c8f"
+        "committed_id": "767b02eaaa1987f7182baf775c165db09de167bf8bd209eb82194721b199e16f"
       },
       "derived": {
-        "message": "0016646f6e652f7472616e736974696f6e2d6f75742f763100013100107265706c6163652d7265636f76657279001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000131000138004064353562613633356434643430616562633661306132353332323439306531626331383762323833333366393335336232663166303330616233393937633866"
+        "message": "0016646f6e652f7472616e736974696f6e2d6f75742f763100013100107265706c6163652d7265636f76657279001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000131000138004037363762303265616161313938376637313832626166373735633136356462303964653136376266386264323039656238323139343732316231393965313666"
       },
       "expected": {
-        "signature": "fbec67308e1eacf45e2558d52a9cc8e610d3b8a095632de2cf5933db19f697806093d08ab8c57ba3f997db6cf08959ac9b53672d1ff337255ad660d937c0c200",
+        "signature": "f5b04ce9f04dff9189ec54b3726d964392f91fbf1dba19866d3e7dd267d0f66bef49ac68f706e4cf41c4ef4cc907be4794d77ddf6de478773b94a78929dc5507",
         "signed_by": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025",
         "verdict": "committed"
       }
@@ -223,6 +284,27 @@
       "expected": "byte-identical to the first submission"
     },
     {
+      "name": "a-replacement-is-bound-to-its-exact-bytes",
+      "why": "Row 14 offers replacement as the answer to a lost -- or exposed -- code, and row 15 says an interruption leaves exactly the old envelope or exactly the new. Both sentences are claims about bytes. The superseded payload bound the new public key and the string \"1|2|3|4|5\", so it said which generations were rewrapped and never to what: each variant below is a complete, well-formed replacement differing from the selected one in one place, and the first three collided with it. Published as digests rather than asserted in prose, because the collision is the whole finding.",
+      "selected": "e7839b9f64bb7aea12229c02a7d7c889a4de7fccb899ace4a2c9d95360ce5ecc",
+      "differing": {
+        "one-byte-of-the-sealed-envelope": "4953d8e7ffbe85568893fd8b6e32cd03e51cc8de8fc9559395bfd9be722141a4",
+        "one-generations-wrap": "e1b83eea55d134c480b3b888fc3ff9295581dcca7c03c2a91b68dda7d2a4d1ba",
+        "a-generation-dropped-from-the-set": "927c6cf7fe7a41d5010124d34ffa9eef995431dfe9d2e6d92a42971bd71f8917",
+        "the-successor-generation": "ab65b19ef2290623ec58547c83ed26a782f6ed98cefbea705d483480bf3a34ec",
+        "the-root-commitment": "308185c3fc4c21b34505f6fb7610e526d4e33ef3ce4e68e68e5ec89b226c6f43"
+      },
+      "superseded_construction": {
+        "bound": [
+          "new-recovery-public-key",
+          "rewrapped-generations"
+        ],
+        "digest": "dbdc561f464fd0fe022b54edb6e00a5356e0123c88b3ee662d0ec11c09c64817",
+        "note": "What the first three variants above could not be distinguished from."
+      },
+      "expected": "every variant differs from the selected digest"
+    },
+    {
       "name": "a-rotation-and-a-retirement-differ-in-one-field",
       "why": "PRD §6.10 says a deliberate downgrade must not silently become account deletion. These two intents are the same workspace, lineage, parent epoch and target; the messages diverge at `kind` and again at the payload it selects. Published side by side because the sentence reads as interface guidance and is a binding requirement.",
       "rotate_message": "0012646f6e652f7472616e736974696f6e2f76310001310006726f74617465001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000137000135004037336161346266353261376365306663623831663037303231376633633232656236343135313863363132383732643836653034373034316636303166346531",
@@ -232,6 +314,22 @@
     }
   ],
   "must_fail": [
+    {
+      "name": "certified-set-approved-by-an-impostor",
+      "why": "The approval is the whole difference between a roster and a recipient set. Signed by a key that is neither an eligible client nor the lineage authorization key, it is a service asserting who may receive a content key -- which is the separation this row exists to keep."
+    },
+    {
+      "name": "certified-set-from-another-epoch",
+      "why": "A set approved against one parent epoch, presented at a later one. Without the parent binding, an approval collected when a credential was legitimately a member survives its removal, and a rotator replays a stale membership as a current one."
+    },
+    {
+      "name": "certified-set-with-an-added-member",
+      "why": "The row, as a signature check. The service adds a credential it admitted to the members and presents the honest approval beside it. The approval covers `members_digest`, so the added member changes the message the signature was taken over."
+    },
+    {
+      "name": "certified-set-with-substituted-recovery-state",
+      "why": "The same at the recovery carrier: the approval covers `recovery_state_digest`, so a substituted R_pub cannot ride an honest approval. This is what stops a correctly-enrolled device wrapping future generations to a key the service holds."
+    },
     {
       "name": "fabricated-refusal",
       "why": "The attack row 6 left open. A definite refusal licenses discarding a live content key and rebuilding; silence does not. Row 6 stated the rule and did not say the refusal must be authenticated -- so anything that can withhold an outcome can fabricate one, and induce a rotation to be thrown away and rebuilt against an epoch of the attacker's choosing. Signed by a key that is not the lineage's authorization key."

@@ -113,6 +113,7 @@ const transcript = ({
   existingCredential,
   newCredential,
   wrappingKey,
+  recoveryStateDigest,
   nonceExisting,
   nonceNew,
   label = TRANSCRIPT_LABEL,
@@ -126,6 +127,7 @@ const transcript = ({
       existing_credential_id: existingCredential,
       new_credential_id: newCredential,
       new_wrapping_key: wrappingKey,
+      recovery_state_digest: recoveryStateDigest,
       nonce_existing: nonceExisting,
       nonce_new: nonceNew,
     }).map(lp),
@@ -225,6 +227,47 @@ const publicFromScalar = (scalar) => {
  * binding a public key to a private one proves nothing if its own halves are
  * unrelated.
  */
+/**
+ * The recovery recipient the new device will install, as one digest.
+ *
+ * **It is in the transcript because `new_wrapping_key` alone was not enough.**
+ * The ceremony authenticates whose wrapping key receives `K_g` now; it said
+ * nothing about which recovery key that device would wrap *future* generations
+ * to. A service that hands the new device an attacker-controlled `R_pub` and a
+ * matching opaque envelope therefore gets the honest, correctly-enrolled device
+ * to do the wrapping for it -- the same attack as `substituted-wrapping-key`,
+ * one carrier along, and invisible to a transcript that stops at `W_pub`.
+ *
+ * Binding the digest rather than the parts keeps the typed string five symbols:
+ * the existing device already holds this state and is comparing, not learning.
+ */
+const RECOVERY_STATE = {
+  counter: 1,
+  r_pub: 'ab'.repeat(32),
+  recovery_envelope_digest: 'cd'.repeat(32),
+  root_commitment: '7c'.repeat(32),
+};
+const SUBSTITUTED_RECOVERY_STATE = { ...RECOVERY_STATE, r_pub: 'ef'.repeat(32) };
+
+/** Both digests, computed once in `main` and read by `HONEST` and its negatives. */
+let honestRecoveryDigest;
+let substitutedRecoveryDigest;
+
+const recoveryStateDigest = async (state) =>
+  hex(
+    await sha256(
+      concat(
+        ...[
+          'done/recovery-state/v1',
+          String(state.counter),
+          state.r_pub,
+          state.recovery_envelope_digest,
+          state.root_commitment,
+        ].map(lp),
+      ),
+    ),
+  );
+
 const KEYPAIRS = {
   new_device: {
     role: 'The new device’s wrapping keypair. Its public half is what the SAS authenticates.',
@@ -280,6 +323,7 @@ const HONEST = {
   existingCredential: LAPTOP,
   newCredential: PHONE,
   wrappingKey: KEYPAIRS.new_device.public_key,
+  recoveryStateDigest: null, // filled in main(), since the digest is computed
   nonceExisting: NONCE_EXISTING,
   nonceNew: NONCE_NEW,
 };
@@ -339,6 +383,10 @@ const NEGATIVES = [
       'Exchange the two nonces. The transcript binds them in fixed positions, so the ceremony is role-ordered and swapping the devices is a different ceremony.',
   },
   {
+    name: 'substituted-recovery-state',
+    why: 'The wrapping-key substitution one carrier along, and the one the transcript could not see. The service admits the genuine new device, authenticates its genuine W_pub, and hands it an attacker-controlled R_pub with a matching opaque envelope. Every symbol of the SAS matches, the enrollment succeeds, and the honestly-enrolled device wraps every future generation to a key the service holds. Binding the recovery state the new device installs is what makes the existing device unable to certify a recipient it does not itself hold.',
+  },
+  {
     name: 'aad-only-renumbered-transcript-label',
     mutate:
       'Derive the SAS under "done/enroll/v2". The label is where this carrier authenticates its own version (row 1).',
@@ -370,6 +418,7 @@ const verify = async (honestSas, honestCommitments) => {
 
   for (const [name, patch] of [
     ['substituted-wrapping-key', { wrappingKey: KEYPAIRS.substituted.public_key }],
+    ['substituted-recovery-state', { recoveryStateDigest: substitutedRecoveryDigest }],
     ['wrong-workspace', { workspace: 'ws_01J0000000000000000000000A' }],
     ['wrong-epoch', { epoch: EPOCH + 1 }],
     ['stale-epoch-head', { epochHead: HEAD_8 }],
@@ -435,6 +484,13 @@ const grind = async (honestSas, symbols) => {
 const main = async () => {
   checkAlphabet();
   checkKeypairs();
+
+  honestRecoveryDigest = await recoveryStateDigest(RECOVERY_STATE);
+  substitutedRecoveryDigest = await recoveryStateDigest(SUBSTITUTED_RECOVERY_STATE);
+  HONEST.recoveryStateDigest = honestRecoveryDigest;
+  if (honestRecoveryDigest === substitutedRecoveryDigest) {
+    throw new Error('The two recovery states digest identically; the negative proves nothing.');
+  }
 
   const honestCommitments = {
     existing: await commit('existing', NONCE_EXISTING),

@@ -40,7 +40,7 @@
 import { writeFileSync, readFileSync } from 'node:fs';
 import { webcrypto as crypto } from 'node:crypto';
 
-import { aadFields, assertedNames, refuses, reportAudit } from './lib/aad-coverage.mjs';
+import { aadFields, assertedNames, eliding, refuses, reportAudit } from './lib/aad-coverage.mjs';
 
 const OUT = new URL('../test/vectors/transition.json', import.meta.url);
 const ROW_1 = new URL('../test/vectors/algorithm-suite.json', import.meta.url);
@@ -178,6 +178,104 @@ const WRAP = {
 };
 const RECOVERY_WRAP = '00112233445566778899aabbccddeeff';
 
+/**
+ * What a `replace-recovery` actually replaces, as bytes rather than as a count.
+ *
+ * **The row-14 envelope is 76 bytes** -- 16 salt, 12 nonce, the 32-byte scalar
+ * and a 16-byte tag -- and every one of them is the thing "exactly the old or
+ * exactly the new" is a claim about. `REWRAPPED` is the same at the other
+ * carrier: one exact wrap per retained generation, not the list `1|2|3|4|5`
+ * that named them.
+ */
+const NEW_R_PUB = 'ab'.repeat(32);
+const RECOVERY_ENVELOPE =
+  '0f1e2d3c4b5a69788796a5b4c3d2e1f0' +
+  '112233445566778899aabbcc' +
+  '4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36' +
+  'fedcba98765432100123456789abcdef';
+const ROOT_COMMITMENT = '7c'.repeat(32);
+const REWRAPPED = {
+  1: '1a'.repeat(16),
+  2: '2b'.repeat(16),
+  3: '3c'.repeat(16),
+  4: '4d'.repeat(16),
+  5: '5e'.repeat(16),
+};
+const SUCCESSOR_GEN = 6;
+
+/**
+ * A credential the service admitted and no person enrolled.
+ *
+ * **It is in the epoch and it is not a recipient, and that gap is the row.** The
+ * epoch enumerates every admitted credential, which is what made it usable as a
+ * roster -- and what let account authorization alone cause *delayed* key
+ * delivery: nothing distinguished this credential, at the next unrelated
+ * rotation, from one whose ceremony had actually succeeded.
+ */
+const INTRUDER = 'cred_01HZXR000000000000INTRUDR';
+
+/** Every credential the service-signed epoch enumerates. */
+const ROSTER = [LAPTOP, PHONE, TABLET, INTRUDER];
+
+/** The wrapping public key each ceremony authenticated. The intruder has none. */
+const W_PUB = {
+  [LAPTOP]: '11'.repeat(32),
+  [PHONE]: '22'.repeat(32),
+  [TABLET]: '33'.repeat(32),
+};
+
+const CERTIFIED_MEMBERS = { ...W_PUB };
+const RECOVERY_STATE_DIGEST = 'cd'.repeat(32);
+
+/**
+ * `members_digest` binds the credential to the exact key a rotator encrypts to.
+ *
+ * **Credential-to-key, never credential-to-boolean.** The roster was never what
+ * was missing; the service does enumerate credentials. What was missing is an
+ * approval of the *key*, so an admitted-but-uncertified credential has no
+ * approved pair and there is nothing to wrap to.
+ */
+const membersDigest = async (members) =>
+  hex(
+    await sha256(
+      concat(
+        lp('done/certified-members/v1'),
+        ...Object.entries(members)
+          .toSorted(([a], [b]) => (a < b ? -1 : 1))
+          .flatMap(([cred, w]) => [lp(cred), lp(w)]),
+      ),
+    ),
+  );
+
+const certifiedSetMessage = ({
+  label = 'done/certified-set/v1',
+  v = VERSION,
+  workspace = WORKSPACE,
+  lineage = LINEAGE,
+  parentEpoch = PARENT_EPOCH,
+  nextEpoch = PARENT_EPOCH + 1,
+  members,
+  recoveryStateDigest = RECOVERY_STATE_DIGEST,
+}) =>
+  concat(
+    ...[
+      label,
+      String(v),
+      workspace,
+      lineage,
+      String(parentEpoch),
+      String(nextEpoch),
+      members,
+      recoveryStateDigest,
+    ].map(lp),
+  );
+
+/** Who a rotation may wrap to: the certified members, less those it excludes. */
+const recipientsOf = (members, excluded) =>
+  Object.keys(members)
+    .filter((c) => !excluded.includes(c))
+    .toSorted();
+
 /** Row 5's accepted heads at the cutoff -- `(credential, position, link)`. */
 const CUTOFF = [
   { credential: LAPTOP, seq: 41, link: 'aa'.repeat(32) },
@@ -211,6 +309,39 @@ const payloadDigest = async (entries) =>
         .flatMap(({ name, value }) => [lp(name), lp(value)]),
     ),
   );
+
+/**
+ * `replace-recovery`'s parts, and every value is bytes.
+ *
+ * **This mirrors `rotationPayload` deliberately, because it did not.** Rotation
+ * has always bound the exact wrap for every recipient and the exact recovery
+ * wrap; replacement bound `new-recovery-public-key` and the string
+ * `"1|2|3|4|5"`. So a signed replacement said *which* generations were
+ * rewrapped and never *to what* -- and two replacements that differ in the
+ * sealed envelope, or in any single generation's wrap, produced the same
+ * digest. Atomicity cannot mean "one exact complete set won" when the set's
+ * contents are outside the signature.
+ *
+ * `successor-generation` is the other half. Resealing leaves `K_g` unchanged,
+ * so an exposed `R_priv` still opens current content after a replacement that
+ * only re-encrypts it. Row 14 offers this flow to the user who has lost *or
+ * exposed* the code, so the successor is in the signed payload and the only
+ * way not to rotate is to say so in it.
+ */
+const replacementPayload = ({ counter, rPub, envelope, rootCommitment, wraps, successor }) => [
+  { name: 'counter', value: String(counter) },
+  { name: 'new-recovery-public-key', value: rPub },
+  { name: 'recovery-envelope', value: envelope },
+  { name: 'root-commitment', value: rootCommitment },
+  { name: 'successor-generation', value: String(successor) },
+  {
+    name: 'wraps',
+    value: Object.entries(wraps)
+      .toSorted(([a], [b]) => Number(a) - Number(b))
+      .map(([g, w]) => `${g}:${w}`)
+      .join('|'),
+  },
+];
 
 const rotationPayload = ({ excluded, wraps, recoveryWrap, cutoff }) => [
   {
@@ -356,6 +487,22 @@ const settle = async ({ intent, intentId, outcome, outcomeSig, authorizationPubl
 
 const MUST_FAIL = [
   {
+    name: 'certified-set-approved-by-an-impostor',
+    why: 'The approval is the whole difference between a roster and a recipient set. Signed by a key that is neither an eligible client nor the lineage authorization key, it is a service asserting who may receive a content key -- which is the separation this row exists to keep.',
+  },
+  {
+    name: 'certified-set-from-another-epoch',
+    why: 'A set approved against one parent epoch, presented at a later one. Without the parent binding, an approval collected when a credential was legitimately a member survives its removal, and a rotator replays a stale membership as a current one.',
+  },
+  {
+    name: 'certified-set-with-an-added-member',
+    why: 'The row, as a signature check. The service adds a credential it admitted to the members and presents the honest approval beside it. The approval covers `members_digest`, so the added member changes the message the signature was taken over.',
+  },
+  {
+    name: 'certified-set-with-substituted-recovery-state',
+    why: 'The same at the recovery carrier: the approval covers `recovery_state_digest`, so a substituted R_pub cannot ride an honest approval. This is what stops a correctly-enrolled device wrapping future generations to a key the service holds.',
+  },
+  {
     name: 'fabricated-refusal',
     why: "The attack row 6 left open. A definite refusal licenses discarding a live content key and rebuilding; silence does not. Row 6 stated the rule and did not say the refusal must be authenticated -- so anything that can withhold an outcome can fabricate one, and induce a rotation to be thrown away and rebuilt against an epoch of the attacker's choosing. Signed by a key that is not the lineage's authorization key.",
   },
@@ -443,6 +590,59 @@ const main = async () => {
   await checkKeypairs();
   checkAgainstRow1();
 
+  // --- the certified recipient set, and what a rotator is allowed to read -------
+
+  const honestMembers = await membersDigest(CERTIFIED_MEMBERS);
+  const honestSet = certifiedSetMessage({ members: honestMembers });
+  const approval = await sign(KEYS.owner.seed, honestSet);
+
+  const approves = async (over, sig = approval) => {
+    const ok = await verify(
+      KEYS.owner.public_key,
+      sig,
+      certifiedSetMessage({ members: honestMembers, ...over }),
+    );
+    if (!ok) throw new Error('the approval does not cover this set');
+    return ok;
+  };
+  if (!(await approves({}))) throw new Error('the honest approval does not verify.');
+
+  await refuses('certified-set-approved-by-an-impostor', async () =>
+    approves({}, await sign(KEYS.impostor.seed, honestSet)),
+  );
+  await refuses('certified-set-from-another-epoch', () => approves({ parentEpoch: LATER_EPOCH }));
+  await refuses('certified-set-with-an-added-member', async () =>
+    approves({
+      members: await membersDigest({ ...CERTIFIED_MEMBERS, [INTRUDER]: '44'.repeat(32) }),
+    }),
+  );
+  await refuses('certified-set-with-substituted-recovery-state', () =>
+    approves({ recoveryStateDigest: 'ef'.repeat(32) }),
+  );
+
+  /**
+   * The rotation wraps to the certified set, and this is the assertion that says so.
+   *
+   * `INTRUDER` sits in `ROSTER` and not in `CERTIFIED_MEMBERS`. A rotator that
+   * read the epoch -- which is what §13.7 said before `S0-2` -- would build a
+   * wrap for it, and the service would hold a wrap it can open. A rotator that
+   * reads the certified set cannot: there is no approved pair to encrypt to.
+   */
+  const recipients = recipientsOf(CERTIFIED_MEMBERS, [TABLET]);
+  const wrapped = Object.keys(WRAP).toSorted();
+  if (wrapped.join('|') !== recipients.join('|')) {
+    throw new Error(
+      `The rotation wraps to ${wrapped.join(', ')} but the certified set licenses ${recipients.join(', ')}.`,
+    );
+  }
+  if (!ROSTER.includes(INTRUDER)) throw new Error('the intruder is not in the roster it exploits.');
+  if (wrapped.includes(INTRUDER)) {
+    throw new Error('A service-admitted credential received a wrap. The rotator read the roster.');
+  }
+  if (recipientsOf(CERTIFIED_MEMBERS, []).includes(INTRUDER)) {
+    throw new Error('The intruder is a certified member; the fixture proves nothing.');
+  }
+
   const auth = KEYS.authorization;
   const owner = KEYS.owner;
 
@@ -475,12 +675,78 @@ const main = async () => {
       { name: 'terminal-head', value: 'de'.repeat(32) },
     ]),
   );
-  const replacePayload = hex(
+  const replaceInputs = {
+    counter: 1,
+    rPub: NEW_R_PUB,
+    envelope: RECOVERY_ENVELOPE,
+    rootCommitment: ROOT_COMMITMENT,
+    wraps: REWRAPPED,
+    successor: SUCCESSOR_GEN,
+  };
+  const replaceParts = replacementPayload(replaceInputs);
+  const replacePayload = hex(await payloadDigest(replaceParts));
+
+  // Same idempotency requirement as the rotation above: a retry that builds the
+  // wraps in a different order must reproduce the digest exactly.
+  if (
+    hex(
+      await payloadDigest(
+        replacementPayload({
+          ...replaceInputs,
+          wraps: Object.fromEntries(Object.entries(REWRAPPED).toReversed()),
+        }),
+      ),
+    ) !== replacePayload
+  ) {
+    throw new Error('The replacement payload digest depends on input order.');
+  }
+
+  /**
+   * The bytes are bound, and this is what proves it rather than asserting it.
+   *
+   * Each variant below is a *complete, well-formed* replacement that differs
+   * from the selected one in exactly one place. Under the superseded
+   * construction -- `new-recovery-public-key` plus `"1|2|3|4|5"` -- the first
+   * three produced an identical digest, because none of them changes which
+   * generations were rewrapped or the public key they were rewrapped to. They
+   * are difference assertions, so they guard on the elision driver: eliding the
+   * field two constructions differ in would otherwise crash the subprocess
+   * instead of rescuing a negative.
+   */
+  const replaceVariants = {
+    'one-byte-of-the-sealed-envelope': {
+      ...replaceInputs,
+      envelope: RECOVERY_ENVELOPE.slice(0, -2) + (RECOVERY_ENVELOPE.endsWith('ef') ? 'ee' : 'ef'),
+    },
+    'one-generations-wrap': { ...replaceInputs, wraps: { ...REWRAPPED, 3: '99'.repeat(16) } },
+    'a-generation-dropped-from-the-set': {
+      ...replaceInputs,
+      wraps: Object.fromEntries(Object.entries(REWRAPPED).filter(([g]) => g !== '5')),
+    },
+    'the-successor-generation': { ...replaceInputs, successor: SUCCESSOR_GEN + 1 },
+    'the-root-commitment': { ...replaceInputs, rootCommitment: '8d'.repeat(32) },
+  };
+  const replaceVariantDigests = {};
+  for (const [what, inputs] of Object.entries(replaceVariants)) {
+    replaceVariantDigests[what] = hex(await payloadDigest(replacementPayload(inputs)));
+    if (!eliding() && replaceVariantDigests[what] === replacePayload) {
+      throw new Error(
+        `A replacement differing in ${what} produced the selected payload digest. ` +
+          'The bytes are not bound, and "exactly the old or exactly the new" means nothing.',
+      );
+    }
+  }
+
+  // What the superseded construction bound, kept only to be compared against.
+  const numbersOnlyPayload = hex(
     await payloadDigest([
-      { name: 'new-recovery-public-key', value: 'ab'.repeat(32) },
-      { name: 'rewrapped-generations', value: '1|2|3|4|5' },
+      { name: 'new-recovery-public-key', value: NEW_R_PUB },
+      { name: 'rewrapped-generations', value: Object.keys(REWRAPPED).join('|') },
     ]),
   );
+  if (!eliding() && numbersOnlyPayload === replacePayload) {
+    throw new Error('The corrected replacement payload is the superseded one.');
+  }
 
   // --- intent vectors ----------------------------------------------------------
 
@@ -507,7 +773,7 @@ const main = async () => {
       kind: 'replace-recovery',
       target: 1,
       payload: replacePayload,
-      parts: null,
+      parts: replaceParts,
     },
   ];
 
@@ -802,6 +1068,18 @@ const main = async () => {
       expected: 'byte-identical to the first submission',
     },
     {
+      name: 'a-replacement-is-bound-to-its-exact-bytes',
+      why: 'Row 14 offers replacement as the answer to a lost -- or exposed -- code, and row 15 says an interruption leaves exactly the old envelope or exactly the new. Both sentences are claims about bytes. The superseded payload bound the new public key and the string "1|2|3|4|5", so it said which generations were rewrapped and never to what: each variant below is a complete, well-formed replacement differing from the selected one in one place, and the first three collided with it. Published as digests rather than asserted in prose, because the collision is the whole finding.',
+      selected: replacePayload,
+      differing: replaceVariantDigests,
+      superseded_construction: {
+        bound: ['new-recovery-public-key', 'rewrapped-generations'],
+        digest: numbersOnlyPayload,
+        note: 'What the first three variants above could not be distinguished from.',
+      },
+      expected: 'every variant differs from the selected digest',
+    },
+    {
       name: 'a-rotation-and-a-retirement-differ-in-one-field',
       why: 'PRD §6.10 says a deliberate downgrade must not silently become account deletion. These two intents are the same workspace, lineage, parent epoch and target; the messages diverge at `kind` and again at the payload it selects. Published side by side because the sentence reads as interface guidance and is a binding requirement.',
       rotate_message: rotateMsg,
@@ -832,6 +1110,28 @@ const main = async () => {
     generated_by: 'scripts/generate-transition-vectors.mjs',
     selection: 'docs/selections/row-15-transitions.md',
     trd_row: 15,
+    certified_recipient_set: {
+      why: 'A rotator wraps to the certified set, never to the epoch roster. The roster enumerates every credential the service admitted; the certified set names the exact (credential, W_pub) pairs a person enrolled, and the exact recovery recipient. Without it, account authorization alone causes delayed content-key delivery: at the next unrelated rotation nothing distinguishes an admitted credential from one whose ceremony succeeded.',
+      message:
+        'CertifiedSet = LP("done/certified-set/v1") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(dec parent_epoch) || LP(dec next_epoch) || LP(hex members_digest) || LP(hex recovery_state_digest)',
+      members_digest:
+        'SHA-256( LP("done/certified-members/v1") || ( LP(credential_id) || LP(hex W_pub) )* sorted by credential_id )',
+      approved_by:
+        'One eligible content-holding client (P-1, single-owner). approvals[] is a list, so a threshold is later a verifier policy change rather than a format migration.',
+      roster: ROSTER,
+      certified_members: CERTIFIED_MEMBERS,
+      admitted_but_uncertified: INTRUDER,
+      excluded_by_this_rotation: [TABLET],
+      licensed_recipients: recipientsOf(CERTIFIED_MEMBERS, [TABLET]),
+      wrapped_by_this_rotation: Object.keys(WRAP).toSorted(),
+      members_digest_value: honestMembers,
+      recovery_state_digest: RECOVERY_STATE_DIGEST,
+      message_hex: hex(honestSet),
+      approval: hex(approval),
+      approver_public_key: KEYS.owner.public_key,
+      expected:
+        'licensed_recipients equals wrapped_by_this_rotation, and admitted_but_uncertified appears in roster and in neither',
+    },
     construction: {
       one_protocol:
         'One intent-and-outcome protocol at three kinds -- rotate, replace-recovery, retire -- because §11.2 test 11s list is one class: a multi-step transition whose interrupted middle can be mistaken for a completed *lesser* transition.',
