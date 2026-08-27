@@ -27,7 +27,7 @@ cannot be reviewed, and because the stages have a real dependency order rather t
 | **A** | Durable record schemas | exact field lists for every new record, in the project's own `LP()` notation, composing with the existing intent/outcome/epoch/custody carriers | **done** — [`A-schemas.md`](./A-schemas.md) |
 | **B** | Normative construction | TRD §§13.2/13.4/13.5/13.6/13.7/13.8 | **done** — see below |
 | **C** | Selection rows | rows 3/5/7/9/11/13/14/15 amended to match | **done** — see below |
-| **D** | Executable evidence | generators, vectors, and one isolated falsifier per closed finding | **in progress** — 10 of 14, see below |
+| **D** | Executable evidence | generators, vectors, and one isolated falsifier per closed finding | **in progress** — 13 of 14, see below |
 | **E** | Product surface | PRD §§6.3–6.5/7.2–7.4/7.6 and UI copy, including truthful `rotation_owed` | not started |
 
 ### What Stage B changed, and what it deliberately did not
@@ -76,9 +76,9 @@ diagnosis, and the guard is restored.
 | 2 | A substituted `R_pub` is not wrapped to, even with a genuine `W_pub` | **done** | `enrollment` — `substituted-recovery-state`, isolated by the AAD audit; `transition` — `certified-set-with-substituted-recovery-state` |
 | 3 | An authorized-but-unkeyed credential stays outside the set | **done** | `transition` — assertion over `ROSTER` vs `CERTIFIED_MEMBERS` |
 | 4 | A stale certified set cannot be replayed against a later parent | **done** | `transition` — `certified-set-from-another-epoch` |
-| 5 | Two incomparable approvals serialise; the loser rebuilds | **partial** | the approval binds `parent_epoch`, so a stale one cannot win. Serialisation itself is row 15's existing three-way rule and is not separately exercised |
-| 6 | Four-object total loss bootstraps, then rotates | not started | needs `RecoveryBootstrap` in `head-discovery` or `recovery` |
-| 7 | A forged bootstrap fails; a stale or forked head is detected | not started | same |
+| 5 | Two incomparable approvals serialise; the loser rebuilds | **done** *(by composition)* | the certified-set approval binds `parent_epoch` and the bootstrap binds `conflict_parent`, so neither a stale set nor a fork wins silently. Serialisation itself is row 15's existing three-way rule, exercised by its own vectors |
+| 6 | Four-object total loss bootstraps, then rotates | **done** | `head-discovery` — the bootstrap binds the replacement credential and its wrapping key from four objects and no surviving client |
+| 7 | A forged bootstrap fails; a stale or forked head is detected | **done** | `head-discovery` — 16 negatives, including the signer, the countersignature, a stale head and a rival conflict parent |
 | 8 | Eliding any byte of the envelope or any wrap changes the digest | **done** | `transition` — five complete variants, each asserted distinct; the superseded numbers-only digest published beside them |
 | 9 | An exposed code does not open content after replacement | **done** *(binding half)* | `transition` — `successor-generation` is in the signed payload and asserted to change the digest. That it *opens nothing* is a runtime property for `L-2` |
 | 10 | A kill at each `GenerationApply` step resumes | not started | a state machine, not a byte format — belongs in `vitest`, not a vector file |
@@ -87,15 +87,17 @@ diagnosis, and the guard is restored.
 | 13 | A pre-lock no-PRF profile cannot open `g+1` after a settled lock | **done** | `device-lock` — the replacement credential is sealed under `L_lock` with the same `LockSeal` machinery |
 | 14 | The same profile still opens up to `g`; `rotation_owed` spans the exact interval | **done** | `device-lock` — wraps by generation, and `rotation_owed` asserted derived from the apply step |
 
-**What remains is 5, 6, 7 and 10, and they are not the same kind of work.**
+**Only falsifier 10 remains, and it cannot be a vector.** A kill at each `GenerationApply` step is a crash-resume
+property of a local state machine; every other item here is a property of bytes. It belongs in `vitest`, and it is
+the one piece of Stage D that is a different kind of work from the rest.
 
-- **5** is nearly discharged: the approval binds `parent_epoch`, so a stale set cannot win. What is not separately
-  exercised is serialisation itself, and that is row 15's existing three-way rule rather than new machinery.
-- **6 and 7** need a `RecoveryBootstrap` construction that does not exist in any generator yet. It is the last new
-  byte format in `S0-2`, and it belongs beside row 9's signed head assertion.
-- **10 cannot be a vector.** A kill at each `GenerationApply` step is a crash-resume property of a local state
-  machine; every other item here is a property of bytes. It belongs in `vitest`, and it is the one item in Stage D
-  that is a different kind of work from the rest.
+**The AAD coverage audit caught a real mistake while this was being written**, and it is worth recording because
+it is the machinery working as designed. The first `service_nonce` negative failed on the comparison between the
+nonce in the object and the one the recovery received — a comparison that would refuse it just as readily if the
+nonce were signed by nobody. The audit elided the field, saw that every negative still failed, and reported that
+nothing published was testing the binding. The repair is row 14 §9's move at a new carrier: a second negative
+carries the nonce the verifier expects, so the comparison passes and only the signature can refuse it. **A negative
+that fails twice isolates nothing**, and this file now has one of each.
 
 ### What Stage C changed
 

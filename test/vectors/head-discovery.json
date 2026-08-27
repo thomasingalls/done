@@ -37,6 +37,18 @@
       "source": "RFC 8032 §7.1, TEST 1",
       "seed": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
       "public_key": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a"
+    },
+    "bootstrap_signer": {
+      "role": "Committed in the prior RecoverySet and sealed beside R_priv under the content factor. The recovery code yields it; the service never holds it.",
+      "source": "RFC 8032 §7.1, TEST 3",
+      "seed": "c5aa8df43f9f837bedb7442f31dcb7b166d38535076f094b85ce3a2e0b4458f7",
+      "public_key": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025"
+    },
+    "new_credential": {
+      "role": "The replacement device's signing credential. Countersigns the bootstrap on install, so the binding names a device that actually holds the key.",
+      "source": "RFC 8032 §7.1, TEST 4",
+      "seed": "f5e5767cf153319517630f226876b86c8160cc583bc013744c6bf255f5cc0ee5",
+      "public_key": "278117fc144c72340f67d0f2316e8386ceffbf2b2428c9c51fef7c597f1d426e"
     }
   },
   "vectors": [
@@ -92,6 +104,39 @@
       }
     }
   ],
+  "recovery_bootstrap": {
+    "why": "A certified recipient set is approved by an eligible content-holding client. A total loss with no surviving device would therefore have had nothing able to approve the replacement -- and the validated four-object theorem would have quietly become a five-object one, the fifth being a device that still works. This is what keeps it at four.",
+    "message": "Bootstrap = LP(\"done/recovery-bootstrap/v1\") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(dec observed_epoch) || LP(hex observed_head_digest) || LP(hex service_nonce) || LP(hex prior_recovery_state_digest) || LP(hex recovered_root) || LP(new_credential_id) || LP(hex new_wrapping_key) || LP(hex new_recovery_state_digest) || LP(hex conflict_parent)",
+    "signed_by": "the bootstrap signer, committed in the prior RecoverySet and sealed beside R_priv under the same content factor -- so the recovery code yields it and the service never holds it",
+    "countersigned_by": "the new credential, which is what proves the named device holds the key it is being bound to",
+    "four_objects": {
+      "account_access": "account recovery — the person signs in",
+      "authorization": "the service admits a replacement credential",
+      "content_key_access": "the saved recovery code opens R_priv and, beside it, the bootstrap signer",
+      "ciphertext": "a hosted copy, a surviving replica, or a fidelity archive"
+    },
+    "no_fifth_object": "The signer is inside the factor-protected recovery object, so possession of the code yields both it and R_priv. Nothing new is independently held.",
+    "freshness": "observed_epoch, observed_head_digest and service_nonce carry row 9's bound unchanged: a hostile service can withhold, not forge. conflict_parent lets it serialise competing bootstraps without choosing the winner's contents.",
+    "fields": {
+      "workspace": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+      "lineage": "ln_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+      "observedEpoch": 9,
+      "observedHeadDigest": "2b7f0a9c14e6d3850fa2c51e86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+      "serviceNonce": "5f4dcc3b5aa765d61d8327deb882cf995f4dcc3b5aa765d61d8327deb882cf99",
+      "priorRecoveryStateDigest": "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+      "recoveredRoot": "7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c",
+      "newCredential": "cred_01HZXR0000000000000000NEW",
+      "newWrappingKey": "de9edb7d7b7dc1b4d35b61c2ece435373f8343c85b78674dadfc7e146f882b4f",
+      "newRecoveryStateDigest": "abababababababababababababababababababababababababababababababab",
+      "conflictParent": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "message_hex": "001a646f6e652f7265636f766572792d626f6f7473747261702f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000139004032623766306139633134653664333835306661326335316538366434303733626239653063316632346438613633373539653062326634633761316438653336004035663464636333623561613736356436316438333237646562383832636639393566346463633362356161373635643631643833323764656238383263663939004063646364636463646364636463646364636463646364636463646364636463646364636463646364636463646364636463646364636463646364636463646364004037633763376337633763376337633763376337633763376337633763376337633763376337633763376337633763376337633763376337633763376337633763001e637265645f3031485a5852303030303030303030303030303030304e4557004064653965646237643762376463316234643335623631633265636534333533373366383334336338356237383637346461646663376531343666383832623466004061626162616261626162616261626162616261626162616261626162616261626162616261626162616261626162616261626162616261626162616261626162004030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030",
+    "signature": "3a0807d6de147233e1abeec8872ec64fdb53b28c4d33cb76fca72f4520007a5a0e631b1d092935ab924e1621eb03a329510b6e5e4ef0860ad33a21c9cfa9fc06",
+    "countersignature": "c32062e0d7f14d3ed341557b25e83bfdcb5cfa93f1720da8199b5afeef96d569cba3aedd626680ed16460f218dbe5b2e5e35099b217f64054893ae38ca1b600a",
+    "signer_public_key": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025",
+    "credential_public_key": "278117fc144c72340f67d0f2316e8386ceffbf2b2428c9c51fef7c597f1d426e",
+    "expected": "binds the replacement credential and its wrapping key, from four objects and no surviving client"
+  },
   "must_fail": [
     {
       "name": "replayed-under-another-nonce",
@@ -128,6 +173,70 @@
     {
       "name": "ancestor-offered-after-first-contact",
       "mutate": "A correctly signed, correctly nonced assertion for epoch 8, offered to a device that has already recorded epoch 9. **The exposure is first contact only** — §13.5’s ancestor rule takes over the moment a head is recorded, and this is that boundary as a vector rather than a sentence."
+    },
+    {
+      "name": "bootstrap-signed-by-the-service",
+      "why": "The whole separation, as one signature. The bootstrap signer is committed in the prior RecoverySet and sealed beside R_priv, so a service that can admit a credential still cannot authorize one to receive content. Signed here by another key the deployment holds."
+    },
+    {
+      "name": "bootstrap-countersigned-by-another-credential",
+      "why": "The countersignature names the device that actually holds the new wrapping key. Without it the recovering client could bind a credential it does not control, which is the same delayed-delivery shape one actor along."
+    },
+    {
+      "name": "bootstrap-with-a-stale-observed-head",
+      "why": "Row 9's bound, at this carrier: a service that withholds cannot forge, but it can offer an older head. Binding the observed head means a bootstrap built against a stale view does not verify against the current one."
+    },
+    {
+      "name": "bootstrap-replayed-under-another-nonce",
+      "why": "The service-issued nonce is retired on use. Replaying an otherwise honest bootstrap under a second nonce is how a withheld transition would be re-presented later."
+    },
+    {
+      "name": "bootstrap-naming-another-prior-recovery-state",
+      "why": "It must chain from the recovery state the code actually opened. Unbound, a bootstrap could claim succession from a set the recovering party never held."
+    },
+    {
+      "name": "bootstrap-substituting-the-new-wrapping-key",
+      "why": "The point of the object. If the key the new credential will receive content on is not bound, the service supplies its own and the recovery hands it the workspace."
+    },
+    {
+      "name": "bootstrap-forked-from-another-parent",
+      "why": "Two bootstraps under different conflict parents are two different transitions. The service serialises them; it does not get to choose the winner's contents, and a fork is detectable rather than silent."
+    },
+    {
+      "name": "aad-only-bootstrap-service-nonce",
+      "why": "Row 14 §9's move, at this carrier. `bootstrap-replayed-under-another-nonce` above fails on the comparison between the nonce in the object and the one this recovery received -- and that comparison would refuse it just as readily if the nonce were signed by nobody. So this one carries the nonce the verifier is expecting, which forces the refusal onto the signature and is also what a real attacker would present, since those bytes are theirs to edit."
+    },
+    {
+      "name": "aad-only-bootstrap-label",
+      "why": "The label doing its own job."
+    },
+    {
+      "name": "aad-only-bootstrap-version",
+      "why": "A downgraded version."
+    },
+    {
+      "name": "aad-only-bootstrap-workspace-id",
+      "why": "The bootstrap moved to another workspace."
+    },
+    {
+      "name": "aad-only-bootstrap-lineage-id",
+      "why": "The bootstrap moved to another lineage."
+    },
+    {
+      "name": "aad-only-bootstrap-observed-epoch",
+      "why": "The epoch the head was observed at."
+    },
+    {
+      "name": "aad-only-bootstrap-recovered-root",
+      "why": "The content root the recovery actually opened, which is what a later package verifies against."
+    },
+    {
+      "name": "aad-only-bootstrap-new-credential-id",
+      "why": "The credential the binding names, held apart from the key it receives on."
+    },
+    {
+      "name": "aad-only-bootstrap-new-recovery-state-digest",
+      "why": "The recovery state the replacement installs, so a bootstrap cannot leave a substituted recipient behind it."
     }
   ]
 }
