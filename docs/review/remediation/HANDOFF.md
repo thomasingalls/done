@@ -36,11 +36,12 @@ read it as "nothing to do", and do not edit those files to make it say otherwise
 
 ## State
 
-**Decided (4 of 7):** `P-1` recipient authority · `P-2` device-lock gating · `P-6` Local archive factor ·
-`P-8` checkpoint and creation authority. Records in [`decisions/`](./decisions/), each with its falsifiers.
+**Decided (5 of 8):** `P-1` recipient authority · `P-2` device-lock gating · `P-4` lapse authority · `P-6`
+Local archive factor · `P-8` checkpoint and creation authority. Records in [`decisions/`](./decisions/), each
+with its falsifiers.
 
-**Outstanding decisions (3):** `P-3` write admission · `P-4` lapse authority · `P-5` policy and closure
-authority. **None blocks anything until `S0-8`.** They are genuinely parallel work.
+**Outstanding decisions (2):** `P-3` write admission · `P-5` policy and closure authority. `P-3` gates `S0-3`
+and `P-5` gates `S0-1`; both feed `S0-8`. They are genuinely parallel work.
 
 **Actions:** `S0-2`, `S0-5` and `S0-6` are **complete** across all five stages. `S0-1`, `S0-3`, `S0-4` and
 `S0-7` are not started. **`S0-7` is now unblocked on its action dependencies** — it had `S0-2` and `S0-6` —
@@ -54,9 +55,9 @@ reproduces from the crate at 6,465 B.
 
 ## What is ready to pick up, in order
 
-1. **`P-4`** — lapse authority. It is now the *only* thing standing between here and `S0-7`, and it is a small
-   decision beside the ones already taken: who initiates a lapse, and who wins a lapse-versus-retire race.
-2. **`S0-7`** — lifecycle and destructive deletion, which consumes `P-4` and `S0-6`'s `TerminalHandoff`.
+1. **`S0-7`** — lifecycle and destructive deletion. Fully unblocked: `P-4` is decided and `S0-6` supplies the
+   `TerminalHandoff` it gates on. Note the scope decision in `P-4`: the common invariants are built now and the
+   entitlement wire waits on `D-31`, which the project defers on purpose.
 3. **`S0-1`, `S0-3`, `S0-4`** — each needs its own decision first (`P-5`, `P-3`, and `S0-1`/`S0-2` respectively).
 3. **`P-3`, `P-5`, `P-4`** — parallel, any order, any time, by anyone. `P-3` now has evidence attached: the
    journal probe measured a hard `localStorage` quota wall at ~92k entries, which its oversize and

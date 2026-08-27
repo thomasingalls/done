@@ -74,7 +74,8 @@ widest action on the path and three further actions wait on it; `S0-5` now waits
 and `P-4` remain off the path entirely — nothing waits on them until `S0-8`, so they can run in parallel with
 `S0-2` or after it.
 
-Remaining decisions, none of them blocking `S0-2` or `S0-5`: `P-3`, `P-4`, `P-5`.
+Remaining decisions: `P-3` and `P-5`. Neither blocks any action now started; `P-3` gates `S0-3` and `P-5`
+gates `S0-1`, and both feed `S0-8`.
 
 ### Exact artifact key
 
@@ -170,6 +171,12 @@ pinned tip.
 - **No-action consequence:** Stage 1 cannot implement the unconditional WAL guarantee or safe concurrent trim.
 
 ### `P-4` — choose lapse authority
+
+> **Decided 2026-08-27: `RC-7B`, a service-signed billing/retention machine** independent of the authorization
+> lineage, with **retire winning the race in both orders**. Record and reasoning:
+> [`decisions/P-4-lapse-authority.md`](./decisions/P-4-lapse-authority.md). The common invariants are selected
+> now; the entitlement wire is gated on `D-31`, which the project defers on purpose. Ten falsifiers are in that
+> record.
 
 - **Prerequisites:** decide whether lapse is user-initiated, automatic billing-driven, or both; name the actor that
   wins lapse-versus-retire races.
