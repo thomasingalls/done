@@ -15,7 +15,7 @@ disagree, the disposition is right and this file is the thing to fix.
 
 | | |
 | --- | --- |
-| Branch | `claude/stage0-remediation`, 75 commits off `9edd930` as of the `S0-3` return, all signed; the current tip rides the worktree branch `claude/s0-3-return-6edd58` until folded back |
+| Branch | `claude/stage0-remediation`, 77 commits off `9edd930` as of the `S0-4` return, all signed; the current tip rides the worktree branch `claude/s0-4-return-35bb60` until folded back |
 | Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, the decisions, and both `S0-9` challenge rounds |
 | Not on it | nothing — this branch is the whole picture, deliberately |
 | Superseded | `claude/remediation-findings-review-997ab5` holds the review workspace at its original SHAs. Redundant once this branch is accepted |
@@ -297,23 +297,25 @@ In order. An item is done when its disposition entry's earliest-return stage has
 ## The exact next command
 
 ```bash
-cd /Users/thomasingalls/Code/done/.claude/worktrees/s0-3-return-6edd58 && pnpm install --frozen-lockfile && pnpm vectors:check && pnpm test
+cd /Users/thomasingalls/Code/done/.claude/worktrees/s0-4-return-35bb60 && pnpm install --frozen-lockfile && pnpm vectors:check && pnpm test
 ```
 
-That establishes the baseline. **The decision sprint, the two structural artifacts, and the `S0-1`, `S0-2`
-and `S0-3` returns are complete** (queue items 2–3 and the front of item 4, 2026-08-28): the authority map
-with `pnpm authority:check`, the storage scheduler with its composed model — all three of its reproductions
-now inverted — the standing census with `pnpm remediation:check`, the recipient-authority readback with
-`pnpm recipient:check`, and now the write-admission readback with `pnpm admission:check` — all in the gate.
-Then read both dispositions end to end, read the map's five open entries — they are the executable form of
+That establishes the baseline. **The decision sprint, the two structural artifacts, and the `S0-1` through
+`S0-4` returns are complete** (queue items 2–3 and the front of item 4, 2026-08-28): the authority map with
+`pnpm authority:check`, the storage scheduler with its composed model — all four of its reproductions now
+inverted — the standing census with `pnpm remediation:check`, the recipient-authority readback with
+`pnpm recipient:check`, and the write-admission readback with `pnpm admission:check` — all in the gate.
+Then read both dispositions end to end, read the map's four open entries — they are the executable form of
 what the dispositions describe — run `pnpm remediation:status` for where every decision stands and what each
-return owes, and start the **`S0-4` return**: `FU-06` (the acceptance refusal's subject — the envelope's
-epoch carried into the signed refusal and `K_accept` resolved from that exact authenticated epoch, TRD §7.5)
-and `FU-10` (the class-2 window at `PositionCounter` — the crash between reservation and spool insertion,
-scheduled through the composed model as `P-3`'s pattern prescribes) — flipping the map's `position-refusal`
-entry as they land. A repair that ignores its class reintroduces the class, and all three class instruments
-now fail on that rather than waiting for a review: a return is not done until its map entries flip, its
-reproductions invert, and the census stays classified.
+return owes, and start the **`S0-5` return**: `FU-11` (checkpoint evidence gains its certified-recipient
+eligibility and cardinality input and a durable staged install machine — producer self-admission refused
+where a second eligible client exists, partial install activating neither content nor heads, the actual
+second-newest fallback exercised; the selected `P-8` branch may remain) and **the `k-checkpoint` census
+entry** (`K_cp`'s counter or discipline selected from the checkpoint homes and the declared absence struck —
+the checker holds the declaration mechanically until then). `S0-6` (`FU-02`, `FU-03` with TRD §14.4) is the
+other open head of the queue and feeds `S0-7`'s composition. A repair that ignores its class reintroduces
+the class, and all three class instruments now fail on that rather than waiting for a review: a return is
+not done until its map entries flip, its reproductions invert, and the census stays classified.
 
 ## Four things that will bite you
 
