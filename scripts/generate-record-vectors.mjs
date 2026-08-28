@@ -72,9 +72,9 @@ const concat = (...parts) => {
  * is not injective, so a workspace id containing the delimiter shifts every
  * field after it and two different contexts can encode to identical bytes.
  * Injectivity is the only property AAD actually needs, and it is the property
- * that the binding below depends on -- this format has six cleartext fields to
- * bind rather than the journal's one, so an ambiguous encoding has more room to
- * do damage here than there.
+ * that the binding below depends on -- this format has seven cleartext fields
+ * to bind rather than the journal's one, so an ambiguous encoding has more
+ * room to do damage here than there.
  */
 const lp = (s) => {
   const bytes = utf8(s);
@@ -83,25 +83,31 @@ const lp = (s) => {
 };
 
 /**
- * K_store = HKDF-SHA256(ikm = K_g, salt = "", info = LP("done/store/v1") || LP(workspace_id), L = 32)
+ * K_store = HKDF-SHA256(ikm = K_g, salt = "",
+ *                       info = LP("done/store/v1") || LP(workspace_id) || LP(store_id), L = 32)
  *
- * Identical in shape to row 2's K_journal and deliberately so: same KDF, same
- * label encoding, different label. That is what makes §13.2's subkey separation
- * a property of the labels rather than of two unrelated constructions.
+ * Same KDF and label encoding as row 2's K_journal, so §13.2's subkey
+ * separation stays a property of the labels -- and the info additionally binds
+ * the store_id minted at store creation, which is a scope term rather than a
+ * separation one (P-3, ratified 2026-08-28; S0-3). The nonce budget below is
+ * counted by one SeqCounter per store, and a key's scope can be no wider than
+ * the state that counts its invocations: one key per counter. Without the
+ * store term, every device holding K_g derived the identical subkey while
+ * each device's counter saw only its own share.
  *
- * The principal is NOT in the derivation, though it IS in the AAD. The split is
- * a rule worth stating once: derivation names the key's scope -- K_g is a
- * workspace generation, so its subkeys are too -- and AAD names the record's
- * home, which is a store keyed by (principal, workspace) per §6.5.
+ * The principal is NOT in the derivation, though it IS in the AAD. The split
+ * is a rule worth stating once: derivation names the key's scope -- fixed by
+ * the budget's counter -- and AAD names the record's home, which is a store
+ * keyed by (principal, workspace) per §6.5.
  */
-const deriveStoreKey = async (kg, workspaceId) => {
+const deriveStoreKey = async (kg, workspaceId, storeId) => {
   const ikm = await crypto.subtle.importKey('raw', kg, 'HKDF', false, ['deriveBits']);
   const bits = await crypto.subtle.deriveBits(
     {
       name: 'HKDF',
       hash: 'SHA-256',
       salt: new Uint8Array(0),
-      info: concat(lp(STORE_LABEL), lp(workspaceId)),
+      info: concat(lp(STORE_LABEL), lp(workspaceId), lp(storeId)),
     },
     ikm,
     256,
@@ -110,20 +116,23 @@ const deriveStoreKey = async (kg, workspaceId) => {
 };
 
 /**
- * AAD = LP(label) || LP(principal) || LP(workspace) || LP(dec v) || LP(dec gen) || LP(dec seq) || LP(kind)
+ * AAD = LP(label) || LP(principal) || LP(workspace) || LP(store_id) || LP(dec v) || LP(dec gen) || LP(dec seq) || LP(kind)
  *
  * Every cleartext field of the record is here. IndexedDB holds a structured
  * clone, so `v`, `gen`, `seq` and `kind` are ordinary editable properties to
  * anyone with profile access -- and each of them is a field the load path
  * trusts. `v` selects the suite, `gen` selects the key, `seq` orders the trim,
- * `kind` decides whether a record supersedes every other one.
+ * `kind` decides whether a record supersedes every other one. The store id is
+ * bound here as well as in the derivation, so a record that lands in the
+ * wrong store fails at the key as well as the AAD (S0-3).
  */
-const aadForRecord = ({ principal, workspace, v, gen, seq, kind, label = STORE_LABEL }) =>
+const aadForRecord = ({ principal, workspace, store, v, gen, seq, kind, label = STORE_LABEL }) =>
   concat(
     ...aadFields('content record', {
       label,
       principal,
       workspace,
+      store,
       v: String(v),
       gen: String(gen),
       seq: String(seq),
@@ -187,6 +196,14 @@ const PRINCIPAL = 'pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D';
 const WORKSPACE = 'ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D';
 const OTHER_WORKSPACE = 'ws_01J0000000000000000000000A';
 const OTHER_PRINCIPAL = 'pr_01J0000000000000000000000A';
+/**
+ * The store-instance id, minted from local randomness at store creation beside
+ * the SeqCounter it names (P-3, S0-3). It is cleartext store metadata, it
+ * enters the derivation info and the AAD, and no two counters ever share one --
+ * which is what makes the nonce budget per key rather than per device-count.
+ */
+const STORE_ID = 'st_01HZXQ7M4K9P2R6T8V0Y3B5N7D';
+const OTHER_STORE = 'st_01J0000000000000000000000A';
 
 /** The same K_g as the row 2 vectors, so the two subkeys are visibly different derivations of one key. */
 const KG = unhex('4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36');
@@ -253,6 +270,17 @@ const RECORD_CASES = [
     nonce: '000102030405060708090a0b',
     plaintext: KEYSTROKE,
   },
+  {
+    name: 'second-store',
+    why: 'Same K_g, same workspace, same nonce, same plaintext, different store id. Proves the subkey is store-bound by derivation, not only by AAD — one key per SeqCounter, so no per-store comparison can undercount a shared key (P-3 falsifier 14).',
+    v: RECORD_VERSION,
+    gen: 1,
+    seq: 1,
+    kind: 'update',
+    store: OTHER_STORE,
+    nonce: '000102030405060708090a0b',
+    plaintext: KEYSTROKE,
+  },
 ];
 
 const ENVELOPE_CASES = [
@@ -278,6 +306,11 @@ const ENVELOPE_CASES = [
 
 const NEGATIVES = [
   { name: 'wrong-workspace-subkey', mutate: 'Derive K_store for a different workspace id.' },
+  {
+    name: 'wrong-store-subkey',
+    mutate:
+      'Derive K_store for a different store id, workspace unchanged. The wrong-store sibling of wrong-workspace-subkey: two stores holding one K_g never derive one subkey, so a record sealed for one store fails to open under the key of another (P-3 falsifier 14).',
+  },
   { name: 'wrong-principal', mutate: 'Authenticate with a different principal in the AAD.' },
   {
     name: 'wrong-workspace-aad',
@@ -311,6 +344,11 @@ const NEGATIVES = [
     name: 'record-aad-only-label',
     mutate:
       'Authenticate a content record with the key-envelope label, every record field unchanged. Isolates the labels contribution from the field difference the whole-AAD swaps also carry.',
+  },
+  {
+    name: 'record-aad-only-store',
+    mutate:
+      'Authenticate a content record claiming the other store id in the AAD, subkey unchanged. Isolates the AAD binding from the derivation binding wrong-store-subkey carries.',
   },
   {
     name: 'envelope-aad-only-label',
@@ -378,14 +416,17 @@ const verify = async (records, envelopes) => {
   const f = {
     principal: PRINCIPAL,
     workspace: WORKSPACE,
+    store: STORE_ID,
     v: RECORD_VERSION,
     gen: 1,
     seq: 1,
     kind: 'update',
   };
 
-  const otherSubkey = await deriveStoreKey(KG, OTHER_WORKSPACE);
+  const otherSubkey = await deriveStoreKey(KG, OTHER_WORKSPACE, STORE_ID);
   await refuses('wrong-workspace-subkey', () => openGcm(otherSubkey, nonce, aadForRecord(f), ct));
+  const otherStoreSubkey = await deriveStoreKey(KG, WORKSPACE, OTHER_STORE);
+  await refuses('wrong-store-subkey', () => openGcm(otherStoreSubkey, nonce, aadForRecord(f), ct));
   await refuses('wrong-principal', () =>
     openGcm(ks, nonce, aadForRecord({ ...f, principal: OTHER_PRINCIPAL }), ct),
   );
@@ -422,6 +463,9 @@ const verify = async (records, envelopes) => {
   // The AAD-only group: the correct key throughout, one bound field changed.
   await refuses('record-aad-only-label', () =>
     openGcm(ks, nonce, aadForRecord({ ...f, label: ENVELOPE_LABEL }), ct),
+  );
+  await refuses('record-aad-only-store', () =>
+    openGcm(ks, nonce, aadForRecord({ ...f, store: OTHER_STORE }), ct),
   );
 
   const envNonce = unhex(env.inputs.nonce);
@@ -461,11 +505,13 @@ const main = async () => {
   const records = [];
   for (const c of RECORD_CASES) {
     const workspace = c.workspace ?? WORKSPACE;
+    const store = c.store ?? STORE_ID;
     const kg = c.kg ?? KG;
-    const kStore = await deriveStoreKey(kg, workspace);
+    const kStore = await deriveStoreKey(kg, workspace, store);
     const fields = {
       principal: PRINCIPAL,
       workspace,
+      store,
       v: c.v,
       gen: c.gen,
       seq: c.seq,
@@ -480,6 +526,7 @@ const main = async () => {
         k_g: hex(kg),
         principal_id: PRINCIPAL,
         workspace_id: workspace,
+        store_id: store,
         v: c.v,
         gen: c.gen,
         seq: c.seq,
@@ -488,7 +535,7 @@ const main = async () => {
         plaintext: c.plaintext,
       },
       derived: {
-        hkdf_info: hex(concat(lp(STORE_LABEL), lp(workspace))),
+        hkdf_info: hex(concat(lp(STORE_LABEL), lp(workspace), lp(store))),
         k_store: hex(kStore),
         aad: hex(aad),
       },
@@ -548,9 +595,9 @@ const main = async () => {
       primitive_kat:
         'test/vectors/algorithm-suite.json -- row 1 selects the primitive, row 3 the composition',
       kdf: 'HKDF-SHA256 via WebCrypto deriveBits, at open',
-      store_hkdf_info: 'LP("done/store/v1") || LP(workspace_id)',
+      store_hkdf_info: 'LP("done/store/v1") || LP(workspace_id) || LP(store_id)',
       store_aad:
-        'LP("done/store/v1") || LP(principal_id) || LP(workspace_id) || LP(dec v) || LP(dec gen) || LP(dec seq) || LP(kind)',
+        'LP("done/store/v1") || LP(principal_id) || LP(workspace_id) || LP(store_id) || LP(dec v) || LP(dec gen) || LP(dec seq) || LP(kind)',
       envelope_aad:
         'LP("done/keyenv/v1") || LP(principal_id) || LP(workspace_id) || LP(dec v) || LP(dec gen) || LP(purpose)',
       length_prefix: 'uint16be(byteLength) || utf8 -- injective, so no field can shift another',
@@ -558,7 +605,9 @@ const main = async () => {
         '{ v, gen, seq, kind, nonce[12], ct } as a structured clone; ct carries the 16-byte tag',
       key_envelope: '{ v, gen, nonce[12], ct } as a structured clone; ct carries the 16-byte tag',
       nonce:
-        '12 bytes from crypto.getRandomValues() per record, under a 2^32-per-generation budget bounded by seq',
+        '12 bytes from crypto.getRandomValues() per record, under a 2^32-per-(store, generation) budget counted by the SeqCounter\'s reserved[gen] -- reserved before encryption, so an abandoned invocation is counted; never read from seq (P-3, S0-3)',
+      store_id:
+        'minted from local randomness at store creation beside the SeqCounter it names; one key per counter, so the nonce budget binds the key it protects for every device count',
       nonce_caveat:
         'Nonces are fixed inputs in these vectors so the composition is testable. Production generates them randomly; the fixed nonce is not the discipline.',
       l_local_caveat:

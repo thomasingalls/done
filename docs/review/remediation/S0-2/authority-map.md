@@ -89,7 +89,7 @@ verifies: any member credential's Ed25519 signature an acceptance step consumes
 resolves: the named signer's member entry (credential_id ‖ W_pub ‖ S_pub) in the parent certified set -> each parent's own approval -> the genesis set under the creating credential -> root:trust-root
 resolves: a bootstrap-minted replacement set -> via:bootstrap-signer
 status: resolved
-pin: docs/TRD.md §13.2 47be86cf7b02
+pin: docs/TRD.md §13.2 acf87ae3c063
 pin: docs/TRD.md §13.5 0c37e6e9e8f4
 pin: docs/review/remediation/S0-2/A-schemas.md §1 37490550ef01
 ```
@@ -218,7 +218,7 @@ verifies: a relay admission token opening a scoped transport connection
 resolves: the service's token issuance -> root:service
 bound: §13.2 — a bounded transport scope that may not decrypt, sign content, admit a device, change capabilities or recover an account
 status: resolved
-pin: docs/TRD.md §13.2 47be86cf7b02
+pin: docs/TRD.md §13.2 acf87ae3c063
 ```
 
 ## 3. Content authenticity and attribution
@@ -459,26 +459,27 @@ pin: docs/TRD.md §13.3 1b1aa14f8855
 Not verification keys, but the same question one construction over: what state is an acceptance bounded
 *against*? `P-3` falsifier 16 requires every AEAD key on the write path to name either the durable state that
 counts its invocations or the nonce discipline that needs none, with a checker refusing a key with neither —
-these entries are that census's home, seeded now so the `S0-3` return grows it rather than inventing it. The
-checker already refuses an `aead` entry that names neither, or both.
+these entries are that census's home, seeded at `S0-2` and grown at the `S0-3` return (2026-08-28). The
+checker refuses an `aead` entry that names neither, or both, and the sweep below now sees AEAD constructions
+as well as signatures.
 
 ```authority
 entry: k-store
 kind: aead
 guards: content
 verifies: the store subkey sealing every StoredRecord
-counted-by: SeqCounter.reserved[gen] — rotate before the 2^32nd reservation, equality first disallowed
-status: open
-blocker: P-3
-return: S0-3
-pin: docs/TRD.md §6.1 bd28c5a8f5de
-pin: docs/selections/row-3-record-format.md 98ce7ee3401f
+counted-by: SeqCounter.reserved[gen] — one key per counter: the derivation binds the store_id minted beside the counter (row 3 §§3–4), and the store rotates before the 2^32nd reservation, equality first disallowed
+status: resolved
+pin: docs/TRD.md §6.1 56bed55ca9ce
+pin: docs/selections/row-3-record-format.md 014a9bce62f3
 ```
 
-The count is right and the scope is not: every store holding `K_g` derives the identical subkey, and one
-`SeqCounter` per store cannot see its siblings, so the budget bounds no key for any device count `D ≥ 2` —
-round 1's *one live construction defect*, the class-2 limit case. `P-3`'s ratified joint 1 (one key per
-counter — the `info` gains the store identity) flips this at the `S0-3` return (falsifiers 14–16).
+The scope was round 1's *one live construction defect* — every store holding `K_g` derived the identical
+subkey while each `SeqCounter` saw only its own share — and it flipped at the `S0-3` return (2026-08-28,
+`P-3` falsifiers 14–16): the `info` binds the store identity, so `reserved[gen]` counts every invocation of
+the key it bounds and the sum over devices is a sum over distinct keys. The two-store reproduction in
+`test/storageSchedule.test.ts` is inverted with its schedule kept, `wrong-store-subkey` is the published
+negative, and `pnpm admission:check` reads the homes.
 
 ```authority
 entry: k-journal
@@ -513,22 +514,48 @@ pin: docs/TRD.md §13.8 ef268347caad
 pin: docs/review/remediation/S0-6/A-schemas.md §2 7ca03c1bac64
 ```
 
-**What this census does not yet hold, on purpose.** The checkpoint subkey `K_cp`, the deferred index subkey,
-and the `L_local`/`L_lock` key envelopes enter at the `S0-3` return, when falsifier 16's checker obligation
-lands and each can be given its counter or its discipline from the homes that select it rather than asserted
-here. The sweep below does not force them — it sees `Ed25519(` constructions — and saying so is the scope of
-this section's claim.
+```authority
+entry: k-key-envelopes
+kind: aead
+guards: custody
+verifies: the local key envelopes — K_g, and §13.4's sealed credentials, under L_local or L_lock
+counted-by: the generation counter — one envelope per (generation, purpose) per device key (row 3 §5), and a custody transition mints a fresh L_lock over the bounded retained set in one transaction (§13.3), so a key's seals ride the monotonic gen and 2^32 of them would need 2^32 generation advances, each a durable counted GenerationApply
+status: resolved
+pin: docs/selections/row-3-record-format.md 014a9bce62f3
+pin: docs/TRD.md §13.3 1b1aa14f8855
+```
+
+```authority
+entry: k-index
+kind: aead
+guards: content
+verifies: the deferred search-index subkey — the label done/index/v1, reserved and unselected
+discipline: no invocation exists to count — no construction is selected (row 3 §4; row 18 stays at its own gate per P-7), and the selection that creates an index write path owes this entry its counter or discipline before it ships
+status: resolved
+pin: docs/TRD.md §13.2 acf87ae3c063
+```
+
+**The census's one declared absence.** The checkpoint subkey `K_cp` does not enter yet, and the reason is
+recorded rather than silent: its homes — TRD §7.6 and row 7 — state neither a durable state that counts its
+invocations nor a nonce discipline that needs none, which is exactly the shape falsifier 16 polices, and the
+repair cannot copy `P-3` joint 1: a checkpoint must open on every device, so its key cannot narrow to a store.
+Selecting `K_cp`'s counter or discipline is checkpoint-machinery work, **owed at the `S0-5` return beside
+`FU-11`**, where the checkpoint homes are already open for consolidation. The checker holds this declaration
+mechanically: a `k-checkpoint` entry appearing while this paragraph stands is paid-and-not-struck, and both
+disappearing is a silent drop — either fails. The `L_local`/`L_lock` envelopes and the deferred index subkey
+entered above at the `S0-3` return (2026-08-28), each from the homes that select it.
 
 ---
 
 ## The census is the documents', and the discipline is the regime's
 
-**The sweep.** Every `Ed25519(` construction in `docs/TRD.md` and the five stage schema documents
-(`S0-2`/`S0-4`/`S0-5`/`S0-6`/`S0-7` `A-schemas.md`) must sit in a section some entry pins — so a signature
-construction added anywhere in those documents fails the checker until the map claims it, and the map cannot
-shrink its own population. What the sweep cannot see is a predicate stated in prose with no construction;
-those enter through the dispositions and the schemas, which is where every entry above came from, and a
-challenge that finds one missing has found a real gap in this file.
+**The sweep.** Every `Ed25519(` construction — and, since the `S0-3` return, every AEAD construction
+(`AES-256-GCM(`, `XChaCha20-Poly1305(`, `AEAD(`) — in `docs/TRD.md` and the five stage schema documents
+(`S0-2`/`S0-4`/`S0-5`/`S0-6`/`S0-7` `A-schemas.md`) must sit in a section some entry pins — so a signature or
+sealed construction added anywhere in those documents fails the checker until the map claims it, and the map
+cannot shrink its own population. What the sweep cannot see is a predicate stated in prose with no
+construction; those enter through the dispositions and the schemas, which is where every entry above came
+from, and a challenge that finds one missing has found a real gap in this file.
 
 **The flip.** A stage return that repairs a joint edits the pinned homes, which fails the entry's pins; the
 same change flips `status` to `resolved` and strikes the blocker, and the checker refuses every other
@@ -538,7 +565,8 @@ shrink by payment.
 
 **Consumption.** The stage returns (queue item 4) flip their entries: `S0-2` — `member-signing-keys`,
 `bootstrap-signer`, `bootstrap-countersig`, `enrollment-transcript` — **flipped 2026-08-28 at the `S0-2`
-return**; `S0-3` — `k-store`; `S0-4` — `position-refusal`; `S0-5` — `checkpoint-admission`; `S0-6` —
+return**; `S0-3` — `k-store` — **flipped 2026-08-28 at the `S0-3` return**; `S0-4` — `position-refusal`;
+`S0-5` — `checkpoint-admission`, and the `k-checkpoint` census entry §5 defers there; `S0-6` —
 `local-archive-anchor`, `terminal-handoff`; `S0-7` — `destructive-boundary`. `S0-9` round 3 reads the computed
 summary as the class-1 ledger, and `S0-10` consumes a map whose open count is zero or does not close. `P-1`
 falsifier 14 was discharged at the `S0-2` return: the member-key entries flipped, every chain still terminates

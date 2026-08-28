@@ -83,6 +83,41 @@ not yet true is the thing it exists to prevent.
 refused**, and an interruption leaves the pieces that finished. The alternative was one operation too large to
 make durable, which fails silently and completely.
 
+## The `S0-3` return (2026-08-28)
+
+Both `S0-9` rounds returned repairs here — the shared `K_store` scope (round 1 `S-9`, *one live construction
+defect*), the refusal window (`FU-08`), `FU-09`'s finish, and `FU-13`'s remaining homes — and the return
+landed them under `P-3` falsifiers 14–22, ratified option A at all three joints, with every gate re-run green:
+
+- **Stage A** — [`A-schemas.md`](./A-schemas.md) amended under the ratified rules: the `SeqCounter` gains the
+  `store_id` minted beside it (one key per counter), the commit gains the fence, and the refusal path is
+  **stage-and-promote** — the reserved mechanism selection, taken here: staging is total where an inverse is
+  not, because the two live causes are storage failures no input inspection predicts. The falsifier map
+  continues at rows 16–24, each naming the `P-3` falsifier it lands.
+- **Stage B** — TRD §6.1 states the per-store scope (*a key's scope can be no wider than the state that
+  counts its invocations*), the carrier rule and the fence; §13.2's label sentence carries the scope term;
+  §15 row 3's cell is rewritten — *still open* and *a budget that `seq` bounds* died there (`FU-13`, `E3`).
+- **Stage C** — row 3 amended: the derivation binds `store_id`, §3's bound names the `D²·2^-33` arithmetic it
+  refuses, §4's scope rule is corrected to say what the budget forced, and §5 names the envelope counter the
+  census entry cites.
+- **Stage D** — the record generator derives per store and publishes the corrected rule string, with
+  `wrong-store-subkey` and `record-aad-only-store` as new negatives (193 AAD fields, each isolated);
+  `test/writeAdmission.test.ts` consolidates the carrier (the mark is **read** by the forced flush, round 1
+  `S-6`'s two green mutations held as permanent negatives) and the fence (`commitReserved` aborts a stale
+  reservation where the commit lands); `test/storageSchedule.test.ts` inverts the last two reproductions
+  with their schedules kept — the refusal path holds nothing a kill can lose at any boundary, and the
+  two-store model derives distinct keys with each counted by its own counter.
+- **Stage E** — PRD §7.10 gains the one owed sentence: on the refusal path the document itself waits for its
+  carrier, so the screen never shows what §7.10 would have to disclaim.
+- **The instruments** — the authority map's `k-store` entry flipped; `k-key-envelopes` and `k-index` entered
+  the AEAD census from their homes; the sweep widened to AEAD constructions; **`K_cp`'s absence is a
+  declared, checker-policed debt owed at the `S0-5` return**, because its homes state neither a counter nor
+  a discipline and its key cannot narrow to a store; and `pnpm admission:check` joined `pnpm check` as
+  falsifier 22's homes-agree readback, with the two-store reconstruction inside it.
+
+An 18-mutation battery caught 18 — every restored sentence, dropped counter, tampered vector, silent map
+edit, un-struck declaration and model reversion fails a check rather than waiting for a review.
+
 ## Not in scope
 
 - **`MAX_UPDATE`'s exact value.** `P-3` selected that it is **derived** from §12's budget on the declared

@@ -3,7 +3,9 @@
 **Standing:** home — the write-admission machine stated here is composed and scheduled by
 `test/storageSchedule.test.ts`; read back by `pnpm test`.
 
-**Status:** proposed for `S0-8` review · not implemented · `RC-3C`
+**Status:** proposed for `S0-8` review · not implemented · `RC-3C` · **amended 2026-08-28 at the `S0-3`
+return, under `P-3`'s three ratified joints** — the store identity in §4, the budget's key scope in §5, and
+the staged carrier in §6, with the falsifier map continued at rows 16–24
 
 ## 1. `MAX_UPDATE` — derived from the budget, never chosen
 
@@ -69,14 +71,35 @@ the remote update is re-delivered, and it integrates. That is a falsifier below,
 `seq` is inside the record's AAD, so it is fixed before encryption and cannot come from an auto-increment key.
 
 ```
-SeqCounter (one record per (principal, workspace))
+SeqCounter (one record per store instance)
+  store_id       minted from local randomness at store creation, beside this
+                 counter; cleartext in the store's metadata, bound in the
+                 derivation info and the AAD (P-3 joint 1, ratified). It
+                 exists at creation for every store -- the anonymous Local
+                 workspace included -- and no two counters ever share it.
   next_seq       the global monotonic allocation point, spanning content and heads
   reserved[gen]  sequences reserved under each content-key generation
 
 Reserve  one readwrite transaction: grant [next_seq, next_seq + k), advance
          next_seq by k, add k to reserved[current_gen]. Two tabs serialize
          because IndexedDB serializes them.
+
+Commit   the batch's committing transaction reads the active-generation
+         marker -- its home shares the store's database -- and validates the
+         reservation's generation where the commit lands (P-3 joint 3, the
+         fence; S0-2 §4 step 5). When the marker moved, the commit aborts
+         into re-reservation under the successor; the abandoned range stays
+         counted. After marker-advance commits, no record can commit under
+         the outgoing generation, so its classification is complete when
+         retirement consumes it.
 ```
+
+**One key per counter is what the `store_id` buys** (`P-3` joint 1). `K_store`'s derivation binds it — row 3
+§§3–4 — so `reserved[gen]` counts every invocation of the key it bounds: the sum over devices is a sum over
+distinct keys, and the rotate-before-2^32 comparison is again the whole enforcement, firing on time for its
+own key instead of up to `D` times too late for a shared one. Two stores holding one `K_g` never derive one
+subkey (`wrong-store-subkey`, the published negative), and a record that lands in the wrong store fails at the
+key as well as the AAD.
 
 **Per batch, exactly sized — which is neither of the options the review offered.** The adapter already writes a
 whole batch in one transaction, so it already knows `k` when it needs it. One extra transaction per batching
@@ -99,6 +122,11 @@ here is what stops the two being conflated a third time.
 §6.1 states the gap precisely: `seq` is global and does not reset, the budget is per generation, and a literal
 `next seq ≥ 2^32` test is conservative until the first rotation and then refuses every write afterwards.
 
+**And the key the budget bounds is per (store, generation)** (`P-3` joint 1, ratified 2026-08-28): a key's
+scope can be no wider than the state that counts its invocations, this counter is per store, and IndexedDB is
+device-local — so the derivation binds the `store_id` beside the workspace, and the `D`-devices-one-key sum
+round 1 computed is structurally zero for every `D`.
+
 **`reserved[gen]` is the right count for a reason beyond arithmetic.** NIST SP 800-38D §8.3 bounds
 **invocations**, and an encryption abandoned before commit is an invocation. A count recovered from committed
 records cannot see it. Reserving before encrypting counts it by construction — the gap a crash leaves _is_ the
@@ -120,10 +148,28 @@ slicing failed to prevent:
 ```
 JournalAdmission  ok | refused('oversize' | 'quota' | 'unavailable')
 
-On refused:  the store is marked not-durable
-             the batch is forced
-             the edit is NOT acknowledged until IndexedDB commits
+The write path stages before it promotes (P-3 joint 2, ratified; S0-3):
+  stage    the input runs against staged state and produces the update
+           bytes; the authoritative document is untouched
+  admit    the gate above, on the produced bytes
+  ok       the synchronous journal write carries the update; the promotion
+           and the acknowledgement ride it, in the same handler
+  refused  the store is marked not-durable -- a mark the forced flush READS
+           the input is held as pending; the document is NOT mutated
+           the batch is forced
+           the commit is the carrier: the record lands, the update is
+           promoted to the document, the acknowledgement fires, the mark
+           clears -- sliced when oversize was the cause
 ```
+
+**Nothing becomes authoritative without a durable carrier — the mechanism is stage-and-promote.** The ratifier
+reserved the inversion-vs-staging choice to this stage, and staging is selected because it is total where an
+inverse is not: the two live causes are storage failures no input inspection predicts, an update's exact size
+exists only after the transaction produces it, and producing it somewhere not yet authoritative is exactly what
+admission-after-the-authority could never be. A handler that meets a refusal returns with the document equal to
+recoverable state, so the milliseconds before the forced commit hold no update a kill can lose — the kill point
+is scheduled, and falsifier 19 below asserts the rule at every boundary on the path. The recorded cost stands:
+under storage pressure a keystroke appears when it is durable rather than immediately (PRD §7.10).
 
 **PRD §7.10 already governs this and nobody had connected it.** _An app whose central claim is local-first must
 not be quiet about a context where the data is not durable._ An unjournallable write is exactly that context, at
@@ -162,3 +208,18 @@ committing — and the response is to force a flush at a watermark well below qu
 | 13  | A batch that rotates mid-flight re-reserves, and the abandoned range stays counted against the old generation | 5      |
 | 14  | Oversize, quota and unavailable reach **one** state, and the edit is unacknowledged until IndexedDB commits   | 6      |
 | 15  | The watermark is characters: large updates back-pressure after hundreds, keystrokes after tens of thousands   | 6      |
+
+Continued at the `S0-3` return (2026-08-28), under `P-3`'s ratified joints — each row names the `P-3`
+falsifier it lands:
+
+| #   | Falsifier                                                                                                      | Schema | `P-3` |
+| --- | -------------------------------------------------------------------------------------------------------------- | ------ | ----- |
+| 16  | Two stores holding one `K_g` never derive one `K_store`; deriving for another store fails to open (`wrong-store-subkey`) | 4      | 14    |
+| 17  | Every invocation of each `K_store` instance is counted by exactly one `SeqCounter`, and a `D`-writer model at the budget's edge shows no key over budget | 4, 5   | 15    |
+| 18  | Every AEAD key on the write path names its counter or its discipline in one home, and an entry with neither fails `pnpm authority:check` | 4, 5   | 16    |
+| 19  | A kill between a journal refusal and the forced commit shows no document ahead of what durable state rebuilds — at every boundary on the path | 6      | 17    |
+| 20  | The mark is read and the acknowledgement is load-bearing: a model that never marks, or acknowledges before the commit, fails a permanent negative | 6      | 18    |
+| 21  | A granted reservation cannot outlive its generation: the late commit aborts into re-reservation and the abandoned range stays counted | 4      | 19    |
+| 22  | No schedule reaches `openers-retired` while a sealed object is outside the retirement predicate's view — `writeAdmission` × `GenerationApply` composed | 4      | 20    |
+| 23  | Every check-to-commit pair is schedulable — a kill and a second writer land in each window — and a fused pair fails the census with the `FU-08` diagnosis | 2, 4, 6 | 21   |
+| 24  | The homes agree: `pnpm admission:check` refuses any home still publishing *still open*, a budget `seq` bounds, the exact-watermark rule, or the store-shared derivation | 1–6    | 22    |

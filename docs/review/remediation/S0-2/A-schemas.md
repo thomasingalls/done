@@ -215,8 +215,10 @@ lands, and aborts into re-reservation under the successor when the marker moved.
 counted against `g` (`P-3` falsifier 8's gap, doing its job). After marker-advance commits, no `g` record can
 commit, so the classification step 7 consumes is complete — the composed model in
 `test/storageSchedule.test.ts` schedules the interleaving and asserts the fence at it, inverted 2026-08-28 from
-the reproduction the dispositions could only describe. `P-3` falsifiers 19–20 finish at the `S0-3` return,
-where the write-admission machine itself consolidates.
+the reproduction the dispositions could only describe. `P-3` falsifiers 19–20 finished at the `S0-3` return
+(2026-08-28): the write-admission machine consolidated the fence — `commitReserved` in
+`test/writeAdmission.test.ts` validates the reservation's generation where the commit lands — and the composed
+retirement assertion holds on the reproduction's own schedule.
 
 ## 5. `GenerationReferences` and the opener-retirement predicate
 

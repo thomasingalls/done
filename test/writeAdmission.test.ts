@@ -13,6 +13,18 @@
  * §12's budget is `scripts/check-update-limit.mjs`'s job, and it recomputes the
  * derivation from the published measurements rather than comparing a string.
  * Two checks, two subjects: this one owns the orderings.
+ *
+ * **Consolidated at the `S0-3` return (2026-08-28), under `P-3`'s ratified
+ * class-2 rules.** The refusal path stages the input as pending and withholds
+ * the acknowledgement until the forced batch commits — nothing becomes
+ * authoritative without a durable carrier — and the mark that state sets is
+ * READ by the forced flush, with round 1 `S-6`'s two green mutations held
+ * below as permanent negatives (falsifier 18). The allocator gains the fence:
+ * a commit validates its reservation's generation where the commit lands and
+ * aborts into re-reservation when the marker moved (falsifier 19). The kill
+ * points and second writers these orderings imply are scheduled in
+ * `test/storageSchedule.test.ts`, which composes this machine with
+ * `GenerationApply` in one world.
  */
 
 import { describe, expect, it } from 'vitest';
@@ -40,7 +52,11 @@ interface Store {
   /** Committed records, as (seq, gen). */
   records: { seq: number; gen: number }[];
   journal: Journal;
-  /** Set the moment the journal refuses; cleared when IndexedDB commits. */
+  /** Refused edits staged for the forced asynchronous commit — never yet in the document. */
+  pending: { id: string; chars: number }[];
+  /** Ids IndexedDB has committed. */
+  committed: string[];
+  /** Set the moment the journal refuses; READ by the forced flush; cleared when IndexedDB commits. */
   notDurable: Refusal | null;
   /** Edits the user has been told are saved. */
   acknowledged: string[];
@@ -52,10 +68,26 @@ const store = (over: Partial<Store> = {}): Store => ({
   gen: 3,
   records: [],
   journal: { entries: [], capacity: 4096, available: true },
+  pending: [],
+  committed: [],
   notDurable: null,
   acknowledged: [],
   ...over,
 });
+
+/**
+ * The carrier invariant, and it is what makes the refusal state readable
+ * (`P-3` falsifiers 17–18): every acknowledged edit is held by a durable
+ * carrier — the journal or the committed batch. A "saved" outside both is the
+ * exact sentence the journal exists to refuse, and round 1 `S-6` showed the
+ * old model could not read it: acknowledging an unjournallable edit
+ * immediately passed 18/18. The two mutation tests below hold this as a
+ * permanent negative.
+ */
+const carrierViolations = (s: Store): string[] =>
+  s.acknowledged.filter(
+    (id) => !s.journal.entries.some((e) => e.id === id) && !s.committed.includes(id),
+  );
 
 /** base64 expands by 4/3, plus the key that names the entry. */
 const storedChars = (bytes: number) => Math.ceil((bytes + 16) / 3) * 4 + 40;
@@ -90,29 +122,50 @@ const journalWrite = (s: Store, id: string, bytes: number): Admission => {
   };
 };
 
-/** The batch commits and the journal entries it covered are removed. */
+/**
+ * The batch commits: the journal entries it covered are removed (IndexedDB now
+ * holds them), the pending refused edits are carried and only now
+ * acknowledged, and the refusal state clears.
+ */
 const commitBatch = (s: Store): Store => ({
   ...s,
   journal: { ...s.journal, entries: [] },
+  pending: [],
+  committed: [
+    ...s.committed,
+    ...s.journal.entries.map((e) => e.id),
+    ...s.pending.map((p) => p.id),
+  ],
   notDurable: null,
-  acknowledged: [...s.acknowledged, ...s.journal.entries.map((e) => e.id)],
+  acknowledged: [...s.acknowledged, ...s.pending.map((p) => p.id)],
 });
 
 /**
- * One locally originated edit. **An unjournallable write is not lost and is not
- * acknowledged**: the batch is forced, and the edit becomes durable when
- * IndexedDB says so rather than when the handler returns (PRD §7.10).
+ * The forced flush the refusal licenses — and it READS the mark, which is what
+ * makes `notDurable` load-bearing rather than write-only (round 1 `S-6`,
+ * inverted at the `S0-3` return): a model that never sets the mark never
+ * forces the batch, and the refused edit is caught unacknowledged by the
+ * contract below.
+ */
+const forcedFlush = (s: Store): Store => (s.notDurable === null ? s : commitBatch(s));
+
+/**
+ * One locally originated edit, under `P-3`'s ratified carrier rule: **nothing
+ * becomes authoritative without a durable carrier.** On the ordinary path the
+ * synchronous journal write is that carrier, and the acknowledgement rides it.
+ * On a refusal the input is *staged as pending* — the document does not gain
+ * it, nothing is acknowledged — and the handler returns with the document
+ * equal to recoverable state. The forced batch's commit is the carrier the
+ * promotion and the acknowledgement wait for; the milliseconds in between are
+ * the crash point `test/storageSchedule.test.ts` kills at (falsifier 17).
  */
 const localEdit = (s: Store, id: string, bytes: number): Store => {
   const attempt = journalWrite(s, id, bytes);
   if (attempt.ok) return { ...attempt.store, acknowledged: [...attempt.store.acknowledged, id] };
-  return commitBatch({
+  return {
     ...attempt.store,
-    journal: {
-      ...attempt.store.journal,
-      entries: [...attempt.store.journal.entries, { id, chars: 0 }],
-    },
-  });
+    pending: [...attempt.store.pending, { id, chars: 0 }],
+  };
 };
 
 /** An operation applied in slices, each its own transaction and each journalled. */
@@ -143,6 +196,33 @@ const reserve = (s: Store, k: number): { s: Store; from: number } => ({
 const mustRotateBefore = (s: Store, k: number) => (s.reserved[s.gen] ?? 0) + k >= BUDGET;
 
 const rotate = (s: Store): Store => ({ ...s, gen: s.gen + 1 });
+
+/**
+ * The committing transaction validates the reservation's generation where the
+ * commit lands (`P-3` joint 3's fence, ratified 2026-08-28; `FU-09`). The
+ * active marker's home shares the store's database, so the same serialization
+ * the allocator's two-tab argument leans on refuses a commit whose reservation
+ * crossed a marker advance: it aborts into re-reservation, and the abandoned
+ * range stays counted. The re-reserve rule above is thereby checked where
+ * looking is atomic, never merely when the batch happens to look.
+ * `test/storageSchedule.test.ts` schedules the interleaving itself.
+ */
+const commitReserved = (
+  s: Store,
+  r: { from: number; k: number; gen: number },
+): { s: Store; committed: boolean } =>
+  r.gen !== s.gen
+    ? { s, committed: false }
+    : {
+        s: {
+          ...s,
+          records: [
+            ...s.records,
+            ...Array.from({ length: r.k }, (_, i) => ({ seq: r.from + i, gen: r.gen })),
+          ],
+        },
+        committed: true,
+      };
 
 /**
  * The trim deletes **what its state record covered**, not everything below a
@@ -238,13 +318,69 @@ describe('§6.1 — admission, and the one state behind it', () => {
 
   it('does not acknowledge an edit the journal could not take until the batch commits', () => {
     const s = store({ journal: { entries: [], capacity: 4096, available: false } });
-    const after = localEdit(s, 'edit-1', 8);
-    // The edit survives -- it is in the forced batch -- and it was never
-    // reported as saved before IndexedDB said so.
+    const mid = localEdit(s, 'edit-1', 8);
+    // The handler has returned and the window is open: the input is staged as
+    // pending, the mark is set and readable, nothing is acknowledged, and no
+    // acknowledged edit sits outside a durable carrier.
+    expect(mid.acknowledged).not.toContain('edit-1');
+    expect(mid.notDurable).toBe('unavailable');
+    expect(mid.pending.map((p) => p.id)).toContain('edit-1');
+    expect(carrierViolations(mid)).toEqual([]);
+    // The forced flush -- driven by the mark -- commits, promotes and only
+    // then acknowledges.
+    const after = forcedFlush(mid);
     expect(after.acknowledged).toContain('edit-1');
     expect(after.notDurable).toBeNull();
+    expect(carrierViolations(after)).toEqual([]);
     const straight = localEdit(store(), 'edit-2', 8);
     expect(straight.acknowledged).toEqual(['edit-2']);
+    expect(carrierViolations(straight)).toEqual([]);
+  });
+
+  // The two mutations round 1 `S-6` ran green, held as permanent negatives
+  // (`P-3` falsifier 18): the refusal state is read, not write-only.
+  it('fails a model that never marks not-durable, because the forced flush reads the mark', () => {
+    const neverMarks = (s: Store, id: string, bytes: number): Store => {
+      const attempt = journalWrite(s, id, bytes);
+      if (attempt.ok) return { ...attempt.store, acknowledged: [...attempt.store.acknowledged, id] };
+      // The mutation: the refusal happens and the mark is never written.
+      return {
+        ...attempt.store,
+        notDurable: null,
+        pending: [...attempt.store.pending, { id, chars: 0 }],
+      };
+    };
+    const dark = store({ journal: { entries: [], capacity: 4096, available: false } });
+    const mutant = forcedFlush(neverMarks(dark, 'e', 8));
+    // The flush reads the mark, so the mutant never commits: the refused edit
+    // stays unacknowledged and uncarried, which the ordinary model's own
+    // assertions above refuse. The mark is load-bearing.
+    expect(mutant.acknowledged).not.toContain('e');
+    expect(mutant.committed).not.toContain('e');
+    const honest = forcedFlush(localEdit(dark, 'e', 8));
+    expect(honest.acknowledged).toContain('e');
+  });
+
+  it('fails a model that acknowledges an unjournallable edit before IndexedDB commits', () => {
+    const acksEarly = (s: Store, id: string, bytes: number): Store => {
+      const attempt = journalWrite(s, id, bytes);
+      if (attempt.ok) return { ...attempt.store, acknowledged: [...attempt.store.acknowledged, id] };
+      // The mutation: the verbatim reachable consequence of f-9b49b74 -- the
+      // handler reports saved with nothing durable holding the edit.
+      return {
+        ...attempt.store,
+        pending: [...attempt.store.pending, { id, chars: 0 }],
+        acknowledged: [...attempt.store.acknowledged, id],
+      };
+    };
+    const dark = store({ journal: { entries: [], capacity: 4096, available: false } });
+    const mutant = acksEarly(dark, 'e', 8);
+    // The carrier invariant isolates exactly this mutation...
+    expect(carrierViolations(mutant)).toEqual(['e']);
+    // ...and the ordinary model never violates it, before or after the flush.
+    const mid = localEdit(dark, 'e', 8);
+    expect(carrierViolations(mid)).toEqual([]);
+    expect(carrierViolations(forcedFlush(mid))).toEqual([]);
   });
 });
 
@@ -361,6 +497,25 @@ describe('§6.1 — the allocator, and the count the budget reads', () => {
     expect(second.s.reserved[3]).toBe(3); // abandoned, still counted
     expect(second.s.reserved[4]).toBe(3);
     expect(second.from).toBeGreaterThan(first.from);
+  });
+
+  it('aborts a commit whose reservation crossed the marker, where the commit lands', () => {
+    let s = store();
+    const first = reserve(s, 3); // granted under gen 3
+    s = rotate(first.s); // the marker advances while the range is in flight
+    const late = commitReserved(s, { from: first.from, k: 3, gen: 3 });
+    // The fence (P-3 falsifier 19): the late commit aborts -- no record lands
+    // under the generation the reservation crossed out of.
+    expect(late.committed).toBe(false);
+    expect(late.s.records).toHaveLength(0);
+    // Re-reservation under the successor commits, and the abandoned range
+    // stays counted against the old generation, composing with falsifier 8.
+    const second = reserve(late.s, 3);
+    const landed = commitReserved(second.s, { from: second.from, k: 3, gen: second.s.gen });
+    expect(landed.committed).toBe(true);
+    expect(landed.s.records.every((r) => r.gen === 4)).toBe(true);
+    expect(landed.s.reserved[3]).toBe(3);
+    expect(landed.s.reserved[4]).toBe(3);
   });
 
   it('deletes what its snapshot covered and leaves a concurrent commit alone', () => {

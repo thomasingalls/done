@@ -13,6 +13,12 @@ said `'update' | 'state'`. `S0-4` adds `outbound` and both are now here. Neither
 already in the AAD, and that binding is what makes a fourth kind safe in the same store subkey.
 **Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-27) — the generation opener a `KeyEnvelope` holds is no longer the only thing a drop consults; TRD §13.7's
 reference ledger counts every object still sealed under a generation before its opener may be retired.
+**Amended by:** [`S0-3`](../review/remediation/S0-3/README.md) (2026-08-28) — **the subkey's scope, corrected
+by the budget** (`P-3`, ratified 2026-08-28). `K_store`'s `info` gains the `store_id` minted at store creation
+and the AAD carries it: **one key per `SeqCounter`**, because a nonce budget binds only what its counter can
+see, and every device holding `K_g` used to derive the identical subkey while each device's counter saw only
+its own share. §3's bound and §4's scope rule are rewritten below; `wrong-store-subkey` is the derivation's
+published negative.
 
 ---
 
@@ -29,14 +35,21 @@ Content record  (IndexedDB, structured clone)
                    'outbound' row 4's minted envelopes, in its own object store
 
   K_store = HKDF-SHA256(ikm = K_g, salt = "",
-                        info = LP("done/store/v1") || LP(workspace_id), L = 32)
+                        info = LP("done/store/v1") || LP(workspace_id)
+                               || LP(store_id), L = 32)
+
+  store_id  minted from local randomness at store creation, beside the
+            SeqCounter it names; cleartext in the store's metadata.
+            One key per counter -- see §3 and §4 (P-3, S0-3).
 
   AAD     = LP("done/store/v1") || LP(principal_id) || LP(workspace_id)
-            || LP(dec v) || LP(dec gen) || LP(dec seq) || LP(kind)
+            || LP(store_id) || LP(dec v) || LP(dec gen) || LP(dec seq)
+            || LP(kind)
 
   Nonce   12 bytes from crypto.getRandomValues() per record, under a
-          2^32-per-generation budget the SeqCounter's reserved[gen] counts.
-          NOT `seq`, which does not reset -- see §3 (S0-3).
+          2^32-per-(store, generation) budget the SeqCounter's
+          reserved[gen] counts. NOT `seq`, which does not reset -- see §3
+          (S0-3).
 
   seq     RESERVED before encryption, per batch, in one IndexedDB
           transaction that also adds k to reserved[gen]. It is in the AAD,
@@ -72,7 +85,7 @@ The shared rules, all three of them inherited from row 2 rather than reinvented:
 1. **`LP()` length-prefixed AAD fields, never delimiter-joined.** A delimiter-joined encoding is not
    injective — a workspace id containing the delimiter shifts every field after it, and two different contexts
    can encode to identical bytes. Injectivity is the only property AAD needs. It matters more here than in the
-   journal: this format has **six** cleartext fields to bind rather than one, so an ambiguous encoding has
+   journal: this format has **seven** cleartext fields to bind rather than one, so an ambiguous encoding has
    proportionally more room to do damage.
 2. **Any cleartext field a reader trusts is authenticated.**
 3. **A binding that costs nothing and removes a class of confusion is taken**, rather than being argued down
@@ -121,8 +134,15 @@ Row 2 rejected a 96-bit nonce for the journal in strong terms: the guarantee "wo
 application behaviour that a later change can silently invalidate." **That objection applies here on its face,
 and it is answered rather than waived.**
 
-**The bound.** NIST SP 800-38D §8.3 limits a key to 2^32 invocations when nonces are random, which holds the
-collision probability at or below 2^-32. `K_store` is per generation, so the budget is per generation.
+**The bound.** NIST SP 800-38D §8.3 limits **a key** to 2^32 invocations when nonces are random, which holds
+the collision probability at or below 2^-32. `K_store` is per **store instance and generation**, so the budget
+is per (store, generation) — and the store term is what makes the bound true rather than merely stated (`P-3`,
+ratified 2026-08-28). The counter below is one `SeqCounter` per store, and IndexedDB is device-local by
+construction, so a subkey derived from `K_g` and the workspace alone would be the identical key on every device
+holding `K_g`: `D` stores each granted 2^32 gives `q = D·2^32`, collision probability ≈ `D²·2^-33` — above the
+claimed 2^-32 for every `D ≥ 2`, visible to no per-store comparison. Binding the `store_id` in the derivation
+makes the sum over devices a sum over distinct keys, so `reserved[gen]` counts every invocation of the key it
+bounds and the one comparison is again the whole enforcement.
 
 **What makes it unconditional here is that the condition is checkable, and row 2's was not.** The journal had
 no durable counter by definition — that was the whole premise of the row — so its safety would have rested on
@@ -172,19 +192,25 @@ precisely the kind of application-behaviour claim this section is trying not to 
 
 ## 4. Derivation names the key's scope; AAD names the record's home
 
-`K_store` is derived from `K_g` under the workspace, exactly as row 2 derived `K_journal` — same KDF, same
-label encoding, different label. **That the two subkeys differ only by label is the point**, because it makes
-§13.2's separation a property of the labels rather than of two unrelated constructions a reviewer has to
-compare by hand.
+`K_store` is derived from `K_g` under the workspace and the store instance, with the same KDF and label
+encoding as row 2's `K_journal` — §13.2's separation stays a property of the labels a reviewer can read, and
+the extra `info` term is a scope term rather than a separation one.
 
-The principal appears in the AAD but **not** in the derivation, which looks inconsistent until stated as a
-rule:
+The rule survives corrected, not repealed (`P-3`, ratified 2026-08-28):
 
-> **Derivation names what the key is scoped to. AAD names where the record lives.**
+> **Derivation names what the key is scoped to — and the budget is what fixes the scope: a key's scope can be
+> no wider than the state that counts its invocations. AAD names where the record lives.**
 
-`K_g` is a content key for one workspace generation (§13.2), so its subkeys are workspace-scoped by
-construction and adding the principal would claim a scope the key does not have. The _record_, by contrast,
-lives in a store keyed by _(principal, workspace)_ per §6.5, and that is what its AAD should say. Row 2's
+The earlier premise here ran the inference backwards: it read the scope off `K_g` — *a content key for one
+workspace generation, so its subkeys are workspace-scoped by construction* — and concluded that adding anything
+narrower *would claim a scope the key does not have*. The budget decides, not the parent key: §3's bound is
+enforced by one `SeqCounter` per store, so the key that bound protects must be per store, and the `store_id`
+minted beside the counter is exactly the identity that makes them one-to-one. It exists at creation for every
+store — the anonymous Local workspace included — and no two counters ever share it, which is the floor the
+ratifier fixed. The principal still appears in the AAD but **not** in the derivation: the *record* lives in a
+store keyed by _(principal, workspace)_ per §6.5, and that is what its AAD should say, while the store's own
+identity now travels in both — so a record that lands in the wrong store fails **at the key as well as the
+AAD**, defense in depth for §6.7's two-principals-one-profile case §2 argues from. Row 2's
 `journal_storage_key` binding is the same rule applied to the journal's own home.
 
 **The label namespace has room for the fourth subkey.** §13.2 anticipates a search-index subkey; `done/index/v1`
@@ -198,6 +224,16 @@ follows measurement in Stage 3 and gates neither this review nor cutover.
 `L_local` is a structured-cloned non-extractable `CryptoKey` and `K_g` persists **only** as bytes sealed under
 it (§13.3). The envelope is that sealing, and the key store holds one per generation the device still needs —
 §6.1's local retention question, which §13.7 warns must not be conflated with the attribution floor.
+
+**The device key's invocation count rides the generation counter, and that is its budget's state** (`P-3`
+falsifier 16, `S0-3`). A device key seals one envelope per (generation, purpose): `L_local` gains one seal per
+rotation it witnesses, and a custody transition mints a **fresh** `L_lock` and reseals only the bounded
+retained set in one transaction (§13.3), so no lock key accumulates re-seals across transitions. Each seal's
+`gen` is durable, monotonic and already in the envelope, so the invocations of any one device key are counted
+by the generations it has held — reaching §3's 2^32 bound would take 2^32 generation advances, each itself a
+durable, counted `GenerationApply` — where the content path's keystroke-rate invocations needed a reservation
+counter of their own. The key is per device profile by construction (never derived, never shared), so the
+counter and the key are one-to-one here without any added identity.
 
 **`purpose` is bound, for row 2's reason rather than a new one.** `L_local` is a _device_ key, not a workspace
 key, so every future locally sealed secret shares it — §13.4's device signing and wrapping credentials, on the
@@ -281,14 +317,18 @@ selects what is built out of it. What this file carries is **composition** — s
 encoding, the framing — which is where a construction on a correct primitive still goes wrong, and which is
 what review 3a most needs to see.
 
-**Five record vectors and two envelope vectors.** An 18-byte keystroke update (the measured common case), a
-`state` record, an empty update, a rotated generation under a different `K_g`, and the same inputs under a
-second workspace. Then `K_g` sealed under `L_local` at two generations.
+**Six record vectors and two envelope vectors.** An 18-byte keystroke update (the measured common case), a
+`state` record, an empty update, a rotated generation under a different `K_g`, the same inputs under a second
+workspace, and the same inputs under a second store of the same workspace — the last proving the store binding
+by derivation, not only by AAD (`S0-3`). Then `K_g` sealed under `L_local` at two generations.
 
-**Eleven negatives**, each one a field the load path trusts: wrong workspace by subkey and again by AAD, wrong
-principal, wrong generation, `kind` swapped from update to state, `seq` renumbered, `v` downgraded, a flipped
-tag bit, a truncated ciphertext, and both cross-carrier confusions — a record opened with an envelope's AAD
-and an envelope opened with a record's.
+**Twenty negatives**, each one a field the load path trusts: wrong workspace by subkey and again by AAD, wrong
+store by subkey (`wrong-store-subkey`, the derivation's falsifier — `P-3` falsifier 14), wrong principal, wrong
+generation, `kind` swapped from update to state, `seq` renumbered, `v` downgraded, a flipped tag bit, a
+truncated ciphertext, both cross-carrier confusions — a record opened with an envelope's AAD and an envelope
+opened with a record's — and the AAD-only isolation group: one negative per bound field that changes that field
+and nothing else, the record's label and store id and the envelope's six among them, so no field's binding
+rides another's.
 
 **The must-fail list cannot drift from what is actually asserted.** Row 2 established that a negative which
 quietly stops failing is worse than no negative; a negative that is _published but never run_ is the same

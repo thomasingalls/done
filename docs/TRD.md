@@ -649,16 +649,23 @@ same way. Three constraints on `heads`:
 **Two version numbers exist and must not be conflated.** `StoredRecord.v` versions the on-disk envelope;
 `meta.schemaVersion` versions the document tree. A change to either must not be read as a change to the other.
 
-**The concrete format is selected** (§15 row 3). AES-256-GCM under a domain-separated store subkey of `K_g`, with
-12 random nonce bytes per record. **Every cleartext field is in the associated data — `v`, `gen`, `seq` and `kind`,
-plus the principal and workspace ids** — and `kind` is why that matters rather than being thorough: IndexedDB holds
-a structured clone whose properties the load path trusts, a `state` record supersedes everything before it, and an
-editable `kind` is therefore a way to make the store delete its own history through its own trim path. **`seq` does
-not reset at trim**, because the nonce budget is argued from it.
+**The concrete format is selected** (§15 row 3). AES-256-GCM under a domain-separated store subkey of `K_g`
+**whose derivation also binds the store instance** — a `store_id` minted from local randomness at store
+creation, held cleartext in the store's metadata, entering the HKDF `info` beside the workspace id (`P-3`,
+`S0-3`) — with 12 random nonce bytes per record. **Every cleartext field is in the associated data — `v`,
+`gen`, `seq` and `kind`, plus the principal, workspace and store ids** — and `kind` is why that matters rather
+than being thorough: IndexedDB holds a structured clone whose properties the load path trusts, a `state` record
+supersedes everything before it, and an editable `kind` is therefore a way to make the store delete its own
+history through its own trim path. **`seq` does not reset at trim**, because the nonce budget is argued from it.
 
 **That budget has a number and an action, and the writer needs both.** NIST SP 800-38D §8.3 bounds a key to 2^32
-invocations when its nonces are random, which is what holds the collision probability at or below 2^-32. `K_store`
-is per generation, so the budget is per generation: **a store whose next write would be the 2^32nd invocation under
+invocations when its nonces are random, which is what holds the collision probability at or below 2^-32.
+`K_store` is per **store instance and generation** — the derivation binds the `store_id` precisely because **a
+key's scope can be no wider than the state that counts its invocations** (`P-3`, ratified 2026-08-28): the
+counter below is per store, IndexedDB is device-local, and a workspace-shared subkey would be invoked by `D`
+stores while every per-store comparison read only its own share, putting the collision probability near
+`D²·2^-33` with no device able to see it. One key per counter makes the sum over devices a sum over distinct
+keys, so the budget is per (store, generation): **a store whose next write would be the 2^32nd invocation under
 the current generation rotates before that write rather than after it.** Equality is the first disallowed value,
 and the writer rotates or refuses rather than proceeding. This is one comparison in front of a field that exists
 for other reasons, and it is the whole enforcement behind the conditional argument the random nonce rests on — a
@@ -675,12 +682,18 @@ that happened.
 
 **And `seq` is reserved rather than read, which is the same decision from the other side** (§15 row 3). It is
 inside the AAD, so it is fixed before encryption and cannot come from an auto-increment key — and two tabs each
-reading the highest committed value choose the same next one. One durable `SeqCounter` per _(principal,
-workspace)_ grants a batch's whole range in one transaction, which is what serializes them, and adds `k` to
-`reserved[gen]` in the same transaction. **Per batch and exactly sized**: the adapter already writes a batch in
-one transaction and already knows how many sequences it needs, so neither a transaction per record nor a
-per-tab lease is the alternative it looked like. A batch that finds a newer generation active **re-reserves**
-under it, and the abandoned range stays counted against the old one.
+reading the highest committed value choose the same next one. One durable `SeqCounter` per store — minted at
+store creation together with the `store_id` that names both the counter and the key it bounds — grants a
+batch's whole range in one transaction, which is what serializes them, and adds `k` to `reserved[gen]` in the
+same transaction. **Per batch and exactly sized**: the adapter already writes a batch in one transaction and
+already knows how many sequences it needs, so neither a transaction per record nor a per-tab lease is the
+alternative it looked like. **A batch's commit validates its generation where the commit lands** (`P-3`,
+ratified 2026-08-28; `S0-2` §4's fence): the active marker's home shares the store's database, the committing
+transaction reads it under the same IndexedDB serialization the allocator already leans on, and when the marker
+moved past the reservation's generation the commit **aborts into re-reservation under the successor** — checked
+where looking is atomic, never merely when the batch happens to look. The abandoned range stays counted against
+the old generation, and after marker-advance commits no record can commit under it, so a generation's
+classification is complete the moment retirement consumes it.
 
 **What the allocator gives the trimmer is uniqueness, not a watermark**, and the difference is worth stating
 because the obvious reading is the other one. A trim deletes what its state record covered; *what it covered*
@@ -720,10 +733,16 @@ paste appears progressively, and a kill part-way through leaves a resumable pref
 
 **And when the journal cannot take a write at all, that is one state rather than three.** Oversize, an
 exhausted quota and unavailable storage differ only in cause: the store is marked **not durable**, the batch is
-forced, and **the edit is not acknowledged until IndexedDB commits**. PRD §7.10 already governs this — *an app
-whose central claim is local-first must not be quiet about a context where the data is not durable* — and what
-is withheld is the acknowledgement rather than a new warning, because §7.10's own rule is that a warning nobody
-can clear is noise.
+forced, and **the edit is not acknowledged until IndexedDB commits**. **Nothing becomes authoritative without a
+durable carrier** (`P-3`, ratified 2026-08-28): a handler that meets a refusal returns only with the document
+equal to recoverable state — the input is produced against staged state, held as pending, and **promoted to the
+document on the ordinary path only once the forced batch's commit carries it**, sliced when oversize was the
+cause — so the milliseconds between a refusal and the commit hold no update a kill can lose, and *the document
+has the change and nothing durable does* can no longer outlive a handler. Under storage pressure a keystroke
+appears when it is durable rather than immediately, which is the recorded cost. PRD §7.10 already governs the
+disclosure — *an app whose central claim is local-first must not be quiet about a context where the data is not
+durable* — and what is withheld is the acknowledgement rather than a new warning, because §7.10's own rule is
+that a warning nobody can clear is noise.
 
 **Back-pressure is measured in stored characters, never in entries.** The append probe measured this origin's
 wall at about 5.3 M UTF-16 characters — roughly 60,000 entries at the common keystroke size and about **241** at
@@ -2299,8 +2318,9 @@ creates a new random `K_g` and makes a recovery wrap during ordinary operation, 
 
 **Subkeys are domain-separated from `K_g`, never `K_g` itself.** At minimum: a content-store subkey (§6.1), a
 synchronous-journal subkey (§6.1), a network-envelope subkey (§7.4), a checkpoint subkey (§7.6), and later an
-index subkey. **All of them differ by label alone**, which is what makes this separation a property of the labels
-rather than of five constructions a reviewer has to compare by hand. **One primitive key
+index subkey. **Their separation is carried by the labels alone**, which is what makes it a property a reviewer
+can read rather than five constructions to compare by hand; the store subkey's `info` additionally binds the
+`store_id` whose counter bounds its nonce budget (§6.1, `P-3`) — a scope term, not a separation one. **One primitive key
 must not be reused across the asynchronous and synchronous constructions**, which is also why `K_g` cannot itself be
 the structured-cloned non-extractable key — WebCrypto cannot later wrap a non-extractable target.
 
@@ -3531,7 +3551,7 @@ true**, and where the two disagree this one wins.
 | - | -------- | ---------------- | ------ |
 | 1 | Algorithm suite and crypto-agility | **Suite 1** — AES-256-GCM on every asynchronous path, XChaCha20-Poly1305 on the synchronous one, HKDF-SHA-256, Ed25519, HPKE base with X25519, SHA-256. **A carrier version selects the whole suite**: no per-record algorithm field, so nothing to negotiate and nothing to downgrade | [row 1](./selections/row-1-algorithm-suite.md) |
 | 2 | Synchronous journal AEAD and its nonce discipline | **XChaCha20-Poly1305**, 24 random bytes per record, **no counter and no durable state** — so there is nothing for a crash to lose. Subkey derived once at open from `K_g`. **The implementation is the audited RustCrypto crate compiled to a 6.5 kB inlined wasm module**, instantiated synchronously, which closes §12's measured 4 kB breach and costs 0.7 kB _less_ than the pure-JS library it replaces (§13.10) | [row 2](./selections/row-2-journal-aead.md) |
-| 3 | Encrypted record and local key-envelope formats | AES-256-GCM under domain-separated subkeys; **every cleartext field is in the AAD**, because IndexedDB holds a structured clone whose properties the load path trusts. 12 random nonce bytes under a per-generation budget that `seq` bounds — **so `seq` does not reset at trim**. The budget is NIST SP 800-38D §8.3's 2^32 invocations per key: **the store rotates before the 2^32nd write under a generation**, equality being the first disallowed value. The per-generation count that comparison reads, and the crash-safe allocator that issues `seq` across tabs, are **still open** (§6.1) | [row 3](./selections/row-3-record-format.md) |
+| 3 | Encrypted record and local key-envelope formats | AES-256-GCM under domain-separated subkeys; **every cleartext field is in the AAD**, because IndexedDB holds a structured clone whose properties the load path trusts. **The store subkey binds the store instance** — one key per `SeqCounter`, because a key's scope can be no wider than the state that counts its invocations (`P-3`). 12 random nonce bytes under a per-(store, generation) budget **counted by `reserved[gen]`, reserved before encryption** so an abandoned invocation is counted — **and `seq` does not reset at trim**. The budget is NIST SP 800-38D §8.3's 2^32 invocations per key: **the store rotates before the 2^32nd reservation under a generation**, equality being the first disallowed value. The crash-safe allocator issues `seq` across tabs per batch, exactly sized, and the commit validates its generation where it lands (§6.1, `S0-3`) | [row 3](./selections/row-3-record-format.md) |
 | 13 | Device-lock derivation, enrollment migration and copy | A **generated 125-bit code always**, with WebAuthn PRF as an additional seal of the same `L_lock` rather than an alternative to it. Enrollment reseals the key envelopes and **rotates the content key forward** (§13.3) | [row 13](./selections/row-13-device-lock.md) |
 | 14 | Recovery-code entropy, generation, step-up and confirmation UX | 125 bits, Crockford Base32, five groups of five, **and no stretching at all**. Step-up is **a bound challenge rather than a freshness window** — `SHA-256( LP("done/recovery-replace/v1") \|\| LP(dec v) \|\| LP(hex intent_id) \|\| LP(hex nonce) )`, answered by the account credential, with 32 service-issued nonce bytes retired on use. **It binds §13.7's transition id, not the new public key**, so a `replace-recovery` step-up cannot be redirected to a `retire`; and no principal or credential id, because a service-issued challenge names the operation as the service knows it (§13.8) | [row 14](./selections/row-14-recovery-code.md) |
 | 5 | Finalization shape | An **append-only per-credential accepted chain** of SHA-256 links, with **service-signed heads amortized over a batch** rather than one receipt per envelope. A separate hot acceptance-signing key, certified by the authorization key in the epoch. `final: true` is the cutoff. The epoch payload and the checkpoint manifest each gain the head vector (§7.5, §7.6, §13.5) | [row 5](./selections/row-5-finalization.md) |

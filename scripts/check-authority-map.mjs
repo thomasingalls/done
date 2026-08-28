@@ -32,9 +32,15 @@
  *      embodies its defect, by content hash. An edit to a pinned home fails
  *      until the editor re-reads the entry and either re-pins it or flips it —
  *      which is `RC-8C`'s both-directions agreement, made mechanical.
- *   5. **The population sweep.** Every `Ed25519(` construction in the TRD and
- *      the five stage schema documents must sit in a section some entry pins,
- *      so the map cannot decide its own census.
+ *   5. **The population sweep.** Every `Ed25519(` construction — and, since
+ *      the `S0-3` return, every AEAD construction (`AES-256-GCM(`,
+ *      `XChaCha20-Poly1305(`, `AEAD(`) — in the TRD and the five stage schema
+ *      documents must sit in a section some entry pins, so the map cannot
+ *      decide its own census. And the census's one declared absence — `K_cp`,
+ *      whose homes state neither a counter nor a discipline, owed at the
+ *      `S0-5` return — is held mechanically: an entry appearing while the
+ *      declaration stands is paid-and-not-struck, both disappearing is a
+ *      silent drop, and either fails.
  *
  * What it does **not** prove: that the corpus implements a chain. `status` is
  * the honest carrier for that gap — an open entry's flip is owed at its
@@ -368,6 +374,10 @@ for (const e of entries.values()) {
 
 // --- 6. the population sweep: the documents decide the census ------------------
 
+/** The construction tokens the sweep attributes: signatures, and — since the
+ * S0-3 return (P-3 falsifier 16) — AEAD seals. */
+const CONSTRUCTS = ['Ed25519(', 'AES-256-GCM(', 'XChaCha20-Poly1305(', 'AEAD('];
+
 for (const path of SWEPT) {
   const text = read(path);
   const lines = text.split('\n');
@@ -375,17 +385,36 @@ for (const path of SWEPT) {
   for (const line of lines) {
     const h = /^#{2,3} ((?:\d+\.)*\d+)[. ]/u.exec(line);
     if (h !== null) current = h[1];
-    if (!line.includes('Ed25519(')) continue;
+    if (!CONSTRUCTS.some((t) => line.includes(t))) continue;
     if (current === null) {
-      fail(`${path}: an Ed25519( construction sits above every numbered section; the sweep cannot attribute it.`);
+      fail(`${path}: a signature or AEAD construction sits above every numbered section; the sweep cannot attribute it.`);
       continue;
     }
     if (!pinned.has(`${path}::${current}`) && !pinned.has(`${path}::*`)) {
       fail(
-        `${path} §${current} constructs a signature and no map entry pins that section. ` +
-          `Every verifier an acceptance step consumes is a map entry, or the map's census is smaller than the corpus.`,
+        `${path} §${current} constructs a signature or a seal and no map entry pins that section. ` +
+          `Every verifier or key an acceptance step consumes is a map entry, or the map's census is smaller than the corpus.`,
       );
     }
+  }
+}
+
+// --- 6b. the census's one declared absence (P-3 falsifier 16, the S0-3 return) --
+
+{
+  const declared = mapText.includes('The checkpoint subkey `K_cp` does not enter yet');
+  const entered = entries.has('k-checkpoint');
+  if (entered && declared) {
+    fail(
+      `${MAP}: a k-checkpoint entry exists while §5 still declares K_cp's absence — the debt was paid and the ` +
+        'declaration was not struck.',
+    );
+  }
+  if (!entered && !declared) {
+    fail(
+      `${MAP}: no k-checkpoint entry and no declared absence — K_cp's census obligation was silently dropped ` +
+        '(P-3 falsifier 16; its counter-or-discipline selection is owed at the S0-5 return).',
+    );
   }
 }
 
@@ -429,7 +458,7 @@ const perStage = [...byReturn]
 const edges = [...entries.values()].reduce((n, e) => n + e.chains.length, 0);
 console.log(
   `authority map: ${entries.size} entries, ${edges} chains; every chain terminates at a permitted root for its guard, ` +
-    `and every Ed25519( construction in the ${SWEPT.length} swept documents sits in a pinned section.`,
+    `and every signature and AEAD construction in the ${SWEPT.length} swept documents sits in a pinned section.`,
 );
 console.log(
   `  open at their own joint: ${open.length}${open.length === 0 ? '' : ` — ${perStage}`}`,

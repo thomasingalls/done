@@ -31,8 +31,9 @@
  * added the citations rather than only the words. And it reads membership, not
  * cells: a register row's construction cell describing a selected construction
  * as still open (`S0-9` `E3`/`E4`, TRD §15 row 3 against §6.1) is a
- * register-internal contradiction this scan cannot see — that home rides its
- * owning return (`FU-13`, `S0-3`). The printed conclusion says exactly this
+ * register-internal contradiction this scan cannot see — that home landed at
+ * the `S0-3` return (`FU-13`), and `pnpm admission:check` reads it as byte
+ * rules. The printed conclusion says exactly this
  * much, because a checker's printed claim wider than its scan is this action's
  * founding defect (`P-5` falsifier 21).
  *
@@ -245,5 +246,5 @@ console.log(
 );
 console.log(
   '  Membership and counts only: a construction cell describing a selected row as open is outside this scan ' +
-    '(S0-9 E3/E4; that home rides the S0-3 return).',
+    '(S0-9 E3/E4; row 3’s cell landed at the S0-3 return, and pnpm admission:check reads it).',
 );

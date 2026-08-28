@@ -2294,9 +2294,11 @@ is not durable. Three conditions, and only the first is a warning at all:
 (`S0-3`). The crash journal is what makes an edit durable the moment it is accepted; when it cannot take one —
 an operation too large, an exhausted store, storage that is not there — that edit is *not durable yet*, and it
 becomes durable when the database commits a moment later. **So what is withheld is the acknowledgement, not a
-banner shown.** A warning for a condition that clears in milliseconds would be exactly the noise the table
-above refuses; a *saved* that is not yet true is the thing this section exists to prevent. The three causes
-reach one state deliberately, so no path can handle two of them and believe it has handled the case.
+banner shown.** On the refusal path the document itself waits for its carrier, so the screen never shows what
+this section would have to disclaim: under storage pressure an edit lands late and durable rather than instant
+and precarious (`P-3`). A warning for a condition that clears in milliseconds would be exactly the noise the
+table above refuses; a *saved* that is not yet true is the thing this section exists to prevent. The three
+causes reach one state deliberately, so no path can handle two of them and believe it has handled the case.
 
 **Warn about the property, not the diagnosis.** "You are in private browsing" should be resisted: private-mode
 detection is unreliable and every reliable-ish technique is a fingerprinting vector browsers are closing.

@@ -6,8 +6,9 @@
 **Decided:** 2026-08-27 · **Reopened:** 2026-08-28, at the shared subkey, the refusal window and the
 reservation fence · **Ratified:** 2026-08-28, option A at all three joints · **Branch:** `RC-3C`, bound the
 operation rather than the write-ahead log · **Allocator:** per-batch exact reservation, in IndexedDB ·
-**Budget baseline:** sequences _reserved_ under a generation, not sequences committed · **Status:** ratified,
-not yet consolidated — the `S0-3` return owes falsifiers 14–22
+**Budget baseline:** sequences _reserved_ under a generation, not sequences committed · **Status:** ratified —
+the `S0-3` return landed falsifiers 14–22 on 2026-08-28, with the `S0-8` regeneration items (the matrix
+receipts and the vector republication `FU-05` shares) staying exactly as the consolidation list reserves them
 
 Consolidation is [`S0-3`](../action-tree.md). Evidence:
 [`probes/journal-append-probe.md`](../probes/journal-append-probe.md), TRD §12, `docs/performance.md`.

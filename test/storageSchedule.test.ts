@@ -18,15 +18,18 @@
  * never by naming steps. The reproductions then drive the models into the
  * states the dispositions describe: **an assertion that such a state is
  * reached states an open defect, not an invariant**, and each stage return
- * inverts its own with the schedule kept. `FU-09`'s is inverted (the `S0-2`
- * return, 2026-08-28): the commit step carries `P-3`'s ratified fence, the
- * marker advance finalizes the outgoing ledger atomically, and the
- * reproduction's schedule now asserts the permanent negative — falsifiers
- * 19–20 finish at the `S0-3` return. `FU-08` (the refusal window, falsifiers
- * 17–18) and `P-3` joint 1 (the key scope, falsifiers 14–15) remain open
- * reproductions owed to `S0-3`. No `falsifies:` tag appears here on purpose:
- * a reproduction demonstrates a finding, it does not refuse one, and a claim
- * would say the repair exists before it does.
+ * inverts its own with the schedule kept. All three are now inverted.
+ * `FU-09`'s at the `S0-2` return (2026-08-28): the commit step carries
+ * `P-3`'s ratified fence, the marker advance finalizes the outgoing ledger
+ * atomically, and the reproduction's schedule asserts the permanent negative.
+ * `FU-08`'s and `P-3` joint 1's at the `S0-3` return (2026-08-28): the write
+ * path stages its input and promotes only under a durable carrier, so the
+ * refusal window holds nothing a kill can lose (falsifiers 17–18), and the
+ * store derivation binds the store identity, so every key is counted by
+ * exactly one counter (falsifiers 14–15) — each on the reproduction's own
+ * schedule, with the pre-return worlds held as permanent negatives. No
+ * `falsifies:` tag appears here on purpose: a reproduction demonstrates a
+ * finding's repair at its return; the finding dispositions stay `S0-10`'s.
  *
  * Sizes are symbolic exactly as in writeAdmission.test.ts: `MAX_UPDATE` 64 and
  * `BUDGET` 8 keep schedules legible, and `check-update-limit.mjs` owns the
@@ -39,6 +42,7 @@ import {
   type Machine,
   type Point,
   type Step,
+  type Trace,
   type World,
   type Writer,
   between,
@@ -78,6 +82,11 @@ interface Durable {
 interface Volatile {
   /** The live document — the authoritative Yjs state, rebuilt on reload. */
   doc: readonly string[];
+  /**
+   * The update produced against staged state, awaiting admission — not yet in
+   * the document (`P-3`'s ratified carrier rule, the `S0-3` return).
+   */
+  staged: { id: string; chars: number } | null;
   /** The batch buffer — updates awaiting the asynchronous IndexedDB commit. */
   pending: readonly { id: string; chars: number }[];
   admission: 'ok' | Refusal | null;
@@ -106,6 +115,7 @@ const durable = (over: Partial<Durable> = {}): Durable => ({
 /** The reload path: the document is exactly what durable state can rebuild. */
 const recover = (d: Durable): Volatile => ({
   doc: [...d.records.map((r) => r.id), ...d.journal.map((j) => j.id)],
+  staged: null,
   pending: d.journal.map((j) => ({ id: j.id, chars: j.chars })),
   admission: null,
   reservation: null,
@@ -126,10 +136,15 @@ const world = (over: Partial<Durable> = {}): W => {
 
 const editSteps = (id: string, bytes: number): Step<Durable, Volatile>[] => [
   {
-    id: 'apply',
-    // The authoritative mutation. From here until something durable holds the
-    // update, the document is ahead of every carrier.
-    run: (w) => ({ ...w, volatile: { ...w.volatile, doc: [...w.volatile.doc, id] } }),
+    id: 'stage',
+    // The input runs against staged state and produces the update bytes; the
+    // authoritative document is untouched until a durable carrier holds them
+    // (P-3's ratified rule, the S0-3 return). Before the return this step was
+    // `apply` — the authoritative mutation, ahead of every carrier.
+    run: (w) => ({
+      ...w,
+      volatile: { ...w.volatile, staged: { id, chars: storedChars(bytes) } },
+    }),
   },
   {
     id: 'admit',
@@ -150,27 +165,39 @@ const editSteps = (id: string, bytes: number): Step<Durable, Volatile>[] => [
 
 const sealStep = (id: string, bytes: number): Step<Durable, Volatile> => ({
   id: 'seal',
-  // The synchronous journal write, and the acknowledgement it licenses.
+  // The synchronous journal write — the durable carrier — with the promotion
+  // and the acknowledgement it licenses, in one handler. Fusing them is
+  // crash-equivalent: killed after the setItem, the reload replays the journal
+  // into the document, which is the same observable world.
   run: (w) => ({
     durable: {
       ...w.durable,
       journal: [...w.durable.journal, { id, chars: storedChars(bytes) }],
     },
-    volatile: { ...w.volatile, pending: [...w.volatile.pending, { id, chars: storedChars(bytes) }] },
+    volatile: {
+      ...w.volatile,
+      staged: null,
+      doc: [...w.volatile.doc, id],
+      pending: [...w.volatile.pending, { id, chars: storedChars(bytes) }],
+    },
     observed: [...w.observed, `saved:${id}`],
   }),
 });
 
 const refuseStep = (id: string, bytes: number): Step<Durable, Volatile> => ({
   id: 'refuse',
-  // The current model's residual rule: mark not-durable, force the batch,
-  // withhold the acknowledgement. The forced batch is asynchronous, so the
-  // handler returns here with the input held in memory and nowhere else.
+  // P-3's ratified residual rule (the S0-3 return): the mark is set — and
+  // read, by the forced flush and §7.10's surface — the staged input is held
+  // as pending, the document is NOT mutated and nothing is acknowledged. The
+  // handler returns here with the document equal to recoverable state; the
+  // forced batch's commit below is the carrier the promotion and the
+  // acknowledgement wait for.
   run: (w) => ({
     ...w,
     volatile: {
       ...w.volatile,
       notDurable: w.volatile.admission === 'ok' ? null : (w.volatile.admission as Refusal),
+      staged: null,
       pending: [...w.volatile.pending, { id, chars: storedChars(bytes) }],
     },
   }),
@@ -222,7 +249,18 @@ const batchSteps = (ackOnCommit: string | null): Step<Durable, Volatile>[] => [
           records: [...w.durable.records, ...committed],
           journal: w.durable.journal.filter((j) => !ids.has(j.id)),
         },
-        volatile: { ...w.volatile, pending: [], reservation: null, notDurable: null },
+        volatile: {
+          ...w.volatile,
+          pending: [],
+          reservation: null,
+          notDurable: null,
+          // The promotion the refusal path waited for: a pending update the
+          // document does not yet hold appears now, carried.
+          doc: [
+            ...w.volatile.doc,
+            ...committed.map((c) => c.id).filter((id) => !w.volatile.doc.includes(id)),
+          ],
+        },
         observed: ackOnCommit === null ? w.observed : [...w.observed, `saved:${ackOnCommit}`],
       };
     },
@@ -269,7 +307,16 @@ const batchSteps = (ackOnCommit: string | null): Step<Durable, Volatile>[] => [
           records: [...w.durable.records, ...committed],
           journal: w.durable.journal.filter((j) => !ids.has(j.id)),
         },
-        volatile: { ...w.volatile, pending: [], reservation: null, notDurable: null },
+        volatile: {
+          ...w.volatile,
+          pending: [],
+          reservation: null,
+          notDurable: null,
+          doc: [
+            ...w.volatile.doc,
+            ...committed.map((c) => c.id).filter((id) => !w.volatile.doc.includes(id)),
+          ],
+        },
         observed: ackOnCommit === null ? w.observed : [...w.observed, `saved:${ackOnCommit}`],
       };
     },
@@ -450,7 +497,7 @@ const CENSUS: { boundary: Boundary; build: () => Machine<Durable, Volatile> }[] 
     build: () => machine([editor('editor', 'e1'), editor('tab2', 't1')]),
   },
   {
-    boundary: { name: 'refusal to batch commit', writer: 'editor', check: 'refuse', commit: 'commit', secondWriter: 'tab2.apply' },
+    boundary: { name: 'refusal to batch commit', writer: 'editor', check: 'refuse', commit: 'commit', secondWriter: 'tab2.stage' },
     build: () => machine([refusedEditor('editor', 'e1'), refusedEditor('tab2', 't1')], { journalAvailable: false }),
   },
   {
@@ -507,7 +554,7 @@ describe('the boundary census — every check-to-commit pair is schedulable', ()
   it('refuses a schedule that breaks a writer’s program order, and one that resumes a dead page', () => {
     const m = machine([editor('editor', 'e1'), transition()]);
     expect(() => runSchedule(m, [{ step: 'editor.seal' }])).toThrow(/program order/u);
-    expect(() => runSchedule(m, [{ kill: true }, { step: 'editor.apply' }])).toThrow(/not resumable/u);
+    expect(() => runSchedule(m, [{ kill: true }, { step: 'editor.stage' }])).toThrow(/not resumable/u);
     // The transition is resumable — its steps are driven by the durable apply
     // record — so continuing it across a kill is a schedule the model takes.
     const t = transition();
@@ -519,40 +566,86 @@ describe('the boundary census — every check-to-commit pair is schedulable', ()
 
 // --- the three windows, driven to the states the dispositions describe ----------
 
-describe('FU-08 — the refusal window, now a schedulable state', () => {
+describe('FU-08 — the refusal window, inverted at the S0-3 return', () => {
+  /**
+   * The schedules are the reproduction's, kept exactly (P-3's charter: each
+   * flip is one assertion reversed, with the schedule kept). Before the
+   * return, `apply` mutated the authoritative document ahead of every carrier,
+   * so the kill at the refuse boundary lost an update the person had watched
+   * appear. Under the ratified rule — nothing becomes authoritative without a
+   * durable carrier — the input is staged, the document waits for the forced
+   * batch's commit, and the same kill unshows nothing because nothing was
+   * shown. Falsifiers 17–18.
+   */
   const m = () => machine([refusedEditor('editor', 'e1')], { journalAvailable: false });
   const e = refusedEditor('editor', 'e1');
 
-  it('reaches the state the disposition describes: the document ahead of everything durable', () => {
+  it('returns from the refusal with the document equal to recoverable state, the mark readable', () => {
     const beforeKill = runSchedule(m(), upTo(e, 'refuse'));
-    // The handler has returned: the mutation is authoritative, the journal
-    // refused, the acknowledgement is withheld — and nothing durable holds e1.
-    expect(beforeKill.world.volatile.doc).toContain('e1');
-    expect(beforeKill.world.volatile.notDurable).toBe('unavailable');
+    const v = beforeKill.world.volatile;
+    // The handler has returned: the mark is set — read here, which is what
+    // write-only state cannot be — the acknowledgement is withheld, the input
+    // is held as pending, and the document does NOT hold e1, because nothing
+    // durable does. The disposition's state — "the document has the change
+    // and nothing durable does" — is unreachable, not merely survived.
+    expect(v.notDurable).toBe('unavailable');
+    expect(v.doc).not.toContain('e1');
+    expect(v.pending.map((p) => p.id)).toContain('e1');
     expect(beforeKill.world.observed).not.toContain('saved:e1');
     expect(beforeKill.world.durable.journal).toHaveLength(0);
-    expect(beforeKill.world.durable.records).toHaveLength(0);
   });
 
-  it('loses the integrated update at the kill point — the open defect, stated as reached', () => {
+  it('loses nothing at the reproduction’s kill point — the schedule kept, the assertion reversed', () => {
     const killed = runSchedule(m(), [...upTo(e, 'refuse'), { kill: true }]);
-    // This assertion states FU-08, not an invariant: the recovered document
-    // no longer holds an update the live one had integrated, and no durable
-    // carrier can rebuild it. P-3's ratified rule — nothing becomes
-    // authoritative without a durable carrier — flips this at the S0-3 return
-    // into falsifier 17's permanent negative: no kill point on the refusal
-    // path may show a document ahead of what durable state can rebuild.
+    // The permanent negative on the exact schedule that used to reach the
+    // defect: the person was shown nothing, so the crash unshows nothing —
+    // and no reload shows a document ahead of what durable state rebuilds,
+    // because the live document was never ahead.
+    expect(killed.world.observed).not.toContain('saved:e1');
     expect(killed.world.volatile.doc).not.toContain('e1');
-    expect(killed.world.durable.journal).toHaveLength(0);
     expect(killed.world.durable.records).toHaveLength(0);
   });
 
-  it('does not lose the same edit on the ordinary path, which is what makes the window the defect', () => {
+  it('shows no document ahead of durable state at any point on the refusal path — falsifier 17', () => {
+    const full = all(e);
+    for (let cut = 1; cut <= full.length; cut++) {
+      const live = runSchedule(m(), full.slice(0, cut));
+      const carried = new Set([
+        ...live.world.durable.records.map((r) => r.id),
+        ...live.world.durable.journal.map((j) => j.id),
+      ]);
+      // The ratified rule, asserted at every step boundary: the live document
+      // holds nothing a durable carrier does not…
+      for (const id of live.world.volatile.doc) expect(carried.has(id)).toBe(true);
+      // …and neither does anything the person has been shown (the observed
+      // log survives a kill on purpose).
+      for (const o of live.world.observed.filter((x) => x.startsWith('saved:')))
+        expect(carried.has(o.slice('saved:'.length))).toBe(true);
+      // And the kill at this boundary rebuilds exactly the carried state.
+      const killed = runSchedule(m(), [...full.slice(0, cut), { kill: true }]);
+      for (const id of killed.world.volatile.doc) expect(carried.has(id)).toBe(true);
+    }
+  });
+
+  it('promotes and acknowledges the refused edit exactly at the forced batch’s commit — falsifier 18', () => {
+    const mid = runSchedule(m(), upTo(e, 'reserve'));
+    expect(mid.world.observed).not.toContain('saved:e1');
+    const done = runSchedule(m(), upTo(e, 'commit'));
+    // The commit is the carrier: the record lands, the promotion and the
+    // acknowledgement arrive here and not before, and the mark clears — the
+    // refusal state is read at both ends of its life.
+    expect(done.world.durable.records.map((r) => r.id)).toContain('e1');
+    expect(done.world.volatile.doc).toContain('e1');
+    expect(done.world.observed).toContain('saved:e1');
+    expect(done.world.volatile.notDurable).toBeNull();
+  });
+
+  it('does not delay the same edit on the ordinary path, where the journal is the carrier', () => {
     const ok = editor('editor', 'e1');
     const killed = runSchedule(machine([ok]), [...upTo(ok, 'seal'), { kill: true }]);
-    // Same kill point, journal available: the WAL holds the update and the
-    // reload replays it. The refusal path's loss is the residual rule's,
-    // not the scheduler's.
+    // Same kill point, journal available: the WAL holds the update, the
+    // acknowledgement rode the synchronous write, and the reload replays it.
+    // The refusal path's deferral is the residual rule's, not the scheduler's.
     expect(killed.world.volatile.doc).toContain('e1');
     expect(killed.world.observed).toContain('saved:e1');
   });
@@ -632,59 +725,105 @@ describe('FU-09 — the fence: a reservation cannot outlive its generation (inve
   });
 });
 
-describe('P-3 joint 1 — a second device under one store key, now an expressible writer', () => {
+describe('P-3 joint 1 — one key per counter, inverted at the S0-3 return', () => {
   /**
-   * Two stores, two SeqCounters, one derived key — because today's derivation
-   * binds only the workspace, every device holding K_g derives the identical
-   * K_store. Symbolic budget of 8 invocations keeps the arithmetic visible.
+   * The schedule is the reproduction's, kept exactly: several devices, each
+   * with its own SeqCounter, reserving toward the budget's edge under one
+   * `K_g`. Before the return the derivation bound only the workspace, so every
+   * store derived the identical `K_store` and the key's true invocation count
+   * was the sum no counter could see — round 1's "one live construction
+   * defect". Under the ratified rule the `info` binds the store identity
+   * (row 3 §§3–4, the `wrong-store-subkey` vector): **one key per counter**,
+   * so the sum over devices is a sum over distinct keys and falsifier 15's
+   * sum-over-stores term is structurally zero for every device count.
+   * Symbolic budget of 8 invocations keeps the arithmetic visible.
    */
-  interface TwoStores {
-    a: { next: number; reserved: number };
-    b: { next: number; reserved: number };
-  }
+  type Stores = Record<string, { next: number; reserved: number }>;
   const BUDGET = 8;
-  const reserveOn = (device: 'a' | 'b', k: number): Step<TwoStores, null> => ({
+  /** The ratified derivation, symbolically: the info binds (K_g, workspace, store_id). */
+  const deriveKey = (kg: string, workspace: string, storeId: string) =>
+    `K(${kg},${workspace},${storeId})`;
+  /** The pre-return derivation — the mutation that must fail (falsifier 14). */
+  const storeBlindKey = (kg: string, workspace: string) => `K(${kg},${workspace})`;
+
+  const DEVICES = ['a', 'b', 'c'];
+  const counterOf = (durable: Stores, device: string) => {
+    const c = durable[device];
+    if (c === undefined) throw new Error(`no counter for device ${device}`);
+    return c;
+  };
+  const reserveOn = (device: string, k: number): Step<Stores, null> => ({
     id: `reserve-${k}`,
-    run: (w) => ({
-      ...w,
-      durable: {
-        ...w.durable,
-        [device]: { next: w.durable[device].next + k, reserved: w.durable[device].reserved + k },
-      },
-    }),
+    run: (w) => {
+      const cur = counterOf(w.durable, device);
+      return {
+        ...w,
+        durable: { ...w.durable, [device]: { next: cur.next + k, reserved: cur.reserved + k } },
+      };
+    },
   });
   const mustRotateBefore = (reserved: number, k: number) => reserved + k >= BUDGET;
 
-  it('lets every per-store comparison pass while the shared key exceeds its budget', () => {
-    const m: Machine<TwoStores, null> = {
+  /** The reproduction's schedule, generalized to D writers at the budget's edge. */
+  const atTheEdge = (): Trace<Stores, null> => {
+    const m: Machine<Stores, null> = {
       initial: {
-        durable: { a: { next: 1, reserved: 0 }, b: { next: 1, reserved: 0 } },
+        durable: Object.fromEntries(DEVICES.map((d) => [d, { next: 1, reserved: 0 }])),
         volatile: null,
         observed: [],
       },
       recover: () => null,
-      writers: [
-        { name: 'deviceA', steps: [reserveOn('a', 3), reserveOn('a', 2)] },
-        { name: 'deviceB', steps: [reserveOn('b', 3), reserveOn('b', 2)] },
-      ],
+      writers: DEVICES.map((d) => ({
+        name: `device-${d}`,
+        steps: [reserveOn(d, 3), reserveOn(d, 2)],
+      })),
     };
-    const trace = runSchedule(m, [
-      { step: 'deviceA.reserve-3' },
-      { step: 'deviceB.reserve-3' },
-      { step: 'deviceA.reserve-2' },
-      { step: 'deviceB.reserve-2' },
+    return runSchedule(m, [
+      ...DEVICES.map((d) => ({ step: `device-${d}.reserve-3` })),
+      ...DEVICES.map((d) => ({ step: `device-${d}.reserve-2` })),
     ]);
-    const { a, b } = trace.world.durable;
-    // Each counter, read alone, says no rotation is due — the one comparison
-    // §6.1 relies on fires on neither device.
-    expect(mustRotateBefore(a.reserved, 1)).toBe(false);
-    expect(mustRotateBefore(b.reserved, 1)).toBe(false);
-    // And the key's true invocation count is the sum no counter can see. This
-    // assertion states the open defect — round 1's "one live construction
-    // defect", the class-2 limit case: the second writer is on another device,
-    // under the same key, invisible to every local counter. P-3's ratified
-    // joint 1 (one key per counter) makes the sum-over-stores term
-    // structurally zero at the S0-3 return, under falsifiers 14–15.
-    expect(a.reserved + b.reserved).toBeGreaterThanOrEqual(BUDGET);
+  };
+
+  it('derives a distinct key for every store holding one K_g — falsifier 14', () => {
+    // Two stores never derive one K_store: the info binds the store identity.
+    const keys = DEVICES.map((d) => deriveKey('Kg', 'ws', `st_${d}`));
+    expect(new Set(keys).size).toBe(DEVICES.length);
+    // And the pre-return derivation is exactly the collision the info term
+    // removes — the identical key on every device, which is the mutation the
+    // wrong-store-subkey vector holds as a published negative.
+    const blind = DEVICES.map(() => storeBlindKey('Kg', 'ws'));
+    expect(new Set(blind).size).toBe(1);
+  });
+
+  it('counts every invocation of each key with exactly one counter, no key over budget — falsifier 15', () => {
+    const trace = atTheEdge();
+    // Under the ratified derivation, each key's invocation count IS its own
+    // counter's reserved — one key per counter — and at the budget's edge no
+    // key exceeds it while every comparison still has authority over its key.
+    const byKey = new Map<string, number>();
+    for (const d of DEVICES) {
+      const key = deriveKey('Kg', 'ws', `st_${d}`);
+      byKey.set(key, (byKey.get(key) ?? 0) + counterOf(trace.world.durable, d).reserved);
+    }
+    expect(byKey.size).toBe(DEVICES.length);
+    for (const d of DEVICES) {
+      const own = counterOf(trace.world.durable, d).reserved;
+      expect(byKey.get(deriveKey('Kg', 'ws', `st_${d}`))).toBe(own);
+      expect(own).toBeLessThan(BUDGET);
+      expect(mustRotateBefore(own, 1)).toBe(false);
+    }
+    // The permanent negative, on the same schedule: a store-blind derivation
+    // puts every store's reservations under ONE key, whose true count is the
+    // sum — over budget while every per-store comparison stays quiet. The
+    // world the ratified rule refuses is detected, not assumed away.
+    const shared = new Map<string, number>();
+    for (const d of DEVICES) {
+      const key = storeBlindKey('Kg', 'ws');
+      shared.set(key, (shared.get(key) ?? 0) + counterOf(trace.world.durable, d).reserved);
+    }
+    const sharedCount = shared.get(storeBlindKey('Kg', 'ws')) ?? 0;
+    expect(sharedCount).toBeGreaterThanOrEqual(BUDGET);
+    for (const d of DEVICES)
+      expect(mustRotateBefore(counterOf(trace.world.durable, d).reserved, 1)).toBe(false);
   });
 });

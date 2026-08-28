@@ -7,13 +7,14 @@
     "aead": "AES-256-GCM via WebCrypto (suite 1, row 1)",
     "primitive_kat": "test/vectors/algorithm-suite.json -- row 1 selects the primitive, row 3 the composition",
     "kdf": "HKDF-SHA256 via WebCrypto deriveBits, at open",
-    "store_hkdf_info": "LP(\"done/store/v1\") || LP(workspace_id)",
-    "store_aad": "LP(\"done/store/v1\") || LP(principal_id) || LP(workspace_id) || LP(dec v) || LP(dec gen) || LP(dec seq) || LP(kind)",
+    "store_hkdf_info": "LP(\"done/store/v1\") || LP(workspace_id) || LP(store_id)",
+    "store_aad": "LP(\"done/store/v1\") || LP(principal_id) || LP(workspace_id) || LP(store_id) || LP(dec v) || LP(dec gen) || LP(dec seq) || LP(kind)",
     "envelope_aad": "LP(\"done/keyenv/v1\") || LP(principal_id) || LP(workspace_id) || LP(dec v) || LP(dec gen) || LP(purpose)",
     "length_prefix": "uint16be(byteLength) || utf8 -- injective, so no field can shift another",
     "stored_record": "{ v, gen, seq, kind, nonce[12], ct } as a structured clone; ct carries the 16-byte tag",
     "key_envelope": "{ v, gen, nonce[12], ct } as a structured clone; ct carries the 16-byte tag",
-    "nonce": "12 bytes from crypto.getRandomValues() per record, under a 2^32-per-generation budget bounded by seq",
+    "nonce": "12 bytes from crypto.getRandomValues() per record, under a 2^32-per-(store, generation) budget counted by the SeqCounter's reserved[gen] -- reserved before encryption, so an abandoned invocation is counted; never read from seq (P-3, S0-3)",
+    "store_id": "minted from local randomness at store creation beside the SeqCounter it names; one key per counter, so the nonce budget binds the key it protects for every device count",
     "nonce_caveat": "Nonces are fixed inputs in these vectors so the composition is testable. Production generates them randomly; the fixed nonce is not the discipline.",
     "l_local_caveat": "L_local is raw bytes here because a vector needs bytes. In production it is a structured-cloned non-extractable CryptoKey with no extractable representation (§13.3)."
   },
@@ -25,6 +26,7 @@
         "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
         "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
         "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "store_id": "st_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
         "v": 1,
         "gen": 1,
         "seq": 1,
@@ -33,19 +35,19 @@
         "plaintext": "01010101a8e0c9d20500042101087903c0a8"
       },
       "derived": {
-        "hkdf_info": "000d646f6e652f73746f72652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
-        "k_store": "67d27fc947b2b1c074b1fb1f46189b75839eed7714dae7b19086ebec5946dbd5",
-        "aad": "000d646f6e652f73746f72652f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e37440001310001310001310006757064617465"
+        "hkdf_info": "000d646f6e652f73746f72652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744001d73745f3031485a5851374d344b395032523654385630593342354e3744",
+        "k_store": "f884e631a9a8e74447ae13b29dcfd8b26c4f265b3c1cf0565c2bfceb99cdd8d4",
+        "aad": "000d646f6e652f73746f72652f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e3744001d73745f3031485a5851374d344b395032523654385630593342354e37440001310001310001310006757064617465"
       },
       "expected": {
-        "ct": "9c735bcb85165f2e7fa9941dbaeae3085028b763d71a26424f71c6af3716226479cd",
+        "ct": "e44cb550ef64d13e3739410897bca95d7c2b50bddac5efeae9c3205bf7af83f82c53",
         "stored_record": {
           "v": 1,
           "gen": 1,
           "seq": 1,
           "kind": "update",
           "nonce": "000102030405060708090a0b",
-          "ct": "9c735bcb85165f2e7fa9941dbaeae3085028b763d71a26424f71c6af3716226479cd"
+          "ct": "e44cb550ef64d13e3739410897bca95d7c2b50bddac5efeae9c3205bf7af83f82c53"
         }
       }
     },
@@ -56,6 +58,7 @@
         "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
         "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
         "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "store_id": "st_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
         "v": 1,
         "gen": 1,
         "seq": 2,
@@ -64,19 +67,19 @@
         "plaintext": "0102a8e0c9d2050004210108790301010101a8e0c9d2050004210108790301010101a8e0c9d205000421010879030101010101010101010101010101010101010101010101010101010101010101"
       },
       "derived": {
-        "hkdf_info": "000d646f6e652f73746f72652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
-        "k_store": "67d27fc947b2b1c074b1fb1f46189b75839eed7714dae7b19086ebec5946dbd5",
-        "aad": "000d646f6e652f73746f72652f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e374400013100013100013200057374617465"
+        "hkdf_info": "000d646f6e652f73746f72652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744001d73745f3031485a5851374d344b395032523654385630593342354e3744",
+        "k_store": "f884e631a9a8e74447ae13b29dcfd8b26c4f265b3c1cf0565c2bfceb99cdd8d4",
+        "aad": "000d646f6e652f73746f72652f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e3744001d73745f3031485a5851374d344b395032523654385630593342354e374400013100013100013200057374617465"
       },
       "expected": {
-        "ct": "f2db277ff7f7b1be834afc64a48d9e12bebbcaf6223734e3234218388141c634bb48ae30a25fed927fd4d4f8441abc3e5ad853bc83ea50a84bf0b1f622bcd28b7a3e122cbe0d95f772693ccd5c7b60f2c499772a6c15d55ce9fc5b21c567",
+        "ct": "ad28871a7c590a4dbc51ebcdec7a5df39ac4c39f9d2a79ba61554e32926c56f815fb9b360f0d7ee4ba6a1a41c30e5feac5ee6924aa67f8518fd513dbca2f55d80e36fe4c339d763b8feee30c51a9ecd18c026921020ffb39b6ac80cf753f",
         "stored_record": {
           "v": 1,
           "gen": 1,
           "seq": 2,
           "kind": "state",
           "nonce": "0c0d0e0f1011121314151617",
-          "ct": "f2db277ff7f7b1be834afc64a48d9e12bebbcaf6223734e3234218388141c634bb48ae30a25fed927fd4d4f8441abc3e5ad853bc83ea50a84bf0b1f622bcd28b7a3e122cbe0d95f772693ccd5c7b60f2c499772a6c15d55ce9fc5b21c567"
+          "ct": "ad28871a7c590a4dbc51ebcdec7a5df39ac4c39f9d2a79ba61554e32926c56f815fb9b360f0d7ee4ba6a1a41c30e5feac5ee6924aa67f8518fd513dbca2f55d80e36fe4c339d763b8feee30c51a9ecd18c026921020ffb39b6ac80cf753f"
         }
       }
     },
@@ -87,6 +90,7 @@
         "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
         "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
         "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "store_id": "st_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
         "v": 1,
         "gen": 1,
         "seq": 3,
@@ -95,19 +99,19 @@
         "plaintext": ""
       },
       "derived": {
-        "hkdf_info": "000d646f6e652f73746f72652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
-        "k_store": "67d27fc947b2b1c074b1fb1f46189b75839eed7714dae7b19086ebec5946dbd5",
-        "aad": "000d646f6e652f73746f72652f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e37440001310001310001330006757064617465"
+        "hkdf_info": "000d646f6e652f73746f72652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744001d73745f3031485a5851374d344b395032523654385630593342354e3744",
+        "k_store": "f884e631a9a8e74447ae13b29dcfd8b26c4f265b3c1cf0565c2bfceb99cdd8d4",
+        "aad": "000d646f6e652f73746f72652f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e3744001d73745f3031485a5851374d344b395032523654385630593342354e37440001310001310001330006757064617465"
       },
       "expected": {
-        "ct": "fedf3c008bc19acce3f146058a5e55d8",
+        "ct": "ae25ecba8f6dd270efc49c9a28f0755a",
         "stored_record": {
           "v": 1,
           "gen": 1,
           "seq": 3,
           "kind": "update",
           "nonce": "18191a1b1c1d1e1f20212223",
-          "ct": "fedf3c008bc19acce3f146058a5e55d8"
+          "ct": "ae25ecba8f6dd270efc49c9a28f0755a"
         }
       }
     },
@@ -118,6 +122,7 @@
         "k_g": "91c4e7a2035fd8b16e4a0c93d75218fe6b3a94c05d2e871f4a6b0938cd5e2107",
         "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
         "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "store_id": "st_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
         "v": 1,
         "gen": 2,
         "seq": 4,
@@ -126,19 +131,19 @@
         "plaintext": "01010101a8e0c9d20500042101087903c0a8"
       },
       "derived": {
-        "hkdf_info": "000d646f6e652f73746f72652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
-        "k_store": "ad696b933b45a1c47a3ef73dffd68e486afbc5b70ef3aef549685e1955e8f8af",
-        "aad": "000d646f6e652f73746f72652f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e37440001310001320001340006757064617465"
+        "hkdf_info": "000d646f6e652f73746f72652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744001d73745f3031485a5851374d344b395032523654385630593342354e3744",
+        "k_store": "f3d352fcc6909d6a1ff58247926070bc827b7daa2c69ca642e253da51f1ced6f",
+        "aad": "000d646f6e652f73746f72652f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e3744001d73745f3031485a5851374d344b395032523654385630593342354e37440001310001320001340006757064617465"
       },
       "expected": {
-        "ct": "b94fb903cea00de40d47d29bd6de0694e664cf4b0e39c1a85174a92f6dc9dc585637",
+        "ct": "4d89d0f0b181e3d266b0d73710a4244a4958b7b26ac6433ed7dd27947430bfff23b7",
         "stored_record": {
           "v": 1,
           "gen": 2,
           "seq": 4,
           "kind": "update",
           "nonce": "2425262728292a2b2c2d2e2f",
-          "ct": "b94fb903cea00de40d47d29bd6de0694e664cf4b0e39c1a85174a92f6dc9dc585637"
+          "ct": "4d89d0f0b181e3d266b0d73710a4244a4958b7b26ac6433ed7dd27947430bfff23b7"
         }
       }
     },
@@ -149,6 +154,7 @@
         "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
         "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
         "workspace_id": "ws_01J0000000000000000000000A",
+        "store_id": "st_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
         "v": 1,
         "gen": 1,
         "seq": 1,
@@ -157,19 +163,51 @@
         "plaintext": "01010101a8e0c9d20500042101087903c0a8"
       },
       "derived": {
-        "hkdf_info": "000d646f6e652f73746f72652f7631001d77735f30314a3030303030303030303030303030303030303030303041",
-        "k_store": "abbad16e51c57b59438320e5afb49f9a4ff6c4ae0a09fa7475a2e15c46f6340d",
-        "aad": "000d646f6e652f73746f72652f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f30314a30303030303030303030303030303030303030303030410001310001310001310006757064617465"
+        "hkdf_info": "000d646f6e652f73746f72652f7631001d77735f30314a3030303030303030303030303030303030303030303041001d73745f3031485a5851374d344b395032523654385630593342354e3744",
+        "k_store": "a6afacbc0ec3773b573d50bae9792378c41b2657732a44021944fc99fca2ef9d",
+        "aad": "000d646f6e652f73746f72652f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f30314a3030303030303030303030303030303030303030303041001d73745f3031485a5851374d344b395032523654385630593342354e37440001310001310001310006757064617465"
       },
       "expected": {
-        "ct": "4c7d7792070cc3f0cdf13fea7d24b4eb81f170f7cead4c94edfe3cd8b60df61647d3",
+        "ct": "4f26bf4c1f3150a12f821f556a2d87f40be15936dd661537c83f3a1663d844c8af6c",
         "stored_record": {
           "v": 1,
           "gen": 1,
           "seq": 1,
           "kind": "update",
           "nonce": "000102030405060708090a0b",
-          "ct": "4c7d7792070cc3f0cdf13fea7d24b4eb81f170f7cead4c94edfe3cd8b60df61647d3"
+          "ct": "4f26bf4c1f3150a12f821f556a2d87f40be15936dd661537c83f3a1663d844c8af6c"
+        }
+      }
+    },
+    {
+      "name": "second-store",
+      "why": "Same K_g, same workspace, same nonce, same plaintext, different store id. Proves the subkey is store-bound by derivation, not only by AAD — one key per SeqCounter, so no per-store comparison can undercount a shared key (P-3 falsifier 14).",
+      "inputs": {
+        "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "store_id": "st_01J0000000000000000000000A",
+        "v": 1,
+        "gen": 1,
+        "seq": 1,
+        "kind": "update",
+        "nonce": "000102030405060708090a0b",
+        "plaintext": "01010101a8e0c9d20500042101087903c0a8"
+      },
+      "derived": {
+        "hkdf_info": "000d646f6e652f73746f72652f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744001d73745f30314a3030303030303030303030303030303030303030303041",
+        "k_store": "cc24ca809584bc473f9ca8ac3934ac6cee7bc3a87810459cb786dd73902585b5",
+        "aad": "000d646f6e652f73746f72652f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744001d77735f3031485a5851374d344b395032523654385630593342354e3744001d73745f30314a30303030303030303030303030303030303030303030410001310001310001310006757064617465"
+      },
+      "expected": {
+        "ct": "d3a70c4f8fb113597be9a0733f8346bfbf765ac24f0a2d5823089080666d78dad382",
+        "stored_record": {
+          "v": 1,
+          "gen": 1,
+          "seq": 1,
+          "kind": "update",
+          "nonce": "000102030405060708090a0b",
+          "ct": "d3a70c4f8fb113597be9a0733f8346bfbf765ac24f0a2d5823089080666d78dad382"
         }
       }
     }
@@ -234,6 +272,10 @@
       "mutate": "Derive K_store for a different workspace id."
     },
     {
+      "name": "wrong-store-subkey",
+      "mutate": "Derive K_store for a different store id, workspace unchanged. The wrong-store sibling of wrong-workspace-subkey: two stores holding one K_g never derive one subkey, so a record sealed for one store fails to open under the key of another (P-3 falsifier 14)."
+    },
+    {
       "name": "wrong-principal",
       "mutate": "Authenticate with a different principal in the AAD."
     },
@@ -282,6 +324,10 @@
     {
       "name": "record-aad-only-label",
       "mutate": "Authenticate a content record with the key-envelope label, every record field unchanged. Isolates the labels contribution from the field difference the whole-AAD swaps also carry."
+    },
+    {
+      "name": "record-aad-only-store",
+      "mutate": "Authenticate a content record claiming the other store id in the AAD, subkey unchanged. Isolates the AAD binding from the derivation binding wrong-store-subkey carries."
     },
     {
       "name": "envelope-aad-only-label",

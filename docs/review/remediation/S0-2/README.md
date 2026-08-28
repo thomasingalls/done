@@ -181,7 +181,8 @@ return landed them under `P-1` falsifiers 12–19, with every gate re-run green:
   independent reconstruction inside it.
 
 What stays reserved, exactly as the record reserves it: the `CertifiedSet` AAD registration and the impostor
-negative's regeneration re-read at `S0-8`; `P-3` falsifiers 14–22 at the `S0-3` return.
+negative's regeneration re-read at `S0-8`. `P-3` falsifiers 14–22, reserved here to the `S0-3` return, landed
+there 2026-08-28.
 
 ## Not in scope for this action
 
