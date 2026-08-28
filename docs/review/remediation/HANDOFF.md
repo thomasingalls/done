@@ -56,8 +56,8 @@ nothing decides it, every action keeps obeying it.
   four of them high. The strongest convergence across all seven challengers is the zero-handoff retirement
   deletion (`FU-04`); the Local-archive wrap (`FU-02`) converges across both rounds.
 
-**Outstanding decision work: one reopened question, plus one decision that never existed. `P-4`, `P-1` and
-`P-3` are ratified and out of the sprint.**
+**Outstanding decision work: one decision that never existed. `P-4`, `P-1`, `P-3` and `P-5` are ratified and
+out of the sprint.**
 
 - **`P-1` is ratified (2026-08-28): option A — the certified set carries the signing keys.** A member entry
   binds `(credential_id ‖ W_pub ‖ S_pub)`, every approval names its approver, and a verifier resolves that
@@ -78,14 +78,15 @@ nothing decides it, every action keeps obeying it.
   at the `cause` overwrite; ceiling erasure terminates in `deleted-without-receipt`, never a state a reader
   can take for a receipt. What remains is not a decision: the `S0-7` return, composed with `S0-6`, owes the
   record's falsifiers 11–19 (queue item 4).
-- **`P-5`** owes closure authority over the remediation's own documents — `corrected-end-state.md` is an
-  explicit `S0-9` input that no checker reads and that still publishes rejected content (`FU-07`).
-  **Drafted 2026-08-28:** the record carries the reopened question — whether `RC-8C`'s *every* reaches the
-  remediation's own corpus — the floors (an input is current under an executed check or it is not an input;
-  prior challenge inputs stay reconstructible; "checked" credits execution, never reachability), options for
-  both joints — the census that brings the corpus under the rule, and the standing `corrected-end-state.md`
-  takes — and falsifiers 15–22; the record's own stale status line and its `FU-15` gate parenthetical are
-  annotated in place. Ratification is the open step.
+- **`P-5` is ratified (2026-08-28): option A at both joints, with the computed status projection.** Every
+  document under `docs/review/remediation/` declares its standing — `home | projection | record |
+  superseded` — and a recursive walker refuses what it cannot classify; where the corpus stands is computed
+  from the decision records' own headers and checked both directions against this file's per-decision claims,
+  the `review:status` shape, never maintained beside them; and `corrected-end-state.md` is superseded — it
+  opens by naming its successors and leaves `S0-9`'s input list, which round 3 replaces with the ratified
+  records and the regenerated corpus. The record's own stale status line and its `FU-15` gate parenthetical
+  are annotated in place. What remains is not a decision: the `S0-1` return owes the record's falsifiers
+  15–22 (queue item 4).
 - **`RC-9` never had a decision at all**, and `action-tree.md` makes choosing between its branches a
   prerequisite of `L-4`.
 - `P-6` reopens only if `FU-02` forces the archive-factor choice to change.
@@ -128,8 +129,11 @@ In order. An item is done when its disposition entry's earliest-return stage has
    and a verification key resolves through client- or factor-authenticated state, or it does not verify.
    `P-3` is done (ratified 2026-08-28, option A at all three joints) and states class 2's: a budget binds
    only what its counter can see, an edit is accepted only when a durable carrier holds it, and a
-   reservation is only as current as the commit that consumes it.** Next is `P-5`; `RC-9` follows, untouched
-   so far.
+   reservation is only as current as the commit that consumes it. `P-5` is done (ratified 2026-08-28, option
+   A at both joints) and states class 3's: every fact keeps one home; every other page is a projection, a
+   dated record, or superseded — and says which; an input a gate or challenge consumes is checked by
+   something that executed, or it is not an input; and a checker's printed claim is exactly its scope.**
+   Next and last is `RC-9`, untouched so far — never a reopening: its record is drafted fresh.
 3. **Two structural artifacts, before per-finding patches.** (a) An **authority-derivation map** at `S0-2`
    Stage A/B: for every verifier key and acceptance predicate, the factor-authenticated state that resolves
    it, with a checker that fails on a dangling edge — class 1 closes as a class or not at all. (b) A
@@ -158,9 +162,11 @@ In order. An item is done when its disposition entry's earliest-return stage has
 cd /Users/thomasingalls/Code/done/.claude/worktrees/stage0-repairs && pnpm install --frozen-lockfile && pnpm vectors:check && pnpm test
 ```
 
-That establishes the baseline. Then read both dispositions end to end, and continue the decision sprint at
-[`decisions/P-5-closure-authority.md`](./decisions/P-5-closure-authority.md) — `P-4`, `P-1` and `P-3` are
-ratified, and their reopened sections are the shape the remaining two records should take.
+That establishes the baseline. Then read both dispositions end to end, and finish the decision sprint at
+`RC-9` — the decision that never existed, so its record is drafted fresh in [`decisions/`](./decisions/)
+rather than reopened; the four ratified records are the shape it should take, and its inputs are
+[`action-tree.md`](./action-tree.md)'s `RC-9`/`L-4` prerequisites plus round 1's demonstration that
+`wasm:stale` sits in no gate.
 
 ## Four things that will bite you
 
