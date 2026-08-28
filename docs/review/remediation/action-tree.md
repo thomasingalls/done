@@ -260,6 +260,17 @@ pinned tip.
 > and every occurrence is an XML namespace identifier — and its printed claim narrows to what it proves, with
 > CSP named as the runtime control for constructed URLs. External observations carry a source, a date and an
 > expiry. Fourteen falsifiers are in that record.
+>
+> **Reopened 2026-08-28 at the rule's own jurisdiction** by `S0-9` (round 1 pattern 3, round 2 `FU-07`):
+> `RC-8C` was ratified saying *every* and enforced over the corpus under review alone, so
+> `corrected-end-state.md` — an exact `S0-9` input no checker reads — still published pre-decision branches
+> and the attempt cap `S0-4` killed by mutation, with every gate green. `RC-8C` itself stands; both rounds
+> convicted the corpus by it. **Ratified the same day: option A at both joints, with the computed status
+> projection.** Every remediation document declares its standing — `home | projection | record | superseded`
+> — and a recursive walker refuses what it cannot classify; where the corpus stands is computed from the
+> decision records' own headers and checked both directions against the queue, the `review:status` shape,
+> never maintained beside them; and `corrected-end-state.md` is superseded — it opens by naming its
+> successors and leaves this plan's `S0-9` input list. Falsifiers 15–22 are owed at the `S0-1` return.
 
 - **Prerequisites:** decide strong no-shared-primitive versus narrow key/domain separation; decide same-origin-only
   WebAuthn versus an approved `topOrigin` allowlist; decide runtime origin-graph enforcement versus a narrowly scoped
