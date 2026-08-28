@@ -348,23 +348,26 @@ In order. An item is done when its disposition entry's earliest-return stage has
 ## The exact next command
 
 ```bash
-cd /Users/thomasingalls/Code/done/.claude/worktrees/s0-5-return-0c9ed3 && pnpm install --frozen-lockfile && pnpm vectors:check && pnpm test
+cd /Users/thomasingalls/Code/done/.claude/worktrees/s0-6-return-414479 && pnpm install --frozen-lockfile && pnpm vectors:check && pnpm test
 ```
 
 That establishes the baseline. **The decision sprint, the two structural artifacts, and the `S0-1` through
-`S0-5` returns are complete** (queue items 2–3 and the front of item 4, 2026-08-28): the authority map with
-`pnpm authority:check`, the storage scheduler with its composed model — all five of its windows now asserting
-their repairs — the standing census with `pnpm remediation:check`, the recipient-authority readback with
-`pnpm recipient:check`, and the write-admission readback with `pnpm admission:check` — all in the gate.
-Then read both dispositions end to end, read the map's three open entries — they are the executable form of
-what the dispositions describe — run `pnpm remediation:status` for where every decision stands and what each
-return owes, and start the **`S0-6` return**: `FU-02` (the Local archive factor authenticates an HPKE
-recipient while the package manifest is authenticated by a separate device key the factor never binds — the
-archive root must join its manifest and content under the factor; `P-6` reopens only if the factor choice
-must change) and `FU-03` (the `TerminalHandoff` catch-up value carries no authenticated transcript, chain
-proof, absence identifiers, signer authority or count-to-list check, so a stale receiver can self-assert
-completeness — with TRD §14.4 among the homes). `S0-6` feeds `S0-7`'s composition (`FU-04`, `FU-12`, and
-`P-4` falsifiers 11–19 composed with it), which is the queue's last security return before `S0-8`. A repair
+`S0-6` returns are complete** (queue items 2–3 and the front of item 4; the `S0-6` return 2026-08-29): the
+authority map with `pnpm authority:check`, the storage scheduler with its composed model — all five of its
+windows asserting their repairs — the standing census with `pnpm remediation:check`, the recipient-authority
+readback with `pnpm recipient:check`, and the write-admission readback with `pnpm admission:check` — all in
+the gate.
+Then read both dispositions end to end, read the map's one open entry — `destructive-boundary`, the
+executable form of what the dispositions describe — run `pnpm remediation:status` for where every decision
+stands and what each return owes, and start the **`S0-7` return**, the queue's last security return before
+`S0-8`: `FU-04` (the retention deadline deliberately deletes every retirement class with zero durable
+handoffs — the model reaches `cleared` while `handoffComplete` is false, elapsed time replacing the receiving
+client's custody authority; `P-4`'s ratified rule — intrinsic acceptance, the boundary written once at the
+`cause` overwrite, ceiling erasure terminating in `deleted-without-receipt` — owes falsifiers 11–19, composed
+with `S0-6`'s `TerminalHandoff` and its transcript gate) and `FU-12` (the divergent-reseed test calls
+`resume` twice from the same input world and never accepts the second branch after the first advances the
+revision, so the selected compare-and-set rule would reject the required second survivor as stale — the
+class-2 composition owed to the scheduler). A repair
 that ignores its class reintroduces the class, and all three class instruments now fail on that rather than
 waiting for a review: a return is not done until its map entries flip, its reproductions invert, and the
 census stays classified.
