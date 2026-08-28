@@ -15,7 +15,7 @@ disagree, the disposition is right and this file is the thing to fix.
 
 | | |
 | --- | --- |
-| Branch | `claude/stage0-remediation`, 81 commits off `9edd930` as of the `S0-6` return, all signed; the current tip rides the worktree branch `claude/s0-6-return-414479` until folded back |
+| Branch | `claude/stage0-remediation`, 83 commits off `9edd930` as of the `S0-7` return, all signed; the current tip rides the worktree branch `claude/s0-7-return-f229bb` until folded back |
 | Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, the decisions, and both `S0-9` challenge rounds |
 | Not on it | nothing — this branch is the whole picture, deliberately |
 | Superseded | `claude/remediation-findings-review-997ab5` holds the review workspace at its original SHAs. Redundant once this branch is accepted |
@@ -96,8 +96,18 @@ to refuse.
 - **`P-4` is ratified (2026-08-28): option B, with intrinsic acceptance.** Every `retire` intent carries the
   erasure acceptance in its signed payload; the destructive boundary is `retired_at + RETENTION`, written once
   at the `cause` overwrite; ceiling erasure terminates in `deleted-without-receipt`, never a state a reader
-  can take for a receipt. What remains is not a decision: the `S0-7` return, composed with `S0-6`, owes the
-  record's falsifiers 11–19 (queue item 4).
+  can take for a receipt. **Nothing remains owed: the `S0-7` return landed the record's falsifiers 11–19 on
+  2026-08-29** — `C-7`'s born-elapsed reproduction refuses `no-handoff` at the birth instant with all six
+  classes present and is the model's permanent negative (11), the property run over arbitrary `stopped_at ≤
+  retired_at` pairs finds no earlier execution in any order (12), the boundary is written once at the `cause`
+  overwrite with a replayed retirement recomputing nothing (13), a ceiling erasure terminates in the sixth
+  retention state `deleted-without-receipt` while the receipt-authorized run stays `cleared` (14), the
+  acceptance-less mint refuses at creation in both the model and the transition vectors with the in-transit
+  strip a published digest difference (15), the entitlement signer moves the boundary in neither direction in
+  the challenge's own order (16), the gate and the model state one published six-class domain with the
+  five-entry copy dead (17), every pre-boundary `S0-6` negative still fails (18), and `pnpm retention:check`
+  is the homes-agree readback over eight boundary homes with the superseded sentences refused as byte
+  rules (19) — composed with `S0-6`'s `TerminalHandoff` exactly as the record reserves.
 - **`P-5` is ratified (2026-08-28): option A at both joints, with the computed status projection.** Every
   document under `docs/review/remediation/` declares its standing — `home | projection | record |
   superseded` — and a recursive walker refuses what it cannot classify; where the corpus stands is computed
@@ -152,8 +162,13 @@ Worth knowing before picking anything up, because a repair that ignores its clas
    composed importer refuses the fresh mint at the commitment, before the signer is consulted and before any
    unwrap — and the deletion gate re-verifies the catch-up transcript its receipt commits: signer resolved
    from the certification in force, never the receiver; links chained from the receiver's own prior head to
-   the terminal head; absences named, the signed count checked against the list. The map now reads 1 open
-   (the live count is always the checker's). `FU-04` rides `S0-7`, the class's last member.
+   the terminal head; absences named, the signed count checked against the list — **and `FU-04`, the class's
+   last member, returned 2026-08-29 at the `S0-7` return**: the destructive boundary is the retirement's own
+   (`retired_at + RETENTION`, written exactly once at the `cause` overwrite, never earlier than an inherited
+   deadline), the clock executes only the owner's intrinsic erasure acceptance, and a boundary erasure
+   terminates in `deleted-without-receipt` — elapsed time is never an authority, at this joint or any other.
+   **The map now reads 0 open** (the live count is always the checker's): the class-1 ledger closed entry by
+   entry at the returns, never by edict.
 2. **Interleavings the pure models cannot schedule** — crash points and second writers that are unexpressible
    rather than refuted (`FU-08`, `FU-09`, `FU-10`, `FU-12`, `K_store`). **`FU-09`'s interface half returned
    2026-08-28 at the `S0-2` return** — the composed model's commit carries `P-3`'s ratified fence and the
@@ -164,7 +179,11 @@ Worth knowing before picking anything up, because a repair that ignores its clas
    14–22 all landed). **`FU-10` returned the same day at the `S0-4` return, through the same scheduler**: the
    position grant stages the spool row in its own transaction, the crash between reservation and spool
    insertion is a schedule whose every kill point recovery resolves, and the counter-only world is kept as
-   the detected negative. `FU-12` rides `S0-7`, the class's last member.
+   the detected negative. **And `FU-12`, the class's last member, returned 2026-08-29 at the `S0-7`
+   return**: the reseed branch set is durable, the stale second survivor is refused with its session held
+   and joins after re-deriving against the world the winner left, the derive-to-commit window runs on the
+   scheduler with a kill and a second writer inside, and the branchless pre-return machine is kept as the
+   detected negative. The class is closed.
 3. **One fact, two homes** — `RC-8C`, the rule this remediation wrote for itself, violated by the remediation,
    including by its gate: at the challenged tip `pnpm check` stopped at lint, so "runs through the gate" was
    command-text reachability, not execution (`FU-05`, `FU-07`, `FU-13`, `FU-14`, `FU-15`, `FU-16`). The gate
@@ -229,7 +248,11 @@ In order. An item is done when its disposition entry's earliest-return stage has
    day, scheduled and inverted in one motion, with the counter-only world kept as the detected negative. The
    `S0-5` return added the install window (`FU-11`) the same way: the content-commit-to-activation boundary
    takes a kill and a second writer, the pre-return fused installer is refused with the `FU-08` diagnosis,
-   and the second-newest fallback is asserted as an install receipt, never opener arithmetic.
+   and the second-newest fallback is asserted as an install receipt, never opener arithmetic. And the `S0-7`
+   return added the class's sixth and last (`FU-12`'s divergent-reseed compare-and-set) the same way: the
+   derive-to-commit window takes a kill and a second writer, the stale loser's session is held rather than
+   lost and joins after re-deriving, and the branchless pre-return machine — acceptance that replaces — is
+   kept as the detected negative.
 4. **Stage returns — the `S0-1` return first, then the security returns in dependency order.** Reordered
    2026-08-28, for item 3's own reason: a repair that ignores its class reintroduces the class, and the
    census is class 3's instrument — it belongs before the six returns that churn the corpus it classifies,
@@ -318,12 +341,32 @@ In order. An item is done when its disposition entry's earliest-return stage has
    stopping short, and the count the receiver signs must equal the enumerated list; the pre-return
    endpoints-hash acceptance and the old positive's count-without-a-list are both kept as permanent
    negatives, and the accepted receipt publishes its transcript). An 18-mutation battery caught 18. The
-   map's `local-archive-anchor` and `terminal-handoff` entries flipped: 1 joint stays open — `S0-7`'s
+   map's `local-archive-anchor` and `terminal-handoff` entries flipped: 1 joint stayed open — `S0-7`'s
    `destructive-boundary` — none of them this stage's; `package-manifest`, `terminal-lineage-record` and
    `k-code-sealed-envelopes` re-pinned with their rules unchanged. `P-6`'s reopen condition never
    triggered — the identity grew a half under the same factor, the carrier completed rather than changed —
-   so the decided direction stands. **Next, the queue's last security return**: `S0-7` (`FU-04`, `FU-12`,
-   and `P-4` falsifiers 11–19, composed with `S0-6`'s `TerminalHandoff`).
+   so the decided direction stands. **The `S0-7` return is done (2026-08-29), and its gates re-ran green** —
+   `pnpm check` end to end. It landed `FU-04` (`P-4` falsifiers 11–19, composed with `S0-6`'s
+   `TerminalHandoff`: the destructive boundary is the retirement's own — `retired_at + RETENTION`, written
+   exactly once at the `cause` overwrite, never earlier than an inherited deadline, a replayed retirement
+   recomputing nothing — so `C-7`'s born-elapsed reproduction refuses `no-handoff` at the birth instant and
+   the property run over arbitrary `stopped_at ≤ retired_at` pairs finds no earlier execution in any order;
+   every `retire` payload carries the erasure acceptance in its signed bytes, the acceptance-less mint a
+   published transition negative and the in-transit strip a published digest difference; a boundary erasure
+   terminates in the sixth retention state `deleted-without-receipt`, distinct from `cleared` in the mark
+   itself, with the receipt-authorized run staying `cleared`; the entitlement signer moves the boundary in
+   neither direction, in `C-7`'s own order; and the gate and the retention model state one published
+   six-class deletion-authority domain — the five-entry copy dead — with `pnpm retention:check` grown into
+   the one-domain and homes-agree readbacks over eight boundary homes, superseded sentences refused as byte
+   rules) and `FU-12` (the reseed branch set is durable: the stale second survivor is refused with its
+   session held, re-derives against the advanced revision, and joins the world the winner left — on the
+   scheduler, with a kill and a second writer inside the derive-to-commit window, the branchless pre-return
+   machine kept as the detected negative). An 18-mutation battery caught 18. The map's
+   `destructive-boundary` entry flipped — **the last open joint: the open count reads 0, entry by entry at
+   the returns** — with `retention-mark`, `reseed-session`, `terminal-handoff`, `package-manifest`,
+   `terminal-lineage-record` and `local-archive-anchor` re-pinned, their rules unchanged (the retention
+   mark's bound gaining the boundary immunity). **Next: `S0-8`, the regeneration (queue item 5)** — the
+   security returns are complete.
    **Each return flips its authority-map entries and inverts its scheduler reproductions** — editing a
    pinned home fails `authority:check` until the entry is re-read
    and re-pinned or flipped — and, now that the census is landed, edits a pinned record only as a dated
@@ -348,29 +391,29 @@ In order. An item is done when its disposition entry's earliest-return stage has
 ## The exact next command
 
 ```bash
-cd /Users/thomasingalls/Code/done/.claude/worktrees/s0-6-return-414479 && pnpm install --frozen-lockfile && pnpm vectors:check && pnpm test
+cd /Users/thomasingalls/Code/done/.claude/worktrees/s0-7-return-f229bb && pnpm install --frozen-lockfile && pnpm vectors:check && pnpm test
 ```
 
-That establishes the baseline. **The decision sprint, the two structural artifacts, and the `S0-1` through
-`S0-6` returns are complete** (queue items 2–3 and the front of item 4; the `S0-6` return 2026-08-29): the
-authority map with `pnpm authority:check`, the storage scheduler with its composed model — all five of its
-windows asserting their repairs — the standing census with `pnpm remediation:check`, the recipient-authority
-readback with `pnpm recipient:check`, and the write-admission readback with `pnpm admission:check` — all in
-the gate.
-Then read both dispositions end to end, read the map's one open entry — `destructive-boundary`, the
-executable form of what the dispositions describe — run `pnpm remediation:status` for where every decision
-stands and what each return owes, and start the **`S0-7` return**, the queue's last security return before
-`S0-8`: `FU-04` (the retention deadline deliberately deletes every retirement class with zero durable
-handoffs — the model reaches `cleared` while `handoffComplete` is false, elapsed time replacing the receiving
-client's custody authority; `P-4`'s ratified rule — intrinsic acceptance, the boundary written once at the
-`cause` overwrite, ceiling erasure terminating in `deleted-without-receipt` — owes falsifiers 11–19, composed
-with `S0-6`'s `TerminalHandoff` and its transcript gate) and `FU-12` (the divergent-reseed test calls
-`resume` twice from the same input world and never accepts the second branch after the first advances the
-revision, so the selected compare-and-set rule would reject the required second survivor as stale — the
-class-2 composition owed to the scheduler). A repair
+That establishes the baseline. **The decision sprint, the two structural artifacts, and every security
+return — `S0-1` through `S0-7` — are complete** (queue items 2–4; the `S0-7` return 2026-08-29): the
+authority map with `pnpm authority:check` and its open count at **zero**, the storage scheduler with its
+composed model — all six of its windows asserting their repairs — the standing census with
+`pnpm remediation:check`, the recipient-authority readback with `pnpm recipient:check`, the write-admission
+readback with `pnpm admission:check`, and the retention readback grown to the one-domain and homes-agree
+scans with `pnpm retention:check` — all in the gate.
+Then run `pnpm remediation:status` for where every decision stands and what each return owes — it reads
+**`S0-8`: `RC-9` falsifiers 1–12** — and start the **`S0-8` regeneration (queue item 5)**: `FU-14`'s gate
+receipts (traceability consumes execution results, never shell text), the five matrix limits, `FU-13`'s
+independent readback, `vectors:coverage` checking identity rather than arity, the `CertifiedSet` AAD audit
+round 1 found missing entirely, and `RC-9`'s consolidation — the debt manifest joining the gate with the
+`OWED` list grown to the ratified fields, the what-blocks-what projection agreeing with this file in both
+directions, and the source↔blob header binding landing in `wasm:verify`. The reserved items land there too:
+the `CertifiedSet` AAD registration `P-1` reserves, the matrix receipts `P-3` reserves, and `P-5` falsifier
+20's receipt mechanism. A repair
 that ignores its class reintroduces the class, and all three class instruments now fail on that rather than
 waiting for a review: a return is not done until its map entries flip, its reproductions invert, and the
-census stays classified.
+census stays classified — every entry has now flipped, and `S0-8`'s job is to make the gate's own receipts
+as honest as the ledgers it runs.
 
 ## Four things that will bite you
 
@@ -384,13 +427,15 @@ format documents by any other route. After any code formatting, re-run `pnpm typ
 format left `pnpm check`; the gate is typecheck plus the evidence suite, and it passed end to end for the
 first time in this branch's history that day. Since queue item 3 it also carries `authority:check`, and that
 green line means exactly its printed scope: the map's chains resolve and its pinned homes are byte-current,
-with one joint *declared open* since the `S0-6` return flipped `local-archive-anchor` and `terminal-handoff`
+with the open count at **zero** since the `S0-7` return flipped `destructive-boundary`, the last open joint
 (the `S0-2` return flipped the four member-key entries; the `S0-3` return, `k-store`; the `S0-4` return,
-`position-refusal`; the `S0-5` return, `checkpoint-admission`),
+`position-refusal`; the `S0-5` return, `checkpoint-admission`; the `S0-6` return, `local-archive-anchor` and
+`terminal-handoff`),
 the sweep covering AEAD constructions beside signatures, and the `k-checkpoint` entry entered at the `S0-5`
 return with its declared absence struck — the checker still refusing the entry and a declaration coexisting,
 or both missing — it is the
-class-1 and class-2 ledgers staying honest, not the classes closed. Since the
+class-1 and class-2 ledgers staying honest: their members returned at their returns, and the checker is what
+keeps the closure from silently reopening. Since the
 `S0-1` return it also carries `remediation:check`, whose green line is likewise its printed scope: 46
 documents classified, 19 record pins byte-current, the status homes agreeing — the class-3 ledger staying
 honest, existence and byte rules, never an execution receipt. Since the `S0-2` return it also carries
@@ -398,7 +443,11 @@ honest, existence and byte rules, never an execution receipt. Since the `S0-2` r
 published inputs — byte rules and one reconstruction, per its printed scope. Since the `S0-3` return it also
 carries `admission:check`: the write-admission homes state the ratified scope, carrier and fence, the retired
 sentences stay dead, and the record vectors — two stores, two subkeys — reconstruct from published inputs,
-per its printed scope. What the green gate does **not** mean: `FU-14`
+per its printed scope. Since the `S0-7` return, `retention:check` also runs the one-domain and homes-agree
+scans: the published deletion-authority domain, §14.7's table and the model agree on one six-class order,
+and eight destructive-boundary homes carry the ratified sentences with the superseded ones refused — byte
+rules, per its printed scope; the boundary's execution semantics are the model tests' to prove. What the
+green gate does **not** mean: `FU-14`
 is repaired. Traceability still credits command-text reachability rather than execution receipts — it now
 *says* so wherever it says anything, and the receipts land at `S0-8` — and `wasm:stale` is still in no gate
 (`RC-9`). Lint and format are opt-in (`pnpm lint` is correctness-only and currently clean; `pnpm format`
