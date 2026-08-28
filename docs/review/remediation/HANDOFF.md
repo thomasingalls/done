@@ -61,7 +61,9 @@ and out of the sprint.**
 
 - **`P-1`** owes the `CertifiedSet` an approver its verifier can resolve without the service-signed epoch
   (round 1) — and `FU-01` reopens it further if the selected carrier cannot carry the recovery-bootstrap
-  authority.
+  authority. **Drafted 2026-08-28:** the record carries the reopened question, the floor — which resolves
+  `FU-01`'s conditional: the carrier is completed, not changed — options A/B/C and falsifiers 12–19.
+  Ratification is the open step.
 - **`P-3`** owes `K_store` per-device scoping (round 1), the admission ruling for `FU-08`'s post-mutation
   async crash window, `FU-09`'s reservation fence if the transaction shape changes, and `FU-13`'s projection
   sync — TRD §15 and the `P-3` record still publish superseded write-admission claims.
@@ -111,7 +113,8 @@ In order. An item is done when its disposition entry's earliest-return stage has
    its reopened question, options and falsifiers, then ratified. Nothing downstream is safe to build first.
    **`P-4` is done (ratified 2026-08-28, option B with intrinsic acceptance) and set the pattern the other
    joints follow: elapsed time executes a factor-authenticated instruction, or it does nothing.** Next is
-   `P-1`; `P-3`, `P-5` and `RC-9` follow, untouched so far.
+   `P-1`, whose reopened section is drafted and awaits ratification; `P-3`, `P-5` and `RC-9` follow,
+   untouched so far.
 3. **Two structural artifacts, before per-finding patches.** (a) An **authority-derivation map** at `S0-2`
    Stage A/B: for every verifier key and acceptance predicate, the factor-authenticated state that resolves
    it, with a checker that fails on a dangling edge — class 1 closes as a class or not at all. (b) A
