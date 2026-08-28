@@ -15,7 +15,7 @@ disagree, the disposition is right and this file is the thing to fix.
 
 | | |
 | --- | --- |
-| Branch | `claude/stage0-remediation`, 51 commits off `9edd930`, all signed |
+| Branch | `claude/stage0-remediation`, 71 commits off `9edd930` as of the `S0-1` return, all signed; the current tip rides the worktree branch `claude/s0-1-return-2a4157` until folded back |
 | Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, the decisions, and both `S0-9` challenge rounds |
 | Not on it | nothing — this branch is the whole picture, deliberately |
 | Superseded | `claude/remediation-findings-review-997ab5` holds the review workspace at its original SHAs. Redundant once this branch is accepted |
@@ -130,7 +130,9 @@ Worth knowing before picking anything up, because a repair that ignores its clas
    including by its gate: at the challenged tip `pnpm check` stopped at lint, so "runs through the gate" was
    command-text reachability, not execution (`FU-05`, `FU-07`, `FU-13`, `FU-14`, `FU-15`, `FU-16`). The gate
    was descoped to the evidence suite on 2026-08-28 and now passes end to end; `FU-14`'s receipts are still
-   owed at `S0-8`.
+   owed at `S0-8`. **`FU-07` returned 2026-08-28 at the `S0-1` return** — the census walker now polices this
+   class in the gate; `FU-05` rides the `S0-2` return, `FU-13`'s remaining homes ride `S0-3`, `FU-14` rides
+   `S0-8`, and `FU-15`/`FU-16` were the hygiene item.
 
 ## The queue
 
@@ -177,23 +179,24 @@ In order. An item is done when its disposition entry's earliest-return stage has
 4. **Stage returns — the `S0-1` return first, then the security returns in dependency order.** Reordered
    2026-08-28, for item 3's own reason: a repair that ignores its class reintroduces the class, and the
    census is class 3's instrument — it belongs before the six returns that churn the corpus it classifies,
-   not sweeping up after them. Nothing hard ordered it last: the action tree holds `S0-1` independent, and
-   `FU-07`'s return names no position among the other returns. The `S0-1` return (`FU-07` after `P-5`)
-   builds the standing census and recursive walker with its computed status projection —
-   `remediation:status`, checked both directions against this file's per-decision claims, which makes every
-   later return's handoff mechanically verified instead of hand-maintained — supersedes
-   `corrected-end-state.md` with the `S0-9` input-list swap, and lands round 1's origin-scanner correction
-   (`originOf` discards any URL containing `+`) and the `status:check`/`trace:check` claim narrowings:
-   `P-5` falsifiers 15–22, with falsifier 20's receipt mechanism staying `S0-8`'s design exactly as the
-   record reserves it. The per-record homes-agree readbacks (`P-1` falsifier 19's and `P-3` falsifier 22's
-   checkers) stay with their owning returns and `S0-8`, where the consolidations they read exist. The cost
-   is stated with the choice: the member-key repair waits one return longer, paid for a class-3 guard rail
-   under all six that follow. **Then**, at the stages each disposition entry names: `S0-2` (`FU-01`,
-   `FU-05`, `FU-09`) → `S0-3` (`FU-08`, `FU-09`) and `S0-4` (`FU-06` with TRD §7.5, `FU-10`) → `S0-5`
-   (`FU-11`) and `S0-6` (`FU-02`, `FU-03` with TRD §14.4) → `S0-7` (`FU-04`, `FU-12`). **Each return flips
-   its authority-map entries and inverts its scheduler reproductions** — editing a pinned home fails
-   `authority:check` until the entry is re-read and re-pinned or flipped — and, once the census lands,
-   edits a pinned record only as a dated addendum under a re-pin and gives every new file a standing. The
+   not sweeping up after them. **The `S0-1` return is done (2026-08-28), and its gates re-ran green** —
+   `pnpm check` end to end with the walker in it, `pnpm build` with the corrected scanner. It landed the
+   standing census over all 46 documents and the recursive walker with its computed status projection —
+   `remediation:status` (`remediation:check` in `pnpm check`), checked both directions against this file's
+   per-decision claims, which makes every later return's handoff mechanically verified instead of
+   hand-maintained — superseded `corrected-end-state.md` with the `S0-9` input-list swap in one commit,
+   and landed round 1's origin-scanner correction (`+` left `originOf`'s discard set; the Google Fonts
+   case now fails by name) and the `status:check`/`trace:check` claim narrowings, with the convicted
+   sentences refused as byte rules: `P-5` falsifiers 15–22 paid, falsifier 20's receipt mechanism staying
+   `S0-8`'s design exactly as the record reserves it. A 22-mutation battery caught 22. The per-record
+   homes-agree readbacks (`P-1` falsifier 19's and `P-3` falsifier 22's checkers) stay with their owning
+   returns and `S0-8`, where the consolidations they read exist. **Next, the security returns**, at the
+   stages each disposition entry names: `S0-2` (`FU-01`, `FU-05`, `FU-09`) → `S0-3` (`FU-08`, `FU-09`)
+   and `S0-4` (`FU-06` with TRD §7.5, `FU-10`) → `S0-5` (`FU-11`) and `S0-6` (`FU-02`, `FU-03` with TRD
+   §14.4) → `S0-7` (`FU-04`, `FU-12`). **Each return flips its authority-map entries and inverts its
+   scheduler reproductions** — editing a pinned home fails `authority:check` until the entry is re-read
+   and re-pinned or flipped — and, now that the census is landed, edits a pinned record only as a dated
+   addendum under a re-pin and gives every new file a standing, or `remediation:check` fails the gate. The
    walker's friction is the map's, designed.
 5. **`S0-8` regeneration.** `FU-14`'s gate receipts — traceability consumes execution results, never shell
    text; the five matrix limits; `FU-13`'s independent readback; `vectors:coverage` checking identity rather
@@ -214,19 +217,21 @@ In order. An item is done when its disposition entry's earliest-return stage has
 ## The exact next command
 
 ```bash
-cd /Users/thomasingalls/Code/done/.claude/worktrees/stage0-repairs && pnpm install --frozen-lockfile && pnpm vectors:check && pnpm test
+cd /Users/thomasingalls/Code/done/.claude/worktrees/s0-1-return-2a4157 && pnpm install --frozen-lockfile && pnpm vectors:check && pnpm test
 ```
 
-That establishes the baseline. **The decision sprint is complete, and so are the two structural artifacts**
-(queue item 3, 2026-08-28): the authority-derivation map at [`S0-2/authority-map.md`](./S0-2/authority-map.md)
-with `pnpm authority:check` in the gate, and the storage-model scheduler at `test/scheduler.ts` with the
-composed model in `test/storageSchedule.test.ts`. Then read both dispositions end to end, read the map's ten
-open entries and the scheduler's three reproductions — they are the executable form of what the dispositions
-describe — and start queue item 4 at the **`S0-1` return**: the census, walker and computed status
-projection land before the corpus churns (reordered 2026-08-28; the reason and its cost are recorded at the
-queue), and `S0-2` follows. A repair that ignores its class reintroduces the class, and the class
-instruments now fail on that rather than waiting for a review: a return is not done until its map entries
-flip and its reproductions invert.
+That establishes the baseline. **The decision sprint, the two structural artifacts and the `S0-1` return are
+complete** (queue items 2–3 and the front of item 4, 2026-08-28): the authority map with `pnpm
+authority:check`, the storage scheduler with its composed model, and now the standing census with `pnpm
+remediation:check` — all in the gate. Then read both dispositions end to end, read the map's ten open entries
+and the scheduler's three reproductions — they are the executable form of what the dispositions describe —
+run `pnpm remediation:status` for where every decision stands and what each return owes, and start the
+**`S0-2` return**: `FU-01` (the bootstrap verifier carried by factor-authenticated recovery state), `FU-05`
+(the enrollment transcript reconstructible with its `recovery_state_digest`), `FU-09`'s interface half, and
+the `P-1` record's falsifiers 12–19 — flipping the map's member-key entries and inverting the scheduler's
+reservation-fence reproduction as they land. A repair that ignores its class reintroduces the class, and all
+three class instruments now fail on that rather than waiting for a review: a return is not done until its
+map entries flip, its reproductions invert, and the census stays classified.
 
 ## Four things that will bite you
 
@@ -240,11 +245,14 @@ format documents by any other route. After any code formatting, re-run `pnpm typ
 format left `pnpm check`; the gate is typecheck plus the evidence suite, and it passed end to end for the
 first time in this branch's history that day. Since queue item 3 it also carries `authority:check`, and that
 green line means exactly its printed scope: the map's chains resolve and its pinned homes are byte-current,
-with ten joints *declared open* — it is the class-1 ledger staying honest, not class 1 closed. What the green
-gate does **not** mean: `FU-14` is repaired. Traceability still credits command-text reachability rather than
-execution receipts — that lands at `S0-8` — and `wasm:stale` is still in no gate (`RC-9`). Lint and format
-are opt-in (`pnpm lint` is correctness-only and currently clean; `pnpm format` covers code files only, with
-pre-existing drift left as found).
+with ten joints *declared open* — it is the class-1 ledger staying honest, not class 1 closed. Since the
+`S0-1` return it also carries `remediation:check`, whose green line is likewise its printed scope: 46
+documents classified, 19 record pins byte-current, the status homes agreeing — the class-3 ledger staying
+honest, existence and byte rules, never an execution receipt. What the green gate does **not** mean: `FU-14`
+is repaired. Traceability still credits command-text reachability rather than execution receipts — it now
+*says* so wherever it says anything, and the receipts land at `S0-8` — and `wasm:stale` is still in no gate
+(`RC-9`). Lint and format are opt-in (`pnpm lint` is correctness-only and currently clean; `pnpm format`
+covers code files only, with pre-existing drift left as found).
 
 **`pnpm vectors:check` cannot see document drift.** It compares a generator to its vector and never a document
 to its generator. During `S0-2` Stage C the selection rows described constructions the generators did not
