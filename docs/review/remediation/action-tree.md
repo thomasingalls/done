@@ -626,6 +626,32 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 
 ### `S0-9` — independent challenge of the repaired constructions
 
+> **Run 2026-08-27, and the independence requirement is NOT met.** Report:
+> [`S0-9/README.md`](./S0-9/README.md); log: [`S0-9/command-log.md`](./S0-9/command-log.md). Every repair on this
+> branch has one author and that author ran this. **`S0-10` must not record the challenge bar as satisfied**; what
+> is still owed is a non-author rerunning the battery and the gates, and a non-author attacking the four judgement
+> axes.
+>
+> **What a self-challenge could still establish**, because none of it depends on who is asking: every gate reruns
+> from a **fresh clone** with `--frozen-lockfile`, including `wasm:stale` rebuilding the blob from the Rust crate
+> at 6,465 B; **no theorem was deleted** — 213 published negatives at the reviewed tip and 297 test titles, none
+> removed, 292 and 363 now; and five sampled defects are confirmed present at `9edd930` by reading the tip, two of
+> them worse than the finding's wording (the WebAuthn fixture *hardcoded* `crossOrigin: false`, so it could not
+> express the attack at all).
+>
+> **The isolation battery is the part that found something.** For each of the ten current defects resting on a
+> single named falsifier, [`isolation-battery.mjs`](./S0-9/isolation-battery.mjs) puts the finding's own defect
+> back and requires that one falsifier to refuse it — attacking exactly what `S0-8` says it does not prove. **20
+> of 20 caught, after one repair.** `check-selection-status.mjs` did not see `is **open**`: three of its five
+> `OPEN` patterns are phrases, and this document's house style puts `**` between the words, so the check worked in
+> the settled direction and failed in the direction `f-tip-prd-stale-selection-status` is about. **Fifth instance
+> of one shape** — a check that classifies by matching a list silently passes whatever the list does not name.
+>
+> **`RC-4`'s simpler repair was raised and answered**: a deterministic nonce would make the nonce reproducible and
+> leave the *ciphertext* exactly as unreproducible, because an envelope carries a time-windowed batch. The spool
+> exists for the batch, not the nonce, and row 4 never says so. **No challenge returned a repair to its owning
+> action.**
+
 - **Prerequisite decisions:** `S0-8` complete; challenger independent of each repair author.
 - **Exact affected artifacts:** corrected PRD/TRD/selections, all regenerated evidence, `corrected-end-state.md`,
   remediation traceability matrix, challenge report and exact command/result log.

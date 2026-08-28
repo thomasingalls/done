@@ -9,7 +9,7 @@ state it is in, and what is ready to pick up.
 
 | | |
 | --- | --- |
-| Branch | `claude/stage0-remediation`, 46 commits off `9edd930`, all signed |
+| Branch | `claude/stage0-remediation`, 48 commits off `9edd930`, all signed |
 | Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, and the decisions |
 | Not on it | nothing — this branch is the whole picture, deliberately |
 | Superseded | `claude/remediation-findings-review-997ab5` holds the review workspace at its original SHAs. Redundant once this branch is accepted |
@@ -44,8 +44,12 @@ by implication. Nothing decides it; every action has to keep obeying it.
 
 **Outstanding decisions: none.** Every remaining item is an action, and no action is waiting on a choice.
 
-**Actions: all eight are complete** — `S0-1` through `S0-7` across all five stages, and `S0-8`'s regenerated
-evidence and traceability matrix. **`S0-9`'s independent challenge is what remains**, then `S0-10`'s closure.
+**Actions: nine are done and one is blocked on a person.** `S0-1` through `S0-7` across all five stages,
+`S0-8`'s regenerated evidence and traceability matrix, and `S0-9`'s challenge — **which does not meet its own
+independence requirement.** Every repair here has one author and that author ran the challenge. The checkable
+axes are checked and one real failure was found and repaired; the judgement axes are argued by the person who
+made the judgements. **`S0-10` must not record the challenge bar as satisfied.** See
+[`S0-9/README.md`](./S0-9/README.md).
 
 **Findings: 29 of 37 are addressed** by the seven actions plus the eight direct repairs, and **all six
 high-severity ones are among them**. That is no longer a hand count:
@@ -67,14 +71,13 @@ which resolves every falsifier claim against the artifact that carries it.
 
 ## What is ready to pick up, in order
 
-1. **`S0-9`** — the independent challenge, by someone who did not author the repairs, then `S0-10`'s closure.
-   Read [`traceability.md`](./traceability.md) first: it is generated, so it is the shortest route from a
-   finding to the artifact that refuses it, and it names the two items still owed rather than hiding them in a
-   count. Its own honest limit is the place to push — **it proves a falsifier exists and runs; it does not
-   prove one isolates.** Isolation is `pnpm vectors:coverage` for AAD fields and the per-action mutation
-   batteries for everything else, so a challenge that finds a negative refusing for a second reason is
-   attacking the right seam.
-2. **`L-1` through `L-4` and `H-1`** are the rest of the plan and are outside Stage 0. Two partial findings and
+1. **A non-author finishes `S0-9`.** Two commands need no judgement and no context —
+   `node docs/review/remediation/S0-9/isolation-battery.mjs .` after a `pnpm build`, and the gates from a fresh
+   clone. Both are logged in [`S0-9/command-log.md`](./S0-9/command-log.md) with the outputs to match against.
+   Then the four judgement axes, starting with **simpler repair**: that is where an author is structurally
+   blind, and `RC-4`'s deterministic-nonce question shows it is not an idle axis.
+2. **`S0-10`'s closure**, which must carry `S0-9`'s independence gap rather than close over it.
+3. **`L-1` through `L-4` and `H-1`** are the rest of the plan and are outside Stage 0. Two partial findings and
    four later gates wait there; `H-1`'s append-only ledger holds the four historical-only corrections, and
    `docs/decisions.md`'s stale *eighteen rows are selected* belongs to it rather than to a silent edit.
 

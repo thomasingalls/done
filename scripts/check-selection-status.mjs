@@ -157,6 +157,26 @@ const SETTLED = /\bselected\b|\banswered\b|\bclosed\b|\bis the selection\b/iu;
 const OPEN =
   /\bstill open\b|\bremains open\b|\bis open\b|\bunselected\b|\bnot (?:yet )?selected\b/iu;
 
+/**
+ * Emphasis is removed before a claim is read, because this document bolds the
+ * status word and half these patterns are phrases (`S0-9`).
+ *
+ * `is **open**` matched nothing. Neither did `still **open**` or
+ * `remains **open**`. The single-word patterns survived — `**selected**` has
+ * the markers outside the word, so `\bselected\b` still finds it — which made
+ * the check work in the settled direction and fail in the open one, the
+ * direction `f-tip-prd-stale-selection-status` is actually about. The PRD's own
+ * house style therefore defeated the check written to police it, and every real
+ * sentence is emphasised, so the natural way to write the stale claim was the
+ * one form invisible here.
+ *
+ * Stripping the markers deletes the whole class rather than adding the three
+ * spellings someone happened to think of — the same move the origin scanner
+ * made when inverting its default beat extending its list. Only runs at a
+ * word's outer edge go, so `rotation_owed` and `K_g` are untouched.
+ */
+const unemphasise = (text) => text.replace(/(^|[\s([])[*_`]+|[*_`]+(?=[\s.,;:)\]!?]|$)/gu, '$1');
+
 const sentences = prd
   .replace(/\n+/gu, ' ')
   .split(/(?<=[.!?])\s+(?=[A-Z*_~(])/u)
@@ -171,8 +191,9 @@ if (sentences.length === 0) {
 
 for (const sentence of sentences) {
   const rows = [...sentence.matchAll(/§15 row (\d+)/gu)].map((m) => m[1]);
-  const settled = SETTLED.test(sentence);
-  const open = OPEN.test(sentence);
+  const plain = unemphasise(sentence);
+  const settled = SETTLED.test(plain);
+  const open = OPEN.test(plain);
   const short = sentence.trim().slice(0, 150);
 
   for (const row of rows) {
