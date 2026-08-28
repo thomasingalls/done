@@ -139,8 +139,11 @@ Worth knowing before picking anything up, because a repair that ignores its clas
    state resolves (`FU-01`, `FU-02`, `FU-03`, `FU-06`, `FU-11`, the `P-1` approver, and `FU-04`'s
    clock-replaces-custody). **`FU-01` and the approver returned 2026-08-28 at the `S0-2` return** — the
    member-key entries resolve through the parent certified set or the factor and the map's class-1 ledger
-   reads 6 open, none of them a recipient-authority carrier; `FU-02`/`FU-03` ride `S0-6`, `FU-06` rides
-   `S0-4`, `FU-11` rides `S0-5`, `FU-04` rides `S0-7`.
+   read 6 open, none of them a recipient-authority carrier — **and `FU-06` returned the same day at the
+   `S0-4` return**: the refusal's subject carries the refused envelope's own epoch and the verifier resolves
+   from the lineage's certification in force, never from the answer, with the retired-key and wrong-epoch
+   attacks published as genuine-signature negatives; the map now reads 4 open (the live count is always the
+   checker's). `FU-02`/`FU-03` ride `S0-6`, `FU-11` rides `S0-5`, `FU-04` rides `S0-7`.
 2. **Interleavings the pure models cannot schedule** — crash points and second writers that are unexpressible
    rather than refuted (`FU-08`, `FU-09`, `FU-10`, `FU-12`, `K_store`). **`FU-09`'s interface half returned
    2026-08-28 at the `S0-2` return** — the composed model's commit carries `P-3`'s ratified fence and the
@@ -148,7 +151,10 @@ Worth knowing before picking anything up, because a repair that ignores its clas
    returned the same day at the `S0-3` return**: `FU-08`'s refusal window stages before it promotes and its
    reproduction is inverted at every kill point, `K_store` derives per store with the two-device reproduction
    inverted, and `FU-09` finished with the write-admission machine consolidating the fence (`P-3` falsifiers
-   14–22 all landed). `FU-10` rides `S0-4` and `FU-12` rides `S0-7`, through the same scheduler.
+   14–22 all landed). **`FU-10` returned the same day at the `S0-4` return, through the same scheduler**: the
+   position grant stages the spool row in its own transaction, the crash between reservation and spool
+   insertion is a schedule whose every kill point recovery resolves, and the counter-only world is kept as
+   the detected negative. `FU-12` rides `S0-7`, the class's last member.
 3. **One fact, two homes** — `RC-8C`, the rule this remediation wrote for itself, violated by the remediation,
    including by its gate: at the challenged tip `pnpm check` stopped at lint, so "runs through the gate" was
    command-text reachability, not execution (`FU-05`, `FU-07`, `FU-13`, `FU-14`, `FU-15`, `FU-16`). The gate
@@ -208,7 +214,9 @@ In order. An item is done when its disposition entry's earliest-return stage has
    negative. The `S0-3` return inverted the last two the same day: the write path stages before it promotes,
    so `FU-08`'s kill point holds nothing to lose, and the store derivation binds the store identity, so joint
    1's per-key counts are their own counters — each on the reproduction's own schedule, with the pre-return
-   worlds kept as detected negatives. All three windows now assert their repairs.
+   worlds kept as detected negatives. All three windows now assert their repairs — and the `S0-4` return
+   added the class's fourth (`FU-10`'s reserve-to-spool crash at `PositionCounter`) to the same file the same
+   day, scheduled and inverted in one motion, with the counter-only world kept as the detected negative.
 4. **Stage returns — the `S0-1` return first, then the security returns in dependency order.** Reordered
    2026-08-28, for item 3's own reason: a repair that ignores its class reintroduces the class, and the
    census is class 3's instrument — it belongs before the six returns that churn the corpus it classifies,
@@ -249,10 +257,22 @@ In order. An item is done when its disposition entry's earliest-return stage has
    widened to sealed constructions; **`K_cp`'s absence a declared, checker-policed debt owed at the `S0-5`
    return**, since its homes state neither counter nor discipline and a checkpoint's key cannot narrow to a
    store), and `pnpm admission:check` as `P-3` falsifier 22's readback. An 18-mutation battery caught 18.
-   The map's `k-store` entry flipped: 5 joints stay open, none of them class 2's storage carriers. **Next,
-   the remaining security returns, in dependency order**: `S0-4` (`FU-06` with TRD §7.5, `FU-10`) → `S0-5`
-   (`FU-11`, and the `k-checkpoint` census entry) and `S0-6` (`FU-02`, `FU-03` with TRD §14.4) → `S0-7`
-   (`FU-04`, `FU-12`).
+   The map's `k-store` entry flipped: 5 joints stay open, none of them class 2's storage carriers. **The
+   `S0-4` return is done (2026-08-28), and its gates re-ran green** — `pnpm check` end to end. It landed
+   `FU-06` (the refusal's subject is five fields, the fifth the refused envelope's own referenced epoch, and
+   the verifier resolves from the lineage's certification in force — never from the answer, never *an epoch
+   it holds*; permanence binds the `Refuse` message, so the licence survives an ordinary `K_accept` rotation;
+   `refusal-under-a-retired-epoch-key`, `refusal-for-another-epoch` and `refusal-for-another-workspace`
+   published as genuine-signature negatives over a published lineage whose subject epoch and tip
+   certification deliberately differ) and `FU-10` (`Reserve` stages the spool row in the grant's own
+   transaction — a counted position with no durable identity cannot exist — and a `reserved` row is occupied
+   at recovery by a fresh first attempt, the row itself durable proof nothing was ever sent; the
+   unexecutable closed-by-refusal branch retired; the window scheduled through the composed model with the
+   counter-only world kept as the detected negative, and recovery counting its fresh licence where the mint
+   seals when the marker moved). An 18-mutation battery caught 18. The map's `position-refusal` entry
+   flipped: 4 joints stay open, none of them this stage's. **Next, the remaining security returns, in
+   dependency order**: `S0-5` (`FU-11`, and the `k-checkpoint` census entry) and `S0-6` (`FU-02`, `FU-03`
+   with TRD §14.4) → `S0-7` (`FU-04`, `FU-12`).
    **Each return flips its authority-map entries and inverts its scheduler reproductions** — editing a
    pinned home fails `authority:check` until the entry is re-read
    and re-pinned or flipped — and, now that the census is landed, edits a pinned record only as a dated
@@ -307,9 +327,9 @@ format documents by any other route. After any code formatting, re-run `pnpm typ
 format left `pnpm check`; the gate is typecheck plus the evidence suite, and it passed end to end for the
 first time in this branch's history that day. Since queue item 3 it also carries `authority:check`, and that
 green line means exactly its printed scope: the map's chains resolve and its pinned homes are byte-current,
-with five joints *declared open* since the `S0-3` return flipped `k-store` (the `S0-2` return flipped the
-four member-key entries), the sweep covering AEAD constructions beside signatures, and `K_cp`'s absence held
-as a declared, checker-policed debt owed at `S0-5` — it is the
+with four joints *declared open* since the `S0-4` return flipped `position-refusal` (the `S0-2` return
+flipped the four member-key entries; the `S0-3` return, `k-store`), the sweep covering AEAD constructions
+beside signatures, and `K_cp`'s absence held as a declared, checker-policed debt owed at `S0-5` — it is the
 class-1 and class-2 ledgers staying honest, not the classes closed. Since the
 `S0-1` return it also carries `remediation:check`, whose green line is likewise its printed scope: 46
 documents classified, 19 record pins byte-current, the status homes agreeing — the class-3 ledger staying

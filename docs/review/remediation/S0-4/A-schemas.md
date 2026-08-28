@@ -3,7 +3,10 @@
 **Standing:** home — sections here are pinned and swept by the authority map; read back by
 `pnpm authority:check`.
 
-**Status:** proposed for `S0-8` review · not implemented · `RC-4A`, with the attempt cap corrected
+**Status:** proposed for `S0-8` review · not implemented · `RC-4A`, with the attempt cap corrected ·
+**amended 2026-08-28 at the `S0-4` return** — the reservation stages its own durable row in §§1–2 (`FU-10`),
+and the refusal's subject carries the envelope's epoch with the verifier resolved from the lineage in §3
+(`FU-06`), with the falsifier map continued at rows 20–26
 
 ## 0. Two numbers are called `seq`, and they are not the same number
 
@@ -35,12 +38,19 @@ binding that already stops a `heads` record being read as a `state` record stops
 second-newest admitted checkpoint; this is where they live. So there is no pending queue _and_ an archive —
 there is one store, and `state` distinguishes what is still owed an answer from what is merely retained:
 
-| `state`    | Meaning                                               | Cleanup                            |
-| ---------- | ----------------------------------------------------- | ---------------------------------- |
-| `minted`   | Persisted, never sent                                 | Resolve first                      |
-| `sent`     | At least one submission made, no authenticated answer | Resolve first                      |
-| `accepted` | A verified `Head_n` covers this digest                | Below the second-newest checkpoint |
-| `closed`   | A verified refusal permanently closed this digest     | Below the second-newest checkpoint |
+| `state`    | Meaning                                                        | Cleanup                            |
+| ---------- | -------------------------------------------------------------- | ---------------------------------- |
+| `reserved` | Position granted in the reservation's own transaction; no bytes exist yet (`FU-10`) | Resolve first                      |
+| `minted`   | Persisted, never sent                                          | Resolve first                      |
+| `sent`     | At least one submission made, no authenticated answer          | Resolve first                      |
+| `accepted` | A verified `Head_n` covers this digest                         | Below the second-newest checkpoint |
+| `closed`   | A verified refusal permanently closed this digest              | Below the second-newest checkpoint |
+
+**The row exists from the reservation, not from the mint** (the `S0-4` return). A `reserved` row carries the
+position and the generation whose budget counted it, and no envelope — the sealed bytes arrive when the mint
+promotes it to `minted`, in the promote's own transaction. `state` and the position are the store's cleartext
+metadata beside the sealed envelope, on §6.1's journal terms: an attacker who can write them can write your
+JavaScript.
 
 **Nothing is deleted for being old, and nothing unresolved is deleted at all.** Two conditions, and the second
 is row 6's floor rather than a new one.
@@ -56,14 +66,29 @@ PositionCounter (one record per (workspace, credential))
   reserved[gen]    positions reserved under each content-key generation
 
 Reserve  one readwrite transaction: grant next_position, advance it, add one to
-         reserved[current_gen]. Two tabs serialize because IndexedDB does.
+         reserved[current_gen], and stage the spool row for the granted position --
+         (position, gen, state: reserved), no bytes yet. Two tabs serialize
+         because IndexedDB does, and a counted position with no durable identity
+         cannot exist, because the count and the identity commit together (FU-10).
 ```
 
-**A gap is not a hole to be filled.** A crash between reservation and minting leaves a position nothing will
-ever occupy — and §7.5's chain is `link_n` over `link_(n-1)`, so a gap stalls the chain exactly as a refusal
-does. **So a reserved-but-unminted position is resolved the same way a refused one is**: the credential mints a
-successor at that position binding the reservation, or the position is closed by a refusal. There is no third
-mechanism.
+**A gap is not a hole to be filled, and since the return it is not a mystery either.** A crash between the
+grant and the mint leaves a `reserved` row and nothing else — and that row is the carrier the resolution reads
+(`FU-10`). §7.5's chain is `link_n` over `link_(n-1)`, so a gap stalls the chain exactly as a refusal does, and
+the position must be occupied: **the credential occupies it itself, with a fresh first attempt at the row's own
+position**, `parent_refusal` zeros. That needs no licence and loses nothing — a licence is owed only where an
+attempt may exist at the service, and bytes are staged before the first network byte, so a `reserved` row is
+itself durable proof that nothing was ever sent; and occupation needs nothing the crash destroyed, because the
+position and generation are in the row, the content is the client's own, and the bytes are fresh by design. A
+kill after the promote is the other case and re-mints nothing: the row holds exact bytes, and the spool's rule
+is resubmit them.
+
+**A refusal is not the resolution here, and cannot be** (`ST-05`): `Refuse` names an exact `refused_digest`,
+and an envelope that was never minted has none — which is exactly why the reservation itself had to become the
+durable carrier rather than a counter movement. An earlier draft resolved a reserved-but-unminted position
+"the same way a refused one is", with neither branch executable: *binding the reservation* had no reservation
+object to bind, and closure-by-refusal had no digest to close. The challenge convicted the draft, and the row
+above is the repair.
 
 **`reserved[gen]` is here for a reason §7.4 states and does not implement.** §7.4 says `seq` bounds the 12-byte
 random nonce's per-generation budget _"in one comparison, exactly as it does in §6.1"_ — and §6.1's version of
@@ -72,6 +97,11 @@ inherited the defect along with the mechanism**: this `seq` is per credential an
 either, so a literal `seq ≥ 2^32` test is conservative until the first rotation and then refuses forever. The
 count the comparison reads is positions **reserved** under the generation, because SP 800-38D bounds
 invocations and a mint abandoned before send is one.
+
+**Recovery composes with that budget the way §6.1's re-reservation does** (`FU-09`'s rule, at this counter). A
+recovery mint under the row's own generation consumes the licence the grant already counted; when the marker
+has moved, the fresh mint counts one against the generation it actually seals under — in the same transaction
+as the promote — and the abandoned licence stays counted where it was, conservatively.
 
 ## 3. `PositionDecision` — the answer, signed by the key that already answers
 
@@ -94,11 +124,19 @@ no rule to apply. **A compromised `K_accept` can already forge acceptance heads*
 forging a refusal, so this adds no reachable power. §7.5's separation — `K_accept` certified by the
 authorization key, rotatable without touching it — is unchanged.
 
+**The subject is five fields, and the fifth is the epoch** (`FU-06`). `epoch` in `Refuse` is the epoch **the
+refused envelope itself references** — fixed at mint, inside the envelope's own AAD and signature — so a
+refusal names exactly one envelope: `(workspace, credential, position, refused_digest, epoch)`. Before the
+return the field was signed and then read by nobody: the client's comparison stopped at position and digest,
+so a refusal about an envelope minted under another epoch could still be read as an answer about this one.
+
 **A refusal is permanent, and that is the whole content of the word _definite_.** It closes
-`(workspace, credential, position, refused_digest)` forever. The service must never accept that digest
-afterwards, however delayed its arrival, and returns the same refusal instead. Without permanence a client
-could re-mint on a refusal and then have its original accepted behind it — two links at one position, which
-§7.5 reads as a compromised credential.
+`(workspace, credential, position, refused_digest, epoch)` forever. The service must never accept that digest
+afterwards, however delayed its arrival, and answers a late resubmission with the same `Refuse` **message** —
+under its live `K_accept`, since `refusal_id = SHA-256(Refuse)` binds the message and not the signature, so
+the licence and the chain survive an ordinary rotation. Without permanence a client could re-mint on a refusal
+and then have its original accepted behind it — two links at one position, which §7.5 reads as a compromised
+credential.
 
 **A successor names its licence, and a licence is good for one position.**
 
@@ -116,10 +154,23 @@ that position will ever accept, so **at most one accepted digest per position al
 A mutation removing the slot changed no result — which is what _not load-bearing_ looks like when it is measured
 rather than argued, and it is the reason the position binding above is here instead.
 
-**What a client may do with one:** verify the signature under the `K_accept` certified in an epoch it holds;
-check that the position and digest are its own; then mint exactly one successor at that position binding
-`refusal_id`. **Everything else is silence** — an unsigned body, a refusal for another digest, a refusal under
-an uncertified key — and silence means resubmit the identical bytes, which is what the spool is for.
+**What a client may do with one:** resolve `K_accept` from **the epoch in force in its authenticated
+lineage** — the same certification the acceptance head resolves through, never a key taken from the answer and
+never merely *an* epoch it once held; verify the signature under that key; check that **all five subject
+fields are its own envelope's**, the epoch included; then mint exactly one successor at that position binding
+`refusal_id`. **Everything else is silence** — an unsigned body, a refusal for another digest, a refusal
+naming another epoch, a refusal under a key the lineage does not currently certify — and silence means
+resubmit the identical bytes, which is what the spool is for.
+
+**What the epoch buys, exactly** (`A-03`). Before the return the verifier was injected beside the answer and
+the rule said *an epoch it holds*, so a genuine refusal signed under a **stale or forked** `K_accept` — a
+delayed old-key compromise — could name a current envelope's other fields and license a re-mint, discarding
+current outbound bytes. Now it is silence both ways: naming the envelope's epoch it fails the signature,
+because the resolution is the lineage's current certification and a retired key is not it; naming the retired
+key's own epoch it fails the subject. The residual is stated rather than discovered: a client whose lineage
+tip is withheld verifies under the certification it last learned — §7.5's stated availability bound, no new
+power — and a refusal signed ahead of the client's tip is silence until the lineage catches up, which costs
+nothing, because the re-mint the refusal licenses references the current epoch and so needs the same catch-up.
 
 ## 4. The three-way rule, at a third object
 
@@ -147,11 +198,11 @@ was lost before arrival or its reply was lost after acceptance.
 | 4   | An unresolved envelope is never trimmed, whatever the checkpoint floor                   | 1      |
 | 5   | A resolved envelope is trimmed only below the **second-newest** checkpoint               | 1      |
 | 6   | Two tabs reserving concurrently receive different positions                              | 2      |
-| 7   | A reserved-but-unminted position is closed or occupied, never silently skipped           | 2      |
+| 7   | A reserved-but-unminted position is occupied at recovery, never silently skipped         | 2      |
 | 8   | The nonce budget reads `reserved[gen]`, not `next_position`                              | 2      |
 | 9   | **An unsigned error body is silence, and the client resubmits rather than re-minting**   | 3, 4   |
 | 10  | A refusal signed by a key no epoch certifies is silence                                  | 3      |
-| 11  | A refusal naming another digest, position or credential is silence                       | 3      |
+| 11  | A refusal naming another digest, position, credential or workspace is silence            | 3      |
 | 12  | **A refused digest is never accepted afterwards, however delayed**                       | 3      |
 | 13  | A successor binding its parent refusal is accepted                                       | 3      |
 | 14  | A successor at a position its refusal does not name is refused                           | 3      |
@@ -160,3 +211,15 @@ was lost before arrival or its reply was lost after acceptance.
 | 17  | A second digest accepted at one position is refused by every client                      | 4      |
 | 18  | Identical resubmission returns the same decision rather than a second one                | 4      |
 | 19  | A signed refusal at my position for a digest that is not mine is silence                 | 3      |
+
+The `S0-4` return (2026-08-28) continues the map at rows 20–26 — `FU-10` first, then `FU-06`:
+
+| #   | Falsifier                                                                                        | Schema |
+| --- | ------------------------------------------------------------------------------------------------ | ------ |
+| 20  | The grant and the `reserved` row are one transaction — no schedule shows a counted position with no durable identity | 2      |
+| 21  | A `reserved` row is occupied at recovery by a fresh first attempt at its own position, and the chain advances through it | 1, 2   |
+| 22  | Recovery under a moved generation counts the fresh licence where the mint seals; the abandoned licence stays counted | 2      |
+| 23  | A kill after the promote resubmits the exact bytes — recovery re-mints only what was never minted | 1      |
+| 24  | A genuinely signed refusal naming another epoch is silence                                       | 3      |
+| 25  | A refusal under a key certified only at a retired epoch is silence — the verifier resolves from the lineage's current certification, never from the answer | 3      |
+| 26  | A refusal signed ahead of the client's tip is silence until the lineage catches up, and the licence works exactly when the re-mint is possible | 3      |

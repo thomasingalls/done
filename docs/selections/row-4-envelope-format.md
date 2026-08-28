@@ -10,7 +10,9 @@ byte. The exact minted bytes are **persisted before the first network byte** in 
 `kind: 'outbound'`; the position is **reserved** before minting, because `seq` is inside both bound field lists
 and two tabs would otherwise choose the same one; and the nonce budget's comparison reads positions **reserved**
 under the generation rather than the raw `seq` — this row said _exactly as it does in §6.1_ and inherited that
-section's defect along with its mechanism (TRD §§6.1/7.4).
+section's defect along with its mechanism (TRD §§6.1/7.4). **And at the `S0-4` return (2026-08-28), still not
+a byte**: the position grant stages the spool row in the grant's own transaction, so a counted position always
+has a durable identity a recovery can occupy rather than a gap nothing can close (`FU-10`, TRD §7.4).
 **Companions:** [row 1](./row-1-algorithm-suite.md) selects the primitives; [row 3](./row-3-record-format.md)
 established the binding conventions and the nonce argument reused here; [row 5](./row-5-finalization.md) rides
 beside this envelope and, as it turns out, dictates one of its fields.

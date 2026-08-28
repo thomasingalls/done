@@ -187,7 +187,7 @@ verifies: Head_n over a credential's accepted chain — the evidence required be
 resolves: K_accept, certified by the authorization key in the epoch in force -> via:epoch-signature
 bound: §7.5 — accepted positions are exactly what the service is authoritative over; the client verifies against the link it replayed itself, first-seen-wins per position, and withheld evidence stops sync rather than admitting anything
 status: resolved
-pin: docs/TRD.md §7.5 9c0a7d9f3e25
+pin: docs/TRD.md §7.5 21aa93da7f05
 ```
 
 ```authority
@@ -196,19 +196,22 @@ kind: verification
 guards: availability
 verifies: a definite Refuse — the only licence to re-mint a position
 resolves: the same K_accept, from the same certification -> via:epoch-signature
-bound: §7.5 — a refusal is permanent, closes exactly (workspace, credential, position, digest), licenses one successor at its own position and no other, and everything unauthenticated is silence
-status: open
-blocker: FU-06
-return: S0-4
-pin: docs/TRD.md §7.5 9c0a7d9f3e25
-pin: docs/review/remediation/S0-4/A-schemas.md §3 09123f85de27
+bound: §7.5 — a refusal is permanent, closes exactly (workspace, credential, position, digest, epoch) — the refused envelope's own referenced epoch, the fifth subject field — licenses one successor at its own position and no other; the verifier resolves from the lineage's certification in force, never from the answer, and everything else is silence
+status: resolved
+pin: docs/TRD.md §7.5 21aa93da7f05
+pin: docs/review/remediation/S0-4/A-schemas.md §3 e4380ac288fd
 ```
 
-The refusal's key resolves exactly as the head's does; what is open is the *subject*: the signed epoch is
-absent from the client's comparison and from the spool model, so a genuine refusal under a stale or forked
-`K_accept` still licenses a re-mint — a delayed old-key compromise discarding current outbound bytes (`A-03`).
-The `S0-4` return carries the envelope's epoch into the subject and resolves `K_accept` from that exact
-authenticated epoch.
+The refusal's key resolves exactly as the head's does — and since the `S0-4` return (2026-08-28) its
+*subject* is closed too: the signed epoch was absent from the client's comparison and from the spool model,
+so a genuine refusal under a stale or forked `K_accept` licensed a re-mint — the delayed old-key compromise
+discarding current outbound bytes (`A-03`, `FU-06`). The return carried the envelope's own epoch into the
+subject as its fifth field and kept the resolution exactly the head's — the certification in force in the
+authenticated lineage, never a key from the answer — so the attack is silence both ways: naming the
+envelope's epoch it fails the signature, naming the retired key's own it fails the subject. The
+`refusal-under-a-retired-epoch-key` and `refusal-for-another-epoch` vectors publish both, the model holds the
+verdicts, and `refusal_id` binds the message rather than the signature, so permanence survives an ordinary
+rotation.
 
 ```authority
 entry: relay-admission
@@ -234,7 +237,7 @@ guards: content
 verifies: sig over an envelope's AAD fields, nonce and digest (§7.4)
 resolves: the signing credential named in the clear header -> its member entry for the referenced epoch -> via:member-signing-keys
 status: resolved
-pin: docs/TRD.md §7.4 690246e0d341
+pin: docs/TRD.md §7.4 bfc630db61b0
 ```
 
 ```authority
@@ -470,7 +473,7 @@ guards: content
 verifies: the store subkey sealing every StoredRecord
 counted-by: SeqCounter.reserved[gen] — one key per counter: the derivation binds the store_id minted beside the counter (row 3 §§3–4), and the store rotates before the 2^32nd reservation, equality first disallowed
 status: resolved
-pin: docs/TRD.md §6.1 56bed55ca9ce
+pin: docs/TRD.md §6.1 2c287c8d6762
 pin: docs/selections/row-3-record-format.md 014a9bce62f3
 ```
 
@@ -496,11 +499,11 @@ entry: k-net
 kind: aead
 guards: content
 verifies: the network-envelope subkey K_net
-counted-by: PositionCounter.reserved[gen] — §7.4's seq, reserved before the envelope exists, same comparison as §6.1's repair
+counted-by: PositionCounter.reserved[gen] — §7.4's seq, reserved before the envelope exists, same comparison as §6.1's repair; a recovery mint under a moved marker counts its fresh licence where it seals, in the promote's transaction, and the abandoned licence stays counted
 status: resolved
-note: FU-10 — the crash between reservation and spool insertion that leaves no durable reservation identity — is a class-2 window, owed to the scheduler at the S0-4 return; the count itself reads reservations and sees the abandoned mint
-pin: docs/TRD.md §7.4 690246e0d341
-pin: docs/review/remediation/S0-4/A-schemas.md §2 18f65d357224
+note: FU-10 landed 2026-08-28 at the S0-4 return — the grant stages the spool row in its own transaction, so the crash between reservation and spool insertion leaves an identity the recovery rule occupies; the window is scheduled and inverted in test/storageSchedule.test.ts with the counter-only world kept as the detected negative
+pin: docs/TRD.md §7.4 bfc630db61b0
+pin: docs/review/remediation/S0-4/A-schemas.md §2 0b0a190abb99
 ```
 
 ```authority
@@ -565,9 +568,9 @@ shrink by payment.
 
 **Consumption.** The stage returns (queue item 4) flip their entries: `S0-2` — `member-signing-keys`,
 `bootstrap-signer`, `bootstrap-countersig`, `enrollment-transcript` — **flipped 2026-08-28 at the `S0-2`
-return**; `S0-3` — `k-store` — **flipped 2026-08-28 at the `S0-3` return**; `S0-4` — `position-refusal`;
-`S0-5` — `checkpoint-admission`, and the `k-checkpoint` census entry §5 defers there; `S0-6` —
-`local-archive-anchor`, `terminal-handoff`; `S0-7` — `destructive-boundary`. `S0-9` round 3 reads the computed
+return**; `S0-3` — `k-store` — **flipped 2026-08-28 at the `S0-3` return**; `S0-4` — `position-refusal` —
+**flipped 2026-08-28 at the `S0-4` return**; `S0-5` — `checkpoint-admission`, and the `k-checkpoint` census
+entry §5 defers there; `S0-6` — `local-archive-anchor`, `terminal-handoff`; `S0-7` — `destructive-boundary`. `S0-9` round 3 reads the computed
 summary as the class-1 ledger, and `S0-10` consumes a map whose open count is zero or does not close. `P-1`
 falsifier 14 was discharged at the `S0-2` return: the member-key entries flipped, every chain still terminates
 at a permitted root for its guard, and the checker — not a review — is what refuses a dangling or service-only

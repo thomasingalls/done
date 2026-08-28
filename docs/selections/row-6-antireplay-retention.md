@@ -102,7 +102,10 @@ the signed head is what refuses it.
 no carrier.** It pointed at row 15's transition `Outcome`, which names a `(kind, workspace, lineage, target)` —
 a transition, not an envelope — so it cannot say which credential, which position, or which exact digest was
 never accepted (`f-745e332-envelope-refusal-carrier-missing`). TRD §7.5's `Refuse` is that object, signed by
-`K_accept`, **permanent** over `(credential, position, digest)`, and licensing a successor that binds its
+`K_accept`, **permanent** over `(credential, position, digest, epoch)` — the epoch being the one the refused
+envelope itself references, the fifth subject field the `S0-4` return added (`FU-06`): the client verifies
+under the `K_accept` its lineage currently certifies, never a key taken from the answer, so a stale key's
+genuine refusal is silence whichever epoch it names. The refusal licenses a successor that binds its
 `refusal_id` — **at that refusal's own position and no other**, or skipping arrives through the back door. A
 successor may itself be refused, and nothing caps the chain, or a credential stalls the second time an epoch
 moves under it.
@@ -321,6 +324,14 @@ generation before the old one may be dropped, so the checkpoint a device adopts 
 - `equivocated-position-at-the-mark` — refused by the head, and signed at position 7 on purpose so it does not
   also fail for being at the wrong position. A negative that fails for two reasons tests neither.
 - `baseline-from-another-checkpoint` — a substituted baseline cannot be walked forward into agreement.
+
+**Seventeen more are the refusal's** (`S0-4`, grown at the return): the nine bound fields one at a time, each
+with the client's own envelope following the patch so the signature is the only thing left to refuse it;
+**five genuine signatures for the wrong subject** — position, digest, credential, workspace and epoch, the
+last two added at the return — where the service really signed the message and it is not about this envelope;
+and three authority cases: an unsigned error body, a key no epoch certifies, and **a key certified only at a
+retired epoch** (`FU-06`'s delayed old-key compromise), refused because the verifier resolves from the
+lineage's current certification rather than from the answer.
 
 **The three demonstrations all succeed, which is the point of each of them.** `self_equivocation` publishes the
 two links at position 7 so _a different link at a held position_ is a value rather than a description.

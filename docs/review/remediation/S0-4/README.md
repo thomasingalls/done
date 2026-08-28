@@ -48,26 +48,32 @@ skipping row 4 forbids, arriving through the back door.
 
 |       | Stage                  | Output                                                                   | Status                                                     |
 | ----- | ---------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------- |
-| **A** | Durable record schemas | the spool record, the position counter, and the signed position decision | **done** — [`A-schemas.md`](./A-schemas.md)                |
+| **A** | Durable record schemas | the spool record, the position counter, and the signed position decision | **done** — [`A-schemas.md`](./A-schemas.md), amended at the return |
 | **B** | Normative construction | TRD §§6.1/7.4/7.5                                                        | **done** — §6.1 gains a fourth kind, §7.5 the other answer |
 | **C** | Selection rows         | rows 3, 4, 5, 6                                                          | **done** — rows 3, 4, 5, 6                                 |
-| **D** | Executable evidence    | refusal bytes and negatives; the crash schedule as a model               | **done** — 15 published negatives, 17 tests, 12 mutations  |
+| **D** | Executable evidence    | refusal bytes and negatives; the crash schedule as a model               | **done** — 17 refusal negatives and 24 model tests as of the return; 12 mutations at the action, 18 at the return |
 | **E** | Product surface        | PRD §7.5 and §7.12                                                       | **done** — §7.5 gains the lie in the other direction       |
 
 ### Stage D, and the two things it changed about Stage A
 
 **Two artifacts, on the project's own split: bytes go in vectors, sequences go in tests.**
 
-`test/vectors/antireplay.json` gains the refusal — its message, its `K_accept` signature, and **fifteen
-negatives**. Nine are the bound fields one at a time, and each is built so **the client's own envelope follows
-the patch**: four of those fields are read twice, once by the signature and once by _is this about me?_, so a
-negative that changed only the message would refuse on the mismatch and prove nothing about the binding. Three
-more carry **genuine signatures for the wrong subject** — the service really did sign them, and they are not
-about this envelope, which the field negatives structurally cannot reach. The last two are the silence cases:
-an unsigned error body, and a refusal under a key no epoch certifies. The AAD audit went from 181 fields to 190.
+`test/vectors/antireplay.json` gains the refusal — its message, its `K_accept` signature, and **fourteen
+negatives** (an earlier copy of this file said fifteen while fourteen existed; the return corrected the count
+while growing it to seventeen). Nine are the bound fields one at a time, and each is built so **the client's
+own envelope follows the patch**: five of those fields are read twice, once by the signature and once by _is
+this about me?_, so a negative that changed only the message would refuse on the mismatch and prove nothing
+about the binding. Genuine signatures for the wrong subject — the service really did sign them, and they are
+not about this envelope, which the field negatives structurally cannot reach — cover position, digest and
+credential from the action, workspace and epoch from the return. The rest are the authority cases: an unsigned
+error body, a refusal under a key no epoch certifies, and — from the return — a refusal under the key a
+retired epoch certified. The AAD audit went from 181 fields to 190 at the action (193 as of the `S0-3`
+return; the return here adds no bound field, because the epoch was always signed — what was missing was
+anyone reading it).
 
-`test/outboundSpool.test.ts` is the part that is not a value — **17 tests, 12 mutations, all caught**: a kill
-between minting and sending, a kill between sending and the reply, two tabs reserving, a reservation abandoned
+`test/outboundSpool.test.ts` is the part that is not a value — **17 tests and 12 mutations at the action, all
+caught; 24 tests after the return**: a kill between minting and sending, a kill between sending and the reply,
+two tabs reserving, a reservation abandoned
 before minting, the successor chain, the permanence of a refusal against a delayed original, and the retention
 floor.
 
@@ -102,6 +108,49 @@ and the client's response to one is to re-send **the same bytes**.
 write that carried it cannot be re-made identically, because part of it is random. A device that kept only the
 edit would have nothing safe to send after a crash and would have to choose between stalling and equivocating.
 Test 6 gains the mirror case.
+
+## The `S0-4` return (2026-08-28)
+
+The `S0-9` follow-up returned two repairs here — the refusal's unread epoch (`FU-06`, authority `A-03`) and
+the abandoned position (`FU-10`, storage `ST-05`) — and the return landed both with every gate re-run green:
+
+- **Stage A** — [`A-schemas.md`](./A-schemas.md) amended at both edges. `Reserve` stages the spool row in the
+  grant's own transaction — a counted position with no durable identity cannot exist — and a `reserved` row is
+  occupied at recovery by a fresh first attempt, the row itself being durable proof nothing was ever sent; the
+  earlier draft's "occupied by a successor binding the reservation, or closed by a refusal" had neither branch
+  executable, which was `ST-05`'s exact conviction. The refusal's subject grew its fifth field — the refused
+  envelope's own referenced epoch — with the verifier resolved from the lineage's certification in force,
+  never from the answer; *an epoch it holds* died as a rule. The falsifier map continues at rows 20–26.
+- **Stage B** — TRD §7.4 states the staged grant and the recovery rule; §7.5 states the five-field subject,
+  the lineage resolution, the message-bound permanence (`refusal_id` survives an ordinary `K_accept`
+  rotation), and two new *must not happen* clauses; §6.1's `outbound` kind now says the row exists from the
+  reservation onward.
+- **Stage C** — row 4's amendment records the staged grant (still not a byte); row 6 §3 states the five-field
+  subject and the resolution rule, and §11 describes the refusal's seventeen negatives.
+- **Stage D** — the generator resolves the verifier from a published lineage (`certified` history plus tip)
+  and adds three negatives: `refusal-for-another-epoch` and `refusal-for-another-workspace` (genuine
+  signatures, wrong subject — the follow-up called workspace substitution un-isolated), and
+  `refusal-under-a-retired-epoch-key`, `A-03`'s delayed old-key compromise, signed by the genuinely
+  once-certified key epoch 8 certified and refused by the resolution. The vector's subject epoch (8) and
+  signing certification (9, the tip) are deliberately different values, so *the message says which envelope,
+  the lineage says which key* is data rather than prose. `test/outboundSpool.test.ts` re-models the client
+  with the staged reservation, the recovery rule, the lineage, and the rotating service — 24 tests, including
+  the licence working exactly when the re-mint is possible and the chain continuing across two epoch moves.
+  `test/storageSchedule.test.ts` schedules `FU-10`'s window through the composed model: the counter-only
+  world is kept as the detected negative (recovery runs and cannot occupy or close the counted position), and
+  the staged world shows every counted position identified at every step boundary and every kill point
+  resolved, across a generation advance and a two-tab race.
+- **Stage E** — PRD §7.5's *only a signed refusal naming that exact write* already said the product truth;
+  the exactness now includes the epoch, and no PRD sentence became false.
+- **The instruments** — the authority map's `position-refusal` entry flipped (4 joints stay open, none of
+  them this stage's); `k-net`'s `FU-10` note struck and its counted-by extended with the recovery rule;
+  `accepted-head`, `envelope-signature` and `k-store` re-pinned over the amended sections with their rules
+  unchanged.
+
+An 18-mutation battery caught 18 — every restored pre-return sentence, dropped subject comparison,
+any-certified-key resolution, unstaged reservation, re-minted minted row, uncounted recovery licence,
+stale-signature re-answer, deciding-epoch subject, swept reserved row, broken grant/row atomicity, no-op
+recovery rule, silent map flip and tampered vector fails a named check rather than waiting for a review.
 
 ## Not in scope
 

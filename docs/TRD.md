@@ -625,8 +625,9 @@ Constraints on it:
   them.
 
 **Two of the four kinds are not content records** (§15 rows 6 and 4). `heads` carries the anti-replay high-water
-mark §7.5 requires — one `(seq, link)` per credential — and **`outbound` carries this device's own minted
-envelopes** (§7.4, `S0-4`). Each lives in **its own object store**, under the same store subkey,
+mark §7.5 requires — one `(seq, link)` per credential — and **`outbound` carries this device's own outbound
+positions from the reservation onward**: the row is staged in the position grant's own transaction and carries
+the minted envelope from the promote on (§7.4, `S0-4`). Each lives in **its own object store**, under the same store subkey,
 so the content load path never meets a record it cannot apply as a Yjs update. Sharing the subkey is safe rather
 than merely economical because `kind` is in the associated data: reinterpreting a heads record as a `state`
 record is exactly the attack that binding was written for, one object along, and it covers the fourth kind the
@@ -1073,9 +1074,15 @@ idea.
 **And the position is reserved before the envelope exists**, because `seq` is inside both bound field lists
 above. Two tabs that each read the highest position they have sent choose the same next one. One durable
 `PositionCounter` per _(workspace, credential)_ grants it in a transaction, which is what serializes them —
-and a gap left by a crash between reservation and minting is not a hole to fill: §7.5's chain links *n* to
-*n-1*, so an unoccupied position stalls the chain exactly as a refused one does, and it is resolved the same
-way rather than by a third mechanism.
+**and the same transaction stages the spool row for the granted position** (`S0-4` return, `FU-10`): a
+counted position with no durable identity cannot exist, because the count and the identity commit together. A
+gap left by a crash between reservation and minting is not a hole to fill — §7.5's chain links *n* to *n-1*,
+so an unoccupied position stalls the chain exactly as a refused one does — and the `reserved` row is what
+resolves it: **the credential occupies its own position with a fresh first attempt**, which needs no licence
+and nothing the crash destroyed, because bytes are staged before the first network byte, so a `reserved` row
+is durable proof that nothing was ever sent. A refusal cannot resolve it — `Refuse` names an exact digest,
+and no envelope was ever minted — which is why the carrier had to be the reservation itself rather than a
+counter movement.
 
 **Batching closes at a change of actor, credential, epoch or generation; at a flush interval that must not be
 shorter than the acceptance-head cadence, since §7.5 holds the envelope regardless; or at a byte cap.** One
@@ -1212,11 +1219,26 @@ express one. So `K_accept` signs a second object from the same decision domain:
 > `sig = Ed25519( K_accept ; Refuse )`, `refusal_id = SHA-256(Refuse)`, and `parent_refusal` is 32 zero bytes
 > for the first attempt at a position
 
+**The refusal's subject is five fields, and the fifth is the envelope's own epoch** (`S0-4` return, `FU-06`).
+`epoch` in `Refuse` is the epoch **the refused envelope itself references** — fixed at mint, inside the
+envelope's AAD and signature — so a refusal names exactly one envelope:
+`(workspace, credential, position, refused_digest, epoch)`. A client acts on a refusal only when **all five
+are its own envelope's** and the signature verifies under the `K_accept` certified in **the epoch in force in
+its authenticated lineage** — the same certification acceptance heads resolve through (§13.5), never a key
+taken from the answer and never merely an epoch it once held. A genuine refusal under a stale or forked
+`K_accept` therefore licenses nothing: naming the envelope's epoch it fails the signature, because the
+resolution is the current certification and a retired key is not it, and naming its own epoch it fails the
+subject — the delayed old-key re-mint is silence both ways. A refusal signed ahead of the client's tip is
+silence until the lineage catches up, which costs nothing: the re-mint it licenses references the current
+epoch, so it needs the same catch-up.
+
 **A refusal is permanent, and that is the entire content of the word _definite_.** It closes
-`(workspace, credential, position, refused_digest)` forever: the service never accepts that digest afterwards,
-however delayed its arrival, and answers a late resubmission with the same refusal. Without permanence a client
-could re-mint on a refusal and have its original accepted behind it — two links at one position, which rule 3
-below reads as a compromised credential.
+`(workspace, credential, position, refused_digest, epoch)` forever: the service never accepts that digest
+afterwards, however delayed its arrival, and answers a late resubmission with the same `Refuse` **message** —
+under its live `K_accept`, since `refusal_id` binds the message and not the signature, so the licence and the
+chain survive an ordinary `K_accept` rotation. Without permanence a client could re-mint on a refusal and have
+its original accepted behind it — two links at one position, which rule 3 below reads as a compromised
+credential.
 
 **A successor names the refusal that licensed it, and that refusal licenses its own position and no other.** A
 successor naming no refusal the service issued is refused, and one naming a refusal for a different position is
@@ -1240,10 +1262,11 @@ and that a licence for *n* cannot be spent at *n+1*.
 3. **First-seen-wins per (credential, position).** A second link at a position already held is equivocation, and
    a valid signature is not an answer to it.
 4. Above the newest head, **hold rather than discard**.
-5. **Everything that is not a verified `Head_n` or a verified `Refuse` over your own digest is silence, and
-   silence means resubmit the identical bytes** (§7.4, `S0-4`). Identical resubmission is safe whether the first
-   request was lost before arrival or its reply was lost after acceptance, because at most one digest is ever
-   accepted at a position — which is what makes *wait* a complete answer rather than a stall.
+5. **Everything that is not a verified `Head_n` or a verified `Refuse` over your own envelope — its digest,
+   its position and its referenced epoch alike — is silence, and silence means resubmit the identical bytes**
+   (§7.4, `S0-4`). Identical resubmission is safe whether the first request was lost before arrival or its
+   reply was lost after acceptance, because at most one digest is ever accepted at a position — which is what
+   makes *wait* a complete answer rather than a stall.
 
 **Non-equivocation here is per credential and within a view, and the bound is stated rather than left to be
 discovered.** A service maintaining two consistent forks and showing each device only its own equivocates
@@ -1295,6 +1318,8 @@ one refusal that retries.
 **Must not happen.** No envelope applied without evidence. No claim that relay refusal alone prevents divergence.
 No presentation of a queued request as "revoked". **No head verified against the link it carries rather than the
 link the client replayed**, and **no second link accepted at a position already held**, however well signed.
+**No refusal verified under a key resolved from the answer rather than from the lineage's current
+certification**, and none acted on across an epoch mismatch with the envelope it names.
 
 **Test.** §11, hostile-relay withholding; revocation commit; concurrent successors.
 

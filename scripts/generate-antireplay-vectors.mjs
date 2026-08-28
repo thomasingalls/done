@@ -176,15 +176,28 @@ const refuseMessage = ({
  * What a client does with a response, which is §7.4's three-way rule at a third
  * object — row 15 selected it for transitions, row 6 for positions.
  *
- * **Everything that is not a verified answer over your own digest is silence**,
+ * **Everything that is not a verified answer over your own envelope is silence**,
  * and silence resubmits the identical bytes rather than re-minting. That is safe
  * whichever unknown it was: at most one digest is ever accepted at a position,
  * so a request lost before arrival and a reply lost after acceptance need not be
  * told apart.
+ *
+ * **The verifier is resolved, never received** (`FU-06`, the `S0-4` return).
+ * The client verifies under the `K_accept` certified in the epoch in force in
+ * its authenticated lineage — the same certification the acceptance heads
+ * resolve through — and the subject comparison covers all five fields, the
+ * refused envelope's own epoch included. Before the return the verifier was
+ * injected beside the answer and the epoch was signed but read by nobody, so a
+ * genuine refusal under a stale certified `K_accept` could name a current
+ * envelope's other fields and license a re-mint (`A-03`). Now a retired key
+ * fails the signature and a wrong epoch fails the subject; both are silence.
  */
-const decide = async ({ mine, response, verifier }) => {
+const decide = async ({ mine, response, lineage }) => {
   if (response.kind === 'unsigned') return 'resubmit';
   if (response.kind === 'refusal') {
+    const certified = lineage.certified[lineage.tip];
+    if (certified === undefined) return 'resubmit';
+    const verifier = await importVerifier(certified);
     const message = refuseMessage(response.refusal);
     const ok = await crypto.subtle.verify(
       { name: 'Ed25519' },
@@ -194,11 +207,12 @@ const decide = async ({ mine, response, verifier }) => {
     );
     if (!ok) return 'resubmit';
     const r = response.refusal;
-    // A genuine signature over somebody else's position is still not an answer
+    // A genuine signature over somebody else's subject is still not an answer
     // about mine. These are separate from the field-binding negatives: there the
     // signature breaks, here it verifies and the fields do not match.
     if (r.workspace !== mine.workspace || r.credential !== mine.credential) return 'resubmit';
     if (r.position !== mine.position || r.digest !== mine.digest) return 'resubmit';
+    if (r.epoch !== mine.epoch) return 'resubmit';
     return 're-mint';
   }
   if (response.kind === 'head') {
@@ -393,10 +407,16 @@ const replayFrom = async (held, run, ctx) => {
 
 const KEYS = {
   k_accept: {
-    role: "The service's hot acceptance-signing key (row 5). It signs heads and nothing else.",
+    role: "The service's hot acceptance-signing key (row 5), certified at epoch 9 — the certification in force. It signs heads and refusals and nothing else.",
     source: 'RFC 8032 §7.1, TEST 2',
     seed: '4ccd089b28ff96da9db6c346ec114e0f5b8a319f35aba624da8cf6ed4fb8a6fb',
     public_key: '3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c',
+  },
+  k_accept_retired: {
+    role: 'The acceptance key epoch 8 certified, rotated away at epoch 9 (an ordinary epoch event, §7.5). Genuinely certified once, currently certified nowhere — the delayed old-key compromise FU-06 closes signs with exactly this key.',
+    source: 'RFC 8032 §7.1, TEST 1',
+    seed: '9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60',
+    public_key: 'd75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a',
   },
 };
 
@@ -566,6 +586,18 @@ const NEGATIVES = [
     falsifies: ['f-745e332-envelope-refusal-carrier-missing'],
     mutate: "A validly signed refusal for another credential's position 13.",
   },
+  {
+    name: 'refusal-for-another-workspace',
+    falsifies: ['f-745e332-envelope-refusal-carrier-missing'],
+    mutate:
+      "A validly signed refusal for the same credential's position 13 in another workspace. The S0-9 follow-up found genuine workspace substitution un-isolated; this is the case (S0-4 return).",
+  },
+  {
+    name: 'refusal-for-another-epoch',
+    falsifies: ['f-745e332-envelope-refusal-carrier-missing'],
+    mutate:
+      "A validly signed refusal naming epoch 9 against the attempt that referenced epoch 8 — this envelope's other fields, another envelope's epoch. It verifies under the certification in force, and the fifth subject field is what refuses it (FU-06, S0-4 return).",
+  },
 
   {
     name: 'unsigned-error-body',
@@ -578,6 +610,12 @@ const NEGATIVES = [
     falsifies: ['f-745e332-envelope-refusal-carrier-missing'],
     mutate:
       'The same refusal signed by a key no epoch certifies. Anything that can withhold an answer can manufacture one, which is why §7.4 requires the refusal be authenticated rather than merely definite.',
+  },
+  {
+    name: 'refusal-under-a-retired-epoch-key',
+    falsifies: ['f-745e332-envelope-refusal-carrier-missing'],
+    mutate:
+      "The same refusal — every subject field this envelope's own — signed by the key epoch 8 certified and the rotation at 9 retired. A perfect subject under a genuinely once-certified key licenses nothing, because the verifier resolves from the lineage's current certification and never from the answer. This is A-03's delayed old-key compromise, refused (FU-06, S0-4 return).",
   },
 ];
 
@@ -678,16 +716,21 @@ const verify = async (doc) => {
   // --- the refusal, which is the answer row 6 required and nothing could send --
   //
   // Position 13 is the one after the signed head at 12, so the envelope under
-  // discussion is the credential's next write rather than a settled one.
-  const { refusal, signature: refusalSig, wrong_subject: wrongSubject } = doc.refusal;
+  // discussion is the credential's next write rather than a settled one — and
+  // it was minted under epoch 8, in flight across the rotation, which is the
+  // refusal's ordinary occasion (stale-epoch). The subject carries THAT epoch;
+  // the verifier is the tip's. The two are visibly different here on purpose:
+  // the epoch in the message says which envelope, never which key (FU-06).
+  const { refusal, signature: refusalSig, wrong_subject: wrongSubject, lineage } = doc.refusal;
   const refusedDigest = refusal.digest;
   const mine = {
     workspace: WORKSPACE,
     credential: PHONE,
     position: 13,
     digest: refusedDigest,
+    epoch: 8,
   };
-  const verdict = async (response) => decide({ mine, response, verifier });
+  const verdict = async (response) => decide({ mine, response, lineage });
 
   // The positive: a verified refusal over this client's own digest licenses
   // exactly one successor at the same position.
@@ -714,7 +757,7 @@ const verify = async (doc) => {
     ['aad-only-refusal-reason', { reason: 'policy' }],
     ['aad-only-refusal-parent', { parent: hex(await sha256(utf8('a refusal never issued'))) }],
   ]) {
-    // **The client's own envelope follows the patch.** Four of these fields are
+    // **The client's own envelope follows the patch.** Five of these fields are
     // read twice -- once by the signature and once by "is this about me?" -- so
     // a negative that changed only the message would refuse on the mismatch and
     // prove nothing about the binding. This way the subject agrees and the
@@ -725,12 +768,13 @@ const verify = async (doc) => {
       credential: patched.credential,
       position: patched.position,
       digest: patched.digest,
+      epoch: patched.epoch,
     };
     await refuses(name, async () => {
       const got = await decide({
         mine: theirs,
         response: { kind: 'refusal', refusal: patched, signature: refusalSig },
-        verifier,
+        lineage,
       });
       if (got !== 're-mint') throw new Error('not a license to re-mint');
     });
@@ -761,6 +805,29 @@ const verify = async (doc) => {
   );
   await refuses('refusal-under-an-uncertified-key', () =>
     mustReMint({ kind: 'refusal', refusal, signature: doc.refusal.uncertified_signature }),
+  );
+
+  // The delayed old-key compromise (`A-03`), refused by the resolution rather
+  // than by any field: every subject field is this envelope's own, and the
+  // signature is genuinely the retired key's — verified here first, because a
+  // published "genuine signature" that is not one would make this refuse for
+  // the wrong reason. The client resolves the verifier from its lineage's
+  // current certification, and the key epoch 8 certified is not it.
+  {
+    const retiredOk = await crypto.subtle.verify(
+      { name: 'Ed25519' },
+      await importVerifier(KEYS.k_accept_retired.public_key),
+      unhex(doc.refusal.retired_epoch_signature),
+      refuseMessage(refusal),
+    );
+    if (!retiredOk) {
+      throw new Error(
+        'refusal-under-a-retired-epoch-key: its signature is supposed to be genuinely the retired key’s and is not',
+      );
+    }
+  }
+  await refuses('refusal-under-a-retired-epoch-key', () =>
+    mustReMint({ kind: 'refusal', refusal, signature: doc.refusal.retired_epoch_signature }),
   );
 
   // The two demonstrations. Neither is a negative, because both succeed — and
@@ -898,6 +965,13 @@ const main = async () => {
   ];
 
   // --- the refusal `S0-4` selects, signed once here and checked in verify() ----
+  //
+  // The refused envelope was minted under epoch 8, in flight across the
+  // rotation — the refusal's ordinary occasion. Its `epoch` field is that
+  // envelope's own referenced epoch (the fifth subject field, FU-06); the
+  // signature is the live K_accept's, certified at epoch 9. The two epochs are
+  // different here on purpose: the message says which envelope, the lineage
+  // says which key.
   const refusedDigest = hex(await sha256(utf8('envelope at position 13')));
   const refusalBase = {
     workspace: WORKSPACE,
@@ -905,7 +979,7 @@ const main = async () => {
     v: 1,
     position: 13,
     digest: refusedDigest,
-    epoch: 9,
+    epoch: 8,
     reason: 'stale-epoch',
     parent: EMPTY_CHAIN,
   };
@@ -917,6 +991,8 @@ const main = async () => {
     ['refusal-for-another-position', { position: 14 }],
     ['refusal-for-another-digest', { digest: hex(await sha256(utf8('a different envelope'))) }],
     ['refusal-for-another-credential', { credential: LAPTOP }],
+    ['refusal-for-another-workspace', { workspace: OTHER_WORKSPACE }],
+    ['refusal-for-another-epoch', { epoch: 9 }],
   ]) {
     const r = { ...refusalBase, ...patch };
     wrongSubject.push({ name, refusal: r, signature: await signRefusal(r) });
@@ -932,6 +1008,19 @@ const main = async () => {
     ),
   );
 
+  // The retired key — epoch 8's certification, rotated away at 9 — signing a
+  // perfect subject (A-03's delayed old-key compromise). Genuine, once
+  // certified, and currently resolvable to nothing.
+  const retiredEpochSignature = hex(
+    new Uint8Array(
+      await crypto.subtle.sign(
+        { name: 'Ed25519' },
+        await importSigner(KEYS.k_accept_retired.seed),
+        refuseMessage(refusalBase),
+      ),
+    ),
+  );
+
   const doc = {
     $schema: 'https://done.invalid/vectors/antireplay/1',
     generated_by: 'scripts/generate-antireplay-vectors.mjs',
@@ -940,7 +1029,7 @@ const main = async () => {
     construction: {
       admit:
         'Admit an envelope at (credential, n) iff: (1) it verifies, row 4; (2) n == held(c).seq + 1; (3) link_n is computed from the link the client itself holds, row 5; (4) a signed head at position >= n verifies against **that** link rather than the one it carries. Otherwise HOLD — the position or the head is not yet available — or REFUSE. A second link at a position already held needs no fifth condition: it arrives at or below the mark and condition 2 refuses it',
-      mint: 'Mint at own_held + 1. On a **definite refusal** at n, re-mint at the same n — row 4 forbids skipping. On no answer, wait. Re-minting a position that may have been accepted is self-equivocation, and the rule above refuses it permanently on every other device',
+      mint: 'Mint at own_held + 1, reserving the position in a transaction that stages the spool row with it (S0-4 return, FU-10). On a **definite refusal** at n — all five subject fields this envelope’s own, verified under the K_accept the lineage currently certifies — re-mint at the same n under the current epoch; row 4 forbids skipping. On no answer, wait. Re-minting a position that may have been accepted is self-equivocation, and the rule above refuses it permanently on every other device',
       baseline:
         "held(c) starts at the adopted checkpoint's head-vector entry for c, or at (0, 32 zero bytes). Replaying from a checkpoint and replaying from genesis are the same operation, which is what makes a checkpoint a retention floor",
       heads_record:
@@ -967,16 +1056,25 @@ const main = async () => {
     refusal: {
       why: "§7.4 makes a definite refusal the only license to re-mint a position and requires it be authenticated. Nothing could express one: row 15's transition Outcome names a transition, not an envelope (S0-4, f-745e332-envelope-refusal-carrier-missing). K_accept signs it, because acceptance and refusal are two answers from one decision domain -- a separate refusal key would be an authority that can induce a re-mint without being able to accept anything, and a compromised K_accept can already forge heads.",
       message:
-        'Refuse = LP("done/position-refuse/v1") || LP(dec v) || LP(workspace_id) || LP(credential_id) || LP(dec position) || LP(hex refused_digest) || LP(dec epoch) || LP(reason) || LP(hex parent_refusal), signed by K_accept. refusal_id = SHA-256(Refuse).',
+        'Refuse = LP("done/position-refuse/v1") || LP(dec v) || LP(workspace_id) || LP(credential_id) || LP(dec position) || LP(hex refused_digest) || LP(dec epoch) || LP(reason) || LP(hex parent_refusal), signed by K_accept. refusal_id = SHA-256(Refuse). epoch is the refused envelope’s own referenced epoch -- the fifth subject field (FU-06, the S0-4 return).',
+      verification:
+        "The client resolves K_accept from the epoch in force in its authenticated lineage -- the same certification the acceptance heads resolve through -- never from the answer and never merely from an epoch it once held; then requires all five subject fields to be its own envelope's, the epoch included. A refusal under a retired epoch's key fails the signature; one naming another epoch fails the subject; both are silence (FU-06, A-03, the S0-4 return).",
       permanence:
-        'A refusal closes (workspace, credential, position, refused_digest) forever. Without that a client could re-mint on a refusal and have its original accepted behind it -- two links at one position, which §7.5 reads as a compromised credential.',
+        'A refusal closes (workspace, credential, position, refused_digest, epoch) forever. A late resubmission is answered with the same Refuse message under the live K_accept: refusal_id binds the message and not the signature, so the licence survives an ordinary rotation. Without permanence a client could re-mint on a refusal and have its original accepted behind it -- two links at one position, which §7.5 reads as a compromised credential.',
       chain:
         "A successor names the refusal_id that licensed it, and that refusal licenses its own position and no other -- a successor at n+1 under a refusal for n is the skipping row 4 forbids. The first attempt at a position names 32 zero bytes. A successor may itself be refused, and nothing caps the chain. Nothing caps the attempts either: RC-4A proposed a sole successor slot per refusal, and every attempt at a position competes for the one digest that position will ever accept, so at most one accepted digest per position already permits only one to win. Removing the slot from the executable model changed no result (S0-4).",
+      lineage: {
+        tip: 9,
+        certified: { 8: KEYS.k_accept_retired.public_key, 9: KEYS.k_accept.public_key },
+        note: 'The certification history the client holds (§13.5, ancestor-checked). The verifier is always certified[tip]; the history rows exist so a retired key is a value here rather than a description.',
+      },
       refusal: refusalBase,
       signature: await signRefusal(refusalBase),
       wrong_subject: wrongSubject,
       uncertified_signature: uncertifiedSignature,
       uncertified_key: 'RFC 8032 §7.1 TEST 3 -- a key no epoch certifies.',
+      retired_epoch_signature: retiredEpochSignature,
+      retired_epoch_key: 'KEYS.k_accept_retired -- certified at epoch 8, rotated away at 9. A-03’s delayed old-key compromise signs with exactly this key, and the resolution refuses it.',
     },
     vectors,
     demonstrations: {

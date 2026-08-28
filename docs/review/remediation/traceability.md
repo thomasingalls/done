@@ -73,8 +73,8 @@ always complete. **28 findings are current design or closure defects and therefo
 | `f-745e332-live-retired-package-resigning-undefined` | medium | S0-6 | `live-manifest-relabelled-as-retired` (negative) · `retired-manifest-under-the-assembling-credential` (negative) | `scripts/generate-package-vectors.mjs` |
 | `f-3bea0e6-store-sequence-allocation-undefined` | medium | S0-3 | `kind-swapped` (negative) · `seq-edited` (negative) · `§6.1 — the allocator, and the count the budget reads` (test) | `scripts/generate-record-vectors.mjs`<br>`test/writeAdmission.test.ts` |
 | `f-9b49b74-journal-seal-64k-gap` | medium | S0-3 | `check-update-limit.mjs` · `§6.1 — admission, and the one state behind it` (test) · `§6.1 — remote updates are not this journal's contract` (test) · `§6.1 — slicing, so the log never meets what it cannot take` (test) · `§6.1 — the back-pressure watermark is characters, not entries` (test) | `scripts/check-update-limit.mjs`<br>`test/writeAdmission.test.ts` |
-| `f-992bc91-outbound-envelope-spool-undefined` | medium | S0-4 | `§7.4 — retention, which is the same store` (test) · `§7.4 — the position is reserved, and gaps are resolved rather than skipped` (test) · `§7.4 — the spool survives the kill it exists for` (test) | `test/outboundSpool.test.ts` |
-| `f-745e332-envelope-refusal-carrier-missing` | medium | S0-4 | `refusal-for-another-credential` (negative) · `refusal-for-another-digest` (negative) · `refusal-for-another-position` (negative) · `refusal-under-an-uncertified-key` (negative) · `unsigned-error-body` (negative) · `§7.5 — the refusal, and the successor chain it licenses` (test) | `scripts/generate-antireplay-vectors.mjs`<br>`test/outboundSpool.test.ts` |
+| `f-992bc91-outbound-envelope-spool-undefined` | medium | S0-4 | `§7.4 — retention, which is the same store` (test) · `§7.4 — the position is reserved with its identity, and gaps are occupied rather than skipped` (test) · `§7.4 — the spool survives the kill it exists for` (test) | `test/outboundSpool.test.ts` |
+| `f-745e332-envelope-refusal-carrier-missing` | medium | S0-4 | `refusal-for-another-credential` (negative) · `refusal-for-another-digest` (negative) · `refusal-for-another-epoch` (negative) · `refusal-for-another-position` (negative) · `refusal-for-another-workspace` (negative) · `refusal-under-a-retired-epoch-key` (negative) · `refusal-under-an-uncertified-key` (negative) · `unsigned-error-body` (negative) · `§7.5 — the refusal, its five-field subject, and the successor chain it licenses` (test) | `scripts/generate-antireplay-vectors.mjs`<br>`test/outboundSpool.test.ts` |
 | `f-4259822-generation-switch-local-durability-undefined` | medium | S0-2 | `GenerationApply — a kill at every step` (test) | `test/generationApply.test.ts` |
 | `f-b997cdb-checkpoint-coverage-unchecked` | medium | S0-5 | `admission-derived-ds-disagrees` (negative) · `admission-derived-sv-disagrees` (negative) · `admission-forked-from-another-parent` (negative) · `admission-of-another-manifest` (negative) · `admission-signed-over-a-wrong-derivation` (negative) · `admission-with-a-substituted-head-baseline` (negative) · `coverage-ignores-deletions` (negative) · `coverage-ignores-insertions` (negative) | `scripts/generate-checkpoint-vectors.mjs` |
 | `f-b997cdb-checkpoint-key-retention-inverted` | medium | S0-2, direct | `the opener predicate` (guard) | `scripts/generate-checkpoint-vectors.mjs` |
@@ -117,7 +117,7 @@ naming one of them is a failure here rather than a bonus.
 
 ## The claims themselves
 
-85 claims across 22 files — 8 guard · 53 negative · 5 script · 19 test.
+88 claims across 22 files — 8 guard · 56 negative · 5 script · 19 test.
 
 | Carrier | Where the claim is written | What keeps the claim live |
 | --- | --- | --- |

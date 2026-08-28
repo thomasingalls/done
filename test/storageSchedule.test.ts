@@ -18,7 +18,7 @@
  * never by naming steps. The reproductions then drive the models into the
  * states the dispositions describe: **an assertion that such a state is
  * reached states an open defect, not an invariant**, and each stage return
- * inverts its own with the schedule kept. All three are now inverted.
+ * inverts its own with the schedule kept. All four are now inverted.
  * `FU-09`'s at the `S0-2` return (2026-08-28): the commit step carries
  * `P-3`'s ratified fence, the marker advance finalizes the outgoing ledger
  * atomically, and the reproduction's schedule asserts the permanent negative.
@@ -27,8 +27,13 @@
  * refusal window holds nothing a kill can lose (falsifiers 17–18), and the
  * store derivation binds the store identity, so every key is counted by
  * exactly one counter (falsifiers 14–15) — each on the reproduction's own
- * schedule, with the pre-return worlds held as permanent negatives. No
- * `falsifies:` tag appears here on purpose: a reproduction demonstrates a
+ * schedule, with the pre-return worlds held as permanent negatives. And
+ * `FU-10`'s at the `S0-4` return (2026-08-28): §7.4's `PositionCounter` — the
+ * class's last member, a different counter with a different owner — stages
+ * the spool row in the grant's own transaction, so the crash between
+ * reservation and spool insertion leaves an identity the model's own recovery
+ * rule occupies, with the counter-only world kept as the detected negative.
+ * No `falsifies:` tag appears here on purpose: a reproduction demonstrates a
  * finding's repair at its return; the finding dispositions stay `S0-10`'s.
  *
  * Sizes are symbolic exactly as in writeAdmission.test.ts: `MAX_UPDATE` 64 and
@@ -825,5 +830,271 @@ describe('P-3 joint 1 — one key per counter, inverted at the S0-3 return', () 
     expect(sharedCount).toBeGreaterThanOrEqual(BUDGET);
     for (const d of DEVICES)
       expect(mustRotateBefore(counterOf(trace.world.durable, d).reserved, 1)).toBe(false);
+  });
+});
+
+describe('FU-10 — the abandoned position, inverted at the S0-4 return', () => {
+  /**
+   * §7.4's `PositionCounter` and the outbound spool in one world — NOT §6.1's
+   * `seq` (S0-4 A-schemas §0: two numbers share a name and nothing else). The
+   * disposition's schedule is: reserve, die before spool insertion. Before the
+   * return `Reserve` moved the counter and nothing else, so recovery saw a
+   * counted position with no durable identity — ST-05's exact state: no
+   * reservation row or digest is durable, `Refuse` needs the digest of an
+   * envelope that was never minted, and the chain cannot advance under the
+   * no-skip rule without a recovery algorithm outside the selected records.
+   * Under the ratified shape the grant and the row are one atomic step — one
+   * IndexedDB readwrite transaction across the counter and the spool — and
+   * the model's own recovery rule occupies what it finds.
+   */
+
+  interface Row {
+    position: number;
+    gen: number;
+    state: 'reserved' | 'minted' | 'sent';
+    digest: string | null;
+  }
+  interface PosDurable {
+    counter: { next: number; reserved: Readonly<Record<number, number>> };
+    spool: readonly Row[];
+    activeGen: number;
+  }
+  interface PosVolatile {
+    /** Each page's in-flight job — the granted position, then the unminted bytes. */
+    jobs: Readonly<Record<string, { position: number; bytes?: string }>>;
+  }
+
+  const posWorld = (): World<PosDurable, PosVolatile> => ({
+    durable: { counter: { next: 1, reserved: {} }, spool: [], activeGen: 4 },
+    volatile: { jobs: {} },
+    observed: [],
+  });
+  /** The reload path: in-flight jobs died with the page; the spool is the truth. */
+  const posRecover = (): PosVolatile => ({ jobs: {} });
+
+  /**
+   * The outbound path. `staged: false` is the pre-return shape — the counter
+   * moves alone, and the spool learns of the position only at the promote —
+   * kept so the detected negative stays executable. `staged: true` is the
+   * ratified shape: the grant and the row commit together.
+   */
+  const outbound = (name: string, staged: boolean): Writer<PosDurable, PosVolatile> => ({
+    name,
+    steps: [
+      {
+        id: 'reserve',
+        run: (w) => {
+          const position = w.durable.counter.next;
+          const gen = w.durable.activeGen;
+          return {
+            ...w,
+            durable: {
+              ...w.durable,
+              counter: {
+                next: position + 1,
+                reserved: {
+                  ...w.durable.counter.reserved,
+                  [gen]: (w.durable.counter.reserved[gen] ?? 0) + 1,
+                },
+              },
+              spool: staged
+                ? [...w.durable.spool, { position, gen, state: 'reserved' as const, digest: null }]
+                : w.durable.spool,
+            },
+            volatile: { jobs: { ...w.volatile.jobs, [name]: { position } } },
+          };
+        },
+      },
+      {
+        id: 'mint',
+        run: (w) => {
+          const job = w.volatile.jobs[name];
+          if (job === undefined) throw new Error(`${name}.mint without a reservation in memory`);
+          return {
+            ...w,
+            volatile: {
+              jobs: { ...w.volatile.jobs, [name]: { ...job, bytes: `${name}@${job.position}` } },
+            },
+          };
+        },
+      },
+      {
+        id: 'promote',
+        run: (w) => {
+          const job = w.volatile.jobs[name];
+          if (job?.bytes === undefined) throw new Error(`${name}.promote without minted bytes`);
+          const bytes = job.bytes;
+          return {
+            ...w,
+            durable: {
+              ...w.durable,
+              spool: staged
+                ? w.durable.spool.map((r) =>
+                    r.position === job.position && r.state === 'reserved'
+                      ? { ...r, state: 'minted' as const, digest: bytes }
+                      : r,
+                  )
+                : [
+                    ...w.durable.spool,
+                    {
+                      position: job.position,
+                      gen: w.durable.activeGen,
+                      state: 'minted' as const,
+                      digest: bytes,
+                    },
+                  ],
+            },
+          };
+        },
+      },
+      {
+        id: 'send',
+        run: (w) => {
+          const job = w.volatile.jobs[name];
+          if (job === undefined) throw new Error(`${name}.send without a job`);
+          return {
+            ...w,
+            durable: {
+              ...w.durable,
+              spool: w.durable.spool.map((r) =>
+                r.position === job.position && r.state === 'minted'
+                  ? { ...r, state: 'sent' as const }
+                  : r,
+              ),
+            },
+          };
+        },
+      },
+    ],
+  });
+
+  /**
+   * The model's own recovery rule (S0-4 A-schemas §2), resumable because every
+   * step reads durable state alone: each `reserved` row is occupied by a fresh
+   * first attempt at its own position — the row is durable proof nothing was
+   * ever sent — sealing under the current generation and counting the fresh
+   * licence there when the marker moved, with the abandoned licence kept.
+   */
+  const recovery = (): Writer<PosDurable, PosVolatile> => ({
+    name: 'recovery',
+    resumable: true,
+    steps: [
+      {
+        id: 'occupy',
+        run: (w) => {
+          let reserved = w.durable.counter.reserved;
+          const gen = w.durable.activeGen;
+          const spool = w.durable.spool.map((r) => {
+            if (r.state !== 'reserved') return r;
+            if (r.gen !== gen) reserved = { ...reserved, [gen]: (reserved[gen] ?? 0) + 1 };
+            return { ...r, gen, state: 'minted' as const, digest: `recovery@${r.position}` };
+          });
+          return {
+            ...w,
+            durable: { ...w.durable, spool, counter: { ...w.durable.counter, reserved } },
+          };
+        },
+      },
+    ],
+  });
+
+  const rotatePos = (): Writer<PosDurable, PosVolatile> => ({
+    name: 'rotate',
+    steps: [
+      {
+        id: 'advance',
+        run: (w) => ({ ...w, durable: { ...w.durable, activeGen: w.durable.activeGen + 1 } }),
+      },
+    ],
+  });
+
+  const posMachine = (
+    writers: readonly Writer<PosDurable, PosVolatile>[],
+  ): Machine<PosDurable, PosVolatile> => ({
+    initial: posWorld(),
+    recover: posRecover,
+    writers,
+  });
+
+  /** Every counted position is identified by exactly one spool row. */
+  const identified = (d: PosDurable) => {
+    for (let p = 1; p < d.counter.next; p++) {
+      expect(d.spool.filter((r) => r.position === p)).toHaveLength(1);
+    }
+  };
+
+  it('detects the pre-return world: a counted position no durable state can occupy or close', () => {
+    const m = posMachine([outbound('tab', false), recovery()]);
+    const t = runSchedule(m, [{ step: 'tab.reserve' }, { kill: true }, { step: 'recovery.occupy' }]);
+    const d = t.world.durable;
+    const granted = d.counter.next - 1;
+    // The licence was counted — and nothing identifies what it was for. The
+    // recovery rule ran and changed nothing, because there is no row to read:
+    // ST-05's state, reached and kept as the detected negative. The position
+    // can be neither occupied (what bytes? which reservation?) nor closed
+    // (Refuse needs the digest of an envelope that was never minted), and the
+    // chain stalls at it under the no-skip rule.
+    expect(d.counter.reserved[4]).toBe(1);
+    expect(d.spool.find((r) => r.position === granted)).toBeUndefined();
+  });
+
+  it('leaves no unresolvable position at any kill point — the schedule kept, the assertion reversed', () => {
+    const w = outbound('tab', true);
+    const full = all(w);
+    for (let cut = 1; cut <= full.length; cut++) {
+      // Before the kill: at every step boundary, every counted position is
+      // already identified — the grant and the row are one atomic step, so
+      // the disposition's window between them is unreachable, not survived.
+      const live = runSchedule(posMachine([outbound('tab', true)]), full.slice(0, cut));
+      identified(live.world.durable);
+      const before = live.world.durable.spool.find((r) => r.digest !== null)?.digest ?? null;
+
+      // The kill at this boundary, then the recovery rule: nothing stays
+      // `reserved`, every position is identified, and a row that already held
+      // bytes holds the same bytes — recovery re-mints only what was never
+      // minted, because a minted row's rule is resubmit.
+      const killed = runSchedule(posMachine([outbound('tab', true), recovery()]), [
+        ...full.slice(0, cut),
+        { kill: true },
+        { step: 'recovery.occupy' },
+      ]);
+      const d = killed.world.durable;
+      identified(d);
+      expect(d.spool.some((r) => r.state === 'reserved')).toBe(false);
+      if (before !== null) {
+        expect(d.spool.find((r) => r.digest === before)?.digest).toBe(before);
+      }
+    }
+  });
+
+  it('recovers across a generation advance: the fresh licence is counted where the mint seals', () => {
+    const m = posMachine([outbound('tab', true), rotatePos(), recovery()]);
+    const t = runSchedule(m, [
+      { step: 'tab.reserve' },
+      { step: 'rotate.advance' },
+      { kill: true },
+      { step: 'recovery.occupy' },
+    ]);
+    const d = t.world.durable;
+    // FU-09's rule at this counter: the abandoned licence stays counted under
+    // the generation that granted it, the fresh mint seals under the marker's
+    // current generation and is counted there, and the row says which.
+    expect(d.counter.reserved[4]).toBe(1);
+    expect(d.counter.reserved[5]).toBe(1);
+    expect(d.spool.find((r) => r.position === 1)).toMatchObject({ gen: 5, state: 'minted' });
+  });
+
+  it('gives two tabs distinct identified positions, and recovery resolves both', () => {
+    const m = posMachine([outbound('tabA', true), outbound('tabB', true), recovery()]);
+    const t = runSchedule(m, [
+      { step: 'tabA.reserve' },
+      { step: 'tabB.reserve' },
+      { kill: true },
+      { step: 'recovery.occupy' },
+    ]);
+    const d = t.world.durable;
+    identified(d);
+    expect(d.spool.map((r) => r.position)).toEqual([1, 2]);
+    expect(d.spool.every((r) => r.state === 'minted' && r.digest !== null)).toBe(true);
   });
 });
