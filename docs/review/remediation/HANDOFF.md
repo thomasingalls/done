@@ -88,7 +88,14 @@ out of the sprint.**
   are annotated in place. What remains is not a decision: the `S0-1` return owes the record's falsifiers
   15–22 (queue item 4).
 - **`RC-9` never had a decision at all**, and `action-tree.md` makes choosing between its branches a
-  prerequisite of `L-4`.
+  prerequisite of `L-4`. **Drafted 2026-08-28:**
+  [`decisions/RC-9-later-gate-governance.md`](./decisions/RC-9-later-gate-governance.md) carries the question
+  — what turns "later" into a state that blocks, and which gate owns `wasm:stale`'s divisible duty — the
+  floors (deferral stands; a debt is a record with owner, one gate, artifact, falsifier and expiry, and
+  arrival-unmet blocks; payment credits an execution receipt; the mechanism exists by `S0-8`, because `S0-10`
+  is its first consumer), options at both joints — `RC-9A`'s manifest, `RC-9B`'s receipts, the priced status
+  quo; and the source↔blob binding split now versus filed whole at `L-4` — and falsifiers 1–12. Ratification
+  is the open step.
 - `P-6` reopens only if `FU-02` forces the archive-factor choice to change.
 
 **What the challenges did not discard:** 371 tests across 36 files · 16/16 generators current · 190 AAD
@@ -133,7 +140,8 @@ In order. An item is done when its disposition entry's earliest-return stage has
    A at both joints) and states class 3's: every fact keeps one home; every other page is a projection, a
    dated record, or superseded — and says which; an input a gate or challenge consumes is checked by
    something that executed, or it is not an input; and a checker's printed claim is exactly its scope.**
-   Next and last is `RC-9`, untouched so far — never a reopening: its record is drafted fresh.
+   Next and last is `RC-9` — never a reopening: its record is drafted fresh, and the draft is on record
+   (2026-08-28) with its question, options and falsifiers; ratification is the open step.
 3. **Two structural artifacts, before per-finding patches.** (a) An **authority-derivation map** at `S0-2`
    Stage A/B: for every verifier key and acceptance predicate, the factor-authenticated state that resolves
    it, with a checker that fails on a dangling edge — class 1 closes as a class or not at all. (b) A
@@ -163,10 +171,11 @@ cd /Users/thomasingalls/Code/done/.claude/worktrees/stage0-repairs && pnpm insta
 ```
 
 That establishes the baseline. Then read both dispositions end to end, and finish the decision sprint at
-`RC-9` — the decision that never existed, so its record is drafted fresh in [`decisions/`](./decisions/)
-rather than reopened; the four ratified records are the shape it should take, and its inputs are
+`RC-9` — drafted fresh on 2026-08-28 in
+[`decisions/RC-9-later-gate-governance.md`](./decisions/RC-9-later-gate-governance.md), never reopened,
+because the decision never existed; the four ratified records were the shape it took, and its inputs were
 [`action-tree.md`](./action-tree.md)'s `RC-9`/`L-4` prerequisites plus round 1's demonstration that
-`wasm:stale` sits in no gate.
+`wasm:stale` sits in no gate. **Ratification is the open step**, and it closes the sprint.
 
 ## Four things that will bite you
 
