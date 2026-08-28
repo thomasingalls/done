@@ -48,21 +48,29 @@ calls an unbounded retention a defect rather than an omission.
 
 Composed, those are a contradiction nobody had to resolve while they lived in different documents. A retirement
 whose survivor never appears retains bytes **forever** under the first rule and **for twelve months** under the
-second. This action resolves it in the direction both rules were already pointing:
+second. This action resolved it in the direction both rules were already pointing:
 
 > **The deadline is a floor on expiry deletion and a ceiling on both.** Nothing may be deleted before it when
 > the cause is expiry; nothing may survive it whatever the cause. A lost acknowledgement retains the bytes
 > _until the ceiling_, and the audit record still says the handoff never completed.
 
+**And both `S0-9` rounds convicted that resolution's boundary half** (`FU-04` — the strongest convergence
+across all seven challengers): composed with *it is the same stop*, a retirement after a lapse's elapsed
+deadline was **born with its ceiling already past**, every class deleting at the click instant with zero
+receipts — elapsed time replacing the receiving client's custody authority, asserted by the suite as a
+positive. The ratified repair (`P-4`, option B with intrinsic acceptance) landed at the return, below: the
+boundary is the retirement's own, what closes it is the owner's signed acceptance, and its execution
+terminates in `deleted-without-receipt`.
+
 ## Stages
 
 |       | Stage                  | Output                                                                                                             | Status                                                     |
 | ----- | ---------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- |
-| **A** | Durable record schemas | the retention state machine, the one clock, the six deletion classes, `EntitlementEvent` in shape, `ReseedSession` | **done** — [`A-schemas.md`](./A-schemas.md)                |
-| **B** | Normative construction | TRD §14.7 (new), with §13.5, §13.7, §14.4 and §16 joined to it                                                     | **done** — §16.1 gains three rows and a name               |
-| **C** | Selection rows         | rows 15 and 16                                                                                                     | **done** — row 15 narrows, row 16 gains its machine        |
-| **D** | Executable evidence    | the state machine as a model test; the cross-check `RC-7` says was missing                                         | **done** — 23 tests, 18 mutations, 3 checks                |
-| **E** | Product surface        | PRD §§6.9–6.10                                                                                                     | **done** — §6.9 bounds "deleted", §6.10 gets its mechanism |
+| **A** | Durable record schemas | the retention state machine, the one clock, the six deletion classes, `EntitlementEvent` in shape, `ReseedSession` | **done** — [`A-schemas.md`](./A-schemas.md), amended at the return: §1 gains `deleted-without-receipt`, §3 the destructive boundary, §4 the branch set, and the falsifier map continues at rows 19–26 |
+| **B** | Normative construction | TRD §14.7 (new), with §13.5, §13.7, §14.4 and §16 joined to it                                                     | **done** — §16.1 gains three rows and a name; the return restates §14.7's boundary half and §14.4's bound |
+| **C** | Selection rows         | rows 15 and 16                                                                                                     | **done** — row 15 narrows, row 16 gains its machine; the return restates row 16 §9's two composition bullets |
+| **D** | Executable evidence    | the state machine as a model test; the cross-check `RC-7` says was missing                                         | **done** — 29 model tests plus the scheduled reseed window, 18 return mutations, and the cross-check grown to the one-domain and homes-agree readbacks |
+| **E** | Product surface        | PRD §§6.9–6.10                                                                                                     | **done** — §6.9 bounds "deleted", §6.10 gets its mechanism; the return lands the acceptance sentence and the request-measured boundary |
 
 ### Stage D
 
@@ -118,10 +126,13 @@ as designed rather than a gap.
 
 **§6.9's _if the acknowledgement is lost, the bytes stay_ needed a second half, and not having one was a
 product problem rather than a design one.** _Deleted_ cannot quietly mean _kept because nobody confirmed_ —
-that is the product holding data the user asked it to destroy, for a reason the user never hears. Deletion
-stops hosted synchronization, which starts the same clock a lapse does, so the copy goes at the deadline
-whatever happened to the handoff. The confirmation now says both halves, and names the one lever a user has if
-they want it sooner: open a device, let it converge, confirm.
+that is the product holding data the user asked it to destroy, for a reason the user never hears. As first
+written, the second half read the copy going *at the deadline whatever happened to the handoff* — the
+inherited clock, which is the sentence `FU-04` convicted; **at the return it became the acceptance said out
+loud**: asking for deletion is accepting deletion, the signed request carries that acceptance, the window is
+measured from the request itself, and a boundary erasure is recorded as `deleted-without-receipt` rather than
+as anything a reader could take for a confirmation. The confirmation still says both halves, and names the
+one lever a user has if they want it sooner: open a device, let it converge, confirm.
 
 **§6.10's binding requirement stopped describing a mechanism it did not have.** It said a downgrade and a
 deletion _are otherwise the same fields, so the kind of transition is authenticated in the request and in its
@@ -144,6 +155,57 @@ will act on cannot drift, and a device that has seen a later version will not ac
 a future reader answering it should know the lapse machine is already selected and only the entitlement
 record's wire and signer wait on the price.
 
+## The `S0-7` return (2026-08-29)
+
+`S0-9` failed this stage twice at one boundary and once at one composition, and the boundary conviction is the
+strongest convergence across all seven challengers:
+
+- **`FU-04`** (round 1's `C-7`; round 2's `A-06`, `ST-02`, `E1`): three true sentences composed into a
+  retirement **born with its ceiling already elapsed** — lapse at `t`, the deadline passes with no destructive
+  act (which §14.7 deliberately permits), the owner retires at `deadline + 1`, and the inherited clock makes
+  the `past` bypass true from the first instant. All six classes deleted at the click instant with
+  `handoffs.size === 0`, the suite asserting it as a positive. The actor split is what made it a design defect:
+  the entitlement signer supplies the state, the owner supplies the intent.
+- **`FU-12`** (`ST-07`): the divergent-reseed test called `resume` twice from the same input world and passed
+  neither result to the other, so the selected compare-and-set would refuse the required second survivor as
+  stale — no branch set, no import state, nowhere for its divergent content to go.
+
+The return landed `P-4`'s ratified rule (option B with intrinsic acceptance) and the branch composition:
+
+- **The boundary is the retirement's own.** `retired_at + RETENTION`, written exactly once at the `cause`
+  overwrite, never earlier than an inherited deadline, never recomputed after — a replayed retirement finds
+  `cause` already `retirement` and recomputes nothing. `C-7`'s schedule now refuses `no-handoff` at the birth
+  instant with all six classes present, and a property run over arbitrary `stopped_at ≤ retired_at` pairs
+  finds no earlier execution in any order (falsifiers 11–13).
+- **The clock executes only signed authority.** Every `retire` payload carries the erasure acceptance in its
+  signed bytes — the acceptance-less mint is a published negative in the transition vectors, and the
+  in-transit strip is a published digest difference the intent's signature no longer covers (falsifier 15).
+  A boundary erasure terminates in **`deleted-without-receipt`**, a sixth retention state distinct from
+  `cleared` that no reader of the mark or ledger can take for a receipt; the receipt-authorized run stays
+  `cleared` and the two ends stay distinguishable (falsifier 14). The entitlement signer moves the boundary
+  in neither direction, in the order `C-7` used (falsifier 16).
+- **One gate, one domain.** `DELETION_CLASSES`'s five-entry copy died: the gate publishes its six-class
+  domain and boundary semantics with the package vectors, and `check-retention.mjs` reads them back against
+  §14.7's table and the model — order included — with the boundary tokens required in both (falsifier 17).
+  The same checker holds eight destructive-boundary homes to the ratified sentences with the superseded ones
+  refused as byte rules — §14.4, §14.7, row 16 §9, PRD §6.9/§6.10, `S0-6`'s and this stage's schema homes,
+  and the record (falsifier 19).
+- **The second survivor joins.** The reseed branch set is durable; the stale session is refused **and held**,
+  re-derives against the advanced revision, and joins the world the winner left. The derive-to-commit window
+  runs on the storage scheduler with a kill and a second writer inside, and the branchless pre-return machine
+  is kept as the detected negative (`FU-12`).
+- **The map's last open joint flipped.** `destructive-boundary` resolved; the open count reads **zero**,
+  entry by entry at the returns. `retention-mark`, `reseed-session`, `terminal-handoff`, `package-manifest`,
+  `terminal-lineage-record` and `local-archive-anchor` re-pinned with their rules unchanged (the retention
+  mark's bound gaining the boundary immunity).
+
+An 18-mutation battery caught 18 — the boundary recompute deleted, the formula inverted, the replay
+recompute restored, the acceptance guards deleted at both mints, the terminal state collapsed back to
+`cleared`, the audit fact unrecorded, the pre-boundary gate disarmed, the branch set replaced in both
+machines, the stale session dropped, the published domain narrowed to five, the superseded sentences
+restored to three homes, and a silent edit to the pinned schema — each by its own falsifier, checker or pin.
+`pnpm check` green end to end.
+
 ## Not in scope
 
 - **`D-31`.** Nothing here prices hosted sync. The `EntitlementEvent` wire is selected in shape and cannot be
@@ -161,4 +223,8 @@ one. A shorter backstop is defensible and would mean a **second duration**, whic
 grounds that were about lapse and resumption and do not obviously carry to deletion somebody asked for.
 
 It is recorded in TRD §14.7 and row 16 §9 as open, in the same sentence that makes the ceiling binding, so
-that nothing reads it as having been settled by implication. `S0-9` should challenge it.
+that nothing reads it as having been settled by implication. `S0-9` was asked to challenge it — **and did,
+harder than the invitation imagined**: the challenge sharpened the question from *how long* to *whether the
+window can be zero*, which is `FU-04`. The ratified answer (`P-4`, option B) makes the duration question
+safely open — any positive backstop refuses the born-elapsed reproduction — and it remains open on exactly
+the recorded terms.

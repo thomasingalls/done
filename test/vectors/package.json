@@ -50,6 +50,20 @@
       "transcript": "T = LP(\"done/catchup/v1\") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(dec source_epoch) || LP(dec link_count) || for each link: LP(hex prior) || LP(hex head) || LP(dec absence_count) || for each: LP(absence_id); sig_T = Ed25519(the lineage’s certification in force at source_epoch; T); catchup_digest = SHA-256(T)",
       "authority": "The transcript’s verifier resolves from the lineage’s client-authenticated certification in force — an input, never a key read out of the answer (FU-06’s rule at this gate). The receiver’s own credential can never fill it, so neither actor signs both parts of the receipt.",
       "verified_current": "Two forms and neither is a timer: the receiver’s accepted head is the terminal head and catchup_digest is empty, or the receipt commits a transcript that verifies under the certification in force, chains link by link from the receiver’s authenticated prior head to the terminal head, and enumerates every known absence by identifier — with the count the receiver signed equal to the list the transcript carries.",
+      "deletion_authority": {
+        "why": "One gate, one domain (P-4 falsifier 17, the S0-7 return): this gate and the retention model state the same predicate over the same six classes, and scripts/check-retention.mjs cross-checks this published statement against §14.7’s table and the executable model — drift in the class list or the time semantics fails a build rather than passing both. The five-entry copy that omitted recovery-anchor died here.",
+        "classes": [
+          "primary",
+          "replicas",
+          "checkpoints",
+          "wraps",
+          "backups",
+          "recovery-anchor"
+        ],
+        "before_the_boundary": "a class deletes only with a durable per-class TerminalHandoff — S0-6’s gate, untouched",
+        "destructive_boundary": "retired_at + RETENTION, written exactly once at the cause overwrite and never earlier than an inherited deadline",
+        "at_the_boundary": "erasure executes the owner’s intrinsic acceptance, carried in the signed retire payload, and terminates in deleted-without-receipt — a terminal state no reader can take for a receipt; elapsed time is never an authority"
+      },
       "accepted_receipt": {
         "handoff": {
           "v": 1,

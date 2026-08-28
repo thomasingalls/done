@@ -26,6 +26,17 @@
  * originally written recognized only the first and was therefore false of four
  * cells in its own table.
  *
+ * **4. One gate, one domain, and 5. the boundary's homes agree** (the `S0-7`
+ * return; `P-4` falsifiers 17 and 19). The deletion gate publishes its
+ * six-class domain and boundary semantics with the package vectors, and this
+ * reads them back against §14.7's table and the executable model — the
+ * five-entry `DELETION_CLASSES` copy that let the gate and the model pass over
+ * different domains died at the return. And every home of the ratified
+ * destructive-boundary rule must state it while the superseded sentences stay
+ * dead — byte rules against named sentences, the `FU-07`/`FU-13` shape refused
+ * before it recurs. What these scans do not prove is execution: the boundary's
+ * behaviour is `test/hostedRetention.test.ts`'s to demonstrate.
+ *
  * **3. The lapse carrier and the transition grammar stay disjoint** (`S0-7`).
  * `RC-7`'s diagnosis of `f-4259822-lapse-transition-kind-missing` is that two
  * independent checkers each passed because *neither cross-checked the policy
@@ -348,6 +359,151 @@ if (classes.some((c) => /keep/iu.test(c.cells[2] ?? ''))) {
   failures.push('TRD §14.7: retirement keeps a deletion class. Retirement reaches all six.');
 }
 
+// --- 4. one gate, one domain (P-4 falsifier 17, the S0-7 return) ---------------
+
+/**
+ * The two artifacts credited with `f-4259822-retirement-safe-survivor-gate-
+ * undefined` — the deletion gate in `generate-package-vectors.mjs` and the
+ * retention model — must state **the same predicate over the same six
+ * classes**. Before the return the generator held a five-entry copy that
+ * omitted `recovery-anchor`, so each artifact passed over a different domain
+ * and nothing failed. The generator now publishes its domain with the vectors;
+ * this reads it back against §14.7's table and the model's own declaration —
+ * order included, because a reordered copy is still a copy — and checks the
+ * published time semantics against the section that owns them.
+ */
+const PACKAGE = new URL('../test/vectors/package.json', import.meta.url);
+const domain = JSON.parse(readFileSync(PACKAGE, 'utf8')).construction?.terminal_handoff
+  ?.deletion_authority;
+if (domain?.classes === undefined) {
+  failures.push(
+    'test/vectors/package.json publishes no construction.terminal_handoff.deletion_authority.classes; ' +
+      'the one-domain cross-check (P-4 falsifier 17) is not running. Regenerate the package vectors.',
+  );
+} else {
+  const docOrder = classes.map((c) => c.name).join(' · ');
+  const gateOrder = domain.classes.join(' · ');
+  const modelOrder = (array('CLASSES') ?? []).join(' · ');
+  if (gateOrder !== docOrder || modelOrder !== docOrder) {
+    failures.push(
+      `the deletion-authority domain has drifted (P-4 falsifier 17): §14.7 [${docOrder}] · ` +
+        `published gate [${gateOrder}] · model [${modelOrder}]. One domain, one order, all six classes — ` +
+        `the five-entry copy died at the S0-7 return and stays dead.`,
+    );
+  }
+  // These documents hard-wrap at ~110 columns, so tokens are matched against a
+  // whitespace-flattened copy; backticks are stripped because the JSON cannot
+  // carry them.
+  const unticked = machine.replace(/`/gu, '').replace(/\s+/gu, ' ');
+  for (const [field, token] of [
+    ['destructive_boundary', 'retired_at + RETENTION'],
+    ['destructive_boundary', 'written exactly once at the cause overwrite'],
+    ['at_the_boundary', 'deleted-without-receipt'],
+  ]) {
+    const published = domain[field];
+    if (typeof published !== 'string' || !published.includes(token)) {
+      failures.push(
+        `the published deletion authority's ${field} no longer states "${token}"; ` +
+          `the gate's time semantics have drifted from §14.7's (P-4 falsifier 17).`,
+      );
+    } else if (!unticked.includes(token)) {
+      failures.push(
+        `TRD §14.7 no longer states "${token}", which the published deletion authority still claims; ` +
+          `the section and the gate disagree about the time semantics (P-4 falsifier 17).`,
+      );
+    }
+  }
+}
+
+// --- 5. the destructive boundary's homes agree (P-4 falsifier 19) --------------
+
+/**
+ * The ratified rule has homes, and a home still publishing the superseded
+ * sentence is the `FU-07`/`FU-13` shape — one fact, two homes, disagreeing
+ * under a green gate. Byte rules against named sentences, per home; the
+ * decision record itself is not scanned for the superseded forms, because it
+ * quotes them as the convicted history.
+ */
+const readDoc = (rel) => readFileSync(new URL(rel, import.meta.url), 'utf8');
+const HOMES = [
+  {
+    name: 'TRD §14.4',
+    text: slice('TRD', '### 14.4', '### 14.5'),
+    must: ['retired_at + RETENTION', 'deleted-without-receipt'],
+    refuse: ['bounded by the same deadline as everything else'],
+  },
+  {
+    name: 'TRD §14.7',
+    text: machine,
+    must: ['retired_at + RETENTION', 'deleted-without-receipt', 'erasure acceptance'],
+    refuse: ['keeps the bytes until the ceiling and no longer', 'do not move, because it is the same stop'],
+  },
+  {
+    name: 'row 16 §9',
+    text: (() => {
+      const row16 = readDoc('../docs/selections/row-16-hosted-retention.md');
+      const at = row16.indexOf('## 9.');
+      return at === -1 ? null : row16.slice(at);
+    })(),
+    must: ['deleted-without-receipt', 'written exactly once at the `cause` overwrite'],
+    refuse: ['the ceiling binding whatever the cause'],
+  },
+  {
+    name: 'PRD §6.9',
+    text: slice('PRD', '### 6.9', '### 6.10'),
+    must: ['Asking for deletion is accepting deletion', 'deleted-without-receipt'],
+    refuse: ['whatever happened to the handoff'],
+  },
+  {
+    name: 'PRD §6.10',
+    text: slice('PRD', '### 6.10', '### 6.11'),
+    must: ['boundary measured from the request'],
+    refuse: [],
+  },
+  {
+    name: 'S0-6/A-schemas.md §4',
+    text: readDoc('../docs/review/remediation/S0-6/A-schemas.md'),
+    must: ['until the destructive boundary', 'deleted-without-receipt'],
+    refuse: ['A lost acknowledgement retains bytes.**'],
+  },
+  {
+    name: 'S0-7/A-schemas.md §3',
+    text: readDoc('../docs/review/remediation/S0-7/A-schemas.md'),
+    must: ['retired_at + RETENTION', 'deleted-without-receipt'],
+    refuse: ['retains the bytes until the ceiling and no longer'],
+  },
+  {
+    name: 'decisions/P-4',
+    text: readDoc('../docs/review/remediation/decisions/P-4-lapse-authority.md'),
+    must: ['deleted-without-receipt', 'retired_at + RETENTION'],
+    refuse: [],
+  },
+];
+for (const home of HOMES) {
+  if (home.text === null) {
+    failures.push(`${home.name}: section not found — the homes-agree readback cannot scan it.`);
+    continue;
+  }
+  // Flattened for the same hard-wrap reason as the domain tokens above.
+  const flat = home.text.replace(/\s+/gu, ' ');
+  for (const token of home.must) {
+    if (!flat.includes(token)) {
+      failures.push(
+        `${home.name} no longer states "${token}" — a home has dropped the ratified rule ` +
+          `(P-4 falsifier 19; the S0-7 return).`,
+      );
+    }
+  }
+  for (const phrase of home.refuse) {
+    if (flat.includes(phrase)) {
+      failures.push(
+        `${home.name} publishes "${phrase}" again — the superseded sentence the S0-7 return retired ` +
+          `(P-4 falsifier 19). Elapsed time is never an authority; restate the home, not the rule.`,
+      );
+    }
+  }
+}
+
 // --- report -------------------------------------------------------------------
 
 if (failures.length > 0) {
@@ -361,5 +517,9 @@ console.log(
   `retention: ${MONTHS} months stated consistently across ${ANCHORS.length} anchors; ` +
     `every §16 unselected cell is bounded and open; ` +
     `§14.7's ${states.length} states and ${classes.length} deletion classes match the executable model ` +
-    `and stay disjoint from §13.7's ${kinds.length} kinds and from §13.5's lineage words.`,
+    `and stay disjoint from §13.7's ${kinds.length} kinds and from §13.5's lineage words; ` +
+    `the published deletion-authority domain, §14.7's table and the model agree on one six-class order ` +
+    `with the boundary tokens stated in both; and ${HOMES.length} destructive-boundary homes carry the ` +
+    `ratified sentences with the superseded ones refused (P-4 falsifiers 17 and 19 — byte rules; the ` +
+    `boundary's execution semantics are the model tests' to prove).`,
 );

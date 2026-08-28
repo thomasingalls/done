@@ -170,13 +170,24 @@ CatchupTranscript T
      which the receiver signs, must equal the list the transcript carries. A count beside an empty list
      was the pre-return positive's own shape, and it is now a published negative.
 
-**Only a durable `TerminalHandoff` authorizes a hosted deletion class**, and it authorizes them one class at a
-time — primary objects, replicas, wraps, checkpoints, declared backups — so a partial deletion resumes rather
-than restarting or over-deleting.
+**Before the destructive boundary, only a durable `TerminalHandoff` authorizes a hosted deletion class**, and
+it authorizes them one class at a time — §14.7's six classes, one domain shared with the retention model — so
+a partial deletion resumes rather than restarting or over-deleting.
 
-**A lost acknowledgement retains bytes.** That direction is deliberate: retaining data nobody asked for is a
-recoverable mistake and deleting data somebody still needed is not, so the ambiguous case keeps the bytes and
-the audit record says the handoff was never completed rather than claiming it was.
+> **Amended 2026-08-29 at the `S0-7` return** (`FU-04`; `P-4` ratified, option B with intrinsic acceptance).
+> As first written, the two statements below were absolute, and composed with §14.7's inherited clock they
+> contradicted row 16's ceiling — a retirement whose survivor never appeared retained bytes forever under this
+> gate and twelve months under the ceiling, and the executable resolution let elapsed time impersonate the
+> receiver's custody authority. The composition now changes the authority rather than the clock: the boundary
+> is the retirement's own (`retired_at + RETENTION`, written once at the `cause` overwrite), what closes it is
+> the owner's erasure acceptance carried in the signed `retire` payload, and a boundary erasure terminates in
+> `deleted-without-receipt` — never a state a reader can take for this gate's receipt.
+
+**A lost acknowledgement retains bytes until the destructive boundary.** That direction is deliberate:
+retaining data nobody asked for is a recoverable mistake and deleting data somebody still needed is not, so
+the ambiguous case keeps the bytes and the audit record says the handoff was never completed rather than
+claiming it was — and what ends the ambiguity at the boundary is the owner's own signed instruction, never
+elapsed time reading itself as evidence.
 
 **An offline device is a stale detached replica until it receives terminal evidence**, and is never counted as
 a survivor for this gate.
@@ -214,11 +225,11 @@ a survivor for this gate.
 | 8 | A live manifest with `lineage_state` changed to `retired` fails its assembler's signature | 3 |
 | 9 | A complete retired package verifies under the terminal authority and not under the assembler | 3 |
 | 10 | A terminal record alone does not upgrade a live package | 3 |
-| 11 | **No hosted deletion class is authorized without a durable `TerminalHandoff`** | 4 |
+| 11 | **Before the destructive boundary, no hosted deletion class is authorized without a durable `TerminalHandoff` — and at the boundary, only the owner's intrinsic erasure acceptance executes, terminating in `deleted-without-receipt`** (restated at the `S0-7` return, `P-4`) | 4 |
 | 12 | A receiver whose accepted head is the terminal head needs no catch-up transcript | 4 |
 | 13 | A receiver behind the terminal head must present a verifiable transcript from its prior head | 4 |
 | 14 | A forged or incomplete catch-up transcript fails, and an unenumerated absence is incomplete | 4 |
-| 15 | A lost acknowledgement retains the bytes and records that the handoff did not complete | 4 |
+| 15 | A lost acknowledgement retains the bytes until the boundary and records that the handoff did not complete | 4 |
 | 16 | A stale offline replica is not counted as a survivor | 4 |
 
 The `S0-6` return continues the map (2026-08-29):

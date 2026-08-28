@@ -1556,13 +1556,16 @@ ambiguous case keeps it and the record says the handoff never completed rather t
 device that never appears is named and never counted**, which is the promise §6.9 already makes about the
 confirmation screen, now true of the deletion underneath it.
 
-**They do not stay forever, and the confirmation has to say which.** *Deleted* cannot quietly mean *kept
-because nobody confirmed* — that is the product holding data the user asked it to destroy, and holding it for
-a reason the user never hears. So deletion also stops hosted synchronization, which starts the same
-retention clock a lapse does (§6.10), and the hosted copy goes **at that deadline whatever happened to the
-handoff** (TRD §14.7). The confirmation says both halves: the bytes go as soon as a device confirms it has
-them, and by the deadline in any case. **A user who wants them gone sooner than that has one lever and it is
-the honest one** — open a device, let it converge, and confirm.
+**They do not stay forever, and the deletion request itself is what says so.** *Deleted* cannot quietly mean
+*kept because nobody confirmed* — that is the product holding data the user asked it to destroy, and holding
+it for a reason the user never hears. **Asking for deletion is accepting deletion** (TRD §14.7): the signed
+request carries that acceptance in its own bytes — if no device confirms receipt within the window, the copy
+is destroyed anyway — and the window is measured **from the request itself**, twelve months from the deletion
+rather than the tail of some earlier clock, so it is never already over at the moment of asking. The
+confirmation says both halves: the bytes go as soon as a device confirms it has them, and by that boundary in
+any case — and when the boundary does the deleting, the record says `deleted-without-receipt`, never that a
+device received what it did not. **A user who wants them gone sooner has one lever and it is the honest one**
+— open a device, let it converge, and confirm.
 
 ### 6.10 Lapse, grace and hosted read-only
 
@@ -1639,9 +1642,10 @@ which the service holds the user's bytes and cannot give them back.
 - **A billing failure cannot delete anything early, and cannot end the lineage.** The service that records
   entitlement can stop hosted synchronization and can do nothing else: the deadline is measured by the
   retention machine from the moment sync actually stopped rather than from any date the billing side supplies,
-  and the recovery material it would take to lock someone out is the one thing expiry is forbidden to touch.
-  **So the worst a billing mistake reaches is read-only** — loudly, with every device still writable and every
-  deadline stated — rather than anything permanent.
+  a deletion the user later asks for gets its **own** boundary measured from the request — which no billing
+  event can move in either direction (TRD §14.7) — and the recovery material it would take to lock someone out
+  is the one thing expiry is forbidden to touch. **So the worst a billing mistake reaches is read-only** —
+  loudly, with every device still writable and every deadline stated — rather than anything permanent.
 
 **One thing must be said out loud when sync stops**, because it is the part a user will not infer: **from
 that moment the devices stop converging, and each one's edits are its own.** **What is shown is a signed

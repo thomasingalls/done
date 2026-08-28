@@ -3411,18 +3411,25 @@ form accepted a digest over the two public heads beside a bare count — a value
 compute, which made the receipt self-assertion by the one actor whose completeness was in question; that
 acceptance is kept as a published negative.
 
-**Only a durable handoff authorizes a hosted deletion class**, one class at a time, so a partial deletion resumes
-rather than restarting or over-deleting. **The classes are §14.7's**, and retirement is the cause that reaches
-all six — a second copy of that list here is a thing that could disagree with it. **A lost acknowledgement
-retains the bytes**, deliberately: keeping data nobody wanted is recoverable and deleting data somebody needed is
-not, so the ambiguous case keeps it and the audit record says the handoff never completed rather than claiming it
-did. An offline replica remains a stale detached copy and is **never counted as a survivor for this gate**.
+**Before the destructive boundary, only a durable handoff authorizes a hosted deletion class**, one class at a
+time, so a partial deletion resumes rather than restarting or over-deleting. **The classes are §14.7's**, and
+retirement is the cause that reaches all six — a second copy of that list here is a thing that could disagree
+with it. **A lost acknowledgement retains the bytes until the boundary**, deliberately: keeping data nobody
+wanted is recoverable and deleting data somebody needed is not, so the ambiguous case keeps it and the audit
+record says the handoff never completed rather than claiming it did. An offline replica remains a stale detached
+copy and is **never counted as a survivor for this gate**.
 
-**That retention is bounded by the same deadline as everything else** (§14.7). Retirement stops hosted
-synchronization, which starts the one clock, so a retirement whose survivor never appears keeps its bytes until
-the ceiling and no longer. Without that bound the gate above would be an unbounded retention, which §16.6 calls a
-defect rather than an omission — the two rules were written in different sections and only disagree once they are
-composed.
+**That retention is bounded by the retirement's own destructive boundary, and what closes it is the owner's
+signed act, never the clock's own authority** (§14.7; `P-4`, ratified). Retirement stops hosted synchronization,
+which starts the one clock when none is running — and whatever clock it inherits, the boundary is written
+exactly once at the `cause` overwrite as `retired_at + RETENTION`, never earlier than an inherited deadline, so
+a retirement never begins life with its gate already disarmed. Every `retire` intent carries the erasure
+acceptance in its signed payload — asking for deletion is accepting deletion, and a payload without it is
+malformed — and at the boundary, erasure executes that instruction and terminates in `deleted-without-receipt`,
+which no reader of the mark or ledger can take for a receipt. Both rules keep their jurisdictions: this gate
+governs while the window is open, and §16.6's bound on retention holds because the owner's own instruction, not
+elapsed time, closes it — the two were written in different sections and only disagreed once composed, and the
+composition now changes the authority rather than the clock.
 
 ### 14.5 Custody is not replica count
 
@@ -3486,7 +3493,8 @@ is how the two get read as one.
 | `grace` | **running** | none | A lapse is recorded and nothing has stopped yet |
 | `stopped` | stopped | **running** | Hosted synchronization has stopped; every hosted byte is still present |
 | `clearing` | stopped | running | Destructive progress has begun and the ledger is partway through |
-| `cleared` | stopped | done | The class set for this cause is complete |
+| `cleared` | stopped | done | The class set for this cause is complete, every deletion authorized — for a retirement, receipt by receipt |
+| `deleted-without-receipt` | stopped | done | A retirement's class set is complete and at least one class was erased at the boundary under the owner's accepted instruction, with the handoff recorded incomplete — terminal, and never readable as handoff completion |
 
 > `RetentionMark = LP("done/retention/v1") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(dec revision) || LP(hex prior_mark_digest) || LP(state) || LP(dec stopped_at) || LP(dec deadline) || LP(cause) || LP(hex ledger_digest)`
 >
@@ -3501,8 +3509,10 @@ compromise reaches*, below.
 per entry into `stopped`, under a compare-and-set on `revision`: concurrent writers do not each write one, the
 loser observes the written value, and a retry is idempotent rather than a second clock. `deadline` is computed
 at that same moment from §15 row 16's twelve months and is **never recomputed**, because a deadline that can be
-recalculated is a deadline that can move. A resume clears both with the same revision advance, so a workspace
-that lapses again gets a new and strictly later clock rather than a resurrected one.
+recalculated is a deadline that can move — with exactly one exception, and it moves in one direction, once: the
+`cause` overwrite to `retirement`, a client-signed event nothing may overwrite, rewrites it as the retirement's
+own destructive boundary (below), and nothing recomputes it after. A resume clears both with the same revision
+advance, so a workspace that lapses again gets a new and strictly later clock rather than a resurrected one.
 
 **The clock does not move the machine — the ledger does.** Passing the deadline changes no state; it changes
 what the ledger is permitted to do. That is deliberately generous: between the deadline and the first
@@ -3543,51 +3553,75 @@ the ledger and the mark cannot drift apart. **The ledger's subject is hosted con
 retiring the lineage itself is §14.4's own ordered sequence and runs before this, because a gate cannot also be
 an item in the thing it gates.
 
-**The deadline is a floor on expiry deletion and a ceiling on both.** Expiry may delete nothing before it.
-Retirement may delete as soon as a `TerminalHandoff` authorizes a class, because the user asked. **Neither may
-leave anything after it** — and that resolves a contradiction the two source rules were never composed closely
-enough to show. §14.4 retains bytes on a lost acknowledgement, because deleting data somebody needed is
-unrecoverable. §16.6 calls an unbounded retention a defect rather than an omission, because there is no deletion
-event in *at least twelve months*. **A lost acknowledgement therefore keeps the bytes until the ceiling and no
-longer**, and the audit record still says the handoff never completed rather than claiming it did.
+**The deadline is a floor on expiry deletion, and the destructive boundary is a ceiling on both causes.**
+Expiry may delete nothing before the deadline. Retirement may delete as soon as a `TerminalHandoff` authorizes
+a class, because the user asked — and its boundary is **its own**: `retired_at + RETENTION`, row 16's twelve
+months measured from the retirement, written exactly once at the `cause` overwrite, never earlier than an
+inherited deadline, and never recomputed after (`P-4`, ratified; the `S0-7` return). A retirement therefore
+never begins life with its gate already disarmed, however long a lapse's clock had been running before the
+owner acted — the born-elapsed composition both `S0-9` rounds convicted is the model's own permanent negative. Neither cause
+may leave anything after its boundary, and what closes that pair is not elapsed time: **every `retire` intent
+carries the erasure acceptance in its signed payload** — asking for deletion is accepting deletion, and a
+payload without it is malformed, refused at creation. §14.4 retains bytes on a lost acknowledgement, because
+deleting data somebody needed is unrecoverable; §16.6 calls an unbounded retention a defect rather than an
+omission. Both hold in their own jurisdictions: a lost acknowledgement keeps the bytes until the boundary,
+where erasure **executes the owner's own signed instruction** and terminates in `deleted-without-receipt` — a
+terminal state distinct from handoff completion that no consumer can read as a receipt, with the audit record
+still saying the handoff never completed rather than claiming it did. **Elapsed time is never an authority**;
+the clock is an executor of the owner's instruction, here and at every joint that follows this pattern.
 
-**For a retirement the ceiling is a backstop and not a target**, and the difference should not have to be
+**For a retirement the boundary is a backstop and not a target**, and the difference should not have to be
 inferred. A retirement whose survivor appears deletes in the ordinary course, within whatever the catch-up
-window turns out to be; the ceiling binds only the case where no survivor ever appears, which is the case that
-would otherwise retain forever. **Whether a user-initiated deletion deserves a shorter backstop than a lapse is
-a live product question and not a settled one** (§15 row 16). Selecting one would mean a second duration, which
-row 16 §3 argues against for reasons that were about lapse; the argument has not been made for this case, and
-this section does not make it by implication.
+window turns out to be; the boundary binds only the case where no survivor ever appears, which is the case that
+would otherwise retain forever against the owner's own signed request. **Whether a user-initiated deletion
+deserves a shorter backstop than a lapse is a live product question and not a settled one** (§15 row 16) — and
+it is safe to leave open, because under the ratified rule any positive backstop refuses the born-elapsed
+reproduction. Selecting a shorter one would mean a second duration, which row 16 §3 argues against for reasons
+that were about lapse; the argument has not been made for this case, and this section does not make it by
+implication.
 
 **Resume is free before destructive progress and needs a re-seed after it.** From `grace` or `stopped` a resume
 returns the machine to `hosted` and nothing is rebuilt, because nothing is missing. From `clearing` or `cleared`
 it requires a committed re-seed session — signed by the **device**, since what it asserts is what that device
 holds, and naming `(lineage_id, epoch, prior_head)` so the result is a **branch of the live lineage and never a
 genesis**. §13.5's detection rule already refuses to mint a replacement identity where a signed live head
-exists, and a lapsed lineage is live. Two divergent survivors each present their own `prior_head` and converge
-exactly as PRD §6.10 says they do; the re-seed does not choose between them. It carries the retention revision
-it was built against, so a re-seed racing a running deletion is refused and rebuilt rather than silently
-reactivating — §15 row 15's three-way rule at a fourth object.
+exists, and a lapsed lineage is live. **Each accepted re-seed joins a durable branch set, and acceptance never
+replaces a sibling** (`FU-12`, the `S0-7` return): two divergent survivors each present their own `prior_head`,
+the second's session — stale once the first advances the retention revision — is refused **and held**, never
+lost, then re-derived against the current revision and accepted beside the first, and the branches converge
+exactly as PRD §6.10 says they do; the re-seed does not choose between them. The session carries the retention
+revision it was built against, so a re-seed racing a running deletion is refused and rebuilt rather than
+silently reactivating — §15 row 15's three-way rule at a fourth object, and the storage scheduler runs its
+derive-to-commit window with a kill and a second writer inside.
 
 **Retirement wins the race in both orders, by one rule.** `cause` is set once with `stopped_at`; retirement may
 overwrite `entitlement` and **nothing may overwrite `retirement`**. Retire-then-lapse: the entitlement event is
 recorded and changes nothing, and a `restored` event is refused because the lineage is terminal. Lapse-then-
-retire: the class set widens to include class 6 and the gate becomes the handoff, while `stopped_at` and
-`deadline` do not move, because it is the same stop. The outcome is a function of the recorded `cause` rather
-than of arrival order, so it is replayable after a lost response.
+retire: the class set widens to include class 6 and the gate becomes the handoff; `stopped_at` does not move,
+because it is the same stop — while the destructive boundary is rewritten here and only here, once, as the
+retirement's own (`retired_at + RETENTION`, never earlier than the deadline it inherits). The outcome is a
+function of the recorded `cause` rather than of arrival order, so it is replayable after a lost response — a
+replayed retirement finds `cause` already `retirement` and recomputes nothing.
 
 **What a compromise of the entitlement signer reaches, as a bound rather than a guarantee.** It can move the
 machine to `grace` and `stopped`, denying hosted synchronization — and every device keeps working locally,
 because nothing on the read or write path ever awaited a credential. It **cannot** commit terminal lineage,
 which needs a client-signed `retire` intent and the lineage authorization key. It cannot delete before the
-deadline, which the retention machine computes from its own clock. It cannot reach class 6, because the class
+boundary, which the retention machine computes from its own clock — and it **cannot move a retirement's
+destructive boundary in either direction**: a backdated `effective_at` never became the clock, and after
+`cause = retirement`, ping-ponged stop/resume and `restored` events are refused against the terminal lineage
+and extend nothing, in exactly the order the challenge used — lapse under the compromised signer, an elapsed
+deadline, then the owner's own retire, whose boundary is its own. It cannot reach class 6, because the class
 set follows `cause`. So the attack is a long, loud read-only state ending in the deletion §15 row 16 already
 promises, with the devices' replicas intact and an independently held fidelity archive outside the deadline
 entirely (§9.3). A signer that could also suppress the marks above would make it quieter, which is why they are
 signed and version-ordered.
 
 **Test.** §11.2 test 11 and §11.4's generated deletion tests; the state machine's own model is
-`test/hostedRetention.test.ts`.
+`test/hostedRetention.test.ts`, and the reseed compare-and-set window runs under the storage scheduler in
+`test/storageSchedule.test.ts`. The deletion-authority domain — the six classes and the boundary's semantics —
+is published with the package vectors and cross-checked against this section and the model by
+`scripts/check-retention.mjs`, so the gate and the machine cannot drift apart again.
 
 ---
 

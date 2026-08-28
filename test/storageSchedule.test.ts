@@ -40,7 +40,14 @@
  * are two steps with a real window between them — where before the return it
  * was one array prepend nothing could kill inside (`ST-06`), so partial
  * install, content-before-head rollback and the second-newest fallback are
- * schedules here rather than opener arithmetic.
+ * schedules here rather than opener arithmetic. And `FU-12`'s at the `S0-7`
+ * return (2026-08-29): the divergent reseed — the class's last member — runs
+ * its derive-to-commit compare-and-set as a scheduled window, where before
+ * the return the two survivors were two isolated counterfactuals no schedule
+ * connected (`ST-07`); the loser's stale session is refused and held, and the
+ * loser re-derives against the world the winner left and joins its durable
+ * branch set, with the branchless pre-return machine kept as the detected
+ * negative.
  *
  * Sizes are symbolic exactly as in writeAdmission.test.ts: `MAX_UPDATE` 64 and
  * `BUDGET` 8 keep schedules legible, and `check-update-limit.mjs` owns the
@@ -1447,5 +1454,188 @@ describe('FU-11 — the staged install: activation is one commit, and the fallba
     ]);
     expect(after.world.durable.trimmedBelow).toBe(4);
     expect(after.world.durable.activeHeads).toBe(4);
+  });
+});
+
+describe('FU-12 — the divergent reseed: the second survivor rebuilds and joins (the S0-7 return)', () => {
+  /**
+   * §14.7's reseed compare-and-set as a scheduled machine (`S0-7` A-schemas
+   * §4, amended at the return). `ST-07`'s conviction: the pre-return test
+   * called `resume` twice from the same input world and passed neither result
+   * to the other — two isolated counterfactuals, no branch set, no import
+   * state, no convergence action — so the selected compare-and-set would have
+   * refused the required second survivor as stale, and nothing said how its
+   * divergent content joins the first without replacing it. Under the ratified
+   * shape the branch set is durable: a stale commit is refused **with its
+   * session held**, and the loser re-derives against the world the winner left
+   * and joins it. `test/hostedRetention.test.ts` owns the full machine; this
+   * file owns the window — the kill and the second writer inside
+   * derive-to-commit that the pure model cannot schedule.
+   */
+
+  interface ReseedDurable {
+    /** §14.7's retention revision — what the compare-and-set compares. */
+    revision: number;
+    /** The accepted branches' prior heads, in acceptance order. */
+    branches: readonly string[];
+    /** Sessions a stale commit refused and held — an input, never a loss. */
+    held: readonly string[];
+  }
+  interface ReseedVolatile {
+    /** Each survivor's derived-but-uncommitted session. */
+    sessions: Readonly<Record<string, { revision: number; priorHead: string } | undefined>>;
+  }
+  type RW = World<ReseedDurable, ReseedVolatile>;
+
+  const rWorld = (): RW => ({
+    durable: { revision: 7, branches: [], held: [] },
+    volatile: { sessions: {} },
+    observed: [],
+  });
+  /** The reload path: derived sessions died with the page; nothing durable did. */
+  const rRecover = (): ReseedVolatile => ({ sessions: {} });
+
+  /**
+   * One survivor. `derive` reads the durable revision into a volatile session;
+   * `commit` is the compare-and-set — acceptance joins the branch set and
+   * advances the revision, a stale session is refused and held; `rederive` and
+   * `recommit` are the rebuild, driven by durable state (which is what makes
+   * the writer honestly resumable): they no-op once the branch has joined.
+   * `branchless: true` is the pre-return shape — acceptance **replaces** the
+   * branch list — kept so the detected negative stays executable.
+   */
+  const survivor = (
+    name: string,
+    priorHead: string,
+    branchless = false,
+  ): Writer<ReseedDurable, ReseedVolatile> => {
+    const derive = (w: RW): RW => ({
+      ...w,
+      volatile: {
+        sessions: {
+          ...w.volatile.sessions,
+          [name]: { revision: w.durable.revision, priorHead },
+        },
+      },
+    });
+    const commit = (w: RW): RW => {
+      if (w.durable.branches.includes(priorHead)) return w; // already joined
+      const s = w.volatile.sessions[name];
+      if (s === undefined) return w; // the session died with a page; nothing durable was lost
+      if (s.revision !== w.durable.revision) {
+        // The refusal holds the input, never the document: the divergent
+        // content stays behind its held session, waiting for the rebuild.
+        return {
+          ...w,
+          durable: { ...w.durable, held: [...w.durable.held, s.priorHead] },
+          observed: [...w.observed, `stale:${s.priorHead}`],
+        };
+      }
+      return {
+        ...w,
+        durable: {
+          ...w.durable,
+          revision: w.durable.revision + 1,
+          branches: branchless ? [s.priorHead] : [...w.durable.branches, s.priorHead],
+        },
+        observed: [...w.observed, `joined:${s.priorHead}`],
+      };
+    };
+    return {
+      name,
+      resumable: true,
+      steps: [
+        { id: 'derive', run: derive },
+        { id: 'commit', run: commit },
+        { id: 'rederive', run: (w) => (w.durable.branches.includes(priorHead) ? w : derive(w)) },
+        { id: 'recommit', run: commit },
+      ],
+    };
+  };
+
+  const rMachine = (writers: Writer<ReseedDurable, ReseedVolatile>[]): Machine<ReseedDurable, ReseedVolatile> => ({
+    initial: rWorld(),
+    recover: rRecover,
+    writers,
+  });
+
+  it("joins the second survivor after the first advances the revision — ST-07's schedule, inverted", () => {
+    // A and B derive from the same world at revision 7, as divergence would;
+    // A commits and advances; B's commit arrives stale, is refused and held;
+    // B re-derives against the world A left and joins it.
+    const a = survivor('survivorA', 'h-a');
+    const b = survivor('survivorB', 'h-b');
+    const t = runSchedule(rMachine([a, b]), [
+      { step: 'survivorA.derive' },
+      { step: 'survivorB.derive' },
+      { step: 'survivorA.commit' },
+      { step: 'survivorB.commit' },
+      { step: 'survivorB.rederive' },
+      { step: 'survivorB.recommit' },
+    ]);
+    expect(t.world.durable.branches).toEqual(['h-a', 'h-b']);
+    expect(t.world.durable.revision).toBe(9);
+    // The refusal was real — the person saw it — and it lost nothing.
+    expect(t.world.observed).toEqual(['joined:h-a', 'stale:h-b', 'joined:h-b']);
+    expect(t.world.durable.held).toEqual(['h-b']);
+  });
+
+  it('loses nothing to a kill inside the window: an uncommitted session leaves no durable trace', () => {
+    const a = survivor('survivorA', 'h-a');
+    const b = survivor('survivorB', 'h-b');
+    // B derives, the page dies inside derive-to-commit, A proceeds, and B's
+    // rebuild — a fresh derivation driven by durable state — still joins.
+    const t = runSchedule(rMachine([a, b]), [
+      { step: 'survivorB.derive' },
+      { kill: true },
+      { step: 'survivorB.commit' }, // the dead session commits nothing
+      { step: 'survivorA.derive' },
+      { step: 'survivorA.commit' },
+      { step: 'survivorB.rederive' },
+      { step: 'survivorB.recommit' },
+    ]);
+    expect(t.world.durable.branches).toEqual(['h-a', 'h-b']);
+    // The killed session refused nothing and joined nothing: no phantom hold.
+    expect(t.world.durable.held).toEqual([]);
+  });
+
+  it('declares the derive-to-commit boundary and demonstrates it — kill and second writer inside', () => {
+    const boundary: Boundary = {
+      name: 'reseed compare-and-set',
+      writer: 'survivorB',
+      check: 'derive',
+      commit: 'commit',
+      secondWriter: 'survivorA.commit',
+    };
+    const { killed, raced } = demonstrateBoundary(
+      rMachine([survivor('survivorA', 'h-a'), survivor('survivorB', 'h-b')]),
+      boundary,
+    );
+    // The kill inside the window: nothing durable moved.
+    expect(killed.world.durable).toEqual(rWorld().durable);
+    // The race: A landed inside B's window, so B's commit is the stale refusal
+    // — the exact interleaving the pre-return suite could not express.
+    expect(raced.world.durable.branches).toEqual(['h-a']);
+    expect(raced.world.durable.held).toEqual(['h-b']);
+  });
+
+  it('keeps the branchless pre-return machine as the detected negative: acceptance that replaces', () => {
+    // The same schedule on the shape ST-07 convicted — no branch set, the
+    // second acceptance REPLACES the first — reaches a world where A's
+    // divergent content is simply gone. That world is the defect, detected;
+    // the durable branch set above is what refuses it.
+    const t = runSchedule(
+      rMachine([survivor('survivorA', 'h-a', true), survivor('survivorB', 'h-b', true)]),
+      [
+        { step: 'survivorA.derive' },
+        { step: 'survivorB.derive' },
+        { step: 'survivorA.commit' },
+        { step: 'survivorB.commit' },
+        { step: 'survivorB.rederive' },
+        { step: 'survivorB.recommit' },
+      ],
+    );
+    expect(t.world.durable.branches).toEqual(['h-b']); // h-a replaced: the loss
+    expect(t.world.durable.branches).not.toContain('h-a');
   });
 });

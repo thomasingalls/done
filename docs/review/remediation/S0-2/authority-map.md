@@ -335,7 +335,7 @@ verifies: the assembler's manifest over a portable package's parts
 resolves: assembled_by, resolved from the epochs the package itself carries -> via:member-signing-keys
 resolves: the factor-checked root commitment, consumed first at import -> via:account-package-root
 status: resolved
-pin: docs/TRD.md §14.4 33ec0d98358c
+pin: docs/TRD.md §14.4 c44b7bbd2d3e
 ```
 
 ```authority
@@ -346,7 +346,7 @@ verifies: the signed terminal record that moves a lineage to retired
 resolves: the lineage authorization key -> root:service
 bound: §14.4 and §14.7 §6 — terminal lineage needs a client-signed retire intent the biller does not hold, the record commits before anything is deleted, and a retired package is a complete re-assembly under the terminal authority, never a live manifest with a field rewritten
 status: resolved
-pin: docs/TRD.md §14.4 33ec0d98358c
+pin: docs/TRD.md §14.4 c44b7bbd2d3e
 pin: docs/review/remediation/S0-6/A-schemas.md §3 d4c0e75e9ddb
 ```
 
@@ -359,7 +359,7 @@ resolves: auth_root — the archive identity's own digest, both public halves, r
 resolves: the manifest's verifier — the signing half the commitment-checked auth_root commits, never a key the package offers -> root:factor
 status: resolved
 pin: docs/review/remediation/S0-6/A-schemas.md §2 faa19f8bc380
-pin: scripts/generate-package-vectors.mjs 214f7182c047
+pin: scripts/generate-package-vectors.mjs a4395a968e1a
 ```
 
 **Flipped 2026-08-29 at the `S0-6` return** (`FU-02`, `A-04`, `ST-01`). The joint was the disconnection: the
@@ -381,8 +381,8 @@ resolves: the receiving client's signature -> via:member-signing-keys
 resolves: the CatchupTranscript committed by catchup_digest — its signer the lineage's certification in force at source_epoch, whose chain terminates at the committed trust root, never the receiver -> root:trust-root
 resolves: the link chain from receiver_prior_head to the terminal head, and the absence list the signed count must equal -> root:structural
 status: resolved
-pin: docs/TRD.md §14.4 33ec0d98358c
-pin: docs/review/remediation/S0-6/A-schemas.md §4 925e733fadef
+pin: docs/TRD.md §14.4 c44b7bbd2d3e
+pin: docs/review/remediation/S0-6/A-schemas.md §4 0d33a5cdf7a2
 ```
 
 **Flipped 2026-08-29 at the `S0-6` return** (`FU-03`, `A-05`). The pre-return value was one hash over two
@@ -402,18 +402,24 @@ guards: deletion
 verifies: what licenses hosted erasure — the intent, the boundary, and the per-class gate
 resolves: the retire intent carrying its erasure acceptance in its signed payload (P-4, option B) -> via:member-signing-keys
 resolves: per-class TerminalHandoffs, one durable receipt per deletion class -> via:terminal-handoff
-status: open
-blocker: FU-04
-return: S0-7
-pin: docs/TRD.md §14.7 2aa56a94b36a
-pin: docs/review/remediation/S0-7/A-schemas.md §3 20fccc94a711
+status: resolved
+pin: docs/TRD.md §14.7 683f0f7679ef
+pin: docs/review/remediation/S0-7/A-schemas.md §3 c29c3b0d8d88
 ```
 
-The strongest convergence across all seven challengers: composed with §14.7's inherited clock, a retirement
-can be born with `retired_at + RETENTION` already elapsed, so every class deletes with `handoffs.size === 0` —
-elapsed time replacing the receiving client's custody authority. `P-4`'s ratified rule (intrinsic acceptance;
-the boundary written once at the `cause` overwrite; ceiling erasure terminating in `deleted-without-receipt`)
-flips this at the `S0-7` return composed with `S0-6` (`P-4` falsifiers 11–19).
+**Flipped 2026-08-29 at the `S0-7` return** (`FU-04` — `ST-02`, `A-06`, `E1`, and round 1's `C-7`; `P-4`
+falsifiers 11–19). The joint was the strongest convergence across all seven challengers: composed with
+§14.7's inherited clock, a retirement could be born with its ceiling already elapsed, so every class deleted
+at the click instant with `handoffs.size === 0` — elapsed time replacing the receiving client's custody
+authority, and the suite asserting it as a positive. The boundary is now the retirement's own — `retired_at +
+RETENTION`, written exactly once at the `cause` overwrite, never earlier than an inherited deadline — so the
+born-elapsed reproduction refuses `no-handoff` at the birth instant and is the model's permanent negative;
+every `retire` payload carries the erasure acceptance in its signed bytes, with the acceptance-less mint a
+published negative and the in-transit strip a published digest difference; a boundary erasure executes that
+instruction and terminates in `deleted-without-receipt`, a state no reader can take for a receipt; the
+entitlement signer moves the boundary in neither direction, in the challenge's own order; and the gate and
+the retention model state one six-class domain, published with the package vectors and cross-checked both
+ways by `pnpm retention:check`, which also holds the eight boundary homes to the ratified sentences.
 
 ```authority
 entry: retention-mark
@@ -421,10 +427,10 @@ kind: verification
 guards: availability
 verifies: a signed, revision-ordered RetentionMark — the disclosure PRD §6.10 requires
 resolves: the retention service's signing key -> root:service
-bound: §14.7 §6 — the signer is not the lineage authorization key: it can stop hosting and cannot admit, revoke, rotate, retire, delete before the deadline its own clock computed, or touch class 6 under cause entitlement; clients reject a passed revision
+bound: §14.7 §6 — the signer is not the lineage authorization key: it can stop hosting and cannot admit, revoke, rotate, retire, delete before the deadline its own clock computed, move a retirement's destructive boundary in either direction, or touch class 6 under cause entitlement; clients reject a passed revision
 status: resolved
-pin: docs/TRD.md §14.7 2aa56a94b36a
-pin: docs/review/remediation/S0-7/A-schemas.md §1 914ddb30d149
+pin: docs/TRD.md §14.7 683f0f7679ef
+pin: docs/review/remediation/S0-7/A-schemas.md §1 b1cd5c9a0902
 ```
 
 ```authority
@@ -445,8 +451,8 @@ guards: availability
 verifies: resuming hosted sync after destructive progress — a branch, never a genesis
 resolves: the seeding device's signature naming the lineage it continues -> via:member-signing-keys
 status: resolved
-note: FU-12 — the divergent second survivor the compare-and-set would refuse — is a class-2 interleaving, owed to the scheduler's composed model at the S0-7 return, not an authority edge
-pin: docs/review/remediation/S0-7/A-schemas.md §4 a19f25973dfe
+note: FU-12 landed 2026-08-29 at the S0-7 return — the branch set is durable state, the stale second survivor is refused with its session held and joins after re-deriving, and the derive-to-commit window runs on the scheduler with a kill and a second writer inside; it was a class-2 interleaving, never an authority edge
+pin: docs/review/remediation/S0-7/A-schemas.md §4 7278571c3cd2
 ```
 
 ```authority
@@ -593,7 +599,9 @@ shrink by payment.
 return**; `S0-3` — `k-store` — **flipped 2026-08-28 at the `S0-3` return**; `S0-4` — `position-refusal` —
 **flipped 2026-08-28 at the `S0-4` return**; `S0-5` — `checkpoint-admission` — **flipped 2026-08-28 at the
 `S0-5` return, with the `k-checkpoint` census entry entered and its declared absence struck the same day**;
-`S0-6` — `local-archive-anchor`, `terminal-handoff`; `S0-7` — `destructive-boundary`. `S0-9` round 3 reads the computed
+`S0-6` — `local-archive-anchor`, `terminal-handoff` — **flipped 2026-08-29 at the `S0-6` return**; `S0-7` —
+`destructive-boundary` — **flipped 2026-08-29 at the `S0-7` return, the map's last open joint: the open count
+now reads zero, entry by entry at the returns, never by edict**. `S0-9` round 3 reads the computed
 summary as the class-1 ledger, and `S0-10` consumes a map whose open count is zero or does not close. `P-1`
 falsifier 14 was discharged at the `S0-2` return: the member-key entries flipped, every chain still terminates
 at a permitted root for its guard, and the checker — not a review — is what refuses a dangling or service-only

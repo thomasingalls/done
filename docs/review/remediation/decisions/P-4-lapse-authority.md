@@ -6,8 +6,8 @@
 **Decided:** 2026-08-27 · **Reopened:** 2026-08-28, at the destructive boundary · **Ratified:** 2026-08-28,
 option B with intrinsic acceptance · **Branch:** `RC-7B`, a service-signed billing/retention machine
 independent of the authorization lineage · **Race:** retire wins, in both orders · **Scope:** common
-invariants selected now, the entitlement wire gated on `D-31` · **Status:** ratified, not yet consolidated —
-the `S0-7` return owes falsifiers 11–19
+invariants selected now, the entitlement wire gated on `D-31` · **Status:** ratified — the `S0-7` return
+landed falsifiers 11–19 on 2026-08-29, composed with `S0-6`'s `TerminalHandoff` and its transcript gate
 
 Consolidation is [`S0-7`](../action-tree.md). Consumes [`S0-6`](../S0-6/README.md)'s `TerminalHandoff`.
 
@@ -261,6 +261,14 @@ Continuing the ten above, under the ratified rule. Each is a test, not a claim:
     sentence — the `FU-07`/`FU-13` shape, refused here before it can recur.
 
 ### Consolidation owed at `S0-7`, composed with `S0-6`
+
+> **Landed 2026-08-29 at the `S0-7` return.** Every item below is in: §14.7 and §14.4 restated, row 16 §9 and
+> PRD §6.9/§6.10 carrying the acceptance sentence and the boundary, the `retire` transition vector's signed
+> payload carrying `erasure-acceptance` with the creation refusal published and the strip demonstrated as a
+> digest difference, the model's positive inverted to `deleted-without-receipt` with falsifiers 11–19 as
+> tests, and one six-class deletion-authority domain published with the package vectors and cross-checked by
+> `scripts/check-retention.mjs` in both directions. The map's `destructive-boundary` entry flipped the same
+> day.
 
 - §14.7: the boundary half of *"it is the same stop"*; the unqualified *"keeps the bytes until the ceiling and
   no longer"*; the compromise paragraph's *"cannot delete before the deadline"* restated against the boundary.

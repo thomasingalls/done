@@ -291,17 +291,23 @@ policy and a sentence in the interface; nothing in §6, §7 or §13 moves.
   right things_ is as much of the assertion as deleting the rest. It belongs with §11.4's generated deletion and
   export tests. **`S0-7` turned that from a note into a class the ledger refuses to touch** — class 6 — so what
   Stage 4 owes is the worker, not the rule.
-- **Whether a user-initiated deletion deserves a shorter backstop is open** (`S0-7`). §14.7 makes this row's
-  deadline a ceiling on retirement too, because the alternative — a retirement whose survivor never appears —
-  is an unbounded retention. Twelve months is the number that was already there, and using it was the
-  conservative move rather than an argued one. A shorter backstop for deletion the user asked for is
-  defensible and would mean a **second duration**, which §3 argues against on grounds that were about lapse
-  and resumption. Those grounds do not obviously carry, and nobody should read §14.7 as having decided it.
+- **Whether a user-initiated deletion deserves a shorter backstop is open** (`S0-7`; `P-4` ratified). §14.7
+  gives a retirement a destructive boundary of its own — `retired_at` plus this row's twelve months, written
+  exactly once at the `cause` overwrite and never earlier than an inherited deadline — because the alternative,
+  a retirement whose survivor never appears, is an unbounded retention against the owner's own request. Twelve
+  months is the number that was already there, and using it was the conservative move rather than an argued
+  one; the question stays safely open, because under the ratified rule **any** positive backstop refuses the
+  born-elapsed reproduction. A shorter backstop for deletion the user asked for is defensible and would mean a
+  **second duration**, which §3 argues against on grounds that were about lapse and resumption. Those grounds
+  do not obviously carry, and nobody should read §14.7 as having decided it.
 - **The composition with retirement's gate was owed and nobody was holding it** (`S0-7`). `S0-6` selected _a
   lost acknowledgement retains the bytes_, and this row selected _at expiry the copy is deleted_. In different
   sections those are both right; composed, a retirement whose survivor never appears retains bytes forever under
-  one and twelve months under the other. §14.7 resolves it as the ceiling binding whatever the cause, and the
-  audit record still saying the handoff never completed.
+  one and twelve months under the other. §14.7 resolves it by **changing the authority rather than the clock**
+  (`P-4`, ratified 2026-08-28; landed at the `S0-7` return): every retire intent carries the erasure acceptance
+  in its signed payload, the boundary is the retirement's own, and an erasure the boundary executes terminates
+  in `deleted-without-receipt` — the bytes bounded, the audit record still saying the handoff never completed,
+  and elapsed time never the authority.
 - **Nothing here waits on review 3b**, and 3b should be told that this row was taken on a binary rather than on
   question 1's answer, so a reviewer who reads the register's old conditionality is not left wondering what
   changed.

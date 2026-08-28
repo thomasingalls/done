@@ -473,8 +473,26 @@ const transcriptMessage = ({ v = 1, workspace, lineage, sourceEpoch, links, abse
     ...absences.map(lp),
   );
 
-/** The hosted classes, deleted one at a time so a partial run resumes. */
-const DELETION_CLASSES = ['primary', 'replicas', 'wraps', 'checkpoints', 'backups'];
+/**
+ * The hosted deletion classes, deleted one at a time so a partial run resumes.
+ *
+ * **One domain, one order — §14.7's, all six** (`P-4` falsifier 17, the `S0-7`
+ * return). This list previously held a five-entry copy that omitted
+ * `recovery-anchor`, so the gate and the retention model stated *the same
+ * predicate over different domains* and both passed. It is now published with
+ * the vectors and cross-checked by `scripts/check-retention.mjs` against
+ * §14.7's class table and the executable model's own declaration — drift in
+ * the list fails a build rather than passing twice. The cause still selects
+ * the set: expiry never reaches `recovery-anchor`; retirement reaches all six.
+ */
+const DELETION_CLASSES = [
+  'primary',
+  'replicas',
+  'checkpoints',
+  'wraps',
+  'backups',
+  'recovery-anchor',
+];
 
 /**
  * The Local archive's own opener, which §9.3 required and nothing constructed.
@@ -1999,6 +2017,16 @@ const main = async () => {
           'The transcript’s verifier resolves from the lineage’s client-authenticated certification in force — an input, never a key read out of the answer (FU-06’s rule at this gate). The receiver’s own credential can never fill it, so neither actor signs both parts of the receipt.',
         verified_current:
           'Two forms and neither is a timer: the receiver’s accepted head is the terminal head and catchup_digest is empty, or the receipt commits a transcript that verifies under the certification in force, chains link by link from the receiver’s authenticated prior head to the terminal head, and enumerates every known absence by identifier — with the count the receiver signed equal to the list the transcript carries.',
+        deletion_authority: {
+          why: 'One gate, one domain (P-4 falsifier 17, the S0-7 return): this gate and the retention model state the same predicate over the same six classes, and scripts/check-retention.mjs cross-checks this published statement against §14.7’s table and the executable model — drift in the class list or the time semantics fails a build rather than passing both. The five-entry copy that omitted recovery-anchor died here.',
+          classes: DELETION_CLASSES,
+          before_the_boundary:
+            'a class deletes only with a durable per-class TerminalHandoff — S0-6’s gate, untouched',
+          destructive_boundary:
+            'retired_at + RETENTION, written exactly once at the cause overwrite and never earlier than an inherited deadline',
+          at_the_boundary:
+            'erasure executes the owner’s intrinsic acceptance, carried in the signed retire payload, and terminates in deleted-without-receipt — a terminal state no reader can take for a receipt; elapsed time is never an authority',
+        },
         accepted_receipt: {
           handoff: {
             v: 1,

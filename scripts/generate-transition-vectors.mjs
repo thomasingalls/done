@@ -579,6 +579,11 @@ const MUST_FAIL = [
     why: 'The same at the recovery carrier: the approval covers `recovery_state_digest`, so a substituted R_pub cannot ride an honest approval. This is what stops a correctly-enrolled device wrapping future generations to a key the service holds.',
   },
   {
+    name: 'retire-intent-without-the-erasure-acceptance',
+    falsifies: ['f-4259822-retirement-safe-survivor-gate-undefined'],
+    why: "P-4 falsifier 15, the creation half: the erasure acceptance is intrinsic to every retire, so a payload without it in its signed bytes is malformed and refuses at the mint — before any signature, settlement or clock. No acceptance-less retirement exists for the ceiling to arbitrate, and the boundary never has to decide what an absent acceptance meant. The in-transit half is the acceptance-in-the-signed-payload demonstration: stripping the acceptance changes payload_digest, which sits inside the signed intent message, so the signature no longer covers what arrived.",
+  },
+  {
     name: 'fabricated-refusal',
     why: "The attack row 6 left open. A definite refusal licenses discarding a live content key and rebuilding; silence does not. Row 6 stated the rule and did not say the refusal must be authenticated -- so anything that can withhold an outcome can fabricate one, and induce a rotation to be thrown away and rebuilt against an epoch of the attacker's choosing. Signed by a key that is not the lineage's authorization key.",
   },
@@ -827,11 +832,53 @@ const main = async () => {
     throw new Error('The payload digest depends on input order. A retry would not be idempotent.');
   }
 
-  const retirePayload = hex(
-    await payloadDigest([
-      { name: 'reason', value: 'account-deletion' },
-      { name: 'terminal-head', value: 'de'.repeat(32) },
-    ]),
+  /**
+   * The retire payload carries the erasure acceptance **in its signed bytes**
+   * (`P-4`, option B with intrinsic acceptance, ratified 2026-08-28; landed at
+   * the `S0-7` return). Asking for deletion is accepting deletion: if no
+   * receiver completes a `TerminalHandoff` by the destructive boundary —
+   * `retired_at + RETENTION`, written once at the `cause` overwrite — the
+   * hosted classes are erased anyway, and the record then says
+   * `deleted-without-receipt`, never that someone received them. A payload
+   * without the acceptance is malformed and refused at creation, before any
+   * signature or settlement, so no acceptance-less retirement exists for the
+   * ceiling to arbitrate; and because `payload_digest` sits inside the signed
+   * intent message, flipping the acceptance in transit breaks the intent's
+   * signature — demonstrated below rather than asserted.
+   */
+  const RETIRE_ACCEPTANCE = 'delete-unreceipted-classes-at-the-boundary';
+  const retireParts = [
+    { name: 'erasure-acceptance', value: RETIRE_ACCEPTANCE },
+    { name: 'reason', value: 'account-deletion' },
+    { name: 'terminal-head', value: 'de'.repeat(32) },
+  ];
+  const mintRetirePayload = async (parts) => {
+    if (!parts.some((p) => p.name === 'erasure-acceptance' && p.value === RETIRE_ACCEPTANCE)) {
+      throw new Error(
+        'a retire payload without the erasure acceptance is malformed: refused at creation, ' +
+          'before any signature or settlement (P-4 falsifier 15).',
+      );
+    }
+    return hex(await payloadDigest(parts));
+  };
+  const retirePayload = await mintRetirePayload(retireParts);
+
+  // The acceptance is bound, proved as a difference rather than asserted: the
+  // acceptance-less digest differs, so an intent whose acceptance was stripped
+  // in transit is a different signed message and the signature no longer
+  // covers it.
+  const acceptancelessDigest = hex(
+    await payloadDigest(retireParts.filter((p) => p.name !== 'erasure-acceptance')),
+  );
+  if (!eliding() && acceptancelessDigest === retirePayload) {
+    throw new Error(
+      'stripping the erasure acceptance produced the selected retire payload digest. ' +
+        'The acceptance is not bound, and the ceiling would arbitrate an intent nobody accepted.',
+    );
+  }
+
+  await refuses('retire-intent-without-the-erasure-acceptance', () =>
+    mintRetirePayload(retireParts.filter((p) => p.name !== 'erasure-acceptance')),
   );
   const replaceInputs = {
     counter: 1,
@@ -928,11 +975,11 @@ const main = async () => {
     },
     {
       name: 'retire',
-      why: 'Account deletion (§14.4). **Identical to the rotate above in every field but `kind` and its payload**, which is why PRD §6.10s warning is a binding requirement rather than an interface one.',
+      why: 'Account deletion (§14.4). **Identical to the rotate above in every field but `kind` and its payload**, which is why PRD §6.10s warning is a binding requirement rather than an interface one. The payload carries the erasure acceptance in its signed bytes (P-4, intrinsic acceptance): asking for deletion is accepting deletion, and a payload without it is refused at creation as malformed.',
       kind: 'retire',
       target: TO_GEN,
       payload: retirePayload,
-      parts: null,
+      parts: retireParts,
     },
     {
       name: 'replace-recovery',
@@ -1222,6 +1269,14 @@ const main = async () => {
   const retireMsg = intentVectors[1].derived.message;
 
   const demonstrations = [
+    {
+      name: 'the-erasure-acceptance-is-inside-the-signed-payload',
+      why: "P-4 falsifier 15, the in-transit half. The retire payload's erasure acceptance is one of its sorted, length-prefixed parts, so stripping or flipping it yields a different payload digest — and payload_digest sits inside the signed intent message, so the stripped intent is a different message the published signature no longer covers. Published as digests rather than asserted, beside the creation-half negative (retire-intent-without-the-erasure-acceptance).",
+      selected: retirePayload,
+      acceptanceless: acceptancelessDigest,
+      acceptance: { name: 'erasure-acceptance', value: RETIRE_ACCEPTANCE },
+      expected: 'the digests differ, so the signature over the intent no longer covers a stripped payload',
+    },
     {
       name: 'an-outcome-re-served-is-not-a-replay',
       why: "Row 9's head assertion needed a nonce because a head is a statement about a moving lineage, so re-serving one is a replay. `(lineage, kind, target)` names an immutable pair -- generations are monotone and a target is reached once -- so this statement does not go stale and there is nothing to bind freshness to. Verifying the same outcome a second time yields the same verdict, deliberately.",
