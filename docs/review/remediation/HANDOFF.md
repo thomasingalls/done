@@ -1,16 +1,19 @@
 # Handoff — Stage 0 remediation execution
 
-**Updated:** 2026-08-27 · **Branch:** `claude/stage0-remediation` · **Base:** `9edd930` (the reviewed tip)
+**Updated:** 2026-08-28 · **Branch:** `claude/stage0-remediation` · **Base:** `9edd930` (the reviewed tip)
 
-Read this first. [`action-tree.md`](./action-tree.md) is the plan; this is where the work actually is, what
-state it is in, and what is ready to pick up.
+Read this first. [`action-tree.md`](./action-tree.md) is the plan; the two `S0-9` dispositions are the
+verdicts; **this file is the one home of the open queue** — what state the work is in and what is ready to
+pick up, in order. An earlier copy of this file disagreed with the dispositions on two points (the X25519 debt
+gate, and "outstanding decisions: none"); each time, the disposition won. When this file and a disposition
+disagree, the disposition is right and this file is the thing to fix.
 
 ## Where the work lives
 
 | | |
 | --- | --- |
-| Branch | `claude/stage0-remediation`, 49 commits off `9edd930`, all signed |
-| Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, and the decisions |
+| Branch | `claude/stage0-remediation`, 51 commits off `9edd930`, all signed |
+| Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, the decisions, and both `S0-9` challenge rounds |
 | Not on it | nothing — this branch is the whole picture, deliberately |
 | Superseded | `claude/remediation-findings-review-997ab5` holds the review workspace at its original SHAs. Redundant once this branch is accepted |
 
@@ -25,9 +28,9 @@ those, on the user's explicit instruction**, because it is no longer a review �
 review's plan calls for.
 
 **Finding dispositions are still untouched.** Every `status:` in `docs/review/findings/` reads as it did, and
-[`end-state-materiality.md`](./end-state-materiality.md) still reads 19/9/5/4. `S0-10` reserves disposition
-changes for a separately authorized validation workflow, and this is not it. The repairs are recorded in
-[`action-tree.md`](./action-tree.md)'s "Repairs already applied" section instead.
+[`end-state-materiality.md`](./end-state-materiality.md) still reads 19/9/5/4 — including for the ten findings
+round 1 reopened; their reopening lives in the dispositions, not in `status:` edits. `S0-10` reserves
+disposition changes for a separately authorized validation workflow, and this is not it.
 
 **`docs/review/`'s own manifests are untouched and still verify.** `work-items.tsv`, `lineage.tsv` and
 `source-manifest.tsv` are hash-pinned in `config.json`, and `pnpm review:status` checks them. It reports
@@ -36,60 +39,93 @@ read it as "nothing to do", and do not edit those files to make it say otherwise
 
 ## State
 
-**Decided — all 7 of the nodes that are choices:** `P-1` recipient authority · `P-2` device-lock gating ·
-`P-3` write admission · `P-4` lapse authority · `P-5` closure authority · `P-6` Local archive factor · `P-8`
-checkpoint and creation authority. Records in [`decisions/`](./decisions/), each with its falsifiers. **`P-7` is the eighth node and is not a choice** — it
-is the standing rule that rows 18, 19 and 21 stay at their own gates and no remediation artifact selects them
-by implication. Nothing decides it; every action has to keep obeying it.
+**All seven decision nodes were taken** — `P-1` recipient authority · `P-2` device-lock gating · `P-3` write
+admission · `P-4` lapse authority · `P-5` closure authority · `P-6` Local archive factor · `P-8` checkpoint
+and creation authority — records in [`decisions/`](./decisions/), each with its falsifiers. **`P-7` is the
+eighth node and is not a choice** — it is the standing rule that rows 18, 19 and 21 stay at their own gates;
+nothing decides it, every action keeps obeying it.
 
-**Outstanding decisions: three reopened, plus one that never existed.** This line read *none* until `S0-9`
-ran independently; see below.
+**`S0-9` has now run twice against `5923f51`, and the package failed both rounds. `S0-10` is blocked.**
 
-**`S0-9` ran independently and the package FAILED it. `S0-10` is blocked.** Four challengers, none of whom
-authored any repair, ran from `5923f51` in isolated worktrees. **Every root cause has at least one failing
-axis**, two high findings reopen at their decisions, and one live construction defect returns to `P-3`. Read
-[`S0-9/DISPOSITION.md`](./S0-9/DISPOSITION.md) before anything else — it names what returns where.
+- **Round 1** — four parallel non-author challengers: [`S0-9/DISPOSITION.md`](./S0-9/DISPOSITION.md). Every
+  root cause has at least one failing axis, two high findings reopen at their decisions, and one live
+  construction defect — `K_store` derives identically on every device, so the §6.1 budget bounds no key —
+  returns to `P-3`.
+- **Round 2** — three serial non-author challengers, reconciled:
+  [`S0-9/FOLLOWUP-DISPOSITION.md`](./S0-9/FOLLOWUP-DISPOSITION.md). Sixteen further blockers, `FU-01`–`FU-16`,
+  four of them high. The strongest convergence across all seven challengers is the zero-handoff retirement
+  deletion (`FU-04`); the Local-archive wrap (`FU-02`) converges across both rounds.
 
-**Outstanding decisions are no longer none.** `P-1`, `P-3` and `P-4` each have a reopened question, and `RC-9`
-never had a decision at all — `action-tree.md` makes choosing between its branches a prerequisite of `L-4`,
-which the line this replaces contradicted.
+**Outstanding decision work: four reopened questions, plus one decision that never existed.**
 
-**Findings: 29 of 37 are addressed** by the seven actions plus the eight direct repairs, and **all six
-high-severity ones are among them**. That is no longer a hand count:
-[`traceability.md`](./traceability.md) is generated from claims carried by the evidence and reports **85
-falsifiers over 27 of the 28 current design and closure defects**. The 28th, `f-bd87655`'s dated evidence table,
-is declared owed at `L-4` rather than counted as covered, and so is `f-66a7c6a`'s append burst on a declared
-device population.
+- **`P-1`** owes the `CertifiedSet` an approver its verifier can resolve without the service-signed epoch
+  (round 1) — and `FU-01` reopens it further if the selected carrier cannot carry the recovery-bootstrap
+  authority.
+- **`P-3`** owes `K_store` per-device scoping (round 1), the admission ruling for `FU-08`'s post-mutation
+  async crash window, `FU-09`'s reservation fence if the transaction shape changes, and `FU-13`'s projection
+  sync — TRD §15 and the `P-3` record still publish superseded write-admission claims.
+- **`P-4`**, composed with `S0-6`'s gate, owes the rule that stops a retirement being born with its ceiling
+  already elapsed (`FU-04`, both rounds).
+- **`P-5`** owes closure authority over the remediation's own documents — `corrected-end-state.md` is an
+  explicit `S0-9` input that no checker reads and that still publishes rejected content (`FU-07`).
+- **`RC-9` never had a decision at all**, and `action-tree.md` makes choosing between its branches a
+  prerequisite of `L-4`.
+- `P-6` reopens only if `FU-02` forces the archive-factor choice to change.
 
-**The other 8 are outside Stage 0 by design** — 4 historical-only corrections belonging to `H-1`'s append-only
-ledger, and 4 later gates (`f-9860a0b` legacy cutover at `L-2`; the RustCrypto audit gap, the source/artifact
-drift check and the support-population floor at `L-4`). No action was ever meant to touch them, and
-[`end-state-materiality.md`](./end-state-materiality.md) still reads 19/9/5/4 because no disposition changed.
+**What the challenges did not discard:** 371 tests across 36 files · 16/16 generators current · 190 AAD
+fields each with an isolated negative · 15 WASM checks · the blob reproducing from the crate at 6,465 B · the
+four document-to-artifact checks (`retention:check`, `status:check`, `limit:check`, and the suite generator's
+own reading of row 1 and §13.10) · `trace:check` resolving every falsifier claim. Both dispositions preserve
+these as **local theorems that narrow the repairs**; they do not close the missing authority and concurrency
+joints. The matrix's five stated limits — relation, recency, liveness, the non-recursive scan, the unpinned
+population — are printed in the matrix itself and repair at `S0-8`.
 
-**Evidence:** 371 tests · 16/16 generators current · 190 AAD fields each isolated · 15 WASM checks · the blob
-reproduces from the crate at 6,465 B · **three document-to-artifact checkers** — `pnpm retention:check`,
-`pnpm status:check` and `pnpm limit:check`, the last of which recomputes §12's extrapolation rather than
-comparing a string — plus the suite generator's own reading of row 1 and §13.10, and **`pnpm trace:check`**,
-which resolves every falsifier claim against the artifact that carries it.
+## The three shapes the open blockers take
 
-## What is ready to pick up, in order
+Worth knowing before picking anything up, because a repair that ignores its class reintroduces the class:
 
-1. **The two reopened high findings, at their decisions.**
-   [`P-1`](./decisions/P-1-recipient-authority.md) owes the `CertifiedSet` an approver its verifier can resolve
-   without the service-signed epoch. `P-4`, composed with `S0-6`'s gate, owes the rule that stops a retirement
-   inheriting an already-elapsed ceiling. Neither is a vector patch; both are decisions.
-2. **`K_store`'s key scoping**, at [`P-3`](./decisions/P-3-write-admission.md). A per-store invocation budget
-   cannot bound a key every device in the workspace derives identically. This is a construction change and it
-   invalidates §6.1's stated 2^-32 bound for every D ≥ 2.
-3. **The five unrepaired limits in the traceability machinery**, now printed in the matrix itself so nothing
-   downstream reads it as stronger than it is — relation, recency, gutted-script liveness, the non-recursive
-   scan, and the unpinned population.
-4. **`RC-9` needs a decision it never had**, and `L-4` is currently its own prerequisite.
-5. **`S0-10`'s closure**, which is blocked until the above land and must record which independence bar it is
-   standing on: the author-reviewing-own-work bar is cleared, the one-perspective bar is not.
-6. **`L-1` through `L-4` and `H-1`** are the rest of the plan and are outside Stage 0. Two partial findings and
-   four later gates wait there; `H-1`'s append-only ledger holds the four historical-only corrections, and
-   `docs/decisions.md`'s stale *eighteen rows are selected* belongs to it rather than to a silent edit.
+1. **Unbound authority joints** — an acceptance step trusts a key or predicate that no factor-authenticated
+   state resolves (`FU-01`, `FU-02`, `FU-03`, `FU-06`, `FU-11`, the `P-1` approver, and `FU-04`'s
+   clock-replaces-custody).
+2. **Interleavings the pure models cannot schedule** — crash points and second writers that are unexpressible
+   rather than refuted (`FU-08`, `FU-09`, `FU-10`, `FU-12`, `K_store`).
+3. **One fact, two homes** — `RC-8C`, the rule this remediation wrote for itself, violated by the remediation,
+   including by its gate: `pnpm check` stops at lint, so "runs through the gate" was command-text
+   reachability, not execution (`FU-05`, `FU-07`, `FU-13`, `FU-14`, `FU-15`, `FU-16`).
+
+## The queue
+
+In order. An item is done when its disposition entry's earliest-return stage has re-run its own gates.
+
+1. **Hygiene — done in this commit.** `FU-15`: the X25519 dated-evidence debt blocks `S0-10`, per TRD §10.11's
+   own sentence; the `OWED` declaration, the regenerated matrix and this file now agree with
+   `action-tree.md`. `FU-16`: `end-state-materiality.md` retitled to the ancestor it classifies against, with
+   the non-ancestor authoring commit kept as a body note.
+2. **The decision sprint.** The five records above — `P-4`, `P-1`, `P-3`, `P-5`, `RC-9` — each updated with
+   its reopened question, options and falsifiers, then ratified. Nothing downstream is safe to build first.
+   `P-4` first: it has the strongest multi-challenger convergence and sets the custody-over-clock pattern the
+   other authority joints will follow.
+3. **Two structural artifacts, before per-finding patches.** (a) An **authority-derivation map** at `S0-2`
+   Stage A/B: for every verifier key and acceptance predicate, the factor-authenticated state that resolves
+   it, with a checker that fails on a dangling edge — class 1 closes as a class or not at all. (b) A
+   **scheduler for the storage models** at the `S0-2`/`S0-3` interface: explicit crash points and two-writer
+   interleavings, so class 2's defects become expressible states instead of unschedulable ones.
+4. **Stage returns**, in dependency order, at the stages each disposition entry names: `S0-2` (`FU-01`,
+   `FU-05`, `FU-09`) → `S0-3` (`FU-08`, `FU-09`) and `S0-4` (`FU-06` with TRD §7.5, `FU-10`) → `S0-5`
+   (`FU-11`) and `S0-6` (`FU-02`, `FU-03` with TRD §14.4) → `S0-7` (`FU-04`, `FU-12`) → `S0-1` (`FU-07` after
+   `P-5`, plus round 1's origin-scanner correction: `originOf` discards any URL containing `+`).
+5. **`S0-8` regeneration.** `FU-14`'s gate receipts — traceability consumes execution results, never shell
+   text; the five matrix limits; `FU-13`'s independent readback; `vectors:coverage` checking identity rather
+   than arity; and the `CertifiedSet` AAD audit round 1 found missing entirely.
+6. **`S0-9` round 3, with a changed perspective.** Seven same-family reads have cleared the
+   author-independence bar thoroughly; the one-perspective bar is the open one and is on record twice. A
+   different model family, targeted adversarial property tests against the authority map, or a human red-team
+   — not an eighth same-family read.
+7. **`S0-10`.** Collect the X25519 dated readback (TRD §10.11 offers review 3b's pass for it), record which
+   independence bar the closure stands on, and only then touch finding dispositions.
+8. **`L-1`–`L-4` and `H-1`** are the rest of the plan and are outside Stage 0. `H-1`'s append-only ledger
+   holds the four historical-only corrections, and `docs/decisions.md`'s stale *eighteen rows are selected*
+   belongs to it rather than to a silent edit.
 
 ## The exact next command
 
@@ -97,48 +133,32 @@ which resolves every falsifier claim against the artifact that carries it.
 cd /Users/thomasingalls/Code/done/.claude/worktrees/stage0-repairs && pnpm install --frozen-lockfile && pnpm vectors:check && pnpm test
 ```
 
-That establishes the baseline. Then read [`S0-2/README.md`](./S0-2/README.md) for how an action is staged, and
-[`decisions/P-8-checkpoint-and-creation-authority.md`](./decisions/P-8-checkpoint-and-creation-authority.md)
-for what `S0-5` has to implement.
+That establishes the baseline. Then read both dispositions end to end, and start the decision sprint at
+[`decisions/P-4-lapse-authority.md`](./decisions/P-4-lapse-authority.md).
 
-## Two things that will bite you
+## Four things that will bite you
 
 **Never run `pnpm format:fix`.** The four markdown documents it wants to reformat include the TRD, and
 reformatting it **breaks the §15.1 register parser**, which silently takes `generate-suite-vectors.mjs` down
-with it. The pinned tip already fails `pnpm format` and `pnpm lint` on files unrelated to any repair, so
-`pnpm check` has never passed on this branch or its base. Format individual files you have changed, and
-re-run `pnpm typecheck` afterwards — a lint-driven `toSorted()` broke typecheck once already.
+with it. Format individual files you have changed, and re-run `pnpm typecheck` afterwards — a lint-driven
+`toSorted()` broke typecheck once already.
+
+**`pnpm check` has never passed on this branch or its base, and it stops at lint (`FU-14`).** The pinned tip
+fails `lint` and `format` on files unrelated to any repair, and the round-2 evidence report names four
+repair-owned files that add their own lint failures. The composite gate therefore never reaches vectors,
+document checks, traceability, WASM verification or tests. Run the named checks directly; cite `pnpm check`
+as evidence of nothing until `S0-8`'s gate receipts exist.
 
 **`pnpm vectors:check` cannot see document drift.** It compares a generator to its vector and never a document
 to its generator. During `S0-2` Stage C the selection rows described constructions the generators did not
 produce, and every check reported green throughout. That is the shape of
 `f-992bc91-network-carrier-registry-stale`. If you amend a row, the matching generator change is owed in the
-same action. **Four checks now read a document against an artifact** — `status:check` (PRD against §15),
-`retention:check` (§14.7 against the executable model), `limit:check` (§12's table against the measurements)
-and the suite generator's own reading of row 1 §3 and §13.10 — and between them they cover the rows those
-sections describe and no others. `trace:check` is not one of them: it catches a *falsifier* going missing, not
-a row describing a construction nobody built.
+same action. Four checks read a document against an artifact — `status:check`, `retention:check`,
+`limit:check` and the suite generator's own reading of row 1 §3 and §13.10 — and between them they cover the
+rows those sections describe and no others. `trace:check` is not one of them: it catches a *falsifier* going
+missing, not a row describing a construction nobody built.
 
 **Never `git checkout --` to undo a mutation.** The mutation batteries run against uncommitted work, so a git
 restore reverts the action's own changes along with the mutation — silently, since the check then fails for a
 reason that looks like the mutation working. `S0-8`'s first battery destroyed the tags in four files this way.
 Snapshot the file contents in memory before applying, and write them back in a `finally`.
-
-## Open question for whoever picks this up
-
-**Answered, and the answer is a file.** The question was where the per-action falsifier tables get collected;
-the answer is that they do not — the claim moved to the evidence and
-[`traceability.md`](./traceability.md) is read back out of it, so there is nothing to collect and nothing to
-keep in step. The seven Stage D tables stay as the narrative of *why* each falsifier is the right one, which is
-the part a generated table cannot carry.
-
-**What replaces it for `S0-9`:** the matrix reports 27 of 28, and the 28th is a declared debt rather than a gap.
-The interesting challenge is not the count but its last section, **where one artifact carries the whole
-demonstration** — 10 of the 28 resolve to a single named falsifier, listed with the file each one lives in. A
-single claim is not automatically thin (`check-wasm-seal.mjs` is one claim over fifteen checks), but it is the
-shortest list of places where losing one artifact loses the finding. The only high-severity entry on it is
-`f-4259822-recovery-replacement-no-forward-rotation`, already marked partial to `L-2`.
-
-That list is derived, and it had to be: this file first said *two*, from a hand count of the rendered table that
-missed the rows whose falsifier titles contain the separator it was counting. The number is 10, the matrix
-computes it, and that mistake is the action's own subject arriving one more time.

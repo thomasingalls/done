@@ -1,4 +1,11 @@
-# End-state materiality at `032d51d`
+# End-state materiality at the reviewed tip `9edd930`
+
+**Provenance.** This ledger was authored from the completed lineage evidence at review commit `032d51d` (“final
+as-written review commit”, held on `claude/remediation-findings-review-997ab5`), which is **not an ancestor of
+this branch** — the review workspace was carried over, not merged. The ledger itself entered this lineage at
+`e19375a`. The title therefore names the object the classifications are anchored to and that this branch can
+verify: the pinned reviewed target `9edd9300adebcec3abd2234c946f1dcccdc17eef`, an ancestor. This title briefly
+named `032d51d`, which `S0-9` recorded as `FU-16`: content present, label not valid exact-lineage provenance.
 
 ## Decision rule
 

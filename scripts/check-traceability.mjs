@@ -91,9 +91,9 @@ const failures = [];
 const OWED = [
   {
     finding: 'f-bd87655-x25519-support-floor-omitted',
-    gate: 'L-4',
+    gate: 'S0-10',
     reason:
-      'TRD §10.11 gained the fourth capability statement, its four exact `SubtleCrypto` operations and the absence behaviour, and the rule it states is a floor **with evidence and a date**. The dated table is deliberately empty: an asserted version row would be worse than the omission, and the source it needs is external to this repository.',
+      'TRD §10.11 gained the fourth capability statement, its four exact `SubtleCrypto` operations and the absence behaviour, and the rule it states is a floor **with evidence and a date**. The dated table is deliberately empty: an asserted version row would be worse than the omission, and the source it needs is external to this repository. §10.11 makes the dated readback of the four operations a prerequisite of Stage 0 closure, so the debt blocks `S0-10` — this entry briefly said `L-4`, which `S0-9` recorded as the gate-assignment contradiction `FU-15`/`A-08`, resolved here in favour of the TRD.',
   },
   {
     finding: 'f-66a7c6a-journal-benchmark-overwrites-one-slot',
