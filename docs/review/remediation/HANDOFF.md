@@ -67,7 +67,10 @@ are ratified and out of the sprint.**
   falsifiers 12–19 (queue item 4).
 - **`P-3`** owes `K_store` per-device scoping (round 1), the admission ruling for `FU-08`'s post-mutation
   async crash window, `FU-09`'s reservation fence if the transaction shape changes, and `FU-13`'s projection
-  sync — TRD §15 and the `P-3` record still publish superseded write-admission claims.
+  sync. **Drafted 2026-08-28:** the record carries the reopened question, the per-joint floors — which
+  scope `FU-09`'s conditional for ratification to resolve — options for each of the three joints, and
+  falsifiers 14–22; its superseded watermark claims are annotated in place, discharging the record half of
+  `FU-13` (the §15 and record-vector homes stay owed at `S0-3`). Ratification is the open step.
 - **`P-4` is ratified (2026-08-28): option B, with intrinsic acceptance.** Every `retire` intent carries the
   erasure acceptance in its signed payload; the destructive boundary is `retired_at + RETENTION`, written once
   at the `cause` overwrite; ceiling erasure terminates in `deleted-without-receipt`, never a state a reader
