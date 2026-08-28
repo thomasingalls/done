@@ -56,8 +56,8 @@ nothing decides it, every action keeps obeying it.
   four of them high. The strongest convergence across all seven challengers is the zero-handoff retirement
   deletion (`FU-04`); the Local-archive wrap (`FU-02`) converges across both rounds.
 
-**Outstanding decision work: two reopened questions, plus one decision that never existed. `P-4` and `P-1`
-are ratified and out of the sprint.**
+**Outstanding decision work: one reopened question, plus one decision that never existed. `P-4`, `P-1` and
+`P-3` are ratified and out of the sprint.**
 
 - **`P-1` is ratified (2026-08-28): option A — the certified set carries the signing keys.** A member entry
   binds `(credential_id ‖ W_pub ‖ S_pub)`, every approval names its approver, and a verifier resolves that
@@ -65,12 +65,14 @@ are ratified and out of the sprint.**
   epoch. `FU-01`'s conditional resolved at the floor: the carrier is completed, not changed, so its return
   stays at `S0-2` Stage A/B/D. What remains is not a decision: the `S0-2` return owes the record's
   falsifiers 12–19 (queue item 4).
-- **`P-3`** owes `K_store` per-device scoping (round 1), the admission ruling for `FU-08`'s post-mutation
-  async crash window, `FU-09`'s reservation fence if the transaction shape changes, and `FU-13`'s projection
-  sync. **Drafted 2026-08-28:** the record carries the reopened question, the per-joint floors — which
-  scope `FU-09`'s conditional for ratification to resolve — options for each of the three joints, and
-  falsifiers 14–22; its superseded watermark claims are annotated in place, discharging the record half of
-  `FU-13` (the §15 and record-vector homes stay owed at `S0-3`). Ratification is the open step.
+- **`P-3` is ratified (2026-08-28): option A at all three joints.** Each store derives its own `K_store`
+  and exactly one `SeqCounter` counts it; nothing becomes authoritative without a durable carrier — a
+  journal refusal holds the input, never the document, with the inversion-vs-stage mechanism reserved to
+  `S0-3` Stage A; and a batch's commit validates its generation under the same IndexedDB serialization the
+  allocator leans on. `FU-09`'s conditional resolved at the floor: the reservation transaction is completed,
+  not changed, so its return stays at the `S0-2`/`S0-3` interface. `FU-13`'s record half is discharged by
+  in-place annotation; the §15 and record-vector homes ride the `S0-3` return. What remains is not a
+  decision: the `S0-3` return owes the record's falsifiers 14–22 (queue item 4).
 - **`P-4` is ratified (2026-08-28): option B, with intrinsic acceptance.** Every `retire` intent carries the
   erasure acceptance in its signed payload; the destructive boundary is `retired_at + RETENTION`, written once
   at the `cause` overwrite; ceiling erasure terminates in `deleted-without-receipt`, never a state a reader
@@ -117,8 +119,11 @@ In order. An item is done when its disposition entry's earliest-return stage has
    its reopened question, options and falsifiers, then ratified. Nothing downstream is safe to build first.
    **`P-4` and `P-1` are done (both ratified 2026-08-28) and together state the class-1 pattern the
    remaining joints follow: elapsed time executes a factor-authenticated instruction, or it does nothing —
-   and a verification key resolves through client- or factor-authenticated state, or it does not verify.**
-   Next is `P-3`; `P-5` and `RC-9` follow, untouched so far.
+   and a verification key resolves through client- or factor-authenticated state, or it does not verify.
+   `P-3` is done (ratified 2026-08-28, option A at all three joints) and states class 2's: a budget binds
+   only what its counter can see, an edit is accepted only when a durable carrier holds it, and a
+   reservation is only as current as the commit that consumes it.** Next is `P-5`; `RC-9` follows, untouched
+   so far.
 3. **Two structural artifacts, before per-finding patches.** (a) An **authority-derivation map** at `S0-2`
    Stage A/B: for every verifier key and acceptance predicate, the factor-authenticated state that resolves
    it, with a checker that fails on a dangling edge — class 1 closes as a class or not at all. (b) A
@@ -148,8 +153,8 @@ cd /Users/thomasingalls/Code/done/.claude/worktrees/stage0-repairs && pnpm insta
 ```
 
 That establishes the baseline. Then read both dispositions end to end, and continue the decision sprint at
-[`decisions/P-3-write-admission.md`](./decisions/P-3-write-admission.md) — `P-4` and `P-1` are ratified, and
-their reopened sections are the shape the remaining three records should take.
+[`decisions/P-5-closure-authority.md`](./decisions/P-5-closure-authority.md) — `P-4`, `P-1` and `P-3` are
+ratified, and their reopened sections are the shape the remaining two records should take.
 
 ## Four things that will bite you
 
