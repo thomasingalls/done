@@ -1,8 +1,10 @@
 # `RC-9` — cross-cutting later-gate governance
 
-**Drafted:** 2026-08-28, fresh — nothing reopens, because nothing was ever decided · **Branches:**
-`RC-9A`/`RC-9B` as defined in [`remediation-options.md`](../remediation-options.md) · **Status:** drafted —
-question, options and falsifiers on record; ratification is the open step
+**Drafted:** 2026-08-28, fresh — nothing reopens, because nothing was ever decided · **Ratified:**
+2026-08-28, option A at both joints — every deferred property is an entry in one debt manifest, and the
+source↔blob binding splits at the toolchain line · **Branch:** `RC-9A`, as defined in
+[`remediation-options.md`](../remediation-options.md) · **Status:** ratified, not yet consolidated — the
+`S0-8` regeneration owes falsifiers 1–12
 
 This is the last record of the decision sprint, and the only one that is not a repair of a prior ruling:
 [`DISPOSITION.md`](../S0-9/DISPOSITION.md) states it as *"`RC-9` has no decision at all"*, and
@@ -10,8 +12,8 @@ This is the last record of the decision sprint, and the only one that is not a r
 decides is [`causal-decision-trees.md`](../causal-decision-trees.md)'s governance composition — *a
 non-accounting governance node over five domain-specific later gates, not their causal ancestor* — and that
 record already names the failure this decision exists to close: **"allowing 'later' to remain a prose promise
-rather than a release-blocking state with evidence readback."** Consolidation of whatever is ratified is
-`S0-8`'s regeneration for the mechanism and the `L-1`–`L-4` gates for its consumption.
+rather than a release-blocking state with evidence readback."** Consolidation is `S0-8`'s regeneration for
+the mechanism and the `L-1`–`L-4` gates for its consumption.
 
 ## The node, and why it is a decision at all
 
@@ -145,7 +147,7 @@ Two joints: how a deferred property binds, and which gate owns the one duty demo
 
 **Joint 1 — the representation that makes "later" block.**
 
-**A — `RC-9A`: one central gate manifest.** The `OWED` list grown into the registry its docblock already
+**A — `RC-9A`: one central gate manifest. (Ratified.)** The `OWED` list grown into the registry its docblock already
 gestures at: one machine-readable home in which every deferred property is an entry with the debt floor's
 fields, entries are content-addressed, results reference commit and build hashes, and the projection of
 what-blocks-what is computed from it on demand. The seed exists and already behaves correctly at this tip —
@@ -185,7 +187,7 @@ ratifying the pattern instead of closing it.
 One sub-question separates the options: whether the duty's demonstrated divisibility is used now or filed as
 one debt.
 
-**A — split the duty at the line the toolchain draws.** `build-wasm-seal.mjs` records, in the generated
+**A — split the duty at the line the toolchain draws. (Ratified.)** `build-wasm-seal.mjs` records, in the generated
 header, the SHA-256 of `src/lib.rs`, of `Cargo.toml`/`Cargo.lock`, and the toolchain version string;
 `check-wasm-seal.mjs` — in `pnpm check` today — recomputes the source-side hashes with Node alone and fails on
 mismatch. Round 1's mutation then fails the normal gate, and the `L-4` debt shrinks to what genuinely needs
@@ -213,15 +215,59 @@ acquires a Rust toolchain as a precondition of typecheck-level hygiene — and b
 the comparison is environment-dependent, which either flaps the gate or drags the `L-4` pinning work into
 Stage 0 against the deferral floor. Priced for completeness; the evidence already refused it once.
 
+## Ratified 2026-08-28 — A at both joints
+
+**The ruling.** Two selections, and the regime that joins them:
+
+- **One debt manifest, total over the deferred.** Every deferred property is exactly one entry in one
+  machine-readable manifest carrying the debt floor's fields — owner, one blocking gate, required artifact,
+  the falsifier that artifact must survive, expiry, hashed inputs. The manifest opens with six entries: the
+  five deferred properties above, and the X25519 dated readback already owed to `S0-10`, migrated unchanged.
+  A gate consults the manifest and blocks while its debt is unpaid, expired or input-changed; an entry leaves
+  only by an execution receipt or a recorded waiver; and what-blocks-what is computed from the manifest on
+  demand, never transcribed beside it.
+- **The binding lands in the gate that already runs.** `build-wasm-seal.mjs` records the SHA-256 of
+  `src/lib.rs` and of `Cargo.toml`/`Cargo.lock`, and the toolchain version string, in `seal.generated.ts`'s
+  header; `check-wasm-seal.mjs` recomputes the source-side hashes with Node alone and fails `pnpm check` on
+  mismatch, printing drift detection and nothing wider. The `L-4` provenance debt shrinks to what genuinely
+  needs Rust — reproducible rebuild, pinned/attested toolchain, blob attestation — and is registered in the
+  manifest like every other debt.
+
+**The mechanism is the lineage review's regime, adopted a third time — deliberately.** The pattern has now
+been selected at three altitudes. The review workspace itself runs on structured homes hash-pinned in
+`config.json` and a computed status view — `pnpm review:status`, whose manifests are untouched, still verify,
+and ran green at every challenge baseline. `P-5` adopted the same shape earlier in this sprint for the
+corpus: the standing census and the `remediation:status` projection, *status computed from the homes, never
+maintained beside them*. This ruling adopts it for deferred evidence. What is new is not the shape but one
+verb and one direction of time the prior two instances never needed: `review:status` and the standing walker
+verify what **is** — a finished review's integrity, a current document's standing — while the debt manifest
+binds what **is not yet**, so its entries carry an expiry that can lapse, and the gates that consult it must
+**block**, not merely report. The same regime, given the refusal the causal record says was missing: *a
+release-blocking state with evidence readback*.
+
+**Why A at the manifest.** It is the only option whose failure mode is a build error rather than a discovery,
+and it is the third instance of a regime this repository has proven twice rather than the first instance of a
+new one. B's census is its chain, so the forgotten gate escapes until a challenge round finds it — the
+position `corrected-end-state.md` held at `P-5`, one altitude down — and its receipt formats multiply into
+`FU-15`'s two-homes shape; C's detection price is one challenge round per instance, and both rounds have
+already invoiced it. A's costs stay exactly as recorded: schema work at `S0-8`, falsifier-column discipline so
+the manifest cannot decay into checkboxes, and the `RC-8C` line — reference and hash stage artifacts, never
+restate them.
+
+**Why A at the binding.** It is the one repair a challenger demonstrated rather than proposed — *materially
+simpler than a governance branch* — and it honors both halves of the finding's own disposition by giving them
+two homes: freshness mandatory in the normal check (the binding, toolchain-free), provenance attested at
+`L-4` (the registered residue). B leaves the demonstrated mutation green through round 3 and `S0-10` for no
+recorded buy beyond diff size; C was tried by round 1 and refused by its own mechanics. The binding's printed
+claim stays exactly its scope — drift, never forgery — and the residual is not a gap but an entry.
+
 ## Falsifiers
 
-Each is a test, not a claim. 1–9 and 12 bind whichever options are ratified; 10 and 11 bind their named
-joint.
+Each is a test, not a claim, under the ratified rules; all twelve bind.
 
 1. **The demonstrated mutation fails a gate that ran.** Append a no-op export to `wasm/journal-seal/src/lib.rs`
-   without rebuilding: the state fails the gate the ratification names — under joint 2 A, `pnpm check` at
-   `wasm:verify`; under joint 2 B, the registered debt's gate before any blob ships — and the failure is
-   receipted, never inferred from command text.
+   without rebuilding: `pnpm check` fails at `wasm:verify` with the mismatched source hash named — and the
+   failure is receipted, never inferred from command text.
 2. **The census is total over the debts that exist.** Each of the five deferred properties resolves to exactly
    one registered debt with owner, gate, artifact, falsifier and expiry; deleting one entry, or adding a sixth
    deferred property with no entry, fails the mechanism rather than entering no bucket — a gate-class finding
@@ -244,15 +290,31 @@ joint.
 9. **Blocking is computed, never transcribed.** What currently blocks release is a projection computed from the
    debt records on demand, agreeing with [`HANDOFF.md`](../HANDOFF.md) and `action-tree.md` in both directions
    — `P-5`'s corollary extended past Stage 0.
-10. **(Joint 2 A)** The generated header carries the source, lockfile and toolchain records; editing `lib.rs`
-    or `seal.generated.ts` alone fails `pnpm check` with the mismatched hash named; and the printed claim
-    states drift detection only — a mutation widening it to attestation fails a check, under `P-5`'s ratified
-    rule that a checker's printed claim is exactly its scope.
-11. **(Joint 2 B)** The registered freshness debt names `wasm:stale` as its falsifier command, an owner, and an
-    expiry — and `L-4` arriving without its executed, receipted pass blocks release.
+10. **The header binds, and claims only drift.** The generated header carries the source, lockfile and
+    toolchain records; editing `lib.rs` or `seal.generated.ts` alone fails `pnpm check` with the mismatched
+    hash named; and the printed claim states drift detection only — a mutation widening it to attestation
+    fails a check, under `P-5`'s ratified rule that a checker's printed claim is exactly its scope.
+11. **The provenance residue is an entry, not a gap.** The manifest registers the `L-4` provenance debt —
+    reproducible rebuild, pinned/attested toolchain, blob attestation — with owner, artifact, falsifier and
+    expiry, and `L-4` arriving without its executed, receipted pass blocks release.
 12. **The reproduction class is closed at the class.** Whatever is ratified, a new deferred property introduced
     by a future stage return cannot exist outside the mechanism: the return that defers it must register it,
     and the mechanism's own check fails a deferral it cannot see — the census argument, pointed forward.
+
+## Consolidation owed at `S0-8`, consumed at `S0-10` and `L-1`–`L-4`
+
+- The manifest joining the gate: the `OWED` list grown to the ratified fields, the six entries registered —
+  the five deferred properties and the migrated X25519 `S0-10` entry — and the what-blocks-what projection
+  checked both directions against [`HANDOFF.md`](../HANDOFF.md) and `action-tree.md` (falsifiers 2–5, 7, 9,
+  11, 12).
+- The header binding: `build-wasm-seal.mjs` writes the three records and `check-wasm-seal.mjs` compares the
+  source-side hashes inside `pnpm check`, its printed claim stated as drift detection (falsifiers 1, 10). One
+  cargo regeneration stamps the current header; the `WASM_BASE64` bytes must not change — `wasm:stale`
+  passing at this tip is the proof they reproduce.
+- Receipt crediting composes with `FU-14`'s design exactly where `S0-8` already owes it; this record adds the
+  refusal rule, never the mechanism (falsifiers 1, 3).
+- `action-tree.md`'s `L-4` prerequisite line carries this ratification's answer, and the queue's bullet and
+  this record agree in both directions from the same commit.
 
 ## What this does not decide
 

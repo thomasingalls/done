@@ -785,7 +785,21 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 
 ### `L-4` — platform, performance, toolchain, and external review release gates
 
-- **Prerequisites:** appropriate integrated targets from `L-1`–`L-3`; choose `RC-9A` or `RC-9B` governance.
+> **`RC-9` ratified 2026-08-28, option A at both joints**
+> ([`decisions/RC-9-later-gate-governance.md`](./decisions/RC-9-later-gate-governance.md)) — drafted fresh
+> the same day, never a reopening, because the decision never existed. Every deferred property is one entry
+> in one debt manifest — owner, one blocking gate, required artifact, falsifier, expiry, hashed inputs — in
+> force from `S0-8` because `S0-10` is the first consuming gate; a gate arriving with its debt unpaid,
+> expired or input-changed blocks; a waiver is an explicit, scoped, expiring, recorded decision; and
+> what-blocks-what is computed from the manifest, never transcribed. The regime is the lineage review's —
+> structured homes, hash pins, a computed status view — adopted a third time after `P-5`'s census, extended
+> by the verb the prior instances never needed: block. The source↔blob duty splits at the toolchain line:
+> source and lockfile hashes stamped into `seal.generated.ts`'s header and compared toolchain-free by
+> `wasm:verify` inside `pnpm check`, while reproducible-rebuild/toolchain/blob attestation stays this gate's
+> registered debt. Twelve falsifiers are in that record, owed at the `S0-8` regeneration.
+
+- **Prerequisites:** appropriate integrated targets from `L-1`–`L-3`; `RC-9A` governance — ratified
+  2026-08-28, the debt manifest in force from `S0-8`.
 - **Exact affected artifacts:** release gate manifest/receipts; exact browser/OS/device matrix; immutable journal raw
   samples; RustCrypto source-delta review; pinned/attested Rust/toolchain/blob hashes; normal CI freshness plus KAT;
   ASVS requirement-by-requirement and runtime egress evidence; reviewers 3a/3b identity/scope/readback.
