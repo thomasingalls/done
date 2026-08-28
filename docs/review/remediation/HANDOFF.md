@@ -56,7 +56,8 @@ nothing decides it, every action keeps obeying it.
   four of them high. The strongest convergence across all seven challengers is the zero-handoff retirement
   deletion (`FU-04`); the Local-archive wrap (`FU-02`) converges across both rounds.
 
-**Outstanding decision work: four reopened questions, plus one decision that never existed.**
+**Outstanding decision work: three reopened questions, plus one decision that never existed. `P-4` is ratified
+and out of the sprint.**
 
 - **`P-1`** owes the `CertifiedSet` an approver its verifier can resolve without the service-signed epoch
   (round 1) — and `FU-01` reopens it further if the selected carrier cannot carry the recovery-bootstrap
@@ -64,8 +65,11 @@ nothing decides it, every action keeps obeying it.
 - **`P-3`** owes `K_store` per-device scoping (round 1), the admission ruling for `FU-08`'s post-mutation
   async crash window, `FU-09`'s reservation fence if the transaction shape changes, and `FU-13`'s projection
   sync — TRD §15 and the `P-3` record still publish superseded write-admission claims.
-- **`P-4`**, composed with `S0-6`'s gate, owes the rule that stops a retirement being born with its ceiling
-  already elapsed (`FU-04`, both rounds).
+- **`P-4` is ratified (2026-08-28): option B, with intrinsic acceptance.** Every `retire` intent carries the
+  erasure acceptance in its signed payload; the destructive boundary is `retired_at + RETENTION`, written once
+  at the `cause` overwrite; ceiling erasure terminates in `deleted-without-receipt`, never a state a reader
+  can take for a receipt. What remains is not a decision: the `S0-7` return, composed with `S0-6`, owes the
+  record's falsifiers 11–19 (queue item 4).
 - **`P-5`** owes closure authority over the remediation's own documents — `corrected-end-state.md` is an
   explicit `S0-9` input that no checker reads and that still publishes rejected content (`FU-07`).
 - **`RC-9` never had a decision at all**, and `action-tree.md` makes choosing between its branches a
@@ -105,8 +109,9 @@ In order. An item is done when its disposition entry's earliest-return stage has
    the non-ancestor authoring commit kept as a body note.
 2. **The decision sprint.** The five records above — `P-4`, `P-1`, `P-3`, `P-5`, `RC-9` — each updated with
    its reopened question, options and falsifiers, then ratified. Nothing downstream is safe to build first.
-   `P-4` first: it has the strongest multi-challenger convergence and sets the custody-over-clock pattern the
-   other authority joints will follow.
+   **`P-4` is done (ratified 2026-08-28, option B with intrinsic acceptance) and set the pattern the other
+   joints follow: elapsed time executes a factor-authenticated instruction, or it does nothing.** Next is
+   `P-1`; `P-3`, `P-5` and `RC-9` follow, untouched so far.
 3. **Two structural artifacts, before per-finding patches.** (a) An **authority-derivation map** at `S0-2`
    Stage A/B: for every verifier key and acceptance predicate, the factor-authenticated state that resolves
    it, with a checker that fails on a dangling edge — class 1 closes as a class or not at all. (b) A
@@ -135,8 +140,9 @@ In order. An item is done when its disposition entry's earliest-return stage has
 cd /Users/thomasingalls/Code/done/.claude/worktrees/stage0-repairs && pnpm install --frozen-lockfile && pnpm vectors:check && pnpm test
 ```
 
-That establishes the baseline. Then read both dispositions end to end, and start the decision sprint at
-[`decisions/P-4-lapse-authority.md`](./decisions/P-4-lapse-authority.md).
+That establishes the baseline. Then read both dispositions end to end, and continue the decision sprint at
+[`decisions/P-1-recipient-authority.md`](./decisions/P-1-recipient-authority.md) — `P-4` is ratified, and its
+reopened section is the shape the remaining four records should take.
 
 ## Four things that will bite you
 
