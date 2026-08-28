@@ -10,7 +10,8 @@
   "trd_row": 7,
   "construction": {
     "checkpoint": "AES-256-GCM(K_cp; a Yjs full snapshot of the content root, AAD) — the snapshot includes row 8’s attribution records",
-    "hkdf_info": "LP(\"done/checkpoint/v1\") || LP(workspace_id)",
+    "kdf": "K_cp = HKDF-SHA256(ikm = K_g, salt = cp_salt[16], info = LP(\"done/checkpoint/v1\") || LP(workspace_id), L = 32)",
+    "seal_discipline": "cp_salt is 16 fresh random bytes per seal, carried in the clear beside the nonce — one message per derived key, so nonce reuse is structurally unreachable and no invocation counter exists because none is needed (§13.8’s discipline at the fifth subkey; the k-checkpoint census entry)",
     "checkpoint_aad": "LP(\"done/cp/v1\") || LP(dec v) || LP(workspace_id) || LP(dec gen) || LP(dec epoch)",
     "manifest": "Ed25519( producing credential ; LP(\"done/cp-manifest/v1\") || LP(dec v) || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(dec gen) || LP(hex checkpoint_digest) || LP(hex sv) || LP(hex ds) || LP(hex head_vector_digest) || LP(producing_credential) )",
     "head_vector": "For each credential ascending by id: LP(credential_id) || LP(dec seq) || LP(hex link). Digest = SHA-256( LP(\"done/headvec/v1\") || head_vector ). The sort is the canonicalization",
@@ -43,6 +44,12 @@
       "source": "RFC 8032 §7.1, TEST 1",
       "seed": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
       "public_key": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a"
+    },
+    "uncertified": {
+      "role": "A keypair whose signatures are genuine and whose credential no certified set names — the eligibility lookup’s negative (FU-11). Without it, a valid signature by an ineligible credential is outside the model.",
+      "source": "RFC 8032 §7.1, TEST 3",
+      "seed": "c5aa8df43f9f837bedb7442f31dcb7b166d38535076f094b85ce3a2e0b4458f7",
+      "public_key": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025"
     }
   },
   "vectors": [
@@ -56,6 +63,7 @@
         "epoch": 9,
         "epoch_head": "2b7f0a9c14e6d3850fa2c51e86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
         "gen": 3,
+        "cp_salt": "5a17c2e94d0b386f1e8a4c7d92b5063f",
         "nonce": "404142434445464748494a4b",
         "producing_credential": "cred_01HZXR0000000000000000LAPT",
         "sv": "01a8e0c9d20503b1c4f70a02",
@@ -79,15 +87,70 @@
         "checkpoint_aad": "000a646f6e652f63702f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744000133000139",
         "head_vector": "001f637265645f3031485a5852303030303030303030303030303030304c41505400023132004061316232633364346535663630373138323933613462356336643765386639306131623263336434653566363037313832393361346235633664376538663930001f637265645f3031485a58523030303030303030303030303030303050484f4e000134004037663365316430633962386135363437333832393130666564636261393837363534333231303066656463626139383736353433323130666564636261393837",
         "head_vector_digest": "80a7a2ba1317655e2cacbc7426b5b531f2a46b762c4ddaf742b5989b0be5bbd7",
-        "manifest_message": "0013646f6e652f63702d6d616e69666573742f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e37440001390040326237663061396331346536643338353066613263353165383664343037336262396530633166323464386136333735396530623266346337613164386533360001330040313631386262653466346534366238323864376539333062646366613962663830643036373831373662613239623034363032323835636138306631366339390018303161386530633964323035303362316334663730613032001c30326138653063396432303530313037623163346637306130333034004038306137613262613133313736353565326361636263373432366235623533316632613436623736326334646461663734326235393839623062653562626437001f637265645f3031485a5852303030303030303030303030303030304c415054"
+        "manifest_message": "0013646f6e652f63702d6d616e69666573742f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e37440001390040326237663061396331346536643338353066613263353165383664343037336262396530633166323464386136333735396530623266346337613164386533360001330040366464613633343331313632633039626432396437346138663661633931636438353137323431356233623537666330393862343264303539333666346662380018303161386530633964323035303362316334663730613032001c30326138653063396432303530313037623163346637306130333034004038306137613262613133313736353565326361636263373432366235623533316632613436623736326334646461663734326235393839623062653562626437001f637265645f3031485a5852303030303030303030303030303030304c415054"
       },
       "expected": {
-        "ciphertext": "d7781bf60189709fb72237142669adac7f3db537b7a0f97d868ec9e84f5651cb374ec9818f6210c6ef0f18a833dc91d178effbef2ac9fee1fe7e2f8aac2758b393f33380f3d361549f8e205464dc4dc3fb1fda0e19e440238e8661fcaf4061de",
-        "checkpoint_digest": "1618bbe4f4e46b828d7e930bdcfa9bf80d0678176ba29b04602285ca80f16c99",
-        "signature": "0e32d13681426c5850cdce501fdc33263fce943e416fb19b50aff31e4a4936cf0dbdee1de588b3b08b4bf8f5ebdf8f1150228a85e2fa020d7a3739630ab9b707"
+        "ciphertext": "7ab4250f161e3385b419daca2c4fb14bad669a7e5b0422767ae1f9b071118e5409301c286a53e58379b59c42a8934cd4acdb13a4106c42decdec725522d0bda728e80406bbcf62ad0231b188b0c49c0d9b121dbfd5221457a5ac01e5c5c46c18",
+        "checkpoint_digest": "6dda63431162c09bd29d74a8f6ac91cd85172415b3b57fc098b42d05936f4fb8",
+        "signature": "21d5958159f04a82d440059e6c0f6a7b1f7a868b93c0bb4d9a68910d80945da37a62c31c3b1bdc13b174653d6426b09a32cb19a3a061b49928c9a2a99abad405"
       }
     }
   ],
+  "admission": {
+    "why": "The authority half of RC-5A, as published values. The verifier for an admission resolves from the certified set at the manifest’s epoch — S0-2’s member entries — never from a key the evidence happens to hold; self_admitted equals the derived producer relation in both directions; and a producer self-admission is refused while the set holds a second eligible client.",
+    "producer": "cred_01HZXR0000000000000000LAPT",
+    "certified_at_epoch_9": {
+      "cred_01HZXR0000000000000000LAPT": {
+        "s_pub": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
+      },
+      "cred_01HZXR0000000000000000PHON": {
+        "s_pub": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a"
+      }
+    },
+    "second_party": {
+      "fields": {
+        "label": "done/cp-admit/v1",
+        "v": 1,
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "checkpoint_digest": "6dda63431162c09bd29d74a8f6ac91cd85172415b3b57fc098b42d05936f4fb8",
+        "manifest_digest": "8a168532f1ed4bf502a5f5cae753531818f6adfb0db390c58e85802d2ae3fd63",
+        "derived_sv": "01a8e0c9d20503b1c4f70a02",
+        "derived_ds": "02a8e0c9d2050107b1c4f70a0304",
+        "head_baseline_digest": "80a7a2ba1317655e2cacbc7426b5b531f2a46b762c4ddaf742b5989b0be5bbd7",
+        "derivation_version": "yjs-v13-sv-ds",
+        "admitting_credential": "cred_01HZXR0000000000000000PHON",
+        "self_admitted": "0",
+        "decision_parent": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "signed_by": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+      "signature": "8cc4fede6c5c9268050e9b7e59995eb985e2c766aaf605d685ad9ddf2e7bd7c60c349704511b01a1829f394002a929100430af32bc4d72bad9f115faa1adc705",
+      "accepted": "in the two-device set: eligible, not the producer, flag agrees"
+    },
+    "self_admission": {
+      "certified_set": {
+        "cred_01HZXR0000000000000000LAPT": {
+          "s_pub": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
+        }
+      },
+      "fields": {
+        "label": "done/cp-admit/v1",
+        "v": 1,
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "checkpoint_digest": "6dda63431162c09bd29d74a8f6ac91cd85172415b3b57fc098b42d05936f4fb8",
+        "manifest_digest": "8a168532f1ed4bf502a5f5cae753531818f6adfb0db390c58e85802d2ae3fd63",
+        "derived_sv": "01a8e0c9d20503b1c4f70a02",
+        "derived_ds": "02a8e0c9d2050107b1c4f70a0304",
+        "head_baseline_digest": "80a7a2ba1317655e2cacbc7426b5b531f2a46b762c4ddaf742b5989b0be5bbd7",
+        "derivation_version": "yjs-v13-sv-ds",
+        "admitting_credential": "cred_01HZXR0000000000000000LAPT",
+        "self_admitted": "1",
+        "decision_parent": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "signed_by": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+      "signature": "1d0e09d2af1960f0baebc61b4cf3c5cb5da6c93065642992c3ed7075dc159e9ffb5b78c47e7f11a7c5ae18583aec389b54a032eb288eaeae4902cec5bbf0c40a",
+      "accepted": "only in the single-device set, and the record says it was self-admitted; the identical bytes beside certified_at_epoch_9 are the self-admission-beside-a-second-eligible negative"
+    }
+  },
   "retention_interlock": {
     "why": "The rule read \"never drop a checkpoint whose generation any retained checkpoint still needs\", which constrains each checkpoint by reference to itself -- the only checkpoint that needs g is the one sealed under g -- and never constrains the generation. §13.7 forces a checkpoint under the new generation before the old one is dropped; it says nothing about whether the second-newest stays openable, and that is the one §11.3 test 8 falls back to.",
     "subject": "the generation, not the checkpoint",
@@ -193,6 +256,10 @@
       "mutate": "Derive K_cp for another workspace. The AAD half is `cp-aad-only-workspace`."
     },
     {
+      "name": "wrong-cp-salt",
+      "mutate": "Derive K_cp under another seal’s salt. One message per derived key is the key’s entire invocation discipline (§13.8’s, at the fifth subkey — the k-checkpoint census entry), so the salt is part of what opens a checkpoint, carried in the clear beside the nonce, and no other salt’s key opens it."
+    },
+    {
       "name": "admission-derived-sv-disagrees",
       "falsifies": [
         "f-b997cdb-checkpoint-coverage-unchecked"
@@ -241,6 +308,34 @@
         "f-b997cdb-checkpoint-coverage-unchecked"
       ],
       "why": "Incomparable proposals serialise by an authenticated decision parent and never by wall clock, which is row 7's own rule at the object that now settles it."
+    },
+    {
+      "name": "admission-by-an-uncertified-credential",
+      "falsifies": [
+        "f-b997cdb-checkpoint-coverage-unchecked"
+      ],
+      "why": "The eligibility lookup, doing its job (FU-11, P-8 requirement 5’s other half). The signature is genuine — the fixture asserts so under the signer’s own key first — and the credential it names has no entry in the certified set at the manifest’s epoch, so the refusal comes from the lookup, before any signature runs. Before the return the verifier was a constant this file imported, and this state was outside the model."
+    },
+    {
+      "name": "self-admission-beside-a-second-eligible",
+      "falsifies": [
+        "f-b997cdb-checkpoint-coverage-unchecked"
+      ],
+      "why": "P-8 requirement 5, and the inversion of the acceptance ST-06 convicted: the producer properly signs its own admission — the signature is genuine and asserted so — while the certified set at the manifest’s epoch holds a second eligible client. The cardinality rule refuses it: a second eligible client must admit where one exists, and before the return this exact admission was unconditionally accepted in this exact two-device world."
+    },
+    {
+      "name": "self-admission-unmarked",
+      "falsifies": [
+        "f-b997cdb-checkpoint-coverage-unchecked"
+      ],
+      "why": "P-8 requirement 6’s second clause. In the one-device world a producer self-admission is accepted — and the record must say it is one. Here the producer admits its own proposal with self_admitted 0, properly signed; the flag disagrees with the derived relation (the admitting credential IS the producing credential), so a restorer would infer the stronger provenance, and the refusal is the honesty rule executing."
+    },
+    {
+      "name": "second-party-admission-marked-self",
+      "falsifies": [
+        "f-b997cdb-checkpoint-coverage-unchecked"
+      ],
+      "why": "The same flag rule in the other direction: a second party’s admission claiming to be a self-admission is refused. The flag equals the derived producer relation in both directions or the admission does not verify — self_admitted is honest, never merely present."
     },
     {
       "name": "aad-only-admission-label",

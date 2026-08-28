@@ -17,6 +17,14 @@ trimmed. A producer may admit its own proposal where no second eligible client e
 so (TRD §7.6).
 **Amended by:** [`S0-6`](../review/remediation/S0-6/README.md) (2026-08-27) — a checkpoint travelling in a package is admitted through the same path as one restored
 locally: coverage re-derived by the importer, then the admission verified (TRD §7.6).
+**Amended by:** the [`S0-5` return](../review/remediation/S0-5/README.md) (2026-08-28, `FU-11` and the
+`k-checkpoint` census entry) — the admission's verifier resolves from the certified set at the manifest's
+epoch, never from a presented key; a producer self-admission is refused while that set holds a second
+eligible client, and `self_admitted` equals the derived relation in both directions. `K_cp` gains a fresh
+16-byte per-seal salt — one message per derived key, §13.8's discipline at the fifth subkey — because a
+checkpoint's key must open on every device and so can narrow to a seal but never to a store. And install is a
+staged machine: content commits durably first, one activation flips content and heads together, and the
+second-newest fallback installs through the same machine (TRD §7.6).
 
 ---
 
@@ -27,8 +35,15 @@ The checkpoint          one full snapshot, sealed under one generation
 
   ct = AES-256-GCM( K_cp ; a Yjs full snapshot of the content root, AAD )
 
-  K_cp = HKDF-SHA256(ikm = K_g, salt = "",
+  K_cp = HKDF-SHA256(ikm = K_g, salt = cp_salt[16],
                      info = LP("done/checkpoint/v1") || LP(workspace_id), L = 32)
+
+  cp_salt = 16 fresh random bytes PER SEAL, carried in the clear beside the
+            nonce. One message per derived key is the key's entire invocation
+            discipline (§13.8's, at the fifth subkey): a checkpoint must open
+            on every device, so K_cp can narrow to a seal but never to a
+            store, and freshness rides the seal instead of a counter no
+            single store could keep. The k-checkpoint census entry holds it.
 
   AAD  = LP("done/cp/v1") || LP(dec v) || LP(workspace_id) || LP(dec gen)
          || LP(dec epoch)
@@ -74,6 +89,14 @@ The admission           what the producer's signature does NOT say
                     eligible client may be the producer. A second one admits
                     where it exists; otherwise this says so. Requiring two would
                     leave a one-device workspace unable to checkpoint at all.
+  eligibility       the verifier resolves from the certified set at the
+                    manifest's epoch (S0-2's member entries) -- a lookup,
+                    refusing an uncertified credential before any signature
+                    runs. self_admitted equals the derived producer relation
+                    in both directions, and a producer self-admission is
+                    REFUSED while the set holds a second eligible client
+                    (the S0-5 return; the set and producer are published
+                    vector inputs).
   decision_parent   incomparable proposals serialise here. NEVER by wall clock.
   head_vector       = for each credential ASCENDING BY ID:
                         LP(credential_id) || LP(dec seq) || LP(hex link)
@@ -94,6 +117,17 @@ Retention
   and has no surviving authorized opener. Stated over OPENERS rather than
   the local KeyEnvelope: a retained recovery or reader wrap may still open a
   generation whose envelope is gone (TRD §13.7).
+
+Install                 staged, and activation is one commit (the S0-5 return)
+
+  Content commits durably into its slot first, under a durable install
+  record, visible to nothing; one activation then flips the live pair --
+  content root and accepted-head baseline -- together or not at all. A kill
+  before the activation activates NEITHER; recovery completes from the
+  record or rolls the stage back, never serving a mixture. Trim reads the
+  ACTIVE pair, so only an admitted, activated tuple licenses it. A newest
+  tuple missing bytes, admission or opener is refused and the second-newest
+  complete tuple is installed through the same machine.
 
                 LP(s) = uint16be(byteLength(utf8 s)) || utf8 s
 ```
@@ -219,7 +253,7 @@ accounting that rotate, revoke and replace-recovery all need (§15 row 15), and 
 | Manifest size          | Two identifiers, four small integers, three digests and the coverage pair   |
 | Retained               | Two checkpoints and two suffixes rather than one                            |
 | Bundle                 | **Nothing.** All four primitives are WebCrypto (row 1)                      |
-| A fifth §13.2 subkey   | One label. `done/checkpoint/v1`, differing from the other four by name only |
+| A fifth §13.2 subkey   | One label plus 16 salt bytes per seal. `done/checkpoint/v1`, differing from the other four by name — and by deriving per seal, which is what buys its invocation discipline without a counter |
 
 **The store's cost is the line worth reading**, for the same reason it was in [row 4](./row-4-envelope-format.md):
 a content-blind durable store that had to do more than hash would be negotiating the content-blindness boundary
@@ -239,7 +273,10 @@ which is Stage 4's.
 **One obligation with a security purpose.** A checkpoint that fails any check must be **refused and reported, and
 the next-newest used** — never partially applied. §11.3 test 8 is the test; the rule matters because a
 half-applied checkpoint is a state no replica ever held, and it would converge with the others as though it were
-real.
+real. **Since the `S0-5` return this is a machine rather than an obligation**: the staged install's activation
+is the only step that makes anything live, `test/storageSchedule.test.ts` schedules a kill and a second writer
+inside its window, and the fallback assertion is an install receipt — the older complete tuple's content and
+heads land through the same two commits — not opener arithmetic.
 
 **Not in this row.** The records inside the snapshot are [row 8](./row-8-attribution-record.md)'s. The links and
 heads the vector collects are [row 5](./row-5-finalization.md)'s. What a migration or terminal package carries —
@@ -254,12 +291,19 @@ checkpoint's head vector.
 `node scripts/generate-checkpoint-vectors.mjs` writes them; `--check` fails if they are stale, and `pnpm check`
 now runs it with the other ten.
 
-**One checkpoint and eighteen negatives.** A laptop checkpointing a two-device workspace at epoch 9,
-generation 3 — the sealed snapshot, its digest, the sorted head vector and its digest, and the signed manifest.
+**One checkpoint and nineteen manifest-and-seal negatives, plus twenty-two at the admission.** A laptop
+checkpointing a two-device workspace at epoch 9, generation 3 — the sealed snapshot, its digest, the sorted
+head vector and its digest, the signed manifest, and (since `S0-5`) the admission with its published
+eligibility inputs.
 
-**Sixteen of the negatives are the two bound field lists**, one per field: five in the sealed checkpoint's AAD
-and eleven in the manifest. The other two are the checks that are not field bindings: a manifest whose digest
-does not match the bytes beside it, which the store catches with no key, and a wrong subkey.
+**Sixteen of the manifest-and-seal negatives are the two bound field lists**, one per field: five in the
+sealed checkpoint's AAD and eleven in the manifest. The other three are the checks that are not field
+bindings: a manifest whose digest does not match the bytes beside it, which the store catches with no key, a
+wrong workspace subkey, and — since the `S0-5` return — a wrong per-seal salt, which is the `k-checkpoint`
+discipline refusing as a value. The admission's four authority negatives (uncertified credential,
+self-admission beside a second eligible, and the honest flag in both directions) carry genuine signatures on
+purpose: each asserts its own signature verifies before relying on the refusal, so the refusal provably comes
+from the lookup, the cardinality rule, or the flag rule — never from broken bytes.
 
 **Three of them are §7.6's own sentences as values.** `coverage-ignores-deletions` and
 `coverage-ignores-insertions` are the pair that makes _a bare state vector is not a coverage claim_ checkable in

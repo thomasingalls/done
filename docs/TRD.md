@@ -1368,6 +1368,15 @@ one-device workspace unable to checkpoint at all — and therefore retaining env
 the condition checkpoints exist to end. **A second eligible client admits where one exists; otherwise the
 admission is marked self-admitted**, and a restorer that can see the weaker provenance can act on it.
 
+**Eligibility is the certified set's, and the verifier is resolved, never presented** (the `S0-5` return,
+2026-08-28). The admission verifies under the signing key the certified recipient set at the manifest's epoch
+binds to the admitting credential (§13.5, `S0-2`'s member entries) — a credential outside that set is refused
+by the lookup before any signature runs. `self_admitted` equals what a verifier derives — the admitting
+credential is the producing credential, or it is not — in both directions; and **where the set holds a second
+eligible client, a producer self-admission is refused**: the second must admit. Before the return the
+evidence accepted keys rather than eligibility, so the selected authority was indistinguishable from any
+signer; the eligibility set and the producer are now inputs the checks consume, published with the vectors.
+
 **Incomparable proposals are ordered by an authenticated decision parent and never by wall clock**, which is
 §15 row 7's own rule carried to the object that now settles it.
 
@@ -1385,7 +1394,8 @@ so there is no step at which the forbidden shape could arise.
 
 ```
 ct = AES-256-GCM( K_cp ; a Yjs full snapshot of the content root, AAD )
-K_cp = HKDF-SHA256(ikm = K_g, salt = "", info = LP("done/checkpoint/v1") || LP(workspace_id), L = 32)
+K_cp = HKDF-SHA256(ikm = K_g, salt = cp_salt[16], info = LP("done/checkpoint/v1") || LP(workspace_id), L = 32)
+cp_salt = 16 fresh random bytes per seal, carried in the clear beside the nonce and ciphertext
 AAD  = LP("done/cp/v1") || LP(dec v) || LP(workspace_id) || LP(dec gen) || LP(dec epoch)
 
 M    = Ed25519( producing credential ; LP("done/cp-manifest/v1") || LP(dec v)
@@ -1401,6 +1411,24 @@ as the relay validates an envelope's (§7.2, §7.4). **`sv` and `ds` are bound s
 separately because either alone is the claim this section says is not a coverage claim, and opaquely because
 their content is Yjs's and §10.1's deferred upgrade would change it. **The sort is the canonicalization**: two
 devices checkpointing the same accepted state must produce the same head-vector digest.
+
+**`K_cp` is derived per seal, and that is its entire invocation discipline** (the `k-checkpoint` census entry,
+entered at the `S0-5` return). A checkpoint must open on every device, so its key cannot narrow to a store the
+way §6.1's does — and no single store could count the invocations other devices make. So freshness rides the
+seal instead of a counter: `cp_salt` is fresh per seal, exactly one plaintext is ever sealed under each derived
+key, and nonce reuse is structurally unreachable — §13.8's discipline at the fifth subkey. A checkpoint names
+its salt beside its nonce and opens under no other.
+
+**Install is staged, and activation is one commit** (`FU-11`, the `S0-5` return). A device adopting a
+checkpoint tuple — restore, first sync, or §11.3 test 8's fallback — commits the tuple's content durably into
+its slot first, visible to nothing, under a durable install record; then one activation flips the live pair —
+the content root and the accepted-head baseline — together, or not at all. A kill anywhere before the
+activation leaves **neither content nor heads** active and a reader on the prior tuple; the
+content-committed-heads-not window recovers by completing from the record or rolling the stage back, never by
+serving the mixture. **Trim reads the active pair**: only an admitted, activated tuple licenses dropping the
+envelopes beneath its coverage, which is where *signed before any pre-checkpoint envelope may be trimmed*
+becomes a gate that executes. When the newest tuple is incomplete — bytes, admission or opener missing — the
+restore falls back to the second-newest complete tuple **and installs it through the same machine**.
 
 **Cadence has one forced rule and two tunables.** **A rotation produces a checkpoint under the new generation
 before the old generation may be dropped** — a checkpoint is openable only while its generation is retained, so
@@ -1426,7 +1454,9 @@ device enrolling fresh receives it from the service in the ordinary way. There i
 the vanished operator has to still be alive to do.
 
 **Must not happen.** No merged state as the recovery representation. No bare state vector as a coverage claim. No
-checkpoint that re-signs another credential's operations.
+checkpoint that re-signs another credential's operations. **No admission verified under a key resolved from
+anywhere but the certified set at the manifest's epoch. No partial install activates content or heads. No
+second plaintext under one derived `K_cp`.**
 
 **Test.** §11, checkpoint coverage; fallback to next-newest checkpoint.
 
@@ -2730,8 +2760,9 @@ licence to start one, and every step between is a crash point:
 
 > 1 outcome verified and persisted · 2 successor opener installed · 3 old-generation objects classified ·
 > 4 permissible local work covered under `g+1` · **5 active epoch/generation advanced — the commit point** ·
-> 6 successor checkpoint admitted and local content trimmed · 7 old openers retired under this section's
-> predicate · 8 the apply record itself discharged
+> 6 successor checkpoint admitted and local content trimmed, through §7.6's staged install and trim gate —
+> its own durable record, so a kill inside this step resumes through both · 7 old openers retired under this
+> section's predicate · 8 the apply record itself discharged
 
 Each step is idempotent and restart resumes at the recorded step. Steps 1–4 are reversible; step 5 is not, and it
 may only be taken once no new write can select `g` and `g+1` is reopenable. **Device lock (§13.3) and recovery

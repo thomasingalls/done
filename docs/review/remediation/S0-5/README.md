@@ -22,10 +22,10 @@ first.
 
 | | Stage | Output | Status |
 | --- | --- | --- | --- |
-| **A** | Durable record schemas | `SemanticAdmission`, `CreationCertificate`, and the card-id derivation that makes replacement structurally impossible | **done** — [`A-schemas.md`](./A-schemas.md) |
-| **B** | Normative construction | TRD §§4.8/7.6/10.4 | **done** — §7.6 splits local re-derivation from the trusted baseline; §4.8 derives `card_id` from its creator; §10.4 keeps card and certificate joint |
-| **C** | Selection rows | rows 5/7/8/10/15 | **done** — rows 7 and 8 gain constructions; 5, 10 and 15 take header notes |
-| **D** | Executable evidence | checkpoint and attribution generators, one isolated falsifier per property | **done** — 36 checkpoint negatives, 13 attribution; 181 AAD fields suite-wide, each isolated |
+| **A** | Durable record schemas | `SemanticAdmission`, `CreationCertificate`, and the card-id derivation that makes replacement structurally impossible | **done** — [`A-schemas.md`](./A-schemas.md), amended at the return: §1's eligibility resolution and §4's `CheckpointInstall` |
+| **B** | Normative construction | TRD §§4.8/7.6/10.4 | **done** — §7.6 splits local re-derivation from the trusted baseline; §4.8 derives `card_id` from its creator; §10.4 keeps card and certificate joint; the return adds §7.6's eligibility, seal-discipline and staged-install rules |
+| **C** | Selection rows | rows 5/7/8/10/15 | **done** — rows 7 and 8 gain constructions; 5, 10 and 15 take header notes; the return amends row 7 |
+| **D** | Executable evidence | checkpoint and attribution generators, one isolated falsifier per property | **done** — 41 checkpoint negatives and 13 attribution as of the return; 193 AAD fields suite-wide, each isolated; the staged install machine scheduled in the composed model |
 | **E** | Product surface | PRD provenance and continuity | **done** — §5.3 says authorship stays evidence after the history that produced it is gone, and that a restorer checks coverage itself |
 
 **§4.5 and §13.7 needed no change.** §4.5 separates freeze from compaction and is untouched by any of this;
@@ -73,6 +73,58 @@ the phone could mint a valid claim naming itself. It still can — but the certi
 id*, so what it produces is a different card rather than a replacement. `card_5B46KSTYGCJ0A1BX` for the laptop,
 `card_SX178ARRP7FKM66N` for the phone's attempt. **There is nothing to refuse at the claim layer**, which is
 what "structural rather than adjudicated" means when it is executable.
+
+## The `S0-5` return (2026-08-28)
+
+The `S0-9` follow-up returned one repair here — checkpoint evidence with no eligibility/cardinality input and
+no install machine (`FU-11`, storage `ST-06`) — and the `S0-3` return had lodged a second debt: `K_cp`'s
+absence from the AEAD census, declared and checker-held because its homes stated neither a counter nor a
+discipline. The return landed both, the selected `P-8` branch unchanged, with every gate re-run green:
+
+- **Stage A** — [`A-schemas.md`](./A-schemas.md) amended at both edges. §1's admission gains its resolution
+  rule: the verifier is the signing key the certified set at the manifest's epoch binds to the admitting
+  credential — a lookup refusing an uncertified credential before any signature runs — `self_admitted` equals
+  the derived producer relation in both directions, and a producer self-admission is refused while the set
+  holds a second eligible client. §4 is the machine that was absent: `CheckpointInstall`, a durable record
+  driving two commits — content into its slot, visible to nothing, then one activation flipping content root
+  and head baseline together or not at all, with rollback when the window's second writer made the tuple
+  ineligible, trim gated on the *active* admitted tuple, and fallback as an install. The falsifier map
+  continues at rows 16–23.
+- **Stage B** — TRD §7.6 states the eligibility resolution, the per-seal `K_cp` derivation (`cp_salt[16]`,
+  one message per derived key, §13.8's discipline at the fifth subkey — a checkpoint's key must open on every
+  device, so it narrows to a seal, never to a store), and the staged install with its trim gate; three new
+  *must not happen* clauses; §13.7's step 6 names the sub-machine it runs.
+- **Stage C** — row 7's selection block carries the salt, the eligibility lines and the install machine; §7's
+  never-partially-applied obligation now points at the machine that executes it; §8 states the grown counts
+  and why the authority negatives carry genuine signatures.
+- **Stage D** — the generator takes the certified set and the producer as inputs, resolves the admitting
+  credential through them, and publishes both admissions with their eligibility worlds (`FU-05`'s rule). Four
+  authority negatives — `admission-by-an-uncertified-credential`, `self-admission-beside-a-second-eligible`
+  (the exact acceptance `ST-06` convicted, inverted with its world kept), `self-admission-unmarked` and
+  `second-party-admission-marked-self` — each asserting its own signature genuine first, plus `wrong-cp-salt`
+  for the census discipline (41 negatives, 193 AAD fields each isolated). `test/storageSchedule.test.ts`
+  schedules the install machine: the content-commit-to-activation window takes a kill and a second writer
+  (`demonstrateBoundary`), the pre-return fused installer is refused with the `FU-08` diagnosis, every kill
+  point before activation shows the prior pair live and consistent, recovery resumes through the record with
+  the pair flipping together, the second-newest fallback actually installs under all three loss modes —
+  bytes, admission, opener — and trim never runs under a tuple nobody admitted.
+- **Stage E** — PRD §5.3's *a device restoring from a checkpoint checks that checkpoint's coverage itself*
+  already said the product truth; no PRD sentence became false.
+- **The instruments** — the authority map's `checkpoint-admission` entry flipped (3 joints stay open, none of
+  them this stage's); the `k-checkpoint` entry entered the AEAD census from the amended homes with the
+  declared absence struck in the same edit, the checker still holding both directions;
+  `checkpoint-manifest` and `attribution-record` re-pinned over the amended sections with their rules
+  unchanged.
+
+**`P-8`'s reopen invitation was read and declined.** The record invites reopening at `S0-5` if the
+portable-witness obstacles clear; neither has — row 4 still binds no `(clientID, clock range)` mapping and
+Yjs client ids remain per-instance — so the selected branch stands, exactly as the record says it should
+when the note survives.
+
+An 18-mutation battery caught 18 — every restored fixture verifier, dropped cardinality or flag rule,
+re-accepted two-device self-admission, salt-blind derivation, fused installer, mixed activation, arithmetic
+fallback, early trim, tampered vector, silent map edit and un-struck declaration fails a named check rather
+than waiting for a review.
 
 ## Not in scope
 

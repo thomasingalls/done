@@ -247,7 +247,7 @@ guards: content
 verifies: M — the producing credential's manifest over checkpoint digest, sv, ds and the head vector
 resolves: the producing credential -> via:member-signing-keys
 status: resolved
-pin: docs/TRD.md §7.6 9286fbcf367f
+pin: docs/TRD.md §7.6 379e814fec88
 ```
 
 ```authority
@@ -257,16 +257,20 @@ guards: content
 verifies: that a checkpoint means the accepted snapshot it claims — SemanticAdmission plus the restorer's order
 resolves: local re-derivation of {sv, ds} from the decrypted snapshot, compared three ways -> root:structural
 resolves: the admission signature and the admitting credential's eligibility at the manifest's epoch -> via:member-signing-keys
-status: open
-blocker: FU-11
-return: S0-5
-pin: docs/review/remediation/S0-5/A-schemas.md §1 cb5d0fada255
+status: resolved
+pin: docs/TRD.md §7.6 379e814fec88
+pin: docs/review/remediation/S0-5/A-schemas.md §1 c28c0a25fd1f
+pin: docs/review/remediation/S0-5/A-schemas.md §4 6fc9ec7ea390
 ```
 
-The rule is stated — the restorer re-derives without trusting anyone, then checks the admitter was in the
-certified set at the manifest's epoch, and `head_baseline_digest` is the one trusted step — and the evidence
-does not exercise it: no certified-recipient eligibility or cardinality input, no staged install machine, so
-producer self-admission beside a second eligible client is refused by nothing that runs (`ST-06`).
+**Flipped 2026-08-28 at the `S0-5` return** (`FU-11`, `ST-06`). The rule was always stated; what flipped it is
+that the evidence now exercises it with the authority as an input: the verifier resolves from the certified
+set's member entry at the manifest's epoch — a genuine signature by an uncertified credential refuses at the
+lookup, before any signature runs — the producer's self-admission beside a second eligible client is refused
+by cardinality (the exact acceptance `ST-06` convicted, inverted with its world kept and published), the
+`self_admitted` flag equals the derived relation in both directions, and install is a staged machine whose
+activation flips content and heads together — kill points, rollback and the actual second-newest fallback
+scheduled in `test/storageSchedule.test.ts`.
 
 ```authority
 entry: attribution-record
@@ -276,7 +280,7 @@ verifies: R — the standing claim minted by the writing credential at card crea
 resolves: content_commitment recomputed from the card's own bytes -> root:structural
 resolves: sig by the writing credential -> via:member-signing-keys
 status: resolved
-pin: docs/TRD.md §13.7 61febc1f9a99
+pin: docs/TRD.md §13.7 21e1e907518f
 ```
 
 ```authority
@@ -538,15 +542,25 @@ status: resolved
 pin: docs/TRD.md §13.2 acf87ae3c063
 ```
 
-**The census's one declared absence.** The checkpoint subkey `K_cp` does not enter yet, and the reason is
-recorded rather than silent: its homes — TRD §7.6 and row 7 — state neither a durable state that counts its
-invocations nor a nonce discipline that needs none, which is exactly the shape falsifier 16 polices, and the
-repair cannot copy `P-3` joint 1: a checkpoint must open on every device, so its key cannot narrow to a store.
-Selecting `K_cp`'s counter or discipline is checkpoint-machinery work, **owed at the `S0-5` return beside
-`FU-11`**, where the checkpoint homes are already open for consolidation. The checker holds this declaration
-mechanically: a `k-checkpoint` entry appearing while this paragraph stands is paid-and-not-struck, and both
-disappearing is a silent drop — either fails. The `L_local`/`L_lock` envelopes and the deferred index subkey
-entered above at the `S0-3` return (2026-08-28), each from the homes that select it.
+```authority
+entry: k-checkpoint
+kind: aead
+guards: content
+verifies: the sealed checkpoint — K_cp over the full snapshot, an opener on every device
+discipline: one message per derived key — cp_salt is 16 fresh random bytes per seal into K_cp's HKDF, carried in the clear beside the nonce, so exactly one plaintext is ever sealed under each derived key and nonce reuse is structurally unreachable (§7.6, row 7); the key cannot narrow to a store because every device must open it and no single store could count the others' seals, so freshness rides the seal rather than a counter — §13.8's discipline at the fifth subkey
+status: resolved
+pin: docs/TRD.md §7.6 379e814fec88
+pin: docs/selections/row-7-checkpoint.md 7fee1deaff8a
+```
+
+**The census's one declared absence, paid and struck at the `S0-5` return (2026-08-28).** From the `S0-3`
+return until then, `K_cp` was held out of the census by a declaration in this paragraph, because its homes
+stated neither a durable state that counts its invocations nor a nonce discipline that needs none — falsifier
+16's exact shape — and the repair could not copy `P-3` joint 1: a checkpoint must open on every device, so its
+key cannot narrow to a store. The homes now select the per-seal derivation above, the `wrong-cp-salt` negative
+is published, and the entry entered with the declaration struck in the same edit — the checker still refuses
+the entry and the declaration coexisting, and both disappearing. The `L_local`/`L_lock` envelopes and the
+deferred index subkey entered above at the `S0-3` return (2026-08-28), each from the homes that select it.
 
 ---
 
@@ -569,8 +583,9 @@ shrink by payment.
 **Consumption.** The stage returns (queue item 4) flip their entries: `S0-2` — `member-signing-keys`,
 `bootstrap-signer`, `bootstrap-countersig`, `enrollment-transcript` — **flipped 2026-08-28 at the `S0-2`
 return**; `S0-3` — `k-store` — **flipped 2026-08-28 at the `S0-3` return**; `S0-4` — `position-refusal` —
-**flipped 2026-08-28 at the `S0-4` return**; `S0-5` — `checkpoint-admission`, and the `k-checkpoint` census
-entry §5 defers there; `S0-6` — `local-archive-anchor`, `terminal-handoff`; `S0-7` — `destructive-boundary`. `S0-9` round 3 reads the computed
+**flipped 2026-08-28 at the `S0-4` return**; `S0-5` — `checkpoint-admission` — **flipped 2026-08-28 at the
+`S0-5` return, with the `k-checkpoint` census entry entered and its declared absence struck the same day**;
+`S0-6` — `local-archive-anchor`, `terminal-handoff`; `S0-7` — `destructive-boundary`. `S0-9` round 3 reads the computed
 summary as the class-1 ledger, and `S0-10` consumes a map whose open count is zero or does not close. `P-1`
 falsifier 14 was discharged at the `S0-2` return: the member-key entries flipped, every chain still terminates
 at a permitted root for its guard, and the checker — not a review — is what refuses a dangling or service-only

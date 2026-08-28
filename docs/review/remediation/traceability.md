@@ -76,7 +76,7 @@ always complete. **28 findings are current design or closure defects and therefo
 | `f-992bc91-outbound-envelope-spool-undefined` | medium | S0-4 | `§7.4 — retention, which is the same store` (test) · `§7.4 — the position is reserved with its identity, and gaps are occupied rather than skipped` (test) · `§7.4 — the spool survives the kill it exists for` (test) | `test/outboundSpool.test.ts` |
 | `f-745e332-envelope-refusal-carrier-missing` | medium | S0-4 | `refusal-for-another-credential` (negative) · `refusal-for-another-digest` (negative) · `refusal-for-another-epoch` (negative) · `refusal-for-another-position` (negative) · `refusal-for-another-workspace` (negative) · `refusal-under-a-retired-epoch-key` (negative) · `refusal-under-an-uncertified-key` (negative) · `unsigned-error-body` (negative) · `§7.5 — the refusal, its five-field subject, and the successor chain it licenses` (test) | `scripts/generate-antireplay-vectors.mjs`<br>`test/outboundSpool.test.ts` |
 | `f-4259822-generation-switch-local-durability-undefined` | medium | S0-2 | `GenerationApply — a kill at every step` (test) | `test/generationApply.test.ts` |
-| `f-b997cdb-checkpoint-coverage-unchecked` | medium | S0-5 | `admission-derived-ds-disagrees` (negative) · `admission-derived-sv-disagrees` (negative) · `admission-forked-from-another-parent` (negative) · `admission-of-another-manifest` (negative) · `admission-signed-over-a-wrong-derivation` (negative) · `admission-with-a-substituted-head-baseline` (negative) · `coverage-ignores-deletions` (negative) · `coverage-ignores-insertions` (negative) | `scripts/generate-checkpoint-vectors.mjs` |
+| `f-b997cdb-checkpoint-coverage-unchecked` | medium | S0-5 | `admission-by-an-uncertified-credential` (negative) · `admission-derived-ds-disagrees` (negative) · `admission-derived-sv-disagrees` (negative) · `admission-forked-from-another-parent` (negative) · `admission-of-another-manifest` (negative) · `admission-signed-over-a-wrong-derivation` (negative) · `admission-with-a-substituted-head-baseline` (negative) · `coverage-ignores-deletions` (negative) · `coverage-ignores-insertions` (negative) · `second-party-admission-marked-self` (negative) · `self-admission-beside-a-second-eligible` (negative) · `self-admission-unmarked` (negative) | `scripts/generate-checkpoint-vectors.mjs` |
 | `f-b997cdb-checkpoint-key-retention-inverted` | medium | S0-2, direct | `the opener predicate` (guard) | `scripts/generate-checkpoint-vectors.mjs` |
 | `f-b997cdb-attribution-self-replacement` | medium | S0-5 | `creation-certificate-from-another-credential` (negative) · `creation-certificate-signed-by-another-credential` (negative) · `lifted-to-another-card` (negative) · `reattributed-actor` (negative) · `reattributed-credential` (negative) · `substituted-commitment` (negative) | `scripts/generate-attribution-vectors.mjs` |
 | `f-f5def83-device-lock-reader-key-bypass` | medium | S0-2 | `replacement-credential-seal-as-a-factor-seal` (negative) · `replacement-credential-under-a-wrong-code` (negative) · `seal-rebound-to-other-credential` (negative) · `the post-lock wrap set` (guard) | `scripts/generate-device-lock-vectors.mjs` |
@@ -117,7 +117,7 @@ naming one of them is a failure here rather than a bonus.
 
 ## The claims themselves
 
-88 claims across 22 files — 8 guard · 56 negative · 5 script · 19 test.
+92 claims across 22 files — 8 guard · 60 negative · 5 script · 19 test.
 
 | Carrier | Where the claim is written | What keeps the claim live |
 | --- | --- | --- |

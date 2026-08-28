@@ -28,6 +28,19 @@
  * it. Binding them opaquely means that upgrade changes what the bytes say and
  * not what this construction is.
  *
+ * **The admission's authority is an input, not a fixture** (the `S0-5` return,
+ * 2026-08-28; `FU-11`). Before the return this file imported one verifier
+ * directly and accepted a self-admission unconditionally, so the selected
+ * authority — a certified eligible client, a second party where one exists —
+ * was indistinguishable from "any signer". `admit` now takes the certified
+ * recipient set at the manifest's epoch and the producing credential, resolves
+ * the admitting credential's verifier from the set's member entry (`S0-2`'s
+ * lookup shape), refuses an uncertified credential before any signature runs,
+ * refuses a producer self-admission while the set holds a second eligible
+ * client, and refuses a `self_admitted` flag that disagrees with the derived
+ * relation in either direction. The eligibility input is published in the
+ * vector, per `FU-05`'s rule.
+ *
  * The primitive KATs are not here; Ed25519, SHA-256, HKDF and AES-256-GCM are
  * row 1's.
  *
@@ -76,19 +89,28 @@ const sha256 = async (bytes) => new Uint8Array(await crypto.subtle.digest('SHA-2
 // --- the constructions ------------------------------------------------------------
 
 /**
- * K_cp = HKDF-SHA256(ikm = K_g, salt = "", info = LP(label) || LP(workspace), L = 32)
+ * K_cp = HKDF-SHA256(ikm = K_g, salt = cp_salt[16], info = LP(label) || LP(workspace), L = 32)
  *
  * A fifth §13.2 subkey, differing from the store, journal and envelope subkeys
  * only by label — which is what keeps that separation a property of the labels
  * rather than of five constructions a reviewer compares by hand.
+ *
+ * **`cp_salt` is 16 fresh random bytes per seal, and that is the key's entire
+ * invocation discipline** (the `k-checkpoint` census entry, entered at the
+ * `S0-5` return). A checkpoint must open on every device, so its key cannot
+ * narrow to a store the way §6.1's does, and no single store could count the
+ * invocations other devices make. So freshness rides the seal instead of a
+ * counter: exactly one plaintext is ever sealed under each derived key, nonce
+ * reuse is structurally unreachable, and the salt travels in the clear beside
+ * the nonce — §13.8's discipline at the fifth subkey.
  */
-const deriveCheckpointKey = async (kg, workspaceId) => {
+const deriveCheckpointKey = async (kg, workspaceId, saltHex) => {
   const ikm = await crypto.subtle.importKey('raw', kg, 'HKDF', false, ['deriveBits']);
   const bits = await crypto.subtle.deriveBits(
     {
       name: 'HKDF',
       hash: 'SHA-256',
-      salt: new Uint8Array(0),
+      salt: unhex(saltHex),
       info: concat(lp(HKDF_LABEL), lp(workspaceId)),
     },
     ikm,
@@ -241,6 +263,12 @@ const KEYS = {
     seed: '9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60',
     public_key: 'd75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a',
   },
+  uncertified: {
+    role: 'A keypair whose signatures are genuine and whose credential no certified set names — the eligibility lookup’s negative (FU-11). Without it, a valid signature by an ineligible credential is outside the model.',
+    source: 'RFC 8032 §7.1, TEST 3',
+    seed: 'c5aa8df43f9f837bedb7442f31dcb7b166d38535076f094b85ce3a2e0b4458f7',
+    public_key: 'fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025',
+  },
 };
 
 const importSigner = (seedHex) =>
@@ -274,8 +302,45 @@ const checkKeypairs = async () => {
 const WORKSPACE = 'ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D';
 const LAPTOP = 'cred_01HZXR0000000000000000LAPT';
 const PHONE = 'cred_01HZXR0000000000000000PHON';
+const INTRUDER = 'cred_01HZXR0000000000000000INTR';
 const KG = unhex('4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36');
 const EPOCH_HEAD = '2b7f0a9c14e6d3850fa2c51e86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36';
+
+/** The fresh per-seal salt K_cp derives under — see `deriveCheckpointKey`. */
+const CP_SALT = '5a17c2e94d0b386f1e8a4c7d92b5063f';
+
+/**
+ * The certified recipient set at the manifest's epoch — `S0-2`'s home, consumed
+ * here as the admission's eligibility and cardinality input (`FU-11`). The
+ * member entry binds the credential to the signing key its admissions verify
+ * under, so the verifier is a lookup into factor- or client-authenticated
+ * state, never a constant this file happens to hold. The intruder has no
+ * entry, which is what makes "genuinely signed and ineligible" a reachable
+ * state rather than a sentence.
+ */
+const CERTIFIED_AT_EPOCH_9 = {
+  [LAPTOP]: { s_pub: KEYS.producer.public_key },
+  [PHONE]: { s_pub: KEYS.other_credential.public_key },
+};
+
+/** The one-device workspace: the only eligible client is the producer. */
+const SINGLE_DEVICE_SET = { [LAPTOP]: { s_pub: KEYS.producer.public_key } };
+
+/**
+ * The eligibility rule as a lookup rather than as prose — the same shape as
+ * the transition generator's `resolveApprover` (`P-1`, ratified 2026-08-28).
+ * A named admitter outside the certified set at the manifest's epoch refuses
+ * here, before any signature runs.
+ */
+const resolveAdmitter = (certified, credential) => {
+  const entry = certified[credential];
+  if (entry === undefined) {
+    throw new Error(
+      `the admitting credential ${credential} is not in the certified set at the manifest's epoch`,
+    );
+  }
+  return entry.s_pub;
+};
 
 /**
  * A Yjs snapshot's two coverage halves, as opaque bytes — see the file header.
@@ -352,6 +417,26 @@ const ADMISSION_NEGATIVES = [
     name: 'admission-forked-from-another-parent',
     falsifies: ['f-b997cdb-checkpoint-coverage-unchecked'],
     why: "Incomparable proposals serialise by an authenticated decision parent and never by wall clock, which is row 7's own rule at the object that now settles it.",
+  },
+  {
+    name: 'admission-by-an-uncertified-credential',
+    falsifies: ['f-b997cdb-checkpoint-coverage-unchecked'],
+    why: 'The eligibility lookup, doing its job (FU-11, P-8 requirement 5’s other half). The signature is genuine — the fixture asserts so under the signer’s own key first — and the credential it names has no entry in the certified set at the manifest’s epoch, so the refusal comes from the lookup, before any signature runs. Before the return the verifier was a constant this file imported, and this state was outside the model.',
+  },
+  {
+    name: 'self-admission-beside-a-second-eligible',
+    falsifies: ['f-b997cdb-checkpoint-coverage-unchecked'],
+    why: 'P-8 requirement 5, and the inversion of the acceptance ST-06 convicted: the producer properly signs its own admission — the signature is genuine and asserted so — while the certified set at the manifest’s epoch holds a second eligible client. The cardinality rule refuses it: a second eligible client must admit where one exists, and before the return this exact admission was unconditionally accepted in this exact two-device world.',
+  },
+  {
+    name: 'self-admission-unmarked',
+    falsifies: ['f-b997cdb-checkpoint-coverage-unchecked'],
+    why: 'P-8 requirement 6’s second clause. In the one-device world a producer self-admission is accepted — and the record must say it is one. Here the producer admits its own proposal with self_admitted 0, properly signed; the flag disagrees with the derived relation (the admitting credential IS the producing credential), so a restorer would infer the stronger provenance, and the refusal is the honesty rule executing.',
+  },
+  {
+    name: 'second-party-admission-marked-self',
+    falsifies: ['f-b997cdb-checkpoint-coverage-unchecked'],
+    why: 'The same flag rule in the other direction: a second party’s admission claiming to be a self-admission is refused. The flag equals the derived producer relation in both directions or the admission does not verify — self_admitted is honest, never merely present.',
   },
   {
     name: 'aad-only-admission-label',
@@ -461,6 +546,11 @@ const NEGATIVES = [
     name: 'wrong-workspace-subkey',
     mutate: 'Derive K_cp for another workspace. The AAD half is `cp-aad-only-workspace`.',
   },
+  {
+    name: 'wrong-cp-salt',
+    mutate:
+      'Derive K_cp under another seal’s salt. One message per derived key is the key’s entire invocation discipline (§13.8’s, at the fifth subkey — the k-checkpoint census entry), so the salt is part of what opens a checkpoint, carried in the clear beside the nonce, and no other salt’s key opens it.',
+  },
 ];
 
 // --- what a restoring device does ------------------------------------------------------
@@ -494,7 +584,7 @@ const verifyManifest = async (manifest, signature, verifier) => {
 // --- verification -------------------------------------------------------------------------
 
 const verify = async (doc) => {
-  const key = await deriveCheckpointKey(KG, WORKSPACE);
+  const key = await deriveCheckpointKey(KG, WORKSPACE, CP_SALT);
   const verifier = await importVerifier(KEYS.producer.public_key);
   const v = doc.vectors[0];
   const ct = unhex(v.expected.ciphertext);
@@ -586,12 +676,14 @@ const verify = async (doc) => {
     await refuses(name, () => openCheckpoint(key, checkpointAad({ ...BASE, ...patch }), ct));
   }
 
-  const otherKey = await deriveCheckpointKey(KG, 'ws_01J0000000000000000000000A');
+  const otherKey = await deriveCheckpointKey(KG, 'ws_01J0000000000000000000000A', CP_SALT);
   await refuses('wrong-workspace-subkey', () => openCheckpoint(otherKey, checkpointAad(BASE), ct));
+
+  const otherSaltKey = await deriveCheckpointKey(KG, WORKSPACE, '00'.repeat(16));
+  await refuses('wrong-cp-salt', () => openCheckpoint(otherSaltKey, checkpointAad(BASE), ct));
 
   // --- the admission, and the two questions it keeps apart -----------------------
 
-  const admitVerifier = await importVerifier(KEYS.other_credential.public_key);
   const manifestDigest = hex(await sha256(manifestMessage(manifest)));
   const headBaseline = manifest.headVecDigest;
 
@@ -615,13 +707,33 @@ const verify = async (doc) => {
   );
 
   /**
-   * The restorer, in the order §7.6 states -- and the first check consults no
-   * signature at all, which is the point of doing it first.
+   * Asserts a negative's fixture really is signed by the key it claims, so a
+   * refusal below provably comes from the rule under test and never from a
+   * broken signature. This is fixture hygiene, not authority: the authority
+   * lookup lives inside `admit`, in the certified set.
+   */
+  const assertGenuine = async (publicHex, sig, fields) => {
+    const ok = await crypto.subtle.verify(
+      { name: 'Ed25519' },
+      await importVerifier(publicHex),
+      sig,
+      admissionMessage(fields),
+    );
+    if (!ok) throw new Error('the fixture is not validly signed; the negative proves nothing');
+  };
+
+  /**
+   * The restorer, in the order §7.6 states -- the first check consults no
+   * signature at all, which is the point of doing it first, and the authority
+   * questions are answered from the certified set at the manifest's epoch
+   * before the signature is consulted (the `S0-5` return, `FU-11`).
    */
   const admit = async ({
     fields = ADMISSION,
     sig = admissionSig,
     derivation = DERIVATION_VERSION,
+    certified = CERTIFIED_AT_EPOCH_9,
+    producer = BASE.credential,
   }) => {
     if (fields.derivationVersion !== undefined && fields.derivationVersion !== derivation) {
       throw new Error(`derivation ${fields.derivationVersion} is not implemented here`);
@@ -631,10 +743,24 @@ const verify = async (doc) => {
     if (fields.derivedDs !== DS) throw new Error('derived ds disagrees with the local derivation');
     if (fields.manifestDigest !== manifestDigest)
       throw new Error('admission names another manifest');
-    // 2. Only then, the trusted half.
+    // 2. Eligibility: the verifier resolves from the certified set at the
+    //    manifest's epoch -- a real lookup, refusing an uncertified credential
+    //    before any signature runs.
+    const admitterKey = resolveAdmitter(certified, fields.admittingCredential);
+    // 3. Cardinality, and the honest flag: self_admitted equals the derived
+    //    producer relation in both directions, and a producer self-admission
+    //    is refused while the set holds a second eligible client.
+    const self = fields.admittingCredential === producer;
+    if (self !== fields.selfAdmitted) {
+      throw new Error('self_admitted must say exactly whether the producer admitted its own proposal');
+    }
+    if (self && Object.keys(certified).some((c) => c !== producer)) {
+      throw new Error('a second eligible client exists and must admit; producer self-admission is refused');
+    }
+    // 4. Only then, the trusted half -- under the resolved verifier.
     const ok = await crypto.subtle.verify(
       { name: 'Ed25519' },
-      admitVerifier,
+      await importVerifier(admitterKey),
       sig,
       admissionMessage(fields),
     );
@@ -647,10 +773,13 @@ const verify = async (doc) => {
     throw new Error('the admission does not carry the baseline.');
   if (admitted.selfAdmitted !== false) throw new Error('this admission is not self-admitted.');
 
-  // A self-admitted checkpoint is ACCEPTED and its provenance is legible. §13.5
-  // selects single-owner authority, so the only eligible client may be the
-  // producer; requiring a second would leave a one-device workspace unable to
-  // checkpoint at all, and therefore retaining envelopes without bound.
+  // A self-admitted checkpoint is ACCEPTED **where no second eligible client
+  // exists**, and its provenance is legible. §13.5 selects single-owner
+  // authority, so the only eligible client may be the producer; requiring a
+  // second would leave a one-device workspace unable to checkpoint at all, and
+  // therefore retaining envelopes without bound. The acceptance runs through
+  // the same `admit` as everything else -- the certified set here holds the
+  // producer alone, which is the fact that licenses it.
   const selfFields = { ...ADMISSION, admittingCredential: LAPTOP, selfAdmitted: true };
   const selfSig = new Uint8Array(
     await crypto.subtle.sign(
@@ -659,23 +788,61 @@ const verify = async (doc) => {
       admissionMessage(selfFields),
     ),
   );
-  const selfAdmitted = await (async () => {
-    const saved = admitVerifier;
-    void saved;
-    // verified under the producer, since that is who admitted it
-    if (
-      !(await crypto.subtle.verify(
+  const selfAdmitted = await admit({
+    fields: selfFields,
+    sig: selfSig,
+    certified: SINGLE_DEVICE_SET,
+  });
+  if (selfAdmitted.selfAdmitted !== true) throw new Error('a self-admission must say that it is one.');
+
+  // The acceptance ST-06 convicted, inverted with its world kept: the SAME
+  // properly signed self-admission, beside the two-device certified set it was
+  // unconditionally accepted in before the return, is refused by cardinality.
+  await refuses('self-admission-beside-a-second-eligible', async () => {
+    await assertGenuine(KEYS.producer.public_key, selfSig, selfFields);
+    await admit({ fields: selfFields, sig: selfSig });
+  });
+
+  // Genuinely signed, and eligible nowhere: the lookup refuses before any
+  // signature runs, which is what an authority *input* makes reachable.
+  await refuses('admission-by-an-uncertified-credential', async () => {
+    const fields = { ...ADMISSION, admittingCredential: INTRUDER };
+    const sig = new Uint8Array(
+      await crypto.subtle.sign(
         { name: 'Ed25519' },
-        await importVerifier(KEYS.producer.public_key),
-        selfSig,
-        admissionMessage(selfFields),
-      ))
-    ) {
-      throw new Error('the self-admission does not verify under its producer.');
-    }
-    return selfFields.selfAdmitted;
-  })();
-  if (selfAdmitted !== true) throw new Error('a self-admission must say that it is one.');
+        await importSigner(KEYS.uncertified.seed),
+        admissionMessage(fields),
+      ),
+    );
+    await assertGenuine(KEYS.uncertified.public_key, sig, fields);
+    await admit({ fields, sig });
+  });
+
+  // The honest flag, in both directions.
+  await refuses('self-admission-unmarked', async () => {
+    const fields = { ...ADMISSION, admittingCredential: LAPTOP, selfAdmitted: false };
+    const sig = new Uint8Array(
+      await crypto.subtle.sign(
+        { name: 'Ed25519' },
+        await importSigner(KEYS.producer.seed),
+        admissionMessage(fields),
+      ),
+    );
+    await assertGenuine(KEYS.producer.public_key, sig, fields);
+    await admit({ fields, sig, certified: SINGLE_DEVICE_SET });
+  });
+  await refuses('second-party-admission-marked-self', async () => {
+    const fields = { ...ADMISSION, selfAdmitted: true };
+    const sig = new Uint8Array(
+      await crypto.subtle.sign(
+        { name: 'Ed25519' },
+        await importSigner(KEYS.other_credential.seed),
+        admissionMessage(fields),
+      ),
+    );
+    await assertGenuine(KEYS.other_credential.public_key, sig, fields);
+    await admit({ fields, sig });
+  });
 
   // Validly signed, and wrong. Nothing but the local derivation can refuse it.
   await refuses('admission-signed-over-a-wrong-derivation', async () => {
@@ -688,16 +855,7 @@ const verify = async (doc) => {
       ),
     );
     // The signature is genuine; assert that before relying on the refusal below.
-    if (
-      !(await crypto.subtle.verify(
-        { name: 'Ed25519' },
-        admitVerifier,
-        properlySigned,
-        admissionMessage(wrong),
-      ))
-    ) {
-      throw new Error('the fixture is not validly signed; the negative proves nothing');
-    }
+    await assertGenuine(KEYS.other_credential.public_key, properlySigned, wrong);
     await admit({ fields: wrong, sig: properlySigned });
   });
 
@@ -742,9 +900,12 @@ const verify = async (doc) => {
    * signed field, forcing the refusal onto the signature alone.
    */
   const signatureOnly = async (fields) => {
+    // The admitter's own key, held directly ON PURPOSE: these negatives test
+    // the signature binding alone, deliberately bypassing the semantic checks
+    // and the authority lookup that `admit` runs first.
     const ok = await crypto.subtle.verify(
       { name: 'Ed25519' },
-      admitVerifier,
+      await importVerifier(KEYS.other_credential.public_key),
       admissionSig,
       admissionMessage(fields),
     );
@@ -868,6 +1029,43 @@ const verify = async (doc) => {
     throw new Error(`Negatives published but never asserted: ${unrun.join(', ')}`);
   if (unpublished.length > 0)
     throw new Error(`Negatives asserted but not published: ${unpublished.join(', ')}`);
+
+  // Every input the admission checks consumed, published (FU-05's rule): the
+  // two admissions with their signatures, and the eligibility worlds each was
+  // checked against, so the refusals above reconstruct from this file alone.
+  const publishFields = (f) => ({
+    label: ADMIT_LABEL,
+    v: 1,
+    workspace_id: f.workspace,
+    checkpoint_digest: f.checkpointDigest,
+    manifest_digest: f.manifestDigest,
+    derived_sv: f.derivedSv,
+    derived_ds: f.derivedDs,
+    head_baseline_digest: f.headBaselineDigest,
+    derivation_version: DERIVATION_VERSION,
+    admitting_credential: f.admittingCredential,
+    self_admitted: f.selfAdmitted ? '1' : '0',
+    decision_parent: f.decisionParent,
+  });
+  return {
+    why: 'The authority half of RC-5A, as published values. The verifier for an admission resolves from the certified set at the manifest’s epoch — S0-2’s member entries — never from a key the evidence happens to hold; self_admitted equals the derived producer relation in both directions; and a producer self-admission is refused while the set holds a second eligible client.',
+    producer: BASE.credential,
+    certified_at_epoch_9: CERTIFIED_AT_EPOCH_9,
+    second_party: {
+      fields: publishFields(ADMISSION),
+      signed_by: KEYS.other_credential.public_key,
+      signature: hex(admissionSig),
+      accepted: 'in the two-device set: eligible, not the producer, flag agrees',
+    },
+    self_admission: {
+      certified_set: SINGLE_DEVICE_SET,
+      fields: publishFields(selfFields),
+      signed_by: KEYS.producer.public_key,
+      signature: hex(selfSig),
+      accepted:
+        'only in the single-device set, and the record says it was self-admitted; the identical bytes beside certified_at_epoch_9 are the self-admission-beside-a-second-eligible negative',
+    },
+  };
 };
 
 // --- assembly ---------------------------------------------------------------------------------
@@ -875,7 +1073,7 @@ const verify = async (doc) => {
 const main = async () => {
   await checkKeypairs();
 
-  const key = await deriveCheckpointKey(KG, WORKSPACE);
+  const key = await deriveCheckpointKey(KG, WORKSPACE, CP_SALT);
   const signer = await importSigner(KEYS.producer.seed);
   const aad = checkpointAad(BASE);
   const ct = new Uint8Array(
@@ -901,6 +1099,7 @@ const main = async () => {
         epoch: BASE.epoch,
         epoch_head: EPOCH_HEAD,
         gen: BASE.gen,
+        cp_salt: CP_SALT,
         nonce: NONCE,
         producing_credential: LAPTOP,
         sv: SV,
@@ -936,7 +1135,9 @@ const main = async () => {
     construction: {
       checkpoint:
         'AES-256-GCM(K_cp; a Yjs full snapshot of the content root, AAD) — the snapshot includes row 8’s attribution records',
-      hkdf_info: 'LP("done/checkpoint/v1") || LP(workspace_id)',
+      kdf: 'K_cp = HKDF-SHA256(ikm = K_g, salt = cp_salt[16], info = LP("done/checkpoint/v1") || LP(workspace_id), L = 32)',
+      seal_discipline:
+        'cp_salt is 16 fresh random bytes per seal, carried in the clear beside the nonce — one message per derived key, so nonce reuse is structurally unreachable and no invocation counter exists because none is needed (§13.8’s discipline at the fifth subkey; the k-checkpoint census entry)',
       checkpoint_aad:
         'LP("done/cp/v1") || LP(dec v) || LP(workspace_id) || LP(dec gen) || LP(dec epoch)',
       manifest:
@@ -965,6 +1166,10 @@ const main = async () => {
     },
     keys: KEYS,
     vectors,
+    // Filled after `verify`, which is where the admissions are built and every
+    // authority refusal runs. Declared here so its position in the published
+    // document does not depend on that.
+    admission: undefined,
     retention_interlock: {
       why: 'The rule read "never drop a checkpoint whose generation any retained checkpoint still needs", which constrains each checkpoint by reference to itself -- the only checkpoint that needs g is the one sealed under g -- and never constrains the generation. §13.7 forces a checkpoint under the new generation before the old one is dropped; it says nothing about whether the second-newest stays openable, and that is the one §11.3 test 8 falls back to.',
       subject: 'the generation, not the checkpoint',
@@ -984,7 +1189,7 @@ const main = async () => {
     must_fail: [...NEGATIVES, ...ADMISSION_NEGATIVES],
   };
 
-  await verify(doc);
+  doc.admission = await verify(doc);
   doc.falsifies = claims();
   reportAudit(NEGATIVES.map((n) => n.name));
 

@@ -36,10 +36,11 @@
  *      the `S0-3` return, every AEAD construction (`AES-256-GCM(`,
  *      `XChaCha20-Poly1305(`, `AEAD(`) — in the TRD and the five stage schema
  *      documents must sit in a section some entry pins, so the map cannot
- *      decide its own census. And the census's one declared absence — `K_cp`,
- *      whose homes state neither a counter nor a discipline, owed at the
- *      `S0-5` return — is held mechanically: an entry appearing while the
- *      declaration stands is paid-and-not-struck, both disappearing is a
+ *      decide its own census. And `K_cp`'s census obligation — declared as an
+ *      absence at the `S0-3` return, paid at the `S0-5` return when its homes
+ *      selected the per-seal discipline and the `k-checkpoint` entry entered
+ *      with the declaration struck — stays held mechanically: an entry beside
+ *      a standing declaration is paid-and-not-struck, both missing is a
  *      silent drop, and either fails.
  *
  * What it does **not** prove: that the corpus implements a chain. `status` is

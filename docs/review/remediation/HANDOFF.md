@@ -142,8 +142,12 @@ Worth knowing before picking anything up, because a repair that ignores its clas
    read 6 open, none of them a recipient-authority carrier — **and `FU-06` returned the same day at the
    `S0-4` return**: the refusal's subject carries the refused envelope's own epoch and the verifier resolves
    from the lineage's certification in force, never from the answer, with the retired-key and wrong-epoch
-   attacks published as genuine-signature negatives; the map now reads 4 open (the live count is always the
-   checker's). `FU-02`/`FU-03` ride `S0-6`, `FU-11` rides `S0-5`, `FU-04` rides `S0-7`.
+   attacks published as genuine-signature negatives — **and `FU-11` returned 2026-08-28 at the `S0-5`
+   return**: the admission's verifier resolves from the certified set's member entry at the manifest's epoch,
+   an uncertified credential refuses at the lookup before any signature runs, and the producer's
+   self-admission beside a second eligible client — the exact acceptance `ST-06` convicted — is refused by
+   cardinality with its world kept and published; the map now reads 3 open (the live count is always the
+   checker's). `FU-02`/`FU-03` ride `S0-6`, `FU-04` rides `S0-7`.
 2. **Interleavings the pure models cannot schedule** — crash points and second writers that are unexpressible
    rather than refuted (`FU-08`, `FU-09`, `FU-10`, `FU-12`, `K_store`). **`FU-09`'s interface half returned
    2026-08-28 at the `S0-2` return** — the composed model's commit carries `P-3`'s ratified fence and the
@@ -216,7 +220,10 @@ In order. An item is done when its disposition entry's earliest-return stage has
    1's per-key counts are their own counters — each on the reproduction's own schedule, with the pre-return
    worlds kept as detected negatives. All three windows now assert their repairs — and the `S0-4` return
    added the class's fourth (`FU-10`'s reserve-to-spool crash at `PositionCounter`) to the same file the same
-   day, scheduled and inverted in one motion, with the counter-only world kept as the detected negative.
+   day, scheduled and inverted in one motion, with the counter-only world kept as the detected negative. The
+   `S0-5` return added the install window (`FU-11`) the same way: the content-commit-to-activation boundary
+   takes a kill and a second writer, the pre-return fused installer is refused with the `FU-08` diagnosis,
+   and the second-newest fallback is asserted as an install receipt, never opener arithmetic.
 4. **Stage returns — the `S0-1` return first, then the security returns in dependency order.** Reordered
    2026-08-28, for item 3's own reason: a repair that ignores its class reintroduces the class, and the
    census is class 3's instrument — it belongs before the six returns that churn the corpus it classifies,
@@ -270,8 +277,26 @@ In order. An item is done when its disposition entry's earliest-return stage has
    unexecutable closed-by-refusal branch retired; the window scheduled through the composed model with the
    counter-only world kept as the detected negative, and recovery counting its fresh licence where the mint
    seals when the marker moved). An 18-mutation battery caught 18. The map's `position-refusal` entry
-   flipped: 4 joints stay open, none of them this stage's. **Next, the remaining security returns, in
-   dependency order**: `S0-5` (`FU-11`, and the `k-checkpoint` census entry) and `S0-6` (`FU-02`, `FU-03`
+   flipped: 4 joints stay open, none of them this stage's. **The `S0-5` return is done (2026-08-28), and its
+   gates re-ran green** — `pnpm check` end to end. It landed `FU-11` (the admission's authority is an input:
+   the verifier resolves from the certified set's member entry at the manifest's epoch, an uncertified
+   credential refuses at the lookup before any signature runs, a producer self-admission beside a second
+   eligible client is refused by cardinality — the exact acceptance `ST-06` convicted, inverted with its
+   world kept — `self_admitted` equals the derived relation in both directions, and the eligibility inputs
+   are published with the vectors; install is a staged machine whose durable record drives two commits —
+   content into its slot, visible to nothing, then one activation flipping content root and head baseline
+   together or not at all — with the window demonstrated under a kill and a second writer, the fused
+   pre-return installer refused with the `FU-08` diagnosis, recovery completing or rolling back and never
+   serving a mixture, trim gated on the active admitted tuple, and the second-newest fallback actually
+   installed under all three loss modes) and **the `k-checkpoint` census entry** (`K_cp` derives per seal —
+   `cp_salt[16]`, one message per derived key, §13.8's discipline at the fifth subkey, because a checkpoint's
+   key must open on every device and so can narrow to a seal but never to a store; the `wrong-cp-salt`
+   negative published and the declared absence struck in the same edit, the checker holding both directions).
+   An 18-mutation battery caught 18. The map's `checkpoint-admission` entry flipped: 3 joints stay open, none
+   of them this stage's; `checkpoint-manifest` and `attribution-record` re-pinned with their rules unchanged.
+   `P-8`'s reopen invitation was read and declined — the portable-witness obstacles have not cleared, so the
+   selected branch stands. **Next, the remaining security returns, in
+   dependency order**: `S0-6` (`FU-02`, `FU-03`
    with TRD §14.4) → `S0-7` (`FU-04`, `FU-12`).
    **Each return flips its authority-map entries and inverts its scheduler reproductions** — editing a
    pinned home fails `authority:check` until the entry is re-read
@@ -329,9 +354,11 @@ format documents by any other route. After any code formatting, re-run `pnpm typ
 format left `pnpm check`; the gate is typecheck plus the evidence suite, and it passed end to end for the
 first time in this branch's history that day. Since queue item 3 it also carries `authority:check`, and that
 green line means exactly its printed scope: the map's chains resolve and its pinned homes are byte-current,
-with four joints *declared open* since the `S0-4` return flipped `position-refusal` (the `S0-2` return
-flipped the four member-key entries; the `S0-3` return, `k-store`), the sweep covering AEAD constructions
-beside signatures, and `K_cp`'s absence held as a declared, checker-policed debt owed at `S0-5` — it is the
+with three joints *declared open* since the `S0-5` return flipped `checkpoint-admission` (the `S0-2` return
+flipped the four member-key entries; the `S0-3` return, `k-store`; the `S0-4` return, `position-refusal`),
+the sweep covering AEAD constructions beside signatures, and the `k-checkpoint` entry entered at the `S0-5`
+return with its declared absence struck — the checker still refusing the entry and a declaration coexisting,
+or both missing — it is the
 class-1 and class-2 ledgers staying honest, not the classes closed. Since the
 `S0-1` return it also carries `remediation:check`, whose green line is likewise its printed scope: 46
 documents classified, 19 record pins byte-current, the status homes agreeing — the class-3 ledger staying

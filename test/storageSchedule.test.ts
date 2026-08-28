@@ -35,6 +35,12 @@
  * rule occupies, with the counter-only world kept as the detected negative.
  * No `falsifies:` tag appears here on purpose: a reproduction demonstrates a
  * finding's repair at its return; the finding dispositions stay `S0-10`'s.
+ * And `FU-11`'s at the `S0-5` return (2026-08-28): checkpoint install is a
+ * machine — a durable install record whose content commit and head activation
+ * are two steps with a real window between them — where before the return it
+ * was one array prepend nothing could kill inside (`ST-06`), so partial
+ * install, content-before-head rollback and the second-newest fallback are
+ * schedules here rather than opener arithmetic.
  *
  * Sizes are symbolic exactly as in writeAdmission.test.ts: `MAX_UPDATE` 64 and
  * `BUDGET` 8 keep schedules legible, and `check-update-limit.mjs` owns the
@@ -1096,5 +1102,350 @@ describe('FU-10 — the abandoned position, inverted at the S0-4 return', () => 
     identified(d);
     expect(d.spool.map((r) => r.position)).toEqual([1, 2]);
     expect(d.spool.every((r) => r.state === 'minted' && r.digest !== null)).toBe(true);
+  });
+});
+
+describe('FU-11 — the staged install: activation is one commit, and the fallback actually installs (the S0-5 return)', () => {
+  /**
+   * §7.6's checkpoint tuple, installed as a machine (`S0-5` A-schemas §4). The
+   * pre-return world was `generationApply` step 6's single array prepend —
+   * content installation, head activation, semantic admission and retention
+   * fused into one step, so `ST-06`'s windows were unexpressible rather than
+   * refuted, and the second-newest check proved opener-set arithmetic. Under
+   * the ratified shape a durable install record drives two commits:
+   * `commit-content` writes the tuple's content into its durable slot —
+   * visible to nothing — and `activate` flips the live pair (content root and
+   * head baseline) together, or rolls the stage back when the window's second
+   * writer made the tuple ineligible. Trim reads the ACTIVE pair, so a tuple
+   * nobody admitted licenses no trim, and pre-admission envelopes survive
+   * every schedule.
+   */
+
+  interface CpTuple {
+    gen: number;
+    /** Ciphertext present and digest-verified at the store, or lost. */
+    bytes: string | null;
+    /** A verified `SemanticAdmission` is durable beside the tuple. */
+    admitted: boolean;
+  }
+  interface CpDurable {
+    /** The store's retained tuples, newest first. */
+    tuples: readonly CpTuple[];
+    openers: readonly number[];
+    /** Durable content slots `commit-content` wrote — installed, not live. */
+    content: Readonly<Record<number, string>>;
+    /** The durable install record a fresh page resumes from. */
+    install: { gen: number } | null;
+    /** The live pair a reader consumes. They move together or not at all. */
+    activeContent: string | null;
+    activeHeads: number | null;
+    /** Pre-checkpoint envelopes trimmed below this generation. */
+    trimmedBelow: number | null;
+  }
+
+  const cpWorld = (over: Partial<CpDurable> = {}): World<CpDurable, null> => ({
+    durable: {
+      tuples: [
+        { gen: 4, bytes: 'cp@4', admitted: true },
+        { gen: 3, bytes: 'cp@3', admitted: true },
+      ],
+      openers: [3, 4],
+      content: { 3: 'content@3' },
+      install: null,
+      activeContent: 'content@3',
+      activeHeads: 3,
+      trimmedBelow: null,
+      ...over,
+    },
+    volatile: null,
+    observed: [],
+  });
+
+  /** The pick: the newest tuple whose bytes, admission and opener all survive. */
+  const newestComplete = (d: CpDurable): number | null =>
+    d.tuples.find((t) => t.bytes !== null && t.admitted && d.openers.includes(t.gen))?.gen ?? null;
+
+  const tupleOf = (d: CpDurable, gen: number) => d.tuples.find((t) => t.gen === gen);
+
+  /**
+   * The installer, resumable because both steps read the durable install
+   * record. `choose` is the restore rule — `newestComplete` exercises the
+   * fallback; a constant exercises one tuple's window.
+   */
+  const installer = (
+    name: string,
+    choose: (d: CpDurable) => number | null,
+  ): Writer<CpDurable, null> => ({
+    name,
+    resumable: true,
+    steps: [
+      {
+        id: 'commit-content',
+        // The check-and-stage: bytes, admission and opener are read, the pick
+        // is recorded durably, and the content commits into its slot. Nothing
+        // becomes live here — a reader still sees the prior pair.
+        run: (w) => {
+          const gen = w.durable.install?.gen ?? choose(w.durable);
+          if (gen === null || gen === w.durable.activeHeads) return w;
+          const t = tupleOf(w.durable, gen);
+          if (t?.bytes == null || !t.admitted || !w.durable.openers.includes(gen)) return w;
+          return {
+            ...w,
+            durable: {
+              ...w.durable,
+              content: { ...w.durable.content, [gen]: `content@${gen}` },
+              install: { gen },
+            },
+          };
+        },
+      },
+      {
+        id: 'activate',
+        // The one commit that makes anything live: the content root and the
+        // head baseline flip together, or not at all. It re-verifies against
+        // durable state, because a second writer can land inside the window —
+        // and when the tuple became ineligible there, it rolls the stage back
+        // rather than serving a mixture.
+        run: (w) => {
+          const r = w.durable.install;
+          if (r === null) return w;
+          const t = tupleOf(w.durable, r.gen);
+          const c = w.durable.content[r.gen];
+          if (t?.bytes == null || !t.admitted || c === undefined) {
+            const content = { ...w.durable.content };
+            delete content[r.gen];
+            return { ...w, durable: { ...w.durable, content, install: null } };
+          }
+          return {
+            ...w,
+            durable: { ...w.durable, activeContent: c, activeHeads: r.gen, install: null },
+            observed: [...w.observed, `installed:${r.gen}`],
+          };
+        },
+      },
+    ],
+  });
+
+  /**
+   * Trim, as its own writer so a schedule can attempt it anywhere: it reads
+   * the ACTIVE pair, and only an admitted active tuple licenses it — which is
+   * where "signed before any pre-checkpoint envelope may be trimmed" becomes a
+   * gate that executes rather than an obligation (P-8 requirement 7).
+   */
+  const trimmer = (): Writer<CpDurable, null> => ({
+    name: 'trimmer',
+    resumable: true,
+    steps: [
+      {
+        id: 'trim',
+        run: (w) => {
+          const g = w.durable.activeHeads;
+          if (g === null) return w;
+          const t = tupleOf(w.durable, g);
+          if (t === undefined || !t.admitted) return w;
+          return { ...w, durable: { ...w.durable, trimmedBelow: g } };
+        },
+      },
+    ],
+  });
+
+  /** §11.3 test 8's event as a writer: the store loses the newest tuple's bytes. */
+  const lose = (gen: number): Writer<CpDurable, null> => ({
+    name: 'lose',
+    steps: [
+      {
+        id: 'drop-bytes',
+        run: (w) => ({
+          ...w,
+          durable: {
+            ...w.durable,
+            tuples: w.durable.tuples.map((t) => (t.gen === gen ? { ...t, bytes: null } : t)),
+          },
+        }),
+      },
+    ],
+  });
+
+  const cpMachine = (
+    writers: readonly Writer<CpDurable, null>[],
+    over: Partial<CpDurable> = {},
+  ): Machine<CpDurable, null> => ({ initial: cpWorld(over), recover: () => null, writers });
+
+  /** The live pair references one tuple, and its content is durably present. */
+  const pairConsistent = (d: CpDurable) => {
+    if (d.activeHeads === null) {
+      expect(d.activeContent).toBeNull();
+      return;
+    }
+    expect(d.activeContent).toBe(d.content[d.activeHeads]);
+  };
+
+  it('the install window is schedulable: a kill and a second writer land between the content commit and the activation', () => {
+    const { killed, raced } = demonstrateBoundary(
+      cpMachine([installer('install', newestComplete), lose(4)]),
+      {
+        name: 'content commit to activation',
+        writer: 'install',
+        check: 'commit-content',
+        commit: 'activate',
+        secondWriter: 'lose.drop-bytes',
+      },
+    );
+    expect(killed.ran).toContain('kill');
+    // Killed inside the window: content committed, nothing live moved.
+    expect(killed.world.durable.install).toEqual({ gen: 4 });
+    expect(killed.world.durable.activeHeads).toBe(3);
+    // Raced: the loss landed inside the window, and the activation rolled the
+    // stage back rather than serving content whose tuple is gone — the
+    // content-before-head rollback, executed.
+    expect(raced.world.durable.activeHeads).toBe(3);
+    expect(raced.world.durable.activeContent).toBe('content@3');
+    expect(raced.world.durable.install).toBeNull();
+    expect(raced.world.durable.content[4]).toBeUndefined();
+  });
+
+  it('refuses the pre-return installer, which fused content, heads, admission and retention into one step', () => {
+    // generationApply step 6's array prepend, rebuilt as a writer: the census
+    // check must refuse it with the FU-08 diagnosis rather than pass around
+    // it — the window ST-06 could only describe is not allowed to disappear.
+    const fused: Writer<CpDurable, null> = {
+      name: 'install',
+      steps: [
+        {
+          id: 'admit-checkpoint',
+          run: (w) => ({
+            ...w,
+            durable: {
+              ...w.durable,
+              content: { ...w.durable.content, 4: 'content@4' },
+              activeContent: 'content@4',
+              activeHeads: 4,
+              trimmedBelow: 4,
+            },
+          }),
+        },
+      ],
+    };
+    expect(() =>
+      demonstrateBoundary(cpMachine([fused, lose(4)]), {
+        name: 'content commit to activation',
+        writer: 'install',
+        check: 'admit-checkpoint',
+        commit: 'admit-checkpoint',
+        secondWriter: 'lose.drop-bytes',
+      }),
+    ).toThrow(/no kill point between the check and the commit|FU-08/u);
+  });
+
+  it('activates neither content nor heads at any kill point before the activation — P-8 requirement 12', () => {
+    const w = installer('install', newestComplete);
+    const full = all(w);
+    for (let cut = 1; cut <= full.length; cut++) {
+      const live = runSchedule(cpMachine([installer('install', newestComplete)]), full.slice(0, cut));
+      const killed = runSchedule(cpMachine([installer('install', newestComplete)]), [
+        ...full.slice(0, cut),
+        { kill: true },
+      ]);
+      for (const trace of [live, killed]) {
+        const d = trace.world.durable;
+        pairConsistent(d);
+        if (trace.ran.includes('install.activate')) {
+          expect(d.activeContent).toBe('content@4');
+          expect(d.activeHeads).toBe(4);
+        } else {
+          // The partial install: content may be durably staged, and the live
+          // pair is the prior tuple's — neither content nor heads.
+          expect(d.activeContent).toBe('content@3');
+          expect(d.activeHeads).toBe(3);
+          expect(trace.world.observed).not.toContain('installed:4');
+        }
+      }
+    }
+  });
+
+  it('resumes across the window from the durable record, and the pair flips together', () => {
+    const w = installer('install', newestComplete);
+    const t = runSchedule(cpMachine([installer('install', newestComplete)]), [
+      ...upTo(w, 'commit-content'),
+      { kill: true },
+      ...between(w, 'commit-content'),
+    ]);
+    const d = t.world.durable;
+    expect(d.activeContent).toBe('content@4');
+    expect(d.activeHeads).toBe(4);
+    expect(d.install).toBeNull();
+    pairConsistent(d);
+  });
+
+  for (const [why, over] of [
+    ['its admission is missing', { tuples: [{ gen: 5, bytes: 'cp@5', admitted: false }, { gen: 4, bytes: 'cp@4', admitted: true }, { gen: 3, bytes: 'cp@3', admitted: true }], openers: [3, 4, 5] }],
+    ['its bytes are lost', { tuples: [{ gen: 5, bytes: null, admitted: true }, { gen: 4, bytes: 'cp@4', admitted: true }, { gen: 3, bytes: 'cp@3', admitted: true }], openers: [3, 4, 5] }],
+    ['its opener is gone', { tuples: [{ gen: 5, bytes: 'cp@5', admitted: true }, { gen: 4, bytes: 'cp@4', admitted: true }, { gen: 3, bytes: 'cp@3', admitted: true }], openers: [3, 4] }],
+  ] as const) {
+    it(`falls back to the second-newest and actually installs it when the newest ${why}`, () => {
+      const restore = installer('restore', newestComplete);
+      const t = runSchedule(cpMachine([installer('restore', newestComplete)], over), all(restore));
+      const d = t.world.durable;
+      // The fallback is an install, not arithmetic: the older complete tuple's
+      // content and heads are live, through the same two commits, and the
+      // receipt shows the machine ran them.
+      expect(d.activeContent).toBe('content@4');
+      expect(d.activeHeads).toBe(4);
+      expect(t.world.observed).toContain('installed:4');
+      expect(t.ran).toEqual(['restore.commit-content', 'restore.activate']);
+      pairConsistent(d);
+    });
+  }
+
+  it('refuses to stage an incomplete tuple even when told to install it by name', () => {
+    // The pick guards the fallback; this guards the direct path: bytes that do
+    // not exist cannot commit, so an incomplete tuple stages nothing. The
+    // assertion sits AT the stage boundary on purpose — the activation's
+    // rollback would scrub the same state by the end of the schedule, and a
+    // stage guard whose only witness is the final state is not a guard.
+    const lost = {
+      tuples: [
+        { gen: 5, bytes: null, admitted: true },
+        { gen: 4, bytes: 'cp@4', admitted: true },
+        { gen: 3, bytes: 'cp@3', admitted: true },
+      ],
+      openers: [3, 4, 5],
+    };
+    const named = installer('install', () => 5);
+    const staged = runSchedule(cpMachine([installer('install', () => 5)], lost), upTo(named, 'commit-content'));
+    // No record and no slot exist for content the machine cannot materialise.
+    expect(staged.world.durable.install).toBeNull();
+    expect(staged.world.durable.content[5]).toBeUndefined();
+    const t = runSchedule(cpMachine([installer('install', () => 5)], lost), all(named));
+    expect(t.world.durable.install).toBeNull();
+    expect(t.world.durable.content[5]).toBeUndefined();
+    expect(t.world.durable.activeHeads).toBe(3);
+  });
+
+  it('never trims under a tuple nobody admitted, wherever the trim is scheduled — P-8 requirement 7', () => {
+    const unadmitted = {
+      tuples: [
+        { gen: 5, bytes: 'cp@5', admitted: false },
+        { gen: 4, bytes: 'cp@4', admitted: true },
+        { gen: 3, bytes: 'cp@3', admitted: true },
+      ],
+      openers: [3, 4, 5],
+    };
+    const restore = installer('restore', newestComplete);
+    // Trim attempted before anything installs: the active tuple (gen 3) is
+    // admitted, so envelopes below IT may go — and nothing at or above the
+    // unadmitted tuple's coverage does, because trim reads the active pair.
+    const early = runSchedule(cpMachine([installer('restore', newestComplete), trimmer()], unadmitted), [
+      { step: 'trimmer.trim' },
+    ]);
+    expect(early.world.durable.trimmedBelow).toBe(3);
+    // The whole restore, then trim: the fallback tuple activated, and trim
+    // follows it to 4 — never to 5, which nobody admitted.
+    const after = runSchedule(cpMachine([installer('restore', newestComplete), trimmer()], unadmitted), [
+      ...all(restore),
+      { step: 'trimmer.trim' },
+    ]);
+    expect(after.world.durable.trimmedBelow).toBe(4);
+    expect(after.world.durable.activeHeads).toBe(4);
   });
 });

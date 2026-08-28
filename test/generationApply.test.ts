@@ -96,6 +96,14 @@ const applyStep = (w: World, step: Step): World => {
       // newest is a no-op, not a second entry. Prepending unconditionally would
       // evict the second-newest on a replay -- destroying the fallback while
       // resuming the transition that was supposed to preserve it.
+      //
+      // The prepend models the RECORD's granularity -- step 6 is one recorded
+      // state -- and not the install itself: since the S0-5 return (FU-11),
+      // installing a checkpoint tuple is its own machine with its own durable
+      // record, whose content commit and head activation are separate steps
+      // with kill points between them. test/storageSchedule.test.ts schedules
+      // that machine; S0-5 A-schemas §4 states it. A kill inside step 6
+      // resumes through BOTH records.
       return {
         ...w,
         checkpoints: w.checkpoints.some((c) => c.gen === targetGen)

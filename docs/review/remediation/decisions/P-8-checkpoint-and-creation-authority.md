@@ -5,7 +5,10 @@
 
 **Decided:** 2026-08-26 · **Checkpoint:** `RC-5A`, retained replay witness plus semantic admission ·
 **Head baseline after trim:** trust the admitting credential, with self-admission recorded as such ·
-**Creation:** `RC-5C`, creator-committed card identity · **Status:** decided, not yet consolidated
+**Creation:** `RC-5C`, creator-committed card identity · **Status:** decided; consolidated at `S0-5` and
+completed by the `S0-5` return (2026-08-28) — requirements 5, 6's honesty clause, 7 and 12 executed there
+(`FU-11`), and the portable-witness reopen invitation below was read and declined: row 4 still binds no
+`(clientID, clock range)` mapping and Yjs client ids remain per-instance, so the selected branch stands
 
 Consolidation is [`S0-5`](../action-tree.md), which also needs `S0-2`. Adopts the single-owner precedent from
 [`P-1`](./P-1-recipient-authority.md). Nothing below is implemented.
