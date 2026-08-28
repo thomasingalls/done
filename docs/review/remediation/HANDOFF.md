@@ -15,7 +15,7 @@ disagree, the disposition is right and this file is the thing to fix.
 
 | | |
 | --- | --- |
-| Branch | `claude/stage0-remediation`, 71 commits off `9edd930` as of the `S0-1` return, all signed; the current tip rides the worktree branch `claude/s0-1-return-2a4157` until folded back |
+| Branch | `claude/stage0-remediation`, 73 commits off `9edd930` as of the `S0-2` return, all signed; the current tip rides the worktree branch `claude/s0-2-return-7a0a11` until folded back |
 | Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, the decisions, and both `S0-9` challenge rounds |
 | Not on it | nothing — this branch is the whole picture, deliberately |
 | Superseded | `claude/remediation-findings-review-997ab5` holds the review workspace at its original SHAs. Redundant once this branch is accepted |
@@ -248,19 +248,22 @@ In order. An item is done when its disposition entry's earliest-return stage has
 ## The exact next command
 
 ```bash
-cd /Users/thomasingalls/Code/done/.claude/worktrees/s0-1-return-2a4157 && pnpm install --frozen-lockfile && pnpm vectors:check && pnpm test
+cd /Users/thomasingalls/Code/done/.claude/worktrees/s0-2-return-7a0a11 && pnpm install --frozen-lockfile && pnpm vectors:check && pnpm test
 ```
 
-That establishes the baseline. **The decision sprint, the two structural artifacts and the `S0-1` return are
-complete** (queue items 2–3 and the front of item 4, 2026-08-28): the authority map with `pnpm
-authority:check`, the storage scheduler with its composed model, and now the standing census with `pnpm
-remediation:check` — all in the gate. Then read both dispositions end to end, read the map's ten open entries
-and the scheduler's three reproductions — they are the executable form of what the dispositions describe —
-run `pnpm remediation:status` for where every decision stands and what each return owes, and start the
-**`S0-2` return**: `FU-01` (the bootstrap verifier carried by factor-authenticated recovery state), `FU-05`
-(the enrollment transcript reconstructible with its `recovery_state_digest`), `FU-09`'s interface half, and
-the `P-1` record's falsifiers 12–19 — flipping the map's member-key entries and inverting the scheduler's
-reservation-fence reproduction as they land. A repair that ignores its class reintroduces the class, and all
+That establishes the baseline. **The decision sprint, the two structural artifacts, the `S0-1` return and the
+`S0-2` return are complete** (queue items 2–3 and the front of item 4, 2026-08-28): the authority map with
+`pnpm authority:check`, the storage scheduler with its composed model, the standing census with `pnpm
+remediation:check`, and now the recipient-authority readback with `pnpm recipient:check` — all in the gate.
+Then read both dispositions end to end, read the map's six open entries and the scheduler's two remaining
+reproductions (`FU-08` and `P-3` joint 1; `FU-09`'s is inverted and now asserts the fence) — they are the
+executable form of what the dispositions describe — run `pnpm remediation:status` for where every decision
+stands and what each return owes, and start the **`S0-3` return**: `FU-08` (the refusal window — nothing
+becomes authoritative without a durable carrier, `P-3` falsifiers 17–18), `FU-09`'s finish (the
+write-admission machine consolidates the fence, falsifiers 19–20), the `K_store` scope (one key per counter,
+falsifiers 14–16), `FU-13`'s remaining homes (§15 row 3 and the record vectors), and the rest of `P-3`'s
+falsifiers 14–22 — flipping the map's `k-store` entry and inverting the scheduler's refusal-window and
+key-scope reproductions as they land. A repair that ignores its class reintroduces the class, and all
 three class instruments now fail on that rather than waiting for a review: a return is not done until its
 map entries flip, its reproductions invert, and the census stays classified.
 
