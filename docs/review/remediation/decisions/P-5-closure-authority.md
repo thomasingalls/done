@@ -1,11 +1,25 @@
 # `P-5` — policy semantics and closure-authority representation
 
-**Decided:** 2026-08-27 · **Representation:** `RC-8C`, targeted repairs under one stated rule — no new registry
-and no coverage manifest · **Suite separation:** the stronger primitive rule, with `path` an exhaustive
-execution-path enum · **WebAuthn:** same-origin only · **Origin isolation:** allowlist by default, and the
-claim narrowed to what the scan proves · **Status:** decided, not yet consolidated
+**Decided:** 2026-08-27 · **Reopened:** 2026-08-28, at the rule's own jurisdiction · **Representation:**
+`RC-8C`, targeted repairs under one stated rule — no new registry and no coverage manifest · **Suite
+separation:** the stronger primitive rule, with `path` an exhaustive execution-path enum · **WebAuthn:**
+same-origin only · **Origin isolation:** allowlist by default, and the claim narrowed to what the scan proves ·
+**Status:** reopened — question, options and falsifiers drafted below; ratification pending
 
-Consolidation is [`S0-1`](../action-tree.md). This is the last decision in the plan.
+Consolidation is [`S0-1`](../action-tree.md). This is the last decision in the plan. *[Annotated 2026-08-28:
+`S0-1` ran to completion on 2026-08-27, so the header's earlier "not yet consolidated" was already stale when
+`S0-9` round 2 read this corpus — this record's own instance of the `FU-13` shape, corrected here in place; the
+reopening below returns the closure-authority question to `S0-1`. And "last decision" is superseded by the
+sprint: `RC-9` never had a decision at all, and the queue in [`HANDOFF.md`](../HANDOFF.md) is the one home of
+what remains and in what order.]*
+
+**Read the reopening at the end of this record before consuming anything above as settled.** `RC-8C` stands —
+both `S0-9` rounds convicted the remediation *by* it, which is the strongest standing a rule can earn from a
+challenge — and the four policy answers stand with it. What failed is the rule's quiet scope: it was ratified
+saying *every* and enforced over the corpus under review alone, so the remediation's own documents — one of
+them an exact `S0-9` input — kept publishing decided-away content while every checker stayed green. The
+reopened question, its floors, the options and falsifiers 15–22 are drafted below; ratification is the open
+step.
 
 ## Five questions, and the fifth is the one that shapes the rest
 
@@ -145,7 +159,12 @@ the same defect as an unbounded retention** (§16.6's instinct, at a different o
 This is why §10.11's evidence table is **correctly empty** rather than incomplete: its own rule is a floor _with
 evidence and a date_, and an asserted version row would be worse than the omission. What `P-5` adds is that
 emptiness is the right state until a dated source exists, and that the expiry is declared when it is filled.
-Enforcement belongs at the gate that consumes it (`L-4`), not at every build.
+Enforcement belongs at the gate that consumes it (`L-4`), not at every build. *[Superseded in part 2026-08-28,
+`FU-15`: for the X25519 table the consuming gate is `S0-10` — TRD §10.11's own sentence makes the dated
+readback a Stage 0 closure input, and the hygiene commit made the `OWED` declaration, the regenerated matrix
+and the queue agree with [`action-tree.md`](../action-tree.md). The discipline stands; the parenthetical named
+the wrong gate for this observation, and for as long as it did, two authority records disagreed about one
+debt — the exact shape the reopening below is about.]*
 
 ## 5. Current selection status has one authority, and it is §15.1
 
@@ -190,3 +209,241 @@ direction: nothing checks that the PRD's own status statements agree with it, wh
 - **The X25519 evidence table's contents**, which need a dated external source `S0-1` may not have.
 - **Whether `S0-8`'s traceability matrix is generated or written.** `RC-8C` gives it a criterion — one home,
   read not restated, checked in both directions by a third party — and leaves the form to that action.
+
+---
+
+## Reopened 2026-08-28 — the jurisdiction of the rule (round 1 pattern 3, round 2 `FU-07`)
+
+**Everything above stands except the scope of one word.** `RC-8C` says *every* fact and *every* consumer, and
+it was enforced as if it said *every fact in the corpus under review*. Both `S0-9` rounds convicted the
+remediation by its own rule: round 1's third pattern — *one fact, two homes, and the cross-check reads one of
+them* ([`DISPOSITION.md`](../S0-9/DISPOSITION.md)) — was built entirely from artifacts this remediation wrote,
+and round 2 found the governing instance
+([`A-07`](../S0-9/followup-authority/challenge-authority.md),
+[`E2`](../S0-9/followup-evidence/challenge-evidence.md), reconciled as `FU-07` in
+[`FOLLOWUP-DISPOSITION.md`](../S0-9/FOLLOWUP-DISPOSITION.md)), with a return that names this record rather
+than any artifact: closure authority at `P-5`/`S0-1`, then `S0-8`. [`HANDOFF.md`](../HANDOFF.md) counts the
+class at six blockers — `FU-05`, `FU-07`, `FU-13`, `FU-14`, `FU-15`, `FU-16` — and states what this record
+owes: the class-3 rule the remaining homes follow.
+
+**The instance: an exact challenge input that no checker reads, publishing what the process rejected.**
+[`corrected-end-state.md`](../corrected-end-state.md) is named in `S0-9`'s exact affected artifacts — the
+corrected end state the challenge exists to challenge — and it was written before any decision was taken and
+never revisited. At lines 13–16 and 302–303 it says `RC-1`, `RC-2`, `RC-3`, `RC-5`, `RC-7`, `RC-8` and `RC-9`
+remain unselected and Stage 0 is not reviewably corrected until they are — six of those seven are decided, in
+records this file predates; the seventh, `RC-9`, is genuinely open, which the queue owns and this file cannot
+speak for. At six further places (76–77, 151–154, 194–196, 220, 242, 269–280) it calls choices unresolved that
+`P-1` through `P-8` recorded — the last of them this record's own: the closure-authority representation,
+presented as an open three-way branch by the very file this decision's jurisdiction failed to reach. And one
+passage is not stale status but a live wrong rule: lines 168–175 prescribe that a final refusal licenses
+exactly attempt 1, which *"cannot fork or create a third"* — the sole-successor cap `S0-4` Stage D killed by
+mutation, because two epoch changes exhaust it, and replaced with the unbounded refusal chain in which each
+durable refusal licenses one successor at the same position. An implementer following the exact corrected end
+state builds the availability defect the remediation deliberately retired; a reviewer mistakes selected
+branches for open work. Every checker stays green throughout, because none of `status:check`,
+`retention:check`, `limit:check`, `vectors:check` or `trace:check` reads this consumer — `E2`'s verdict:
+*"This is the precise failure mode `P-5` tried to prevent."* The file `P-1`'s record quotes for the
+two-sources-of-truth hazard is itself the second source that drifted.
+
+**The class: the rule was enforced over a jurisdiction smaller than its statement.** The remediation gave the
+reviewed corpus homes, readbacks and third-party checks — and exempted its own corpus by silence. Round 1
+found the shape inside the remediation three times: `DELETION_CLASSES` disagreeing with §14.7,
+row 17's A1 vector byte-identical to the reviewed tip, §10.11's before-Stage-0 sentence against the `OWED`
+list's `L-4`. Round 2 added the debt with two gates (`FU-15`), the ledger titled by a non-ancestor (`FU-16`),
+this sprint's own records publishing retired claims (`FU-13` — and the status line at the top of this record,
+annotated above), and the gate itself crediting command-text reachability as execution (`FU-14`, `E5`): at the
+challenged tip `pnpm check` exited at lint, and traceability still said every artifact *runs through the
+gate*. Inside the enforced jurisdiction, `E4` found the same disease in `S0-1`'s own instruments:
+`status:check` scopes itself honestly in its docblock while the closure copy grants it more — a checker's
+printed claim wider than its scan is `S0-1`'s founding defect, *green while enforcing less than they claimed*,
+in the instrument built to end it.
+
+`P-4` and `P-1` ratified class 1's pattern and `P-3` ratified class 2's. This record owes class 3's: **every
+fact keeps one home; every other page that states it is a projection, a dated record, or superseded — and says
+which; an input a gate or a challenge consumes is checked by something that executed, or it is not an input;
+and a checker's printed claim is exactly its scope.**
+
+### The reopened question
+
+**Does `RC-8C`'s *every* reach the remediation's own documents — by what census does each of them take a
+standing (a home something executed checks, a projection something regenerates, a dated record, a superseded
+page that names its successors) — and which standing does `corrected-end-state.md`, an exact `S0-9` input
+still publishing decided-away content, take?**
+
+`RC-8C` itself is not reopened. Both rounds convicted the corpus *by* the rule — every class-3 blocker is
+stated as a violation of it — and the four policy answers stand with it: round 1 verified `checkSeparation` as
+*a genuine total classification*; the WebAuthn negatives held; the inverted scanner holds within its narrowed
+claim, owing round 1's `originOf` correction at `S0-1` (any URL carrying `+` is discarded as a fragment — the
+queue already carries it); the dated-observation discipline stands with its gate corrected in place above
+(`FU-15`). What is reopened is the jurisdiction the ratification never wrote down, and the standing of the one
+document whose drift both rounds priced.
+
+### The floors that are not choices
+
+**The instance floor: an artifact listed as a gate or challenge input is current under an executed check, or
+it is not listed.** Whatever is ratified must refuse the reproduction: `corrected-end-state.md` cannot keep
+both its `S0-9` input listing and its decided-away content while every checker passes. Round 3 (queue item 6)
+does not begin against an input in that state.
+
+**The reconstructibility floor.** The document's own `ClosureAuthority` row states the deletion condition this
+program holds closure records to: *append/supersede only; prior review inputs stay reconstructible*. Rounds 1
+and 2 read this file at `5923f51`, and their reports must keep their meaning — so no option repairs by making
+the challenged bytes unreachable. Supersession, regeneration and in-place annotation all satisfy this; silent
+rewriting and deletion do not.
+
+**The execution floor: "checked" credits an execution, never reachability.** `RC-8C`'s third clause — checked
+in both directions by something that is neither endpoint — gains the word the gate lesson paid for: the
+something must have *run*. A claim backed by command text that could have run is the `FU-14` defect, whatever
+the document. The receipt mechanism is `S0-8`'s design to own; the crediting rule binds every option here.
+
+**And the jurisdiction has two existing regimes it must not disturb.** `docs/review/`'s own manifests are
+hash-pinned in `config.json` and verified by `pnpm review:status` — that regime stands, untouched. Finding
+dispositions under `docs/review/findings/` are `S0-10`'s separately authorized subject, and no checker
+ratified here acquires authority over them. The jurisdiction that was never written down is
+`docs/review/remediation/` itself — 44 markdown files, this record included.
+
+### The options considered
+
+Two joints: how the corpus enters the rule, and what the drifted input becomes.
+
+**Joint 1 — the census that brings the corpus under the rule.**
+
+**A — a total standing classification.** Every document under `docs/review/remediation/` declares its standing
+from an exhaustive enum — `home | projection | record | superseded` — and a recursive walker (round 1's
+non-recursive-`readdirSync` lesson is a floor of the mechanism) refuses a missing standing, an unknown value,
+and a per-standing obligation left unmet: a home names the readback that checks it, a projection names its
+generator, a record names the SHA it speaks of — ancestry-verified, the `FU-16` shape made permanent — and
+takes edits only as dated addenda under a pin, and a superseded page opens by naming its successors. The buy
+is the argument this program has now bought five times: a classification that drops what it does not recognise
+cannot fail, it can only pass — `checkSeparation`'s totality, applied to the corpus that kept generating the
+class. The census is complete by construction, a new file cannot enter no bucket, and the standing header
+doubles as the first thing a reader needs to know about any page. The costs, recorded: one header per file
+across 44 files, once; one new walker in the gate; and the record pins need a home and a re-pin discipline —
+the `config.json` shape the review workspace already uses, extended rather than invented.
+
+**B — jurisdiction by declared consumption.** No headers; the census is the input lists the gates and
+challenges already publish — `S0-9`'s exact affected artifacts, the gate's readbacks — and each listed path
+must resolve to a checked-current document or leave the list. The buy is the smallest edit: no mass header
+pass, and the rule binds exactly the consumption edges `RC-8C` is about. The costs: the census *is* the lists,
+so an undeclared consumer escapes silently — the filter defect at corpus scale, and `FU-07` arose precisely at
+a consumer nobody had declared a checker for; the lists multiply and must pairwise agree, which is `FU-15`'s
+shape — two authority records disagreeing about one debt — made load-bearing; and a document outside every
+list still reads as current to the next challenger, its standing unwritten exactly where this reopening
+started.
+
+**C — repair the instance and add no mechanism.** Fix or retire `corrected-end-state.md` now; let `S0-9`
+round 3 and its successors catch the next drift. The buy is zero machinery. The costs: review-as-checker is
+the defect class itself — both rounds ran with every checker green while an input published rejected content,
+so the class's detection price is one full challenge round per instance; `RC-8C`'s third clause exists because
+*neither endpoint is trusted to certify itself*, and C leaves the corpus certified by whoever happens to read
+it; and it hands class 3 the concession `P-4` and `P-3` refused their classes — the smallest diff, ratifying
+the pattern instead of closing it.
+
+**Joint 2 — what `corrected-end-state.md` becomes.**
+
+One sub-question separates the options: where the corrected end state lives now that every choice the document
+deferred is taken or queued.
+
+**A — superseded: the ratified records and the corrected corpus are the end state, and the file says so.** The
+document closes with a supersession header naming its successors — the seven decision records for every branch
+it calls open, `S0-4`'s refusal chain for the attempt cap, the stage returns' TRD and selection homes for the
+invariants and the durable-record table as they land — and leaves `S0-9`'s input list, replaced there by the
+ratified records and the regenerated corpus; its challenge-era content stays reconstructible at its SHAs,
+which is the supersede half of its own `ClosureAuthority` row applied to itself. The buy: the second copy
+stops existing as a current statement, so the failure mode is structurally gone on this file — no maintainer,
+no checker, nothing left to drift; *read the somewhere else*, taken to its conclusion. The costs: the corpus
+loses its one composed narrative as a current page, so round 3 reads decisions and returns instead of one
+target document; the `S0-9` node's input list amends, an edit to the plan's own home; and a migration pass
+must first verify nothing still consumes it as current — at this tip the consumers are the action tree's input
+list and the queue's `P-5` bullet, plus `P-1`'s quotation of its two-sources hazard, which stays true as a
+quotation of the challenge-era file.
+
+**B — a generated projection.** The document is rebuilt by a generator that reads the decision records'
+status and selections and the action tree, and a third script checks both directions. The buy: the narrative
+page survives, and cannot drift where it is generated. The costs are this record's own Branch-A argument,
+returned home: the decision records are prose, so generating from them means either giving them machine
+frontmatter — reshaping the sprint's records to feed a document — or extracting free-text blocks the checker
+cannot see, which is a registry in name only with the drift moved inside the blocks; and the nuance is the
+artifact — the global invariants and the durable-record table are arguments, and a projection either carries
+them opaquely or throws them away.
+
+**C — a current home, hand-maintained, with a contradiction readback.** Update the document to the ratified
+state now and add a checker that reads it against the decision records — selected/open agreement in both
+directions, plus the known contradiction patterns. The buy: the composed page keeps authority where
+composition genuinely lives, and the known defects become permanent negatives. The costs are this record's own
+Branch-B argument, returned home: a maintained second copy of every decision, with a maintainer attached — and
+the checker sees only what it was told to see, the list-matcher shape `S0-1` exists to refuse. The cap
+sentence was not a status word (`E2`: *not merely stale wording*), so the readback that would have caught
+yesterday's drift is blind to tomorrow's by construction; and the sprint has already paid this maintenance
+twice inside its own records (`FU-13`; the status line annotated above), which is what keeping a wide copy
+current actually costs.
+
+### Awaiting ratification
+
+The ratifying edit selects one option per joint, argues each against the floors, names
+`corrected-end-state.md`'s standing and its successors or readback explicitly, and instantiates falsifiers 15,
+16, 17 and 18 against the selected mechanism. Until then the `S0-1` return does not begin, round 3 has no
+valid input list, and nothing may cite `corrected-end-state.md` as a current statement of anything.
+
+### Falsifiers 15–22
+
+Continuing the fourteen above, under the floors. Each is a test, not a claim; 20, 21 and 22 bind every option,
+15's *outcome* binds every option while its mechanism is ratification's to instantiate, and the rest read "the
+ratified census" and "the ratified standing" as whatever ratification selects.
+
+15. **The reproduction fails.** The two convicted passages cannot recur unread: *cannot fork or create a
+    third* against `S0-4`'s refusal chain, and an *unselected/unresolved* claim against a ratified record,
+    each either fails an executed check or is unreachable because the document is no longer a current input —
+    demonstrated by putting either sentence back.
+16. **The census is total.** Every document in the corpus resolves to exactly one standing; a new file with
+    none, an unknown standing value, and a file in a subdirectory the walker missed each fail the checker
+    rather than entering no bucket.
+17. **A record names its subject, and the name verifies.** A `record`-standing document carries the SHA it
+    speaks of and ancestry is checked — `end-state-materiality.md`, retitled by the `FU-16` hygiene, passes as
+    the first instance — and a silent edit to a pinned record fails until a dated addendum re-pins it.
+18. **Standing binds consumption.** Every path a gate or challenge lists as a current input resolves to a
+    standing that admits current consumption, with its readback live; a superseded or record document in a
+    current-input list fails; `S0-9` round 3's input list passes this before the round begins.
+19. **Supersession is legible and loses nothing.** A superseded document opens with its successors before any
+    old content, every named successor resolves, and the challenge-era bytes remain reconstructible at their
+    SHAs — a reader landing mid-file cannot take it for current, and `git show 5923f51:…` still explains what
+    rounds 1 and 2 read.
+20. **A green gate attests exactly what ran.** The claim *runs through the gate* is credited only by an
+    execution receipt; a check reachable in command text but skipped by an earlier exit fails the claim —
+    `FU-14`'s reproduction, refused as a rule here and designed at `S0-8`.
+21. **A checker's printed claim is its scope.** `status:check` and `trace:check` print conclusions no wider
+    than what their docblocks scope (`E4`, `E5`); a mutation restoring the wider sentence fails — falsifier
+    12's rule, pointed at the two oracles the rounds caught overclaiming.
+22. **The homes agree.** [`HANDOFF.md`](../HANDOFF.md), `action-tree.md`'s `P-5`/`S0-1`/`S0-9` nodes and this
+    record state the ratified census and the document's ratified standing, and a readback fails while any of
+    them still lists `corrected-end-state.md` as a current challenge input or publishes the superseded
+    jurisdiction — the `FU-07` shape, refused at the record that owns the shape.
+
+### Consolidation owed at `S0-1`, regenerated at `S0-8`
+
+- `corrected-end-state.md` disposed per the ratified joint-2 option — header, generator or readback — with the
+  `S0-9` node's input list and the queue agreeing in the same commit (falsifier 22).
+- The standing census per the ratified joint-1 mechanism, joining the gate; the record pins, with
+  `end-state-materiality.md` and the two `S0-9` dispositions as first entries.
+- Round 1's `originOf` correction — a URL carrying `+` is currently discarded as a fragment — with the
+  republished claim narrowed or the pattern fixed, in the same return the queue already assigns it.
+- The two claim-narrowings from `E4`/`E5`: `status:check`'s and `trace:check`'s printed conclusions restated
+  to their scopes now; `trace:check`'s execution-receipt redesign stays at `S0-8` (`FU-14`).
+- At `S0-8`: traceability consumes execution receipts, never shell text; the regenerated matrix's
+  population-agreement step gains the standing census as an input; the five matrix limits repair as already
+  queued.
+
+### What this reopening does not decide
+
+- **`FU-14`'s receipt mechanism** — `S0-8`'s design. The execution floor fixes what a claim may credit, not
+  how receipts are produced.
+- **`FU-13`'s remaining homes** — TRD §15 row 3 and the record vectors ride the `S0-3` return, exactly as
+  `P-3` assigned them; `FU-05`'s republication rides `S0-2`'s regeneration.
+- **The four policy answers** and `S0-1`'s four checks within their stated scopes — not reopened; round 1
+  verified the separation check's totality by mutation.
+- **`RC-9`** — next in the sprint, untouched here. Which gate owns `wasm:stale` and the `L-4` evidence set is
+  its question, and the standing census does not answer it.
+- **Finding dispositions** — `S0-10`'s separately authorized workflow, exactly as the boundary above states;
+  the census classifies nothing under `docs/review/findings/`.
+- **`docs/decisions.md`'s stale row count** — outside this jurisdiction and already assigned to `H-1`'s
+  append-only ledger.

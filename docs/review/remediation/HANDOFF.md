@@ -80,6 +80,12 @@ nothing decides it, every action keeps obeying it.
   record's falsifiers 11–19 (queue item 4).
 - **`P-5`** owes closure authority over the remediation's own documents — `corrected-end-state.md` is an
   explicit `S0-9` input that no checker reads and that still publishes rejected content (`FU-07`).
+  **Drafted 2026-08-28:** the record carries the reopened question — whether `RC-8C`'s *every* reaches the
+  remediation's own corpus — the floors (an input is current under an executed check or it is not an input;
+  prior challenge inputs stay reconstructible; "checked" credits execution, never reachability), options for
+  both joints — the census that brings the corpus under the rule, and the standing `corrected-end-state.md`
+  takes — and falsifiers 15–22; the record's own stale status line and its `FU-15` gate parenthetical are
+  annotated in place. Ratification is the open step.
 - **`RC-9` never had a decision at all**, and `action-tree.md` makes choosing between its branches a
   prerequisite of `L-4`.
 - `P-6` reopens only if `FU-02` forces the archive-factor choice to change.
