@@ -1,6 +1,14 @@
 {
   "$schema": "https://done.invalid/vectors/device-lock/1",
   "generated_by": "scripts/generate-device-lock-vectors.mjs",
+  "falsifies": {
+    "the post-lock wrap set": [
+      "f-f5def83-device-lock-reader-key-bypass"
+    ],
+    "the rotation_owed derivation": [
+      "f-dbfd01f-device-lock-rotation-caveat-lost"
+    ]
+  },
   "selection": "docs/selections/row-13-device-lock.md",
   "trd_row": 13,
   "construction": {
@@ -265,14 +273,23 @@
     },
     {
       "name": "replacement-credential-under-a-wrong-code",
+      "falsifies": [
+        "f-f5def83-device-lock-reader-key-bypass"
+      ],
       "why": "The replacement wrapping credential is sealed with the same LockSeal machinery as L_lock itself, so a wrong code does not open it. Without this the lock would replace a promptless key with another promptless key and change nothing."
     },
     {
       "name": "replacement-credential-seal-as-a-factor-seal",
+      "falsifies": [
+        "f-f5def83-device-lock-reader-key-bypass"
+      ],
       "why": "The credential seal presented under the code factor's own id. The seal AAD binds the id, so the two sealed objects in a locked slot -- L_lock and the wrapping credential -- cannot be substituted for one another."
     },
     {
       "name": "seal-rebound-to-other-credential",
+      "falsifies": [
+        "f-f5def83-device-lock-reader-key-bypass"
+      ],
       "why": "A prf seal presented under another credential id, which is how a removed passkey would be made to look enrolled."
     },
     {

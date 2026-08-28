@@ -305,6 +305,7 @@ const expectOk = (r: Result): World => {
 const lapsed = (now = 10): World =>
   expectOk(entitlement(initial(), { sequence: 1, effect: 'sync-stops', effectiveAt: now }, now));
 
+// falsifies: f-4259822-lapse-transition-kind-missing
 describe('§14.7 — one clock', () => {
   it('gives two concurrent stop events one stopped_at and one deadline', () => {
     const base = initial();
@@ -366,6 +367,7 @@ describe('§14.7 — one clock', () => {
   });
 });
 
+// falsifies: f-4259822-lapse-transition-kind-missing
 describe('§14.7 — the lineage stays live, and only retire moves it', () => {
   it('keeps the lineage live through lapse, expiry and a fully cleared store', () => {
     let w = lapsed(10);
@@ -380,6 +382,7 @@ describe('§14.7 — the lineage stays live, and only retire moves it', () => {
   });
 });
 
+// falsifies: f-4259822-retirement-safe-survivor-gate-undefined
 describe('§14.7 — the six classes, and the cause that selects them', () => {
   it('deletes classes 1–5 on expiry and refuses the recovery anchor', () => {
     const w = lapsed(10);
@@ -453,6 +456,7 @@ describe('§14.7 — the six classes, and the cause that selects them', () => {
   });
 });
 
+// falsifies: f-4259822-retirement-safe-survivor-gate-undefined
 describe('§14.7 — the ledger belongs to the cause, and to this stop', () => {
   /**
    * Both of these were model bugs before they were tests. Writing the machine
@@ -498,6 +502,7 @@ describe('§14.7 — the ledger belongs to the cause, and to this stop', () => {
   });
 });
 
+// falsifies: f-4259822-lapse-transition-kind-missing
 describe('§14.7 — resume, and the re-seed after destructive progress', () => {
   it('resumes with no re-seed before any destructive progress', () => {
     for (const w of [
@@ -566,6 +571,7 @@ describe('§14.7 — resume, and the re-seed after destructive progress', () => 
   });
 });
 
+// falsifies: f-4259822-lapse-transition-kind-missing, f-4259822-retirement-safe-survivor-gate-undefined
 describe('§14.7 — retirement wins the race, in both orders', () => {
   it('reaches the same mark whichever arrives first', () => {
     const lapseThenRetire = retire(lapsed(10), 40);
@@ -602,6 +608,7 @@ describe('§14.7 — retirement wins the race, in both orders', () => {
   });
 });
 
+// falsifies: f-4259822-lapse-transition-kind-missing
 describe('§14.7 — what a compromised entitlement signer reaches', () => {
   /** The adversary holds the entitlement key and nothing else. */
   const compromised = (w: World, now: number): World => {

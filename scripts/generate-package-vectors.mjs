@@ -613,26 +613,32 @@ const ARCHIVE_PARTS = [
 const HANDOFF_NEGATIVES = [
   {
     name: 'deletion-without-a-handoff',
+    falsifies: ['f-4259822-retirement-safe-survivor-gate-undefined'],
     why: 'The gate. No hosted class is destroyed on an elapsed window, a request, or a terminal record the service wrote itself. Something a receiver signed has to exist first.',
   },
   {
     name: 'handoff-from-a-receiver-behind-the-terminal-head',
+    falsifies: ['f-4259822-retirement-safe-survivor-gate-undefined'],
     why: "A receiver whose accepted head is not the terminal head is not current, and saying so is the whole point -- otherwise 'verified-current' means 'was reachable recently'. It may still qualify, but only by presenting a transcript.",
   },
   {
     name: 'handoff-with-an-unverifiable-catchup',
+    falsifies: ['f-4259822-retirement-safe-survivor-gate-undefined'],
     why: 'A transcript that does not chain from the prior head the receiver authenticated. Without the prior head bound, any transcript would do, and the catch-up would be a formality.',
   },
   {
     name: 'handoff-with-unenumerated-absences',
+    falsifies: ['f-4259822-retirement-safe-survivor-gate-undefined'],
     why: "A transcript that admits things are missing without naming them. 'Some updates could not be recovered' is not a known-absence list, and a deletion authorized on it destroys the only copy of what was never enumerated.",
   },
   {
     name: 'handoff-for-another-retired-package',
+    falsifies: ['f-4259822-retirement-safe-survivor-gate-undefined'],
     why: 'The receipt binds the exact package digest, so acknowledging one retirement does not authorize deleting the bytes of another.',
   },
   {
     name: 'handoff-signed-by-a-non-receiver',
+    falsifies: ['f-4259822-retirement-safe-survivor-gate-undefined'],
     why: 'The receiver is named in the message, so a service that can assemble the package cannot also sign for having received it.',
   },
 ];
@@ -640,10 +646,12 @@ const HANDOFF_NEGATIVES = [
 const RETIRED_NEGATIVES = [
   {
     name: 'live-manifest-relabelled-as-retired',
+    falsifies: ['f-745e332-live-retired-package-resigning-undefined'],
     why: 'Row 10 said a live package is UPGRADED to a retired one by importing the terminal record, and not replaced. There was never an upgrade to verify: lineage_state is inside the message the assembler signs, so relabelling it leaves a signature that no longer covers what it names. This is that claim, executed -- the honest live signature against a manifest calling itself retired.',
   },
   {
     name: 'retired-manifest-under-the-assembling-credential',
+    falsifies: ['f-745e332-live-retired-package-resigning-undefined'],
     why: 'And the other direction. A complete retired package is signed by the terminal authority, so it does not verify under the device that assembled the live one -- which is what makes "complete package" mean something rather than being a label on the same bytes.',
   },
 ];
@@ -651,22 +659,27 @@ const RETIRED_NEGATIVES = [
 const ARCHIVE_NEGATIVES = [
   {
     name: 'archive-under-a-wrong-code',
+    falsifies: ['f-745e332-local-archive-portable-wrap-undefined'],
     why: 'The archive keypair is sealed under the code and nothing else. A wrong code opens neither the identity nor the commitment beside it, which is what "the code that opens it" has to mean once it is a construction rather than a sentence.',
   },
   {
     name: 'archive-envelope-repaired-with-another-identity',
+    falsifies: ['f-745e332-local-archive-portable-wrap-undefined'],
     why: "Row 14's own negative, at the archive: an envelope presented alongside a public key that is not the one it was sealed for. The identity is in the envelope's AAD, so the pairing is authenticated rather than assumed -- without it, an archive's sealed private half could be offered beside somebody else's public half.",
   },
   {
     name: 'archive-root-commitment-mismatch',
+    falsifies: ['f-745e332-local-archive-portable-wrap-undefined'],
     why: "The same anchor as an account package, at the state that has no external authority to appeal to. The archive identity's own public key fills the slot a lineage would, so a manifest naming a different identity does not match the commitment the code unsealed.",
   },
   {
     name: 'archive-wrap-from-another-workspace',
+    falsifies: ['f-745e332-local-archive-portable-wrap-undefined'],
     why: 'The generation wrap binds the workspace, so an archive of one Local workspace opens no generation of another. Independent of the factor and of the root, which is what makes the four failures separable rather than one check wearing four hats.',
   },
   {
     name: 'archive-wrap-of-another-generation',
+    falsifies: ['f-745e332-local-archive-portable-wrap-undefined'],
     why: 'And the generation, for the same reason.',
   },
 ];
@@ -674,14 +687,17 @@ const ARCHIVE_NEGATIVES = [
 const ROOT_NEGATIVES = [
   {
     name: 'freshly-minted-package-under-an-attacker-root',
+    falsifies: ['f-745e332-package-root-rewrap-substitution'],
     why: 'The attack `substituted-trust-root` cannot reach, and the reason this row needed reopening. HPKE base mode is anonymous: the attacker needs only R_pub, which travels in the package. So they pick their own auth_root, sign a fabricated history under it, and wrap their OWN generation key to the GENUINE R_pub with info naming their own root. Every signature verifies, under a root they minted, and the wrap opens -- nothing in the ciphertext is wrong. What refuses it is the root commitment sealed beside R_priv, which the attacker cannot produce without the code.',
   },
   {
     name: 'attacker-root-refused-before-any-unwrap',
+    falsifies: ['f-745e332-package-root-rewrap-substitution'],
     why: 'Order, not just outcome. The commitment is checked against the manifest before a single generation is unwrapped, so a package whose root is wrong is refused without exercising HPKE at all. An implementation that unwrapped first and checked afterwards would still have opened attacker-chosen content before noticing.',
   },
   {
     name: 'root-commitment-for-another-lineage',
+    falsifies: ['f-745e332-package-root-rewrap-substitution'],
     why: 'The commitment binds all three fields, so a genuine commitment from one lineage does not authenticate a package claiming another.',
   },
 ];

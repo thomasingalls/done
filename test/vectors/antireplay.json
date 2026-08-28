@@ -339,22 +339,37 @@
     },
     {
       "name": "refusal-for-another-position",
+      "falsifies": [
+        "f-745e332-envelope-refusal-carrier-missing"
+      ],
       "mutate": "A validly signed refusal for position 14, presented to a client waiting at 13. It verifies, and it licenses nothing here."
     },
     {
       "name": "refusal-for-another-digest",
+      "falsifies": [
+        "f-745e332-envelope-refusal-carrier-missing"
+      ],
       "mutate": "A validly signed refusal for a different digest at this position — the shape a service would produce for an attempt this client never made."
     },
     {
       "name": "refusal-for-another-credential",
+      "falsifies": [
+        "f-745e332-envelope-refusal-carrier-missing"
+      ],
       "mutate": "A validly signed refusal for another credential's position 13."
     },
     {
       "name": "unsigned-error-body",
+      "falsifies": [
+        "f-745e332-envelope-refusal-carrier-missing"
+      ],
       "mutate": "An error body with no signature, which §7.4 calls silence in as many words. The client resubmits the identical bytes from its spool rather than re-minting — and that is safe whichever unknown it was, because at most one digest is ever accepted at a position."
     },
     {
       "name": "refusal-under-an-uncertified-key",
+      "falsifies": [
+        "f-745e332-envelope-refusal-carrier-missing"
+      ],
       "mutate": "The same refusal signed by a key no epoch certifies. Anything that can withhold an answer can manufacture one, which is why §7.4 requires the refusal be authenticated rather than merely definite."
     }
   ]

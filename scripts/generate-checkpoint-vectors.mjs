@@ -38,6 +38,7 @@ import { writeFileSync, readFileSync } from 'node:fs';
 import { webcrypto as crypto } from 'node:crypto';
 
 import { aadFields, assertedNames, refuses, reportAudit } from './lib/aad-coverage.mjs';
+import { claims, falsifies } from './lib/traceability.mjs';
 
 const OUT = new URL('../test/vectors/checkpoint.json', import.meta.url);
 
@@ -316,22 +317,27 @@ const NONCE = '404142434445464748494a4b';
 const ADMISSION_NEGATIVES = [
   {
     name: 'admission-derived-sv-disagrees',
+    falsifies: ['f-b997cdb-checkpoint-coverage-unchecked'],
     why: "The check that needs nobody's signature. A restorer materialises the snapshot, derives {sv, ds} itself, and compares against BOTH the manifest and the admission. A disagreement is a refusal reached without trusting anyone, and it is mandatory even when every signature verifies -- an encoding or selection bug produces this as readily as a malicious producer.",
   },
   {
     name: 'admission-derived-ds-disagrees',
+    falsifies: ['f-b997cdb-checkpoint-coverage-unchecked'],
     why: "The same at the deletion half, which is bound separately for §7.6's reason: two replicas can carry identical state vectors and disagree about what has been deleted.",
   },
   {
     name: 'admission-signed-over-a-wrong-derivation',
+    falsifies: ['f-b997cdb-checkpoint-coverage-unchecked'],
     why: 'The case the local re-derivation exists for, and the only one that proves it runs. Here the admitter signs an admission whose derived coverage genuinely disagrees with the snapshot -- a colluding admitter, or an honest one with a bug. Every signature verifies. The refusal has to come from the restorer recomputing {sv, ds} itself, which is why that check is first and why it is mandatory even when the admission is valid. The sibling negatives above cannot show this: with the local check removed they still fail, on the signature, which is the fails-twice-isolates-nothing shape.',
   },
   {
     name: 'admission-of-another-manifest',
+    falsifies: ['f-b997cdb-checkpoint-coverage-unchecked'],
     why: 'An admission lifted onto a different manifest. It binds the manifest digest, so a checked coverage claim cannot be moved to a checkpoint nobody checked.',
   },
   {
     name: 'admission-with-a-substituted-head-baseline',
+    falsifies: ['f-b997cdb-checkpoint-coverage-unchecked'],
     why: 'The one trusted field, doing its job. Proving the head vector does not reach past the snapshot needs the accepted events that trim removes, so the baseline is what the admitter attests to and it may not be swapped afterwards.',
   },
   {
@@ -344,6 +350,7 @@ const ADMISSION_NEGATIVES = [
   },
   {
     name: 'admission-forked-from-another-parent',
+    falsifies: ['f-b997cdb-checkpoint-coverage-unchecked'],
     why: "Incomparable proposals serialise by an authenticated decision parent and never by wall clock, which is row 7's own rule at the object that now settles it.",
   },
   {
@@ -391,11 +398,13 @@ const ADMISSION_NEGATIVES = [
 const NEGATIVES = [
   {
     name: 'coverage-ignores-deletions',
+    falsifies: ['f-b997cdb-checkpoint-coverage-unchecked'],
     mutate:
       'A manifest whose delete set differs while its state vector is identical. **This is §7.6’s stated failure as a vector**: two replicas can agree on `sv` and disagree about what has been deleted, so a bare state vector is not a coverage claim and `ds` has to be bound on its own.',
   },
   {
     name: 'coverage-ignores-insertions',
+    falsifies: ['f-b997cdb-checkpoint-coverage-unchecked'],
     mutate:
       'The same manifest with a different state vector and the same delete set — the mirror of the negative above. Both halves are bound independently, so neither can be moved against the other, and the pair is published as a pair because §7.6’s point is that one of them alone is not a coverage claim.',
   },
@@ -774,6 +783,8 @@ const verify = async (doc) => {
 
   // --- retention, and the clause the interlock was missing -----------------------
 
+  falsifies('the opener predicate', ['f-b997cdb-checkpoint-key-retention-inverted']);
+
   /**
    * A checkpoint is openable only while its generation is, and the rule that
    * was supposed to guarantee that had the wrong subject.
@@ -917,6 +928,9 @@ const main = async () => {
   const doc = {
     $schema: 'https://done.invalid/vectors/checkpoint/1',
     generated_by: 'scripts/generate-checkpoint-vectors.mjs',
+    // Filled after `verify`, which is where this file's guards run. Declared
+    // here so its position in the published document does not depend on that.
+    falsifies: undefined,
     selection: 'docs/selections/row-7-checkpoint.md',
     trd_row: 7,
     construction: {
@@ -971,6 +985,7 @@ const main = async () => {
   };
 
   await verify(doc);
+  doc.falsifies = claims();
   reportAudit(NEGATIVES.map((n) => n.name));
 
   const json = JSON.stringify(doc, null, 2) + '\n';

@@ -22,6 +22,8 @@
  * 20 kB, not 64 kB*, which is the load-bearing part. And it does not check the
  * slicing that keeps ordinary operations under the limit; that is
  * `test/writeAdmission.test.ts`.
+ *
+ * falsifies: f-9b49b74-journal-seal-64k-gap
  */
 
 import { readFileSync } from 'node:fs';

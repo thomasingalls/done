@@ -140,6 +140,7 @@ const killAfter = (k: Step): World => {
 /** Steps 1–4 are reversible: discard the record and nothing moved. */
 const rollback = (_w: World): World => initial();
 
+// falsifies: f-4259822-generation-switch-local-durability-undefined
 describe('GenerationApply — a kill at every step', () => {
   it('settles to the same state from every kill point', () => {
     const settled = resume(initial());

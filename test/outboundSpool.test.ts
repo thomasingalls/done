@@ -210,6 +210,7 @@ const submit = (s: Service, e: Envelope, refuse = false): Submission => {
   };
 };
 
+// falsifies: f-992bc91-outbound-envelope-spool-undefined
 describe('§7.4 — the spool survives the kill it exists for', () => {
   it('resubmits the identical bytes after a kill between minting and sending', () => {
     let c = client();
@@ -255,6 +256,7 @@ describe('§7.4 — the spool survives the kill it exists for', () => {
   });
 });
 
+// falsifies: f-992bc91-outbound-envelope-spool-undefined
 describe('§7.4 — the position is reserved, and gaps are resolved rather than skipped', () => {
   it('gives two tabs different positions', () => {
     const shared = client();
@@ -289,6 +291,7 @@ describe('§7.4 — the position is reserved, and gaps are resolved rather than 
   });
 });
 
+// falsifies: f-745e332-envelope-refusal-carrier-missing
 describe('§7.5 — the refusal, and the successor chain it licenses', () => {
   const firstAttempt = () => {
     let c = client();
@@ -406,6 +409,7 @@ describe('§7.5 — the refusal, and the successor chain it licenses', () => {
   });
 });
 
+// falsifies: f-992bc91-outbound-envelope-spool-undefined
 describe('§7.4 — retention, which is the same store', () => {
   const settled = () => {
     let c = client();

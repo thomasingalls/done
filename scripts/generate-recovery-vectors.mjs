@@ -548,11 +548,13 @@ const MUST_FAIL = [
   },
   {
     name: 'stepup-framed-ceremony',
+    falsifies: ['f-b9ff071-webauthn-cross-origin-policy'],
     mutate:
       'The correct challenge, the right passkey, and crossOrigin true: a step-up collected in a delegated iframe. The origin check does not cover it, because in a cross-origin frame the caller IS this origin while the top-level one differs. Same-origin only is the selected policy (S0-1, P-5), and this omission was in row 12s verifier and this one identically -- one gap in two files, which is what scripts/lib/webauthn.mjs exists to prevent.',
   },
   {
     name: 'stepup-embedding-origin-claimed',
+    falsifies: ['f-b9ff071-webauthn-cross-origin-policy'],
     mutate:
       'crossOrigin false with a topOrigin present, signed over its own bytes. The specification emits topOrigin only when crossOrigin is true, so this is a client contradicting itself, and a verifier reading only the boolean accepts an embedding recorded in the bytes it just hashed. Deliberately separate from the negative above: one setting both members would pass with either check present and prove neither.',
   },

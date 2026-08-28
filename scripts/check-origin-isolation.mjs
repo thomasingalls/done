@@ -45,6 +45,8 @@
  * correct and is also the boundary of what can be proved here. **That residual
  * belongs to CSP** (`default-src 'self'`, `connect-src 'self'`), read back at
  * deployment, and §10.9 now says so rather than implying this check covered it.
+ *
+ * falsifies: f-5bd9552-origin-scan-static-forms
  */
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';

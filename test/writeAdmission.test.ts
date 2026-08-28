@@ -170,6 +170,7 @@ const trimBelow = (s: Store, boundary: number): Store => ({
   records: s.records.filter((r) => r.seq >= boundary),
 });
 
+// falsifies: f-9b49b74-journal-seal-64k-gap
 describe('§6.1 — admission, and the one state behind it', () => {
   it('refuses an update over the limit before the seal ever sees it', () => {
     const attempt = journalWrite(store(), 'big', MAX_UPDATE + 1);
@@ -247,6 +248,7 @@ describe('§6.1 — admission, and the one state behind it', () => {
   });
 });
 
+// falsifies: f-9b49b74-journal-seal-64k-gap
 describe('§6.1 — slicing, so the log never meets what it cannot take', () => {
   it('applies an operation far over the limit in full, refusing nothing', () => {
     const after = applyOperation(
@@ -275,6 +277,7 @@ describe('§6.1 — slicing, so the log never meets what it cannot take', () => 
   });
 });
 
+// falsifies: f-9b49b74-journal-seal-64k-gap
 describe('§6.1 — the back-pressure watermark is characters, not entries', () => {
   const wall = 5_300_000;
   const fits = (bytes: number) => Math.floor(wall / storedChars(bytes));
@@ -313,6 +316,7 @@ describe('§6.1 — the back-pressure watermark is characters, not entries', () 
   });
 });
 
+// falsifies: f-3bea0e6-store-sequence-allocation-undefined, f-dbfd01f-record-nonce-ceiling-omitted
 describe('§6.1 — the allocator, and the count the budget reads', () => {
   it('gives two tabs disjoint ranges', () => {
     const shared = store();
@@ -404,6 +408,7 @@ describe('§6.1 — the allocator, and the count the budget reads', () => {
   });
 });
 
+// falsifies: f-9b49b74-journal-seal-64k-gap
 describe("§6.1 — remote updates are not this journal's contract", () => {
   /** The accepted mark advances only after the content batch commits. */
   const receive = (s: Store, mark: number, commit: boolean) =>

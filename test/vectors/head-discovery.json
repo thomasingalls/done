@@ -192,10 +192,16 @@
     },
     {
       "name": "bootstrap-naming-another-prior-recovery-state",
+      "falsifies": [
+        "f-a073574-enrollment-recovery-key-unbound"
+      ],
       "why": "It must chain from the recovery state the code actually opened. Unbound, a bootstrap could claim succession from a set the recovering party never held."
     },
     {
       "name": "bootstrap-substituting-the-new-wrapping-key",
+      "falsifies": [
+        "f-a073574-enrollment-recovery-key-unbound"
+      ],
       "why": "The point of the object. If the key the new credential will receive content on is not bound, the service supplies its own and the recovery hands it the workspace."
     },
     {

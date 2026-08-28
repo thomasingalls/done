@@ -28,6 +28,8 @@
  * name a row. A PRD paragraph describing a selected construction as open
  * *without* citing `TRD §15 row N` is invisible here — which is why the repair
  * added the citations rather than only the words.
+ *
+ * falsifies: f-tip-prd-stale-selection-status
  */
 
 import { readFileSync } from 'node:fs';

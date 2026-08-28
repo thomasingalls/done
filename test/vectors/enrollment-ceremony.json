@@ -123,6 +123,9 @@
     },
     {
       "name": "substituted-recovery-state",
+      "falsifies": [
+        "f-a073574-enrollment-recovery-key-unbound"
+      ],
       "why": "The wrapping-key substitution one carrier along, and the one the transcript could not see. The service admits the genuine new device, authenticates its genuine W_pub, and hands it an attacker-controlled R_pub with a matching opaque envelope. Every symbol of the SAS matches, the enrollment succeeds, and the honestly-enrolled device wraps every future generation to a key the service holds. Binding the recovery state the new device installs is what makes the existing device unable to certify a recipient it does not itself hold."
     },
     {

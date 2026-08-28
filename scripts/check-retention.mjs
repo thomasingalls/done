@@ -42,6 +42,8 @@
  * a form it does not recognize is not matched and not rejected. What catches a
  * number that has been deleted rather than changed is the anchor list, which
  * requires the statement to be present in each place that must carry it.
+ *
+ * falsifies: f-4259822-lapse-transition-kind-missing
  */
 
 import { readFileSync } from 'node:fs';

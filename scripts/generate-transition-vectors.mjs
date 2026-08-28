@@ -41,6 +41,7 @@ import { writeFileSync, readFileSync } from 'node:fs';
 import { webcrypto as crypto } from 'node:crypto';
 
 import { aadFields, assertedNames, eliding, refuses, reportAudit } from './lib/aad-coverage.mjs';
+import { claims, falsifies } from './lib/traceability.mjs';
 
 const OUT = new URL('../test/vectors/transition.json', import.meta.url);
 const ROW_1 = new URL('../test/vectors/algorithm-suite.json', import.meta.url);
@@ -488,18 +489,22 @@ const settle = async ({ intent, intentId, outcome, outcomeSig, authorizationPubl
 const MUST_FAIL = [
   {
     name: 'certified-set-approved-by-an-impostor',
+    falsifies: ['f-c611666-rotation-reader-eligibility-missing'],
     why: 'The approval is the whole difference between a roster and a recipient set. Signed by a key that is neither an eligible client nor the lineage authorization key, it is a service asserting who may receive a content key -- which is the separation this row exists to keep.',
   },
   {
     name: 'certified-set-from-another-epoch',
+    falsifies: ['f-c611666-rotation-reader-eligibility-missing'],
     why: 'A set approved against one parent epoch, presented at a later one. Without the parent binding, an approval collected when a credential was legitimately a member survives its removal, and a rotator replays a stale membership as a current one.',
   },
   {
     name: 'certified-set-with-an-added-member',
+    falsifies: ['f-c611666-rotation-reader-eligibility-missing'],
     why: 'The row, as a signature check. The service adds a credential it admitted to the members and presents the honest approval beside it. The approval covers `members_digest`, so the added member changes the message the signature was taken over.',
   },
   {
     name: 'certified-set-with-substituted-recovery-state',
+    falsifies: ['f-a073574-enrollment-recovery-key-unbound'],
     why: 'The same at the recovery carrier: the approval covers `recovery_state_digest`, so a substituted R_pub cannot ride an honest approval. This is what stops a correctly-enrolled device wrapping future generations to a key the service holds.',
   },
   {
@@ -548,6 +553,7 @@ const MUST_FAIL = [
   },
   {
     name: 'aad-only-intent-payload-digest',
+    falsifies: ['f-4259822-recovery-replacement-payload-bytes-unbound'],
     why: 'The wraps, the exclusion set and the cutoff. Unbound, the service commits an epoch whose excluded set is not the one the client signed -- a revocation that revokes someone else.',
   },
   {
@@ -726,6 +732,15 @@ const main = async () => {
     'the-successor-generation': { ...replaceInputs, successor: SUCCESSOR_GEN + 1 },
     'the-root-commitment': { ...replaceInputs, rootCommitment: '8d'.repeat(32) },
   };
+  // The forward-rotation claim is partial and says so. What is falsified here is
+  // the *binding*: `successor` is inside the signed payload digest, so a
+  // replacement cannot be re-served with a different one. That the exposed code
+  // then **opens nothing** is a runtime property of the generation switch, and
+  // it belongs to `L-2` rather than to a vector.
+  falsifies('the replacement-payload variants', [
+    'f-4259822-recovery-replacement-payload-bytes-unbound',
+    'f-4259822-recovery-replacement-no-forward-rotation -> L-2',
+  ]);
   const replaceVariantDigests = {};
   for (const [what, inputs] of Object.entries(replaceVariants)) {
     replaceVariantDigests[what] = hex(await payloadDigest(replacementPayload(inputs)));
@@ -1108,6 +1123,7 @@ const main = async () => {
   const doc = {
     $schema: 'https://done.invalid/vectors/transition/1',
     generated_by: 'scripts/generate-transition-vectors.mjs',
+    falsifies: claims(),
     selection: 'docs/selections/row-15-transitions.md',
     trd_row: 15,
     certified_recipient_set: {

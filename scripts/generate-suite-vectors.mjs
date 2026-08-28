@@ -27,6 +27,7 @@ import { writeFileSync, readFileSync, readdirSync } from 'node:fs';
 import { webcrypto as crypto } from 'node:crypto';
 
 import { reportAudit } from './lib/aad-coverage.mjs';
+import { claims, falsifies } from './lib/traceability.mjs';
 
 const OUT = new URL('../test/vectors/algorithm-suite.json', import.meta.url);
 const TRD = new URL('../docs/TRD.md', import.meta.url);
@@ -396,6 +397,7 @@ const PATHS = new Set(['async', 'sync', 'none']);
  * recognise can only pass.**
  */
 const checkSeparation = () => {
+  falsifies('checkSeparation', ['f-3bea0e6-suite-separation-ignores-both-path']);
   const asyncPath = new Set();
   const syncPath = new Set();
   for (const [role, r] of Object.entries(SUITE_1)) {
@@ -463,6 +465,7 @@ const ownerRowIsClosed = (selectedBy) => {
 };
 
 const checkCarriers = () => {
+  falsifies('checkCarriers', ['f-992bc91-network-carrier-registry-stale']);
   for (const c of CARRIERS) {
     if (c.suite === null) {
       if (!c.selected_by)
@@ -541,6 +544,7 @@ const ROW_1 = new URL('../docs/selections/row-1-algorithm-suite.md', import.meta
  * check that existed read the data and never a document.
  */
 const checkSuiteDocuments = ({ async: asyncSet, sync: syncSet }) => {
+  falsifies('checkSuiteDocuments', ['f-3bea0e6-suite-separation-ignores-both-path']);
   const row1 = readFileSync(ROW_1, 'utf8');
   // A `·`-separated cell rather than a prose list: the HPKE ciphersuite carries
   // its own commas, so a comma-separated sentence cannot hold the suite the
@@ -625,6 +629,7 @@ const main = async () => {
     generated_by: 'scripts/generate-suite-vectors.mjs',
     selection: 'docs/selections/row-1-algorithm-suite.md',
     trd_row: 1,
+    falsifies: claims(),
     rule: {
       statement:
         'A carrier version selects an entire suite. There is no per-record algorithm identifier, no negotiation, and therefore nothing to downgrade.',

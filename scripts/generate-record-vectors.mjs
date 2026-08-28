@@ -284,8 +284,16 @@ const NEGATIVES = [
     mutate: 'Authenticate with a different workspace in the AAD, subkey unchanged.',
   },
   { name: 'wrong-generation', mutate: 'Claim gen=2 in the AAD for a record sealed under gen=1.' },
-  { name: 'kind-swapped', mutate: 'Reinterpret an update record as a state record.' },
-  { name: 'seq-edited', mutate: 'Renumber seq from 1 to 99 to reorder the trim.' },
+  {
+    name: 'kind-swapped',
+    falsifies: ['f-3bea0e6-store-sequence-allocation-undefined'],
+    mutate: 'Reinterpret an update record as a state record.',
+  },
+  {
+    name: 'seq-edited',
+    falsifies: ['f-3bea0e6-store-sequence-allocation-undefined'],
+    mutate: 'Renumber seq from 1 to 99 to reorder the trim.',
+  },
   {
     name: 'version-downgraded',
     mutate: 'Renumber v from 1 to 0 to select a suite this reader does not have.',

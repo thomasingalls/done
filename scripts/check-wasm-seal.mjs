@@ -19,6 +19,8 @@
  * fails, rather than the property quietly becoming untrue.
  *
  * Usage: node scripts/check-wasm-seal.mjs
+ *
+ * falsifies: f-9b49b74-wasm-glue-key-nonce-lengths
  */
 
 import { readFileSync } from 'node:fs';

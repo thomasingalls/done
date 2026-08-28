@@ -247,10 +247,16 @@
     },
     {
       "name": "kind-swapped",
+      "falsifies": [
+        "f-3bea0e6-store-sequence-allocation-undefined"
+      ],
       "mutate": "Reinterpret an update record as a state record."
     },
     {
       "name": "seq-edited",
+      "falsifies": [
+        "f-3bea0e6-store-sequence-allocation-undefined"
+      ],
       "mutate": "Renumber seq from 1 to 99 to reorder the trim."
     },
     {

@@ -580,6 +580,32 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 
 ### `S0-8` — regenerate selected evidence and the adversarial closure pack
 
+> **Started and completed 2026-08-27.** Plan and status: [`S0-8/README.md`](./S0-8/README.md). It closes no
+> finding of its own; what it owes is the property the other seven rest on — that the falsifier each one claims
+> **exists, names the finding it refuses, and still runs**.
+>
+> **The matrix is generated, not written**, because a written one is `P-5`'s Branch B: a second copy of every
+> mapping, which is exactly `f-992bc91-network-carrier-registry-stale`'s shape. Claims live at the evidence in
+> four carriers — `must_fail[].falsifies` on a negative, a run-time `falsifies()` registration inside a
+> generator guard, `// falsifies:` above a `describe`, and a `falsifies:` docblock line in a check script — and
+> [`traceability.md`](./traceability.md) is read back out of them by
+> [`check-traceability.mjs`](../../../scripts/check-traceability.mjs), which is neither the claim nor the matrix.
+> Each carrier is paired with a liveness oracle that is not the checker: the generators' published-versus-asserted
+> comparison, `pnpm vectors:check`'s regeneration diff, the tests `vitest list` collects, and the reachable
+> closure of `pnpm check` and `pnpm build`.
+>
+> **The population is read three ways and must agree** before anything else is checked, because a matrix that
+> decides its own population is always complete — the findings directory's own frontmatter, this file's classes
+> in [`end-state-materiality.md`](./end-state-materiality.md), and the seven action READMEs plus the repairs row
+> above. They agreed on the first run: **85 claims over 27 of the 28 current defects, and one declared owed**.
+> `pnpm trace:check` joins `check`. Sixteen mutations, all caught.
+>
+> **Two results changed a claim rather than confirming one.** A mutation moving `falsifies()` out of a guard body
+> changed no result, so the placement rule published in two docblocks was retired — what makes a guard claim live
+> is that `claims()` emits only what registered during that run, not where the call sits. And the forward-rotation
+> claim is now **partial by construction**: the vectors falsify the *binding* of `successor`, and that an exposed
+> code opens nothing is a runtime property owed to `L-2`, which the artifact now says rather than a paragraph.
+
 - **Prerequisite decisions:** `S0-1` through `S0-7` stable enough to version.
 - **Exact affected artifacts:** all changed `docs/selections/row-*.md`; corresponding `scripts/generate-*-vectors.mjs`
   and `test/vectors/*.json`; suite/AAD/retention/origin/browser/WASM checks; TRD §11 scenario inventories; review 3a/3b

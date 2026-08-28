@@ -38,6 +38,7 @@ import { writeFileSync, readFileSync } from 'node:fs';
 import { webcrypto as crypto } from 'node:crypto';
 
 import { aadFields, assertedNames, refuses, reportAudit } from './lib/aad-coverage.mjs';
+import { claims, falsifies } from './lib/traceability.mjs';
 
 const OUT = new URL('../test/vectors/device-lock.json', import.meta.url);
 const ROW_3 = new URL('../test/vectors/record-format.json', import.meta.url);
@@ -340,14 +341,17 @@ const MUST_FAIL = [
   { name: 'seal-moved-to-other-principal', why: 'The same, across principals.' },
   {
     name: 'replacement-credential-under-a-wrong-code',
+    falsifies: ['f-f5def83-device-lock-reader-key-bypass'],
     why: 'The replacement wrapping credential is sealed with the same LockSeal machinery as L_lock itself, so a wrong code does not open it. Without this the lock would replace a promptless key with another promptless key and change nothing.',
   },
   {
     name: 'replacement-credential-seal-as-a-factor-seal',
+    falsifies: ['f-f5def83-device-lock-reader-key-bypass'],
     why: "The credential seal presented under the code factor's own id. The seal AAD binds the id, so the two sealed objects in a locked slot -- L_lock and the wrapping credential -- cannot be substituted for one another.",
   },
   {
     name: 'seal-rebound-to-other-credential',
+    falsifies: ['f-f5def83-device-lock-reader-key-bypass'],
     why: 'A prf seal presented under another credential id, which is how a removed passkey would be made to look enrolled.',
   },
   {
@@ -848,6 +852,7 @@ const main = async () => {
   if (!Object.hasOwn(wrapsByGeneration[GEN], W_PUB_PRELOCK)) {
     throw new Error('The pre-lock copy cannot open generation g. History was re-keyed.');
   }
+  falsifies('the post-lock wrap set', ['f-f5def83-device-lock-reader-key-bypass']);
   if (Object.hasOwn(wrapsByGeneration[SUCCESSOR_GEN], W_PUB_PRELOCK)) {
     throw new Error(
       'The successor generation is wrapped to the pre-lock credential. A copied profile opens it, ' +
@@ -864,6 +869,7 @@ const main = async () => {
    * move and before any rotation has landed -- claims future-copy protection
    * during precisely the window where there is none.
    */
+  falsifies('the rotation_owed derivation', ['f-dbfd01f-device-lock-rotation-caveat-lost']);
   const rotationOwedAt = (step) => step < 8;
   for (const step of [1, 2, 3, 4, 5, 6, 7, 8]) {
     if (rotationOwedAt(step) !== step < 8) throw new Error('rotation_owed is not derived.');
@@ -888,6 +894,7 @@ const main = async () => {
   const doc = {
     $schema: 'https://done.invalid/vectors/device-lock/1',
     generated_by: 'scripts/generate-device-lock-vectors.mjs',
+    falsifies: claims(),
     selection: 'docs/selections/row-13-device-lock.md',
     trd_row: 13,
     construction: {

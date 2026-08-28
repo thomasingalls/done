@@ -208,6 +208,7 @@ const NEGATIVES = [
   },
   {
     name: 'wrong-generation-key',
+    falsifies: ['f-9860a0b-journal-rotated-vector-reuses-key'],
     mutate:
       "Open the generation-2 record with generation 1's subkey, under generation 2's own correct AAD. The AAD half of the binding is satisfied, so only the key lookup can refuse this -- which is the half `wrong-generation` cannot reach.",
   },

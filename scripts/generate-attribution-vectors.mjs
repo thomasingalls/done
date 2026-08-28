@@ -274,6 +274,7 @@ const CASES = [
 const NEGATIVES = [
   {
     name: 'creation-certificate-from-another-credential',
+    falsifies: ['f-b997cdb-attribution-self-replacement'],
     why: 'The row, as arithmetic. The phone mints a certificate naming itself as creator of this card -- and it does not name this card, because the id is what its own certificate hashes to. A claim naming another creator for an existing id cannot be constructed, so there is nothing to refuse at the claim layer.',
   },
   {
@@ -282,6 +283,7 @@ const NEGATIVES = [
   },
   {
     name: 'creation-certificate-signed-by-another-credential',
+    falsifies: ['f-b997cdb-attribution-self-replacement'],
     why: "The certificate's own signature, doing its own job: the id proves which credential the certificate names, and the signature proves that credential produced it.",
   },
   {
@@ -291,11 +293,13 @@ const NEGATIVES = [
   },
   {
     name: 'lifted-to-another-card',
+    falsifies: ['f-b997cdb-attribution-self-replacement'],
     mutate:
       'The laptop’s genuine claim, re-keyed under a different card id. Isolates `card_id`, which is what stops a record being moved to a card its actor never created.',
   },
   {
     name: 'reattributed-actor',
+    falsifies: ['f-b997cdb-attribution-self-replacement'],
     mutate: 'Change the attributed actor while keeping the signing credential.',
   },
   {
@@ -305,6 +309,7 @@ const NEGATIVES = [
   },
   {
     name: 'reattributed-credential',
+    falsifies: ['f-b997cdb-attribution-self-replacement'],
     mutate:
       'Name a different credential inside a record the laptop signed, **verified under the key that actually signed it**. Holding the verifier fixed is what makes this test the binding: fetching the named credential’s key instead would fail on the key and prove nothing about the field.',
   },
@@ -316,6 +321,7 @@ const NEGATIVES = [
   },
   {
     name: 'substituted-commitment',
+    falsifies: ['f-b997cdb-attribution-self-replacement'],
     mutate:
       'Replace the body commitment with one for different text. The commitment makes the claim falsifiable; a substitutable one would make it merely decorative.',
   },

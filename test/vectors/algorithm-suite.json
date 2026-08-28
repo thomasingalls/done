@@ -3,6 +3,17 @@
   "generated_by": "scripts/generate-suite-vectors.mjs",
   "selection": "docs/selections/row-1-algorithm-suite.md",
   "trd_row": 1,
+  "falsifies": {
+    "checkCarriers": [
+      "f-992bc91-network-carrier-registry-stale"
+    ],
+    "checkSeparation": [
+      "f-3bea0e6-suite-separation-ignores-both-path"
+    ],
+    "checkSuiteDocuments": [
+      "f-3bea0e6-suite-separation-ignores-both-path"
+    ]
+  },
   "rule": {
     "statement": "A carrier version selects an entire suite. There is no per-record algorithm identifier, no negotiation, and therefore nothing to downgrade.",
     "reader": "A reader knows a fixed compiled-in set of (carrier, version) pairs, accepts exactly those, and refuses everything else including versions above its own.",
