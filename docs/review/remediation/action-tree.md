@@ -198,6 +198,13 @@ pinned tip.
 > [`decisions/P-4-lapse-authority.md`](./decisions/P-4-lapse-authority.md). The common invariants are selected
 > now; the entitlement wire is gated on `D-31`, which the project defers on purpose. Ten falsifiers are in that
 > record.
+>
+> **Reopened 2026-08-28 at the destructive boundary** by `S0-9` (`FU-04`, both rounds): a retirement could be
+> born with its ceiling already elapsed, disarming `S0-6`'s handoff gate. `RC-7B` itself stands. **Ratified
+> the same day: option B, with intrinsic acceptance** — every `retire` intent carries the erasure acceptance
+> in its signed payload, the destructive boundary is `retired_at + RETENTION` written once at the `cause`
+> overwrite, and ceiling erasure terminates in `deleted-without-receipt`, never a state a reader can take for
+> a receipt. Falsifiers 11–19 are in the record; the `S0-7` return, composed with `S0-6`, owes them.
 
 - **Prerequisites:** decide whether lapse is user-initiated, automatic billing-driven, or both; name the actor that
   wins lapse-versus-retire races.
