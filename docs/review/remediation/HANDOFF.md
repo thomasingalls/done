@@ -167,13 +167,27 @@ In order. An item is done when its disposition entry's earliest-return stage has
    two-device shared-`K_store` budget (`P-3` joint 1). **Those reproduction assertions state the open
    defects, not invariants** — each return inverts its own into the permanent negative and keeps the
    schedule.
-4. **Stage returns**, in dependency order, at the stages each disposition entry names: `S0-2` (`FU-01`,
+4. **Stage returns — the `S0-1` return first, then the security returns in dependency order.** Reordered
+   2026-08-28, for item 3's own reason: a repair that ignores its class reintroduces the class, and the
+   census is class 3's instrument — it belongs before the six returns that churn the corpus it classifies,
+   not sweeping up after them. Nothing hard ordered it last: the action tree holds `S0-1` independent, and
+   `FU-07`'s return names no position among the other returns. The `S0-1` return (`FU-07` after `P-5`)
+   builds the standing census and recursive walker with its computed status projection —
+   `remediation:status`, checked both directions against this file's per-decision claims, which makes every
+   later return's handoff mechanically verified instead of hand-maintained — supersedes
+   `corrected-end-state.md` with the `S0-9` input-list swap, and lands round 1's origin-scanner correction
+   (`originOf` discards any URL containing `+`) and the `status:check`/`trace:check` claim narrowings:
+   `P-5` falsifiers 15–22, with falsifier 20's receipt mechanism staying `S0-8`'s design exactly as the
+   record reserves it. The per-record homes-agree readbacks (`P-1` falsifier 19's and `P-3` falsifier 22's
+   checkers) stay with their owning returns and `S0-8`, where the consolidations they read exist. The cost
+   is stated with the choice: the member-key repair waits one return longer, paid for a class-3 guard rail
+   under all six that follow. **Then**, at the stages each disposition entry names: `S0-2` (`FU-01`,
    `FU-05`, `FU-09`) → `S0-3` (`FU-08`, `FU-09`) and `S0-4` (`FU-06` with TRD §7.5, `FU-10`) → `S0-5`
-   (`FU-11`) and `S0-6` (`FU-02`, `FU-03` with TRD §14.4) → `S0-7` (`FU-04`, `FU-12`) → `S0-1` (`FU-07` after
-   `P-5`, plus round 1's origin-scanner correction: `originOf` discards any URL containing `+`). **Each
-   return also flips its authority-map entries and inverts its scheduler reproductions** — editing a pinned
-   home fails `authority:check` until the entry is re-read and re-pinned or flipped, which is the designed
-   friction, not an obstacle.
+   (`FU-11`) and `S0-6` (`FU-02`, `FU-03` with TRD §14.4) → `S0-7` (`FU-04`, `FU-12`). **Each return flips
+   its authority-map entries and inverts its scheduler reproductions** — editing a pinned home fails
+   `authority:check` until the entry is re-read and re-pinned or flipped — and, once the census lands,
+   edits a pinned record only as a dated addendum under a re-pin and gives every new file a standing. The
+   walker's friction is the map's, designed.
 5. **`S0-8` regeneration.** `FU-14`'s gate receipts — traceability consumes execution results, never shell
    text; the five matrix limits; `FU-13`'s independent readback; `vectors:coverage` checking identity rather
    than arity; and the `CertifiedSet` AAD audit round 1 found missing entirely. Plus `RC-9`'s consolidation:
@@ -201,9 +215,11 @@ That establishes the baseline. **The decision sprint is complete, and so are the
 with `pnpm authority:check` in the gate, and the storage-model scheduler at `test/scheduler.ts` with the
 composed model in `test/storageSchedule.test.ts`. Then read both dispositions end to end, read the map's ten
 open entries and the scheduler's three reproductions — they are the executable form of what the dispositions
-describe — and start queue item 4: the stage returns in dependency order, `S0-2` first. A repair that ignores
-its class reintroduces the class, and the class instruments now fail on that rather than waiting for a
-review: a return is not done until its map entries flip and its reproductions invert.
+describe — and start queue item 4 at the **`S0-1` return**: the census, walker and computed status
+projection land before the corpus churns (reordered 2026-08-28; the reason and its cost are recorded at the
+queue), and `S0-2` follows. A repair that ignores its class reintroduces the class, and the class
+instruments now fail on that rather than waiting for a review: a return is not done until its map entries
+flip and its reproductions invert.
 
 ## Four things that will bite you
 
