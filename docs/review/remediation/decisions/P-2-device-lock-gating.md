@@ -1,5 +1,8 @@
 # `P-2` — locked-device future-generation gating
 
+**Standing:** home — the decision’s current status lives in the header below; read back by
+`pnpm remediation:status`, which parses it and checks `HANDOFF.md`’s claim of it in both directions.
+
 **Decided:** 2026-08-26 · **Branch:** `RC-2A`, replace the operational wrapping credential at lock enable ·
 **Cutover:** old credential valid until the certified-set successor and generation winner are durably known ·
 **Status:** decided, not yet consolidated

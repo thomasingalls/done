@@ -1,5 +1,8 @@
 # `S0-2` — recipient authority and the complete generation/custody transition
 
+**Standing:** home — the findings table below is an ownership source of the traceability population; read
+back by `pnpm trace:check`.
+
 **Started:** 2026-08-27 · **Inputs:** [`P-1`](../decisions/P-1-recipient-authority.md),
 [`P-2`](../decisions/P-2-device-lock-gating.md), [`P-6`](../decisions/P-6-local-archive-factor.md) — all decided
 

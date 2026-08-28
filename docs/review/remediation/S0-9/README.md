@@ -1,5 +1,8 @@
 # `S0-9` — challenge of the repaired constructions (author's pass)
 
+**Standing:** record — speaks of `5923f510fd9ac3c1cd809e9bec352a7f73751492`, the tip the author’s pass ran against; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 > **Superseded in part by [`DISPOSITION.md`](./DISPOSITION.md).** Four independent challengers, none of whom
 > authored any repair, later ran from `5923f51` without access to this document. They found what this pass could
 > not, and two of its conclusions are wrong: **"no challenge returned a repair to its owning action"** is false —

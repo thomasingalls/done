@@ -1,5 +1,8 @@
 # `S0-1` — the closure authority, and the policies the green checks were hiding
 
+**Standing:** home — the findings table below is an ownership source of the traceability population; read
+back by `pnpm trace:check`.
+
 **Started:** 2026-08-27 · **Inputs:** [`P-5`](../decisions/P-5-closure-authority.md) decided (`RC-8C`)
 
 The last action whose findings are closure defects rather than design ones — and the one where **every artifact
@@ -101,3 +104,34 @@ policy, with the verifier and `frame-ancestors` stated as independent on purpose
   left alone deliberately. It is a record of what was concluded on a date, not a normative claim, and rewriting
   it would erase the fact that the count was wrong when it was written. That belongs to `H-1`'s append-only
   historical ledger.
+
+## The `S0-1` return — 2026-08-28
+
+Both `S0-9` rounds convicted this action's own subject inside this action's own jurisdiction: `RC-8C` said
+*every* fact and was enforced over the corpus under review alone, so `corrected-end-state.md` — an exact
+challenge input no checker read — kept publishing decided-away branches and the retired attempt cap under a
+green gate (`FU-07`), and `status:check`'s and `trace:check`'s printed conclusions read wider than their scans
+(`E4`/`E5`) — *green while enforcing less than they claimed*, in the instruments built to end exactly that.
+`P-5` reopened at the rule's jurisdiction and ratified option A at both joints; this return pays its
+falsifiers 15–22. What landed:
+
+| What | Where |
+| --- | --- |
+| The standing census: every document under `docs/review/remediation/` declares `home \| projection \| record \| superseded`, with per-standing obligations | one header per file, 46 files; encodings in [`A-policies.md`](./A-policies.md) §6 |
+| The recursive walker and computed status projection, in the gate | `scripts/remediation-status.mjs` — `pnpm remediation:status`, `remediation:check` in `pnpm check` |
+| The record pins — all nineteen record-standing documents, `end-state-materiality.md` and the two dispositions first | `census.json`; a changed record fails until a dated addendum re-pins it |
+| `corrected-end-state.md` superseded: header naming successors, `S0-9` input-list swap, queue agreement, one commit | the file's opening block; `action-tree.md`'s `S0-9` node; `HANDOFF.md` |
+| Round 1's `originOf` correction: `+` left the discard set, so `family=Open+Sans` now fails the scan | `scripts/check-origin-isolation.mjs` |
+| Both printed conclusions restated to their docblock scopes, and the convicted sentences refused by name as byte rules | `check-selection-status.mjs`, `check-traceability.mjs`, the walker's instance negatives |
+
+**Mutation battery: 22 of 22 caught** — the `FU-07` reproduction in both directions, a standing-less file in a
+fresh subdirectory, an unknown standing value, a second standing line, a silent record edit, a non-ancestor
+subject SHA, a record in the challenge input list, an unresolvable successor, a displaced supersession header,
+both convicted sentences restored, record↔`HANDOFF.md` drift in three shapes, an undefined readback, a pin
+over a home, and an unpinned record — each applied from an in-memory snapshot and restored in a `finally`,
+never with `git checkout --`.
+
+**The scope did not grow to match the ambition, deliberately.** A green walk means standings resolve, pins are
+byte-current, readbacks exist and the status homes agree — existence and byte rules. It is not an execution
+receipt (`FU-14`; `S0-8`'s design), and the per-record homes-agree readbacks of `P-1` falsifier 19 and `P-3`
+falsifier 22 stay with their owning returns, where the consolidations they read will exist.

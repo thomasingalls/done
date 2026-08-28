@@ -1,5 +1,8 @@
 # `S0-5` Stage A — durable record schemas
 
+**Standing:** home — sections here are pinned and swept by the authority map; read back by
+`pnpm authority:check`.
+
 **Status:** proposed for `S0-8` review · not implemented · no generator or vector consumes these yet
 
 Notation is the project's own: `LP(s) = uint16be(byteLength(utf8 s)) || utf8 s`, digests SHA-256, signatures

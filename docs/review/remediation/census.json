@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "record_sha256": {
+    "end-state-materiality.md": "e205e341506a5153d5c761f050934d982e72f1b4d54cf5b9248733b841b039ec",
+    "S0-9/DISPOSITION.md": "6f1b35acf1a708c1e6614e5a90318a7a92b6aeed31a2bb2acb34b822d20a59ba",
+    "S0-9/FOLLOWUP-DISPOSITION.md": "0c48630b06bc2294bea1c61bc6e4bf60dde0dd2aa87135bd87318de450f27594",
+    "causal-decision-trees.md": "2407acce39993ac6e91ee9813084ea70be177e153ec98ab20f50f372e993124f",
+    "remediation-options.md": "9a5c714cd101bab71d2844410ebe6dceeba73607edaa0a7afcb6adc46e5beb68",
+    "probes/journal-append-probe.md": "d580903c9e474765eece87bb98f677eb5945053bbbc1b8ae896bc7440144f71b",
+    "S0-8/README.md": "ba7ebbce61c7367c2b6f38972d5cee5ee2715c1f57efc1b66a36ca980e7000dd",
+    "S0-9/README.md": "910e816e14e654e183d81d52a5bcb811821aea6976537c4038db5d81b35aac82",
+    "S0-9/command-log.md": "94965c0542ecf2d70e72e1f57d79289911eae4a267999d08878acb65fa146e8f",
+    "S0-9/challenge-continuity.md": "ef318a3e6faf7aa87ad35b3e5db778daf8cfd25cca4fec94a449397ba2814943",
+    "S0-9/challenge-platform.md": "a124fcd77f476216b152fb38e6755f67a608b1dc6dc9981eac4a39d38c09706d",
+    "S0-9/challenge-protocol.md": "d85380db4d739ce63d042bb92a5ac86b7702d0171d5b617288bf1ce81e3502d4",
+    "S0-9/challenge-storage.md": "b03ee9b5e22966f176b594fdda2370866e673765935fccda9c6e4232dd9e2da4",
+    "S0-9/followup-authority/challenge-authority.md": "3df6813aabacbc54c630ada8e754b8cc2f235387dad861b4351dae475472a130",
+    "S0-9/followup-authority/challenge-authority-commands.md": "7f00b5b64003d129da3ee5de6f01440dcfab56c926382aa32b816965708f3b7f",
+    "S0-9/followup-evidence/challenge-evidence.md": "17518d34fe418ed030572026b2199f66b8746c25fda00c0027466eeeed29df90",
+    "S0-9/followup-evidence/challenge-evidence-commands.md": "ca4eb67bf391fce7e9b4c7fae20ed6954c396227863f431e22f6467d8c5edb74",
+    "S0-9/followup-storage/challenge-storage.md": "b5a21f949320a67cd2601b9ca6d5080c8df35ac4f67c47411456e8b030b25894",
+    "S0-9/followup-storage/challenge-storage-commands.md": "01359df70431eeb45e6bf4fa8d05a309af73eb2a87aff0e17a3e9f8bbf0ebf40"
+  }
+}

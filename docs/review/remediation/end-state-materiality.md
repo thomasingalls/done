@@ -1,5 +1,8 @@
 # End-state materiality at the reviewed tip `9edd930`
 
+**Standing:** record — speaks of `9edd9300adebcec3abd2234c946f1dcccdc17eef`, the reviewed tip this ledger classifies against; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 **Provenance.** This ledger was authored from the completed lineage evidence at review commit `032d51d` (“final
 as-written review commit”, held on `claude/remediation-findings-review-997ab5`), which is **not an ancestor of
 this branch** — the review workspace was carried over, not merged. The ledger itself entered this lineage at

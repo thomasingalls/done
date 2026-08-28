@@ -1,5 +1,8 @@
 # `S0-3` — total local-write admission, the allocator, and the budget nobody could compute
 
+**Standing:** home — the findings table below is an ownership source of the traceability population; read
+back by `pnpm trace:check`.
+
 **Started:** 2026-08-27 · **Inputs:** [`P-3`](../decisions/P-3-write-admission.md) decided (`RC-3C`)
 
 The last of the seven actions, and the one whose cluster the review diagnosed most precisely: _the composition

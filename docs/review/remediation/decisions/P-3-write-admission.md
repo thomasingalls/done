@@ -1,5 +1,8 @@
 # `P-3` — write admission for oversize and storage failure
 
+**Standing:** home — the decision’s current status lives in the header below; read back by
+`pnpm remediation:status`, which parses it and checks `HANDOFF.md`’s claim of it in both directions.
+
 **Decided:** 2026-08-27 · **Reopened:** 2026-08-28, at the shared subkey, the refusal window and the
 reservation fence · **Ratified:** 2026-08-28, option A at all three joints · **Branch:** `RC-3C`, bound the
 operation rather than the write-ahead log · **Allocator:** per-batch exact reservation, in IndexedDB ·

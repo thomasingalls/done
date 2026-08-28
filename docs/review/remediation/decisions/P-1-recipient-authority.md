@@ -1,5 +1,8 @@
 # `P-1` — recipient authority
 
+**Standing:** home — the decision’s current status lives in the header below; read back by
+`pnpm remediation:status`, which parses it and checks `HANDOFF.md`’s claim of it in both directions.
+
 **Decided:** 2026-08-26 · **Reopened:** 2026-08-28, at the approver and bootstrap-signer joints ·
 **Ratified:** 2026-08-28, option A — the certified set carries the signing keys · **Branch:** `RC-1B`,
 client-certified recipient set inside each authorization successor · **Approval policy:** single-owner ·

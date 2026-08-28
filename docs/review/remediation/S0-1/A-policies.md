@@ -1,5 +1,8 @@
 # `S0-1` Stage A — the policy objects
 
+**Standing:** home — the policy objects the Stage D checks embody (`pnpm status:check`,
+`pnpm vectors:check`, the origin scan in `pnpm build`); §6’s census is read back by `pnpm remediation:status`.
+
 **Status:** proposed for `S0-8` review · these are the shapes the Stage D checks read
 
 ## 0. One rule, applied four times
@@ -109,6 +112,10 @@ every occurrence is an XML namespace identifier — the SVG, MathML, `xlink` and
 **What it stops claiming:** _the key-holding origin is first-party only._ A URL assembled from parts, or code
 fetched and then evaluated, is invisible to any static scan — `originOf` already discards anything carrying
 JavaScript punctuation as a fragment, which is correct and is also the boundary of what can be proved here.
+*[Corrected 2026-08-28 at the `S0-1` return: "correct" was one character too wide. `S0-9` round 1 found `+` in
+the discard set, and `+` is URL syntax, not splice residue — `family=Open+Sans`, the archetypal Google Fonts
+link and the case this check was written for, was discarded as a fragment and passed. The set is now exactly
+backtick, `$` and backslash, and the six-form battery gained the case its author had not thought of.]*
 
 **The residual's control is CSP**, selected now and read back later: `default-src 'self'`, `connect-src 'self'`,
 `frame-ancestors 'none'`. The third is the same header §2 leans on, which is one artifact answering two
@@ -133,7 +140,10 @@ browser version nobody is running.
 **This is why §10.11's evidence table is correctly empty rather than incomplete.** Its own rule is a floor _with
 evidence and a date_; an asserted version row would be worse than the omission, because it would look like
 evidence. What is added here is that empty-under-a-stated-rule is the right state until a dated source exists,
-and that enforcement belongs at the gate that consumes it (`L-4`) rather than at every build.
+and that enforcement belongs at the gate that consumes it (`L-4`) rather than at every build. *[Corrected
+2026-08-28, `FU-15`: for the X25519 table the consuming gate is `S0-10` — TRD §10.11's own sentence makes the
+dated readback a Stage 0 closure input. The discipline stands; this parenthetical named the wrong gate for that
+observation, the same correction `P-5`'s record carries in place.]*
 
 **Home:** the evidence table beside §10.11's rule. **Consumers:** the release gate, and `S0-9`'s challenge.
 
@@ -151,6 +161,47 @@ green throughout.
 
 **The check lives in neither document.** That is `RC-8C`'s third clause and the reason a one-directional check
 in the generator was not enough: the generator is one of the two things that can be wrong.
+
+## 6. `StandingCensus` — the corpus is inside the rule's jurisdiction
+
+*Added 2026-08-28 at the `S0-1` return, under `P-5`'s reopened ratification (option A at both joints). `P-5`
+reserved the exact encodings to this stage; these are them.*
+
+```
+Standing  = home | projection | record | superseded     -- exhaustive; a document in no bucket fails the walk
+home       names ≥1 `pnpm <script>` readback that exists in package.json
+projection names the generator that regenerates it, which exists on disk
+record     names the full 40-hex SHA it speaks of — an ancestor of HEAD — and is pinned in census.json
+superseded opens the file (only the title may precede) and names successors that all resolve
+```
+
+**The header syntax** is one paragraph beginning `**Standing:**` — the value first, the obligation in the same
+paragraph, at most once per document, above the first section heading. Fenced code is stripped before the scan,
+so this section can quote the syntax without declaring twice.
+
+**The pin home is `census.json`** beside the corpus — the `config.json` shape the review workspace already
+runs, extended rather than invented: `record_sha256` maps each record-standing path to the sha256 of its exact
+bytes. A record that changes under its pin fails until the editor adds the edit as a dated addendum and
+re-pins, or reverts; neither happens silently. First entries: `end-state-materiality.md` and the two `S0-9`
+dispositions, and the census is total — every record is pinned, because a pin census with voluntary membership
+is the filter defect again.
+
+**The projection is computed, never transcribed** (`pnpm remediation:status`, the `review-status.mjs` shape):
+it parses each decision record's header — `Decided`/`Drafted`, `Ratified`, `Status`, the structured part every
+record already carries — computes what is ratified and what each return owes, and checks both directions
+against `HANDOFF.md`'s per-decision claim bullets. The queue's *order* stays HANDOFF's alone; the projection
+asserts no sequence. Two instance rules ride along, named as instances: the `FU-07` reproduction
+(`corrected-end-state.md` in a current-input position) and the two convicted printed sentences (`E4`/`E5`) fail
+as byte rules.
+
+**The scope of a green walk, stated because a checker's printed claim is its scope:** standings resolve, pins
+are byte-current, named readbacks exist, status homes agree. Existence and byte rules — never an execution
+receipt; a reachable checker can still have been skipped by an earlier exit, and crediting execution is
+`FU-14`'s repair at `S0-8`.
+
+**Home:** the census walker `scripts/remediation-status.mjs` and `census.json`; this section states the
+encodings. **Consumers:** `pnpm check` (via `pnpm remediation:check`), every stage return's handoff, and `S0-9`
+round 3's input discipline.
 
 ## Falsifier map
 
@@ -172,3 +223,14 @@ in the generator was not enough: the generator is one of the two things that can
 | 14  | An observation without a date or an expiry fails at the gate that reads it      | 4      |
 | 15  | A PRD subsection calling a selected row open fails                              | 5      |
 | 16  | A PRD statement naming a row open that §15.1 lists as selected fails            | 5      |
+| 17  | `corrected-end-state.md` in a current-input list, or its header stripped, fails | 6      |
+| 18  | A file with no standing, an unknown value, or a missed subdirectory fails       | 6      |
+| 19  | A silent edit to a pinned record, or a non-ancestor subject SHA, fails          | 6      |
+| 20  | A record or superseded document in the `S0-9` input list fails                  | 6      |
+| 21  | A successor that does not resolve, or a header not opening the file, fails      | 6      |
+| 22  | Restoring either convicted printed sentence fails                               | 6      |
+| 23  | A record↔HANDOFF status or owed-falsifiers disagreement fails, either direction | 6      |
+| 24  | A home naming an undefined readback, or an unpinned record, fails               | 6      |
+
+Rows 17–24 are `P-5` falsifiers 15–22 in this action's numbering; falsifier 20's execution-receipt half is
+stated as a rule and designed at `S0-8` (`FU-14`), and the walker's printed scope says so.

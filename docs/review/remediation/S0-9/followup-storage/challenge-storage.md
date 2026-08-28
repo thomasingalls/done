@@ -1,5 +1,8 @@
 # S0-9 independent challenge — storage, crash/retry, and concurrency
 
+**Standing:** record — speaks of `5923f510fd9ac3c1cd809e9bec352a7f73751492`, the challenged tip; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 **Challenger:** independent non-author review
 
 **Reviewed tip:** detached `5923f510fd9ac3c1cd809e9bec352a7f73751492`

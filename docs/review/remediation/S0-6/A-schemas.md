@@ -1,5 +1,8 @@
 # `S0-6` Stage A — durable record schemas
 
+**Standing:** home — sections here are pinned and swept by the authority map; read back by
+`pnpm authority:check`.
+
 **Status:** proposed for `S0-8` review · not implemented · no generator or vector consumes these yet
 
 ## 1. `RootCommitment`, sealed under the factor — closes the rewrap substitution

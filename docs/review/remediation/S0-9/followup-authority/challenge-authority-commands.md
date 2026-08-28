@@ -1,5 +1,8 @@
 # S0-9 authority challenge — exact command/result log
 
+**Standing:** record — speaks of `5923f510fd9ac3c1cd809e9bec352a7f73751492`, the challenged tip; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 All commands were run with working directory `/private/tmp/done-s0-9-authority`. No command consulted another
 worktree, ref, remote, or non-ancestor repository object. I did not run `pnpm format:fix` or `git checkout --`.
 

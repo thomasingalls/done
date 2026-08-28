@@ -1,5 +1,8 @@
 # `S0-6` — package root, Local opener, full retired package, and handoff receipt
 
+**Standing:** home — the findings table below is an ownership source of the traceability population; read
+back by `pnpm trace:check`.
+
 **Started:** 2026-08-27 · **Inputs:** [`P-6`](../decisions/P-6-local-archive-factor.md) decided; `S0-2` and
 `S0-5` complete, which were its other two dependencies
 

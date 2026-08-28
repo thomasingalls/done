@@ -1,5 +1,8 @@
 # Probe — does immutable append cost more than a hot-key overwrite?
 
+**Standing:** record — speaks of `c1a0283c264dd9f7e0ccce4a18047fe733d4b58e`, the commit whose harness produced these numbers; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 **Run:** 2026-08-26 · **Harness:** `test/latency/journal-bench.ts` via `journal.spec.ts`, `--project=desktop` ·
 **Machine:** development Mac, Chromium 1234 · **Status:** probe, **not** a release measurement
 

@@ -1,5 +1,8 @@
 # `S0-9` — command and result log
 
+**Standing:** record — speaks of `5923f510fd9ac3c1cd809e9bec352a7f73751492`, the challenged tip; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 **Run:** 2026-08-27 · **Against:** `5923f51` · Assembled from the actual runs rather than transcribed.
 
 `S0-9`'s acceptance asks for an exact command/result log. This is it; [`README.md`](./README.md) is the report

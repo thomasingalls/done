@@ -1,5 +1,8 @@
 # S0-9 storage challenge — exact command/result log
 
+**Standing:** record — speaks of `5923f510fd9ac3c1cd809e9bec352a7f73751492`, the challenged tip; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 All commands ran with working directory `/private/tmp/done-s0-9-storage`. No network repository material, other ref, branch, worktree, stash, reflog, or non-ancestor object was consulted. `pnpm format:fix` and `git checkout --` were never run.
 
 ## 1. Boundary

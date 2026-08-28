@@ -1,5 +1,8 @@
 # `P-8` — checkpoint semantic authority and immutable creation authority
 
+**Standing:** home — the decision’s current status lives in the header below; read back by
+`pnpm remediation:status`, which parses it and checks `HANDOFF.md`’s claim of it in both directions.
+
 **Decided:** 2026-08-26 · **Checkpoint:** `RC-5A`, retained replay witness plus semantic admission ·
 **Head baseline after trim:** trust the admitting credential, with self-admission recorded as such ·
 **Creation:** `RC-5C`, creator-committed card identity · **Status:** decided, not yet consolidated

@@ -1,5 +1,8 @@
 # `S0-8` — regenerated evidence and the traceability matrix
 
+**Standing:** record — speaks of `5923f510fd9ac3c1cd809e9bec352a7f73751492`, the tip at which the evidence suite last ran under `S0-8`; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 **Started:** 2026-08-27 · **Inputs:** [`P-5`](../decisions/P-5-closure-authority.md) — decided; `S0-1` through
 `S0-7` — all complete
 

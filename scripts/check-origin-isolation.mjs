@@ -41,10 +41,12 @@
  * **And the claim narrowed to the evidence.** What this proves is that no
  * literal remote URL appears in built output. A URL assembled from parts, or
  * code fetched and then evaluated, is invisible to any static scan — `originOf`
- * below already discards anything carrying JavaScript punctuation, which is
- * correct and is also the boundary of what can be proved here. **That residual
- * belongs to CSP** (`default-src 'self'`, `connect-src 'self'`), read back at
- * deployment, and §10.9 now says so rather than implying this check covered it.
+ * below discards template-literal splice fragments, which is the boundary of
+ * what can be proved here. (Its discard set once included `+` and thereby
+ * dropped real URLs — `S0-9` round 1's correction, repaired below.) **The
+ * residual belongs to CSP** (`default-src 'self'`, `connect-src 'self'`), read
+ * back at deployment, and §10.9 now says so rather than implying this check
+ * covered it.
  *
  * falsifies: f-5bd9552-origin-scan-static-forms
  */
@@ -111,11 +113,19 @@ const HOSTLIKE = /^(?:localhost|\[[0-9a-f:]+\]|[a-z0-9-]+(?:\.[a-z0-9-]+)+)$/iu;
 /**
  * Minified code splices URLs out of template literals, so a match can be a
  * fragment rather than a URL. A fragment is not a subresource and reporting it
- * as a mention is noise, so anything carrying JavaScript punctuation is
+ * as a mention is noise, so anything carrying template-literal punctuation is
  * discarded rather than tuned around.
+ *
+ * **The discard set is exactly backtick, `$` and backslash — `+` left it on
+ * 2026-08-28** (`S0-9` round 1's correction, landed at the `S0-1` return).
+ * `+` is ordinary URL syntax, not splice residue: with it in the set,
+ * `fonts.googleapis.com/css?family=Open+Sans` — the archetypal Google Fonts
+ * link, and the case the docblock above says this check was written for — was
+ * silently discarded as a fragment and passed the inverted default. The six
+ * forms the original battery tested were the six its author thought of.
  */
 const originOf = (url) => {
-  if (/[`$+\\]/u.test(url)) return null;
+  if (/[`$\\]/u.test(url)) return null;
   let parsed;
   try {
     parsed = new URL(url);

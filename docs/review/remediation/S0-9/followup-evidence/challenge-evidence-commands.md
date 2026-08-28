@@ -1,5 +1,8 @@
 # `S0-9` independent challenge command/result log
 
+**Standing:** record — speaks of `5923f510fd9ac3c1cd809e9bec352a7f73751492`, the challenged tip; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 This log records the commands executed by the independent challenger in
 `/private/tmp/done-s0-9-evidence`. No repository command was run from another checkout. No network source, other
 ref, later object, stash, reflog, or other challenge report was consulted.

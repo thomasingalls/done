@@ -1,5 +1,8 @@
 # Causal decision trees
 
+**Standing:** record — speaks of `9edd9300adebcec3abd2234c946f1dcccdc17eef`, the reviewed tip whose surviving findings these trees cluster; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 ## Scope and clustering rule
 
 These trees cover the 33 findings that survive as current defects or explicit later gates. The four historical-only

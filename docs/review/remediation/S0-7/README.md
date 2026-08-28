@@ -1,5 +1,8 @@
 # `S0-7` — lapse, expiry, and the per-class destructive-deletion ledger
 
+**Standing:** home — the findings table below is an ownership source of the traceability population; read
+back by `pnpm trace:check`.
+
 **Started:** 2026-08-27 · **Inputs:** [`P-4`](../decisions/P-4-lapse-authority.md) decided (`RC-7B`);
 [`S0-6`](../S0-6/README.md) supplies `TerminalHandoff`; [`S0-2`](../S0-2/README.md) supplies the generation and
 reference rules

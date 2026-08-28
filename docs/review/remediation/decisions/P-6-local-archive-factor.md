@@ -1,5 +1,8 @@
 # `P-6` — Local archive factor and root
 
+**Standing:** home — the decision’s current status lives in the header below; read back by
+`pnpm remediation:status`, which parses it and checks `HANDOFF.md`’s claim of it in both directions.
+
 **Decided:** 2026-08-26 · **Direction:** `RC-6A` accepted — factor-sealed root commitment and full retired-package
 replacement · **Identity:** per workspace · **Confirmation:** typed back once per workspace ·
 **At promotion:** retired to legacy · **Status:** decided, not yet consolidated

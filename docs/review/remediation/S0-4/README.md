@@ -1,5 +1,8 @@
 # `S0-4` — the outbound spool and the refusal nobody could sign
 
+**Standing:** home — the findings table below is an ownership source of the traceability population; read
+back by `pnpm trace:check`.
+
 **Started:** 2026-08-27 · **Inputs:** [`S0-1`](../S0-1/README.md) and [`S0-2`](../S0-2/README.md) complete;
 branch `RC-4A` recommended by the review and taken
 

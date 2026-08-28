@@ -1,5 +1,8 @@
 # `S0-9` — independent challenge, PROTOCOL cluster (`RC-1`, `RC-4`)
 
+**Standing:** record — speaks of `5923f510fd9ac3c1cd809e9bec352a7f73751492`, the challenged tip; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 **Challenger:** independent of every repair author. **Worktree:** detached at `5923f51`, `pnpm install
 --frozen-lockfile`. **Date:** 2026-08-28.
 **Scope:** `RC-1` client-authenticated recipient authority · `RC-4` exact-byte outbound acceptance machine.

@@ -1,5 +1,8 @@
 # Action tree from the pinned state
 
+**Standing:** home — the plan; read back by `pnpm remediation:status` (the supersession claim and the
+`S0-9` input list), `pnpm authority:check` and `pnpm trace:check` (gate names, repair owners).
+
 ## Repairs already applied on this branch
 
 Eight findings were repaired directly on the pinned tip before any `P-` decision was taken, because none of them
@@ -271,6 +274,9 @@ pinned tip.
 > decision records' own headers and checked both directions against the queue, the `review:status` shape,
 > never maintained beside them; and `corrected-end-state.md` is superseded — it opens by naming its
 > successors and leaves this plan's `S0-9` input list. Falsifiers 15–22 are owed at the `S0-1` return.
+> *[Paid 2026-08-28: the return landed the census, the walker and computed projection
+> (`pnpm remediation:status`, in the gate), the supersession with the input-list swap in one commit, the
+> `originOf` correction and both claim narrowings — falsifier 20's receipt mechanism stays `S0-8`'s design.]*
 
 - **Prerequisites:** decide strong no-shared-primitive versus narrow key/domain separation; decide same-origin-only
   WebAuthn versus an approved `topOrigin` allowlist; decide runtime origin-graph enforcement versus a narrowly scoped
@@ -365,8 +371,19 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 
 ### `S0-1` — establish the selected closure authority and reconcile current policy/status
 
+> **Started and completed 2026-08-27; the `S0-1` return ran 2026-08-28** (`FU-07` after `P-5`'s reopened
+> ratification — first of the stage returns, reordered so the class-3 instrument lands before the churn it
+> polices). The return built the standing census over all 46 remediation documents, the recursive walker and
+> computed status projection (`scripts/remediation-status.mjs`, `pnpm remediation:check` in `pnpm check`,
+> `census.json` pinning the nineteen record-standing documents), superseded `corrected-end-state.md` with this
+> plan's `S0-9` input-list swap in the same commit, corrected `originOf` (round 1: `+` discarded real URLs)
+> and restated `status:check`'s and `trace:check`'s printed conclusions to their docblock scopes, with the
+> convicted sentences refused by name. 22-mutation battery, all caught; `A-policies.md` §6 holds the
+> encodings, its falsifier rows 17–24 being `P-5` falsifiers 15–22.
+>
 > **Started and completed 2026-08-27.** Plan and status: [`S0-1/README.md`](./S0-1/README.md); the policy
-> objects are in [`S0-1/A-policies.md`](./S0-1/A-policies.md) with sixteen falsifiers. **Every artifact in this
+> objects are in [`S0-1/A-policies.md`](./S0-1/A-policies.md) with sixteen falsifiers (twenty-four since the
+> return). **Every artifact in this
 > action was already passing** — three oracles reported green while enforcing less than they claimed, and the
 > work was making the claim and the enforcement the same size. TRD §§10.9/10.11/13.2/13.9–13.10, rows 1/12/14/17,
 > PRD §7.12. **Stage D: four checks, twenty mutations**, all caught but the one that is the stated limit.
@@ -709,8 +726,12 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 > action.**
 
 - **Prerequisite decisions:** `S0-8` complete; challenger independent of each repair author.
-- **Exact affected artifacts:** corrected PRD/TRD/selections, all regenerated evidence, `corrected-end-state.md`,
-  remediation traceability matrix, challenge report and exact command/result log.
+- **Exact affected artifacts:** the ratified decision records under `decisions/`, corrected PRD/TRD/selections,
+  all regenerated evidence, the remediation traceability matrix (`traceability.md`), the standing census and its
+  computed status projection (`pnpm remediation:status`), challenge report and exact command/result log. *[Amended
+  2026-08-28 at the `S0-1` return: this list named the corrected end state; `P-5`'s ratification superseded that
+  document — round 3 challenges the ratified records and the regenerated corpus, and a superseded or record-standing
+  page in this list now fails the census walker (`P-5` falsifiers 15/18).]*
 - **Type:** external or independent review + executable evidence review.
 - **Safe parallel work:** independent specialists may challenge storage, protocol, continuity, and platform clusters;
   final disposition must reconcile cross-cluster compositions.

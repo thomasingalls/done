@@ -1,5 +1,8 @@
 # S0-9 independent authority and protocol challenge
 
+**Standing:** record — speaks of `5923f510fd9ac3c1cd809e9bec352a7f73751492`, the challenged tip; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 ## Review identity, boundary, and disposition
 
 This is an independent, non-author challenge of the repaired Stage 0 constructions at detached

@@ -1,5 +1,8 @@
 # Remediation options
 
+**Standing:** record — speaks of `9edd9300adebcec3abd2234c946f1dcccdc17eef`, the reviewed tip whose defects these branches target; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 ## Reading rule
 
 Each branch is a target construction, not implementation authorization. “Preserves” names challenged component

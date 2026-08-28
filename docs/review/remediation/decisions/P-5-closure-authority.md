@@ -1,12 +1,16 @@
 # `P-5` — policy semantics and closure-authority representation
 
+**Standing:** home — the decision’s current status lives in the header below; read back by
+`pnpm remediation:status`, which parses it and checks `HANDOFF.md`’s claim of it in both directions.
+
 **Decided:** 2026-08-27 · **Reopened:** 2026-08-28, at the rule's own jurisdiction · **Ratified:** 2026-08-28,
 option A at both joints — a total census, a computed status projection, and `corrected-end-state.md`
 superseded · **Representation:** `RC-8C`, targeted repairs under one stated rule — no new registry and no
 coverage manifest · **Suite separation:** the stronger primitive rule, with `path` an exhaustive
 execution-path enum · **WebAuthn:** same-origin only · **Origin isolation:** allowlist by default, and the
-claim narrowed to what the scan proves · **Status:** ratified, not yet consolidated — the `S0-1` return owes
-falsifiers 15–22
+claim narrowed to what the scan proves · **Status:** ratified — the `S0-1` return landed falsifiers 15–22 on
+2026-08-28, with falsifier 20's receipt mechanism and the matrix halves staying at `S0-8` exactly as this
+record reserves them
 
 Consolidation is [`S0-1`](../action-tree.md). This is the last decision in the plan. *[Annotated 2026-08-28:
 `S0-1` ran to completion on 2026-08-27, so the header's earlier "not yet consolidated" was already stale when
@@ -23,7 +27,10 @@ them an exact `S0-9` input — kept publishing decided-away content while every 
 is now ratified: **option A at both joints.** Every remediation document declares its standing and a total
 walker refuses what it cannot classify; where the corpus stands is computed from the records' own headers —
 the `review:status` shape — never maintained beside them; and `corrected-end-state.md` is superseded, leaving
-`S0-9`'s input list. Falsifiers 15–22 are owed at the `S0-1` return.
+`S0-9`'s input list. Falsifiers 15–22 are owed at the `S0-1` return. *[Paid 2026-08-28: the return landed the
+census walker and computed projection (`pnpm remediation:status`, in the gate), the supersession header with
+the input-list swap, the `originOf` correction and both claim narrowings — falsifier 20's receipt mechanism
+stays `S0-8`'s design.]*
 
 ## Five questions, and the fifth is the one that shapes the rest
 
@@ -468,6 +475,12 @@ Continuing the fourteen above, under the ratified rules. Each is a test, not a c
     record that owns the shape, by the instrument this ruling adds.
 
 ### Consolidation owed at `S0-1`, regenerated at `S0-8`
+
+*[The `S0-1` return ran 2026-08-28 and paid the first four bullets: the supersession landed in one commit with
+the input-list swap and the queue's agreement; the walker and projection are `scripts/remediation-status.mjs`
+(`pnpm remediation:check`, in `pnpm check`), with `census.json` pinning all nineteen record-standing documents;
+`originOf`'s discard set dropped `+`; and both printed conclusions now state their docblock scopes, with the
+walker refusing the convicted sentences by name. The `S0-8` bullet stands owed, exactly as written.]*
 
 - `corrected-end-state.md` superseded: the header naming successors lands with the `S0-9` node's input-list
   swap and the queue's agreement in the same commit (falsifiers 15, 19, 22).

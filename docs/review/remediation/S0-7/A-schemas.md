@@ -1,5 +1,8 @@
 # `S0-7` Stage A — durable record schemas
 
+**Standing:** home — sections here are pinned and swept by the authority map; read back by
+`pnpm authority:check`.
+
 **Status:** proposed for `S0-8` review · not implemented · the `EntitlementEvent` wire is gated on `D-31`
 
 ## 0. The naming rule, because the whole finding is a confusion of two axes

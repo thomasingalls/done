@@ -16,8 +16,9 @@
  *
  * What it does:
  *
- * 1. **The register is internally coherent.** A row is selected or unselected,
- *    never both, and §15.1's count matches what §15 claims in words.
+ * 1. **The register's membership is coherent.** A row is selected or
+ *    unselected, never both, and §15.1's count matches what §15 claims in
+ *    words.
  * 2. **Every `TRD §15 row N` the PRD names exists**, so a reference cannot
  *    outlive the row it points at.
  * 3. **A PRD sentence claiming a row is settled names a row §15.1 lists**, and a
@@ -27,7 +28,13 @@
  * **What it cannot do**, stated rather than discovered: it reads claims that
  * name a row. A PRD paragraph describing a selected construction as open
  * *without* citing `TRD §15 row N` is invisible here — which is why the repair
- * added the citations rather than only the words.
+ * added the citations rather than only the words. And it reads membership, not
+ * cells: a register row's construction cell describing a selected construction
+ * as still open (`S0-9` `E3`/`E4`, TRD §15 row 3 against §6.1) is a
+ * register-internal contradiction this scan cannot see — that home rides its
+ * owning return (`FU-13`, `S0-3`). The printed conclusion says exactly this
+ * much, because a checker's printed claim wider than its scan is this action's
+ * founding defect (`P-5` falsifier 21).
  *
  * falsifies: f-tip-prd-stale-selection-status
  */
@@ -229,7 +236,14 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
+// The conclusion is the scope (P-5 falsifier 21, S0-9 E4): membership, stated
+// counts, and row-citing sentences — never the construction cells, whose
+// agreement with the normative sections is a different oracle's job.
 console.log(
-  `selection status: ${selected.size} selected and ${unselected.size} unselected rows, disjoint; ` +
-    `${sentences.length} PRD sentences cite a row and none contradicts the register.`,
+  `selection status: ${selected.size} selected and ${unselected.size} unselected rows, disjoint, and the ` +
+    `stated counts match; ${sentences.length} PRD sentences cite a row and none disagrees with its membership.`,
+);
+console.log(
+  '  Membership and counts only: a construction cell describing a selected row as open is outside this scan ' +
+    '(S0-9 E3/E4; that home rides the S0-3 return).',
 );

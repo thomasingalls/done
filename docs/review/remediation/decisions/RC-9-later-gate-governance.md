@@ -1,5 +1,8 @@
 # `RC-9` — cross-cutting later-gate governance
 
+**Standing:** home — the decision’s current status lives in the header below; read back by
+`pnpm remediation:status`, which parses it and checks `HANDOFF.md`’s claim of it in both directions.
+
 **Drafted:** 2026-08-28, fresh — nothing reopens, because nothing was ever decided · **Ratified:**
 2026-08-28, option A at both joints — every deferred property is an entry in one debt manifest, and the
 source↔blob binding splits at the toolchain line · **Branch:** `RC-9A`, as defined in

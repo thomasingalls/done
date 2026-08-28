@@ -1,5 +1,8 @@
 # `S0-3` Stage A — durable record schemas
 
+**Standing:** home — the write-admission machine stated here is composed and scheduled by
+`test/storageSchedule.test.ts`; read back by `pnpm test`.
+
 **Status:** proposed for `S0-8` review · not implemented · `RC-3C`
 
 ## 1. `MAX_UPDATE` — derived from the budget, never chosen

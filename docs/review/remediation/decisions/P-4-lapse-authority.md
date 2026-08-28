@@ -1,5 +1,8 @@
 # `P-4` — lapse authority
 
+**Standing:** home — the decision’s current status lives in the header below; read back by
+`pnpm remediation:status`, which parses it and checks `HANDOFF.md`’s claim of it in both directions.
+
 **Decided:** 2026-08-27 · **Reopened:** 2026-08-28, at the destructive boundary · **Ratified:** 2026-08-28,
 option B with intrinsic acceptance · **Branch:** `RC-7B`, a service-signed billing/retention machine
 independent of the authorization lineage · **Race:** retire wins, in both orders · **Scope:** common

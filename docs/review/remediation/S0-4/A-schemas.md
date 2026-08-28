@@ -1,5 +1,8 @@
 # `S0-4` Stage A — durable record schemas
 
+**Standing:** home — sections here are pinned and swept by the authority map; read back by
+`pnpm authority:check`.
+
 **Status:** proposed for `S0-8` review · not implemented · `RC-4A`, with the attempt cap corrected
 
 ## 0. Two numbers are called `seq`, and they are not the same number

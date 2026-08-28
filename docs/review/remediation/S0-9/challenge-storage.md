@@ -1,5 +1,8 @@
 # `S0-9` — independent challenge, STORAGE cluster (`RC-3`, `RC-5`)
 
+**Standing:** record — speaks of `5923f510fd9ac3c1cd809e9bec352a7f73751492`, the challenged tip; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 **Challenger:** independent of every repair author. **Worktree:** `.claude/worktrees/s09-storage`, detached at
 `5923f51`. **Subject tip:** `9edd930`. **Date:** 2026-08-28.
 

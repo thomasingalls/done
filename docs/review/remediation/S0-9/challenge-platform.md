@@ -1,5 +1,8 @@
 # `S0-9` — independent challenge: platform, evidence and closure (`RC-8`, `RC-9`)
 
+**Standing:** record — speaks of `5923f510fd9ac3c1cd809e9bec352a7f73751492`, the challenged tip; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 **Challenger:** independent of every repair author. **Subject:** the worktree at `5923f51`, detached, `node_modules`
 installed. No other branch, worktree, reflog entry or later commit was consulted. **Baseline established before any
 mutation:** all eight gates green, 371 tests, 16/16 generators current (§4).

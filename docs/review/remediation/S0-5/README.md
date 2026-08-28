@@ -1,5 +1,8 @@
 # `S0-5` — semantic checkpoint, admission/install, and immutable creation authority
 
+**Standing:** home — the findings table below is an ownership source of the traceability population; read
+back by `pnpm trace:check`.
+
 **Started:** 2026-08-27 · **Inputs:** [`P-8`](../decisions/P-8-checkpoint-and-creation-authority.md) decided;
 `S0-2` complete, which was its only other dependency
 

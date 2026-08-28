@@ -1,5 +1,8 @@
 # Handoff — Stage 0 remediation execution
 
+**Standing:** home — the one home of the open queue; read back by `pnpm remediation:status`, which checks
+the per-decision claims below against the decision records in both directions.
+
 **Updated:** 2026-08-28 · **Branch:** `claude/stage0-remediation` · **Base:** `9edd930` (the reviewed tip)
 
 Read this first. [`action-tree.md`](./action-tree.md) is the plan; the two `S0-9` dispositions are the
@@ -88,8 +91,12 @@ to refuse.
   the `review:status` shape, never maintained beside them; and `corrected-end-state.md` is superseded — it
   opens by naming its successors and leaves `S0-9`'s input list, which round 3 replaces with the ratified
   records and the regenerated corpus. The record's own stale status line and its `FU-15` gate parenthetical
-  are annotated in place. What remains is not a decision: the `S0-1` return owes the record's falsifiers
-  15–22 (queue item 4).
+  are annotated in place. **Nothing remains owed: the `S0-1` return landed the record's falsifiers 15–22 on
+  2026-08-28** — the census walker and computed projection are `pnpm remediation:status`
+  (`remediation:check` in `pnpm check`), `census.json` pins all nineteen record-standing documents, the
+  supersession header and input-list swap landed in one commit, and the `originOf` correction and both
+  claim narrowings are in — with falsifier 20's receipt mechanism staying `S0-8`'s design exactly as the
+  record reserves it.
 - **`RC-9` is ratified (2026-08-28): option A at both joints — drafted fresh and ratified the same day,
   never a reopening, because the decision never existed.** Every deferred property is one entry in one debt
   manifest — owner, one blocking gate, required artifact, falsifier, expiry, hashed inputs — that blocks its

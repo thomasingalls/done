@@ -1,5 +1,37 @@
 # Minimally corrected end state
 
+**Standing:** superseded 2026-08-28, at `P-5`'s ratification (joint 2, option A) — successors:
+`decisions/P-1-recipient-authority.md`, `decisions/P-2-device-lock-gating.md`,
+`decisions/P-3-write-admission.md`, `decisions/P-4-lapse-authority.md`, `decisions/P-5-closure-authority.md`,
+`decisions/P-6-local-archive-factor.md`, `decisions/P-8-checkpoint-and-creation-authority.md`,
+`decisions/RC-9-later-gate-governance.md`, `S0-4/A-schemas.md`, `HANDOFF.md`.
+
+> **Nothing below this box is current.** This was the challenge-era target document, written before any
+> decision was taken and never revisited — and both `S0-9` rounds priced that: an exact challenge input that no
+> checker read, publishing what the process had rejected (`FU-07`; round 1 pattern 3;
+> [`P-5`](./decisions/P-5-closure-authority.md)'s reopening). What it publishes below is disowned by its
+> successors, branch by branch:
+>
+> - **Every `RC-*` choice it calls unselected or unresolved is decided.** `RC-1`/`P-1`, `RC-2`/`P-2`,
+>   `RC-3`/`P-3`, `RC-5`/`P-8`, `RC-7`/`P-4`, `RC-8`/`P-5` and `RC-9`
+>   ([`RC-9-later-gate-governance.md`](./decisions/RC-9-later-gate-governance.md), the decision this file
+>   rightly called open — drafted and ratified 2026-08-28) are all recorded in [`decisions/`](./decisions/),
+>   each with its falsifiers; `RC-4` and `RC-6` were already selected when this file was written.
+> - **The attempt rule below is the retired defect, not the design.** Lines that say a final refusal licenses
+>   exactly attempt 1, which *cannot fork or create a third*, describe the sole-successor cap `S0-4` Stage D
+>   killed by mutation — two epoch changes exhaust it — and replaced with the unbounded refusal chain in which
+>   each durable refusal licenses one successor at the same position ([`S0-4/A-schemas.md`](./S0-4/A-schemas.md)).
+>   An implementer following this page builds the availability defect the remediation deliberately retired.
+> - **The invariants and the durable-record table land at the stage returns' TRD and selection homes**, in the
+>   order [`HANDOFF.md`](./HANDOFF.md)'s queue owns; by round 3 the corrected corpus *is* the end state, and
+>   this page stopped being a second copy of it.
+>
+> `S0-9` round 3 challenges the ratified records and the regenerated corpus, not this file — its input list in
+> [`action-tree.md`](./action-tree.md) was amended with this header, in the same commit. The challenge-era
+> bytes rounds 1 and 2 read stay reconstructible:
+> `git show 5923f51:docs/review/remediation/corrected-end-state.md` — the supersede half of this document's own
+> `ClosureAuthority` row, applied to itself.
+
 ## Status and branch assumptions
 
 This is a target architecture, not an implementation claim. It preserves the validated primitive, carrier-binding,

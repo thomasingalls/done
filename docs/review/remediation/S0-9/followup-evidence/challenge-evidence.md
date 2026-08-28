@@ -1,5 +1,8 @@
 # `S0-9` independent challenge evidence
 
+**Standing:** record — speaks of `5923f510fd9ac3c1cd809e9bec352a7f73751492`, the challenged tip; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 **Challenger:** independent non-author review at detached
 `5923f510fd9ac3c1cd809e9bec352a7f73751492`
 **Disposition:** **fail — `S0-10` must not close Stage 0**

@@ -1,5 +1,8 @@
 # `S0-9` — independent challenge, CONTINUITY cluster
 
+**Standing:** record — speaks of `5923f510fd9ac3c1cd809e9bec352a7f73751492`, the challenged tip; pinned in
+`census.json`, so edits land only as dated addenda under a re-pin.
+
 **Challenger:** independent of every repair in this cluster; authored none of `S0-2`, `S0-6` or `S0-7`.
 **Subject:** detached checkout at `5923f51`. No later commit, branch, worktree or reflog was consulted.
 **Reviewed tip:** `9edd930`, read directly with `git show` for the survival axis.
