@@ -45,6 +45,8 @@ import { claims, falsifies } from './lib/traceability.mjs';
 
 const OUT = new URL('../test/vectors/transition.json', import.meta.url);
 const ROW_1 = new URL('../test/vectors/algorithm-suite.json', import.meta.url);
+/** Row 9's emitted bootstrap — the fixture P-1 falsifier 17's composition consumes by value. */
+const HEAD_DISCOVERY = new URL('../test/vectors/head-discovery.json', import.meta.url);
 
 const INTENT_LABEL = 'done/transition/v1';
 const OUTCOME_LABEL = 'done/transition-out/v1';
@@ -182,17 +184,22 @@ const RECOVERY_WRAP = '00112233445566778899aabbccddeeff';
 /**
  * What a `replace-recovery` actually replaces, as bytes rather than as a count.
  *
- * **The row-14 envelope is 76 bytes** -- 16 salt, 12 nonce, the 32-byte scalar
- * and a 16-byte tag -- and every one of them is the thing "exactly the old or
- * exactly the new" is a claim about. `REWRAPPED` is the same at the other
- * carrier: one exact wrap per retained generation, not the list `1|2|3|4|5`
- * that named them.
+ * **The row-14 envelope is 140 bytes** -- 16 salt, 12 nonce, the 96-byte
+ * plaintext (the 32-byte `R_priv` scalar, the 32-byte bootstrap signing seed
+ * sealed beside it since the `S0-2` return, and §14.2's 32-byte root
+ * commitment) and a 16-byte tag -- and every one of them is the thing "exactly
+ * the old or exactly the new" is a claim about. Sealing a fresh signer here is
+ * what retires the old bootstrap capability (TRD §13.8, row 14). `REWRAPPED`
+ * is the same at the other carrier: one exact wrap per retained generation,
+ * not the list `1|2|3|4|5` that named them.
  */
 const NEW_R_PUB = 'ab'.repeat(32);
 const RECOVERY_ENVELOPE =
   '0f1e2d3c4b5a69788796a5b4c3d2e1f0' +
   '112233445566778899aabbcc' +
   '4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36' +
+  '833fe62409237b9d62ec77587520911e9a759cec1d19755b7da901b96dca3d42' +
+  '7c'.repeat(32) +
   'fedcba98765432100123456789abcdef';
 const ROOT_COMMITMENT = '7c'.repeat(32);
 const REWRAPPED = {
@@ -218,23 +225,51 @@ const INTRUDER = 'cred_01HZXR000000000000INTRUDR';
 /** Every credential the service-signed epoch enumerates. */
 const ROSTER = [LAPTOP, PHONE, TABLET, INTRUDER];
 
-/** The wrapping public key each ceremony authenticated. The intruder has none. */
-const W_PUB = {
-  [LAPTOP]: '11'.repeat(32),
-  [PHONE]: '22'.repeat(32),
-  [TABLET]: '33'.repeat(32),
+/**
+ * The member entries each ceremony authenticated: the wrapping key a rotator
+ * encrypts to, and — since the `S0-2` return, `P-1` ratified — the signing key
+ * a set approval verifies under. The intruder has neither. `LAPTOP`'s signing
+ * key is `KEYS.owner`'s, because the owner device is the approver whose lookup
+ * the negatives below exercise; the others' halves are not held here.
+ */
+const MEMBER_KEYS = {
+  [LAPTOP]: { w_pub: '11'.repeat(32), s_pub: KEYS.owner.public_key },
+  [PHONE]: {
+    w_pub: '22'.repeat(32),
+    s_pub: '278117fc144c72340f67d0f2316e8386ceffbf2b2428c9c51fef7c597f1d426e', // RFC 8032 §7.1, TEST 1024
+  },
+  [TABLET]: {
+    w_pub: '33'.repeat(32),
+    s_pub: 'ec172b93ad5e563bf4932c70e1245034c35467ef2efd4d64ebf819683467e2bf', // RFC 8032 §7.1, TEST SHA(abc)
+  },
 };
 
-const CERTIFIED_MEMBERS = { ...W_PUB };
+/** The wrapping-key projection a rotator consumes. */
+const W_PUB = Object.fromEntries(Object.entries(MEMBER_KEYS).map(([c, k]) => [c, k.w_pub]));
+
+const CERTIFIED_MEMBERS = { ...MEMBER_KEYS };
+
+/**
+ * The PARENT certified set's members — the ratified home an approval's
+ * verifier resolves from (`P-1`, option A). The successor under approval here
+ * carries the same three members; what the negatives vary is who signs and who
+ * is named, never where the verifier looks.
+ */
+const PARENT_MEMBERS = { ...MEMBER_KEYS };
 const RECOVERY_STATE_DIGEST = 'cd'.repeat(32);
 
 /**
- * `members_digest` binds the credential to the exact key a rotator encrypts to.
+ * `members_digest` binds the credential to the exact key a rotator encrypts to
+ * and the exact key its approvals verify under.
  *
  * **Credential-to-key, never credential-to-boolean.** The roster was never what
  * was missing; the service does enumerate credentials. What was missing is an
  * approval of the *key*, so an admitted-but-uncertified credential has no
- * approved pair and there is nothing to wrap to.
+ * approved pair and there is nothing to wrap to. The third field is the same
+ * repair one authority along: without `S_pub` in the entry, the only
+ * credential-to-signing-key certification was the service-signed epoch — the
+ * object this construction exists to dethrone — and round 1 showed the
+ * approval's own verifier falling back on it.
  */
 const membersDigest = async (members) =>
   hex(
@@ -243,7 +278,7 @@ const membersDigest = async (members) =>
         lp('done/certified-members/v1'),
         ...Object.entries(members)
           .toSorted(([a], [b]) => (a < b ? -1 : 1))
-          .flatMap(([cred, w]) => [lp(cred), lp(w)]),
+          .flatMap(([cred, k]) => [lp(cred), lp(k.w_pub), lp(k.s_pub)]),
       ),
     ),
   );
@@ -270,6 +305,30 @@ const certifiedSetMessage = ({
       recoveryStateDigest,
     ].map(lp),
   );
+
+/**
+ * An approval names its approver in its signed bytes (`P-1`, ratified
+ * 2026-08-28): flipping the name breaks the signature, so one eligible member
+ * cannot replay another's approval as its own, and an approval naming nobody is
+ * malformed — the pre-return shape, refused below by construction.
+ */
+const APPROVAL_LABEL = 'done/certified-set-approval/v1';
+const approvalMessage = (approver, setBytes) => concat(lp(APPROVAL_LABEL), lp(approver), setBytes);
+
+/**
+ * The lookup round 1's mutation proved missing: the named approver's `S_pub`
+ * resolves from the parent certified set's member entry — never from the
+ * service-signed epoch, which certifies no recipient-authority key. A named
+ * approver outside the parent set refuses here, before any signature runs,
+ * which is the eligibility rule as a lookup rather than as prose.
+ */
+const resolveApprover = (parentMembers, approver) => {
+  const entry = parentMembers[approver];
+  if (entry === undefined) {
+    throw new Error(`the named approver ${approver} is not a member of the parent certified set`);
+  }
+  return entry.s_pub;
+};
 
 /** Who a rotation may wrap to: the certified members, less those it excludes. */
 const recipientsOf = (members, excluded) =>
@@ -490,7 +549,19 @@ const MUST_FAIL = [
   {
     name: 'certified-set-approved-by-an-impostor',
     falsifies: ['f-c611666-rotation-reader-eligibility-missing'],
-    why: 'The approval is the whole difference between a roster and a recipient set. Signed by a key that is neither an eligible client nor the lineage authorization key, it is a service asserting who may receive a content key -- which is the separation this row exists to keep.',
+    why: "The approval is the whole difference between a roster and a recipient set, and this is round 1's mutation inverted into the permanent shape of the negative (P-1 falsifier 12): the verifier resolves the named approver's S_pub from the parent certified set's member entry — a real lookup, not a constant — so a hostile service that publishes an epoch substituting a member's signing key gets an approval that does not verify. The epoch certifies no recipient-authority key, and the verifier never asks it.",
+  },
+  {
+    name: 'approval-presented-as-another-members',
+    why: "P-1 falsifier 13: the approver is named inside the approval's signed bytes, so presenting one member's approval under another member's name changes the message the signature was taken over — flipping the name breaks the signature, and one eligible member cannot replay another's approval as its own.",
+  },
+  {
+    name: 'approval-without-a-named-approver',
+    why: 'The pre-return approval shape — a signature over the bare set bytes, naming nobody — is malformed by construction: the verifier only accepts the labeled, approver-prefixed message, so an approval that does not say who approved cannot verify under anyone.',
+  },
+  {
+    name: 'approval-by-an-admitted-non-member',
+    why: "The eligibility rule as a lookup. The intruder is in the service's roster and not in the parent certified set, so an approval naming it refuses at resolution — before any signature runs. Admission is the service's to grant and approval authority is not: criterion 10's authorized-but-unkeyed credential stays outside, now for approvals as well as wraps.",
   },
   {
     name: 'certified-set-from-another-epoch',
@@ -600,26 +671,59 @@ const main = async () => {
 
   const honestMembers = await membersDigest(CERTIFIED_MEMBERS);
   const honestSet = certifiedSetMessage({ members: honestMembers });
-  const approval = await sign(KEYS.owner.seed, honestSet);
+  const approval = await sign(KEYS.owner.seed, approvalMessage(LAPTOP, honestSet));
 
-  const approves = async (over, sig = approval) => {
+  /**
+   * The verifier, with the lookup real (P-1 falsifier 12). The named approver's
+   * key comes from the parent certified set's member entry and from nowhere
+   * else; round 1's mutation made the pre-return verifier do this lookup and
+   * `certified-set-approved-by-an-impostor` succeeded when it must not, because
+   * the epoch was the only signing-key home. Now the member entry is.
+   */
+  const approves = async (over, { approver = LAPTOP, sig = approval } = {}) => {
+    const sPub = resolveApprover(PARENT_MEMBERS, approver);
     const ok = await verify(
-      KEYS.owner.public_key,
+      sPub,
       sig,
-      certifiedSetMessage({ members: honestMembers, ...over }),
+      approvalMessage(approver, certifiedSetMessage({ members: honestMembers, ...over })),
     );
     if (!ok) throw new Error('the approval does not cover this set');
     return ok;
   };
   if (!(await approves({}))) throw new Error('the honest approval does not verify.');
+  if (resolveApprover(PARENT_MEMBERS, LAPTOP) !== KEYS.owner.public_key) {
+    throw new Error('the fixture resolves the approver to a key it does not sign with.');
+  }
 
+  // The service publishes an epoch substituting LAPTOP's signing key with one
+  // it holds, and approves the set under it, naming LAPTOP. The lookup never
+  // consults the epoch: LAPTOP's member entry resolves the genuine key, and
+  // the impostor's approval does not verify.
   await refuses('certified-set-approved-by-an-impostor', async () =>
-    approves({}, await sign(KEYS.impostor.seed, honestSet)),
+    approves({}, { sig: await sign(KEYS.impostor.seed, approvalMessage(LAPTOP, honestSet)) }),
+  );
+  // LAPTOP's honest approval, presented as PHONE's: the name is in the signed
+  // bytes, so the flip breaks the signature.
+  await refuses('approval-presented-as-another-members', () => approves({}, { approver: PHONE }));
+  // The pre-return shape: a signature over the bare set bytes, naming nobody.
+  await refuses('approval-without-a-named-approver', async () =>
+    approves({}, { sig: await sign(KEYS.owner.seed, honestSet) }),
+  );
+  // The intruder is admitted and is not a member, so resolution refuses before
+  // any signature runs.
+  await refuses('approval-by-an-admitted-non-member', async () =>
+    approves({}, {
+      approver: INTRUDER,
+      sig: await sign(KEYS.impostor.seed, approvalMessage(INTRUDER, honestSet)),
+    }),
   );
   await refuses('certified-set-from-another-epoch', () => approves({ parentEpoch: LATER_EPOCH }));
   await refuses('certified-set-with-an-added-member', async () =>
     approves({
-      members: await membersDigest({ ...CERTIFIED_MEMBERS, [INTRUDER]: '44'.repeat(32) }),
+      members: await membersDigest({
+        ...CERTIFIED_MEMBERS,
+        [INTRUDER]: { w_pub: '44'.repeat(32), s_pub: '55'.repeat(32) },
+      }),
     }),
   );
   await refuses('certified-set-with-substituted-recovery-state', () =>
@@ -647,6 +751,54 @@ const main = async () => {
   }
   if (recipientsOf(CERTIFIED_MEMBERS, []).includes(INTRUDER)) {
     throw new Error('The intruder is a certified member; the fixture proves nothing.');
+  }
+
+  // --- P-1 falsifier 17: bootstrap output becomes rotation capability ------------
+  //
+  // The rule TRD §13.8 states, run: an accepted RecoveryBootstrap's binding IS
+  // the replacement certified set — one member entry (new_credential_id ‖
+  // new_W_pub ‖ new_S_pub) with new_recovery_state_digest, at parent_epoch =
+  // observed_epoch — and a subsequent rotation by the recovered credential
+  // succeeds, its approval resolving through that set's member entry. Round 1
+  // D-3 found the composition existed nowhere: §13.7's rotator consumed the
+  // certified set of its parent epoch, after a total loss that set named only
+  // dead credentials, and no rule turned the bootstrap's binding into one — so
+  // the recovered credential could read and could not rotate. The fixture is
+  // head-discovery.json's own accepted bootstrap, so the two carriers compose
+  // by value rather than by two copies of one story.
+  const HD = JSON.parse(readFileSync(HEAD_DISCOVERY, 'utf8'));
+  const boot = HD.recovery_bootstrap.fields;
+  if (boot.workspace !== WORKSPACE || boot.lineage !== LINEAGE) {
+    throw new Error('the bootstrap fixture is not this workspace; the composition proves nothing.');
+  }
+  if (boot.newSigningKey !== HD.keys.new_credential.public_key) {
+    throw new Error('the bootstrap does not carry the countersigning credential’s key.');
+  }
+  const replacementMembers = {
+    [boot.newCredential]: { w_pub: boot.newWrappingKey, s_pub: boot.newSigningKey },
+  };
+  const replacementMembersDigest = await membersDigest(replacementMembers);
+  const replacementSet = certifiedSetMessage({
+    parentEpoch: boot.observedEpoch,
+    nextEpoch: boot.observedEpoch + 1,
+    members: replacementMembersDigest,
+    recoveryStateDigest: boot.newRecoveryStateDigest,
+  });
+  const successorSet = certifiedSetMessage({
+    parentEpoch: boot.observedEpoch + 1,
+    nextEpoch: boot.observedEpoch + 2,
+    members: replacementMembersDigest,
+    recoveryStateDigest: boot.newRecoveryStateDigest,
+  });
+  const successorApproval = await sign(
+    HD.keys.new_credential.seed,
+    approvalMessage(boot.newCredential, successorSet),
+  );
+  const recoveredKey = resolveApprover(replacementMembers, boot.newCredential);
+  if (!(await verify(recoveredKey, successorApproval, approvalMessage(boot.newCredential, successorSet)))) {
+    throw new Error(
+      'the recovered credential cannot rotate: its approval does not verify through the replacement set.',
+    );
   }
 
   const auth = KEYS.authorization;
@@ -1127,13 +1279,18 @@ const main = async () => {
     selection: 'docs/selections/row-15-transitions.md',
     trd_row: 15,
     certified_recipient_set: {
-      why: 'A rotator wraps to the certified set, never to the epoch roster. The roster enumerates every credential the service admitted; the certified set names the exact (credential, W_pub) pairs a person enrolled, and the exact recovery recipient. Without it, account authorization alone causes delayed content-key delivery: at the next unrelated rotation nothing distinguishes an admitted credential from one whose ceremony succeeded.',
+      why: 'A rotator wraps to the certified set, never to the epoch roster. The roster enumerates every credential the service admitted; the certified set names the exact (credential_id ‖ W_pub ‖ S_pub) member triples a person enrolled, and the exact recovery recipient. Without it, account authorization alone causes delayed content-key delivery: at the next unrelated rotation nothing distinguishes an admitted credential from one whose ceremony succeeded.',
       message:
         'CertifiedSet = LP("done/certified-set/v1") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(dec parent_epoch) || LP(dec next_epoch) || LP(hex members_digest) || LP(hex recovery_state_digest)',
       members_digest:
-        'SHA-256( LP("done/certified-members/v1") || ( LP(credential_id) || LP(hex W_pub) )* sorted by credential_id )',
+        'SHA-256( LP("done/certified-members/v1") || ( LP(credential_id) || LP(hex W_pub) || LP(hex S_pub) )* sorted by credential_id )',
+      approval_message:
+        'approval = Ed25519( the named approver’s signing credential ; LP("done/certified-set-approval/v1") || LP(approver_credential_id) || CertifiedSet )',
       approved_by:
-        'One eligible content-holding client (P-1, single-owner). approvals[] is a list, so a threshold is later a verifier policy change rather than a format migration.',
+        'One eligible content-holding client (P-1, single-owner). approvals[] is a list of (approver_credential_id, approval) entries, so a threshold is later a verifier policy change rather than a format migration.',
+      approver_resolution:
+        'The verifier resolves the named approver’s S_pub from the PARENT certified set’s member entry and nothing else — the genesis set under the creating credential’s key, a bootstrap-minted replacement under the factor-resolved signer. The service-signed epoch resolves no recipient-authority key (P-1, ratified 2026-08-28).',
+      parent_certified_members: PARENT_MEMBERS,
       roster: ROSTER,
       certified_members: CERTIFIED_MEMBERS,
       admitted_but_uncertified: INTRUDER,
@@ -1143,10 +1300,25 @@ const main = async () => {
       members_digest_value: honestMembers,
       recovery_state_digest: RECOVERY_STATE_DIGEST,
       message_hex: hex(honestSet),
+      approver: LAPTOP,
       approval: hex(approval),
       approver_public_key: KEYS.owner.public_key,
       expected:
         'licensed_recipients equals wrapped_by_this_rotation, and admitted_but_uncertified appears in roster and in neither',
+    },
+    bootstrap_composition: {
+      why: 'P-1 falsifier 17, run: an accepted RecoveryBootstrap’s binding IS the replacement certified set, and a subsequent rotation by the recovered credential succeeds — its approval resolving through the replacement set’s member entry, the same lookup every approval uses. Round 1 D-3 found this composed nowhere: the recovered credential could read and could not rotate.',
+      rule: 'replacement set = one member entry (new_credential_id ‖ new_W_pub ‖ new_S_pub) with new_recovery_state_digest, at parent_epoch = observed_epoch, verifying under the factor-resolved bootstrap signer (TRD §13.8, S0-2/A-schemas.md §2)',
+      consumes: 'test/vectors/head-discovery.json recovery_bootstrap.fields — the composition is by value, not by a second copy of the story',
+      replacement_members: replacementMembers,
+      replacement_set_hex: hex(replacementSet),
+      subsequent_rotation: {
+        successor_set_hex: hex(successorSet),
+        approver: boot.newCredential,
+        approval: hex(successorApproval),
+        resolved_through: 'the replacement set’s member entry — resolveApprover(replacement_members, approver)',
+      },
+      expected: 'the recovered credential’s successor approval verifies through the replacement set',
     },
     construction: {
       kinds: ['rotate', 'replace-recovery', 'retire'],

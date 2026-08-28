@@ -39,16 +39,22 @@
       "public_key": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a"
     },
     "bootstrap_signer": {
-      "role": "Committed in the prior RecoverySet and sealed beside R_priv under the content factor. The recovery code yields it; the service never holds it.",
+      "role": "Committed in recovery_state_digest — the field the certified set carries — and sealed beside R_priv under the content factor. The recovery code yields it; the service never holds it; acceptance derives its verifier from the factor-opened state and from nothing else.",
       "source": "RFC 8032 §7.1, TEST 3",
       "seed": "c5aa8df43f9f837bedb7442f31dcb7b166d38535076f094b85ce3a2e0b4458f7",
       "public_key": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025"
     },
     "new_credential": {
-      "role": "The replacement device's signing credential. Countersigns the bootstrap on install, so the binding names a device that actually holds the key.",
+      "role": "The replacement device's signing credential. Its verification key rides the Bootstrap as new_signing_key — the one key no surviving set can carry — and the countersignature verifies under it, so the binding names a device that actually holds the key.",
       "source": "RFC 8032 §7.1, TEST 4",
       "seed": "f5e5767cf153319517630f226876b86c8160cc583bc013744c6bf255f5cc0ee5",
       "public_key": "278117fc144c72340f67d0f2316e8386ceffbf2b2428c9c51fef7c597f1d426e"
+    },
+    "replacement_bootstrap_signer": {
+      "role": "The fresh signer a replace-recovery seals beside the new R_priv and commits in the successor recovery_state_digest — the rotation that retires the one above (P-1 falsifier 16).",
+      "source": "RFC 8032 §7.1, TEST SHA(abc)",
+      "seed": "833fe62409237b9d62ec77587520911e9a759cec1d19755b7da901b96dca3d42",
+      "public_key": "ec172b93ad5e563bf4932c70e1245034c35467ef2efd4d64ebf819683467e2bf"
     }
   },
   "vectors": [
@@ -106,9 +112,26 @@
   ],
   "recovery_bootstrap": {
     "why": "A certified recipient set is approved by an eligible content-holding client. A total loss with no surviving device would therefore have had nothing able to approve the replacement -- and the validated four-object theorem would have quietly become a five-object one, the fifth being a device that still works. This is what keeps it at four.",
-    "message": "Bootstrap = LP(\"done/recovery-bootstrap/v1\") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(dec observed_epoch) || LP(hex observed_head_digest) || LP(hex service_nonce) || LP(hex prior_recovery_state_digest) || LP(hex recovered_root) || LP(new_credential_id) || LP(hex new_wrapping_key) || LP(hex new_recovery_state_digest) || LP(hex conflict_parent)",
-    "signed_by": "the bootstrap signer, committed in the prior RecoverySet and sealed beside R_priv under the same content factor -- so the recovery code yields it and the service never holds it",
-    "countersigned_by": "the new credential, which is what proves the named device holds the key it is being bound to",
+    "message": "Bootstrap = LP(\"done/recovery-bootstrap/v1\") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(dec observed_epoch) || LP(hex observed_head_digest) || LP(hex service_nonce) || LP(hex prior_recovery_state_digest) || LP(hex recovered_root) || LP(new_credential_id) || LP(hex new_wrapping_key) || LP(hex new_signing_key) || LP(hex new_recovery_state_digest) || LP(hex conflict_parent)",
+    "recovery_state": {
+      "why": "The factor-opened current RecoveryState — the only authority input acceptance consumes, and the carrier FU-01 found missing: before the S0-2 return the executable acceptance verified under a fixed out-of-band constant. Its digest is committed by §13.5’s certified set; its bootstrap_signer’s signing half is sealed beside R_priv in row 14’s envelope.",
+      "digest_formula": "recovery_state_digest = SHA-256( LP(\"done/recovery-state/v1\") || LP(dec counter) || LP(hex R_pub) || LP(hex recovery_envelope_digest) || LP(hex root_commitment) || LP(hex bootstrap_signer) )",
+      "current": {
+        "counter": 1,
+        "r_pub": "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a",
+        "recovery_envelope_digest": "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+        "root_commitment": "7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c",
+        "bootstrap_signer": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025"
+      },
+      "current_digest": "2a913107850c375005ef90e722e68f2f7852869dee98e09998447a37ddb2dded"
+    },
+    "acceptance": [
+      "prior_recovery_state_digest equals the digest of the factor-opened current RecoveryState, or the bootstrap is refused as an authority failure — a stale or forked head, not merely a broken signature (P-1 falsifier 15).",
+      "sig verifies under current.bootstrap_signer, derived only from that state; a service-supplied verifier is nothing acceptance ever consumes.",
+      "countersig verifies under the carried new_signing_key — the one key the parent set cannot carry, vouched by the binding the factor-resolved sig covers."
+    ],
+    "signed_by": "the bootstrap signer, committed in recovery_state_digest and sealed beside R_priv under the same content factor -- so the recovery code yields it and the service never holds it",
+    "countersigned_by": "the new credential, under the carried new_signing_key, which is what proves the named device holds the key it is being bound to",
     "four_objects": {
       "account_access": "account recovery — the person signs in",
       "authorization": "the service admits a replacement credential",
@@ -117,25 +140,40 @@
     },
     "no_fifth_object": "The signer is inside the factor-protected recovery object, so possession of the code yields both it and R_priv. Nothing new is independently held.",
     "freshness": "observed_epoch, observed_head_digest and service_nonce carry row 9's bound unchanged: a hostile service can withhold, not forge. conflict_parent lets it serialise competing bootstraps without choosing the winner's contents.",
+    "replacement_rotates_the_signer": {
+      "why": "Every replace-recovery seals a fresh signer beside the new R_priv and commits it in the successor recovery_state_digest — which is what retires the old capability (P-1 falsifier 16). The refusal cites the rotated commitment, never an envelope decryption failure; and against the successor state the replacement signer signs the next succession, so the rotation composes forward.",
+      "next": {
+        "counter": 2,
+        "r_pub": "abababababababababababababababababababababababababababababababab",
+        "recovery_envelope_digest": "cececececececececececececececececececececececececececececececece",
+        "root_commitment": "7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c",
+        "bootstrap_signer": "ec172b93ad5e563bf4932c70e1245034c35467ef2efd4d64ebf819683467e2bf"
+      },
+      "next_digest": "d9f2b659c8aaeda5f43d39970be7f2239a7dd8697c6f8f072b4147759ef90a5b",
+      "retired_signer_public_key": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025",
+      "replacement_signer_public_key": "ec172b93ad5e563bf4932c70e1245034c35467ef2efd4d64ebf819683467e2bf"
+    },
+    "composition": "An accepted bootstrap’s binding IS the replacement certified set: one member entry (new_credential_id ‖ new_W_pub ‖ new_S_pub) with new_recovery_state_digest, at parent_epoch = observed_epoch (TRD §13.8). test/vectors/transition.json demonstrates it by minting that set from these fields and verifying a successor approval by the recovered credential through the member-key lookup — the recovered credential can rotate, not merely read (P-1 falsifier 17).",
     "fields": {
       "workspace": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
       "lineage": "ln_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
       "observedEpoch": 9,
       "observedHeadDigest": "2b7f0a9c14e6d3850fa2c51e86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
       "serviceNonce": "5f4dcc3b5aa765d61d8327deb882cf995f4dcc3b5aa765d61d8327deb882cf99",
-      "priorRecoveryStateDigest": "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+      "priorRecoveryStateDigest": "2a913107850c375005ef90e722e68f2f7852869dee98e09998447a37ddb2dded",
       "recoveredRoot": "7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c",
       "newCredential": "cred_01HZXR0000000000000000NEW",
       "newWrappingKey": "de9edb7d7b7dc1b4d35b61c2ece435373f8343c85b78674dadfc7e146f882b4f",
-      "newRecoveryStateDigest": "abababababababababababababababababababababababababababababababab",
+      "newSigningKey": "278117fc144c72340f67d0f2316e8386ceffbf2b2428c9c51fef7c597f1d426e",
+      "newRecoveryStateDigest": "d9f2b659c8aaeda5f43d39970be7f2239a7dd8697c6f8f072b4147759ef90a5b",
       "conflictParent": "0000000000000000000000000000000000000000000000000000000000000000"
     },
-    "message_hex": "001a646f6e652f7265636f766572792d626f6f7473747261702f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000139004032623766306139633134653664333835306661326335316538366434303733626239653063316632346438613633373539653062326634633761316438653336004035663464636333623561613736356436316438333237646562383832636639393566346463633362356161373635643631643833323764656238383263663939004063646364636463646364636463646364636463646364636463646364636463646364636463646364636463646364636463646364636463646364636463646364004037633763376337633763376337633763376337633763376337633763376337633763376337633763376337633763376337633763376337633763376337633763001e637265645f3031485a5852303030303030303030303030303030304e4557004064653965646237643762376463316234643335623631633265636534333533373366383334336338356237383637346461646663376531343666383832623466004061626162616261626162616261626162616261626162616261626162616261626162616261626162616261626162616261626162616261626162616261626162004030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030",
-    "signature": "3a0807d6de147233e1abeec8872ec64fdb53b28c4d33cb76fca72f4520007a5a0e631b1d092935ab924e1621eb03a329510b6e5e4ef0860ad33a21c9cfa9fc06",
-    "countersignature": "c32062e0d7f14d3ed341557b25e83bfdcb5cfa93f1720da8199b5afeef96d569cba3aedd626680ed16460f218dbe5b2e5e35099b217f64054893ae38ca1b600a",
+    "message_hex": "001a646f6e652f7265636f766572792d626f6f7473747261702f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744001d6c6e5f3031485a5851374d344b395032523654385630593342354e3744000139004032623766306139633134653664333835306661326335316538366434303733626239653063316632346438613633373539653062326634633761316438653336004035663464636333623561613736356436316438333237646562383832636639393566346463633362356161373635643631643833323764656238383263663939004032613931333130373835306333373530303565663930653732326536386632663738353238363964656539386530393939383434376133376464623264646564004037633763376337633763376337633763376337633763376337633763376337633763376337633763376337633763376337633763376337633763376337633763001e637265645f3031485a5852303030303030303030303030303030304e4557004064653965646237643762376463316234643335623631633265636534333533373366383334336338356237383637346461646663376531343666383832623466004032373831313766633134346337323334306636376430663233313665383338366365666662663262323432386339633531666566376335393766316434323665004064396632623635396338616165646135663433643339393730626537663232333961376464383639376336663866303732623431343737353965663930613562004030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030",
+    "signature": "cdf4b914bd0cb93c8ecd216c744e3aa8c4902a1ed69b12d8c0fc279917182bf097a9c0eea377cf409e9acd05b2cbfd1362c69f7abd7390c5bc664092f1e66d09",
+    "countersignature": "0c090e7bc677048caf587bd4bf35a687764f9cfe886cff3588d45968c5526d0753eb3872a8e2ba4875c6065a195bb0c493324c758866844e88cf2cfae369ab0d",
     "signer_public_key": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025",
     "credential_public_key": "278117fc144c72340f67d0f2316e8386ceffbf2b2428c9c51fef7c597f1d426e",
-    "expected": "binds the replacement credential and its wrapping key, from four objects and no surviving client"
+    "expected": "binds the replacement credential, its wrapping key and its signing key, from four objects and no surviving client"
   },
   "must_fail": [
     {
@@ -176,11 +214,11 @@
     },
     {
       "name": "bootstrap-signed-by-the-service",
-      "why": "The whole separation, as one signature. The bootstrap signer is committed in the prior RecoverySet and sealed beside R_priv, so a service that can admit a credential still cannot authorize one to receive content. Signed here by another key the deployment holds."
+      "why": "The whole separation, as one signature. The bootstrap signer is committed in recovery_state_digest and sealed beside R_priv, acceptance derives its verifier from that factor-opened state and from nothing the service supplies, so a service that can admit a credential still cannot authorize one to receive content. Signed here by another key the deployment holds."
     },
     {
       "name": "bootstrap-countersigned-by-another-credential",
-      "why": "The countersignature names the device that actually holds the new wrapping key. Without it the recovering client could bind a credential it does not control, which is the same delayed-delivery shape one actor along."
+      "why": "The countersignature verifies under the carried new_signing_key — the key the factor-resolved sig vouches for — so it names the device that actually holds it. Without it the recovering client could bind a credential it does not control, which is the same delayed-delivery shape one actor along."
     },
     {
       "name": "bootstrap-with-a-stale-observed-head",
@@ -195,7 +233,11 @@
       "falsifies": [
         "f-a073574-enrollment-recovery-key-unbound"
       ],
-      "why": "It must chain from the recovery state the code actually opened. Unbound, a bootstrap could claim succession from a set the recovering party never held."
+      "why": "It must chain from the recovery state the code actually opened: prior_recovery_state_digest is compared against the factor-authenticated current state, so a stale or forked head fails as an authority refusal before any signature is consulted (P-1 falsifier 15). Unbound, a bootstrap could claim succession from a set the recovering party never held."
+    },
+    {
+      "name": "bootstrap-signed-by-the-retired-signer",
+      "why": "A-01's standing attack, refused (P-1 falsifier 16). After replace-recovery rotates the signer, the prior capability signs a fresh-nonce successor chaining from the rotated state — and it fails against the commitment the successor recovery_state_digest carries, with a refusal that cites the committed signer rather than an envelope decryption failure. An exposed bootstrap capability cannot sign successors forever."
     },
     {
       "name": "bootstrap-substituting-the-new-wrapping-key",
@@ -211,6 +253,14 @@
     {
       "name": "aad-only-bootstrap-service-nonce",
       "why": "Row 14 §9's move, at this carrier. `bootstrap-replayed-under-another-nonce` above fails on the comparison between the nonce in the object and the one this recovery received -- and that comparison would refuse it just as readily if the nonce were signed by nobody. So this one carries the nonce the verifier is expecting, which forces the refusal onto the signature and is also what a real attacker would present, since those bytes are theirs to edit."
+    },
+    {
+      "name": "aad-only-bootstrap-prior-recovery-state",
+      "why": "The same move for the chain binding: `bootstrap-naming-another-prior-recovery-state` above fails on the authority comparison against the factor-opened state, which would refuse it whether or not the field were signed. Here the presented field matches the current state — the comparison passes — and the signatures were taken over a different prior binding, so only the signature can refuse it."
+    },
+    {
+      "name": "aad-only-bootstrap-new-signing-key",
+      "why": "The countersignature verifies under the carried key, so a substituted new_signing_key arrives with a countersignature its holder can actually produce — that check passes, and only the factor-resolved sig over the binding refuses it. Unbound, the service swaps the signing key in the binding and the replacement set certifies an approval authority the attacker holds."
     },
     {
       "name": "aad-only-bootstrap-label",

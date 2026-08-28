@@ -15,16 +15,18 @@
  * **What the demonstrations assert, and what they do not.** The boundary
  * census proves the four check-to-commit pairs `P-3` falsifier 21 names are
  * expressible — by executing a kill and a second writer inside each window,
- * never by naming steps. The reproductions then drive the *current* models
- * into the states the dispositions describe, and assert those states are
- * reached: **each such assertion states an open defect, not an invariant.**
- * The stage returns invert them — `S0-3` under `P-3` falsifiers 17–18 (the
- * refusal window), the `S0-2`/`S0-3` interface under falsifiers 19–20 (the
- * fence and the retirement composition), `S0-3` under falsifiers 14–15 (the
- * key scope) — and this file is written so each flip is one assertion
- * reversed, with the schedule kept. No `falsifies:` tag appears here on
- * purpose: a reproduction demonstrates a finding, it does not refuse one, and
- * a claim would say the repair exists before it does.
+ * never by naming steps. The reproductions then drive the models into the
+ * states the dispositions describe: **an assertion that such a state is
+ * reached states an open defect, not an invariant**, and each stage return
+ * inverts its own with the schedule kept. `FU-09`'s is inverted (the `S0-2`
+ * return, 2026-08-28): the commit step carries `P-3`'s ratified fence, the
+ * marker advance finalizes the outgoing ledger atomically, and the
+ * reproduction's schedule now asserts the permanent negative — falsifiers
+ * 19–20 finish at the `S0-3` return. `FU-08` (the refusal window, falsifiers
+ * 17–18) and `P-3` joint 1 (the key scope, falsifiers 14–15) remain open
+ * reproductions owed to `S0-3`. No `falsifies:` tag appears here on purpose:
+ * a reproduction demonstrates a finding, it does not refuse one, and a claim
+ * would say the repair exists before it does.
  *
  * Sizes are symbolic exactly as in writeAdmission.test.ts: `MAX_UPDATE` 64 and
  * `BUDGET` 8 keep schedules legible, and `check-update-limit.mjs` owns the
@@ -64,10 +66,11 @@ interface Durable {
   openers: readonly number[];
   checkpoints: readonly { gen: number }[];
   /**
-   * The classification ledger: what step 3 snapshotted per generation. Step 7
-   * consumes it as if it were complete — which is exactly the claim `S0-2`'s
-   * step 5 makes and nothing enforces, so the ledger is durable state here in
-   * order to *exhibit* the record that escaped it.
+   * The classification ledger: what step 3 snapshotted per generation, and
+   * what step 5 finalizes in the same atomic transaction that advances the
+   * marker (the S0-2 return). Step 7 consumes it as complete — true by
+   * construction now, because the fence lets no record commit under a
+   * generation the marker has left.
    */
   ledger: Readonly<Record<number, readonly number[]>>;
 }
@@ -196,13 +199,68 @@ const batchSteps = (ackOnCommit: string | null): Step<Durable, Volatile>[] => [
   },
   {
     id: 'commit',
-    // The asynchronous IndexedDB transaction: records land under the
-    // reservation's generation — the one captured at reserve, not the marker's
-    // current value — the journal entries it covered are removed, and the
-    // refusal path's acknowledgement arrives here.
+    // The asynchronous IndexedDB transaction — with the fence (P-3 joint 3,
+    // ratified 2026-08-28; the S0-2 return): the committing transaction reads
+    // the active marker under the same serialization the allocator leans on,
+    // and when the marker moved past the reservation's generation it aborts
+    // into re-reservation — the abandoned range stays counted against its
+    // generation, and the pending updates wait for the retry transaction
+    // below. When the marker did not move, records land under the
+    // reservation's generation, the journal entries they covered are removed,
+    // and the refusal path's acknowledgement arrives here.
     run: (w) => {
       const r = w.volatile.reservation;
       if (r === null) throw new Error('commit without a reservation is not a schedule this model takes');
+      if (r.gen !== w.durable.activeGen) {
+        return { ...w, volatile: { ...w.volatile, reservation: null } };
+      }
+      const committed = w.volatile.pending.map((p, i) => ({ id: p.id, seq: r.from + i, gen: r.gen }));
+      const ids = new Set(committed.map((c) => c.id));
+      return {
+        durable: {
+          ...w.durable,
+          records: [...w.durable.records, ...committed],
+          journal: w.durable.journal.filter((j) => !ids.has(j.id)),
+        },
+        volatile: { ...w.volatile, pending: [], reservation: null, notDurable: null },
+        observed: ackOnCommit === null ? w.observed : [...w.observed, `saved:${ackOnCommit}`],
+      };
+    },
+  },
+  {
+    id: 're-reserve',
+    // The retry the fence's abort licenses: a fresh reservation transaction
+    // under the marker the abort observed. A separate step on purpose — the
+    // window between the abort and this transaction is real, and a second
+    // marker advance inside it is a schedule this model can take, refused
+    // again by the same fence at re-commit.
+    run: (w) => {
+      if (w.volatile.pending.length === 0 || w.volatile.reservation !== null) return w;
+      const k = w.volatile.pending.length;
+      const gen = w.durable.activeGen;
+      return {
+        ...w,
+        durable: {
+          ...w.durable,
+          seq: {
+            next: w.durable.seq.next + k,
+            reserved: { ...w.durable.seq.reserved, [gen]: (w.durable.seq.reserved[gen] ?? 0) + k },
+          },
+        },
+        volatile: { ...w.volatile, reservation: { from: w.durable.seq.next, k, gen } },
+      };
+    },
+  },
+  {
+    id: 're-commit',
+    // The retried commit, under the same fence. A no-op when the first commit
+    // already landed the batch.
+    run: (w) => {
+      const r = w.volatile.reservation;
+      if (r === null || w.volatile.pending.length === 0) return w;
+      if (r.gen !== w.durable.activeGen) {
+        return { ...w, volatile: { ...w.volatile, reservation: null } };
+      }
       const committed = w.volatile.pending.map((p, i) => ({ id: p.id, seq: r.from + i, gen: r.gen }));
       const ids = new Set(committed.map((c) => c.id));
       return {
@@ -268,8 +326,9 @@ const transition = (): Writer<Durable, Volatile> => ({
     {
       id: 'classify',
       // Step 3: snapshot every old-generation object. The ledger entry is what
-      // step 7 will consume — and a record committed after this moment is in no
-      // snapshot, which is the whole of FU-09's mechanism.
+      // step 7 will consume; a record can still commit under g between here
+      // and step 5 — legitimately, the marker has not moved — which is why
+      // step 5 finalizes the ledger atomically with the advance.
       run: (w) => {
         const g = w.durable.activeGen;
         const target = w.durable.apply?.targetGen ?? g + 1;
@@ -298,13 +357,27 @@ const transition = (): Writer<Durable, Volatile> => ({
     },
     {
       id: 'advance-marker',
-      // The commit point. S0-2's step-5 claim — "only once no new write can
-      // select g" — is asserted by nothing here, faithfully.
+      // The commit point — and, since the S0-2 return, the moment step 3's
+      // classification is complete: the marker and the records share one
+      // serialization domain (the fence reads the marker in the committing
+      // record transaction), so no g record can commit after this step, and
+      // the same atomic transaction finalizes g's ledger over everything that
+      // did. "Only once no new write can select g" is construction now, not a
+      // claim the suites step around.
       run: (w) => {
-        const target = w.durable.apply?.targetGen ?? w.durable.activeGen + 1;
+        const g = w.durable.activeGen;
+        const target = w.durable.apply?.targetGen ?? g + 1;
         return {
           ...w,
-          durable: { ...w.durable, activeGen: target, apply: { step: 5, targetGen: target, settled: false } },
+          durable: {
+            ...w.durable,
+            activeGen: target,
+            ledger: {
+              ...w.durable.ledger,
+              [g]: w.durable.records.filter((r) => r.gen === g).map((r) => r.seq),
+            },
+            apply: { step: 5, targetGen: target, settled: false },
+          },
         };
       },
     },
@@ -326,9 +399,10 @@ const transition = (): Writer<Durable, Volatile> => ({
     },
     {
       id: 'retire-openers',
-      // Step 7 consumes step 3's classification as if it were complete. The
-      // predicate here is the shipped model's — retained checkpoints — and the
-      // ledger stands beside it so a test can exhibit the record it never saw.
+      // Step 7 consumes the classification step 5 finalized — complete by the
+      // fence's construction. The predicate here is the shipped model's —
+      // retained checkpoints — and the invariant the inversion asserts is
+      // that no record's generation loses its opener while outside the ledger.
       run: (w) => {
         const target = w.durable.apply?.targetGen ?? w.durable.activeGen;
         return {
@@ -484,15 +558,19 @@ describe('FU-08 — the refusal window, now a schedulable state', () => {
   });
 });
 
-describe('FU-09 — a reservation crossing the marker advance, now a schedulable interleaving', () => {
-  it('commits a late g record after classification closed, and retirement never sees it', () => {
-    // Reserve under g=4, let two full transitions run (4 -> 5 -> 6), then let
-    // the granted range commit. The record lands under generation 4 — the
-    // reservation's, not the marker's — after every classification that will
-    // ever look at generation 4 has closed: the first cycle classifies gen 4
-    // before the record exists, the second classifies gen 5 only, and the
-    // two-retained checkpoint rule ages generation 4's checkpoint out, so
-    // step 7 retires its opener with the record outside every ledger entry.
+describe('FU-09 — the fence: a reservation cannot outlive its generation (inverted at the S0-2 return)', () => {
+  /**
+   * The schedule is the reproduction's, kept exactly (P-3's charter: each flip
+   * is one assertion reversed, with the schedule kept): reserve under g=4, let
+   * two full transitions run (4 -> 5 -> 6), then let the granted range try to
+   * commit. Before the return the record landed under generation 4 — after
+   * every classification that would ever look at generation 4 had closed, with
+   * its opener retired — the composition P-3 falsifier 20 forbids. Under the
+   * ratified fence the commit validates its generation where the commit lands
+   * and aborts into re-reservation under the successor. Falsifiers 19–20
+   * finish at the S0-3 return, where the write-admission machine consolidates.
+   */
+  it('aborts the late commit into re-reservation under the successor, and no ledger is escaped', () => {
     const e = editor('editor', 'e1');
     const t1 = { ...transition(), name: 'rotate1' };
     const t2 = { ...transition(), name: 'rotate2' };
@@ -501,24 +579,56 @@ describe('FU-09 — a reservation crossing the marker advance, now a schedulable
       ...upTo(e, 'reserve'),
       ...all(t1),
       ...all(t2),
-      ...between(e, 'reserve', 'commit'),
+      ...between(e, 'reserve'),
     ]);
 
     const d = trace.world.durable;
-    const lateRecord = d.records.find((r) => r.id === 'e1');
-    // The composition falsifier 20 forbids, reached: a record sealed under a
-    // generation whose opener is retired, visible to no classification ledger.
-    // This states the open defect at the S0-2/S0-3 interface — P-3's ratified
-    // fence (the committing transaction validates its generation where the
-    // commit lands, and aborts into re-reservation) flips it at the return
-    // under falsifiers 19–20.
-    expect(lateRecord).toMatchObject({ gen: 4 });
+    const record = d.records.find((r) => r.id === 'e1');
+    // The permanent negative: the update lands under the marker's current
+    // generation, never under the one the reservation crossed out of.
+    expect(record).toMatchObject({ gen: 6 });
+    expect(d.records.filter((r) => r.gen === 4)).toHaveLength(0);
     expect(d.activeGen).toBe(6);
     expect(d.openers).not.toContain(4);
-    expect(d.ledger[4] ?? []).not.toContain(lateRecord?.seq);
-    // And the abandoned-looking range is still counted against g — the half of
-    // falsifier 19 that already holds and must survive the repair.
+    // No record's generation lost its opener while outside its finalized
+    // ledger — the composition falsifier 20 forbids, now unreachable on the
+    // reproduction's own schedule.
+    for (const r of d.records) {
+      if (!d.openers.includes(r.gen)) {
+        expect(d.ledger[r.gen] ?? []).toContain(r.seq);
+      }
+    }
+    // And the abandoned range stays counted against g — the half of
+    // falsifier 19 that already held and survives the repair, composing with
+    // falsifier 8's never-reused gap.
     expect(d.seq.reserved[4]).toBe(1);
+    expect(d.seq.reserved[6]).toBe(1);
+  });
+
+  it('commits normally when the marker did not move, so the fence costs the ordinary path nothing', () => {
+    const e = editor('editor', 'e1');
+    const only = machine([e]);
+    const trace = runSchedule(only, [...upTo(e, 'commit')]);
+    expect(trace.world.durable.records.find((r) => r.id === 'e1')).toMatchObject({ gen: 4 });
+    expect(trace.world.durable.seq.reserved[4]).toBe(1);
+  });
+
+  it('a record that legitimately commits between classify and the advance is inside the finalized ledger', () => {
+    // The window the fence deliberately leaves open: the marker has not moved,
+    // so a commit under g is correct — and step 5's atomic re-finalization is
+    // what keeps step 7's view complete for exactly this case.
+    const e = editor('editor', 'e1');
+    const t = transition();
+    const composed = machine([e, t]);
+    const trace = runSchedule(composed, [
+      ...upTo(t, 'classify'),
+      ...upTo(e, 'commit'),
+      ...between(t, 'classify'),
+    ]);
+    const d = trace.world.durable;
+    const record = d.records.find((r) => r.id === 'e1');
+    expect(record).toMatchObject({ gen: 4 });
+    expect(d.ledger[4]).toContain(record?.seq);
   });
 });
 

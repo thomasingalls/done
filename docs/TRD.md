@@ -2271,11 +2271,11 @@ Everything below is downstream of that, and any construction that violates it is
 | **Relay admission token**                  | Open a scoped transport connection for a bounded time                                                | Decrypt, sign content, admit a device, change capabilities, recover an account                  |
 | **Device / agent signing credential**      | Sign mutations as its authorized actor                                                                | Receive a content key merely because it can sign; change authorization                          |
 | **Device / agent wrapping credential**     | Unwrap content keys if read-capable                                                                   | Sign mutations, change authorization, represent an arbitrary actor                              |
-| **Certified recipient set** (§13.5)        | Name the exact `(credential, W_pub)` pairs and the `R_pub` a rotator may wrap to                     | Be authored or amended by the service; grant capability; assert accepted positions              |
+| **Certified recipient set** (§13.5)        | Name the exact `(credential, W_pub, S_pub)` triples and the `R_pub` a rotator may wrap to; certify the signing key a set approval verifies under | Be authored or amended by the service; grant capability; assert accepted positions              |
 | **Recovery-bootstrap signer** (§13.8)      | Authenticate one successor binding when no eligible client survives, from the factor-opened recovery object | Be held by the service; exist outside the content factor's seal; be reused for a second binding |
 | **Local-custody key `L_local`**            | Open this slot's encrypted `K_g` envelopes on the default tier                                       | Sign, authenticate an account, unwrap `R_priv`, travel to another device                        |
 | **Optional device-lock custody `L_lock`**  | Replace promptless opening of those envelopes with a user-factor gate (§13.3)                        | Sign, authenticate an account, become a recovery factor implicitly, be opened by recovery       |
-| **Service authorization authority**        | Admit and revoke credentials, choose capabilities, sign epochs, finalize accepted sets               | Decrypt, sign a device's mutations, represent its actor, deliver a content key by authorization alone |
+| **Service authorization authority**        | Admit and revoke credentials, choose capabilities, sign epochs, finalize accepted sets               | Decrypt, sign a device's mutations, represent its actor, deliver a content key by authorization alone, resolve a recipient-authority verification key |
 | **Content-key generation `K_g`**           | Derive domain-separated subkeys for one workspace generation                                          | Admit or revoke anything; authorize its own distribution; be reused across stores or protocols  |
 | **Recovery public key `R_pub`**            | Wrap each `K_g` for recovery                                                                          | Unwrap any generation, authorize anything                                                       |
 | **Recovery private key `R_priv`**          | Unwrap recovery copies of `K_g` after device loss                                                     | Admit or revoke anything, sign mutations, recover the service account                           |
@@ -2283,6 +2283,14 @@ Everything below is downstream of that, and any construction that violates it is
 **Signing and wrapping are two jobs and the contract may not assume one key does both.** Signing proves who sent an
 envelope; public-key encryption or key agreement lets a content key be wrapped for one reader. A library may
 represent them together; this document may not.
+
+**A verification key resolves through client- or factor-authenticated state, or it does not verify** (`P-1`,
+ratified 2026-08-28). A member credential's signing key is certified in exactly one place: its
+`(credential_id ‖ W_pub ‖ S_pub)` entry in the parent certified set (§13.5), whose chain grounds at workspace
+creation's trust root or at §13.8's factor-resolved bootstrap signer — never in the epoch alone, which carries
+the certified sets, serializes them, and vouches for none of them. An acceptance step that would fall back on a
+service-published key table for an approval, a bootstrap signature or a countersignature has no key to fall
+back on: that edge is the one the table's last column forbids the service outright.
 
 **The asymmetric recovery shape is load-bearing, not a preference.** A symmetric recovery root present on every
 device would let a later-revoked device derive future generations. A symmetric root absent from ordinary devices
@@ -2437,15 +2445,30 @@ epoch therefore additionally carries a **certified recipient set**, which the se
 
 > `CertifiedSet = LP("done/certified-set/v1") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(dec parent_epoch) || LP(dec next_epoch) || LP(hex members_digest) || LP(hex recovery_state_digest)`
 >
-> `members_digest = SHA-256( LP("done/certified-members/v1") || ( LP(credential_id) || LP(hex W_pub) )* sorted by credential_id )`
+> `members_digest = SHA-256( LP("done/certified-members/v1") || ( LP(credential_id) || LP(hex W_pub) || LP(hex S_pub) )* sorted by credential_id )`
 >
-> `recovery_state_digest = SHA-256( LP("done/recovery-state/v1") || LP(dec counter) || LP(hex R_pub) || LP(hex recovery_envelope_digest) || LP(hex root_commitment) )`
+> `recovery_state_digest = SHA-256( LP("done/recovery-state/v1") || LP(dec counter) || LP(hex R_pub) || LP(hex recovery_envelope_digest) || LP(hex root_commitment) || LP(hex bootstrap_signer) )`
+>
+> `approval = Ed25519( the named approver's signing credential ; LP("done/certified-set-approval/v1") || LP(approver_credential_id) || CertifiedSet )`
 
 **The binding is credential-to-exact-wrapping-key, not credential-to-boolean**, because the roster was never the
 thing that was missing — the service does enumerate credentials. What was missing is an approval of the exact key
 a rotator will encrypt to, so a service-admitted credential has no approved `(credential, W_pub)` pair and
 receives no wrap. The recovery recipient sits in the same object for the same reason: substituting `R_pub` is that
 attack through a second carrier, and one approval covers both.
+
+**The member entry also binds the signing key, and the approval resolves through it** (`S0-2`, `P-1` reopened
+2026-08-28). An approval names its approver in its signed bytes, and a verifier resolves the named approver's
+`S_pub` from the **parent** certified set and nothing else — the genesis set under the creating credential's
+key, a bootstrap-minted replacement set under §13.8's factor-resolved signer. **The service-signed epoch
+resolves no recipient-authority key.** Without the third member field that rule had no home: the only
+credential-to-signing-key certification was the epoch, so a service that substituted a member's signing key
+could approve a successor itself and the next honest rotation would wrap `K_(g+1)` to it — delayed key delivery
+by authorization alone, surviving the machinery built to end it. Naming the approver inside the signed bytes is
+what makes the resolution checkable at all: flipping the name breaks the signature, so one eligible member
+cannot replay another's approval as its own, and an approval naming no approver is malformed.
+`recovery_state_digest` gains the bootstrap-signer commitment under the same rule at the factor edge (§13.8).
+A member's signing-key rotation is a set successor, priced by the machinery removal already uses.
 
 **One eligible content-holding client's signature suffices** (`P-1`). `approvals[]` is a list, so a threshold is
 later a verifier policy change rather than a format migration; a hard quorum is not selected, because it would
@@ -2454,7 +2477,8 @@ make a one-device workspace unable to enroll its second device.
 **This does not change what the head vector is or who asserts it.** The epoch stays service-signed as a whole and
 the approvals ride inside it as bytes the service cannot forge; accepted positions remain the service's to assert,
 because positions are exactly what it is authoritative over. Verifiers check the epoch signature as before and
-additionally check the approvals over `members_digest` and `recovery_state_digest` (§7.5, §15 row 5).
+additionally check each approval — its named approver's key resolved through the parent certified set — over
+`members_digest` and `recovery_state_digest` (§7.5, §15 row 5).
 
 **The head vector is what makes an equivocating service have to fork the lineage**, rather than merely withhold.
 The epoch already says which credentials exist; this says where each one had got to, so a device shown a
@@ -2538,14 +2562,30 @@ gets the honest new device to wrap future generations to it. The `recovery_state
 is inside what the typed symbols authenticate, so an existing client cannot be induced to certify a recovery
 recipient it does not itself hold.
 
+**And it binds the new device's signing public key, because the successor set now certifies it** (`S0-2`,
+2026-08-28). §13.5's member entry is `(credential_id ‖ W_pub ‖ S_pub)`, the approvals that govern future
+recipients verify under member `S_pub`s, and this ceremony is the one place a person vouches for a key across
+the out-of-band channel — so the SAS covers the signing key the successor will carry, or the service could
+substitute it in the entry the honest existing device certifies and hold the approval authority the set exists
+to withhold from it.
+
 **Enrollment is not complete at admission, and the states are distinct**: service-admitted, ceremony-committed,
 SAS-confirmed, key-and-recovery-state-delivered, installed-and-countersigned, certified. Only the last is
 reader-eligible. A crash resumes the same transcript or restarts with a fresh credential; a mismatch spends the
-credential.
+credential. **Key delivery and set activation either commit together or leave a resumable pending certificate**
+(`P-1` criterion 11): the releasing device durably stages the signed successor with the delivery, so every crash
+point between delivery and activation is recoverable from that record rather than from anyone's memory.
+**Two enrollments racing at one `parent_epoch` serialize, and the loser resumes.** The service serializes set
+successors exactly as it serializes epochs, so of two siblings differing only in `members_digest` exactly one
+activates; the loser's pending certificate is refused as stale-parent, its existing device rebuilds the
+successor against the winner — the same members plus its own new entry — and re-activates, so a device a person
+authenticated by typing five symbols reaches `certified` rather than stranding at installed-and-countersigned
+(`S0-2` return, `test/enrollmentStates.test.ts`).
 
 **The ceremony that discharges the second gate is selected** (§15 row 11): a **short authentication string over
 an in-band agreement**, with both nonces **committed before either is revealed**, derived from a transcript
-binding the workspace, the epoch **and its head**, both credential ids and the new device's wrapping public key.
+binding the workspace, the epoch **and its head**, both credential ids, the new device's wrapping and signing
+public keys, and the recovery recipient digest.
 **The head is bound because §15 row 9 asked for it**: a device enrolling here is talking to one that already
 knows where the lineage is, so the same typed symbols authenticate that too and §13.5's brand-new case never
 reaches this path. Five Crockford
@@ -2775,10 +2815,12 @@ account exists**.
 **The code is selected** (§15 row 14): **125 bits, Crockford Base32, five groups of five, and no stretching at all.**
 The alphabet omits `I`, `L`, `O` and `U`, which is what lets the input field map `O` to `0` and `I`/`L` to `1`
 without collision — a correct transcription of a badly rendered code still opens the workspace. The envelope seals
-`R_priv` **and §14.2's root commitment** under HKDF-SHA-256 of the code with a fresh per-seal salt, so exactly one
-message is ever encrypted under that key and nonce reuse is structurally unreachable. **The commitment rides here
-rather than in its own object** because it must be protected by exactly what protects `R_priv` and must be
-available at exactly the moment `R_priv` is: one AEAD, one seal, and nothing further for the user to keep. **The no-stretching decision rests on the invariant in
+`R_priv`, **the recovery-bootstrap signing key (below)** and **§14.2's root commitment** under HKDF-SHA-256 of the
+code with a fresh per-seal salt, so exactly one
+message is ever encrypted under that key and nonce reuse is structurally unreachable. **The commitment and the
+signer ride here rather than in their own objects** because each must be protected by exactly what protects
+`R_priv` and must be available at exactly the moment `R_priv` is: one AEAD, one seal, and nothing further for the
+user to keep. **The no-stretching decision rests on the invariant in
 §13.10**: the code is generated at full width and is never user-chosen, user-extended or truncated. Additional independent seals may be added — PRF-capable passkeys, preferably in more than one
 ecosystem — and each is a complete path only if it remains available after loss of the device it protects.
 
@@ -2797,11 +2839,41 @@ copy can carry — which puts the weight on what is said at the moment of genera
 returning no PRF result costs its owner an optional convenience wrap and nothing else: no branch, no device-dependent
 security bar, no silent downgrade.
 
+**Recovery with no surviving eligible client is a signed successor binding, the `RecoveryBootstrap`** (`S0-2`;
+§13.2's authority table names its signer, and this is the construction it cites). The certified set is approved
+by an eligible content-holding client, so a total loss with none surviving would otherwise turn the validated
+four-object theorem into a five-object one, the fifth being a device that still works. The factor-opened
+recovery state is what keeps it at four:
+
+> `RecoveryState = { counter, R_pub, recovery_envelope_digest, root_commitment, bootstrap_signer }` — committed
+> as §13.5's `recovery_state_digest`, its `bootstrap_signer` the Ed25519 verification key whose signing half the
+> envelope above seals beside `R_priv`.
+>
+> `Bootstrap = LP("done/recovery-bootstrap/v1") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(dec observed_epoch) || LP(hex observed_head_digest) || LP(hex service_nonce) || LP(hex prior_recovery_state_digest) || LP(hex recovered_root) || LP(new_credential_id) || LP(hex new_W_pub) || LP(hex new_S_pub) || LP(hex new_recovery_state_digest) || LP(hex conflict_parent)`
+>
+> `sig = Ed25519( the bootstrap signer ; Bootstrap )` · `countersig = Ed25519( the new credential ; Bootstrap )`
+
+`observed_epoch`, `observed_head_digest` and `service_nonce` carry §13.5's nonce-bound signed head assertion
+unchanged — a hostile service can withhold, not forge — and `conflict_parent` lets the service serialize
+competing bootstraps without choosing the winner's contents. **Acceptance consumes the four objects and nothing
+else**: `prior_recovery_state_digest` must equal the digest of the factor-opened current `RecoveryState` or the
+bootstrap is refused as a stale or forked head — an authority refusal, not merely a broken signature; `sig`
+verifies under that state's `bootstrap_signer` and under nothing a service supplies; `countersig` verifies under
+the carried `new_S_pub`, the one key no surviving set can name, vouched by the binding the factor-resolved `sig`
+covers. **An accepted bootstrap's binding is the replacement certified set**: one member entry
+`(new_credential_id ‖ new_W_pub ‖ new_S_pub)` with `new_recovery_state_digest`, at
+`parent_epoch = observed_epoch`, verifying under the factor-resolved signer per §13.5's resolution rule — so the
+recovered credential can rotate, not merely read.
+
 **The code is never re-displayed; replacement exists instead.** Re-display would require retaining a recoverable copy.
 Replacement is allowed only from a device that already has content access: after fresh account authentication and an
-explicit confirmation, it creates a new recovery keypair, seals the new `R_priv` to a newly confirmed code and optional
+explicit confirmation, it creates a new recovery keypair **and a fresh bootstrap signer**, seals the new `R_priv` —
+the new signer beside it — to a newly confirmed code and optional
 factors, rewraps every required generation to the new `R_pub`, and asks the service to atomically replace the old
-public key, wraps and sealed envelope. **That replacement is §13.7's transition protocol at `kind:
+public key, wraps and sealed envelope. **The successor `recovery_state_digest` commits the fresh signer, which is
+what retires the old one**: a fresh-nonce bootstrap signed by the prior capability fails against the rotated
+commitment — refused as an authority failure that names it, never as an envelope decryption failure — so an
+exposed bootstrap capability cannot sign successors forever. **That replacement is §13.7's transition protocol at `kind:
 'replace-recovery'`** (§15 row 15), so an interruption leaves exactly the old envelope or exactly the new — never
 both live, which would leave the old code still opening content. **It cannot help after the last content key and the old code are both gone.**
 

@@ -68,9 +68,16 @@ to refuse.
 - **`P-1` is ratified (2026-08-28): option A — the certified set carries the signing keys.** A member entry
   binds `(credential_id ‖ W_pub ‖ S_pub)`, every approval names its approver, and a verifier resolves that
   key from the parent certified set or the factor-carried bootstrap signer — never from the service-signed
-  epoch. `FU-01`'s conditional resolved at the floor: the carrier is completed, not changed, so its return
-  stays at `S0-2` Stage A/B/D. What remains is not a decision: the `S0-2` return owes the record's
-  falsifiers 12–19 (queue item 4).
+  epoch. `FU-01`'s conditional resolved at the floor: the carrier is completed, not changed. **Nothing
+  remains owed: the `S0-2` return landed the record's falsifiers 12–19 on 2026-08-28** — the approver lookup
+  is real and the impostor negative inverted (12–13), the map's four member-key entries flipped with
+  `authority:check` green at 6 open joints (14), bootstrap acceptance derives its verifier from the
+  factor-opened `RecoveryState` and the retired signer is refused by the rotated commitment (15–16), the
+  accepted bootstrap mints the replacement certified set and the recovered credential rotates under it (17),
+  the six enrollment states run with crash points and the sibling-successor loser resumes to `certified`
+  (18, criterion 11), and `pnpm recipient:check` is the homes-agree readback with `FU-05`'s independent
+  reconstruction (19) — with the `CertifiedSet` AAD registration staying at `S0-8` exactly as the record
+  reserves it.
 - **`P-3` is ratified (2026-08-28): option A at all three joints.** Each store derives its own `K_store`
   and exactly one `SeqCounter` counts it; nothing becomes authoritative without a durable carrier — a
   journal refusal holds the input, never the document, with the inversion-vs-stage mechanism reserved to
@@ -123,16 +130,23 @@ Worth knowing before picking anything up, because a repair that ignores its clas
 
 1. **Unbound authority joints** — an acceptance step trusts a key or predicate that no factor-authenticated
    state resolves (`FU-01`, `FU-02`, `FU-03`, `FU-06`, `FU-11`, the `P-1` approver, and `FU-04`'s
-   clock-replaces-custody).
+   clock-replaces-custody). **`FU-01` and the approver returned 2026-08-28 at the `S0-2` return** — the
+   member-key entries resolve through the parent certified set or the factor and the map's class-1 ledger
+   reads 6 open, none of them a recipient-authority carrier; `FU-02`/`FU-03` ride `S0-6`, `FU-06` rides
+   `S0-4`, `FU-11` rides `S0-5`, `FU-04` rides `S0-7`.
 2. **Interleavings the pure models cannot schedule** — crash points and second writers that are unexpressible
-   rather than refuted (`FU-08`, `FU-09`, `FU-10`, `FU-12`, `K_store`).
+   rather than refuted (`FU-08`, `FU-09`, `FU-10`, `FU-12`, `K_store`). **`FU-09`'s interface half returned
+   2026-08-28 at the `S0-2` return** — the composed model's commit carries `P-3`'s ratified fence and the
+   reservation-fence reproduction is inverted with its schedule kept; `P-3` falsifiers 19–20 finish at
+   `S0-3` with the rest of 14–22.
 3. **One fact, two homes** — `RC-8C`, the rule this remediation wrote for itself, violated by the remediation,
    including by its gate: at the challenged tip `pnpm check` stopped at lint, so "runs through the gate" was
    command-text reachability, not execution (`FU-05`, `FU-07`, `FU-13`, `FU-14`, `FU-15`, `FU-16`). The gate
    was descoped to the evidence suite on 2026-08-28 and now passes end to end; `FU-14`'s receipts are still
    owed at `S0-8`. **`FU-07` returned 2026-08-28 at the `S0-1` return** — the census walker now polices this
-   class in the gate; `FU-05` rides the `S0-2` return, `FU-13`'s remaining homes ride `S0-3`, `FU-14` rides
-   `S0-8`, and `FU-15`/`FU-16` were the hygiene item.
+   class in the gate — **and `FU-05` returned the same day at the `S0-2` return**: the enrollment vector
+   publishes every transcript input and `pnpm recipient:check` reconstructs the artifact from them alone;
+   `FU-13`'s remaining homes ride `S0-3`, `FU-14` rides `S0-8`, and `FU-15`/`FU-16` were the hygiene item.
 
 ## The queue
 
@@ -160,8 +174,10 @@ In order. An item is done when its disposition entry's earliest-return stage has
 3. **Two structural artifacts, before per-finding patches — done 2026-08-28.** (a) The
    **authority-derivation map**: [`S0-2/authority-map.md`](./S0-2/authority-map.md) (standing: home), read
    back by `scripts/check-authority-map.mjs` — `pnpm authority:check`, in `pnpm check`. 31 entries; every
-   chain terminates at a permitted root for its guard; ten joints are declared open with their blocker and
-   return, six more compute as blocked through the member-key home; an **undeclared** dangling or
+   chain terminates at a permitted root for its guard; ten joints were declared open as built with their
+   blocker and return, six more computing as blocked through the member-key home (the `S0-2` return flipped
+   the four member-key entries: six open, none blocked-through — the live count is always the checker's,
+   never this file's); an **undeclared** dangling or
    service-only edge, a silent edit to a pinned home, or a flip without a strike fails the gate. A green
    `authority:check` means the rules resolve and their homes are pinned — never that class 1 is closed:
    closure is the open count reaching zero, entry by entry at the returns, and `P-1` falsifier 14's claim is
@@ -175,7 +191,9 @@ In order. An item is done when its disposition entry's earliest-return stage has
    marker advances into a retired-opener generation (`FU-09`, falsifier 20's forbidden composition), and the
    two-device shared-`K_store` budget (`P-3` joint 1). **Those reproduction assertions state the open
    defects, not invariants** — each return inverts its own into the permanent negative and keeps the
-   schedule.
+   schedule. The `S0-2` return inverted `FU-09`'s (2026-08-28): the commit carries the ratified fence, the
+   marker advance finalizes the outgoing ledger, and the reproduction's schedule now asserts the permanent
+   negative; `FU-08`'s and joint 1's stay open reproductions for `S0-3`.
 4. **Stage returns — the `S0-1` return first, then the security returns in dependency order.** Reordered
    2026-08-28, for item 3's own reason: a repair that ignores its class reintroduces the class, and the
    census is class 3's instrument — it belongs before the six returns that churn the corpus it classifies,
@@ -190,11 +208,24 @@ In order. An item is done when its disposition entry's earliest-return stage has
    sentences refused as byte rules: `P-5` falsifiers 15–22 paid, falsifier 20's receipt mechanism staying
    `S0-8`'s design exactly as the record reserves it. A 22-mutation battery caught 22. The per-record
    homes-agree readbacks (`P-1` falsifier 19's and `P-3` falsifier 22's checkers) stay with their owning
-   returns and `S0-8`, where the consolidations they read exist. **Next, the security returns**, at the
-   stages each disposition entry names: `S0-2` (`FU-01`, `FU-05`, `FU-09`) → `S0-3` (`FU-08`, `FU-09`)
-   and `S0-4` (`FU-06` with TRD §7.5, `FU-10`) → `S0-5` (`FU-11`) and `S0-6` (`FU-02`, `FU-03` with TRD
-   §14.4) → `S0-7` (`FU-04`, `FU-12`). **Each return flips its authority-map entries and inverts its
-   scheduler reproductions** — editing a pinned home fails `authority:check` until the entry is re-read
+   returns and `S0-8`, where the consolidations they read exist. **The `S0-2` return is done (2026-08-28),
+   and its gates re-ran green** — `pnpm check` end to end, now carrying `recipient:check`. It landed `FU-01`
+   (the factor-carried bootstrap verifier: `recovery_state_digest` commits `bootstrap_signer`, acceptance
+   derives the verifier only from the factor-opened state, replacement rotates it, and the retired signer is
+   refused by the rotated commitment), `FU-05` (every transcript input published; the artifact reconstructs
+   from published inputs alone, in the gate), `FU-09`'s interface half (`A-schemas.md` §4 step 5 and §5
+   carry `P-3`'s ratified fence; the scheduler's reservation-fence reproduction inverted with its schedule
+   kept, `P-3` falsifiers 19–20 finishing at `S0-3`), and `P-1`'s falsifiers 12–19 — the member triple, the
+   named approver and the real lookup in §13.2/§13.5 and the transition vectors, §13.8 finally carrying the
+   `RecoveryBootstrap` construction §13.2 cites (round 1 `D-3` closed), the bootstrap→certified-set
+   composition run in the vectors, the six enrollment states as a crash model with the sibling-successor
+   race serialized (`test/enrollmentStates.test.ts`), and `pnpm recipient:check` as falsifier 19's readback.
+   A 12-mutation battery caught 12. The map's four member-key entries flipped: 6 joints stay open, none of
+   them class 1's recipient-authority carriers. **Next, the remaining security returns, in dependency
+   order**: `S0-3` (`FU-08`, `FU-09`'s finish, `P-3` falsifiers 14–22) and `S0-4` (`FU-06` with TRD §7.5,
+   `FU-10`) → `S0-5` (`FU-11`) and `S0-6` (`FU-02`, `FU-03` with TRD §14.4) → `S0-7` (`FU-04`, `FU-12`).
+   **Each return flips its authority-map entries and inverts its scheduler reproductions** — editing a
+   pinned home fails `authority:check` until the entry is re-read
    and re-pinned or flipped — and, now that the census is landed, edits a pinned record only as a dated
    addendum under a re-pin and gives every new file a standing, or `remediation:check` fails the gate. The
    walker's friction is the map's, designed.
@@ -245,10 +276,13 @@ format documents by any other route. After any code formatting, re-run `pnpm typ
 format left `pnpm check`; the gate is typecheck plus the evidence suite, and it passed end to end for the
 first time in this branch's history that day. Since queue item 3 it also carries `authority:check`, and that
 green line means exactly its printed scope: the map's chains resolve and its pinned homes are byte-current,
-with ten joints *declared open* — it is the class-1 ledger staying honest, not class 1 closed. Since the
+with six joints *declared open* since the `S0-2` return flipped the four member-key entries — it is the
+class-1 ledger staying honest, not class 1 closed. Since the
 `S0-1` return it also carries `remediation:check`, whose green line is likewise its printed scope: 46
 documents classified, 19 record pins byte-current, the status homes agreeing — the class-3 ledger staying
-honest, existence and byte rules, never an execution receipt. What the green gate does **not** mean: `FU-14`
+honest, existence and byte rules, never an execution receipt. Since the `S0-2` return it also carries
+`recipient:check`: the recipient-authority homes agree and the enrollment artifact reconstructs from
+published inputs — byte rules and one reconstruction, per its printed scope. What the green gate does **not** mean: `FU-14`
 is repaired. Traceability still credits command-text reachability rather than execution receipts — it now
 *says* so wherever it says anything, and the receipts land at `S0-8` — and `wasm:stale` is still in no gate
 (`RC-9`). Lint and format are opt-in (`pnpm lint` is correctness-only and currently clean; `pnpm format`

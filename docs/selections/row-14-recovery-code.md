@@ -19,6 +19,10 @@ replacement offered as the answer to an exposed code rotates forward (TRD §13.8
 **Amended by:** [`S0-6`](../review/remediation/S0-6/README.md) (2026-08-27) — the recovery envelope's plaintext is `R_priv` **and** §14.2's root commitment. One AEAD, one
 seal: the commitment must be protected by exactly what protects `R_priv` and available at exactly the moment it
 is (TRD §13.8).
+**Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-28, the return) — the plaintext also seals **the recovery-bootstrap signing key beside `R_priv`**,
+under the same one-seal rule: possession of the code yields the signer, so total loss stays a four-object story
+(`FU-01`, TRD §13.8, `S0-2/A-schemas.md` §2). Each replacement seals a **fresh** signer and commits it in the
+successor `recovery_state_digest`, which is what retires the old capability.
 
 ---
 

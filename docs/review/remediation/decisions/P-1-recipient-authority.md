@@ -6,10 +6,14 @@
 **Decided:** 2026-08-26 · **Reopened:** 2026-08-28, at the approver and bootstrap-signer joints ·
 **Ratified:** 2026-08-28, option A — the certified set carries the signing keys · **Branch:** `RC-1B`,
 client-certified recipient set inside each authorization successor · **Approval policy:** single-owner ·
-**Status:** ratified, not yet consolidated — the `S0-2` return owes falsifiers 12–19
+**Status:** ratified — the `S0-2` return landed falsifiers 12–19 on 2026-08-28, with the `S0-8` items (the
+`CertifiedSet` AAD registration and the regeneration re-read) staying exactly as the consolidation list below
+reserves them
 
-This is the decision record only. Consolidating it into the PRD, the TRD, rows 5/9/11/14/15 and their
-generators is [`S0-2`](../action-tree.md), which also needs `P-2` and `P-6`. Nothing below is implemented.
+This is the decision record only. Its consolidation into the TRD, rows 9/11/14 and the generators landed at
+the [`S0-2`](../action-tree.md) return — see the dated note at the end of this record. *[Annotated 2026-08-28:
+the original sentence here said "Nothing below is implemented", which the return retired; rows 5/15 and the
+PRD needed no amendment beyond what Stages B–E had already landed.]*
 
 **Read the reopening at the end of this record before consuming anything above as settled.** `RC-1B` stands;
 what failed both `S0-9` rounds was the resolution of two verification keys this record's carrier consumes —
@@ -337,3 +341,35 @@ against the parent certified set.
 - **`K_store` scoping** — `P-3`, next in the sprint.
 - **The exact bytes** of the amended member entry, `RecoveryState` and `Bootstrap` — `S0-2` Stage A selects
   encodings under the ratified rule, exactly as this record already reserved for the bootstrap.
+
+### The `S0-2` return — falsifiers 12–19 landed 2026-08-28
+
+Each falsifier's home, as built:
+
+- **12/13** — `generate-transition-vectors.mjs`: the verifier resolves the named approver's `S_pub` from the
+  parent certified set (`resolveApprover`, a real lookup); `certified-set-approved-by-an-impostor` is round
+  1's mutation inverted, with `approval-presented-as-another-members`, `approval-without-a-named-approver`
+  and `approval-by-an-admitted-non-member` beside it.
+- **14** — the authority map's four member-key entries flipped to `resolved` with the return's edits;
+  `pnpm authority:check` reads 6 open joints, none of them class 1's recipient-authority carriers, and 0
+  entries blocked through them.
+- **15/16** — `generate-head-discovery-vectors.mjs`: acceptance derives the verifier from the factor-opened
+  `RecoveryState` (its digest now commits `bootstrap_signer`); `prior_recovery_state_digest` is compared
+  against that state and the refusal *kind* is asserted, not just the refusal;
+  `bootstrap-signed-by-the-retired-signer` fails against the rotated commitment by name.
+- **17** — the composition rule in TRD §13.8 and `A-schemas.md` §2, run in the transition generator: the
+  accepted bootstrap (consumed by value from `head-discovery.json`) mints the replacement certified set and
+  the recovered credential's successor approval verifies through it.
+- **18 and criterion 11** — `test/enrollmentStates.test.ts`: §13.6's six states as executable states with
+  crash points under the scheduler; two sibling successors at one `parent_epoch` serialize, exactly one
+  activates, and the loser resumes to `certified` through a rebuilt successor — with the delivered-key ⇒
+  durable-pending-certificate invariant checked at every boundary.
+- **19** — `pnpm recipient:check` (`scripts/check-recipient-authority.mjs`, in `pnpm check`): byte rules over
+  §13.2/§13.5/§13.8, rows 9/11/14, `A-schemas.md` §§1–2 and the generators — the ratified formulas required,
+  the pair-only member formula and the uncarried commitment refused — plus `FU-05`'s independent
+  reconstruction of the enrollment transcript, hash, wrap info and SAS from published inputs alone.
+
+`FU-09`'s interface half landed in the same return: `A-schemas.md` §4 step 5 and §5 carry `P-3`'s ratified
+fence, and the scheduler's reservation-fence reproduction is inverted with its schedule kept. What stays
+reserved: the `CertifiedSet` AAD registration and the impostor negative's regeneration re-read at `S0-8`, and
+`P-3` falsifiers 14–22 at the `S0-3` return.

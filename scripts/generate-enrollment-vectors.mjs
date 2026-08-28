@@ -90,7 +90,9 @@ const commit = async (role, nonce, label = COMMIT_LABEL) =>
 /**
  * T = LP("done/enroll/v1") || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head)
  *     || LP(existing_credential_id) || LP(new_credential_id)
- *     || LP(hex new_wrapping_key) || LP(hex nonce_existing) || LP(hex nonce_new)
+ *     || LP(hex new_wrapping_key) || LP(hex new_signing_key)
+ *     || LP(hex recovery_state_digest)
+ *     || LP(hex nonce_existing) || LP(hex nonce_new)
  *
  * `new_wrapping_key` is the field the whole ceremony exists to authenticate.
  * The two credential ids are bound in fixed positions, which is what makes the
@@ -105,6 +107,13 @@ const commit = async (role, nonce, label = COMMIT_LABEL) =>
  * a mismatch. Both the number and the digest are bound although the head commits
  * to the number: two bytes, and a current-looking number can never be paired
  * with an older head.
+ *
+ * **`new_signing_key` arrived with `P-1`'s ratified rule (the `S0-2` return).**
+ * The successor's member entry is `(credential_id ‖ W_pub ‖ S_pub)` and set
+ * approvals verify under member `S_pub`s, so the one place a person vouches for
+ * a key across the out-of-band channel must vouch for the signing key too — or
+ * the service substitutes it in the entry the honest existing device certifies
+ * and holds the approval authority the set exists to withhold from it.
  */
 const transcript = ({
   workspace,
@@ -113,6 +122,7 @@ const transcript = ({
   existingCredential,
   newCredential,
   wrappingKey,
+  signingKey,
   recoveryStateDigest,
   nonceExisting,
   nonceNew,
@@ -127,6 +137,7 @@ const transcript = ({
       existing_credential_id: existingCredential,
       new_credential_id: newCredential,
       new_wrapping_key: wrappingKey,
+      new_signing_key: signingKey,
       recovery_state_digest: recoveryStateDigest,
       nonce_existing: nonceExisting,
       nonce_new: nonceNew,
@@ -246,6 +257,10 @@ const RECOVERY_STATE = {
   r_pub: 'ab'.repeat(32),
   recovery_envelope_digest: 'cd'.repeat(32),
   root_commitment: '7c'.repeat(32),
+  // The recovery-bootstrap verification key the state commits (TRD §13.8, P-1's
+  // factor-carried edge; the S0-2 return). Its signing half is sealed beside
+  // R_priv, and head-discovery.json exercises the acceptance that consumes it.
+  bootstrap_signer: 'fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025',
 };
 const SUBSTITUTED_RECOVERY_STATE = { ...RECOVERY_STATE, r_pub: 'ef'.repeat(32) };
 
@@ -263,6 +278,7 @@ const recoveryStateDigest = async (state) =>
           state.r_pub,
           state.recovery_envelope_digest,
           state.root_commitment,
+          state.bootstrap_signer,
         ].map(lp),
       ),
     ),
@@ -283,11 +299,56 @@ const KEYPAIRS = {
   },
 };
 
-const checkKeypairs = () => {
+/**
+ * The new device's Ed25519 signing keypair, and the one the service would offer
+ * in its place — the transcript's `new_signing_key` (P-1, the S0-2 return). The
+ * SAS binds the public half; the private halves never sign in this file, and
+ * the seeds are here so the halves can be checked rather than trusted, which is
+ * row 14's rule at a second curve.
+ */
+const SIGNING_KEYPAIRS = {
+  new_device_signing: {
+    role: 'The new device’s Ed25519 signing credential. The successor’s member entry carries it, and set approvals verify under it — which is why the SAS must vouch for it.',
+    source: 'RFC 8032 §7.1, TEST 1024',
+    seed: 'f5e5767cf153319517630f226876b86c8160cc583bc013744c6bf255f5cc0ee5',
+    public_key: '278117fc144c72340f67d0f2316e8386ceffbf2b2428c9c51fef7c597f1d426e',
+  },
+  substituted_signing: {
+    role: 'A signing key the service controls, offered in the new device’s place — the approval-authority half of §11.2 test 7’s attack.',
+    source: 'RFC 8032 §7.1, TEST 1',
+    seed: '9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60',
+    public_key: 'd75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a',
+  },
+};
+
+const ED25519_PKCS8_PREFIX = '302e020100300506032b657004220420';
+
+const checkKeypairs = async () => {
   for (const [name, k] of Object.entries(KEYPAIRS)) {
     const derived = hex(publicFromScalar(unhex(k.scalar)));
     if (derived !== k.public_key) {
       throw new Error(`${name}: scalar yields ${derived}, not ${k.public_key}`);
+    }
+  }
+  const probe = utf8('keypair self-check');
+  for (const [name, k] of Object.entries(SIGNING_KEYPAIRS)) {
+    const signer = await crypto.subtle.importKey(
+      'pkcs8',
+      unhex(ED25519_PKCS8_PREFIX + k.seed),
+      { name: 'Ed25519' },
+      false,
+      ['sign'],
+    );
+    const verifier = await crypto.subtle.importKey(
+      'raw',
+      unhex(k.public_key),
+      { name: 'Ed25519' },
+      false,
+      ['verify'],
+    );
+    const sig = await crypto.subtle.sign({ name: 'Ed25519' }, signer, probe);
+    if (!(await crypto.subtle.verify({ name: 'Ed25519' }, verifier, sig, probe))) {
+      throw new Error(`${name}: seed and public key are not one keypair.`);
     }
   }
 };
@@ -323,6 +384,7 @@ const HONEST = {
   existingCredential: LAPTOP,
   newCredential: PHONE,
   wrappingKey: KEYPAIRS.new_device.public_key,
+  signingKey: SIGNING_KEYPAIRS.new_device_signing.public_key,
   recoveryStateDigest: null, // filled in main(), since the digest is computed
   nonceExisting: NONCE_EXISTING,
   nonceNew: NONCE_NEW,
@@ -351,6 +413,11 @@ const NEGATIVES = [
     name: 'substituted-wrapping-key',
     mutate:
       'The service offers its own X25519 public key in the new device’s place. **This is §11.2 test 7**, and the SAS not matching is the whole of §13.6’s second gate.',
+  },
+  {
+    name: 'substituted-signing-key',
+    mutate:
+      'The service offers its own Ed25519 signing key in the new device’s place. The successor’s member entry is (credential_id ‖ W_pub ‖ S_pub) and set approvals verify under member S_pub’s (P-1, ratified 2026-08-28), so an unbound signing key would hand the service the approval authority the certified set exists to withhold from it — §11.2 test 7’s attack against the entry’s third field.',
   },
   {
     name: 'wrong-workspace',
@@ -386,6 +453,10 @@ const NEGATIVES = [
     name: 'substituted-recovery-state',
     falsifies: ['f-a073574-enrollment-recovery-key-unbound'],
     why: 'The wrapping-key substitution one carrier along, and the one the transcript could not see. The service admits the genuine new device, authenticates its genuine W_pub, and hands it an attacker-controlled R_pub with a matching opaque envelope. Every symbol of the SAS matches, the enrollment succeeds, and the honestly-enrolled device wraps every future generation to a key the service holds. Binding the recovery state the new device installs is what makes the existing device unable to certify a recipient it does not itself hold.',
+    // The concrete values, filled in main() once the digests are computed —
+    // FU-05's repair: a negative naming no original and no substituted value is
+    // not independently checkable, whatever its prose says.
+    values: null,
   },
   {
     name: 'aad-only-renumbered-transcript-label',
@@ -419,6 +490,7 @@ const verify = async (honestSas, honestCommitments) => {
 
   for (const [name, patch] of [
     ['substituted-wrapping-key', { wrappingKey: KEYPAIRS.substituted.public_key }],
+    ['substituted-signing-key', { signingKey: SIGNING_KEYPAIRS.substituted_signing.public_key }],
     ['substituted-recovery-state', { recoveryStateDigest: substitutedRecoveryDigest }],
     ['wrong-workspace', { workspace: 'ws_01J0000000000000000000000A' }],
     ['wrong-epoch', { epoch: EPOCH + 1 }],
@@ -484,7 +556,7 @@ const grind = async (honestSas, symbols) => {
 
 const main = async () => {
   checkAlphabet();
-  checkKeypairs();
+  await checkKeypairs();
 
   honestRecoveryDigest = await recoveryStateDigest(RECOVERY_STATE);
   substitutedRecoveryDigest = await recoveryStateDigest(SUBSTITUTED_RECOVERY_STATE);
@@ -492,6 +564,15 @@ const main = async () => {
   if (honestRecoveryDigest === substitutedRecoveryDigest) {
     throw new Error('The two recovery states digest identically; the negative proves nothing.');
   }
+
+  // FU-05's repair, at the negative: the substitution names its exact values.
+  const substituted = NEGATIVES.find((n) => n.name === 'substituted-recovery-state');
+  substituted.values = {
+    original_recovery_state: RECOVERY_STATE,
+    original_digest: honestRecoveryDigest,
+    substituted_r_pub: SUBSTITUTED_RECOVERY_STATE.r_pub,
+    substituted_digest: substitutedRecoveryDigest,
+  };
 
   const honestCommitments = {
     existing: await commit('existing', NONCE_EXISTING),
@@ -517,9 +598,13 @@ const main = async () => {
       commitment:
         'SHA-256( LP("done/enroll-commit/v1") || LP(role) || LP(hex nonce) ), role in {existing, new}',
       transcript:
-        'LP("done/enroll/v1") || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(existing_credential_id) || LP(new_credential_id) || LP(hex new_wrapping_key) || LP(hex nonce_existing) || LP(hex nonce_new)',
+        'LP("done/enroll/v1") || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(existing_credential_id) || LP(new_credential_id) || LP(hex new_wrapping_key) || LP(hex new_signing_key) || LP(hex recovery_state_digest) || LP(hex nonce_existing) || LP(hex nonce_new)',
       epoch_head:
         'Bound because row 9 asked for it. A device enrolling here is talking to one that already knows where the lineage is, so the typed symbols authenticate the head as well as the wrapping key — and row 9 never reaches this arrival path.',
+      new_signing_key:
+        'Bound because the successor’s member entry is (credential_id ‖ W_pub ‖ S_pub) and set approvals verify under member S_pub’s (P-1, ratified 2026-08-28): the SAS vouches for the signing key as well as the wrapping key.',
+      recovery_state_digest:
+        'SHA-256( LP("done/recovery-state/v1") || LP(dec counter) || LP(hex R_pub) || LP(hex recovery_envelope_digest) || LP(hex root_commitment) || LP(hex bootstrap_signer) ) — the recovery recipient the new device installs, inside what the typed symbols authenticate (TRD §§13.5/13.8). Its preimage is published in the honest vector’s inputs, so the digest — and therefore the transcript — reconstructs from published values alone (FU-05).',
       transcript_hash: 'SHA-256(T). The ceremony’s identity, and what a wrap is bound to.',
       sas: 'HKDF-SHA256(ikm = T, salt = "", info = LP("done/enroll-sas/v1"), L = 5); symbol i = ALPHABET[byte_i & 0x1f]',
       alphabet: `Crockford Base32: ${ALPHABET} (no I, L, O, U) — row 14’s, reused`,
@@ -540,10 +625,11 @@ const main = async () => {
       },
     },
     keypairs: KEYPAIRS,
+    signing_keypairs: SIGNING_KEYPAIRS,
     vectors: [
       {
         name: 'honest-enrollment',
-        why: 'A laptop enrolling a phone at epoch 9. Both sides derive this transcript and this string.',
+        why: 'A laptop enrolling a phone at epoch 9. Both sides derive this transcript and this string. Every transcript input is published here — FU-05 found recovery_state_digest inserted by generator internals only, so the artifact could not be independently reconstructed for its new load-bearing field.',
         inputs: {
           workspace_id: WORKSPACE,
           epoch: EPOCH,
@@ -551,6 +637,9 @@ const main = async () => {
           existing_credential_id: LAPTOP,
           new_credential_id: PHONE,
           new_wrapping_key: KEYPAIRS.new_device.public_key,
+          new_signing_key: SIGNING_KEYPAIRS.new_device_signing.public_key,
+          recovery_state: RECOVERY_STATE,
+          recovery_state_digest: honestRecoveryDigest,
           nonce_existing: NONCE_EXISTING,
           nonce_new: NONCE_NEW,
         },

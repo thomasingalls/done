@@ -12,6 +12,13 @@
 **Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-27) — the nonce-bound signed head assertion this row selects is what a `RecoveryBootstrap` consumes
 when no eligible client survives (TRD §13.8). The freshness bound is unchanged — a hostile service can withhold,
 not forge — and the bootstrap adds no fifth independently held object, since its signer is sealed beside `R_priv`.
+**Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-28, the return) — the bootstrap verifier is **factor-carried** (`FU-01`, `P-1` falsifiers 15–17):
+acceptance derives it only from the factor-opened current `RecoveryState`, whose digest commits
+`bootstrap_signer`; `prior_recovery_state_digest` is compared against that state, so a stale or forked head is
+an authority refusal; every `replace-recovery` rotates the signer and the retired one is refused by name; the
+`Bootstrap` binds `new_S_pub`, so the countersignature verifies under a carried key rather than a constant; and
+an accepted bootstrap **mints the replacement certified set**, which the transition vectors demonstrate by
+rotating under it (TRD §13.8).
 
 ---
 

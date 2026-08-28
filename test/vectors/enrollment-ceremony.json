@@ -6,8 +6,10 @@
   "construction": {
     "shape": "Short authentication string over an in-band agreement, committed before revealed, typed rather than compared",
     "commitment": "SHA-256( LP(\"done/enroll-commit/v1\") || LP(role) || LP(hex nonce) ), role in {existing, new}",
-    "transcript": "LP(\"done/enroll/v1\") || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(existing_credential_id) || LP(new_credential_id) || LP(hex new_wrapping_key) || LP(hex nonce_existing) || LP(hex nonce_new)",
+    "transcript": "LP(\"done/enroll/v1\") || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(existing_credential_id) || LP(new_credential_id) || LP(hex new_wrapping_key) || LP(hex new_signing_key) || LP(hex recovery_state_digest) || LP(hex nonce_existing) || LP(hex nonce_new)",
     "epoch_head": "Bound because row 9 asked for it. A device enrolling here is talking to one that already knows where the lineage is, so the typed symbols authenticate the head as well as the wrapping key — and row 9 never reaches this arrival path.",
+    "new_signing_key": "Bound because the successor’s member entry is (credential_id ‖ W_pub ‖ S_pub) and set approvals verify under member S_pub’s (P-1, ratified 2026-08-28): the SAS vouches for the signing key as well as the wrapping key.",
+    "recovery_state_digest": "SHA-256( LP(\"done/recovery-state/v1\") || LP(dec counter) || LP(hex R_pub) || LP(hex recovery_envelope_digest) || LP(hex root_commitment) || LP(hex bootstrap_signer) ) — the recovery recipient the new device installs, inside what the typed symbols authenticate (TRD §§13.5/13.8). Its preimage is published in the honest vector’s inputs, so the digest — and therefore the transcript — reconstructs from published values alone (FU-05).",
     "transcript_hash": "SHA-256(T). The ceremony’s identity, and what a wrap is bound to.",
     "sas": "HKDF-SHA256(ikm = T, salt = \"\", info = LP(\"done/enroll-sas/v1\"), L = 5); symbol i = ALPHABET[byte_i & 0x1f]",
     "alphabet": "Crockford Base32: 0123456789ABCDEFGHJKMNPQRSTVWXYZ (no I, L, O, U) — row 14’s, reused",
@@ -36,10 +38,24 @@
       "public_key": "de9edb7d7b7dc1b4d35b61c2ece435373f8343c85b78674dadfc7e146f882b4f"
     }
   },
+  "signing_keypairs": {
+    "new_device_signing": {
+      "role": "The new device’s Ed25519 signing credential. The successor’s member entry carries it, and set approvals verify under it — which is why the SAS must vouch for it.",
+      "source": "RFC 8032 §7.1, TEST 1024",
+      "seed": "f5e5767cf153319517630f226876b86c8160cc583bc013744c6bf255f5cc0ee5",
+      "public_key": "278117fc144c72340f67d0f2316e8386ceffbf2b2428c9c51fef7c597f1d426e"
+    },
+    "substituted_signing": {
+      "role": "A signing key the service controls, offered in the new device’s place — the approval-authority half of §11.2 test 7’s attack.",
+      "source": "RFC 8032 §7.1, TEST 1",
+      "seed": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
+      "public_key": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a"
+    }
+  },
   "vectors": [
     {
       "name": "honest-enrollment",
-      "why": "A laptop enrolling a phone at epoch 9. Both sides derive this transcript and this string.",
+      "why": "A laptop enrolling a phone at epoch 9. Both sides derive this transcript and this string. Every transcript input is published here — FU-05 found recovery_state_digest inserted by generator internals only, so the artifact could not be independently reconstructed for its new load-bearing field.",
       "inputs": {
         "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
         "epoch": 9,
@@ -47,18 +63,27 @@
         "existing_credential_id": "cred_01HZXR0000000000000000LAPT",
         "new_credential_id": "cred_01HZXR0000000000000000PHON",
         "new_wrapping_key": "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a",
+        "new_signing_key": "278117fc144c72340f67d0f2316e8386ceffbf2b2428c9c51fef7c597f1d426e",
+        "recovery_state": {
+          "counter": 1,
+          "r_pub": "abababababababababababababababababababababababababababababababab",
+          "recovery_envelope_digest": "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+          "root_commitment": "7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c",
+          "bootstrap_signer": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025"
+        },
+        "recovery_state_digest": "f713e754ff43fd637c7161ca75634fb01e5f7c3bd6a5d4148849efd9b224439d",
         "nonce_existing": "5f0e1d2c3b4a59687786958493a2b1c0cfdeed0c1b2a39485766758493a2b1c0",
         "nonce_new": "a0b1c2d3e4f50617283949596a7b8c9dae0f1e2d3c4b5a69788796a5b4c3d2e1"
       },
       "derived": {
         "commitment_existing": "56826dc582649f1bb3367bab151e766139906a60a2eab26a2715679078122dee",
         "commitment_new": "1de8f32cd0055a9a03155956c27cb64fa2b6b8e2ba72f08b7c388089e77cdb0c",
-        "transcript": "000e646f6e652f656e726f6c6c2f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744000139004032623766306139633134653664333835306661326335316538366434303733626239653063316632346438613633373539653062326634633761316438653336001f637265645f3031485a5852303030303030303030303030303030304c415054001f637265645f3031485a58523030303030303030303030303030303050484f4e004038353230663030393839333061373534373438623764646362343365663735613064626633613064323633383161663465626134613938656161396234653661004062666263396136383432353737643236363837313435376134396263343835663163303039633231346633666435373263373330636161326234313830633665004035663065316432633362346135393638373738363935383439336132623163306366646565643063316232613339343835373636373538343933613262316330004061306231633264336534663530363137323833393439353936613762386339646165306631653264336334623561363937383837393661356234633364326531",
-        "transcript_hash": "7f2bf8b19714249394efb55fd41f341c9a924d99a2de2b5d1ff16497e29e1fd5",
-        "wrap_info": "0013646f6e652f656e726f6c6c2d777261702f7631004037663262663862313937313432343933393465666235356664343166333431633961393234643939613264653262356431666631363439376532396531666435"
+        "transcript": "000e646f6e652f656e726f6c6c2f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744000139004032623766306139633134653664333835306661326335316538366434303733626239653063316632346438613633373539653062326634633761316438653336001f637265645f3031485a5852303030303030303030303030303030304c415054001f637265645f3031485a58523030303030303030303030303030303050484f4e004038353230663030393839333061373534373438623764646362343365663735613064626633613064323633383161663465626134613938656161396234653661004032373831313766633134346337323334306636376430663233313665383338366365666662663262323432386339633531666566376335393766316434323665004066373133653735346666343366643633376337313631636137353633346662303165356637633362643661356434313438383439656664396232323434333964004035663065316432633362346135393638373738363935383439336132623163306366646565643063316232613339343835373636373538343933613262316330004061306231633264336534663530363137323833393439353936613762386339646165306631653264336334623561363937383837393661356234633364326531",
+        "transcript_hash": "ac78afe5df0ab7bbfb55c5d58db3cdd1c7f1e0ab6aab7927762d50b108f81c49",
+        "wrap_info": "0013646f6e652f656e726f6c6c2d777261702f7631004061633738616665356466306162376262666235356335643538646233636464316337663165306162366161623739323737363264353062313038663831633439"
       },
       "expected": {
-        "sas": "RMP3G"
+        "sas": "R76MR"
       }
     }
   ],
@@ -66,10 +91,10 @@
     "why": "The reason the nonces are committed before they are revealed. A service that reveals second and is not committed can search its nonce until the string comes out as it likes.",
     "method": "Candidate i is SHA-256(\"done/grind-demo\" || uint32be(i)), so the count is a fact about the construction rather than about this run. The substituted wrapping key is in place throughout.",
     "target_symbols": 2,
-    "target": "RM",
-    "tries": 120,
-    "nonce_found": "fc71bc604c733d815812c89440d05478985c1e883683069f6fd0ec3fa7b8307e",
-    "sas_produced": "RMZQ3",
+    "target": "R7",
+    "tries": 401,
+    "nonce_found": "083d2401e9c04020f4731a91ba80410e878eef4ad6cd2371ec225df91776e492",
+    "sas_produced": "R7VEZ",
     "extrapolation": "Forcing all five symbols is the same search at 2^25 — seconds of work. The commitment is what makes 25 bits mean 25 bits."
   },
   "must_fail": [
@@ -88,6 +113,10 @@
     {
       "name": "substituted-wrapping-key",
       "mutate": "The service offers its own X25519 public key in the new device’s place. **This is §11.2 test 7**, and the SAS not matching is the whole of §13.6’s second gate."
+    },
+    {
+      "name": "substituted-signing-key",
+      "mutate": "The service offers its own Ed25519 signing key in the new device’s place. The successor’s member entry is (credential_id ‖ W_pub ‖ S_pub) and set approvals verify under member S_pub’s (P-1, ratified 2026-08-28), so an unbound signing key would hand the service the approval authority the certified set exists to withhold from it — §11.2 test 7’s attack against the entry’s third field."
     },
     {
       "name": "wrong-workspace",
@@ -126,7 +155,19 @@
       "falsifies": [
         "f-a073574-enrollment-recovery-key-unbound"
       ],
-      "why": "The wrapping-key substitution one carrier along, and the one the transcript could not see. The service admits the genuine new device, authenticates its genuine W_pub, and hands it an attacker-controlled R_pub with a matching opaque envelope. Every symbol of the SAS matches, the enrollment succeeds, and the honestly-enrolled device wraps every future generation to a key the service holds. Binding the recovery state the new device installs is what makes the existing device unable to certify a recipient it does not itself hold."
+      "why": "The wrapping-key substitution one carrier along, and the one the transcript could not see. The service admits the genuine new device, authenticates its genuine W_pub, and hands it an attacker-controlled R_pub with a matching opaque envelope. Every symbol of the SAS matches, the enrollment succeeds, and the honestly-enrolled device wraps every future generation to a key the service holds. Binding the recovery state the new device installs is what makes the existing device unable to certify a recipient it does not itself hold.",
+      "values": {
+        "original_recovery_state": {
+          "counter": 1,
+          "r_pub": "abababababababababababababababababababababababababababababababab",
+          "recovery_envelope_digest": "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+          "root_commitment": "7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c",
+          "bootstrap_signer": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025"
+        },
+        "original_digest": "f713e754ff43fd637c7161ca75634fb01e5f7c3bd6a5d4148849efd9b224439d",
+        "substituted_r_pub": "efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef",
+        "substituted_digest": "34af9826fbcbb364e6a62fe4cd0620b6588aae6e0b06319f5260ddac8fd24dee"
+      }
     },
     {
       "name": "aad-only-renumbered-transcript-label",

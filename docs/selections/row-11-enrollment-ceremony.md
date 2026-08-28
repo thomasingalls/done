@@ -13,6 +13,12 @@ symbols authenticate where the lineage is as well as whose key it is. The short 
 **Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-27) — a successful ceremony now **produces a certified recipient-set successor** (TRD §§13.5–13.6), and
 the transcript binds the recovery recipient as well as the wrapping key. The ceremony was sound for the immediate
 release and silent about the delayed one; that is what this amendment repairs.
+**Amended by:** [`S0-2`](../review/remediation/S0-2/README.md) (2026-08-28, the return) — the transcript binds the new device's **signing** public key, because the
+member entry the successor certifies is now `(credential_id ‖ W_pub ‖ S_pub)` and an approval verifies under
+member `S_pub`s (`P-1`, ratified): the SAS vouches for the signing key as well as the wrapping key. The vector
+file republishes with **every transcript input in the published inputs** — `FU-05` found `recovery_state_digest`
+inserted by generator internals and absent from the formula and inputs, so the artifact could not be
+independently reconstructed; `pnpm recipient:check` now reconstructs it from the published inputs alone.
 
 ---
 
@@ -34,11 +40,18 @@ The transcript
   T = LP("done/enroll/v1") || LP(workspace_id) || LP(dec epoch)
       || LP(hex epoch_head)
       || LP(existing_credential_id) || LP(new_credential_id)
-      || LP(hex W_pub) || LP(hex recovery_state_digest)
+      || LP(hex W_pub) || LP(hex S_pub) || LP(hex recovery_state_digest)
       || LP(hex n_E) || LP(hex n_N)
 
   W_pub  the new device's X25519 wrapping public key (§13.4) — the value this
          whole ceremony exists to authenticate.
+  S_pub  the new device's Ed25519 signing public key (S0-2 return, P-1
+         ratified). The successor's member entry is
+         (credential_id ‖ W_pub ‖ S_pub) and set approvals verify under member
+         S_pub's, so the one place a person vouches for a key must vouch for
+         this one too — or the service substitutes it in the entry the honest
+         existing device certifies and holds the approval authority the set
+         exists to withhold from it.
   recovery_state_digest
          the recovery recipient the new device will install (TRD §13.5). Bound
          here because substituting R_pub is this row's attack at a second
@@ -50,9 +63,9 @@ The transcript
 
 On success              the existing device signs a CERTIFIED RECIPIENT-SET
                         SUCCESSOR (TRD §§13.5-13.6) naming (new_credential_id,
-                        W_pub) and this recovery state; the new credential
-                        countersigns on install. That record, not the epoch
-                        roster, is what a future rotator reads.
+                        W_pub, S_pub) and this recovery state; the new
+                        credential countersigns on install. That record, not
+                        the epoch roster, is what a future rotator reads.
 
                         This ceremony was sound for the IMMEDIATE release and
                         silent about the delayed one. Without the successor,
@@ -63,7 +76,7 @@ On success              the existing device signs a CERTIFIED RECIPIENT-SET
 The string
 
   SAS = HKDF-SHA256(ikm = T, salt = "", info = LP("done/enroll-sas/v1"), L = 5)
-        symbol i = ALPHABET[byte_i & 0x1f]        e.g. R9RH2
+        symbol i = ALPHABET[byte_i & 0x1f]        e.g. R76MR
 
   Alphabet, mask and normalization are row 14's, unchanged: Crockford Base32
   without I, L, O, U; 256 = 8 x 32 so the mask is uniform; O -> 0, I -> 1,
@@ -147,8 +160,8 @@ The conventional SAS flow shows the string on both devices and asks the person t
 enrolling their own phone and have no expectation of an attack. The step that is meant to be the entire security
 boundary is the step most likely to be discharged without being performed.
 
-**Transcription is not skippable in the same way.** The person cannot type `R9RH2` into the laptop without
-having read `R9RH2` off the phone. The check moves from _did you compare_ to _can you produce_, and only the
+**Transcription is not skippable in the same way.** The person cannot type `R76MR` into the laptop without
+having read `R76MR` off the phone. The check moves from _did you compare_ to _can you produce_, and only the
 second is evidence.
 
 **It costs one input field that already exists.** Row 14 built the recovery-code input: Crockford Base32,
@@ -184,7 +197,7 @@ the SAS is a deterministic function of a transcript that side is still choosing.
 that, with the substituted wrapping key in place, and searches for the first two symbols of the honest
 ceremony's string:
 
-> **Target `R9`, found in 566 tries.**
+> **Target `R7`, found in 401 tries.**
 
 Ten bits, so the count is what probability predicts, and the search is deterministic — candidate _i_ is
 `SHA-256("done/grind-demo" || i)` — so that number is a fact about the construction rather than about the
@@ -260,9 +273,9 @@ starting at the empty chain — is [row 5](./row-5-finalization.md).
 `node scripts/generate-enrollment-vectors.mjs` writes them; `--check` fails if they are stale, and `pnpm check`
 now runs it with the other ten.
 
-**One honest ceremony and thirteen negatives.** A laptop enrolling a phone at epoch 9, with both commitments, the
-transcript, its hash, the wrap `info` and the string `R9RH2`. Then every bound field of both constructions, one
-at a time.
+**One honest ceremony and fifteen negatives.** A laptop enrolling a phone at epoch 9, with both commitments, the
+transcript, its hash, the wrap `info` and the short string. Then every bound field of both constructions, one
+at a time — `substituted-signing-key` joined at the `S0-2` return, when the transcript gained `S_pub`.
 
 **`substituted-wrapping-key` is §11.2 test 7 as a value.** The keypairs are RFC 7748 §6.1's — Alice is the new
 device, Bob is the key the service offers in her place — and the generator derives each public key from its own
@@ -281,8 +294,8 @@ positions under length prefixes give that; the negative is what proves it, and i
 survives a rewrite only if something is watching.
 
 **Every field is isolated, and here that claim is exact.** `pnpm vectors:coverage` elides each bound field in
-turn and confirms exactly one negative stops failing — 12 fields across the two constructions, contributing to
-the tree's 100. Unlike [row 5](./row-5-finalization.md), which has two layers and therefore a field that rescues
+turn and confirms exactly one negative stops failing — 14 fields across the two constructions.
+Unlike [row 5](./row-5-finalization.md), which has two layers and therefore a field that rescues
 every negative in the layer below it, **this construction is flat**: the SAS is a function of the transcript and
 nothing else, so a per-field negative isolates a per-field binding and the `aad-only-` naming means what it
 says.

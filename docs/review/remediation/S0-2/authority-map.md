@@ -73,10 +73,13 @@ replacement under the factor-resolved signer. These four entries are that shape;
 end `via:` one of them.
 
 **The shared home.** A member credential's signing key is what approvals, envelope signatures, admissions,
-attribution claims and handoff receipts all verify under. Today the only credential-to-signing-key certification
-is §13.2's authority table row — the service-signed epoch, the object `P-1` exists to dethrone — which is
-round 1 `D-1` and the high finding it returns. The ratified home is the parent certified set's member entry,
-`(credential_id ‖ W_pub ‖ S_pub)`, with every approval naming its approver in its signed bytes.
+attribution claims and handoff receipts all verify under. Before the `S0-2` return the only
+credential-to-signing-key certification was §13.2's authority table row — the service-signed epoch, the object
+`P-1` exists to dethrone — which is round 1 `D-1` and the high finding it returned. The ratified home landed
+2026-08-28: the parent certified set's member entry, `(credential_id ‖ W_pub ‖ S_pub)`, with every approval
+naming its approver in its signed bytes and the verifier resolving that name through the parent set —
+`certified-set-approved-by-an-impostor` is round 1's mutation inverted, with the lookup real (`P-1`
+falsifier 12).
 
 ```authority
 entry: member-signing-keys
@@ -85,23 +88,23 @@ guards: keys
 verifies: any member credential's Ed25519 signature an acceptance step consumes
 resolves: the named signer's member entry (credential_id ‖ W_pub ‖ S_pub) in the parent certified set -> each parent's own approval -> the genesis set under the creating credential -> root:trust-root
 resolves: a bootstrap-minted replacement set -> via:bootstrap-signer
-status: open
-blocker: f-c611666-rotation-reader-eligibility-missing
-return: S0-2
-pin: docs/TRD.md §13.2 00c7e20b203a
-pin: docs/TRD.md §13.5 d7fc91702d85
-pin: docs/review/remediation/S0-2/A-schemas.md §1 c651b0dce8a7
+status: resolved
+pin: docs/TRD.md §13.2 47be86cf7b02
+pin: docs/TRD.md §13.5 0c37e6e9e8f4
+pin: docs/review/remediation/S0-2/A-schemas.md §1 37490550ef01
 ```
 
-The pins are the three homes the `S0-2` return amends together (`P-1` falsifiers 12–13, 18–19): §13.2's device
-signing-key row, §13.5's `CertifiedSet` member formula, and the Stage A schema. Any of them changing fails this
-entry until it is re-read — which is exactly when the flip to `resolved` is due.
+The pins are the three homes the `S0-2` return amended together (`P-1` falsifiers 12–13, 18–19): §13.2's
+ratified-rule paragraph and its table rows, §13.5's `CertifiedSet` member and approval formulas, and the Stage A
+schema — with `pnpm recipient:check` as the falsifier-19 readback over them and the generators. Any of them
+changing fails this entry until it is re-read, exactly as the flip itself did.
 
 **The factor-carried edge.** At total loss the client-authenticated state *is* the four objects, so the
 bootstrap verifier must be factor-carried: committed in `recovery_state_digest`, sealed beside `R_priv`,
-rotated by every recovery replacement, the old key refused after. `A-schemas.md` §2 already asserts the
-commitment; no carrier holds it — `FU-01`'s finding, resolved by `P-1`'s floor as *the carrier is completed,
-not changed*.
+rotated by every recovery replacement, the old key refused after. `FU-01` found the commitment asserted and
+carried by nothing; the `S0-2` return landed the carrier — the digest's `bootstrap_signer` field, acceptance
+deriving the verifier from the factor-opened state alone, and the retired signer refused by the rotated
+commitment (`P-1` falsifiers 15–16).
 
 ```authority
 entry: bootstrap-signer
@@ -109,11 +112,9 @@ kind: verification
 guards: keys
 verifies: sig over a RecoveryBootstrap when no eligible client survives
 resolves: the signer commitment inside recovery_state_digest -> the signer sealed beside R_priv under the recovery code -> root:factor
-status: open
-blocker: FU-01
-return: S0-2
-pin: docs/TRD.md §13.8 63056c2a15a5
-pin: docs/review/remediation/S0-2/A-schemas.md §2 d524983485cc
+status: resolved
+pin: docs/TRD.md §13.8 ef268347caad
+pin: docs/review/remediation/S0-2/A-schemas.md §2 78dea0956af7
 ```
 
 ```authority
@@ -121,33 +122,32 @@ entry: bootstrap-countersig
 kind: verification
 guards: keys
 verifies: the new credential's countersig over the same Bootstrap
-resolves: the successor binding the factor-resolved sig vouches for (new_credential_id ‖ new_W_pub ‖ new_recovery_state_digest) -> via:bootstrap-signer
-status: open
-blocker: FU-01
-return: S0-2
-pin: docs/review/remediation/S0-2/A-schemas.md §2 d524983485cc
+resolves: the carried new_S_pub inside the binding the factor-resolved sig vouches for (new_credential_id ‖ new_W_pub ‖ new_S_pub ‖ new_recovery_state_digest) -> via:bootstrap-signer
+status: resolved
+pin: docs/review/remediation/S0-2/A-schemas.md §2 78dea0956af7
 ```
 
 The countersig's verifier is the one key the parent set cannot carry — the new credential exists precisely
-because no set names it — so it is vouched by the binding the factor-resolved `sig` covers, and `P-1`
-falsifier 17 owes the composition that turns that binding into the active certified set. Both bootstrap
-entries flip together at the `S0-2` return (`P-1` falsifiers 15–17).
+because no set names it — so the `Bootstrap` carries `new_S_pub` and the countersig verifies under it, vouched
+by the binding the factor-resolved `sig` covers. `P-1` falsifier 17's composition landed with the flip: an
+accepted bootstrap's binding is the replacement certified set, and the transition vectors rotate under it —
+both bootstrap entries flipped together at the `S0-2` return (`P-1` falsifiers 15–17, 2026-08-28).
 
 **The ceremony.** Enrollment's second gate is the one place a key crosses between people's hands, and its
 authority is the releasing client's eligibility plus the out-of-band channel — the typed symbols. Under the
-ratified option A the transcript must also bind `S_pub`, and that binding is now load-bearing; `FU-05`'s
-republication (the formula and vector inputs omit `recovery_state_digest`) rides the same return.
+ratified option A the transcript binds `S_pub` — landed at the return, with a `substituted-signing-key`
+negative — and `FU-05`'s republication landed in the same regeneration: every transcript input is in the
+vector's published inputs, and `pnpm recipient:check` reconstructs the transcript, its hash, the wrap info and
+the SAS from them alone.
 
 ```authority
 entry: enrollment-transcript
 kind: predicate
 guards: keys
 verifies: the SAS ceremony that licenses a content-key release and produces the set successor
-resolves: the typed symbols over the transcript (workspace, epoch and head, both credentials, W_pub, recovery_state_digest) -> the releasing client's eligibility in the certified set -> via:member-signing-keys
-status: open
-blocker: FU-05
-return: S0-2
-pin: docs/TRD.md §13.6 7d21356bd875
+resolves: the typed symbols over the transcript (workspace, epoch and head, both credentials, W_pub, S_pub, recovery_state_digest) -> the releasing client's eligibility in the certified set -> via:member-signing-keys
+status: resolved
+pin: docs/TRD.md §13.6 1accb334be21
 ```
 
 ## 2. The lineage and the acceptance domain — service powers, each with its bound
@@ -165,7 +165,7 @@ verifies: a successor epoch — roster, capabilities, generation, K_accept certi
 resolves: the service authorization key -> root:service
 bound: §13.5 — epochs are serialized, signed and ancestor-checked, so equivocation must fork the lineage rather than withhold; and per P-1 the epoch resolves no recipient-authority key — it carries the certified sets and vouches for none of them
 status: resolved
-pin: docs/TRD.md §13.5 d7fc91702d85
+pin: docs/TRD.md §13.5 0c37e6e9e8f4
 ```
 
 ```authority
@@ -176,7 +176,7 @@ verifies: the nonce-bound signed head assertion a brand-new or total-loss device
 resolves: K_auth's head assertion -> root:service
 bound: §13.5 — client_nonce separates a hostile relay from a hostile service; issued_at is displayed, never enforced; a stale self-consistent head degrades to a partition because a hidden revocation is a hidden generation, and the ancestor rule takes over after first contact
 status: resolved
-pin: docs/TRD.md §13.5 d7fc91702d85
+pin: docs/TRD.md §13.5 0c37e6e9e8f4
 ```
 
 ```authority
@@ -218,7 +218,7 @@ verifies: a relay admission token opening a scoped transport connection
 resolves: the service's token issuance -> root:service
 bound: §13.2 — a bounded transport scope that may not decrypt, sign content, admit a device, change capabilities or recover an account
 status: resolved
-pin: docs/TRD.md §13.2 00c7e20b203a
+pin: docs/TRD.md §13.2 47be86cf7b02
 ```
 
 ## 3. Content authenticity and attribution
@@ -296,7 +296,7 @@ guards: custody
 verifies: opening the sealed R_priv ‖ RootCommitment envelope
 resolves: the 125-bit recovery code the user re-entered before the account existed -> root:factor
 status: resolved
-pin: docs/TRD.md §13.8 63056c2a15a5
+pin: docs/TRD.md §13.8 ef268347caad
 ```
 
 ```authority
@@ -307,7 +307,7 @@ verifies: the three gates on replace-recovery
 resolves: content access proven by use — rewrapping opens every retained generation, and the device lock is implied where the slot has one -> root:factor
 resolves: an account-credential assertion over the nonce-bound, single-use challenge -> via:account-credential
 status: resolved
-pin: docs/TRD.md §13.8 63056c2a15a5
+pin: docs/TRD.md §13.8 ef268347caad
 ```
 
 ```authority
@@ -509,7 +509,7 @@ guards: custody
 verifies: the recovery envelope and the archive envelope
 discipline: one message per derived key — a fresh per-seal salt into HKDF of the code, so exactly one plaintext is ever sealed under each derived key and nonce reuse is structurally unreachable (§13.8, S0-6 §2)
 status: resolved
-pin: docs/TRD.md §13.8 63056c2a15a5
+pin: docs/TRD.md §13.8 ef268347caad
 pin: docs/review/remediation/S0-6/A-schemas.md §2 7ca03c1bac64
 ```
 
@@ -537,9 +537,10 @@ blocker or return naming nothing. The open set can only shrink by repair, exactl
 shrink by payment.
 
 **Consumption.** The stage returns (queue item 4) flip their entries: `S0-2` — `member-signing-keys`,
-`bootstrap-signer`, `bootstrap-countersig`, `enrollment-transcript`; `S0-3` — `k-store`; `S0-4` —
-`position-refusal`; `S0-5` — `checkpoint-admission`; `S0-6` — `local-archive-anchor`, `terminal-handoff`;
-`S0-7` — `destructive-boundary`. `S0-9` round 3 reads the computed summary as the class-1 ledger, and `S0-10`
-consumes a map whose open count is zero or does not close. `P-1` falsifier 14 is discharged by this file plus
-its checker **at the `S0-2` return** — the map exists now; the falsifier's claim is owed there, with the rest
-of 12–19.
+`bootstrap-signer`, `bootstrap-countersig`, `enrollment-transcript` — **flipped 2026-08-28 at the `S0-2`
+return**; `S0-3` — `k-store`; `S0-4` — `position-refusal`; `S0-5` — `checkpoint-admission`; `S0-6` —
+`local-archive-anchor`, `terminal-handoff`; `S0-7` — `destructive-boundary`. `S0-9` round 3 reads the computed
+summary as the class-1 ledger, and `S0-10` consumes a map whose open count is zero or does not close. `P-1`
+falsifier 14 was discharged at the `S0-2` return: the member-key entries flipped, every chain still terminates
+at a permitted root for its guard, and the checker — not a review — is what refuses a dangling or service-only
+edge from here on.

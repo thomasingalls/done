@@ -157,6 +157,32 @@ claiming it before it holds. The action tree's "safe parallel work" note applies
 schema and the local apply/reference ledger were designed against one another's interfaces rather than in
 sequence, and recovery canonicalisation was designed independently of the device-lock carrier.
 
+## The `S0-2` return (2026-08-28)
+
+Both `S0-9` rounds returned repairs here — `FU-01` (`A-01`), `FU-05` (`A-02`), `FU-09`'s interface half
+(`ST-04`), and `P-1`'s reopened approver and bootstrap-signer joints (round 1 `D-1`/`D-3`/`D-4`) — and the
+return landed them under `P-1` falsifiers 12–19, with every gate re-run green:
+
+- **Stage A/B** — the member entry is the `(credential_id ‖ W_pub ‖ S_pub)` triple, every approval names its
+  approver, `recovery_state_digest` commits `bootstrap_signer`, the `Bootstrap` carries `new_S_pub`, and TRD
+  §13.8 carries the `RecoveryBootstrap` construction §13.2 cites — round 1 `D-3`'s dangling normative
+  reference closed. `A-schemas.md` §4 step 5 and §5 gained `P-3`'s ratified fence (`FU-09`).
+- **Stage C** — rows 9, 11 and 14 amended: the factor-carried verifier, the transcript's `S_pub`, and the
+  bootstrap signer sealed beside `R_priv`.
+- **Stage D** — the three generators reworked and regenerated: the approver lookup is real and the impostor
+  negative inverted; bootstrap acceptance derives its verifier from the factor-opened `RecoveryState`,
+  refuses a stale chain as an authority failure and the retired signer by the rotated commitment; the
+  bootstrap→certified-set composition runs in the transition vectors; the enrollment vector publishes every
+  transcript input (`FU-05`). `test/enrollmentStates.test.ts` runs §13.6's six states with crash points and
+  serializes the sibling-successor race (falsifier 18, criterion 11);
+  `test/storageSchedule.test.ts`'s reservation-fence reproduction is inverted with its schedule kept.
+- **The instruments** — the authority map's four member-key entries flipped (falsifier 14);
+  `pnpm recipient:check` joined `pnpm check` as falsifier 19's homes-agree readback, with `FU-05`'s
+  independent reconstruction inside it.
+
+What stays reserved, exactly as the record reserves it: the `CertifiedSet` AAD registration and the impostor
+negative's regeneration re-read at `S0-8`; `P-3` falsifiers 14–22 at the `S0-3` return.
+
 ## Not in scope for this action
 
 - Checkpoint semantics and creation authority — [`P-8`](../decisions/P-8-checkpoint-and-creation-authority.md)
