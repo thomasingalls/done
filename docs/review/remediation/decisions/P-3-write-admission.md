@@ -1,20 +1,21 @@
 # `P-3` — write admission for oversize and storage failure
 
 **Decided:** 2026-08-27 · **Reopened:** 2026-08-28, at the shared subkey, the refusal window and the
-reservation fence · **Branch:** `RC-3C`, bound the operation rather than the write-ahead log ·
-**Allocator:** per-batch exact reservation, in IndexedDB · **Budget baseline:** sequences _reserved_ under a
-generation, not sequences committed · **Status:** reopened — question, options and falsifiers drafted below;
-ratification pending
+reservation fence · **Ratified:** 2026-08-28, option A at all three joints · **Branch:** `RC-3C`, bound the
+operation rather than the write-ahead log · **Allocator:** per-batch exact reservation, in IndexedDB ·
+**Budget baseline:** sequences _reserved_ under a generation, not sequences committed · **Status:** ratified,
+not yet consolidated — the `S0-3` return owes falsifiers 14–22
 
 Consolidation is [`S0-3`](../action-tree.md). Evidence:
 [`probes/journal-append-probe.md`](../probes/journal-append-probe.md), TRD §12, `docs/performance.md`.
 
 **Read the reopening at the end of this record before consuming anything above as settled.** `RC-3C` stands;
-what failed both `S0-9` rounds is what contains an admitted write at three joints its models cannot schedule —
+what failed both `S0-9` rounds was what contains an admitted write at three joints its models cannot schedule —
 the key every store's nonces share, the crash window behind a journal refusal, and a reservation that crosses a
-generation advance — plus this record's own superseded trim claims (`FU-13`), now annotated in place where they
-occur. The reopened question, its floors, the options and falsifiers 14–22 are drafted below; ratification is
-the open step.
+generation advance — plus this record's own superseded trim claims (`FU-13`), annotated in place where they
+occur. Those rules are now ratified: **option A at every joint — each store derives its own key and its own
+counter bounds it, nothing becomes authoritative without a durable carrier, and a batch's commit validates its
+generation where the commit lands.**
 
 ## The question is not the one the options document asks
 
@@ -351,7 +352,7 @@ Three sub-questions, one per joint.
 
 **Joint 1 — what makes the per-key bound true for `D` stores.**
 
-**A — the derivation gains the store's identity: one key per counter.** `info` gains the identifier that
+**A — the derivation gains the store's identity: one key per counter. (Ratified.)** `info` gains the identifier that
 separates `SeqCounter`s — a store-instance id minted at store creation, or the device credential where one
 exists; Stage A selects the encoding under one constraint: it exists at creation for every store, the
 anonymous Local workspace included, and no two counters ever share it. The buy is that the counter already had
@@ -382,7 +383,7 @@ per-store key would accept. C imports class 1's problem to avoid class 2's repai
 
 **Joint 2 — when the journal refuses, what holds the update the document already integrated.**
 
-**A — nothing authoritative without a durable carrier.** A handler that meets a refusal returns only after the
+**A — nothing authoritative without a durable carrier. (Ratified.)** A handler that meets a refusal returns only after the
 document again equals recoverable state: the refused transaction is inverted before return — or the update is
 staged and promoted only once carried; Stage A selects the mechanism, the rule is the option — the input is
 held as pending, the forced batch commits, and the input re-applies on the ordinary path, sliced if oversize
@@ -410,7 +411,7 @@ anti-pattern `P-4` refused to hand class 1.
 
 **Joint 3 — where a granted reservation's generation is validated.**
 
-**A — at the record commit, under the serialization the allocator already leans on.** The active marker's home
+**A — at the record commit, under the serialization the allocator already leans on. (Ratified.)** The active marker's home
 shares the store's database, so the batch's committing transaction spans it: validate the generation or abort
 and re-reserve under the successor — the re-reserve rule this record already states, moved from *when the
 batch happens to look* to the one place looking is atomic. IndexedDB serializes overlapping readwrite
@@ -434,41 +435,78 @@ generation land arbitrarily late; and for the rotation that exists because `g` w
 sealing fresh content under the exposed key is the regression rotation is for. C protects the record and
 forfeits the rotation.
 
-### Awaiting ratification
+### Ratified 2026-08-28 — A at every joint
 
-The ratifying edit selects one option per joint, argues each against its floor, resolves `FU-09`'s conditional
-explicitly, and instantiates falsifiers 14, 15, 17, 19 and 20 against the selected rules. Until then `S0-3`
-may consume nothing in this record as settled — the original sections included, since the derivation and the
-batch transaction are in play.
+**The ruling.** Three rules, and one resolution:
+
+- **`K_store` derives per store: one key per counter.** The `info` gains the identifier that separates
+  `SeqCounter`s, selected at Stage A under the floor's constraint — it exists at creation for every store, the
+  anonymous Local workspace included, and no two counters ever share it. `reserved[gen]` then counts every
+  invocation of the key it bounds, the sum over devices is a sum over distinct keys, and the one comparison —
+  rotate before the 2^32nd reservation — is again the whole enforcement, firing on time for its own key
+  instead of up to `D` times too late for a shared one.
+- **Nothing becomes authoritative without a durable carrier.** A handler that meets a journal refusal returns
+  only with the document equal to recoverable state; the input is held as pending and re-applies on the
+  ordinary path once the forced batch commits, sliced when oversize was the cause. Whether the mechanism is
+  inversion or stage-and-promote is Stage A's selection, reserved by the ratifier on purpose: the rule is
+  ratified, the plumbing is not prejudged.
+- **A batch's commit validates its generation where the commit lands.** The committing transaction reads the
+  active marker under the same IndexedDB serialization the allocator already leans on, and aborts into
+  re-reservation when it moved. After marker-advance commits, no `g` record can commit, so step 3's
+  classification is complete when step 7 consumes it — step 5's claim becomes construction. `FU-09`'s
+  conditional is thereby determinate: **the reservation transaction is completed, not changed** — its return
+  stays at the `S0-2`/`S0-3` interface, and `P-3` reopens no further on that axis.
+
+The class-2 pattern is now normative beside `P-4`'s and `P-1`'s class-1 halves: **a budget binds only what
+its counter can see; an edit is accepted only when a durable carrier holds it; a reservation is only as
+current as the commit that consumes it.** `FU-10` and `FU-12` follow it through the scheduler.
+
+**Why A, three times.** At the key: A is the only option whose enforcement is the comparison that already
+exists — B trades a probabilistic bound for a uniqueness invariant whose failure mode, a restored backup
+rewinding `next_seq`, is immediate nonce reuse reachable by ordinary means, and it needs a tag authority — a
+class-1 joint imported into a local path; C couples the same local path to roster state. The ratifier's scale
+question is answered here because it was due diligence, not doubt: an invocation is one stored record — an
+update (a keystroke, while typing; a 16 kB slice, in bulk), a remote update sync delivers, a heads mark, an
+outbound envelope, a state record, an abandoned reservation — and the count is cumulative, untouched by trim,
+reset per generation. One generation's budget at a sustained 10,000 records a day is roughly 1,200 years; at
+an automated 100 records a second it is about 16 months — and the design relies on neither figure, because the
+comparison rotates first at any rate. That comparison is only sound when the counter sees everything the key
+does, which is exactly what A restores. At the refusal: A restores §12's contract as stated where C
+renegotiates it — the anti-pattern `P-4` refused — and B is not total: `unavailable` has no synchronous home,
+and the segmented backstop repeals *"no group, no chunk, no reassembly"* on its own path. Pre-measuring the
+input cannot substitute: the two live causes are storage failures no input inspection predicts, and an
+update's exact size exists only after the transaction produces it — producing it somewhere not yet
+authoritative is precisely the stage-and-promote half of A's mechanism choice. At the fence: A rides
+serialization that already exists and already carries the allocator's two-tab argument; B re-derives A behind
+a timer and reintroduces the elapsed-time authority `P-4` just retired; C protects a record by forfeiting the
+rotation — fatal exactly when rotation exists because `g` was exposed.
 
 ### Falsifiers 14–22
 
-Continuing the thirteen above, under the floors. Each is a test, not a claim; 16, 18, 21 and 22 bind every
-option, and the rest read "the ratified rule" as whatever ratification selects.
+Continuing the thirteen above, under the ratified rules. Each is a test, not a claim.
 
 14. **The reproduction fails with the scope real.** Two stores holding the same `K_g` never derive one
-    `K_store` under the ratified rule; today's identical derivation is the mutation that must fail, and
-    deriving for another store fails to open — the `wrong-store` sibling of `wrong-workspace-subkey`.
+    `K_store` — the `info` binds the store identity, today's identical derivation is the mutation that must
+    fail, and deriving for another store fails to open: the `wrong-store` sibling of `wrong-workspace-subkey`.
 15. **The budget binds a key again.** Every invocation of each `K_store` instance is counted by exactly one
-    durable state, and a `D`-writer model at the budget's edge shows no key exceeding 2^32 invocations — the
-    sum-over-stores term round 1 computed is structurally zero, or provably bounded, under the ratified rule,
-    for every `D`.
+    `SeqCounter`'s `reserved[gen]`, and a `D`-writer model at the budget's edge shows no key exceeding 2^32
+    invocations — the sum-over-stores term round 1 computed is structurally zero for every `D`, because no
+    two stores share a key.
 16. **No uncounted key.** For every AEAD key on the write path — each `K_store` instance, `K_journal`, the key
     envelopes — one home names either the durable state that counts its invocations or the nonce discipline
     that needs none, and a key with neither fails a checker rather than a review. Row 2's 24 random bytes pass
     by the second clause; today's `K_store` fails by both.
 17. **The refusal window is schedulable and survives.** The scheduler kills the model between a journal
-    refusal and the forced batch's commit, and the ratified rule's outcome is asserted at that point: for a
-    carrier option, no reload shows a document ahead of what durable state can rebuild; a renegotiation
-    (option C) must instead assert its bounded, marked loss at the same point and narrow the WAL theorem in
-    every home falsifier 22 reads.
+    refusal and the forced batch's commit, and the ratified rule is asserted at that point: no reload shows a
+    document ahead of what durable state can rebuild — the reproduction, an integrated update recoverable
+    from nowhere, fails at every kill point on the refusal path.
 18. **Acknowledgement is load-bearing.** Round 1 `S-6`'s two green mutations are permanent negatives: a model
     that never sets `notDurable`, or that acknowledges an unjournallable edit before IndexedDB commits, fails
     a test — the refusal state is read, not write-only.
 19. **A granted reservation cannot silently outlive its generation.** The interleaving reserve-under-`g` →
     marker-advance → commit-under-`g` is schedulable, and under the ratified fence the late commit aborts and
-    re-reserves, or is re-counted before any retirement — and the abandoned range stays counted against `g`,
-    composing with falsifier 8.
+    re-reserves under the successor — and the abandoned range stays counted against `g`, composing with
+    falsifier 8.
 20. **The retirement composition fails.** No schedule reaches `openers-retired` while any object sealed under
     `g` is outside the retirement predicate's view — clauses (a)–(c) hold under concurrency, asserted with
     `writeAdmission` and `GenerationApply` composed in one scheduled model rather than two sequential suites.
@@ -497,7 +535,9 @@ option, and the rest read "the ratified rule" as whatever ratification selects.
   composed `writeAdmission` × `GenerationApply` schedule for falsifier 20.
 - The falsifier-22 readback lands as an independent checker at `S0-1`/`S0-8`, per `E3`/`E4` — the
   `status:check` shape, pointed at the write-admission homes.
-- PRD §7.10 and §7.1 amend only if the ratified refusal rule changes the product surface.
+- PRD §7.10 and §7.1: the withheld acknowledgement stands, and Stage E owes one sentence — on the refusal
+  path the document itself waits for its carrier, so the screen never shows what §7.10 would have to
+  disclaim; under storage pressure an edit lands late and durable rather than instant and precarious.
 
 ### What this reopening does not decide
 

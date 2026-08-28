@@ -184,6 +184,18 @@ pinned tip.
 > large writes need, without the group-commit machinery. `MAX_UPDATE`'s exact value is derived from the budget
 > on the declared support population and is therefore downstream of
 > `f-bd87655-baseline-not-performance-floor`; 16 kB is an interim floor to build against.
+>
+> **Reopened 2026-08-28 at the shared subkey, the refusal window and the reservation fence** by `S0-9`
+> (round 1 `S-9`, round 2 `FU-08`/`FU-09`/`FU-13`): every store derived one `K_store` no single counter could
+> bound; a journal refusal left the document ahead of anything durable in a window the model could not
+> schedule; a granted reservation could commit under a generation the marker had already left; and §15 row 3
+> and the record itself still published superseded allocator claims. `RC-3C` itself stands. **Ratified the
+> same day: option A at all three joints.** Each store derives its own key and exactly one `SeqCounter`
+> counts it; nothing becomes authoritative without a durable carrier — a refusal holds the input, never the
+> document; and a batch's commit validates its generation under the same IndexedDB serialization the
+> allocator leans on, so the reservation transaction is completed, not changed. The acceptance line below —
+> refused before authoritative mutation or fully recoverable — becomes true rather than approximated.
+> Falsifiers 14–22 are owed at the `S0-3` return.
 
 - **Prerequisites:** decide whether the product permits a pre-mutation operation/update ceiling. Obtain feasibility
   measurements for staged arbitrary-size WAL and for per-write versus range allocation.
