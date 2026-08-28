@@ -1,0 +1,545 @@
+# The authority-derivation map
+
+**Standing:** home — read back by [`check-authority-map.mjs`](../../../../scripts/check-authority-map.mjs)
+(`pnpm authority:check`, in `pnpm check`) · **Built:** 2026-08-28, queue item 3(a) · **Anchored at:** `S0-2`
+Stage A/B, because that is where the authority carriers live; its entries span every stage's joints
+
+For every verification key and acceptance predicate in the workspace design: the client- or
+factor-authenticated state that resolves it. [`HANDOFF.md`](../HANDOFF.md)'s class 1 — *an acceptance step
+trusts a key or predicate that no factor-authenticated state resolves* — generated seven of the open blockers,
+found one at a time by challenge rounds. This map is the instrument that closes the class as a class:
+**a dangling or service-only edge fails the checker rather than a review** (`P-1` falsifier 14), and what still
+blocks what is computed from the entries on demand, never transcribed beside them.
+
+The ruling it enforces is `P-1`'s, ratified 2026-08-28 and stated as the pattern the sibling joints follow:
+**a verification key resolves through client- or factor-authenticated state, or it does not verify.** Its first
+entry is `P-1`'s own: no approval verifies under a key whose only voucher is the service-signed epoch.
+
+## The four roots, and what each is allowed to carry
+
+Every resolution chain terminates at exactly one of:
+
+| Root | What it is | What may terminate there |
+| --- | --- | --- |
+| `trust-root` | Client-authenticated state grounded at workspace creation — the genesis certified set under the creating credential's key | anything |
+| `factor` | State opened by something only the user holds — the recovery code, the archive code, a device-lock factor, a platform authenticator | anything |
+| `structural` | A commitment verifiable from the bytes alone, no authority consulted — a hash recomputation, a local re-derivation | anything |
+| `service` | The service's own signing keys | **only** an entry whose `guards` is `availability`, with the stated bound cited — the powers §13.2's service row grants: serialize epochs, assert accepted positions, stop hosting. Never keys, content, custody, attribution or deletion |
+
+The `service` row is the design's own boundary, not a new rule: §13.1 fixes that authorization and decryption
+never collapse, §13.5 prices what an equivocating service must do (fork, not withhold), and §14.7 §6 states a
+compromised biller's blast radius as availability. The map makes the boundary a checked property of every edge
+instead of an argument repeated at some of them.
+
+## How to read an entry
+
+Entries are the fenced `authority` blocks below — fenced so no formatter can ever reach them, machine-parsed so
+the checker's enums are total: an unknown `kind`, `guards`, `status` or field name fails rather than entering
+no bucket.
+
+- **`kind`** — `verification` (a signature some acceptance step verifies) · `predicate` (an acceptance rule
+  that consumes authenticated state) · `aead` (a sealing key; carried here because `P-3` falsifier 16 needs a
+  census with one home — see §5).
+- **`guards`** — what the entry protects: `keys | content | custody | attribution | deletion | availability`.
+  The first five must terminate at `trust-root`, `factor` or `structural`; only `availability` may terminate at
+  `service`, and then `bound:` cites the stated bound.
+- **`resolves`** — the chain, ` -> `-separated, ending at `root:<root>` or `via:<entry>`. **A chain records the
+  rule the decision records ratified or the schemas state — not what the corpus currently implements.** The
+  `status` line carries that difference.
+- **`status`** — `resolved`: the rule is stated at its pinned homes and the challenge rounds left it standing.
+  `open`: a disposition holds the joint open; `blocker:` names the entry that holds it (`FU-nn` from
+  [`FOLLOWUP-DISPOSITION.md`](../S0-9/FOLLOWUP-DISPOSITION.md), a finding, or a reopened `P-n`) and `return:`
+  names the stage that owes the repair, both validated against the documents that define them.
+- **`pin`** — `path §number hash12` (or `path hash12` for a whole file): the SHA-256 (first 12 hex) of the
+  section that states the rule or embodies the defect. An edit to a pinned home fails the checker until the
+  editor re-reads the entry and either re-pins it or flips it — `RC-8C`'s both-directions agreement, made
+  mechanical, in the regime this program has now adopted four times (the review's `config.json`, `P-5`'s
+  census, `RC-9`'s manifest, here).
+
+**What the checker proves, exactly.** Every chain terminates at a permitted root for its guard; every open
+joint carries a real blocker and a defined return; every pinned home is byte-current; and every `Ed25519(`
+construction in the TRD and the five stage schema documents sits in a pinned section, so the map cannot decide
+its own census. **What it does not prove:** that the corpus implements a chain — an open entry's flip is owed
+at its return, under that record's falsifiers, and the sweep sees signature constructions, not every predicate
+prose could state. A pin detects drift, never forgery.
+
+---
+
+## 1. The two carriers every recipient-authority chain grounds in
+
+Class 1's repair has one shape because `P-1` gave it one: every member key resolves through the certified-set
+chain, and the chain grounds at its two edges — genesis under the creating credential, or a bootstrap-minted
+replacement under the factor-resolved signer. These four entries are that shape; every later section's chains
+end `via:` one of them.
+
+**The shared home.** A member credential's signing key is what approvals, envelope signatures, admissions,
+attribution claims and handoff receipts all verify under. Today the only credential-to-signing-key certification
+is §13.2's authority table row — the service-signed epoch, the object `P-1` exists to dethrone — which is
+round 1 `D-1` and the high finding it returns. The ratified home is the parent certified set's member entry,
+`(credential_id ‖ W_pub ‖ S_pub)`, with every approval naming its approver in its signed bytes.
+
+```authority
+entry: member-signing-keys
+kind: verification
+guards: keys
+verifies: any member credential's Ed25519 signature an acceptance step consumes
+resolves: the named signer's member entry (credential_id ‖ W_pub ‖ S_pub) in the parent certified set -> each parent's own approval -> the genesis set under the creating credential -> root:trust-root
+resolves: a bootstrap-minted replacement set -> via:bootstrap-signer
+status: open
+blocker: f-c611666-rotation-reader-eligibility-missing
+return: S0-2
+pin: docs/TRD.md §13.2 00c7e20b203a
+pin: docs/TRD.md §13.5 d7fc91702d85
+pin: docs/review/remediation/S0-2/A-schemas.md §1 c651b0dce8a7
+```
+
+The pins are the three homes the `S0-2` return amends together (`P-1` falsifiers 12–13, 18–19): §13.2's device
+signing-key row, §13.5's `CertifiedSet` member formula, and the Stage A schema. Any of them changing fails this
+entry until it is re-read — which is exactly when the flip to `resolved` is due.
+
+**The factor-carried edge.** At total loss the client-authenticated state *is* the four objects, so the
+bootstrap verifier must be factor-carried: committed in `recovery_state_digest`, sealed beside `R_priv`,
+rotated by every recovery replacement, the old key refused after. `A-schemas.md` §2 already asserts the
+commitment; no carrier holds it — `FU-01`'s finding, resolved by `P-1`'s floor as *the carrier is completed,
+not changed*.
+
+```authority
+entry: bootstrap-signer
+kind: verification
+guards: keys
+verifies: sig over a RecoveryBootstrap when no eligible client survives
+resolves: the signer commitment inside recovery_state_digest -> the signer sealed beside R_priv under the recovery code -> root:factor
+status: open
+blocker: FU-01
+return: S0-2
+pin: docs/TRD.md §13.8 63056c2a15a5
+pin: docs/review/remediation/S0-2/A-schemas.md §2 d524983485cc
+```
+
+```authority
+entry: bootstrap-countersig
+kind: verification
+guards: keys
+verifies: the new credential's countersig over the same Bootstrap
+resolves: the successor binding the factor-resolved sig vouches for (new_credential_id ‖ new_W_pub ‖ new_recovery_state_digest) -> via:bootstrap-signer
+status: open
+blocker: FU-01
+return: S0-2
+pin: docs/review/remediation/S0-2/A-schemas.md §2 d524983485cc
+```
+
+The countersig's verifier is the one key the parent set cannot carry — the new credential exists precisely
+because no set names it — so it is vouched by the binding the factor-resolved `sig` covers, and `P-1`
+falsifier 17 owes the composition that turns that binding into the active certified set. Both bootstrap
+entries flip together at the `S0-2` return (`P-1` falsifiers 15–17).
+
+**The ceremony.** Enrollment's second gate is the one place a key crosses between people's hands, and its
+authority is the releasing client's eligibility plus the out-of-band channel — the typed symbols. Under the
+ratified option A the transcript must also bind `S_pub`, and that binding is now load-bearing; `FU-05`'s
+republication (the formula and vector inputs omit `recovery_state_digest`) rides the same return.
+
+```authority
+entry: enrollment-transcript
+kind: predicate
+guards: keys
+verifies: the SAS ceremony that licenses a content-key release and produces the set successor
+resolves: the typed symbols over the transcript (workspace, epoch and head, both credentials, W_pub, recovery_state_digest) -> the releasing client's eligibility in the certified set -> via:member-signing-keys
+status: open
+blocker: FU-05
+return: S0-2
+pin: docs/TRD.md §13.6 7d21356bd875
+```
+
+## 2. The lineage and the acceptance domain — service powers, each with its bound
+
+These are the edges the design deliberately grants the service, and the map's job here is the opposite of
+§1's: not to remove the edge, but to pin the bound that keeps it an availability power. An entry in this
+section acquiring a wider guard than `availability` would fail the checker — which is the boundary §13.1
+states, enforced per edge.
+
+```authority
+entry: epoch-signature
+kind: verification
+guards: availability
+verifies: a successor epoch — roster, capabilities, generation, K_accept certification, accepted-head vector
+resolves: the service authorization key -> root:service
+bound: §13.5 — epochs are serialized, signed and ancestor-checked, so equivocation must fork the lineage rather than withhold; and per P-1 the epoch resolves no recipient-authority key — it carries the certified sets and vouches for none of them
+status: resolved
+pin: docs/TRD.md §13.5 d7fc91702d85
+```
+
+```authority
+entry: head-first-contact
+kind: verification
+guards: availability
+verifies: the nonce-bound signed head assertion a brand-new or total-loss device consumes at first contact
+resolves: K_auth's head assertion -> root:service
+bound: §13.5 — client_nonce separates a hostile relay from a hostile service; issued_at is displayed, never enforced; a stale self-consistent head degrades to a partition because a hidden revocation is a hidden generation, and the ancestor rule takes over after first contact
+status: resolved
+pin: docs/TRD.md §13.5 d7fc91702d85
+```
+
+```authority
+entry: accepted-head
+kind: verification
+guards: availability
+verifies: Head_n over a credential's accepted chain — the evidence required before any envelope is applied
+resolves: K_accept, certified by the authorization key in the epoch in force -> via:epoch-signature
+bound: §7.5 — accepted positions are exactly what the service is authoritative over; the client verifies against the link it replayed itself, first-seen-wins per position, and withheld evidence stops sync rather than admitting anything
+status: resolved
+pin: docs/TRD.md §7.5 9c0a7d9f3e25
+```
+
+```authority
+entry: position-refusal
+kind: verification
+guards: availability
+verifies: a definite Refuse — the only licence to re-mint a position
+resolves: the same K_accept, from the same certification -> via:epoch-signature
+bound: §7.5 — a refusal is permanent, closes exactly (workspace, credential, position, digest), licenses one successor at its own position and no other, and everything unauthenticated is silence
+status: open
+blocker: FU-06
+return: S0-4
+pin: docs/TRD.md §7.5 9c0a7d9f3e25
+pin: docs/review/remediation/S0-4/A-schemas.md §3 09123f85de27
+```
+
+The refusal's key resolves exactly as the head's does; what is open is the *subject*: the signed epoch is
+absent from the client's comparison and from the spool model, so a genuine refusal under a stale or forked
+`K_accept` still licenses a re-mint — a delayed old-key compromise discarding current outbound bytes (`A-03`).
+The `S0-4` return carries the envelope's epoch into the subject and resolves `K_accept` from that exact
+authenticated epoch.
+
+```authority
+entry: relay-admission
+kind: predicate
+guards: availability
+verifies: a relay admission token opening a scoped transport connection
+resolves: the service's token issuance -> root:service
+bound: §13.2 — a bounded transport scope that may not decrypt, sign content, admit a device, change capabilities or recover an account
+status: resolved
+pin: docs/TRD.md §13.2 00c7e20b203a
+```
+
+## 3. Content authenticity and attribution
+
+Every entry here chains through the member-key home, which is what *class* means: these entries' own rules
+held both challenge rounds, and they stay blocked-through until §1 flips — repair the home once and they clear
+together, which the checker computes rather than anyone maintaining.
+
+```authority
+entry: envelope-signature
+kind: verification
+guards: content
+verifies: sig over an envelope's AAD fields, nonce and digest (§7.4)
+resolves: the signing credential named in the clear header -> its member entry for the referenced epoch -> via:member-signing-keys
+status: resolved
+pin: docs/TRD.md §7.4 690246e0d341
+```
+
+```authority
+entry: checkpoint-manifest
+kind: verification
+guards: content
+verifies: M — the producing credential's manifest over checkpoint digest, sv, ds and the head vector
+resolves: the producing credential -> via:member-signing-keys
+status: resolved
+pin: docs/TRD.md §7.6 9286fbcf367f
+```
+
+```authority
+entry: checkpoint-admission
+kind: predicate
+guards: content
+verifies: that a checkpoint means the accepted snapshot it claims — SemanticAdmission plus the restorer's order
+resolves: local re-derivation of {sv, ds} from the decrypted snapshot, compared three ways -> root:structural
+resolves: the admission signature and the admitting credential's eligibility at the manifest's epoch -> via:member-signing-keys
+status: open
+blocker: FU-11
+return: S0-5
+pin: docs/review/remediation/S0-5/A-schemas.md §1 cb5d0fada255
+```
+
+The rule is stated — the restorer re-derives without trusting anyone, then checks the admitter was in the
+certified set at the manifest's epoch, and `head_baseline_digest` is the one trusted step — and the evidence
+does not exercise it: no certified-recipient eligibility or cardinality input, no staged install machine, so
+producer self-admission beside a second eligible client is refused by nothing that runs (`ST-06`).
+
+```authority
+entry: attribution-record
+kind: verification
+guards: attribution
+verifies: R — the standing claim minted by the writing credential at card creation
+resolves: content_commitment recomputed from the card's own bytes -> root:structural
+resolves: sig by the writing credential -> via:member-signing-keys
+status: resolved
+pin: docs/TRD.md §13.7 61febc1f9a99
+```
+
+```authority
+entry: creation-certificate
+kind: verification
+guards: attribution
+verifies: C — the certificate a card's identity commits to
+resolves: card_id recomputed as the hash of C, so a different creator is a different id -> root:structural
+resolves: cert_sig by the creating credential -> via:member-signing-keys
+status: resolved
+pin: docs/review/remediation/S0-5/A-schemas.md §2 fa5ea81f2eec
+```
+
+## 4. Custody, packages, recovery
+
+```authority
+entry: recovery-envelope
+kind: predicate
+guards: custody
+verifies: opening the sealed R_priv ‖ RootCommitment envelope
+resolves: the 125-bit recovery code the user re-entered before the account existed -> root:factor
+status: resolved
+pin: docs/TRD.md §13.8 63056c2a15a5
+```
+
+```authority
+entry: recovery-replace-stepup
+kind: predicate
+guards: custody
+verifies: the three gates on replace-recovery
+resolves: content access proven by use — rewrapping opens every retained generation, and the device lock is implied where the slot has one -> root:factor
+resolves: an account-credential assertion over the nonce-bound, single-use challenge -> via:account-credential
+status: resolved
+pin: docs/TRD.md §13.8 63056c2a15a5
+```
+
+```authority
+entry: account-package-root
+kind: predicate
+guards: content
+verifies: importer step 2 — the recomputed RootCommitment against the manifest, before any unwrap
+resolves: the commitment sealed beside R_priv under the recovery code -> root:factor
+status: resolved
+pin: docs/review/remediation/S0-6/A-schemas.md §1 29d6982aa361
+```
+
+```authority
+entry: package-manifest
+kind: verification
+guards: content
+verifies: the assembler's manifest over a portable package's parts
+resolves: assembled_by, resolved from the epochs the package itself carries -> via:member-signing-keys
+resolves: the factor-checked root commitment, consumed first at import -> via:account-package-root
+status: resolved
+pin: docs/TRD.md §14.4 b88dc4f60dbc
+```
+
+```authority
+entry: terminal-lineage-record
+kind: verification
+guards: availability
+verifies: the signed terminal record that moves a lineage to retired
+resolves: the lineage authorization key -> root:service
+bound: §14.4 and §14.7 §6 — terminal lineage needs a client-signed retire intent the biller does not hold, the record commits before anything is deleted, and a retired package is a complete re-assembly under the terminal authority, never a live manifest with a field rewritten
+status: resolved
+pin: docs/TRD.md §14.4 b88dc4f60dbc
+pin: docs/review/remediation/S0-6/A-schemas.md §3 d4c0e75e9ddb
+```
+
+```authority
+entry: local-archive-anchor
+kind: predicate
+guards: content
+verifies: what authenticates a never-established Local archive
+resolves: auth_root = archive_pub, checked against the commitment sealed under the archive code -> root:factor
+status: open
+blocker: FU-02
+return: S0-6
+pin: docs/review/remediation/S0-6/A-schemas.md §2 7ca03c1bac64
+pin: scripts/generate-package-vectors.mjs d8d936aad0ae
+```
+
+The schema states the factor chain; the published package positive contradicts it — `archiveFields.authRoot`
+is the laptop's Ed25519 key, signed by a device key the archive factor never bound, and the code-sealed
+commitment is never composed with the manifest (`A-04`). The generator is pinned whole so the `S0-6` return's
+repair trips this entry and flips it.
+
+```authority
+entry: terminal-handoff
+kind: predicate
+guards: deletion
+verifies: verified-current — the receipt that authorizes a hosted deletion class
+resolves: the receiving client's signature -> via:member-signing-keys
+resolves: a verifiable catch-up transcript from receiver_prior_head with exact absences enumerated -> root:structural
+status: open
+blocker: FU-03
+return: S0-6
+pin: docs/TRD.md §14.4 b88dc4f60dbc
+pin: docs/review/remediation/S0-6/A-schemas.md §4 3f5b651f43db
+```
+
+The chain's second line is the rule the schema states and the current value cannot honor: `catchup_digest` is
+one hash over `(priorHead, terminalHead)` plus a non-negative count — no transcript, no chain proof, no absence
+identifiers — so a stale receiver can self-assert completeness and the gate on destruction reads it as current
+(`A-05`).
+
+```authority
+entry: destructive-boundary
+kind: predicate
+guards: deletion
+verifies: what licenses hosted erasure — the intent, the boundary, and the per-class gate
+resolves: the retire intent carrying its erasure acceptance in its signed payload (P-4, option B) -> via:member-signing-keys
+resolves: per-class TerminalHandoffs, one durable receipt per deletion class -> via:terminal-handoff
+status: open
+blocker: FU-04
+return: S0-7
+pin: docs/TRD.md §14.7 2aa56a94b36a
+pin: docs/review/remediation/S0-7/A-schemas.md §3 20fccc94a711
+```
+
+The strongest convergence across all seven challengers: composed with §14.7's inherited clock, a retirement
+can be born with `retired_at + RETENTION` already elapsed, so every class deletes with `handoffs.size === 0` —
+elapsed time replacing the receiving client's custody authority. `P-4`'s ratified rule (intrinsic acceptance;
+the boundary written once at the `cause` overwrite; ceiling erasure terminating in `deleted-without-receipt`)
+flips this at the `S0-7` return composed with `S0-6` (`P-4` falsifiers 11–19).
+
+```authority
+entry: retention-mark
+kind: verification
+guards: availability
+verifies: a signed, revision-ordered RetentionMark — the disclosure PRD §6.10 requires
+resolves: the retention service's signing key -> root:service
+bound: §14.7 §6 — the signer is not the lineage authorization key: it can stop hosting and cannot admit, revoke, rotate, retire, delete before the deadline its own clock computed, or touch class 6 under cause entitlement; clients reject a passed revision
+status: resolved
+pin: docs/TRD.md §14.7 2aa56a94b36a
+pin: docs/review/remediation/S0-7/A-schemas.md §1 914ddb30d149
+```
+
+```authority
+entry: entitlement-event
+kind: verification
+guards: availability
+verifies: a billing event — grace-begins, sync-stops, restored
+resolves: the entitlement service's signing key -> root:service
+bound: S0-7 §2 — effective_at is bound evidence and never the clock, so a backdated event cannot move the deadline; sequence is monotonic per account, so a replayed stop cannot re-stop a resumed one; the exact wire is gated on D-31
+status: resolved
+pin: docs/review/remediation/S0-7/A-schemas.md §2 739acfa79631
+```
+
+```authority
+entry: reseed-session
+kind: predicate
+guards: availability
+verifies: resuming hosted sync after destructive progress — a branch, never a genesis
+resolves: the seeding device's signature naming the lineage it continues -> via:member-signing-keys
+status: resolved
+note: FU-12 — the divergent second survivor the compare-and-set would refuse — is a class-2 interleaving, owed to the scheduler's composed model at the S0-7 return, not an authority edge
+pin: docs/review/remediation/S0-7/A-schemas.md §4 a19f25973dfe
+```
+
+```authority
+entry: account-credential
+kind: verification
+guards: availability
+verifies: the WebAuthn account credential and the local slot verifier
+resolves: an assertion from the platform authenticator, same-origin only, Ed25519 or ES256 -> root:factor
+status: resolved
+pin: docs/TRD.md §13.9 14e4bc0a9f2a
+```
+
+```authority
+entry: device-lock-custody
+kind: predicate
+guards: custody
+verifies: opening a locked slot's key envelopes
+resolves: L_lock sealed under the enrolled factors, the 125-bit code always among them, role and slot bound inside the PRF input -> root:factor
+status: resolved
+pin: docs/TRD.md §13.3 1b1aa14f8855
+```
+
+## 5. The AEAD keys — `P-3` falsifier 16's census, seeded
+
+Not verification keys, but the same question one construction over: what state is an acceptance bounded
+*against*? `P-3` falsifier 16 requires every AEAD key on the write path to name either the durable state that
+counts its invocations or the nonce discipline that needs none, with a checker refusing a key with neither —
+these entries are that census's home, seeded now so the `S0-3` return grows it rather than inventing it. The
+checker already refuses an `aead` entry that names neither, or both.
+
+```authority
+entry: k-store
+kind: aead
+guards: content
+verifies: the store subkey sealing every StoredRecord
+counted-by: SeqCounter.reserved[gen] — rotate before the 2^32nd reservation, equality first disallowed
+status: open
+blocker: P-3
+return: S0-3
+pin: docs/TRD.md §6.1 bd28c5a8f5de
+pin: docs/selections/row-3-record-format.md 98ce7ee3401f
+```
+
+The count is right and the scope is not: every store holding `K_g` derives the identical subkey, and one
+`SeqCounter` per store cannot see its siblings, so the budget bounds no key for any device count `D ≥ 2` —
+round 1's *one live construction defect*, the class-2 limit case. `P-3`'s ratified joint 1 (one key per
+counter — the `info` gains the store identity) flips this at the `S0-3` return (falsifiers 14–16).
+
+```authority
+entry: k-journal
+kind: aead
+guards: content
+verifies: the synchronous journal subkey
+discipline: 24 fresh random bytes per entry — XChaCha20-Poly1305's nonce space needs no invocation budget (row 2)
+status: resolved
+pin: docs/selections/row-2-journal-aead.md 9140d2c7f86e
+```
+
+```authority
+entry: k-net
+kind: aead
+guards: content
+verifies: the network-envelope subkey K_net
+counted-by: PositionCounter.reserved[gen] — §7.4's seq, reserved before the envelope exists, same comparison as §6.1's repair
+status: resolved
+note: FU-10 — the crash between reservation and spool insertion that leaves no durable reservation identity — is a class-2 window, owed to the scheduler at the S0-4 return; the count itself reads reservations and sees the abandoned mint
+pin: docs/TRD.md §7.4 690246e0d341
+pin: docs/review/remediation/S0-4/A-schemas.md §2 18f65d357224
+```
+
+```authority
+entry: k-code-sealed-envelopes
+kind: aead
+guards: custody
+verifies: the recovery envelope and the archive envelope
+discipline: one message per derived key — a fresh per-seal salt into HKDF of the code, so exactly one plaintext is ever sealed under each derived key and nonce reuse is structurally unreachable (§13.8, S0-6 §2)
+status: resolved
+pin: docs/TRD.md §13.8 63056c2a15a5
+pin: docs/review/remediation/S0-6/A-schemas.md §2 7ca03c1bac64
+```
+
+**What this census does not yet hold, on purpose.** The checkpoint subkey `K_cp`, the deferred index subkey,
+and the `L_local`/`L_lock` key envelopes enter at the `S0-3` return, when falsifier 16's checker obligation
+lands and each can be given its counter or its discipline from the homes that select it rather than asserted
+here. The sweep below does not force them — it sees `Ed25519(` constructions — and saying so is the scope of
+this section's claim.
+
+---
+
+## The census is the documents', and the discipline is the regime's
+
+**The sweep.** Every `Ed25519(` construction in `docs/TRD.md` and the five stage schema documents
+(`S0-2`/`S0-4`/`S0-5`/`S0-6`/`S0-7` `A-schemas.md`) must sit in a section some entry pins — so a signature
+construction added anywhere in those documents fails the checker until the map claims it, and the map cannot
+shrink its own population. What the sweep cannot see is a predicate stated in prose with no construction;
+those enter through the dispositions and the schemas, which is where every entry above came from, and a
+challenge that finds one missing has found a real gap in this file.
+
+**The flip.** A stage return that repairs a joint edits the pinned homes, which fails the entry's pins; the
+same change flips `status` to `resolved` and strikes the blocker, and the checker refuses every other
+combination — a resolved entry still carrying its blocker, an open entry whose homes changed silently, a
+blocker or return naming nothing. The open set can only shrink by repair, exactly as the `OWED` list can only
+shrink by payment.
+
+**Consumption.** The stage returns (queue item 4) flip their entries: `S0-2` — `member-signing-keys`,
+`bootstrap-signer`, `bootstrap-countersig`, `enrollment-transcript`; `S0-3` — `k-store`; `S0-4` —
+`position-refusal`; `S0-5` — `checkpoint-admission`; `S0-6` — `local-archive-anchor`, `terminal-handoff`;
+`S0-7` — `destructive-boundary`. `S0-9` round 3 reads the computed summary as the class-1 ledger, and `S0-10`
+consumes a map whose open count is zero or does not close. `P-1` falsifier 14 is discharged by this file plus
+its checker **at the `S0-2` return** — the map exists now; the falsifier's claim is owed there, with the rest
+of 12–19.
