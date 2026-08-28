@@ -1,4 +1,13 @@
-# `S0-9` — challenge of the repaired constructions
+# `S0-9` — challenge of the repaired constructions (author's pass)
+
+> **Superseded in part by [`DISPOSITION.md`](./DISPOSITION.md).** Four independent challengers, none of whom
+> authored any repair, later ran from `5923f51` without access to this document. They found what this pass could
+> not, and two of its conclusions are wrong: **"no challenge returned a repair to its owning action"** is false —
+> two high findings and one construction defect return to `P-1`, `P-3` and `P-4` — and the origin scanner's repair
+> is narrower than reported here, since `originOf` discards any URL containing `+` and so misses the archetypal
+> Google Fonts link. **The six forms this pass tested were the six its author thought of**, which is the whole
+> argument for independence and is why the file below is kept rather than deleted.
+
 
 **Run:** 2026-08-27 · **Against:** `5923f51`, 47 commits off `9edd930` · **Inputs:** all seven actions, `S0-8`'s
 [`traceability.md`](../traceability.md)

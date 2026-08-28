@@ -626,7 +626,25 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 
 ### `S0-9` — independent challenge of the repaired constructions
 
-> **Run 2026-08-27, and the independence requirement is NOT met.** Report:
+> **Run twice. The independent pass FAILED the challenge — see
+> [`S0-9/DISPOSITION.md`](./S0-9/DISPOSITION.md).** Four challengers, none of whom authored any repair, ran from
+> `5923f51` in isolated worktrees with no access to the author's pass, to later commits, or to each other.
+> **Every root cause has at least one failing axis.** Two high findings reopen at their decisions rather than
+> their artifacts — `f-4259822-retirement-safe-survivor-gate-undefined` (a retirement can be born with its
+> ceiling already past, so the handoff gate never fires; all six classes delete with zero handoffs) and
+> `f-c611666-rotation-reader-eligibility-missing` (the `CertifiedSet` names no approver, so nothing
+> client-authenticated resolves its verification key). One live construction defect returns to `P-3`: `K_store`
+> binds no principal, so a per-store invocation budget cannot bound a workspace-wide key.
+>
+> **Three patterns generated most of it.** A falsifier for a documentation finding that does not read the
+> document (three clusters, independently). Evidence credited to a repair that predates the repair — six
+> negatives ran unchanged at the reviewed tip. And one fact with two homes where the cross-check reads only one,
+> which is `RC-8C` broken inside the remediation that wrote it.
+>
+> **`S0-10` is blocked.** The author's pass below is kept and marked superseded, because the six spellings it
+> tested were the six its author thought of, and that is the argument for independence in one line.
+>
+> **The author's earlier self-challenge, superseded in part.** Report:
 > [`S0-9/README.md`](./S0-9/README.md); log: [`S0-9/command-log.md`](./S0-9/command-log.md). Every repair on this
 > branch has one author and that author ran this. **`S0-10` must not record the challenge bar as satisfied**; what
 > is still owed is a non-author rerunning the battery and the gates, and a non-author attacking the four judgement

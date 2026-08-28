@@ -22,6 +22,24 @@ everything here and demonstrates nothing — this project's recurring defect. `p
 isolation for AAD fields by eliding each one and requiring a negative to stop failing; the mutation batteries
 recorded in each action's Stage D cover the rest. Those are deliberately different oracles.
 
+> ### Five more limits, found by `S0-9`'s independent challengers and not yet repaired
+>
+> Read every row below with these in mind. They are recorded here rather than in a report because this is the
+> document a reader reaches for, and it was overclaiming.
+>
+> 1. **Relation is not checked.** A claim naming an unrelated negative passes — tagging `flipped-tag-bit` as the
+>    sequence allocator's falsifier is accepted.
+> 2. **Recency is not checked.** Six of the claims below name negatives that ran unchanged at the reviewed tip,
+>    passing *while the defect existed*. Their only diff on this branch is the tag itself.
+> 3. **A check-script claim survives the script being gutted.** Reachability from a gate is not liveness, and
+>    three of the single-falsifier findings rest wholly on that carrier.
+> 4. **The scan is not recursive.** A claim under `test/geometry/` or `scripts/lib/` is invisible, at exit 0.
+> 5. **Nothing pins the population.** Deleting a finding from all four sources regenerates green with a smaller
+>    denominator.
+>
+> Disposition: [`S0-9/DISPOSITION.md`](./S0-9/DISPOSITION.md). Until these are repaired, a row here means *an
+> artifact names this finding and runs* — not that the finding is closed.
+
 ## The population is read, not declared
 
 | Source | What it states | Count |

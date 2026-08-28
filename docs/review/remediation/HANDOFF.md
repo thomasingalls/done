@@ -9,7 +9,7 @@ state it is in, and what is ready to pick up.
 
 | | |
 | --- | --- |
-| Branch | `claude/stage0-remediation`, 48 commits off `9edd930`, all signed |
+| Branch | `claude/stage0-remediation`, 49 commits off `9edd930`, all signed |
 | Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, and the decisions |
 | Not on it | nothing — this branch is the whole picture, deliberately |
 | Superseded | `claude/remediation-findings-review-997ab5` holds the review workspace at its original SHAs. Redundant once this branch is accepted |
@@ -42,14 +42,17 @@ checkpoint and creation authority. Records in [`decisions/`](./decisions/), each
 is the standing rule that rows 18, 19 and 21 stay at their own gates and no remediation artifact selects them
 by implication. Nothing decides it; every action has to keep obeying it.
 
-**Outstanding decisions: none.** Every remaining item is an action, and no action is waiting on a choice.
+**Outstanding decisions: three reopened, plus one that never existed.** This line read *none* until `S0-9`
+ran independently; see below.
 
-**Actions: nine are done and one is blocked on a person.** `S0-1` through `S0-7` across all five stages,
-`S0-8`'s regenerated evidence and traceability matrix, and `S0-9`'s challenge — **which does not meet its own
-independence requirement.** Every repair here has one author and that author ran the challenge. The checkable
-axes are checked and one real failure was found and repaired; the judgement axes are argued by the person who
-made the judgements. **`S0-10` must not record the challenge bar as satisfied.** See
-[`S0-9/README.md`](./S0-9/README.md).
+**`S0-9` ran independently and the package FAILED it. `S0-10` is blocked.** Four challengers, none of whom
+authored any repair, ran from `5923f51` in isolated worktrees. **Every root cause has at least one failing
+axis**, two high findings reopen at their decisions, and one live construction defect returns to `P-3`. Read
+[`S0-9/DISPOSITION.md`](./S0-9/DISPOSITION.md) before anything else — it names what returns where.
+
+**Outstanding decisions are no longer none.** `P-1`, `P-3` and `P-4` each have a reopened question, and `RC-9`
+never had a decision at all — `action-tree.md` makes choosing between its branches a prerequisite of `L-4`,
+which the line this replaces contradicted.
 
 **Findings: 29 of 37 are addressed** by the seven actions plus the eight direct repairs, and **all six
 high-severity ones are among them**. That is no longer a hand count:
@@ -71,13 +74,20 @@ which resolves every falsifier claim against the artifact that carries it.
 
 ## What is ready to pick up, in order
 
-1. **A non-author finishes `S0-9`.** Two commands need no judgement and no context —
-   `node docs/review/remediation/S0-9/isolation-battery.mjs .` after a `pnpm build`, and the gates from a fresh
-   clone. Both are logged in [`S0-9/command-log.md`](./S0-9/command-log.md) with the outputs to match against.
-   Then the four judgement axes, starting with **simpler repair**: that is where an author is structurally
-   blind, and `RC-4`'s deterministic-nonce question shows it is not an idle axis.
-2. **`S0-10`'s closure**, which must carry `S0-9`'s independence gap rather than close over it.
-3. **`L-1` through `L-4` and `H-1`** are the rest of the plan and are outside Stage 0. Two partial findings and
+1. **The two reopened high findings, at their decisions.**
+   [`P-1`](./decisions/P-1-recipient-authority.md) owes the `CertifiedSet` an approver its verifier can resolve
+   without the service-signed epoch. `P-4`, composed with `S0-6`'s gate, owes the rule that stops a retirement
+   inheriting an already-elapsed ceiling. Neither is a vector patch; both are decisions.
+2. **`K_store`'s key scoping**, at [`P-3`](./decisions/P-3-write-admission.md). A per-store invocation budget
+   cannot bound a key every device in the workspace derives identically. This is a construction change and it
+   invalidates §6.1's stated 2^-32 bound for every D ≥ 2.
+3. **The five unrepaired limits in the traceability machinery**, now printed in the matrix itself so nothing
+   downstream reads it as stronger than it is — relation, recency, gutted-script liveness, the non-recursive
+   scan, and the unpinned population.
+4. **`RC-9` needs a decision it never had**, and `L-4` is currently its own prerequisite.
+5. **`S0-10`'s closure**, which is blocked until the above land and must record which independence bar it is
+   standing on: the author-reviewing-own-work bar is cleared, the one-perspective bar is not.
+6. **`L-1` through `L-4` and `H-1`** are the rest of the plan and are outside Stage 0. Two partial findings and
    four later gates wait there; `H-1`'s append-only ledger holds the four historical-only corrections, and
    `docs/decisions.md`'s stale *eighteen rows are selected* belongs to it rather than to a silent edit.
 
