@@ -37,7 +37,7 @@ matrix — checks both directions.
 | **A** | The population, reconciled three ways | no artifact; the reconciliation is section 1 of the checker | **done** — it agreed on the first run |
 | **B** | The claim grammar and its two generator carriers | [`scripts/lib/traceability.mjs`](../../../../scripts/lib/traceability.mjs) | **done** |
 | **C** | Tag the evidence | 85 claims across 22 files | **done** |
-| **D** | The checker and the generated matrix | `scripts/check-traceability.mjs`, `pnpm trace:check`, wired into `check` | **done** — 16 mutations, all caught |
+| **D** | The checker and the generated matrix | `scripts/check-traceability.mjs`, `pnpm trace:check`, wired into `check` | **done** — 19 mutations, all caught |
 | **E** | Regenerate and re-verify | 16/16 generators, 371 tests, five checkers | **done** |
 
 ### Stage A — the population agreed, which was not the interesting part
@@ -98,7 +98,7 @@ Two claims are **partial**, and the grammar says so rather than rounding up:
 - The two entries in the checker's `OWED` list, which is a declaration of debt rather than a coverage claim —
   `f-bd87655`'s dated evidence table and `f-66a7c6a`'s declared-population burst, both at `L-4`.
 
-### Stage D — sixteen mutations, and two of them corrected the design
+### Stage D — nineteen mutations, and three of them corrected the design
 
 Every mutation is applied, the check is run, and the file is restored **from an in-memory snapshot**. Not from
 git: none of this work was committed yet, and a `git checkout --` restore reverts the action's own changes along
@@ -123,6 +123,9 @@ files and had to be re-applied.
 | 13b | a **negative** claim names a gate nothing defines | caught — that path does not go through `falsifies()` |
 | 14 | the matrix is deleted | caught — stale |
 | 15 | a tagged `describe` is renamed | caught, by staleness — see below |
+| 16 | a test tag is detached from its `describe` | caught — added by the re-check below |
+| 17 | a claim is written in a generator docblock | caught — the wrong carrier for a generator |
+| 18 | a second claim sits below a check script's docblock | caught |
 
 **Mutation 14 of the first battery deleted a claim I had written into two docblocks.** It moved `falsifies()`
 from inside the guard body to its call site, and **changed no result** — because either way, deleting the
@@ -142,6 +145,19 @@ not a defect anyway; the defect that carrier guards against is the block leaving
 **Mutation 5 exposed a crash rather than a diagnosis.** A claim naming a finding that does not exist was recorded
 as a failure and then the matrix was rendered anyway, looking up a severity for an id with no record. The report
 now runs before anything is rendered: a population that has not reconciled has nothing to render from.
+
+**Mutations 16 to 18 come from re-checking this action after it was committed, and they close a defect it had.**
+The test and script scanners matched a pattern and ignored everything else, so a `// falsifies:` comment not
+immediately above a `describe`, a claim written in a generator's docblock instead of through `falsifies()`, or a
+second `falsifies:` line below a check script's docblock would all have **vanished silently** — the claim gone,
+the finding then reported as uncovered or, worse, still covered by a different artifact while one claim
+evaporated.
+
+That is `S0-1`'s subject exactly: *a check that classifies by matching a list silently passes whatever the list
+does not name.* It repaired three instances of it, and the file written to prove those repairs had a fourth. No
+tag was actually orphaned — the count was 17 offered and 17 attached — which is why nothing caught it and why
+the audit had to be run rather than reasoned about. Each scanner now compares what is **offered** against what
+it could **attach**, and refuses the difference.
 
 ### What Stage E regenerated
 

@@ -231,10 +231,27 @@ for (const file of readdirSync(at(VECTORS)).filter((f) => f.endsWith('.json'))) 
 
 const TESTS = 'test/';
 const TAG = /^[ \t]*\/\/ falsifies: (.+)$\n[ \t]*(describe|it)(\.\w+)?\(\s*(['"`])(.*?)\4/gmu;
+/** Any line offering itself as a claim, so one this scanner cannot attach is a failure. */
+const ANY_TAG = /^[ \t]*(?:\/\/|\*) falsifies:/gmu;
 /** @type {Map<string, Set<string>>} Test file to the titles it tags. */
 const tagged = new Map();
 for (const file of readdirSync(at(TESTS)).filter((f) => /\.test\.tsx?$/u.test(f))) {
   const src = read(TESTS + file);
+
+  // A tag the pattern cannot attach must fail rather than disappear. `S0-1`
+  // repaired this exact shape three times — a check that classifies by matching
+  // a list silently passes whatever the list does not name — and a scanner that
+  // skipped a detached `// falsifies:` would be the fourth, in the file whose
+  // whole job is to notice that a claim has no evidence behind it.
+  const offered = [...src.matchAll(ANY_TAG)].length;
+  const attached = [...src.matchAll(TAG)].length;
+  if (offered !== attached) {
+    failures.push(
+      `${TESTS}${file}: ${offered} line(s) offer a falsifier claim and ${attached} attach to a ` +
+        '`describe` or `it` on the next line. A claim this scanner cannot attach is not a claim.',
+    );
+  }
+
   for (const m of src.matchAll(TAG)) {
     const [, raw, , modifier, , title] = m;
     // A claim on a skipped block is a claim about a test that does not run.
@@ -251,10 +268,31 @@ for (const file of readdirSync(at(TESTS)).filter((f) => /\.test\.tsx?$/u.test(f)
 }
 
 const SCRIPTS = 'scripts/';
-for (const file of readdirSync(at(SCRIPTS)).filter((f) => /^check-.*\.mjs$/u.test(f))) {
+for (const file of readdirSync(at(SCRIPTS)).filter((f) => f.endsWith('.mjs'))) {
   const src = read(SCRIPTS + file);
   const head = src.slice(0, src.indexOf('\n */\n'));
   const line = /^ \* falsifies: (.+)$/mu.exec(head);
+
+  // Same rule as the tests, one carrier over: every offered claim is either
+  // read or refused. A `falsifies:` docblock line in a generator is a claim
+  // written in the wrong carrier — generators register through `falsifies()` so
+  // the claim is published only if the guard ran — and one below the leading
+  // docblock is out of the scanner's reach either way.
+  const offered = [...src.matchAll(/^ \* falsifies:/gmu)].length;
+  if (offered > 0 && !/^check-.*\.mjs$/u.test(file)) {
+    failures.push(
+      `${SCRIPTS}${file} carries a \`falsifies:\` docblock line, which is only read from a ` +
+        '`check-*.mjs`. A generator registers claims through `falsifies()` instead, so the claim ' +
+        'is published only if the guard ran.',
+    );
+    continue;
+  }
+  if (offered > (line === null ? 0 : 1)) {
+    failures.push(
+      `${SCRIPTS}${file}: ${offered} \`falsifies:\` line(s), and only one in the leading docblock ` +
+        'is read. A claim below it is not a claim.',
+    );
+  }
   if (line === null) continue;
   for (const one of line[1].split(',')) {
     claims.push({ ...parse(one.trim()), kind: 'script', what: file, where: SCRIPTS + file });

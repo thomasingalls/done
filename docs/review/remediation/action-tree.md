@@ -598,7 +598,9 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 > decides its own population is always complete — the findings directory's own frontmatter, this file's classes
 > in [`end-state-materiality.md`](./end-state-materiality.md), and the seven action READMEs plus the repairs row
 > above. They agreed on the first run: **85 claims over 27 of the 28 current defects, and one declared owed**.
-> `pnpm trace:check` joins `check`. Sixteen mutations, all caught.
+> `pnpm trace:check` joins `check`. Nineteen mutations, all caught — the last three added by re-checking the
+> action after it was committed, which found the scanner silently dropping any claim it could not attach.
+> That is `S0-1`'s own subject, in the file written to prove `S0-1`'s repairs.
 >
 > **Two results changed a claim rather than confirming one.** A mutation moving `falsifies()` out of a guard body
 > changed no result, so the placement rule published in two docblocks was retired — what makes a guard claim live
