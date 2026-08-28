@@ -43,7 +43,8 @@ read it as "nothing to do", and do not edit those files to make it say otherwise
 admission · `P-4` lapse authority · `P-5` closure authority · `P-6` Local archive factor · `P-8` checkpoint
 and creation authority — records in [`decisions/`](./decisions/), each with its falsifiers. **`P-7` is the
 eighth node and is not a choice** — it is the standing rule that rows 18, 19 and 21 stay at their own gates;
-nothing decides it, every action keeps obeying it.
+nothing decides it, every action keeps obeying it. **`RC-9` is the ninth record and the sprint's last** — the
+governance node the original seven never included, ratified 2026-08-28 (below).
 
 **`S0-9` has now run twice against `5923f51`, and the package failed both rounds. `S0-10` is blocked.**
 
@@ -56,8 +57,10 @@ nothing decides it, every action keeps obeying it.
   four of them high. The strongest convergence across all seven challengers is the zero-handoff retirement
   deletion (`FU-04`); the Local-archive wrap (`FU-02`) converges across both rounds.
 
-**Outstanding decision work: one decision that never existed. `P-4`, `P-1`, `P-3` and `P-5` are ratified and
-out of the sprint.**
+**Outstanding decision work: none. The sprint completed 2026-08-28 — `P-4`, `P-1`, `P-3`, `P-5` and `RC-9`
+are all ratified.** An earlier copy of this file said "none" while `RC-9`'s record did not exist, and the
+dispositions convicted it; this "none" differs in kind — the record exists, and its debts are the manifest's
+to refuse.
 
 - **`P-1` is ratified (2026-08-28): option A — the certified set carries the signing keys.** A member entry
   binds `(credential_id ‖ W_pub ‖ S_pub)`, every approval names its approver, and a verifier resolves that
@@ -87,15 +90,16 @@ out of the sprint.**
   records and the regenerated corpus. The record's own stale status line and its `FU-15` gate parenthetical
   are annotated in place. What remains is not a decision: the `S0-1` return owes the record's falsifiers
   15–22 (queue item 4).
-- **`RC-9` never had a decision at all**, and `action-tree.md` makes choosing between its branches a
-  prerequisite of `L-4`. **Drafted 2026-08-28:**
-  [`decisions/RC-9-later-gate-governance.md`](./decisions/RC-9-later-gate-governance.md) carries the question
-  — what turns "later" into a state that blocks, and which gate owns `wasm:stale`'s divisible duty — the
-  floors (deferral stands; a debt is a record with owner, one gate, artifact, falsifier and expiry, and
-  arrival-unmet blocks; payment credits an execution receipt; the mechanism exists by `S0-8`, because `S0-10`
-  is its first consumer), options at both joints — `RC-9A`'s manifest, `RC-9B`'s receipts, the priced status
-  quo; and the source↔blob binding split now versus filed whole at `L-4` — and falsifiers 1–12. Ratification
-  is the open step.
+- **`RC-9` is ratified (2026-08-28): option A at both joints — drafted fresh and ratified the same day,
+  never a reopening, because the decision never existed.** Every deferred property is one entry in one debt
+  manifest — owner, one blocking gate, required artifact, falsifier, expiry, hashed inputs — that blocks its
+  gate while unpaid, expired or input-changed, and what-blocks-what is computed from the manifest on demand;
+  the mechanism is the lineage review's regime — structured homes, hash pins, a computed status view —
+  adopted a third time after `P-5`'s census, extended by the verb the prior instances never needed: block.
+  The source↔blob binding splits at the toolchain line: hashes stamped into `seal.generated.ts`'s header,
+  compared toolchain-free in `wasm:verify`, with provenance attestation staying a registered `L-4` debt.
+  Record: [`decisions/RC-9-later-gate-governance.md`](./decisions/RC-9-later-gate-governance.md). What
+  remains is not a decision: the `S0-8` regeneration owes the record's falsifiers 1–12 (queue item 5).
 - `P-6` reopens only if `FU-02` forces the archive-factor choice to change.
 
 **What the challenges did not discard:** 371 tests across 36 files · 16/16 generators current · 190 AAD
@@ -140,8 +144,10 @@ In order. An item is done when its disposition entry's earliest-return stage has
    A at both joints) and states class 3's: every fact keeps one home; every other page is a projection, a
    dated record, or superseded — and says which; an input a gate or challenge consumes is checked by
    something that executed, or it is not an input; and a checker's printed claim is exactly its scope.**
-   Next and last is `RC-9` — never a reopening: its record is drafted fresh, and the draft is on record
-   (2026-08-28) with its question, options and falsifiers; ratification is the open step.
+   `RC-9` is done (ratified 2026-08-28, option A at both joints — the decision that never existed, drafted
+   fresh and ratified the same day) and states the deferral pattern: a deferred property is a registered
+   debt — owner, one gate, artifact, falsifier, expiry — that blocks its gate when it arrives unpaid, and
+   "later" is computed from the manifest, never promised in prose. **The sprint is complete.**
 3. **Two structural artifacts, before per-finding patches.** (a) An **authority-derivation map** at `S0-2`
    Stage A/B: for every verifier key and acceptance predicate, the factor-authenticated state that resolves
    it, with a checker that fails on a dangling edge — class 1 closes as a class or not at all. (b) A
@@ -153,7 +159,10 @@ In order. An item is done when its disposition entry's earliest-return stage has
    `P-5`, plus round 1's origin-scanner correction: `originOf` discards any URL containing `+`).
 5. **`S0-8` regeneration.** `FU-14`'s gate receipts — traceability consumes execution results, never shell
    text; the five matrix limits; `FU-13`'s independent readback; `vectors:coverage` checking identity rather
-   than arity; and the `CertifiedSet` AAD audit round 1 found missing entirely.
+   than arity; and the `CertifiedSet` AAD audit round 1 found missing entirely. Plus `RC-9`'s consolidation:
+   the debt manifest joining the gate — the `OWED` list grown to the ratified fields, six entries — the
+   what-blocks-what projection agreeing with this file in both directions, and the source↔blob header binding
+   landing in `wasm:verify` (the record's falsifiers 1–12).
 6. **`S0-9` round 3, with a changed perspective.** Seven same-family reads have cleared the
    author-independence bar thoroughly; the one-perspective bar is the open one and is on record twice. A
    different model family, targeted adversarial property tests against the authority map, or a human red-team
@@ -170,12 +179,11 @@ In order. An item is done when its disposition entry's earliest-return stage has
 cd /Users/thomasingalls/Code/done/.claude/worktrees/stage0-repairs && pnpm install --frozen-lockfile && pnpm vectors:check && pnpm test
 ```
 
-That establishes the baseline. Then read both dispositions end to end, and finish the decision sprint at
-`RC-9` — drafted fresh on 2026-08-28 in
-[`decisions/RC-9-later-gate-governance.md`](./decisions/RC-9-later-gate-governance.md), never reopened,
-because the decision never existed; the four ratified records were the shape it took, and its inputs were
-[`action-tree.md`](./action-tree.md)'s `RC-9`/`L-4` prerequisites plus round 1's demonstration that
-`wasm:stale` sits in no gate. **Ratification is the open step**, and it closes the sprint.
+That establishes the baseline. **The decision sprint is complete** — `RC-9` was drafted fresh and ratified on
+2026-08-28 ([`decisions/RC-9-later-gate-governance.md`](./decisions/RC-9-later-gate-governance.md)), option A
+at both joints. Then read both dispositions end to end and start queue item 3: the two structural artifacts —
+the authority-derivation map at `S0-2` Stage A/B, and the storage-model scheduler at the `S0-2`/`S0-3`
+interface — before any per-finding patch, because a repair that ignores its class reintroduces the class.
 
 ## Four things that will bite you
 
