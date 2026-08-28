@@ -56,14 +56,15 @@ nothing decides it, every action keeps obeying it.
   four of them high. The strongest convergence across all seven challengers is the zero-handoff retirement
   deletion (`FU-04`); the Local-archive wrap (`FU-02`) converges across both rounds.
 
-**Outstanding decision work: three reopened questions, plus one decision that never existed. `P-4` is ratified
-and out of the sprint.**
+**Outstanding decision work: two reopened questions, plus one decision that never existed. `P-4` and `P-1`
+are ratified and out of the sprint.**
 
-- **`P-1`** owes the `CertifiedSet` an approver its verifier can resolve without the service-signed epoch
-  (round 1) — and `FU-01` reopens it further if the selected carrier cannot carry the recovery-bootstrap
-  authority. **Drafted 2026-08-28:** the record carries the reopened question, the floor — which resolves
-  `FU-01`'s conditional: the carrier is completed, not changed — options A/B/C and falsifiers 12–19.
-  Ratification is the open step.
+- **`P-1` is ratified (2026-08-28): option A — the certified set carries the signing keys.** A member entry
+  binds `(credential_id ‖ W_pub ‖ S_pub)`, every approval names its approver, and a verifier resolves that
+  key from the parent certified set or the factor-carried bootstrap signer — never from the service-signed
+  epoch. `FU-01`'s conditional resolved at the floor: the carrier is completed, not changed, so its return
+  stays at `S0-2` Stage A/B/D. What remains is not a decision: the `S0-2` return owes the record's
+  falsifiers 12–19 (queue item 4).
 - **`P-3`** owes `K_store` per-device scoping (round 1), the admission ruling for `FU-08`'s post-mutation
   async crash window, `FU-09`'s reservation fence if the transaction shape changes, and `FU-13`'s projection
   sync — TRD §15 and the `P-3` record still publish superseded write-admission claims.
@@ -111,10 +112,10 @@ In order. An item is done when its disposition entry's earliest-return stage has
    the non-ancestor authoring commit kept as a body note.
 2. **The decision sprint.** The five records above — `P-4`, `P-1`, `P-3`, `P-5`, `RC-9` — each updated with
    its reopened question, options and falsifiers, then ratified. Nothing downstream is safe to build first.
-   **`P-4` is done (ratified 2026-08-28, option B with intrinsic acceptance) and set the pattern the other
-   joints follow: elapsed time executes a factor-authenticated instruction, or it does nothing.** Next is
-   `P-1`, whose reopened section is drafted and awaits ratification; `P-3`, `P-5` and `RC-9` follow,
-   untouched so far.
+   **`P-4` and `P-1` are done (both ratified 2026-08-28) and together state the class-1 pattern the
+   remaining joints follow: elapsed time executes a factor-authenticated instruction, or it does nothing —
+   and a verification key resolves through client- or factor-authenticated state, or it does not verify.**
+   Next is `P-3`; `P-5` and `RC-9` follow, untouched so far.
 3. **Two structural artifacts, before per-finding patches.** (a) An **authority-derivation map** at `S0-2`
    Stage A/B: for every verifier key and acceptance predicate, the factor-authenticated state that resolves
    it, with a checker that fails on a dangling edge — class 1 closes as a class or not at all. (b) A
@@ -144,8 +145,8 @@ cd /Users/thomasingalls/Code/done/.claude/worktrees/stage0-repairs && pnpm insta
 ```
 
 That establishes the baseline. Then read both dispositions end to end, and continue the decision sprint at
-[`decisions/P-1-recipient-authority.md`](./decisions/P-1-recipient-authority.md) — `P-4` is ratified, and its
-reopened section is the shape the remaining four records should take.
+[`decisions/P-3-write-admission.md`](./decisions/P-3-write-admission.md) — `P-4` and `P-1` are ratified, and
+their reopened sections are the shape the remaining three records should take.
 
 ## Four things that will bite you
 
