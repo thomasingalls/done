@@ -16,6 +16,13 @@ recovery code**, because HPKE base mode is anonymous and `info` alone stops a wr
 than minted. A never-established archive gains its **own identity and code** (`P-6`). And a retired package is
 a **complete package signed by the terminal authority** rather than a live one upgraded in place — the
 assembler signs `lineage_state`, so there was never an in-place upgrade to verify (TRD §§9.3, 14.2, 14.4).
+**Amended by:** the [`S0-6` return](../review/remediation/S0-6/README.md) (2026-08-29) — the archive identity
+gains its **manifest-signing half under the same code** (`FU-02`): `auth_root` for a never-established package
+is the digest of both public halves, the sealed commitment covers it, and the manifest verifies only under the
+committed signing identity — the device key the first landing verified under is a published negative now. And
+the `TerminalHandoff` catch-up value becomes a **construction the gate re-verifies** (`FU-03`): a signed
+transcript whose verifier resolves from the certification in force, chaining from the receiver's prior head to
+the terminal head, absences named and counted against the list (TRD §§9.3, 14.4).
 
 ---
 
@@ -87,10 +94,12 @@ The trust-root anchor — the only thing here that is not an encoding
   code, which the attacker does not have.
 
   For a never-established archive the same shape holds under the
-  archive's own per-workspace code, with archive_pub in the slot a
-  lineage would fill -- so §9.3's "what authenticates a Local archive
-  is the code that opens it" becomes a construction rather than a
-  sentence.
+  archive's own per-workspace code, with the identity's own digest --
+  SHA-256( LP("done/archive-root/v1") || LP(hex archive_pub)
+  || LP(hex archive_sign_pub) ) -- in the slot a lineage would fill,
+  so §9.3's "what authenticates a Local archive is the code that
+  opens it" becomes a construction rather than a sentence, for the
+  manifest as well as the wraps (S0-6 return, FU-02).
 
                 LP(s) = uint16be(byteLength(utf8 s)) || utf8 s
 ```
@@ -124,11 +133,15 @@ lineage would have supplied.
 §11.3's tests 4, 5, 7, 8 and 9 exercise one code path, and that the state a device is looking at is a field it
 reads rather than a shape it infers from which parts are present.
 
-**§9.3 gets a consequence it should not be read past.** A Local archive has no lineage, so both anchor fields
-are empty and `auth_root` names the archiving device. Nothing external authenticates it — and §9.3 already
-says the archive answers _does ciphertext still exist_ and never _can you decrypt it_. The format does not
-pretend otherwise, and the never-established vector is published so that the difference is visible rather than
-described.
+**§9.3 gets a consequence it should not be read past.** A Local archive has no lineage, so the lineage anchor
+field is empty and `auth_root` is the archive identity's own digest, committing both of its public halves —
+the encryption half that opens the wraps and the signing half that verifies the manifest, both private halves
+sealed under the code (`S0-6` return, `FU-02`; this cell originally said `auth_root` *names the archiving
+device* and *nothing external authenticates it*, and `S0-9` convicted that executable: a device key the factor
+never bound authenticated the manifest). Nothing **external** authenticates a Local archive — the code does,
+for the whole package — and §9.3 still says the archive answers _does ciphertext still exist_ and never _can
+you decrypt it_ for a holder without the code. The never-established vector is published so that the
+difference is visible rather than described.
 
 ---
 
@@ -241,24 +254,30 @@ negative changes the digest alone.
 
 ---
 
-## 6. Who signs, and the one state where nothing certifies the signer
+## 6. Who signs, and the one state where the signer is the factor's own
 
-`assembled_by` names the assembler and the manifest is signed by it. Three cases, one rule:
+`assembled_by` names the assembler, and the manifest verifies under the authority its state requires. Three
+cases, one rule:
 
-| State             | Assembler                | Resolved against                         |
-| ----------------- | ------------------------ | ---------------------------------------- |
-| live              | the restoring credential | the epochs the package carries           |
-| retired           | the service              | the trust root itself (§14.4 commits it) |
-| never established | the archiving device     | **nothing** — and §9.3 already says so   |
+| State             | Assembler                | Manifest verifies under                                          |
+| ----------------- | ------------------------ | ---------------------------------------------------------------- |
+| live              | the restoring credential | the epochs the package carries                                   |
+| retired           | the service              | the trust root itself (§14.4 commits it)                         |
+| never established | the archiving device     | **the factor-committed archive signing identity** (`S0-6` return) |
 
-The rule is: **the assembler must be resolvable from the epochs the package carries, or be the trust root
-itself, or — where there is no lineage — be the device that made the archive.** The third is not a weaker form
-of the first two. There is no authority to appeal to for a workspace that never had one, and what authenticates
-a Local archive is the code that opens it. The signature is integrity within something you have already
-opened, which is worth having and is not worth describing as more.
+The rule is: **the manifest's verifier must be resolvable from the epochs the package carries, or be the
+trust root itself, or — where there is no lineage — be the signing half of the archive identity the
+code-sealed commitment commits.** The third is not a weaker form of the first two, and it is no longer an
+absence: this cell originally read *nothing certifies the signer* and called the signature *integrity within
+something you have already opened* — and `S0-9` convicted that executable (`FU-02`/`A-04`/`ST-01`), because
+the factor authenticated an HPKE recipient while the archiving device's unbound key authenticated the manifest
+that names every part. There is still no **external** authority for a workspace that never had one; the code
+is the authority, and since the `S0-6` return it certifies the signer too. `assembled_by` still names the
+device, and naming is not verifying.
 
-All three are published as vectors, under two different signing keys, so the shapes are compared rather than
-asserted.
+All three are published as vectors, under three different signing keys, so the shapes are compared rather than
+asserted — and the never-established package is run through the composed importer, not just its signature
+checked.
 
 ---
 
@@ -269,9 +288,9 @@ asserted.
 | Per package                    | One Ed25519 signature, one SHA-256 over the sorted part list                   |
 | Per generation                 | Two fields in an HPKE `info` — **no ciphertext grows**                         |
 | Verification, brand-new reader | One HPKE open, then one signature per epoch it needs                           |
-| New keys                       | **None**                                                                       |
+| New keys                       | **None for the account path.** The Local archive identity carries a signing half since the `S0-6` return — sealed under the existing code, so no new user-held secret |
 | New signature schemes          | **None.** Ed25519, row 1                                                       |
-| Changes to row 14              | **None.** The code-sealed `R_priv` envelope is untouched                       |
+| Changes to row 14              | **None.** The code-sealed `R_priv` envelope is untouched; the archive has its own envelope |
 | Bundle                         | HPKE was already row 1's suite and row 11's dependency                         |
 | Formats deleted                | One — §15 asked for two packages, and §9.3's archive folds in as a third state |
 
@@ -300,9 +319,11 @@ service must do before deletion, and the catch-up window §14.4 requires, is Sta
 `node scripts/generate-package-vectors.mjs` writes them; `--check` fails if they are stale, and `pnpm check`
 now runs it with the other twelve.
 
-**Three vectors — one per lineage state — and fifteen negatives.** The three are the point of the row made
-concrete: the same manifest construction at live, retired and never-established, signed by a credential, by the
-service, and by an archiving device.
+**Three vectors — one per lineage state — and forty-four negatives** (the live count is the generator's own
+published-versus-asserted check). The three are the point of the row made concrete: the same manifest
+construction at live, retired and never-established — signed by a credential, by the service, and by the
+archive's own factor-committed signing identity, with the never-established package additionally run through
+the composed importer and its restore reconstructed from the published inputs alone (`S0-6` return).
 
 **Five negatives are the wrap's `info`, and `substituted-trust-root` is the row.** A forger's authorization key
 offered in the root's place, and the generation wrap opens nothing.

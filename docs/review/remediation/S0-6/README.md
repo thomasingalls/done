@@ -39,10 +39,10 @@ fails. It never attempts the fresh rewrap, so `--check` has always passed.
 
 | | Stage | Output | Status |
 | --- | --- | --- | --- |
-| **A** | Durable record schemas | the factor-sealed root commitment, the Local archive identity, the full retired package, and `TerminalHandoff` | **done** — [`A-schemas.md`](./A-schemas.md) |
-| **B** | Normative construction | TRD §§9.3/13.8/14 | **done** — plus §15 row 10's register cell, which carried both corrected claims |
-| **C** | Selection rows | rows 7/8/10/14/15 | **done** — row 10 gains the fresh-mint attack and its repair; the rest take header notes |
-| **D** | Executable evidence | package and recovery generators; **the paired fresh-rewrap negative is the one that matters** | **done** — 16 of 16, plus one the writing found |
+| **A** | Durable record schemas | the factor-sealed root commitment, the Local archive identity, the full retired package, and `TerminalHandoff` | **done** — [`A-schemas.md`](./A-schemas.md), amended at the return: §2's identity gains its manifest-signing half, §4's catch-up value becomes the `CatchupTranscript` construction, and the falsifier map continues at rows 17–23 |
+| **B** | Normative construction | TRD §§9.3/13.8/14 | **done** — plus §15 row 10's register cell, which carried both corrected claims; the return amends §9.3's authority sentence and §14.4's catch-up and assembler rules |
+| **C** | Selection rows | rows 7/8/10/14/15 | **done** — row 10 gains the fresh-mint attack and its repair; the rest take header notes; the return amends row 10's archive anchor, signer table and cost rows |
+| **D** | Executable evidence | package and recovery generators; **the paired fresh-rewrap negative is the one that matters** | **done** — 16 of 16, plus one the writing found; **the return rebuilt the archive and handoff halves**: 44 negatives, the composed importer over the published package, the transcript machinery, 197 AAD fields suite-wide |
 | **E** | Product surface | PRD §§6.9/7.6–7.7/8 and archive UX | **done** — §8.3 gains the archive's own code and its three UX consequences; §6.9 gains the receipt; §7.7's trust root names what holds it down |
 
 Same dependency order and the same expected intermediate state after `C` as `S0-2` and `S0-5`.
@@ -110,6 +110,57 @@ keeps the bytes, deliberately.
 **§7.7's trust root now says what holds it down.** The list already required the root *"bound so it cannot be
 substituted"* and left the mechanism unstated — so the sweep added the product-visible half: it is the user's
 own code, and that is the whole reason the archive can still be trusted after the service is gone.
+
+## The `S0-6` return (2026-08-29)
+
+`S0-9` failed this stage's two largest artifacts, one conviction per half, and both dispositions converged on
+the archive one:
+
+- **`FU-02`** (authority `A-04`, storage `ST-01`, and round 1's `C-5`): the factor authenticated an HPKE
+  recipient while the published package positive verified its manifest under the laptop's device key — a key
+  the factor never bound — the code-sealed commitment was never composed with the manifest, and the
+  commitment negative failed twice, isolating nothing. The clean restore and the package positive were **two
+  positives about two different packages.**
+- **`FU-03`** (authority `A-05`): the `TerminalHandoff` catch-up value was `SHA-256(LP(priorHead) ||
+  LP(terminalHead))` beside a bare non-negative count — no transcript bytes, no chain proof, no signer
+  authority, no absence identifiers, no count-to-list check — so the stale receiver whose completeness was in
+  question could compute its own currentness. The passing `caughtUp` object claimed two absences while
+  carrying zero entries.
+
+The return landed both, `P-6`'s direction unchanged (the reopen condition — the factor choice having to
+change — never triggered: the identity **grew a half under the same factor**, which is the record's carrier
+completed, not changed):
+
+- **The archive identity has two halves under one code.** An Ed25519 manifest-signing keypair joins the
+  X25519 encryption keypair; the envelope seals `archive_priv || archive_sign_priv || RootCommitment`;
+  `auth_root` for a never-established package is the digest of both public halves; and the manifest verifies
+  **only under the committed signing half** — the verifier is resolved through the factor, never read from
+  the package. The signing half rides the commitment rather than the AAD deliberately, so the fresh-mint
+  negative isolates the commitment check instead of failing twice.
+- **One composed importer, run over the published package.** §5's order, executed: envelope → commitment
+  (before the signer is consulted, before any unwrap — observed by probes, not inferred) → manifest under the
+  committed signer → parts → wrap. The published vector carries every input, and the restore reconstructs
+  envelope, wrap and manifest from those inputs alone (`FU-05`'s rule) — restoring the identity **whole**,
+  both halves, so a clean device can keep archiving under it.
+- **The attacker's archive is built end to end and asserted internally consistent** — its wrap round-trips
+  under the genuine scalar, its manifest verifies under the signing key its own root commits — and the one
+  value the attacker cannot seal refuses it. The second door (genuine root kept, uncommitted signing key
+  beside it) has its own negative, as do the pre-return device-signed acceptance, the parts binding, and the
+  envelope's four AAD fields — the archive envelope joined the coverage audit, 197 fields suite-wide.
+- **The catch-up is a construction the gate re-verifies.** `CatchupTranscript` carries `source_epoch`,
+  ordered `(prior, head)` links and named absences; `catchup_digest` commits its full bytes; the gate
+  verifies the signer from the lineage's certification in force (`FU-06`'s resolution rule — an input, never
+  the answer), the chain from the receiver's authenticated prior head to the terminal head, and the
+  count-to-list equality. Chaining from elsewhere, a broken interior link, stopping short, a receiver-signed
+  transcript (genuine, and asserted to be), an unnamed absence, and the pre-return acceptance itself —
+  endpoints digest, count without a list — are seven of the nine published handoff negatives.
+- **The map's two entries flipped** — `local-archive-anchor` and `terminal-handoff` — leaving one joint open,
+  `S0-7`'s `destructive-boundary`, none of them this stage's. TRD §14.4's three re-pins rode along with their
+  rules unchanged.
+
+An 18-mutation battery caught 18 — every new guard deleted, the order inverted, the verifier misresolved
+toward the receiver or the device key, the pre-return acceptance restored, the auth-root formula narrowed,
+the AAD unbound — each by its own negative or probe. `pnpm check` green end to end.
 
 ## Not in scope
 

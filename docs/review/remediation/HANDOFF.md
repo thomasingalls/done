@@ -3,7 +3,7 @@
 **Standing:** home — the one home of the open queue; read back by `pnpm remediation:status`, which checks
 the per-decision claims below against the decision records in both directions.
 
-**Updated:** 2026-08-28 · **Branch:** `claude/stage0-remediation` · **Base:** `9edd930` (the reviewed tip)
+**Updated:** 2026-08-29 · **Branch:** `claude/stage0-remediation` · **Base:** `9edd930` (the reviewed tip)
 
 Read this first. [`action-tree.md`](./action-tree.md) is the plan; the two `S0-9` dispositions are the
 verdicts; **this file is the one home of the open queue** — what state the work is in and what is ready to
@@ -15,7 +15,7 @@ disagree, the disposition is right and this file is the thing to fix.
 
 | | |
 | --- | --- |
-| Branch | `claude/stage0-remediation`, 79 commits off `9edd930` as of the `S0-5` return, all signed; the current tip rides the worktree branch `claude/s0-5-return-0c9ed3` until folded back |
+| Branch | `claude/stage0-remediation`, 81 commits off `9edd930` as of the `S0-6` return, all signed; the current tip rides the worktree branch `claude/s0-6-return-414479` until folded back |
 | Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, the decisions, and both `S0-9` challenge rounds |
 | Not on it | nothing — this branch is the whole picture, deliberately |
 | Superseded | `claude/remediation-findings-review-997ab5` holds the review workspace at its original SHAs. Redundant once this branch is accepted |
@@ -146,8 +146,14 @@ Worth knowing before picking anything up, because a repair that ignores its clas
    return**: the admission's verifier resolves from the certified set's member entry at the manifest's epoch,
    an uncertified credential refuses at the lookup before any signature runs, and the producer's
    self-admission beside a second eligible client — the exact acceptance `ST-06` convicted — is refused by
-   cardinality with its world kept and published; the map now reads 3 open (the live count is always the
-   checker's). `FU-02`/`FU-03` ride `S0-6`, `FU-04` rides `S0-7`.
+   cardinality with its world kept and published — **and `FU-02` and `FU-03` returned 2026-08-29 at the
+   `S0-6` return**: the archive identity carries a manifest-signing half under the same factor, so the
+   never-established manifest verifies only under the signing key the code-sealed commitment commits — the
+   composed importer refuses the fresh mint at the commitment, before the signer is consulted and before any
+   unwrap — and the deletion gate re-verifies the catch-up transcript its receipt commits: signer resolved
+   from the certification in force, never the receiver; links chained from the receiver's own prior head to
+   the terminal head; absences named, the signed count checked against the list. The map now reads 1 open
+   (the live count is always the checker's). `FU-04` rides `S0-7`, the class's last member.
 2. **Interleavings the pure models cannot schedule** — crash points and second writers that are unexpressible
    rather than refuted (`FU-08`, `FU-09`, `FU-10`, `FU-12`, `K_store`). **`FU-09`'s interface half returned
    2026-08-28 at the `S0-2` return** — the composed model's commit carries `P-3`'s ratified fence and the
@@ -295,9 +301,29 @@ In order. An item is done when its disposition entry's earliest-return stage has
    An 18-mutation battery caught 18. The map's `checkpoint-admission` entry flipped: 3 joints stay open, none
    of them this stage's; `checkpoint-manifest` and `attribution-record` re-pinned with their rules unchanged.
    `P-8`'s reopen invitation was read and declined — the portable-witness obstacles have not cleared, so the
-   selected branch stands. **Next, the remaining security returns, in
-   dependency order**: `S0-6` (`FU-02`, `FU-03`
-   with TRD §14.4) → `S0-7` (`FU-04`, `FU-12`).
+   selected branch stands. **The `S0-6` return is done (2026-08-29), and its gates re-ran green** — `pnpm
+   check` end to end. It landed `FU-02` (the archive identity has two halves under one code: an Ed25519
+   manifest-signing keypair joins the X25519 encryption keypair in the envelope, `auth_root` for a
+   never-established package is the digest of both public halves, and the manifest verifies only under the
+   committed signing half — the verifier resolved through the factor, never read from the package; the
+   published package runs the composed importer and reconstructs from its published inputs, the fresh mint
+   is refused at the commitment with the order observed by probes, the second door — genuine root,
+   uncommitted signing key — has its own negative, the pre-return device-signed acceptance is kept as the
+   permanent negative, and the archive envelope joined the AAD coverage audit: 197 fields suite-wide, 44
+   package negatives) and `FU-03` (the `TerminalHandoff` catch-up is a construction the gate re-verifies:
+   `CatchupTranscript` with `source_epoch`, ordered links and named absences, its full bytes committed by
+   `catchup_digest`; the signer resolves from the lineage's certification in force — `FU-06`'s rule, with
+   the receiver's own genuine signature refused — the chain runs from the receiver's authenticated prior
+   head to the terminal head with three separate refusals for chaining from elsewhere, a broken link and
+   stopping short, and the count the receiver signs must equal the enumerated list; the pre-return
+   endpoints-hash acceptance and the old positive's count-without-a-list are both kept as permanent
+   negatives, and the accepted receipt publishes its transcript). An 18-mutation battery caught 18. The
+   map's `local-archive-anchor` and `terminal-handoff` entries flipped: 1 joint stays open — `S0-7`'s
+   `destructive-boundary` — none of them this stage's; `package-manifest`, `terminal-lineage-record` and
+   `k-code-sealed-envelopes` re-pinned with their rules unchanged. `P-6`'s reopen condition never
+   triggered — the identity grew a half under the same factor, the carrier completed rather than changed —
+   so the decided direction stands. **Next, the queue's last security return**: `S0-7` (`FU-04`, `FU-12`,
+   and `P-4` falsifiers 11–19, composed with `S0-6`'s `TerminalHandoff`).
    **Each return flips its authority-map entries and inverts its scheduler reproductions** — editing a
    pinned home fails `authority:check` until the entry is re-read
    and re-pinned or flipped — and, now that the census is landed, edits a pinned record only as a dated
@@ -355,8 +381,9 @@ format documents by any other route. After any code formatting, re-run `pnpm typ
 format left `pnpm check`; the gate is typecheck plus the evidence suite, and it passed end to end for the
 first time in this branch's history that day. Since queue item 3 it also carries `authority:check`, and that
 green line means exactly its printed scope: the map's chains resolve and its pinned homes are byte-current,
-with three joints *declared open* since the `S0-5` return flipped `checkpoint-admission` (the `S0-2` return
-flipped the four member-key entries; the `S0-3` return, `k-store`; the `S0-4` return, `position-refusal`),
+with one joint *declared open* since the `S0-6` return flipped `local-archive-anchor` and `terminal-handoff`
+(the `S0-2` return flipped the four member-key entries; the `S0-3` return, `k-store`; the `S0-4` return,
+`position-refusal`; the `S0-5` return, `checkpoint-admission`),
 the sweep covering AEAD constructions beside signatures, and the `k-checkpoint` entry entered at the `S0-5`
 return with its declared absence struck — the checker still refusing the entry and a declaration coexisting,
 or both missing — it is the

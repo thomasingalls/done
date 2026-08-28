@@ -34,7 +34,57 @@
       "why": "§14.2 requires the old trust root *bound so it cannot be substituted*. Every other link in the chain is service-signed, so a forger supplying their own root can re-sign all of it; the chain has to terminate in user-held material, and the recovery code is the only such thing. Binding the root in the wrap's `info` means a substituted root opens no generation, so there is no content to re-attribute",
       "why_info_not_aad": "`info` is never transmitted. A reader must supply the root it believes rather than read one out of the package, so a wrong belief fails to open instead of failing to match",
       "granularity": "Per generation, which §14.1 makes correct rather than convenient: migration rotates to a fresh generation under the new lineage, so pre-migration generations stay anchored to the root that was in force when they were written",
-      "never_established": "§9.3’s Local archive has no lineage, so both fields are empty and the auth root names the archiving device. Nothing external authenticates it, and §9.3 already says so — the archive answers *does ciphertext still exist*, never *can you decrypt it*"
+      "never_established": "§9.3’s Local archive has no lineage, so the lineage field is empty and `auth_root` is the archive identity’s own digest — SHA-256 over LP(\"done/archive-root/v1\") || LP(hex archive_pub) || LP(hex archive_sign_pub) — committed under the code beside both private halves (`S0-6` return, `FU-02`). What authenticates a Local archive is the code that opens it, for the manifest as well as the wraps: the signing half verifies the manifest, the encryption half opens the generations, and neither authority is resolvable from anything the package alone offers. The archive still answers *does ciphertext still exist* for a holder without the code"
+    },
+    "local_archive": {
+      "why": "The S0-9 conviction (FU-02/A-04/ST-01): the factor sealed an HPKE recipient while a separate device key, never bound by the factor, authenticated the manifest — so a fresh wrap to the genuine public archive_pub could open an independently chosen generation key under a fabricated manifest. The identity now has two halves under one code, and the composed importer refuses the fresh mint at the commitment, before its signer is consulted and before any unwrap.",
+      "identity": "X25519 archive_pub/archive_priv opens the wraps; Ed25519 archive_sign_pub/archive_sign_priv signs the manifest. One identity per workspace (P-6), minted at first archive, retired to legacy at promotion.",
+      "auth_root": "SHA-256( LP(\"done/archive-root/v1\") || LP(hex archive_pub) || LP(hex archive_sign_pub) ) — in the manifest slot a lineage’s trust root would fill, so the commitment formula and the wrap info are unchanged and one importer serves all three lineage states",
+      "envelope": "K_archive = HKDF-SHA256(ikm = utf8(code), salt, info = LP(\"done/archive/v1\") || LP(workspace_id)); ct seals archive_priv || archive_sign_priv || RootCommitment under AES-256-GCM; AAD = LP(\"done/archive/v1\") || LP(workspace_id) || LP(dec v) || LP(hex archive_pub)",
+      "aad_note": "The AAD binds the encryption half so the sealed private halves cannot be offered beside somebody else’s public key. The signing half is bound through auth_root inside the sealed commitment instead, deliberately: the commitment is the one value the attacker cannot seal, and keeping it the sole carrier of the signing identity is what lets the fresh-mint negative isolate it.",
+      "importer": "One path, §5’s order: the code opens the envelope; the sealed commitment is checked against the manifest before anything the package says is trusted; the manifest verifies only under the committed signing identity — never under a key the package offers; the parts digest is checked; only then are generations unwrapped."
+    },
+    "terminal_handoff": {
+      "why": "The S0-9 conviction (FU-03/A-05): catchup_digest was SHA-256 over two public heads beside a bare count, so a stale receiver could self-assert completeness and authorize hosted destruction. The digest now commits the full bytes of a signed CatchupTranscript, and the gate verifies the transcript itself.",
+      "receipt": "H = LP(\"done/handoff/v1\") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(hex terminal_head_digest) || LP(hex retired_package_digest) || LP(receiver_credential) || LP(hex receiver_prior_head) || LP(hex catchup_digest) || LP(dec known_absence_count); sig = Ed25519(the receiving client’s signing credential; H)",
+      "transcript": "T = LP(\"done/catchup/v1\") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(dec source_epoch) || LP(dec link_count) || for each link: LP(hex prior) || LP(hex head) || LP(dec absence_count) || for each: LP(absence_id); sig_T = Ed25519(the lineage’s certification in force at source_epoch; T); catchup_digest = SHA-256(T)",
+      "authority": "The transcript’s verifier resolves from the lineage’s client-authenticated certification in force — an input, never a key read out of the answer (FU-06’s rule at this gate). The receiver’s own credential can never fill it, so neither actor signs both parts of the receipt.",
+      "verified_current": "Two forms and neither is a timer: the receiver’s accepted head is the terminal head and catchup_digest is empty, or the receipt commits a transcript that verifies under the certification in force, chains link by link from the receiver’s authenticated prior head to the terminal head, and enumerates every known absence by identifier — with the count the receiver signed equal to the list the transcript carries.",
+      "accepted_receipt": {
+        "handoff": {
+          "v": 1,
+          "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+          "lineage_id": "lin_01HZXS0000000000000000OLDS",
+          "terminal_head_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "retired_package_digest": "734bc0db42e7763e3670c1813dc688e1d6c59aaff69f99b67e70263e6ef641d4",
+          "receiver_credential": "cred_01HZXR0000000000000000LAPT",
+          "receiver_prior_head": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "catchup_digest": "7ffaf8f2401e32fd8e596bbf646144d0aadb94218750479e2164253913751f09",
+          "known_absence_count": 2
+        },
+        "transcript": {
+          "v": 1,
+          "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+          "lineage_id": "lin_01HZXS0000000000000000OLDS",
+          "source_epoch": 10,
+          "links": [
+            {
+              "prior": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "head": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+            },
+            {
+              "prior": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+              "head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          ],
+          "absences": [
+            "env_01HZXT00000000000000000AAA",
+            "env_01HZXT00000000000000000BBB"
+          ],
+          "message": "000f646f6e652f636174636875702f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744001e6c696e5f3031485a5853303030303030303030303030303030304f4c445300023130000132004062626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262004065656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565004065656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565004061616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161000132001e656e765f3031485a58543030303030303030303030303030303030414141001e656e765f3031485a58543030303030303030303030303030303030424242",
+          "signed_by": "the lineage’s certification in force — modeled by k_auth"
+        }
+      }
     },
     "hpke": "RFC 9180 base mode, DHKEM(X25519, HKDF-SHA256) / HKDF-SHA256 / AES-256-GCM (row 1). Implemented in the generator rather than pinned as a string, because this row’s claim is a binding inside it; it reproduces RFC 9180 A.1.1 on every invocation before it is used",
     "not_here": {
@@ -206,15 +256,15 @@
     },
     {
       "name": "never-established-archive",
-      "why": "§9.3’s fidelity archive of a Local workspace, which is §13.5’s third lineage state rather than a fourth artifact. No epochs, no head, no suffix and an empty lineage; the archiving device is the assembler, and **what authenticates it is the code that opens it** rather than any authority, because there is none to appeal to.",
+      "why": "§9.3’s fidelity archive of a Local workspace, which is §13.5’s third lineage state rather than a fourth artifact. No epochs, no head, no suffix and an empty lineage; the archiving device is the assembler, and **what authenticates it is the code that opens it** — now for the manifest too (`S0-6` return, `FU-02`): `auth_root` is the digest of both public halves of the factor-sealed archive identity, the manifest verifies only under the committed signing half, and the composed importer is run over exactly this published package.",
       "inputs": {
         "v": 1,
-        "workspace": "ws_01HZXQ9LOCAL0000000000000",
-        "lineage": "",
-        "lineageState": "never-established",
-        "authRoot": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025",
-        "lineageHeadDigest": "",
+        "workspace_id": "ws_01HZXQ9LOCAL0000000000000",
+        "lineage_id": "",
+        "lineage_state": "never-established",
+        "lineage_head_digest": "",
         "epoch": 0,
+        "assembled_by": "cred_01HZXR0000000000000000LAPT",
         "parts": [
           {
             "name": "checkpoint",
@@ -232,16 +282,34 @@
             "digest": "8888888888888888888888888888888888888888888888888888888888888888"
           }
         ],
-        "assembledBy": "cred_01HZXR0000000000000000LAPT",
-        "lineage_state": "never-established",
-        "assembled_by": "cred_01HZXR0000000000000000LAPT"
+        "archive": {
+          "code": "AZC52QK9FEHC6M7VS01JDA3NY",
+          "hkdf_salt": "000102030405060708090a0b0c0d0e0f",
+          "nonce": "202122232425262728292a2b",
+          "encryption_scalar": "5dab087e624a8a4b79e17f8b83800ee66f3bb1292618b6fd1c2f8b27ff88e0eb",
+          "signing_seed": "f5e5767cf153319517630f226876b86c8160cc583bc013744c6bf255f5cc0ee5",
+          "archive_pub": "de9edb7d7b7dc1b4d35b61c2ece435373f8343c85b78674dadfc7e146f882b4f",
+          "archive_sign_pub": "278117fc144c72340f67d0f2316e8386ceffbf2b2428c9c51fef7c597f1d426e",
+          "generation": {
+            "gen": 1,
+            "k_g": "9e0b2f4c7a1d8e364a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a6375"
+          },
+          "hpke_ephemeral_scalar": "7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c"
+        }
       },
       "derived": {
+        "auth_root": "373eea2e8a04356e02709b89ac3d005af0a9e44bbf3e40ab59742b9c639d60f2",
+        "root_commitment": "059eebb3947a89cf4ecf3754021c94d48711415c21389dd9466b448808452e4b",
         "parts_digest": "53a66596336293df1675c0f2bc4fb458ccfd2115093c75f0eb07ba0fd29b11c3",
-        "manifest_message": "000b646f6e652f706b672f7631000131001c77735f3031485a5851394c4f43414c30303030303030303030303030000000116e657665722d65737461626c69736865640040666335316364386536323138613161333864613437656430303233306630353830383136656431336261333330336163356465623931313534383930383032350000000130004035336136363539363333363239336466313637356330663262633466623435386363666432313135303933633735663065623037626130666432396231316333001f637265645f3031485a5852303030303030303030303030303030304c415054"
+        "manifest_message": "000b646f6e652f706b672f7631000131001c77735f3031485a5851394c4f43414c30303030303030303030303030000000116e657665722d65737461626c69736865640040333733656561326538613034333536653032373039623839616333643030356166306139653434626266336534306162353937343262396336333964363066320000000130004035336136363539363333363239336466313637356330663262633466623435386363666432313135303933633735663065623037626130666432396231316333001f637265645f3031485a5852303030303030303030303030303030304c415054"
       },
       "expected": {
-        "manifest_signature": "2999fa639b41d45b1f95e152249a5f3a1d824476b12f44eda9b0ca633a534f3d1e00ccaa7d7ff17e76ed370744f38ca352e187144386787707b303c90b2a720f"
+        "envelope_ct": "00dd5cfdb2e22b9211f07b7153a29d470f417f59e2f4ea6fcdbfe0e7c66523c13312587d0af89fbb28cdb1bdcf51852dca121d66568e91702c5694001f2a2b8ec5752377557997ccb5f34db8e8a963e47df721cf5d555a6d0ed66198a767a59b021429c5737942ecfaf9e5831f5d9b9b",
+        "generation_wrap": {
+          "enc": "efd256a30cdbc942879ae5b1fff78d8e4a1f09e6296bdcbbc537cd086a23d233",
+          "ct": "07559c289dd35baf79ff4a7778f2cf86682a4afb239157bb4c7483144f8ac14cce28e5df1df199dd72d4d7bc96aa9d5c"
+        },
+        "manifest_signature": "9f7e9e79926acd2f6e3f189dcc1824918dc8232c00a961ba94735c0c7f7f33fd1c9bb41c5e4c38c6fa464b4d4ee4069ada05215b2b756d37165490cd078ce608"
       }
     }
   ],
@@ -340,7 +408,7 @@
       "falsifies": [
         "f-745e332-local-archive-portable-wrap-undefined"
       ],
-      "why": "The archive keypair is sealed under the code and nothing else. A wrong code opens neither the identity nor the commitment beside it, which is what \"the code that opens it\" has to mean once it is a construction rather than a sentence."
+      "why": "The archive identity is sealed under the code and nothing else. A wrong code opens neither keypair nor the commitment beside them, which is what \"the code that opens it\" has to mean once it is a construction rather than a sentence."
     },
     {
       "name": "archive-envelope-repaired-with-another-identity",
@@ -350,18 +418,69 @@
       "why": "Row 14's own negative, at the archive: an envelope presented alongside a public key that is not the one it was sealed for. The identity is in the envelope's AAD, so the pairing is authenticated rather than assumed -- without it, an archive's sealed private half could be offered beside somebody else's public half."
     },
     {
-      "name": "archive-root-commitment-mismatch",
+      "name": "aad-only-archive-envelope-workspace",
       "falsifies": [
         "f-745e332-local-archive-portable-wrap-undefined"
       ],
-      "why": "The same anchor as an account package, at the state that has no external authority to appeal to. The archive identity's own public key fills the slot a lineage would, so a manifest naming a different identity does not match the commitment the code unsealed."
+      "why": "The AAD's workspace binding, isolated from the key derivation's. The HKDF info binds the workspace too, so a negative that changed both would be rescued by neither; this one opens with the genuine derived key and an AAD claiming another workspace, so only the AAD can refuse it."
+    },
+    {
+      "name": "aad-only-archive-envelope-version",
+      "falsifies": [
+        "f-745e332-local-archive-portable-wrap-undefined"
+      ],
+      "why": "The envelope version, bound so a v1 envelope cannot be presented as a later one whose rules differ."
+    },
+    {
+      "name": "aad-only-renumbered-archive-label",
+      "falsifies": [
+        "f-745e332-local-archive-portable-wrap-undefined"
+      ],
+      "why": "The construction label, the same discipline as every other AAD here."
+    },
+    {
+      "name": "freshly-minted-archive-under-an-attacker-root",
+      "falsifies": [
+        "f-745e332-local-archive-portable-wrap-undefined",
+        "f-745e332-package-root-rewrap-substitution"
+      ],
+      "why": "The account path's fresh-mint attack, at the state S0-9 convicted (FU-02/A-04/ST-01). HPKE base mode needs only archive_pub, which travels in the archive; Ed25519 verification needs only the signing key the manifest names, and the attacker names their own. So the package is internally consistent end to end -- its wrap round-trips under the genuine archive scalar and its manifest verifies under the signing key its auth_root commits, both asserted before the negative runs. Only the commitment sealed under the code separates it from a real archive, because the attacker's auth_root commits a signing identity the factor never sealed."
+    },
+    {
+      "name": "archive-refused-before-any-unwrap",
+      "falsifies": [
+        "f-745e332-local-archive-portable-wrap-undefined",
+        "f-745e332-package-root-rewrap-substitution"
+      ],
+      "why": "Order, observed rather than inferred, exactly as the account path observes it: the commitment is checked before the manifest signer is consulted and before a single generation unwrap runs, so an attacker-rooted archive is refused without opening any attacker-chosen content."
+    },
+    {
+      "name": "archive-manifest-signed-by-the-archiving-device",
+      "falsifies": [
+        "f-745e332-local-archive-portable-wrap-undefined"
+      ],
+      "why": "The pre-return world, kept as the permanent negative (FU-02): the shipped positive verified the archive manifest under the laptop's device key, an authority the archive factor never bound. Here the device's signature over otherwise-genuine fields -- genuine, and asserted to be -- is refused, because the manifest verifies only under the signing identity the sealed commitment carries, never under whatever key the package offers."
+    },
+    {
+      "name": "archive-signing-identity-not-committed-by-the-root",
+      "falsifies": [
+        "f-745e332-local-archive-portable-wrap-undefined"
+      ],
+      "why": "The second door the same conviction opens, closed by the same resolution rule: keep the genuine auth_root so the commitment agrees, and present your own signing key beside it. The manifest signer must be the identity the commitment-checked auth_root itself commits, so a signing key the root does not derive verifies nothing -- however genuine its signature, and that it is genuine is asserted first."
+    },
+    {
+      "name": "archive-parts-not-the-manifests",
+      "falsifies": [
+        "f-745e332-local-archive-portable-wrap-undefined"
+      ],
+      "why": "The composed importer checks the parts against the manifest the factor-committed identity signed, on the Local path -- the check the pre-return isolated opener never made, because it never met the manifest at all."
     },
     {
       "name": "archive-wrap-from-another-workspace",
       "falsifies": [
         "f-745e332-local-archive-portable-wrap-undefined"
       ],
-      "why": "The generation wrap binds the workspace, so an archive of one Local workspace opens no generation of another. Independent of the factor and of the root, which is what makes the four failures separable rather than one check wearing four hats."
+      "why": "The generation wrap binds the workspace, so an archive of one Local workspace opens no generation of another. The envelope and manifest agree with the mutated workspace on purpose -- sealed and signed for it -- so the refusal is the wrap’s alone rather than one check wearing four hats."
     },
     {
       "name": "archive-wrap-of-another-generation",
@@ -399,18 +518,60 @@
       "why": "A receiver whose accepted head is not the terminal head is not current, and saying so is the whole point -- otherwise 'verified-current' means 'was reachable recently'. It may still qualify, but only by presenting a transcript."
     },
     {
+      "name": "catchup-of-public-endpoints-alone",
+      "falsifies": [
+        "f-4259822-retirement-safe-survivor-gate-undefined"
+      ],
+      "why": "The pre-return acceptance, kept as the permanent negative (FU-03/A-05). catchup_digest used to be SHA-256(LP(priorHead) || LP(terminalHead)) -- two public values any stale receiver can hash -- beside a bare count, so the actor whose completeness was in question could self-assert it. That exact receipt, digest and knownAbsences: 0 and all, is now refused: a digest with no transcript behind it commits nothing."
+    },
+    {
       "name": "handoff-with-an-unverifiable-catchup",
       "falsifies": [
         "f-4259822-retirement-safe-survivor-gate-undefined"
       ],
-      "why": "A transcript that does not chain from the prior head the receiver authenticated. Without the prior head bound, any transcript would do, and the catch-up would be a formality."
+      "why": "A receipt whose catchup_digest does not commit the transcript presented beside it. The receiver signed for verifying one thing and is showing another, and the gate reads only what the signature covers."
+    },
+    {
+      "name": "catchup-transcript-signed-by-the-receiver",
+      "falsifies": [
+        "f-4259822-retirement-safe-survivor-gate-undefined"
+      ],
+      "why": "The self-assertion attack with a real transcript: the stale receiver writes its own catch-up and signs it with its own credential. The signature is genuine -- that is asserted before the negative runs -- and it verifies under nothing the gate consults, because the transcript's verifier resolves from the lineage's certification in force, never from the answer (FU-06's rule, at this gate)."
+    },
+    {
+      "name": "catchup-transcript-not-from-the-prior-head",
+      "falsifies": [
+        "f-4259822-retirement-safe-survivor-gate-undefined"
+      ],
+      "why": "A genuinely signed transcript that chains from somewhere else. Without links[0].prior bound to the prior head the receiver authenticated, any transcript would do, and the catch-up would be a formality."
+    },
+    {
+      "name": "catchup-transcript-with-a-broken-link",
+      "falsifies": [
+        "f-4259822-retirement-safe-survivor-gate-undefined"
+      ],
+      "why": "An interior link that does not name its predecessor. A chain proof is only a proof at every link; a gap in the middle is the same unreceived content as a gap at the ends, wearing continuity."
+    },
+    {
+      "name": "catchup-transcript-short-of-the-terminal-head",
+      "falsifies": [
+        "f-4259822-retirement-safe-survivor-gate-undefined"
+      ],
+      "why": "A genuinely signed transcript that stops before the terminal head. Caught up to almost the end is behind, and a receiver that verified it is not current in either of the two forms the gate accepts."
     },
     {
       "name": "handoff-with-unenumerated-absences",
       "falsifies": [
         "f-4259822-retirement-safe-survivor-gate-undefined"
       ],
-      "why": "A transcript that admits things are missing without naming them. 'Some updates could not be recovered' is not a known-absence list, and a deletion authorized on it destroys the only copy of what was never enumerated."
+      "why": "The pre-return positive's own numbers, kept as the detected negative: a count of two beside an empty list. 'Some updates could not be recovered' is not a known-absence list, and a deletion authorized on it destroys the only copy of what was never enumerated. The count the receiver signs must equal the list the transcript carries."
+    },
+    {
+      "name": "catchup-absence-without-an-identifier",
+      "falsifies": [
+        "f-4259822-retirement-safe-survivor-gate-undefined"
+      ],
+      "why": "An absence entry that names nothing. The count-to-list check alone would accept two empty strings as two absences, so each entry must be an identifier -- the gaps are named rather than counted."
     },
     {
       "name": "handoff-for-another-retired-package",

@@ -5,7 +5,11 @@
 
 **Decided:** 2026-08-26 · **Direction:** `RC-6A` accepted — factor-sealed root commitment and full retired-package
 replacement · **Identity:** per workspace · **Confirmation:** typed back once per workspace ·
-**At promotion:** retired to legacy · **Status:** decided, not yet consolidated
+**At promotion:** retired to legacy · **Status:** decided; consolidated at `S0-6` and completed by the `S0-6`
+return (2026-08-29) — requirements 1–3 below executed there against the published package (`FU-02`: the
+identity grew its manifest-signing half under the same factor, which is this record's carrier completed, not
+changed, so the reopen condition — the factor choice having to change — never triggered; requirement 3's
+paired fresh rewrap now fails for a Local archive at the commitment, isolated, with the order observed)
 
 Consolidation is [`S0-6`](../action-tree.md), which also needs `S0-2` and `S0-5`. This record also completes the
 inputs to [`S0-2`](../action-tree.md), alongside [`P-1`](./P-1-recipient-authority.md) and

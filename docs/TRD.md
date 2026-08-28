@@ -1688,11 +1688,13 @@ Two constraints on it:
 
 - **A purely Local archive has no account recovery keypair**, so it needs its own explicit portable wrap rather
   than one it does not have. **That wrap is now constructed rather than only required** (`S0-6`, `P-6`): the
-  workspace holds one archive keypair, its private half sealed under a generated 125-bit archive code — row
-  14's generator, alphabet and normalizer unchanged — beside the same root commitment §14.2 uses, with the
-  archive identity's own public key in the slot a lineage would otherwise fill. **One code per workspace, typed
-  back once before any archive is described as restorable**, retired to legacy when the workspace is promoted.
-  Generations are wrapped to that identity, so import is one path rather than two.
+  workspace holds one archive **identity** — an X25519 keypair that opens the wraps and, since the `S0-6`
+  return closed `FU-02`, an Ed25519 keypair that signs the manifest — both private halves sealed under one
+  generated 125-bit archive code, row 14's generator, alphabet and normalizer unchanged, beside the same root
+  commitment §14.2 uses. The slot a lineage's trust root would fill holds the identity's own digest, committing
+  both public halves. **One code per workspace, typed back once before any archive is described as
+  restorable**, retired to legacy when the workspace is promoted. Generations are wrapped to that identity, so
+  import is one path rather than two.
 - **It is not a recovery factor.** It answers *does ciphertext still exist* and never *can you decrypt it*. A user
   holding an archive and no code has an encrypted file and no way in.
 
@@ -1704,10 +1706,17 @@ survive (§9.2).
 
 **It is not a separate artifact from §14's package: it is that format at the never-established lineage state**
 (§15 row 10, §13.5). The two constraints above are what that state *means* rather than exceptions to it — no
-lineage, so no trust root to anchor and no epochs, head or suffix to carry, and the explicit portable wrap is the
-one the absent recovery keypair would otherwise have supplied. **The archive's own signature is integrity within
-something already opened**, not an authority: what authenticates a Local archive is the code that opens it, which
-is the same sentence as *it answers does ciphertext still exist and never can you decrypt it*.
+lineage, so no service trust root to anchor and no epochs, head or suffix to carry, and the explicit portable
+wrap is the one the absent recovery keypair would otherwise have supplied. **The archive's manifest is
+authenticated by the same factor that opens it** (`S0-6` return, `FU-02`): the manifest verifies only under the
+archive's own signing half, whose public key is committed — with the encryption half — in the `auth_root` the
+code-sealed commitment covers, so a device key or any other authority the factor never bound verifies nothing.
+An earlier version of this section called the archive's signature *integrity within something already opened,
+not an authority*, and `S0-9` convicted that sentence's executable form: it left the manifest under an unbound
+device key while the factor authenticated only an HPKE recipient, so a fresh wrap to the genuine public
+`archive_pub` could open an attacker-chosen generation key under a fabricated manifest. What authenticates a
+Local archive is the code that opens it — now for the manifest too — which remains the same sentence as *it
+answers does ciphertext still exist and never can you decrypt it* for a holder without the code.
 
 ---
 
@@ -3343,7 +3352,9 @@ the checkpoint the package already carries — which is what §7.6 required of a
 place. **There is no separate part count either**, because each part's count is already inside `parts_digest`,
 and a second binding of the same fact could disagree with it. `assembled_by` names a credential resolvable from
 the epochs the package carries, or the trust root itself when the service assembled it here, or — where there is
-no lineage — the archiving device, which nothing external certifies and §9.3 already says so.
+no lineage — the archiving device. **Naming is not verifying**: a never-established manifest verifies only under
+the archive's own factor-committed signing identity (§9.3, `S0-6` return), so the device named as assembler
+carries no verification authority the code did not seal.
 
 **That commit is §13.7's transition protocol at `kind: 'retire'`, and the ordering is the fail-closed property
 rather than an implementation detail** (§15 row 15). A lapse and a deletion differ in exactly one artifact —
@@ -3388,6 +3399,17 @@ copy was stale, incomplete, or absent — and a window that has merely elapsed i
 time for evidence, which §10.4 already refuses elsewhere. A receiving client signs a `TerminalHandoff` binding
 the terminal head, the exact retired-package digest, its own prior head, and either an empty catch-up or a
 verified transcript from that prior head with **exact known absences enumerated rather than summarised**.
+
+**The catch-up is a construction the gate re-verifies, not a value the receiver reports** (`S0-6` return,
+`FU-03`). The receipt's `catchup_digest` commits the full bytes of a signed `CatchupTranscript`, and the gate
+verifies the transcript itself before the acknowledgement counts: its signer resolves from the lineage's
+client-authenticated certification in force at the transcript's stated epoch — an input, never a key read out
+of the answer, and never the receiver's own credential, so neither actor signs both parts of the receipt; its
+links chain from the prior head the receiver authenticated to the terminal head, each naming its predecessor;
+and its absences are identifiers whose count must equal the count the receiver signed. An earlier executable
+form accepted a digest over the two public heads beside a bare count — a value the stale receiver itself could
+compute, which made the receipt self-assertion by the one actor whose completeness was in question; that
+acceptance is kept as a published negative.
 
 **Only a durable handoff authorizes a hosted deletion class**, one class at a time, so a partial deletion resumes
 rather than restarting or over-deleting. **The classes are §14.7's**, and retirement is the cause that reaches

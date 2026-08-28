@@ -335,7 +335,7 @@ verifies: the assembler's manifest over a portable package's parts
 resolves: assembled_by, resolved from the epochs the package itself carries -> via:member-signing-keys
 resolves: the factor-checked root commitment, consumed first at import -> via:account-package-root
 status: resolved
-pin: docs/TRD.md §14.4 b88dc4f60dbc
+pin: docs/TRD.md §14.4 33ec0d98358c
 ```
 
 ```authority
@@ -346,7 +346,7 @@ verifies: the signed terminal record that moves a lineage to retired
 resolves: the lineage authorization key -> root:service
 bound: §14.4 and §14.7 §6 — terminal lineage needs a client-signed retire intent the biller does not hold, the record commits before anything is deleted, and a retired package is a complete re-assembly under the terminal authority, never a live manifest with a field rewritten
 status: resolved
-pin: docs/TRD.md §14.4 b88dc4f60dbc
+pin: docs/TRD.md §14.4 33ec0d98358c
 pin: docs/review/remediation/S0-6/A-schemas.md §3 d4c0e75e9ddb
 ```
 
@@ -355,18 +355,22 @@ entry: local-archive-anchor
 kind: predicate
 guards: content
 verifies: what authenticates a never-established Local archive
-resolves: auth_root = archive_pub, checked against the commitment sealed under the archive code -> root:factor
-status: open
-blocker: FU-02
-return: S0-6
-pin: docs/review/remediation/S0-6/A-schemas.md §2 7ca03c1bac64
-pin: scripts/generate-package-vectors.mjs d8d936aad0ae
+resolves: auth_root — the archive identity's own digest, both public halves, recomputed and checked against the commitment sealed under the archive code -> root:factor
+resolves: the manifest's verifier — the signing half the commitment-checked auth_root commits, never a key the package offers -> root:factor
+status: resolved
+pin: docs/review/remediation/S0-6/A-schemas.md §2 faa19f8bc380
+pin: scripts/generate-package-vectors.mjs 214f7182c047
 ```
 
-The schema states the factor chain; the published package positive contradicts it — `archiveFields.authRoot`
-is the laptop's Ed25519 key, signed by a device key the archive factor never bound, and the code-sealed
-commitment is never composed with the manifest (`A-04`). The generator is pinned whole so the `S0-6` return's
-repair trips this entry and flips it.
+**Flipped 2026-08-29 at the `S0-6` return** (`FU-02`, `A-04`, `ST-01`). The joint was the disconnection: the
+factor sealed an HPKE recipient while the published package positive verified its manifest under the laptop's
+device key, and the code-sealed commitment was never composed with the manifest. The identity now carries a
+manifest-signing half under the same code, `auth_root` is the digest of both public halves, and the composed
+importer — run over the published package itself, which reconstructs from its published inputs — refuses the
+fresh mint at the commitment before the signer is consulted and before any unwrap, with the order observed
+rather than inferred. The pre-return device-signed acceptance, the uncommitted-signer door, and the
+endpoints-era wrap attacks are published negatives; the envelope's AAD joined the coverage audit with each of
+its four fields isolated.
 
 ```authority
 entry: terminal-handoff
@@ -374,18 +378,22 @@ kind: predicate
 guards: deletion
 verifies: verified-current — the receipt that authorizes a hosted deletion class
 resolves: the receiving client's signature -> via:member-signing-keys
-resolves: a verifiable catch-up transcript from receiver_prior_head with exact absences enumerated -> root:structural
-status: open
-blocker: FU-03
-return: S0-6
-pin: docs/TRD.md §14.4 b88dc4f60dbc
-pin: docs/review/remediation/S0-6/A-schemas.md §4 3f5b651f43db
+resolves: the CatchupTranscript committed by catchup_digest — its signer the lineage's certification in force at source_epoch, whose chain terminates at the committed trust root, never the receiver -> root:trust-root
+resolves: the link chain from receiver_prior_head to the terminal head, and the absence list the signed count must equal -> root:structural
+status: resolved
+pin: docs/TRD.md §14.4 33ec0d98358c
+pin: docs/review/remediation/S0-6/A-schemas.md §4 925e733fadef
 ```
 
-The chain's second line is the rule the schema states and the current value cannot honor: `catchup_digest` is
-one hash over `(priorHead, terminalHead)` plus a non-negative count — no transcript, no chain proof, no absence
-identifiers — so a stale receiver can self-assert completeness and the gate on destruction reads it as current
-(`A-05`).
+**Flipped 2026-08-29 at the `S0-6` return** (`FU-03`, `A-05`). The pre-return value was one hash over two
+public heads plus a bare count — computable by the stale receiver itself, so the gate on destruction read
+self-assertion as currentness. `catchup_digest` now commits the full bytes of a `CatchupTranscript` the gate
+re-verifies: signer resolved from the certification in force (an input, never the answer — the receiver's own
+genuine signature is a published negative), links chained from the receiver's authenticated prior head to the
+terminal head with chaining-from-elsewhere, a broken interior link and stopping short refused separately, and
+absences named, with the count the receiver signed checked against the list. The pre-return acceptance —
+endpoints digest, `knownAbsences: 0` — and the old positive's count-without-a-list are both kept as permanent
+negatives, and the accepted receipt publishes its transcript so the artifact reconstructs from its inputs.
 
 ```authority
 entry: destructive-boundary
@@ -518,7 +526,7 @@ verifies: the recovery envelope and the archive envelope
 discipline: one message per derived key — a fresh per-seal salt into HKDF of the code, so exactly one plaintext is ever sealed under each derived key and nonce reuse is structurally unreachable (§13.8, S0-6 §2)
 status: resolved
 pin: docs/TRD.md §13.8 ef268347caad
-pin: docs/review/remediation/S0-6/A-schemas.md §2 7ca03c1bac64
+pin: docs/review/remediation/S0-6/A-schemas.md §2 faa19f8bc380
 ```
 
 ```authority

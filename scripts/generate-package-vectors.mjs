@@ -386,7 +386,9 @@ const manifestMessage = ({
  */
 const ROOT_LABEL = 'done/pkg-root/v1';
 const ARCHIVE_LABEL = 'done/archive/v1';
+const ARCHIVE_ROOT_LABEL = 'done/archive-root/v1';
 const HANDOFF_LABEL = 'done/handoff/v1';
+const CATCHUP_LABEL = 'done/catchup/v1';
 
 /**
  * The receipt that authorizes destroying hosted bytes.
@@ -401,6 +403,20 @@ const HANDOFF_LABEL = 'done/handoff/v1';
  * accepted head **is** the terminal head, or it verifies a transcript from its
  * authenticated prior head with **exact known absences enumerated**. A summary
  * is not an enumeration, which is what `known_absence_count` is for.
+ *
+ * **What `catchup_digest` commits was the `S0-9` conviction (`FU-03`/`A-05`),
+ * and the transcript below is the repair.** The pre-return value was
+ * `SHA-256(LP(priorHead) || LP(terminalHead))` -- two public heads, computable
+ * by the very receiver whose completeness was in question -- beside a bare
+ * non-negative count, so a stale receiver could self-assert its way through the
+ * gate on hosted destruction. The digest now commits the full bytes of a
+ * `CatchupTranscript`, and the gate verifies the transcript itself: its signer
+ * resolves from the lineage's certification in force (`FU-06`'s rule -- an
+ * input, never the answer), its links chain from the receiver's authenticated
+ * prior head to the terminal head, and its absences are exact identifiers whose
+ * count must equal the count the receiver signed. Self-assertion has no move
+ * left: the receiver cannot mint the transcript, and the source cannot sign for
+ * having received it.
  */
 const handoffMessage = ({
   v = 1,
@@ -429,6 +445,34 @@ const handoffMessage = ({
     ].map(lp),
   );
 
+/**
+ * The exact authenticated catch-up carrier (`FU-03`).
+ *
+ * T = LP("done/catchup/v1") || LP(dec v) || LP(workspace_id) || LP(lineage_id)
+ *     || LP(dec source_epoch)
+ *     || LP(dec link_count) || for each link: LP(hex prior) || LP(hex head)
+ *     || LP(dec absence_count) || for each: LP(absence_id)
+ *
+ *   sig_T = Ed25519( the lineage's certification in force at source_epoch ; T )
+ *   catchup_digest = SHA-256(T), committed in the receiver's signed H
+ *
+ * Each link stands for a signed accepted-head record naming its predecessor,
+ * so "verifiable transcript" is a chain property rather than a vibe:
+ * `links[0].prior` must be the prior head the receiver authenticated,
+ * `links[i].prior` must be `links[i-1].head`, and the last head must be the
+ * terminal head. The absences are the objects the source could not deliver,
+ * each named -- the receiver countersigns their exact count, so "some things
+ * are missing" cannot pass as an enumeration.
+ */
+const transcriptMessage = ({ v = 1, workspace, lineage, sourceEpoch, links, absences }) =>
+  concat(
+    ...[CATCHUP_LABEL, String(v), workspace, lineage, String(sourceEpoch)].map(lp),
+    lp(String(links.length)),
+    ...links.flatMap((l) => [lp(l.prior), lp(l.head)]),
+    lp(String(absences.length)),
+    ...absences.map(lp),
+  );
+
 /** The hosted classes, deleted one at a time so a partial run resumes. */
 const DELETION_CLASSES = ['primary', 'replicas', 'wraps', 'checkpoints', 'backups'];
 
@@ -443,20 +487,56 @@ const DELETION_CLASSES = ['primary', 'replicas', 'wraps', 'checkpoints', 'backup
  * manifest signature -- so `--check` passed while the archive's load-bearing
  * case, total device loss, was unopenable.
  *
- * A workspace holds one archive keypair (`P-6`), its private half sealed under
- * a generated code beside the same root commitment §14.2 uses, with the archive
- * identity's own public key in the slot a lineage would fill. There is no
- * external authority for a never-established workspace and there never was; the
- * code is the only one it has ever had, and this makes that structural.
+ * A workspace holds one archive **identity** (`P-6`): an X25519 keypair that
+ * opens the wraps *and* an Ed25519 keypair that signs the manifest, both
+ * private halves sealed under one generated code beside the same root
+ * commitment §14.2 uses. There is no external authority for a
+ * never-established workspace and there never was; the code is the only one it
+ * has ever had, and this makes that structural.
+ *
+ * **The signing half is the `S0-9` return (`FU-02`/`A-04`/`ST-01`).** The
+ * pre-return construction factor-sealed only the encryption half, and the
+ * published package positive was signed by the laptop's device key -- a key the
+ * factor never bound -- so the code authenticated an HPKE recipient while a
+ * disconnected authority authenticated the manifest that names every part. An
+ * attacker who signed fabricated parts with their own key and wrapped their own
+ * generation key to the genuine public `archive_pub` reproduced the fresh-rewrap
+ * substitution under Local custody. Now `auth_root` for a never-established
+ * package is a digest committing **both** public halves, the sealed commitment
+ * covers it, and the manifest verifies only under the committed signing
+ * identity -- never under whatever key the package offers.
  */
 const ARCHIVE_WORKSPACE = 'ws_01HZXQ9LOCAL0000000000000';
 const ARCHIVE_SCALAR = unhex('5dab087e624a8a4b79e17f8b83800ee66f3bb1292618b6fd1c2f8b27ff88e0eb');
 const ARCHIVE_PUB = hex(x25519PublicFrom(ARCHIVE_SCALAR));
+/** The archive's manifest-signing half. RFC 8032 §7.1 TEST 1024's keypair. */
+const ARCHIVE_SIGN = {
+  seed: 'f5e5767cf153319517630f226876b86c8160cc583bc013744c6bf255f5cc0ee5',
+  public_key: '278117fc144c72340f67d0f2316e8386ceffbf2b2428c9c51fef7c597f1d426e',
+};
 const ARCHIVE_CODE = 'AZC52QK9FEHC6M7VS01JDA3NY';
 const ARCHIVE_WRONG_CODE = 'AZC52QK9FEHC6M7VS01JDA3NZ';
 const ARCHIVE_SALT = unhex('000102030405060708090a0b0c0d0e0f');
 const ARCHIVE_NONCE = unhex('202122232425262728292a2b');
 const K_ARCHIVE_GEN = unhex('9e0b2f4c7a1d8e364a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a6375');
+const ARCHIVE_WRAP_EPHEMERAL = unhex('7c'.repeat(32));
+
+/**
+ * The never-established `auth_root`: one digest committing both halves of the
+ * archive identity, in the slot a lineage's trust root would fill.
+ *
+ * auth_root = SHA-256( LP("done/archive-root/v1")
+ *                      || LP(hex archive_pub) || LP(hex archive_sign_pub) )
+ *
+ * The commitment formula and the wrap `info` are unchanged -- they bind this
+ * digest exactly as an account package's bind `K_auth` -- so one importer
+ * serves all three lineage states. The signing half deliberately rides the
+ * commitment rather than the envelope's AAD: the commitment is the one value
+ * the attacker cannot seal, and keeping it the sole carrier is what lets the
+ * fresh-mint negative isolate it.
+ */
+const archiveAuthRoot = async (encPub, signPub) =>
+  hex(await sha256(concat(lp(ARCHIVE_ROOT_LABEL), lp(encPub), lp(signPub))));
 
 const archiveKeyFrom = async (code) => {
   const ikm = await crypto.subtle.importKey('raw', utf8(code), 'HKDF', false, ['deriveBits']);
@@ -474,25 +554,40 @@ const archiveKeyFrom = async (code) => {
   );
 };
 
-const archiveAad = (pub = ARCHIVE_PUB) =>
-  concat(lp(ARCHIVE_LABEL), lp(ARCHIVE_WORKSPACE), lp('1'), lp(pub));
+/**
+ * The envelope's AAD, registered with the coverage audit like every other
+ * construction here. It binds the encryption public half so the sealed private
+ * half cannot be offered beside somebody else's public half (the row-14
+ * negative a mutation found missing); the signing public half is bound through
+ * `auth_root` inside the sealed commitment instead, on purpose -- see
+ * `archiveAuthRoot` above.
+ */
+const archiveAad = ({ pub = ARCHIVE_PUB, workspace = ARCHIVE_WORKSPACE, v = '1', label = ARCHIVE_LABEL } = {}) =>
+  concat(
+    ...aadFields('archive envelope', {
+      label,
+      workspace_id: workspace,
+      v,
+      archive_pub: pub,
+    }).map(lp),
+  );
 
-const sealArchive = async (keyBytes, plaintext, pub = ARCHIVE_PUB) => {
+const sealArchive = async (keyBytes, plaintext, aad = {}) => {
   const key = await crypto.subtle.importKey('raw', keyBytes, 'AES-GCM', false, ['encrypt']);
   return new Uint8Array(
     await crypto.subtle.encrypt(
-      { name: 'AES-GCM', iv: ARCHIVE_NONCE, additionalData: archiveAad(pub), tagLength: 128 },
+      { name: 'AES-GCM', iv: ARCHIVE_NONCE, additionalData: archiveAad(aad), tagLength: 128 },
       key,
       plaintext,
     ),
   );
 };
 
-const openArchive = async (keyBytes, ct, pub = ARCHIVE_PUB) => {
+const openArchive = async (keyBytes, ct, aad = {}) => {
   const key = await crypto.subtle.importKey('raw', keyBytes, 'AES-GCM', false, ['decrypt']);
   return new Uint8Array(
     await crypto.subtle.decrypt(
-      { name: 'AES-GCM', iv: ARCHIVE_NONCE, additionalData: archiveAad(pub), tagLength: 128 },
+      { name: 'AES-GCM', iv: ARCHIVE_NONCE, additionalData: archiveAad(aad), tagLength: 128 },
       key,
       ct,
     ),
@@ -563,6 +658,18 @@ const checkKeypairs = async () => {
   if (derived !== KEYS.recovery.r_pub) {
     throw new Error('recovery: R_priv does not derive R_pub.');
   }
+  const sig = await crypto.subtle.sign(
+    { name: 'Ed25519' },
+    await importSigner(ARCHIVE_SIGN.seed),
+    probe,
+  );
+  const ok = await crypto.subtle.verify(
+    { name: 'Ed25519' },
+    await importVerifier(ARCHIVE_SIGN.public_key),
+    sig,
+    probe,
+  );
+  if (!ok) throw new Error('archive signing identity: seed and public key are not one keypair.');
 };
 
 // --- the scenario -------------------------------------------------------------------------
@@ -573,6 +680,33 @@ const OTHER_LINEAGE = 'lin_01J00000000000000000FORGE';
 const LAPTOP = 'cred_01HZXR0000000000000000LAPT';
 const K_G3 = unhex('4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36');
 const EPHEMERAL = unhex('a621b0d7f8e94c3b25a6f0184d7c39be5028f1a6c4d739e0b8154a2c6f03d97e');
+
+// --- the deletion-gate scenario, shared by the model and the published receipt --
+
+const TERMINAL_HEAD = 'aa'.repeat(32);
+const PRIOR_HEAD = 'bb'.repeat(32);
+const MID_HEAD = 'ee'.repeat(32);
+const RECEIVER = 'cred_01HZXR0000000000000000LAPT';
+const PACKAGE_DIGEST = hex(await sha256(concat(lp('retired-package'))));
+
+/**
+ * The worked catch-up: two links from the receiver's authenticated prior head
+ * to the terminal head, and two absences, each named. Published with the
+ * vectors so the accepted receipt reconstructs from its inputs (`FU-05`'s
+ * rule) -- the pre-return `caughtUp` object claimed two absences while
+ * carrying zero entries, and nothing published could have shown it.
+ */
+const CAUGHT_UP_TRANSCRIPT = {
+  v: 1,
+  workspace: WORKSPACE,
+  lineage: LINEAGE,
+  sourceEpoch: 10,
+  links: [
+    { prior: PRIOR_HEAD, head: MID_HEAD },
+    { prior: MID_HEAD, head: TERMINAL_HEAD },
+  ],
+  absences: ['env_01HZXT00000000000000000AAA', 'env_01HZXT00000000000000000BBB'],
+};
 
 /** The signed live head row 9 requires the package to carry, as a digest of that object. */
 const LIVE_HEAD_DIGEST = '2b7f0a9c14e6d3850fa2c51e86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36';
@@ -622,14 +756,44 @@ const HANDOFF_NEGATIVES = [
     why: "A receiver whose accepted head is not the terminal head is not current, and saying so is the whole point -- otherwise 'verified-current' means 'was reachable recently'. It may still qualify, but only by presenting a transcript.",
   },
   {
+    name: 'catchup-of-public-endpoints-alone',
+    falsifies: ['f-4259822-retirement-safe-survivor-gate-undefined'],
+    why: "The pre-return acceptance, kept as the permanent negative (FU-03/A-05). catchup_digest used to be SHA-256(LP(priorHead) || LP(terminalHead)) -- two public values any stale receiver can hash -- beside a bare count, so the actor whose completeness was in question could self-assert it. That exact receipt, digest and knownAbsences: 0 and all, is now refused: a digest with no transcript behind it commits nothing.",
+  },
+  {
     name: 'handoff-with-an-unverifiable-catchup',
     falsifies: ['f-4259822-retirement-safe-survivor-gate-undefined'],
-    why: 'A transcript that does not chain from the prior head the receiver authenticated. Without the prior head bound, any transcript would do, and the catch-up would be a formality.',
+    why: 'A receipt whose catchup_digest does not commit the transcript presented beside it. The receiver signed for verifying one thing and is showing another, and the gate reads only what the signature covers.',
+  },
+  {
+    name: 'catchup-transcript-signed-by-the-receiver',
+    falsifies: ['f-4259822-retirement-safe-survivor-gate-undefined'],
+    why: "The self-assertion attack with a real transcript: the stale receiver writes its own catch-up and signs it with its own credential. The signature is genuine -- that is asserted before the negative runs -- and it verifies under nothing the gate consults, because the transcript's verifier resolves from the lineage's certification in force, never from the answer (FU-06's rule, at this gate).",
+  },
+  {
+    name: 'catchup-transcript-not-from-the-prior-head',
+    falsifies: ['f-4259822-retirement-safe-survivor-gate-undefined'],
+    why: 'A genuinely signed transcript that chains from somewhere else. Without links[0].prior bound to the prior head the receiver authenticated, any transcript would do, and the catch-up would be a formality.',
+  },
+  {
+    name: 'catchup-transcript-with-a-broken-link',
+    falsifies: ['f-4259822-retirement-safe-survivor-gate-undefined'],
+    why: 'An interior link that does not name its predecessor. A chain proof is only a proof at every link; a gap in the middle is the same unreceived content as a gap at the ends, wearing continuity.',
+  },
+  {
+    name: 'catchup-transcript-short-of-the-terminal-head',
+    falsifies: ['f-4259822-retirement-safe-survivor-gate-undefined'],
+    why: 'A genuinely signed transcript that stops before the terminal head. Caught up to almost the end is behind, and a receiver that verified it is not current in either of the two forms the gate accepts.',
   },
   {
     name: 'handoff-with-unenumerated-absences',
     falsifies: ['f-4259822-retirement-safe-survivor-gate-undefined'],
-    why: "A transcript that admits things are missing without naming them. 'Some updates could not be recovered' is not a known-absence list, and a deletion authorized on it destroys the only copy of what was never enumerated.",
+    why: "The pre-return positive's own numbers, kept as the detected negative: a count of two beside an empty list. 'Some updates could not be recovered' is not a known-absence list, and a deletion authorized on it destroys the only copy of what was never enumerated. The count the receiver signs must equal the list the transcript carries.",
+  },
+  {
+    name: 'catchup-absence-without-an-identifier',
+    falsifies: ['f-4259822-retirement-safe-survivor-gate-undefined'],
+    why: 'An absence entry that names nothing. The count-to-list check alone would accept two empty strings as two absences, so each entry must be an identifier -- the gaps are named rather than counted.',
   },
   {
     name: 'handoff-for-another-retired-package',
@@ -660,7 +824,7 @@ const ARCHIVE_NEGATIVES = [
   {
     name: 'archive-under-a-wrong-code',
     falsifies: ['f-745e332-local-archive-portable-wrap-undefined'],
-    why: 'The archive keypair is sealed under the code and nothing else. A wrong code opens neither the identity nor the commitment beside it, which is what "the code that opens it" has to mean once it is a construction rather than a sentence.',
+    why: 'The archive identity is sealed under the code and nothing else. A wrong code opens neither keypair nor the commitment beside them, which is what "the code that opens it" has to mean once it is a construction rather than a sentence.',
   },
   {
     name: 'archive-envelope-repaired-with-another-identity',
@@ -668,14 +832,55 @@ const ARCHIVE_NEGATIVES = [
     why: "Row 14's own negative, at the archive: an envelope presented alongside a public key that is not the one it was sealed for. The identity is in the envelope's AAD, so the pairing is authenticated rather than assumed -- without it, an archive's sealed private half could be offered beside somebody else's public half.",
   },
   {
-    name: 'archive-root-commitment-mismatch',
+    name: 'aad-only-archive-envelope-workspace',
     falsifies: ['f-745e332-local-archive-portable-wrap-undefined'],
-    why: "The same anchor as an account package, at the state that has no external authority to appeal to. The archive identity's own public key fills the slot a lineage would, so a manifest naming a different identity does not match the commitment the code unsealed.",
+    why: "The AAD's workspace binding, isolated from the key derivation's. The HKDF info binds the workspace too, so a negative that changed both would be rescued by neither; this one opens with the genuine derived key and an AAD claiming another workspace, so only the AAD can refuse it.",
+  },
+  {
+    name: 'aad-only-archive-envelope-version',
+    falsifies: ['f-745e332-local-archive-portable-wrap-undefined'],
+    why: 'The envelope version, bound so a v1 envelope cannot be presented as a later one whose rules differ.',
+  },
+  {
+    name: 'aad-only-renumbered-archive-label',
+    falsifies: ['f-745e332-local-archive-portable-wrap-undefined'],
+    why: 'The construction label, the same discipline as every other AAD here.',
+  },
+  {
+    name: 'freshly-minted-archive-under-an-attacker-root',
+    falsifies: [
+      'f-745e332-local-archive-portable-wrap-undefined',
+      'f-745e332-package-root-rewrap-substitution',
+    ],
+    why: "The account path's fresh-mint attack, at the state S0-9 convicted (FU-02/A-04/ST-01). HPKE base mode needs only archive_pub, which travels in the archive; Ed25519 verification needs only the signing key the manifest names, and the attacker names their own. So the package is internally consistent end to end -- its wrap round-trips under the genuine archive scalar and its manifest verifies under the signing key its auth_root commits, both asserted before the negative runs. Only the commitment sealed under the code separates it from a real archive, because the attacker's auth_root commits a signing identity the factor never sealed.",
+  },
+  {
+    name: 'archive-refused-before-any-unwrap',
+    falsifies: [
+      'f-745e332-local-archive-portable-wrap-undefined',
+      'f-745e332-package-root-rewrap-substitution',
+    ],
+    why: 'Order, observed rather than inferred, exactly as the account path observes it: the commitment is checked before the manifest signer is consulted and before a single generation unwrap runs, so an attacker-rooted archive is refused without opening any attacker-chosen content.',
+  },
+  {
+    name: 'archive-manifest-signed-by-the-archiving-device',
+    falsifies: ['f-745e332-local-archive-portable-wrap-undefined'],
+    why: "The pre-return world, kept as the permanent negative (FU-02): the shipped positive verified the archive manifest under the laptop's device key, an authority the archive factor never bound. Here the device's signature over otherwise-genuine fields -- genuine, and asserted to be -- is refused, because the manifest verifies only under the signing identity the sealed commitment carries, never under whatever key the package offers.",
+  },
+  {
+    name: 'archive-signing-identity-not-committed-by-the-root',
+    falsifies: ['f-745e332-local-archive-portable-wrap-undefined'],
+    why: 'The second door the same conviction opens, closed by the same resolution rule: keep the genuine auth_root so the commitment agrees, and present your own signing key beside it. The manifest signer must be the identity the commitment-checked auth_root itself commits, so a signing key the root does not derive verifies nothing -- however genuine its signature, and that it is genuine is asserted first.',
+  },
+  {
+    name: 'archive-parts-not-the-manifests',
+    falsifies: ['f-745e332-local-archive-portable-wrap-undefined'],
+    why: 'The composed importer checks the parts against the manifest the factor-committed identity signed, on the Local path -- the check the pre-return isolated opener never made, because it never met the manifest at all.',
   },
   {
     name: 'archive-wrap-from-another-workspace',
     falsifies: ['f-745e332-local-archive-portable-wrap-undefined'],
-    why: 'The generation wrap binds the workspace, so an archive of one Local workspace opens no generation of another. Independent of the factor and of the root, which is what makes the four failures separable rather than one check wearing four hats.',
+    why: 'The generation wrap binds the workspace, so an archive of one Local workspace opens no generation of another. The envelope and manifest agree with the mutated workspace on purpose -- sealed and signed for it -- so the refusal is the wrap’s alone rather than one check wearing four hats.',
   },
   {
     name: 'archive-wrap-of-another-generation',
@@ -867,88 +1072,6 @@ const verify = async (doc) => {
     throw new Error('the honest package no longer imports.');
   }
 
-  // --- the Local archive, restored from a code and nothing else ------------------
-
-  /**
-   * The case §9.3 exists for: total device loss, no account, no provider.
-   *
-   * Everything below is derived from the archive bytes and the user's code.
-   * There is deliberately no `KEYS` lookup in this block -- if a value could be
-   * fetched from somewhere else, the restore would not be proving what it
-   * claims to prove.
-   */
-  const archiveBase = { workspace: ARCHIVE_WORKSPACE, lineage: '', authRoot: ARCHIVE_PUB, gen: 1 };
-  const archiveCommitment = await rootCommitment(archiveBase);
-  const archiveEnvelope = await sealArchive(
-    await archiveKeyFrom(ARCHIVE_CODE),
-    concat(ARCHIVE_SCALAR, unhex(archiveCommitment)),
-  );
-  const archiveWrap = await hpkeSeal(
-    unhex('7c'.repeat(32)),
-    unhex(ARCHIVE_PUB),
-    wrapInfo(archiveBase),
-    K_ARCHIVE_GEN,
-  );
-
-  /**
-   * A clean device: the code and the archive bytes, and nothing else at all.
-   *
-   * `sealedFor` exists so the four failures are genuinely separable. The
-   * commitment and the wrap's `info` bind overlapping fields, so changing the
-   * workspace refuses at *both* -- which is defence in depth in production and
-   * a negative that isolates nothing in a test. Supplying an envelope sealed
-   * for the mutated manifest lets the commitment agree, forcing the refusal
-   * onto the wrap alone. Row 12's finding, at a fourth object.
-   */
-  const restoreArchive = async ({
-    code = ARCHIVE_CODE,
-    manifest = archiveBase,
-    archiveWrapIn = archiveWrap,
-    sealedFor = null,
-  } = {}) => {
-    const envelope =
-      sealedFor === null
-        ? archiveEnvelope
-        : await sealArchive(
-            await archiveKeyFrom(ARCHIVE_CODE),
-            concat(ARCHIVE_SCALAR, unhex(await rootCommitment(sealedFor))),
-          );
-    const unsealed = await openArchive(await archiveKeyFrom(code), envelope);
-    const scalar = unsealed.subarray(0, 32);
-    const sealedCommitment = hex(unsealed.subarray(32));
-    if ((await rootCommitment(manifest)) !== sealedCommitment) {
-      throw new Error('archive root commitment does not match the manifest');
-    }
-    return hpkeOpen(archiveWrapIn.enc, scalar, wrapInfo(manifest), archiveWrapIn.ct);
-  };
-
-  const restored = await restoreArchive();
-  if (hex(restored) !== hex(K_ARCHIVE_GEN)) {
-    throw new Error('the archive does not restore from its code alone.');
-  }
-
-  await refuses('archive-under-a-wrong-code', () => restoreArchive({ code: ARCHIVE_WRONG_CODE }));
-  await refuses('archive-envelope-repaired-with-another-identity', async () =>
-    openArchive(
-      await archiveKeyFrom(ARCHIVE_CODE),
-      archiveEnvelope,
-      hex(x25519PublicFrom(unhex('4c'.repeat(32)))),
-    ),
-  );
-  await refuses('archive-root-commitment-mismatch', () =>
-    restoreArchive({ manifest: { ...archiveBase, authRoot: KEYS.forged_root.public_key } }),
-  );
-  // These two carry a matching commitment on purpose, so the refusal is the
-  // wrap's and not the anchor's a second time.
-  const otherWorkspace = { ...archiveBase, workspace: 'ws_01J0000000000000000000000A' };
-  await refuses('archive-wrap-from-another-workspace', () =>
-    restoreArchive({ manifest: otherWorkspace, sealedFor: otherWorkspace }),
-  );
-  const otherGen = { ...archiveBase, gen: 2 };
-  await refuses('archive-wrap-of-another-generation', () =>
-    restoreArchive({ manifest: otherGen, sealedFor: otherGen }),
-  );
-
   for (const [name, patch] of [
     ['substituted-trust-root', { authRoot: KEYS.forged_root.public_key }],
     ['substituted-lineage', { lineage: OTHER_LINEAGE }],
@@ -994,12 +1117,356 @@ const verify = async (doc) => {
   };
   await verifyManifest(retiredFields, retired.expected.manifest_signature, KEYS.k_auth.public_key);
 
-  // --- the deletion gate ---------------------------------------------------------
+  // --- the Local archive: one composed importer over the published package -------
 
-  const TERMINAL_HEAD = 'aa'.repeat(32);
-  const PACKAGE_DIGEST = hex(await sha256(concat(lp('retired-package'))));
-  const RECEIVER = 'cred_01HZXR0000000000000000LAPT';
-  const PRIOR_HEAD = 'bb'.repeat(32);
+  /**
+   * The case §9.3 exists for: total device loss, no account, no provider.
+   *
+   * The restore below consumes the **published vector** and the user's code,
+   * and nothing else -- the reconstruction rule `FU-05` set, at the package
+   * whose two halves `S0-9` caught living apart (`FU-02`/`A-04`/`ST-01`): the
+   * pre-return generator proved envelope-to-wrap opening in one block and
+   * verified a device-signed manifest in another, and no rule joined the
+   * authorities. This is the join, executed: one importer, §5's order, run
+   * over the exact bytes the vector publishes.
+   */
+  const aIn = archive.inputs;
+  const aId = aIn.archive;
+
+  // The identity's root digest recomputes from the published halves, and the
+  // published artifacts recompute from the published inputs.
+  const aAuthRoot = await archiveAuthRoot(aId.archive_pub, aId.archive_sign_pub);
+  if (aAuthRoot !== archive.derived.auth_root) {
+    throw new Error("the published auth_root is not the archive identity's own digest.");
+  }
+  const archiveManifest = {
+    v: aIn.v,
+    workspace: aIn.workspace_id,
+    lineage: aIn.lineage_id,
+    lineageState: aIn.lineage_state,
+    authRoot: archive.derived.auth_root,
+    lineageHeadDigest: aIn.lineage_head_digest,
+    epoch: aIn.epoch,
+    parts: archive.derived.parts_digest,
+    assembledBy: aIn.assembled_by,
+  };
+  const archiveBase = {
+    workspace: aIn.workspace_id,
+    lineage: aIn.lineage_id,
+    authRoot: archive.derived.auth_root,
+    gen: aId.generation.gen,
+  };
+  const archiveSalt = unhex(aId.hkdf_salt);
+  const rebuiltEnvelope = await sealArchive(
+    await archiveKeyFrom(aId.code, { salt: archiveSalt }),
+    concat(
+      unhex(aId.encryption_scalar),
+      unhex(aId.signing_seed),
+      unhex(await rootCommitment(archiveBase)),
+    ),
+    { pub: aId.archive_pub },
+  );
+  if (hex(rebuiltEnvelope) !== archive.expected.envelope_ct) {
+    throw new Error('the archive envelope does not reconstruct from its published inputs.');
+  }
+  const rebuiltWrap = await hpkeSeal(
+    unhex(aId.hpke_ephemeral_scalar),
+    unhex(aId.archive_pub),
+    wrapInfo(archiveBase),
+    unhex(aId.generation.k_g),
+  );
+  if (
+    rebuiltWrap.enc !== archive.expected.generation_wrap.enc ||
+    rebuiltWrap.ct !== archive.expected.generation_wrap.ct
+  ) {
+    throw new Error('the archive generation wrap does not reconstruct from its published inputs.');
+  }
+
+  const signManifest = async (seed, fields) =>
+    hex(
+      new Uint8Array(
+        await crypto.subtle.sign(
+          { name: 'Ed25519' },
+          await importSigner(seed),
+          manifestMessage(fields),
+        ),
+      ),
+    );
+
+  /**
+   * The one importer §5 orders, at the never-established state.
+   *
+   * The verification key for the manifest is **resolved, not read**: the code
+   * opens the envelope, the envelope carries the commitment, the commitment
+   * covers `auth_root`, and `auth_root` is the digest of the two public
+   * halves -- so the signing identity the manifest must verify under is
+   * factor-authenticated before the signature is ever checked. A key the
+   * package offers on its own authority is consulted by nothing.
+   */
+  const importLocalArchive = async ({
+    code = aId.code,
+    encPub = aId.archive_pub,
+    signPub = aId.archive_sign_pub,
+    envelope = archive.expected.envelope_ct,
+    fields = archiveManifest,
+    signature = archive.expected.manifest_signature,
+    parts = aIn.parts,
+    wrap = archive.expected.generation_wrap,
+    gen = aId.generation.gen,
+    observe = null,
+  } = {}) => {
+    // 1. The code opens the identity. The AAD binds the encryption half.
+    const unsealed = await openArchive(
+      await archiveKeyFrom(code, { salt: archiveSalt, workspace: fields.workspace }),
+      unhex(envelope),
+      { pub: encPub, workspace: fields.workspace },
+    );
+    const scalar = unsealed.subarray(0, 32);
+    const signSeed = hex(unsealed.subarray(32, 64));
+    const sealedCommitment = hex(unsealed.subarray(64));
+    // 2. The commitment is the check -- before the manifest's signer is
+    //    consulted and before any unwrap is attempted.
+    const claimed = await rootCommitment({
+      workspace: fields.workspace,
+      lineage: fields.lineage,
+      authRoot: fields.authRoot,
+    });
+    if (claimed !== sealedCommitment) {
+      throw new Error('archive root commitment does not match the manifest; refused before unwrap');
+    }
+    if ((await archiveAuthRoot(encPub, signPub)) !== fields.authRoot) {
+      throw new Error("the manifest's auth_root is not the archive identity's digest");
+    }
+    // 3. The manifest verifies under the committed signing identity alone.
+    if (observe) observe.signerConsulted = true;
+    await verifyManifest(fields, signature, signPub);
+    // 4. Every part is what the manifest says it is.
+    if ((await partsDigest(parts)) !== fields.parts) {
+      throw new Error('archive parts digest does not match the manifest');
+    }
+    // 5. Only now, the unwrap.
+    if (observe) observe.unwrapped = true;
+    const key = await hpkeOpen(
+      wrap.enc,
+      scalar,
+      wrapInfo({
+        workspace: fields.workspace,
+        lineage: fields.lineage,
+        authRoot: fields.authRoot,
+        gen,
+      }),
+      wrap.ct,
+    );
+    return { key, signSeed };
+  };
+
+  const restored = await importLocalArchive();
+  if (hex(restored.key) !== aId.generation.k_g) {
+    throw new Error('the archive does not restore from its code and the published bytes alone.');
+  }
+  if (restored.signSeed !== aId.signing_seed) {
+    throw new Error('the archive identity does not restore whole: the signing half is missing.');
+  }
+
+  await refuses('archive-under-a-wrong-code', () =>
+    importLocalArchive({ code: ARCHIVE_WRONG_CODE }),
+  );
+
+  const archiveKey = await archiveKeyFrom(aId.code, { salt: archiveSalt });
+  const archiveEnvelopeBytes = unhex(archive.expected.envelope_ct);
+  await refuses('archive-envelope-repaired-with-another-identity', () =>
+    openArchive(archiveKey, archiveEnvelopeBytes, {
+      pub: hex(x25519PublicFrom(unhex('4c'.repeat(32)))),
+    }),
+  );
+  await refuses('aad-only-archive-envelope-workspace', () =>
+    openArchive(archiveKey, archiveEnvelopeBytes, {
+      pub: aId.archive_pub,
+      workspace: 'ws_01J0000000000000000000000A',
+    }),
+  );
+  await refuses('aad-only-archive-envelope-version', () =>
+    openArchive(archiveKey, archiveEnvelopeBytes, { pub: aId.archive_pub, v: '2' }),
+  );
+  await refuses('aad-only-renumbered-archive-label', () =>
+    openArchive(archiveKey, archiveEnvelopeBytes, {
+      pub: aId.archive_pub,
+      label: 'done/archive/v2',
+    }),
+  );
+
+  /**
+   * The attacker's archive, built end to end and asserted to be internally
+   * consistent -- because a negative that refuses a malformed package proves
+   * nothing. The wrap round-trips under the genuine restored scalar, and the
+   * manifest verifies under the signing key its own `auth_root` commits. Only
+   * the commitment sealed under the code separates it from a real archive.
+   */
+  const attackerArchiveRoot = await archiveAuthRoot(aId.archive_pub, KEYS.forged_root.public_key);
+  const attackerArchiveFields = { ...archiveManifest, authRoot: attackerArchiveRoot };
+  const attackerArchiveBase = { ...archiveBase, authRoot: attackerArchiveRoot };
+  const attackerArchiveKey = unhex('0d'.repeat(32));
+  const attackerArchiveWrap = await hpkeSeal(
+    unhex('5e'.repeat(32)),
+    unhex(aId.archive_pub), // the GENUINE archive identity. It is public.
+    wrapInfo(attackerArchiveBase),
+    attackerArchiveKey,
+  );
+  const attackerOpenedArchive = await hpkeOpen(
+    attackerArchiveWrap.enc,
+    unhex(aId.encryption_scalar),
+    wrapInfo(attackerArchiveBase),
+    attackerArchiveWrap.ct,
+  );
+  if (hex(attackerOpenedArchive) !== hex(attackerArchiveKey)) {
+    throw new Error('the attacker archive does not round-trip; the negative would prove nothing.');
+  }
+  const attackerArchiveSignature = await signManifest(
+    KEYS.forged_root.seed,
+    attackerArchiveFields,
+  );
+  const attackerSigOk = await crypto.subtle.verify(
+    { name: 'Ed25519' },
+    await importVerifier(KEYS.forged_root.public_key),
+    unhex(attackerArchiveSignature),
+    manifestMessage(attackerArchiveFields),
+  );
+  if (!attackerSigOk) {
+    throw new Error('the attacker manifest is not genuinely signed; the negative would prove nothing.');
+  }
+  const attackerArchivePackage = {
+    signPub: KEYS.forged_root.public_key,
+    fields: attackerArchiveFields,
+    signature: attackerArchiveSignature,
+    wrap: attackerArchiveWrap,
+  };
+  await refuses('freshly-minted-archive-under-an-attacker-root', () =>
+    importLocalArchive(attackerArchivePackage),
+  );
+
+  /**
+   * Order, observed rather than inferred, as the account path observes it: the
+   * probes below flip only if the importer reaches the signer or the unwrap,
+   * and the assertion is that a refused archive reached neither.
+   */
+  const observedArchive = { signerConsulted: false, unwrapped: false };
+  await refuses('archive-refused-before-any-unwrap', () =>
+    importLocalArchive({ ...attackerArchivePackage, observe: observedArchive }),
+  );
+  if (observedArchive.signerConsulted || observedArchive.unwrapped) {
+    throw new Error(
+      'The archive importer consulted the package signer or ran an unwrap before the commitment ' +
+        'was checked. An archive under an attacker-chosen root would have been trusted before ' +
+        'anything noticed.',
+    );
+  }
+
+  // The pre-return world, kept as the permanent negative: the archiving
+  // device's own signature over otherwise-genuine fields -- genuine, and
+  // asserted to be, under the key the factor never bound.
+  const deviceSignature = await signManifest(KEYS.laptop.seed, archiveManifest);
+  const deviceSigOk = await crypto.subtle.verify(
+    { name: 'Ed25519' },
+    await importVerifier(KEYS.laptop.public_key),
+    unhex(deviceSignature),
+    manifestMessage(archiveManifest),
+  );
+  if (!deviceSigOk) {
+    throw new Error('the device-signed manifest is not genuinely signed; the negative would prove nothing.');
+  }
+  await refuses('archive-manifest-signed-by-the-archiving-device', () =>
+    importLocalArchive({ signature: deviceSignature }),
+  );
+
+  /**
+   * The second door: keep the genuine `auth_root` so the commitment agrees,
+   * and present an uncommitted signing key beside it, with a manifest signed
+   * by that key and a fresh wrap agreeing with the genuine root. Everything
+   * verifies under the keys it names -- asserted below -- and the one rule
+   * that refuses it is that the signer must be the identity the auth_root
+   * itself commits.
+   */
+  const uncommittedSignature = await signManifest(KEYS.forged_root.seed, archiveManifest);
+  const uncommittedSigOk = await crypto.subtle.verify(
+    { name: 'Ed25519' },
+    await importVerifier(KEYS.forged_root.public_key),
+    unhex(uncommittedSignature),
+    manifestMessage(archiveManifest),
+  );
+  if (!uncommittedSigOk) {
+    throw new Error('the uncommitted-signer manifest is not genuinely signed; the negative would prove nothing.');
+  }
+  const uncommittedWrap = await hpkeSeal(
+    unhex('6f'.repeat(32)),
+    unhex(aId.archive_pub),
+    wrapInfo(archiveBase), // the GENUINE root: the commitment must agree
+    attackerArchiveKey,
+  );
+  const uncommittedOpened = await hpkeOpen(
+    uncommittedWrap.enc,
+    unhex(aId.encryption_scalar),
+    wrapInfo(archiveBase),
+    uncommittedWrap.ct,
+  );
+  if (hex(uncommittedOpened) !== hex(attackerArchiveKey)) {
+    throw new Error('the uncommitted-signer wrap does not round-trip; the negative would prove nothing.');
+  }
+  await refuses('archive-signing-identity-not-committed-by-the-root', () =>
+    importLocalArchive({
+      signPub: KEYS.forged_root.public_key,
+      signature: uncommittedSignature,
+      wrap: uncommittedWrap,
+    }),
+  );
+
+  await refuses('archive-parts-not-the-manifests', () =>
+    importLocalArchive({
+      parts: aIn.parts.map((p) => (p.name === 'generations' ? { ...p, count: 2 } : p)),
+    }),
+  );
+
+  /**
+   * These two carry an envelope sealed for and a manifest signed for the
+   * mutated package on purpose, so the commitment and the signature agree and
+   * the refusal is the wrap's alone. Row 12's finding, at a fourth object --
+   * and the inverse of the same discipline is what the fresh-mint negative
+   * needed: there the wrap agrees and only the commitment refuses.
+   */
+  const composedFor = async (fields, gen) => ({
+    fields,
+    gen,
+    envelope: hex(
+      await sealArchive(
+        await archiveKeyFrom(aId.code, { salt: archiveSalt, workspace: fields.workspace }),
+        concat(
+          unhex(aId.encryption_scalar),
+          unhex(aId.signing_seed),
+          unhex(
+            await rootCommitment({
+              workspace: fields.workspace,
+              lineage: fields.lineage,
+              authRoot: fields.authRoot,
+            }),
+          ),
+        ),
+        { pub: aId.archive_pub, workspace: fields.workspace },
+      ),
+    ),
+    signature: await signManifest(aId.signing_seed, fields),
+  });
+  await refuses('archive-wrap-from-another-workspace', async () =>
+    importLocalArchive(
+      await composedFor(
+        { ...archiveManifest, workspace: 'ws_01J0000000000000000000000A' },
+        aId.generation.gen,
+      ),
+    ),
+  );
+  await refuses('archive-wrap-of-another-generation', async () =>
+    importLocalArchive(await composedFor(archiveManifest, 2)),
+  );
+
+  // --- the deletion gate ---------------------------------------------------------
 
   const signHandoff = async (fields, seed = KEYS.laptop.seed) =>
     new Uint8Array(
@@ -1007,6 +1474,14 @@ const verify = async (doc) => {
         { name: 'Ed25519' },
         await importSigner(seed),
         handoffMessage(fields),
+      ),
+    );
+  const signTranscript = async (t, seed = KEYS.k_auth.seed) =>
+    new Uint8Array(
+      await crypto.subtle.sign(
+        { name: 'Ed25519' },
+        await importSigner(seed),
+        transcriptMessage(t),
       ),
     );
 
@@ -1018,8 +1493,27 @@ const verify = async (doc) => {
    * Retaining data nobody wanted is recoverable; deleting data somebody needed
    * is not, so the ambiguous case keeps it and the record says the handoff
    * never completed rather than claiming it did.
+   *
+   * For a behind receiver, the receipt is only as good as the transcript it
+   * commits (`FU-03`). `certificationInForce` is the transcript's verifier,
+   * resolved by the caller from the lineage's client-authenticated
+   * certification -- an input, never a key read out of the answer (`FU-06`'s
+   * rule, at this gate). The receiver's own credential can never fill it: the
+   * receiver signs `H` for having verified the transcript, and the source
+   * authority signs the transcript itself, so neither actor can play both
+   * parts.
    */
-  const authorizeDeletion = async (klass, handoff, sig, verifierKey = KEYS.laptop.public_key) => {
+  const authorizeDeletion = async (
+    klass,
+    handoff,
+    sig,
+    {
+      verifierKey = KEYS.laptop.public_key,
+      transcript = null,
+      transcriptSig = null,
+      certificationInForce = KEYS.k_auth.public_key,
+    } = {},
+  ) => {
     if (!DELETION_CLASSES.includes(klass)) throw new Error(`unknown deletion class ${klass}`);
     if (handoff === null) throw new Error('no terminal handoff: bytes retained');
     if (handoff.packageDigest !== PACKAGE_DIGEST) throw new Error('handoff names another package');
@@ -1034,11 +1528,31 @@ const verify = async (doc) => {
     if (!current) {
       if (handoff.catchupDigest === '')
         throw new Error('receiver is behind and presented no catch-up');
-      const expected = hex(await sha256(concat(lp(handoff.priorHead), lp(handoff.terminalHead))));
-      if (handoff.catchupDigest !== expected)
-        throw new Error('catch-up does not chain from the prior head');
-      if (handoff.knownAbsences < 0)
-        throw new Error('absences are summarised rather than enumerated');
+      if (transcript === null || transcriptSig === null)
+        throw new Error('a catch-up digest with no transcript behind it is a self-assertion');
+      const committed = hex(await sha256(transcriptMessage(transcript)));
+      if (handoff.catchupDigest !== committed)
+        throw new Error('the receipt does not commit the transcript presented beside it');
+      const tOk = await crypto.subtle.verify(
+        { name: 'Ed25519' },
+        await importVerifier(certificationInForce),
+        transcriptSig,
+        transcriptMessage(transcript),
+      );
+      if (!tOk)
+        throw new Error("the transcript does not verify under the lineage's certification in force");
+      if (transcript.links.length === 0 || transcript.links[0].prior !== handoff.priorHead)
+        throw new Error('the transcript does not chain from the prior head the receiver authenticated');
+      for (let i = 1; i < transcript.links.length; i += 1) {
+        if (transcript.links[i].prior !== transcript.links[i - 1].head)
+          throw new Error('a transcript link does not chain from its predecessor');
+      }
+      if (transcript.links[transcript.links.length - 1].head !== handoff.terminalHead)
+        throw new Error('the transcript stops short of the terminal head');
+      if (transcript.absences.some((a) => a === ''))
+        throw new Error('an absence without an identifier is a summary, not an enumeration');
+      if (handoff.knownAbsences !== transcript.absences.length)
+        throw new Error('the signed absence count does not match the enumerated list');
     }
     return klass;
   };
@@ -1061,14 +1575,32 @@ const verify = async (doc) => {
     }
   }
 
-  // Form two: behind, but with a transcript that chains and enumerates.
+  // Form two: behind, with a transcript that is signed by the certification in
+  // force, chains from the receiver's own prior head to the terminal head, and
+  // names both of its absences -- the count the receiver signs is checked
+  // against the list.
+  const caughtUpSig = await signTranscript(CAUGHT_UP_TRANSCRIPT);
   const caughtUp = {
     ...currentHandoff,
     priorHead: PRIOR_HEAD,
-    catchupDigest: hex(await sha256(concat(lp(PRIOR_HEAD), lp(TERMINAL_HEAD)))),
-    knownAbsences: 2,
+    catchupDigest: hex(await sha256(transcriptMessage(CAUGHT_UP_TRANSCRIPT))),
+    knownAbsences: CAUGHT_UP_TRANSCRIPT.absences.length,
   };
-  await authorizeDeletion('primary', caughtUp, await signHandoff(caughtUp));
+  await authorizeDeletion('primary', caughtUp, await signHandoff(caughtUp), {
+    transcript: CAUGHT_UP_TRANSCRIPT,
+    transcriptSig: caughtUpSig,
+  });
+
+  /** A receipt whose H commits the given transcript, receiver-signed. */
+  const receiptFor = async (t, knownAbsences = t.absences.length) => {
+    const h = {
+      ...currentHandoff,
+      priorHead: PRIOR_HEAD,
+      catchupDigest: hex(await sha256(transcriptMessage(t))),
+      knownAbsences,
+    };
+    return { h, hSig: await signHandoff(h), transcript: t, transcriptSig: await signTranscript(t) };
+  };
 
   await refuses('deletion-without-a-handoff', () =>
     authorizeDeletion('primary', null, new Uint8Array(64)),
@@ -1077,13 +1609,82 @@ const verify = async (doc) => {
     const behind = { ...currentHandoff, priorHead: PRIOR_HEAD };
     return authorizeDeletion('primary', behind, await signHandoff(behind));
   });
+  await refuses('catchup-of-public-endpoints-alone', async () => {
+    // The pre-return acceptance, byte for byte: a digest over two public
+    // heads, a bare count, and nothing else -- computable by the receiver.
+    const selfAsserted = {
+      ...currentHandoff,
+      priorHead: PRIOR_HEAD,
+      catchupDigest: hex(await sha256(concat(lp(PRIOR_HEAD), lp(TERMINAL_HEAD)))),
+      knownAbsences: 0,
+    };
+    return authorizeDeletion('primary', selfAsserted, await signHandoff(selfAsserted));
+  });
   await refuses('handoff-with-an-unverifiable-catchup', async () => {
     const bad = { ...caughtUp, catchupDigest: 'cc'.repeat(32) };
-    return authorizeDeletion('primary', bad, await signHandoff(bad));
+    return authorizeDeletion('primary', bad, await signHandoff(bad), {
+      transcript: CAUGHT_UP_TRANSCRIPT,
+      transcriptSig: caughtUpSig,
+    });
+  });
+
+  // The receiver-signed transcript is a genuine signature, and that is
+  // asserted before the negative runs -- the refusal must be about whose key
+  // it is, not whether it verifies.
+  const receiverSignedTranscript = await signTranscript(CAUGHT_UP_TRANSCRIPT, KEYS.laptop.seed);
+  const receiverSigGenuine = await crypto.subtle.verify(
+    { name: 'Ed25519' },
+    await importVerifier(KEYS.laptop.public_key),
+    receiverSignedTranscript,
+    transcriptMessage(CAUGHT_UP_TRANSCRIPT),
+  );
+  if (!receiverSigGenuine) {
+    throw new Error('the receiver-signed transcript is not genuine; the negative would prove nothing.');
+  }
+  await refuses('catchup-transcript-signed-by-the-receiver', async () =>
+    authorizeDeletion('primary', caughtUp, await signHandoff(caughtUp), {
+      transcript: CAUGHT_UP_TRANSCRIPT,
+      transcriptSig: receiverSignedTranscript,
+    }),
+  );
+
+  await refuses('catchup-transcript-not-from-the-prior-head', async () => {
+    const t = {
+      ...CAUGHT_UP_TRANSCRIPT,
+      links: [
+        { prior: '99'.repeat(32), head: MID_HEAD },
+        { prior: MID_HEAD, head: TERMINAL_HEAD },
+      ],
+    };
+    const { h, hSig, transcript, transcriptSig } = await receiptFor(t);
+    return authorizeDeletion('primary', h, hSig, { transcript, transcriptSig });
+  });
+  await refuses('catchup-transcript-with-a-broken-link', async () => {
+    const t = {
+      ...CAUGHT_UP_TRANSCRIPT,
+      links: [
+        { prior: PRIOR_HEAD, head: MID_HEAD },
+        { prior: '99'.repeat(32), head: TERMINAL_HEAD },
+      ],
+    };
+    const { h, hSig, transcript, transcriptSig } = await receiptFor(t);
+    return authorizeDeletion('primary', h, hSig, { transcript, transcriptSig });
+  });
+  await refuses('catchup-transcript-short-of-the-terminal-head', async () => {
+    const t = { ...CAUGHT_UP_TRANSCRIPT, links: [{ prior: PRIOR_HEAD, head: MID_HEAD }] };
+    const { h, hSig, transcript, transcriptSig } = await receiptFor(t);
+    return authorizeDeletion('primary', h, hSig, { transcript, transcriptSig });
   });
   await refuses('handoff-with-unenumerated-absences', async () => {
-    const vague = { ...caughtUp, knownAbsences: -1 };
-    return authorizeDeletion('primary', vague, await signHandoff(vague));
+    // The pre-return positive's own numbers: two claimed, none named.
+    const t = { ...CAUGHT_UP_TRANSCRIPT, absences: [] };
+    const { h, hSig, transcript, transcriptSig } = await receiptFor(t, 2);
+    return authorizeDeletion('primary', h, hSig, { transcript, transcriptSig });
+  });
+  await refuses('catchup-absence-without-an-identifier', async () => {
+    const t = { ...CAUGHT_UP_TRANSCRIPT, absences: [CAUGHT_UP_TRANSCRIPT.absences[0], ''] };
+    const { h, hSig, transcript, transcriptSig } = await receiptFor(t);
+    return authorizeDeletion('primary', h, hSig, { transcript, transcriptSig });
   });
   await refuses('handoff-for-another-retired-package', async () => {
     const other = { ...currentHandoff, packageDigest: 'dd'.repeat(32) };
@@ -1108,19 +1709,6 @@ const verify = async (doc) => {
   await refuses('retired-manifest-under-the-assembling-credential', () =>
     verifyManifest(retiredFields, retired.expected.manifest_signature, KEYS.laptop.public_key),
   );
-
-  const archiveFields = {
-    v: 1,
-    workspace: 'ws_01HZXQ9LOCAL0000000000000',
-    lineage: '',
-    lineageState: 'never-established',
-    authRoot: KEYS.laptop.public_key,
-    lineageHeadDigest: '',
-    epoch: 0,
-    parts: archive.derived.parts_digest,
-    assembledBy: LAPTOP,
-  };
-  await verifyManifest(archiveFields, archive.expected.manifest_signature, KEYS.laptop.public_key);
 
   await refuses('retired-presented-as-live', () =>
     verifyManifest(
@@ -1232,12 +1820,31 @@ const main = async () => {
     parts: retiredParts,
     assembledBy: 'service',
   };
+  // The Local archive's whole authority chain, assembled here so the vector
+  // publishes every input the composed importer consumes (S0-6 return, FU-02):
+  // the code seals both private halves beside the commitment, auth_root is the
+  // identity's own digest, and the manifest is signed by the archive's signing
+  // half rather than by any device key.
+  const archiveRoot = await archiveAuthRoot(ARCHIVE_PUB, ARCHIVE_SIGN.public_key);
+  const archiveBase = { workspace: ARCHIVE_WORKSPACE, lineage: '', authRoot: archiveRoot, gen: 1 };
+  const archiveCommitment = await rootCommitment(archiveBase);
+  const archiveEnvelope = await sealArchive(
+    await archiveKeyFrom(ARCHIVE_CODE),
+    concat(ARCHIVE_SCALAR, unhex(ARCHIVE_SIGN.seed), unhex(archiveCommitment)),
+  );
+  const archiveWrap = await hpkeSeal(
+    ARCHIVE_WRAP_EPHEMERAL,
+    unhex(ARCHIVE_PUB),
+    wrapInfo(archiveBase),
+    K_ARCHIVE_GEN,
+  );
+  const archiveSigner = await importSigner(ARCHIVE_SIGN.seed);
   const archiveFields = {
     v: 1,
-    workspace: 'ws_01HZXQ9LOCAL0000000000000',
+    workspace: ARCHIVE_WORKSPACE,
     lineage: '',
     lineageState: 'never-established',
-    authRoot: KEYS.laptop.public_key,
+    authRoot: archiveRoot,
     lineageHeadDigest: '',
     epoch: 0,
     parts: archiveParts,
@@ -1288,18 +1895,39 @@ const main = async () => {
     },
     {
       name: 'never-established-archive',
-      why: '§9.3’s fidelity archive of a Local workspace, which is §13.5’s third lineage state rather than a fourth artifact. No epochs, no head, no suffix and an empty lineage; the archiving device is the assembler, and **what authenticates it is the code that opens it** rather than any authority, because there is none to appeal to.',
+      why: '§9.3’s fidelity archive of a Local workspace, which is §13.5’s third lineage state rather than a fourth artifact. No epochs, no head, no suffix and an empty lineage; the archiving device is the assembler, and **what authenticates it is the code that opens it** — now for the manifest too (`S0-6` return, `FU-02`): `auth_root` is the digest of both public halves of the factor-sealed archive identity, the manifest verifies only under the committed signing half, and the composed importer is run over exactly this published package.',
       inputs: {
-        ...archiveFields,
+        v: 1,
+        workspace_id: ARCHIVE_WORKSPACE,
+        lineage_id: '',
         lineage_state: 'never-established',
+        lineage_head_digest: '',
+        epoch: 0,
         assembled_by: LAPTOP,
         parts: ARCHIVE_PARTS,
+        archive: {
+          code: ARCHIVE_CODE,
+          hkdf_salt: hex(ARCHIVE_SALT),
+          nonce: hex(ARCHIVE_NONCE),
+          encryption_scalar: hex(ARCHIVE_SCALAR),
+          signing_seed: ARCHIVE_SIGN.seed,
+          archive_pub: ARCHIVE_PUB,
+          archive_sign_pub: ARCHIVE_SIGN.public_key,
+          generation: { gen: 1, k_g: hex(K_ARCHIVE_GEN) },
+          hpke_ephemeral_scalar: hex(ARCHIVE_WRAP_EPHEMERAL),
+        },
       },
       derived: {
+        auth_root: archiveRoot,
+        root_commitment: archiveCommitment,
         parts_digest: archiveParts,
         manifest_message: hex(manifestMessage(archiveFields)),
       },
-      expected: { manifest_signature: await sign(laptopSigner, archiveFields) },
+      expected: {
+        envelope_ct: hex(archiveEnvelope),
+        generation_wrap: archiveWrap,
+        manifest_signature: await sign(archiveSigner, archiveFields),
+      },
     },
   ];
 
@@ -1346,7 +1974,54 @@ const main = async () => {
         granularity:
           'Per generation, which §14.1 makes correct rather than convenient: migration rotates to a fresh generation under the new lineage, so pre-migration generations stay anchored to the root that was in force when they were written',
         never_established:
-          '§9.3’s Local archive has no lineage, so both fields are empty and the auth root names the archiving device. Nothing external authenticates it, and §9.3 already says so — the archive answers *does ciphertext still exist*, never *can you decrypt it*',
+          '§9.3’s Local archive has no lineage, so the lineage field is empty and `auth_root` is the archive identity’s own digest — SHA-256 over LP("done/archive-root/v1") || LP(hex archive_pub) || LP(hex archive_sign_pub) — committed under the code beside both private halves (`S0-6` return, `FU-02`). What authenticates a Local archive is the code that opens it, for the manifest as well as the wraps: the signing half verifies the manifest, the encryption half opens the generations, and neither authority is resolvable from anything the package alone offers. The archive still answers *does ciphertext still exist* for a holder without the code',
+      },
+      local_archive: {
+        why: 'The S0-9 conviction (FU-02/A-04/ST-01): the factor sealed an HPKE recipient while a separate device key, never bound by the factor, authenticated the manifest — so a fresh wrap to the genuine public archive_pub could open an independently chosen generation key under a fabricated manifest. The identity now has two halves under one code, and the composed importer refuses the fresh mint at the commitment, before its signer is consulted and before any unwrap.',
+        identity:
+          'X25519 archive_pub/archive_priv opens the wraps; Ed25519 archive_sign_pub/archive_sign_priv signs the manifest. One identity per workspace (P-6), minted at first archive, retired to legacy at promotion.',
+        auth_root:
+          'SHA-256( LP("done/archive-root/v1") || LP(hex archive_pub) || LP(hex archive_sign_pub) ) — in the manifest slot a lineage’s trust root would fill, so the commitment formula and the wrap info are unchanged and one importer serves all three lineage states',
+        envelope:
+          'K_archive = HKDF-SHA256(ikm = utf8(code), salt, info = LP("done/archive/v1") || LP(workspace_id)); ct seals archive_priv || archive_sign_priv || RootCommitment under AES-256-GCM; AAD = LP("done/archive/v1") || LP(workspace_id) || LP(dec v) || LP(hex archive_pub)',
+        aad_note:
+          'The AAD binds the encryption half so the sealed private halves cannot be offered beside somebody else’s public key. The signing half is bound through auth_root inside the sealed commitment instead, deliberately: the commitment is the one value the attacker cannot seal, and keeping it the sole carrier of the signing identity is what lets the fresh-mint negative isolate it.',
+        importer:
+          'One path, §5’s order: the code opens the envelope; the sealed commitment is checked against the manifest before anything the package says is trusted; the manifest verifies only under the committed signing identity — never under a key the package offers; the parts digest is checked; only then are generations unwrapped.',
+      },
+      terminal_handoff: {
+        why: 'The S0-9 conviction (FU-03/A-05): catchup_digest was SHA-256 over two public heads beside a bare count, so a stale receiver could self-assert completeness and authorize hosted destruction. The digest now commits the full bytes of a signed CatchupTranscript, and the gate verifies the transcript itself.',
+        receipt:
+          'H = LP("done/handoff/v1") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(hex terminal_head_digest) || LP(hex retired_package_digest) || LP(receiver_credential) || LP(hex receiver_prior_head) || LP(hex catchup_digest) || LP(dec known_absence_count); sig = Ed25519(the receiving client’s signing credential; H)',
+        transcript:
+          'T = LP("done/catchup/v1") || LP(dec v) || LP(workspace_id) || LP(lineage_id) || LP(dec source_epoch) || LP(dec link_count) || for each link: LP(hex prior) || LP(hex head) || LP(dec absence_count) || for each: LP(absence_id); sig_T = Ed25519(the lineage’s certification in force at source_epoch; T); catchup_digest = SHA-256(T)',
+        authority:
+          'The transcript’s verifier resolves from the lineage’s client-authenticated certification in force — an input, never a key read out of the answer (FU-06’s rule at this gate). The receiver’s own credential can never fill it, so neither actor signs both parts of the receipt.',
+        verified_current:
+          'Two forms and neither is a timer: the receiver’s accepted head is the terminal head and catchup_digest is empty, or the receipt commits a transcript that verifies under the certification in force, chains link by link from the receiver’s authenticated prior head to the terminal head, and enumerates every known absence by identifier — with the count the receiver signed equal to the list the transcript carries.',
+        accepted_receipt: {
+          handoff: {
+            v: 1,
+            workspace_id: WORKSPACE,
+            lineage_id: LINEAGE,
+            terminal_head_digest: TERMINAL_HEAD,
+            retired_package_digest: PACKAGE_DIGEST,
+            receiver_credential: RECEIVER,
+            receiver_prior_head: PRIOR_HEAD,
+            catchup_digest: hex(await sha256(transcriptMessage(CAUGHT_UP_TRANSCRIPT))),
+            known_absence_count: CAUGHT_UP_TRANSCRIPT.absences.length,
+          },
+          transcript: {
+            v: CAUGHT_UP_TRANSCRIPT.v,
+            workspace_id: CAUGHT_UP_TRANSCRIPT.workspace,
+            lineage_id: CAUGHT_UP_TRANSCRIPT.lineage,
+            source_epoch: CAUGHT_UP_TRANSCRIPT.sourceEpoch,
+            links: CAUGHT_UP_TRANSCRIPT.links,
+            absences: CAUGHT_UP_TRANSCRIPT.absences,
+            message: hex(transcriptMessage(CAUGHT_UP_TRANSCRIPT)),
+            signed_by: 'the lineage’s certification in force — modeled by k_auth',
+          },
+        },
       },
       hpke: 'RFC 9180 base mode, DHKEM(X25519, HKDF-SHA256) / HKDF-SHA256 / AES-256-GCM (row 1). Implemented in the generator rather than pinned as a string, because this row’s claim is a binding inside it; it reproduces RFC 9180 A.1.1 on every invocation before it is used',
       not_here: {
