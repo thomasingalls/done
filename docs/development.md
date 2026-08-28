@@ -11,12 +11,12 @@ pnpm install
 pnpm dev            # http://localhost:5173, also on the LAN
 pnpm dev:tailscale  # trusted HTTPS/WSS over MagicDNS; starts the whole stack
 pnpm build          # typecheck, bundle, and enforce the §12 budget
-pnpm lint           # oxlint with React, TypeScript, a11y, import, promise, and Vitest checks
-pnpm format         # oxfmt formatting check
+pnpm lint           # opt-in; oxlint bug-catchers (correctness) only — not part of `pnpm check`
+pnpm format         # opt-in; oxfmt check, code files only — markdown is never formatted
 pnpm vectors        # regenerate the TRD §15 test vectors
 pnpm vectors:check  # fail if any vector file has drifted, or any AAD field is untested
 pnpm vectors:coverage  # just the AAD coverage half of the above
-pnpm check          # typecheck, lint, format, vectors, unit and geometry tests
+pnpm check          # typecheck, vectors, document checks, traceability, WASM, unit and geometry tests
 pnpm test           # unit tests
 pnpm test:geometry  # layout, line-height and pixel-identity tests, needs a browser
 pnpm test:latency   # TRD §12's latency budgets, measured; not part of `pnpm check`
@@ -157,11 +157,13 @@ days after a package version is published before accepting it. The lockfile was
 generated under that policy; a couple of transitive peer overrides are pinned
 there so `pnpm peers check` stays clean.
 
-Linting and formatting use the oxc.rs toolchain: Oxlint is configured with
-type-aware rules plus React, React performance, JSX accessibility, import,
-promise, and Vitest plugins, and Oxfmt owns repository formatting. Warnings are
-currently allowed because enabling the broad rule set surfaced follow-up cleanup
-work in the scaffolded code; errors fail `pnpm lint`.
+Linting and formatting use the oxc.rs toolchain, **deliberately dialed back for
+the remediation phase** (2026-08-28): Oxlint runs correctness rules only, plus
+the React plugin, and Oxfmt never touches markdown — `.prettierignore`, which
+oxfmt reads, excludes `*.md` because reflowing the TRD breaks the §15.1
+register parser. Neither is part of `pnpm check`; both are opt-in. The broad
+type-aware rule set and repository-wide formatting can return when the phase
+changes.
 
 React Compiler is enabled in Vite through `@vitejs/plugin-react`'s
 `reactCompilerPreset()` and `@rolldown/plugin-babel`. React 19 is already in use,

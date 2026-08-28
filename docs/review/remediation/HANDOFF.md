@@ -90,8 +90,10 @@ Worth knowing before picking anything up, because a repair that ignores its clas
 2. **Interleavings the pure models cannot schedule** — crash points and second writers that are unexpressible
    rather than refuted (`FU-08`, `FU-09`, `FU-10`, `FU-12`, `K_store`).
 3. **One fact, two homes** — `RC-8C`, the rule this remediation wrote for itself, violated by the remediation,
-   including by its gate: `pnpm check` stops at lint, so "runs through the gate" was command-text
-   reachability, not execution (`FU-05`, `FU-07`, `FU-13`, `FU-14`, `FU-15`, `FU-16`).
+   including by its gate: at the challenged tip `pnpm check` stopped at lint, so "runs through the gate" was
+   command-text reachability, not execution (`FU-05`, `FU-07`, `FU-13`, `FU-14`, `FU-15`, `FU-16`). The gate
+   was descoped to the evidence suite on 2026-08-28 and now passes end to end; `FU-14`'s receipts are still
+   owed at `S0-8`.
 
 ## The queue
 
@@ -138,16 +140,18 @@ That establishes the baseline. Then read both dispositions end to end, and start
 
 ## Four things that will bite you
 
-**Never run `pnpm format:fix`.** The four markdown documents it wants to reformat include the TRD, and
-reformatting it **breaks the §15.1 register parser**, which silently takes `generate-suite-vectors.mjs` down
-with it. Format individual files you have changed, and re-run `pnpm typecheck` afterwards — a lint-driven
+**Never reformat the markdown.** Reflowing the TRD **breaks the §15.1 register parser**, which silently takes
+`generate-suite-vectors.mjs` down with it. Since 2026-08-28 the formatter cannot reach it — `.prettierignore`,
+which oxfmt reads, excludes `*.md` — so the standing rule is: do not remove that ignore entry, and do not
+format documents by any other route. After any code formatting, re-run `pnpm typecheck` — a lint-driven
 `toSorted()` broke typecheck once already.
 
-**`pnpm check` has never passed on this branch or its base, and it stops at lint (`FU-14`).** The pinned tip
-fails `lint` and `format` on files unrelated to any repair, and the round-2 evidence report names four
-repair-owned files that add their own lint failures. The composite gate therefore never reaches vectors,
-document checks, traceability, WASM verification or tests. Run the named checks directly; cite `pnpm check`
-as evidence of nothing until `S0-8`'s gate receipts exist.
+**`pnpm check` passes now — know exactly what that means.** On 2026-08-28, on the user's instruction, lint and
+format left `pnpm check`; the gate is typecheck plus the evidence suite, and it passed end to end for the
+first time in this branch's history that day. What it does **not** mean: `FU-14` is repaired. Traceability
+still credits command-text reachability rather than execution receipts — that lands at `S0-8` — and
+`wasm:stale` is still in no gate (`RC-9`). Lint and format are opt-in (`pnpm lint` is correctness-only and
+currently clean; `pnpm format` covers code files only, with pre-existing drift left as found).
 
 **`pnpm vectors:check` cannot see document drift.** It compares a generator to its vector and never a document
 to its generator. During `S0-2` Stage C the selection rows described constructions the generators did not

@@ -1,0 +1,5 @@
+# Read by oxfmt (its --ignore-path default picks this file up).
+# Markdown is deliberately never formatted: reflowing the TRD breaks the §15.1
+# register parser, which silently takes generate-suite-vectors.mjs down with it
+# (docs/review/remediation/HANDOFF.md, "things that will bite you").
+*.md
