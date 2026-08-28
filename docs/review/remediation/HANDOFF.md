@@ -148,15 +148,32 @@ In order. An item is done when its disposition entry's earliest-return stage has
    fresh and ratified the same day) and states the deferral pattern: a deferred property is a registered
    debt — owner, one gate, artifact, falsifier, expiry — that blocks its gate when it arrives unpaid, and
    "later" is computed from the manifest, never promised in prose. **The sprint is complete.**
-3. **Two structural artifacts, before per-finding patches.** (a) An **authority-derivation map** at `S0-2`
-   Stage A/B: for every verifier key and acceptance predicate, the factor-authenticated state that resolves
-   it, with a checker that fails on a dangling edge — class 1 closes as a class or not at all. (b) A
-   **scheduler for the storage models** at the `S0-2`/`S0-3` interface: explicit crash points and two-writer
-   interleavings, so class 2's defects become expressible states instead of unschedulable ones.
+3. **Two structural artifacts, before per-finding patches — done 2026-08-28.** (a) The
+   **authority-derivation map**: [`S0-2/authority-map.md`](./S0-2/authority-map.md) (standing: home), read
+   back by `scripts/check-authority-map.mjs` — `pnpm authority:check`, in `pnpm check`. 31 entries; every
+   chain terminates at a permitted root for its guard; ten joints are declared open with their blocker and
+   return, six more compute as blocked through the member-key home; an **undeclared** dangling or
+   service-only edge, a silent edit to a pinned home, or a flip without a strike fails the gate. A green
+   `authority:check` means the rules resolve and their homes are pinned — never that class 1 is closed:
+   closure is the open count reaching zero, entry by entry at the returns, and `P-1` falsifier 14's claim is
+   discharged at the `S0-2` return, not by the map existing. (b) The **storage-model scheduler**:
+   `test/scheduler.ts` (kills at any step boundary, second writers under enforced program order, durable
+   versus volatile state with the model's own recovery rule, and a boundary census whose demonstrations are
+   execution receipts) plus `test/storageSchedule.test.ts`, which composes the write-admission machine with
+   `GenerationApply` in one world. `P-3` falsifier 21's four check-to-commit pairs are all expressible — a
+   fused pair now fails the census with the `FU-08` diagnosis — and the three windows the dispositions could
+   only describe are reached as states: the refusal-window loss (`FU-08`), the reservation crossing two
+   marker advances into a retired-opener generation (`FU-09`, falsifier 20's forbidden composition), and the
+   two-device shared-`K_store` budget (`P-3` joint 1). **Those reproduction assertions state the open
+   defects, not invariants** — each return inverts its own into the permanent negative and keeps the
+   schedule.
 4. **Stage returns**, in dependency order, at the stages each disposition entry names: `S0-2` (`FU-01`,
    `FU-05`, `FU-09`) → `S0-3` (`FU-08`, `FU-09`) and `S0-4` (`FU-06` with TRD §7.5, `FU-10`) → `S0-5`
    (`FU-11`) and `S0-6` (`FU-02`, `FU-03` with TRD §14.4) → `S0-7` (`FU-04`, `FU-12`) → `S0-1` (`FU-07` after
-   `P-5`, plus round 1's origin-scanner correction: `originOf` discards any URL containing `+`).
+   `P-5`, plus round 1's origin-scanner correction: `originOf` discards any URL containing `+`). **Each
+   return also flips its authority-map entries and inverts its scheduler reproductions** — editing a pinned
+   home fails `authority:check` until the entry is re-read and re-pinned or flipped, which is the designed
+   friction, not an obstacle.
 5. **`S0-8` regeneration.** `FU-14`'s gate receipts — traceability consumes execution results, never shell
    text; the five matrix limits; `FU-13`'s independent readback; `vectors:coverage` checking identity rather
    than arity; and the `CertifiedSet` AAD audit round 1 found missing entirely. Plus `RC-9`'s consolidation:
@@ -179,11 +196,14 @@ In order. An item is done when its disposition entry's earliest-return stage has
 cd /Users/thomasingalls/Code/done/.claude/worktrees/stage0-repairs && pnpm install --frozen-lockfile && pnpm vectors:check && pnpm test
 ```
 
-That establishes the baseline. **The decision sprint is complete** — `RC-9` was drafted fresh and ratified on
-2026-08-28 ([`decisions/RC-9-later-gate-governance.md`](./decisions/RC-9-later-gate-governance.md)), option A
-at both joints. Then read both dispositions end to end and start queue item 3: the two structural artifacts —
-the authority-derivation map at `S0-2` Stage A/B, and the storage-model scheduler at the `S0-2`/`S0-3`
-interface — before any per-finding patch, because a repair that ignores its class reintroduces the class.
+That establishes the baseline. **The decision sprint is complete, and so are the two structural artifacts**
+(queue item 3, 2026-08-28): the authority-derivation map at [`S0-2/authority-map.md`](./S0-2/authority-map.md)
+with `pnpm authority:check` in the gate, and the storage-model scheduler at `test/scheduler.ts` with the
+composed model in `test/storageSchedule.test.ts`. Then read both dispositions end to end, read the map's ten
+open entries and the scheduler's three reproductions — they are the executable form of what the dispositions
+describe — and start queue item 4: the stage returns in dependency order, `S0-2` first. A repair that ignores
+its class reintroduces the class, and the class instruments now fail on that rather than waiting for a
+review: a return is not done until its map entries flip and its reproductions invert.
 
 ## Four things that will bite you
 
@@ -195,10 +215,13 @@ format documents by any other route. After any code formatting, re-run `pnpm typ
 
 **`pnpm check` passes now — know exactly what that means.** On 2026-08-28, on the user's instruction, lint and
 format left `pnpm check`; the gate is typecheck plus the evidence suite, and it passed end to end for the
-first time in this branch's history that day. What it does **not** mean: `FU-14` is repaired. Traceability
-still credits command-text reachability rather than execution receipts — that lands at `S0-8` — and
-`wasm:stale` is still in no gate (`RC-9`). Lint and format are opt-in (`pnpm lint` is correctness-only and
-currently clean; `pnpm format` covers code files only, with pre-existing drift left as found).
+first time in this branch's history that day. Since queue item 3 it also carries `authority:check`, and that
+green line means exactly its printed scope: the map's chains resolve and its pinned homes are byte-current,
+with ten joints *declared open* — it is the class-1 ledger staying honest, not class 1 closed. What the green
+gate does **not** mean: `FU-14` is repaired. Traceability still credits command-text reachability rather than
+execution receipts — that lands at `S0-8` — and `wasm:stale` is still in no gate (`RC-9`). Lint and format
+are opt-in (`pnpm lint` is correctness-only and currently clean; `pnpm format` covers code files only, with
+pre-existing drift left as found).
 
 **`pnpm vectors:check` cannot see document drift.** It compares a generator to its vector and never a document
 to its generator. During `S0-2` Stage C the selection rows described constructions the generators did not
