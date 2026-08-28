@@ -119,6 +119,14 @@ pinned tip.
 > single-owner approval.** Record and reasoning:
 > [`decisions/P-1-recipient-authority.md`](./decisions/P-1-recipient-authority.md). `S0-2` consolidates it;
 > nothing is implemented yet. The eleven falsifiers `S0-2` must satisfy are in that record.
+>
+> **Reopened 2026-08-28 at the approver and bootstrap-signer joints** by `S0-9` (round 1 `D-1`, round 2
+> `FU-01`): nothing client-authenticated resolved a set approval's verification key — the only
+> credential-to-signing-key map was the service-signed epoch — and the bootstrap verifier was carried by
+> nothing. `RC-1B` itself stands. **Ratified the same day: option A — the certified set carries the signing
+> keys.** A member entry binds `(credential_id ‖ W_pub ‖ S_pub)`, every approval names its approver, and a
+> verifier resolves that key from the parent certified set or the factor-carried bootstrap signer, never
+> from the epoch. Falsifiers 12–19 are owed at the `S0-2` return.
 
 - **Prerequisites:** accept the common `RC-1` invariant; decide whether client approval of recipient changes is
   single-owner or quorum-like and how recovery works when no current device survives.

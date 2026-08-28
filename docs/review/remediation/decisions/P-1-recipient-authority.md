@@ -1,16 +1,18 @@
 # `P-1` — recipient authority
 
-**Decided:** 2026-08-26 · **Reopened:** 2026-08-28, at the approver and bootstrap-signer joints · **Branch:**
-`RC-1B`, client-certified recipient set inside each authorization successor · **Approval policy:**
-single-owner · **Status:** reopened — question, options and falsifiers drafted below; ratification pending
+**Decided:** 2026-08-26 · **Reopened:** 2026-08-28, at the approver and bootstrap-signer joints ·
+**Ratified:** 2026-08-28, option A — the certified set carries the signing keys · **Branch:** `RC-1B`,
+client-certified recipient set inside each authorization successor · **Approval policy:** single-owner ·
+**Status:** ratified, not yet consolidated — the `S0-2` return owes falsifiers 12–19
 
 This is the decision record only. Consolidating it into the PRD, the TRD, rows 5/9/11/14/15 and their
 generators is [`S0-2`](../action-tree.md), which also needs `P-2` and `P-6`. Nothing below is implemented.
 
 **Read the reopening at the end of this record before consuming anything above as settled.** `RC-1B` stands;
-what failed both `S0-9` rounds is the resolution of two verification keys this record's carrier consumes — the
-set approval's and the total-loss bootstrap signer's. The reopened question, its floor, the options and
-falsifiers 12–19 are drafted below; ratification is the open step.
+what failed both `S0-9` rounds was the resolution of two verification keys this record's carrier consumes —
+the set approval's and the total-loss bootstrap signer's — and that rule is now ratified: **option A. The
+certified set carries the signing keys, every approval names its approver, and a verifier resolves that key
+from the parent set or the factor — never from the service-signed epoch.**
 
 ## The defect this closes
 
@@ -71,6 +73,10 @@ in the verifier, not a format migration. If `P-8` or a later threat pass wants N
 admits it.
 
 ## What `S0-2` must satisfy
+
+*Reopened 2026-08-28: these criteria stand, and they were not sufficient — criterion 6's second half was
+composed nowhere, criterion 11 had no falsifier, and nothing below resolves the verification key an approval
+or a bootstrap is checked against. The list continues at falsifiers 12–19, below.*
 
 From `P-1`'s acceptance criteria and branch B's closure falsifiers. Each is a test, not a claim:
 
@@ -205,9 +211,9 @@ mere admission.
 
 One sub-question separates them: where a member's signing key lives.
 
-**A — the certified set carries the signing keys.** A member entry becomes `(credential_id ‖ W_pub ‖
-S_pub)`; an approval names its approver in its signed bytes; a verifier resolves the named approver's
-`S_pub` from the **parent** certified set and nothing else. The chain grounds at its two edges: the genesis
+**A — the certified set carries the signing keys. (Ratified.)** A member entry becomes `(credential_id ‖
+W_pub ‖ S_pub)`; an approval names its approver in its signed bytes; a verifier resolves the named
+approver's `S_pub` from the **parent** certified set and nothing else. The chain grounds at its two edges: the genesis
 set verifies under the creating credential's key — the trust root workspace creation already writes — and a
 bootstrap-minted replacement set verifies under the factor-resolved bootstrap signer, the floor's edge. This
 is round 1's *"one more field per member"*, which it judged *"strictly smaller than the machinery that was
@@ -239,16 +245,35 @@ to *approve* unless a revocation object joins, and the set already is that objec
 ride the serialized epochs, so anti-equivocation needs exactly the separate story this record declined to
 write the first time. C re-derives the set's machinery beside the set.
 
-### Awaiting ratification
+### Ratified 2026-08-28 — A, the certified set carries the signing keys
 
-The ratifying edit selects one option, argues it against the floor, and instantiates falsifiers 12, 13 and
-18 against the selected home. Until then `S0-2` may consume nothing in this record as settled — the original
-sections included, since the member-entry bytes are in play.
+**The ruling.** A member entry binds `(credential_id ‖ W_pub ‖ S_pub)`; every approval names its approver in
+its signed bytes; a verifier resolves the named approver's `S_pub` from the parent certified set and nothing
+else. The chain grounds at its two edges and nowhere else: the genesis set verifies under the creating
+credential's key — the trust root workspace creation writes — and a bootstrap-minted replacement set
+verifies under the factor-resolved bootstrap signer, per the floor. A member's signing-key rotation is a set
+successor, priced by the machinery removal already uses. **The service-signed epoch resolves no
+recipient-authority key** — it carries the sets, serializes them, and vouches for none of them. `FU-01`'s
+conditional is thereby determinate: the carrier is completed, not changed — `recovery_state_digest` gains
+the signer commitment at `S0-2` Stage A, and `FU-01`'s return stays there rather than here. Falsifiers 12,
+13 and 18's ratified home is the parent certified set.
+
+**Why A.** It is the only option with one resolution rule: every key an acceptance predicate consumes
+resolves through the set chain or the factor, so the authority-derivation map gets a single root and the
+sibling joints (`FU-02`, `FU-03`, `FU-06`, `FU-11`) get one pattern to follow. It is round 1's own scale
+judgment made normative — *"one more field per member"*, *"strictly smaller than the machinery that was
+built"*, a missing part of `RC-1B` rather than an alternative to it — and `A-01`'s simpler-repair paragraph
+is its bootstrap half. B countersigns a service-composed document and must either invalidate standing
+approvals on mere admission, breaking criterion 10, or split the member-to-key fact across two homes —
+`RC-8C`'s shape at the most security-critical joint. C rebuilds the set's machinery beside the set and
+forfeits the inherited equivocation story. The cost is accepted with eyes open: row 11's transcript binds
+`S_pub`, and that binding is now load-bearing — falsifiers 12–13 and the `S0-8` AAD registration exist so it
+is tested rather than prose.
 
 ### Falsifiers 12–19
 
-Continuing the eleven above, under the floor. Each is a test, not a claim; 14–17 bind every option, and 12,
-13 and 18 read "the ratified home" as whatever ratification selects.
+Continuing the eleven above, under the ratified rule. Each is a test, not a claim; 12, 13 and 18 resolve
+against the parent certified set.
 
 12. **The reproduction fails with the lookup real.** The approval verifier resolves its key from the
     ratified home rather than a constant, and `certified-set-approved-by-an-impostor` still fails — round
@@ -293,8 +318,8 @@ Continuing the eleven above, under the floor. Each is a test, not a claim; 14–
 - The composition rule for falsifier 17, and the enrollment crash model criterion 11 has always owed —
   §13.6's six states become executable states with crash points (round 1 `D-4`), at the `S0-2`/`S0-3`
   scheduler the queue's structural item builds.
-- Row 11's transcript binds `S_pub` if A is ratified; `FU-05`'s formula and vector inputs republish in the
-  same regeneration.
+- Row 11's transcript binds `S_pub` — A is ratified — and `FU-05`'s formula and vector inputs republish in
+  the same regeneration.
 - At `S0-8`: the amended `CertifiedSet` registers with `check-aad-coverage.mjs` — round 1 `D-2`'s five
   unisolated fields die there — and the impostor negative's published `why` is rewritten to what the
   artifact then proves.
