@@ -15,7 +15,7 @@ disagree, the disposition is right and this file is the thing to fix.
 
 | | |
 | --- | --- |
-| Branch | `claude/stage0-remediation`, 83 commits off `9edd930` as of the `S0-7` return, all signed; the current tip rides the worktree branch `claude/s0-8-regeneration-9bcaad` until folded back |
+| Branch | `claude/stage0-remediation`, 85 commits off `9edd930` as of the `S0-8` regeneration, all signed; the current tip rides the worktree branch `claude/s0-8-regeneration-9bcaad` until folded back |
 | Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, the decisions, and both `S0-9` challenge rounds |
 | Not on it | nothing — this branch is the whole picture, deliberately |
 | Superseded | `claude/remediation-findings-review-997ab5` holds the review workspace at its original SHAs. Redundant once this branch is accepted |
@@ -373,8 +373,9 @@ In order. An item is done when its disposition entry's earliest-return stage has
    `destructive-boundary` entry flipped — **the last open joint: the open count reads 0, entry by entry at
    the returns** — with `retention-mark`, `reseed-session`, `terminal-handoff`, `package-manifest`,
    `terminal-lineage-record` and `local-archive-anchor` re-pinned, their rules unchanged (the retention
-   mark's bound gaining the boundary immunity). **Next: `S0-8`, the regeneration (queue item 5)** — the
-   security returns are complete.
+   mark's bound gaining the boundary immunity). The security returns are complete, and the `S0-8`
+   regeneration followed 2026-08-29 (item 5, above the queue's remaining items): **next is `S0-9` round 3
+   (queue item 6)**.
    **Each return flips its authority-map entries and inverts its scheduler reproductions** — editing a
    pinned home fails `authority:check` until the entry is re-read
    and re-pinned or flipped — and, now that the census is landed, edits a pinned record only as a dated
@@ -430,10 +431,34 @@ cd /Users/thomasingalls/Code/done/.claude/worktrees/s0-8-regeneration-9bcaad && 
 ```
 
 That establishes the baseline and mints the execution receipts in one motion (`pnpm check`'s last step now
-consumes them, so the full chain is the baseline). The regeneration's own summary is queue item 5 above;
-this section advances with the HANDOFF commit.
+consumes them, so the full chain is the baseline). **Queue items 1–5 are complete** — the decision sprint,
+the two structural artifacts, the seven security returns, and the `S0-8` regeneration (2026-08-29): the
+authority map with `pnpm authority:check` at **zero** open, the storage scheduler with all six windows
+asserting their repairs, the standing census with `pnpm remediation:check`, the recipient-authority,
+write-admission and retention readbacks, the debt manifest with `pnpm debts:check`, the source↔blob binding
+inside `pnpm wasm:verify`, and the traceability matrix crediting execution receipts — all in the gate.
+`pnpm remediation:status` reads **nothing owed at any return**; `pnpm debts` computes what blocks the gates
+ahead (`S0-10` — 1 · `L-1` — 1 · `L-4` — 4).
+Next is **`S0-9` round 3 (queue item 6), with the changed perspective the item has demanded twice**: seven
+same-family reads have cleared the author-independence bar thoroughly; the one-perspective bar is the open
+one. A different model family, targeted adversarial property tests against the authority map, or a human
+red team — not an eighth same-family read. Round 3's input list is `action-tree.md`'s `S0-9` node — the
+ratified records and the regenerated corpus — and its first command is the baseline above from a fresh
+clone. After it: `S0-10` consults `node scripts/check-debts.mjs --gate S0-10`, which blocks until the
+X25519 dated readback is paid into TRD §10.11's table with source, date and expiry (queue item 7).
 
-## Four things that will bite you
+## Five things that will bite you
+
+**Receipts go stale by design — `pnpm check` is the fix, not a workaround.** Every check script writes an
+execution receipt (`.receipts/`, untracked) recording its bytes and the tree it ran against, and
+`trace:check` refuses a receipt from an edited script or a changed tree. So after **any** edit, a standalone
+`pnpm trace:check` fails with *receipt was written against another tree* — that is `FU-14`'s repair working,
+not a bug: yesterday's run does not vouch for today's state. Run the gate (or the affected checks and then
+`trace:check`); a fresh clone earns its credits the same way, and the two build-gate receipts
+(`check-budget`, `check-origin-isolation`) are minted by `pnpm build`, which `test:geometry`'s web server
+runs inside `pnpm check`. If the matrix itself changed, regenerate it (`pnpm trace`) — the matrix file is
+excluded from the tree digest precisely so the projection can regenerate without invalidating the receipts
+it projects.
 
 **Never reformat the markdown.** Reflowing the TRD **breaks the §15.1 register parser**, which silently takes
 `generate-suite-vectors.mjs` down with it. Since 2026-08-28 the formatter cannot reach it — `.prettierignore`,
