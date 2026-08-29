@@ -476,7 +476,7 @@ In order. An item is done when its disposition entry's earliest-return stage has
 ## The exact next command
 
 ```bash
-cd /Users/thomasingalls/Code/done/.claude/worktrees/x25519-debt-bar-recording-3c0d10 && pnpm install --frozen-lockfile && pnpm check && pnpm review:check && node scripts/check-debts.mjs --gate L-1
+cd /Users/thomasingalls/Code/done/.claude/worktrees/stage0-repairs && pnpm install --frozen-lockfile && pnpm check && pnpm review:check && node scripts/check-debts.mjs --gate L-1
 ```
 
 That establishes the baseline, mints the execution receipts in one motion (`pnpm check`'s last step consumes
