@@ -200,7 +200,9 @@ by what exists. **The property fleet runs with `persist: false`** — it wires u
 awareness, but never touches the store — so the whole suite will keep passing whatever the encrypted store
 does. Two things follow: the encrypted store needs its own tests (TRD §11.1), and it is worth adding a
 `persist: true` variant of the fleet so that convergence and the encrypted round trip are exercised together.
-The harness already takes the flag, so this is cheap.
+`openStore` takes the flag, but the fleet's two entry points — `openReplica` in `test/replicas.ts` and
+`harness` in `test/workspace.ts` — hardcode `persist: false` and would each need it threaded. Still cheap,
+and still a change to the harness rather than a flag already waiting to be set.
 
 **Exit:** a profile snapshot after ordinary use yields no recognizable content in any store, at genesis and
 after; two workspaces open on one device with no cross-writes on any path including teardown and error; a
