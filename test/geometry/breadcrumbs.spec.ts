@@ -85,8 +85,19 @@ test('the outline navigates without moving the editor selection', async ({ page 
   await page.keyboard.press('Escape');
 
   // The outline click did not move CodeMirror's selection from the end. When
-  // the editor regains focus, typing therefore continues at the old location.
-  await content.evaluate((element) => element.focus());
+  // the editor regains focus the way the app returns it — EditorView.focus(),
+  // which restores the editor's own selection into the DOM (see App.tsx) —
+  // typing therefore continues at the old location. A raw contentDOM.focus()
+  // is not that path: it re-activates whatever caret the browser kept, and on
+  // a slow run CodeMirror can have dropped the end-of-document line from its
+  // rendered viewport, leaving the browser a caret clamped to the rendered
+  // top that the editor then adopts as a selection change.
+  await content.evaluate((element) => {
+    const view = (element as { cmTile?: { root?: { view?: { focus: () => void } } } }).cmTile?.root
+      ?.view;
+    if (!view) throw new Error('No EditorView behind .cm-content — did cmTile move?');
+    view.focus();
+  });
   await page.keyboard.insertText('X');
   await expect(content).toContainText('body line ### Phase 50X');
 });
