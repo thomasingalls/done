@@ -684,6 +684,16 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 
 ### `S0-9` — independent challenge of the repaired constructions
 
+> **Run a third time 2026-08-29, against `cfc6b70` — the regenerated corpus and the ratified records — by a
+> different model family (Claude Fable 5, Mythos-class; the prior seven reads were one family), with
+> targeted adversarial property tests against the authority map and a fresh 21-probe instrument battery:
+> [`S0-9/ROUND-3-DISPOSITION.md`](./S0-9/ROUND-3-DISPOSITION.md). The seven constructions survived every
+> axis run; the closure instrument failed narrowly (`R3-1` — the per-decision option drifting under a
+> date-only comparison — with `R3-2`/`R3-3` beside it), and the round-3 return repaired all three the same
+> day with the probes inverted. `S0-10` remains blocked by the registered X25519 debt
+> (`node scripts/check-debts.mjs --gate S0-10`) and must record the independence bar exactly:
+> author-independent seven times, family-independent once, human-independent never.**
+>
 > **Run twice. The independent pass FAILED the challenge — see
 > [`S0-9/DISPOSITION.md`](./S0-9/DISPOSITION.md).** Four challengers, none of whom authored any repair, ran from
 > `5923f51` in isolated worktrees with no access to the author's pass, to later commits, or to each other.

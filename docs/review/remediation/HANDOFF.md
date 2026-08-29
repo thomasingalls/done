@@ -1,11 +1,13 @@
 # Handoff — Stage 0 remediation execution
 
 **Standing:** home — the one home of the open queue; read back by `pnpm remediation:status`, which checks
-the per-decision claims below against the decision records in both directions.
+each per-decision claim below — its ratification date, its ratified option, and its owed falsifier ranges —
+against the decision records in both directions (the option facet joined at the `S0-9` round-3 return,
+`R3-1`; prose beyond those facets is this file's own to keep honest).
 
 **Updated:** 2026-08-29 · **Branch:** `claude/stage0-remediation` · **Base:** `9edd930` (the reviewed tip)
 
-Read this first. [`action-tree.md`](./action-tree.md) is the plan; the two `S0-9` dispositions are the
+Read this first. [`action-tree.md`](./action-tree.md) is the plan; the three `S0-9` dispositions are the
 verdicts; **this file is the one home of the open queue** — what state the work is in and what is ready to
 pick up, in order. An earlier copy of this file disagreed with the dispositions on two points (the X25519 debt
 gate, and "outstanding decisions: none"); each time, the disposition won. When this file and a disposition
@@ -15,8 +17,8 @@ disagree, the disposition is right and this file is the thing to fix.
 
 | | |
 | --- | --- |
-| Branch | `claude/stage0-remediation`, 85 commits off `9edd930` as of the `S0-8` regeneration, all signed; the current tip rides the worktree branch `claude/s0-8-regeneration-9bcaad` until folded back |
-| Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, the decisions, and both `S0-9` challenge rounds |
+| Branch | `claude/stage0-remediation`, 88 commits off `9edd930` as of the `S0-9` round-3 return, all signed; the current tip rides the worktree branch `claude/s0-9-round-3-handoff-2504b1` until folded back |
+| Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, the decisions, and all three `S0-9` challenge rounds |
 | Not on it | nothing — this branch is the whole picture, deliberately |
 | Superseded | `claude/remediation-findings-review-997ab5` holds the review workspace at its original SHAs. Redundant once this branch is accepted |
 
@@ -49,7 +51,10 @@ eighth node and is not a choice** — it is the standing rule that rows 18, 19 a
 nothing decides it, every action keeps obeying it. **`RC-9` is the ninth record and the sprint's last** — the
 governance node the original seven never included, ratified 2026-08-28 (below).
 
-**`S0-9` has now run twice against `5923f51`, and the package failed both rounds. `S0-10` is blocked.**
+**`S0-9` has now run three times. Rounds 1–2, against `5923f51`, failed the package. Round 3, against
+`cfc6b70` with the changed perspective the queue demanded, found the seven constructions sound and failed
+one narrow axis at the closure instrument — repaired the same day at the round-3 return. `S0-10` remains
+blocked by exactly the registered X25519 debt and its own intake duties.**
 
 - **Round 1** — four parallel non-author challengers: [`S0-9/DISPOSITION.md`](./S0-9/DISPOSITION.md). Every
   root cause has at least one failing axis, two high findings reopen at their decisions, and one live
@@ -59,6 +64,20 @@ governance node the original seven never included, ratified 2026-08-28 (below).
   [`S0-9/FOLLOWUP-DISPOSITION.md`](./S0-9/FOLLOWUP-DISPOSITION.md). Sixteen further blockers, `FU-01`–`FU-16`,
   four of them high. The strongest convergence across all seven challengers is the zero-handoff retirement
   deletion (`FU-04`); the Local-archive wrap (`FU-02`) converges across both rounds.
+- **Round 3** — one non-author challenger from a **different model family** (Claude Fable 5, Mythos-class;
+  the prior seven reads were one family), 2026-08-29 against the regenerated corpus:
+  [`S0-9/ROUND-3-DISPOSITION.md`](./S0-9/ROUND-3-DISPOSITION.md), with its fresh 21-probe battery committed
+  beside it ([`S0-9/round-3-battery.mjs`](./S0-9/round-3-battery.mjs)). The constructions survived every axis
+  run — byte-level LP/domain-tag review, the map's guard rules, the retention and reseed inversions, the
+  importer's order probes — and 19 of 19 expected-fail probes were caught. What failed was the instrument
+  class itself, narrowly: `R3-1`, the per-decision claims checked thinner than both homes said (a drifted
+  ratified option rode every gate check green); `R3-2`, the map's census sweep omitting `S0-3/A-schemas.md`;
+  `R3-3`, the gate reading `docs/trd.md` by case-folding luck. **The round-3 return landed all three the
+  same day** — the option facet joined the both-directions comparison with its printed line narrowed to
+  scope, the sweep closed over all seven stage documents, the paths took their exact case — and the two
+  blind-spot probes are inverted in the committed battery as permanent negatives. `R3-4` (member-entry
+  uniqueness unstated at the class-1 core) is recorded low, owed to `S0-2`'s homes before `L-2` implements a
+  verifier, and does not block Stage 0 closure.
 
 **Outstanding decision work: none. The sprint completed 2026-08-28 — `P-4`, `P-1`, `P-3`, `P-5` and `RC-9`
 are all ratified.** An earlier copy of this file said "none" while `RC-9`'s record did not exist, and the
@@ -228,7 +247,9 @@ In order. An item is done when its disposition entry's earliest-return stage has
    "later" is computed from the manifest, never promised in prose. **The sprint is complete.**
 3. **Two structural artifacts, before per-finding patches — done 2026-08-28.** (a) The
    **authority-derivation map**: [`S0-2/authority-map.md`](./S0-2/authority-map.md) (standing: home), read
-   back by `scripts/check-authority-map.mjs` — `pnpm authority:check`, in `pnpm check`. 31 entries; every
+   back by `scripts/check-authority-map.mjs` — `pnpm authority:check`, in `pnpm check`. 34 entries as of the `S0-8`
+   regeneration — the live entry count, like the open count, is the checker's, and round 3 caught this line
+   still saying 31 (`R3-1`'s second instance); every
    chain terminates at a permitted root for its guard; ten joints were declared open as built with their
    blocker and return, six more computing as blocked through the member-key home (the `S0-2` return flipped
    the four member-key entries: six open, none blocked-through — the live count is always the checker's,
@@ -373,9 +394,9 @@ In order. An item is done when its disposition entry's earliest-return stage has
    `destructive-boundary` entry flipped — **the last open joint: the open count reads 0, entry by entry at
    the returns** — with `retention-mark`, `reseed-session`, `terminal-handoff`, `package-manifest`,
    `terminal-lineage-record` and `local-archive-anchor` re-pinned, their rules unchanged (the retention
-   mark's bound gaining the boundary immunity). The security returns are complete, and the `S0-8`
-   regeneration followed 2026-08-29 (item 5, above the queue's remaining items): **next is `S0-9` round 3
-   (queue item 6)**.
+   mark's bound gaining the boundary immunity). The security returns are complete; the `S0-8`
+   regeneration followed 2026-08-29 (item 5), and `S0-9` round 3 with its same-day return followed the same
+   day (item 6): **next is `S0-10` (queue item 7)**.
    **Each return flips its authority-map entries and inverts its scheduler reproductions** — editing a
    pinned home fails `authority:check` until the entry is re-read
    and re-pinned or flipped — and, now that the census is landed, edits a pinned record only as a dated
@@ -414,10 +435,15 @@ In order. An item is done when its disposition entry's earliest-return stage has
    plaintext cutover kill matrix) · `L-4` — 4 (population, audit delta, provenance, append burst) —
    `pnpm debts` computes this and `debts:check` holds this sentence to it in both directions. A 21-mutation
    battery caught 21.
-6. **`S0-9` round 3, with a changed perspective.** Seven same-family reads have cleared the
-   author-independence bar thoroughly; the one-perspective bar is the open one and is on record twice. A
-   different model family, targeted adversarial property tests against the authority map, or a human red-team
-   — not an eighth same-family read.
+6. **`S0-9` round 3, with a changed perspective — done 2026-08-29, and the round-3 return landed the same
+   day.** The bar was met two of the three named ways at once: a **different model family** (Claude Fable 5,
+   Mythos-class — the prior seven reads were one family) ran **targeted adversarial property tests against
+   the authority map** plus a byte-level construction review and a fresh 21-probe instrument battery.
+   Verdict: [`S0-9/ROUND-3-DISPOSITION.md`](./S0-9/ROUND-3-DISPOSITION.md) — the constructions survive; the
+   instrument axis failed narrowly (`R3-1` option-drift channel, `R3-2` sweep omission, `R3-3` path case)
+   and the return repaired all three with the probes inverted; `R3-4` stays recorded for `S0-2`'s homes,
+   low, non-blocking. The human-red-team bar remains open and unclaimed — `S0-10` records the bar exactly:
+   author-independent seven times, family-independent once, human-independent never.
 7. **`S0-10`.** Collect the X25519 dated readback (TRD §10.11 offers review 3b's pass for it), record which
    independence bar the closure stands on, and only then touch finding dispositions.
 8. **`L-1`–`L-4` and `H-1`** are the rest of the plan and are outside Stage 0. `H-1`'s append-only ledger
@@ -427,25 +453,28 @@ In order. An item is done when its disposition entry's earliest-return stage has
 ## The exact next command
 
 ```bash
-cd /Users/thomasingalls/Code/done/.claude/worktrees/s0-8-regeneration-9bcaad && pnpm install --frozen-lockfile && pnpm check
+cd /Users/thomasingalls/Code/done/.claude/worktrees/s0-9-round-3-handoff-2504b1 && pnpm install --frozen-lockfile && pnpm check && node scripts/check-debts.mjs --gate S0-10
 ```
 
-That establishes the baseline and mints the execution receipts in one motion (`pnpm check`'s last step now
-consumes them, so the full chain is the baseline). **Queue items 1–5 are complete** — the decision sprint,
-the two structural artifacts, the seven security returns, and the `S0-8` regeneration (2026-08-29): the
-authority map with `pnpm authority:check` at **zero** open, the storage scheduler with all six windows
-asserting their repairs, the standing census with `pnpm remediation:check`, the recipient-authority,
-write-admission and retention readbacks, the debt manifest with `pnpm debts:check`, the source↔blob binding
-inside `pnpm wasm:verify`, and the traceability matrix crediting execution receipts — all in the gate.
-`pnpm remediation:status` reads **nothing owed at any return**; `pnpm debts` computes what blocks the gates
-ahead (`S0-10` — 1 · `L-1` — 1 · `L-4` — 4).
-Next is **`S0-9` round 3 (queue item 6), with the changed perspective the item has demanded twice**: seven
-same-family reads have cleared the author-independence bar thoroughly; the one-perspective bar is the open
-one. A different model family, targeted adversarial property tests against the authority map, or a human
-red team — not an eighth same-family read. Round 3's input list is `action-tree.md`'s `S0-9` node — the
-ratified records and the regenerated corpus — and its first command is the baseline above from a fresh
-clone. After it: `S0-10` consults `node scripts/check-debts.mjs --gate S0-10`, which blocks until the
-X25519 dated readback is paid into TRD §10.11's table with source, date and expiry (queue item 7).
+That establishes the baseline, mints the execution receipts in one motion (`pnpm check`'s last step consumes
+them, so the full chain is the baseline), and then asks the one question the queue is now at: the `S0-10`
+consult, which **blocks today, correctly**, until the X25519 dated readback is paid into TRD §10.11's table
+with source, date and expiry. **Queue items 1–6 are complete** — the decision sprint, the two structural
+artifacts, the seven security returns, the `S0-8` regeneration, and now `S0-9` round 3 with its same-day
+return (2026-08-29): the authority map with `pnpm authority:check` at **zero** open and its census sweep
+closed over all seven stage documents, the storage scheduler with all six windows asserting their repairs,
+the standing census with `pnpm remediation:check` now comparing each claim's ratified **option** beside its
+date and owed ranges, the recipient-authority, write-admission and retention readbacks, the debt manifest
+with `pnpm debts:check` on exact-case paths, the source↔blob binding inside `pnpm wasm:verify`, and the
+traceability matrix crediting execution receipts — all in the gate. `pnpm remediation:status` reads
+**nothing owed at any return**; `pnpm debts` computes what blocks the gates ahead (`S0-10` — 1 · `L-1` — 1 ·
+`L-4` — 4).
+Next is **`S0-10` (queue item 7)**: pay the X25519 debt (TRD §10.11 offers review 3b's pass for it; the
+consult above lifts only on a typed dated-external-observation payment), **record which independence bar the
+closure stands on** — author-independent seven times, family-independent once (round 3), human-independent
+never — and only then touch finding dispositions, under the separately authorized workflow `S0-10` reserves.
+`R3-4` (member-entry uniqueness, low) rides to `S0-2`'s homes before `L-2` implements a verifier and does
+not gate closure.
 
 ## Five things that will bite you
 
