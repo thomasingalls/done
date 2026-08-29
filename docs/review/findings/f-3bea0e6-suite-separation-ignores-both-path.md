@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-3bea0e6-suite-separation-ignores-both-path
-status: validated
+status: repaired
 type: evidence-weakness
 severity: medium
 confidence: high
 introduced_by: 3bea0e69469e47b790fe6214d7fbed42bcf84441
 work_item: B-04
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -77,3 +77,7 @@ not the implemented ones.
 
 Fix and clarify. Make path values exhaustive and make the oracle fail for the exact stronger invariant, or narrow the
 normative claim to the key-domain property actually required by §13.2.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by the `checkSeparation` and
+`checkSuiteDocuments` guards (suite generator), their totality mutation-verified at `S0-9` round 1.

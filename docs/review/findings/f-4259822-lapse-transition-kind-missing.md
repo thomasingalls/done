@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-4259822-lapse-transition-kind-missing
-status: validated
+status: repaired
 type: contradiction
 severity: medium
 confidence: high
 introduced_by: 4259822828060fe2b9592fa525cd9a17170af285
 work_item: X-05
 created_by: root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -61,3 +61,8 @@ A billing system can durably record `lapsed_at`, retain a live lineage, and gate
 ## Disposition
 
 Reopen the row-15/row-16 joint or narrow the normative claim. The review record must not call deliberate downgrade mechanically bound until the live-dormant transition has an exact durable carrier and crash semantics.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by `check-retention.mjs` and the
+five `§14.7` retention-model tests — one clock; resume and the re-seed; retirement wins the race in both
+orders; the lineage stays live; the compromised entitlement signer.

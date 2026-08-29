@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-9b49b74-wasm-glue-key-nonce-lengths
-status: validated
+status: repaired
 type: implementation-hazard
 severity: medium
 confidence: high
 introduced_by: 9b49b743cb03cb8827682d79fc66405f458cf29b
 work_item: B-02
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -72,3 +72,7 @@ all key lengths other than 32 and nonce lengths other than 24 to throw before to
 
 Fix: enforce `key.length === 32` and `nonce.length === 24` in generated glue, exercise both short and long inputs,
 and retain the Rust-side AAD/plaintext bounds as defense in depth.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by `check-wasm-seal.mjs`,
+the 15-check battery over the exact generated artifact.

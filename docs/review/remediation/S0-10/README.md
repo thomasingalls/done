@@ -92,3 +92,21 @@ separately authorized workflow; the closure recording that follows it — `docs/
 This record claims exactly: the one registered `S0-10` debt is paid with a dated, sourced, expiring external
 observation; the independence bar is stated above, in its only home; and nothing downstream was touched to
 make either true.
+
+---
+
+## Addendum — 2026-08-29: the dispositions, under the authorization this record waited for
+
+Later the same day, the user formally authorized the third duty — the `S0-10` disposition workflow, with the
+falsifier-executes evidence standard — and it ran. The finding lifecycle gained `repaired`
+(`docs/review/README.md` §Finding lifecycle; `review-status.mjs` refuses the status without a dated
+`**Repaired — YYYY-MM-DD**` disposition line, and a 3-mutation battery caught 3). All 28 current design and
+closure findings moved `validated → repaired`, each Disposition naming the falsifiers that refuse its
+defect's return; the 5 gate-class findings stay `validated` beside their registered debts, and the 4
+historical findings stay `validated` for `H-1`'s ledger. `pnpm review:check` reads 9 validated · 28
+repaired, and [`end-state-materiality.md`](../end-state-materiality.md)'s 19/9/5/4 classes are untouched —
+class is closure-effect, not status. The closure recording landed in the same motion: the Stage 0 entry in
+`docs/completed.md`, written before `docs/progress.md`'s active slice moved to Stage 1 (`L-1`), in that
+order, per those files' own rules. The section above headed "What this record does not claim" spoke before
+this authorization existed and stays as written; **Stage 0's closure is now complete**, standing on exactly
+the bar the body of this record states.

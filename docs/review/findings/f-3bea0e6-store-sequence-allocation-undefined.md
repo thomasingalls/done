@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-3bea0e6-store-sequence-allocation-undefined
-status: validated
+status: repaired
 type: implementation-hazard
 severity: medium
 confidence: high
 introduced_by: 3bea0e69469e47b790fe6214d7fbed42bcf84441
 work_item: X-02
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -81,3 +81,7 @@ reduces severity but does not make the present ordering reconstructible.
 
 Reopen before Stage 1: select the durable sequence allocator and its generation-budget metadata, then make the
 multi-tab and kill-point schedule build-failing.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by the write-admission model's
+`§6.1 — the allocator, and the count the budget reads` test, on the composed storage scheduler.

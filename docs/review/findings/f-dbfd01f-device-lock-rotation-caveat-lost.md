@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-dbfd01f-device-lock-rotation-caveat-lost
-status: validated
+status: repaired
 type: guarantee-overstatement
 severity: medium
 confidence: high
 introduced_by: dbfd01f54cdfcab994ac7df2298ba0da0bbe7da9
 work_item: B-04
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -82,3 +82,7 @@ contingency therefore remains live rather than historical.
 
 Clarify and test. Either make successful rotation a precondition for presenting enrollment as complete, or preserve
 the selection's pending state and conditional copy in the normative PRD/TRD.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by `the rotation_owed
+derivation` guard (device-lock vectors).

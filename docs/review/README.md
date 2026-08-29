@@ -218,7 +218,13 @@ Statuses:
 - `candidate`: plausible, with evidence and an explicit disproof attempt still open;
 - `validated`: the concern survives counterevidence and its consequence is demonstrated or tightly argued;
 - `rejected`: evidence disproves it; preserve the reasoning so another agent does not repeat it;
-- `superseded`: replaced by a better-scoped finding, whose id must be named.
+- `superseded`: replaced by a better-scoped finding, whose id must be named;
+- `repaired`: was `validated`; the defect's repair is demonstrated by named falsifiers that execute in the
+  gate (`remediation/traceability.md` is the generated finding→falsifier matrix), and the finding's
+  Disposition carries a dated `**Repaired — YYYY-MM-DD**` line naming them. Added 2026-08-29 under the
+  separately authorized `S0-10` disposition workflow; deferred residue, if any, stays a registered debt in
+  `remediation/debts.json` and holds the finding short of this status only when it is the defect itself
+  rather than later-gate evidence.
 
 Severity describes consequence, not effort or rhetorical force. A finding is not validated merely because prose
 is ambiguous; identify the reachable bad state, violated requirement, or decision that lacks the evidence it

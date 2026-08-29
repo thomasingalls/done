@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-c611666-rotation-reader-eligibility-missing
-status: validated
+status: repaired
 type: implementation-hazard
 severity: high
 confidence: high
 introduced_by: c6116669030eedeea3d599bca0da3547114e6930
 work_item: X-01
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -97,3 +97,7 @@ Reopen the authorization/decryption joint. Specify a durable client-authenticate
 that binds at least the workspace/lineage, credential id, wrapping public key, and completed delivery ceremony (or
 an equivalent construction), make rotation validate it independently of service authorization, and add the delayed-
 delivery adversarial vector above.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by `certified-set-approved-by-an-impostor`,
+`certified-set-from-another-epoch` and `certified-set-with-an-added-member` (enrollment vectors).

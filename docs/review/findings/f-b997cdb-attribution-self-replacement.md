@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-b997cdb-attribution-self-replacement
-status: validated
+status: repaired
 type: implementation-hazard
 severity: medium
 confidence: high
 introduced_by: b997cdb6bfaabc0e73cbecbb444dc0df84044d71
 work_item: B-02
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -75,3 +75,7 @@ authenticate first-creation state independently of the mutable snapshot.
 
 Reopen row 8. Bind provenance to an immutable accepted creation event or an equivalent append-only/first-write
 commitment that a fresh restorer can verify; a CRDT “write-once” convention and tuple signature alone are insufficient.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by `creation-certificate-from-another-credential`
+and `creation-certificate-signed-by-another-credential` (attribution vectors).

@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-745e332-envelope-refusal-carrier-missing
-status: validated
+status: repaired
 type: implementation-hazard
 severity: medium
 confidence: high
 introduced_by: 745e332b061e0e964ae655e853f2f3b393667c66
 work_item: X-03
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -88,3 +88,7 @@ than disproving it.
 
 Reopen before Stage 4: select and vector the authenticated ordinary-envelope refusal carrier, its signing authority,
 idempotency, and relationship to accepted/final heads.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by the seven `refusal-*`
+genuine-signature negatives (envelope vectors).

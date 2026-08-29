@@ -83,3 +83,32 @@ latency rows still have no harness; building it is Stage 0's third item.
 
 **What was deliberately not done.** `sequencing.md` §5's decisions were left where they are: that document
 cites its own §5 throughout, and moving them would break it. `sessions.md` was not touched.
+
+---
+
+### Stage 0 — select, measure, book: closed on the corrected evidence, at the recorded independence bar
+
+**Date:** 2026-08-29 · **Commit:** `cd8228c` (the `S0-10` record; the dispositions and this entry ride the
+commit after it) · **Stage:** [sequencing.md](./sequencing.md) §3.1
+
+**Exit.** Every TRD §15 row selected or correctly open — rows 18, 19 and 21 stay at their own gates by rule.
+The lineage review's 37 validated findings answered: the repairs landed and the evidence regenerated
+(`S0-8`), the whole gate green end to end — typecheck, sixteen generators, 205 isolated AAD fields, 445
+tests across 39 files, the authority map at zero open joints, the standing census, the debt manifest, and
+the traceability matrix crediting execution receipts, 28 of 28 current defects carrying a named falsifier.
+Independently challenged three times (`S0-9`): rounds 1–2 failed the package as challenged and forced the
+returns; round 3, from a different model family, found the constructions sound. The one registered `S0-10`
+debt paid by a dated external observation — TRD §10.11's X25519 evidence table, wpt.fyi stable-run
+executions on the four engines, expiring 2027-02-28. The closure recorded with its independence bar exact
+([`docs/review/remediation/S0-10/README.md`](./review/remediation/S0-10/README.md)): author-independent
+seven times, family-independent once, human-independent never. And the 28 current findings moved
+`validated → repaired` under the user-authorized falsifier-executes standard, the five later-gate findings
+staying open as registered debts (`L-1` — 1 · `L-4` — 4), the four historical riding `H-1`.
+
+**Notes.** What this closure does not claim: human review — review 3a/3b remain bookings, not results, and
+proceeding on the machine-adversarial bar was an explicit decision recorded in the `S0-10` record, not an
+oversight. The X25519 observation is dated evidence with an expiry; from 2027-02-28 the manifest refuses it
+exactly as a missing one, and review 3b's pass is offered the re-measurement. Firefox 154's `deriveBits`
+small-order rejection gap is recorded at §10.11's dagger note — the DHKEM layer carries its own all-zero
+abort (`L-2`/`L-3`). `R3-4` (member-entry uniqueness, low) rides `S0-2`'s homes before `L-2` implements a
+verifier.

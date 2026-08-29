@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-992bc91-outbound-envelope-spool-undefined
-status: validated
+status: repaired
 type: implementation-hazard
 severity: medium
 confidence: high
 introduced_by: 992bc9113093fe04d20df0247aa118d0f8ba365f
 work_item: X-03
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -88,3 +88,8 @@ encrypted spool can solve the issue; it is not present in the selected state mac
 
 Reopen before Stage 4: select the encrypted outbound spool, position reservation, exact retry/idempotency rule, and
 checkpoint-relative cleanup ordering.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by the three `§7.4` spool
+tests — the position is reserved with its identity and gaps are occupied; the spool survives the kill it
+exists for; retention is the same store.

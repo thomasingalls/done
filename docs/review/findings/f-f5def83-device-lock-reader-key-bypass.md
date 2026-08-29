@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-f5def83-device-lock-reader-key-bypass
-status: validated
+status: repaired
 type: guarantee-overstatement
 severity: medium
 confidence: high
 introduced_by: f5def83ac6f21873ab7fb589247dd116fc2febd9
 work_item: X-01
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -95,3 +95,8 @@ names.
 Reopen the lock/reader-credential composition. Either make lock enrollment replace or factor-gate every path by
 which that device can obtain future generations, prove and test that its own reader wrap is unreachable to the old
 profile, or narrow the temporal promise to the assurance tier and session conditions actually enforced.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by `the post-lock wrap set`
+guard with `replacement-credential-seal-as-a-factor-seal` and `replacement-credential-under-a-wrong-code`
+(device-lock vectors).

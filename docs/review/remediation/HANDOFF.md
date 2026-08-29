@@ -32,10 +32,14 @@ generators, vectors, tests, requirements, or finding dispositions.* **This work 
 those, on the user's explicit instruction**, because it is no longer a review — it is the remediation the
 review's plan calls for.
 
-**Finding dispositions are still untouched.** Every `status:` in `docs/review/findings/` reads as it did, and
-[`end-state-materiality.md`](./end-state-materiality.md) still reads 19/9/5/4 — including for the ten findings
-round 1 reopened; their reopening lives in the dispositions, not in `status:` edits. `S0-10` reserves
-disposition changes for a separately authorized validation workflow, and this is not it.
+**Finding dispositions moved 2026-08-29, under the authorization `S0-10` reserved.** The user formally
+authorized the disposition workflow with the falsifier-executes evidence standard; the lifecycle gained
+`repaired` (`docs/review/README.md` §Finding lifecycle, policed by `review-status.mjs` with its dated-line
+rule), and the 28 current design/closure findings moved `validated → repaired`, each naming in a dated
+Disposition line the falsifiers that refuse its defect's return. The 5 gate-class findings stay `validated`
+beside their registered debts, the 4 historical stay `validated` for `H-1`, and
+[`end-state-materiality.md`](./end-state-materiality.md) still reads 19/9/5/4 — class is closure-effect, not
+status, and that record is untouched. `pnpm review:check` reads 9 validated · 28 repaired.
 
 **`docs/review/`'s own manifests are untouched and still verify.** `work-items.tsv`, `lineage.tsv` and
 `source-manifest.tsv` are hash-pinned in `config.json`, and `pnpm review:status` checks them. It reports
@@ -55,8 +59,11 @@ governance node the original seven never included, ratified 2026-08-28 (below).
 `cfc6b70` with the changed perspective the queue demanded, found the seven constructions sound and failed
 one narrow axis at the closure instrument — repaired the same day at the round-3 return. The `S0-10` arrival
 paid the registered X25519 debt (2026-08-29): the dated readback stands in TRD §10.11's table, held to the
-payment record in both directions by `pnpm debts:check`, and the gate consult lifts. What remains of `S0-10`
-is its own recording and the separately authorized disposition workflow.**
+payment record in both directions by `pnpm debts:check`, and the gate consult lifts. The disposition
+workflow ran later the same day under the user's formal authorization — 28 current findings `repaired`
+under the falsifier-executes standard, the deferred five and historical four staying `validated` — and the
+closure recording landed in `docs/completed.md` and `docs/progress.md`, in that order. **Stage 0 is closed,
+on the recorded bar: author-independent seven times, family-independent once, human-independent never.**
 
 - **Round 1** — four parallel non-author challengers: [`S0-9/DISPOSITION.md`](./S0-9/DISPOSITION.md). Every
   root cause has at least one failing axis, two high findings reopen at their decisions, and one live
@@ -455,10 +462,13 @@ In order. An item is done when its disposition entry's earliest-return stage has
    `node scripts/check-debts.mjs --gate S0-10` lifting — with Firefox's `deriveBits` rejection-edge misses
    recorded at the table's dagger note and the DHKEM layer's own all-zero abort named as the Stage-4
    consequence. The independence bar is recorded in its one home, [`S0-10/README.md`](./S0-10/README.md):
-   author-independent seven times, family-independent once, human-independent never. **What remains is the
-   third duty**: finding dispositions under the separately authorized validation/remediation workflow —
-   authorization this branch does not carry — and the closure recording (`docs/progress.md`,
-   `docs/completed.md`, register status) that follows its outcome.
+   author-independent seven times, family-independent once, human-independent never. **The third duty ran
+   later the same day, formally authorized by the user in session**: the disposition workflow under the
+   falsifier-executes standard — the lifecycle gained `repaired` with `review-status.mjs` policing its dated
+   line, the 28 current findings flipped with Disposition lines naming their falsifiers, and the deferred
+   five and historical four stayed `validated` — then the closure recording, in order: the Stage 0 entry in
+   `docs/completed.md`, then `docs/progress.md`'s active slice moving to Stage 1 (`L-1`). Rows 18/19/21
+   stay correctly open. **Queue item 7 is complete; Stage 0 is closed on the recorded bar.**
 8. **`L-1`–`L-4` and `H-1`** are the rest of the plan and are outside Stage 0. `H-1`'s append-only ledger
    holds the four historical-only corrections, and `docs/decisions.md`'s stale *eighteen rows are selected*
    belongs to it rather than to a silent edit.
@@ -466,17 +476,21 @@ In order. An item is done when its disposition entry's earliest-return stage has
 ## The exact next command
 
 ```bash
-cd /Users/thomasingalls/Code/done/.claude/worktrees/x25519-debt-bar-recording-3c0d10 && pnpm install --frozen-lockfile && pnpm check && node scripts/check-debts.mjs --gate S0-10
+cd /Users/thomasingalls/Code/done/.claude/worktrees/x25519-debt-bar-recording-3c0d10 && pnpm install --frozen-lockfile && pnpm check && pnpm review:check && node scripts/check-debts.mjs --gate L-1
 ```
 
 That establishes the baseline, mints the execution receipts in one motion (`pnpm check`'s last step consumes
-them, so the full chain is the baseline), and confirms what changed 2026-08-29: the `S0-10` consult **lifts**
+them, so the full chain is the baseline), runs the disposition readback, and then asks the one question the
+queue is now at: the `L-1` consult, which **blocks today, correctly**, until the executed cutover kill
+matrix is paid. What changed 2026-08-29: the `S0-10` consult **lifts** (`node scripts/check-debts.mjs
+--gate S0-10`)
 — the X25519 debt is paid into TRD §10.11's table with source, date and expiry, and `debts:check` holds the
-table and the payment record to each other. **Queue items 1–6 are complete, and item 7's first two duties
-are done** — the decision sprint, the two structural artifacts, the seven security returns, the `S0-8`
-regeneration, `S0-9` round 3 with its same-day return, and now the `S0-10` arrival: the debt paid and the
-independence bar recorded in [`S0-10/README.md`](./S0-10/README.md) — author-independent seven times,
-family-independent once (round 3), human-independent never. The gate stands as before plus the new readback:
+table and the payment record to each other. **Queue items 1–7 are complete** — the decision sprint, the two
+structural artifacts, the seven security returns, the `S0-8` regeneration, `S0-9` round 3 with its same-day
+return, and the `S0-10` arrival and completion: the debt paid, the independence bar recorded in
+[`S0-10/README.md`](./S0-10/README.md) — author-independent seven times, family-independent once (round 3),
+human-independent never — the dispositions moved under the user's formal authorization, and the closure
+recorded. The gate stands as before plus the new readback:
 the authority map at **zero** open, the storage scheduler's six windows asserting their repairs, the standing
 census comparing each claim's ratified **option** beside its date and owed ranges, the recipient-authority,
 write-admission and retention readbacks, the debt manifest on exact-case paths with §10.11's evidence table
@@ -484,13 +498,13 @@ held to the payment record, the source↔blob binding inside `pnpm wasm:verify`,
 crediting execution receipts — 28 of 28 current defects carrying a named falsifier. `pnpm remediation:status`
 reads **nothing owed at any return**; `pnpm debts` computes what blocks the gates ahead (`L-1` — 1 ·
 `L-4` — 4; the `S0-10` entry is paid).
-**Next is `S0-10`'s remainder, and it needs authorization this branch does not carry**: finding dispositions
-change only under the separately authorized validation/remediation workflow, and the closure recording
-(`docs/progress.md`, `docs/completed.md`, register status) follows that workflow's outcome. Beyond Stage 0,
-`L-1` arrives against its registered kill-matrix debt (`node scripts/check-debts.mjs --gate L-1` names it).
-`R3-4` (member-entry uniqueness, low) rides to `S0-2`'s homes before `L-2` implements a verifier and does
-not gate closure. The X25519 observation expires 2027-02-28; from that day `debts:check` refuses it exactly
-as a missing one, and the re-measurement is review 3b's offered pass.
+**Next is `L-1`** — Stage 1's encrypted local store and legacy cutover; `docs/progress.md` is the
+active-slice home now, and `action-tree.md`'s node is the plan. It arrives against its registered
+kill-matrix debt: `node scripts/check-debts.mjs --gate L-1` names it, and design prose is refused as
+payment. `pnpm review:check` is the disposition readback (9 validated · 28 repaired). `R3-4` (member-entry
+uniqueness, low) rides to `S0-2`'s homes before `L-2` implements a verifier. The X25519 observation expires
+2027-02-28; from that day `debts:check` refuses it exactly as a missing one, and the re-measurement is
+review 3b's offered pass.
 
 ## Five things that will bite you
 

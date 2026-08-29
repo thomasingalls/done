@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-9b49b74-journal-seal-64k-gap
-status: validated
+status: repaired
 type: contradiction
 severity: medium
 confidence: high
 introduced_by: 9b49b743cb03cb8827682d79fc66405f458cf29b
 work_item: X-02
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -77,3 +77,8 @@ not merely hypothetical module failure.
 
 Reopen before Stage 1 integrates the seal. Select an explicit oversize write state and test it on the same page-kill
 schedule as ordinary journal entries.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by `check-update-limit.mjs`
+and the four `§6.1` tests — admission's one state; slicing; the character watermark; remote updates
+outside the contract. Stage-1 integration of the seal rides `L-1`.

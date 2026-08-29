@@ -526,7 +526,7 @@ for (const row of lineage) {
   }
 }
 
-const allowedFindingStatuses = new Set(['candidate', 'validated', 'rejected', 'superseded']);
+const allowedFindingStatuses = new Set(['candidate', 'validated', 'rejected', 'superseded', 'repaired']);
 const allowedFindingTypes = new Set([
   'contradiction',
   'ambiguity',
@@ -603,6 +603,11 @@ for (const path of markdownFiles(findingDir)) {
     }
     if (metadata.status === 'superseded' && (!metadata.superseded_by || metadata.superseded_by === 'none')) {
       errors.push(`${relative(ROOT, path)} is superseded without naming its replacement`);
+    }
+    if (metadata.status === 'repaired' && !/\*\*Repaired — \d{4}-\d{2}-\d{2}\*\*/.test(content)) {
+      errors.push(
+        `${relative(ROOT, path)} is repaired without a dated "**Repaired — YYYY-MM-DD**" disposition line naming its falsifiers`,
+      );
     }
     requireSections(
       content,

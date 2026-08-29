@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-745e332-package-root-rewrap-substitution
-status: validated
+status: repaired
 type: implementation-hazard
 severity: high
 confidence: high
 introduced_by: 745e332b061e0e964ae655e853f2f3b393667c66
 work_item: B-02
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -83,3 +83,8 @@ fail before attacker-controlled content becomes an accepted workspace.
 Reopen row 10. Authenticate the historical root with data protected directly by the user-held recovery secret—for
 example, include a root/lineage commitment inside the code-sealed recovery object—or an equivalent non-rewrappable
 anchor. Then add the paired re-wrap substitution vector; changing `info` on an old ciphertext is insufficient.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by `freshly-minted-package-under-an-attacker-root`,
+`freshly-minted-archive-under-an-attacker-root`, `attacker-root-refused-before-any-unwrap`,
+`archive-refused-before-any-unwrap` and `root-commitment-for-another-lineage` (package vectors).

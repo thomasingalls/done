@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-b9ff071-webauthn-cross-origin-policy
-status: validated
+status: repaired
 type: implementation-hazard
 severity: low
 confidence: high
 introduced_by: b9ff071ddb4ee67e47179e549b5ad22a429ac5ee
 work_item: B-01
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -84,3 +84,7 @@ is part of these selected verifiers and its as-built enforcement is future work.
 Validated by `V-01`. Add the missing ceremony-policy check and negative vectors, or demonstrate a
 deployment invariant that makes cross-origin WebAuthn invocation unreachable and bind that invariant into the
 row-17 verification evidence.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by `embedding-origin-claimed`,
+`framed-ceremony` and their `stepup-*` twins (account-credential and recovery vectors).

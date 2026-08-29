@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-b997cdb-checkpoint-coverage-unchecked
-status: validated
+status: repaired
 type: evidence-weakness
 severity: medium
 confidence: high
 introduced_by: b997cdb6bfaabc0e73cbecbb444dc0df84044d71
 work_item: B-02
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -68,3 +68,7 @@ claim accepted heads beyond their applied run. Require fallback rather than part
 
 Test and clarify: specify the producer/restorer coverage derivation and accepted-head relationship, then replace the
 independent constants with an end-to-end Yjs checkpoint/suffix oracle.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by the seven `admission-*`
+negatives (checkpoint vectors), the derived `sv`/`ds` disagreements among them.

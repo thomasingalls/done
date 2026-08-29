@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-745e332-local-archive-portable-wrap-undefined
-status: validated
+status: repaired
 type: implementation-hazard
 severity: high
 confidence: high
 introduced_by: 745e332b061e0e964ae655e853f2f3b393667c66
 work_item: X-05
 created_by: root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -61,3 +61,8 @@ TRD §9.3 explicitly says that a code opens the Local archive and that an explic
 ## Disposition
 
 Reopen row 10's never-established state and row-20 closure. Select an archive-specific portable opener and exercise the full saved-factor-to-checkpoint restore path before claiming the Local fidelity archive is an exact restore format.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by the archive negatives
+enumerated in the matrix — `archive-manifest-signed-by-the-archiving-device`, the `aad-only-archive-*`
+isolations and their siblings (package vectors).

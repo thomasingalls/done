@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-4259822-retirement-safe-survivor-gate-undefined
-status: validated
+status: repaired
 type: implementation-hazard
 severity: high
 confidence: high
 introduced_by: 4259822828060fe2b9592fa525cd9a17170af285
 work_item: X-04
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -87,3 +87,7 @@ however, so the exact handoff between the two closed rows remains undefined.
 
 Reopen the retire/package/deletion joint. Select a durable safe-survivor/export acknowledgement and catch-up gate,
 and make every hosted deletion event depend on it before account deletion is implementation-ready.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by the seven `catchup-*`
+negatives and the `§14.7` retention-model suite enumerated for this finding in the matrix.

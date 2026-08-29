@@ -29,7 +29,7 @@
         "note": "Every success-path row passes on all four engines. Firefox 154's deriveBits reads pass 12/19: the six small-order all-zero rejection subtests and the non-multiple-of-8 length subtest miss while every positive derivation (pkcs8/spki import, deriveBits at length 256) passes — recorded in the table's dagger note, with the consequence that the Stage-4 DHKEM layer carries its own RFC 9180 all-zero abort on every engine."
       },
       "inputs": [
-        { "path": "docs/review/findings/f-bd87655-x25519-support-floor-omitted.md", "section": null, "hash": "f02e907f63fb" },
+        { "path": "docs/review/findings/f-bd87655-x25519-support-floor-omitted.md", "section": null, "hash": "bbcbedf69e94" },
         { "path": "docs/TRD.md", "section": "10.11", "hash": "2e79beca1a79" }
       ]
     },

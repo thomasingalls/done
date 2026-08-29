@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-9860a0b-journal-rotated-vector-reuses-key
-status: validated
+status: repaired
 type: evidence-weakness
 severity: medium
 confidence: high
 introduced_by: 9860a0bc1611b01eac76abcc5584afc51f5ed959
 work_item: B-04
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -75,3 +75,7 @@ load-path invariant, not invalid ciphertext or a broken XChaCha primitive KAT.
 ## Disposition
 
 Fix the vector fixtures and test generation-key lookup independently from AAD generation binding.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by `wrong-generation-key`
+(journal vectors).

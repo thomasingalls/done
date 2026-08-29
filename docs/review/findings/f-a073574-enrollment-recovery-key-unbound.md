@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-a073574-enrollment-recovery-key-unbound
-status: validated
+status: repaired
 type: implementation-hazard
 severity: high
 confidence: high
 introduced_by: a073574fcb90f9f2a70fa1be2bae5dc1d9c364f3
 work_item: X-04
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -92,3 +92,8 @@ authentication, and asking for the recovery code would contradict the ordinary-e
 
 Reopen the enrollment/recovery-recipient joint. Define and test authentic `R_pub` and recovery-envelope delivery to
 ordinary new devices before allowing them to originate a rotation.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by `substituted-recovery-state`,
+`certified-set-with-substituted-recovery-state`, `bootstrap-naming-another-prior-recovery-state` and
+`bootstrap-substituting-the-new-wrapping-key`.

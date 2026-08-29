@@ -10,6 +10,9 @@ needed one. They are recorded here so the actions below do not overstate what re
 `status:` was touched**, since `S0-10` reserves disposition changes for the separately authorized
 validation/remediation workflow. The population in
 [`end-state-materiality.md`](./end-state-materiality.md) is likewise unchanged and still reads 19/9/5/4.
+*[Amended 2026-08-29: the authorized workflow ran at `S0-10` — the lifecycle gained `repaired` and the 28
+current findings moved `validated → repaired` under the falsifier-executes standard, the gate-class five
+and historical four staying `validated`; the classes above are still untouched.]*
 
 | Finding | Owning action | State | What remains |
 | --- | --- | --- | --- |
@@ -769,7 +772,10 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 > once (round 3), human-independent never — review 3a/3b stay bookings, and a booking is not a result.
 > **Finding dispositions remain untouched**: the separately authorized validation/remediation workflow this
 > node reserves has not run, and the closure recording across `docs/progress.md`/`docs/completed.md` waits
-> for it.
+> for it. *[Completed 2026-08-29, later the same day: the user formally authorized the workflow; 28 current
+> findings moved to `repaired` under the falsifier-executes standard with `review-status.mjs` policing the
+> dated repair line, the deferred and historical nine stayed `validated`, and the closure recording landed
+> in order — Stage 0 closed on the recorded bar; `S0-10/README.md`'s addendum is the record.]*
 
 - **Prerequisite decisions:** `S0-1`–`S0-9` accepted; updated review 3a/3b scopes/bookings recorded without calling
   booking a result.

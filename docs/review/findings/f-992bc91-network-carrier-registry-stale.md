@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-992bc91-network-carrier-registry-stale
-status: validated
+status: repaired
 type: propagated-assumption
 severity: medium
 confidence: high
 introduced_by: 992bc9113093fe04d20df0247aa118d0f8ba365f
 work_item: X-01
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -79,3 +79,7 @@ and acceptance registry omits a carrier whose independent selection happens to b
 
 Fix the row-1 carrier registry and make its owner/acceptance coverage register-aware. Preserve row 4's independent
 vectors, but do not claim carrier-wide agility is machine-checked until the generated suite artifact includes it.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by the `checkCarriers` guard
+(suite generator), reading the owning row's own status line.

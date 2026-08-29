@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-b997cdb-checkpoint-key-retention-inverted
-status: validated
+status: repaired
 type: contradiction
 severity: medium
 confidence: high
 introduced_by: b997cdb6bfaabc0e73cbecbb444dc0df84044d71
 work_item: X-03
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -83,3 +83,7 @@ to be stated and tested before it can discharge fallback.
 
 Clarify and test before old-generation deletion: invert the normative rule to retain every generation opener needed
 by any retained checkpoint, and add that condition to row 15's deletion predicate.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by `the opener predicate`
+guard (checkpoint vectors).

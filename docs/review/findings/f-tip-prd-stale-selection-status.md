@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-tip-prd-stale-selection-status
-status: validated
+status: repaired
 type: contradiction
 severity: low
 confidence: high
 introduced_by: a073574fcb90f9f2a70fa1be2bae5dc1d9c364f3
 work_item: F-02
 created_by: /root/f_02
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -69,3 +69,7 @@ I tested whether the PRD paragraphs could be read as historical rationale. That 
 ## Disposition
 
 Validated by `V-01`. Update the PRD to name the selected constructions and leave only genuinely open confirmation UX, or explicitly reopen the affected TRD rows and propagate that reopening to their records, artifacts, and review scopes.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by `check-selection-status.mjs`,
+its `OPEN` patterns repaired at round 1 and its printed claim narrowed at the `S0-1` return.

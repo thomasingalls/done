@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-4259822-recovery-replacement-no-forward-rotation
-status: validated
+status: repaired
 type: guarantee-overstatement
 severity: high
 confidence: high
 introduced_by: 4259822828060fe2b9592fa525cd9a17170af285
 work_item: X-04
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -88,3 +88,9 @@ serve. The design already accepts forward rotation as the way to make removal go
 
 Reopen recovery replacement. Treat an exposed recovery capability as lost read access and select/test the forward-
 rotation composition or narrow the guarantee to the weaker deletion-of-service-state property.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by the `replacement-payload
+variants` guard (transition vectors), with TRD §13.7 selecting rotation as replacement's default —
+`none-lost-not-copied` the only non-rotating value. The remainder declared on the claim — the composed
+replacement-plus-rotation executing in the implementation — rides `L-2`, as the matrix states.

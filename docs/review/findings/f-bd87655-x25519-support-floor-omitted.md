@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-bd87655-x25519-support-floor-omitted
-status: validated
+status: repaired
 type: contradiction
 severity: low
 confidence: high
 introduced_by: bd876553c8a2be17ff55c399f416d7eed9075935
 work_item: B-03
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -71,3 +71,10 @@ Add a published RFC 9180 vector once the selected implementation exists.
 
 Clarify and test. Include X25519 in §10.11's capability-specific inventory and keep the Stage-4 support check open
 until the exact HPKE implementation passes on the current floor.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by `check-debts.mjs` —
+§10.11's evidence table held to the paid `x25519-dated-readback` payment record in both directions
+(partial at `S0-10`, the matrix's divisible-duty split). Residue: the observation expires 2027-02-28,
+after which the manifest refuses it exactly as a missing one; the HPKE conformance run on the floor rides
+`L-2`/`L-3`, and review 3b's pass stays offered the re-measurement.

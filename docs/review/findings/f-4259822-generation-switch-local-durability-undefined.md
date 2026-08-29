@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-4259822-generation-switch-local-durability-undefined
-status: validated
+status: repaired
 type: implementation-hazard
 severity: medium
 confidence: high
 introduced_by: 4259822828060fe2b9592fa525cd9a17170af285
 work_item: X-03
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -90,3 +90,7 @@ pending record; they do not select the ordering or tell an implementation when c
 
 Reopen before Stage 4: select the local `applying` transaction/order and compose it with the key store, journal,
 outbound spool, checkpoint admission, and old-generation deletion predicates.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by `GenerationApply — a kill
+at every step`, the composed storage-schedule model.

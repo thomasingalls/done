@@ -2,14 +2,14 @@
 schema: 1
 kind: finding
 id: f-dbfd01f-record-nonce-ceiling-omitted
-status: validated
+status: repaired
 type: implementation-hazard
 severity: low
 confidence: high
 introduced_by: dbfd01f54cdfcab994ac7df2298ba0da0bbe7da9
 work_item: B-04
 created_by: /root
-updated: 2026-08-26
+updated: 2026-08-29
 challenged_by: root-v01-20260826
 superseded_by: none
 ---
@@ -78,3 +78,8 @@ severity but does not repair the normative document's claim that it states curre
 
 Clarify before Stage 1 implementation: put the numeric ceiling and rotate-before-write transition in the normative
 record algorithm, then encode the boundary as a build-failing test.
+
+**Repaired — 2026-08-29** under the authorized `S0-10` disposition workflow (`docs/review/README.md` §Finding lifecycle states the standard; `remediation/traceability.md` is the
+generated finding→falsifier matrix). The defect's return is refused by the `§6.1 — the allocator,
+and the count the budget reads` boundary test. The production encrypted writer's own run of the
+boundary rides `L-1`.
