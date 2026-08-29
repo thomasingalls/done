@@ -17,7 +17,7 @@ disagree, the disposition is right and this file is the thing to fix.
 
 | | |
 | --- | --- |
-| Branch | `claude/stage0-remediation`, 88 commits off `9edd930` as of the `S0-9` round-3 return, all signed; the current tip rides the worktree branch `claude/s0-9-round-3-handoff-2504b1` until folded back |
+| Branch | `claude/stage0-remediation`, 89 commits off `9edd930` through the round-3 queue update (`9e33ed9`), all signed; the current tip rides the worktree branch `claude/s0-9-round-3-handoff-2504b1` until folded back |
 | Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, the decisions, and all three `S0-9` challenge rounds |
 | Not on it | nothing — this branch is the whole picture, deliberately |
 | Superseded | `claude/remediation-findings-review-997ab5` holds the review workspace at its original SHAs. Redundant once this branch is accepted |
