@@ -915,6 +915,14 @@ no claim that two principals in one slot are the same person.
 and a name that can be guessed from a workspace identifier alone would let a picker enumerate by construction
 rather than by lookup. Enumerate through the index, never through `indexedDB.databases()`.
 
+**The derivation is `SHA-256( LP("done/store-name/v1") || LP(principal) || LP(workspace) )`, truncated to 128
+bits, and it is deliberately unsalted.** The rule above asks only that a workspace identifier alone not name a
+store, which binding the principal satisfies; it does not ask that a holder of *both* identifiers be unable to
+compute the name. Deriving rather than minting an opaque name is what keeps a store re-discoverable when the
+index is lost, since re-discovery through a database listing is the one route this section forbids. **If the
+principal identifier ever becomes guessable, the augmentation is one further `LP()` of device-local salt in
+that input** — it is a rename of every existing store, so it is a migration rather than an edit.
+
 **Lifecycle:**
 
 | Operation                       | Slot index                                                     | Stores                       | Service            |

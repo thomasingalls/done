@@ -41,6 +41,7 @@ export * from './serialize';
 export * from './compaction';
 export * from './export';
 export * from './persistence';
+export * from './slotIndex';
 export * from './sync';
 
 export interface Store extends DocumentTree {
