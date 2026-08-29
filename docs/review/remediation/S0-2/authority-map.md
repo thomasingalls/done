@@ -90,14 +90,22 @@ resolves: the named signer's member entry (credential_id ‖ W_pub ‖ S_pub) in
 resolves: a bootstrap-minted replacement set -> via:bootstrap-signer
 status: resolved
 pin: docs/TRD.md §13.2 acf87ae3c063
-pin: docs/TRD.md §13.5 0c37e6e9e8f4
-pin: docs/review/remediation/S0-2/A-schemas.md §1 37490550ef01
+pin: docs/TRD.md §13.5 bfd84b3cbdd8
+pin: docs/review/remediation/S0-2/A-schemas.md §1 4863e06ab791
 ```
 
 The pins are the three homes the `S0-2` return amended together (`P-1` falsifiers 12–13, 18–19): §13.2's
 ratified-rule paragraph and its table rows, §13.5's `CertifiedSet` member and approval formulas, and the Stage A
 schema — with `pnpm recipient:check` as the falsifier-19 readback over them and the generators. Any of them
 changing fails this entry until it is re-read, exactly as the flip itself did.
+
+**Re-pinned 2026-08-29 for `R3-4`, and the entry still holds.** Both homes gained the member-entry uniqueness
+rule: a set carrying two entries under one `credential_id` is malformed and a verifier refuses it. The entry's
+resolution line already read *the named signer's member entry* — singular — and this makes the singular true by
+construction rather than by assumption, so the re-pin is the additive kind and no status flips. §13.5's two
+other pinning entries (`epoch-signature`, `head-first-contact`) are re-pinned by the same edit and their
+`bound:` lines are untouched by it. `recipient:check` now carries the rule as a byte rule at both homes, since
+the generator's object-keyed `members` cannot express a duplicate and no published negative can cover it.
 
 **The factor-carried edge.** At total loss the client-authenticated state *is* the four objects, so the
 bootstrap verifier must be factor-carried: committed in `recovery_state_digest`, sealed beside `R_priv`,
@@ -165,7 +173,7 @@ verifies: a successor epoch — roster, capabilities, generation, K_accept certi
 resolves: the service authorization key -> root:service
 bound: §13.5 — epochs are serialized, signed and ancestor-checked, so equivocation must fork the lineage rather than withhold; and per P-1 the epoch resolves no recipient-authority key — it carries the certified sets and vouches for none of them
 status: resolved
-pin: docs/TRD.md §13.5 0c37e6e9e8f4
+pin: docs/TRD.md §13.5 bfd84b3cbdd8
 ```
 
 ```authority
@@ -176,7 +184,7 @@ verifies: the nonce-bound signed head assertion a brand-new or total-loss device
 resolves: K_auth's head assertion -> root:service
 bound: §13.5 — client_nonce separates a hostile relay from a hostile service; issued_at is displayed, never enforced; a stale self-consistent head degrades to a partition because a hidden revocation is a hidden generation, and the ancestor rule takes over after first contact
 status: resolved
-pin: docs/TRD.md §13.5 0c37e6e9e8f4
+pin: docs/TRD.md §13.5 bfd84b3cbdd8
 ```
 
 ```authority

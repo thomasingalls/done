@@ -2613,6 +2613,15 @@ cannot replay another's approval as its own, and an approval naming no approver 
 `recovery_state_digest` gains the bootstrap-signer commitment under the same rule at the factor edge (§13.8).
 A member's signing-key rotation is a set successor, priced by the machinery removal already uses.
 
+**`credential_id` is unique within a set, and a duplicate is malformed.** A certified set carrying two
+member entries for the same `credential_id` is malformed, and a verifier refuses the set rather than
+resolving under either entry. `members_digest` sorts by `credential_id` and nothing else, so a tie leaves
+the order — and therefore the digest, and therefore which `S_pub` an approval resolves under — undetermined
+between two conforming verifiers. Refusing is the rule rather than picking a side, because a verifier that
+took the first or the lesser entry would still disagree with another that took the other, and the
+idempotency-key property this sort exists for (§15 row 15: two devices building the same object produce the
+same key) holds only while the key is unique (`R3-4`).
+
 **One eligible content-holding client's signature suffices** (`P-1`). `approvals[]` is a list, so a threshold is
 later a verifier policy change rather than a format migration; a hard quorum is not selected, because it would
 make a one-device workspace unable to enroll its second device.
