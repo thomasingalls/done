@@ -36,11 +36,11 @@
     {
       "id": "legacy-plaintext-cutover",
       "finding": "f-9860a0b-legacy-plaintext-repair-undefined",
-      "property": "The known old-origin plaintext cutover as one resumable transaction — export, import, active-store selection, deletion, restart — with its kill matrix executed and no plaintext left at any kill point.",
+      "property": "The known old-origin plaintext cutover as one resumable transaction — export, import, active-store selection, deletion, restart — with its kill matrix executed against a seeded legacy installation. The terminal-state rule is the finding's own validation procedure, step 3: after each kill and restart, recovery reaches either a verified pre-cutover state with the legacy carrier preserved, or one verified encrypted post-cutover state; recognizable plaintext is absent from every carrier once cutover completes. Preserved legacy plaintext before completion is the finding's allowed recoverable state, not a residue failure.",
       "owner": "the L-1 encrypted-store implementation",
       "gate": "L-1",
-      "artifact": "the executed kill matrix over the cutover state machine, with a residue scan at every kill point",
-      "falsifier": "a kill point after which plaintext remains, or a resume that cannot complete or roll back, fails the matrix; design prose without an executed matrix is refused as payment",
+      "artifact": "the executed kill matrix over the cutover state machine, run against a seeded legacy installation — never the live first deployment, which is Stage 2's — with a residue scan at every kill point and the reached terminal state named at each",
+      "falsifier": "a kill point whose restart reaches neither terminal state, a completed cutover leaving recognizable plaintext in any carrier, or a resume that can neither complete nor roll back, fails the matrix; a residue scan that fails on plaintext preserved before completion is reading the wrong rule and does not pay the debt either; design prose without an executed matrix is refused as payment",
       "payment": {
         "kind": "executed-kill-matrix",
         "requires": ["kill_points", "residue_scan", "date"],

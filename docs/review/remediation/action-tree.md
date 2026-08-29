@@ -803,10 +803,17 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 - **Type:** implementation + executable evidence.
 - **Safe parallel work:** new encrypted store, disposable old-origin cutover harness, device benchmark matrix.
 - **Acceptance/falsifiers:** all writer/page-kill tests, immutable p95 population, exact export/import/active-store/
-  delete/restart kills, whole-profile plaintext scan, destructive local clear.
+  delete/restart kills, whole-profile plaintext scan, destructive local clear. The kill matrix's terminal-state rule
+  is not restated here — it is the `legacy-plaintext-cutover` entry in [`debts.json`](./debts.json), which carries it
+  from the finding's own validation procedure.
+- **Scope boundary — machinery here, the live cutover at Stage 2.** `L-1` builds the cutover state machine and
+  executes its kill matrix against a **seeded** legacy installation. It does not perform the one-way first-deployment
+  cutover of the author's real development data: that is Stage 2 ([sequencing.md](../../sequencing.md) §3.3), which
+  waits on TRD §15 row 21's carrier choice (§5.4) and on review 3a's answer (§5.2 — 3a gates cutover, not Stage 1).
+  Building the machinery under `L-1` while the live move waits is the intended shape, not a deferral.
 - **Downstream invalidated if action changes:** Stage 4 sync client assumptions and release evidence.
-- **Rollback/reconsideration:** before selecting encrypted store active or deleting any legacy carrier; keep a verified
-  recoverable export.
+- **Rollback/reconsideration:** before selecting encrypted store active or deleting any legacy carrier **on the seeded
+  harness**; keep a verified recoverable export. The real installation's carriers are not `L-1`'s to delete.
 - **Consequence of no action:** later gate remains open; not a reason to call the Stage 0 design wrong.
 
 ### `L-2` — authorization, acceptance, outbound, and transition integration
