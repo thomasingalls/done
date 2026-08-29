@@ -39,6 +39,10 @@ CertifiedSet = LP("done/certified-set/v1") || LP(dec v)
                 single-owner); the list is the carrier, so a threshold is later a
                 verifier policy change, not a format migration.
 
+  uniqueness — credential_id is the sort key and carries at most one entry.
+               A set holding two entries under one credential_id is malformed
+               and a verifier refuses the whole set; it does not pick one.
+
   resolution — a verifier resolves the named approver's member entry
                (credential_id ‖ W_pub ‖ S_pub) in the PARENT certified set and
                nothing else. The chain grounds at its two edges: the genesis set
@@ -70,6 +74,22 @@ which the commitment makes true rather than aspirational.
 **Why the recovery recipient is in the same object.** `f-a073574` is the same attack through a different carrier —
 substitute `R_pub` and the honest new device wraps future generations to the attacker. One object, approved once,
 covers both, and a rotator that consumes the certified set cannot wrap to a recovery key nobody approved.
+
+**Why uniqueness is stated rather than assumed** (`R3-4`, `S0-9` round 3, 2026-08-29). A certified set
+carrying two member entries for the same `credential_id` is malformed, and a verifier refuses the set rather
+than resolving under either entry. The rule had no home before this sentence: `members_digest` sorts by
+`credential_id` alone, so a duplicate leaves the order undetermined at the tie, and two conforming verifiers
+could digest the same members into different bytes and resolve the same approval under different `S_pub`.
+That is not a privilege escalation — under single-owner approval a rogue member can mint worse than a
+duplicate — it is an interop and determinism hole at the construction every chain grounds in, and it
+falsifies the stated idempotency-key property directly: *two devices building the same object produce the
+same digest* is only true while the sort key is unique. **Refusing beats picking.** A verifier that resolved
+the first, the last or the lexicographically-lesser entry would be a conforming verifier that disagrees with
+another conforming verifier about who approved a set, which is the failure the rule exists to make
+impossible. The generator's representation cannot express the case — `members` is keyed by `credential_id`,
+so `Object.entries` deduplicates by construction — and that is why no published negative covers it; the
+duty lands on the verifier `L-2` builds, which parses a wire list rather than a JavaScript object and must
+check what the object made unrepresentable.
 
 **Consumption rule.** A rotator wraps to exactly the `(credential, W_pub)` pairs in the certified set for its
 parent epoch, and to exactly that `R_pub`. Never to an epoch roster, never to a service-supplied key, never to a

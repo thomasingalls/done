@@ -184,6 +184,35 @@ What stays reserved, exactly as the record reserves it: the `CertifiedSet` AAD r
 negative's regeneration re-read at `S0-8`. `P-3` falsifiers 14–22, reserved here to the `S0-3` return, landed
 there 2026-08-28.
 
+## The `R3-4` amendment (2026-08-29) — member entries are unique by `credential_id`
+
+`S0-9` round 3 recorded one low finding against this action's core construction and returned it here rather
+than blocking Stage 0 closure with it: `CertifiedSet` sorts `members_digest` by `credential_id`, the ratified
+resolution rule reads *the named approver's member entry* in the singular, and **nothing said a set carrying
+two entries for one `credential_id` was malformed**. The sort is undetermined at the tie, so two conforming
+verifiers could digest the same members into different bytes and resolve the same approval under different
+`S_pub` — an interop and determinism hole, not a privilege escalation, at the construction every chain
+grounds in. The disposition's stated return was *`S0-2`'s homes, at the owner's convenience before `L-2`
+implements a verifier*; `L-2` opened 2026-08-29, so it landed first.
+
+- **Stage A** — [`A-schemas.md`](./A-schemas.md) §1 gained a `uniqueness` clause inside the construction and
+  the paragraph arguing it: the key carries at most one entry, a duplicate makes the whole set malformed, and
+  a verifier **refuses rather than picks**, because a verifier taking the first or the lesser entry is still a
+  conforming verifier disagreeing with another about who approved a set.
+- **Stage C** — TRD §13.5 gained the same rule in its own voice, tied to §15 row 15's idempotency-key
+  argument, which is what the unique sort key was always load-bearing for.
+- **The instruments** — the four authority-map entries pinning those two sections (`member-signing-keys`
+  twice over, `epoch-signature`, `head-first-contact`) were re-read and re-pinned with every entry held: the
+  edit is additive and makes `member-signing-keys`' already-singular resolution line true by construction, so
+  no status flips. `pnpm recipient:check` gained the sentence as a byte rule at both homes — added beyond the
+  named repair for the reason the finding itself gives, that the transition generator's `members` is an object
+  keyed by `credential_id` and cannot express a duplicate, so **no published negative can ever cover this rule
+  and prose is its only carrier**. Deleting the sentence from either home fails the readback.
+
+**What this does not discharge.** The verifier. The rule is now stated and held; enforcing it against a parsed
+wire list is `L-2`'s, in the same object as the approver resolution it protects, and the object-keyed
+generator is exactly why the check cannot be inherited from the vectors.
+
 ## Not in scope for this action
 
 - Checkpoint semantics and creation authority — [`P-8`](../decisions/P-8-checkpoint-and-creation-authority.md)
