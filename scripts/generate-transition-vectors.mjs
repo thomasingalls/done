@@ -244,9 +244,6 @@ const MEMBER_KEYS = {
   },
 };
 
-/** The wrapping-key projection a rotator consumes. */
-const W_PUB = Object.fromEntries(Object.entries(MEMBER_KEYS).map(([c, k]) => [c, k.w_pub]));
-
 const CERTIFIED_MEMBERS = { ...MEMBER_KEYS };
 
 /**
