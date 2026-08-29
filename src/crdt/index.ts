@@ -23,10 +23,12 @@ import { repairCardMemberships, transactionAffectsMembership } from './days';
 import { CONTENT_ROOT, STORE_OPEN, STORE_READY, mark } from '../lib/marks';
 import { createSync, type SyncController, type SyncOptions } from './sync';
 import {
+  LEGACY_STORE,
   openLocalStore,
   requestPersistenceOnFirstWrite,
   type LocalStore,
   type StoragePersistence,
+  type StoreHandle,
 } from './persistence';
 
 export * from './yjs';
@@ -64,7 +66,13 @@ export interface Store extends DocumentTree {
 
 export interface OpenStoreOptions {
   doc?: YDoc;
-  dbName?: string;
+  /**
+   * Which local store to open (TRD §6.5). Omitted means `LEGACY_STORE` — the
+   * one store that exists before the slot index does. That fallback is the
+   * next item of Stage 1 to go: once §6.5's index supplies the handle, a store
+   * opened without one is a bug rather than a default.
+   */
+  store?: StoreHandle;
   /** Off for tests that have no business touching IndexedDB. */
   persist?: boolean;
   onStoragePersistence?: (status: StoragePersistence) => void;
@@ -140,7 +148,7 @@ export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> 
       ? null
       : openLocalStore(
           doc,
-          options.dbName,
+          options.store ?? LEGACY_STORE,
           options.onLocalPersistenceError
             ? { onPersistenceError: options.onLocalPersistenceError }
             : {},

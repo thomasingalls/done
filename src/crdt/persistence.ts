@@ -14,8 +14,6 @@ import { newId } from '../lib/id';
 import { IndexeddbPersistence, Y, type YDoc } from './yjs';
 import type { Origin } from './actors';
 
-export const DB_NAME = 'done';
-
 export type StoragePersistence = 'granted' | 'denied' | 'unsupported' | 'unknown';
 
 export interface LocalStore {
@@ -36,6 +34,38 @@ const UPDATES_STORE = 'updates';
 const JOURNAL_VERSION = '1:';
 const JOURNAL_PREFIX = 'done.pending-update.';
 const FLUSH_DELAY_MS = 250;
+
+/**
+ * The identity of one local store (TRD §6.5).
+ *
+ * A store has two carriers — the IndexedDB database and its journal namespace
+ * in localStorage — and a handle is the only thing that names both. That is the
+ * point of it: a caller cannot open one store's content against another's
+ * journal, because it never holds the two names separately.
+ *
+ * §6.5 derives the name from *(principal, workspace)* through the slot index,
+ * which is the next item of Stage 1. Until then the only handle is
+ * `LEGACY_STORE`, and callers name it rather than falling through to a default
+ * three levels down — so the encrypted store arriving after it has an explicit
+ * identity to bind its subkeys to, and the cutover has something to point at
+ * when it says *which* store it is reading.
+ */
+export interface StoreHandle {
+  readonly dbName: string;
+  readonly journalPrefix: string;
+}
+
+export const storeHandle = (dbName: string): StoreHandle => ({
+  dbName,
+  journalPrefix: `${JOURNAL_PREFIX}${encodeURIComponent(dbName)}.`,
+});
+
+/**
+ * The store every build before the slot index has opened, and the one the
+ * `L-1` cutover reads from. It is a value a caller passes when it means this
+ * store, not a default that happens when it means nothing.
+ */
+export const LEGACY_STORE: StoreHandle = storeHandle('done');
 
 interface JournalEntry {
   key: string;
@@ -69,8 +99,6 @@ const journalStorage = (report: (error: Error) => void): Storage | null => {
     return null;
   }
 };
-
-const journalPrefix = (name: string): string => `${JOURNAL_PREFIX}${encodeURIComponent(name)}.`;
 
 const readJournal = (storage: Storage | null, prefix: string): JournalEntry[] => {
   if (!storage) return [];
@@ -146,13 +174,13 @@ const persistUpdates = (database: IDBDatabase, updates: readonly Uint8Array[]): 
 
 export const openLocalStore = (
   doc: YDoc,
-  name: string = DB_NAME,
+  handle: StoreHandle,
   options: LocalStoreOptions = {},
 ): LocalStore => {
-  const provider = new IndexeddbPersistence(name, doc);
+  const provider = new IndexeddbPersistence(handle.dbName, doc);
   const reportPersistenceError = (error: Error): void => options.onPersistenceError?.(error);
   const storage = journalStorage(reportPersistenceError);
-  const prefix = journalPrefix(name);
+  const prefix = handle.journalPrefix;
   const recovered = readJournal(storage, prefix).filter((entry) => {
     try {
       Y.applyUpdate(doc, entry.update, provider);

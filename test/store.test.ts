@@ -28,17 +28,21 @@ import {
   readSchemaVersion,
   readSettings,
   setRolloverHour,
+  storeHandle,
   transact,
   updateActor,
   type Store,
+  type StoreHandle,
   type Workspace,
 } from '../src/crdt';
 
-const fresh = async (dbName: string): Promise<Store> => openStore({ dbName });
+const fresh = async (dbName: string): Promise<Store> => openStore({ store: storeHandle(dbName) });
 
-const journalKeys = (name: string): string[] =>
+// Reads the prefix off the handle rather than rebuilding it: the rule for how
+// a store names its journal has one home, and this assertion is not a second.
+const journalKeys = (handle: StoreHandle): string[] =>
   Array.from({ length: localStorage.length }, (_, index) => localStorage.key(index)).flatMap(
-    (key) => (key?.startsWith(`done.pending-update.${name}.`) ? [key] : []),
+    (key) => (key?.startsWith(handle.journalPrefix) ? [key] : []),
   );
 
 const failStorageWrite = (): never => {
@@ -209,7 +213,7 @@ describe('local persistence', () => {
   it('does not add a full-document checkpoint during a clean open', async () => {
     const commit = vi.spyOn(IDBTransaction.prototype, 'commit');
     const doc = new Y.Doc();
-    const local = openLocalStore(doc, 'done-test-clean-open');
+    const local = openLocalStore(doc, storeHandle('done-test-clean-open'));
 
     try {
       await local.whenSynced;
@@ -255,9 +259,9 @@ describe('local persistence', () => {
     const errors: Error[] = [];
     const originalCommit = IDBTransaction.prototype.commit;
     let attempts = 0;
-    const name = 'done-test-no-automatic-retry';
+    const handle = storeHandle('done-test-no-automatic-retry');
     const doc = new Y.Doc();
-    const local = openLocalStore(doc, name, { onPersistenceError: (error) => errors.push(error) });
+    const local = openLocalStore(doc, handle, { onPersistenceError: (error) => errors.push(error) });
 
     try {
       await local.whenSynced;
@@ -274,16 +278,16 @@ describe('local persistence', () => {
 
         await vi.waitFor(() => expect(errors).toHaveLength(1));
         expect(attempts).toBe(1);
-        expect(journalKeys(name)).toHaveLength(1);
+        expect(journalKeys(handle)).toHaveLength(1);
 
         // A re-armed flush would run after another 250 ms.
         await new Promise<void>((resolve) => setTimeout(resolve, 300));
         expect(attempts).toBe(1);
-        expect(journalKeys(name)).toHaveLength(1);
+        expect(journalKeys(handle)).toHaveLength(1);
 
         await expect(local.whenDurable()).resolves.toBeUndefined();
         expect(attempts).toBe(2);
-        expect(journalKeys(name)).toEqual([]);
+        expect(journalKeys(handle)).toEqual([]);
       } finally {
         commit.mockRestore();
       }
@@ -294,63 +298,64 @@ describe('local persistence', () => {
   });
 
   it('rejects durability when an observed update has no database connection', async () => {
+    const handle = storeHandle('done-test-checkpoint-without-db');
     const doc = new Y.Doc();
-    const local = openLocalStore(doc, 'done-test-checkpoint-without-db');
+    const local = openLocalStore(doc, handle);
     await expect(local.whenSynced).resolves.toBeUndefined();
     local.provider.db = null;
     transact(doc, 'test', () => doc.getText('master').insert(0, 'not yet in IndexedDB'));
     await expect(local.whenDurable()).rejects.toThrow(
       'IndexedDB opened without a database connection.',
     );
-    expect(journalKeys('done-test-checkpoint-without-db')).toHaveLength(1);
+    expect(journalKeys(handle)).toHaveLength(1);
 
     local.destroy();
     doc.destroy();
   });
 
   it('replays the synchronous journal across repeated interrupted opens', async () => {
-    const name = 'done-test-interrupted-write';
+    const handle = storeHandle('done-test-interrupted-write');
     const firstDoc = new Y.Doc();
-    const first = openLocalStore(firstDoc, name);
+    const first = openLocalStore(firstDoc, handle);
     await first.whenSynced;
 
     // Fault injection for a page that cannot finish its asynchronous write.
     first.provider.db = null;
     transact(firstDoc, 'test', () => firstDoc.getText('master').insert(0, 'survived reload'));
-    expect(journalKeys(name)).toHaveLength(1);
+    expect(journalKeys(handle)).toHaveLength(1);
     first.destroy();
     firstDoc.destroy();
 
     const secondDoc = new Y.Doc();
-    const second = openLocalStore(secondDoc, name);
+    const second = openLocalStore(secondDoc, handle);
     await second.whenSynced;
     expect(secondDoc.getText('master').toString()).toBe('survived reload');
     // A second interruption must not clear journal data merely because loading finished.
-    expect(journalKeys(name)).toHaveLength(1);
+    expect(journalKeys(handle)).toHaveLength(1);
     second.destroy();
     secondDoc.destroy();
 
     const thirdDoc = new Y.Doc();
-    const third = openLocalStore(thirdDoc, name);
+    const third = openLocalStore(thirdDoc, handle);
     await third.whenSynced;
     expect(thirdDoc.getText('master').toString()).toBe('survived reload');
     await third.whenDurable();
-    expect(journalKeys(name)).toEqual([]);
+    expect(journalKeys(handle)).toEqual([]);
     third.destroy();
     thirdDoc.destroy();
   });
 
   it('journals immutable deltas and truncates them after one short batch', async () => {
-    const name = 'done-test-delta-journal';
+    const handle = storeHandle('done-test-delta-journal');
     const doc = new Y.Doc();
-    const local = openLocalStore(doc, name);
+    const local = openLocalStore(doc, handle);
     await local.whenSynced;
 
     transact(doc, 'test', () => doc.getText('master').insert(0, 'a'));
     transact(doc, 'test', () => doc.getText('master').insert(1, 'b'));
 
-    expect(journalKeys(name)).toHaveLength(2);
-    await vi.waitFor(() => expect(journalKeys(name)).toEqual([]), { timeout: 1000 });
+    expect(journalKeys(handle)).toHaveLength(2);
+    await vi.waitFor(() => expect(journalKeys(handle)).toEqual([]), { timeout: 1000 });
     await expect(local.whenDurable()).resolves.toBeUndefined();
 
     local.destroy();
@@ -360,7 +365,7 @@ describe('local persistence', () => {
   it('commits a burst in one relaxed transaction', async () => {
     const commit = vi.spyOn(IDBTransaction.prototype, 'commit');
     const doc = new Y.Doc();
-    const local = openLocalStore(doc, 'done-test-batched-transaction');
+    const local = openLocalStore(doc, storeHandle('done-test-batched-transaction'));
 
     try {
       await local.whenSynced;
@@ -381,9 +386,9 @@ describe('local persistence', () => {
 
   it('reports a synchronous journal failure while still allowing an IndexedDB flush', async () => {
     const errors: Error[] = [];
-    const name = 'done-test-journal-failure';
+    const handle = storeHandle('done-test-journal-failure');
     const doc = new Y.Doc();
-    const local = openLocalStore(doc, name, { onPersistenceError: (error) => errors.push(error) });
+    const local = openLocalStore(doc, handle, { onPersistenceError: (error) => errors.push(error) });
     await local.whenSynced;
     const localSetItem = vi.spyOn(localStorage, 'setItem').mockImplementation(failStorageWrite);
     const prototypeSetItem = vi
