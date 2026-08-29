@@ -53,8 +53,10 @@ governance node the original seven never included, ratified 2026-08-28 (below).
 
 **`S0-9` has now run three times. Rounds 1–2, against `5923f51`, failed the package. Round 3, against
 `cfc6b70` with the changed perspective the queue demanded, found the seven constructions sound and failed
-one narrow axis at the closure instrument — repaired the same day at the round-3 return. `S0-10` remains
-blocked by exactly the registered X25519 debt and its own intake duties.**
+one narrow axis at the closure instrument — repaired the same day at the round-3 return. The `S0-10` arrival
+paid the registered X25519 debt (2026-08-29): the dated readback stands in TRD §10.11's table, held to the
+payment record in both directions by `pnpm debts:check`, and the gate consult lifts. What remains of `S0-10`
+is its own recording and the separately authorized disposition workflow.**
 
 - **Round 1** — four parallel non-author challengers: [`S0-9/DISPOSITION.md`](./S0-9/DISPOSITION.md). Every
   root cause has at least one failing axis, two high findings reopen at their decisions, and one live
@@ -431,10 +433,10 @@ In order. An item is done when its disposition entry's earliest-return stage has
    expired or input-changed; the refusal negatives live in `test/debtManifest.test.ts`; and the source↔blob
    header binding landed — one cargo regeneration stamped `seal.generated.ts` with the source hashes and
    toolchain string, `WASM_BASE64` byte-identical, and `pnpm wasm:verify` compares toolchain-free, drift
-   detection only. The registered debts block: `S0-10` — 1 (the X25519 dated readback) · `L-1` — 1 (the
-   plaintext cutover kill matrix) · `L-4` — 4 (population, audit delta, provenance, append burst) —
-   `pnpm debts` computes this and `debts:check` holds this sentence to it in both directions. A 21-mutation
-   battery caught 21.
+   detection only. The registered debts block: `L-1` — 1 (the plaintext cutover kill matrix) · `L-4` — 4
+   (population, audit delta, provenance, append burst) — `pnpm debts` computes this and `debts:check` holds
+   this sentence to it in both directions; the migrated X25519 entry was paid at the `S0-10` arrival
+   (2026-08-29) and blocks nothing. A 21-mutation battery caught 21.
 6. **`S0-9` round 3, with a changed perspective — done 2026-08-29, and the round-3 return landed the same
    day.** The bar was met two of the three named ways at once: a **different model family** (Claude Fable 5,
    Mythos-class — the prior seven reads were one family) ran **targeted adversarial property tests against
@@ -467,8 +469,8 @@ the standing census with `pnpm remediation:check` now comparing each claim's rat
 date and owed ranges, the recipient-authority, write-admission and retention readbacks, the debt manifest
 with `pnpm debts:check` on exact-case paths, the source↔blob binding inside `pnpm wasm:verify`, and the
 traceability matrix crediting execution receipts — all in the gate. `pnpm remediation:status` reads
-**nothing owed at any return**; `pnpm debts` computes what blocks the gates ahead (`S0-10` — 1 · `L-1` — 1 ·
-`L-4` — 4).
+**nothing owed at any return**; `pnpm debts` computes what blocks the gates ahead (`L-1` — 1 · `L-4` — 4;
+the `S0-10` entry is paid).
 Next is **`S0-10` (queue item 7)**: pay the X25519 debt (TRD §10.11 offers review 3b's pass for it; the
 consult above lifts only on a typed dated-external-observation payment), **record which independence bar the
 closure stands on** — author-independent seven times, family-independent once (round 3), human-independent

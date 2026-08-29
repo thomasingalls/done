@@ -17,10 +17,20 @@
       },
       "expiry": "2027-02-28",
       "registered": "2026-08-29",
-      "status": "open",
+      "status": "paid",
+      "payment_record": {
+        "kind": "dated-external-observation",
+        "source": "web-platform-tests stable desktop runs, read 2026-08-29 via wpt.fyi — https://wpt.fyi/results/WebCryptoAPI?run_ids=5176987542093824,5102565221203968,4788146637373440,5172112754212864 (Chrome 152.0.7977.64 run 5176987542093824, started 2026-08-28 · Edge 152.0.4191.53 run 5102565221203968, 2026-08-29 · Firefox 154.0.1 run 4788146637373440, 2026-08-27 · Safari 26.6 run 5172112754212864, 2026-08-27); executions of the four SubtleCrypto operations, never a version citation",
+        "date": "2026-08-29",
+        "expiry": "2027-02-28",
+        "operations": ["generateKey", "importKey raw/spki", "importKey pkcs8", "deriveBits"],
+        "engines": ["chrome", "edge", "firefox", "safari"],
+        "artifact": "docs/TRD.md §10.11's evidence table — 16 engine × operation rows, each with source, date and expiry; check-debts.mjs holds the table and this record to each other in both directions",
+        "note": "Every success-path row passes on all four engines. Firefox 154's deriveBits reads pass 12/19: the six small-order all-zero rejection subtests and the non-multiple-of-8 length subtest miss while every positive derivation (pkcs8/spki import, deriveBits at length 256) passes — recorded in the table's dagger note, with the consequence that the Stage-4 DHKEM layer carries its own RFC 9180 all-zero abort on every engine."
+      },
       "inputs": [
         { "path": "docs/review/findings/f-bd87655-x25519-support-floor-omitted.md", "section": null, "hash": "f02e907f63fb" },
-        { "path": "docs/TRD.md", "section": "10.11", "hash": "09ee6bdd045a" }
+        { "path": "docs/TRD.md", "section": "10.11", "hash": "2e79beca1a79" }
       ]
     },
     {

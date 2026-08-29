@@ -634,7 +634,9 @@ const rowsFor = (ids) =>
         ...(debt === undefined
           ? []
           : [
-              `**Owed to \`${debt.gate}\`** — registered debt \`${debt.id}\` in [\`debts.json\`](./debts.json) (owner: ${esc(debt.owner)}; expires ${debt.expiry}). ${esc(debt.property)}`,
+              debt.status === 'paid'
+                ? `**Registered debt \`${debt.id}\`, paid ${debt.payment_record?.date}** (\`${debt.payment_record?.kind}\`) in [\`debts.json\`](./debts.json); it blocked \`${debt.gate}\` until payment. ${esc(debt.property)}`
+                : `**Owed to \`${debt.gate}\`** — registered debt \`${debt.id}\` in [\`debts.json\`](./debts.json) (owner: ${esc(debt.owner)}; expires ${debt.expiry}). ${esc(debt.property)}`,
             ]),
       ].join(' · ');
       const by = (owners.get(id) ?? ['—']).join(', ');
@@ -778,7 +780,11 @@ ${outside
     const debt = owed.get(id);
     const state =
       debt !== undefined
-        ? `Registered debt \`${debt.id}\` — blocks \`${debt.gate}\`, expires ${debt.expiry}.`
+        ? debt.status === 'paid'
+          ? `Registered debt \`${debt.id}\` — **paid ${debt.payment_record?.date}** (\`${debt.payment_record?.kind}\`); it blocked \`${debt.gate}\` until payment, and the observation expires ${debt.payment_record?.expiry ?? debt.expiry}.`
+          : debt.status === 'waived'
+            ? `Registered debt \`${debt.id}\` — waived until ${debt.waiver?.expiry} by ${debt.waiver?.authority} (waived is not paid); blocks \`${debt.gate}\` again on expiry.`
+            : `Registered debt \`${debt.id}\` — blocks \`${debt.gate}\`, expires ${debt.expiry}.`
         : classOf.get(id) === 'gate'
           ? 'UNREGISTERED — pnpm debts:check refuses this state.'
           : '`H-1` ledger correction.';

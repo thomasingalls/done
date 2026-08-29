@@ -29,6 +29,17 @@
  * the named widening phrase is refused as a byte rule, under `P-5`'s ratified
  * rule that a checker's printed claim is exactly its scope.
  *
+ * And since the `S0-10` arrival (2026-08-29) it reads the one paid artifact the
+ * manifest points at: TRD §10.11's X25519 evidence table, held to the payment
+ * record in both directions — engines × operations exactly, one row per pair,
+ * each row passing, sourced, dated, and carrying the record's one expiry. The
+ * debt's own falsifier is the rule: an empty, undated, unsourced or expired
+ * table fails the S0-10 evaluation that reads it, and a populated table beside
+ * an unpaid entry fails the same way — an artifact and a record disagreeing is
+ * the FU-07 shape wherever it appears.
+ *
+ * falsifies: f-bd87655-x25519-support-floor-omitted -> S0-10
+ *
  * Usage: node scripts/check-debts.mjs [--check | --gate <name>]
  */
 
@@ -36,7 +47,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readFindings } from './lib/findings.mjs';
-import { MANIFEST, evaluateGate, loadManifest, projection, validateManifest } from './lib/debts.mjs';
+import { MANIFEST, evaluateGate, loadManifest, projection, section, validateManifest } from './lib/debts.mjs';
 import { installReceipt } from './lib/receipts.mjs';
 
 installReceipt(import.meta.url);
@@ -126,6 +137,90 @@ for (const phrase of ['what-blocks-what is computed from the manifest', 'debts.j
   }
 }
 
+// --- the S0-10 artifact: §10.11's evidence table and the payment agree --------
+// The x25519 debt's own falsifier, made a check: an empty, undated, unsourced
+// or expired table fails the S0-10 evaluation that reads it. The record is one
+// home and the table the other; both directions, or the R3-1 shape rides again.
+
+const EVIDENCE_COLUMNS = ['Engine', 'Operation', 'Result', 'Source', 'Date', 'Expiry'];
+const DATE_CELL = /^\d{4}-\d{2}-\d{2}$/u;
+const s1011 = section(trd1011, '10.11');
+if (s1011 === null) {
+  fail('docs/TRD.md no longer has a §10.11 section heading; the X25519 evidence has no home to read.');
+} else if (x25519 !== undefined) {
+  const cellsOf = (line) =>
+    line
+      .split('|')
+      .slice(1, -1)
+      .map((c) => c.replaceAll('`', '').trim());
+  const lines = s1011.split('\n');
+  const headAt = lines.findIndex(
+    (line) => line.startsWith('|') && cellsOf(line).join(',') === EVIDENCE_COLUMNS.join(','),
+  );
+  const rows = [];
+  if (headAt !== -1) {
+    for (let i = headAt + 2; i < lines.length && lines[i].startsWith('|'); i += 1) {
+      const cells = cellsOf(lines[i]);
+      if (cells.length !== EVIDENCE_COLUMNS.length) {
+        fail(`docs/TRD.md §10.11 evidence row "${lines[i].slice(0, 40)}…" has ${cells.length} cells; the readback cannot attribute it.`);
+        continue;
+      }
+      const [engine, operation, result, source, date, expiry] = cells;
+      rows.push({ engine, operation, result, source, date, expiry });
+    }
+  }
+
+  if (x25519.status === 'paid') {
+    const record = x25519.payment_record ?? {};
+    const engines = Array.isArray(record.engines) ? record.engines : [];
+    const operations = Array.isArray(record.operations) ? record.operations : [];
+    if (rows.length === 0) {
+      fail(
+        'docs/TRD.md §10.11 has no populated evidence table while the manifest marks the X25519 debt paid — ' +
+          'an empty table fails the S0-10 evaluation that reads it.',
+      );
+    }
+    const seen = new Set();
+    for (const row of rows) {
+      const engine = row.engine.split(/\s/u)[0].toLowerCase();
+      const key = `${engine} × ${row.operation}`;
+      if (!engines.includes(engine) || !operations.includes(row.operation)) {
+        fail(`docs/TRD.md §10.11 carries an evidence row for ${key}, which the payment record does not declare — the homes must agree in both directions.`);
+        continue;
+      }
+      if (seen.has(key)) {
+        fail(`docs/TRD.md §10.11 carries two evidence rows for ${key}; one observation, one row.`);
+        continue;
+      }
+      seen.add(key);
+      if (!row.result.startsWith('pass')) {
+        fail(`docs/TRD.md §10.11's ${key} row reads "${row.result}"; a row that does not observe the operation passing cannot support the floor the payment claims.`);
+      }
+      if (row.source === '' || row.source === '—') {
+        fail(`docs/TRD.md §10.11's ${key} row is unsourced; an unsourced observation is an assertion.`);
+      }
+      if (!DATE_CELL.test(row.date)) {
+        fail(`docs/TRD.md §10.11's ${key} row has date "${row.date}"; an undated observation is an assertion.`);
+      }
+      if (row.expiry !== record.expiry) {
+        fail(`docs/TRD.md §10.11's ${key} row expires "${row.expiry}" and the payment record says ${record.expiry ?? 'nothing'}; one observation set, one expiry.`);
+      }
+    }
+    for (const engine of engines) {
+      for (const operation of operations) {
+        if (!seen.has(`${engine} × ${operation}`)) {
+          fail(`docs/TRD.md §10.11's evidence table has no row for ${engine} × ${operation}, which the payment record declares; a missing row is a missing observation.`);
+        }
+      }
+    }
+  } else if (rows.length > 0) {
+    fail(
+      'docs/TRD.md §10.11 carries a populated evidence table while the manifest does not mark the X25519 debt ' +
+        'paid — an artifact without a payment record, the two homes disagreeing.',
+    );
+  }
+}
+
 // --- the wasm binding's printed claim is its scope (falsifier 10) -------------
 
 const wasmChecker = read('scripts/check-wasm-seal.mjs');
@@ -202,7 +297,8 @@ if (GATE !== null) {
   console.log(
     `debts: ${debts.length} registered (${counts.open} open · ${counts.paid} paid · ${counts.waived} waived), ` +
       'entries valid, pins current, gate-class census total, homes agree. ' +
-      'Scope: the manifest and its byte rules — a gate arrival is evaluated by --gate, and blocking happens there.',
+      "Scope: the manifest and its byte rules, plus §10.11's evidence table held to the X25519 payment record " +
+      'in both directions — a gate arrival is evaluated by --gate, and blocking happens there.',
   );
 } else {
   console.log(`debts: ${debts.length} registered — ${counts.open} open · ${counts.paid} paid · ${counts.waived} waived.`);

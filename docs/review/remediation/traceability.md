@@ -65,7 +65,7 @@ All three must agree before anything below is checked, because a matrix that dec
 always complete — and the denominator is pinned (`census.json`'s `findings_population`: 37 ids), so a
 finding deleted from every source fails rather than shrinking the population (limit 5, repaired).
 **28 findings are current design or closure defects and therefore require a falsifier.**
-27 carry one; 1 is a registered debt in [`debts.json`](./debts.json).
+28 carry one; 1 is a registered debt in [`debts.json`](./debts.json).
 
 ## Current design defects — 19 of 19 carry a falsifier
 
@@ -91,7 +91,7 @@ finding deleted from every source fails rather than shrinking the population (li
 | `f-4259822-lapse-transition-kind-missing` | medium | S0-7 | `check-retention.mjs` · `§14.7 — one clock` (test) · `§14.7 — resume, and the re-seed after destructive progress` (test) · `§14.7 — retirement wins the race, in both orders` (test) · `§14.7 — the lineage stays live, and only retire moves it` (test) · `§14.7 — what a compromised entitlement signer reaches` (test) | `scripts/check-retention.mjs`<br>`test/hostedRetention.test.ts` |
 | `f-b9ff071-webauthn-cross-origin-policy` | low | S0-1 | `embedding-origin-claimed` (negative) · `framed-ceremony` (negative) · `stepup-embedding-origin-claimed` (negative) · `stepup-framed-ceremony` (negative) | `scripts/generate-account-credential-vectors.mjs`<br>`scripts/generate-recovery-vectors.mjs` |
 
-## Current closure and evidence defects — 8 of 9 carry a falsifier
+## Current closure and evidence defects — 9 of 9 carry a falsifier
 
 | Finding | Severity | Repaired by | Falsifier | Where it lives |
 | --- | --- | --- | --- | --- |
@@ -102,7 +102,7 @@ finding deleted from every source fails rather than shrinking the population (li
 | `f-dbfd01f-device-lock-rotation-caveat-lost` | medium | S0-2 | `the rotation_owed derivation` (guard) | `scripts/generate-device-lock-vectors.mjs` |
 | `f-5bd9552-origin-scan-static-forms` | medium | S0-1 | `check-origin-isolation.mjs` | `scripts/check-origin-isolation.mjs` |
 | `f-dbfd01f-record-nonce-ceiling-omitted` | low | S0-3, direct | `§6.1 — the allocator, and the count the budget reads` (test) | `test/writeAdmission.test.ts` |
-| `f-bd87655-x25519-support-floor-omitted` | low | S0-1, direct | **Owed to `S0-10`** — registered debt `x25519-dated-readback` in [`debts.json`](./debts.json) (owner: review 3b intake (TRD §10.11 offers that pass the measurement; row 12's authenticator survey shares it); expires 2027-02-28). A dated SubtleCrypto readback of TRD §10.11's four X25519 operations across the four core engines — the section's rule is a floor with evidence and a date, and its evidence table is deliberately empty until this lands. | — |
+| `f-bd87655-x25519-support-floor-omitted` | low | S0-1, direct | `check-debts.mjs` (remainder at `S0-10`) · **Registered debt `x25519-dated-readback`, paid 2026-08-29** (`dated-external-observation`) in [`debts.json`](./debts.json); it blocked `S0-10` until payment. A dated SubtleCrypto readback of TRD §10.11's four X25519 operations across the four core engines — the section's rule is a floor with evidence and a date, and its evidence table is deliberately empty until this lands. | `scripts/check-debts.mjs` |
 | `f-tip-prd-stale-selection-status` | low | S0-1, direct | `check-selection-status.mjs` | `scripts/check-selection-status.mjs` |
 
 ## Repaired beyond the required population — 1
@@ -136,7 +136,7 @@ failure here rather than a bonus.
 
 ## The claims themselves
 
-100 claims across 21 files — 8 guard · 66 negative · 6 script · 20 test.
+101 claims across 22 files — 8 guard · 66 negative · 7 script · 20 test.
 
 | Carrier | Where the claim is written | What keeps the claim live |
 | --- | --- | --- |
@@ -147,7 +147,7 @@ failure here rather than a bonus.
 
 ### Where one artifact carries the whole demonstration
 
-12 of the 28 current defects resolve to a single named falsifier. That is not the same as thin evidence — one
+13 of the 28 current defects resolve to a single named falsifier. That is not the same as thin evidence — one
 check script can hold fifteen assertions — but it is the shortest list of places where losing one artifact
 loses the finding, so it is where a challenge gets the most leverage.
 
@@ -160,6 +160,7 @@ loses the finding, so it is where a challenge gets the most leverage.
 - `f-992bc91-network-carrier-registry-stale` (medium) — `checkCarriers` (guard) in `scripts/generate-suite-vectors.mjs`
 - `f-9b49b74-wasm-glue-key-nonce-lengths` (medium) — `check-wasm-seal.mjs` in `scripts/check-wasm-seal.mjs`
 - `f-b997cdb-checkpoint-key-retention-inverted` (medium) — `the opener predicate` (guard) in `scripts/generate-checkpoint-vectors.mjs`
+- `f-bd87655-x25519-support-floor-omitted` (low) — `check-debts.mjs` (remainder at `S0-10`) in `scripts/check-debts.mjs`
 - `f-dbfd01f-device-lock-rotation-caveat-lost` (medium) — `the rotation_owed derivation` (guard) in `scripts/generate-device-lock-vectors.mjs`
 - `f-dbfd01f-record-nonce-ceiling-omitted` (low) — `§6.1 — the allocator, and the count the budget reads` (test) in `test/writeAdmission.test.ts`
 - `f-tip-prd-stale-selection-status` (low) — `check-selection-status.mjs` in `scripts/check-selection-status.mjs`

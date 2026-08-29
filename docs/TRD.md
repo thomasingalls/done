@@ -2006,11 +2006,62 @@ import is begun that it could not finish. That is the same shape as §13.9's ans
 and for the same reason: an operation that cannot complete must not consume a credential, a nonce or a transition
 id on the way to discovering it.
 
-**The evidence table is deliberately empty, and that is the remaining work.** This section's own rule is a floor
-with evidence and the date it was taken; asserting a version row from memory would be worse than the omission it
-replaces, because §10.11's dates are the point rather than decoration. A dated `SubtleCrypto` readback of the four
-operations above, across the four core engines, is required before Stage 0 closes — and it is the same measurement
-row 12's authenticator survey is already offered to review 3b for, so it belongs in that pass.
+**The evidence table, populated 2026-08-29 — the dated readback the registered debt owed.** This section's own
+rule is a floor with evidence and the date it was taken; asserting a version row from memory would be worse than
+the omission it replaced, because §10.11's dates are the point rather than decoration. A dated `SubtleCrypto`
+readback of the four operations above, across the four core engines, is required before Stage 0 closes — the
+table below is that readback, paid into the registered debt `x25519-dated-readback`
+(`docs/review/remediation/debts.json`, gate `S0-10`, payment kind `dated-external-observation`), and
+`pnpm debts:check` holds this table and that payment record to each other in both directions: engines ×
+operations exactly, each row sourced, dated and carrying the one expiry. The observation is the
+web-platform-tests suite's stable desktop runs (wpt.fyi) — dated executions of these `SubtleCrypto` operations
+on each engine, which is what makes it a readback rather than the compatibility-table citation the debt refuses.
+Review 3b's pass stays offered the re-measurement beside row 12's authenticator survey; the expiry column is
+when this observation stops being one and the `S0-10` consult starts refusing it again.
+
+Each operation row reads one WPT test; window and worker variants report identically on every engine:
+
+| Operation row        | Exercised by (web-platform-tests)                                                                              |
+| -------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `generateKey`        | `WebCryptoAPI/generateKey/successes_X25519.https.any.html`, 32 subtests                                        |
+| `importKey raw/spki` | `WebCryptoAPI/import_export/okp_importKey_X25519.https.any.html` — the public `raw`/`spki` subtests of its 54  |
+| `importKey pkcs8`    | the same file — the private `pkcs8` subtests of its 54                                                         |
+| `deriveBits`         | `WebCryptoAPI/derive_bits_keys/cfrg_curves_bits_curve25519.https.any.html`, 19 subtests: `pkcs8`/`spki` import, then `deriveBits` at length 256 — the DH shape §13.10's DHKEM uses |
+
+A source cell names a pinned wpt.fyi run, resolvable as `https://wpt.fyi/results/<test>?run_id=<run>`; the four
+runs side by side:
+`https://wpt.fyi/results/WebCryptoAPI?run_ids=5176987542093824,5102565221203968,4788146637373440,5172112754212864`.
+
+| Engine               | Operation            | Result      | Source                       | Date       | Expiry     |
+| -------------------- | -------------------- | ----------- | ---------------------------- | ---------- | ---------- |
+| Chrome 152.0.7977.64 | `generateKey`        | pass 32/32  | wpt.fyi run 5176987542093824 | 2026-08-28 | 2027-02-28 |
+| Chrome 152.0.7977.64 | `importKey raw/spki` | pass 54/54  | wpt.fyi run 5176987542093824 | 2026-08-28 | 2027-02-28 |
+| Chrome 152.0.7977.64 | `importKey pkcs8`    | pass 54/54  | wpt.fyi run 5176987542093824 | 2026-08-28 | 2027-02-28 |
+| Chrome 152.0.7977.64 | `deriveBits`         | pass 19/19  | wpt.fyi run 5176987542093824 | 2026-08-28 | 2027-02-28 |
+| Edge 152.0.4191.53   | `generateKey`        | pass 32/32  | wpt.fyi run 5102565221203968 | 2026-08-29 | 2027-02-28 |
+| Edge 152.0.4191.53   | `importKey raw/spki` | pass 54/54  | wpt.fyi run 5102565221203968 | 2026-08-29 | 2027-02-28 |
+| Edge 152.0.4191.53   | `importKey pkcs8`    | pass 54/54  | wpt.fyi run 5102565221203968 | 2026-08-29 | 2027-02-28 |
+| Edge 152.0.4191.53   | `deriveBits`         | pass 19/19  | wpt.fyi run 5102565221203968 | 2026-08-29 | 2027-02-28 |
+| Firefox 154.0.1      | `generateKey`        | pass 32/32  | wpt.fyi run 4788146637373440 | 2026-08-27 | 2027-02-28 |
+| Firefox 154.0.1      | `importKey raw/spki` | pass 54/54  | wpt.fyi run 4788146637373440 | 2026-08-27 | 2027-02-28 |
+| Firefox 154.0.1      | `importKey pkcs8`    | pass 54/54  | wpt.fyi run 4788146637373440 | 2026-08-27 | 2027-02-28 |
+| Firefox 154.0.1      | `deriveBits`         | pass 12/19 † | wpt.fyi run 4788146637373440 | 2026-08-27 | 2027-02-28 |
+| Safari 26.6          | `generateKey`        | pass 32/32  | wpt.fyi run 5172112754212864 | 2026-08-27 | 2027-02-28 |
+| Safari 26.6          | `importKey raw/spki` | pass 54/54  | wpt.fyi run 5172112754212864 | 2026-08-27 | 2027-02-28 |
+| Safari 26.6          | `importKey pkcs8`    | pass 54/54  | wpt.fyi run 5172112754212864 | 2026-08-27 | 2027-02-28 |
+| Safari 26.6          | `deriveBits`         | pass 19/19  | wpt.fyi run 5172112754212864 | 2026-08-27 | 2027-02-28 |
+
+† Firefox 154's seven misses are rejection edges, not the derivation: the six *all-zero value result with a key
+of order …* small-order subtests and the *non-multiple of 8 bits* length subtest fail, while every positive
+derivation — `pkcs8`/`spki` import, then `deriveBits` at length 256 — passes. Two consequences are worth the
+ink. The DHKEM layer above `deriveBits` cannot delegate RFC 9180's all-zero shared-secret abort to the engine,
+so the Stage-4 implementation carries its own check on every engine rather than inheriting one engine's. And
+nothing else in the four rows differs by engine: the other X25519 deviations these same runs show —
+malformed-input strictness (`failures_X25519`: Safari 64/104; `okp_importKey_failures_X25519`: Firefox 648/662,
+Safari 454/662) and `structuredClone` serialization (Safari 0/2) — sit outside the four operations and are not
+floor questions. These are the engines' stable desktop runs; the floor's mobile halves ship the same engines,
+which is an engine-level statement rather than a second observation, and the re-measurement offered to review
+3b is where a product-level matrix would come from.
 
 **WebAuthn PRF cannot be a floor capability at all**, and this is a fact about the feature rather than a gap in the
 research. Its availability is not a browser version: it is a matrix of operating system, browser and authenticator
