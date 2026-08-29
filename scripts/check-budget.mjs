@@ -13,6 +13,9 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { join } from 'node:path';
+import { installReceipt } from './lib/receipts.mjs';
+
+installReceipt(import.meta.url);
 
 const DIST = 'dist';
 const BUDGET_BYTES = 350 * 1024;

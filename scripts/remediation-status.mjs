@@ -50,8 +50,9 @@
  * are byte-current, the named readbacks exist as package scripts, and the
  * status homes agree. Existence and byte rules — never an execution receipt.
  * A checker reachable in command text can still have been skipped by an
- * earlier exit; crediting execution is `FU-14`'s repair and is `S0-8`'s design
- * (falsifier 20 states the rule; this script does not claim it).
+ * earlier exit; crediting execution is `FU-14`'s repair, landed at the `S0-8`
+ * regeneration in `check-traceability.mjs`'s receipt consumption (falsifier 20
+ * states the rule; this script still does not claim it).
  *
  * Usage: node scripts/remediation-status.mjs [--check]
  */
@@ -61,6 +62,9 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { installReceipt } from './lib/receipts.mjs';
+
+installReceipt(import.meta.url);
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const REMEDIATION = join(ROOT, 'docs', 'review', 'remediation');
@@ -435,5 +439,6 @@ if (CHECK) {
 }
 console.log(
   '  Scope: standings, pins, readback existence, header/claim agreement, the S0-9 input rule and two named ' +
-    'sentence negatives — byte rules, never an execution receipt (FU-14; the receipt design is S0-8\'s).',
+    'sentence negatives — byte rules, never an execution receipt (FU-14\'s receipts live at trace:check ' +
+    'since the S0-8 regeneration; this stays byte rules).',
 );

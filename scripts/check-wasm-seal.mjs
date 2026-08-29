@@ -18,15 +18,30 @@
  * instantiates without an await. If that ever stops being possible the import here
  * fails, rather than the property quietly becoming untrue.
  *
+ * **The source↔blob binding, compared toolchain-free** (`RC-9`, option A at the
+ * binding joint; `S0-8`). The generated module's header records the SHA-256 of
+ * `src/lib.rs`, `Cargo.toml` and `Cargo.lock` as they were when the blob was
+ * built; this recomputes them with Node alone and fails on mismatch, so editing
+ * the crate without rebuilding — round 1's demonstrated mutation, green through
+ * every gate at the challenged tip — now fails `pnpm check` with the drifted
+ * file named. The claim is **drift detection only**: a builder that lies about
+ * the recorded hashes, or a compromised toolchain, is the registered
+ * `wasm-toolchain-provenance` debt at `L-4`, which is why the partial claim
+ * below owes its remainder there.
+ *
  * Usage: node scripts/check-wasm-seal.mjs
  *
- * falsifies: f-9b49b74-wasm-glue-key-nonce-lengths
+ * falsifies: f-9b49b74-wasm-glue-key-nonce-lengths, f-9b49b74-wasm-source-artifact-drift-unchecked -> L-4
  */
 
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createJournalSeal } from '../wasm/journal-seal/seal.generated.ts';
+import { installReceipt, setReceiptDetail } from './lib/receipts.mjs';
+
+installReceipt(import.meta.url);
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const published = JSON.parse(readFileSync(join(root, 'test/vectors/journal-aead.json'), 'utf8'));
@@ -37,6 +52,31 @@ const hex = (u) => [...u].map((b) => b.toString(16).padStart(2, '0')).join('');
 const { seal, maxAad, maxPlaintext } = createJournalSeal();
 const failures = [];
 let checked = 0;
+
+/* The source↔blob binding. The header's recorded hashes are compared against
+ * the crate as it sits on disk — Node alone, no cargo — so a crate edited
+ * without a rebuild, or a generated module edited by hand, fails here with the
+ * drifted file named. Drift detection only; the toolchain line is recorded,
+ * not compared, because comparing it needs the toolchain. */
+{
+  const crate = join(root, 'wasm/journal-seal');
+  const header = readFileSync(join(crate, 'seal.generated.ts'), 'utf8');
+  for (const source of ['src/lib.rs', 'Cargo.toml', 'Cargo.lock']) {
+    checked += 1;
+    const recorded = new RegExp(`^ \\* {3}binding ${source.replace(/[./]/gu, '\\$&')} sha256 ([0-9a-f]{64})$`, 'mu').exec(header)?.[1];
+    if (recorded === undefined) {
+      failures.push(`seal.generated.ts records no binding hash for ${source} — regenerate: node scripts/build-wasm-seal.mjs`);
+      continue;
+    }
+    const current = createHash('sha256').update(readFileSync(join(crate, source))).digest('hex');
+    if (current !== recorded) {
+      failures.push(
+        `${source} is ${current.slice(0, 16)}… and the shipped module was built from ${recorded.slice(0, 16)}… — ` +
+          'the source drifted from the blob (or the header was edited alone). Rebuild: node scripts/build-wasm-seal.mjs',
+      );
+    }
+  }
+}
 
 /* The external KAT — the only vector here whose origin is outside this repo. */
 {
@@ -148,11 +188,12 @@ checked += 1;
 }
 
 if (failures.length > 0) {
+  setReceiptDetail({ failures });
   console.error(`journal seal: ${failures.length} of ${checked} checks FAILED`);
   for (const failure of failures) console.error(`  ${failure}`);
   process.exit(1);
 }
 
 console.log(
-  `journal seal: ${checked} checks pass — the published KAT, ${published.vectors.length} composition vectors, the length guard in both directions, and the key/nonce width guard.`,
+  `journal seal: ${checked} checks pass — the published KAT, ${published.vectors.length} composition vectors, the length guard in both directions, the key/nonce width guard, and the source↔blob binding (lib.rs, Cargo.toml, Cargo.lock hashes match the generated header — drift detection only; provenance attestation is the registered L-4 debt).`,
 );

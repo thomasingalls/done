@@ -289,16 +289,10 @@
     },
     {
       "name": "kind-swapped",
-      "falsifies": [
-        "f-3bea0e6-store-sequence-allocation-undefined"
-      ],
       "mutate": "Reinterpret an update record as a state record."
     },
     {
       "name": "seq-edited",
-      "falsifies": [
-        "f-3bea0e6-store-sequence-allocation-undefined"
-      ],
       "mutate": "Renumber seq from 1 to 99 to reorder the trim."
     },
     {
@@ -323,34 +317,42 @@
     },
     {
       "name": "record-aad-only-label",
+      "isolates": "content record.label",
       "mutate": "Authenticate a content record with the key-envelope label, every record field unchanged. Isolates the labels contribution from the field difference the whole-AAD swaps also carry."
     },
     {
       "name": "record-aad-only-store",
+      "isolates": "content record.store",
       "mutate": "Authenticate a content record claiming the other store id in the AAD, subkey unchanged. Isolates the AAD binding from the derivation binding wrong-store-subkey carries."
     },
     {
       "name": "envelope-aad-only-label",
+      "isolates": "key envelope.label",
       "mutate": "Authenticate a key envelope with the content-record label, every envelope field unchanged."
     },
     {
       "name": "envelope-aad-only-principal",
+      "isolates": "key envelope.principal",
       "mutate": "A key envelope claiming the other principal on the same profile (PRD §6.7s ordinary case)."
     },
     {
       "name": "envelope-aad-only-workspace",
+      "isolates": "key envelope.workspace",
       "mutate": "A key envelope claiming the other workspace. L_local is a device key, not a workspace key, so nothing but the AAD separates the two slots."
     },
     {
       "name": "envelope-aad-only-version",
+      "isolates": "key envelope.v",
       "mutate": "A key envelope renumbered to v=0. The carrier version selects the whole suite (row 1), so it must fail to open rather than select a weaker one."
     },
     {
       "name": "envelope-aad-only-generation",
+      "isolates": "key envelope.gen",
       "mutate": "A gen=1 envelope claiming gen=2, which is how a superseded content key would be made to look current."
     },
     {
       "name": "envelope-aad-only-purpose",
+      "isolates": "key envelope.purpose",
       "mutate": "A content-key envelope opened as a device-signing-key envelope. This is the substitution purpose exists to prevent, and nothing tested it."
     }
   ]

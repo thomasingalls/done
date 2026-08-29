@@ -20,11 +20,13 @@
  *   - A field where *no* negative stops failing is bound by the construction
  *     and tested by nothing.
  *
- * The converse is checked too, because it is free once the first is: a negative
- * whose name says `aad-only-` must be rescued by exactly one field. One that is
- * rescued by none is isolating nothing — it is failing on a wrong key, or on a
- * second field it also changes — which is the defect that started this rule,
- * and its name would otherwise assert the opposite.
+ * The converse is checked as **identity, not arity** (`S0-8`; round 1's limit:
+ * swapping what two `aad-only-*` negatives test left the audit green with both
+ * attributions wrong, because only the rescue *count* was checked). A negative
+ * claiming isolation declares its one target on the published entry itself —
+ * `isolates: "construction.field"` — and the cipher's rescue attribution must
+ * equal that declaration exactly. Rescued by nothing, by two fields, or by a
+ * different field than declared each fails; a name is not a claim.
  *
  * **Generators are discovered rather than listed.** A file matching
  * `scripts/generate-*-vectors.mjs` that does not report its constructions is a
@@ -41,6 +43,9 @@ import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 
 import { MARKER } from './lib/aad-coverage.mjs';
+import { installReceipt } from './lib/receipts.mjs';
+
+installReceipt(import.meta.url);
 
 const run = promisify(execFile);
 
@@ -53,7 +58,7 @@ const CONCURRENCY = 8;
  *
  * @typedef {object} Report
  * @property {Record<string, string[]>} [constructions] Listing mode: AAD name to field names, in encoding order.
- * @property {string[]} [negatives] Listing mode: the file's published must_fail names.
+ * @property {{name: string, isolates: string|null}[]} [negatives] Listing mode: the published must_fail entries' names and isolation declarations.
  * @property {string[]} [rescued] Elision mode: the negatives that stopped failing.
  * @property {string} [error] Elision mode: the driver named a field no AAD builder has.
  */
@@ -153,16 +158,32 @@ const auditGenerator = async (script) => {
     }
   });
 
-  // The converse: a negative that calls itself aad-only must isolate one field.
-  for (const name of negatives.filter((n) => n.includes('aad-only-'))) {
+  // The converse, as identity: a declared isolation must be exactly what the
+  // cipher establishes. An aad-only name without a declaration is refused too —
+  // a name the audit cannot hold to anything is the arity-only contract back.
+  for (const { name, isolates } of negatives) {
+    if (isolates == null) {
+      if (name.includes('aad-only-')) {
+        failures.push(
+          `"${name}" claims isolation by name and declares no target. The claim is a declaration\n` +
+            "      on the published entry — isolates: 'construction.field' — held to the cipher's\n" +
+            '      rescue attribution; a name is not a claim (S0-8, identity rather than arity).',
+        );
+      }
+      continue;
+    }
     const fields = rescuedBy.get(name) ?? [];
-    if (fields.length === 1) continue;
+    if (fields.length === 1 && fields[0] === isolates) continue;
     failures.push(
       fields.length === 0
-        ? `"${name}" is named aad-only but isolates no field. It keeps failing with every\n` +
-            '      field removed in turn, so it is failing on a wrong key or on a second\n' +
-            '      field it also changes — which is what the name says it does not do.'
-        : `"${name}" is named aad-only but changes ${fields.length} fields: ${fields.join(', ')}.`,
+        ? `"${name}" declares isolates: ${isolates} and no elision rescues it. It keeps failing\n` +
+            '      with every field removed in turn, so it is failing on a wrong key or on a\n' +
+            '      second field it also changes — which is what the declaration says it does not do.'
+        : fields.length === 1
+          ? `"${name}" declares isolates: ${isolates} and the cipher attributes it to ${fields[0]} —\n` +
+            '      the declaration and the establishment disagree, which is the swapped-attribution\n' +
+            '      defect the identity rule exists to refuse.'
+          : `"${name}" declares isolates: ${isolates} and is rescued by ${fields.length} fields: ${fields.join(', ')}.`,
     );
   }
 

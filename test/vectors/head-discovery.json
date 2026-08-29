@@ -182,26 +182,32 @@
     },
     {
       "name": "aad-only-nonce-rewritten-to-match",
+      "isolates": "head assertion.client_nonce",
       "mutate": "The captured assertion with its carried nonce **rewritten** to the second device’s, so the device’s own comparison passes and only the signature can refuse it. `replayed-under-another-nonce` above tests the client rule and does not test this: it fails on a string comparison whether or not the nonce is signed at all. The coverage audit found that gap on the one field this row exists for."
     },
     {
       "name": "aad-only-stale-head",
+      "isolates": "head assertion.epoch_head",
       "mutate": "A current epoch number paired with the previous epoch’s head. Isolates `epoch_head`, and is the attack the whole row is bounding — a self-consistent past served to a device with no history."
     },
     {
       "name": "aad-only-wrong-epoch",
+      "isolates": "head assertion.epoch",
       "mutate": "The current head paired with a different epoch number. Both are bound although the head commits to the number, so neither can be moved against the other."
     },
     {
       "name": "aad-only-wrong-workspace",
+      "isolates": "head assertion.workspace_id",
       "mutate": "Verify the assertion against another workspace. A device may hold several (§6.1), so this is an ordinary confusion rather than an exotic one."
     },
     {
       "name": "aad-only-altered-issued-at",
+      "isolates": "head assertion.issued_at",
       "mutate": "Change the timestamp the device displays. It is not enforced — a recovering device has no trustworthy clock — but it is shown to a person, so it is signed."
     },
     {
       "name": "aad-only-renumbered-label",
+      "isolates": "head assertion.label",
       "mutate": "Verify under \"done/head-assert/v2\". The label is where this carrier authenticates its own version (row 1)."
     },
     {
@@ -252,46 +258,57 @@
     },
     {
       "name": "aad-only-bootstrap-service-nonce",
+      "isolates": "recovery bootstrap.service_nonce",
       "why": "Row 14 §9's move, at this carrier. `bootstrap-replayed-under-another-nonce` above fails on the comparison between the nonce in the object and the one this recovery received -- and that comparison would refuse it just as readily if the nonce were signed by nobody. So this one carries the nonce the verifier is expecting, which forces the refusal onto the signature and is also what a real attacker would present, since those bytes are theirs to edit."
     },
     {
       "name": "aad-only-bootstrap-prior-recovery-state",
+      "isolates": "recovery bootstrap.prior_recovery_state_digest",
       "why": "The same move for the chain binding: `bootstrap-naming-another-prior-recovery-state` above fails on the authority comparison against the factor-opened state, which would refuse it whether or not the field were signed. Here the presented field matches the current state — the comparison passes — and the signatures were taken over a different prior binding, so only the signature can refuse it."
     },
     {
       "name": "aad-only-bootstrap-new-signing-key",
+      "isolates": "recovery bootstrap.new_signing_key",
       "why": "The countersignature verifies under the carried key, so a substituted new_signing_key arrives with a countersignature its holder can actually produce — that check passes, and only the factor-resolved sig over the binding refuses it. Unbound, the service swaps the signing key in the binding and the replacement set certifies an approval authority the attacker holds."
     },
     {
       "name": "aad-only-bootstrap-label",
+      "isolates": "recovery bootstrap.label",
       "why": "The label doing its own job."
     },
     {
       "name": "aad-only-bootstrap-version",
+      "isolates": "recovery bootstrap.v",
       "why": "A downgraded version."
     },
     {
       "name": "aad-only-bootstrap-workspace-id",
+      "isolates": "recovery bootstrap.workspace_id",
       "why": "The bootstrap moved to another workspace."
     },
     {
       "name": "aad-only-bootstrap-lineage-id",
+      "isolates": "recovery bootstrap.lineage_id",
       "why": "The bootstrap moved to another lineage."
     },
     {
       "name": "aad-only-bootstrap-observed-epoch",
+      "isolates": "recovery bootstrap.observed_epoch",
       "why": "The epoch the head was observed at."
     },
     {
       "name": "aad-only-bootstrap-recovered-root",
+      "isolates": "recovery bootstrap.recovered_root",
       "why": "The content root the recovery actually opened, which is what a later package verifies against."
     },
     {
       "name": "aad-only-bootstrap-new-credential-id",
+      "isolates": "recovery bootstrap.new_credential_id",
       "why": "The credential the binding names, held apart from the key it receives on."
     },
     {
       "name": "aad-only-bootstrap-new-recovery-state-digest",
+      "isolates": "recovery bootstrap.new_recovery_state_digest",
       "why": "The recovery state the replacement installs, so a bootstrap cannot leave a substituted recipient behind it."
     }
   ]

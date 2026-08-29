@@ -377,7 +377,7 @@ const SIG_MUTATIONS = [
 ];
 
 const NEGATIVES = [
-  ...AAD_MUTATIONS.map(({ field, mutate }) => ({ name: `aad-only-${field}`, mutate })),
+  ...AAD_MUTATIONS.map(({ field, mutate }) => ({ name: `aad-only-${field}`, isolates: `envelope aad.${field}`, mutate })),
   ...SIG_MUTATIONS.map(({ field, mutate }) => ({ name: `sig-only-${field}`, mutate })),
   {
     name: 'wrong-workspace-subkey',
@@ -606,7 +606,7 @@ const main = async () => {
   };
 
   await verify(doc);
-  reportAudit(NEGATIVES.map((n) => n.name));
+  reportAudit(NEGATIVES);
 
   const json = JSON.stringify(doc, null, 2) + '\n';
 

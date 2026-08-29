@@ -18,8 +18,8 @@
  * ## The four carriers, and what keeps each claim live
  *
  * A claim is worth nothing unless something other than this script vouches for
- * the artifact carrying it. Three carriers have an oracle that executes; the
- * fourth has only reachability, and saying so is the point (`S0-9` `E5`):
+ * the artifact carrying it. Since the `S0-8` regeneration, all four carriers
+ * have an oracle that executes:
  *
  *   - **a published negative** carries `must_fail[].falsifies`. The claim and
  *     the evidence are one object and cannot disagree, and each generator's own
@@ -34,133 +34,112 @@
  *   - **a test** carries `// falsifies:` above a `describe` or `it`, reconciled
  *     against the tests `vitest list` actually collects — not against the source
  *     text, which is the half that would agree with itself.
- *   - **a check script** carries `falsifies:` in its module docblock, and must
- *     be named in the command text reachable from `pnpm check` or `pnpm build`.
- *     **Reachability is not execution**: the expansion below does not model
- *     `&&` failure, so a script after an earlier exit is "reachable" without
- *     having run — which is exactly how the challenged tip's gate stopped at
- *     lint while this matrix said everything ran (`FU-14`). The claim here is
- *     narrowed to what the scan proves; the execution receipt is `S0-8`'s
- *     design to own.
+ *   - **a check script** carries `falsifies:` in its module docblock, is named
+ *     in the command text reachable from `pnpm check` or `pnpm build` (the
+ *     wiring), and is credited only by its **execution receipt**
+ *     (scripts/lib/receipts.mjs): present, passing, written by the script's
+ *     current bytes, against the current tree. Reachability was the whole
+ *     credit once, and the gate exiting at lint while this matrix said
+ *     everything ran is how that was convicted (`FU-14`/`E5`; `P-5` falsifier
+ *     20 made execution the floor). A receipt from an edited script, or from
+ *     yesterday's tree, fails rather than crediting.
  *
- * ## The population is not this file's to declare
+ * ## The population is not this file's to declare — and it is pinned
  *
  * `S0-8`'s acceptance says **no shared producer inventory is the sole
  * completeness oracle**, which is the whole difficulty: a matrix that decides
  * which findings it is required to cover is always complete. So the population
- * is read three ways — the findings directory's own frontmatter,
- * `end-state-materiality.md`'s four class tables, and the seven action READMEs
- * plus `action-tree.md`'s repairs table — and all three must agree before
- * anything else is checked. Two of those are documents this remediation wrote;
- * the first is the review's record and predates it.
+ * is read three ways — the findings directory's own frontmatter and
+ * `end-state-materiality.md`'s four class tables (scripts/lib/findings.mjs,
+ * shared with check-debts.mjs), and the seven action READMEs plus
+ * `action-tree.md`'s repairs table — and all three must agree before anything
+ * else is checked. The denominator is pinned in `census.json`
+ * (`findings_population`), because round 1 demonstrated that deleting a finding
+ * from every source regenerated green with a smaller population (limit 5); now
+ * that fails until the pin is restated deliberately.
+ *
+ * ## Recency: evidence that passed while the defect existed proves no repair
+ *
+ * Round 1's limit 2: six claims named negatives that ran unchanged at the
+ * reviewed tip — green *while the defect existed* — their only diff on this
+ * branch being the tag itself. Every claim is now compared against the reviewed
+ * tip (`9edd930`): a published negative byte-identical there (tags aside), a
+ * claim-carrying test file unchanged there, or a check script unchanged there,
+ * fails — the evidence predates every repair on this branch and cannot
+ * demonstrate one. A tagged test *title* that already existed at the reviewed
+ * tip in a since-changed file passes and is listed in the matrix, because
+ * block-level history is not cheaply decidable — that boundary is printed, not
+ * hidden. This also refuses limit 1's demonstrated relation mutation (tagging a
+ * reviewed-tip negative as some other finding's falsifier); a *new* artifact
+ * deliberately mis-tagged by its author remains outside every static oracle
+ * here — isolation identity (`pnpm vectors:coverage`), the per-return mutation
+ * batteries, and the challenge rounds are that oracle.
+ *
+ * ## The owed rows are the debt manifest's
+ *
+ * The `OWED` list that lived here grew into `docs/review/remediation/debts.json`
+ * (`RC-9A`, ratified 2026-08-28): every deferred property is one registered
+ * debt with owner, one blocking gate, required artifact, falsifier, expiry and
+ * hashed inputs, validated by `pnpm debts:check`. This file reads the manifest
+ * for its owed rows and keeps the vacuity guard: a debt whose finding carries a
+ * falsifier claim fails as paid-and-not-struck — unless every such claim is
+ * partial with its declared remainder at the debt's own gate, which is the
+ * divisible-duty case (`RC-9`'s wasm binding: freshness falsified now,
+ * provenance registered at `L-4`).
  *
  * ## What it cannot do
  *
- * It proves a falsifier exists, names the finding it refuses, and — for three
- * of the four carriers — that its liveness oracle holds; for a check script it
- * proves reachability only, as above. **It does not prove the falsifier
- * isolates.** A negative that refuses for a
- * second reason satisfies everything here and demonstrates nothing — which is
- * this project's recurring defect. `pnpm vectors:coverage` proves isolation for
- * AAD fields by eliding each one and requiring a negative to stop failing, and
- * the mutation batteries recorded in each action's Stage D cover the rest.
- * Those are different oracles on purpose; this one would pass if it were its
- * own.
+ * It proves a falsifier exists, names the finding it refuses, its liveness
+ * oracle holds, and its evidence postdates the reviewed tip. **It does not
+ * prove the falsifier isolates.** A negative that refuses for a second reason
+ * satisfies everything here and demonstrates nothing — which is this project's
+ * recurring defect. `pnpm vectors:coverage` proves isolation for AAD fields by
+ * eliding each one and requiring the declared negative — identity, not arity —
+ * to stop failing, and the mutation batteries recorded in each action's Stage D
+ * cover the rest. Those are different oracles on purpose; this one would pass
+ * if it were its own.
  *
  * Usage: node scripts/check-traceability.mjs [--check]
  */
 
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { MANIFEST, loadManifest } from './lib/debts.mjs';
+import { readFindings } from './lib/findings.mjs';
+import { installReceipt, readReceipt, treeDigest } from './lib/receipts.mjs';
+
+installReceipt(import.meta.url);
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const at = (p) => ROOT + p;
 const read = (p) => readFileSync(at(p), 'utf8');
 
 const REMEDIATION = 'docs/review/remediation/';
-const FINDINGS = 'docs/review/findings/';
 const OUT = REMEDIATION + 'traceability.md';
 const ACTIONS = ['S0-1', 'S0-2', 'S0-3', 'S0-4', 'S0-5', 'S0-6', 'S0-7'];
+
+/** The tip the review reviewed. Evidence unchanged since then passed while every current defect existed. */
+const REVIEWED_TIP = '9edd9300adebcec3abd2234c946f1dcccdc17eef';
 
 const failures = [];
 
 /**
- * Findings with no executable falsifier, and who owes one.
- *
- * This is a declaration of debt, not a coverage claim, and it is the only place
- * the fact lives. An entry appears in the matrix as owed rather than as covered,
- * so a partial repair can be recorded honestly instead of having to be published
- * as a whole one to appear at all — which is what would happen if the only
- * expressible state were "has a falsifier".
- *
- * The list can only shrink. An entry that turns out to have a claim is a failure
- * below rather than a duplicate: it means the debt was paid and not struck.
+ * The registered debts — the manifest `RC-9A` grew from this file's old `OWED`
+ * list, which was, per its own docblock, a declaration of debt and not a
+ * coverage claim. The declaration now carries the ratified fields and lives in
+ * one home; `pnpm debts:check` validates it, and this file only consumes it:
+ * a required-class debt renders as owed, a gate-class debt renders as
+ * registered, and the vacuity guard below still refuses paid-and-not-struck.
  */
-const OWED = [
-  {
-    finding: 'f-bd87655-x25519-support-floor-omitted',
-    gate: 'S0-10',
-    reason:
-      'TRD §10.11 gained the fourth capability statement, its four exact `SubtleCrypto` operations and the absence behaviour, and the rule it states is a floor **with evidence and a date**. The dated table is deliberately empty: an asserted version row would be worse than the omission, and the source it needs is external to this repository. §10.11 makes the dated readback of the four operations a prerequisite of Stage 0 closure, so the debt blocks `S0-10` — this entry briefly said `L-4`, which `S0-9` recorded as the gate-assignment contradiction `FU-15`/`A-08`, resolved here in favour of the TRD.',
-  },
-  {
-    finding: 'f-66a7c6a-journal-benchmark-overwrites-one-slot',
-    gate: 'L-4',
-    reason:
-      'A later gate rather than a current defect, and repaired past what the gate asked: each benchmark write takes its own slot at a production-shaped occupancy, and the probe then found no material difference from the hot-key measurement it replaced. The append burst on a **declared device population** is what remains. `test/latency/journal-bench.ts` is a Playwright bench that no gate below `test:latency` runs, so a claim carried there would have no liveness oracle.',
-  },
-];
+const DEBTS = loadManifest(ROOT);
 
-// --- 1. the population, read three ways --------------------------------------
+// --- 1. the population, read three ways and pinned ----------------------------
 
-/** @type {Map<string, {severity: string, status: string}>} */
-const declared = new Map();
-for (const file of readdirSync(at(FINDINGS))) {
-  if (!file.startsWith('f-') || !file.endsWith('.md')) continue;
-  const text = read(FINDINGS + file);
-  const head = text.slice(0, text.indexOf('\n---', 4));
-  const field = (k) => (new RegExp(`^${k}: (.*)$`, 'mu').exec(head) ?? [])[1];
-  const id = field('id');
-  if (id !== file.slice(0, -3)) {
-    failures.push(`${FINDINGS}${file} declares id "${id}"; a finding's file name is its id.`);
-    continue;
-  }
-  declared.set(id, { severity: field('severity'), status: field('status') });
-}
-if (declared.size === 0) {
-  throw new Error('No findings were read; the population cannot be checked.');
-}
-
-const CLASSES = [
-  ['design', '## Current design defects', '## Current closure/evidence defects'],
-  ['closure', '## Current closure/evidence defects', '## Explicit later'],
-  ['gate', '## Explicit later', '## Historical-only'],
-  ['historical', '## Historical-only', '## Unresolved product choice'],
-];
-const materiality = read(REMEDIATION + 'end-state-materiality.md');
-/** @type {Map<string, string>} */
-const classOf = new Map();
-for (const [name, from, to] of CLASSES) {
-  const start = materiality.indexOf(from);
-  const end = materiality.indexOf(to);
-  if (start === -1 || end === -1 || end < start) {
-    throw new Error(`end-state-materiality.md has no ${name} section; the classes cannot be read.`);
-  }
-  for (const m of materiality.slice(start, end).matchAll(/^\| `(f-[a-z0-9-]+)`/gmu)) {
-    if (classOf.has(m[1])) failures.push(`${m[1]} is listed in two materiality classes.`);
-    classOf.set(m[1], name);
-  }
-}
-
-for (const id of declared.keys()) {
-  if (!classOf.has(id)) failures.push(`${id} has a finding record and no materiality class.`);
-}
-for (const id of classOf.keys()) {
-  if (!declared.has(id)) {
-    failures.push(`${id} is classified in end-state-materiality.md and has no finding record.`);
-  }
-}
+const population = readFindings(ROOT);
+failures.push(...population.failures);
+const { declared, classOf } = population;
 
 const idsIn = (text) => new Set([...text.matchAll(/`(f-[a-z0-9-]+)`/gu)].map((m) => m[1]));
 const section = (text, heading) => {
@@ -214,6 +193,8 @@ for (const id of owners.keys()) {
  * @property {'negative'|'guard'|'test'|'script'} kind
  * @property {string} what The falsifier, named as a reader would look for it.
  * @property {string} where The file it lives in.
+ * @property {string} [vector] For a negative or guard: the published vector file.
+ * @property {object} [entry] For a negative: the published entry, for the recency diff.
  */
 /** @type {Claim[]} */
 const claims = [];
@@ -222,18 +203,37 @@ const parse = (raw) => {
   return { finding, gate: gate ?? null };
 };
 
+/**
+ * Every scan below walks its directory recursively (round 1, limit 4: all
+ * three `readdirSync` calls were non-recursive, so a tag under `test/geometry/`
+ * or `scripts/lib/` vanished at exit 0). A claim in a file the carrier rules do
+ * not admit now fails loudly instead of being unreadable.
+ */
+const walk = (dir, keep) =>
+  readdirSync(at(dir), { recursive: true, withFileTypes: true })
+    .filter((entry) => entry.isFile() && keep(entry.name))
+    .map((entry) => `${entry.parentPath}/${entry.name}`.slice(at(dir).length).replace(/^\/+/u, ''))
+    .sort();
+
 const VECTORS = 'test/vectors/';
 for (const file of readdirSync(at(VECTORS)).filter((f) => f.endsWith('.json'))) {
   const doc = JSON.parse(read(VECTORS + file));
   const source = doc.generated_by ?? VECTORS + file;
   for (const negative of doc.must_fail ?? []) {
     for (const raw of negative.falsifies ?? []) {
-      claims.push({ ...parse(raw), kind: 'negative', what: negative.name, where: source });
+      claims.push({
+        ...parse(raw),
+        kind: 'negative',
+        what: negative.name,
+        where: source,
+        vector: VECTORS + file,
+        entry: negative,
+      });
     }
   }
   for (const [guard, held] of Object.entries(doc.falsifies ?? {})) {
     for (const raw of held) {
-      claims.push({ ...parse(raw), kind: 'guard', what: guard, where: source });
+      claims.push({ ...parse(raw), kind: 'guard', what: guard, where: source, vector: VECTORS + file });
     }
   }
 }
@@ -244,15 +244,30 @@ const TAG = /^[ \t]*\/\/ falsifies: (.+)$\n[ \t]*(describe|it)(\.\w+)?\(\s*(['"`
 const ANY_TAG = /^[ \t]*(?:\/\/|\*) falsifies:/gmu;
 /** @type {Map<string, Set<string>>} Test file to the titles it tags. */
 const tagged = new Map();
-for (const file of readdirSync(at(TESTS)).filter((f) => /\.test\.tsx?$/u.test(f))) {
+for (const file of walk(TESTS, (name) => /\.(?:ts|tsx|mjs)$/u.test(name) && !name.endsWith('.json'))) {
   const src = read(TESTS + file);
+  const offered = [...src.matchAll(ANY_TAG)].length;
+
+  // A claim outside a `*.test.ts(x)` file has no oracle: vitest collects
+  // nothing from a helper, a scheduler, or a Playwright spec, so a tag there
+  // would be a claim about evidence no gate observes. It fails rather than
+  // being unreadable — the recursive-scan repair is only a repair if what the
+  // carrier rules do not admit is refused instead of skipped.
+  if (!/\.test\.tsx?$/u.test(file)) {
+    if (offered > 0) {
+      failures.push(
+        `${TESTS}${file} offers ${offered} falsifier claim(s) and is not a *.test file vitest ` +
+          'collects. A claim with no liveness oracle is not a claim; move it to the evidence.',
+      );
+    }
+    continue;
+  }
 
   // A tag the pattern cannot attach must fail rather than disappear. `S0-1`
   // repaired this exact shape three times — a check that classifies by matching
   // a list silently passes whatever the list does not name — and a scanner that
   // skipped a detached `// falsifies:` would be the fourth, in the file whose
   // whole job is to notice that a claim has no evidence behind it.
-  const offered = [...src.matchAll(ANY_TAG)].length;
   const attached = [...src.matchAll(TAG)].length;
   if (offered !== attached) {
     failures.push(
@@ -277,7 +292,7 @@ for (const file of readdirSync(at(TESTS)).filter((f) => /\.test\.tsx?$/u.test(f)
 }
 
 const SCRIPTS = 'scripts/';
-for (const file of readdirSync(at(SCRIPTS)).filter((f) => f.endsWith('.mjs'))) {
+for (const file of walk(SCRIPTS, (name) => name.endsWith('.mjs'))) {
   const src = read(SCRIPTS + file);
   const head = src.slice(0, src.indexOf('\n */\n'));
   const line = /^ \* falsifies: (.+)$/mu.exec(head);
@@ -285,14 +300,14 @@ for (const file of readdirSync(at(SCRIPTS)).filter((f) => f.endsWith('.mjs'))) {
   // Same rule as the tests, one carrier over: every offered claim is either
   // read or refused. A `falsifies:` docblock line in a generator is a claim
   // written in the wrong carrier — generators register through `falsifies()` so
-  // the claim is published only if the guard ran — and one below the leading
-  // docblock is out of the scanner's reach either way.
+  // the claim is published only if the guard ran — and one in `scripts/lib/`,
+  // or below the leading docblock, is out of every oracle's reach either way.
   const offered = [...src.matchAll(/^ \* falsifies:/gmu)].length;
-  if (offered > 0 && !/^check-.*\.mjs$/u.test(file)) {
+  if (offered > 0 && !/^check-[a-z-]+\.mjs$/u.test(file)) {
     failures.push(
       `${SCRIPTS}${file} carries a \`falsifies:\` docblock line, which is only read from a ` +
-        '`check-*.mjs`. A generator registers claims through `falsifies()` instead, so the claim ' +
-        'is published only if the guard ran.',
+        'top-level `check-*.mjs`. A generator registers claims through `falsifies()` instead, so ' +
+        'the claim is published only if the guard ran; a library has no gate of its own.',
     );
     continue;
   }
@@ -352,8 +367,9 @@ const scripts = pkg.scripts ?? {};
  * The direction matters (`E5`): unreachable proves dead, but reachable does
  * not prove alive — this concatenation does not model `&&` failure, so a
  * command after an earlier non-zero exit is in the text and out of the run.
- * That is why every claim resting on this closure is published as
- * reachability, never as execution (`FU-14`; receipts at `S0-8`).
+ * The wiring check keeps the dead direction; the execution receipts below
+ * close the live one (`FU-14`'s repair): a script-carrier claim is credited
+ * only by a receipt its current bytes wrote against the current tree.
  */
 const gated = (() => {
   const seen = new Set();
@@ -380,6 +396,51 @@ for (const claim of unique.values()) {
     `${claim.where} carries a falsifier claim and neither \`pnpm check\` nor \`pnpm build\` reaches ` +
       'it. Evidence nothing runs proves nothing.',
   );
+}
+
+/**
+ * The execution receipts (`FU-14`'s repair; `P-5` falsifier 20's rule). A
+ * script-carrier claim is credited only when the script's receipt says it
+ * executed and passed, was written by the script's current bytes, and ran
+ * against the current tree — `pnpm check` mints every receipt before this, its
+ * last step, reads them, and `pnpm build` mints the two build-gate ones inside
+ * `test:geometry`'s web server. A receipt from an edited script or another
+ * tree fails: crediting yesterday's run against today's state is exactly the
+ * claim shape the challenged tip's green matrix was convicted of.
+ */
+const sha256 = (data) => createHash('sha256').update(data).digest('hex');
+const nowTree = treeDigest();
+for (const claim of [...unique.values()].filter((c) => c.kind === 'script')) {
+  const receipt = readReceipt(claim.what);
+  if (receipt === null) {
+    failures.push(
+      `${claim.where} carries a falsifier claim and has no execution receipt (.receipts/). ` +
+        'Reachability is not execution (FU-14): run `pnpm check` (or `pnpm build` for the build ' +
+        'checks) so the claim is credited by a run, then re-run this.',
+    );
+    continue;
+  }
+  if (!receipt.ok) {
+    failures.push(
+      `${claim.where}'s last receipted execution FAILED (${receipt.finished}). A failing falsifier ` +
+        'demonstrates the defect, not the repair; fix it and re-run the gate.',
+    );
+    continue;
+  }
+  if (receipt.script_sha256 !== sha256(read(claim.where))) {
+    failures.push(
+      `${claim.where} changed since its receipt (${receipt.finished}). A receipt credits the bytes ` +
+        'that ran, not the file that now exists — the gutted-script claim, refused. Re-run the gate.',
+    );
+    continue;
+  }
+  if (receipt.tree.head !== nowTree.head || receipt.tree.dirty_sha256 !== nowTree.dirty_sha256) {
+    failures.push(
+      `${claim.where}'s receipt was written against another tree (${receipt.tree.head.slice(0, 12)}…, ` +
+        `${receipt.finished}); the tree has changed since it ran. Re-run the gate so the credit is an ` +
+        'execution against this state.',
+    );
+  }
 }
 
 /** The tests the default run collects — neither the comment nor this file's reading of it. */
@@ -417,7 +478,87 @@ for (const [file, titles] of tagged) {
   }
 }
 
-// --- 5. every required finding is covered, or declared owed -------------------
+// --- 5. recency: evidence must postdate the reviewed tip ----------------------
+
+/**
+ * Round 1's limit 2, made a rule: a falsifier that ran unchanged at the
+ * reviewed tip passed *while the defect existed*, so it cannot demonstrate the
+ * repair — its tag is a claim about evidence the defect never disturbed. Each
+ * claim's artifact is compared to `git show <reviewed tip>`: negatives at the
+ * entry (tags aside), tests and check scripts at the file. A tagged title that
+ * existed at the tip inside a since-changed file is the boundary of what file
+ * history decides cheaply; those are printed in the matrix, never silent.
+ */
+const gitAt = (path) => {
+  try {
+    return execFileSync('git', ['-C', ROOT, 'show', `${REVIEWED_TIP}:${path}`], {
+      encoding: 'utf8',
+      maxBuffer: 64 * 1024 * 1024,
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+  } catch {
+    return null; // the path did not exist at the tip: the evidence is new
+  }
+};
+const oldTextCache = new Map();
+const oldText = (path) => {
+  if (!oldTextCache.has(path)) oldTextCache.set(path, gitAt(path));
+  return oldTextCache.get(path);
+};
+const canonical = (v) => {
+  if (Array.isArray(v)) return `[${v.map(canonical).join(',')}]`;
+  if (v !== null && typeof v === 'object') {
+    return `{${Object.keys(v)
+      .sort()
+      .map((k) => `${JSON.stringify(k)}:${canonical(v[k])}`)
+      .join(',')}}`;
+  }
+  return JSON.stringify(v);
+};
+const untagged = (entry) => {
+  const { falsifies: _f, isolates: _i, ...rest } = entry;
+  return rest;
+};
+
+/** @type {Claim[]} Tagged titles that predate the tip in files that changed since. */
+const predates = [];
+for (const claim of unique.values()) {
+  if (claim.kind === 'negative') {
+    const old = oldText(claim.vector);
+    if (old === null) continue;
+    const oldEntry = (JSON.parse(old).must_fail ?? []).find((n) => n.name === claim.what);
+    if (oldEntry !== undefined && canonical(untagged(oldEntry)) === canonical(untagged(claim.entry))) {
+      failures.push(
+        `${claim.vector}: "${claim.what}" is identical (tags aside) at the reviewed tip — it passed ` +
+          `while ${claim.finding} existed, so it cannot demonstrate the repair; only the tag is new.`,
+      );
+    }
+  } else if (claim.kind === 'guard') {
+    const old = oldText(claim.vector);
+    if (old === null) continue;
+    const held = JSON.parse(old).falsifies?.[claim.what];
+    if (Array.isArray(held) && held.some((raw) => raw.startsWith(claim.finding))) {
+      failures.push(
+        `${claim.vector}: guard "${claim.what}" already claimed ${claim.finding} at the reviewed tip; ` +
+          'a claim that predates the branch demonstrates nothing about its repairs.',
+      );
+    }
+  } else {
+    const old = oldText(claim.where);
+    if (old === null) continue;
+    if (old === read(claim.where)) {
+      failures.push(
+        `${claim.where} is byte-identical at the reviewed tip and carries a claim for ` +
+          `${claim.finding} — evidence unchanged since the defective tip passed while the defect ` +
+          'existed and cannot demonstrate its repair.',
+      );
+    } else if (claim.kind === 'test' && old.includes(claim.what)) {
+      predates.push(claim);
+    }
+  }
+}
+
+// --- 6. every required finding is covered, or a registered debt ---------------
 
 /** @type {Map<string, Claim[]>} */
 const byFinding = new Map();
@@ -425,31 +566,41 @@ for (const claim of claims) {
   byFinding.set(claim.finding, [...(byFinding.get(claim.finding) ?? []), claim]);
 }
 
-const owed = new Map(OWED.map((o) => [o.finding, o]));
-for (const entry of OWED) {
-  if (!declared.has(entry.finding)) {
-    failures.push(`The owed list names ${entry.finding}, which is not a finding.`);
+/**
+ * The vacuity guard, over the manifest instead of the old local list (which
+ * `RC-9A` grew into `debts.json`; `pnpm debts:check` validates the entries
+ * themselves). Paid-and-not-struck stays a failure here, with one carve-out
+ * the ratification defines: a claim declared partial at exactly the debt's own
+ * gate is the divisible-duty case — the falsified half and the registered
+ * remainder are two homes of one split, and they must agree on the gate.
+ */
+const owed = new Map(DEBTS.map((d) => [d.finding, d]));
+for (const debt of DEBTS) {
+  if (!declared.has(debt.finding)) {
+    failures.push(`${MANIFEST} names ${debt.finding}, which is not a finding.`);
+    continue;
   }
-  const held = byFinding.get(entry.finding);
-  if (held !== undefined) {
+  const overreach = (byFinding.get(debt.finding) ?? []).filter((c) => c.gate !== debt.gate);
+  if (overreach.length > 0) {
     failures.push(
-      `${entry.finding} is declared owed to ${entry.gate} and carries ${held.length} falsifier ` +
-        'claim(s). The debt was paid and the declaration was not struck.',
+      `${debt.finding} is a registered debt at ${debt.gate} and carries ${overreach.length} falsifier ` +
+        `claim(s) not declared partial at that gate (${overreach.map((c) => `"${c.what}"`).join(', ')}). ` +
+        'Either the debt was paid and not struck, or a claim credits more than the registered split allows.',
     );
   }
-  if (!definesGate(entry.gate)) {
-    failures.push(`${entry.finding} is owed to "${entry.gate}", which action-tree.md does not define.`);
+  if (!definesGate(debt.gate)) {
+    failures.push(`${debt.finding} is owed to "${debt.gate}", which action-tree.md does not define.`);
   }
 }
 for (const id of required) {
   if (byFinding.has(id) || owed.has(id)) continue;
   failures.push(
-    `${id} is a current ${classOf.get(id)} defect with no falsifier and no declared debt. Either an ` +
-      'artifact claims it or the owed list says who owes one.',
+    `${id} is a current ${classOf.get(id)} defect with no falsifier and no registered debt. Either an ` +
+      `artifact claims it or ${MANIFEST} says who owes one.`,
   );
 }
 
-// --- 6. report, before anything is rendered ----------------------------------
+// --- 7. report, before anything is rendered ----------------------------------
 
 if (failures.length > 0) {
   console.error(`traceability: ${failures.length} failure(s)\n`);
@@ -457,7 +608,7 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-// --- 7. the matrix -----------------------------------------------------------
+// --- 8. the matrix -----------------------------------------------------------
 
 const esc = (s) => s.replace(/\|/gu, '\\|');
 const cite = (claim) => {
@@ -476,9 +627,16 @@ const rowsFor = (ids) =>
       const held = [...(byFinding.get(id) ?? [])].sort((a, b) => (a.what < b.what ? -1 : 1));
       const debt = owed.get(id);
       const where = [...new Set(held.map((c) => c.where))].sort();
-      const evidence = debt
-        ? `**Owed to \`${debt.gate}\`.** ${debt.reason}`
-        : held.map(cite).join(' · ');
+      // A finding can carry both: the falsified half of a divisible duty, and
+      // the registered remainder. Render both — the split is the point.
+      const evidence = [
+        ...held.map(cite),
+        ...(debt === undefined
+          ? []
+          : [
+              `**Owed to \`${debt.gate}\`** — registered debt \`${debt.id}\` in [\`debts.json\`](./debts.json) (owner: ${esc(debt.owner)}; expires ${debt.expiry}). ${esc(debt.property)}`,
+            ]),
+      ].join(' · ');
       const by = (owners.get(id) ?? ['—']).join(', ');
       const files = where.length === 0 ? '—' : where.map((w) => `\`${w}\``).join('<br>');
       return `| \`${id}\` | ${declared.get(id).severity} | ${by} | ${evidence} | ${files} |`;
@@ -546,34 +704,40 @@ names the finding it refuses, in the file that runs, and this table is read back
 **What it proves, per carrier.** Every finding below has at least one artifact that names it. For a published
 negative or a generator guard, the claim is live under the generator's own published-versus-asserted comparison
 and the regeneration diff \`pnpm vectors:check\` performs; for a test, under the test list \`vitest list\`
-actually collects. **For a check script it proves strictly less: the script is named in command text reachable
-from \`pnpm check\` or \`pnpm build\` — reachability, not execution** (\`FU-14\`/\`E5\`: at the challenged tip
-the gate exited at lint while this paragraph said everything still ran; the execution receipt is \`S0-8\`'s
-design, and until it lands this claim is exactly this small).
+actually collects; **for a check script, under its execution receipt** (\`.receipts/\`,
+\`scripts/lib/receipts.mjs\`): the script executed and passed, the receipt was written by the script's current
+bytes, and it ran against the current tree — \`pnpm check\` mints every receipt before \`trace:check\`, its
+last step, reads them. Reachability in command text was this carrier's whole credit once, and the gate exiting
+at lint while this paragraph said everything ran is how that was convicted (\`FU-14\`/\`E5\`; \`P-5\` falsifier
+20 made execution the floor). And every claim survives a recency comparison against the reviewed tip
+\`${REVIEWED_TIP.slice(0, 7)}\`: evidence identical there passed *while the defect existed* and is refused.
 
 **What it does not prove is that a falsifier isolates.** A negative that refuses for a second reason satisfies
 everything here and demonstrates nothing — this project's recurring defect. \`pnpm vectors:coverage\` proves
-isolation for AAD fields by eliding each one and requiring a negative to stop failing; the mutation batteries
-recorded in each action's Stage D cover the rest. Those are deliberately different oracles.
+isolation for AAD fields by eliding each one and requiring exactly the negative that declares that field —
+identity, not arity — to stop failing; the mutation batteries recorded in each action's Stage D cover the rest.
+Those are deliberately different oracles.
 
-> ### Five more limits, found by \`S0-9\`'s independent challengers and not yet repaired
+> ### The five limits \`S0-9\` found, and where each stands since the \`S0-8\` regeneration
 >
-> Read every row below with these in mind. They are recorded here rather than in a report because this is the
-> document a reader reaches for, and it was overclaiming.
+> Recorded here rather than in a report because this is the document a reader reaches for, and it was
+> overclaiming. Disposition: [\`S0-9/DISPOSITION.md\`](./S0-9/DISPOSITION.md).
 >
-> 1. **Relation is not checked.** A claim naming an unrelated negative passes — tagging \`flipped-tag-bit\` as the
->    sequence allocator's falsifier is accepted.
-> 2. **Recency is not checked.** Six of the claims below name negatives that ran unchanged at the reviewed tip,
->    passing *while the defect existed*. Their only diff on this branch is the tag itself.
-> 3. **A check-script claim survives the script being gutted.** Reachability from a gate is not liveness, and
->    three of the single-falsifier findings rest wholly on that carrier.
-> 4. **The scan is not recursive.** A claim under \`test/geometry/\` or \`scripts/lib/\` is invisible, at exit 0.
-> 5. **Nothing pins the population.** Deleting a finding from all four sources regenerates green with a smaller
->    denominator.
->
-> Disposition: [\`S0-9/DISPOSITION.md\`](./S0-9/DISPOSITION.md). Until these are repaired, a row here means *an
-> artifact names this finding and its liveness oracle holds — reachability only, for a check script* — not that
-> the finding is closed.
+> 1. **Relation** — repaired at its checkable faces, and the residue is stated. The recency rule refuses the
+>    demonstrated mutation (tagging a reviewed-tip negative as another finding's falsifier now fails, because
+>    such a negative predates every repair); an \`isolates\`-declaring negative is bound to its field by the
+>    cipher (\`pnpm vectors:coverage\`). A **new** artifact deliberately mis-tagged by its author is outside
+>    every static oracle here — the mutation batteries and the challenge rounds are that oracle, and a row
+>    below still does not mean *closed*.
+> 2. **Recency** — repaired. Every claim is compared against the reviewed tip: a negative identical there
+>    (tags aside), or a claim-carrying test file or check script unchanged there, fails. The stated boundary:
+>    a tagged *title* that existed at the tip inside a since-changed file passes and is listed below.
+> 3. **Check-script liveness** — repaired by the execution receipts above: a gutted or edited script no longer
+>    keeps its claim, because the receipt binds the bytes that ran; assertion strength stays the batteries'.
+> 4. **The recursive scan** — repaired. All three scans walk their directories recursively, and a claim in a
+>    file the carrier rules do not admit (a helper, \`scripts/lib/\`, a Playwright spec) fails loudly.
+> 5. **The population pin** — repaired. \`census.json\` pins the findings count and id hash; deleting a finding
+>    from every source now fails every consumer until the pin is restated deliberately.
 
 ## The population is read, not declared
 
@@ -584,8 +748,10 @@ recorded in each action's Stage D cover the rest. Those are deliberately differe
 | the seven \`S0-*/README.md\` tables and [\`action-tree.md\`](./action-tree.md)'s repairs row | who owns each repair | ${owners.size} |
 
 All three must agree before anything below is checked, because a matrix that decides its own population is
-always complete. **${design.length + closure.length} findings are current design or closure defects and therefore require a falsifier.**
-${covered(design) + covered(closure)} carry one; ${OWED.filter((o) => required.includes(o.finding)).length} is declared owed.
+always complete — and the denominator is pinned (\`census.json\`'s \`findings_population\`: ${declared.size} ids), so a
+finding deleted from every source fails rather than shrinking the population (limit 5, repaired).
+**${design.length + closure.length} findings are current design or closure defects and therefore require a falsifier.**
+${covered(design) + covered(closure)} carry one; ${DEBTS.filter((d) => required.includes(d.finding)).length} is a registered debt in [\`debts.json\`](./debts.json).
 
 ## Current design defects — ${covered(design)} of ${design.length} carry a falsifier
 
@@ -599,9 +765,11 @@ ${rowsFor(closure)}
 ${beyond}
 ## Outside the required population — ${outside.length}
 
-Neither owed a falsifier nor silently dropped. Later gates are repaired when their gate arrives; historical-only
-corrections have no surviving defect to falsify and belong to \`H-1\`'s append-only ledger — which is why a claim
-naming one of them is a failure here rather than a bonus.
+Neither owed a falsifier nor silently dropped. Every *Explicit later* finding is a registered debt in
+[\`debts.json\`](./debts.json) — owner, one blocking gate, required artifact, falsifier, expiry, hashed inputs —
+whose gate blocks while it is unmet (\`pnpm debts\`, \`RC-9A\`); historical-only corrections have no surviving
+defect to falsify and belong to \`H-1\`'s append-only ledger — which is why a claim naming one of them is a
+failure here rather than a bonus.
 
 | Finding | Class | State |
 | --- | --- | --- |
@@ -610,15 +778,31 @@ ${outside
     const debt = owed.get(id);
     const state =
       debt !== undefined
-        ? `Owed to \`${debt.gate}\`.`
+        ? `Registered debt \`${debt.id}\` — blocks \`${debt.gate}\`, expires ${debt.expiry}.`
         : classOf.get(id) === 'gate'
-          ? 'Waiting at its gate.'
+          ? 'UNREGISTERED — pnpm debts:check refuses this state.'
           : '`H-1` ledger correction.';
     return `| \`${id}\` | ${classOf.get(id)} | ${state} |`;
   })
   .join('\n')}
 
-## The claims themselves
+${
+  predates.length === 0
+    ? ''
+    : `## Tagged titles that predate the reviewed tip — ${predates.length}
+
+The recency rule's stated boundary: these \`describe\`/\`it\` titles already existed at \`${REVIEWED_TIP.slice(0, 7)}\`,
+inside files that have changed since. File history proves the file moved, not that the block did; whether the
+assertions behind these titles strengthened is the batteries' and the challenge's subject, and hiding the list
+would be the overclaim this document was convicted of.
+
+${predates
+  .sort((a, b) => (a.where + a.what < b.where + b.what ? -1 : 1))
+  .map((c) => `- \`${esc(c.what)}\` in \`${c.where}\` (claims \`${c.finding}\`)`)
+  .join('\n')}
+
+`
+}## The claims themselves
 
 ${claims.length} claims across ${new Set(claims.map((c) => c.where)).size} files — ${[...counts]
   .sort(([a], [b]) => (a < b ? -1 : 1))
@@ -630,7 +814,7 @@ ${claims.length} claims across ${new Set(claims.map((c) => c.where)).size} files
 | a published negative | \`must_fail[].falsifies\` in the vector file, so the claim and the evidence are one object | the generator's published-versus-asserted comparison, in both directions |
 | a guard inside a generator | \`falsifies()\`, published by \`claims()\`, which emits only what registered during that run | \`pnpm vectors:check\` regenerates and compares, so a guard that stops being called writes a file missing its claim |
 | a test | \`// falsifies:\` above a \`describe\` or \`it\` | \`vitest list\` — the tests the default run collects, not the source text |
-| a check script | \`falsifies:\` in the module docblock | the script is named in command text reachable from \`pnpm check\` or \`pnpm build\` — reachability, not an execution receipt (\`FU-14\`, \`S0-8\`) |
+| a check script | \`falsifies:\` in the module docblock | wired into \`pnpm check\`'s or \`pnpm build\`'s command text **and** credited by its execution receipt — present, passing, written by the current bytes against the current tree (\`FU-14\`, repaired at the \`S0-8\` regeneration) |
 
 ### Where one artifact carries the whole demonstration
 
@@ -657,7 +841,8 @@ if (process.argv.includes('--check')) {
   }
   console.log(
     `traceability: ${claims.length} claims, ${settled} of ${total} current defects carry a named falsifier, ` +
-      `${OWED.length} declared owed. ${OUT} is current.`,
+      `${DEBTS.length} registered debts. Script claims credited by execution receipts; recency held against ` +
+      `${REVIEWED_TIP.slice(0, 7)}. ${OUT} is current.`,
   );
 } else {
   writeFileSync(at(OUT), matrix);

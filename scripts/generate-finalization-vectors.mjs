@@ -295,6 +295,7 @@ const NEGATIVES = [
   },
   {
     name: 'aad-only-renumbered-head-label',
+    isolates: 'accepted head.label',
     mutate: 'Verify the head under "done/accept-head/v2".',
   },
 
@@ -605,7 +606,7 @@ const main = async () => {
   };
 
   await verify(doc);
-  reportAudit(NEGATIVES.map((n) => n.name));
+  reportAudit(NEGATIVES);
 
   const json = JSON.stringify(doc, null, 2) + '\n';
 

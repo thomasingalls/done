@@ -53,6 +53,9 @@
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
+import { installReceipt } from './lib/receipts.mjs';
+
+installReceipt(import.meta.url);
 
 const DIST = 'dist';
 

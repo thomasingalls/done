@@ -293,13 +293,11 @@ const NEGATIVES = [
   },
   {
     name: 'lifted-to-another-card',
-    falsifies: ['f-b997cdb-attribution-self-replacement'],
     mutate:
       'The laptop’s genuine claim, re-keyed under a different card id. Isolates `card_id`, which is what stops a record being moved to a card its actor never created.',
   },
   {
     name: 'reattributed-actor',
-    falsifies: ['f-b997cdb-attribution-self-replacement'],
     mutate: 'Change the attributed actor while keeping the signing credential.',
   },
   {
@@ -309,7 +307,6 @@ const NEGATIVES = [
   },
   {
     name: 'reattributed-credential',
-    falsifies: ['f-b997cdb-attribution-self-replacement'],
     mutate:
       'Name a different credential inside a record the laptop signed, **verified under the key that actually signed it**. Holding the verifier fixed is what makes this test the binding: fetching the named credential’s key instead would fail on the key and prove nothing about the field.',
   },
@@ -321,13 +318,13 @@ const NEGATIVES = [
   },
   {
     name: 'substituted-commitment',
-    falsifies: ['f-b997cdb-attribution-self-replacement'],
     mutate:
       'Replace the body commitment with one for different text. The commitment makes the claim falsifiable; a substitutable one would make it merely decorative.',
   },
   { name: 'wrong-version', mutate: 'Claim record version 2 for a version-1 record.' },
   {
     name: 'aad-only-renumbered-label',
+    isolates: 'attribution record.label',
     mutate:
       'Verify under "done/attrib/v2". The label is where this carrier authenticates its own version (row 1).',
   },
@@ -611,7 +608,7 @@ const main = async () => {
   };
 
   await verify(doc);
-  reportAudit(NEGATIVES.map((n) => n.name));
+  reportAudit(NEGATIVES);
 
   const json = JSON.stringify(doc, null, 2) + '\n';
 

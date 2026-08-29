@@ -192,6 +192,7 @@
     },
     {
       "name": "aad-only-renumbered-head-label",
+      "isolates": "accepted head.label",
       "mutate": "Verify the head under \"done/accept-head/v2\"."
     },
     {

@@ -851,16 +851,19 @@ const ARCHIVE_NEGATIVES = [
   },
   {
     name: 'aad-only-archive-envelope-workspace',
+    isolates: 'archive envelope.workspace_id',
     falsifies: ['f-745e332-local-archive-portable-wrap-undefined'],
     why: "The AAD's workspace binding, isolated from the key derivation's. The HKDF info binds the workspace too, so a negative that changed both would be rescued by neither; this one opens with the genuine derived key and an AAD claiming another workspace, so only the AAD can refuse it.",
   },
   {
     name: 'aad-only-archive-envelope-version',
+    isolates: 'archive envelope.v',
     falsifies: ['f-745e332-local-archive-portable-wrap-undefined'],
     why: 'The envelope version, bound so a v1 envelope cannot be presented as a later one whose rules differ.',
   },
   {
     name: 'aad-only-renumbered-archive-label',
+    isolates: 'archive envelope.label',
     falsifies: ['f-745e332-local-archive-portable-wrap-undefined'],
     why: 'The construction label, the same discipline as every other AAD here.',
   },
@@ -947,6 +950,7 @@ const NEGATIVES = [
   },
   {
     name: 'aad-only-renumbered-wrap-label',
+    isolates: 'generation wrap info.label',
     mutate: 'Open a generation wrap under "done/gen-wrap/v2".',
   },
   {
@@ -980,6 +984,7 @@ const NEGATIVES = [
   { name: 'manifest-wrong-version', mutate: 'Claim manifest version 2 for a version-1 manifest.' },
   {
     name: 'aad-only-renumbered-manifest-label',
+    isolates: 'package manifest.label',
     mutate: 'Verify the manifest under "done/pkg/v2".',
   },
 ];
@@ -2083,7 +2088,7 @@ const main = async () => {
   };
 
   await verify(doc);
-  reportAudit(NEGATIVES.map((n) => n.name));
+  reportAudit(NEGATIVES);
 
   const json = JSON.stringify(doc, null, 2) + '\n';
 

@@ -6,6 +6,14 @@
  * draft-irtf-cfrg-xchacha-03 §A.3.1 and row 2's composition vectors by
  * scripts/check-wasm-seal.mjs.
  *
+ * Source binding, recorded at generation and compared toolchain-free in
+ * `pnpm wasm:verify` — drift detection only; provenance attestation is the
+ * registered L-4 debt (docs/review/remediation/debts.json):
+ *   binding src/lib.rs sha256 9da5e0bdfeb25dbb38614b8205c2985ab07762a036144814f1454cab3613235a
+ *   binding Cargo.toml sha256 8f8c138c9ee1a8b3a7edf5371163d253c597b93bc374eadb0eb587a50d0706c9
+ *   binding Cargo.lock sha256 6339c5b066678ce11cb27f70e1bc7a31ffaa9f2ff4c416e45b67ff6344dc5998
+ *   built-by rustc 1.100.0-nightly (e457a7b0d 2026-08-27) (recorded, not compared — comparing it needs the toolchain)
+ *
  * Raw wasm 6465 bytes; base64 8620; see docs/performance.md for
  * what it weighs through the bundler and what it costs to instantiate.
  */

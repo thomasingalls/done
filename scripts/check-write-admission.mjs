@@ -45,6 +45,9 @@
 import { readFileSync } from 'node:fs';
 import { webcrypto as crypto } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { installReceipt } from './lib/receipts.mjs';
+
+installReceipt(import.meta.url);
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const read = (p) => readFileSync(ROOT + p, 'utf8');

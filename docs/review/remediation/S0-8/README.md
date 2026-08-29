@@ -193,3 +193,77 @@ catch.
 - **The two owed items.** `f-bd87655`'s dated table needs an external source and `f-66a7c6a`'s burst needs a
   declared device population. Both are `L-4`, and both are now visible in a generated document rather than in a
   paragraph somebody has to remember.
+
+## Addendum — the post-challenge regeneration, 2026-08-29 (queue item 5)
+
+Both `S0-9` rounds convicted parts of the mechanism this record describes, and the queue's item 5 is the
+regeneration that repairs them. It ran 2026-08-29 on the remediation branch; this addendum records it under a
+re-pin, and the current mechanism claims live in the regenerated [`traceability.md`](../traceability.md), the
+[`RC-9` record](../decisions/RC-9-later-gate-governance.md) and [`HANDOFF.md`](../HANDOFF.md) — this section
+is the dated report, not a second home.
+
+**`FU-14`'s execution receipts.** The fourth carrier's oracle was reachability in command text, and the
+challenged tip's gate exited at lint while the matrix said everything ran. Now every check script installs
+`scripts/lib/receipts.mjs`, which writes `.receipts/<script>.json` at process exit — the script's own SHA-256,
+the exit, and the tree (HEAD plus a digest of every uncommitted change) — and `check-traceability.mjs`
+credits a script-carrier claim only by a receipt that is present, passing, written by the script's current
+bytes, and written against the current tree. `pnpm check` reordered so `trace:check` is its **last** step:
+every receipt is minted (the two build-gate ones inside `test:geometry`'s web server) before the matrix
+credits anything. The receipts directory is untracked on purpose — a commit cannot carry proof that checks
+ran on your machine — so a fresh clone earns its credits by running the gate once. Failures are receipted
+too: `RC-9` falsifier 1's demonstration reads `ok: false` and the named mismatch out of the receipt, never
+shell text.
+
+**The five matrix limits** (round 1's list, printed in the matrix since the dispositions):
+
+1. *Relation* — repaired at its checkable faces and stated at its residue: recency refuses the demonstrated
+   mutation (a reviewed-tip negative re-tagged for any finding fails), identity binds declared negatives to
+   their fields through the cipher, and a **new** artifact deliberately mis-tagged stays the batteries' and
+   the challenge's subject — the matrix says exactly that instead of overclaiming.
+2. *Recency* — every claim is compared against the reviewed tip `9edd930`. The rule convicted ten live tags
+   on negatives that ran unchanged while their defects existed — four on `attribution.json`, two on
+   `checkpoint.json`, one on `device-lock.json`, two on `record-format.json`, one on `transition.json` —
+   the exact shape round 1 counted six of. All ten tags were dropped; the negatives stay published as local
+   theorems; every affected finding still carries post-tip evidence (the `S0-2`–`S0-7` returns' guards,
+   tests and inversions), two of them now honestly in the single-falsifier leverage list.
+3. *Check-script liveness* — the receipts above; a gutted or edited script no longer keeps its claim.
+4. *The recursive scan* — all three scans walk recursively, and a claim in a file the carrier rules do not
+   admit (a helper, `scripts/lib/`, a Playwright spec) fails loudly instead of vanishing.
+5. *The population pin* — `census.json` gained `findings_population` (37 ids, hash over the sorted list),
+   read by `scripts/lib/findings.mjs` for `trace:check` and `debts:check` at once.
+
+**Identity, not arity, in the AAD audit.** Every negative claiming isolation now declares its target on the
+published entry — `isolates: 'construction.field'`, 114 declarations across the corpus — and
+`check-aad-coverage.mjs` holds the cipher's rescue attribution to the declaration exactly: rescued by
+nothing, by two fields, or by a different field than declared each fails, and an `aad-only-*` name without a
+declaration is refused. Round 1's swapped-attribution demonstration now fails by construction. The
+`CertifiedSet` construction registered with the audit — eight fields through `aadFields`, byte-identical
+encoding — with five new `aad-only-certified-set-*` negatives for the fields round 1 found isolated by
+nothing, and the three existing field negatives declaring theirs: the audit grew from 197 to **205 fields,
+each isolated by its declared negative**.
+
+**`RC-9`'s consolidation.** The checker's `OWED` list — *a declaration of debt, not a coverage claim*, per
+its own docblock — grew into [`debts.json`](../debts.json): six entries, each carrying owner, one blocking
+gate, required artifact, falsifier, expiry, typed payment and hashed inputs. `scripts/check-debts.mjs`
+(`pnpm debts:check`, in the gate) validates the entries, holds the gate-class census total (an *Explicit
+later* finding with no entry, or a future deferral outside the manifest, fails rather than entering no
+bucket), enforces one-debt-one-gate against TRD §10.11 and `action-tree.md`, and checks `HANDOFF.md`'s
+what-blocks-what claim against the computed projection in both directions; `--gate <name>` evaluates an
+arrival and blocks while a debt is unpaid, expired or input-changed. The refusal floor is executable:
+`test/debtManifest.test.ts` holds twenty negatives — a KAT presented as provenance, an audit citation as
+the delta review, a Baseline citation as the population, an undated observation, an authority-less waiver —
+each refused by a check, not a convention. And the source↔blob header binding landed: one cargo
+regeneration stamped `seal.generated.ts` with the SHA-256 of `src/lib.rs`, `Cargo.toml` and `Cargo.lock`
+plus the toolchain string (`WASM_BASE64` byte-identical, which is the reproduction proof), and
+`check-wasm-seal.mjs` recomputes the source-side hashes with Node alone inside `pnpm check` — drift
+detection only, the printed claim held to that scope by a byte rule, with provenance attestation registered
+as the `wasm-toolchain-provenance` debt at `L-4`.
+
+**The battery.** Twenty-one mutations, all caught, each asserted on its specific diagnostic rather than a
+bare exit code, files restored from in-memory snapshots in a `finally` (this record's own Stage D rule):
+the five receipt forgeries (deleted, re-hashed, edited-script, moved tree, hidden failure), eight manifest
+mutations (deleted gate-class entry, struck `S0-10` debt, the `FU-15` two-gate shape, duplicated finding,
+paid-without-receipt, dropped falsifier field, changed pinned input, a wrong `HANDOFF` count), the
+`action-tree` byte rule, the widened wasm claim, round 1's lib.rs mutation (failing receipted) and the
+header edited alone, the `scripts/lib` and non-test-file claim refusals, the population pin, and a
+reviewed-tip negative re-tagged (the recency conviction, reproduced on demand).

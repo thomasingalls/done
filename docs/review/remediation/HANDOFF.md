@@ -15,7 +15,7 @@ disagree, the disposition is right and this file is the thing to fix.
 
 | | |
 | --- | --- |
-| Branch | `claude/stage0-remediation`, 83 commits off `9edd930` as of the `S0-7` return, all signed; the current tip rides the worktree branch `claude/s0-7-return-f229bb` until folded back |
+| Branch | `claude/stage0-remediation`, 83 commits off `9edd930` as of the `S0-7` return, all signed; the current tip rides the worktree branch `claude/s0-8-regeneration-9bcaad` until folded back |
 | Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, the decisions, and both `S0-9` challenge rounds |
 | Not on it | nothing — this branch is the whole picture, deliberately |
 | Superseded | `claude/remediation-findings-review-997ab5` holds the review workspace at its original SHAs. Redundant once this branch is accepted |
@@ -76,8 +76,9 @@ to refuse.
   accepted bootstrap mints the replacement certified set and the recovered credential rotates under it (17),
   the six enrollment states run with crash points and the sibling-successor loser resumes to `certified`
   (18, criterion 11), and `pnpm recipient:check` is the homes-agree readback with `FU-05`'s independent
-  reconstruction (19) — with the `CertifiedSet` AAD registration staying at `S0-8` exactly as the record
-  reserves it.
+  reconstruction (19) — and the `CertifiedSet` AAD registration landed at the `S0-8` regeneration
+  (2026-08-29): eight fields under the identity audit, round 1 `D-2`'s five unisolated fields each dying to
+  its own declared negative.
 - **`P-3` is ratified (2026-08-28): option A at all three joints.** Each store derives its own `K_store`
   and exactly one `SeqCounter` counts it; nothing becomes authoritative without a durable carrier — a
   journal refusal holds the input, never the document; and a batch's commit validates its generation under
@@ -91,8 +92,9 @@ to refuse.
   permanent negatives (17–18); the write-admission machine consolidated the fence and the retirement
   composition holds on the reproduction's schedule (19–20); the boundary census stands over the renamed
   steps (21); and `pnpm admission:check` is the homes-agree readback with the two-store reconstruction
-  (22) — `FU-13`'s §15 row 3 and record-vector homes landed the same day, and the matrix receipts stay at
-  `S0-8` exactly as the record reserves them.
+  (22) — `FU-13`'s §15 row 3 and record-vector homes landed the same day, and the matrix receipts landed
+  at the `S0-8` regeneration (2026-08-29): the traceability matrix credits a check-script claim only by its
+  execution receipt.
 - **`P-4` is ratified (2026-08-28): option B, with intrinsic acceptance.** Every `retire` intent carries the
   erasure acceptance in its signed payload; the destructive boundary is `retired_at + RETENTION`, written once
   at the `cause` overwrite; ceiling erasure terminates in `deleted-without-receipt`, never a state a reader
@@ -119,8 +121,9 @@ to refuse.
   2026-08-28** — the census walker and computed projection are `pnpm remediation:status`
   (`remediation:check` in `pnpm check`), `census.json` pins all nineteen record-standing documents, the
   supersession header and input-list swap landed in one commit, and the `originOf` correction and both
-  claim narrowings are in — with falsifier 20's receipt mechanism staying `S0-8`'s design exactly as the
-  record reserves it.
+  claim narrowings are in — and falsifier 20's receipt mechanism landed at the `S0-8` regeneration
+  (2026-08-29): every check script writes an execution receipt at exit, and `trace:check`, now the gate's
+  last step, credits only receipts that are present, passing, byte-current and tree-current.
 - **`RC-9` is ratified (2026-08-28): option A at both joints — drafted fresh and ratified the same day,
   never a reopening, because the decision never existed.** Every deferred property is one entry in one debt
   manifest — owner, one blocking gate, required artifact, falsifier, expiry, hashed inputs — that blocks its
@@ -129,8 +132,13 @@ to refuse.
   adopted a third time after `P-5`'s census, extended by the verb the prior instances never needed: block.
   The source↔blob binding splits at the toolchain line: hashes stamped into `seal.generated.ts`'s header,
   compared toolchain-free in `wasm:verify`, with provenance attestation staying a registered `L-4` debt.
-  Record: [`decisions/RC-9-later-gate-governance.md`](./decisions/RC-9-later-gate-governance.md). What
-  remains is not a decision: the `S0-8` regeneration owes the record's falsifiers 1–12 (queue item 5).
+  Record: [`decisions/RC-9-later-gate-governance.md`](./decisions/RC-9-later-gate-governance.md). **Nothing
+  remains owed: the `S0-8` regeneration landed the record's falsifiers 1–12 on 2026-08-29** — the manifest
+  is [`debts.json`](./debts.json), six entries with owner, one gate, artifact, falsifier, expiry, typed
+  payment and hashed inputs, validated by `pnpm debts:check` in the gate; a gate arrival consults
+  `check-debts.mjs --gate <name>` and blocks while a debt is unpaid, expired or input-changed; and the
+  source↔blob header binding compares toolchain-free in `pnpm wasm:verify`, drift detection only, with the
+  provenance residue registered as the `wasm-toolchain-provenance` entry.
 - `P-6` reopens only if `FU-02` forces the archive-factor choice to change.
 
 **What the challenges did not discard:** 371 tests across 36 files · 16/16 generators current · 190 AAD
@@ -372,12 +380,39 @@ In order. An item is done when its disposition entry's earliest-return stage has
    and re-pinned or flipped — and, now that the census is landed, edits a pinned record only as a dated
    addendum under a re-pin and gives every new file a standing, or `remediation:check` fails the gate. The
    walker's friction is the map's, designed.
-5. **`S0-8` regeneration.** `FU-14`'s gate receipts — traceability consumes execution results, never shell
-   text; the five matrix limits; `FU-13`'s independent readback; `vectors:coverage` checking identity rather
-   than arity; and the `CertifiedSet` AAD audit round 1 found missing entirely. Plus `RC-9`'s consolidation:
-   the debt manifest joining the gate — the `OWED` list grown to the ratified fields, six entries — the
-   what-blocks-what projection agreeing with this file in both directions, and the source↔blob header binding
-   landing in `wasm:verify` (the record's falsifiers 1–12).
+5. **`S0-8` regeneration — done 2026-08-29, and its gates re-ran green** (`pnpm check` end to end, in its
+   new order: `trace:check` is now the gate's last step, so every receipt exists before the matrix credits
+   it). Addendum: [`S0-8/README.md`](./S0-8/README.md). What landed, item by item as queued: **`FU-14`'s
+   gate receipts** — every check script writes an execution receipt at exit (`scripts/lib/receipts.mjs`,
+   `.receipts/`, untracked on purpose: a commit cannot carry proof that checks ran on your machine)
+   recording its own bytes, its exit and the tree, and `check-traceability.mjs` credits a script-carrier
+   claim only by a receipt that is present, passing, byte-current and tree-current — reachability is dead
+   as a credit, and a failure is receipted too (`RC-9` falsifier 1's demonstration reads the receipt, not
+   the shell). **The five matrix limits** — relation's checkable faces (recency refuses the demonstrated
+   mutation; identity binds declared negatives to their fields), recency against the reviewed tip
+   `9edd930` (which convicted ten live tags on negatives that ran unchanged while their defects existed —
+   across attribution, checkpoint, device-lock, record-format and transition — all ten dropped, every
+   affected finding still covered by post-tip evidence), liveness via the receipts, all three scans
+   recursive with out-of-carrier claims refused loudly, and the population pinned in `census.json`
+   (`findings_population`). **`FU-13`'s independent readback** rode the `S0-3` return as
+   `pnpm admission:check`; the receipts now credit its execution. **`vectors:coverage` checks identity** —
+   every negative claiming isolation declares `isolates: 'construction.field'` on the published entry (114
+   declarations) and the cipher's rescue attribution must equal it exactly; swapped attributions fail.
+   **The `CertifiedSet` construction registered** — eight fields through the audit's registry,
+   byte-identical encoding, five new `aad-only-certified-set-*` negatives for round 1 `D-2`'s unisolated
+   fields, 205 AAD fields now each isolated by its declared negative. **`RC-9`'s consolidation** — the
+   `OWED` list grew into [`debts.json`](./debts.json): six entries (the five deferred properties and the
+   migrated X25519 `S0-10` entry), each with owner, one blocking gate, required artifact, falsifier,
+   expiry, typed payment and hashed inputs; `pnpm debts:check` joins the gate holding the entries, the
+   gate-class census, the one-gate agreement (TRD §10.11, `action-tree.md`) and this file's claim in both
+   directions; a gate arrival consults `check-debts.mjs --gate <name>` and blocks while a debt is unpaid,
+   expired or input-changed; the refusal negatives live in `test/debtManifest.test.ts`; and the source↔blob
+   header binding landed — one cargo regeneration stamped `seal.generated.ts` with the source hashes and
+   toolchain string, `WASM_BASE64` byte-identical, and `pnpm wasm:verify` compares toolchain-free, drift
+   detection only. The registered debts block: `S0-10` — 1 (the X25519 dated readback) · `L-1` — 1 (the
+   plaintext cutover kill matrix) · `L-4` — 4 (population, audit delta, provenance, append burst) —
+   `pnpm debts` computes this and `debts:check` holds this sentence to it in both directions. A 21-mutation
+   battery caught 21.
 6. **`S0-9` round 3, with a changed perspective.** Seven same-family reads have cleared the
    author-independence bar thoroughly; the one-perspective bar is the open one and is on record twice. A
    different model family, targeted adversarial property tests against the authority map, or a human red-team
@@ -391,29 +426,12 @@ In order. An item is done when its disposition entry's earliest-return stage has
 ## The exact next command
 
 ```bash
-cd /Users/thomasingalls/Code/done/.claude/worktrees/s0-7-return-f229bb && pnpm install --frozen-lockfile && pnpm vectors:check && pnpm test
+cd /Users/thomasingalls/Code/done/.claude/worktrees/s0-8-regeneration-9bcaad && pnpm install --frozen-lockfile && pnpm check
 ```
 
-That establishes the baseline. **The decision sprint, the two structural artifacts, and every security
-return — `S0-1` through `S0-7` — are complete** (queue items 2–4; the `S0-7` return 2026-08-29): the
-authority map with `pnpm authority:check` and its open count at **zero**, the storage scheduler with its
-composed model — all six of its windows asserting their repairs — the standing census with
-`pnpm remediation:check`, the recipient-authority readback with `pnpm recipient:check`, the write-admission
-readback with `pnpm admission:check`, and the retention readback grown to the one-domain and homes-agree
-scans with `pnpm retention:check` — all in the gate.
-Then run `pnpm remediation:status` for where every decision stands and what each return owes — it reads
-**`S0-8`: `RC-9` falsifiers 1–12** — and start the **`S0-8` regeneration (queue item 5)**: `FU-14`'s gate
-receipts (traceability consumes execution results, never shell text), the five matrix limits, `FU-13`'s
-independent readback, `vectors:coverage` checking identity rather than arity, the `CertifiedSet` AAD audit
-round 1 found missing entirely, and `RC-9`'s consolidation — the debt manifest joining the gate with the
-`OWED` list grown to the ratified fields, the what-blocks-what projection agreeing with this file in both
-directions, and the source↔blob header binding landing in `wasm:verify`. The reserved items land there too:
-the `CertifiedSet` AAD registration `P-1` reserves, the matrix receipts `P-3` reserves, and `P-5` falsifier
-20's receipt mechanism. A repair
-that ignores its class reintroduces the class, and all three class instruments now fail on that rather than
-waiting for a review: a return is not done until its map entries flip, its reproductions invert, and the
-census stays classified — every entry has now flipped, and `S0-8`'s job is to make the gate's own receipts
-as honest as the ledgers it runs.
+That establishes the baseline and mints the execution receipts in one motion (`pnpm check`'s last step now
+consumes them, so the full chain is the baseline). The regeneration's own summary is queue item 5 above;
+this section advances with the HANDOFF commit.
 
 ## Four things that will bite you
 
@@ -446,12 +464,17 @@ sentences stay dead, and the record vectors — two stores, two subkeys — reco
 per its printed scope. Since the `S0-7` return, `retention:check` also runs the one-domain and homes-agree
 scans: the published deletion-authority domain, §14.7's table and the model agree on one six-class order,
 and eight destructive-boundary homes carry the ratified sentences with the superseded ones refused — byte
-rules, per its printed scope; the boundary's execution semantics are the model tests' to prove. What the
-green gate does **not** mean: `FU-14`
-is repaired. Traceability still credits command-text reachability rather than execution receipts — it now
-*says* so wherever it says anything, and the receipts land at `S0-8` — and `wasm:stale` is still in no gate
-(`RC-9`). Lint and format are opt-in (`pnpm lint` is correctness-only and currently clean; `pnpm format`
-covers code files only, with pre-existing drift left as found).
+rules, per its printed scope; the boundary's execution semantics are the model tests' to prove. Since the
+`S0-8` regeneration it also carries `debts:check` — the manifest's entries, pins, gate-class census and
+both-directions agreement, per its printed scope; the *blocking* verb lives at `--gate <name>`, which is
+the consuming gate's to run — and `wasm:verify` now holds the source↔blob binding: the crate's source
+hashes match the generated header, drift detection only, so round 1's edit-`lib.rs`-rebuild-nothing
+mutation fails the normal gate (`wasm:stale` stays manual and cargo-bound for full byte reproduction; the
+binding is what moved in-gate). And the gate's **last** step is now `trace:check`, which credits a
+check-script claim only by the execution receipt the earlier steps just minted — `FU-14` is repaired, and
+the matrix's carrier table states the receipt rule where it used to disclaim reachability. Lint and format
+are opt-in (`pnpm lint` is correctness-only and currently clean; `pnpm format` covers code files only, with
+pre-existing drift left as found).
 
 **`pnpm vectors:check` cannot see document drift.** It compares a generator to its vector and never a document
 to its generator. During `S0-2` Stage C the selection rows described constructions the generators did not

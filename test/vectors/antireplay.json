@@ -320,26 +320,32 @@
     },
     {
       "name": "heads-aad-only-principal",
+      "isolates": "heads record.principal",
       "mutate": "Open the heads record as though it belonged to another principal on the same profile."
     },
     {
       "name": "heads-aad-only-workspace",
+      "isolates": "heads record.workspace",
       "mutate": "Open it as though it belonged to another workspace."
     },
     {
       "name": "heads-aad-only-version",
+      "isolates": "heads record.v",
       "mutate": "Open it claiming another record format version."
     },
     {
       "name": "heads-aad-only-generation",
+      "isolates": "heads record.gen",
       "mutate": "Open it claiming another content-key generation."
     },
     {
       "name": "heads-aad-only-seq",
+      "isolates": "heads record.seq",
       "mutate": "Open it claiming another store sequence number. `seq` is shared with the content store rather than restarting here, so row 3’s per-generation nonce budget stays one comparison over one sequence."
     },
     {
       "name": "heads-aad-only-renumbered-label",
+      "isolates": "heads record.label",
       "mutate": "Open it under \"done/store/v2\"."
     },
     {
@@ -348,38 +354,47 @@
     },
     {
       "name": "aad-only-refusal-label",
+      "isolates": "position refusal.label",
       "mutate": "Renumber the message label to \"done/position-refuse/v2\"."
     },
     {
       "name": "aad-only-refusal-version",
+      "isolates": "position refusal.v",
       "mutate": "Claim v = 2."
     },
     {
       "name": "aad-only-refusal-workspace",
+      "isolates": "position refusal.workspace",
       "mutate": "A refusal minted for another workspace."
     },
     {
       "name": "aad-only-refusal-credential",
+      "isolates": "position refusal.credential",
       "mutate": "Another credential's position."
     },
     {
       "name": "aad-only-refusal-position",
+      "isolates": "position refusal.position",
       "mutate": "Position 14 rather than 13."
     },
     {
       "name": "aad-only-refusal-digest",
+      "isolates": "position refusal.refused_digest",
       "mutate": "Another envelope digest. This is the field that makes the refusal permanent rather than a status, so it is the one an attacker would move."
     },
     {
       "name": "aad-only-refusal-epoch",
+      "isolates": "position refusal.epoch",
       "mutate": "Claim a later epoch."
     },
     {
       "name": "aad-only-refusal-reason",
+      "isolates": "position refusal.reason",
       "mutate": "\"policy\" rather than \"stale-epoch\"."
     },
     {
       "name": "aad-only-refusal-parent",
+      "isolates": "position refusal.parent_refusal",
       "mutate": "Name a parent refusal that was never issued. Binding it is what makes a re-mint require a licence at all, and what stops a licence for position n being spent at n+1."
     },
     {

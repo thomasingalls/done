@@ -635,9 +635,12 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 
 ### `S0-8` — regenerate selected evidence and the adversarial closure pack
 
-> **Started and completed 2026-08-27.** Plan and status: [`S0-8/README.md`](./S0-8/README.md). It closes no
-> finding of its own; what it owes is the property the other seven rest on — that the falsifier each one claims
-> **exists, names the finding it refuses, and still runs**.
+> **Started and completed 2026-08-27; the post-challenge regeneration — queue item 5 — ran 2026-08-29.**
+> Plan and status: [`S0-8/README.md`](./S0-8/README.md), whose dated addendum records the regeneration:
+> `FU-14`'s execution receipts, the five matrix limits' repairs, the AAD audit's identity rule with the
+> `CertifiedSet` registration, and `RC-9`'s consolidation — the debt manifest and the source↔blob header
+> binding. It closes no finding of its own; what it owes is the property the other seven rest on — that the
+> falsifier each one claims **exists, names the finding it refuses, and still runs**.
 >
 > **The matrix is generated, not written**, because a written one is `P-5`'s Branch B: a second copy of every
 > mapping, which is exactly `f-992bc91-network-carrier-registry-stale`'s shape. Claims live at the evidence in
@@ -817,7 +820,10 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 > by the verb the prior instances never needed: block. The source↔blob duty splits at the toolchain line:
 > source and lockfile hashes stamped into `seal.generated.ts`'s header and compared toolchain-free by
 > `wasm:verify` inside `pnpm check`, while reproducible-rebuild/toolchain/blob attestation stays this gate's
-> registered debt. Twelve falsifiers are in that record, owed at the `S0-8` regeneration.
+> registered debt. Twelve falsifiers are in that record, landed at the `S0-8` regeneration (2026-08-29):
+> the manifest is [`debts.json`](./debts.json) — six entries — read back by `pnpm debts:check` in the gate
+> and consulted at a gate arrival by `check-debts.mjs --gate <name>`, which blocks while a debt is unpaid,
+> expired or input-changed; this gate arrives against its four registered entries.
 
 - **Prerequisites:** appropriate integrated targets from `L-1`–`L-3`; `RC-9A` governance — ratified
   2026-08-28, the debt manifest in force from `S0-8`.

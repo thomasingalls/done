@@ -12,3 +12,4 @@ tsconfig*.tsbuildinfo
 .cursor/
 relay/data/
 wasm/journal-seal/target/
+.receipts/

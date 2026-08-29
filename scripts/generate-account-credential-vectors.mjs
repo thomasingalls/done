@@ -467,54 +467,67 @@ const MUST_FAIL = [
   },
   {
     name: 'aad-only-binding-label',
+    isolates: 'slot binding.label',
     why: 'The domain-separation label, isolated. It is the whole of what stops a service signature of another kind being read as a slot binding.',
   },
   {
     name: 'aad-only-binding-version',
+    isolates: 'slot binding.v',
     why: 'Row 1s rule: a carrier version selects the suite, so a renumbered binding must fail rather than select a weaker one.',
   },
   {
     name: 'aad-only-binding-account-id',
+    isolates: 'slot binding.account_id',
     why: "Another account's binding on the same device. PRD §6.7s two-principal profile is the ordinary case, not an attack.",
   },
   {
     name: 'aad-only-binding-principal-id',
+    isolates: 'slot binding.principal_id',
     why: 'A binding lifted between slots on one profile, which is the substitution that needs no forgery if the slot is not named.',
   },
   {
     name: 'aad-only-binding-rp-id',
+    isolates: 'slot binding.rp_id',
     why: 'A consistent assertion for another relying party, presented with a binding edited to name it. The obvious negative fails on the rpIdHash comparison whether or not the binding covers rp_id; this one satisfies that comparison, so only the binding can refuse it.',
   },
   {
     name: 'aad-only-binding-epoch',
+    isolates: 'slot binding.epoch',
     why: 'Which authorization epoch admitted this credential (§13.5). It is what bounds a binding naming a since-revoked credential.',
   },
   {
     name: 'aad-only-binding-cred-id',
+    isolates: 'slot binding.cred_id',
     why: 'The credential id, isolated from the key beside it: an implementation binding the key and not the id accepts a rebound identifier.',
   },
   {
     name: 'aad-only-binding-public-key',
+    isolates: 'slot binding.public_key',
     why: 'The field this row exists to bind, and the negative that shows what its absence costs: the attackers key in the record *and* the attackers assertion, with the honest service signature left in place. Without public_key in the signed message this opens, because the attacker supplies a consistent pair. IndexedDB holds a structured clone, so that pair is one property edit away.',
   },
   {
     name: 'aad-only-challenge-label',
+    isolates: 'unlock challenge.label',
     why: 'The cross-protocol negative. The same credential authenticates to the service, so an assertion is a proof two different verifiers read. The label is the purpose, and without it a slot-unlock assertion has the shape of a sign-in.',
   },
   {
     name: 'aad-only-challenge-version',
+    isolates: 'unlock challenge.v',
     why: 'The challenge carrier version, isolated from the binding version, because they are separate carriers and an implementation can bind one and not the other.',
   },
   {
     name: 'aad-only-challenge-principal-id',
+    isolates: 'unlock challenge.principal_id',
     why: 'An assertion minted to open one slot, presented at another on the same profile.',
   },
   {
     name: 'aad-only-challenge-cred-id',
+    isolates: 'unlock challenge.cred_id',
     why: 'An assertion minted naming one credential, presented as another. The account has several and they are equally able to assert.',
   },
   {
     name: 'aad-only-challenge-nonce',
+    isolates: 'unlock challenge.nonce',
     why: 'Replay. Without the nonce the challenge is a constant per slot, and one captured assertion opens it forever.',
   },
 ];
@@ -917,7 +930,7 @@ const main = async () => {
     );
   }
 
-  reportAudit(MUST_FAIL.map((m) => m.name));
+  reportAudit(MUST_FAIL);
 
   const doc = {
     $schema: 'https://done.invalid/vectors/account-credential/1',

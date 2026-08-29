@@ -359,7 +359,7 @@ resolves: auth_root — the archive identity's own digest, both public halves, r
 resolves: the manifest's verifier — the signing half the commitment-checked auth_root commits, never a key the package offers -> root:factor
 status: resolved
 pin: docs/review/remediation/S0-6/A-schemas.md §2 faa19f8bc380
-pin: scripts/generate-package-vectors.mjs a4395a968e1a
+pin: scripts/generate-package-vectors.mjs 03771d2e0ccb
 ```
 
 **Flipped 2026-08-29 at the `S0-6` return** (`FU-02`, `A-04`, `ST-01`). The joint was the disconnection: the

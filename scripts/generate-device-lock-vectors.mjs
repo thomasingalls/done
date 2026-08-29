@@ -351,7 +351,6 @@ const MUST_FAIL = [
   },
   {
     name: 'seal-rebound-to-other-credential',
-    falsifies: ['f-f5def83-device-lock-reader-key-bypass'],
     why: 'A prf seal presented under another credential id, which is how a removed passkey would be made to look enrolled.',
   },
   {
@@ -362,15 +361,18 @@ const MUST_FAIL = [
   { name: 'truncated-ciphertext', why: 'The same, from the other end.' },
   {
     name: 'aad-only-mislabelled-factor',
+    isolates: 'lock seal.factor',
     why: 'The correct key, with a factor the AAD disagrees about -- what an implementation that builds the AAD from a different variable than the derivation produces. Isolates the AADs binding of factor from the HKDF infos.',
   },
   {
     name: 'aad-only-other-workspace',
+    isolates: 'lock seal.workspace',
     why: 'The same isolation for workspace_id: correct key, AAD naming the other slot.',
   },
-  { name: 'aad-only-other-principal', why: 'The same isolation for principal_id.' },
+  { name: 'aad-only-other-principal', isolates: 'lock seal.principal', why: 'The same isolation for principal_id.' },
   {
     name: 'aad-only-envelope-label',
+    isolates: 'lock seal.label',
     why: "The same isolation for the label, and it is the field with the least margin. This AAD and row 3's key envelope are both six length-prefixed fields with principal, workspace and v in the same three positions; the label is the whole of what separates a device-lock seal from a key envelope.",
   },
 ];
@@ -889,7 +891,7 @@ const main = async () => {
     );
   }
 
-  reportAudit(MUST_FAIL.map((m) => m.name));
+  reportAudit(MUST_FAIL);
 
   const doc = {
     $schema: 'https://done.invalid/vectors/device-lock/1',

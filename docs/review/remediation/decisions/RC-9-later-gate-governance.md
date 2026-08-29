@@ -6,8 +6,11 @@
 **Drafted:** 2026-08-28, fresh — nothing reopens, because nothing was ever decided · **Ratified:**
 2026-08-28, option A at both joints — every deferred property is an entry in one debt manifest, and the
 source↔blob binding splits at the toolchain line · **Branch:** `RC-9A`, as defined in
-[`remediation-options.md`](../remediation-options.md) · **Status:** ratified, not yet consolidated — the
-`S0-8` regeneration owes falsifiers 1–12
+[`remediation-options.md`](../remediation-options.md) · **Status:** ratified and consolidated — the `S0-8`
+regeneration landed falsifiers 1–12 on 2026-08-29: the manifest is [`debts.json`](../debts.json) with its
+six entries, read back by `pnpm debts:check` in the gate and consulted at a gate arrival by
+`node scripts/check-debts.mjs --gate <name>`, and the header binding compares toolchain-free in
+`pnpm wasm:verify`
 
 This is the last record of the decision sprint, and the only one that is not a repair of a prior ruling:
 [`DISPOSITION.md`](../S0-9/DISPOSITION.md) states it as *"`RC-9` has no decision at all"*, and
@@ -305,6 +308,22 @@ Each is a test, not a claim, under the ratified rules; all twelve bind.
     and the mechanism's own check fails a deferral it cannot see — the census argument, pointed forward.
 
 ## Consolidation owed at `S0-8`, consumed at `S0-10` and `L-1`–`L-4`
+
+*[The `S0-8` regeneration ran 2026-08-29 and paid all four bullets. The manifest is
+[`debts.json`](../debts.json) — six entries, the five deferred properties and the migrated X25519 `S0-10`
+entry, each with owner, one gate, required artifact, falsifier, expiry, typed payment and hashed inputs —
+validated by `scripts/check-debts.mjs` (`pnpm debts:check`, in `pnpm check`), which also holds the
+gate-class census total, the one-gate agreement against TRD §10.11 and `action-tree.md`, and the
+what-blocks-what claim in `HANDOFF.md` in both directions; a gate arrival consults `--gate <name>` and
+blocks while a debt is unpaid, expired or input-changed (falsifiers 2–5, 7, 9, 11, 12, with the refusal
+negatives in `test/debtManifest.test.ts`). The header binding landed in `build-wasm-seal.mjs` /
+`check-wasm-seal.mjs`: one cargo regeneration stamped the three source hashes and the toolchain string with
+`WASM_BASE64` byte-identical, and round 1's demonstrated mutation now fails `pnpm wasm:verify` inside
+`pnpm check` with the drifted hash named and the failure receipted (falsifiers 1, 10; the printed claim
+states drift detection only, and `check-debts.mjs` refuses a widening as a byte rule). Receipt crediting
+landed as `FU-14`'s execution receipts (`scripts/lib/receipts.mjs`), consumed by `check-traceability.mjs`
+(falsifiers 1, 3). The old `OWED` list is gone from the traceability checker — the manifest is its one
+home — and the queue's bullet, the `L-4` node and this record agree from the same commit.]*
 
 - The manifest joining the gate: the `OWED` list grown to the ratified fields, the six entries registered —
   the five deferred properties and the migrated X25519 `S0-10` entry — and the what-blocks-what projection

@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "note": "The RC-9A debt manifest (ratified 2026-08-28, consolidated at the S0-8 regeneration). Every property Stage 0 defers to a later gate is exactly one entry here; a gate consults this file and blocks while its debt is unpaid, expired or input-changed; an entry leaves only by a payment record or a recorded waiver; what-blocks-what is computed from these entries on demand (pnpm debts), never transcribed beside them. Read back by scripts/check-debts.mjs (pnpm debts:check, in pnpm check) and consumed by scripts/check-traceability.mjs for its owed rows. Inputs are pinned by hash12 of the file, or of the named section under the authority-map slicing rule; a changed input fails the check until the entry is re-read and re-pinned or amended.",
+  "debts": [
+    {
+      "id": "x25519-dated-readback",
+      "finding": "f-bd87655-x25519-support-floor-omitted",
+      "property": "A dated SubtleCrypto readback of TRD §10.11's four X25519 operations across the four core engines — the section's rule is a floor with evidence and a date, and its evidence table is deliberately empty until this lands.",
+      "owner": "review 3b intake (TRD §10.11 offers that pass the measurement; row 12's authenticator survey shares it)",
+      "gate": "S0-10",
+      "artifact": "TRD §10.11's evidence table, populated: engine × operation rows each carrying source, date and expiry",
+      "falsifier": "an empty, undated, unsourced or expired table fails the S0-10 evaluation that reads it; a browser-version citation or an assertion from memory is refused as payment",
+      "payment": {
+        "kind": "dated-external-observation",
+        "requires": ["source", "date", "expiry", "operations", "engines"],
+        "refuses": ["assertion-from-memory", "browser-version-citation"]
+      },
+      "expiry": "2027-02-28",
+      "registered": "2026-08-29",
+      "status": "open",
+      "inputs": [
+        { "path": "docs/review/findings/f-bd87655-x25519-support-floor-omitted.md", "section": null, "hash": "f02e907f63fb" },
+        { "path": "docs/trd.md", "section": "10.11", "hash": "09ee6bdd045a" }
+      ]
+    },
+    {
+      "id": "legacy-plaintext-cutover",
+      "finding": "f-9860a0b-legacy-plaintext-repair-undefined",
+      "property": "The known old-origin plaintext cutover as one resumable transaction — export, import, active-store selection, deletion, restart — with its kill matrix executed and no plaintext left at any kill point.",
+      "owner": "the L-1 encrypted-store implementation",
+      "gate": "L-1",
+      "artifact": "the executed kill matrix over the cutover state machine, with a residue scan at every kill point",
+      "falsifier": "a kill point after which plaintext remains, or a resume that cannot complete or roll back, fails the matrix; design prose without an executed matrix is refused as payment",
+      "payment": {
+        "kind": "executed-kill-matrix",
+        "requires": ["kill_points", "residue_scan", "date"],
+        "refuses": ["design-prose"]
+      },
+      "expiry": "2027-08-31",
+      "registered": "2026-08-29",
+      "status": "open",
+      "inputs": [
+        { "path": "docs/review/findings/f-9860a0b-legacy-plaintext-repair-undefined.md", "section": null, "hash": "bc2ce5c20297" }
+      ]
+    },
+    {
+      "id": "declared-device-population",
+      "finding": "f-bd87655-baseline-not-performance-floor",
+      "property": "A declared hardware population under the journal p95 budget — Baseline stays a compatibility policy and never becomes a performance floor; slower supported devices are sampled, not inferred.",
+      "owner": "the L-4 platform/performance track",
+      "gate": "L-4",
+      "artifact": "the declared device population with raw journal p95 samples measured on it",
+      "falsifier": "a Baseline citation, or the single Pixel, presented as the population fails the evaluation; the budget claim must rest on samples from the declared population",
+      "payment": {
+        "kind": "device-population",
+        "requires": ["population", "samples", "p95", "date"],
+        "refuses": ["baseline-citation", "single-device"]
+      },
+      "expiry": "2027-08-31",
+      "registered": "2026-08-29",
+      "status": "open",
+      "inputs": [
+        { "path": "docs/review/findings/f-bd87655-baseline-not-performance-floor.md", "section": null, "hash": "462fa59983f7" }
+      ]
+    },
+    {
+      "id": "rustcrypto-audit-delta",
+      "finding": "f-9b49b74-rustcrypto-audit-version-gap",
+      "property": "The audit's exact scope: the 2019 snapshot diffed to the locked 0.10.1 graph, with review 3a naming what it evaluated — the audit preserved as related history, never as exact-version proof.",
+      "owner": "review 3a intake",
+      "gate": "L-4",
+      "artifact": "the source-delta review from the audited snapshot to the locked graph, with reviewer 3a's named scope and readback",
+      "falsifier": "the 2019 audit citation cannot mark this paid without the exact commit-to-0.10.1 delta and review 3a's named scope; a citation alone is refused as payment",
+      "payment": {
+        "kind": "delta-review",
+        "requires": ["delta_base", "delta_head", "reviewer", "scope", "date"],
+        "refuses": ["audit-citation"]
+      },
+      "expiry": "2027-08-31",
+      "registered": "2026-08-29",
+      "status": "open",
+      "inputs": [
+        { "path": "docs/review/findings/f-9b49b74-rustcrypto-audit-version-gap.md", "section": null, "hash": "cd1cbead7a19" }
+      ]
+    },
+    {
+      "id": "wasm-toolchain-provenance",
+      "finding": "f-9b49b74-wasm-source-artifact-drift-unchecked",
+      "property": "The provenance residue after the S0-8 header binding: reproducible rebuild — the same bytes from the same source under a pinned or attested toolchain — with blob attestation. The toolchain-free source↔blob drift binding landed in wasm:verify and detects drift, never forgery; a builder that lies about hashes, or a compromised toolchain, is exactly this residue.",
+      "owner": "the L-4 toolchain track",
+      "gate": "L-4",
+      "artifact": "an attested reproduction: pinned toolchain identity, the rebuilt blob's hash equal to the shipped hash, and the attestation binding them",
+      "falsifier": "a green KAT, or the drift binding itself, cannot mark this paid — the payment is a reproduced build under a pinned toolchain, receipted; anything less is refused",
+      "payment": {
+        "kind": "attested-rebuild",
+        "requires": ["toolchain", "source_sha256", "blob_sha256", "attestation", "date"],
+        "refuses": ["kat", "freshness-binding"]
+      },
+      "expiry": "2027-08-31",
+      "registered": "2026-08-29",
+      "status": "open",
+      "inputs": [
+        { "path": "docs/review/findings/f-9b49b74-wasm-source-artifact-drift-unchecked.md", "section": null, "hash": "2a0339152c47" }
+      ]
+    },
+    {
+      "id": "journal-append-burst",
+      "finding": "f-66a7c6a-journal-benchmark-overwrites-one-slot",
+      "property": "The immutable append burst measured on the declared device population at production-shaped occupancy — the fixed-slot microbenchmark stays useful history, never product-shaped append evidence. Causally RC-3's; registered here, never double-counted.",
+      "owner": "the L-4 platform/performance track",
+      "gate": "L-4",
+      "artifact": "raw append-burst samples on the declared population, with occupancy and cleanup stated (test/latency/journal-bench.ts is the bench; no gate below test:latency runs it, so its claim lives here rather than as a falsifier tag)",
+      "falsifier": "a hot-key or single-device measurement presented as the burst fails the evaluation; the samples must come from the declared population at stated occupancy",
+      "payment": {
+        "kind": "device-population",
+        "requires": ["population", "samples", "burst", "occupancy", "date"],
+        "refuses": ["hot-key-benchmark", "single-device"]
+      },
+      "expiry": "2027-08-31",
+      "registered": "2026-08-29",
+      "status": "open",
+      "inputs": [
+        { "path": "docs/review/findings/f-66a7c6a-journal-benchmark-overwrites-one-slot.md", "section": null, "hash": "b186d4f3b443" }
+      ]
+    }
+  ]
+}

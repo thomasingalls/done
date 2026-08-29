@@ -41,6 +41,9 @@
  */
 
 import { readFileSync } from 'node:fs';
+import { installReceipt } from './lib/receipts.mjs';
+
+installReceipt(import.meta.url);
 
 const PRD = new URL('../docs/PRD.md', import.meta.url);
 const TRD = new URL('../docs/TRD.md', import.meta.url);

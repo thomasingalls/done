@@ -154,13 +154,28 @@ export const eliding = () => elision !== null;
  * Call this once, after the last negative has been asserted and before the
  * document is assembled. On an ordinary run it does nothing at all.
  *
- * `publishedNegatives` is the file's own `must_fail` names. The driver checks
- * the converse of the coverage rule with them: a negative calling itself
- * `aad-only-` must be rescued by exactly one field.
+ * `publishedNegatives` is the file's own `must_fail` entries — the objects, not
+ * the names, because the driver reads each entry's `isolates` declaration. That
+ * is the identity half of the audit (`S0-8`; round 1's *arity, not identity*):
+ * a negative claiming isolation declares, in the published entry itself, the
+ * one `construction.field` it isolates, and the driver holds the cipher's
+ * rescue attribution to that declaration exactly. Passing bare names throws,
+ * so no generator can quietly stay on the arity-only contract.
  */
-export const reportAudit = (/** @type {readonly string[]} */ publishedNegatives = []) => {
+export const reportAudit = (/** @type {readonly {name: string, isolates?: string}[]} */ publishedNegatives = []) => {
   if (LIST) {
-    emit({ constructions: Object.fromEntries(registry), negatives: publishedNegatives });
+    for (const entry of publishedNegatives) {
+      if (typeof entry !== 'object' || entry === null || typeof entry.name !== 'string') {
+        throw new Error(
+          'reportAudit() takes the published must_fail entries themselves, not their names — ' +
+            'the driver reads each entry\'s `isolates` declaration (S0-8, identity rather than arity).',
+        );
+      }
+    }
+    emit({
+      constructions: Object.fromEntries(registry),
+      negatives: publishedNegatives.map((e) => ({ name: e.name, isolates: e.isolates ?? null })),
+    });
     process.exit(0);
   }
   if (!elision) return;

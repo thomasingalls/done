@@ -229,16 +229,19 @@ const NEGATIVES = [
   // every negative above it.
   {
     name: 'aad-only-other-workspace',
+    isolates: 'journal record.workspace_id',
     mutate:
       'Authenticate with the other workspace in the AAD, subkey unchanged. Isolates the AAD binding from the HKDF info.',
   },
   {
     name: 'aad-only-hkdf-label',
+    isolates: 'journal record.label',
     mutate:
       'Authenticate with the HKDF label in the AAD label position -- what one constant reached for twice produces.',
   },
   {
     name: 'aad-only-renumbered-label',
+    isolates: 'journal record.label',
     mutate:
       'Authenticate with "done/jrnl/v2". The label is where this carrier authenticates its own version, so a renumbered record must fail to open rather than select another suite (row 1).',
   },
@@ -360,7 +363,7 @@ const main = async () => {
   }
 
   await verify(vectors);
-  reportAudit(NEGATIVES.map((n) => n.name));
+  reportAudit(NEGATIVES);
 
   const doc = {
     $schema: 'https://done.invalid/vectors/journal-aead/1',

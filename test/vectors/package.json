@@ -354,6 +354,7 @@
     },
     {
       "name": "aad-only-renumbered-wrap-label",
+      "isolates": "generation wrap info.label",
       "mutate": "Open a generation wrap under \"done/gen-wrap/v2\"."
     },
     {
@@ -394,6 +395,7 @@
     },
     {
       "name": "aad-only-renumbered-manifest-label",
+      "isolates": "package manifest.label",
       "mutate": "Verify the manifest under \"done/pkg/v2\"."
     },
     {
@@ -433,6 +435,7 @@
     },
     {
       "name": "aad-only-archive-envelope-workspace",
+      "isolates": "archive envelope.workspace_id",
       "falsifies": [
         "f-745e332-local-archive-portable-wrap-undefined"
       ],
@@ -440,6 +443,7 @@
     },
     {
       "name": "aad-only-archive-envelope-version",
+      "isolates": "archive envelope.v",
       "falsifies": [
         "f-745e332-local-archive-portable-wrap-undefined"
       ],
@@ -447,6 +451,7 @@
     },
     {
       "name": "aad-only-renumbered-archive-label",
+      "isolates": "archive envelope.label",
       "falsifies": [
         "f-745e332-local-archive-portable-wrap-undefined"
       ],

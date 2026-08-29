@@ -18,34 +18,40 @@ names the finding it refuses, in the file that runs, and this table is read back
 **What it proves, per carrier.** Every finding below has at least one artifact that names it. For a published
 negative or a generator guard, the claim is live under the generator's own published-versus-asserted comparison
 and the regeneration diff `pnpm vectors:check` performs; for a test, under the test list `vitest list`
-actually collects. **For a check script it proves strictly less: the script is named in command text reachable
-from `pnpm check` or `pnpm build` — reachability, not execution** (`FU-14`/`E5`: at the challenged tip
-the gate exited at lint while this paragraph said everything still ran; the execution receipt is `S0-8`'s
-design, and until it lands this claim is exactly this small).
+actually collects; **for a check script, under its execution receipt** (`.receipts/`,
+`scripts/lib/receipts.mjs`): the script executed and passed, the receipt was written by the script's current
+bytes, and it ran against the current tree — `pnpm check` mints every receipt before `trace:check`, its
+last step, reads them. Reachability in command text was this carrier's whole credit once, and the gate exiting
+at lint while this paragraph said everything ran is how that was convicted (`FU-14`/`E5`; `P-5` falsifier
+20 made execution the floor). And every claim survives a recency comparison against the reviewed tip
+`9edd930`: evidence identical there passed *while the defect existed* and is refused.
 
 **What it does not prove is that a falsifier isolates.** A negative that refuses for a second reason satisfies
 everything here and demonstrates nothing — this project's recurring defect. `pnpm vectors:coverage` proves
-isolation for AAD fields by eliding each one and requiring a negative to stop failing; the mutation batteries
-recorded in each action's Stage D cover the rest. Those are deliberately different oracles.
+isolation for AAD fields by eliding each one and requiring exactly the negative that declares that field —
+identity, not arity — to stop failing; the mutation batteries recorded in each action's Stage D cover the rest.
+Those are deliberately different oracles.
 
-> ### Five more limits, found by `S0-9`'s independent challengers and not yet repaired
+> ### The five limits `S0-9` found, and where each stands since the `S0-8` regeneration
 >
-> Read every row below with these in mind. They are recorded here rather than in a report because this is the
-> document a reader reaches for, and it was overclaiming.
+> Recorded here rather than in a report because this is the document a reader reaches for, and it was
+> overclaiming. Disposition: [`S0-9/DISPOSITION.md`](./S0-9/DISPOSITION.md).
 >
-> 1. **Relation is not checked.** A claim naming an unrelated negative passes — tagging `flipped-tag-bit` as the
->    sequence allocator's falsifier is accepted.
-> 2. **Recency is not checked.** Six of the claims below name negatives that ran unchanged at the reviewed tip,
->    passing *while the defect existed*. Their only diff on this branch is the tag itself.
-> 3. **A check-script claim survives the script being gutted.** Reachability from a gate is not liveness, and
->    three of the single-falsifier findings rest wholly on that carrier.
-> 4. **The scan is not recursive.** A claim under `test/geometry/` or `scripts/lib/` is invisible, at exit 0.
-> 5. **Nothing pins the population.** Deleting a finding from all four sources regenerates green with a smaller
->    denominator.
->
-> Disposition: [`S0-9/DISPOSITION.md`](./S0-9/DISPOSITION.md). Until these are repaired, a row here means *an
-> artifact names this finding and its liveness oracle holds — reachability only, for a check script* — not that
-> the finding is closed.
+> 1. **Relation** — repaired at its checkable faces, and the residue is stated. The recency rule refuses the
+>    demonstrated mutation (tagging a reviewed-tip negative as another finding's falsifier now fails, because
+>    such a negative predates every repair); an `isolates`-declaring negative is bound to its field by the
+>    cipher (`pnpm vectors:coverage`). A **new** artifact deliberately mis-tagged by its author is outside
+>    every static oracle here — the mutation batteries and the challenge rounds are that oracle, and a row
+>    below still does not mean *closed*.
+> 2. **Recency** — repaired. Every claim is compared against the reviewed tip: a negative identical there
+>    (tags aside), or a claim-carrying test file or check script unchanged there, fails. The stated boundary:
+>    a tagged *title* that existed at the tip inside a since-changed file passes and is listed below.
+> 3. **Check-script liveness** — repaired by the execution receipts above: a gutted or edited script no longer
+>    keeps its claim, because the receipt binds the bytes that ran; assertion strength stays the batteries'.
+> 4. **The recursive scan** — repaired. All three scans walk their directories recursively, and a claim in a
+>    file the carrier rules do not admit (a helper, `scripts/lib/`, a Playwright spec) fails loudly.
+> 5. **The population pin** — repaired. `census.json` pins the findings count and id hash; deleting a finding
+>    from every source now fails every consumer until the pin is restated deliberately.
 
 ## The population is read, not declared
 
@@ -56,8 +62,10 @@ recorded in each action's Stage D cover the rest. Those are deliberately differe
 | the seven `S0-*/README.md` tables and [`action-tree.md`](./action-tree.md)'s repairs row | who owns each repair | 29 |
 
 All three must agree before anything below is checked, because a matrix that decides its own population is
-always complete. **28 findings are current design or closure defects and therefore require a falsifier.**
-27 carry one; 1 is declared owed.
+always complete — and the denominator is pinned (`census.json`'s `findings_population`: 37 ids), so a
+finding deleted from every source fails rather than shrinking the population (limit 5, repaired).
+**28 findings are current design or closure defects and therefore require a falsifier.**
+27 carry one; 1 is a registered debt in [`debts.json`](./debts.json).
 
 ## Current design defects — 19 of 19 carry a falsifier
 
@@ -66,20 +74,20 @@ always complete. **28 findings are current design or closure defects and therefo
 | `f-c611666-rotation-reader-eligibility-missing` | high | S0-2 | `certified-set-approved-by-an-impostor` (negative) · `certified-set-from-another-epoch` (negative) · `certified-set-with-an-added-member` (negative) | `scripts/generate-transition-vectors.mjs` |
 | `f-a073574-enrollment-recovery-key-unbound` | high | S0-2 | `bootstrap-naming-another-prior-recovery-state` (negative) · `bootstrap-substituting-the-new-wrapping-key` (negative) · `certified-set-with-substituted-recovery-state` (negative) · `substituted-recovery-state` (negative) | `scripts/generate-enrollment-vectors.mjs`<br>`scripts/generate-head-discovery-vectors.mjs`<br>`scripts/generate-transition-vectors.mjs` |
 | `f-4259822-recovery-replacement-no-forward-rotation` | high | S0-2 | `the replacement-payload variants` (guard, remainder at `L-2`) | `scripts/generate-transition-vectors.mjs` |
-| `f-4259822-recovery-replacement-payload-bytes-unbound` | medium | S0-2 | `aad-only-intent-payload-digest` (negative) · `the replacement-payload variants` (guard) | `scripts/generate-transition-vectors.mjs` |
+| `f-4259822-recovery-replacement-payload-bytes-unbound` | medium | S0-2 | `the replacement-payload variants` (guard) | `scripts/generate-transition-vectors.mjs` |
 | `f-745e332-package-root-rewrap-substitution` | high | S0-6 | `archive-refused-before-any-unwrap` (negative) · `attacker-root-refused-before-any-unwrap` (negative) · `freshly-minted-archive-under-an-attacker-root` (negative) · `freshly-minted-package-under-an-attacker-root` (negative) · `root-commitment-for-another-lineage` (negative) | `scripts/generate-package-vectors.mjs` |
 | `f-745e332-local-archive-portable-wrap-undefined` | high | S0-6 | `aad-only-archive-envelope-version` (negative) · `aad-only-archive-envelope-workspace` (negative) · `aad-only-renumbered-archive-label` (negative) · `archive-envelope-repaired-with-another-identity` (negative) · `archive-manifest-signed-by-the-archiving-device` (negative) · `archive-parts-not-the-manifests` (negative) · `archive-refused-before-any-unwrap` (negative) · `archive-signing-identity-not-committed-by-the-root` (negative) · `archive-under-a-wrong-code` (negative) · `archive-wrap-from-another-workspace` (negative) · `archive-wrap-of-another-generation` (negative) · `freshly-minted-archive-under-an-attacker-root` (negative) | `scripts/generate-package-vectors.mjs` |
 | `f-4259822-retirement-safe-survivor-gate-undefined` | high | S0-6, S0-7 | `catchup-absence-without-an-identifier` (negative) · `catchup-of-public-endpoints-alone` (negative) · `catchup-transcript-not-from-the-prior-head` (negative) · `catchup-transcript-short-of-the-terminal-head` (negative) · `catchup-transcript-signed-by-the-receiver` (negative) · `catchup-transcript-with-a-broken-link` (negative) · `deletion-without-a-handoff` (negative) · `handoff-for-another-retired-package` (negative) · `handoff-from-a-receiver-behind-the-terminal-head` (negative) · `handoff-signed-by-a-non-receiver` (negative) · `handoff-with-an-unverifiable-catchup` (negative) · `handoff-with-unenumerated-absences` (negative) · `retire-intent-without-the-erasure-acceptance` (negative) · `§14.7 — retirement wins the race, in both orders` (test) · `§14.7 — the destructive boundary, inverted at the S0-7 return (P-4 falsifiers 11–16)` (test) · `§14.7 — the ledger belongs to the cause, and to this stop` (test) · `§14.7 — the six classes, and the cause that selects them` (test) | `scripts/generate-package-vectors.mjs`<br>`scripts/generate-transition-vectors.mjs`<br>`test/hostedRetention.test.ts` |
 | `f-745e332-live-retired-package-resigning-undefined` | medium | S0-6 | `live-manifest-relabelled-as-retired` (negative) · `retired-manifest-under-the-assembling-credential` (negative) | `scripts/generate-package-vectors.mjs` |
-| `f-3bea0e6-store-sequence-allocation-undefined` | medium | S0-3 | `kind-swapped` (negative) · `seq-edited` (negative) · `§6.1 — the allocator, and the count the budget reads` (test) | `scripts/generate-record-vectors.mjs`<br>`test/writeAdmission.test.ts` |
+| `f-3bea0e6-store-sequence-allocation-undefined` | medium | S0-3 | `§6.1 — the allocator, and the count the budget reads` (test) | `test/writeAdmission.test.ts` |
 | `f-9b49b74-journal-seal-64k-gap` | medium | S0-3 | `check-update-limit.mjs` · `§6.1 — admission, and the one state behind it` (test) · `§6.1 — remote updates are not this journal's contract` (test) · `§6.1 — slicing, so the log never meets what it cannot take` (test) · `§6.1 — the back-pressure watermark is characters, not entries` (test) | `scripts/check-update-limit.mjs`<br>`test/writeAdmission.test.ts` |
 | `f-992bc91-outbound-envelope-spool-undefined` | medium | S0-4 | `§7.4 — retention, which is the same store` (test) · `§7.4 — the position is reserved with its identity, and gaps are occupied rather than skipped` (test) · `§7.4 — the spool survives the kill it exists for` (test) | `test/outboundSpool.test.ts` |
 | `f-745e332-envelope-refusal-carrier-missing` | medium | S0-4 | `refusal-for-another-credential` (negative) · `refusal-for-another-digest` (negative) · `refusal-for-another-epoch` (negative) · `refusal-for-another-position` (negative) · `refusal-for-another-workspace` (negative) · `refusal-under-a-retired-epoch-key` (negative) · `refusal-under-an-uncertified-key` (negative) · `unsigned-error-body` (negative) · `§7.5 — the refusal, its five-field subject, and the successor chain it licenses` (test) | `scripts/generate-antireplay-vectors.mjs`<br>`test/outboundSpool.test.ts` |
 | `f-4259822-generation-switch-local-durability-undefined` | medium | S0-2 | `GenerationApply — a kill at every step` (test) | `test/generationApply.test.ts` |
-| `f-b997cdb-checkpoint-coverage-unchecked` | medium | S0-5 | `admission-by-an-uncertified-credential` (negative) · `admission-derived-ds-disagrees` (negative) · `admission-derived-sv-disagrees` (negative) · `admission-forked-from-another-parent` (negative) · `admission-of-another-manifest` (negative) · `admission-signed-over-a-wrong-derivation` (negative) · `admission-with-a-substituted-head-baseline` (negative) · `coverage-ignores-deletions` (negative) · `coverage-ignores-insertions` (negative) · `second-party-admission-marked-self` (negative) · `self-admission-beside-a-second-eligible` (negative) · `self-admission-unmarked` (negative) | `scripts/generate-checkpoint-vectors.mjs` |
+| `f-b997cdb-checkpoint-coverage-unchecked` | medium | S0-5 | `admission-by-an-uncertified-credential` (negative) · `admission-derived-ds-disagrees` (negative) · `admission-derived-sv-disagrees` (negative) · `admission-forked-from-another-parent` (negative) · `admission-of-another-manifest` (negative) · `admission-signed-over-a-wrong-derivation` (negative) · `admission-with-a-substituted-head-baseline` (negative) · `second-party-admission-marked-self` (negative) · `self-admission-beside-a-second-eligible` (negative) · `self-admission-unmarked` (negative) | `scripts/generate-checkpoint-vectors.mjs` |
 | `f-b997cdb-checkpoint-key-retention-inverted` | medium | S0-2, direct | `the opener predicate` (guard) | `scripts/generate-checkpoint-vectors.mjs` |
-| `f-b997cdb-attribution-self-replacement` | medium | S0-5 | `creation-certificate-from-another-credential` (negative) · `creation-certificate-signed-by-another-credential` (negative) · `lifted-to-another-card` (negative) · `reattributed-actor` (negative) · `reattributed-credential` (negative) · `substituted-commitment` (negative) | `scripts/generate-attribution-vectors.mjs` |
-| `f-f5def83-device-lock-reader-key-bypass` | medium | S0-2 | `replacement-credential-seal-as-a-factor-seal` (negative) · `replacement-credential-under-a-wrong-code` (negative) · `seal-rebound-to-other-credential` (negative) · `the post-lock wrap set` (guard) | `scripts/generate-device-lock-vectors.mjs` |
+| `f-b997cdb-attribution-self-replacement` | medium | S0-5 | `creation-certificate-from-another-credential` (negative) · `creation-certificate-signed-by-another-credential` (negative) | `scripts/generate-attribution-vectors.mjs` |
+| `f-f5def83-device-lock-reader-key-bypass` | medium | S0-2 | `replacement-credential-seal-as-a-factor-seal` (negative) · `replacement-credential-under-a-wrong-code` (negative) · `the post-lock wrap set` (guard) | `scripts/generate-device-lock-vectors.mjs` |
 | `f-4259822-lapse-transition-kind-missing` | medium | S0-7 | `check-retention.mjs` · `§14.7 — one clock` (test) · `§14.7 — resume, and the re-seed after destructive progress` (test) · `§14.7 — retirement wins the race, in both orders` (test) · `§14.7 — the lineage stays live, and only retire moves it` (test) · `§14.7 — what a compromised entitlement signer reaches` (test) | `scripts/check-retention.mjs`<br>`test/hostedRetention.test.ts` |
 | `f-b9ff071-webauthn-cross-origin-policy` | low | S0-1 | `embedding-origin-claimed` (negative) · `framed-ceremony` (negative) · `stepup-embedding-origin-claimed` (negative) · `stepup-framed-ceremony` (negative) | `scripts/generate-account-credential-vectors.mjs`<br>`scripts/generate-recovery-vectors.mjs` |
 
@@ -94,46 +102,59 @@ always complete. **28 findings are current design or closure defects and therefo
 | `f-dbfd01f-device-lock-rotation-caveat-lost` | medium | S0-2 | `the rotation_owed derivation` (guard) | `scripts/generate-device-lock-vectors.mjs` |
 | `f-5bd9552-origin-scan-static-forms` | medium | S0-1 | `check-origin-isolation.mjs` | `scripts/check-origin-isolation.mjs` |
 | `f-dbfd01f-record-nonce-ceiling-omitted` | low | S0-3, direct | `§6.1 — the allocator, and the count the budget reads` (test) | `test/writeAdmission.test.ts` |
-| `f-bd87655-x25519-support-floor-omitted` | low | S0-1, direct | **Owed to `S0-10`.** TRD §10.11 gained the fourth capability statement, its four exact `SubtleCrypto` operations and the absence behaviour, and the rule it states is a floor **with evidence and a date**. The dated table is deliberately empty: an asserted version row would be worse than the omission, and the source it needs is external to this repository. §10.11 makes the dated readback of the four operations a prerequisite of Stage 0 closure, so the debt blocks `S0-10` — this entry briefly said `L-4`, which `S0-9` recorded as the gate-assignment contradiction `FU-15`/`A-08`, resolved here in favour of the TRD. | — |
+| `f-bd87655-x25519-support-floor-omitted` | low | S0-1, direct | **Owed to `S0-10`** — registered debt `x25519-dated-readback` in [`debts.json`](./debts.json) (owner: review 3b intake (TRD §10.11 offers that pass the measurement; row 12's authenticator survey shares it); expires 2027-02-28). A dated SubtleCrypto readback of TRD §10.11's four X25519 operations across the four core engines — the section's rule is a floor with evidence and a date, and its evidence table is deliberately empty until this lands. | — |
 | `f-tip-prd-stale-selection-status` | low | S0-1, direct | `check-selection-status.mjs` | `scripts/check-selection-status.mjs` |
+
+## Repaired beyond the required population — 1
+
+Not current defects. They carry a falsifier because the repair that closed a neighbouring finding reached them,
+and that is recorded rather than discarded.
+
+| Finding | Severity | Repaired by | Falsifier | Where it lives |
+| --- | --- | --- | --- | --- |
+| `f-9b49b74-wasm-source-artifact-drift-unchecked` | low | — | `check-wasm-seal.mjs` (remainder at `L-4`) · **Owed to `L-4`** — registered debt `wasm-toolchain-provenance` in [`debts.json`](./debts.json) (owner: the L-4 toolchain track; expires 2027-08-31). The provenance residue after the S0-8 header binding: reproducible rebuild — the same bytes from the same source under a pinned or attested toolchain — with blob attestation. The toolchain-free source↔blob drift binding landed in wasm:verify and detects drift, never forgery; a builder that lies about hashes, or a compromised toolchain, is exactly this residue. | `scripts/check-wasm-seal.mjs` |
 
 ## Outside the required population — 9
 
-Neither owed a falsifier nor silently dropped. Later gates are repaired when their gate arrives; historical-only
-corrections have no surviving defect to falsify and belong to `H-1`'s append-only ledger — which is why a claim
-naming one of them is a failure here rather than a bonus.
+Neither owed a falsifier nor silently dropped. Every *Explicit later* finding is a registered debt in
+[`debts.json`](./debts.json) — owner, one blocking gate, required artifact, falsifier, expiry, hashed inputs —
+whose gate blocks while it is unmet (`pnpm debts`, `RC-9A`); historical-only corrections have no surviving
+defect to falsify and belong to `H-1`'s append-only ledger — which is why a claim naming one of them is a
+failure here rather than a bonus.
 
 | Finding | Class | State |
 | --- | --- | --- |
 | `f-138a5f8-libsodium-readiness-timing` | historical | `H-1` ledger correction. |
-| `f-66a7c6a-journal-benchmark-overwrites-one-slot` | gate | Owed to `L-4`. |
+| `f-66a7c6a-journal-benchmark-overwrites-one-slot` | gate | Registered debt `journal-append-burst` — blocks `L-4`, expires 2027-08-31. |
 | `f-6b021c4-wasm-size-proxy-unreproducible` | historical | `H-1` ledger correction. |
-| `f-9860a0b-legacy-plaintext-repair-undefined` | gate | Waiting at its gate. |
-| `f-9b49b74-rustcrypto-audit-version-gap` | gate | Waiting at its gate. |
-| `f-9b49b74-wasm-source-artifact-drift-unchecked` | gate | Waiting at its gate. |
-| `f-bd87655-baseline-not-performance-floor` | gate | Waiting at its gate. |
+| `f-9860a0b-legacy-plaintext-repair-undefined` | gate | Registered debt `legacy-plaintext-cutover` — blocks `L-1`, expires 2027-08-31. |
+| `f-9b49b74-rustcrypto-audit-version-gap` | gate | Registered debt `rustcrypto-audit-delta` — blocks `L-4`, expires 2027-08-31. |
+| `f-9b49b74-wasm-source-artifact-drift-unchecked` | gate | Registered debt `wasm-toolchain-provenance` — blocks `L-4`, expires 2027-08-31. |
+| `f-bd87655-baseline-not-performance-floor` | gate | Registered debt `declared-device-population` — blocks `L-4`, expires 2027-08-31. |
 | `f-caee157-plaintext-baseline-points-to-parent` | historical | `H-1` ledger correction. |
 | `f-dbfd01f-row20-closes-unvectorized-hpke` | historical | `H-1` ledger correction. |
 
 ## The claims themselves
 
-109 claims across 22 files — 8 guard · 76 negative · 5 script · 20 test.
+100 claims across 21 files — 8 guard · 66 negative · 6 script · 20 test.
 
 | Carrier | Where the claim is written | What keeps the claim live |
 | --- | --- | --- |
 | a published negative | `must_fail[].falsifies` in the vector file, so the claim and the evidence are one object | the generator's published-versus-asserted comparison, in both directions |
 | a guard inside a generator | `falsifies()`, published by `claims()`, which emits only what registered during that run | `pnpm vectors:check` regenerates and compares, so a guard that stops being called writes a file missing its claim |
 | a test | `// falsifies:` above a `describe` or `it` | `vitest list` — the tests the default run collects, not the source text |
-| a check script | `falsifies:` in the module docblock | the script is named in command text reachable from `pnpm check` or `pnpm build` — reachability, not an execution receipt (`FU-14`, `S0-8`) |
+| a check script | `falsifies:` in the module docblock | wired into `pnpm check`'s or `pnpm build`'s command text **and** credited by its execution receipt — present, passing, written by the current bytes against the current tree (`FU-14`, repaired at the `S0-8` regeneration) |
 
 ### Where one artifact carries the whole demonstration
 
-10 of the 28 current defects resolve to a single named falsifier. That is not the same as thin evidence — one
+12 of the 28 current defects resolve to a single named falsifier. That is not the same as thin evidence — one
 check script can hold fifteen assertions — but it is the shortest list of places where losing one artifact
 loses the finding, so it is where a challenge gets the most leverage.
 
+- `f-3bea0e6-store-sequence-allocation-undefined` (medium) — `§6.1 — the allocator, and the count the budget reads` (test) in `test/writeAdmission.test.ts`
 - `f-4259822-generation-switch-local-durability-undefined` (medium) — `GenerationApply — a kill at every step` (test) in `test/generationApply.test.ts`
 - `f-4259822-recovery-replacement-no-forward-rotation` (high) — `the replacement-payload variants` (guard, remainder at `L-2`) in `scripts/generate-transition-vectors.mjs`
+- `f-4259822-recovery-replacement-payload-bytes-unbound` (medium) — `the replacement-payload variants` (guard) in `scripts/generate-transition-vectors.mjs`
 - `f-5bd9552-origin-scan-static-forms` (medium) — `check-origin-isolation.mjs` in `scripts/check-origin-isolation.mjs`
 - `f-9860a0b-journal-rotated-vector-reuses-key` (medium) — `wrong-generation-key` (negative) in `scripts/generate-journal-vectors.mjs`
 - `f-992bc91-network-carrier-registry-stale` (medium) — `checkCarriers` (guard) in `scripts/generate-suite-vectors.mjs`

@@ -529,11 +529,13 @@ const MUST_FAIL = [
   // negative that changes both proves only that one of the two works.
   {
     name: 'aad-only-other-principal',
+    isolates: 'recovery envelope.principal_id',
     mutate:
       'The correct K_rec, with the AAD naming a second principal. Isolates the AAD binding from the derivation.',
   },
   {
     name: 'aad-only-devicelock-label',
+    isolates: 'recovery envelope.label',
     mutate:
       "Authenticate with row 13's device-lock label. Both constructions seal a key under a 125-bit generated code, so the label is what stops a local device-lock seal being presented as this service-held envelope.",
   },
@@ -560,20 +562,24 @@ const MUST_FAIL = [
   },
   {
     name: 'aad-only-stepup-label',
+    isolates: 'step-up challenge.label',
     mutate:
       "An assertion collected for row 12's slot unlock, re-presented as a step-up. The label is the purpose, and this is the negative that says so.",
   },
   {
     name: 'aad-only-stepup-version',
+    isolates: 'step-up challenge.v',
     mutate: 'An assertion collected under v=0, presented against a v=1 challenge.',
   },
   {
     name: 'aad-only-stepup-intent',
+    isolates: 'step-up challenge.intent_id',
     mutate:
       'An assertion collected for a different transition id. Since row 15 binds `kind` inside the Intent, this is also what stops a `replace-recovery` step-up being redirected to a `retire`.',
   },
   {
     name: 'aad-only-stepup-nonce',
+    isolates: 'step-up challenge.nonce',
     mutate:
       'The replay the nonce exists for: an assertion collected under a nonce the service has since retired, presented against a fresh one. Without the nonce field this negative cannot be built at all, because the challenge would be identical.',
   },
@@ -875,7 +881,7 @@ const main = async () => {
   if (unpublished.length > 0)
     throw new Error(`Negatives asserted but not published: ${unpublished.join(', ')}`);
 
-  reportAudit(MUST_FAIL.map((m) => m.name));
+  reportAudit(MUST_FAIL);
 
   const doc = {
     $schema: 'https://done.invalid/vectors/recovery-code/1',

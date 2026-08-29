@@ -1,5 +1,10 @@
 {
   "schema_version": 1,
+  "findings_population": {
+    "count": 37,
+    "ids_sha256": "587859773e1615211a32aa786ae5d3ae792e121e6685fdb59f200b928f9999ae",
+    "note": "S0-9 round 1, matrix limit 5: nothing pinned the population, so deleting a finding from all four sources regenerated green with a smaller denominator. This pin is read by scripts/lib/findings.mjs for every consumer at once; adding or removing a finding restates it in the same commit, deliberately."
+  },
   "record_sha256": {
     "end-state-materiality.md": "e205e341506a5153d5c761f050934d982e72f1b4d54cf5b9248733b841b039ec",
     "S0-9/DISPOSITION.md": "6f1b35acf1a708c1e6614e5a90318a7a92b6aeed31a2bb2acb34b822d20a59ba",
@@ -7,7 +12,7 @@
     "causal-decision-trees.md": "2407acce39993ac6e91ee9813084ea70be177e153ec98ab20f50f372e993124f",
     "remediation-options.md": "9a5c714cd101bab71d2844410ebe6dceeba73607edaa0a7afcb6adc46e5beb68",
     "probes/journal-append-probe.md": "d580903c9e474765eece87bb98f677eb5945053bbbc1b8ae896bc7440144f71b",
-    "S0-8/README.md": "ba7ebbce61c7367c2b6f38972d5cee5ee2715c1f57efc1b66a36ca980e7000dd",
+    "S0-8/README.md": "0858d865d6afca0dcabadd29903312f2428b6d9c27a48b4344681b06e194c211",
     "S0-9/README.md": "910e816e14e654e183d81d52a5bcb811821aea6976537c4038db5d81b35aac82",
     "S0-9/command-log.md": "94965c0542ecf2d70e72e1f57d79289911eae4a267999d08878acb65fa146e8f",
     "S0-9/challenge-continuity.md": "ef318a3e6faf7aa87ad35b3e5db778daf8cfd25cca4fec94a449397ba2814943",

@@ -293,17 +293,21 @@ const certifiedSetMessage = ({
   members,
   recoveryStateDigest = RECOVERY_STATE_DIGEST,
 }) =>
+  // Registered with the AAD audit (S0-8, the registration P-1 reserved): round 1
+  // found the construction in no audit at all, five of its eight fields isolated
+  // by nothing. The encoding stays this file's own — aadFields moves the field
+  // list, not the length-prefix concatenation.
   concat(
-    ...[
+    ...aadFields('certified set', {
       label,
-      String(v),
-      workspace,
-      lineage,
-      String(parentEpoch),
-      String(nextEpoch),
-      members,
-      recoveryStateDigest,
-    ].map(lp),
+      v: String(v),
+      workspace_id: workspace,
+      lineage_id: lineage,
+      parent_epoch: String(parentEpoch),
+      next_epoch: String(nextEpoch),
+      members_digest: members,
+      recovery_state_digest: recoveryStateDigest,
+    }).map(lp),
   );
 
 /**
@@ -565,18 +569,46 @@ const MUST_FAIL = [
   },
   {
     name: 'certified-set-from-another-epoch',
+    isolates: 'certified set.parent_epoch',
     falsifies: ['f-c611666-rotation-reader-eligibility-missing'],
     why: 'A set approved against one parent epoch, presented at a later one. Without the parent binding, an approval collected when a credential was legitimately a member survives its removal, and a rotator replays a stale membership as a current one.',
   },
   {
     name: 'certified-set-with-an-added-member',
+    isolates: 'certified set.members_digest',
     falsifies: ['f-c611666-rotation-reader-eligibility-missing'],
     why: 'The row, as a signature check. The service adds a credential it admitted to the members and presents the honest approval beside it. The approval covers `members_digest`, so the added member changes the message the signature was taken over.',
   },
   {
     name: 'certified-set-with-substituted-recovery-state',
+    isolates: 'certified set.recovery_state_digest',
     falsifies: ['f-a073574-enrollment-recovery-key-unbound'],
     why: 'The same at the recovery carrier: the approval covers `recovery_state_digest`, so a substituted R_pub cannot ride an honest approval. This is what stops a correctly-enrolled device wrapping future generations to a key the service holds.',
+  },
+  {
+    name: 'aad-only-certified-set-label',
+    isolates: 'certified set.label',
+    why: 'The domain-separation label, isolated. It is what stops a signed statement of another kind — or a later certified-set format — being read as this one.',
+  },
+  {
+    name: 'aad-only-certified-set-version',
+    isolates: 'certified set.v',
+    why: "Row 1's rule at the recipient-authority carrier: the version selects the format, so a renumbered set must fail rather than parse as a weaker one.",
+  },
+  {
+    name: 'aad-only-certified-set-workspace-id',
+    isolates: 'certified set.workspace_id',
+    why: "A certified set lifted between workspaces on one profile. The approval must not survive the move: recipient authority is per workspace, and an approver eligible in one says nothing about the other.",
+  },
+  {
+    name: 'aad-only-certified-set-lineage-id',
+    isolates: 'certified set.lineage_id',
+    why: 'The lineage a migration replaces (§14.1). Unbound, a pre-migration certified set could carry its members into the successor lineage without re-approval.',
+  },
+  {
+    name: 'aad-only-certified-set-next-epoch',
+    isolates: 'certified set.next_epoch',
+    why: 'Which epoch the set certifies into. Unbound, an approval collected for one rotation could be presented for a different one that happens to share its parent.',
   },
   {
     name: 'retire-intent-without-the-erasure-acceptance',
@@ -601,67 +633,82 @@ const MUST_FAIL = [
   },
   {
     name: 'aad-only-intent-label',
+    isolates: 'transition intent.label',
     why: 'The domain-separation label, isolated. It is the whole of what stops a signed statement of another kind being read as a transition intent.',
   },
   {
     name: 'aad-only-intent-version',
+    isolates: 'transition intent.v',
     why: "Row 1's rule: a carrier version selects the suite, so a renumbered intent must fail rather than select a weaker one.",
   },
   {
     name: 'aad-only-intent-kind',
+    isolates: 'transition intent.kind',
     why: "PRD §6.10 as bytes. A rotate and a retire are otherwise the same eight fields; unbound, `kind` is how a deliberate downgrade commits as an account deletion. Row 3's editable-`kind` finding at a third object.",
   },
   {
     name: 'aad-only-intent-workspace-id',
+    isolates: 'transition intent.workspace_id',
     why: 'An intent lifted between workspaces on one profile -- PRD §6.7s two-principal case, not an attack.',
   },
   {
     name: 'aad-only-intent-lineage-id',
+    isolates: 'transition intent.lineage_id',
     why: 'The lineage a migration replaces (§14.1). Unbound, a pre-migration intent could commit against the successor lineage, which is exactly what §14.2 forbids replaying.',
   },
   {
     name: 'aad-only-intent-parent-epoch',
+    isolates: 'transition intent.parent_epoch',
     why: 'Which epoch the exclusion set was computed against. It is what makes a stale intent detectable rather than merely wrong.',
   },
   {
     name: 'aad-only-intent-target',
+    isolates: 'transition intent.target',
     why: 'The generation being rotated to, and half the idempotency key. Unbound, a retry could commit at a different generation than the one it was built for.',
   },
   {
     name: 'aad-only-intent-payload-digest',
-    falsifies: ['f-4259822-recovery-replacement-payload-bytes-unbound'],
+    isolates: 'transition intent.payload_digest',
     why: 'The wraps, the exclusion set and the cutoff. Unbound, the service commits an epoch whose excluded set is not the one the client signed -- a revocation that revokes someone else.',
   },
   {
     name: 'aad-only-outcome-label',
+    isolates: 'transition outcome.label',
     why: 'The same isolation for the outcome, and the two labels differ so an intent can never be presented as its own settlement.',
   },
   {
     name: 'aad-only-outcome-version',
+    isolates: 'transition outcome.v',
     why: 'The outcome carrier version, isolated from the intent version, because they are separate carriers.',
   },
   {
     name: 'aad-only-outcome-kind',
+    isolates: 'transition outcome.kind',
     why: 'An outcome for a retire presented as the settlement of a rotate. The client would apply a generation switch on the strength of a signature over something else.',
   },
   {
     name: 'aad-only-outcome-workspace-id',
+    isolates: 'transition outcome.workspace_id',
     why: "Another workspace's settlement on the same device.",
   },
   {
     name: 'aad-only-outcome-lineage-id',
+    isolates: 'transition outcome.lineage_id',
     why: 'The same across lineages, which is the migration boundary.',
   },
   {
     name: 'aad-only-outcome-target',
+    isolates: 'transition outcome.target',
     why: 'Which generation was settled. Unbound, an old settlement licenses discarding a key for a rotation still in flight.',
   },
   {
     name: 'aad-only-outcome-epoch',
+    isolates: 'transition outcome.epoch',
     why: 'Which epoch committed it. Isolated by using two epochs the same authorization key signs -- §13.5 rotates `K_accept` and not the authorization key, which is what makes the field varyable without varying the verifier.',
   },
   {
     name: 'aad-only-outcome-committed-id',
+    isolates: 'transition outcome.committed_id',
     why: 'The field the whole three-way rule turns on. Unbound, an attacker flips a commit into a supersede and the client discards a content key the service holds wraps for -- the interrupted state masquerading as a completed lesser one, which is this rows whole subject. The substituted id is another kinds intent rather than the rival rotations, because the rival differs in one field and eliding that field would rescue this negative for the wrong reason.',
   },
 ];
@@ -734,6 +781,16 @@ const main = async () => {
   await refuses('certified-set-with-substituted-recovery-state', () =>
     approves({ recoveryStateDigest: 'ef'.repeat(32) }),
   );
+
+  // The five fields round 1 found isolated by nothing (D-2), one at a time,
+  // each against the honest approval. The audit's elision holds each name to
+  // its declared field: remove that field from the preimage and exactly this
+  // negative must verify again.
+  await refuses('aad-only-certified-set-label', () => approves({ label: 'done/certified-set/v2' }));
+  await refuses('aad-only-certified-set-version', () => approves({ v: VERSION + 1 }));
+  await refuses('aad-only-certified-set-workspace-id', () => approves({ workspace: OTHER_WORKSPACE }));
+  await refuses('aad-only-certified-set-lineage-id', () => approves({ lineage: OTHER_LINEAGE }));
+  await refuses('aad-only-certified-set-next-epoch', () => approves({ nextEpoch: PARENT_EPOCH + 2 }));
 
   /**
    * The rotation wraps to the certified set, and this is the assertion that says so.
@@ -1325,7 +1382,7 @@ const main = async () => {
     );
   }
 
-  reportAudit(MUST_FAIL.map((m) => m.name));
+  reportAudit(MUST_FAIL);
 
   const doc = {
     $schema: 'https://done.invalid/vectors/transition/1',

@@ -6,9 +6,10 @@
 **Decided:** 2026-08-26 · **Reopened:** 2026-08-28, at the approver and bootstrap-signer joints ·
 **Ratified:** 2026-08-28, option A — the certified set carries the signing keys · **Branch:** `RC-1B`,
 client-certified recipient set inside each authorization successor · **Approval policy:** single-owner ·
-**Status:** ratified — the `S0-2` return landed falsifiers 12–19 on 2026-08-28, with the `S0-8` items (the
-`CertifiedSet` AAD registration and the regeneration re-read) staying exactly as the consolidation list below
-reserves them
+**Status:** ratified — the `S0-2` return landed falsifiers 12–19 on 2026-08-28, and the `S0-8` regeneration
+landed the reserved items on 2026-08-29: the amended `CertifiedSet` registers with `check-aad-coverage.mjs`
+as an eight-field construction under the identity audit, round 1 `D-2`'s five unisolated fields each dying
+to its own declared negative
 
 This is the decision record only. Its consolidation into the TRD, rows 9/11/14 and the generators landed at
 the [`S0-2`](../action-tree.md) return — see the dated note at the end of this record. *[Annotated 2026-08-28:
@@ -329,7 +330,11 @@ against the parent certified set.
   the same regeneration.
 - At `S0-8`: the amended `CertifiedSet` registers with `check-aad-coverage.mjs` — round 1 `D-2`'s five
   unisolated fields die there — and the impostor negative's published `why` is rewritten to what the
-  artifact then proves.
+  artifact then proves. *[Landed 2026-08-29 at the `S0-8` regeneration: the preimage builds through the
+  audit's field registry as `certified set` — eight fields, byte-identical encoding — with
+  `aad-only-certified-set-{label, version, workspace-id, lineage-id, next-epoch}` published and each held
+  to its declared field by the identity rule, and the three existing field negatives declaring theirs; the
+  impostor `why` had landed with the `S0-2` inversion and stands as the artifact proves it.]*
 
 ### What this reopening does not decide
 

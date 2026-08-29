@@ -404,6 +404,7 @@ const NEGATIVES = [
   },
   {
     name: 'aad-only-renumbered-commit-label',
+    isolates: 'nonce commitment.label',
     mutate: 'Open the commitment under "done/enroll-commit/v2".',
   },
 
@@ -460,6 +461,7 @@ const NEGATIVES = [
   },
   {
     name: 'aad-only-renumbered-transcript-label',
+    isolates: 'enrollment transcript.label',
     mutate:
       'Derive the SAS under "done/enroll/v2". The label is where this carrier authenticates its own version (row 1).',
   },
@@ -583,7 +585,7 @@ const main = async () => {
   const honestSas = await sasFrom(t);
 
   await verify(honestSas, honestCommitments);
-  reportAudit(NEGATIVES.map((n) => n.name));
+  reportAudit(NEGATIVES);
 
   const forced = await grind(honestSas, 2);
 

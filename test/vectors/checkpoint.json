@@ -179,16 +179,10 @@
   "must_fail": [
     {
       "name": "coverage-ignores-deletions",
-      "falsifies": [
-        "f-b997cdb-checkpoint-coverage-unchecked"
-      ],
       "mutate": "A manifest whose delete set differs while its state vector is identical. **This is §7.6’s stated failure as a vector**: two replicas can agree on `sv` and disagree about what has been deleted, so a bare state vector is not a coverage claim and `ds` has to be bound on its own."
     },
     {
       "name": "coverage-ignores-insertions",
-      "falsifies": [
-        "f-b997cdb-checkpoint-coverage-unchecked"
-      ],
       "mutate": "The same manifest with a different state vector and the same delete set — the mirror of the negative above. Both halves are bound independently, so neither can be moved against the other, and the pair is published as a pair because §7.6’s point is that one of them alone is not a coverage claim."
     },
     {
@@ -229,26 +223,32 @@
     },
     {
       "name": "aad-only-renumbered-manifest-label",
+      "isolates": "checkpoint manifest.label",
       "mutate": "Verify under \"done/cp-manifest/v2\"."
     },
     {
       "name": "cp-aad-only-workspace",
+      "isolates": "checkpoint aad.workspace_id",
       "mutate": "Open the checkpoint as though it belonged to another workspace, subkey unchanged."
     },
     {
       "name": "cp-aad-only-generation",
+      "isolates": "checkpoint aad.gen",
       "mutate": "Open it claiming another generation."
     },
     {
       "name": "cp-aad-only-epoch",
+      "isolates": "checkpoint aad.epoch",
       "mutate": "Open it claiming another epoch."
     },
     {
       "name": "cp-aad-only-version",
+      "isolates": "checkpoint aad.v",
       "mutate": "Open it claiming another format version."
     },
     {
       "name": "cp-aad-only-renumbered-label",
+      "isolates": "checkpoint aad.label",
       "mutate": "Open it under \"done/cp/v2\"."
     },
     {
@@ -339,42 +339,52 @@
     },
     {
       "name": "aad-only-admission-label",
+      "isolates": "checkpoint admission.label",
       "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
     },
     {
       "name": "aad-only-admission-version",
+      "isolates": "checkpoint admission.v",
       "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
     },
     {
       "name": "aad-only-admission-workspace-id",
+      "isolates": "checkpoint admission.workspace_id",
       "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
     },
     {
       "name": "aad-only-admission-checkpoint-digest",
+      "isolates": "checkpoint admission.checkpoint_digest",
       "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
     },
     {
       "name": "aad-only-admission-manifest-digest",
+      "isolates": "checkpoint admission.manifest_digest",
       "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
     },
     {
       "name": "aad-only-admission-derived-sv",
+      "isolates": "checkpoint admission.derived_sv",
       "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
     },
     {
       "name": "aad-only-admission-derived-ds",
+      "isolates": "checkpoint admission.derived_ds",
       "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
     },
     {
       "name": "aad-only-admission-derivation-version",
+      "isolates": "checkpoint admission.derivation_version",
       "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
     },
     {
       "name": "aad-only-admission-admitting-credential",
+      "isolates": "checkpoint admission.admitting_credential",
       "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
     },
     {
       "name": "aad-only-admission-self-admitted",
+      "isolates": "checkpoint admission.self_admitted",
       "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
     }
   ]

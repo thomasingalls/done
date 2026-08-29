@@ -9,8 +9,9 @@ superseded · **Representation:** `RC-8C`, targeted repairs under one stated rul
 coverage manifest · **Suite separation:** the stronger primitive rule, with `path` an exhaustive
 execution-path enum · **WebAuthn:** same-origin only · **Origin isolation:** allowlist by default, and the
 claim narrowed to what the scan proves · **Status:** ratified — the `S0-1` return landed falsifiers 15–22 on
-2026-08-28, with falsifier 20's receipt mechanism and the matrix halves staying at `S0-8` exactly as this
-record reserves them
+2026-08-28, and the `S0-8` regeneration landed the reserved receipt mechanism and matrix halves on
+2026-08-29: traceability consumes execution receipts, the population is pinned, and the five matrix limits
+carry their repairs
 
 Consolidation is [`S0-1`](../action-tree.md). This is the last decision in the plan. *[Annotated 2026-08-28:
 `S0-1` ran to completion on 2026-08-27, so the header's earlier "not yet consolidated" was already stale when
@@ -480,7 +481,13 @@ Continuing the fourteen above, under the ratified rules. Each is a test, not a c
 the input-list swap and the queue's agreement; the walker and projection are `scripts/remediation-status.mjs`
 (`pnpm remediation:check`, in `pnpm check`), with `census.json` pinning all nineteen record-standing documents;
 `originOf`'s discard set dropped `+`; and both printed conclusions now state their docblock scopes, with the
-walker refusing the convicted sentences by name. The `S0-8` bullet stands owed, exactly as written.]*
+walker refusing the convicted sentences by name. The `S0-8` regeneration ran 2026-08-29 and paid the last
+bullet: `scripts/lib/receipts.mjs` writes an execution receipt — script bytes, exit, tree — at every check
+script's exit, `trace:check` moved to the end of the gate and credits a script-carrier claim only by a
+receipt that is present, passing, byte-current and tree-current (falsifier 20's rule, mechanized), the
+population-agreement step reads `census.json`'s `findings_population` pin, and the five matrix limits carry
+their repairs in the regenerated matrix — recency against the reviewed tip, identity in the AAD audit,
+recursive scans, the pin, and the receipts themselves.]*
 
 - `corrected-end-state.md` superseded: the header naming successors lands with the `S0-9` node's input-list
   swap and the queue's agreement in the same commit (falsifiers 15, 19, 22).

@@ -161,30 +161,37 @@
   "must_fail": [
     {
       "name": "aad-only-label",
+      "isolates": "envelope aad.label",
       "mutate": "The label is where this carrier authenticates its own version, so a renumbered envelope must fail to open rather than select another suite (row 1)."
     },
     {
       "name": "aad-only-v",
+      "isolates": "envelope aad.v",
       "mutate": "Claim format version 2 for bytes sealed as version 1."
     },
     {
       "name": "aad-only-workspace_id",
+      "isolates": "envelope aad.workspace_id",
       "mutate": "Open the envelope as though it belonged to another workspace, subkey unchanged. This is the AAD half of §11.2 test 3’s cross-workspace replay; the subkey half is `wrong-workspace-subkey`."
     },
     {
       "name": "aad-only-credential_id",
+      "isolates": "envelope aad.credential_id",
       "mutate": "Attribute the envelope to another credential. The credential is what the epoch binds capabilities to, so this is where §11.2 test 3’s capability change lands."
     },
     {
       "name": "aad-only-epoch",
+      "isolates": "envelope aad.epoch",
       "mutate": "Move the envelope to a later epoch — the field §7.5 shows cannot by itself distinguish accepted from withheld, and which therefore must at least be immovable."
     },
     {
       "name": "aad-only-gen",
+      "isolates": "envelope aad.gen",
       "mutate": "Claim a content-key generation the envelope was not sealed under."
     },
     {
       "name": "aad-only-seq",
+      "isolates": "envelope aad.seq",
       "mutate": "Renumber the envelope’s position. Row 5’s accepted chain binds this position, so a movable `seq` would move a link."
     },
     {
