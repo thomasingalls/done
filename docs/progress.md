@@ -67,7 +67,11 @@ historical ledger corrections (`docs/decisions.md`'s stale *eighteen rows are se
 here. The X25519 observation in TRD §10.11 expires 2027-02-28; the gate that consumes it refuses it from
 that day.
 
-**Running alongside, not blocking.** Review 3a's updated input pack is owed — `action-tree.md`'s external-review
-coordination puts it after `S0-8`, which closed 2026-08-29, and it has not been produced. It does not block
-Stage 1 and it does block Stage 2, which is exactly the failure [sequencing.md](./sequencing.md) §7 names for
-this stage: *Review 3a has not been booked because Stage 1 "isn't waiting on it". It is not — Stage 2 is.*
+**Running alongside, not blocking.** Review 3a's input pack is written and is
+[`docs/review/3a/README.md`](./review/3a/README.md) — scope, the five constructions, the questions being asked
+rather than told, the runnable evidence, and the independence bar stated as it is. What remains is the
+engagement itself, which is a human's calendar rather than a document: it does not block Stage 1 and it does
+block Stage 2, which is the failure [sequencing.md](./sequencing.md) §7 names for this stage — *Review 3a has
+not been booked because Stage 1 "isn't waiting on it". It is not — Stage 2 is.* One registered debt names
+**review 3a intake** as its owner (`rustcrypto-audit-delta`), so the engagement is also how that debt gets
+paid.
