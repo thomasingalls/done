@@ -20,7 +20,7 @@
       "status": "open",
       "inputs": [
         { "path": "docs/review/findings/f-bd87655-x25519-support-floor-omitted.md", "section": null, "hash": "f02e907f63fb" },
-        { "path": "docs/trd.md", "section": "10.11", "hash": "09ee6bdd045a" }
+        { "path": "docs/TRD.md", "section": "10.11", "hash": "09ee6bdd045a" }
       ]
     },
     {

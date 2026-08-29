@@ -58,7 +58,7 @@ no bucket.
 
 **What the checker proves, exactly.** Every chain terminates at a permitted root for its guard; every open
 joint carries a real blocker and a defined return; every pinned home is byte-current; and every `Ed25519(`
-construction in the TRD and the five stage schema documents sits in a pinned section, so the map cannot decide
+construction in the TRD and the seven stage documents sits in a pinned section, so the map cannot decide
 its own census. **What it does not prove:** that the corpus implements a chain — an open entry's flip is owed
 at its return, under that record's falsifiers, and the sweep sees signature constructions, not every predicate
 prose could state. A pin detects drift, never forgery.
@@ -581,8 +581,10 @@ deferred index subkey entered above at the `S0-3` return (2026-08-28), each from
 ## The census is the documents', and the discipline is the regime's
 
 **The sweep.** Every `Ed25519(` construction — and, since the `S0-3` return, every AEAD construction
-(`AES-256-GCM(`, `XChaCha20-Poly1305(`, `AEAD(`) — in `docs/TRD.md` and the five stage schema documents
-(`S0-2`/`S0-4`/`S0-5`/`S0-6`/`S0-7` `A-schemas.md`) must sit in a section some entry pins — so a signature or
+(`AES-256-GCM(`, `XChaCha20-Poly1305(`, `AEAD(`) — in `docs/TRD.md` and the seven stage documents
+(`S0-1/A-policies.md`, and `S0-2`/`S0-3`/`S0-4`/`S0-5`/`S0-6`/`S0-7` `A-schemas.md` — `S0-1` and `S0-3`
+joined at the `S0-9` round-3 return, `R3-2`, which demonstrated a sealed construction in `S0-3`'s schema home
+entering no census) must sit in a section some entry pins — so a signature or
 sealed construction added anywhere in those documents fails the checker until the map claims it, and the map
 cannot shrink its own population. What the sweep cannot see is a predicate stated in prose with no
 construction; those enter through the dispositions and the schemas, which is where every entry above came

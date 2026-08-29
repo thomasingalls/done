@@ -34,9 +34,15 @@
  *      which is `RC-8C`'s both-directions agreement, made mechanical.
  *   5. **The population sweep.** Every `Ed25519(` construction — and, since
  *      the `S0-3` return, every AEAD construction (`AES-256-GCM(`,
- *      `XChaCha20-Poly1305(`, `AEAD(`) — in the TRD and the five stage schema
+ *      `XChaCha20-Poly1305(`, `AEAD(`) — in the TRD and the seven stage
  *      documents must sit in a section some entry pins, so the map cannot
- *      decide its own census. And `K_cp`'s census obligation — declared as an
+ *      decide its own census. All seven stages since the `S0-9` round-3
+ *      return (`R3-2`): the set used to name five schema documents, and a
+ *      sealed construction added to `S0-3/A-schemas.md` — the write-admission
+ *      machine's own schema home — entered no census at all; a document
+ *      population that is itself a hand-maintained list is the same
+ *      list-classification defect one level up, so the set now closes over
+ *      every stage document. And `K_cp`'s census obligation — declared as an
  *      absence at the `S0-3` return, paid at the `S0-5` return when its homes
  *      selected the per-seal discipline and the `k-checkpoint` entry entered
  *      with the declaration struck — stays held mechanically: an entry beside
@@ -68,10 +74,15 @@ const TREE = 'docs/review/remediation/action-tree.md';
 const FINDINGS = 'docs/review/findings/';
 const DECISIONS = 'docs/review/remediation/decisions/';
 
-/** The documents whose signature constructions decide the census, not the map. */
+/** The documents whose signature constructions decide the census, not the map.
+ * Closed over all seven stage documents at the `S0-9` round-3 return (`R3-2`):
+ * `S0-1`'s policies and `S0-3`'s schemas joined, so a construction added to
+ * either fails the sweep instead of entering no census. */
 const SWEPT = [
   'docs/TRD.md',
+  'docs/review/remediation/S0-1/A-policies.md',
   'docs/review/remediation/S0-2/A-schemas.md',
+  'docs/review/remediation/S0-3/A-schemas.md',
   'docs/review/remediation/S0-4/A-schemas.md',
   'docs/review/remediation/S0-5/A-schemas.md',
   'docs/review/remediation/S0-6/A-schemas.md',

@@ -99,22 +99,25 @@ for (const [id, cls] of classOf) {
 // --- one debt, one gate, all homes agreeing (falsifier 4) ---------------------
 
 const TRD_ASSIGNER = 'required before Stage 0 closes';
-const trd1011 = read('docs/trd.md');
+// Exact case: the file is docs/TRD.md, and a case-folding filesystem resolving
+// a lowercase spelling is what let this read work anyway (`R3-3`, round 3) —
+// on a case-sensitive filesystem the old spelling crashed the gate.
+const trd1011 = read('docs/TRD.md');
 const x25519 = byFinding.get('f-bd87655-x25519-support-floor-omitted');
 if (trd1011.includes(TRD_ASSIGNER)) {
   if (x25519 === undefined) {
     fail(
-      `docs/trd.md §10.11 makes the X25519 dated readback "${TRD_ASSIGNER}" and the manifest has no ` +
+      `docs/TRD.md §10.11 makes the X25519 dated readback "${TRD_ASSIGNER}" and the manifest has no ` +
         'entry for f-bd87655-x25519-support-floor-omitted — a debt one home states and the other cannot see.',
     );
   } else if (x25519.gate !== 'S0-10') {
     fail(
-      `docs/trd.md §10.11 assigns the X25519 readback to Stage 0 closure and the manifest blocks ` +
+      `docs/TRD.md §10.11 assigns the X25519 readback to Stage 0 closure and the manifest blocks ` +
         `"${x25519.gate}" with it — the FU-15 shape, one debt with two gates, refused (RC-9's one-gate floor).`,
     );
   }
 } else {
-  fail(`docs/trd.md no longer says "${TRD_ASSIGNER}"; the X25519 debt's gate-assigning home changed under it.`);
+  fail(`docs/TRD.md no longer says "${TRD_ASSIGNER}"; the X25519 debt's gate-assigning home changed under it.`);
 }
 
 for (const phrase of ['what-blocks-what is computed from the manifest', 'debts.json']) {

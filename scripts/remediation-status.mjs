@@ -32,8 +32,13 @@
  * parses each decision record's header (`Decided`/`Drafted`, `Ratified`,
  * `Status`), computes what is ratified and what each return owes, and checks
  * both directions against `HANDOFF.md`'s per-decision claims (P-5 falsifier
- * 22). The queue's *order* stays HANDOFF's alone — nothing here asserts a
- * sequence.
+ * 22). The compared facets are the ratification **date**, the ratified
+ * **option letter**, and the **owed falsifier ranges** — the option joined at
+ * the `S0-9` round-3 return (`R3-1`), which demonstrated HANDOFF asserting a
+ * different option than the record ratified with every gate check green,
+ * because only the date was compared. Prose beyond those facets is not
+ * compared, and the printed line says exactly that much. The queue's *order*
+ * stays HANDOFF's alone — nothing here asserts a sequence.
  *
  * Two instance rules, stated because they are instances and not totality:
  *
@@ -242,7 +247,7 @@ for (const [file, expected] of Object.entries(pins)) {
 // --- the computed status projection -------------------------------------------
 
 const DECISIONS = 'decisions';
-/** @type {Map<string, {ratified: string|null, statusWord: string, owed: {stage: string, from: number, to: number}[]}>} */
+/** @type {Map<string, {ratified: string|null, option: string|null, statusWord: string, owed: {stage: string, from: number, to: number}[]}>} */
 const decisions = new Map();
 
 for (const file of files.filter((f) => f.startsWith(`${DECISIONS}/`))) {
@@ -257,6 +262,9 @@ for (const file of files.filter((f) => f.startsWith(`${DECISIONS}/`))) {
     fail(`${file} has no parseable **Decided:**/**Drafted:** date; a header the projection cannot read is a status it is not checking.`);
   }
   const ratified = /\*\*Ratified:\*\*\s+(\d{4}-\d{2}-\d{2})/u.exec(text)?.[1] ?? null;
+  // The ratified option is part of the claim, not decoration (`R3-1`): the
+  // headers hard-wrap, so \s+ must be allowed to cross the line break.
+  const option = /\*\*Ratified:\*\*\s+\d{4}-\d{2}-\d{2},\s+option ([A-Z])\b/u.exec(text)?.[1] ?? null;
 
   const statusStart = text.indexOf('**Status:**');
   if (statusStart === -1) {
@@ -279,7 +287,7 @@ for (const file of files.filter((f) => f.startsWith(`${DECISIONS}/`))) {
   const owed = [...status.matchAll(/the `(S0-\d)` (?:return|regeneration) owes falsifiers (\d+)[–-](\d+)/gu)].map(
     (m) => ({ stage: m[1], from: Number(m[2]), to: Number(m[3]) }),
   );
-  decisions.set(id, { ratified, statusWord, owed });
+  decisions.set(id, { ratified, option, statusWord, owed });
 }
 
 // HANDOFF's per-decision claims, from the State section's claim bullets.
@@ -293,7 +301,7 @@ if (stateStart === -1 || stateEnd === -1) {
 }
 const state = stateStart === -1 ? '' : handoff.slice(stateStart, stateEnd === -1 ? undefined : stateEnd);
 
-/** @type {Map<string, {ratified: string|null, owed: {stage: string, from: number, to: number}[]}>} */
+/** @type {Map<string, {ratified: string|null, option: string|null, owed: {stage: string, from: number, to: number}[]}>} */
 const claims = new Map();
 for (const raw of state.split(/\n(?=- )/u)) {
   const id = /^- \*{0,2}`(P-\d|RC-\d)`/u.exec(raw)?.[1];
@@ -306,10 +314,11 @@ for (const raw of state.split(/\n(?=- )/u)) {
   // mid-sentence; the claims are read from the unwrapped bullet.
   const block = raw.replace(/\s+/gu, ' ');
   const ratified = new RegExp('`' + id + '` is ratified \\((\\d{4}-\\d{2}-\\d{2})\\)', 'u').exec(block)?.[1] ?? null;
+  const option = new RegExp('`' + id + '` is ratified \\(\\d{4}-\\d{2}-\\d{2}\\): option ([A-Z])\\b', 'u').exec(block)?.[1] ?? null;
   const owed = [
     ...block.matchAll(/the `(S0-\d)` (?:return|regeneration)[^.]*? owes the record's falsifiers (\d+)[–-](\d+)/gu),
   ].map((m) => ({ stage: m[1], from: Number(m[2]), to: Number(m[3]) }));
-  claims.set(id, { ratified, owed });
+  claims.set(id, { ratified, option, owed });
 }
 
 // Agreement, in both directions (P-5 falsifier 22).
@@ -333,6 +342,16 @@ for (const [id, record] of decisions) {
   }
   if (record.ratified === null && claim?.ratified != null) {
     fail(`${DECISIONS}/${id}: ${HANDOFF} claims it is ratified and the record's header does not; the claim is wider than its home.`);
+  }
+  // The ratified content, at its checkable face — the option letter (`R3-1`,
+  // the round-3 return): HANDOFF asserting a different option than the record
+  // ratified passed every gate check while only the date was compared.
+  if (record.ratified !== null && (record.option ?? null) !== (claim?.option ?? null)) {
+    fail(
+      `${DECISIONS}/${id}: the record ratified ${record.option === null ? 'no stated option' : `option ${record.option}`} ` +
+        `and ${HANDOFF}'s claim says ${claim?.option == null ? 'no option' : `option ${claim.option}`} — the R3-1 shape: ` +
+        'the ratified content drifting between the two homes while only the date was compared.',
+    );
   }
   if (owedKey(record.owed) !== owedKey(claim?.owed ?? [])) {
     fail(
@@ -425,7 +444,7 @@ for (const [id, d] of decisions) {
 if (CHECK) {
   console.log(
     `remediation census: ${census.size} documents (${countLine}), ${records.length} pins current; ` +
-      `${ratified.length} ratified · ${decided.length} decided, HANDOFF agrees in both directions.`,
+      `${ratified.length} ratified · ${decided.length} decided; HANDOFF's dates, options and owed ranges agree in both directions.`,
   );
 } else {
   console.log(`remediation census: ${census.size} documents — ${countLine}.`);
