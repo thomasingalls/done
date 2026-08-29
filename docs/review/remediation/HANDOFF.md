@@ -17,7 +17,7 @@ disagree, the disposition is right and this file is the thing to fix.
 
 | | |
 | --- | --- |
-| Branch | `claude/stage0-remediation`, 93 commits off `9edd930` through the `S0-10` disposition workflow and Stage 0 closure (`a6ea5fa`), all signed — later commits ride after that anchor, so this sentence cannot silently age; the current tip rides the worktree branch `claude/x25519-debt-bar-recording-3c0d10` until folded back |
+| Branch | `claude/stage0-remediation`, 93 commits off `9edd930` through the `S0-10` disposition workflow and Stage 0 closure (`a6ea5fa`), all signed — later commits ride after that anchor, so this sentence cannot silently age. Folded 2026-08-29: this branch carries the tip directly at its own checkout (`.claude/worktrees/stage0-repairs`); the intermediate session branches and worktrees — the returns, the drafts, the challenge sandboxes — are removed, their every report preserved in `S0-9/`, and the last session's seat departs with its session. The superseded review branch `claude/remediation-findings-review-997ab5` stays until acceptance, per the row below |
 | Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, the decisions, all three `S0-9` challenge rounds, and the `S0-10` closure — the paid debt, the recorded bar, the authorized dispositions |
 | Not on it | nothing — this branch is the whole picture, deliberately |
 | Superseded | `claude/remediation-findings-review-997ab5` holds the review workspace at its original SHAs. Redundant once this branch is accepted |
