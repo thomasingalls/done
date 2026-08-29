@@ -25,6 +25,7 @@
  * directly. The encrypted content store registers through it when it lands.
  */
 
+import type { SlotBinding } from '../account/slotUnlock';
 import { storeHandle, type StoreHandle } from './persistence';
 
 /** The index's own database. It names no workspace, so its name may be fixed. */
@@ -88,6 +89,11 @@ export const deriveStoreHandle = async (
 ): Promise<StoreHandle> => storeHandle(await deriveStoreName(principal, workspace));
 
 export interface SlotStore {
+  /**
+   * Read out of the slot's binding, never taken from a caller — see
+   * `registerStore`. Recorded so a later read does not have to re-open the
+   * binding to learn whose store this is.
+   */
   principal: string;
   workspace: string;
   /**
@@ -102,9 +108,23 @@ export interface SlotStore {
 export interface Slot {
   id: string;
   status: 'active' | 'closed';
-  /** §13.9's offline-verifiable unlock binding. `L-2` mints and verifies it. */
-  unlockBinding: string | null;
+  /**
+   * §13.9's offline-verifiable unlock binding, as stored: the service-signed
+   * `SlotBinding` and the signature over it. **Stored here, verified nowhere
+   * here** — `verifySlotUnlock` is `L-2`'s and the caller runs it before
+   * opening a slot. §6.5's index is a structured clone, which is exactly why
+   * the binding is a structure rather than a string: a reader that had to parse
+   * it would be trusting the parse as well as the bytes.
+   */
+  unlockBinding: StoredBinding | null;
   stores: SlotStore[];
+}
+
+/** What §6.5's index holds for one credential, and nothing more. */
+export interface StoredBinding {
+  binding: SlotBinding;
+  /** Ed25519 over `slotBindingMessage(binding)`, hex. */
+  bindingSignature: string;
 }
 
 const request = <T>(req: IDBRequest<T>): Promise<T> =>
@@ -141,14 +161,11 @@ const deleteDatabase = (name: string): Promise<void> =>
 export interface SlotIndex {
   createSlot: (id: string) => Promise<Slot>;
   readSlot: (id: string) => Promise<Slot | null>;
-  registerStore: (slotId: string, principal: string, workspace: string) => Promise<StoreHandle>;
+  bindSlot: (slotId: string, stored: StoredBinding) => Promise<void>;
+  registerStore: (slotId: string, workspace: string) => Promise<StoreHandle>;
   /** The picker's enumeration. Through the index, by construction. */
   listWorkspaces: (slotId: string) => Promise<SlotStore[]>;
-  resolveHandle: (
-    slotId: string,
-    principal: string,
-    workspace: string,
-  ) => Promise<StoreHandle | null>;
+  resolveHandle: (slotId: string, workspace: string) => Promise<StoreHandle | null>;
   closeSlot: (id: string) => Promise<void>;
   reopenSlot: (id: string) => Promise<void>;
   removeSlot: (id: string) => Promise<void>;
@@ -170,6 +187,17 @@ export const openSlotIndex = async (name: string = INDEX_DB): Promise<SlotIndex>
     await request(tx.objectStore(SLOTS_STORE).put(slot));
   };
 
+  /**
+   * A slot with no binding has no principal, so it can name no store. Refusing
+   * is the whole point: the alternative is a caller-supplied principal, which
+   * is the seam this index exists on the correct side of.
+   */
+  const principalOf = (slot: Slot): string => {
+    const principal = slot.unlockBinding?.binding.principalId;
+    if (!principal) throw new Error(`Slot ${slot.id} has no binding, so it names no store.`);
+    return principal;
+  };
+
   const mustRead = async (id: string): Promise<Slot> => {
     const slot = await read(id);
     if (!slot) throw new Error(`No such slot: ${id}`);
@@ -189,8 +217,23 @@ export const openSlotIndex = async (name: string = INDEX_DB): Promise<SlotIndex>
 
     readSlot: read,
 
-    registerStore: async (slotId, principal, workspace) => {
+    bindSlot: async (slotId, stored) => {
+      await write({ ...(await mustRead(slotId)), unlockBinding: stored });
+    },
+
+    /**
+     * **The principal comes from the slot's binding, never from the caller.**
+     * `L-2`'s verifier reaches the same rule from the other side — it reads
+     * `principalId` and `credId` out of the verified binding because taking
+     * them alongside would let a bug verify a challenge minted for somebody
+     * else. The same bug here would name another principal's store, and the
+     * name is what the §6.1 subkey binds, so it would be a key's scope that
+     * moved. An unbound slot has no principal and therefore no store name;
+     * the pre-account path is `LEGACY_STORE`, which is not in this index.
+     */
+    registerStore: async (slotId, workspace) => {
       const slot = await mustRead(slotId);
+      const principal = principalOf(slot);
       const dbName = await deriveStoreName(principal, workspace);
       const existing = slot.stores.find((s) => s.dbName === dbName);
       if (!existing) {
@@ -201,12 +244,12 @@ export const openSlotIndex = async (name: string = INDEX_DB): Promise<SlotIndex>
 
     listWorkspaces: async (slotId) => (await mustRead(slotId)).stores,
 
-    resolveHandle: async (slotId, principal, workspace) => {
+    resolveHandle: async (slotId, workspace) => {
       const slot = await mustRead(slotId);
       // "No slot's stores are reachable while that slot is closed" (§6.5). The
       // entries survive a sign-out; reachability does not.
       if (slot.status === 'closed') return null;
-      const dbName = await deriveStoreName(principal, workspace);
+      const dbName = await deriveStoreName(principalOf(slot), workspace);
       return slot.stores.some((s) => s.dbName === dbName) ? storeHandle(dbName) : null;
     },
 

@@ -5,13 +5,37 @@
  */
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { deriveStoreName, openSlotIndex, type SlotIndex } from '../src/crdt';
+import { deriveStoreName, openSlotIndex, type SlotIndex, type StoredBinding } from '../src/crdt';
 
 let open: SlotIndex | null = null;
 
 const freshIndex = async (name: string): Promise<SlotIndex> => {
   open = await openSlotIndex(name);
   return open;
+};
+
+/**
+ * The binding as §6.5's index stores it. Only `principalId` matters to this
+ * layer — the rest is carried and read by `L-2`'s verifier, which is the point
+ * of the seam these tests police.
+ */
+const binding = (principalId: string): StoredBinding => ({
+  binding: {
+    v: 1,
+    accountId: 'account-1',
+    principalId,
+    rpId: 'example.test',
+    epoch: 1,
+    credId: 'cred-1',
+    publicKey: '00',
+  },
+  bindingSignature: 'ff',
+});
+
+/** A slot that can name stores, which means a slot with a binding. */
+const boundSlot = async (index: SlotIndex, id: string, principalId: string): Promise<void> => {
+  await index.createSlot(id);
+  await index.bindSlot(id, binding(principalId));
 };
 
 afterEach(() => {
@@ -61,10 +85,10 @@ describe('store naming', () => {
 describe('slot scoping', () => {
   it('enumerates only the asking slot, with a second slot present and closed', async () => {
     const index = await freshIndex('done.slots-test-scoping');
-    await index.createSlot('slot-a');
-    await index.createSlot('slot-b');
-    await index.registerStore('slot-a', 'principal-a', 'workspace-1');
-    await index.registerStore('slot-b', 'principal-b', 'workspace-2');
+    await boundSlot(index, 'slot-a', 'principal-a');
+    await boundSlot(index, 'slot-b', 'principal-b');
+    await index.registerStore('slot-a', 'workspace-1');
+    await index.registerStore('slot-b', 'workspace-2');
     await index.closeSlot('slot-b');
 
     const listed = await index.listWorkspaces('slot-a');
@@ -75,8 +99,8 @@ describe('slot scoping', () => {
 
   it('never falls back to a database listing', async () => {
     const index = await freshIndex('done.slots-test-no-listing');
-    await index.createSlot('slot-a');
-    await index.registerStore('slot-a', 'principal-a', 'workspace-1');
+    await boundSlot(index, 'slot-a', 'principal-a');
+    await index.registerStore('slot-a', 'workspace-1');
 
     // §6.5's "must not happen": no picker enumerates by database name. The
     // spy is the assertion — a future enumeration that reaches for the listing
@@ -88,24 +112,24 @@ describe('slot scoping', () => {
 
   it("keeps a closed slot's entries and refuses to reach its stores", async () => {
     const index = await freshIndex('done.slots-test-closed');
-    await index.createSlot('slot-a');
-    await index.registerStore('slot-a', 'principal-a', 'workspace-1');
+    await boundSlot(index, 'slot-a', 'principal-a');
+    await index.registerStore('slot-a', 'workspace-1');
 
     await index.closeSlot('slot-a');
     // Sign-out retains the entries...
     expect(await index.listWorkspaces('slot-a')).toHaveLength(1);
     // ...and makes the stores unreachable, which is the half that matters.
-    expect(await index.resolveHandle('slot-a', 'principal-a', 'workspace-1')).toBeNull();
+    expect(await index.resolveHandle('slot-a', 'workspace-1')).toBeNull();
 
     await index.reopenSlot('slot-a');
-    expect(await index.resolveHandle('slot-a', 'principal-a', 'workspace-1')).not.toBeNull();
+    expect(await index.resolveHandle('slot-a', 'workspace-1')).not.toBeNull();
   });
 
   it('resolves a handle whose journal namespace travels with its database', async () => {
     const index = await freshIndex('done.slots-test-handle');
-    await index.createSlot('slot-a');
-    const registered = await index.registerStore('slot-a', 'principal-a', 'workspace-1');
-    const resolved = await index.resolveHandle('slot-a', 'principal-a', 'workspace-1');
+    await boundSlot(index, 'slot-a', 'principal-a');
+    const registered = await index.registerStore('slot-a', 'workspace-1');
+    const resolved = await index.resolveHandle('slot-a', 'workspace-1');
 
     expect(resolved?.dbName).toBe(registered.dbName);
     expect(resolved?.journalPrefix).toBe(registered.journalPrefix);
@@ -114,17 +138,17 @@ describe('slot scoping', () => {
 
   it('does not resolve a workspace the slot never registered', async () => {
     const index = await freshIndex('done.slots-test-unregistered');
-    await index.createSlot('slot-a');
-    await index.registerStore('slot-a', 'principal-a', 'workspace-1');
-    expect(await index.resolveHandle('slot-a', 'principal-a', 'workspace-9')).toBeNull();
+    await boundSlot(index, 'slot-a', 'principal-a');
+    await index.registerStore('slot-a', 'workspace-1');
+    expect(await index.resolveHandle('slot-a', 'workspace-9')).toBeNull();
   });
 });
 
 describe('destructive clears', () => {
   it('removes the index entry last, so an interrupted clear is resumable', async () => {
     const index = await freshIndex('done.slots-test-order');
-    await index.createSlot('slot-a');
-    const handle = await index.registerStore('slot-a', 'principal-a', 'workspace-1');
+    await boundSlot(index, 'slot-a', 'principal-a');
+    const handle = await index.registerStore('slot-a', 'workspace-1');
 
     // Both deletions are observed where they actually happen. An earlier
     // version of this test appended 'index-entry' after removeSlot resolved,
@@ -156,8 +180,8 @@ describe('destructive clears', () => {
 
   it('resumes an interrupted clear rather than orphaning what it reached', async () => {
     const index = await freshIndex('done.slots-test-resume');
-    await index.createSlot('slot-a');
-    const handle = await index.registerStore('slot-a', 'principal-a', 'workspace-1');
+    await boundSlot(index, 'slot-a', 'principal-a');
+    const handle = await index.registerStore('slot-a', 'workspace-1');
 
     // The kill lands on the store deletion, which is what makes this assertion
     // about the ordering rather than about throwing. Under the required order
@@ -187,8 +211,8 @@ describe('destructive clears', () => {
 
   it('treats a blocked store deletion as a refusal, keeping the entry', async () => {
     const index = await freshIndex('done.slots-test-blocked');
-    await index.createSlot('slot-a');
-    const handle = await index.registerStore('slot-a', 'principal-a', 'workspace-1');
+    await boundSlot(index, 'slot-a', 'principal-a');
+    const handle = await index.registerStore('slot-a', 'workspace-1');
 
     // Another tab holds the database open. The store is still on disk, so
     // reporting success here would let the clear go on to remove the entry and
@@ -205,10 +229,10 @@ describe('destructive clears', () => {
 
   it('leaves the other slot untouched when one account is removed', async () => {
     const index = await freshIndex('done.slots-test-remove-one');
-    await index.createSlot('slot-a');
-    await index.createSlot('slot-b');
-    await index.registerStore('slot-a', 'principal-a', 'workspace-1');
-    await index.registerStore('slot-b', 'principal-b', 'workspace-2');
+    await boundSlot(index, 'slot-a', 'principal-a');
+    await boundSlot(index, 'slot-b', 'principal-b');
+    await index.registerStore('slot-a', 'workspace-1');
+    await index.registerStore('slot-b', 'workspace-2');
 
     await index.removeSlot('slot-a');
 
@@ -219,10 +243,10 @@ describe('destructive clears', () => {
 
   it('clears every slot for a handoff reset', async () => {
     const index = await freshIndex('done.slots-test-handoff');
-    await index.createSlot('slot-a');
-    await index.createSlot('slot-b');
-    await index.registerStore('slot-a', 'principal-a', 'workspace-1');
-    await index.registerStore('slot-b', 'principal-b', 'workspace-2');
+    await boundSlot(index, 'slot-a', 'principal-a');
+    await boundSlot(index, 'slot-b', 'principal-b');
+    await index.registerStore('slot-a', 'workspace-1');
+    await index.registerStore('slot-b', 'workspace-2');
 
     await index.resetForHandoff();
 
@@ -231,16 +255,47 @@ describe('destructive clears', () => {
   });
 });
 
+describe('the principal comes from the binding', () => {
+  it('refuses to name a store for a slot with no binding', async () => {
+    const index = await freshIndex('done.slots-test-unbound');
+    await index.createSlot('slot-unbound');
+    // No binding means no principal, and a caller-supplied one is exactly what
+    // this refuses. L-2's verifier reaches the same rule from the other side.
+    await expect(index.registerStore('slot-unbound', 'workspace-1')).rejects.toThrow(
+      'names no store',
+    );
+    await expect(index.resolveHandle('slot-unbound', 'workspace-1')).rejects.toThrow(
+      'names no store',
+    );
+  });
+
+  it('names the store after the bound principal, not the asking slot', async () => {
+    const index = await freshIndex('done.slots-test-bound-name');
+    await boundSlot(index, 'slot-a', 'principal-a');
+    await boundSlot(index, 'slot-b', 'principal-b');
+
+    const a = await index.registerStore('slot-a', 'workspace-1');
+    const b = await index.registerStore('slot-b', 'workspace-1');
+
+    // Same workspace, different bound principals, different stores — the
+    // property §6.5 asks for, now sourced where it cannot be spoofed.
+    expect(a.dbName).not.toBe(b.dbName);
+    expect(a.dbName).toBe(await deriveStoreName('principal-a', 'workspace-1'));
+  });
+});
+
 describe('the unlock binding is carried, not verified', () => {
   it('is null until L-2 mints it, and no read here consults it', async () => {
     const index = await freshIndex('done.slots-test-binding');
-    await index.createSlot('slot-a');
-    await index.registerStore('slot-a', 'principal-a', 'workspace-1');
+    await boundSlot(index, 'slot-a', 'principal-a');
+    await index.registerStore('slot-a', 'workspace-1');
 
-    // §13.9 and row 12 own the binding and its service-signed anchor. This
-    // layer gates on `status` alone; asserting the column stays empty is what
-    // keeps half of §13.9 from being built here by accident.
-    expect((await index.readSlot('slot-a'))?.unlockBinding).toBeNull();
-    expect(await index.resolveHandle('slot-a', 'principal-a', 'workspace-1')).not.toBeNull();
+    // §13.9 and row 12 own verification and the service-signed anchor. This
+    // layer stores the binding and gates on `status` alone — the signature here
+    // is 'ff' and resolves anyway, which is the seam stated as a test rather
+    // than a comment: verifySlotUnlock is L-2's and the caller runs it before
+    // opening a slot. Building half of §13.9 here is what this pins against.
+    expect((await index.readSlot('slot-a'))?.unlockBinding?.bindingSignature).toBe('ff');
+    expect(await index.resolveHandle('slot-a', 'workspace-1')).not.toBeNull();
   });
 });
