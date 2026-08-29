@@ -19,7 +19,7 @@ validation/remediation workflow. The population in
 | `f-tip-prd-stale-selection-status` | `S0-1` | **Closed by document repair.** All three PRD subsections report the selection; row 14's confirmation UX is still open and still says so. | No executable cross-document oracle. That is `S0-1`'s bidirectional coverage work and still needs `P-5`. |
 | `f-dbfd01f-record-nonce-ceiling-omitted` | `S0-3` | **Closed by document repair.** TRD §6.1 and §15 row 3 carry SP 800-38D §8.3's 2^32 and rotate-before-write, equality first disallowed. | The build-failing boundary test the finding asks for. It cannot be written until `P-3` selects the per-generation count the comparison reads — which the TRD now says explicitly rather than implying the rule is complete. |
 | `f-b997cdb-checkpoint-key-retention-inverted` | `S0-2` | **Closed by document repair.** Subject corrected to the generation in row 7 twice and TRD §7.6 once. | Which objects constitute an opener — local key envelope, retained recovery wrap, reader wrap. That is `RC-2` generation-reference accounting, gated on `P-1`/`P-2`. |
-| `f-bd87655-x25519-support-floor-omitted` | `S0-1` | **Partially closed.** §10.11 gains the fourth statement with the four exact `SubtleCrypto` operations and the absence behaviour — a refusal at the capability check, so no ceremony consumes a credential, nonce or transition id on its way to failing. | The dated evidence table. Left empty deliberately: §10.11's own rule is a floor *with evidence and a date*, and an asserted version row would be worse than the omission. Required before `S0-10`. |
+| `f-bd87655-x25519-support-floor-omitted` | `S0-1` | **Partially closed.** §10.11 gains the fourth statement with the four exact `SubtleCrypto` operations and the absence behaviour — a refusal at the capability check, so no ceremony consumes a credential, nonce or transition id on its way to failing. | The dated evidence table. Left empty deliberately: §10.11's own rule is a floor *with evidence and a date*, and an asserted version row would be worse than the omission. Required before `S0-10`. *[Paid 2026-08-29 at the `S0-10` arrival: §10.11 carries the dated wpt.fyi readback and `pnpm debts:check` holds the table and the payment record to each other in both directions; the Firefox `deriveBits` residue rides the table's dagger note.]* |
 | `f-66a7c6a-journal-benchmark-overwrites-one-slot` | `S0-3` / `L-4` | **Partially closed, and probed.** Each write now takes its own slot, bounded to a production-shaped occupancy; quota is reported with the write count. The probe was then run — [`probes/journal-append-probe.md`](./probes/journal-append-probe.md) — and found **no material difference** between append and hot-key overwrite, with an identical 60 µs p95 at 4096 B. The Stage 0 premise survives; this no longer threatens the row-2 selection. | An immutable append burst on a **declared device population**, still owed at `L-4`. The probe's unbounded arm also measured a hard `localStorage` quota wall at ~92k entries, which is an input to `P-3`/`S0-3` rather than to this finding. |
 
 **One incidental defect, found while applying these and not in the finding population.** The pinned tip does not
@@ -692,7 +692,9 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 > date-only comparison — with `R3-2`/`R3-3` beside it), and the round-3 return repaired all three the same
 > day with the probes inverted. `S0-10` remains blocked by the registered X25519 debt
 > (`node scripts/check-debts.mjs --gate S0-10`) and must record the independence bar exactly:
-> author-independent seven times, family-independent once, human-independent never.**
+> author-independent seven times, family-independent once, human-independent never.** *[Both landed
+> 2026-08-29 at the `S0-10` arrival: the debt was paid by the dated readback in TRD §10.11's table and the
+> consult lifts; the bar is recorded in its one home, [`S0-10/README.md`](./S0-10/README.md).]*
 >
 > **Run twice. The independent pass FAILED the challenge — see
 > [`S0-9/DISPOSITION.md`](./S0-9/DISPOSITION.md).** Four challengers, none of whom authored any repair, ran from
@@ -757,6 +759,17 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 - **Consequence of no action:** the remediation repeats the original shared-model closure weakness.
 
 ### `S0-10` — record corrected Stage 0 closure
+
+> **Arrived 2026-08-29, in part — the debt paid and the bar recorded:
+> [`S0-10/README.md`](./S0-10/README.md).** The registered X25519 debt was paid by a dated external
+> observation — wpt.fyi stable-run executions of §10.11's four operations on the four core engines — with
+> the evidence table landed in TRD §10.11, the typed payment record on the manifest entry, and
+> `pnpm debts:check` holding the two to each other in both directions; `node scripts/check-debts.mjs --gate
+> S0-10` lifts. The independence bar is recorded exactly: author-independent seven times, family-independent
+> once (round 3), human-independent never — review 3a/3b stay bookings, and a booking is not a result.
+> **Finding dispositions remain untouched**: the separately authorized validation/remediation workflow this
+> node reserves has not run, and the closure recording across `docs/progress.md`/`docs/completed.md` waits
+> for it.
 
 - **Prerequisite decisions:** `S0-1`–`S0-9` accepted; updated review 3a/3b scopes/bookings recorded without calling
   booking a result.

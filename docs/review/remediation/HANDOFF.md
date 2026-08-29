@@ -17,7 +17,7 @@ disagree, the disposition is right and this file is the thing to fix.
 
 | | |
 | --- | --- |
-| Branch | `claude/stage0-remediation`, 89 commits off `9edd930` through the round-3 queue update (`9e33ed9`), all signed; the current tip rides the worktree branch `claude/s0-9-round-3-handoff-2504b1` until folded back |
+| Branch | `claude/stage0-remediation`, 91 commits off `9edd930` through the `S0-10` debt payment (`866e500`), all signed — the record and queue update ride after that anchor; the current tip rides the worktree branch `claude/x25519-debt-bar-recording-3c0d10` until folded back |
 | Contains | the review workspace (`docs/review/`, cherry-picked), the repairs, the decisions, and all three `S0-9` challenge rounds |
 | Not on it | nothing — this branch is the whole picture, deliberately |
 | Superseded | `claude/remediation-findings-review-997ab5` holds the review workspace at its original SHAs. Redundant once this branch is accepted |
@@ -140,7 +140,8 @@ to refuse.
   records and the regenerated corpus. The record's own stale status line and its `FU-15` gate parenthetical
   are annotated in place. **Nothing remains owed: the `S0-1` return landed the record's falsifiers 15–22 on
   2026-08-28** — the census walker and computed projection are `pnpm remediation:status`
-  (`remediation:check` in `pnpm check`), `census.json` pins all nineteen record-standing documents, the
+  (`remediation:check` in `pnpm check`), `census.json` pins all twenty-one record-standing documents (the
+  `S0-10` record joined 2026-08-29; the live count is the checker's, as ever), the
   supersession header and input-list swap landed in one commit, and the `originOf` correction and both
   claim narrowings are in — and falsifier 20's receipt mechanism landed at the `S0-8` regeneration
   (2026-08-29): every check script writes an execution receipt at exit, and `trace:check`, now the gate's
@@ -398,7 +399,8 @@ In order. An item is done when its disposition entry's earliest-return stage has
    `terminal-lineage-record` and `local-archive-anchor` re-pinned, their rules unchanged (the retention
    mark's bound gaining the boundary immunity). The security returns are complete; the `S0-8`
    regeneration followed 2026-08-29 (item 5), and `S0-9` round 3 with its same-day return followed the same
-   day (item 6): **next is `S0-10` (queue item 7)**.
+   day (item 6): **`S0-10` (queue item 7) arrived 2026-08-29 — the debt paid, the bar recorded; its
+   remainder is the separately authorized disposition workflow**.
    **Each return flips its authority-map entries and inverts its scheduler reproductions** — editing a
    pinned home fails `authority:check` until the entry is re-read
    and re-pinned or flipped — and, now that the census is landed, edits a pinned record only as a dated
@@ -446,8 +448,17 @@ In order. An item is done when its disposition entry's earliest-return stage has
    and the return repaired all three with the probes inverted; `R3-4` stays recorded for `S0-2`'s homes,
    low, non-blocking. The human-red-team bar remains open and unclaimed — `S0-10` records the bar exactly:
    author-independent seven times, family-independent once, human-independent never.
-7. **`S0-10`.** Collect the X25519 dated readback (TRD §10.11 offers review 3b's pass for it), record which
-   independence bar the closure stands on, and only then touch finding dispositions.
+7. **`S0-10` — arrived 2026-08-29; two of its three duties are done, in order.** The X25519 dated readback
+   is collected and paid: wpt.fyi's stable desktop runs executing §10.11's four operations on the four core
+   engines, landed as the evidence table in TRD §10.11 beside the typed `payment_record` on the manifest
+   entry, `pnpm debts:check` holding the two to each other in both directions and
+   `node scripts/check-debts.mjs --gate S0-10` lifting — with Firefox's `deriveBits` rejection-edge misses
+   recorded at the table's dagger note and the DHKEM layer's own all-zero abort named as the Stage-4
+   consequence. The independence bar is recorded in its one home, [`S0-10/README.md`](./S0-10/README.md):
+   author-independent seven times, family-independent once, human-independent never. **What remains is the
+   third duty**: finding dispositions under the separately authorized validation/remediation workflow —
+   authorization this branch does not carry — and the closure recording (`docs/progress.md`,
+   `docs/completed.md`, register status) that follows its outcome.
 8. **`L-1`–`L-4` and `H-1`** are the rest of the plan and are outside Stage 0. `H-1`'s append-only ledger
    holds the four historical-only corrections, and `docs/decisions.md`'s stale *eighteen rows are selected*
    belongs to it rather than to a silent edit.
@@ -455,28 +466,31 @@ In order. An item is done when its disposition entry's earliest-return stage has
 ## The exact next command
 
 ```bash
-cd /Users/thomasingalls/Code/done/.claude/worktrees/s0-9-round-3-handoff-2504b1 && pnpm install --frozen-lockfile && pnpm check && node scripts/check-debts.mjs --gate S0-10
+cd /Users/thomasingalls/Code/done/.claude/worktrees/x25519-debt-bar-recording-3c0d10 && pnpm install --frozen-lockfile && pnpm check && node scripts/check-debts.mjs --gate S0-10
 ```
 
 That establishes the baseline, mints the execution receipts in one motion (`pnpm check`'s last step consumes
-them, so the full chain is the baseline), and then asks the one question the queue is now at: the `S0-10`
-consult, which **blocks today, correctly**, until the X25519 dated readback is paid into TRD §10.11's table
-with source, date and expiry. **Queue items 1–6 are complete** — the decision sprint, the two structural
-artifacts, the seven security returns, the `S0-8` regeneration, and now `S0-9` round 3 with its same-day
-return (2026-08-29): the authority map with `pnpm authority:check` at **zero** open and its census sweep
-closed over all seven stage documents, the storage scheduler with all six windows asserting their repairs,
-the standing census with `pnpm remediation:check` now comparing each claim's ratified **option** beside its
-date and owed ranges, the recipient-authority, write-admission and retention readbacks, the debt manifest
-with `pnpm debts:check` on exact-case paths, the source↔blob binding inside `pnpm wasm:verify`, and the
-traceability matrix crediting execution receipts — all in the gate. `pnpm remediation:status` reads
-**nothing owed at any return**; `pnpm debts` computes what blocks the gates ahead (`L-1` — 1 · `L-4` — 4;
-the `S0-10` entry is paid).
-Next is **`S0-10` (queue item 7)**: pay the X25519 debt (TRD §10.11 offers review 3b's pass for it; the
-consult above lifts only on a typed dated-external-observation payment), **record which independence bar the
-closure stands on** — author-independent seven times, family-independent once (round 3), human-independent
-never — and only then touch finding dispositions, under the separately authorized workflow `S0-10` reserves.
+them, so the full chain is the baseline), and confirms what changed 2026-08-29: the `S0-10` consult **lifts**
+— the X25519 debt is paid into TRD §10.11's table with source, date and expiry, and `debts:check` holds the
+table and the payment record to each other. **Queue items 1–6 are complete, and item 7's first two duties
+are done** — the decision sprint, the two structural artifacts, the seven security returns, the `S0-8`
+regeneration, `S0-9` round 3 with its same-day return, and now the `S0-10` arrival: the debt paid and the
+independence bar recorded in [`S0-10/README.md`](./S0-10/README.md) — author-independent seven times,
+family-independent once (round 3), human-independent never. The gate stands as before plus the new readback:
+the authority map at **zero** open, the storage scheduler's six windows asserting their repairs, the standing
+census comparing each claim's ratified **option** beside its date and owed ranges, the recipient-authority,
+write-admission and retention readbacks, the debt manifest on exact-case paths with §10.11's evidence table
+held to the payment record, the source↔blob binding inside `pnpm wasm:verify`, and the traceability matrix
+crediting execution receipts — 28 of 28 current defects carrying a named falsifier. `pnpm remediation:status`
+reads **nothing owed at any return**; `pnpm debts` computes what blocks the gates ahead (`L-1` — 1 ·
+`L-4` — 4; the `S0-10` entry is paid).
+**Next is `S0-10`'s remainder, and it needs authorization this branch does not carry**: finding dispositions
+change only under the separately authorized validation/remediation workflow, and the closure recording
+(`docs/progress.md`, `docs/completed.md`, register status) follows that workflow's outcome. Beyond Stage 0,
+`L-1` arrives against its registered kill-matrix debt (`node scripts/check-debts.mjs --gate L-1` names it).
 `R3-4` (member-entry uniqueness, low) rides to `S0-2`'s homes before `L-2` implements a verifier and does
-not gate closure.
+not gate closure. The X25519 observation expires 2027-02-28; from that day `debts:check` refuses it exactly
+as a missing one, and the re-measurement is review 3b's offered pass.
 
 ## Five things that will bite you
 
@@ -510,8 +524,8 @@ return with its declared absence struck — the checker still refusing the entry
 or both missing — it is the
 class-1 and class-2 ledgers staying honest: their members returned at their returns, and the checker is what
 keeps the closure from silently reopening. Since the
-`S0-1` return it also carries `remediation:check`, whose green line is likewise its printed scope: 46
-documents classified, 19 record pins byte-current, the status homes agreeing — the class-3 ledger staying
+`S0-1` return it also carries `remediation:check`, whose green line is likewise its printed scope: 48
+documents classified, 21 record pins byte-current, the status homes agreeing — the class-3 ledger staying
 honest, existence and byte rules, never an execution receipt. Since the `S0-2` return it also carries
 `recipient:check`: the recipient-authority homes agree and the enrollment artifact reconstructs from
 published inputs — byte rules and one reconstruction, per its printed scope. Since the `S0-3` return it also

@@ -6,6 +6,7 @@
     "note": "S0-9 round 1, matrix limit 5: nothing pinned the population, so deleting a finding from all four sources regenerated green with a smaller denominator. This pin is read by scripts/lib/findings.mjs for every consumer at once; adding or removing a finding restates it in the same commit, deliberately."
   },
   "record_sha256": {
+    "S0-10/README.md": "421cfe7067a3de6db85a8ce94c5a1c39a02237bde9871ef1f67c583f0af89a3f",
     "end-state-materiality.md": "e205e341506a5153d5c761f050934d982e72f1b4d54cf5b9248733b841b039ec",
     "S0-9/DISPOSITION.md": "6f1b35acf1a708c1e6614e5a90318a7a92b6aeed31a2bb2acb34b822d20a59ba",
     "S0-9/FOLLOWUP-DISPOSITION.md": "0c48630b06bc2294bea1c61bc6e4bf60dde0dd2aa87135bd87318de450f27594",
