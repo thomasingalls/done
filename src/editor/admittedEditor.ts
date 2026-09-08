@@ -6,11 +6,11 @@ import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { indentUnit } from '@codemirror/language';
 import { livePreview } from './livePreview';
 import { editorTheme } from './theme';
-import type { AdmittedText, TextAction, TextSelection } from './admittedText';
+import type { AdmittedTextSurface, TextAction, TextSelection } from './admittedText';
 
 export interface AdmittedEditorOptions {
   readonly parent: HTMLElement;
-  readonly document: AdmittedText;
+  readonly document: AdmittedTextSurface;
   readonly placeholder?: string;
   readonly extra?: readonly Extension[];
 }
@@ -23,6 +23,7 @@ export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
   let selection: TextSelection | undefined, compositionSelection: TextSelection | undefined;
   let localError = '',
     suppressComposition = false;
+  let isEditable = true;
   const status = window.document.createElement('div');
   status.className = 'admission-status';
   status.setAttribute('role', 'status');
@@ -193,6 +194,8 @@ export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
     if (destroyed) return;
     try {
       const snapshot = document.read();
+      const changedEditable = isEditable !== (snapshot.editable !== false);
+      isEditable = snapshot.editable !== false;
       const before = view.state.doc.toString(),
         after = snapshot.text;
       let from = 0,
@@ -210,11 +213,15 @@ export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
             ? {}
             : { changes: { from, to: end, insert: after.slice(from, last) } }),
           selection: EditorSelection.fromJSON(snapshot.selection),
+          ...(changedEditable
+            ? { effects: editable.reconfigure(EditorView.editable.of(isEditable)) }
+            : {}),
         });
       } finally {
         projecting = false;
       }
     } catch {
+      isEditable = false;
       projecting = true;
       try {
         view.dispatch({
@@ -265,6 +272,7 @@ export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
   };
   const unsubscribe = document.subscribe(project),
     stopStatus = document.onStatus(renderStatus);
+  project();
   renderStatus();
   return {
     view,

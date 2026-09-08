@@ -1,32 +1,9 @@
 /** Goals text commands prepared privately, with history published only after admission. */
-import {
-  EditorSelection,
-  EditorState,
-  Transaction,
-  Annotation,
-  findClusterBreak,
-  type StateCommand,
-} from '@codemirror/state';
-import {
-  history,
-  undo,
-  redo,
-  undoDepth,
-  redoDepth,
-  indentMore,
-  indentLess,
-  insertNewline,
-} from '@codemirror/commands';
-import { markdown, markdownLanguage, deleteMarkupBackward } from '@codemirror/lang-markdown';
+import { EditorSelection, EditorState, Transaction, Annotation } from '@codemirror/state';
+import { history, undoDepth, redoDepth } from '@codemirror/commands';
+import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { indentUnit } from '@codemirror/language';
-import { continueList } from './keymap';
-import {
-  toggleBold,
-  toggleItalic,
-  toggleInlineCode,
-  toggleStrikethrough,
-  toggleTask,
-} from './commands';
+import { textCommands as commands } from './admittedCommands';
 import { Y, createDoc, applyUpdate } from '../crdt/yjs';
 import {
   openAdmissionSession,
@@ -58,6 +35,7 @@ export type TextAction =
     };
 export type TextSelection = ReturnType<EditorSelection['toJSON']>;
 export interface TextSnapshot {
+  readonly editable?: boolean;
   readonly text: string;
   readonly selection: TextSelection;
   readonly undo: number;
@@ -80,43 +58,11 @@ export interface AdmittedText {
   discardPending(): void;
   close(): Promise<void>;
 }
-const deleteCluster =
-  (forward: boolean): StateCommand =>
-  ({ state, dispatch }) => {
-    const spec = state.changeByRange((range) => {
-      let from = range.from,
-        to = range.to;
-      if (range.empty) {
-        const line = state.doc.lineAt(from);
-        const next = forward
-          ? from === line.to
-            ? Math.min(state.doc.length, from + 1)
-            : line.from + findClusterBreak(line.text, from - line.from, true)
-          : from === line.from
-            ? Math.max(0, from - 1)
-            : line.from + findClusterBreak(line.text, from - line.from, false);
-        from = Math.min(from, next);
-        to = Math.max(to, next);
-      }
-      return { changes: { from, to }, range: EditorSelection.cursor(from) };
-    });
-    dispatch(state.update(spec, { userEvent: forward ? 'delete.forward' : 'delete.backward' }));
-    return true;
-  };
-const commands: Record<Exclude<TextAction['name'], 'insert'>, StateCommand> = {
-  backspace: (target) => deleteMarkupBackward(target) || deleteCluster(false)(target),
-  delete: deleteCluster(true),
-  enter: (target) => continueList(target) || insertNewline(target),
-  indent: indentMore,
-  outdent: indentLess,
-  bold: toggleBold,
-  italic: toggleItalic,
-  code: toggleInlineCode,
-  strike: toggleStrikethrough,
-  task: toggleTask,
-  undo,
-  redo,
-};
+/** A mounted text surface shares its owner's lifetime, transport and export. */
+export type AdmittedTextSurface = Pick<
+  AdmittedText,
+  'status' | 'read' | 'input' | 'subscribe' | 'onStatus' | 'retry' | 'discardPending'
+>;
 const group = Annotation.define<number>();
 const encoder = new TextEncoder(),
   decoder = new TextDecoder('utf-8', { fatal: true });

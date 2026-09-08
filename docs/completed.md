@@ -389,3 +389,54 @@ complete startup/clear/migration/onboarding, exact trim, Account receive authori
 receiver composition, PRF and independent/platform review remain owed. This phase and phase five remain
 uncommitted. Only evidence cells and their three matrix hash pins change; no obligation or debt status is
 paid, and the independent L-2 progress document is unchanged.
+
+
+---
+
+### Encrypted-store implementation phase seven — admitted workspace commands and shared human history
+
+**Date:** 2026-09-08 · **Branch:** `codex/encrypted-store-contract-corrections` · **Stage:** bounded L-1 integration checkpoint
+
+**Check-in.** Phases five and six were committed as `0b5337a` before this phase began. This new workspace
+checkpoint is uncommitted. Existing completed entries describe their status at the time they were written.
+
+**Exit.** The [workspace adapter](./workspace-admission.md) brings Goals/card text, compose/moves/reorder/
+remove/split/merge/copy/file/bulk, actor initialization/update, settings and membership repair through one
+ordered owner. Existing command rules execute privately at the queue head. One human content undo manager
+covers Goals, days, cards and locations; system work and received work stay outside it. Accepted document,
+history, export and outgoing bytes advance together after their carrier. Mounted text surfaces share the
+workspace lifetime without acquiring a writable document. Application-content initialization completes a
+content barrier before a facade/editor can be exposed; failure mounts no editor.
+
+The Yjs seam forks runtime undo/redo delete sets, selection metadata and local-only Item.redone links.
+Separate private transactions preserve system origins for day creation, repair and bulk. This retains
+deleted runtime content with gc:false and adds a second full clone per preparation, a cost requiring
+performance/memory and independent review. History is not persisted. General large-command slicing and
+native IME acceptance remain owed; the 16 KiB encoded-delta guard remains in force.
+
+A real same-origin workspace BroadcastChannel exchanges accepted state in both directions on join before
+continuing accepted update delivery. That supplies actor/bootstrap structs which later updates may need.
+Received bytes still complete local content persistence before projection/dependent work. This channel is
+not Account authority, reliable delivery, old-writer exclusion or unbounded snapshot support.
+
+**Evidence.** The [recorded execution](./storage-conformance-runs/2026-09-08-workspace-admission.md) passes
+**10 browser cases / 62 assertions** and detects **four** source mutants. Real Goals/card editors, native
+input/undo, encrypted carrier aborts, tab joins, system repair and actual renderer crashes exercise the
+bounded integration. Reopen recovers accepted state offline with fresh runtime history. Close and known
+journal damage disable both ordinary surfaces and refuse export. The mutations discriminate pending
+history publication, system bulk in undo, remote work in undo and omitted redone links.
+
+Goals regression passes **12 cases / 61 assertions / three mutants**; admission regression passes
+**15 cases / 64 assertions / six mutants**. These preceded only the final workspace null-receipt correction,
+which is outside their import paths and is covered by the final workspace run. Full Vitest passes
+**607 tests / 51 files**, including 19 workspace tests. Typecheck, focused lint/format, build/budget/origin,
+sixteen vector generators/AAD, WASM verification and relevant project/traceability checks pass. Initial
+JS remains **306.3 kB / 350.0 kB** gzipped. The literal full check chain, geometry and separate unchanged
+carrier/custody/lifecycle browser suites were not rerun. `storage:workspace` is in the check chain.
+
+**Remaining.** The default React application and legacy provider still use the earlier writable store.
+Owned startup/classification/clear and scoped identity/index onboarding are the next boundary before
+application integration; exact trim and seeded legacy cutover/migration remain separate obligations.
+Account verification, PRF, generation/reference/receiver composition, supported-platform performance and
+independent review remain owed. Only matrix evidence and three hash pins advance; debt statuses and
+obligations do not change, and the independent L-2 progress record remains unchanged.

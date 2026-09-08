@@ -48,52 +48,61 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # bounded Goals editor checkpoint complete; workspace and acceptance work remain
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, editor-admission.md]
+status: in flight # bounded workspace command checkpoint complete; startup and acceptance remain
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, workspace-admission.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-08
 ```
 
-**Just completed.** Phase six connects a [real Goals editor](./editor-admission.md) to phase five's ordered
-admission owner: semantic typing/paste/list/format/task commands, multiple carets, cut, undo/redo and the
-existing export functions observe accepted state. A scoped BroadcastChannel carries accepted local
-bytes through the receive-before-promotion path. Refused input stays private, and repair/close disable
-ordinary surfaces. The [recorded execution](./storage-conformance-runs/2026-09-08-editor-admission.md)
-passes 12 browser cases/61 assertions and detects three mutants. Admission regression passes 15 cases/
-64 assertions and six mutants; full Vitest passes 588 tests. Phases five and six remain uncommitted.
+**Just completed.** Phases five and six are committed as `0b5337a`. Phase seven adds the
+[workspace adapter](./workspace-admission.md): Goals/card text and structural commands share one admitted
+human content history, while actor/schema initialization, day materialization, membership repair and
+bulk preserve system origins. Metadata and remote work stay outside content undo. One owner supplies
+accepted projections/export and shared mounted text surfaces. A bidirectional accepted-state tab handshake
+supplies bootstrap dependencies; received bytes commit locally before dependent work. This new checkpoint
+is uncommitted. The default application remains on its earlier store.
 
-**Preparation/acceptance gate.** Full-clone preparation still scales with encoded state and fragmentation.
-The recorded Mac-only profile ranges from 0.2 ms p95 at compact 1 KiB to 6.1 ms for an extreme 2000-writer
-history, excluding command/history, encryption, view and paint. Optimize/profile the complete path before
-low-end/editor acceptance; no budget revision is implied. The tested Blink composition commit route
-works, including missing compositionend, but native preedit/candidate-window and device/IME behavior
-remain unvalidated. These are explicit gates before enabling the new editor path by default.
+**Evidence.** [Recorded execution](./storage-conformance-runs/2026-09-08-workspace-admission.md) passes
+10 workspace browser cases/62 assertions and detects four mutants, including lost Yjs redo links in a
+restored card. Real Goals/card editors, aborts, tab joins, system repair and renderer death exercise the
+bounded adapter. Close and known journal damage disable ordinary surfaces/export. Goals regression
+passes 12 cases/61 assertions/three mutants; admission regression passes 15 cases/64 assertions/six
+mutants. The final workspace receipt correction is outside those regression import paths and has final
+workspace/unit coverage. Full Vitest passes 607 tests/51 files; applicable build/project checks pass.
 
-**Next integration.** A workspace command adapter must bring cards/moves, actor initialization and repair,
-settings and actor-scoped cross-surface undo through one owner. The current text facade owns only Goals
-history. Full owned startup/classification/clear/migration and Local/Account identity/index onboarding
-remain separate subsequent checkpoints, along with exact trim. The app still uses its earlier persistence.
-Sequencing §3.2's items 3–6 remain one integrated landing unit developed in reviewable checkpoints.
+**Preparation/acceptance gate.** Forking accepted runtime history requires gc:false deleted-content
+retention, version-sensitive Yjs Item.redone/delete-set copying and another whole-document clone in
+addition to the ordered owner's draft. History is runtime-only. No memory bound, zeroization or low-end
+input-to-paint budget pass is claimed. The phase-six clone profile excludes this added history work.
+Large structural/bulk/undo/deletion results still face the 16 KiB delta guard and need general bounded
+adapters. Native preedit/candidate-window, device/IME and complete interaction performance remain gates
+before enabling the new path by default.
 
-**Existing evidence.** Corrected contracts were committed as `f87997d`; shared harness and phase-one
-lifecycle as `ccfcbf0`; mandatory-factor custody as `a6d39a2`; encrypted content as `468cbe2`; synchronous
-journal as `9e60c6a`. [Phase-five admission](./ordered-admission.md) owns canonical state, exact forced
-retry, byte bounds, slicing and durability barriers. The [shared candidate run](./storage-conformance-runs/2026-09-08.md)
+**Next bounded integration.** Owned startup/classification: establish which retained workspace state may
+open normally, which needs repair, and how an interrupted open resumes before exposing application writes.
+This adapter's actor/content initialization is not full Local/Account genesis or index authority. Scoped
+identity/index onboarding, workspace clear, exact trim and seeded legacy migration/cutover remain separate
+obligations before replacing the React application's legacy store/provider. Sequencing §3.2 items 3–6
+remain one integrated landing unit built in checkpoints.
+
+**Existing evidence.** Corrected contracts: `f87997d`; shared harness and lifecycle: `ccfcbf0`;
+mandatory-factor custody: `a6d39a2`; content: `468cbe2`; synchronous journal: `9e60c6a`; ordered admission
+and Goals editor: `0b5337a`. [Phase-five admission](./ordered-admission.md) owns canonical state, exact
+forced retry, bounds, slicing and durability barriers. The [shared candidate run](./storage-conformance-runs/2026-09-08.md)
 contains 57 candidate subcases; all three pinned candidates fail the corrected contract and none is merged.
 Disk-union trim and fail-closed load remain donor ideas after exact identity-and-bytes deletion repair.
 
-**Completion blockers.** L-1 still owes full workspace/startup/clear conformance and the seeded legacy
-cutover kill matrix. The carrier has no trim API; journal flush is not workspace clear. PRF, Account
-receive authority and full Local/Account onboarding remain incomplete. L-3 composes generation/custody
-references with lifetimes and interrupted phases; the components do not implement retirement. L-4 carries
-supported-profile/authenticator, low-end performance, platform and independent-review evidence. Matrix
-pins are refreshed with obligations/debt statuses unchanged. No checkpoint pays old-writer cutover or a
-release gate.
+**Completion blockers.** L-1 still owes full application/startup/clear conformance and seeded legacy
+cutover kills. The carrier has no trim API; journal flush is not workspace clear. PRF, Account receive
+authority and full Local/Account onboarding remain incomplete. L-3 composes generation/custody references,
+lifetimes and interrupted phases; these components do not implement retirement. L-4 carries supported
+profiles/authenticators, low-end performance, platform and independent review. Only matrix evidence and
+three pins advance, with obligations/debt statuses unchanged. No checkpoint pays old-writer cutover or release.
 
-**Scope.** This seat owns L-1 implementation/evidence. The independent L-2 seat below retains its own
-record. The author's real-data cutover remains Stage 2, after carrier selection and review 3a. Historical
-Stage 0 records are not certification of states their models omitted.
+**Scope.** This seat owns L-1 implementation/evidence. The independent L-2 record below is unchanged.
+The author's real-data cutover remains Stage 2 after carrier selection and review 3a. Historical Stage 0
+records do not certify states their models omitted.
 
 ---
 

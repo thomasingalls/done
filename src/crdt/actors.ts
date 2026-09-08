@@ -135,6 +135,50 @@ export interface ActorContext {
   systemOrigin: Origin;
 }
 
+/** Identity comes from the owning application, before private document preparation. */
+export interface WorkspaceActorIdentity {
+  readonly id: ActorId;
+  readonly actor: Actor;
+  readonly device: Device;
+}
+export const registerWorkspaceActor = (
+  doc: YDoc,
+  identity: WorkspaceActorIdentity,
+): ActorContext => {
+  if (
+    !identity.id ||
+    identity.id === SYSTEM_ACTOR_ID ||
+    identity.actor.kind !== 'human' ||
+    !identity.actor.name.trim() ||
+    !/^#[0-9a-f]{6}$/iu.test(identity.actor.color) ||
+    !identity.device.id
+  )
+    throw Error('A valid human workspace actor is required.');
+  const meta = doc.getMap('meta'),
+    device = { ...identity.device };
+  const systemOrigin: Origin = Object.freeze({
+    actor: SYSTEM_ACTOR_ID,
+    kind: 'system',
+    device: device.id,
+  });
+  transact(doc, systemOrigin, () => {
+    migrateLegacyRoster(meta);
+    const existing = actorFrom(meta, identity.id);
+    if (existing && existing.kind !== 'human')
+      throw Error('Workspace actor kind conflicts with local identity.');
+    if (!existing) meta.set(actorKey(identity.id), { ...identity.actor });
+    if (!actorFrom(meta, SYSTEM_ACTOR_ID))
+      meta.set(actorKey(SYSTEM_ACTOR_ID), { kind: 'system', name: 'done', color: '#8a8a8a' });
+  });
+  return {
+    id: identity.id,
+    actor: { ...actorFrom(meta, identity.id)! },
+    device,
+    origin: Object.freeze({ actor: identity.id, kind: 'human', device: device.id }),
+    systemOrigin,
+  };
+};
+
 /**
  * Resolves the local actor, creating one on first run, and makes sure both it
  * and the system actor are in the synced roster.

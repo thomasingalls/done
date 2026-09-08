@@ -207,3 +207,67 @@ export const createUndoManager = (
   scope: UndoScope | UndoScope[],
   trackedOrigins: Set<unknown>,
 ): YUndoManager => new Y.UndoManager(scope, { trackedOrigins });
+
+/** Private runtime workspace history. Deleted content is retained until this history is disposed. */
+export const createHistoryDoc = (): YDoc => new Y.Doc({ gc: false });
+export const workspaceUndo = (doc: YDoc, origin: unknown): YUndoManager =>
+  new Y.UndoManager(
+    [doc.getText('master'), doc.getMap('days'), doc.getMap('cards'), doc.getMap('cardLocations')],
+    {
+      trackedOrigins: new Set([origin]),
+      captureTimeout: Infinity,
+    },
+  );
+
+/**
+ * Fork an accepted runtime history for private preparation. Yjs wire updates do not carry
+ * Item.redone links or UndoManager stacks. Keep this version-sensitive use inside the v13 seam.
+ * Metadata is application-owned structured-cloneable selection data, never Yjs types/callbacks.
+ */
+export const forkWorkspaceHistory = (source: YUndoManager, origin: unknown): YUndoManager => {
+  const doc = createHistoryDoc(),
+    bytes = encodeState(source.doc);
+  try {
+    applyUpdate(doc, bytes);
+    doc.transact((tr) => {
+      for (const structs of source.doc.store.clients.values())
+        for (const item of structs) {
+          if (!(item instanceof Y.Item) || !item.redone) continue;
+          const copied = Y.getItemCleanStart(tr, item.id);
+          Y.getItemCleanEnd(
+            tr,
+            doc.store,
+            Y.createID(item.id.client, item.id.clock + item.length - 1),
+          );
+          if (!(copied instanceof Y.Item))
+            throw Error('Runtime undo content was garbage-collected.');
+          copied.redone = Y.createID(item.redone.client, item.redone.clock);
+        }
+    });
+    const manager = workspaceUndo(doc, origin);
+    const copySet = (value: (typeof source.undoStack)[number]['insertions']) => {
+      const copy = Y.createDeleteSet();
+      for (const [client, ranges] of value.clients)
+        copy.clients.set(
+          client,
+          ranges.map((r) => ({ clock: r.clock, len: r.len })),
+        );
+      return copy;
+    };
+    const copyStack = (stack: typeof source.undoStack) =>
+      stack.map((item) => ({
+        insertions: copySet(item.insertions),
+        deletions: copySet(item.deletions),
+        meta: structuredClone(item.meta),
+      }));
+    manager.undoStack = copyStack(source.undoStack);
+    manager.redoStack = copyStack(source.redoStack);
+    manager.lastChange = source.lastChange;
+    return manager;
+  } catch (error) {
+    doc.destroy();
+    throw error;
+  } finally {
+    bytes.fill(0);
+  }
+};

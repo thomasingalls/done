@@ -1685,3 +1685,36 @@ costs. This does not prove the low-end budget holds or justify changing it. Prep
 complete interaction measurement, plus native IME validation, remain prerequisites for editor acceptance.
 The [execution record](./storage-conformance-runs/2026-09-08-editor-admission.md) distinguishes passing
 cases and mutations from corrected/incomplete development runs. No release gate is paid by this checkpoint.
+
+
+### 2026-09-08 — one admitted workspace history, with private system transactions and tab bootstrap exchange
+
+The [phase-seven workspace adapter](./workspace-admission.md) reuses existing semantic application commands
+at the ordered admission head. Goals/card text and human structural operations share a runtime content
+undo scope. Metadata remains outside that scope, as in the existing application. Day materialization,
+bulk work and membership repair keep their system origins. Received work persists before promotion and
+never enters human undo. Application actor/schema initialization itself enters admission and completes a
+content barrier before the factory returns. Identity is supplied by the owner; this does not introduce
+legacy localStorage actor/device side effects or solve scoped identity onboarding.
+
+Preparation uses a private history document separate from the ordered owner's draft because its outer
+transaction would swallow nested origins. The pinned Yjs seam copies delete sets, selection metadata and
+Item.redone links that wire encoding omits. The browser mutant demonstrates the latter dependency by
+removing a card, restoring it and undoing an earlier text edit inside it. gc:false retains deleted runtime
+content and this design adds a second full clone. Those costs and version-sensitive internals are explicit
+acceptance/review work, not a performance optimization or a claim that arbitrary runtime history is proved.
+
+The workspace facade exposes detached projections, accepted export/update bytes and shared text surfaces.
+Text surfaces do not own session close or transport. Each command receipt preserves its business result,
+including false/null/zero; a completed no-op/refusal must not be confused with an applied mutation or a
+storage failure. Storage-blocked preparation retains the pending candidate and history for retry/discard.
+
+Joining same-origin tabs exchange accepted snapshots in both directions: actor initialization can happen
+before a channel opens, so future-only update delivery can omit dependencies permanently. Snapshots and
+subsequent bytes all enter the receiver's durable FIFO path. The channel remains a bounded participating-tab
+adapter with explicit error reporting, not Account authorization, reliable delivery or a trim certificate.
+
+[Execution evidence](./storage-conformance-runs/2026-09-08-workspace-admission.md) covers real editor surfaces,
+commands, aborts, joins and renderer death. It leaves the default application on its earlier store. Full
+startup/classification/clear, scoped identity/index, migration/cutover, exact trim and the release/review
+obligations remain subsequent work; no debt status changes at this checkpoint.
