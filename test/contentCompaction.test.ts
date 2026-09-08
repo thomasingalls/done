@@ -12,6 +12,7 @@ import {
   type JournalSession,
 } from '../src/crdt/custody';
 import { deriveStoreName } from '../src/crdt/storeName';
+import { makeSource, checkRecovery } from './storage-properties/oracle';
 import { validateContentUpdates } from '../src/crdt/contentCompaction';
 const scope = { slotId: 'trim-unit', principalId: 'principal', workspaceId: 'workspace' };
 const authority = { ...scope, resolvePrincipal: () => scope.principalId };
@@ -200,10 +201,57 @@ describe('exact-coverage content compaction (unit wiring locks only)', () => {
       const expected = doc.getText('text').toString();
       doc.destroy();
       await s.appendBatch([{ kind: 'update', bytes: updates[1]! }]);
-      await s.compactContent();
+      const before = await inventory();
+      expect((await s.compactContent()).status).toBe('retained');
+      expect(await inventory()).toEqual(before);
       expect(await replay(s, [updates[0]!])).toBe(expected);
     },
   );
+  it('defers the generated cross-client partial-merge counterexample, then compacts after its basis arrives', async () => {
+    const { s, code } = await seed();
+    const source = makeSource([
+      { lane: 0, actor: 1, at: 0, text: 'a', remove: 0 },
+      ...Array.from({ length: 3 }, () => ({ lane: 0, actor: 0, at: 0, text: 'a', remove: 0 })),
+    ]);
+    const ids = [3, 1, 5];
+    await s.appendBatch(
+      ids.map((i) => ({ kind: 'update', bytes: new Uint8Array(source.updates[i]!) })),
+    );
+    const before = await inventory();
+    expect(await s.compactContent()).toMatchObject({
+      status: 'retained',
+      stateSequence: null,
+      removed: [],
+    });
+    expect(await inventory()).toEqual(before);
+    await s.close();
+    const cold = await openJournalSession(authority, code);
+    sessions.push(cold);
+    const pending = await cold.loadRecovery();
+    expect(() =>
+      checkRecovery(
+        source,
+        ids,
+        pending.records.map((r) => r.bytes),
+      ),
+    ).not.toThrow();
+    pending.records.forEach((r) => r.bytes.fill(0));
+    await cold.appendBatch(
+      source.updates.flatMap((u, i) =>
+        ids.includes(i) ? [] : [{ kind: 'update' as const, bytes: new Uint8Array(u) }],
+      ),
+    );
+    expect((await cold.compactContent()).status).toBe('compacted');
+    const complete = await cold.loadRecovery();
+    expect(() =>
+      checkRecovery(
+        source,
+        source.updates.map((_, i) => i),
+        complete.records.map((r) => r.bytes),
+      ),
+    ).not.toThrow();
+    complete.records.forEach((r) => r.bytes.fill(0));
+  });
   it.each(['update', 'state'] as const)(
     'refuses an authenticated malformed %s even when it is the only record',
     async (kind) => {

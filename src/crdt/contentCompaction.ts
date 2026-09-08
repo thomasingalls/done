@@ -1,5 +1,5 @@
 /** Internal exact-coverage owner. No caller document, coverage token, or arbitrary deletion API. */
-import { Y } from './yjs';
+import { Y, hasPendingUpdates } from './yjs';
 import type { Bytes } from './custodyCrypto';
 import {
   CONTENT_STORES,
@@ -53,14 +53,15 @@ export const equalStoredRecord = (a: StoredRecord, b: StoredRecord): boolean =>
   equalBytes(a.nonce, b.nonce) &&
   equalBytes(a.ct, b.ct);
 
-/** Validate even a singleton update: mergeUpdates' singleton fast path does not decode it. */
-export const validateContentUpdates = (updates: readonly Bytes[]): void => {
+/** Validate even a singleton; return whether every struct/deletion dependency integrated. */
+export const validateContentUpdates = (updates: readonly Bytes[]): boolean => {
   const doc = new Y.Doc({ gc: false });
   try {
     for (const bytes of updates) {
       Y.decodeUpdate(bytes);
       Y.applyUpdate(doc, bytes);
     }
+    return !hasPendingUpdates(doc);
   } catch (cause) {
     throw new ContentError('repair-required', 'Persisted CRDT bytes are unreadable.', { cause });
   } finally {
@@ -165,10 +166,13 @@ export const compactContent = async (
     .map((r) => parseStoredRecord(r.value));
   try {
     const updates = content(opened).map((r) => r.bytes);
-    task.step(() => validateContentUpdates(updates));
+    const complete = task.step(() => validateContentUpdates(updates));
+    // Pinned Yjs can strand cross-client structs after merging an incomplete union, even
+    // after later dependencies arrive. Keep original framing until the disk union integrates.
+    if (!complete) return receipt('retained', null);
     if (!covered.length || (covered.length === 1 && covered[0]!.kind === 'state'))
       return receipt('unchanged', null);
-    // Merge actual wire updates, preserving pending structs and deletion sets without a state-vector proxy.
+    // Merge only an integrated disk union; coverage still comes from exact records, never a vector.
     merged = task.step(() => new Uint8Array(Y.mergeUpdates(updates)));
     if (merged.length > MAX_BATCH_BYTES)
       throw new ContentError(

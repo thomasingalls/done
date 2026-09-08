@@ -35,6 +35,10 @@ export const newArray = <T>(): YArray<T> => new Y.Array<T>();
 
 export const encodeState = (doc: YDoc): Uint8Array => Y.encodeStateAsUpdate(doc);
 
+/** Pinned v13 integration state. Incomplete disk unions must retain their original update framing. */
+export const hasPendingUpdates = (doc: YDoc): boolean =>
+  doc.store.pendingStructs !== null || doc.store.pendingDs !== null;
+
 export const applyUpdate = (doc: YDoc, update: Uint8Array, origin?: unknown): void =>
   Y.applyUpdate(doc, update, origin);
 

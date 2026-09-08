@@ -1840,3 +1840,28 @@ native request-success/abort distinctions and actual renderer death. The selecte
 formats remain unchanged. Storage/crypto review and full reference/Account/checkpoint composition remain
 owed. Next is legacy migration/cutover preparation, before any real-data or default-application switch.
 No debt status changes at this checkpoint.
+
+
+### 2026-09-09 — generate production carrier histories; defer compaction over unresolved dependencies
+
+The [property harness](./storage-properties.md) exercises the real encrypted carrier with a separate source
+operation ledger. Pending text structs/deletions are checked by decoded wire inventories, and complete
+semantic bases by replay plus a plain string model. Partial visible equality is not a preservation oracle:
+pinned Yjs can expose different portions of incomplete information depending on update framing/order.
+The suite still requires every pending clock/payload and deletion range to survive, and every fully supplied
+history to recover. It also requires maintenance to complete once its basis is actually persisted.
+
+Generated cross-client histories exposed a stronger failure in the previous compactor: merging a partial
+union could strand text even after all dependencies were delivered. The bounded correction retains the
+original content records whenever validation leaves pending structs or deletion sets. It returns `retained`
+with no reserved state sequence and no persistent mutation; later flush/dependency delivery and a fresh
+compaction can proceed. This is valid pending material, not damage. The guard is read through the pinned
+Yjs seam and must be reevaluated on a dependency upgrade. The native counterexample and standalone complete-
+delivery control are recorded in [execution evidence](./storage-conformance-runs/2026-09-09-storage-properties.md).
+
+Exact identity/byte coverage, journal authentication, transaction-completion receipts, invocation accounting
+and mandatory-factor custody remain unchanged. Deferral can retain growing input while dependencies are
+absent; streaming, memory limits and scheduling remain acceptance work. Source mutants must repeat a named
+property failure and pass the same minimized history on unmodified production; exceptions/timeouts do not
+count as sensitivity. JSON replay accompanies seed/path metadata. No debt is paid, and migration/default-app
+cutover remains subsequent work.

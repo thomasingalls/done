@@ -190,7 +190,7 @@ export async function runCase(definition, env) {
           const p = await t(a, 'probe', mode);
           await append(a, 'pending-' + mode, [p.updates[1]]);
           await t(a, 'compact', 'trim-' + mode);
-          check(mode + '-compacted', (await settled(a, 'trim-' + mode)).value?.status, 'compacted');
+          check(mode + '-retained', (await settled(a, 'trim-' + mode)).value?.status, 'retained');
           const b = await page();
           await open(b, code);
           check(

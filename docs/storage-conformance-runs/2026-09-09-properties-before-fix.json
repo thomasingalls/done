@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "scope": "encrypted-storage-properties",
+  "started": "2026-09-08T22:17:05.584Z",
+  "harness": {
+    "commit": "85c74042f4ab5837df1e5c36007fae11e649d205",
+    "dirty": true,
+    "files": {
+      "src/crdt/custody.ts": "f0605c8f31b7e9e072ca59f45f9cdb9331279b2da1605a1aa727ae8b5ad52a76",
+      "src/crdt/localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+      "src/crdt/startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+      "src/crdt/startupState.ts": "f923a328ce9f1a24737e21d24589fce4d5fb569d34b9ebc1cb39032c2dbae08f",
+      "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+      "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+      "src/crdt/writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+      "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+      "src/crdt/contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+      "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+      "src/crdt/contentCompaction.ts": "126934a7853d490e5c8647ad0d28a0159405ce13d803c3e8d7805df32aacf57b",
+      "src/crdt/yjs.ts": "9567b4ff68af1b522600c21a1e5c4a27f4fdea5079e56f3b5f585370a5ac2b7e",
+      "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+      "src/crdt/journalCodec.ts": "fb6a10ca41cb74875580ec179dceb2540f6e9b20dc58cd6e40d23d95a4cebee7",
+      "src/crdt/journalStore.ts": "452af4237246b73594edfd85267b11007a349e8883b16f8567c93e7d39698490",
+      "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265",
+      "package.json": "bb10eaddae998ef0d6372aa85b85c50c9fc04fae448277149533133b82918ba3",
+      "pnpm-lock.yaml": "52153631a8196a6317dbbf68eb85b67622482d0df2c7c2cd69bd8f512a27a1ac",
+      "docs/storage-properties.md": "b682ae3cc175c8f34fbb6ec77d9860f19e6d9330fdd6d40f29620ec3d8d79ac5",
+      "docs/storage-contract.md": "439b820e3258feafc5fdef8b42448cc2bbdb045615db3ae9e4494e00933a8e4f",
+      "scripts/content-trim/catalog.mjs": "96dec1046dd4490d905f2f5189113796a6f6e4fb216de835b1729176e41a5e43",
+      "test/storageProperties.test.ts": "da514dcd36f5dc2e61b742e50cb8e5e45ecf7ea706cb724a3fe7c5490fe70bad",
+      "scripts/storage-properties/arbitrary.mjs": "0453eb7ed5ed966cedff4e20d973cae1be1b0dcb3b462cc294c39393f670bab2",
+      "scripts/storage-properties/mutants.mjs": "3f4e6a3efe56ac1bc5fab32baa659e26a6aeb1b9747cd4c142e94f9a23fac1ee",
+      "scripts/storage-properties/run.mjs": "0771172c33b9212eae8a7abba9e9d7b580db242b78336e72b229a002843b8c97",
+      "test/storage-properties/browser.mjs": "df0f6fb9310ba25aae7846c120530e1956606ab5153ebd800ffa11a7076cadd5",
+      "test/storage-properties/corpus/discard-pending-wire-bytes.json": "2dba1ea71b5b00fc0a64eca8a80df28cb91231edfe71a9c912cab05e2c2421ab",
+      "test/storage-properties/corpus/early-delete-receipt.json": "7d125534067cd6a3edef557ffef08a910398f596ac403be9e841e11a3f937db8",
+      "test/storage-properties/corpus/partial-cross-client-merge.json": "24babad76a229f6786e9b7137d140f49d37681c22f7d5444390bd0abfdcd5794",
+      "test/storage-properties/corpus/partial-disk-union.json": "7fb4a280d9aa005f4ab221642d07c9ce6f4ed92790bc46128dfab0e3093b736c",
+      "test/storage-properties/corpus/range-delete.json": "b76d4b52a4f8fcd57f72c75e934df96bdd101e28f72add54b2ca9346aa6a4dc3",
+      "test/storage-properties/index.html": "aeedcb818f8dda0941b8eca97caae2a74d245e2ecefe8ac8cb9236808c7ecf8a",
+      "test/storage-properties/oracle.ts": "3b139c3d400eb649a869a605d1081ac249877c2b055f519ccabab0073444423d"
+    },
+    "node": "v26.8.1",
+    "fastCheck": "4.9.0",
+    "vite": "8.1.5"
+  },
+  "seeds": [8941, 130003, 991827],
+  "runsPerSeed": 40,
+  "baseline": {
+    "sourceHashes": {
+      "custody.ts": "f0605c8f31b7e9e072ca59f45f9cdb9331279b2da1605a1aa727ae8b5ad52a76",
+      "localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+      "startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+      "startupState.ts": "f923a328ce9f1a24737e21d24589fce4d5fb569d34b9ebc1cb39032c2dbae08f",
+      "custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+      "custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+      "writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+      "contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+      "contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+      "contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+      "contentCompaction.ts": "126934a7853d490e5c8647ad0d28a0159405ce13d803c3e8d7805df32aacf57b",
+      "yjs.ts": "9567b4ff68af1b522600c21a1e5c4a27f4fdea5079e56f3b5f585370a5ac2b7e",
+      "storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+      "journalCodec.ts": "fb6a10ca41cb74875580ec179dceb2540f6e9b20dc58cd6e40d23d95a4cebee7",
+      "journalStore.ts": "452af4237246b73594edfd85267b11007a349e8883b16f8567c93e7d39698490",
+      "seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+    },
+    "corpus": [
+      {
+        "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test/storage-properties/corpus/partial-cross-client-merge.json",
+        "hash": "24babad76a229f6786e9b7137d140f49d37681c22f7d5444390bd0abfdcd5794",
+        "outcome": {
+          "error": {
+            "type": "property",
+            "invariant": "recovery-visible",
+            "actual": ["base0", "base1", ""],
+            "expected": ["abase0", "base1", ""],
+            "message": "recovery-visible: [\"base0\",\"base1\",\"\"] !== [\"abase0\",\"base1\",\"\"]",
+            "stack": "Error: recovery-visible: [\"base0\",\"base1\",\"\"] !== [\"abase0\",\"base1\",\"\"]\n    at equal (http://127.0.0.1:5186/test/storage-properties/oracle.ts:14:65)\n    at check (http://127.0.0.1:5186/test/storage-properties/oracle.ts:82:3)\n    at http://127.0.0.1:5186/test/storage-properties/oracle.ts:94:4\n    at Array.forEach (<anonymous>)\n    at checkRecovery (http://127.0.0.1:5186/test/storage-properties/oracle.ts:90:18)\n    at check (http://127.0.0.1:5186/test/storage-properties/browser.mjs:157:26)\n    at async step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:333:3)\n    at async Object.step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:372:14)\n    at async <anonymous>:337:30"
+          },
+          "index": 1
+        }
+      }
+    ],
+    "campaigns": [],
+    "coverage": {},
+    "requiredCoverage": [],
+    "missingCoverage": []
+  },
+  "mutations": [],
+  "limits": [
+    "Two native shared journal sessions in one renderer, three source text lanes with generated authors and cross-client dependencies; generated overlaps at named boundaries, not an exhaustive browser scheduler.",
+    "Actual generation-one factor custody, IndexedDB/Web Locks/WebCrypto/WASM; synthetic identity/creation authority. No default application, ordered editor admission, genesis/clear, migration or generation rotation.",
+    "Operation ledger and string edits are independent of persistence; both wire replay sides use pinned Yjs. This tests carrier preservation, not independent CRDT correctness.",
+    "Controlled quota/removal/transaction faults and renderer death on one Chromium/macOS host; no power-loss, real quota exhaustion or supported-platform claim."
+  ],
+  "browser": {
+    "version": "151.0.7922.34",
+    "executablePath": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "platform": "darwin",
+    "arch": "arm64",
+    "playwright": "1.62.0"
+  },
+  "exitCode": 1,
+  "finished": "2026-09-08T22:17:07.244Z"
+}

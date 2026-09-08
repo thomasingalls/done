@@ -69,12 +69,12 @@ export const mutants = [
     to: ';',
   },
   {
-    id: 'discard-pending-wire-bytes',
+    id: 'merge-incomplete-content',
     file: 'contentCompaction.ts',
     case: 'T04.dependencies',
-    assertion: 'pending-struct-recovers',
-    from: 'new Uint8Array(Y.mergeUpdates(updates))',
-    to: '(() => { const doc = new Y.Doc(); for (const u of updates) Y.applyUpdate(doc,u); const bytes = Y.encodeStateAsUpdate(doc); doc.store.pendingStructs = null; doc.store.pendingDs = null; const incomplete = Y.encodeStateAsUpdate(doc); doc.destroy(); return new Uint8Array(incomplete); })()',
+    assertion: 'struct-retained',
+    from: "if (!complete) return receipt('retained', null);",
+    to: ';',
   },
   {
     id: 'early-delete-receipt',

@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "origin": "Generated source-mutant counterexample, not a production defect",
+  "mutant": "clear-journal-before-commit",
+  "seed": 8941,
+  "path": "19:1:0:0:0:1:1:1:2:1:1:2:6:10:10:10:0:8:8:3:3",
+  "shrinks": 20,
+  "prunedTrailingSteps": 1,
+  "history": {
+    "edits": [],
+    "steps": [
+      {
+        "op": "journal",
+        "id": 0
+      },
+      {
+        "op": "overlap",
+        "background": "flush",
+        "boundary": "seal",
+        "ids": [0],
+        "during": [
+          {
+            "op": "compact"
+          }
+        ],
+        "finish": "release"
+      }
+    ]
+  },
+  "invariant": "recovery-wire-structs"
+}

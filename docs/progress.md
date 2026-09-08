@@ -48,31 +48,29 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # exact content compaction complete; legacy cutover and acceptance remain
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, content-trim.md]
+status: in flight # production properties complete; legacy cutover and acceptance remain
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, storage-properties.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
-updated: 2026-09-08
+updated: 2026-09-09
 ```
 
-**Just completed.** Phase ten is committed as `d7c0f32`. Phase eleven adds [exact-coverage content
-compaction](./content-trim.md) to the journal-capable session under its shared lifetime. It merges
-validated authenticated disk updates, including unresolved structs/deletion sets, publishes a reserved
-state and rechecks the exact current census in the deleting transaction. Only initially covered content
-identities/bytes are removed. Journal, heads/outbound, late records, concurrent replacements, reservation
-history and opener references survive. Known damage refuses the whole trim and closes ordinary use;
-interruptions leave safe original/replacement carriers for a fresh invocation. This checkpoint is
-uncommitted; default-app routing and application-day archival remain unchanged.
+**Just completed.** Phase eleven is committed as `85c7404`. Phase twelve adds [production carrier
+properties](./storage-properties.md): generated/shrinkable edit, delivery, journal, flush, compaction,
+abort, close, reopen and renderer-death histories with an independent source ledger. It found a real
+partial-merge recovery failure in pinned Yjs. Compaction now retains the original records without reserving,
+publishing or deleting until its disk union's struct/deletion dependencies integrate. Missing basis in the
+journal can be flushed before a fresh compaction. Known malformed material still refuses. This checkpoint
+is uncommitted; its outcome is appended to [completed.md](./completed.md).
 
-**Evidence.** [Recorded compaction execution](./storage-conformance-runs/2026-09-08-content-trim.md) passes
-21 browser cases/128 assertions and detects eight mutants. Delayed reservation 2 survives the state-4
-replacement of 1/3; concurrent compactors retain both snapshots. Exact byte replacement after audit,
-new unreadable records, final journal checks, native aborts, three renderer deaths and lifetime/generation
-fencing pass. Content regression passes 13/58/five mutants; journal 17/93/six; custody 13/73/five;
-admission 15/64/six; Local clear 17/172/five; genesis 17/160/four; startup 15/96/three. Full Vitest passes
-679 tests/55 files; applicable build/project checks pass. The record distinguishes the initial missing-row
-mutant harness error and corrected intermediate unit assertions from the final successful executions.
-No supported-population, memory/latency, forensic-erasure or independent-review claim follows.
+**Evidence.** [Recorded execution](./storage-conformance-runs/2026-09-09-storage-properties.md) passes
+120 generated histories / 11,461 recovery comparisons, six corpus replays, 18 renderer deaths and 120
+checks that compaction resumes after basis persistence. Five mutants are detected, shrunk and replayed
+against faulty and unmodified production. Compaction regression passes 21 cases / 128 assertions / eight
+mutants. Full Vitest passes 687 tests / 56 files; build and applicable project checks pass. The record
+separates pending wire preservation from incomplete Yjs visibility and records exploratory failures and
+interruptions. The before-fix native counterexample and complete-delivery library control remain reproducible.
+No supported-platform, memory/latency, forensic-erasure or independent-review claim follows.
 
 **Next bounded integration.** Legacy migration/cutover preparation: explicit source inventory and authority,
 old-writer fencing, a fresh encrypted key/counter scope, and seeded interruption schedules before any
@@ -85,15 +83,16 @@ checkpoints; these component passes do not authorize real-data cutover.
 copies Yjs Item.redone/delete-set state through version-sensitive internals, adding a second full clone.
 History is runtime-only; no memory bound, zeroization or low-end input-to-paint budget pass is claimed.
 Large structural/bulk/undo/deletion output still faces the 16 KiB guard and needs general bounded adapters.
-Compaction reads/merges the full disk union in memory; its 4 MiB output bound does not bound input memory.
-Native IME/preedit and complete interaction performance remain gates before default editor acceptance.
+Compaction scans the full disk union; its 4 MiB output bound does not bound input memory. Dependency deferral
+may retain growing data until the basis arrives. Native IME/preedit, broader editor/admission properties
+and complete interaction performance remain gates before default editor acceptance.
 
 **Existing evidence.** Corrected contracts: `f87997d`; shared harness/lifecycle: `ccfcbf0`; mandatory-factor
 custody: `a6d39a2`; content: `468cbe2`; synchronous journal: `9e60c6a`; admission/Goals editor: `0b5337a`;
 workspace commands/history: `a48c090`; owned startup: `a916d61`; Local genesis/index: `ee60528`;
-scoped Local clear: `d7c0f32`. The [shared candidate run](./storage-conformance-runs/2026-09-08.md) contains
-57 candidate subcases; all three pinned candidates fail the corrected contract and none is merged.
-Disk-union merge is now implemented with exact identity-and-byte deletion, without adopting a range watermark.
+scoped Local clear: `d7c0f32`; content compaction: `85c7404`. The [shared candidate run](./storage-conformance-runs/2026-09-08.md)
+contains 57 candidate subcases; all three pinned candidates fail the corrected contract and none is merged.
+Earlier component/browser evidence remains historical; current property and compaction execution is linked above.
 
 **Completion blockers.** L-1 still owes integrated genesis/index/clear/default-application conformance and
 seeded legacy cutover kills. Scoped Local clear handles only the first completed active workspace;

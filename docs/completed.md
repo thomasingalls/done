@@ -626,3 +626,32 @@ maintenance, full-scan memory/performance, large-state chunking, shared/multiple
 onboarding/receive/checkpoint authority, PRF and generation/reference transitions remain subsequent work.
 Only matrix evidence and three pins advance; no debt status or obligation changes, and the independent
 L-2 progress record stays unchanged. Independent review and supported-platform acceptance remain owed.
+
+
+### 2026-09-09 — production encrypted-storage properties find and repair incomplete compaction
+
+**Outcome.** Phase eleven is committed as `85c7404`. The [native fast-check harness](./storage-properties.md)
+now generates, shrinks and replays production journal/content histories with independent source edits,
+pending wire inventories and complete-basis recovery. It runs native crypto, storage and writer sessions,
+including named overlaps, aborts and real renderer deaths; `storage:properties` joins the project check chain.
+
+Generation found a real pinned-Yjs partial-merge recovery defect. Content compaction now returns `retained`
+without reservation/publication/deletion while its disk union has unresolved structs or deletion sets.
+Original records and openers survive; a fresh call compacts once the basis reaches content storage. A
+four-edit counterexample fails before the fix and passes afterward, including eventual compaction. This
+postpones maintenance and may retain growing data; it is not a Yjs library repair or a new byte format.
+
+**Evidence.** [Recorded execution](./storage-conformance-runs/2026-09-09-storage-properties.md) passes
+**120 generated histories / 11,461 recovery comparisons**, six corpus replays, 18 renderer deaths and
+120 eventual-compaction checks; five source mutants are detected, shrunk and replayed against both faulty
+and unmodified production. The updated compaction regression passes **21/128/eight mutants**. Full Vitest
+passes **687 tests / 56 files**. Typecheck, focused lint/format, build/budget and applicable project checks
+pass. Initial JS remains **306.3 kB / 350.0 kB** gzipped. The evidence distinguishes the initial incomplete-
+visibility oracle from the final unconditional wire-inventory/complete-basis oracle and records interrupted
+exploration and refined mutation controls honestly. No whole-contract or supported-platform claim follows.
+
+**Remaining.** Legacy migration/cutover preparation is next. The default app, migration, generation/key
+retirement, additional/shared Local workspaces, Account authority, PRF and broader editor/interaction
+properties remain later work. Full-scan memory/performance, deferred maintenance growth, independent review
+and supported-platform acceptance remain owed. Only matrix evidence and its three pins advance; obligations,
+debt statuses and the independent L-2 progress record are unchanged. This checkpoint remains uncommitted.
