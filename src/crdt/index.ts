@@ -42,6 +42,7 @@ export * from './compaction';
 export * from './export';
 export * from './persistence';
 export * from './slotIndex';
+export * from './writeSession';
 export * from './sync';
 
 export interface Store extends DocumentTree {

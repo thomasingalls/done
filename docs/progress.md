@@ -42,41 +42,47 @@ that is no longer active.
 
 ---
 
-## Active slice: Stage 1 — corrected encrypted-store acceptance (`L-1`)
+## Active slice: Stage 1 — corrected encrypted-store implementation (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # Step 2 contract consolidation complete; shared production harness is next
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md]
+status: in flight # implementation phase one complete; factor custody is next
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, write-session.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers its represented cases only
-debts: consult docs/review/remediation/debts.json # no prose/model-only payment
+debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-08
 ```
 
-**Just completed.** Step 2 corrected the PRD/TRD, selected storage/custody schemas and their evidence
-claims, following the user's mandatory-factor choice. Its outcome is recorded in
-[completed.md](./completed.md). [storage-contract.md](./storage-contract.md) owns the detailed boundary;
-[storage-conformance.md](./storage-conformance.md) separates model/component evidence from 16 pending
-production scenarios. No candidate branch has been merged or certified.
+**Just completed.** Implementation phase one, the [write-session lifecycle](./write-session.md), is
+implemented and exported. Its [recorded execution](./storage-conformance-runs/2026-09-08-write-session.md)
+passes 13 real-browser cases and detects five guard-removal mutants, with zero harness or unexpected
+page errors. It covers shared/exclusive ownership, frozen tabs, task/session invalidation, work and cache
+cleanup, cancellation, initializer failures, workers and renderer death. The outcome is recorded in
+[completed.md](./completed.md). Application wiring and full storage/retirement safety remain subsequent work.
 
-**Next action.** Build one shared harness that invokes actual candidate open/admit/receive/trim/clear/
-custody paths, with controlled failure boundaries and browser lifecycle tests. Run the listed losing
-schedules and guard-removal mutants before choosing components. Then synthesize deliberately around
-an admission/lifetime coordinator satisfying the corrected contract; do not infer correctness from a
-candidate's own tests. The baseline's store handles and slot index are already present; items 3–6 remain
-the implementation unit in sequencing §3.2.
+**Next phase.** Mandatory-factor custody attached to this lifecycle, with its own bounded acceptance
+criteria: initialize only under a held permit, reload current durable state on each acquisition and clear
+owned capabilities during disposal. The generated code remains required at persistent genesis. Admission
+and editor/receive integration follow separately. Sequencing §3.2's items 3–6 remain one integrated landing
+unit, developed and reviewed in successive implementation checkpoints.
 
-**Completion blockers.** `node scripts/check-debts.mjs --gate L-1` requires the seeded legacy cutover
-kill matrix and corrected production storage conformance. L-3 composes all generation/custody reference
-classes with writer lifetimes and interrupted phases; L-4 carries full supported-profile/authenticator
-and platform evidence. New byte/model tests pay none of those obligations.
+**Existing evidence.** Contracts were committed as `f87997d`. The earlier
+[shared candidate run](./storage-conformance-runs/2026-09-08.md) contains 57 candidate subcases and three
+detected trim mutants. All three pinned candidates fail the corrected contract; none has been merged.
+Contract-pass's disk-union trim and fail-closed load remain component donors after repairing the
+identity-and-bytes deletion check. The lifecycle result does not change the candidate comparison.
 
-**Scope.** This branch corrects acceptance for L-1. The independent L-2 seat below retains its own
-record. The author’s real-data cutover remains Stage 2, after the carrier choice and review 3a; this work
-neither executes it nor declares those gates satisfied. Existing Stage 0 records remain dated records,
-not certification of states their models omitted.
+**Completion blockers.** `node scripts/check-debts.mjs --gate L-1` still requires the seeded legacy
+cutover kill matrix and complete corrected production storage conformance. Full clear/startup interruption
+matrices and mandatory-factor controls remain owed. L-3 composes generation/custody references with writer
+lifetimes and interrupted phases; L-4 carries supported-profile/authenticator and platform evidence.
+A Chromium component pass does not pay those broader obligations or establish the old-writer cutover.
+
+**Scope.** This seat owns L-1's corrected implementation and evidence. The independent L-2 seat below
+retains its own record. The author's real-data cutover remains Stage 2, after the carrier choice and
+review 3a. Existing Stage 0 records remain dated records, not certification of states their models omitted.
 
 ---
 

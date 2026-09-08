@@ -138,3 +138,58 @@ components and byte fixtures; no production conformance or complete copied-profi
 storage conformance at L-1, composed writer/generation lifecycle at L-3, and supported factor/profile
 evidence at L-4. Earlier finding dispositions remain historical evidence; this entry does not recertify
 the full protocol, merge candidate implementations, or execute the live Stage 2 cutover.
+
+---
+
+### Shared encrypted-store browser harness — pinned candidate executions
+
+**Date:** 2026-09-08 · **Branch:** `codex/encrypted-store-contract-corrections` · **Stage:** L-1 implementation evidence, not L-1 closure
+
+**Exit.** The Step 2 contracts were committed as `f87997d`. The shared
+[harness](./storage-harness.md) now invokes actual candidate storage, key, editor, application and clear
+paths through thin adapters. It archives three immutable commits, injects browser-primitive failures,
+crashes/freezes renderers, copies complete synthetic profiles, and records source hashes, assertions and
+storage inventories. It does not merge or repair candidate production code.
+
+**Evidence.** The [dated execution](./storage-conformance-runs/2026-09-08.md) preserves 57 unmodified
+candidate subcases and three detected trim mutants, with zero harness errors. All three candidates fail
+the corrected contract. In particular, all lose the larger remote dependency and dependent local edit
+after a renderer crash, leak pending input into ordinary editor/export/undo, and delete a trim input
+whose bytes changed after snapshot commit. Contract-pass passes the independent-writer, late-reservation
+and unreadable-trim controls. All three copied Chromium test profiles reopen without a factor. The full
+unit suite passes 507 tests in 43 files, including nine harness-reporting tests; TypeScript passes.
+
+**Remaining.** The catalog names 15 remaining-obligation rows per candidate, keeping all 16 acceptance
+requirements visible. These include unavailable integrated transition/custody/import APIs, complete
+clear/startup interruption matrices, factor controls and supported-platform evidence. The three new
+conformance debts remain open. The next implementation unit is the admission/lifetime coordinator,
+with selected donor components repaired and evaluated through this harness. No release gate is paid,
+candidate merged or live Stage 2 cutover executed by this result.
+
+---
+
+### Encrypted-store implementation phase one — write-session lifecycle
+
+**Date:** 2026-09-08 · **Branch:** `codex/encrypted-store-contract-corrections` · **Stage:** L-1 component checkpoint, not L-1 closure
+
+**Exit.** The agreed first implementation phase is complete. [writeSession.ts](../src/crdt/writeSession.ts)
+acquires a shared slot permit before initialization, requires cleanup for initialization, invalidates
+closed sessions and finished tasks, drains tracked work, clears caches and awaits native release.
+Exclusive operations use the same lifecycle after the initiating writer closes; there is no upgrade,
+timeout or stealing path. Failed cleanup disables writes and retains the permit. Reacquisition creates
+fresh capabilities and reruns initialization.
+
+**Evidence.** The [recorded browser execution](./storage-conformance-runs/2026-09-08-write-session.md)
+passes 13 scenarios and detects five deliberate regressions, with zero harness or unexpected page errors.
+It covers concurrent/frozen tab holders, task and session invalidation, detached work, partial initializer
+failure, delayed/failed cleanup, queued cancellation, exclusive failure, renderer death, dedicated-worker
+shutdown/termination and navigation. BFCache restoration was not observed. The full Vitest run passes
+514 tests in 44 files; TypeScript, focused lint/format and the production build pass. `pnpm storage:session`
+is included in `pnpm check`.
+
+**Remaining.** This is the production lifecycle component with synthetic key-cache/write probes, exported
+but not yet wired into the application. Mandatory-factor custody is the next phase; encrypted admission,
+editor/receive integration and complete journal/generation/retirement composition follow. The C04 evidence
+cell and its three existing debt pins were refreshed without changing obligations or paying any gate.
+The independent L-2 record and earlier candidate outcomes remain unchanged. The component guide is
+[write-session.md](./write-session.md).
