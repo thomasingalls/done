@@ -440,3 +440,51 @@ application integration; exact trim and seeded legacy cutover/migration remain s
 Account verification, PRF, generation/reference/receiver composition, supported-platform performance and
 independent review remain owed. Only matrix evidence and three hash pins advance; debt statuses and
 obligations do not change, and the independent L-2 progress record remains unchanged.
+
+
+---
+
+### Encrypted-store implementation phase eight — owned retained-workspace startup and classification
+
+**Date:** 2026-09-08 · **Branch:** `codex/encrypted-store-contract-corrections` · **Stage:** bounded L-1 integration checkpoint
+
+**Check-in.** The phase-seven workspace checkpoint was committed as `a48c090` before this phase. The
+new startup checkpoint remains uncommitted; earlier completed entries retain their historical status.
+
+**Exit.** [Owned startup](./owned-startup.md) now reads the scoped slot index, custody/control records,
+content witness/counter/layout and journal before selecting keys. Presentation preflight uses read-only
+known-name probes that abort would-be database creation. Normal open rereads inside the encrypted
+carrier's one shared lifetime, verifies factor/custody/content/journal, replays, validates the application
+schema and completes admitted initialization before returning a workspace for editor/channel construction.
+The required Local/Account identity verifier remains an external authority seam; a stored index is not
+accepted as an identity proof. The default React application remains on its earlier store.
+
+Absent carriers produce a fresh *observation*, not enrollment or genesis authority. Missing/inconsistent
+indexed material and orphan carriers refuse repair without reminting/resetting anything. Selected legacy
+routing stays on the migration path. Creation-pending and refusal-only clearing/cleared/migration hints
+preserve their carriers; this module neither authenticates a full cross-database creation/clear intent nor
+executes its resumption/deletion. Ordinary interrupted open reacquires, rereads and recovers admitted
+initialization before exposure. Cancellation drains owned crypto before releasing its permit.
+
+**Evidence.** The [recorded execution](./storage-conformance-runs/2026-09-08-owned-startup.md) passes
+**15 browser cases / 96 assertions** and detects **three** source mutants: probe creation, orphan-as-fresh
+and skipped classification after the grant. Native before/after inventories verify refusal preserves
+carriers and no normal database enumeration occurs. Actual locks, encrypted reads, mounted editor/channel,
+content-creation interruption and renderer death exercise the retained-open boundary. Wrong factor,
+unreadable ciphertext, unsupported application schema and damaged target journal refuse before ordinary
+exposure; an independently valid workspace remains usable. The first startup browser run passed.
+
+Workspace regression passes **10 cases / 62 assertions / four mutants**. Full Vitest passes **634 tests /
+52 files**, including 27 new startup preflight tests. Typecheck, focused lint/format, build/budget/origin,
+sixteen vector generators/AAD, WASM verification and applicable project/governance/traceability checks pass.
+Initial JS remains **306.3 kB / 350.0 kB** gzipped. The literal full check chain, geometry and separate
+unchanged Goals/admission/carrier/custody/lifecycle browser suites were not rerun; workspace regression
+covers the changed existing workspace module. `storage:startup` is in the check chain.
+
+**Remaining.** Next is verified fresh Local genesis and lifecycle-owned scoped indexing, including the
+immutable cross-database intent and mandatory factor confirmation. Full creation/migration resumption,
+journal-inclusive clear, exact trim, legacy cutover and default application/provider integration remain
+owed. Existing index mutations still need the writer/exclusive discipline. Account verifier wiring,
+receive authority, PRF/generation/reference composition, runtime-history/IME/performance acceptance and
+independent review remain separate work. Evidence and three matrix pins advance; obligations/debt statuses
+and the independent L-2 progress record do not change.

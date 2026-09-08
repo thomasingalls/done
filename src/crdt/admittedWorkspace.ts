@@ -18,7 +18,8 @@ import {
 import { type CustodyAuthority } from './custody';
 import { type Bytes } from './custodyCrypto';
 import { type WorkspaceActorIdentity, type Origin, listActors } from './actors';
-import { readSettings } from './doc';
+import { readSettings, SCHEMA_VERSION } from './doc';
+import { ContentError } from './contentRecord';
 import {
   cardAt,
   cardBody,
@@ -300,6 +301,14 @@ export const createAdmittedWorkspace = async (
       bytes = session.snapshot();
     try {
       applyUpdate(doc, bytes);
+      const version = doc.getMap('meta').get('schemaVersion');
+      if (
+        version !== undefined &&
+        (!Number.isSafeInteger(version) ||
+          (version as number) < 0 ||
+          (version as number) > SCHEMA_VERSION)
+      )
+        throw new ContentError('repair-required', 'Unsupported persisted workspace schema.');
       accepted = {
         history: workspaceUndo(doc, human),
         selections: new Map(),

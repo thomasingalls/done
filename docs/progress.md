@@ -48,57 +48,56 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # bounded workspace command checkpoint complete; startup and acceptance remain
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, workspace-admission.md]
+status: in flight # retained startup checkpoint complete; genesis/index and acceptance remain
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, owned-startup.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-08
 ```
 
-**Just completed.** Phases five and six are committed as `0b5337a`. Phase seven adds the
-[workspace adapter](./workspace-admission.md): Goals/card text and structural commands share one admitted
-human content history, while actor/schema initialization, day materialization, membership repair and
-bulk preserve system origins. Metadata and remote work stay outside content undo. One owner supplies
-accepted projections/export and shared mounted text surfaces. A bidirectional accepted-state tab handshake
-supplies bootstrap dependencies; received bytes commit locally before dependent work. This new checkpoint
-is uncommitted. The default application remains on its earlier store.
+**Just completed.** Phase seven is committed as `a48c090`. Phase eight adds
+[owned retained-workspace startup](./owned-startup.md): read-only scoped index/carrier preflight, then a
+fresh census inside the actual writer lifetime before factor unlock, complete replay and admitted
+initialization. A workspace is exposed to editor/transport only after its content barrier. Missing or
+inconsistent material, legacy routes, partial creation and clear/migration hints refuse without replacement
+or cleanup. Native probes do not create databases or enumerate stores. This checkpoint is uncommitted;
+the default application remains on its earlier store.
 
-**Evidence.** [Recorded execution](./storage-conformance-runs/2026-09-08-workspace-admission.md) passes
-10 workspace browser cases/62 assertions and detects four mutants, including lost Yjs redo links in a
-restored card. Real Goals/card editors, aborts, tab joins, system repair and renderer death exercise the
-bounded adapter. Close and known journal damage disable ordinary surfaces/export. Goals regression
-passes 12 cases/61 assertions/three mutants; admission regression passes 15 cases/64 assertions/six
-mutants. The final workspace receipt correction is outside those regression import paths and has final
-workspace/unit coverage. Full Vitest passes 607 tests/51 files; applicable build/project checks pass.
+**Evidence.** [Recorded startup execution](./storage-conformance-runs/2026-09-08-owned-startup.md) passes
+15 browser cases/96 assertions and detects three mutants. Actual locks, crypto, before/after inventories
+and renderer death test grant-time rereading, cancellation/drain, partial creation refusal, interrupted
+application initialization, wrong factors, damage and independently valid workspace isolation. Workspace
+regression passes 10 cases/62 assertions/four mutants. Full Vitest passes 634 tests/52 files, including 27
+new preflight tests; applicable build/project checks pass. Identity/enrollment/index setup remain explicit
+fixture seams, not product genesis or Account verification evidence.
 
-**Preparation/acceptance gate.** Forking accepted runtime history requires gc:false deleted-content
-retention, version-sensitive Yjs Item.redone/delete-set copying and another whole-document clone in
-addition to the ordered owner's draft. History is runtime-only. No memory bound, zeroization or low-end
-input-to-paint budget pass is claimed. The phase-six clone profile excludes this added history work.
-Large structural/bulk/undo/deletion results still face the 16 KiB delta guard and need general bounded
-adapters. Native preedit/candidate-window, device/IME and complete interaction performance remain gates
-before enabling the new path by default.
+**Next bounded integration.** Verified fresh Local genesis and lifecycle-owned scoped indexing: serialize
+one winning identity set, confirm mandatory factor custody and retain its immutable cross-database creation
+intent until all expected stages complete. That owner must turn the current absence/creation-pending
+observations into verified actions. Existing index writers do not yet take the lifecycle permits. Complete
+creation/migration resumption, journal-inclusive clear, exact trim and seeded legacy cutover remain separate
+obligations before replacing the default application/provider. Sequencing §3.2 items 3–6 remain one
+integrated landing unit developed in reviewable checkpoints.
 
-**Next bounded integration.** Owned startup/classification: establish which retained workspace state may
-open normally, which needs repair, and how an interrupted open resumes before exposing application writes.
-This adapter's actor/content initialization is not full Local/Account genesis or index authority. Scoped
-identity/index onboarding, workspace clear, exact trim and seeded legacy migration/cutover remain separate
-obligations before replacing the React application's legacy store/provider. Sequencing §3.2 items 3–6
-remain one integrated landing unit built in checkpoints.
+**Preparation/acceptance gate.** Workspace history retains deleted runtime content with gc:false and
+copies Yjs Item.redone/delete-set state through version-sensitive internals, adding a second full clone.
+History is runtime-only; no memory bound, zeroization or low-end input-to-paint budget pass is claimed.
+Large structural/bulk/undo/deletion output still faces the 16 KiB guard and needs general bounded adapters.
+Native IME/preedit and complete interaction performance remain gates before default editor acceptance.
 
-**Existing evidence.** Corrected contracts: `f87997d`; shared harness and lifecycle: `ccfcbf0`;
-mandatory-factor custody: `a6d39a2`; content: `468cbe2`; synchronous journal: `9e60c6a`; ordered admission
-and Goals editor: `0b5337a`. [Phase-five admission](./ordered-admission.md) owns canonical state, exact
-forced retry, bounds, slicing and durability barriers. The [shared candidate run](./storage-conformance-runs/2026-09-08.md)
+**Existing evidence.** Corrected contracts: `f87997d`; shared harness/lifecycle: `ccfcbf0`; mandatory-factor
+custody: `a6d39a2`; content: `468cbe2`; synchronous journal: `9e60c6a`; ordered admission/Goals editor:
+`0b5337a`; workspace commands/shared history: `a48c090`. The [shared candidate run](./storage-conformance-runs/2026-09-08.md)
 contains 57 candidate subcases; all three pinned candidates fail the corrected contract and none is merged.
 Disk-union trim and fail-closed load remain donor ideas after exact identity-and-bytes deletion repair.
 
-**Completion blockers.** L-1 still owes full application/startup/clear conformance and seeded legacy
-cutover kills. The carrier has no trim API; journal flush is not workspace clear. PRF, Account receive
-authority and full Local/Account onboarding remain incomplete. L-3 composes generation/custody references,
-lifetimes and interrupted phases; these components do not implement retirement. L-4 carries supported
-profiles/authenticators, low-end performance, platform and independent review. Only matrix evidence and
-three pins advance, with obligations/debt statuses unchanged. No checkpoint pays old-writer cutover or release.
+**Completion blockers.** L-1 still owes full genesis/index/clear/default-application conformance and seeded
+legacy cutover kills. The carrier has no trim API, and refusal-only clear hints are not an implemented
+ClearIntent or terminal marker protocol. PRF, Account verifier/receive authority and Local/Account onboarding
+remain incomplete. L-3 composes generation/custody references, lifetimes and interrupted phases; these
+components do not implement retirement. L-4 carries supported profiles/authenticators, low-end performance,
+platform and independent review. Only matrix evidence and three pins advance; obligations/debt statuses
+are unchanged. No checkpoint pays old-writer cutover or release.
 
 **Scope.** This seat owns L-1 implementation/evidence. The independent L-2 record below is unchanged.
 The author's real-data cutover remains Stage 2 after carrier selection and review 3a. Historical Stage 0

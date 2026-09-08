@@ -1718,3 +1718,32 @@ adapter with explicit error reporting, not Account authorization, reliable deliv
 commands, aborts, joins and renderer death. It leaves the default application on its earlier store. Full
 startup/classification/clear, scoped identity/index, migration/cutover, exact trim and the release/review
 obligations remain subsequent work; no debt status changes at this checkpoint.
+
+
+### 2026-09-08 — retained-workspace startup rereads under the eventual writer lifetime
+
+The next [bounded checkpoint](./owned-startup.md) owns retained-workspace opening. A read-only preflight
+can offer an unlock-required or refusal disposition; it cannot authorize a later open. Actual open repeats
+the scoped index/carrier census inside the underlying writer's shared permit, before custody reads/key
+selection, and holds that lifetime through authenticated replay, admitted application initialization and
+runtime use. Editor and transport construction follow only a ready result. The independent Local/Account
+identity verifier runs under the permit and does not turn a raw index row into authority.
+
+Known-name IndexedDB probes abort would-be creation, settle record reads at transaction completion, and
+close eventual abandoned connections. Missing initialized material, conflicting routes and orphan carriers
+are typed refusals; an undefined-valued retained row still counts as material. Structurally consistent
+preflight is not authentication: a correct factor and full carrier/replay validation remain required.
+Unsupported application schema is rejected before admitted actor/schema initialization.
+
+This phase deliberately has no genesis, clear or migration execution API. Fresh means observed absence of
+requested known carriers, not authorization to mint an identity/root or reset a counter. Creation-pending
+requires the later owner to authenticate its immutable cross-database intent and expected stages. Extra
+scoped rows bearing clearing/cleared/migrating tags give refusal-only hints, not validated transition
+formats, proof of completion or cleanup authority. Other unknown controls require repair.
+
+[Browser evidence](./storage-conformance-runs/2026-09-08-owned-startup.md) tests a clear marker installed
+between preflight and the eventual lock grant, cancellation while crypto is pending, and renderer death
+before the initialization barrier. Reacquisition and complete replay precede exposure; cancellation cannot
+release exclusion ahead of owned native work. The fixture's enrollment, identity and index installation
+are explicit synthetic assumptions. Verified Local genesis and lifecycle-owned indexing are next, before
+application cutover; no debt or release gate is paid by this checkpoint.
