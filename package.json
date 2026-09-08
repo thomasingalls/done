@@ -14,7 +14,7 @@
     "lint:fix": "oxlint --react-plugin --fix",
     "format": "oxfmt --check .",
     "format:fix": "oxfmt --write .",
-    "check": "pnpm typecheck && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm test:geometry && pnpm trace:check",
+    "check": "pnpm typecheck && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm test:geometry && pnpm trace:check",
     "test": "vitest run",
     "test:https": "pnpm build && pnpm --dir relay build && node scripts/test-https.mjs",
     "test:watch": "vitest",
@@ -47,7 +47,8 @@
     "wasm:stale": "node scripts/build-wasm-seal.mjs --check",
     "wasm:size": "node scripts/size-wasm-seal.mjs",
     "storage:custody": "node scripts/custody/run.mjs",
-    "storage:content": "node scripts/content/run.mjs"
+    "storage:content": "node scripts/content/run.mjs",
+    "storage:journal": "node scripts/journal/run.mjs"
   },
   "dependencies": {
     "@codemirror/commands": "^6.10.4",

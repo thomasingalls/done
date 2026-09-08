@@ -1,5 +1,6 @@
+import { deriveStoreName } from './storeName';
 /** Internal carrier owner. Only custody constructs its crypto callbacks. No key or reservation escapes. */
-import { fields, hex, random, type Bytes } from './custodyCrypto';
+import { hex, random, type Bytes } from './custodyCrypto';
 import { CUSTODY_STORE, openCustodyDb, recordKey } from './custodyRecord';
 import { contentTransaction, openContentDb } from './contentDatabase';
 import {
@@ -272,18 +273,7 @@ export const createContentOwner = (
           );
         witness = existing;
       }
-      const name =
-        'done.' +
-        hex(
-          new Uint8Array(
-            await task.wait(() =>
-              crypto.subtle.digest(
-                'SHA-256',
-                fields('done/store-name/v1', scope.principalId, scope.workspaceId),
-              ),
-            ),
-          ).subarray(0, 16),
-        );
+      const name = await task.wait(() => deriveStoreName(scope.principalId, scope.workspaceId));
       await task.wait(async () => {
         db = await openContentDb(task, name, Boolean(creation));
       });

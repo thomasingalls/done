@@ -3,6 +3,18 @@
  * credential. Startup supplies verified identity and the cross-carrier census;
  * completing this component alone does not complete workspace genesis.
  */
+import { deriveStoreName } from './storeName';
+import { deriveJournalKey } from './journalCodec';
+import {
+  createJournalOwner,
+  eraseJournalSnapshot,
+  type JournalAdmission,
+  type JournalUpdate,
+  type JournalFlushReceipt,
+} from './journalStore';
+export { JournalError, MAX_JOURNAL_UPDATE, JOURNAL_WATERMARK } from './journalCodec';
+export type { JournalRefusal } from './journalCodec';
+export type { JournalAdmission, JournalUpdate, JournalFlushReceipt } from './journalStore';
 import {
   createContentOwner,
   type ContentCreationOptions,
@@ -162,12 +174,15 @@ const newIntent = (): CreationIntent =>
 interface OwnedKeys {
   store: CryptoKey | null;
   metadata?: CryptoKey | null;
+  journal?: Bytes | null;
   wrapping: CryptoKey | null;
   signing: CryptoKey | null;
 }
 const clearKeys = (keys: OwnedKeys) => {
   keys.store = null;
   keys.metadata = null;
+  keys.journal?.fill(0);
+  keys.journal = null;
   keys.wrapping = null;
   keys.signing = null;
 };
@@ -178,6 +193,7 @@ const loadKeys = async (
   root: Bytes,
   keys: OwnedKeys,
   content = false,
+  journal = false,
 ): Promise<void> => {
   let generation: Bytes | undefined;
   try {
@@ -214,6 +230,14 @@ const loadKeys = async (
           ),
           { name: 'HMAC', hash: 'SHA-256', length: 256 },
           ['sign', 'verify'],
+          guardedSubtle(() => task.step(() => {})),
+        );
+      });
+    if (journal)
+      await task.wait(async () => {
+        keys.journal = await deriveJournalKey(
+          generation!,
+          scope.workspaceId,
           guardedSubtle(() => task.step(() => {})),
         );
       });
@@ -505,13 +529,19 @@ export const resumeCustodyCreation = (
   createOrResume(captureAuthority(input), codeBytes(code), { ...options }, 'resume');
 
 /** Internal owner shared by read-only custody and the allocated content carrier. */
-const prepareCustody = (input: CustodyAuthority, code: string, content: boolean) => {
+const prepareCustody = (
+  input: CustodyAuthority,
+  code: string,
+  content: boolean,
+  withJournal = false,
+) => {
   const authority = captureAuthority(input),
     factor = codeBytes(code);
   const keys: OwnedKeys = { store: null, wrapping: null, signing: null };
   let db: IDBDatabase | undefined, root: Bytes | undefined;
   let scope!: CustodyScope, record!: CustodyRecord;
   let carrier: ReturnType<typeof createContentOwner> | undefined;
+  let journal: ReturnType<typeof createJournalOwner> | undefined;
   const openRecord = (task: SessionTask, inputRecord: StoredRecord): Promise<Bytes> => {
     const value = task.step(() => parseStoredRecord(inputRecord));
     if (value.gen !== 1)
@@ -541,6 +571,9 @@ const prepareCustody = (input: CustodyAuthority, code: string, content: boolean)
       factor.fill(0);
     },
     describe: () => descriptor(scope, record),
+    get journal() {
+      return journal!;
+    },
     get carrier() {
       return carrier!;
     },
@@ -587,7 +620,7 @@ const prepareCustody = (input: CustodyAuthority, code: string, content: boolean)
           guardedSubtle(() => task.step(() => {})),
         ),
       );
-      await loadKeys(task, scope, record, root!, keys, content);
+      await loadKeys(task, scope, record, root!, keys, content, withJournal);
       root!.fill(0);
       root = undefined;
       db!.close();
@@ -627,6 +660,18 @@ const prepareCustody = (input: CustodyAuthority, code: string, content: boolean)
         );
         await carrier.initialize(task, creation);
       }
+      if (withJournal) {
+        const name = await task.wait(() => deriveStoreName(scope.principalId, scope.workspaceId));
+        journal = task.step(() =>
+          createJournalOwner(
+            { ...scope, storeId: record.store_id, rootId: record.root_id },
+            name,
+            1,
+            keys.journal!,
+          ),
+        );
+        task.step(() => eraseJournalSnapshot(journal!.snapshot()));
+      }
     },
     dispose: () => {
       factor.fill(0);
@@ -636,6 +681,7 @@ const prepareCustody = (input: CustodyAuthority, code: string, content: boolean)
       db?.close();
       db = undefined;
       carrier?.dispose();
+      journal?.dispose();
     },
   };
 };
@@ -747,5 +793,115 @@ export const openContentSession = async (
         });
     },
     loadRecords: () => live.run((task) => owner.carrier.load(task)),
+  });
+};
+
+export interface JournalRecovery {
+  readonly records: OpenedRecord[];
+  readonly journal: JournalUpdate[];
+}
+export interface JournalSession extends ContentSession {
+  /** Synchronous carrier result. No canonical mutation, timer, or implicit flush. */
+  appendLocal(update: Bytes): JournalAdmission;
+  /** Capture journal before content, so concurrent handoff cannot fall between reads. */
+  loadRecovery(): Promise<JournalRecovery>;
+  /** Commit the captured exact journal bytes, then attempt identity/value-matched cleanup. */
+  flushJournal(): Promise<JournalFlushReceipt>;
+  readonly observedJournalCharacters: number;
+}
+export const openJournalSession = async (
+  input: CustodyAuthority,
+  code: string,
+  options: { signal?: AbortSignal } = {},
+): Promise<JournalSession> => {
+  const owner = prepareCustody(input, code, true, true);
+  let live;
+  try {
+    live = await openWriteSession(owner.authority.slotId, {
+      ...options,
+      initialize: (task) => owner.initialize(task),
+      dispose: owner.dispose,
+    });
+  } finally {
+    owner.eraseFactor();
+  }
+  return Object.freeze({
+    ...owner.describe(),
+    get state() {
+      return live.state;
+    },
+    signal: live.signal,
+    close: () => live.close(),
+    get observedJournalCharacters() {
+      return owner.journal.observedCharacters;
+    },
+    appendLocal: (update: Bytes) => live.write(() => owner.journal.append(update)),
+    appendBatch: (input: readonly ContentInput[]) => {
+      let copied: ContentInput[];
+      try {
+        copied = live.write(() => copyBatch(input));
+      } catch (cause) {
+        return Promise.reject(cause);
+      }
+      return live.run(async (task) => {
+        try {
+          return await owner.carrier.append(task, copied);
+        } finally {
+          for (const v of copied) v.bytes.fill(0);
+        }
+      });
+    },
+    loadRecords: () => live.run((task) => owner.carrier.load(task)),
+    loadRecovery: () => {
+      let snapshot: ReturnType<typeof owner.journal.snapshot>;
+      try {
+        snapshot = live.write(() => owner.journal.snapshot());
+      } catch (cause) {
+        return Promise.reject(cause);
+      }
+      return live
+        .run(async (task) => {
+          let records: OpenedRecord[] | undefined;
+          try {
+            records = await owner.carrier.load(task);
+            return task.step(() => ({
+              records: records!,
+              journal: snapshot.map(({ key, generation, bytes }) => ({
+                key,
+                generation,
+                bytes: bytes.slice(),
+              })),
+            }));
+          } catch (cause) {
+            if (records) for (const r of records) r.bytes.fill(0);
+            throw cause;
+          } finally {
+            eraseJournalSnapshot(snapshot);
+          }
+        })
+        .finally(() => eraseJournalSnapshot(snapshot));
+    },
+    flushJournal: () => {
+      let snapshot: ReturnType<typeof owner.journal.snapshot>;
+      try {
+        snapshot = live.write(() => owner.journal.snapshot());
+      } catch (cause) {
+        return Promise.reject(cause);
+      }
+      return live
+        .run(async (task) => {
+          try {
+            return await owner.journal.flush(task, snapshot, (task, bytes) =>
+              owner.carrier.append(
+                task,
+                bytes.map((bytes) => ({ kind: 'update', bytes })),
+              ),
+            );
+          } finally {
+            eraseJournalSnapshot(snapshot);
+          }
+        })
+        .finally(() => eraseJournalSnapshot(snapshot));
+    },
   });
 };

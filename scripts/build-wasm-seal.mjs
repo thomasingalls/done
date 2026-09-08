@@ -38,15 +38,22 @@ const wasmPath = join(crate, 'target/wasm32-unknown-unknown/release/journal_seal
 const out = join(crate, 'seal.generated.ts');
 const check = process.argv.includes('--check');
 
-execFileSync('cargo', ['build', '--release', '--target', 'wasm32-unknown-unknown'], {
-  cwd: crate,
-  stdio: check ? 'pipe' : 'inherit',
-});
+execFileSync(
+  'cargo',
+  ['build', '--locked', '--offline', '--release', '--target', 'wasm32-unknown-unknown'],
+  {
+    cwd: crate,
+    stdio: check ? 'pipe' : 'inherit',
+  },
+);
 
 const wasm = readFileSync(wasmPath);
 const b64 = wasm.toString('base64');
 
-const sha256 = (p) => createHash('sha256').update(readFileSync(join(crate, p))).digest('hex');
+const sha256 = (p) =>
+  createHash('sha256')
+    .update(readFileSync(join(crate, p)))
+    .digest('hex');
 const toolchain = execFileSync('rustc', ['--version'], { encoding: 'utf8' }).trim();
 
 const module = `/*
@@ -96,11 +103,26 @@ interface Exports {
   max_aad: () => number;
   max_plaintext: () => number;
   seal: (aadLen: number, plaintextLen: number) => number;
+  open: (aadLen: number, ciphertextLen: number) => number;
 }
 
 export interface JournalSeal {
   /** ciphertext‖tag, exactly what row 2's record format base64-encodes. */
-  seal: (key: Uint8Array, nonce: Uint8Array, aad: Uint8Array, plaintext: Uint8Array) => Uint8Array;
+  seal: (
+    key: Uint8Array,
+    nonce: Uint8Array,
+    aad: Uint8Array,
+    plaintext: Uint8Array,
+  ) => Uint8Array<ArrayBuffer>;
+  /** Authenticated plaintext, or throw without returning a prefix. */
+  open: (
+    key: Uint8Array,
+    nonce: Uint8Array,
+    aad: Uint8Array,
+    ciphertext: Uint8Array,
+  ) => Uint8Array<ArrayBuffer>;
+  /** Clear all instance memory and permanently refuse further operations. */
+  dispose: () => void;
   maxAad: number;
   maxPlaintext: number;
 }
@@ -133,23 +155,52 @@ export const createJournalSeal = (): JournalSeal => {
   // so the view is taken once rather than rebuilt on each call.
   const memory = new Uint8Array(exports.memory.buffer);
 
-  return {
-    maxAad,
-    maxPlaintext,
-    seal: (key, nonce, aad, plaintext) => {
-      if (key.length !== KEY_BYTES)
-        throw new RangeError('journal seal: key must be exactly 32 bytes');
-      if (nonce.length !== NONCE_BYTES)
-        throw new RangeError('journal seal: nonce must be exactly 24 bytes');
-      if (aad.length > maxAad || plaintext.length > maxPlaintext)
-        throw new RangeError('journal seal: input exceeds the module buffers');
+  let disposed = false;
+  const operate = (
+    opening: boolean,
+    key: Uint8Array,
+    nonce: Uint8Array,
+    aad: Uint8Array,
+    input: Uint8Array,
+  ): Uint8Array<ArrayBuffer> => {
+    if (disposed) throw new Error('journal seal: disposed');
+    if (key.length !== KEY_BYTES)
+      throw new RangeError('journal seal: key must be exactly 32 bytes');
+    if (nonce.length !== NONCE_BYTES)
+      throw new RangeError('journal seal: nonce must be exactly 24 bytes');
+    if (
+      aad.length > maxAad ||
+      input.length > maxPlaintext + (opening ? 16 : 0) ||
+      (opening && input.length < 16)
+    )
+      throw new RangeError('journal seal: input exceeds the module buffers');
+    try {
       memory.set(key, keyAt);
       memory.set(nonce, nonceAt);
       memory.set(aad, aadAt);
-      memory.set(plaintext, bufAt);
-      const written = exports.seal(aad.length, plaintext.length);
-      if (written < 0) throw new Error('journal seal: refused');
+      memory.set(input, bufAt);
+      const written = opening
+        ? exports.open(aad.length, input.length)
+        : exports.seal(aad.length, input.length);
+      if (written < 0) throw new Error('journal seal: authentication or operation refused');
       return memory.slice(bufAt, bufAt + written);
+    } finally {
+      // Staged buffers are cleared on every path. Dispose also erases the full
+      // instance (including stack space); it is never used again after that.
+      memory.fill(0, keyAt, keyAt + KEY_BYTES);
+      memory.fill(0, nonceAt, nonceAt + NONCE_BYTES);
+      memory.fill(0, aadAt, aadAt + aad.length);
+      memory.fill(0, bufAt, bufAt + input.length + (opening ? 0 : 16));
+    }
+  };
+  return {
+    maxAad,
+    maxPlaintext,
+    seal: (key, nonce, aad, plaintext) => operate(false, key, nonce, aad, plaintext),
+    open: (key, nonce, aad, ciphertext) => operate(true, key, nonce, aad, ciphertext),
+    dispose: () => {
+      disposed = true;
+      memory.fill(0);
     },
   };
 };

@@ -47,11 +47,23 @@ const sourcePaths = [
   'contentRecord.ts',
   'contentDatabase.ts',
   'contentStore.ts',
+  'storeName.ts',
+  'journalCodec.ts',
+  'journalStore.ts',
 ];
 const sources = Object.fromEntries(
   sourcePaths.map((name) => [name, readFileSync(join(root, 'src/crdt', name), 'utf8')]),
 );
+sources['seal.generated.ts'] = readFileSync(
+  join(root, 'wasm/journal-seal/seal.generated.ts'),
+  'utf8',
+);
 const recordedFiles = [
+  'wasm/journal-seal/seal.generated.ts',
+  'wasm/journal-seal/src/lib.rs',
+  'wasm/journal-seal/Cargo.toml',
+  'wasm/journal-seal/Cargo.lock',
+  'scripts/build-wasm-seal.mjs',
   ...sourcePaths.map((name) => 'src/crdt/' + name),
   'docs/storage-contract.md',
   'pnpm-lock.yaml',
@@ -114,6 +126,7 @@ async function run(mutation = null) {
     cacheDir: join(folder, 'vite-cache'),
     resolve: {
       alias: {
+        '../../wasm/journal-seal/seal.generated': join(folder, 'seal.generated.ts'),
         '@custody': join(folder, 'custody.ts'),
         '@custody-record': join(folder, 'custodyRecord.ts'),
         '@custody-crypto': join(folder, 'custodyCrypto.ts'),

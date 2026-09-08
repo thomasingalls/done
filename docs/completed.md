@@ -261,3 +261,46 @@ canonical editor/transport integration follow. Exact trim, complete identity/ind
 PRF and the supported-platform/transition/reference evidence remain open. Matrix pins are refreshed with
 all obligation text and debt statuses unchanged. No release debt or old-writer cutover is paid by this
 component. The independent L-2 progress document is preserved.
+
+
+---
+
+### Encrypted-store implementation phase four — synchronous encrypted journal
+
+**Date:** 2026-09-08 · **Branch:** `codex/encrypted-store-contract-corrections` · **Stage:** L-1 component checkpoint, not L-1 closure
+
+**Exit.** Phase three was committed as `468cbe2`. The [synchronous journal](./journal-store.md) now
+attaches selected row-2 XChaCha20-Poly1305 bytes to mandatory-factor custody and the shared writer lifetime.
+It reports success only after synchronous localStorage completion, refuses oversize/quota/unavailability,
+authenticates full scoped snapshots, and preserves unreadable or unknown-generation entries. Recovery
+captures journal before content to cover concurrent handoff. Flush commits captured bytes through the
+real content allocator in bounded chunks and removes only matching entries after transaction completion.
+Failed or changed cleanup retains the journal; no public caller-asserted receipt or clear API exists.
+
+The existing RustCrypto WASM module gained authenticated opening, per-operation staged-buffer clearing
+and permanent whole-memory disposal. The raw journal subkey and instance are cleared before the lifetime
+permit releases. Selected journal vectors and locked cipher dependencies are unchanged. The shared store
+name derivation was extracted without changing slot-index naming behavior. No editor/application wiring
+or input-admission coordinator was added.
+
+**Evidence.** The [recorded execution](./storage-conformance-runs/2026-09-08-journal.md) passes **17 cases /
+93 assertions** and detects **six** mutants. It covers actual renderer death before flush and between
+content completion/cleanup, real quota exhaustion, unreadable entries, concurrent handoff and late suffix,
+actual freeze/resume/death with a cached journal key, close/disposal, and failure in a later flush chunk.
+The content regression passes **13 cases / 58 assertions / five mutants**; custody passes **13 cases /
+73 assertions / five mutants**, including its copied-profile controls. All three exit 0.
+
+Full Vitest passes **554 tests / 48 files**. Type checking, focused lint/format, build/budget/origin checks,
+WASM freshness and its **28 assertions**, published vectors and relevant contract/governance checks pass.
+The WASM module is 8746 raw bytes; application initial JS remains **306.3 kB / 350.0 kB** gzipped. Desktop
+append timings are a coarse-clock smoke observation, not payment of the low-end p95 or platform gate.
+The literal full `pnpm check` chain, geometry and unchanged phase-one browser suite were not rerun.
+`pnpm storage:journal` is included in the check chain.
+
+**Remaining.** Ordered admission is next: prepare private input, force content on journal refusal, and
+promote canonical state only after durable carrier completion. Actual editor/IME/undo/export/transport,
+complete Local/Account startup/clear/migration, exact trim, generation/reference/receiver composition,
+PRF and supported-platform/independent-review evidence remain owed. C11-prefixed journal-flush cases do
+not implement workspace clear. Equality cleanup assumes conforming immutable identities, without an
+atomic localStorage compare-and-delete claim. Three matrix pins are refreshed; no obligation text or
+debt status changes and no release gate is paid. The independent L-2 progress record remains unchanged.

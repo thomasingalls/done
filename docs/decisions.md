@@ -1571,3 +1571,41 @@ per batch, independent of the journal's measured limit; total input queue policy
 
 The [executed component evidence](./storage-conformance-runs/2026-09-08-content.md) supplies browser
 counterexamples and mutations for these choices. It does not pay full startup/admission/trim obligations.
+
+
+### 2026-09-08 — journal recovery captures before content, and cleanup owns the completed handoff
+
+Phase four keeps the selected row-2 HKDF/AAD and generation-bearing journal bytes. The mandatory-factor
+owner derives the raw journal subkey once while holding the shared writer lifetime and disposes both
+that key and its synchronous WASM instance before releasing the permit. The existing RustCrypto module
+now opens authenticated ciphertext and clears staged buffers; whole-instance disposal is a logical
+owned-memory guarantee, not an engine/OS forensic guarantee. The independently registered toolchain
+provenance debt remains open after the rebuild.
+
+The new byte journal reports synchronous success only after localStorage setItem succeeds. Its immutable
+entry identity combines the existing database namespace, custody store id, random runtime writer id and
+monotonic ordinal. Oversize, pressure and unavailable writes refuse without queueing or promotion. A
+full scoped read authenticates every entry and rechecks its captured identities/bytes; unreadability
+refuses ordinary open/recovery/flush and preserves entries. Unknown generations remain opener references,
+not absent data. The interim 16 KiB bound precedes nonce generation and sealing; the observed origin-wide
+UTF-16 character watermark is advisory because storage events can lag.
+
+Full recovery captures the journal before reading content. Reversing those reads allows a concurrent
+flush to move an update out of the journal after the content snapshot and before the journal read,
+leaving neither copy in the result. Recovery therefore accepts duplicate carrier coverage. Flush owns
+its captured private bytes and invokes the actual content allocator/commit, then checks each completed
+chunk's exact journal identity/value before removal. No public receipt assertion can authorize cleanup.
+A failed content chunk leaves its journal entries intact; an earlier completed chunk may already be
+cleared. Changed values are retained and require repair.
+
+There is no atomic localStorage compare-and-delete. The equality cleanup relies on conforming writers
+never overwriting or reusing an identity; it does not exclude an arbitrary older/hostile writer between
+individual storage calls. Shared lifetimes block exclusive transition/retirement while a cached journal
+writer survives, including freeze. Supported-version cutover, a fresh journal-inclusive retirement census
+and complete owned startup/clear remain later obligations. The [component guide](./journal-store.md)
+and [executed evidence](./storage-conformance-runs/2026-09-08-journal.md) record these limits explicitly.
+
+The next owner is ordered admission over both carriers. This checkpoint has no canonical document,
+editor, transport, pending-intent queue or batching timer and cannot itself guarantee causal closure of
+arbitrary caller bytes. The raw content/journal API is an internal integration boundary, not permission
+for a production receive path to promote memory-only dependencies.

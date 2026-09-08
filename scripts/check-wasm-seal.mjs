@@ -49,7 +49,7 @@ const published = JSON.parse(readFileSync(join(root, 'test/vectors/journal-aead.
 const unhex = (s) => Uint8Array.from(s.match(/.{2}/gu) ?? [], (b) => Number.parseInt(b, 16));
 const hex = (u) => [...u].map((b) => b.toString(16).padStart(2, '0')).join('');
 
-const { seal, maxAad, maxPlaintext } = createJournalSeal();
+const { seal, open, maxAad, maxPlaintext } = createJournalSeal();
 const failures = [];
 let checked = 0;
 
@@ -63,12 +63,19 @@ let checked = 0;
   const header = readFileSync(join(crate, 'seal.generated.ts'), 'utf8');
   for (const source of ['src/lib.rs', 'Cargo.toml', 'Cargo.lock']) {
     checked += 1;
-    const recorded = new RegExp(`^ \\* {3}binding ${source.replace(/[./]/gu, '\\$&')} sha256 ([0-9a-f]{64})$`, 'mu').exec(header)?.[1];
+    const recorded = new RegExp(
+      `^ \\* {3}binding ${source.replace(/[./]/gu, '\\$&')} sha256 ([0-9a-f]{64})$`,
+      'mu',
+    ).exec(header)?.[1];
     if (recorded === undefined) {
-      failures.push(`seal.generated.ts records no binding hash for ${source} — regenerate: node scripts/build-wasm-seal.mjs`);
+      failures.push(
+        `seal.generated.ts records no binding hash for ${source} — regenerate: node scripts/build-wasm-seal.mjs`,
+      );
       continue;
     }
-    const current = createHash('sha256').update(readFileSync(join(crate, source))).digest('hex');
+    const current = createHash('sha256')
+      .update(readFileSync(join(crate, source)))
+      .digest('hex');
     if (current !== recorded) {
       failures.push(
         `${source} is ${current.slice(0, 16)}… and the shipped module was built from ${recorded.slice(0, 16)}… — ` +
@@ -115,6 +122,32 @@ for (const vector of published.vectors) {
   );
   checked += 1;
   if (got !== expected) failures.push(`${vector.name}: got ${got}, expected ${expected}`);
+  checked += 1;
+  if (
+    hex(
+      open(
+        unhex(vector.derived.k_journal),
+        unhex(vector.inputs.nonce),
+        unhex(vector.derived.aad),
+        raw.subarray(28),
+      ),
+    ) !== vector.inputs.plaintext
+  )
+    failures.push(`${vector.name}: open disagrees with the published plaintext`);
+  checked += 1;
+  const damaged = Uint8Array.from(raw.subarray(28));
+  damaged[damaged.length - 1] ^= 1;
+  try {
+    open(
+      unhex(vector.derived.k_journal),
+      unhex(vector.inputs.nonce),
+      unhex(vector.derived.aad),
+      damaged,
+    );
+    failures.push(`${vector.name}: open accepted a changed tag`);
+  } catch {
+    /* expected authentication refusal */
+  }
 }
 
 /* The length guard is the module's only failure path, so it is checked in both
@@ -187,6 +220,25 @@ checked += 1;
     failures.push('a refused call disturbed the staged state of the next good one');
 }
 
+{
+  const instance = createJournalSeal();
+  instance.dispose();
+  for (const operation of ['seal', 'open']) {
+    checked += 1;
+    try {
+      instance[operation](
+        new Uint8Array(32),
+        new Uint8Array(24),
+        new Uint8Array(),
+        new Uint8Array(16),
+      );
+      failures.push(`disposed ${operation} remained usable`);
+    } catch {
+      /* expected */
+    }
+  }
+}
+
 if (failures.length > 0) {
   setReceiptDetail({ failures });
   console.error(`journal seal: ${failures.length} of ${checked} checks FAILED`);
@@ -195,5 +247,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `journal seal: ${checked} checks pass — the published KAT, ${published.vectors.length} composition vectors, the length guard in both directions, the key/nonce width guard, and the source↔blob binding (lib.rs, Cargo.toml, Cargo.lock hashes match the generated header — drift detection only; provenance attestation is the registered L-4 debt).`,
+  `journal seal: ${checked} checks pass — the published KAT, ${published.vectors.length} composition vectors, authenticated open/tag refusal, disposal, the length guard in both directions, the key/nonce width guard, and the source↔blob binding (lib.rs, Cargo.toml, Cargo.lock hashes match the generated header — drift detection only; provenance attestation is the registered L-4 debt).`,
 );
