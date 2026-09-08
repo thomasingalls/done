@@ -1810,3 +1810,33 @@ refuse. Namespaces and stored data remain unchanged. [Execution evidence](./stor
 records native blocked deletion, cancellation drain, seven crash boundaries, partial journal failure,
 transaction aborts and five detected mutants. Account/shared-custody clear, migration/cutover and independent
 review remain owed. Exact-coverage content compaction is next; no debt status changes here.
+
+
+### 2026-09-08 — content compaction commits a disk-union replacement and rechecks exact coverage
+
+[JournalSession compaction](./content-trim.md) is explicit maintenance under its existing shared writer
+lifetime. The public call accepts no live document, state vector, watermark or deletion set. It validates
+and authenticates a consistent snapshot of every content store, merges content wire updates including
+pending structs/delete sets, and publishes a state using the existing durable allocator. Heads/outbound
+are authenticated but remain outside the replacement/deletion set. The journal is authenticated and retained.
+
+The owner keeps the observed encrypted record identities and bytes in memory, and a completed publication
+receipt precedes deletion. A new authenticated census checks that replacement and covered inputs still
+match. The deleting transaction compares the entire census and counter before synchronously checking the
+journal and deleting only exact covered content identities. Changed material requires reevaluation; known
+unreadable material refuses the entire trim and closes ordinary use. Persistent keys remain. A removed input
+or replacement may reflect another completed compaction, so this invocation returns `retained` without
+its own deletion. Concurrent new records/replacements are never covered merely by their sequence.
+
+There is no persisted trim watermark. Interrupted publication/deletion leaves recoverable input or safe
+duplication; a fresh invocation starts again. Eight conflicting censuses bound one deletion attempt's retry
+loop. A replacement above the existing 4 MiB limit refuses before reservation. These choices bound output
+and contention, not input memory or low-end latency: the full union remains an in-memory scan and merge.
+Automatic scheduling, streaming/chunking and default-app integration need later acceptance work.
+
+[Execution evidence](./storage-conformance-runs/2026-09-08-content-trim.md) includes the late-sequence
+counterexample, overlapping compactors, byte replacement after authentication, final journal damage,
+native request-success/abort distinctions and actual renderer death. The selected record crypto and key
+formats remain unchanged. Storage/crypto review and full reference/Account/checkpoint composition remain
+owed. Next is legacy migration/cutover preparation, before any real-data or default-application switch.
+No debt status changes at this checkpoint.

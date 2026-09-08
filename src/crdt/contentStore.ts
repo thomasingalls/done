@@ -1,3 +1,4 @@
+import { compactContent, type DiskState } from './contentCompaction';
 import { deriveStoreName } from './storeName';
 /** Internal carrier owner. Only custody constructs its crypto callbacks. No key or reservation escapes. */
 import { hex, random, type Bytes } from './custodyCrypto';
@@ -50,15 +51,6 @@ export interface ContentReceipt {
   readonly storeId: string;
   readonly generation: number;
   readonly sequences: readonly number[];
-}
-interface DiskRow {
-  store: string;
-  key: IDBValidKey;
-  value: unknown;
-}
-interface DiskState {
-  counter: ContentCounter | null;
-  rows: DiskRow[];
 }
 
 export const createContentOwner = (
@@ -198,9 +190,8 @@ export const createContentOwner = (
         },
       ),
     );
-  const load = async (task: SessionTask): Promise<OpenedRecord[]> => {
-    const snapshot = await read(task, true),
-      counter = snapshot.counter;
+  const openSnapshot = async (task: SessionTask, snapshot: DiskState): Promise<OpenedRecord[]> => {
+    const counter = snapshot.counter;
     if (!counter)
       throw new ContentError('missing-content', 'The initialized content counter is missing.');
     await verify(task, counterPayload(scope, counter), counter.mac);
@@ -228,6 +219,41 @@ export const createContentOwner = (
       for (const r of opened) r.bytes.fill(0);
       throw cause;
     }
+  };
+  const load = async (task: SessionTask): Promise<OpenedRecord[]> =>
+    openSnapshot(task, await read(task, true));
+  const appendRecords = async (
+    task: SessionTask,
+    input: ContentInput[],
+  ): Promise<StoredRecord[]> => {
+    let before!: ContentCounter;
+    while (true) {
+      before = await currentCounter(task);
+      let next = reserveCounter(before, input.length, generation);
+      next = { ...next, mac: await crypt.sign(task, counterPayload(scope, next)) };
+      if (await compareAndWrite(task, before, next)) break;
+    }
+    // This range has completed durably. Every attempt consumes exactly one
+    // invocation per record; a failure/retry abandons it and reserves a new range.
+    const records: StoredRecord[] = [];
+    for (const [i, value] of input.entries())
+      records.push(
+        await crypt.seal(
+          task,
+          { v: 1, gen: generation, seq: before.next_seq + i, kind: value.kind },
+          value.bytes,
+        ),
+      );
+    while (true) {
+      const current = await currentCounter(task);
+      if (
+        current.next_seq < before.next_seq + input.length ||
+        current.reserved[String(generation)]! < before.reserved[String(generation)]! + input.length
+      )
+        corrupt('A content reservation was rewound.');
+      if (await compareAndWrite(task, current, null, records)) break;
+    }
+    return records;
   };
   return {
     dispose() {
@@ -333,39 +359,23 @@ export const createContentOwner = (
     },
     load,
     async append(task: SessionTask, input: ContentInput[]): Promise<ContentReceipt> {
-      let before!: ContentCounter;
-      while (true) {
-        before = await currentCounter(task);
-        let next = reserveCounter(before, input.length, generation);
-        next = { ...next, mac: await crypt.sign(task, counterPayload(scope, next)) };
-        if (await compareAndWrite(task, before, next)) break;
-      }
-      // This range has completed durably. Every attempt consumes exactly one
-      // invocation per record; a failure/retry abandons it and reserves a new range.
-      const records: StoredRecord[] = [];
-      for (const [i, value] of input.entries())
-        records.push(
-          await crypt.seal(
-            task,
-            { v: 1, gen: generation, seq: before.next_seq + i, kind: value.kind },
-            value.bytes,
-          ),
-        );
-      while (true) {
-        const current = await currentCounter(task);
-        if (
-          current.next_seq < before.next_seq + input.length ||
-          current.reserved[String(generation)]! <
-            before.reserved[String(generation)]! + input.length
-        )
-          corrupt('A content reservation was rewound.');
-        if (await compareAndWrite(task, current, null, records)) break;
-      }
+      const records = await appendRecords(task, input);
       return Object.freeze({
         storeId: scope.storeId,
         generation,
         sequences: Object.freeze(records.map((r) => r.seq)),
       });
     },
+    compact: (task: SessionTask, checkJournal: () => void) =>
+      compactContent(task, {
+        scope,
+        generation,
+        intent: witness.intent,
+        db: db!,
+        read: () => read(task, true),
+        authenticate: (snapshot) => openSnapshot(task, snapshot),
+        publish: async (bytes) => (await appendRecords(task, [{ kind: 'state', bytes }]))[0]!,
+        checkJournal,
+      }),
   };
 };

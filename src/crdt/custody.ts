@@ -4,6 +4,8 @@
  * completing this component alone does not complete workspace genesis.
  */
 import { assertNoLocalClear } from './localClearState';
+import { validateContentUpdates, type ContentCompactionReceipt } from './contentCompaction';
+export type { ContentCompactionReceipt } from './contentCompaction';
 import { deriveStoreName } from './storeName';
 import { deriveJournalKey } from './journalCodec';
 import {
@@ -117,7 +119,7 @@ export interface CustodyContentRecord {
   ct: Bytes;
 }
 export interface CustodyTask extends SessionTask {
-  /** Authenticated read only. Allocated writes belong to ContentSession; admission and trim are later owners. */
+  /** Authenticated read only. Allocated writes belong to ContentSession; admission and compaction use the journal-capable owner. */
   openRecord(record: CustodyContentRecord): Promise<Bytes>;
 }
 export interface CustodySession extends CustodyDescriptor {
@@ -842,6 +844,8 @@ export interface JournalRecovery {
   readonly journal: JournalUpdate[];
 }
 export interface JournalSession extends ContentSession {
+  /** Explicit disk-union maintenance. Never accepts a caller snapshot or deletes journal/heads/outbound. */
+  compactContent(): Promise<ContentCompactionReceipt>;
   /** Synchronous carrier result. No canonical mutation, timer, or implicit flush. */
   appendLocal(update: Bytes): JournalAdmission;
   /** Capture journal before content, so concurrent handoff cannot fall between reads. */
@@ -877,6 +881,34 @@ export const openJournalSession = async (
       return owner.journal.observedCharacters;
     },
     appendLocal: (update: Bytes) => live.write(() => owner.journal.append(update)),
+    compactContent: () =>
+      live
+        .run((task) =>
+          owner.carrier.compact(task, () => {
+            const snapshot = owner.journal.snapshot();
+            try {
+              validateContentUpdates(snapshot.map((e) => e.bytes));
+            } finally {
+              eraseJournalSnapshot(snapshot);
+            }
+          }),
+        )
+        .catch(async (cause: unknown) => {
+          // A known unreadable carrier closes ordinary use and drains owned work; persisted openers stay intact.
+          if (cause instanceof ContentError && cause.code === 'missing-content')
+            cause = new ContentError(
+              'repair-required',
+              'Initialized content metadata is missing.',
+              { cause },
+            );
+          if (
+            cause instanceof Error &&
+            'code' in cause &&
+            (cause.code === 'repair-required' || cause.code === 'generation-changed')
+          )
+            await live.close();
+          throw cause;
+        }),
     appendBatch: (input: readonly ContentInput[]) => {
       let copied: ContentInput[];
       try {

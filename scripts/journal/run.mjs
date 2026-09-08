@@ -50,6 +50,8 @@ const sourcePaths = [
   'contentRecord.ts',
   'contentDatabase.ts',
   'contentStore.ts',
+  'contentCompaction.ts',
+  'yjs.ts',
   'storeName.ts',
   'journalCodec.ts',
   'journalStore.ts',

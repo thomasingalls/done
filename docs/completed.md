@@ -580,3 +580,49 @@ seeded legacy/default-app cutover remain subsequent work. The factor-derived cle
 review. Platform, IME, runtime-history/performance, PRF and generation/receiver/reference composition remain
 later gates. Only matrix evidence and three pins advance; no obligations or debt statuses change. The
 independent L-2 progress record remains unchanged.
+
+
+---
+
+### Encrypted-store implementation phase eleven — exact-coverage content trim/compaction
+
+**Date:** 2026-09-08 · **Branch:** `codex/encrypted-store-contract-corrections` · **Stage:** bounded L-1 integration checkpoint
+
+**Check-in.** Phase ten was committed as `d7c0f32` before this work. Phase eleven remains uncommitted.
+
+**Exit.** [Explicit content compaction](./content-trim.md) runs on the journal-capable session under its
+existing shared lifetime. It authenticates the disk union, validates content CRDT bytes and merges actual
+wire updates, preserving pending structs/deletion sets. The existing allocator durably reserves a new state
+record; its committed encrypted bytes precede deletion. A subsequent full authenticated census plus exact
+header/nonce/ciphertext comparisons inside the deleting transaction authorize only the initially covered
+content records. Heads/outbound, journals, late commits, concurrent replacements and all opener references
+remain. Reservation history never shrinks. No caller document or watermark authorizes deletion.
+
+Changed/unreadable records refuse the entire trim; detected damage after publication retains both
+replacement and inputs and closes ordinary use. Missing coverage from another compactor or bounded
+contention returns `retained` without deletion. Empty or single validated state is unchanged. Deletion
+aborts roll back all input removals; interruptions leave either original carriers, safe duplication or the
+committed replacement. Fresh maintenance rereads after reacquisition. Close drains pending crypto before
+an exclusive successor enters. The default application and paused application-day archival are unchanged.
+
+**Evidence.** [Recorded execution](./storage-conformance-runs/2026-09-08-content-trim.md) passes **21 browser
+cases / 128 assertions** and detects **eight** mutants. The 1/3 → state 4 → late 2 schedule preserves 2;
+overlapping compactors retain both new states. Valid authenticated record replacement, damage before and
+after audit/publication, final journal checking, native transaction aborts, three renderer deaths and
+lifetime/generation fencing are covered. The first baseline run passed; an initial mutant harness error on
+an absent row was corrected to report its intended failed assertion. New missing-metadata/journal schedules
+extend refusal coverage. The evidence records two intermediate unit assertion/performance corrections.
+
+Content regression passes **13/58/five mutants**; journal **17/93/six**; custody **13/73/five**; admission
+**15/64/six**; Local clear **17/172/five**; genesis **17/160/four**; startup **15/96/three**. Full Vitest passes
+**679 tests / 55 files**, including 13 new tests. Typecheck, focused lint/format, build/budget/origin,
+sixteen vector generators/AAD, WASM and applicable project/governance/traceability checks pass. Initial JS
+remains **306.3 kB / 350.0 kB** gzipped. The literal full chain, geometry and separate unchanged
+editor/workspace/lifecycle browser suites were not run. `storage:trim` joins the check chain.
+
+**Remaining.** Legacy migration/cutover preparation is next: explicit source inventory, old-writer fencing,
+fresh key/counter scope and seeded interruption schedules before default-app routing switches. Automatic
+maintenance, full-scan memory/performance, large-state chunking, shared/multiple-workspace custody, Account
+onboarding/receive/checkpoint authority, PRF and generation/reference transitions remain subsequent work.
+Only matrix evidence and three pins advance; no debt status or obligation changes, and the independent
+L-2 progress record stays unchanged. Independent review and supported-platform acceptance remain owed.

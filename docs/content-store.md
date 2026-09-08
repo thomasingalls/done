@@ -5,6 +5,10 @@ admission and owned startup. [custody.ts](../src/crdt/custody.ts) owns its keys 
 [contentStore.ts](../src/crdt/contentStore.ts) owns initialization, allocation, insertion and loading.
 The production editor still uses its earlier persistence. No release obligation is paid by this phase.
 
+**Later checkpoint:** [exact-coverage trim](./content-trim.md) adds `JournalSession.compactContent()`
+above this byte carrier. It merges authenticated disk updates and rechecks exact coverage before deletion;
+the lower-level content-only capability still exposes no deletion or caller-supplied coverage authority.
+
 ## Capability and scope
 
 `initializeContentStore(authority, code, {checkCreation, signal?})` opens current factor custody under

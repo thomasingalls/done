@@ -14,7 +14,7 @@
     "lint:fix": "oxlint --react-plugin --fix",
     "format": "oxfmt --check .",
     "format:fix": "oxfmt --write .",
-    "check": "pnpm typecheck && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm test:geometry && pnpm trace:check",
+    "check": "pnpm typecheck && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm test:geometry && pnpm trace:check",
     "test": "vitest run",
     "test:https": "pnpm build && pnpm --dir relay build && node scripts/test-https.mjs",
     "test:watch": "vitest",
@@ -54,7 +54,8 @@
     "storage:workspace": "node scripts/workspace-admission/run.mjs",
     "storage:startup": "node scripts/owned-startup/run.mjs",
     "storage:genesis": "node scripts/local-genesis/run.mjs",
-    "storage:clear": "node scripts/local-clear/run.mjs"
+    "storage:clear": "node scripts/local-clear/run.mjs",
+    "storage:trim": "node scripts/content-trim/run.mjs"
   },
   "dependencies": {
     "@codemirror/commands": "^6.10.4",
