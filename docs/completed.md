@@ -227,3 +227,37 @@ remain owed. The v2 credential/metadata encodings are detailed in the component 
 Next build the encrypted content carrier and allocation/load boundary on these capabilities, then compose
 journal/admission and owned startup in subsequent checkpoints. No release debt is paid, and the earlier
 candidate comparison and independent L-2 work are unchanged.
+
+### 2026-09-08 — encrypted content carrier, implementation phase three
+
+**Gate/seat:** L-1, `/Users/thomasingalls/.codex/worktrees/c030/done`,
+`codex/encrypted-store-contract-corrections`. The preceding mandatory-factor custody checkpoint was
+committed as **`a6d39a2`** at the user's request. This entry records the next bounded component.
+
+[content-store.md](./content-store.md) describes the new lifecycle-bound byte carrier. It has resumable
+initialization with an authenticated custody-side witness, exact durable per-batch allocation, cumulative
+counts including abandoned encryption, atomic immutable insertion across update/state/heads/outbound,
+and complete authenticated loading. It copies caller inputs before awaiting, exposes no key or reusable
+reservation, and returns a content receipt only on transaction completion. Close drains work before
+releasing custody's shared permit. Ordinary open never repairs a missing initialized counter by resetting
+it. Ceiling/generation changes refuse; rotation, trim and admission are not implemented by this phase.
+
+The [recorded content run](./storage-conformance-runs/2026-09-08-content.md) passes **13 browser cases /
+58 assertions**, detecting **five** independently injected defects. Native cases include two-tab
+allocation, request-success/transaction-abort faults, actual renderer death after encryption, initialization
+resumption, corrupt/unknown/misplaced records, immutable-row collision and close during crypto. Cold offline
+Yjs replay retains a 17 KiB remote dependency, deletion and dependent local edit as exact stored bytes.
+The production editor/receive path is not part of that fixture.
+
+The refactored custody owner retains its API behavior: its regression run passes **13 cases / 73 assertions**
+and detects all **five** prior mutants, including profile-copy controls. Full Vitest passes **545 tests /
+47 files**. Type checking, focused lint/format, build, record/device-lock vectors, AAD coverage, bundle
+budget and contract/governance checks pass. Initial gzipped JS stays **306.3 kB / 350.0 kB**; app wiring
+is still unchanged. The literal full `pnpm check` chain, geometry and unchanged phase-one browser suite
+were not rerun. Reports pin exact source/harness inputs and the Chromium/macOS environment.
+
+**What remains:** the synchronous encrypted journal is the next bounded carrier; ordered admission and
+canonical editor/transport integration follow. Exact trim, complete identity/index/startup/clear/migration,
+PRF and the supported-platform/transition/reference evidence remain open. Matrix pins are refreshed with
+all obligation text and debt statuses unchanged. No release debt or old-writer cutover is paid by this
+component. The independent L-2 progress document is preserved.

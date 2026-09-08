@@ -1543,3 +1543,31 @@ protocol authority. The v2 custody state does not independently authorize worksp
 must still retain and complete its own cross-carrier genesis intent before acknowledging edits or
 reporting whole-workspace protection. Phase-two fixture checks do not substitute for that production
 owner. The browser controls are bounded evidence, not a supported-platform or independent security review.
+
+### 2026-09-08 — content allocation has authenticated metadata and a custody-side initialization witness
+
+Phase three retains the selected v1 record and generation-envelope bytes. Its counter is scoped to the
+store id already minted by custody; all four record kinds share one global sequence and per-generation
+reservation history. AES-GCM runs only after an exactly sized reservation transaction completes.
+Metadata authentication uses a distinct HKDF-SHA256-derived HMAC key under `K_g`, empty salt and
+`LP("done/content-metadata/v1") || LP(slotId) || LP(principalId) || LP(workspaceId) || LP(storeId)`.
+The counter and witness use separate labelled, closed JSON tuples binding every trusted field and the
+slot/principal/workspace/store/root identities. [content-store.md](./content-store.md) specifies them;
+[contentRecord.ts](../src/crdt/contentRecord.ts) owns the actual ordered encodings.
+
+A `creating`/`ready` witness at `[slotId, principalId, workspaceId, "content-v1"]` in `done.custody/entries`
+precedes content initialization and remains when its database is deleted. This leaves v2 custody entries
+unchanged and makes missing initialized content a refusal instead of a zero-count replacement. The
+exclusive owner resumes the same unused intent; ordinary open never initializes. Fresh genesis still
+requires the startup owner's cross-carrier authorization. The witness is not a complete workspace-ready
+receipt or a detector of arbitrary multi-carrier rollback/removal, which remains outside SC-09's history.
+
+A counter is read/authenticated outside IDB, then compared byte-for-byte inside the updating transaction;
+conflicts retry with fresh authentication. Record insertion uses `add` in a transaction spanning metadata
+and all record stores, and validates the generation there. This phase refuses ceiling/generation changes;
+successor activation and automatic re-reservation are later transition work. Full snapshots authenticate
+all records and never use a state record to hide predecessors. The bounded API accepts 256 records/4 MiB
+per batch, independent of the journal's measured limit; total input queue policy remains admission work.
+
+The [executed component evidence](./storage-conformance-runs/2026-09-08-content.md) supplies browser
+counterexamples and mutations for these choices. It does not pay full startup/admission/trim obligations.

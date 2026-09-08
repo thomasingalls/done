@@ -5,6 +5,11 @@ factor custody to the [write-session lifecycle](./write-session.md). The
 [recorded execution](./storage-conformance-runs/2026-09-08-custody.md) exercises the production component
 in Chromium. This checkpoint is not application onboarding or complete encrypted-store genesis.
 
+**Later component:** [phase-three content storage](./content-store.md) now shares this private custody
+owner for allocated encrypted writes and authenticated loading. The phase-two APIs and recorded evidence
+below retain their original scope; the [custody regression](./storage-conformance-runs/2026-09-08-content.md)
+reruns their browser controls after that refactor.
+
 ## Entry points and ownership
 
 `beginCustodyEnrollment(authority, options)` generates the selected 125-bit device-lock code: 25

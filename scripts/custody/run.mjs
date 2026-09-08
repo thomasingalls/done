@@ -39,7 +39,15 @@ const output = resolve(
 );
 if (existsSync(output)) throw Error('Refusing existing output: ' + output);
 mkdirSync(output, { recursive: true });
-const sourcePaths = ['custody.ts', 'custodyCrypto.ts', 'custodyRecord.ts', 'writeSession.ts'];
+const sourcePaths = [
+  'custody.ts',
+  'custodyCrypto.ts',
+  'custodyRecord.ts',
+  'writeSession.ts',
+  'contentRecord.ts',
+  'contentDatabase.ts',
+  'contentStore.ts',
+];
 const sources = Object.fromEntries(
   sourcePaths.map((name) => [name, readFileSync(join(root, 'src/crdt', name), 'utf8')]),
 );

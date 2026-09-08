@@ -1,0 +1,3482 @@
+{
+  "schema": 1,
+  "scope": "custody-component-browser",
+  "started": "2026-09-08T16:35:04.580Z",
+  "requestedCandidates": ["custody"],
+  "requestedCases": [
+    "C12.genesis",
+    "C10.concurrent-creation",
+    "C12.reservation-abort",
+    "C12.interrupted-creation",
+    "C12.completion-abort",
+    "C12.metadata-authentication",
+    "C10.partial-and-legacy",
+    "C12.scope-and-authority",
+    "C12.seal-ceiling",
+    "C12.session-lifetime",
+    "C12.cancel-crypto",
+    "C12.cancel-initialize",
+    "C13.profile-copy"
+  ],
+  "harness": {
+    "commit": "a6d39a25b4d4f064fdc4f600c29769ef803162a6",
+    "dirty": true,
+    "files": {
+      "src/crdt/custody.ts": "de4bb9bb52d48e7baedd4c0ef4935a1a5dc14881969e85bdbc35a80b0e383132",
+      "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+      "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+      "src/crdt/writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+      "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+      "src/crdt/contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+      "src/crdt/contentStore.ts": "d3371333742260de6a9543531aee6b751d327af9e06013b4806a929d8f702361",
+      "docs/storage-contract.md": "439b820e3258feafc5fdef8b42448cc2bbdb045615db3ae9e4494e00933a8e4f",
+      "pnpm-lock.yaml": "52153631a8196a6317dbbf68eb85b67622482d0df2c7c2cd69bd8f512a27a1ac",
+      "package.json": "a71fbcb3b017dc37ffa61e378b2f79a5ca1c0f79a3af0a7e57b0232ebf7c4f87",
+      "test/custodyCrypto.test.ts": "71f0aea26b84bd0f56536bd8db1f5da4e123e1cee00445ab5a7ecb8545ad959e",
+      "test/custodyRecord.test.ts": "9bd78a30f4741eed12ce3af5e79b286cda3dcda1fd0e5a70316638467125130e",
+      "scripts/storage-conformance/report.mjs": "3213b63e0e5f4a39af85ef798a7f7e1eb09fee07e8006d78a2dc141263feb506",
+      "scripts/custody/catalog.mjs": "fcfab3fedcc890455d107e60cca54b4a5c92bf240bda7bb17ff39b4555ec7a67",
+      "scripts/custody/run.mjs": "48234f2de497980ede35b4a0aec83e20c2f4b118921e6e2b9cf8af4ad13bf203",
+      "scripts/custody/scenarios.mjs": "681f6a6b78eca18254aaf88e8c8302d138bd792696d9acb59c8a8cdc0b8ca212",
+      "test/custody/browser.mjs": "b5a49218d118a78c3c384ae82ad84f5a57c8baa5eddbbe27fed652f04bccb1af",
+      "test/custody/index.html": "c12b2679ed4780743a95b7917e9dea1f7092bba6e2ce411091d621ba82bac3dc"
+    },
+    "node": "v26.8.1",
+    "vite": "8.1.5"
+  },
+  "browser": {
+    "version": "151.0.7922.34",
+    "executablePath": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "platform": "darwin",
+    "arch": "arm64",
+    "playwright": "1.62.0"
+  },
+  "candidates": [
+    {
+      "id": "custody",
+      "source": {
+        "files": {
+          "custody.ts": "de4bb9bb52d48e7baedd4c0ef4935a1a5dc14881969e85bdbc35a80b0e383132",
+          "custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+          "custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+          "writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+          "contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+          "contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+          "contentStore.ts": "d3371333742260de6a9543531aee6b751d327af9e06013b4806a929d8f702361"
+        }
+      },
+      "mutation": null,
+      "cases": [
+        {
+          "id": "C12.genesis",
+          "title": "Generated code confirmation and factor-only cold reopen",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "no-custody-before-confirmation",
+              "actual": null,
+              "expected": null,
+              "passed": true
+            },
+            {
+              "id": "wrong-confirmation-refused",
+              "actual": "confirmation-required",
+              "expected": "confirmation-required",
+              "passed": true
+            },
+            {
+              "id": "wrong-confirmation-writes-nothing",
+              "actual": null,
+              "expected": null,
+              "passed": true
+            },
+            {
+              "id": "code-no-longer-redisplayed",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "protected-after-completion",
+              "actual": "protected",
+              "expected": "protected",
+              "passed": true
+            },
+            {
+              "id": "all-root-invocations-reserved",
+              "actual": 3,
+              "expected": 3,
+              "passed": true
+            },
+            {
+              "id": "credentials-both-sealed",
+              "actual": [
+                ["wrapping", 2, 96],
+                ["signing", 2, 96]
+              ],
+              "expected": [
+                ["wrapping", 2, 96],
+                ["signing", 2, 96]
+              ],
+              "passed": true
+            },
+            {
+              "id": "wrong-factor-refused",
+              "actual": "unlock-failed",
+              "expected": "unlock-failed",
+              "passed": true
+            },
+            {
+              "id": "cold-offline-open",
+              "actual": "custody content probe: survives cold unlock",
+              "expected": "custody content probe: survives cold unlock",
+              "passed": true
+            }
+          ],
+          "schedule": ["Actual Page.crash without a graceful close"],
+          "artifacts": [
+            {
+              "point": "before-renderer-death",
+              "snapshot": {
+                "entries": {
+                  "c": {
+                    "status": "resolved",
+                    "value": true,
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": {
+                      "storeId": "3fb8c94e9a73eac1d9ab02ce2fd9c001",
+                      "rootId": "6213d21f9e5730d7fd9c49f0672c0642"
+                    }
+                  }
+                },
+                "gates": [],
+                "events": [
+                  "resolve-principal",
+                  {
+                    "checkCreation": "fresh",
+                    "intentId": "73db896748dd3e6d858c86a4758e7a9e"
+                  },
+                  "root-encryption",
+                  "root-encryption",
+                  "root-encryption"
+                ],
+                "rootEncryptions": 3,
+                "privateExports": 2
+              },
+              "record": {
+                "v": 2,
+                "state": "protected",
+                "slot_id": "test-slot",
+                "principal_id": "test-principal",
+                "workspace_id": "test-workspace",
+                "store_id": "3fb8c94e9a73eac1d9ab02ce2fd9c001",
+                "root_id": "6213d21f9e5730d7fd9c49f0672c0642",
+                "seals": [
+                  {
+                    "v": 1,
+                    "factor": "code",
+                    "id": "code",
+                    "salt": {
+                      "hex": "bc8e2d9172ba8537730711638017c0c3"
+                    },
+                    "nonce": {
+                      "hex": "9c684ca581e4e42289cac33c"
+                    },
+                    "ct": {
+                      "hex": "c05d43952682e41855862dcc292db2682638406966caa2edce7cf1c9412d732f9792ab60d410217d5795ee04ca8aaf7a"
+                    }
+                  }
+                ],
+                "seal_reserved": 3,
+                "rotation_owed": false,
+                "creation_intent": null,
+                "envelope": {
+                  "v": 1,
+                  "gen": 1,
+                  "nonce": {
+                    "hex": "a7e1a331bc3e762689b94be9"
+                  },
+                  "ct": {
+                    "hex": "9cd6be9c20cc0a499783131884b05f0cb9061b1043e7db67b090ab6a5d9d1b0d2640958da8b89927a04523bd8b1704f7"
+                  }
+                },
+                "credentials": [
+                  {
+                    "role": "wrapping",
+                    "id": "b938391a63bf7fae19b8c771f3b82662",
+                    "publicKey": {
+                      "hex": "22614ac177e242e07ace581a132115c691ee94bf54cace0fb0010038090cb217"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "384e8c752f892fab88512197"
+                      },
+                      "ct": {
+                        "hex": "f0bcce6fc746ed9639839b85bd2de41999b3d996c1d3ab6ddded345a61185f5410990fe749d915defab0c8cfbecf169a"
+                      }
+                    }
+                  },
+                  {
+                    "role": "signing",
+                    "id": "82fd19724a92e27ab7b54d33b49d185a",
+                    "publicKey": {
+                      "hex": "a3ab61118ceb5b4b9878867c061d9e041cb99fcf98add51568271842d60fc8c9"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "4d0386c1093ee7c1693e02a3"
+                      },
+                      "ct": {
+                        "hex": "b1de32abac11271a141f623369e0dc992df34f6f1ac2a568769474748318bbc9743f0321bc49ede750bb3b257132f5af"
+                      }
+                    }
+                  }
+                ],
+                "mac": {
+                  "hex": "64c2f0505247b06a9df22ad378a02c6ce1253182b7171dbc2ca9845698d85a92"
+                }
+              }
+            },
+            {
+              "point": "persisted-component-inventory",
+              "inventory": [
+                {
+                  "database": "done.custody",
+                  "store": "entries",
+                  "values": [
+                    {
+                      "v": 2,
+                      "state": "protected",
+                      "slot_id": "test-slot",
+                      "principal_id": "test-principal",
+                      "workspace_id": "test-workspace",
+                      "store_id": "3fb8c94e9a73eac1d9ab02ce2fd9c001",
+                      "root_id": "6213d21f9e5730d7fd9c49f0672c0642",
+                      "seals": [
+                        {
+                          "v": 1,
+                          "factor": "code",
+                          "id": "code",
+                          "salt": {
+                            "hex": "bc8e2d9172ba8537730711638017c0c3"
+                          },
+                          "nonce": {
+                            "hex": "9c684ca581e4e42289cac33c"
+                          },
+                          "ct": {
+                            "hex": "c05d43952682e41855862dcc292db2682638406966caa2edce7cf1c9412d732f9792ab60d410217d5795ee04ca8aaf7a"
+                          }
+                        }
+                      ],
+                      "seal_reserved": 3,
+                      "rotation_owed": false,
+                      "creation_intent": null,
+                      "envelope": {
+                        "v": 1,
+                        "gen": 1,
+                        "nonce": {
+                          "hex": "a7e1a331bc3e762689b94be9"
+                        },
+                        "ct": {
+                          "hex": "9cd6be9c20cc0a499783131884b05f0cb9061b1043e7db67b090ab6a5d9d1b0d2640958da8b89927a04523bd8b1704f7"
+                        }
+                      },
+                      "credentials": [
+                        {
+                          "role": "wrapping",
+                          "id": "b938391a63bf7fae19b8c771f3b82662",
+                          "publicKey": {
+                            "hex": "22614ac177e242e07ace581a132115c691ee94bf54cace0fb0010038090cb217"
+                          },
+                          "sealed": {
+                            "v": 2,
+                            "nonce": {
+                              "hex": "384e8c752f892fab88512197"
+                            },
+                            "ct": {
+                              "hex": "f0bcce6fc746ed9639839b85bd2de41999b3d996c1d3ab6ddded345a61185f5410990fe749d915defab0c8cfbecf169a"
+                            }
+                          }
+                        },
+                        {
+                          "role": "signing",
+                          "id": "82fd19724a92e27ab7b54d33b49d185a",
+                          "publicKey": {
+                            "hex": "a3ab61118ceb5b4b9878867c061d9e041cb99fcf98add51568271842d60fc8c9"
+                          },
+                          "sealed": {
+                            "v": 2,
+                            "nonce": {
+                              "hex": "4d0386c1093ee7c1693e02a3"
+                            },
+                            "ct": {
+                              "hex": "b1de32abac11271a141f623369e0dc992df34f6f1ac2a568769474748318bbc9743f0321bc49ede750bb3b257132f5af"
+                            }
+                          }
+                        }
+                      ],
+                      "mac": {
+                        "hex": "64c2f0505247b06a9df22ad378a02c6ce1253182b7171dbc2ca9845698d85a92"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "database": "done.custody-probe",
+                  "store": "probe",
+                  "values": [
+                    {
+                      "scope": {
+                        "slotId": "test-slot",
+                        "principalId": "test-principal",
+                        "workspaceId": "test-workspace"
+                      },
+                      "record": {
+                        "v": 1,
+                        "gen": 1,
+                        "seq": 1,
+                        "kind": "update",
+                        "nonce": {
+                          "hex": "00df484d3a7106c3c8474e96"
+                        },
+                        "ct": {
+                          "hex": "537bdd277ddb0b7a1a008c4dbbddaf35a0e4459996f2a2dbc248d2f2e7a16626912b32976e90e542f989fcb058e4fdc1e7b482207341cc41aacfec"
+                        }
+                      },
+                      "future": {
+                        "publicKey": {
+                          "hex": "cd65e4932088c6a108710826e42be6bd0cda9946ab2599e427755cbf3739815b"
+                        },
+                        "nonce": {
+                          "hex": "1474c7b1cf4002a61551bf98"
+                        },
+                        "ct": {
+                          "hex": "671926dddce7f428d4d25f37e28a1a5824dab3f1f7d4ef94cea73e511a75ea09533f090bdc229e84c8b8ae35f74bace0"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "wrong": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "unlock-failed",
+                      "message": "The factor did not open custody; it may be wrong or the seal damaged."
+                    },
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "session": {
+                    "status": "resolved",
+                    "value": "custody content probe: survives cold unlock",
+                    "state": "active",
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  }
+                },
+                "gates": [],
+                "events": ["resolve-principal", "resolve-principal"],
+                "rootEncryptions": 0,
+                "privateExports": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "C10.concurrent-creation",
+          "title": "Concurrent creators retain exactly one identity and factor",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "exactly-one-creator-wins",
+              "actual": ["rejected", "resolved"],
+              "expected": ["rejected", "resolved"],
+              "passed": true
+            },
+            {
+              "id": "loser-is-existing-locked",
+              "actual": "locked-existing",
+              "expected": "locked-existing",
+              "passed": true
+            },
+            {
+              "id": "loser-cannot-enroll-factor",
+              "actual": "unlock-failed",
+              "expected": "unlock-failed",
+              "passed": true
+            },
+            {
+              "id": "winner-custody-unchanged",
+              "actual": {
+                "v": 2,
+                "state": "protected",
+                "slot_id": "test-slot",
+                "principal_id": "test-principal",
+                "workspace_id": "test-workspace",
+                "store_id": "721b10f0fec550a4deb691390150f32d",
+                "root_id": "eb49c14ce6615265fce1a40cc0b9e572",
+                "seals": [
+                  {
+                    "v": 1,
+                    "factor": "code",
+                    "id": "code",
+                    "salt": {
+                      "hex": "81b0e68ef4ed454615607dd3f96f946d"
+                    },
+                    "nonce": {
+                      "hex": "21189fdbabd66d8e9afaae21"
+                    },
+                    "ct": {
+                      "hex": "3f233a73548d8d957cc8d5365315bdc2a644482d31c0d7a30b289a1caf7004b6f7424bfcd99a2119b74d72e66df0d49c"
+                    }
+                  }
+                ],
+                "seal_reserved": 3,
+                "rotation_owed": false,
+                "creation_intent": null,
+                "envelope": {
+                  "v": 1,
+                  "gen": 1,
+                  "nonce": {
+                    "hex": "c7975783590b7332d04362fb"
+                  },
+                  "ct": {
+                    "hex": "c3ff6db3feb42dd89c239e83ad65dc800f7fe422c753cd405ee2666bf6fa2e743675f1977550167019b1f836aba757b0"
+                  }
+                },
+                "credentials": [
+                  {
+                    "role": "wrapping",
+                    "id": "118ee7615b16f88762247b300b2b6acc",
+                    "publicKey": {
+                      "hex": "5aabb9c5e94f7cc38d1b594483ad75d391c49c2b25503c3c9e18fb63e9e0530c"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "0bfd275c4a7bee0d72c9b1c8"
+                      },
+                      "ct": {
+                        "hex": "eb68dc96770215364e5c2bd7afcbb6487b393e43712e4e604adca76d12ef43ed09870d40fcfaa71543dfe188107f576c"
+                      }
+                    }
+                  },
+                  {
+                    "role": "signing",
+                    "id": "fc96c3f6ba2b0d43d98719f96bbcd6fb",
+                    "publicKey": {
+                      "hex": "891f28b52b2961e2ea8ed0ac273ceafeb64aaec739a9033b53ab9ac30e5f4c7c"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "12265a493864e3235a06a4a0"
+                      },
+                      "ct": {
+                        "hex": "1b43de2416fb66026177941f123ec365f6e2db554e65df183460770460e0fc67dfae78d48ae69c24ab93f7d8d8abc46b"
+                      }
+                    }
+                  }
+                ],
+                "mac": {
+                  "hex": "68f5f01ed9cdc41a6d6451f8b68e47c828f148499414aff43e88241a106e8251"
+                }
+              },
+              "expected": {
+                "v": 2,
+                "state": "protected",
+                "slot_id": "test-slot",
+                "principal_id": "test-principal",
+                "workspace_id": "test-workspace",
+                "store_id": "721b10f0fec550a4deb691390150f32d",
+                "root_id": "eb49c14ce6615265fce1a40cc0b9e572",
+                "seals": [
+                  {
+                    "v": 1,
+                    "factor": "code",
+                    "id": "code",
+                    "salt": {
+                      "hex": "81b0e68ef4ed454615607dd3f96f946d"
+                    },
+                    "nonce": {
+                      "hex": "21189fdbabd66d8e9afaae21"
+                    },
+                    "ct": {
+                      "hex": "3f233a73548d8d957cc8d5365315bdc2a644482d31c0d7a30b289a1caf7004b6f7424bfcd99a2119b74d72e66df0d49c"
+                    }
+                  }
+                ],
+                "seal_reserved": 3,
+                "rotation_owed": false,
+                "creation_intent": null,
+                "envelope": {
+                  "v": 1,
+                  "gen": 1,
+                  "nonce": {
+                    "hex": "c7975783590b7332d04362fb"
+                  },
+                  "ct": {
+                    "hex": "c3ff6db3feb42dd89c239e83ad65dc800f7fe422c753cd405ee2666bf6fa2e743675f1977550167019b1f836aba757b0"
+                  }
+                },
+                "credentials": [
+                  {
+                    "role": "wrapping",
+                    "id": "118ee7615b16f88762247b300b2b6acc",
+                    "publicKey": {
+                      "hex": "5aabb9c5e94f7cc38d1b594483ad75d391c49c2b25503c3c9e18fb63e9e0530c"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "0bfd275c4a7bee0d72c9b1c8"
+                      },
+                      "ct": {
+                        "hex": "eb68dc96770215364e5c2bd7afcbb6487b393e43712e4e604adca76d12ef43ed09870d40fcfaa71543dfe188107f576c"
+                      }
+                    }
+                  },
+                  {
+                    "role": "signing",
+                    "id": "fc96c3f6ba2b0d43d98719f96bbcd6fb",
+                    "publicKey": {
+                      "hex": "891f28b52b2961e2ea8ed0ac273ceafeb64aaec739a9033b53ab9ac30e5f4c7c"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "12265a493864e3235a06a4a0"
+                      },
+                      "ct": {
+                        "hex": "1b43de2416fb66026177941f123ec365f6e2db554e65df183460770460e0fc67dfae78d48ae69c24ab93f7d8d8abc46b"
+                      }
+                    }
+                  }
+                ],
+                "mac": {
+                  "hex": "68f5f01ed9cdc41a6d6451f8b68e47c828f148499414aff43e88241a106e8251"
+                }
+              },
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": [
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "first": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "locked-existing",
+                      "message": "Custody already exists; unlock or resume its winning factor."
+                    },
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "session": {
+                    "status": "resolved",
+                    "value": true,
+                    "state": "active",
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  }
+                },
+                "gates": [],
+                "events": ["resolve-principal", "resolve-principal"],
+                "rootEncryptions": 0,
+                "privateExports": 0
+              }
+            },
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "second": {
+                    "status": "resolved",
+                    "value": true,
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": {
+                      "storeId": "721b10f0fec550a4deb691390150f32d",
+                      "rootId": "eb49c14ce6615265fce1a40cc0b9e572"
+                    }
+                  },
+                  "loser": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "unlock-failed",
+                      "message": "The factor did not open custody; it may be wrong or the seal damaged."
+                    },
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  }
+                },
+                "gates": [],
+                "events": [
+                  "resolve-principal",
+                  {
+                    "checkCreation": "fresh",
+                    "intentId": "ee7105e26fa40847a2078854fae6b073"
+                  },
+                  "root-encryption",
+                  "root-encryption",
+                  "root-encryption",
+                  "resolve-principal"
+                ],
+                "rootEncryptions": 3,
+                "privateExports": 2
+              }
+            }
+          ]
+        },
+        {
+          "id": "C12.reservation-abort",
+          "title": "Request success cannot acknowledge a reservation transaction",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "aborted-reservation-refuses",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "no-encryption-before-reservation-completes",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "abort-keeps-zero-count",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "retry-reserves-before-encrypt",
+              "actual": 3,
+              "expected": 3,
+              "passed": true
+            }
+          ],
+          "schedule": ["Abort reservation transaction after put request succeeds"],
+          "artifacts": [
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "c": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "storage-failed",
+                      "message": "Custody transaction did not commit."
+                    },
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "r": {
+                    "status": "resolved",
+                    "value": true,
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": {
+                      "storeId": "01ca0e8d7aee213770edc73e8025e272",
+                      "rootId": "b154c52db62155a72bb9b41de1f6370d"
+                    }
+                  }
+                },
+                "gates": [],
+                "events": [
+                  "resolve-principal",
+                  {
+                    "checkCreation": "fresh",
+                    "intentId": "ebf6df944f8963e5266f592a393d3f61"
+                  },
+                  "put-success-then-abort",
+                  "resolve-principal",
+                  {
+                    "checkCreation": "resume",
+                    "intentId": "ebf6df944f8963e5266f592a393d3f61"
+                  },
+                  "root-encryption",
+                  "root-encryption",
+                  "root-encryption"
+                ],
+                "rootEncryptions": 3,
+                "privateExports": 2
+              }
+            },
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {},
+                "gates": [],
+                "events": [],
+                "rootEncryptions": 0,
+                "privateExports": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "C12.interrupted-creation",
+          "title": "Renderer death preserves root, intent and abandoned reservations",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "durable-reservation-before-encrypt",
+              "actual": 3,
+              "expected": 3,
+              "passed": true
+            },
+            {
+              "id": "creation-is-not-openable",
+              "actual": "creating",
+              "expected": "creating",
+              "passed": true
+            },
+            {
+              "id": "shared-open-waits-for-creator",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "partial-open-refuses",
+              "actual": "creation-pending",
+              "expected": "creation-pending",
+              "passed": true
+            },
+            {
+              "id": "resume-retains-root",
+              "actual": "c529de7e7d47f454fde0a2e54f68010e",
+              "expected": "c529de7e7d47f454fde0a2e54f68010e",
+              "passed": true
+            },
+            {
+              "id": "resume-retains-store",
+              "actual": "ef1d6f466e41249cea24b2db21731b11",
+              "expected": "ef1d6f466e41249cea24b2db21731b11",
+              "passed": true
+            },
+            {
+              "id": "abandoned-seals-stay-counted",
+              "actual": 6,
+              "expected": 6,
+              "passed": true
+            },
+            {
+              "id": "credential-identities-retained",
+              "actual": ["d0ccf6926662c50eade00bb6d4b88093", "cc1cb1f0a54b1ed8dacc230faab49748"],
+              "expected": ["d0ccf6926662c50eade00bb6d4b88093", "cc1cb1f0a54b1ed8dacc230faab49748"],
+              "passed": true
+            },
+            {
+              "id": "resume-rechecks-authenticated-intent",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            }
+          ],
+          "schedule": ["Actual Page.crash without a graceful close"],
+          "artifacts": [
+            {
+              "point": "before-renderer-death",
+              "snapshot": {
+                "entries": {
+                  "c": {
+                    "status": "pending",
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": null
+                  }
+                },
+                "gates": ["envelope"],
+                "events": [
+                  "resolve-principal",
+                  {
+                    "checkCreation": "fresh",
+                    "intentId": "e39cc4694fb7989299d584ed79755dc5"
+                  }
+                ],
+                "rootEncryptions": 0,
+                "privateExports": 0
+              },
+              "record": {
+                "v": 2,
+                "state": "creating",
+                "slot_id": "test-slot",
+                "principal_id": "test-principal",
+                "workspace_id": "test-workspace",
+                "store_id": "ef1d6f466e41249cea24b2db21731b11",
+                "root_id": "c529de7e7d47f454fde0a2e54f68010e",
+                "seals": [
+                  {
+                    "v": 1,
+                    "factor": "code",
+                    "id": "code",
+                    "salt": {
+                      "hex": "91fd13a3b0d60a968f14ebc58eea4fba"
+                    },
+                    "nonce": {
+                      "hex": "491eefe137daaeb01117f3c9"
+                    },
+                    "ct": {
+                      "hex": "c2aaf65836c848826240c6385e534939201a1ea6ca4d2d6d95d6f8f46e2e1d7058f550e03d6246f69b8f52d8b2a94481"
+                    }
+                  }
+                ],
+                "seal_reserved": 3,
+                "rotation_owed": false,
+                "creation_intent": {
+                  "id": "e39cc4694fb7989299d584ed79755dc5",
+                  "storeId": "ef1d6f466e41249cea24b2db21731b11",
+                  "rootId": "c529de7e7d47f454fde0a2e54f68010e",
+                  "wrappingId": "d0ccf6926662c50eade00bb6d4b88093",
+                  "signingId": "cc1cb1f0a54b1ed8dacc230faab49748"
+                },
+                "envelope": null,
+                "credentials": null,
+                "mac": {
+                  "hex": "b12770b5ea3c3496aadaf811b5062ca5d919ffe2d3f5d9e99d98d52ee452c587"
+                }
+              }
+            },
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "partial": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "creation-pending",
+                      "message": "Custody creation must resume before normal open."
+                    },
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "r": {
+                    "status": "resolved",
+                    "value": true,
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": {
+                      "storeId": "ef1d6f466e41249cea24b2db21731b11",
+                      "rootId": "c529de7e7d47f454fde0a2e54f68010e"
+                    }
+                  }
+                },
+                "gates": [],
+                "events": [
+                  "resolve-principal",
+                  "resolve-principal",
+                  {
+                    "checkCreation": "resume",
+                    "intentId": "e39cc4694fb7989299d584ed79755dc5"
+                  },
+                  "root-encryption",
+                  "root-encryption",
+                  "root-encryption"
+                ],
+                "rootEncryptions": 3,
+                "privateExports": 2
+              }
+            }
+          ]
+        },
+        {
+          "id": "C12.completion-abort",
+          "title": "Atomic protected-custody installation and retry",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "failed-completion-is-not-success",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "all-or-nothing-custody-artifacts",
+              "actual": ["creating", null, null],
+              "expected": ["creating", null, null],
+              "passed": true
+            },
+            {
+              "id": "failed-completion-keeps-count",
+              "actual": 3,
+              "expected": 3,
+              "passed": true
+            },
+            {
+              "id": "uncommitted-protection-refused",
+              "actual": "creation-pending",
+              "expected": "creation-pending",
+              "passed": true
+            },
+            {
+              "id": "retry-count-is-monotonic",
+              "actual": 6,
+              "expected": 6,
+              "passed": true
+            }
+          ],
+          "schedule": ["Abort final custody transaction after put request succeeds"],
+          "artifacts": [
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "c": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "storage-failed",
+                      "message": "Custody transaction did not commit."
+                    },
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": null
+                  }
+                },
+                "gates": [],
+                "events": [
+                  "resolve-principal",
+                  {
+                    "checkCreation": "fresh",
+                    "intentId": "81b8b133876852a4e8e17888074271e5"
+                  },
+                  "root-encryption",
+                  "root-encryption",
+                  "root-encryption",
+                  "put-success-then-abort"
+                ],
+                "rootEncryptions": 3,
+                "privateExports": 2
+              }
+            },
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "partial": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "creation-pending",
+                      "message": "Custody creation must resume before normal open."
+                    },
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "retry": {
+                    "status": "resolved",
+                    "value": true,
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": {
+                      "storeId": "52a72ce9ee32f3a354945798633314c1",
+                      "rootId": "29a48721358aad1abafb2883a0adc7a7"
+                    }
+                  }
+                },
+                "gates": [],
+                "events": [
+                  "resolve-principal",
+                  "resolve-principal",
+                  {
+                    "checkCreation": "resume",
+                    "intentId": "81b8b133876852a4e8e17888074271e5"
+                  },
+                  "root-encryption",
+                  "root-encryption",
+                  "root-encryption"
+                ],
+                "rootEncryptions": 3,
+                "privateExports": 2
+              }
+            }
+          ]
+        },
+        {
+          "id": "C12.metadata-authentication",
+          "title": "Counter tampering refuses normal unlock",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "modified-count-refuses",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "damaged-record-is-retained",
+              "actual": {
+                "v": 2,
+                "state": "protected",
+                "slot_id": "test-slot",
+                "principal_id": "test-principal",
+                "workspace_id": "test-workspace",
+                "store_id": "60c86b608dd221c643c6eef1e58a3274",
+                "root_id": "ea25464beaec84a5411b9130a55c535c",
+                "seals": [
+                  {
+                    "v": 1,
+                    "factor": "code",
+                    "id": "code",
+                    "salt": {
+                      "hex": "e9a568f7f85fc324ec3e1819ad7c4f2d"
+                    },
+                    "nonce": {
+                      "hex": "b607892f663b42c3c3f804c4"
+                    },
+                    "ct": {
+                      "hex": "9faaf4ae417ab713e9dcf121a933f4d7e249b43b302e17b8029dfb9f0927f72f2c3458d3bfda7056ce18c34d15dc4dcd"
+                    }
+                  }
+                ],
+                "seal_reserved": 4,
+                "rotation_owed": false,
+                "creation_intent": null,
+                "envelope": {
+                  "v": 1,
+                  "gen": 1,
+                  "nonce": {
+                    "hex": "653cb57e39a95f9f9495b8f1"
+                  },
+                  "ct": {
+                    "hex": "f3041d6b8c5d94d2909447e2d80116f08f2a57b46951f839d06c35d1078b871f4d650f78a50ff94f7d17e79e71ae2608"
+                  }
+                },
+                "credentials": [
+                  {
+                    "role": "wrapping",
+                    "id": "0afb68e43c86c11011a3e854ca07b032",
+                    "publicKey": {
+                      "hex": "3c2d121de8572d6b4b5c338f6a6150e2fa7661e59483ddc66314f3c80cb9414f"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "0878621a3e775c0dc48bec17"
+                      },
+                      "ct": {
+                        "hex": "f399ac44d728d1b7e910a5e340b799e2861c7a5378a47c3dd79c0b661eea4dada28fa9da9bea525febeda02bd42f48a6"
+                      }
+                    }
+                  },
+                  {
+                    "role": "signing",
+                    "id": "841003780f1d238038c1984fbdac7df9",
+                    "publicKey": {
+                      "hex": "47369acb32a15ced88c87c4d364e3373b5cd062eb08e88877cfa3fad1c93865f"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "0ea84bd74d7d0d3c781f1793"
+                      },
+                      "ct": {
+                        "hex": "f6c9a9da7e9b30a930d4b0d941ce642c9221d956f9006e4bd384c94e91fe6e79b224980797c20c3945c66afc953898ac"
+                      }
+                    }
+                  }
+                ],
+                "mac": {
+                  "hex": "c715bc22b987b6972a7c065b58ae0aeaea8b850d521556a81400c22ac7d35424"
+                }
+              },
+              "expected": {
+                "v": 2,
+                "state": "protected",
+                "slot_id": "test-slot",
+                "principal_id": "test-principal",
+                "workspace_id": "test-workspace",
+                "store_id": "60c86b608dd221c643c6eef1e58a3274",
+                "root_id": "ea25464beaec84a5411b9130a55c535c",
+                "seals": [
+                  {
+                    "v": 1,
+                    "factor": "code",
+                    "id": "code",
+                    "salt": {
+                      "hex": "e9a568f7f85fc324ec3e1819ad7c4f2d"
+                    },
+                    "nonce": {
+                      "hex": "b607892f663b42c3c3f804c4"
+                    },
+                    "ct": {
+                      "hex": "9faaf4ae417ab713e9dcf121a933f4d7e249b43b302e17b8029dfb9f0927f72f2c3458d3bfda7056ce18c34d15dc4dcd"
+                    }
+                  }
+                ],
+                "seal_reserved": 4,
+                "rotation_owed": false,
+                "creation_intent": null,
+                "envelope": {
+                  "v": 1,
+                  "gen": 1,
+                  "nonce": {
+                    "hex": "653cb57e39a95f9f9495b8f1"
+                  },
+                  "ct": {
+                    "hex": "f3041d6b8c5d94d2909447e2d80116f08f2a57b46951f839d06c35d1078b871f4d650f78a50ff94f7d17e79e71ae2608"
+                  }
+                },
+                "credentials": [
+                  {
+                    "role": "wrapping",
+                    "id": "0afb68e43c86c11011a3e854ca07b032",
+                    "publicKey": {
+                      "hex": "3c2d121de8572d6b4b5c338f6a6150e2fa7661e59483ddc66314f3c80cb9414f"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "0878621a3e775c0dc48bec17"
+                      },
+                      "ct": {
+                        "hex": "f399ac44d728d1b7e910a5e340b799e2861c7a5378a47c3dd79c0b661eea4dada28fa9da9bea525febeda02bd42f48a6"
+                      }
+                    }
+                  },
+                  {
+                    "role": "signing",
+                    "id": "841003780f1d238038c1984fbdac7df9",
+                    "publicKey": {
+                      "hex": "47369acb32a15ced88c87c4d364e3373b5cd062eb08e88877cfa3fad1c93865f"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "0ea84bd74d7d0d3c781f1793"
+                      },
+                      "ct": {
+                        "hex": "f6c9a9da7e9b30a930d4b0d941ce642c9221d956f9006e4bd384c94e91fe6e79b224980797c20c3945c66afc953898ac"
+                      }
+                    }
+                  }
+                ],
+                "mac": {
+                  "hex": "c715bc22b987b6972a7c065b58ae0aeaea8b850d521556a81400c22ac7d35424"
+                }
+              },
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": [
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "creation": {
+                    "status": "resolved",
+                    "value": true,
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": {
+                      "storeId": "60c86b608dd221c643c6eef1e58a3274",
+                      "rootId": "ea25464beaec84a5411b9130a55c535c"
+                    }
+                  }
+                },
+                "gates": [],
+                "events": [
+                  "resolve-principal",
+                  {
+                    "checkCreation": "fresh",
+                    "intentId": "24d61fac93a3a29f4fa9543383c52016"
+                  },
+                  "root-encryption",
+                  "root-encryption",
+                  "root-encryption"
+                ],
+                "rootEncryptions": 3,
+                "privateExports": 2
+              }
+            },
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "tampered": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "repair-required",
+                      "message": "Custody metadata authentication failed."
+                    },
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  }
+                },
+                "gates": [],
+                "events": ["resolve-principal"],
+                "rootEncryptions": 0,
+                "privateExports": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "C10.partial-and-legacy",
+          "title": "Partial, legacy and missing custody cannot silently remint",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "typed-refusal-partial",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "no-remint-partial",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "retained-partial",
+              "actual": {
+                "v": 2,
+                "state": "protected",
+                "slot_id": "test-slot",
+                "principal_id": "test-principal",
+                "workspace_id": "test-workspace",
+                "store_id": "78fa64766ad7406b077527b2f0cd2671",
+                "root_id": "2b638fbb54884f69f2ef42577f85945e",
+                "seals": [
+                  {
+                    "v": 1,
+                    "factor": "code",
+                    "id": "code",
+                    "salt": {
+                      "hex": "180250af317f1f0351ed5131d31566dc"
+                    },
+                    "nonce": {
+                      "hex": "9a2126800650e3ca4de3d8ee"
+                    },
+                    "ct": {
+                      "hex": "6800646fe884b338c283b9f04b025332470e28c14196cfdb83e0f11ecccafe2df49696295a1f9a9968dee1c79c6b352c"
+                    }
+                  }
+                ],
+                "seal_reserved": 3,
+                "rotation_owed": false,
+                "creation_intent": null,
+                "envelope": null,
+                "credentials": [
+                  {
+                    "role": "wrapping",
+                    "id": "6fefa2c42ee26a5e0aa6b1c71952f3bf",
+                    "publicKey": {
+                      "hex": "71710035387c1fa61fb1f34f79971850687be1ef2b2f793c92317a1c3850995a"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "af6d1c1e5c22a5966c81baf8"
+                      },
+                      "ct": {
+                        "hex": "9c5ecf97c23e87b8d7be950c2108403a9423ac3538c1c018ba437421d0d747e5645b4c0106695b24a91d85ced1bd34d0"
+                      }
+                    }
+                  },
+                  {
+                    "role": "signing",
+                    "id": "4101d49f9d61b9fa2090577c443dc488",
+                    "publicKey": {
+                      "hex": "acad7e46d7d742d4e05a05b35b08cb5b5e7ff1baa277eae7c875fc6e6d158af3"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "5169ebfb20492791bb7f655d"
+                      },
+                      "ct": {
+                        "hex": "1f5162aaa86b761fc328dfba39ec6f94fdba838feb62993fe5fcdced67fcf45f8b938728b8422d6fd32b636ea564d7af"
+                      }
+                    }
+                  }
+                ],
+                "mac": {
+                  "hex": "56a875df686bd3ca338030741edd29561fef867ba5f31ad1feedd8b5d36212df"
+                }
+              },
+              "expected": {
+                "v": 2,
+                "state": "protected",
+                "slot_id": "test-slot",
+                "principal_id": "test-principal",
+                "workspace_id": "test-workspace",
+                "store_id": "78fa64766ad7406b077527b2f0cd2671",
+                "root_id": "2b638fbb54884f69f2ef42577f85945e",
+                "seals": [
+                  {
+                    "v": 1,
+                    "factor": "code",
+                    "id": "code",
+                    "salt": {
+                      "hex": "180250af317f1f0351ed5131d31566dc"
+                    },
+                    "nonce": {
+                      "hex": "9a2126800650e3ca4de3d8ee"
+                    },
+                    "ct": {
+                      "hex": "6800646fe884b338c283b9f04b025332470e28c14196cfdb83e0f11ecccafe2df49696295a1f9a9968dee1c79c6b352c"
+                    }
+                  }
+                ],
+                "seal_reserved": 3,
+                "rotation_owed": false,
+                "creation_intent": null,
+                "envelope": null,
+                "credentials": [
+                  {
+                    "role": "wrapping",
+                    "id": "6fefa2c42ee26a5e0aa6b1c71952f3bf",
+                    "publicKey": {
+                      "hex": "71710035387c1fa61fb1f34f79971850687be1ef2b2f793c92317a1c3850995a"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "af6d1c1e5c22a5966c81baf8"
+                      },
+                      "ct": {
+                        "hex": "9c5ecf97c23e87b8d7be950c2108403a9423ac3538c1c018ba437421d0d747e5645b4c0106695b24a91d85ced1bd34d0"
+                      }
+                    }
+                  },
+                  {
+                    "role": "signing",
+                    "id": "4101d49f9d61b9fa2090577c443dc488",
+                    "publicKey": {
+                      "hex": "acad7e46d7d742d4e05a05b35b08cb5b5e7ff1baa277eae7c875fc6e6d158af3"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "5169ebfb20492791bb7f655d"
+                      },
+                      "ct": {
+                        "hex": "1f5162aaa86b761fc328dfba39ec6f94fdba838feb62993fe5fcdced67fcf45f8b938728b8422d6fd32b636ea564d7af"
+                      }
+                    }
+                  }
+                ],
+                "mac": {
+                  "hex": "56a875df686bd3ca338030741edd29561fef867ba5f31ad1feedd8b5d36212df"
+                }
+              },
+              "passed": true
+            },
+            {
+              "id": "typed-refusal-unknown",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "no-remint-unknown",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "retained-unknown",
+              "actual": {
+                "v": 3,
+                "state": "protected",
+                "slot_id": "test-slot",
+                "principal_id": "test-principal",
+                "workspace_id": "test-workspace",
+                "store_id": "78fa64766ad7406b077527b2f0cd2671",
+                "root_id": "2b638fbb54884f69f2ef42577f85945e",
+                "seals": [
+                  {
+                    "v": 1,
+                    "factor": "code",
+                    "id": "code",
+                    "salt": {
+                      "hex": "180250af317f1f0351ed5131d31566dc"
+                    },
+                    "nonce": {
+                      "hex": "9a2126800650e3ca4de3d8ee"
+                    },
+                    "ct": {
+                      "hex": "6800646fe884b338c283b9f04b025332470e28c14196cfdb83e0f11ecccafe2df49696295a1f9a9968dee1c79c6b352c"
+                    }
+                  }
+                ],
+                "seal_reserved": 3,
+                "rotation_owed": false,
+                "creation_intent": null,
+                "envelope": null,
+                "credentials": [
+                  {
+                    "role": "wrapping",
+                    "id": "6fefa2c42ee26a5e0aa6b1c71952f3bf",
+                    "publicKey": {
+                      "hex": "71710035387c1fa61fb1f34f79971850687be1ef2b2f793c92317a1c3850995a"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "af6d1c1e5c22a5966c81baf8"
+                      },
+                      "ct": {
+                        "hex": "9c5ecf97c23e87b8d7be950c2108403a9423ac3538c1c018ba437421d0d747e5645b4c0106695b24a91d85ced1bd34d0"
+                      }
+                    }
+                  },
+                  {
+                    "role": "signing",
+                    "id": "4101d49f9d61b9fa2090577c443dc488",
+                    "publicKey": {
+                      "hex": "acad7e46d7d742d4e05a05b35b08cb5b5e7ff1baa277eae7c875fc6e6d158af3"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "5169ebfb20492791bb7f655d"
+                      },
+                      "ct": {
+                        "hex": "1f5162aaa86b761fc328dfba39ec6f94fdba838feb62993fe5fcdced67fcf45f8b938728b8422d6fd32b636ea564d7af"
+                      }
+                    }
+                  }
+                ],
+                "mac": {
+                  "hex": "56a875df686bd3ca338030741edd29561fef867ba5f31ad1feedd8b5d36212df"
+                }
+              },
+              "expected": {
+                "v": 3,
+                "state": "protected",
+                "slot_id": "test-slot",
+                "principal_id": "test-principal",
+                "workspace_id": "test-workspace",
+                "store_id": "78fa64766ad7406b077527b2f0cd2671",
+                "root_id": "2b638fbb54884f69f2ef42577f85945e",
+                "seals": [
+                  {
+                    "v": 1,
+                    "factor": "code",
+                    "id": "code",
+                    "salt": {
+                      "hex": "180250af317f1f0351ed5131d31566dc"
+                    },
+                    "nonce": {
+                      "hex": "9a2126800650e3ca4de3d8ee"
+                    },
+                    "ct": {
+                      "hex": "6800646fe884b338c283b9f04b025332470e28c14196cfdb83e0f11ecccafe2df49696295a1f9a9968dee1c79c6b352c"
+                    }
+                  }
+                ],
+                "seal_reserved": 3,
+                "rotation_owed": false,
+                "creation_intent": null,
+                "envelope": null,
+                "credentials": [
+                  {
+                    "role": "wrapping",
+                    "id": "6fefa2c42ee26a5e0aa6b1c71952f3bf",
+                    "publicKey": {
+                      "hex": "71710035387c1fa61fb1f34f79971850687be1ef2b2f793c92317a1c3850995a"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "af6d1c1e5c22a5966c81baf8"
+                      },
+                      "ct": {
+                        "hex": "9c5ecf97c23e87b8d7be950c2108403a9423ac3538c1c018ba437421d0d747e5645b4c0106695b24a91d85ced1bd34d0"
+                      }
+                    }
+                  },
+                  {
+                    "role": "signing",
+                    "id": "4101d49f9d61b9fa2090577c443dc488",
+                    "publicKey": {
+                      "hex": "acad7e46d7d742d4e05a05b35b08cb5b5e7ff1baa277eae7c875fc6e6d158af3"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "5169ebfb20492791bb7f655d"
+                      },
+                      "ct": {
+                        "hex": "1f5162aaa86b761fc328dfba39ec6f94fdba838feb62993fe5fcdced67fcf45f8b938728b8422d6fd32b636ea564d7af"
+                      }
+                    }
+                  }
+                ],
+                "mac": {
+                  "hex": "56a875df686bd3ca338030741edd29561fef867ba5f31ad1feedd8b5d36212df"
+                }
+              },
+              "passed": true
+            },
+            {
+              "id": "typed-refusal-legacy",
+              "actual": "migration-required",
+              "expected": "migration-required",
+              "passed": true
+            },
+            {
+              "id": "no-remint-legacy",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "retained-legacy",
+              "actual": {
+                "v": 1,
+                "promptless": "legacy-marker"
+              },
+              "expected": {
+                "v": 1,
+                "promptless": "legacy-marker"
+              },
+              "passed": true
+            },
+            {
+              "id": "typed-refusal-missing",
+              "actual": "missing-custody",
+              "expected": "missing-custody",
+              "passed": true
+            },
+            {
+              "id": "no-remint-missing",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "retained-missing",
+              "actual": null,
+              "expected": null,
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": [
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "creation": {
+                    "status": "resolved",
+                    "value": true,
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": {
+                      "storeId": "78fa64766ad7406b077527b2f0cd2671",
+                      "rootId": "2b638fbb54884f69f2ef42577f85945e"
+                    }
+                  },
+                  "retry-partial": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "repair-required",
+                      "message": "Custody metadata is incomplete, unsupported, or inconsistent."
+                    },
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "retry-unknown": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "repair-required",
+                      "message": "Custody metadata is incomplete, unsupported, or inconsistent."
+                    },
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "retry-legacy": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "migration-required",
+                      "message": "This custody needs the explicit migration owner."
+                    },
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "retry-missing": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "carrier-refused",
+                      "message": "Synthetic surviving carrier requires the startup owner"
+                    },
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": null
+                  }
+                },
+                "gates": [],
+                "events": [
+                  "resolve-principal",
+                  {
+                    "checkCreation": "fresh",
+                    "intentId": "1f10394f99fc3ef4fb578f4a068d89cc"
+                  },
+                  "root-encryption",
+                  "root-encryption",
+                  "root-encryption",
+                  "resolve-principal",
+                  "resolve-principal",
+                  "resolve-principal",
+                  "resolve-principal",
+                  {
+                    "checkCreation": "fresh",
+                    "intentId": "d33696c00793a26cf724c02d8c1bb32f"
+                  }
+                ],
+                "rootEncryptions": 3,
+                "privateExports": 2
+              }
+            },
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "partial": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "repair-required",
+                      "message": "Custody metadata is incomplete, unsupported, or inconsistent."
+                    },
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "unknown": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "repair-required",
+                      "message": "Custody metadata is incomplete, unsupported, or inconsistent."
+                    },
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "legacy": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "migration-required",
+                      "message": "This custody needs the explicit migration owner."
+                    },
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "missing": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "missing-custody",
+                      "message": "No custody exists for this identity. Normal open never creates it."
+                    },
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  }
+                },
+                "gates": [],
+                "events": [
+                  "resolve-principal",
+                  "resolve-principal",
+                  "resolve-principal",
+                  "resolve-principal"
+                ],
+                "rootEncryptions": 0,
+                "privateExports": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "C12.scope-and-authority",
+          "title": "Each acquisition verifies identity and retains factor scope",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "authority-must-verify",
+              "actual": "identity-refused",
+              "expected": "identity-refused",
+              "passed": true
+            },
+            {
+              "id": "authority-reread-on-each-open",
+              "actual": "missing-custody",
+              "expected": "missing-custody",
+              "passed": true
+            },
+            {
+              "id": "moved-scope-refuses",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "scope-refusal-does-not-repair",
+              "actual": {
+                "v": 2,
+                "state": "protected",
+                "slot_id": "test-slot",
+                "principal_id": "test-principal",
+                "workspace_id": "other",
+                "store_id": "e56d7e792608ef325d7e92c9df7dee7a",
+                "root_id": "67dc8d20565273bb8b2cd0d13f49ca28",
+                "seals": [
+                  {
+                    "v": 1,
+                    "factor": "code",
+                    "id": "code",
+                    "salt": {
+                      "hex": "761e327b268c63b40795f91b8ad84e23"
+                    },
+                    "nonce": {
+                      "hex": "1049d52b0d40dae1b9ebcf08"
+                    },
+                    "ct": {
+                      "hex": "0e201cf7191577ca1e5f4d3dc814d46d73733abcafe15e121e5e0a6bca8e6f1323fb0082dcb550016eb8e029b3a4cc37"
+                    }
+                  }
+                ],
+                "seal_reserved": 3,
+                "rotation_owed": false,
+                "creation_intent": null,
+                "envelope": {
+                  "v": 1,
+                  "gen": 1,
+                  "nonce": {
+                    "hex": "81bc171e61ee6356e56dd63c"
+                  },
+                  "ct": {
+                    "hex": "622f338bae7f48e52438b7703c2bc134ad684a7d917411bc9cd59e7d4b69e90f73274c931c79a1a9389be1962b4c9af8"
+                  }
+                },
+                "credentials": [
+                  {
+                    "role": "wrapping",
+                    "id": "7374b69a8eb101515fa750b44dc09ec7",
+                    "publicKey": {
+                      "hex": "061d09f90f97bf08418ddbb05a1aa58faf42a45cfcc4f6ad284ba95cd1d0d032"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "86483cebe12064bb18d06d75"
+                      },
+                      "ct": {
+                        "hex": "c323d005a0de8d7893c16708da790ed7a401465f8de852d1ed25cab9ebcf87937692c774dc70c0862b4068a33c5be79c"
+                      }
+                    }
+                  },
+                  {
+                    "role": "signing",
+                    "id": "87e0672c10ebba5227d7810760a37a10",
+                    "publicKey": {
+                      "hex": "98d6b1a31b3c2f17f744ccf2002cae17b752f4a74448128ca5b2703768d52217"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "94a40140d011da5d19c79b17"
+                      },
+                      "ct": {
+                        "hex": "4cae9e3831331f7fd9445be876508d2b3374803f36475d931aec3121376490be2f36c11ae2f4ce18d6ccdbd622275e31"
+                      }
+                    }
+                  }
+                ],
+                "mac": {
+                  "hex": "ed39ae12f7b747daa49d0bcd150cc45bc5bdfd38a4d56b786da1056d4209abf0"
+                }
+              },
+              "expected": {
+                "v": 2,
+                "state": "protected",
+                "slot_id": "test-slot",
+                "principal_id": "test-principal",
+                "workspace_id": "other",
+                "store_id": "e56d7e792608ef325d7e92c9df7dee7a",
+                "root_id": "67dc8d20565273bb8b2cd0d13f49ca28",
+                "seals": [
+                  {
+                    "v": 1,
+                    "factor": "code",
+                    "id": "code",
+                    "salt": {
+                      "hex": "761e327b268c63b40795f91b8ad84e23"
+                    },
+                    "nonce": {
+                      "hex": "1049d52b0d40dae1b9ebcf08"
+                    },
+                    "ct": {
+                      "hex": "0e201cf7191577ca1e5f4d3dc814d46d73733abcafe15e121e5e0a6bca8e6f1323fb0082dcb550016eb8e029b3a4cc37"
+                    }
+                  }
+                ],
+                "seal_reserved": 3,
+                "rotation_owed": false,
+                "creation_intent": null,
+                "envelope": {
+                  "v": 1,
+                  "gen": 1,
+                  "nonce": {
+                    "hex": "81bc171e61ee6356e56dd63c"
+                  },
+                  "ct": {
+                    "hex": "622f338bae7f48e52438b7703c2bc134ad684a7d917411bc9cd59e7d4b69e90f73274c931c79a1a9389be1962b4c9af8"
+                  }
+                },
+                "credentials": [
+                  {
+                    "role": "wrapping",
+                    "id": "7374b69a8eb101515fa750b44dc09ec7",
+                    "publicKey": {
+                      "hex": "061d09f90f97bf08418ddbb05a1aa58faf42a45cfcc4f6ad284ba95cd1d0d032"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "86483cebe12064bb18d06d75"
+                      },
+                      "ct": {
+                        "hex": "c323d005a0de8d7893c16708da790ed7a401465f8de852d1ed25cab9ebcf87937692c774dc70c0862b4068a33c5be79c"
+                      }
+                    }
+                  },
+                  {
+                    "role": "signing",
+                    "id": "87e0672c10ebba5227d7810760a37a10",
+                    "publicKey": {
+                      "hex": "98d6b1a31b3c2f17f744ccf2002cae17b752f4a74448128ca5b2703768d52217"
+                    },
+                    "sealed": {
+                      "v": 2,
+                      "nonce": {
+                        "hex": "94a40140d011da5d19c79b17"
+                      },
+                      "ct": {
+                        "hex": "4cae9e3831331f7fd9445be876508d2b3374803f36475d931aec3121376490be2f36c11ae2f4ce18d6ccdbd622275e31"
+                      }
+                    }
+                  }
+                ],
+                "mac": {
+                  "hex": "ed39ae12f7b747daa49d0bcd150cc45bc5bdfd38a4d56b786da1056d4209abf0"
+                }
+              },
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": [
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "creation": {
+                    "status": "resolved",
+                    "value": true,
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": {
+                      "storeId": "e56d7e792608ef325d7e92c9df7dee7a",
+                      "rootId": "67dc8d20565273bb8b2cd0d13f49ca28"
+                    }
+                  }
+                },
+                "gates": [],
+                "events": [
+                  "resolve-principal",
+                  {
+                    "checkCreation": "fresh",
+                    "intentId": "ade7a513ff612fc7509eca9be6278ba1"
+                  },
+                  "root-encryption",
+                  "root-encryption",
+                  "root-encryption"
+                ],
+                "rootEncryptions": 3,
+                "privateExports": 2
+              }
+            },
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "denied": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "identity-refused",
+                      "message": "Synthetic identity rejected"
+                    },
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "other": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "missing-custody",
+                      "message": "No custody exists for this identity. Normal open never creates it."
+                    },
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "moved": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "repair-required",
+                      "message": "Custody metadata is incomplete, unsupported, or inconsistent."
+                    },
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  }
+                },
+                "gates": [],
+                "events": ["resolve-principal", "resolve-principal", "resolve-principal"],
+                "rootEncryptions": 0,
+                "privateExports": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "C12.seal-ceiling",
+          "title": "Reservation ceiling refuses before encryption",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "ceiling-refuses-before-batch",
+              "actual": "seal-budget-exhausted",
+              "expected": "seal-budget-exhausted",
+              "passed": true
+            },
+            {
+              "id": "ceiling-does-not-encrypt",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "ceiling-keeps-history",
+              "actual": {
+                "v": 2,
+                "state": "creating",
+                "slot_id": "test-slot",
+                "principal_id": "test-principal",
+                "workspace_id": "test-workspace",
+                "store_id": "0d9da43515c2720a1fbd0e2aafbf178b",
+                "root_id": "41def89d5c00264a64d70a9bed2d29a2",
+                "seals": [
+                  {
+                    "v": 1,
+                    "factor": "code",
+                    "id": "code",
+                    "salt": {
+                      "hex": "d3efe39e42569acfc96e1e224de9b64c"
+                    },
+                    "nonce": {
+                      "hex": "8982fe6046bbbc96e698d61b"
+                    },
+                    "ct": {
+                      "hex": "9991c3117651987fa0f77a01ef20ad64af4a5c365ac20f1a0da8ead5d0f95ff2b3c0c1d18e3cd218db14a8d1d157950d"
+                    }
+                  }
+                ],
+                "seal_reserved": 4294967293,
+                "rotation_owed": false,
+                "creation_intent": {
+                  "id": "b67f67c67d1b09ff625cd8a2aec5e7e0",
+                  "storeId": "0d9da43515c2720a1fbd0e2aafbf178b",
+                  "rootId": "41def89d5c00264a64d70a9bed2d29a2",
+                  "wrappingId": "b5fc17170462477c61c2673ca455a41e",
+                  "signingId": "fd603147c9da845026a3d4c1a2f94df8"
+                },
+                "envelope": null,
+                "credentials": null,
+                "mac": {
+                  "hex": "2b67d6e51ac7d7b0df9bcc738019f6ba7f6b665f07ed334d99d5ba124dcb84d8"
+                }
+              },
+              "expected": {
+                "v": 2,
+                "state": "creating",
+                "slot_id": "test-slot",
+                "principal_id": "test-principal",
+                "workspace_id": "test-workspace",
+                "store_id": "0d9da43515c2720a1fbd0e2aafbf178b",
+                "root_id": "41def89d5c00264a64d70a9bed2d29a2",
+                "seals": [
+                  {
+                    "v": 1,
+                    "factor": "code",
+                    "id": "code",
+                    "salt": {
+                      "hex": "d3efe39e42569acfc96e1e224de9b64c"
+                    },
+                    "nonce": {
+                      "hex": "8982fe6046bbbc96e698d61b"
+                    },
+                    "ct": {
+                      "hex": "9991c3117651987fa0f77a01ef20ad64af4a5c365ac20f1a0da8ead5d0f95ff2b3c0c1d18e3cd218db14a8d1d157950d"
+                    }
+                  }
+                ],
+                "seal_reserved": 4294967293,
+                "rotation_owed": false,
+                "creation_intent": {
+                  "id": "b67f67c67d1b09ff625cd8a2aec5e7e0",
+                  "storeId": "0d9da43515c2720a1fbd0e2aafbf178b",
+                  "rootId": "41def89d5c00264a64d70a9bed2d29a2",
+                  "wrappingId": "b5fc17170462477c61c2673ca455a41e",
+                  "signingId": "fd603147c9da845026a3d4c1a2f94df8"
+                },
+                "envelope": null,
+                "credentials": null,
+                "mac": {
+                  "hex": "2b67d6e51ac7d7b0df9bcc738019f6ba7f6b665f07ed334d99d5ba124dcb84d8"
+                }
+              },
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": [
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "c": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "storage-failed",
+                      "message": "Custody transaction did not commit."
+                    },
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": null
+                  }
+                },
+                "gates": [],
+                "events": [
+                  "resolve-principal",
+                  {
+                    "checkCreation": "fresh",
+                    "intentId": "b67f67c67d1b09ff625cd8a2aec5e7e0"
+                  },
+                  "put-success-then-abort"
+                ],
+                "rootEncryptions": 0,
+                "privateExports": 0
+              }
+            },
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "limit": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "seal-budget-exhausted",
+                      "message": "This custody root cannot reserve another creation attempt."
+                    },
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  }
+                },
+                "gates": [],
+                "events": [
+                  "resolve-principal",
+                  {
+                    "checkCreation": "resume",
+                    "intentId": "b67f67c67d1b09ff625cd8a2aec5e7e0"
+                  }
+                ],
+                "rootEncryptions": 0,
+                "privateExports": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "C12.session-lifetime",
+          "title": "Custody work drains and stale callbacks refuse",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "finished-custody-task-refuses",
+              "actual": "inactive",
+              "expected": "inactive",
+              "passed": true
+            },
+            {
+              "id": "decrypt-retains-permit-until-settled",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "close-invalidates-immediately",
+              "actual": "closing",
+              "expected": "closing",
+              "passed": true
+            },
+            {
+              "id": "closing-decrypt-cannot-return-plaintext",
+              "actual": "inactive",
+              "expected": "inactive",
+              "passed": true
+            },
+            {
+              "id": "closed-task-refuses",
+              "actual": "inactive",
+              "expected": "inactive",
+              "passed": true
+            },
+            {
+              "id": "fresh-acquisition-opens",
+              "actual": "custody content probe: survives cold unlock",
+              "expected": "custody content probe: survives cold unlock",
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": [
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "creation": {
+                    "status": "resolved",
+                    "value": true,
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": {
+                      "storeId": "987ba9b8749484c4a4c58cdd3bf11d23",
+                      "rootId": "5de0f8228ee51b8b7e4213b70841a0dc"
+                    }
+                  },
+                  "session": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "inactive",
+                      "message": "This write capability is no longer live."
+                    },
+                    "value": true,
+                    "state": "closed",
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "read": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "inactive",
+                      "message": "This write capability is no longer live."
+                    },
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "closing": {
+                    "status": "resolved",
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "fresh": {
+                    "status": "resolved",
+                    "value": "custody content probe: survives cold unlock",
+                    "state": "active",
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  }
+                },
+                "gates": [],
+                "events": [
+                  "resolve-principal",
+                  {
+                    "checkCreation": "fresh",
+                    "intentId": "3a43f655e86b6c8fb7c250611dc61baa"
+                  },
+                  "root-encryption",
+                  "root-encryption",
+                  "root-encryption",
+                  "resolve-principal",
+                  "resolve-principal"
+                ],
+                "rootEncryptions": 3,
+                "privateExports": 2
+              }
+            },
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "second": {
+                    "status": "resolved",
+                    "state": "closed",
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  },
+                  "exclusive": {
+                    "status": "resolved",
+                    "displayErased": false,
+                    "entered": true,
+                    "descriptor": null
+                  }
+                },
+                "gates": [],
+                "events": ["resolve-principal"],
+                "rootEncryptions": 0,
+                "privateExports": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "C12.cancel-crypto",
+          "title": "Cancellation stops nested crypto continuations before private export",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "keygen-retains-permit-until-settled",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "cancelled-creation-refuses",
+              "actual": "inactive",
+              "expected": "inactive",
+              "passed": true
+            },
+            {
+              "id": "cancel-prevents-private-export",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "cancel-keeps-reservations",
+              "actual": ["creating", 3],
+              "expected": ["creating", 3],
+              "passed": true
+            },
+            {
+              "id": "cancelled-creation-resumes",
+              "actual": 6,
+              "expected": 6,
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": [
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "c": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "inactive",
+                      "message": "This write capability is no longer live."
+                    },
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": null
+                  }
+                },
+                "gates": [],
+                "events": [
+                  "resolve-principal",
+                  {
+                    "checkCreation": "fresh",
+                    "intentId": "166906ca6538f3c6039c26befdee3a98"
+                  },
+                  "root-encryption"
+                ],
+                "rootEncryptions": 1,
+                "privateExports": 0
+              }
+            },
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "x": {
+                    "status": "resolved",
+                    "displayErased": false,
+                    "entered": true,
+                    "descriptor": null
+                  },
+                  "r": {
+                    "status": "resolved",
+                    "value": true,
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": {
+                      "storeId": "8e48633ff6682b03e016deabead22a88",
+                      "rootId": "0828c567cd4b174bb08b6672de473aec"
+                    }
+                  }
+                },
+                "gates": [],
+                "events": [
+                  "resolve-principal",
+                  {
+                    "checkCreation": "resume",
+                    "intentId": "166906ca6538f3c6039c26befdee3a98"
+                  },
+                  "root-encryption",
+                  "root-encryption",
+                  "root-encryption"
+                ],
+                "rootEncryptions": 3,
+                "privateExports": 2
+              }
+            }
+          ]
+        },
+        {
+          "id": "C12.cancel-initialize",
+          "title": "Cancellation drains initialization before exclusive acquisition",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "cancel-drains-authority-continuation",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "cancelled-initialization-refuses",
+              "actual": "inactive",
+              "expected": "inactive",
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": [
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "creation": {
+                    "status": "resolved",
+                    "value": true,
+                    "displayErased": true,
+                    "entered": false,
+                    "descriptor": {
+                      "storeId": "09e899339febb09987e227f8f0ffb4f0",
+                      "rootId": "b2cddde7b7ba2d2d539ff7a81b00b13b"
+                    }
+                  },
+                  "s": {
+                    "status": "rejected",
+                    "error": {
+                      "code": "inactive",
+                      "message": "This write capability is no longer live."
+                    },
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  }
+                },
+                "gates": [],
+                "events": [
+                  "resolve-principal",
+                  {
+                    "checkCreation": "fresh",
+                    "intentId": "6ee0162dbf6312f7d783330b2eb55033"
+                  },
+                  "root-encryption",
+                  "root-encryption",
+                  "root-encryption",
+                  "resolve-principal"
+                ],
+                "rootEncryptions": 3,
+                "privateExports": 2
+              }
+            },
+            {
+              "point": "final",
+              "snapshot": {
+                "entries": {
+                  "x": {
+                    "status": "resolved",
+                    "displayErased": false,
+                    "entered": true,
+                    "descriptor": null
+                  },
+                  "session": {
+                    "status": "resolved",
+                    "value": true,
+                    "state": "active",
+                    "displayErased": false,
+                    "entered": false,
+                    "descriptor": null
+                  }
+                },
+                "gates": [],
+                "events": ["resolve-principal"],
+                "rootEncryptions": 0,
+                "privateExports": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "C13.profile-copy",
+          "title": "Whole-profile negative and planted promptless-opener positive controls",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "copied-profile-has-no-content-opener",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "copied-profile-has-no-future-opener",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "no-factor-refuses-false",
+              "actual": "confirmation-required",
+              "expected": "confirmation-required",
+              "passed": true
+            },
+            {
+              "id": "external-factor-opens-copied-content-false",
+              "actual": "custody content probe: survives cold unlock",
+              "expected": "custody content probe: survives cold unlock",
+              "passed": true
+            },
+            {
+              "id": "positive-control-opens-content",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "positive-control-opens-future",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "no-factor-refuses-true",
+              "actual": "confirmation-required",
+              "expected": "confirmation-required",
+              "passed": true
+            },
+            {
+              "id": "external-factor-opens-copied-content-true",
+              "actual": "custody content probe: survives cold unlock",
+              "expected": "custody content probe: survives cold unlock",
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Closed synthetic source profiles; copied whole directories; launched cold copies on the same host; factor retained only by the runner"
+          ],
+          "artifacts": [
+            {
+              "point": "source-inventory-false",
+              "inventory": [
+                {
+                  "database": "done.custody",
+                  "store": "entries",
+                  "values": [
+                    {
+                      "v": 2,
+                      "state": "protected",
+                      "slot_id": "test-slot",
+                      "principal_id": "test-principal",
+                      "workspace_id": "test-workspace",
+                      "store_id": "135c8dcd55d365afbe6b2c5eee405192",
+                      "root_id": "4351e5786d9b944662b1cf8bcf5b63a1",
+                      "seals": [
+                        {
+                          "v": 1,
+                          "factor": "code",
+                          "id": "code",
+                          "salt": {
+                            "hex": "4c91404aba29042ad40831339318a97d"
+                          },
+                          "nonce": {
+                            "hex": "a2b12d9aab51006ec96b9334"
+                          },
+                          "ct": {
+                            "hex": "1334c9a1988ef2a6d616f2c798e9ec56fe75aceb101189b61ba003a4c3670bf9ab780c5c8d3e9f9f7d5d094e81da788d"
+                          }
+                        }
+                      ],
+                      "seal_reserved": 3,
+                      "rotation_owed": false,
+                      "creation_intent": null,
+                      "envelope": {
+                        "v": 1,
+                        "gen": 1,
+                        "nonce": {
+                          "hex": "b93a982d9e51d80ec954dad7"
+                        },
+                        "ct": {
+                          "hex": "a244fbf67db84bebef541d8952577d6b9d8866be83edff7b5a0222bc6325e8ea916e74714e3fa0a6f4c728c43f01f16a"
+                        }
+                      },
+                      "credentials": [
+                        {
+                          "role": "wrapping",
+                          "id": "119f4c31f514676154113d78c653583b",
+                          "publicKey": {
+                            "hex": "b80ee2696c2cc06ad067bf67315e7230b71d021470699db839feb2d508e12930"
+                          },
+                          "sealed": {
+                            "v": 2,
+                            "nonce": {
+                              "hex": "bee823cd70a4b68046b0d484"
+                            },
+                            "ct": {
+                              "hex": "daf09e51ce107db65b8769457c38fa71265783d6b38e384117807a0c907f0529576249dceced50ddccc942cececd34bb"
+                            }
+                          }
+                        },
+                        {
+                          "role": "signing",
+                          "id": "90d181d83402f51a9faa07dd48d1f088",
+                          "publicKey": {
+                            "hex": "78cc3067cbe3e9f54baabe21ba3efbc0cfb5e692cae4a7b3fbe55cbcaf933b65"
+                          },
+                          "sealed": {
+                            "v": 2,
+                            "nonce": {
+                              "hex": "970fc63d8240bd96da019d85"
+                            },
+                            "ct": {
+                              "hex": "92e85b3cac52a077e59ae5b987764b66e7dd2ec0fd3de1c090e38e67ed9a1372aee4d39ff46b1c27d4243f39a62dc67b"
+                            }
+                          }
+                        }
+                      ],
+                      "mac": {
+                        "hex": "78d2a8afef33e362651c29c3b93f9d56889042a6ce3d8c26d4b0e729f07e335f"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "database": "done.custody-probe",
+                  "store": "probe",
+                  "values": [
+                    {
+                      "scope": {
+                        "slotId": "test-slot",
+                        "principalId": "test-principal",
+                        "workspaceId": "test-workspace"
+                      },
+                      "record": {
+                        "v": 1,
+                        "gen": 1,
+                        "seq": 1,
+                        "kind": "update",
+                        "nonce": {
+                          "hex": "5a90e76473250173edb77af0"
+                        },
+                        "ct": {
+                          "hex": "109d5be648e96ebe8e3bbdba76e139e8145802ecfdafe015f2403992c1e52e674fa90966c7be2c8738626cf1f569e2e498e449882deecf8f34b25f"
+                        }
+                      },
+                      "future": {
+                        "publicKey": {
+                          "hex": "5260866dbf1ffa8a10289ce9fb00c526312541eeada621ca65a67b7d551a1c68"
+                        },
+                        "nonce": {
+                          "hex": "8f8b20f5d03e441cc23aa6a7"
+                        },
+                        "ct": {
+                          "hex": "9900fe7b6de870dde0d0a9127c0fee48feb7e8319661d0d5cb488165a5229438da4026143b2bbd46838922432604749a"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "point": "copied-profile-attack-false",
+              "attack": {
+                "content": false,
+                "future": false,
+                "opener": null,
+                "candidates": [
+                  "done.custody/entries/0/credentials/0/publicKey",
+                  "done.custody/entries/0/credentials/1/publicKey",
+                  "done.custody/entries/0/mac",
+                  "done.custody-probe/probe/0/future/publicKey"
+                ]
+              }
+            },
+            {
+              "point": "source-inventory-true",
+              "inventory": [
+                {
+                  "database": "done.custody",
+                  "store": "entries",
+                  "values": [
+                    {
+                      "v": 2,
+                      "state": "protected",
+                      "slot_id": "test-slot",
+                      "principal_id": "test-principal",
+                      "workspace_id": "test-workspace",
+                      "store_id": "8e47e1c1ca419b67844acd5ccea1958f",
+                      "root_id": "1e2c8e447fe0d57866135127bb57dca8",
+                      "seals": [
+                        {
+                          "v": 1,
+                          "factor": "code",
+                          "id": "code",
+                          "salt": {
+                            "hex": "391324993ca00242a9485a7844b81a54"
+                          },
+                          "nonce": {
+                            "hex": "d81fe12e9d170ff4154af49e"
+                          },
+                          "ct": {
+                            "hex": "7aca50609f67226c757e4c5cf6a0fc808eec92cdda5f785601f7d94daf5061b2a3576303eda26e99185f3b26af4eaa0a"
+                          }
+                        }
+                      ],
+                      "seal_reserved": 3,
+                      "rotation_owed": false,
+                      "creation_intent": null,
+                      "envelope": {
+                        "v": 1,
+                        "gen": 1,
+                        "nonce": {
+                          "hex": "4465dfca6bfefa45a28abe15"
+                        },
+                        "ct": {
+                          "hex": "75fd25671ade4735dfb7d81b6ffc9ac5061810ae1b3db05f13b636a7a7f09ee9ec1092d163434444f6af6617c2967b0c"
+                        }
+                      },
+                      "credentials": [
+                        {
+                          "role": "wrapping",
+                          "id": "7e955a7d9a98b4179f880a2ecc318674",
+                          "publicKey": {
+                            "hex": "878dcf47ed9ee35b704a85b5e1ef465a96673777f58589895e9951a0dd804166"
+                          },
+                          "sealed": {
+                            "v": 2,
+                            "nonce": {
+                              "hex": "ecb8a8c28ff297b4d656f746"
+                            },
+                            "ct": {
+                              "hex": "22a80a45030f53cb90a8b317ac21577d0c8f8c9668860267a0d242d13b5e10d152c07c461ad857fa4ceb38e6b7a12a66"
+                            }
+                          }
+                        },
+                        {
+                          "role": "signing",
+                          "id": "2b53f8bee34d7d8a189bfaed0743c5a5",
+                          "publicKey": {
+                            "hex": "4eddb42f8bb247a054446db1883cf429fe46d5337f3157db2ff844f6d975cf4e"
+                          },
+                          "sealed": {
+                            "v": 2,
+                            "nonce": {
+                              "hex": "ae0d0782f5c2e291b40ebf55"
+                            },
+                            "ct": {
+                              "hex": "12c3ab599f8b5150817f11eb23e9ff6066ed19de8787003f3bf47dfde8d73d2f895d5b461a5e2502c1bd941fb9cb5beb"
+                            }
+                          }
+                        }
+                      ],
+                      "mac": {
+                        "hex": "315e981ef39bd49ebc515422b25a581093e70da2f0ca8c09842cf9b40cee3907"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "database": "done.custody-probe",
+                  "store": "probe",
+                  "values": [
+                    {
+                      "scope": {
+                        "slotId": "test-slot",
+                        "principalId": "test-principal",
+                        "workspaceId": "test-workspace"
+                      },
+                      "record": {
+                        "v": 1,
+                        "gen": 1,
+                        "seq": 1,
+                        "kind": "update",
+                        "nonce": {
+                          "hex": "369e9ed50e9c6c07bfd203c4"
+                        },
+                        "ct": {
+                          "hex": "0d5e71c5ce548df1852bda40175096780aefcee08adfd3ac7dce98576749dba0c8226910b2fffe74c490803f820512d898cdc9818ab24cd3ba236c"
+                        }
+                      },
+                      "future": {
+                        "publicKey": {
+                          "hex": "90ecbc953062d7ad89c88a610cdd44c639f83fe3a1e103d6c3cd2c4d847bef4d"
+                        },
+                        "nonce": {
+                          "hex": "8012ee2bf91e7377ddb27df5"
+                        },
+                        "ct": {
+                          "hex": "f17a748522e779b6886484cc6826893a9d389d50fec4bf84bda52c760edf7e24ac1be424ed3fa476b6373b5702eb3ba6"
+                        }
+                      },
+                      "promptlessRoot": {
+                        "cryptoKey": {
+                          "type": "secret",
+                          "algorithm": "AES-GCM",
+                          "extractable": false
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "point": "copied-profile-attack-true",
+              "attack": {
+                "content": true,
+                "future": true,
+                "opener": "done.custody-probe/probe/0/promptlessRoot",
+                "candidates": [
+                  "done.custody/entries/0/credentials/0/publicKey",
+                  "done.custody/entries/0/credentials/1/publicKey",
+                  "done.custody/entries/0/mac",
+                  "done.custody-probe/probe/0/future/publicKey",
+                  "done.custody-probe/probe/0/promptlessRoot"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mutations": [
+    {
+      "id": "skip-nested-crypto-guard",
+      "assertion": "cancel-prevents-private-export",
+      "status": "detected",
+      "result": {
+        "id": "skip-nested-crypto-guard",
+        "source": {
+          "files": {
+            "custody.ts": "de4bb9bb52d48e7baedd4c0ef4935a1a5dc14881969e85bdbc35a80b0e383132",
+            "custodyCrypto.ts": "88e008a5f62bc4fa29174faf597477377af0f293bc813067ebb7d8040f6cb5f8",
+            "custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+            "contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+            "contentStore.ts": "d3371333742260de6a9543531aee6b751d327af9e06013b4806a929d8f702361"
+          }
+        },
+        "mutation": {
+          "file": "custodyCrypto.ts",
+          "from": "        guard();",
+          "to": "        void guard;"
+        },
+        "cases": [
+          {
+            "id": "C12.cancel-crypto",
+            "title": "Cancellation stops nested crypto continuations before private export",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "keygen-retains-permit-until-settled",
+                "actual": false,
+                "expected": false,
+                "passed": true
+              },
+              {
+                "id": "cancelled-creation-refuses",
+                "actual": "inactive",
+                "expected": "inactive",
+                "passed": true
+              },
+              {
+                "id": "cancel-prevents-private-export",
+                "actual": 1,
+                "expected": 0,
+                "passed": false
+              },
+              {
+                "id": "cancel-keeps-reservations",
+                "actual": ["creating", 3],
+                "expected": ["creating", 3],
+                "passed": true
+              },
+              {
+                "id": "cancelled-creation-resumes",
+                "actual": 6,
+                "expected": 6,
+                "passed": true
+              }
+            ],
+            "schedule": [],
+            "artifacts": [
+              {
+                "point": "final",
+                "snapshot": {
+                  "entries": {
+                    "c": {
+                      "status": "rejected",
+                      "error": {
+                        "code": "inactive",
+                        "message": "This write capability is no longer live."
+                      },
+                      "displayErased": true,
+                      "entered": false,
+                      "descriptor": null
+                    }
+                  },
+                  "gates": [],
+                  "events": [
+                    "resolve-principal",
+                    {
+                      "checkCreation": "fresh",
+                      "intentId": "9632bcd2ef0b0ea5f18f26d17bfdf193"
+                    },
+                    "root-encryption",
+                    "root-encryption"
+                  ],
+                  "rootEncryptions": 2,
+                  "privateExports": 1
+                }
+              },
+              {
+                "point": "final",
+                "snapshot": {
+                  "entries": {
+                    "x": {
+                      "status": "resolved",
+                      "displayErased": false,
+                      "entered": true,
+                      "descriptor": null
+                    },
+                    "r": {
+                      "status": "resolved",
+                      "value": true,
+                      "displayErased": false,
+                      "entered": false,
+                      "descriptor": {
+                        "storeId": "85bd957398222e96d91c7df4479250c9",
+                        "rootId": "6cbb6e54b923534c5287cf9b5e48a5a5"
+                      }
+                    }
+                  },
+                  "gates": [],
+                  "events": [
+                    "resolve-principal",
+                    {
+                      "checkCreation": "resume",
+                      "intentId": "9632bcd2ef0b0ea5f18f26d17bfdf193"
+                    },
+                    "root-encryption",
+                    "root-encryption",
+                    "root-encryption"
+                  ],
+                  "rootEncryptions": 3,
+                  "privateExports": 2
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "accept-unconfirmed-code",
+      "assertion": "wrong-confirmation-refused",
+      "status": "detected",
+      "result": {
+        "id": "accept-unconfirmed-code",
+        "source": {
+          "files": {
+            "custody.ts": "e6bc6c3621a6108ecf5bd9ce8177d643aab38cb009ae2d6fe25ff649a520996f",
+            "custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+            "contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+            "contentStore.ts": "d3371333742260de6a9543531aee6b751d327af9e06013b4806a929d8f702361"
+          }
+        },
+        "mutation": {
+          "file": "custody.ts",
+          "from": "if (!typed.every((b, i) => b === expected![i])) {",
+          "to": "if (false) {"
+        },
+        "cases": [
+          {
+            "id": "C12.genesis",
+            "title": "Generated code confirmation and factor-only cold reopen",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "no-custody-before-confirmation",
+                "actual": null,
+                "expected": null,
+                "passed": true
+              },
+              {
+                "id": "wrong-confirmation-refused",
+                "expected": "confirmation-required",
+                "passed": false
+              }
+            ],
+            "schedule": [],
+            "artifacts": [
+              {
+                "point": "final",
+                "snapshot": {
+                  "entries": {
+                    "c": {
+                      "status": "resolved",
+                      "value": true,
+                      "displayErased": true,
+                      "entered": false,
+                      "descriptor": {
+                        "storeId": "b690b9bdfe28abb064e3f660706b29a2",
+                        "rootId": "4a6f0d269f7bc01248eb37b7353f1083"
+                      }
+                    }
+                  },
+                  "gates": [],
+                  "events": [
+                    "resolve-principal",
+                    {
+                      "checkCreation": "fresh",
+                      "intentId": "725dbb04efa40cb0e9bf0fa5e254e984"
+                    },
+                    "root-encryption",
+                    "root-encryption",
+                    "root-encryption"
+                  ],
+                  "rootEncryptions": 3,
+                  "privateExports": 2
+                }
+              },
+              {
+                "point": "final",
+                "snapshot": {
+                  "entries": {},
+                  "gates": [],
+                  "events": [],
+                  "rootEncryptions": 0,
+                  "privateExports": 0
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "skip-reservation-commit",
+      "assertion": "durable-reservation-before-encrypt",
+      "status": "detected",
+      "result": {
+        "id": "skip-reservation-commit",
+        "source": {
+          "files": {
+            "custody.ts": "a850933ebac7ebb884e4a6d0d415295634d8454c48caf0f1d186d9922b76b5f4",
+            "custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+            "contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+            "contentStore.ts": "d3371333742260de6a9543531aee6b751d327af9e06013b4806a929d8f702361"
+          }
+        },
+        "mutation": {
+          "file": "custody.ts",
+          "from": "await task.wait(() => transact(db, task, scope, initial, reserved));",
+          "to": "// Removed durable reservation boundary."
+        },
+        "cases": [
+          {
+            "id": "C12.interrupted-creation",
+            "title": "Renderer death preserves root, intent and abandoned reservations",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "durable-reservation-before-encrypt",
+                "actual": 0,
+                "expected": 3,
+                "passed": false
+              }
+            ],
+            "schedule": ["Actual Page.crash without a graceful close"],
+            "artifacts": [
+              {
+                "point": "before-renderer-death",
+                "snapshot": {
+                  "entries": {
+                    "c": {
+                      "status": "pending",
+                      "displayErased": true,
+                      "entered": false,
+                      "descriptor": null
+                    }
+                  },
+                  "gates": ["envelope"],
+                  "events": [
+                    "resolve-principal",
+                    {
+                      "checkCreation": "fresh",
+                      "intentId": "b8607f9cbb943589a19adf7b66427eca"
+                    }
+                  ],
+                  "rootEncryptions": 0,
+                  "privateExports": 0
+                },
+                "record": {
+                  "v": 2,
+                  "state": "creating",
+                  "slot_id": "test-slot",
+                  "principal_id": "test-principal",
+                  "workspace_id": "test-workspace",
+                  "store_id": "a23058fb28252ee65d8781738a52adce",
+                  "root_id": "4206984d9e50fb651c5ce59d35e470b7",
+                  "seals": [
+                    {
+                      "v": 1,
+                      "factor": "code",
+                      "id": "code",
+                      "salt": {
+                        "hex": "9b7437643dd81e4def99d073d0b32407"
+                      },
+                      "nonce": {
+                        "hex": "fbe66f47b67ad824e46c3ec0"
+                      },
+                      "ct": {
+                        "hex": "01c10351e5206588f998f1dc48f16cc3ce22a1c497ae76a71f53a140eff43f657396d45811fc89fed8f115596ce16efd"
+                      }
+                    }
+                  ],
+                  "seal_reserved": 0,
+                  "rotation_owed": false,
+                  "creation_intent": {
+                    "id": "b8607f9cbb943589a19adf7b66427eca",
+                    "storeId": "a23058fb28252ee65d8781738a52adce",
+                    "rootId": "4206984d9e50fb651c5ce59d35e470b7",
+                    "wrappingId": "60804bfe2cc02ab46943715eea737eb4",
+                    "signingId": "0183ac41be01b8b6f48e59208359cc38"
+                  },
+                  "envelope": null,
+                  "credentials": null,
+                  "mac": {
+                    "hex": "b0521c76ca81dc1dd04dcdb624cb0ec40ff8e3b1d322666ea4e4468a32a7fbd8"
+                  }
+                }
+              },
+              {
+                "point": "final",
+                "snapshot": {
+                  "entries": {},
+                  "gates": [],
+                  "events": [],
+                  "rootEncryptions": 0,
+                  "privateExports": 0
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "trust-unverified-metadata",
+      "assertion": "modified-count-refuses",
+      "status": "detected",
+      "result": {
+        "id": "trust-unverified-metadata",
+        "source": {
+          "files": {
+            "custody.ts": "b22d31d3406c1b6d4f4a3c8cfbc12e2c09320b9cd56d5110178bf86cac5a1da2",
+            "custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+            "contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+            "contentStore.ts": "d3371333742260de6a9543531aee6b751d327af9e06013b4806a929d8f702361"
+          }
+        },
+        "mutation": {
+          "file": "custody.ts",
+          "from": "          record,\n          guardedSubtle(() => task.step(() => {})),\n        ),",
+          "to": "          record,\n          guardedSubtle(() => task.step(() => {})),\n        ).catch(() => {}),"
+        },
+        "cases": [
+          {
+            "id": "C12.metadata-authentication",
+            "title": "Counter tampering refuses normal unlock",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "modified-count-refuses",
+                "expected": "repair-required",
+                "passed": false
+              },
+              {
+                "id": "damaged-record-is-retained",
+                "actual": {
+                  "v": 2,
+                  "state": "protected",
+                  "slot_id": "test-slot",
+                  "principal_id": "test-principal",
+                  "workspace_id": "test-workspace",
+                  "store_id": "935b1834ea965e2b2e0b3611fc38fcca",
+                  "root_id": "f78a696fba288216320f4fda97c77640",
+                  "seals": [
+                    {
+                      "v": 1,
+                      "factor": "code",
+                      "id": "code",
+                      "salt": {
+                        "hex": "0a5039791ef33a57b31f46e85a9987e1"
+                      },
+                      "nonce": {
+                        "hex": "14c1f00766949b9b687e69b4"
+                      },
+                      "ct": {
+                        "hex": "6da032e25747ec6efe8965fe20fd89ede2fa0fa11cf5ce4702b7b834dc68db7b2e866c1ee60d1c6e44f2548ea27795b8"
+                      }
+                    }
+                  ],
+                  "seal_reserved": 4,
+                  "rotation_owed": false,
+                  "creation_intent": null,
+                  "envelope": {
+                    "v": 1,
+                    "gen": 1,
+                    "nonce": {
+                      "hex": "d8638e1189da599876dd8a15"
+                    },
+                    "ct": {
+                      "hex": "822308bbc78d32b46d543308a53d6c9f430ee2c7b8bfb44c5719022ad1d09a95eac51723f6c9e6e2efd71bdee8cee448"
+                    }
+                  },
+                  "credentials": [
+                    {
+                      "role": "wrapping",
+                      "id": "9e6d9fbe0bf3bc80a8c1c93166ca0024",
+                      "publicKey": {
+                        "hex": "639c24120fb897e3680cc92a0bf242a139bb0058b60f13c55b555d3bee467a3f"
+                      },
+                      "sealed": {
+                        "v": 2,
+                        "nonce": {
+                          "hex": "d224a99a6610aa6683c965de"
+                        },
+                        "ct": {
+                          "hex": "33c399831926cce2f870a18916819724bc36489f56bb5ec959c055c6351a0b0b2e951890f54460200b5d873a312b3894"
+                        }
+                      }
+                    },
+                    {
+                      "role": "signing",
+                      "id": "85ad7af74dfd2c57d57acb2a8c81cc11",
+                      "publicKey": {
+                        "hex": "c26a6e4682829f99b552a56d97cf22b53f79205d36c846e372debd6d5f236d71"
+                      },
+                      "sealed": {
+                        "v": 2,
+                        "nonce": {
+                          "hex": "f7d558e3f9bf4db5d9cbfe4e"
+                        },
+                        "ct": {
+                          "hex": "738cdd6936e56b59651bb89aca04d32787e464d5c23c6c4fb8be7f1b08a3d840f72e2e92a4fcf0c77303be4164a5e41b"
+                        }
+                      }
+                    }
+                  ],
+                  "mac": {
+                    "hex": "bec8622e4dc8342b4548090c48a12d44610c25e5e03d6f312fc0051b74757195"
+                  }
+                },
+                "expected": {
+                  "v": 2,
+                  "state": "protected",
+                  "slot_id": "test-slot",
+                  "principal_id": "test-principal",
+                  "workspace_id": "test-workspace",
+                  "store_id": "935b1834ea965e2b2e0b3611fc38fcca",
+                  "root_id": "f78a696fba288216320f4fda97c77640",
+                  "seals": [
+                    {
+                      "v": 1,
+                      "factor": "code",
+                      "id": "code",
+                      "salt": {
+                        "hex": "0a5039791ef33a57b31f46e85a9987e1"
+                      },
+                      "nonce": {
+                        "hex": "14c1f00766949b9b687e69b4"
+                      },
+                      "ct": {
+                        "hex": "6da032e25747ec6efe8965fe20fd89ede2fa0fa11cf5ce4702b7b834dc68db7b2e866c1ee60d1c6e44f2548ea27795b8"
+                      }
+                    }
+                  ],
+                  "seal_reserved": 4,
+                  "rotation_owed": false,
+                  "creation_intent": null,
+                  "envelope": {
+                    "v": 1,
+                    "gen": 1,
+                    "nonce": {
+                      "hex": "d8638e1189da599876dd8a15"
+                    },
+                    "ct": {
+                      "hex": "822308bbc78d32b46d543308a53d6c9f430ee2c7b8bfb44c5719022ad1d09a95eac51723f6c9e6e2efd71bdee8cee448"
+                    }
+                  },
+                  "credentials": [
+                    {
+                      "role": "wrapping",
+                      "id": "9e6d9fbe0bf3bc80a8c1c93166ca0024",
+                      "publicKey": {
+                        "hex": "639c24120fb897e3680cc92a0bf242a139bb0058b60f13c55b555d3bee467a3f"
+                      },
+                      "sealed": {
+                        "v": 2,
+                        "nonce": {
+                          "hex": "d224a99a6610aa6683c965de"
+                        },
+                        "ct": {
+                          "hex": "33c399831926cce2f870a18916819724bc36489f56bb5ec959c055c6351a0b0b2e951890f54460200b5d873a312b3894"
+                        }
+                      }
+                    },
+                    {
+                      "role": "signing",
+                      "id": "85ad7af74dfd2c57d57acb2a8c81cc11",
+                      "publicKey": {
+                        "hex": "c26a6e4682829f99b552a56d97cf22b53f79205d36c846e372debd6d5f236d71"
+                      },
+                      "sealed": {
+                        "v": 2,
+                        "nonce": {
+                          "hex": "f7d558e3f9bf4db5d9cbfe4e"
+                        },
+                        "ct": {
+                          "hex": "738cdd6936e56b59651bb89aca04d32787e464d5c23c6c4fb8be7f1b08a3d840f72e2e92a4fcf0c77303be4164a5e41b"
+                        }
+                      }
+                    }
+                  ],
+                  "mac": {
+                    "hex": "bec8622e4dc8342b4548090c48a12d44610c25e5e03d6f312fc0051b74757195"
+                  }
+                },
+                "passed": true
+              }
+            ],
+            "schedule": [],
+            "artifacts": [
+              {
+                "point": "final",
+                "snapshot": {
+                  "entries": {
+                    "creation": {
+                      "status": "resolved",
+                      "value": true,
+                      "displayErased": true,
+                      "entered": false,
+                      "descriptor": {
+                        "storeId": "935b1834ea965e2b2e0b3611fc38fcca",
+                        "rootId": "f78a696fba288216320f4fda97c77640"
+                      }
+                    }
+                  },
+                  "gates": [],
+                  "events": [
+                    "resolve-principal",
+                    {
+                      "checkCreation": "fresh",
+                      "intentId": "d17118238efa88ca36ab72f7e62c5850"
+                    },
+                    "root-encryption",
+                    "root-encryption",
+                    "root-encryption"
+                  ],
+                  "rootEncryptions": 3,
+                  "privateExports": 2
+                }
+              },
+              {
+                "point": "final",
+                "snapshot": {
+                  "entries": {
+                    "tampered": {
+                      "status": "resolved",
+                      "value": true,
+                      "state": "active",
+                      "displayErased": false,
+                      "entered": false,
+                      "descriptor": null
+                    }
+                  },
+                  "gates": [],
+                  "events": ["resolve-principal"],
+                  "rootEncryptions": 0,
+                  "privateExports": 0
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "request-success-as-commit",
+      "assertion": "no-encryption-before-reservation-completes",
+      "status": "detected",
+      "result": {
+        "id": "request-success-as-commit",
+        "source": {
+          "files": {
+            "custody.ts": "de4bb9bb52d48e7baedd4c0ef4935a1a5dc14881969e85bdbc35a80b0e383132",
+            "custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "custodyRecord.ts": "9499ce0820cf7e7887ad2906a163c6b2f9ced106a18b9a029a3bf3b9ab6df158",
+            "writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+            "contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+            "contentStore.ts": "d3371333742260de6a9543531aee6b751d327af9e06013b4806a929d8f702361"
+          }
+        },
+        "mutation": {
+          "file": "custodyRecord.ts",
+          "from": "store.put(next, recordKey(scope));",
+          "to": "const write = store.put(next, recordKey(scope)); write.onsuccess = () => resolve(next);"
+        },
+        "cases": [
+          {
+            "id": "C12.reservation-abort",
+            "title": "Request success cannot acknowledge a reservation transaction",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "aborted-reservation-refuses",
+                "actual": "rejected",
+                "expected": "rejected",
+                "passed": true
+              },
+              {
+                "id": "no-encryption-before-reservation-completes",
+                "actual": 3,
+                "expected": 0,
+                "passed": false
+              }
+            ],
+            "schedule": [],
+            "artifacts": [
+              {
+                "point": "final",
+                "snapshot": {
+                  "entries": {
+                    "c": {
+                      "status": "rejected",
+                      "error": {
+                        "code": "repair-required",
+                        "message": "Custody changed during the operation."
+                      },
+                      "displayErased": true,
+                      "entered": false,
+                      "descriptor": null
+                    }
+                  },
+                  "gates": [],
+                  "events": [
+                    "resolve-principal",
+                    {
+                      "checkCreation": "fresh",
+                      "intentId": "cfe44248b32afc98bdc691dd9c3c7514"
+                    },
+                    "put-success-then-abort",
+                    "root-encryption",
+                    "root-encryption",
+                    "root-encryption"
+                  ],
+                  "rootEncryptions": 3,
+                  "privateExports": 2
+                }
+              },
+              {
+                "point": "final",
+                "snapshot": {
+                  "entries": {},
+                  "gates": [],
+                  "events": [],
+                  "rootEncryptions": 0,
+                  "privateExports": 0
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "limits": [
+    "Component scope: genesis custody, generated code unlock and lifecycle. App startup/admission, legacy migration, PRF ceremonies and full storage composition remain separate.",
+    "Identity and other-carrier validation are required caller boundaries, supplied by synthetic fixture checks in this run. The Account service verifier is not exercised.",
+    "Chromium on this macOS host only. Entire closed profiles are copied; test-only content and future ECDH probes are not production content writes or a reader-wrap verifier.",
+    "Profile attacker attempts persisted 32-byte values and CryptoKey handles as root openers for known content and future-receiver probes; this is not an exhaustive attack proof.",
+    "Source and copies use --use-mock-keychain and --password-store=basic. Results do not certify native keychain or other supported-platform behavior.",
+    "Copies only read/decrypt; raw profile cloning is not a supported writable store history. No release debt is paid."
+  ],
+  "exitCode": 0,
+  "finished": "2026-09-08T16:35:20.694Z"
+}

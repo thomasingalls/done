@@ -48,40 +48,42 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # implementation phase two complete; encrypted content carrier is next
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, custody.md]
+status: in flight # implementation phase three complete; synchronous encrypted journal is next
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, content-store.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers its represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-08
 ```
 
-**Just completed.** Phase two, [mandatory-factor custody](./custody.md), attaches generated-code
-confirmation, authenticated resumable creation, sealed generation/operational credentials and cold unlock
-to the shared/exclusive lifecycle. Its [recorded execution](./storage-conformance-runs/2026-09-08-custody.md)
-passes 13 browser cases and 73 assertions and detects five source defects. Same-host copied-profile
-controls include a valid external factor and a planted promptless root recovering content and a future
-receiver probe. The full unit suite passes 532 tests. [completed.md](./completed.md) records the outcome.
-The preceding shared candidate harness and phase-one lifecycle are committed as `ccfcbf0`.
+**Just completed.** Phase three, the [encrypted content carrier](./content-store.md), adds exact durable
+batch allocation, counted abandoned seals, atomic mixed-kind insertion, authenticated full snapshots and
+resumable initialization with an independent custody-side witness. It shares the factor-unlocked private
+key owner and lifetime, exposes no raw key or reservation, and refuses the invocation ceiling or a changed
+generation. Its [recorded execution](./storage-conformance-runs/2026-09-08-content.md) passes 13 browser
+cases and 58 assertions and detects five mutations. The custody regression passes its 13 cases/73 assertions
+and detects all five prior mutations, including copied-profile controls. The full unit suite passes 545
+tests. The previous custody phase is committed as `a6d39a2`; phase three is the current checkpoint.
 
-**Next phase.** The encrypted content carrier: durable allocation, authenticated loading and the exact
-stored-record boundary using the custody session. Journal/admission and complete owned startup follow
-as separate checkpoints. The custody component requires its future caller to verify identity and inspect
-other carriers under the permit; those boundaries, application onboarding and actual Account/receiver
-integration are not supplied by its synthetic browser fixture. The app still uses its earlier persistence.
-Sequencing §3.2's items 3–6 remain one integrated landing unit, developed in successive checkpoints.
+**Next phase.** The synchronous encrypted journal attached to the same lifecycle. The ordered admission
+owner and canonical document/editor/transport integration then connect these carriers. Exact trim and
+complete owned startup/clear/migration remain subsequent checkpoints. Application onboarding and actual
+Local/Account identity/index integration are not supplied by synthetic fixture authorities. The app still
+uses its earlier persistence. Sequencing §3.2's items 3–6 remain one integrated landing unit, developed in
+successive checkpoints; no component receipt is a whole-workspace readiness receipt.
 
-**Existing evidence.** Contracts were committed as `f87997d`. The earlier
-[shared candidate run](./storage-conformance-runs/2026-09-08.md) contains 57 candidate subcases and three
-detected trim mutants. All three pinned candidates fail the corrected contract; none has been merged.
-Contract-pass's disk-union trim and fail-closed load remain component donors after repairing the
-identity-and-bytes deletion check. The lifecycle/custody results do not change the candidate comparison.
+**Existing evidence.** Contracts were committed as `f87997d`; the shared harness and phase-one lifecycle
+as `ccfcbf0`. The [shared candidate run](./storage-conformance-runs/2026-09-08.md) contains 57 candidate
+subcases and three detected trim mutants. All three pinned candidates fail the corrected contract; none
+has been merged. Contract-pass's disk-union trim and fail-closed load remain component donors after
+repairing the identity-and-bytes deletion check. The new carrier preserves every stored record and has no
+trim API; a `state` record cannot hide its predecessors.
 
-**Completion blockers.** L-1 still owes complete storage/admission/startup/clear conformance and the
+**Completion blockers.** L-1 still owes complete journal/admission/startup/clear conformance and the
 seeded legacy cutover kill matrix. PRF enrollment, legacy receiver replacement and full Local/Account
 onboarding remain incomplete. L-3 composes generation/custody references with lifetimes and interrupted
-phases; L-4 carries supported-profile/authenticator, platform and independent-review evidence. The three
-matrix evidence pins were refreshed with obligations and debt statuses unchanged. No component pass
-establishes the old-writer cutover or pays a release gate.
+phases; phase three's generation-fence probe does not activate a successor. L-4 carries supported-profile/
+authenticator, platform and independent-review evidence. Matrix input pins are refreshed with obligations
+and debt statuses unchanged. No component pass establishes the old-writer cutover or pays a release gate.
 
 **Scope.** This seat owns L-1's corrected implementation and evidence. The independent L-2 seat below
 retains its own record. The author's real-data cutover remains Stage 2, after the carrier choice and

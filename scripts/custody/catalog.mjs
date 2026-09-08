@@ -43,8 +43,8 @@ export const mutants = [
     file: 'custody.ts',
     case: 'C12.metadata-authentication',
     assertion: 'modified-count-refuses',
-    from: '            record,\n            guardedSubtle(() => task.step(() => {})),\n          ),',
-    to: '            record,\n            guardedSubtle(() => task.step(() => {})),\n          ).catch(() => {}),',
+    from: '          record,\n          guardedSubtle(() => task.step(() => {})),\n        ),',
+    to: '          record,\n          guardedSubtle(() => task.step(() => {})),\n        ).catch(() => {}),',
   },
   {
     id: 'request-success-as-commit',
