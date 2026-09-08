@@ -1609,3 +1609,79 @@ The next owner is ordered admission over both carriers. This checkpoint has no c
 editor, transport, pending-intent queue or batching timer and cannot itself guarantee causal closure of
 arbitrary caller bytes. The raw content/journal API is an internal integration boundary, not permission
 for a production receive path to promote memory-only dependencies.
+
+
+### 2026-09-08 — ordered admission owns canonical state, intent preparation and durability barriers
+
+Phase five introduces [one admission owner](./ordered-admission.md) over the real factor-unlocked journal
+and content capabilities. Canonical Yjs state is private; callers receive detached accepted snapshots and
+post-carrier update events. Local input queues encoded intent rather than updates prepared against a
+possibly uncommitted predecessor. At the head, a required synchronous command adapter prepares on a
+private clone. The owner captures its exact delta and never publishes the clone. Transport-specific
+receive validation and private Yjs validation precede persistence; content completion precedes remote
+canonical application. Pending structs/delete sets are retained, without state-vector coverage shortcuts.
+
+A successful single-slice journal append retains synchronous promotion. A refusal forces journal-prefix
+flush and then candidate content commit; these are separate transactions. Failed content retains the
+prepared bytes and the pending suffix. Retry remains forced to content even if journal availability has
+changed. A rejected inbound message can leave the queue because it never became authorized input; failed
+local preparation or storage instead holds the suffix until retry or explicit whole-suffix discard.
+Known repair-required persistence cannot be hidden by retry/discard or an ordinary snapshot.
+
+Commands that need slicing return a strictly smaller remaining byte intent. Every prepared update stays
+within the selected interim 16 KiB limit; oversized adapter output blocks before sealing. Each slice of a
+large command completes content persistence before promotion and next preparation. This is a resumable
+accepted prefix at the carrier boundary, not persisted ownership of an arbitrary import's remaining source.
+The application adapter supplies command semantics, slicing and product-level source recovery.
+
+Initial queue policy is 256 jobs and 4 MiB of conservative byte reservations: local input reserves twice
+its byte length plus 16 KiB for input/remainder/update, and receive reserves captured input bytes. These
+are explicit implementation bounds, not population measurements or a Yjs/process-memory bound. Full draft
+cloning buys an isolated candidate here; profiling its document-size cost and improving the preparation
+seam as necessary precede low-end/editor acceptance.
+
+The 250 ms timer and `whenDurable()` use FIFO flush barriers. A barrier covers every prior observed input,
+including pending intent, and may finish while later input is still journal-only. Storage failure rejects
+barriers observably and blocks automatic retry. Closing invalidates input/publication, erases the pending
+suffix and drains the guarded underlying lifecycle before document disposal and permit release.
+
+[Executed evidence](./storage-conformance-runs/2026-09-08-admission.md) exercises this production owner
+with synthetic command/receive authorities and accepted-event projections. It does not certify actual
+CodeMirror/IME/undo/export/transport adapters, full startup/clear/migration, generation/reference composition
+or the old-writer cutover. The application remains on its previous persistence until the integrated unit
+is ready. No release obligation or debt status changes at this component checkpoint.
+
+
+### 2026-09-08 — integrate the Goals command/history boundary before the whole workspace
+
+The next [bounded integration checkpoint](./editor-admission.md) is the real Goals text surface. The
+existing application's writable Y.Doc is shared by editor bindings, card/workflow operations, actor
+repair, undo and the legacy provider. Replacing that capability everywhere is a broader workspace change;
+this checkpoint supplies a text command boundary and its actual browser observation surfaces first.
+The default application's persistence and startup remain unchanged.
+
+CodeMirror commands run against private state at the admission head. The accepted CodeMirror state owns
+history; a prepared transaction/history state remains private until the exact Yjs candidate promotes.
+Remote Y.Text deltas rebase that history with addToHistory disabled. Each submitted action is an undo
+step, while a paste's completed slices group together. This is one Goals history stream, not the final
+actor-scoped cross-surface history. The later workspace adapter must preserve that broader contract.
+
+Input normally follows the preceding accepted command's selection. An explicit UI selection is encoded
+as relative positions against accepted Yjs text and resolved when the intent reaches the head. Therefore
+queued typing can continue while earlier input is private without precomputing CRDT updates against an
+unaccepted document. Text projections, copy/export and outgoing bytes observe only accepted state.
+The same-origin BroadcastChannel adapter sends accepted local bytes and never lends a writable doc to
+its receiver. Caller-supplied receive authority and later Account envelope verification remain distinct.
+
+Native composition stays provisional. Blink may reconcile away preedit without a compositionend event;
+its final non-composing insertText must still enter admission. The CDP probe demonstrates the corrected
+commit route, not native IME/candidate-window usability or supported-device acceptance. Large paste
+slices stay below 1000 UTF-16 units without breaking surrogate pairs. All commands, including undo/redo,
+still face the owner's 16 KiB encoded-update limit; unsupported large command output refuses visibly.
+
+The preparation profile is diagnostic. Compact text size and fragmented Yjs history both affect full
+clone cost; the extreme 2000-writer case measured 6.1 ms p95 on this Mac before journal, view and paint
+costs. This does not prove the low-end budget holds or justify changing it. Preparation optimization and
+complete interaction measurement, plus native IME validation, remain prerequisites for editor acceptance.
+The [execution record](./storage-conformance-runs/2026-09-08-editor-admission.md) distinguishes passing
+cases and mutations from corrected/incomplete development runs. No release gate is paid by this checkpoint.

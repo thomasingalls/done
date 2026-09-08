@@ -48,51 +48,52 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # implementation phase four complete; ordered admission is next
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, journal-store.md]
-prerequisites: corrected SC-01–09; historical S0-10 closure covers its represented cases only
+status: in flight # bounded Goals editor checkpoint complete; workspace and acceptance work remain
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, editor-admission.md]
+prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-08
 ```
 
-**Just completed.** Phase four, the [synchronous encrypted journal](./journal-store.md), attaches local
-append, authenticated full recovery and content-backed flush cleanup to mandatory-factor custody and the
-shared lifetime. It preserves the selected row-2 bytes, refuses oversize/quota/unavailability, retains
-unreadable/changed entries, and disposes the raw subkey and WASM instance before releasing the permit.
-Journal-before-content recovery covers a concurrent flush handoff. Its
-[recorded execution](./storage-conformance-runs/2026-09-08-journal.md) passes 17 browser cases and 93
-assertions and detects six mutants. Content and custody regressions pass their 26 cases/131 assertions
-and ten prior mutants. Full Vitest passes 554 tests. Phase three is committed as `468cbe2`; phase four
-is the current checkpoint.
+**Just completed.** Phase six connects a [real Goals editor](./editor-admission.md) to phase five's ordered
+admission owner: semantic typing/paste/list/format/task commands, multiple carets, cut, undo/redo and the
+existing export functions observe accepted state. A scoped BroadcastChannel carries accepted local
+bytes through the receive-before-promotion path. Refused input stays private, and repair/close disable
+ordinary surfaces. The [recorded execution](./storage-conformance-runs/2026-09-08-editor-admission.md)
+passes 12 browser cases/61 assertions and detects three mutants. Admission regression passes 15 cases/
+64 assertions and six mutants; full Vitest passes 588 tests. Phases five and six remain uncommitted.
 
-**Next phase.** The bounded ordered admission coordinator over these two carriers: private intent
-preparation, forced content persistence on journal refusal, durable remote admission and canonical
-promotion only after a carrier receipt. Real editor/IME/undo/export/transport integration then connects
-that owner. Exact trim and complete owned startup/clear/migration remain subsequent checkpoints.
-Application onboarding and actual Local/Account identity/index integration are not supplied by synthetic
-fixture authorities. The app still uses its earlier persistence. Sequencing §3.2's items 3–6 remain one
-integrated landing unit, developed in successive checkpoints; no component receipt is workspace readiness.
+**Preparation/acceptance gate.** Full-clone preparation still scales with encoded state and fragmentation.
+The recorded Mac-only profile ranges from 0.2 ms p95 at compact 1 KiB to 6.1 ms for an extreme 2000-writer
+history, excluding command/history, encryption, view and paint. Optimize/profile the complete path before
+low-end/editor acceptance; no budget revision is implied. The tested Blink composition commit route
+works, including missing compositionend, but native preedit/candidate-window and device/IME behavior
+remain unvalidated. These are explicit gates before enabling the new editor path by default.
 
-**Existing evidence.** Contracts were committed as `f87997d`; the shared harness and phase-one lifecycle
-as `ccfcbf0`; mandatory-factor custody as `a6d39a2`. The
-[shared candidate run](./storage-conformance-runs/2026-09-08.md) contains 57 candidate subcases and three
-detected trim mutants. All three pinned candidates fail the corrected contract; none has been merged.
-Contract-pass's disk-union trim and fail-closed load remain component donors after repairing the
-identity-and-bytes deletion check. The content carrier preserves every stored record and has no trim
-API; a state record cannot hide predecessors. Journal cleanup now owns its actual content handoff.
+**Next integration.** A workspace command adapter must bring cards/moves, actor initialization and repair,
+settings and actor-scoped cross-surface undo through one owner. The current text facade owns only Goals
+history. Full owned startup/classification/clear/migration and Local/Account identity/index onboarding
+remain separate subsequent checkpoints, along with exact trim. The app still uses its earlier persistence.
+Sequencing §3.2's items 3–6 remain one integrated landing unit developed in reviewable checkpoints.
 
-**Completion blockers.** L-1 still owes complete admission/startup/clear conformance and the seeded legacy
-cutover kill matrix. Journal flush is not workspace clear; immutable identity/value cleanup is not an
-atomic localStorage transaction against arbitrary nonparticipating writers. PRF enrollment, legacy
-receiver replacement and full Local/Account onboarding remain incomplete. L-3 composes generation/custody
-references with lifetimes and interrupted phases; the cached-key freeze/death probe does not implement
-retirement. L-4 carries supported-profile/authenticator, low-end performance, platform and independent
-review evidence. Matrix input pins are refreshed with obligations and debt statuses unchanged. No
-component pass establishes old-writer cutover or pays a release gate.
+**Existing evidence.** Corrected contracts were committed as `f87997d`; shared harness and phase-one
+lifecycle as `ccfcbf0`; mandatory-factor custody as `a6d39a2`; encrypted content as `468cbe2`; synchronous
+journal as `9e60c6a`. [Phase-five admission](./ordered-admission.md) owns canonical state, exact forced
+retry, byte bounds, slicing and durability barriers. The [shared candidate run](./storage-conformance-runs/2026-09-08.md)
+contains 57 candidate subcases; all three pinned candidates fail the corrected contract and none is merged.
+Disk-union trim and fail-closed load remain donor ideas after exact identity-and-bytes deletion repair.
 
-**Scope.** This seat owns L-1's corrected implementation and evidence. The independent L-2 seat below
-retains its own record. The author's real-data cutover remains Stage 2, after the carrier choice and
-review 3a. Existing Stage 0 records remain dated records, not certification of states their models omitted.
+**Completion blockers.** L-1 still owes full workspace/startup/clear conformance and the seeded legacy
+cutover kill matrix. The carrier has no trim API; journal flush is not workspace clear. PRF, Account
+receive authority and full Local/Account onboarding remain incomplete. L-3 composes generation/custody
+references with lifetimes and interrupted phases; the components do not implement retirement. L-4 carries
+supported-profile/authenticator, low-end performance, platform and independent-review evidence. Matrix
+pins are refreshed with obligations/debt statuses unchanged. No checkpoint pays old-writer cutover or a
+release gate.
+
+**Scope.** This seat owns L-1 implementation/evidence. The independent L-2 seat below retains its own
+record. The author's real-data cutover remains Stage 2, after carrier selection and review 3a. Historical
+Stage 0 records are not certification of states their models omitted.
 
 ---
 

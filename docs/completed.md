@@ -304,3 +304,88 @@ PRF and supported-platform/independent-review evidence remain owed. C11-prefixed
 not implement workspace clear. Equality cleanup assumes conforming immutable identities, without an
 atomic localStorage compare-and-delete claim. Three matrix pins are refreshed; no obligation text or
 debt status changes and no release gate is paid. The independent L-2 progress record remains unchanged.
+
+
+---
+
+### Encrypted-store implementation phase five — ordered admission
+
+**Date:** 2026-09-08 · **Branch:** `codex/encrypted-store-contract-corrections` · **Stage:** L-1 component checkpoint, not L-1 closure
+
+**Exit.** Phase four was committed as `9e60c6a`. The [ordered admission owner](./ordered-admission.md)
+now owns private canonical Yjs state and one FIFO over local intents, received updates and durability
+barriers. Journal success promotes synchronously; refusal forces content before promotion. Queued intents
+prepare only against the resulting accepted predecessor. Failed content retains exact prepared bytes and
+retry remains on the content path. Receive validation precedes encrypted content completion and canonical
+application. Recovery preserves unresolved structs/delete sets and refuses malformed persisted Yjs.
+
+The component adds bounded byte/item reservations, explicit whole-suffix discard, retained pressure,
+command-supplied slices, a 250 ms flush and `whenDurable()`. Canonical documents do not escape; snapshots
+and accepted events are detached copies. Close immediately refuses input/publication, drains native work
+and lets the existing lifecycle dispose custody. The owner is exported but not wired into the app.
+
+**Evidence.** The [recorded browser execution](./storage-conformance-runs/2026-09-08-admission.md) passes
+**15 cases / 64 assertions** and detects **six** mutants. Actual encrypted-storage schedules cover
+refused predecessors, exact forced retry, receive-before-promotion, unresolved structs/deletes, slice
+interruption, capacity, flush barriers/timer, malformed persisted Yjs, repair refusal and close/exclusion.
+Renderer death demonstrates offline accepted-state/prefix recovery. An initially empty second tab
+withholds a received update and dependent intent until its own content commit. Fixture projections and
+publication inventories observe the real admission owner, not actual editor/transport implementations.
+
+The journal regression passes **17 cases / 93 assertions / six mutants**. Full Vitest passes **574 tests /
+49 files**, including 20 new admission tests for controlled failure and callback/ownership schedules.
+Type checking, focused lint/format, build/budget/origin, vectors/AAD, WASM verification and relevant
+contract/governance/traceability checks pass. Initial JS remains **306.3 kB / 350.0 kB** gzipped. The literal
+full `pnpm check` chain, geometry and separate unchanged custody/content/phase-one browser suites were
+not rerun. `pnpm storage:admission` is included in the check chain. The evidence records the corrected
+native completion observer and the earlier development result without crediting its nonpassing baseline.
+
+**Remaining.** Next is actual editor/command/IME/undo/export and receive/transport integration through the
+owner, with preparation-cost profiling before low-end acceptance. Full canonical cloning is an explicit
+cost, and 256 jobs/4 MiB reservations do not bound total Yjs memory. Complete identity/index/startup/clear/
+migration, exact trim, PRF, receiver/transition/reference composition, supported platforms and independent
+review remain owed. Three matrix pins are refreshed; no debt status or obligation text changes, no release
+gate or cutover is paid, and the independent L-2 progress record remains unchanged.
+
+
+---
+
+### Encrypted-store implementation phase six — admitted Goals editor and preparation profile
+
+**Date:** 2026-09-08 · **Branch:** `codex/encrypted-store-contract-corrections` · **Stage:** bounded L-1 integration checkpoint
+
+**Exit.** The [Goals text adapter](./editor-admission.md) connects a real CodeMirror surface to the
+phase-five owner. Semantic typing/paste, list/format/task commands, cut, undo/redo and multiple carets
+prepare privately at the FIFO head. Accepted text, history and the existing Markdown/ZIP export functions
+advance after the carrier receipt. Remote deltas map history without entering local undo. The actual
+same-origin scoped BroadcastChannel sends only accepted local bytes, and received bytes complete their
+local content commit before text publication or dependent input. The default application startup remains
+on its earlier store; this does not integrate the whole workspace or authorize cutover.
+
+Native Blink composition is provisional and its tested final commit enters admission once, including
+Blink's missing-compositionend case. Platform-native IME behavior and preedit UX still require validation.
+Storage pressure has visible retry/discard controls; repair and close clear/disable the ordinary editor
+and refuse ordinary export. Large paste uses bounded Unicode slices with a shared runtime undo step;
+other commands whose encoded delta exceeds 16 KiB block rather than bypassing the owner.
+
+**Evidence.** The [recorded execution](./storage-conformance-runs/2026-09-08-editor-admission.md) passes
+**12 browser cases / 61 assertions** and detects **three** editor source mutants. Actual renderer crashes
+recover accepted prefixes and completed edits offline. The full admission regression passes **15 cases /
+64 assertions / six mutants**. Full Vitest passes **588 tests / 50 files**, including 14 new command tests.
+Typecheck, focused lint/format, build/budget/origin, vectors/AAD, WASM verification and applicable project
+checks pass. The app's initial JS remains **306.3 kB / 350.0 kB** gzipped. The literal full check chain,
+geometry and separate unchanged carrier/custody/lifecycle browser suites were not rerun. The new
+`storage:editor` runner is in the check chain; source and fixture evidence is frozen and hashed.
+
+Preparation-only profiling records 50 samples each for compact 1 KiB/100 KiB/1 MiB text and a 2000-edit
+single-writer history, plus 30 samples for an extreme 2000-writer history. This Mac's p95 ranges from
+0.2 ms to 6.1 ms across those shapes. That is neither the complete input-to-paint path nor supported
+low-end evidence. Full cloning and native IME remain acceptance gates, with budgets/debt unchanged.
+The earlier false empty-Yjs-merge data-loss rationale in `openStore` was corrected without changing its
+load-before-connect behavior.
+
+**Remaining.** Card/workspace and actor-scoped cross-surface undo adapters, actor initialization/repair,
+complete startup/clear/migration/onboarding, exact trim, Account receive authority, generation/reference/
+receiver composition, PRF and independent/platform review remain owed. This phase and phase five remain
+uncommitted. Only evidence cells and their three matrix hash pins change; no obligation or debt status is
+paid, and the independent L-2 progress document is unchanged.

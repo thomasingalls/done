@@ -44,6 +44,7 @@ export * from './persistence';
 export * from './slotIndex';
 export * from './writeSession';
 export * from './custody';
+export * from './admission';
 export * from './sync';
 
 export interface Store extends DocumentTree {
@@ -135,11 +136,9 @@ const watchMemberships = (doc: YDoc, context: ActorContext): (() => void) => {
  *    document that already knows it and overwrite the stored name and colour
  *    with fresh defaults.
  * 2. **No transport may be constructed until the disk read has landed**
- *    (TRD §6.1). A socket opened against a document that is still empty hands
- *    the relay and every other replica an empty document, and they converge on
- *    it — sync propagates the loss instead of repairing it. This is the most
- *    common data-loss report against Yjs in production, and the reason
- *    `createSync` is at the bottom of this function rather than the top.
+ *    (TRD §6.1). An empty Yjs document does not erase a populated peer when
+ *    merged. The ordering protects recovery classification and initialization:
+ *    transport must not expose a document before local recovery has succeeded.
  *    Asserted in `test/sync.test.ts`, "load before connect".
  */
 export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> => {
