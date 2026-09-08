@@ -488,3 +488,50 @@ owed. Existing index mutations still need the writer/exclusive discipline. Accou
 receive authority, PRF/generation/reference composition, runtime-history/IME/performance acceptance and
 independent review remain separate work. Evidence and three matrix pins advance; obligations/debt statuses
 and the independent L-2 progress record do not change.
+
+
+---
+
+### Encrypted-store implementation phase nine — verified fresh Local genesis and lifecycle-owned scoped indexing
+
+**Date:** 2026-09-08 · **Branch:** `codex/encrypted-store-contract-corrections` · **Stage:** bounded L-1 integration checkpoint
+
+**Check-in.** Phase eight was committed as `a916d61` before this work. Phase nine remains uncommitted.
+
+**Exit.** [Verified Local genesis](./local-genesis.md) creates the first workspace in a fresh slot without
+an Account binding or caller-supplied principal. Exact generated-code confirmation precedes storage.
+One exclusive lifetime spans the fresh census, atomic identity/custody claim, custody completion,
+authenticated monotone progress, content initialization and scoped index installation. The claim retains
+the signed initial custody identity set; its intent also binds content initialization. Resumption verifies
+the factor and every surviving stage, consumes existing reservation state, and never restores the initial
+snapshot over missing live custody. Ready progress prevents missing initialized carriers from being
+recreated even after loss of their witness and index.
+
+Local startup verifies this claim under the eventual writer lifetime, then completes authenticated replay
+and admitted initialization before exposure. The picker returns only factor-verified detached routes for
+the requested slot. Earlier index APIs now take lifecycle permits and settle slot effects on transaction
+completion; add replaces blind creation put. Those APIs refuse Local claims/rows, including incomplete
+creation, and cannot bind, close or delete them. The default application still uses its earlier store.
+
+**Evidence.** [Recorded execution](./storage-conformance-runs/2026-09-08-local-genesis.md) passes **17 browser
+cases / 160 assertions** and detects **four** mutants. Nine durable-boundary renderer deaths resume the same
+winning identity set; each recovered workspace admits text and survives a further offline kill/reopen.
+Two creator tabs retain one factor; abort-after-request-success, cancellation/drain, missing/damaged
+material, legacy index interference and independent/closed slots are covered. Native database enumeration
+is disabled for production and retained only by inventory instrumentation. The first and final browser
+runs pass. A unit fixture's invalid actor color was corrected before its real workspace-open assertion.
+
+Startup regression passes **15 cases / 96 assertions / three mutants**; custody passes **13 / 73 / five**;
+content passes **13 / 58 / five**. Full Vitest passes **649 tests / 53 files**, with 15 new Local tests.
+Typecheck, focused lint/format, build/budget/origin, sixteen vector generators/AAD, WASM verification and
+applicable project/governance/traceability checks pass. Initial JS remains **306.3 kB / 350.0 kB** gzipped.
+The literal full check chain, geometry and separate unchanged journal/admission/editor/workspace/lifecycle
+browser suites were not rerun. `storage:genesis` is now in the check chain.
+
+**Remaining.** Next is journal-inclusive scoped Local clear: authenticated intent, ordered carrier cleanup,
+resumable failures and a terminal marker. It must include the retained genesis factor seal as an opener
+reference. Adding workspaces to existing slots, Account onboarding/verifier wiring, migration/import,
+exact trim and seeded legacy/default-app cutover remain owed. The new progress MAC construction needs
+independent review; platform, native IME, runtime history/performance, PRF and generation/receiver/reference
+composition remain later gates. Only matrix evidence and three pins advance; no debt status changes.
+The independent L-2 progress document is unchanged.

@@ -1,0 +1,60 @@
+export const boundaries = [
+  'claim',
+  'reservation',
+  'custody',
+  'progress-content',
+  'witness',
+  'counter',
+  'witness-ready',
+  'progress-ready',
+  'index',
+];
+export const cases = [
+  { id: 'G01.confirm', title: 'No persistent creation before generated-factor confirmation' },
+  { id: 'G02.race', title: 'Two creator tabs retain exactly one identity and factor' },
+  ...boundaries.map((boundary, i) => ({
+    id: `G${String(i + 3).padStart(2, '0')}.kill-${boundary}`,
+    title: `Renderer death after ${boundary} commit resumes the winning intent`,
+    boundary,
+  })),
+  { id: 'G12.abort', title: 'Request success followed by abort is not creation completion' },
+  { id: 'G13.cancel', title: 'Cancelled native crypto drains while exclusivity remains held' },
+  { id: 'G14.missing', title: 'Missing completed carriers cannot restart initialization' },
+  { id: 'G15.auth', title: 'Damaged progress and wrong factors refuse without writes' },
+  { id: 'G16.index', title: 'Legacy index mutations queue and refuse Local slots' },
+  { id: 'G17.scope', title: 'Independent Local slots and closed slots remain isolated' },
+];
+export const mutants = [
+  {
+    id: 'skip-factor-confirmation',
+    file: 'src/crdt/localGenesis.ts',
+    case: 'G01.confirm',
+    assertion: 'mismatched-confirmation-refused',
+    from: 'if (typed !== expected)',
+    to: 'if (false)',
+  },
+  {
+    id: 'forget-completed-stage',
+    file: 'src/crdt/localGenesisStorage.ts',
+    case: 'G14.missing',
+    assertion: 'missing-complete-refuses',
+    from: "if (claim.stage === 'ready' && content?.state !== 'ready')",
+    to: 'if (false)',
+  },
+  {
+    id: 'skip-progress-authentication',
+    file: 'src/crdt/localGenesisRecord.ts',
+    case: 'G15.auth',
+    assertion: 'damaged-progress-refuses',
+    from: 'await claimAuthentication(task, claim, code, false);',
+    to: 'return;',
+  },
+  {
+    id: 'legacy-overwrites-local',
+    file: 'src/crdt/slotIndex.ts',
+    case: 'G16.index',
+    assertion: 'legacy-cannot-close-local',
+    from: 'if (slot?.local || (await readLocalClaim(task, id)))',
+    to: 'if (false)',
+  },
+];

@@ -346,6 +346,7 @@ const createOrResume = async (
   factor: Bytes,
   options: CustodyCreationOptions,
   mode: 'fresh' | 'resume',
+  owned?: { task: SessionTask; installInitial?: InitialCustodyInstaller },
 ): Promise<CustodyDescriptor> => {
   const { checkCreation, signal } = options;
   if (typeof checkCreation !== 'function') {
@@ -354,113 +355,151 @@ const createOrResume = async (
   }
   let db: IDBDatabase | undefined;
   let root: Bytes | undefined;
-  try {
-    return await withExclusiveSlot(
-      authority.slotId,
-      async (task) => {
-        const scope = await resolveScope(task, authority);
-        await task.wait(async () => {
-          db = await openCustodyDb();
-        });
-        let record = await task.wait(() => transact(db!, task, scope));
-        if (mode === 'fresh') {
-          if (record)
-            throw new CustodyError(
-              'locked-existing',
-              'Custody already exists; unlock or resume its winning factor.',
-            );
-          const intent = newIntent();
-          await task.wait(() => checkCreation(task, scope, intent, 'fresh'));
-          root = random(32);
-          const seal = await task.wait(() =>
-            sealFactor(
-              scope,
-              factor,
-              root!,
-              'code',
-              'code',
-              guardedSubtle(() => task.step(() => {})),
-            ),
-          );
-          record = await task.wait(() =>
-            signRecord(
-              root!,
-              {
-                v: 2,
-                state: 'creating',
-                slot_id: scope.slotId,
-                principal_id: scope.principalId,
-                workspace_id: scope.workspaceId,
-                store_id: intent.storeId,
-                root_id: intent.rootId,
-                seals: [seal],
-                seal_reserved: 0,
-                rotation_owed: false,
-                creation_intent: intent,
-                envelope: null,
-                credentials: null,
-                mac: new Uint8Array(32),
-              },
-              guardedSubtle(() => task.step(() => {})),
-            ),
-          );
-          await task.wait(() => transact(db!, task, scope, null, record!));
-        } else {
-          if (!record)
-            throw new CustodyError(
-              'missing-custody',
-              'Missing custody is not permission to create a replacement.',
-            );
-          if (record.state !== 'creating')
-            throw new CustodyError(
-              'locked-existing',
-              'Creation already completed; use ordinary factor unlock.',
-            );
-          try {
-            await task.wait(async () => {
-              root = await openFactor(
-                scope,
-                factor,
-                record!.seals[0],
-                guardedSubtle(() => task.step(() => {})),
-              );
-            });
-          } catch (cause) {
-            if (task.signal.aborted) throw cause;
-            throw new CustodyError(
-              'unlock-failed',
-              'The factor did not open custody; it may be wrong or the seal damaged.',
-              { cause },
-            );
-          }
-          await task.wait(() =>
-            authenticateRecord(
-              root!,
-              record!,
-              guardedSubtle(() => task.step(() => {})),
-            ),
-          );
-          await task.wait(() =>
-            checkCreation(task, scope, Object.freeze({ ...record!.creation_intent! }), 'resume'),
-          );
-        }
-        factor.fill(0);
-        const completed = await finishCreation(db!, task, scope, record, root!);
-        return descriptor(scope, completed);
-      },
-      {
-        ...(signal ? { signal } : {}),
-        dispose: () => {
-          factor.fill(0);
-          root?.fill(0);
-          root = undefined;
-          db?.close();
-          db = undefined;
-        },
-      },
-    );
-  } finally {
+  const dispose = () => {
     factor.fill(0);
+    root?.fill(0);
+    root = undefined;
+    db?.close();
+    db = undefined;
+  };
+  const operation = async (task: SessionTask) => {
+    const scope = await resolveScope(task, authority);
+    await task.wait(async () => {
+      db = await openCustodyDb();
+    });
+    let record = await task.wait(() => transact(db!, task, scope));
+    if (mode === 'fresh') {
+      if (record)
+        throw new CustodyError(
+          'locked-existing',
+          'Custody already exists; unlock or resume its winning factor.',
+        );
+      const intent = newIntent();
+      await task.wait(() => checkCreation(task, scope, intent, 'fresh'));
+      root = random(32);
+      const seal = await task.wait(() =>
+        sealFactor(
+          scope,
+          factor,
+          root!,
+          'code',
+          'code',
+          guardedSubtle(() => task.step(() => {})),
+        ),
+      );
+      record = await task.wait(() =>
+        signRecord(
+          root!,
+          {
+            v: 2,
+            state: 'creating',
+            slot_id: scope.slotId,
+            principal_id: scope.principalId,
+            workspace_id: scope.workspaceId,
+            store_id: intent.storeId,
+            root_id: intent.rootId,
+            seals: [seal],
+            seal_reserved: 0,
+            rotation_owed: false,
+            creation_intent: intent,
+            envelope: null,
+            credentials: null,
+            mac: new Uint8Array(32),
+          },
+          guardedSubtle(() => task.step(() => {})),
+        ),
+      );
+      if (owned?.installInitial)
+        await task.wait(() => owned.installInitial!(task, db!, scope, record!));
+      else await task.wait(() => transact(db!, task, scope, null, record!));
+    } else {
+      if (!record)
+        throw new CustodyError(
+          'missing-custody',
+          'Missing custody is not permission to create a replacement.',
+        );
+      if (record.state !== 'creating')
+        throw new CustodyError(
+          'locked-existing',
+          'Creation already completed; use ordinary factor unlock.',
+        );
+      try {
+        await task.wait(async () => {
+          root = await openFactor(
+            scope,
+            factor,
+            record!.seals[0],
+            guardedSubtle(() => task.step(() => {})),
+          );
+        });
+      } catch (cause) {
+        if (task.signal.aborted) throw cause;
+        throw new CustodyError(
+          'unlock-failed',
+          'The factor did not open custody; it may be wrong or the seal damaged.',
+          { cause },
+        );
+      }
+      await task.wait(() =>
+        authenticateRecord(
+          root!,
+          record!,
+          guardedSubtle(() => task.step(() => {})),
+        ),
+      );
+      await task.wait(() =>
+        checkCreation(task, scope, Object.freeze({ ...record!.creation_intent! }), 'resume'),
+      );
+    }
+    factor.fill(0);
+    const completed = await finishCreation(db!, task, scope, record, root!);
+    return descriptor(scope, completed);
+  };
+  try {
+    return owned
+      ? await operation(owned.task)
+      : await withExclusiveSlot(authority.slotId, operation, {
+          ...(signal ? { signal } : {}),
+          dispose,
+        });
+  } finally {
+    dispose();
+  }
+};
+
+/** Internal composition seam: the genesis owner holds exclusion throughout all stages. */
+export type InitialCustodyInstaller = (
+  task: SessionTask,
+  db: IDBDatabase,
+  scope: CustodyScope,
+  record: CustodyRecord,
+) => Promise<void>;
+export const createCustodyUnderPermit = (
+  task: SessionTask,
+  authority: CustodyAuthority,
+  code: string,
+  options: CustodyCreationOptions,
+  mode: 'fresh' | 'resume',
+  installInitial?: InitialCustodyInstaller,
+): Promise<CustodyDescriptor> =>
+  createOrResume(captureAuthority(authority), codeBytes(code), options, mode, {
+    task,
+    ...(installInitial ? { installInitial } : {}),
+  });
+
+/** Internal authenticated read/initialization, with keys disposed before returning to the owner. */
+export const checkContentUnderPermit = async (
+  task: SessionTask,
+  authority: CustodyAuthority,
+  code: string,
+  creation?: ContentCreationOptions,
+): Promise<CustodyDescriptor> => {
+  const owner = prepareCustody(authority, code, true);
+  try {
+    await owner.initialize(task, creation);
+    return owner.describe();
+  } finally {
+    owner.dispose();
   }
 };
 

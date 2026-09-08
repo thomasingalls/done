@@ -46,19 +46,29 @@ export const captureStartupAuthority = (input: StartupAuthority): StartupAuthori
     resolveIdentity: input.resolveIdentity,
   });
 };
-const parseSlot = (value: unknown, slotId: string): Slot | null => {
+export const parseSlot = (value: unknown, slotId: string): Slot | null => {
   if (value === undefined) return null;
   if (!value || typeof value !== 'object')
     return stopStartup('repair-required', 'invalid-slot-index');
   const v = value as Slot;
   if (
-    Object.keys(v).sort().join(',') !== 'id,status,stores,unlockBinding' ||
+    !['id,status,stores,unlockBinding', 'id,local,status,stores,unlockBinding'].includes(
+      Object.keys(v).sort().join(','),
+    ) ||
     v.id !== slotId ||
     !['active', 'closed'].includes(v.status) ||
     !Array.isArray(v.stores) ||
     (v.unlockBinding !== null && typeof v.unlockBinding !== 'object')
   )
     return stopStartup('repair-required', 'invalid-slot-index');
+  if (
+    'local' in v &&
+    (!v.local ||
+      v.unlockBinding !== null ||
+      Object.keys(v.local).sort().join(',') !== 'intentId,principalId,workspaceId' ||
+      Object.values(v.local).some((s) => typeof s !== 'string' || !s))
+  )
+    stopStartup('repair-required', 'invalid-local-index');
   for (const entry of v.stores) {
     if (
       !entry ||
@@ -69,7 +79,7 @@ const parseSlot = (value: unknown, slotId: string): Slot | null => {
   }
   return structuredClone(v);
 };
-const contentCensus = (task: SessionTask, name: string) =>
+export const contentCensus = (task: SessionTask, name: string) =>
   probeDatabase(task, name, async (db) => {
     if (db.objectStoreNames.contains('updates'))
       stopStartup('migration-required', 'legacy-content-layout');
@@ -125,6 +135,13 @@ export const classifyUnderPermit = async (
       authority.resolveIdentity(task, slot ? structuredClone(slot) : null),
     );
     identity(verified.principalId);
+    if (
+      slot?.local &&
+      (verified.kind !== 'local' ||
+        verified.principalId !== slot.local.principalId ||
+        authority.workspaceId !== slot.local.workspaceId)
+    )
+      throw Error('Local identity differs from its recorded claim.');
     if (!['local', 'account'].includes(verified.kind)) throw Error('Unknown identity authority.');
     if (
       verified.kind === 'account' &&

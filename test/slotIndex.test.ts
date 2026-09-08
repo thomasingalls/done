@@ -4,7 +4,7 @@
  * clear" — the key-material half arrives with the key store.
  */
 
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { deriveStoreName, openSlotIndex, type SlotIndex, type StoredBinding } from '../src/crdt';
 
 let open: SlotIndex | null = null;
@@ -38,7 +38,14 @@ const boundSlot = async (index: SlotIndex, id: string, principalId: string): Pro
   await index.bindSlot(id, binding(principalId));
 };
 
+beforeEach(() => {
+  vi.stubGlobal('isSecureContext', true);
+  vi.stubGlobal('navigator', {
+    locks: { request: async (_name: string, _options: unknown, fn: () => Promise<void>) => fn() },
+  });
+});
 afterEach(() => {
+  vi.unstubAllGlobals();
   open?.close();
   open = null;
   vi.restoreAllMocks();
@@ -158,7 +165,11 @@ describe('destructive clears', () => {
     const order: string[] = [];
     vi.spyOn(indexedDB, 'deleteDatabase').mockImplementation(((name: string) => {
       order.push(`store:${name}`);
-      const req = { onsuccess: null, onerror: null, onblocked: null } as unknown as IDBOpenDBRequest;
+      const req = {
+        onsuccess: null,
+        onerror: null,
+        onblocked: null,
+      } as unknown as IDBOpenDBRequest;
       queueMicrotask(() => (req.onsuccess as unknown as () => void)?.());
       return req;
     }) as typeof indexedDB.deleteDatabase);
@@ -189,7 +200,11 @@ describe('destructive clears', () => {
     // entry is already gone and the store it named is orphaned — the exact
     // state §11.1 forbids, and §6.5's reason for removing the entry last.
     const killed = vi.spyOn(indexedDB, 'deleteDatabase').mockImplementation((() => {
-      const req = { onsuccess: null, onerror: null, onblocked: null } as unknown as IDBOpenDBRequest;
+      const req = {
+        onsuccess: null,
+        onerror: null,
+        onblocked: null,
+      } as unknown as IDBOpenDBRequest;
       queueMicrotask(() => {
         (req as unknown as { error: Error }).error = new Error('killed clearing the store');
         (req.onerror as unknown as (() => void) | null)?.();
@@ -218,7 +233,11 @@ describe('destructive clears', () => {
     // reporting success here would let the clear go on to remove the entry and
     // orphan it — blocked has to refuse, not resolve.
     vi.spyOn(indexedDB, 'deleteDatabase').mockImplementation((() => {
-      const req = { onsuccess: null, onerror: null, onblocked: null } as unknown as IDBOpenDBRequest;
+      const req = {
+        onsuccess: null,
+        onerror: null,
+        onblocked: null,
+      } as unknown as IDBOpenDBRequest;
       queueMicrotask(() => (req.onblocked as unknown as (() => void) | null)?.());
       return req;
     }) as typeof indexedDB.deleteDatabase);

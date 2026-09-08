@@ -23,6 +23,6 @@ export class StartupError extends Error {
     super(disposition.reason);
   }
 }
-export const stopStartup = (kind: StartupKind, reason: string): never => {
+export function stopStartup(kind: StartupKind, reason: string): never {
   throw new StartupError(Object.freeze({ kind, reason }));
-};
+}

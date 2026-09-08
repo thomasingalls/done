@@ -15,7 +15,7 @@ import { StartupError, type StartupDisposition } from './startupState';
 export type { StartupAuthority, StartupIdentity } from './startupClassification';
 export type { StartupDisposition, StartupKind } from './startupState';
 
-const refusal = (cause: unknown, signal?: AbortSignal): StartupDisposition => {
+export const startupRefusal = (cause: unknown, signal?: AbortSignal): StartupDisposition => {
   if (signal?.aborted || (cause instanceof DOMException && cause.name === 'AbortError'))
     return Object.freeze({ kind: 'cancelled', reason: 'startup-cancelled' });
   if (cause instanceof StartupError) return cause.disposition;
@@ -54,7 +54,7 @@ export const inspectWorkspaceStartup = async (
       reason: 'retained-carriers-need-authenticated-replay',
     });
   } catch (cause) {
-    return refusal(cause, captured.signal);
+    return startupRefusal(cause, captured.signal);
   } finally {
     await session?.close();
   }
@@ -95,6 +95,6 @@ export const openOwnedWorkspace = async (
     }
     return Object.freeze({ kind: 'ready', ...classified, workspace });
   } catch (cause) {
-    return refusal(cause, captured.signal);
+    return startupRefusal(cause, captured.signal);
   }
 };

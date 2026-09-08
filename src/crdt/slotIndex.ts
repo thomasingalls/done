@@ -13,22 +13,21 @@
  * local access only and makes no claim that two principals in one slot are the
  * same person.
  *
- * **What is here and what is not.** The naming, scoping and enumeration half of
- * §6.5 is `L-1`'s and is built here. The slot's offline-verifiable unlock
- * binding is §13.9's, and its service-signed anchor is §15 row 12's — both
- * `L-2`'s. `unlockBinding` is carried as a column and never verified here;
- * a slot's `status` is the only gate this layer enforces. Building half of
- * §13.9 inside Stage 1 is the specific mistake this comment exists to prevent.
- *
- * Nothing in the app resolves through this index yet, because the app has no
- * principal or workspace identity to scope by — it opens `LEGACY_STORE`
- * directly. The encrypted content store registers through it when it lands.
+ * Account binding storage/verification remains L-2's external authority boundary.
+ * The Local owner is in localGenesis.ts: its signed claim, factor verification and
+ * scoped index installation require no service-signed binding. These earlier
+ * Account/legacy methods now take slot lifecycle permits and refuse Local rows
+ * or claims. They are not an encrypted clear or Account verification owner.
+ * The default application still opens LEGACY_STORE directly.
  */
 
 import { deriveStoreName } from './storeName';
 export { deriveStoreName } from './storeName';
 import type { SlotBinding } from '../account/slotUnlock';
 import { storeHandle, type StoreHandle } from './persistence';
+import { withExclusiveSlot, openWriteSession, type SessionTask } from './writeSession';
+import { contentTransaction } from './contentDatabase';
+import { readLocalClaim } from './localGenesisRecord';
 
 /** The index's own database. It names no workspace, so its name may be fixed. */
 const INDEX_DB = 'done.slots';
@@ -58,6 +57,8 @@ export interface SlotStore {
 }
 
 export interface Slot {
+  /** Verified Local genesis owner; legacy Account writers cannot mutate these rows. */
+  local?: { principalId: string; workspaceId: string; intentId: string };
   id: string;
   status: 'active' | 'closed';
   /**
@@ -129,109 +130,107 @@ export interface SlotIndex {
 export const openSlotIndex = async (name: string = INDEX_DB): Promise<SlotIndex> => {
   const db = await openIndexDb(name);
 
-  const read = async (id: string): Promise<Slot | null> => {
-    const tx = db.transaction(SLOTS_STORE, 'readonly');
-    const slot = await request<Slot | undefined>(tx.objectStore(SLOTS_STORE).get(id));
-    return slot ?? null;
+  const read = (task: SessionTask, id: string): Promise<Slot | null> =>
+    task.wait(() =>
+      contentTransaction<Slot | null>(db, task, [SLOTS_STORE], 'readonly', (tx, result, guard) => {
+        const req = tx.objectStore(SLOTS_STORE).get(id);
+        req.onsuccess = () => guard(() => result(req.result ?? null));
+      }),
+    );
+  const write = (task: SessionTask, slot: Slot, create = false): Promise<void> =>
+    task.wait(() =>
+      contentTransaction<void>(db, task, [SLOTS_STORE], 'readwrite', (tx) => {
+        const store = tx.objectStore(SLOTS_STORE);
+        if (create) store.add(slot);
+        else store.put(slot);
+      }),
+    );
+  const legacy = async (task: SessionTask, id: string): Promise<Slot | null> => {
+    const slot = await read(task, id);
+    if (slot?.local || (await readLocalClaim(task, id)))
+      throw new Error('Use the verified Local genesis/index owner for this slot.');
+    return slot;
   };
-
-  const write = async (slot: Slot): Promise<void> => {
-    const tx = db.transaction(SLOTS_STORE, 'readwrite');
-    await request(tx.objectStore(SLOTS_STORE).put(slot));
+  const mustRead = async (task: SessionTask, id: string): Promise<Slot> => {
+    const slot = await legacy(task, id);
+    if (!slot) throw new Error(`No such slot: ${id}`);
+    return slot;
   };
-
-  /**
-   * A slot with no binding has no principal, so it can name no store. Refusing
-   * is the whole point: the alternative is a caller-supplied principal, which
-   * is the seam this index exists on the correct side of.
-   */
+  const reading = async <T>(id: string, fn: (task: SessionTask) => Promise<T>): Promise<T> => {
+    const session = await openWriteSession(id);
+    try {
+      return await session.run(fn);
+    } finally {
+      await session.close();
+    }
+  };
   const principalOf = (slot: Slot): string => {
     const principal = slot.unlockBinding?.binding.principalId;
     if (!principal) throw new Error(`Slot ${slot.id} has no binding, so it names no store.`);
     return principal;
   };
-
-  const mustRead = async (id: string): Promise<Slot> => {
-    const slot = await read(id);
-    if (!slot) throw new Error(`No such slot: ${id}`);
-    return slot;
-  };
-
-  const setStatus = async (id: string, status: Slot['status']): Promise<void> => {
-    await write({ ...(await mustRead(id)), status });
-  };
-
+  const setStatus = (id: string, status: Slot['status']) =>
+    withExclusiveSlot(id, async (task) => {
+      await write(task, { ...(await mustRead(task, id)), status });
+    });
+  const remove = (id: string) =>
+    withExclusiveSlot(id, async (task) => {
+      const slot = await legacy(task, id);
+      if (!slot) return;
+      // Legacy plaintext cleanup only; the Local guard above prevents encrypted-carrier deletion here.
+      for (const store of slot.stores) await task.wait(() => deleteDatabase(store.dbName));
+      await task.wait(() =>
+        contentTransaction<void>(db, task, [SLOTS_STORE], 'readwrite', (tx) => {
+          tx.objectStore(SLOTS_STORE).delete(id);
+        }),
+      );
+    });
   return {
-    createSlot: async (id) => {
-      const slot: Slot = { id, status: 'active', unlockBinding: null, stores: [] };
-      await write(slot);
-      return slot;
+    createSlot: (id) =>
+      withExclusiveSlot(id, async (task) => {
+        await legacy(task, id);
+        const slot: Slot = { id, status: 'active', unlockBinding: null, stores: [] };
+        await write(task, slot, true);
+        return slot;
+      }),
+    readSlot: (id) => reading(id, (task) => legacy(task, id)),
+    bindSlot: (id, stored) => {
+      const captured = structuredClone(stored);
+      return withExclusiveSlot(id, async (task) => {
+        await write(task, { ...(await mustRead(task, id)), unlockBinding: captured });
+      });
     },
-
-    readSlot: read,
-
-    bindSlot: async (slotId, stored) => {
-      await write({ ...(await mustRead(slotId)), unlockBinding: stored });
-    },
-
-    /**
-     * **The principal comes from the slot's binding, never from the caller.**
-     * `L-2`'s verifier reaches the same rule from the other side — it reads
-     * `principalId` and `credId` out of the verified binding because taking
-     * them alongside would let a bug verify a challenge minted for somebody
-     * else. The same bug here would name another principal's store, and the
-     * name is what the §6.1 subkey binds, so it would be a key's scope that
-     * moved. An unbound slot has no principal and therefore no store name;
-     * the pre-account path is `LEGACY_STORE`, which is not in this index.
-     */
-    registerStore: async (slotId, workspace) => {
-      const slot = await mustRead(slotId);
-      const principal = principalOf(slot);
-      const dbName = await deriveStoreName(principal, workspace);
-      const existing = slot.stores.find((s) => s.dbName === dbName);
-      if (!existing) {
-        await write({ ...slot, stores: [...slot.stores, { principal, workspace, dbName }] });
-      }
-      return storeHandle(dbName);
-    },
-
-    listWorkspaces: async (slotId) => (await mustRead(slotId)).stores,
-
-    resolveHandle: async (slotId, workspace) => {
-      const slot = await mustRead(slotId);
-      // "No slot's stores are reachable while that slot is closed" (§6.5). The
-      // entries survive a sign-out; reachability does not.
-      if (slot.status === 'closed') return null;
-      const dbName = await deriveStoreName(principalOf(slot), workspace);
-      return slot.stores.some((s) => s.dbName === dbName) ? storeHandle(dbName) : null;
-    },
-
+    registerStore: (id, workspace) =>
+      withExclusiveSlot(id, async (task) => {
+        const slot = await mustRead(task, id),
+          principal = principalOf(slot);
+        if (slot.status === 'closed') throw new Error('Slot is closed.');
+        const dbName = await task.wait(() => deriveStoreName(principal, workspace));
+        if (!slot.stores.some((s) => s.dbName === dbName))
+          await write(task, {
+            ...slot,
+            stores: [...slot.stores, { principal, workspace, dbName }],
+          });
+        return storeHandle(dbName);
+      }),
+    listWorkspaces: (id) => reading(id, async (task) => (await mustRead(task, id)).stores),
+    resolveHandle: (id, workspace) =>
+      reading(id, async (task) => {
+        const slot = await mustRead(task, id);
+        if (slot.status === 'closed') return null;
+        const dbName = await task.wait(() => deriveStoreName(principalOf(slot), workspace));
+        return slot.stores.some((s) => s.dbName === dbName) ? storeHandle(dbName) : null;
+      }),
     closeSlot: (id) => setStatus(id, 'closed'),
     reopenSlot: (id) => setStatus(id, 'active'),
-
-    /**
-     * Remove-account. **The index entry goes last** (§6.5): an interrupted clear
-     * that has dropped stores but kept the entry is re-discoverable and
-     * resumable, where the opposite order orphans whatever it did not reach.
-     */
-    removeSlot: async (id) => {
-      const slot = await read(id);
-      if (!slot) return;
-      for (const store of slot.stores) await deleteDatabase(store.dbName);
-      const tx = db.transaction(SLOTS_STORE, 'readwrite');
-      await request(tx.objectStore(SLOTS_STORE).delete(id));
-    },
-
+    removeSlot: remove,
     resetForHandoff: async () => {
+      // Administrative legacy inventory. Each removal rereads after its scoped exclusive grant.
       const tx = db.transaction(SLOTS_STORE, 'readonly');
       const slots = await request<Slot[]>(tx.objectStore(SLOTS_STORE).getAll());
-      for (const slot of slots) {
-        for (const store of slot.stores) await deleteDatabase(store.dbName);
-        const del = db.transaction(SLOTS_STORE, 'readwrite');
-        await request(del.objectStore(SLOTS_STORE).delete(slot.id));
-      }
+      if (slots.some((s) => s.local)) throw new Error('Local slots require their clear owner.');
+      for (const slot of slots) await remove(slot.id);
     },
-
     close: () => db.close(),
   };
 };

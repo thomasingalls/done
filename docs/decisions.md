@@ -1747,3 +1747,34 @@ before the initialization barrier. Reacquisition and complete replay precede exp
 release exclusion ahead of owned native work. The fixture's enrollment, identity and index installation
 are explicit synthetic assumptions. Verified Local genesis and lifecycle-owned indexing are next, before
 application cutover; no debt or release gate is paid by this checkpoint.
+
+
+### 2026-09-08 — Local genesis atomically claims identity/custody and authenticates cross-database progress
+
+The [Local genesis owner](./local-genesis.md) uses a fixed per-slot claim in the custody database, committed
+with the first factor-sealed custody record in one add-only transaction. The signed initial record binds
+principal/workspace, root/store and credential IDs. Keeping that immutable anchor lets interrupted work
+verify the winner without minting a replacement identity or reconstructing a used custody counter.
+The content initialization intent is the same signed intent ID; expected stages and layouts are versioned
+by this Local protocol. No Account binding is fabricated for Local access.
+
+A separately authenticated `custody` → `content` → `ready` progress field prevents missing later carriers
+from looking like permission to initialize again. Its HMAC derives from the factor-opened root under the
+documented Local metadata domain and binds the initial record MAC plus stage. Crypto and transaction
+completion stay within one exclusive slot lifetime; cancellation drains them before release. The final
+index is added only after authenticated empty content initialization and ready progress. A loser obtains
+the winner's valid factor or receives the existing locked disposition. Normal Local startup rereads and
+verifies the claim under its eventual shared writer permit before replay and application initialization.
+
+The retained initial record is an authentication anchor, never a live-custody restoration source. It
+contains another copy of the same factor-sealed opener bytes and therefore belongs in later clear and
+rotation/reference accounting. The added progress construction needs independent review; these tests are
+bounded evidence rather than proof of the full protocol or copied-profile support population.
+
+Earlier index APIs now serialize slot writes, await transaction completion and refuse Local-owned rows
+or claims. The new picker requires factor verification and returns a detached, slot-scoped route list.
+This checkpoint handles the first workspace in a fresh Local slot; additional-workspace registration,
+Account onboarding, Local close/reopen/delete, migration, clear and default-application cutover remain
+subsequent owners. [Browser evidence](./storage-conformance-runs/2026-09-08-local-genesis.md) exercises the
+nine creation boundaries, two factors/creators, cancellation, transaction aborts and legacy interference.
+No obligation or debt status is paid by this checkpoint.

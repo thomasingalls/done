@@ -35,6 +35,8 @@ export interface ContentCrypto {
   verify(task: SessionTask, payload: Bytes, mac: Bytes): Promise<boolean>;
 }
 export interface ContentCreationOptions {
+  /** Immutable genesis intent supplied by the composed owner. */
+  intent?: string;
   signal?: AbortSignal;
   /** Fresh all-other-carrier check under exclusion; not a prior cached census. */
   checkCreation(
@@ -241,12 +243,16 @@ export const createContentOwner = (
       const existing = await readWitness(task);
       if (existing) await verify(task, witnessPayload(scope, existing), existing.mac);
       if (creation) {
+        if (creation.intent !== undefined && !/^[0-9a-f]{32}$/u.test(creation.intent))
+          throw new ContentError('invalid-input', 'Genesis requires a 128-bit content intent.');
         if (existing?.state === 'ready')
           throw new ContentError(
             'already-initialized',
             'Content is already initialized; use normal open.',
           );
-        const intent = existing?.intent ?? hex(random(16));
+        const intent = existing?.intent ?? creation.intent ?? hex(random(16));
+        if (creation.intent !== undefined && creation.intent !== intent)
+          corrupt('Content intent differs from its genesis claim.');
         await task.wait(() =>
           creation.checkCreation(
             task,
