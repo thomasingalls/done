@@ -1511,3 +1511,35 @@ writer/generation lifetime at L-3, and supported factor/profile evidence at L-4.
 vector cannot pay these debts. Next build one shared harness against each candidate's actual paths, then
 synthesize deliberately around a rebuilt coordinator. This decision does not select a whole branch as
 correct, recertify the full protocol, or authorize the live Stage 2 cutover.
+
+
+---
+
+### Phase-two local custody: authenticated v2 metadata and root-sealed credentials
+
+**Date:** 2026-09-08 · **Branch:** `codex/encrypted-store-contract-corrections` · **Context:** mandatory-factor custody implementation
+
+The corrected contract requires authenticated resumable creation and per-root invocation accounting,
+while retaining the selected v1 factor and generation-envelope bytes. A cleartext count or intent whose
+fields are not authenticated would reintroduce trust in editable profile metadata. The new component
+therefore binds its complete closed v2 metadata tuple with HMAC-SHA256 under a separately derived key;
+[the exact encoding](./custody.md#v2-local-encodings) and production parser own its field order.
+Transactional comparison retains the observed identity and bytes before each mutation. The MAC prevents
+unauthenticated edits, not replay of authentic old states: the unrewound/unbranched-history condition
+remains necessary.
+
+New operational credentials use a separately labelled v2 local credential seal directly under the random
+custody root. It authenticates principal/workspace, role, credential id and public key. This makes all
+three creation encryptions — generation, wrapping scalar and signing seed — direct counted invocations
+under that root. The count is committed before encryption and includes abandoned attempts. The historical
+code-sealed wrapping-credential vector remains a historical byte fixture; the new representation does not
+mislabel a custody root as a PRF output or require a credential reseal when an additional root factor is
+implemented. Existing v1 LockSeal, generation KeyEnvelope, record, journal and wire bytes are unchanged.
+This concretizes the new local v2 lifecycle rather than modifying a deployed carrier.
+
+The custody descriptor exposes no private capability. Generation 1 can decrypt selected content records
+through live task checks; encryption awaits the content allocator, and signing/receiving await their
+protocol authority. The v2 custody state does not independently authorize workspace readiness: startup
+must still retain and complete its own cross-carrier genesis intent before acknowledging edits or
+reporting whole-workspace protection. Phase-two fixture checks do not substitute for that production
+owner. The browser controls are bounded evidence, not a supported-platform or independent security review.

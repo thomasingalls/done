@@ -1,0 +1,603 @@
+/**
+ * Phase-two custody owner. No caller receives a root, generation key, or private
+ * credential. Startup supplies verified identity and the cross-carrier census;
+ * completing this component alone does not complete workspace genesis.
+ */
+import {
+  createCredential,
+  fields,
+  guardedSubtle,
+  generateDeviceCode,
+  hex,
+  hkdf,
+  normalizeDeviceCode,
+  openCredential,
+  openEnvelope,
+  openFactor,
+  random,
+  sealEnvelope,
+  sealFactor,
+  utf8,
+  type Bytes,
+} from './custodyCrypto';
+import {
+  authenticateRecord,
+  CustodyError,
+  identity,
+  openCustodyDb,
+  SEAL_LIMIT,
+  signRecord,
+  transact,
+  type CreationIntent,
+  type CustodyRecord,
+  type CustodyScope,
+} from './custodyRecord';
+import {
+  openWriteSession,
+  withExclusiveSlot,
+  type SessionTask,
+  type WriteSessionState,
+} from './writeSession';
+export { CustodyError } from './custodyRecord';
+export type { CustodyRefusal, CustodyScope, CreationIntent } from './custodyRecord';
+
+export interface CustodyAuthority {
+  readonly slotId: string;
+  readonly workspaceId: string;
+  /** Reread/verify Local identity or Account binding under this granted permit. */
+  resolvePrincipal(task: SessionTask): string | PromiseLike<string>;
+}
+export interface CustodyCreationOptions {
+  signal?: AbortSignal;
+  /**
+   * Required owner of SC-06's OTHER carriers. Throw unless they are absent for
+   * fresh creation, or match this authenticated intent on resume. Never a cached
+   * earlier census. Runs under exclusion before this component changes custody.
+   */
+  checkCreation(
+    task: SessionTask,
+    scope: Readonly<CustodyScope>,
+    intent: Readonly<CreationIntent>,
+    mode: 'fresh' | 'resume',
+  ): void | PromiseLike<void>;
+}
+export interface CustodyEnrollment {
+  /** Display once, outside persistent app state. Null after confirm starts/cancel. */
+  readonly displayCode: string | null;
+  confirm(typedCode: string): Promise<CustodyDescriptor>;
+  cancel(): void;
+}
+export interface CustodyDescriptor {
+  readonly scope: Readonly<CustodyScope>;
+  readonly storeId: string;
+  readonly rootId: string;
+  readonly generation: 1;
+  readonly publicCredentials: ReadonlyArray<{
+    readonly role: 'wrapping' | 'signing';
+    readonly id: string;
+    readonly publicKey: Bytes;
+  }>;
+}
+export interface CustodyContentRecord {
+  v: 1;
+  gen: number;
+  seq: number;
+  kind: 'update' | 'state' | 'heads' | 'outbound';
+  nonce: Bytes;
+  ct: Bytes;
+}
+export interface CustodyTask extends SessionTask {
+  /** Authenticated read only. Admission, allocation, writes and trim are later owners. */
+  openRecord(record: CustodyContentRecord): Promise<Bytes>;
+}
+export interface CustodySession extends CustodyDescriptor {
+  readonly state: WriteSessionState;
+  readonly signal: AbortSignal;
+  run<T>(operation: (task: CustodyTask) => T | PromiseLike<T>): Promise<T>;
+  close(): Promise<void>;
+}
+const captureAuthority = (authority: CustodyAuthority) => {
+  try {
+    const { slotId, workspaceId, resolvePrincipal } = authority;
+    identity(slotId);
+    identity(workspaceId);
+    if (typeof resolvePrincipal !== 'function') throw Error('Missing authority resolver');
+    return { slotId, workspaceId, resolvePrincipal };
+  } catch (cause) {
+    throw new CustodyError('invalid-input', 'Custody requires an identity authority.', { cause });
+  }
+};
+const resolveScope = async (task: SessionTask, a: CustodyAuthority): Promise<CustodyScope> => {
+  const principalId = await task.wait(() => a.resolvePrincipal(task));
+  identity(principalId);
+  return Object.freeze({ slotId: a.slotId, workspaceId: a.workspaceId, principalId });
+};
+const codeBytes = (code: string): Bytes => {
+  try {
+    return utf8(normalizeDeviceCode(code));
+  } catch (cause) {
+    throw new CustodyError('confirmation-required', 'Enter the generated device-lock code.', {
+      cause,
+    });
+  }
+};
+const descriptor = (scope: CustodyScope, record: CustodyRecord): CustodyDescriptor =>
+  Object.freeze({
+    scope,
+    storeId: record.store_id,
+    rootId: record.root_id,
+    generation: 1,
+    publicCredentials: Object.freeze(
+      record.credentials!.map((c) =>
+        Object.freeze({ role: c.role, id: c.id, publicKey: c.publicKey.slice() }),
+      ),
+    ),
+  });
+const newIntent = (): CreationIntent =>
+  Object.freeze({
+    id: hex(random(16)),
+    storeId: hex(random(16)),
+    rootId: hex(random(16)),
+    wrappingId: hex(random(16)),
+    signingId: hex(random(16)),
+  });
+
+interface OwnedKeys {
+  store: CryptoKey | null;
+  wrapping: CryptoKey | null;
+  signing: CryptoKey | null;
+}
+const clearKeys = (keys: OwnedKeys) => {
+  keys.store = null;
+  keys.wrapping = null;
+  keys.signing = null;
+};
+const loadKeys = async (
+  task: SessionTask,
+  scope: CustodyScope,
+  record: CustodyRecord,
+  root: Bytes,
+  keys: OwnedKeys,
+): Promise<void> => {
+  let generation: Bytes | undefined;
+  try {
+    await task.wait(async () => {
+      generation = await openEnvelope(
+        scope,
+        root,
+        record.envelope!,
+        guardedSubtle(() => task.step(() => {})),
+      );
+    });
+    if (generation!.length !== 32) throw Error('Invalid generation key');
+    await task.wait(async () => {
+      keys.store = await hkdf(
+        generation!,
+        new Uint8Array(),
+        fields('done/store/v1', scope.workspaceId, record.store_id),
+        { name: 'AES-GCM', length: 256 },
+        ['decrypt'],
+        guardedSubtle(() => task.step(() => {})),
+      );
+    });
+    await task.wait(async () => {
+      keys.wrapping = await openCredential(
+        scope,
+        root,
+        record.credentials![0],
+        guardedSubtle(() => task.step(() => {})),
+      );
+    });
+    await task.wait(async () => {
+      keys.signing = await openCredential(
+        scope,
+        root,
+        record.credentials![1],
+        guardedSubtle(() => task.step(() => {})),
+      );
+    });
+  } catch (cause) {
+    if (task.signal.aborted) throw cause;
+    throw new CustodyError('repair-required', 'A retained custody opener could not authenticate.', {
+      cause,
+    });
+  } finally {
+    generation?.fill(0);
+  }
+};
+
+/** Reserve the entire next batch durably BEFORE any corresponding encryption. */
+const finishCreation = async (
+  db: IDBDatabase,
+  task: SessionTask,
+  scope: CustodyScope,
+  initial: CustodyRecord,
+  root: Bytes,
+): Promise<CustodyRecord> => {
+  const intent = initial.creation_intent!;
+  if (initial.seal_reserved + 3 >= SEAL_LIMIT)
+    throw new CustodyError(
+      'seal-budget-exhausted',
+      'This custody root cannot reserve another creation attempt.',
+    );
+  const reserved = await task.wait(() =>
+    signRecord(
+      root,
+      { ...initial, seal_reserved: initial.seal_reserved + 3 },
+      guardedSubtle(() => task.step(() => {})),
+    ),
+  );
+  await task.wait(() => transact(db, task, scope, initial, reserved));
+  const generation = random(32);
+  const verified: OwnedKeys = { store: null, wrapping: null, signing: null };
+  try {
+    const envelope = await task.wait(() =>
+      sealEnvelope(
+        scope,
+        root,
+        1,
+        generation,
+        guardedSubtle(() => task.step(() => {})),
+      ),
+    );
+    const wrapping = await task.wait(() =>
+      createCredential(
+        scope,
+        root,
+        'wrapping',
+        intent.wrappingId,
+        guardedSubtle(() => task.step(() => {})),
+      ),
+    );
+    const signing = await task.wait(() =>
+      createCredential(
+        scope,
+        root,
+        'signing',
+        intent.signingId,
+        guardedSubtle(() => task.step(() => {})),
+      ),
+    );
+    const completed = await task.wait(() =>
+      signRecord(
+        root,
+        {
+          ...reserved,
+          state: 'protected',
+          creation_intent: null,
+          envelope,
+          credentials: [wrapping, signing],
+        },
+        guardedSubtle(() => task.step(() => {})),
+      ),
+    );
+    await loadKeys(task, scope, completed, root, verified);
+    await task.wait(() => transact(db, task, scope, reserved, completed));
+    return completed;
+  } finally {
+    generation.fill(0);
+    clearKeys(verified);
+  }
+};
+
+const createOrResume = async (
+  authority: CustodyAuthority,
+  factor: Bytes,
+  options: CustodyCreationOptions,
+  mode: 'fresh' | 'resume',
+): Promise<CustodyDescriptor> => {
+  const { checkCreation, signal } = options;
+  if (typeof checkCreation !== 'function') {
+    factor.fill(0);
+    throw new CustodyError('invalid-input', 'Creation requires the startup carrier check.');
+  }
+  let db: IDBDatabase | undefined;
+  let root: Bytes | undefined;
+  try {
+    return await withExclusiveSlot(
+      authority.slotId,
+      async (task) => {
+        const scope = await resolveScope(task, authority);
+        await task.wait(async () => {
+          db = await openCustodyDb();
+        });
+        let record = await task.wait(() => transact(db!, task, scope));
+        if (mode === 'fresh') {
+          if (record)
+            throw new CustodyError(
+              'locked-existing',
+              'Custody already exists; unlock or resume its winning factor.',
+            );
+          const intent = newIntent();
+          await task.wait(() => checkCreation(task, scope, intent, 'fresh'));
+          root = random(32);
+          const seal = await task.wait(() =>
+            sealFactor(
+              scope,
+              factor,
+              root!,
+              'code',
+              'code',
+              guardedSubtle(() => task.step(() => {})),
+            ),
+          );
+          record = await task.wait(() =>
+            signRecord(
+              root!,
+              {
+                v: 2,
+                state: 'creating',
+                slot_id: scope.slotId,
+                principal_id: scope.principalId,
+                workspace_id: scope.workspaceId,
+                store_id: intent.storeId,
+                root_id: intent.rootId,
+                seals: [seal],
+                seal_reserved: 0,
+                rotation_owed: false,
+                creation_intent: intent,
+                envelope: null,
+                credentials: null,
+                mac: new Uint8Array(32),
+              },
+              guardedSubtle(() => task.step(() => {})),
+            ),
+          );
+          await task.wait(() => transact(db!, task, scope, null, record!));
+        } else {
+          if (!record)
+            throw new CustodyError(
+              'missing-custody',
+              'Missing custody is not permission to create a replacement.',
+            );
+          if (record.state !== 'creating')
+            throw new CustodyError(
+              'locked-existing',
+              'Creation already completed; use ordinary factor unlock.',
+            );
+          try {
+            await task.wait(async () => {
+              root = await openFactor(
+                scope,
+                factor,
+                record!.seals[0],
+                guardedSubtle(() => task.step(() => {})),
+              );
+            });
+          } catch (cause) {
+            if (task.signal.aborted) throw cause;
+            throw new CustodyError(
+              'unlock-failed',
+              'The factor did not open custody; it may be wrong or the seal damaged.',
+              { cause },
+            );
+          }
+          await task.wait(() =>
+            authenticateRecord(
+              root!,
+              record!,
+              guardedSubtle(() => task.step(() => {})),
+            ),
+          );
+          await task.wait(() =>
+            checkCreation(task, scope, Object.freeze({ ...record!.creation_intent! }), 'resume'),
+          );
+        }
+        factor.fill(0);
+        const completed = await finishCreation(db!, task, scope, record, root!);
+        return descriptor(scope, completed);
+      },
+      {
+        ...(signal ? { signal } : {}),
+        dispose: () => {
+          factor.fill(0);
+          root?.fill(0);
+          root = undefined;
+          db?.close();
+          db = undefined;
+        },
+      },
+    );
+  } finally {
+    factor.fill(0);
+  }
+};
+
+/** Only this generated-code ceremony can create fresh custody. No chosen-code setter. */
+export const beginCustodyEnrollment = (
+  input: CustodyAuthority,
+  options: CustodyCreationOptions,
+): CustodyEnrollment => {
+  const authority = captureAuthority(input);
+  const captured = { ...options };
+  if (typeof captured.checkCreation !== 'function')
+    throw new CustodyError('invalid-input', 'Creation requires the startup carrier check.');
+  let display: string | null = generateDeviceCode();
+  let expected: Bytes | null = codeBytes(display);
+  let used = false;
+  const controller = new AbortController();
+  const erase = () => {
+    used = true;
+    display = null;
+    expected?.fill(0);
+    expected = null;
+  };
+  const detach = () => captured.signal?.removeEventListener('abort', cancel);
+  const cancel = () => {
+    erase();
+    controller.abort();
+    detach();
+  };
+  captured.signal?.addEventListener('abort', cancel, { once: true });
+  if (captured.signal?.aborted) cancel();
+  return {
+    get displayCode() {
+      return display;
+    },
+    cancel,
+    confirm: async (typedCode) => {
+      if (used || !expected)
+        throw new CustodyError(
+          'enrollment-closed',
+          'Start a new ceremony or resume the saved creation.',
+        );
+      const typed = codeBytes(typedCode);
+      if (!typed.every((b, i) => b === expected![i])) {
+        typed.fill(0);
+        throw new CustodyError(
+          'confirmation-required',
+          'The confirmation does not match the generated code.',
+        );
+      }
+      // Consume the ceremony before the first await: two confirms cannot race it.
+      erase();
+      return createOrResume(
+        authority,
+        typed,
+        { ...captured, signal: controller.signal },
+        'fresh',
+      ).finally(detach);
+    },
+  };
+};
+export const resumeCustodyCreation = (
+  input: CustodyAuthority,
+  code: string,
+  options: CustodyCreationOptions,
+): Promise<CustodyDescriptor> =>
+  createOrResume(captureAuthority(input), codeBytes(code), { ...options }, 'resume');
+
+export const openCustodySession = async (
+  input: CustodyAuthority,
+  code: string,
+  options: { signal?: AbortSignal } = {},
+): Promise<CustodySession> => {
+  const authority = captureAuthority(input),
+    factor = codeBytes(code);
+  const keys: OwnedKeys = { store: null, wrapping: null, signing: null };
+  let db: IDBDatabase | undefined, root: Bytes | undefined;
+  let scope!: CustodyScope, record!: CustodyRecord;
+  let session;
+  try {
+    session = await openWriteSession(authority.slotId, {
+      ...(options.signal ? { signal: options.signal } : {}),
+      initialize: async (task) => {
+        scope = await resolveScope(task, authority);
+        await task.wait(async () => {
+          db = await openCustodyDb();
+        });
+        const current = await task.wait(() => transact(db!, task, scope));
+        if (!current)
+          throw new CustodyError(
+            'missing-custody',
+            'No custody exists for this identity. Normal open never creates it.',
+          );
+        if (current.state !== 'protected')
+          throw new CustodyError(
+            'creation-pending',
+            'Custody creation must resume before normal open.',
+          );
+        record = current;
+        try {
+          await task.wait(async () => {
+            root = await openFactor(
+              scope,
+              factor,
+              record.seals[0],
+              guardedSubtle(() => task.step(() => {})),
+            );
+          });
+        } catch (cause) {
+          if (task.signal.aborted) throw cause;
+          throw new CustodyError(
+            'unlock-failed',
+            'The factor did not open custody; it may be wrong or the seal damaged.',
+            { cause },
+          );
+        }
+        factor.fill(0);
+        await task.wait(() =>
+          authenticateRecord(
+            root!,
+            record,
+            guardedSubtle(() => task.step(() => {})),
+          ),
+        );
+        await loadKeys(task, scope, record, root!, keys);
+        root!.fill(0);
+        root = undefined;
+        db!.close();
+        db = undefined;
+      },
+      dispose: () => {
+        factor.fill(0);
+        root?.fill(0);
+        root = undefined;
+        clearKeys(keys);
+        db?.close();
+        db = undefined;
+      },
+    });
+  } finally {
+    factor.fill(0);
+  }
+  const live = session;
+  return Object.freeze({
+    ...descriptor(scope, record),
+    get state() {
+      return live.state;
+    },
+    signal: live.signal,
+    close: () => live.close(),
+    run: <T>(operation: (task: CustodyTask) => T | PromiseLike<T>): Promise<T> =>
+      live.run((task) =>
+        operation({
+          ...task,
+          openRecord: (inputRecord) => {
+            const value = task.step(() => structuredClone(inputRecord));
+            if (
+              value.v !== 1 ||
+              value.gen !== 1 ||
+              !Number.isSafeInteger(value.seq) ||
+              value.seq < 1 ||
+              !['update', 'state', 'heads', 'outbound'].includes(value.kind) ||
+              !(value.nonce instanceof Uint8Array) ||
+              value.nonce.length !== 12 ||
+              !(value.ct instanceof Uint8Array) ||
+              value.ct.length < 16
+            )
+              throw new CustodyError('repair-required', 'Unsupported or malformed content record.');
+            return task.wait(async () => {
+              try {
+                return new Uint8Array(
+                  await crypto.subtle.decrypt(
+                    {
+                      name: 'AES-GCM',
+                      iv: value.nonce,
+                      tagLength: 128,
+                      additionalData: fields(
+                        'done/store/v1',
+                        scope.principalId,
+                        scope.workspaceId,
+                        record.store_id,
+                        '1',
+                        String(value.gen),
+                        String(value.seq),
+                        value.kind,
+                      ),
+                    },
+                    keys.store!,
+                    value.ct,
+                  ),
+                );
+              } catch (cause) {
+                throw new CustodyError('repair-required', 'Content authentication failed.', {
+                  cause,
+                });
+              }
+            });
+          },
+        }),
+      ),
+  });
+};

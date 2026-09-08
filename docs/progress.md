@@ -48,37 +48,40 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # implementation phase one complete; factor custody is next
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, write-session.md]
+status: in flight # implementation phase two complete; encrypted content carrier is next
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, custody.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers its represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-08
 ```
 
-**Just completed.** Implementation phase one, the [write-session lifecycle](./write-session.md), is
-implemented and exported. Its [recorded execution](./storage-conformance-runs/2026-09-08-write-session.md)
-passes 13 real-browser cases and detects five guard-removal mutants, with zero harness or unexpected
-page errors. It covers shared/exclusive ownership, frozen tabs, task/session invalidation, work and cache
-cleanup, cancellation, initializer failures, workers and renderer death. The outcome is recorded in
-[completed.md](./completed.md). Application wiring and full storage/retirement safety remain subsequent work.
+**Just completed.** Phase two, [mandatory-factor custody](./custody.md), attaches generated-code
+confirmation, authenticated resumable creation, sealed generation/operational credentials and cold unlock
+to the shared/exclusive lifecycle. Its [recorded execution](./storage-conformance-runs/2026-09-08-custody.md)
+passes 13 browser cases and 73 assertions and detects five source defects. Same-host copied-profile
+controls include a valid external factor and a planted promptless root recovering content and a future
+receiver probe. The full unit suite passes 532 tests. [completed.md](./completed.md) records the outcome.
+The preceding shared candidate harness and phase-one lifecycle are committed as `ccfcbf0`.
 
-**Next phase.** Mandatory-factor custody attached to this lifecycle, with its own bounded acceptance
-criteria: initialize only under a held permit, reload current durable state on each acquisition and clear
-owned capabilities during disposal. The generated code remains required at persistent genesis. Admission
-and editor/receive integration follow separately. Sequencing §3.2's items 3–6 remain one integrated landing
-unit, developed and reviewed in successive implementation checkpoints.
+**Next phase.** The encrypted content carrier: durable allocation, authenticated loading and the exact
+stored-record boundary using the custody session. Journal/admission and complete owned startup follow
+as separate checkpoints. The custody component requires its future caller to verify identity and inspect
+other carriers under the permit; those boundaries, application onboarding and actual Account/receiver
+integration are not supplied by its synthetic browser fixture. The app still uses its earlier persistence.
+Sequencing §3.2's items 3–6 remain one integrated landing unit, developed in successive checkpoints.
 
 **Existing evidence.** Contracts were committed as `f87997d`. The earlier
 [shared candidate run](./storage-conformance-runs/2026-09-08.md) contains 57 candidate subcases and three
 detected trim mutants. All three pinned candidates fail the corrected contract; none has been merged.
 Contract-pass's disk-union trim and fail-closed load remain component donors after repairing the
-identity-and-bytes deletion check. The lifecycle result does not change the candidate comparison.
+identity-and-bytes deletion check. The lifecycle/custody results do not change the candidate comparison.
 
-**Completion blockers.** `node scripts/check-debts.mjs --gate L-1` still requires the seeded legacy
-cutover kill matrix and complete corrected production storage conformance. Full clear/startup interruption
-matrices and mandatory-factor controls remain owed. L-3 composes generation/custody references with writer
-lifetimes and interrupted phases; L-4 carries supported-profile/authenticator and platform evidence.
-A Chromium component pass does not pay those broader obligations or establish the old-writer cutover.
+**Completion blockers.** L-1 still owes complete storage/admission/startup/clear conformance and the
+seeded legacy cutover kill matrix. PRF enrollment, legacy receiver replacement and full Local/Account
+onboarding remain incomplete. L-3 composes generation/custody references with lifetimes and interrupted
+phases; L-4 carries supported-profile/authenticator, platform and independent-review evidence. The three
+matrix evidence pins were refreshed with obligations and debt statuses unchanged. No component pass
+establishes the old-writer cutover or pays a release gate.
 
 **Scope.** This seat owns L-1's corrected implementation and evidence. The independent L-2 seat below
 retains its own record. The author's real-data cutover remains Stage 2, after the carrier choice and

@@ -193,3 +193,37 @@ editor/receive integration and complete journal/generation/retirement compositio
 cell and its three existing debt pins were refreshed without changing obligations or paying any gate.
 The independent L-2 record and earlier candidate outcomes remain unchanged. The component guide is
 [write-session.md](./write-session.md).
+
+
+---
+
+### Encrypted-store implementation phase two — mandatory-factor custody
+
+**Date:** 2026-09-08 · **Branch:** `codex/encrypted-store-contract-corrections` · **Stage:** L-1 component checkpoint, not L-1 closure
+
+**Exit.** The preceding harness and lifecycle checkpoint were committed as `ccfcbf0`. The
+[custody component](./custody.md) now generates and confirms the mandatory code, stages sealed custody
+under exclusion, commits root-seal reservations before encryption, and resumes an authenticated creation
+intent without changing its identity or resetting its history. Cold unlock rereads authority/custody under
+the shared lifetime permit and imports scoped store, wrapping and signing keys into owned memory. Closing
+invalidates tasks, drains work and clears capabilities; nested crypto continuations also check the task.
+No private-key or promptless persistence API is exposed. The component supplies authenticated record reads
+for the next phase, without content writes or admission.
+
+**Evidence.** The [recorded execution](./storage-conformance-runs/2026-09-08-custody.md) passes 13 real-browser
+cases and 73 assertions and detects five deliberate defects, with no harness or unexpected page errors.
+It includes actual renderer death during creation, transaction aborts after request success, concurrency,
+partial/legacy refusal, metadata tampering, the reservation ceiling and cancellation within key generation.
+Complete synthetic same-host profiles have external-factor controls and a planted promptless-root control
+that recovers both content and a test future-receiver probe. The full Vitest suite passes 532 tests in
+46 files; TypeScript, focused lint/format, the production build, bundle budget and origin checks pass.
+Published device-lock/record/recovery vectors and the 205-field AAD audit remain current.
+`pnpm storage:custody` is included in `pnpm check`.
+
+**Remaining.** The new component is exported, with required verified-identity and other-carrier checks
+for its future caller; the app still uses its earlier persistence. Complete Local/Account startup,
+application onboarding, PRF enrollment, legacy migration and real receiver/authorization integration
+remain owed. The v2 credential/metadata encodings are detailed in the component guide and decisions.
+Next build the encrypted content carrier and allocation/load boundary on these capabilities, then compose
+journal/admission and owned startup in subsequent checkpoints. No release debt is paid, and the earlier
+candidate comparison and independent L-2 work are unchanged.

@@ -5,10 +5,10 @@
     {
       "id": "x25519-dated-readback",
       "finding": "f-bd87655-x25519-support-floor-omitted",
-      "property": "A dated SubtleCrypto readback of TRD §10.11's four X25519 operations across the four core engines — the section's rule is a floor with evidence and a date, and its evidence table is deliberately empty until this lands.",
-      "owner": "review 3b intake (TRD §10.11 offers that pass the measurement; row 12's authenticator survey shares it)",
+      "property": "A dated SubtleCrypto readback of TRD \u00a710.11's four X25519 operations across the four core engines \u2014 the section's rule is a floor with evidence and a date, and its evidence table is deliberately empty until this lands.",
+      "owner": "review 3b intake (TRD \u00a710.11 offers that pass the measurement; row 12's authenticator survey shares it)",
       "gate": "S0-10",
-      "artifact": "TRD §10.11's evidence table, populated: engine × operation rows each carrying source, date and expiry",
+      "artifact": "TRD \u00a710.11's evidence table, populated: engine \u00d7 operation rows each carrying source, date and expiry",
       "falsifier": "an empty, undated, unsourced or expired table fails the S0-10 evaluation that reads it; a browser-version citation or an assertion from memory is refused as payment",
       "payment": {
         "kind": "dated-external-observation",
@@ -20,13 +20,13 @@
       "status": "paid",
       "payment_record": {
         "kind": "dated-external-observation",
-        "source": "web-platform-tests stable desktop runs, read 2026-08-29 via wpt.fyi — https://wpt.fyi/results/WebCryptoAPI?run_ids=5176987542093824,5102565221203968,4788146637373440,5172112754212864 (Chrome 152.0.7977.64 run 5176987542093824, started 2026-08-28 · Edge 152.0.4191.53 run 5102565221203968, 2026-08-29 · Firefox 154.0.1 run 4788146637373440, 2026-08-27 · Safari 26.6 run 5172112754212864, 2026-08-27); executions of the four SubtleCrypto operations, never a version citation",
+        "source": "web-platform-tests stable desktop runs, read 2026-08-29 via wpt.fyi \u2014 https://wpt.fyi/results/WebCryptoAPI?run_ids=5176987542093824,5102565221203968,4788146637373440,5172112754212864 (Chrome 152.0.7977.64 run 5176987542093824, started 2026-08-28 \u00b7 Edge 152.0.4191.53 run 5102565221203968, 2026-08-29 \u00b7 Firefox 154.0.1 run 4788146637373440, 2026-08-27 \u00b7 Safari 26.6 run 5172112754212864, 2026-08-27); executions of the four SubtleCrypto operations, never a version citation",
         "date": "2026-08-29",
         "expiry": "2027-02-28",
         "operations": ["generateKey", "importKey raw/spki", "importKey pkcs8", "deriveBits"],
         "engines": ["chrome", "edge", "firefox", "safari"],
-        "artifact": "docs/TRD.md §10.11's evidence table — 16 engine × operation rows, each with source, date and expiry; check-debts.mjs holds the table and this record to each other in both directions",
-        "note": "Every success-path row passes on all four engines. Firefox 154's deriveBits reads pass 12/19: the six small-order all-zero rejection subtests and the non-multiple-of-8 length subtest miss while every positive derivation (pkcs8/spki import, deriveBits at length 256) passes — recorded in the table's dagger note, with the consequence that the Stage-4 DHKEM layer carries its own RFC 9180 all-zero abort on every engine."
+        "artifact": "docs/TRD.md \u00a710.11's evidence table \u2014 16 engine \u00d7 operation rows, each with source, date and expiry; check-debts.mjs holds the table and this record to each other in both directions",
+        "note": "Every success-path row passes on all four engines. Firefox 154's deriveBits reads pass 12/19: the six small-order all-zero rejection subtests and the non-multiple-of-8 length subtest miss while every positive derivation (pkcs8/spki import, deriveBits at length 256) passes \u2014 recorded in the table's dagger note, with the consequence that the Stage-4 DHKEM layer carries its own RFC 9180 all-zero abort on every engine."
       },
       "inputs": [
         {
@@ -44,10 +44,10 @@
     {
       "id": "legacy-plaintext-cutover",
       "finding": "f-9860a0b-legacy-plaintext-repair-undefined",
-      "property": "The known old-origin plaintext cutover as one resumable transaction — export, import, active-store selection, deletion, restart — with its kill matrix executed against a seeded legacy installation. The terminal-state rule is the finding's own validation procedure, step 3: after each kill and restart, recovery reaches either a verified pre-cutover state with the legacy carrier preserved, or one verified encrypted post-cutover state; recognizable plaintext is absent from every carrier once cutover completes. Preserved legacy plaintext before completion is the finding's allowed recoverable state, not a residue failure.",
+      "property": "The known old-origin plaintext cutover as one resumable transaction \u2014 export, import, active-store selection, deletion, restart \u2014 with its kill matrix executed against a seeded legacy installation. The terminal-state rule is the finding's own validation procedure, step 3: after each kill and restart, recovery reaches either a verified pre-cutover state with the legacy carrier preserved, or one verified encrypted post-cutover state; recognizable plaintext is absent from every carrier once cutover completes. Preserved legacy plaintext before completion is the finding's allowed recoverable state, not a residue failure.",
       "owner": "the L-1 encrypted-store implementation",
       "gate": "L-1",
-      "artifact": "the executed kill matrix over the cutover state machine, run against a seeded legacy installation — never the live first deployment, which is Stage 2's — with a residue scan at every kill point and the reached terminal state named at each",
+      "artifact": "the executed kill matrix over the cutover state machine, run against a seeded legacy installation \u2014 never the live first deployment, which is Stage 2's \u2014 with a residue scan at every kill point and the reached terminal state named at each",
       "falsifier": "a kill point whose restart reaches neither terminal state, a completed cutover leaving recognizable plaintext in any carrier, or a resume that can neither complete nor roll back, fails the matrix; a residue scan that fails on plaintext preserved before completion is reading the wrong rule and does not pay the debt either; design prose without an executed matrix is refused as payment",
       "payment": {
         "kind": "executed-kill-matrix",
@@ -68,7 +68,7 @@
     {
       "id": "declared-device-population",
       "finding": "f-bd87655-baseline-not-performance-floor",
-      "property": "A declared hardware population under the journal p95 budget — Baseline stays a compatibility policy and never becomes a performance floor; slower supported devices are sampled, not inferred.",
+      "property": "A declared hardware population under the journal p95 budget \u2014 Baseline stays a compatibility policy and never becomes a performance floor; slower supported devices are sampled, not inferred.",
       "owner": "the L-4 platform/performance track",
       "gate": "L-4",
       "artifact": "the declared device population with raw journal p95 samples measured on it",
@@ -92,7 +92,7 @@
     {
       "id": "rustcrypto-audit-delta",
       "finding": "f-9b49b74-rustcrypto-audit-version-gap",
-      "property": "The audit's exact scope: the 2019 snapshot diffed to the locked 0.10.1 graph, with review 3a naming what it evaluated — the audit preserved as related history, never as exact-version proof.",
+      "property": "The audit's exact scope: the 2019 snapshot diffed to the locked 0.10.1 graph, with review 3a naming what it evaluated \u2014 the audit preserved as related history, never as exact-version proof.",
       "owner": "review 3a intake",
       "gate": "L-4",
       "artifact": "the source-delta review from the audited snapshot to the locked graph, with reviewer 3a's named scope and readback",
@@ -116,11 +116,11 @@
     {
       "id": "wasm-toolchain-provenance",
       "finding": "f-9b49b74-wasm-source-artifact-drift-unchecked",
-      "property": "The provenance residue after the S0-8 header binding: reproducible rebuild — the same bytes from the same source under a pinned or attested toolchain — with blob attestation. The toolchain-free source↔blob drift binding landed in wasm:verify and detects drift, never forgery; a builder that lies about hashes, or a compromised toolchain, is exactly this residue.",
+      "property": "The provenance residue after the S0-8 header binding: reproducible rebuild \u2014 the same bytes from the same source under a pinned or attested toolchain \u2014 with blob attestation. The toolchain-free source\u2194blob drift binding landed in wasm:verify and detects drift, never forgery; a builder that lies about hashes, or a compromised toolchain, is exactly this residue.",
       "owner": "the L-4 toolchain track",
       "gate": "L-4",
       "artifact": "an attested reproduction: pinned toolchain identity, the rebuilt blob's hash equal to the shipped hash, and the attestation binding them",
-      "falsifier": "a green KAT, or the drift binding itself, cannot mark this paid — the payment is a reproduced build under a pinned toolchain, receipted; anything less is refused",
+      "falsifier": "a green KAT, or the drift binding itself, cannot mark this paid \u2014 the payment is a reproduced build under a pinned toolchain, receipted; anything less is refused",
       "payment": {
         "kind": "attested-rebuild",
         "requires": ["toolchain", "source_sha256", "blob_sha256", "attestation", "date"],
@@ -140,7 +140,7 @@
     {
       "id": "journal-append-burst",
       "finding": "f-66a7c6a-journal-benchmark-overwrites-one-slot",
-      "property": "The immutable append burst measured on the declared device population at production-shaped occupancy — the fixed-slot microbenchmark stays useful history, never product-shaped append evidence. Causally RC-3's; registered here, never double-counted.",
+      "property": "The immutable append burst measured on the declared device population at production-shaped occupancy \u2014 the fixed-slot microbenchmark stays useful history, never product-shaped append evidence. Causally RC-3's; registered here, never double-counted.",
       "owner": "the L-4 platform/performance track",
       "gate": "L-4",
       "artifact": "raw append-burst samples on the declared population, with occupancy and cleanup stated (test/latency/journal-bench.ts is the bench; no gate below test:latency runs it, so its claim lives here rather than as a falsifier tag)",
@@ -164,7 +164,7 @@
     {
       "id": "storage-contract-adapter-conformance",
       "finding": "f-9b49b74-journal-seal-64k-gap",
-      "property": "SC-01–09 storage/admission/startup/clear/custody behavior through actual production paths; applicable C01–C16 cases include ordered refusal, causal offline recovery, exact trim, partial genesis, interrupted clear, factor genesis and seal reservation accounting.",
+      "property": "SC-01\u201309 storage/admission/startup/clear/custody behavior through actual production paths; applicable C01\u2013C16 cases include ordered refusal, causal offline recovery, exact trim, partial genesis, interrupted clear, factor genesis and seal reservation accounting.",
       "owner": "the L-1 shared production-adapter harness",
       "gate": "L-1",
       "artifact": "Executed shared adapter and browser schedules on pinned candidate revisions, including seeded failures and guard-removal mutants; inspect canonical UI/export/transport and replay durable bytes offline after valid unlock.",
@@ -195,7 +195,7 @@
         {
           "path": "docs/storage-conformance.md",
           "section": null,
-          "hash": "32414fac60aa"
+          "hash": "cfa9e661c09b"
         },
         {
           "path": "docs/review/findings/f-9b49b74-journal-seal-64k-gap.md",
@@ -207,7 +207,7 @@
     {
       "id": "generation-lifetime-conformance",
       "finding": "f-4259822-generation-switch-local-durability-undefined",
-      "property": "C04–06/C14 compose writer permits, WAL generations, cached capabilities, complete opener references, receiver replacement and every interrupted transition phase; service outcome, local observation and local activation remain distinct.",
+      "property": "C04\u201306/C14 compose writer permits, WAL generations, cached capabilities, complete opener references, receiver replacement and every interrupted transition phase; service outcome, local observation and local activation remain distinct.",
       "owner": "the integrated generation and custody lifecycle coordinator",
       "gate": "L-3",
       "artifact": "Executed adapter/browser transition matrix with real freeze/resume, page/process death, concurrent writers/rotations and full carrier inventories; recovery reacquires exclusion and refreshes the census.",
@@ -238,7 +238,7 @@
         {
           "path": "docs/storage-conformance.md",
           "section": null,
-          "hash": "32414fac60aa"
+          "hash": "cfa9e661c09b"
         },
         {
           "path": "docs/review/findings/f-4259822-generation-switch-local-durability-undefined.md",
@@ -250,7 +250,7 @@
     {
       "id": "factor-profile-conformance",
       "finding": "f-f5def83-device-lock-reader-key-bypass",
-      "property": "C12–14 mandatory-factor Local/Account genesis, offline unlock and complete copied-profile protection under the declared browser/authenticator population; inventory all current/future receiving and indirect custody paths.",
+      "property": "C12\u201314 mandatory-factor Local/Account genesis, offline unlock and complete copied-profile protection under the declared browser/authenticator population; inventory all current/future receiving and indirect custody paths.",
       "owner": "the supported-platform custody and profile review track",
       "gate": "L-4",
       "artifact": "Executed full-profile negative tests, valid-factor controls and planted promptless-opener control on the declared population, plus interrupted legacy replacement and remote-observation cases.",
@@ -281,7 +281,7 @@
         {
           "path": "docs/storage-conformance.md",
           "section": null,
-          "hash": "32414fac60aa"
+          "hash": "cfa9e661c09b"
         },
         {
           "path": "docs/review/findings/f-f5def83-device-lock-reader-key-bypass.md",
