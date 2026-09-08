@@ -3,6 +3,7 @@
  * credential. Startup supplies verified identity and the cross-carrier census;
  * completing this component alone does not complete workspace genesis.
  */
+import { assertNoLocalClear } from './localClearState';
 import { deriveStoreName } from './storeName';
 import { deriveJournalKey } from './journalCodec';
 import {
@@ -137,6 +138,7 @@ const captureAuthority = (authority: CustodyAuthority) => {
   }
 };
 const resolveScope = async (task: SessionTask, a: CustodyAuthority): Promise<CustodyScope> => {
+  await assertNoLocalClear(task, a.slotId);
   const principalId = await task.wait(() => a.resolvePrincipal(task));
   identity(principalId);
   return Object.freeze({ slotId: a.slotId, workspaceId: a.workspaceId, principalId });

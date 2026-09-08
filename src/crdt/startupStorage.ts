@@ -1,6 +1,7 @@
 /** Known-name, read-only native probes. They never create or upgrade a database. */
 import type { SessionTask } from './writeSession';
 import { contentTransaction } from './contentDatabase';
+import { journalPrefix } from './journalCodec';
 import { stopStartup } from './startupState';
 
 export const probeDatabase = <T>(
@@ -111,18 +112,28 @@ export const readScopedRows = (
     ),
   );
 
-export const journalCount = (task: SessionTask, prefix: string): number =>
+export const journalCount = (
+  task: SessionTask,
+  prefix: string,
+  exclude: (key: string) => boolean = () => false,
+): number =>
   task.step(() => {
     const storage = globalThis.localStorage;
     const keys = Object.keys(storage)
-      .filter((key) => key.startsWith(prefix))
+      .filter((key) => key.startsWith(prefix) && !exclude(key))
       .sort();
     for (const key of keys)
       if (storage.getItem(key) === null) throw Error('Journal changed during startup.');
     const after = Object.keys(storage)
-      .filter((key) => key.startsWith(prefix))
+      .filter((key) => key.startsWith(prefix) && !exclude(key))
       .sort();
     if (keys.length !== after.length || keys.some((k, i) => k !== after[i]))
       throw Error('Journal changed during startup.');
     return keys.length;
   });
+
+/** The old `done` prefix contains modern `done.<hash>` prefixes. Their complete key grammars are disjoint. */
+export const legacyJournalCount = (task: SessionTask): number =>
+  journalCount(task, journalPrefix('done'), (key) =>
+    /^done\.pending-update\.done\.[0-9a-f]{32}\.[0-9a-f]{32}\.[0-9a-f]{32}\.[0-9]{16}$/u.test(key),
+  );

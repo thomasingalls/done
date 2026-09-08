@@ -48,37 +48,37 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # first Local genesis/index checkpoint complete; clear/cutover and acceptance remain
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, local-genesis.md]
+status: in flight # scoped Local clear complete; exact trim/cutover and acceptance remain
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, local-clear.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-08
 ```
 
-**Just completed.** Phase eight is committed as `a916d61`. Phase nine adds [verified first Local
-genesis and scoped indexing](./local-genesis.md): confirmed mandatory factor; atomic identity/custody
-claim; authenticated cross-database progress; content initialization and final index add under one
-exclusive lifetime. A competing creator cannot replace the winner's identity/factor. Explicit resumption
-verifies retained stages and refuses missing initialized material or live custody. Local startup verifies
-the claim before replay/admitted initialization; the picker requires a factor. Earlier index writers now
-use lifecycle permits and refuse Local slots. This checkpoint is uncommitted; the default application
-remains on its earlier store.
+**Just completed.** Phase nine is committed as `ee60528`. Phase ten adds [journal-inclusive scoped Local
+clear](./local-clear.md): a factor-verified immutable target, authenticated durable intent and ordered
+cleanup under one exclusive lifetime. Native content success precedes exact journal removal; every opener,
+including the genesis factor seal, is retained until journal absence and removed atomically with progress.
+Scoped index cleanup follows. Resumption verifies the factor even after key removal, rereads current state
+and refuses changed/unknown carriers. A terminal marker blocks normal opening and automatic fresh genesis.
+This checkpoint is uncommitted; the default application remains on its earlier store.
 
-**Evidence.** [Recorded genesis execution](./storage-conformance-runs/2026-09-08-local-genesis.md) passes
-17 browser cases/160 assertions and detects four mutants. Actual renderer death after nine durable
-boundaries preserves the signed winning identity set; admitted text recovers after another offline kill.
-Two creators/factors, native transaction aborts, cancellation/drain, damaged/missing state, closed and
-independent slots, and legacy index interference pass. Startup regression passes 15/96/three mutants;
-custody 13/73/five; content 13/58/five. Full Vitest passes 649 tests/53 files; applicable build/project
-checks pass. New creation/Local verification uses production owners; Account receive validation remains
-a fixture seam. No supported-population or independent crypto-review claim follows.
+**Evidence.** [Recorded clear execution](./storage-conformance-runs/2026-09-08-local-clear.md) passes
+17 browser cases/172 assertions and detects five mutants. Seven durable-boundary renderer deaths, native
+blocked deletion, cancellation drain, partial journal failure, transaction aborts, frozen writers, queued
+state changes and independent slots pass. Genesis regression passes 17/160/four mutants; startup
+15/96/three; custody 13/73/five; content 13/58/five; journal 17/93/six; admission 15/64/six. Full Vitest
+passes 666 tests/54 files; applicable build/project checks pass. One earlier static-render failure did not
+reproduce in isolation or the final full run; the cause is unestablished. A legacy prefix overlap exposed
+by the first browser run is corrected without renaming or deleting journal data. No supported-population,
+forensic-erasure or independent crypto-review claim follows.
 
-**Next bounded integration.** Journal-inclusive scoped Local clear: an authenticated durable intent,
-content-first cleanup retaining journal/openers/index on refusal, resumable later phases, and a terminal
-marker preventing accidental new genesis. The retained genesis factor seal is an additional opener
-reference this owner must include. Adding workspaces to existing slots, Account onboarding, migration/import,
-exact trim and seeded legacy/default-application cutover remain separate work. Sequencing §3.2 items 3–6
-remain one integrated landing unit developed in reviewable checkpoints.
+**Next bounded integration.** Exact-coverage content trim/compaction: construct the snapshot from the disk
+union, then delete only records whose exact identities and bytes it covers. Late commits, concurrent tabs,
+unreadable material and interrupted publication must preserve recoverability. No sequence-range deletion
+or single-tab document can establish coverage. Adding workspaces, Account onboarding, migration/import and
+seeded legacy/default-application cutover remain separate work. Sequencing §3.2 items 3–6 remain one
+integrated landing unit developed in reviewable checkpoints.
 
 **Preparation/acceptance gate.** Workspace history retains deleted runtime content with gc:false and
 copies Yjs Item.redone/delete-set state through version-sensitive internals, adding a second full clone.
@@ -88,17 +88,20 @@ Native IME/preedit and complete interaction performance remain gates before defa
 
 **Existing evidence.** Corrected contracts: `f87997d`; shared harness/lifecycle: `ccfcbf0`; mandatory-factor
 custody: `a6d39a2`; content: `468cbe2`; synchronous journal: `9e60c6a`; admission/Goals editor: `0b5337a`;
-workspace commands/history: `a48c090`; owned startup: `a916d61`. The [shared candidate run](./storage-conformance-runs/2026-09-08.md)
-contains 57 candidate subcases; all three pinned candidates fail the corrected contract and none is merged.
-Disk-union trim and fail-closed load remain donor ideas after exact identity-and-bytes deletion repair.
+workspace commands/history: `a48c090`; owned startup: `a916d61`; Local genesis/index: `ee60528`.
+The [shared candidate run](./storage-conformance-runs/2026-09-08.md) contains 57 candidate subcases; all three
+pinned candidates fail the corrected contract and none is merged. Disk-union trim and fail-closed load
+remain donor ideas after exact identity-and-bytes deletion repair.
 
-**Completion blockers.** L-1 still owes full genesis/index/clear/default-application conformance and seeded
-legacy cutover kills. The carrier has no trim or Local clear API; refusal-only clear hints are not a full
-ClearIntent/terminal-marker protocol. Additional Local workspaces, Account verifier/receive authority and
-PRF remain incomplete. L-3 composes generation/custody references, lifetimes and interrupted phases; these
-components do not implement retirement. L-4 carries independent review of the added progress authenticator,
-supported profiles/authenticators, low-end performance and platform acceptance. Only matrix evidence and
-three pins advance; obligations/debt statuses are unchanged. No checkpoint pays old-writer cutover/release.
+**Completion blockers.** L-1 still owes full genesis/index/clear/default-application conformance, exact trim
+and seeded legacy cutover kills. Scoped Local clear handles only the first completed active workspace;
+shared/multiple-workspace custody, Account removal/service revocation, partial-genesis cleanup and explicit
+cleared-slot reuse need subsequent owners. Additional Local workspaces, Account verifier/receive authority
+and PRF remain incomplete. L-3 composes generation/custody references, lifetimes and interrupted phases;
+these components do not implement retirement. L-4 carries independent review of the added progress
+and clear authenticators, supported profiles/authenticators, low-end performance and platform acceptance.
+Only matrix evidence and three pins advance; obligations/debt statuses are unchanged. No checkpoint pays
+old-writer cutover/release.
 
 **Scope.** This seat owns L-1 implementation/evidence. The independent L-2 record below is unchanged.
 The author's real-data cutover remains Stage 2 after carrier selection and review 3a. Historical Stage 0

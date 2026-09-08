@@ -41,6 +41,9 @@ if (existsSync(output)) throw Error('Refusing existing output: ' + output);
 mkdirSync(output, { recursive: true });
 const sourcePaths = [
   'custody.ts',
+  'localClearState.ts',
+  'startupStorage.ts',
+  'startupState.ts',
   'custodyCrypto.ts',
   'custodyRecord.ts',
   'writeSession.ts',

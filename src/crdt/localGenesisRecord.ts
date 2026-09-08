@@ -19,6 +19,7 @@ import {
   type Bytes,
 } from './custodyCrypto';
 import { probeDatabase, checkLayout, readScopedRows } from './startupStorage';
+import { assertNoLocalClear } from './localClearState';
 import { stopStartup } from './startupState';
 import type { SessionTask } from './writeSession';
 
@@ -70,6 +71,7 @@ export const readLocalClaim = async (
   task: SessionTask,
   slotId: string,
 ): Promise<LocalClaim | null> => {
+  await assertNoLocalClear(task, slotId);
   const rows = (await slotCustodyRows(task, slotId)) ?? [];
   const row = rows.find((r) => indexedDB.cmp(r.key, localClaimKey(slotId)) === 0);
   return row ? parseLocalClaim(row.value, slotId) : null;

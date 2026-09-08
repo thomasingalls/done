@@ -17,7 +17,9 @@ import {
   readScopedRows,
   checkLayout,
   journalCount,
+  legacyJournalCount,
 } from './startupStorage';
+import { assertNoLocalClear } from './localClearState';
 import { StartupError, stopStartup } from './startupState';
 import type { SessionTask } from './writeSession';
 import type { Slot } from './slotIndex';
@@ -124,6 +126,7 @@ export const classifyUnderPermit = async (
   task: SessionTask,
   authority: StartupAuthority,
 ): Promise<ClassifiedWorkspace> => {
+  await assertNoLocalClear(task, authority.slotId);
   const slot = await probeDatabase(task, 'done.slots', async (db) => {
     checkLayout(db, { slots: 'id' });
     return parseSlot(await readRow(task, db, 'slots', authority.slotId), authority.slotId);
@@ -195,7 +198,7 @@ export const classifyUnderPermit = async (
     if (rows.length || disk || journal)
       stopStartup('repair-required', 'retained-material-without-index');
     const legacy = await probeDatabase(task, 'done', async () => true);
-    if (legacy || journalCount(task, journalPrefix('done')))
+    if (legacy || legacyJournalCount(task))
       stopStartup('migration-required', 'unassigned-legacy-carrier');
     stopStartup('fresh', 'requested-carriers-absent');
   }

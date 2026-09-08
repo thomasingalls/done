@@ -535,3 +535,48 @@ exact trim and seeded legacy/default-app cutover remain owed. The new progress M
 independent review; platform, native IME, runtime history/performance, PRF and generation/receiver/reference
 composition remain later gates. Only matrix evidence and three pins advance; no debt status changes.
 The independent L-2 progress document is unchanged.
+
+
+---
+
+### Encrypted-store implementation phase ten — journal-inclusive scoped Local clear
+
+**Date:** 2026-09-08 · **Branch:** `codex/encrypted-store-contract-corrections` · **Stage:** bounded L-1 integration checkpoint
+
+**Check-in.** Phase nine was committed as `ee60528` before this work. Phase ten remains uncommitted.
+
+**Exit.** [Scoped Local clear](./local-clear.md) prepares a factor-verified immutable target, then rereads
+under one exclusive slot lifetime and installs an authenticated intent before deletion. Native content
+deletion must succeed before journal removal; a blocked request retains exclusion until it settles, even
+after cancellation. Exact journal removal and verified absence precede atomic removal of live custody,
+the content witness and the retained genesis factor seal together with progress advancement. Exact index
+removal follows. A non-content terminal marker prevents automatic genesis and normal key access.
+
+Resumption authenticates progress with the external generated factor, including after every content opener
+has gone, and rereads surviving carriers before further effects. Unknown references, changed identity,
+damaged metadata and reappearing later-stage carriers refuse. Failed journal cleanup retains remaining
+entries and every opener. Initial deletion is limited to the first completed active Local workspace in its
+slot; damaged ciphertext can be explicitly deleted within verified ownership. The host owns the deletion
+confirmation and closes its initiating writer before clear. No default UI or real user data was changed.
+
+**Evidence.** [Recorded execution](./storage-conformance-runs/2026-09-08-local-clear.md) passes **17 browser
+cases / 172 assertions** and detects **five** mutants. Seven durable-boundary renderer deaths resume with
+the same authorized target. Native blocked deletion/cancellation, frozen live writers, partial journal
+failure, transaction aborts, wrong factor after key removal, queued target changes and independent slots
+are covered. The first run exposed the legacy journal prefix overlapping modern namespaces; the legacy-only
+census now distinguishes complete modern framing while retaining refusal for ambiguous/legacy keys.
+
+Genesis regression passes **17/160/four mutants**; startup **15/96/three**; custody **13/73/five**; content
+**13/58/five**; journal **17/93/six**; admission **15/64/six**. Full Vitest passes **666 tests / 54 files**,
+including 17 new tests. One earlier concurrent full run had a static-render assertion failure that did not
+reproduce in isolation or the final full run; its cause is unestablished. Typecheck, focused lint/format,
+build/budget/origin, sixteen vector generators/AAD, WASM and applicable project/governance/traceability
+checks pass. Initial JS remains **306.3 kB / 350.0 kB** gzipped. The literal full check chain, geometry and
+separate unchanged editor/workspace/lifecycle browser suites were not run. `storage:clear` joins the chain.
+
+**Remaining.** Exact-coverage content trim/compaction is the next bounded phase. Shared/multiple-workspace
+custody, Account removal/revocation, partial-genesis cleanup, cleared-slot reuse, migration/import and
+seeded legacy/default-app cutover remain subsequent work. The factor-derived clear MAC needs independent
+review. Platform, IME, runtime-history/performance, PRF and generation/receiver/reference composition remain
+later gates. Only matrix evidence and three pins advance; no obligations or debt statuses change. The
+independent L-2 progress record remains unchanged.

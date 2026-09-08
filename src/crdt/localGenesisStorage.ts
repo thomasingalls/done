@@ -1,7 +1,13 @@
 /** Only the Local genesis owner calls these operations, under a slot permit. */
 import { contentTransaction } from './contentDatabase';
 import { parseSlot, contentCensus } from './startupClassification';
-import { probeDatabase, checkLayout, readRow, journalCount } from './startupStorage';
+import {
+  probeDatabase,
+  checkLayout,
+  readRow,
+  journalCount,
+  legacyJournalCount,
+} from './startupStorage';
 import { journalPrefix } from './journalCodec';
 import { deriveStoreName } from './storeName';
 import { CUSTODY_STORE, parseRecord, recordKey, recordEqual } from './custodyRecord';
@@ -37,10 +43,7 @@ export const requireFreshLocalSlot = async (task: SessionTask, slotId: string): 
     stopStartup('unlock-required', 'local-creation-already-won');
   if (count || (await slotCustodyRows(task, slotId))?.length)
     stopStartup('repair-required', 'local-slot-already-retains-material');
-  if (
-    (await probeDatabase(task, 'done', async () => true)) ||
-    journalCount(task, journalPrefix('done'))
-  )
+  if ((await probeDatabase(task, 'done', async () => true)) || legacyJournalCount(task))
     stopStartup('migration-required', 'unassigned-legacy-carrier');
 };
 export const localRoute = async (task: SessionTask, claim: LocalClaim): Promise<Slot> => {

@@ -1778,3 +1778,35 @@ Account onboarding, Local close/reopen/delete, migration, clear and default-appl
 subsequent owners. [Browser evidence](./storage-conformance-runs/2026-09-08-local-genesis.md) exercises the
 nine creation boundaries, two factors/creators, cancellation, transaction aborts and legacy interference.
 No obligation or debt status is paid by this checkpoint.
+
+
+### 2026-09-08 — Local clear authenticates resumable progress after removing every content opener
+
+The [Local clear owner](./local-clear.md) handles the first completed active Local workspace in its slot.
+Read-only preparation verifies the generated factor and returns an immutable target for the host's explicit
+deletion confirmation. The exclusive action rereads ownership after grant, rejects unknown references and
+persists a scoped intent before any deletion. It waits for native content deletion success before touching
+the journal; blocked native deletion keeps exclusion until settlement, including after cancellation.
+
+Exact observed journal removal and verified absence precede opener cleanup. Live custody, the content
+witness and the genesis claim's retained factor seal are removed in the same transaction as advancement
+to index cleanup. Index removal and terminal progress span databases, so a crash can leave no content
+opener with cleanup still pending. An independent HKDF/HMAC construction derives only from the existing
+high-entropy generated factor, salt and domain-separated intent context. Its authenticated payload binds
+the full target and stage. No derived key or code is persisted; the terminal record retains no content
+opener. Initial authority additionally requires the existing factor-authenticated Local genesis claim.
+The guide records the exact construction and its independent-review requirement.
+
+Every resumer reacquires exclusion and verifies current progress and surviving carriers. A pending content
+stage may observe absence after an interrupted native success; a surviving database must still match its
+bound counter/layout. Later stages refuse reappearing residue. Normal custody access, Local genesis,
+startup and legacy index writes observe the fixed control before proceeding. Structural observation only
+authorizes refusal, never deletion. Terminal state blocks automatic fresh genesis; explicit reuse of a
+cleared slot needs a later owner. The action has no rollback after intent commit.
+
+The browser preparation exposed that the legacy `done` journal prefix includes modern encrypted
+namespaces. The legacy-only census now excludes only complete modern key framing; ambiguous keys still
+refuse. Namespaces and stored data remain unchanged. [Execution evidence](./storage-conformance-runs/2026-09-08-local-clear.md)
+records native blocked deletion, cancellation drain, seven crash boundaries, partial journal failure,
+transaction aborts and five detected mutants. Account/shared-custody clear, migration/cutover and independent
+review remain owed. Exact-coverage content compaction is next; no debt status changes here.
