@@ -1,5 +1,13 @@
 # Review 3a — storage and journal design review: reviewer input pack
 
+**Input amendment, 2026-09-08:** read [storage-contract.md](../../storage-contract.md) and
+[storage-conformance.md](../../storage-conformance.md) with this pack. Mandatory factor genesis replaces
+optional default custody; key retirement requires writer exclusion and a fresh journal-inclusive census;
+trim is exact authenticated coverage; offline recovery includes causal dependencies. The nonce theorem
+excludes raw clones/rollback, and custody seals need reservation accounting including retries. Existing
+vectors keep their crypto bytes and do not certify these lifecycle properties. Review the corrected
+contracts and implementations against the pending production cases, including the new v2 metadata.
+
 **Standing:** home — the one home of the 3a intake. Outside the remediation census, which walks
 `docs/review/remediation/` only; nothing here is pinned by `remediation:check`.
 
@@ -71,10 +79,12 @@ Enough to orient before the long documents; each is stated normatively in the TR
    than the state that counts its invocations. 12 random nonce bytes under a per-(store, generation) budget
    counted by `reserved[gen]`, **reserved before encryption** so an abandoned invocation is still counted, and
    `seq` does not reset at trim. The budget is NIST SP 800-38D §8.3's 2³² invocations per key, with the store
-   rotating **before** the 2³²-th reservation — equality is the first disallowed value.
+   rotating **before** the 2³²-th reservation — equality is the first disallowed value. This assumes an
+   unrewound, unbranched key/counter history (SC-09); raw profile clones duplicate that history.
 4. **The device lock.** A generated 125-bit code **always**, with WebAuthn PRF as an additional seal of the
-   same `L_lock` rather than an alternative to it. Enrollment reseals the key envelopes and **rotates the
-   content key forward**.
+   same scoped `L_lock`. Factors are mandatory from persistent genesis and cold start. Legacy migration
+   replaces promptless future receivers and rotates content forward; protection remains pending until
+   durable local activation/retirement complete. Complete profile-copy tests remain owed.
 5. **The recovery code, storage half.** 125 bits, Crockford Base32, five groups of five, **no stretching**.
 
 ## The questions

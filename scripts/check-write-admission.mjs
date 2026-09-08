@@ -32,8 +32,8 @@
  *      primitives and compared byte-for-byte — and the two stores' subkeys
  *      must differ, which is falsifier 14's readback tooth.
  *
- * What it does not check: that any construction is sound (the generators' own
- * negatives and `pnpm vectors:coverage` own that), that the corpus implements
+ * What it does not check: that any construction is sound (generator negatives and
+ * `pnpm vectors:coverage` cover only their declared cases), that the corpus implements
  * the rule (the authority map's `status` lines carry that), or any home it
  * does not name below. A green run means: the named homes state the ratified
  * rules, the named retired sentences appear in none of them, and the record
@@ -65,6 +65,17 @@ const STORE_INFO = 'LP("done/store/v1") || LP(workspace_id) || LP(store_id)';
 
 const REQUIRED = [
   {
+    file: 'docs/storage-contract.md',
+    needs: [
+      'without network redelivery',
+      'SC-03 — writer lifetime and local activation',
+      'SC-05 — exact trim and unreadable persistence',
+      'SC-07 — resumable, journal-inclusive clear',
+      'SC-08 — mandatory factor custody and honest copied-profile protection',
+      'unrewound, unbranched history per',
+    ],
+  },
+  {
     file: 'docs/TRD.md',
     needs: [
       SCOPE_RULE,
@@ -87,7 +98,8 @@ const REQUIRED = [
       'the budget is what fixes the scope',
       // The key-envelope counter statement — the home P-3 falsifier 16's
       // census entry cites.
-      'one envelope per (generation, purpose)',
+      'One envelope per (generation, purpose) is a logical row constraint',
+      'seal_reserved',
     ],
   },
   {
@@ -96,7 +108,11 @@ const REQUIRED = [
   },
   {
     file: 'docs/review/remediation/S0-3/A-schemas.md',
-    needs: ['stage-and-promote', 'key per counter', 'no two counters ever share it'],
+    needs: [
+      'stage-and-promote',
+      'key per counter',
+      'conditional on an unrewound, unbranched history',
+    ],
   },
   {
     file: 'scripts/generate-record-vectors.mjs',
@@ -117,7 +133,9 @@ for (const { file, needs } of REQUIRED) {
   const text = flat(read(file));
   for (const phrase of needs) {
     if (!text.includes(phrase)) {
-      fail(`${file} no longer states the ratified rule: "${phrase}" is absent — the homes have diverged (P-3 falsifier 22).`);
+      fail(
+        `${file} no longer states the ratified rule: "${phrase}" is absent — the homes have diverged (P-3 falsifier 22).`,
+      );
     }
   }
 }
@@ -128,11 +146,18 @@ for (const { file, needs } of REQUIRED) {
   const trd = read('docs/TRD.md');
   const row = trd.split('\n').find((line) => /^\| 3 \| Encrypted record/u.test(line));
   if (row === undefined) {
-    fail('docs/TRD.md §15.1 has no row 3 line the scan recognizes — the register moved under this readback.');
+    fail(
+      'docs/TRD.md §15.1 has no row 3 line the scan recognizes — the register moved under this readback.',
+    );
   } else {
-    for (const phrase of ['The store subkey binds the store instance', 'counted by `reserved[gen]`']) {
+    for (const phrase of [
+      'The store subkey binds the store instance',
+      'counted by `reserved[gen]`',
+    ]) {
       if (!row.includes(phrase)) {
-        fail(`docs/TRD.md §15 row 3's cell no longer states "${phrase}" — the register and §6.1 have diverged again (E3's shape).`);
+        fail(
+          `docs/TRD.md §15 row 3's cell no longer states "${phrase}" — the register and §6.1 have diverged again (E3's shape).`,
+        );
       }
     }
   }
@@ -156,6 +181,14 @@ const CONSUMABLE = [
 
 const REFUSED = [
   {
+    phrase: 'a state record supersedes every record before it',
+    was: 'SC-05: uniqueness is not coverage; a late reserved sequence must survive trim',
+  },
+  {
+    phrase: 'no two counters ever share it',
+    was: 'SC-09: raw profile clones duplicate the key and counter; the theorem is conditional',
+  },
+  {
     phrase: 'budget that `seq` bounds',
     was: "E3: the register's cell publishing the count P-3 retired — the budget reads reserved[gen], never seq",
   },
@@ -173,7 +206,7 @@ const REFUSED = [
   },
   {
     phrase: 'info = LP("done/store/v1") || LP(workspace_id), L = 32',
-    was: "P-3 joint 1: the store-shared derivation — every device holding K_g derived the identical subkey while each counter saw only its own share",
+    was: 'P-3 joint 1: the store-shared derivation — every device holding K_g derived the identical subkey while each counter saw only its own share',
   },
 ];
 
@@ -181,7 +214,9 @@ for (const file of CONSUMABLE) {
   const text = flat(read(file));
   for (const { phrase, was } of REFUSED) {
     if (text.includes(phrase)) {
-      fail(`${file} publishes "${phrase}" again — ${was}. The rule was ratified at P-3 and consolidated at the S0-3 return; restore the ratified sentence or take the reopening to the record.`);
+      fail(
+        `${file} publishes "${phrase}" again — ${was}. The rule was ratified at P-3 and consolidated at the S0-3 return; restore the ratified sentence or take the reopening to the record.`,
+      );
     }
   }
 }
@@ -214,21 +249,37 @@ const reconstruct = async (name) => {
     return null;
   }
   const inputs = v.inputs;
-  const missing = ['k_g', 'principal_id', 'workspace_id', 'store_id', 'v', 'gen', 'seq', 'kind', 'nonce', 'plaintext']
-    .filter((k) => inputs[k] === undefined);
+  const missing = [
+    'k_g',
+    'principal_id',
+    'workspace_id',
+    'store_id',
+    'v',
+    'gen',
+    'seq',
+    'kind',
+    'nonce',
+    'plaintext',
+  ].filter((k) => inputs[k] === undefined);
   if (missing.length > 0) {
-    fail(`the ${name} vector's inputs omit ${missing.join(', ')} — FU-05's defect: an artifact no one can rebuild from what is published.`);
+    fail(
+      `the ${name} vector's inputs omit ${missing.join(', ')} — FU-05's defect: an artifact no one can rebuild from what is published.`,
+    );
     return null;
   }
 
   // The HKDF info, from its published inputs in the published order.
   const info = concat(lp('done/store/v1'), lp(inputs.workspace_id), lp(inputs.store_id));
   if (hex(info) !== v.derived.hkdf_info) {
-    fail(`the ${name} vector's hkdf_info does not reconstruct from its published inputs — the formula and the generator disagree.`);
+    fail(
+      `the ${name} vector's hkdf_info does not reconstruct from its published inputs — the formula and the generator disagree.`,
+    );
   }
 
   // The store subkey, through HKDF.
-  const ikm = await crypto.subtle.importKey('raw', unhex(inputs.k_g), 'HKDF', false, ['deriveBits']);
+  const ikm = await crypto.subtle.importKey('raw', unhex(inputs.k_g), 'HKDF', false, [
+    'deriveBits',
+  ]);
   const kStore = new Uint8Array(
     await crypto.subtle.deriveBits(
       { name: 'HKDF', hash: 'SHA-256', salt: new Uint8Array(0), info },
@@ -237,7 +288,9 @@ const reconstruct = async (name) => {
     ),
   );
   if (hex(kStore) !== v.derived.k_store) {
-    fail(`the ${name} vector's k_store does not reconstruct: computed ${hex(kStore)}, published ${v.derived.k_store}.`);
+    fail(
+      `the ${name} vector's k_store does not reconstruct: computed ${hex(kStore)}, published ${v.derived.k_store}.`,
+    );
   }
 
   // The AAD, from the published fields in the published order.
@@ -268,7 +321,9 @@ const reconstruct = async (name) => {
       ),
     );
     if (hex(got) !== inputs.plaintext) {
-      fail(`the ${name} vector's ciphertext does not open to its published plaintext under the recomputed key.`);
+      fail(
+        `the ${name} vector's ciphertext does not open to its published plaintext under the recomputed key.`,
+      );
     }
   } catch {
     fail(`the ${name} vector's ciphertext does not authenticate under the recomputed key and AAD.`);
@@ -280,19 +335,25 @@ const base = await reconstruct('update-record');
 const sibling = await reconstruct('second-store');
 if (base !== null && sibling !== null) {
   if (base.store === sibling.store) {
-    fail('the update-record and second-store vectors publish one store id — the sibling case no longer exercises the store term.');
+    fail(
+      'the update-record and second-store vectors publish one store id — the sibling case no longer exercises the store term.',
+    );
   }
   // Falsifier 14's readback tooth: two stores holding one K_g never derive
   // one K_store.
   if (base.kStore === sibling.kStore) {
-    fail('two stores holding one K_g derive one K_store — the store term has left the derivation (P-3 falsifier 14).');
+    fail(
+      'two stores holding one K_g derive one K_store — the store term has left the derivation (P-3 falsifier 14).',
+    );
   }
 }
 
 // The published negatives that guard the store binding, in both carriers.
 for (const name of ['wrong-store-subkey', 'record-aad-only-store']) {
   if (!vector.must_fail.some((n) => n.name === name)) {
-    fail(`test/vectors/record-format.json no longer publishes the ${name} negative — the store binding is untested in one of its two carriers.`);
+    fail(
+      `test/vectors/record-format.json no longer publishes the ${name} negative — the store binding is untested in one of its two carriers.`,
+    );
   }
 }
 
@@ -310,5 +371,5 @@ console.log(
 );
 console.log(
   '  Scope: byte rules over the named homes and two vector reconstructions — never construction soundness ' +
-    '(the negatives and vectors:coverage own that) and never implementation (the authority map’s status lines own that).',
+    'and never implementation. Vectors cover declared cases; production obligations remain in storage-conformance.md.',
 );

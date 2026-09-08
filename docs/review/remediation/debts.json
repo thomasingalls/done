@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "note": "The RC-9A debt manifest (ratified 2026-08-28, consolidated at the S0-8 regeneration). Every property Stage 0 defers to a later gate is exactly one entry here; a gate consults this file and blocks while its debt is unpaid, expired or input-changed; an entry leaves only by a payment record or a recorded waiver; what-blocks-what is computed from these entries on demand (pnpm debts), never transcribed beside them. Read back by scripts/check-debts.mjs (pnpm debts:check, in pnpm check) and consumed by scripts/check-traceability.mjs for its owed rows. Inputs are pinned by hash12 of the file, or of the named section under the authority-map slicing rule; a changed input fails the check until the entry is re-read and re-pinned or amended.",
+  "note": "The RC-9A debt manifest (ratified 2026-08-28, consolidated at the S0-8 regeneration). Every property Stage 0 defers to a later gate is exactly one entry here; a gate consults this file and blocks while its debt is unpaid, expired or input-changed; an entry leaves only by a payment record or a recorded waiver; what-blocks-what is computed from these entries on demand (pnpm debts), never transcribed beside them. Read back by scripts/check-debts.mjs (pnpm debts:check, in pnpm check) and consumed by scripts/check-traceability.mjs for its owed rows. Inputs are pinned by hash12 of the file, or of the named section under the authority-map slicing rule; a changed input fails the check until the entry is re-read and re-pinned or amended. The 2026-09-08 storage amendment adds three unpaid production-conformance obligations; earlier repaired finding statuses and primitive receipts do not pay them.",
   "debts": [
     {
       "id": "x25519-dated-readback",
@@ -29,8 +29,16 @@
         "note": "Every success-path row passes on all four engines. Firefox 154's deriveBits reads pass 12/19: the six small-order all-zero rejection subtests and the non-multiple-of-8 length subtest miss while every positive derivation (pkcs8/spki import, deriveBits at length 256) passes — recorded in the table's dagger note, with the consequence that the Stage-4 DHKEM layer carries its own RFC 9180 all-zero abort on every engine."
       },
       "inputs": [
-        { "path": "docs/review/findings/f-bd87655-x25519-support-floor-omitted.md", "section": null, "hash": "bbcbedf69e94" },
-        { "path": "docs/TRD.md", "section": "10.11", "hash": "2e79beca1a79" }
+        {
+          "path": "docs/review/findings/f-bd87655-x25519-support-floor-omitted.md",
+          "section": null,
+          "hash": "bbcbedf69e94"
+        },
+        {
+          "path": "docs/TRD.md",
+          "section": "10.11",
+          "hash": "2e79beca1a79"
+        }
       ]
     },
     {
@@ -50,7 +58,11 @@
       "registered": "2026-08-29",
       "status": "open",
       "inputs": [
-        { "path": "docs/review/findings/f-9860a0b-legacy-plaintext-repair-undefined.md", "section": null, "hash": "bc2ce5c20297" }
+        {
+          "path": "docs/review/findings/f-9860a0b-legacy-plaintext-repair-undefined.md",
+          "section": null,
+          "hash": "bc2ce5c20297"
+        }
       ]
     },
     {
@@ -70,7 +82,11 @@
       "registered": "2026-08-29",
       "status": "open",
       "inputs": [
-        { "path": "docs/review/findings/f-bd87655-baseline-not-performance-floor.md", "section": null, "hash": "462fa59983f7" }
+        {
+          "path": "docs/review/findings/f-bd87655-baseline-not-performance-floor.md",
+          "section": null,
+          "hash": "462fa59983f7"
+        }
       ]
     },
     {
@@ -90,7 +106,11 @@
       "registered": "2026-08-29",
       "status": "open",
       "inputs": [
-        { "path": "docs/review/findings/f-9b49b74-rustcrypto-audit-version-gap.md", "section": null, "hash": "cd1cbead7a19" }
+        {
+          "path": "docs/review/findings/f-9b49b74-rustcrypto-audit-version-gap.md",
+          "section": null,
+          "hash": "cd1cbead7a19"
+        }
       ]
     },
     {
@@ -110,7 +130,11 @@
       "registered": "2026-08-29",
       "status": "open",
       "inputs": [
-        { "path": "docs/review/findings/f-9b49b74-wasm-source-artifact-drift-unchecked.md", "section": null, "hash": "2a0339152c47" }
+        {
+          "path": "docs/review/findings/f-9b49b74-wasm-source-artifact-drift-unchecked.md",
+          "section": null,
+          "hash": "2a0339152c47"
+        }
       ]
     },
     {
@@ -130,7 +154,140 @@
       "registered": "2026-08-29",
       "status": "open",
       "inputs": [
-        { "path": "docs/review/findings/f-66a7c6a-journal-benchmark-overwrites-one-slot.md", "section": null, "hash": "b186d4f3b443" }
+        {
+          "path": "docs/review/findings/f-66a7c6a-journal-benchmark-overwrites-one-slot.md",
+          "section": null,
+          "hash": "b186d4f3b443"
+        }
+      ]
+    },
+    {
+      "id": "storage-contract-adapter-conformance",
+      "finding": "f-9b49b74-journal-seal-64k-gap",
+      "property": "SC-01–09 storage/admission/startup/clear/custody behavior through actual production paths; applicable C01–C16 cases include ordered refusal, causal offline recovery, exact trim, partial genesis, interrupted clear, factor genesis and seal reservation accounting.",
+      "owner": "the L-1 shared production-adapter harness",
+      "gate": "L-1",
+      "artifact": "Executed shared adapter and browser schedules on pinned candidate revisions, including seeded failures and guard-removal mutants; inspect canonical UI/export/transport and replay durable bytes offline after valid unlock.",
+      "falsifier": "Any acknowledged semantic loss, pending-input leak, deletion outside authenticated coverage, partial-state remint, missing opener, promptless genesis or uncounted seal retry fails; a mutant that reproduces the losing schedule must be detected.",
+      "payment": {
+        "kind": "executed-production-conformance",
+        "requires": [
+          "revision",
+          "executed_path",
+          "fault_schedules",
+          "assertions",
+          "mutants",
+          "evidence_class",
+          "artifact",
+          "date"
+        ],
+        "refuses": ["design-prose", "model-only", "component-vectors", "byte-rule-check"]
+      },
+      "expiry": "2027-08-31",
+      "registered": "2026-09-08",
+      "status": "open",
+      "inputs": [
+        {
+          "path": "docs/storage-contract.md",
+          "section": null,
+          "hash": "439b820e3258"
+        },
+        {
+          "path": "docs/storage-conformance.md",
+          "section": null,
+          "hash": "21f65e10f0ab"
+        },
+        {
+          "path": "docs/review/findings/f-9b49b74-journal-seal-64k-gap.md",
+          "section": null,
+          "hash": "5849dcf23c14"
+        }
+      ]
+    },
+    {
+      "id": "generation-lifetime-conformance",
+      "finding": "f-4259822-generation-switch-local-durability-undefined",
+      "property": "C04–06/C14 compose writer permits, WAL generations, cached capabilities, complete opener references, receiver replacement and every interrupted transition phase; service outcome, local observation and local activation remain distinct.",
+      "owner": "the integrated generation and custody lifecycle coordinator",
+      "gate": "L-3",
+      "artifact": "Executed adapter/browser transition matrix with real freeze/resume, page/process death, concurrent writers/rotations and full carrier inventories; recovery reacquires exclusion and refreshes the census.",
+      "falsifier": "A cached writer creates an unreadable acknowledged WAL entry, a stale pre-crash census retires a needed opener, or an unknown reference is ignored; omission of each guard must reproduce a detected failure.",
+      "payment": {
+        "kind": "executed-production-conformance",
+        "requires": [
+          "revision",
+          "executed_path",
+          "fault_schedules",
+          "assertions",
+          "mutants",
+          "evidence_class",
+          "artifact",
+          "date"
+        ],
+        "refuses": ["design-prose", "model-only", "component-vectors", "byte-rule-check"]
+      },
+      "expiry": "2027-08-31",
+      "registered": "2026-09-08",
+      "status": "open",
+      "inputs": [
+        {
+          "path": "docs/storage-contract.md",
+          "section": null,
+          "hash": "439b820e3258"
+        },
+        {
+          "path": "docs/storage-conformance.md",
+          "section": null,
+          "hash": "21f65e10f0ab"
+        },
+        {
+          "path": "docs/review/findings/f-4259822-generation-switch-local-durability-undefined.md",
+          "section": null,
+          "hash": "dcfd804c1ebf"
+        }
+      ]
+    },
+    {
+      "id": "factor-profile-conformance",
+      "finding": "f-f5def83-device-lock-reader-key-bypass",
+      "property": "C12–14 mandatory-factor Local/Account genesis, offline unlock and complete copied-profile protection under the declared browser/authenticator population; inventory all current/future receiving and indirect custody paths.",
+      "owner": "the supported-platform custody and profile review track",
+      "gate": "L-4",
+      "artifact": "Executed full-profile negative tests, valid-factor controls and planted promptless-opener control on the declared population, plus interrupted legacy replacement and remote-observation cases.",
+      "falsifier": "Any copied supported profile opens retained content or receives successor keys without the external factor, any valid-factor control fails, or protection completes before receiver/local activation obligations; plaintext scans alone are insufficient.",
+      "payment": {
+        "kind": "executed-production-conformance",
+        "requires": [
+          "revision",
+          "executed_path",
+          "fault_schedules",
+          "assertions",
+          "mutants",
+          "evidence_class",
+          "artifact",
+          "date"
+        ],
+        "refuses": ["design-prose", "model-only", "component-vectors", "byte-rule-check"]
+      },
+      "expiry": "2027-08-31",
+      "registered": "2026-09-08",
+      "status": "open",
+      "inputs": [
+        {
+          "path": "docs/storage-contract.md",
+          "section": null,
+          "hash": "439b820e3258"
+        },
+        {
+          "path": "docs/storage-conformance.md",
+          "section": null,
+          "hash": "21f65e10f0ab"
+        },
+        {
+          "path": "docs/review/findings/f-f5def83-device-lock-reader-key-bypass.md",
+          "section": null,
+          "hash": "dffd169972d1"
+        }
       ]
     }
   ]

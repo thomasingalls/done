@@ -42,66 +42,41 @@ that is no longer active.
 
 ---
 
-## Active slice: Stage 1 — the encrypted local store and legacy cutover (`L-1`)
+## Active slice: Stage 1 — corrected encrypted-store acceptance (`L-1`)
 
 ```yaml
 gate: L-1
-seat: /Users/thomasingalls/Code/done # the primary checkout
-branch: claude/l1-contract-pass
-status: in flight # contract pass, store handles and the slot index landed; the key store is next
-plan: [sequencing.md §3.2, action-tree.md L-1]
-prerequisites: S0-10 (closed 2026-08-29), with S0-3 selected
-debts: 1 # node scripts/check-debts.mjs --gate L-1 blocks on legacy-plaintext-cutover
-updated: 2026-08-29
+seat: /Users/thomasingalls/.codex/worktrees/c030/done
+branch: codex/encrypted-store-contract-corrections
+status: in flight # Step 2 contract consolidation complete; shared production harness is next
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md]
+prerequisites: corrected SC-01–09; historical S0-10 closure covers its represented cases only
+debts: consult docs/review/remediation/debts.json # no prose/model-only payment
+updated: 2026-09-08
 ```
 
-**Stage 0 closed 2026-08-29** on the corrected evidence at the recorded independence bar — author-independent
-seven times, family-independent once, human-independent never. The entry is in
-[completed.md](./completed.md); the bar's one home is
-[`docs/review/remediation/S0-10/README.md`](./review/remediation/S0-10/README.md). Reviews 3a/3b remain
-booked, not results; proceeding on the machine-adversarial bar was an explicit decision, recorded rather
-than waived.
+**Just completed.** Step 2 corrected the PRD/TRD, selected storage/custody schemas and their evidence
+claims, following the user's mandatory-factor choice. Its outcome is recorded in
+[completed.md](./completed.md). [storage-contract.md](./storage-contract.md) owns the detailed boundary;
+[storage-conformance.md](./storage-conformance.md) separates model/component evidence from 16 pending
+production scenarios. No candidate branch has been merged or certified.
 
-**What has landed.** The contract pass (the Stage 2 seam and the kill-matrix rule), the store-handle
-refactor (`DB_NAME` became `StoreHandle`, byte-identical on disk), and TRD §6.5's slot index with its
-store-name derivation. Next is the key store, and items 3-6 land together.
+**Next action.** Build one shared harness that invokes actual candidate open/admit/receive/trim/clear/
+custody paths, with controlled failure boundaries and browser lifecycle tests. Run the listed losing
+schedules and guard-removal mutants before choosing components. Then synthesize deliberately around
+an admission/lifetime coordinator satisfying the corrected contract; do not infer correctness from a
+candidate's own tests. The baseline's store handles and slot index are already present; items 3–6 remain
+the implementation unit in sequencing §3.2.
 
-**What this slice is.** The production encrypted local store — store/key/journal adapters, startup, load,
-trim, clear — and the old-origin plaintext cutover **as machinery**: export, import, active-store selection,
-deletion, restart, as one resumable transaction, with its kill matrix executed against a seeded legacy
-installation. The write-admission machine, the storage scheduler, and the §6.1 boundary tests it must
-satisfy are Stage 0 artifacts, already in the gate.
+**Completion blockers.** `node scripts/check-debts.mjs --gate L-1` requires the seeded legacy cutover
+kill matrix and corrected production storage conformance. L-3 composes all generation/custody reference
+classes with writer lifetimes and interrupted phases; L-4 carries full supported-profile/authenticator
+and platform evidence. New byte/model tests pay none of those obligations.
 
-**The live cutover is not this slice.** Building the state machine and running the one-way move on the
-author's real development data are separate acts, and only the first is `L-1`'s. The second is Stage 2
-([sequencing.md](./sequencing.md) §3.3), which waits on TRD §15 row 21's carrier choice (§5.4) and on review
-3a's answer — 3a gates cutover, not Stage 1 (§5.2). The boundary is stated once, at
-[action-tree.md](./review/remediation/action-tree.md) `L-1`'s scope-boundary bullet.
-
-**It arrives against one registered debt.** The executed cutover kill matrix, with a residue scan at every
-kill point — `node scripts/check-debts.mjs --gate L-1` names it, and design prose is refused as payment
-(`docs/review/remediation/debts.json`). The entry's terminal-state rule is the finding's own validation
-procedure: each kill's restart reaches a verified pre-cutover state with the legacy carrier preserved, or one
-verified encrypted post-cutover state, and plaintext is absent from every carrier once cutover completes —
-preserved plaintext *before* completion is the allowed recoverable state, not a residue failure. Nothing else
-blocks starting.
-
-**Not in this slice.** The live Stage 2 cutover, above. `L-2`–`L-4` — services, lifecycle execution, and the
-platform/toolchain/external review gates, four more registered debts among them — and `H-1`'s append-only
-historical ledger corrections (`docs/decisions.md`'s stale *eighteen rows are selected* belongs there).
-The X25519 observation in TRD §10.11 expires 2027-02-28; the gate that consumes it refuses it from that day.
-`R3-4` was owed here when this paragraph was written and is not any more — the `L-2` seat paid it into
-`S0-2`'s homes before building its verifier, and named the staleness in its own document rather than reaching
-across the separator to correct this one.
-
-**Running alongside, not blocking.** Review 3a's input pack is written and is
-[`docs/review/3a/README.md`](./review/3a/README.md) — scope, the five constructions, the questions being asked
-rather than told, the runnable evidence, and the independence bar stated as it is. What remains is the
-engagement itself, which is a human's calendar rather than a document: it does not block Stage 1 and it does
-block Stage 2, which is the failure [sequencing.md](./sequencing.md) §7 names for this stage — *Review 3a has
-not been booked because Stage 1 "isn't waiting on it". It is not — Stage 2 is.* One registered debt names
-**review 3a intake** as its owner (`rustcrypto-audit-delta`), so the engagement is also how that debt gets
-paid.
+**Scope.** This branch corrects acceptance for L-1. The independent L-2 seat below retains its own
+record. The author’s real-data cutover remains Stage 2, after the carrier choice and review 3a; this work
+neither executes it nor declares those gates satisfied. Existing Stage 0 records remain dated records,
+not certification of states their models omitted.
 
 ---
 

@@ -1,5 +1,9 @@
 # Selection — TRD §15 row 3: the encrypted record and local key-envelope formats
 
+**Storage contract corrected 2026-09-08:** [SC-05/06/08/09](../storage-contract.md) selects exact
+authenticated trim, repair-required open, mandatory factor custody and the unrewound/unbranched nonce
+history assumption. Record/KeyEnvelope cryptographic bytes are unchanged; production conformance is pending.
+
 **Status:** selected, and folded into the TRD. **Date:** 2026-08-18
 **Closes:** TRD §15 row 3 · **Scope of:** review 3a (storage and journal)
 **Constrained by:** TRD §6.1, §6.5, §13.2, §13.3, §13.7 · PRD §6.7 · **Stage:** [sequencing.md](../sequencing.md) §3.2
@@ -59,7 +63,7 @@ Content record  (IndexedDB, structured clone)
 Local key envelope  (the key store, structured clone)
 
   KeyEnvelope = { v: 1, gen, nonce: Uint8Array(12), ct: Uint8Array }
-                ct = AES-256-GCM(L_local; plaintext = K_g, 32 bytes)
+                ct = AES-256-GCM(L_lock; plaintext = K_g, 32 bytes) // L_local only in legacy fixtures
 
   AAD     = LP("done/keyenv/v1") || LP(principal_id) || LP(workspace_id)
             || LP(dec v) || LP(dec gen) || LP(purpose)      // purpose = "content-key"
@@ -104,10 +108,10 @@ editable JavaScript properties to anyone who can reach the profile, and the load
 | `v`    | Selects the suite (row 1)                    | Point a record at a different suite — the downgrade surface row 1 §4 exists to remove     |
 | `gen`  | Selects which `K_g` to derive from           | Claim a generation the record was not sealed under                                        |
 | `seq`  | Orders the trim                              | Renumber a record so trim keeps or drops the wrong one                                    |
-| `kind` | Decides whether a record supersedes the rest | **Promote an ordinary update to a `state` record, which supersedes everything before it** |
+| `kind` | Decides whether a record supersedes the rest | **Mislabel an ordinary update as replacement state; authentication must reject it, and kind alone proves no deletion coverage** |
 
 **`kind` is the sharp one and it is worth being explicit about.** A `state` record is the collapsed whole
-document; the trim deletes everything it supersedes. So a `kind` an attacker can edit is not an integrity
+document; trim separately proves exact authenticated record coverage before deletion. So a `kind` an attacker can edit is not an integrity
 nuisance, it is a way to make the store delete its own history using the store's own maintenance path. One
 byte of AAD closes it.
 
@@ -206,7 +210,7 @@ workspace generation, so its subkeys are workspace-scoped by construction* — a
 narrower *would claim a scope the key does not have*. The budget decides, not the parent key: §3's bound is
 enforced by one `SeqCounter` per store, so the key that bound protects must be per store, and the `store_id`
 minted beside the counter is exactly the identity that makes them one-to-one. It exists at creation for every
-store — the anonymous Local workspace included — and no two counters ever share it, which is the floor the
+store — the anonymous Local workspace included — within an unrewound, unbranched history (SC-09), which is the floor the
 ratifier fixed. The principal still appears in the AAD but **not** in the derivation: the *record* lives in a
 store keyed by _(principal, workspace)_ per §6.5, and that is what its AAD should say, while the store's own
 identity now travels in both — so a record that lands in the wrong store fails **at the key as well as the
@@ -221,32 +225,31 @@ follows measurement in Stage 3 and gates neither this review nor cutover.
 
 ## 5. The local key envelope
 
-`L_local` is a structured-cloned non-extractable `CryptoKey` and `K_g` persists **only** as bytes sealed under
-it (§13.3). The envelope is that sealing, and the key store holds one per generation the device still needs —
-§6.1's local retention question, which §13.7 warns must not be conflated with the attribution floor.
+Current `K_g` envelopes persist as bytes sealed under factor-protected `L_lock` (§13.3), scoped to the
+principal/workspace custody entry. `L_local` is the legacy opener. The key store retains each generation
+needed by SC-04's reference census; this is independent of the attribution floor.
 
-**The device key's invocation count rides the generation counter, and that is its budget's state** (`P-3`
-falsifier 16, `S0-3`). A device key seals one envelope per (generation, purpose): `L_local` gains one seal per
-rotation it witnesses, and a custody transition mints a **fresh** `L_lock` and reseals only the bounded
-retained set in one transaction (§13.3), so no lock key accumulates re-seals across transitions. Each seal's
-`gen` is durable, monotonic and already in the envelope, so the invocations of any one device key are counted
-by the generations it has held — reaching §3's 2^32 bound would take 2^32 generation advances, each itself a
-durable, counted `GenerationApply` — where the content path's keystroke-rate invocations needed a reservation
-counter of their own. The key is per device profile by construction (never derived, never shared), so the
-counter and the key are one-to-one here without any added identity.
+**One envelope per (generation, purpose) is a logical row constraint, not an invocation counter.** The
+former generation-only argument omitted abandoned attempts, retries and the sum across purposes. Current
+v2 custody metadata records a durable `seal_reserved` count per custody root. Reserve before every
+AES-GCM invocation under that root, including abandoned attempts and every purpose; rotate the custody
+root or refuse before the 2^32nd reservation. Never reconstruct this count from surviving envelopes.
+A resumable migration preserves the staged root's count; retrying cannot reset it. Fresh-root installation
+and retained-envelope coverage obey SC-03/04. These metadata semantics do not change envelope bytes.
 
-**`purpose` is bound, for row 2's reason rather than a new one.** `L_local` is a _device_ key, not a workspace
-key, so every future locally sealed secret shares it — §13.4's device signing and wrapping credentials, on the
-tier that seals rather than storing a non-extractable handle. Without `purpose`, those envelopes are
-structurally identical to this one and can be substituted for it. Fifteen bytes removes the class instead of
-making it unlikely, which is the trade row 2 made for `journal_storage_key` and the same answer applies.
+**`purpose` is bound, for row 2's reason.** Content-key and operational-credential seals preserve their
+selected principal/workspace scope and distinct purpose. Without that field, otherwise identical
+structures could be substituted. Mandatory factor custody includes receiving credentials (SC-08).
 
-**What this row does not decide is what opens the envelope.** On the default tier that is `L_local`; with the
-optional device lock, §13.3 replaces the promptless handle with a factor-gated one and **no default handle
-capable of opening these envelopes remains**. Which factor, how it derives, and what enrollment migration
-looks like is **row 13** — not started, and in review 3a's scope. The format above is deliberately indifferent
-to that choice: the envelope's AAD binds where and what, never how the opening key was obtained, so row 13 can
-be answered without reopening row 3.
+**Row 13 selects mandatory factor custody.** `L_lock` opens current envelopes; `L_local` is legacy
+migration input only. Seal bytes/AAD remain independent of how the opening key was obtained, but a new
+persistent store cannot choose promptless custody. SC-08 includes every future receiving credential and
+forbids a persisted fallback opener. The seal vectors do not certify the complete profile inventory.
+
+**Nonce accounting assumes unrewound, unbranched histories** (SC-09), for content keys and custody-key
+seal budgets alike. Raw profile copies/restores duplicate keys and counters. Supported writable import
+mints a fresh independent store id/key scope and reservation history; raw writable profile restoration
+is outside the guarantee and cannot be assumed reliably detectable.
 
 ---
 
@@ -298,7 +301,9 @@ regardless, and shipping a plaintext reader to migrate it would defeat the point
 with `persist: false` and will keep passing whatever the encrypted store does — [sequencing.md](../sequencing.md)
 §3.2 already flags this as Stage 1's characteristic failure. And an unreadable record must be **left in place
 and reported**, never dropped by the load path, inheriting row 2's rule for the journal; a load path that
-discards what it cannot authenticate turns a key problem into data loss.
+discards what it cannot authenticate turns a key problem into data loss. SC-05 selects typed
+repair-required refusal of normal open and whole-trim refusal, retaining all input carriers and needed
+openers. SC-06 distinguishes fresh, resumable and damaged state; SC-07 includes the journal in clear.
 
 **Not in this row.** The network envelope's wire format is row 4 and review 3b. The device-lock derivation is
 row 13. Whether a persistent search index exists is row 18. The cutover's attribution carrier is row 21 and
@@ -337,5 +342,5 @@ asserted and fails if that set differs from the published list in either directi
 
 **Two things are inputs here that are not inputs in production**, and the file says so in its own text so a
 reader who arrives at the JSON without this document cannot confuse them: nonces are fixed, because a vector
-has to fix one to be a vector; and `L_local` is raw bytes, because a vector needs bytes, where production
+has to fix one to be a vector; and `L_local` is raw bytes, because a vector needs bytes, where legacy production
 holds a non-extractable `CryptoKey` with no extractable representation at all.

@@ -1463,3 +1463,51 @@ the register as an open row.
 Stage 4 will get wrong first. The residual §5 names is unchanged and accepted: a party holding a device _and_ the
 account credential can replace the recovery envelope and destroy the owner's recovery path — an availability loss,
 strictly less than deleting the account outright, surfaced at the explicit confirmation rather than prevented.
+
+
+---
+
+### Encrypted-store contracts corrected before implementation synthesis
+
+**Date:** 2026-09-08 · **Base:** `af8941e` · **Branch:** `codex/encrypted-store-contract-corrections`
+
+The three implementations inherited contradictory or incomplete prose. The spec assessment and bounded
+counterexamples showed why an IndexedDB fence cannot exclude a stale localStorage writer, unique sequence
+numbers cannot prove snapshot coverage, and a journalled local Yjs edit may require an unpersisted remote
+predecessor. An empty Yjs replica does not erase a populated peer by ordinary synchronization. Treat the
+old closure/model claims as evidence of represented cases, not authority for these omitted states.
+
+**Product decision.** The user selected factor unlock for protection against copied profiles. Require the
+generated 125-bit code at persistent Local and Account genesis and cold start; PRF adds a seal. Narrow the
+claim to supported copied profiles without the external factor, after complete custody/receiver protection.
+Non-extractability alone is not filesystem confidentiality. Existing copies retain history; migration and
+remote observation can leave forward protection pending. No ordinary disable-lock downgrade remains.
+
+**Selected storage rules.** SC-01–09 in [storage-contract.md](./storage-contract.md) now own the detailed
+boundary: shared writer-lifetime permits and exclusive slot transitions; journal-inclusive fresh retirement
+census after every restart; remote/cross-tab commit before canonical promotion; ordered private pending
+input; exact authenticated trim; repair-required refusal of unreadable persisted state; classified partial
+genesis; resumable authorized clear; mandatory factors and qualified nonce accounting/restore. A frozen
+writer may delay transitions indefinitely. No timeout or stale census supplies safety. Pressured local
+input becomes ordinary document content only when durable; IME preedit remains provisional native input.
+
+**Metadata and bytes.** Custody lifecycle metadata becomes v2 (`creating | migrating | protected`), with
+verified durable intent and per-root seal reservations. Factor authority remains principal/workspace-scoped
+inside the local user slot; the coordination permit is wider than that key authority. Record, journal,
+LockSeal and transition cryptographic encodings are unchanged. The older generation-only custody budget
+counted stored rows but omitted encryption retries and multiple purposes; reserve every custody-root seal
+before encryption instead. All random-nonce counter claims assume unrewound, unbranched histories.
+Supported writable restore uses verified import with a fresh store/key scope, never a restored counter.
+
+**Five ambiguity dispositions.** Partial genesis resumes a verified intent or refuses; unreadable load
+refuses ordinary open; unreadable trim refuses the whole trim; pending input stays private until durable;
+clear includes the journal and preserves recovery material when content deletion fails. A durable clear
+intent and terminal marker prevent resurrection after interrupted cleanup.
+
+**Evidence and next gate.** [storage-conformance.md](./storage-conformance.md) separates finite models,
+real Yjs components, production adapters and browser evidence. New model/component tests expose the losing
+schedules; all production obligations remain pending. Register adapter conformance at L-1, complete
+writer/generation lifetime at L-3, and supported factor/profile evidence at L-4. A prose check or primitive
+vector cannot pay these debts. Next build one shared harness against each candidate's actual paths, then
+synthesize deliberately around a rebuilt coordinator. This decision does not select a whole branch as
+correct, recertify the full protocol, or authorize the live Stage 2 cutover.

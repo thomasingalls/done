@@ -1,5 +1,11 @@
 # The authority-derivation map
 
+**2026-09-08 pin review:** the changed custody, storage and local-activation sections were reread
+against SC-01–09. Factor roots retain their existing principal/workspace authority. `resolved` below
+means the specified derivation/predicate has a home; it does not claim production conformance. Custody
+seal counting now includes retries/purposes and all counter arguments exclude raw rollback/clones.
+The [conformance matrix](../../../storage-conformance.md) records the remaining implementation evidence.
+
 **Standing:** home — read back by [`check-authority-map.mjs`](../../../../scripts/check-authority-map.mjs)
 (`pnpm authority:check`, in `pnpm check`) · **Built:** 2026-08-28, queue item 3(a) · **Anchored at:** `S0-2`
 Stage A/B, because that is where the authority carriers live; its entries span every stage's joints
@@ -89,7 +95,7 @@ verifies: any member credential's Ed25519 signature an acceptance step consumes
 resolves: the named signer's member entry (credential_id ‖ W_pub ‖ S_pub) in the parent certified set -> each parent's own approval -> the genesis set under the creating credential -> root:trust-root
 resolves: a bootstrap-minted replacement set -> via:bootstrap-signer
 status: resolved
-pin: docs/TRD.md §13.2 acf87ae3c063
+pin: docs/TRD.md §13.2 e20172edb4ea
 pin: docs/TRD.md §13.5 bfd84b3cbdd8
 pin: docs/review/remediation/S0-2/A-schemas.md §1 4863e06ab791
 ```
@@ -229,7 +235,7 @@ verifies: a relay admission token opening a scoped transport connection
 resolves: the service's token issuance -> root:service
 bound: §13.2 — a bounded transport scope that may not decrypt, sign content, admit a device, change capabilities or recover an account
 status: resolved
-pin: docs/TRD.md §13.2 acf87ae3c063
+pin: docs/TRD.md §13.2 e20172edb4ea
 ```
 
 ## 3. Content authenticity and attribution
@@ -288,7 +294,7 @@ verifies: R — the standing claim minted by the writing credential at card crea
 resolves: content_commitment recomputed from the card's own bytes -> root:structural
 resolves: sig by the writing credential -> via:member-signing-keys
 status: resolved
-pin: docs/TRD.md §13.7 21e1e907518f
+pin: docs/TRD.md §13.7 90571d7b3fd0
 ```
 
 ```authority
@@ -319,7 +325,7 @@ entry: recovery-replace-stepup
 kind: predicate
 guards: custody
 verifies: the three gates on replace-recovery
-resolves: content access proven by use — rewrapping opens every retained generation, and the device lock is implied where the slot has one -> root:factor
+resolves: content access proven by use — rewrapping opens every retained generation, and the required local factor opens the scoped custody entry -> root:factor
 resolves: an account-credential assertion over the nonce-bound, single-use challenge -> via:account-credential
 status: resolved
 pin: docs/TRD.md §13.8 ef268347caad
@@ -470,17 +476,17 @@ guards: availability
 verifies: the WebAuthn account credential and the local slot verifier
 resolves: an assertion from the platform authenticator, same-origin only, Ed25519 or ES256 -> root:factor
 status: resolved
-pin: docs/TRD.md §13.9 14e4bc0a9f2a
+pin: docs/TRD.md §13.9 8d9ba621b3e6
 ```
 
 ```authority
 entry: device-lock-custody
 kind: predicate
 guards: custody
-verifies: opening a locked slot's key envelopes
+verifies: opening every persistent scoped custody entry from genesis and cold start
 resolves: L_lock sealed under the enrolled factors, the 125-bit code always among them, role and slot bound inside the PRF input -> root:factor
 status: resolved
-pin: docs/TRD.md §13.3 1b1aa14f8855
+pin: docs/TRD.md §13.3 edf42ef40738
 ```
 
 ## 5. The AEAD keys — `P-3` falsifier 16's census, seeded
@@ -497,16 +503,17 @@ entry: k-store
 kind: aead
 guards: content
 verifies: the store subkey sealing every StoredRecord
-counted-by: SeqCounter.reserved[gen] — one key per counter: the derivation binds the store_id minted beside the counter (row 3 §§3–4), and the store rotates before the 2^32nd reservation, equality first disallowed
+counted-by: SeqCounter.reserved[gen] — one key per counter: the derivation binds the store_id minted beside the counter (row 3 §§3–4), and the store rotates before the 2^32nd reservation, equality first disallowed; conditional on an unrewound, unbranched history (SC-09), not raw profile clones
 status: resolved
-pin: docs/TRD.md §6.1 2c287c8d6762
-pin: docs/selections/row-3-record-format.md 014a9bce62f3
+pin: docs/TRD.md §6.1 b51be4528331
+pin: docs/selections/row-3-record-format.md dcefb99d3368
 ```
 
 The scope was round 1's *one live construction defect* — every store holding `K_g` derived the identical
 subkey while each `SeqCounter` saw only its own share — and it flipped at the `S0-3` return (2026-08-28,
 `P-3` falsifiers 14–16): the `info` binds the store identity, so `reserved[gen]` counts every invocation of
-the key it bounds and the sum over devices is a sum over distinct keys. The two-store reproduction in
+the key it bounds and the sum over independently created devices is a sum over distinct keys.
+That argument excludes raw clones and rollback, which duplicate the store identity and counter (SC-09). The two-store reproduction in
 `test/storageSchedule.test.ts` is inverted with its schedule kept, `wrong-store-subkey` is the published
 negative, and `pnpm admission:check` reads the homes.
 
@@ -517,7 +524,7 @@ guards: content
 verifies: the synchronous journal subkey
 discipline: 24 fresh random bytes per entry — XChaCha20-Poly1305's nonce space needs no invocation budget (row 2)
 status: resolved
-pin: docs/selections/row-2-journal-aead.md 9140d2c7f86e
+pin: docs/selections/row-2-journal-aead.md f41b7842cee3
 ```
 
 ```authority
@@ -547,11 +554,11 @@ pin: docs/review/remediation/S0-6/A-schemas.md §2 faa19f8bc380
 entry: k-key-envelopes
 kind: aead
 guards: custody
-verifies: the local key envelopes — K_g, and §13.4's sealed credentials, under L_local or L_lock
-counted-by: the generation counter — one envelope per (generation, purpose) per device key (row 3 §5), and a custody transition mints a fresh L_lock over the bounded retained set in one transaction (§13.3), so a key's seals ride the monotonic gen and 2^32 of them would need 2^32 generation advances, each a durable counted GenerationApply
+verifies: the local key envelopes — K_g and §13.4's sealed credentials under scoped factor-protected L_lock; L_local is legacy migration input
+counted-by: v2 custody root seal_reserved — reserve before every invocation, across purposes and abandoned retries; rotate the root or refuse before the 2^32nd reservation (row 3 §5, SC-09). One envelope per (generation, purpose) is only logical uniqueness. Resume the same staged root with its counter; unrewound/unbranched history is required
 status: resolved
-pin: docs/selections/row-3-record-format.md 014a9bce62f3
-pin: docs/TRD.md §13.3 1b1aa14f8855
+pin: docs/selections/row-3-record-format.md dcefb99d3368
+pin: docs/TRD.md §13.3 edf42ef40738
 ```
 
 ```authority
@@ -561,7 +568,7 @@ guards: content
 verifies: the deferred search-index subkey — the label done/index/v1, reserved and unselected
 discipline: no invocation exists to count — no construction is selected (row 3 §4; row 18 stays at its own gate per P-7), and the selection that creates an index write path owes this entry its counter or discipline before it ships
 status: resolved
-pin: docs/TRD.md §13.2 acf87ae3c063
+pin: docs/TRD.md §13.2 e20172edb4ea
 ```
 
 ```authority

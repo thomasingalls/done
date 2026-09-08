@@ -1,5 +1,11 @@
 # `S0-2` — recipient authority and the complete generation/custody transition
 
+**2026-09-08 correction:** [storage-contract.md](../../../storage-contract.md) and
+[storage-conformance.md](../../../storage-conformance.md) supersede the old journal-fence,
+range-trim, redelivery and optional-custody assumptions. Existing closure evidence is limited to its
+represented cases. New production conformance is registered as unpaid debt; this amendment does not
+recertify Stage 0 or change historical finding dispositions.
+
 **Standing:** home — the findings table below is an ownership source of the traceability population; read
 back by `pnpm trace:check`.
 

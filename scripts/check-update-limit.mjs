@@ -23,7 +23,7 @@
  * slicing that keeps ordinary operations under the limit; that is
  * `test/writeAdmission.test.ts`.
  *
- * falsifies: f-9b49b74-journal-seal-64k-gap
+ * falsifies: f-9b49b74-journal-seal-64k-gap -> L-1
  */
 
 import { readFileSync } from 'node:fs';

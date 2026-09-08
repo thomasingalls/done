@@ -1,5 +1,9 @@
 # `S0-2` Stage A — durable record schemas
 
+**Storage boundary correction 2026-09-08:** [SC-03/04/06/08](../../../storage-contract.md) is consolidated
+in §§4–6 below. Earlier Stage 0 executions retain their narrow represented scope; C04–C06/C10–C14 in
+the [conformance matrix](../../../storage-conformance.md) are still owed through production adapters.
+
 **Standing:** home — sections here are pinned and swept by the authority map; read back by
 `pnpm authority:check`.
 
@@ -195,50 +199,45 @@ avoid one is the explicit `none-lost-not-copied` value — which the product may
 that state and can establish it. An unbound choice is what let the exposed-code promise be claimed without being
 kept.
 
-## 4. `GenerationApply` — `RC-2` core
+## 4. `GenerationApply` — `RC-2` core, corrected local lifetime
 
-Closes `f-4259822-generation-switch-local-durability-undefined`. Row 15 already names `applying` in its local
-order; nothing makes it durable, so a kill inside it is unrecoverable.
+The resumable apply record binds verified outcome, target generation and completed durable phases.
+Service commitment is not the same event as per-runtime observation or completed local activation.
+An observer immediately stops new acknowledgements. Every normal write-key holder has a shared
+slot-lifetime permit; the applier releases its own shared permit, then acquires exclusive ownership.
 
 ```
 GenerationApply = { v, transition_id, outcome_digest, target_gen,
                     step, staged, settled_at }
 
-  step ∈ ordered:
-    1 outcome-verified      verified outcome persisted, pending payload retained
-    2 opener-installed      K_(g+1) recovered and its successor opener durably installed
-    3 objects-classified    every old-generation object classified: unminted delta,
-                            record batch, exact outbound envelope, accepted mark,
-                            checkpoint/suffix, package, recovery wrap
-    4 work-covered          permissible local deltas covered under g+1; exact possibly
-                            accepted g envelopes retained until authenticated resolution
-    5 marker-advanced       active epoch/generation advanced atomically — and no
-                            new write can select g, by the fence below, so g+1
-                            is reopenable and step 3's classification is
-                            complete the moment step 7 consumes it
-    6 checkpoint-admitted   a semantically verified g+1 checkpoint admitted, local
-                            content trimmed under g+1
-    7 openers-retired       each old opener deleted only where §5 below permits
-    8 settled               the apply record itself discharged, last
+  1 outcome-verified    persist verified outcome and pending payload
+  2 opener-installed    under exclusion, durably install successor opener
+  3 objects-classified  authenticate current journals/batches/outbound/accepted/
+                        checkpoint/suffix/package/wrap/transition references
+  4 work-covered        durably cover permissible work; retain exact possibly
+                        accepted envelopes until authenticated resolution
+  5 marker-advanced     commit local active epoch/generation and related metadata;
+                        no live old writer overlaps, g+1 is reopenable
+  6 checkpoint-admitted semantically verify successor checkpoint and exact local trim;
+                        old openers survive while further gates are pending
+  7 openers-retired     reacquire exclusion and recensus before each retirement pass;
+                        preserve every required opener, including fallback
+  8 settled             discharge completed apply record last
 ```
 
-Each step is idempotent and restart resumes at the recorded step. Steps 1–4 are reversible; **step 5 is the
-commit point**. `P-2`'s device lock and `replace-recovery` use this same machine rather than each inventing one.
+SC-03/04 defines the permit lifetime, callback invalidation, restart and all-reference gates. No lock
+steal, timeout or silence establishes quiescence. A suspended holder can delay activation indefinitely.
+Exclusion may be released while waiting on a network checkpoint; later retirement rebuilds the census.
+After applier death, reacquire and revalidate current carriers before continuing. An old persisted census
+cannot account for writers that ran while exclusion was absent. Multi-database phases carry durable
+progress; a Web Lock does not make them atomic. Once destructive work commits, resume forward.
 
-**The fence, and it is the `S0-2`/`S0-3` interface (`P-3` joint 3, ratified 2026-08-28; `FU-09`).** Step 5's
-"no new write can select g" was a claim both test suites stepped around: a writer holding a granted reservation
-could cross the marker advance and commit a late `g` record after classification closed, into a generation
-whose opener step 7 then retires. The ratified rule makes it construction rather than assertion: **the active
-marker's home shares the record store's database, and a batch's committing transaction reads it under the same
-IndexedDB serialization the allocator leans on — it validates the reservation's generation where the commit
-lands, and aborts into re-reservation under the successor when the marker moved.** The abandoned range stays
-counted against `g` (`P-3` falsifier 8's gap, doing its job). After marker-advance commits, no `g` record can
-commit, so the classification step 7 consumes is complete — the composed model in
-`test/storageSchedule.test.ts` schedules the interleaving and asserts the fence at it, inverted 2026-08-28 from
-the reproduction the dispositions could only describe. `P-3` falsifiers 19–20 finished at the `S0-3` return
-(2026-08-28): the write-admission machine consolidated the fence — `commitReserved` in
-`test/writeAdmission.test.ts` validates the reservation's generation where the commit lands — and the composed
-retirement assertion holds on the reproduction's own schedule.
+**The IndexedDB fence remains:** the committing transaction reads the marker in the content database and
+**validates the reservation's generation where the commit lands**, aborting into re-reservation under
+the successor on mismatch. Abandoned invocations remain counted. This excludes late database commits;
+it does not revoke a cached localStorage journal key. The lifetime barrier closes that independent path.
+`test/storageSchedule.test.ts` and `test/writeAdmission.test.ts` exercise only the older represented
+record-fence schedules. C04–C06 require full production composition, not credit from their green status.
 
 ## 5. `GenerationReferences` and the opener-retirement predicate
 
@@ -266,34 +265,48 @@ mandates falling back to — is still openable. Deleting a local key envelope do
 a retained recovery or reader wrap may still open the generation; (c) is stated over openers rather than over any
 single carrier for that reason.
 
-**And the predicate's view is complete only because of §4's fence** (2026-08-28). Clauses (a)–(c) read what
-exists; a record that commits under `gen` after the references were gathered is outside every clause's view,
-which is `FU-09`'s mechanism. The fence closes the class: no `gen` record can commit after step 5, so
-references gathered at or after the marker advance are the complete population when `retire_opener(gen)` runs.
+**The predicate consumes a fresh census under exclusive ownership** (SC-04). A record fence alone
+cannot make a journal census complete. Journals carry authenticated generation identity; unknown or
+unreadable carriers block retirement rather than disappearing from the reference set. No individual
+journal is removed before matching durable coverage. Every cached write capability must have quiesced
+before the census, and a restart invalidates earlier completeness claims.
 
-## 6. `CustodyRecord`, extended — `P-2`
+## 6. `CustodyRecord` — mandatory factors and legacy migration
 
-Row 13's record gains the replacement wrapping credential. Existing fields unchanged.
+New persistent entries use row 13's v2 lifecycle metadata and existing v1 factor-seal bytes:
 
 ```
-CustodyRecord = { v: 1, state: 'promptless' | 'enrolling' | 'locked',
-                  seals: LockSeal[], rotation_owed: boolean,
+CustodyRecord = { v: 2, state: 'creating' | 'migrating' | 'protected',
+                  principal_id, workspace_id, seals: LockSeal[],
+                  creation_or_migration_intent | absent, seal_reserved, rotation_owed: boolean,
                   wrapping_credential: {
-                    id,
-                    custody: 'promptless' | 'staged' | 'factor-sealed',
-                    sealed: LockSeal-shaped | absent,
-                    predecessor_id | absent
-                  } }
+                    id, custody: 'staged' | 'factor-sealed', sealed,
+                    predecessor_id | absent } }
 ```
 
-At lock enable the replacement is generated as extractable bytes, sealed under `L_lock`, and imported
-non-extractable after unlock — §13.4's existing PRF-tier pattern with `L_lock` as the factor source, rather than a
-new carrier. `predecessor_id` remains until the certified-set successor and the generation winner are both durably
-known, which is `P-2`'s selected cutover.
+Confirm a generated code before completed persistent genesis. Factor authority retains the scoped
+principal/workspace binding; slot-wide coordination does not broaden it. v1 promptless/enrolling
+custody is migration input only. Existing v1 locked custody must also establish complete sealed receiver
+custody before conversion and migrate to a fresh root if seal-reservation history is absent. Never
+infer that count from stored envelopes. Missing/partial material resumes a matching verified intent or refuses normal
+open; it never triggers a promptless fallback or fresh identity over surviving ciphertext (SC-06).
 
-**`rotation_owed` is derived, never asserted.** It is true from step 3 of the custody swap until `GenerationApply`
-reaches step 8, and no UI may claim future-copy protection while it is true. That is `f-dbfd01f`'s repair, and it
-is a Stage E obligation that this field exists to make checkable.
+P-2's receiving-credential replacement applies to legacy promptless material because it cannot be
+exported and resealed. Stage replacement bytes under `L_lock`; import runtime keys non-extractably.
+Preserve predecessors until certified successor/outcome and needed local recovery material are durable.
+`rotation_owed` is derived from incomplete required migration phases. No interface reports copied-profile
+protection complete while they remain. SC-08 defines factor loss, profile-copy scope and historical limits.
+
+`seal_reserved` belongs to the identified custody root and monotonically counts every AES-GCM
+invocation under it, across purposes and abandoned attempts, before encryption (row 3 §5, SC-09).
+A transition intent identifies the staged root and its counter; an interruption never resets that count.
+`protected` requires verified complete genesis/migration and no remaining creation/migration intent;
+otherwise the durable intent identifies the operation and completed phases needed to resume. The
+`rotation_owed` flag is derived from that operation, not evidence that its prerequisites completed.
+
+Fresh factor-protected genesis owes no rotation of a nonexistent promptless predecessor. Factor seals
+and existing record/transition wire encodings are unchanged; lifecycle and production-copy tests remain
+owed separately from the vectors below.
 
 ## Falsifier map
 

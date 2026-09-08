@@ -112,3 +112,29 @@ exactly as a missing one, and review 3b's pass is offered the re-measurement. Fi
 small-order rejection gap is recorded at §10.11's dagger note — the DHKEM layer carries its own all-zero
 abort (`L-2`/`L-3`). `R3-4` (member-entry uniqueness, low) rides `S0-2`'s homes before `L-2` implements a
 verifier.
+
+
+---
+
+### Encrypted-store Step 2 — corrected contracts and conformance plan consolidated
+
+**Date:** 2026-09-08 · **Branch:** `codex/encrypted-store-contract-corrections`, from `af8941e` · **Stage:** L-1 prerequisite, not L-1 closure
+
+**Exit.** The selected corrections now have normative repository homes: [storage-contract.md](./storage-contract.md),
+PRD/TRD, affected selections and schemas, with [storage-conformance.md](./storage-conformance.md) specifying
+16 acceptance scenarios and their evidence classes. The five outstanding ambiguity dispositions are explicit.
+Mandatory factor genesis follows the user's choice. Custody lifecycle/reservation metadata becomes v2 while
+the selected cryptographic bytes remain unchanged. Sequencing, action-tree, authority pins and unpaid debts
+now distinguish the corrected contracts from the older partial Stage 0 evidence.
+
+**Evidence.** Seven new model/component tests exercise writer-lifetime exclusion and its losing mutant,
+Yjs causal dependencies and deletions, exact versus range trim, raw-clone accounting and empty-replica
+synchronization. The full Vitest run passed 498 tests in 42 files; TypeScript passed. All 16 vector
+generators checked current, and AAD coverage checked 205 field isolations. The record/device-lock fixtures
+retain all 119 cryptographic hex values from the baseline. These results concern represented models,
+components and byte fixtures; no production conformance or complete copied-profile protection is claimed.
+
+**Remaining.** The shared production-adapter/browser harness is next. Three new unpaid obligations cover
+storage conformance at L-1, composed writer/generation lifecycle at L-3, and supported factor/profile
+evidence at L-4. Earlier finding dispositions remain historical evidence; this entry does not recertify
+the full protocol, merge candidate implementations, or execute the live Stage 2 cutover.

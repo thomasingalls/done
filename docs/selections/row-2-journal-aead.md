@@ -1,5 +1,9 @@
 # Selection — TRD §15 row 2: the synchronous journal AEAD and its nonce discipline
 
+**Lifetime/failure correction 2026-09-08:** [SC-01–07](../storage-contract.md) governs admission,
+shared writer lifetime, generation-tagged journal references, repair-required open and journal-inclusive
+clear. The seal format is unchanged. A generation fence in IndexedDB does not fence localStorage.
+
 **Status:** selected, and folded into the TRD; measured on hardware on 2026-08-19, which found the budget
 **exceeded at a 4 kB payload** — **and closed the same day by a compiled WASM seal** (§7). **Date:** 2026-08-18
 **Closes:** TRD §15 row 2 · **Scope of:** review 3a (storage and journal)

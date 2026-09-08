@@ -1,5 +1,10 @@
 # Action tree from the pinned state
 
+**2026-09-08 storage amendment:** [storage-contract.md](../../storage-contract.md) corrects the
+`af8941e` boundary; [storage-conformance.md](../../storage-conformance.md) owns current acceptance.
+Prior Stage 0 closure records describe their represented cases, not proof of the newly specified
+lifetime, causal-recovery, custody-genesis or clear rules. The new debts below remain unpaid.
+
 **Standing:** home — the plan; read back by `pnpm remediation:status` (the supersession claim and the
 `S0-9` input list), `pnpm authority:check` and `pnpm trace:check` (gate names, repair owners).
 
@@ -797,7 +802,11 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 
 ### `L-1` — encrypted local store and legacy cutover
 
-- **Prerequisites:** `S0-10`, with `S0-3` selected.
+- **Prerequisites:** `S0-10`, with `S0-3` selected and the 2026-09-08 storage amendment applied.
+- **Current conformance:** SC-01–09 and the applicable C01–C16 adapter/browser cases; use one shared
+  harness against candidate production paths before synthesis. `storage-contract-adapter-conformance`
+  is an additional completion debt. Factor custody is mandatory from genesis. Frozen writer permits
+  may delay transitions indefinitely; a timeout cannot pay the safety requirement.
 - **Exact affected artifacts:** production local store/key/journal adapter; old `1:` journal and `done` database
   cutover; startup/load/trim/clear code; Stage 1 persistence and no-plaintext tests; performance ledger.
 - **Type:** implementation + executable evidence.
@@ -824,7 +833,8 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 - **Type:** implementation + executable evidence.
 - **Safe parallel work:** service idempotency/refusal and local generation application with shared exact schemas.
 - **Acceptance/falsifiers:** TRD §11 protocol suite, all relay refusal/silence/fork scenarios, multi-device enrollment,
-  revocation, recovery replacement, lost outcomes, stale profiles.
+  revocation, recovery replacement, lost outcomes, stale profiles. Include SC-02 receive-before-promotion
+  and SC-03/04: a service outcome, local observation and completed local activation are distinct events.
 - **Downstream invalidated if action changes:** checkpoint/package service behavior and Stage 4 release review.
 - **Rollback/reconsideration:** before enabling hosted sync or accepting production ciphertext.
 - **Consequence of no action:** selected protocol remains specification-time only.
@@ -838,7 +848,9 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 - **Safe parallel work:** clean-device restore/tooling and hosted lifecycle workers after schemas stabilize.
 - **Acceptance/falsifiers:** newest loss, provider disappearance, total loss, Local restore, migration, lapse/expiry,
   executed primary/replica/backup deletion kills, divergent-survivor reseed, local clear with service unreachable,
-  terminal receipt, independent deployment outside provider account.
+  terminal receipt, independent deployment outside provider account. `generation-lifetime-conformance`
+  additionally requires C04–06/C14 with all reference classes, writer permits and interrupted transition
+  phases composed; every restart reacquires exclusion and refreshes the census.
 - **Downstream invalidated if action changes:** Stage 2 archive cutover and Stage 4/5 ship gates.
 - **Rollback/reconsideration:** before destructive deletion or irreversible migration/cutover.
 - **Consequence of no action:** portability/continuity remain design promises, not release evidence.
@@ -857,9 +869,9 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 > source and lockfile hashes stamped into `seal.generated.ts`'s header and compared toolchain-free by
 > `wasm:verify` inside `pnpm check`, while reproducible-rebuild/toolchain/blob attestation stays this gate's
 > registered debt. Twelve falsifiers are in that record, landed at the `S0-8` regeneration (2026-08-29):
-> the manifest is [`debts.json`](./debts.json) — six entries — read back by `pnpm debts:check` in the gate
+> the manifest is [`debts.json`](./debts.json) — originally six entries, extended by the storage amendment — read back by `pnpm debts:check` in the gate
 > and consulted at a gate arrival by `check-debts.mjs --gate <name>`, which blocks while a debt is unpaid,
-> expired or input-changed; this gate arrives against its four registered entries.
+> expired or input-changed; consult the manifest for the current gate population.
 
 - **Prerequisites:** appropriate integrated targets from `L-1`–`L-3`; `RC-9A` governance — ratified
   2026-08-28, the debt manifest in force from `S0-8`.
@@ -870,10 +882,12 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 - **Safe parallel work:** performance, browser, toolchain, ASVS/egress, and external review tracks.
 - **Acceptance/falsifiers:** Baseline never substitutes for hardware; slower supported devices sampled; stale blob
   fails normal CI; exact audit delta scoped; runtime remote channels checked; reviewer responses tied to exact input.
+  `factor-profile-conformance` requires C12–14 over supported profiles/authenticators, complete persisted
+  receiver inventory and positive controls; WebCrypto non-extractability alone is not payment.
 - **Downstream invalidated if action changes:** release approval and any public assurance copy.
 - **Rollback/reconsideration:** fail the release gate and return to the affected implementation/design; waivers are
   explicit, scoped, expiring product/security decisions.
-- **Consequence of no action:** the five later-gate findings remain honest blockers at their assigned stages.
+- **Consequence of no action:** the registered unpaid debts remain blockers at their assigned stages.
 
 ## Historical ledger corrections
 

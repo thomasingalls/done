@@ -185,12 +185,23 @@ The work, in an order chosen so that the riskiest change arrives alone and revie
 2. **The local user slot index.** A device-local store, scoping, and enumeration through the index rather than
    `indexedDB.databases()` — a name guessable from a workspace identifier would let a picker enumerate by
    construction (TRD §6.5).
-3. **The key store.** `L_local` as a structured-cloned non-extractable key; `K_g` sealed under it as bytes;
-   domain-separated subkeys.
-4. **The encrypted content store**, replacing `y-indexeddb`: the load path, the record store, and the trim.
-5. **The encrypted journal** and its synchronous AEAD.
-6. **Start-up order inversion:** keys → journal replay → content records → transport.
+3. **The key store and required factor custody.** Confirm the generated code at persistent genesis; seal
+   scoped `L_lock`, generation keys and future receiving credentials. Classify partial/legacy state and
+   resume verified intents. No promptless genesis; v2 custody metadata retains v1 seal bytes (SC-06/08/09).
+4. **The encrypted content store**, replacing `y-indexeddb`: authenticated load, exact covered-set trim,
+   repair-required refusal and resumable journal-inclusive clear (SC-05/07).
+5. **The encrypted journal and admission coordinator.** Synchronous AEAD under shared writer-lifetime
+   permits, exclusive local transitions, receive commit before promotion and ordered private pending input.
+6. **Owned startup:** classify → acquire permit → establish/unlock custody → journal/content replay
+   → application initialization through admission → editor and transport.
 7. **Import**, outside the freeze, outside the cap, attributed to the system actor.
+
+**Corrected acceptance authority (2026-09-08).** [storage-contract.md](./storage-contract.md) and its
+[conformance matrix](./storage-conformance.md) precede synthesis of the three implementations from
+`af8941e`. First consolidate the contracts; then execute one shared production-adapter harness with the
+listed falsifiers; then select/reuse components and build the missing coordinator. The older Stage 0
+models omit important lifecycle state and do not certify these contracts. Applicable C01–C16 cases and
+the registered storage-conformance debt gate L-1 completion.
 
 **Items 3–6 are one change and should land together.** You cannot ship 4 without 3, and 5 without 6 produces a
 journal nobody can replay.
@@ -204,8 +215,9 @@ does. Two things follow: the encrypted store needs its own tests (TRD §11.1), a
 `harness` in `test/workspace.ts` — hardcode `persist: false` and would each need it threaded. Still cheap,
 and still a change to the harness rather than a flag already waiting to be set.
 
-**Exit:** a profile snapshot after ordinary use yields no recognizable content in any store, at genesis and
-after; two workspaces open on one device with no cross-writes on any path including teardown and error; a
+**Exit:** applicable production cases in the conformance matrix pass; mandatory-factor genesis and
+reopen succeed with a valid factor and refuse without it; profile scans find no recognizable content at
+genesis and after ordinary use (complete supported-platform copied-profile assurance remains L-4); two workspaces open on one device with no cross-writes on any path including teardown and error; a
 ten-day export imports into a clean store with **every** day present; the latency harness shows the budgets
 holding, or shows a number the budget has been consciously revised to.
 

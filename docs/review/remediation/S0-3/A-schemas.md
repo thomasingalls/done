@@ -1,5 +1,9 @@
 # `S0-3` Stage A — durable record schemas
 
+**Storage boundary correction 2026-09-08:** [SC-01–09](../../../storage-contract.md) supplies the
+current recovery, lifetime, trim, genesis, custody and clear rules. The earlier falsifier receipts below
+are partial evidence; new adapter/browser obligations live in [storage-conformance.md](../../../storage-conformance.md).
+
 **Standing:** home — the write-admission machine stated here is composed and scheduled by
 `test/storageSchedule.test.ts`; read back by `pnpm test`.
 
@@ -53,18 +57,17 @@ said large writes need, arrived at without the group-commit machinery.
 **A kill part-way through a sliced operation leaves a prefix**, which is resumable and honest. One
 arbitrary-size update leaves nothing.
 
-## 3. Remote updates leave the journal's contract
+## 3. Remote updates commit before canonical promotion
 
-**The journal exists so a page kill cannot lose _accepted local work_.** A remote update is not local work, and
-§6.1 already protects it by a stronger mechanism: _the content batch commits first and the heads record after
-it_, so a crash before the batch leaves the accepted mark below that position and **sync re-delivers**.
+Remote and cross-tab updates do not use the synchronous journal. Validate into a private receive buffer,
+commit encrypted local content, then promote into the canonical editable document; heads advance after
+content completion. Persist pending update bytes and deletions as well as visible inserts. Local input
+can depend only on recoverable canonical state, so acknowledged local replay is offline after valid
+unlock. Eventual redelivery remains a separate availability behavior, not the recovery precondition.
 
-**This also removes the only case that cannot be sliced.** A peer's large paste, or an initial sync, arrives as
-one update whose size this device does not control and cannot split. It turns out not to need the rule at all.
-
-**The composition to check** is a local update that causally depends on a remote one which was never persisted.
-On reload the journal replays the local update against a document missing its dependency; Yjs holds it pending,
-the remote update is re-delivered, and it integrates. That is a falsifier below, not an assumption.
+State vectors alone cannot prove coverage; a deletion may leave them unchanged. SC-02 owns the receive
+and local promotion gate. C01–C03 require actual editor/transport adapters; an old model that explicitly
+redelivers a dependency is not evidence of this stronger offline case.
 
 ## 4. `SeqCounter` — reserve per batch, exactly
 
@@ -76,7 +79,8 @@ SeqCounter (one record per store instance)
                  counter; cleartext in the store's metadata, bound in the
                  derivation info and the AAD (P-3 joint 1, ratified). It
                  exists at creation for every store -- the anonymous Local
-                 workspace included -- and no two counters ever share it.
+                 workspace included -- within one unrewound, unbranched history. Copies/rollback are excluded
+                 from this uniqueness/accounting claim (SC-09).
   next_seq       the global monotonic allocation point, spanning content and heads
   reserved[gen]  sequences reserved under each content-key generation
 
@@ -90,11 +94,11 @@ Commit   the batch's committing transaction reads the active-generation
          fence; S0-2 §4 step 5). When the marker moved, the commit aborts
          into re-reservation under the successor; the abandoned range stays
          counted. After marker-advance commits, no record can commit under
-         the outgoing generation, so its classification is complete when
-         retirement consumes it.
+         the outgoing generation. Journals and live cached keys additionally
+         require SC-03/04 lifetime exclusion and a fresh retirement census.
 ```
 
-**One key per counter is what the `store_id` buys** (`P-3` joint 1). `K_store`'s derivation binds it — row 3
+**One key per counter, conditional on an unrewound, unbranched history, is what the `store_id` buys** (`P-3` joint 1). `K_store`'s derivation binds it — row 3
 §§3–4 — so `reserved[gen]` counts every invocation of the key it bounds: the sum over devices is a sum over
 distinct keys, and the rotate-before-2^32 comparison is again the whole enforcement, firing on time for its
 own key instead of up to `D` times too late for a shared one. Two stores holding one `K_g` never derive one
@@ -106,12 +110,15 @@ whole batch in one transaction, so it already knows `k` when it needs it. One ex
 window is about four a second; one per record would be one per keystroke; a per-tab lease introduces ranges that
 can be abandoned in part.
 
-**And what it gives the trimmer is uniqueness, not a watermark** — which is a correction the executable model
-forced. A trim deletes what its state record covered, and _what it covered_ is expressible only because one
-`seq` is issued once. Two tabs each choosing `max + 1` put two records at one number, and then no rule stated
-over numbers separates the one the snapshot saw from the one it did not. **The race is upstream of the trim's
-rule, in the numbering**, so the repair is the allocator rather than a cleverer trim — and a mutation swapping
-a covered-set trim for a range trim changes no result, because with unique numbers the two agree.
+**The allocator gives uniqueness, not coverage.** Authenticate/merge the exact disk records used for
+replacement, commit it, and delete only that observed identity/byte set (SC-05). Unique sequences do not
+make range deletion equivalent: a previously reserved sequence can commit after the snapshot. Unreadable
+input refuses the whole trim and retains keys/carriers. C07–C09 exercise these cases.
+
+**Restore scope is explicit** (SC-09). A raw copy duplicates the key and counter; rollback forgets counted
+invocations. Supported writable import mints a fresh store id, derived store key and reservation history.
+No local check claims to detect every unannounced clone. The invocation bound includes abandoned seals
+and remains conditional on the stated history assumption.
 
 **`PositionCounter` is the same shape at §7.4's `seq`**, which is a different number — the credential's outbound
 and accepted position (`S0-4`). Both need a reservation and both need a per-generation count, and saying so once
@@ -170,6 +177,9 @@ admission-after-the-authority could never be. A handler that meets a refusal ret
 recoverable state, so the milliseconds before the forced commit hold no update a kill can lose — the kill point
 is scheduled, and falsifier 19 below asserts the rule at every boundary on the path. The recorded cost stands:
 under storage pressure a keystroke appears when it is durable rather than immediately (PRD §7.10).
+Later input cannot bypass an uncommitted predecessor: queue intent and prepare it after promotion.
+SC-02 keeps pending content out of ordinary editor/export/undo/transport and treats IME preedit as
+provisional input. Every write-capable runtime holds SC-03's shared lifetime permit.
 
 **PRD §7.10 already governs this and nobody had connected it.** _An app whose central claim is local-first must
 not be quiet about a context where the data is not durable._ An unjournallable write is exactly that context, at
