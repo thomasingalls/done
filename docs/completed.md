@@ -655,3 +655,34 @@ retirement, additional/shared Local workspaces, Account authority, PRF and broad
 properties remain later work. Full-scan memory/performance, deferred maintenance growth, independent review
 and supported-platform acceptance remain owed. Only matrix evidence and its three pins advance; obligations,
 debt statuses and the independent L-2 progress record are unchanged. This checkpoint remains uncommitted.
+
+
+### 2026-09-09 — legacy migration preparation: read-only source and exclusion falsifier
+
+**Check-in.** The completed phase-twelve property tests and compaction deferral were committed as `a0811e2`.
+This phase-thirteen preparation checkpoint remains uncommitted.
+
+**Outcome.** Added a private native read-only observer for the predecessor `done` database, its plaintext
+`1:` journal and four known ancillary local keys, plus a [migration preparation plan](./legacy-migration-prep.md).
+The reader creates no database/provider/identity/keys/route, preserves exact original updates and WAL,
+refuses unreadable/unknown bounded input, flags missing CRDT dependencies and detects observed journal
+drift. The digest is explicitly an observation, not a quiescence or deletion authority. No default-app
+routing, live migration, source cleanup or new cryptographic format is introduced.
+
+**Evidence.** [Recorded native execution](./storage-conformance-runs/2026-09-09-legacy-source.md) passes
+100 generated delivery partitions / 400 preservation comparisons and 12 named checks, including one source-
+reader renderer death. All four focused source mutants are detected; a saved JSON history replays with
+all scenarios and mutants. The actual old provider appends to the plaintext journal and commits while the
+new exclusive lock is held, demonstrating that production old-writer exclusion remains owed. Eighteen new
+unit tests include another 100 generated partitions; full Vitest passes **705 tests / 57 files**. Typecheck,
+focused lint/format, build/budget and applicable project checks pass. Initial JS remains **306.3 kB / 350.0 kB**
+gzipped. The evidence records the initial unit-environment and two native fault-harness corrections.
+
+**Next bounded work.** Verified source/export capture under controller-owned exclusion in a seeded browser,
+including an independent ten-day, journal-only and dependency oracle. Then an authenticated pre-active
+fresh destination/import owner, followed by verified selection and exact resumable cleanup. The plan names
+the future cutover kill boundaries; this checkpoint does not execute that matrix. Production exclusion,
+carrier/attribution choice and review 3a remain gates for the author's real Stage 2 move. Existing genesis
+absence checks must not be bypassed by a synthetic migration caller. General bounded import adapters,
+large-state memory/performance and prior L-1/L-3/L-4 acceptance remain owed. Only matrix evidence and three
+pins advance; obligations, debt statuses and the independent L-2 record are unchanged.

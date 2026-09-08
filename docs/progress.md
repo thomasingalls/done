@@ -48,36 +48,41 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # production properties complete; legacy cutover and acceptance remain
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, storage-properties.md]
+status: in flight # source preparation complete; migration/cutover and acceptance remain
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-migration-prep.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-09
 ```
 
-**Just completed.** Phase eleven is committed as `85c7404`. Phase twelve adds [production carrier
-properties](./storage-properties.md): generated/shrinkable edit, delivery, journal, flush, compaction,
-abort, close, reopen and renderer-death histories with an independent source ledger. It found a real
-partial-merge recovery failure in pinned Yjs. Compaction now retains the original records without reserving,
-publishing or deleting until its disk union's struct/deletion dependencies integrate. Missing basis in the
-journal can be flushed before a fresh compaction. Known malformed material still refuses. This checkpoint
-is uncommitted; its outcome is appended to [completed.md](./completed.md).
+**Just completed.** Phase twelve is committed as `a0811e2`. Phase thirteen adds a [read-only legacy source
+observer and migration preparation plan](./legacy-migration-prep.md). It captures exact original `done`
+records and `1:` journal bytes, inventories four ancillary keys, refuses unknown/unreadable bounded input,
+and flags pending dependencies without merging them. It creates no database, provider, actor, destination,
+key or route. Its unkeyed digest describes an observation and authorizes no migration or deletion. This
+checkpoint remains uncommitted; its outcome is appended to [completed.md](./completed.md).
 
-**Evidence.** [Recorded execution](./storage-conformance-runs/2026-09-09-storage-properties.md) passes
-120 generated histories / 11,461 recovery comparisons, six corpus replays, 18 renderer deaths and 120
-checks that compaction resumes after basis persistence. Five mutants are detected, shrunk and replayed
-against faulty and unmodified production. Compaction regression passes 21 cases / 128 assertions / eight
-mutants. Full Vitest passes 687 tests / 56 files; build and applicable project checks pass. The record
-separates pending wire preservation from incomplete Yjs visibility and records exploratory failures and
-interruptions. The before-fix native counterexample and complete-delivery library control remain reproducible.
-No supported-platform, memory/latency, forensic-erasure or independent-review claim follows.
+**Evidence.** [Native preparation execution](./storage-conformance-runs/2026-09-09-legacy-source.md) passes
+100 generated delivery partitions / 400 preservation comparisons, 12 named checks and four focused source
+mutants. A saved JSON history replays, including the named scenarios and controls. One reader renderer death
+preserves the source. The actual legacy provider journals and commits while the new exclusive lock is held:
+matching scans and the new lifecycle lock do not exclude old writers. Full Vitest passes 705 tests / 57 files;
+build and applicable project checks pass. This is not the migration kill matrix or production exclusion.
 
-**Next bounded integration.** Legacy migration/cutover preparation: explicit source inventory and authority,
-old-writer fencing, a fresh encrypted key/counter scope, and seeded interruption schedules before any
-default-app routing switch. Existing legacy material must not be reclassified as fresh, and imported data
-must not restore writable keys or counters. Automatic maintenance scheduling and large-state chunking
-remain additional work. Sequencing §3.2 items 3–6 remain one integrated landing unit developed in reviewable
-checkpoints; these component passes do not authorize real-data cutover.
+**Next bounded integration.** Verified source/export capture under controller-owned exclusion in a seeded
+browser, with an independent ten-day, journal-only and dependency oracle. Keep the carrier adapter explicit;
+the Markdown/system-attribution versus fidelity-archive choice remains open for Stage 2. Then build an
+authenticated pre-active fresh destination/import owner before selection or cleanup. Existing legacy
+material cannot be reclassified as fresh, Local genesis absence checks cannot be bypassed, and imports
+cannot restore writable keys/counters. The preparation plan names future restart/fault/property schedules;
+no import, migration progress, active selection or deletion transition is implemented in this checkpoint.
+
+**Exclusion gate.** A disposable test controller can stop every old context and disallow old execution
+routes across restarts. That is a test precondition, not a production browser primitive. Supported-version
+exclusion for the author's installation still needs an implemented and tested procedure covering old pages,
+workers, cached shells and transport. A new origin isolates the destination but alone does not stabilize or
+clean the source. Preserve legacy recovery material until verified encrypted selection; complete cutover
+requires no recognizable app-managed plaintext. No boolean assertion or matching digest pays this gate.
 
 **Preparation/acceptance gate.** Workspace history retains deleted runtime content with gc:false and
 copies Yjs Item.redone/delete-set state through version-sensitive internals, adding a second full clone.
@@ -90,9 +95,11 @@ and complete interaction performance remain gates before default editor acceptan
 **Existing evidence.** Corrected contracts: `f87997d`; shared harness/lifecycle: `ccfcbf0`; mandatory-factor
 custody: `a6d39a2`; content: `468cbe2`; synchronous journal: `9e60c6a`; admission/Goals editor: `0b5337a`;
 workspace commands/history: `a48c090`; owned startup: `a916d61`; Local genesis/index: `ee60528`;
-scoped Local clear: `d7c0f32`; content compaction: `85c7404`. The [shared candidate run](./storage-conformance-runs/2026-09-08.md)
-contains 57 candidate subcases; all three pinned candidates fail the corrected contract and none is merged.
-Earlier component/browser evidence remains historical; current property and compaction execution is linked above.
+scoped Local clear: `d7c0f32`; content compaction: `85c7404`; production carrier properties and incomplete-
+compaction deferral: `a0811e2`. [Phase-twelve execution](./storage-conformance-runs/2026-09-09-storage-properties.md)
+records 120 encrypted histories, six corpus replays, five shrunk mutants and 18 renderer deaths; those
+separate browser suites were not rerun this phase. The [shared candidate run](./storage-conformance-runs/2026-09-08.md)
+contains 57 subcases; all three pinned candidates fail the corrected contract and none is merged.
 
 **Completion blockers.** L-1 still owes integrated genesis/index/clear/default-application conformance and
 seeded legacy cutover kills. Scoped Local clear handles only the first completed active workspace;

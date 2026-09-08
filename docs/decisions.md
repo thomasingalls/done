@@ -1865,3 +1865,31 @@ absent; streaming, memory limits and scheduling remain acceptance work. Source m
 property failure and pass the same minimized history on unmodified production; exceptions/timeouts do not
 count as sensitivity. JSON replay accompanies seed/path metadata. No debt is paid, and migration/default-app
 cutover remains subsequent work.
+
+
+### 2026-09-09 — migration preparation observes the predecessor without treating observation as authority
+
+Phase twelve is committed as `a0811e2`. The next bounded [migration preparation](./legacy-migration-prep.md)
+uses a separate read-only source observer: ordinary `openStore` and its predecessor provider perform writes
+on startup and cannot serve as a source survey. The observer captures original `done` update rows, `1:` WAL
+entries and four known ancillary keys; it refuses unknown/unreadable supported-carrier material, detects
+observed journal drift, and retains pending dependencies without merging away their original framing.
+The observation digest is unkeyed and authorizes no destination, active selection or deletion.
+
+[Native evidence](./storage-conformance-runs/2026-09-09-legacy-source.md) confirms that the real legacy
+provider can journal and commit while the new exclusive slot lock is held. Matching scans cannot exclude
+that writer. The next seeded harness therefore needs controller-owned exclusion of every old execution
+context and route across restart. That test precondition is not a production fence; supported-version
+exclusion for the actual installation remains an explicit implementation/acceptance requirement.
+
+The preparation plan orders verified source/export, mandatory-factor pre-active destination creation,
+bounded idempotent import, cold verification, selection and resumable exact cleanup. It inventories old
+journal/DB, ancillary credentials/device names, cached executable shells and transport paths. Fresh writable
+store/key/counter history is mandatory; imported writable keys/counters never become a second live instance.
+The plan does not define a new authenticated progress format or implement those transitions yet. Existing
+Local genesis absence checks must not be bypassed to build migration. The next bounded implementation is
+verified export capture under controlled seeded exclusion, before the destination/import owner.
+
+The open Markdown/system-attribution versus fidelity-archive decision still gates the real Stage 2 cutover;
+this reader does not choose it or change ordinary application routing. Matrix evidence and its three pins
+advance without changing obligations/debt status. The independent L-2 record is preserved.
