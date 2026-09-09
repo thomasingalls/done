@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "status": "Confirmed native failure on generated history 21; shrinking interrupted, not minimal.",
+  "files": {
+    "input.json": {
+      "source": "test-results/legacy-cleanup/2026-09-09T19-10-29.708Z/baseline-first-failure-input.json",
+      "sha256": "36877ec7c9975b5259a24d0edf31faabd4be968419d2f89442c88c208aa35e3d"
+    },
+    "diagnostic.json": {
+      "source": "test-results/legacy-cleanup/2026-09-09T19-10-29.708Z/baseline-first-failure.json",
+      "sha256": "2d73589e2a9689d6ad092b7d455d203ab035c34736a77490ca2dea674fa7ef00"
+    },
+    "report.json": {
+      "source": "test-results/legacy-cleanup/2026-09-09T19-10-29.708Z/report.json",
+      "sha256": "db8733f9901a7a41106dba9cba98e27d373a8eabef79741f93ccb9caead9fce8"
+    }
+  }
+}
