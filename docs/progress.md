@@ -48,34 +48,32 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # bounded native cleanup validation closed; coordinator/restart prep complete
+status: in flight # private coordinator validated; production migration host prep next
 plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-coordinator-preparation.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-09
 ```
 
-**Current checkpoint.** Authenticated, journal-inclusive source cleanup has completed its bounded native
-validation. The user's full campaign passes 45 directed cases, 60 generated histories (seed 8941), 16 deliberate
-renderer crashes and all seven named controls in 295.304 seconds, with clean teardown and unchanged inputs.
-The exact formerly failing history 21 now passes. [Preserved execution evidence](./storage-conformance-runs/2026-09-09-legacy-cleanup.md)
-retains all eleven top-level artifacts and full event log with hashes; all 148 tested inputs match repair
-commit `3e7981b`. The original report keeps its actual starting commit `4c3c3ab`. No campaign was rerun to
-record this checkpoint. Outcomes were appended to [completed.md](./completed.md) before this rewrite.
+**Current checkpoint.** The private migration coordinator and restart composition are implemented and validated.
+It derives state from existing authenticated owners, dispatches one requested step, preserves selected edits
+and never remints on missing retained material. Read-only terminal verification requires signed completed
+cleanup under its own permit, then separately opens ordinary Local recovery. Closing cancels and drains native
+work. Host exclusion loss stops dispatch and cancels the active coordinator in the disposable fixture.
 
-**Preparation complete.** [Owned migration coordinator and restart preparation](./legacy-coordinator-preparation.md)
-specifies readonly slot classification and one requested step through existing import/selection/cleanup owners.
-Authenticated component records supply durable progress. The contract preserves selected edits, resumes partial
-source deletion by manifest, handles missing/wrong recovery inputs and clear state, and defines permit gaps and
-cancellation. A saved packet is required for maintenance retries; ordinary selected Local recovery remains
-independent. No coordinator runtime or default-app route has been implemented in this checkpoint.
+[Preserved execution evidence](./storage-conformance-runs/2026-09-09-legacy-coordinator.md) passes 36 directed
+coordinator cases (33 full-run plus three focused gaps), 60 generated histories, 19 renderer deaths and ten
+controls. Full Vitest passes 793 tests / 67 files; the 14 supervisor tests and all affected native
+import/selection/cleanup/startup/clear regressions pass. The generated harness scheduling defect and exact
+passing replay are retained. Test hashes identify the uncommitted implementation based on `f4ed6bc`; the
+default application does not call it. Outcomes were appended to [completed.md](./completed.md) before this rewrite.
 
-**Next bounded implementation.** Build the private coordinator and composed disposable native fixture against
-that preparation. Require externally saved and cold-verified recovery input, connect host exclusion loss to
-cancellation/native draining, and exercise cross-owner crash/abort/restart gaps with an external operation ledger.
-Retain bounded first-failure/shrinking diagnostics and named controls. Existing component passes do not establish
-the composed coordinator, and existing host epoch assertions alone do not cancel an in-flight operation.
-Production old-writer exclusion and default application cutover remain later gates.
+**Next bounded work.** Prepare the production migration host contract before default-app integration. Specify
+an implementable procedure for supported old pages/windows/workers/cached executables and transport exclusion,
+restart/loss handling and externally saved recovery readback. Define seeded supported-version falsifiers and
+ownership of retained input/factor state. The private coordinator's [contract](./legacy-coordinator-preparation.md)
+and controller callback do not create production browser authority. Do not enable automatic real-profile
+selection/deletion or decide the live carrier/attribution choice as an incidental implementation detail.
 
 **Exclusion and product gates.** The seeded controller closes old contexts, blocks service workers/external
 routes and reestablishes its epoch after each restart. That is a test precondition, not a production browser
@@ -102,7 +100,8 @@ Local genesis/index `ee60528`; Local clear `d7c0f32`; exact compaction `85c7404`
 `a0811e2`; source reader `e64cd2a`; export capture `da5def9`; reproductions `a292103`; contention repair
 `fc1ff41`; runtime forks/projections `0399567`; Yjs delivery/handoff `a465310`; pre-active import `a0072e8`;
 verified selection `4f40ede`; source cleanup implementation `4c3c3ab`; harness `6a5ebe7`; failure evidence
-`082b567`; size repair `3e7981b`. Full bounded native cleanup validation is recorded in the current checkpoint.
+`082b567`; size repair `3e7981b`. Cleanup validation/coordinator preparation is committed as `f4ed6bc`; the
+private coordinator implementation is the current uncommitted checkpoint.
 The earlier shared candidate run rejected all three pinned branches; none is merged.
 
 **Completion blockers.** L-1 still owes integrated genesis/index/clear/default-application conformance and

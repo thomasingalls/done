@@ -2138,3 +2138,26 @@ default-app/live-cutover gates. This is a preparation decision, with implementat
 Reread the three conformance debts after adding this execution checkpoint to the matrix. Their requirements,
 owners, gates, statuses and payment conditions still apply unchanged. Re-pinned only their
 `docs/storage-conformance.md` inputs to `7e3f4cce55f1`; the bounded component pass does not pay any of them.
+
+### 2026-09-09 — Separate terminal observation from deletion in the private migration coordinator
+
+The private coordinator is implemented against the existing authenticated import, selected Local, cleanup and
+clear records. It stores no second durable phase. Inspection releases its lifecycle permit before entering
+public owners, which reacquire exclusion and recheck their own state. Wrong/missing input and a lost selected
+route never fall back to fresh identity creation. Selected editing remains independent of the recovery packet.
+
+Added `verifyLegacyCleanup` as a read-only entry point to the existing cleanup owner. It requires terminal
+signed progress under its own permit before reaching any deletion loop, repeats current destination DB/WAL
+and source-absence checks, then the coordinator separately opens/closes ordinary Local recovery. This avoids
+a stale inspection accidentally authorizing resumed deletion. The resulting observation is not persisted as
+a completion certificate; the external host still needs a current unbroken exclusion epoch.
+
+The seeded controller now reports first exclusion loss, allowing the harness to cancel the coordinator and
+stop dispatch. Close remains pending while native deletion drains; a competing writer stays excluded.
+[Native evidence](./storage-conformance-runs/2026-09-09-legacy-coordinator.md) tests these gaps and later edits,
+including source/route/clear changes after inspection. The generated failure was a harness assumption about
+which bounded call reaches import completion; its corrected schedule and exact replay are retained.
+
+Production supported-version exclusion, host recovery-save/readback, real carrier choice and default-app
+cutover remain separate work. Reread all three conformance debts; only their matrix input hashes advance to
+`0d492c62fe48`. Requirements, owners, gates, statuses and payment conditions are unchanged.

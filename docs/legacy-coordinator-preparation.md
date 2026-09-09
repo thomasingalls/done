@@ -1,15 +1,34 @@
 # Owned legacy migration coordinator and restart preparation
 
-**Status: preparation complete; implementation and its conformance campaign are not started.** This is the
-next bounded L-1 phase after [native source-cleanup validation](./storage-conformance-runs/2026-09-09-legacy-cleanup.md).
-It specifies one private coordinator for the existing seeded Markdown/system migration path. It does not
+**Status: bounded private coordinator implemented and validated.** This follows
+[native source-cleanup validation](./storage-conformance-runs/2026-09-09-legacy-cleanup.md).
+It records the contract for one private coordinator in the seeded Markdown/system migration path. It does not
 change default application startup, settle the real Stage 2 carrier choice, or authorize the real profile's
 selection/deletion. [SC-01–09](./storage-contract.md), [sequencing §§3.2–3.3/5.4](./sequencing.md) and
 [action-tree L-1](./review/remediation/action-tree.md) retain authority over those boundaries.
 
-## What to build next
+## Implemented checkpoint
 
-Build a coordinator that inspects one explicitly named Local slot and, after fresh verification, performs
+`createLegacyCoordinator(slotId)` owns read-only `inspect`, `capture`, a one-use factor `enroll` ceremony,
+and one explicitly named `advance` action: import, select, cleanup or verify. It copies caller-owned packet
+bytes before awaiting, erases its own copies, rejects concurrent operations, and closes pending ceremonies on
+cancellation. A failed confirmation closes that wrapper; starting a new ceremony is allowed only while the
+slot remains unused, otherwise the retained intent must be resumed. Inspection hints before unlock confer no
+authority. Authenticated metadata inspection is also distinct from current content recovery.
+
+A read-only `verifyLegacyCleanup` entry point requires terminal signed progress under the cleanup owner's own
+permit. It cannot start or resume deletion based on a previous inspection. Final verification then opens and
+closes the ordinary Local owner; concurrent clear or damage can still refuse this separate observation. The
+coordinator adds no durable success marker and never falls back to fresh enrollment on a missing claim/route.
+
+[Preserved evidence](./storage-conformance-runs/2026-09-09-legacy-coordinator.md) includes the generated harness
+scheduling failure and passing exact replay. The repaired injection stays armed across bounded imports until
+the requested terminal commit is actually reached. No coordinator data-loss defect was found in these runs.
+Production exclusion and recovery-save/readback host preparation are next, before any default-app route.
+
+## Coordinator contract
+
+The coordinator inspects one explicitly named Local slot and, after fresh verification, performs
 one requested step through the existing import, selection or cleanup owner. A new renderer must recover the
 next permitted action from retained carriers plus the original recovery packet and factor. It must not need
 the previous renderer's document, callback, receipt object, in-memory phase or a saved progress label.
@@ -37,10 +56,10 @@ them after a crash. Transient UI state and host diagnostics are observations, an
 | `localClearState.ts`, `localClear.ts` | Clear exclusion and authenticated clear resumption, including source absence after custody removal | Detect a retained clear first; report that its owner is required, without attempting migration, reminting or clearing automatically |
 | `writeSession.ts` | Native permit acquisition, transaction draining and cancellation | Close classification lifetimes before calling public owners that acquire their own exclusive permits |
 
-Proposed files are `src/crdt/legacyCoordinator.ts` for private orchestration and, if needed for separation,
-`src/crdt/legacyCoordinatorState.ts` for read-only inspection/dispositions. Do not export them from normal app
-startup yet. Add `test/legacy-coordinator/` and `scripts/legacy-coordinator/` for the composed native fixture.
-The exact TypeScript interface is an implementation detail; it must preserve the contract below and cannot
+Implementation files are `src/crdt/legacyCoordinator.ts` for private orchestration and
+`src/crdt/legacyCoordinatorState.ts` for read-only inspection/dispositions. They are not exported from normal app
+startup. `test/legacy-coordinator/` and `scripts/legacy-coordinator/` contain the composed native fixture, run by
+`pnpm storage:legacy-coordinator`. Its interface preserves the contract below and cannot
 accept a caller-supplied Yjs document, phase, cursor, route authority, key, restored counter or exclusion flag.
 
 ## Restart classification and authority
@@ -119,9 +138,9 @@ admit only the known fixture. It keeps that exclusion across source capture, sav
 selection, cleanup and final observation, including time between individual API calls. A renderer restart
 invalidates its handle; reestablish a new exclusion epoch and reload inputs before another call.
 
-`scripts/legacy-export/exclusion.mjs` is the starting test controller, not a production capability. Its current
-event/epoch assertions detect unexpected execution but do not by themselves cancel an in-flight browser call.
-The composed harness must wire exclusion loss to cancellation and stop further dispatch, and exercise loss
+`scripts/legacy-export/exclusion.mjs` remains a test controller, not a production capability. It now reports
+first exclusion loss through an optional callback. The composed harness wires that callback to coordinator
+cancellation and guards each dispatch and result with its current epoch, and exercises loss
 while work is parked and between owners. Checking only before/after an entire flow cannot establish that no
 intervening effect occurred. Stale epoch handles cannot restart work. A host-reported completion requires an
 unbroken current epoch around the final checks as well as passing component results.
@@ -148,7 +167,7 @@ source cleanup is terminal and freshly verified. None means full product migrati
 selected editing is permitted by the existing owner before source cleanup; the coordinator must preserve
 that behavior and surface pending cleanup. It must not reopen the legacy provider as a fallback.
 
-The composed successful terminal observation requires terminal `cleanupLegacySource` verification (current
+The composed successful terminal observation requires terminal `verifyLegacyCleanup` verification (current
 destination DB/journal, coupled receipts and known-source absence), followed by a fresh ordinary Local open
 under its own owner. Close that owner after checking the external ledger in tests. Reclassify if a concurrent
 clear or other transition prevents the open; the coordinator adds no durable success record. The host then
@@ -160,9 +179,12 @@ cancelled/draining and source/exclusion change distinctly enough for a caller to
 the original cause in diagnostics. Never retry storage corruption as contention, claim refused work succeeded,
 replace source bindings on mismatch, or resume cleared/missing selected material as a fresh import.
 
-## Conformance work for the implementation phase
+## Conformance contract and executed scope
 
-These are planned tests, not evidence already executed. Drive the real coordinator and component owners in
+The [execution record](./storage-conformance-runs/2026-09-09-legacy-coordinator.md) maps the tests actually run,
+including 36 directed coordinator cases, 60 generated native histories, 19 renderer deaths and ten controls.
+The following table retains the required outcomes; detailed component fault/size cases also remain covered by
+the passing import, selection, cleanup, startup and clear regression campaigns. Drive these production owners in
 disposable Chromium. Freeze all consumed source/harness files and retain hashes, seed, first input/error,
 completed shrink path, partial/final report and full bounded event stream. Reuse the cleanup harness's deadline,
 supervisor, observed-abort and error-preservation machinery; do not build another unbounded runner.
@@ -182,13 +204,13 @@ supervisor, observed-abort and error-preservation machinery; do not build anothe
 | Later selected journal-only edit, flush/compaction, renderer death | Original imported meaning plus all admitted later edits recover; no reimport overwrites current state |
 | Terminal cursor with reappearing source, damaged destination or missing route | No composed completion; clear marker takes its own path even after custody removal |
 
-The generated model tracks external source text/day/archive/unfiled values and DB/WAL partitions; host epoch;
-saved-packet availability/identity; immutable chosen destination; durable component stage; later admitted edits;
-fault boundary and restart schedule. Generate commands across these dimensions, including repeated advances,
-two contenders, missing/restored packet, stale inspection, source mutation, abort, crash, ordinary edit, flush,
-compaction and clear handoff. Use bounded schedules and explicit coverage counts so stages cannot all be
-skipped by refusals. Generate Unicode and sizes around known packet/manifest/update boundaries with dedicated
-oversize refusal cases. Preserve exact first failures before shrinking and native replay of saved histories.
+The composed generator varies external source text/day/archive/unfiled values and DB/WAL partitions, import
+budget, abort boundary, cleanup cursor, restart and later journal-only edits. Every generated history saves and
+rereads the packet, selects, refuses missing input, resumes cleanup and cold-recovers the external ledger.
+The harness separately tracks host epoch, chosen identity and reservations. Two contenders, stale inspection,
+source/route change and clear handoff also have directed cases; detailed packet/manifest/update size boundaries
+remain in the component suites. This is a bounded schedule generator, not arbitrary command interleavings.
+Reports include coverage counts and preserve exact first failures before shrinking and native replay.
 
 The oracle is an independent string/operation ledger plus an exact carrier/identity/reservation ledger, not
 the importer's receipt count or the coordinator's returned phase. Before source deletion, source preservation

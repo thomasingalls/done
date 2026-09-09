@@ -58,6 +58,20 @@ is preparation only. Composed migration kills, default-app routing, production s
 whole-profile residue, platform/performance and independent review remain owed; no matrix obligation or debt
 is marked paid by this checkpoint. Earlier evidence descriptions above retain their historical phase scope.
 
+## Private migration coordinator checkpoint — 2026-09-09
+
+The [composed native execution](./storage-conformance-runs/2026-09-09-legacy-coordinator.md) supersedes the
+preceding preparation-only status for this private seeded owner. It adds 36 directed cases, 60 generated
+histories, 19 deliberate renderer deaths and ten controls, with passing component regressions. This supplies
+partial C04/C05 cancellation and stale-dispatch evidence, C10 retained identity/reservation evidence, C11
+clear-owner handoff evidence and C16 cold restart/selected recovery evidence. Authenticated existing records
+remain the only durable progress; read-only terminal verification cannot initiate deletion. The external ledger
+preserves later selected edits through packet loss, partial cleanup, journal flush and compaction.
+
+The generated campaign found an abort-injection scheduling defect, repaired and retained with an exact native
+replay. This checkpoint does not pay production old-writer exclusion, default-app cutover, whole-profile
+residue, supported-platform/performance or independent-review obligations. No debt status or payment changes.
+
 ## Harness and mutation requirements
 
 One adapter contract must expose actual store lifecycle and controlled boundaries, not reimplement the

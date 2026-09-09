@@ -12,10 +12,12 @@ export class SeededExclusion {
   #active = false;
   #reason = null;
   #epoch = 0;
+  #onLoss;
   events = [];
-  constructor(context, url) {
+  constructor(context, url, { onLoss } = {}) {
     this.#context = context;
     this.#url = url;
+    this.#onLoss = onLoss;
     context.on('page', (page) => {
       if (this.#active) this.#invalidate('unexpected-page');
       page.on('crash', () => {
@@ -40,8 +42,10 @@ export class SeededExclusion {
     });
   }
   #invalidate(reason) {
+    const first = this.#reason === null;
     this.#reason ??= reason;
     this.events.push({ epoch: this.#epoch, event: reason });
+    if (first) this.#onLoss?.({ epoch: this.#epoch, reason });
   }
   async installRoutes() {
     const origin = new URL(this.#url).origin;

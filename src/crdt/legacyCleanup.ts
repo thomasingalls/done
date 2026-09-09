@@ -88,11 +88,12 @@ const verifySelectedRecovery = async (
     },
   );
 };
-export const cleanupLegacySource = (
+const runLegacyCleanup = (
   slotId: string,
   code: string,
   input: LegacyImportInput,
-  options: LegacyCleanupOptions = {},
+  options: LegacyCleanupOptions,
+  verifyOnly: boolean,
 ): Promise<LegacyCleanupReceipt> => {
   identity(slotId);
   const captured = copyImportInput(input),
@@ -104,6 +105,8 @@ export const cleanupLegacySource = (
       if (!claim?.imported || claim.stage !== 'ready')
         return cleanupRefuse('cleanup-needs-selected-import');
       await verifyLocalClaim(task, claim, code);
+      if (verifyOnly && !cleanupComplete(claim.sourceCleanup))
+        cleanupRefuse('cleanup-not-complete');
       requireSourceOrigin(task, claim.imported.sourceOrigin);
       const plan = await prepareImportPlan(task, captured);
       if (!sameImportBinding(claim.imported, plan.binding)) cleanupRefuse('cleanup-input-mismatch');
@@ -192,3 +195,18 @@ export const cleanupLegacySource = (
     settings.signal ? { signal: settings.signal } : {},
   ).finally(() => captured.recovery.fill(0));
 };
+
+export const cleanupLegacySource = (
+  slotId: string,
+  code: string,
+  input: LegacyImportInput,
+  options: LegacyCleanupOptions = {},
+) => runLegacyCleanup(slotId, code, input, options, false);
+
+/** Read-only terminal revalidation under a fresh permit; never starts/resumes deletion. */
+export const verifyLegacyCleanup = (
+  slotId: string,
+  code: string,
+  input: LegacyImportInput,
+  options: { signal?: AbortSignal } = {},
+) => runLegacyCleanup(slotId, code, input, options, true);

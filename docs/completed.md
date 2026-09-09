@@ -978,3 +978,31 @@ assertions alone do not stop in-flight work. The plan includes cross-owner crash
 external-ledger histories and named controls with bounded diagnostics. Production exclusion, recovery-save
 ceremony and real carrier choice are explicit default-app prerequisites. This checkpoint is documentation
 and retained evidence only: no coordinator runtime, product cutover or new native acceptance is claimed.
+
+## 2026-09-09 — Private migration coordinator and restart composition (`L-1`)
+
+The prior cleanup-validation/preparation checkpoint is committed as `f4ed6bc`. The new private coordinator
+inspects an explicit Local slot, owns factor enrollment and dispatches one requested import, selection,
+cleanup or verification step. Existing authenticated component records supply restart authority. It copies
+recovery input before waiting, disposes owned buffers/ceremonies, refuses retained-state reminting and drains
+native work before close completes. A new read-only cleanup verifier requires terminal signed progress under
+its own permit, followed by a fresh ordinary Local open; no second progress/completion record is persisted.
+
+[Preserved evidence](./storage-conformance-runs/2026-09-09-legacy-coordinator.md) passes 33 directed cases plus
+three focused dispatch-gap cases, 60 generated histories, 19 renderer deaths and ten named controls. Histories
+check external source/operation, exact carrier, destination identity and reservation ledgers across saved-file
+replay, bounded import, missing input, later journal edits and interrupted cleanup. Source/route/clear changes
+between inspection and dispatch refuse without mutation. The first campaign exposed a harness scheduling
+assumption: the terminal import abort may need several bounded calls. Its exact first failure and shrink-budget
+expiry remain preserved; the corrected schedule passes the saved input and full campaign. No minimality or
+coordinator data-loss finding is claimed from that failure.
+
+Full Vitest passes 793 tests / 67 files, including 30 generated coordinator histories; 14 supervisor tests pass.
+Native import/selection/cleanup regressions each pass 60 generated histories and all directed cases/controls;
+startup and Local clear pass 15/17 cases and three/five controls. Typechecking, targeted lint and formatting
+pass. Tested reports retain starting HEAD `f4ed6bc` and the uncommitted source hashes; native runtime inputs
+match this implementation. Three dispatch cases were added after the full campaign and run separately.
+
+The default app does not call the coordinator. Production exclusion/recovery-save host preparation is next;
+real carrier choice, full-profile residue, platform/performance, independent review and default-app cutover
+remain owed. No obligation or debt is paid. This outcome is appended before rewriting the L-1 active slice.
