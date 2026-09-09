@@ -66,3 +66,9 @@ is limited to the named schedules on one Chromium/macOS host, not OS/power-loss 
 Full startup/classification/clear and scoped identity onboarding, exact trim, legacy migration/cutover,
 Account verification/discovery, factor/platform population, generation retirement/reference rules and
 independent review remain separate work. No destructive coverage shortcut is introduced here.
+
+The [phase-three delivery suite](./yjs-delivery.md) separately tests original-record ordering and pending
+channel handoff with the exact-version Yjs wake-up repair. The existing snapshot wire encoding and scoped
+channel API are unchanged. Initial and hello-response snapshots retain pending structs/deletions through
+receive admission; later missing originals complete without the donor. This does not authorize partial
+compaction, migration or a default-application switch.

@@ -8,6 +8,9 @@ overrides:
   '@emnapi/core': 2.0.0-alpha.3
   '@emnapi/runtime': 2.0.0-alpha.3
 
+patchedDependencies:
+  yjs@13.6.31: d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1
+
 importers:
 
   .:
@@ -50,19 +53,19 @@ importers:
         version: 1.0.2
       y-codemirror.next:
         specifier: 0.3.5
-        version: 0.3.5(@codemirror/state@6.7.1)(@codemirror/view@6.43.7)(yjs@13.6.31)
+        version: 0.3.5(@codemirror/state@6.7.1)(@codemirror/view@6.43.7)(yjs@13.6.31(patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1))
       y-indexeddb:
         specifier: ^9.0.12
-        version: 9.0.12(yjs@13.6.31)
+        version: 9.0.12(yjs@13.6.31(patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1))
       y-protocols:
         specifier: ^1.0.7
-        version: 1.0.7(yjs@13.6.31)
+        version: 1.0.7(yjs@13.6.31(patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1))
       y-websocket:
         specifier: 3.0.0
-        version: 3.0.0(yjs@13.6.31)
+        version: 3.0.0(yjs@13.6.31(patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1))
       yjs:
         specifier: 13.6.31
-        version: 13.6.31
+        version: 13.6.31(patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1)
     devDependencies:
       '@babel/core':
         specifier: ^8.0.1
@@ -2734,29 +2737,29 @@ snapshots:
 
   xmlchars@2.2.0: {}
 
-  y-codemirror.next@0.3.5(@codemirror/state@6.7.1)(@codemirror/view@6.43.7)(yjs@13.6.31):
+  y-codemirror.next@0.3.5(@codemirror/state@6.7.1)(@codemirror/view@6.43.7)(yjs@13.6.31(patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1)):
     dependencies:
       '@codemirror/state': 6.7.1
       '@codemirror/view': 6.43.7
       lib0: 0.2.117
-      yjs: 13.6.31
+      yjs: 13.6.31(patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1)
 
-  y-indexeddb@9.0.12(yjs@13.6.31):
+  y-indexeddb@9.0.12(yjs@13.6.31(patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1)):
     dependencies:
       lib0: 0.2.117
-      yjs: 13.6.31
+      yjs: 13.6.31(patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1)
 
-  y-protocols@1.0.7(yjs@13.6.31):
+  y-protocols@1.0.7(yjs@13.6.31(patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1)):
     dependencies:
       lib0: 0.2.117
-      yjs: 13.6.31
+      yjs: 13.6.31(patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1)
 
-  y-websocket@3.0.0(yjs@13.6.31):
+  y-websocket@3.0.0(yjs@13.6.31(patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1)):
     dependencies:
       lib0: 0.2.117
-      y-protocols: 1.0.7(yjs@13.6.31)
-      yjs: 13.6.31
+      y-protocols: 1.0.7(yjs@13.6.31(patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1))
+      yjs: 13.6.31(patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1)
 
-  yjs@13.6.31:
+  yjs@13.6.31(patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1):
     dependencies:
       lib0: 0.2.117

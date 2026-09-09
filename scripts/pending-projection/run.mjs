@@ -35,13 +35,6 @@ const mutants = {
     case: 'pending-deletion-forks',
     assertion: 'pending-deletions-exact',
   },
-  'serialize-startup': {
-    file: 'src/crdt/admittedWorkspace.ts',
-    from: 'const doc = session.fork();',
-    to: 'const doc = new Y.Doc({gc:false}); Y.applyUpdate(doc,session.snapshot());',
-    case: 'pending-workspace-startup',
-    assertion: 'pending-workspace-startup-completes',
-  },
   'skip-workspace-check': {
     file: 'src/crdt/admittedWorkspace.ts',
     from: 'if (!session.matches(accepted!.history.doc))',
@@ -168,7 +161,7 @@ const report = {
   cases: [],
   limits: [
     'Native Chromium storage, factor custody, Web Locks, WASM and actual workspace admission; synthetic enrollment/receive authority.',
-    'Generated remote records retain original framing and use a separate source-string oracle. Arbitrary original delivery can itself strand in pinned Yjs; receiver/fork equivalence is distinguished from complete semantic recovery.',
+    'Generated remote records retain original framing and use a separate source-string oracle. The pinned delivery repair requires complete semantic recovery in every generated original order.',
     'A controlled projection-event omission tests refusal sensitivity; persistence/authority are not replaced. One actual renderer death is tested. No generation transition, migration, new wire format or OS/power-loss claim.',
   ],
 };
@@ -508,7 +501,8 @@ try {
               }
             }
             const after = await snapshot(a);
-            const expected = whole ? source.expected[0] : original.text[0];
+            assert.equal(whole, true, 'generated-original-ledger-completes');
+            const expected = source.expected[0];
             assert(after.accepted.master.includes(marker), 'generated-local-input-survives');
             assert.equal(
               after.accepted.master.replace(marker, ''),

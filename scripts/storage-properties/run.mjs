@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
 import { chromium } from '@playwright/test';
 import * as fc from 'fast-check';
-import { historyArbitrary, incompleteMergeArbitrary, defaultSeeds } from './arbitrary.mjs';
+import { historyArbitrary, defaultSeeds } from './arbitrary.mjs';
 import { mutants } from './mutants.mjs';
 
 const root = fileURLToPath(new URL('../..', import.meta.url));
@@ -148,9 +148,8 @@ async function historyRun(origin, history) {
 
 async function campaign(origin, label, seed) {
   const attempts = [];
-  const focused = label === 'merge-incomplete-content';
   const details = await fc.check(
-    fc.asyncProperty(focused ? incompleteMergeArbitrary : historyArbitrary, async (history) => {
+    fc.asyncProperty(historyArbitrary, async (history) => {
       const outcome = await historyRun(origin, history);
       attempts.push({ history, outcome });
       if (outcome.error && !attempts.slice(0, -1).some((a) => a.outcome.error)) {
@@ -179,7 +178,7 @@ async function campaign(origin, label, seed) {
     },
   );
   const row = {
-    generator: focused ? 'four-edit-incomplete-merge' : 'full-history',
+    generator: 'full-history',
     seed: details.seed,
     runs: details.numRuns,
     shrinks: details.numShrinks,

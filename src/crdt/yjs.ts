@@ -5,7 +5,8 @@
  * `y-indexeddb`, `y-protocols`, `y-codemirror.next` or `y-websocket`. Yjs v13,
  * `y-codemirror.next@0.3.5` and `y-websocket@3.0.0` are pinned; v14,
  * `@y/codemirror` and whatever the provider becomes on top of them are planned
- * debt. Keeping every import here means that migration touches one file.
+ * debt. v13.6.31 also requires the wake-up patch pinned in vendor-patches; yjs:check verifies it.
+ * Keeping every import here means that migration touches one file.
  *
  * `test/seam.test.ts` enforces this mechanically for static and dynamic imports.
  */

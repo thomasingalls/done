@@ -2,7 +2,7 @@
 
 Core repair phase 2 preserves runtime Yjs pending state through private draft/history forks and projection
 startup. It does not change the wire encoding, stored records, compaction rule or transport protocol.
-Arbitrary original-record delivery and pending donor snapshots remain separate library/transport work.
+[Core repair phase 3](./yjs-delivery.md) adds the separate pinned-library delivery and donor-handoff repair.
 
 The pinned Yjs v13 encoder normally merges pending bytes into an integrated snapshot. Reapplying that
 snapshot can change the pending missing-clock map. `forkDoc` instead encodes the integrated store through
@@ -33,8 +33,8 @@ read view, pending-store fields and undo internals must be reevaluated on a Yjs 
 
 `test/pendingProjection.test.ts` holds the saved draft/history counterexamples, detached pending buffers,
 content/deletion negative controls and 500 generated fork/delivery histories. Arbitrary original framing
-can itself strand in pinned Yjs, so fork equivalence and complete source-ordered semantic recovery are
-distinct oracles.
+could strand in the unpatched library. With the pinned wake-up repair, all generated orders now also own
+the complete external-string recovery oracle.
 
 The native suite freezes production and harness bytes and uses actual factor custody, IndexedDB,
 localStorage, Web Locks, workspace/Goals owners and CodeMirror. It covers pending recovery startup, later
@@ -46,7 +46,7 @@ are compared against an external source-string oracle when the
 original replay completes. Original replay and runtime-fork observations remain separate from claims about
 the library's arbitrary-order semantics.
 
-Seven focused mutations remove pending structs/deletions, serialize pending startup, omit workspace/Goals
+Six current focused mutations remove pending structs/deletions, omit workspace/Goals
 checks, ignore content differences despite equal clocks or mask initialization's failure. Detection requires a named assertion, not an
 unexpected exception or timeout. Native generated failures save their input history without shrinking;
 the unit fork property supports shrinking. Chromium on one macOS host is not platform acceptance.
@@ -60,5 +60,8 @@ node_modules/.bin/vitest run test/pendingProjection.test.ts
 ```
 
 Use a fresh output directory and set `CHROMIUM_PATH` if needed. `--case` selects one named case. Mutation
-IDs are defined in the runner. Migration stays paused until the remaining core/library gates are resolved.
+IDs are defined in the runner. The old `serialize-startup` control is retired: it survives after the phase-three library repair because
+serialized pending startup now completes. Its phase-two failure remains historical evidence, not a current
+fault claim. Exact runtime forks and publication checks remain the production policy. Migration still
+requires its separate preparation and acceptance gates.
 `storage:projection` joins the project check chain after the existing workspace suite.

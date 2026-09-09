@@ -18,7 +18,7 @@ describe('encrypted storage property oracle negative controls', () => {
     expect(() => checkRecovery(source, [3], [])).toThrow(/recovery-/);
     expect(() => checkRecovery(source, [3], [new Uint8Array(source.updates[3]!)])).not.toThrow();
   });
-  it('pins the partial-merge failure even after every missing dependency is delivered', () => {
+  it('recovers the saved partial-merge corpus after the pinned delivery repair', () => {
     const source = makeSource([
       { lane: 0, actor: 1, at: 0, text: 'a', remove: 0 },
       ...Array.from({ length: 3 }, () => ({ lane: 0, actor: 0, at: 0, text: 'a', remove: 0 })),
@@ -31,8 +31,10 @@ describe('encrypted storage property oracle negative controls', () => {
       source.updates.forEach((u, i) => {
         if (!ids.includes(i)) Y.applyUpdate(doc, new Uint8Array(u));
       });
-      // A pinned dependency limitation, not the expected behavior of production compaction.
-      expect(doc.getText('lane0').toString()).toBe('base0');
+      // Runtime delivery repair does not change production's conservative partial-compaction policy.
+      expect(doc.getText('lane0').toString()).toBe(source.final[0]);
+      expect(doc.store.pendingStructs).toBeNull();
+      expect(doc.store.pendingDs).toBeNull();
       expect(source.final[0]).toBe('aaaabase0');
       expect(() => checkRecovery(source, ids, original)).not.toThrow();
     } finally {

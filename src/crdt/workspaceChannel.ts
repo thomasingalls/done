@@ -17,6 +17,8 @@ export const connectWorkspaceChannel = (
   )
     throw Error('A complete workspace channel scope is required.');
   // Validate the owner's lifetime before allocating a channel or retaining listeners.
+  // State updates include unresolved structs and deletion sets. The pinned Yjs wake-up repair
+  // lets a receiver finish this handoff from later original basis without another donor snapshot.
   const initial = workspace.snapshot();
   const channel = new BroadcastChannel(
     'done/accepted-workspace/v1/' +

@@ -813,3 +813,40 @@ fidelity. Added normalization scans/copies, history retention and pinned interna
 memory and independent-review obligations. Default-app cutover, source exclusion and earlier acceptance
 remain owed. Only matrix evidence and its three pins advance; debt statuses, obligations and the
 independent L-2 record are unchanged.
+
+
+### 2026-09-09 — core repair phase 3: Yjs delivery order and pending donor handoff
+
+**Check-in.** Phase 2 was committed as `0399567` with the configured signer. The user then authorized
+original-record ordering and pending donor handoff work. This new checkpoint remains uncommitted.
+
+**Outcome.** An exact-version patch to Yjs 13.6.31 preserves the earlier cross-client wake-up when an
+available reader starts after its dependency. Retry inspection now follows merging the current pending
+union, so a newly parked wake-up satisfied later in that pass is drained before returning. Source, ESM,
+CJS and transitive peers are pinned and checked before build. Wire/storage formats, scoped channel API,
+exact runtime forks, strict projection comparison and incomplete-content retention policy are unchanged.
+
+**Evidence.** [Recorded execution](./storage-conformance-runs/2026-09-09-yjs-delivery.md) passes all 5,040
+orders of the saved original bytes and 150,000 generated original/handoff/concurrent histories. Reversing
+the earlier wake-up change reproduces exactly 78 failed orders. Eight native cases include 100 generated
+channel histories, a saved generated failure, pending deletion/pressure paths and one renderer death
+followed by snapshot-only recovery. All five new native controls are detected; explicit Node/native JSON
+replays pass. The generator caught a second real bookkeeping mismatch despite identical pending bytes;
+draining ready retries fixes it without weakening the projection check. A clean offline frozen-lockfile
+installation and ESM/CJS runtime checks pass.
+
+Full Vitest passes **741 tests / 61 files**, including 3,000 new generated histories and 500 repeated-fork
+histories. Projection passes 12 cases / 100 histories and six current controls. Admission/editor/workspace/
+startup pass 15/12/10/15 cases and 6/3/4/3 controls; trim passes 21 cases / eight controls. Storage properties
+pass 120 histories, six corpus replays, 18 renderer deaths and four shrunk/replayed controls. Journal
+contention and legacy source/export regressions pass. Typecheck, lint/format, patch guard, build/budget,
+vectors/AAD and applicable checks pass; initial JS remains **306.3 kB / 350.0 kB** gzipped. The old serialized-
+startup and partial-merge semantic controls are retired because those saved behaviors now recover; the
+trim deferral-policy control remains. Development harness corrections are recorded separately.
+
+**Next.** Return to bounded pre-active destination/import preparation, with explicit carrier policy and
+verified source input; no migration selection or cleanup follows automatically. Production old-writer
+exclusion, source preservation, default-app integration and existing acceptance remain owed. The local
+library patch and whole-state checking still need independent review, large-state and low-end performance
+acceptance. Only matrix evidence and its three pins advance. No obligation, debt status, payment record or
+independent L-2 record changes.

@@ -2003,3 +2003,38 @@ covers pending startup, later dependencies, local typing/undo, pressure/privacy,
 projection faults. It does not establish arbitrary original-record Yjs ordering or pending donor snapshot
 handoff. Those are the next core gates before destination/import work resumes; no new wire/storage format
 or migration is introduced here. Evidence and three matrix pins advance without obligation/debt payment.
+
+
+### 2026-09-09 — repair Yjs dependency wake-ups before pending handoff
+
+Phase 2 is committed as `0399567`. Core repair phase 3 uses an exact-version local Yjs 13.6.31 patch to
+repair the reproduced integration mechanism. A transport-only ordering rule would leave already stored
+original records and serialized pending unions dependent on delivery assumptions. The patch keeps the
+existing wire format and receive/storage owners and changes the underlying wake-up conditions instead.
+
+Every missing cross-client dependency records its current lower bound before the integration routine
+follows an available reader. That reader can start too late; retaining only its later same-client gap loses
+an earlier wake-up. The saved seven-record fixture demonstrates this at client 102 clocks 0 and 5.
+After the routine merges the newly parked and previously pending unions, it tests all resulting wake-ups,
+including when there was no previous pending union. Satisfied wake-ups are retried before returning.
+The native property generator required this second change: canonical/history copies otherwise retained
+identical pending bytes but different bookkeeping and the strict projection guard closed access.
+
+No comparison is weakened, no complete-basis redelivery is introduced, and no original-record archive is
+added. The existing snapshot update carries unresolved structs and deletion sets. A receiver can finish
+a pending handoff from missing original basis after its donor closes, while preserving receiver-local
+input and human-only undo. Snapshot acceptance remains an ordinary encrypted receive transaction; it is
+not authenticated trim coverage, Account authority or old-writer exclusion.
+
+[Saved, generated, native and mutation evidence](./storage-conformance-runs/2026-09-09-yjs-delivery.md)
+holds the patch to original bytes and independent input ledgers. Source/ESM/CJS hashes, lock/workspace
+pins, peer resolution and a clean frozen install make the local patch reviewable and reproducible. It is
+not an upstream-reviewed release. Existing recursive integration, version-sensitive history/fork internals,
+whole-state comparison, memory and input-to-paint acceptance remain independent obligations.
+
+The previous serialized-startup control and semantic partial-merge control now exercise recovered behavior
+and are retired from those fault batteries. Their historical evidence remains; current properties require
+complete external-string recovery in every generated original order. Conservative incomplete-content
+compaction deferral is unchanged and still has its directed policy control. Migration, carrier choice,
+pre-active destination/import ownership, source exclusion and default-app cutover remain separate work.
+Evidence and three matrix pins advance without obligation/debt payment.

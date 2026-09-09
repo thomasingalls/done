@@ -3,3 +3,6 @@
 # register parser, which silently takes generate-suite-vectors.mjs down with it
 # (docs/review/remediation/HANDOFF.md, "things that will bite you").
 *.md
+# Preserve byte-for-byte execution evidence and the saved native counterexample.
+docs/storage-conformance-runs/*.json
+test/yjs-delivery/ready-wakeup.json

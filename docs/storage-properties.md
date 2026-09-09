@@ -42,7 +42,7 @@ This is generated ordering at named boundaries, not an exhaustive scheduler over
 
 ## Run and replay
 
-- Default: three fixed seeds, 40 histories per seed, then five source-mutant searches. `storage:properties`
+- Default: three fixed seeds, 40 histories per seed, then four source-mutant searches. `storage:properties`
   is part of the project check chain. The default campaign also fails if named command/fault/overlap coverage is absent. Native browser runtime is required; there is no fake-IDB fallback.
 - Explore: `node scripts/storage-properties/run.mjs --seed 12345 --runs 200 --no-mutants`.
 - `--no-shrink` saves the first failure promptly for debugging; normal runs shrink.
@@ -54,8 +54,7 @@ Each failing campaign saves the minimized JSON history, seed, shrink path, shrin
 actual/expected observations, and replays it in a new native context. An irrelevant suffix after the first failing command is removed
 and rechecked separately; the recorded shrink count/path still describe fast-check’s reduction. A mutant counts as detected only
 when the shrunk history repeats a property failure and the same JSON passes on unmodified production.
-Harness exceptions/timeouts never count as detected. The incomplete-merge mutant uses a focused generated
-four-edit causal chain; the other mutants search the full history grammar. The checked-in corpus holds selected minimized
+Harness exceptions/timeouts never count as detected. The current mutants search the full history grammar. The checked-in corpus holds selected minimized
 histories as baseline regressions; mutation counterexamples do not claim production bugs.
 
 ## Limits
@@ -78,3 +77,9 @@ completeness and returns `retained` without reserving, publishing or deleting wh
 deletions are pending. It retries from disk on a later call. Malformed bytes still refuse; the journal
 remains independently authenticated. The generated end-of-history check proves compaction resumes after
 its complete basis is persisted. This is a conservative maintenance restriction, not a Yjs library fix.
+
+The [phase-three Yjs wake-up repair](./yjs-delivery.md) now recovers the saved partial-merge corpus, including
+all later basis updates. The old incomplete-merge mutation is retired from this semantic property battery:
+it no longer represents the saved data-loss defect. The directed content-trim suite still detects that
+mutation as a violation of the unchanged `retained` policy for incomplete disk unions. Expanding compaction
+policy remains separate work; the historical phase-twelve evidence retains its original scope.

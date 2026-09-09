@@ -1,12 +1,7 @@
 import { mutants as trim } from '../content-trim/catalog.mjs';
 export const mutants = [
   ...trim.filter((m) =>
-    [
-      'range-delete',
-      'partial-disk-union',
-      'merge-incomplete-content',
-      'early-delete-receipt',
-    ].includes(m.id),
+    ['range-delete', 'partial-disk-union', 'early-delete-receipt'].includes(m.id),
   ),
   {
     id: 'clear-journal-before-commit',

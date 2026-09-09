@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "scope": "yjs-delivery",
+  "started": "2026-09-09T08:00:33.479Z",
+  "commit": "0399567a965fb2b24128d03aee29ac54caec3f19",
+  "node": "v26.8.1",
+  "files": {
+    "scripts/yjs-delivery/campaign.mjs": "17eb780a375105c528a9d5a47067f18c313aa6a1d075abeeaf68b45339d932f8",
+    "scripts/core-reproductions/source.mjs": "2d43f853e5861ee5d357d05e97afebba9a9f596727c04604a115f4235bb32b46",
+    "test/yjs-delivery/model.mjs": "0b18d0eaa0aa0587952ff226670c83450d06c9612ef83ebf43f5af33173bfa46",
+    "test/yjsDelivery.test.ts": "7498624a2a5c67c3d1c782fe85c4021db802013de01eddcb488534c9ea2b62d5",
+    "test/core-reproductions/original-order.json": "41781a14259177d524886ae4a87a5b15e876a7729da2c24dc75e5e70e0e36933",
+    "vendor-patches/yjs@13.6.31.patch": "d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1",
+    "pnpm-lock.yaml": "0ff2c4bd03d8988de1e9f383f3f96504e9f1d1af6823a53610dffb758e6dc38e",
+    "pnpm-workspace.yaml": "c47ec22acbc22d2c84ecf0e3eb3d55d4b4b39e6e8e20eff4b62d16d3bd22720a",
+    "node_modules/yjs/package.json": "ebe6efd8e33ebc6bc9fea6cce26bf3156733b7156a2889d203bffc1a200b8914",
+    "node_modules/yjs/src/utils/encoding.js": "dadeb87f5abfc3f7734e6236ac45980a964f3e316fd5aec1ffc1d3de03b265f9",
+    "node_modules/yjs/dist/yjs.mjs": "fd569a091caf4eb2ef7a3f3d9a2dfe5e2561e5c31175e9ee4963c6394ce69753",
+    "node_modules/yjs/dist/yjs.cjs": "81369aaeeb565df49d07348e71a52b49c740416f9f42165369c35949b37c4a25"
+  },
+  "runtimeHash": "fd569a091caf4eb2ef7a3f3d9a2dfe5e2561e5c31175e9ee4963c6394ce69753",
+  "mutant": null,
+  "runs": 50000,
+  "seed": 8941,
+  "arms": [
+    {
+      "arm": "originals",
+      "histories": 50000,
+      "pendingDonors": 0,
+      "pendingDeletionDonors": 0,
+      "failed": false,
+      "seed": 8941,
+      "path": null,
+      "shrinks": 0
+    },
+    {
+      "arm": "handoff",
+      "histories": 50000,
+      "pendingDonors": 30016,
+      "pendingDeletionDonors": 26640,
+      "failed": false,
+      "seed": 8941,
+      "path": null,
+      "shrinks": 0
+    },
+    {
+      "arm": "concurrent-handoff",
+      "histories": 50000,
+      "pendingDonors": 37062,
+      "pendingDeletionDonors": 32726,
+      "failed": false,
+      "seed": 8941,
+      "path": null,
+      "shrinks": 0
+    }
+  ],
+  "exhaustive": {
+    "orders": 5040,
+    "failures": 0
+  },
+  "status": "passed",
+  "finished": "2026-09-09T08:04:43.280Z"
+}

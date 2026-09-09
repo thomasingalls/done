@@ -183,13 +183,10 @@ describe('pending document forks', () => {
               fork = next;
               expect(pending(fork)).toEqual(pending(original));
             }
-            // Arbitrary original framing can itself strand in pinned Yjs; only source-ordered delivery
-            // owns the complete external-string oracle here. Every schedule owns fork equivalence.
-            if (!reorder) {
-              expect(view(fork)).toEqual(source.final);
-              expect(fork.store.pendingStructs).toBeNull();
-              expect(fork.store.pendingDs).toBeNull();
-            }
+            // The pinned delivery repair now owns the complete external oracle for every order.
+            expect(view(fork)).toEqual(source.final);
+            expect(fork.store.pendingStructs).toBeNull();
+            expect(fork.store.pendingDs).toBeNull();
           } finally {
             original.destroy();
             fork.destroy();

@@ -1,0 +1,153 @@
+diff --git a/dist/yjs.cjs b/dist/yjs.cjs
+index 5b5690eb2f172cd99d244ff33394ff59f44fe103..d8e789a7f6a24058e064bee6637f43b1fb6ec711 100644
+--- a/dist/yjs.cjs
++++ b/dist/yjs.cjs
+@@ -1623,9 +1623,9 @@ const integrateStructs = (transaction, store, clientsStructRefs) => {
+            * @type {{ refs: Array<GC|Item>, i: number }}
+            */
+           const structRefs = clientsStructRefs.get(/** @type {number} */ (missing)) || { refs: [], i: 0 };
++          // Retain this wake-up even when the available reader starts after the dependency.
++          updateMissingSv(/** @type {number} */ (missing), getState(store, missing));
+           if (structRefs.refs.length === structRefs.i) {
+-            // This update message causally depends on another update message that doesn't exist yet
+-            updateMissingSv(/** @type {number} */ (missing), getState(store, missing));
+             addStackToRestSS();
+           } else {
+             stackHead = structRefs.refs[structRefs.i++];
+@@ -1701,13 +1701,6 @@ const readUpdateV2 = (decoder, ydoc, transactionOrigin, structDecoder = new Upda
+     const restStructs = integrateStructs(transaction, store, ss);
+     const pending = store.pendingStructs;
+     if (pending) {
+-      // check if we can apply something
+-      for (const [client, clock] of pending.missing) {
+-        if (clock < getState(store, client)) {
+-          retry = true;
+-          break
+-        }
+-      }
+       if (restStructs) {
+         // merge restStructs into store.pending
+         for (const [client, clock] of restStructs.missing) {
+@@ -1721,6 +1714,16 @@ const readUpdateV2 = (decoder, ydoc, transactionOrigin, structDecoder = new Upda
+     } else {
+       store.pendingStructs = restStructs;
+     }
++    // Drain wake-ups satisfied later in this pass, including a newly parked pending union.
++    if (store.pendingStructs) {
++      // check if we can apply something
++      for (const [client, clock] of store.pendingStructs.missing) {
++        if (clock < getState(store, client)) {
++          retry = true;
++          break
++        }
++      }
++    }
+     // console.log('time to integrate: ', performance.now() - start) // @todo remove
+     // start = performance.now()
+     const dsRest = readAndApplyDeleteSet(structDecoder, transaction, store);
+@@ -10435,4 +10438,4 @@ exports.tryGc = tryGc;
+ exports.typeListToArraySnapshot = typeListToArraySnapshot;
+ exports.typeMapGetAllSnapshot = typeMapGetAllSnapshot;
+ exports.typeMapGetSnapshot = typeMapGetSnapshot;
+-//# sourceMappingURL=yjs.cjs.map
++// Upstream source map omitted for the locally patched integration block.
+diff --git a/dist/yjs.mjs b/dist/yjs.mjs
+index 10d633d8e71171b2702c45376553832504921877..87bd4f04da9263a49e770aea4aa726149f9bf05f 100644
+--- a/dist/yjs.mjs
++++ b/dist/yjs.mjs
+@@ -1586,9 +1586,9 @@ const integrateStructs = (transaction, store, clientsStructRefs) => {
+            * @type {{ refs: Array<GC|Item>, i: number }}
+            */
+           const structRefs = clientsStructRefs.get(/** @type {number} */ (missing)) || { refs: [], i: 0 };
++          // Retain this wake-up even when the available reader starts after the dependency.
++          updateMissingSv(/** @type {number} */ (missing), getState(store, missing));
+           if (structRefs.refs.length === structRefs.i) {
+-            // This update message causally depends on another update message that doesn't exist yet
+-            updateMissingSv(/** @type {number} */ (missing), getState(store, missing));
+             addStackToRestSS();
+           } else {
+             stackHead = structRefs.refs[structRefs.i++];
+@@ -1664,13 +1664,6 @@ const readUpdateV2 = (decoder, ydoc, transactionOrigin, structDecoder = new Upda
+     const restStructs = integrateStructs(transaction, store, ss);
+     const pending = store.pendingStructs;
+     if (pending) {
+-      // check if we can apply something
+-      for (const [client, clock] of pending.missing) {
+-        if (clock < getState(store, client)) {
+-          retry = true;
+-          break
+-        }
+-      }
+       if (restStructs) {
+         // merge restStructs into store.pending
+         for (const [client, clock] of restStructs.missing) {
+@@ -1684,6 +1677,16 @@ const readUpdateV2 = (decoder, ydoc, transactionOrigin, structDecoder = new Upda
+     } else {
+       store.pendingStructs = restStructs;
+     }
++    // Drain wake-ups satisfied later in this pass, including a newly parked pending union.
++    if (store.pendingStructs) {
++      // check if we can apply something
++      for (const [client, clock] of store.pendingStructs.missing) {
++        if (clock < getState(store, client)) {
++          retry = true;
++          break
++        }
++      }
++    }
+     // console.log('time to integrate: ', performance.now() - start) // @todo remove
+     // start = performance.now()
+     const dsRest = readAndApplyDeleteSet(structDecoder, transaction, store);
+@@ -10296,4 +10299,4 @@ if (glo[importIdentifier] === true) {
+ glo[importIdentifier] = true;
+ 
+ export { AbsolutePosition, AbstractConnector, AbstractStruct, AbstractType, YArray as Array, ContentAny, ContentBinary, ContentDeleted, ContentDoc, ContentEmbed, ContentFormat, ContentJSON, ContentString, ContentType, Doc, GC, ID, Item, YMap as Map, PermanentUserData, RelativePosition, Skip, Snapshot, YText as Text, Transaction, UndoManager, UpdateDecoderV1, UpdateDecoderV2, UpdateEncoderV1, UpdateEncoderV2, YXmlElement as XmlElement, YXmlFragment as XmlFragment, YXmlHook as XmlHook, YXmlText as XmlText, YArrayEvent, YEvent, YMapEvent, YTextEvent, YXmlEvent, applyUpdate, applyUpdateV2, cleanupYTextFormatting, compareIDs, compareRelativePositions, convertUpdateFormatV1ToV2, convertUpdateFormatV2ToV1, createAbsolutePositionFromRelativePosition, createDeleteSet, createDeleteSetFromStructStore, createDocFromSnapshot, createID, createRelativePositionFromJSON, createRelativePositionFromTypeIndex, createSnapshot, decodeRelativePosition, decodeSnapshot, decodeSnapshotV2, decodeStateVector, decodeUpdate, decodeUpdateV2, diffUpdate, diffUpdateV2, emptySnapshot, encodeRelativePosition, encodeSnapshot, encodeSnapshotV2, encodeStateAsUpdate, encodeStateAsUpdateV2, encodeStateVector, encodeStateVectorFromUpdate, encodeStateVectorFromUpdateV2, equalDeleteSets, equalSnapshots, findIndexSS, findRootTypeKey, getItem, getItemCleanEnd, getItemCleanStart, getState, getTypeChildren, isDeleted, isParentOf, iterateDeletedStructs, logType, logUpdate, logUpdateV2, mergeDeleteSets, mergeUpdates, mergeUpdatesV2, obfuscateUpdate, obfuscateUpdateV2, parseUpdateMeta, parseUpdateMetaV2, readUpdate, readUpdateV2, relativePositionToJSON, snapshot, snapshotContainsUpdate, transact, tryGc, typeListToArraySnapshot, typeMapGetAllSnapshot, typeMapGetSnapshot };
+-//# sourceMappingURL=yjs.mjs.map
++// Upstream source map omitted for the locally patched integration block.
+diff --git a/src/utils/encoding.js b/src/utils/encoding.js
+index b195ccc3ba37fee317b79724516633550eb98145..192cd23ee819706ddb6236af99673396a9484f69 100644
+--- a/src/utils/encoding.js
++++ b/src/utils/encoding.js
+@@ -317,9 +317,9 @@ const integrateStructs = (transaction, store, clientsStructRefs) => {
+            * @type {{ refs: Array<GC|Item>, i: number }}
+            */
+           const structRefs = clientsStructRefs.get(/** @type {number} */ (missing)) || { refs: [], i: 0 }
++          // Retain this wake-up even when the available reader starts after the dependency.
++          updateMissingSv(/** @type {number} */ (missing), getState(store, missing))
+           if (structRefs.refs.length === structRefs.i) {
+-            // This update message causally depends on another update message that doesn't exist yet
+-            updateMissingSv(/** @type {number} */ (missing), getState(store, missing))
+             addStackToRestSS()
+           } else {
+             stackHead = structRefs.refs[structRefs.i++]
+@@ -395,13 +395,6 @@ export const readUpdateV2 = (decoder, ydoc, transactionOrigin, structDecoder = n
+     const restStructs = integrateStructs(transaction, store, ss)
+     const pending = store.pendingStructs
+     if (pending) {
+-      // check if we can apply something
+-      for (const [client, clock] of pending.missing) {
+-        if (clock < getState(store, client)) {
+-          retry = true
+-          break
+-        }
+-      }
+       if (restStructs) {
+         // merge restStructs into store.pending
+         for (const [client, clock] of restStructs.missing) {
+@@ -415,6 +408,16 @@ export const readUpdateV2 = (decoder, ydoc, transactionOrigin, structDecoder = n
+     } else {
+       store.pendingStructs = restStructs
+     }
++    // Drain wake-ups satisfied later in this pass, including a newly parked pending union.
++    if (store.pendingStructs) {
++      // check if we can apply something
++      for (const [client, clock] of store.pendingStructs.missing) {
++        if (clock < getState(store, client)) {
++          retry = true
++          break
++        }
++      }
++    }
+     // console.log('time to integrate: ', performance.now() - start) // @todo remove
+     // start = performance.now()
+     const dsRest = readAndApplyDeleteSet(structDecoder, transaction, store)
