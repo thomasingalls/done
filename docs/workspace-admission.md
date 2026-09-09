@@ -32,6 +32,14 @@ is not persisted; reopening starts fresh history. Disposal is not a JavaScript-m
 This strategy needs performance/memory and independent correctness review before application acceptance.
 The phase-six preparation timings do not measure this extra work or pass the low-end input-to-paint budget.
 
+[Core repair phase 2](./pending-projection.md) now preserves exact pending struct/deletion bytes and
+missing-clock bookkeeping separately from integrated serialization, including the initial projection.
+After every accepted local or remote transition, the owner checks integrated content and pending state
+against canonical before publishing views/export or sending local bytes. A detected runtime mismatch
+closes access with `projection-mismatch`, preserving durable records and the original failure through
+initialization shutdown. It is not evidence of corrupted storage or authority to clear it. The additional
+state scans/copies still need performance and memory acceptance.
+
 Typing and card/Goals paste use the existing Markdown commands. Paste slices preserve surrogate pairs,
 contain at most 1000 UTF-16 units and share one undo step. The 16 KiB encoded-delta guard remains. Large
 structural/bulk, deletion, formatting or undo commands can exceed it and block visibly; general large-command
@@ -46,6 +54,8 @@ receive path. The namespace includes slot, principal and workspace. It is coordi
 tabs, not Account envelope authority, reliable network delivery, old-writer exclusion or arbitrary
 snapshot-size support. The owner enforces its receive queue budget; refusals reach the required error
 callback. Snapshot traffic is not a coverage/trim certificate. Close/repair shuts down the channel.
+Pending donor serialization and arbitrary original-update ordering remain separate library/transport gates;
+the runtime-fork repair does not change this wire protocol or prove those cases safe.
 
 `node scripts/workspace-admission/run.mjs` runs isolated Chromium schedules and named source mutants.
 The runner freezes all production source and hashes source, fixture, contract and guide inputs. It uses

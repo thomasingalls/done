@@ -1,0 +1,79 @@
+{
+  "history": {
+    "edits": [
+      {
+        "lane": 1,
+        "actor": 1,
+        "at": 1,
+        "remove": 2,
+        "text": "]!Ts"
+      },
+      {
+        "lane": 1,
+        "actor": 1,
+        "at": 5,
+        "remove": 3,
+        "text": "[9"
+      },
+      {
+        "lane": 2,
+        "actor": 0,
+        "at": 16,
+        "remove": 3,
+        "text": ""
+      },
+      {
+        "lane": 1,
+        "actor": 2,
+        "at": 4,
+        "remove": 4,
+        "text": "KUl"
+      },
+      {
+        "lane": 0,
+        "actor": 2,
+        "at": 29,
+        "remove": 3,
+        "text": "f&v$"
+      },
+      {
+        "lane": 1,
+        "actor": 0,
+        "at": 14,
+        "remove": 4,
+        "text": "n*2"
+      },
+      {
+        "lane": 1,
+        "actor": 2,
+        "at": 19,
+        "remove": 3,
+        "text": "~x]b"
+      },
+      {
+        "lane": 1,
+        "actor": 2,
+        "at": 27,
+        "remove": 4,
+        "text": "A0]"
+      },
+      {
+        "lane": 2,
+        "actor": 1,
+        "at": 8,
+        "remove": 1,
+        "text": "lEkK"
+      }
+    ],
+    "keys": [
+      3,
+      9,
+      9,
+      22,
+      35,
+      18,
+      12
+    ],
+    "hour": 2
+  }
+}

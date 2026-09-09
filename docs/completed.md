@@ -782,3 +782,34 @@ dependency delivery against saved original records, before migration resumes. Th
 is not retried; no Yjs/projection repair, generation transition or default-app switch is included. Migration,
 source exclusion, large-input performance and prior acceptance remain owed. Only matrix evidence and its
 three pins advance; obligations/debt statuses and the independent L-2 record remain unchanged.
+
+
+### 2026-09-09 — core repair phase 2: exact pending forks and checked projections
+
+**Check-in.** Journal contention repair was committed as `fc1ff41`, using the configured SSH signer.
+The user then authorized phase 2. This new checkpoint remains uncommitted.
+
+**Outcome.** Private drafts, runtime history and initial workspace/Goals projections now preserve pending
+struct bytes, missing-clock maps and deletion bytes separately from integrated-state serialization. Every
+accepted transition checks integrated content and pending state against canonical before ordinary
+publication. A mismatch closes access with typed runtime unavailability and preserves durable records.
+The initialization error survives its closing session's cancelled barrier. No stored/wire-format, vendor,
+transport or migration change is included.
+
+**Evidence.** [Recorded execution](./storage-conformance-runs/2026-09-09-pending-projection.md) passes
+12 native cases, 100 generated edit/delivery/undo histories, saved JSON replay and one renderer death;
+all seven focused mutants are detected. Tests cover local typing while dependencies are absent, later
+editor/export agreement, human-only undo/redo, refused-history privacy and mismatch recovery from retained
+originals. Existing admission/editor/workspace/startup regressions pass 15/12/10/15 cases and detect
+6/3/4/3 mutants; journal contention passes 12 cases and another 100 generated read histories. Full Vitest
+passes **736 tests / 60 files**, including seven new tests and 500 generated repeated-fork histories.
+Typecheck, focused lint/format, build/budget, vectors/AAD and applicable checks pass; initial JS remains
+**306.3 kB / 350.0 kB** gzipped. Evidence records the two initial fork failures, the newly caught masked
+initialization failure and native harness corrections.
+
+**Next.** Resolve the pinned Yjs original-record ordering and pending donor snapshot handoff gates against
+saved original bytes before returning to migration. Runtime agreement does not prove canonical semantic
+fidelity. Added normalization scans/copies, history retention and pinned internals retain their performance,
+memory and independent-review obligations. Default-app cutover, source exclusion and earlier acceptance
+remain owed. Only matrix evidence and its three pins advance; debt statuses, obligations and the
+independent L-2 record are unchanged.

@@ -48,39 +48,40 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # journal contention repair complete; pending Yjs/projection repair precedes migration
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, journal-contention.md, core-reproductions.md, legacy-migration-prep.md]
+status: in flight # pending-fork/projection repair complete; library/transport gates precede migration
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, pending-projection.md, core-reproductions.md, legacy-migration-prep.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-09
 ```
 
-**Just completed.** Core reproductions are committed as `a292103`. Repair phase 1 adds
-[bounded journal capture retries](./journal-contention.md) to initialization, recovery and flush. There
-are three total attempts under the same live task/permit; only changed captures retry. Content work starts
-once after stable capture and is not retried by the helper. Transient contention completes without human
-Retry while later input stays queued; exhaustion reports `journal-busy`, preserving input for explicit
-Retry/discard. Startup distinguishes busy from damage/unavailable storage. This repair checkpoint remains
-uncommitted; its outcome is appended to [completed.md](./completed.md).
+**Just completed.** Journal contention repair is committed as `fc1ff41`. Core repair phase 2 adds
+[exact pending-state forks and checked projections](./pending-projection.md): private draft/history and
+initial workspace/Goals copies preserve pending bytes and missing-clock bookkeeping separately from
+integrated serialization. Every accepted local/remote transition checks projection state against canonical
+before ordinary publication. Runtime mismatch closes access while retaining durable originals; its typed
+failure survives initialization shutdown. This checkpoint remains uncommitted, with its outcome appended
+to [completed.md](./completed.md).
 
-**Evidence and qualifications.** [Recorded execution](./storage-conformance-runs/2026-09-09-journal-contention.md)
-passes 12 native cases including 100 generated read histories, and detects all four focused mutants.
-The existing journal/admission/startup suites pass 17/15/15 cases and detect 6/6/3 mutants. Full Vitest passes
-729 tests / 59 files, including seven new tests and another 100 generated churn schedules. Typecheck,
-focused lint/format, build/budget, vectors/AAD and applicable checks pass; initial JS remains 306.3 kB / 350.0 kB
-gzipped. Evidence covers cancellation timer removal and permit release, bounded pressure and no repeated
-content sealing. Controlled CDP/reentrant races do not establish ordinary two-tab frequency; the earlier
-uninterrupted overlap and 3,200 simultaneous keystrokes did not reproduce contention on Chromium.
+**Evidence and qualifications.** [Recorded execution](./storage-conformance-runs/2026-09-09-pending-projection.md)
+passes 12 native cases, 100 generated edit/delivery/undo histories, saved replay and one renderer death.
+All seven focused mutants are detected. Tests cover pending recovery startup, local typing before basis
+delivery, later editor/export agreement, human-only undo/redo, refusal privacy and runtime-mismatch recovery.
+Existing admission/editor/workspace/startup suites pass 15/12/10/15 cases and detect 6/3/4/3 mutants; journal
+contention passes 12 cases and another 100 generated read histories. Full Vitest passes 736 tests / 60 files,
+including seven new tests and 500 generated repeated-fork histories. Typecheck, focused lint/format,
+build/budget, vectors/AAD and applicable checks pass; initial JS remains 306.3 kB / 350.0 kB gzipped.
+A directed test caught initialization masking a projection failure as cancellation; the new control pins
+that correction. The normalizer's full-state work is not a memory or input-to-paint acceptance result.
 
-**Next bounded work.** Core repair phase 2: preserve or recover pending Yjs information and maintain
-canonical/editor/export agreement through later dependency delivery. Reuse the saved original-framing
-corpus and independent semantic oracle. Text and integrated vectors can agree at promotion while pending
-information differs; a promotion-only comparison is insufficient. The prior campaign found 169 failures
-in 50,000 arbitrary original-record permutations, none observed in 50,000 sender-ordered or 50,000 complete-
-join histories. Its seven-record minimized case fails in 78 of 5,040 orders, with no failures among 210
-sender-ordered orders. Those scoped observations remain library/projection gates, not general guarantees.
-No Yjs/projection repair is included in phase 1; migration remains paused. The review's other recovery,
-maintenance/cost, row-limit, nonce-wording and plaintext-scanning findings remain outside this selected repair.
+**Next bounded work.** Resolve pinned Yjs original-record delivery-order behavior and pending donor
+snapshot handoff against the saved bytes and independent semantic oracle. Runtime agreement does not
+prove canonical semantic fidelity. The earlier campaign found 169 failures in 50,000 arbitrary original-
+record permutations, none observed in 50,000 sender-ordered or 50,000 complete-join histories. Its seven-
+record minimized case fails in 78 of 5,040 orders, with no failures among 210 sender-ordered orders. Phase 2
+changes no vendor code or wire serialization and does not pay that library/transport gate. Migration
+remains paused. The review's other recovery, maintenance/cost, row-limit, nonce-wording and plaintext-
+scanning findings remain outside this selected repair.
 
 **Deferred migration integration.** The pre-active destination/import owner still needs explicit verified
 source and carrier-policy input, mandatory-factor fresh writable store/key/counter scope and bounded
@@ -98,7 +99,8 @@ clean the source. Preserve legacy recovery material until verified encrypted sel
 requires no recognizable app-managed plaintext. No boolean assertion or matching digest pays this gate.
 
 **Preparation/acceptance gate.** Workspace history retains deleted runtime content with gc:false and
-copies Yjs Item.redone/delete-set state through version-sensitive internals, adding a second full clone.
+copies Yjs Item.redone/delete-set state through version-sensitive internals, adding a second full clone. Core repair phase 2 also normalizes and compares
+whole integrated state after each accepted transition.
 History is runtime-only; no memory bound, zeroization or low-end input-to-paint budget pass is claimed.
 Large structural/bulk/undo/deletion output still faces the 16 KiB guard and needs general bounded adapters.
 Compaction scans the full disk union; its 4 MiB output bound does not bound input memory. Dependency deferral
@@ -110,7 +112,7 @@ custody: `a6d39a2`; content: `468cbe2`; synchronous journal: `9e60c6a`; admissio
 workspace commands/history: `a48c090`; owned startup: `a916d61`; Local genesis/index: `ee60528`;
 scoped Local clear: `d7c0f32`; content compaction: `85c7404`; production carrier properties and incomplete-
 compaction deferral: `a0811e2`; read-only source preparation: `e64cd2a`; verified export capture: `da5def9`;
-core reproductions: `a292103`. [Phase-twelve execution](./storage-conformance-runs/2026-09-09-storage-properties.md)
+core reproductions: `a292103`; journal contention repair: `fc1ff41`. [Phase-twelve execution](./storage-conformance-runs/2026-09-09-storage-properties.md)
 records 120 encrypted histories, six corpus replays, five shrunk mutants and 18 renderer deaths; those
 separate browser suites were not rerun this phase. The [shared candidate run](./storage-conformance-runs/2026-09-08.md)
 contains 57 subcases; all three pinned candidates fail the corrected contract and none is merged.
@@ -121,7 +123,7 @@ shared/multiple-workspace custody, Account removal/service revocation, partial-g
 cleared-slot reuse need subsequent owners. Additional Local workspaces, Account verifier/receive/checkpoint
 authority and PRF remain incomplete. L-3 composes generation/custody references, lifetimes and interrupted
 phases; these components do not implement retirement. L-4 carries independent storage/crypto review,
-supported profiles/authenticators, low-end performance and platform acceptance. This repair checkpoint advances only matrix evidence and its three pins;
+supported profiles/authenticators, low-end performance and platform acceptance. This checkpoint advances only matrix evidence and its three pins;
 obligations/debt statuses remain unchanged. No checkpoint pays old-writer cutover/release.
 
 **Scope.** This seat owns L-1 implementation/evidence. The independent L-2 record below is unchanged.

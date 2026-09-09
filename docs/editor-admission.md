@@ -42,6 +42,12 @@ History shape affects cost even when visible text is small. Optimizing preparati
 complete input-to-paint path are still required before accepting this implementation against the low-end
 interaction budget. This checkpoint does not revise that budget or enable the new path by default.
 
+[Core repair phase 2](./pending-projection.md) replaces the initial pending-state serialization with a
+detached runtime fork. Every accepted transition checks the Yjs projection's integrated content and
+pending bookkeeping against canonical before updating the public surface. Runtime mismatch disables
+ordinary access while preserving durable originals; it does not classify valid pending data as storage
+corruption. These extra state scans/copies are outside the historical preparation profile below.
+
 `node scripts/editor-admission/run.mjs` runs isolated Chromium cases, source mutants and a preparation
 profile, with optional `--case`, `--output` and `--no-mutants`. All production source, fixtures and relevant
 contracts are hashed and the executed source copy is immutable. Faults use actual content transactions,

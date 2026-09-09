@@ -1,15 +1,9 @@
 /** One admission owner and one human undo history for every workspace mutation surface. */
 import { EditorSelection } from '@codemirror/state';
-import {
-  Y,
-  applyUpdate,
-  createHistoryDoc,
-  workspaceUndo,
-  forkWorkspaceHistory,
-  type YUndoManager,
-} from './yjs';
+import { Y, applyUpdate, workspaceUndo, forkWorkspaceHistory, type YUndoManager } from './yjs';
 import {
   openAdmissionSession,
+  AdmissionError,
   type AdmissionOptions,
   type AdmissionSession,
   type AdmissionReceipt,
@@ -297,10 +291,8 @@ export const createAdmittedWorkspace = async (
     }
   };
   try {
-    const doc = createHistoryDoc(),
-      bytes = session.snapshot();
+    const doc = session.fork();
     try {
-      applyUpdate(doc, bytes);
       const version = doc.getMap('meta').get('schemaVersion');
       if (
         version !== undefined &&
@@ -318,9 +310,15 @@ export const createAdmittedWorkspace = async (
     } catch (error) {
       doc.destroy();
       throw error;
-    } finally {
-      bytes.fill(0);
     }
+    const verifyProjection = () => {
+      if (!session.matches(accepted!.history.doc))
+        throw new AdmissionError(
+          'projection-mismatch',
+          'Workspace projection differs from accepted canonical state.',
+        );
+    };
+    verifyProjection();
     session.subscribe((event) => {
       try {
         live();
@@ -332,6 +330,8 @@ export const createAdmittedWorkspace = async (
           dispose(previous);
           outcomes.set(accepted.group, accepted.value);
         } else applyUpdate(accepted!.history.doc, event.update, 'received');
+        // Check every accepted transition, including later remote dependencies, before exposure.
+        verifyProjection();
         emit();
         if (event.source === 'local')
           for (const send of [...senders]) {
@@ -383,7 +383,9 @@ export const createAdmittedWorkspace = async (
     live();
   } catch (error) {
     await close();
-    throw error;
+    // A projection listener can close the session during admitted initialization. Preserve its
+    // specific failure instead of reclassifying the subsequent rejected barrier as cancellation.
+    throw failure ?? error;
   }
   const read = (): WorkspaceSnapshot => {
     live();

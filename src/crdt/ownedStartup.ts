@@ -28,6 +28,8 @@ export const startupRefusal = (cause: unknown, signal?: AbortSignal): StartupDis
     return Object.freeze({ kind: 'unlock-failed', reason: 'factor-wrong-or-seal-damaged' });
   if (code === 'journal-busy')
     return Object.freeze({ kind: 'busy', reason: 'journal-read-contention' });
+  if (code === 'projection-mismatch')
+    return Object.freeze({ kind: 'unavailable', reason: 'runtime-projection-mismatch' });
   if (code === 'migration-required')
     return Object.freeze({ kind: 'migration-required', reason: 'custody-migration-required' });
   if (code === 'creation-pending')

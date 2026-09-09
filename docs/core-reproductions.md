@@ -8,7 +8,9 @@ with the reviewer's search.
 
 **Historical execution:** this investigation is committed as **a292103**. Its browser runner intentionally
 expects the old journal-blocking behavior. Use that revision to replay it; the current [bounded journal
-repair suite](./journal-contention.md) tests the corrected behavior. The Yjs/projection findings remain open.
+repair suite](./journal-contention.md) tests the corrected behavior. [Core repair phase 2](./pending-projection.md)
+now addresses runtime pending forks and projection agreement. The original-order library finding and pending
+donor snapshot handoff remain open; the historical observations below retain their original scope.
 
 ## Results
 

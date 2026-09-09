@@ -4,9 +4,10 @@ import { history, undoDepth, redoDepth } from '@codemirror/commands';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { indentUnit } from '@codemirror/language';
 import { textCommands as commands } from './admittedCommands';
-import { Y, createDoc, applyUpdate } from '../crdt/yjs';
+import { Y, applyUpdate } from '../crdt/yjs';
 import {
   openAdmissionSession,
+  AdmissionError,
   type AdmissionOptions,
   type AdmissionSession,
   type AdmissionStatus,
@@ -96,8 +97,7 @@ export const createAdmittedText = async (
   open: (options: AdmissionOptions) => Promise<AdmissionSession>,
   validateReceive: AdmissionOptions['validateReceive'],
 ): Promise<AdmittedText> => {
-  const projection = createDoc(),
-    text = projection.getText('master');
+  let projection!: Y.Doc, text!: Y.Text;
   const listeners = new Set<() => void>(),
     senders = new Set<(b: Bytes) => void>();
   let accepted!: EditorState,
@@ -172,9 +172,6 @@ export const createAdmittedText = async (
       }
       return remaining ? { remaining } : undefined;
     },
-  }).catch((error) => {
-    projection.destroy();
-    throw error;
   });
   const live = () => {
     if (failure) throw failure;
@@ -183,13 +180,17 @@ export const createAdmittedText = async (
     if (session.status.pressure?.code === 'repair-required')
       throw Error('Repair is required before ordinary text access.');
   };
+  const verifyProjection = () => {
+    if (!session.matches(projection))
+      throw new AdmissionError(
+        'projection-mismatch',
+        'Text projection differs from accepted canonical state.',
+      );
+  };
   try {
-    const recovered = session.snapshot();
-    try {
-      applyUpdate(projection, recovered);
-    } finally {
-      recovered.fill(0);
-    }
+    projection = session.fork();
+    text = projection.getText('master');
+    verifyProjection();
     accepted = EditorState.create({
       doc: text.toString(),
       extensions: [
@@ -205,7 +206,7 @@ export const createAdmittedText = async (
     });
   } catch (error) {
     await session.close();
-    projection.destroy();
+    projection?.destroy();
     throw error;
   }
   const emit = () => {
@@ -241,6 +242,7 @@ export const createAdmittedText = async (
       } finally {
         text.unobserve(observe);
       }
+      verifyProjection();
       if (event.source === 'local') {
         if (!candidate || candidate.doc.toString() !== text.toString())
           throw Error('Accepted command projection mismatch.');

@@ -1974,3 +1974,32 @@ focused sensitivity controls. This does not strengthen the earlier unproven rout
 claim. No Yjs/projection repair is included. Phase 2 must preserve or recover pending information and verify
 projection agreement when later dependencies arrive; then migration preparation can resume. Evidence and
 three matrix pins advance without paying any obligation or changing debt status.
+
+
+### 2026-09-09 — preserve pending runtime state and verify projection before publication
+
+Journal contention repair is committed as `fc1ff41`. Core repair phase 2 copies integrated state through
+a detached read-only view of the pinned Yjs encoder and then copies exact pending structs, missing-clock
+bookkeeping and pending deletion bytes. Reapplying the encoder's merged pending snapshot changed that
+bookkeeping in the saved corpus. The runtime copy neither mutates source fields nor aliases source buffers.
+Workspace undo stacks/redone links retain the existing seam; initial projections use admission's owned
+detached fork. Canonical state itself is never lent to commands, projections or observers.
+
+Every accepted local/remote transition checks integrated clocks/deletions, normalized integrated content,
+pending bytes and the missing-clock map before publishing views or outgoing local updates. Checking only
+visible text or integrated vectors at promotion would miss the reproduced later divergence. Normalization
+accounts for undo-only deleted content and split Item boundaries; it adds whole-state scans/copies and
+still needs memory and low-end latency acceptance. Version-sensitive encoder/store/history details remain
+inside the pinned seam and need reevaluation on a dependency upgrade.
+
+An unexpected mismatch closes ordinary access with `projection-mismatch` while preserving durable
+originals. Startup reports unavailable / runtime-projection-mismatch; valid pending data is not thereby
+classified as corrupted storage. A fresh open constructs a new runtime projection. No silent active undo
+reset, carrier rewrite or deletion is authorized. A directed test caught initialization replacing this
+failure with its later inactive-session barrier error; the owner now preserves its original failure.
+
+[Native, generated and mutation evidence](./storage-conformance-runs/2026-09-09-pending-projection.md)
+covers pending startup, later dependencies, local typing/undo, pressure/privacy, renderer death and explicit
+projection faults. It does not establish arbitrary original-record Yjs ordering or pending donor snapshot
+handoff. Those are the next core gates before destination/import work resumes; no new wire/storage format
+or migration is introduced here. Evidence and three matrix pins advance without obligation/debt payment.

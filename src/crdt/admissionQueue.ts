@@ -1,4 +1,4 @@
-import { applyUpdate, createDoc, encodeState, type YDoc } from './yjs';
+import { applyUpdate, createDoc, encodeState, forkDoc, sameDocState, type YDoc } from './yjs';
 import { MAX_JOURNAL_UPDATE, type JournalSession } from './custody';
 import type { Bytes } from './custodyCrypto';
 import {
@@ -21,6 +21,7 @@ export type AdmissionFailure =
   | 'receive-refused'
   | 'storage-failed'
   | 'repair-required'
+  | 'projection-mismatch'
   | 'discarded'
   | 'inactive-session';
 export class AdmissionError extends Error {
@@ -70,6 +71,10 @@ export interface AdmissionSession {
   receive(update: Bytes): AdmissionTicket;
   /** A detached accepted-state update, including Yjs pending structs/delete sets. */
   snapshot(): Bytes;
+  /** Detached runtime copy for projection startup; caller owns/destroys it. Never the canonical doc. */
+  fork(): YDoc;
+  /** Read-only consistency check against accepted canonical state, including pending information. */
+  matches(doc: YDoc): boolean;
   subscribe(listener: (event: AcceptedUpdate) => void): () => void;
   onStatus(listener: (status: AdmissionStatus) => void): () => void;
   /** FIFO barrier over every input observed before this call; forces the journal to IDB. */
@@ -503,6 +508,18 @@ export const createAdmissionOwner = async (
           'Ordinary snapshots are disabled until repair.',
         );
       return new Uint8Array(encodeState(canonical));
+    },
+    fork: () => {
+      live();
+      if (repairRequired)
+        throw new AdmissionError('repair-required', 'Workspace repair is required.');
+      return forkDoc(canonical, false);
+    },
+    matches: (doc: YDoc) => {
+      live();
+      if (repairRequired)
+        throw new AdmissionError('repair-required', 'Workspace repair is required.');
+      return sameDocState(canonical, doc);
     },
     subscribe: (listener: (event: AcceptedUpdate) => void) => {
       live();

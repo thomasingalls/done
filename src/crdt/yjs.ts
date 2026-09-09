@@ -35,6 +35,79 @@ export const newArray = <T>(): YArray<T> => new Y.Array<T>();
 
 export const encodeState = (doc: YDoc): Uint8Array => Y.encodeStateAsUpdate(doc);
 
+/**
+ * Pinned v13 encoder read view. encodeStateAsUpdate reads store.clients and the two pending fields.
+ * Excluding pending fields here avoids its merge/diff step changing the missing-dependency map on
+ * a subsequent apply. This shallow view is never applied/mutated and never changes the source doc.
+ */
+const encodeIntegratedState = (doc: YDoc): Uint8Array =>
+  Y.encodeStateAsUpdate({
+    ...doc,
+    store: { ...doc.store, pendingStructs: null, pendingDs: null },
+  } as YDoc);
+
+/** Detached runtime fork, not a wire/archive format. Preserve pending bookkeeping without replaying it. */
+export const forkDoc = (source: YDoc, gc = true): YDoc => {
+  const doc = new Y.Doc({ gc }),
+    bytes = encodeIntegratedState(source);
+  try {
+    Y.applyUpdate(doc, bytes);
+    const pending = source.store.pendingStructs;
+    doc.store.pendingStructs = pending
+      ? { missing: new Map(pending.missing), update: pending.update.slice() }
+      : null;
+    doc.store.pendingDs = source.store.pendingDs?.slice() ?? null;
+    return doc;
+  } catch (error) {
+    doc.destroy();
+    throw error;
+  } finally {
+    bytes.fill(0);
+  }
+};
+const equalBytes = (a: Uint8Array | null, b: Uint8Array | null): boolean =>
+  a === b || (a !== null && b !== null && a.length === b.length && a.every((v, i) => v === b[i]));
+const normalizedIntegratedState = (source: YDoc): Uint8Array => {
+  const doc = createDoc(),
+    bytes = encodeIntegratedState(source);
+  try {
+    Y.applyUpdate(doc, bytes);
+    return encodeIntegratedState(doc);
+  } finally {
+    bytes.fill(0);
+    doc.destroy();
+  }
+};
+/**
+ * Compare integrated identity/deletions/content plus exact pending bytes and dependency bookkeeping.
+ * Normalizing integrated data with gc:true ignores runtime undo retention and Item split boundaries.
+ * This scans/copies document state; it is not an input-latency or memory-budget acceptance receipt.
+ */
+export const sameDocState = (a: YDoc, b: YDoc): boolean => {
+  if (!Y.equalSnapshots(Y.snapshot(a), Y.snapshot(b))) return false;
+  const ap = a.store.pendingStructs,
+    bp = b.store.pendingStructs;
+  if (Boolean(ap) !== Boolean(bp)) return false;
+  if (
+    ap &&
+    bp &&
+    (ap.missing.size !== bp.missing.size ||
+      [...ap.missing].some(([id, clock]) => bp.missing.get(id) !== clock) ||
+      !equalBytes(ap.update, bp.update))
+  )
+    return false;
+  if (!equalBytes(a.store.pendingDs, b.store.pendingDs)) return false;
+  const aa = normalizedIntegratedState(a);
+  let bb: Uint8Array | undefined;
+  try {
+    bb = normalizedIntegratedState(b);
+    return equalBytes(aa, bb);
+  } finally {
+    aa.fill(0);
+    bb?.fill(0);
+  }
+};
+
 /** Pinned v13 integration state. Incomplete disk unions must retain their original update framing. */
 export const hasPendingUpdates = (doc: YDoc): boolean =>
   doc.store.pendingStructs !== null || doc.store.pendingDs !== null;
@@ -240,10 +313,8 @@ export const workspaceUndo = (doc: YDoc, origin: unknown): YUndoManager =>
  * Metadata is application-owned structured-cloneable selection data, never Yjs types/callbacks.
  */
 export const forkWorkspaceHistory = (source: YUndoManager, origin: unknown): YUndoManager => {
-  const doc = createHistoryDoc(),
-    bytes = encodeState(source.doc);
+  const doc = forkDoc(source.doc, false);
   try {
-    applyUpdate(doc, bytes);
     doc.transact((tr) => {
       for (const structs of source.doc.store.clients.values())
         for (const item of structs) {
@@ -282,7 +353,5 @@ export const forkWorkspaceHistory = (source: YUndoManager, origin: unknown): YUn
   } catch (error) {
     doc.destroy();
     throw error;
-  } finally {
-    bytes.fill(0);
   }
 };

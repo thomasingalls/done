@@ -1,5 +1,5 @@
 /** Private Yjs preparation. Never lend the canonical document to a command or observer. */
-import { Y, createDoc, applyUpdate, encodeState, type YDoc } from './yjs';
+import { Y, createDoc, applyUpdate, forkDoc, type YDoc } from './yjs';
 import type { Bytes } from './custodyCrypto';
 import type { JournalRecovery } from './custody';
 
@@ -14,19 +14,7 @@ export const newWriterId = (): number => {
   doc.destroy();
   return id;
 };
-export const cloneDocument = (source: YDoc): YDoc => {
-  const doc = createDoc(),
-    bytes = encodeState(source);
-  try {
-    applyUpdate(doc, bytes);
-    return doc;
-  } catch (error) {
-    doc.destroy();
-    throw error;
-  } finally {
-    bytes.fill(0);
-  }
-};
+export const cloneDocument = (source: YDoc): YDoc => forkDoc(source);
 export const replayRecovery = (doc: YDoc, recovery: JournalRecovery): void => {
   for (const record of recovery.records)
     if (record.kind === 'update' || record.kind === 'state') applyUpdate(doc, record.bytes);
