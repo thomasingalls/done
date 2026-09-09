@@ -47,6 +47,7 @@ const freshTarget = async (
   const claim = await readLocalClaim(task, slotId);
   if (!claim) stopStartup('identity-required', 'clear-needs-verified-local-genesis');
   await verifyLocalClaim(task, claim, code);
+  if (claim.imported) stopStartup('migration-required', 'import-source-cleanup-needs-owner');
   const census = await localCensus(task, claim);
   if (claim.stage !== 'ready' || !census.slot)
     stopStartup('creation-pending', 'finish-local-genesis-before-clear');

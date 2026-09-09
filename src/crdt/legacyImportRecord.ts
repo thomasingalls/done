@@ -26,7 +26,7 @@ import {
 import { parseRecord } from './custodyRecord';
 import { parseCounter, parseWitness } from './contentRecord';
 import { probeDatabase, journalCount } from './startupStorage';
-import { readLocalSlot } from './localGenesisStorage';
+import { matchLocalRoute, readLocalSlot } from './localGenesisStorage';
 import { contentCensus } from './startupClassification';
 import { contentTransaction } from './contentDatabase';
 import { deriveStoreName } from './storeName';
@@ -40,7 +40,7 @@ export interface ImportClaim {
   initial: CustodyRecord;
   binding: ImportBinding;
   createdAt: string;
-  stage: 'custody' | 'content' | 'importing' | 'imported';
+  stage: 'custody' | 'content' | 'importing' | 'imported' | 'selecting';
   mac: Bytes;
 }
 export const importScope = (claim: ImportClaim) => claimScope({ ...claim, stage: 'custody' });
@@ -67,7 +67,7 @@ export const parseImportClaim = (value: unknown, slotId: string): ImportClaim =>
     !c ||
     Object.keys(c).sort().join(',') !== 'binding,createdAt,initial,mac,stage,v' ||
     c.v !== 1 ||
-    !['custody', 'content', 'importing', 'imported'].includes(c.stage) ||
+    !['custody', 'content', 'importing', 'imported', 'selecting'].includes(c.stage) ||
     typeof c.createdAt !== 'string' ||
     !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u.test(c.createdAt) ||
     !Number.isFinite(Date.parse(c.createdAt)) ||
@@ -167,7 +167,11 @@ export const importCensus = async (task: SessionTask, claim: ImportClaim) => {
     key = recordKey(scope),
     intent = claim.initial.creation_intent!;
   await assertNoLocalClear(task, scope.slotId);
-  if (await readLocalSlot(task, scope.slotId)) refuseImport('import-destination-indexed');
+  const slot = await readLocalSlot(task, scope.slotId);
+  if (slot) {
+    if (claim.stage !== 'selecting') refuseImport('import-destination-indexed');
+    await matchLocalRoute(task, { ...claim, stage: 'ready' }, slot);
+  }
   let custody: unknown,
     witness: unknown,
     seen = false;
@@ -203,7 +207,7 @@ export const importCensus = async (task: SessionTask, claim: ImportClaim) => {
         );
   if (
     (content?.state === 'ready' && !counter) ||
-    (['importing', 'imported'].includes(claim.stage) && content?.state !== 'ready')
+    (['importing', 'imported', 'selecting'].includes(claim.stage) && content?.state !== 'ready')
   )
     refuseImport('import-content-missing');
   if (
@@ -211,7 +215,7 @@ export const importCensus = async (task: SessionTask, claim: ImportClaim) => {
     (disk?.records || (counter && (counter.next_seq !== 1 || counter.reserved['1'] !== 0)))
   )
     refuseImport('import-writes-before-progress');
-  return { record, content };
+  return { record, content, slot };
 };
 export const installImportClaim = async (
   task: SessionTask,
@@ -239,7 +243,7 @@ export const advanceImportClaim = async (
   code: string,
   stage: ImportClaim['stage'],
 ) => {
-  const stages = ['custody', 'content', 'importing', 'imported'];
+  const stages = ['custody', 'content', 'importing', 'imported', 'selecting'];
   if (stages.indexOf(stage) !== stages.indexOf(claim.stage) + 1)
     refuseImport('invalid-import-transition');
   const next = await signImportClaim(task, { ...claim, stage }, code);

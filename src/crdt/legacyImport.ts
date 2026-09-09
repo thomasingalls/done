@@ -69,6 +69,7 @@ const finishImport = async (
   slices: number,
 ): Promise<LegacyImportProgress> => {
   let claim = initial;
+  if (claim.stage === 'selecting') refuseImport('import-selection-needs-owner');
   await verifyImportClaim(task, claim, code);
   if (!sameImportBinding(claim.binding, plan.binding)) refuseImport('import-intent-mismatch');
   let census = await importCensus(task, claim);

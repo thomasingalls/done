@@ -14,7 +14,7 @@
     "lint:fix": "oxlint --react-plugin --fix",
     "format": "oxfmt --check .",
     "format:fix": "oxfmt --write .",
-    "check": "pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm test:geometry && pnpm trace:check",
+    "check": "pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm test:geometry && pnpm trace:check",
     "test": "vitest run",
     "test:https": "pnpm build && pnpm --dir relay build && node scripts/test-https.mjs",
     "test:watch": "vitest",
@@ -63,7 +63,8 @@
     "storage:legacy-export": "node scripts/legacy-export/run.mjs",
     "storage:legacy-import": "node scripts/legacy-import/run.mjs",
     "yjs:check": "node scripts/check-yjs-patch.mjs",
-    "storage:delivery": "node scripts/yjs-delivery/campaign.mjs --runs 1000 && node scripts/yjs-delivery/run.mjs"
+    "storage:delivery": "node scripts/yjs-delivery/campaign.mjs --runs 1000 && node scripts/yjs-delivery/run.mjs",
+    "storage:legacy-selection": "node scripts/legacy-selection/run.mjs"
   },
   "dependencies": {
     "@codemirror/commands": "^6.10.4",

@@ -881,3 +881,28 @@ Verified cold destination selection and its interrupted index/progress commits a
 exclusion, live carrier choice, source cleanup, full cutover terminal-state/residue acceptance, independent
 review and performance/profile gates remain owed. Whole-input planning and replay are still in memory.
 Only conformance evidence and the three matrix pins advance; no obligation/debt status or payment changes.
+
+### 2026-09-09 — verified Local import selection and ordinary-owner handoff
+
+Pre-active import is committed as `a0072e8`. The [next bounded owner](./legacy-selection-preparation.md)
+cold-verifies factor-opened destination records against the same verified source/policy/plan binding. It
+checks the current source observation before verification and before the final decision under externally
+established seeded exclusion. A signed selecting intent precedes an exact scoped index add; one final
+custody transaction replaces the pre-active marker with a signed ready Local claim carrying authenticated
+import provenance. The index alone cannot authorize opening. Live custody, keys, content and counters are
+preserved. Normal Local factor unlock, picker, replay and admission then own the selected workspace.
+Completed retries authenticate the recorded selection without reimporting or comparing later edits against
+the old payload. Imported Local clear refuses pending its source cleanup owner.
+
+[Execution evidence](./storage-conformance-runs/2026-09-09-legacy-selection.md) passes 20 native cases,
+60 generated source/abort/restart/edit histories, three renderer deaths and five named controls. The damaged
+import control shrinks twice and saves an input. Full Vitest passes 765 tests / 64 files; the new suite
+includes 30 generated partial states. Pre-active import, genesis, clear and startup regressions pass.
+A directed fault found that the first final census accepted a lost route and incorrectly returned selected;
+the added route-presence requirement now refuses and resumes safely. Before/after evidence and a native
+sensitivity control retain that failure mechanism. It is not an observation of silent native storage loss.
+
+Source cleanup, production supported-version exclusion, real cutover carrier choice, default application
+routing, complete legacy cutover/residue acceptance and independent review/platform/performance remain owed.
+No source material is deleted and no whole obligation/debt status/payment changes. This checkpoint is
+uncommitted; the next bounded phase is authenticated, resumable journal-inclusive legacy source cleanup.

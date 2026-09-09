@@ -195,7 +195,7 @@
         {
           "path": "docs/storage-conformance.md",
           "section": null,
-          "hash": "200277789fce"
+          "hash": "8023a83400b8"
         },
         {
           "path": "docs/review/findings/f-9b49b74-journal-seal-64k-gap.md",
@@ -238,7 +238,7 @@
         {
           "path": "docs/storage-conformance.md",
           "section": null,
-          "hash": "200277789fce"
+          "hash": "8023a83400b8"
         },
         {
           "path": "docs/review/findings/f-4259822-generation-switch-local-durability-undefined.md",
@@ -281,7 +281,7 @@
         {
           "path": "docs/storage-conformance.md",
           "section": null,
-          "hash": "200277789fce"
+          "hash": "8023a83400b8"
         },
         {
           "path": "docs/review/findings/f-f5def83-device-lock-reader-key-bypass.md",

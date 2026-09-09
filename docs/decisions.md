@@ -2075,3 +2075,31 @@ archives become collections; empty archive files retain their empty representati
 Old actor/device/settings/history metadata and unfiled provenance are not promoted into destination authority.
 The [construction and evidence](./legacy-import-preparation.md) leave selection, source exclusion and cleanup
 to subsequent owners. No obligation/debt status or payment changes with this component.
+
+### 2026-09-09 — make the custody handoff the imported Local active decision
+
+Pre-active import (`a0072e8`) has its own durable marker and freshly generated writable identity. Selection
+must not remove that protection based only on an `imported` claim. The new internal owner replays freshly
+factor-opened disk records into a new private document, validates every slice receipt and verifies the
+selected logical projection against the same source/policy/plan binding. Current source observations
+must still match before verification and before the final custody commit. They detect change, not source
+authenticity or old-writer exclusion; the host's exclusion precondition remains independently owed.
+
+A signed `selecting` intent precedes the exact Local index route. The route alone leaves ordinary access
+blocked. After requiring the exact route to remain present, a single custody transaction compares the
+selecting claim, adds the authenticated ready Local claim and deletes the import marker. That transaction's
+completion is the active decision. Imported Local provenance has a distinct signed payload domain, including
+its presence, source/plan/policy, timestamp and selecting MAC. Existing fresh Local claims keep their format
+and payload. Neither selection nor resumption restores live custody, writable keys, content or counters.
+
+Before the active decision, resume always repeats cold destination verification. After it, resume verifies
+the recorded selection and current route/census without reimporting or requiring today's document to equal
+the old payload; later admitted edits must survive. Ordinary open still owns current record/journal recovery.
+A missing completed index refuses rather than being recreated. A directed omitted-route fault exposed the
+need for the explicit last route-presence check; its native regression and control are retained with evidence.
+
+The default application does not call this owner. The explicit Markdown/system adapter does not settle
+sequencing §5.4. The existing Local clear owner refuses imported selections until source cleanup can be
+composed, avoiding a clear result that leaves the original app-managed plaintext behind. Authenticated,
+resumable source DB/WAL/ancillary cleanup is the next bounded phase under seeded exclusion; production
+exclusion and real cutover acceptance remain separate gates. No obligation/debt status or payment changes.

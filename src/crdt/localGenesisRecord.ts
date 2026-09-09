@@ -30,6 +30,16 @@ export interface LocalClaim {
   initial: CustodyRecord;
   stage: 'custody' | 'content' | 'ready';
   mac: Bytes;
+  /** Authenticated provenance of an imported Local selection; absent for fresh genesis. */
+  imported?: {
+    policy: 'markdown-system-v1';
+    recoveryDigest: string;
+    sourceOrigin: string;
+    sourceDigest: string;
+    planDigest: string;
+    createdAt: string;
+    selectionMac: string;
+  };
 }
 export const claimScope = (claim: LocalClaim): CustodyScope => ({
   slotId: claim.initial.slot_id,
@@ -40,7 +50,9 @@ export const parseLocalClaim = (value: unknown, slotId: string): LocalClaim => {
   const v = value as LocalClaim | undefined;
   if (
     !v ||
-    Object.keys(v).sort().join(',') !== 'initial,mac,stage,v' ||
+    !['initial,mac,stage,v', 'imported,initial,mac,stage,v'].includes(
+      Object.keys(v).sort().join(','),
+    ) ||
     v.v !== 1 ||
     !v.initial ||
     !['custody', 'content', 'ready'].includes(v.stage) ||
@@ -61,7 +73,32 @@ export const parseLocalClaim = (value: unknown, slotId: string): LocalClaim => {
     !/^[0-9a-f]{32}$/u.test(scope.workspaceId)
   )
     stopStartup('repair-required', 'invalid-local-claim');
-  return { v: 1, initial, stage: v.stage, mac: v.mac.slice() };
+  if ('imported' in v) {
+    const p = v.imported;
+    if (
+      !p ||
+      v.stage !== 'ready' ||
+      Object.keys(p).sort().join(',') !==
+        'createdAt,planDigest,policy,recoveryDigest,selectionMac,sourceDigest,sourceOrigin' ||
+      p.policy !== 'markdown-system-v1' ||
+      [p.planDigest, p.recoveryDigest, p.sourceDigest, p.selectionMac].some(
+        (x) => typeof x !== 'string' || !/^[a-f0-9]{64}$/u.test(x),
+      ) ||
+      typeof p.sourceOrigin !== 'string' ||
+      p.sourceOrigin.length > 4096 ||
+      typeof p.createdAt !== 'string' ||
+      !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u.test(p.createdAt) ||
+      !Number.isFinite(Date.parse(p.createdAt))
+    )
+      stopStartup('repair-required', 'invalid-import-selection');
+  }
+  return {
+    v: 1,
+    initial,
+    stage: v.stage,
+    mac: v.mac.slice(),
+    ...(v.imported ? { imported: { ...v.imported } } : {}),
+  };
 };
 export const slotCustodyRows = (task: SessionTask, slotId: string) =>
   probeDatabase(task, CUSTODY_DB, async (db) => {
@@ -113,7 +150,23 @@ const claimAuthentication = async (
         subtle,
       ),
     );
-    const payload = fields('done/local-genesis-progress/v1', hex(claim.initial.mac), claim.stage);
+    const p = claim.imported;
+    const payload = p
+      ? fields(
+          'done/local-import-selection/v1',
+          hex(claim.initial.mac),
+          claim.stage,
+          JSON.stringify([
+            p.policy,
+            p.recoveryDigest,
+            p.sourceOrigin,
+            p.sourceDigest,
+            p.planDigest,
+            p.createdAt,
+            p.selectionMac,
+          ]),
+        )
+      : fields('done/local-genesis-progress/v1', hex(claim.initial.mac), claim.stage);
     if (signing) return new Uint8Array(await task.wait(() => subtle.sign('HMAC', key, payload)));
     if (!(await task.wait(() => subtle.verify('HMAC', key, claim.mac, payload))))
       stopStartup('repair-required', 'local-progress-authentication-failed');
