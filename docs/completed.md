@@ -1006,3 +1006,32 @@ match this implementation. Three dispatch cases were added after the full campai
 The default app does not call the coordinator. Production exclusion/recovery-save host preparation is next;
 real carrier choice, full-profile residue, platform/performance, independent review and default-app cutover
 remain owed. No obligation or debt is paid. This outcome is appended before rewriting the L-1 active slice.
+
+## 2026-09-09 — Production migration host preparation (`L-1`)
+
+Committed the validated private coordinator and its preserved native evidence as `7d238ee`.
+Prepared the [host contract](./legacy-host-preparation.md) and a
+[pinned static source inventory](./legacy-host-sources.json): 36 repository files across `af8941e` and
+`7d238ee`, plus three installed dependency files. The current default app still opens the legacy provider;
+its worker can serve cached old executables, and its locks do not exclude unmodified old writers.
+The preparation does not establish a production exclusion primitive or new native acceptance.
+
+Specified a disposable persistent-profile preflight with pre-execution containment experiments, actual
+cached predecessor shells, full process restarts, independent carrier/operation ledgers, externally saved
+packet readback, generated schedules and named controls. It has no destination or deletion authority.
+Unsupported target coverage must remain explicit, and a failed mechanism must yield a preserved
+counterexample instead of a coordinator bridge. Browser API documentation constrains the candidate;
+CDP support alone is not treated as proof of whole-profile exclusion.
+
+Static inspection also found a conditional carrier outside the current cleanup manifest: installed
+`y-websocket`/`lib0` can persist base64 protocol messages at a relay/room localStorage key when native
+BroadcastChannel is absent and localStorage is available. No deployed footprint or native reproduction is
+claimed. The preflight must reproduce/classify this path and refuse unsupported carriers; existing bounded
+known-source cleanup evidence remains accurately scoped. No broad deletion is authorized by this discovery.
+
+The contract separates durable source preservation from volatile visible old edits, same-origin coordination
+from a future cross-origin move, and local dependency completeness from remote reconciliation. It specifies
+packet/factor ownership without a new durable host stage. Production profile access, lasting executable
+retirement, actual save UX, carrier/attribution choice, full residue and platform/review gates remain open.
+This is documentation only; default startup, runtime, conformance matrix and debt statuses are unchanged.
+This outcome is appended before replacing the L-1 checkpoint; the L-2 seat remains untouched.

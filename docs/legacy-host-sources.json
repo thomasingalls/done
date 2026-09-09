@@ -1,0 +1,235 @@
+{
+  "kind": "legacy-host-preparation-source-inventory",
+  "version": 1,
+  "inspected": "2026-09-09",
+  "status": "static preparation only; no native host experiment or deployed-version census",
+  "purpose": "Pin inspected source and starting fixtures. Actual built shell, browser/protocol and executable dependency resolution must also be pinned by the future native campaign.",
+  "repository": [
+    {
+      "commit": "7d238eecec4fe760f026ce1b68f3ca5603a9086a",
+      "files": [
+        {
+          "path": "src/main.tsx",
+          "bytes": 692,
+          "sha256": "a1344b3e4b38570e3466e2da9ddf99e37b3daca0a6f9c13463153321cfa56752"
+        },
+        {
+          "path": "src/ui/useStore.ts",
+          "bytes": 2049,
+          "sha256": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d"
+        },
+        {
+          "path": "src/crdt/index.ts",
+          "bytes": 7668,
+          "sha256": "02cec4ca13ed2c92d544938d471faabb4ce24d1e6c3590a975f7056cc00e78e3"
+        },
+        {
+          "path": "src/crdt/persistence.ts",
+          "bytes": 11670,
+          "sha256": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc"
+        },
+        {
+          "path": "src/pwa.ts",
+          "bytes": 3884,
+          "sha256": "5a3ec5b5e78c89701a086928507163284832ef1d08eaecc0f43b7bd128a416c0"
+        },
+        {
+          "path": "vite/precacheServiceWorker.ts",
+          "bytes": 2534,
+          "sha256": "1cc531c95a8e8c1a787dffdc593d31ff13d7d77c7e2cdbb7ee2fc0bfbea70ff2"
+        },
+        {
+          "path": "src/crdt/sync.ts",
+          "bytes": 17958,
+          "sha256": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807"
+        },
+        {
+          "path": "src/crdt/yjs.ts",
+          "bytes": 13846,
+          "sha256": "907bf2b7cce9ce60a8d5f1f50e59e4b43f55b8747eb405931f3534dd586b9612"
+        },
+        {
+          "path": "src/crdt/export.ts",
+          "bytes": 2713,
+          "sha256": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf"
+        },
+        {
+          "path": "relay/src/auth.ts",
+          "bytes": 4859,
+          "sha256": "676ca348b6ae6496a39d123274dd42237df4c144e51b985c502c71b608de84b0"
+        },
+        {
+          "path": "relay/src/server.ts",
+          "bytes": 4724,
+          "sha256": "bf94d85b2967cbaaac4fab23527b9216a73047f6b373804b7709298b726925c8"
+        },
+        {
+          "path": "relay/src/persistence.ts",
+          "bytes": 3663,
+          "sha256": "c7c3ab009305b1cdf61949fc96e5987558b7b95e13b66d60e25be6b976078b4b"
+        },
+        {
+          "path": "package.json",
+          "bytes": 7838,
+          "sha256": "495f73b78f551102fa9958d4afe5b28ed772d1a5591fb7512b53a239b8b6b184"
+        },
+        {
+          "path": "pnpm-lock.yaml",
+          "bytes": 93662,
+          "sha256": "0ff2c4bd03d8988de1e9f383f3f96504e9f1d1af6823a53610dffb758e6dc38e"
+        },
+        {
+          "path": "src/crdt/legacySource.ts",
+          "bytes": 7544,
+          "sha256": "04ce8f6a8e78340e332148f662dace3f4c2f528a5b445f2859655f37e7eb6d61"
+        },
+        {
+          "path": "src/crdt/legacyExport.ts",
+          "bytes": 10641,
+          "sha256": "bfee92dbc2e0146f888d8ca7d443bb4a00082a6bf6f1b78caa311a3bbbd83a55"
+        },
+        {
+          "path": "src/crdt/legacyImportPlan.ts",
+          "bytes": 9156,
+          "sha256": "543533f93c7feba90c62dc780c321c5430c84f8f0f77513e8592a387c67de730"
+        },
+        {
+          "path": "src/crdt/legacySelection.ts",
+          "bytes": 7370,
+          "sha256": "1d7aa0983765435b03ad567b1bfcdaf615aef18b4688be92c583a6e2b22f277a"
+        },
+        {
+          "path": "src/crdt/legacyCleanup.ts",
+          "bytes": 7745,
+          "sha256": "ecb557e1503bf823762621a0463a8f341bc70fa5f3a144f7686b58195e1ba187"
+        },
+        {
+          "path": "src/crdt/legacyCoordinator.ts",
+          "bytes": 8698,
+          "sha256": "7e703f93cd324dca876940589dcdc4b32d623d9e342cf3aa590b9855ec4d0fd5"
+        },
+        {
+          "path": "src/crdt/legacyCoordinatorState.ts",
+          "bytes": 4246,
+          "sha256": "2f2cffca05dca02e766a75a8944158ad27c2466662bfdb772c1e1406ae2d8f43"
+        },
+        {
+          "path": "scripts/legacy-export/exclusion.mjs",
+          "bytes": 3906,
+          "sha256": "0b08fa51dd964d7bd20f4a64b4b64b9a57092f6db52e371a136bf1d22b138763"
+        }
+      ]
+    },
+    {
+      "commit": "af8941e8c588df173dacff7d49ad6164f2619a6e",
+      "files": [
+        {
+          "path": "src/main.tsx",
+          "bytes": 692,
+          "sha256": "a1344b3e4b38570e3466e2da9ddf99e37b3daca0a6f9c13463153321cfa56752"
+        },
+        {
+          "path": "src/ui/useStore.ts",
+          "bytes": 2049,
+          "sha256": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d"
+        },
+        {
+          "path": "src/crdt/index.ts",
+          "bytes": 7728,
+          "sha256": "4d9e79628db5b4d92dbb7fbf7da4ddc88d0084eb84573357d48c57cf74f97f6c"
+        },
+        {
+          "path": "src/crdt/persistence.ts",
+          "bytes": 11670,
+          "sha256": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc"
+        },
+        {
+          "path": "src/pwa.ts",
+          "bytes": 3884,
+          "sha256": "5a3ec5b5e78c89701a086928507163284832ef1d08eaecc0f43b7bd128a416c0"
+        },
+        {
+          "path": "vite/precacheServiceWorker.ts",
+          "bytes": 2534,
+          "sha256": "1cc531c95a8e8c1a787dffdc593d31ff13d7d77c7e2cdbb7ee2fc0bfbea70ff2"
+        },
+        {
+          "path": "src/crdt/sync.ts",
+          "bytes": 17958,
+          "sha256": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807"
+        },
+        {
+          "path": "src/crdt/yjs.ts",
+          "bytes": 8038,
+          "sha256": "d5eb2c3f86f022b5196b22f4d0f08eb40ca4adff0dc010ae31d18fa3078220e0"
+        },
+        {
+          "path": "src/crdt/export.ts",
+          "bytes": 2713,
+          "sha256": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf"
+        },
+        {
+          "path": "relay/src/auth.ts",
+          "bytes": 4859,
+          "sha256": "676ca348b6ae6496a39d123274dd42237df4c144e51b985c502c71b608de84b0"
+        },
+        {
+          "path": "relay/src/server.ts",
+          "bytes": 4724,
+          "sha256": "bf94d85b2967cbaaac4fab23527b9216a73047f6b373804b7709298b726925c8"
+        },
+        {
+          "path": "relay/src/persistence.ts",
+          "bytes": 3663,
+          "sha256": "c7c3ab009305b1cdf61949fc96e5987558b7b95e13b66d60e25be6b976078b4b"
+        },
+        {
+          "path": "package.json",
+          "bytes": 5579,
+          "sha256": "95214da73d52684052e959ff8f632445d9e14725f7623018266038cb23dd307e"
+        },
+        {
+          "path": "pnpm-lock.yaml",
+          "bytes": 92405,
+          "sha256": "52153631a8196a6317dbbf68eb85b67622482d0df2c7c2cd69bd8f512a27a1ac"
+        }
+      ]
+    }
+  ],
+  "installedDependencies": [
+    {
+      "name": "y-websocket",
+      "version": "3.0.0",
+      "files": [
+        {
+          "path": "src/y-websocket.js",
+          "bytes": 15696,
+          "sha256": "ce4443979bdfc6d82243b2490a042086b7d7aa554ae8fd881765fa0d54661b7c"
+        }
+      ]
+    },
+    {
+      "name": "lib0",
+      "version": "0.2.117",
+      "files": [
+        {
+          "path": "broadcastchannel.js",
+          "bytes": 3041,
+          "sha256": "cbccc6dad94e1ec336f61a076d60f9945de064e1104ad5cc3509743c5937fdb8"
+        },
+        {
+          "path": "storage.js",
+          "bytes": 1755,
+          "sha256": "cd5038e8a00cac99a34ea9703cbd53d49732db227d0ecf8e10f4a0b853f40f27"
+        }
+      ]
+    }
+  ],
+  "dependencyScope": "Installed source inspected at this checkpoint, consistent with the current lockfile; this is not a claim about dependencies in every historical deployed bundle.",
+  "primaryReferences": [
+    "https://w3c.github.io/ServiceWorker/#clients-matchall",
+    "https://chromedevtools.github.io/devtools-protocol/tot/Target/",
+    "https://developer.chrome.com/blog/remote-debugging-port",
+    "https://fs.spec.whatwg.org/#api-filesystemfilehandle-getfile"
+  ]
+}

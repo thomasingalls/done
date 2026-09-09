@@ -48,41 +48,44 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # private coordinator validated; production migration host prep next
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-coordinator-preparation.md]
+status: in flight # private coordinator committed; host preflight implementation next
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-host-preparation.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-09
 ```
 
-**Current checkpoint.** The private migration coordinator and restart composition are implemented and validated.
-It derives state from existing authenticated owners, dispatches one requested step, preserves selected edits
-and never remints on missing retained material. Read-only terminal verification requires signed completed
-cleanup under its own permit, then separately opens ordinary Local recovery. Closing cancels and drains native
-work. Host exclusion loss stops dispatch and cancels the active coordinator in the disposable fixture.
+**Current checkpoint.** The validated private migration coordinator is committed as `7d238ee`.
+[Preserved evidence](./storage-conformance-runs/2026-09-09-legacy-coordinator.md) covers 36 directed cases,
+60 generated native histories, 19 renderer deaths and ten controls, with all affected component regressions
+and 793 unit tests / 67 files passing. Historical reports retain their tested base and source hashes.
+The default application still uses the legacy provider.
 
-[Preserved execution evidence](./storage-conformance-runs/2026-09-09-legacy-coordinator.md) passes 36 directed
-coordinator cases (33 full-run plus three focused gaps), 60 generated histories, 19 renderer deaths and ten
-controls. Full Vitest passes 793 tests / 67 files; the 14 supervisor tests and all affected native
-import/selection/cleanup/startup/clear regressions pass. The generated harness scheduling defect and exact
-passing replay are retained. Test hashes identify the uncommitted implementation based on `f4ed6bc`; the
-default application does not call it. Outcomes were appended to [completed.md](./completed.md) before this rewrite.
+The [host preparation](./legacy-host-preparation.md) is complete, with a
+[pinned source inventory](./legacy-host-sources.json) and falsifiable next-build contract. No new native
+host acceptance is claimed. A client census/worker update cannot be assumed to stop every old executable;
+the candidate external controller needs pre-execution containment tests on a persistent profile. Inspection
+also found a conditional unencrypted localStorage carrier in the sync dependency's BroadcastChannel fallback,
+outside the current cleanup manifest. Its deployed presence is unproven; reproduce/classify it and refuse
+unsupported carriers before production cleanup. Outcomes were appended to [completed.md](./completed.md)
+before this checkpoint rewrite.
 
-**Next bounded work.** Prepare the production migration host contract before default-app integration. Specify
-an implementable procedure for supported old pages/windows/workers/cached executables and transport exclusion,
-restart/loss handling and externally saved recovery readback. Define seeded supported-version falsifiers and
-ownership of retained input/factor state. The private coordinator's [contract](./legacy-coordinator-preparation.md)
-and controller callback do not create production browser authority. Do not enable automatic real-profile
-selection/deletion or decide the live carrier/attribution choice as an incidental implementation detail.
+**Next bounded work.** Build the private persistent-profile host preflight under `scripts/legacy-host/`
+and `test/legacy-host/`. Use disposable seeded Chromium, actual pinned cached predecessor shells and full
+process restarts. Test control acquisition/loss, old page/frame/worker/history execution and transport;
+save the diagnostic packet outside the browser profile and independently reread/cold-replay it. Track
+source carriers and meaning with external ledgers, including the difference between durable and volatile
+visible old edits. Reuse the bounded supervisor and require directed cases, generated coverage and named
+controls. The preflight has no destination write, factor minting or source/site-data deletion authority.
+A failed containment mechanism must remain unsupported and retain its counterexample.
 
-**Exclusion and product gates.** The seeded controller closes old contexts, blocks service workers/external
-routes and reestablishes its epoch after each restart. That is a test precondition, not a production browser
-primitive. Supported-version exclusion still needs an implemented procedure covering old pages/workers/
-cached shells and transport. A new origin isolates the destination but alone does not stabilize or clean
-source. Source equality detects observed change; it does not certify quiescence or source authenticity.
-No boolean, digest or selection receipt pays this gate. Seeded cleanup is not a production exclusion procedure. The diagnostic
-packet is not a fidelity archive, and the explicit Markdown/system adapter does not settle sequencing §5.4's
-real carrier/attribution choice. The author's real-data Stage 2 move remains gated on that decision and review.
+**Exclusion and product gates.** The seeded coordinator controller remains a test precondition. The new
+preflight must not turn a callback, digest, empty census or host report into production authority. Production
+profile access and supported versions, continuous and lasting old-executable retirement, actual recovery-save
+UX, remote-source reconciliation and whole-profile residue remain open. Keep current same-origin checks;
+a move to another deployment origin needs a separate transfer/cleanup handshake. The diagnostic packet and
+Markdown/system policy do not settle sequencing §5.4's real carrier/attribution choice. Stage 2 remains gated
+on that choice and review. No automatic real-profile selection/deletion or default-app bridge is enabled.
 
 **Review and preparation gates.** The local Yjs patch is not an upstream-reviewed release. Generated alphabets
 and one Chromium host do not establish general CRDT correctness or malicious-input coverage. Recursive
@@ -100,8 +103,8 @@ Local genesis/index `ee60528`; Local clear `d7c0f32`; exact compaction `85c7404`
 `a0811e2`; source reader `e64cd2a`; export capture `da5def9`; reproductions `a292103`; contention repair
 `fc1ff41`; runtime forks/projections `0399567`; Yjs delivery/handoff `a465310`; pre-active import `a0072e8`;
 verified selection `4f40ede`; source cleanup implementation `4c3c3ab`; harness `6a5ebe7`; failure evidence
-`082b567`; size repair `3e7981b`. Cleanup validation/coordinator preparation is committed as `f4ed6bc`; the
-private coordinator implementation is the current uncommitted checkpoint.
+`082b567`; size repair `3e7981b`. Cleanup validation/coordinator preparation is committed as `f4ed6bc`;
+private coordinator implementation and native evidence as `7d238ee`.
 The earlier shared candidate run rejected all three pinned branches; none is merged.
 
 **Completion blockers.** L-1 still owes integrated genesis/index/clear/default-application conformance and
@@ -111,8 +114,8 @@ custody, Account removal/service revocation and explicit cleared-slot reuse need
 Additional Local workspaces, Account verifier/receive/
 checkpoint authority and PRF remain incomplete. L-3 composes generation/custody references and interrupted
 lifetimes; these components do not implement retirement. L-4 carries independent storage/crypto review,
-supported profiles/authenticators, low-end performance and platform acceptance. Evidence and three matrix
-pins advance; obligations/debt statuses remain unchanged. No checkpoint pays old-writer release.
+supported profiles/authenticators, low-end performance and platform acceptance. Existing evidence and three matrix
+pins remain unchanged by host preparation; obligations/debt statuses remain unchanged. No checkpoint pays old-writer release.
 
 **Scope.** This seat owns L-1 implementation/evidence. The independent L-2 record below is unchanged. Historical
 Stage 0 records do not certify states their models omitted.

@@ -1,11 +1,13 @@
 # Owned legacy migration coordinator and restart preparation
 
-**Status: bounded private coordinator implemented and validated.** This follows
+**Status: bounded private coordinator implemented and validated, committed as `7d238ee`.** This follows
 [native source-cleanup validation](./storage-conformance-runs/2026-09-09-legacy-cleanup.md).
 It records the contract for one private coordinator in the seeded Markdown/system migration path. It does not
 change default application startup, settle the real Stage 2 carrier choice, or authorize the real profile's
 selection/deletion. [SC-01–09](./storage-contract.md), [sequencing §§3.2–3.3/5.4](./sequencing.md) and
 [action-tree L-1](./review/remediation/action-tree.md) retain authority over those boundaries.
+The next [host preparation contract](./legacy-host-preparation.md) inventories executable/carrier gaps and
+specifies a persistent-profile preflight before any production coordinator bridge.
 
 ## Implemented checkpoint
 

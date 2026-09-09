@@ -2161,3 +2161,25 @@ which bounded call reaches import completion; its corrected schedule and exact r
 Production supported-version exclusion, host recovery-save/readback, real carrier choice and default-app
 cutover remain separate work. Reread all three conformance debts; only their matrix input hashes advance to
 `0d492c62fe48`. Requirements, owners, gates, statuses and payment conditions are unchanged.
+
+### 2026-09-09 — Test host feasibility before bridging production migration
+
+The next bounded build is the [persistent-profile host preflight](./legacy-host-preparation.md), limited to
+measuring predecessor exclusion, preserving source and independently rereading the recovery file. It may
+control a disposable seeded browser, but cannot enroll/import/select a destination or delete source/site
+storage. The private coordinator is committed as `7d238ee`; its existing authenticated owners stay private.
+
+Do not promote service-worker client enumeration, new Web Locks, request blocking, after-creation callbacks
+or a branded epoch into browser authority. Investigate an external pre-execution controller with explicit
+target/version coverage and loss/restart falsifiers. A missing capability or counterexample means unsupported;
+it does not justify default-app integration. No production utility/platform choice is made by this test.
+
+The source inventory must cover the conditional lib0 localStorage broadcast fallback before claiming full
+cleanup. Preserve unsupported keys; an authenticated extension requires its own bounded work. Also preserve
+the distinction between disk-recoverable legacy data and unflushed visible edits before terminating old
+contexts. Recovery save/readback is a host-owned disk boundary, with the mandatory factor held separately.
+
+Keep current same-origin binding checks. A deployment-origin move, remote-source reconciliation, durable
+retirement of old routes and the real carrier/attribution choice need later explicit contracts. No new host
+progress record or success token may replace authenticated component state. The existing conformance matrix,
+three input pins and all debt requirements/statuses remain unchanged by this preparation.
