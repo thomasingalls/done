@@ -48,37 +48,41 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # seeded capture/replay complete; destination/import and cutover remain
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-migration-prep.md, legacy-export-capture.md]
+status: in flight # core reproductions complete; repair precedes destination/import
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-migration-prep.md, legacy-export-capture.md, core-reproductions.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-09
 ```
 
-**Just completed.** Phase thirteen is committed as `e64cd2a`. Phase fourteen adds [verified legacy export
-capture](./legacy-export-capture.md): original source records in a diagnostic recovery packet, an explicit
-Markdown preview, and cold replay under controller-owned exclusion in a seeded browser. It refuses pending
-dependencies, unsupported schema/projection shapes, omitted registry membership and observed source drift.
-A new refusal test caught and repaired silent array-to-Text projection loss through a pinned Yjs item-kind
-guard. No source repair, destination, active selection or cleanup is introduced. The checkpoint remains
-uncommitted; its outcome is appended to [completed.md](./completed.md).
+**Just completed.** Phase fourteen is committed as `da5def9`. The user paused migration integration for
+three [core review reproductions](./core-reproductions.md). New investigation runners and a minimized corpus
+confirm journal-changed blocking under controlled interleaving, pending-clone workspace projection divergence
+and some original-framing Yjs ordering failures. No production code or fix is included. This checkpoint
+remains uncommitted; its outcome is appended to [completed.md](./completed.md).
 
-**Evidence.** [Native capture execution](./storage-conformance-runs/2026-09-09-legacy-export.md) passes
-60 generated histories / 240 core comparisons, 16 named checks, seven detected mutants and three renderer
-deaths. There are 64 saved/replayed candidates, plus saved JSON history replay. Separate input-string and
-Python ZIP/CRC oracles verify all ten days, journal-only dependencies and unfiled content. The source-reader
-regression passes 100 partitions / 400 comparisons, 12 checks, four mutants and one reader death. Full Vitest
-passes 722 tests / 58 files; build and applicable project checks pass. This is controlled capture/recovery
-evidence, not the complete migration kill matrix or production supported-version exclusion.
+**Evidence and qualifications.** Nine native cases complete, including actual workspace/editor/export
+promotion, independent reopen/Undo controls, paused peer append/cleanup and a 500 ms uninterrupted overlap.
+The latter and 3,200 simultaneous keystrokes do not reproduce journal blocking on Chromium; the controlled
+pause can alter event processing and does not prove the routine two-tab claim. The Yjs campaign runs
+150,000 histories: 169 failures in 50,000 arbitrary permutations, none observed in the sender-ordered or
+complete-join arms of 50,000 each. A saved case shrinks 133 times and replays exactly. Its seven records fail
+in 78 of all 5,040 orders, with no failure among 210 sender-ordered orders. Fifty-one focused tests and
+applicable checks pass. These are scoped investigation outcomes, not conformance or probability bounds.
 
-**Next bounded integration.** An authenticated pre-active destination/import owner with explicit verified
-source and carrier-policy input, mandatory-factor fresh writable store/key/counter scope, and bounded
-idempotent slices. Make its progress/authority construction concrete before selection or cleanup. Existing
-legacy material cannot be reclassified as fresh, Local genesis absence checks cannot be bypassed, and a
-normal ready index row cannot be installed early. Imports cannot restore writable keys/counters. The
-Markdown/system-attribution versus fidelity-archive choice remains open for Stage 2; the diagnostic packet
-has no portable encryption/archive authority and does not satisfy that choice. No import or migration
-progress transition is implemented in this checkpoint.
+**Next bounded work.** Design and test journal-churn handling and pending-projection repair before returning
+to destination/import work. Visible equality only at promotion misses the reproduced later divergence;
+both text and integrated vectors can agree while pending information differs. The original-framing corpus
+also remains a library behavior gate. This pass implements none of those repairs and does not reproduce
+the review's other recovery, maintenance/cost, row-limit, nonce-wording or plaintext-scanning findings.
+
+**Deferred migration integration.** The pre-active destination/import owner still needs explicit verified
+source and carrier-policy input, mandatory-factor fresh writable store/key/counter scope and bounded
+idempotent slices. Existing legacy material cannot be reclassified as fresh, Local genesis absence checks
+cannot be bypassed, and a normal ready index row cannot be installed early. Imports cannot restore writable
+keys/counters. The Markdown/system-attribution versus fidelity-archive choice remains open for Stage 2;
+the diagnostic capture packet has no portable encryption/archive authority. No import, migration progress,
+active selection or cleanup transition is implemented in this checkpoint.
 
 **Exclusion gate.** A disposable test controller can stop every old context and disallow old execution
 routes across restarts. That is a test precondition, not a production browser primitive. Supported-version
@@ -99,7 +103,7 @@ and complete interaction performance remain gates before default editor acceptan
 custody: `a6d39a2`; content: `468cbe2`; synchronous journal: `9e60c6a`; admission/Goals editor: `0b5337a`;
 workspace commands/history: `a48c090`; owned startup: `a916d61`; Local genesis/index: `ee60528`;
 scoped Local clear: `d7c0f32`; content compaction: `85c7404`; production carrier properties and incomplete-
-compaction deferral: `a0811e2`; read-only source preparation: `e64cd2a`. [Phase-twelve execution](./storage-conformance-runs/2026-09-09-storage-properties.md)
+compaction deferral: `a0811e2`; read-only source preparation: `e64cd2a`; verified export capture: `da5def9`. [Phase-twelve execution](./storage-conformance-runs/2026-09-09-storage-properties.md)
 records 120 encrypted histories, six corpus replays, five shrunk mutants and 18 renderer deaths; those
 separate browser suites were not rerun this phase. The [shared candidate run](./storage-conformance-runs/2026-09-08.md)
 contains 57 subcases; all three pinned candidates fail the corrected contract and none is merged.
@@ -110,8 +114,8 @@ shared/multiple-workspace custody, Account removal/service revocation, partial-g
 cleared-slot reuse need subsequent owners. Additional Local workspaces, Account verifier/receive/checkpoint
 authority and PRF remain incomplete. L-3 composes generation/custody references, lifetimes and interrupted
 phases; these components do not implement retirement. L-4 carries independent storage/crypto review,
-supported profiles/authenticators, low-end performance and platform acceptance. Only matrix evidence and
-three pins advance; obligations/debt statuses are unchanged. No checkpoint pays old-writer cutover/release.
+supported profiles/authenticators, low-end performance and platform acceptance. This reproduction checkpoint changes no matrix pins or
+obligations/debt statuses. No checkpoint pays old-writer cutover/release.
 
 **Scope.** This seat owns L-1 implementation/evidence. The independent L-2 record below is unchanged.
 The author's real-data cutover remains Stage 2 after carrier selection and review 3a. Historical Stage 0

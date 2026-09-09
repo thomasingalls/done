@@ -723,3 +723,34 @@ checkpoint. The plaintext diagnostic packet is not the fidelity-archive construc
 the complete cutover kill matrix, Stage 2 carrier choice, review 3a, large-input performance and prior
 acceptance obligations remain owed. Only matrix evidence and three pins advance; debt status, obligations
 and the independent L-2 progress record are unchanged.
+
+
+### 2026-09-09 — core review reproductions pause further migration integration
+
+**Check-in.** Phase fourteen's verified export capture was committed as `da5def9`. The user then selected
+three core review findings for reproduction before further migration work. This checkpoint changes no
+production code and applies no fix; the new reproduction runners, corpus and records remain uncommitted.
+
+**Outcome.** [Recorded reproductions](./core-reproductions.md) establish journal-changed blocking under a
+controlled native interleaving, pending-fork projection divergence through actual workspace/editor/export
+paths, and pinned Yjs stranding under some original-record delivery orders. The evidence qualifies the
+review: ordinary simultaneous keyboard input and uninterrupted snapshot overlap did not reproduce journal
+blocking on this Chromium host. A CDP pause can alter event processing. The workspace corpus also heals
+through a subsequent Undo command, as well as independent cold reopen. A text-only comparison at promotion
+would miss its later dependency-triggered divergence because the visible texts match at promotion.
+
+**Evidence.** Nine native cases complete, including peer append/cleanup while a snapshot is paused,
+retained private input until Retry, an uninterrupted 500 ms overlap, independent reopen/Undo controls and
+3,200 concurrent keystrokes with/without BroadcastChannel. The bare Yjs campaign executes **150,000 histories**:
+169 failures among 50,000 arbitrary permutations, zero observed among 50,000 sender-ordered interleavings,
+and zero among 50,000 delayed complete-snapshot joins. A 133-step shrink and saved JSON replay preserve an
+original-framing failure. Exhaustive replay of its seven records finds **78 failures / 5,040 permutations**,
+with none among the 210 sender-ordered permutations. These frequencies describe the specified generators,
+not production risk bounds. Fifty-one existing focused tests, typecheck and focused lint/format pass.
+The full unit suite, build and unrelated browser/platform suites were not rerun for this investigation.
+
+**Next.** Design bounded journal-churn handling and pending-projection repair against these reproducible
+cases before resuming destination/import work. Complete source/export/import cutover, carrier choice,
+production old-writer exclusion, recovery tooling, compaction/costs and prior acceptance remain owed.
+The other review findings were not assessed in this selected reproduction pass. No conformance obligation,
+matrix pin or debt status changes; the independent L-2 record is preserved.

@@ -1,0 +1,555 @@
+{
+  "schema": 1,
+  "scope": "seven-record-original-framing-corpus",
+  "started": "2026-09-09T00:18:42.338Z",
+  "commit": "da5def9377652bb07670bd0cd0d048091f64614b",
+  "edits": [
+    {
+      "lane": 1,
+      "actor": 2,
+      "at": 0,
+      "remove": 0,
+      "text": "a"
+    },
+    {
+      "lane": 0,
+      "actor": 0,
+      "at": 0,
+      "remove": 0,
+      "text": "a"
+    },
+    {
+      "lane": 1,
+      "actor": 1,
+      "at": 0,
+      "remove": 0,
+      "text": "a"
+    },
+    {
+      "lane": 0,
+      "actor": 1,
+      "at": 0,
+      "remove": 0,
+      "text": "a"
+    }
+  ],
+  "source": {
+    "names": [
+      "master",
+      "lane1",
+      "lane2"
+    ],
+    "updates": [
+      [
+        1,
+        1,
+        101,
+        0,
+        4,
+        1,
+        6,
+        109,
+        97,
+        115,
+        116,
+        101,
+        114,
+        5,
+        98,
+        97,
+        115,
+        101,
+        48,
+        0
+      ],
+      [
+        1,
+        1,
+        102,
+        0,
+        4,
+        1,
+        5,
+        108,
+        97,
+        110,
+        101,
+        49,
+        5,
+        98,
+        97,
+        115,
+        101,
+        49,
+        0
+      ],
+      [
+        1,
+        1,
+        103,
+        0,
+        4,
+        1,
+        5,
+        108,
+        97,
+        110,
+        101,
+        50,
+        5,
+        98,
+        97,
+        115,
+        101,
+        50,
+        0
+      ],
+      [
+        1,
+        1,
+        103,
+        5,
+        68,
+        102,
+        0,
+        1,
+        97,
+        0
+      ],
+      [
+        1,
+        1,
+        101,
+        5,
+        68,
+        101,
+        0,
+        1,
+        97,
+        0
+      ],
+      [
+        1,
+        1,
+        102,
+        5,
+        68,
+        103,
+        5,
+        1,
+        97,
+        0
+      ],
+      [
+        1,
+        1,
+        102,
+        6,
+        68,
+        101,
+        5,
+        1,
+        97,
+        0
+      ]
+    ],
+    "authors": [
+      0,
+      1,
+      2,
+      2,
+      0,
+      1,
+      1
+    ],
+    "expected": [
+      "aabase0",
+      "aabase1",
+      "base2"
+    ]
+  },
+  "failingOrder": [
+    2,
+    3,
+    4,
+    6,
+    0,
+    1,
+    5
+  ],
+  "before": {
+    "text": [
+      "abase0",
+      "base1",
+      "base2"
+    ],
+    "vector": [
+      [
+        101,
+        6
+      ],
+      [
+        102,
+        5
+      ],
+      [
+        103,
+        5
+      ]
+    ],
+    "pendingStructs": true,
+    "pendingDs": false,
+    "missing": [
+      [
+        102,
+        5
+      ],
+      [
+        103,
+        5
+      ]
+    ]
+  },
+  "permutations": 5040,
+  "violations": 78,
+  "senderFIFO": 210,
+  "senderFIFOViolations": 0,
+  "examples": [
+    {
+      "order": [
+        0,
+        3,
+        4,
+        6,
+        2,
+        1,
+        5
+      ],
+      "actual": {
+        "text": [
+          "abase0",
+          "base1",
+          "base2"
+        ],
+        "vector": [
+          [
+            101,
+            6
+          ],
+          [
+            102,
+            5
+          ],
+          [
+            103,
+            5
+          ]
+        ],
+        "pendingStructs": true,
+        "pendingDs": false,
+        "missing": [
+          [
+            102,
+            5
+          ],
+          [
+            103,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "order": [
+        0,
+        3,
+        6,
+        2,
+        1,
+        4,
+        5
+      ],
+      "actual": {
+        "text": [
+          "abase0",
+          "base1",
+          "base2"
+        ],
+        "vector": [
+          [
+            101,
+            6
+          ],
+          [
+            102,
+            5
+          ],
+          [
+            103,
+            5
+          ]
+        ],
+        "pendingStructs": true,
+        "pendingDs": false,
+        "missing": [
+          [
+            102,
+            5
+          ],
+          [
+            103,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "order": [
+        0,
+        3,
+        6,
+        2,
+        1,
+        5,
+        4
+      ],
+      "actual": {
+        "text": [
+          "abase0",
+          "base1",
+          "base2"
+        ],
+        "vector": [
+          [
+            101,
+            6
+          ],
+          [
+            102,
+            5
+          ],
+          [
+            103,
+            5
+          ]
+        ],
+        "pendingStructs": true,
+        "pendingDs": false,
+        "missing": [
+          [
+            102,
+            5
+          ],
+          [
+            103,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "order": [
+        0,
+        3,
+        6,
+        2,
+        4,
+        1,
+        5
+      ],
+      "actual": {
+        "text": [
+          "abase0",
+          "base1",
+          "base2"
+        ],
+        "vector": [
+          [
+            101,
+            6
+          ],
+          [
+            102,
+            5
+          ],
+          [
+            103,
+            5
+          ]
+        ],
+        "pendingStructs": true,
+        "pendingDs": false,
+        "missing": [
+          [
+            102,
+            5
+          ],
+          [
+            103,
+            5
+          ]
+        ]
+      }
+    },
+    {
+      "order": [
+        0,
+        3,
+        6,
+        4,
+        2,
+        1,
+        5
+      ],
+      "actual": {
+        "text": [
+          "abase0",
+          "base1",
+          "base2"
+        ],
+        "vector": [
+          [
+            101,
+            6
+          ],
+          [
+            102,
+            5
+          ],
+          [
+            103,
+            5
+          ]
+        ],
+        "pendingStructs": true,
+        "pendingDs": false,
+        "missing": [
+          [
+            102,
+            5
+          ],
+          [
+            103,
+            5
+          ]
+        ]
+      }
+    }
+  ],
+  "recoveryProbes": {
+    "empty-update": {
+      "text": [
+        "abase0",
+        "base1",
+        "base2"
+      ],
+      "vector": [
+        [
+          101,
+          6
+        ],
+        [
+          102,
+          5
+        ],
+        [
+          103,
+          5
+        ]
+      ],
+      "pendingStructs": true,
+      "pendingDs": false,
+      "missing": [
+        [
+          102,
+          5
+        ],
+        [
+          103,
+          5
+        ]
+      ]
+    },
+    "originals-in-order-again": {
+      "text": [
+        "aabase0",
+        "aabase1",
+        "base2"
+      ],
+      "vector": [
+        [
+          101,
+          6
+        ],
+        [
+          102,
+          7
+        ],
+        [
+          103,
+          6
+        ]
+      ],
+      "pendingStructs": false,
+      "pendingDs": false,
+      "missing": []
+    },
+    "self-snapshot": {
+      "text": [
+        "aabase0",
+        "aabase1",
+        "base2"
+      ],
+      "vector": [
+        [
+          101,
+          6
+        ],
+        [
+          102,
+          7
+        ],
+        [
+          103,
+          6
+        ]
+      ],
+      "pendingStructs": false,
+      "pendingDs": false,
+      "missing": []
+    },
+    "fresh-complete-snapshot": {
+      "text": [
+        "aabase0",
+        "aabase1",
+        "base2"
+      ],
+      "vector": [
+        [
+          101,
+          6
+        ],
+        [
+          102,
+          7
+        ],
+        [
+          103,
+          6
+        ]
+      ],
+      "pendingStructs": false,
+      "pendingDs": false,
+      "missing": []
+    }
+  },
+  "files": {
+    "scripts/core-reproductions/source.mjs": "2d43f853e5861ee5d357d05e97afebba9a9f596727c04604a115f4235bb32b46",
+    "scripts/core-reproductions/yjs-corpus.mjs": "8f71ae6ae22fc3946af16cb1239f42e2aaf0af3e899b9b73ca0163c7c8a84c42",
+    "test/core-reproductions/original-order.json": "41781a14259177d524886ae4a87a5b15e876a7729da2c24dc75e5e70e0e36933",
+    "pnpm-lock.yaml": "52153631a8196a6317dbbf68eb85b67622482d0df2c7c2cd69bd8f512a27a1ac",
+    "node_modules/yjs/dist/yjs.mjs": "da487316488770c06877210d76e30b7d4daaef826731b1630fcea18ea2a3365a"
+  },
+  "status": "completed-reproduction",
+  "finished": "2026-09-09T00:18:43.026Z"
+}

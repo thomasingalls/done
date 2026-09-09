@@ -1923,3 +1923,25 @@ pre-active destination/import owner with mandatory-factor fresh writable scope a
 it must not bypass Local genesis absence checks or publish a ready index row before verification. Selection,
 resumable exact cleanup, production exclusion and the complete cutover kill matrix follow. Source recovery
 material survives until verified encrypted selection. No obligation/debt status changes at this checkpoint.
+
+
+### 2026-09-09 — separate reproduced core failures from unproven routine schedules
+
+Phase fourteen is committed as `da5def9`. Further migration integration pauses for the three user-selected
+[core reproductions](./core-reproductions.md). Production code remains unchanged. A completed investigation
+report is not a conformance pass: it records observed violations separately from passed controls and treats
+unexpected exceptions as harness failures.
+
+Journal-changed puts the real owner into human-retry pressure when a paused native snapshot observes a
+peer append or completed cleanup. Neither uninterrupted synchronous overlap nor the simultaneous keyboard
+campaign reproduces that interleaving on this Chromium host. A debugger-induced event-processing opportunity
+must not be used to claim ordinary two-tab typing commonly blocks. Cross-platform/routine frequency remains
+unproven, while the error propagation and retained pending input are reproduced.
+
+The pending-clone corpus reproduces canonical/editor/export divergence after later dependency delivery;
+visible texts and integrated state vectors can agree before the missing basis arrives. Therefore a cheap
+visible comparison only at promotion is not an adequate acceptance condition for the proposed repair.
+Independent reopen and a later Undo both heal this corpus, but neither is yet a general recovery design.
+The original-framing Yjs campaign also finds delivery-order failures; no observed sender-ordered or complete-
+join failures imply no proof outside those narrow alphabets. Saved original bytes, minimized schedules and
+external string oracles are retained for the next bounded repair phase. No migration or debt payment follows.
