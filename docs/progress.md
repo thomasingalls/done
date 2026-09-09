@@ -48,34 +48,37 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # source preparation complete; migration/cutover and acceptance remain
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-migration-prep.md]
+status: in flight # seeded capture/replay complete; destination/import and cutover remain
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-migration-prep.md, legacy-export-capture.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-09
 ```
 
-**Just completed.** Phase twelve is committed as `a0811e2`. Phase thirteen adds a [read-only legacy source
-observer and migration preparation plan](./legacy-migration-prep.md). It captures exact original `done`
-records and `1:` journal bytes, inventories four ancillary keys, refuses unknown/unreadable bounded input,
-and flags pending dependencies without merging them. It creates no database, provider, actor, destination,
-key or route. Its unkeyed digest describes an observation and authorizes no migration or deletion. This
-checkpoint remains uncommitted; its outcome is appended to [completed.md](./completed.md).
+**Just completed.** Phase thirteen is committed as `e64cd2a`. Phase fourteen adds [verified legacy export
+capture](./legacy-export-capture.md): original source records in a diagnostic recovery packet, an explicit
+Markdown preview, and cold replay under controller-owned exclusion in a seeded browser. It refuses pending
+dependencies, unsupported schema/projection shapes, omitted registry membership and observed source drift.
+A new refusal test caught and repaired silent array-to-Text projection loss through a pinned Yjs item-kind
+guard. No source repair, destination, active selection or cleanup is introduced. The checkpoint remains
+uncommitted; its outcome is appended to [completed.md](./completed.md).
 
-**Evidence.** [Native preparation execution](./storage-conformance-runs/2026-09-09-legacy-source.md) passes
-100 generated delivery partitions / 400 preservation comparisons, 12 named checks and four focused source
-mutants. A saved JSON history replays, including the named scenarios and controls. One reader renderer death
-preserves the source. The actual legacy provider journals and commits while the new exclusive lock is held:
-matching scans and the new lifecycle lock do not exclude old writers. Full Vitest passes 705 tests / 57 files;
-build and applicable project checks pass. This is not the migration kill matrix or production exclusion.
+**Evidence.** [Native capture execution](./storage-conformance-runs/2026-09-09-legacy-export.md) passes
+60 generated histories / 240 core comparisons, 16 named checks, seven detected mutants and three renderer
+deaths. There are 64 saved/replayed candidates, plus saved JSON history replay. Separate input-string and
+Python ZIP/CRC oracles verify all ten days, journal-only dependencies and unfiled content. The source-reader
+regression passes 100 partitions / 400 comparisons, 12 checks, four mutants and one reader death. Full Vitest
+passes 722 tests / 58 files; build and applicable project checks pass. This is controlled capture/recovery
+evidence, not the complete migration kill matrix or production supported-version exclusion.
 
-**Next bounded integration.** Verified source/export capture under controller-owned exclusion in a seeded
-browser, with an independent ten-day, journal-only and dependency oracle. Keep the carrier adapter explicit;
-the Markdown/system-attribution versus fidelity-archive choice remains open for Stage 2. Then build an
-authenticated pre-active fresh destination/import owner before selection or cleanup. Existing legacy
-material cannot be reclassified as fresh, Local genesis absence checks cannot be bypassed, and imports
-cannot restore writable keys/counters. The preparation plan names future restart/fault/property schedules;
-no import, migration progress, active selection or deletion transition is implemented in this checkpoint.
+**Next bounded integration.** An authenticated pre-active destination/import owner with explicit verified
+source and carrier-policy input, mandatory-factor fresh writable store/key/counter scope, and bounded
+idempotent slices. Make its progress/authority construction concrete before selection or cleanup. Existing
+legacy material cannot be reclassified as fresh, Local genesis absence checks cannot be bypassed, and a
+normal ready index row cannot be installed early. Imports cannot restore writable keys/counters. The
+Markdown/system-attribution versus fidelity-archive choice remains open for Stage 2; the diagnostic packet
+has no portable encryption/archive authority and does not satisfy that choice. No import or migration
+progress transition is implemented in this checkpoint.
 
 **Exclusion gate.** A disposable test controller can stop every old context and disallow old execution
 routes across restarts. That is a test precondition, not a production browser primitive. Supported-version
@@ -96,7 +99,7 @@ and complete interaction performance remain gates before default editor acceptan
 custody: `a6d39a2`; content: `468cbe2`; synchronous journal: `9e60c6a`; admission/Goals editor: `0b5337a`;
 workspace commands/history: `a48c090`; owned startup: `a916d61`; Local genesis/index: `ee60528`;
 scoped Local clear: `d7c0f32`; content compaction: `85c7404`; production carrier properties and incomplete-
-compaction deferral: `a0811e2`. [Phase-twelve execution](./storage-conformance-runs/2026-09-09-storage-properties.md)
+compaction deferral: `a0811e2`; read-only source preparation: `e64cd2a`. [Phase-twelve execution](./storage-conformance-runs/2026-09-09-storage-properties.md)
 records 120 encrypted histories, six corpus replays, five shrunk mutants and 18 renderer deaths; those
 separate browser suites were not rerun this phase. The [shared candidate run](./storage-conformance-runs/2026-09-08.md)
 contains 57 subcases; all three pinned candidates fail the corrected contract and none is merged.

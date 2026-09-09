@@ -39,6 +39,17 @@ export const encodeState = (doc: YDoc): Uint8Array => Y.encodeStateAsUpdate(doc)
 export const hasPendingUpdates = (doc: YDoc): boolean =>
   doc.store.pendingStructs !== null || doc.store.pendingDs !== null;
 
+/** A replayed untyped root can be requested as a Map even if its wire content was a sequence. */
+export const hasSequenceContent = (map: YMap<unknown>): boolean => map._length !== 0;
+
+/** Text projection skips some foreign item kinds. Refuse them at a plain-text capture boundary. */
+export const hasNonTextContent = (text: YText): boolean => {
+  for (let item = text._start; item; item = item.right) {
+    if (!item.deleted && !(item.content instanceof Y.ContentString)) return true;
+  }
+  return false;
+};
+
 export const applyUpdate = (doc: YDoc, update: Uint8Array, origin?: unknown): void =>
   Y.applyUpdate(doc, update, origin);
 

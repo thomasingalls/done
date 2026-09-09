@@ -1893,3 +1893,33 @@ verified export capture under controlled seeded exclusion, before the destinatio
 The open Markdown/system-attribution versus fidelity-archive decision still gates the real Stage 2 cutover;
 this reader does not choose it or change ordinary application routing. Matrix evidence and its three pins
 advance without changing obligations/debt status. The independent L-2 record is preserved.
+
+
+### 2026-09-09 — verify seeded source recovery before designing pre-active destination authority
+
+Phase thirteen is committed as `e64cd2a`. The next bounded [capture checkpoint](./legacy-export-capture.md)
+keeps original legacy update records in a diagnostic JSON packet and exercises Markdown only as an explicit
+preview adapter. It does not choose the Stage 2 Markdown/system-attribution versus fidelity-archive policy.
+The packet omits ancillary local credentials, carries no destination keys/counters and is not a portable
+encrypted archive. Its separate SHA-256 checksum establishes integrity relative to an expected digest, not
+authenticity if both can be replaced. A future migration owner must bind source, policy, intent and authority.
+
+Capture requires complete CRDT dependencies and a supported schema-4 projection; unknown shapes and omitted
+registry membership refuse without repair or deletion. A new test exposed that valid array ContentAny items
+can disappear from pinned Yjs Text projection. The correction checks live text item kinds through the Yjs
+seam before exporting. This is a defect discovered while building the new private path, not evidence of an
+executed migration or deployed data loss. Version-sensitive guards require reevaluation on a Yjs upgrade.
+
+A seeded Node controller owns browser-context shutdown, route admission and invalidatable observation epochs.
+It stops the known old page/dedicated worker before capture and detects new execution attempts across cold
+replay. This controlled fixture precondition does not exclude arbitrary supported historical installations,
+SharedWorkers, profiles or remote devices. Matching source observations and a new lifecycle lock still do
+not fence the real predecessor. No boolean assertion, packet or digest grants production exclusion.
+
+[Native evidence](./storage-conformance-runs/2026-09-09-legacy-export.md) combines generated delivery/content
+histories, independent input-string and ZIP readback, saved-file replay, renderer deaths and seven named
+sensitivity controls. The default application remains on the legacy provider. Next is an authenticated
+pre-active destination/import owner with mandatory-factor fresh writable scope and bounded idempotent slices;
+it must not bypass Local genesis absence checks or publish a ready index row before verification. Selection,
+resumable exact cleanup, production exclusion and the complete cutover kill matrix follow. Source recovery
+material survives until verified encrypted selection. No obligation/debt status changes at this checkpoint.

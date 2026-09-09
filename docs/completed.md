@@ -686,3 +686,40 @@ carrier/attribution choice and review 3a remain gates for the author's real Stag
 absence checks must not be bypassed by a synthetic migration caller. General bounded import adapters,
 large-state memory/performance and prior L-1/L-3/L-4 acceptance remain owed. Only matrix evidence and three
 pins advance; obligations, debt statuses and the independent L-2 record are unchanged.
+
+
+### 2026-09-09 — verified legacy export capture under controlled seeded exclusion
+
+**Check-in.** Phase thirteen's read-only source observer and migration plan were committed as `e64cd2a`.
+This phase-fourteen checkpoint remains uncommitted.
+
+**Outcome.** Added private [capture and replay functions](./legacy-export-capture.md) that preserve original
+source record identities, framing and update bytes in a diagnostic recovery packet, alongside an explicit
+Markdown preview of all supported authored content. Capture requires complete dependencies, refuses unknown
+schema/projection shapes and reobserves the source for drift. Replay checks a separately held packet digest
+and reconstructs in a fresh private document without startup/repair/transport. The seeded controller owns
+context/worker shutdown and invalidates capture verification after observed exclusion loss. Production
+old-writer exclusion, source authority and the real carrier/attribution decision remain separate gates.
+
+Testing caught an initial validator flaw: pinned Yjs can silently skip array items projected as Text,
+producing an empty master preview. A live item-kind guard through the pinned seam now refuses it. Capture
+also refuses registry cards that ordinary day/unfiled projection would omit because their named collection
+exists but lacks their id. Neither correction changes ordinary application export or repairs the source.
+
+**Evidence.** [Recorded execution](./storage-conformance-runs/2026-09-09-legacy-export.md) passes **60 generated
+histories / 240 core comparisons**, 16 named checks, seven detected mutants, 64 saved/replayed candidates
+and three renderer deaths. Saved JSON replay repeats all named checks and controls. Python ZIP/CRC readback
+and a separate input-string ledger verify the ten-day preview, journal-only dependencies and unfiled content.
+The source-reader regression passes 100 partitions / 400 comparisons, 12 checks, four mutants and one reader
+death. Full Vitest passes **722 tests / 58 files**, including 17 new tests and 100 generated text payloads.
+Typecheck, focused lint/format, build/budget, vector/AAD and applicable project checks pass; initial JS remains
+**306.3 kB / 350.0 kB** gzipped. The literal full check chain, geometry and separate unchanged encrypted-store
+browser suites were not rerun. The evidence records development failures and the limits of each oracle.
+
+**Next bounded work.** An authenticated pre-active destination/import owner, with explicit verified source
+and carrier-policy input, mandatory-factor fresh writable store/key/counter scope and bounded idempotent
+slices. No import, migration progress, active selection, source cleanup or default-app switch exists in this
+checkpoint. The plaintext diagnostic packet is not the fidelity-archive construction. Production exclusion,
+the complete cutover kill matrix, Stage 2 carrier choice, review 3a, large-input performance and prior
+acceptance obligations remain owed. Only matrix evidence and three pins advance; debt status, obligations
+and the independent L-2 progress record are unchanged.
