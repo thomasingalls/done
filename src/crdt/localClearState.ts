@@ -16,6 +16,7 @@ export interface LocalClearTarget {
   readonly rootId: string;
   readonly genesisIntentId: string;
   readonly dbName: string;
+  readonly legacySourceOrigin?: string;
 }
 export interface LocalClearRecord {
   v: 1;
@@ -34,8 +35,10 @@ const id = (value: unknown): string => {
 export const captureClearTarget = (input: LocalClearTarget): LocalClearTarget => {
   if (
     !input ||
-    Object.keys(input).sort().join(',') !==
-      'dbName,genesisIntentId,principalId,rootId,slotId,storeId,workspaceId'
+    ![
+      'dbName,genesisIntentId,principalId,rootId,slotId,storeId,workspaceId',
+      'dbName,genesisIntentId,legacySourceOrigin,principalId,rootId,slotId,storeId,workspaceId',
+    ].includes(Object.keys(input).sort().join(','))
   )
     stopStartup('repair-required', 'invalid-clear-target');
   const target = {
@@ -46,9 +49,15 @@ export const captureClearTarget = (input: LocalClearTarget): LocalClearTarget =>
     rootId: id(input.rootId),
     genesisIntentId: id(input.genesisIntentId),
     dbName: input.dbName,
+    ...('legacySourceOrigin' in input ? { legacySourceOrigin: input.legacySourceOrigin } : {}),
   };
   if (typeof target.dbName !== 'string' || !/^done\.[0-9a-f]{32}$/u.test(target.dbName))
     stopStartup('repair-required', 'invalid-clear-database');
+  if (
+    'legacySourceOrigin' in target &&
+    (typeof target.legacySourceOrigin !== 'string' || target.legacySourceOrigin.length > 4096)
+  )
+    stopStartup('repair-required', 'invalid-clear-source-origin');
   return Object.freeze(target);
 };
 export const parseLocalClear = (value: unknown, slotId: string): LocalClearRecord => {

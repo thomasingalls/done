@@ -13,7 +13,7 @@ import { stopStartup } from './startupState';
 import type { SessionTask } from './writeSession';
 import type { LocalClearRecord } from './localClearState';
 
-export const clearPayload = (r: LocalClearRecord): Bytes =>
+const baseClearPayload = (r: LocalClearRecord): Bytes =>
   fields(
     'done/local-clear-progress/v1',
     r.intentId,
@@ -27,6 +27,10 @@ export const clearPayload = (r: LocalClearRecord): Bytes =>
     hex(r.salt),
     r.stage,
   );
+export const clearPayload = (r: LocalClearRecord): Bytes =>
+  r.target.legacySourceOrigin !== undefined
+    ? fields('done/local-import-clear/v1', hex(baseClearPayload(r)), r.target.legacySourceOrigin)
+    : baseClearPayload(r);
 export const equalClear = (a: LocalClearRecord, b: LocalClearRecord): boolean =>
   hex(clearPayload(a)) === hex(clearPayload(b)) && hex(a.mac) === hex(b.mac);
 export const clearAuthenticator = async (task: SessionTask, r: LocalClearRecord, code: string) => {

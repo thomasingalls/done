@@ -5,6 +5,7 @@
  * only detects observed change and never supplies exclusion or deletion authority.
  */
 import { CUSTODY_DB, CUSTODY_STORE, identity } from './custodyRecord';
+import { cleanupComplete } from './legacyCleanupRecord';
 import { hex } from './custodyCrypto';
 import { withExclusiveSlot, type SessionTask } from './writeSession';
 import { withPreactiveContentUnderPermit } from './custody';
@@ -48,8 +49,8 @@ export interface LegacySelectionReceipt {
   readonly scope: Readonly<ReturnType<typeof importScope>>;
   readonly storeId: string;
   readonly intentId: string;
-  /** Selection is complete; source cleanup has not run. */
-  readonly sourceCleanup: 'pending';
+  /** Current authenticated cleanup progress; not an exclusion or residue certificate. */
+  readonly sourceCleanup: 'pending' | 'complete';
 }
 const receipt = (claim: LocalClaim): LegacySelectionReceipt =>
   Object.freeze({
@@ -57,7 +58,7 @@ const receipt = (claim: LocalClaim): LegacySelectionReceipt =>
     scope: Object.freeze(claimScope(claim)),
     storeId: claim.initial.store_id,
     intentId: claim.initial.creation_intent!.id,
-    sourceCleanup: 'pending',
+    sourceCleanup: cleanupComplete(claim.sourceCleanup) ? 'complete' : 'pending',
   });
 const checkSource = async (task: SessionTask, claim: ImportClaim) => {
   if (task.step(() => globalThis.location.origin) !== claim.binding.sourceOrigin)

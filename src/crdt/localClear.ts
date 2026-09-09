@@ -1,4 +1,6 @@
 /** Explicit Local-only destructive action. The host confirms deletion of the returned immutable target. */
+import { cleanupComplete } from './legacyCleanupRecord';
+import { assertLegacySourceAbsent } from './legacyCleanupStorage';
 import { identity } from './custodyRecord';
 import { random, hex } from './custodyCrypto';
 import { openWriteSession, withExclusiveSlot, type SessionTask } from './writeSession';
@@ -47,7 +49,11 @@ const freshTarget = async (
   const claim = await readLocalClaim(task, slotId);
   if (!claim) stopStartup('identity-required', 'clear-needs-verified-local-genesis');
   await verifyLocalClaim(task, claim, code);
-  if (claim.imported) stopStartup('migration-required', 'import-source-cleanup-needs-owner');
+  if (claim.imported) {
+    if (!cleanupComplete(claim.sourceCleanup))
+      stopStartup('migration-required', 'import-source-cleanup-needs-owner');
+    await assertLegacySourceAbsent(task, claim.imported.sourceOrigin);
+  }
   const census = await localCensus(task, claim);
   if (claim.stage !== 'ready' || !census.slot)
     stopStartup('creation-pending', 'finish-local-genesis-before-clear');
@@ -59,6 +65,7 @@ const freshTarget = async (
     rootId: claim.initial.root_id,
     genesisIntentId: claim.initial.creation_intent!.id,
     dbName: route.stores[0]!.dbName,
+    ...(claim.imported ? { legacySourceOrigin: claim.imported.sourceOrigin } : {}),
   });
 };
 /** Read-only target for a host's explicit Local deletion confirmation; the action revalidates after its exclusive grant. */

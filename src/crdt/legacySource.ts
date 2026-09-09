@@ -47,7 +47,7 @@ export interface LegacySourceObservation {
   readonly digest: string;
 }
 
-const readLocal = (task: SessionTask): LegacyLocalEntry[] =>
+export const readLegacyLocal = (task: SessionTask): LegacyLocalEntry[] =>
   task.step(() => {
     const storage = globalThis.localStorage;
     const keys: string[] = [];
@@ -69,7 +69,7 @@ const readLocal = (task: SessionTask): LegacyLocalEntry[] =>
     });
   });
 
-const readUpdates = (task: SessionTask): Promise<LegacyUpdate[] | null> =>
+export const readLegacyUpdates = (task: SessionTask): Promise<LegacyUpdate[] | null> =>
   probeDatabase(task, 'done', async (db) => {
     if (db.version !== 1 || [...db.objectStoreNames].sort().join(',') !== 'custom,updates')
       refuse('unsupported-legacy-layout');
@@ -130,7 +130,7 @@ const hex = (bytes: Uint8Array): string =>
  * Returned plaintext is private preparatory input; callers must not log or persist it.
  */
 export const inspectLegacySource = async (task: SessionTask): Promise<LegacySourceObservation> => {
-  const local = readLocal(task);
+  const local = readLegacyLocal(task);
   const journal = task.step(() =>
     local
       .filter((e) => e.key.startsWith(PREFIX))
@@ -150,7 +150,7 @@ export const inspectLegacySource = async (task: SessionTask): Promise<LegacySour
         return { ...entry, bytes };
       }),
   );
-  const disk = await readUpdates(task);
+  const disk = await readLegacyUpdates(task);
   const dependencies = task.step(() => {
     const doc = new Y.Doc({ gc: false });
     try {
@@ -166,7 +166,7 @@ export const inspectLegacySource = async (task: SessionTask): Promise<LegacySour
       doc.destroy();
     }
   });
-  if (JSON.stringify(local) !== JSON.stringify(readLocal(task))) refuse('source-changed');
+  if (JSON.stringify(local) !== JSON.stringify(readLegacyLocal(task))) refuse('source-changed');
   const digest = await task.wait(async () =>
     hex(
       new Uint8Array(

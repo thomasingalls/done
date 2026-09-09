@@ -1,4 +1,6 @@
 /** Exact scoped effects for the Local clear owner. No broad database or storage clearing. */
+import { cleanupComplete } from './legacyCleanupRecord';
+import { assertLegacySourceAbsent } from './legacyCleanupStorage';
 import { CUSTODY_DB, CUSTODY_STORE, recordKey, parseRecord } from './custodyRecord';
 import { parseWitness, parseCounter } from './contentRecord';
 import { contentTransaction } from './contentDatabase';
@@ -107,6 +109,8 @@ export const clearCensus = async (task: SessionTask, record: LocalClearRecord, c
   const control = rows.find((row) => isKey(row, localClearKey(t.slotId)));
   if (!control || !same(control.value, record))
     stopStartup('repair-required', 'clear-intent-changed');
+  if (t.legacySourceOrigin !== undefined)
+    await assertLegacySourceAbsent(task, t.legacySourceOrigin);
   const retained = rows.filter((row) => row !== control);
   for (const row of retained)
     if (![localClaimKey(t.slotId), key, [...key, 'content-v1']].some((k) => isKey(row, k)))
@@ -119,6 +123,13 @@ export const clearCensus = async (task: SessionTask, record: LocalClearRecord, c
     if (!initial) stopStartup('repair-required', 'clear-genesis-claim-missing');
     const claim = parseLocalClaim(initial.value, t.slotId);
     await verifyLocalClaim(task, claim, code);
+    if (
+      claim.imported
+        ? !cleanupComplete(claim.sourceCleanup) ||
+          t.legacySourceOrigin !== claim.imported.sourceOrigin
+        : t.legacySourceOrigin !== undefined
+    )
+      stopStartup('repair-required', 'clear-source-cleanup-mismatch');
     if (
       claim.stage !== 'ready' ||
       claim.initial.principal_id !== t.principalId ||

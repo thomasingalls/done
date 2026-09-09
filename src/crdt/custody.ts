@@ -808,6 +808,27 @@ export const withPreactiveContentUnderPermit = async <T>(
   }
 };
 
+/** Internal cold recovery under an already-held lifecycle permit. No writes or keys escape. */
+export const withRecoveryUnderPermit = async <T>(
+  task: SessionTask,
+  authority: CustodyAuthority,
+  code: string,
+  operation: (recovery: JournalRecovery) => Promise<T>,
+): Promise<T> => {
+  const owner = prepareCustody(authority, code, true, true);
+  let journal: JournalUpdate[] | undefined, records: OpenedRecord[] | undefined;
+  try {
+    await owner.initialize(task);
+    journal = await owner.journal.readSnapshot(task);
+    records = await owner.carrier.load(task);
+    return await operation({ records, journal });
+  } finally {
+    journal?.forEach((row) => row.bytes.fill(0));
+    records?.forEach((row) => row.bytes.fill(0));
+    owner.dispose();
+  }
+};
+
 export const initializeContentStore = async (
   input: CustodyAuthority,
   code: string,

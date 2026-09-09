@@ -24,12 +24,19 @@ import { assertNoPreactiveImport } from './legacyImportState';
 import { stopStartup } from './startupState';
 import type { SessionTask } from './writeSession';
 
+import {
+  parseLegacyCleanup,
+  cleanupPayload,
+  type LegacyCleanupRecord,
+} from './legacyCleanupRecord';
+
 export const localClaimKey = (slotId: string): string[] => [slotId, 'local-genesis-v1'];
 export interface LocalClaim {
   v: 1;
   initial: CustodyRecord;
   stage: 'custody' | 'content' | 'ready';
   mac: Bytes;
+  sourceCleanup?: LegacyCleanupRecord;
   /** Authenticated provenance of an imported Local selection; absent for fresh genesis. */
   imported?: {
     policy: 'markdown-system-v1';
@@ -50,9 +57,11 @@ export const parseLocalClaim = (value: unknown, slotId: string): LocalClaim => {
   const v = value as LocalClaim | undefined;
   if (
     !v ||
-    !['initial,mac,stage,v', 'imported,initial,mac,stage,v'].includes(
-      Object.keys(v).sort().join(','),
-    ) ||
+    ![
+      'initial,mac,stage,v',
+      'imported,initial,mac,stage,v',
+      'imported,initial,mac,sourceCleanup,stage,v',
+    ].includes(Object.keys(v).sort().join(',')) ||
     v.v !== 1 ||
     !v.initial ||
     !['custody', 'content', 'ready'].includes(v.stage) ||
@@ -98,6 +107,7 @@ export const parseLocalClaim = (value: unknown, slotId: string): LocalClaim => {
     stage: v.stage,
     mac: v.mac.slice(),
     ...(v.imported ? { imported: { ...v.imported } } : {}),
+    ...('sourceCleanup' in v ? { sourceCleanup: parseLegacyCleanup(v.sourceCleanup) } : {}),
   };
 };
 export const slotCustodyRows = (task: SessionTask, slotId: string) =>
@@ -151,7 +161,7 @@ const claimAuthentication = async (
       ),
     );
     const p = claim.imported;
-    const payload = p
+    const selectionPayload = p
       ? fields(
           'done/local-import-selection/v1',
           hex(claim.initial.mac),
@@ -167,6 +177,13 @@ const claimAuthentication = async (
           ]),
         )
       : fields('done/local-genesis-progress/v1', hex(claim.initial.mac), claim.stage);
+    const payload = claim.sourceCleanup
+      ? fields(
+          'done/local-import-cleanup/v1',
+          hex(selectionPayload),
+          cleanupPayload(claim.sourceCleanup),
+        )
+      : selectionPayload;
     if (signing) return new Uint8Array(await task.wait(() => subtle.sign('HMAC', key, payload)));
     if (!(await task.wait(() => subtle.verify('HMAC', key, claim.mac, payload))))
       stopStartup('repair-required', 'local-progress-authentication-failed');
