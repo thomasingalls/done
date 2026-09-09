@@ -48,45 +48,35 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # verified Local import selection implemented; source cleanup is next
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-selection-preparation.md]
+status: in flight # cleanup implementation committed; harness diagnostics ready, native validation incomplete
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-cleanup-preparation.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-09
 ```
 
-**Just completed.** Pre-active import is committed as `a0072e8`. The
-[verified selection owner](./legacy-selection-preparation.md) cold-replays the factor-opened destination,
-checks the source/policy/plan binding and advances to signed selection intent. An exact Local index route
-precedes one atomic custody handoff to the ordinary Local owner; the pre-active marker blocks opening until
-that final commit completes. The ready claim authenticates import provenance. Keys, counters and content
-remain in place. Normal Local unlock/picker/admission work, and repeated selection preserves later edits.
-This checkpoint is uncommitted; its outcome is appended to [completed.md](./completed.md).
+**Current checkpoint.** Verified selection is committed as `4f40ede`; source cleanup is committed as
+`4c3c3ab`. The cleanup implementation was checked in before its generated native campaign completed.
+The retained [input and diagnostic](../test/legacy-cleanup/regressions/captured-4c3c3ab/README.md) have hashes
+and explicit unresolved provenance; their exact pairing and minimality have not been verified.
 
-**Evidence and repair.** [Executed evidence](./storage-conformance-runs/2026-09-09-legacy-selection.md)
-passes 20 native cases, 60 generated source/abort/restart/edit histories, three renderer deaths and five
-named controls. Full Vitest passes 765 tests / 64 files, including 30 new generated partial states. A directed
-fault exposed a missing final route-presence requirement: the first census could accept a lost index and
-return selected. The explicit check now refuses and resumes safely; before/after evidence and a native
-control retain this failure mechanism. The separate damaged-import property shrinks twice and saves input.
-Import/genesis/clear/startup regressions pass with actual tested hashes. These results establish bounded
-component behavior, not complete protocol or platform correctness.
+**Just completed.** The harness saves first failures before shrinking, retains browser message/stack/cause,
+checkpoints partial reports and logs trial/operation progress. Calls, histories, shrinking, campaigns and
+teardown have explicit deadlines. A separate supervisor bounds a wedged worker or a leaked handle after
+reported success. Thirteen Node-only tests pass using synthetic errors, promises and processes. This
+checkpoint launches no real browser and makes no cleanup-runtime change. The outcome is recorded in
+[completed.md](./completed.md); details are in the [harness guide](./legacy-cleanup-preparation.md#harness-diagnostics-and-deadlines).
 
-**Next bounded work.** Build authenticated, resumable journal-inclusive legacy source cleanup for a verified
-selected destination. Bind deletion to the selected source observation and immutable destination provenance;
-revalidate before the first destructive action, persist resumable cleanup intent, and order exact legacy
-DB/WAL/ancillary deletion with native crash/abort coverage. Never delete or roll back the selected destination
-when cleanup is interrupted. Compose the imported Local-clear boundary so it cannot report completion while
-recognizable app-managed legacy plaintext remains. Keep source exclusion and source-change refusals explicit.
-The existing Local clear owner currently refuses imported selections. Default application cutover and the
-full residue/old-executable-route matrix remain separate integration work.
+**Next bounded work.** Diagnose a saved-input replay with these diagnostics, then complete the native
+campaign and fault controls before accepting source cleanup. Migration coordination and default application
+cutover remain later work.
 
 **Exclusion and product gates.** The seeded controller closes old contexts, blocks service workers/external
 routes and reestablishes its epoch after each restart. That is a test precondition, not a production browser
 primitive. Supported-version exclusion still needs an implemented procedure covering old pages/workers/
 cached shells and transport. A new origin isolates the destination but alone does not stabilize or clean
 source. Source equality detects observed change; it does not certify quiescence or source authenticity.
-No boolean, digest or selection receipt pays this gate. Source is retained at this checkpoint. The diagnostic
+No boolean, digest or selection receipt pays this gate. Seeded cleanup is not a production exclusion procedure. The diagnostic
 packet is not a fidelity archive, and the explicit Markdown/system adapter does not settle sequencing §5.4's
 real carrier/attribution choice. The author's real-data Stage 2 move remains gated on that decision and review.
 
@@ -104,7 +94,8 @@ plaintext-scanning findings remain outside the selected core repairs and these m
 content `468cbe2`; journal `9e60c6a`; admission/Goals `0b5337a`; workspace/history `a48c090`; startup `a916d61`;
 Local genesis/index `ee60528`; Local clear `d7c0f32`; exact compaction `85c7404`; production properties
 `a0811e2`; source reader `e64cd2a`; export capture `da5def9`; reproductions `a292103`; contention repair
-`fc1ff41`; runtime forks/projections `0399567`; Yjs delivery/handoff `a465310`; pre-active import `a0072e8`.
+`fc1ff41`; runtime forks/projections `0399567`; Yjs delivery/handoff `a465310`; pre-active import `a0072e8`;
+verified selection `4f40ede`; source cleanup implementation `4c3c3ab` (validation unresolved).
 The earlier shared candidate run rejected all three pinned branches; none is merged.
 
 **Completion blockers.** L-1 still owes integrated genesis/index/clear/default-application conformance and

@@ -1,3 +1,4 @@
+import { describeError } from '../legacy-import/error.mjs';
 import '../legacy-import/browser.mjs';
 import { selectLegacyImport } from '../../src/crdt/legacySelection';
 import { readImportClaim, advanceImportClaim } from '../../src/crdt/legacyImportRecord';
@@ -27,7 +28,11 @@ const run = async (fn) => {
     if (trigger && fault?.startsWith('kill-')) await pause();
     return { status: 'ok', value };
   } catch (e) {
-    return { status: 'refused', reason: e.reason ?? e.disposition?.reason ?? e.code ?? e.name };
+    return {
+      status: 'refused',
+      reason: e?.reason ?? e?.disposition?.reason ?? e?.code ?? e?.name ?? 'ThrownValue',
+      error: describeError(e),
+    };
   }
 };
 const phase = (store, value, key) => {

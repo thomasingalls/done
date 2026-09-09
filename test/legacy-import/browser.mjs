@@ -1,3 +1,4 @@
+import { describeError } from './error.mjs';
 import { encodeImportSlice } from '../../src/crdt/legacyImportPlan';
 import { beginLegacyImport, resumeLegacyImport } from '../../src/crdt/legacyImport';
 import { captureLegacyExport } from '../../src/crdt/legacyExport';
@@ -33,7 +34,11 @@ const run = async (operation) => {
     if (trigger && fault?.startsWith('kill-')) await pause();
     return { status: 'ok', value };
   } catch (e) {
-    return { status: 'refused', reason: e.reason ?? e.disposition?.reason ?? e.code ?? e.name };
+    return {
+      status: 'refused',
+      reason: e?.reason ?? e?.disposition?.reason ?? e?.code ?? e?.name ?? 'ThrownValue',
+      error: describeError(e),
+    };
   }
 };
 const nativeAdd = IDBObjectStore.prototype.add,

@@ -1,3 +1,4 @@
+import { describeError } from '../legacy-import/error.mjs';
 import '../legacy-selection/browser.mjs';
 import { cleanupLegacySource } from '../../src/crdt/legacyCleanup';
 import { readLocalClaim, localClaimKey } from '../../src/crdt/localGenesisRecord';
@@ -34,7 +35,11 @@ const run = async (fn) => {
     if (trigger) await pause();
     return { status: 'ok', value };
   } catch (e) {
-    return { status: 'refused', reason: e.reason ?? e.disposition?.reason ?? e.code ?? e.name };
+    return {
+      status: 'refused',
+      reason: e?.reason ?? e?.disposition?.reason ?? e?.code ?? e?.name ?? 'ThrownValue',
+      error: describeError(e),
+    };
   }
 };
 const decode = (input) => ({ ...input, recovery: new Uint8Array(input.recovery) });

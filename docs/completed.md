@@ -906,3 +906,19 @@ Source cleanup, production supported-version exclusion, real cutover carrier cho
 routing, complete legacy cutover/residue acceptance and independent review/platform/performance remain owed.
 No source material is deleted and no whole obligation/debt status/payment changes. This checkpoint is
 uncommitted; the next bounded phase is authenticated, resumable journal-inclusive legacy source cleanup.
+
+## 2026-09-09 — Cleanup failure preservation and bounded harness diagnostics (`L-1`)
+
+Preserved the interrupted `4c3c3ab` campaign's input and diagnostic with byte hashes and explicit unresolved
+provenance. The old generic refusal discarded its browser stack; new fixture wrappers preserve message/stack/cause.
+The cleanup harness now checkpoints partial reports and first failures before shrinking, logs trial/operation
+progress, and bounds calls, cases, shrinking, campaigns and teardown. A separate supervisor bounds the worker
+even when its event loop wedges or it leaves a handle after reporting success. Timeouts cannot satisfy named
+fault-control assertions. Saved-input replay now bypasses directed cases and runs once without shrinking.
+
+Thirteen Node-only harness tests pass, covering archival hashes, original error details, failure-before-shrink,
+stalled calls/shrinks, campaign limits, independent teardown, deadline options, a wedged worker and its registered
+disposable process, post-report leaks, exit status, an orphaned browser and worker import failure. These tests import no cleanup runtime
+and launch no real browser. No historical replay or native cleanup campaign ran in this checkpoint; the cleanup
+implementation remains unvalidated as a complete phase. The next work is replay and diagnosis, followed by the
+full native campaign and controls. No migration coordinator, cutover or debt payment is claimed.

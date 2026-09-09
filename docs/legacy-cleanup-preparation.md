@@ -69,3 +69,55 @@ that current effect. Repeated whole-manifest comparisons and complete destinatio
 refusal sizes, not established latency/memory acceptance. One Chromium host and finite generated alphabets do not
 establish protocol-wide correctness, adversarial-unlocked-code isolation or supported-browser/security approval.
 Whole-profile residue, production old-executable exclusion, default cutover and the real carrier decision remain gates.
+
+## Harness diagnostics and deadlines
+
+**Validation status at `4c3c3ab`: incomplete.** The implementation was committed while the native generated
+campaign was unresolved. Earlier directed PASS output does not establish completion of the generated histories,
+shrinking, fault controls or teardown. The retained [history and diagnostic](../test/legacy-cleanup/regressions/captured-4c3c3ab/README.md)
+are preserved with provenance; their exact pairing and minimality remain unverified. No cleanup runtime change,
+historical replay or native campaign was performed in the subsequent harness instrumentation checkpoint.
+
+`pnpm storage:legacy-cleanup:harness` tests only the Node diagnostics, fast-check orchestration and supervisor,
+using synthetic exceptions, stalled promises and disposable Node subprocesses. It launches no real browser and
+imports no cleanup runtime. It is a prerequisite in `pnpm check`; it cannot substitute for the native campaign.
+
+The native runner now uses an external supervisor and a campaign worker. Each directed case and generated or
+shrinking trial prints its start; trials identify their attempt, seed, stage and input hash. A heartbeat every
+15 seconds lists active operations. `events.jsonl` adds operation timing and serialized browser refusals, including
+message, stack, code, disposition and nested cause. Fixture call arguments, recovery packets and unlock material
+are not logged. These diagnostics are for the synthetic fixture, not an interface for production profiles.
+
+Before each property attempt, `<campaign>-current-input.json` stores its input. Before fast-check can shrink a
+failure, `<campaign>-first-failure-input.json` and `<campaign>-first-failure.json` store the original input and
+exception; subsequent shrink attempts do not replace them. Completed shrinking still writes the existing final
+counterexample and path. `report.json` is checkpointed atomically throughout the run, before teardown and at
+completion. Partial reports retain completed assertions, active operations and trial identity. An old discarded
+browser stack cannot be reconstructed without another execution.
+
+All deadline flags take positive integer milliseconds:
+
+| Flag | Default | Boundary |
+| --- | ---: | --- |
+| `--call-ms` | 30000 | Fixture evaluation, restart and startup operations |
+| `--case-ms` | 120000 | One directed case, generated history, control or replay |
+| `--campaign-ms` | 600000 | One fast-check campaign, including shrinking |
+| `--shrink-ms` | 120000 | Total shrinking time after the first failure |
+| `--teardown-ms` | 10000 | Each resource close, and worker exit after its final report |
+| `--run-ms` | 1800000 | Entire worker lifetime, enforced by a separate process |
+
+These are diagnostic budgets, not measured performance requirements. Exhausting any budget fails the run and
+cannot count as detecting a named fault control. The worker stops admitting new trials and attempts each resource
+close even if an earlier close fails. The external supervisor can terminate a wedged worker and its registered
+disposable browser process group on POSIX; the Node-only controls exercise that process boundary on the current
+host. This is not cross-platform native-browser validation. A successful final report also requires a clean worker
+exit; assertions passing before a leaked handle does not produce a successful command.
+
+A watchdog bounds the harness wait; it cannot cancel an in-flight IndexedDB deletion or authorize early release
+of a production lifecycle permit. Disposal/termination abandons the disposable test context. The production
+blocked-delete contract above remains unchanged.
+
+`--mutant baseline --replay <input.json>` now runs only that saved history, with no directed cases, generation,
+shrinking or controls. Outputs still use a fresh directory and freeze the current sources. The next bounded work
+is that replay and root-cause diagnosis, followed by any repair and the complete native campaign; none is credited
+by the instrumentation tests.
