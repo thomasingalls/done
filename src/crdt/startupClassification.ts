@@ -20,6 +20,7 @@ import {
   legacyJournalCount,
 } from './startupStorage';
 import { assertNoLocalClear } from './localClearState';
+import { assertNoPreactiveImport } from './legacyImportState';
 import { StartupError, stopStartup } from './startupState';
 import type { SessionTask } from './writeSession';
 import type { Slot } from './slotIndex';
@@ -127,6 +128,7 @@ export const classifyUnderPermit = async (
   authority: StartupAuthority,
 ): Promise<ClassifiedWorkspace> => {
   await assertNoLocalClear(task, authority.slotId);
+  await assertNoPreactiveImport(task, authority.slotId);
   const slot = await probeDatabase(task, 'done.slots', async (db) => {
     checkLayout(db, { slots: 'id' });
     return parseSlot(await readRow(task, db, 'slots', authority.slotId), authority.slotId);

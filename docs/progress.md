@@ -48,78 +48,74 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # bounded core repairs complete; pre-active migration preparation is next
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, yjs-delivery.md, legacy-migration-prep.md]
+status: in flight # pre-active import implemented; verified active selection is next
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-import-preparation.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-09
 ```
 
-**Just completed.** Phase-two runtime forks/projection checking is committed as `0399567`. The
-[delivery-order and pending-handoff repair](./yjs-delivery.md) pins two Yjs 13.6.31 corrections: retain the
-earlier cross-client dependency wake-up even when a later reader is available, and drain wake-ups satisfied
-within the current integration pass. The second correction came from a new native generated failure with
-identical pending bytes but divergent retry bookkeeping. Strict projection checking remains. This
-checkpoint is uncommitted; its outcome is appended to [completed.md](./completed.md).
+**Just completed.** The Yjs delivery repair is committed as `a465310`. The
+[pre-active Local import owner](./legacy-import-preparation.md) binds a verified diagnostic packet and
+explicit Markdown/system policy to generated-factor confirmation and fresh principal/workspace/store/root/
+reservation history. Authenticated coarse progress and immutable encrypted per-slice receipts resume bounded
+imports without repeating committed actions. Final verification rereads committed ciphertext into a new
+private document. Ordinary startup/custody/index access refuses the destination; the source remains intact.
+This checkpoint is uncommitted; its outcome is appended to [completed.md](./completed.md).
 
-**Evidence.** [Recorded execution](./storage-conformance-runs/2026-09-09-yjs-delivery.md) passes all 5,040
-orders of the saved original bytes, 150,000 generated original/handoff/concurrent histories, eight native
-cases including 100 generated channel histories, saved replay and snapshot-only recovery after renderer
-death. The earlier wake-up mutant reproduces exactly 78 failed orders; all five new native controls are
-detected. Full Vitest passes 741 tests / 61 files, including 3,000 new histories and 500 repeated-fork
-histories. Projection, admission, editor, workspace, startup, trim, storage-property, journal-contention
-and legacy capture regressions pass. Storage properties include 120 histories, four shrunk/replayed
-controls and 18 renderer deaths. Patch/peer checks and a clean offline frozen install pass. Typecheck,
-lint/format, build/budget, vectors/AAD and applicable checks pass; initial JS remains 306.3 kB / 350.0 kB
-compressed. Two former semantic controls now exercise repaired behavior and are retired; the unchanged
-incomplete-compaction policy still has its directed control.
+**Evidence and the defect found.** [Executed evidence](./storage-conformance-runs/2026-09-09-legacy-import.md)
+passes 22 native cases, 60 generated restart histories, ten renderer deaths and six controls. Full Vitest
+passes 755 tests / 63 files. A stress probe found that repeatedly overwriting one Yjs progress key caused
+receipt deletion metadata to exceed 16 KiB at action index 2296. Immutable receipt keys fix that mechanism;
+five generated 2,000–4,000-card writer histories replay every update, and a native 2,601-action probe observes
+maximum output of 344 bytes. These writer-id simulations are distinct from the ten actual renderer deaths.
+The repeated-write property shrinks five times and saves its input. Custody/content/journal/admission/
+startup/genesis/clear and legacy export regressions pass; their evidence retains the actual tested hashes.
 
-**Next bounded work.** Pre-active destination/import preparation can resume against verified source input
-and an explicit carrier policy. The destination needs mandatory-factor fresh writable store/key/counter
-scope and bounded idempotent slices. Existing legacy material cannot be reclassified as fresh, Local
-genesis absence checks cannot be bypassed, and a normal ready index row cannot be installed early. Imports
-cannot restore writable keys/counters. The Markdown/system-attribution versus fidelity-archive choice
-remains open for Stage 2; the diagnostic capture packet has no portable encryption/archive authority.
-No destination/import, migration progress, active selection or cleanup is implemented in this checkpoint.
+**Next bounded work.** Make cold destination verification and one durable active-selection decision concrete,
+with authenticated resumable progress across custody/index boundaries. An `imported` claim alone must never
+install an ordinary ready route: reread the factor-opened destination, bind the same source/policy/identity,
+and verify the selected logical projection first. Interruption must converge without reminting writable
+keys/counters or duplicating import. Keep source cleanup in its own subsequent phase. The diagnostic packet
+is not a fidelity archive. Markdown/system attribution versus the fidelity carrier remains open for the
+author's Stage 2 move; the explicit preparatory adapter does not settle that product decision.
 
-**Exclusion gate.** The test controller can stop every old context and disallow old execution routes across
-restarts. That is a test precondition, not a production browser primitive. Supported-version exclusion for
-the author's installation still needs an implemented and tested procedure covering old pages, workers,
-cached shells and transport. A new origin isolates the destination but alone does not stabilize or clean
-the source. Preserve legacy recovery material until verified encrypted selection; complete cutover requires
-no recognizable app-managed plaintext. No assertion or matching digest pays this gate.
+**Exclusion gate.** The seeded controller closes old contexts, blocks service workers/external routes and
+reestablishes its epoch after each restart. That is a test precondition, not a production browser primitive.
+Supported-version exclusion still needs an implemented procedure covering old pages/workers/cached shells
+and transport. A new origin isolates the destination but alone does not stabilize or clean the source.
+No boolean, digest or pre-active import receipt pays this gate. Preserve legacy recovery material until
+verified encrypted selection; complete cutover eventually requires no recognizable app-managed plaintext.
 
-**Review and preparation gates.** The Yjs repair is a local patch, not an upstream-reviewed release or a
-proof of general CRDT correctness. Generated alphabets and one Chromium host do not cover malicious binary
-updates or arbitrary same-position concurrent text semantics. Recursive pending retries, gc:false history,
-Item.redone/delete-set copies and whole-state projection comparisons retain version, memory and low-end
-input-to-paint obligations. Large structural/bulk/undo/deletion output still faces the 16 KiB guard and
-needs general bounded adapters. Compaction scans the full disk union; its 4 MiB output limit does not bound
-input memory. Incomplete unions still retain original records until their basis arrives. Native IME and
-complete interaction performance remain gates before default editor acceptance. The review's additional
-recovery, maintenance/cost, row-limit, nonce-wording and plaintext-scanning findings remain outside these
-selected repairs.
+**Review and preparation gates.** The local Yjs patch is not an upstream-reviewed release. Generated alphabets
+and one Chromium host do not establish general CRDT correctness or malicious-input coverage. Recursive
+pending retries, retained undo history and whole-state comparisons retain version/memory/input-to-paint
+obligations. Imports now have bounded action updates, but planning and replay still scan the whole bounded
+input/history in memory. General structural/bulk/undo/deletion adapters and low-end performance remain owed.
+Compaction's output limit does not bound its input memory; incomplete unions still retain their original
+records. Native IME and full interaction performance remain gates before default editor acceptance. The
+review's additional recovery, maintenance/cost, row-limit, nonce-wording and plaintext-scanning findings
+remain outside the selected core repairs and this import phase.
 
-**Existing checkpoints.** Corrected contracts: `f87997d`; shared harness/lifecycle: `ccfcbf0`; mandatory-factor
-custody: `a6d39a2`; content: `468cbe2`; synchronous journal: `9e60c6a`; admission/Goals editor: `0b5337a`;
-workspace commands/history: `a48c090`; owned startup: `a916d61`; Local genesis/index: `ee60528`; scoped Local
-clear: `d7c0f32`; exact content compaction: `85c7404`; production properties/incomplete-compaction deferral:
-`a0811e2`; read-only source: `e64cd2a`; verified export capture: `da5def9`; core reproductions: `a292103`;
-journal contention repair: `fc1ff41`; exact runtime forks and projections: `0399567`. The earlier 57-subcase
-shared candidate run rejected all three pinned candidates; none is merged.
+**Existing checkpoints.** Corrected contracts `f87997d`; harness/lifecycle `ccfcbf0`; factor custody `a6d39a2`;
+content `468cbe2`; journal `9e60c6a`; admission/Goals `0b5337a`; workspace/history `a48c090`; startup `a916d61`;
+Local genesis/index `ee60528`; Local clear `d7c0f32`; exact compaction `85c7404`; production properties
+`a0811e2`; source reader `e64cd2a`; export capture `da5def9`; reproductions `a292103`; contention repair
+`fc1ff41`; runtime forks/projections `0399567`; Yjs delivery/handoff `a465310`. The earlier shared candidate
+run rejected all three pinned branches; none is merged.
 
 **Completion blockers.** L-1 still owes integrated genesis/index/clear/default-application conformance and
 seeded legacy cutover kills. Scoped Local clear handles only the first completed active workspace;
-shared/multiple-workspace custody, Account removal/service revocation, partial-genesis cleanup and explicit
-cleared-slot reuse need subsequent owners. Additional Local workspaces, Account verifier/receive/checkpoint
-authority and PRF remain incomplete. L-3 composes generation/custody references, lifetimes and interrupted
-phases; these components do not implement retirement. L-4 carries independent storage/crypto review,
-supported profiles/authenticators, low-end performance and platform acceptance. Only matrix evidence and
-its three pins advance; obligations/debt statuses remain unchanged. No checkpoint pays old-writer release.
+shared/multiple-workspace custody, Account removal/service revocation, partial-genesis/import cleanup and
+explicit cleared-slot reuse need subsequent owners. Additional Local workspaces, Account verifier/receive/
+checkpoint authority and PRF remain incomplete. L-3 composes generation/custody references and interrupted
+lifetimes; these components do not implement retirement. L-4 carries independent storage/crypto review,
+supported profiles/authenticators, low-end performance and platform acceptance. Evidence and three matrix
+pins advance; obligations/debt statuses remain unchanged. No checkpoint pays old-writer release.
 
-**Scope.** This seat owns L-1 implementation/evidence. The independent L-2 record below is unchanged.
-The author's real-data cutover remains Stage 2 after carrier selection and review 3a. Historical Stage 0
-records do not certify states their models omitted.
+**Scope.** This seat owns L-1 implementation/evidence. The independent L-2 record below is unchanged. The
+author's real-data cutover remains Stage 2 after carrier selection and review 3a. Historical Stage 0 records
+do not certify states their models omitted.
 
 ---
 

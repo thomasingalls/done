@@ -4,6 +4,7 @@
  * completing this component alone does not complete workspace genesis.
  */
 import { assertNoLocalClear } from './localClearState';
+import { assertNoPreactiveImport } from './legacyImportState';
 import { validateContentUpdates, type ContentCompactionReceipt } from './contentCompaction';
 export type { ContentCompactionReceipt } from './contentCompaction';
 import { deriveStoreName } from './storeName';
@@ -140,8 +141,13 @@ const captureAuthority = (authority: CustodyAuthority) => {
     throw new CustodyError('invalid-input', 'Custody requires an identity authority.', { cause });
   }
 };
-const resolveScope = async (task: SessionTask, a: CustodyAuthority): Promise<CustodyScope> => {
+const resolveScope = async (
+  task: SessionTask,
+  a: CustodyAuthority,
+  preactive = false,
+): Promise<CustodyScope> => {
   await assertNoLocalClear(task, a.slotId);
+  if (!preactive) await assertNoPreactiveImport(task, a.slotId);
   const principalId = await task.wait(() => a.resolvePrincipal(task));
   identity(principalId);
   return Object.freeze({ slotId: a.slotId, workspaceId: a.workspaceId, principalId });
@@ -368,7 +374,7 @@ const createOrResume = async (
     db = undefined;
   };
   const operation = async (task: SessionTask) => {
-    const scope = await resolveScope(task, authority);
+    const scope = await resolveScope(task, authority, Boolean(owned));
     await task.wait(async () => {
       db = await openCustodyDb();
     });
@@ -499,7 +505,7 @@ export const checkContentUnderPermit = async (
   code: string,
   creation?: ContentCreationOptions,
 ): Promise<CustodyDescriptor> => {
-  const owner = prepareCustody(authority, code, true);
+  const owner = prepareCustody(authority, code, true, false, true);
   try {
     await owner.initialize(task, creation);
     return owner.describe();
@@ -578,6 +584,7 @@ const prepareCustody = (
   code: string,
   content: boolean,
   withJournal = false,
+  preactive = false,
 ) => {
   const authority = captureAuthority(input),
     factor = codeBytes(code);
@@ -623,7 +630,7 @@ const prepareCustody = (
     },
     openRecord,
     initialize: async (task: SessionTask, creation?: ContentCreationOptions) => {
-      scope = await resolveScope(task, authority);
+      scope = await resolveScope(task, authority, preactive);
       await task.wait(async () => {
         db = await openCustodyDb();
       });
@@ -773,6 +780,33 @@ export interface ContentSession extends CustodyDescriptor {
   loadRecords(): Promise<OpenedRecord[]>;
   close(): Promise<void>;
 }
+
+/** Internal pre-active owner seam. Caller owns exclusion and verifies its import claim on this task.
+ * No key, journal, transport or long-lived carrier escapes the callback. */
+export const withPreactiveContentUnderPermit = async <T>(
+  task: SessionTask,
+  authority: CustodyAuthority,
+  code: string,
+  operation: (content: Pick<ContentSession, 'appendBatch' | 'loadRecords'>) => Promise<T>,
+): Promise<T> => {
+  const owner = prepareCustody(authority, code, true, false, true);
+  try {
+    await owner.initialize(task);
+    return await operation({
+      loadRecords: () => owner.carrier.load(task),
+      appendBatch: async (input) => {
+        const copied = task.step(() => copyBatch(input));
+        try {
+          return await owner.carrier.append(task, copied);
+        } finally {
+          for (const record of copied) record.bytes.fill(0);
+        }
+      },
+    });
+  } finally {
+    owner.dispose();
+  }
+};
 
 export const initializeContentStore = async (
   input: CustodyAuthority,

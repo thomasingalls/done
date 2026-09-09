@@ -20,6 +20,7 @@ import {
 } from './custodyCrypto';
 import { probeDatabase, checkLayout, readScopedRows } from './startupStorage';
 import { assertNoLocalClear } from './localClearState';
+import { assertNoPreactiveImport } from './legacyImportState';
 import { stopStartup } from './startupState';
 import type { SessionTask } from './writeSession';
 
@@ -72,6 +73,7 @@ export const readLocalClaim = async (
   slotId: string,
 ): Promise<LocalClaim | null> => {
   await assertNoLocalClear(task, slotId);
+  await assertNoPreactiveImport(task, slotId);
   const rows = (await slotCustodyRows(task, slotId)) ?? [];
   const row = rows.find((r) => indexedDB.cmp(r.key, localClaimKey(slotId)) === 0);
   return row ? parseLocalClaim(row.value, slotId) : null;

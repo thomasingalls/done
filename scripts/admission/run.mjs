@@ -46,6 +46,7 @@ const sourcePaths = [
   'yjs.ts',
   'custody.ts',
   'localClearState.ts',
+  'legacyImportState.ts',
   'startupStorage.ts',
   'startupState.ts',
   'custodyCrypto.ts',

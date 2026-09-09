@@ -850,3 +850,34 @@ exclusion, source preservation, default-app integration and existing acceptance 
 library patch and whole-state checking still need independent review, large-state and low-end performance
 acceptance. Only matrix evidence and its three pins advance. No obligation, debt status, payment record or
 independent L-2 record changes.
+
+
+### 2026-09-09 — pre-active Local destination/import owner
+
+The preceding Yjs delivery repair is committed as **a465310**. The next bounded L-1 phase is implemented
+and uncommitted: [construction](./legacy-import-preparation.md),
+[execution evidence](./storage-conformance-runs/2026-09-09-legacy-import.md). Generated-factor confirmation
+installs an authenticated immutable source/policy/plan/identity intent with fresh custody and counters.
+The owner imports 1–32 bounded actions per invocation, authenticates consecutive encrypted receipts on
+resume, and rereads committed content for semantic verification. The destination remains pre-active,
+ordinary opens/index mutations refuse it, and the source retains its exact native/localStorage bytes.
+No Local genesis absence check is bypassed; no ready index, source selection/deletion or default-app switch
+is installed. The explicit Markdown/system adapter does not settle the real cutover carrier.
+
+A directed restarted-writer stress probe found that replacing one mutable Yjs progress key caused deletion
+metadata to exceed 16 KiB at action index 2296. Immutable per-action receipt keys repair that mechanism.
+Five generated 2,000–4,000-card writer histories replay each update to a separate receiver; the native
+2,601-action stress keeps each update at or below 344 bytes. These simulate distinct runtime writer ids,
+not thousands of browser process deaths. Native schedule generation covers real bounded resumes/aborts;
+a repeated-write mutant shrinks five times and saves a replayable input.
+
+Final native evidence passes 22 cases, 60 generated histories, ten renderer deaths and all six controls.
+Full Vitest passes 755 tests / 63 files. Custody/content/journal/admission/startup/genesis/clear and source
+export regressions pass with their controls; export also carries 60 generated histories and three deaths.
+The custody runner's missing frozen guard dependency and an early crash-fixture timing error were corrected
+before credited runs. Earlier mutable-receipt passes remain development evidence, not final acceptance.
+
+Verified cold destination selection and its interrupted index/progress commits are next. Production old-writer
+exclusion, live carrier choice, source cleanup, full cutover terminal-state/residue acceptance, independent
+review and performance/profile gates remain owed. Whole-input planning and replay are still in memory.
+Only conformance evidence and the three matrix pins advance; no obligation/debt status or payment changes.

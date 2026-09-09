@@ -2038,3 +2038,40 @@ complete external-string recovery in every generated original order. Conservativ
 compaction deferral is unchanged and still has its directed policy control. Migration, carrier choice,
 pre-active destination/import ownership, source exclusion and default-app cutover remain separate work.
 Evidence and three matrix pins advance without obligation/debt payment.
+
+
+### 2026-09-09 — bind pre-active imports to fresh custody and immutable encrypted receipts
+
+The Yjs delivery repair is committed as `a465310`. The next bounded owner accepts a verified diagnostic
+source packet, separately held digest, expected origin/source observation and explicit `markdown-system-v1`
+policy. Generated-factor confirmation binds these choices to a fresh Local principal/workspace/store/root
+and reservation history. This locally authenticated intent is not source authenticity or old-writer exclusion.
+The real carrier/attribution choice in sequencing §5.4 remains open; no downloaded fidelity archive or writable
+key/counter restoration is implemented by this preparatory adapter.
+
+The factor-sealed initial custody record and import claim install atomically. A domain-separated HMAC
+binds that initial custody MAC, input/plan/policy, immutable timestamp and coarse custody/content/importing/
+imported stages. The owner checks exact previous progress and all scoped destination carriers under the
+existing exclusive permit. It never writes a Local genesis claim or ready index row. Ordinary custody,
+startup, genesis/index mutation and Local open refuse retained pre-active import state. Internal composition
+seams retain their trusted-owner responsibility; they are not a sandbox against unlocked same-origin code.
+
+Each bounded action writes its receipt and content in one encrypted update/native commit. Resume validates
+consecutive, intent-bound receipts from authenticated disk records before preparing the next action. Final
+semantic verification rereads committed ciphertext into a new private document, rather than checking only
+the document used to prepare writes. Missing/unknown material refuses; reservations abandoned after failure
+remain spent. Every invocation admits at most 1–32 actions, with an authoritative 16 KiB encoded-update guard.
+Whole-input planning/history replay still needs memory and latency acceptance.
+
+A directed stress probe rejected the original mutable cursor at action index 2296: overwriting one meta key
+under successive Yjs client ids accumulated deletion metadata until a tiny slice exceeded the update limit.
+The correction writes immutable per-action receipt keys. A generated restarted-writer regression and an
+explicit mutable-receipt control retain this failure mechanism. This is a discovered preparation defect,
+not a claim about production prevalence. The separate native repeated-write property is shrunk and saved.
+
+The explicit adapter preserves master/card text, all day files and unfiled bodies, without consulting freeze
+or cap. It assigns fresh intent-scoped ids, system authorship, null origin and the import timestamp. Nonempty
+archives become collections; empty archive files retain their empty representation to preserve file presence.
+Old actor/device/settings/history metadata and unfiled provenance are not promoted into destination authority.
+The [construction and evidence](./legacy-import-preparation.md) leave selection, source exclusion and cleanup
+to subsequent owners. No obligation/debt status or payment changes with this component.

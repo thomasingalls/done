@@ -42,6 +42,7 @@ mkdirSync(output, { recursive: true });
 const sourcePaths = [
   'custody.ts',
   'localClearState.ts',
+  'legacyImportState.ts',
   'startupStorage.ts',
   'startupState.ts',
   'custodyCrypto.ts',
