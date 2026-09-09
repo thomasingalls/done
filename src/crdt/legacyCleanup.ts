@@ -109,7 +109,7 @@ export const cleanupLegacySource = (
       if (!sameImportBinding(claim.imported, plan.binding)) cleanupRefuse('cleanup-input-mismatch');
       await verifySelectedRecovery(task, claim, code, plan);
       const intentId = claim.sourceCleanup?.intentId ?? hex(random(16)),
-        fp = await cleanupFingerprinter(task, claim, code, intentId);
+        fp = await cleanupFingerprinter(task, claim, code, intentId, claim.sourceCleanup?.v ?? 2);
       try {
         if (!claim.sourceCleanup) {
           const source = await inspectLegacySource(task);
@@ -122,7 +122,7 @@ export const cleanupLegacySource = (
             for (const e of [...source.journal, ...source.ancillary])
               entries.push({ key: e.key, digest: await fp.digest('local', [e.key, e.value]) });
             manifest = {
-              v: 1,
+              v: 2,
               intentId,
               databaseDigest: await databaseFingerprint(task, fp),
               entries,

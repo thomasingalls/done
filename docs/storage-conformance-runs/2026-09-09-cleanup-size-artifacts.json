@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "source": "test-results/legacy-cleanup/focused-repair-replay-native/report.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-cleanup-size-replay.json",
+      "sha256": "7dd0688ba98a83cd466b925df22d5b6670285101e3e46c99795017c02f404c3b"
+    },
+    {
+      "source": "test-results/legacy-cleanup/focused-repair-directed-native/report.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-cleanup-size-directed.json",
+      "sha256": "61d2accb3b6fe9b5624d34f432e8326588c57ef6b7845942147043ea1c5ec136"
+    },
+    {
+      "source": "test-results/legacy-cleanup/focused-repair-vitest.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-cleanup-size-unit.json",
+      "sha256": "0476b8b58d85c63171a8ad697fb7d47ccd0ab495bf34a1ff1f468743f159a96d"
+    },
+    {
+      "source": "test-results/legacy-cleanup/focused-repair-bounds-final.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-cleanup-size-bounds.json",
+      "sha256": "891ecde48b321f59b4457cca0e1625f22f1dccf955aa6ed470e00e4a076886f3"
+    }
+  ]
+}

@@ -9,12 +9,13 @@ import {
   guardedSubtle,
   type Bytes,
 } from './custodyCrypto';
+import { cleanupFields, type CleanupVersion } from './legacyCleanupEncoding';
 import type { LocalClaim } from './localGenesisRecord';
 import type { SessionTask } from './writeSession';
 import { stopStartup } from './startupState';
 
 export interface LegacyCleanupRecord {
-  v: 1;
+  v: CleanupVersion;
   intentId: string;
   databaseDigest: string | null;
   entries: { key: string; digest: string }[];
@@ -27,7 +28,7 @@ export const parseLegacyCleanup = (value: unknown): LegacyCleanupRecord => {
   if (
     !v ||
     Object.keys(v).sort().join(',') !== 'databaseDigest,entries,intentId,next,v' ||
-    v.v !== 1 ||
+    (v.v !== 1 && v.v !== 2) ||
     typeof v.intentId !== 'string' ||
     !/^[a-f0-9]{32}$/u.test(v.intentId) ||
     (v.databaseDigest !== null && !digest(v.databaseDigest)) ||
@@ -56,7 +57,7 @@ export const parseLegacyCleanup = (value: unknown): LegacyCleanupRecord => {
     keys.add(e.key);
   }
   return {
-    v: 1,
+    v: v.v,
     intentId: v.intentId,
     databaseDigest: v.databaseDigest,
     entries: v.entries.map((e) => ({ ...e })),
@@ -80,6 +81,7 @@ export const cleanupFingerprinter = async (
   claim: LocalClaim,
   code: string,
   intentId: string,
+  version: CleanupVersion = 2,
 ) => {
   let root: Bytes | undefined, factor: Bytes | undefined, key: CryptoKey | undefined;
   const subtle = guardedSubtle(() => task.step(() => {}));
@@ -97,7 +99,7 @@ export const cleanupFingerprinter = async (
       hkdf(
         root!,
         new Uint8Array(),
-        fields('done/legacy-cleanup-fingerprint/v1', hex(claim.initial.mac), intentId),
+        fields(`done/legacy-cleanup-fingerprint/v${version}`, hex(claim.initial.mac), intentId),
         { name: 'HMAC', hash: 'SHA-256', length: 256 },
         ['sign'],
         subtle,
@@ -109,7 +111,12 @@ export const cleanupFingerprinter = async (
   }
   return {
     async digest(kind: 'database' | 'local', value: unknown) {
-      const bytes = fields('done/legacy-cleanup-entry/v1', kind, JSON.stringify(value));
+      const bytes = cleanupFields(
+        version,
+        'done/legacy-cleanup-entry',
+        kind,
+        JSON.stringify(value),
+      );
       try {
         return hex(new Uint8Array(await task.wait(() => subtle.sign('HMAC', key!, bytes))));
       } finally {

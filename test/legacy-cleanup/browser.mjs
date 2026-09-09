@@ -23,7 +23,8 @@ let fault,
   settled = false,
   competing = false,
   competingRun;
-let removal = 0;
+let removal = 0,
+  observedAbort = null;
 const pause = async () => {
   gated = true;
   await new Promise(() => {});
@@ -51,7 +52,14 @@ IDBObjectStore.prototype.put = function (value, key) {
     const n = value.sourceCleanup.next;
     if (fault === `abort-${n}`) {
       fault = null;
-      req.addEventListener('success', () => tx.abort(), { once: true });
+      req.addEventListener(
+        'success',
+        () => {
+          tx.abort();
+          observedAbort = n;
+        },
+        { once: true },
+      );
     }
     if (fault === `kill-progress-${n}`)
       tx.addEventListener(
@@ -187,11 +195,13 @@ window.cleanupFixture = {
   clean: (code, input) => run(() => cleanup(code, input)),
   raceClean: (code, input) => Promise.all([1, 2].map(() => run(() => cleanup(code, input)))),
   fault: (value) => {
+    observedAbort = null;
     fault = value;
     trigger = false;
     gated = false;
     removal = 0;
   },
+  observedAbort: () => observedAbort,
   gated: () => gated,
   progress: () => progress,
   claim: () => withExclusiveSlot(slot, (task) => readLocalClaim(task, slot)),

@@ -48,28 +48,35 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # cleanup implementation committed; harness diagnostics ready, native validation incomplete
+status: in flight # focused cleanup size repair verified; full native campaign still required
 plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-cleanup-preparation.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-09
 ```
 
-**Current checkpoint.** Verified selection is committed as `4f40ede`; source cleanup is committed as
-`4c3c3ab`. The cleanup implementation was checked in before its generated native campaign completed.
-The retained [input and diagnostic](../test/legacy-cleanup/regressions/captured-4c3c3ab/README.md) have hashes
-and explicit unresolved provenance; their exact pairing and minimality have not been verified.
+**Current checkpoint.** Verified Local selection is committed as `4f40ede`; source cleanup is committed as
+`4c3c3ab`. The user's full native cleanup run passed 45 directed cases and 20 generated histories, then failed
+history 21 with `Field too long`. Shrinking exhausted its two-minute budget; teardown completed. The
+[confirmed failure](../test/legacy-cleanup/regressions/field-too-long-2026-09-09/README.md) is preserved with hashes.
 
-**Just completed.** The harness saves first failures before shrinking, retains browser message/stack/cause,
-checkpoints partial reports and logs trial/operation progress. Calls, histories, shrinking, campaigns and
-teardown have explicit deadlines. A separate supervisor bounds a wedged worker or a leaked handle after
-reported success. Thirteen Node-only tests pass using synthetic errors, promises and processes. This
-checkpoint launches no real browser and makes no cleanup-runtime change. The outcome is recorded in
-[completed.md](./completed.md); details are in the [harness guide](./legacy-cleanup-preparation.md#harness-diagnostics-and-deadlines).
+**Just completed, bounded repair.** Cleanup's new v2 MAC encoding supports bulk database/local fingerprints
+and manifests beyond the accidental 65,535-byte field limit. Shared custody fields stay unchanged; existing
+signed v1 cleanup intents remain resumable. The generated abort check requires the intended native boundary,
+and reports retain the original failure separately from the terminal stop. Harness instrumentation is committed
+as `6a5ebe7`, failure evidence as `082b567`, and this checkpoint checks in the focused repair. Outcomes are
+recorded in [completed.md](./completed.md).
 
-**Next bounded work.** Diagnose a saved-input replay with these diagnostics, then complete the native
-campaign and fault controls before accepting source cleanup. Migration coordination and default application
-cutover remain later work.
+**Evidence.** [The focused report](./storage-conformance-runs/2026-09-09-legacy-cleanup-size-repair.md) records four
+failing before-repair tests, a passing isolated native replay of the confirmed input, ten affected native cases,
+783 passing unit tests / 66 files, and 14 passing Node harness tests. The seven new bounds tests cover large
+DB/WAL/local values, authenticated large manifests, generated UTF-8 boundaries and v1 compatibility. This is
+bounded component evidence, not acceptance of the complete cleanup phase.
+
+**Next bounded work.** Finish the full native cleanup campaign: all directed cases, 60 generated histories,
+completed shrinking if a new failure appears, and all seven named fault controls. Inspect any new failure
+before advancing. That full campaign was not rerun in the focused repair. Owned migration coordination/restart
+handling and default application cutover remain later work.
 
 **Exclusion and product gates.** The seeded controller closes old contexts, blocks service workers/external
 routes and reestablishes its epoch after each restart. That is a test precondition, not a production browser

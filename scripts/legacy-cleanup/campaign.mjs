@@ -12,7 +12,14 @@ import { arbitrary as sourceArbitrary } from '../legacy-export/arbitrary.mjs';
 import { expected, example } from '../legacy-export/oracle.mjs';
 import { SeededExclusion } from '../legacy-export/exclusion.mjs';
 import { readOptions } from './config.mjs';
-import { Diagnostics, describeError, requireOK, atomicJSON, fingerprint } from './diagnostics.mjs';
+import {
+  Diagnostics,
+  describeError,
+  requireOK,
+  requireInjectedAbort,
+  atomicJSON,
+  fingerprint,
+} from './diagnostics.mjs';
 import { checkHistories } from './properties.mjs';
 const root = fileURLToPath(new URL('../..', import.meta.url));
 const { options, runs, seed, output, limits } = readOptions(process.argv.slice(2), root);
@@ -33,6 +40,7 @@ const paths = [
   ...walk('test/legacy-source'),
   'test/storage-properties/oracle.ts',
   'test/legacyCleanup.test.ts',
+  'test/legacyCleanupBounds.test.ts',
   'test/legacyCleanupFixture.ts',
   'wasm/journal-seal/seal.generated.ts',
   'docs/legacy-cleanup-preparation.md',
@@ -430,11 +438,8 @@ async function variantRun(variant) {
     const total = before.local.filter(([k]) => legacyKey(k)).length + 1,
       boundary = value.boundary % (total + 1);
     await call(handle.page, 'fault', `abort-${boundary}`);
-    assert.equal(
-      (await call(handle.page, 'clean', code, input)).status,
-      'refused',
-      'generated-progress-abort',
-    );
+    const aborted = await call(handle.page, 'clean', code, input);
+    requireInjectedAbort(aborted, boundary, await call(handle.page, 'observedAbort'));
     await restart();
     const claim = await call(handle.page, 'claim'),
       r = claim.sourceCleanup;
@@ -818,7 +823,7 @@ async function variantRun(variant) {
       });
       process.stdout.write(`DETECTED ${variant.id}\n`);
     } else {
-      report.failure ??= describeError(error);
+      diag.recordFailure(error);
       diag.checkpoint();
       throw error;
     }
@@ -856,7 +861,7 @@ try {
   for (const variant of selected) await variantRun(variant);
   report.testsPassed = true;
 } catch (error) {
-  report.failure ??= describeError(error);
+  diag.recordFailure(error);
   report.error = describeError(error);
   diag.event('campaign-failed', { error: report.error }, true);
   process.exitCode = 1;
@@ -876,7 +881,7 @@ try {
       ['browser-server', () => browserServer?.close()],
     ]);
   } catch (error) {
-    report.failure ??= describeError(error);
+    diag.recordFailure(error);
     process.exitCode = 1;
   }
   report.finished = new Date().toISOString();

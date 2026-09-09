@@ -58,10 +58,11 @@ export const setup = async (
   source = { ...example(), days: [] },
   complete = true,
   beforeCapture?: () => void,
+  placement = { disk: [0], wal: [1, 2] },
 ) => {
   const old = makeExportSource(source);
   try {
-    await seed([0], [1, 2], old.updates);
+    await seed(placement.disk, placement.wal, old.updates);
   } finally {
     old.doc.destroy();
   }

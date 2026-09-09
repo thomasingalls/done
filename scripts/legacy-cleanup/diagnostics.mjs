@@ -99,7 +99,16 @@ export class Diagnostics {
       atomicJSON(prefix + '-input.json', input);
       atomicJSON(prefix + '.json', detail);
     }
+    this.report.firstFailures ??= {};
+    this.report.firstFailures[campaign] ??= detail;
     this.event('trial-failed', detail, true);
+    this.checkpoint();
+  }
+  recordFailure(error) {
+    this.report.failure ??=
+      this.report.firstFailures?.[this.report.phase]?.error ?? describeError(error);
+    this.report.terminalError = describeError(error);
+    this.report.passed = false;
     this.checkpoint();
   }
   async closeResources(resources) {
@@ -135,4 +144,17 @@ export const requireOK = (r) => {
     throw e;
   }
   return r.value;
+};
+
+export const requireInjectedAbort = (result, expectedBoundary, observedBoundary) => {
+  if (
+    result.status !== 'refused' ||
+    result.reason !== 'storage-failed' ||
+    observedBoundary !== expectedBoundary
+  ) {
+    throw new Error(
+      `injected-abort-not-observed: expected ${expectedBoundary}, observed ${observedBoundary}, result ${result.reason ?? result.status}`,
+      { cause: result.error },
+    );
+  }
 };

@@ -18,6 +18,7 @@ import {
   hkdf,
   type Bytes,
 } from './custodyCrypto';
+import { cleanupFields } from './legacyCleanupEncoding';
 import { probeDatabase, checkLayout, readScopedRows } from './startupStorage';
 import { assertNoLocalClear } from './localClearState';
 import { assertNoPreactiveImport } from './legacyImportState';
@@ -178,8 +179,9 @@ const claimAuthentication = async (
         )
       : fields('done/local-genesis-progress/v1', hex(claim.initial.mac), claim.stage);
     const payload = claim.sourceCleanup
-      ? fields(
-          'done/local-import-cleanup/v1',
+      ? cleanupFields(
+          claim.sourceCleanup.v,
+          'done/local-import-cleanup',
           hex(selectionPayload),
           cleanupPayload(claim.sourceCleanup),
         )

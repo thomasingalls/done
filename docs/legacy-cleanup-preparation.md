@@ -121,3 +121,39 @@ blocked-delete contract above remains unchanged.
 shrinking or controls. Outputs still use a fresh directory and freeze the current sources. The next bounded work
 is that replay and root-cause diagnosis, followed by any repair and the complete native campaign; none is credited
 by the instrumentation tests.
+
+## Focused bulk-encoding repair
+
+The user's `2026-09-09T19-10-29.708Z` run passed 45 directed cases, then failed generated history 21
+with `Field too long`. The 120-second shrink budget subsequently expired; teardown completed. The actual
+failure was a mismatch between the source reader's 16 MiB bound and cleanup's use of a 65,535-byte field
+for hex-encoded database rows. The same field-width issue also affected large local values and manifests.
+The [confirmed input](../test/legacy-cleanup/regressions/field-too-long-2026-09-09/README.md) is retained;
+the earlier generic diagnostic remains historical evidence rather than a proven exact replay pair.
+
+New cleanup intents now use `sourceCleanup.v = 2`. Cleanup-only MAC messages encode a UTF-8 JSON array
+whose first element is the domain (`done/legacy-cleanup-entry/v2` or `done/local-import-cleanup/v2`)
+and whose remaining elements are the existing field strings. JSON escaping and array framing retain field
+boundaries and all string code units, including non-ASCII values. The fingerprint KDF uses the corresponding
+`done/legacy-cleanup-fingerprint/v2` domain. HMAC still authenticates the complete message; nothing is
+truncated or persisted as an unkeyed source-value digest.
+
+The authenticated manifest version selects both fingerprint and claim-authentication encoding. The reader
+accepts v1 and v2; an existing v1 intent keeps its original MAC bytes, fingerprint domain and progress
+version when resumed. There is no fallback verification across versions or automatic reinterpretation of
+old signed progress. Old executables that only know v1 cannot read v2; production predecessor exclusion
+remains a separate gate. Shared custody `fields()` and all non-cleanup constructions retain their v1 format.
+
+Source/manifest refusal bounds and whole-input memory processing remain unchanged. This removes an accidental
+encoding limit; it does not establish memory or latency acceptance at the maximum supported input sizes.
+
+The generated native abort check now requires a fixture receipt identifying the exact transaction boundary,
+as well as a storage-failure refusal. An unrelated exception cannot satisfy that injection. Reports retain
+per-campaign `firstFailures`; a failed run's `failure` preserves the original error while `terminalError`
+records the eventual stop, including an exhausted shrink budget. Expected fault-control failures remain
+separate from the overall pass/fail result.
+
+[Executed focused evidence](./storage-conformance-runs/2026-09-09-legacy-cleanup-size-repair.md) covers the saved
+native replay, ten affected native cases, the full unit suite and encoding/property regressions. The full
+60-history native campaign, complete directed set and all seven fault controls must still finish together
+before source cleanup is accepted. Migration coordination and default cutover have not advanced.

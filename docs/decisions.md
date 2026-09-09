@@ -2103,3 +2103,14 @@ sequencing §5.4. The existing Local clear owner refuses imported selections unt
 composed, avoiding a clear result that leaves the original app-managed plaintext behind. Authenticated,
 resumable source DB/WAL/ancillary cleanup is the next bounded phase under seeded exclusion; production
 exclusion and real cutover acceptance remain separate gates. No obligation/debt status or payment changes.
+
+### 2026-09-09 — Version cleanup bulk MAC framing; preserve existing signed v1 intents
+
+The native cleanup campaign exposed a source accepted by the reader/importer but rejected by cleanup's
+65,535-byte MAC field encoding. Database hex JSON, local values and full manifests can all exceed that width.
+New cleanup intents use manifest version 2 with dedicated domain-tagged UTF-8 JSON-array MAC messages and a
+versioned fingerprint KDF domain. The shared custody `fields()` construction stays unchanged. Existing v1
+intents retain their original MAC/fingerprint bytes and version while resuming; there is no cross-version
+verification fallback. The manifest version is authenticated and unknown versions refuse. This is an internal
+preparatory format change, not approval of old-writer exclusion, default cutover or maximum-size performance.
+See [focused evidence](./storage-conformance-runs/2026-09-09-legacy-cleanup-size-repair.md).

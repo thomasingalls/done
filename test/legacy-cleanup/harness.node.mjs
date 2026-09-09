@@ -11,6 +11,7 @@ import {
   Diagnostics,
   describeError,
   requireOK,
+  requireInjectedAbort,
   HarnessTimeout,
   atomicJSON,
 } from '../../scripts/legacy-cleanup/diagnostics.mjs';
@@ -159,6 +160,11 @@ test('shrinking has its own budget and retains the original failure when a shrin
     HarnessTimeout,
   );
   assert.equal(attempts, 2);
+  diag.recordFailure(diag.fatal);
+  const report = read(join(diag.output, 'report.json'));
+  assert.equal(report.failure.message, 'initial assertion');
+  assert.equal(report.terminalError.name, 'HarnessTimeout');
+  assert.equal(report.firstFailures.shrink.trial.attempt, 1);
   assert.match(
     read(join(diag.output, 'shrink-first-failure.json')).error.message,
     /initial assertion/,
@@ -316,3 +322,19 @@ test(
     assert.match(report.supervisor.reason, /left registered browser/);
   },
 );
+
+test('an unrelated refusal cannot masquerade as an injected progress abort', () => {
+  const aborted = { status: 'refused', reason: 'storage-failed' };
+  requireInjectedAbort(aborted, 3, 3);
+  assert.throws(() => requireInjectedAbort(aborted, 3, null), /injected-abort-not-observed/);
+  assert.throws(() => requireInjectedAbort(aborted, 3, 2), /injected-abort-not-observed/);
+  assert.throws(
+    () =>
+      requireInjectedAbort(
+        { status: 'refused', reason: 'Error', error: { message: 'Field too long' } },
+        3,
+        null,
+      ),
+    (error) => error.cause.message === 'Field too long',
+  );
+});
