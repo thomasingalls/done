@@ -48,35 +48,34 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # focused cleanup size repair verified; full native campaign still required
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-cleanup-preparation.md]
+status: in flight # bounded native cleanup validation closed; coordinator/restart prep complete
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-coordinator-preparation.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-09
 ```
 
-**Current checkpoint.** Verified Local selection is committed as `4f40ede`; source cleanup is committed as
-`4c3c3ab`. The user's full native cleanup run passed 45 directed cases and 20 generated histories, then failed
-history 21 with `Field too long`. Shrinking exhausted its two-minute budget; teardown completed. The
-[confirmed failure](../test/legacy-cleanup/regressions/field-too-long-2026-09-09/README.md) is preserved with hashes.
+**Current checkpoint.** Authenticated, journal-inclusive source cleanup has completed its bounded native
+validation. The user's full campaign passes 45 directed cases, 60 generated histories (seed 8941), 16 deliberate
+renderer crashes and all seven named controls in 295.304 seconds, with clean teardown and unchanged inputs.
+The exact formerly failing history 21 now passes. [Preserved execution evidence](./storage-conformance-runs/2026-09-09-legacy-cleanup.md)
+retains all eleven top-level artifacts and full event log with hashes; all 148 tested inputs match repair
+commit `3e7981b`. The original report keeps its actual starting commit `4c3c3ab`. No campaign was rerun to
+record this checkpoint. Outcomes were appended to [completed.md](./completed.md) before this rewrite.
 
-**Just completed, bounded repair.** Cleanup's new v2 MAC encoding supports bulk database/local fingerprints
-and manifests beyond the accidental 65,535-byte field limit. Shared custody fields stay unchanged; existing
-signed v1 cleanup intents remain resumable. The generated abort check requires the intended native boundary,
-and reports retain the original failure separately from the terminal stop. Harness instrumentation is committed
-as `6a5ebe7`, failure evidence as `082b567`, and this checkpoint checks in the focused repair. Outcomes are
-recorded in [completed.md](./completed.md).
+**Preparation complete.** [Owned migration coordinator and restart preparation](./legacy-coordinator-preparation.md)
+specifies readonly slot classification and one requested step through existing import/selection/cleanup owners.
+Authenticated component records supply durable progress. The contract preserves selected edits, resumes partial
+source deletion by manifest, handles missing/wrong recovery inputs and clear state, and defines permit gaps and
+cancellation. A saved packet is required for maintenance retries; ordinary selected Local recovery remains
+independent. No coordinator runtime or default-app route has been implemented in this checkpoint.
 
-**Evidence.** [The focused report](./storage-conformance-runs/2026-09-09-legacy-cleanup-size-repair.md) records four
-failing before-repair tests, a passing isolated native replay of the confirmed input, ten affected native cases,
-783 passing unit tests / 66 files, and 14 passing Node harness tests. The seven new bounds tests cover large
-DB/WAL/local values, authenticated large manifests, generated UTF-8 boundaries and v1 compatibility. This is
-bounded component evidence, not acceptance of the complete cleanup phase.
-
-**Next bounded work.** Finish the full native cleanup campaign: all directed cases, 60 generated histories,
-completed shrinking if a new failure appears, and all seven named fault controls. Inspect any new failure
-before advancing. That full campaign was not rerun in the focused repair. Owned migration coordination/restart
-handling and default application cutover remain later work.
+**Next bounded implementation.** Build the private coordinator and composed disposable native fixture against
+that preparation. Require externally saved and cold-verified recovery input, connect host exclusion loss to
+cancellation/native draining, and exercise cross-owner crash/abort/restart gaps with an external operation ledger.
+Retain bounded first-failure/shrinking diagnostics and named controls. Existing component passes do not establish
+the composed coordinator, and existing host epoch assertions alone do not cancel an in-flight operation.
+Production old-writer exclusion and default application cutover remain later gates.
 
 **Exclusion and product gates.** The seeded controller closes old contexts, blocks service workers/external
 routes and reestablishes its epoch after each restart. That is a test precondition, not a production browser
@@ -102,13 +101,15 @@ content `468cbe2`; journal `9e60c6a`; admission/Goals `0b5337a`; workspace/histo
 Local genesis/index `ee60528`; Local clear `d7c0f32`; exact compaction `85c7404`; production properties
 `a0811e2`; source reader `e64cd2a`; export capture `da5def9`; reproductions `a292103`; contention repair
 `fc1ff41`; runtime forks/projections `0399567`; Yjs delivery/handoff `a465310`; pre-active import `a0072e8`;
-verified selection `4f40ede`; source cleanup implementation `4c3c3ab` (validation unresolved).
+verified selection `4f40ede`; source cleanup implementation `4c3c3ab`; harness `6a5ebe7`; failure evidence
+`082b567`; size repair `3e7981b`. Full bounded native cleanup validation is recorded in the current checkpoint.
 The earlier shared candidate run rejected all three pinned branches; none is merged.
 
 **Completion blockers.** L-1 still owes integrated genesis/index/clear/default-application conformance and
-seeded full cutover kills. Scoped Local clear handles only the first completed fresh workspace; imported
-cleanup, partial genesis/import cleanup, shared/multiple-workspace custody, Account removal/service revocation
-and explicit cleared-slot reuse need subsequent owners. Additional Local workspaces, Account verifier/receive/
+seeded full cutover kills. Scoped Local clear covers the first completed fresh workspace and completed imported
+Local workspaces after authenticated source cleanup; partial genesis/import cleanup, shared/multiple-workspace
+custody, Account removal/service revocation and explicit cleared-slot reuse need subsequent owners.
+Additional Local workspaces, Account verifier/receive/
 checkpoint authority and PRF remain incomplete. L-3 composes generation/custody references and interrupted
 lifetimes; these components do not implement retirement. L-4 carries independent storage/crypto review,
 supported profiles/authenticators, low-end performance and platform acceptance. Evidence and three matrix

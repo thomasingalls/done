@@ -1,5 +1,11 @@
 # Authenticated legacy source cleanup preparation
 
+**Current checkpoint:** the complete seeded native campaign passes: 45 directed cases, 60 generated histories,
+16 deliberate renderer crashes and seven named controls, with clean teardown and unchanged tested inputs.
+[Preserved execution evidence](./storage-conformance-runs/2026-09-09-legacy-cleanup.md) closes this bounded
+source-cleanup validation. [Coordinator/restart preparation](./legacy-coordinator-preparation.md) is next;
+production exclusion, default-app cutover and full-profile acceptance remain open.
+
 This bounded L-1 owner follows verified Local selection (`4f40ede`). `cleanupLegacySource` remains an internal
 preparatory entry point, exercised only on synthetic profiles under externally maintained predecessor
 exclusion. It does not expose a default application cutover route, select the real Stage 2 carrier, retire
@@ -154,6 +160,7 @@ records the eventual stop, including an exhausted shrink budget. Expected fault-
 separate from the overall pass/fail result.
 
 [Executed focused evidence](./storage-conformance-runs/2026-09-09-legacy-cleanup-size-repair.md) covers the saved
-native replay, ten affected native cases, the full unit suite and encoding/property regressions. The full
-60-history native campaign, complete directed set and all seven fault controls must still finish together
-before source cleanup is accepted. Migration coordination and default cutover have not advanced.
+native replay, ten affected native cases, the full unit suite and encoding/property regressions. The subsequent
+[complete native campaign](./storage-conformance-runs/2026-09-09-legacy-cleanup.md) passes the full directed set,
+60 histories and all seven controls together, including the exact previously failing history 21. That closes
+bounded source-cleanup validation; coordinator implementation and default cutover remain subsequent work.

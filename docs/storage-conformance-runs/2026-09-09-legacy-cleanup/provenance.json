@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "sourceRun": "test-results/legacy-cleanup/2026-09-09T19-38-39.778Z",
+  "command": "pnpm storage:legacy-cleanup",
+  "commandProvenance": "Exact command reported by the user; existing results inspected, not rerun for this checkpoint.",
+  "recordedStartingCommit": "4c3c3ab0cbb00e179133e59882466d68c1d340f3",
+  "verifiedAgainstCommit": "3e7981b1c08f510a1507726e8bb31bd83cb35db6",
+  "testedFileCount": 148,
+  "sourceVerification": "Every report.files SHA-256 matches its frozen baseline, working file and git blob at verifiedAgainstCommit before documentation edits. Original report is retained unchanged.",
+  "snapshotReconstruction": "Read each path in report.files from verifiedAgainstCommit and verify its hash. Variant changes are defined in the pinned scripts/legacy-cleanup/campaign.mjs. Snapshot trees are not duplicated here.",
+  "files": [
+    {
+      "source": "test-results/legacy-cleanup/2026-09-09T19-38-39.778Z/baseline-current-input.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup/baseline-current-input.json",
+      "sourceBytes": 3194,
+      "sourceSha256": "83c37ad94d07fe2915c2d487f128bd8894a544e32682008c9ef7c9176fc1517d",
+      "artifactBytes": 3194,
+      "artifactSha256": "83c37ad94d07fe2915c2d487f128bd8894a544e32682008c9ef7c9176fc1517d",
+      "encoding": "identity"
+    },
+    {
+      "source": "test-results/legacy-cleanup/2026-09-09T19-38-39.778Z/events.jsonl",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup/events.jsonl.gz",
+      "sourceBytes": 796526,
+      "sourceSha256": "84e53cd390becee92b8d27d842f1959c04e73bffc984f0fdc49ae52e742b0057",
+      "artifactBytes": 53216,
+      "artifactSha256": "2a4e3545a8e2bcbcff8b254bb1992864a7ad27a346bfcff490cfbfe776b36422",
+      "encoding": "gzip"
+    },
+    {
+      "source": "test-results/legacy-cleanup/2026-09-09T19-38-39.778Z/manifest-counterexample.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup/manifest-counterexample.json",
+      "sourceBytes": 36,
+      "sourceSha256": "b80af1a61a435f6353f9a4ec7e4195e0b37ced3585821f57db5f83012f490e99",
+      "artifactBytes": 36,
+      "artifactSha256": "b80af1a61a435f6353f9a4ec7e4195e0b37ced3585821f57db5f83012f490e99",
+      "encoding": "identity"
+    },
+    {
+      "source": "test-results/legacy-cleanup/2026-09-09T19-38-39.778Z/report.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup/report.json",
+      "sourceBytes": 88510,
+      "sourceSha256": "861b663512456bb073650be595bf04b0a6c276bcf51af2c77d2f1b6fe786b8c4",
+      "artifactBytes": 88510,
+      "artifactSha256": "861b663512456bb073650be595bf04b0a6c276bcf51af2c77d2f1b6fe786b8c4",
+      "encoding": "identity"
+    },
+    {
+      "source": "test-results/legacy-cleanup/2026-09-09T19-38-39.778Z/skip-destination-counterexample.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup/skip-destination-counterexample.json",
+      "sourceBytes": 17,
+      "sourceSha256": "fc0b742de0c47406d41fdefa79510daf0b75b4aef62bf4970cbeaf9ad3efbbb5",
+      "artifactBytes": 17,
+      "artifactSha256": "fc0b742de0c47406d41fdefa79510daf0b75b4aef62bf4970cbeaf9ad3efbbb5",
+      "encoding": "identity"
+    },
+    {
+      "source": "test-results/legacy-cleanup/2026-09-09T19-38-39.778Z/skip-destination-current-input.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup/skip-destination-current-input.json",
+      "sourceBytes": 17,
+      "sourceSha256": "fc0b742de0c47406d41fdefa79510daf0b75b4aef62bf4970cbeaf9ad3efbbb5",
+      "artifactBytes": 17,
+      "artifactSha256": "fc0b742de0c47406d41fdefa79510daf0b75b4aef62bf4970cbeaf9ad3efbbb5",
+      "encoding": "identity"
+    },
+    {
+      "source": "test-results/legacy-cleanup/2026-09-09T19-38-39.778Z/skip-destination-first-failure-input.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup/skip-destination-first-failure-input.json",
+      "sourceBytes": 17,
+      "sourceSha256": "fc0b742de0c47406d41fdefa79510daf0b75b4aef62bf4970cbeaf9ad3efbbb5",
+      "artifactBytes": 17,
+      "artifactSha256": "fc0b742de0c47406d41fdefa79510daf0b75b4aef62bf4970cbeaf9ad3efbbb5",
+      "encoding": "identity"
+    },
+    {
+      "source": "test-results/legacy-cleanup/2026-09-09T19-38-39.778Z/skip-destination-first-failure.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup/skip-destination-first-failure.json",
+      "sourceBytes": 2036,
+      "sourceSha256": "5dc8d16cedfbbc7ad581461becaece9aca18b197b1339c8a8c637f523f797ed8",
+      "artifactBytes": 2036,
+      "artifactSha256": "5dc8d16cedfbbc7ad581461becaece9aca18b197b1339c8a8c637f523f797ed8",
+      "encoding": "identity"
+    },
+    {
+      "source": "test-results/legacy-cleanup/2026-09-09T19-38-39.778Z/skip-manifest-validation-current-input.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup/skip-manifest-validation-current-input.json",
+      "sourceBytes": 36,
+      "sourceSha256": "b80af1a61a435f6353f9a4ec7e4195e0b37ced3585821f57db5f83012f490e99",
+      "artifactBytes": 36,
+      "artifactSha256": "b80af1a61a435f6353f9a4ec7e4195e0b37ced3585821f57db5f83012f490e99",
+      "encoding": "identity"
+    },
+    {
+      "source": "test-results/legacy-cleanup/2026-09-09T19-38-39.778Z/skip-manifest-validation-first-failure-input.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup/skip-manifest-validation-first-failure-input.json",
+      "sourceBytes": 36,
+      "sourceSha256": "ac2678b7e5426fdcd74f67c75f2e79c67b458b70972f5b6b963d8c088fd4ac2f",
+      "artifactBytes": 36,
+      "artifactSha256": "ac2678b7e5426fdcd74f67c75f2e79c67b458b70972f5b6b963d8c088fd4ac2f",
+      "encoding": "identity"
+    },
+    {
+      "source": "test-results/legacy-cleanup/2026-09-09T19-38-39.778Z/skip-manifest-validation-first-failure.json",
+      "artifact": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup/skip-manifest-validation-first-failure.json",
+      "sourceBytes": 44938,
+      "sourceSha256": "40e37b22fcafd99c193f50af100e085d121d2678020e6e867f8cae442cb6d179",
+      "artifactBytes": 44938,
+      "artifactSha256": "40e37b22fcafd99c193f50af100e085d121d2678020e6e867f8cae442cb6d179",
+      "encoding": "identity"
+    }
+  ]
+}

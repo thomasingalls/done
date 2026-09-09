@@ -947,3 +947,34 @@ pre-repair evidence as `082b567`. The following repair checkpoint includes the p
 and exact copies of its passing replay, ten-case native report, full-unit report and final bounds report. Their
 original run-time commit/file hashes remain intact. The user is running the full campaign separately; no result
 from that in-progress run is claimed here.
+
+## 2026-09-09 — Bounded native source-cleanup validation closed (`L-1`)
+
+The user's exact `pnpm storage:legacy-cleanup` run at `2026-09-09T19-38-39.778Z` completes in 295.304 seconds:
+45 directed cases, 60 generated histories (seed 8941), 16 deliberate renderer crashes and all seven named
+fault controls pass, with no timeout or teardown failure. The formerly failing history 21 has the same input
+hash and now passes. Logged errors are the intended renderer crashes and mutation assertions; baseline has
+no first failure. [Preserved evidence](./storage-conformance-runs/2026-09-09-legacy-cleanup.md) includes all eleven
+top-level artifacts, a lossless full event log, and copy hashes/provenance. No campaign was rerun to record it.
+
+The report keeps its actual starting commit `4c3c3ab`. All 148 tested file hashes match the frozen baseline,
+working files before documentation edits and Git blobs at repair commit `3e7981b`; that identifies the tested
+repair despite commits made while the run was in progress. Together with the focused before/after tests,
+this closes native validation for the bounded seeded source-cleanup component. It does not pay L-1, full
+legacy-cutover/residue, production exclusion, platform/performance or independent-review obligations.
+
+## 2026-09-09 — Migration coordinator and restart preparation (`L-1`)
+
+Prepared the [next bounded implementation contract](./legacy-coordinator-preparation.md): readonly restart
+classification and one explicitly requested step through existing import, selection and cleanup owners.
+Authenticated component records remain the only durable progress; no duplicate coordinator stage is added.
+The preparation distinguishes pre-active recovery from selected editing and manifest-based deletion resume,
+requires the same externally saved/cold-verified recovery packet and factor, and specifies stale-dispatch,
+clear, missing-input and exclusion-loss behavior. Selected edits remain recoverable without the packet,
+although maintenance retries still require it through the current APIs.
+
+The next native harness must connect host exclusion loss to cancellation and native draining; existing epoch
+assertions alone do not stop in-flight work. The plan includes cross-owner crash/abort schedules, generated
+external-ledger histories and named controls with bounded diagnostics. Production exclusion, recovery-save
+ceremony and real carrier choice are explicit default-app prerequisites. This checkpoint is documentation
+and retained evidence only: no coordinator runtime, product cutover or new native acceptance is claimed.

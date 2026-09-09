@@ -2114,3 +2114,27 @@ intents retain their original MAC/fingerprint bytes and version while resuming; 
 verification fallback. The manifest version is authenticated and unknown versions refuse. This is an internal
 preparatory format change, not approval of old-writer exclusion, default cutover or maximum-size performance.
 See [focused evidence](./storage-conformance-runs/2026-09-09-legacy-cleanup-size-repair.md).
+
+### 2026-09-09 — Derive migration restart state from existing authenticated owners
+
+The bounded native source-cleanup campaign now passes in full; the next coordinator is specified in
+[legacy-coordinator-preparation.md](./legacy-coordinator-preparation.md). It will inspect one explicit Local
+slot and dispatch one requested component step, with fresh permit-bound verification. Existing import,
+selected Local, cleanup and clear records remain the durable authority. No separate coordinator cursor,
+index-as-active decision, source-binding replacement or completion certificate is introduced.
+
+After selection, current edits belong to the destination and cannot be checked against or overwritten by
+the old source payload. Once cleanup begins, resumption uses the authenticated exact manifest, not a new
+whole-source capture. The original externally saved/cold-verified packet and factor remain required by
+maintenance APIs; missing input does not authorize reminting or rollback. Ordinary selected Local open has
+its existing independent recovery path and need not wait for cleanup or possession of that packet.
+
+The composed seeded host must retain exclusion between calls, invalidate restart epochs, cancel on observed
+loss and wait for native draining. A blocked deletion can still settle after cancellation; neither an epoch
+assertion nor a timeout cancels it. No in-page exclusion flag/token supplies production browser authority.
+Production supported-version exclusion, a real recovery-save/readback ceremony and sequencing §5.4 remain
+default-app/live-cutover gates. This is a preparation decision, with implementation and falsifiers still owed.
+
+Reread the three conformance debts after adding this execution checkpoint to the matrix. Their requirements,
+owners, gates, statuses and payment conditions still apply unchanged. Re-pinned only their
+`docs/storage-conformance.md` inputs to `7e3f4cce55f1`; the bounded component pass does not pay any of them.
