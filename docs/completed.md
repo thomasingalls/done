@@ -754,3 +754,31 @@ cases before resuming destination/import work. Complete source/export/import cut
 production old-writer exclusion, recovery tooling, compaction/costs and prior acceptance remain owed.
 The other review findings were not assessed in this selected reproduction pass. No conformance obligation,
 matrix pin or debt status changes; the independent L-2 record is preserved.
+
+
+### 2026-09-09 — core repair phase 1: bounded journal snapshot contention
+
+**Check-in.** The completed core reproductions were committed as `a292103`. The user then authorized
+the first bounded repair. This new phase-one checkpoint remains uncommitted.
+
+**Outcome.** Journal initialization, recovery and flush now retry only changed read captures, with three
+total attempts under the same live task/permit. Failed captures perform no content work; the content
+operation executes once after stable acquisition. Transient churn keeps later input queued and completes
+without human Retry. Exhaustion reports `journal-busy`, retains unaccepted input and permits explicit later
+Retry/discard. Startup distinguishes busy from unavailable/repair; cancellation clears the pending timer
+and retains the lifecycle's cleanup rules. Observed immutable-value replacement latches repair-required.
+
+**Evidence.** [Recorded native execution](./storage-conformance-runs/2026-09-09-journal-contention.md) passes
+12 cases, including two controlled cross-tab races and 100 generated read histories; all four focused
+mutants are detected. Existing journal/admission/startup regressions pass 17/15/15 cases and detect 6/6/3
+mutants. Full Vitest passes **729 tests / 59 files**, with seven new tests including another 100 generated
+churn schedules. Typecheck, focused lint/format, build/budget, vectors/AAD and applicable checks pass. Initial
+JS remains **306.3 kB / 350.0 kB** gzipped. Evidence records fixture corrections, the narrowed handoff fixture,
+and a prose-only clarification after native inputs froze. This does not establish routine contention
+frequency; the earlier uninterrupted/simultaneous-typing controls did not reproduce it on Chromium.
+
+**Next.** Core repair phase 2 addresses pending Yjs fork preservation and projection agreement through later
+dependency delivery against saved original records, before migration resumes. The compaction mutation path
+is not retried; no Yjs/projection repair, generation transition or default-app switch is included. Migration,
+source exclusion, large-input performance and prior acceptance remain owed. Only matrix evidence and its
+three pins advance; obligations/debt statuses and the independent L-2 record remain unchanged.

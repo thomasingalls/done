@@ -1945,3 +1945,32 @@ Independent reopen and a later Undo both heal this corpus, but neither is yet a 
 The original-framing Yjs campaign also finds delivery-order failures; no observed sender-ordered or complete-
 join failures imply no proof outside those narrow alphabets. Saved original bytes, minimized schedules and
 external string oracles are retained for the next bounded repair phase. No migration or debt payment follows.
+
+
+### 2026-09-09 — retry journal acquisition within one live operation, with a finite budget
+
+The core reproductions are committed as `a292103`. Repair phase 1 changes journal read acquisition only:
+three total capture attempts, counting the existing synchronous invocation capture. Only an actual
+`JournalError('journal-changed')` retries, after 0 ms then 8 ms scheduling delays. The same live task and
+permit cover the wait and each read; cancellation removes its timer and prevents another capture. Delays
+are scheduling requests, not wall-clock guarantees. Failed decoded attempts are erased.
+
+The successful invocation fast path keeps its exact set. On churn, a replacement capture can include
+later peer entries. Journal-first recovery still precedes the content read. Content reservation/sealing/
+publication/cleanup begins only after acquisition and executes once; content failure is never fed back
+through this retry. The synchronous compaction preflight remains outside the helper so no later mutation
+operation is accidentally repeated. Cleanup remains exact identity/value matched and commit dependent.
+
+During acquisition, later local input stays behind the pending barrier. Three changed captures produce
+`journal-busy`; the admission owner then retains input for explicit Retry/discard, without indefinite
+background attempts. Startup classifies this as `busy` / `journal-read-contention`, with cancellation
+precedence and no creation/deletion/migration authority. Unavailable storage and malformed/unopenable
+entries fail immediately. An observed replacement of an immutable captured value latches repair-required;
+disappearance can be conforming completed cleanup and remains retryable churn.
+
+[Native and generated evidence](./storage-conformance-runs/2026-09-09-journal-contention.md) covers bounded
+capture, ordering, preservation, cancellation/permit release and no repeated content writes, with four
+focused sensitivity controls. This does not strengthen the earlier unproven routine-typing frequency
+claim. No Yjs/projection repair is included. Phase 2 must preserve or recover pending information and verify
+projection agreement when later dependencies arrive; then migration preparation can resume. Evidence and
+three matrix pins advance without paying any obligation or changing debt status.

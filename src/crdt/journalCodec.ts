@@ -9,7 +9,8 @@ export type JournalRefusal =
   | 'invalid-input'
   | 'unavailable'
   | 'repair-required'
-  | 'journal-changed';
+  | 'journal-changed'
+  | 'journal-busy';
 export class JournalError extends Error {
   override readonly name = 'JournalError';
   constructor(

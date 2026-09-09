@@ -6,6 +6,10 @@ or paying an acceptance debt. The reviewer supplied prose but no saved random ca
 use our existing compaction corpus and independently generated cases. Frequencies are not directly comparable
 with the reviewer's search.
 
+**Historical execution:** this investigation is committed as **a292103**. Its browser runner intentionally
+expects the old journal-blocking behavior. Use that revision to replay it; the current [bounded journal
+repair suite](./journal-contention.md) tests the corrected behavior. The Yjs/projection findings remain open.
+
 ## Results
 
 | Question | Observation | Disposition |

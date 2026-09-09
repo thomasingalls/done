@@ -88,6 +88,12 @@ after it resolves. Adjacent barriers can share completion. Blocked storage/capac
 barrier observably; cleanup failure leaves the journal and does not claim the strong boundary completed.
 Recovered journal entries also schedule a flush. There is no indefinite automatic retry loop.
 
+Transient journal snapshot churn is handled by the carrier's [bounded read-only retry](./journal-contention.md)
+before any content mutation. The barrier remains pending and later local input stays behind it; a successful
+retry does not block admission or require human Retry. Three failed captures report `journal-busy`, which
+blocks with explicit contention pressure and retains the suffix. Actual storage failure and corruption
+retain their existing behavior. Retrying acquisition never repeats a seal, reservation, commit or cleanup.
+
 `close()` disables admission immediately, rejects/erases the pending suffix, clears the timer, and drains
 in-flight work while the carrier closes its guarded lifecycle. Late continuations cannot promote. The
 private canonical document is destroyed after draining; the raw journal key and WASM instance are disposed

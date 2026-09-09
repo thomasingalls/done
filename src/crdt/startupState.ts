@@ -10,6 +10,7 @@ export type StartupKind =
   | 'slot-closed'
   | 'identity-required'
   | 'unlock-failed'
+  | 'busy'
   | 'unavailable'
   | 'unsupported'
   | 'cancelled';

@@ -48,33 +48,39 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # core reproductions complete; repair precedes destination/import
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-migration-prep.md, legacy-export-capture.md, core-reproductions.md]
+status: in flight # journal contention repair complete; pending Yjs/projection repair precedes migration
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, journal-contention.md, core-reproductions.md, legacy-migration-prep.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-09
 ```
 
-**Just completed.** Phase fourteen is committed as `da5def9`. The user paused migration integration for
-three [core review reproductions](./core-reproductions.md). New investigation runners and a minimized corpus
-confirm journal-changed blocking under controlled interleaving, pending-clone workspace projection divergence
-and some original-framing Yjs ordering failures. No production code or fix is included. This checkpoint
-remains uncommitted; its outcome is appended to [completed.md](./completed.md).
+**Just completed.** Core reproductions are committed as `a292103`. Repair phase 1 adds
+[bounded journal capture retries](./journal-contention.md) to initialization, recovery and flush. There
+are three total attempts under the same live task/permit; only changed captures retry. Content work starts
+once after stable capture and is not retried by the helper. Transient contention completes without human
+Retry while later input stays queued; exhaustion reports `journal-busy`, preserving input for explicit
+Retry/discard. Startup distinguishes busy from damage/unavailable storage. This repair checkpoint remains
+uncommitted; its outcome is appended to [completed.md](./completed.md).
 
-**Evidence and qualifications.** Nine native cases complete, including actual workspace/editor/export
-promotion, independent reopen/Undo controls, paused peer append/cleanup and a 500 ms uninterrupted overlap.
-The latter and 3,200 simultaneous keystrokes do not reproduce journal blocking on Chromium; the controlled
-pause can alter event processing and does not prove the routine two-tab claim. The Yjs campaign runs
-150,000 histories: 169 failures in 50,000 arbitrary permutations, none observed in the sender-ordered or
-complete-join arms of 50,000 each. A saved case shrinks 133 times and replays exactly. Its seven records fail
-in 78 of all 5,040 orders, with no failure among 210 sender-ordered orders. Fifty-one focused tests and
-applicable checks pass. These are scoped investigation outcomes, not conformance or probability bounds.
+**Evidence and qualifications.** [Recorded execution](./storage-conformance-runs/2026-09-09-journal-contention.md)
+passes 12 native cases including 100 generated read histories, and detects all four focused mutants.
+The existing journal/admission/startup suites pass 17/15/15 cases and detect 6/6/3 mutants. Full Vitest passes
+729 tests / 59 files, including seven new tests and another 100 generated churn schedules. Typecheck,
+focused lint/format, build/budget, vectors/AAD and applicable checks pass; initial JS remains 306.3 kB / 350.0 kB
+gzipped. Evidence covers cancellation timer removal and permit release, bounded pressure and no repeated
+content sealing. Controlled CDP/reentrant races do not establish ordinary two-tab frequency; the earlier
+uninterrupted overlap and 3,200 simultaneous keystrokes did not reproduce contention on Chromium.
 
-**Next bounded work.** Design and test journal-churn handling and pending-projection repair before returning
-to destination/import work. Visible equality only at promotion misses the reproduced later divergence;
-both text and integrated vectors can agree while pending information differs. The original-framing corpus
-also remains a library behavior gate. This pass implements none of those repairs and does not reproduce
-the review's other recovery, maintenance/cost, row-limit, nonce-wording or plaintext-scanning findings.
+**Next bounded work.** Core repair phase 2: preserve or recover pending Yjs information and maintain
+canonical/editor/export agreement through later dependency delivery. Reuse the saved original-framing
+corpus and independent semantic oracle. Text and integrated vectors can agree at promotion while pending
+information differs; a promotion-only comparison is insufficient. The prior campaign found 169 failures
+in 50,000 arbitrary original-record permutations, none observed in 50,000 sender-ordered or 50,000 complete-
+join histories. Its seven-record minimized case fails in 78 of 5,040 orders, with no failures among 210
+sender-ordered orders. Those scoped observations remain library/projection gates, not general guarantees.
+No Yjs/projection repair is included in phase 1; migration remains paused. The review's other recovery,
+maintenance/cost, row-limit, nonce-wording and plaintext-scanning findings remain outside this selected repair.
 
 **Deferred migration integration.** The pre-active destination/import owner still needs explicit verified
 source and carrier-policy input, mandatory-factor fresh writable store/key/counter scope and bounded
@@ -103,7 +109,8 @@ and complete interaction performance remain gates before default editor acceptan
 custody: `a6d39a2`; content: `468cbe2`; synchronous journal: `9e60c6a`; admission/Goals editor: `0b5337a`;
 workspace commands/history: `a48c090`; owned startup: `a916d61`; Local genesis/index: `ee60528`;
 scoped Local clear: `d7c0f32`; content compaction: `85c7404`; production carrier properties and incomplete-
-compaction deferral: `a0811e2`; read-only source preparation: `e64cd2a`; verified export capture: `da5def9`. [Phase-twelve execution](./storage-conformance-runs/2026-09-09-storage-properties.md)
+compaction deferral: `a0811e2`; read-only source preparation: `e64cd2a`; verified export capture: `da5def9`;
+core reproductions: `a292103`. [Phase-twelve execution](./storage-conformance-runs/2026-09-09-storage-properties.md)
 records 120 encrypted histories, six corpus replays, five shrunk mutants and 18 renderer deaths; those
 separate browser suites were not rerun this phase. The [shared candidate run](./storage-conformance-runs/2026-09-08.md)
 contains 57 subcases; all three pinned candidates fail the corrected contract and none is merged.
@@ -114,8 +121,8 @@ shared/multiple-workspace custody, Account removal/service revocation, partial-g
 cleared-slot reuse need subsequent owners. Additional Local workspaces, Account verifier/receive/checkpoint
 authority and PRF remain incomplete. L-3 composes generation/custody references, lifetimes and interrupted
 phases; these components do not implement retirement. L-4 carries independent storage/crypto review,
-supported profiles/authenticators, low-end performance and platform acceptance. This reproduction checkpoint changes no matrix pins or
-obligations/debt statuses. No checkpoint pays old-writer cutover/release.
+supported profiles/authenticators, low-end performance and platform acceptance. This repair checkpoint advances only matrix evidence and its three pins;
+obligations/debt statuses remain unchanged. No checkpoint pays old-writer cutover/release.
 
 **Scope.** This seat owns L-1 implementation/evidence. The independent L-2 record below is unchanged.
 The author's real-data cutover remains Stage 2 after carrier selection and review 3a. Historical Stage 0

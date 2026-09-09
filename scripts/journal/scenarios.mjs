@@ -230,12 +230,15 @@ export async function runCase(definition, env) {
       case 'C09.enumeration-change': {
         await call(a, 'append', 'first');
         await call(a, 'append', 'second');
+        // The disappearance is a conforming handoff: both exact payloads already committed to content.
+        await call(a, 'batch', 'covered', ['first', 'second']);
+        await settled(a, 'covered');
         await call(a, 'fault', 'change-during-read');
         await call(a, 'recover', 'changed');
         check(
-          'changed-enumeration-refuses',
-          (await settled(a, 'changed')).error?.code,
-          'journal-changed',
+          'changed-enumeration-retries-covered-handoff',
+          [...new Set(texts((await settled(a, 'changed')).value))].sort(),
+          ['first', 'second'],
         );
         check('surviving-entry-kept', Object.keys(await call(a, 'inventory')).length, 1);
         break;

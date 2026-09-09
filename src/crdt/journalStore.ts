@@ -40,6 +40,28 @@ const size = (key: string, value: string | null): number =>
 export const eraseJournalSnapshot = (entries: readonly JournalUpdate[]) => {
   for (const e of entries) e.bytes.fill(0);
 };
+export const JOURNAL_SNAPSHOT_ATTEMPTS = 3;
+export const isJournalChanged = (cause: unknown): cause is JournalError =>
+  cause instanceof JournalError && cause.code === 'journal-changed';
+
+/** Yield outside every transaction, retaining the task/permit and waking promptly on close. */
+const retrySnapshotAfter = (task: SessionTask, delay: number): Promise<void> =>
+  task.wait(
+    () =>
+      new Promise<void>((resolve, reject) => {
+        const abort = () => {
+          clearTimeout(timer);
+          task.signal.removeEventListener('abort', abort);
+          reject(task.signal.reason);
+        };
+        const timer = setTimeout(() => {
+          task.signal.removeEventListener('abort', abort);
+          resolve();
+        }, delay);
+        task.signal.addEventListener('abort', abort, { once: true });
+        if (task.signal.aborted) abort();
+      }),
+  );
 
 /** Internal owner. Flush authority is supplied only by the actual content owner. */
 export const createJournalOwner = (
@@ -113,7 +135,12 @@ export const createJournalOwner = (
         .filter((k) => k.startsWith(prefix))
         .sort();
       if (scoped.length !== after.length || scoped.some((k, i) => k !== after[i])) throw changed();
-      for (const e of opened) if (s.getItem(e.key) !== e.value) throw changed();
+      for (const e of opened) {
+        const current = s.getItem(e.key);
+        if (current === null) throw changed();
+        if (current !== e.value)
+          throw new JournalError('repair-required', 'An immutable journal entry was replaced.');
+      }
       observedCharacters = characters;
       return opened;
     } catch (cause) {
@@ -127,6 +154,28 @@ export const createJournalOwner = (
   };
   return {
     snapshot,
+    /** Read-only attempts only. The optional first failure is the synchronous invocation capture. */
+    async readSnapshot(task: SessionTask, firstFailure?: JournalError): Promise<ObservedEntry[]> {
+      if (firstFailure && !isJournalChanged(firstFailure)) throw firstFailure;
+      let changed = firstFailure;
+      for (let attempt = firstFailure ? 1 : 0; attempt < JOURNAL_SNAPSHOT_ATTEMPTS; attempt++) {
+        if (changed) await retrySnapshotAfter(task, attempt === 1 ? 0 : 8);
+        try {
+          return task.step(snapshot);
+        } catch (cause) {
+          if (!isJournalChanged(cause)) throw cause;
+          changed = cause;
+        }
+      }
+      task.step(() => {});
+      throw new JournalError(
+        'journal-busy',
+        'The journal kept changing during three read attempts.',
+        {
+          cause: changed,
+        },
+      );
+    },
     get observedCharacters() {
       return observedCharacters;
     },

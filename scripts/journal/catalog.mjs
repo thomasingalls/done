@@ -14,7 +14,10 @@ export const cases = [
     'C09.unreadable',
     'Bad tag/version/generation/moved-key entries refuse whole recovery and flush',
   ],
-  ['C09.enumeration-change', 'A disappearing captured entry refuses a partial journal snapshot'],
+  [
+    'C09.enumeration-change',
+    'A covered entry disappearing during read retries before returning full recovery',
+  ],
   ['C11.abort-flush', 'Failed content transaction retains every journal entry'],
   [
     'C11.crash-before-cleanup',

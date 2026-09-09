@@ -7,10 +7,11 @@ import { assertNoLocalClear } from './localClearState';
 import { validateContentUpdates, type ContentCompactionReceipt } from './contentCompaction';
 export type { ContentCompactionReceipt } from './contentCompaction';
 import { deriveStoreName } from './storeName';
-import { deriveJournalKey } from './journalCodec';
+import { deriveJournalKey, type JournalError } from './journalCodec';
 import {
   createJournalOwner,
   eraseJournalSnapshot,
+  isJournalChanged,
   type JournalAdmission,
   type JournalUpdate,
   type JournalFlushReceipt,
@@ -713,7 +714,8 @@ const prepareCustody = (
             keys.journal!,
           ),
         );
-        task.step(() => eraseJournalSnapshot(journal!.snapshot()));
+        // Erasure is cleanup and must also run if cancellation follows the successful read.
+        eraseJournalSnapshot(await journal.readSnapshot(task));
       }
     },
     dispose: () => {
@@ -870,6 +872,35 @@ export const openJournalSession = async (
   } finally {
     owner.eraseFactor();
   }
+  const withSnapshot = <T>(
+    operation: (
+      task: SessionTask,
+      snapshot: ReturnType<typeof owner.journal.snapshot>,
+    ) => Promise<T>,
+  ): Promise<T> => {
+    let snapshot: ReturnType<typeof owner.journal.snapshot> | undefined;
+    let firstFailure: JournalError | undefined;
+    try {
+      // Preserve the existing invocation-time fast path, including the exact captured entry set.
+      snapshot = live.write(() => owner.journal.snapshot());
+    } catch (cause) {
+      if (!isJournalChanged(cause)) return Promise.reject(cause);
+      firstFailure = cause;
+    }
+    return live
+      .run(async (task) => {
+        try {
+          snapshot ??= await owner.journal.readSnapshot(task, firstFailure);
+          return await operation(task, snapshot);
+        } finally {
+          if (snapshot) eraseJournalSnapshot(snapshot);
+        }
+      })
+      .finally(() => {
+        // run can reject before invoking its callback if close wins after the eager capture.
+        if (snapshot) eraseJournalSnapshot(snapshot);
+      });
+  };
   return Object.freeze({
     ...owner.describe(),
     get state() {
@@ -925,56 +956,32 @@ export const openJournalSession = async (
       });
     },
     loadRecords: () => live.run((task) => owner.carrier.load(task)),
-    loadRecovery: () => {
-      let snapshot: ReturnType<typeof owner.journal.snapshot>;
-      try {
-        snapshot = live.write(() => owner.journal.snapshot());
-      } catch (cause) {
-        return Promise.reject(cause);
-      }
-      return live
-        .run(async (task) => {
-          let records: OpenedRecord[] | undefined;
-          try {
-            records = await owner.carrier.load(task);
-            return task.step(() => ({
-              records: records!,
-              journal: snapshot.map(({ key, generation, bytes }) => ({
-                key,
-                generation,
-                bytes: bytes.slice(),
-              })),
-            }));
-          } catch (cause) {
-            if (records) for (const r of records) r.bytes.fill(0);
-            throw cause;
-          } finally {
-            eraseJournalSnapshot(snapshot);
-          }
-        })
-        .finally(() => eraseJournalSnapshot(snapshot));
-    },
-    flushJournal: () => {
-      let snapshot: ReturnType<typeof owner.journal.snapshot>;
-      try {
-        snapshot = live.write(() => owner.journal.snapshot());
-      } catch (cause) {
-        return Promise.reject(cause);
-      }
-      return live
-        .run(async (task) => {
-          try {
-            return await owner.journal.flush(task, snapshot, (task, bytes) =>
-              owner.carrier.append(
-                task,
-                bytes.map((bytes) => ({ kind: 'update', bytes })),
-              ),
-            );
-          } finally {
-            eraseJournalSnapshot(snapshot);
-          }
-        })
-        .finally(() => eraseJournalSnapshot(snapshot));
-    },
+    loadRecovery: () =>
+      withSnapshot(async (task, snapshot) => {
+        let records: OpenedRecord[] | undefined;
+        try {
+          records = await owner.carrier.load(task);
+          return task.step(() => ({
+            records: records!,
+            journal: snapshot.map(({ key, generation, bytes }) => ({
+              key,
+              generation,
+              bytes: bytes.slice(),
+            })),
+          }));
+        } catch (cause) {
+          if (records) for (const r of records) r.bytes.fill(0);
+          throw cause;
+        }
+      }),
+    flushJournal: () =>
+      withSnapshot((task, snapshot) =>
+        owner.journal.flush(task, snapshot, (task, bytes) =>
+          owner.carrier.append(
+            task,
+            bytes.map((bytes) => ({ kind: 'update', bytes })),
+          ),
+        ),
+      ),
   });
 };

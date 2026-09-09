@@ -26,7 +26,8 @@ concurrent flush from falling between an earlier content read and a later empty 
 updates across carriers are expected and Yjs replay must preserve their idempotent semantics. The inherited
 `loadRecords()` remains a content-only primitive; full recovery uses `loadRecovery()`.
 
-`flushJournal()` captures an exact private journal snapshot at invocation. It commits those authenticated
+`flushJournal()` attempts an exact private journal snapshot synchronously at invocation. Transient capture
+churn can move that snapshot to a bounded later retry before any content write. It commits those authenticated
 bytes as content `update` records in batches of at most 256, using the actual content owner's durable
 allocator and transaction-completion receipt. Only after each batch completes does it compare each
 captured entry's current key/value and attempt removal. A late appended suffix is outside the captured
@@ -35,10 +36,11 @@ retains the affected entry. The result distinguishes completed content receipts 
 entries. A cleanup failure does not undo content durability. A failed content batch clears none of its
 entries; completed earlier chunks can already have cleared theirs.
 
-There is no timer or implicit retry. The later coordinator owns the 250 ms batching window, forced
-flushes, `whenDurable()` and queue-wide ordering. A flush covers its captured set, not updates appended
-after invocation. The raw byte interface does not validate Yjs, guarantee causal closure of caller inputs,
-or turn an arbitrary memory-only remote dependency into durable state.
+The coordinator owns the 250 ms batching window, forced flushes, `whenDurable()` and queue-wide ordering.
+The carrier schedules only bounded read-retry delays; it does not retry content writes. A flush covers its
+successful capture, including entries that arrived before a replacement capture if the invocation-time
+attempt changed. Later entries remain outside that set. The raw byte interface does not validate Yjs,
+guarantee causal closure of caller inputs, or turn an arbitrary memory-only remote dependency into durable state.
 
 ## Selected bytes and ownership
 
@@ -76,8 +78,11 @@ legacy entries by introducing a separate format prefix.
 ## Reads, cleanup and pressure
 
 Journal enumeration captures own keys, reads the scoped values and authenticates all of them, then
-rechecks the scoped key set and exact values before returning. A changed snapshot refuses with
-`journal-changed`; callers can retry. Authentication, unsupported/legacy versions, malformed/canonical
+rechecks the scoped key set and exact values before returning. A changed key census or disappeared entry
+refuses that attempt with `journal-changed`. Initialization, recovery and flush apply the [bounded read-only
+retry policy](./journal-contention.md): three total captures, yielding between attempts, with cancellation
+and a distinct `journal-busy` result on exhaustion. Only acquisition repeats; content writes and cleanup
+do not. An observed immutable-value replacement latches repair. Authentication, unsupported/legacy versions, malformed/canonical
 base64 failures and missing-generation openers refuse with `repair-required`, preserving entries.
 No readable prefix is returned from an unreadable snapshot. Other database namespaces are left alone.
 

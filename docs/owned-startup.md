@@ -26,7 +26,9 @@ invalidate the requested identity.
 Reads use known names, never `indexedDB.databases()`. Probes abort a new database's upgrade transaction;
 they do not create empty metadata as a side effect of looking. All record reads settle at transaction
 completion. A cancelled probe closes any eventual connection and its late upgrade still aborts. Database
-and localStorage errors produce unavailable/repair dispositions, not absence. A row whose value is
+and localStorage errors produce unavailable/repair dispositions, not absence. Journal capture churn has
+a bounded internal retry; exhaustion produces `busy` / `journal-read-contention`, with cancellation taking
+precedence. That disposition grants no creation or cleanup authority. A row whose value is
 undefined still counts as surviving material. A changed/missing route cannot be bypassed by deriving
 around the index.
 
