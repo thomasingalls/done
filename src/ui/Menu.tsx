@@ -4,6 +4,7 @@ import { exportFilename } from '../crdt/export';
 import { addDays, formatDayLong, relativeDay, type ISODate } from '../lib/date';
 import { installHelp, readInstallState, requestInstall, subscribeToInstallState } from '../pwa';
 import { useWorkspaceUi } from './workspaceUi';
+import { AppUpdateNotice } from './AppUpdateNotice';
 
 export interface MenuProps {
   today: ISODate;
@@ -67,6 +68,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
   };
   return (
     <aside className="menu" id="menu" aria-label="Menu" ref={ref}>
+      <AppUpdateNotice />
       <section className="menu-section">
         <h2 className="menu-heading">Day</h2>
         <p className="menu-note">{formatDayLong(date)}</p>

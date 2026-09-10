@@ -3,6 +3,7 @@ import { createLocalStartup, type LocalStartup, type LocalStartupState } from '.
 import type { StartupKind } from '../crdt/startupState';
 import { WorkspaceUiProvider } from './workspaceUi';
 import { App } from './App';
+import { AppUpdateNotice } from './AppUpdateNotice';
 
 const messages: Record<StartupKind, { title: string; detail: string }> = {
   fresh: {
@@ -218,6 +219,7 @@ export const LocalApp = (): React.ReactElement => {
   return (
     <main className="local-startup" data-state={state.kind}>
       <div className="local-startup-panel">
+        <AppUpdateNotice />
         <span className="local-brand">done</span>
         {content}
       </div>

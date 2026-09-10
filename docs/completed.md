@@ -1318,3 +1318,41 @@ and server remain here at the author's request, relay remains disconnected, and 
 source remains retained. Authenticated source cleanup and the broader conformance/review gates are
 separate work; no debt or matrix status changed. This outcome precedes the L-1 checkpoint rewrite;
 L-2 is untouched.
+
+## 2026-09-10 — Compatible app upgrade handoff and one-off cleanup preparation (`L-1`)
+
+Committed the packaged/offline checkpoint as signed `07d89f6`. The author selected safe upgrades next and
+requested a DevTools paste helper for personal source cleanup. Prepared that helper around the existing
+authenticated coordinator/cleanup owner, with saved packet/binding verification, existing factor, exact
+deletion progress and a separate same-origin dependency realm. Wrong-code retry, source absence, modern
+encrypted-journal preservation and later-writing recovery pass in a disposable seeded browser. Actual
+personal cleanup remains pending; no personal browser operation or source deletion was performed.
+
+The first bounded upgrade phase verifies every downloaded static asset against the generated worker's
+release hashes, waits for old controlled tabs to close, avoids forced reload/takeover and removes only
+its own base-scoped older caches. A menu/startup notice describes the normal lock/close/reopen handoff.
+Worker policy changes also change the cache identifier. Builds and tests use isolated output directories,
+leaving the author's live build and server intact.
+
+Eight native upgrade cases, five native cleanup/migration cases and 37 relevant unit tests pass. The
+upgrade properties include 120 generated failure/retry histories and byte-verification/cache-scope controls;
+native coverage includes the actually served predecessor, two live old tabs, later edits, failed updates,
+offline reopen, renderer death, compatible rollback and an immediate-activation mutant. The new helper's
+stale-error retry defect was reproduced and repaired; instrumentation corrections remain named separately.
+See the [preserved record](./storage-conformance-runs/2026-09-10-app-upgrades.md).
+
+This is compatible application-file replacement, not authorization for an incompatible storage migration.
+The next bounded upgrade work is a reader/writer compatibility and lifecycle migration contract before any
+persisted format changes. Personal cleanup and deployment of the prepared policy remain operator steps.
+No conformance debt or matrix status changed. This outcome precedes the L-1 checkpoint rewrite; L-2 is
+untouched.
+
+## 2026-09-10 — Personal source cleanup confirmed (`L-1`)
+
+The author ran the one-off DevTools helper, reported successful source cleanup, closed it, and then
+unlocked the encrypted workspace with the writing still present. The exact completion message was not
+retained. This is the author's observed result, not an independently captured personal storage census.
+External recovery files, exports and relay backups remain retained; the other pre-encryption device has
+not been joined or cleaned. The prepared application-upgrade build has not replaced the live package.
+The next bounded implementation is reader/writer compatibility before future persisted-format changes.
+This outcome precedes the L-1 checkpoint rewrite; L-2 remains unchanged.

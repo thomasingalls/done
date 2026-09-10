@@ -133,6 +133,73 @@ const unzip = (path: string): { path: string; content: string }[] =>
     execFileSync('python3', ['scripts/legacy-export/unzip.py', path], { encoding: 'utf8' }),
   );
 
+test('one-off pasted cleanup helper authenticates files and factor, removes source and preserves later writing', async ({
+  page,
+}, info) => {
+  execFileSync(process.execPath, ['scripts/build-private-cleanup.mjs']);
+  const helper = await readFile('.dev/private-cleanup/paste.js', 'utf8');
+  await seed(page);
+  const files = await capture(page, info);
+  await load(page, files);
+  const code = await confirm(page);
+  await phase(page, 'authenticated');
+  await finishImport(page);
+  const before = await census(page);
+  await page.getByRole('button', { name: 'Open Local editor' }).click();
+  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await page.getByRole('button', { name: 'Unlock', exact: true }).click();
+  const master = page.locator('.goals .cm-content');
+  await master.click();
+  await master.press('ControlOrMeta+End');
+  await page.keyboard.insertText('Later writing survives the cleanup helper');
+  await expect(master).toContainText('Later writing survives the cleanup helper');
+  await page.getByRole('button', { name: 'Lock workspace' }).click();
+  await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'unlock-required');
+  const modernJournals = await page.evaluate(
+    (sourceKeys) =>
+      Object.fromEntries(
+        Object.entries(localStorage).filter(
+          ([key]) => key.startsWith('done.pending-update.done.') && !sourceKeys.includes(key),
+        ),
+      ),
+    Object.keys(before.local),
+  );
+  await page.addScriptTag({ content: helper });
+  const dialog = page.locator('#done-private-cleanup');
+  await dialog.getByLabel('Recovery packet').setInputFiles(files.packet);
+  await dialog.getByLabel('Saved binding').setInputFiles(files.binding);
+  await dialog.getByLabel('Device-lock code').fill('wrong code');
+  await dialog.getByRole('button', { name: 'Clean up source' }).click();
+  await expect(dialog.getByRole('button', { name: 'Clean up source' })).toBeEnabled();
+  expect(await census(page)).toEqual(before);
+  await dialog.getByLabel('Device-lock code').fill(code);
+  await dialog.getByRole('button', { name: 'Clean up source' }).click();
+  await expect(dialog.getByRole('status')).toContainText('Source cleanup complete');
+  expect(
+    await page.evaluate(async () => (await indexedDB.databases()).some((db) => db.name === 'done')),
+  ).toBe(false);
+  expect(
+    await page.evaluate(
+      (keys) => keys.every((key) => localStorage.getItem(key) === null),
+      Object.keys(before.local),
+    ),
+  ).toBe(true);
+  expect(
+    await page.evaluate(
+      (keys) => Object.fromEntries(keys.map((key) => [key, localStorage.getItem(key)])),
+      Object.keys(modernJournals),
+    ),
+  ).toEqual(modernJournals);
+  await dialog.getByRole('button', { name: 'Close', exact: true }).click();
+  await page.reload();
+  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await page.getByRole('button', { name: 'Unlock', exact: true }).click();
+  await expect(page.locator('.goals .cm-content')).toContainText(
+    'Later writing survives the cleanup helper',
+  );
+  await expect(page.locator('.goals .cm-content')).toContainText('journal-only ✔');
+});
+
 test('saved files, renderer death, resumed selection and ordinary editor cold recovery preserve the ledger', async ({
   page,
   context,

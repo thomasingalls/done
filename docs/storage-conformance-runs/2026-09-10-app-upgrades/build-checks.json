@@ -1,0 +1,17 @@
+{
+  "checks": [
+    {
+      "script": "scripts/check-budget.mjs",
+      "target": "isolated upgrade-a build",
+      "status": 0,
+      "output": "index.html\n   326.8 kB  /assets/main-B0AV8VPD.js\ninitial JS, gzipped: 326.8 kB of 350.0 kB budget\nlocal.html\n   326.8 kB  /assets/main-B0AV8VPD.js\ninitial JS, gzipped: 326.8 kB of 350.0 kB budget\n     5.1 kB  (css, informational — the budget is on JS)\n"
+    },
+    {
+      "script": "scripts/check-origin-isolation.mjs",
+      "target": "isolated upgrade-a build",
+      "status": 0,
+      "output": "origin isolation: scanned 7 built files\n  1 allowlisted origin: http://www.w3.org (2, namespace-identifier)\n  no literal remote URL in built output, allowlisted namespace identifiers aside (§10.9, row 17 A1)\n"
+    }
+  ],
+  "liveBuild": "all 11 original files still match recorded hashes"
+}

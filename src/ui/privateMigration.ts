@@ -279,7 +279,7 @@ export const createPrivateMigration = (
         }
       });
     },
-    advance(action: 'import' | 'select') {
+    advance(action: 'import' | 'select' | 'cleanup') {
       if (state.phase !== 'authenticated' || !factor || !input) return Promise.resolve();
       return run(async () => {
         try {

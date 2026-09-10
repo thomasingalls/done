@@ -40,7 +40,7 @@ loopback port and existing origin route, with relay disconnected. The author loa
 confirmed existing writing, and then confirmed cached reopening and later-edit recovery through another
 lock/close/reopen while the app server was stopped. The same packaged server is now running again; HTTPS
 checks match its app entry and worker to the build. See the
-[packaged offline record](./storage-conformance-runs/2026-09-10-packaged-serving.md). Source cleanup remains
+[packaged offline record](./storage-conformance-runs/2026-09-10-packaged-serving.md). At that checkpoint, source cleanup remained
 a separate step.
 
 ## Steps, one at a time
@@ -88,8 +88,14 @@ source/old-writer preconditions and a separately reviewed operator step still ap
 and factor are needed for that maintenance. Opening the new editor can register its ordinary service
 worker, so returning to the maintenance utility later requires dealing with that registration again.
 
+The author subsequently chose a [one-off DevTools cleanup helper](./private-source-cleanup.md) instead of
+another application ceremony. It uses the same authenticated cleanup owner while the current Local app is
+locked, preserves the packaged worker, and relies on the author's exclusion of old executables. Its native
+rehearsal passed. The author subsequently reported successful personal cleanup and encrypted reopening
+with the writing intact; the exact completion text was not retained.
+
 The author's import/reopen/export check and ordinary packaged cutover at the same origin are complete.
-The source-cleanup/remaining residue steps still require separate work. Do not describe the source-retaining checkpoint
+Whole-profile residue testing and cleanup of external backups remain separate decisions. Do not describe the source-retaining checkpoint
 as complete encrypted-only custody. Account transport, whole-profile residue, platform/latency evidence and
 independent review retain their existing gates. No conformance debt or matrix payment follows from this page.
 

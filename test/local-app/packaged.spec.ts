@@ -53,9 +53,6 @@ for (const entry of ['/', '/local.html']) {
     await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'unlock-required');
     await expect(page.getByText('Offline encrypted writing')).toHaveCount(0);
     await page.evaluate(() => navigator.serviceWorker.ready.then(() => {}));
-    await expect
-      .poll(() => page.evaluate(() => navigator.serviceWorker.controller !== null))
-      .toBe(true);
     await context.setOffline(true);
     await page.close();
     const offline = await context.newPage();
