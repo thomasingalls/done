@@ -1,3 +1,9 @@
+import { withPromotionSlot } from '../crdt/writeSession';
+import { readPromotion } from '../crdt/promotionRecord';
+import { promotionLineage } from '../crdt/promotionPreparation';
+import { type AuthorityPin, parseAuthorityPin } from '../../account-protocol/authority';
+import { verifyPendingProof } from '../../account-protocol/preparation';
+import { random, hex } from '../crdt/custodyCrypto';
 import {
   context,
   parseDraft,
@@ -12,6 +18,7 @@ export const RECOVERY_PREPARATION_DB = 'done.account-recovery-preparation.v1';
 export interface RecoveryTransport {
   begin(input: { retryKey: string; draft: RecoveryDraft }): Promise<unknown>;
   finish(input: Finalization): Promise<unknown>;
+  abandon?(input: { retryKey: string; accountId: string; nonce: string }): Promise<unknown>;
 }
 interface Finalization {
   retryKey: string;
@@ -42,6 +49,8 @@ const identifier = (value: string) => {
 export async function withRecoveryOwner<T>(
   options: {
     context: RecoveryContext;
+    pin?: AuthorityPin;
+    local?: { slotId: string; code: string };
     accountId: string;
     retryKey: string;
     transport: RecoveryTransport;
@@ -52,13 +61,17 @@ export async function withRecoveryOwner<T>(
     status(): Promise<'empty' | 'awaiting-code' | 'finalization-pending'>;
     confirm(code: string, assertion: (options: unknown) => Promise<unknown>): Promise<unknown>;
     resume(): Promise<unknown>;
+    abandon(): Promise<void>;
+    draft(): Promise<RecoveryDraft>;
   }) => Promise<T>,
 ): Promise<T> {
   const scope = context(options.context),
     accountId = options.accountId,
-    retryKey = options.retryKey;
+    retryKey = options.retryKey,
+    pin = options.pin ? parseAuthorityPin(options.pin) : undefined;
   identifier(accountId);
   identifier(retryKey);
+  const local = options.local ? { ...options.local } : undefined;
   const transport = options.transport,
     signal = options.signal;
   return navigator.locks.request(
@@ -82,14 +95,19 @@ export async function withRecoveryOwner<T>(
         alive = false;
         db.close();
       };
-      const access = (value?: Retained) =>
+      const access = (value?: Retained | null) =>
         new Promise<unknown>((resolve, reject) => {
           guard();
-          const tx = db.transaction('progress', value ? 'readwrite' : 'readonly', {
+          const tx = db.transaction('progress', value !== undefined ? 'readwrite' : 'readonly', {
             durability: 'strict',
           });
           const store = tx.objectStore('progress'),
-            request = value ? store.put(value, 'pending') : store.get('pending');
+            request =
+              value === null
+                ? store.delete('pending')
+                : value
+                  ? store.put(value, 'pending')
+                  : store.get('pending');
           tx.oncomplete = () => resolve(request.result);
           tx.onabort = () => reject(tx.error ?? Error('Recovery progress write aborted'));
           tx.onerror = () => {};
@@ -175,6 +193,67 @@ export async function withRecoveryOwner<T>(
       };
       try {
         return await work({
+          draft: () =>
+            owned(async () => {
+              const saved = await load();
+              if (!saved) throw Error('No retained recovery draft');
+              return structuredClone(saved.draft);
+            }),
+          abandon: () =>
+            owned(async () => {
+              const saved = await load();
+              if (!saved) return;
+              if (!pin || pin.authRoot !== scope.authRoot || !transport.abandon)
+                throw Error('Pinned abandonment transport required');
+              if (!local) throw Error('Local owner is required to release recovery preparation');
+              await withPromotionSlot(
+                local.slotId,
+                local.code,
+                async (task) => {
+                  const source = await readPromotion(task, local.slotId, local.code);
+                  if (source.marker) throw Error('Abandon retained Local promotion first');
+                  const { localCensus } = await task.wait(
+                    () => import('../crdt/localGenesisStorage'),
+                  );
+                  await localCensus(task, source.claim);
+                  const c = source.claim.initial;
+                  if (
+                    c.principal_id !== scope.principalId ||
+                    c.workspace_id !== scope.workspaceId ||
+                    (await promotionLineage(pin, accountId, {
+                      slotId: local.slotId,
+                      principalId: c.principal_id,
+                      workspaceId: c.workspace_id,
+                      storeId: c.store_id,
+                      rootId: c.root_id,
+                      genesisIntentId: c.creation_intent!.id,
+                      generation: 1,
+                    })) !== scope.lineageId
+                  )
+                    throw Error('Recovery Local target changed');
+                  const nonce = hex(random(32));
+                  const state = await task.wait(async () =>
+                    verifyPendingProof(
+                      pin,
+                      nonce,
+                      await transport.abandon!({ retryKey, accountId, nonce }),
+                    ),
+                  );
+                  guard();
+                  if (
+                    state.status !== 'abandoned' ||
+                    state.accountId !== accountId ||
+                    (state.draft &&
+                      (await draftDigest(state.draft)) !== (await draftDigest(saved.draft)))
+                  )
+                    throw Error('Recovery abandonment mismatch');
+                  guard();
+                  await task.wait(() => access(null));
+                  guard();
+                },
+                signal,
+              );
+            }),
           generate: () =>
             owned(async () => {
               if (await load())

@@ -83,10 +83,11 @@ export const contentTransaction = <T>(
     result: (value: T) => void,
     guard: (effect: () => void) => void,
   ) => void,
+  durability: IDBTransactionDurability = 'relaxed',
 ): Promise<T> =>
   new Promise((resolve, reject) => {
     let value!: T, failure: unknown;
-    const tx = task.step(() => db.transaction(stores, mode, { durability: 'relaxed' }));
+    const tx = task.step(() => db.transaction(stores, mode, { durability }));
     const abort = () => {
       try {
         tx.abort();

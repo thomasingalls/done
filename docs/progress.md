@@ -48,8 +48,8 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # authority/preflight complete; durable promotion intent and device custody next
-plan: [sequencing.md §3.5, action-tree.md L-1, account-sync-prep.md, account-authority.md]
+status: in flight # durable Local promotion preparation complete; genesis and exact wraps next
+plan: [sequencing.md §3.5, action-tree.md L-1, account-sync-prep.md, account-promotion.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-10
@@ -59,48 +59,50 @@ updated: 2026-09-10
 `17d87c2`. The preview remains stopped at their request; relay is off. The verified release stays at
 `.dev/releases/17d87c2/app` and predecessor `dist/` is intact. Origin/Tailscale routing is unchanged.
 Build and server stay in this worktree/Codex session. The author controls their browser and factors.
+No real account, passkey, recovery code, operator key or authority pin has been provisioned.
 
-**Recovery committed; trusted-root/preflight component complete.** Signed `e9477aa` commits the
-account core; signed `0f1a073` commits recovery sealing and restart-owned confirmation. The new
-[authority contract](./account-authority.md) provides explicit encrypted service-root initialization,
-cold open/recovery with no automatic rekeying, independent client pin verification, and a fixed-purpose
-nonce proof through the private adapter. No actual root/pin/operator secret or personal account has
-been provisioned. The service root does not authenticate itself by appearing next to its signature.
+**Root/preflight committed; durable preparation complete.** Signed `e9477aa` commits the account core,
+`0f1a073` recovery sealing/confirmation, and `e96107b` the private root and read-only Local preflight.
+The new [promotion contract](./account-promotion.md) owns a factor-authenticated interlock, durable
+seal-budget reservation and fresh device signing/wrapping credentials. The original Local claim,
+credentials, content key, generation, content store, journal and index stay retained. An interrupted
+reservation burns another pair of seal invocations; a committed preparation resumes the exact keys.
+Ordinary Local editing refuses while the marker exists. This is still Local preparation, not activation.
 
-The read-only Local preflight verifies mandatory custody and source identity under slot exclusion,
-cold-replays content plus journal, refuses admission material or pending dependencies, then verifies the
-pinned root proof. Its proposed lineage/recovery context is stable for this source/account; it grants
-no service admission and freezes no content snapshot. Local custody, keys, counters, routing and writing
-remain unchanged. Accounts remain pending, with no ordinary account UI or activation exposed.
+Current signed service observations check live pending-account/recovery state rather than historical
+receipts. Explicit abandonment cancels the pending registration before deleting only the authenticated
+Local preparation; accepted writing and spent budgets survive. Recovery-owner abandonment/reset requires
+an independently pinned service proof and authenticated Local census. It preserves its capability while
+promotion or an unknown Local reference remains; a cancelled registration is never recycled.
 
-[Preserved evidence](./account-conformance-runs/2026-09-10-account-authority.md): 13 authority/preflight
-tests, including 160 generated root and 40 generated browser histories, process kills and competing
-creators, two observed acceptance controls, native journal/refusal/imported-claim/cancellation checks,
-all 55 account/recovery regressions (400 more generated histories), and 825 existing unit tests pass.
-TypeScript, focused static checks and isolated application build checks pass. The preliminary test-page
-CSP blocked the journal's WASM; the disposable app harness was corrected while API CSP stayed unchanged.
-No generated production counterexample, debt payment or matrix status change is claimed.
+[Preserved evidence](./account-conformance-runs/2026-09-10-account-promotion.md): 18 new tests, 120 generated
+service and 45 generated native histories, two actual bad-acceptance controls, SQLite process death,
+renderer death, IDB aborts, competing tabs, cancellation, missing counters and journal survival pass.
+All 69 account/authority/recovery regressions, 13 writer-lifetime, 17 genesis, five compatibility cases
+and 825 unit tests pass. TypeScript, focused static checks, isolated build and 13 final gates pass;
+initial JS is 328.0/350.0 kB. Harness crash-wait/dependency issues and a directed-test preflight input race were corrected; no generated production
+counterexample, whole-protocol debt payment or matrix change is claimed.
 
-**Next bounded write phase.** Implement the durable authenticated promotion intent and prepare fresh
-device signing/wrapping credentials under mandatory custody. Revalidate this Local source, trusted pin
-and exact current recovery/account state, retain the application-upgrade interlock before incompatible
-carriers, reserve seal budgets durably and inventory all new references. Preserve the current generation,
-counters, Local identity and index throughout preparation; resume the same winning intent/keys after a
-crash. Own explicit abandonment/reset, including the preceding recovery ceremony's terminal states.
+**Next bounded phase.** Under this retained owner, cold-replay database plus journal and prepare the
+never-admitted genesis checkpoint and exact wraps for the prepared device and confirmed recovery keys.
+Preserve existing attribution as required by TRD §13.6. Specify the authenticated artifact stage,
+reservation budget, complete reference census and interruption/resumption rules before writing it.
+The service receives only permitted public keys, sealed/wrapped material, ciphertext and signed evidence;
+a signed digest alone cannot establish semantic replay correctness.
 
-**Following phase.** Build verified genesis, exact recovery/device wraps, certified recipients, first
-authorization/acceptance head, and the service/local-index handoff before activation. The existing
-principal, workspace and physical content store carry over; no Local duplicate or copied profile is
-created. The first slot binding must verify against independently pinned authority. The actual second
-pre-encryption device then adopts this workspace with fresh custody/store/counters/credentials and
-no import or merge of its old writing; its cleanup stays separate.
+**Following phase.** Atomically commit current account/recovery eligibility, certified recipients, first
+authorization/acceptance head and exact checkpoint/wrap evidence at the service. Verify and retain the
+complete signed result before handing the existing Local index to Account classification. Preserve the
+principal, workspace, database and generation, with no duplicate Local or copied profile. Activation,
+slot bindings and interrupted handoff need their own owner/conformance boundaries.
 
-**Remaining gates.** Complete promotion and bindings, encrypted relay/durable storage, two-gate enrollment,
-revocation/rotation/finalization and full recovery, complete product conformance, whole-profile residue,
-platform coverage, production root distribution/restore and independent review remain open. Incompatible
-formats require a concrete authenticated upgrade owner and tested exclusion/restart rules. The host VM
-stays stopped; host/policy research is not next-up. L-2's historical clean ref `d24732b` has no further
-service work to integrate. This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
+**Remaining gates.** Complete accounts/promotion/bindings, encrypted relay/durable storage, two-gate
+enrollment, revocation/rotation/finalization and full recovery, product conformance, whole-profile residue,
+platform coverage, production root distribution/restore and independent review remain open. The actual
+second pre-encryption device adopts the first device's workspace with fresh custody/store/counters/keys
+and no import or merge of its old writing; its cleanup stays separate. The host VM stays stopped;
+host/policy research is not next-up. L-2's historical clean ref `d24732b` has no further service work to
+integrate. This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 
 ---
 

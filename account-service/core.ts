@@ -1,3 +1,4 @@
+import { parsePendingState, type PendingState } from '../account-protocol/preparation.ts';
 import {
   parseDraft,
   rootCommitment,
@@ -452,6 +453,59 @@ export class AccountCore {
         .run(digest, JSON.stringify(result), ceremony!.id);
       return result;
     });
+  }
+
+  /** Current state only; old recovery receipts cannot authorize new preparation. Abandonment
+   * permanently cancels this pending registration, retaining its audit/proof rows. */
+  pendingPreparation(
+    input: unknown,
+    abandon = false,
+  ): { ok: true; state: PendingState } | { ok: false; refusal: Refusal } {
+    if (!object(input) || !fields(input, ['retryKey', 'accountId'])) return refuse('malformed');
+    try {
+      retryHash(input.retryKey);
+      bytes(input.accountId, 32, 32);
+    } catch {
+      return refuse('malformed');
+    }
+    return this.#transaction(abandon ? 'abandon-preparation' : 'inspect-preparation', () => {
+      const attempt = this.#attempt(input.retryKey);
+      if (!attempt || attempt.mode !== 'register' || attempt.account_id !== input.accountId)
+        return refuse('unknown-attempt');
+      if (
+        this.#db.prepare('SELECT state FROM accounts WHERE id=?').get(attempt.account_id)?.state !==
+        'pending'
+      )
+        return refuse('account-not-pending');
+      const row = this.#recovery(attempt);
+      if (!abandon && (!this.#pendingCredential(attempt) || row?.state !== 'done' || !row.result))
+        return refuse('account-not-pending');
+      const receipt = row?.result ? JSON.parse(row.result) : null;
+      const state = parsePendingState({
+        v: 1,
+        accountId: attempt.account_id,
+        attemptId: attempt.id,
+        status: abandon ? 'abandoned' : 'eligible',
+        draft: row ? JSON.parse(row.draft) : null,
+        confirmation: receipt
+          ? {
+              recoveryId: receipt.recoveryId,
+              draftDigest: receipt.draftDigest,
+              recoveryStateDigest: receipt.recoveryStateDigest,
+              receiptId: receipt.receiptId,
+            }
+          : null,
+      });
+      if (abandon) {
+        this.#db.prepare("UPDATE attempts SET state='cancelled' WHERE id=?").run(attempt.id);
+        if (row) this.#db.prepare("UPDATE recovery SET state='cancelled' WHERE id=?").run(row.id);
+      }
+      return { ok: true, state };
+    });
+  }
+
+  abandonPreparation(input: unknown) {
+    return this.pendingPreparation(input, true);
   }
 
   #recovery(attempt: Attempt): RecoveryRow | undefined {

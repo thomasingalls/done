@@ -1,0 +1,14 @@
+[WebServer] (node:74058) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 5 tests using 1 worker
+
+(node:74065) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/storage-compatibility/compatibility.spec.ts:30:1 › two live writers block an upgrade; a queued opener rechecks before loading keys (1.7s)
+  ✓  2 test/storage-compatibility/compatibility.spec.ts:85:1 › renderer death after intent commits leaves cold open and exclusive cleanup blocked (1.0s)
+  ✓  3 test/storage-compatibility/compatibility.spec.ts:119:1 › a cancelled blocked IndexedDB probe retains its permit until native settlement (348ms)
+  ✓  4 test/storage-compatibility/compatibility.spec.ts:147:1 › a future document schema held only in the journal refuses without rewriting carriers (545ms)
+  ✓  5 test/storage-compatibility/compatibility.spec.ts:167:1 › unrelated slots remain usable and omitting the marker check actually admits an incompatible writer (418ms)
+
+  5 passed (4.9s)

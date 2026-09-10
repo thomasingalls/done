@@ -69,7 +69,7 @@ export const promotionLineage = (
     ),
   );
 
-export async function inspectLocalPromotion(options: {
+export interface PromotionInspectionOptions {
   slotId: string;
   code: string;
   accountId: string;
@@ -77,82 +77,93 @@ export async function inspectLocalPromotion(options: {
   pin: AuthorityPin;
   proveAuthority(input: { nonce: string }): Promise<unknown>;
   signal?: AbortSignal;
-}): Promise<PromotionPreparation> {
+}
+export async function inspectLocalPromotion(
+  options: PromotionInspectionOptions,
+): Promise<PromotionPreparation> {
+  // Capture before the lock request yields; the acquired permit must match the inspected source.
+  const owned = { ...options, pin: parseAuthorityPin(options.pin) };
+  return withExclusiveSlot(
+    owned.slotId,
+    (task) => inspectPromotionUnderPermit(task, owned),
+    owned.signal ? { signal: owned.signal } : {},
+  );
+}
+/** Internal: caller owns exclusive acquisition; promotionCode permits only an authenticated known marker. */
+export async function inspectPromotionUnderPermit(
+  task: SessionTask,
+  options: PromotionInspectionOptions,
+  promotionCode?: string,
+): Promise<PromotionPreparation> {
   const slotId = options.slotId,
     code = options.code,
     accountId = options.accountId,
     pin = parseAuthorityPin(options.pin),
-    prove = options.proveAuthority,
-    signal = options.signal;
+    prove = options.proveAuthority;
   if (!/^[A-Za-z0-9_-]{42}[AEIMQUYcgkosw048]$/.test(accountId))
     throw Error('Malformed pending account');
-  return withExclusiveSlot(
-    slotId,
-    async (task) => {
-      const claim = await readLocalClaim(task, slotId);
-      if (!claim || claim.stage !== 'ready')
-        stopStartup('identity-required', 'promotion-needs-ready-local');
-      await verifyLocalClaim(task, claim, code);
-      const census = await localCensus(task, claim);
-      if (!census.slot || census.record.state !== 'protected' || census.content?.state !== 'ready')
-        stopStartup('repair-required', 'promotion-local-incomplete');
-      const scope = claimScope(claim),
-        name = await task.wait(() => deriveStoreName(scope.principalId, scope.workspaceId));
-      await noAdmissionRows(task, name);
-      let recovered: PromotionPreparation['recovered'] | undefined;
-      await withRecoveryUnderPermit(
-        task,
-        { ...scope, resolvePrincipal: () => scope.principalId },
-        code,
-        async (recovery) => {
-          const doc = new Y.Doc({ gc: false });
-          try {
-            task.step(() => replayRecovery(doc, recovery));
-            if (hasPendingUpdates(doc))
-              stopStartup('repair-required', 'promotion-local-pending-dependencies');
-            recovered = Object.freeze({
-              records: recovery.records.length,
-              journalEntries: recovery.journal.length,
-            });
-          } finally {
-            doc.destroy();
-          }
-        },
-      );
-      // A wrong device factor or unreadable local state never starts a network request.
-      const nonce = hex(random(32));
-      const proof = await task.wait(() => prove({ nonce }));
-      const verified = await task.wait(() => verifyPinnedAuthority(pin, nonce, proof));
-      // Reread and authenticate the Local identity/routing after the network wait.
-      const current = await readLocalClaim(task, slotId);
-      if (!current || hex(current.mac) !== hex(claim.mac))
-        stopStartup('repair-required', 'promotion-claim-changed');
-      await verifyLocalClaim(task, current, code);
-      const finalCensus = await localCensus(task, current);
-      await noAdmissionRows(task, name);
-      if (hex(finalCensus.record.mac) !== hex(census.record.mac))
-        stopStartup('repair-required', 'promotion-custody-changed');
-      const source = Object.freeze({
-        ...scope,
-        storeId: census.record.store_id,
-        rootId: census.record.root_id,
-        genesisIntentId: claim.initial.creation_intent!.id,
-        generation: census.record.envelope!.gen,
-      });
-      const context = Object.freeze({
-        principalId: source.principalId,
-        workspaceId: source.workspaceId,
-        lineageId: await task.wait(() => promotionLineage(verified, accountId, source)),
-        authRoot: verified.authRoot,
-      });
-      return Object.freeze({
-        kind: 'promotion-preflight',
-        source,
-        pin: verified,
-        context,
-        recovered: recovered!,
-      });
+
+  const claim = await readLocalClaim(task, slotId);
+  if (!claim || claim.stage !== 'ready')
+    stopStartup('identity-required', 'promotion-needs-ready-local');
+  await verifyLocalClaim(task, claim, code);
+  const census = await localCensus(task, claim, promotionCode);
+  if (!census.slot || census.record.state !== 'protected' || census.content?.state !== 'ready')
+    stopStartup('repair-required', 'promotion-local-incomplete');
+  const scope = claimScope(claim),
+    name = await task.wait(() => deriveStoreName(scope.principalId, scope.workspaceId));
+  await noAdmissionRows(task, name);
+  let recovered: PromotionPreparation['recovered'] | undefined;
+  await withRecoveryUnderPermit(
+    task,
+    { ...scope, resolvePrincipal: () => scope.principalId },
+    code,
+    async (recovery) => {
+      const doc = new Y.Doc({ gc: false });
+      try {
+        task.step(() => replayRecovery(doc, recovery));
+        if (hasPendingUpdates(doc))
+          stopStartup('repair-required', 'promotion-local-pending-dependencies');
+        recovered = Object.freeze({
+          records: recovery.records.length,
+          journalEntries: recovery.journal.length,
+        });
+      } finally {
+        doc.destroy();
+      }
     },
-    signal ? { signal } : {},
   );
+  // A wrong device factor or unreadable local state never starts a network request.
+  const nonce = hex(random(32));
+  const proof = await task.wait(() => prove({ nonce }));
+  const verified = await task.wait(() => verifyPinnedAuthority(pin, nonce, proof));
+  // Reread and authenticate the Local identity/routing after the network wait.
+  const current = await readLocalClaim(task, slotId);
+  if (!current || hex(current.mac) !== hex(claim.mac))
+    stopStartup('repair-required', 'promotion-claim-changed');
+  await verifyLocalClaim(task, current, code);
+  const finalCensus = await localCensus(task, current, promotionCode);
+  await noAdmissionRows(task, name);
+  if (hex(finalCensus.record.mac) !== hex(census.record.mac))
+    stopStartup('repair-required', 'promotion-custody-changed');
+  const source = Object.freeze({
+    ...scope,
+    storeId: census.record.store_id,
+    rootId: census.record.root_id,
+    genesisIntentId: claim.initial.creation_intent!.id,
+    generation: census.record.envelope!.gen,
+  });
+  const context = Object.freeze({
+    principalId: source.principalId,
+    workspaceId: source.workspaceId,
+    lineageId: await task.wait(() => promotionLineage(verified, accountId, source)),
+    authRoot: verified.authRoot,
+  });
+  return Object.freeze({
+    kind: 'promotion-preflight',
+    source,
+    pin: verified,
+    context,
+    recovered: recovered!,
+  });
 }

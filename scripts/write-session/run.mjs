@@ -46,7 +46,11 @@ const files = (paths) =>
   Object.fromEntries(paths.map((path) => [path, hash(readFileSync(join(root, path)))]));
 const recordedFiles = [
   sourcePath,
-  'src/crdt/storageCompatibility.ts',
+  ...['src/crdt', 'account-protocol'].flatMap((dir) =>
+    readdirSync(join(root, dir))
+      .filter((n) => n.endsWith('.ts'))
+      .map((n) => dir + '/' + n),
+  ),
   'scripts/storage-conformance/report.mjs',
   'docs/storage-contract.md',
   'pnpm-lock.yaml',
@@ -105,7 +109,12 @@ async function run(mutation = null) {
     root,
     logLevel: 'error',
     cacheDir: join(folder, 'vite-cache'),
-    resolve: { alias: { '@write-session': target } },
+    resolve: {
+      alias: {
+        '@write-session': target,
+        './promotionRecord': join(root, 'src/crdt/promotionRecord.ts'),
+      },
+    },
     optimizeDeps: { noDiscovery: true },
     server: { host: '127.0.0.1', port: 5175, strictPort: true, fs: { allow: [root] } },
   });

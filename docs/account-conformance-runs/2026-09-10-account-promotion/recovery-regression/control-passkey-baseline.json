@@ -1,0 +1,40 @@
+{
+  "proof": {
+    "retryKey": "dxq_ITOo2YmFBjooNBn-1jC9Fa8O1bcdHJlT9krMGEo",
+    "recoveryId": "ft_ENaKu3hzoL1XgZjPORPpnDYEw1zwh9_f9lcmEW_A",
+    "response": {},
+    "recoveryProof": "79e597309aa7479baa9de5292449be6466fd389a167ee279377492c08566886828319b1d1b4d198d68bb1c8ab3cc5684dcb8f6b2108e34ee2d7526aed9d15801"
+  },
+  "result": {
+    "ok": false,
+    "refusal": "invalid-proof"
+  },
+  "before": [
+    {
+      "account_id": "xKx6TQT8KxbDhdtRj8-yMW9V-rgmDUI98nbXuXFmiOo",
+      "attempt_id": "kbrdLAIWSxkxjhJoZKT7dXVtd8vIQ37TgrDGuFtV4W8",
+      "id": "ft_ENaKu3hzoL1XgZjPORPpnDYEw1zwh9_f9lcmEW_A",
+      "draft": "{\"authRoot\":\"abababababababababababababababababababababababababababababababab\",\"bootstrapSigner\":\"e195bb9265a7f6dccb50075886910588166ef8ad59f32bd9a26bde5f94c94ed5\",\"envelope\":{\"ct\":\"f94214fa75aa9a58d1e44d3d1c1645d1f77eea00f361411a0357480a5bed02f24b0ea67a2291b6f7150d8e088e80f932d959c3deab4ef540c9b273ed1297c2198982ff612f6df8a21577f4fdd9e578b22db44409b0423d0539177136d6a03499ac1e33ba2be3873f91e868b28f397ed3\",\"nonce\":\"ca72c7b6365f7255d129bc36\",\"salt\":\"e3928c6ac1658a8b0bffb92bd5dc31c1\",\"v\":1},\"lineageId\":\"never-admitted\",\"principalId\":\"local-principal\",\"rPub\":\"d663626de6a447492b70dda6f5fe0e4790401f4d3f9d4ed3b81094eee26f8d64\",\"rootCommitment\":\"7344781dad63a31c4e34c75a0aacf90aae9dcd9fa90db3dfa15a21dc9804a441\",\"v\":1,\"workspaceId\":\"local-workspace\"}",
+      "digest": "bf4b808b055a5cfd800514efa64ff05bccd9b4a9d230deb24c92cbdbe9bad631",
+      "challenge": "kV-GrMapAyXmcwWolvP9wkR06QImKlb1k7Fntpo4EVM",
+      "expires": 1789056186226,
+      "state": "open",
+      "proof_hash": null,
+      "result": null
+    }
+  ],
+  "after": [
+    {
+      "account_id": "xKx6TQT8KxbDhdtRj8-yMW9V-rgmDUI98nbXuXFmiOo",
+      "attempt_id": "kbrdLAIWSxkxjhJoZKT7dXVtd8vIQ37TgrDGuFtV4W8",
+      "id": "ft_ENaKu3hzoL1XgZjPORPpnDYEw1zwh9_f9lcmEW_A",
+      "draft": "{\"authRoot\":\"abababababababababababababababababababababababababababababababab\",\"bootstrapSigner\":\"e195bb9265a7f6dccb50075886910588166ef8ad59f32bd9a26bde5f94c94ed5\",\"envelope\":{\"ct\":\"f94214fa75aa9a58d1e44d3d1c1645d1f77eea00f361411a0357480a5bed02f24b0ea67a2291b6f7150d8e088e80f932d959c3deab4ef540c9b273ed1297c2198982ff612f6df8a21577f4fdd9e578b22db44409b0423d0539177136d6a03499ac1e33ba2be3873f91e868b28f397ed3\",\"nonce\":\"ca72c7b6365f7255d129bc36\",\"salt\":\"e3928c6ac1658a8b0bffb92bd5dc31c1\",\"v\":1},\"lineageId\":\"never-admitted\",\"principalId\":\"local-principal\",\"rPub\":\"d663626de6a447492b70dda6f5fe0e4790401f4d3f9d4ed3b81094eee26f8d64\",\"rootCommitment\":\"7344781dad63a31c4e34c75a0aacf90aae9dcd9fa90db3dfa15a21dc9804a441\",\"v\":1,\"workspaceId\":\"local-workspace\"}",
+      "digest": "bf4b808b055a5cfd800514efa64ff05bccd9b4a9d230deb24c92cbdbe9bad631",
+      "challenge": "kV-GrMapAyXmcwWolvP9wkR06QImKlb1k7Fntpo4EVM",
+      "expires": 1789056186226,
+      "state": "open",
+      "proof_hash": null,
+      "result": null
+    }
+  ]
+}

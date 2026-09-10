@@ -18,6 +18,8 @@ async function mutation(t, file, from, to) {
     'account-service/webauthn.ts',
     'account-service/recovery.ts',
     'account-protocol/recovery.ts',
+    'account-protocol/authority.ts',
+    'account-protocol/preparation.ts',
     'src/account/recovery.ts',
   ]) {
     let s = readFileSync(path, 'utf8');

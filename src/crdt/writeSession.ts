@@ -90,6 +90,7 @@ async function acquire(
   slotId: string,
   mode: LockMode,
   options: WriteSessionOptions,
+  compatibility = checkStorageCompatibility,
 ): Promise<WriteSession> {
   const name = slotPermitName(slotId);
   let locks: LockManager;
@@ -241,7 +242,7 @@ async function acquire(
       granted = true;
       try {
         await task(async (scope) => {
-          await checkStorageCompatibility(scope, slotId);
+          await compatibility(scope, slotId);
           scope.step(() => {});
           await initialize?.(scope);
         }, true);
@@ -294,6 +295,30 @@ export const withExclusiveSlot = async <T>(
   options: WriteSessionOptions = {},
 ): Promise<T> => {
   const session = await acquire(slotId, 'exclusive', options);
+  try {
+    return await session.run(operation);
+  } finally {
+    await session.close();
+  }
+};
+
+/** Private promotion owner: exclusive acquisition authenticates any retained interlock with the
+ * mandatory factor. Ordinary shared/exclusive callers retain the refusal-only compatibility gate. */
+export const withPromotionSlot = async <T>(
+  slotId: string,
+  code: string,
+  operation: (task: SessionTask) => Promise<T>,
+  signal?: AbortSignal,
+): Promise<T> => {
+  const session = await acquire(
+    slotId,
+    'exclusive',
+    signal ? { signal } : {},
+    async (task, slot) => {
+      const { checkPromotionCompatibility } = await task.wait(() => import('./promotionRecord'));
+      await checkPromotionCompatibility(task, slot, code);
+    },
+  );
   try {
     return await session.run(operation);
   } finally {

@@ -1552,3 +1552,35 @@ recipients, recovery wraps and checkpoint semantics before activating an Account
 second pre-encryption device will adopt this workspace later without importing its old writing. The
 personal preview and relay remain stopped; the origin, predecessor build and verified release remain
 unchanged. This outcome precedes the L-1 rewrite; L-2 remains byte-for-byte unchanged.
+
+
+## 2026-09-10 — Private Local promotion intent and prepared device custody
+
+Signed `e96107b` commits the preceding root/preflight phase. The next bounded component now retains a
+factor-authenticated promotion interlock, durably reserves direct-root seal invocations, and prepares
+fresh X25519/Ed25519 device credentials without replacing the Local claim, original credentials,
+content-key envelope, journal, store, generation or index. Interrupted reservations consume new budget
+on retry; a committed preparation cold-opens the exact winning credentials. Ordinary Local readers
+remain excluded until explicit abandonment or a later verified account handoff.
+
+The private service signs fixed-purpose current pending-account observations, requiring a live confirmed
+registration/recovery. Atomic idempotent abandonment cancels that registration while retaining audit and
+historical receipt rows. Local abandonment removes only the authenticated marker and its prepared-key
+references, preserving writing and consumed budgets. Recovery owner reset requires a pinned service
+abandonment and authenticated Local census; it keeps the recovery capability while any promotion or
+unknown Local reference remains. There is still no activation, ordinary account UI or sync.
+
+[Contract](./account-promotion.md) and [preserved evidence](./account-conformance-runs/2026-09-10-account-promotion.md):
+18 new tests, 120 generated service and 45 generated native histories, two observed acceptance controls,
+SQLite SIGKILL and renderer-death/transaction-abort boundaries pass. All 69 account/authority/recovery
+regressions, 13 writer-lifetime cases, 17 Local-genesis cases, five compatibility cases and 825 existing
+unit tests pass. TypeScript, focused static checks, isolated app build and 13 final gates pass; budget
+328.0/350.0 kB. Crash-wait and copied-fixture dependency problems were corrected in the harness.
+A directed native reproduction caught and fixed a preflight refactor race: caller options are again
+copied before lock acquisition, so the inspected slot cannot diverge from its acquired permit. No
+production counterexample from the generated histories or whole-protocol debt payment is claimed.
+
+The personal preview/relay remain off; original `dist/` and `.dev/releases/17d87c2/app` stay intact. Next
+is journal-inclusive genesis checkpoint and exact device/recovery wraps, followed by current-state
+service admission and verified index handoff. This outcome was appended before replacing L-1 progress;
+L-2 remains byte-for-byte unchanged.

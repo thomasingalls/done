@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync, readdirSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { AccountCore } from '../../account-service/core.ts';
@@ -14,10 +14,11 @@ async function mutated(t, edits) {
   t.after(() => rmSync(dir, { recursive: true, force: true }));
   mkdirSync(join(dir, 'account-service'));
   mkdirSync(join(dir, 'account-protocol'));
-  writeFileSync(
-    join(dir, 'account-protocol/recovery.ts'),
-    readFileSync('account-protocol/recovery.ts'),
-  );
+  for (const name of readdirSync('account-protocol').filter((n) => n.endsWith('.ts')))
+    writeFileSync(
+      join(dir, 'account-protocol', name),
+      readFileSync(join('account-protocol', name)),
+    );
   for (const file of ['protocol.ts', 'webauthn.ts', 'core.ts', 'recovery.ts']) {
     let source = readFileSync(resolve('account-service', file), 'utf8');
     for (const [target, from, to] of edits)

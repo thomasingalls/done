@@ -303,3 +303,24 @@ test(
     assert.equal(count, 40);
   },
 );
+
+test(
+  'preflight snapshots caller input before queued acquisition',
+  { timeout: 20000 },
+  async (t) => {
+    const { page } = await native(t),
+      a = { ...(await local(page, 'snapshot-a')), accountId: accountId() },
+      b = { ...(await local(page, 'snapshot-b')), accountId: accountId() };
+    const result = await page.evaluate(
+      async ({ a, b }) => {
+        const options = { ...a, pin: structuredClone(pin), proveAuthority: prove };
+        const pending = Harness.inspectLocalPromotion(options);
+        Object.assign(options, b);
+        return pending;
+      },
+      { a, b },
+    );
+    assert.equal(result.source.slotId, a.slotId);
+    assert.equal(result.source.principalId, a.scope.principalId);
+  },
+);

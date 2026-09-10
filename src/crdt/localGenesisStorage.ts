@@ -1,3 +1,4 @@
+import { storageUpgradeKey } from './storageCompatibility';
 /** Only the Local genesis owner calls these operations, under a slot permit. */
 import { contentTransaction } from './contentDatabase';
 import { parseSlot, contentCensus } from './startupClassification';
@@ -83,7 +84,13 @@ export const matchLocalRoute = async (
   )
     stopStartup('repair-required', 'index-differs-from-local-claim');
 };
-export const localCensus = async (task: SessionTask, claim: LocalClaim) => {
+export const localCensus = async (task: SessionTask, claim: LocalClaim, promotionCode?: string) => {
+  const promotion =
+    promotionCode === undefined
+      ? null
+      : await (
+          await task.wait(() => import('./promotionRecord'))
+        ).readPromotion(task, claim.initial.slot_id, promotionCode);
   const scope = claimScope(claim),
     rows = (await slotCustodyRows(task, scope.slotId)) ?? [];
   const key = recordKey(scope),
@@ -93,6 +100,8 @@ export const localCensus = async (task: SessionTask, claim: LocalClaim) => {
     witnessPresent = false;
   for (const row of rows) {
     if (indexedDB.cmp(row.key, localClaimKey(scope.slotId)) === 0) continue;
+    if (promotion?.marker && indexedDB.cmp(row.key, storageUpgradeKey(scope.slotId)) === 0)
+      continue;
     if (indexedDB.cmp(row.key, key) === 0) custody = row.value;
     else if (indexedDB.cmp(row.key, [...key, 'content-v1']) === 0) {
       witness = row.value;

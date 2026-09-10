@@ -1,0 +1,179 @@
+{
+  "scope": "Synthetic test account only",
+  "proof": {
+    "retryKey": "C_rky0EBEshKDk0ZKmW0j_rrNumLl512ZEohSQtF664",
+    "ceremonyId": "Incl4okIMOX4a3gkZQFELu1J6rYcq4ejk4ZhyWA-AQM",
+    "operation": "authenticate",
+    "response": {
+      "id": "e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE",
+      "rawId": "e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE",
+      "type": "public-key",
+      "clientExtensionResults": {},
+      "response": {
+        "clientDataJSON": "ewogInR5cGUiOiAid2ViYXV0aG4uZ2V0IiwKICJjaGFsbGVuZ2UiOiAiREs2ZGJmUzJIelhxZF9uR3loVC1LNDZGelVSSUVlRWxVZms3d0FpS0xrMCIsCiAib3JpZ2luIjogImh0dHA6Ly9sb2NhbGhvc3Q6NDk5OSIsCiAiY3Jvc3NPcmlnaW4iOiBmYWxzZQp9",
+        "authenticatorData": "SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFAAAAAA",
+        "signature": "NJVWtGkWfjbb-v_7a2j91dR8iHOGCkzWWL9C4Xkcf0kjGJxjjAuuUg4fjZeZ_dxB-kTdCpCWZKqVPaXjIlfGAw",
+        "userHandle": "e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0",
+        "publicKey": "pAEBAycgBiFYIFkedwb6nQxh6F94KzdNLCkR-baC92Y9X4-sFaSHXBDj"
+      }
+    }
+  },
+  "result": {
+    "ok": true,
+    "stage": "account-proof",
+    "attemptId": "lZ9R-pn2dTCSQH3ve4N54liwU-wLqJImKeYQ1nvV4WY",
+    "accountId": "e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0",
+    "credentialId": "e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE",
+    "receiptId": "hiNrL0Ya6aEhBEFQOqteZFG8Fcu842Nt-VKSK5M7ajg"
+  },
+  "before": {
+    "accounts": [
+      {
+        "id": "e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0",
+        "state": "active"
+      }
+    ],
+    "attempts": [
+      {
+        "id": "-Uudhsrx4IldBjg2JzPCUW33pSjrg6N50ak2FNwxPPw",
+        "retry_hash": "3b3c73394cd853c8e45b96551f1284c7506ddabf3ba42a8c4edf749d0382153d",
+        "mode": "register",
+        "state": "done",
+        "account_id": "e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0",
+        "current_id": "ZJvYzn66gMCXPSc874uHXBf7EFxyRyKQdP6GgZ7alwo",
+        "result": "{\"ok\":true,\"stage\":\"credential-confirmed\",\"attemptId\":\"-Uudhsrx4IldBjg2JzPCUW33pSjrg6N50ak2FNwxPPw\",\"accountId\":\"e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0\",\"credentialId\":\"e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE\",\"receiptId\":\"iyIW05Umf0m9mg1ilgWKUALuooLPNZ6SVXkTyzPRkLk\"}"
+      },
+      {
+        "id": "lZ9R-pn2dTCSQH3ve4N54liwU-wLqJImKeYQ1nvV4WY",
+        "retry_hash": "983b1706e66f8abcf67f6853643129dd6f344dda405b77195270f1c077d95195",
+        "mode": "authenticate",
+        "state": "open",
+        "account_id": null,
+        "current_id": "Incl4okIMOX4a3gkZQFELu1J6rYcq4ejk4ZhyWA-AQM",
+        "result": null
+      }
+    ],
+    "credentials": [
+      {
+        "id": "e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE",
+        "account_id": "e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0",
+        "public_key": {
+          "base64url": "pAEBAycgBiFYIGEle06V0v0RkM60oIQPOgosHGIwjuwDrlBSV52f3vl-"
+        },
+        "spki": "302a300506032b657003210061257b4e95d2fd1190ceb4a0840f3a0a2c1c62308eec03ae5052579d9fdef97e",
+        "state": "confirmed",
+        "counter": 0
+      }
+    ],
+    "ceremonies": [
+      {
+        "id": "Mlnlo_J1LRpZwY4nK-l053N7dV-DbRMouajm-aC0erI",
+        "attempt_id": "-Uudhsrx4IldBjg2JzPCUW33pSjrg6N50ak2FNwxPPw",
+        "operation": "register",
+        "challenge": "DZC7hp6uDFyWrJwGtasRr8-B1eu2lkvQXZbI96e0iR4",
+        "expires": 1789056186195,
+        "options": "{\"challenge\":\"DZC7hp6uDFyWrJwGtasRr8-B1eu2lkvQXZbI96e0iR4\",\"rp\":{\"id\":\"localhost\",\"name\":\"done\"},\"user\":{\"id\":\"e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0\",\"name\":\"Pending e83hSPBv\",\"displayName\":\"Pending done account\"},\"pubKeyCredParams\":[{\"type\":\"public-key\",\"alg\":-8},{\"type\":\"public-key\",\"alg\":-7}],\"timeout\":600000,\"attestation\":\"none\",\"authenticatorSelection\":{\"residentKey\":\"required\",\"requireResidentKey\":true,\"userVerification\":\"required\"}}",
+        "credential_id": null,
+        "proof_hash": "b135f2a290d471462b00588c469c983c7fee034371595f93f7293f19cb453f6d",
+        "result": "{\"ok\":true,\"stage\":\"ceremony\",\"operation\":\"confirm-registration\",\"attemptId\":\"-Uudhsrx4IldBjg2JzPCUW33pSjrg6N50ak2FNwxPPw\",\"ceremonyId\":\"ZJvYzn66gMCXPSc874uHXBf7EFxyRyKQdP6GgZ7alwo\",\"expiresAt\":1789056186197,\"options\":{\"challenge\":\"pcsdtMHQXKdk0ww_e2CoB6oIR8SRxQFcoHdLDtkT3bY\",\"rpId\":\"localhost\",\"timeout\":600000,\"userVerification\":\"required\",\"allowCredentials\":[{\"type\":\"public-key\",\"id\":\"e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE\"}]}}"
+      },
+      {
+        "id": "ZJvYzn66gMCXPSc874uHXBf7EFxyRyKQdP6GgZ7alwo",
+        "attempt_id": "-Uudhsrx4IldBjg2JzPCUW33pSjrg6N50ak2FNwxPPw",
+        "operation": "confirm-registration",
+        "challenge": "pcsdtMHQXKdk0ww_e2CoB6oIR8SRxQFcoHdLDtkT3bY",
+        "expires": 1789056186197,
+        "options": "{\"challenge\":\"pcsdtMHQXKdk0ww_e2CoB6oIR8SRxQFcoHdLDtkT3bY\",\"rpId\":\"localhost\",\"timeout\":600000,\"userVerification\":\"required\",\"allowCredentials\":[{\"type\":\"public-key\",\"id\":\"e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE\"}]}",
+        "credential_id": "e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE",
+        "proof_hash": "528265c6bc33f7411e276fc4548f55d463145b95e2b6f246c045f457686bafb7",
+        "result": "{\"ok\":true,\"stage\":\"credential-confirmed\",\"attemptId\":\"-Uudhsrx4IldBjg2JzPCUW33pSjrg6N50ak2FNwxPPw\",\"accountId\":\"e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0\",\"credentialId\":\"e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE\",\"receiptId\":\"iyIW05Umf0m9mg1ilgWKUALuooLPNZ6SVXkTyzPRkLk\"}"
+      },
+      {
+        "id": "Incl4okIMOX4a3gkZQFELu1J6rYcq4ejk4ZhyWA-AQM",
+        "attempt_id": "lZ9R-pn2dTCSQH3ve4N54liwU-wLqJImKeYQ1nvV4WY",
+        "operation": "authenticate",
+        "challenge": "DK6dbfS2HzXqd_nGyhT-K46FzURIEeElUfk7wAiKLk0",
+        "expires": 1789056186200,
+        "options": "{\"challenge\":\"DK6dbfS2HzXqd_nGyhT-K46FzURIEeElUfk7wAiKLk0\",\"rpId\":\"localhost\",\"timeout\":600000,\"userVerification\":\"required\"}",
+        "credential_id": null,
+        "proof_hash": null,
+        "result": null
+      }
+    ]
+  },
+  "after": {
+    "accounts": [
+      {
+        "id": "e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0",
+        "state": "active"
+      }
+    ],
+    "attempts": [
+      {
+        "id": "-Uudhsrx4IldBjg2JzPCUW33pSjrg6N50ak2FNwxPPw",
+        "retry_hash": "3b3c73394cd853c8e45b96551f1284c7506ddabf3ba42a8c4edf749d0382153d",
+        "mode": "register",
+        "state": "done",
+        "account_id": "e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0",
+        "current_id": "ZJvYzn66gMCXPSc874uHXBf7EFxyRyKQdP6GgZ7alwo",
+        "result": "{\"ok\":true,\"stage\":\"credential-confirmed\",\"attemptId\":\"-Uudhsrx4IldBjg2JzPCUW33pSjrg6N50ak2FNwxPPw\",\"accountId\":\"e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0\",\"credentialId\":\"e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE\",\"receiptId\":\"iyIW05Umf0m9mg1ilgWKUALuooLPNZ6SVXkTyzPRkLk\"}"
+      },
+      {
+        "id": "lZ9R-pn2dTCSQH3ve4N54liwU-wLqJImKeYQ1nvV4WY",
+        "retry_hash": "983b1706e66f8abcf67f6853643129dd6f344dda405b77195270f1c077d95195",
+        "mode": "authenticate",
+        "state": "done",
+        "account_id": "e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0",
+        "current_id": "Incl4okIMOX4a3gkZQFELu1J6rYcq4ejk4ZhyWA-AQM",
+        "result": "{\"ok\":true,\"stage\":\"account-proof\",\"attemptId\":\"lZ9R-pn2dTCSQH3ve4N54liwU-wLqJImKeYQ1nvV4WY\",\"accountId\":\"e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0\",\"credentialId\":\"e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE\",\"receiptId\":\"hiNrL0Ya6aEhBEFQOqteZFG8Fcu842Nt-VKSK5M7ajg\"}"
+      }
+    ],
+    "credentials": [
+      {
+        "id": "e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE",
+        "account_id": "e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0",
+        "public_key": {
+          "base64url": "pAEBAycgBiFYIGEle06V0v0RkM60oIQPOgosHGIwjuwDrlBSV52f3vl-"
+        },
+        "spki": "302a300506032b657003210061257b4e95d2fd1190ceb4a0840f3a0a2c1c62308eec03ae5052579d9fdef97e",
+        "state": "confirmed",
+        "counter": 0
+      }
+    ],
+    "ceremonies": [
+      {
+        "id": "Mlnlo_J1LRpZwY4nK-l053N7dV-DbRMouajm-aC0erI",
+        "attempt_id": "-Uudhsrx4IldBjg2JzPCUW33pSjrg6N50ak2FNwxPPw",
+        "operation": "register",
+        "challenge": "DZC7hp6uDFyWrJwGtasRr8-B1eu2lkvQXZbI96e0iR4",
+        "expires": 1789056186195,
+        "options": "{\"challenge\":\"DZC7hp6uDFyWrJwGtasRr8-B1eu2lkvQXZbI96e0iR4\",\"rp\":{\"id\":\"localhost\",\"name\":\"done\"},\"user\":{\"id\":\"e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0\",\"name\":\"Pending e83hSPBv\",\"displayName\":\"Pending done account\"},\"pubKeyCredParams\":[{\"type\":\"public-key\",\"alg\":-8},{\"type\":\"public-key\",\"alg\":-7}],\"timeout\":600000,\"attestation\":\"none\",\"authenticatorSelection\":{\"residentKey\":\"required\",\"requireResidentKey\":true,\"userVerification\":\"required\"}}",
+        "credential_id": null,
+        "proof_hash": "b135f2a290d471462b00588c469c983c7fee034371595f93f7293f19cb453f6d",
+        "result": "{\"ok\":true,\"stage\":\"ceremony\",\"operation\":\"confirm-registration\",\"attemptId\":\"-Uudhsrx4IldBjg2JzPCUW33pSjrg6N50ak2FNwxPPw\",\"ceremonyId\":\"ZJvYzn66gMCXPSc874uHXBf7EFxyRyKQdP6GgZ7alwo\",\"expiresAt\":1789056186197,\"options\":{\"challenge\":\"pcsdtMHQXKdk0ww_e2CoB6oIR8SRxQFcoHdLDtkT3bY\",\"rpId\":\"localhost\",\"timeout\":600000,\"userVerification\":\"required\",\"allowCredentials\":[{\"type\":\"public-key\",\"id\":\"e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE\"}]}}"
+      },
+      {
+        "id": "ZJvYzn66gMCXPSc874uHXBf7EFxyRyKQdP6GgZ7alwo",
+        "attempt_id": "-Uudhsrx4IldBjg2JzPCUW33pSjrg6N50ak2FNwxPPw",
+        "operation": "confirm-registration",
+        "challenge": "pcsdtMHQXKdk0ww_e2CoB6oIR8SRxQFcoHdLDtkT3bY",
+        "expires": 1789056186197,
+        "options": "{\"challenge\":\"pcsdtMHQXKdk0ww_e2CoB6oIR8SRxQFcoHdLDtkT3bY\",\"rpId\":\"localhost\",\"timeout\":600000,\"userVerification\":\"required\",\"allowCredentials\":[{\"type\":\"public-key\",\"id\":\"e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE\"}]}",
+        "credential_id": "e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE",
+        "proof_hash": "528265c6bc33f7411e276fc4548f55d463145b95e2b6f246c045f457686bafb7",
+        "result": "{\"ok\":true,\"stage\":\"credential-confirmed\",\"attemptId\":\"-Uudhsrx4IldBjg2JzPCUW33pSjrg6N50ak2FNwxPPw\",\"accountId\":\"e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0\",\"credentialId\":\"e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE\",\"receiptId\":\"iyIW05Umf0m9mg1ilgWKUALuooLPNZ6SVXkTyzPRkLk\"}"
+      },
+      {
+        "id": "Incl4okIMOX4a3gkZQFELu1J6rYcq4ejk4ZhyWA-AQM",
+        "attempt_id": "lZ9R-pn2dTCSQH3ve4N54liwU-wLqJImKeYQ1nvV4WY",
+        "operation": "authenticate",
+        "challenge": "DK6dbfS2HzXqd_nGyhT-K46FzURIEeElUfk7wAiKLk0",
+        "expires": 1789056186200,
+        "options": "{\"challenge\":\"DK6dbfS2HzXqd_nGyhT-K46FzURIEeElUfk7wAiKLk0\",\"rpId\":\"localhost\",\"timeout\":600000,\"userVerification\":\"required\"}",
+        "credential_id": null,
+        "proof_hash": "5682cefc745352953b4c21534d184e2630060f97e44a460435df879a005c9ebf",
+        "result": "{\"ok\":true,\"stage\":\"account-proof\",\"attemptId\":\"lZ9R-pn2dTCSQH3ve4N54liwU-wLqJImKeYQ1nvV4WY\",\"accountId\":\"e83hSPBvn7UA8BMobL6AgfiQO_u0XibjCGin0IFsY_0\",\"credentialId\":\"e9o_MuqmDj4nsNsGh-chIMOXikv0aZaAbOXoygMPDgE\",\"receiptId\":\"hiNrL0Ya6aEhBEFQOqteZFG8Fcu842Nt-VKSK5M7ajg\"}"
+      }
+    ]
+  }
+}

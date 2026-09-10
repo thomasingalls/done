@@ -1,0 +1,63 @@
+[
+  {
+    "args": [
+      "node_modules/typescript/bin/tsc",
+      "-b",
+      "--noEmit"
+    ],
+    "status": 0,
+    "output": ""
+  },
+  {
+    "args": [
+      "node_modules/oxlint/bin/oxlint",
+      "--react-plugin",
+      "account-protocol/preparation.ts",
+      "account-service/authority.ts",
+      "account-service/core.ts",
+      "account-service/private-server.ts",
+      "src/account/recoveryOwner.ts",
+      "src/crdt/contentDatabase.ts",
+      "src/crdt/localGenesisStorage.ts",
+      "src/crdt/promotionPreparation.ts",
+      "src/crdt/writeSession.ts",
+      "src/crdt/promotionRecord.ts",
+      "src/crdt/promotionOwner.ts",
+      "test/account-promotion",
+      "test/account-authority/native.test.mjs",
+      "test/account-core/controls.test.mjs",
+      "test/account-recovery/controls.test.mjs",
+      "scripts/account-promotion",
+      "scripts/write-session/run.mjs"
+    ],
+    "status": 0,
+    "output": ""
+  },
+  {
+    "args": [
+      "node_modules/oxfmt/bin/oxfmt",
+      "--check",
+      "account-protocol/preparation.ts",
+      "account-service/authority.ts",
+      "account-service/core.ts",
+      "account-service/private-server.ts",
+      "src/account/recoveryOwner.ts",
+      "src/crdt/contentDatabase.ts",
+      "src/crdt/localGenesisStorage.ts",
+      "src/crdt/promotionPreparation.ts",
+      "src/crdt/writeSession.ts",
+      "src/crdt/promotionRecord.ts",
+      "src/crdt/promotionOwner.ts",
+      "test/account-promotion",
+      "test/account-authority/native.test.mjs",
+      "test/account-core/controls.test.mjs",
+      "test/account-recovery/controls.test.mjs",
+      "scripts/account-promotion",
+      "scripts/write-session/run.mjs",
+      "package.json",
+      "docs/account-promotion.md"
+    ],
+    "status": 0,
+    "output": "Checking formatting...\n\nAll matched files use the correct format.\nFinished in 30ms on 21 files using 10 threads.\n"
+  }
+]

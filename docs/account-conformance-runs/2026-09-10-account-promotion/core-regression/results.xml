@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="replay control actually mints a second logical result when retirement guards are removed" time="0.161189" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/controls.test.mjs"/>
+	<testcase name="wrong-operation proof control is accepted only with expected-challenge verification removed" time="0.051887" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/controls.test.mjs"/>
+	<testcase name="substituted-key control grants proof only when a caller key replaces the retained verifier" time="0.047480" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/controls.test.mjs"/>
+	<testcase name="registration, confirmation, pending refusal and discoverable sign-in (-8)" time="0.055605" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/core.test.mjs"/>
+	<testcase name="registration policy negatives and attested-key identity (-8)" time="0.036560" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/core.test.mjs"/>
+	<testcase name="assertion policy, operation separation, substituted key and exact bytes (-8)" time="0.073015" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/core.test.mjs"/>
+	<testcase name="registration, confirmation, pending refusal and discoverable sign-in (-7)" time="0.017391" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/core.test.mjs"/>
+	<testcase name="registration policy negatives and attested-key identity (-7)" time="0.015826" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/core.test.mjs"/>
+	<testcase name="assertion policy, operation separation, substituted key and exact bytes (-7)" time="0.070559" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/core.test.mjs"/>
+	<testcase name="retry secret, operation binding, concurrent proof and conflicting replay" time="0.013930" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/core.test.mjs"/>
+	<testcase name="global credential uniqueness, key possession and account identity" time="0.012431" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/core.test.mjs"/>
+	<testcase name="expiry, cancellation and account change during verification recheck at commit" time="0.026787" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/core.test.mjs"/>
+	<testcase name="abort and lost response around every mutating ceremony commit" time="0.019251" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/core.test.mjs"/>
+	<testcase name="hostile wire input is refused and durable policy cannot be changed on restart" time="0.006673" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/core.test.mjs"/>
+	<testcase name="caller mutation cannot change the verified/committed request, and retained-key races refuse" time="0.010956" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/core.test.mjs"/>
+	<testcase name="a competing process completing confirmation between inspection and crypto returns the same receipt" time="0.361960" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/core.test.mjs"/>
+	<testcase name="native discoverable passkey registration/confirmation, restart/login and browser cancellation" time="1.160227" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/native.test.mjs"/>
+	<testcase name="private adapter refuses missing token, hostile origin/host and oversized input" time="0.071245" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/native.test.mjs"/>
+	<testcase name="160 generated durable ceremony histories against an independent acceptance ledger" time="5.377874" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/properties.test.mjs"/>
+	<testcase name="80 generated sign-in histories preserve one receipt through abort, lost response, replay and restart" time="2.887435" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/properties.test.mjs"/>
+	<testcase name="SIGKILL before-commit begin: cold process recovers one outcome" time="0.981397" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/restart.test.mjs"/>
+	<testcase name="SIGKILL after-commit begin: cold process recovers one outcome" time="1.140084" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/restart.test.mjs"/>
+	<testcase name="SIGKILL before-commit register: cold process recovers one outcome" time="1.096850" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/restart.test.mjs"/>
+	<testcase name="SIGKILL after-commit register: cold process recovers one outcome" time="0.877679" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/restart.test.mjs"/>
+	<testcase name="SIGKILL before-commit confirm-registration: cold process recovers one outcome" time="0.926639" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/restart.test.mjs"/>
+	<testcase name="SIGKILL after-commit confirm-registration: cold process recovers one outcome" time="0.768124" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/restart.test.mjs"/>
+	<testcase name="SIGKILL before-commit authenticate: cold process recovers one outcome" time="0.809145" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/restart.test.mjs"/>
+	<testcase name="SIGKILL after-commit authenticate: cold process recovers one outcome" time="0.821189" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/restart.test.mjs"/>
+	<testcase name="SIGKILL before-commit cancel: cold process recovers one outcome" time="0.567950" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/restart.test.mjs"/>
+	<testcase name="SIGKILL after-commit cancel: cold process recovers one outcome" time="0.698712" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-core/restart.test.mjs"/>
+	<!-- tests 30 -->
+	<!-- suites 0 -->
+	<!-- pass 30 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 9267.64125 -->
+</testsuites>

@@ -1,3 +1,5 @@
+import { closed, pendingMessage, type PendingProof } from '../account-protocol/preparation.ts';
+import type { AccountCore } from './core.ts';
 /** Explicit private service root owner. No general signing oracle, account activation or key export. */
 import { DatabaseSync } from 'node:sqlite';
 import {
@@ -217,6 +219,33 @@ export class PrivateAuthority {
       pin: { ...this.#pin },
       nonce,
       signature: sign(null, authorityMessage(this.#pin, nonce), this.#key).toString('hex'),
+    };
+  }
+  /** Resolve through the live service core; callers cannot supply the signed state. */
+  pending(
+    core: AccountCore,
+    input: unknown,
+    abandon = false,
+  ): PendingProof | { ok: false; refusal: string } {
+    if (!this.#key) throw Error('Authority closed');
+    const r = closed(input, ['retryKey', 'accountId', 'nonce']);
+    unhex(r['nonce'], 32);
+    const result = core.pendingPreparation(
+      { retryKey: r['retryKey'], accountId: r['accountId'] },
+      abandon,
+    );
+    if (!result.ok) return result;
+    if (result.state.draft && result.state.draft.authRoot !== this.#pin.authRoot)
+      throw Error('Recovery root differs from service root');
+    const nonce = r['nonce'] as string;
+    return {
+      v: 1,
+      pin: { ...this.#pin },
+      nonce,
+      state: result.state,
+      signature: sign(null, pendingMessage(this.#pin, nonce, result.state), this.#key).toString(
+        'hex',
+      ),
     };
   }
   close(): void {
