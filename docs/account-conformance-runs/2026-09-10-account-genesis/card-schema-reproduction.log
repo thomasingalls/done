@@ -1,0 +1,28 @@
+(node:77319) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:77319) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✖ genesis preserves full database+journal state, attribution, source carriers and exact artifacts on restart (732.084333ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1462.584125
+
+✖ failing tests:
+
+test at test/account-genesis/native.test.mjs:49:1
+✖ genesis preserves full database+journal state, attribution, source carriers and exact artifacts on restart (732.084333ms)
+  page.evaluate: Error: Genesis card has unbound attribution
+      at actors (eval at evaluate (:311:30), <anonymous>:31700:146)
+      at eval (eval at evaluate (:311:30), <anonymous>:31765:25)
+      at withRecoveryUnderPermit (eval at evaluate (:311:30), <anonymous>:25857:18)
+      at async withRecoveryKeys (eval at evaluate (:311:30), <anonymous>:31029:11)
+      at async eval (eval at evaluate (:311:30), <anonymous>:31752:13)
+      at async eval (eval at evaluate (:311:30), <anonymous>:25354:23)
+      at genesis (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/fixtures.mjs:59:8)
+      at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs:59:29) {
+    log: []
+  }

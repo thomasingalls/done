@@ -149,7 +149,7 @@ export async function native(t) {
       response: item.key.assert(view, { client: { origin: server.origin } }),
     });
     if (!receipt.ok) throw Error(JSON.stringify(receipt));
-    return { ...item, draft: generated.draft, receipt };
+    return { ...item, draft: generated.draft, recoveryCode: generated.code, receipt };
   };
   return { page, browser, context, setup, ready, local, server, pin, script };
 }

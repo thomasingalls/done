@@ -1,4 +1,5 @@
 /** Internal authenticated inventory of the single promotion carrier, retained at the stable interlock. */
+import { parseGenesis, type GenesisCandidate } from '../../account-protocol/genesis';
 import { parseAuthorityPin, type AuthorityPin } from '../../account-protocol/authority';
 import {
   closed,
@@ -47,7 +48,7 @@ import { probeDatabase } from './startupStorage';
 import { contentTransaction } from './contentDatabase';
 import type { SessionTask } from './writeSession';
 export interface PromotionRecord {
-  v: 1;
+  v: 1 | 2;
   kind: 'local-promotion';
   id: string;
   source: PromotionSource;
@@ -58,7 +59,8 @@ export interface PromotionRecord {
   custodyMac: string;
   sealReserved: number;
   credentialIds: [string, string];
-  stage: 'reserved' | 'prepared';
+  stage: 'reserved' | 'prepared' | 'genesis-prepared';
+  genesis?: GenesisCandidate;
   credentials: [SealedCredential, SealedCredential] | null;
   mac: Bytes;
 }
@@ -82,6 +84,7 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
     'stage',
     'credentials',
     'mac',
+    ...((input as { v?: unknown })?.v === 2 ? ['genesis'] : []),
   ]);
   const s = closed(r['source'], [
     'slotId',
@@ -93,9 +96,11 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
     'generation',
   ]);
   if (
-    r['v'] !== 1 ||
+    !(
+      (r['v'] === 1 && ['reserved', 'prepared'].includes(String(r['stage']))) ||
+      (r['v'] === 2 && r['stage'] === 'genesis-prepared')
+    ) ||
     r['kind'] !== 'local-promotion' ||
-    !['reserved', 'prepared'].includes(String(r['stage'])) ||
     s['generation'] !== 1
   )
     throw Error('Unsupported promotion');
@@ -129,7 +134,7 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
   const credentialIds: [string, string] = [id(r['credentialIds'][0]), id(r['credentialIds'][1])];
   if (credentialIds[0] === credentialIds[1]) throw Error('Duplicate credential identity');
   let credentials: PromotionRecord['credentials'] = null;
-  if (r['stage'] === 'prepared') {
+  if (r['stage'] !== 'reserved') {
     if (!Array.isArray(r['credentials']) || r['credentials'].length !== 2)
       throw Error('Missing prepared credentials');
     credentials = r['credentials'].map((input: unknown, i: number) => {
@@ -153,7 +158,8 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
   if (!(r['mac'] instanceof Uint8Array) || r['mac'].length !== 32)
     throw Error('Missing promotion authentication');
   return {
-    v: 1,
+    v: r['v'] as 1 | 2,
+    ...(r['v'] === 2 ? { genesis: parseGenesis(r['genesis']) } : {}),
     kind: 'local-promotion',
     id: id(r['id']),
     source,
@@ -201,6 +207,7 @@ export const promotionPayload = (r: PromotionRecord): Bytes =>
         hex(c.sealed.nonce),
         hex(c.sealed.ct),
       ]) ?? null,
+      ...(r.v === 2 ? [parseGenesis(r.genesis)] : []),
     ]),
   );
 const macKey = (root: Bytes, r: PromotionRecord, subtle: SubtleCrypto) =>

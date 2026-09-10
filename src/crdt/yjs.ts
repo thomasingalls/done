@@ -36,6 +36,13 @@ export const newArray = <T>(): YArray<T> => new Y.Array<T>();
 
 export const encodeState = (doc: YDoc): Uint8Array => Y.encodeStateAsUpdate(doc);
 
+/** Version-pinned opaque SV + DS descriptor; empty accepted-head evidence is separate.
+ * Yjs snapshot encoding contains clocks/deletions, never document text. */
+export const genesisCoverage = (doc: YDoc): Uint8Array<ArrayBuffer> => {
+  if (hasPendingUpdates(doc)) throw Error('Genesis has pending dependencies');
+  return new Uint8Array(Y.encodeSnapshot(Y.snapshot(doc)));
+};
+
 /**
  * Pinned v13 encoder read view. encodeStateAsUpdate reads store.clients and the two pending fields.
  * Excluding pending fields here avoids its merge/diff step changing the missing-dependency map on

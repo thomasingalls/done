@@ -29,10 +29,10 @@ const prefix = (kind: 'X25519' | 'Ed25519') =>
     kind === 'X25519' ? '302e020100300506032b656e04220420' : '302e020100300506032b657004220420',
     16,
   );
-async function privateKey(raw: Uint8Array, kind: 'X25519' | 'Ed25519') {
+async function privateKey(raw: Uint8Array, kind: 'X25519' | 'Ed25519', subtle = crypto.subtle) {
   const pkcs8 = new Uint8Array([...prefix(kind), ...raw]);
   try {
-    return await crypto.subtle.importKey(
+    return await subtle.importKey(
       'pkcs8',
       pkcs8,
       kind,
@@ -43,11 +43,11 @@ async function privateKey(raw: Uint8Array, kind: 'X25519' | 'Ed25519') {
     pkcs8.fill(0);
   }
 }
-async function codeKey(code: string, principalId: string, salt: string) {
+async function codeKey(code: string, principalId: string, salt: string, subtle = crypto.subtle) {
   const input = new TextEncoder().encode(normalizeRecoveryCode(code));
   try {
-    const ikm = await crypto.subtle.importKey('raw', input, 'HKDF', false, ['deriveKey']);
-    return await crypto.subtle.deriveKey(
+    const ikm = await subtle.importKey('raw', input, 'HKDF', false, ['deriveKey']);
+    return await subtle.deriveKey(
       {
         name: 'HKDF',
         hash: 'SHA-256',
@@ -117,6 +117,65 @@ export async function generateRecovery(
   }
 }
 
+/** Private owner callback: verified, non-extractable keys live only for this invocation. */
+export async function withRecoveryKeys<T>(
+  input: RecoveryDraft,
+  code: string,
+  subtle: SubtleCrypto,
+  work: (wrapping: CryptoKey, signing: CryptoKey) => Promise<T>,
+): Promise<T> {
+  const draft = parseDraft(input);
+  if ((await rootCommitment(draft)) !== draft.rootCommitment)
+    throw Error('Recovery context mismatch');
+  const payload = new Uint8Array(
+    await subtle.decrypt(
+      {
+        name: 'AES-GCM',
+        iv: unhex(draft.envelope.nonce, 12),
+        additionalData: aad(draft),
+        tagLength: 128,
+      },
+      await codeKey(code, draft.principalId, draft.envelope.salt, subtle),
+      unhex(draft.envelope.ct, 112),
+    ),
+  );
+  try {
+    if (payload.length !== 96 || hex(payload.subarray(32, 64)) !== draft.rootCommitment)
+      throw Error('Sealed root mismatch');
+    const r = await privateKey(payload.subarray(0, 32), 'X25519', subtle);
+    const pub = await subtle.importKey('raw', unhex(draft.rPub, 32), 'X25519', false, []);
+    const peer = await subtle.generateKey('X25519', false, ['deriveBits']);
+    const a = new Uint8Array(
+      await subtle.deriveBits({ name: 'X25519', public: peer.publicKey }, r, 256),
+    );
+    let b: Uint8Array<ArrayBuffer> | undefined;
+    try {
+      b = new Uint8Array(
+        await subtle.deriveBits({ name: 'X25519', public: pub }, peer.privateKey, 256),
+      );
+      if (!a.some((v) => v !== 0) || hex(a) !== hex(b)) throw Error('Recovery key mismatch');
+    } finally {
+      a.fill(0);
+      b?.fill(0);
+    }
+    const signer = await privateKey(payload.subarray(64), 'Ed25519', subtle);
+    const message = lp('done/recovery-key-check/v1', draft.rootCommitment);
+    const proof = new Uint8Array(await subtle.sign('Ed25519', signer, message));
+    const verify = await subtle.importKey(
+      'raw',
+      unhex(draft.bootstrapSigner, 32),
+      'Ed25519',
+      false,
+      ['verify'],
+    );
+    if (!(await subtle.verify('Ed25519', verify, proof, message)))
+      throw Error('Bootstrap key mismatch');
+    return await work(r, signer);
+  } finally {
+    payload.fill(0);
+  }
+}
+
 /** Re-entry opens and checks the complete amended payload, then signs only this finalization. */
 export async function confirmRecovery(
   input: RecoveryDraft,
@@ -125,65 +184,13 @@ export async function confirmRecovery(
   expectedDigest: string,
 ): Promise<string> {
   const draft = parseDraft(input);
-  if (
-    !/^[A-Za-z0-9_-]{43}$/.test(challenge) ||
-    (await draftDigest(draft)) !== expectedDigest ||
-    (await rootCommitment(draft)) !== draft.rootCommitment
-  )
+  if (!/^[A-Za-z0-9_-]{43}$/.test(challenge) || (await draftDigest(draft)) !== expectedDigest)
     throw Error('Recovery context mismatch');
-  const payload = new Uint8Array(
-    await crypto.subtle.decrypt(
-      {
-        name: 'AES-GCM',
-        iv: unhex(draft.envelope.nonce, 12),
-        additionalData: aad(draft),
-        tagLength: 128,
-      },
-      await codeKey(code, draft.principalId, draft.envelope.salt),
-      unhex(draft.envelope.ct, 112),
+  return withRecoveryKeys(draft, code, crypto.subtle, async (_r, signer) =>
+    hex(
+      new Uint8Array(
+        await crypto.subtle.sign('Ed25519', signer, confirmationBytes(challenge, expectedDigest)),
+      ),
     ),
   );
-  try {
-    if (payload.length !== 96 || hex(payload.subarray(32, 64)) !== draft.rootCommitment)
-      throw Error('Sealed root mismatch');
-    const r = await privateKey(payload.subarray(0, 32), 'X25519');
-    const pub = await crypto.subtle.importKey('raw', unhex(draft.rPub, 32), 'X25519', false, []);
-    const peer = await crypto.subtle.generateKey('X25519', false, ['deriveBits']);
-    const a = new Uint8Array(
-      await crypto.subtle.deriveBits({ name: 'X25519', public: peer.publicKey }, r, 256),
-    );
-    let b: Uint8Array<ArrayBuffer> | undefined;
-    try {
-      b = new Uint8Array(
-        await crypto.subtle.deriveBits({ name: 'X25519', public: pub }, peer.privateKey, 256),
-      );
-      if (hex(a) !== hex(b)) throw Error('Recovery key mismatch');
-    } finally {
-      a.fill(0);
-      b?.fill(0);
-    }
-    const signer = await privateKey(payload.subarray(64), 'Ed25519');
-    const proof = new Uint8Array(
-      await crypto.subtle.sign('Ed25519', signer, confirmationBytes(challenge, expectedDigest)),
-    );
-    const verify = await crypto.subtle.importKey(
-      'raw',
-      unhex(draft.bootstrapSigner, 32),
-      'Ed25519',
-      false,
-      ['verify'],
-    );
-    if (
-      !(await crypto.subtle.verify(
-        'Ed25519',
-        verify,
-        proof,
-        confirmationBytes(challenge, expectedDigest),
-      ))
-    )
-      throw Error('Bootstrap key mismatch');
-    return hex(proof);
-  } finally {
-    payload.fill(0);
-  }
 }

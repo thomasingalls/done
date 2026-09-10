@@ -1584,3 +1584,35 @@ The personal preview/relay remain off; original `dist/` and `.dev/releases/17d87
 is journal-inclusive genesis checkpoint and exact device/recovery wraps, followed by current-state
 service admission and verified index handoff. This outcome was appended before replacing L-1 progress;
 L-2 remains byte-for-byte unchanged.
+
+
+## 2026-09-10 — Journal-inclusive private genesis candidate and exact generation wraps
+
+Signed `a4e1c15` commits durable Local promotion preparation. Its next bounded phase now cold-replays
+the encrypted database plus synchronous journal, preserves the existing Yjs state and attribution,
+and retains a signed encrypted genesis candidate with exactly the prepared device and confirmed recovery
+key wraps. Both saved factors are required; both wraps must independently open to the current content
+key, and the decrypted checkpoint must match the source's integrated state and derived SV/DS.
+
+One authenticated version-2 promotion carrier holds the candidate. Strict atomic replacement, abort,
+renderer death, cancellation/draining, competing owners and exact restart are covered. All other Local
+carriers and spent budgets are retained. The previous reader refuses the new format. The candidate
+proposes epoch 1; it is not a certified epoch, SemanticAdmission, account activation or index switch.
+
+[Contract](./account-promotion.md) and [preserved evidence](./account-conformance-runs/2026-09-10-account-genesis.md):
+17 new tests, 100 generated HPKE/OpenSSL comparisons, 40 generated native delivery/interruption/forgery
+histories and two observed semantic bad-acceptance controls pass. Refreshed promotion/recovery/authority
+campaigns (57 tests), 13 writer-lifetime cases, 17 Local-genesis cases and 825 unit tests pass. TypeScript,
+focused lint/format, isolated build and 13 final gates pass; initial JavaScript remains 328.0/350.0 kB.
+
+A directed integration reproduction found an incorrect card field (`authorActorId` instead of `author`)
+that the original hand-built fixture repeated. The owner now uses the existing `cardAuthor` accessor;
+fixtures use real app constructors and generated tests include actual section ordering and human/system
+attribution. The before-fix refusal is preserved. This was a review/directed-test finding, not an original
+property-generator discovery. An old-reader expected-message assertion was also corrected in the harness.
+No further production counterexample or whole-protocol debt payment is claimed.
+
+Next is current-state service admission with exact recipient certification, the first head and an
+independently verified retained receipt; verified Local-to-Account index handoff follows as its own
+boundary. The personal preview and relay remain off; the predecessor build and verified release remain
+intact. This outcome precedes the L-1 rewrite; L-2 is unchanged.

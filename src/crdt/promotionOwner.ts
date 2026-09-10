@@ -108,7 +108,7 @@ export async function prepareLocalPromotion(input: PreparePromotionOptions) {
       };
       const account = await current();
       return withPromotionRoot(task, claim, record, options.code, async (root, subtle) => {
-        if (marker?.stage === 'prepared') {
+        if (marker && marker.stage !== 'reserved') {
           for (const credential of marker.credentials!)
             await openCredential(claimScope(claim), root, credential, subtle);
           return result(marker);

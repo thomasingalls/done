@@ -48,7 +48,7 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # durable Local promotion preparation complete; genesis and exact wraps next
+status: in flight # private genesis candidate complete; service admission/retained receipt next
 plan: [sequencing.md §3.5, action-tree.md L-1, account-sync-prep.md, account-promotion.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
@@ -56,53 +56,54 @@ updated: 2026-09-10
 ```
 
 **Personal checkpoint.** The author confirmed edit survival through full close and normal reopen at
-`17d87c2`. The preview remains stopped at their request; relay is off. The verified release stays at
-`.dev/releases/17d87c2/app` and predecessor `dist/` is intact. Origin/Tailscale routing is unchanged.
-Build and server stay in this worktree/Codex session. The author controls their browser and factors.
-No real account, passkey, recovery code, operator key or authority pin has been provisioned.
+`17d87c2`. Preview and relay remain stopped. The verified release stays at `.dev/releases/17d87c2/app`
+and predecessor `dist/` is intact. Origin/Tailscale routing is unchanged; build and server remain in
+this worktree/Codex session. The author controls their browser and factors. No real account, passkey,
+recovery code, operator key or authority pin has been provisioned.
 
-**Root/preflight committed; durable preparation complete.** Signed `e9477aa` commits the account core,
-`0f1a073` recovery sealing/confirmation, and `e96107b` the private root and read-only Local preflight.
-The new [promotion contract](./account-promotion.md) owns a factor-authenticated interlock, durable
-seal-budget reservation and fresh device signing/wrapping credentials. The original Local claim,
-credentials, content key, generation, content store, journal and index stay retained. An interrupted
-reservation burns another pair of seal invocations; a committed preparation resumes the exact keys.
-Ordinary Local editing refuses while the marker exists. This is still Local preparation, not activation.
+**Preparation committed; genesis candidate complete.** Signed `e9477aa` commits account core,
+`0f1a073` recovery, `e96107b` private root/preflight, and `a4e1c15` durable promotion preparation.
+The [promotion contract](./account-promotion.md) now covers a signed journal-inclusive encrypted genesis
+candidate, exact device/recovery generation wraps and its authenticated version-2 carrier. Both saved
+factors are required. Both wraps open to the existing content key; an independently decrypted checkpoint
+must match a cold database-plus-journal replay, including SV/DS, real card order and existing attribution.
 
-Current signed service observations check live pending-account/recovery state rather than historical
-receipts. Explicit abandonment cancels the pending registration before deleting only the authenticated
-Local preparation; accepted writing and spent budgets survive. Recovery-owner abandonment/reset requires
-an independently pinned service proof and authenticated Local census. It preserves its capability while
-promotion or an unknown Local reference remains; a cancelled registration is never recycled.
+The owner retains the original Local claim, index, content store, journal, credentials, keys, generation
+and counters. Strict atomic marker replacement, crash/restart and abandonment retain those carriers.
+Committed candidates resume exact bytes; ordinary Local editing and older promotion readers refuse
+while the new marker exists. This is a proposal for epoch 1, not an issued epoch, admission or Account
+classification. There is still no content publication or encrypted relay.
 
-[Preserved evidence](./account-conformance-runs/2026-09-10-account-promotion.md): 18 new tests, 120 generated
-service and 45 generated native histories, two actual bad-acceptance controls, SQLite process death,
-renderer death, IDB aborts, competing tabs, cancellation, missing counters and journal survival pass.
-All 69 account/authority/recovery regressions, 13 writer-lifetime, 17 genesis, five compatibility cases
-and 825 unit tests pass. TypeScript, focused static checks, isolated build and 13 final gates pass;
-initial JS is 328.0/350.0 kB. Harness crash-wait/dependency issues and a directed-test preflight input race were corrected; no generated production
-counterexample, whole-protocol debt payment or matrix change is claimed.
+[Preserved evidence](./account-conformance-runs/2026-09-10-account-genesis.md): 17 new tests, 100 generated
+HPKE/OpenSSL comparisons, 40 generated native delivery/interruption/forgery histories, two observed bad-
+acceptance controls, transaction aborts, renderer death and cancellation/draining pass. All 57 refreshed
+promotion/recovery/authority tests, 13 writer-lifetime cases, 17 Local-genesis cases and 825 unit tests
+pass. TypeScript, focused static checks, isolated build and 13 final gates pass; initial JS 328.0/350.0 kB.
 
-**Next bounded phase.** Under this retained owner, cold-replay database plus journal and prepare the
-never-admitted genesis checkpoint and exact wraps for the prepared device and confirmed recovery keys.
-Preserve existing attribution as required by TRD §13.6. Specify the authenticated artifact stage,
-reservation budget, complete reference census and interruption/resumption rules before writing it.
-The service receives only permitted public keys, sealed/wrapped material, ciphertext and signed evidence;
-a signed digest alone cannot establish semantic replay correctness.
+Review plus a directed real-card reproduction caught a wrong attribution field also present in the
+hand-built fixture. Production now uses `cardAuthor`; fixtures use the app's constructors and generated
+histories check actual section ordering and human/system attribution. The before-fix refusal is retained.
+No further generated production counterexample, whole-protocol debt payment or matrix change is claimed.
 
-**Following phase.** Atomically commit current account/recovery eligibility, certified recipients, first
-authorization/acceptance head and exact checkpoint/wrap evidence at the service. Verify and retain the
-complete signed result before handing the existing Local index to Account classification. Preserve the
-principal, workspace, database and generation, with no duplicate Local or copied profile. Activation,
-slot bindings and interrupted handoff need their own owner/conformance boundaries.
+**Next bounded phase.** Current-state service admission and a retained authenticated receipt: atomically
+check pending account/recovery eligibility, certify the exact recipient keys and issue the first
+account authorization/acceptance head bound to the exact candidate. Define its client semantic evidence
+and final row-7 manifest relationship before issuing anything. Verify and durably retain the complete
+signed result under the existing owner, covering lost response, service/client restart, competing
+attempts, cancellation and replay. A bare signed digest does not establish semantic replay correctness.
+No Local index switch belongs in an unverified or partially retained result.
 
-**Remaining gates.** Complete accounts/promotion/bindings, encrypted relay/durable storage, two-gate
-enrollment, revocation/rotation/finalization and full recovery, product conformance, whole-profile residue,
-platform coverage, production root distribution/restore and independent review remain open. The actual
-second pre-encryption device adopts the first device's workspace with fresh custody/store/counters/keys
-and no import or merge of its old writing; its cleanup stays separate. The host VM stays stopped;
-host/policy research is not next-up. L-2's historical clean ref `d24732b` has no further service work to
-integrate. This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
+**Following boundary.** Verified Local-to-Account index handoff and owned startup classification,
+preserving principal, workspace, database and generation without a duplicate Local or copied profile.
+Then encrypted relay/durable storage, account UI and two-gate second-device enrollment. The author's
+actual second pre-encryption device adopts the first device's workspace using fresh custody, store,
+counters and credentials, with no import or merge of its old writing; cleanup stays separate.
+
+**Remaining gates.** Complete accounts/bindings, encrypted sync, enrollment, revocation/rotation,
+finalization/full recovery, product conformance, whole-profile residue, platform coverage, production
+root distribution/restore and independent review remain open. The host VM stays stopped; host/policy
+research is not next-up. L-2's historical clean ref `d24732b` has no further service work to integrate.
+This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 
 ---
 
