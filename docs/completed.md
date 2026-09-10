@@ -1356,3 +1356,29 @@ External recovery files, exports and relay backups remain retained; the other pr
 not been joined or cleaned. The prepared application-upgrade build has not replaced the live package.
 The next bounded implementation is reader/writer compatibility before future persisted-format changes.
 This outcome precedes the L-1 checkpoint rewrite; L-2 remains unchanged.
+
+## 2026-09-10 — Storage compatibility interlock and upgrade baseline (`L-1`)
+
+Signed `14901a5` committed the compatible application-update policy, passing evidence, one-off cleanup
+helper and the author's successful personal cleanup/reopen report. The next bounded phase now checks
+the stable per-slot application-upgrade interlock after every shared/exclusive grant, before caller
+initialization. Any populated marker refuses, including null/undefined and a claimed ready state; absence
+continues to the existing authentication and carrier checks. The probe writes no data and retains the
+permit through cancelled/blocked native opens. Future document schemas receive a compatible-app message
+and preserve their encrypted database/journal bytes. No new format or migration owner was introduced.
+
+[Preserved evidence](./storage-conformance-runs/2026-09-10-storage-compatibility.md): 825 unit tests pass,
+including 160 generated interlock histories and a get/count fault control. Five new native compatibility
+cases, thirteen lifecycle cases plus five detected controls, eight compatible-upgrade cases, eight Local
+app cases and five private migration/cleanup cases pass. Static checks, isolated-build budget (327.2 kB)
+and origin isolation pass. Test-harness signature/crash-realm corrections are recorded separately.
+
+[The contract](./storage-compatibility.md) specifies what a first actual incompatible migration still
+needs: authenticated intent, exclusive ownership, refusal by pre-interlock executables, restart rules
+and a supported recovery path. A speculative general migrator is not next. Review/commit this baseline,
+then guide the same-format personal app handoff; development next moves to account attachment and
+encrypted sync prep, reconciling L-2 before overlap. The author's other pre-encryption device must adopt
+this workspace without importing or merging its old writing. Its cleanup is separate.
+
+The live `dist/`, server, origin and relay-off state were retained. The full check chain, broader platform
+assurance and debt/matrix closure are not claimed. This outcome precedes the L-1 rewrite; L-2 is unchanged.

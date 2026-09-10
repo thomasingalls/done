@@ -20,6 +20,8 @@ export const startupRefusal = (cause: unknown, signal?: AbortSignal): StartupDis
     return Object.freeze({ kind: 'cancelled', reason: 'startup-cancelled' });
   if (cause instanceof StartupError) return cause.disposition;
   const code = (cause as { code?: unknown } | null)?.code;
+  if (code === 'app-update-required')
+    return Object.freeze({ kind: 'app-update-required', reason: 'unsupported-storage-format' });
   if (code === 'cancelled' || code === 'inactive' || code === 'inactive-session')
     return Object.freeze({ kind: 'cancelled', reason: 'startup-session-ended' });
   if (code === 'unsupported')

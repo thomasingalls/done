@@ -4,6 +4,7 @@
  * every effect behind step/write, await native work through wait, and register
  * cache cleanup. It cannot sandbox code that retains and uses raw keys itself.
  */
+import { checkStorageCompatibility } from './storageCompatibility';
 
 export type WriteSessionState = 'opening' | 'active' | 'closing' | 'closed' | 'failed';
 export type WriteSessionRefusal =
@@ -239,7 +240,11 @@ async function acquire(
     request = locks.request(name, { mode, signal: stopped.signal }, async () => {
       granted = true;
       try {
-        await task(initialize ?? (() => {}), true);
+        await task(async (scope) => {
+          await checkStorageCompatibility(scope, slotId);
+          scope.step(() => {});
+          await initialize?.(scope);
+        }, true);
         assertLive(true);
         state = 'active';
         ready.resolve(session);

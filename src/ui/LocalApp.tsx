@@ -6,6 +6,11 @@ import { App } from './App';
 import { AppUpdateNotice } from './AppUpdateNotice';
 
 const messages: Record<StartupKind, { title: string; detail: string }> = {
+  'app-update-required': {
+    title: 'This workspace needs a compatible app',
+    detail:
+      'Saved storage uses an unsupported format or has an unfinished upgrade. Reopen with the app that supports it. Your saved data has been kept.',
+  },
   fresh: {
     title: 'Your Local workspace',
     detail: 'Keep your writing encrypted in this browser. A device-lock code unlocks it.',

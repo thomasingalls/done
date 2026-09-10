@@ -14,6 +14,7 @@ import { type Bytes } from './custodyCrypto';
 import { type WorkspaceActorIdentity, type Origin, listActors } from './actors';
 import { readSettings, SCHEMA_VERSION } from './doc';
 import { ContentError } from './contentRecord';
+import { StorageCompatibilityError } from './storageCompatibility';
 import {
   cardAt,
   cardBody,
@@ -301,6 +302,8 @@ export const createAdmittedWorkspace = async (
     const doc = session.fork();
     try {
       const version = doc.getMap('meta').get('schemaVersion');
+      if (Number.isSafeInteger(version) && (version as number) > SCHEMA_VERSION)
+        throw new StorageCompatibilityError('Unsupported persisted workspace schema.');
       if (
         version !== undefined &&
         (!Number.isSafeInteger(version) ||

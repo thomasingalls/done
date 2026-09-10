@@ -44,9 +44,10 @@ release signature or protection against a server deliberately delivering hostile
 can run different application code. A tab-count observation cannot authorize changing stored formats.
 Compatible A→B and B→A tests do not establish safe downgrade after a format migration.
 
-Before changing persisted formats, the next bounded phase must define the supported reader/writer range,
-put compatibility checking on every production open and writer acquisition, and specify a durable migration
-intent under the existing exclusive lifecycle owner. Old writers must drain or block the transition;
+The [storage compatibility phase](./storage-compatibility.md) now defines the baseline formats and checks
+a refusal-only interlock on every shared/exclusive acquisition. It writes no marker or new format. The
+first actual incompatible change still needs a concrete authenticated durable migration intent and
+predecessor refusal under the existing exclusive lifecycle owner. Old writers must drain or block the transition;
 restart must reacquire exclusion and re-read authenticated progress. Unknown/newer data must be preserved
 and refused before application repair or writes. Rollback across changed formats requires an explicitly
 supported migration/restore route, never raw key/counter cloning or merely serving the older JavaScript.

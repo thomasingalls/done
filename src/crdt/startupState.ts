@@ -1,5 +1,6 @@
 /** Startup dispositions are observations, never permission to create, migrate or clear. */
 export type StartupKind =
+  | 'app-update-required'
   | 'unlock-required'
   | 'fresh'
   | 'creation-pending'

@@ -46,6 +46,7 @@ const files = (paths) =>
   Object.fromEntries(paths.map((path) => [path, hash(readFileSync(join(root, path)))]));
 const recordedFiles = [
   sourcePath,
+  'src/crdt/storageCompatibility.ts',
   'scripts/storage-conformance/report.mjs',
   'docs/storage-contract.md',
   'pnpm-lock.yaml',
@@ -95,6 +96,10 @@ async function run(mutation = null) {
   }
   const target = join(folder, 'writeSession.ts');
   writeFileSync(target, tested);
+  writeFileSync(
+    join(folder, 'storageCompatibility.ts'),
+    readFileSync(join(root, 'src/crdt/storageCompatibility.ts')),
+  );
   const server = await createServer({
     configFile: false,
     root,

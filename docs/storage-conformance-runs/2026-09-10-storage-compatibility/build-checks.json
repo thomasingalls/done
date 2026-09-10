@@ -1,0 +1,20 @@
+[
+  {
+    "command": "scripts/check-budget.mjs",
+    "status": 0,
+    "output": "index.html\n   327.2 kB  /assets/main-Br-yV_KW.js\ninitial JS, gzipped: 327.2 kB of 350.0 kB budget\nlocal.html\n   327.2 kB  /assets/main-Br-yV_KW.js\ninitial JS, gzipped: 327.2 kB of 350.0 kB budget\n     5.1 kB  (css, informational \u2014 the budget is on JS)\n",
+    "build": "isolated upgrade-a"
+  },
+  {
+    "command": "scripts/check-origin-isolation.mjs",
+    "status": 0,
+    "output": "origin isolation: scanned 7 built files\n  1 allowlisted origin: http://www.w3.org (2, namespace-identifier)\n  no literal remote URL in built output, allowlisted namespace identifiers aside (\u00a710.9, row 17 A1)\n",
+    "build": "isolated upgrade-a"
+  },
+  {
+    "check": "live build unchanged",
+    "files": 11,
+    "inventory": "predecessor.json",
+    "status": 0
+  }
+]

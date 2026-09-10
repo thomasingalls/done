@@ -17,6 +17,7 @@
     "playwright.config.ts",
     "playwright.latency.config.ts",
     "playwright.private-migration.config.ts",
-    "playwright.app-upgrades.config.ts"
+    "playwright.app-upgrades.config.ts",
+    "playwright.storage-compatibility.config.ts"
   ]
 }

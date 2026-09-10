@@ -48,53 +48,48 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # compatible app-upgrade phase verified; personal source cleanup confirmed
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, application-upgrades.md]
+status: in flight # compatible updates committed; storage compatibility baseline verified
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, application-upgrades.md, storage-compatibility.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-10
 ```
 
-**Personal checkpoint.** Signed `07d89f6` records the packaged/offline cutover and precache repair, following
-personal import checkpoint `8db7070`. The author verified existing writing and an offline edit through
-lock/close/reopen with the server stopped. The same preview server is running again. The build and server
-remain in this worktree/Codex session by explicit request; relay is off. The author controls every browser
-action. Saved recovery files/exports and private verification records have verified copies beside earlier
-backups. The code remains with the author. The author has now confirmed successful source cleanup and encrypted
-reopening with the writing intact; the exact helper completion text was not retained.
+**Personal checkpoint.** Signed `14901a5` records compatible app-update work and the author's successful
+source cleanup followed by encrypted reopening with the writing intact. The exact helper completion text
+was not retained; no independent personal census is claimed. External backups remain. The live package
+is still the earlier `07d89f6` checkpoint following personal import `8db7070`; the new update policy and
+compatibility gate are not deployed. The same preview server and HTTPS origin remain in this worktree/
+Codex session by request. Relay is off. The author controls their browser and retains their device code.
 
-**Completed bounded upgrade work, awaiting commit.** The [upgrade contract](./application-upgrades.md)
-and [evidence](./storage-conformance-runs/2026-09-10-app-upgrades.md) cover compatible static application
-releases. A worker verifies the complete download, waits for all controlled old tabs/windows to close,
-and deletes only its own scoped predecessor caches. There is no forced reload/takeover. A menu/startup
-notice explains the lock/close/reopen handoff. Tests build into isolated directories; the live `dist/`
-and server were not changed and the new policy is not yet deployed to the personal installation.
+**Completed bounded compatibility work, awaiting commit.** The [contract](./storage-compatibility.md)
+and [evidence](./storage-conformance-runs/2026-09-10-storage-compatibility.md) cover a refusal-only interlock
+at a stable custody key. Every shared/exclusive grant checks it before caller initialization. Any retained
+value blocks this build; absence continues to the existing authentication and format checks. Blocked native
+opens retain the permit through cancellation. Future document schemas present a compatible-app requirement
+while preserving the encrypted database/journal. This phase writes no upgrade marker and changes no format.
 
-Eight native upgrade cases pass, including a copy of the actual predecessor, two old tabs, later edits,
-failed and wrong-byte downloads, offline recovery, renderer death, compatible rollback and a forced-
-activation control. Thirty-seven relevant unit tests pass, including 120 generated worker failure/retry
-histories and two byte-verification/cache-scope controls. These do not establish safe incompatible data
-migration, supported-platform assurance or cache-eviction recovery.
+825 unit tests pass, including 160 generated interlock histories and a get/count control. Native passes:
+five compatibility cases, thirteen lifecycle cases plus five detected controls, eight compatible app-upgrade
+cases including the actual predecessor, eight Local app cases and five private migration/cleanup cases.
+TypeScript, focused static checks, isolated-build budget (327.2 kB) and origin isolation pass. The live build
+was not overwritten. The complete check chain was not run; no debt or matrix status changed.
 
-**Personal cleanup completed.** The author requested a short DevTools path. The
-[one-off helper](./private-source-cleanup.md) bundles the existing authenticated cleanup owner outside the
-application and uses the original saved packet, binding and factor. Five native cleanup/migration cases
-pass, including wrong-code refusal/retry, exact legacy removal, encrypted journal preservation and later
-writing reopening. The author subsequently ran the helper and reported success, then verified the
-encrypted workspace still opened with the writing present. No independent personal census was captured. The other pre-encryption device must join
-the first device's new workspace later without importing or merging its old writing; its cleanup is separate.
+**Next bounded work.** Review/commit this baseline, then guide the prepared same-format app release through
+the author's lock/close/reopen handoff. Development can move to account attachment and encrypted sync prep:
+reconcile L-2's current account boundary first, identify service/account authority and recovery requirements,
+and bind this existing workspace. The author's other pre-encryption device must adopt this workspace with
+fresh device custody without importing or merging its old writing. Cleanup there remains separate.
 
-**Next bounded upgrade work.** Commit/review this phase, then define and implement the reader/writer
-compatibility gate before any format migration. The worker's waiting state is not writer exclusion:
-forced refresh or an uncontrolled executable can bypass it. A migration needs the existing exclusive
-lifecycle owner, authenticated durable intent and restart checks. Serving old JavaScript alone does not
-establish safe rollback across changed formats. The prepared build's live handoff remains a separately guided browser/operator step.
+No actual incompatible format change is planned. Before one, its concrete owner must authenticate durable
+intent, exclude old writers (including pre-interlock builds), resume under exclusion, and define recovery/
+rollback. Worker waiting alone does not establish those properties. A general migration framework is not
+needed for the current same-format release.
 
 **Remaining gates.** Account/sync integration, complete production conformance, whole-profile residue,
 platform/latency, receiver/generation transitions and independent review remain open. The host VM is stopped;
-automatic host/policy research is not next-up. The full runtime/check chain was not rerun and no debt or
-matrix status changed. This outcome was appended to completed.md before the checkpoint rewrite; L-2 is unchanged.
-
+automatic host/policy research is not next-up. This outcome was appended to completed.md before this
+checkpoint rewrite. L-2 below is unchanged.
 
 ---
 

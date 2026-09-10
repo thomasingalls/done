@@ -43,6 +43,7 @@ const sourceNames = [
   'custodyCrypto.ts',
   'custodyRecord.ts',
   'writeSession.ts',
+  'storageCompatibility.ts',
   'contentRecord.ts',
   'contentDatabase.ts',
   'contentStore.ts',
