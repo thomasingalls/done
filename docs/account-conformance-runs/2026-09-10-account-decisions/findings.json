@@ -1,0 +1,38 @@
+{
+  "production": "No implementation/design defect was demonstrated by this phase's generated cases. Positive results are bounded evidence, supported by actual guard-removal controls.",
+  "nativeFixtureRepair": {
+    "failure": "The later-position test invoked editor.text(...).replace, an API the actual admitted surface does not expose.",
+    "repair": "Use the established surface.input admission adapter and await its accepted ticket. The corrected test verifies every retained predecessor.",
+    "evidence": "initial-native-fixture-failure.log; final native.log"
+  },
+  "controls": [
+    "Removing the acceptance signature refusal accepts a foreign-key refusal.",
+    "Removing the fifth subject comparison accepts a correctly signed refusal naming another envelope epoch.",
+    "Removing link reconstruction comparison accepts a signed head with a foreign predecessor.",
+    "Removing parent ID from wrapper signing and verification accepts a substituted valid parent proof.",
+    "Removing successor-position comparison accepts a valid parent proof from another position."
+  ],
+  "generated": {
+    "chainHistories": {
+      "seed": 9612026,
+      "runs": 200,
+      "length": "1..8",
+      "oracle": "Independent Node/OpenSSL message and chain reconstruction; exact, conflicting and foreign-prefix answers."
+    },
+    "successorProofs": {
+      "seed": 9612027,
+      "runs": 100,
+      "oracle": "Independent Node signature inputs; current proof key, parent ID, lineage and original position."
+    },
+    "native": {
+      "seed": 9622026,
+      "runs": 8,
+      "length": "2..5",
+      "inputs": "generated.json",
+      "oracle": "Actual persisted inventory, detached wire and source capsules remain unchanged through response histories and cold restart."
+    }
+  },
+  "wiring": "The complete response campaign was rerun after appending account:decisions to pnpm check. Spool regression and the unchanged unit/build code ran just before that scripts.check-only edit. package-at-regression.json retains those exact package bytes; verification allows only that one script addition and checks all other regression hashes against current files.",
+  "authorityLimits": "Composed ownership resolves the first authenticated private epoch, not a general rotated lineage. Lower-level synthetic contexts exercise stale/current key rules without claiming epoch-advancement implementation. A signature authenticates a permanent-closure claim; the future durable service must enforce it.",
+  "scope": "Read-only response evidence and detached signed submission codec. No delivery-state writes, stored submission wrapper, successor minting, relay dispatch, real Account provisioning or personal browser/server operation."
+}

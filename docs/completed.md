@@ -1819,3 +1819,36 @@ No sending or acceptance/removal authority is exposed. Next is the authenticated
 carrier and verification; durable relay integration follows. No whole conformance debt is paid and no real
 Account is provisioned. Personal preview/relay remain off and retained builds stay intact. This outcome is
 appended before replacing L-1 progress; L-2 is unchanged.
+
+
+### 2026-09-10 — Authenticated Account responses and submission proofs
+
+Committed the spool phase as signed `7082fa7`. Added canonical private response bytes while preserving
+the selected refusal/link/head signed messages. Refusals bind all five envelope subject fields plus the
+attempt parent and verify under the currently held certified acceptance key. Exact-position acceptance
+proofs reconstruct the link from retained local predecessors; a proved different leaf is conflict evidence,
+while an unprovable prefix is unknown. Refusal IDs exclude signatures and survive ordinary re-signing.
+
+A separate device-signed submission wrapper binds the exact unchanged v2 envelope bytes, lineage and parent
+refusal ID. Verification rejects proof substitution, foreign positions, stale proof keys and changed wire.
+It authenticates a closure claim without pretending to prove the future service's permanent decision store.
+The Account owner's new inspectResponse method obtains subject, chain and key from authenticated retained
+state and performs no writes. Closing drains pending crypto and withholds late evidence. No durable delivery
+transition, successor minting or relay dispatch is added.
+
+[Preserved evidence](./account-conformance-runs/2026-09-10-account-decisions.md): 12 verifier unit tests with
+300 generated cases, six native tests including eight generated histories and five effective actual-module
+controls, the 24-case spool regression, and all 869 unit tests pass. Existing signed-message/vector readback
+and an independent Node/OpenSSL oracle substantiate framing and signatures. The sole initial native failure
+used a nonexistent test editing helper; the corrected admitted-input adapter passes and the failure log is
+retained. This phase's generated campaign demonstrated no implementation/design counterexample.
+
+The standalone campaign is added to pnpm check; direct Node entrypoints ran the focused campaigns. The final
+response run pins completed wiring. The regression/unit/build code ran before the scripts.check-only addition;
+its exact package file and explicit difference check are retained. Source hashes, histories, controls and
+final static/build/gate outcomes accompany the [contract](./account-decisions.md). No whole debt is paid.
+
+Next is lifecycle-owned durable decision evidence and exact signed submission bytes, with authority rechecks,
+reader fencing, ledger completeness and native commit/crash coverage. Service permanence and successors under
+changed authority remain separate. Personal servers stay off, retained builds intact, and no real Account is
+provisioned. This outcome is appended before replacing L-1 progress; L-2 remains unchanged.

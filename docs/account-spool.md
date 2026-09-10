@@ -116,3 +116,10 @@ exact restart retry, unknown outcome, cancellation/drain, mixed actors, missing/
 spool bytes, bounds and old readers. Record external invocation observations so the test does not infer
 crypto use from the implementation's own counter. Add generated crash histories and actual guard controls.
 Keep the author's Local release and stopped personal servers intact. No default Account UI or relay cutover.
+
+## Read-only decision inspection
+
+The following [response/proof phase](./account-decisions.md) adds `inspectResponse(position, bytes)` to
+this owner. It derives the subject, predecessor chain and current acceptance key from authenticated
+retained state and returns evidence without writing accepted/closed records or changing the v7 format.
+Sources and exact envelopes remain retained for every result, including contradictory signed answers.

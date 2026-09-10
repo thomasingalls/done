@@ -29,7 +29,15 @@ import {
   type SpoolEntry,
   type SpoolState,
 } from './spoolRecord';
-import { sealNetworkEnvelope } from '../../account-protocol/envelope';
+import {
+  acceptanceLink,
+  verifyPositionResponse,
+  RESPONSE_LIMIT,
+  ZERO_REFUSAL,
+  type DecisionAuthority,
+  type DecisionEvidence,
+} from '../../account-protocol/positionDecision';
+import { decodeNetworkEnvelope, sealNetworkEnvelope } from '../../account-protocol/envelope';
 import { createAdmissionOwner } from './admissionQueue';
 import { createAdmittedWorkspace } from './admittedWorkspace';
 import { ContentError } from './contentRecord';
@@ -46,6 +54,7 @@ export async function openOwnedAccountSpoolWorkspace(input: AccountWorkspaceOpti
     today: input.today,
   };
   let kg: Bytes | undefined, signer: CryptoKey | undefined, publicKey: CryptoKey | undefined;
+  let decisionAuthority: Readonly<DecisionAuthority> | undefined;
   const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
   const verified = async (
     task: SessionTask,
@@ -64,6 +73,15 @@ export async function openOwnedAccountSpoolWorkspace(input: AccountWorkspaceOpti
   const extension: CaptureExtension = {
     sourceRecords: (records, route) => inspectSpool(records, route).sourceRecords,
     async initialize(task, v) {
+      // verifyAccountUnderPermit authenticated this exact retained lineage and receipt before this hook.
+      const epoch = v.marker.admission!.receipt!.offer;
+      decisionAuthority = Object.freeze({
+        workspace: epoch.epoch.workspaceId,
+        lineage: epoch.epoch.lineageId,
+        tip: epoch.epoch.epoch,
+        head: epoch.head,
+        acceptanceKey: epoch.epoch.acceptancePublicKey,
+      });
       await withPromotionRoot(task, v.claim, v.record, options.code, async (root, subtle) => {
         kg = await openEnvelope(claimScope(v.claim), root, v.record.envelope!, subtle);
         signer = await openCredential(claimScope(v.claim), root, v.marker.credentials![1], subtle);
@@ -86,6 +104,7 @@ export async function openOwnedAccountSpoolWorkspace(input: AccountWorkspaceOpti
       kg?.fill(0);
       kg = undefined;
       signer = publicKey = undefined;
+      decisionAuthority = undefined;
     },
   };
   const { account, carrier, listCaptures, runCaptureTask } = await openAccountCaptureOwner(
@@ -165,6 +184,55 @@ export async function openOwnedAccountSpoolWorkspace(input: AccountWorkspaceOpti
             persisted: !!p.wire,
           })),
         })),
+      /** Read-only evidence for a persisted position. No transport-supplied subject, baseline or key. */
+      inspectResponse: async (position: number, answer: Bytes): Promise<DecisionEvidence> => {
+        if (
+          !Number.isSafeInteger(position) ||
+          position < 1 ||
+          !(answer instanceof Uint8Array) ||
+          answer.length > RESPONSE_LIMIT
+        )
+          throw Error('Invalid response input');
+        const captured = new Uint8Array(answer);
+        try {
+          return await runCaptureTask(async (task, owner, route) => {
+            const { records, state } = await verified(task, owner, route);
+            try {
+              let previous = ZERO_REFUSAL;
+              for (const p of state.positions) {
+                if (!p.wire) return { kind: 'unknown' };
+                const e = decodeNetworkEnvelope(p.wire);
+                const subject = {
+                  workspace: e.workspace_id,
+                  credential: e.credential_id,
+                  position: e.seq,
+                  digest: hex(e.digest),
+                  epoch: e.epoch,
+                };
+                if (p.position === position) {
+                  const evidence = await task.wait(() =>
+                    verifyPositionResponse(
+                      captured,
+                      { ...subject, previous, parent: ZERO_REFUSAL },
+                      decisionAuthority!,
+                      subtleFor(task),
+                    ),
+                  );
+                  return task.step(() => evidence);
+                }
+                previous = await task.wait(() =>
+                  acceptanceLink(subject, previous, subtleFor(task)),
+                );
+              }
+              return { kind: 'unknown' };
+            } finally {
+              for (const r of records) r.bytes.fill(0);
+            }
+          });
+        } finally {
+          captured.fill(0);
+        }
+      },
       prepareNextEnvelope: async (): Promise<PersistedEnvelope | null> => {
         await workspace.whenDurable();
         return runCaptureTask(async (task, owner, route) => {

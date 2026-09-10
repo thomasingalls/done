@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="owned proof checks resolve certified custody, retain exact wire and do not persist decision state" time="5.008993" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-decisions/native.test.mjs"/>
+	<testcase name="foreign keys, subjects, parent and claimed chain links leave delivery unknown; proved conflicting digest is distinct" time="3.808290" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-decisions/native.test.mjs"/>
+	<testcase name="close drains a pending response verification and withholds its evidence before releasing exclusion" time="4.916443" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-decisions/native.test.mjs"/>
+	<testcase name="eight generated response histories preserve stored sources, wire and counters through cold restart" time="17.534796" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-decisions/native.test.mjs"/>
+	<testcase name="later-position acceptance reconstructs every retained predecessor instead of trusting a supplied link" time="3.534416" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-decisions/native.test.mjs"/>
+	<testcase name="actual verifier controls expose wrong-key, wrong-epoch, unanchored-head and unbound-parent acceptance" time="4.303501" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-decisions/native.test.mjs"/>
+	<!-- tests 6 -->
+	<!-- suites 0 -->
+	<!-- pass 6 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 40507.906875 -->
+</testsuites>
