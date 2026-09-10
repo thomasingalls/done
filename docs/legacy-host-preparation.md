@@ -8,6 +8,10 @@ its statements about the "next" fixture describe that preparation, not unexecute
 oracle now explicitly begins after a clean profile reopen; separate whole-browser-kill counterexamples
 retain the unsettled localStorage boundary rather than claiming that acknowledgement forces disk persistence.
 
+The next experiment is specified in [cold-start host preparation](./legacy-host-cold-start.md): mandatory
+global execution denial before browser startup, followed by protocol-only storage observation in a disposable
+policy-bearing runtime. It remains untested and carries no production migration authority.
+
 **Preparation baseline.** The private coordinator is committed as
 `7d238ee`; its [native evidence](./storage-conformance-runs/2026-09-09-legacy-coordinator.md) establishes the
 bounded seeded composition. The next build is a persistent-profile **preflight**, limited to exclusion,

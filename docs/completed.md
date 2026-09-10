@@ -1068,3 +1068,29 @@ preservation of unsettled visible source work and lasting executable/transport r
 candidate to the coordinator. Production platform/profile access, recovery UX, actual carrier/attribution,
 remote reconciliation, cross-origin transfer, full residue and review/performance remain gates. Matrix pins
 and all debt statuses/requirements remain unchanged. This outcome precedes the L-1 checkpoint rewrite.
+
+## 2026-09-10 — Revised cold-start host preparation (`L-1`)
+
+Committed the private preflight, counterexamples and immutable evidence as `fbfc3ba`. Verified its archived
+bytes and tested input hashes before commit. Prepared the [replacement experiment](./legacy-host-cold-start.md)
+against first-script pages/frames and crash-restored cached executables; no new native acceptance is claimed.
+
+Selected a disposable policy-bearing Linux runtime with mandatory global JavaScript denial installed before
+source-profile launch. CDP becomes a bounded storage-observation channel, with no script-enabled maintenance
+URL exception. Official policy documentation exposes a further design constraint: origin-scoped blocking is
+based on the top-level document and does not contain a source frame inside an allowed foreign page. Dynamic
+policy application also does not establish that ongoing work ceased. Worker/background coverage and exact
+script-denied storage access remain hypotheses requiring native falsification.
+
+Compared callback/website-only control, origin blocking, the selected global-denial experiment, offline
+filesystem extraction and a custom embedded host. Specified immutable policy ownership across controller death,
+second-process/restart tests, binary/paged protocol observation, independent source/sentinel/network ledgers,
+positive controls, explicit unsupported coverage and a 20-history first campaign. The first build is limited
+to denial/observer feasibility; readonly packet parity follows only if it survives. Installed tooling is not
+proof of a running Linux runtime; provisioning and pinning that disposable environment is implementation work.
+
+Separated the closed-source fixture precondition from lossless acquisition of live visible edits, and temporary
+denial from lasting retirement before modern execution is enabled. Neither source settlement nor full old-code/
+transport retirement is implemented by this preparation. Kept mandatory factor custody, source-origin checks,
+authenticated cleanup scope and the real carrier/attribution gate intact. Default startup/runtime, existing
+native reports, matrix pins and all debt statuses are unchanged. This outcome precedes the L-1 checkpoint rewrite.

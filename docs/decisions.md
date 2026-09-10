@@ -2205,3 +2205,26 @@ The dependency fallback's native plaintext carrier remains unsupported by the cu
 Preserve/classify it; do not expand deletion by heuristic URL keys. No deployed carrier footprint, production
 utility/origin choice, migration-carrier decision or debt payment follows from this experiment. Mandatory
 factor custody, authenticated component progress and same-origin binding contracts remain unchanged.
+
+### 2026-09-10 — Move the next host experiment's denial before browser startup
+
+Use [cold-start global execution denial](./legacy-host-cold-start.md) as the next seeded experiment, in a
+disposable Linux runtime with mandatory browser policy installed before the source profile launches. Keep
+policy independent of the debugger/controller lifetime. Origin-scoped blocking leaves the documented
+cross-origin top-level embedding case; more target callbacks do not repair the measured pre-attachment gap.
+No website or maintenance path gets a JavaScript exception. The first observer uses narrowly permitted storage
+protocol commands; an inability to read exact bytes with execution denied is an unsupported result.
+
+This selects a falsifiable prototype, not a supported production profile/platform, cleanup capability or
+migration authority. Pin and verify the real runtime/browser/policy; do not install global policy on the
+user's host or clone a real profile to make the test possible. Missing/ignored policy, worker/background gaps,
+controller/browser death and second-process entry need native controls. No current browser API documentation
+is treated as proof that every restored worker is stopped. Offline reading/custom hosting remain alternatives
+if denial or bounded exact observation fails.
+
+Require the explicit clean-reopened source basis for this first experiment. A later live procedure must
+preserve or settle all visible old edits before termination; uncertain settlement refuses first intent.
+Successful temporary denial still cannot be removed to enable the modern app until lasting old-executable
+and transport retirement has its own owner/evidence. Source binding, mandatory factor custody, full residue,
+real carrier choice and all debt payment conditions remain unchanged. No runtime implementation or new native
+campaign accompanies this preparation.

@@ -48,15 +48,15 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # host diagnostic complete; candidate unsupported; revise host strategy
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-host-preparation.md]
+status: in flight # preflight committed; cold-start denial/observer probe prepared
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-host-cold-start.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-10
 ```
 
 **Current checkpoint.** Private coordinator implementation/evidence is committed as `7d238ee`; host
-preparation as `0d9c733`. The private persistent-profile diagnostic is implemented, with
+preparation as `0d9c733`; the persistent-profile diagnostic/evidence as `fbfc3ba`, with
 [preserved evidence](./storage-conformance-runs/2026-09-10-legacy-host.md): ten directed groups, 60 generated
 histories, seven full-campaign controls and one additional history-omission control pass their assertions.
 Seven new Node tests (100 generated filesystem histories), 14 supervisor tests and focused static checks pass.
@@ -74,11 +74,21 @@ start from a clean-reopened profile, also after deliberate source drift; a separ
 unsettled persistence boundary. External saved packets cold-replay the independent ledger. Outcomes were
 appended to [completed.md](./completed.md) before this checkpoint rewrite.
 
-**Next bounded work.** Revise host-strategy preparation around control before profile/session execution,
-preservation of unsettled visible work and lasting old-executable/transport retirement. Compare concrete
-supported-platform procedures against the saved page/frame/restored-shell falsifiers before another prototype.
-Do not connect this controller to coordinator effects. This result does not choose a production utility,
-new origin, migration carrier or live source-set reconciliation procedure.
+**Revised preparation.** The [cold-start host contract](./legacy-host-cold-start.md) selects a disposable
+policy-bearing Linux experiment: mandatory global JavaScript denial before the source profile launches,
+independent of controller lifetime, plus protocol-only storage observation. Official origin-blocking semantics
+leave a cross-origin embedding gap, so a maintenance URL or source-only rule cannot be the trusted boundary.
+Worker/startup coverage and exact binary observation with scripts denied remain untested hypotheses.
+This is documentation only; no production browser/platform or real migration carrier is selected.
+
+**Next bounded work.** Build the private cold-start denial/observer probe under `scripts/legacy-host-cold/`.
+Provision/pin the disposable runtime and effective mandatory policy, then test first-script pages/frames,
+retained workers/cached sessions, controller death, browser restart and second launch without enabling page
+JavaScript to read storage. Require independent carrier/sentinel ledgers, positive fault controls and 20
+bounded generated histories (seed 8941), with unsupported coverage explicit. Keep the source's clean-reopened
+fixture precondition separate from a future lossless live-source acquisition owner. If this mechanism and
+observer survive, readonly packet parity is next; coordinator effects and release of denial remain gated on
+separate live-source preservation and lasting executable/transport retirement work.
 
 **Exclusion and product gates.** The seeded coordinator controller remains a test precondition. The
 preflight must not turn a callback, digest, empty census or host report into production authority. Production
