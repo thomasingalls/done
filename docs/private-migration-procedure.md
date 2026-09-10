@@ -10,7 +10,8 @@ passed. The first personal capture refused obsolete day-journal fields; the auth
 that removed feature, and capture succeeded after the compatibility repair. Original updates retain those
 fields in the recovery packet; the durability journal and current writing remain covered. The earlier
 Markdown/relay backups remain outside the repository. Newly supplied recovery/export files are ignored
-at the worktree root and must be preserved with those backups before retiring this checkout.
+at the worktree root; copies and private verification records were preserved and checked byte-for-byte
+beside those earlier backups.
 
 ## Operator boundary
 
@@ -30,11 +31,17 @@ utility operation; matching source digests alone are still not an exclusion mech
 Use the **same browser profile and exact origin** as the source. A fresh localhost origin cannot see or
 authenticate that source, even if it has a copy of the export files. Codex prepares and verifies the chosen
 development server behind the existing origin; the author then performs the browser steps. Browser-specific
-worker retirement is guided when that step is reached, after server preparation. The development server
-still serves this worktree behind the existing origin's route with relay disconnected. The author completed
+worker retirement is guided when that step is reached, after server preparation. The author completed
 capture, saved-file verification, factor confirmation, import, selection, editor unlock and later-edit
 recovery after locking/closing/reopening. The subsequent export comparison preserved all pre-existing writing.
-Source cleanup and packaged/offline serving are still separate steps.
+The author then requested keeping the packaged build/server in this worktree and Codex session. After
+locking and closing the app, the development server was replaced by Vite preview of `dist/` on the same
+loopback port and existing origin route, with relay disconnected. The author loaded the new package online,
+confirmed existing writing, and then confirmed cached reopening and later-edit recovery through another
+lock/close/reopen while the app server was stopped. The same packaged server is now running again; HTTPS
+checks match its app entry and worker to the build. See the
+[packaged offline record](./storage-conformance-runs/2026-09-10-packaged-serving.md). Source cleanup remains
+a separate step.
 
 ## Steps, one at a time
 
@@ -81,8 +88,8 @@ source/old-writer preconditions and a separately reviewed operator step still ap
 and factor are needed for that maintenance. Opening the new editor can register its ordinary service
 worker, so returning to the maintenance utility later requires dealing with that registration again.
 
-After the author's import/reopen/export check, prepare the ordinary packaged app at the same origin and
-guide the separate source-cleanup/remaining residue steps. Do not describe the source-retaining checkpoint
+The author's import/reopen/export check and ordinary packaged cutover at the same origin are complete.
+The source-cleanup/remaining residue steps still require separate work. Do not describe the source-retaining checkpoint
 as complete encrypted-only custody. Account transport, whole-profile residue, platform/latency evidence and
 independent review retain their existing gates. No conformance debt or matrix payment follows from this page.
 

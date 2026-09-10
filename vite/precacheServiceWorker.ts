@@ -8,6 +8,8 @@
  */
 
 import { createHash } from 'node:crypto';
+import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import type { Plugin } from 'vite';
 
 const CACHEABLE = /\.(?:js|css|html|svg|png|webmanifest|woff2?)$/;
@@ -72,28 +74,36 @@ export const precacheServiceWorker = (): Plugin => {
       base = config.base;
     },
 
-    generateBundle(_options, bundle) {
-      const files = Object.keys(bundle)
-        .filter((name) => CACHEABLE.test(name))
+    writeBundle(options) {
+      if (!options.dir) throw new Error('Precache generation requires an output directory.');
+      const directory = options.dir;
+      // Vite removes inlined entry chunks after our old generateBundle hook. Read the final
+      // written output, including copied public assets, so no missing chunk can enter the cache.
+      const files = readdirSync(directory, { recursive: true, encoding: 'utf8' })
+        .filter(
+          (name) =>
+            name !== 'sw.js' && CACHEABLE.test(name) && statSync(join(directory, name)).isFile(),
+        )
         .sort();
-
-      const unique = [
-        // Vite emits these HTML entry assets after this hook; the bundle already has their chunks.
-        ...new Set([
-          base,
-          `${base}index.html`,
-          `${base}local.html`,
-          ...files.map((name) => `${base}${name}`),
-        ]),
-      ];
-
-      const version = createHash('sha256').update(unique.join('\n')).digest('hex').slice(0, 12);
-
-      this.emitFile({
-        type: 'asset',
-        fileName: 'sw.js',
-        source: serviceWorkerSource(base, version, unique),
-      });
+      if (!files.includes('index.html') || !files.includes('local.html'))
+        throw new Error('Both application entries must exist before precaching.');
+      const entries = [base, ...files.map((name) => `${base}${name.replaceAll('\\', '/')}`)];
+      // HTML, manifests and public icons have stable names: their byte changes must also produce
+      // a new worker/cache version, even when the hashed JavaScript filenames remain the same.
+      const version = createHash('sha256')
+        .update(
+          JSON.stringify(
+            files.map((name) => [
+              name,
+              createHash('sha256')
+                .update(readFileSync(join(directory, name)))
+                .digest('hex'),
+            ]),
+          ),
+        )
+        .digest('hex')
+        .slice(0, 12);
+      writeFileSync(join(directory, 'sw.js'), serviceWorkerSource(base, version, entries));
     },
   };
 };

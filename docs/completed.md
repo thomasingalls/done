@@ -1275,3 +1275,46 @@ cutover occurred: the existing origin still serves the development app with rela
 the repair/checkpoint, preserving these artifacts alongside earlier backups, and preparing packaged/offline
 serving at the same origin. Source cleanup remains a separate operator step. No conformance debt or matrix
 status changed. This outcome precedes the L-1 checkpoint rewrite; L-2 is untouched.
+
+## 2026-09-10 — Packaged serving and final-output precache repair (`L-1`)
+
+Committed the personal import/reopen checkpoint as signed `8db7070`. The author chose to keep both the
+build and serving process in this worktree/Codex session. New personal recovery/export files and private
+verification records were copied and verified beside earlier backups. After the author locked and closed
+the personal app, the development server was replaced by Vite preview of this worktree's `dist/` on the
+existing loopback port and unchanged Tailscale route. Relay remains disconnected; no source cleanup occurred.
+
+Build inspection caught two nonexistent entry chunks in the precache list: Vite removed them after the
+old generator ran, while the preview server's HTML fallback hid their absence from the original offline
+tests. The generator now reads final written files, includes public icons/manifest, and versions all cached
+bytes including fixed-name files. One unit test and three native packaged cases pass: exact file/HTTP
+parity plus new-tab offline opening, editing and recovery after another close/reopen for both entries.
+Build, TypeScript, focused static checks, budget and origin isolation pass; ordinary entries stay at
+326.6 kB gzip. See [preserved evidence](./storage-conformance-runs/2026-09-10-packaged-serving.md).
+
+Read-only checks through the personal HTTPS URL match all cached asset and worker bytes to the build,
+exclude private files and confirm relay rejection. The author has not yet performed the online first load
+and offline check of this package. That is next, one browser step at a time. The full runtime/check chain,
+new property campaigns, personal source cleanup, residue and independent review are not claimed. This
+outcome precedes the L-1 checkpoint rewrite; L-2 is untouched.
+
+## 2026-09-10 — Personal packaged offline recovery confirmed (`L-1`)
+
+The author opened the packaged app at the existing origin, unlocked the existing Local workspace and
+confirmed the writing was present. The preview server was then stopped; an independent HTTP request
+returned 502, confirming the app backend was unavailable. The author confirmed normal cached reopening,
+then made an edit and confirmed it survived locking, closing, normal reopening and unlocking while the
+server remained stopped. A forced refresh failed against the unavailable server; a subsequent normal
+refresh recovered the cached app. That observation does not establish that the worker cache was cleared.
+
+The same packaged preview was restarted in this worktree/Codex session. Read-only HTTPS checks returned
+200 and matched both the application HTML and service worker to the existing build bytes. No rebuild or
+browser storage change was needed. The personal browser result is author-reported, with no independent
+export comparison of this particular offline edit; the separate synthetic native cases remain preserved
+in the [packaged serving record](./storage-conformance-runs/2026-09-10-packaged-serving.md).
+
+The bounded personal packaged cutover is complete. Its build repair and evidence await commit. The build
+and server remain here at the author's request, relay remains disconnected, and the original plaintext
+source remains retained. Authenticated source cleanup and the broader conformance/review gates are
+separate work; no debt or matrix status changed. This outcome precedes the L-1 checkpoint rewrite;
+L-2 is untouched.

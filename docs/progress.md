@@ -48,52 +48,55 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # personal import/selection/reopen verified; packaged serving prep next
+status: in flight # personal packaged cutover verified; repair and checkpoint await commit
 plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, private-migration-procedure.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-10
 ```
 
-**Current checkpoint.** The personal import, selected Local editor and reopen check are complete under the
-[operator procedure](./private-migration-procedure.md). The author controlled every browser action. Private
-utility/rehearsal commit `9c2c48f` follows admitted Local editor `46a17fb` and startup `46d9cd6`. There is no
-deployed instance or external user. [Row 21](./selections/row-21-development-cutover.md) selects this private
-Markdown/system import and its accepted metadata/obsolete-feature losses. The host VM remains stopped;
-automatic host/policy research is not next-up. Local relay transport remains off.
+**Current checkpoint.** The personal import/selection/reopen verification and obsolete day-journal repair
+are signed commit `8db7070`, following utility `9c2c48f` and admitted editor `46a17fb`. The bounded personal
+packaged cutover is now verified. At the author's request, the build remains in this worktree and Vite
+preview runs in this Codex session, serving `dist/` through the same loopback port and existing origin
+route. Relay is off. The author controls every browser action.
 
-**Personal result.** The author saved and reselected the recovery packet/binding, saved and confirmed the
-factor, finished the bounded import, selected the destination, unlocked the ordinary editor and visually
-checked writing. Independent saved-file replay and ZIP/CRC checks matched all 24 earlier backup files.
-The first Local export preserved Goals and all 22 day files exactly, plus six unfiled bodies/order with
-expected provenance changes. After the author appended a larger Goals block, locked, closed the tab,
-reopened and unlocked, the next export contained only that appended block; all original writing was
-unchanged. The author confirmed both the intended larger addition and its presence after reopening.
-See the [walkthrough record](./storage-conformance-runs/2026-09-10-personal-local-import.md). This is bounded
-personal evidence, not an independent expected-byte oracle for the new block or a complete failure proof.
+**Personal recovery evidence.** The author completed saved-file verification, factor confirmation,
+import, selection and ordinary Local unlock. All pre-existing writing matched the verified preview/export.
+A later intentional Goals block survived lock, tab close, reopen and unlock; independent exported-byte
+comparison found only that appended block. See the [personal record](./storage-conformance-runs/2026-09-10-personal-local-import.md).
+The five new recovery/export files and four private verification records were copied and verified beside
+the earlier backups. Originals and detailed records stay ignored in this worktree. The factor remains
+with the author. The source plaintext has not been cleaned up.
 
-**Repair and checkpoint.** The obsolete day-journal compatibility repair accepts the known plain-text field,
-omits it from import by the author's decision, and retains original recovery updates. Unknown fields and
-unsupported text still refuse. Its [evidence](./storage-conformance-runs/2026-09-10-obsolete-day-journal.md)
-records the reproduction, 95 relevant unit tests, an expanded 100-case export property, four native
-migration/editor cases and passing build/static gates. The rehearsal now uses a separate dependency cache
-and explicit fixture/UI entries after initial seeding-page reloads. This checkpoint includes the repair,
-exact recovery/export filename ignores and personal verification record. Private files and hash/comparison
-records remain excluded from Git; the author holds the device-lock code.
+**Completed packaged work, awaiting commit.** [Packaged serving evidence](./storage-conformance-runs/2026-09-10-packaged-serving.md)
+records a discovered precache defect: two entry chunks were removed after the generator listed them;
+preview fallback concealed those missing files from the earlier browser checks. Generation now reads
+final output, includes public icons/manifest, and versions file contents as well as names. One unit test
+and three native cases pass, including real file/HTTP parity and new-tab offline opening/editing/reopening
+for both app entries. Build, TypeScript, focused lint/format, budget and origin isolation pass. Runtime
+custody/admission were unchanged. No full runtime suite or new property campaign was run for this repair.
 
-**Next bounded work.** Preserve the collected recovery files and exports alongside the earlier backups
-outside the worktree, then prepare the ordinary packaged application at the
-same origin. The development server still serves the selected Local editor through the existing root
-route; source data and relay-off configuration are retained. Rehearse the packaged serving arrangement,
-then guide the author through its same-origin handoff and offline reopening one step at a time. Keep the
-same profile/origin and preserve browser storage. The author continues to perform all browser interaction.
+**Personal packaged outcome.** The author opened the package online, unlocked and confirmed the writing.
+The preview server was stopped and an independent HTTPS request returned 502. With the backend still
+unavailable, the author confirmed cached reopening and a new edit surviving lock, close, normal reopen
+and unlock. The personal edit result is author-reported; there was no independent export comparison for
+this particular edit. The same preview server was then restarted. Read-only HTTPS checks returned 200
+and matched the app entry and worker to this build. Prior checks matched every precache asset, excluded
+private recovery content and confirmed relay rejection. The command, current process session, build hashes
+and detailed personal observations remain in ignored local records.
 
-**Separate later maintenance.** Authenticated source cleanup requires its existing owner and actual
-old-writer/source preconditions. The private utility has no cleanup button and the plaintext source remains
-retained; this is not complete encrypted-only custody. Whole-profile residue, applicable conformance,
-platform/latency, transport integration and independent review remain open. No debt or matrix status changes.
-The personal check ran no new synthetic runtime suite. Its outcome was appended to completed.md before this
-checkpoint rewrite; L-2 is unchanged.
+**Next bounded work.** Review and commit the packaged build repair, regression evidence and completed
+personal checkpoint. The browser walkthrough is complete. Keep this build and server here as explicitly
+requested, preserving the same profile/origin and browser storage. Further personal maintenance is a
+separate step; the offline test does not authorize source deletion.
+
+**Separate later maintenance.** Authenticated source cleanup still needs its existing owner and actual
+old-writer/source preconditions; the private utility is not in the packaged app. This source-retaining
+checkpoint is not complete encrypted-only custody. Whole-profile residue, applicable conformance,
+platform/latency, transport integration and independent review remain open. The host VM remains stopped;
+automatic host/policy research is not next-up. No debt or matrix status changes. The personal offline
+outcome was appended to completed.md before this checkpoint rewrite; L-2 is unchanged.
 
 
 ---
