@@ -1,0 +1,258 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.8.1/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/c030/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.private-migration.config.ts"
+    ],
+    "configFile": "/Users/thomasingalls/.codex/worktrees/c030/done/playwright.private-migration.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/private-migration/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/private-migration/report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": {
+      "command": "node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 4193 --strictPort",
+      "url": "http://127.0.0.1:4193/private/migration.html",
+      "reuseExistingServer": false,
+      "timeout": 30000
+    }
+  },
+  "suites": [
+    {
+      "title": "rehearsal.spec.ts",
+      "file": "rehearsal.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "saved files, renderer death, resumed selection and ordinary editor cold recovery preserve the ledger",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 518,
+                  "error": {
+                    "message": "Error: page.evaluate: Execution context was destroyed, most likely because of a navigation.",
+                    "stack": "Error: page.evaluate: Execution context was destroyed, most likely because of a navigation.\n    at seed (/Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration/rehearsal.spec.ts:31:14)\n    at /Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration/rehearsal.spec.ts:142:3",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration/rehearsal.spec.ts",
+                      "column": 14,
+                      "line": 31
+                    },
+                    "snippet": "  29 |   await page.goto('/test/legacy-export/index.html');\n  30 |   await page.waitForFunction(() => 'captureFixture' in window);\n> 31 |   await page.evaluate(async (input) => {\n     |              ^\n  32 |     const fixture = (\n  33 |       window as unknown as { captureFixture: { prepare(input: unknown): Promise<void> } }\n  34 |     ).captureFixture;"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration/rehearsal.spec.ts",
+                        "column": 14,
+                        "line": 31
+                      },
+                      "message": "Error: page.evaluate: Execution context was destroyed, most likely because of a navigation.\n\n  29 |   await page.goto('/test/legacy-export/index.html');\n  30 |   await page.waitForFunction(() => 'captureFixture' in window);\n> 31 |   await page.evaluate(async (input) => {\n     |              ^\n  32 |     const fixture = (\n  33 |       window as unknown as { captureFixture: { prepare(input: unknown): Promise<void> } }\n  34 |     ).captureFixture;\n    at seed (/Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration/rehearsal.spec.ts:31:14)\n    at /Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration/rehearsal.spec.ts:142:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T10:26:28.021Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/private-migration/artifacts/rehearsal-saved-files-rend-18727-ecovery-preserve-the-ledger/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration/rehearsal.spec.ts",
+                    "column": 14,
+                    "line": 31
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "5a688984f7417d6db555-4f4351df21d7ee848112",
+          "file": "rehearsal.spec.ts",
+          "line": 136,
+          "column": 1
+        },
+        {
+          "title": "wrong saved digest and origin refuse before enrollment; source drift refuses first intent",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1284,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T10:26:29.097Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5a688984f7417d6db555-07b202631c21429e1fce",
+          "file": "rehearsal.spec.ts",
+          "line": 221,
+          "column": 1
+        },
+        {
+          "title": "an aborted first content write offers resume with the original factor and retains source",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1476,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T10:26:30.541Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5a688984f7417d6db555-ea2ef3cca12e3a32f490",
+          "file": "rehearsal.spec.ts",
+          "line": 250,
+          "column": 1
+        },
+        {
+          "title": "a retained service-worker registration blocks observation without removing site data",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 298,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T10:26:32.023Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5a688984f7417d6db555-e82291a55fbfb50234d7",
+          "file": "rehearsal.spec.ts",
+          "line": 282,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-10T10:26:27.387Z",
+    "duration": 4989.19,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

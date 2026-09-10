@@ -68,6 +68,81 @@ describe('verified legacy export candidate preparation', () => {
       reason: 'explicit-preview-required',
     });
   });
+  it('omits obsolete day journals from Markdown while preserving their original recovery updates', async () => {
+    const input: SourceInput = example();
+    input.days[0]!.obsoleteJournal = 'removed feature prose';
+    input.days[1]!.obsoleteJournal = '';
+    input.days.push(
+      {
+        date: '2026-08-11',
+        next: [],
+        scheduled: [],
+        done: [],
+        archive: '## Next\n\n- archived card\n\n## Scheduled\n\n\n## Done\n\n',
+        obsoleteJournal: 'removed archived-day prose',
+      },
+      {
+        date: '2026-08-12',
+        next: [],
+        scheduled: [],
+        done: [],
+        obsoleteJournal: 'removed journal-only day',
+      },
+    );
+    const source = makeExportSource(input);
+    try {
+      await seed([0], [1, 2], source.updates);
+      const captured = await captureLegacyExport(task, preview);
+      checkEntries(
+        (await replayLegacyExport(captured.recovery, captured.recoveryDigest)).entries,
+        input,
+      );
+      const records = JSON.parse(new TextDecoder().decode(captured.recovery)).records as {
+        update: string;
+      }[];
+      const recovered = new Y.Doc({ gc: false });
+      try {
+        for (const [i, sourceIndex] of [1, 2, 0].entries()) {
+          const bytes = new Uint8Array(Buffer.from(records[i]!.update, 'base64'));
+          expect([...bytes]).toEqual(source.updates[sourceIndex]!);
+          Y.applyUpdate(recovered, bytes);
+        }
+        for (const day of input.days.filter((d) => d.obsoleteJournal !== undefined))
+          expect(
+            (
+              recovered.getMap<Y.Map<unknown>>('days').get(day.date)!.get('journal') as Y.Text
+            ).toString(),
+          ).toBe(day.obsoleteJournal);
+      } finally {
+        recovered.destroy();
+      }
+      expect((await captureLegacyExport(task, preview)).sourceDigest).toBe(captured.sourceDigest);
+    } finally {
+      source.doc.destroy();
+    }
+  });
+  it.each(['unknown-field', 'wrong-type', 'rich-text', 'text-map-field', 'embed'])(
+    'still refuses unsupported day content: %s',
+    async (kind) => {
+      const { doc } = makeExportSource(example());
+      try {
+        const day = doc.getMap<Y.Map<unknown>>('days').get('2026-08-01')!;
+        const journal = new Y.Text('removed prose');
+        day.set('journal', journal);
+        if (kind === 'unknown-field') day.set('unexpected', new Y.Text('retained'));
+        if (kind === 'wrong-type') day.set('journal', new Y.Map());
+        if (kind === 'rich-text') journal.format(0, 1, { bold: true });
+        if (kind === 'text-map-field') journal.setAttribute('hidden', 'retained');
+        if (kind === 'embed') journal.insertEmbed(0, { hidden: 'retained' });
+        await seed([0], [], [[...Y.encodeStateAsUpdate(doc)]]);
+        await expect(captureLegacyExport(task, preview)).rejects.toMatchObject({
+          reason: kind === 'unknown-field' ? 'unsupported-legacy-day' : 'unsupported-legacy-text',
+        });
+      } finally {
+        doc.destroy();
+      }
+    },
+  );
   it.each([1, 2])(
     'refuses incomplete semantic basis for update %i and preserves original WAL',
     async (id) => {
@@ -165,13 +240,14 @@ describe('verified legacy export candidate preparation', () => {
       .array(fc.constantFrom('a', ' ', '\n', '\t', '#', '-', 'é', '🔒'), { maxLength: 35 })
       .map((v) => v.join(''));
     await fc.assert(
-      fc.asyncProperty(text, text, text, async (master, body, orphan) => {
-        const input = example();
+      fc.asyncProperty(text, text, text, text, async (master, body, orphan, obsoleteJournal) => {
+        const input: SourceInput = example();
         input.master = master;
         input.orphan = orphan;
-        input.days.forEach((d: { next: string[]; done: string[] }) => {
+        input.days.forEach((d) => {
           d.next = [body, '', body];
           d.done = [body];
+          d.obsoleteJournal = obsoleteJournal;
         });
         await prepare(input);
         const result = await captureLegacyExport(task, preview);

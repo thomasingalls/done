@@ -7,6 +7,8 @@ export interface SourceDay {
   scheduled: string[];
   done: string[];
   archive?: string;
+  /** Removed day-level prose feature; distinct from the durability journal. */
+  obsoleteJournal?: string;
 }
 export interface SourceInput {
   master: string;
@@ -27,6 +29,7 @@ export const makeExportSource = (input: SourceInput) => {
     doc.getText('master').insert(0, input.master);
     input.days.forEach((day, d) => {
       const target = ensureDay(doc, 'fixture', day.date);
+      if (day.obsoleteJournal !== undefined) target.set('journal', new Y.Text(day.obsoleteJournal));
       if (day.archive !== undefined) {
         for (const section of SECTIONS) target.delete(section);
         target.set('archive', new Y.Text(day.archive));

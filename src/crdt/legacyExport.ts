@@ -74,7 +74,8 @@ const fields = (value: object, allowed: string[]) => {
     refuse('unsupported-recovery-packet');
 };
 
-/** Strict schema-4 projection. Never initialize actors/schema or run membership repair. */
+/** Strict schema-4 projection, excluding the removed day-journal feature by explicit policy.
+ * Never initialize actors/schema or run membership repair. */
 const previewEntries = (doc: YDoc): ZipEntry[] => {
   if ([...doc.share.keys()].some((name) => !ROOTS.includes(name)))
     refuse('unsupported-legacy-root');
@@ -107,8 +108,15 @@ const previewEntries = (doc: YDoc): ZipEntry[] => {
   const represented = new Set<string>();
   for (const [iso, day] of days) {
     date(iso);
-    if (!mapOnly(day) || [...day.keys()].some((k) => ![...SECTIONS, 'archive'].includes(k)))
+    if (
+      !mapOnly(day) ||
+      [...day.keys()].some((k) => ![...SECTIONS, 'archive', 'journal'].includes(k))
+    )
       refuse('unsupported-legacy-day');
+    // The old feature removal left these fields behind. The author permits omitting their prose
+    // from Markdown/import; original updates still retain it in the recovery packet. Accept only
+    // the known plain Y.Text shape, without widening the rule for unknown day fields or content.
+    if (day.has('journal')) plain(day.get('journal'));
     const archive = day.get('archive');
     if (archive !== undefined) {
       const body = plain(archive);

@@ -87,9 +87,9 @@ export const PrivateMigrationApp = () => {
         <p className="local-brand">done · private development utility</p>
         <h1>Move this browser’s writing to Local</h1>
         <p>
-          Import preserves Markdown content and order. Card identities and attribution are replaced;
-          preferences and editing history are not restored. Source deletion is a later, separate
-          step.
+          Import preserves current Markdown content and order. Notes from the removed day-journal
+          feature are omitted. Card identities and attribution are replaced; preferences and editing
+          history are not restored. Source deletion is a later, separate step.
         </p>
         <fieldset disabled={state.busy} style={{ border: 0, padding: 0, minWidth: 0 }}>
           {state.phase === 'host' && (

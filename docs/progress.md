@@ -48,54 +48,52 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # private import/editor rehearsal complete; personal server preparation and guided capture next
+status: in flight # personal import/selection/reopen verified; packaged serving prep next
 plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, private-migration-procedure.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-10
 ```
 
-**Current checkpoint.** The admitted Local editor is committed as signed commit `46a17fb`, following
-Local startup `46d9cd6` and preserved host diagnostics `0aec587`. The host VM is stopped. There is no deployed
-instance: only the author's personal development installation needs migration. [Row 21](./selections/row-21-development-cutover.md)
-selects the existing private Markdown/system importer with its metadata losses. Automatic host/policy/
-protocol-reader research is no longer next-up. Both ordinary app entries use factor-gated admitted editing;
-Local relay transport remains off.
+**Current checkpoint.** The personal import, selected Local editor and reopen check are complete under the
+[operator procedure](./private-migration-procedure.md). The author controlled every browser action. Private
+utility/rehearsal commit `9c2c48f` follows admitted Local editor `46a17fb` and startup `46d9cd6`. There is no
+deployed instance or external user. [Row 21](./selections/row-21-development-cutover.md) selects this private
+Markdown/system import and its accepted metadata/obsolete-feature losses. The host VM remains stopped;
+automatic host/policy research is not next-up. Local relay transport remains off.
 
-**Completed bounded work, awaiting commit.** The development-only `/private/migration.html` page connects
-capture, separate saved recovery/binding files, restart and file replay, code confirmation, bounded import,
-retained-intent unlock, selection and ordinary editor handoff. It adds no durable UI progress or plaintext
-browser cache, checks for service-worker controllers/registrations before operations, and leaves actual
-old-client quiescence with the operator. It is absent from the production entries, menu and precache and
-exposes no source deletion. See the [procedure](./private-migration-procedure.md) and
-[evidence](./storage-conformance-runs/2026-09-10-private-migration.md): 809 unit tests in 70 files and four
-native cases pass. New properties cover 200 packet/binding corruptions and 150 retained-intent UI histories,
-seed 8941. Native testing covers a renderer crash after partial import, a content-transaction abort, resumed
-selection, independent ZIP/string-ledger comparison, later accepted edit recovery and exact source retention.
-A crash-command wait error was repaired in the harness; no new runtime defect was established. Ordinary
-build/budget passes at 326.6 kB gzip per entry; desktop and mobile utility views were inspected.
+**Personal result.** The author saved and reselected the recovery packet/binding, saved and confirmed the
+factor, finished the bounded import, selected the destination, unlocked the ordinary editor and visually
+checked writing. Independent saved-file replay and ZIP/CRC checks matched all 24 earlier backup files.
+The first Local export preserved Goals and all 22 day files exactly, plus six unfiled bodies/order with
+expected provenance changes. After the author appended a larger Goals block, locked, closed the tab,
+reopened and unlocked, the next export contained only that appended block; all original writing was
+unchanged. The author confirmed both the intended larger addition and its presence after reopening.
+See the [walkthrough record](./storage-conformance-runs/2026-09-10-personal-local-import.md). This is bounded
+personal evidence, not an independent expected-byte oracle for the new block or a complete failure proof.
 
-**Personal recovery preparation already complete.** Readable Markdown plus older/newer relay snapshots are
-backed up outside the repository. Cold replay of the updated snapshot matched all 24 exported files
-byte-for-byte without pending dependencies. The temporary relay and route were removed after sync.
-The author controls browser interaction and has paused editing. No real recovery packet, import intent,
-selection or source cleanup has been performed. The new editor has not replaced the personal installation.
+**Repair and checkpoint.** The obsolete day-journal compatibility repair accepts the known plain-text field,
+omits it from import by the author's decision, and retains original recovery updates. Unknown fields and
+unsupported text still refuse. Its [evidence](./storage-conformance-runs/2026-09-10-obsolete-day-journal.md)
+records the reproduction, 95 relevant unit tests, an expanded 100-case export property, four native
+migration/editor cases and passing build/static gates. The rehearsal now uses a separate dependency cache
+and explicit fixture/UI entries after initial seeding-page reloads. This checkpoint includes the repair,
+exact recovery/export filename ignores and personal verification record. Private files and hash/comparison
+records remain excluded from Git; the author holds the device-lock code.
 
-**Next bounded work.** Commit this utility/rehearsal checkpoint, then prepare and verify the development
-server from this worktree behind the original origin with relay disconnected. Guide the author through
-retiring the old service worker without clearing IndexedDB/localStorage/site data, closing the old controlled
-page, and opening the private utility. The author performs every personal-browser interaction. Take the
-procedure one step at a time: capture/save both files, cold reselect/verify, confirm factor, import, select,
-open the normal editor, and compare writing/export plus cold-reopened later edits. Use the same browser
-profile and origin. Do not substitute the Markdown ZIP or relay snapshot for the authenticated source-bound
-input. Do not restart automatic host research or present the operator checkbox as general exclusion proof.
+**Next bounded work.** Preserve the collected recovery files and exports alongside the earlier backups
+outside the worktree, then prepare the ordinary packaged application at the
+same origin. The development server still serves the selected Local editor through the existing root
+route; source data and relay-off configuration are retained. Rehearse the packaged serving arrangement,
+then guide the author through its same-origin handoff and offline reopening one step at a time. Keep the
+same profile/origin and preserve browser storage. The author continues to perform all browser interaction.
 
-**After verified personal destination recovery.** Prepare the ordinary packaged application at the same
-origin, retaining backups. Source cleanup requires a separate operator step through its existing authenticated
-owner and actual old-writer/source preconditions. The current utility deliberately retains plaintext source;
-this is not complete encrypted-only custody. Whole-profile residue, applicable conformance, platform/latency,
-transport integration and independent review remain open. No debt or conformance matrix status changed.
-Completed work was recorded before this checkpoint rewrite; L-2 is unchanged.
+**Separate later maintenance.** Authenticated source cleanup requires its existing owner and actual
+old-writer/source preconditions. The private utility has no cleanup button and the plaintext source remains
+retained; this is not complete encrypted-only custody. Whole-profile residue, applicable conformance,
+platform/latency, transport integration and independent review remain open. No debt or matrix status changes.
+The personal check ran no new synthetic runtime suite. Its outcome was appended to completed.md before this
+checkpoint rewrite; L-2 is unchanged.
 
 
 ---

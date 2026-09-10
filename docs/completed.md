@@ -1226,3 +1226,52 @@ result, platform/latency evidence or independent review is claimed. Source clean
 under its existing authenticated owner and actual preconditions. Next is preparing this private utility at
 the author's existing origin, then guiding the author through service-worker retirement and capture while
 preserving site data. This outcome precedes the L-1 checkpoint rewrite; L-2 is untouched.
+
+## 2026-09-10 — Obsolete day-journal capture compatibility (`L-1`)
+
+The private utility/rehearsal is committed as signed `9c2c48f`. The development server now serves it at the
+author's existing origin through the unchanged root route, with relay disconnected. The author reached
+capture after the service-worker check passed; the first capture refused `unsupported-legacy-day`.
+Historical feature removal left day-level `journal: Y.Text` fields in the source. The author explicitly
+permits omitting that obsolete prose from the import, recorded in row 21. The validator accepts that known
+plain-text shape while retaining all original recovery update bytes and existing refusal boundaries.
+The utility explains the omission; this does not change durability-journal recovery or authorize deletion.
+
+[Evidence](./storage-conformance-runs/2026-09-10-obsolete-day-journal.md): the synthetic failure reproduced
+before repair; 95 relevant unit tests in eight files and all four native migration/editor cases pass.
+The 100-case generated export property now independently varies obsolete prose. Directed checks retain
+the raw updates and source digest while omitting empty/nonempty, archived and journal-only day prose from
+the independent current-content ledger. Two initial native runs lost their seeding page before capture;
+a focused rerun passed, and a separate test dependency cache/explicit entry scan now avoids sharing the
+operator server's optimizer cache. The final complete campaign passes from that new cache. The precise
+initial reload trigger was not established. TypeScript, focused static checks, production build/budget,
+origin isolation and documentation gates pass; ordinary entries remain at 326.6 kB gzip.
+
+Read-only strict replay of the unchanged personal relay backup and in-memory import planning now pass;
+all 24 current-content files still match the verified Markdown backup. No real capture, destination intent,
+selection or cleanup is yet recorded. Next is the author's capture retry in the same browser/origin.
+The complete check chain and older native campaigns were not rerun; no debt or conformance status changes.
+This outcome precedes the L-1 checkpoint rewrite; L-2 is untouched.
+
+## 2026-09-10 — Personal Local import, selection and reopen verification (`L-1`)
+
+The author completed the private browser walkthrough after the obsolete day-journal compatibility repair:
+saved packet/binding verification, private factor storage and confirmation, bounded import, selected Local
+destination, ordinary editor unlock and visual check. The author controlled every browser interaction.
+File-only strict replay verified the actual saved packet/binding, and its preview matched all 24 earlier
+Markdown backup files. The new Local export preserved Goals and all 22 day files byte-for-byte and all six
+unfiled bodies/order; only expected unfiled provenance metadata changed.
+
+The author then added a larger Goals block, locked, closed the tab, reopened the same origin and unlocked.
+The author confirmed the addition remained visible. Independent ZIP/CRC comparison of the subsequent export
+found exactly one appended Goals block (456 nonblank lines), with all original Goals characters, day files
+and unfiled bytes unchanged. The author confirmed that the larger addition was intentional. The new block's
+exact expected bytes were not independently supplied; this is a successful personal reopen check, not a
+complete failure/conformance proof. See the [walkthrough record](./storage-conformance-runs/2026-09-10-personal-local-import.md).
+
+Private recovery/export files are excluded from Git; detailed hashes/comparisons remain in ignored local
+records. The device-lock code stays with the author. No plaintext source cleanup or packaged application
+cutover occurred: the existing origin still serves the development app with relay off. Next is committing
+the repair/checkpoint, preserving these artifacts alongside earlier backups, and preparing packaged/offline
+serving at the same origin. Source cleanup remains a separate operator step. No conformance debt or matrix
+status changed. This outcome precedes the L-1 checkpoint rewrite; L-2 is untouched.

@@ -13,6 +13,7 @@ const source: SourceInput = {
       next: ['one', 'two', 'three', 'four'],
       scheduled: ['later\n\n## Done'],
       done: ['finished', ''],
+      obsoleteJournal: 'Removed day-journal prose: omit from the imported workspace.',
     },
   ],
 };

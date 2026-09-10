@@ -8,6 +8,15 @@ uncapped imported collections and unfiled bodies. Give cards fresh IDs, system a
 the import timestamp. Actor/device/settings metadata and CRDT history are not restored. A full fidelity
 archive and a general user-facing Markdown ZIP importer remain separate work.
 
+**Removed-feature disposition, same day.** Personal capture exposed residual day-level `journal` fields
+left by the old feature removal (`a11194e`). The author explicitly permits dropping that obsolete prose
+from the Markdown preview and imported workspace. Accept only its known plain `Y.Text` representation;
+unknown day fields and unsupported text still refuse. The original updates, including those journals,
+remain in the recovery packet and source until a separate authorized cleanup. This exception concerns
+the removed day-journal feature, not the localStorage durability journal or edits it carries. Existing
+accepted packets and their import plans do not change; previously refused packets with this old field
+can now produce the same current-content projection as the ordinary Markdown exporter.
+
 The current private importer accepts a verified diagnostic recovery packet and a source/policy binding.
 The raw packet is plaintext backup material; it is not the portable encrypted archive. A Markdown ZIP or
 relay `.ydoc` is useful recovery material but cannot simply be passed to this API or substituted for source

@@ -4,8 +4,13 @@ This is the operator-assisted path selected in [row 21](./selections/row-21-deve
 the author's sole development installation. The private page at `/private/migration.html` is served by
 the Vite development server from this worktree. It is absent from the ordinary production build, service
 worker precache, app menu and public application exports. It registers no worker and connects no relay.
-The [seeded rehearsal](./storage-conformance-runs/2026-09-10-private-migration.md) has passed; the personal
-procedure has not yet begun. The earlier verified Markdown and relay backups remain outside the repository.
+The [seeded rehearsal](./storage-conformance-runs/2026-09-10-private-migration.md) and
+[personal import/reopen checkpoint](./storage-conformance-runs/2026-09-10-personal-local-import.md) have
+passed. The first personal capture refused obsolete day-journal fields; the author permitted omitting
+that removed feature, and capture succeeded after the compatibility repair. Original updates retain those
+fields in the recovery packet; the durability journal and current writing remain covered. The earlier
+Markdown/relay backups remain outside the repository. Newly supplied recovery/export files are ignored
+at the worktree root and must be preserved with those backups before retiring this checkout.
 
 ## Operator boundary
 
@@ -25,8 +30,11 @@ utility operation; matching source digests alone are still not an exclusion mech
 Use the **same browser profile and exact origin** as the source. A fresh localhost origin cannot see or
 authenticate that source, even if it has a copy of the export files. Codex prepares and verifies the chosen
 development server behind the existing origin; the author then performs the browser steps. Browser-specific
-worker retirement is guided when that step is reached, after server preparation. No personal server or
-route was changed during this implementation or its rehearsal.
+worker retirement is guided when that step is reached, after server preparation. The development server
+still serves this worktree behind the existing origin's route with relay disconnected. The author completed
+capture, saved-file verification, factor confirmation, import, selection, editor unlock and later-edit
+recovery after locking/closing/reopening. The subsequent export comparison preserved all pre-existing writing.
+Source cleanup and packaged/offline serving are still separate steps.
 
 ## Steps, one at a time
 
@@ -56,9 +64,9 @@ route was changed during this implementation or its rehearsal.
    migration or proof of current content recovery.
 7. Choose **Open Local editor**, enter the same code, and verify Goals, historical days, frozen dates,
    uncapped imported Next collections and unfiled bodies. Export Markdown and compare its content with the
-   recovery preview/known backup. Unfiled provenance, card IDs/attribution, preferences and CRDT history have
-   the selected Markdown/system losses. Test a small edit, lock, cold reopen and export again before using
-   the new workspace for ongoing writing.
+   recovery preview/known backup. The removed day-journal feature is deliberately omitted. Unfiled provenance,
+   card IDs/attribution, preferences and CRDT history have the selected Markdown/system losses. Test a small
+   edit, lock, cold reopen and export again before using the new workspace for ongoing writing.
 
 The utility's restart link drains its coordinator and drops visible code/preview. Page closure or renderer
 death can leave retained intent; reopen recovers its next step from the existing authenticated records,
