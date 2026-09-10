@@ -1382,3 +1382,73 @@ this workspace without importing or merging its old writing. Its cleanup is sepa
 
 The live `dist/`, server, origin and relay-off state were retained. The full check chain, broader platform
 assurance and debt/matrix closure are not claimed. This outcome precedes the L-1 rewrite; L-2 is unchanged.
+
+## 2026-09-10 — Compatibility committed; personal release and account/sync prep (`L-1`)
+
+Signed `17d87c2` commits the compatibility interlock, its checkpoint and preserved evidence. A production
+package was then built from that clean source into `.dev/releases/17d87c2/app`; the live `dist/` was not
+overwritten. All ten candidate files and eleven predecessor files were hash-checked. The packaged runner
+now accepts an isolated release root and report path. Three native package cases pass, including exact
+HTTP/file parity and encrypted edit/lock/reopen while offline at both entries. TypeScript, focused lint/
+format, budget (327.2 kB) and origin isolation pass. The [build and report](./storage-conformance-runs/2026-09-10-personal-upgrade-prep/manifest.json) are preserved.
+
+The [handoff procedure](./personal-app-upgrade.md) is ready. Current lock/close confirmation has been
+requested from the author; the preview still serves the verified predecessor. Preparation and HTTP
+verification do not establish a personal browser update. The new policy may require a final normal
+close/reopen after its first download before the Version field shows `17d87c2`.
+
+[Account/sync prep](./account-sync-prep.md) reconciles the clean L-2 worktree/ref at `d24732b`: the slot
+verifier and tests are already identical here; no account service or enrollment implementation is pending
+there. The first code slice is durable account challenges and passkey verification, kept pending until
+recovery confirmation and promotion are implemented. The author's chosen path is promotion here and
+adoption on the actual second pre-encryption device without merging its old writing. No account service,
+account ceremony or relay was started. L-2's checkpoint remains unchanged. This outcome precedes L-1's rewrite.
+
+## 2026-09-10 — Personal upgrade server handoff verified; browser confirmation pending (`L-1`)
+
+After the author confirmed the current lock/close request, the predecessor preview was stopped and
+replaced with the prepared `17d87c2` package on the same loopback port 8082. The HTTPS origin and
+Tailscale route are unchanged; the build and server remain in this worktree/Codex session. The old
+`dist/` is intact. Relay remains off and no personal browser operation was automated.
+
+All ten release files plus the root HTML alias returned 200 and matched the clean-source build's SHA-256
+hashes through both loopback and the personal HTTPS origin: 22 matching responses. The read-only
+[HTTP handoff evidence](./storage-conformance-runs/2026-09-10-personal-upgrade-prep/handoff-http.json)
+is preserved separately from the preparation manifest. This establishes what the server serves; the
+author's normal browser reopen, Version `17d87c2`, writing and later-edit recovery checks remain pending.
+This outcome precedes the L-1 checkpoint update; L-2 is unchanged.
+
+## 2026-09-10 — Personal upgrade reached after hard reload (`L-1`)
+
+The author reports Version `8db7070` on the first normal load, unchanged after a soft reload, then
+Version `17d87c2` after a hard reload. This confirms the new app was reached but does not establish
+the active service-worker controller or the package used by a subsequent normal/offline reopen. Writing
+and a new edit surviving lock, full close and normal reopen still need confirmation for this handoff.
+
+The new package already includes the waiting-release notice in the menu and startup screen; the cached
+predecessor lacks it. Its instruction is to lock, close all tabs/app windows and reopen once an update is
+ready. The author's suggestion for an update message is therefore covered for later releases, though
+this personal observation has not exercised the notice. No app code or server change was made in response.
+This outcome precedes the L-1 checkpoint update; L-2 remains unchanged.
+
+## 2026-09-10 — Personal application upgrade confirmed (`L-1`)
+
+After the requested edit, lock, full close, normal reopen and unlock, the author confirms the edit survives
+and Version remains `17d87c2`. This closes the bounded personal same-format application handoff. The
+result is author-reported; no personal browser automation or independent export comparison was performed.
+The personal server-off check was not repeated for this release; the prepared exact-package native tests
+already cover offline edit/reopen at both entries. Future waiting-update notice behavior was not exercised
+by this personal handoff from the older app that lacked it.
+
+The verified release remains served from this worktree/Codex session at the unchanged origin; relay remains
+off. The prior build and external recovery files remain retained. Account/sync preparation is complete;
+the next bounded implementation is durable account challenges and passkey verification with private test
+endpoints, keeping account activation, recovery, promotion and content access outside this first slice.
+This outcome precedes the L-1 checkpoint update; L-2 remains unchanged.
+
+## 2026-09-10 — Personal preview paused for account implementation (`L-1`)
+
+At the author’s request, stopped the personal preview after the successful `17d87c2` normal-reopen/edit
+check. Account-core testing uses separate disposable servers and does not require this preview. The
+release files and unchanged Tailscale route remain available for a later restart; relay remains off.
+This outcome precedes the L-1 checkpoint update; L-2 is unchanged.

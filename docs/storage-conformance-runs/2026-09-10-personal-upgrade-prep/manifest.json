@@ -1,0 +1,34 @@
+{
+  "sourceCommit": "17d87c23fe888ed577b558002c3bf94bca4cad98",
+  "scope": "Clean-source package preparation and disposable offline tests; personal handoff awaits current quiescence",
+  "files": [
+    {
+      "path": "playwright.local-startup.config.ts",
+      "sha256": "9195d8ed1e29d9372c92536b2a846502907b34e1023a5bc325505d3238894a71"
+    },
+    {
+      "path": "test/local-app/packaged.spec.ts",
+      "sha256": "f39c3fcbbeba644351f3e525ee2c31f29fd4d874f62910e93e328d1c5cb7ee30"
+    },
+    {
+      "path": "tsconfig.node.json",
+      "sha256": "2109413a824b532d9d598159a93792869254d3eb7160e9d7a76462e658b126fa"
+    },
+    {
+      "path": "docs/personal-app-upgrade.md",
+      "sha256": "2a5efaa57fbddfd357e1da6c22420c10bc5d8647dbb72d3d9ef9ba85d67d1fee"
+    },
+    {
+      "path": "docs/account-sync-prep.md",
+      "sha256": "20023c0bab76cf8efb75ebb1f590eb956f64d2ca949be3a759fcc875c6937d40"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-personal-upgrade-prep/packaged.json",
+      "sha256": "43601033fb0018cf78e5928454242bb0782254afd78b757cf683e0b5129e27ea"
+    },
+    {
+      "path": "docs/storage-conformance-runs/2026-09-10-personal-upgrade-prep/build.json",
+      "sha256": "889f20230277121e64ce57a762f46944f7f3545c85f921756c5b4e294cf96ddf"
+    }
+  ]
+}

@@ -1,14 +1,17 @@
 import { test, expect } from '@playwright/test';
 import { readFile, access } from 'node:fs/promises';
+import { join, resolve } from 'node:path';
+
+const releaseRoot = resolve(process.env['LOCAL_STARTUP_PREVIEW_ROOT'] ?? 'dist');
 
 test('packaged precache names real files and serves their exact bytes', async ({ request }) => {
-  const worker = await readFile('dist/sw.js', 'utf8');
+  const worker = await readFile(join(releaseRoot, 'sw.js'), 'utf8');
   const entries = JSON.parse(
     worker.match(/const PRECACHE = ([\s\S]*?);\nconst URLS/)![1]!,
   ) as string[];
   expect(entries).toEqual(expect.arrayContaining(['/', '/index.html', '/local.html']));
   for (const path of entries) {
-    const file = `dist/${path === '/' ? 'index.html' : path.slice(1)}`;
+    const file = join(releaseRoot, path === '/' ? 'index.html' : path.slice(1));
     await access(file); // A preview server's HTML fallback must not disguise a missing asset.
     const response = await request.get(path);
     expect(response.status()).toBe(200);

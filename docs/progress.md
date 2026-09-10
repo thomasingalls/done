@@ -48,7 +48,7 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # compatible updates committed; storage compatibility baseline verified
+status: in flight # personal upgrade complete; account challenge/passkey core next
 plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, application-upgrades.md, storage-compatibility.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
@@ -57,12 +57,14 @@ updated: 2026-09-10
 
 **Personal checkpoint.** Signed `14901a5` records compatible app-update work and the author's successful
 source cleanup followed by encrypted reopening with the writing intact. The exact helper completion text
-was not retained; no independent personal census is claimed. External backups remain. The live package
-is still the earlier `07d89f6` checkpoint following personal import `8db7070`; the new update policy and
-compatibility gate are not deployed. The same preview server and HTTPS origin remain in this worktree/
+was not retained; no independent personal census is claimed. External backups remain. Following the author's
+current lock/close confirmation, the preview served the verified `17d87c2` package at the same HTTPS
+origin and loopback port. It is now stopped at the author’s request during account implementation. The predecessor `dist/` remains intact. Build and server remain in this worktree/
 Codex session by request. Relay is off. The author controls their browser and retains their device code.
+The author confirms a later edit survives lock, full close, normal reopen and unlock, with Version
+`17d87c2` still shown. The bounded personal application upgrade is complete.
 
-**Completed bounded compatibility work, awaiting commit.** The [contract](./storage-compatibility.md)
+**Committed compatibility baseline (`17d87c2`).** The [contract](./storage-compatibility.md)
 and [evidence](./storage-conformance-runs/2026-09-10-storage-compatibility.md) cover a refusal-only interlock
 at a stable custody key. Every shared/exclusive grant checks it before caller initialization. Any retained
 value blocks this build; absence continues to the existing authentication and format checks. Blocked native
@@ -75,11 +77,24 @@ cases including the actual predecessor, eight Local app cases and five private m
 TypeScript, focused static checks, isolated-build budget (327.2 kB) and origin isolation pass. The live build
 was not overwritten. The complete check chain was not run; no debt or matrix status changed.
 
-**Next bounded work.** Review/commit this baseline, then guide the prepared same-format app release through
-the author's lock/close/reopen handoff. Development can move to account attachment and encrypted sync prep:
-reconcile L-2's current account boundary first, identify service/account authority and recovery requirements,
-and bind this existing workspace. The author's other pre-encryption device must adopt this workspace with
-fresh device custody without importing or merging its old writing. Cleanup there remains separate.
+**Personal release handoff.** The clean-source package from `17d87c2` is retained at
+`.dev/releases/17d87c2/app`. All three exact-package native cases pass, including offline edit/reopen at
+both entries. [Build/report pins](./storage-conformance-runs/2026-09-10-personal-upgrade-prep/manifest.json)
+and the [handoff procedure](./personal-app-upgrade.md) are retained. All ten release files plus root HTML
+match through both loopback and HTTPS: [22 matching responses](./storage-conformance-runs/2026-09-10-personal-upgrade-prep/handoff-http.json).
+The author saw `8db7070` on the first load and after soft reload, then `17d87c2` after hard reload.
+A subsequent requested lock/full-close/normal-reopen check preserved the new edit and Version `17d87c2`,
+as reported by the author. The personal server-off exercise was not repeated for this release; the
+exact-package native tests cover offline recovery. This package includes the waiting-update notice that
+the predecessor lacked; the personal handoff did not exercise that notice.
+
+**Account/sync prep complete.** The [prep](./account-sync-prep.md) reconciles the clean L-2 worktree/ref at
+`d24732b`: its verifier/tests are already identical here, and no account service or enrollment code is
+waiting there. The next bounded code phase is durable account challenges and passkey verification with
+private/disposable endpoints. Accounts remain pending until recovery confirmation and promotion exist;
+this phase cannot grant content access, relay capability or modify the selected Local workspace.
+The author chose promotion of the current writing here and adoption on the actual second pre-encryption
+device, with fresh local custody and no import/merge of that device's old writing. Its cleanup is separate.
 
 No actual incompatible format change is planned. Before one, its concrete owner must authenticate durable
 intent, exclude old writers (including pre-interlock builds), resume under exclusion, and define recovery/
