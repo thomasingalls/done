@@ -1,0 +1,58 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/yjsDelivery.test.ts > pinned Yjs delivery wake-ups > retains the earlier cross-client wake-up when its supplied reader starts after the dependency 5ms
+ ✓ test/yjsDelivery.test.ts > pinned Yjs delivery wake-ups > completes every order of the saved seven original records without redelivery 496ms
+ ✓ test/positionDecision.test.ts > reads the selected refusal and link/head messages without changing their signed bytes 4ms
+ ✓ test/positionDecision.test.ts > binds all five refusal subject fields, parent and the current externally held acceptance key 4ms
+ ✓ test/positionDecision.test.ts > authenticates a reconstructed link, distinguishes a proved conflicting leaf, and holds unanchored heads 4ms
+ ✓ test/positionDecision.test.ts > keeps refusal IDs stable across acceptance-key rotation while requiring the current signature 1ms
+ ✓ test/positionDecision.test.ts > rejects unknown, noncanonical, oversized, unsigned and malformed response bytes 1ms
+ ✓ test/positionDecision.test.ts > 200 generated signed chain histories distinguish exact evidence, conflicting leaves and foreign prefixes 993ms
+ ✓ test/yjsDelivery.test.ts > pinned Yjs delivery wake-ups > preserves the external ledger under generated originals histories 680ms
+ ✓ test/positionDecision.test.ts > signs a separate submission wrapper over exact v2 bytes and parent refusal ID 4ms
+ ✓ test/positionDecision.test.ts > rejects swapping a valid parent proof, changing exact wire, skipping positions and stale proof keys 9ms
+ ✓ test/positionDecision.test.ts > 100 generated successor proofs bind parent bytes, original position and independent signing inputs 339ms
+ ✓ test/positionDecision.test.ts > captures response, expected subject and authority before asynchronous verification 1ms
+ ✓ test/positionDecision.test.ts > captures submission inputs and rejects malformed/trailing/oversized framing 1ms
+ ✓ test/positionDecision.test.ts > re-signing the same permanent parent under the current key preserves wrapper verification 3ms
+ ✓ test/yjsDelivery.test.ts > pinned Yjs delivery wake-ups > preserves the external ledger under generated handoff histories 781ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > 250 generated transaction histories recover exact bytes, actors and independent text across carrier overlap and reverse delivery 1036ms
+stdout | test/sourceCapture.test.ts > Account source capsule conformance > private initialization retains system attribution and subsequent editing retains the human actor
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/sourceCapture.test.ts > Account source capsule conformance > private initialization retains system attribution and subsequent editing retains the human actor
+[yjs] Changed the client-id because another client seems to be using it.
+
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > 200 generated route and actor substitutions refuse without accepting a different authority 18ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > refuses noncanonical framing, unknown version, malformed CRDT, oversized payload and too many sources 1ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > conflicting stable identity refuses journal/disk, disk/disk and journal/journal overlap 2ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > requires original sources to cover all prepared state, including deletions 2ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > private initialization retains system attribution and subsequent editing retains the human actor 35ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > repeated oversized preparation does not accumulate capsule reservations or acknowledge input 5ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separates v2 keys by credential and generation and refuses v1 mint/downgrade 3ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 1 bytes: single-update 3ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 1 bytes: batched-updates 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 1 bytes: system-actor 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 1 bytes: rotated-generation 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 2 bytes: single-update 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 2 bytes: batched-updates 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 2 bytes: system-actor 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 2 bytes: rotated-generation 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 2 bytes: other-credential 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separately checks the signature and seal binding for workspace_id 3ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separately checks the signature and seal binding for credential_id 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separately checks the signature and seal binding for epoch 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separately checks the signature and seal binding for gen 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separately checks the signature and seal binding for seq 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > checks version, domains, nonce, digest, ciphertext, signer and workspace subkey 3ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > refuses malformed framing and authenticated malformed bodies without returning updates 13ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > captures mutable input before asynchronous crypto and returns detached output 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > generated bodies roundtrip exactly; arbitrary changed wire bytes cannot authenticate 77ms
+ ✓ test/yjsDelivery.test.ts > pinned Yjs delivery wake-ups > preserves the external ledger under generated concurrent-handoff histories 2339ms
+
+ Test Files  4 passed (4)
+      Tests  43 passed (43)
+   Start at  01:34:49
+   Duration  4.53s (transform 293ms, setup 91ms, import 514ms, tests 6.89s, environment 0ms)
+

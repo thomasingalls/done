@@ -2016,3 +2016,46 @@ Next is bounded prep for authenticated inbound replay: establish the receive bas
 membership from publisher authority, specify the receive commit/cursor and reader fence, and build
 independent counterexamples before enabling receipt of new remote content. This outcome is appended
 before replacing L-1 progress; L-2 is unchanged.
+
+
+### 2026-09-11 — Authenticated inbound replay preparation
+
+Committed the owned delivery/reconnect driver as `8dd06fb`. The
+[inbound contract](./account-inbound.md) now distinguishes the independently held semantic baseline,
+reader membership, publisher authority, per-stream acceptance links, durable receive progress and Yjs
+materialization. Proposed v2 read/page bytes bind separate reader and publisher credentials; the existing
+v1 service/transport remains unchanged. The first runtime scope remains the creating publisher at epoch 1,
+generation 1, with fresh-reader/two-publisher authority supplied only by synthetic preparation fixtures.
+
+The planned v9 reader fence and inbound event retain original signed request/page bytes (including envelope
+and proof), while content, event and metadata witness commit together before editor promotion. Pending
+structs/deletions retain original framing; compaction cannot erase them. Remote bytes bypass source capture.
+The local batch limit requires an explicit bounded first receive policy: one entry, at most 512 KiB wire,
+255 updates and 512 KiB decoded updates, then the actual 4 MiB/256-record check. No new runtime formats,
+service routes, database schema, personal Account, browser or factor were changed in this preparation.
+
+[Evidence](./account-conformance-runs/2026-09-11-account-inbound-prep.md) preserves 25 preparation cases,
+300 generated histories (seed 9142026), independent Node/OpenSSL wire fixtures, seven effective shortcut
+controls, 43 existing primitive regressions and the 906-test/80-file unit suite. Isolated build, static
+checks and 13 repository gates accompany the result. Tests demonstrated false baseline authority, missing
+deletion coverage, cursor-before-content loss, dropped pending deletions, a local edit depending on an
+uncommitted remote input, conflated publisher cursors and source relabeling. These are counterexamples to
+proposed shortcuts, not claims that the current production owner enables those paths.
+
+A directed mutable-input test found a defect in the new executable candidate: it verified parsed bytes but
+saved the caller's later mutation. The candidate now owns bounded copies before async crypto and rechecks
+lifetime even before returning a duplicate. The failing reproduction is retained; the final test includes
+closure during duplicate verification. The final generated histories found no additional counterexample.
+The model assumes atomic JS assignment and independently established authority, and caches prior verified
+event objects for restart. Native durability, authenticated stored-wire replay, issuance and complete v2
+parser conformance remain implementation obligations. No whole-protocol debt is paid.
+
+The pnpm wrapper stalled without output before launching the campaign; its task process was stopped and
+the checked-in Node runner executed directly. Its cause was not diagnosed; neither a successful pnpm wrapper
+run nor the whole pnpm check is claimed. The personal Local release/predecessor are intact, preview/relay
+remain stopped and L-2 is unchanged. This outcome is appended before replacing L-1.
+
+Next bounded build: closed inbound record and v2 read/page codecs plus first-epoch verification under an
+independently supplied owner context, with canonical framing, baseline/actor/prefix/bounds and mutable-input
+controls. Native v9 activation and atomic receive storage follow that verified byte boundary; editor
+promotion and service/enrollment integration follow their own checkpoints.

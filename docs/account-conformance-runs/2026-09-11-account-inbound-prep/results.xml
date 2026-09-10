@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="25" failures="0" errors="0" time="7.175515416">
+    <testsuite name="test/accountInboundPrep.test.ts" timestamp="2026-09-10T23:34:49.348Z" hostname="Thomass-MacBook-Pro.local" tests="25" failures="0" errors="0" skipped="0" time="7.175515416">
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; keeps reader authority distinct from publisher authority and begins from held zero links" time="0.018083333">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; retains cross-stream pending structs/deletions across commit and restart before their dependency arrives" time="0.014290292">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; rejects a gap, deduplicates exact entries and retains advertised high-water marks across restart" time="0.008673125">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; binds fresh input to the actual pending request; committed evidence remains usable after expiry" time="0.0057125">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; refuses foreign input without changing content or progress" time="0.00207775">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; refuses retired input without changing content or progress" time="0.00170975">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; refuses reader-retired input without changing content or progress" time="0.001722291">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; refuses epoch input without changing content or progress" time="0.002208167">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; refuses generation input without changing content or progress" time="0.003175958">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; refuses actor input without changing content or progress" time="0.00334025">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; refuses agent input without changing content or progress" time="0.003609167">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; refuses final input without changing content or progress" time="0.003154">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; retains a proved conflicting digest without applying it or advancing the receive cursor" time="0.006343834">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; retains the exact verified request/page when caller buffers change during crypto" time="0.004988041">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; leaves malformed or unproved evidence unconsumed and refuses local size/count overflow" time="0.024727209">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; commits content and progress together across abort, lost acknowledgement and close before commit" time="0.019217166">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; rechecks membership at commit and fails cold open on omitted evidence or a wrong reader fence" time="0.0050835">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="inbound candidate contract — synthetic authority and atomic model only &gt; 300 generated delivery/crash/compaction histories preserve the external receipt and source ledger" time="7.026717125">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="effective counterexamples to tempting receive shortcuts &gt; equal state vectors can hide different deletion coverage in a proposed baseline" time="0.001968917">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="effective counterexamples to tempting receive shortcuts &gt; a valid head cannot choose its own prefix, and a complete accepted suffix cannot replace genesis" time="0.004223792">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="effective counterexamples to tempting receive shortcuts &gt; a cursor-first split commit is detected after the content half is lost" time="0.003446375">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="effective counterexamples to tempting receive shortcuts &gt; dropping pending data from a snapshot loses a received deletion when its target arrives later" time="0.001542">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="effective counterexamples to tempting receive shortcuts &gt; promoting a remote dependency before commit can acknowledge a local edit that disappears on cold replay" time="0.001818583">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="effective counterexamples to tempting receive shortcuts &gt; one global receive cursor skips a different publisher at the same position" time="0.002045334">
+        </testcase>
+        <testcase classname="test/accountInboundPrep.test.ts" name="effective counterexamples to tempting receive shortcuts &gt; the raw capture primitive can relabel received bytes, so it cannot serve as authenticated ingress" time="0.004268958">
+        </testcase>
+    </testsuite>
+</testsuites>

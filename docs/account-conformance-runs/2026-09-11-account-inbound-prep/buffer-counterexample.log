@@ -1,0 +1,54 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > keeps reader authority distinct from publisher authority and begins from held zero links
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > retains cross-stream pending structs/deletions across commit and restart before their dependency arrives
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > rejects a gap, deduplicates exact entries and retains advertised high-water marks across restart
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > binds fresh input to the actual pending request; committed evidence remains usable after expiry
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses foreign input without changing content or progress
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses retired input without changing content or progress
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses reader-retired input without changing content or progress
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses epoch input without changing content or progress
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses generation input without changing content or progress
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses actor input without changing content or progress
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses agent input without changing content or progress
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses final input without changing content or progress
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > retains a proved conflicting digest without applying it or advancing the receive cursor
+ × test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > retains the exact verified request/page when caller buffers change during crypto 31ms
+   → expected '0000000000000000000000000000000000000…' to be '5b22646f6e652f707269766174652d7265616…' // Object.is equality
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > leaves malformed or unproved evidence unconsumed and refuses local size/count overflow
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > commits content and progress together across abort, lost acknowledgement and close before commit
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > rechecks membership at commit and fails cold open on omitted evidence or a wrong reader fence
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > 300 generated delivery/crash/compaction histories preserve the external receipt and source ledger
+ ↓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > equal state vectors can hide different deletion coverage in a proposed baseline
+ ↓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > a valid head cannot choose its own prefix, and a complete accepted suffix cannot replace genesis
+ ↓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > a cursor-first split commit is detected after the content half is lost
+ ↓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > dropping pending data from a snapshot loses a received deletion when its target arrives later
+ ↓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > promoting a remote dependency before commit can acknowledge a local edit that disappears on cold replay
+ ↓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > one global receive cursor skips a different publisher at the same position
+ ↓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > the raw capture primitive can relabel received bytes, so it cannot serve as authenticated ingress
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > retains the exact verified request/page when caller buffers change during crypto
+AssertionError: expected '0000000000000000000000000000000000000…' to be '5b22646f6e652f707269766174652d7265616…' // Object.is equality
+
+Expected: "5b22646f6e652f707269766174652d726561642f7632222c322c223838383838383838383838383838383838383838383838383838383838383838222c2268747470733a2f2f666978747572652e696e76616c6964222c223535353535353535353535353535353535353535353535353535353535353535222c223333333333333333333333333333333333333333333333333333333333333333222c223131313131313131313131313131313131313131313131313131313131313131222c2236363636363636363636363636363636363636363636363636363636363636363636363636363636363636363636363636363636363636363636363636363636222c2237373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737222c312c302c312c2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303031222c33303030302c223538636432313264633464323238626430646234353562626664643131373438653135643437333862336333656464633561613733633235626561663966336637386537656530356537373037306232393435336636366134303431373339663064383139653262373130366264346231363461616536306636623163303037225d"
+Received: "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+
+ ❯ test/accountInboundPrep.test.ts:232:41
+    230|       p.request.fill(0);p.page.fill(0);
+    231|       await prepared;r.commit();
+    232|       expect(r.disk.events[0]!.request).toBe(hex(expected));
+       |                                         ^
+    233|       expect(r.disk.events[0]!.page).toBe(hex(page));
+    234|     } finally {r.dispose();}
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 24 skipped (25)
+   Start at  01:33:07
+   Duration  336ms (transform 88ms, setup 37ms, import 156ms, tests 32ms, environment 0ms)
+
