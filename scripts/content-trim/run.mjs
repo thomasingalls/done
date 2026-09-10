@@ -2,7 +2,7 @@
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
 import { chromium } from '@playwright/test';
@@ -40,28 +40,15 @@ const output = resolve(
 );
 if (existsSync(output)) throw Error('Refusing existing output: ' + output);
 mkdirSync(output, { recursive: true });
-const sourcePaths = [
-  'custody.ts',
-  'localClearState.ts',
-  'startupStorage.ts',
-  'startupState.ts',
-  'custodyCrypto.ts',
-  'custodyRecord.ts',
-  'writeSession.ts',
-  'storageCompatibility.ts',
-  'contentRecord.ts',
-  'contentDatabase.ts',
-  'contentStore.ts',
-  'contentCompaction.ts',
-  'yjs.ts',
-  'storeName.ts',
-  'journalCodec.ts',
-  'journalStore.ts',
-];
+const walk = (dir) =>
+  readdirSync(join(root, dir), { withFileTypes: true }).flatMap((e) =>
+    e.isDirectory() ? walk(dir + '/' + e.name) : [dir + '/' + e.name],
+  );
+const sourcePaths = [...walk('src'), ...walk('account-protocol')];
 const sources = Object.fromEntries(
-  sourcePaths.map((name) => [name, readFileSync(join(root, 'src/crdt', name), 'utf8')]),
+  sourcePaths.map((name) => [name, readFileSync(join(root, name), 'utf8')]),
 );
-sources['seal.generated.ts'] = readFileSync(
+sources['wasm/journal-seal/seal.generated.ts'] = readFileSync(
   join(root, 'wasm/journal-seal/seal.generated.ts'),
   'utf8',
 );
@@ -71,7 +58,7 @@ const recordedFiles = [
   'wasm/journal-seal/Cargo.toml',
   'wasm/journal-seal/Cargo.lock',
   'scripts/build-wasm-seal.mjs',
-  ...sourcePaths.map((name) => 'src/crdt/' + name),
+  ...sourcePaths,
   'docs/storage-contract.md',
   'pnpm-lock.yaml',
   'package.json',
@@ -123,11 +110,15 @@ async function run(mutation = null) {
   mkdirSync(folder);
   const tested = { ...sources };
   if (mutation) {
-    if (tested[mutation.file].split(mutation.from).length !== 2)
+    const file = 'src/crdt/' + mutation.file;
+    if (tested[file].split(mutation.from).length !== 2)
       throw Error('Mutation anchor is not unique: ' + label);
-    tested[mutation.file] = tested[mutation.file].replace(mutation.from, mutation.to);
+    tested[file] = tested[file].replace(mutation.from, mutation.to);
   }
-  for (const [name, source] of Object.entries(tested)) writeFileSync(join(folder, name), source);
+  for (const [name, source] of Object.entries(tested)) {
+    mkdirSync(dirname(join(folder, name)), { recursive: true });
+    writeFileSync(join(folder, name), source);
+  }
   const server = await createServer({
     configFile: false,
     root,
@@ -135,19 +126,20 @@ async function run(mutation = null) {
     cacheDir: join(folder, 'vite-cache'),
     resolve: {
       alias: {
-        '../../wasm/journal-seal/seal.generated': join(folder, 'seal.generated.ts'),
-        '@custody': join(folder, 'custody.ts'),
-        '@custody-record': join(folder, 'custodyRecord.ts'),
-        '@custody-crypto': join(folder, 'custodyCrypto.ts'),
-        '@write-session': join(folder, 'writeSession.ts'),
-        '@content-record': join(folder, 'contentRecord.ts'),
+        '../../wasm/journal-seal/seal.generated': join(
+          folder,
+          'wasm/journal-seal/seal.generated.ts',
+        ),
+        '@custody': join(folder, 'src/crdt/custody.ts'),
+        '@custody-record': join(folder, 'src/crdt/custodyRecord.ts'),
+        '@custody-crypto': join(folder, 'src/crdt/custodyCrypto.ts'),
+        '@write-session': join(folder, 'src/crdt/writeSession.ts'),
+        '@content-record': join(folder, 'src/crdt/contentRecord.ts'),
       },
     },
     optimizeDeps: { noDiscovery: true },
-    server: { host: '127.0.0.1', port: 5185, strictPort: true, fs: { allow: [root] } },
+    server: { host: '127.0.0.1', port: 0, strictPort: true, fs: { allow: [root] } },
   });
-  await server.listen();
-  const origin = `http://127.0.0.1:${server.httpServer.address().port}`;
   const report = {
     id: label,
     source: {
@@ -157,6 +149,8 @@ async function run(mutation = null) {
     cases: [],
   };
   try {
+    await server.listen();
+    const origin = `http://127.0.0.1:${server.httpServer.address().port}`;
     const inventory = mutation ? cases.filter((c) => c.id === mutation.case) : selected;
     for (const definition of inventory) {
       const row = await runCase(definition, {

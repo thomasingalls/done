@@ -19,6 +19,7 @@ export const openAccountJournalSession = async (
     ...(options.signal ? { signal: options.signal } : {}),
     initialize: async (task) => {
       const verified = await verifyAccountUnderPermit(task, options);
+      if (verified.marker.v === 6) throw Error('Account requires the source-capture owner');
       if (verified.account.principalId !== principalId)
         throw Error('Account actor identity changed');
       account = verified.account;

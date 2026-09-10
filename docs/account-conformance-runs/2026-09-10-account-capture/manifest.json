@@ -1,0 +1,134 @@
+[
+  {
+    "path": "account-editing-regression.log",
+    "sha256": "c79c9cd899c415cf0711ff837a700715160b797a2b7824221ace5b3fd5a0ced4"
+  },
+  {
+    "path": "admission-regression/report.json",
+    "sha256": "c39fc3e026d5aa8a2a0eee7ffe92f450aff644c2aeea47730ec50c52eae7d377"
+  },
+  {
+    "path": "admission-regression/report.md",
+    "sha256": "aac227c2bb4c3e6c00b9d18e02270c05e4ab1d1ddf6c8d5fe6c5d563b236989a"
+  },
+  {
+    "path": "admission-regression/run.log",
+    "sha256": "59dec9553cfa40bcf1eea372a887606f6f18a5e9f3d52635c3d3467e8d7660c6"
+  },
+  {
+    "path": "build.log",
+    "sha256": "af215e2d2dfc5c25941a39f8cde688063f5c9b43eba8760ea6ed86216872b1b6"
+  },
+  {
+    "path": "content-trim-final-regression/report.json",
+    "sha256": "77588927f687f64307d4bc9e0e5bb5d40c080006327c946311567dc4e4eb5a76"
+  },
+  {
+    "path": "content-trim-final-regression/report.md",
+    "sha256": "360a051fd84f6fe47867790741388eae0cce9d7973020850249dda44b61382d7"
+  },
+  {
+    "path": "content-trim-final-regression/run.log",
+    "sha256": "058403a9067abd9a53f040cf887cc2e9eef3c3678e8bf56af7b5123802c52e28"
+  },
+  {
+    "path": "controls.json",
+    "sha256": "7625ada05a4b785dec69d89aff69e8914c2e7036f460a34dfe77a26cc9e88c48"
+  },
+  {
+    "path": "final-gates.json",
+    "sha256": "ec5bcad59d6d10688cdb4cd0a1918b3261af82a2dc4ec4f24d2d2e1836017367"
+  },
+  {
+    "path": "findings.json",
+    "sha256": "06276567989057e4b4894baf267dc679fc52cebb82a6bd705e8f6d8a79749be7"
+  },
+  {
+    "path": "generated.json",
+    "sha256": "a0a7834b39801c6a37edeb2c9c8caba4f6be38c57e8a0887ebbd9a5f1ad7e450"
+  },
+  {
+    "path": "initial-native-failures.log",
+    "sha256": "c50fa32177f485a2300ab57b61448841e3196a287519e7840505b829d95d67cf"
+  },
+  {
+    "path": "initial-regression-summary.json",
+    "sha256": "e1cabc8cccc0491b9416cf5675d1be1369c591e361245a069d799046476fbf6b"
+  },
+  {
+    "path": "initial-unit-failure.log",
+    "sha256": "81e0f22dae03a909716b15c338eba09a0d2668a993680bde40a06a47917b7692"
+  },
+  {
+    "path": "native.log",
+    "sha256": "37c0cbd2c675c4e9718ff4cb7de16f329be9c502b862a888bdced2cb0efe1696"
+  },
+  {
+    "path": "properties.log",
+    "sha256": "f8d0770b3c464a45266f15f89a9c064ce55c8c555e559b4320602cbcaaafdd58"
+  },
+  {
+    "path": "regression-runner.mjs",
+    "sha256": "13d51b4fbb1e62890b396b1d87a5cddd4b6afa570176ffd43ab13c4a81e3eb60"
+  },
+  {
+    "path": "reservation-control.log",
+    "sha256": "fe618e885f8b32203c1c3fa95d7f61c46c9fb085bb07f7b4246ba91fbd20b338"
+  },
+  {
+    "path": "reservation-control.mjs",
+    "sha256": "58f93a7fbb2584cfa861ddee775dbdb43046e8541fd5f6bc44d05f7d2e8bad83"
+  },
+  {
+    "path": "results.xml",
+    "sha256": "93752326b8d542f91febb683e2333b34fe9e03c7151b2814036de08adf13a2b7"
+  },
+  {
+    "path": "sources.json",
+    "sha256": "c6c524fb3580566f1c27052b0ec0de95e4f46317583fb83c8a4514a875a1aa9a"
+  },
+  {
+    "path": "static-checks.json",
+    "sha256": "863ed2dc8cd78278b17910866cddd67e8da178d68fa6cc71a68be47c6542b082"
+  },
+  {
+    "path": "summary.json",
+    "sha256": "5b62a1ee64997611026d8424d008f6ea3af718fd04668e258d3d39183415ab87"
+  },
+  {
+    "path": "trim-incomplete-fixture.log",
+    "sha256": "8f43c0be7104a766cfa48416e6a9d7d9957b6a05ef7087f3b72a18b5832c84ec"
+  },
+  {
+    "path": "trim-port-conflict.log",
+    "sha256": "e8b27d4af78b5e56a09a668ff9a71b4a6013d2e0cdea22e5fd136da35116602c"
+  },
+  {
+    "path": "trim-start-control-report.json",
+    "sha256": "c3c63871a8335abb61f63dbfb772925867a7aeff616999b77ce37659ba8214c7"
+  },
+  {
+    "path": "trim-start-control.log",
+    "sha256": "fb922ec7f5f4787681f0ced53e5be1c0663ee88c61dc1602ef39c54cdcebb1fd"
+  },
+  {
+    "path": "trim-start-control.mjs",
+    "sha256": "52fed508136fb1b6f471624209b381c08a38ab438767a58328f8d2d2cf4556d7"
+  },
+  {
+    "path": "unit-tests.log",
+    "sha256": "51eb5e6c0ad2988d84e7a9ad88d466709ae681bc155156450e6e5e331fc571f9"
+  },
+  {
+    "path": "workspace-admission-regression/report.json",
+    "sha256": "2895fb85246c3f62af826fe7f7aefb4ba27abe3da1ca26c5b98fe784dcd5c498"
+  },
+  {
+    "path": "workspace-admission-regression/report.md",
+    "sha256": "2ed4a364342dd858b88985b8ce73d86a11079684edd898d12f3fbe59f9fec900"
+  },
+  {
+    "path": "workspace-admission-regression/run.log",
+    "sha256": "54a4896ec2532b1362a79fc6a9babbfe20fbd35d4e3cb1ea609378659dc9090b"
+  }
+]

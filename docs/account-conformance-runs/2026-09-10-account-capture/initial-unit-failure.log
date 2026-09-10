@@ -1,0 +1,39 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > 250 generated transaction histories recover exact bytes, actors and independent text across carrier overlap and reverse delivery 1050ms
+stdout | test/sourceCapture.test.ts > Account source capsule conformance > private preparation retains human and system transactions separately instead of relabelling initialization
+[yjs] Changed the client-id because another client seems to be using it.
+
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > 200 generated route and actor substitutions refuse without accepting a different authority 21ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > refuses noncanonical framing, unknown version, malformed CRDT, oversized payload and too many sources 1ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > conflicting stable identity refuses journal/disk, disk/disk and journal/journal overlap 2ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > requires original sources to cover all prepared state, including deletions 2ms
+ × test/sourceCapture.test.ts > Account source capsule conformance > private preparation retains human and system transactions separately instead of relabelling initialization 12ms
+   → expected Set{ 'system' } to deeply equal Set{ 'human', 'system' }
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > repeated oversized preparation does not accumulate capsule reservations or acknowledge input 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/sourceCapture.test.ts > Account source capsule conformance > private preparation retains human and system transactions separately instead of relabelling initialization
+AssertionError: expected Set{ 'system' } to deeply equal Set{ 'human', 'system' }
+
+- Expected
++ Received
+
+  Set {
+-   "human",
+    "system",
+  }
+
+ ❯ test/sourceCapture.test.ts:94:60
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  21:43:11
+   Duration  1.64s (transform 207ms, setup 44ms, import 371ms, tests 1.09s, environment 0ms)
+

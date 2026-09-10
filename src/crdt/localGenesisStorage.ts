@@ -153,7 +153,8 @@ export const localCensus = async (task: SessionTask, claim: LocalClaim, promotio
     } else {
       if (
         promotion?.marker?.stage === 'handoff-selected' ||
-        promotion?.marker?.stage === 'account-active'
+        promotion?.marker?.stage === 'account-active' ||
+        promotion?.marker?.stage === 'account-capturing'
       )
         stopStartup('repair-required', 'selected-account-index-regressed');
       await matchLocalRoute(task, claim, slot);

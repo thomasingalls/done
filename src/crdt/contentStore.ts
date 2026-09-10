@@ -26,6 +26,8 @@ import {
 import type { SessionTask } from './writeSession';
 
 export interface ContentCrypto {
+  /** Optional private carrier payload validation, including every compaction audit. */
+  validate?(records: readonly OpenedRecord[]): void;
   open(task: SessionTask, record: StoredRecord): Promise<Bytes>;
   seal(
     task: SessionTask,
@@ -214,7 +216,10 @@ export const createContentOwner = (
         seen.add(r.seq);
         opened.push({ kind: r.kind, gen: r.gen, seq: r.seq, bytes: await crypt.open(task, r) });
       }
-      return task.step(() => opened.sort((a, b) => a.seq - b.seq));
+      return task.step(() => {
+        crypt.validate?.(opened);
+        return opened.sort((a, b) => a.seq - b.seq);
+      });
     } catch (cause) {
       for (const r of opened) r.bytes.fill(0);
       throw cause;

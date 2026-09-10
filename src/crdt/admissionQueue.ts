@@ -117,6 +117,8 @@ const erase = (job: Job) => {
   job.input.fill(0);
   job.prepared?.update.fill(0);
   job.prepared?.remaining?.fill(0);
+  job.prepared?.carrierBytes?.fill(0);
+  for (const source of job.prepared?.sources ?? []) source.bytes.fill(0);
 };
 
 /** Internal seam for controlled tests. Production construction owns an actual JournalSession. */
@@ -173,6 +175,8 @@ export const createAdmissionOwner = async (
             ? 0
             : j.input.length +
               (j.prepared?.update.length ?? 0) +
+              (j.prepared?.carrierBytes?.length ?? 0) +
+              (j.prepared?.sources?.reduce((n, s) => n + s.bytes.length, 0) ?? 0) +
               (j.prepared?.remaining?.length ?? 0)),
         0,
       ),
@@ -307,6 +311,8 @@ export const createAdmissionOwner = async (
     if (rest) {
       job.input.fill(0);
       job.prepared!.update.fill(0);
+      job.prepared!.carrierBytes?.fill(0);
+      for (const source of job.prepared!.sources ?? []) source.bytes.fill(0);
       job.input = rest;
       job.prepared = undefined;
       job.sliced = true;
@@ -341,7 +347,9 @@ export const createAdmissionOwner = async (
   const forceLocal = async (job: InputJob) => {
     await flush();
     live();
-    await carrier.appendBatch([{ kind: 'update', bytes: job.prepared!.update }]);
+    await carrier.appendBatch([
+      { kind: 'update', bytes: job.prepared!.carrierBytes ?? job.prepared!.update },
+    ]);
     live();
     promote(job, job.prepared!.update);
     completeInput(job);
@@ -383,7 +391,25 @@ export const createAdmissionOwner = async (
           MAX_JOURNAL_UPDATE,
           options.prepare,
         );
+        if (carrier.captureLocal)
+          job.prepared.carrierBytes = carrier.captureLocal(
+            job.prepared.update,
+            job.prepared.sources,
+          );
+        if (job.prepared.carrierBytes) {
+          const extra =
+            job.prepared.carrierBytes.length +
+            (job.prepared.sources?.reduce((n, s) => n + s.bytes.length, 0) ?? 0);
+          if (status().reservedBytes + extra > MAX_PENDING_BYTES)
+            throw new AdmissionError('queue-full', 'Source capture exceeds pending capacity.');
+          job.reservation += extra;
+        }
       } catch (cause) {
+        job.prepared?.update.fill(0);
+        job.prepared?.remaining?.fill(0);
+        job.prepared?.carrierBytes?.fill(0);
+        for (const s of job.prepared?.sources ?? []) s.bytes.fill(0);
+        job.prepared = undefined;
         throw new AdmissionError(
           'prepare-failed',
           'Local preparation failed; pending input retained.',
@@ -399,7 +425,10 @@ export const createAdmissionOwner = async (
       if (job.prepared.update.length > MAX_JOURNAL_UPDATE) {
         job.prepared.update.fill(0);
         job.prepared.remaining?.fill(0);
+        job.prepared.carrierBytes?.fill(0);
+        for (const s of job.prepared.sources ?? []) s.bytes.fill(0);
         job.prepared = undefined;
+        job.reservation = 2 * job.input.length + MAX_JOURNAL_UPDATE;
         throw new AdmissionError(
           'slice-required',
           'The command adapter must prepare a smaller slice.',
@@ -409,7 +438,7 @@ export const createAdmissionOwner = async (
     const attempt =
       job.force || job.sliced || job.prepared.remaining
         ? { status: 'refused' as const, reason: job.force ?? 'oversize' }
-        : carrier.appendLocal(job.prepared.update);
+        : carrier.appendLocal(job.prepared.carrierBytes ?? job.prepared.update);
     if (attempt.status === 'journalled') {
       journalDirty = true;
       promote(job, job.prepared.update);

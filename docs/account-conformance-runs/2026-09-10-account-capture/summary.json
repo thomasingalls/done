@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-10T19:47:18.044Z",
+  "stages": [
+    {
+      "name": "properties",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native",
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "scope": "Private durable Account source capture, v6 activation, atomic pressured admission, exact journal overlap and original actor/update retention through compaction and restart. No network positions, envelopes, relay, default cutover or personal operations.",
+  "completedAt": "2026-09-10T19:49:02.636Z"
+}

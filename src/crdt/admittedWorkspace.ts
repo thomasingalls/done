@@ -92,6 +92,8 @@ export interface AdmittedWorkspace {
   close(): Promise<void>;
 }
 export interface WorkspaceOptions {
+  /** Private Account source capture; preserve each actual transaction's actor and update bytes. */
+  readonly captureSources?: boolean;
   readonly identity: WorkspaceActorIdentity;
   readonly validateReceive: AdmissionOptions['validateReceive'];
   readonly today?: () => ISODate;
@@ -166,8 +168,24 @@ export const createAdmittedWorkspace = async (
       doc.clientID = draft.clientID;
       const selections = structuredClone(accepted.selections);
       if (intent.group !== accepted.group) history.stopCapturing();
-      const updates: Bytes[] = [];
-      const capture = (bytes: Uint8Array) => updates.push(new Uint8Array(bytes));
+      const updates: Bytes[] = [],
+        sources: import('./sourceCapture').SourceUpdate[] = [];
+      const capture = (bytes: Uint8Array, origin: unknown) => {
+        const copy = new Uint8Array(bytes);
+        updates.push(copy);
+        if (options.captureSources) {
+          const actor = origin === history ? human : (origin as typeof human);
+          if (
+            !actor ||
+            !(
+              (actor.actor === identity.id && actor.kind === 'human') ||
+              (actor.actor === 'system' && actor.kind === 'system')
+            )
+          )
+            throw Error('Unbound transaction source');
+          sources.push({ actor: actor.actor, kind: actor.kind, bytes: copy });
+        }
+      };
       doc.on('update', capture);
       let humanItem: (typeof history.undoStack)[number] | undefined,
         popped: (typeof history.undoStack)[number] | undefined;
@@ -214,7 +232,25 @@ export const createAdmittedWorkspace = async (
           update.fill(0);
         }
         pending = { history, selections, group: intent.group, value: result.value };
-        return result.remaining ? { remaining: encode(result.remaining) } : undefined;
+        return result.remaining || options.captureSources
+          ? {
+              ...(result.remaining ? { remaining: encode(result.remaining) } : {}),
+              ...(options.captureSources
+                ? {
+                    sources: (sources.length
+                      ? sources
+                      : [
+                          {
+                            actor: identity.id,
+                            kind: 'human' as const,
+                            bytes: new Uint8Array([0, 0]),
+                          },
+                        ]
+                    ).map((s) => ({ ...s, bytes: s.bytes.slice() })),
+                  }
+                : {}),
+            }
+          : undefined;
       } catch (error) {
         history.destroy();
         doc.destroy();

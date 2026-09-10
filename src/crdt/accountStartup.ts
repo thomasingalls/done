@@ -1,4 +1,5 @@
 /** Private Account classification. No writer, network token or retained plaintext escapes this permit. */
+import { capturedRecovery, captureRoute } from './sourceCapture';
 import { parseAuthorityPin, pinBytes, type AuthorityPin } from '../../account-protocol/authority';
 import { verifyReceipt, same } from '../../account-protocol/admission';
 import { verifyBindingProof } from '../../account-protocol/slot';
@@ -34,7 +35,8 @@ export async function verifyAccountUnderPermit(task: SessionTask, options: Accou
     !marker ||
     !(
       (marker.v === 4 && marker.stage === 'handoff-selected') ||
-      (marker.v === 5 && marker.stage === 'account-active')
+      (marker.v === 5 && marker.stage === 'account-active') ||
+      (marker.v === 6 && marker.stage === 'account-capturing')
     )
   )
     throw Error('Account handoff needs resumption');
@@ -123,7 +125,13 @@ export async function verifyAccountUnderPermit(task: SessionTask, options: Accou
             const doc = new Y.Doc({ gc: false }),
               checkpoint = new Y.Doc({ gc: false });
             try {
-              replayRecovery(doc, recovered);
+              const recovery =
+                marker.v === 6 ? capturedRecovery(recovered, captureRoute(marker)) : recovered;
+              try {
+                replayRecovery(doc, recovery);
+              } finally {
+                if (marker.v === 6) for (const r of recovery.journal) r.bytes.fill(0);
+              }
               Y.applyUpdate(checkpoint, plaintext);
               if (
                 hex(genesisCoverage(checkpoint)) !== candidate.coverage.snapshot ||

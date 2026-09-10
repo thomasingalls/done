@@ -1,0 +1,49 @@
+[
+  {
+    "name": "account-editing",
+    "args": [
+      "--test",
+      "--test-reporter=spec",
+      "test/account-editing/native.test.mjs"
+    ],
+    "code": 0,
+    "timedOut": false,
+    "durationMs": 120673
+  },
+  {
+    "name": "admission",
+    "args": [
+      "scripts/admission/run.mjs",
+      "--no-mutants",
+      "--output",
+      "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/admission"
+    ],
+    "code": 0,
+    "timedOut": false,
+    "durationMs": 18722
+  },
+  {
+    "name": "workspace-admission",
+    "args": [
+      "scripts/workspace-admission/run.mjs",
+      "--no-mutants",
+      "--output",
+      "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/workspace-admission"
+    ],
+    "code": 0,
+    "timedOut": false,
+    "durationMs": 12863
+  },
+  {
+    "name": "content-trim",
+    "args": [
+      "scripts/content-trim/run.mjs",
+      "--no-mutants",
+      "--output",
+      "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim"
+    ],
+    "code": 2,
+    "timedOut": false,
+    "durationMs": 121184
+  }
+]

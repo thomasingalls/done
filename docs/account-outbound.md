@@ -1,5 +1,8 @@
 # Private Account outbound preparation
 
+The following [source-capture phase](./account-source-capture.md) implements durable admission; this
+document retains the preceding preparation findings and the allocation boundary that follows capture.
+
 This phase implements the envelope codec and tests the proposed durability boundary. It does **not**
 implement a durable spool, publish edits, authenticate a relay answer, or change the default app. The
 private Account editor still has no relay. The next bounded phase is durable source capture at admission;

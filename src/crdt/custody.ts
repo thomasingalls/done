@@ -586,6 +586,7 @@ const prepareCustody = (
   content: boolean,
   withJournal = false,
   preactive = false,
+  validateRecords?: (records: readonly OpenedRecord[]) => void,
 ) => {
   const authority = captureAuthority(input),
     factor = codeBytes(code);
@@ -683,6 +684,7 @@ const prepareCustody = (
           { ...scope, storeId: record.store_id, rootId: record.root_id },
           1,
           {
+            ...(validateRecords ? { validate: validateRecords } : {}),
             open: openRecord,
             seal: (task, header, plaintext) =>
               task.wait(async () => {
@@ -902,6 +904,11 @@ export interface JournalRecovery {
   readonly journal: JournalUpdate[];
 }
 export interface JournalSession extends ContentSession {
+  /** Private Account adapter: encode stable source capture once per prepared slice, before admission. */
+  captureLocal?(
+    update: Bytes,
+    sources: readonly import('./sourceCapture').SourceUpdate[] | undefined,
+  ): Bytes;
   /** Internal composed lifetime cleanup, after native drain and before permit release. */
   beforeRelease?(cleanup: () => void | Promise<void>): void;
   /** Explicit disk-union maintenance. Never accepts a caller snapshot or deletes journal/heads/outbound. */
@@ -1051,5 +1058,8 @@ export const attachJournal = (
 };
 
 /** Internal Account composition seam; the Account owner authenticates before loading these caches. */
-export const prepareAccountCustody = (input: CustodyAuthority, code: string) =>
-  prepareCustody(input, code, true, true);
+export const prepareAccountCustody = (
+  input: CustodyAuthority,
+  code: string,
+  validateRecords?: (records: readonly OpenedRecord[]) => void,
+) => prepareCustody(input, code, true, true, false, validateRecords);

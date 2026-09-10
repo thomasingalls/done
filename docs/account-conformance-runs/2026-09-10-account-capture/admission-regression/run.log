@@ -1,0 +1,17 @@
+admission C01.pending-struct: pass
+admission C03.synchronous: pass
+admission C03.ordered-refusal: pass
+admission C03.retry: pass
+admission C01.remote-basis: pass
+admission C02.pending-delete: pass
+admission C03.slicing: pass
+admission C03.capacity: pass
+admission C03.barrier: pass
+admission C03.timer: pass
+admission C04.close: pass
+admission C09.persisted-yjs: pass
+admission C09.runtime-repair: pass
+admission C03.validation: pass
+admission C04.cross-tab: pass
+Report: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/admission/report.md
+Exit 0 (bounded ordered admission)

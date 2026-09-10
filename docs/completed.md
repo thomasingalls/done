@@ -1753,3 +1753,36 @@ Account exists, so this does not redo the author's Local migration. Native spool
 framing, response verification and relay integration remain subsequent work. No whole debt is paid, and
 personal builds/servers are untouched. This outcome was appended before replacing L-1 progress; L-2 stays
 byte-for-byte unchanged.
+
+### 2026-09-10 — Durable Account source capture at admission
+
+Committed outbound preparation and v2 key-domain corrections as signed `18ceb40`. Added the private
+source-capturing Account lifecycle behind authenticated promotion v6. Verified frozen v4 genesis drains
+its old journal before activation; already-edited v5 history refuses automatic attribution recovery and
+keeps its writing. The old reader and ordinary Account journal owner refuse v6.
+
+Each admitted slice journals a canonical encrypted capsule with stable identity, authenticated route,
+prepared signer and original per-transaction actor/update bytes. Pressured admission atomically commits
+raw content and the source obligation. Exact intent/byte deduplication closes the journal/DB crash overlap;
+conflicting reuse refuses. Pending Yjs structs and deletions retain their original frames. Compaction
+validates and retains every outbound source. Public receive, network positions, envelopes and sending stay
+outside this owner. Local formats and the personal installation are unchanged.
+
+[Preserved evidence](./account-conformance-runs/2026-09-10-account-capture.md): 15 native capture cases,
+16 generated native histories, seven source tests with 450 generated property cases, two actual capture
+guard controls, and the full 851-test unit suite pass. Prior Account editing (16 cases), ordered admission
+(15), workspace admission (10) and compaction (21 plus all eight detected controls) pass. Review found and
+fixed accumulating retry reservations; an actual-module control reproduces it. The initial Unicode failure
+was a test generator splitting a surrogate pair, not a demonstrated storage defect. Source hashes,
+generated native inputs, failed-run diagnostics, controls and final static/build/gate evidence are retained.
+
+The regression campaign also repaired the compaction harness's fixed-port/startup-cleanup failure and
+incomplete flat source snapshot. It now uses a free port, closes failed startup and snapshots the full
+module graph. The injected startup-failure check exits promptly. The separate process occupying the old
+port was left alone; the final compaction campaign passes.
+
+[The carrier contract](./account-source-capture.md) defines the semantic layout, bounds, transferred source
+buffers, no-op behavior, activation fence and retained-history assumptions. No whole debt is paid. Next is
+owned position allocation and exact persisted v2 envelopes, with a distinct durable reservation before
+every encryption invocation; response/refusal-proof authority and relay submission follow later. Personal
+preview/relay remain off and retained builds intact. This outcome precedes the L-1 rewrite; L-2 is unchanged.

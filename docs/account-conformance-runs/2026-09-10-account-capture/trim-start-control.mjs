@@ -1,0 +1,2 @@
+import {registerHooks} from 'node:module';
+registerHooks({load(url,context,next){const result=next(url,context);if(url.endsWith('/scripts/content-trim/run.mjs')){const source=String(result.source),anchor='await server.listen();';if(source.split(anchor).length!==2)throw Error('Missing/ambiguous listen anchor');return {...result,source:source.replace(anchor,"throw Error('injected trim server startup failure');")};}return result;}});

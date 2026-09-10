@@ -1,0 +1,53 @@
+{
+  "implementationRepair": {
+    "discovery": "Code review of new queue accounting",
+    "failure": "Oversized preparation discarded its capsule but retained the added reservation; each retry added it again.",
+    "repair": "Restore the base input/prepared-update reservation when refusing an oversized prepared update.",
+    "regression": "Five retries preserve the reservation and acknowledge nothing. Removing the reset in the actual module fails immediately: 49806 versus 33101 bytes.",
+    "control": "reservation-control.mjs; invoke Vitest with --config and -t repeated oversized; expected exit 1."
+  },
+  "nativeHarnessRepairs": [
+    {
+      "failure": "Expected system initialization in an already initialized fixture",
+      "repair": "Require retained capsules and separately test actual system operations; a no-change initialization is an explicit invoking-human no-op."
+    },
+    {
+      "failure": "Expected a different old-reader error",
+      "repair": "Accept the actual closed-parser refusal, Malformed preparation."
+    },
+    {
+      "failure": "Generated Unicode deletion split an emoji surrogate pair",
+      "seed": 9322026,
+      "path": "2",
+      "repair": "Delete the complete leading codepoint. Yjs normalized the old lone surrogate to U+FFFD; the initial oracle expected the lone surrogate. This is a generator/domain correction, not a newly demonstrated storage defect."
+    }
+  ],
+  "unitHarnessRepair": "Fresh initialization uses system origin for both registration and schema setup. The corrected test checks that source separately from the later human edit.",
+  "compactionHarnessRepairs": {
+    "original": "A separate test process held fixed port 5185. Server listen happened before finally, leaving this failed run alive. A retry then exposed an incomplete flat dependency snapshot, missing promotionRecord.",
+    "repair": "Use port 0, put startup under server-close finally, and preserve the full src/account-protocol directory graph for directed cases and mutants.",
+    "startupControl": {
+      "expectedExit": 2,
+      "observedExit": 2,
+      "finalSourceReport": "trim-start-control-report.json"
+    },
+    "final": "21 directed cases pass, all 8 mutation controls detected. Separate process left untouched. Initial failed/terminated diagnostics retained; they are not passing evidence."
+  },
+  "generated": {
+    "unitTransactions": {
+      "seed": 9422026,
+      "runs": 250
+    },
+    "unitRoutes": {
+      "seed": 9422027,
+      "runs": 200
+    },
+    "native": {
+      "seed": 9322026,
+      "runs": 16,
+      "inputs": "generated.json"
+    },
+    "scope": "Native logical histories preserved; unit logical inputs reproduce from fixed seeds and pinned test source. Synthetic Yjs client IDs, keys and intent IDs are fresh each run."
+  },
+  "limits": "Single-host disposable Chromium, strict transaction acknowledgements and controlled renderer death, not physical power loss or profile rollback proof. No relay, network positions, deployed Account or personal browser operations."
+}
