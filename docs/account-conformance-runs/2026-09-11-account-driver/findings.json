@@ -1,0 +1,51 @@
+{
+  "implementation": [
+    {
+      "finding": "A synchronous working-status observer could close the scheduler before the next operation, but the scheduler still invoked it.",
+      "repair": "Register active work first and recheck stop/gate after observer publication; preserve the directed reproduction and actual guard-removal control.",
+      "evidence": "initial-observer-failure.log; control-after-close.json; current driver unit case"
+    },
+    {
+      "finding": "A successful pass announced idle while additional captured work remained.",
+      "repair": "Keep working status through backlog yields and announce idle only after an empty pass. Expose starting before the initial storage check; freeze runtime status from construction.",
+      "evidence": "initial-idle-failure.log; native rapid-edit/capture-drain check; strengthened final unit assertion"
+    }
+  ],
+  "harness": {
+    "finding": "The installed Playwright waitForFunction polls the truthiness of an async predicate Promise, and can complete with false. This caused new drain waits to return prematurely.",
+    "repair": "Use an explicit bounded Node loop awaiting page.evaluate results; apply it to the new drain and native lock-pending checks. Retain a live reproduction contrasting the installed wait with the corrected wait.",
+    "evidence": "initial-async-poll-failure.log; poll-repair.log; polling-reproduction.json",
+    "scope": "Older unrelated harness async-predicate usage was not comprehensively audited in this phase."
+  },
+  "timeout": {
+    "finding": "The initial eight-history native run exceeded its 110-second test deadline.",
+    "response": "Added history progress output, per-history browser cleanup and explicit awaited completion checks. A focused eight-history run completed in about 106 seconds. Final test deadline is 180 seconds with a 300-second runner-stage watchdog; timeout is not treated as a minimized protocol counterexample.",
+    "evidence": "initial-generated-timeout.log; generated-native.json; native.log"
+  },
+  "generated": {
+    "scheduler": {
+      "seed": 9122026,
+      "runs": 200,
+      "commands": "5..80 deferred wake/manual/tick/offline/online/pause/restore/unknown/idle/progress/close events",
+      "oracle": "Independent clock and deferred invocation ledger: one active pass, at most one timer, retry floor, no post-close work, drain completion."
+    },
+    "native": {
+      "seed": 9132026,
+      "runs": 8,
+      "commands": "3..6 edit/offline/lost/retry/restart actions",
+      "oracle": "Retained wire-by-position compared at every retry with actual SQLite rows; exact capture/envelope/acceptance coverage, invocation counts and reopened writing checked."
+    },
+    "result": "No additional production counterexample was demonstrated by the final generated histories."
+  },
+  "controls": [
+    "Removing scheduler concurrency guards invokes two owner passes concurrently.",
+    "Removing the post-observer stop check invokes an owner pass after close.",
+    "Removing the final dispatch gate permits HTTP submission after a connectivity change at that boundary."
+  ],
+  "limits": [
+    "Private first epoch/one creating credential; no inbound content application, enrollment, UI or personal provisioning.",
+    "Driver runtime status and retry timing are not durable acceptance authority.",
+    "Full retained-ledger scans/backlog performance, pruning and whole-state restore/rollback remain open.",
+    "Final focused campaigns and 13 repository gates are individually executed; no whole pnpm check run is claimed."
+  ]
+}

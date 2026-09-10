@@ -1,0 +1,33 @@
+✔ actual scheduler overlap control demonstrates its prohibited invocation (32.313042ms)
+✔ actual scheduler after-close control demonstrates its prohibited invocation (3.015666ms)
+(node:38411) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38411) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual dispatch guard control sends after connectivity changes at the final fetch boundary (11486.703542ms)
+(node:38436) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38436) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ startup and rapid edits drain automatically, Local remains usable and idle notifications do not spin (12523.442042ms)
+✔ unknown replies back off despite edits, then online wake retries exact bytes before new content (6954.323625ms)
+✔ cold restart resolves a persisted unknown wrapper before any new seal (8360.682875ms)
+✔ verified closed evidence halts automatic publication and retains later Local edits (7031.919542ms)
+✔ verified conflict evidence halts automatic publication and retains later Local edits (6983.705833ms)
+✔ verified finalized evidence halts automatic publication and retains later Local edits (6942.347ms)
+✔ close during backoff removes wake sources and never waits for the retry deadline (6480.49975ms)
+✔ close drains a late fetch while retaining the native slot permit (5355.126458ms)
+✔ Local storage failure pauses publication and restoring admission wakes retained work (6660.14425ms)
+✖ eight generated native edit/disconnect/lost-reply/restart histories preserve each exact wrapper and drain all captures (110270.654958ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 1
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 192730.070125
+
+✖ failing tests:
+
+test at test/account-driver/native.test.mjs:366:1
+✖ eight generated native edit/disconnect/lost-reply/restart histories preserve each exact wrapper and drain all captures (110270.654958ms)
+  'test timed out after 110000ms'

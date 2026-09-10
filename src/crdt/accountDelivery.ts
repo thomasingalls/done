@@ -36,6 +36,7 @@ type Owner = ReturnType<typeof prepareAccountCustody>;
 export interface DeliveryContext {
   authority(): DecisionAuthority;
   pin(): AuthorityPin;
+  canSubmit?(): boolean;
   signer(): CryptoKey;
   publicKey(): CryptoKey;
   assertCurrent(task: SessionTask): Promise<void>;
@@ -231,14 +232,16 @@ export function createDeliveryOperations(context: DeliveryContext) {
         if (!bytes) return { kind: 'idle' as const };
         await context.assertCurrent(task);
         const answer = await task.wait(() =>
-          privateDeliveryPost(
-            context.pin(),
-            operatorToken,
-            'submit',
-            encodeSubmit(context.authority().workspace, bytes),
-            RESPONSE_LIMIT,
-            task.signal,
-          ),
+          context.canSubmit?.() === false
+            ? null
+            : privateDeliveryPost(
+                context.pin(),
+                operatorToken,
+                'submit',
+                encodeSubmit(context.authority().workspace, bytes),
+                RESPONSE_LIMIT,
+                task.signal,
+              ),
         );
         await context.assertCurrent(task);
         if (!answer) return { kind: 'unknown' as const, recorded: false };

@@ -1,0 +1,94 @@
+Account driver evidence: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-driver/2026-09-10T22-53-23.347Z
+Starting properties
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > coalesces wake storms, keeps one pass, and does not lose an edit arriving during idle detection 2ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > unknown backoff caps at 30 seconds and ordinary edits cannot accelerate it 2ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > offline and Local pressure cancel timers, and restore/manual retry expedite work 1ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > permanent evidence and unexpected operation failures suppress automatic retries 1ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > abort clears backoff immediately and drains unfinished work; observers cannot start work after close 1ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > 200 generated deferred event histories preserve single ownership, bounded timers and the retry floor 67ms
+ ✓ test/accountDriver.test.ts > owned delivery step > resolves persisted wrappers before preparation and never reseals a persisted envelope on an unknown reply 1ms
+ ✓ test/accountDriver.test.ts > owned delivery step > derives progress only from durable status and halts on owned publication evidence 0ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  00:53:23
+   Duration  857ms (transform 220ms, setup 172ms, import 83ms, tests 75ms, environment 412ms)
+
+Starting native
+✔ actual scheduler overlap control demonstrates its prohibited invocation (41.695167ms)
+✔ actual scheduler after-close control demonstrates its prohibited invocation (3.776542ms)
+(node:39593) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39593) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual dispatch guard control sends after connectivity changes at the final fetch boundary (12431.79575ms)
+native still running; see native.log
+(node:39628) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39628) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✖ startup and rapid edits drain automatically, Local remains usable and idle notifications do not spin (5566.296041ms)
+✔ unknown replies back off despite edits, then online wake retries exact bytes before new content (7475.383042ms)
+native still running; see native.log
+✖ cold restart resolves a persisted unknown wrapper before any new seal (7537.854625ms)
+✔ verified closed evidence halts automatic publication and retains later Local edits (7400.389917ms)
+native still running; see native.log
+✔ verified conflict evidence halts automatic publication and retains later Local edits (7334.936583ms)
+✔ verified finalized evidence halts automatic publication and retains later Local edits (7431.222083ms)
+native still running; see native.log
+✔ close during backoff removes wake sources and never waits for the retry deadline (6851.14925ms)
+✔ close drains a late fetch while retaining the native slot permit (5716.975209ms)
+native still running; see native.log
+driver history 1/8: ["retry","restart","restart"]
+✔ Local storage failure pauses publication and restoring admission wakes retained work (6918.20975ms)
+driver history 2/8: ["retry","lost","restart","edit","lost"]
+native still running; see native.log
+driver history 3/8: ["lost","edit","lost","offline","offline","lost"]
+native still running; see native.log
+native still running; see native.log
+driver history 4/8: ["retry","lost","restart","lost","offline","restart"]
+native still running; see native.log
+driver history 5/8: ["retry","retry","lost"]
+native still running; see native.log
+driver history 6/8: ["retry","restart","lost","restart"]
+driver history 7/8: ["lost","offline","offline"]
+native still running; see native.log
+driver history 8/8: ["restart","retry","retry","lost"]
+native still running; see native.log
+✔ eight generated native edit/disconnect/lost-reply/restart histories preserve each exact wrapper and drain all captures (108283.101291ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 11
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 186899.052
+
+✖ failing tests:
+
+test at test/account-driver/native.test.mjs:57:1
+✖ startup and rapid edits drain automatically, Local remains usable and idle notifications do not spin (5566.296041ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok((await driverStatus(f.page)).acceptedThrough >= 1)
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/native.test.mjs:79:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test/account-driver/native.test.mjs:157:1
+✖ cold restart resolves a persisted unknown wrapper before any new seal (7537.854625ms)
+  TypeError: Cannot read properties of undefined (reading 'wire')
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/native.test.mjs:181:26)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+failed: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-driver/2026-09-10T22-53-23.347Z

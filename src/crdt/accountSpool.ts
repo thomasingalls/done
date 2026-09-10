@@ -1,3 +1,4 @@
+import { createDeliveryScheduler, driveDeliveryStep, type DriverGate } from './accountDriver';
 /** Private v7 owner: durable allocation, distinct invocation grants, exact persisted v2 wire. No sender. */
 import { openAccountCaptureOwner, type CaptureExtension } from './accountCapture';
 import { captureAccountOptions } from './accountStartup';
@@ -50,7 +51,14 @@ export interface PersistedEnvelope {
   position: number;
   bytes: Bytes;
 }
-async function openSpoolWorkspace(input: AccountWorkspaceOptions, deliveryMode: boolean) {
+async function openSpoolWorkspace(
+  input: AccountWorkspaceOptions,
+  deliveryMode: boolean,
+  operatorToken?: string,
+) {
+  const driven = operatorToken !== undefined;
+  if (driven && !/^[A-Za-z0-9_-]{43}$/.test(operatorToken!))
+    throw Error('Invalid private operator token');
   const options = {
     ...captureAccountOptions(input),
     identity: structuredClone(input.identity),
@@ -221,21 +229,30 @@ async function openSpoolWorkspace(input: AccountWorkspaceOptions, deliveryMode: 
       await workspace.close();
       throw Error('Account opening was cancelled');
     }
-    return Object.freeze({
+    const gate = (): DriverGate => {
+      if (carrier.signal.aborted || !['active', 'blocked'].includes(workspace.status.state))
+        return 'closed';
+      if (workspace.status.state !== 'active' || workspace.status.pressure !== null)
+        return 'local-storage';
+      return globalThis.navigator?.onLine === false ? 'offline' : 'ready';
+    };
+    const delivery = deliveryMode
+      ? createDeliveryOperations({
+          authority: () => decisionAuthority!,
+          pin: () => options.pin,
+          signer: () => signer!,
+          publicKey: () => publicKey!,
+          assertCurrent,
+          run: runCaptureTask,
+          ...(driven ? { canSubmit: () => gate() === 'ready' } : {}),
+        })
+      : undefined;
+    const result = Object.freeze({
       ...account,
       kind: 'ready' as const,
       workspace,
       listCaptures,
-      ...(deliveryMode
-        ? createDeliveryOperations({
-            authority: () => decisionAuthority!,
-            pin: () => options.pin,
-            signer: () => signer!,
-            publicKey: () => publicKey!,
-            assertCurrent,
-            run: runCaptureTask,
-          })
-        : {}),
+      ...delivery,
       compactContent: async () => {
         await workspace.whenDurable();
         await useState(() => {});
@@ -391,6 +408,51 @@ async function openSpoolWorkspace(input: AccountWorkspaceOptions, deliveryMode: 
         });
       },
     });
+    if (!driven) return { ...result, driver: undefined };
+    if (!delivery) throw Error('Sending requires delivery ownership');
+    let unsubscribe: (() => void) | undefined;
+    const online = () => scheduler.wake(true),
+      offline = () => scheduler.wake();
+    const scheduler = createDeliveryScheduler({
+      signal: carrier.signal,
+      gate,
+      step: () => driveDeliveryStep({ ...result, ...delivery }, operatorToken ?? '', gate),
+      detach() {
+        operatorToken = undefined;
+        unsubscribe?.();
+        globalThis.removeEventListener?.('online', online);
+        globalThis.removeEventListener?.('offline', offline);
+      },
+    });
+    try {
+      let previousRevision = workspace.status.revision,
+        wasReady = workspace.status.state === 'active' && workspace.status.pressure === null;
+      unsubscribe = workspace.onStatus((status) => {
+        const ready = status.state === 'active' && status.pressure === null;
+        const changed = status.revision !== previousRevision || (ready && !wasReady);
+        previousRevision = status.revision;
+        wasReady = ready;
+        if (changed || !ready) scheduler.wake();
+      });
+      globalThis.addEventListener?.('online', online);
+      globalThis.addEventListener?.('offline', offline);
+      if (!carrier.beforeRelease) throw Error('Missing driver cleanup ownership');
+      carrier.beforeRelease(scheduler.dispose);
+      scheduler.wake();
+    } catch (cause) {
+      await scheduler.dispose();
+      throw cause;
+    }
+    return {
+      ...result,
+      driver: Object.freeze({
+        get status() {
+          return scheduler.status();
+        },
+        retry: () => scheduler.wake(true),
+        onStatus: scheduler.onStatus,
+      }),
+    };
   } catch (e) {
     await carrier.close();
     throw e;
@@ -416,4 +478,24 @@ export async function openOwnedAccountDeliveryWorkspace(input: AccountWorkspaceO
     pendingSubmissions: result.pendingSubmissions,
     deliveryStatus: result.deliveryStatus,
   };
+}
+
+/** Private automatic sender. Mutating publication primitives stay inside this lifecycle composition. */
+export async function openOwnedAccountSendingWorkspace(
+  input: AccountWorkspaceOptions,
+  operatorToken: string,
+) {
+  if (typeof operatorToken !== 'string') throw Error('Private operator token required');
+  const result = await openSpoolWorkspace(input, true, operatorToken);
+  if (!result.driver || !result.deliveryStatus) throw Error('Missing sending composition');
+  const {
+    prepareNextEnvelope: _prepare,
+    prepareSubmission: _submission,
+    submitPending: _send,
+    recordResponse: _record,
+    pendingSubmissions: _pending,
+    readAcceptedPage: _read,
+    ...owned
+  } = result;
+  return { ...owned, driver: result.driver, deliveryStatus: result.deliveryStatus };
 }

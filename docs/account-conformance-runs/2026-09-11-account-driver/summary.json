@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-10T22:58:09.467Z",
+  "stages": [
+    {
+      "name": "properties",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native",
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "scope": "Private lifecycle-owned one-device delivery driver; exact pending priority, single pass and timer, bounded retry, offline/Local pause, drained close, independent scheduler properties, native histories and actual controls. No inbound application, Account UI, provisioning or deployment.",
+  "completedAt": "2026-09-10T23:01:30.668Z"
+}

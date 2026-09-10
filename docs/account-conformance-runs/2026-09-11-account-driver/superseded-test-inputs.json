@@ -1,0 +1,47 @@
+{
+  "differences": [
+    {
+      "campaign": "test-results/account-driver/2026-09-10T22-58-09.440Z",
+      "path": "test/accountDriver.test.ts",
+      "original": "15a44eaf43aba490739d7f133483cb8504e934c894d9eab1970561b45b7af2e8",
+      "current": "dcbd3fb198de903cc43c26c5ff3cb540b65d33168f7a7d916af06c9a9dca4e47"
+    },
+    {
+      "campaign": "test-results/account-transport/2026-09-10T22-53-22.415Z",
+      "path": "test/account-driver/fixtures.mjs",
+      "original": "aaa6e82f13ad5bed6a85d9030aebb92256b65f96b118b8ae6feb3a6ee2dd9c3f",
+      "current": "2286b6ba0f9763164b743ef9c6a8e4599aa7231a0b0c77a291ff066e129b16ba"
+    },
+    {
+      "campaign": "test-results/account-transport/2026-09-10T22-53-22.415Z",
+      "path": "test/account-driver/native.test.mjs",
+      "original": "0d224baaa64add8ae2ab761826497a755585f594c67a370e070f32fc16a1cf0f",
+      "current": "a49f4433e69c36e6a17ba91eb0fbca5e597b260535c9c7fd19eafcefe1f16e4b"
+    },
+    {
+      "campaign": "test-results/account-transport/2026-09-10T22-53-22.415Z",
+      "path": "test/accountDriver.test.ts",
+      "original": "15a44eaf43aba490739d7f133483cb8504e934c894d9eab1970561b45b7af2e8",
+      "current": "dcbd3fb198de903cc43c26c5ff3cb540b65d33168f7a7d916af06c9a9dca4e47"
+    },
+    {
+      "campaign": "test-results/account-delivery/2026-09-10T22-53-23.274Z",
+      "path": "test/account-driver/fixtures.mjs",
+      "original": "aaa6e82f13ad5bed6a85d9030aebb92256b65f96b118b8ae6feb3a6ee2dd9c3f",
+      "current": "2286b6ba0f9763164b743ef9c6a8e4599aa7231a0b0c77a291ff066e129b16ba"
+    },
+    {
+      "campaign": "test-results/account-delivery/2026-09-10T22-53-23.274Z",
+      "path": "test/account-driver/native.test.mjs",
+      "original": "0d224baaa64add8ae2ab761826497a755585f594c67a370e070f32fc16a1cf0f",
+      "current": "a49f4433e69c36e6a17ba91eb0fbca5e597b260535c9c7fd19eafcefe1f16e4b"
+    },
+    {
+      "campaign": "test-results/account-delivery/2026-09-10T22-53-23.274Z",
+      "path": "test/accountDriver.test.ts",
+      "original": "15a44eaf43aba490739d7f133483cb8504e934c894d9eab1970561b45b7af2e8",
+      "current": "dcbd3fb198de903cc43c26c5ff3cb540b65d33168f7a7d916af06c9a9dca4e47"
+    }
+  ],
+  "explanation": "Original campaign snapshots are preserved. The older transport/delivery runners enumerate all test files, including unrelated driver fixtures. Those two driver test files were subsequently repaired and exercised by the final driver campaign. A further assertion protecting working status across a successful pass was added to the existing driver unit case after the campaign snapshot; the final full unit suite executes that superset. No production/runtime source differs. final-sources.json records exact inputs immediately before the final full unit run."
+}

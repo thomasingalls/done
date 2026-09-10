@@ -1970,3 +1970,49 @@ personal preview/relay remain stopped. No whole debt is paid.
 Next is a lifecycle-owned one-device delivery/reconnect driver, using these exact-byte operations and
 bounded retry, before authenticated inbound replay and second-device enrollment/adoption. This outcome
 is appended before replacing L-1 progress; L-2 is unchanged.
+
+
+### 2026-09-11 — Owned one-device delivery and reconnect
+
+Committed private submission transport/readback as `e1a5029`. The explicit private sending factory now
+attaches one driver to the factor-owned v8 lifetime, preserving the manual factories. It drains captured
+Local work through existing durable position/invocation/envelope/submission operations and sends the
+oldest pending wrapper first. Unknown outcomes never trigger a new seal for an existing envelope or wrapper.
+Durable owned status, not transport return values, determines progress and permanent stops.
+
+The [driver contract](./account-driver.md) defines one active pass, one timer, coalesced revision wakes,
+1–30 second backoff, offline/Local-pressure pauses, explicit retry and lifecycle cleanup. Backoff does not
+hold the storage task queue. Closure/conflict/finalization halt publication while Local editing remains
+available. Close clears the token reference, detaches listeners/timers, aborts and drains existing work
+before slot/custody release. The private status distinguishes starting, working, idle, retrying, offline,
+blocked and closed. No format, service schema, default-app entrypoint or personal configuration changed.
+
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-driver.md): eight property/unit cases
+include 200 generated scheduler histories; 14 Node/native cases include eight generated browser histories,
+three effective controls and a polling reproduction. Actual native tests cover rapid edits, exact retries
+after lost replies, cold restart before further seals, permanent halts with later Local edits, Local storage
+failure/retry, and close during fetch/backoff. Existing transport/readback (17 tests) and v8 delivery
+(four properties plus 19 native cases) pass. The final full suite passes 881 tests in 79 files; isolated
+build, static checks and 13 repository gates accompany the result.
+
+Two implementation defects were uncovered and fixed: a synchronous observer could close the scheduler
+before it nevertheless invoked work, and the driver briefly announced idle between accepted envelopes
+while backlog remained. Directed tests/controls and final status assertions retain their reproductions.
+The new native harness also inherited an async-predicate polling mistake: this installed Playwright can
+return false immediately because it sees a truthy Promise. An explicit awaited poll loop repairs the new
+waits; a live reproduction is retained. Older unrelated async waits still warrant a separate audit.
+An initial generated run exhausted 110 seconds; per-history cleanup, progress output and a bounded
+180-second case/300-second stage budget retain useful evidence. No additional production defect was
+demonstrated by the final generated campaign.
+
+Original campaign source snapshots are retained. Two driver fixture files, not invoked by the older
+transport/delivery campaigns, were subsequently repaired and verified by the final driver campaign. A
+final assertion strengthening the existing driver unit test is covered by the final full suite. Every
+production/runtime input matches; the final source snapshot and superseded-test list make those differences
+explicit. No whole debt is paid. The personal release/predecessor and browser/factors remain intact and
+personal preview/relay stay stopped.
+
+Next is bounded prep for authenticated inbound replay: establish the receive baseline, distinguish read
+membership from publisher authority, specify the receive commit/cursor and reader fence, and build
+independent counterexamples before enabling receipt of new remote content. This outcome is appended
+before replacing L-1 progress; L-2 is unchanged.

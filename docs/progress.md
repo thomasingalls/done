@@ -42,73 +42,72 @@ that is no longer active.
 
 ---
 
-## Active slice: Owned one-device delivery and reconnect (`L-1`)
+## Active slice: Authenticated inbound replay preparation (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: lifecycle-owned delivery scheduling and retry contract
+blocks_on: receive baseline, reader/publisher authority, and durable cursor contract
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
 
-**Personal checkpoint.** The verified Local release remains `.dev/releases/17d87c2/app`, with predecessor
-`dist/` intact. Preview/relay remain stopped; origin/Tailscale routing is unchanged. The author controls the
-browser and factors. No real Account, passkey, recovery code, operator key or authority pin is provisioned.
-The actual old second device will adopt this device's workspace with fresh custody/store/counters/credentials;
-its old writing will not be imported or merged.
+**Personal checkpoint.** The verified Local release remains `.dev/releases/17d87c2/app`, predecessor
+`dist/` intact. Personal preview/relay remain stopped and origin/Tailscale routing unchanged. The author
+controls browser interaction and factors. No real Account, passkey, recovery code, operator key or authority
+pin is provisioned. The actual old second device will adopt this device's workspace with fresh custody,
+store, counters and credentials; its old writing will not be imported or merged.
 
 **Committed base.** `18ceb40` contains v2 outbound preparation, `7210b7d` source capture, `7082fa7` the
-witnessed v7 spool, `81a4655` response/proof verification, `2cb42a2` lifecycle-owned v8 delivery evidence,
-and `96a2040` private schema-4 service decisions. Positions and encryption invocation grants are distinct;
-exact source capsules, envelopes, wrappers and witnessed response evidence survive restart/compaction.
-Closure/conflict/finalization halt outbound work while Local editing and retained evidence remain available.
-Edited v5 histories still need a separately verified catch-up checkpoint.
+witnessed spool, `81a4655` proof verification, `2cb42a2` v8 delivery evidence, `96a2040` schema-4 service
+decisions, and `e1a5029` private HTTP transport/readback. Original source capsules and exact envelopes,
+wrappers and response evidence survive restart/compaction. Position grants and seal-invocation grants are
+separate. Edited v5 histories still need a separately verified catch-up checkpoint.
 
-**Private transport/readback completed.** The [contract](./account-transport.md) composes actual private
-HTTP with the v8 owner. Submission sends only the earliest already persisted eligible wrapper and commits
-original service evidence using the existing witness barrier. Errors and unsigned unknowns preserve exact
-retry bytes. Read requests require the current certified device signature, bound to independently pinned
-service/origin and retained lineage/credential, fresh nonce, expiry and bounded cursor. Operator access is
-separate from content authorization.
+**Owned sender completed.** The [private driver](./account-driver.md) drains existing pending wrappers
+before any new preparation, derives progress from authenticated durable status and uses a single pass/timer
+with coalesced wakes and capped backoff. Offline/Local-pressure states pause publication; manual retry or
+restored admission can wake it. Permanent evidence cannot be cleared by retry. Close detaches scheduling,
+clears the token reference and drains work before slot/custody release. The sending factory keeps mutable
+publication primitives internal; manual v7/v8 factories remain separate. No stored format or schema changed.
 
-The service rechecks its authenticated membership and full witnessed ledger before signing a bounded page.
-The page authenticates ciphertext/proof pairs, exact request, extent and continuation, including empty/end
-results. The owner verifies every envelope and proof against retained authority and locally reconstructed
-predecessors; a returned head cannot establish its own baseline. This phase only inspects the one-device
-retained spool, with no decryption/application or durable receive cursor. Lifecycle close aborts and drains
-fetch before slot/custody release. No schema or Local format changed.
+[Evidence](./account-conformance-runs/2026-09-11-account-driver.md): eight unit/property cases with 200
+scheduler histories, 14 Node/native cases with eight generated browser histories and three actual controls;
+17 transport/readback and 23 v8 delivery regressions; all 881 unit tests pass. Tests found and fixed work
+invocation after an observer closed the scheduler, premature idle reporting and an async-predicate polling
+mistake in the new harness. Final waits explicitly await their predicates. An initial native history run
+exhausted its old deadline; bounded budgets now reflect measured workload. No whole debt is paid.
 
-[Preserved evidence](./account-conformance-runs/2026-09-11-account-transport.md): 17 new tests, 60 generated
-service histories and three effective controls; full private HTTP/browser cancellation, lost reply and cold
-retry; 32 service delivery, 23 browser delivery, 30 Account core regressions, and all 873 unit tests pass.
-The corrected initial failure was an unsupported test-fixture credential state, not a demonstrated protocol
-defect. Short expiry windows allow exact-request replay while membership remains current and require clock
-agreement. Full scans, unbounded retained history and coordinated state rollback remain limits.
+**Next bounded phase — prep before receiving new content.** Today's readback requires each returned
+envelope already in the local spool and reconstructs predecessors there. It is not an inbound replication
+baseline. Define how a receiver starts from authenticated genesis/checkpoint evidence, keeps per-publisher
+accepted links and advances a durable receive cursor without trusting a returned head as its own baseline.
+The private read request currently uses the creating credential for both read authorization and the only
+stream. Distinguish an enrolled reader's authority from a publisher's credential before adapting this to
+another device; neither a receipt nor an operator token is a read capability.
 
-**Next bounded phase.** Build a private lifecycle-owned one-device delivery/reconnect driver. Coalesce
-requests to drain durable captures, prepare eligible envelopes and persist submissions, then send through
-the existing exact-byte operation. Always resolve an existing pending wrapper first. Keep one network
-operation in flight; do not hold the task queue while sleeping between attempts. Unknown or lost replies
-retry the retained bytes with bounded backoff; closure, conflict, finalization or local durability failure
-stop publication without suppressing Local editing. Keep operator-token lifetime and all event/timer cleanup
-attached to close/abort.
+Specify the exact retained incoming record/proof bytes, membership/epoch/generation/actor checks, replay and
+pending-Yjs handling, duplicate/conflict decisions, atomic content/evidence/cursor commit, reader fence,
+compaction coverage and close/restart rules. Remote input must retain its original authenticated envelope
+and must not become a new Local source capsule. Keep publication accounting separate from receive cursors.
+Identify what two-gate enrollment must supply to a fresh device and what can be tested with synthetic
+first-epoch fixtures before enrollment exists. Do not enable the default Account receive path merely
+because ciphertext readback and one-device sending pass.
 
-Specify the scheduling and restart state machine before wiring it. Exercise rapid edits, offline/online,
-lost commits/replies, repeated wakeups, restart with a pending wrapper, and close during fetch/backoff using
-the actual owner/service and generated histories. Preserve durable invocation accounting and source capture;
-no transport callback may mint ciphertext or install authority. Provide private status/manual retry useful
-for the next walkthrough, without provisioning the author's Account or mounting a default-app service.
+Deliver a bounded contract and independent conformance fixtures/counterexamples first. Include out-of-order
+and repeated pages, missing dependencies, false prefix baselines, foreign/retired publishers, unknown or
+conflicting proofs, crash between content and cursor, and restart/compaction. Audit async browser polling in
+any harness used for that evidence; legacy async waitForFunction calls must not be credited as awaited
+conditions. Inbound implementation follows that checkpoint.
 
-**Following boundaries.** Authenticated inbound replay (including its durable receive baseline/cursor and
-reader fence), Account UI, two-gate second-device enrollment/adoption, general lineage advancement, client
-successors, batched proofs/checkpoints, concurrent Account writers, pruning/backlog performance, revocation,
-rotation, clear/delete, finalization/recovery, supported platforms, whole-profile residue, production
-provisioning/deployment/restore and independent review. No whole debt is paid. L-2's historical clean ref
-`d24732b` has no further service work to integrate; host VM/policy research remains stopped. Both client
-credential history and service history still assume unrewound, unbranched state.
+**Following boundaries.** Authenticated inbound implementation, Account UI and two-gate second-device
+adoption, general lineage advancement, successors, batched proofs/checkpoints, concurrent Account writers,
+pruning/backlog performance, revocation/rotation, clear/delete, finalization/recovery, supported platforms,
+whole-profile residue, production provisioning/deployment/restore and independent review. L-2's historical
+clean ref `d24732b` has no further service work to integrate. Host VM/policy research stays stopped. Client
+credentials and service state still require unrewound, unbranched histories.
 
 This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 

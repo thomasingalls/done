@@ -1,0 +1,22 @@
+(node:39658) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39658) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual request-binding mutation accepts a stale signed page for a fresh nonce (5772.923292ms)
+(node:39679) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39679) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual HTTP send uses exact persisted bytes, readback is bounded and detached, and cold restart retains acceptance (7387.680666ms)
+✔ lost HTTP acceptance reply survives browser death and retries the same wrapper (6687.34825ms)
+✔ operator-only or malformed read requests and HTTP gate failures cannot disclose pages (4984.164125ms)
+✔ stale nonce, reordered entries, false end, and validly signed wrong-predecessor heads are refused without storage effects (6006.599584ms)
+✔ close aborts submit and drains a late fetch before releasing the slot permit (6184.6555ms)
+✔ close aborts read and drains a late fetch before releasing the slot permit (6216.274084ms)
+✔ malformed, oversized streaming, redirect and reordered submission replies preserve the next wrapper (5694.734625ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 51975.045625

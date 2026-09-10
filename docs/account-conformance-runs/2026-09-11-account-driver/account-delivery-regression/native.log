@@ -1,0 +1,38 @@
+(node:39590) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39590) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ first submission is persisted exactly, idempotent, retained through compaction and suppressed after acceptance (8498.206667ms)
+✔ closed evidence survives cold restart, blocks outbound preparation and preserves local editing (6359.514291ms)
+✔ conflict evidence survives cold restart, blocks outbound preparation and preserves local editing (6224.520041ms)
+✔ finalized evidence survives cold restart, blocks outbound preparation and preserves local editing (6326.544417ms)
+✔ submission before native commit recovers without rewriting acknowledged bytes (6540.716ms)
+✔ submission after native commit recovers without rewriting acknowledged bytes (6535.066333ms)
+✔ response before native commit recovers without rewriting acknowledged bytes (6507.329042ms)
+✔ response after native commit recovers without rewriting acknowledged bytes (6525.26475ms)
+✔ v8 activation before commit fences v7 readers before returning the editor (6684.138125ms)
+✔ v8 activation after commit fences v7 readers before returning the editor (6722.217833ms)
+✔ invalid responses and exact duplicates change no persistent inventory (4873.949292ms)
+✔ missing final submission refuses reopening with its retained ledger witness (4848.33ms)
+✔ missing final response refuses reopening with its retained ledger witness (4715.723541ms)
+✔ contradictory prefix acceptance, refusals and final heads halt in either order (15479.183334ms)
+✔ actual early-return and witness controls expose lost submission and resurrected closed delivery (6910.602791ms)
+✔ close drains device signing and withholds uncommitted submission bytes (5995.14775ms)
+✔ authority is reauthenticated after signing; an actual omitted-recheck control commits behind a changed fence (8313.418ms)
+✔ actual leaf-only control misses contradictory prefix proofs in both orders (9045.27925ms)
+delivery history 1/8: {"side":"before","compact":false,"answers":[{"kind":"finalized","position":2},{"kind":"accepted","position":1},{"kind":"junk","position":2},{"kind":"accepted","position":2},{"kind":"finalized","position":1},{"kind":"conflict","position":2}]}
+delivery history 2/8: {"side":"before","compact":false,"answers":[{"kind":"junk","position":2},{"kind":"finalized","position":1},{"kind":"refused","position":2}]}
+delivery history 3/8: {"side":"before","compact":false,"answers":[{"kind":"finalized","position":1},{"kind":"junk","position":1},{"kind":"conflict","position":2},{"kind":"refused","position":2}]}
+delivery history 4/8: {"side":"after","compact":true,"answers":[{"kind":"finalized","position":1},{"kind":"refused","position":1},{"kind":"finalized","position":2},{"kind":"junk","position":2}]}
+delivery history 5/8: {"side":"after","compact":true,"answers":[{"kind":"finalized","position":1},{"kind":"conflict","position":1},{"kind":"finalized","position":1}]}
+delivery history 6/8: {"side":"before","compact":true,"answers":[{"kind":"conflict","position":2},{"kind":"junk","position":1},{"kind":"refused","position":1},{"kind":"refused","position":2}]}
+delivery history 7/8: {"side":"after","compact":false,"answers":[{"kind":"accepted","position":2},{"kind":"refused","position":1},{"kind":"junk","position":2}]}
+delivery history 8/8: {"side":"before","compact":true,"answers":[{"kind":"accepted","position":2},{"kind":"finalized","position":1},{"kind":"refused","position":2},{"kind":"junk","position":2}]}
+✔ eight generated durable histories preserve exact retries, proof-derived status and sources across faults and cold restarts (38541.35825ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 167598.462417

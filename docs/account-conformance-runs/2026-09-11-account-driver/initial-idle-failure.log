@@ -1,0 +1,38 @@
+(node:38024) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38024) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✖ startup and rapid edits drain automatically, Local remains usable and idle notifications do not spin (7762.271375ms)
+✔ unknown replies back off despite edits, then online wake retries exact bytes before new content (7031.874959ms)
+✔ cold restart resolves a persisted unknown wrapper before any new seal (7344.821584ms)
+✔ verified closed evidence halts automatic publication and retains later Local edits (7074.852875ms)
+✔ verified conflict evidence halts automatic publication and retains later Local edits (6992.803666ms)
+✔ verified finalized evidence halts automatic publication and retains later Local edits (7081.937166ms)
+✔ close during backoff removes wake sources and never waits for the retry deadline (6507.48575ms)
+✔ close drains a late fetch while retaining the native slot permit (5445.164792ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 7
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 56974.222791
+
+✖ failing tests:
+
+test at test/account-driver/native.test.mjs:59:1
+✖ startup and rapid edits drain automatically, Local remains usable and idle notifications do not spin (7762.271375ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(all.length >= 9)
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-driver/native.test.mjs:104:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
