@@ -1,0 +1,35 @@
+{
+  "status": "post-run hash reconstruction, not a new native observation",
+  "packet": "history-24.recovery.json",
+  "expectedLocal": [
+    [
+      "done.actor",
+      "legacy-human"
+    ],
+    [
+      "other-app",
+      "preserve-unknown-material"
+    ]
+  ],
+  "reappearedLocal": [
+    [
+      "done.actor",
+      "legacy-human"
+    ],
+    [
+      "done.pending-update.done.fixture.0",
+      "1:AQHKAQCEZQwMIfCflJIJ8J+UkiMJAA=="
+    ],
+    [
+      "done.pending-update.done.fixture.1",
+      "1:AAHKAQEAAQ=="
+    ],
+    [
+      "other-app",
+      "preserve-unknown-material"
+    ]
+  ],
+  "expectedHash": "caf507addce7c8a455cd7757d6bf57310aa7546af6f848e0c6b6e306be82a251",
+  "observedHash": "5ef06cca7764360aebd6eb2ac874ddce1f04d33448da93ff8d8d4756c44d5e87",
+  "interpretation": "The exact observed localStorage hash matches the original two journal entries plus unchanged ancillary/unknown values. The database comparison passed before this localStorage comparison failed; this is journal-removal rollback, not evidence of losing the later database edit."
+}

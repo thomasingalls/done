@@ -2183,3 +2183,25 @@ Keep current same-origin binding checks. A deployment-origin move, remote-source
 retirement of old routes and the real carrier/attribution choice need later explicit contracts. No new host
 progress record or success token may replace authenticated component state. The existing conformance matrix,
 three input pins and all debt requirements/statuses remain unchanged by this preparation.
+
+### 2026-09-10 — Reject the measured host candidate; retain the whole-browser persistence boundary
+
+The [persistent-profile preflight](./storage-conformance-runs/2026-09-10-legacy-host.md) returns no production
+migration authority. The tested CDP auto-attachment controller allowed first-script page/frame writes and a
+crash-restored cached old application at a maintenance URL. Keep this implementation as a diagnostic tool;
+revise the host strategy before any coordinator bridge. A completed test campaign means the observations
+and refusals were checked, not that exclusion succeeded. Finite paused-worker observations, history reload
+and a rejected second process cannot fill BFCache, installed-window or production-profile coverage gaps.
+
+Native generation also invalidated an implicit assumption that successful localStorage writes/removals force
+physical persistence across whole-browser kill. Define the readonly carrier baseline after a clean profile
+reopen, including after deliberate source drift, and retain separate unsettled-source counterexamples plus
+their exact saved inputs. An external saved packet still recovers its captured ledger. This is an explicit
+fixture/protocol-acceptance boundary, not a justification to erase failures or silently extend earlier
+renderer-death evidence to browser/power loss. Whole-browser acceptance and preservation of visible unflushed
+legacy work remain owed before a live migration procedure.
+
+The dependency fallback's native plaintext carrier remains unsupported by the current cleanup manifest.
+Preserve/classify it; do not expand deletion by heuristic URL keys. No deployed carrier footprint, production
+utility/origin choice, migration-carrier decision or debt payment follows from this experiment. Mandatory
+factor custody, authenticated component progress and same-origin binding contracts remain unchanged.

@@ -1,6 +1,14 @@
 # Legacy migration host preparation
 
-**Status: preparation complete; host feasibility remains untested.** The private coordinator is committed as
+**Status: diagnostic preflight implemented; the tested host candidate is unsupported.**
+The [2026-09-10 execution record](./storage-conformance-runs/2026-09-10-legacy-host.md) preserves native
+first-script page/frame writes and a crash-restored cached old application at a maintenance URL. These
+counterexamples block a coordinator bridge. The contract below records the experiment's original requirements;
+its statements about the "next" fixture describe that preparation, not unexecuted work. The readonly history
+oracle now explicitly begins after a clean profile reopen; separate whole-browser-kill counterexamples
+retain the unsettled localStorage boundary rather than claiming that acknowledgement forces disk persistence.
+
+**Preparation baseline.** The private coordinator is committed as
 `7d238ee`; its [native evidence](./storage-conformance-runs/2026-09-09-legacy-coordinator.md) establishes the
 bounded seeded composition. The next build is a persistent-profile **preflight**, limited to exclusion,
 source preservation and recovery-file readback. It receives no destination enrollment, import, selection,

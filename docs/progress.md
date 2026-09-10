@@ -48,38 +48,39 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # private coordinator committed; host preflight implementation next
+status: in flight # host diagnostic complete; candidate unsupported; revise host strategy
 plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-host-preparation.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
-updated: 2026-09-09
+updated: 2026-09-10
 ```
 
-**Current checkpoint.** The validated private migration coordinator is committed as `7d238ee`.
-[Preserved evidence](./storage-conformance-runs/2026-09-09-legacy-coordinator.md) covers 36 directed cases,
-60 generated native histories, 19 renderer deaths and ten controls, with all affected component regressions
-and 793 unit tests / 67 files passing. Historical reports retain their tested base and source hashes.
-The default application still uses the legacy provider.
+**Current checkpoint.** Private coordinator implementation/evidence is committed as `7d238ee`; host
+preparation as `0d9c733`. The private persistent-profile diagnostic is implemented, with
+[preserved evidence](./storage-conformance-runs/2026-09-10-legacy-host.md): ten directed groups, 60 generated
+histories, seven full-campaign controls and one additional history-omission control pass their assertions.
+Seven new Node tests (100 generated filesystem histories), 14 supervisor tests and focused static checks pass.
+The encrypted runtime is unchanged, and the default application still uses the legacy provider.
 
-The [host preparation](./legacy-host-preparation.md) is complete, with a
-[pinned source inventory](./legacy-host-sources.json) and falsifiable next-build contract. No new native
-host acceptance is claimed. A client census/worker update cannot be assumed to stop every old executable;
-the candidate external controller needs pre-execution containment tests on a persistent profile. Inspection
-also found a conditional unencrypted localStorage carrier in the sync dependency's BroadcastChannel fallback,
-outside the current cleanup manifest. Its deployed presence is unproven; reproduce/classify it and refuse
-unsupported carriers before production cleanup. Outcomes were appended to [completed.md](./completed.md)
-before this checkpoint rewrite.
+**The tested host is unsupported.** CDP attachment did not stop first-script page/frame writes. After browser
+crash, the old cached application resumed at a maintenance URL and changed source. Worker pause windows are
+finite observations; history reload did not exercise BFCache; installed-window UI remains untested. Native
+BroadcastChannel fallback retained a plaintext carrier outside current cleanup scope. The final second-process
+attempt was rejected without observed write; this does not establish general profile control.
 
-**Next bounded work.** Build the private persistent-profile host preflight under `scripts/legacy-host/`
-and `test/legacy-host/`. Use disposable seeded Chromium, actual pinned cached predecessor shells and full
-process restarts. Test control acquisition/loss, old page/frame/worker/history execution and transport;
-save the diagnostic packet outside the browser profile and independently reread/cold-replay it. Track
-source carriers and meaning with external ledgers, including the difference between durable and volatile
-visible old edits. Reuse the bounded supervisor and require directed cases, generated coverage and named
-controls. The preflight has no destination write, factor minting or source/site-data deletion authority.
-A failed containment mechanism must remain unsupported and retain its counterexample.
+Generated failures also showed fresh localStorage loss and reappearance of removed legacy journal entries
+across whole-browser kill. Their inputs/errors and exact replays are preserved. Readonly histories explicitly
+start from a clean-reopened profile, also after deliberate source drift; a separate negative case retains the
+unsettled persistence boundary. External saved packets cold-replay the independent ledger. Outcomes were
+appended to [completed.md](./completed.md) before this checkpoint rewrite.
 
-**Exclusion and product gates.** The seeded coordinator controller remains a test precondition. The new
+**Next bounded work.** Revise host-strategy preparation around control before profile/session execution,
+preservation of unsettled visible work and lasting old-executable/transport retirement. Compare concrete
+supported-platform procedures against the saved page/frame/restored-shell falsifiers before another prototype.
+Do not connect this controller to coordinator effects. This result does not choose a production utility,
+new origin, migration carrier or live source-set reconciliation procedure.
+
+**Exclusion and product gates.** The seeded coordinator controller remains a test precondition. The
 preflight must not turn a callback, digest, empty census or host report into production authority. Production
 profile access and supported versions, continuous and lasting old-executable retirement, actual recovery-save
 UX, remote-source reconciliation and whole-profile residue remain open. Keep current same-origin checks;
@@ -115,7 +116,7 @@ Additional Local workspaces, Account verifier/receive/
 checkpoint authority and PRF remain incomplete. L-3 composes generation/custody references and interrupted
 lifetimes; these components do not implement retirement. L-4 carries independent storage/crypto review,
 supported profiles/authenticators, low-end performance and platform acceptance. Existing evidence and three matrix
-pins remain unchanged by host preparation; obligations/debt statuses remain unchanged. No checkpoint pays old-writer release.
+pins remain unchanged by this host experiment; obligations/debt statuses remain unchanged. No checkpoint pays old-writer release.
 
 **Scope.** This seat owns L-1 implementation/evidence. The independent L-2 record below is unchanged. Historical
 Stage 0 records do not certify states their models omitted.

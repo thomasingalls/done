@@ -1,0 +1,83 @@
+{
+  "source": {
+    "input": {
+      "master": "🔒a",
+      "suffix": "! ba\né a",
+      "orphan": "",
+      "days": [
+        {
+          "next": ["#"],
+          "scheduled": [" abbé\na🔒-", " #\t", ""],
+          "done": [],
+          "date": "2026-08-01",
+          "archive": "## Next\n\n- #\n\n## Scheduled\n\n-  abbé\n  a🔒-\n\n-  #\t\n\n-\n\n## Done\n\n"
+        },
+        {
+          "next": ["🔒é\t\n", "-\t", " b\t\n🔒🔒", "-#\tab\nbé-#"],
+          "scheduled": [],
+          "done": ["🔒#b\n#a"],
+          "date": "2026-08-02"
+        },
+        {
+          "next": ["", "", "\na-é\t\n\t\t\t"],
+          "scheduled": ["-\nb", "", " \n\naé- #\tb"],
+          "done": [],
+          "date": "2026-08-03"
+        },
+        {
+          "next": ["#\ta#-\t\tééé", "", "", "éé é", "--#"],
+          "scheduled": ["\t\tbab "],
+          "done": ["\t#a"],
+          "date": "2026-08-04"
+        },
+        {
+          "next": ["# a\na ", "# -a-é"],
+          "scheduled": [],
+          "done": ["\n🔒-b"],
+          "date": "2026-08-05"
+        },
+        {
+          "next": ["a\ta🔒é🔒éa"],
+          "scheduled": [],
+          "done": [],
+          "date": "2026-08-06"
+        },
+        {
+          "next": ["", "#éé- ", "", "\t -"],
+          "scheduled": [],
+          "done": ["é  \n"],
+          "date": "2026-08-07"
+        },
+        {
+          "next": ["\t🔒 \n#b-", ""],
+          "scheduled": [],
+          "done": ["#🔒\t# é "],
+          "date": "2026-08-08"
+        },
+        {
+          "next": ["\n-b\n", "", "é--#\nb"],
+          "scheduled": ["\t", "\n\té\t -b", "#"],
+          "done": [],
+          "date": "2026-08-09"
+        },
+        {
+          "next": ["#-a", "\tb"],
+          "scheduled": [],
+          "done": [""],
+          "date": "2026-08-10"
+        }
+      ]
+    },
+    "disk": [1],
+    "wal": [0, 2]
+  },
+  "commands": [
+    "missing-file",
+    "open-close",
+    "replace-file",
+    "wrong-origin",
+    "wrong-origin",
+    "open-close",
+    "freeze-restore"
+  ]
+}

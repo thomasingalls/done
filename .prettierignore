@@ -6,3 +6,6 @@
 # Preserve byte-for-byte execution evidence and the saved native counterexample.
 docs/storage-conformance-runs/*.json
 test/yjs-delivery/ready-wakeup.json
+
+# Immutable persistent-profile preflight evidence (including nested native reports).
+docs/storage-conformance-runs/2026-09-10-legacy-host/**

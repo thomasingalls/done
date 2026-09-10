@@ -1035,3 +1035,36 @@ packet/factor ownership without a new durable host stage. Production profile acc
 retirement, actual save UX, carrier/attribution choice, full residue and platform/review gates remain open.
 This is documentation only; default startup, runtime, conformance matrix and debt statuses are unchanged.
 This outcome is appended before replacing the L-1 checkpoint; the L-2 seat remains untouched.
+
+## 2026-09-10 — Persistent-profile migration host preflight (`L-1`)
+
+Committed host preparation as `0d9c733`. Implemented the private disposable-profile runner and readonly source/
+recovery fixture. It builds the actual pinned legacy application/worker, retains persistent browser profiles
+across process death, reads native carriers independently and saves/syncs/closes/rereads the recovery file
+outside the profile. No destination owner, factor mint, coordinator bridge or default-app cutover is enabled.
+
+[Preserved evidence](./storage-conformance-runs/2026-09-10-legacy-host.md) passes ten directed diagnostic groups,
+60 generated native histories (seed 8941), seven controls and one later focused history-omission control.
+Seven new Node tests (including 100 filesystem histories), 14 existing supervisor tests, typecheck and focused
+lint/format checks pass. Raw reports retain source/build/browser/protocol hashes and the tested dirty snapshots.
+Existing encrypted runtime files remain unchanged; old full unit/component native suites were not rerun here.
+
+**The host candidate is unsupported.** First-script page/frame writes occurred during attempted CDP pausing.
+A browser crash restored the old cached application at a maintenance URL and changed source. Worker no-write
+windows remain finite observations; history reloaded instead of exercising BFCache and installed-window UI is
+untested. The final second-process attempt was rejected without observed source write. Native dependency
+fallback retained a recoverable plaintext protocol update outside the cleanup manifest; deployed presence is
+unknown. Old direct assets wrote and a live provider reconnected after `done.sync` removal.
+
+Two generated failures exposed unsettled localStorage persistence: fresh writes disappeared, and removed old
+journal entries reappeared after whole-browser kill. Preserve their first inputs/errors, shrink-budget expiry,
+exact replays and reconstruction evidence. Readonly generated histories now declare their baseline only after
+clean profile reopen, including after deliberate source drift; a separate negative case retains the unsettled
+boundary. This qualification does not establish arbitrary browser/power-loss durability or change encrypted
+runtime guarantees. Original externally saved packets still cold-replay the independent operation ledger.
+
+The next bounded work is revised host-strategy preparation around control before profile/session execution,
+preservation of unsettled visible source work and lasting executable/transport retirement. Do not bridge this
+candidate to the coordinator. Production platform/profile access, recovery UX, actual carrier/attribution,
+remote reconciliation, cross-origin transfer, full residue and review/performance remain gates. Matrix pins
+and all debt statuses/requirements remain unchanged. This outcome precedes the L-1 checkpoint rewrite.
