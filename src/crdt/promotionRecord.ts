@@ -1,3 +1,4 @@
+import { parseRetainedAdmission, type RetainedAdmission } from '../../account-protocol/admission';
 /** Internal authenticated inventory of the single promotion carrier, retained at the stable interlock. */
 import { parseGenesis, type GenesisCandidate } from '../../account-protocol/genesis';
 import { parseAuthorityPin, type AuthorityPin } from '../../account-protocol/authority';
@@ -48,7 +49,7 @@ import { probeDatabase } from './startupStorage';
 import { contentTransaction } from './contentDatabase';
 import type { SessionTask } from './writeSession';
 export interface PromotionRecord {
-  v: 1 | 2;
+  v: 1 | 2 | 3;
   kind: 'local-promotion';
   id: string;
   source: PromotionSource;
@@ -59,7 +60,14 @@ export interface PromotionRecord {
   custodyMac: string;
   sealReserved: number;
   credentialIds: [string, string];
-  stage: 'reserved' | 'prepared' | 'genesis-prepared';
+  stage:
+    | 'reserved'
+    | 'prepared'
+    | 'genesis-prepared'
+    | 'admission-requested'
+    | 'admission-offered'
+    | 'admission-receipted';
+  admission?: RetainedAdmission;
   genesis?: GenesisCandidate;
   credentials: [SealedCredential, SealedCredential] | null;
   mac: Bytes;
@@ -84,7 +92,8 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
     'stage',
     'credentials',
     'mac',
-    ...((input as { v?: unknown })?.v === 2 ? ['genesis'] : []),
+    ...([2, 3].includes((input as { v?: number })?.v ?? 0) ? ['genesis'] : []),
+    ...((input as { v?: unknown })?.v === 3 ? ['admission'] : []),
   ]);
   const s = closed(r['source'], [
     'slotId',
@@ -98,7 +107,11 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
   if (
     !(
       (r['v'] === 1 && ['reserved', 'prepared'].includes(String(r['stage']))) ||
-      (r['v'] === 2 && r['stage'] === 'genesis-prepared')
+      (r['v'] === 2 && r['stage'] === 'genesis-prepared') ||
+      (r['v'] === 3 &&
+        ['admission-requested', 'admission-offered', 'admission-receipted'].includes(
+          String(r['stage']),
+        ))
     ) ||
     r['kind'] !== 'local-promotion' ||
     s['generation'] !== 1
@@ -158,8 +171,11 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
   if (!(r['mac'] instanceof Uint8Array) || r['mac'].length !== 32)
     throw Error('Missing promotion authentication');
   return {
-    v: r['v'] as 1 | 2,
-    ...(r['v'] === 2 ? { genesis: parseGenesis(r['genesis']) } : {}),
+    v: r['v'] as 1 | 2 | 3,
+    ...([2, 3].includes(r['v'] as number) ? { genesis: parseGenesis(r['genesis']) } : {}),
+    ...(r['v'] === 3
+      ? { admission: parseRetainedAdmission(r['admission'], r['stage'] as string) }
+      : {}),
     kind: 'local-promotion',
     id: id(r['id']),
     source,
@@ -207,7 +223,8 @@ export const promotionPayload = (r: PromotionRecord): Bytes =>
         hex(c.sealed.nonce),
         hex(c.sealed.ct),
       ]) ?? null,
-      ...(r.v === 2 ? [parseGenesis(r.genesis)] : []),
+      ...(r.v >= 2 ? [parseGenesis(r.genesis)] : []),
+      ...(r.v === 3 ? [parseRetainedAdmission(r.admission, r.stage)] : []),
     ]),
   );
 const macKey = (root: Bytes, r: PromotionRecord, subtle: SubtleCrypto) =>

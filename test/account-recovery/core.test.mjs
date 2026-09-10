@@ -164,7 +164,7 @@ test('schema v1 requires an explicit offline additive upgrade and preserves pend
   const f = fixture(t),
     account = await registered(f);
   const db = new DatabaseSync(f.path);
-  db.exec('DROP TABLE recovery; PRAGMA user_version=1;');
+  db.exec('DROP TABLE promotions; DROP TABLE recovery; PRAGMA user_version=1;');
   db.close();
   assert.throws(() => new AccountCore(f.path, policy), /explicit offline upgrade/);
   const upgraded = new AccountCore(f.path, policy, { upgradeFromV1: true });

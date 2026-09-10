@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-10T17:27:13.150Z",
+  "completedAt": "2026-09-10T17:28:23.281Z",
+  "code": 0,
+  "timedOut": false,
+  "scope": "Private first-epoch service admission and authenticated Local receipt; independent OpenSSL and plaintext replay oracles, generated service/native histories, actual bad-acceptance controls, SQLite process death and renderer/IDB boundaries. No index handoff, relay, or personal operations."
+}

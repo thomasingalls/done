@@ -1,6 +1,17 @@
+import { AcceptanceCustody } from './acceptance.ts';
+import {
+  firstEpoch,
+  epochHead,
+  offerMessage,
+  epochMessage,
+  receiptMessage,
+  type AdmissionOffer,
+  type AdmissionReceipt,
+} from '../account-protocol/admission.ts';
+import type { PromotionIssuer } from './promotion.ts';
 import { closed, pendingMessage, type PendingProof } from '../account-protocol/preparation.ts';
 import type { AccountCore } from './core.ts';
-/** Explicit private service root owner. No general signing oracle, account activation or key export. */
+/** Explicit private service root and acceptance-custody owner. Fixed-purpose issuance only. */
 import { DatabaseSync } from 'node:sqlite';
 import {
   createCipheriv,
@@ -101,9 +112,11 @@ function unlock(row: SealedRoot, expected: AuthorityPin, operatorKey: Uint8Array
 export class PrivateAuthority {
   #pin: AuthorityPin;
   #key: KeyObject | null;
-  private constructor(pin: AuthorityPin, key: KeyObject) {
+  #acceptance: AcceptanceCustody;
+  private constructor(pin: AuthorityPin, key: KeyObject, operatorKey: Uint8Array) {
     this.#pin = pin;
     this.#key = key;
+    this.#acceptance = new AcceptanceCustody(operatorKey, pin);
   }
   /** The operator owns the parent directory, external wrapping key and independent public pin distribution. */
   static initialize(
@@ -177,7 +190,11 @@ export class PrivateAuthority {
       const rows = db.prepare('SELECT * FROM authority').all();
       if (rows.length !== 1 || rows[0]!.id !== 1)
         throw Error('Authority root missing or ambiguous');
-      return new PrivateAuthority(pin, unlock(rows[0] as unknown as SealedRoot, pin, operatorKey));
+      return new PrivateAuthority(
+        pin,
+        unlock(rows[0] as unknown as SealedRoot, pin, operatorKey),
+        operatorKey,
+      );
     } finally {
       db.close();
     }
@@ -248,7 +265,50 @@ export class PrivateAuthority {
       ),
     };
   }
+  #issuer(): PromotionIssuer {
+    const signature = (message: Uint8Array) => {
+      if (!this.#key) throw Error('Authority closed');
+      return sign(null, message, this.#key).toString('hex');
+    };
+    return {
+      pin: { ...this.#pin },
+      prepare: async (request) => {
+        const { requestDigest } = await import('../account-protocol/admission.ts');
+        const seal = this.#acceptance.create(await requestDigest(request));
+        const epoch = await firstEpoch(request, this.#pin, seal.publicKey);
+        const offer: AdmissionOffer = {
+          v: 1,
+          kind: 'promotion-offer',
+          epoch,
+          head: await epochHead(epoch),
+          signature: '00'.repeat(64),
+        };
+        offer.signature = signature(await offerMessage(offer));
+        return { offer, seal };
+      },
+      complete: async (offer, completion) => {
+        const receipt: AdmissionReceipt = {
+          v: 1,
+          kind: 'promotion-receipt',
+          offer,
+          completion,
+          epochSignature: signature(await epochMessage(offer.epoch)),
+          signature: '00'.repeat(64),
+        };
+        receipt.signature = signature(await receiptMessage(receipt));
+        return receipt;
+      },
+      check: (seal, id, pub) => this.#acceptance.check(seal, id, pub),
+    };
+  }
+  beginPromotion(core: AccountCore, input: unknown) {
+    return core.beginPromotion(input, this.#issuer());
+  }
+  finishPromotion(core: AccountCore, input: unknown) {
+    return core.finishPromotion(input, this.#issuer());
+  }
   close(): void {
     this.#key = null;
+    this.#acceptance.close();
   }
 }

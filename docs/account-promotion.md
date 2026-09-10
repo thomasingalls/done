@@ -230,3 +230,14 @@ and re-derives source coverage; it returns committed bytes without resealing. Ca
 in-flight transaction before releasing the slot. Service abandonment may race a last observation; these
 proofs are observations, not a service reservation. The future activation transaction must check live
 eligibility atomically and reject a cancelled account even if a Local candidate exists.
+
+
+## Following component: first-epoch admission
+
+[Private admission](./account-admission.md) consumes the version-2 candidate, adds exact recipient
+certification and a recovery-bootstrap origin endorsement, then retains the current-state service's
+verified first epoch and semantic admission receipt in a version-3 carrier. The proposed acceptance key
+is sealed under separate operator-derived custody. Proposal, account activation and receipt retention
+have distinct crash boundaries. Local claim/index/content/custody remain retained and excluded; the
+verified Local-to-Account handoff is still the next owner. Existing preparation/genesis readers refuse
+version 3. Abandonment may free a pending workspace for a new registration, but refuses once admitted.

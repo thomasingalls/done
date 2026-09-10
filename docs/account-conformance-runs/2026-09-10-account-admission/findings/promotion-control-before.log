@@ -1,0 +1,54 @@
+Account promotion evidence: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-promotion/2026-09-10T17-26-46.921Z
+(node:82274) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:82274) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ current signed observation binds nonce, pin, account and confirmed draft; historical receipts cannot reauthorize abandonment (36.8225ms)
+✔ 120 generated service histories retain cancellation despite old receipts, restart, lost replies and wrong capabilities (2091.445958ms)
+✔ SIGKILL before-commit abandonment is resolved cold (271.332792ms)
+✔ SIGKILL after-commit abandonment is resolved cold (218.736625ms)
+✖ current-eligibility fault control accepts an abandoned account only when live-state checks are removed (24.441834ms)
+✔ abandonment owns absent, expired and cancelled recovery drafts without making the old registration reusable (21.676417ms)
+(node:82275) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:82275) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ native preparation resumes exact credentials, preserves journal/content/Local identity and restores Local only through abandonment (922.1605ms)
+✔ native before reserved commit interruption preserves reservation and winning keys (760.609ms)
+✔ native after reserved commit interruption preserves reservation and winning keys (1286.632542ms)
+✔ native before prepared commit interruption preserves reservation and winning keys (790.94375ms)
+✔ native after prepared commit interruption preserves reservation and winning keys (1318.459791ms)
+Account promotion campaign is still running; results stream to run.log.
+✔ generated histories exercise restart, damaged markers, failed reservations, writing and abandonment against an independent ledger (11231.617416ms)
+✔ observed MAC fault control admits a substituted preparation identity only with authentication disabled (829.933708ms)
+✔ missing completed counter and exhausted seal budget refuse without replacement or network authority (714.182292ms)
+✔ competing preparers converge; cancellation retains exclusion until native network work settles (818.5775ms)
+✔ recovery owner abandons unsaved or cancelled code through current proof, retains lost replies, and permits a fresh registration (531.640542ms)
+✔ abandonment lost reply and local deletion abort retain exact prepared identity for retry (653.826209ms)
+✔ confirmed recovery draft stays owned until Local promotion is abandoned, and unknown Local references refuse reset (562.376958ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 17
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21055.146584
+
+✖ failing tests:
+
+test at test/account-promotion/core.test.mjs:188:1
+✖ current-eligibility fault control accepts an abandoned account only when live-state checks are removed (24.441834ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion/core.test.mjs:210:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+Account promotion campaign failed: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-promotion/2026-09-10T17-26-46.921Z

@@ -1,3 +1,20 @@
+import {
+  parseAdmissionRequest,
+  requestDigest,
+  verifyAdmissionRequest,
+  verifyOffer,
+  verifyCompletion,
+  parseOffer,
+  parseReceipt,
+  parseCompletion,
+  same,
+  ADMISSION_LIMIT,
+  type AdmissionRequest,
+  type AdmissionOffer,
+  type AdmissionReceipt,
+} from '../account-protocol/admission.ts';
+import { pendingBytes } from '../account-protocol/preparation.ts';
+import type { PromotionIssuer } from './promotion.ts';
 import { parsePendingState, type PendingState } from '../account-protocol/preparation.ts';
 import {
   parseDraft,
@@ -55,9 +72,20 @@ interface Ceremony {
   proof_hash: string | null;
   result: string | null;
 }
+interface PromotionRow {
+  account_id: string;
+  workspace_id: string;
+  lineage_id: string;
+  request_digest: string;
+  request: string;
+  offer: string;
+  acceptance_seal: string;
+  state: 'proposed' | 'admitted' | 'cancelled';
+  result: string | null;
+}
 type Hook = (point: 'before-commit' | 'after-commit' | 'after-verify', operation: string) => void;
 
-/** Private service core. No content imports, network grants, activation or binding issuer. */
+/** Private account and first-admission transactions. No plaintext content, relay or slot binding issuer. */
 export class AccountCore {
   #db: DatabaseSync;
   #policy: Policy;
@@ -67,7 +95,12 @@ export class AccountCore {
   constructor(
     path: string,
     policy: Policy,
-    instrumentation: { now?: () => number; hook?: Hook; upgradeFromV1?: boolean } = {},
+    instrumentation: {
+      now?: () => number;
+      hook?: Hook;
+      upgradeFromV1?: boolean;
+      upgradeFromV2?: boolean;
+    } = {},
   ) {
     validatePolicy(policy);
     this.#policy = { ...policy };
@@ -101,8 +134,12 @@ export class AccountCore {
           PRAGMA user_version=1;
         `);
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
-      } else if (version !== 2 && !(version === 1 && instrumentation.upgradeFromV1))
-        throw Error('Unsupported account schema; v1 requires explicit offline upgrade');
+      } else if (
+        version !== 3 &&
+        !(version === 2 && instrumentation.upgradeFromV2) &&
+        !(version === 1 && instrumentation.upgradeFromV1)
+      )
+        throw Error('Unsupported account schema; older versions require explicit offline upgrade');
       if (version === 0 || version === 1) {
         this.#db.exec(`CREATE TABLE recovery (
           account_id TEXT PRIMARY KEY REFERENCES accounts(id), attempt_id TEXT UNIQUE NOT NULL REFERENCES attempts(id),
@@ -110,6 +147,15 @@ export class AccountCore {
           expires INTEGER NOT NULL, state TEXT NOT NULL CHECK(state IN ('open','done','cancelled','expired')),
           proof_hash TEXT, result TEXT, CHECK((proof_hash IS NULL) = (result IS NULL)));
           PRAGMA user_version=2;`);
+      }
+      if (version !== 3) {
+        this.#db.exec(`CREATE TABLE promotions (
+          account_id TEXT PRIMARY KEY REFERENCES accounts(id),workspace_id TEXT NOT NULL,lineage_id TEXT NOT NULL,
+          request_digest TEXT UNIQUE NOT NULL,request TEXT NOT NULL,offer TEXT NOT NULL,acceptance_seal TEXT NOT NULL,
+          state TEXT NOT NULL CHECK(state IN ('proposed','admitted','cancelled')),result TEXT);
+          CREATE UNIQUE INDEX promotion_workspace ON promotions(workspace_id) WHERE state != 'cancelled';
+          CREATE UNIQUE INDEX promotion_lineage ON promotions(lineage_id) WHERE state != 'cancelled';
+          PRAGMA user_version=3;`);
       }
       if (
         this.#db.prepare('SELECT value FROM policy WHERE id=1').get()?.value !==
@@ -455,6 +501,196 @@ export class AccountCore {
     });
   }
 
+  #promotionCurrent(
+    retryKey: string,
+    request: AdmissionRequest,
+    issuer: PromotionIssuer,
+  ): { ok: true; state: PendingState; row?: PromotionRow } | { ok: false; refusal: Refusal } {
+    const attempt = this.#attempt(retryKey),
+      accountId = request.candidate.accountId;
+    if (!attempt || attempt.mode !== 'register' || attempt.account_id !== accountId)
+      return refuse('unknown-attempt');
+    const account = this.#db.prepare('SELECT state FROM accounts WHERE id=?').get(accountId);
+    const credential = this.#db
+      .prepare("SELECT id FROM credentials WHERE account_id=? AND state='confirmed'")
+      .get(accountId);
+    const recovery = this.#recovery(attempt);
+    const row = this.#db
+      .prepare('SELECT * FROM promotions WHERE account_id=?')
+      .get(accountId) as unknown as PromotionRow | undefined;
+    if (
+      attempt.state !== 'done' ||
+      !credential ||
+      recovery?.state !== 'done' ||
+      !recovery.result ||
+      row?.state === 'cancelled' ||
+      (account?.state !== 'pending' && !(account?.state === 'active' && row?.state === 'admitted'))
+    )
+      return refuse('account-not-pending');
+    if (row) {
+      if (!same(parseAdmissionRequest(JSON.parse(row.request)), request))
+        return refuse('proof-conflict');
+      const offer = parseOffer(JSON.parse(row.offer));
+      issuer.check(
+        JSON.parse(row.acceptance_seal),
+        row.request_digest,
+        offer.epoch.acceptancePublicKey,
+      );
+    }
+    const receipt = JSON.parse(recovery.result);
+    const state = parsePendingState({
+      v: 1,
+      accountId,
+      attemptId: attempt.id,
+      status: 'eligible',
+      draft: JSON.parse(recovery.draft),
+      confirmation: {
+        recoveryId: receipt.recoveryId,
+        draftDigest: receipt.draftDigest,
+        recoveryStateDigest: receipt.recoveryStateDigest,
+        receiptId: receipt.receiptId,
+      },
+    });
+    return { ok: true, state, ...(row ? { row } : {}) };
+  }
+  #promotionView(row: PromotionRow): AdmissionOffer | AdmissionReceipt {
+    return row.state === 'admitted'
+      ? parseReceipt(JSON.parse(row.result!))
+      : parseOffer(JSON.parse(row.offer));
+  }
+  async beginPromotion(
+    input: unknown,
+    issuer: PromotionIssuer,
+  ): Promise<AdmissionOffer | AdmissionReceipt | { ok: false; refusal: Refusal }> {
+    let retryKey: string, request: AdmissionRequest, id: string;
+    try {
+      if (!object(input) || !fields(input, ['retryKey', 'request'])) return refuse('malformed');
+      const raw = canonical(input);
+      if (Buffer.byteLength(raw) > ADMISSION_LIMIT) return refuse('malformed');
+      const copied = JSON.parse(raw);
+      retryKey = copied.retryKey;
+      retryHash(retryKey);
+      request = parseAdmissionRequest(copied.request);
+      id = await requestDigest(request);
+    } catch {
+      return refuse('malformed');
+    }
+    const before = this.#transaction('inspect-promotion', () =>
+      this.#promotionCurrent(retryKey, request, issuer),
+    );
+    if (!before.ok) return before;
+    try {
+      await verifyAdmissionRequest(request, before.state);
+      if (request.candidate.authRoot !== issuer.pin.authRoot) return refuse('invalid-proof');
+      if (before.row) {
+        await verifyOffer(JSON.parse(before.row.offer), request, issuer.pin);
+        return this.#promotionView(before.row);
+      }
+      const proposed = await issuer.prepare(request);
+      await verifyOffer(proposed.offer, request, issuer.pin);
+      issuer.check(proposed.seal, id, proposed.offer.epoch.acceptancePublicKey);
+      this.#hook('after-verify', 'offer-promotion');
+      const result = this.#transaction('offer-promotion', () => {
+        const now = this.#promotionCurrent(retryKey, request, issuer);
+        if (!now.ok) return now;
+        if (now.row) return { ok: true as const, value: this.#promotionView(now.row) };
+        if (pendingBytes(now.state) !== pendingBytes(before.state)) return refuse('invalid-proof');
+        if (
+          this.#db
+            .prepare(
+              "SELECT account_id FROM promotions WHERE state != 'cancelled' AND (workspace_id=? OR lineage_id=?)",
+            )
+            .get(request.candidate.workspaceId, request.candidate.lineageId)
+        )
+          return refuse('proof-conflict');
+        this.#db
+          .prepare("INSERT INTO promotions VALUES (?,?,?,?,?,?,?,'proposed',NULL)")
+          .run(
+            request.candidate.accountId,
+            request.candidate.workspaceId,
+            request.candidate.lineageId,
+            id,
+            JSON.stringify(request),
+            JSON.stringify(proposed.offer),
+            JSON.stringify(proposed.seal),
+          );
+        return { ok: true as const, value: proposed.offer };
+      });
+      return result.ok ? result.value : result;
+    } catch {
+      return refuse('invalid-proof');
+    }
+  }
+  async finishPromotion(
+    input: unknown,
+    issuer: PromotionIssuer,
+  ): Promise<AdmissionReceipt | { ok: false; refusal: Refusal }> {
+    let retryKey: string,
+      id: string,
+      completion: ReturnType<typeof parseCompletion>,
+      request: AdmissionRequest;
+    try {
+      if (!object(input) || !fields(input, ['retryKey', 'requestDigest', 'completion']))
+        return refuse('malformed');
+      const raw = canonical(input);
+      if (Buffer.byteLength(raw) > ADMISSION_LIMIT) return refuse('malformed');
+      const copied = JSON.parse(raw);
+      retryKey = copied.retryKey;
+      retryHash(retryKey);
+      id = copied.requestDigest;
+      if (!/^[0-9a-f]{64}$/.test(id)) return refuse('malformed');
+      completion = parseCompletion(copied.completion);
+      const row = this.#db.prepare('SELECT request FROM promotions WHERE request_digest=?').get(id);
+      if (!row) return refuse('unknown-attempt');
+      request = parseAdmissionRequest(JSON.parse(row.request as string));
+    } catch {
+      return refuse('malformed');
+    }
+    const before = this.#transaction('inspect-admission', () =>
+      this.#promotionCurrent(retryKey, request, issuer),
+    );
+    if (!before.ok) return before;
+    if (!before.row) return refuse('unknown-attempt');
+    try {
+      if ((await requestDigest(request)) !== id) return refuse('invalid-proof');
+      await verifyAdmissionRequest(request, before.state);
+      const offer = await verifyOffer(JSON.parse(before.row.offer), request, issuer.pin);
+      await verifyCompletion(completion, request, offer);
+      if (before.row.state === 'admitted') {
+        const receipt = parseReceipt(JSON.parse(before.row.result!));
+        return same(receipt.completion, completion) ? receipt : refuse('proof-conflict');
+      }
+      const receipt = await issuer.complete(offer, completion);
+      this.#hook('after-verify', 'admit-promotion');
+      const result = this.#transaction('admit-promotion', () => {
+        const now = this.#promotionCurrent(retryKey, request, issuer);
+        if (!now.ok) return now;
+        if (!now.row) return refuse('unknown-attempt');
+        if (now.row.state === 'admitted') {
+          const existing = parseReceipt(JSON.parse(now.row.result!));
+          return same(existing.completion, completion)
+            ? { ok: true as const, value: existing }
+            : refuse('proof-conflict');
+        }
+        if (
+          canonical(now.row) !== canonical(before.row) ||
+          pendingBytes(now.state) !== pendingBytes(before.state)
+        )
+          return refuse('proof-conflict');
+        this.#db
+          .prepare("UPDATE promotions SET state='admitted',result=? WHERE account_id=?")
+          .run(JSON.stringify(receipt), request.candidate.accountId);
+        this.#db
+          .prepare("UPDATE accounts SET state='active' WHERE id=?")
+          .run(request.candidate.accountId);
+        return { ok: true as const, value: receipt };
+      });
+      return result.ok ? result.value : result;
+    } catch {
+      return refuse('invalid-proof');
+    }
+  }
+
   /** Current state only; old recovery receipts cannot authorize new preparation. Abandonment
    * permanently cancels this pending registration, retaining its audit/proof rows. */
   pendingPreparation(
@@ -497,6 +733,11 @@ export class AccountCore {
           : null,
       });
       if (abandon) {
+        this.#db
+          .prepare(
+            "UPDATE promotions SET state='cancelled' WHERE account_id=? AND state='proposed'",
+          )
+          .run(attempt.account_id);
         this.#db.prepare("UPDATE attempts SET state='cancelled' WHERE id=?").run(attempt.id);
         if (row) this.#db.prepare("UPDATE recovery SET state='cancelled' WHERE id=?").run(row.id);
       }

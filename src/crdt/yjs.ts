@@ -363,3 +363,12 @@ export const forkWorkspaceHistory = (source: YUndoManager, origin: unknown): YUn
     throw error;
   }
 };
+
+/** Row-7 separately bound descriptors. DS uses snapshot-v1 with an empty SV suffix. */
+export const genesisCoverageParts = (doc: YDoc) => {
+  if (hasPendingUpdates(doc)) throw Error('Genesis has pending dependencies');
+  return {
+    sv: new Uint8Array(Y.encodeStateVector(doc)),
+    ds: new Uint8Array(Y.encodeSnapshot(Y.createSnapshot(Y.snapshot(doc).ds, new Map()))),
+  };
+};

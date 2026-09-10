@@ -42,15 +42,14 @@ that is no longer active.
 
 ---
 
-## Active slice: Stage 1 — corrected encrypted-store implementation (`L-1`)
+## Active slice: Verified Local-to-Account handoff and owned startup (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # private genesis candidate complete; service admission/retained receipt next
-plan: [sequencing.md §3.5, action-tree.md L-1, account-sync-prep.md, account-promotion.md]
-prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
+status: in flight
+blocks_on: verified Local-to-Account index handoff and restart classification
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-10
 ```
@@ -61,43 +60,46 @@ and predecessor `dist/` is intact. Origin/Tailscale routing is unchanged; build 
 this worktree/Codex session. The author controls their browser and factors. No real account, passkey,
 recovery code, operator key or authority pin has been provisioned.
 
-**Preparation committed; genesis candidate complete.** Signed `e9477aa` commits account core,
-`0f1a073` recovery, `e96107b` private root/preflight, and `a4e1c15` durable promotion preparation.
-The [promotion contract](./account-promotion.md) now covers a signed journal-inclusive encrypted genesis
-candidate, exact device/recovery generation wraps and its authenticated version-2 carrier. Both saved
-factors are required. Both wraps open to the existing content key; an independently decrypted checkpoint
-must match a cold database-plus-journal replay, including SV/DS, real card order and existing attribution.
+**Genesis committed; admission complete.** Signed `280f616` commits the preceding candidate phase.
+[Private admission](./account-admission.md) now certifies the exact prepared device keys, adds a
+recovery-bootstrap endorsement of the original genesis, and retains a durable first-epoch service offer
+with a separately sealed acceptance key. Reopening both generation wraps and cold replaying the Local
+database plus journal precedes the client's exact checkpoint manifest and semantic-admission signatures.
+The service atomically checks current eligibility, activates the account and stores a signed receipt.
+The client verifies and durably retains that receipt under its existing exclusive promotion owner.
 
-The owner retains the original Local claim, index, content store, journal, credentials, keys, generation
-and counters. Strict atomic marker replacement, crash/restart and abandonment retain those carriers.
-Committed candidates resume exact bytes; ordinary Local editing and older promotion readers refuse
-while the new marker exists. This is a proposal for epoch 1, not an issued epoch, admission or Account
-classification. There is still no content publication or encrypted relay.
+One authenticated version-3 carrier holds request, offer, completion and receipt progress. Lost replies,
+service/renderer death, competing owners and cancellation/draining resume exact committed outcomes.
+The Local claim/index/content/journal/keys/credentials/generation/counters remain retained. Old readers
+and ordinary Local editing refuse the carrier. An admitted account cannot authorize Local abandonment;
+a cancelled offer retains audit evidence while allowing a fresh attempt for the same workspace.
+This phase has no index switch, default account UI, relay publication or offline Account startup.
 
-[Preserved evidence](./account-conformance-runs/2026-09-10-account-genesis.md): 17 new tests, 100 generated
-HPKE/OpenSSL comparisons, 40 generated native delivery/interruption/forgery histories, two observed bad-
-acceptance controls, transaction aborts, renderer death and cancellation/draining pass. All 57 refreshed
-promotion/recovery/authority tests, 13 writer-lifetime cases, 17 Local-genesis cases and 825 unit tests
-pass. TypeScript, focused static checks, isolated build and 13 final gates pass; initial JS 328.0/350.0 kB.
+[Preserved evidence](./account-conformance-runs/2026-09-10-account-admission.md): 34 new tests, 80 generated
+service and 30 generated native histories, independent OpenSSL/LP plus plaintext replay oracles, three
+observed bad-acceptance controls, four SQLite SIGKILL and six renderer/IDB interruption boundaries pass.
+All 104 refreshed account/authority/recovery/promotion/genesis regressions, 13 writer-lifetime cases,
+17 Local-genesis cases and 825 unit tests pass. TypeScript, focused static checks, isolated build and
+13 final gates pass; initial JS remains 328.0/350.0 kB.
 
-Review plus a directed real-card reproduction caught a wrong attribution field also present in the
-hand-built fixture. Production now uses `cardAuthor`; fixtures use the app's constructors and generated
-histories check actual section ordering and human/system attribution. The before-fix refusal is retained.
-No further generated production counterexample, whole-protocol debt payment or matrix change is claimed.
+Directed reproductions found two defects: field-order-sensitive comparison of equivalent requests, and
+cancelled proposals permanently reserving the workspace. Normalized requests and partial uniqueness for
+non-cancelled rows repair those failures. An older fault control was retargeted to its intended owner.
+Before/after logs are retained. No further generated counterexample or whole-protocol debt payment is
+claimed. Receipt signatures alone do not prove semantic replay; receivers still must decrypt and rederive.
 
-**Next bounded phase.** Current-state service admission and a retained authenticated receipt: atomically
-check pending account/recovery eligibility, certify the exact recipient keys and issue the first
-account authorization/acceptance head bound to the exact candidate. Define its client semantic evidence
-and final row-7 manifest relationship before issuing anything. Verify and durably retain the complete
-signed result under the existing owner, covering lost response, service/client restart, competing
-attempts, cancellation and replay. A bare signed digest does not establish semantic replay correctness.
-No Local index switch belongs in an unverified or partially retained result.
+**Next bounded phase.** Verified Local-to-Account index handoff and owned startup classification.
+Consume the fully authenticated retained receipt, recheck source/custody/recipient bindings under the
+exclusive owner and atomically select Account while preserving principal, workspace, content database,
+generation and counters. Define exactly what remains retained across handoff before mutation. Cover
+before/after index commit, renderer death, lost acknowledgements, competing owners and both Local/Account
+startup readers. Every restart must have an unambiguous owner; a partially retained result cannot select.
+No duplicate Local workspace, copied profile or plaintext relay belongs in this transition.
 
-**Following boundary.** Verified Local-to-Account index handoff and owned startup classification,
-preserving principal, workspace, database and generation without a duplicate Local or copied profile.
-Then encrypted relay/durable storage, account UI and two-gate second-device enrollment. The author's
-actual second pre-encryption device adopts the first device's workspace using fresh custody, store,
-counters and credentials, with no import or merge of its old writing; cleanup stays separate.
+**Following boundary.** Encrypted relay/durable storage, then account UI and two-gate second-device
+enrollment. The author's actual second pre-encryption device adopts the first device's workspace using
+fresh custody, store, counters and credentials, with no import or merge of its old writing; cleanup stays
+separate. Account passkey, Local device-lock code, recovery code and operator wrapping key remain distinct.
 
 **Remaining gates.** Complete accounts/bindings, encrypted sync, enrollment, revocation/rotation,
 finalization/full recovery, product conformance, whole-profile residue, platform coverage, production

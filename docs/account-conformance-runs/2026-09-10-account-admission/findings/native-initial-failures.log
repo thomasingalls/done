@@ -1,0 +1,198 @@
+(node:80932) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:80932) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✖ admission commits one verified first head and retains Local carriers through cold restart (1369.677292ms)
+✖ renderer interruption before admission-requested commit (1382.46225ms)
+✖ renderer interruption after admission-requested commit (1692.888ms)
+✖ renderer interruption before admission-offered commit (30029.180875ms)
+✖ renderer interruption after admission-offered commit (30028.179167ms)
+✖ renderer interruption before admission-receipted commit (30030.199958ms)
+✖ renderer interruption after admission-receipted commit (30031.689875ms)
+✖ lost begin response resumes exact service outcome (854.629125ms)
+✖ lost finish response resumes exact service outcome (844.3655ms)
+✖ abandonment after an offer removes only preparation, while a lost committed reply cannot roll back Local (1248.025083ms)
+✖ changed receipt signature is refused; disabling final verification actually retains it (837.393417ms)
+✖ queued owner and cancellation retain the commit until native acknowledgement drains (30026.695792ms)
+✖ caller mutation after queuing cannot change the owned slot or request (860.57625ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 0
+ℹ fail 8
+ℹ cancelled 5
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 160071.905416
+
+✖ failing tests:
+
+test at test/account-admission/native.test.mjs:39:1
+✖ admission commits one verified first head and retains Local carriers through cold restart (1369.677292ms)
+  page.evaluate: Error: Retained admission request changed
+      at eval (eval at evaluate (:311:30), <anonymous>:32515:56)
+      at async withRecoveryUnderPermit (eval at evaluate (:311:30), <anonymous>:26242:12)
+      at async withRecoveryKeys (eval at evaluate (:311:30), <anonymous>:31426:11)
+      at async eval (eval at evaluate (:311:30), <anonymous>:32155:12)
+      at async eval (eval at evaluate (:311:30), <anonymous>:25739:23)
+      at admit (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/fixtures.mjs:55:8)
+      at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs:46:26) {
+    log: []
+  }
+
+test at test/account-admission/native.test.mjs:65:5
+✖ renderer interruption before admission-requested commit (1382.46225ms)
+  page.evaluate: Error: Retained admission request changed
+      at eval (eval at evaluate (:311:30), <anonymous>:32515:56)
+      at async withRecoveryUnderPermit (eval at evaluate (:311:30), <anonymous>:26242:12)
+      at async withRecoveryKeys (eval at evaluate (:311:30), <anonymous>:31426:11)
+      at async eval (eval at evaluate (:311:30), <anonymous>:32155:12)
+      at async eval (eval at evaluate (:311:30), <anonymous>:25739:23)
+      at admit (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/fixtures.mjs:55:8)
+      at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs:95:29) {
+    log: []
+  }
+
+test at test/account-admission/native.test.mjs:65:5
+✖ renderer interruption after admission-requested commit (1692.888ms)
+  page.evaluate: Error: Retained admission request changed
+      at eval (eval at evaluate (:311:30), <anonymous>:32515:56)
+      at async withRecoveryUnderPermit (eval at evaluate (:311:30), <anonymous>:26242:12)
+      at async withRecoveryKeys (eval at evaluate (:311:30), <anonymous>:31426:11)
+      at async eval (eval at evaluate (:311:30), <anonymous>:32155:12)
+      at async eval (eval at evaluate (:311:30), <anonymous>:25739:23)
+      at admit (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/fixtures.mjs:55:8)
+      at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs:95:29) {
+    log: []
+  }
+
+test at test/account-admission/native.test.mjs:65:5
+✖ renderer interruption before admission-offered commit (30029.180875ms)
+  'test timed out after 30000ms'
+
+test at test/account-admission/native.test.mjs:65:5
+✖ renderer interruption after admission-offered commit (30028.179167ms)
+  'test timed out after 30000ms'
+
+test at test/account-admission/native.test.mjs:65:5
+✖ renderer interruption before admission-receipted commit (30030.199958ms)
+  'test timed out after 30000ms'
+
+test at test/account-admission/native.test.mjs:65:5
+✖ renderer interruption after admission-receipted commit (30031.689875ms)
+  'test timed out after 30000ms'
+
+test at test/account-admission/native.test.mjs:102:3
+✖ lost begin response resumes exact service outcome (854.629125ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /lost response/. Input:
+  
+  'Error: page.evaluate: Error: Retained admission request changed\n' +
+    '    at eval (eval at evaluate (:311:30), <anonymous>:32515:56)\n' +
+    '    at async withRecoveryUnderPermit (eval at evaluate (:311:30), <anonymous>:26242:12)\n' +
+    '    at async withRecoveryKeys (eval at evaluate (:311:30), <anonymous>:31426:11)\n' +
+    '    at async eval (eval at evaluate (:311:30), <anonymous>:32155:12)\n' +
+    '    at async eval (eval at evaluate (:311:30), <anonymous>:25739:23)'
+  
+      at async TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs:113:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: page.evaluate: Error: Retained admission request changed
+        at eval (eval at evaluate (:311:30), <anonymous>:32515:56)
+        at async withRecoveryUnderPermit (eval at evaluate (:311:30), <anonymous>:26242:12)
+        at async withRecoveryKeys (eval at evaluate (:311:30), <anonymous>:31426:11)
+        at async eval (eval at evaluate (:311:30), <anonymous>:32155:12)
+        at async eval (eval at evaluate (:311:30), <anonymous>:25739:23)
+        at admit (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/fixtures.mjs:55:8)
+        at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs:113:26),
+    expected: /lost response/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test/account-admission/native.test.mjs:102:3
+✖ lost finish response resumes exact service outcome (844.3655ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /lost response/. Input:
+  
+  'Error: page.evaluate: Error: Retained admission request changed\n' +
+    '    at eval (eval at evaluate (:311:30), <anonymous>:32515:56)\n' +
+    '    at async withRecoveryUnderPermit (eval at evaluate (:311:30), <anonymous>:26242:12)\n' +
+    '    at async withRecoveryKeys (eval at evaluate (:311:30), <anonymous>:31426:11)\n' +
+    '    at async eval (eval at evaluate (:311:30), <anonymous>:32155:12)\n' +
+    '    at async eval (eval at evaluate (:311:30), <anonymous>:25739:23)'
+  
+      at async TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs:113:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: page.evaluate: Error: Retained admission request changed
+        at eval (eval at evaluate (:311:30), <anonymous>:32515:56)
+        at async withRecoveryUnderPermit (eval at evaluate (:311:30), <anonymous>:26242:12)
+        at async withRecoveryKeys (eval at evaluate (:311:30), <anonymous>:31426:11)
+        at async eval (eval at evaluate (:311:30), <anonymous>:32155:12)
+        at async eval (eval at evaluate (:311:30), <anonymous>:25739:23)
+        at admit (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/fixtures.mjs:55:8)
+        at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs:113:26),
+    expected: /lost response/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test/account-admission/native.test.mjs:120:1
+✖ abandonment after an offer removes only preparation, while a lost committed reply cannot roll back Local (1248.025083ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs:149:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test/account-admission/native.test.mjs:153:1
+✖ changed receipt signature is refused; disabling final verification actually retains it (837.393417ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /signature/. Input:
+  
+  'Error: page.evaluate: Error: Retained admission request changed\n' +
+    '    at eval (eval at evaluate (:311:30), <anonymous>:32515:56)\n' +
+    '    at async withRecoveryUnderPermit (eval at evaluate (:311:30), <anonymous>:26242:12)\n' +
+    '    at async withRecoveryKeys (eval at evaluate (:311:30), <anonymous>:31426:11)\n' +
+    '    at async eval (eval at evaluate (:311:30), <anonymous>:32155:12)\n' +
+    '    at async eval (eval at evaluate (:311:30), <anonymous>:25739:23)'
+  
+      at async TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs:168:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: page.evaluate: Error: Retained admission request changed
+        at eval (eval at evaluate (:311:30), <anonymous>:32515:56)
+        at async withRecoveryUnderPermit (eval at evaluate (:311:30), <anonymous>:26242:12)
+        at async withRecoveryKeys (eval at evaluate (:311:30), <anonymous>:31426:11)
+        at async eval (eval at evaluate (:311:30), <anonymous>:32155:12)
+        at async eval (eval at evaluate (:311:30), <anonymous>:25739:23)
+        at admit (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/fixtures.mjs:55:8)
+        at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs:168:26),
+    expected: /signature/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test/account-admission/native.test.mjs:192:1
+✖ queued owner and cancellation retain the commit until native acknowledgement drains (30026.695792ms)
+  'test timed out after 30000ms'
+
+test at test/account-admission/native.test.mjs:239:1
+✖ caller mutation after queuing cannot change the owned slot or request (860.57625ms)
+  page.evaluate: Error: Retained admission request changed
+      at eval (eval at evaluate (:311:30), <anonymous>:32515:56)
+      at async withRecoveryUnderPermit (eval at evaluate (:311:30), <anonymous>:26242:12)
+      at async withRecoveryKeys (eval at evaluate (:311:30), <anonymous>:31426:11)
+      at async eval (eval at evaluate (:311:30), <anonymous>:32155:12)
+      at async eval (eval at evaluate (:311:30), <anonymous>:25739:23)
+      at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs:264:33) {
+    log: []
+  }

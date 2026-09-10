@@ -151,7 +151,18 @@ export async function native(t) {
     if (!receipt.ok) throw Error(JSON.stringify(receipt));
     return { ...item, draft: generated.draft, recoveryCode: generated.code, receipt };
   };
-  return { page, browser, context, setup, ready, local, server, pin, script };
+  return {
+    page,
+    browser,
+    context,
+    setup,
+    ready,
+    local,
+    server,
+    pin,
+    script,
+    dbPath: join(dir, 'account.sqlite'),
+  };
 }
 export const args = (item) => ({
   slotId: item.slotId,

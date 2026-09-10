@@ -193,9 +193,21 @@ test('current-eligibility fault control accepts an abandoned account only when l
     cpSync(name, join(dir, name), { recursive: true });
   const path = join(dir, 'account-service/core.ts'),
     original = readFileSync(path, 'utf8');
-  const mutant = original
-    .replace("attempt.state !== 'done' ||", 'false ||')
-    .replace("row?.state !== 'done'", 'false');
+  // Scope the control to the intended owner; admission has its own live-state guard.
+  const start = original.indexOf('\n  pendingPreparation(');
+  assert.ok(start > 0);
+  // Include #pendingCredential, which implements preparation's registration-state check.
+  const end = original.indexOf('\n  #recoveryView(', start);
+  assert.ok(end > start);
+  const target = original.slice(start, end);
+  assert.equal(target.split("attempt.state !== 'done' ||").length, 2);
+  assert.equal(target.split("row?.state !== 'done'").length, 2);
+  const mutant =
+    original.slice(0, start) +
+    target
+      .replace("attempt.state !== 'done' ||", 'false ||')
+      .replace("row?.state !== 'done'", 'false') +
+    original.slice(end);
   assert.notEqual(mutant, original);
   writeFileSync(path, mutant);
   const { AccountCore } = await import(pathToFileURL(path));

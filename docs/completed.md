@@ -1616,3 +1616,39 @@ Next is current-state service admission with exact recipient certification, the 
 independently verified retained receipt; verified Local-to-Account index handoff follows as its own
 boundary. The personal preview and relay remain off; the predecessor build and verified release remain
 intact. This outcome precedes the L-1 rewrite; L-2 is unchanged.
+
+
+## 2026-09-10 — Private first-epoch service admission and retained receipt
+
+Signed `280f616` commits journal-inclusive genesis preparation and exact generation wraps. Its next
+bounded phase now retains an exact recipient approval plus recovery-bootstrap origin endorsement,
+obtains a durable service offer with separately sealed acceptance custody, and signs the offered
+checkpoint manifest and SemanticAdmission after independently reopening/replaying the Local source.
+The service rechecks current registration, confirmed passkey/recovery and exact proofs, then atomically
+activates the account and stores its signed first-epoch receipt. The client verifies and retains the
+complete result in one authenticated version-3 promotion carrier.
+
+The Local index, claim, writing, journal, keys, credentials, counters and generation remain retained.
+There is no index handoff, default account UI or encrypted relay yet. Lost replies, crash/restart,
+competing processes/owners and cancelled acknowledgements preserve exact committed outcomes. After
+admission, abandonment refuses; cancelled proposals retain audit rows while freeing their reservation
+for a fresh registration. Old readers and ordinary Local editing refuse the new carrier.
+
+[Contract](./account-admission.md) and [preserved evidence](./account-conformance-runs/2026-09-10-account-admission.md):
+34 new tests, 80 generated service and 30 generated native histories, independent OpenSSL/LP and
+plaintext replay oracles, three observed bad-acceptance controls, four SQLite SIGKILL boundaries and
+six renderer/IDB interruption boundaries pass. All 104 refreshed account/recovery/authority/promotion/
+genesis regressions, 13 writer-lifetime and 17 Local-genesis cases, and 825 unit tests pass. TypeScript,
+focused static checks, isolated build and 13 final gates pass; initial JavaScript 328.0/350.0 kB.
+
+Directed tests caught two implementation defects: comparing equivalent request objects in different
+field order, and cancelled proposals permanently reserving the retained workspace. Requests are now
+normalized before comparison and non-cancelled rows alone hold workspace/lineage uniqueness. Before/
+after evidence is retained. The older preparation fault control also needed its text mutation scoped
+to its intended owner; final bad acceptance is observed again. No additional generated counterexample,
+whole-protocol debt payment or matrix change is claimed.
+
+Next is verified Local-to-Account index handoff and owned startup classification, preserving principal,
+workspace, database and generation. Encrypted relay, account UI and the author's second-device fresh
+adoption follow. The personal preview and relay remain off; retained builds remain intact. This outcome
+was appended before replacing L-1 progress; L-2 is unchanged.

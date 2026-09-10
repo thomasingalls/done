@@ -1,3 +1,4 @@
+import { ADMISSION_LIMIT } from '../account-protocol/admission.ts';
 import type { PrivateAuthority } from './authority.ts';
 import type { Policy } from './webauthn.ts';
 import { createServer } from 'node:http';
@@ -61,7 +62,12 @@ export async function createPrivateAccountServer(options: {
       let size = 0;
       for await (const part of request) {
         size += part.length;
-        if (size > 131072) {
+        if (
+          size >
+          (['/account/promotion/begin', '/account/promotion/finish'].includes(request.url ?? '')
+            ? ADMISSION_LIMIT
+            : 131072)
+        ) {
           send(413, refuse('malformed'));
           return;
         }
@@ -76,29 +82,33 @@ export async function createPrivateAccountServer(options: {
       }
       const route = request.url;
       const result =
-        route === '/account/preparation/inspect'
-          ? (authority?.pending(core, input) ?? null)
-          : route === '/account/preparation/abandon'
-            ? (authority?.pending(core, input, true) ?? null)
-            : route === '/account/authority/prove'
-              ? (authority?.prove(input) ?? null)
-              : route === '/account/recovery/begin'
-                ? await core.beginRecovery(input)
-                : route === '/account/recovery/resume'
-                  ? core.resumeRecovery(input)
-                  : route === '/account/recovery/cancel'
-                    ? core.cancelRecovery(input)
-                    : route === '/account/recovery/finish'
-                      ? await core.finishRecovery(input)
-                      : route === '/account/begin'
-                        ? core.begin(input)
-                        : route === '/account/resume'
-                          ? core.resume(input)
-                          : route === '/account/cancel'
-                            ? core.cancel(input)
-                            : route === '/account/finish'
-                              ? await core.finish(input)
-                              : null;
+        route === '/account/promotion/begin'
+          ? ((await authority?.beginPromotion(core, input)) ?? null)
+          : route === '/account/promotion/finish'
+            ? ((await authority?.finishPromotion(core, input)) ?? null)
+            : route === '/account/preparation/inspect'
+              ? (authority?.pending(core, input) ?? null)
+              : route === '/account/preparation/abandon'
+                ? (authority?.pending(core, input, true) ?? null)
+                : route === '/account/authority/prove'
+                  ? (authority?.prove(input) ?? null)
+                  : route === '/account/recovery/begin'
+                    ? await core.beginRecovery(input)
+                    : route === '/account/recovery/resume'
+                      ? core.resumeRecovery(input)
+                      : route === '/account/recovery/cancel'
+                        ? core.cancelRecovery(input)
+                        : route === '/account/recovery/finish'
+                          ? await core.finishRecovery(input)
+                          : route === '/account/begin'
+                            ? core.begin(input)
+                            : route === '/account/resume'
+                              ? core.resume(input)
+                              : route === '/account/cancel'
+                                ? core.cancel(input)
+                                : route === '/account/finish'
+                                  ? await core.finish(input)
+                                  : null;
       if (!result) {
         send(404, refuse('malformed'));
         return;
