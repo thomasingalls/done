@@ -1,3 +1,5 @@
+import type { PrivateAuthority } from './authority.ts';
+import type { Policy } from './webauthn.ts';
 import { createServer } from 'node:http';
 import { timingSafeEqual } from 'node:crypto';
 import { AccountCore } from './core.ts';
@@ -9,9 +11,12 @@ export async function createPrivateAccountServer(options: {
   port?: number;
   token: string;
   instrumentation?: ConstructorParameters<typeof AccountCore>[2];
+  /** Explicitly provisioned owner; omitted means the bootstrap route is unavailable. */
+  authority?: (policy: Policy) => PrivateAuthority;
 }) {
   const token = bytes(options.token, 32, 32);
   let core: AccountCore;
+  let authority: PrivateAuthority | undefined;
   let origin: string;
   const server = createServer(async (request, response) => {
     response.setHeader('Cache-Control', 'no-store');
@@ -71,28 +76,30 @@ export async function createPrivateAccountServer(options: {
       }
       const route = request.url;
       const result =
-        route === '/account/recovery/begin'
-          ? await core.beginRecovery(input)
-          : route === '/account/recovery/resume'
-            ? core.resumeRecovery(input)
-            : route === '/account/recovery/cancel'
-              ? core.cancelRecovery(input)
-              : route === '/account/recovery/finish'
-                ? await core.finishRecovery(input)
-                : route === '/account/begin'
-                  ? core.begin(input)
-                  : route === '/account/resume'
-                    ? core.resume(input)
-                    : route === '/account/cancel'
-                      ? core.cancel(input)
-                      : route === '/account/finish'
-                        ? await core.finish(input)
-                        : null;
+        route === '/account/authority/prove'
+          ? (authority?.prove(input) ?? null)
+          : route === '/account/recovery/begin'
+            ? await core.beginRecovery(input)
+            : route === '/account/recovery/resume'
+              ? core.resumeRecovery(input)
+              : route === '/account/recovery/cancel'
+                ? core.cancelRecovery(input)
+                : route === '/account/recovery/finish'
+                  ? await core.finishRecovery(input)
+                  : route === '/account/begin'
+                    ? core.begin(input)
+                    : route === '/account/resume'
+                      ? core.resume(input)
+                      : route === '/account/cancel'
+                        ? core.cancel(input)
+                        : route === '/account/finish'
+                          ? await core.finish(input)
+                          : null;
       if (!result) {
         send(404, refuse('malformed'));
         return;
       }
-      send(result.ok ? 200 : 409, result);
+      send('ok' in result && !result.ok ? 409 : 200, result);
     } catch {
       send(400, refuse('malformed'));
     }
@@ -107,7 +114,17 @@ export async function createPrivateAccountServer(options: {
   if (!address || typeof address === 'string') throw Error('Missing private listener');
   origin = `http://localhost:${address.port}`;
   try {
-    core = new AccountCore(options.path, { rpId: 'localhost', origin }, options.instrumentation);
+    const policy = { rpId: 'localhost', origin };
+    core = new AccountCore(options.path, policy, options.instrumentation);
+    try {
+      authority = options.authority?.(policy);
+      if (authority && (authority.pin.origin !== origin || authority.pin.rpId !== policy.rpId))
+        throw Error('Authority policy differs from account service');
+    } catch (error) {
+      authority?.close();
+      core.close();
+      throw error;
+    }
   } catch (error) {
     server.close();
     throw error;
@@ -119,6 +136,7 @@ export async function createPrivateAccountServer(options: {
       new Promise<void>((resolve, reject) => {
         server.closeAllConnections();
         server.close((error) => {
+          authority?.close();
           core.close();
           if (error) reject(error);
           else resolve();

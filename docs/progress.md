@@ -48,55 +48,59 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # recovery preparation complete; trusted root and promotion preparation next
-plan: [sequencing.md §3.5, action-tree.md L-1, account-sync-prep.md, account-recovery.md]
+status: in flight # authority/preflight complete; durable promotion intent and device custody next
+plan: [sequencing.md §3.5, action-tree.md L-1, account-sync-prep.md, account-authority.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-10
 ```
 
-**Personal checkpoint.** Signed `187b636` records the completed `17d87c2` application handoff and
-account/sync prep. The author's edit survives full close and normal reopen at that version. The preview
-is stopped at their request; relay remains off. The verified release is retained at
-`.dev/releases/17d87c2/app`, the predecessor `dist/` is intact, and the origin/Tailscale route is
-unchanged. Build and server remain in this worktree/Codex session. The author controls their browser.
+**Personal checkpoint.** The author confirmed edit survival through full close and normal reopen at
+`17d87c2`. The preview remains stopped at their request; relay is off. The verified release stays at
+`.dev/releases/17d87c2/app` and predecessor `dist/` is intact. Origin/Tailscale routing is unchanged.
+Build and server stay in this worktree/Codex session. The author controls their browser and factors.
 
-**Account core committed; recovery preparation complete.** Signed `e9477aa` commits the private
-challenge/passkey core. The [recovery contract](./account-recovery.md) now pins the amended three-part
-seal, saved-code confirmation, independent account/recovery proofs, durable service finalization and
-browser restart owner. The exact draft/root and recovery-state digest are bound into a historical
-receipt. **Accounts stay pending** until the later promotion owner attaches that state. No personal
-account, passkey, recovery code, content, custody or index operation occurred. No ordinary account UI,
-activation, service authority or network grant is exposed.
+**Recovery committed; trusted-root/preflight component complete.** Signed `e9477aa` commits the
+account core; signed `0f1a073` commits recovery sealing and restart-owned confirmation. The new
+[authority contract](./account-authority.md) provides explicit encrypted service-root initialization,
+cold open/recovery with no automatic rekeying, independent client pin verification, and a fixed-purpose
+nonce proof through the private adapter. No actual root/pin/operator secret or personal account has
+been provisioned. The service root does not authenticate itself by appearing next to its signature.
 
-[Preserved evidence](./account-conformance-runs/2026-09-10-account-recovery.md): all 25 recovery tests,
-including 160 generated histories, six SIGKILL cases, independent crypto reconstruction, native browser
-abort/crash/restart and cancellation-settlement checks, and three observed acceptance controls pass.
-All 30 core regressions (240 generated histories) and 825 existing unit tests pass. TypeScript, focused
-static checks and isolated build/budget/origin checks pass. Two preliminary failures were harness defects:
-lazy expiry in the expected ledger and awaiting a CDP crash response. Full check-chain and wider protocol
-assurance remain open; no debt/matrix status changed.
+The read-only Local preflight verifies mandatory custody and source identity under slot exclusion,
+cold-replays content plus journal, refuses admission material or pending dependencies, then verifies the
+pinned root proof. Its proposed lineage/recovery context is stable for this source/account; it grants
+no service admission and freezes no content snapshot. Local custody, keys, counters, routing and writing
+remain unchanged. Accounts remain pending, with no ordinary account UI or activation exposed.
 
-**Next bounded phase.** Trusted service authority-root persistence/bootstrap and promotion preparation.
-Connect the exact confirmed recovery result to the existing unlocked Local principal/workspace and
-never-admitted lineage. Prepare fresh device signing/wrapping credentials under mandatory custody,
-required recovery generation wraps and authenticated genesis/index restart handoff before activation.
-The root must be established before code generation; a key supplied beside an unverified binding cannot
-prove that same binding. An account receipt alone grants no content authority. Pending-attempt
-abandonment/reset needs its own enrollment owner before exposing the UI. Device-lock code, account
-passkey and content-recovery code remain distinct powers.
+[Preserved evidence](./account-conformance-runs/2026-09-10-account-authority.md): 13 authority/preflight
+tests, including 160 generated root and 40 generated browser histories, process kills and competing
+creators, two observed acceptance controls, native journal/refusal/imported-claim/cancellation checks,
+all 55 account/recovery regressions (400 more generated histories), and 825 existing unit tests pass.
+TypeScript, focused static checks and isolated application build checks pass. The preliminary test-page
+CSP blocked the journal's WASM; the disposable app harness was corrected while API CSP stayed unchanged.
+No generated production counterexample, debt payment or matrix status change is claimed.
 
-The author's actual second pre-encryption device will later **adopt this workspace**, with fresh local
-custody/store/counters/device credentials and no import or merge of its old writing. Cleanup there stays
-separate. L-2's clean historical worktree at `d24732b` has no further service work to integrate; its
-checkpoint remains untouched.
+**Next bounded write phase.** Implement the durable authenticated promotion intent and prepare fresh
+device signing/wrapping credentials under mandatory custody. Revalidate this Local source, trusted pin
+and exact current recovery/account state, retain the application-upgrade interlock before incompatible
+carriers, reserve seal budgets durably and inventory all new references. Preserve the current generation,
+counters, Local identity and index throughout preparation; resume the same winning intent/keys after a
+crash. Own explicit abandonment/reset, including the preceding recovery ceremony's terminal states.
 
-**Remaining gates.** Trusted root/promotion and signed binding issuance, encrypted relay/durable storage,
-two-gate enrollment, revocation/rotation/finalization, complete product conformance, whole-profile residue,
-platform coverage and independent review remain open. Incompatible persisted formats require an owned
-upgrade with authenticated intent, exclusion and restart/recovery rules. The private service's schema-v1
-upgrade is explicit and offline; no personal service database was upgraded. The host VM stays stopped;
-host/policy research is not next-up. This outcome was appended to completed.md before this rewrite.
+**Following phase.** Build verified genesis, exact recovery/device wraps, certified recipients, first
+authorization/acceptance head, and the service/local-index handoff before activation. The existing
+principal, workspace and physical content store carry over; no Local duplicate or copied profile is
+created. The first slot binding must verify against independently pinned authority. The actual second
+pre-encryption device then adopts this workspace with fresh custody/store/counters/credentials and
+no import or merge of its old writing; its cleanup stays separate.
+
+**Remaining gates.** Complete promotion and bindings, encrypted relay/durable storage, two-gate enrollment,
+revocation/rotation/finalization and full recovery, complete product conformance, whole-profile residue,
+platform coverage, production root distribution/restore and independent review remain open. Incompatible
+formats require a concrete authenticated upgrade owner and tested exclusion/restart rules. The host VM
+stays stopped; host/policy research is not next-up. L-2's historical clean ref `d24732b` has no further
+service work to integrate. This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 
 ---
 

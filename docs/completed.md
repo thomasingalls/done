@@ -1519,3 +1519,36 @@ and authenticated index restart handoff must use the exact confirmed recovery re
 personal enrollment remain gated on that work; sync and second-device adoption follow. Pending-attempt
 abandonment/reset and wider production lifecycle remain open. The personal preview and relay remain
 off, with release files and origin unchanged. This outcome precedes the L-1 rewrite; L-2 is unchanged.
+
+## 2026-09-10 — Private authority root and verified Local promotion preflight (`L-1`)
+
+Signed `0f1a073` commits recovery sealing, saved-code confirmation and restart-owned finalization.
+This slice adds an explicitly initialized private Ed25519 service root, sealed under a separate operator
+wrapping key with SQLite WAL/FULL commit and cold factor/pin verification. Missing/partial/damaged state
+refuses without automatic rekeying. The optional private proof endpoint signs only a fixed-purpose,
+client-nonce-bound bootstrap statement. Clients require a pin supplied independently by trusted
+operator/application configuration; no actual personal pin or operator secret was provisioned.
+
+The read-only Local promotion preflight factor-authenticates the ready claim and current carriers,
+requires Local routing with no admission material, cold-replays encrypted content plus journal, refuses
+pending dependencies, and verifies the pinned service proof under slot exclusion. It returns a stable
+proposed lineage/recovery context using the existing principal, workspace, store, root and genesis intent.
+It creates no carrier, content/custody/index change, checkpoint, recipient grant, epoch or activation.
+The [contract](./account-authority.md) specifies the next promotion-write owners and their boundaries.
+
+[Evidence](./account-conformance-runs/2026-09-10-account-authority.md): all 13 authority/preflight tests
+pass, including 160 generated root histories, 40 generated native histories, actual initialization
+process deaths and competing creators, native journal/read-only/cancellation/imported-claim coverage,
+and two actual bad-acceptance controls. All 55 core/recovery regressions (400 additional generated
+histories) and 825 existing unit tests pass. TypeScript, focused static checks and isolated app build
+checks pass. The preliminary native page CSP blocked journal WebAssembly; correcting the disposable app
+harness resolved it while leaving API CSP unchanged. Generated histories found no production defect.
+The full check chain was not run and no whole-protocol debt/matrix status changed.
+
+Next bounded write phase: authenticated durable promotion intent and fresh device credentials sealed
+under mandatory custody, preserving Local classification, current generation and counters until the
+exact prepared result is complete. The following genesis/service/index handoff must compose certified
+recipients, recovery wraps and checkpoint semantics before activating an Account workspace. The actual
+second pre-encryption device will adopt this workspace later without importing its old writing. The
+personal preview and relay remain stopped; the origin, predecessor build and verified release remain
+unchanged. This outcome precedes the L-1 rewrite; L-2 remains byte-for-byte unchanged.
