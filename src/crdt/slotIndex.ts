@@ -59,6 +59,8 @@ export interface SlotStore {
 export interface Slot {
   /** Verified Local genesis owner; legacy Account writers cannot mutate these rows. */
   local?: { principalId: string; workspaceId: string; intentId: string };
+  /** Private verified promotion owner. The authenticated interlock owns this exact route. */
+  account?: { v: 1; promotionId: string; requestDigest: string; epochHead: string };
   id: string;
   status: 'active' | 'closed';
   /**

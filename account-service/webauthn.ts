@@ -111,6 +111,10 @@ export async function registration(value: unknown, expectedChallenge: string, po
   };
 }
 
+export function validateCredentialKey(credential: StoredCredential): void {
+  if (spkiFor(credential.public_key) !== credential.spki) throw Error('Retained key mismatch');
+}
+
 export async function assertion(
   value: unknown,
   expectedChallenge: string,
@@ -123,7 +127,7 @@ export async function assertion(
   bytes(value.response.authenticatorData, 37, 16384);
   bytes(value.response.signature, 1, 1024);
   // Validate the retained encoding too, before choosing a verification algorithm.
-  if (spkiFor(credential.public_key) !== credential.spki) throw Error('Retained key mismatch');
+  validateCredentialKey(credential);
   const result = await verifyAuthenticationResponse({
     response: value,
     expectedChallenge,

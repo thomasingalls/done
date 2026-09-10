@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-10T18:05:38.489Z",
+  "completedAt": "2026-09-10T18:06:05.990Z",
+  "code": 0,
+  "timedOut": false,
+  "scope": "Private authenticated Local promotion preparation; current service eligibility and abandonment, generated service/browser histories, observed acceptance controls, native IDB and renderer/process deaths. No activation or personal operations."
+}

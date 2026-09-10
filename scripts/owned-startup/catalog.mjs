@@ -12,7 +12,7 @@ export const cases = [
   ['O11.recheck', 'Open rereads routing and controls after acquiring its lifetime'],
   ['O12.replay', 'Cancellation during authenticated replay drains before permit release'],
   ['O13.init-death', 'Interrupted admitted initialization recovers before exposure'],
-  ['O14.future', 'Unsupported application schema is repair-required before initialization'],
+  ['O14.future', 'Unsupported application schema is app-update-required before initialization'],
   ['O15.scope', 'Damage in one workspace does not prevent an independently valid workspace'],
 ].map(([id, title]) => ({ id, title }));
 export const mutants = [

@@ -1,0 +1,20 @@
+startup O01.absence: pass
+startup O02.orphan: pass
+startup O03.missing-content: pass
+startup O04.missing-custody: pass
+startup O05.routing: pass
+startup O06.legacy: pass
+startup O07.creation: pass
+startup O08.clear: pass
+startup O09.corrupt: pass
+startup O10.factor: pass
+startup O11.recheck: pass
+startup O12.replay: pass
+startup O13.init-death: pass
+startup O14.future: pass
+startup O15.scope: pass
+probe-creates-database O01.absence: fail
+orphan-is-fresh O02.orphan: fail
+skip-open-classification O11.recheck: fail
+Report: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/owned-startup/2026-09-10T18-04-33.166Z/report.md
+Exit 0 (bounded owned startup integration)

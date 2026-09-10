@@ -85,7 +85,7 @@ export async function prepareLocalPromotion(input: PreparePromotionOptions) {
           throw Error('Recovery draft differs from Local target');
       const retryHash = await task.wait(() => retryDigest(options.retryKey));
       let { claim, record, marker } = await readPromotion(task, options.slotId, options.code);
-      if (marker?.v === 3) throw Error('Use the admission owner');
+      if (marker && marker.v >= 3) throw Error('Use the admission owner');
       if (marker) requireSame(options.pin, options.accountId, retryHash, marker);
       const current = async (): Promise<PendingState> => {
         const nonce = hex(random(32)),

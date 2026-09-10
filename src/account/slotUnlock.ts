@@ -1,3 +1,4 @@
+import { es256Signature } from './es256Signature';
 /**
  * The device-local slot verifier (TRD §13.9, §15 row 12).
  *
@@ -262,10 +263,12 @@ const verifyUnder = async (
   } catch {
     return null;
   }
+  const encoded = accepted.importAs.name === 'ECDSA' ? es256Signature(signature) : signature;
+  if (!encoded) return false;
   return crypto.subtle.verify(
     accepted.verifyWith,
     key,
-    signature as BufferSource,
+    encoded as BufferSource,
     message as BufferSource,
   );
 };

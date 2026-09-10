@@ -1,9 +1,11 @@
+import { parseBindingProof, type BindingProof } from '../account-protocol/slot.ts';
 import {
   parseAdmissionRequest,
   requestDigest,
   verifyAdmissionRequest,
   verifyOffer,
   verifyCompletion,
+  verifyReceipt,
   parseOffer,
   parseReceipt,
   parseCompletion,
@@ -33,6 +35,7 @@ import {
   assertion,
   registration,
   validatePolicy,
+  validateCredentialKey,
   type Policy,
   type StoredCredential,
 } from './webauthn.ts';
@@ -85,7 +88,7 @@ interface PromotionRow {
 }
 type Hook = (point: 'before-commit' | 'after-commit' | 'after-verify', operation: string) => void;
 
-/** Private account and first-admission transactions. No plaintext content, relay or slot binding issuer. */
+/** Private account and first-admission transactions. No plaintext content or relay. */
 export class AccountCore {
   #db: DatabaseSync;
   #policy: Policy;
@@ -686,6 +689,79 @@ export class AccountCore {
         return { ok: true as const, value: receipt };
       });
       return result.ok ? result.value : result;
+    } catch {
+      return refuse('invalid-proof');
+    }
+  }
+
+  /** Fixed public binding for the admitted creating account; no caller-supplied key. */
+  async promotionBinding(
+    input: unknown,
+    issuer: PromotionIssuer,
+  ): Promise<BindingProof | { ok: false; refusal: Refusal }> {
+    let retryKey: string, id: string;
+    try {
+      if (!object(input) || !fields(input, ['retryKey', 'requestDigest']))
+        return refuse('malformed');
+      retryKey = input.retryKey as string;
+      retryHash(retryKey);
+      id = input.requestDigest as string;
+      if (typeof id !== 'string' || !/^[0-9a-f]{64}$/.test(id)) return refuse('malformed');
+    } catch {
+      return refuse('malformed');
+    }
+    const current = () => {
+      const row = this.#db
+        .prepare('SELECT * FROM promotions WHERE request_digest=?')
+        .get(id) as unknown as PromotionRow | undefined;
+      if (!row || row.state !== 'admitted') return refuse('account-not-pending');
+      const request = parseAdmissionRequest(JSON.parse(row.request));
+      const state = this.#promotionCurrent(retryKey, request, issuer);
+      const account = this.#db.prepare('SELECT state FROM accounts WHERE id=?').get(row.account_id);
+      if (!state.ok || account?.state !== 'active') return refuse('account-not-pending');
+      const credential = this.#db
+        .prepare("SELECT * FROM credentials WHERE account_id=? AND state='confirmed'")
+        .get(row.account_id) as unknown as StoredCredential;
+      validateCredentialKey(credential);
+      const receipt = parseReceipt(JSON.parse(row.result!));
+      return { ok: true as const, row, request, receipt, credential };
+    };
+    const before = this.#transaction('inspect-slot-binding', current);
+    if (!before.ok) return before;
+    try {
+      await verifyReceipt(before.receipt, before.request, issuer.pin);
+      if ((await requestDigest(before.request)) !== id) return refuse('invalid-proof');
+      const proof = parseBindingProof({
+        v: 1,
+        kind: 'promotion-slot-binding',
+        requestDigest: id,
+        epochHead: before.receipt.offer.head,
+        stored: {
+          binding: {
+            v: 1,
+            accountId: before.row.account_id,
+            principalId: before.request.candidate.principalId,
+            rpId: this.#policy.rpId,
+            epoch: 1,
+            credId: before.credential.id,
+            publicKey: before.credential.spki,
+          },
+          bindingSignature: '00'.repeat(64),
+        },
+      });
+      proof.stored.bindingSignature = await issuer.bind(proof.stored.binding);
+      this.#hook('after-verify', 'slot-binding');
+      const final = this.#transaction('slot-binding', () => {
+        const now = current();
+        if (!now.ok) return now;
+        if (
+          canonical(now.row) !== canonical(before.row) ||
+          canonical(now.credential) !== canonical(before.credential)
+        )
+          return refuse('proof-conflict');
+        return { ok: true as const, value: proof };
+      });
+      return final.ok ? final.value : final;
     } catch {
       return refuse('invalid-proof');
     }

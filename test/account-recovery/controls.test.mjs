@@ -22,6 +22,7 @@ async function mutation(t, file, from, to) {
     'account-protocol/preparation.ts',
     'account-protocol/genesis.ts',
     'account-protocol/admission.ts',
+    'account-protocol/slot.ts',
     'src/account/recovery.ts',
   ]) {
     let s = readFileSync(path, 'utf8');

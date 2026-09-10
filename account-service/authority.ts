@@ -1,3 +1,4 @@
+import { bindingMessage } from '../account-protocol/slot.ts';
 import { AcceptanceCustody } from './acceptance.ts';
 import {
   firstEpoch,
@@ -272,6 +273,7 @@ export class PrivateAuthority {
     };
     return {
       pin: { ...this.#pin },
+      bind: async (binding) => signature(bindingMessage(binding)),
       prepare: async (request) => {
         const { requestDigest } = await import('../account-protocol/admission.ts');
         const seal = this.#acceptance.create(await requestDigest(request));
@@ -306,6 +308,9 @@ export class PrivateAuthority {
   }
   finishPromotion(core: AccountCore, input: unknown) {
     return core.finishPromotion(input, this.#issuer());
+  }
+  promotionBinding(core: AccountCore, input: unknown) {
+    return core.promotionBinding(input, this.#issuer());
   }
   close(): void {
     this.#key = null;

@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Active slice: Verified Local-to-Account handoff and owned startup (`L-1`)
+## Active slice: Account editing and writer lifetime integration (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-blocks_on: verified Local-to-Account index handoff and restart classification
+blocks_on: attach verified Account access to the owned editor and writer lifetime
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-10
 ```
@@ -60,41 +60,44 @@ and predecessor `dist/` is intact. Origin/Tailscale routing is unchanged; build 
 this worktree/Codex session. The author controls their browser and factors. No real account, passkey,
 recovery code, operator key or authority pin has been provisioned.
 
-**Genesis committed; admission complete.** Signed `280f616` commits the preceding candidate phase.
-[Private admission](./account-admission.md) now certifies the exact prepared device keys, adds a
-recovery-bootstrap endorsement of the original genesis, and retains a durable first-epoch service offer
-with a separately sealed acceptance key. Reopening both generation wraps and cold replaying the Local
-database plus journal precedes the client's exact checkpoint manifest and semantic-admission signatures.
-The service atomically checks current eligibility, activates the account and stores a signed receipt.
-The client verifies and durably retains that receipt under its existing exclusive promotion owner.
+**Admission committed; handoff complete.** Signed `beed8cf` commits the preceding first-admission phase.
+[Private handoff](./account-handoff.md) now consumes the authenticated receipt and a root-signed binding
+derived from the admitted account's current confirmed credential. Both saved content factors, the exact
+source checkpoint/wraps and a fresh account passkey assertion precede index selection. A version-4
+prepared carrier owns the interval around strict Local-to-Account index replacement; selected progress
+follows its acknowledged commit. Exact retries recover before/after each boundary. Changed, missing,
+closed or regressed routing refuses without repair or Local fallback.
 
-One authenticated version-3 carrier holds request, offer, completion and receipt progress. Lost replies,
-service/renderer death, competing owners and cancellation/draining resume exact committed outcomes.
-The Local claim/index/content/journal/keys/credentials/generation/counters remain retained. Old readers
-and ordinary Local editing refuse the carrier. An admitted account cannot authorize Local abandonment;
-a cancelled offer retains audit evidence while allowing a fresh attempt for the same workspace.
-This phase has no index switch, default account UI, relay publication or offline Account startup.
+Principal, workspace, content database, content key, generation and counters stay intact. The old Local
+claim remains authenticated provenance behind the interlock, not a second selectable workspace. Owned
+Account startup rechecks the selected index, receipt, binding, custody, device wrap and full source replay
+under a fresh permit. It needs the device-lock code and a new passkey assertion, but no network or recovery
+code. Its metadata result does not grant ongoing access after the permit ends. The source remains frozen
+at genesis; an Account editing lifetime must precede new writes. The default editor and relay are unchanged.
 
-[Preserved evidence](./account-conformance-runs/2026-09-10-account-admission.md): 34 new tests, 80 generated
-service and 30 generated native histories, independent OpenSSL/LP plus plaintext replay oracles, three
-observed bad-acceptance controls, four SQLite SIGKILL and six renderer/IDB interruption boundaries pass.
-All 104 refreshed account/authority/recovery/promotion/genesis regressions, 13 writer-lifetime cases,
-17 Local-genesis cases and 825 unit tests pass. TypeScript, focused static checks, isolated build and
-13 final gates pass; initial JS remains 328.0/350.0 kB.
+[Preserved evidence](./account-conformance-runs/2026-09-10-account-handoff.md): 21 new tests, 60 generated
+service histories, 24 generated native histories, 200 independent DER signatures, two observed
+bad-acceptance controls and six renderer/IDB interruption boundaries pass. All 138 refreshed account
+regressions, 13 writer-lifetime, 17 Local-genesis, 17 Local-clear and 15 owned-startup cases, plus 825 unit
+tests pass. TypeScript, focused static checks, isolated build and 13 final gates pass; initial JavaScript
+is 328.2/350.0 kB. Logs, source hashes, generated inputs and actual DER signatures are retained.
 
-Directed reproductions found two defects: field-order-sensitive comparison of equivalent requests, and
-cancelled proposals permanently reserving the workspace. Normalized requests and partial uniqueness for
-non-cancelled rows repair those failures. An older fault control was retargeted to its intended owner.
-Before/after logs are retained. No further generated counterexample or whole-protocol debt payment is
-claimed. Receipt signatures alone do not prove semantic replay; receivers still must decrypt and rederive.
+A real disposable Chromium ES256 assertion exposed an existing offline-verifier encoding mismatch.
+Strict DER-to-WebCrypto conversion repairs it; independent OpenSSL fixtures replace the old fixture's
+raw-format assumption. The same directed test caught a new SPKI parser's missing point-format byte.
+Local regression harnesses also required removal of an unnecessary eager protocol import and correction
+of the stale future-schema expectation. Before/after evidence is preserved. These were directed findings;
+no additional generated counterexample or whole-protocol debt payment is claimed.
 
-**Next bounded phase.** Verified Local-to-Account index handoff and owned startup classification.
-Consume the fully authenticated retained receipt, recheck source/custody/recipient bindings under the
-exclusive owner and atomically select Account while preserving principal, workspace, content database,
-generation and counters. Define exactly what remains retained across handoff before mutation. Cover
-before/after index commit, renderer death, lost acknowledgements, competing owners and both Local/Account
-startup readers. Every restart must have an unambiguous owner; a partially retained result cannot select.
-No duplicate Local workspace, copied profile or plaintext relay belongs in this transition.
+**Next bounded phase.** Attach verified Account access to an owned editing/writer lifetime. Specify the
+transition from frozen genesis provenance to evolving Account content before changing persistence.
+Keep the permit, authenticated routing, device custody and fresh passkey proof attached to the document
+and journal admission owner. Cold reopen must preserve edits beyond genesis, while lock, shutdown,
+cancellation, generation changes and competing owners invalidate/drain access correctly. Reuse the
+existing journal/admission machinery with explicit Account ownership; no permissive interlock bypass.
+Cover later disk/journal edits, pending dependencies, stale callbacks, lock/reopen and interrupted handoff
+without importing a duplicate Local store. The existing private API is the starting point, not a new
+default Account UI or a request to provision personal factors now.
 
 **Following boundary.** Encrypted relay/durable storage, then account UI and two-gate second-device
 enrollment. The author's actual second pre-encryption device adopts the first device's workspace using
@@ -103,9 +106,10 @@ separate. Account passkey, Local device-lock code, recovery code and operator wr
 
 **Remaining gates.** Complete accounts/bindings, encrypted sync, enrollment, revocation/rotation,
 finalization/full recovery, product conformance, whole-profile residue, platform coverage, production
-root distribution/restore and independent review remain open. The host VM stays stopped; host/policy
-research is not next-up. L-2's historical clean ref `d24732b` has no further service work to integrate.
-This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
+root distribution/restore and independent review remain open. Offline binding checks do not establish
+revocation freshness. The host VM stays stopped; host/policy research is not next-up. L-2's historical
+clean ref `d24732b` has no further service work to integrate. This outcome was appended to completed.md
+before this rewrite; L-2 is unchanged.
 
 ---
 

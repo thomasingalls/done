@@ -55,9 +55,11 @@ export const parseSlot = (value: unknown, slotId: string): Slot | null => {
     return stopStartup('repair-required', 'invalid-slot-index');
   const v = value as Slot;
   if (
-    !['id,status,stores,unlockBinding', 'id,local,status,stores,unlockBinding'].includes(
-      Object.keys(v).sort().join(','),
-    ) ||
+    ![
+      'id,status,stores,unlockBinding',
+      'id,local,status,stores,unlockBinding',
+      'account,id,status,stores,unlockBinding',
+    ].includes(Object.keys(v).sort().join(',')) ||
     v.id !== slotId ||
     !['active', 'closed'].includes(v.status) ||
     !Array.isArray(v.stores) ||
@@ -72,6 +74,18 @@ export const parseSlot = (value: unknown, slotId: string): Slot | null => {
       Object.values(v.local).some((s) => typeof s !== 'string' || !s))
   )
     stopStartup('repair-required', 'invalid-local-index');
+  if (
+    'account' in v &&
+    (!v.account ||
+      v.local ||
+      !v.unlockBinding ||
+      Object.keys(v.account).sort().join(',') !== 'epochHead,promotionId,requestDigest,v' ||
+      v.account.v !== 1 ||
+      !/^[0-9a-f]{32}$/.test(v.account.promotionId) ||
+      !/^[0-9a-f]{64}$/.test(v.account.requestDigest) ||
+      !/^[0-9a-f]{64}$/.test(v.account.epochHead))
+  )
+    stopStartup('repair-required', 'invalid-account-index');
   for (const entry of v.stores) {
     if (
       !entry ||

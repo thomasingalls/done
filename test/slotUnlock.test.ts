@@ -25,6 +25,7 @@
  */
 
 import { readFileSync } from 'node:fs';
+import { createPrivateKey, sign as nodeSign } from 'node:crypto';
 import { beforeAll, describe, expect, it } from 'vitest';
 
 import {
@@ -292,12 +293,14 @@ describe('an honest attempt opens the slot', () => {
     });
     const authData = await authenticatorData({ rpId: binding.rpId });
     const clientData = clientDataJSON({ challenge: b64url(challenge), origin: ORIGIN });
+    // An independent Node/OpenSSL signer emits WebAuthn's DER, unlike subtle.sign's raw r || s.
+    const privateKey = createPrivateKey({
+      key: Buffer.from(await crypto.subtle.exportKey('pkcs8', pair.privateKey)),
+      format: 'der',
+      type: 'pkcs8',
+    });
     const signature = new Uint8Array(
-      await crypto.subtle.sign(
-        { name: 'ECDSA', hash: 'SHA-256' },
-        pair.privateKey,
-        concat(authData, await sha256(clientData)) as BufferSource,
-      ),
+      nodeSign('sha256', concat(authData, await sha256(clientData)), privateKey),
     );
 
     expect(

@@ -133,7 +133,7 @@ export async function withVerifiedGenesis<T>(
     throw Error('Genesis owner changed');
   for (const k of ['principalId', 'workspaceId', 'lineageId', 'authRoot'] as const)
     if (options.draft[k] !== inspected.context[k]) throw Error('Genesis recovery context changed');
-  if (marker.v === 3 && !observe) throw Error('Use the admission owner');
+  if (marker.v >= 3 && !observe) throw Error('Use the admission owner');
   if (observe && marker.v === 1) throw Error('Admission needs retained genesis');
   const current = async () => {
     if (observe) return observe(marker);

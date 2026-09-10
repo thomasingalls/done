@@ -269,7 +269,7 @@ export async function runCase(definition, env) {
         await call(a, 'future', code);
         await settled(a, 'future');
         const before = await call(a, 'inventory');
-        check('future-schema-repair-required', (await open(a, code)).kind, 'repair-required');
+        check('future-schema-update-required', (await open(a, code)).kind, 'app-update-required');
         check('future-schema-not-rewritten', await call(a, 'inventory'), before);
         await notExposed(a, 'future-schema-not-exposed');
         break;

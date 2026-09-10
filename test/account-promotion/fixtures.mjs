@@ -104,8 +104,8 @@ export async function native(t) {
   };
   const page = await context.newPage();
   await setup(page);
-  const register = async () => {
-    const key = authenticator(),
+  const register = async (alg = -8) => {
+    const key = authenticator(alg),
       retryKey = fresh();
     let view = server.core.begin({ operation: 'register', retryKey });
     const accountId = view.options.user.id;
@@ -118,22 +118,22 @@ export async function native(t) {
     if (!result.ok) throw Error(JSON.stringify(result));
     return { key, retryKey, accountId };
   };
-  const local = async (slotId) => {
+  const local = async (slotId, alg = -8) => {
     const item = await page.evaluate(async (slotId) => {
       const c = Harness.beginLocalGenesis(slotId),
         code = c.displayCode,
         receipt = await c.confirm(code);
       return { slotId, code, scope: receipt.scope };
     }, slotId);
-    const account = await register();
+    const account = await register(alg);
     const inspected = await page.evaluate(
       (item) => Harness.inspectLocalPromotion({ ...item, pin, proveAuthority: prove }),
       { ...item, accountId: account.accountId },
     );
     return { ...item, ...account, context: inspected.context };
   };
-  const ready = async (slotId) => {
-    const item = await local(slotId),
+  const ready = async (slotId, alg = -8) => {
+    const item = await local(slotId, alg),
       generated = await generateRecovery(item.context);
     let view = await server.core.beginRecovery({ retryKey: item.retryKey, draft: generated.draft });
     if (!view.ok) throw Error(JSON.stringify(view));

@@ -1,0 +1,46 @@
+[
+  {
+    "sub": "",
+    "source": "test-results/account-handoff/2026-09-10T18-04-28.332Z"
+  },
+  {
+    "sub": "core-regression",
+    "source": "test-results/account-core/2026-09-10T17-56-24.204Z"
+  },
+  {
+    "sub": "recovery-regression",
+    "source": "test-results/account-recovery/2026-09-10T17-56-24.901Z"
+  },
+  {
+    "sub": "authority-regression",
+    "source": "test-results/account-authority/2026-09-10T18-05-33.964Z"
+  },
+  {
+    "sub": "promotion-regression",
+    "source": "test-results/account-promotion/2026-09-10T18-05-38.468Z"
+  },
+  {
+    "sub": "genesis-regression",
+    "source": "test-results/account-genesis/2026-09-10T18-06-17.278Z"
+  },
+  {
+    "sub": "admission-regression",
+    "source": "test-results/account-admission/2026-09-10T18-06-21.825Z"
+  },
+  {
+    "sub": "writer-regression",
+    "source": "test-results/write-session/2026-09-10T18-06-26.236Z"
+  },
+  {
+    "sub": "local-genesis-regression",
+    "source": "test-results/local-genesis/2026-09-10T18-04-38.133Z"
+  },
+  {
+    "sub": "local-clear-regression",
+    "source": "test-results/local-clear/2026-09-10T18-05-17.302Z"
+  },
+  {
+    "sub": "startup-regression",
+    "source": "test-results/owned-startup/2026-09-10T18-04-33.166Z"
+  }
+]

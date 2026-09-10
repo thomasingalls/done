@@ -241,3 +241,13 @@ is sealed under separate operator-derived custody. Proposal, account activation 
 have distinct crash boundaries. Local claim/index/content/custody remain retained and excluded; the
 verified Local-to-Account handoff is still the next owner. Existing preparation/genesis readers refuse
 version 3. Abandonment may free a pending workspace for a new registration, but refuses once admitted.
+
+
+## Following component: verified Account handoff
+
+[Private handoff](./account-handoff.md) obtains the admitted account's exact service-signed passkey
+binding, authenticates a fresh local assertion and records a version-4 destination before replacing
+the one Local index entry. The selected carrier retains the original claim as provenance, the exact
+Account route and all encrypted content/custody. Offline startup classification requires the device
+factor plus a fresh account assertion; it owns cold replay but exports no ongoing writer capability.
+Account editor/lifetime integration follows before encrypted relay work.

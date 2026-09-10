@@ -1652,3 +1652,39 @@ Next is verified Local-to-Account index handoff and owned startup classification
 workspace, database and generation. Encrypted relay, account UI and the author's second-device fresh
 adoption follow. The personal preview and relay remain off; retained builds remain intact. This outcome
 was appended before replacing L-1 progress; L-2 is unchanged.
+
+
+## 2026-09-10 — Verified private Account index handoff and offline startup classification
+
+Signed `beed8cf` commits the preceding first-admission phase. Its next bounded component now obtains a
+root-signed binding for the admitted account's current confirmed credential, verifies the exact retained
+receipt and source under both saved factors, and requires a fresh account passkey assertion before
+selecting the existing store as Account. A version-4 authenticated carrier owns prepared/selected
+progress across strict index replacement and its acknowledgement. Principal, workspace, database,
+content key, generation and counters remain intact; the Local claim stays as authenticated provenance
+under the interlock, not a second selectable workspace.
+
+Owned startup rechecks the selected route, receipt, binding, custody, device wrap and full source replay,
+requiring the device-lock code plus a fresh passkey but no network or recovery code. It releases its
+permit after returning metadata. Account editing and writer lifetime integration follow before relay;
+this classification result is not an ongoing read/write capability.
+
+[Contract](./account-handoff.md) and [preserved evidence](./account-conformance-runs/2026-09-10-account-handoff.md):
+21 new tests, 60 generated service histories, 24 generated native histories, 200 independent DER
+signature cases, two observed bad-acceptance controls and six renderer/IDB interruption boundaries pass.
+All 138 account/recovery/authority/promotion/genesis/admission regressions, 13 writer-lifetime,
+17 Local-genesis, 17 Local-clear and 15 owned-startup cases, plus 825 unit tests pass. TypeScript,
+focused static checks, isolated build and 13 final gates pass; initial JS is 328.2/350.0 kB.
+
+A real disposable Chromium ES256 ceremony reproduced a defect in the committed offline verifier:
+WebAuthn DER was passed to WebCrypto as if it were fixed-width r || s. Strict DER conversion repairs
+it; independent OpenSSL fixtures replace the old fixture's matching raw-format assumption. The same
+directed test caught a new SPKI parser's missing point-format byte. Storage regression harnesses needed
+an unnecessary eager protocol import removed, and the future-schema expected result corrected to the
+existing update-required behavior. Before/after evidence is retained. These were directed findings;
+the generated histories found no additional counterexample. No whole-protocol debt payment is claimed.
+
+Next is Account editing/writer lifetime integration, including cold recovery of edits beyond the frozen
+genesis, invalidation, lock and drain. Encrypted relay and fresh adoption by the author's actual old
+second device follow. Personal preview/relay remain off and retained builds remain intact. This outcome
+was appended before replacing L-1 progress; L-2 is unchanged.
