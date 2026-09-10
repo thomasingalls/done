@@ -1,0 +1,631 @@
+{
+  "mode": "directed",
+  "policy": "allow",
+  "started": "2026-09-10T06:43:29.388Z",
+  "scope": "synthetic closed profiles; no migration authority",
+  "cases": [
+    {
+      "name": "isolated-canary-policy-and-first-script",
+      "passed": true,
+      "result": {
+        "sentinel": "ran"
+      }
+    },
+    {
+      "name": "first-page",
+      "passed": true,
+      "result": {
+        "hit": true,
+        "inventoryHash": "bc58d3473e7838365993cc060a2d2ed331df77abd86e28cdd4cca8a40c7ef2cd"
+      }
+    },
+    {
+      "name": "same-frame",
+      "passed": true,
+      "result": {
+        "hit": true,
+        "inventoryHash": "0dce689c05dc3c823401eaa516b30f3849e7f36263b4425ab32df709c0afa6d6"
+      }
+    },
+    {
+      "name": "foreign-frame",
+      "passed": true,
+      "result": {
+        "hit": true,
+        "inventoryHash": "0101cbf74502c31ea4e3eac622b83e7b85e6aad23778cb71cf1fd2b24828f278"
+      }
+    },
+    {
+      "name": "srcdoc",
+      "passed": true,
+      "result": {
+        "hit": true,
+        "inventoryHash": "1bf3cfc5becd502a3c39b1b6d766e4038ed1915e455502b941c43f2551c0c5aa"
+      }
+    },
+    {
+      "name": "blank",
+      "passed": true,
+      "result": {
+        "hit": true,
+        "inventoryHash": "cfa20255f899985846d3587700581d1b583cf76e60e93bdc56384d41cc1c3b74"
+      }
+    },
+    {
+      "name": "dedicated",
+      "passed": true,
+      "result": {
+        "hit": true,
+        "inventoryHash": "3e6477ae6dca3fe5f84d30d746160fac4e7228944eb7c37f679d6c4367963cb9"
+      }
+    },
+    {
+      "name": "shared",
+      "passed": true,
+      "result": {
+        "hit": true,
+        "inventoryHash": "64a3932222774c1073b6e66eb3731d672da4b1fd206fd3ac77002dc94eca093a"
+      }
+    },
+    {
+      "name": "blob",
+      "passed": true,
+      "result": {
+        "hit": true,
+        "inventoryHash": "ef73cc02d27715810666f09bb526fbe66c750cade065aa5a5583009e10ac9bb7"
+      }
+    },
+    {
+      "name": "sw-fetch",
+      "passed": true,
+      "result": {
+        "hit": true,
+        "inventoryHash": "24d733d66ec02f52525d44e9f3a9ffc90d77456d005e8d963249af1003517266"
+      }
+    },
+    {
+      "name": "controller-death-and-reconnect",
+      "passed": true
+    },
+    {
+      "name": "browser-kill-cold-start-and-session-restore",
+      "passed": true,
+      "result": {
+        "restoredTargets": [
+          {
+            "type": "service_worker",
+            "url": "http://127.0.0.1:43101/sentinel-sw.js"
+          },
+          {
+            "type": "page",
+            "url": "http://127.0.0.1:43102/embed?kind=frame&id=foreign-frame"
+          },
+          {
+            "type": "browser_ui",
+            "url": "chrome://omnibox-popup.top-chrome/"
+          },
+          {
+            "type": "browser_ui",
+            "url": "chrome://omnibox-popup.top-chrome/omnibox_popup_aim.html"
+          },
+          {
+            "type": "page",
+            "url": "http://127.0.0.1:43101/embed?kind=blank&id=blank"
+          },
+          {
+            "type": "page",
+            "url": "http://127.0.0.1:43101/embed?kind=frame&id=same-frame"
+          },
+          {
+            "type": "page",
+            "url": "http://127.0.0.1:43101/spawn?kind=dedicated&id=dedicated"
+          },
+          {
+            "type": "page",
+            "url": "http://127.0.0.1:43101/sw-trigger"
+          },
+          {
+            "type": "page",
+            "url": "http://127.0.0.1:43101/spawn?kind=shared&id=shared"
+          },
+          {
+            "type": "page",
+            "url": "http://127.0.0.1:43101/spawn?kind=blob&id=blob"
+          },
+          {
+            "type": "page",
+            "url": "http://127.0.0.1:43101/inert"
+          },
+          {
+            "type": "page",
+            "url": "http://127.0.0.1:43101/probe?id=directed-cold"
+          },
+          {
+            "type": "page",
+            "url": "http://127.0.0.1:43101/inert"
+          },
+          {
+            "type": "page",
+            "url": "http://127.0.0.1:43101/embed?kind=srcdoc&id=srcdoc"
+          },
+          {
+            "type": "page",
+            "url": "http://127.0.0.1:43101/probe?id=first-page"
+          }
+        ]
+      }
+    },
+    {
+      "name": "second-invocation-with-controller-absent",
+      "passed": true,
+      "result": {
+        "code": 21,
+        "signal": null,
+        "stderr": "[639:639:0910/064334.857247:ERROR:chrome/browser/process_singleton_posix.cc:347] Failed to create /home/probe/cold-output/2026-09-10T06-43-14-597Z/profiles/allow/SingletonLock: File exists (17)\n[639:639:0910/064334.857698:ERROR:chrome/app/chrome_main_delegate.cc:527] Failed to create a ProcessSingleton for your profile directory. This means that running multiple instances would start multiple browser processes rather than opening a new window in the existing process. Aborting now to avoid profile corruption.\n",
+        "navigation": false
+      }
+    },
+    {
+      "name": "ordinary-history-and-frozen-document",
+      "passed": true,
+      "result": {
+        "historyEntries": 2,
+        "bfcacheProven": false
+      }
+    },
+    {
+      "name": "cached-predecessor-maintenance-and-direct-asset",
+      "passed": true,
+      "result": {
+        "before": "5997b1958c5917277c14cbcb997bb868c1fc217e6cfba626005066d9db102d53",
+        "after": "5cec4d3152a069b8c563cd6296d556b2ec7cf9919dc2f4b8c4d0a089a7040f2f",
+        "denial": false
+      }
+    }
+  ],
+  "unsupported": [
+    "Retained service-worker fetch trigger under denial is not independently acknowledged; absence alone is a finite observation.",
+    "Independent background event delivery, actual BFCache restoration and installed windows remain unproven. Frozen/active and ordinary history commands were exercised."
+  ],
+  "limits": {
+    "callMs": 30000,
+    "caseMs": 120000,
+    "totalMs": 600000,
+    "teardownMs": 10000,
+    "shrinkMs": 120000
+  },
+  "passed": true,
+  "fixtureBundleHash": "762fa7d84028fc138a028bef34336a06216ee2b274fa0bd9e575e4816b2f29e7",
+  "privilegeBoundary": {
+    "noNewPrivs": 1,
+    "sudoExit": 1,
+    "stderr": "sudo: The \"no new privileges\" flag is set, which prevents sudo from running as root.\nsudo: If sudo is running in a container, you may need to adjust the container configuration to disable the flag.\n"
+  },
+  "policyWriteRefusal": "EACCES",
+  "runtime": {
+    "mount": "264 221 254:1 /opt/done-cold/policies/allow /etc/chromium/policies/managed ro,relatime - ext4 /dev/vda1 rw,discard,errors=remount-ro",
+    "config": {
+      "DefaultJavaScriptSetting": 1
+    },
+    "interfaces": [
+      {
+        "ifindex": 1,
+        "ifname": "lo",
+        "flags": [
+          "LOOPBACK",
+          "UP",
+          "LOWER_UP"
+        ],
+        "mtu": 65536,
+        "qdisc": "noqueue",
+        "operstate": "UNKNOWN",
+        "group": "default",
+        "txqlen": 1000,
+        "link_type": "loopback",
+        "address": "00:00:00:00:00:00",
+        "broadcast": "00:00:00:00:00:00",
+        "addr_info": [
+          {
+            "family": "inet",
+            "local": "127.0.0.1",
+            "prefixlen": 8,
+            "scope": "host",
+            "label": "lo",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "::1",
+            "prefixlen": 128,
+            "scope": "host",
+            "protocol": "kernel_lo",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      }
+    ],
+    "packages": "chromium\t152.0.7977.82-1~deb13u1\nchromium-sandbox\t152.0.7977.82-1~deb13u1\nnode-undici\t7.3.0+dfsg1+~cs24.12.11-1\nnodejs\t20.19.2+dfsg-1+deb13u2\n",
+    "kernel": "Linux lima-probe 6.12.95+deb13-cloud-arm64 #1 SMP Debian 6.12.95-1 (2026-07-04) aarch64 GNU/Linux\n",
+    "binary": "c690b6eaf0d5b1988adc0d6b0dd4be98fa708351a8df2f2bda583ade9774e82b  /usr/lib/chromium/chromium\n2c8d32d29dc6781c35ae196ea83299d507ac88fc339301abe74672feda299779  /usr/bin/chromium\n",
+    "externalConnect": "ENETUNREACH"
+  },
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/152.0.7977.82",
+    "revision": "@d04cdb24d67b081f6cf80200ffc5233f44b61109",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "jsVersion": "15.2.124.21"
+  },
+  "commandLine": {
+    "arguments": [
+      "/usr/lib/chromium/chromium",
+      "--show-component-extension-options",
+      "--enable-gpu-rasterization",
+      "--no-default-browser-check",
+      "--disable-pings",
+      "--media-router=0",
+      "--disable-dev-shm-usage",
+      "--enable-remote-extensions",
+      "--load-extension",
+      "--headless=new",
+      "--no-first-run",
+      "--no-default-browser-check",
+      "--disable-background-networking",
+      "--disable-component-update",
+      "--disable-sync",
+      "--disable-extensions",
+      "--disable-default-apps",
+      "--password-store=basic",
+      "--remote-debugging-port=0",
+      "--enable-automation",
+      "--user-data-dir=/home/probe/cold-output/2026-09-10T06-43-14-597Z/profiles/canary-directed-allow",
+      "--noerrdialogs",
+      "--ozone-platform=headless",
+      "--ozone-override-screen-size=800,600",
+      "--use-angle=swiftshader-webgl",
+      "--flag-switches-begin",
+      "--flag-switches-end",
+      "http://127.0.0.1:43101/probe?id=canary"
+    ]
+  },
+  "effectivePolicy": {
+    "rows": [
+      [
+        "DefaultJavaScriptSetting",
+        "1",
+        "Platform",
+        "Machine",
+        "Mandatory",
+        "OK",
+        "Value",
+        "1",
+        "Applies to",
+        "Machine",
+        "Level",
+        "Mandatory",
+        "Status",
+        "OK",
+        "Error",
+        "Warning",
+        "Info"
+      ]
+    ],
+    "text": [
+      "DefaultJavaScriptSetting"
+    ]
+  },
+  "sandbox": [
+    "Sandbox Status",
+    "\n      #sandbox-status {\n        border: 1px solid gray;\n      }\n      #sandbox-status td {\n        border: 1px solid gray;\n        padding: 3px;\n        vertical-align: top;\n      }\n      #evaluation {\n        font-weight: bold;\n      }\n      .good {\n        background-color: rgb(143, 218, 146);\n      }\n      .bad {\n        background-color: rgb(249, 156, 149);\n      }\n      .medium {\n        background-color: rgb(255, 255, 90);\n      }\n      .info {\n        background-color: rgb(169, 217, 239);\n      }\n\n    ",
+    "Sandbox Status",
+    "Layer 1 Sandbox",
+    "Namespace",
+    "PID namespaces",
+    "Yes",
+    "Network namespaces",
+    "Yes",
+    "Seccomp-BPF sandbox",
+    "Yes",
+    "Seccomp-BPF sandbox supports TSYNC",
+    "Yes",
+    "Ptrace Protection with Yama LSM (Broker)",
+    "No",
+    "Ptrace Protection with Yama LSM (Non-broker)",
+    "No",
+    "You are adequately sandboxed."
+  ],
+  "workerVerdict": "counterexample",
+  "ended": "2026-09-10T06:43:37.698Z",
+  "hits": [
+    {
+      "path": "/probe",
+      "id": "canary"
+    },
+    {
+      "path": "/hit",
+      "id": "canary"
+    },
+    {
+      "path": "/favicon.ico",
+      "id": "default"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/probe",
+      "id": "first-page"
+    },
+    {
+      "path": "/hit",
+      "id": "first-page"
+    },
+    {
+      "path": "/favicon.ico",
+      "id": "default"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/embed",
+      "id": "same-frame"
+    },
+    {
+      "path": "/probe",
+      "id": "same-frame"
+    },
+    {
+      "path": "/hit",
+      "id": "same-frame"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/embed",
+      "id": "foreign-frame"
+    },
+    {
+      "path": "/probe",
+      "id": "foreign-frame"
+    },
+    {
+      "path": "/hit",
+      "id": "foreign-frame"
+    },
+    {
+      "path": "/favicon.ico",
+      "id": "default"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/embed",
+      "id": "srcdoc"
+    },
+    {
+      "path": "/hit",
+      "id": "srcdoc"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/embed",
+      "id": "blank"
+    },
+    {
+      "path": "/hit",
+      "id": "blank"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/spawn",
+      "id": "dedicated"
+    },
+    {
+      "path": "/worker.js",
+      "id": "dedicated"
+    },
+    {
+      "path": "/hit",
+      "id": "dedicated"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/spawn",
+      "id": "shared"
+    },
+    {
+      "path": "/worker.js",
+      "id": "shared"
+    },
+    {
+      "path": "/hit",
+      "id": "shared"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/spawn",
+      "id": "blob"
+    },
+    {
+      "path": "/worker.js",
+      "id": "blob"
+    },
+    {
+      "path": "/hit",
+      "id": "blob"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/sw-trigger",
+      "id": "default"
+    },
+    {
+      "path": "/hit",
+      "id": "sw-fetch"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/deferred",
+      "id": "directed-controller"
+    },
+    {
+      "path": "/probe",
+      "id": "directed-controller"
+    },
+    {
+      "path": "/hit",
+      "id": "directed-controller"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/probe",
+      "id": "directed-cold"
+    },
+    {
+      "path": "/hit",
+      "id": "directed-cold"
+    },
+    {
+      "path": "/favicon.ico",
+      "id": "default"
+    },
+    {
+      "path": "/favicon.ico",
+      "id": "default"
+    },
+    {
+      "path": "/probe",
+      "id": "history-a"
+    },
+    {
+      "path": "/hit",
+      "id": "history-a"
+    },
+    {
+      "path": "/probe",
+      "id": "history-b"
+    },
+    {
+      "path": "/hit",
+      "id": "history-b"
+    },
+    {
+      "path": "/probe",
+      "id": "history-a"
+    },
+    {
+      "path": "/hit",
+      "id": "history-a"
+    },
+    {
+      "path": "/maintenance",
+      "id": "default"
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "id": "default"
+    },
+    {
+      "path": "/icon-192.png",
+      "id": "default"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/favicon.ico",
+      "id": "default"
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "id": "default"
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "id": "default"
+    },
+    {
+      "path": "/icon-192.png",
+      "id": "default"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "id": "default"
+    },
+    {
+      "path": "/old-asset",
+      "id": "default"
+    },
+    {
+      "path": "/assets/index-6pjPrlNz.js",
+      "id": "default"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/maintenance",
+      "id": "default"
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "id": "default"
+    },
+    {
+      "path": "/icon-192.png",
+      "id": "default"
+    },
+    {
+      "path": "/inert",
+      "id": "default"
+    },
+    {
+      "path": "/favicon.ico",
+      "id": "default"
+    }
+  ]
+}
