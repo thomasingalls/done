@@ -18,6 +18,10 @@ const VERSION = ${JSON.stringify(version)};
 const CACHE = 'done-precache-' + VERSION;
 const BASE = ${JSON.stringify(base)};
 const PRECACHE = ${JSON.stringify(precache, null, 2)};
+const URLS = new Set(PRECACHE.map((path) => new URL(path, self.location.origin).href));
+// These are this build's static assets. Vary: Origin from a static host must not
+// distinguish installation fetches from crossorigin module/style requests.
+const cached = (request) => caches.open(CACHE).then((cache) => cache.match(request, { ignoreVary: true }));
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -42,15 +46,18 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return;
   if (new URL(request.url).origin !== self.location.origin) return;
 
-  // Every navigation is the same shell; routing is the app's business.
+  // The staged Local entry must cold-open its own shell, never the legacy editor.
   if (request.mode === 'navigate') {
+    const shell = new URL(request.url).pathname === BASE + 'local.html' ? 'local.html' : 'index.html';
     event.respondWith(
-      caches.match(BASE + 'index.html').then((cached) => cached || fetch(request)),
+      cached(BASE + shell).then((response) => response || fetch(request)),
     );
     return;
   }
 
-  event.respondWith(caches.match(request).then((cached) => cached || fetch(request)));
+  if (URLS.has(request.url)) {
+    event.respondWith(cached(request).then((response) => response || fetch(request)));
+  }
 });
 `;
 
@@ -71,7 +78,13 @@ export const precacheServiceWorker = (): Plugin => {
         .sort();
 
       const unique = [
-        ...new Set([base, `${base}index.html`, ...files.map((name) => `${base}${name}`)]),
+        // Vite emits these HTML entry assets after this hook; the bundle already has their chunks.
+        ...new Set([
+          base,
+          `${base}index.html`,
+          `${base}local.html`,
+          ...files.map((name) => `${base}${name}`),
+        ]),
       ];
 
       const version = createHash('sha256').update(unique.join('\n')).digest('hex').slice(0, 12);

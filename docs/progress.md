@@ -48,88 +48,47 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # preflight committed; cold-start denial/observer probe prepared
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, legacy-host-cold-start.md]
+status: in flight # Local startup complete; admitted editor integration next
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, local-app-startup.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-10
 ```
 
-**Current checkpoint.** Private coordinator implementation/evidence is committed as `7d238ee`; host
-preparation as `0d9c733`; the persistent-profile diagnostic/evidence as `fbfc3ba`, with
-[preserved evidence](./storage-conformance-runs/2026-09-10-legacy-host.md): ten directed groups, 60 generated
-histories, seven full-campaign controls and one additional history-omission control pass their assertions.
-Seven new Node tests (100 generated filesystem histories), 14 supervisor tests and focused static checks pass.
-The encrypted runtime is unchanged, and the default application still uses the legacy provider.
+**Current checkpoint.** Private coordinator work is committed as `7d238ee`; the rejected attachment preflight
+as `fbfc3ba`; revised cold-start preparation as `f8fdf1f`. Subsequent cold-start diagnostics and their
+[evidence](./storage-conformance-runs/2026-09-10-legacy-host-cold.md) are committed as `0aec587`. That VM is stopped.
+The author has clarified that there is no deployed instance: only the personal development installation needs
+migration. [Row 21](./selections/row-21-development-cutover.md) selects the existing private Markdown/system
+importer and accepts its metadata losses. Automatic host/policy/protocol-reader research is no longer next-up.
 
-**The tested host is unsupported.** CDP attachment did not stop first-script page/frame writes. After browser
-crash, the old cached application resumed at a maintenance URL and changed source. Worker pause windows are
-finite observations; history reload did not exercise BFCache; installed-window UI remains untested. Native
-BroadcastChannel fallback retained a plaintext carrier outside current cleanup scope. The final second-process
-attempt was rejected without observed write; this does not establish general profile control.
+**Completed bounded integration.** `/local.html` now classifies the Local slot, requires saved-code confirmation
+before fresh creation, unlocks or resumes the same interrupted genesis, and exposes a read-only verified
+preview. Lock/cancel drains the existing owner; no transport or legacy identity cache is used. The main app
+entry remains unchanged until admitted editing is connected. See [scope](./local-app-startup.md) and
+[passing evidence](./storage-conformance-runs/2026-09-10-local-app-startup.md): 800 unit tests in 68 files,
+including seven controller tests with 150 generated histories (seed 8941), four native startup cases and two
+packaged offline cases. Directed testing repaired close-notification ordering and guards listener disposal;
+packaged testing repaired both the missing Local HTML precache and `Vary: Origin` asset-cache misses.
 
-Generated failures also showed fresh localStorage loss and reappearance of removed legacy journal entries
-across whole-browser kill. Their inputs/errors and exact replays are preserved. Readonly histories explicitly
-start from a clean-reopened profile, also after deliberate source drift; a separate negative case retains the
-unsettled persistence boundary. External saved packets cold-replay the independent ledger. Outcomes were
-appended to [completed.md](./completed.md) before this checkpoint rewrite.
+**Personal migration preparation.** Readable Markdown plus older/newer relay snapshots are backed up outside
+the repository. Cold replay of the updated snapshot matched all 24 exported files byte-for-byte without
+pending dependencies. The temporary relay and route were removed after sync. The author controls browser
+interaction and has paused editing. No real import packet, selection or source cleanup has been performed.
 
-**Revised preparation.** The [cold-start host contract](./legacy-host-cold-start.md) selects a disposable
-policy-bearing Linux experiment: mandatory global JavaScript denial before the source profile launches,
-independent of controller lifetime, plus protocol-only storage observation. Official origin-blocking semantics
-leave a cross-origin embedding gap, so a maintenance URL or source-only rule cannot be the trusted boundary.
-Worker/startup coverage and exact binary observation with scripts denied remain untested hypotheses.
-This is documentation only; no production browser/platform or real migration carrier is selected.
+**Next bounded work.** Integrate the editor with the admitted workspace: neutral read projections, existing
+admitted text binding, and every command/history/paste/card-mutation surface. Preserve pending-input semantics,
+freeze checks and refusal behavior; do not expose a writable transport document or fall back to the legacy
+store. Dispose editors before retiring the lifetime and remove visible plaintext on lock/invalidation.
+Exercise user input, journal recovery, refused work, undo/redo and reopen with seeded browser fixtures. Switch
+the ordinary entry only when the admitted editing path is usable. Network remains a separate integration.
 
-**Next bounded work.** Build the private cold-start denial/observer probe under `scripts/legacy-host-cold/`.
-Provision/pin the disposable runtime and effective mandatory policy, then test first-script pages/frames,
-retained workers/cached sessions, controller death, browser restart and second launch without enabling page
-JavaScript to read storage. Require independent carrier/sentinel ledgers, positive fault controls and 20
-bounded generated histories (seed 8941), with unsupported coverage explicit. Keep the source's clean-reopened
-fixture precondition separate from a future lossless live-source acquisition owner. If this mechanism and
-observer survive, readonly packet parity is next; coordinator effects and release of denial remain gated on
-separate live-source preservation and lasting executable/transport retirement work.
-
-**Exclusion and product gates.** The seeded coordinator controller remains a test precondition. The
-preflight must not turn a callback, digest, empty census or host report into production authority. Production
-profile access and supported versions, continuous and lasting old-executable retirement, actual recovery-save
-UX, remote-source reconciliation and whole-profile residue remain open. Keep current same-origin checks;
-a move to another deployment origin needs a separate transfer/cleanup handshake. The diagnostic packet and
-Markdown/system policy do not settle sequencing §5.4's real carrier/attribution choice. Stage 2 remains gated
-on that choice and review. No automatic real-profile selection/deletion or default-app bridge is enabled.
-
-**Review and preparation gates.** The local Yjs patch is not an upstream-reviewed release. Generated alphabets
-and one Chromium host do not establish general CRDT correctness or malicious-input coverage. Recursive
-pending retries, retained undo history and whole-state comparisons retain version/memory/input-to-paint
-obligations. Planning, import and selection replay still process the bounded input/history in memory;
-per-slice write limits do not establish memory/latency acceptance. General structural/bulk/undo/deletion
-adapters and low-end performance remain owed. Compaction's output limit does not bound its input memory;
-incomplete unions retain original records. Native IME and full interaction performance remain gates before
-default editor acceptance. The review's additional recovery, maintenance/cost, row-limit, nonce-wording and
-plaintext-scanning findings remain outside the selected core repairs and these migration preparations.
-
-**Existing checkpoints.** Corrected contracts `f87997d`; harness/lifecycle `ccfcbf0`; factor custody `a6d39a2`;
-content `468cbe2`; journal `9e60c6a`; admission/Goals `0b5337a`; workspace/history `a48c090`; startup `a916d61`;
-Local genesis/index `ee60528`; Local clear `d7c0f32`; exact compaction `85c7404`; production properties
-`a0811e2`; source reader `e64cd2a`; export capture `da5def9`; reproductions `a292103`; contention repair
-`fc1ff41`; runtime forks/projections `0399567`; Yjs delivery/handoff `a465310`; pre-active import `a0072e8`;
-verified selection `4f40ede`; source cleanup implementation `4c3c3ab`; harness `6a5ebe7`; failure evidence
-`082b567`; size repair `3e7981b`. Cleanup validation/coordinator preparation is committed as `f4ed6bc`;
-private coordinator implementation and native evidence as `7d238ee`.
-The earlier shared candidate run rejected all three pinned branches; none is merged.
-
-**Completion blockers.** L-1 still owes integrated genesis/index/clear/default-application conformance and
-seeded full cutover kills. Scoped Local clear covers the first completed fresh workspace and completed imported
-Local workspaces after authenticated source cleanup; partial genesis/import cleanup, shared/multiple-workspace
-custody, Account removal/service revocation and explicit cleared-slot reuse need subsequent owners.
-Additional Local workspaces, Account verifier/receive/
-checkpoint authority and PRF remain incomplete. L-3 composes generation/custody references and interrupted
-lifetimes; these components do not implement retirement. L-4 carries independent storage/crypto review,
-supported profiles/authenticators, low-end performance and platform acceptance. Existing evidence and three matrix
-pins remain unchanged by this host experiment; obligations/debt statuses remain unchanged. No checkpoint pays old-writer release.
-
-**Scope.** This seat owns L-1 implementation/evidence. The independent L-2 record below is unchanged. Historical
-Stage 0 records do not certify states their models omitted.
+**After that.** Rehearse the operator-assisted private capture/recovery/import/selection procedure, then guide
+the author through the personal cutover one step at a time. Existing source binding, dependency checks,
+fresh keys/counters and authenticated cleanup preconditions remain. A raw relay snapshot or Markdown ZIP is
+recovery material, not the current importer's authenticated source packet. Real capture/cleanup, whole-profile
+residue, applicable conformance, latency/platform evidence and independent review remain open. No debt or
+conformance matrix status changed. Completed work was recorded before this checkpoint rewrite; L-2 is unchanged.
 
 
 ---

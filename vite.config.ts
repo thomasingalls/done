@@ -68,6 +68,7 @@ export default defineConfig({
     'import.meta.env.VITE_APP_COMMIT_DATE': JSON.stringify(commit.date),
   },
   build: {
+    rollupOptions: { input: { app: 'index.html', local: 'local.html' } },
     // The §12 budget is on the initial JS bundle; splitting it into many small
     // chunks would only hide the number the budget is about.
     target: 'es2022',

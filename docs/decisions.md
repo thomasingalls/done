@@ -2228,3 +2228,56 @@ Successful temporary denial still cannot be removed to enable the modern app unt
 and transport retirement has its own owner/evidence. Source binding, mandatory factor custody, full residue,
 real carrier choice and all debt payment conditions remain unchanged. No runtime implementation or new native
 campaign accompanies this preparation.
+
+
+### 2026-09-10 — Keep cold-start denial as a private readback experiment, not host authority
+
+The [bounded native diagnostic](./storage-conformance-runs/2026-09-10-legacy-host-cold.md) supports further
+readonly source/packet parity work in the measured synthetic Debian/Chromium runtime. Mandatory global denial
+preserved exact carriers through the exercised page/frame/worker-attempt, controller-death, cold restart and
+cached/direct legacy executable cases. The source-only policy produced the foreign-top-level write and is
+rejected as the containment boundary. Keep execution denial independent of debugger lifetime.
+
+Credit only exercised controls: four invalid-policy canaries write; recommended-only configuration refuses
+but its user-override write remains unproven. Worker/background delivery, actual BFCache, installed windows,
+dynamic late policy installation/removal and wider profile entry are not established by this result. Passing
+bounded diagnostics does not issue production authority or pay whole conformance obligations.
+
+The protocol reader must continue to refuse moving/unsupported source and must never enable source JavaScript
+as a fallback. Positive controls deliberately run writers and may wait for a complete read after recording
+metadata drift; denied reads fail on drift immediately. Native generated sequences preserve first inputs and
+executed prefixes without shrinking a contaminated profile. The separate byte/pagination property tests retain
+shrinking. No unsettled browser-death observation becomes a lossless live-shutdown promise.
+
+Next, reuse/extract the existing production parsing/digest/packet rules for private readonly parity. Keep
+same-origin binding, mandatory factor custody and authenticated owners intact; a protocol census alone cannot
+permit capture substitution, selection or cleanup. Releasing denial, lasting executable/transport retirement,
+real carrier/attribution, remote-source reconciliation, whole-profile residue and review remain separate gates.
+
+
+**Runtime ownership refinement.** The readonly mount must be paired with inherited `NoNewPrivs=1` for the
+browser/controller process tree: Lima's default guest account otherwise retains passwordless sudo. Native
+checks now reject elevation via `sudo -n true` while the sandbox and full campaign still pass. Credit the
+rerun with that boundary; an ordinary permission error on a policy file alone is insufficient evidence that
+the controller lacks policy-removal privilege. The separate privileged namespace/watchdog owner remains trusted.
+
+
+### 2026-09-10 — Personal development cutover through the existing importer
+
+There is no deployed instance or external user to migrate. The author accepts the existing private
+`markdown-system-v1` semantics, including system attribution and metadata/history losses. Record this as
+[TRD row 21](./selections/row-21-development-cutover.md) and sequencing §5.4's selected product choice. Stop
+expanding automatic migration-host experiments into requirements for this one-person cutover. Preserve the
+experiments and their limitations; they do not become supported host authority. The author operates the
+personal browser. Retain verified recovery backups and use an explicit operator-assisted procedure through
+the existing authenticated owners. A ZIP or relay snapshot alone is not a source-bound import packet or
+cleanup capability. Conformance and review requirements are unchanged.
+
+### 2026-09-10 — Stage Local startup before switching the main editor
+
+Use `/local.html` for the first bounded application integration: classify, confirm a generated factor,
+unlock/resume, and expose a read-only verified preview. Keep the ordinary app entry until every editor mutation
+surface is routed through admission. The Local actor is the authenticated principal; its device label is
+Local attribution only, not an Account credential. Do not use the legacy plaintext identity cache or attach
+transport. Lock/cancel drains the owner, including a late open. Both HTML entries must have packaged offline
+coverage and pass the existing initial-JS budget separately. Real import/cutover follows editor integration.

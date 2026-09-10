@@ -20,44 +20,45 @@ installReceipt(import.meta.url);
 const DIST = 'dist';
 const BUDGET_BYTES = 350 * 1024;
 
-const html = readFileSync(join(DIST, 'index.html'), 'utf8');
-
-const initial = new Set();
-for (const match of html.matchAll(/<script[^>]+src="([^"]+)"/g)) initial.add(match[1]);
-for (const match of html.matchAll(/<link[^>]+rel="modulepreload"[^>]+href="([^"]+)"/g)) {
-  initial.add(match[1]);
-}
-
+const gzipped = (path) => gzipSync(readFileSync(path), { level: 9 }).length;
+const kb = (bytes) => `${(bytes / 1024).toFixed(1)} kB`;
 const toPath = (url) => join(DIST, url.replace(/^\/+/, ''));
 
-const scripts = [...initial].filter((url) => url.endsWith('.js'));
-if (scripts.length === 0) {
-  console.error('budget: found no entry scripts in dist/index.html — has the build run?');
-  process.exit(1);
+// Each built HTML entry has its own initial load budget, including shared preloads.
+const entries = readdirSync(DIST)
+  .filter((name) => name.endsWith('.html'))
+  .sort();
+if (!entries.includes('index.html'))
+  throw Error('budget: dist/index.html is missing — has the build run?');
+let total = 0; // The ordinary app's existing --record row.
+let exceeded = false;
+for (const entry of entries) {
+  const html = readFileSync(join(DIST, entry), 'utf8');
+  const initial = new Set();
+  for (const match of html.matchAll(/<script[^>]+src="([^"]+)"/g)) initial.add(match[1]);
+  for (const match of html.matchAll(/<link[^>]+rel="modulepreload"[^>]+href="([^"]+)"/g)) {
+    initial.add(match[1]);
+  }
+  const scripts = [...initial].filter((url) => url.endsWith('.js'));
+  if (scripts.length === 0) throw Error(`budget: found no entry scripts in dist/${entry}`);
+  let entryTotal = 0;
+  console.log(entry);
+  for (const url of scripts.sort()) {
+    const size = gzipped(toPath(url));
+    entryTotal += size;
+    console.log(`  ${kb(size).padStart(9)}  ${url}`);
+  }
+  console.log(`initial JS, gzipped: ${kb(entryTotal)} of ${kb(BUDGET_BYTES)} budget`);
+  if (entry === 'index.html') total = entryTotal;
+  if (entryTotal > BUDGET_BYTES) {
+    console.error(`${entry}: budget exceeded by ${kb(entryTotal - BUDGET_BYTES)} (TRD §12).`);
+    exceeded = true;
+  }
 }
-
-const gzipped = (path) => gzipSync(readFileSync(path), { level: 9 }).length;
-
-let total = 0;
-const rows = [];
-for (const url of scripts.sort()) {
-  const size = gzipped(toPath(url));
-  total += size;
-  rows.push([url, size]);
-}
-
 const css = readdirSync(join(DIST, 'assets'))
   .filter((name) => name.endsWith('.css'))
   .reduce((sum, name) => sum + gzipped(join(DIST, 'assets', name)), 0);
-
-const kb = (bytes) => `${(bytes / 1024).toFixed(1)} kB`;
-
-for (const [url, size] of rows) console.log(`  ${kb(size).padStart(9)}  ${url}`);
 console.log(`  ${kb(css).padStart(9)}  (css, informational — the budget is on JS)`);
-console.log(
-  `\ninitial JS, gzipped: ${kb(total)} of ${kb(BUDGET_BYTES)} budget ` +
-    `(${((total / BUDGET_BYTES) * 100).toFixed(0)}%)`,
-);
 
 const wasm = readdirSync(DIST, { recursive: true }).filter((name) =>
   String(name).endsWith('.wasm'),
@@ -85,9 +86,6 @@ if (process.argv.includes('--record')) {
   );
 }
 
-if (total > BUDGET_BYTES) {
-  console.error(`\nbudget exceeded by ${kb(total - BUDGET_BYTES)} (TRD §12).`);
-  process.exit(1);
-}
+if (exceeded) process.exit(1);
 
 statSync(DIST); // fail loudly if dist vanished mid-run

@@ -818,7 +818,9 @@ here. It is two choices, not one, and four combinations are viable: `A+C`, `A+D`
 - **Scope boundary — machinery here, the live cutover at Stage 2.** `L-1` builds the cutover state machine and
   executes its kill matrix against a **seeded** legacy installation. It does not perform the one-way first-deployment
   cutover of the author's real development data: that is Stage 2 ([sequencing.md](../../sequencing.md) §3.3), which
-  waits on TRD §15 row 21's carrier choice (§5.4) and on review 3a's answer (§5.2 — 3a gates cutover, not Stage 1).
+  uses TRD §15 row 21's selected Markdown/system semantics (§5.4, 2026-09-10) and retains review 3a's gate (§5.2).
+  The author is the only user; automatic migration of arbitrary old browser installations is not the active scope.
+  Operator control does not waive authenticated import/selection/cleanup preconditions or pay existing debts.
   Building the machinery under `L-1` while the live move waits is the intended shape, not a deferral.
 - **Downstream invalidated if action changes:** Stage 4 sync client assumptions and release evidence.
 - **Rollback/reconsideration:** before selecting encrypted store active or deleting any legacy carrier **on the seeded

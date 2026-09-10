@@ -1,13 +1,16 @@
 # Cold-start migration host — revised preparation
 
-**Status: preparation complete; replacement mechanism untested.** The first preflight and its native
-counterexamples are committed as `fbfc3ba`. Its [execution record](./storage-conformance-runs/2026-09-10-legacy-host.md)
-rejects the tested attachment controller. This document selects the next **seeded experiment**, not a production
-platform or permission to act on the author's profile. The private coordinator, mandatory factor custody,
-same-origin checks and [SC-01–09](./storage-contract.md) remain unchanged. Live cutover still requires
-[sequencing §5.4](./sequencing.md#54-what-happens-to-attribution-at-the-cutover--open) and review 3a.
+**Status: bounded diagnostics complete; further host research is outside the active cutover.**
+On 2026-09-10 the author clarified that there is no deployed instance and selected an operator-assisted
+migration through the existing private importer. See [row 21](./selections/row-21-development-cutover.md) and
+[sequencing §5.4](./sequencing.md#54-what-happens-to-attribution-at-the-cutover--decided).
+The VM is stopped. The experiment below and its [execution record](./storage-conformance-runs/2026-09-10-legacy-host-cold.md)
+remain evidence for the measured synthetic runtime, including failed controls and coverage limits; they are
+not a supported production host or permission to act on the author's browser. The rejected attachment
+preflight is committed as `fbfc3ba`; the revised preparation as `f8fdf1f`. Mandatory factor custody,
+authenticated coordinator effects, same-origin checks and [SC-01–09](./storage-contract.md) remain intact.
 
-**Next build: a cold-start global-execution-denial probe in a disposable policy-bearing Linux runtime.**
+**First build (now executed): a cold-start global-execution-denial probe in a disposable policy-bearing Linux runtime.**
 Install mandatory browser policy before launching the seeded profile, leave it installed across controller
 and browser loss, and observe storage through a small protocol-only reader. Begin with first-script sentinels
 and restart cases. Do not rebuild the 60-history export campaign until the execution boundary and observer
@@ -78,7 +81,8 @@ source write before that read. Observe the source from its first cold launch wit
 
 No policy or infrastructure is installed by this preparation. Docker, Podman, Lima and QEMU executables were
 found on the current macOS host; that establishes neither a running service nor a compatible Linux browser.
-Provisioning/pinning the isolated runtime is the first implementation step. Do not fall back to changing the
+Provisioning/pinning the isolated runtime was the first implementation step; its implementation and measured
+versions are now recorded in the execution record. Do not fall back to changing the
 user's macOS browser policy, cloning a profile across platforms, or using unverified user preferences when
 that runtime is unavailable.
 

@@ -3078,12 +3078,12 @@ number — so the list is allowed to carry its own answers rather than shrinking
    install is writing*, and those are different questions with different answers. Worth naming properly before
    it reaches the UI (§5.2).
 
-10. **Does the first-deployment cutover accept system attribution for all pre-cutover cards, or does the
-    fidelity archive arrive early and preserve their CRDT identity?** The Markdown export deliberately carries
-    bodies rather than `id`, `author`, `origin` or `createdAt`, and import is a system-actor write (§8.2). Accepting
-    that makes provenance blank before cutover; preserving it pulls the fidelity archive (§8.3) into the cutover.
-    Adding `author` to the Markdown escape format is rejected. **Blocks the first deployment cutover in §10 and
-    nothing else.**
+10. **Selected 2026-09-10: accept system attribution for the author's development cutover.** There is no
+    deployed instance or external user to migrate. Use the existing private importer with Markdown/system
+    semantics; retain content and placement while accepting the metadata losses in §8.2. The fidelity archive
+    stays separate. TRD §15 row 21 is selected; sequencing §5.4 records the operator-assisted procedure and
+    distinguishes its diagnostic packet from a general ZIP import UI. Application integration, conformance
+    and review requirements remain.
 
 **Copy and interaction detail, each attached to a settled decision:**
 

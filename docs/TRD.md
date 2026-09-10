@@ -3530,29 +3530,24 @@ hand on each device against a shared bearer token and a **plaintext** relay docu
 authorization lineage, and it occupies no supported configuration — it is multi-device sync with no account, which
 works because it has exactly one user who trusts every device on his own tailnet.
 
-**The proposed cutover is to export from the development installation and import into the first real deployment, and
-to treat that as the migration** rather than carrying a live document across. It is not selected until §15 row 21
-decides whether the resulting system attribution is acceptable; if it is not, the fidelity archive moves forward and
-carries the CRDT state instead. Then comes a versioning and upgrade story, built preventatively rather than at the
-first incompatible change.
+**Selected 2026-09-10: one operator-assisted migration of the author's development installation, using
+the existing private `markdown-system-v1` importer.** There is no deployed instance or external user to
+upgrade. Keep verified Markdown and raw source backups before importing; the current importer consumes
+a verified, source-bound diagnostic recovery packet, not an arbitrary ZIP or relay snapshot. A general
+ZIP import UI, fidelity archive and automatic browser-profile migration host are separate work.
 
-**One consequence has to be decided rather than discovered: the Markdown cutover re-attributes everything.** Import is a
-system-actor write and the export carries no `author` (§9.1), so every card written before the cutover arrives
-attributed to the system actor, and provenance mode (PRD §5.7) shows nothing for any of it. For a single-user
-development installation where the answer to *who wrote this* is always the same, that may be an acceptable price
-for using the escape format as the migration path; it is not something to find out afterwards. The alternative is
-to bring the fidelity archive (§9.3) forward and migrate through **it** instead, since CRDT state is what carries
-identity and attribution — which costs a continuity item early and is the only route that does not put metadata
-into the markdown. Adding `author` to the day files is rejected on §4.6's grounds: the format has already had
-hidden per-item identity syntax removed once, and putting it back to serve a one-off migration is the wrong
-direction for the dependency to run.
+The author accepts the documented losses: fresh card IDs, system authorship, absent origin links, import
+timestamps, and reset actor/device/settings/history metadata. Written content, dates, sections, captured
+order and unfiled card bodies must survive. Import still bypasses freeze and cap; this choice does not
+authorize dropped text or bypass authenticated import, selection or cleanup checks. No metadata is added
+to Markdown. [Row 21](./selections/row-21-development-cutover.md) and sequencing §5.4 record the choice.
 
 **Two further consequences, and the second is a sequencing win available in one direction only:**
 
 1. **The import must not be gated by the freeze** (§4.5, §9.2), or a ten-day export silently loses everything older
    than three days.
 2. **If encryption-at-rest lands before any external user exists, the first-deployment cutover _is_ its migration,
-   whichever carrier row 21 selects.** The alternative is a one-time in-place conversion state machine — open the old
+   with row 21's selected Markdown/system semantics.** The alternative is a one-time in-place conversion state machine — open the old
    plaintext store, mint `K0`, write and verify the encrypted store, atomically select it, remove the plaintext store
    only after verification, resume safely after interruption. That machine is well-understood and entirely avoidable,
    and it is only avoidable now.
@@ -3711,13 +3706,12 @@ is published with the package vectors and cross-checked against this section and
 
 ## 15. The selection register
 
-The constraints above are fixed; this is the register of the constructions built on them. **Seventeen rows are
-selected and four are open**, with row 20 split — closed for the seventeen, open for the rest. **That count said
-*eighteen* until `S0-1`, and §15.1 has always listed seventeen**: the prose counted row 20's closed half as a
-selected row while the table did not, and the arithmetic below inherited it. A count stated in words beside a
-table it does not match is the smallest version of this section's own subject, so `scripts/check-selection-status.mjs`
-now reads the table and fails when the two disagree. **The design reviews wait on the selections in their scope, and the cutover
-waits separately on row 21** (§13.11, §14.6).
+The constraints above are fixed; this is the register of the constructions built on them. **Eighteen rows are
+selected and three are open**, with row 20 split between the selected constructions and remaining work.
+The count increased from seventeen when the author selected row 21 on 2026-09-10; it does not count row 20
+as selected. `scripts/check-selection-status.mjs` checks the printed count against table membership.
+Design reviews wait on the selections in their scope; the author has now settled the separate migration
+choice (§13.11, §14.6), without discharging implementation or review requirements.
 
 **The register has two review scopes and two independent scopes.** Rows **1, 2, 3 and 13**, plus the storage-facing
 part of 14, are what a local encrypted store needs; they gate the storage work and are the scope of review **3a**, answered
@@ -3734,7 +3728,7 @@ rather than a position. **What is left for the reviewer is one question rather t
 rate-limits envelope fetch, which changes nothing about the code's entropy because the attacker who matters has
 already fetched (§15 row 14's record, §5). Rows **18 and 19**
 retain their own empirical triggers and gate neither review nor
-cutover. Row **21** is the migration choice: it gates cutover but neither design review. Closing one scope does not
+cutover. Row **21** is the selected migration choice; its implementation remains separate from either design review. Closing one scope does not
 require another, which is what lets encryption at rest land before the protocol is specified.
 
 ### 15.1 Selected
@@ -3762,15 +3756,13 @@ true**, and where the two disagree this one wins.
 | 12 | Account-credential and slot-verifier construction | The account credential is a **WebAuthn discoverable credential** and the verifier **checks a signature rather than a secret** — so §13.10's Argon2id candidate answers *none* for the third time and on the strongest argument: there is no secret in the profile to grind. Each credential gets a **service-signed binding** in the slot index, because an asymmetric verifier trades a guessable secret for a **substitutable public key** and §6.5's index is a structured clone. The unlock assertion is bound to the slot and the credential, never to a clock; the signature counter is read and ignored (§13.9) | [row 12](./selections/row-12-account-credential.md) |
 | 16 | Hosted-content retention duration after a lapse | **Twelve months**, from the moment hosted synchronization stops rather than from the missed payment, so grace is not deducted from it. **A floor on the promise and a ceiling on the data**: a plan may offer longer and none may offer shorter, and at expiry the ciphertext and wraps are *deleted*. One number for two paths because both are gated by one artifact — the ciphertext — so a shorter recovery window would save nothing and produce the state §6.10 refuses. **The condition was one bit of PRD §11's pricing question**, not its answer. **§14.7 is the machine that executes it** — one clock, created by whichever event stops synchronization; a six-class ledger whose cause decides whether the recovery anchor is kept; and the deadline as a **floor on expiry deletion and a ceiling on both causes**, which is what bounds §14.4's lost acknowledgement (`S0-7`) (PRD §6.10, §16) | [row 16](./selections/row-16-hosted-retention.md) |
 | 10 | Terminal and portable cutover-package formats | **One format at §13.5's three lineage states**, not two: §14.2's cutover package, §14.4's terminal package and §9.3's fidelity archive. A **retired package is a complete package signed by the terminal authority**, not a live manifest upgraded in place — `lineage_state` is inside what the assembler signs, so there is no in-place upgrade to verify. §14.2's trust root is bound in the **HPKE `info` of every generation wrap** *and* committed in a digest **sealed beside `R_priv` under the recovery code**: `info` alone stops a wrap being reinterpreted and not one being minted, since base mode needs only the public `R_pub`. The commitment is the anchor that terminates in user-held material; the importer checks it before any unwrap. §9.3's archive uses the same shape under its own per-workspace code (§14.2, §14.4, `S0-6`) | [row 10](./selections/row-10-portable-package.md) |
+| 21 | First-development cutover attribution and scope | **Accept system attribution** through the existing private `markdown-system-v1` importer for the author's sole development installation. Preserve written content and placement; accept the documented metadata losses. Operator-assisted capture and verification; no automatic old-profile host or early fidelity archive | [row 21](./selections/row-21-development-cutover.md) |
 
-**Row 20 — test vectors — is closed for these seventeen and open for the rest.** Rows 16 and 17 are the two whose
-artifacts are not vector files in the same sense — a number and a profile rather than constructions — and each
-earns its place the same way: checked against what it names rather than restating it, and build-failing when the
-two stop agreeing. Row 17's profile is generated from a pinned index of the standard; row 16's number is read
-back out of this document and the PRD by `scripts/check-retention.mjs`, which also audits §16's `unselected`
-cells against §15.1. Each carries a generated,
-self-verifying vector file; `pnpm vectors:check` fails the build if any has drifted from its generator, and
-`pnpm vectors:coverage` fails it if any field bound in one is isolated by no published negative.
+**Row 20 — test vectors — remains closed for the original seventeen constructions.** Fifteen carry
+generated vector files; rows 16 and 17 carry checked artifacts appropriate to a duration and a profile.
+Row 21 adds an author decision, supported by the existing import semantics and its executed component
+tests; it does not claim a new cryptographic vector or completed real-data cutover. `pnpm vectors:check`
+and `pnpm vectors:coverage` continue to verify their existing generated constructions.
 
 ### 15.2 Unselected
 
@@ -3778,8 +3770,7 @@ self-verifying vector file; `pnpm vectors:check` fails the build if any has drif
 | - | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | 18 | Whether a persistent encrypted search index is needed at all | Deferred; gates neither review nor cutover; measure the in-memory rebuild first (§6.2, §12) |
 | 19 | Root-type day collections (§10.8)              | Deferred; one of its four costs has lapsed and should be re-counted                            |
-| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the seventeen selected above** — fifteen carry a generated, self-verifying vector file, and rows 16 and 17 carry the checked artifact their subject admits instead |
-| 21 | First-deployment cutover attribution: accept system attribution, or bring the fidelity archive forward | §14.6; must be selected before cutover; adding authorship fields to Markdown is rejected (§9.1) |
+| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the original seventeen constructions** — fifteen vector files and checked artifacts for rows 16 and 17; row 21 is an author decision with import-adapter evidence, not a new cryptographic construction |
 
 **No row remains in this scope.** Envelope, acceptance, retention, checkpoint, attribution, enrollment, discovery,
 the package that carries all of it out, the credential the account is reached by, the rule for what happens when any

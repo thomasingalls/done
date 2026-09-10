@@ -1,0 +1,81 @@
+@layer app {
+  .local-startup {
+    height: 100dvh;
+    overflow: auto;
+    padding: max(2rem, env(safe-area-inset-top)) 1.25rem 3rem;
+  }
+  .local-startup-panel {
+    max-width: 40rem;
+    margin: 5vh auto 0;
+  }
+  .local-brand {
+    font-weight: 650;
+    color: var(--color-text-dim);
+  }
+  .local-startup h1 {
+    font-size: 1.8rem;
+    line-height: 1.2;
+    margin: 1.5rem 0 1rem;
+  }
+  .local-startup h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+  .local-startup p {
+    margin: 0 0 1.5rem;
+  }
+  .local-startup button,
+  .local-startup input {
+    font: inherit;
+    border: 1px solid currentColor;
+    border-radius: var(--radius-2);
+    padding: 0.65rem 1rem;
+    color: inherit;
+    background: transparent;
+  }
+  .local-startup button {
+    cursor: pointer;
+  }
+  .local-startup button:focus-visible,
+  .local-startup input:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+  .local-startup .local-secondary {
+    display: block;
+    border: 0;
+    margin-top: 0.75rem;
+  }
+  .local-form {
+    display: grid;
+    gap: 0.65rem;
+    max-width: 28rem;
+  }
+  .local-form input {
+    min-width: 0;
+    width: 100%;
+    font-family: var(--font-mono);
+  }
+  .local-generated-code {
+    display: block;
+    margin: 2rem 0;
+    font-size: 1.3rem;
+    overflow-wrap: anywhere;
+    user-select: all;
+  }
+  .local-preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .local-preview {
+    padding: 1.5rem 0;
+    border-top: 1px solid currentColor;
+  }
+  .local-preview pre {
+    font: inherit;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+}
