@@ -12,16 +12,22 @@ async function mutated(t, edits) {
   mkdirSync(parent, { recursive: true });
   const dir = mkdtempSync(join(parent, 'mutant-'));
   t.after(() => rmSync(dir, { recursive: true, force: true }));
-  for (const file of ['protocol.ts', 'webauthn.ts', 'core.ts']) {
+  mkdirSync(join(dir, 'account-service'));
+  mkdirSync(join(dir, 'account-protocol'));
+  writeFileSync(
+    join(dir, 'account-protocol/recovery.ts'),
+    readFileSync('account-protocol/recovery.ts'),
+  );
+  for (const file of ['protocol.ts', 'webauthn.ts', 'core.ts', 'recovery.ts']) {
     let source = readFileSync(resolve('account-service', file), 'utf8');
     for (const [target, from, to] of edits)
       if (file === target) {
         assert(source.includes(from), `Control no longer matches ${file}: ${from}`);
         source = source.replaceAll(from, to);
       }
-    writeFileSync(join(dir, file), source);
+    writeFileSync(join(dir, 'account-service', file), source);
   }
-  return (await import(pathToFileURL(join(dir, 'core.ts')).href)).AccountCore;
+  return (await import(pathToFileURL(join(dir, 'account-service/core.ts')).href)).AccountCore;
 }
 
 test('replay control actually mints a second logical result when retirement guards are removed', async (t) => {

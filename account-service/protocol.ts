@@ -23,6 +23,8 @@ export type Refusal =
   | 'invalid-proof'
   | 'credential-in-use'
   | 'account-not-active'
+  | 'account-not-pending'
+  | 'recovery-conflict'
   | 'already-finished'
   | 'storage-unavailable';
 export type Result =
@@ -47,7 +49,10 @@ export type Result =
     }
   | { ok: true; attemptId: string; stage: 'cancelled' };
 
-export const refuse = (refusal: Refusal): Result => ({ ok: false, refusal });
+export const refuse = (refusal: Refusal): { ok: false; refusal: Refusal } => ({
+  ok: false,
+  refusal,
+});
 export const fresh = (): string => randomBytes(32).toString('base64url');
 export const hash = (value: string | Uint8Array): string =>
   createHash('sha256').update(value).digest('hex');

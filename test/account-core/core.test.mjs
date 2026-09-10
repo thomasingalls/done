@@ -291,7 +291,7 @@ test('hostile wire input is refused and durable policy cannot be changed on rest
     /policy requires/,
   );
   const db = new DatabaseSync(f.path);
-  db.exec('PRAGMA user_version=2');
+  db.exec('PRAGMA user_version=999');
   db.close();
   assert.throws(() => new AccountCore(f.path, policy), /Unsupported account schema/);
 });

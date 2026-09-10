@@ -48,54 +48,55 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # first account core complete; recovery/finalization next
-plan: [sequencing.md §3.5, action-tree.md L-1, account-sync-prep.md, account-core.md]
+status: in flight # recovery preparation complete; trusted root and promotion preparation next
+plan: [sequencing.md §3.5, action-tree.md L-1, account-sync-prep.md, account-recovery.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-10
 ```
 
-**Personal checkpoint.** Signed `187b636` records the completed `17d87c2` application handoff, exact-package
-runner and account/sync prep. The author confirms a new edit survived lock, full close, normal reopen and
-unlock, with the version unchanged. The preview is stopped at their request while account work proceeds;
-relay remains off. The verified release stays in `.dev/releases/17d87c2/app`, the predecessor `dist/`
-is intact, and the origin/Tailscale route are unchanged. Build and server remain in this worktree/Codex
-session by request. The author controls their browser and retains the device code and external backups.
+**Personal checkpoint.** Signed `187b636` records the completed `17d87c2` application handoff and
+account/sync prep. The author's edit survives full close and normal reopen at that version. The preview
+is stopped at their request; relay remains off. The verified release is retained at
+`.dev/releases/17d87c2/app`, the predecessor `dist/` is intact, and the origin/Tailscale route is
+unchanged. Build and server remain in this worktree/Codex session. The author controls their browser.
 
-**First account core complete.** The [contract](./account-core.md) describes the private service boundary:
-service-owned, purpose-bound, single-use challenges; attested-key staging and separate proof of possession;
-discoverable sign-in against active fixture accounts; SQLite WAL/FULL progress and result commits; current
-state/expiry/key checks after asynchronous verification; restart-safe retry lookup and typed refusals.
-Accounts created here stay pending. Results confer no session, relay, admission or content authority.
-The loopback adapter is not mounted in the app or relay. No personal account, passkey or content operation
-occurred. The server-side WebAuthn dependency is pinned to the reviewed, age-policy-eligible 14.0.0 release.
+**Account core committed; recovery preparation complete.** Signed `e9477aa` commits the private
+challenge/passkey core. The [recovery contract](./account-recovery.md) now pins the amended three-part
+seal, saved-code confirmation, independent account/recovery proofs, durable service finalization and
+browser restart owner. The exact draft/root and recovery-state digest are bound into a historical
+receipt. **Accounts stay pending** until the later promotion owner attaches that state. No personal
+account, passkey, recovery code, content, custody or index operation occurred. No ordinary account UI,
+activation, service authority or network grant is exposed.
 
-[Preserved evidence](./account-conformance-runs/2026-09-10-account-core.md): all 30 campaign tests pass,
-including a repaired competing-process confirmation race, 240 generated histories, ten real SIGKILL/reopen
-cases, native virtual-authenticator ceremonies,
-HTTP boundary tests and three observed acceptance controls. All 825 existing unit tests, TypeScript,
-focused static checks and the isolated production build pass; the app remains within 327.2 kB of the
-350 kB budget, and origin isolation passes. The full check chain was not run; no debt/matrix status changed.
+[Preserved evidence](./account-conformance-runs/2026-09-10-account-recovery.md): all 25 recovery tests,
+including 160 generated histories, six SIGKILL cases, independent crypto reconstruction, native browser
+abort/crash/restart and cancellation-settlement checks, and three observed acceptance controls pass.
+All 30 core regressions (240 generated histories) and 825 existing unit tests pass. TypeScript, focused
+static checks and isolated build/budget/origin checks pass. Two preliminary failures were harness defects:
+lazy expiry in the expected ledger and awaiting a CDP crash response. Full check-chain and wider protocol
+assurance remain open; no debt/matrix status changed.
 
-**Next bounded phase.** Recovery sealing, saved-code confirmation and restart-owned account finalization,
-following [the prep](./account-sync-prep.md). This must preserve the distinction between the existing
-mandatory device-lock code, account passkey and newly generated content-recovery code. Local promotion,
-the first authority/binding issuer and its trusted key bootstrap follow with an authenticated connection
-to the confirmed recovery result. The core's immutable proof receipts are historical evidence, not current
-bearer grants. No ordinary account activation or application enrollment is exposed yet.
+**Next bounded phase.** Trusted service authority-root persistence/bootstrap and promotion preparation.
+Connect the exact confirmed recovery result to the existing unlocked Local principal/workspace and
+never-admitted lineage. Prepare fresh device signing/wrapping credentials under mandatory custody,
+required recovery generation wraps and authenticated genesis/index restart handoff before activation.
+The root must be established before code generation; a key supplied beside an unverified binding cannot
+prove that same binding. An account receipt alone grants no content authority. Pending-attempt
+abandonment/reset needs its own enrollment owner before exposing the UI. Device-lock code, account
+passkey and content-recovery code remain distinct powers.
 
-The clean historical L-2 worktree/ref was reconciled at `d24732b`: its slot verifier/tests already match
-this branch and it contains no further account service to integrate. L-2's historical checkpoint remains
-untouched. The author's selected path is promotion of the writing here, then adoption on the actual second
-pre-encryption device with fresh custody/credentials and no import/merge of that device's old writing.
-Its cleanup remains separate.
+The author's actual second pre-encryption device will later **adopt this workspace**, with fresh local
+custody/store/counters/device credentials and no import or merge of its old writing. Cleanup there stays
+separate. L-2's clean historical worktree at `d24732b` has no further service work to integrate; its
+checkpoint remains untouched.
 
-**Remaining gates.** Recovery/promotion, signed binding issuance, encrypted relay/durable storage,
+**Remaining gates.** Trusted root/promotion and signed binding issuance, encrypted relay/durable storage,
 two-gate enrollment, revocation/rotation/finalization, complete product conformance, whole-profile residue,
-platform coverage and independent review remain open. Before any incompatible persisted-format change,
-its concrete owner needs authenticated intent, exclusion (including pre-interlock builds), restart and
-recovery/rollback rules. The host VM is stopped; automatic host/policy research is not next-up. This
-outcome was appended to completed.md before this rewrite. L-2 below is unchanged.
+platform coverage and independent review remain open. Incompatible persisted formats require an owned
+upgrade with authenticated intent, exclusion and restart/recovery rules. The private service's schema-v1
+upgrade is explicit and offline; no personal service database was upgraded. The host VM stays stopped;
+host/policy research is not next-up. This outcome was appended to completed.md before this rewrite.
 
 ---
 

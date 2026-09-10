@@ -12,7 +12,7 @@ const files = [
   'tsconfig.node.json',
   'scripts/account-core/run.mjs',
   'docs/account-core.md',
-  ...['account-service', 'test/account-core'].flatMap((dir) =>
+  ...['account-service', 'account-protocol', 'test/account-core'].flatMap((dir) =>
     readdirSync(dir)
       .filter((file) => /\.(ts|mjs)$/.test(file))
       .map((file) => `${dir}/${file}`),

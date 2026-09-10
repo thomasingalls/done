@@ -20,6 +20,7 @@
     "playwright.private-migration.config.ts",
     "playwright.local-startup.config.ts",
     "playwright.app-upgrades.config.ts",
-    "playwright.storage-compatibility.config.ts"
+    "playwright.storage-compatibility.config.ts",
+    "account-protocol"
   ]
 }

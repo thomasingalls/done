@@ -1491,3 +1491,31 @@ account campaign. All 30 final tests pass, including the added regression, 240 g
 three acceptance controls with before/after state snapshots. The generated histories themselves did not
 find this particular inter-process gap. The earlier 29-test result above records the pre-repair campaign.
 This addendum precedes the L-1 checkpoint correction; L-2 is unchanged.
+
+## 2026-09-10 — Private recovery sealing and restart-owned finalization (`L-1`)
+
+Signed `e9477aa` commits the account challenge/passkey core. The next bounded slice now generates a
+125-bit recovery code and seals the recovery scalar, root commitment and bootstrap signer together.
+The browser owner commits only sealed material before displaying the code; re-entry checks the complete
+payload and both keypairs before requesting a fresh operation-bound passkey assertion. It retains the
+exact two-proof request before sending it, so renderer death or a lost response resumes one finalization.
+The service commits exact preparation/receipt bytes under SQLite and rechecks current eligibility,
+expiry, cancellation and both proofs. Accounts remain pending for authenticated Local promotion.
+See the [contract](./account-recovery.md) and [evidence](./account-conformance-runs/2026-09-10-account-recovery.md).
+
+All 25 recovery campaign tests pass: 160 generated histories, six real SIGKILL cases, independent crypto
+reconstruction, three observed acceptance controls, and disposable native-browser coverage of IndexedDB
+aborts, owner exclusion/cancellation, renderer death, browser restart and saved-proof response recovery.
+All 30 account-core regressions (240 more generated histories) and all 825 existing unit tests pass.
+The generated recovery ledger initially modeled expiry before a foreign-ID refusal; correcting that
+harness expectation made the seed pass. The crash harness also needed to observe the renderer crash
+instead of awaiting its CDP command response. Neither was a discovered production defect. TypeScript,
+focused static checks and isolated application build/budget/origin checks pass. The complete check chain
+was not run; no debt/matrix status changed.
+
+Next is trusted authority-root ownership/bootstrap and promotion preparation for this existing Local
+workspace. The first lineage/genesis, mandatory-custody device credentials, recovery generation wraps
+and authenticated index restart handoff must use the exact confirmed recovery result. Activation and
+personal enrollment remain gated on that work; sync and second-device adoption follow. Pending-attempt
+abandonment/reset and wider production lifecycle remain open. The personal preview and relay remain
+off, with release files and origin unchanged. This outcome precedes the L-1 rewrite; L-2 is unchanged.

@@ -23,6 +23,7 @@
     "skipLibCheck": true,
 
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "composite": true
   },
   /*
@@ -33,5 +34,12 @@
    * (test/relayAuth.test.ts). Naming the one file keeps the relay's server, and
    * therefore `ws` and `@y/websocket-server`, out of the app's program.
    */
-  "include": ["src", "private", "test", "relay/src/auth.ts", "wasm/journal-seal/seal.generated.ts"]
+  "include": [
+    "account-protocol",
+    "src",
+    "private",
+    "test",
+    "relay/src/auth.ts",
+    "wasm/journal-seal/seal.generated.ts"
+  ]
 }

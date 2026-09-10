@@ -126,6 +126,8 @@ error. Separate ledgers cover registration and active-fixture sign-in histories;
 replay, purpose and key-substitution controls. Native Chromium uses a fresh profile and virtual
 authenticator, never the author's profile.
 
+The follow-on [recovery preparation contract](./account-recovery.md) adds schema v2 through an explicit offline upgrade and the private recovery endpoints. This document describes the original v1 boundary.
+
 After this boundary passes, the next bounded phase is recovery sealing, saved-code confirmation and
 restart-owned account finalization. Local promotion and the first authority/binding issuer follow with
 an explicit authenticated connection to that result. The current device-lock code remains distinct from
