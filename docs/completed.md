@@ -1197,3 +1197,32 @@ whole-profile residue result, wider platform/latency evidence or independent rev
 chain was not rerun and no debt or conformance matrix status is paid. Next is operator-assisted private
 import/cutover rehearsal, then author-controlled browser steps. Personal backups and the stopped host VM
 remain unchanged. This outcome precedes the L-1 checkpoint rewrite; L-2 is untouched.
+
+## 2026-09-10 — Private operator page and import/editor rehearsal (`L-1`)
+
+Committed the admitted editor integration as signed commit `46a17fb`. Built the private development page
+at `/private/migration.html` around the existing coordinator, without changing the ordinary app runtime or
+adding a production entry. The page captures and downloads separate recovery/binding files, requires saved
+file replay after restart, confirms a generated factor separately, resumes bounded import with the original
+factor/input, selects through the authenticated owner, and hands off to ordinary Local unlock/editing.
+It adds no durable UI progress record, plaintext browser cache, transport, source deletion or exclusion claim.
+The [operator procedure](./private-migration-procedure.md) keeps old-client quiescence with the author and
+refuses observed service-worker registrations/controllers without deleting site data.
+
+[Preserved evidence](./storage-conformance-runs/2026-09-10-private-migration.md): all 809 unit tests in 70
+files and four native private-page cases pass. Five new unit tests include 200 generated packet/binding
+corruptions and 150 retained-intent UI histories, seed 8941. Native tests save/reselect actual files, crash
+the renderer after partial import, resume with the same factor, cold-select/open the normal editor, compare
+both ZIPs against an external string ledger, and recover a later accepted edit after lock/reopen. Original
+database/journal/ancillary bytes are retained. Wrong digest/origin, source drift, an observed content-transaction
+abort and retained worker registration are covered. The first crash fixture incorrectly awaited the dead
+renderer's command response; it now awaits the independent crash event. No new runtime defect was established.
+TypeScript, focused static checks and ordinary build pass; private utility code is absent from the built
+entries and both remain at 326.6 kB under the gzip gate. Desktop/mobile layouts were inspected.
+
+The real personal source was not captured, imported, selected or deleted, and no personal server/browser
+route changed. No complete check chain, new mutation battery, general host exclusion, whole-profile residue
+result, platform/latency evidence or independent review is claimed. Source cleanup remains a separate step
+under its existing authenticated owner and actual preconditions. Next is preparing this private utility at
+the author's existing origin, then guiding the author through service-worker retirement and capture while
+preserving site data. This outcome precedes the L-1 checkpoint rewrite; L-2 is untouched.

@@ -2302,3 +2302,21 @@ This local build switch does not perform the author's browser cutover or revive 
 research. Rehearse the existing private capture/recovery/import/selection procedure next, retaining verified
 backups and author-controlled browser interaction. Real source cleanup and all remaining conformance/review
 obligations are unchanged.
+
+### 2026-09-10 — Keep the personal migration page private and stop at a recoverable selected destination
+
+Use the [development-only operator page](./private-migration-procedure.md) to connect the existing coordinator
+to the sole personal cutover. The author owns stopped editing, disconnected relay and closed old clients.
+The page refuses an observed service-worker registration/controller, but that observation and the operator
+checkbox never mint general old-writer exclusion authority. Keep automatic policy-host research stopped.
+Serve the page explicitly from the existing source origin; exclude it from the normal build/menu/precache.
+
+Download a recovery packet and separate binding record outside browser persistence, restart and reselect the
+saved files before enrollment. Preserve the generated-factor confirmation boundary and original factor/input
+on restart. Import calls remain bounded to eight actions; selection and editor opening are separate actions.
+No UI checkpoint, URL parameter or saved plaintext copy replaces authenticated component progress.
+
+This page ends at ordinary Local unlock/recovery and subsequent edit/export verification. It exposes no
+source-cleanup action and does not label selected metadata as complete migration. Retain the source and
+external backups until the separate operator cleanup step has its existing preconditions. The seeded UI
+rehearsal changes no conformance debt, real-profile residue claim or independent review requirement.

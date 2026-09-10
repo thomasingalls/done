@@ -40,3 +40,6 @@ The next bounded phase is a rehearsal of the private capture/recovery/import/sel
 by the author's personal cutover with the author operating the browser. The existing backups remain the
 recovery basis. No personal source, origin, browser profile, import selection or cleanup changed in this
 editor phase; automatic migration-host research is not resumed.
+
+The subsequent [private page and rehearsal](./private-migration-procedure.md) now exercise that import,
+restart, selection and editor handoff using synthetic source. The author's browser cutover remains next.

@@ -9,6 +9,13 @@ selection/deletion. [SC-01–09](./storage-contract.md), [sequencing §§3.2–3
 The next [host preparation contract](./legacy-host-preparation.md) inventories executable/carrier gaps and
 specifies a persistent-profile preflight before any production coordinator bridge.
 
+**Later development scope, 2026-09-10.** [Row 21](./selections/row-21-development-cutover.md) selects the
+existing importer for the author's sole development installation and stops automatic host research as
+active cutover work. The [private operator procedure](./private-migration-procedure.md) now connects this
+coordinator to a development-only page through selection and ordinary editor handoff. Its operator
+assumptions do not establish production exclusion or authorize source cleanup. The earlier host preparation
+and its limitations remain historical evidence, not prerequisites for further automatic-host work here.
+
 ## Implemented checkpoint
 
 `createLegacyCoordinator(slotId)` owns read-only `inspect`, `capture`, a one-use factor `enroll` ceremony,

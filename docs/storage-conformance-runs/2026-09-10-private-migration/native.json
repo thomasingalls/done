@@ -1,0 +1,243 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.8.1/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/c030/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.private-migration.config.ts"
+    ],
+    "configFile": "/Users/thomasingalls/.codex/worktrees/c030/done/playwright.private-migration.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/private-migration/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/private-migration/report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": {
+      "command": "node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 4193 --strictPort",
+      "url": "http://127.0.0.1:4193/private/migration.html",
+      "reuseExistingServer": false,
+      "timeout": 30000
+    }
+  },
+  "suites": [
+    {
+      "title": "rehearsal.spec.ts",
+      "file": "rehearsal.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "saved files, renderer death, resumed selection and ordinary editor cold recovery preserve the ledger",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5466,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "text": "(node:30416) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "startTime": "2026-09-10T09:48:50.747Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "source-input",
+                      "contentType": "application/json",
+                      "body": "eyJtYXN0ZXIiOiIjIEdvYWxzXG5cbktlZXAgdGhlIHZpc2libGUgd3JpdGluZy5cbiIsInN1ZmZpeCI6IiFqb3VybmFsLW9ubHkg4pyUXG4iLCJvcnBoYW4iOiJ1bmZpbGVkIGJvZHlcblxud2l0aCBkZXRhaWwiLCJkYXlzIjpbeyJkYXRlIjoiMjAyNi0wMS0wMiIsIm5leHQiOlsib25lIiwidHdvIiwidGhyZWUiLCJmb3VyIl0sInNjaGVkdWxlZCI6WyJsYXRlclxuXG4jIyBEb25lIl0sImRvbmUiOlsiZmluaXNoZWQiLCIiXX1dfQ=="
+                    },
+                    {
+                      "name": "source-preservation",
+                      "contentType": "application/json",
+                      "body": "eyJyb3dzIjpbeyJrZXkiOjEsImJ5dGVzIjpbMSw3NywxMDEsMCw0MCwxLDQsMTA5LDEwMSwxMTYsOTcsMTMsMTE1LDk5LDEwNCwxMDEsMTA5LDk3LDg2LDEwMSwxMTQsMTE1LDEwNSwxMTEsMTEwLDEsMTI1LDQsNDAsMSw0LDEwOSwxMDEsMTE2LDk3LDksOTksMTE0LDEwMSw5NywxMTYsMTAxLDEwMCw2NSwxMTYsMSwxMTksMjAsNTAsNDgsNTAsNTQsNDUsNDgsNTYsNDUsNDgsNDksODQsNDgsNDgsNTgsNDgsNDgsNTgsNDgsNDgsOTAsNDAsMSw0LDEwOSwxMDEsMTE2LDk3LDExLDk3LDk5LDExNiwxMTEsMTE0LDU4LDEwNCwxMTcsMTA5LDk3LDExMCwxLDExOCwzLDQsMTA3LDEwNSwxMTAsMTAwLDExOSw1LDEwNCwxMTcsMTA5LDk3LDExMCw0LDExMCw5NywxMDksMTAxLDExOSw1LDcyLDExNywxMDksOTcsMTEwLDUsOTksMTExLDEwOCwxMTEsMTE0LDExOSw3LDM1LDk3LDk3LDQ4LDQ4LDQ4LDQ4LDQsMSw2LDEwOSw5NywxMTUsMTE2LDEwMSwxMTQsMzUsMzUsMzIsNzEsMTExLDk3LDEwOCwxMTUsMTAsMTAsNzUsMTAxLDEwMSwxMTIsMzIsMTE2LDEwNCwxMDEsMzIsMTE4LDEwNSwxMTUsMTA1LDk4LDEwOCwxMDEsMzIsMTE5LDExNCwxMDUsMTE2LDEwNSwxMTAsMTAzLDQ2LDEwLDM5LDEsNCwxMDAsOTcsMTIxLDExNSwxMCw1MCw0OCw1MCw1NCw0NSw0OCw0OSw0NSw0OCw1MCwxLDM5LDAsMTAxLDM4LDQsMTEwLDEwMSwxMjAsMTE2LDAsMzksMCwxMDEsMzgsOSwxMTUsOTksMTA0LDEwMSwxMDAsMTE3LDEwOCwxMDEsMTAwLDAsMzksMCwxMDEsMzgsNCwxMDAsMTExLDExMCwxMDEsMCwzOSwxLDUsOTksOTcsMTE0LDEwMCwxMTUsMTMsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMTAsMTAxLDEyMCwxMTYsNDUsNDgsMSw0MCwwLDEwMSw0MiwyLDEwNSwxMDAsMSwxMTksMTMsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMTAsMTAxLDEyMCwxMTYsNDUsNDgsMzksMCwxMDEsNDIsNCwxMTYsMTAxLDEyMCwxMTYsMiw0LDAsMTAxLDQ0LDMsMTExLDExMCwxMDEsNDAsMCwxMDEsNDIsNiwxMTEsMTE0LDEwNSwxMDMsMTA1LDExMCwxLDExOSw2LDEwOSw5NywxMTUsMTE2LDEwMSwxMTQsNDAsMCwxMDEsNDIsNiw5NywxMTcsMTE2LDEwNCwxMTEsMTE0LDEsMTE5LDUsMTA0LDExNywxMDksOTcsMTEwLDQwLDAsMTAxLDQyLDksOTksMTE0LDEwMSw5NywxMTYsMTAxLDEwMCw2NSwxMTYsMSwxMTksMjAsNTAsNDgsNTAsNTQsNDUsNDgsNTYsNDUsNDgsNDksODQsNDgsNDgsNTgsNDgsNDgsNTgsNDgsNDgsOTAsNDAsMSwxMyw5OSw5NywxMTQsMTAwLDc2LDExMSw5OSw5NywxMTYsMTA1LDExMSwxMTAsMTE1LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTEwLDEwMSwxMjAsMTE2LDQ1LDQ4LDEsMTE5LDE1LDUwLDQ4LDUwLDU0LDQ1LDQ4LDQ5LDQ1LDQ4LDUwLDU4LDExMCwxMDEsMTIwLDExNiw4LDAsMTAxLDM5LDEsMTE5LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTEwLDEwMSwxMjAsMTE2LDQ1LDQ4LDM5LDEsNSw5OSw5NywxMTQsMTAwLDExNSwxMyw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDExMCwxMDEsMTIwLDExNiw0NSw0OSwxLDQwLDAsMTAxLDUzLDIsMTA1LDEwMCwxLDExOSwxMyw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDExMCwxMDEsMTIwLDExNiw0NSw0OSwzOSwwLDEwMSw1Myw0LDExNiwxMDEsMTIwLDExNiwyLDQsMCwxMDEsNTUsMywxMTYsMTE5LDExMSw0MCwwLDEwMSw1Myw2LDExMSwxMTQsMTA1LDEwMywxMDUsMTEwLDEsMTE5LDYsMTA5LDk3LDExNSwxMTYsMTAxLDExNCw0MCwwLDEwMSw1Myw2LDk3LDExNywxMTYsMTA0LDExMSwxMTQsMSwxMTksNSwxMDQsMTE3LDEwOSw5NywxMTAsNDAsMCwxMDEsNTMsOSw5OSwxMTQsMTAxLDk3LDExNiwxMDEsMTAwLDY1LDExNiwxLDExOSwyMCw1MCw0OCw1MCw1NCw0NSw0OCw1Niw0NSw0OCw0OSw4NCw0OCw0OCw1OCw0OCw0OCw1OCw0OCw0OCw5MCw0MCwxLDEzLDk5LDk3LDExNCwxMDAsNzYsMTExLDk5LDk3LDExNiwxMDUsMTExLDExMCwxMTUsMTMsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMTAsMTAxLDEyMCwxMTYsNDUsNDksMSwxMTksMTUsNTAsNDgsNTAsNTQsNDUsNDgsNDksNDUsNDgsNTAsNTgsMTEwLDEwMSwxMjAsMTE2LDEzNiwxMDEsNTIsMSwxMTksMTMsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMTAsMTAxLDEyMCwxMTYsNDUsNDksMzksMSw1LDk5LDk3LDExNCwxMDAsMTE1LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTEwLDEwMSwxMjAsMTE2LDQ1LDUwLDEsNDAsMCwxMDEsNjQsMiwxMDUsMTAwLDEsMTE5LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTEwLDEwMSwxMjAsMTE2LDQ1LDUwLDM5LDAsMTAxLDY0LDQsMTE2LDEwMSwxMjAsMTE2LDIsNCwwLDEwMSw2Niw1LDExNiwxMDQsMTE0LDEwMSwxMDEsNDAsMCwxMDEsNjQsNiwxMTEsMTE0LDEwNSwxMDMsMTA1LDExMCwxLDExOSw2LDEwOSw5NywxMTUsMTE2LDEwMSwxMTQsNDAsMCwxMDEsNjQsNiw5NywxMTcsMTE2LDEwNCwxMTEsMTE0LDEsMTE5LDUsMTA0LDExNywxMDksOTcsMTEwLDQwLDAsMTAxLDY0LDksOTksMTE0LDEwMSw5NywxMTYsMTAxLDEwMCw2NSwxMTYsMSwxMTksMjAsNTAsNDgsNTAsNTQsNDUsNDgsNTYsNDUsNDgsNDksODQsNDgsNDgsNTgsNDgsNDgsNTgsNDgsNDgsOTAsNDAsMSwxMyw5OSw5NywxMTQsMTAwLDc2LDExMSw5OSw5NywxMTYsMTA1LDExMSwxMTAsMTE1LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTEwLDEwMSwxMjAsMTE2LDQ1LDUwLDEsMTE5LDE1LDUwLDQ4LDUwLDU0LDQ1LDQ4LDQ5LDQ1LDQ4LDUwLDU4LDExMCwxMDEsMTIwLDExNiwxMzYsMTAxLDYzLDEsMTE5LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTEwLDEwMSwxMjAsMTE2LDQ1LDUwLDM5LDEsNSw5OSw5NywxMTQsMTAwLDExNSwxMyw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDExMCwxMDEsMTIwLDExNiw0NSw1MSwxLDQwLDAsMTAxLDc3LDIsMTA1LDEwMCwxLDExOSwxMyw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDExMCwxMDEsMTIwLDExNiw0NSw1MSwzOSwwLDEwMSw3Nyw0LDExNiwxMDEsMTIwLDExNiwyLDQsMCwxMDEsNzksNCwxMDIsMTExLDExNywxMTQsNDAsMCwxMDEsNzcsNiwxMTEsMTE0LDEwNSwxMDMsMTA1LDExMCwxLDExOSw2LDEwOSw5NywxMTUsMTE2LDEwMSwxMTQsNDAsMCwxMDEsNzcsNiw5NywxMTcsMTE2LDEwNCwxMTEsMTE0LDEsMTE5LDUsMTA0LDExNywxMDksOTcsMTEwLDQwLDAsMTAxLDc3LDksOTksMTE0LDEwMSw5NywxMTYsMTAxLDEwMCw2NSwxMTYsMSwxMTksMjAsNTAsNDgsNTAsNTQsNDUsNDgsNTYsNDUsNDgsNDksODQsNDgsNDgsNTgsNDgsNDgsNTgsNDgsNDgsOTAsNDAsMSwxMyw5OSw5NywxMTQsMTAwLDc2LDExMSw5OSw5NywxMTYsMTA1LDExMSwxMTAsMTE1LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTEwLDEwMSwxMjAsMTE2LDQ1LDUxLDEsMTE5LDE1LDUwLDQ4LDUwLDU0LDQ1LDQ4LDQ5LDQ1LDQ4LDUwLDU4LDExMCwxMDEsMTIwLDExNiwxMzYsMTAxLDc2LDEsMTE5LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTEwLDEwMSwxMjAsMTE2LDQ1LDUxLDM5LDEsNSw5OSw5NywxMTQsMTAwLDExNSwxOCw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDExNSw5OSwxMDQsMTAxLDEwMCwxMTcsMTA4LDEwMSwxMDAsNDUsNDgsMSw0MCwwLDEwMSw4OSwyLDEwNSwxMDAsMSwxMTksMTgsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMTUsOTksMTA0LDEwMSwxMDAsMTE3LDEwOCwxMDEsMTAwLDQ1LDQ4LDM5LDAsMTAxLDg5LDQsMTE2LDEwMSwxMjAsMTE2LDIsNCwwLDEwMSw5MSwxNCwxMDgsOTcsMTE2LDEwMSwxMTQsMTAsMTAsMzUsMzUsMzIsNjgsMTExLDExMCwxMDEsNDAsMCwxMDEsODksNiwxMTEsMTE0LDEwNSwxMDMsMTA1LDExMCwxLDExOSw2LDEwOSw5NywxMTUsMTE2LDEwMSwxMTQsNDAsMCwxMDEsODksNiw5NywxMTcsMTE2LDEwNCwxMTEsMTE0LDEsMTE5LDUsMTA0LDExNywxMDksOTcsMTEwLDQwLDAsMTAxLDg5LDksOTksMTE0LDEwMSw5NywxMTYsMTAxLDEwMCw2NSwxMTYsMSwxMTksMjAsNTAsNDgsNTAsNTQsNDUsNDgsNTYsNDUsNDgsNDksODQsNDgsNDgsNTgsNDgsNDgsNTgsNDgsNDgsOTAsNDAsMSwxMyw5OSw5NywxMTQsMTAwLDc2LDExMSw5OSw5NywxMTYsMTA1LDExMSwxMTAsMTE1LDE4LDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTE1LDk5LDEwNCwxMDEsMTAwLDExNywxMDgsMTAxLDEwMCw0NSw0OCwxLDExOSwyMCw1MCw0OCw1MCw1NCw0NSw0OCw0OSw0NSw0OCw1MCw1OCwxMTUsOTksMTA0LDEwMSwxMDAsMTE3LDEwOCwxMDEsMTAwLDgsMCwxMDEsNDAsMSwxMTksMTgsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMTUsOTksMTA0LDEwMSwxMDAsMTE3LDEwOCwxMDEsMTAwLDQ1LDQ4LDM5LDEsNSw5OSw5NywxMTQsMTAwLDExNSwxMyw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDEwMCwxMTEsMTEwLDEwMSw0NSw0OCwxLDQwLDAsMTAxLDExMSwyLDEwNSwxMDAsMSwxMTksMTMsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMDAsMTExLDExMCwxMDEsNDUsNDgsMzksMCwxMDEsMTExLDQsMTE2LDEwMSwxMjAsMTE2LDIsNCwwLDEwMSwxMTMsOCwxMDIsMTA1LDExMCwxMDUsMTE1LDEwNCwxMDEsMTAwLDQwLDAsMTAxLDExMSw2LDExMSwxMTQsMTA1LDEwMywxMDUsMTEwLDEsMTE5LDYsMTA5LDk3LDExNSwxMTYsMTAxLDExNCw0MCwwLDEwMSwxMTEsNiw5NywxMTcsMTE2LDEwNCwxMTEsMTE0LDEsMTE5LDUsMTA0LDExNywxMDksOTcsMTEwLDQwLDAsMTAxLDExMSw5LDk5LDExNCwxMDEsOTcsMTE2LDEwMSwxMDAsNjUsMTE2LDEsMTE5LDIwLDUwLDQ4LDUwLDU0LDQ1LDQ4LDU2LDQ1LDQ4LDQ5LDg0LDQ4LDQ4LDU4LDQ4LDQ4LDU4LDQ4LDQ4LDkwLDQwLDEsMTMsOTksOTcsMTE0LDEwMCw3NiwxMTEsOTksOTcsMTE2LDEwNSwxMTEsMTEwLDExNSwxMyw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDEwMCwxMTEsMTEwLDEwMSw0NSw0OCwxLDExOSwxNSw1MCw0OCw1MCw1NCw0NSw0OCw0OSw0NSw0OCw1MCw1OCwxMDAsMTExLDExMCwxMDEsOCwwLDEwMSw0MSwxLDExOSwxMyw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDEwMCwxMTEsMTEwLDEwMSw0NSw0OCwzOSwxLDUsOTksOTcsMTE0LDEwMCwxMTUsMTMsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMDAsMTExLDExMCwxMDEsNDUsNDksMSw0MCwwLDEwMSwxMjcsMiwxMDUsMTAwLDEsMTE5LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTAwLDExMSwxMTAsMTAxLDQ1LDQ5LDM5LDAsMTAxLDEyNyw0LDExNiwxMDEsMTIwLDExNiwyLDQwLDAsMTAxLDEyNyw2LDExMSwxMTQsMTA1LDEwMywxMDUsMTEwLDEsMTE5LDYsMTA5LDk3LDExNSwxMTYsMTAxLDExNCw0MCwwLDEwMSwxMjcsNiw5NywxMTcsMTE2LDEwNCwxMTEsMTE0LDEsMTE5LDUsMTA0LDExNywxMDksOTcsMTEwLDQwLDAsMTAxLDEyNyw5LDk5LDExNCwxMDEsOTcsMTE2LDEwMSwxMDAsNjUsMTE2LDEsMTE5LDIwLDUwLDQ4LDUwLDU0LDQ1LDQ4LDU2LDQ1LDQ4LDQ5LDg0LDQ4LDQ4LDU4LDQ4LDQ4LDU4LDQ4LDQ4LDkwLDQwLDEsMTMsOTksOTcsMTE0LDEwMCw3NiwxMTEsOTksOTcsMTE2LDEwNSwxMTEsMTEwLDExNSwxMyw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDEwMCwxMTEsMTEwLDEwMSw0NSw0OSwxLDExOSwxNSw1MCw0OCw1MCw1NCw0NSw0OCw0OSw0NSw0OCw1MCw1OCwxMDAsMTExLDExMCwxMDEsMTM2LDEwMSwxMjYsMSwxMTksMTMsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMDAsMTExLDExMCwxMDEsNDUsNDksMzksMSw1LDk5LDk3LDExNCwxMDAsMTE1LDYsMTExLDExNCwxMTIsMTA0LDk3LDExMCwxLDQwLDAsMTAxLDEzNSwxLDIsMTA1LDEwMCwxLDExOSw2LDExMSwxMTQsMTEyLDEwNCw5NywxMTAsMzksMCwxMDEsMTM1LDEsNCwxMTYsMTAxLDEyMCwxMTYsMiw0LDAsMTAxLDEzNywxLDI1LDExNywxMTAsMTAyLDEwNSwxMDgsMTAxLDEwMCwzMiw5OCwxMTEsMTAwLDEyMSwxMCwxMCwxMTksMTA1LDExNiwxMDQsMzIsMTAwLDEwMSwxMTYsOTcsMTA1LDEwOCw0MCwwLDEwMSwxMzUsMSw2LDExMSwxMTQsMTA1LDEwMywxMDUsMTEwLDEsMTE5LDYsMTA5LDk3LDExNSwxMTYsMTAxLDExNCw0MCwwLDEwMSwxMzUsMSw2LDk3LDExNywxMTYsMTA0LDExMSwxMTQsMSwxMTksNSwxMDQsMTE3LDEwOSw5NywxMTAsNDAsMCwxMDEsMTM1LDEsOSw5OSwxMTQsMTAxLDk3LDExNiwxMDEsMTAwLDY1LDExNiwxLDExOSwyMCw1MCw0OCw1MCw1NCw0NSw0OCw1Niw0NSw0OCw0OSw4NCw0OCw0OCw1OCw0OCw0OCw1OCw0OCw0OCw5MCwwXX1dLCJsb2NhbCI6eyJkb25lLmRldmljZSI6IntcImlkXCI6XCJvbGQtZGV2aWNlXCIsXCJuYW1lXCI6XCJwcml2YXRlLW5hbWVcIn0iLCJkb25lLnBlbmRpbmctdXBkYXRlLmRvbmUuZml4dHVyZS4xIjoiMTpBQUhLQVFFQUFRPT0iLCJkb25lLnN5bmMiOiJ7XCJ0b2tlblwiOlwicHJpdmF0ZS10b2tlblwiLFwicm9vbVwiOlwibGVnYWN5LXJvb21cIn0iLCJkb25lLmFjdG9yIjoibGVnYWN5LWh1bWFuIiwiZG9uZS5wZW5kaW5nLXVwZGF0ZS5kb25lLmZpeHR1cmUuMCI6IjE6QVFIS0FRQ0VaU1VTSVdwdmRYSnVZV3d0YjI1c2VTRGluSlFLQUE9PSJ9fQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5a688984f7417d6db555-4f4351df21d7ee848112",
+          "file": "rehearsal.spec.ts",
+          "line": 135,
+          "column": 1
+        },
+        {
+          "title": "wrong saved digest and origin refuse before enrollment; source drift refuses first intent",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1128,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T09:48:56.727Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5a688984f7417d6db555-07b202631c21429e1fce",
+          "file": "rehearsal.spec.ts",
+          "line": 220,
+          "column": 1
+        },
+        {
+          "title": "an aborted first content write offers resume with the original factor and retains source",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1737,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T09:48:57.861Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5a688984f7417d6db555-ea2ef3cca12e3a32f490",
+          "file": "rehearsal.spec.ts",
+          "line": 249,
+          "column": 1
+        },
+        {
+          "title": "a retained service-worker registration blocks observation without removing site data",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 420,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T09:48:59.606Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5a688984f7417d6db555-e82291a55fbfb50234d7",
+          "file": "rehearsal.spec.ts",
+          "line": 281,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-10T09:48:49.301Z",
+    "duration": 10842.567000000001,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

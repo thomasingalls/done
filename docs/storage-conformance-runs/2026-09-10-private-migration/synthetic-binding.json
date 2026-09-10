@@ -1,0 +1,8 @@
+{
+  "kind": "done-private-migration-binding",
+  "v": 1,
+  "policy": "markdown-system-v1",
+  "sourceOrigin": "http://127.0.0.1:4193",
+  "sourceDigest": "bc27dd6ea717fec7a29a350a0e2f174fb9071b62d33db77c3cad418a1933ebc1",
+  "recoveryDigest": "d1335b5f2b8db757553536adc5899e640cf5b3d8cea854e42e81cd16217a51b0"
+}
