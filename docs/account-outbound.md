@@ -142,3 +142,9 @@ The model uses explicit atomic commits, volatile permissions and an external inv
 it does not test a native spool, MAC verification, authenticated refusal, accepted heads or real rotation.
 Those remain implementation obligations, not credit from a green model. No personal browser or server is
 used. This phase pays no whole-protocol conformance debt.
+
+## Private spool continuation
+
+[Account spool](./account-spool.md) implements the next private v7 phase: separate position and
+invocation grants, exact persisted v2 wire and an authenticated metadata witness for ledger completeness.
+All source obligations remain retained. Response/refusal authority and relay submission remain separate.

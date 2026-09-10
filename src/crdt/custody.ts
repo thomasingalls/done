@@ -22,6 +22,7 @@ export type { JournalRefusal } from './journalCodec';
 export type { JournalAdmission, JournalUpdate, JournalFlushReceipt } from './journalStore';
 import {
   createContentOwner,
+  type ContentCrypto,
   type ContentCreationOptions,
   type ContentReceipt,
 } from './contentStore';
@@ -586,7 +587,8 @@ const prepareCustody = (
   content: boolean,
   withJournal = false,
   preactive = false,
-  validateRecords?: (records: readonly OpenedRecord[]) => void,
+  validateRecords?: ContentCrypto['validate'],
+  allowSpoolCounter?: true,
 ) => {
   const authority = captureAuthority(input),
     factor = codeBytes(code);
@@ -685,6 +687,7 @@ const prepareCustody = (
           1,
           {
             ...(validateRecords ? { validate: validateRecords } : {}),
+            ...(allowSpoolCounter ? { allowSpoolCounter } : {}),
             open: openRecord,
             seal: (task, header, plaintext) =>
               task.wait(async () => {
@@ -817,8 +820,17 @@ export const withRecoveryUnderPermit = async <T>(
   authority: CustodyAuthority,
   code: string,
   operation: (recovery: JournalRecovery) => Promise<T>,
+  validation?: Pick<ContentCrypto, 'validate' | 'allowSpoolCounter'>,
 ): Promise<T> => {
-  const owner = prepareCustody(authority, code, true, true);
+  const owner = prepareCustody(
+    authority,
+    code,
+    true,
+    true,
+    false,
+    validation?.validate,
+    validation?.allowSpoolCounter,
+  );
   let journal: JournalUpdate[] | undefined, records: OpenedRecord[] | undefined;
   try {
     await owner.initialize(task);
@@ -1061,5 +1073,6 @@ export const attachJournal = (
 export const prepareAccountCustody = (
   input: CustodyAuthority,
   code: string,
-  validateRecords?: (records: readonly OpenedRecord[]) => void,
-) => prepareCustody(input, code, true, true, false, validateRecords);
+  validateRecords?: ContentCrypto['validate'],
+  allowSpoolCounter?: true,
+) => prepareCustody(input, code, true, true, false, validateRecords, allowSpoolCounter);

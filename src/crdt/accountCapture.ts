@@ -25,24 +25,59 @@ import {
 } from './sourceCapture';
 import type { SourceUpdate } from './sourceCapture';
 import { hex, type Bytes } from './custodyCrypto';
-import { copyBatch, MAX_BATCH_BYTES, MAX_BATCH_RECORDS } from './contentRecord';
+import {
+  copyBatch,
+  MAX_BATCH_BYTES,
+  MAX_BATCH_RECORDS,
+  type OpenedRecord,
+  type ContentCounter,
+} from './contentRecord';
 import { eraseJournalSnapshot, type ObservedEntry } from './journalStore';
 import { validateContentUpdates } from './contentCompaction';
 import { createAdmissionOwner } from './admissionQueue';
 import { createAdmittedWorkspace } from './admittedWorkspace';
 import type { AccountWorkspaceOptions } from './accountWorkspace';
 
-export async function openAccountCaptureSession(input: AccountStartupOptions, principalId: string) {
+/** Internal composition hook; never supplied by application or transport callers. */
+export interface CaptureExtension {
+  sourceRecords(records: readonly OpenedRecord[], route: CaptureRoute): OpenedRecord[];
+  initialize(
+    task: SessionTask,
+    verified: Awaited<ReturnType<typeof verifyAccountUnderPermit>>,
+  ): Promise<void>;
+  activate(task: SessionTask, owner: ReturnType<typeof prepareAccountCustody>): Promise<void>;
+  validate(
+    task: SessionTask,
+    records: readonly OpenedRecord[],
+    route: CaptureRoute,
+    counter: ContentCounter,
+  ): Promise<void>;
+  dispose(): void;
+}
+export async function openAccountCaptureOwner(
+  input: AccountStartupOptions,
+  principalId: string,
+  extension?: CaptureExtension,
+) {
   const options = captureAccountOptions(input),
     cleanups = new Set<() => void | Promise<void>>();
   let owner: ReturnType<typeof prepareAccountCustody> | undefined;
   let account!: Awaited<ReturnType<typeof verifyAccountUnderPermit>>['account'];
   let route!: CaptureRoute;
   let tail: Promise<unknown> = Promise.resolve();
+  const sourceRecords = (records: readonly OpenedRecord[]) =>
+    extension ? extension.sourceRecords(records, route) : records;
+  const recovery = (records: OpenedRecord[], journal: ObservedEntry[]) => ({
+    ...capturedRecovery({ records: [...sourceRecords(records)], journal }, route),
+    records,
+  });
   const live = await openAccountWriteSession(options.slotId, options.code, {
     ...(options.signal ? { signal: options.signal } : {}),
     initialize: async (task) => {
       const v = await verifyAccountUnderPermit(task, options);
+      if (!extension && v.marker.v === 7) throw Error('Account requires the spool owner');
+      if (extension && v.marker.v !== 6 && v.marker.v !== 7)
+        throw Error('Spool requires verified source capture');
       if (v.marker.v === 5) throw Error('Edited v5 Account needs a verified catch-up checkpoint');
       if (v.account.principalId !== principalId) throw Error('Account actor identity changed');
       route = captureRoute(v.marker);
@@ -65,11 +100,26 @@ export async function openAccountCaptureSession(input: AccountStartupOptions, pr
           resolvePrincipal: () => route.principal,
         },
         options.code,
-        (records) => {
-          captureCatalog(records, route);
+        (records, task, counter) => {
+          captureCatalog(sourceRecords(records), route);
+          return extension?.validate(task, records, route, counter);
         },
+        extension ? true : undefined,
       );
+      await extension?.initialize(task, v);
       await owner.initialize(task);
+      if (extension) {
+        if (v.marker.v === 6)
+          await withPromotionRoot(task, v.claim, v.record, options.code, async (root, subtle) => {
+            const next = await signPromotion(
+              root,
+              { ...v.marker, v: 7, stage: 'account-spooling' },
+              subtle,
+            );
+            await writePromotion(task, v.claim, v.record, v.record, v.marker, next);
+          });
+      }
+      await extension?.activate(task, owner);
       if (v.marker.v === 4) {
         const records = await owner.carrier.load(task);
         try {
@@ -107,6 +157,7 @@ export async function openAccountCaptureSession(input: AccountStartupOptions, pr
         for (const cleanup of cleanups) await cleanup();
         cleanups.clear();
       } finally {
+        extension?.dispose();
         owner?.dispose();
       }
     },
@@ -145,7 +196,7 @@ export async function openAccountCaptureSession(input: AccountStartupOptions, pr
     let batch: ContentInput[] = [],
       size = 0;
     try {
-      const catalog = captureCatalog(records, route);
+      const catalog = captureCatalog(sourceRecords(records), route);
       for (const bytes of values) {
         const c = decodeSourceCapsule(bytes, route);
         try {
@@ -237,7 +288,7 @@ export async function openAccountCaptureSession(input: AccountStartupOptions, pr
       run(async (task) => {
         const records = await owner!.carrier.load(task);
         try {
-          captureCatalog(records, route);
+          captureCatalog(sourceRecords(records), route);
           return records;
         } catch (e) {
           for (const r of records) r.bytes.fill(0);
@@ -249,7 +300,7 @@ export async function openAccountCaptureSession(input: AccountStartupOptions, pr
         withSnapshot(task, async (journal) => {
           const records = await owner!.carrier.load(task);
           try {
-            return capturedRecovery({ records, journal }, route);
+            return recovery(records, journal);
           } catch (e) {
             for (const r of records) r.bytes.fill(0);
             throw e;
@@ -268,12 +319,12 @@ export async function openAccountCaptureSession(input: AccountStartupOptions, pr
         // before it may delete any content, including exact journal/disk overlap.
         await withSnapshot(task, async (journal) => {
           const records = await owner!.carrier.load(task);
-          let recovery;
+          let recovered;
           try {
-            recovery = capturedRecovery({ records, journal }, route);
+            recovered = recovery(records, journal);
           } finally {
             for (const r of records) r.bytes.fill(0);
-            for (const r of recovery?.journal ?? []) r.bytes.fill(0);
+            for (const r of recovered?.journal ?? []) r.bytes.fill(0);
           }
         });
         return owner!.carrier.compact(task, () => {
@@ -296,13 +347,21 @@ export async function openAccountCaptureSession(input: AccountStartupOptions, pr
   return {
     account,
     carrier,
+    // Only the composed private owner receives task authority; wrappers below omit this capability.
+    runCaptureTask: <T>(
+      operation: (
+        task: SessionTask,
+        owner: ReturnType<typeof prepareAccountCustody>,
+        route: CaptureRoute,
+      ) => Promise<T>,
+    ) => run((task) => operation(task, owner!, route)),
     listCaptures: () =>
       run((task) =>
         withSnapshot(task, async (journal) => {
           const records = await owner!.carrier.load(task),
             result: SourceCapsule[] = [];
           try {
-            const catalog = captureCatalog(records, route);
+            const catalog = captureCatalog(sourceRecords(records), route);
             for (const e of journal) {
               const c = decodeSourceCapsule(e.bytes, route);
               try {
@@ -325,6 +384,11 @@ export async function openAccountCaptureSession(input: AccountStartupOptions, pr
         }),
       ),
   };
+}
+
+export async function openAccountCaptureSession(input: AccountStartupOptions, principalId: string) {
+  const { account, carrier, listCaptures } = await openAccountCaptureOwner(input, principalId);
+  return { account, carrier, listCaptures };
 }
 
 export async function openOwnedCapturedAccountWorkspace(input: AccountWorkspaceOptions) {

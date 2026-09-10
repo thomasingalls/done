@@ -16,6 +16,9 @@ import {
   equalCounter,
   reserveCounter,
   recordStore,
+  emptySpoolWitness,
+  sameSpoolWitness,
+  type SpoolWitness,
   type ContentIdentity,
   type ContentInput,
   type ContentCounter,
@@ -27,7 +30,12 @@ import type { SessionTask } from './writeSession';
 
 export interface ContentCrypto {
   /** Optional private carrier payload validation, including every compaction audit. */
-  validate?(records: readonly OpenedRecord[]): void;
+  allowSpoolCounter?: true;
+  validate?(
+    records: readonly OpenedRecord[],
+    task: SessionTask,
+    counter: ContentCounter,
+  ): void | Promise<void>;
   open(task: SessionTask, record: StoredRecord): Promise<Bytes>;
   seal(
     task: SessionTask,
@@ -154,6 +162,7 @@ export const createContentOwner = (
     const { counter } = await read(task, false);
     if (!counter)
       throw new ContentError('missing-content', 'The initialized content counter is missing.');
+    if (counter.v === 2 && !crypt.allowSpoolCounter) corrupt('Content requires the spool owner.');
     await verify(task, counterPayload(scope, counter), counter.mac);
     return counter;
   };
@@ -196,6 +205,7 @@ export const createContentOwner = (
     const counter = snapshot.counter;
     if (!counter)
       throw new ContentError('missing-content', 'The initialized content counter is missing.');
+    if (counter.v === 2 && !crypt.allowSpoolCounter) corrupt('Content requires the spool owner.');
     await verify(task, counterPayload(scope, counter), counter.mac);
     if (counter.active_gen !== generation)
       throw new ContentError('generation-changed', 'Reopen the current content generation.');
@@ -216,10 +226,8 @@ export const createContentOwner = (
         seen.add(r.seq);
         opened.push({ kind: r.kind, gen: r.gen, seq: r.seq, bytes: await crypt.open(task, r) });
       }
-      return task.step(() => {
-        crypt.validate?.(opened);
-        return opened.sort((a, b) => a.seq - b.seq);
-      });
+      if (crypt.validate) await task.wait(() => crypt.validate!(opened, task, counter));
+      return task.step(() => opened.sort((a, b) => a.seq - b.seq));
     } catch (cause) {
       for (const r of opened) r.bytes.fill(0);
       throw cause;
@@ -230,10 +238,19 @@ export const createContentOwner = (
   const appendRecords = async (
     task: SessionTask,
     input: ContentInput[],
+    spool?: { before: SpoolWitness; after: SpoolWitness },
   ): Promise<StoredRecord[]> => {
     let before!: ContentCounter;
     while (true) {
       before = await currentCounter(task);
+      if (
+        spool &&
+        (!crypt.allowSpoolCounter ||
+          before.v !== 2 ||
+          !sameSpoolWitness(before.spool, spool.before) ||
+          spool.after.events !== spool.before.events + 1)
+      )
+        corrupt('Spool witness changed before reservation.');
       let next = reserveCounter(before, input.length, generation);
       next = { ...next, mac: await crypt.sign(task, counterPayload(scope, next)) };
       if (await compareAndWrite(task, before, next)) break;
@@ -256,7 +273,14 @@ export const createContentOwner = (
         current.reserved[String(generation)]! < before.reserved[String(generation)]! + input.length
       )
         corrupt('A content reservation was rewound.');
-      if (await compareAndWrite(task, current, null, records)) break;
+      let next: ContentCounter | null = null;
+      if (spool) {
+        if (current.v !== 2 || !sameSpoolWitness(current.spool, spool.before))
+          corrupt('Spool witness changed before commit.');
+        next = { ...current, v: 2, spool: { ...spool.after } };
+        next = { ...next, mac: await crypt.sign(task, counterPayload(scope, next)) };
+      }
+      if (await compareAndWrite(task, current, next, records)) break;
     }
     return records;
   };
@@ -363,6 +387,31 @@ export const createContentOwner = (
       custodyDb = undefined;
     },
     load,
+    /** Internal v7 activation, after its reader fence and before admission. */
+    async enableSpool(task: SessionTask) {
+      if (!crypt.allowSpoolCounter || !crypt.validate) corrupt('Spool validation is required.');
+      const rows = await load(task);
+      for (const row of rows) row.bytes.fill(0);
+      while (true) {
+        const current = await currentCounter(task);
+        if (current.v === 2) return;
+        let next: ContentCounter = { ...current, v: 2, spool: emptySpoolWitness() };
+        next = { ...next, mac: await crypt.sign(task, counterPayload(scope, next)) };
+        if (await compareAndWrite(task, current, next)) return;
+      }
+    },
+    async spoolWitness(task: SessionTask): Promise<SpoolWitness> {
+      const current = await currentCounter(task);
+      if (current.v !== 2) return corrupt('Spool metadata is not activated.');
+      return { ...current.spool };
+    },
+    async appendSpool(
+      task: SessionTask,
+      input: ContentInput,
+      transition: { before: SpoolWitness; after: SpoolWitness },
+    ) {
+      await appendRecords(task, [input], transition);
+    },
     async append(task: SessionTask, input: ContentInput[]): Promise<ContentReceipt> {
       const records = await appendRecords(task, input);
       return Object.freeze({

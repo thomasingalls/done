@@ -49,15 +49,21 @@ export interface ContentWitness {
   intent: string;
   mac: Bytes;
 }
-export interface ContentCounter {
-  v: 1;
+export interface SpoolWitness {
+  events: number;
+  hash: string;
+}
+export const emptySpoolWitness = (): SpoolWitness => ({ events: 0, hash: '0'.repeat(64) });
+export const sameSpoolWitness = (a: SpoolWitness, b: SpoolWitness): boolean =>
+  a.events === b.events && a.hash === b.hash;
+export type ContentCounter = ({ v: 1 } | { v: 2; spool: SpoolWitness }) & {
   store_id: string;
   intent: string;
   active_gen: number;
   next_seq: number;
   reserved: Record<string, number>;
   mac: Bytes;
-}
+};
 export const CONTENT_STORES = ['meta', 'content', 'heads', 'outbound'] as const;
 export const recordStore = (kind: RecordKind): string =>
   kind === 'update' || kind === 'state' ? 'content' : kind;
@@ -155,8 +161,19 @@ export const parseCounter = (
   scope: ContentIdentity,
   intent: string,
 ): ContentCounter => {
-  const v = object(input, ['v', 'store_id', 'intent', 'active_gen', 'next_seq', 'reserved', 'mac']);
-  if (v['v'] !== 1 || v['store_id'] !== scope.storeId || v['intent'] !== intent) return corrupt();
+  const version = (input as { v?: unknown } | null)?.v;
+  const v = object(input, [
+    'v',
+    'store_id',
+    'intent',
+    'active_gen',
+    'next_seq',
+    'reserved',
+    'mac',
+    ...(version === 2 ? ['spool'] : []),
+  ]);
+  if ((version !== 1 && version !== 2) || v['store_id'] !== scope.storeId || v['intent'] !== intent)
+    return corrupt();
   const active_gen = positive(v['active_gen']),
     next_seq = positive(v['next_seq']);
   const raw = v['reserved'];
@@ -184,8 +201,20 @@ export const parseCounter = (
     total !== next_seq - 1
   )
     return corrupt();
+  let variant: { v: 1 } | { v: 2; spool: SpoolWitness } = { v: 1 };
+  if (version === 2) {
+    const w = object(v['spool'], ['events', 'hash']);
+    if (
+      !Number.isSafeInteger(w['events']) ||
+      Number(w['events']) < 0 ||
+      typeof w['hash'] !== 'string' ||
+      !/^[0-9a-f]{64}$/.test(w['hash'])
+    )
+      return corrupt();
+    variant = { v: 2, spool: { events: w['events'] as number, hash: w['hash'] } };
+  }
   return {
-    v: 1,
+    ...variant,
     store_id: scope.storeId,
     intent,
     active_gen,
@@ -206,7 +235,7 @@ export const witnessPayload = (s: ContentIdentity, w: ContentWitness): Bytes =>
 export const counterPayload = (s: ContentIdentity, c: ContentCounter): Bytes =>
   utf8(
     JSON.stringify([
-      'done/content-counter/v1',
+      c.v === 1 ? 'done/content-counter/v1' : 'done/content-counter/v2',
       ...scopeTuple(s),
       c.v,
       c.store_id,
@@ -214,6 +243,7 @@ export const counterPayload = (s: ContentIdentity, c: ContentCounter): Bytes =>
       c.active_gen,
       c.next_seq,
       Object.entries(c.reserved).sort(([a], [b]) => Number(a) - Number(b)),
+      ...(c.v === 2 ? [[c.spool.events, c.spool.hash]] : []),
     ]),
   );
 export const equalCounter = (s: ContentIdentity, a: ContentCounter, b: ContentCounter): boolean =>

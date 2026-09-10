@@ -116,3 +116,9 @@ Next, allocate network positions and persist exact v2 envelopes from these durab
 allocation distinct from each committed encryption-invocation reservation, retain exact retry bytes across
 unknown outcomes, and use the prepared certified signer. Verified acceptance/refusal carriers and relay
 integration follow separately. See [outbound preparation](./account-outbound.md).
+
+## Private spool continuation
+
+[Account spool](./account-spool.md) implements the next private v7 phase: separate position and
+invocation grants, exact persisted v2 wire and an authenticated metadata witness for ledger completeness.
+All source obligations remain retained. Response/refusal authority and relay submission remain separate.

@@ -1,4 +1,5 @@
 /** Private Account classification. No writer, network token or retained plaintext escapes this permit. */
+import { inspectSpool, verifySpool, verifySpoolWitness } from './spoolRecord';
 import { capturedRecovery, captureRoute } from './sourceCapture';
 import { parseAuthorityPin, pinBytes, type AuthorityPin } from '../../account-protocol/authority';
 import { verifyReceipt, same } from '../../account-protocol/admission';
@@ -36,7 +37,8 @@ export async function verifyAccountUnderPermit(task: SessionTask, options: Accou
     !(
       (marker.v === 4 && marker.stage === 'handoff-selected') ||
       (marker.v === 5 && marker.stage === 'account-active') ||
-      (marker.v === 6 && marker.stage === 'account-capturing')
+      (marker.v === 6 && marker.stage === 'account-capturing') ||
+      (marker.v === 7 && marker.stage === 'account-spooling')
     )
   )
     throw Error('Account handoff needs resumption');
@@ -117,6 +119,13 @@ export async function verifyAccountUnderPermit(task: SessionTask, options: Accou
         ),
       );
       try {
+        const route = captureRoute(marker);
+        const signer =
+          marker.v === 7
+            ? await subtle.importKey('raw', marker.credentials![1].publicKey, 'Ed25519', false, [
+                'verify',
+              ])
+            : undefined;
         await withRecoveryUnderPermit(
           task,
           { ...scope, resolvePrincipal: () => scope.principalId },
@@ -125,12 +134,19 @@ export async function verifyAccountUnderPermit(task: SessionTask, options: Accou
             const doc = new Y.Doc({ gc: false }),
               checkpoint = new Y.Doc({ gc: false });
             try {
+              const route = captureRoute(marker);
+              const spool = marker.v === 7 ? inspectSpool(recovered.records, route) : undefined;
               const recovery =
-                marker.v === 6 ? capturedRecovery(recovered, captureRoute(marker)) : recovered;
+                marker.v >= 6
+                  ? capturedRecovery(
+                      { ...recovered, records: spool?.sourceRecords ?? recovered.records },
+                      route,
+                    )
+                  : recovered;
               try {
                 replayRecovery(doc, recovery);
               } finally {
-                if (marker.v === 6) for (const r of recovery.journal) r.bytes.fill(0);
+                if (marker.v >= 6) for (const r of recovery.journal) r.bytes.fill(0);
               }
               Y.applyUpdate(checkpoint, plaintext);
               if (
@@ -150,6 +166,16 @@ export async function verifyAccountUnderPermit(task: SessionTask, options: Accou
               checkpoint.destroy();
             }
           },
+          marker.v === 7
+            ? {
+                allowSpoolCounter: true,
+                validate: async (records, _task, counter) => {
+                  const state = inspectSpool(records, route);
+                  await verifySpoolWitness(state, counter, subtle);
+                  await verifySpool(state, route, key, signer!, subtle);
+                },
+              }
+            : undefined,
         );
       } finally {
         plaintext.fill(0);

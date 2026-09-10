@@ -1786,3 +1786,36 @@ buffers, no-op behavior, activation fence and retained-history assumptions. No w
 owned position allocation and exact persisted v2 envelopes, with a distinct durable reservation before
 every encryption invocation; response/refusal-proof authority and relay submission follow later. Personal
 preview/relay remain off and retained builds intact. This outcome precedes the L-1 rewrite; L-2 is unchanged.
+
+
+### 2026-09-10 — Private Account position allocation and exact persisted envelopes
+
+Committed source capture as signed `7210b7d`. Added the private v7 spool owner under the same exclusive
+Account lifetime. It assigns a contiguous network position to each retained original source transaction,
+strictly commits a separate fresh grant before every network encryption invocation, and returns only
+persisted, verified v2 bytes signed by the prepared certified credential. A crash abandons invocation
+permission; a persisted envelope retains identical bytes. Actors, pending update frames and every source
+capsule survive compaction and restart. Old capture readers refuse the authenticated v7 fence.
+
+Review and a native reproduction uncovered a design defect in the initial append-only ledger: deleting
+the final envelope left a legal unfinished position and allowed different wire bytes at an already-exposed
+position. The repaired private content counter v2 authenticates a hash-chain witness, atomically advanced
+with each ledger entry. Every census verifies completeness. Missing final/all ledger rows refuse against
+retained metadata; interrupted v7/witness activation resumes before admission. A control removing the actual
+verifier reproduces the defect. Coordinated restoration of old metadata and matching ledger remains outside
+local rollback detection. Local v1 counter and record bytes remain unchanged.
+
+[Preserved evidence](./account-conformance-runs/2026-09-10-account-spool.md): 24 native spool cases, eight
+generated native histories, six unit tests with 300 generated property cases, actual early-return,
+invocation-reuse and witness-removal controls, and all 857 unit tests pass. Source capture's 15 native cases
+and compaction's 21 cases/eight mutation controls pass. A reused compaction evidence directory correctly
+refused overwrite; the final run uses a fresh directory. Failed pre-repair diagnostics, superseded evidence,
+source hashes and final static/build/gate results are retained. The generated tests did not discover the
+missing-final-row defect; directed review and reproduction did.
+
+[The spool contract](./account-spool.md) records native transaction boundaries, metadata framing, key and
+actor domains, cancellation/drain, indefinite source/envelope retention and rollback/performance limits.
+No sending or acceptance/removal authority is exposed. Next is the authenticated response/refusal-proof
+carrier and verification; durable relay integration follows. No whole conformance debt is paid and no real
+Account is provisioned. Personal preview/relay remain off and retained builds stay intact. This outcome is
+appended before replacing L-1 progress; L-2 is unchanged.
