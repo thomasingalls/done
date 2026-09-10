@@ -1,0 +1,54 @@
+Account editing evidence: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-editing/2026-09-10T18-29-29.661Z
+(node:91069) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:91069) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ Account editor activates, preserves journal-only edits and cold reopens offline (3706.700291ms)
+✔ activation interruption before commit never admits initialization early (2445.817917ms)
+✔ activation interruption after commit never admits initialization early (2745.495875ms)
+✔ wrong pin, factor, passkey and actor refuse activation; receive cannot reach persistence (1979.9695ms)
+✔ exclusive lifetime queues another editor; cancellation, pagehide and stale surfaces revoke access (2431.228917ms)
+Account editing campaign is still running; results stream to run.log.
+✔ cancelled native flush holds permit until drain and destroys projections before release (2434.903167ms)
+✔ detected authenticated generation change closes the Account lifetime (2561.198458ms)
+✔ missing genesis refuses without restoring it; ancestry control actually opens an empty replacement (2248.13475ms)
+✔ passkey fault control actually opens and edits without a valid assertion (2149.5525ms)
+✔ previous reader, handoff and ordinary Local owners refuse editable Account progress (2423.238ms)
+✔ durable pending dependencies coexist with editable Account ancestry and recover after delivery (3466.315208ms)
+Account editing campaign is still running; results stream to run.log.
+✔ 200 generated ancestry comparisons retain later deletion and pending state without repairing source (1764.181541ms)
+✖ 24 generated editing histories preserve independent writing, provenance and cold recovery (6252.508958ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 12
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 37696.153792
+
+✖ failing tests:
+
+test at test/account-editing/native.test.mjs:511:1
+✖ 24 generated editing histories preserve independent writing, provenance and cold recovery (6252.508958ms)
+  Error: Property failed after 2 tests
+  { seed: 9292026, path: "1", endOnFailure: true }
+  Counterexample: [[{__proto__:null,"at":13,"remove":10,"insert":">*h","undo":true,"mode":"journal"},{"at":11,"remove":12,"insert":" ","undo":false,"mode":"compact"},{"at":15,"remove":2,"insert":"","undo":false,"mode":"crash"},{"at":50,"remove":3,"insert":"NncC","undo":true,"mode":"flush"},{"at":50,"remove":9,"insert":"Er","undo":true,"mode":"flush"},{"at":50,"remove":2,"insert":"","undo":false,"mode":"compact"}]]
+  Shrunk 0 time(s)
+  
+  Hint: Enable verbose mode in order to have the list of all failing values encountered during the run
+      at buildError (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2462:16)
+      at asyncThrowIfFailed (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2474:8) {
+    [cause]: page.evaluate: Target page, context or browser has been closed
+        at local (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion/fixtures.mjs:122:29)
+        at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion/fixtures.mjs:136:24)
+        at f.ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/fixtures.mjs:71:24)
+        at selected (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-editing/fixtures.mjs:99:24)
+        at /Users/thomasingalls/.codex/worktrees/c030/done/test/account-editing/native.test.mjs:531:30
+        at AsyncProperty.predicate (/Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1281:104)
+        at AsyncProperty.run (/Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1217:30)
+        at asyncRunIt (/Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2516:30)
+        at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-editing/native.test.mjs:518:5) {
+      log: []
+    }
+  }
+Account editing campaign failed: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-editing/2026-09-10T18-29-29.661Z

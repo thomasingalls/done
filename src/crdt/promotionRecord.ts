@@ -50,7 +50,7 @@ import { probeDatabase } from './startupStorage';
 import { contentTransaction } from './contentDatabase';
 import type { SessionTask } from './writeSession';
 export interface PromotionRecord {
-  v: 1 | 2 | 3 | 4;
+  v: 1 | 2 | 3 | 4 | 5;
   kind: 'local-promotion';
   id: string;
   source: PromotionSource;
@@ -69,7 +69,8 @@ export interface PromotionRecord {
     | 'admission-offered'
     | 'admission-receipted'
     | 'handoff-prepared'
-    | 'handoff-selected';
+    | 'handoff-selected'
+    | 'account-active';
   handoff?: HandoffState;
   admission?: RetainedAdmission;
   genesis?: GenesisCandidate;
@@ -96,9 +97,9 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
     'stage',
     'credentials',
     'mac',
-    ...([2, 3, 4].includes((input as { v?: number })?.v ?? 0) ? ['genesis'] : []),
-    ...([3, 4].includes((input as { v?: number })?.v ?? 0) ? ['admission'] : []),
-    ...((input as { v?: unknown })?.v === 4 ? ['handoff'] : []),
+    ...([2, 3, 4, 5].includes((input as { v?: number })?.v ?? 0) ? ['genesis'] : []),
+    ...([3, 4, 5].includes((input as { v?: number })?.v ?? 0) ? ['admission'] : []),
+    ...([4, 5].includes((input as { v?: number })?.v ?? 0) ? ['handoff'] : []),
   ]);
   const s = closed(r['source'], [
     'slotId',
@@ -114,6 +115,7 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
       (r['v'] === 1 && ['reserved', 'prepared'].includes(String(r['stage']))) ||
       (r['v'] === 2 && r['stage'] === 'genesis-prepared') ||
       (r['v'] === 4 && ['handoff-prepared', 'handoff-selected'].includes(String(r['stage']))) ||
+      (r['v'] === 5 && r['stage'] === 'account-active') ||
       (r['v'] === 3 &&
         ['admission-requested', 'admission-offered', 'admission-receipted'].includes(
           String(r['stage']),
@@ -177,14 +179,14 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
   if (!(r['mac'] instanceof Uint8Array) || r['mac'].length !== 32)
     throw Error('Missing promotion authentication');
   return {
-    v: r['v'] as 1 | 2 | 3 | 4,
-    ...([2, 3, 4].includes(r['v'] as number) ? { genesis: parseGenesis(r['genesis']) } : {}),
-    ...(r['v'] === 4 ? { handoff: parseHandoff(r['handoff']) } : {}),
-    ...([3, 4].includes(r['v'] as number)
+    v: r['v'] as 1 | 2 | 3 | 4 | 5,
+    ...([2, 3, 4, 5].includes(r['v'] as number) ? { genesis: parseGenesis(r['genesis']) } : {}),
+    ...([4, 5].includes(r['v'] as number) ? { handoff: parseHandoff(r['handoff']) } : {}),
+    ...([3, 4, 5].includes(r['v'] as number)
       ? {
           admission: parseRetainedAdmission(
             r['admission'],
-            r['v'] === 4 ? 'admission-receipted' : (r['stage'] as string),
+            [4, 5].includes(r['v'] as number) ? 'admission-receipted' : (r['stage'] as string),
           ),
         }
       : {}),
@@ -237,9 +239,9 @@ export const promotionPayload = (r: PromotionRecord): Bytes =>
       ]) ?? null,
       ...(r.v >= 2 ? [parseGenesis(r.genesis)] : []),
       ...(r.v >= 3
-        ? [parseRetainedAdmission(r.admission, r.v === 4 ? 'admission-receipted' : r.stage)]
+        ? [parseRetainedAdmission(r.admission, r.v >= 4 ? 'admission-receipted' : r.stage)]
         : []),
-      ...(r.v === 4 ? [parseHandoff(r.handoff)] : []),
+      ...(r.v >= 4 ? [parseHandoff(r.handoff)] : []),
     ]),
   );
 const macKey = (root: Bytes, r: PromotionRecord, subtle: SubtleCrypto) =>

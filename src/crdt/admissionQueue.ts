@@ -65,6 +65,8 @@ export interface AdmissionStatus {
   readonly pressure: Readonly<{ code: string; cause?: string }> | null;
 }
 export interface AdmissionSession {
+  /** Optional composed carrier hook; never an application cleanup or authority shortcut. */
+  beforeRelease?: JournalSession['beforeRelease'];
   readonly status: AdmissionStatus;
   readonly signal: AbortSignal;
   submit(intent: Bytes): AdmissionTicket;
@@ -136,6 +138,23 @@ export const createAdmissionOwner = async (
     busy = false;
   let timer: ReturnType<typeof setTimeout> | undefined, inFlight: Promise<void> | undefined;
   let closing: Promise<void> | undefined;
+  let disposed = false;
+  const dispose = () => {
+    if (disposed) return;
+    disposed = true;
+    canonical.destroy();
+    listeners.clear();
+  };
+  try {
+    carrier.beforeRelease?.(async () => {
+      await inFlight;
+      dispose();
+    });
+  } catch (cause) {
+    // Cancellation can win after the carrier factory returns but before composition starts.
+    dispose();
+    throw cause;
+  }
   const live = () => {
     if (state !== 'active' && state !== 'blocked')
       throw new AdmissionError('inactive-session', 'This admission session is inactive.');
@@ -211,8 +230,7 @@ export const createAdmissionOwner = async (
     notify();
     const stopped = carrier.close();
     void Promise.allSettled([inFlight, stopped]).then((results) => {
-      canonical.destroy();
-      listeners.clear();
+      dispose();
       const failure = results.find((r) => r.status === 'rejected');
       state = failure ? 'failed' : 'closed';
       notify();
@@ -498,6 +516,7 @@ export const createAdmissionOwner = async (
       return status();
     },
     signal: carrier.signal,
+    ...(carrier.beforeRelease ? { beforeRelease: carrier.beforeRelease } : {}),
     submit: (intent: Bytes) => enqueue('local', intent),
     receive: (update: Bytes) => enqueue('remote', update),
     snapshot: () => {

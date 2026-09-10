@@ -1688,3 +1688,38 @@ Next is Account editing/writer lifetime integration, including cold recovery of 
 genesis, invalidation, lock and drain. Encrypted relay and fresh adoption by the author's actual old
 second device follow. Personal preview/relay remain off and retained builds remain intact. This outcome
 was appended before replacing L-1 progress; L-2 is unchanged.
+
+
+## 2026-09-10 — Private Account editing and writer lifetime
+
+Signed `649925f` commits verified Account handoff and offline classification. The next bounded component
+now owns an actual admitted Account workspace, journal, content carrier and undo history. Every open
+rechecks the selected route, authenticated provenance/custody, first-epoch receipt and pinned binding
+with a fresh passkey assertion plus device-lock code. The first open verifies frozen genesis and strictly
+retains v5 `account-active` progress before initialization or editing. Later opens verify genesis ancestry
+while recovering later database/journal edits and durable pending updates. The original store, identities,
+keys, credentials, generation, signed genesis and receipt remain retained.
+
+The private Account editor holds an exclusive slot permit for its entire lifetime. Another editor waits
+until lock/close; concurrent Account editors remain an extension. Cancellation/pagehide invalidate stale
+handles, drain native work, destroy canonical/projection/undo state and erase custody caches before permit
+release. A detected generation change closes the owner. The public receive path refuses until an
+Account relay receiver exists. Default UI and relay remain disconnected.
+
+[Contract](./account-editing.md) and [preserved evidence](./account-conformance-runs/2026-09-10-account-editing.md):
+16 new native tests, 24 generated editing/reopen/crash histories, 200 generated ancestry comparisons,
+two observed bad-acceptance controls, activation commit interruptions, pending-dependency delivery and
+cancellation/drain pass. All 55 admission/handoff regressions, 13 writer-lifetime, 15 ordered-admission,
+10 workspace-projection and 17 Local-genesis cases, plus 825 unit tests pass. TypeScript, focused static
+checks, isolated build and 13 final gates pass; initial JavaScript is 328.3/350.0 kB.
+
+The generated campaign found a fixture defect: its crash helper closed the page still used by later
+workspace creation. Separate creation/editing pages repair it. A stale flat-copy admission harness now
+copies and hashes its complete source dependency tree. Initial Account/custody composition was moved
+into its own module after a dynamic dependency cycle broke single-file test bundles. Review tightened
+composed disposal and registration during cancellation. Before/after evidence is retained; the final
+generators found no production counterexample. No whole-protocol debt payment is claimed.
+
+Next is the encrypted outbound spool under the selected exact-byte retry/refusal contract, then envelope
+acceptance and the content-blind durable service. The personal preview/relay remain off and retained
+builds stay intact. This outcome precedes the L-1 rewrite; L-2 remains unchanged.

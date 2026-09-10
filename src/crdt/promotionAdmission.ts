@@ -151,7 +151,7 @@ export async function admitLocalPromotion(
           return receipt;
         },
         async (marker) => {
-          if (marker.v === 4) throw Error('Use the handoff owner');
+          if (marker.v >= 4) throw Error('Use the handoff owner');
           if (marker.v === 2) {
             const nonce = hex(random(32));
             const proof = await task.wait(() =>

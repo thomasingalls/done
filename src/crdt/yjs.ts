@@ -116,6 +116,21 @@ export const sameDocState = (a: YDoc, b: YDoc): boolean => {
   }
 };
 
+/** Current Account recovery must already contain its genesis. Never repair the live document by
+ * overlaying the checkpoint; a detached fork must remain unchanged, including pending bookkeeping. */
+export const coversGenesis = (current: YDoc, checkpoint: YDoc): boolean => {
+  if (hasPendingUpdates(checkpoint)) return false;
+  const copy = forkDoc(current, false),
+    bytes = encodeState(checkpoint);
+  try {
+    applyUpdate(copy, bytes);
+    return sameDocState(current, copy);
+  } finally {
+    bytes.fill(0);
+    copy.destroy();
+  }
+};
+
 /** Pinned v13 integration state. Incomplete disk unions must retain their original update framing. */
 export const hasPendingUpdates = (doc: YDoc): boolean =>
   doc.store.pendingStructs !== null || doc.store.pendingDs !== null;

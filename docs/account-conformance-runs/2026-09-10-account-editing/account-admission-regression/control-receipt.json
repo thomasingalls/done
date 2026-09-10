@@ -1,0 +1,84 @@
+{
+  "observed": "invalid service receipt retained with verification disabled",
+  "accepted": {
+    "v": 1,
+    "kind": "promotion-receipt",
+    "offer": {
+      "v": 1,
+      "kind": "promotion-offer",
+      "epoch": {
+        "v": 1,
+        "kind": "first-authorization-epoch",
+        "pin": {
+          "v": 1,
+          "serviceId": "2a8cc0787f2e446446640a2a1a342c0a",
+          "origin": "http://localhost:65385",
+          "rpId": "localhost",
+          "authRoot": "17cae877f9b75c28c0ca39aea146a9e7c37c43e42494bb88bedbc88dac0abe0d"
+        },
+        "requestDigest": "50b3bff6ce4896bdc627ea8d38230bc5d15855c9b96448703b2a99385bb81fc5",
+        "accountId": "8tymOvQKrOwATE_hnCx3bGpSz30JYN9fYSSrv6Bjc7s",
+        "principalId": "54a4549865dc9a2458762b3b5371a5bd",
+        "workspaceId": "316b5a26c47cac81ee67cca7dd630a2d",
+        "lineageId": "6cbccc2ffeb31a112068d90f34ab00290cefd369eaa5ecbe81c7f2c5812c7880",
+        "epoch": 1,
+        "parent": "0000000000000000000000000000000000000000000000000000000000000000",
+        "generation": 1,
+        "certification": {
+          "members": [
+            {
+              "id": "a39b56073d4b08c5273bc25a40d6dc4b",
+              "wPub": "77cfdd4455c42b8d88f5abd50664eeecd54de767e7d941b20be9e44ef6b27907",
+              "sPub": "25f1a679a5736d72e86381a3ca39927af02a6f91c334c8557191969e614573db"
+            }
+          ],
+          "recoveryStateDigest": "5926da8151b183eae21fd634059d2f5383083232b02e91d3afd773393e2e2584",
+          "approver": "a39b56073d4b08c5273bc25a40d6dc4b",
+          "signature": "4efee420eb2c9fb8bc30b3eab86ff814ca98b8a98de918b37d8b0a1a142683bea19a9cab2f6471e924a774ee00b06b941138b0682e31d70de6b1223722830304"
+        },
+        "owner": "a39b56073d4b08c5273bc25a40d6dc4b",
+        "capabilities": [
+          "read",
+          "write",
+          "admit",
+          "manage"
+        ],
+        "acceptancePublicKey": "121d8664b0d7ac51ce688a74ad3a5e61cacf45cf184e51acb76b53baca88ced5",
+        "heads": []
+      },
+      "head": "c7796a5c66dbaf16f096c8c6c0368deca055fccf4b71c4bac7aabc301a57b4d6",
+      "signature": "54af019237b8f5cf3f1148bf4b9e569cdf49835ff3d21f2b956ae24ed376830830c1e1e6893af054dfdda681736996fafdf53e1e10b2fafdf9d5c65c85337501"
+    },
+    "completion": {
+      "manifest": {
+        "v": 1,
+        "workspaceId": "316b5a26c47cac81ee67cca7dd630a2d",
+        "epoch": 1,
+        "epochHead": "c7796a5c66dbaf16f096c8c6c0368deca055fccf4b71c4bac7aabc301a57b4d6",
+        "generation": 1,
+        "checkpointDigest": "719f58812384c50d695ec4b5b6808702de15831f6748558b60df5948e6242bb8",
+        "sv": "01d9cee8f40b6a",
+        "ds": "01d9cee8f40b022c014e0200",
+        "headVectorDigest": "f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475",
+        "producer": "a39b56073d4b08c5273bc25a40d6dc4b",
+        "signature": "95855db23a411b0d99bc23f0554eebae4bb632a97e4a4a85efbe4d436b72bfc5844dfbf441fb5ac8ef368161b19585f98fe657e6a19569fa04c8ae926d8b2c0e"
+      },
+      "admission": {
+        "v": 1,
+        "workspaceId": "316b5a26c47cac81ee67cca7dd630a2d",
+        "checkpointDigest": "719f58812384c50d695ec4b5b6808702de15831f6748558b60df5948e6242bb8",
+        "manifestDigest": "ba0f7eba692dc63ac4f9ee1eed514295805b19dca07f758824bb3676bf37ede6",
+        "derivedSv": "01d9cee8f40b6a",
+        "derivedDs": "01d9cee8f40b022c014e0200",
+        "headBaselineDigest": "f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475",
+        "derivation": "yjs-13.6.31-sv-ds-v1",
+        "admittingCredential": "a39b56073d4b08c5273bc25a40d6dc4b",
+        "selfAdmitted": 1,
+        "decisionParent": "0000000000000000000000000000000000000000000000000000000000000000",
+        "signature": "cd5834c206f09669355a5999dd0e3646abdd8be1b20626cbb5923915aab7fd45f7b8830dbdcb8427620f950e68b5fe8f3f5c235768f0db7d0ea8d46f9140eb05"
+      }
+    },
+    "epochSignature": "996614d5991396dbdd597a7420eec9786c6fbb4f641ce7cf3acd86a1861dbf5b97a6b379412a85f67f169aba8b7fc5f7d54abf8421bab3fe100f109f3cff530f",
+    "signature": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  }
+}

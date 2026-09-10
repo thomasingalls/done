@@ -147,11 +147,14 @@ export const localCensus = async (task: SessionTask, claim: LocalClaim, promotio
     stopStartup('repair-required', 'unfinished-content-has-writes');
   const slot = await readLocalSlot(task, scope.slotId);
   if (slot) {
-    if (promotion?.marker?.v === 4 && slot.account) {
+    if (promotion?.marker && promotion.marker.v >= 4 && slot.account) {
       if (JSON.stringify(slot) !== JSON.stringify(promotion.marker.handoff!.destination))
         stopStartup('repair-required', 'handoff-route-changed');
     } else {
-      if (promotion?.marker?.stage === 'handoff-selected')
+      if (
+        promotion?.marker?.stage === 'handoff-selected' ||
+        promotion?.marker?.stage === 'account-active'
+      )
         stopStartup('repair-required', 'selected-account-index-regressed');
       await matchLocalRoute(task, claim, slot);
     }

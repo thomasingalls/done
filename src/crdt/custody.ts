@@ -68,6 +68,7 @@ import {
 } from './custodyRecord';
 import {
   openWriteSession,
+  type WriteSession,
   withExclusiveSlot,
   type SessionTask,
   type WriteSessionState,
@@ -901,6 +902,8 @@ export interface JournalRecovery {
   readonly journal: JournalUpdate[];
 }
 export interface JournalSession extends ContentSession {
+  /** Internal composed lifetime cleanup, after native drain and before permit release. */
+  beforeRelease?(cleanup: () => void | Promise<void>): void;
   /** Explicit disk-union maintenance. Never accepts a caller snapshot or deletes journal/heads/outbound. */
   compactContent(): Promise<ContentCompactionReceipt>;
   /** Synchronous carrier result. No canonical mutation, timer, or implicit flush. */
@@ -927,6 +930,12 @@ export const openJournalSession = async (
   } finally {
     owner.eraseFactor();
   }
+  return attachJournal(owner, live);
+};
+export const attachJournal = (
+  owner: ReturnType<typeof prepareCustody>,
+  live: WriteSession,
+): JournalSession => {
   const withSnapshot = <T>(
     operation: (
       task: SessionTask,
@@ -1040,3 +1049,7 @@ export const openJournalSession = async (
       ),
   });
 };
+
+/** Internal Account composition seam; the Account owner authenticates before loading these caches. */
+export const prepareAccountCustody = (input: CustodyAuthority, code: string) =>
+  prepareCustody(input, code, true, true);

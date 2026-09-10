@@ -325,3 +325,26 @@ export const withPromotionSlot = async <T>(
     await session.close();
   }
 };
+
+/** Internal Account lifetime: exclusive through activation, editing and disposal. The caller must
+ * verify selected/active progress, pinned binding and fresh passkey inside initialize. */
+export const openAccountWriteSession = (
+  slotId: string,
+  code: string,
+  options: WriteSessionOptions & { initialize: NonNullable<WriteSessionOptions['initialize']> },
+): Promise<WriteSession> =>
+  acquire(slotId, 'exclusive', options, async (task, slot) => {
+    const { checkPromotionCompatibility, readPromotion } = await task.wait(
+      () => import('./promotionRecord'),
+    );
+    await checkPromotionCompatibility(task, slot, code);
+    const { marker } = await readPromotion(task, slot, code);
+    if (
+      !marker ||
+      !(
+        (marker.v === 4 && marker.stage === 'handoff-selected') ||
+        (marker.v === 5 && marker.stage === 'account-active')
+      )
+    )
+      throw Error('Account handoff needs resumption');
+  });

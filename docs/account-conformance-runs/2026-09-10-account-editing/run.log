@@ -1,0 +1,27 @@
+(node:91900) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:91900) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ Account editor activates, preserves journal-only edits and cold reopens offline (3186.728375ms)
+✔ activation interruption before commit never admits initialization early (2489.911917ms)
+✔ activation interruption after commit never admits initialization early (2987.600958ms)
+✔ wrong pin, factor, passkey and actor refuse activation; receive cannot reach persistence (2165.801166ms)
+✔ exclusive lifetime queues another editor; cancellation, pagehide and stale surfaces revoke access (2609.35225ms)
+✔ cancelled native flush holds permit until drain and destroys projections before release (2618.287334ms)
+✔ detected authenticated generation change closes the Account lifetime (2626.085833ms)
+✔ missing genesis refuses without restoring it; ancestry control actually opens an empty replacement (2382.672084ms)
+✔ passkey fault control actually opens and edits without a valid assertion (2272.097083ms)
+✔ previous reader, handoff and ordinary Local owners refuse editable Account progress (2419.405292ms)
+✔ durable pending dependencies coexist with editable Account ancestry and recover after delivery (3150.539291ms)
+✔ 200 generated ancestry comparisons retain later deletion and pending state without repairing source (1693.938625ms)
+✔ 24 generated editing histories preserve independent writing, provenance and cold recovery (71150.302958ms)
+✔ refused storage keeps the pending edit outside the document and outgoing observations (2788.3015ms)
+✔ a queued caller cannot substitute slot, actor or pin; damaged selected routing refuses without repair (2974.53225ms)
+✔ abort during a pending passkey drains the ceremony before releasing and does not activate (2097.532084ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 110637.911958

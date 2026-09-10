@@ -135,7 +135,11 @@ export async function finishPromotionHandoff(input: HandoffOptions): Promise<Han
           return handoffResult(destination);
         },
         async (marker) => {
-          if (marker.v < 3 || (marker.v === 3 && marker.stage !== 'admission-receipted'))
+          if (
+            marker.v > 4 ||
+            marker.v < 3 ||
+            (marker.v === 3 && marker.stage !== 'admission-receipted')
+          )
             throw Error('Handoff requires retained admission receipt');
         },
       ),

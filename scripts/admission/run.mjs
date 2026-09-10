@@ -2,7 +2,7 @@
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
 import { chromium } from '@playwright/test';
@@ -39,34 +39,16 @@ const output = resolve(
 );
 if (existsSync(output)) throw Error('Refusing existing output: ' + output);
 mkdirSync(output, { recursive: true });
-const sourcePaths = [
-  'admission.ts',
-  'admissionQueue.ts',
-  'admissionDocument.ts',
-  'yjs.ts',
-  'custody.ts',
-  'localClearState.ts',
-  'legacyImportState.ts',
-  'startupStorage.ts',
-  'startupState.ts',
-  'custodyCrypto.ts',
-  'custodyRecord.ts',
-  'writeSession.ts',
-  'storageCompatibility.ts',
-  'contentRecord.ts',
-  'contentDatabase.ts',
-  'contentStore.ts',
-  'contentCompaction.ts',
-  'storeName.ts',
-  'journalCodec.ts',
-  'journalStore.ts',
-];
+const walk = (dir) =>
+  readdirSync(join(root, dir), { withFileTypes: true }).flatMap((e) =>
+    e.isDirectory() ? walk(dir + '/' + e.name) : [dir + '/' + e.name],
+  );
+const sourcePaths = [...walk('src'), ...walk('account-protocol')];
 const sources = Object.fromEntries(
-  sourcePaths.map((name) => [name, readFileSync(join(root, 'src/crdt', name), 'utf8')]),
-);
-sources['seal.generated.ts'] = readFileSync(
-  join(root, 'wasm/journal-seal/seal.generated.ts'),
-  'utf8',
+  [...sourcePaths, 'wasm/journal-seal/seal.generated.ts'].map((path) => [
+    path,
+    readFileSync(join(root, path), 'utf8'),
+  ]),
 );
 const recordedFiles = [
   'wasm/journal-seal/seal.generated.ts',
@@ -74,7 +56,7 @@ const recordedFiles = [
   'wasm/journal-seal/Cargo.toml',
   'wasm/journal-seal/Cargo.lock',
   'scripts/build-wasm-seal.mjs',
-  ...sourcePaths.map((name) => 'src/crdt/' + name),
+  ...sourcePaths,
   'docs/storage-contract.md',
   'pnpm-lock.yaml',
   'package.json',
@@ -126,11 +108,17 @@ async function run(mutation = null) {
   mkdirSync(folder);
   const tested = { ...sources };
   if (mutation) {
-    if (tested[mutation.file].split(mutation.from).length !== 2)
+    if (tested['src/crdt/' + mutation.file].split(mutation.from).length !== 2)
       throw Error('Mutation anchor is not unique: ' + label);
-    tested[mutation.file] = tested[mutation.file].replace(mutation.from, mutation.to);
+    tested['src/crdt/' + mutation.file] = tested['src/crdt/' + mutation.file].replace(
+      mutation.from,
+      mutation.to,
+    );
   }
-  for (const [name, source] of Object.entries(tested)) writeFileSync(join(folder, name), source);
+  for (const [name, source] of Object.entries(tested)) {
+    mkdirSync(dirname(join(folder, name)), { recursive: true });
+    writeFileSync(join(folder, name), source);
+  }
   const server = await createServer({
     configFile: false,
     root,
@@ -138,15 +126,18 @@ async function run(mutation = null) {
     cacheDir: join(folder, 'vite-cache'),
     resolve: {
       alias: {
-        '../../wasm/journal-seal/seal.generated': join(folder, 'seal.generated.ts'),
-        '@admission': join(folder, 'admission.ts'),
-        '@custody': join(folder, 'custody.ts'),
-        '@custody-record': join(folder, 'custodyRecord.ts'),
-        '@custody-crypto': join(folder, 'custodyCrypto.ts'),
-        '@write-session': join(folder, 'writeSession.ts'),
-        '@content-record': join(folder, 'contentRecord.ts'),
-        '@journal-codec': join(folder, 'journalCodec.ts'),
-        '@store-name': join(folder, 'storeName.ts'),
+        '../../wasm/journal-seal/seal.generated': join(
+          folder,
+          'wasm/journal-seal/seal.generated.ts',
+        ),
+        '@admission': join(folder, 'src/crdt/admission.ts'),
+        '@custody': join(folder, 'src/crdt/custody.ts'),
+        '@custody-record': join(folder, 'src/crdt/custodyRecord.ts'),
+        '@custody-crypto': join(folder, 'src/crdt/custodyCrypto.ts'),
+        '@write-session': join(folder, 'src/crdt/writeSession.ts'),
+        '@content-record': join(folder, 'src/crdt/contentRecord.ts'),
+        '@journal-codec': join(folder, 'src/crdt/journalCodec.ts'),
+        '@store-name': join(folder, 'src/crdt/storeName.ts'),
       },
     },
     optimizeDeps: { noDiscovery: true },

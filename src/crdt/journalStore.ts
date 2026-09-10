@@ -18,7 +18,7 @@ export interface JournalUpdate {
   readonly generation: number;
   readonly bytes: Bytes;
 }
-interface ObservedEntry extends JournalUpdate {
+export interface ObservedEntry extends JournalUpdate {
   readonly value: string;
 }
 export interface JournalFlushReceipt {

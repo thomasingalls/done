@@ -378,6 +378,7 @@ export const createAdmittedWorkspace = async (
         void close().catch(() => {});
       }
     });
+    session.beforeRelease?.(teardown);
     session.onStatus((status) => {
       if (
         !['active', 'blocked'].includes(status.state) ||
