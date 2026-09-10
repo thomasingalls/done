@@ -1168,3 +1168,32 @@ Next is bounded admitted editor integration, followed by a rehearsal of the oper
 import and cutover. Full application mutation coverage, real source capture/recovery/import/selection/cleanup,
 profile residue, latency/platform evidence and independent review remain open. No conformance debt or matrix
 pin is paid by this phase. This outcome was appended before replacing the L-1 checkpoint; L-2 is untouched.
+
+## 2026-09-10 — Admitted Local editor and default entry (`L-1`)
+
+Committed the preserved cold-start experiment as `0aec587` and the Local startup/personal-cutover checkpoint
+as `46d9cd6`. Connected the existing editor UI to the verified Local workspace and switched both `/` and
+`/local.html` to that factor-gated application. Read snapshots replace active UI access to the legacy Store;
+CodeMirror and semantic commands use the existing admission owner. Compose waits for acceptance before
+clearing its draft, pending input has retry/discard controls, and locking/invalidation disposes editors
+before closing the owner. Goals/card operations, stale/unfiled actions, history, archive reads, export and
+explicit preferences are connected. The device display label lives in encrypted metadata and is not a
+credential. Local remains disconnected from relay transport.
+
+[Evidence](./storage-conformance-runs/2026-09-10-local-app-editor.md): 804 unit tests in 69 files, eight native
+application cases, two packaged offline cases, and 84 geometry/workflow cases pass; ten existing
+device-specific geometry skips remain. The native editor and workspace campaigns pass with their seven
+combined injected-fault controls, and pending projection passes 12 cases including 100 generated histories.
+The new application generator checks 20 compose/undo/redo histories against a separate ledger through cold
+reopen, seed 8941. The 1,000-case whole-line deletion property found and shrank a trailing-line separator
+defect; native Goals copy/remove exposed selection collapse on unrelated accepted commands. Both are fixed
+and retained. Test-boundary/key/metadata-undo mistakes are recorded separately from implementation defects.
+TypeScript, focused static checks, production build/budget and origin isolation pass. Desktop and settled
+mobile views were inspected using synthetic writing in disposable profiles.
+
+The [bounded contract](./local-app-editor.md) retains explicit limits: no attached Account transport, new
+automatic compaction scheduler, real browser cutover, personal source capture/import/selection/cleanup,
+whole-profile residue result, wider platform/latency evidence or independent review. The full `pnpm check`
+chain was not rerun and no debt or conformance matrix status is paid. Next is operator-assisted private
+import/cutover rehearsal, then author-controlled browser steps. Personal backups and the stopped host VM
+remain unchanged. This outcome precedes the L-1 checkpoint rewrite; L-2 is untouched.

@@ -1,0 +1,17 @@
+editor E11.repair: pass
+editor E12.multicaret: pass
+editor E09.pending-death: pass
+editor E10.checkbox: pass
+editor E01.typing: pass
+editor E02.pressure: pass
+editor E03.remote: pass
+editor E04.cross-tab: pass
+editor E05.paste: pass
+editor E06.composition: pass
+editor E07.close: pass
+editor E08.profile: pass
+history-before-receipt E02.pressure: fail
+ordinary-view-before-receipt E02.pressure: fail
+remote-in-undo E03.remote: fail
+Report: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/editor-admission/2026-09-10T09-18-36.224Z/report.md
+Exit 0 (bounded Goals editor integration)

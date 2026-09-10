@@ -23,7 +23,12 @@ import {
   cardMembershipIssues,
   listDays,
   cardsIn,
+  archiveOf,
+  dayAt,
+  collectionOf,
+  type Section,
 } from './days';
+import { parseCollections } from './serialize';
 import { currentDate, plainDate, type ISODate } from '../lib/date';
 import { exportArchive, exportEntries } from './export';
 import {
@@ -60,9 +65,11 @@ export interface WorkspaceSnapshot {
     next: readonly string[];
     scheduled: readonly string[];
     done: readonly string[];
+    readonly archived?: Readonly<Record<Section, readonly string[]>>;
   }[];
   readonly actors: ReturnType<typeof listActors>;
   readonly settings: ReturnType<typeof readSettings>;
+  readonly deviceName: string;
   readonly undo: number;
   readonly redo: number;
 }
@@ -408,9 +415,24 @@ export const createAdmittedWorkspace = async (
         next: cardsIn(doc, date, 'next').map((c) => c.get('id') as string),
         scheduled: cardsIn(doc, date, 'scheduled').map((c) => c.get('id') as string),
         done: cardsIn(doc, date, 'done').map((c) => c.get('id') as string),
+        ...(archiveOf(dayAt(doc, date))
+          ? {
+              archived: (() => {
+                const day = dayAt(doc, date);
+                const parsed = parseCollections(archiveOf(day)!.toString());
+                for (const section of ['next', 'scheduled', 'done'] as const)
+                  if (collectionOf(day, section)) parsed[section] = [];
+                return parsed;
+              })(),
+            }
+          : {}),
       })),
       actors: structuredClone(listActors(doc)),
       settings: readSettings(doc.getMap('meta')),
+      deviceName:
+        typeof doc.getMap('meta').get(`device-label:${identity.device.id}`) === 'string'
+          ? (doc.getMap('meta').get(`device-label:${identity.device.id}`) as string)
+          : identity.device.name,
       undo: history.undoStack.length,
       redo: history.redoStack.length,
     };

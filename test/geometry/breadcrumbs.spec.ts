@@ -1,3 +1,4 @@
+import { openApp } from './openApp';
 /** Browser coverage for the viewport-derived part of TRD §8.6. */
 
 import { expect, test, type Page } from '@playwright/test';
@@ -22,7 +23,7 @@ const seed = async (page: Page): Promise<void> => {
 
 test('the Goals breadcrumb follows the scroll edge rather than the cursor', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto('/');
+  await openApp(page);
 
   const scroller = page.locator('.goals .cm-scroller');
   const breadcrumb = page.locator('.goals .goals-breadcrumbs');
@@ -53,7 +54,7 @@ test('the Goals breadcrumb follows the scroll edge rather than the cursor', asyn
 
 test('the outline navigates without moving the editor selection', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto('/');
+  await openApp(page);
   await seed(page);
 
   const content = page.locator('.goals .cm-content');
@@ -104,7 +105,7 @@ test('the outline navigates without moving the editor selection', async ({ page 
 
 test('Escape closes the outline without closing the narrow Goals surface', async ({ page }) => {
   await page.setViewportSize({ width: 420, height: 900 });
-  await page.goto('/');
+  await openApp(page);
   const shell = page.locator('.shell');
   await expect(page.locator('.day-panel[data-active="true"] .compose-field')).toBeVisible();
   await page.keyboard.press('Alt+ArrowRight');

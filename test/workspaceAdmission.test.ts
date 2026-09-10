@@ -3,7 +3,8 @@ import { describe, it, expect } from 'vitest';
 import { createAdmittedWorkspace, type AdmittedWorkspace } from '../src/crdt/admittedWorkspace';
 import { createAdmissionOwner } from '../src/crdt/admissionQueue';
 import type { JournalSession } from '../src/crdt/custody';
-import { createDoc, applyUpdate, encodeState } from '../src/crdt/yjs';
+import { createDoc, applyUpdate, encodeState, newMap, newText } from '../src/crdt/yjs';
+import { serializeCollections } from '../src/crdt/serialize';
 const identity = {
   id: 'human-one',
   actor: { kind: 'human' as const, name: 'Alice', color: '#3f8fd6' },
@@ -107,6 +108,44 @@ const fixture = async (seed?: Uint8Array) => {
 };
 const insert = (text: string) => ({ name: 'insert' as const, text });
 describe('admitted workspace commands and history', () => {
+  it('projects retained legacy archives as read-only bodies without creating live cards', async () => {
+    const seed = createDoc();
+    const day = newMap();
+    seed.getMap('days').set('2026-08-01', day);
+    const archived = { next: ['old next'], scheduled: [], done: ['old done'] };
+    day.set('archive', newText(serializeCollections(archived)));
+    const f = await fixture(new Uint8Array(encodeState(seed)));
+    seed.destroy();
+    try {
+      expect(f.doc.read().days.find((d) => d.date === '2026-08-01')?.archived).toEqual(archived);
+      expect(f.doc.read().cards).toEqual([]);
+      expect(
+        f.doc.exportEntries().find((entry) => entry.path === 'days/2026-08-01.md')?.content,
+      ).toContain('old done');
+    } finally {
+      await f.doc.close();
+    }
+  });
+  it('admits device display labels into encrypted content and recovers them without changing identity', async () => {
+    const f = await fixture();
+    let reopened: Awaited<ReturnType<typeof fixture>> | undefined;
+    try {
+      expect(f.doc.read().deviceName).toBe('test device');
+      await f.doc.command({ kind: 'device-label', name: 'Kitchen laptop' }).accepted;
+      expect(f.doc.read().deviceName).toBe('Kitchen laptop');
+      reopened = await fixture(f.doc.snapshot());
+      expect(reopened.doc.read().deviceName).toBe('Kitchen laptop');
+      expect(reopened.doc.read().actors.find((actor) => actor.id === identity.id)?.name).toBe(
+        'Alice',
+      );
+      expect(f.doc.read().undo).toBe(0);
+      expect((await f.doc.command({ kind: 'undo' }).accepted).value).toBe(false);
+      expect(f.doc.read().deviceName).toBe('Kitchen laptop');
+    } finally {
+      await f.doc.close();
+      await reopened?.doc.close();
+    }
+  });
   it('preserves null business results without treating them as a storage failure', async () => {
     const f = await fixture();
     try {

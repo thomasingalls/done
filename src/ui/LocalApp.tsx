@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { createLocalStartup, type LocalStartup, type LocalStartupState } from './localStartup';
 import type { StartupKind } from '../crdt/startupState';
+import { WorkspaceUiProvider } from './workspaceUi';
+import { App } from './App';
 
 const messages: Record<StartupKind, { title: string; detail: string }> = {
   fresh: {
@@ -96,7 +98,7 @@ const CodeForm = ({
   );
 };
 
-/** Startup and read-only handoff. Editors are connected to the admitted workspace in the next phase. */
+/** Factor-gated startup and lifecycle-owned handoff to the admitted editor. */
 export const LocalApp = (): React.ReactElement => {
   const [epoch, setEpoch] = useState(0);
   const [owner, setOwner] = useState<LocalStartup | null>(null);
@@ -180,32 +182,19 @@ export const LocalApp = (): React.ReactElement => {
         </button>
       </>
     );
-  } else if (state.kind === 'ready') {
-    content = (
-      <>
-        <div className="local-preview-header">
-          <h1>Your Local workspace</h1>
-          <button onClick={restart}>Lock</button>
-        </div>
-        <p role="status">Unlocked · Read-only preview</p>
-        {state.entries.every((entry) => !entry.content) && <p>Your workspace is empty.</p>}
-        {state.entries
-          .filter((entry) => entry.content)
-          .map((entry) => (
-            <section className="local-preview" key={entry.path}>
-              <h2>
-                {entry.path === 'master.md'
-                  ? 'Goals'
-                  : entry.path === 'unfiled.md'
-                    ? 'Unfiled'
-                    : entry.path.slice(5, -3)}
-              </h2>
-              <pre>{entry.content}</pre>
-            </section>
-          ))}
-      </>
+  } else if (state.kind === 'ready' && owner) {
+    return (
+      <WorkspaceUiProvider
+        workspace={state.workspace}
+        actorId={state.actorId}
+        registerEditor={owner.registerEditor}
+        onLock={restart}
+      >
+        <App />
+      </WorkspaceUiProvider>
     );
   } else {
+    if (state.kind === 'ready') return <div className="boot" aria-busy="true" />;
     const message = messages[state.kind];
     content = (
       <>

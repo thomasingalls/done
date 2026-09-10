@@ -12,34 +12,16 @@
  * an error after the fact.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  NEXT_CAP,
-  archiveOf,
-  cardId,
-  cardsIn,
-  collectionOf,
-  compose,
-  countIn,
-  dayAt,
-  mergeCardBackwards,
-  moveCard,
-  parseCollections,
-  removeCard,
-  splitCard,
-  type Card as CardType,
-  type Ref,
-  type Section,
-  type Store,
-  type Workspace,
-} from '../crdt';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { NEXT_CAP, type Section } from '../crdt/days';
+import type { WorkspaceSnapshot } from '../crdt/admittedWorkspace';
+import { useWorkspaceUi } from './workspaceUi';
 import type { CardHooks } from '../editor/cardCommands';
 import { renderStatic } from '../editor/staticRender';
 import { addDays, type ISODate } from '../lib/date';
 import { Card, type CardAction, type CardReorder } from './Card';
 import { Compose } from './Compose';
 import { useCardReorder } from './useCardReorder';
-import { useYValue } from './useYjs';
 
 const TITLES: Record<Section, string> = {
   next: 'Next',
@@ -69,8 +51,6 @@ const ArchivedCard = ({
 };
 
 export interface CollectionProps {
-  store: Store;
-  workspace: Workspace;
   date: ISODate;
   section: Section;
   frozen: boolean;
@@ -79,50 +59,23 @@ export interface CollectionProps {
 }
 
 export const Collection = ({
-  store,
-  workspace,
   date,
   section,
   frozen,
   active,
 }: CollectionProps): React.ReactElement | null => {
-  /*
-   * Everything this render depends on, read through one hook (see useYjs.ts).
-   *
-   * The key is membership and order, plus how full Next is, since that is what
-   * decides whether a Scheduled card may be promoted. A card's *content* is
-   * deliberately absent from it: that is the editor's business, not the list's
-   * (TRD §4.4). `absent` rather than an empty string because a day that has
-   * just been created holds an empty collection, and those two states have to
-   * be distinguishable or the day's arrival is not a change.
-   */
-  const { cards, archived, nextIsFull } = useYValue(
-    store.days,
-    () => {
-      const day = dayAt(store.doc, date);
-      const live = collectionOf(day, section);
-      if (!live) return `archive:${archiveOf(day)?.toString() ?? 'absent'}:${section}`;
-      return `${countIn(store.doc, date, 'next')}:${live.toArray().join(',')}`;
-    },
-    () => {
-      const day = dayAt(store.doc, date);
-      const live = collectionOf(day, section);
-      const archive = archiveOf(day);
-      return {
-        cards: live ? cardsIn(store.doc, date, section) : [],
-        archived: !live && archive ? parseCollections(archive.toString())[section] : [],
-        nextIsFull: countIn(store.doc, date, 'next') >= NEXT_CAP,
-      };
-    },
-  );
+  const { snapshot, execute } = useWorkspaceUi();
+  const day = snapshot.days.find((value) => value.date === date);
+  const ids = day?.[section] ?? [];
+  const byId = new Map(snapshot.cards.map((card) => [card.id, card]));
+  const cards = ids.flatMap((id) => (byId.get(id) ? [byId.get(id)!] : []));
+  const archived = day?.archived?.[section] ?? [];
+  const nextIsFull = (day?.next.length ?? 0) >= NEXT_CAP;
 
   // Set after a split so the card that was created opens with the caret in it.
   const [focusCard, setFocusCard] = useState<{ id: string; at: number } | null>(null);
 
-  const ref: Ref = useMemo(() => ({ date, section }), [date, section]);
   const reorder = useCardReorder({
-    workspace,
-    ref,
     cards,
     enabled: section === 'done' && active && !frozen && cards.length > 1,
   });
@@ -130,35 +83,38 @@ export const Collection = ({
   const hooksFor = useCallback(
     (id: string): CardHooks => ({
       split: (at, tailFrom) => {
-        const created = splitCard(workspace, ref, id, at, tailFrom);
-        if (created) setFocusCard({ id: created, at: 0 });
-        return created !== null;
+        void execute({ kind: 'split', id, at, tailFrom }).then((created) => {
+          if (typeof created === 'string') setFocusCard({ id: created, at: 0 });
+        });
+        return true;
       },
       mergeBackwards: () => {
-        const index = cards.findIndex((card) => cardId(card) === id);
+        const index = cards.findIndex((card) => card.id === id);
         const previous = index > 0 ? cards[index - 1] : undefined;
-        const at = mergeCardBackwards(workspace, ref, id);
-        if (at !== null && previous) setFocusCard({ id: cardId(previous), at });
-        return at;
+        if (!previous) return null;
+        void execute({ kind: 'merge', id }).then((at) => {
+          if (typeof at === 'number') setFocusCard({ id: previous.id, at });
+        });
+        return 0;
       },
       leave: () => setFocusCard((current) => (current?.id === id ? null : current)),
     }),
-    [workspace, ref, cards],
+    [execute, cards],
   );
 
   const actionsFor = useCallback(
-    (card: CardType): CardAction[] => {
-      const id = cardId(card);
+    (card: WorkspaceSnapshot['cards'][number]): CardAction[] => {
+      const id = card.id;
 
       const done: CardAction = {
         label: 'Done',
         hint: 'Move to Done',
-        run: () => void moveCard(workspace, ref, id, { date, section: 'done' }),
+        run: () => void execute({ kind: 'move', id, to: { date, section: 'done' } }),
       };
       const remove: CardAction = {
         label: 'Remove',
         hint: 'Remove this card',
-        run: () => void removeCard(workspace, ref, id),
+        run: () => void execute({ kind: 'remove', id }),
       };
 
       if (section === 'next') {
@@ -167,7 +123,7 @@ export const Collection = ({
           {
             label: 'Later',
             hint: 'Move to Scheduled',
-            run: () => void moveCard(workspace, ref, id, { date, section: 'scheduled' }),
+            run: () => void execute({ kind: 'move', id, to: { date, section: 'scheduled' } }),
           },
           remove,
         ];
@@ -179,14 +135,18 @@ export const Collection = ({
           {
             label: 'Next',
             hint: 'Move to Next',
-            run: () => void moveCard(workspace, ref, id, { date, section: 'next' }),
+            run: () => void execute({ kind: 'move', id, to: { date, section: 'next' } }),
             disabled: nextIsFull,
           },
           {
             label: 'Tomorrow',
             hint: 'Move to tomorrow',
             run: () =>
-              void moveCard(workspace, ref, id, { date: addDays(date, 1), section: 'scheduled' }),
+              void execute({
+                kind: 'move',
+                id,
+                to: { date: addDays(date, 1), section: 'scheduled' },
+              }),
           },
           remove,
         ];
@@ -194,7 +154,7 @@ export const Collection = ({
 
       return [remove];
     },
-    [workspace, ref, date, section, nextIsFull],
+    [execute, date, section, nextIsFull],
   );
 
   // An empty collection is noise except where it says something: Next carries
@@ -222,7 +182,7 @@ export const Collection = ({
       ) : (
         <div className="card-list" ref={reorder.listRef} data-reordering={reorder.drag !== null}>
           {cards.map((card) => {
-            const id = cardId(card);
+            const id = card.id;
             const cardReorder: CardReorder | undefined = reorder.enabled
               ? {
                   dragging: reorder.drag?.id === id,
@@ -237,7 +197,6 @@ export const Collection = ({
             return (
               <Card
                 key={id}
-                store={store}
                 card={card}
                 section={section}
                 frozen={frozen}
@@ -245,7 +204,6 @@ export const Collection = ({
                 actions={actionsFor(card)}
                 hooks={hooksFor(id)}
                 editable={active}
-                origin={workspace.origin}
                 {...(cardReorder ? { reorder: cardReorder } : {})}
                 {...(focusCard?.id === id ? { autoFocusAt: focusCard.at } : {})}
               />
@@ -272,7 +230,9 @@ export const Collection = ({
       {section === 'done' && !frozen && (
         <Compose
           placeholder="What got done?"
-          onSubmit={(value) => compose(workspace, { date, section: 'done' }, value)}
+          onSubmit={async (text) =>
+            Boolean(await execute({ kind: 'compose', to: { date, section: 'done' }, text }))
+          }
         />
       )}
     </section>

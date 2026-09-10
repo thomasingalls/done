@@ -3,7 +3,9 @@ import { defineConfig } from '@playwright/test';
 export default defineConfig({
   testDir: './test/local-app',
   testMatch:
-    process.env['LOCAL_STARTUP_PREVIEW'] === '1' ? '**/packaged.spec.ts' : '**/startup.spec.ts',
+    process.env['LOCAL_STARTUP_PREVIEW'] === '1'
+      ? '**/packaged.spec.ts'
+      : ['**/startup.spec.ts', '**/editor.spec.ts'],
   outputDir: './test-results/local-app/artifacts',
   timeout: 30_000,
   workers: 1,

@@ -48,47 +48,52 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # Local startup complete; admitted editor integration next
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, local-app-startup.md]
+status: in flight # admitted editor complete; private import/cutover rehearsal next
+plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, local-app-editor.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-10
 ```
 
-**Current checkpoint.** Private coordinator work is committed as `7d238ee`; the rejected attachment preflight
-as `fbfc3ba`; revised cold-start preparation as `f8fdf1f`. Subsequent cold-start diagnostics and their
-[evidence](./storage-conformance-runs/2026-09-10-legacy-host-cold.md) are committed as `0aec587`. That VM is stopped.
-The author has clarified that there is no deployed instance: only the personal development installation needs
-migration. [Row 21](./selections/row-21-development-cutover.md) selects the existing private Markdown/system
-importer and accepts its metadata losses. Automatic host/policy/protocol-reader research is no longer next-up.
+**Current checkpoint.** Private coordinator work is committed as `7d238ee`; rejected attachment preflight
+as `fbfc3ba`; cold-start preparation as `f8fdf1f`; bounded host diagnostics/evidence as `0aec587`; Local
+startup and the personal-cutover scope as `46d9cd6`. That VM is stopped. There is no deployed instance:
+only the author's personal development installation needs migration. [Row 21](./selections/row-21-development-cutover.md)
+selects the existing private Markdown/system importer and accepts its metadata losses. Automatic host/policy/
+protocol-reader research is no longer next-up.
 
-**Completed bounded integration.** `/local.html` now classifies the Local slot, requires saved-code confirmation
-before fresh creation, unlocks or resumes the same interrupted genesis, and exposes a read-only verified
-preview. Lock/cancel drains the existing owner; no transport or legacy identity cache is used. The main app
-entry remains unchanged until admitted editing is connected. See [scope](./local-app-startup.md) and
-[passing evidence](./storage-conformance-runs/2026-09-10-local-app-startup.md): 800 unit tests in 68 files,
-including seven controller tests with 150 generated histories (seed 8941), four native startup cases and two
-packaged offline cases. Directed testing repaired close-notification ordering and guards listener disposal;
-packaged testing repaired both the missing Local HTML precache and `Vary: Origin` asset-cache misses.
+**Completed bounded integration, awaiting commit.** Both `/` and `/local.html` now classify and unlock the
+Local slot, then mount the existing editor through admitted text surfaces, commands and read snapshots.
+Typing/paste, Goals/card operations, compose, stale/unfiled actions, history, archive reads, export and
+explicit preferences are connected. Pending input offers retry/discard; locking/invalidation disposes editors
+before retiring the owner. The device display label is encrypted metadata, not a credential. Local has no
+attached relay or legacy identity-cache fallback. See [scope](./local-app-editor.md) and
+[evidence](./storage-conformance-runs/2026-09-10-local-app-editor.md): 804 unit tests in 69 files, eight native
+application cases, two packaged offline cases and 84 geometry/workflow cases pass, with ten existing
+geometry skips. Native editor/workspace campaigns pass with their fault controls; pending projection passes
+12 cases including 100 generated histories. New coverage includes 20 native compose/history sequences and
+1,000 whole-line deletion cases, seed 8941. Testing repaired trailing-line deletion and selection collapse
+after Goals copy. Final build budget is 326.6 kB gzip per entry; desktop and mobile views were inspected.
 
 **Personal migration preparation.** Readable Markdown plus older/newer relay snapshots are backed up outside
 the repository. Cold replay of the updated snapshot matched all 24 exported files byte-for-byte without
 pending dependencies. The temporary relay and route were removed after sync. The author controls browser
 interaction and has paused editing. No real import packet, selection or source cleanup has been performed.
+The editor build has not replaced the personal installation.
 
-**Next bounded work.** Integrate the editor with the admitted workspace: neutral read projections, existing
-admitted text binding, and every command/history/paste/card-mutation surface. Preserve pending-input semantics,
-freeze checks and refusal behavior; do not expose a writable transport document or fall back to the legacy
-store. Dispose editors before retiring the lifetime and remove visible plaintext on lock/invalidation.
-Exercise user input, journal recovery, refused work, undo/redo and reopen with seeded browser fixtures. Switch
-the ordinary entry only when the admitted editing path is usable. Network remains a separate integration.
+**Next bounded work.** Rehearse the operator-assisted private capture/recovery/import/selection procedure
+against the usable Local editor in a disposable seeded profile. Make the required operator steps concrete,
+exercise interrupted/restarted handoffs, and verify visible writing plus cold unlock/export after selection.
+Reuse the existing authenticated owners and the selected Markdown/system semantics; do not restart automatic
+migration-host research. Identify the exact point at which the author must act in the personal browser before
+requesting that action. The existing backed-up source remains the recovery basis.
 
-**After that.** Rehearse the operator-assisted private capture/recovery/import/selection procedure, then guide
-the author through the personal cutover one step at a time. Existing source binding, dependency checks,
-fresh keys/counters and authenticated cleanup preconditions remain. A raw relay snapshot or Markdown ZIP is
-recovery material, not the current importer's authenticated source packet. Real capture/cleanup, whole-profile
-residue, applicable conformance, latency/platform evidence and independent review remain open. No debt or
-conformance matrix status changed. Completed work was recorded before this checkpoint rewrite; L-2 is unchanged.
+**After rehearsal.** Guide the author through the personal cutover one step at a time. Existing source
+binding, dependency checks, fresh keys/counters and authenticated cleanup preconditions remain. A raw relay
+snapshot or Markdown ZIP is recovery material, not the current importer's authenticated source packet.
+Real capture/cleanup, whole-profile residue, applicable conformance, latency/platform evidence, transport
+integration and independent review remain open. No debt or conformance matrix status changed. Completed
+work was recorded before this checkpoint rewrite; L-2 is unchanged.
 
 
 ---

@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './ui/App';
+import { LocalApp } from './ui/LocalApp';
 import { BOOT, mark } from './lib/marks';
 import { prepareInstallPrompt, registerServiceWorker } from './pwa';
 import './styles/index.css';
@@ -17,7 +17,7 @@ prepareInstallPrompt();
 
 createRoot(root).render(
   <StrictMode>
-    <App />
+    <LocalApp />
   </StrictMode>,
 );
 

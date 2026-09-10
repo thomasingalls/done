@@ -1,0 +1,267 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.8.1/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/c030/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.local-startup.config.ts",
+      "--grep",
+      "compose keeps|discarded editor|Goals copy|generated compose"
+    ],
+    "configFile": "/Users/thomasingalls/.codex/worktrees/c030/done/playwright.local-startup.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-app/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app",
+        "testIgnore": [],
+        "testMatch": [
+          "**/startup.spec.ts",
+          "**/editor.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/local-app/native.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": {
+      "command": "node node_modules/vite/bin/vite.js  --host 127.0.0.1 --port 4181 --strictPort",
+      "url": "http://127.0.0.1:4181/local.html",
+      "reuseExistingServer": false,
+      "timeout": 30000
+    }
+  },
+  "suites": [
+    {
+      "title": "editor.spec.ts",
+      "file": "editor.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "compose keeps its draft through native refusal; retry admits it once and reopen retains it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1894,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T09:13:22.215Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2f56d7d370f0ba02e91-892b06267fc0f19d01e1",
+          "file": "editor.spec.ts",
+          "line": 36,
+          "column": 1
+        },
+        {
+          "title": "discarded editor input never appears, and locking disposes the mounted editor",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 815,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T09:13:24.579Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2f56d7d370f0ba02e91-15b0d88aa655ddd6302e",
+          "file": "editor.spec.ts",
+          "line": 57,
+          "column": 1
+        },
+        {
+          "title": "Goals copy and separate line removal preserve suffix boundaries and workspace undo",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5613,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.goals .cm-content')\nExpected: \u001b[32m\"keep\"\u001b[39m\nReceived: \u001b[31m\"keep\u001b[7mremove one\u001b[27m\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.goals .cm-content')\u001b[22m\n\u001b[2m    14 × locator resolved to <div translate=\"no\" role=\"textbox\" autocorrect=\"off\" spellcheck=\"false\" autocapitalize=\"off\" aria-multiline=\"true\" contenteditable=\"true\" data-language=\"markdown\" writingsuggestions=\"false\" class=\"cm-content cm-lineWrapping\" aria-placeholder=\"Everything. Tasks, projects, someday-maybes, notes to self.\">…</div>\u001b[22m\n\u001b[2m       - unexpected value \"keepremove one\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.goals .cm-content')\nExpected: \u001b[32m\"keep\"\u001b[39m\nReceived: \u001b[31m\"keep\u001b[7mremove one\u001b[27m\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.goals .cm-content')\u001b[22m\n\u001b[2m    14 × locator resolved to <div translate=\"no\" role=\"textbox\" autocorrect=\"off\" spellcheck=\"false\" autocapitalize=\"off\" aria-multiline=\"true\" contenteditable=\"true\" data-language=\"markdown\" writingsuggestions=\"false\" class=\"cm-content cm-lineWrapping\" aria-placeholder=\"Everything. Tasks, projects, someday-maybes, notes to self.\">…</div>\u001b[22m\n\u001b[2m       - unexpected value \"keepremove one\"\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/editor.spec.ts:98:25",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/editor.spec.ts",
+                      "column": 25,
+                      "line": 98
+                    },
+                    "snippet": "   96 |   await expect(content).toHaveText('keepremove oneremove two');\n   97 |   await page.locator('.goals').getByRole('button', { name: 'Remove', exact: true }).click();\n>  98 |   await expect(content).toHaveText('keep');\n      |                         ^\n   99 |   await page.getByRole('button', { name: 'Undo', exact: true }).click();\n  100 |   await expect(content).toHaveText('keepremove oneremove two');\n  101 |   await reloadApp(page);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/editor.spec.ts",
+                        "column": 25,
+                        "line": 98
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.goals .cm-content')\nExpected: \u001b[32m\"keep\"\u001b[39m\nReceived: \u001b[31m\"keep\u001b[7mremove one\u001b[27m\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.goals .cm-content')\u001b[22m\n\u001b[2m    14 × locator resolved to <div translate=\"no\" role=\"textbox\" autocorrect=\"off\" spellcheck=\"false\" autocapitalize=\"off\" aria-multiline=\"true\" contenteditable=\"true\" data-language=\"markdown\" writingsuggestions=\"false\" class=\"cm-content cm-lineWrapping\" aria-placeholder=\"Everything. Tasks, projects, someday-maybes, notes to self.\">…</div>\u001b[22m\n\u001b[2m       - unexpected value \"keepremove one\"\u001b[22m\n\n\n   96 |   await expect(content).toHaveText('keepremove oneremove two');\n   97 |   await page.locator('.goals').getByRole('button', { name: 'Remove', exact: true }).click();\n>  98 |   await expect(content).toHaveText('keep');\n      |                         ^\n   99 |   await page.getByRole('button', { name: 'Undo', exact: true }).click();\n  100 |   await expect(content).toHaveText('keepremove oneremove two');\n  101 |   await reloadApp(page);\n    at /Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/editor.spec.ts:98:25"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T09:13:25.400Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-app/artifacts/editor-Goals-copy-and-sepa-844a6-undaries-and-workspace-undo/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/local-app/editor.spec.ts",
+                    "column": 25,
+                    "line": 98
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "d2f56d7d370f0ba02e91-17a099fab8daf7c11cfe",
+          "file": "editor.spec.ts",
+          "line": 81,
+          "column": 1
+        },
+        {
+          "title": "generated compose and history sequences match a separate ledger before and after cold open",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 16017,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T09:13:31.331Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "generated-inputs",
+                      "contentType": "application/json",
+                      "body": "eyJzZWVkIjo4OTQxLCJoaXN0b3JpZXMiOltbInVuZG8iLCJ1bmRvIiwidW5kbyIsInVuZG8iLCJyZWRvIiwidW5kbyIsInJlZG8iLCJyZWRvIiwiY29tcG9zZSIsInJlZG8iLCJ1bmRvIl0sWyJyZWRvIiwiY29tcG9zZSIsInJlZG8iLCJjb21wb3NlIl0sWyJ1bmRvIiwiY29tcG9zZSIsInJlZG8iLCJjb21wb3NlIiwidW5kbyIsImNvbXBvc2UiLCJjb21wb3NlIiwicmVkbyIsImNvbXBvc2UiLCJjb21wb3NlIiwiY29tcG9zZSJdLFsiY29tcG9zZSIsImNvbXBvc2UiLCJ1bmRvIiwicmVkbyIsInVuZG8iLCJjb21wb3NlIiwidW5kbyIsInVuZG8iXSxbImNvbXBvc2UiLCJjb21wb3NlIiwidW5kbyJdLFsiY29tcG9zZSIsImNvbXBvc2UiLCJyZWRvIiwiY29tcG9zZSIsImNvbXBvc2UiLCJ1bmRvIiwiY29tcG9zZSIsImNvbXBvc2UiLCJjb21wb3NlIiwiY29tcG9zZSJdLFsidW5kbyIsInJlZG8iLCJ1bmRvIiwidW5kbyIsInVuZG8iLCJ1bmRvIiwiY29tcG9zZSIsInJlZG8iLCJ1bmRvIiwicmVkbyIsInVuZG8iXSxbInJlZG8iLCJ1bmRvIiwidW5kbyIsInVuZG8iLCJyZWRvIiwidW5kbyIsInVuZG8iLCJjb21wb3NlIiwidW5kbyIsInJlZG8iLCJyZWRvIl0sWyJyZWRvIiwicmVkbyIsImNvbXBvc2UiLCJyZWRvIiwicmVkbyIsImNvbXBvc2UiLCJjb21wb3NlIiwidW5kbyJdLFsiY29tcG9zZSIsInVuZG8iLCJ1bmRvIiwidW5kbyIsInVuZG8iLCJ1bmRvIiwidW5kbyJdLFsidW5kbyIsInJlZG8iLCJyZWRvIl0sWyJ1bmRvIiwicmVkbyIsInVuZG8iLCJyZWRvIiwidW5kbyIsInJlZG8iLCJ1bmRvIl0sWyJ1bmRvIiwicmVkbyIsInVuZG8iLCJjb21wb3NlIl0sWyJyZWRvIiwicmVkbyIsImNvbXBvc2UiLCJjb21wb3NlIiwiY29tcG9zZSIsInJlZG8iLCJjb21wb3NlIiwidW5kbyIsInVuZG8iLCJ1bmRvIiwicmVkbyJdLFsiY29tcG9zZSIsInJlZG8iLCJ1bmRvIiwicmVkbyIsInVuZG8iLCJ1bmRvIiwicmVkbyIsInVuZG8iLCJyZWRvIiwicmVkbyIsImNvbXBvc2UiXSxbImNvbXBvc2UiLCJjb21wb3NlIiwicmVkbyIsInVuZG8iLCJyZWRvIiwicmVkbyIsImNvbXBvc2UiLCJ1bmRvIiwicmVkbyIsInVuZG8iLCJjb21wb3NlIl0sWyJ1bmRvIiwidW5kbyIsImNvbXBvc2UiXSxbImNvbXBvc2UiLCJ1bmRvIiwiY29tcG9zZSJdLFsidW5kbyIsInJlZG8iLCJ1bmRvIiwicmVkbyIsImNvbXBvc2UiLCJyZWRvIl0sWyJjb21wb3NlIiwidW5kbyIsImNvbXBvc2UiLCJ1bmRvIiwicmVkbyIsImNvbXBvc2UiLCJyZWRvIiwiY29tcG9zZSIsImNvbXBvc2UiXV19"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2f56d7d370f0ba02e91-ab2d2fc9b40cc7d9f058",
+          "file": "editor.spec.ts",
+          "line": 106,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-10T09:13:21.450Z",
+    "duration": 26153.733,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

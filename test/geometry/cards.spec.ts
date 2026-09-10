@@ -1,3 +1,4 @@
+import { openApp } from './openApp';
 /**
  * "Hard constraint: static render and mounted editor must be pixel-identical.
  * Text must not shift when an editor mounts" (TRD §4.4), and §11: "static card
@@ -72,7 +73,7 @@ const lineBoxes = (
 
 test.describe('static render and mounted editor', () => {
   test('produce identical geometry for every supported construct', async ({ page }) => {
-    await page.goto('/');
+    await openApp(page);
     await expect(page.locator('.day-panel[data-active="true"] .compose-field')).toBeVisible();
 
     for (const card of CARDS) await compose(page, card);
@@ -113,7 +114,7 @@ test.describe('static render and mounted editor', () => {
 
 test.describe('the guard on Done cards', () => {
   test('does not become editable by tapping it (PRD §5)', async ({ page }) => {
-    await page.goto('/');
+    await openApp(page);
     await compose(page, 'called the dentist');
 
     const card = page
@@ -129,7 +130,7 @@ test.describe('the guard on Done cards', () => {
 
 test.describe('the three-item cap', () => {
   test('is visible before it is hit, and stops at three (PRD §3)', async ({ page }) => {
-    await page.goto('/');
+    await openApp(page);
     const count = page.locator(
       '.day-panel[data-active="true"] .collection[data-section="next"] .collection-count',
     );

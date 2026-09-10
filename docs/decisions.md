@@ -2281,3 +2281,24 @@ surface is routed through admission. The Local actor is the authenticated princi
 Local attribution only, not an Account credential. Do not use the legacy plaintext identity cache or attach
 transport. Lock/cancel drains the owner, including a late open. Both HTML entries must have packaged offline
 coverage and pass the existing initial-JS budget separately. Real import/cutover follows editor integration.
+
+### 2026-09-10 — Make the admitted Local workspace the application editor boundary
+
+With [bounded editor evidence](./storage-conformance-runs/2026-09-10-local-app-editor.md), switch both built
+entries to Local startup and the existing editor UI through admitted text surfaces and workspace commands.
+The active UI consumes read snapshots and does not open a legacy Store or writable transport document.
+Pending editor input remains owned by admission, with retry/discard; compose retains its draft until
+acceptance. Preserve local CodeMirror selection across accepted operations that do not change its text.
+Destroy editors before lifetime close and remove visible content on lock/invalidation. Recoverable storage
+blockage must not lock the user out of retrying or discarding the pending work.
+
+Save identity/preferences explicitly through separately acknowledged commands. Store the device's display
+label in encrypted metadata keyed by the Local device ID, without changing authenticated identity or using
+the legacy plaintext cache. Actor/device-label/rollover metadata remain outside content undo. The menu's
+Markdown export covers accepted writing and is not an authenticated migration packet. No relay is attached
+to Local; Account/transport and automatic compaction scheduling retain separate integration work.
+
+This local build switch does not perform the author's browser cutover or revive automatic migration-host
+research. Rehearse the existing private capture/recovery/import/selection procedure next, retaining verified
+backups and author-controlled browser interaction. Real source cleanup and all remaining conformance/review
+obligations are unchanged.

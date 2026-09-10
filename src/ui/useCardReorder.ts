@@ -9,7 +9,8 @@
  */
 
 import { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
-import { cardId, reorderCard, type Card, type Ref, type Workspace } from '../crdt';
+import type { WorkspaceSnapshot } from '../crdt/admittedWorkspace';
+import { useWorkspaceUi } from './workspaceUi';
 
 export interface ReorderRectangle {
   top: number;
@@ -45,9 +46,7 @@ interface ReorderSession {
 }
 
 export interface UseCardReorderOptions {
-  workspace: Workspace;
-  ref: Ref;
-  cards: readonly Card[];
+  cards: WorkspaceSnapshot['cards'];
   enabled: boolean;
 }
 
@@ -69,11 +68,10 @@ const elementFor = (list: HTMLDivElement, id: string): HTMLElement | undefined =
   cardElements(list).find((element) => element.dataset['card'] === id);
 
 export const useCardReorder = ({
-  workspace,
-  ref,
   cards,
   enabled,
 }: UseCardReorderOptions): CardReorderController => {
+  const { execute } = useWorkspaceUi();
   const listRef = useRef<HTMLDivElement>(null);
   const session = useRef<ReorderSession | null>(null);
   const autoScrollFrame = useRef<number | null>(null);
@@ -157,7 +155,7 @@ export const useCardReorder = ({
     (id: string, clientY: number): boolean => {
       if (!enabled || session.current) return false;
       const list = listRef.current;
-      const index = cards.findIndex((card) => cardId(card) === id);
+      const index = cards.findIndex((card) => card.id === id);
       if (!list || index < 0) return false;
 
       const element = elementFor(list, id);
@@ -224,21 +222,21 @@ export const useCardReorder = ({
       session.current = null;
       setDrag(null);
       if (commit && completed && completed.to !== completed.from) {
-        reorderCard(workspace, ref, completed.id, completed.to);
+        void execute({ kind: 'reorder', id: completed.id, index: completed.to });
       }
     },
-    [ref, stopAutoScroll, workspace],
+    [execute, stopAutoScroll],
   );
 
   const moveBy = useCallback(
     (id: string, offset: number): void => {
       if (!enabled || offset === 0) return;
-      const from = cards.findIndex((card) => cardId(card) === id);
+      const from = cards.findIndex((card) => card.id === id);
       const to = Math.min(Math.max(from + offset, 0), cards.length - 1);
       if (from < 0 || from === to) return;
-      reorderCard(workspace, ref, id, to);
+      void execute({ kind: 'reorder', id, index: to });
     },
-    [cards, enabled, ref, workspace],
+    [cards, enabled, execute],
   );
 
   useEffect(() => {

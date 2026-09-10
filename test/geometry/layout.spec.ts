@@ -1,3 +1,4 @@
+import { openApp } from './openApp';
 /**
  * The layout constraints from TRD §8.2, which must hold under any
  * implementation and so are tested against the rendered result rather than
@@ -11,7 +12,7 @@ import { expect, test, type Page } from '@playwright/test';
  * newlines in directly; Enter in the compose field would submit each line.
  */
 const fill = async (page: Page, lines: number): Promise<void> => {
-  await page.goto('/');
+  await openApp(page);
   const compose = page.locator('.day-panel[data-active="true"] .compose-field');
   await expect(compose).toBeVisible();
   await compose.click();
@@ -63,7 +64,7 @@ test.describe('layout', () => {
   });
 
   test('the four bands are in the order PRD §7.4 gives them', async ({ page }) => {
-    await page.goto('/');
+    await openApp(page);
     await expect(page.locator('.day-panel[data-active="true"]')).toBeVisible();
 
     const bands = await page.evaluate(() => {
@@ -86,7 +87,7 @@ test.describe('layout', () => {
 
   test('the master list fills the Goals column rather than collapsing', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
-    await page.goto('/');
+    await openApp(page);
 
     const editor = page.locator('.goals .cm-editor');
     await expect(editor).toBeVisible();
@@ -116,7 +117,7 @@ test.describe('layout', () => {
   test('Goals is wider than Today whenever the two are panels', async ({ page }) => {
     for (const width of [900, 1280]) {
       await page.setViewportSize({ width, height: 900 });
-      await page.goto('/');
+      await openApp(page);
       await expect(page.locator('.goals')).toBeVisible();
 
       const widths = await page.evaluate(() => ({
@@ -130,7 +131,7 @@ test.describe('layout', () => {
 
   test('a short day has no phantom scrolling space', async ({ page }) => {
     await page.setViewportSize({ width: 420, height: 900 });
-    await page.goto('/');
+    await openApp(page);
     const body = page.locator('.day-panel[data-active="true"] .day-body');
 
     const measurements = await body.evaluate((element) => ({
@@ -145,7 +146,7 @@ test.describe('layout', () => {
 
   test('the menu is a panel at wide and behind a trigger below it', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
-    await page.goto('/');
+    await openApp(page);
     await expect(page.locator('.menu')).toBeVisible();
     await expect(page.locator('.menu-trigger')).toBeHidden();
 
@@ -162,7 +163,7 @@ test.describe('layout', () => {
 
   test('Goals sits beside Today from medium up, and off-screen below it', async ({ page }) => {
     await page.setViewportSize({ width: 900, height: 900 });
-    await page.goto('/');
+    await openApp(page);
     await expect
       .poll(async () =>
         page.locator('.goals').evaluate((element) => element.getBoundingClientRect().right),
@@ -179,7 +180,7 @@ test.describe('layout', () => {
 
   test('the trigger opens and closes the menu', async ({ page }) => {
     await page.setViewportSize({ width: 420, height: 900 });
-    await page.goto('/');
+    await openApp(page);
     await expect(page.locator('.day-panel[data-active="true"] .compose-field')).toBeVisible();
 
     await page.locator('.menu-trigger').click();
@@ -193,7 +194,7 @@ test.describe('layout', () => {
   });
 
   test('the day reads Next, Done, Scheduled, in that order', async ({ page }) => {
-    await page.goto('/');
+    await openApp(page);
     const day = page.locator('.day-panel[data-active="true"]');
     await expect(day.locator('.collection')).toHaveCount(2); // Scheduled is hidden while empty
 
@@ -218,7 +219,7 @@ test.describe('layout', () => {
   });
 
   test('a peek is a click target that moves a day (PRD §7.3)', async ({ page }) => {
-    await page.goto('/');
+    await openApp(page);
     const title = page.locator('.day-panel[data-active="true"] .panel-title');
     const today = (await title.textContent()) ?? '';
 
@@ -228,7 +229,7 @@ test.describe('layout', () => {
 
   test('an adjacent day is fully laid out before it moves into focus', async ({ page }) => {
     await page.setViewportSize({ width: 420, height: 900 });
-    await page.goto('/');
+    await openApp(page);
 
     const next = page.locator('.day-panel[data-active="false"]').last();
     await expect(next.locator('.collection')).toHaveCount(2);

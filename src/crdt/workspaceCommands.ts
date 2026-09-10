@@ -47,6 +47,7 @@ export type WorkspaceCommand =
   | { readonly kind: 'bulk'; readonly from: ISODate; readonly to: Ref | 'master' }
   | { readonly kind: 'settings'; readonly rolloverHour: number }
   | { readonly kind: 'actor'; readonly patch: { readonly name?: string; readonly color?: string } }
+  | { readonly kind: 'device-label'; readonly name: string }
   | { readonly kind: 'repair' | 'undo' | 'redo' };
 export type RelativeSelection = {
   ranges: { anchor: Y.RelativePosition; head: Y.RelativePosition }[];
@@ -264,6 +265,17 @@ export const runWorkspaceCommand = (
     case 'actor':
       value = updateActor(doc, context.human, context.identity.id, command.patch) !== null;
       break;
+    case 'device-label': {
+      const name = command.name.trim().slice(0, 80);
+      if (!name) break;
+      // A display label inside encrypted workspace content, never a device credential.
+      doc.transact(
+        () => doc.getMap('meta').set(`device-label:${context.identity.device.id}`, name),
+        context.human,
+      );
+      value = true;
+      break;
+    }
     case 'repair':
       value = repairCardMemberships(doc, context.system);
       break;

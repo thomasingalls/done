@@ -14,13 +14,10 @@
  */
 
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
-import type { Store, Workspace } from '../crdt';
 import { addDays, relativeDay, type ISODate } from '../lib/date';
 import { DayPanel } from './DayPanel';
 
 export interface DayPlaneProps {
-  store: Store;
-  workspace: Workspace;
   date: ISODate;
   today: ISODate;
   /** Live drag offset in pixels; positive reveals the past. */
@@ -37,8 +34,6 @@ export interface DayPlaneProps {
 }
 
 export const DayPlane = ({
-  store,
-  workspace,
   date,
   today,
   shift,
@@ -151,8 +146,6 @@ export const DayPlane = ({
         {[previous, date, next].map((panelDate, index) => (
           <DayPanel
             key={panelDate}
-            store={store}
-            workspace={workspace}
             date={panelDate}
             today={today}
             offset={index - 1}

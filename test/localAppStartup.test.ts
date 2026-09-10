@@ -51,6 +51,33 @@ beforeEach(() => {
 });
 
 describe('Local application lifetime', () => {
+  it('keeps blocked admission open for retry and retires editors before closing the workspace', async () => {
+    const owned = ready();
+    if (owned.result.kind !== 'ready') throw Error('Expected ready fixture.');
+    const events: string[] = [];
+    owned.close.mockImplementation(async () => {
+      events.push('workspace');
+    });
+    open.mockResolvedValue(owned.result);
+    const owner = createLocalStartup();
+    await owner.inspect();
+    await owner.unlock('code');
+    owner.registerEditor(() => events.push('editor'));
+    const changed = vi.mocked(owned.result.workspace.onStatus).mock.calls[0]![0];
+    changed({
+      state: 'blocked',
+      revision: 1,
+      pendingItems: 1,
+      pendingBytes: 1,
+      reservedBytes: 1,
+      durable: false,
+      pressure: { code: 'quota' },
+    });
+    expect(owner.getSnapshot().kind).toBe('ready');
+    expect(events).toEqual([]);
+    await owner.close();
+    expect(events).toEqual(['editor', 'workspace']);
+  });
   it('keeps confirmation separate from displaying the generated code', async () => {
     inspect.mockResolvedValue({ kind: 'fresh', reason: 'test' });
     const cancel = vi.fn();

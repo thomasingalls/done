@@ -1,3 +1,4 @@
+import { openApp, reloadApp } from './openApp';
 /** Browser regressions for Phase 2 interactions that unit tests cannot cover. */
 
 import { expect, test, type Locator, type Page } from '@playwright/test';
@@ -44,7 +45,7 @@ const touchSwipe = async (
 test.describe('Phase 2 workflow', () => {
   test('touch gestures bind after the asynchronous store opens', async ({ page }) => {
     await page.setViewportSize({ width: 420, height: 900 });
-    await page.goto('/');
+    await openApp(page);
 
     const shell = page.locator('.shell');
     await expect(shell).toHaveAttribute('data-select', 'on');
@@ -73,7 +74,7 @@ test.describe('Phase 2 workflow', () => {
 
   test('a canceled touch drag snaps back instead of remaining in progress', async ({ page }) => {
     await page.setViewportSize({ width: 420, height: 900 });
-    await page.goto('/');
+    await openApp(page);
 
     const shell = page.locator('.shell');
     await shell.evaluate((element) => {
@@ -102,7 +103,7 @@ test.describe('Phase 2 workflow', () => {
     page,
   }) => {
     await page.setViewportSize({ width: 420, height: 900 });
-    await page.goto('/');
+    await openApp(page);
 
     const shell = page.locator('.shell');
     const compose = activeDay(page).getByRole('textbox', { name: 'What got done?' });
@@ -139,7 +140,7 @@ test.describe('Phase 2 workflow', () => {
     page,
   }) => {
     await page.setViewportSize({ width: 420, height: 900 });
-    await page.goto('/');
+    await openApp(page);
 
     const body = activeDay(page).locator('.day-body');
     const initial = await activeDay(page).getAttribute('data-date');
@@ -153,7 +154,7 @@ test.describe('Phase 2 workflow', () => {
 
   test('a long day reserves only directions with native scroll room', async ({ page }) => {
     await page.setViewportSize({ width: 420, height: 900 });
-    await page.goto('/');
+    await openApp(page);
     const body = activeDay(page).locator('.day-body');
     // One tall card is enough to make the body scroll, and `insertText` puts the
     // newlines in directly — Enter in the compose field would submit each line.
@@ -188,7 +189,7 @@ test.describe('Phase 2 workflow', () => {
   });
 
   test('direct navigation cancels an unfinished day transition', async ({ page }) => {
-    await page.goto('/');
+    await openApp(page);
     const initial = await activeDay(page).getAttribute('data-date');
 
     await page.keyboard.press('Alt+ArrowDown');
@@ -200,7 +201,7 @@ test.describe('Phase 2 workflow', () => {
 
   test('an install prompt is exposed in the menu', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
-    await page.goto('/');
+    await openApp(page);
     await page.evaluate(() => {
       const event = new Event('beforeinstallprompt', { cancelable: true });
       Object.assign(event, {
@@ -219,7 +220,7 @@ test.describe('Phase 2 workflow', () => {
   });
 
   test('merging a card keeps focus at the join point', async ({ page }) => {
-    await page.goto('/');
+    await openApp(page);
     const day = activeDay(page);
     const compose = day.getByRole('textbox', { name: 'What got done?' });
 
@@ -247,14 +248,14 @@ test.describe('Phase 2 workflow', () => {
 
   test('safety-deferred cards remain visible after the compaction threshold', async ({ page }) => {
     await page.clock.install({ time: new Date('2026-08-01T12:00:00Z') });
-    await page.goto('/');
+    await openApp(page);
     const compose = activeDay(page).getByRole('textbox', { name: 'What got done?' });
     await compose.fill('kept after compaction');
     await compose.press('Enter');
     await expect(activeDay(page).getByText('kept after compaction')).toBeVisible();
 
     await page.clock.setFixedTime(new Date('2026-08-08T12:00:00Z'));
-    await page.reload();
+    await reloadApp(page);
     await expect(activeDay(page)).toHaveAttribute('data-date', '2026-08-08');
     await page.clock.fastForward(4_100);
 
@@ -268,27 +269,31 @@ test.describe('Phase 2 workflow', () => {
 
   test('the device name is editable, since it is what the other device sees', async ({ page }) => {
     await page.setViewportSize({ width: 420, height: 900 });
-    await page.goto('/');
+    await openApp(page);
     await openMenu(page);
 
     await page.getByRole('textbox', { name: 'Device name' }).fill('Kitchen laptop');
+    await page.getByRole('button', { name: 'Save preferences' }).click();
+    await expect(page.getByText('Preferences saved.')).toBeVisible();
     await page.waitForTimeout(100);
-    await page.reload();
+    await reloadApp(page);
     await openMenu(page);
     await expect(page.getByRole('textbox', { name: 'Device name' })).toHaveValue('Kitchen laptop');
   });
 
   test('actor and rollover settings are editable and persist locally', async ({ page }) => {
     await page.setViewportSize({ width: 420, height: 900 });
-    await page.goto('/');
+    await openApp(page);
     await openMenu(page);
 
     await page.getByRole('textbox', { name: 'Actor name' }).fill('Phase Two Tester');
     await page.getByRole('combobox', { name: 'Day rollover hour' }).selectOption('4');
+    await page.getByRole('button', { name: 'Save preferences' }).click();
+    await expect(page.getByText('Preferences saved.')).toBeVisible();
     await expect(page.getByText('Phase Two Tester', { exact: true })).toBeVisible();
 
     await page.waitForTimeout(100);
-    await page.reload();
+    await reloadApp(page);
     await openMenu(page);
     await expect(page.getByRole('textbox', { name: 'Actor name' })).toHaveValue('Phase Two Tester');
     await expect(page.getByRole('combobox', { name: 'Day rollover hour' })).toHaveValue('4');

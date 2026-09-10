@@ -13,7 +13,10 @@ export default defineConfig({
   outputDir: './test-results/playwright',
   testDir: './test/geometry',
   fullyParallel: true,
-  reporter: process.env['CI'] ? 'github' : 'list',
+  reporter: [
+    process.env['CI'] ? ['github'] : ['list'],
+    ['json', { outputFile: 'test-results/geometry/report.json' }],
+  ],
   webServer: {
     command: 'pnpm build && pnpm exec vite preview --port 4173 --strictPort',
     url: 'http://localhost:4173',

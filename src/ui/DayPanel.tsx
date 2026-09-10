@@ -12,13 +12,12 @@
  */
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { DISPLAY_SECTIONS, isFrozen, type Store, type Workspace } from '../crdt';
+import { DISPLAY_SECTIONS } from '../crdt/days';
+import { isFrozen } from '../crdt/freeze';
 import { formatDay, relativeDay, type ISODate } from '../lib/date';
 import { Collection } from './Collection';
 
 export interface DayPanelProps {
-  store: Store;
-  workspace: Workspace;
   date: ISODate;
   today: ISODate;
   /** -1, 0 or 1: yesterday, the day in focus, tomorrow. */
@@ -36,8 +35,6 @@ export interface DayPanelProps {
 type TouchScrollRoom = 'none' | 'top' | 'middle' | 'bottom';
 
 export const DayPanel = ({
-  store,
-  workspace,
   date,
   today,
   offset,
@@ -154,15 +151,7 @@ export const DayPanel = ({
 
       <div className="day-body" data-scroll="day" data-touch-scroll={touchScrollRoom} ref={body}>
         {DISPLAY_SECTIONS.map((section) => (
-          <Collection
-            key={section}
-            store={store}
-            workspace={workspace}
-            date={date}
-            section={section}
-            frozen={frozen}
-            active={active}
-          />
+          <Collection key={section} date={date} section={section} frozen={frozen} active={active} />
         ))}
       </div>
     </section>

@@ -28,25 +28,14 @@ import type { EditorView } from '@codemirror/view';
 import { shouldCommit, type Direction } from '../gestures/recognizer';
 import { useGestures } from '../gestures/useGestures';
 import { addDays, currentDate, type ISODate } from '../lib/date';
-import {
-  DEFAULT_SETTINGS,
-  compactDueDays,
-  readSettings,
-  unfiledCards,
-  scheduleCompaction,
-  transactionAffectsMembership,
-  type UnfiledCard,
-  type Workspace,
-} from '../crdt';
+import { useWorkspaceUi } from './workspaceUi';
 import { DayPlane } from './DayPlane';
 import { Goals } from './Goals';
 import { Menu } from './Menu';
 import { UnfiledPanel } from './UnfiledPanel';
 import { StaleBanner } from './StaleBanner';
 import { goalsIsPanel, menuIsPanel, useBreakpoint } from './useBreakpoint';
-import { useStore } from './useStore';
 import { useToday } from './useToday';
-import { useYDocValue, useYValue } from './useYjs';
 
 const clamp = (value: number, min: number, max: number): number =>
   Math.min(max, Math.max(min, value));
@@ -58,13 +47,9 @@ const SNAP_MS = 220;
 type Lateral = 'menu' | 'goals';
 
 export const App = (): React.ReactElement => {
-  const { store, storage, error, persistenceError } = useStore();
+  const { snapshot } = useWorkspaceUi();
   const breakpoint = useBreakpoint();
-  const settings = useYValue(
-    store?.meta,
-    () => (store ? JSON.stringify(readSettings(store.meta)) : 'absent'),
-    () => (store ? readSettings(store.meta) : DEFAULT_SETTINGS),
-  );
+  const settings = snapshot.settings;
   const today = useToday(settings.rolloverHour);
 
   const [date, setDate] = useState<ISODate>(currentDate);
@@ -72,17 +57,10 @@ export const App = (): React.ReactElement => {
   const [goalsOpen, setGoalsOpen] = useState(false);
   const [unfiledOpen, setUnfiledOpen] = useState(false);
 
-  const unfiled = useYDocValue<UnfiledCard[]>(
-    store?.doc,
-    () => (store ? unfiledCards(store.doc) : []),
-    (cards) =>
-      store
-        ? cards
-            .map(({ id, location }) => `${id}:${location?.date ?? ''}:${location?.section ?? ''}`)
-            .join('|')
-        : 'absent',
-    (transaction) => Boolean(store && transactionAffectsMembership(store.doc, transaction)),
+  const placed = new Set(
+    snapshot.days.flatMap((day) => [...day.next, ...day.scheduled, ...day.done]),
   );
+  const unfiled = snapshot.cards.filter((card) => !placed.has(card.id));
 
   const [lateral, setLateral] = useState<Lateral | null>(null);
   const [menuProgress, setMenuProgress] = useState(0);
@@ -371,20 +349,11 @@ export const App = (): React.ReactElement => {
     today,
   ]);
 
-  /** Compaction, opportunistically, on idle. Never on the keystroke path. */
   useEffect(() => {
-    if (!store) return;
-    return scheduleCompaction(() => {
-      compactDueDays(store.doc, store.actor.systemOrigin, today);
-    });
-  }, [store, today]);
-
-  /** The rollover hour is in the document, so the first real `today` arrives late. */
-  useEffect(() => {
-    if (!store || started.current) return;
+    if (started.current) return;
     started.current = true;
     setDate(today);
-  }, [store, today]);
+  }, [today]);
 
   useEffect(() => {
     if (!menuOverlay) setMenuOpen(false);
@@ -426,34 +395,10 @@ export const App = (): React.ReactElement => {
     [clearGoalsFocus, clearSettlement],
   );
 
-  if (error) {
-    return (
-      <div className="boot" role="alert">
-        <p>Could not open local storage.</p>
-        <p className="menu-note">{error.message}</p>
-      </div>
-    );
-  }
-
-  if (!store) {
-    // Deliberately blank rather than a spinner: offline is the normal state,
-    // and this wait is a disk read, not a network one (PRD principle 3).
-    return <div className="boot" aria-busy="true" />;
-  }
-
-  const workspace: Workspace = {
-    doc: store.doc,
-    origin: store.actor.origin,
-    systemOrigin: store.actor.systemOrigin,
-    author: store.actor.id,
-    today,
-    undo: store.undo,
-  };
-  const system: Workspace = { ...workspace, origin: store.actor.systemOrigin };
-
   return (
     <div
       className="shell"
+      data-local-workspace="true"
       ref={shell}
       data-breakpoint={breakpoint}
       data-menu={lateral === 'menu' ? 'dragging' : menuOpen ? 'open' : 'closed'}
@@ -484,21 +429,9 @@ export const App = (): React.ReactElement => {
         } as React.CSSProperties
       }
     >
-      <Menu
-        ref={menu}
-        store={store}
-        storage={storage}
-        persistenceError={persistenceError}
-        settings={settings}
-        today={today}
-        date={date}
-        onGoTo={goTo}
-        onClose={closeLateral}
-      />
+      <Menu ref={menu} today={today} date={date} onGoTo={goTo} onClose={closeLateral} />
 
       <UnfiledPanel
-        store={store}
-        workspace={workspace}
         today={today}
         cards={unfiled}
         open={unfiledOpen}
@@ -516,10 +449,8 @@ export const App = (): React.ReactElement => {
       <button type="button" className="scrim" aria-label="Close" onClick={closeLateral} />
 
       <div className="plane" ref={plane} onWheel={onDayWheel}>
-        <StaleBanner store={store} system={system} today={today} onGoTo={goTo} />
+        <StaleBanner today={today} onGoTo={goTo} />
         <DayPlane
-          store={store}
-          workspace={workspace}
           date={date}
           today={today}
           shift={dayShift}
@@ -537,13 +468,7 @@ export const App = (): React.ReactElement => {
         />
       </div>
 
-      <Goals
-        ref={goals}
-        store={store}
-        workspace={workspace}
-        date={date}
-        onEditorReady={onGoalsEditorReady}
-      />
+      <Goals ref={goals} date={date} onEditorReady={onGoalsEditorReady} />
     </div>
   );
 };

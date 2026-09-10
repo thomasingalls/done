@@ -21,26 +21,17 @@ import {
 } from 'react';
 import { type EditorState, type Extension } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
-import {
-  NEXT_CAP,
-  copyFromMaster,
-  removeFromMaster,
-  type Section,
-  type Store,
-  type Workspace,
-} from '../crdt';
+import { NEXT_CAP, type Section } from '../crdt/days';
+import { useWorkspaceUi } from './workspaceUi';
 import {
   documentHeadings,
   scrollAwareBreadcrumb,
   type DocumentHeading,
 } from '../editor/breadcrumbs';
-import { createEditor, type EditorHandle } from '../editor/createEditor';
 import type { ISODate } from '../lib/date';
 import { GoalsOutline } from './GoalsOutline';
 
 export interface GoalsProps {
-  store: Store;
-  workspace: Workspace;
   /** Copies land on the day in view, which is the one the user is looking at. */
   date: ISODate;
   ref?: React.Ref<HTMLElement>;
@@ -74,13 +65,8 @@ export const selectedLines = (state: EditorState): Selection => {
   };
 };
 
-export const Goals = ({
-  store,
-  workspace,
-  date,
-  ref,
-  onEditorReady,
-}: GoalsProps): React.ReactElement => {
+export const Goals = ({ date, ref, onEditorReady }: GoalsProps): React.ReactElement => {
+  const { execute, mountEditor, removeMasterLines } = useWorkspaceUi();
   const host = useRef<HTMLDivElement>(null);
   const editor = useRef<EditorView | null>(null);
   const outlineTrigger = useRef<HTMLButtonElement>(null);
@@ -93,7 +79,7 @@ export const Goals = ({
   // A ref because the editor is built once and the binding inside it must not
   // capture the props of the render that happened to build it.
   const copyTo = useRef<(section: Section, lines: readonly string[]) => void>(() => {});
-  copyTo.current = (section, lines) => void copyFromMaster(workspace, { date, section }, lines);
+  copyTo.current = (section, lines) => void execute({ kind: 'copy', to: { date, section }, lines });
 
   useEffect(() => {
     const parent = host.current;
@@ -103,14 +89,10 @@ export const Goals = ({
       if (update.selectionSet || update.docChanged) setSelection(selectedLines(update.state));
     });
 
-    const handle: EditorHandle = createEditor({
+    const handle = mountEditor(
       parent,
-      text: store.master,
-      awareness: store.awareness,
-      undo: store.undo,
-      origin: workspace.origin,
-      placeholder: 'Everything. Tasks, projects, someday-maybes, notes to self.',
-      extra: [
+      { kind: 'master' },
+      [
         track,
         scrollAwareBreadcrumb(setHeadingPath),
         keymap.of([
@@ -124,7 +106,8 @@ export const Goals = ({
           },
         ]),
       ],
-    });
+      'Everything. Tasks, projects, someday-maybes, notes to self.',
+    );
     editor.current = handle.view;
     setSelection(selectedLines(handle.view.state));
     onEditorReady?.(handle.view);
@@ -137,7 +120,7 @@ export const Goals = ({
       setHeadingOutline([]);
       setOutlineOpen(false);
     };
-  }, [onEditorReady, store, workspace.origin]);
+  }, [onEditorReady, mountEditor]);
 
   useEffect(() => {
     if (!outlineOpen) return;
@@ -279,7 +262,7 @@ export const Goals = ({
           className="card-action card-action-danger"
           disabled={disabled}
           title="Delete the selected lines from the master list"
-          onClick={() => void removeFromMaster(workspace, store.master, selection.lines)}
+          onClick={() => removeMasterLines(selection.lines)}
         >
           Remove
         </button>

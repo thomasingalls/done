@@ -1,7 +1,10 @@
 import { test, expect, type Page } from '@playwright/test';
 
 const app = (page: Page) => page.locator('.local-startup');
-const state = (page: Page, kind: string) => expect(app(page)).toHaveAttribute('data-state', kind);
+const state = (page: Page, kind: string) =>
+  kind === 'ready'
+    ? expect(page.locator('.shell[data-local-workspace]')).toBeVisible()
+    : expect(app(page)).toHaveAttribute('data-state', kind);
 const census = (page: Page) =>
   page.evaluate(async () => ({
     databases: (await indexedDB.databases()).map((db) => db.name).sort(),
@@ -24,7 +27,7 @@ const enroll = async (page: Page) => {
   return code;
 };
 const lock = async (page: Page) => {
-  await page.getByRole('button', { name: 'Lock', exact: true }).click();
+  await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
   await state(page, 'unlock-required');
 };
 
@@ -106,7 +109,7 @@ test('existing legacy data refuses creation without touching its carriers', asyn
   expect(value).toBe('retained source sentinel');
 });
 
-test('verified content is a read-only preview and disappears immediately on lock', async ({
+test('verified content opens in the admitted editor and disappears immediately on lock', async ({
   page,
 }) => {
   await page.goto('/local.html');
@@ -139,12 +142,11 @@ test('verified content is a read-only preview and disappears immediately on lock
   await page.getByLabel('Device-lock code', { exact: true }).fill(code);
   await page.getByRole('button', { name: 'Unlock', exact: true }).click();
   await state(page, 'ready');
-  await expect(page.locator('.local-preview pre')).toHaveText(
+  await expect(page.locator('.goals .cm-content')).toHaveText(
     'Private preview <script>sentinel</script>',
   );
-  await expect(
-    page.locator('.local-preview script, [contenteditable="true"], .cm-editor'),
-  ).toHaveCount(0);
+  await expect(page.locator('.goals .cm-content script')).toHaveCount(0);
+  await expect(page.locator('.goals .cm-content')).toHaveAttribute('contenteditable', 'true');
   await lock(page);
   await expect(page.getByText('Private preview', { exact: false })).toHaveCount(0);
   expect(JSON.stringify(await census(page))).not.toContain('Private preview');

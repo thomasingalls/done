@@ -5,7 +5,7 @@ import { defaultKeymap } from '@codemirror/commands';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { indentUnit } from '@codemirror/language';
 import { livePreview } from './livePreview';
-import { editorTheme } from './theme';
+import { cardTheme, editorTheme } from './theme';
 import type { AdmittedTextSurface, TextAction, TextSelection } from './admittedText';
 
 export interface AdmittedEditorOptions {
@@ -13,6 +13,7 @@ export interface AdmittedEditorOptions {
   readonly document: AdmittedTextSurface;
   readonly placeholder?: string;
   readonly extra?: readonly Extension[];
+  readonly surface?: 'document' | 'card';
 }
 export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
   const document = options.document,
@@ -79,7 +80,7 @@ export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
     EditorView.lineWrapping,
     EditorState.allowMultipleSelections.of(true),
     livePreview(),
-    editorTheme,
+    options.surface === 'card' ? cardTheme : editorTheme,
     ...(options.placeholder === undefined ? [] : [placeholder(options.placeholder)]),
     editable.of(EditorView.editable.of(true)),
     EditorView.inputHandler.of((_view, from, to, inserted) => {
@@ -206,13 +207,17 @@ export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
         end--;
         last--;
       }
+      // Copying or moving a card can publish without changing this text. Keep the
+      // user's local selection then; it has not been submitted as a text intent.
+      const nextSelection = before === after && selection ? selection : snapshot.selection;
+      if (before !== after) selection = undefined;
       projecting = true;
       try {
         view.dispatch({
           ...(before === after
             ? {}
             : { changes: { from, to: end, insert: after.slice(from, last) } }),
-          selection: EditorSelection.fromJSON(snapshot.selection),
+          selection: EditorSelection.fromJSON(nextSelection),
           ...(changedEditable
             ? { effects: editable.reconfigure(EditorView.editable.of(isEditable)) }
             : {}),

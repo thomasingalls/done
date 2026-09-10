@@ -18,11 +18,22 @@ export type LocalStartupState =
   | { readonly kind: 'checking' | 'working' | 'closing' }
   | { readonly kind: 'save-code'; readonly code: string }
   | { readonly kind: 'confirm-code'; readonly error: string | null }
-  | { readonly kind: 'ready'; readonly entries: ReturnType<AdmittedWorkspace['exportEntries']> };
+  | { readonly kind: 'ready'; readonly workspace: AdmittedWorkspace; readonly actorId: string };
 
 export const createLocalStartup = () => {
   const lifetime = new AbortController();
   const listeners = new Set<() => void>();
+  const editors = new Set<() => void>();
+  const retireEditors = () => {
+    for (const destroy of [...editors]) {
+      try {
+        destroy();
+      } catch {
+        /* A failed view teardown must not retain the storage owner. */
+      }
+    }
+    editors.clear();
+  };
   let state: LocalStartupState = { kind: 'checking' };
   let ceremony: LocalGenesisEnrollment | undefined;
   let workspace: AdmittedWorkspace | undefined;
@@ -39,6 +50,7 @@ export const createLocalStartup = () => {
   const close = (): Promise<void> => {
     if (closing) return closing;
     closed = true;
+    retireEditors();
     const pending = operation;
     // Install this before notifying subscribers; also drain any opener which resolves after abort.
     closing = Promise.resolve().then(async () => {
@@ -95,16 +107,22 @@ export const createLocalStartup = () => {
     const owned = workspace;
     try {
       unsubscribe = owned.onStatus((status) => {
-        if (closed || status.state === 'active') return;
+        if (
+          closed ||
+          (['active', 'blocked'].includes(status.state) &&
+            status.pressure?.code !== 'repair-required')
+        )
+          return;
         // Retire visible plaintext immediately when the carrier loses its active lifetime.
         unsubscribe?.();
         unsubscribe = undefined;
+        retireEditors();
         publish(startupRefusal(status.pressure ?? { code: 'inactive' }));
         void owned.close().catch(() => {
           if (!closed) publish({ kind: 'unavailable', reason: 'local-close-failed' });
         });
       });
-      publish({ kind: 'ready', entries: owned.exportEntries() });
+      publish({ kind: 'ready', workspace: owned, actorId: principal });
     } catch (cause) {
       unsubscribe?.();
       unsubscribe = undefined;
@@ -115,6 +133,16 @@ export const createLocalStartup = () => {
   };
 
   return {
+    registerEditor(destroy: () => void) {
+      if (closed || state.kind !== 'ready') {
+        destroy();
+        return () => {};
+      }
+      editors.add(destroy);
+      return () => {
+        editors.delete(destroy);
+      };
+    },
     getSnapshot: () => state,
     subscribe(listener: () => void) {
       listeners.add(listener);
