@@ -1723,3 +1723,33 @@ generators found no production counterexample. No whole-protocol debt payment is
 Next is the encrypted outbound spool under the selected exact-byte retry/refusal contract, then envelope
 acceptance and the content-blind durable service. The personal preview/relay remain off and retained
 builds stay intact. This outcome precedes the L-1 rewrite; L-2 remains unchanged.
+
+### 2026-09-10 — Private outbound codec and durable-capture preparation
+
+Committed the preceding Account editing phase as signed `d10cf8b`. Built the internal envelope codec,
+with v1 reference readback and v2 required for new seals. V2 binds workspace, credential and generation
+into network-key derivation; explicit versioned routes refuse downgrade. Bounded canonical wire/body
+parsers, independent digest/signature checks, authenticated opening and captured async inputs are tested.
+No codec call grants lineage, actor, acceptance or publication authority.
+
+Preparation reproduced two nonce-budget defects in the old construction: repeated crashed mints and
+successors escape position-based counts, and v1 credentials share a key despite separate budgets. Updated
+TRD §7.4, the S0-4 allocator contract, selection annotation and all three affected authority-map pins.
+Every seal now requires its own proposed durable reservation; network positions remain separate.
+A native Account journal/renderer-crash reproduction establishes that outgoing observers cannot retain
+outbound obligations. The actual editor preserves the accepted writing correctly through that failure.
+
+[Preserved evidence](./account-conformance-runs/2026-09-10-account-outbound.md): 19 codec tests, five
+preparation tests, two native/control tests, 100 generated codec cases, 1,000 generated preparation
+histories, three model controls and three actual codec bad-acceptance controls pass. All 844 unit tests
+pass. Source hashes, generated inputs, counterexamples and logs are retained; final static/build/gate
+results accompany them. The only harness defect found was treating an inventory object as an array.
+
+The [implementation contract](./account-outbound.md) makes durable source capture the next bounded phase:
+retain encrypted intent identity, attribution and exact update bytes at admission, through journal flush
+and content compaction, behind an authenticated format fence. Begin from verified frozen genesis;
+already-edited v5 Account histories require a separate catch-up checkpoint before publication. No real
+Account exists, so this does not redo the author's Local migration. Native spool allocation, refusal-proof
+framing, response verification and relay integration remain subsequent work. No whole debt is paid, and
+personal builds/servers are untouched. This outcome was appended before replacing L-1 progress; L-2 stays
+byte-for-byte unchanged.

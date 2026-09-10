@@ -1,0 +1,82 @@
+[
+  {
+    "path": "build.log",
+    "sha256": "96577ca0420efdf7187161f65c5539a649e00354c254770d26e3d758033ce2bd"
+  },
+  {
+    "path": "codec-controls.json",
+    "sha256": "ac4b15cbbf75bc0519c0a7517f34a1de9b3e14c4995506566f9f8cc9af3e4c85"
+  },
+  {
+    "path": "codec-generated.json",
+    "sha256": "b1335cecb43c10f85490d9481d2f0429acf4dbf790aed36e1020f403353b24c9"
+  },
+  {
+    "path": "codec.log",
+    "sha256": "c71c4c547be0906adee3f7dd1ba9eb3d3a3100b55d8439aec2a8bb03b876ae5d"
+  },
+  {
+    "path": "counterexample-key-domain.json",
+    "sha256": "f11600494e7fcd6c7ba59bffab1f5d0cf1302865878ea27ecf345f42b1629660"
+  },
+  {
+    "path": "counterexample-listener-gap.json",
+    "sha256": "e81bd4e2c4756c45224e172b27e5f5b48926e8c3473fb62ca4a3fa474ad36e03"
+  },
+  {
+    "path": "counterexample-model-budget.json",
+    "sha256": "984a8203555e1f08a58cf8e71f26e897d718de87fdec884b8f6ad9b655abb132"
+  },
+  {
+    "path": "final-gates.json",
+    "sha256": "1e94be0c1253d5d25cd6b8cbfb9cd293399446442f0eae41d0063267fcdcf42c"
+  },
+  {
+    "path": "findings.json",
+    "sha256": "42d65509ba898aebb045cff05c6f655177412301e08dd6ea9490a8ee3a1b4bcc"
+  },
+  {
+    "path": "legacy-vectors.log",
+    "sha256": "775f09c3a00d80c978501b3bc6a925f8b26fdc934e3cfe38849f15c916173f36"
+  },
+  {
+    "path": "model-controls.json",
+    "sha256": "2e2795fddb0664293d50e48acee404d0eeed43bfede1d6eccaa9724ebcb0e4e1"
+  },
+  {
+    "path": "native.log",
+    "sha256": "429aef266db86b567a98beacb79fbec7f53d5dbee48f846a177f23df193ba007"
+  },
+  {
+    "path": "preparation-generated.json",
+    "sha256": "ea12fc4a5d977327ec36b1510d8802a36fc86a414213f9110855d6e18c66c0a6"
+  },
+  {
+    "path": "preparation.log",
+    "sha256": "525003e38d77a4a495f80ff67ea37457549897b68ed0313549f9c57a777eff54"
+  },
+  {
+    "path": "results.xml",
+    "sha256": "45748c920193b0bbe6771ba6c91724219518c5e7216210d1cada84d1c3f9a351"
+  },
+  {
+    "path": "sources.json",
+    "sha256": "618215de99cf060138d90e8569a16e0153e24e3e098fe0e1d85b3eb8e7f4f26f"
+  },
+  {
+    "path": "static-checks.json",
+    "sha256": "6e10cb1f0d6ebabeead94aa83426f0941a9730984116dbbb71ee2a27413a68cf"
+  },
+  {
+    "path": "summary.json",
+    "sha256": "e4cea312a7a98b86118342189e7fc3d05e4e55bda65166b955c77912b1720b1c"
+  },
+  {
+    "path": "unit-tests.log",
+    "sha256": "3465be1e61f91fbdaa69228b8c86c70894f606719356907ee63ad344fb23b420"
+  },
+  {
+    "path": "vectors.log",
+    "sha256": "1de1ecc0eaa20f22afb25a5304608f2651268d48a3ab7aec751d12f10d35a681"
+  }
+]

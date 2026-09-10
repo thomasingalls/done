@@ -1,0 +1,13 @@
+{
+  "credentials": [
+    "device-A",
+    "device-B"
+  ],
+  "sameKg": true,
+  "sameInfo": true,
+  "equalDerivedKeys": true,
+  "countEach": 2147483648,
+  "sumUnderOneKey": 4294967296,
+  "firstDisallowed": 4294967296,
+  "scope": "Exact HKDF equality plus arithmetic; not billions of real encryptions or a collision attack."
+}

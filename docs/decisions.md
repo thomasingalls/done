@@ -2320,3 +2320,24 @@ This page ends at ordinary Local unlock/recovery and subsequent edit/export veri
 source-cleanup action and does not label selected metadata as complete migration. Retain the source and
 external backups until the separate operator cleanup step has its existing preconditions. The seeded UI
 rehearsal changes no conformance debt, real-profile residue claim or independent review requirement.
+
+### 2026-09-10 — Separate network positions from seal attempts and retain source at admission
+
+Private outbound preparation reproduced two defects in the older network budget model: repeated crashed
+mints reuse one position count, and separate credentials derive the same v1 key. New private envelopes
+therefore require v2 with workspace, signing credential and generation in the key derivation. Retain v1
+vectors as historical readback and refuse v1 minting or implicit downgrade. Every future encryption
+attempt must have its own durable reservation; retries of persisted envelopes reuse the exact bytes.
+This is a construction correction, not native spool or relay completion.
+
+A real Account journal/crash reproduction also shows that accepted-update observers cannot supply
+outbound durability. Build encrypted source capsules into admission before allocating network positions.
+Preserve capsule identity, attribution and exact updates through journal flush and content compaction;
+retain remote envelopes under their original source credentials. Start the initial capture implementation
+at verified frozen genesis with an authenticated reader-version fence. Already-edited v5 Account histories
+need a separate verified catch-up checkpoint before publication; do not infer their source history from a
+compacted snapshot. No real Account exists yet, and the author's Local migration remains intact.
+
+The [outbound contract](./account-outbound.md) records the concrete bytes, proposed transaction boundaries,
+remaining refusal-proof carrier and required native evidence. Public Account receive, relay publication,
+rotation and second-device enrollment remain disabled until their owned integrations exist.

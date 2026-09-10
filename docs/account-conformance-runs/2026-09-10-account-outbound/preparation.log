@@ -1,0 +1,15 @@
+(node:95976) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ existing S0-4 model undercounts same-generation recovery and successor mints (40.338958ms)
+✔ v1 key derivation shares the actual network key across distinct credential budgets (1.515875ms)
+✔ proposed split reservations count each crashed seal and retain the same position (0.66ms)
+✔ independent oracle detects each deliberately broken preparation model (0.372125ms)
+✔ generated crash histories preserve capture, allocation, invocation count and exact retry (106.104875ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 225.570792

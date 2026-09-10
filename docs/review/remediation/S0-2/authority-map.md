@@ -251,7 +251,7 @@ guards: content
 verifies: sig over an envelope's AAD fields, nonce and digest (§7.4)
 resolves: the signing credential named in the clear header -> its member entry for the referenced epoch -> via:member-signing-keys
 status: resolved
-pin: docs/TRD.md §7.4 bfc630db61b0
+pin: docs/TRD.md §7.4 879970c40c7c
 ```
 
 ```authority
@@ -532,11 +532,11 @@ entry: k-net
 kind: aead
 guards: content
 verifies: the network-envelope subkey K_net
-counted-by: PositionCounter.reserved[gen] — §7.4's seq, reserved before the envelope exists, same comparison as §6.1's repair; a recovery mint under a moved marker counts its fresh licence where it seals, in the promote's transaction, and the abandoned licence stays counted
+counted-by: NetSealCounter.reserved[gen] per workspace/credential — private v2 binds credential and generation in HKDF; strictly reserve each invocation before crypto, including crash recovery and refusal successors; reject before 2^32; assumes an unrewound, unbranched credential history
 status: resolved
-note: FU-10 landed 2026-08-28 at the S0-4 return — the grant stages the spool row in its own transaction, so the crash between reservation and spool insertion leaves an identity the recovery rule occupies; the window is scheduled and inverted in test/storageSchedule.test.ts with the counter-only world kept as the detected negative
-pin: docs/TRD.md §7.4 bfc630db61b0
-pin: docs/review/remediation/S0-4/A-schemas.md §2 0b0a190abb99
+note: FU-10 still requires atomic position plus reserved-row identity. The 2026-09-10 preparation corrects the older model’s crash/successor undercount and v1 shared-key domain. Resolved here is the specified construction, not native implementation; account-outbound.md and its counterexamples retain that boundary.
+pin: docs/TRD.md §7.4 879970c40c7c
+pin: docs/review/remediation/S0-4/A-schemas.md §2 4eee344bd206
 ```
 
 ```authority

@@ -1062,6 +1062,12 @@ status.
 
 ### 7.4 The envelope
 
+**Private implementation amendment, 2026-09-10.** New envelopes use v2 below. The
+[concrete outbound contract](./account-outbound.md) corrects the key domain, separates position grants
+from per-invocation seal reservations, and requires durable source capture before publication. The v1
+reference vectors remain historical readback; v1 minting and implicit downgrade are refused. No relay
+or native spool is implemented by this amendment.
+
 **Constraint.** Every mutation admitted to the shared lineage is authenticated by a credential authorized at the
 referenced epoch, and its attributed actor is derived from that credential or explicitly authorized for it to
 represent.
@@ -1073,22 +1079,22 @@ relay is not entitled to a per-write record of which member wrote. The signature
 **The format is selected** (§15 row 4):
 
 ```
-Clear header  v, workspace_id, credential_id, epoch, gen, seq, nonce[12], digest
+Clear header  v=2, workspace_id, credential_id, epoch, gen, seq, nonce[12], digest
 Sealed body   LP("done/env-body/v1") || LP(actor_id) || LP(actor_kind)
               || u32be(count) || ( u32be(len) || update )*
 
-K_net = HKDF-SHA256(ikm = K_g, salt = "", info = LP("done/envelope/v1") || LP(workspace_id), L = 32)
-AAD   = LP("done/env/v1") || LP(dec v) || LP(workspace_id) || LP(credential_id)
+K_net = HKDF-SHA256(ikm = K_g, salt = "", info = LP("done/envelope/v2") || LP(workspace_id) || LP(credential_id) || LP(dec gen), L = 32)
+AAD   = LP("done/env/v2") || LP(dec v) || LP(workspace_id) || LP(credential_id)
         || LP(dec epoch) || LP(dec gen) || LP(dec seq)
 ct    = AES-256-GCM(K_net; body, AAD)
-sig   = Ed25519( device signing credential ; LP("done/env-sig/v1") || <the AAD's fields>
+sig   = Ed25519( device signing credential ; LP("done/env-sig/v2") || <the AAD's fields>
         || LP(hex nonce) || LP(hex digest) )
 ```
 
-**There are two bound field lists because one of them structurally cannot do the whole job.** The nonce is the
-AEAD's own input and `digest` is a function of the ciphertext the AAD helps produce, so neither can be inside
-the AAD — and both are fields a reader trusts. **The signature is what reaches them**, which is why its message
-is a separate list rather than the header repeated.
+**The signature binds nonce and digest as well as the AAD fields.** The nonce is known before
+encryption and could also be in AAD; the historical claim that this would be circular was incorrect.
+The ciphertext digest cannot be an input to its own construction. Keeping the two selected lists binds
+both fields without that circularity.
 
 **`digest` is SHA-256 of the ciphertext**, not the plaintext, so §7.2's relay validates it with no content key
 and §7.5's accepted chain binds the same value the relay checked.
@@ -1097,25 +1103,31 @@ and §7.5's accepted chain binds the same value the relay checked.
 by §7.5 rather than chosen here.** A client can only replay its own chain if it can compute each position
 unaided; a service-assigned position would mean it cannot verify anything until told where its own writes
 landed. The cost is that a client cannot skip — a refused envelope stalls that credential's chain until it is
-re-minted at the same position — and the benefit beyond §7.5 is that `seq` bounds the 12-byte random nonce's
-per-generation budget in one comparison, exactly as it does in §6.1.
+re-minted at the same position. Network position does not count encryption invocations.
 
-**Which means it inherited §6.1's defect along with its mechanism, and `S0-4` is where that is said.** This
-`seq` is per credential and does not reset at rotation either, so a literal `seq ≥ 2^32` test is conservative
-until the first rotation and then refuses every write for the rest of the credential's life. The count the
-comparison reads is positions **reserved** under the current generation — SP 800-38D bounds invocations, and a
-mint abandoned before send is one. *Exactly as it does in §6.1* is now true of the repair as well as of the
-idea.
+**Count every seal attempt, under the key actually used.** V2 derives distinct network keys per
+workspace, credential and generation. A durable `NetSealCounter.reserved[gen]` for that credential
+strictly commits one fresh reservation before each AES invocation, including abandoned attempts and
+authenticated-refusal successors. Refuse before the count reaches 2^32. Only the live continuation of
+the acknowledged reservation may seal once; recovery never reuses its permission. The generation fence
+applies at reservation and envelope persistence. Rotation needs a fresh key-domain count; old counts
+remain conservative. This assumes one unrewound, unbranched counter history per credential.
+
+The prior position-count argument failed twice: several crashed mints can reuse one reserved position,
+and v1 derives the same key for different credentials with separate budgets. The corrected v2 key
+domain and split reservation remove those assumptions. The codec verifies bytes; the durable counter
+and spool still require native implementation and testing.
 
 **And the position is reserved before the envelope exists**, because `seq` is inside both bound field lists
 above. Two tabs that each read the highest position they have sent choose the same next one. One durable
 `PositionCounter` per _(workspace, credential)_ grants it in a transaction, which is what serializes them —
 **and the same transaction stages the spool row for the granted position** (`S0-4` return, `FU-10`): a
-counted position with no durable identity cannot exist, because the count and the identity commit together. A
+granted position with no durable identity cannot exist, because the allocation and the identity commit together. A
 gap left by a crash between reservation and minting is not a hole to fill — §7.5's chain links *n* to *n-1*,
 so an unoccupied position stalls the chain exactly as a refused one does — and the `reserved` row is what
 resolves it: **the credential occupies its own position with a fresh first attempt**, which needs no licence
-and nothing the crash destroyed, because bytes are staged before the first network byte, so a `reserved` row
+and uses its retained exact source capsules plus a new seal-budget reservation. Bytes are staged before
+the first network byte, so a `reserved` row
 is durable proof that nothing was ever sent. A refusal cannot resolve it — `Refuse` names an exact digest,
 and no envelope was ever minted — which is why the carrier had to be the reservation itself rather than a
 counter movement.
@@ -3746,7 +3758,7 @@ true**, and where the two disagree this one wins.
 | 14 | Recovery-code entropy, generation, step-up and confirmation UX | 125 bits, Crockford Base32, five groups of five, **and no stretching at all**. Step-up is **a bound challenge rather than a freshness window** — `SHA-256( LP("done/recovery-replace/v1") \|\| LP(dec v) \|\| LP(hex intent_id) \|\| LP(hex nonce) )`, answered by the account credential, with 32 service-issued nonce bytes retired on use. **It binds §13.7's transition id, not the new public key**, so a `replace-recovery` step-up cannot be redirected to a `retire`; and no principal or credential id, because a service-issued challenge names the operation as the service knows it (§13.8) | [row 14](./selections/row-14-recovery-code.md) |
 | 5 | Finalization shape | An **append-only per-credential accepted chain** of SHA-256 links, with **service-signed heads amortized over a batch** rather than one receipt per envelope. A separate hot acceptance-signing key, certified by the authorization key in the epoch. `final: true` is the cutoff. The epoch payload and the checkpoint manifest each gain the head vector (§7.5, §7.6, §13.5) | [row 5](./selections/row-5-finalization.md) |
 | 11 | Device-to-device ceremony | A **short authentication string over an in-band agreement**, nonces **committed before revealed**, five Crockford Base32 symbols **typed** from the new device into the existing one. QR is an accelerator of the same transcript where a decoder exists, never a second protocol. The transcript binds the epoch head as well as the wrapping key, and the wrap's HPKE `info` binds the transcript hash (§13.6) | [row 11](./selections/row-11-enrollment-ceremony.md) |
-| 4 | Envelope wire format and batching granularity | Clear header — `v`, workspace, credential, epoch, generation, `seq`, nonce, `digest` — under AES-256-GCM with a network subkey, the actor inside the seal, and **two bound field lists**: an AAD for what the reader trusts, and a signature reaching the nonce and digest the AAD structurally cannot. `digest` is of the **ciphertext**, so the relay validates it with no content key. **`seq` is the credential's own position and the accepted position both**, because row 5 requires the client to compute its chain unaided (§7.4) | [row 4](./selections/row-4-envelope-format.md) |
+| 4 | Envelope wire format and batching granularity | Clear header — `v`, workspace, credential, epoch, generation, `seq`, nonce, `digest` — under AES-256-GCM with a network subkey, the actor inside the seal, and **two bound field lists**: an AAD for what the reader trusts, and a signature reaching nonce and digest. New private envelopes use v2 with a credential/generation-bound network subkey and separate per-seal budget; nonce can also be AAD, while ciphertext digest cannot be its own input. `digest` is of the **ciphertext**, so the relay validates it with no content key. **`seq` is the credential's own position and the accepted position both**, because row 5 requires the client to compute its chain unaided (§7.4) | [row 4](./selections/row-4-envelope-format.md) |
 | 9 | Chain-head discovery for a brand-new device | **Two of three arrival paths are not brand-new**: enrollment carries the head through the person (row 11), and migration carries it in a user-held package. The third — recovery with no surviving device — gets a **nonce-bound signed head assertion**, which moves replay from *anyone in the path* to *the authorization service itself*. The residual is bounded: a hidden revocation is a hidden rotation, so a stale head cannot come with current content (§13.5) | [row 9](./selections/row-9-chain-head-discovery.md) |
 | 8 | Attribution-preserving representation and its storage bound | A **standing signed claim, minted by the writing credential at card creation and living in the content root** beside the card it attributes — so §6.1's trim re-seals it under the current generation and **verifying historical authorship stops requiring historical generations**. The body commitment makes the claim falsifiable, not unforgeable: a card edited since creation verifies and is not exact. One record per card, retiring on exactly the event §4.5 already says retires a claim (§13.7) | [row 8](./selections/row-8-attribution-record.md) |
 | 7 | Checkpoint construction, cadence and retention | One **full snapshot under one generation** plus a signed manifest binding the epoch and its head, the generation, the checkpoint digest, **`sv` and `ds` separately**, row 5's accepted-head vector and the producing credential. **Attribution is preserved by row 8 rather than here**, so §7.6's forbidden re-signing shape is unreachable. **A rotation forces a checkpoint before the old generation may be dropped**; at least two are retained (§7.6) | [row 7](./selections/row-7-checkpoint.md) |

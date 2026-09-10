@@ -42,75 +42,72 @@ that is no longer active.
 
 ---
 
-## Active slice: Encrypted outbound spool and exact retry preparation (`L-1`)
+## Active slice: Durable Account source capture at admission (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-blocks_on: journal-inclusive outbound ownership and exact-byte retry contract before relay integration
-debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
+blocks_on: native journal-inclusive source capture before outbound positions or publication
+debts: consult docs/review/remediation/debts.json
 updated: 2026-09-10
 ```
 
-**Personal checkpoint.** The author confirmed edit survival through full close and normal reopen at
-`17d87c2`. Preview and relay remain stopped. The verified release stays at `.dev/releases/17d87c2/app`
-and predecessor `dist/` is intact. Origin/Tailscale routing is unchanged; build and server remain in
-this worktree/Codex session. The author controls their browser and factors. No real account, passkey,
-recovery code, operator key or authority pin has been provisioned.
+**Personal checkpoint.** The author's verified Local release remains `.dev/releases/17d87c2/app`, with
+predecessor `dist/` intact. Preview and relay remain stopped; origin/Tailscale routing is unchanged.
+The author controls their browser and factors. No real Account, passkey, recovery code, operator key or
+authority pin has been provisioned. The old second device will adopt this device's workspace using fresh
+custody/store/counters/credentials; its old writing will not be imported or merged.
 
-**Handoff committed; Account editing complete.** Signed `649925f` commits the preceding handoff phase.
-[Private Account editing](./account-editing.md) now attaches authenticated routing, custody and a fresh
-passkey proof to the actual document, journal, ordered admission queue and undo history. The first open
-checks exact frozen genesis and strictly advances the authenticated carrier to v5 `account-active`
-before admitted initialization or editing. Subsequent opens verify the original checkpoint independently
-and require current recovery to contain its ancestry, while preserving later edits and pending updates.
-The original principal, workspace, database, keys, credentials, generation, genesis and receipt remain.
+**Committed.** Signed `d10cf8b` contains the preceding private Account editing lifetime. It owns the
+journal, ordered admission, projection and history under one exclusive permit, authenticates each open,
+checks original genesis ancestry, and preserves later edits and pending updates through restart. Public
+receive still refuses and the default app remains disconnected from Account and relay work.
 
-This first private Account editor holds **one exclusive slot permit for its whole lifetime**. Another
-Account editor waits until lock/close; concurrent Account editors remain later work. Cancellation,
-pagehide and detected generation changes invalidate access. Native work drains and canonical/projection/
-undo/key cleanup completes before release. Stale editor and text handles refuse. Public receive refuses
-until an authenticated Account relay receiver exists. Outgoing callbacks observe accepted local changes;
-they do not grant network publication authority. The default app and relay remain disconnected.
+**Outbound preparation complete.** [The contract](./account-outbound.md) and
+[preserved evidence](./account-conformance-runs/2026-09-10-account-outbound.md) establish the next boundary.
+The internal codec reads the original v1 vectors and requires v2 for new encryption. V2 keys are scoped
+by workspace, signing credential and generation, with explicit versioned routing and bounded canonical
+wire/body parsing. It grants no lineage, actor, acceptance or send authority.
 
-[Preserved evidence](./account-conformance-runs/2026-09-10-account-editing.md): 16 new native tests,
-24 generated editing/reopen/crash histories, 200 generated ancestry comparisons and two observed
-bad-acceptance controls pass. Coverage includes activation before/after commit, journal-only later edits,
-delete/undo, compaction, durable pending dependency delivery, refused edits, queued owner cancellation,
-changed routing, stale handles and cancellation/drain. All 55 first-admission/handoff regressions,
-13 writer-lifetime, 15 ordered-admission, 10 workspace-projection and 17 Local-genesis cases, plus
-825 unit tests pass. TypeScript, focused static checks, isolated build and 13 final gates pass; initial
-JavaScript is 328.3/350.0 kB. Source hashes, logs, generated inputs and control outcomes are retained.
+The old model undercounts repeated mints interrupted before persistence and its successor path. V1's
+key derivation also shares keys across independently counted credentials. TRD/S0-4 now require a fresh,
+strictly committed reservation before every seal attempt, separately from network position allocation.
+A real Account journal/crash test shows why outgoing callbacks cannot be the sole outbox: acknowledged
+writing survives, but its callback does not replay and no outbound record appears after compaction.
 
-The generated campaign found a harness defect: renderer replacement closed a page still used for later
-fixture creation. Separate creation/editing pages repair it. The older admission runner also needed its
-complete dependency tree copied and hashed. Initial Account composition was isolated from shared custody
-after a dynamic dependency cycle prevented the test bundle from building. Review tightened disposal and
-cleanup registration during cancellation. Before/after evidence is preserved. The final generators found
-no production counterexample; no whole-protocol debt payment is claimed.
+Nineteen codec tests, five preparation tests, two native/control tests, 100 generated codec cases and
+1,000 generated model histories pass. Three model controls expose broken invariants; three actual codec
+guard controls permit bad acceptance. The full 844-test unit suite passes. Exact sources, generated
+inputs, counterexamples, logs and final checks are preserved. The proposed model's commits and crypto
+tokens do not establish native spool correctness. No whole-protocol debt payment is claimed.
 
-**Next bounded phase.** Encrypted outbound spool, with preparation against S0-4's selected exact-byte
-retry/refusal rules before implementation. Define how accepted database and journal updates acquire a
-network position, envelope bytes and durable pending-send state without losing acknowledged local work.
-Keep network positions distinct from local record sequences and preserve the exact bytes across crash,
-lost request/reply and cold retry. Use the certified prepared device signing credential. Unknown delivery
-outcome never licenses re-minting; authenticated refusal and successor rules must remain explicit. Build
-and test this local ownership boundary before connecting the Account editor to a relay. No ordinary
-snapshot alone substitutes for pending/journal-inclusive recovery.
+**Next bounded phase: durable source capture.** Under the existing exclusive Account lifecycle, install
+an authenticated reader-version fence before admitted initialization or editing. Start from v4's verified
+frozen genesis; refuse automatic attribution recovery from already-edited v5 histories, retaining their
+writing for a later verified catch-up checkpoint. There is no real Account history to convert today.
 
-**Following boundaries.** Envelope/acceptance integration and a content-blind durable service, then the
-first one-device ciphertext round trip. Account UI and two-gate second-device enrollment follow. The
-author's actual second pre-encryption device adopts the first device's workspace using fresh custody,
-store, counters and credentials, with no import or merge of its old writing; cleanup stays separate.
-Account passkey, device-lock code, recovery code and operator wrapping key remain distinct.
+Persist each local update with an encrypted intent capsule holding stable identity, authenticated actor/
+credential/epoch/generation and exact update bytes. The capsule's synchronous journal write is admission;
+the pressured database path must commit content and the outbound obligation atomically. Journal flush
+must retain both before exact cleanup. Deduplicate the crash overlap by intent identity and exact bytes;
+refuse conflicting reuse. Retain outbound obligations independently of content compaction. Define the
+versioned bytes/layout and effective size accounting before implementation; retain Local formats.
 
-**Remaining gates.** Concurrent Account writers, complete bindings, encrypted sync, enrollment,
-revocation/rotation, Account clear/delete, finalization/full recovery, product conformance, whole-profile
-residue, platform coverage, production root distribution/restore and independent review remain open.
-Offline binding checks do not establish revocation freshness. The host VM stays stopped; host/policy
-research is not next-up. L-2's historical clean ref `d24732b` has no further service work to integrate.
+Test the actual native boundaries: activation before/after commit, journal-only crash/reopen, pressured
+admission, flush overlap, compaction before/after capture, refused edits, pending Yjs dependencies,
+identity/attribution changes, cancellation/drain and old-reader refusal. Add generated histories and
+observed guard controls. Keep public receive and network submission disabled during this bounded phase.
+
+**Following boundaries.** Position allocation plus exact persisted v2 envelopes, then verified response/
+refusal-proof carrier and content-blind durable relay integration. Unknown outcomes retain identical
+bytes; no arbitrary accepted/closed/remint setter. After a one-device ciphertext round trip, Account UI
+and the two-gate second-device enrollment follow. Concurrent Account writers, revocation/rotation,
+Account clear/delete, finalization/recovery, product conformance, platform coverage, whole-profile residue,
+production authority distribution/restore and independent review remain open. L-2's historical clean ref
+`d24732b` has no further service work to integrate. Host VM/policy research stays stopped.
+
 This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 
 ---

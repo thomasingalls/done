@@ -1,0 +1,28 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separates v2 keys by credential and generation and refuses v1 mint/downgrade 3ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 1 bytes: single-update 4ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 1 bytes: batched-updates 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 1 bytes: system-actor 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 1 bytes: rotated-generation 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 2 bytes: single-update 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 2 bytes: batched-updates 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 2 bytes: system-actor 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 2 bytes: rotated-generation 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 2 bytes: other-credential 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separately checks the signature and seal binding for workspace_id 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separately checks the signature and seal binding for credential_id 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separately checks the signature and seal binding for epoch 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separately checks the signature and seal binding for gen 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separately checks the signature and seal binding for seq 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > checks version, domains, nonce, digest, ciphertext, signer and workspace subkey 3ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > refuses malformed framing and authenticated malformed bodies without returning updates 13ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > captures mutable input before asynchronous crypto and returns detached output 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > generated bodies roundtrip exactly; arbitrary changed wire bytes cannot authenticate 81ms
+
+ Test Files  1 passed (1)
+      Tests  19 passed (19)
+   Start at  21:13:19
+   Duration  332ms (transform 47ms, setup 42ms, import 51ms, tests 125ms, environment 0ms)
+
