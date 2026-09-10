@@ -40,6 +40,7 @@ import type { AccountWorkspaceOptions } from './accountWorkspace';
 
 /** Internal composition hook; never supplied by application or transport callers. */
 export interface CaptureExtension {
+  version: 7 | 8;
   sourceRecords(records: readonly OpenedRecord[], route: CaptureRoute): OpenedRecord[];
   initialize(
     task: SessionTask,
@@ -75,8 +76,8 @@ export async function openAccountCaptureOwner(
     ...(options.signal ? { signal: options.signal } : {}),
     initialize: async (task) => {
       const v = await verifyAccountUnderPermit(task, options);
-      if (!extension && v.marker.v === 7) throw Error('Account requires the spool owner');
-      if (extension && v.marker.v !== 6 && v.marker.v !== 7)
+      if (!extension && v.marker.v >= 7) throw Error('Account requires the spool owner');
+      if (extension && v.marker.v !== extension.version - 1 && v.marker.v !== extension.version)
         throw Error('Spool requires verified source capture');
       if (v.marker.v === 5) throw Error('Edited v5 Account needs a verified catch-up checkpoint');
       if (v.account.principalId !== principalId) throw Error('Account actor identity changed');
@@ -109,11 +110,15 @@ export async function openAccountCaptureOwner(
       await extension?.initialize(task, v);
       await owner.initialize(task);
       if (extension) {
-        if (v.marker.v === 6)
+        if (v.marker.v === extension.version - 1)
           await withPromotionRoot(task, v.claim, v.record, options.code, async (root, subtle) => {
             const next = await signPromotion(
               root,
-              { ...v.marker, v: 7, stage: 'account-spooling' },
+              {
+                ...v.marker,
+                v: extension.version,
+                stage: extension.version === 8 ? 'account-delivering' : 'account-spooling',
+              },
               subtle,
             );
             await writePromotion(task, v.claim, v.record, v.record, v.marker, next);

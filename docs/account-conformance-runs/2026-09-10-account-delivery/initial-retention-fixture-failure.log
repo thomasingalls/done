@@ -1,0 +1,61 @@
+(node:19635) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:19635) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✖ first submission is persisted exactly, idempotent, retained through compaction and suppressed after acceptance (6636.968458ms)
+✔ closed evidence survives cold restart, blocks outbound preparation and preserves local editing (6137.515875ms)
+✔ invalid responses and exact duplicates change no persistent inventory (4703.086042ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19111.750417
+
+✖ failing tests:
+
+test at test/account-delivery/native.test.mjs:59:1
+✖ first submission is persisted exactly, idempotent, retained through compaction and suppressed after acceptance (6636.968458ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      {
+        credential: 'e92d949f7d0b9a4ce501474ca3d0f1fe',
+        epoch: 1,
+        generation: 1,
+  ...
+      },
+  +   {
+  +     credential: 'e92d949f7d0b9a4ce501474ca3d0f1fe',
+  +     epoch: 1,
+  +     generation: 1,
+  +     id: '4aa6004cebea483d405ab3accbe5ac04',
+  +     principal: '7fd0dd299c19eeb53989934ec37c4784',
+  +     sources: [
+  +       {
+  +         actor: '7fd0dd299c19eeb53989934ec37c4784',
+  +         bytes: [
+  +           0,
+  +           0
+  +         ],
+  +         kind: 'human'
+  +       }
+  +     ],
+  +     v: 1,
+  +     workspace: '55a475886b2280ceda8a52f9f74f4f6c'
+  +   }
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs:78:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { v: 1, id: '629fded4eaa75f829d22daa24d064122', workspace: '55a475886b2280ceda8a52f9f74f4f6c', credential: 'e92d949f7d0b9a4ce501474ca3d0f1fe', principal: '7fd0dd299c19eeb53989934ec37c4784', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '85f4f4e34a5247ec6a81c3be60dd7076', workspace: '55a475886b2280ceda8a52f9f74f4f6c', credential: 'e92d949f7d0b9a4ce501474ca3d0f1fe', principal: '7fd0dd299c19eeb53989934ec37c4784', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '1e0b943df8917c1c6c01a39d4ec77160', workspace: '55a475886b2280ceda8a52f9f74f4f6c', credential: 'e92d949f7d0b9a4ce501474ca3d0f1fe', principal: '7fd0dd299c19eeb53989934ec37c4784', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '4aa6004cebea483d405ab3accbe5ac04', workspace: '55a475886b2280ceda8a52f9f74f4f6c', credential: 'e92d949f7d0b9a4ce501474ca3d0f1fe', principal: '7fd0dd299c19eeb53989934ec37c4784', epoch: 1, generation: 1, sources: [Array] } ],
+    expected: [ { v: 1, id: '629fded4eaa75f829d22daa24d064122', workspace: '55a475886b2280ceda8a52f9f74f4f6c', credential: 'e92d949f7d0b9a4ce501474ca3d0f1fe', principal: '7fd0dd299c19eeb53989934ec37c4784', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '85f4f4e34a5247ec6a81c3be60dd7076', workspace: '55a475886b2280ceda8a52f9f74f4f6c', credential: 'e92d949f7d0b9a4ce501474ca3d0f1fe', principal: '7fd0dd299c19eeb53989934ec37c4784', epoch: 1, generation: 1, sources: [Array] }, { v: 1, id: '1e0b943df8917c1c6c01a39d4ec77160', workspace: '55a475886b2280ceda8a52f9f74f4f6c', credential: 'e92d949f7d0b9a4ce501474ca3d0f1fe', principal: '7fd0dd299c19eeb53989934ec37c4784', epoch: 1, generation: 1, sources: [Array] } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

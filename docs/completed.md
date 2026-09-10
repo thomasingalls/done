@@ -1852,3 +1852,39 @@ Next is lifecycle-owned durable decision evidence and exact signed submission by
 reader fencing, ledger completeness and native commit/crash coverage. Service permanence and successors under
 changed authority remain separate. Personal servers stay off, retained builds intact, and no real Account is
 provisioned. This outcome is appended before replacing L-1 progress; L-2 remains unchanged.
+
+
+### 2026-09-10 — Owned Account delivery evidence and exact signed submissions
+
+Committed response verification and submission proof framing as signed `81a4655`. The private v8
+`account-delivering` owner now persists exact first-attempt signed submissions and original verified
+response bytes. It derives acceptance, closure, finalization and contradiction from those bytes on every
+census and cold open. Accepted heads cover the whole local prefix; earlier refusals and incompatible
+final heads contradict in either arrival order. Valid contradictory evidence halts outbound work while
+preserving Local editing and every source capsule.
+
+The v8 reader fence precedes admission and delivery writes. New proof/submission records extend the
+existing completeness witness in the same strict content transaction. Authority and a fresh proposed
+ledger census are rechecked after signing/sealing before the commit path. Unknown completion resolves by
+readback of exact stored bytes; missing rows refuse against retained current metadata. Earlier accepted
+submissions leave eligibility without deletion. No dispatch, successor encryption or service permanence
+is implemented. The [contract](./account-delivery.md) records first-epoch, exclusion and rollback limits.
+
+[Preserved evidence](./account-conformance-runs/2026-09-10-account-delivery.md): four unit tests include
+500 generated proof histories against an independent proposition oracle; 19 native cases include eight
+generated commit/restart histories and four effective actual-module controls. The controls expose lost
+submission persistence, resurrection after missing closure, missed prefix contradiction, and commit after
+authority changes during signing. The 24-case spool, six-case response and 21-case compaction regressions
+(with eight compaction controls) pass, as do all 873 unit tests in 78 files. No implementation/design
+counterexample was demonstrated by this phase's generators.
+
+The first retention assertion incorrectly forbade a new empty Yjs capsule on reopen; it now verifies
+retention of every original identity and byte sequence. An overlapping full unit run exceeded the existing
+five-second limit on the spool property test; the unchanged suite passes when run after browser completion.
+Both diagnostics are retained alongside exact source hashes, histories, control outputs and static/build/gate
+results. The isolated application build preserves the personal release and stopped preview/relay. No real
+Account is provisioned and no whole debt is paid.
+
+Next is durable service acceptance/refusal decisions enforcing one accepted digest or permanent closure,
+then relay integration and a one-device encrypted round trip. This outcome is appended before replacing
+L-1 progress; L-2 remains unchanged.

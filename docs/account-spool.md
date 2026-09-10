@@ -123,3 +123,6 @@ The following [response/proof phase](./account-decisions.md) adds `inspectRespon
 this owner. It derives the subject, predecessor chain and current acceptance key from authenticated
 retained state and returns evidence without writing accepted/closed records or changing the v7 format.
 Sources and exact envelopes remain retained for every result, including contradictory signed answers.
+
+The following [v8 delivery owner](./account-delivery.md) adds durable proofs and signed submissions to the
+same completeness witness. V7 remains a separate reader and refuses that activated format.

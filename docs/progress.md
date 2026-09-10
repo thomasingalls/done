@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Active slice: Account durable decisions and signed submissions (`L-1`)
+## Active slice: Durable service acceptance and refusal decisions (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: lifecycle-owned decision and submission persistence contract
+blocks_on: durable service position-decision contract
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-10
 ```
@@ -60,52 +60,50 @@ browser and factors. No real Account, passkey, recovery code, operator key or au
 The old second device will adopt this device's workspace with fresh custody/store/counters/credentials;
 its old writing will not be imported or merged.
 
-**Committed.** Signed `18ceb40` contains v2 outbound preparation, `7210b7d` durable source capture, and
-`7082fa7` the witnessed v7 spool. Network positions and encryption invocations have separate committed
-grants. Original source transactions and exact encrypted wire survive restart and compaction. An
-atomically updated metadata witness detects missing ledger rows against retained current metadata;
-coordinated profile rollback remains outside the local argument. Edited v5 histories still require a
-separately verified catch-up checkpoint.
+**Committed.** Signed `18ceb40` contains v2 outbound preparation, `7210b7d` source capture, `7082fa7` the
+witnessed v7 spool, and `81a4655` response verification and signed submission framing. Positions and network
+encryption invocations have separate durable grants. Original source transactions and exact encrypted wire
+survive restart and compaction. Coordinated restoration of metadata and ledger remains outside the local
+witness argument. Edited v5 histories still require a separately verified catch-up checkpoint.
 
-**Response/proof phase implemented.** The [contract](./account-decisions.md) defines canonical response
-bytes over unchanged selected signed messages, exact-position acceptance proof verification, all-five-field
-refusal matching, and a separate device-signed wrapper binding exact v2 wire and its parent refusal ID.
-A head is checked against the locally reconstructed chain. A proved different digest/epoch is conflict
-evidence; an unprovable prefix is unknown. A closure signature authenticates the claim, while the service
-must eventually enforce permanence. A parent proof must bind its successor's position and current authority.
+**Durable delivery implemented.** The [private v8 owner](./account-delivery.md) stores exact first-attempt
+signed submission bytes and original authenticated response bytes, atomically extending the same ledger
+witness. Its reader fence precedes editor admission; v7 readers refuse v8. Authority and a fresh proposed
+ledger census are checked again after signing/sealing before the commit path. Retries return verified
+persisted bytes. Accepted heads prove the whole retained prefix; closure, incompatible final heads and
+contradictory acceptance halt outbound work. Valid conflicting evidence stays readable, Local editing
+continues, and all source/ledger records remain retained. Invalid answers and duplicates write nothing.
 
-The Account owner's read-only inspectResponse resolves subject, previous link and current acceptance key
-from authenticated retained state. It changes no sources, envelopes or counters, and close/drain withholds
-late results. The private first epoch is the only composed lineage currently supported. Low-level verifier
-contexts are not themselves authentication, and evidence objects grant no persistence/minting capability.
+[Preserved evidence](./account-conformance-runs/2026-09-10-account-delivery.md): four unit tests with 500
+generated proposition histories, 19 native tests including eight generated restart histories and four
+effective actual-module controls. All 873 unit tests, 24 spool cases, six response cases and 21 compaction
+cases with eight compaction controls pass. Retention-fixture and concurrent unit-timeout diagnostics are
+retained; the corrected assertion and unchanged isolated unit rerun pass. No implementation/design
+counterexample was demonstrated by these generators and no whole debt is paid.
 
-[Preserved evidence](./account-conformance-runs/2026-09-10-account-decisions.md): 12 unit tests with 300
-generated cases, six native tests including eight generated histories, five effective actual verifier
-controls, all 24 spool native cases and all 869 unit tests pass. The native fixture's nonexistent editing
-helper was corrected; no implementation/design counterexample was demonstrated by this phase's generators.
-Exact inputs, controls, failed diagnostic and static/build/gate results are retained. No whole debt is paid.
+**Next bounded phase.** Specify and implement durable service position decisions for the first private
+lineage. Authenticate the submitted device/credential and exact signed wrapper against retained membership,
+current authority and the owned workspace route. Make one accepted digest or a permanent closure a durable
+transaction result, returned only after commit. Contiguous acceptance must extend the exact prior head;
+repeated requests and lost replies must return stored decisions without allocating another accepted leaf.
+A signature must report durable state, not create permission to reverse a prior outcome.
 
-**Next bounded phase.** Define and implement lifecycle-owned durable recording of verified response evidence
-and exact signed submission bytes. Use an authenticated reader fence and extend the spool's completeness
-witness atomically with every new semantic record. Recheck the current lineage, persisted envelope subject
-and prior decision at the commit boundary. Unknown/invalid responses change nothing; contradictory valid
-accept/refuse or conflicting-head evidence must fail closed and retain sources. Do not trust caller-supplied
-evidence objects or clear a capsule simply because one envelope was accepted.
+Define unknown, invalid and out-of-order requests distinctly from permanent refusal. Establish which
+policy failures warrant closure before issuing any signed refusal; transient failures must not permanently
+poison a position. Bind any parent proof to the service's own issued closure record. Do not add a successor
+minting shortcut: changed epoch/generation authority and fresh encryption grants remain required. Keep
+acceptance signing under service custody and preserve the existing certification and restore constraints.
+Exercise competing requests, restart before/after durable commit, exact retries, refusal permanence and
+signed head chains with independent histories and actual fault controls. This phase need not connect a
+browser transport or provision the author's Account.
 
-Persist a signed first-attempt submission before any future dispatch, and reread exact stored bytes after
-unknown completion. Keep device signing under the existing factor/passkey lifetime, with input capture,
-cancellation/drain and native before/after commit, renderer-crash, missing-row and generated/control coverage.
-This phase need not add dispatch or successor encryption. Any successor must additionally have a durable
-parent refusal, current epoch/generation authority and a fresh network encryption grant; capture its exact
-wrapper and proof before sending. Define those later transitions rather than guessing authority updates.
-
-**Following boundaries.** Durable service decisions enforcing permanent closure and one accepted digest,
-then content-blind relay integration and a one-device ciphertext round trip. Account UI and two-gate
-second-device enrollment follow. General lineage advancement, batched proofs/checkpoint baselines,
-concurrent Account writers, revocation/rotation, clear/delete, finalization/recovery, platform/product
-coverage, whole-profile residue, production authority distribution/restore and independent review remain
-open. L-2's historical clean ref d24732b has no further service work to integrate. Host VM/policy research
-stays stopped. Unrewound, unbranched-history assumptions remain explicit.
+**Following boundaries.** Content-blind relay integration and a one-device ciphertext round trip, then
+Account UI and two-gate second-device enrollment. General lineage advancement, successors, batched proofs,
+checkpoint baselines, concurrent Account writers, history pruning/backlog performance, revocation/rotation,
+clear/delete, finalization/recovery, platform/product coverage, whole-profile residue, production authority
+and restore, and independent review remain open. L-2's historical clean ref d24732b has no further service
+work to integrate. Host VM/policy research stays stopped. Unrewound, unbranched-history assumptions remain
+explicit.
 
 This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 

@@ -119,8 +119,9 @@ resolve that refusal ID in its own durable issued ledger and enforce permanent c
 membership, generation policy and at most one accepted digest. A valid wrapper alone proves none of those.
 
 `signSubmission` is a low-level primitive, like the envelope codec. It receives a signer only from internal
-composition/test code; the Account owner currently exposes no signing or dispatch method for it. The next
-phase must persist exact signed submission bytes before dispatch and retain them through unknown outcomes.
+composition/test code; the v7 Account owner exposes no signing or dispatch method for it. The following
+[v8 delivery owner](./account-delivery.md) persists exact first-attempt wrappers before returning them,
+retaining them through unknown outcomes; it adds no dispatch.
 A re-signed parent proof may be verified without invalidating the wrapper signature, but it does not license
 the owner to rewrite an already-persisted submission during an unknown outcome.
 
@@ -133,7 +134,7 @@ the disposable fixture factor; production acceptance custody still has no conten
 mutations remove signature, epoch, chain-link, parent-binding and successor-position checks and demonstrate
 bad acceptance. Native readback confirms sources, envelopes and counters remain unchanged by every answer.
 
-Next is lifecycle-owned persistence of verified decision evidence and exact signed submission bytes behind
-an authenticated reader fence and ledger witness. Record conflicting evidence without discarding sources;
+The following [delivery phase](./account-delivery.md) implements lifecycle-owned persistence of verified
+decision evidence and exact signed submission bytes behind an authenticated reader fence and ledger witness. Record conflicting evidence without discarding sources;
 recheck authority at commit. Permanent service decisions, successors under changed epochs/generations and
 relay dispatch require their own bounded work. No whole-protocol debt or multi-device correctness is claimed.

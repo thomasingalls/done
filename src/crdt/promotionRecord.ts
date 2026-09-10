@@ -50,7 +50,7 @@ import { probeDatabase } from './startupStorage';
 import { contentTransaction } from './contentDatabase';
 import type { SessionTask } from './writeSession';
 export interface PromotionRecord {
-  v: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  v: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
   kind: 'local-promotion';
   id: string;
   source: PromotionSource;
@@ -72,7 +72,8 @@ export interface PromotionRecord {
     | 'handoff-selected'
     | 'account-active'
     | 'account-capturing'
-    | 'account-spooling';
+    | 'account-spooling'
+    | 'account-delivering';
   handoff?: HandoffState;
   admission?: RetainedAdmission;
   genesis?: GenesisCandidate;
@@ -99,9 +100,9 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
     'stage',
     'credentials',
     'mac',
-    ...([2, 3, 4, 5, 6, 7].includes((input as { v?: number })?.v ?? 0) ? ['genesis'] : []),
-    ...([3, 4, 5, 6, 7].includes((input as { v?: number })?.v ?? 0) ? ['admission'] : []),
-    ...([4, 5, 6, 7].includes((input as { v?: number })?.v ?? 0) ? ['handoff'] : []),
+    ...([2, 3, 4, 5, 6, 7, 8].includes((input as { v?: number })?.v ?? 0) ? ['genesis'] : []),
+    ...([3, 4, 5, 6, 7, 8].includes((input as { v?: number })?.v ?? 0) ? ['admission'] : []),
+    ...([4, 5, 6, 7, 8].includes((input as { v?: number })?.v ?? 0) ? ['handoff'] : []),
   ]);
   const s = closed(r['source'], [
     'slotId',
@@ -120,6 +121,7 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
       (r['v'] === 5 && r['stage'] === 'account-active') ||
       (r['v'] === 6 && r['stage'] === 'account-capturing') ||
       (r['v'] === 7 && r['stage'] === 'account-spooling') ||
+      (r['v'] === 8 && r['stage'] === 'account-delivering') ||
       (r['v'] === 3 &&
         ['admission-requested', 'admission-offered', 'admission-receipted'].includes(
           String(r['stage']),
@@ -183,16 +185,16 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
   if (!(r['mac'] instanceof Uint8Array) || r['mac'].length !== 32)
     throw Error('Missing promotion authentication');
   return {
-    v: r['v'] as 1 | 2 | 3 | 4 | 5 | 6 | 7,
-    ...([2, 3, 4, 5, 6, 7].includes(r['v'] as number)
+    v: r['v'] as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8,
+    ...([2, 3, 4, 5, 6, 7, 8].includes(r['v'] as number)
       ? { genesis: parseGenesis(r['genesis']) }
       : {}),
-    ...([4, 5, 6, 7].includes(r['v'] as number) ? { handoff: parseHandoff(r['handoff']) } : {}),
-    ...([3, 4, 5, 6, 7].includes(r['v'] as number)
+    ...([4, 5, 6, 7, 8].includes(r['v'] as number) ? { handoff: parseHandoff(r['handoff']) } : {}),
+    ...([3, 4, 5, 6, 7, 8].includes(r['v'] as number)
       ? {
           admission: parseRetainedAdmission(
             r['admission'],
-            [4, 5, 6, 7].includes(r['v'] as number)
+            [4, 5, 6, 7, 8].includes(r['v'] as number)
               ? 'admission-receipted'
               : (r['stage'] as string),
           ),

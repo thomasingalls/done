@@ -2,7 +2,10 @@
 import { openAccountCaptureOwner, type CaptureExtension } from './accountCapture';
 import { captureAccountOptions } from './accountStartup';
 import type { AccountWorkspaceOptions } from './accountWorkspace';
-import { withPromotionRoot } from './promotionRecord';
+import { inspectDelivery, verifyDelivery, publicationState } from './deliveryRecord';
+import { createDeliveryOperations } from './accountDelivery';
+import { same } from '../../account-protocol/admission';
+import { readPromotion, promotionPayload, withPromotionRoot } from './promotionRecord';
 import { claimScope } from './localGenesisRecord';
 import {
   openEnvelope,
@@ -47,7 +50,7 @@ export interface PersistedEnvelope {
   position: number;
   bytes: Bytes;
 }
-export async function openOwnedAccountSpoolWorkspace(input: AccountWorkspaceOptions) {
+async function openSpoolWorkspace(input: AccountWorkspaceOptions, deliveryMode: boolean) {
   const options = {
     ...captureAccountOptions(input),
     identity: structuredClone(input.identity),
@@ -55,6 +58,45 @@ export async function openOwnedAccountSpoolWorkspace(input: AccountWorkspaceOpti
   };
   let kg: Bytes | undefined, signer: CryptoKey | undefined, publicKey: CryptoKey | undefined;
   let decisionAuthority: Readonly<DecisionAuthority> | undefined;
+  let expectedPayload = '',
+    expectedRecord: unknown;
+  const assertCurrent = async (task: SessionTask) => {
+    const current = await readPromotion(task, options.slotId, options.code);
+    if (
+      !current.marker ||
+      hex(promotionPayload(current.marker)) !== expectedPayload ||
+      !same(current.record, expectedRecord)
+    )
+      captureError('Delivery authority changed before commit');
+  };
+  const inspect = (records: Parameters<typeof inspectSpool>[0], route: CaptureRoute) =>
+    deliveryMode
+      ? inspectDelivery(records, route, decisionAuthority!).spool
+      : inspectSpool(records, route);
+  const checkPublication = async (
+    task: SessionTask,
+    owner: ReturnType<typeof prepareAccountCustody>,
+    route: CaptureRoute,
+  ) => {
+    if (!deliveryMode) return;
+    await assertCurrent(task);
+    const records = await owner.carrier.load(task);
+    try {
+      const state = await task.wait(() =>
+        verifyDelivery(
+          inspectDelivery(records, route, decisionAuthority!),
+          route,
+          decisionAuthority!,
+          publicKey!,
+          subtleFor(task),
+        ),
+      );
+      if (publicationState(state) !== 'ready')
+        throw Error('Delivery blocked: ' + publicationState(state));
+    } finally {
+      for (const r of records) r.bytes.fill(0);
+    }
+  };
   const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
   const verified = async (
     task: SessionTask,
@@ -63,7 +105,7 @@ export async function openOwnedAccountSpoolWorkspace(input: AccountWorkspaceOpti
   ) => {
     const records = await owner.carrier.load(task);
     try {
-      const state = inspectSpool(records, route);
+      const state = inspect(records, route);
       return { records, state };
     } catch (e) {
       for (const r of records) r.bytes.fill(0);
@@ -71,8 +113,17 @@ export async function openOwnedAccountSpoolWorkspace(input: AccountWorkspaceOpti
     }
   };
   const extension: CaptureExtension = {
-    sourceRecords: (records, route) => inspectSpool(records, route).sourceRecords,
+    version: deliveryMode ? 8 : 7,
+    sourceRecords: (records, route) => inspect(records, route).sourceRecords,
     async initialize(task, v) {
+      expectedPayload = hex(
+        promotionPayload({
+          ...v.marker,
+          v: deliveryMode ? 8 : 7,
+          stage: deliveryMode ? 'account-delivering' : 'account-spooling',
+        }),
+      );
+      expectedRecord = v.record;
       // verifyAccountUnderPermit authenticated this exact retained lineage and receipt before this hook.
       const epoch = v.marker.admission!.receipt!.offer;
       decisionAuthority = Object.freeze({
@@ -96,9 +147,17 @@ export async function openOwnedAccountSpoolWorkspace(input: AccountWorkspaceOpti
     },
     activate: (task, owner) => owner.carrier.enableSpool(task),
     async validate(task, records, route, counter) {
-      const state = inspectSpool(records, route);
+      const state = inspect(records, route);
       await verifySpoolWitness(state, counter, subtleFor(task));
       await verifySpool(state, route, kg!, publicKey!, subtleFor(task));
+      if (deliveryMode)
+        await verifyDelivery(
+          inspectDelivery(records, route, decisionAuthority!),
+          route,
+          decisionAuthority!,
+          publicKey!,
+          subtleFor(task),
+        );
     },
     dispose() {
       kg?.fill(0);
@@ -125,7 +184,11 @@ export async function openOwnedAccountSpoolWorkspace(input: AccountWorkspaceOpti
       await owner.carrier.appendSpool(
         task,
         { kind: entry.type === 'envelope' ? 'outbound' : 'heads', bytes },
-        { before, after },
+        {
+          before,
+          after,
+          ...(deliveryMode ? { beforeCommit: () => checkPublication(task, owner, route) } : {}),
+        },
       );
     } finally {
       bytes.fill(0);
@@ -163,6 +226,15 @@ export async function openOwnedAccountSpoolWorkspace(input: AccountWorkspaceOpti
       kind: 'ready' as const,
       workspace,
       listCaptures,
+      ...(deliveryMode
+        ? createDeliveryOperations({
+            authority: () => decisionAuthority!,
+            signer: () => signer!,
+            publicKey: () => publicKey!,
+            assertCurrent,
+            run: runCaptureTask,
+          })
+        : {}),
       compactContent: async () => {
         await workspace.whenDurable();
         await useState(() => {});
@@ -236,6 +308,7 @@ export async function openOwnedAccountSpoolWorkspace(input: AccountWorkspaceOpti
       prepareNextEnvelope: async (): Promise<PersistedEnvelope | null> => {
         await workspace.whenDurable();
         return runCaptureTask(async (task, owner, route) => {
+          await checkPublication(task, owner, route);
           // Sources are now durable. New journal appends during this operation belong to a later grant.
           let { records, state } = await verified(task, owner, route);
           let wire: Bytes | undefined;
@@ -321,4 +394,25 @@ export async function openOwnedAccountSpoolWorkspace(input: AccountWorkspaceOpti
     await carrier.close();
     throw e;
   }
+}
+
+/** V7 remains a separate, refusing reader after delivery activation. */
+export const openOwnedAccountSpoolWorkspace = (input: AccountWorkspaceOptions) =>
+  openSpoolWorkspace(input, false);
+export async function openOwnedAccountDeliveryWorkspace(input: AccountWorkspaceOptions) {
+  const result = await openSpoolWorkspace(input, true);
+  if (
+    !result.prepareSubmission ||
+    !result.recordResponse ||
+    !result.pendingSubmissions ||
+    !result.deliveryStatus
+  )
+    throw Error('Missing delivery composition');
+  return {
+    ...result,
+    prepareSubmission: result.prepareSubmission,
+    recordResponse: result.recordResponse,
+    pendingSubmissions: result.pendingSubmissions,
+    deliveryStatus: result.deliveryStatus,
+  };
 }

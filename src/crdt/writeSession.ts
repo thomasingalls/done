@@ -345,7 +345,8 @@ export const openAccountWriteSession = (
         (marker.v === 4 && marker.stage === 'handoff-selected') ||
         (marker.v === 5 && marker.stage === 'account-active') ||
         (marker.v === 6 && marker.stage === 'account-capturing') ||
-        (marker.v === 7 && marker.stage === 'account-spooling')
+        (marker.v === 7 && marker.stage === 'account-spooling') ||
+        (marker.v === 8 && marker.stage === 'account-delivering')
       )
     )
       throw Error('Account handoff needs resumption');

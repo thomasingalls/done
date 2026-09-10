@@ -238,7 +238,11 @@ export const createContentOwner = (
   const appendRecords = async (
     task: SessionTask,
     input: ContentInput[],
-    spool?: { before: SpoolWitness; after: SpoolWitness },
+    spool?: {
+      before: SpoolWitness;
+      after: SpoolWitness;
+      beforeCommit?: (records: readonly StoredRecord[]) => Promise<void>;
+    },
   ): Promise<StoredRecord[]> => {
     let before!: ContentCounter;
     while (true) {
@@ -267,6 +271,7 @@ export const createContentOwner = (
         ),
       );
     while (true) {
+      if (spool?.beforeCommit) await task.wait(() => spool.beforeCommit!(records));
       const current = await currentCounter(task);
       if (
         current.next_seq < before.next_seq + input.length ||
@@ -408,7 +413,11 @@ export const createContentOwner = (
     async appendSpool(
       task: SessionTask,
       input: ContentInput,
-      transition: { before: SpoolWitness; after: SpoolWitness },
+      transition: {
+        before: SpoolWitness;
+        after: SpoolWitness;
+        beforeCommit?: (records: readonly StoredRecord[]) => Promise<void>;
+      },
     ) {
       await appendRecords(task, [input], transition);
     },
