@@ -1,3 +1,15 @@
+import {
+  encodeSubmit,
+  encodeReadRequest,
+  readRequestMessage,
+  verifyReadPage,
+  READ_PAGE_LIMIT,
+  type ReadRequest,
+} from '../../account-protocol/deliveryTransport';
+import { verifyNetworkEnvelope } from '../../account-protocol/envelope';
+import type { AuthorityPin } from '../../account-protocol/authority';
+import { privateDeliveryPost } from '../account/privateDeliveryHttp';
+import { networkRoute } from './spoolRecord';
 /** Internal persistence operations attached to the spool's existing exclusive task queue. */
 import { signSubmission } from '../../account-protocol/submission';
 import {
@@ -23,6 +35,7 @@ import type { prepareAccountCustody } from './custody';
 type Owner = ReturnType<typeof prepareAccountCustody>;
 export interface DeliveryContext {
   authority(): DecisionAuthority;
+  pin(): AuthorityPin;
   signer(): CryptoKey;
   publicKey(): CryptoKey;
   assertCurrent(task: SessionTask): Promise<void>;
@@ -115,6 +128,47 @@ export function createDeliveryOperations(context: DeliveryContext) {
       bytes.fill(0);
     }
   };
+  const record = async (
+    task: SessionTask,
+    owner: Owner,
+    route: CaptureRoute,
+    c: ReturnType<typeof inspectDelivery>,
+    s: DeliveryState,
+    position: number,
+    bytes: Bytes,
+  ) => {
+    const expected = await task.wait(() => expectedPosition(c.spool, position, subtleFor(task)));
+    if (!expected) return { kind: 'unknown' as const, recorded: false };
+    const evidence = await task.wait(() =>
+      verifyPositionResponse(bytes, expected, context.authority(), subtleFor(task)),
+    );
+    task.step(() => {});
+    if (evidence.kind === 'unknown') return { kind: 'unknown' as const, recorded: false };
+    if (s.responses.get(position)?.some((b) => hex(b) === hex(bytes)))
+      return { kind: evidence.kind, recorded: false, status: describeDelivery(s) };
+    if (s.conflict)
+      return { kind: 'blocked' as const, recorded: false, status: describeDelivery(s) };
+    await persist(task, owner, route, { type: 'response', position, wire: bytes });
+    const rows = await owner.carrier.load(task);
+    try {
+      const checked = await task.wait(() =>
+        verifyDelivery(
+          inspectDelivery(rows, route, context.authority()),
+          route,
+          context.authority(),
+          context.publicKey(),
+          subtleFor(task),
+        ),
+      );
+      return task.step(() => ({
+        kind: evidence.kind,
+        recorded: true,
+        status: describeDelivery(checked),
+      }));
+    } finally {
+      for (const r of rows) r.bytes.fill(0);
+    }
+  };
   return {
     deliveryStatus: () => withState(async (_task, _owner, _route, _c, s) => describeDelivery(s)),
     pendingSubmissions: () =>
@@ -168,6 +222,104 @@ export function createDeliveryOperations(context: DeliveryContext) {
           wire.fill(0);
         }
       }),
+    submitPending: (operatorToken: string) =>
+      withState(async (task, owner, route, c, s) => {
+        if (publicationState(s) !== 'ready')
+          return { kind: 'blocked' as const, state: publicationState(s) };
+        const position = s.acceptedThrough + 1,
+          bytes = s.submissions.get(position);
+        if (!bytes) return { kind: 'idle' as const };
+        await context.assertCurrent(task);
+        const answer = await task.wait(() =>
+          privateDeliveryPost(
+            context.pin(),
+            operatorToken,
+            'submit',
+            encodeSubmit(context.authority().workspace, bytes),
+            RESPONSE_LIMIT,
+            task.signal,
+          ),
+        );
+        await context.assertCurrent(task);
+        if (!answer) return { kind: 'unknown' as const, recorded: false };
+        return record(task, owner, route, c, s, position, answer);
+      }),
+    readAcceptedPage: (operatorToken: string, after = 0, limit = 8) =>
+      withState(async (task, _owner, route, c, s) => {
+        if (!Number.isSafeInteger(after) || after < 0 || after > s.acceptedThrough)
+          throw Error('Read cursor requires retained accepted prefix');
+        const a = context.authority(),
+          pin = context.pin();
+        const request: ReadRequest = {
+          serviceId: pin.serviceId,
+          origin: pin.origin,
+          workspace: a.workspace,
+          credential: route.credential,
+          lineage: a.lineage,
+          head: a.head,
+          epoch: a.tip,
+          after,
+          limit,
+          nonce: hex(crypto.getRandomValues(new Uint8Array(32))),
+          expires: Date.now() + 30000,
+          signature: '00'.repeat(64),
+        };
+        const message = readRequestMessage(request);
+        await context.assertCurrent(task);
+        request.signature = hex(
+          new Uint8Array(
+            await task.wait(() => subtleFor(task).sign('Ed25519', context.signer(), message)),
+          ),
+        );
+        const query = encodeReadRequest(request);
+        await context.assertCurrent(task);
+        const answer = await task.wait(() =>
+          privateDeliveryPost(pin, operatorToken, 'read', query, READ_PAGE_LIMIT, task.signal),
+        );
+        await context.assertCurrent(task);
+        if (!answer) return { kind: 'unknown' as const };
+        try {
+          const page = await task.wait(() =>
+            verifyReadPage(answer, query, a.acceptanceKey, subtleFor(task)),
+          );
+          if (page.through < s.acceptedThrough || request.expires <= Date.now())
+            throw Error('Read prefix regressed');
+          for (let i = 0; i < page.entries.length; i++) {
+            const entry = page.entries[i]!,
+              position = after + i + 1;
+            const expected = await task.wait(() =>
+              expectedPosition(c.spool, position, subtleFor(task)),
+            );
+            const own = c.spool.positions.find((p) => p.position === position)?.wire;
+            if (!expected || !own || hex(own) !== hex(entry.envelope))
+              throw Error('Read differs from retained spool');
+            const envelope = await task.wait(() =>
+              verifyNetworkEnvelope(
+                entry.envelope,
+                networkRoute(route),
+                context.publicKey(),
+                subtleFor(task),
+              ),
+            );
+            if (envelope.seq !== position) throw Error('Read sequence');
+            const proof = await task.wait(() =>
+              verifyPositionResponse(entry.proof, expected, a, subtleFor(task)),
+            );
+            if (proof.kind !== 'accepted' || proof.head.final) throw Error('Read acceptance');
+          }
+          await context.assertCurrent(task);
+          return task.step(() => ({
+            kind: 'page' as const,
+            through: page.through,
+            next: page.next,
+            more: page.next < page.through,
+            entries: page.entries,
+          }));
+        } catch {
+          task.step(() => {});
+          return { kind: 'unknown' as const };
+        }
+      }),
     recordResponse: async (position: number, answer: Bytes) => {
       if (
         !Number.isSafeInteger(position) ||
@@ -178,41 +330,9 @@ export function createDeliveryOperations(context: DeliveryContext) {
         throw Error('Invalid response input');
       const bytes = new Uint8Array(answer);
       try {
-        return await withState(async (task, owner, route, c, s) => {
-          const expected = await task.wait(() =>
-            expectedPosition(c.spool, position, subtleFor(task)),
-          );
-          if (!expected) return { kind: 'unknown' as const, recorded: false };
-          const evidence = await task.wait(() =>
-            verifyPositionResponse(bytes, expected, context.authority(), subtleFor(task)),
-          );
-          task.step(() => {});
-          if (evidence.kind === 'unknown') return { kind: 'unknown' as const, recorded: false };
-          if (s.responses.get(position)?.some((b) => hex(b) === hex(bytes)))
-            return { kind: evidence.kind, recorded: false, status: describeDelivery(s) };
-          if (s.conflict)
-            return { kind: 'blocked' as const, recorded: false, status: describeDelivery(s) };
-          await persist(task, owner, route, { type: 'response', position, wire: bytes });
-          const rows = await owner.carrier.load(task);
-          try {
-            const checked = await task.wait(() =>
-              verifyDelivery(
-                inspectDelivery(rows, route, context.authority()),
-                route,
-                context.authority(),
-                context.publicKey(),
-                subtleFor(task),
-              ),
-            );
-            return task.step(() => ({
-              kind: evidence.kind,
-              recorded: true,
-              status: describeDelivery(checked),
-            }));
-          } finally {
-            for (const r of rows) r.bytes.fill(0);
-          }
-        });
+        return await withState((task, owner, route, c, s) =>
+          record(task, owner, route, c, s, position, bytes),
+        );
       } finally {
         bytes.fill(0);
       }

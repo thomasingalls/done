@@ -164,6 +164,7 @@ export async function native(t) {
     dbPath: join(dir, 'account.sqlite'),
     // Synthetic fixture factor only, for independent protocol-signature oracles. Never report its bytes.
     testOperatorKey: key,
+    testOperatorToken: token,
   };
 }
 export const args = (item) => ({

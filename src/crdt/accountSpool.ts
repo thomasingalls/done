@@ -229,6 +229,7 @@ async function openSpoolWorkspace(input: AccountWorkspaceOptions, deliveryMode: 
       ...(deliveryMode
         ? createDeliveryOperations({
             authority: () => decisionAuthority!,
+            pin: () => options.pin,
             signer: () => signer!,
             publicKey: () => publicKey!,
             assertCurrent,

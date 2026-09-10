@@ -42,74 +42,73 @@ that is no longer active.
 
 ---
 
-## Active slice: Private encrypted submission transport and readback (`L-1`)
+## Active slice: Owned one-device delivery and reconnect (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: private transport authentication and bounded readback contract
+blocks_on: lifecycle-owned delivery scheduling and retry contract
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
 
 **Personal checkpoint.** The verified Local release remains `.dev/releases/17d87c2/app`, with predecessor
-`dist/` intact. Preview/relay are stopped and origin/Tailscale routing unchanged. The author controls the
+`dist/` intact. Preview/relay remain stopped; origin/Tailscale routing is unchanged. The author controls the
 browser and factors. No real Account, passkey, recovery code, operator key or authority pin is provisioned.
-The old second device will adopt this device's workspace with fresh custody/store/counters/credentials;
+The actual old second device will adopt this device's workspace with fresh custody/store/counters/credentials;
 its old writing will not be imported or merged.
 
-**Committed.** Signed `18ceb40` contains v2 outbound preparation, `7210b7d` source capture, `7082fa7` the
-witnessed v7 spool, `81a4655` response/proof verification, and `2cb42a2` lifecycle-owned v8 delivery evidence
-and exact signed submissions. Positions and network invocations have separate durable grants. Original
-source transactions and exact wire survive restart/compaction. The v8 reader fence precedes admission;
-its responses and submissions share the atomically updated completeness witness. Closure/conflict/finalization
-halt outbound work while Local editing and retained evidence remain available. Edited v5 histories still
-require a separately verified catch-up checkpoint.
+**Committed base.** `18ceb40` contains v2 outbound preparation, `7210b7d` source capture, `7082fa7` the
+witnessed v7 spool, `81a4655` response/proof verification, `2cb42a2` lifecycle-owned v8 delivery evidence,
+and `96a2040` private schema-4 service decisions. Positions and encryption invocation grants are distinct;
+exact source capsules, envelopes, wrappers and witnessed response evidence survive restart/compaction.
+Closure/conflict/finalization halt outbound work while Local editing and retained evidence remain available.
+Edited v5 histories still need a separately verified catch-up checkpoint.
 
-**Private service decisions implemented.** The [schema-4 owner](./account-service-delivery.md) reauthenticates
-retained creating-member certification, confirmed recovery, first-epoch receipt and acceptance custody.
-It stores exact ciphertext submissions and signed responses with a signed completeness witness in one
-SQLite WAL/FULL transaction. The current authority and complete ledger snapshot are rechecked at commit.
-Retries recover exact decisions; one accepted digest per position and permanent refused subjects survive
-races, crashes and restart. Unknown/invalid/out-of-order requests create no permanent closure. A signed
-generation mismatch under a known immutable epoch has the explicitly documented permanent disposition.
+**Private transport/readback completed.** The [contract](./account-transport.md) composes actual private
+HTTP with the v8 owner. Submission sends only the earliest already persisted eligible wrapper and commits
+original service evidence using the existing witness barrier. Errors and unsigned unknowns preserve exact
+retry bytes. Read requests require the current certified device signature, bound to independently pinned
+service/origin and retained lineage/credential, fresh nonce, expiry and bounded cursor. Operator access is
+separate from content authorization.
 
-Issued parent IDs are resolved in the service's own ledger. This service-side verification adds no browser
-successor-minting or general lineage/rotation capability. V8 still emits only its current certified generation
-and halts on refusal. Schema 3 requires explicit offline upgrade; no real database was upgraded here.
-The witness detects missing rows against retained metadata, not coordinated rollback of witness and ledger.
+The service rechecks its authenticated membership and full witnessed ledger before signing a bounded page.
+The page authenticates ciphertext/proof pairs, exact request, extent and continuation, including empty/end
+results. The owner verifies every envelope and proof against retained authority and locally reconstructed
+predecessors; a returned head cannot establish its own baseline. This phase only inspects the one-device
+retained spool, with no decryption/application or durable receive cursor. Lifecycle close aborts and drains
+fetch before slot/custody release. No schema or Local format changed.
 
-[Preserved evidence](./account-conformance-runs/2026-09-11-account-service-delivery.md): 31 service tests with
-80 generated histories and four effective controls, plus real v8 consumption of service-issued heads through
-a test bridge with lost-reply recovery. All 30 core, 25 recovery, 34 admission, 14 authority and 873 unit tests
-pass. Direct Node startup required an equivalent shared-parser syntax repair; older mutation fixture copies
-required their new imports. Both initial failures and passing reruns are retained. No additional counterexample
-was demonstrated by the generators and no whole debt is paid.
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-transport.md): 17 new tests, 60 generated
+service histories and three effective controls; full private HTTP/browser cancellation, lost reply and cold
+retry; 32 service delivery, 23 browser delivery, 30 Account core regressions, and all 873 unit tests pass.
+The corrected initial failure was an unsupported test-fixture credential state, not a demonstrated protocol
+defect. Short expiry windows allow exact-request replay while membership remains current and require clock
+agreement. Full scans, unbounded retained history and coordinated state rollback remain limits.
 
-**Next bounded phase.** Define and implement private authenticated submission transport and bounded
-ciphertext/proof readback. Route only exact already-persisted v8 submissions into the service decision owner;
-unsigned unknown results and transport failures preserve pending bytes and grant no re-mint authority.
-Resolve read access from authenticated current membership, not a request-supplied workspace or key. Bind
-requests to the service/lineage/credential and distinguish any private development operator gate from the
-device's content authorization. Do not infer a read capability from a registration receipt or a signed head.
+**Next bounded phase.** Build a private lifecycle-owned one-device delivery/reconnect driver. Coalesce
+requests to drain durable captures, prepare eligible envelopes and persist submissions, then send through
+the existing exact-byte operation. Always resolve an existing pending wrapper first. Keep one network
+operation in flight; do not hold the task queue while sleeping between attempts. Unknown or lost replies
+retry the retained bytes with bounded backoff; closure, conflict, finalization or local durability failure
+stop publication without suppressing Local editing. Keep operator-token lifetime and all event/timer cleanup
+attached to close/abort.
 
-Define byte bounds, exact response framing, cursor/continuation behavior, and the authentication required
-for retained ciphertext reads before adding an endpoint. Verify returned envelopes and their service proofs
-against locally owned authority and reconstructed predecessors; never trust a supplied head as its own
-baseline. Exercise malformed/foreign requests, duplicate/late/reordered replies, lost commits, cancellation,
-restart and bounded pages with the actual owner/service and independent fault controls. Keep publication
-under the existing lifecycle task queue. This phase may establish one-device send/readback without applying
-remote content to an editor or provisioning the author's Account.
+Specify the scheduling and restart state machine before wiring it. Exercise rapid edits, offline/online,
+lost commits/replies, repeated wakeups, restart with a pending wrapper, and close during fetch/backoff using
+the actual owner/service and generated histories. Preserve durable invocation accounting and source capture;
+no transport callback may mint ciphertext or install authority. Provide private status/manual retry useful
+for the next walkthrough, without provisioning the author's Account or mounting a default-app service.
 
-**Following boundaries.** Delivery/reconnect integration with authenticated inbound replay, Account UI and
-two-gate second-device enrollment/adoption. General lineage advancement, client successors, batched proofs,
-checkpoint baselines, concurrent Account writers, history pruning/backlog performance, revocation/rotation,
-clear/delete, finalization/recovery, platform/product coverage, whole-profile residue, production authority
-and restore, and independent review remain open. L-2's historical clean ref d24732b has no further service
-work to integrate. Host VM/policy research stays stopped. Unrewound, unbranched-history assumptions remain
-explicit for both client credentials and service state.
+**Following boundaries.** Authenticated inbound replay (including its durable receive baseline/cursor and
+reader fence), Account UI, two-gate second-device enrollment/adoption, general lineage advancement, client
+successors, batched proofs/checkpoints, concurrent Account writers, pruning/backlog performance, revocation,
+rotation, clear/delete, finalization/recovery, supported platforms, whole-profile residue, production
+provisioning/deployment/restore and independent review. No whole debt is paid. L-2's historical clean ref
+`d24732b` has no further service work to integrate; host VM/policy research remains stopped. Both client
+credential history and service history still assume unrewound, unbranched state.
 
 This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 

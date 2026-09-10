@@ -1,3 +1,8 @@
+import {
+  encodeReadPage,
+  readPageMessage,
+  type ReadPage,
+} from '../account-protocol/deliveryTransport.ts';
 /** Private acceptance-seed custody. Fixed-purpose response and ledger-witness signing stays inside this owner. */
 import {
   sign,
@@ -158,6 +163,15 @@ export class AcceptanceCustody {
       ...value,
       signature: sign(null, message, key).toString('hex'),
     }));
+  }
+  page(input: unknown, id: string, pub: string, value: ReadPage): Uint8Array<ArrayBuffer> {
+    encodeReadPage(value);
+    return this.#withKey(input, id, pub, (key) =>
+      encodeReadPage({
+        ...value,
+        signature: sign(null, readPageMessage(value), key).toString('hex'),
+      }),
+    );
   }
   close() {
     this.#key = null;

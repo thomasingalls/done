@@ -1,3 +1,8 @@
+import {
+  decodeSubmit,
+  SUBMIT_BODY_LIMIT,
+  READ_REQUEST_LIMIT,
+} from '../account-protocol/deliveryTransport.ts';
 import { ADMISSION_LIMIT } from '../account-protocol/admission.ts';
 import type { PrivateAuthority } from './authority.ts';
 import type { Policy } from './webauthn.ts';
@@ -43,11 +48,14 @@ export async function createPrivateAccountServer(options: {
       send(405, refuse('malformed'));
       return;
     }
+    const deliveryRoute =
+      request.url === '/account/delivery/submit' || request.url === '/account/delivery/read';
     try {
       const supplied = request.headers.authorization?.replace(/^Bearer /, '');
       if (
         request.headers.origin !== origin ||
-        request.headers['content-type'] !== 'application/json' ||
+        request.headers['content-type'] !==
+          (deliveryRoute ? 'application/octet-stream' : 'application/json') ||
         !timingSafeEqual(bytes(supplied, 32, 32), token)
       ) {
         send(403, refuse('malformed'));
@@ -64,18 +72,32 @@ export async function createPrivateAccountServer(options: {
         size += part.length;
         if (
           size >
-          (['/account/promotion/begin', '/account/promotion/finish'].includes(request.url ?? '')
-            ? ADMISSION_LIMIT
-            : 131072)
+          (deliveryRoute
+            ? request.url === '/account/delivery/submit'
+              ? SUBMIT_BODY_LIMIT
+              : READ_REQUEST_LIMIT
+            : ['/account/promotion/begin', '/account/promotion/finish'].includes(request.url ?? '')
+              ? ADMISSION_LIMIT
+              : 131072)
         ) {
           send(413, refuse('malformed'));
           return;
         }
         parts.push(part);
       }
-      const input: unknown = JSON.parse(
-        new TextDecoder('utf-8', { fatal: true }).decode(Buffer.concat(parts)),
-      );
+      const body = new Uint8Array(Buffer.concat(parts));
+      if (deliveryRoute) {
+        const result =
+          request.url === '/account/delivery/submit'
+            ? await authority?.decideSubmission(core, decodeSubmit(body))
+            : await authority?.readAccepted(core, body);
+        if (result?.kind === 'decision') {
+          response.writeHead(200, { 'Content-Type': 'application/octet-stream' });
+          response.end(result.bytes);
+        } else send(409, { kind: 'unknown' });
+        return;
+      }
+      const input: unknown = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(body));
       if (!object(input)) {
         send(400, refuse('malformed'));
         return;

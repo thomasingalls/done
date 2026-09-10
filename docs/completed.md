@@ -1929,3 +1929,44 @@ Next is private authenticated submission transport and bounded ciphertext/proof 
 and reconnect integration. No personal Account or service is provisioned; the Local release and predecessor
 remain intact and personal preview/relay stay stopped. No whole debt is paid. This outcome is appended
 before replacing L-1 progress; L-2 is unchanged.
+
+
+### 2026-09-11 — Private authenticated submission transport and bounded readback
+
+Committed the private schema-4 service decisions as `96a2040`. The v8 lifecycle now sends only its
+already persisted earliest submission over the private HTTP adapter and records original acceptance or
+refusal evidence through its existing witnessed commit barrier. Unknown, malformed, stale and lost replies
+retain exact retry bytes. Dispatch adds no allocation or encryption invocation. No storage-format upgrade
+is required.
+
+The [readback contract](./account-transport.md) adds a device-signed selector bound to the pinned service,
+origin, workspace, creating credential, lineage, epoch head, cursor, limit, nonce and short expiry. The
+service derives the verification key from current retained membership and reauthenticates its witnessed
+ledger; the operator token remains only a development gate. The complete snapshot is rechecked before
+fixed-purpose acceptance-key signing. Pages contain contiguous exact ciphertext/proof pairs, a bound request
+hash, accepted extent and continuation, including authenticated empty/end results. Limits are eight entries
+and 10 MiB per page, with smaller pages when necessary.
+
+The actual owner verifies each page, envelope and original head against its own authority and reconstructed
+predecessors. This one-device readback requires exact retained spool bytes and rejects regression behind
+retained acceptance. It does not decrypt/apply downloaded content, persist a receive cursor or infer a
+checkpoint baseline from a head. Submit and read run under the exclusive capture queue; close invalidates,
+aborts and drains fetch before releasing the slot and custody.
+
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-transport.md): all 17 new service/native
+tests pass, including 60 generated histories, maximum-envelope page boundaries and three effective actual
+code mutations. Native HTTP tests cover lost replies and cold retry, operator-only/foreign/malformed reads,
+stale/reordered/false-extent pages, validly signed wrong-predecessor heads, redirect/oversize replies, and
+late fetch settlement during close. Existing service delivery (32 tests, including 80 histories), browser
+delivery (four properties and 19 native cases, including eight generated durable histories), Account core
+(30), and all 873 unit tests in 78 files pass. Isolated build and final checks accompany the result.
+
+The first direct service test used an unsupported credential state in its fault setup; it now uses the
+existing non-confirmed state. No production counterexample was demonstrated by these new generators.
+Expiry-window replay, clock agreement, full scans/backlog performance and coordinated restore/rollback
+remain explicit limits. The personal Local release/predecessor, factors and browser were not operated on;
+personal preview/relay remain stopped. No whole debt is paid.
+
+Next is a lifecycle-owned one-device delivery/reconnect driver, using these exact-byte operations and
+bounded retry, before authenticated inbound replay and second-device enrollment/adoption. This outcome
+is appended before replacing L-1 progress; L-2 is unchanged.

@@ -1,4 +1,13 @@
-/** Private first-lineage service decisions. No transport and no content decryption. */
+/** Private first-lineage service decisions and authenticated readback. No content decryption. */
+import {
+  decodeReadRequest,
+  encodeReadPage,
+  readRequestMessage,
+  readScopeMatches,
+  readTimeValid,
+  READ_REQUEST_LIMIT,
+  type ReadPage,
+} from '../account-protocol/deliveryTransport.ts';
 import type { DatabaseSync } from 'node:sqlite';
 import { createHash } from 'node:crypto';
 import {
@@ -468,6 +477,90 @@ export async function decideSubmission(
     } catch {
       if (db.isTransaction) db.exec('ROLLBACK');
       return unknown('storage-unavailable');
+    }
+  }
+  return unknown('state-changed');
+}
+
+export interface ReadIssuer extends DeliveryIssuer {
+  page(seal: unknown, id: string, pub: string, value: ReadPage): Bytes;
+}
+/** Reuses decision authority and the witnessed census; a workspace selector is never read authority. */
+export async function readAccepted(
+  db: DatabaseSync,
+  input: unknown,
+  issuer: ReadIssuer,
+  hook: DeliveryHook,
+): Promise<ServiceDeliveryResult> {
+  let bytes: Bytes, request: ReturnType<typeof decodeReadRequest>;
+  try {
+    if (!(input instanceof Uint8Array) || input.length > READ_REQUEST_LIMIT)
+      throw Error('Read bytes required');
+    bytes = new Uint8Array(input);
+    request = decodeReadRequest(bytes);
+  } catch {
+    return unknown('invalid-request');
+  }
+  for (let retry = 0; retry < 4; retry++) {
+    try {
+      const s = read(db, request.workspace);
+      if (!s) return unknown('unavailable');
+      const auth = await authority(s, issuer);
+      if (
+        !readScopeMatches(request, issuer.pin, auth.a, auth.credential) ||
+        !readTimeValid(request, Date.now()) ||
+        !(await crypto.subtle.verify(
+          'Ed25519',
+          auth.key,
+          unhex(request.signature, 64),
+          readRequestMessage(request),
+        ))
+      )
+        return unknown('invalid-request');
+      const ledger = await census(s, auth);
+      if (request.after > ledger.through) return unknown('out-of-order');
+      const page: ReadPage = {
+        request: hash(bytes),
+        through: ledger.through,
+        next: request.after,
+        entries: [],
+        signature: '00'.repeat(64),
+      };
+      for (const row of s.rows) {
+        if (row.kind !== 'accepted' || row.position <= request.after) continue;
+        const entry = {
+          envelope: decodeSubmission(new Uint8Array(row.submission)).envelope,
+          proof: new Uint8Array(row.response),
+        };
+        page.entries.push(entry);
+        page.next++;
+        try {
+          encodeReadPage(page);
+        } catch {
+          page.entries.pop();
+          page.next--;
+          break;
+        }
+        if (page.entries.length === request.limit) break;
+      }
+      if (page.next < page.through && !page.entries.length) return unknown('unavailable');
+      hook('after-verify', 'read-accepted');
+      db.exec('BEGIN');
+      if (snapshotBytes(s) !== snapshotBytes(snapshot(db, request.workspace))) {
+        db.exec('ROLLBACK');
+        continue;
+      }
+      if (!readTimeValid(request, Date.now())) {
+        db.exec('ROLLBACK');
+        return unknown('invalid-request');
+      }
+      issuer.check(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey);
+      const answer = issuer.page(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey, page);
+      db.exec('COMMIT');
+      return { kind: 'decision', bytes: answer };
+    } catch {
+      if (db.isTransaction) db.exec('ROLLBACK');
+      return unknown('unavailable');
     }
   }
   return unknown('state-changed');

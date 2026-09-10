@@ -1,4 +1,9 @@
-import { decideSubmission, type DeliveryIssuer } from './delivery.ts';
+import {
+  decideSubmission,
+  readAccepted,
+  type ReadIssuer,
+  type DeliveryIssuer,
+} from './delivery.ts';
 import { parseBindingProof, type BindingProof } from '../account-protocol/slot.ts';
 import {
   parseAdmissionRequest,
@@ -190,6 +195,9 @@ export class AccountCore {
   }
 
   /** Private service composition; transport cannot supply an issuer or authenticated membership. */
+  readAccepted(input: unknown, issuer: ReadIssuer) {
+    return readAccepted(this.#db, input, issuer, this.#hook);
+  }
   decideSubmission(input: unknown, issuer: DeliveryIssuer) {
     return decideSubmission(this.#db, input, issuer, this.#hook);
   }
