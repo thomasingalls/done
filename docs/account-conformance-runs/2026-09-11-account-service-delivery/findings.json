@@ -1,0 +1,30 @@
+{
+  "implementation": {
+    "failure": "Importing the shared envelope codec into the direct-Node service exposed a TypeScript parameter property unsupported by Node strip-only execution. The service could not start.",
+    "repair": "Declare the Reader input field and initialize it explicitly in its constructor. The protocol bytes and parser behavior are unchanged.",
+    "evidence": "initial-node-compatibility-failure.log; final service/native campaigns; full shared-codec unit suite"
+  },
+  "fixtures": {
+    "failure": "Older core and recovery mutation harnesses copied a fixed list of dependencies, so their isolated AccountCore import failed on the new delivery module.",
+    "repair": "Copy all TypeScript modules in account-service and account-protocol before applying the intended guard mutation. Existing controls again execute and show their intended bad outcomes.",
+    "evidence": "initial-core-fixture-failure.log; initial-recovery-fixture-failure.log; passing Account core/recovery regressions"
+  },
+  "generated": {
+    "seed": 9822026,
+    "runs": 80,
+    "length": "3..16 operations",
+    "inputs": "generated.json",
+    "oracle": "Independent Node/OpenSSL envelope, wrapper and response framing; permanent subject receipts, one accepted leaf per position, contiguous prefix, exact persisted wire and immutable retries through before/after unknown commits.",
+    "result": "No additional design or implementation counterexample was demonstrated by these generated histories."
+  },
+  "controls": [
+    "Rolling back instead of committing lets a signed acceptance escape without a durable decision.",
+    "Removing the generation policy accepts a validly signed envelope contradicting the certified epoch generation.",
+    "Removing the fresh snapshot comparison permits commit after membership becomes inactive.",
+    "Removing the signed ledger witness check allows acceptance of a previously refused subject after its closure row is deleted."
+  ],
+  "firstEpochScope": "One creating credential, epoch 1 and its fixed certified generation; valid unknown/future/out-of-order inputs produce no permanent refusal. Service validates issued successor parents but the client has no successor minting or general lineage advancement. Ciphertext is retained without decryption or plaintext/actor validation.",
+  "durability": "SQLite WAL/FULL row+witness transaction, signatures withheld until commit, exact stored response on retry; process SIGKILL and competing-process evidence retained. Local metadata+ledger rollback and whole-service restoration remain outside this witness argument.",
+  "rollout": "Private in-process API and disposable browser test bridge only. No HTTP delivery route, shipped relay loop, inbound editor delivery, personal Account provisioning, live database upgrade or retained-release/server operation.",
+  "wiring": "account:service-delivery was added to pnpm check before final snapshots. Direct Node entrypoints ran the campaigns; no whole pnpm check run is claimed."
+}

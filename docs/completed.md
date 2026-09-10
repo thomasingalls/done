@@ -1888,3 +1888,44 @@ Account is provisioned and no whole debt is paid.
 Next is durable service acceptance/refusal decisions enforcing one accepted digest or permanent closure,
 then relay integration and a one-device encrypted round trip. This outcome is appended before replacing
 L-1 progress; L-2 remains unchanged.
+
+
+### 2026-09-11 — Private service acceptance and permanent refusal decisions
+
+Committed lifecycle-owned delivery evidence and exact submissions as `2cb42a2`. The private Account
+service now verifies exact signed submissions against its retained creating-member certification, recovery
+endorsement, first-epoch receipt and acceptance custody. Schema 4 adds append-only ciphertext/response
+rows and a signed completeness witness; the row and witness commit together under SQLite WAL/FULL.
+Acceptance/refusal signatures return only after commit. Lost replies recover the exact original response.
+
+The service enforces contiguous acceptance and one accepted digest per position. An epoch-generation
+mismatch under a valid device signature permanently closes the exact subject; unknown epochs, gaps,
+invalid proofs, unavailable storage and missing parent authority create no permanent refusal. A closure
+survives restamping, restart and later acceptance of a different digest. Any successor proof must resolve
+in the service's own issued ledger and use current certified authority. This adds no client re-mint or
+general lineage-advancement capability. Current v8 clients remain halted after closure.
+
+A coherent authority/ledger snapshot is rechecked inside the final immediate transaction after async
+verification. Missing rows against retained signed witness, tampered records/custody and changed membership
+refuse without repair. Explicit offline v3 upgrade preserves prior admission; older readers reject v4.
+Coordinated metadata+ledger rollback remains outside this bounded argument. The
+[contract](./account-service-delivery.md) records request dispositions, exact hash/signing domains and limits.
+
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-service-delivery.md): 31 service cases,
+including 80 generated histories, four effective actual-module controls, SIGKILL on both sides of both
+decision kinds and competing-process races, plus one real-v8-browser integration test. The browser test
+recovers a deliberately lost acceptance reply through a test bridge; no transport endpoint or relay loop
+is added. All 30 Account core, 25 recovery, 34 admission and 14 authority regression tests pass, as do all
+873 unit tests in 78 files. Isolated build, static checks and repository gates accompany the result.
+
+The first direct Node run exposed an implementation integration defect: a browser-compiled TypeScript
+parameter property in the shared envelope parser was unsupported by Node strip-only execution. Equivalent
+field initialization repairs startup without changing wire bytes. Two older mutation fixture copiers also
+omitted the newly imported modules; copying the complete service/protocol TypeScript directories restores
+their effective controls. Initial diagnostics and passing reruns are retained. The generated histories
+found no additional design or implementation counterexample.
+
+Next is private authenticated submission transport and bounded ciphertext/proof readback before delivery
+and reconnect integration. No personal Account or service is provisioned; the Local release and predecessor
+remain intact and personal preview/relay stay stopped. No whole debt is paid. This outcome is appended
+before replacing L-1 progress; L-2 is unchanged.

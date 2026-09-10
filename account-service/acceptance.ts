@@ -1,5 +1,6 @@
-/** Private acceptance-seed custody. This component certifies a key but issues no content accepts. */
+/** Private acceptance-seed custody. Fixed-purpose response and ledger-witness signing stays inside this owner. */
 import {
+  sign,
   createSecretKey,
   generateKeyPairSync,
   createPrivateKey,
@@ -12,6 +13,13 @@ import {
 } from 'node:crypto';
 import { lp, unhex } from '../account-protocol/recovery.ts';
 import { pinBytes, type AuthorityPin } from '../account-protocol/authority.ts';
+import {
+  encodePositionResponse,
+  headMessage,
+  refusalMessage,
+  type PositionResponse,
+} from '../account-protocol/positionDecision.ts';
+import { witnessMessage, type WitnessScope, type DeliveryWitness } from './deliveryWitness.ts';
 import { closed } from '../account-protocol/preparation.ts';
 export interface AcceptanceSeal {
   v: 1;
@@ -79,7 +87,7 @@ export class AcceptanceCustody {
       raw.fill(0);
     }
   }
-  check(input: unknown, id: string, pub: string): void {
+  #withKey<T>(input: unknown, id: string, pub: string, use: (key: KeyObject) => T): T {
     const s = closed(input, ['v', 'publicKey', 'salt', 'nonce', 'ct']);
     if (s['v'] !== 1 || s['publicKey'] !== pub) throw Error('Acceptance seal changed');
     unhex(pub, 32);
@@ -101,11 +109,55 @@ export class AcceptanceCustody {
           .toString('hex') !== pub
       )
         throw Error('Acceptance key mismatch');
+      return use(privateKey);
     } finally {
       key.fill(0);
       raw?.fill(0);
       encoded?.fill(0);
     }
+  }
+  check(input: unknown, id: string, pub: string): void {
+    this.#withKey(input, id, pub, () => {});
+  }
+  issue(
+    input: unknown,
+    id: string,
+    pub: string,
+    response: PositionResponse,
+  ): Uint8Array<ArrayBuffer> {
+    // Validate the exact purpose framing before custody signs anything.
+    encodePositionResponse(response);
+    return this.#withKey(input, id, pub, (key) => {
+      if (response.kind === 'accepted')
+        return encodePositionResponse({
+          ...response,
+          head: {
+            ...response.head,
+            signature: sign(null, headMessage(response.head), key).toString('hex'),
+          },
+        });
+      return encodePositionResponse({
+        ...response,
+        refusal: {
+          ...response.refusal,
+          signature: sign(null, refusalMessage(response.refusal), key).toString('hex'),
+        },
+      });
+    });
+  }
+  witness(
+    input: unknown,
+    id: string,
+    pub: string,
+    scope: WitnessScope,
+    value: Omit<DeliveryWitness, 'signature'>,
+  ): DeliveryWitness {
+    if (scope.request !== id) throw Error('Witness custody mismatch');
+    const message = witnessMessage(scope, value);
+    return this.#withKey(input, id, pub, (key) => ({
+      ...value,
+      signature: sign(null, message, key).toString('hex'),
+    }));
   }
   close() {
     this.#key = null;

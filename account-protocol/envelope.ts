@@ -95,7 +95,10 @@ export function encodeEnvelopeBody(body: EnvelopeBody): Bytes {
 }
 class Reader {
   at = 0;
-  constructor(readonly input: Bytes) {}
+  readonly input: Bytes;
+  constructor(input: Bytes) {
+    this.input = input;
+  }
   take(n: number): Bytes {
     if (n < 0 || n > this.input.length - this.at) return bad();
     const result = this.input.slice(this.at, this.at + n);

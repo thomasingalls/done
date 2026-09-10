@@ -312,6 +312,16 @@ export class PrivateAuthority {
   promotionBinding(core: AccountCore, input: unknown) {
     return core.promotionBinding(input, this.#issuer());
   }
+  decideSubmission(core: AccountCore, input: unknown) {
+    if (!this.#key) throw Error('Authority closed');
+    return core.decideSubmission(input, {
+      pin: { ...this.#pin },
+      check: (seal, id, pub) => this.#acceptance.check(seal, id, pub),
+      issue: (seal, id, pub, response) => this.#acceptance.issue(seal, id, pub, response),
+      witness: (seal, id, pub, scope, value) =>
+        this.#acceptance.witness(seal, id, pub, scope, value),
+    });
+  }
   close(): void {
     this.#key = null;
     this.#acceptance.close();

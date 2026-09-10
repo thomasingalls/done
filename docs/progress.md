@@ -42,16 +42,16 @@ that is no longer active.
 
 ---
 
-## Active slice: Durable service acceptance and refusal decisions (`L-1`)
+## Active slice: Private encrypted submission transport and readback (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: durable service position-decision contract
+blocks_on: private transport authentication and bounded readback contract
 debts: consult docs/review/remediation/debts.json
-updated: 2026-09-10
+updated: 2026-09-11
 ```
 
 **Personal checkpoint.** The verified Local release remains `.dev/releases/17d87c2/app`, with predecessor
@@ -61,49 +61,55 @@ The old second device will adopt this device's workspace with fresh custody/stor
 its old writing will not be imported or merged.
 
 **Committed.** Signed `18ceb40` contains v2 outbound preparation, `7210b7d` source capture, `7082fa7` the
-witnessed v7 spool, and `81a4655` response verification and signed submission framing. Positions and network
-encryption invocations have separate durable grants. Original source transactions and exact encrypted wire
-survive restart and compaction. Coordinated restoration of metadata and ledger remains outside the local
-witness argument. Edited v5 histories still require a separately verified catch-up checkpoint.
+witnessed v7 spool, `81a4655` response/proof verification, and `2cb42a2` lifecycle-owned v8 delivery evidence
+and exact signed submissions. Positions and network invocations have separate durable grants. Original
+source transactions and exact wire survive restart/compaction. The v8 reader fence precedes admission;
+its responses and submissions share the atomically updated completeness witness. Closure/conflict/finalization
+halt outbound work while Local editing and retained evidence remain available. Edited v5 histories still
+require a separately verified catch-up checkpoint.
 
-**Durable delivery implemented.** The [private v8 owner](./account-delivery.md) stores exact first-attempt
-signed submission bytes and original authenticated response bytes, atomically extending the same ledger
-witness. Its reader fence precedes editor admission; v7 readers refuse v8. Authority and a fresh proposed
-ledger census are checked again after signing/sealing before the commit path. Retries return verified
-persisted bytes. Accepted heads prove the whole retained prefix; closure, incompatible final heads and
-contradictory acceptance halt outbound work. Valid conflicting evidence stays readable, Local editing
-continues, and all source/ledger records remain retained. Invalid answers and duplicates write nothing.
+**Private service decisions implemented.** The [schema-4 owner](./account-service-delivery.md) reauthenticates
+retained creating-member certification, confirmed recovery, first-epoch receipt and acceptance custody.
+It stores exact ciphertext submissions and signed responses with a signed completeness witness in one
+SQLite WAL/FULL transaction. The current authority and complete ledger snapshot are rechecked at commit.
+Retries recover exact decisions; one accepted digest per position and permanent refused subjects survive
+races, crashes and restart. Unknown/invalid/out-of-order requests create no permanent closure. A signed
+generation mismatch under a known immutable epoch has the explicitly documented permanent disposition.
 
-[Preserved evidence](./account-conformance-runs/2026-09-10-account-delivery.md): four unit tests with 500
-generated proposition histories, 19 native tests including eight generated restart histories and four
-effective actual-module controls. All 873 unit tests, 24 spool cases, six response cases and 21 compaction
-cases with eight compaction controls pass. Retention-fixture and concurrent unit-timeout diagnostics are
-retained; the corrected assertion and unchanged isolated unit rerun pass. No implementation/design
-counterexample was demonstrated by these generators and no whole debt is paid.
+Issued parent IDs are resolved in the service's own ledger. This service-side verification adds no browser
+successor-minting or general lineage/rotation capability. V8 still emits only its current certified generation
+and halts on refusal. Schema 3 requires explicit offline upgrade; no real database was upgraded here.
+The witness detects missing rows against retained metadata, not coordinated rollback of witness and ledger.
 
-**Next bounded phase.** Specify and implement durable service position decisions for the first private
-lineage. Authenticate the submitted device/credential and exact signed wrapper against retained membership,
-current authority and the owned workspace route. Make one accepted digest or a permanent closure a durable
-transaction result, returned only after commit. Contiguous acceptance must extend the exact prior head;
-repeated requests and lost replies must return stored decisions without allocating another accepted leaf.
-A signature must report durable state, not create permission to reverse a prior outcome.
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-service-delivery.md): 31 service tests with
+80 generated histories and four effective controls, plus real v8 consumption of service-issued heads through
+a test bridge with lost-reply recovery. All 30 core, 25 recovery, 34 admission, 14 authority and 873 unit tests
+pass. Direct Node startup required an equivalent shared-parser syntax repair; older mutation fixture copies
+required their new imports. Both initial failures and passing reruns are retained. No additional counterexample
+was demonstrated by the generators and no whole debt is paid.
 
-Define unknown, invalid and out-of-order requests distinctly from permanent refusal. Establish which
-policy failures warrant closure before issuing any signed refusal; transient failures must not permanently
-poison a position. Bind any parent proof to the service's own issued closure record. Do not add a successor
-minting shortcut: changed epoch/generation authority and fresh encryption grants remain required. Keep
-acceptance signing under service custody and preserve the existing certification and restore constraints.
-Exercise competing requests, restart before/after durable commit, exact retries, refusal permanence and
-signed head chains with independent histories and actual fault controls. This phase need not connect a
-browser transport or provision the author's Account.
+**Next bounded phase.** Define and implement private authenticated submission transport and bounded
+ciphertext/proof readback. Route only exact already-persisted v8 submissions into the service decision owner;
+unsigned unknown results and transport failures preserve pending bytes and grant no re-mint authority.
+Resolve read access from authenticated current membership, not a request-supplied workspace or key. Bind
+requests to the service/lineage/credential and distinguish any private development operator gate from the
+device's content authorization. Do not infer a read capability from a registration receipt or a signed head.
 
-**Following boundaries.** Content-blind relay integration and a one-device ciphertext round trip, then
-Account UI and two-gate second-device enrollment. General lineage advancement, successors, batched proofs,
+Define byte bounds, exact response framing, cursor/continuation behavior, and the authentication required
+for retained ciphertext reads before adding an endpoint. Verify returned envelopes and their service proofs
+against locally owned authority and reconstructed predecessors; never trust a supplied head as its own
+baseline. Exercise malformed/foreign requests, duplicate/late/reordered replies, lost commits, cancellation,
+restart and bounded pages with the actual owner/service and independent fault controls. Keep publication
+under the existing lifecycle task queue. This phase may establish one-device send/readback without applying
+remote content to an editor or provisioning the author's Account.
+
+**Following boundaries.** Delivery/reconnect integration with authenticated inbound replay, Account UI and
+two-gate second-device enrollment/adoption. General lineage advancement, client successors, batched proofs,
 checkpoint baselines, concurrent Account writers, history pruning/backlog performance, revocation/rotation,
 clear/delete, finalization/recovery, platform/product coverage, whole-profile residue, production authority
 and restore, and independent review remain open. L-2's historical clean ref d24732b has no further service
 work to integrate. Host VM/policy research stays stopped. Unrewound, unbranched-history assumptions remain
-explicit.
+explicit for both client credentials and service state.
 
 This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 

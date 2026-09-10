@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { AccountCore } from '../../account-service/core.ts';
@@ -13,16 +13,11 @@ async function mutation(t, file, from, to) {
   const dir = mkdtempSync(join(parent, 'mutant-'));
   t.after(() => rmSync(dir, { recursive: true, force: true }));
   for (const path of [
-    'account-service/core.ts',
-    'account-service/protocol.ts',
-    'account-service/webauthn.ts',
-    'account-service/recovery.ts',
-    'account-protocol/recovery.ts',
-    'account-protocol/authority.ts',
-    'account-protocol/preparation.ts',
-    'account-protocol/genesis.ts',
-    'account-protocol/admission.ts',
-    'account-protocol/slot.ts',
+    ...['account-service', 'account-protocol'].flatMap((dir) =>
+      readdirSync(dir)
+        .filter((name) => name.endsWith('.ts'))
+        .map((name) => dir + '/' + name),
+    ),
     'src/account/recovery.ts',
   ]) {
     let s = readFileSync(path, 'utf8');

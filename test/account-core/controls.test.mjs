@@ -19,7 +19,7 @@ async function mutated(t, edits) {
       join(dir, 'account-protocol', name),
       readFileSync(join('account-protocol', name)),
     );
-  for (const file of ['protocol.ts', 'webauthn.ts', 'core.ts', 'recovery.ts']) {
+  for (const file of readdirSync('account-service').filter((name) => name.endsWith('.ts'))) {
     let source = readFileSync(resolve('account-service', file), 'utf8');
     for (const [target, from, to] of edits)
       if (file === target) {

@@ -102,3 +102,7 @@ integration and a one-device ciphertext round trip. General lineage advancement,
 concurrent Account writers, history pruning/backlog performance, recovery/finalization workflows, rotation,
 revocation, two-device enrollment and production authority/restore coverage remain separate work. The
 first authenticated private epoch and an unrewound, unbranched credential history remain explicit limits.
+
+The following [private service phase](./account-service-delivery.md) implements durable first-epoch
+acceptance/refusal transactions and a signed completeness witness. The browser owner is unchanged;
+its service consumption is exercised through a test bridge, with relay transport still separate.

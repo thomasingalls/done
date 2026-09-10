@@ -1,0 +1,89 @@
+Account recovery evidence: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-recovery/2026-09-10T22-02-15.796Z
+(node:28202) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28202) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✖ control: removing recovery verification actually accepts a one-factor finalization (17.572333ms)
+✖ control: removing passkey verification actually accepts a one-factor finalization (6.974334ms)
+✔ control: removing the sealed-root check accepts an attacker-substituted authority root (83.889459ms)
+(node:28203) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28203) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ both proofs finalize one exact recovery preparation (-8) (178.634792ms)
+✔ both proofs finalize one exact recovery preparation (-7) (77.271958ms)
+✔ wrong code, binding and substituted private keys cannot confirm (115.652917ms)
+✔ unconfirmed registration, another attempt, malformed draft and extra authority fields refuse (27.22525ms)
+✔ finalization rechecks cancel after verification (26.475208ms)
+✔ finalization rechecks expiry after verification (71.522791ms)
+✔ finalization rechecks activation after verification (68.227416ms)
+✔ finalization rechecks key after verification (26.009334ms)
+✔ finalization before-commit write failure has one retry outcome (64.967708ms)
+✔ finalization after-commit write failure has one retry outcome (83.119458ms)
+✔ schema v1 requires an explicit offline additive upgrade and preserves pending registration (17.215ms)
+(node:28204) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28204) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ independent Node crypto opens the complete three-part payload and verifies confirmation bytes (23.906625ms)
+✔ sealed root, X25519 private/public and bootstrap private/public checks are independently necessary (117.305375ms)
+✔ normalization preserves the selected full-width alphabet and rejects non-codes (14.432833ms)
+(node:28205) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28205) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ native saved-code reentry, full browser restart, owner exclusion and lost finalization response (2888.624917ms)
+(node:28206) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28206) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ 160 generated recovery histories obey an independent durable outcome ledger (4626.433042ms)
+(node:28207) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28207) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ SIGKILL before-commit begin-recovery resumes from a cold process (854.658209ms)
+✔ SIGKILL after-commit begin-recovery resumes from a cold process (772.193666ms)
+✔ SIGKILL before-commit finalize-recovery resumes from a cold process (944.077916ms)
+✔ SIGKILL after-commit finalize-recovery resumes from a cold process (619.22325ms)
+✔ SIGKILL before-commit cancel-recovery resumes from a cold process (582.328958ms)
+✔ SIGKILL after-commit cancel-recovery resumes from a cold process (493.37125ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 23
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5342.859958
+
+✖ failing tests:
+
+test at test/account-recovery/controls.test.mjs:46:3
+✖ control: removing recovery verification actually accepts a one-factor finalization (17.572333ms)
+  Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-recovery-controls/mutant-asduvO/account-service/delivery.ts' imported from /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-recovery-controls/mutant-asduvO/account-service/core.ts
+      at finalizeResolution (node:internal/modules/esm/resolve:272:11)
+      at moduleResolve (node:internal/modules/esm/resolve:879:10)
+      at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+      at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+      at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+      at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+      at #resolve (node:internal/modules/esm/loader:690:17)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+      at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33)
+      at ModuleJob.link (node:internal/modules/esm/module_job:389:17) {
+    code: 'ERR_MODULE_NOT_FOUND',
+    url: 'file:///Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-recovery-controls/mutant-asduvO/account-service/delivery.ts'
+  }
+
+test at test/account-recovery/controls.test.mjs:46:3
+✖ control: removing passkey verification actually accepts a one-factor finalization (6.974334ms)
+  Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-recovery-controls/mutant-bDLXC2/account-service/delivery.ts' imported from /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-recovery-controls/mutant-bDLXC2/account-service/core.ts
+      at finalizeResolution (node:internal/modules/esm/resolve:272:11)
+      at moduleResolve (node:internal/modules/esm/resolve:879:10)
+      at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+      at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+      at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+      at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+      at #resolve (node:internal/modules/esm/loader:690:17)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+      at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33)
+      at ModuleJob.link (node:internal/modules/esm/module_job:389:17) {
+    code: 'ERR_MODULE_NOT_FOUND',
+    url: 'file:///Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-recovery-controls/mutant-bDLXC2/account-service/delivery.ts'
+  }
+Account recovery campaign failed: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-recovery/2026-09-10T22-02-15.796Z

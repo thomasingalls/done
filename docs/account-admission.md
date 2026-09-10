@@ -89,3 +89,7 @@ Private POST routes `/account/promotion/begin` and `/account/promotion/finish` k
 operator token, JSON and no-store rules. Only these ciphertext-bearing routes accept up to 72 MiB of
 JSON; existing small ceremony routes retain 128 KiB. No plaintext document, factor, content key or device
 private key is in either request. No personal service is provisioned or started in this phase.
+
+The following [service decision phase](./account-service-delivery.md) advances the private service to
+schema 4 with an explicit offline v3 upgrade. It preserves these admission receipts and their original
+acceptance-key seals while adding permanent content-decision storage.

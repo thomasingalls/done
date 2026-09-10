@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-10T22:03:24.622Z",
+  "stages": [
+    {
+      "name": "service",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native",
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "scope": "Private schema-4 durable service acceptance/refusal, certified membership, fixed-purpose acceptance custody, atomic signed ledger witness, process death/competition, independent generated histories and real v8 browser consumption through a test bridge. No shipped relay transport, client successor minting, general lineage advancement or personal operations.",
+  "completedAt": "2026-09-10T22:03:53.857Z"
+}

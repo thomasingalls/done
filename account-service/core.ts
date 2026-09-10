@@ -1,3 +1,4 @@
+import { decideSubmission, type DeliveryIssuer } from './delivery.ts';
 import { parseBindingProof, type BindingProof } from '../account-protocol/slot.ts';
 import {
   parseAdmissionRequest,
@@ -103,6 +104,7 @@ export class AccountCore {
       hook?: Hook;
       upgradeFromV1?: boolean;
       upgradeFromV2?: boolean;
+      upgradeFromV3?: boolean;
     } = {},
   ) {
     validatePolicy(policy);
@@ -138,7 +140,8 @@ export class AccountCore {
         `);
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
-        version !== 3 &&
+        version !== 4 &&
+        !(version === 3 && instrumentation.upgradeFromV3) &&
         !(version === 2 && instrumentation.upgradeFromV2) &&
         !(version === 1 && instrumentation.upgradeFromV1)
       )
@@ -151,7 +154,7 @@ export class AccountCore {
           proof_hash TEXT, result TEXT, CHECK((proof_hash IS NULL) = (result IS NULL)));
           PRAGMA user_version=2;`);
       }
-      if (version !== 3) {
+      if (version < 3) {
         this.#db.exec(`CREATE TABLE promotions (
           account_id TEXT PRIMARY KEY REFERENCES accounts(id),workspace_id TEXT NOT NULL,lineage_id TEXT NOT NULL,
           request_digest TEXT UNIQUE NOT NULL,request TEXT NOT NULL,offer TEXT NOT NULL,acceptance_seal TEXT NOT NULL,
@@ -159,6 +162,19 @@ export class AccountCore {
           CREATE UNIQUE INDEX promotion_workspace ON promotions(workspace_id) WHERE state != 'cancelled';
           CREATE UNIQUE INDEX promotion_lineage ON promotions(lineage_id) WHERE state != 'cancelled';
           PRAGMA user_version=3;`);
+      }
+      if (version < 4) {
+        this.#db.exec(`ALTER TABLE promotions ADD COLUMN delivery_witness TEXT;
+          CREATE TABLE delivery_decisions (
+            account_id TEXT NOT NULL REFERENCES accounts(id),
+            ordinal INTEGER NOT NULL CHECK(ordinal>0),
+            position INTEGER NOT NULL CHECK(position>0),
+            digest TEXT NOT NULL, envelope_epoch INTEGER NOT NULL CHECK(envelope_epoch>0),
+            kind TEXT NOT NULL CHECK(kind IN ('accepted','refused')),
+            submission BLOB NOT NULL, response BLOB NOT NULL,
+            PRIMARY KEY(account_id,position,digest,envelope_epoch), UNIQUE(account_id,ordinal));
+          CREATE UNIQUE INDEX delivery_accepted_position ON delivery_decisions(account_id,position) WHERE kind='accepted';
+          PRAGMA user_version=4;`);
       }
       if (
         this.#db.prepare('SELECT value FROM policy WHERE id=1').get()?.value !==
@@ -173,6 +189,10 @@ export class AccountCore {
     }
   }
 
+  /** Private service composition; transport cannot supply an issuer or authenticated membership. */
+  decideSubmission(input: unknown, issuer: DeliveryIssuer) {
+    return decideSubmission(this.#db, input, issuer, this.#hook);
+  }
   close(): void {
     this.#db.close();
   }
@@ -607,7 +627,9 @@ export class AccountCore {
         )
           return refuse('proof-conflict');
         this.#db
-          .prepare("INSERT INTO promotions VALUES (?,?,?,?,?,?,?,'proposed',NULL)")
+          .prepare(
+            "INSERT INTO promotions (account_id,workspace_id,lineage_id,request_digest,request,offer,acceptance_seal,state,result) VALUES (?,?,?,?,?,?,?,'proposed',NULL)",
+          )
           .run(
             request.candidate.accountId,
             request.candidate.workspaceId,
