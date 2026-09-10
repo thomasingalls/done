@@ -12,6 +12,7 @@
     "composite": true
   },
   "include": [
+    "account-service",
     "vite.config.ts",
     "vite",
     "playwright.config.ts",

@@ -48,63 +48,54 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight # personal upgrade complete; account challenge/passkey core next
-plan: [sequencing.md §3.2, action-tree.md L-1, storage-conformance.md, application-upgrades.md, storage-compatibility.md]
+status: in flight # first account core complete; recovery/finalization next
+plan: [sequencing.md §3.5, action-tree.md L-1, account-sync-prep.md, account-core.md]
 prerequisites: corrected SC-01–09; historical S0-10 closure covers represented cases only
 debts: consult docs/review/remediation/debts.json # component evidence does not pay whole obligations
 updated: 2026-09-10
 ```
 
-**Personal checkpoint.** Signed `14901a5` records compatible app-update work and the author's successful
-source cleanup followed by encrypted reopening with the writing intact. The exact helper completion text
-was not retained; no independent personal census is claimed. External backups remain. Following the author's
-current lock/close confirmation, the preview served the verified `17d87c2` package at the same HTTPS
-origin and loopback port. It is now stopped at the author’s request during account implementation. The predecessor `dist/` remains intact. Build and server remain in this worktree/
-Codex session by request. Relay is off. The author controls their browser and retains their device code.
-The author confirms a later edit survives lock, full close, normal reopen and unlock, with Version
-`17d87c2` still shown. The bounded personal application upgrade is complete.
+**Personal checkpoint.** Signed `187b636` records the completed `17d87c2` application handoff, exact-package
+runner and account/sync prep. The author confirms a new edit survived lock, full close, normal reopen and
+unlock, with the version unchanged. The preview is stopped at their request while account work proceeds;
+relay remains off. The verified release stays in `.dev/releases/17d87c2/app`, the predecessor `dist/`
+is intact, and the origin/Tailscale route are unchanged. Build and server remain in this worktree/Codex
+session by request. The author controls their browser and retains the device code and external backups.
 
-**Committed compatibility baseline (`17d87c2`).** The [contract](./storage-compatibility.md)
-and [evidence](./storage-conformance-runs/2026-09-10-storage-compatibility.md) cover a refusal-only interlock
-at a stable custody key. Every shared/exclusive grant checks it before caller initialization. Any retained
-value blocks this build; absence continues to the existing authentication and format checks. Blocked native
-opens retain the permit through cancellation. Future document schemas present a compatible-app requirement
-while preserving the encrypted database/journal. This phase writes no upgrade marker and changes no format.
+**First account core complete.** The [contract](./account-core.md) describes the private service boundary:
+service-owned, purpose-bound, single-use challenges; attested-key staging and separate proof of possession;
+discoverable sign-in against active fixture accounts; SQLite WAL/FULL progress and result commits; current
+state/expiry/key checks after asynchronous verification; restart-safe retry lookup and typed refusals.
+Accounts created here stay pending. Results confer no session, relay, admission or content authority.
+The loopback adapter is not mounted in the app or relay. No personal account, passkey or content operation
+occurred. The server-side WebAuthn dependency is pinned to the reviewed, age-policy-eligible 14.0.0 release.
 
-825 unit tests pass, including 160 generated interlock histories and a get/count control. Native passes:
-five compatibility cases, thirteen lifecycle cases plus five detected controls, eight compatible app-upgrade
-cases including the actual predecessor, eight Local app cases and five private migration/cleanup cases.
-TypeScript, focused static checks, isolated-build budget (327.2 kB) and origin isolation pass. The live build
-was not overwritten. The complete check chain was not run; no debt or matrix status changed.
+[Preserved evidence](./account-conformance-runs/2026-09-10-account-core.md): all 30 campaign tests pass,
+including a repaired competing-process confirmation race, 240 generated histories, ten real SIGKILL/reopen
+cases, native virtual-authenticator ceremonies,
+HTTP boundary tests and three observed acceptance controls. All 825 existing unit tests, TypeScript,
+focused static checks and the isolated production build pass; the app remains within 327.2 kB of the
+350 kB budget, and origin isolation passes. The full check chain was not run; no debt/matrix status changed.
 
-**Personal release handoff.** The clean-source package from `17d87c2` is retained at
-`.dev/releases/17d87c2/app`. All three exact-package native cases pass, including offline edit/reopen at
-both entries. [Build/report pins](./storage-conformance-runs/2026-09-10-personal-upgrade-prep/manifest.json)
-and the [handoff procedure](./personal-app-upgrade.md) are retained. All ten release files plus root HTML
-match through both loopback and HTTPS: [22 matching responses](./storage-conformance-runs/2026-09-10-personal-upgrade-prep/handoff-http.json).
-The author saw `8db7070` on the first load and after soft reload, then `17d87c2` after hard reload.
-A subsequent requested lock/full-close/normal-reopen check preserved the new edit and Version `17d87c2`,
-as reported by the author. The personal server-off exercise was not repeated for this release; the
-exact-package native tests cover offline recovery. This package includes the waiting-update notice that
-the predecessor lacked; the personal handoff did not exercise that notice.
+**Next bounded phase.** Recovery sealing, saved-code confirmation and restart-owned account finalization,
+following [the prep](./account-sync-prep.md). This must preserve the distinction between the existing
+mandatory device-lock code, account passkey and newly generated content-recovery code. Local promotion,
+the first authority/binding issuer and its trusted key bootstrap follow with an authenticated connection
+to the confirmed recovery result. The core's immutable proof receipts are historical evidence, not current
+bearer grants. No ordinary account activation or application enrollment is exposed yet.
 
-**Account/sync prep complete.** The [prep](./account-sync-prep.md) reconciles the clean L-2 worktree/ref at
-`d24732b`: its verifier/tests are already identical here, and no account service or enrollment code is
-waiting there. The next bounded code phase is durable account challenges and passkey verification with
-private/disposable endpoints. Accounts remain pending until recovery confirmation and promotion exist;
-this phase cannot grant content access, relay capability or modify the selected Local workspace.
-The author chose promotion of the current writing here and adoption on the actual second pre-encryption
-device, with fresh local custody and no import/merge of that device's old writing. Its cleanup is separate.
+The clean historical L-2 worktree/ref was reconciled at `d24732b`: its slot verifier/tests already match
+this branch and it contains no further account service to integrate. L-2's historical checkpoint remains
+untouched. The author's selected path is promotion of the writing here, then adoption on the actual second
+pre-encryption device with fresh custody/credentials and no import/merge of that device's old writing.
+Its cleanup remains separate.
 
-No actual incompatible format change is planned. Before one, its concrete owner must authenticate durable
-intent, exclude old writers (including pre-interlock builds), resume under exclusion, and define recovery/
-rollback. Worker waiting alone does not establish those properties. A general migration framework is not
-needed for the current same-format release.
-
-**Remaining gates.** Account/sync integration, complete production conformance, whole-profile residue,
-platform/latency, receiver/generation transitions and independent review remain open. The host VM is stopped;
-automatic host/policy research is not next-up. This outcome was appended to completed.md before this
-checkpoint rewrite. L-2 below is unchanged.
+**Remaining gates.** Recovery/promotion, signed binding issuance, encrypted relay/durable storage,
+two-gate enrollment, revocation/rotation/finalization, complete product conformance, whole-profile residue,
+platform coverage and independent review remain open. Before any incompatible persisted-format change,
+its concrete owner needs authenticated intent, exclusion (including pre-interlock builds), restart and
+recovery/rollback rules. The host VM is stopped; automatic host/policy research is not next-up. This
+outcome was appended to completed.md before this rewrite. L-2 below is unchanged.
 
 ---
 

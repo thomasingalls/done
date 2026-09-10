@@ -1,0 +1,74 @@
+[
+  {
+    "path": "package.json",
+    "sha256": "8eb9c644b8e41a9b7ac8aa6a6a80138dc8609ab619c7c4feb1459422e108d239"
+  },
+  {
+    "path": "pnpm-lock.yaml",
+    "sha256": "d1a235a6fa7e533e526d2eb6a79b2c60c26b7193235330578c6b9c12ecee334d"
+  },
+  {
+    "path": "tsconfig.node.json",
+    "sha256": "25012f049f6b03ef93bfc903315c1c783fbf2c65f42870e0ec9af9635fbf1f99"
+  },
+  {
+    "path": "scripts/account-core/run.mjs",
+    "sha256": "8c4d1fd786afc532cdabddb5926b04b0b9c984fc62350daa95ebb676e2e37f19"
+  },
+  {
+    "path": "docs/account-core.md",
+    "sha256": "e8e80a91645a340333896dcc1c4698548c195e8f1a79a006b1b94232ff2bfec7"
+  },
+  {
+    "path": "account-service/core.ts",
+    "sha256": "0ac066cbba7b51cd4e5e3726aa367871db9bfdb21b07a1c399517e381ad6cb62"
+  },
+  {
+    "path": "account-service/private-server.ts",
+    "sha256": "6ed0eaf2d85793fdcf4c6e956299e84b83ffb322751c16827dad690280edb2a3"
+  },
+  {
+    "path": "account-service/protocol.ts",
+    "sha256": "b480b229c7f28779bbbe58acc12056ad3bf87a8144495587311809b21c67fd93"
+  },
+  {
+    "path": "account-service/webauthn.ts",
+    "sha256": "e16482a2fe46eb3869e65ee77588decac6ea36dfc1df3f8fefec3d05c83ab694"
+  },
+  {
+    "path": "test/account-core/controls.test.mjs",
+    "sha256": "b7a6e316e04b19b83803692730d2c5974634e6542ba3a90aa3cf25d035258218"
+  },
+  {
+    "path": "test/account-core/core.test.mjs",
+    "sha256": "7105d7653dbe1e90027ab586e0dd2c27ccc6f2db7a18afd78796b6506ea4a04b"
+  },
+  {
+    "path": "test/account-core/diagnostics.mjs",
+    "sha256": "29575463306a5984da4248179b0cce28f8bb9643f96dab44433c361f43ab28ed"
+  },
+  {
+    "path": "test/account-core/finish-once.mjs",
+    "sha256": "c98e49d8be362cdad5ee1b0f1259364bc0f951f3094fb23422f46f2fed3f542a"
+  },
+  {
+    "path": "test/account-core/fixtures.mjs",
+    "sha256": "cd1b12cb73e53c2cbd14f297484cb13a93f46e38447d36827bd0e32c5f106746"
+  },
+  {
+    "path": "test/account-core/native.test.mjs",
+    "sha256": "b61b084c3042581590cf42b2c060ca75c44ec79de2576ebf6d50f127c05078e9"
+  },
+  {
+    "path": "test/account-core/properties.test.mjs",
+    "sha256": "9c90a25fdcf2157a3322f82182559d4961e25edcd5e3a47cc14183e18e72e64a"
+  },
+  {
+    "path": "test/account-core/restart.test.mjs",
+    "sha256": "ed2abc8801f943b81d3cee7bc9f9b13c7d5f6214f94b4f58bf8842dcfff1611a"
+  },
+  {
+    "path": "test/account-core/worker.mjs",
+    "sha256": "17a3958396a504e8ac7897969ad8bc735b224debb541efe67733f2b564bc0fca"
+  }
+]

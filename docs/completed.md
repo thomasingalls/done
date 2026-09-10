@@ -1452,3 +1452,42 @@ At the author’s request, stopped the personal preview after the successful `17
 check. Account-core testing uses separate disposable servers and does not require this preview. The
 release files and unchanged Tailscale route remain available for a later restart; relay remains off.
 This outcome precedes the L-1 checkpoint update; L-2 is unchanged.
+
+## 2026-09-10 — Private account challenge and passkey core (`L-1`)
+
+Signed `187b636` commits the personal application handoff, exact-package runner and account/sync prep.
+The personal preview is stopped by request. The first account core now owns durable service-issued
+registration, confirmation and discoverable sign-in challenges in SQLite. Registration stages a unique
+attested key, then requires a fresh assertion proving possession; accounts stay pending. Sign-in against
+synthetic active accounts creates historical proof receipts, with no session, relay, content or admission
+grant. Cancellation, expiry, key/account state and challenge consumption are rechecked in the commit.
+Identical retries recover one result after abort/lost-response/restart; changed completed proofs refuse.
+
+The reviewed WebAuthn verifier is pinned to 14.0.0. The newest release failed the repository's dependency-age
+policy; no exception was made. Mandatory UV/discovery, Ed25519/ES256, exact same-origin policy, attested ID,
+user handle, key encoding and purpose checks are explicit. SQLite WAL/FULL commits progress and result
+atomically. Only a token-protected loopback test adapter exists. See the [contract](./account-core.md).
+
+The [preserved campaign](./account-conformance-runs/2026-09-10-account-core.md) passes 29 tests: 12 focused
+cases, 240 generated histories across two ledgers, ten real SIGKILL/reopen cases, two native/HTTP cases,
+and three controls that actually demonstrate duplicate results, wrong-purpose acceptance and substituted
+key acceptance after guard removal. The initial Host probe used fetch, which rewrote that header; a raw
+HTTP probe corrected the harness and passes. 825 existing unit tests, TypeScript, focused static checks,
+isolated application build/budget (327.2 kB) and origin isolation pass. No existing app build was replaced.
+
+The next bounded phase is recovery sealing, saved-code confirmation and restart-owned account finalization;
+Local promotion and the first authority/binding issuer follow. No personal account or passkey was created,
+no local writing/custody/index was changed, and relay remains off. Full product conformance, actual device
+coverage, production sessions/restore, residue and independent review remain open. No debt/matrix status
+changed. This outcome precedes the L-1 checkpoint rewrite; L-2 remains byte-for-byte unchanged.
+
+### Account-core concurrency repair and final evidence (2026-09-10)
+
+Final review added a real competing-process case and reproduced a spurious invalid-proof refusal when
+confirmation completed between the initial challenge inspection and a separate credential read. The
+initial transaction now snapshots the challenge and credential together; final commit still rechecks
+current state and recovers a competing winner's receipt. The before/after evidence is retained with the
+account campaign. All 30 final tests pass, including the added regression, 240 generated histories and
+three acceptance controls with before/after state snapshots. The generated histories themselves did not
+find this particular inter-process gap. The earlier 29-test result above records the pre-repair campaign.
+This addendum precedes the L-1 checkpoint correction; L-2 is unchanged.
