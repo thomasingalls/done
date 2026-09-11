@@ -15,6 +15,43 @@ const baseline = () => ({
   entries: mapEntries(read('docs/review/remediation/S0-2/authority-map.md')),
 });
 
+test('D7 cannot discard native startup, genesis scope, shrinking or inherited cipher evidence', () => {
+  const evidence = [];
+  for (const obligation of [
+    'native-checkpoint-owner',
+    'genesis-scope-disposition',
+    'shrinking-replay-histories',
+    'inherited-byte-agreement',
+    'encoded-field-omissions',
+  ]) {
+    const o = baseline(),
+      r = o.document.constructions.find((r) => r.id === 'genesis-checkpoint-seal');
+    r.requirements = r.requirements.filter((x) => x !== obligation);
+    assert(
+      checkConstructionRegistry(root, o).failures.some(
+        (f) => f.includes('missing evidence obligation') && f.includes(obligation),
+      ),
+    );
+    evidence.push({ obligation, caught: true });
+  }
+  const o = baseline(),
+    c = o.document.additionalCorpora.find((c) => c.phase === 'D7'),
+    v = JSON.parse(read(c.vectorFile));
+  v.vectors.find((v) => v.id === 'checkpoint-seal-genesis').encodedBindingControls = [];
+  const changed = JSON.stringify(v);
+  c.vectorSha256 = digest(changed);
+  o.read = (p) => (p === c.vectorFile ? changed : read(p));
+  assert(checkConstructionRegistry(root, o).failures.some((f) => f.includes('omission corpus')));
+  evidence.push({ obligation: 'omission vectors', caught: true, aggregatePinUpdated: true });
+  if (process.env.ACCOUNT_REPORT_DIR) {
+    mkdirSync(process.env.ACCOUNT_REPORT_DIR, { recursive: true });
+    writeFileSync(
+      join(process.env.ACCOUNT_REPORT_DIR, 'checkpoint-registry-controls.json'),
+      JSON.stringify(evidence, null, 2) + '\n',
+    );
+  }
+});
+
 test('D6 custody cannot drop correspondence, parser repair, native comparison or inherited byte obligations', () => {
   const controls = [
     ['native owner', 'custody-factor-v1', 'native-custody-owner'],
@@ -163,8 +200,8 @@ test('D5 bridges cannot lose native owners, inherited agreement, primitive roles
 test('registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups', () => {
   const result = checkConstructionRegistry(root);
   assert.deepEqual(result.failures, []);
-  assert.equal(result.specified, 72);
-  assert.equal(result.open, 2);
+  assert.equal(result.specified, 74);
+  assert.equal(result.open, 1);
   assert.equal(result.excluded, 1);
 });
 

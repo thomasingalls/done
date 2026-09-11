@@ -1,0 +1,16 @@
+(node:95367) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95367) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:95367) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ native genesis seal and read-only persisted startup share exact KDF/AAD bytes; retry never reseals (3122.341708ms)
+✔ persisted selected and active startup refuse missing writing; source omission controls really accept it (4832.378917ms)
+✔ local MAC cannot substitute for pinned receipt, candidate signature or authenticated checkpoint (4203.109917ms)
+✔ 24 shrinking-enabled native histories cold replay inserts/deletions and refuse loss of their admitted journal (47527.080584ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 61010.351625

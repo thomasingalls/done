@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="native genesis seal and read-only persisted startup share exact KDF/AAD bytes; retry never reseals" time="3.122342" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-checkpoint-contract/native.test.mjs"/>
+	<testcase name="persisted selected and active startup refuse missing writing; source omission controls really accept it" time="4.832379" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-checkpoint-contract/native.test.mjs"/>
+	<testcase name="local MAC cannot substitute for pinned receipt, candidate signature or authenticated checkpoint" time="4.203110" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-checkpoint-contract/native.test.mjs"/>
+	<testcase name="24 shrinking-enabled native histories cold replay inserts/deletions and refuse loss of their admitted journal" time="47.527081" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-checkpoint-contract/native.test.mjs"/>
+	<!-- tests 4 -->
+	<!-- suites 0 -->
+	<!-- pass 4 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 61010.351625 -->
+</testsuites>

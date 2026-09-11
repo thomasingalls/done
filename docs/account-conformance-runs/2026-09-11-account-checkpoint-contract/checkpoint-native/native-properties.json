@@ -1,0 +1,697 @@
+{
+  "failed": false,
+  "interrupted": false,
+  "numRuns": 24,
+  "numSkips": 0,
+  "numShrinks": 0,
+  "seed": 5110932,
+  "counterexample": null,
+  "counterexamplePath": null,
+  "error": null,
+  "errorInstance": null,
+  "failures": [],
+  "executionSummary": [],
+  "verbose": 0,
+  "runConfiguration": {
+    "seed": 5110932,
+    "numRuns": 24,
+    "maxSkipsPerRun": 100,
+    "markInterruptAsFailure": false,
+    "skipEqualValues": false,
+    "ignoreEqualValues": false,
+    "path": "",
+    "unbiased": false,
+    "verbose": 0,
+    "examples": [],
+    "endOnFailure": false,
+    "includeErrorInReport": false
+  },
+  "histories": [
+    {
+      "ops": [
+        {
+          "at": 84,
+          "remove": 1,
+          "insert": "+",
+          "disk": true
+        },
+        {
+          "at": 47,
+          "remove": 2,
+          "insert": "Tg7A) Jx*!e^",
+          "disk": false
+        },
+        {
+          "at": 37,
+          "remove": 2,
+          "insert": "RJ;e2@l#",
+          "disk": true
+        },
+        {
+          "at": 29,
+          "remove": 3,
+          "insert": "Z",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "expected": " mandatory journal suffix bRJ;eZ#e+Tg7A) Jx*!e^",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 29,
+          "remove": 2,
+          "insert": "aP<qA",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "expected": " mandatory journal suffix baseaP<qA",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 92,
+          "remove": 1,
+          "insert": "$#x",
+          "disk": true
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "expected": " mandatory journal suffix ba$#xe",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 5,
+          "remove": 3,
+          "insert": "wD",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "expected": " mandatory journal suffix wDe",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 15,
+          "remove": 2,
+          "insert": "^#CD~",
+          "disk": true
+        },
+        {
+          "at": 5,
+          "remove": 3,
+          "insert": "p",
+          "disk": false
+        },
+        {
+          "at": 17,
+          "remove": 3,
+          "insert": "d:H ",
+          "disk": true
+        },
+        {
+          "at": 28,
+          "remove": 1,
+          "insert": "G?A%zlz{#%lR",
+          "disk": true
+        },
+        {
+          "at": 3,
+          "remove": 3,
+          "insert": "V{RR2&=p:",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "expected": " mandatory journal suffix ^#CV{RR2&=p:A%zlz{#%lRH ",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 50,
+          "remove": 0,
+          "insert": "3f&[r1",
+          "disk": true
+        },
+        {
+          "at": 85,
+          "remove": 0,
+          "insert": "=%)#~/+E",
+          "disk": true
+        },
+        {
+          "at": 12,
+          "remove": 0,
+          "insert": "vObBG",
+          "disk": false
+        },
+        {
+          "at": 54,
+          "remove": 1,
+          "insert": "#P3]xe-y=",
+          "disk": true
+        },
+        {
+          "at": 42,
+          "remove": 0,
+          "insert": ">t7:s+2",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "expected": " mandatory journal suffix 3f&[r1#P3]>t7:s+2xe-y=a=%)#vObBG~/+Ese",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 81,
+          "remove": 1,
+          "insert": "G+=]*",
+          "disk": false
+        },
+        {
+          "at": 79,
+          "remove": 3,
+          "insert": "/X",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "expected": " mandatory journal suffix bG+=]*s/X",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 0,
+          "remove": 2,
+          "insert": "%$[",
+          "disk": true
+        },
+        {
+          "at": 51,
+          "remove": 2,
+          "insert": "toString",
+          "disk": true
+        },
+        {
+          "at": 11,
+          "remove": 0,
+          "insert": "ri",
+          "disk": false
+        },
+        {
+          "at": 98,
+          "remove": 1,
+          "insert": "n%MXQ$$#}&1A",
+          "disk": true
+        },
+        {
+          "at": 6,
+          "remove": 1,
+          "insert": "}m",
+          "disk": true
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "expected": " mandatory journal suffix n%MXQ$}m#}&1A$[toStringri",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 68,
+          "remove": 1,
+          "insert": "O",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "expected": " mandatory journal suffix basO",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 3,
+          "remove": 0,
+          "insert": "@r3$s!@",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "expected": " mandatory journal suffix bas@r3$s!@e",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 46,
+          "remove": 3,
+          "insert": "8-d7pS[Px",
+          "disk": false
+        },
+        {
+          "at": 80,
+          "remove": 2,
+          "insert": "EpHY~x`V{AM",
+          "disk": true
+        },
+        {
+          "at": 39,
+          "remove": 4,
+          "insert": "5BAe8u*",
+          "disk": true
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "expected": " mandatory journal suffix b8-EpHY~x`V{AMpS[Px5BAe8u*",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 99,
+          "remove": 2,
+          "insert": "D|zq",
+          "disk": false
+        },
+        {
+          "at": 38,
+          "remove": 0,
+          "insert": "W$`Uo&5<)",
+          "disk": true
+        },
+        {
+          "at": 100,
+          "remove": 4,
+          "insert": "l6XL*<4\" 0PU",
+          "disk": true
+        },
+        {
+          "at": 2,
+          "remove": 2,
+          "insert": "Gd~",
+          "disk": true
+        },
+        {
+          "at": 4,
+          "remove": 4,
+          "insert": "|",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "expected": " mandatory journal suffix baGd|&5<l6XL*<4\" 0PU|zq",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 64,
+          "remove": 2,
+          "insert": "&y",
+          "disk": true
+        },
+        {
+          "at": 72,
+          "remove": 4,
+          "insert": "2oj0~%5d_evB",
+          "disk": false
+        },
+        {
+          "at": 33,
+          "remove": 0,
+          "insert": "Obf*:55zM*c+",
+          "disk": true
+        },
+        {
+          "at": 6,
+          "remove": 1,
+          "insert": "8",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "expected": " mandatory journal suffix ba2Obf8:55zM*c+oj0~%5d_evB",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 17,
+          "remove": 3,
+          "insert": "x#$sx[u",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "expected": " mandatory journal suffix bax#$sx[u",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 39,
+          "remove": 4,
+          "insert": "!am-+",
+          "disk": true
+        },
+        {
+          "at": 54,
+          "remove": 3,
+          "insert": "J+!e/{6Br3",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "expected": " mandatory journal suffix baseJ+!e/{6Br3-+",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 49,
+          "remove": 0,
+          "insert": "!<$..2=",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "expected": " mandatory journal suffix base!<$..2=",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 2,
+          "remove": 4,
+          "insert": "PIP *p:M",
+          "disk": true
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "expected": " mandatory journal suffix baPIP *p:M",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 16,
+          "remove": 3,
+          "insert": "=]p6",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "expected": " mandatory journal suffix b=]p6",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 39,
+          "remove": 2,
+          "insert": ">U",
+          "disk": true
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "expected": " mandatory journal suffix base>U",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 8,
+          "remove": 2,
+          "insert": "P7",
+          "disk": true
+        },
+        {
+          "at": 71,
+          "remove": 2,
+          "insert": ":1",
+          "disk": false
+        },
+        {
+          "at": 18,
+          "remove": 2,
+          "insert": ":t2}Bj",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "expected": " mandatory journal suffix ba:t2}Bj7:1",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 13,
+          "remove": 3,
+          "insert": "7:",
+          "disk": true
+        },
+        {
+          "at": 1,
+          "remove": 3,
+          "insert": "?P",
+          "disk": false
+        },
+        {
+          "at": 19,
+          "remove": 3,
+          "insert": "d}}zka2(.",
+          "disk": false
+        },
+        {
+          "at": 72,
+          "remove": 0,
+          "insert": "V`eG",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "expected": " mandatory journal suffix b?V`eGP:d}}zka2(.",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 62,
+          "remove": 2,
+          "insert": ":kcc*rHj|",
+          "disk": true
+        },
+        {
+          "at": 2,
+          "remove": 3,
+          "insert": "v,(3j+>?",
+          "disk": false
+        },
+        {
+          "at": 94,
+          "remove": 1,
+          "insert": "&",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "expected": " mandatory journal suffix bav,(3j+>&c*rHj|",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 1,
+          "remove": 2,
+          "insert": "&=&-PcV;!#=Q",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "expected": " mandatory journal suffix b&=&-PcV;!#=Qe",
+      "refusedMissingJournal": true
+    },
+    {
+      "ops": [
+        {
+          "at": 50,
+          "remove": 3,
+          "insert": "2q5=)",
+          "disk": true
+        },
+        {
+          "at": 82,
+          "remove": 0,
+          "insert": "]R*:T\"=:{",
+          "disk": false
+        },
+        {
+          "at": 2,
+          "remove": 3,
+          "insert": ".^+ `b0:",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 0,
+          "insert": " mandatory journal suffix ",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "expected": " mandatory journal suffix 2q.^+ `b0:]R*:T\"=:{e",
+      "refusedMissingJournal": true
+    }
+  ]
+}

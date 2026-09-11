@@ -42,89 +42,78 @@ that is no longer active.
 
 ---
 
-## Active slice: Account genesis checkpoint and persisted-startup byte bridges (`L-1`)
+## Active slice: Remaining Local/migration provenance disposition (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: checkpoint/startup byte agreement before real Account authority
+blocks_on: explicit remaining Local provenance disposition before aggregate Account byte-contract closure
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
 
 **Roadmap position.** Personal Local cutover, source cleanup and packaged offline upgrades are exercised.
-Account work is at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), around item 5's internal
-creating-member ciphertext round trip. Composition is `6398e33`, descriptor bounds/versioning `4f71bac`,
-fresh activation `2ba50aa`, crypto prep `9cf5c98`, first-authority A `43b42b1`, recovery B `e74fbaa`,
-transport C `d098bd4`, service custody D1 `d24ca66`, Local promotion D2 `1897848`, Account ledger D3
-`24bc3a4`, counters D4 `837cd14` and store/journal D5 `add6fd7`. C and D1–D5 were committed **unsigned**
-at the user's request; the existing reminder includes all six. D6 is complete and remains unstaged/
-uncommitted. No real Account receipt exists; this is not Stage 4 completion or second-device enrollment.
+Account work remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), item 5's internal
+creating-member ciphertext round trip. Composition `6398e33`, descriptor bounds `4f71bac`, activation
+`2ba50aa`, prep `9cf5c98`, A `43b42b1`, B `e74fbaa`, C `d098bd4`, D1 `d24ca66`, D2 `1897848`,
+D3 `24bc3a4`, D4 `837cd14`, D5 `add6fd7` and D6 `3585a1b` are committed. C and D1–D6 are unsigned at
+the user's request; the existing reminder includes all seven. D7 is complete, unstaged/uncommitted.
+No real Account receipt exists; this is not Stage 4 completion or second-device enrollment.
 
-**Completed boundary.** [D6 factor/custody contracts](./account-crypto/local-custody.md) qualify current
-factor KDF/AAD, v1 generation envelopes, v2 private credential seals, local Ed25519/X25519 key-pair
-correspondence, metadata KDF/MAC tuple and native ownership. Three inherited factor and two key-envelope
-vectors agree with current runtime and independent encoders. PRF/higher-generation fixtures are byte
-compatibility evidence, not implementations of those lifecycle ceremonies.
+**Completed boundary.** [D7 checkpoint/startup contracts](./account-crypto/checkpoint.md) pin exact
+checkpoint key/AAD/cipher bytes and native persisted ownership. The inherited row-7 cipher matches;
+its generation 3, epoch 9, non-genesis identifier and prose plaintext qualify only byte agreement.
+Current parser support stays genesis at generation 1/epoch 1. Successful decryption does not establish
+service/member/lineage authority or replace recovery of the admitted content. No production change or
+new runtime defect was found. D6's strict state-parser repair remains intact.
 
-**Parser repair.** A generated case found that String(state) admitted boxed protected state, whose
-JSON tuple also retained its valid MAC. It shrank to boxed state with three reservations in one shrink.
-Ordinary open already refused it with creation-pending; no successful unlock or authority bypass was
-reproduced. The parser now requires primitive state strings and rejects arrays/boxed strings with
-repair-required. This one-line runtime change preserves all valid formats. The original fixture,
-failure, production file and replay instructions are preserved alongside native before/after controls.
+[Final evidence](./account-conformance-runs/2026-09-11-account-checkpoint-contract.md): 49 stages
+pass with 849 matching source pins. Six vectors, 48 mutations, 15 encoded omissions, 44 parser
+refusals and seven helper source controls pass. Shrinking-enabled properties cover 250 cipher cases,
+200 deletion/pending/reorder cases and 24 native cold-replay histories. Four native tests prove actual
+producer/startup byte agreement, no resealing on retained retry, offline read-only classification,
+later-edit recovery, authority refusals and missing database/journal refusal. Removing selected/active
+coverage checks accepts the damaged cases; removing startup workspace from KDF refuses valid state.
+Inherited genesis/handoff interruption campaigns, 983 units/88 files, typecheck, prior contracts and
+29 vector commands pass. Registry: 74 specified, one open, one exclusion. Map: 77 entries/96 permitted
+chains/18 swept homes. Census: unchanged 158 sources/89 labels/templates.
 
-[Final evidence](./account-conformance-runs/2026-09-11-account-local-custody.md): 46 stages pass with
-835 matching pins. Fifteen vectors, 115 field mutations/115 encoded omission witnesses, 106 counted
-parser refusals and six malformed private-export cases pass. Ten helper source controls are effective.
-The corrected state property passes 100 cases; 200 shrinking-enabled metadata histories cover 1,539
-steps without another failure. Four native tests, including two nested comparison runs, verify actual
-factor/metadata derivation, stored key correspondence, cold opening, 17 cleared temporary buffers,
-authentic wrong-key/metadata refusal and the prior-MAC race before root sealing. All 13 inherited custody
-cases/five mutants, 983 units, typecheck, earlier contracts and 28 vector commands pass. The registry
-has 72 specified, two open and one exclusion; the map has 73 entries/90 permitted-root chains.
+**Next bounded phase — D8: disposition of remaining Local/migration provenance.** Complete the last
+explicit group in [the construction registry](./account-crypto/constructions.json) under
+[group D's gate](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates):
 
-**Next bounded phase — D7: Account genesis checkpoint and persisted-startup byte bridges.** Continue
-[group D](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates) with
-`remaining-genesis-checkpoint`:
+- Trace the twelve remaining labels/templates through current Local claims, imported selection/cleanup,
+  clear and legacy-source/import carriers. Identify which authenticate a claim actually consumed by
+  Account promotion/startup versus carriers reachable only in legacy migration/Local deletion.
+- Bridge required live claim KDF/MAC/progress bytes to exact homes, current runtime and independent
+  vectors/meaningful negatives. Use existing native evidence where it establishes the same owner;
+  add a bounded check for any demonstrated gap. Do not classify a live dependency as an exclusion.
+- Give legacy-only carriers explicit, justified dispositions with retained source/home/evidence links
+  and limits. Do not rebuild migration machinery or turn this into a fresh whole-Local/WASM audit.
+- Preserve current valid formats; change runtime only for a reproduced defect or explicit correction.
+  Run the affected registry/vector/owner checks, preserve evidence, append the outcome, then replace
+  only L-1. Review aggregate F-05/F-06 closure separately; zero open labels alone is insufficient.
 
-- Pin the actual `done/checkpoint/v1` KDF invocations in promotion genesis and Account startup, plus
-  `done/cp/v1` AAD/framing in the protocol. Compare their current inputs and consumers with the inherited
-  checkpoint suite; record current byte agreements and explicitly disposition any mismatch.
-- Connect checkpoint authentication to its admitted root/scope, genesis baseline and persisted startup
-  checks. A decryptable blob alone does not establish current service/member/lineage authority or
-  complete replay. Distinguish current genesis support from future successor/checkpoint lifecycles.
-- Fill demonstrated vector gaps with independent encoders, meaningful per-field negatives, effective
-  source omission controls and shrinking-enabled properties. Exercise actual native persisted startup
-  and failure boundaries where helper agreement cannot establish the owner connection.
-- Preserve valid formats; change runtime only for a reproduced defect or explicit correction. Register
-  exact source/map/byte joins, run affected checks, preserve evidence and append the outcome before
-  replacing only L-1. No real provisioning, personal build/server, onboarding UI or deployment here.
-
-Local/migration-only provenance still needs an explicit bounded disposition. F-05/F-06 do not close
-merely because one remaining Account group finishes. The actual old second device will adopt the first
-workspace with fresh custody/store/counters/credentials, without importing or merging its old writing.
-Recovery byte conformance is not a built total-loss machine.
-
-**Personal checkpoint.** Root `dist/` and `.dev/releases/17d87c2/app` retain all 21 saved hashes.
-All 28 prior tracked vector files, historical review and L-2 are unchanged. Production changes only in
-custodyRecord.ts's strict state guard; its census hash is updated. Personal preview/relay, browser/
-factors and origin/routing are unchanged. New native bundles stayed in memory; inherited harnesses used
-only disposable loopback fixtures/profiles. Host VM/policy research stays stopped. No real Account,
-factor, operator key or pin was provisioned. Unrelated root files `done ` and
-`reviewpacket96a20401ceb88d.md` remain untouched.
+**Personal checkpoint.** All 21 saved package hashes in root `dist/` and
+`.dev/releases/17d87c2/app`, 29 prior tracked vector files, production sources, historical review and
+L-2 are unchanged. Personal preview/relay remain stopped. No real browser interaction, Account, factor,
+operator key, pin, origin or routing change occurred. New bundles stayed in memory; native fixtures were
+disposable and synthetic. Unrelated root files `done ` and `reviewpacket96a20401ceb88d.md` remain untouched.
+Host VM/policy research stays stopped. The actual old second device will adopt the first workspace with
+fresh custody/store/counters/credentials, without importing or merging its old writing.
 
 **Other gates.** F-15 invocation-grant power-loss accounting remains: content requests relaxed durability,
-custody requests no explicit hint, and native completion/renderer death are not OS/power-loss evidence.
-Salvage/diagnostics, parser/admission/service negatives, performance/maintenance, lock ordering and
-accepted review follow-ups remain. Passkey and workspace signing IDs are distinct namespaces. General
-lineage advancement, successor/checkpoint baselines, concurrent members, pruning/backlog scale,
-enrollment/device management, revocation/rotation, clear/delete, finalization/recovery, PRF enrollment,
-supported platforms, whole-profile residue, production deployment/restore and independent review remain
-separate. Client/service histories must be unrewound and unbranched; fresh-salt/sender constructions also
-require nonrepeating randomness. L-2's historical clean ref `d24732b` has no further service work to integrate.
+custody no explicit hint; renderer death and transaction completion are not OS/power-loss evidence.
+F-05/F-06, salvage/diagnostics, parser/admission/service negatives, performance/maintenance, lock ordering
+and accepted review follow-ups remain. Passkey and workspace signing IDs are distinct namespaces.
+General lineage advancement, successor/checkpoint baselines/install/fallback, concurrent members,
+pruning/backlog scale, enrollment/device management, revocation/rotation, clear/delete,
+finalization/total-loss recovery, PRF enrollment, supported platforms, whole-profile residue,
+production deployment/restore and independent review remain separate. Client/service histories must
+be unrewound/unbranched; fresh-salt/sender constructions require nonrepeating randomness. L-2's historical
+clean ref `d24732b` has no further service work to integrate.
 
 The outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 

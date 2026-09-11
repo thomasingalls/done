@@ -2782,3 +2782,44 @@ All 21 personal package hashes, 28 prior tracked vector files, historical review
 files are preserved. Production change is confined to the strict state guard. No personal build/server,
 real Account, factor, operator secret or pin was provisioned. The evidence manifest records selected
 exact copies and omitted duplicate source/profile material. Appended before replacing only L-1.
+
+
+## 2026-09-11 — Account genesis checkpoint and persisted-startup byte bridges (`L-1` seat)
+
+D6 was committed unsigned as `3585a1b` at the user's request; the existing reminder includes all seven
+unsigned C/D1–D6 commits. D7 is complete and remains unstaged/uncommitted. Production code, current
+cipher/manifest versions, the prior vectors and personal installation are unchanged.
+
+The [D7 contract](./account-crypto/checkpoint.md) qualifies exact checkpoint KDF/AAD, closed genesis
+carrier and persisted startup predicates. Inherited cipher bytes agree, but the generation-3/epoch-9
+fixture's IDs and prose plaintext are not a current supported Yjs genesis. Startup must already hold
+its admitted genesis in recovered database/journal; it cannot substitute AEAD success for the pinned
+receipt, member/factor/passkey/scope and full replay checks. Per-seal freshness remains probabilistic
+and conditional on nonrepeating randomness and unrewound/unbranched histories.
+
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-checkpoint-contract.md): all 49
+stages pass with 849 matching source pins. Six independent vectors, 48 field/cipher checks,
+15 encoded omissions, 44 parser refusals, seven helper source controls and six registry controls pass.
+All 250 cipher, 200 Yjs deletion/pending/reorder and 24 native cold-replay histories pass with shrinking
+enabled and no production counterexample. Early property/expected-message mistakes were harness-only
+and corrected before the final campaign.
+
+Four native tests match actual producer/startup bytes, prove retained retry does not reseal, cold-open
+offline without writes, preserve a later edit, and refuse removed journal or erased content. Omitting
+selected/active coverage checks actually accepts damaged state. Removing startup workspace from KDF
+refuses valid state. Local-MAC-authenticated receipt/candidate/checkpoint alterations refuse before
+opening, and the original restored state succeeds. Observed checkpoint buffers clear; no whole-heap,
+filesystem or power-loss guarantee is inferred.
+
+Inherited genesis and handoff campaigns pass, including renderer/commit interruption and genuine-signer
+semantic forgeries. All 983 unit tests/88 files, typecheck, prior A/B/C/D1–D6 contracts, 29 vector commands
+and lint/format pass. Two constructions replace the checkpoint group: 74 specified, one open and one
+exclusion; 77 map entries, 96 permitted-root chains, 18 swept homes. Service availability proofs remain
+separate from content authority. Census stays 158 sources/89 labels with no source-hash changes.
+
+D8 will disposition the remaining Local/migration-only provenance group before aggregate F-05/F-06
+closure can be considered. Live Account dependencies cannot be waved away as migration-only. No new
+migration tooling, real Account onboarding or deployment is authorized by that disposition. F-15,
+successor epochs/checkpoints, second-device enrollment/adoption, broader Account/release gates and
+independent review remain open. All 21 personal hashes, 29 prior tracked vectors, historical review,
+L-2 and unrelated root files are preserved. Appended before replacing only L-1.

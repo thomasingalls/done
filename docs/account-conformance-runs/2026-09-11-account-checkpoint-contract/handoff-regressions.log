@@ -1,0 +1,26 @@
+(node:95541) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:95541) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ handoff selects exactly one Account route and cold classifies offline with passkey plus device factor (1492.504292ms)
+✔ real browser ES256 passkey assertion completes handoff and offline startup (1547.206041ms)
+✔ renderer interruption before handoff-prepared commit resumes exactly (1746.45125ms)
+✔ renderer interruption after handoff-prepared commit resumes exactly (1997.208375ms)
+✔ renderer interruption before index commit resumes exactly (1762.203375ms)
+✔ renderer interruption after index commit resumes exactly (2017.236167ms)
+✔ renderer interruption before handoff-selected commit resumes exactly (1753.996125ms)
+✔ renderer interruption after handoff-selected commit resumes exactly (2027.09175ms)
+✔ binding and passkey refusals precede any index mutation; replay cannot reopen a new attempt (1455.44725ms)
+✔ missing, closed and changed Account routes refuse without repair or Local fallback (1355.341458ms)
+✔ passkey fault control actually selects and classifies with an invalid assertion (1442.531ms)
+✔ cancelled index acknowledgement retains the permit until the native commit drains (1621.849792ms)
+✔ 24 generated handoff histories preserve independent writing and source inventory across aborted commits and restart (32375.795833ms)
+✔ actual previous reader and Local owners refuse the Account handoff carrier (1504.107666ms)
+✔ missing or damaged provenance refuses startup without creating or rewriting carriers (1274.350958ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 56235.546834

@@ -4201,11 +4201,12 @@
       "blocker": null
     },
     {
-      "id": "remaining-genesis-checkpoint",
-      "phase": "D",
-      "status": "open",
-      "roles": ["kdf", "aead"],
-      "labels": ["done/checkpoint/v1", "done/cp/v1"],
+      "id": "genesis-checkpoint-key",
+      "phase": "D7",
+      "status": "specified",
+      "roles": ["kdf"],
+      "signer": null,
+      "labels": ["done/checkpoint/v1"],
       "sourceSites": [
         {
           "path": "src/crdt/accountStartup.ts",
@@ -4218,7 +4219,77 @@
           "line": 83,
           "label": "done/checkpoint/v1",
           "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/promotionGenesis.ts",
+          "name": "withVerifiedGenesis"
         },
+        {
+          "path": "src/crdt/accountStartup.ts",
+          "name": "verifyAccountUnderPermit"
+        }
+      ],
+      "mapEntries": [
+        "private-checkpoint-key",
+        "private-checkpoint-startup",
+        "private-checkpoint-service-binding"
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "1",
+          "hash": "1ba07b8d7606"
+        },
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "2",
+          "hash": "ff5de5a6b82d"
+        },
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "3",
+          "hash": "ea8cc350e5e1"
+        },
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "4",
+          "hash": "9aca2271994a"
+        },
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "5",
+          "hash": "6a17735630ce"
+        }
+      ],
+      "vectorCases": [
+        "checkpoint-key-genesis",
+        "checkpoint-key-inherited",
+        "checkpoint-key-decimal-helper"
+      ],
+      "tests": [
+        "test/account-checkpoint-contract/formats.test.mjs",
+        "test/account-checkpoint-contract/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "inherited-byte-agreement",
+        "native-checkpoint-owner",
+        "genesis-scope-disposition",
+        "shrinking-replay-histories"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "genesis-checkpoint-seal",
+      "phase": "D7",
+      "status": "specified",
+      "roles": ["aead", "predicate"],
+      "signer": null,
+      "labels": ["done/cp/v1"],
+      "sourceSites": [
         {
           "path": "account-protocol/genesis.ts",
           "line": 153,
@@ -4226,12 +4297,75 @@
           "kind": "literal"
         }
       ],
-      "entryPoints": [],
-      "mapEntries": [],
-      "home": "docs/account-admission.md",
-      "blocker": "F-05/F-06: native startup/checkpoint qualification is not the recovery recipient bridge",
-      "next": "D: qualify checkpoint KDF/AAD and persisted Account startup against the existing published checkpoint suite",
-      "reason": null
+      "entryPoints": [
+        {
+          "path": "account-protocol/genesis.ts",
+          "name": "checkpointAAD"
+        },
+        {
+          "path": "account-protocol/genesis.ts",
+          "name": "parseGenesis"
+        },
+        {
+          "path": "src/crdt/accountStartup.ts",
+          "name": "verifyAccountUnderPermit"
+        },
+        {
+          "path": "src/crdt/yjs.ts",
+          "name": "coversGenesis"
+        }
+      ],
+      "mapEntries": [
+        "private-checkpoint-seal",
+        "private-checkpoint-startup",
+        "private-checkpoint-service-binding"
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "1",
+          "hash": "1ba07b8d7606"
+        },
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "2",
+          "hash": "ff5de5a6b82d"
+        },
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "3",
+          "hash": "ea8cc350e5e1"
+        },
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "4",
+          "hash": "9aca2271994a"
+        },
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "5",
+          "hash": "6a17735630ce"
+        }
+      ],
+      "vectorCases": [
+        "checkpoint-seal-genesis",
+        "checkpoint-seal-inherited",
+        "checkpoint-seal-decimal-helper"
+      ],
+      "tests": [
+        "test/account-checkpoint-contract/formats.test.mjs",
+        "test/account-checkpoint-contract/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "inherited-byte-agreement",
+        "native-checkpoint-owner",
+        "genesis-scope-disposition",
+        "shrinking-replay-histories",
+        "encoded-field-omissions"
+      ],
+      "blocker": null
     }
   ],
   "additionalCorpora": [
@@ -4274,6 +4408,11 @@
       "phase": "D6",
       "vectorFile": "test/vectors/account-local-custody.json",
       "vectorSha256": "5bfae00faa516252408a1de6bd58e09ac888c340621c8d6c65df1a4dc4221f27"
+    },
+    {
+      "phase": "D7",
+      "vectorFile": "test/vectors/account-checkpoint.json",
+      "vectorSha256": "508f0fb9c7dc87f434ea0d624bb3490c20156fda9badfe2aedeb7ec71b367f03"
     }
   ]
 }

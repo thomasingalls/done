@@ -1,0 +1,35 @@
+[
+  {
+    "name": "aadLabel",
+    "caught": true,
+    "omitted": "label"
+  },
+  {
+    "name": "aadVersion",
+    "caught": true,
+    "omitted": "version"
+  },
+  {
+    "name": "aadWorkspace",
+    "caught": true,
+    "omitted": "workspace"
+  },
+  {
+    "name": "aadGeneration",
+    "caught": true,
+    "omitted": "generation"
+  },
+  {
+    "name": "aadEpoch",
+    "caught": true,
+    "omitted": "epoch"
+  },
+  {
+    "name": "keyLabel",
+    "caught": true
+  },
+  {
+    "name": "keyWorkspace",
+    "caught": true
+  }
+]

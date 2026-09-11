@@ -1264,3 +1264,67 @@ pin: docs/account-crypto/local-custody.md §4 a4d785bf39e2
 pin: docs/account-crypto/local-custody.md §5 013347c29113
 pin: docs/account-crypto/local-custody.md §6 4517b014105e
 ```
+
+## 16. Current genesis checkpoint and persisted startup bridge — D7
+
+These predicates qualify the genesis-only implementation; they do not instantiate successor checkpoint installation.
+
+```authority
+entry: private-checkpoint-key
+kind: predicate
+guards: keys
+verifies: per-seal HKDF from the held generation key with exact workspace binding
+resolves: current factor-protected custody root and authenticated generation envelope -> via:private-local-custody-open
+resolves: device wrap recipient, lineage/root context and generation-key equality -> via:private-recovery-recipient
+status: resolved
+pin: docs/account-crypto/checkpoint.md §1 1ba07b8d7606
+pin: docs/account-crypto/checkpoint.md §2 ff5de5a6b82d
+pin: docs/account-crypto/checkpoint.md §3 ea8cc350e5e1
+pin: docs/account-crypto/checkpoint.md §4 9aca2271994a
+pin: docs/account-crypto/checkpoint.md §5 6a17735630ce
+```
+
+```authority
+entry: private-checkpoint-seal
+kind: aead
+guards: content
+verifies: v1 checkpoint AES-256-GCM under the per-seal key, full update and all five AAD fields
+discipline: fresh 16-byte salt and independent 12-byte nonce per new seal, retained retry reuses the ciphertext; finite fresh-randomness assumption with unrewound/unbranched histories, not RNG-clone or power-loss evidence
+status: resolved
+pin: docs/account-crypto/checkpoint.md §1 1ba07b8d7606
+pin: docs/account-crypto/checkpoint.md §2 ff5de5a6b82d
+pin: docs/account-crypto/checkpoint.md §3 ea8cc350e5e1
+pin: docs/account-crypto/checkpoint.md §4 9aca2271994a
+pin: docs/account-crypto/checkpoint.md §5 6a17735630ce
+```
+
+```authority
+entry: private-checkpoint-startup
+kind: predicate
+guards: content
+verifies: verified pinned receipt/binding, factor and passkey ownership, exact checkpoint coverage and already-present genesis before releasing Account classification
+resolves: certified creating signer and separately rederived SV/DS -> via:private-first-coverage
+resolves: factor-owned generation key and exact per-seal derivation -> via:private-checkpoint-key
+resolves: supported retained stage, exact selected route, fresh local assertion, after-assertion owner reread and cold database/journal containment without repair -> root:structural
+status: resolved
+pin: docs/account-crypto/checkpoint.md §1 1ba07b8d7606
+pin: docs/account-crypto/checkpoint.md §2 ff5de5a6b82d
+pin: docs/account-crypto/checkpoint.md §3 ea8cc350e5e1
+pin: docs/account-crypto/checkpoint.md §4 9aca2271994a
+pin: docs/account-crypto/checkpoint.md §5 6a17735630ce
+```
+
+```authority
+entry: private-checkpoint-service-binding
+kind: predicate
+guards: availability
+verifies: pinned receipt, slot binding and exact selected destination checked before checkpoint open, separate from content authority
+resolves: pinned service admission and epoch proof -> via:private-first-service
+bound: Only retained admission and routing assertions in checkpoint §3; no recipient, plaintext coverage or factor authority.
+status: resolved
+pin: docs/account-crypto/checkpoint.md §1 1ba07b8d7606
+pin: docs/account-crypto/checkpoint.md §2 ff5de5a6b82d
+pin: docs/account-crypto/checkpoint.md §3 ea8cc350e5e1
+pin: docs/account-crypto/checkpoint.md §4 9aca2271994a
+pin: docs/account-crypto/checkpoint.md §5 6a17735630ce
+```
