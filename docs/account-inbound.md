@@ -1,5 +1,8 @@
 # Authenticated inbound replay preparation
 
+The subsequent [byte-format and verification phase](./account-inbound-verification.md) implements the
+closed carriers and first-epoch checks below. This document retains the preparation contract and limits.
+
 This is an executable design checkpoint, not a receive implementation. The private v8 sender and
 schema-4 service remain unchanged. The next implementation starts with a bounded receive verifier and
 ledger under the existing lifetime; editor integration and enrollment follow their own checks.

@@ -1,0 +1,5 @@
+{
+  "sameStateVector": true,
+  "complete": "ase",
+  "omittedDeletion": "base"
+}

@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Active slice: Inbound codecs and first-epoch verification (`L-1`)
+## Active slice: Native inbound activation and atomic receive storage (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: closed inbound framing and owner-context verification
+blocks_on: factor-owned v9 activation and complete authenticated receive replay
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
@@ -62,53 +62,60 @@ store, counters and credentials; its old writing will not be imported or merged.
 
 **Committed base.** `18ceb40` contains v2 outbound preparation, `7210b7d` source capture, `7082fa7` the
 witnessed spool, `81a4655` response verification, `2cb42a2` v8 delivery evidence, `96a2040` schema-4 service
-decisions, `e1a5029` private HTTP transport/readback and `8dd06fb` the owned delivery/reconnect driver.
-Exact source capsules, envelopes, wrappers and proof evidence survive restart/compaction; position and seal
-invocation grants remain separate. Edited v5 histories need a separately verified catch-up checkpoint.
+decisions, `e1a5029` private HTTP transport/readback, `8dd06fb` the owned delivery/reconnect driver and
+`ee42c45` inbound preparation. Exact source capsules, envelopes, wrappers and proof evidence survive
+restart/compaction; position and seal invocation grants remain separate. Edited v5 histories need a
+separately verified catch-up checkpoint.
 
-**Inbound preparation completed.** The [contract](./account-inbound.md) requires an independently admitted
-semantic genesis with zero publisher links; later checkpoint baselines remain unsupported. Reader authority
-is separate from publisher identity. Proposed v2 request/page framing binds both, while received progress is
-per publisher and independent of visible Yjs state, outbound acceptance and local sequences. A retained
-inbound event carries exact signed request/page bytes and the envelope/proof inside it. Content, event,
-derived progress and witness must commit atomically before remote promotion. Pending originals survive
-restart/compaction; remote input cannot become a new local source capsule. Earlier readers must refuse the
-planned v9 marker before admission. The first receive bounds fit actual local batch limits.
+**Inbound bytes completed.** The [receive contract](./account-inbound.md) and
+[implemented verifier boundary](./account-inbound-verification.md) keep semantic genesis, reader membership,
+publisher authority, durable receipt and Yjs materialization separate. Closed v2 request/page and future
+inbound event codecs preserve original signed bytes alongside unchanged v1. The verifier checks held
+service/baseline/membership/prefix context, request/page signatures, acceptance, envelope decryption and
+actor, with detached original updates. Stored replay reauthenticates original wire and outer metadata even
+after request expiry. A context argument establishes no authority by itself. No production receive owner,
+v9 marker, service route or editor receive path is enabled yet.
 
-[Evidence](./account-conformance-runs/2026-09-11-account-inbound-prep.md): 25 preparation cases, 300 generated
-histories, seven effective shortcut controls, 43 primitive regressions and all 906 unit tests pass. A directed
-test found and fixed mutable-input retention in the test-only candidate; original bytes are now copied
-before async crypto and closure is rechecked before duplicate results. No production receiver exists yet.
-The model uses synthetic authority, atomic JS assignment and previously verified event objects on restart;
-it is not native storage, enrollment, complete codec or cold cryptographic replay evidence. No browser
-harness ran; future native waits must explicitly await predicates. The pnpm wrapper launch stalled; the
-registered Node script ran directly and its evidence is retained. No whole debt is paid.
+[Evidence](./account-conformance-runs/2026-09-11-account-inbound-codecs.md): 34 codec/verifier cases, eight
+effective actual source-removal controls, 400 generated signed inputs, 500 wire mutations, 68 regressions
+(including the prior 300 model histories), all 948 unit tests, isolated build and 13 repository gates pass.
+A directed test found and fixed callback replacement during crypto bypassing closure; original lifetime
+callbacks are now bound once. The failing reproduction is preserved. Codec and regression generated logs
+have separate output directories. Synthetic authority and one-event reauthentication are not native
+witness/content coverage or enrollment evidence. No whole debt is paid.
 
-**Next bounded build.** Implement the closed inbound event codec and proposed v2 read/page codecs alongside
-unchanged v1. Implement first-epoch verification with explicit independently held owner context: baseline ID,
-lineage/head, reader and publisher keys/membership, generation opener, actor bindings, prior received link
-and retained high-water mark. Verify the exact request, canonical bounds, page proof, contiguous subject,
-acceptance link, envelope signature/decryption and actor before returning detached original updates/evidence.
-A low-level context parameter grants no membership or baseline authority on its own. Keep wire bytes owned
-across async crypto and withhold late results on close, including duplicates.
+**Next bounded build.** Activate the planned v9 fence only through an explicit factor-owned private factory
+and exclusive permit. Earlier v8 readers must refuse before admission, while the default Local path remains
+unchanged. Derive the first receive context from actual verified promotion genesis/admission and held
+credential/lineage/generation state; neither a supplied response nor an in-memory verifier result can
+establish the baseline. Support the actual admitted owner's private self-stream first. Fresh readers and
+additional publishers remain synthetic until their enrollment/authority owner exists.
 
-Use the independent fixtures as byte expectations, not the model's fixture parser as production code.
-Add malformed/trailing/noncanonical/oversized frames, request substitution, false prefix, conflicting proof,
-unsupported epoch/generation/finalization, actor misuse, mutable input and cancellation tests with effective
-actual guard-removal controls. Retain v1 vectors. This phase exposes no default receive path, new enrollment,
-service route, writable cursor or production activation marker.
+Build one checked native batch containing every original received update, its exact evidence event and the
+complete metadata witness. Existing one-record spool append is insufficient. The 255-update/512 KiB cap
+and actual 256-record/4 MiB check apply before any durable mutation. Commit received progress and original
+content together; aborted or unknown commits must be resolved by authenticated cold replay, not a writable
+cursor or a second seal. Conflicting accepted evidence halts that stream without promoting plaintext.
 
-**Then:** native v9 reader-fence activation, complete stored-wire reauthentication and atomic original
-content/event/witness batches under the factor-owned permit; actual abort/crash/lost-ack/cold-open tests;
-ordered remote editor promotion; v2 service reader/publisher resolution and transport; Account UI/two-gate
-second-device adoption. A private self-stream can use the actual admitted owner; fresh readers and extra
-publishers remain synthetic until their enrollment/authority owner exists.
+On cold open, authenticate the full retained event census, replay every original signed request/page and
+acceptance from independently reconstructed prefixes, and verify content coverage and witnessed completeness.
+Preserve original pending Yjs structs/deletions through restart and exact-coverage compaction. Received data
+cannot become a new local source capsule. Empty and exact-duplicate observations confer no durable new
+high-water knowledge. Keep editor remote promotion disabled until native storage evidence passes.
 
-**Following boundaries.** General lineage advancement, successors, admitted checkpoint baselines, concurrent
-writers, pruning/backlog performance, revocation/rotation, clear/delete, finalization/recovery, supported
-platforms, whole-profile residue, production provisioning/deployment/restore and independent review. L-2's
-historical clean ref `d24732b` has no further service work to integrate. Host VM/policy research stays stopped.
-Client credentials and service state still require unrewound, unbranched histories.
+Tests must exercise real IndexedDB abort/crash/lost-ack/cold-open boundaries, changed or missing evidence,
+content/event split controls, old-reader refusal, pressure, cancellation and permit ownership. Use independent
+content/receipt expectations and bounded generated histories. Native waits must explicitly await predicates;
+the earlier Playwright async-predicate bug cannot count as successful polling. Preserve source hashes and
+counterexamples before updating this checkpoint.
+
+**Then:** ordered remote editor promotion; v2 service reader/publisher resolution and transport; Account
+UI/two-gate second-device adoption. General lineage advancement, successors, admitted checkpoint baselines,
+concurrent writers, pruning/backlog performance, revocation/rotation, clear/delete, finalization/recovery,
+supported platforms, whole-profile residue, production provisioning/deployment/restore and independent
+review remain following boundaries. L-2's historical clean ref `d24732b` has no further service work to
+integrate. Host VM/policy research stays stopped. Client credentials and service state still require
+unrewound, unbranched histories.
 
 This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 

@@ -1,0 +1,64 @@
+{
+  "scope": "Closed v2 read/page and inbound event codecs; first-epoch verification under independently supplied authority. No receive storage activation, browser, service route or enrollment.",
+  "codecs": {
+    "cases": 34,
+    "controls": 8,
+    "result": "passed"
+  },
+  "generated": [
+    {
+      "seed": 9152026,
+      "runs": 400,
+      "oracle": "Authored Yjs updates, independent Node/OpenSSL signatures and canonical event bytes; live/stored equality and independently re-signed actor rejection.",
+      "inputs": "generated.json"
+    },
+    {
+      "seed": 9162026,
+      "runs": 500,
+      "oracle": "One nonzero XOR mutation of a page byte must be refused. Reproduce from the test and seed; individual mutations are not separately saved."
+    },
+    {
+      "seed": 9142026,
+      "runs": 300,
+      "oracle": "Existing preparation model external source/receipt ledger, atomic model cuts and pending Yjs replay.",
+      "inputs": "regression-artifacts/generated.json"
+    }
+  ],
+  "implementation_defect": {
+    "finding": "Replacing lifetime.assertCurrent during crypto could bypass closure because the callback property was consulted repeatedly.",
+    "before": "lifetime-counterexample.log",
+    "repair": "Capture and bind the original lifetime assertion and clock callbacks once before crypto.",
+    "after": "The directed regression passes in codecs.log, results.xml and the full unit suite."
+  },
+  "actual_source_controls": [
+    "page-signature",
+    "request-binding",
+    "prefix-proof",
+    "actor",
+    "record-binding",
+    "batch-count",
+    "buffer-copy",
+    "late-close"
+  ],
+  "harness_repair": "Regression output initially overwrote generated.json. The final runner isolates regression-artifacts; both 400 codec inputs and 300 prior model histories are now preserved.",
+  "suite": {
+    "tests": 948,
+    "files": 82,
+    "result": "passed"
+  },
+  "regressions": {
+    "tests": 68,
+    "files": 5,
+    "result": "passed"
+  },
+  "limits": [
+    "Synthetic independently supplied membership, genesis and generation authority do not establish real issuance or semantic baseline admission.",
+    "Stored verification covers one original event, not native AEAD, complete witness census or content coverage.",
+    "No v9 reader fence, native transaction, crash campaign, editor promotion, real service reader route or fresh enrollment is enabled.",
+    "Only creating publisher at epoch 1/generation 1; no general lineage advancement, finalization or concurrent-writer authority.",
+    "Generated campaign found no additional defect; bounded examples and effective controls are not a whole-protocol correctness proof.",
+    "Actual mutation bundles log a duplicate Yjs import warning. Only raw bytes cross bundle boundaries, not Yjs documents or constructor-checked objects.",
+    "The registered Node runner ran directly. No successful whole pnpm check is claimed.",
+    "Isolated application build does not ship the unused verifier; tests and source-control bundles execute it directly."
+  ]
+}

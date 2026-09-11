@@ -2059,3 +2059,43 @@ Next bounded build: closed inbound record and v2 read/page codecs plus first-epo
 independently supplied owner context, with canonical framing, baseline/actor/prefix/bounds and mutable-input
 controls. Native v9 activation and atomic receive storage follow that verified byte boundary; editor
 promotion and service/enrollment integration follow their own checkpoints.
+
+
+### 2026-09-11 — Closed inbound bytes and first-epoch verification
+
+Committed inbound preparation as `ee42c45`. The [byte/verifier boundary](./account-inbound-verification.md)
+now implements closed v2 read/page codecs and the future encrypted inbound event, preserving exact signed
+request/page bytes. V1 readback, v8 sending and Local formats remain unchanged. The low-level verifier
+requires independently supplied genesis, membership, actor, service, generation and received-prefix context;
+it cannot install that authority or advance a cursor itself.
+
+Verification checks the outstanding reader-signed request, service page signature, exact request hash,
+held prefix, acceptance proof, member-signed envelope, decrypted actor and original Yjs framing. Old
+positions also recheck the independently retained original proof/envelope. Detached received updates and
+records, conflicts without plaintext, and empty/duplicate observations remain distinct. Stored replay
+rechecks original signatures and recomputed outer metadata after request expiry. The first receiver is
+bounded to one entry, 512 KiB wire, 255 updates and 512 KiB decoded updates, then actual local batch limits.
+
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-inbound-codecs.md): 34 codec/verifier cases,
+eight effective actual source-removal controls, 400 generated signed inputs, 500 wire mutations, 68
+regressions (including the prior 300 generated histories), and all 948 unit tests in 82 files pass. Direct
+Node import, isolated build, static checks and 13 repository gates accompany the result. The generated
+oracles use authored Yjs bytes and independently framed Node/OpenSSL evidence, not production encoders.
+
+A directed test found and fixed a lifetime defect: replacing the caller's assertion during crypto bypassed
+closure. Binding the original assertion and clock once repairs it; the failing reproduction is preserved.
+Final guards cover empty, duplicate and last-decrypt completion. The final generated campaign found no
+additional defect. A runner artifact collision was also repaired: regression outputs now have their own
+directory and no longer overwrite the new codec's generated inputs. Mutation bundles emit Yjs's duplicate
+import warning; only raw bytes cross their independent module boundaries.
+
+This is one-event byte/crypto/lifetime evidence, not a native witness census, content coverage, semantic
+genesis admission or enrollment proof. No v9 activation, storage owner, editor receive path, service route
+or personal Account is enabled. The registered Node runner ran directly; no whole pnpm check is claimed.
+No whole debt is paid. Personal release/predecessor, browser/factors and origin remain intact; personal
+preview/relay remain stopped. This outcome is appended before replacing L-1 progress; L-2 is unchanged.
+
+Next is native v9 reader-fence activation and an atomic original content/event/witness batch under the
+factor-owned permit, with complete stored-wire replay and native abort/crash/lost-ack coverage. The private
+self-stream must derive its context from actual admitted genesis; fresh readers/publishers remain synthetic
+until enrollment exists. Remote editor promotion and v2 service integration follow their own checkpoints.
