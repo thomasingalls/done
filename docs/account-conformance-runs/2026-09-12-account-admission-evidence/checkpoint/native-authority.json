@@ -1,0 +1,31 @@
+{
+  "results": [
+    {
+      "field": "receipt",
+      "refusedBeforeCheckpoint": true,
+      "readOnly": true
+    },
+    {
+      "field": "candidate",
+      "refusedBeforeCheckpoint": true,
+      "readOnly": true
+    },
+    {
+      "field": "salt",
+      "refusedBeforeCheckpoint": true,
+      "readOnly": true
+    },
+    {
+      "field": "nonce",
+      "refusedBeforeCheckpoint": true,
+      "readOnly": true
+    },
+    {
+      "field": "ct",
+      "refusedBeforeCheckpoint": true,
+      "readOnly": true
+    }
+  ],
+  "wrongPin": "refused",
+  "restored": "account"
+}

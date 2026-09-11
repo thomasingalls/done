@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="admission commits one verified first head and retains Local carriers through cold restart" time="1.320789" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="renderer interruption before admission-requested commit" time="1.424152" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="renderer interruption after admission-requested commit" time="1.712784" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="renderer interruption before admission-offered commit" time="1.434508" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="renderer interruption after admission-offered commit" time="1.712517" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="renderer interruption before admission-receipted commit" time="1.436209" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="renderer interruption after admission-receipted commit" time="1.707496" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="lost begin response resumes exact service outcome" time="1.221153" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="lost finish response resumes exact service outcome" time="1.215619" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="abandonment after an offer removes only preparation, while a lost committed reply cannot roll back Local" time="1.416929" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="changed receipt signature is refused; disabling final verification actually retains it" time="1.320060" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="queued owner and cancellation retain the commit until native acknowledgement drains" time="1.383607" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="caller mutation after queuing cannot change the owned slot or request" time="0.977431" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="30 generated delivery, admission interruption and retry histories preserve independent writing and coverage" time="36.200671" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<testcase name="the committed version-2 reader and ordinary Local editor refuse a retained admission" time="1.323371" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission/native.test.mjs"/>
+	<!-- tests 15 -->
+	<!-- suites 0 -->
+	<!-- pass 15 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 56586.675458 -->
+</testsuites>

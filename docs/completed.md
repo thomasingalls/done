@@ -3073,3 +3073,36 @@ coverage/size cases. Other review, privacy, Account and deployment gates remain.
 hashes, 31 vectors, historical review and L-2 are preserved. No personal server, browser, Account,
 factor, operator key, pin, origin or routing changed. Unrelated root files remain untouched.
 Appended before replacing only L-1.
+
+
+## 2026-09-12 — Remaining admission coverage and size evidence (`L-1` seat)
+
+Delivery-oracle work was committed signed as `3b0a1ba`; its 893 source pins agree with committed/current
+files. All fifteen recent signatures verify `G`. This new F-21.2 phase is complete, unstaged/uncommitted.
+No production code, protocol format, limit, registry or vector changed.
+
+[Current disposition](./review/implementation/account-admission-evidence.md) credits the earlier bounds
+protocol/native tests, A/D7 and later genesis/admission/parser evidence rather than repeating the old
+blanket absence claim. New cases fill receipt-resume and exact owner size gaps. Real HTTP service-issued
+SV/DS lies carry valid signatures and pass content-blind verification, but fail the client owner's own
+cold replay. Independent Node/OpenSSL verification and decrypted checkpoint rederivation provide the
+separate check. Test-planted authenticated receipted carriers isolate the cold branch.
+
+[Preserved campaign](./account-conformance-runs/2026-09-12-account-admission-evidence.md): 44 stages,
+75 Node tests, 898 source pins, types, 30 vector commands, census/map/registry, lint and format
+pass. Twelve new native cases include twelve generated histories (seed 1121026, no counterexample),
+three actual Yjs snapshots at 16 MiB minus/exact/plus one, and six explicitly injected combined coverage
+edges. Allowed snapshots seal once and cold-retry without writes/reseals. Oversize snapshots refuse
+before sealing; oversized injected coverage refuses before requested/send. All source/cold replay hashes
+are retained. Three distinct source omissions are effective at those exact boundaries. The snapshot
+omission still encounters a later parser refusal, so it establishes early-seal prevention rather than
+sole protection against oversized persistence. Existing bounds/A/D7/genesis/admission regressions pass.
+
+No production defect was found. A focused harness failure reused a closed setup page; separate case/
+generated-history fixture lifetimes fixed it. Loopback sandbox refusal was environmental. Full Vitest,
+aggregate crypto audit, unrelated campaigns, other platforms, power loss, real Account capacity and
+whole-profile residue remain outside this evidence. Personal 21 package hashes, 31 vector files,
+historical review and L-2 are unchanged. No personal server/browser/Account/factor/key/pin/origin/routing
+changed; unrelated root files remain untouched. Next is F-21.4 neutral plaintext-residue preparation:
+carrier/representation inventory, permitted plaintext, lifecycle points and effective leak controls,
+with logical carrier and filesystem profile claims kept distinct. Appended before replacing only L-1.

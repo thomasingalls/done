@@ -122,7 +122,8 @@
     "account:isolation": "node scripts/account-isolation/run.mjs",
     "account:decision-composition": "node scripts/account-decision-composition/run.mjs",
     "account:parser-conformance": "node scripts/account-parser-conformance/run.mjs",
-    "account:delivery-oracle": "node scripts/account-delivery-oracle/run.mjs"
+    "account:delivery-oracle": "node scripts/account-delivery-oracle/run.mjs",
+    "account:admission-evidence": "node scripts/account-admission-evidence/run.mjs"
   },
   "dependencies": {
     "@codemirror/commands": "^6.10.4",

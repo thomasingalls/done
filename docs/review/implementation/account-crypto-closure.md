@@ -170,8 +170,17 @@ faults and exact native retained-evidence checks. Four faults still pass the ori
 production defect was found or runtime code changed. D3/C and genuine service-issued arrival-order
 regressions pass; model assumptions and real-owner admission limits remain explicit.
 
-Next is F-21.2's remaining admission coverage/size inventory, crediting A/D7 and later owner tests.
-Residue, diagnostic and performance findings retain separate obligations.
+F-21.6 was committed signed as `3b0a1ba`. The subsequent
+[admission coverage and size evidence](./account-admission-evidence.md) addresses the remaining F-21.2
+owner cases, crediting the earlier bounds/A/D7 and native genesis/admission tests. Actual service-issued
+receipt lies refuse against cold client replay. Real exact-size snapshots and explicitly injected
+coverage descriptors demonstrate pre-seal/pre-write/pre-send refusal, with effective source omissions.
+No production defect was found or runtime source changed.
+
+Next is F-21.4 neutral plaintext-residue preparation: declare carrier/representation coverage, permitted
+plaintext, lifecycle observation points and planted-leak controls before implementing the scanner.
+Logical-carrier and filesystem-profile claims remain distinct. Diagnostics and performance retain
+separate obligations.
 
 Platform qualification, whole-profile residue, general lineage/checkpoint evolution, enrollment/adoption,
 revocation/rotation, finalization, recovery replacement, total-loss recovery, deployment/restore and

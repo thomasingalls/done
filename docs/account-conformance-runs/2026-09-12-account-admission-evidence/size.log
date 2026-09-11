@@ -1,0 +1,20 @@
+(node:40662) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:40662) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual retained snapshot at 16 MiB -1 bytes is bounded before checkpoint sealing (12031.107958ms)
+✔ actual retained snapshot at 16 MiB +0 bytes is bounded before checkpoint sealing (11499.358583ms)
+✔ actual retained snapshot at 16 MiB +1 bytes is bounded before checkpoint sealing (4749.839458ms)
+✔ injected sv coverage tests the actual owner preflight at combined byte edge -1, with an effective omission (2400.592417ms)
+✔ injected sv coverage tests the actual owner preflight at combined byte edge 0, with an effective omission (2279.657541ms)
+✔ injected sv coverage tests the actual owner preflight at combined byte edge 1, with an effective omission (2893.441917ms)
+✔ injected ds coverage tests the actual owner preflight at combined byte edge -1, with an effective omission (2284.091417ms)
+✔ injected ds coverage tests the actual owner preflight at combined byte edge 0, with an effective omission (2273.23275ms)
+✔ injected ds coverage tests the actual owner preflight at combined byte edge 1, with an effective omission (2792.627125ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 43964.606541

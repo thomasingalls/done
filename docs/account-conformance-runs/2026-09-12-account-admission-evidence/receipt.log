@@ -1,0 +1,27 @@
+(node:40519) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:40519) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:40519) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ real service-issued sv lie refuses at all receipt paths; retained-part omission returns it (3745.464334ms)
+receipt history 1: {"field":"ds","reverse":false,"ops":[{"at":5,"remove":2,"insert":"`[zt hxHd#","disk":false}]}
+✔ real service-issued ds lie refuses at all receipt paths; retained-part omission returns it (3481.782625ms)
+receipt history 2: {"field":"ds","reverse":true,"ops":[{"at":16,"remove":3,"insert":"G\"5D5@QV\\","disk":true},{"at":5,"remove":3,"insert":"L*mE\\&VfyY%d","disk":true},{"at":12,"remove":3,"insert":"hPsap{j","disk":true},{"at":19,"remove":1,"insert":"M!>.0vwBrN","disk":false},{"at":18,"remove":2,"insert":"fal6Z6sPb","disk":false}]}
+receipt history 3: {"field":"ds","reverse":true,"ops":[{"at":8,"remove":3,"insert":"%/quUgnE}X@!","disk":true},{"at":19,"remove":2,"insert":"|","disk":true},{"at":0,"remove":3,"insert":"q(Q%b87#\"&6S","disk":true}]}
+receipt history 4: {"field":"ds","reverse":false,"ops":[{"at":20,"remove":2,"insert":"_","disk":true},{"at":1,"remove":2,"insert":"[70&!z","disk":true}]}
+receipt history 5: {"field":"ds","reverse":false,"ops":[{"at":12,"remove":2,"insert":"MUs8Z`H=[7","disk":false},{"at":4,"remove":1,"insert":"Hj2B@,(mq{","disk":false},{"at":3,"remove":2,"insert":"C","disk":true},{"at":14,"remove":3,"insert":"YR,","disk":true},{"at":7,"remove":2,"insert":"uj!MkDwh>0#B","disk":true}]}
+receipt history 6: {"field":"sv","reverse":false,"ops":[{"at":7,"remove":1,"insert":".el","disk":false},{"at":16,"remove":2,"insert":"1","disk":true},{"at":8,"remove":3,"insert":"vJQ","disk":false}]}
+receipt history 7: {"field":"sv","reverse":false,"ops":[{"at":14,"remove":3,"insert":"x/","disk":true},{"at":2,"remove":1,"insert":"huGf-ZH/5","disk":false},{"at":16,"remove":1,"insert":"X!}xA","disk":true},{"at":7,"remove":3,"insert":"'k7#","disk":false}]}
+receipt history 8: {"field":"sv","reverse":false,"ops":[{"at":0,"remove":1,"insert":"$p","disk":false}]}
+receipt history 9: {"field":"sv","reverse":true,"ops":[{"at":19,"remove":1,"insert":"d/]\\B!\\","disk":false},{"at":1,"remove":1,"insert":"Fy(","disk":false},{"at":13,"remove":1,"insert":"7v2J<XF2","disk":false}]}
+receipt history 10: {"field":"sv","reverse":true,"ops":[{"at":20,"remove":3,"insert":"+zt4m7W4","disk":false},{"at":4,"remove":1,"insert":"$x|","disk":false}]}
+receipt history 11: {"field":"ds","reverse":true,"ops":[{"at":6,"remove":2,"insert":"p(V'","disk":false},{"at":12,"remove":2,"insert":"QNix`^+K?'","disk":false},{"at":18,"remove":2,"insert":"d,RxFhlm","disk":false},{"at":17,"remove":1,"insert":"\")on:9\\,%0_","disk":false},{"at":4,"remove":3,"insert":"1[.BJX","disk":false}]}
+receipt history 12: {"field":"sv","reverse":false,"ops":[{"at":11,"remove":1,"insert":"\"8gfjka(Qv","disk":true},{"at":11,"remove":2,"insert":"610zaIBa6","disk":true},{"at":4,"remove":3,"insert":"]\"v)Tt","disk":true},{"at":17,"remove":2,"insert":"~k\"7t&%E","disk":true}]}
+✔ 12 generated journal/disk histories rederive receipt coverage on cold reopen and detect the omission (41058.531209ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 49076.367375
