@@ -1,0 +1,42 @@
+[
+  {
+    "field": "intent",
+    "validMac": true,
+    "result": "refused"
+  },
+  {
+    "field": "active_gen",
+    "validMac": true,
+    "result": "refused"
+  },
+  {
+    "field": "range",
+    "validMac": true,
+    "result": "refused"
+  },
+  {
+    "field": "spoolHash",
+    "validMac": true,
+    "result": "refused"
+  },
+  {
+    "field": "spoolCount",
+    "validMac": true,
+    "result": "refused"
+  },
+  {
+    "field": "reservedLimit",
+    "validMac": true,
+    "result": "refused"
+  },
+  {
+    "field": "witnessIntent",
+    "validMac": true,
+    "result": "refused"
+  },
+  {
+    "field": "witnessState",
+    "validMac": true,
+    "result": "refused"
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "control": "base",
+    "invocations": [
+      {
+        "next": 2,
+        "reserved": 1,
+        "durable": true
+      }
+    ],
+    "lateRewindGuard": "not triggered"
+  },
+  {
+    "control": "reserve",
+    "invocations": [
+      {
+        "next": 1,
+        "reserved": 0,
+        "durable": false
+      }
+    ],
+    "lateRewindGuard": "refuses after invocation"
+  }
+]

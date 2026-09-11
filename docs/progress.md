@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Active slice: Authenticated counter and witness byte contracts (`L-1`)
+## Active slice: Inherited store and synchronous journal byte bridges (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: Account-to-Local counter/witness byte and ownership agreement before real Account authority
+blocks_on: remaining current Local store/journal byte agreement before real Account authority
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
@@ -58,56 +58,60 @@ updated: 2026-09-11
 Account work is at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), around item 5's internal
 creating-member ciphertext round trip. Composition is `6398e33`, descriptor bounds/versioning `4f71bac`,
 fresh activation `2ba50aa`, crypto prep `9cf5c98`, first-authority A `43b42b1`, recovery B `e74fbaa`,
-transport C `d098bd4`, service custody D1 `d24ca66`, and local promotion D2 `1897848`. C, D1 and D2 were
-committed **unsigned** at the user's request; the existing reminder now includes all three for signing
-tomorrow morning. D3 is complete and remains unstaged/uncommitted. No real Account receipt exists;
-this is not Stage 4 completion or second-device enrollment.
+transport C `d098bd4`, service custody D1 `d24ca66`, local promotion D2 `1897848` and Account ledger D3
+`24bc3a4`. C and D1–D3 were committed **unsigned** at the user's request; the existing reminder includes
+all four for signing later. D4 is complete and remains unstaged/uncommitted. No real Account receipt
+exists; this is not Stage 4 completion or second-device enrollment.
 
-**Completed boundary.** [D3 Account capsules and ledger](./account-crypto/account-ledger.md) pins the
-source/spool/delivery/inbound carriers, whole-source and held-receipt hashes, shared event chain and
-explicit authenticated-counter dependency. It separates canonical bytes, enclosing record authentication,
-retained completeness and exact-source/acceptance/content-coverage checks. Runtime and persistent formats
-are unchanged. The witness count has two checks; removing just the early check still refuses through
-final pair equality. No runtime defect was reproduced in this bounded phase.
+**Completed boundary.** [D4 counter/witness contracts](./account-crypto/content-counter.md) pin the scoped
+metadata KDF, creating/ready witnesses, counter v1/v2 payload/MAC, structured-clone parsing and native
+reservation/event ownership. Root ID is intentionally omitted from key info and included in each payload.
+No production code or valid stored format changed. Correctly MACed lies remain subject to allocation,
+generation, initialization and ledger checks.
 
-[Final evidence](./account-conformance-runs/2026-09-11-account-ledger-contract.md): all 42 stages
-pass with 795 matching input pins. Twenty vectors, 118 carrier mutations and 118 encoded omissions,
-13,876 truncated prefixes, 80 other framing refusals, 73 baseline-digest mutations and 200 shrinking-enabled
-histories covering 2,563 ledger events pass. Eight effective weakening controls retain real crypto;
-the independent redundant-count control stays refused. All 75 native owner tests, including 44
-generated browser histories, 983 units, typecheck, retained A/B/C/D1/D2 contracts and all 25 vector
-commands pass. The map joins 59 specified constructions, four open and one exclusion through 58 entries
-and 70 permitted chains. F-05/F-06 remain open.
+**Durability correction.** D3 and earlier spool prose incorrectly said strict commits. The native helper
+requests and reports `relaxed` durability. The current contracts now say so; historical evidence is
+unchanged. F-15 remains open: completed transactions and renderer-crash tests do not establish persistence
+of invocation grants through OS/power loss. No new runtime defect or strict-persistence repair is claimed.
 
-**Next bounded phase — D4: authenticated counter and witness byte contracts.** Continue
-[group D](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates) with the relevant
-subset of `remaining-shared-store`:
+[Final evidence](./account-conformance-runs/2026-09-11-account-counter-contract.md): all 43 stages
+pass with 806 matching input pins. Eight vectors, 80 input mutations, 95 encoded omission witnesses,
+88 parser refusals and 200 shrinking-enabled histories (1,443 reservations, 13 ceiling refusals) pass.
+Five new native tests verify real custody KDF/MAC bytes, correctly MACed lies, abort atomicity, the
+post-authentication MAC race and reservation-before-AES boundary. All 41 existing spool/receive native
+regressions, 983 units, typecheck, retained A/B/C/D1/D2/D3 contracts and 26 vector commands pass.
+A missing-MAC fixture conversion was corrected to exercise the runtime parser; the interrupted first
+campaign and passing final campaign are preserved. The registry has 63 specified, four open and one
+exclusion; the map has 61 entries and 75 permitted-root chains. F-05/F-06 remain open.
 
-- Pin current content-counter v1/v2 payload bytes, parsers, compatibility and scoped metadata key/MAC
-  derivation. Include content witness framing where the same owner uses it. Compare existing Local
-  vectors with actual current bytes; preserve inherited formats unless a reproduced defect requires change.
-- Specify the Account chain's connection to authenticated v2 metadata: reserved sequence/invocation
-  ownership, previous-state comparison, final atomic event/content/witness commit and cold replay.
-  Distinguish native commit evidence from power-loss or coordinated-rollback guarantees.
-- Publish independent fixed vectors, meaningful field negatives, correctly MACed semantic lies, effective
-  omission controls and shrinking-enabled histories. Register exact source/map/vector joins without
-  silently closing the remaining store/journal/custody construction group.
-- Change runtime only for a reproduced defect or explicit contract correction. Run affected regressions,
-  preserve evidence and append the outcome before replacing L-1. No real provisioning, onboarding UI,
-  personal build/server or deployment is authorized by this phase.
+**Next bounded phase — D5: inherited store and synchronous journal byte bridges.** Continue
+[group D](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates) with the remaining
+`remaining-shared-store` constructions:
 
-Later D slices retain inherited custody/store/journal bridges and checkpoint/startup contracts. Migration-only
-scope needs an explicit disposition, not a silent claim of whole-Local requalification. The actual old
-second device will adopt the first workspace with fresh custody/store/counters/credentials; it will not
-import or merge its old writing. Recovery byte conformance is not a built total-loss machine.
+- Compare current store-name digest, store-key KDF and record AAD/framing with inherited row-3 vectors
+  and their runtime consumers. Register exact byte/source/map joins and fill only demonstrated gaps.
+- Pin journal key derivation and synchronous carrier header/AAD/nonce/tag bytes, including scope,
+  generation, tab identity and native parser rules. Bridge existing WASM/vector evidence where exact;
+  do not claim a fresh whole-WASM qualification from a matching wrapper.
+- Use independent fixed vectors, meaningful per-field negatives, effective omission controls and
+  shrinking-enabled tests around these byte boundaries. Keep lifecycle, invocation accounting and
+  content coverage obligations explicit instead of deriving them from an AEAD tag.
+- Change runtime only for a reproduced defect or explicit contract correction; preserve valid formats
+  otherwise. Run affected checks, preserve evidence and append the outcome before replacing L-1.
+  No real provisioning, personal build/server, onboarding UI or deployment is authorized by this phase.
+
+Later D slices retain other custody primitives and checkpoint/startup contracts. Migration-only provenance
+needs an explicit disposition, not silent whole-Local requalification. The actual old second device will
+adopt the first workspace with fresh custody/store/counters/credentials, without importing or merging its
+old writing. Recovery byte conformance is not a built total-loss machine.
 
 **Personal checkpoint.** Root `dist/` and `.dev/releases/17d87c2/app` retain all 21 saved hashes.
-All 25 prior tracked vector files and production runtime sources are unchanged by D3. Personal preview/
-relay, browser/factors, origin/routing, historical review and L-2 are unchanged. Native bundles were built
-in memory. Host VM/policy research stays stopped. No real Account, factor, operator key or pin was
-provisioned. Unrelated root files `done ` and `reviewpacket96a20401ceb88d.md` remain untouched.
+All 26 prior tracked vector files and production sources are unchanged by D4. Personal preview/relay,
+browser/factors, origin/routing, historical review and L-2 are unchanged. Native bundles stayed in memory.
+Host VM/policy research stays stopped. No real Account, factor, operator key or pin was provisioned.
+Unrelated root files `done ` and `reviewpacket96a20401ceb88d.md` remain untouched.
 
-**Other gates.** Invocation-grant power-loss accounting, salvage/diagnostics, parser/admission/service
+**Other gates.** F-15 invocation-grant power-loss accounting, salvage/diagnostics, parser/admission/service
 negatives, performance/maintenance, lock ordering and accepted review follow-ups remain. Passkey and
 workspace signing IDs are distinct namespaces. General lineage advancement, successor/checkpoint
 baselines, concurrent members, pruning/backlog scale, enrollment/device management, revocation/rotation,

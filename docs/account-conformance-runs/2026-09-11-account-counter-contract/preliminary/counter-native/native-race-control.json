@@ -1,0 +1,10 @@
+[
+  {
+    "control": "base",
+    "result": "refused changed MAC before sealing"
+  },
+  {
+    "control": "equalMac",
+    "result": "overwrote changed MAC and committed"
+  }
+]

@@ -141,3 +141,7 @@ The next bounded carrier is the synchronous encrypted journal attached to the sa
 the canonical document/editor/transport boundary, exact authenticated trim, full startup and migration
 remain subsequent checkpoints. Generation transitions and full reference accounting remain L-3 work;
 supported-platform/performance/independent-review evidence remains L-4 work.
+
+The current counter/witness metadata bytes and Account v2 bridge are pinned in
+[the D4 counter contract](./account-crypto/content-counter.md). The retained record-AEAD vectors do not
+cover those metadata MACs. The counter contract also states the current relaxed durability limitation.

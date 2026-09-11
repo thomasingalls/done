@@ -18,7 +18,7 @@ const baseline = () => ({
 test('registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups', () => {
   const result = checkConstructionRegistry(root);
   assert.deepEqual(result.failures, []);
-  assert.equal(result.specified, 59);
+  assert.equal(result.specified, 63);
   assert.equal(result.open, 4);
   assert.equal(result.excluded, 1);
 });
@@ -574,6 +574,105 @@ test('D3 ledger byte coverage cannot discard canonical negatives or its counter 
   if (process.env.ACCOUNT_REPORT_DIR)
     writeFileSync(
       join(process.env.ACCOUNT_REPORT_DIR, 'ledger-registry-controls.json'),
+      JSON.stringify({ controls: evidence.length, evidence }, null, 2) + '\n',
+    );
+});
+
+test('D4 metadata cannot drop its scoped MAC owner, native coupling or negative corpus', () => {
+  const controls = [
+    [
+      'D4 corpus',
+      (o) =>
+        (o.document.additionalCorpora = o.document.additionalCorpora.filter(
+          (c) => c.phase !== 'D4',
+        )),
+      'specified phase/blocker mismatch',
+    ],
+    [
+      'MAC owner',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'content-counter-v2').mapEntries = [
+          'private-content-counter-order',
+          'private-account-ledger-completeness',
+        ]),
+      'missing MAC custody authority entry',
+    ],
+    [
+      'ledger edge',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'content-counter-v2').mapEntries = [
+          'private-content-metadata',
+          'private-content-counter-order',
+        ]),
+      'missing native counter/ledger dependency',
+    ],
+    [
+      'native obligation',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'content-metadata-key').requirements = [
+          'runtime-bytes',
+          'input-mutations',
+        ]),
+      'missing evidence obligation',
+    ],
+    [
+      'parser obligation',
+      (o) => {
+        const r = o.document.constructions.find((r) => r.id === 'content-counter-v1');
+        r.requirements = r.requirements.filter((s) => s !== 'structured-clone-negatives');
+      },
+      'missing evidence obligation',
+    ],
+    [
+      'witness source',
+      (o) =>
+        o.document.constructions
+          .find((r) => r.id === 'content-initialization-witness')
+          .sourceSites.pop(),
+      'source-site census changed',
+    ],
+    [
+      'KDF role',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'content-metadata-key').roles = [
+          'predicate',
+        ]),
+      'primitive vector misclassified',
+    ],
+  ];
+  const evidence = [];
+  for (const [name, change, expected] of controls) {
+    const o = baseline();
+    change(o);
+    assert(
+      checkConstructionRegistry(root, o).failures.some((f) => f.includes(expected)),
+      name,
+    );
+    evidence.push({ name, caught: true, expected });
+  }
+  for (const field of ['negatives', 'encodedBindingControls']) {
+    const o = baseline(),
+      c = o.document.additionalCorpora.find((c) => c.phase === 'D4'),
+      path = c.vectorFile,
+      v = JSON.parse(read(path));
+    v.vectors.find((v) => v.id === 'content-counter-v2-ledger')[field] = [];
+    const changed = JSON.stringify(v);
+    c.vectorSha256 = digest(changed);
+    o.read = (p) => (p === path ? changed : read(p));
+    const result = checkConstructionRegistry(root, o);
+    assert(
+      result.failures.some((f) =>
+        f.includes(
+          field === 'negatives' ? 'missing vector/negative corpus' : 'missing MAC/omission corpus',
+        ),
+      ),
+    );
+    assert(!result.failures.some((f) => f.includes('stale additional vector file pin')));
+    evidence.push({ name: field, caught: true, aggregatePinUpdated: true });
+  }
+  if (process.env.ACCOUNT_REPORT_DIR)
+    writeFileSync(
+      join(process.env.ACCOUNT_REPORT_DIR, 'counter-registry-controls.json'),
       JSON.stringify({ controls: evidence.length, evidence }, null, 2) + '\n',
     );
 });

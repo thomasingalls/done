@@ -53,7 +53,10 @@ export function checkConstructionRegistry(root, options = {}) {
   const executed = vectors.vectors.map((v) => ({ ...v, phase: 'A' }));
   const corpusPhases = new Set(['A']);
   for (const corpus of additional) {
-    if (!['B', 'C', 'D1', 'D2', 'D3'].includes(corpus.phase) || corpusPhases.has(corpus.phase))
+    if (
+      !['B', 'C', 'D1', 'D2', 'D3', 'D4'].includes(corpus.phase) ||
+      corpusPhases.has(corpus.phase)
+    )
       fail('unknown/duplicate additional corpus phase');
     corpusPhases.add(corpus.phase);
     if (digest(read(corpus.vectorFile)) !== corpus.vectorSha256)
@@ -75,7 +78,7 @@ export function checkConstructionRegistry(root, options = {}) {
     if (ids.has(r.id)) fail('duplicate construction ' + r.id);
     ids.add(r.id);
     if (!['specified', 'open', 'excluded'].includes(r.status)) fail('unknown status ' + r.id);
-    if (!['A', 'B', 'C', 'D', 'D1', 'D2', 'D3', 'Local', 'non-crypto'].includes(r.phase))
+    if (!['A', 'B', 'C', 'D', 'D1', 'D2', 'D3', 'D4', 'Local', 'non-crypto'].includes(r.phase))
       fail('unknown phase ' + r.id);
     if (
       !r.roles.length ||
@@ -170,9 +173,21 @@ export function checkConstructionRegistry(root, options = {}) {
       !r.mapEntries.includes('private-account-ledger-completeness')
     )
       fail('missing counter witness dependency ' + r.id);
+    if (
+      r.id === 'content-counter-v2' &&
+      (!r.mapEntries.includes('private-content-counter-order') ||
+        !r.mapEntries.includes('private-account-ledger-completeness'))
+    )
+      fail('missing native counter/ledger dependency ' + r.id);
     const required = [
       'runtime-bytes',
       'input-mutations',
+      ...(r.phase === 'D4'
+        ? [
+            'native-metadata-owner',
+            ...(r.roles.includes('mac') ? ['structured-clone-negatives'] : []),
+          ]
+        : []),
       ...(r.id === 'account-ledger-chain' ? ['counter-witness-coupling'] : []),
       ...(r.phase === 'D3' && r.roles.includes('carrier')
         ? ['canonical-carrier-negatives', 'encoded-field-omissions']

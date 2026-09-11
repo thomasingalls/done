@@ -1,0 +1,20 @@
+(node:83182) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ removing each production context/root/key-pair check rescues its separately authentic counterexample (18.601458ms)
+✔ omitting exact PKCS#8 format checks recreates acceptance of each malformed export (7.214333ms)
+✔ PKCS#8 extraction refuses wrong algorithm, prefix, truncation and extra bytes for each private key; clears exports before returning (10.104209ms)
+✔ fixed corpus independently reproduces; amended row 14 agrees and historical scalar-only ciphertext refuses (27.071167ms)
+✔ actual generator and opener reproduce full deterministic payload, KDF/AAD, root and key checks (5.103125ms)
+✔ actual service challenge encoders use exact operation, scope and fresh nonce; proof/retry hashes preserve their byte rules (1.856583ms)
+✔ authenticated wrong private/public pairs, sealed roots, segment order and widths refuse before releasing keys (6.899ms)
+✔ every encoded field mutation and omission changes its independent result; signatures and AEAD reject valid wrong-purpose bytes (4.923708ms)
+✔ recovery-opened key consumes fixed HPKE wrap with exact generation info; each binding and low-order recipient refuses (8.261959ms)
+✔ 200 generated contexts, normalized codes and authentic payload faults: runtime and independent oracle agree (334.224458ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 696.433459

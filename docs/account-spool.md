@@ -45,7 +45,7 @@ A ledger entry must fit the existing 4 MiB content-batch cap. This first serial 
 source transaction per envelope, hence every body is homogeneous in actor, credential, epoch and generation.
 A mixed-actor capsule has a distinct retained reference for each source index. Nothing removes the capsule.
 
-A position entry is **both** allocation-counter advancement and its staged row in one strict transaction.
+A position entry is **both** allocation-counter advancement and its staged row in one completed IndexedDB transaction.
 The network counter is derived from the append-only contiguous grant ledger, starting at 1. The same
 transaction advances an authenticated ledger witness in content metadata; neither may survive alone. Original sources must already be on disk, must precede the
 grant and must match its capsule hash/index. No source index may be allocated twice. Local record sequences
@@ -53,7 +53,7 @@ remain independent: a gap in the local sequence allocator is not a network posit
 
 An attempt entry likewise advances the single invocation counter for this workspace/credential/generation
 key domain. Counts must be contiguous, starting at 1, and remain strictly below 2^32. It belongs to the
-latest unresolved position. The owner must strictly commit a **new** attempt before every AES invocation.
+latest unresolved position. The owner must commit a **new** attempt before every AES invocation.
 Only that live acknowledged continuation may seal once. Cancellation, crypto failure or a crash abandons
 permission but retains its count. Restart at an unresolved position consumes another attempt. The outer
 StoredRecord encryption consumes its existing, separate local-store budget too.
@@ -82,7 +82,7 @@ The initial witness is zero events and 32 zero bytes. Each canonical ledger entr
 SHA256(UTF8("done/account-spool-chain/v1\0") || previousHash32 || u32be(entryByteLength) || entryBytes)
 ```
 
-The entry and signed next witness commit in the same strict content transaction, comparing the exact
+The entry and signed next witness commit in the same content transaction, comparing the exact
 previous authenticated metadata. Outer sequence/invocation reservations occur first and preserve the
 witness; an aborted final transaction burns only that outer reservation. Ordinary source flush and
 content compaction also preserve the witness. Every census checks the ledger event count and recomputed
@@ -130,3 +130,7 @@ Sources and exact envelopes remain retained for every result, including contradi
 
 The following [v8 delivery owner](./account-delivery.md) adds durable proofs and signed submissions to the
 same completeness witness. V7 remains a separate reader and refuses that activated format.
+
+D4 corrects the earlier strict-durability wording: content transactions request `relaxed` durability.
+Native completion and renderer-crash recovery do not establish power-loss persistence of invocation
+grants. F-15 remains open; see [counter ownership and crash model](./account-crypto/content-counter.md#4-allocation-ledger-coupling-and-crash-model).

@@ -2652,3 +2652,47 @@ covered. F-05/F-06, wider readiness and invocation power-loss/rollback/clone ass
 All 21 personal package hashes, 25 prior tracked vector files, production sources, historical review,
 L-2 and unrelated root files are preserved. Personal preview/relay remain stopped; no real Account,
 factor, operator secret or pin was provisioned. Appended before replacing only L-1.
+
+
+## 2026-09-11 — Authenticated content counter and witness contracts (`L-1` seat)
+
+D3 was committed unsigned as `24bc3a4` at the user's request. The signing reminder includes it alongside
+C `d098bd4`, D1 `d24ca66` and D2 `1897848`. D4 is complete and remains unstaged/uncommitted. It specifies
+the scoped metadata HKDF, initialization witness, counter v1/v2 MAC bytes, structured-clone parsing and
+reservation/event ownership without changing production code or persistent formats.
+
+D4 corrects the earlier D3/spool claim of strict content commits. Native instrumentation confirms that
+these transactions request and report relaxed durability. This is the already-open F-15 issue, not a
+newly repaired runtime defect: transaction atomicity and renderer-crash recovery do not establish
+power-loss persistence of invocation grants. Current contracts are corrected; historical evidence stays
+unchanged. No strict-persistence repair or F-15 closure is claimed.
+
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-counter-contract.md) records all
+43 stages passing with 806 matching input pins. Eight independent fixed cases include Unicode
+scope framing and numeric multi-generation ordering. Eighty input mutations produce 47 parser refusals
+and 33 changed authenticated payloads; 95 encoded omission witnesses and 88 malformed parser cases pass.
+Two hundred shrinking-enabled allocation histories, seed 5110918, cover 1,443 successful reservations
+and 13 ceiling refusals with no counterexample. Root ID is intentionally absent from key info and bound
+by every metadata message. Helper generation-change cases do not qualify production Account rotation.
+
+Six helper source controls remove actual binding, comparison or allocator checks. Native tests additionally
+prove the MAC-comparison race at the transaction boundary and show that omitting reservation persistence
+invokes AES before allocation even though the later rewind guard still refuses. Real custody derivation
+and stored MACs match the independent oracle. Eight correctly MACed semantic lies refuse, and a final
+transaction abort retains the burned reservation while publishing neither event nor witness.
+
+The ten new helper/native tests, 41 existing spool/receive native regressions (including 20 generated
+browser histories), all 983 units in 88 files, typecheck, retained A/B/C/D1/D2/D3 contracts,
+26 vector commands and targeted lint/format pass. Review found a missing-MAC fixture conversion that
+could fail before production parsing; it now preserves field absence and requires the runtime refusal
+code. The interrupted initial campaign and the complete corrected campaign are preserved.
+
+Four D4 records join the map: 63 constructions specified, four open and one exclusion; 61 map entries,
+75 permitted-root chains and 15 swept documents. Nine new registry controls enforce owner, byte and
+negative-evidence obligations. Runtime census remains 158 sources/89 labels and templates. The next
+bounded phase is D5's inherited store and synchronous journal byte bridges. Other custody, checkpoint/
+startup, migration provenance, F-05/F-06, F-15 and wider Account readiness remain separate.
+
+All 21 personal package hashes, 26 prior tracked vector files, production sources, historical review,
+L-2 and unrelated root files are preserved. Personal preview/relay remain stopped. No real Account,
+factor, operator secret or pin was provisioned. Appended before replacing only L-1.

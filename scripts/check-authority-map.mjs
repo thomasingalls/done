@@ -94,6 +94,7 @@ const SWEPT = [
   'docs/account-crypto/service-custody.md',
   'docs/account-crypto/local-promotion.md',
   'docs/account-crypto/account-ledger.md',
+  'docs/account-crypto/content-counter.md',
 ];
 
 const KINDS = new Set(['verification', 'predicate', 'aead']);

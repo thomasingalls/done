@@ -971,8 +971,8 @@ pin: docs/account-crypto/account-ledger.md §2 5df20f1d1ba9
 pin: docs/account-crypto/account-ledger.md §3 c7933547450b
 pin: docs/account-crypto/account-ledger.md §4 c1ab5278aa37
 pin: docs/account-crypto/account-ledger.md §5 3d81df0bac8b
-pin: docs/account-crypto/account-ledger.md §6 0edb9e0fe7fe
-pin: docs/account-crypto/account-ledger.md §7 7750cbe25e8f
+pin: docs/account-crypto/account-ledger.md §6 d788c391a6ac
+pin: docs/account-crypto/account-ledger.md §7 5e0caa8bc6a7
 ```
 
 ```authority
@@ -980,7 +980,7 @@ entry: private-account-ledger-completeness
 kind: predicate
 guards: custody
 verifies: the full ordered event union checked against the retained authenticated counter, with coupled final commit and no silent witness reset
-resolves: current counter authentication through scoped factor-opened custody, not a supplied public hash -> via:device-lock-custody
+resolves: current scoped counter MAC authentication, not a supplied public hash -> via:private-content-metadata
 resolves: exact ordered hash chain, event count and atomic compare-and-write predicates -> root:structural
 status: resolved
 pin: docs/account-crypto/account-ledger.md §1 73439e172173
@@ -988,8 +988,8 @@ pin: docs/account-crypto/account-ledger.md §2 5df20f1d1ba9
 pin: docs/account-crypto/account-ledger.md §3 c7933547450b
 pin: docs/account-crypto/account-ledger.md §4 c1ab5278aa37
 pin: docs/account-crypto/account-ledger.md §5 3d81df0bac8b
-pin: docs/account-crypto/account-ledger.md §6 0edb9e0fe7fe
-pin: docs/account-crypto/account-ledger.md §7 7750cbe25e8f
+pin: docs/account-crypto/account-ledger.md §6 d788c391a6ac
+pin: docs/account-crypto/account-ledger.md §7 5e0caa8bc6a7
 ```
 
 ```authority
@@ -1006,8 +1006,8 @@ pin: docs/account-crypto/account-ledger.md §2 5df20f1d1ba9
 pin: docs/account-crypto/account-ledger.md §3 c7933547450b
 pin: docs/account-crypto/account-ledger.md §4 c1ab5278aa37
 pin: docs/account-crypto/account-ledger.md §5 3d81df0bac8b
-pin: docs/account-crypto/account-ledger.md §6 0edb9e0fe7fe
-pin: docs/account-crypto/account-ledger.md §7 7750cbe25e8f
+pin: docs/account-crypto/account-ledger.md §6 d788c391a6ac
+pin: docs/account-crypto/account-ledger.md §7 5e0caa8bc6a7
 ```
 
 ```authority
@@ -1023,6 +1023,54 @@ pin: docs/account-crypto/account-ledger.md §2 5df20f1d1ba9
 pin: docs/account-crypto/account-ledger.md §3 c7933547450b
 pin: docs/account-crypto/account-ledger.md §4 c1ab5278aa37
 pin: docs/account-crypto/account-ledger.md §5 3d81df0bac8b
-pin: docs/account-crypto/account-ledger.md §6 0edb9e0fe7fe
-pin: docs/account-crypto/account-ledger.md §7 7750cbe25e8f
+pin: docs/account-crypto/account-ledger.md §6 d788c391a6ac
+pin: docs/account-crypto/account-ledger.md §7 5e0caa8bc6a7
+```
+
+## 13. Authenticated counter and witness contracts — group D4
+
+These entries qualify the scoped metadata bridge, not power-loss accounting or all inherited Local cryptography.
+
+```authority
+entry: private-content-metadata-key
+kind: predicate
+guards: keys
+verifies: factor-opened generation secret and exact scoped HKDF fields
+resolves: generation secret opened through admitted factor custody -> via:device-lock-custody
+resolves: purpose-separated Unicode LP fields and non-extractable HMAC key parameters -> root:structural
+status: resolved
+pin: docs/account-crypto/content-counter.md §1 bf706ca4de43
+pin: docs/account-crypto/content-counter.md §2 d5670fb971b9
+pin: docs/account-crypto/content-counter.md §3 1ca2e196dbba
+pin: docs/account-crypto/content-counter.md §4 b50f82193614
+pin: docs/account-crypto/content-counter.md §5 46b056613a26
+```
+
+```authority
+entry: private-content-metadata
+kind: verification
+guards: custody
+verifies: HMAC-SHA256(K_meta, reconstructed witness or counter payload), including root, scope, version and retained ledger witness
+resolves: scoped metadata key derived from admitted factor-opened custody -> via:private-content-metadata-key
+status: resolved
+pin: docs/account-crypto/content-counter.md §1 bf706ca4de43
+pin: docs/account-crypto/content-counter.md §2 d5670fb971b9
+pin: docs/account-crypto/content-counter.md §3 1ca2e196dbba
+pin: docs/account-crypto/content-counter.md §4 b50f82193614
+pin: docs/account-crypto/content-counter.md §5 46b056613a26
+```
+
+```authority
+entry: private-content-counter-order
+kind: predicate
+guards: custody
+verifies: valid allocation sums/bounds, exact previous payload and MAC comparison, and atomic counter/event ownership
+resolves: previously authenticated metadata, rechecked by exact comparison inside the transaction -> via:private-content-metadata
+resolves: serialized reservation, generation, placement and final event/witness predicates, within the stated relaxed durability model -> root:structural
+status: resolved
+pin: docs/account-crypto/content-counter.md §1 bf706ca4de43
+pin: docs/account-crypto/content-counter.md §2 d5670fb971b9
+pin: docs/account-crypto/content-counter.md §3 1ca2e196dbba
+pin: docs/account-crypto/content-counter.md §4 b50f82193614
+pin: docs/account-crypto/content-counter.md §5 46b056613a26
 ```

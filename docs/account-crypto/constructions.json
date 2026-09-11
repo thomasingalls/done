@@ -2475,7 +2475,7 @@
         {
           "path": "docs/account-crypto/account-ledger.md",
           "section": "7",
-          "hash": "7750cbe25e8f"
+          "hash": "5e0caa8bc6a7"
         }
       ],
       "vectorCases": ["source-human", "source-mixed", "capture-source-digest"],
@@ -2556,12 +2556,12 @@
         {
           "path": "docs/account-crypto/account-ledger.md",
           "section": "6",
-          "hash": "0edb9e0fe7fe"
+          "hash": "d788c391a6ac"
         },
         {
           "path": "docs/account-crypto/account-ledger.md",
           "section": "7",
-          "hash": "7750cbe25e8f"
+          "hash": "5e0caa8bc6a7"
         }
       ],
       "vectorCases": ["spool-position", "spool-attempt", "spool-retry", "spool-envelope"],
@@ -2642,12 +2642,12 @@
         {
           "path": "docs/account-crypto/account-ledger.md",
           "section": "6",
-          "hash": "0edb9e0fe7fe"
+          "hash": "d788c391a6ac"
         },
         {
           "path": "docs/account-crypto/account-ledger.md",
           "section": "7",
-          "hash": "7750cbe25e8f"
+          "hash": "5e0caa8bc6a7"
         }
       ],
       "vectorCases": ["delivery-submission", "delivery-response"],
@@ -2733,12 +2733,12 @@
         {
           "path": "docs/account-crypto/account-ledger.md",
           "section": "6",
-          "hash": "0edb9e0fe7fe"
+          "hash": "d788c391a6ac"
         },
         {
           "path": "docs/account-crypto/account-ledger.md",
           "section": "7",
-          "hash": "7750cbe25e8f"
+          "hash": "5e0caa8bc6a7"
         }
       ],
       "vectorCases": ["inbound-received", "inbound-conflict"],
@@ -2785,12 +2785,12 @@
         {
           "path": "docs/account-crypto/account-ledger.md",
           "section": "6",
-          "hash": "0edb9e0fe7fe"
+          "hash": "d788c391a6ac"
         },
         {
           "path": "docs/account-crypto/account-ledger.md",
           "section": "7",
-          "hash": "7750cbe25e8f"
+          "hash": "5e0caa8bc6a7"
         }
       ],
       "vectorCases": [
@@ -2836,7 +2836,7 @@
         {
           "path": "docs/account-crypto/account-ledger.md",
           "section": "7",
-          "hash": "7750cbe25e8f"
+          "hash": "5e0caa8bc6a7"
         }
       ],
       "vectorCases": ["inbound-baseline-digest"],
@@ -2849,45 +2849,268 @@
       "blocker": null
     },
     {
-      "id": "remaining-shared-store",
-      "phase": "D",
-      "status": "open",
-      "roles": ["kdf", "aead", "mac", "digest"],
-      "labels": [
-        "done/store/v1",
-        "done/store-name/v1",
-        "done/content-metadata/v1",
-        "done/content-witness/v1",
-        "done/content-counter/v1",
-        "done/content-counter/v2",
-        "done/journal/v1",
-        "done/jrnl/v1"
+      "id": "content-metadata-key",
+      "phase": "D4",
+      "status": "specified",
+      "roles": ["kdf"],
+      "signer": null,
+      "labels": ["done/content-metadata/v1"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/custody.ts",
+          "line": 238,
+          "label": "done/content-metadata/v1",
+          "kind": "literal"
+        }
       ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "hkdf"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "fields"
+        }
+      ],
+      "mapEntries": ["private-content-metadata-key"],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "1",
+          "hash": "bf706ca4de43"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "5",
+          "hash": "46b056613a26"
+        }
+      ],
+      "vectorCases": ["content-metadata-key"],
+      "tests": [
+        "test/account-counter-contract/formats.test.mjs",
+        "test/account-counter-contract/native.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations", "native-metadata-owner"],
+      "blocker": null
+    },
+    {
+      "id": "content-initialization-witness",
+      "phase": "D4",
+      "status": "specified",
+      "roles": ["mac", "predicate"],
+      "signer": null,
+      "labels": ["done/content-witness/v1"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "line": 234,
+          "label": "done/content-witness/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "witnessPayload"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "parseWitness"
+        }
+      ],
+      "mapEntries": ["private-content-metadata", "private-content-counter-order"],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "1",
+          "hash": "bf706ca4de43"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "2",
+          "hash": "d5670fb971b9"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "4",
+          "hash": "b50f82193614"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "5",
+          "hash": "46b056613a26"
+        }
+      ],
+      "vectorCases": ["content-witness-creating", "content-witness-ready"],
+      "tests": [
+        "test/account-counter-contract/formats.test.mjs",
+        "test/account-counter-contract/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-metadata-owner",
+        "encoded-field-omissions",
+        "structured-clone-negatives"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "content-counter-v1",
+      "phase": "D4",
+      "status": "specified",
+      "roles": ["mac", "predicate"],
+      "signer": null,
+      "labels": ["done/content-counter/v1"],
       "sourceSites": [
         {
           "path": "src/crdt/contentRecord.ts",
           "line": 238,
           "label": "done/content-counter/v1",
           "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "counterPayload"
         },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "parseCounter"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "equalCounter"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "reserveCounter"
+        }
+      ],
+      "mapEntries": ["private-content-metadata", "private-content-counter-order"],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "1",
+          "hash": "bf706ca4de43"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "3",
+          "hash": "1ca2e196dbba"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "4",
+          "hash": "b50f82193614"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "5",
+          "hash": "46b056613a26"
+        }
+      ],
+      "vectorCases": ["content-counter-v1-empty", "content-counter-v1-multigen"],
+      "tests": [
+        "test/account-counter-contract/formats.test.mjs",
+        "test/account-counter-contract/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-metadata-owner",
+        "encoded-field-omissions",
+        "structured-clone-negatives"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "content-counter-v2",
+      "phase": "D4",
+      "status": "specified",
+      "roles": ["mac", "predicate"],
+      "signer": null,
+      "labels": ["done/content-counter/v2"],
+      "sourceSites": [
         {
           "path": "src/crdt/contentRecord.ts",
           "line": 238,
           "label": "done/content-counter/v2",
           "kind": "literal"
-        },
+        }
+      ],
+      "entryPoints": [
         {
-          "path": "src/crdt/custody.ts",
-          "line": 238,
-          "label": "done/content-metadata/v1",
-          "kind": "literal"
+          "path": "src/crdt/contentRecord.ts",
+          "name": "counterPayload"
         },
         {
           "path": "src/crdt/contentRecord.ts",
-          "line": 234,
-          "label": "done/content-witness/v1",
-          "kind": "literal"
+          "name": "parseCounter"
         },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "equalCounter"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "reserveCounter"
+        }
+      ],
+      "mapEntries": [
+        "private-content-metadata",
+        "private-content-counter-order",
+        "private-account-ledger-completeness"
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "1",
+          "hash": "bf706ca4de43"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "3",
+          "hash": "1ca2e196dbba"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "4",
+          "hash": "b50f82193614"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "5",
+          "hash": "46b056613a26"
+        }
+      ],
+      "vectorCases": [
+        "content-counter-v2-empty",
+        "content-counter-v2-ledger",
+        "content-counter-v2-high-gen"
+      ],
+      "tests": [
+        "test/account-counter-contract/formats.test.mjs",
+        "test/account-counter-contract/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-metadata-owner",
+        "encoded-field-omissions",
+        "structured-clone-negatives"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "remaining-shared-store",
+      "phase": "D",
+      "status": "open",
+      "roles": ["kdf", "aead", "mac", "digest"],
+      "labels": ["done/store/v1", "done/store-name/v1", "done/journal/v1", "done/jrnl/v1"],
+      "sourceSites": [
         {
           "path": "src/crdt/journalCodec.ts",
           "line": 40,
@@ -2923,7 +3146,7 @@
       "mapEntries": [],
       "home": "docs/storage-conformance.md",
       "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "D: bridge Account counter-v2/current storage to existing Local contracts without requalifying all Local work",
+      "next": "D5: inherited store-record, store-name and synchronous journal KDF/AAD bridges; metadata counters were qualified separately by D4",
       "reason": null
     },
     {
@@ -3525,6 +3748,11 @@
       "phase": "D3",
       "vectorFile": "test/vectors/account-ledger.json",
       "vectorSha256": "99f0df5547f7e82a4c578b3da306ccbb7807dec7a487a6655c651e9b8d538c6c"
+    },
+    {
+      "phase": "D4",
+      "vectorFile": "test/vectors/account-counter.json",
+      "vectorSha256": "caba0c0bd82e9f73933b39b38e1b16e91fa538c2a2e2cc31c3928466a86f52df"
     }
   ]
 }

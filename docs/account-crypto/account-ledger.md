@@ -187,11 +187,15 @@ operative. Removing both count comparisons loses that protection. An interrupted
 v1 counter only when there are no ledger events; it does not authorize resetting a v2 witness.
 
 `createContentOwner` reserves physical sequences/invocations first, preserving the witness. The final
-strict transaction compares the exact previous authenticated metadata and atomically writes the event
+IndexedDB transaction compares the exact previous authenticated metadata and atomically writes the event
 and newly MACed witness. An inbound commit writes its original content updates plus one evidence event
 and one witness advancement together; conflict writes only evidence. The source owner cannot merely
 supply an arbitrary successful witness: semantic callbacks, current-state checks, cold re-verification
 and exact readback remain required. Aborted final commits burn reservations without publishing a witness.
+
+D4 corrects the earlier strict-durability wording: these transactions request relaxed durability.
+See [the counter contract](./content-counter.md#4-allocation-ledger-coupling-and-crash-model); power-loss
+invocation accounting remains open.
 
 D3 qualifies this dependency and the ledger bytes, **not** all content-counter-v2 key/MAC layouts or
 Local allocator correctness. The next bridge must pin counterPayload, metadata derivation and inherited
@@ -218,7 +222,7 @@ Effective controls remove source identity/digest checks, exact decrypted-origina
 delivery order, received-content coverage, both witness count comparisons or witness hash comparison.
 A separate control removes previous-hash bytes from the actual native digest input. No signature,
 AEAD or digest success boolean is forced true. Existing native capture/spool/delivery/receive regressions
-exercise actual strict commits, journal/compaction preservation, missing tails, valid local re-encryption
+exercise actual completed native transactions, journal/compaction preservation, missing tails, valid local re-encryption
 and a valid counter MAC around false service evidence, and effective source mutants.
 
 This is one creating stream with held first-epoch authority. It does not finish current membership

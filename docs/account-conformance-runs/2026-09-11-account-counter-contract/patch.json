@@ -1,0 +1,31 @@
+{
+  "baseCommit": "24bc3a4519049abcf7e4b16433b759e7e34c971d",
+  "sha256": "db3b8d3c13e1438e03e28d6f14a987f8524777c1f8c3a3fe8bb352df85397b1d",
+  "bytes": 379330,
+  "paths": [
+    "docs/account-conformance-runs/2026-09-11-account-counter-contract.md",
+    "docs/account-crypto/account-ledger.md",
+    "docs/account-crypto/constructions.json",
+    "docs/account-crypto/content-counter.md",
+    "docs/account-spool.md",
+    "docs/completed.md",
+    "docs/content-store.md",
+    "docs/progress.md",
+    "docs/review/remediation/S0-2/authority-map.md",
+    "package.json",
+    "scripts/account-counter-contract/run.mjs",
+    "scripts/account-counter-contract/vectors.mjs",
+    "scripts/account-first-authority/registry.mjs",
+    "scripts/check-authority-map.mjs",
+    "test/account-counter-contract/browser.ts",
+    "test/account-counter-contract/formats.test.mjs",
+    "test/account-counter-contract/native-browser.ts",
+    "test/account-counter-contract/native.test.mjs",
+    "test/account-counter-contract/oracle.mjs",
+    "test/account-counter-contract/runtime.mjs",
+    "test/account-first-authority/registry.test.mjs",
+    "test/vectors/account-counter.json"
+  ],
+  "scope": "D4 contract, tests, vectors, registrations, durability wording correction and checkpoint. Raw final/preliminary evidence and patch/manifest excluded to avoid recursive packaging. No production source changes.",
+  "indexEmpty": true
+}
