@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="one owner sends and reads back actual service bytes, preserves sources through edits, compaction and cold replay" time="19.485471" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native.test.mjs"/>
+	<testcase name="lost submit answer can be received before delivery resolves; cold retry uses exact bytes without resealing" time="17.053617" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native.test.mjs"/>
+	<testcase name="native submission abort retains work for cold restart" time="12.259088" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native.test.mjs"/>
+	<testcase name="native receive abort retains work for cold restart" time="12.444687" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native.test.mjs"/>
+	<testcase name="close drains a delayed send and prevents queued receive dispatch before releasing the shared permit" time="8.478687" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native.test.mjs"/>
+	<testcase name="local journal admission during an outbound seal is captured once and sent after readback gets a turn" time="11.513812" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native.test.mjs"/>
+	<!-- tests 6 -->
+	<!-- suites 0 -->
+	<!-- pass 6 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 83199.9305 -->
+</testsuites>

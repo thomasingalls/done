@@ -35,6 +35,8 @@ import type { prepareAccountCustody } from './custody';
 type Owner = ReturnType<typeof prepareAccountCustody>;
 export interface DeliveryContext {
   authority(): DecisionAuthority;
+  /** Internal owner census; v8 stays strict, v9 accounts for the complete receive union. */
+  inspect?: typeof inspectDelivery;
   pin(): AuthorityPin;
   canSubmit?(): boolean;
   signer(): CryptoKey;
@@ -56,6 +58,7 @@ export function describeDelivery(s: DeliveryState) {
   };
 }
 export function createDeliveryOperations(context: DeliveryContext) {
+  const inspect = context.inspect ?? inspectDelivery;
   const withState = <T>(
     operation: (
       task: SessionTask,
@@ -68,7 +71,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
     context.run(async (task, owner, route) => {
       const records = await owner.carrier.load(task);
       try {
-        const c = inspectDelivery(records, route, context.authority()),
+        const c = inspect(records, route, context.authority()),
           s = await task.wait(() =>
             verifyDelivery(c, route, context.authority(), context.publicKey(), subtleFor(task)),
           );
@@ -110,7 +113,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
               ];
               await task.wait(() =>
                 verifyDelivery(
-                  inspectDelivery(proposed, route, context.authority()),
+                  inspect(proposed, route, context.authority()),
                   route,
                   context.authority(),
                   context.publicKey(),
@@ -154,7 +157,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
     try {
       const checked = await task.wait(() =>
         verifyDelivery(
-          inspectDelivery(rows, route, context.authority()),
+          inspect(rows, route, context.authority()),
           route,
           context.authority(),
           context.publicKey(),
@@ -206,7 +209,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
           try {
             const checked = await task.wait(() =>
                 verifyDelivery(
-                  inspectDelivery(rows, route, context.authority()),
+                  inspect(rows, route, context.authority()),
                   route,
                   context.authority(),
                   context.publicKey(),

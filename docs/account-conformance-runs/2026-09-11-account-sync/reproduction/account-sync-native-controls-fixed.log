@@ -1,0 +1,24 @@
+(node:41149) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:41149) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:41149) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ omitting the union witness admits missing retained receive evidence on cold open (11830.930833ms)
+✖ self-stream byte binding refuses a different valid envelope from the same synthetic credential (18116.919667ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 31809.051875
+
+✖ failing tests:
+
+test at test/account-sync/native-controls.test.mjs:112:1
+✖ self-stream byte binding refuses a different valid envelope from the same synthetic credential (18116.919667ms)
+  Error: Receive predicate timed out
+      at waitPredicate (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/fixtures.mjs:174:9)
+      at async TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native-controls.test.mjs:145:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

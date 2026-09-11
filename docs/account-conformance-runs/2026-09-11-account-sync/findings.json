@@ -1,0 +1,44 @@
+[
+  {
+    "id": "SYNC-01",
+    "kind": "implementation",
+    "status": "repaired",
+    "assessment": "Candidate self-stream mismatch incorrectly closed valid Local content as repair-required. Now receive-refused before persistence; Local remains active.",
+    "evidence": [
+      "reproduction/account-sync-self-diagnosis.log",
+      "reproduction/accountReceive-before-refusal.ts",
+      "campaign/control-classification.json",
+      "campaign/control-self.json"
+    ]
+  },
+  {
+    "id": "SYNC-02",
+    "kind": "protocol-halt",
+    "status": "covered",
+    "assessment": "Authenticated retained receive conflict blocks both lanes and keeps Local readable; runtime status distinguishes conflict from an ordinary unknown reply.",
+    "evidence": [
+      "campaign/native.log"
+    ]
+  },
+  {
+    "id": "HARNESS-01",
+    "kind": "harness",
+    "status": "corrected",
+    "assessment": "Loop-variable shadowing, interior-event deletion, closed-state predicate and a formatted mutation anchor caused unsuccessful probes; they are not credited as passing conformance.",
+    "evidence": [
+      "reproduction/account-sync-initial-native.log",
+      "reproduction/account-sync-native-controls-initial.log",
+      "before-control-anchor-repair/summary.json"
+    ]
+  },
+  {
+    "id": "HARNESS-02",
+    "kind": "harness-margin",
+    "status": "adjusted-after-pass",
+    "assessment": "The generated stage passed in 291 seconds with a 300-second deadline. Only test/runner deadlines became 420/450 seconds; exact executed source and delta retained.",
+    "evidence": [
+      "deadline-adjustment.json",
+      "campaign/generated.log"
+    ]
+  }
+]

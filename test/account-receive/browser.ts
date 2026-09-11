@@ -63,7 +63,7 @@ export async function fixtureInboundEnvelope(
 export async function inboundCensus(
   slot: string,
   code: string,
-  fault?: 'event' | 'content' | 'ciphertext',
+  fault?: 'event' | 'last-event' | 'content' | 'ciphertext',
 ) {
   return withPromotionSlot(slot, code, async (task) => {
     const v = await readPromotion(task, slot, code),
@@ -80,7 +80,7 @@ export async function inboundCensus(
       try {
         const result = rows.map((r) => ({ ...r, bytes: [...r.bytes] }));
         if (fault) {
-          const event = rows.find(
+          const event = (fault === 'last-event' ? [...rows].reverse() : rows).find(
             (r) =>
               r.kind === 'heads' &&
               new TextDecoder().decode(r.bytes).startsWith('["done/account-inbound/v1"'),

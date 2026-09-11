@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="actual final offline submit dispatch control" time="17.572496" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native-controls.test.mjs"/>
+	<testcase name="actual final pressure submit dispatch control" time="17.418643" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native-controls.test.mjs"/>
+	<testcase name="omitting the union witness admits missing retained receive evidence on cold open" time="12.512637" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native-controls.test.mjs"/>
+	<testcase name="self-stream byte binding refuses a different valid envelope from the same synthetic credential" time="25.812699" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native-controls.test.mjs" failure="Build failed with 1 error:&#10;&#10;[plugin sync-control] /Users/thomasingalls/.codex/worktrees/c030/done/src/crdt/accountReceive.ts&#10;Error: Missing mutation anchor classification&#10;    at TransformPluginContextImpl.transform (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/fixtures.mjs:53:23)&#10;    at TransformPluginContextImpl.handler (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33304:13)&#10;    at plugin (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/bindingify-input-options-XPJLJOD0.mjs:1511:30)&#10;    at plugin.&lt;computed> (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/bindingify-input-options-XPJLJOD0.mjs:1959:18)">
+		<failure type="testCodeFailure" message="Build failed with 1 error:&#10;&#10;[plugin sync-control] /Users/thomasingalls/.codex/worktrees/c030/done/src/crdt/accountReceive.ts&#10;Error: Missing mutation anchor classification&#10;    at TransformPluginContextImpl.transform (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/fixtures.mjs:53:23)&#10;    at TransformPluginContextImpl.handler (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33304:13)&#10;    at plugin (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/bindingify-input-options-XPJLJOD0.mjs:1511:30)&#10;    at plugin.&lt;computed> (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/bindingify-input-options-XPJLJOD0.mjs:1959:18)">
+[Error [ERR_TEST_FAILURE]: Build failed with 1 error:
+
+[plugin sync-control] /Users/thomasingalls/.codex/worktrees/c030/done/src/crdt/accountReceive.ts
+Error: Missing mutation anchor classification
+    at TransformPluginContextImpl.transform (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/fixtures.mjs:53:23)
+    at TransformPluginContextImpl.handler (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33304:13)
+    at plugin (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/bindingify-input-options-XPJLJOD0.mjs:1511:30)
+    at plugin.&lt;computed> (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/bindingify-input-options-XPJLJOD0.mjs:1959:18)] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Build failed with 1 error:
+  
+  [plugin sync-control] /Users/thomasingalls/.codex/worktrees/c030/done/src/crdt/accountReceive.ts
+  Error: Missing mutation anchor classification
+      at TransformPluginContextImpl.transform (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/fixtures.mjs:53:23)
+      at TransformPluginContextImpl.handler (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33304:13)
+      at plugin (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/bindingify-input-options-XPJLJOD0.mjs:1511:30)
+      at plugin.&lt;computed> (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/bindingify-input-options-XPJLJOD0.mjs:1959:18)
+      at aggregateBindingErrorsIntoJsError (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/error-BHRSI0R7.mjs:48:18)
+      at unwrapBindingResult (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/error-BHRSI0R7.mjs:18:128)
+      at #build (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/rolldown-build-CtPvmZgJ.mjs:3276:34)
+      at async buildEnvironment (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33061:66)
+      at async Object.build (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33483:19)
+      at async syncBundle (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/fixtures.mjs:35:18)
+      at async TestContext.&lt;anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native-controls.test.mjs:142:31)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errors: [
+      Error: Missing mutation anchor classification
+          at TransformPluginContextImpl.transform (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/fixtures.mjs:53:23)
+          at TransformPluginContextImpl.handler (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33304:13)
+          at plugin (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/bindingify-input-options-XPJLJOD0.mjs:1511:30)
+          at plugin.&lt;computed> (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/bindingify-input-options-XPJLJOD0.mjs:1959:18)
+    ]
+  }
+}
+		</failure>
+	</testcase>
+	<!-- tests 4 -->
+	<!-- suites 0 -->
+	<!-- pass 3 -->
+	<!-- fail 1 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 75316.726042 -->
+</testsuites>

@@ -42,80 +42,71 @@ that is no longer active.
 
 ---
 
-## Active slice: Outbound composition under the v9 Account owner (`L-1`)
+## Active slice: Account admission descriptor bounds and explicit versioning (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: bounded composition prep first; real Account use remains gated below
+blocks_on: bounded row-7/admission encoding prep first; real Account use remains gated below
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
 
-**Personal checkpoint.** The verified Local release remains `.dev/releases/17d87c2/app`; predecessor
-`dist/` and all 21 saved package hashes are unchanged this phase. The prior phase's accidental predecessor
-build was restored and documented. Preview/relay stay stopped. Origin/Tailscale routing, personal browser
-and factors are unchanged. No real Account, passkey, recovery code, operator key or authority pin is
-provisioned. The actual old second device will adopt this device's workspace with fresh custody, store,
-counters and credentials; its old writing will not be imported or merged.
+**Where we are on the roadmap.** Personal Local cutover, source cleanup and packaged offline upgrades
+have been exercised. Account work is at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service): the
+creating-member ciphertext round trip now runs through one private editor owner in synthetic fixtures.
+This is the internal seam around item 5, not completion of all of Stage 4. Actual second-device enrollment
+(item 6), device management, rotation/revocation/finalization and continuity remain later. No real Account
+receipt has been created for the personal installation.
 
-**Completed boundary.** Native receive is `f6e4cf4`, ordered editor integration `19586b6`, the unchanged
-annotated review archive `500630f`, validation-baseline repair `e835243`, private v2 service read `9598ca6`,
-and owned receive HTTP `1ceb88d`. The full aggregate is preserved with validation-baseline repair; later
-phases use targeted native/regression campaigns and full units.
+**Personal checkpoint.** The Local release remains `.dev/releases/17d87c2/app`; root `dist/` and all 21
+saved package hashes are unchanged. Preview/relay stay stopped. Origin/Tailscale routing, browser and
+factors are unchanged. No real Account, passkey, recovery code, operator key or authority pin is provisioned.
+The actual old second device will adopt this device's workspace with fresh custody, store, counters and
+credentials; its old writing will not be imported or merged.
 
-[Owned receive polling/reconnect](./account-receive-driver.md) is implemented and not yet committed. Its
-explicit private v9 factory owns one timer/pass, five-second idle polls, 50 ms page yields and capped
-unknown backoff. It reconstructs progress from durable receive state each pass. Readiness is checked again
-at actual HTTP dispatch. Offline/pressure pauses cannot clear a conflict/error halt; explicit retry cannot
-repair/discard input or erase durable evidence. Close invalidates and drains the scheduler and receiver
-under their existing permit. No outbound v9 sender has been composed yet.
+**Completed boundary.** Native receive `f6e4cf4`, ordered editor `19586b6`, unchanged historical review
+`500630f`, aggregate validation-baseline repair `e835243`, private v2 service read `9598ca6`, receive HTTP
+`1ceb88d`, and receive polling/reconnect `83eed0b` are committed. [Outbound composition](./account-outbound-composition.md)
+is implemented and not yet committed. It uses one v9 owner, carrier, witness and ordered editor, preserving
+original source identities, grants and exact envelopes/submissions. One fair scheduler drives both lanes
+with independent retry/halts. The self-stream must match locally persisted envelopes; no copied or branched
+credential history is supported. Raw mutating primitives stay inside the private factory.
 
-[Evidence](./account-conformance-runs/2026-09-11-account-receive-driver.md) includes five directed native
-cases, ten generated native histories, 400 deferred clock/event schedules, 100 observer-pause histories,
-seven effective controls, all 974 units with two workers, affected manual receive/v8 sender campaigns,
-and isolated build/trace checks. The reproduced observer-pressure startup stall and its repair are
-preserved. The earlier concurrent unit run's ten timeouts are not credited as passing. No whole-protocol
-debt is paid. Historical review and L-2 are unchanged.
+[Evidence](./account-conformance-runs/2026-09-11-account-sync.md) preserves seven directed native cases,
+eight generated native histories, 400 new clock/event schedules, ten effective controls, all 980 units,
+affected manual HTTP/v8 sender/spool/polling-receiver campaigns and isolated build/trace checks. The
+network-refusal classification defect and effective reproduction are archived. Only outer generated-test
+deadlines changed after its passing run; inputs and exact delta are retained. No whole-protocol debt is paid.
 
-**F-11 correction still applies.** Passkey IDs and workspace signing credential IDs intentionally differ.
-The review's suggested equality was wrong. Existing candidate/member agreement remains enforced; the
-service snapshot binds the passkey row to completed registration. See the corrected service-phase contract.
+**Next small build.** Correct the capacity/versioning contract before any real Account receipt:
 
-**Next small build.** Prepare and implement explicit outbound composition under the v9 owner:
+- Reproduce the current raw SV/DS hex length-prefix ceiling, including both row-7 manifest and semantic
+  admission bytes. Use generated synthetic long-history coverage and exact boundaries; do not inspect or
+  modify the personal browser to manufacture evidence.
+- Specify versioned signed encodings at both homes, preserve rederived semantic coverage and exact request/
+  receipt binding, and define the disposition of existing private v1 artifacts. Do not silently reinterpret
+  old signatures or update only the manifest.
+- Amend the selected row-7/TRD and Account contract homes together, implement the bounded client/service
+  path, regenerate interoperable positives and per-field negatives, and test old-reader/version refusal,
+  mismatched correctly signed descriptors and acceptance across the former ceiling.
+- Preserve private genesis/admission and composed send/receive regressions. This phase does not add Account
+  UI, enroll a device, provision production keys or activate the personal Account.
 
-- First specify the shared owner/task boundaries for source capture, outbound spool/grants, decisions and
-  inbound receive evidence. Reuse the actual v9 held authority and one content carrier/witness; do not open
-  a v8 sender beside it or silently teach older marker readers v9 semantics.
-- Preserve original local source identities, exact persisted envelopes/submissions and earliest unresolved
-  position retry. Receive originals and pending remote dependencies must never be recaptured or resealed
-  as locally authored work. Verify the complete metadata/content census on every cold open.
-- Define scheduling fairness and pause/close ownership before composing sender and receiver. Neither
-  network callback may publish, mint authority or move a runtime cursor into durable authority. Keep both
-  operation sets internal to the explicit private composed factory, with meaningful separate runtime status.
-- Test local send plus receive under one lifetime, lost replies/cold retry, receive amid local preparation,
-  native commit failures, exact coverage compaction, close/drain and older-reader refusal. Use independent
-  source/position/content oracles, generated histories and effective omissions. Preserve manual v9 and v8
-  driver regressions. This creating-member self-stream fixture is not real enrollment or credential cloning.
+**Other gates before real Account receipts/rollout.** Require an operation-bound fresh account assertion
+at first service activation; register/pin the exact Account crypto constructions with interoperable vectors;
+align recovery's 96-byte payload with row 14/TRD; resolve invocation-grant power-loss accounting. Keep
+salvage/diagnostics, parser/admission/service negatives, performance/maintenance, lock ordering and other
+accepted review follow-ups visible. The F-11 historical correction still applies: passkey and workspace
+signing credential IDs intentionally differ; service binding is to completed registration, not ID equality.
 
-Keep this composition bounded. Account UI and actual two-gate second-device adoption follow the remaining
-real-use gates. Preserve per-publication projection, complete cold-content verification and existing
-receiver envelope/batch limits. No large-envelope, new-member or checkpoint-successor support is inferred.
-
-**Before real Account receipts/rollout:** amend row-7 manifest AND admission descriptor bounds with
-explicit versioning; require an operation-bound fresh account assertion at first service activation;
-register and pin exact Account cryptographic constructions with interoperable vectors and align recovery's
-96-byte payload with row 14/TRD; resolve invocation-grant power-loss accounting. Keep diagnostics/salvage,
-parser/admission/service negative tests, performance/maintenance, lock ordering and the other accepted
-review follow-ups visible.
-
-General lineage advancement, successor/checkpoint baselines, concurrent writers, pruning/backlog scale,
+General lineage advancement, successor/checkpoint baselines, concurrent members, pruning/backlog scale,
 revocation/rotation, clear/delete, finalization/recovery, supported platforms, whole-profile residue,
-production provisioning/deployment/restore and independent review remain later boundaries. L-2's historical
-clean ref `d24732b` has no further service work to integrate. Host VM/policy research stays stopped. Client
-credentials and service state still require unrewound, unbranched histories.
+production provisioning/deployment/restore and independent review remain separate boundaries. L-2's
+historical clean ref `d24732b` has no further service work to integrate. Host VM/policy research stays stopped.
+Client credentials and service state still require unrewound, unbranched histories.
 
 This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 

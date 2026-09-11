@@ -1,0 +1,119 @@
+import { build } from 'vite';
+import { resolve } from 'node:path';
+import { native as base, args, waitPredicate } from '../account-receive-driver/fixtures.mjs';
+export * from '../account-receive-driver/fixtures.mjs';
+export async function syncBundle(control) {
+  let hits = 0;
+  const targets = {
+    classification: [
+      '/src/crdt/accountReceive.ts',
+      "throw new AdmissionError('receive-refused', 'Self-stream history differs', {\n                  cause,\n                });",
+      'throw cause;',
+    ],
+    self: [
+      '/src/crdt/accountSyncState.ts',
+      'if (!local || hex(local) !== hex(envelope))',
+      'if (false)',
+    ],
+    dispatch: [
+      '/src/crdt/accountDelivery.ts',
+      'context.canSubmit?.() === false',
+      '(globalThis.syncDispatchBoundary?.(), false)',
+    ],
+    'dispatch-baseline': [
+      '/src/crdt/accountDelivery.ts',
+      'context.canSubmit?.() === false',
+      '(globalThis.syncDispatchBoundary?.(), context.canSubmit?.() === false)',
+    ],
+  };
+  const target = targets[control];
+  const result = await build({
+    configFile: false,
+    logLevel: 'error',
+    plugins: control
+      ? [
+          {
+            name: 'sync-control',
+            enforce: 'pre',
+            transform(code, id) {
+              if (control === 'witness' && id.endsWith('/src/crdt/spoolRecord.ts')) {
+                const pattern =
+                  /(export async function verifySpoolWitness\([\s\S]*?\): Promise<void> \{)/g;
+                if ([...code.matchAll(pattern)].length !== 1) throw Error('Missing witness anchor');
+                hits++;
+                return code.replace(pattern, '$1 return;');
+              }
+              if (!target || !id.endsWith(target[0])) return;
+              if (code.split(target[1]).length !== 2)
+                throw Error('Missing mutation anchor ' + control);
+              hits++;
+              return code.replace(target[1], target[2]);
+            },
+          },
+        ]
+      : [],
+    build: {
+      write: false,
+      minify: false,
+      lib: { entry: resolve('test/account-sync/browser.ts'), name: 'Harness', formats: ['iife'] },
+    },
+  });
+  if (control && hits !== 1) throw Error('Mutation did not apply');
+  return (Array.isArray(result) ? result[0] : result).output.find((f) => f.type === 'chunk').code;
+}
+const script = await syncBundle();
+export async function configure(page, token) {
+  await page.evaluate((token) => {
+    window.openSync = async (item) => {
+      window.opened = await Harness.openOwnedSyncingAccountWorkspace(optionsFor(item), token);
+      window.editor = opened.workspace;
+      window.surface = editor.text({ kind: 'master' });
+      return editor.read();
+    };
+  }, token);
+}
+export async function native(t) {
+  const f = await base(t),
+    setup = f.setup;
+  f.setup = async (page) => {
+    await setup(page);
+    await page.evaluate(script);
+    await configure(page, f.testOperatorToken);
+    await page.evaluate(() => {
+      if (window.__syncInstrumented) return;
+      window.__syncInstrumented = true;
+      window.netBodies = [];
+      const encrypt = crypto.subtle.encrypt.bind(crypto.subtle);
+      crypto.subtle.encrypt = async function (alg, key, bytes) {
+        if (
+          alg.additionalData &&
+          new TextDecoder().decode(alg.additionalData).includes('done/env/v2')
+        )
+          netBodies.push([...new Uint8Array(bytes)]);
+        return encrypt(alg, key, bytes);
+      };
+    });
+  };
+  await f.setup(f.page);
+  return f;
+}
+export const syncing = (page, item) => page.evaluate((item) => openSync(item), args(item));
+export const syncStatus = (page) => page.evaluate(() => opened.sync.status);
+export const retryLane = (page, lane) => page.evaluate((lane) => opened.sync.retry(lane), lane);
+export const settled = (page) =>
+  waitPredicate(
+    page,
+    async () => {
+      if (opened.sync.status.send.phase !== 'idle') return false;
+      const c = await opened.listCaptures();
+      const n = c.reduce((sum, c) => sum + c.sources.length, 0);
+      for (const item of c) Harness.eraseCapsule(item);
+      return (
+        opened.sync.status.send.phase === 'idle' &&
+        opened.sync.status.send.acceptedThrough === n &&
+        opened.sync.status.receive.receivedThrough === n
+      );
+    },
+    30000,
+  );
+export const requestWire = (route) => JSON.parse(route.request().postData())[3];

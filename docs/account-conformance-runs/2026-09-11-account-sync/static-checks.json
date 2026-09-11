@@ -1,0 +1,53 @@
+[
+  {
+    "name": "lint",
+    "command": [
+      "node",
+      "node_modules/oxlint/bin/oxlint",
+      "--react-plugin",
+      "src/crdt/accountSyncDriver.ts",
+      "src/crdt/accountSyncState.ts",
+      "src/crdt/accountEnvelopePreparation.ts",
+      "src/crdt/accountSpool.ts",
+      "src/crdt/accountDelivery.ts",
+      "src/crdt/accountReceive.ts",
+      "test/accountSyncDriver.test.ts",
+      "test/account-sync",
+      "test/account-spool/fixtures.mjs",
+      "test/account-receive/browser.ts",
+      "scripts/account-sync",
+      "package.json"
+    ],
+    "code": 0
+  },
+  {
+    "name": "format",
+    "command": [
+      "node",
+      "node_modules/oxfmt/bin/oxfmt",
+      "--check",
+      "src/crdt/accountSyncDriver.ts",
+      "src/crdt/accountSyncState.ts",
+      "src/crdt/accountEnvelopePreparation.ts",
+      "src/crdt/accountSpool.ts",
+      "src/crdt/accountDelivery.ts",
+      "src/crdt/accountReceive.ts",
+      "test/accountSyncDriver.test.ts",
+      "test/account-sync",
+      "test/account-spool/fixtures.mjs",
+      "test/account-receive/browser.ts",
+      "scripts/account-sync",
+      "package.json"
+    ],
+    "code": 0
+  },
+  {
+    "name": "whitespace",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "code": 0
+  }
+]

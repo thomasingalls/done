@@ -26,7 +26,7 @@ export async function spoolBundle(control) {
               }
               if (control === 'budget' && id.endsWith('/src/crdt/spoolRecord.ts'))
                 return code.replace('NET_SEAL_LIMIT = 2 ** 32', 'NET_SEAL_LIMIT = 3');
-              if (id.endsWith('/src/crdt/accountSpool.ts')) {
+              if (id.endsWith('/src/crdt/accountEnvelopePreparation.ts')) {
                 const replace = (input, pattern, replacement) => {
                   const matches = [...input.matchAll(pattern)];
                   if (matches.length !== 1) throw Error('Missing/ambiguous spool control');

@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "script": "scripts/check-selection-status.mjs",
+  "script_sha256": "48f70832df4b1278543fa2d61a8d6394bc55b0c86e8a78c0ea21534f04665f89",
+  "argv": [],
+  "ok": true,
+  "exit": 0,
+  "started": "2026-09-11T12:01:41.212Z",
+  "finished": "2026-09-11T12:01:41.217Z",
+  "tree": {
+    "head": "83eed0b1acc89f0cdb8b3f05e4ad45ca826bfddd",
+    "dirty_sha256": "5ab1cb85b6cb81936dfc70798f06855fd88e740b666d7b5b533c65e3b1f6ee42"
+  }
+}

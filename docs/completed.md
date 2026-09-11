@@ -2300,3 +2300,38 @@ Both personal package directories retain all 21 saved hashes. Preview/relay, per
 origin/routing, historical review and L-2 remain unchanged. No real Account, enrollment, deployment or
 whole-protocol debt is activated/paid. Next is bounded prep and explicit outbound composition under the
 v9 owner; the remaining accepted review gates still precede real Account use. Appended before L-1 rewrite.
+
+
+## 2026-09-11 — Private v9 outbound/receive composition (`L-1` seat)
+
+Receive polling/reconnect was committed as `83eed0b`. The next bounded phase now joins original-source
+publication and signed v2 readback under one v9 custody/content owner, admission FIFO and completeness
+witness. [Contract](./account-outbound-composition.md); [preserved evidence](./account-conformance-runs/2026-09-11-account-sync.md).
+
+The explicit private `openOwnedSyncingAccountWorkspace` keeps preparation, submission and raw receive
+operations internal. The extracted envelope algorithm preserves capsule/index/hash identity, committed
+invocation grants and exact saved wire bytes; old v7/v8 factories retain their refusal rules. The v9
+delivery census includes the receive ledger in the single witness. A self-stream acceptance must match
+the locally persisted envelope, with no synthetic source reconciliation. This creating-member round trip
+is neither enrollment nor safe cloning of a credential history.
+
+One scheduler alternates due send/receive passes, yields after each position/page, retains local wakes,
+keeps independent backoff/halts, rechecks dispatch readiness and drains both lanes before permit release.
+Native controls uncovered a network-refusal classification error that closed valid Local content. The
+repair and an effective mutation are preserved. Retained receive conflict also halts both lanes without
+closing the local editor.
+
+Validation: all 980 unit tests (two workers); seven directed native composition cases; eight generated
+native histories; 400 new deferred clock/event histories; ten effective omission controls; manual v9 HTTP,
+v8 sending, extracted spool and polling-receiver regression campaigns; type/lint/format and isolated
+build/budget/origin/trace checks. The generated native campaign passed its original 300-second deadline
+in 291 seconds; only its outer test/runner deadlines were then widened to 420/450 seconds, retaining the
+seed, histories and assertions. Exact executed inputs and that delta are archived. The entire historical
+`pnpm check` aggregate was not rerun; `e835243` remains its recorded baseline.
+
+This reaches the synthetic creating-member ciphertext round-trip seam in sequencing §3.5. Before real
+Account admission, the next bounded phase is row-7 manifest AND semantic-admission descriptor capacity
+and explicit versioning. Fresh activation assertion binding, crypto registry/recovery-vector alignment,
+invocation power-loss accounting, diagnostics, performance and the other accepted review gates remain.
+No whole-protocol debt is paid. All 21 personal package hashes, historical review, L-2 and stopped
+personal preview/relay are unchanged. New composition work remains uncommitted at this checkpoint.

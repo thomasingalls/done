@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="actual overlap omission exposes prohibited scheduling" time="0.032554" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-driver/controls.test.mjs"/>
+	<testcase name="actual poll omission exposes prohibited scheduling" time="0.004136" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-driver/controls.test.mjs"/>
+	<testcase name="actual halt omission exposes prohibited scheduling" time="0.003427" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-driver/controls.test.mjs"/>
+	<testcase name="actual observer omission exposes prohibited scheduling" time="0.003670" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-driver/controls.test.mjs"/>
+	<testcase name="actual resume omission exposes prohibited scheduling" time="0.003273" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-driver/controls.test.mjs"/>
+	<!-- tests 5 -->
+	<!-- suites 0 -->
+	<!-- pass 5 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 112.265417 -->
+</testsuites>

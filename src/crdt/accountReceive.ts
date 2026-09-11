@@ -1,3 +1,8 @@
+import { createEnvelopePreparation } from './accountEnvelopePreparation';
+import { createDeliveryOperations, describeDelivery } from './accountDelivery';
+import { publicationState } from './deliveryRecord';
+import { requireSelfEnvelope, verifySyncState } from './accountSyncState';
+import { createSyncScheduler, driveOutboundStep } from './accountSyncDriver';
 import { createReceiveScheduler, driveReceiveStep } from './accountReceiveDriver';
 import type { DriverGate } from './accountDriver';
 /** Private receive owners. Authority and original-update promotion stay inside the held lifetime. */
@@ -10,6 +15,7 @@ import {
   encodeInboundRequest,
   inboundRequestMessage,
   decodeInboundRequest,
+  decodeInboundPage,
 } from '../../account-protocol/inboundTransport';
 import { privateDeliveryPost } from '../account/privateDeliveryHttp';
 import { READ_PAGE_LIMIT } from '../../account-protocol/deliveryTransport';
@@ -46,6 +52,7 @@ async function openAccountReceiveOwner(
   input: AccountStartupOptions,
   principalId?: string,
   canReceive: () => boolean = () => true,
+  composed = false,
 ) {
   const options = captureAccountOptions(input);
   let base!: InboundContext, signer: CryptoKey | undefined, publicKey!: CryptoKey;
@@ -99,8 +106,15 @@ async function openAccountReceiveOwner(
         subtle = subtleFor(task);
       await verifySpoolWitness(census.delivery.spool, counter, subtle);
       await verifySpool(census.delivery.spool, route, base.generationKey, publicKey, subtle);
-      await verifyDelivery(census.delivery, route, base.authority, publicKey, subtle);
-      await verifyInboundLedger(census, records, base, lifetime(task));
+      const delivery = await verifyDelivery(
+        census.delivery,
+        route,
+        base.authority,
+        publicKey,
+        subtle,
+      );
+      const inbound = await verifyInboundLedger(census, records, base, lifetime(task));
+      if (composed) verifySyncState(census.delivery, delivery, inbound);
     },
     dispose() {
       base?.generationKey.fill(0);
@@ -258,6 +272,38 @@ async function openAccountReceiveOwner(
               promote([]);
               return { kind: result!.kind, recorded: false, status: describe(s) };
             });
+          if (composed && result.kind === 'received') {
+            const rows = await owner.carrier.load(task);
+            try {
+              const census = inspectInbound(rows, route, base).delivery;
+              const delivery = await verifyDelivery(
+                census,
+                route,
+                base.authority,
+                publicKey,
+                subtleFor(task),
+              );
+              try {
+                requireSelfEnvelope(
+                  census,
+                  result.position,
+                  decodeInboundPage(page).entries[0]!.envelope,
+                );
+                verifySyncState(census, delivery, {
+                  ...s,
+                  prefix: { ...s.prefix, observedThrough: result.through },
+                });
+              } catch (cause) {
+                // The local census already verified. A contradictory network candidate is refused
+                // before persistence, not diagnosed as corruption of the existing Local workspace.
+                throw new AdmissionError('receive-refused', 'Self-stream history differs', {
+                  cause,
+                });
+              }
+            } finally {
+              for (const row of rows) row.bytes.fill(0);
+            }
+          }
           const evidence = result.record;
           const before = await owner.carrier.spoolWitness(task),
             after = await task.wait(() => extendSpoolWitness(before, evidence, subtleFor(task))),
@@ -305,7 +351,102 @@ async function openAccountReceiveOwner(
     },
     compactContent: () => carrier.compactContent(),
   });
-  return { api, account, carrier, listCaptures, fetchPage };
+  const createOutbound = (whenDurable: () => Promise<unknown>) => {
+    if (!composed) throw Error('Outbound composition was not opened');
+    const inspect: NonNullable<Parameters<typeof createDeliveryOperations>[0]['inspect']> = (
+      records,
+      route,
+    ) => inspectInbound(records, route, base).delivery;
+    const checkPublication = async (
+      task: SessionTask,
+      owner: ReturnType<typeof prepareAccountCustody>,
+      route: CaptureRoute,
+    ) => {
+      await assertCurrent(task);
+      const records = await owner.carrier.load(task);
+      try {
+        const census = inspectInbound(records, route, base);
+        const inbound = await verifyInboundLedger(census, records, base, lifetime(task));
+        const delivery = await verifyDelivery(
+          census.delivery,
+          route,
+          base.authority,
+          publicKey,
+          subtleFor(task),
+        );
+        if (inbound.conflict || publicationState(delivery) !== 'ready')
+          throw Error('Publication is halted by retained evidence');
+      } finally {
+        for (const r of records) r.bytes.fill(0);
+      }
+    };
+    const delivery = createDeliveryOperations({
+      authority: () => base.authority,
+      pin: () => options.pin,
+      signer: () => signer!,
+      publicKey: () => publicKey,
+      assertCurrent,
+      inspect,
+      canSubmit: canReceive,
+      run: (operation) =>
+        runCaptureTask(async (task, owner, route) => {
+          const inbound = await state(task, owner, route);
+          if (inbound.conflict) throw Error('Publication halted by inbound conflict');
+          return operation(task, owner, route);
+        }),
+    });
+    return {
+      ...delivery,
+      deliveryStatus: () =>
+        runCaptureTask(async (task, owner, route) => {
+          const records = await owner.carrier.load(task);
+          try {
+            const census = inspectInbound(records, route, base);
+            const inbound = await verifyInboundLedger(census, records, base, lifetime(task));
+            const delivery = await verifyDelivery(
+              census.delivery,
+              route,
+              base.authority,
+              publicKey,
+              subtleFor(task),
+            );
+            return {
+              ...describeDelivery(delivery),
+              state: inbound.conflict ? ('conflict' as const) : publicationState(delivery),
+            };
+          } finally {
+            for (const row of records) row.bytes.fill(0);
+          }
+        }),
+      ...createEnvelopePreparation({
+        key: () => base.generationKey,
+        signer: () => signer!,
+        whenDurable,
+        checkPublication,
+        inspect: (records, route) => inspect(records, route, base.authority).spool,
+        run: runCaptureTask,
+      }),
+      spoolStatus: () =>
+        runCaptureTask(async (task, owner, route) => {
+          const records = await owner.carrier.load(task);
+          try {
+            const spool = inspect(records, route, base.authority).spool;
+            return {
+              attempts: spool.attempts,
+              positions: spool.positions.map((p) => ({
+                position: p.position,
+                source: { ...p.source },
+                attempts: [...p.attempts],
+                persisted: !!p.wire,
+              })),
+            };
+          } finally {
+            for (const r of records) r.bytes.fill(0);
+          }
+        }),
+    };
+  };
+  return { api, account, carrier, listCaptures, fetchPage, createOutbound };
 }
 
 /** Storage-only surface retained for independent conformance and preparation. */
@@ -314,7 +455,11 @@ export async function openOwnedAccountReceiveStore(input: AccountStartupOptions)
   return Object.freeze({ ...api, receivePage: (bytes: Bytes) => api.receivePage(bytes) });
 }
 
-async function openReceivingWorkspace(input: AccountWorkspaceOptions, operatorToken?: string) {
+async function openReceivingWorkspace(
+  input: AccountWorkspaceOptions,
+  operatorToken?: string,
+  composed = false,
+) {
   const driven = operatorToken !== undefined;
   if (driven && !/^[A-Za-z0-9_-]{43}$/.test(operatorToken!))
     throw Error('Invalid private operator token');
@@ -324,11 +469,13 @@ async function openReceivingWorkspace(input: AccountWorkspaceOptions, operatorTo
     identity: structuredClone(input.identity),
     today: input.today,
   };
-  const { api, account, carrier, listCaptures, fetchPage } = await openAccountReceiveOwner(
-    options,
-    options.identity.id,
-    () => !driven || gate() === 'ready',
-  );
+  const { api, account, carrier, listCaptures, fetchPage, createOutbound } =
+    await openAccountReceiveOwner(
+      options,
+      options.identity.id,
+      () => !driven || gate() === 'ready',
+      composed,
+    );
   let enqueue!: OwnedReceiveQueue;
   try {
     const workspace = await createAdmittedWorkspace(
@@ -407,7 +554,54 @@ async function openReceivingWorkspace(input: AccountWorkspaceOptions, operatorTo
       },
       listCaptures,
     });
-    if (!driven) return Object.freeze({ ...result, receiver: undefined });
+    if (composed) {
+      const outbound = createOutbound(() => workspace.whenDurable());
+      let unsubscribe: (() => void) | undefined;
+      const online = () => scheduler.wake('online'),
+        offline = () => scheduler.wake('gate');
+      const scheduler = createSyncScheduler({
+        signal: carrier.signal,
+        gate,
+        send: () => driveOutboundStep(outbound, operatorToken ?? '', gate),
+        receive: () => driveReceiveStep(result, operatorToken ?? '', gate),
+        detach() {
+          operatorToken = undefined;
+          unsubscribe?.();
+          globalThis.removeEventListener?.('online', online);
+          globalThis.removeEventListener?.('offline', offline);
+        },
+      });
+      try {
+        let revision = workspace.status.revision,
+          previousGate = gate();
+        unsubscribe = workspace.onStatus((status) => {
+          const changed = status.revision !== revision,
+            current = gate();
+          revision = status.revision;
+          if (changed) scheduler.wake('local');
+          if (current !== previousGate) {
+            previousGate = current;
+            scheduler.wake('gate');
+          }
+        });
+        globalThis.addEventListener?.('online', online);
+        globalThis.addEventListener?.('offline', offline);
+        if (!carrier.beforeRelease) throw Error('Missing composed driver cleanup ownership');
+        carrier.beforeRelease(scheduler.dispose);
+        scheduler.wake('start');
+      } catch (cause) {
+        await scheduler.dispose();
+        throw cause;
+      }
+      return Object.freeze({ ...result, outbound, sync: scheduler.runtime, receiver: undefined });
+    }
+    if (!driven)
+      return Object.freeze({
+        ...result,
+        receiver: undefined,
+        sync: undefined,
+        outbound: undefined,
+      });
     let unsubscribe: (() => void) | undefined;
     const online = () => scheduler.wake('online'),
       offline = () => scheduler.wake('gate');
@@ -442,6 +636,8 @@ async function openReceivingWorkspace(input: AccountWorkspaceOptions, operatorTo
     }
     return {
       ...result,
+      sync: undefined,
+      outbound: undefined,
       receiver: Object.freeze({
         get status() {
           return scheduler.status();
@@ -469,4 +665,27 @@ export async function openOwnedPollingAccountWorkspace(
   if (!result.receiver) throw Error('Missing receive polling ownership');
   const { prepareRead: _prepare, receivePage: _receive, receiveNext: _next, ...owned } = result;
   return Object.freeze({ ...owned, receiver: result.receiver });
+}
+
+/** Explicit private single-owner round trip. It cannot enroll or clone another writer. */
+export async function openOwnedSyncingAccountWorkspace(
+  input: AccountWorkspaceOptions,
+  operatorToken: string,
+) {
+  if (typeof operatorToken !== 'string') throw Error('Private operator token required');
+  const result = await openReceivingWorkspace(input, operatorToken, true);
+  if (!result.sync || !result.outbound) throw Error('Missing outbound composition');
+  const {
+    prepareRead: _prepare,
+    receivePage: _receive,
+    receiveNext: _next,
+    outbound,
+    receiver: _receiver,
+    ...owned
+  } = result;
+  return Object.freeze({
+    ...owned,
+    deliveryStatus: outbound.deliveryStatus,
+    spoolStatus: outbound.spoolStatus,
+  });
 }
