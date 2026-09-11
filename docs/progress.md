@@ -42,68 +42,67 @@ that is no longer active.
 
 ---
 
-## Active slice: Owned receive polling and reconnect (`L-1`)
+## Active slice: Outbound composition under the v9 Account owner (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none for bounded private receive scheduling; real Account use remains gated below
+blocks_on: bounded composition prep first; real Account use remains gated below
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
 
-**Personal checkpoint.** The verified Local release remains `.dev/releases/17d87c2/app`. Predecessor
-`dist/` was accidentally rebuilt during this phase, then restored from the saved upgrade-test copy;
-all 21 saved package hashes match. Preview/relay stay stopped. Origin/Tailscale routing, personal browser
+**Personal checkpoint.** The verified Local release remains `.dev/releases/17d87c2/app`; predecessor
+`dist/` and all 21 saved package hashes are unchanged this phase. The prior phase's accidental predecessor
+build was restored and documented. Preview/relay stay stopped. Origin/Tailscale routing, personal browser
 and factors are unchanged. No real Account, passkey, recovery code, operator key or authority pin is
 provisioned. The actual old second device will adopt this device's workspace with fresh custody, store,
 counters and credentials; its old writing will not be imported or merged.
 
 **Completed boundary.** Native receive is `f6e4cf4`, ordered editor integration `19586b6`, the unchanged
-annotated review archive `500630f`, validation-baseline repair `e835243`, and private v2 service read
-`9598ca6`. The full aggregate is preserved with the validation-baseline repair; later phases use targeted
-native/regression campaigns and full units.
+annotated review archive `500630f`, validation-baseline repair `e835243`, private v2 service read `9598ca6`,
+and owned receive HTTP `1ceb88d`. The full aggregate is preserved with validation-baseline repair; later
+phases use targeted native/regression campaigns and full units.
 
-[Owned v2 receive HTTP](./account-receive-transport.md) is implemented and not yet committed. The private
-v9 editor's `receiveNext(operatorToken)` derives a signed request from durable receive progress and routes
-its exact response through ordered admission. One in-flight call spans fetch through publication. Closing
-aborts and drains fetch, response stream, admission/native work and owned buffers before permit release.
-Lost/invalid/superseded replies never advance progress. Current private receiver envelope/batch limits
-remain; large service envelopes do not become supportable by splitting signed bytes.
+[Owned receive polling/reconnect](./account-receive-driver.md) is implemented and not yet committed. Its
+explicit private v9 factory owns one timer/pass, five-second idle polls, 50 ms page yields and capped
+unknown backoff. It reconstructs progress from durable receive state each pass. Readiness is checked again
+at actual HTTP dispatch. Offline/pressure pauses cannot clear a conflict/error halt; explicit retry cannot
+repair/discard input or erase durable evidence. Close invalidates and drains the scheduler and receiver
+under their existing permit. No outbound v9 sender has been composed yet.
 
-[Evidence](./account-conformance-runs/2026-09-11-account-receive-transport.md): nine directed native HTTP
-cases, 16 generated native histories, 200 generated stream partitions, 200 existing controlled queue
-interleavings, four effective source omissions, 964 unit tests, affected v1 transport/v2 service/ordered
-editor regressions, and isolated build/trace checks pass. No generated counterexample or whole-protocol
-debt payment is inferred beyond these checks. The build-directory mistake and verified restoration are
-explicitly preserved. Historical review and L-2 are unchanged.
+[Evidence](./account-conformance-runs/2026-09-11-account-receive-driver.md) includes five directed native
+cases, ten generated native histories, 400 deferred clock/event schedules, 100 observer-pause histories,
+seven effective controls, all 974 units with two workers, affected manual receive/v8 sender campaigns,
+and isolated build/trace checks. The reproduced observer-pressure startup stall and its repair are
+preserved. The earlier concurrent unit run's ten timeouts are not credited as passing. No whole-protocol
+debt is paid. Historical review and L-2 are unchanged.
 
 **F-11 correction still applies.** Passkey IDs and workspace signing credential IDs intentionally differ.
 The review's suggested equality was wrong. Existing candidate/member agreement remains enforced; the
 service snapshot binds the passkey row to completed registration. See the corrected service-phase contract.
 
-**Next small build.** Add an explicit private receive polling/reconnect factory around this owner:
+**Next small build.** Prepare and implement explicit outbound composition under the v9 owner:
 
-- One pass and at most one timer; yield between pages, coalesce wakeups, and use bounded polling after a
-  verified end page so later remote work can be discovered without local edits. Specify the idle interval
-  and unknown-result backoff before implementing; no timer sleep may occupy the carrier task queue.
-- Read authenticated receive progress/conflict each pass; only verified durable advancement determines
-  progress. Never retain a cursor, response or runtime status as new authority. Unknown replies re-request
-  the unchanged durable position with a fresh nonce; no automatic repair/discard or authority installation.
-- Pause on offline hints and Local admission pressure; check the gate again immediately before actual
-  dispatch after queued verification. Manual retry/online events may expedite bounded backoff. Invalid
-  authenticated state and unexpected storage/crypto failures halt automatic work pending explicit retry.
-- Bind timers/listeners/operator-token references to the same lifetime. Close invalidates scheduling,
-  cancels timers, aborts/drains the current pass and cannot deadlock the receive owner's cleanup.
-- Test an independent clock/event model, wake storms, empty-to-later-content polling, backoff, offline and
-  storage-pressure transitions, late close, lost replies and cold restart. Include native HTTP and effective
-  omissions, preserving manual receive and v8 sender regressions.
+- First specify the shared owner/task boundaries for source capture, outbound spool/grants, decisions and
+  inbound receive evidence. Reuse the actual v9 held authority and one content carrier/witness; do not open
+  a v8 sender beside it or silently teach older marker readers v9 semantics.
+- Preserve original local source identities, exact persisted envelopes/submissions and earliest unresolved
+  position retry. Receive originals and pending remote dependencies must never be recaptured or resealed
+  as locally authored work. Verify the complete metadata/content census on every cold open.
+- Define scheduling fairness and pause/close ownership before composing sender and receiver. Neither
+  network callback may publish, mint authority or move a runtime cursor into durable authority. Keep both
+  operation sets internal to the explicit private composed factory, with meaningful separate runtime status.
+- Test local send plus receive under one lifetime, lost replies/cold retry, receive amid local preparation,
+  native commit failures, exact coverage compaction, close/drain and older-reader refusal. Use independent
+  source/position/content oracles, generated histories and effective omissions. Preserve manual v9 and v8
+  driver regressions. This creating-member self-stream fixture is not real enrollment or credential cloning.
 
-Keep that scheduler bounded. Explicit outbound v9 sender composition follows; the v8 driver does not gain
-v9 semantics implicitly. Then Account UI and real two-gate second-device adoption. Preserve per-publication
-projection and complete cold-content verification throughout.
+Keep this composition bounded. Account UI and actual two-gate second-device adoption follow the remaining
+real-use gates. Preserve per-publication projection, complete cold-content verification and existing
+receiver envelope/batch limits. No large-envelope, new-member or checkpoint-successor support is inferred.
 
 **Before real Account receipts/rollout:** amend row-7 manifest AND admission descriptor bounds with
 explicit versioning; require an operation-bound fresh account assertion at first service activation;

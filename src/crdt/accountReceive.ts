@@ -1,3 +1,5 @@
+import { createReceiveScheduler, driveReceiveStep } from './accountReceiveDriver';
+import type { DriverGate } from './accountDriver';
 /** Private receive owners. Authority and original-update promotion stay inside the held lifetime. */
 import { openAccountCaptureOwner, type CaptureExtension } from './accountCapture';
 import { captureAccountOptions, type AccountStartupOptions } from './accountStartup';
@@ -40,7 +42,11 @@ import {
 import { createAdmittedWorkspace } from './admittedWorkspace';
 import type { AccountWorkspaceOptions } from './accountWorkspace';
 
-async function openAccountReceiveOwner(input: AccountStartupOptions, principalId?: string) {
+async function openAccountReceiveOwner(
+  input: AccountStartupOptions,
+  principalId?: string,
+  canReceive: () => boolean = () => true,
+) {
   const options = captureAccountOptions(input);
   let base!: InboundContext, signer: CryptoKey | undefined, publicKey!: CryptoKey;
   let expectedPayload = '',
@@ -184,14 +190,16 @@ async function openAccountReceiveOwner(input: AccountStartupOptions, principalId
       return await runCaptureTask(async (task, owner, route) => {
         const query = (request = await prepareRead(task, owner, route));
         await task.wait(async () => {
-          page = await privateDeliveryPost(
-            options.pin,
-            operatorToken,
-            'read-v2',
-            query,
-            MAX_PENDING_BYTES,
-            task.signal,
-          );
+          page = canReceive()
+            ? await privateDeliveryPost(
+                options.pin,
+                operatorToken,
+                'read-v2',
+                query,
+                MAX_PENDING_BYTES,
+                task.signal,
+              )
+            : null;
         });
         await assertCurrent(task);
         return task.step(() => ({ request: query, page }));
@@ -306,8 +314,11 @@ export async function openOwnedAccountReceiveStore(input: AccountStartupOptions)
   return Object.freeze({ ...api, receivePage: (bytes: Bytes) => api.receivePage(bytes) });
 }
 
-/** Private admitted editor and signed-page receive under one v9 permit. No sender or reconnect scheduler. */
-export async function openOwnedReceivingAccountWorkspace(input: AccountWorkspaceOptions) {
+async function openReceivingWorkspace(input: AccountWorkspaceOptions, operatorToken?: string) {
+  const driven = operatorToken !== undefined;
+  if (driven && !/^[A-Za-z0-9_-]{43}$/.test(operatorToken!))
+    throw Error('Invalid private operator token');
+  let gate: () => DriverGate = () => 'closed';
   const options = {
     ...captureAccountOptions(input),
     identity: structuredClone(input.identity),
@@ -316,6 +327,7 @@ export async function openOwnedReceivingAccountWorkspace(input: AccountWorkspace
   const { api, account, carrier, listCaptures, fetchPage } = await openAccountReceiveOwner(
     options,
     options.identity.id,
+    () => !driven || gate() === 'ready',
   );
   let enqueue!: OwnedReceiveQueue;
   try {
@@ -339,6 +351,13 @@ export async function openOwnedReceivingAccountWorkspace(input: AccountWorkspace
       await workspace.close();
       throw Error('Account opening was cancelled');
     }
+    gate = () => {
+      if (carrier.signal.aborted || !['active', 'blocked'].includes(workspace.status.state))
+        return 'closed';
+      if (workspace.status.state !== 'active' || workspace.status.pressure !== null)
+        return 'local-storage';
+      return globalThis.navigator?.onLine === false ? 'offline' : 'ready';
+    };
     const receivePage = (bytes: Bytes, request?: Bytes) => {
       try {
         return enqueue(bytes, (page, promote) => api.receivePage(page, promote, request));
@@ -374,7 +393,7 @@ export async function openOwnedReceivingAccountWorkspace(input: AccountWorkspace
       void work.then(settled, settled);
       return work;
     };
-    return Object.freeze({
+    const result = Object.freeze({
       ...account,
       kind: 'ready' as const,
       workspace,
@@ -388,8 +407,66 @@ export async function openOwnedReceivingAccountWorkspace(input: AccountWorkspace
       },
       listCaptures,
     });
+    if (!driven) return Object.freeze({ ...result, receiver: undefined });
+    let unsubscribe: (() => void) | undefined;
+    const online = () => scheduler.wake('online'),
+      offline = () => scheduler.wake('gate');
+    const scheduler = createReceiveScheduler({
+      signal: carrier.signal,
+      gate,
+      step: () => driveReceiveStep(result, operatorToken ?? '', gate),
+      detach() {
+        operatorToken = undefined;
+        unsubscribe?.();
+        globalThis.removeEventListener?.('online', online);
+        globalThis.removeEventListener?.('offline', offline);
+      },
+    });
+    try {
+      let previousGate = gate();
+      unsubscribe = workspace.onStatus(() => {
+        const current = gate();
+        if (current !== previousGate) {
+          previousGate = current;
+          scheduler.wake('gate');
+        }
+      });
+      globalThis.addEventListener?.('online', online);
+      globalThis.addEventListener?.('offline', offline);
+      if (!carrier.beforeRelease) throw Error('Missing receive driver cleanup ownership');
+      carrier.beforeRelease(scheduler.dispose);
+      scheduler.wake('start');
+    } catch (cause) {
+      await scheduler.dispose();
+      throw cause;
+    }
+    return {
+      ...result,
+      receiver: Object.freeze({
+        get status() {
+          return scheduler.status();
+        },
+        retry: () => scheduler.wake('retry'),
+        onStatus: scheduler.onStatus,
+      }),
+    };
   } catch (cause) {
     await carrier.close();
     throw cause;
   }
+}
+
+/** Private manual v9 editor/receive surface, without automatic network work. */
+export const openOwnedReceivingAccountWorkspace = (input: AccountWorkspaceOptions) =>
+  openReceivingWorkspace(input);
+/** Private polling receiver. Raw request/page operations remain internal to this composition. */
+export async function openOwnedPollingAccountWorkspace(
+  input: AccountWorkspaceOptions,
+  operatorToken: string,
+) {
+  if (typeof operatorToken !== 'string') throw Error('Private operator token required');
+  const result = await openReceivingWorkspace(input, operatorToken);
+  if (!result.receiver) throw Error('Missing receive polling ownership');
+  const { prepareRead: _prepare, receivePage: _receive, receiveNext: _next, ...owned } = result;
+  return Object.freeze({ ...owned, receiver: result.receiver });
 }

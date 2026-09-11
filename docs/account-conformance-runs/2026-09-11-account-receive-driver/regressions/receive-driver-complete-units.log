@@ -1,0 +1,230 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ❯ test/accountInboundPrep.test.ts (25 tests | 1 failed) 30867ms
+     × 300 generated delivery/crash/compaction histories preserve the external receipt and source ledger 30016ms
+ ❯ test/legacyImport.test.ts (13 tests | 1 failed) 37955ms
+     × generated text and resumptions retain the external logical ledger 30012ms
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+ ❯ test/legacyCleanup.test.ts (11 tests | 1 failed) 38723ms
+     × generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse 30014ms
+ ❯ test/positionDecision.test.ts (12 tests | 2 failed) 10581ms
+   × 200 generated signed chain histories distinguish exact evidence, conflicting leaves and foreign prefixes 5030ms
+   × 100 generated successor proofs bind parent bytes, original position and independent signing inputs 5082ms
+ ❯ test/accountInboundCodec.test.ts (34 tests | 1 failed) 44547ms
+     × 400 generated signed updates round-trip, cold-verify and reject independently re-signed actor substitutions 30029ms
+ ❯ test/storageCompatibility.test.ts (7 tests | 1 failed) 5356ms
+     × preserves storage through 160 generated marker/reacquisition histories 5009ms
+ ❯ test/pendingProjection.test.ts (7 tests | 1 failed) 8252ms
+     × preserves generated delivery histories across repeated detached forks and later dependencies 8060ms
+ ❯ test/sourceCapture.test.ts (7 tests | 1 failed) 7811ms
+     × 250 generated transaction histories recover exact bytes, actors and independent text across carrier overlap and reverse delivery 7597ms
+ ❯ test/legacyImportReceipts.test.ts (1 test | 1 failed) 62246ms
+   × bounds tiny slice output across thousands of restarted writer identities 62244ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/accountInboundCodec.test.ts > first-epoch inbound evidence under independently held owner context > 400 generated signed updates round-trip, cold-verify and reject independently re-signed actor substitutions
+Error: Test timed out in 30000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/accountInboundCodec.test.ts:475:3
+    473|     await expect(pending).rejects.toThrow('closed');
+    474|   });
+    475|   it('400 generated signed updates round-trip, cold-verify and reject …
+       |   ^
+    476|     const histories: unknown[] = [];
+    477|     await fc.assert(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > 300 generated delivery/crash/compaction histories preserve the external receipt and source ledger
+Error: Test timed out in 30000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/accountInboundPrep.test.ts:331:3
+    329|     }
+    330|   });
+    331|   it('300 generated delivery/crash/compaction histories preserve the e…
+       |   ^
+    332|     const histories: unknown[] = [];
+    333|     const action = fc.record({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+Error: Test timed out in 30000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/legacyCleanup.test.ts:240:3
+    238|     expect(() => parseLocalClaim(malformed, slot)).toThrow();
+    239|   });
+    240|   it('generated Unicode sources and interrupted native-progress writes…
+       |   ^
+    241|     await fc.assert(
+    242|       fc.asyncProperty(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  test/legacyImport.test.ts > pre-active Local import > generated text and resumptions retain the external logical ledger
+Error: Test timed out in 30000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/legacyImport.test.ts:279:3
+    277|     await expect(ceremony.confirm(code)).resolves.toMatchObject({ kind…
+    278|   });
+    279|   it('generated text and resumptions retain the external logical ledge…
+       |   ^
+    280|     await fc.assert(
+    281|       fc.asyncProperty(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  test/legacyImportReceipts.test.ts > bounds tiny slice output across thousands of restarted writer identities
+Error: Test timed out in 60000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/legacyImportReceipts.test.ts:7:1
+      5| import { encodeImportSlice, importCursor, type ImportPlan } from '../s…
+      6|
+      7| it('bounds tiny slice output across thousands of restarted writer iden…
+       | ^
+      8|   fc.assert(
+      9|     fc.property(fc.integer({ min: 2000, max: 4000 }), fc.nat(1000000),…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  test/pendingProjection.test.ts > pending document forks > preserves generated delivery histories across repeated detached forks and later dependencies
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/pendingProjection.test.ts:153:3
+    151|     }
+    152|   });
+    153|   it('preserves generated delivery histories across repeated detached …
+       |   ^
+    154|     fc.assert(
+    155|       fc.property(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  test/positionDecision.test.ts > 200 generated signed chain histories distinguish exact evidence, conflicting leaves and foreign prefixes
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/positionDecision.test.ts:197:1
+    195|   }
+    196| });
+    197| it('200 generated signed chain histories distinguish exact evidence, c…
+       | ^
+    198|   await fc.assert(
+    199|     fc.asyncProperty(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+ FAIL  test/positionDecision.test.ts > 100 generated successor proofs bind parent bytes, original position and independent signing inputs
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/positionDecision.test.ts:352:1
+    350|   ).rejects.toThrow(/lineage/);
+    351| });
+    352| it('100 generated successor proofs bind parent bytes, original positio…
+       | ^
+    353|   await fc.assert(
+    354|     fc.asyncProperty(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+
+ FAIL  test/sourceCapture.test.ts > Account source capsule conformance > 250 generated transaction histories recover exact bytes, actors and independent text across carrier overlap and reverse delivery
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/sourceCapture.test.ts:56:3
+     54|
+     55| describe('Account source capsule conformance', () => {
+     56|   it('250 generated transaction histories recover exact bytes, actors …
+       |   ^
+     57|     fc.assert(
+     58|       fc.property(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/10]⎯
+
+ FAIL  test/storageCompatibility.test.ts > storage compatibility interlock > preserves storage through 160 generated marker/reacquisition histories
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/storageCompatibility.test.ts:108:3
+    106|     expect(await inspectLocalStartup('local')).toMatchObject({ kind: '…
+    107|   });
+    108|   it('preserves storage through 160 generated marker/reacquisition his…
+       |   ^
+    109|     await fc.assert(
+    110|       fc.asyncProperty(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/10]⎯
+
+
+ Test Files  9 failed | 77 passed (86)
+      Tests  10 failed | 964 passed (974)
+   Start at  12:56:06
+   Duration  75.84s (transform 18.36s, setup 7.01s, import 52.74s, tests 523.79s, environment 63.61s)
+

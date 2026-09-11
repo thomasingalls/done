@@ -1,0 +1,95 @@
+Account receive transport evidence: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-receive-transport/2026-09-11T10-51-12.601Z
+Starting types
+Starting units
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/privateDeliveryHttp.test.ts > uses the fixed v2 route, no ambient credentials or redirects, and refuses inactive dispatch 17ms
+ ✓ test/privateDeliveryHttp.test.ts > bounds actual streaming bytes independently of headers and cancels overrun 1ms
+ ✓ test/privateDeliveryHttp.test.ts > waits for stream cancellation to settle and cannot return partial bytes after close 0ms
+ ✓ test/privateDeliveryHttp.test.ts > cancels a late successful response from a fetch that ignores abort 0ms
+ ✓ test/privateDeliveryHttp.test.ts > enforces the deadline during a streaming body 1ms
+ ✓ test/privateDeliveryHttp.test.ts > generated stream partitions return detached exact bytes only for complete bounded responses 15ms
+ ✓ test/ownedReceiveQueue.test.ts > holds local preparation behind owned commit and publishes originals without a local append 6ms
+ ✓ test/ownedReceiveQueue.test.ts > refuses invalid pages without blocking later edits and never accepts raw updates through the seam 2ms
+ ✓ test/ownedReceiveQueue.test.ts > close while commit is pending prevents promotion and late acknowledgement 1ms
+ ✓ test/ownedReceiveQueue.test.ts > capacity refusal happens before dispatch and capture owns all queued wire bytes 1ms
+ ✓ test/ownedReceiveQueue.test.ts > 200 generated interleavings recover authored text and preserve source counts 137ms
+ ✓ test/ownedReceiveQueue.test.ts > empty source lists cannot conceal a deletion with an unchanged state vector 2ms
+
+ Test Files  2 passed (2)
+      Tests  12 passed (12)
+   Start at  12:51:13
+   Duration  448ms (transform 139ms, setup 59ms, import 205ms, tests 184ms, environment 0ms)
+
+Starting native
+(node:31641) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31641) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:31641) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual v2 HTTP pages advance owned durable progress without local recapture, including cold end (9080.560583ms)
+native still running; see native.log
+✔ HTTP refusal, truncation, overflow, redirect, lost reply and stale signed page advance no cursor (8507.069958ms)
+✔ fetch serializes outstanding reads; a manually superseding request refuses the older response (6447.9285ms)
+native still running; see native.log
+✔ remote native commit holds ordered publication and later local input through HTTP (8106.24125ms)
+✔ close aborts and drains pending fetch before another owner acquires (8017.17825ms)
+native still running; see native.log
+✔ close aborts and drains pending stream before another owner acquires (8381.705042ms)
+✔ HTTP receive before native commit crash cold-retries from actual durable progress (8645.413875ms)
+native still running; see native.log
+✔ HTTP receive after native commit crash cold-retries from actual durable progress (8640.725167ms)
+native still running; see native.log
+✔ local journal admission remains responsive during fetch and the eventual page preserves that edit (8260.078292ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 75778.496458
+Starting controls
+(node:31886) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31886) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:31886) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+controls still running; see controls.log
+✔ effective queue omission exposes the forbidden result (13693.989666ms)
+✔ effective flight omission exposes the forbidden result (13607.393709ms)
+✔ effective HTTP bound omission exposes the forbidden result (19.66725ms)
+✔ effective HTTP drain omission exposes the forbidden result (16.506625ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 29266.027542
+Starting generated
+(node:31989) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31989) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:31989) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+✔ generated HTTP histories agree on durable receive prefix, authored text and local source count (165289.086125ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 167144.399
+passed: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-receive-transport/2026-09-11T10-51-12.601Z

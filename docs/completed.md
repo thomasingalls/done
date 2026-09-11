@@ -2266,3 +2266,37 @@ The historical review and L-2 checkpoint are unchanged. No real Account/factors,
 server, deployment or whole-protocol debt was activated/changed/paid. Next is bounded owned receive polling
 and reconnect, then explicit v9 outbound composition; all accepted review gates before real Account use
 remain open. This outcome is appended before replacing L-1 progress.
+
+
+## 2026-09-11 — Owned receive polling and reconnect (`L-1`)
+
+Committed the completed receive HTTP phase and evidence as `1ceb88d`. Added the explicit private
+[polling/reconnect owner](./account-receive-driver.md) around the existing v9 editor/receiver. Its caller
+receives runtime status and explicit retry, while request/page operations stay internal. One pass and at
+most one timer poll five seconds after a verified end, yield 50 ms between pages and back off unknown
+results at 1/2/4/8/16/30 seconds. Actual authenticated durable progress determines advancement.
+
+Offline and Local-pressure pauses cancel scheduling. The owner checks readiness again immediately before
+fetch after queued verification. Error/conflict halts are separate from temporary readiness and survive
+edits, restoration and online events; only explicit retry rechecks them. Skipped passes do not report a
+verified end or reset the unknown streak. Close clears listeners/timers/token references, aborts network
+work and drains the active pass under the same permit. The manual v9 receiver and v8 sender remain separate.
+
+A focused review reproduced a new scheduler defect: Local pressure raised by a status observer just before
+the first owned step erased the pending attempt, leaving ordinary restoration stalled. Retaining that
+attempt until the step starts fixes it. The failing module/output, passing regression, 100 generated
+observer-pause cases and an effective mutation recreating the stall are retained. Four other scheduler
+omissions expose overlap, missing end polling, online clearing of a halt and dispatch after observer close;
+two native omissions expose fetch after the final offline/pressure gate changes.
+
+[Evidence](./account-conformance-runs/2026-09-11-account-receive-driver.md) records five directed native
+cases, ten generated native histories, 400 independent deferred clock/event schedules, 100 observer-pause
+histories and seven effective controls. The affected manual HTTP and v8 sender campaigns pass. All 974
+unit tests pass on the final tree with two workers; an earlier ten-timeout run during concurrent browser/
+build work remains recorded as failed. The isolated build, budget/origin and fresh trace chain pass.
+No complete aggregate was rerun. The generated final histories found no further counterexample.
+
+Both personal package directories retain all 21 saved hashes. Preview/relay, personal browser/factors,
+origin/routing, historical review and L-2 remain unchanged. No real Account, enrollment, deployment or
+whole-protocol debt is activated/paid. Next is bounded prep and explicit outbound composition under the
+v9 owner; the remaining accepted review gates still precede real Account use. Appended before L-1 rewrite.

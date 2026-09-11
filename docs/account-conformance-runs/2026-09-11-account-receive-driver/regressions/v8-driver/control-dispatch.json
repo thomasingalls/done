@@ -1,0 +1,26 @@
+[
+  {
+    "mode": "dispatch-baseline",
+    "sent": 0,
+    "status": {
+      "phase": "closed",
+      "acceptedThrough": 0,
+      "position": null,
+      "failures": 0,
+      "retryAt": null,
+      "reason": null
+    }
+  },
+  {
+    "mode": "dispatch",
+    "sent": 1,
+    "status": {
+      "phase": "closed",
+      "acceptedThrough": 1,
+      "position": 2,
+      "failures": 0,
+      "retryAt": null,
+      "reason": null
+    }
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "script": "scripts/check-wasm-seal.mjs",
+  "script_sha256": "7a3743ddd6fc9d353ff978dcb258901d0bc38edbd394ed8a11e894ef4c1c20aa",
+  "argv": [],
+  "ok": true,
+  "exit": 0,
+  "started": "2026-09-11T10:56:18.679Z",
+  "finished": "2026-09-11T10:56:18.704Z",
+  "tree": {
+    "head": "1ceb88d3f5b203a9034501b816a426663e060a0e",
+    "dirty_sha256": "93be64ae0f1aa57ac7c87f5c81d022599cbc999460fb0cc9d697e57e0709eda9"
+  }
+}

@@ -1,0 +1,2108 @@
+diff --git a/docs/completed.md b/docs/completed.md
+index 68abd68..5ed4f1d 100644
+--- a/docs/completed.md
++++ b/docs/completed.md
+@@ -2266,3 +2266,37 @@ The historical review and L-2 checkpoint are unchanged. No real Account/factors,
+ server, deployment or whole-protocol debt was activated/changed/paid. Next is bounded owned receive polling
+ and reconnect, then explicit v9 outbound composition; all accepted review gates before real Account use
+ remain open. This outcome is appended before replacing L-1 progress.
++
++
++## 2026-09-11 — Owned receive polling and reconnect (`L-1`)
++
++Committed the completed receive HTTP phase and evidence as `1ceb88d`. Added the explicit private
++[polling/reconnect owner](./account-receive-driver.md) around the existing v9 editor/receiver. Its caller
++receives runtime status and explicit retry, while request/page operations stay internal. One pass and at
++most one timer poll five seconds after a verified end, yield 50 ms between pages and back off unknown
++results at 1/2/4/8/16/30 seconds. Actual authenticated durable progress determines advancement.
++
++Offline and Local-pressure pauses cancel scheduling. The owner checks readiness again immediately before
++fetch after queued verification. Error/conflict halts are separate from temporary readiness and survive
++edits, restoration and online events; only explicit retry rechecks them. Skipped passes do not report a
++verified end or reset the unknown streak. Close clears listeners/timers/token references, aborts network
++work and drains the active pass under the same permit. The manual v9 receiver and v8 sender remain separate.
++
++A focused review reproduced a new scheduler defect: Local pressure raised by a status observer just before
++the first owned step erased the pending attempt, leaving ordinary restoration stalled. Retaining that
++attempt until the step starts fixes it. The failing module/output, passing regression, 100 generated
++observer-pause cases and an effective mutation recreating the stall are retained. Four other scheduler
++omissions expose overlap, missing end polling, online clearing of a halt and dispatch after observer close;
++two native omissions expose fetch after the final offline/pressure gate changes.
++
++[Evidence](./account-conformance-runs/2026-09-11-account-receive-driver.md) records five directed native
++cases, ten generated native histories, 400 independent deferred clock/event schedules, 100 observer-pause
++histories and seven effective controls. The affected manual HTTP and v8 sender campaigns pass. All 974
++unit tests pass on the final tree with two workers; an earlier ten-timeout run during concurrent browser/
++build work remains recorded as failed. The isolated build, budget/origin and fresh trace chain pass.
++No complete aggregate was rerun. The generated final histories found no further counterexample.
++
++Both personal package directories retain all 21 saved hashes. Preview/relay, personal browser/factors,
++origin/routing, historical review and L-2 remain unchanged. No real Account, enrollment, deployment or
++whole-protocol debt is activated/paid. Next is bounded prep and explicit outbound composition under the
++v9 owner; the remaining accepted review gates still precede real Account use. Appended before L-1 rewrite.
+diff --git a/docs/progress.md b/docs/progress.md
+index 67c1368..9e77c0e 100644
+--- a/docs/progress.md
++++ b/docs/progress.md
+@@ -42,68 +42,67 @@ that is no longer active.
+ 
+ ---
+ 
+-## Active slice: Owned receive polling and reconnect (`L-1`)
++## Active slice: Outbound composition under the v9 Account owner (`L-1`)
+ 
+ ```yaml
+ gate: L-1
+ seat: /Users/thomasingalls/.codex/worktrees/c030/done
+ branch: codex/encrypted-store-contract-corrections
+ status: not started
+-blocks_on: none for bounded private receive scheduling; real Account use remains gated below
++blocks_on: bounded composition prep first; real Account use remains gated below
+ debts: consult docs/review/remediation/debts.json
+ updated: 2026-09-11
+ ```
+ 
+-**Personal checkpoint.** The verified Local release remains `.dev/releases/17d87c2/app`. Predecessor
+-`dist/` was accidentally rebuilt during this phase, then restored from the saved upgrade-test copy;
+-all 21 saved package hashes match. Preview/relay stay stopped. Origin/Tailscale routing, personal browser
++**Personal checkpoint.** The verified Local release remains `.dev/releases/17d87c2/app`; predecessor
++`dist/` and all 21 saved package hashes are unchanged this phase. The prior phase's accidental predecessor
++build was restored and documented. Preview/relay stay stopped. Origin/Tailscale routing, personal browser
+ and factors are unchanged. No real Account, passkey, recovery code, operator key or authority pin is
+ provisioned. The actual old second device will adopt this device's workspace with fresh custody, store,
+ counters and credentials; its old writing will not be imported or merged.
+ 
+ **Completed boundary.** Native receive is `f6e4cf4`, ordered editor integration `19586b6`, the unchanged
+-annotated review archive `500630f`, validation-baseline repair `e835243`, and private v2 service read
+-`9598ca6`. The full aggregate is preserved with the validation-baseline repair; later phases use targeted
+-native/regression campaigns and full units.
++annotated review archive `500630f`, validation-baseline repair `e835243`, private v2 service read `9598ca6`,
++and owned receive HTTP `1ceb88d`. The full aggregate is preserved with validation-baseline repair; later
++phases use targeted native/regression campaigns and full units.
+ 
+-[Owned v2 receive HTTP](./account-receive-transport.md) is implemented and not yet committed. The private
+-v9 editor's `receiveNext(operatorToken)` derives a signed request from durable receive progress and routes
+-its exact response through ordered admission. One in-flight call spans fetch through publication. Closing
+-aborts and drains fetch, response stream, admission/native work and owned buffers before permit release.
+-Lost/invalid/superseded replies never advance progress. Current private receiver envelope/batch limits
+-remain; large service envelopes do not become supportable by splitting signed bytes.
++[Owned receive polling/reconnect](./account-receive-driver.md) is implemented and not yet committed. Its
++explicit private v9 factory owns one timer/pass, five-second idle polls, 50 ms page yields and capped
++unknown backoff. It reconstructs progress from durable receive state each pass. Readiness is checked again
++at actual HTTP dispatch. Offline/pressure pauses cannot clear a conflict/error halt; explicit retry cannot
++repair/discard input or erase durable evidence. Close invalidates and drains the scheduler and receiver
++under their existing permit. No outbound v9 sender has been composed yet.
+ 
+-[Evidence](./account-conformance-runs/2026-09-11-account-receive-transport.md): nine directed native HTTP
+-cases, 16 generated native histories, 200 generated stream partitions, 200 existing controlled queue
+-interleavings, four effective source omissions, 964 unit tests, affected v1 transport/v2 service/ordered
+-editor regressions, and isolated build/trace checks pass. No generated counterexample or whole-protocol
+-debt payment is inferred beyond these checks. The build-directory mistake and verified restoration are
+-explicitly preserved. Historical review and L-2 are unchanged.
++[Evidence](./account-conformance-runs/2026-09-11-account-receive-driver.md) includes five directed native
++cases, ten generated native histories, 400 deferred clock/event schedules, 100 observer-pause histories,
++seven effective controls, all 974 units with two workers, affected manual receive/v8 sender campaigns,
++and isolated build/trace checks. The reproduced observer-pressure startup stall and its repair are
++preserved. The earlier concurrent unit run's ten timeouts are not credited as passing. No whole-protocol
++debt is paid. Historical review and L-2 are unchanged.
+ 
+ **F-11 correction still applies.** Passkey IDs and workspace signing credential IDs intentionally differ.
+ The review's suggested equality was wrong. Existing candidate/member agreement remains enforced; the
+ service snapshot binds the passkey row to completed registration. See the corrected service-phase contract.
+ 
+-**Next small build.** Add an explicit private receive polling/reconnect factory around this owner:
++**Next small build.** Prepare and implement explicit outbound composition under the v9 owner:
+ 
+-- One pass and at most one timer; yield between pages, coalesce wakeups, and use bounded polling after a
+-  verified end page so later remote work can be discovered without local edits. Specify the idle interval
+-  and unknown-result backoff before implementing; no timer sleep may occupy the carrier task queue.
+-- Read authenticated receive progress/conflict each pass; only verified durable advancement determines
+-  progress. Never retain a cursor, response or runtime status as new authority. Unknown replies re-request
+-  the unchanged durable position with a fresh nonce; no automatic repair/discard or authority installation.
+-- Pause on offline hints and Local admission pressure; check the gate again immediately before actual
+-  dispatch after queued verification. Manual retry/online events may expedite bounded backoff. Invalid
+-  authenticated state and unexpected storage/crypto failures halt automatic work pending explicit retry.
+-- Bind timers/listeners/operator-token references to the same lifetime. Close invalidates scheduling,
+-  cancels timers, aborts/drains the current pass and cannot deadlock the receive owner's cleanup.
+-- Test an independent clock/event model, wake storms, empty-to-later-content polling, backoff, offline and
+-  storage-pressure transitions, late close, lost replies and cold restart. Include native HTTP and effective
+-  omissions, preserving manual receive and v8 sender regressions.
++- First specify the shared owner/task boundaries for source capture, outbound spool/grants, decisions and
++  inbound receive evidence. Reuse the actual v9 held authority and one content carrier/witness; do not open
++  a v8 sender beside it or silently teach older marker readers v9 semantics.
++- Preserve original local source identities, exact persisted envelopes/submissions and earliest unresolved
++  position retry. Receive originals and pending remote dependencies must never be recaptured or resealed
++  as locally authored work. Verify the complete metadata/content census on every cold open.
++- Define scheduling fairness and pause/close ownership before composing sender and receiver. Neither
++  network callback may publish, mint authority or move a runtime cursor into durable authority. Keep both
++  operation sets internal to the explicit private composed factory, with meaningful separate runtime status.
++- Test local send plus receive under one lifetime, lost replies/cold retry, receive amid local preparation,
++  native commit failures, exact coverage compaction, close/drain and older-reader refusal. Use independent
++  source/position/content oracles, generated histories and effective omissions. Preserve manual v9 and v8
++  driver regressions. This creating-member self-stream fixture is not real enrollment or credential cloning.
+ 
+-Keep that scheduler bounded. Explicit outbound v9 sender composition follows; the v8 driver does not gain
+-v9 semantics implicitly. Then Account UI and real two-gate second-device adoption. Preserve per-publication
+-projection and complete cold-content verification throughout.
++Keep this composition bounded. Account UI and actual two-gate second-device adoption follow the remaining
++real-use gates. Preserve per-publication projection, complete cold-content verification and existing
++receiver envelope/batch limits. No large-envelope, new-member or checkpoint-successor support is inferred.
+ 
+ **Before real Account receipts/rollout:** amend row-7 manifest AND admission descriptor bounds with
+ explicit versioning; require an operation-bound fresh account assertion at first service activation;
+diff --git a/package.json b/package.json
+index f4c85e5..23c5c81 100644
+--- a/package.json
++++ b/package.json
+@@ -14,7 +14,7 @@
+     "lint:fix": "oxlint --react-plugin --fix",
+     "format": "oxfmt --check .",
+     "format:fix": "oxfmt --write .",
+-    "check": "pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:harness && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm storage:legacy-cleanup:harness && pnpm storage:legacy-cleanup && pnpm storage:legacy-coordinator && pnpm storage:legacy-host:harness && pnpm storage:legacy-host && pnpm storage:private-migration && pnpm storage:app-startup && pnpm test:geometry && pnpm storage:app-startup:packaged && pnpm storage:app-upgrades && pnpm storage:compatibility && pnpm trace:check && pnpm account:core && pnpm account:recovery && pnpm account:authority && pnpm account:promotion && pnpm account:genesis && pnpm account:admission && pnpm account:handoff && pnpm account:editing && pnpm account:outbound && pnpm account:capture && pnpm account:spool && pnpm account:decisions && pnpm account:delivery && pnpm account:service-delivery && pnpm account:transport && pnpm account:driver && pnpm account:inbound-prep && pnpm account:inbound-codecs && pnpm account:receive && pnpm account:receive-editor && pnpm account:service-inbound && pnpm account:receive-transport",
++    "check": "pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:harness && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm storage:legacy-cleanup:harness && pnpm storage:legacy-cleanup && pnpm storage:legacy-coordinator && pnpm storage:legacy-host:harness && pnpm storage:legacy-host && pnpm storage:private-migration && pnpm storage:app-startup && pnpm test:geometry && pnpm storage:app-startup:packaged && pnpm storage:app-upgrades && pnpm storage:compatibility && pnpm trace:check && pnpm account:core && pnpm account:recovery && pnpm account:authority && pnpm account:promotion && pnpm account:genesis && pnpm account:admission && pnpm account:handoff && pnpm account:editing && pnpm account:outbound && pnpm account:capture && pnpm account:spool && pnpm account:decisions && pnpm account:delivery && pnpm account:service-delivery && pnpm account:transport && pnpm account:driver && pnpm account:inbound-prep && pnpm account:inbound-codecs && pnpm account:receive && pnpm account:receive-editor && pnpm account:service-inbound && pnpm account:receive-transport && pnpm account:receive-driver",
+     "test": "vitest run",
+     "test:https": "pnpm build && pnpm --dir relay build && node scripts/test-https.mjs",
+     "test:watch": "vitest",
+@@ -100,7 +100,8 @@
+     "account:inbound-codecs": "node scripts/account-inbound-codecs/run.mjs",
+     "account:receive": "node scripts/account-receive/run.mjs",
+     "account:receive-editor": "node scripts/account-receive-editor/run.mjs",
+-    "account:receive-transport": "node scripts/account-receive-transport/run.mjs"
++    "account:receive-transport": "node scripts/account-receive-transport/run.mjs",
++    "account:receive-driver": "node scripts/account-receive-driver/run.mjs"
+   },
+   "dependencies": {
+     "@codemirror/commands": "^6.10.4",
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index 25c65ef..d4dee6e 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -1,3 +1,5 @@
++import { createReceiveScheduler, driveReceiveStep } from './accountReceiveDriver';
++import type { DriverGate } from './accountDriver';
+ /** Private receive owners. Authority and original-update promotion stay inside the held lifetime. */
+ import { openAccountCaptureOwner, type CaptureExtension } from './accountCapture';
+ import { captureAccountOptions, type AccountStartupOptions } from './accountStartup';
+@@ -40,7 +42,11 @@ import {
+ import { createAdmittedWorkspace } from './admittedWorkspace';
+ import type { AccountWorkspaceOptions } from './accountWorkspace';
+ 
+-async function openAccountReceiveOwner(input: AccountStartupOptions, principalId?: string) {
++async function openAccountReceiveOwner(
++  input: AccountStartupOptions,
++  principalId?: string,
++  canReceive: () => boolean = () => true,
++) {
+   const options = captureAccountOptions(input);
+   let base!: InboundContext, signer: CryptoKey | undefined, publicKey!: CryptoKey;
+   let expectedPayload = '',
+@@ -184,14 +190,16 @@ async function openAccountReceiveOwner(input: AccountStartupOptions, principalId
+       return await runCaptureTask(async (task, owner, route) => {
+         const query = (request = await prepareRead(task, owner, route));
+         await task.wait(async () => {
+-          page = await privateDeliveryPost(
+-            options.pin,
+-            operatorToken,
+-            'read-v2',
+-            query,
+-            MAX_PENDING_BYTES,
+-            task.signal,
+-          );
++          page = canReceive()
++            ? await privateDeliveryPost(
++                options.pin,
++                operatorToken,
++                'read-v2',
++                query,
++                MAX_PENDING_BYTES,
++                task.signal,
++              )
++            : null;
+         });
+         await assertCurrent(task);
+         return task.step(() => ({ request: query, page }));
+@@ -306,8 +314,11 @@ export async function openOwnedAccountReceiveStore(input: AccountStartupOptions)
+   return Object.freeze({ ...api, receivePage: (bytes: Bytes) => api.receivePage(bytes) });
+ }
+ 
+-/** Private admitted editor and signed-page receive under one v9 permit. No sender or reconnect scheduler. */
+-export async function openOwnedReceivingAccountWorkspace(input: AccountWorkspaceOptions) {
++async function openReceivingWorkspace(input: AccountWorkspaceOptions, operatorToken?: string) {
++  const driven = operatorToken !== undefined;
++  if (driven && !/^[A-Za-z0-9_-]{43}$/.test(operatorToken!))
++    throw Error('Invalid private operator token');
++  let gate: () => DriverGate = () => 'closed';
+   const options = {
+     ...captureAccountOptions(input),
+     identity: structuredClone(input.identity),
+@@ -316,6 +327,7 @@ export async function openOwnedReceivingAccountWorkspace(input: AccountWorkspace
+   const { api, account, carrier, listCaptures, fetchPage } = await openAccountReceiveOwner(
+     options,
+     options.identity.id,
++    () => !driven || gate() === 'ready',
+   );
+   let enqueue!: OwnedReceiveQueue;
+   try {
+@@ -339,6 +351,13 @@ export async function openOwnedReceivingAccountWorkspace(input: AccountWorkspace
+       await workspace.close();
+       throw Error('Account opening was cancelled');
+     }
++    gate = () => {
++      if (carrier.signal.aborted || !['active', 'blocked'].includes(workspace.status.state))
++        return 'closed';
++      if (workspace.status.state !== 'active' || workspace.status.pressure !== null)
++        return 'local-storage';
++      return globalThis.navigator?.onLine === false ? 'offline' : 'ready';
++    };
+     const receivePage = (bytes: Bytes, request?: Bytes) => {
+       try {
+         return enqueue(bytes, (page, promote) => api.receivePage(page, promote, request));
+@@ -374,7 +393,7 @@ export async function openOwnedReceivingAccountWorkspace(input: AccountWorkspace
+       void work.then(settled, settled);
+       return work;
+     };
+-    return Object.freeze({
++    const result = Object.freeze({
+       ...account,
+       kind: 'ready' as const,
+       workspace,
+@@ -388,8 +407,66 @@ export async function openOwnedReceivingAccountWorkspace(input: AccountWorkspace
+       },
+       listCaptures,
+     });
++    if (!driven) return Object.freeze({ ...result, receiver: undefined });
++    let unsubscribe: (() => void) | undefined;
++    const online = () => scheduler.wake('online'),
++      offline = () => scheduler.wake('gate');
++    const scheduler = createReceiveScheduler({
++      signal: carrier.signal,
++      gate,
++      step: () => driveReceiveStep(result, operatorToken ?? '', gate),
++      detach() {
++        operatorToken = undefined;
++        unsubscribe?.();
++        globalThis.removeEventListener?.('online', online);
++        globalThis.removeEventListener?.('offline', offline);
++      },
++    });
++    try {
++      let previousGate = gate();
++      unsubscribe = workspace.onStatus(() => {
++        const current = gate();
++        if (current !== previousGate) {
++          previousGate = current;
++          scheduler.wake('gate');
++        }
++      });
++      globalThis.addEventListener?.('online', online);
++      globalThis.addEventListener?.('offline', offline);
++      if (!carrier.beforeRelease) throw Error('Missing receive driver cleanup ownership');
++      carrier.beforeRelease(scheduler.dispose);
++      scheduler.wake('start');
++    } catch (cause) {
++      await scheduler.dispose();
++      throw cause;
++    }
++    return {
++      ...result,
++      receiver: Object.freeze({
++        get status() {
++          return scheduler.status();
++        },
++        retry: () => scheduler.wake('retry'),
++        onStatus: scheduler.onStatus,
++      }),
++    };
+   } catch (cause) {
+     await carrier.close();
+     throw cause;
+   }
+ }
++
++/** Private manual v9 editor/receive surface, without automatic network work. */
++export const openOwnedReceivingAccountWorkspace = (input: AccountWorkspaceOptions) =>
++  openReceivingWorkspace(input);
++/** Private polling receiver. Raw request/page operations remain internal to this composition. */
++export async function openOwnedPollingAccountWorkspace(
++  input: AccountWorkspaceOptions,
++  operatorToken: string,
++) {
++  if (typeof operatorToken !== 'string') throw Error('Private operator token required');
++  const result = await openReceivingWorkspace(input, operatorToken);
++  if (!result.receiver) throw Error('Missing receive polling ownership');
++  const { prepareRead: _prepare, receivePage: _receive, receiveNext: _next, ...owned } = result;
++  return Object.freeze({ ...owned, receiver: result.receiver });
++}
+diff --git a/docs/account-conformance-runs/2026-09-11-account-receive-driver.md b/docs/account-conformance-runs/2026-09-11-account-receive-driver.md
+new file mode 100644
+index 0000000..0a44230
+--- /dev/null
++++ b/docs/account-conformance-runs/2026-09-11-account-receive-driver.md
+@@ -0,0 +1,68 @@
++# Owned receive polling/reconnect evidence — 2026-09-11
++
++The receive HTTP phase was committed as `1ceb88d`. The [working patch](./2026-09-11-account-receive-driver/working.patch)
++implements the next bounded [private polling/reconnect owner](../account-receive-driver.md) against that
++commit. This phase remains uncommitted for review.
++
++| Check | Observed result |
++| --- | --- |
++| Native polling/reconnect | Five cases pass: actual service empty-to-later-data polling, lost response/backoff/catch-up/cold replay, persistent failure halt, Local pressure/explicit repair, close/drain and prompt backoff close |
++| Native generated histories | Ten histories, seed 9112052; publish/local/lost/offline/halt/restart actions preserve authored text, durable progress, source counts and the cold request cursor |
++| Independent scheduler model | 400 deferred clock/event histories, seed 9112051, check exact attempt deadlines/counts, unknown floors, pauses, halts, close, one pass and one timer |
++| Observer-pause regression | 100 generated pause durations, seed 9112053, plus a focused failing-before/passing-after test |
++| Effective omissions | Five actual scheduler controls and two native final-dispatch controls all distinguish the passing baseline from a prohibited result |
++| Full unit suite | 974 tests in 86 files pass with `--maxWorkers=2`; original per-test deadlines remain |
++| Affected campaigns | Manual receive HTTP and the v8 sender/reconnect driver pass, including their native, generated and mutation cases |
++| Isolated build/trace | Yjs binding, TypeScript, Vite, budget, origin isolation and fresh prerequisite/trace chain pass; initial JS 329.6 KiB / 350 KiB, 101 claims, 28/28 named current-defect falsifiers, nine retained debts |
++| Scoped static checks | TypeScript, lint, formatting and diff checks pass |
++
++[Final campaign](./2026-09-11-account-receive-driver/campaign/summary.json),
++[native cases](./2026-09-11-account-receive-driver/campaign/native.log),
++[generated native histories](./2026-09-11-account-receive-driver/campaign/generated-native.json),
++[clock/property cases](./2026-09-11-account-receive-driver/campaign/units.log),
++[regression chain](./2026-09-11-account-receive-driver/regressions/summary.json),
++[final full units](./2026-09-11-account-receive-driver/regressions/receive-driver-isolated-units.json), and
++[isolated build](./2026-09-11-account-receive-driver/build/summary.json).
++
++## Defect found and repaired
++
++A status observer introducing Local pressure just before the first owned step started could erase its
++pending attempt. Ordinary admission restoration then had nothing to schedule. The
++[original module](./2026-09-11-account-receive-driver/reproduction/receive-driver-reentrant-before.ts) and
++[failing test](./2026-09-11-account-receive-driver/reproduction/receive-driver-reentrant-before.log) preserve
++that counterexample. The repair retains the pending time until the owned step actually starts. The focused
++regression, 100 generated observer-pause cases and a mutation recreating the stall pass. This was found by
++focused review and reproduction; the earlier random event campaign had not represented that observer cut.
++
++A separate classification correction distinguishes skipped readiness from a verified empty response.
++A paused pass does not reset unknown failures or claim the stream is caught up. The independent generated
++oracle now includes paused completions. No further counterexample was found by the final generated tests.
++
++The other four scheduler controls expose concurrent passes, absent polling after end, online events
++clearing a permanent halt, and invocation after observer closure. Native controls change connectivity or
++induce actual Local quota/storage pressure at the final dispatch boundary: the baseline makes zero fetches,
++the guard omission makes one. Each control runs a baseline and altered production source. Timeouts or
++harness errors are never counted as detection. The first overlap mutation left one guard intact and did
++not produce overlap; it was strengthened before the recorded final campaign.
++
++## Failed run and scope of validation
++
++A concurrent full-unit run failed ten existing per-test deadlines across nine files while browser campaigns
++and build work were running; 964 other tests passed. Its
++[failed output](./2026-09-11-account-receive-driver/regressions/receive-driver-complete-units.log) is retained.
++The final full suite subsequently passed with two workers and no concurrent native/build campaign, without
++changing assertions or deadlines. Earlier passing campaigns preceding the two scheduler corrections are
++retained separately and are not substituted for the final campaign.
++
++[Verification](./2026-09-11-account-receive-driver/verification.json) compares the final campaign code inputs
++and isolated runtime inputs with current files. Earlier manual-receive/v8 regressions precede only the final
++scheduler-specific corrections; the final driver campaign and full units cover the final scheduler.
++Documentation was completed afterward. The [artifact manifest](./2026-09-11-account-receive-driver/manifest.json)
++identifies the saved evidence and patch. The build helper asserts the exact isolated checkout path before
++running. Both personal package directories match all 21 saved hashes; no predecessor restoration was
++needed this phase. The historical review and L-2 checkpoint are unchanged.
++
++This is targeted validation, not another full `pnpm check`. `pnpm account:receive-driver` is appended to that
++aggregate. No v9 outbound sender, new-member enrollment, personal browser/factor operation, real Account,
++route, server or deployment was activated. Creating-member/first-epoch and existing receiver-size bounds
++remain. Whole-protocol debt and the accepted review gates before real Account use remain open.
+diff --git a/docs/account-receive-driver.md b/docs/account-receive-driver.md
+new file mode 100644
+index 0000000..1ebb650
+--- /dev/null
++++ b/docs/account-receive-driver.md
+@@ -0,0 +1,62 @@
++# Owned receive polling and reconnect
++
++The explicit private `openOwnedPollingAccountWorkspace(input, operatorToken)` composes the v9 receive
++owner with one polling driver. It does not add a durable format, sender, membership, default-app UI or
++personal Account activation. The manual receive factory remains available without automatic networking.
++The polling factory keeps raw prepare/read/page operations internal; its caller receives the admitted
++editor, read-only receive census, runtime `receiver.status`, `retry()` and status subscription.
++
++## Polling policy
++
++A timer starts the first pass. Each pass reads authenticated durable receive state and calls the existing
++owned limit-one HTTP operation. It re-reads durable state after the operation: only an increased durable
++position counts as progress. A verified empty response with no advancement means the stream is currently
++caught up. Runtime status never supplies a cursor, baseline, key or trust decision.
++
++Successful progress yields 50 ms through a timer before another page. A verified empty page schedules the
++next poll five seconds later, even without local edits. Unknown results use 1, 2, 4, 8, 16 and then 30-second
++backoff, capped at 30 seconds. Successful responses reset the failure streak. These private intervals are
++fixed in code; they are not an availability or latency guarantee on suspended browsers.
++
++One pass and at most one timer exist. Ordinary status notifications do not accelerate backoff or restart
++an idle interval. Online events and explicit retry may expedite the next attempt and coalesce during work.
++Local revision changes alone do not trigger network reads. No timer wait occupies the carrier queue or
++holds a task capability. Each new request derives its cursor afresh and receives a new nonce; unknown or
++lost replies grant no receive progress.
++
++## Pauses and failures
++
++Offline connectivity is a hint. It cancels scheduling until connectivity or an explicit retry wake; actual
++HTTP failure while reported online is unknown. Local admission blockage or pressure also pauses polling.
++The backoff deadline survives a Local pause/resume. A skipped pass is classified as paused,
++not as a verified empty page, and does not reset the unknown streak. The owner rechecks the current gate immediately before
++fetch, after queued crypto and storage reads; a readiness check only at the beginning of a pass is insufficient.
++An already dispatched response can finish its ordered durable receive while the lifetime remains active.
++
++Conflicted durable state, malformed/unverified pages and unexpected crypto/storage failures halt automatic
++attempts. The failure halt is kept separately from temporary offline/storage gates, including if a failure
++arrives while already paused. Ordinary edits, admission restoration and online events do not clear it.
++Explicit `retry()` rechecks durable state; it neither repairs/discards Local input nor erases conflict
++records. A retained conflict still prevents dispatch. A blocked admission job retains its existing ordered
++suffix semantics; the user must resolve that suffix before the driver can settle and proceed.
++
++Status is a frozen detached observation: phase, received-through, saturating failure streak, next attempt
++time and bounded reason. It contains no token, raw response, plaintext or key. Status observers cannot
++start work after synchronous close or create duplicate timers through reentrant wakeups.
++
++## Lifetime and scope
++
++The driver owns listeners, timers and its operator-token reference under the same held permit as receive.
++Close immediately stops scheduling, clears the token reference and listeners, cancels timers and aborts
++the lifetime. Cleanup drains the active pass after the owner has settled its fetch/stream/native work.
++Closing during backoff waits for no timer delay. Cold reopen rebuilds progress from the authenticated
++receive ledger and signs the next request from that position, never from saved runtime status.
++
++The first epoch, creating publisher, generation 1, receiver's 512 KiB envelope cap and native batch limits
++remain. Polling does not make larger envelopes, new members, checkpoint successors or branched credentials
++supported. The v8 sender is unchanged. Next is explicit outbound composition under v9, followed by remaining
++review gates and real two-gate second-device adoption; no real Account rollout is authorized by these tests.
++
++`account:receive-driver` combines an independent clock/event oracle, effective scheduler and final-dispatch
++omissions, and disposable native HTTP/restart histories. The manual transport and v8 sending driver remain
++regression gates. This targeted evidence is not a claim of complete protocol correctness.
+diff --git a/scripts/account-receive-driver/run.mjs b/scripts/account-receive-driver/run.mjs
+new file mode 100644
+index 0000000..c1483fe
+--- /dev/null
++++ b/scripts/account-receive-driver/run.mjs
+@@ -0,0 +1,156 @@
++import { spawn } from 'node:child_process';
++import { createHash } from 'node:crypto';
++import { mkdirSync, readdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
++import { join, resolve } from 'node:path';
++
++const output = resolve(
++  'test-results/account-receive-driver',
++  new Date().toISOString().replaceAll(':', '-'),
++);
++mkdirSync(output, { recursive: true });
++console.log(`Account receive driver evidence: ${output}`);
++const walk = (dir) =>
++  readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
++    e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)],
++  );
++const files = [
++  ...new Set([
++    'package.json',
++    'pnpm-lock.yaml',
++    'tsconfig.app.json',
++    'tsconfig.node.json',
++    'vite.config.ts',
++    'docs/account-source-capture.md',
++    'docs/account-receive-driver.md',
++    'docs/account-inbound.md',
++    'docs/account-inbound-verification.md',
++    'docs/account-delivery.md',
++    'docs/account-admission.md',
++    'docs/account-decisions.md',
++    'docs/account-spool.md',
++    'docs/selections/row-5-finalization.md',
++    'docs/selections/row-6-antireplay-retention.md',
++    'docs/account-outbound.md',
++    'docs/TRD.md',
++    'docs/review/remediation/S0-4/A-schemas.md',
++    'docs/review/remediation/S0-2/authority-map.md',
++    'docs/selections/row-4-envelope-format.md',
++    'scripts/account-receive-driver/run.mjs',
++    'scripts/generate-private-envelope-vectors.mjs',
++    'scripts/generate-envelope-vectors.mjs',
++    'scripts/lib/aad-coverage.mjs',
++    ...['src', 'account-protocol', 'account-service', 'test', 'vite', 'wasm/journal-seal']
++      .flatMap(walk)
++      .filter((f) => /\.(ts|tsx|mjs|json|wasm)$/.test(f)),
++  ]),
++].sort();
++writeFileSync(
++  join(output, 'sources.json'),
++  JSON.stringify(
++    files.map((path) => ({
++      path,
++      sha256: createHash('sha256').update(readFileSync(path)).digest('hex'),
++    })),
++    null,
++    2,
++  ) + '\n',
++);
++const summary = {
++  status: 'running',
++  startedAt: new Date().toISOString(),
++  stages: [],
++  scope:
++    'Private owned v9 receive polling and reconnect: fixed idle interval and capped backoff, sticky failure halt, dispatch gate, lifetime draining, generated clock/native histories and effective omission controls. No outbound composition or personal Account deployment.',
++};
++const save = () =>
++  writeFileSync(join(output, 'summary.json'), JSON.stringify(summary, null, 2) + '\n');
++save();
++async function run(name, args, timeoutMs) {
++  console.log(`Starting ${name}`);
++  const log = createWriteStream(join(output, name + '.log'));
++  const child = spawn(process.execPath, args, {
++    detached: true,
++    stdio: ['ignore', 'pipe', 'pipe'],
++    env: { ...process.env, ACCOUNT_REPORT_DIR: output },
++  });
++  let timedOut = false,
++    forced,
++    launchError;
++  const kill = (signal) => {
++    try {
++      process.kill(-child.pid, signal);
++    } catch {}
++  };
++  const deadline = setTimeout(() => {
++    timedOut = true;
++    kill('SIGTERM');
++    forced = setTimeout(() => kill('SIGKILL'), 5000);
++  }, timeoutMs);
++  const heartbeat = setInterval(() => console.log(`${name} still running; see ${name}.log`), 15000);
++  for (const stream of [child.stdout, child.stderr])
++    stream.on('data', (b) => {
++      process.stdout.write(b);
++      log.write(b);
++    });
++  const code = await new Promise((resolve) => {
++    child.once('error', (e) => {
++      launchError = String(e);
++      resolve(1);
++    });
++    child.once('close', (code) => resolve(code ?? 1));
++  });
++  clearTimeout(deadline);
++  clearTimeout(forced);
++  clearInterval(heartbeat);
++  await new Promise((resolve) => log.end(resolve));
++  const result = { name, code, timedOut, ...(launchError ? { launchError } : {}) };
++  summary.stages.push(result);
++  save();
++  return code === 0 && !timedOut;
++}
++try {
++  const stages = [
++    ['types', ['node_modules/typescript/bin/tsc', '-b'], 60000],
++    [
++      'units',
++      [
++        'node_modules/vitest/vitest.mjs',
++        'run',
++        'test/accountReceiveDriver.test.ts',
++        'test/ownedReceiveQueue.test.ts',
++        '--maxWorkers=2',
++        '--reporter=verbose',
++      ],
++      60000,
++    ],
++    ...[
++      ['native', 120000],
++      ['controls', 90000],
++      ['native-controls', 90000],
++      ['generated', 270000],
++    ].map(([name, deadline]) => [
++      name,
++      [
++        '--test',
++        '--test-concurrency=1',
++        '--test-reporter=spec',
++        '--test-reporter-destination=stdout',
++        '--test-reporter=junit',
++        `--test-reporter-destination=${join(output, name + '.xml')}`,
++        `test/account-receive-driver/${name}.test.mjs`,
++      ],
++      deadline,
++    ]),
++  ];
++  for (const [name, args, timeout] of stages)
++    if (!(await run(name, args, timeout))) throw Error(`${name} failed`);
++  summary.status = 'passed';
++} catch (e) {
++  summary.status = 'failed';
++  summary.error = String(e);
++  process.exitCode = 1;
++} finally {
++  summary.completedAt = new Date().toISOString();
++  save();
++  console.log(`${summary.status}: ${output}`);
++}
+diff --git a/src/crdt/accountReceiveDriver.ts b/src/crdt/accountReceiveDriver.ts
+new file mode 100644
+index 0000000..8df26f2
+--- /dev/null
++++ b/src/crdt/accountReceiveDriver.ts
+@@ -0,0 +1,219 @@
++/** Private receive polling. Runtime timers and observations never supply receive authority. */
++import type { DriverClock, DriverGate } from './accountDriver';
++export const RECEIVE_POLL_MS = 5000;
++export const RECEIVE_YIELD_MS = 50;
++export type ReceiveHalt = 'conflict' | 'operation-failed';
++export interface ReceiveDriverStatus {
++  readonly phase: 'starting' | 'working' | 'idle' | 'retrying' | 'offline' | 'blocked' | 'closed';
++  readonly receivedThrough: number;
++  readonly failures: number;
++  readonly nextAttemptAt: number | null;
++  readonly reason: ReceiveHalt | 'local-storage' | null;
++}
++export type ReceiveStep =
++  | { kind: 'idle' | 'progress' | 'unknown' | 'paused'; receivedThrough: number }
++  | { kind: 'blocked'; receivedThrough: number; reason: ReceiveHalt };
++export type ReceiveWake = 'start' | 'gate' | 'online' | 'retry';
++const realClock: DriverClock = {
++  now: () => Date.now(),
++  set: (fn, delay) => setTimeout(fn, delay),
++  clear: (timer) => clearTimeout(timer as ReturnType<typeof setTimeout>),
++};
++/** Internal deterministic clock/operation seam; the factory supplies only held owner operations. */
++export function createReceiveScheduler(options: {
++  signal: AbortSignal;
++  gate(): DriverGate;
++  step(): Promise<ReceiveStep>;
++  detach(): void;
++  clock?: DriverClock;
++}) {
++  const clock = options.clock ?? realClock;
++  const listeners = new Set<(status: ReceiveDriverStatus) => void>();
++  let value: ReceiveDriverStatus = Object.freeze({
++    phase: 'starting',
++    receivedThrough: 0,
++    failures: 0,
++    nextAttemptAt: null,
++    reason: null,
++  });
++  let phase: 'starting' | 'working' | 'idle' | 'retrying' = 'starting';
++  let stopped = false,
++    expedited = false;
++  let receivedThrough = 0,
++    failures = 0;
++  // Halt is separate from the temporary connectivity/admission gate: offline/online cannot erase it.
++  let halt: ReceiveHalt | undefined, due: number | undefined;
++  let timer: unknown, work: Promise<void> | undefined;
++  const publish = (next: ReceiveDriverStatus) => {
++    if (Object.entries(next).every(([k, v]) => value[k as keyof ReceiveDriverStatus] === v)) return;
++    value = Object.freeze(next);
++    for (const listener of [...listeners]) {
++      try {
++        listener(value);
++      } catch {
++        /* Observers own their errors. */
++      }
++    }
++  };
++  const clear = () => {
++    if (timer !== undefined) {
++      clock.clear(timer);
++      timer = undefined;
++    }
++  };
++  const stop = () => {
++    if (stopped) return;
++    stopped = true;
++    expedited = false;
++    due = undefined;
++    clear();
++    options.signal.removeEventListener('abort', stop);
++    options.detach();
++    publish({ phase: 'closed', receivedThrough, failures, nextAttemptAt: null, reason: null });
++    listeners.clear();
++  };
++  const ready = () => {
++    if (stopped) return false;
++    const gate = options.gate();
++    if (gate === 'closed') {
++      stop();
++      return false;
++    }
++    const allowed = gate === 'ready' && halt === undefined;
++    publish({
++      phase: halt
++        ? 'blocked'
++        : gate === 'offline'
++          ? 'offline'
++          : gate === 'local-storage'
++            ? 'blocked'
++            : phase,
++      receivedThrough,
++      failures,
++      nextAttemptAt: allowed && !work ? (due ?? null) : null,
++      reason: halt ?? (gate === 'local-storage' ? 'local-storage' : null),
++    });
++    return !stopped && options.gate() === 'ready' && halt === undefined;
++  };
++  const arm = () => {
++    if (!ready() || work || due === undefined) {
++      clear();
++      return;
++    }
++    // A status observer may itself wake/arm us. Replace that timer too, after notification.
++    clear();
++    timer = clock.set(
++      () => {
++        timer = undefined;
++        begin();
++      },
++      Math.max(0, due - clock.now()),
++    );
++  };
++  const begin = () => {
++    if (stopped || work || !ready()) return;
++    // Publish only after registering work; synchronous status observers may close or wake us.
++    work = Promise.resolve()
++      .then(async () => {
++        if (stopped || !ready()) return;
++        phase = 'working';
++        if (!ready() || stopped) return;
++        due = undefined;
++        const result = await options.step();
++        if (stopped) return;
++        receivedThrough = result.receivedThrough;
++        if (result.kind === 'blocked') {
++          halt = result.reason;
++          due = undefined;
++          expedited = false;
++        } else if (result.kind === 'paused') {
++          phase = 'working';
++          due = clock.now() + (expedited ? 0 : RECEIVE_YIELD_MS);
++          expedited = false;
++        } else {
++          phase =
++            result.kind === 'unknown' ? 'retrying' : result.kind === 'idle' ? 'idle' : 'working';
++          failures = result.kind === 'unknown' ? Math.min(failures + 1, 6) : 0;
++          const delay =
++            result.kind === 'unknown'
++              ? Math.min(1000 * 2 ** (failures - 1), 30000)
++              : result.kind === 'idle'
++                ? RECEIVE_POLL_MS
++                : RECEIVE_YIELD_MS;
++          due = clock.now() + (expedited ? 0 : delay);
++          expedited = false;
++        }
++        ready();
++      })
++      .catch(() => {
++        if (stopped) return;
++        halt = 'operation-failed';
++        due = undefined;
++        expedited = false;
++        ready();
++      })
++      .finally(() => {
++        work = undefined;
++        arm();
++      });
++  };
++  const wake = (cause: ReceiveWake = 'gate') => {
++    if (stopped) return;
++    if (cause === 'retry') halt = undefined;
++    if (cause === 'retry' || (cause === 'online' && !halt)) expedited = true;
++    if (cause === 'start' && due === undefined && !work && !halt) due = clock.now();
++    if (expedited && !work) {
++      due = clock.now();
++      expedited = false;
++    }
++    arm();
++  };
++  options.signal.addEventListener('abort', stop, { once: true });
++  if (options.signal.aborted) stop();
++  return {
++    wake,
++    dispose: async () => {
++      stop();
++      await work;
++    },
++    status: () => value,
++    onStatus(listener: (status: ReceiveDriverStatus) => void) {
++      if (!stopped) listeners.add(listener);
++      return () => {
++        listeners.delete(listener);
++      };
++    },
++  };
++}
++export interface ReceiveDriverOperations {
++  receiveStatus(): Promise<{ state: 'ready' | 'conflict'; receivedThrough: number }>;
++  receiveNext(token: string): Promise<{ kind: string }>;
++}
++/** A transport return cannot advance progress. Only the current authenticated durable census can. */
++export async function driveReceiveStep(
++  ops: ReceiveDriverOperations,
++  token: string,
++  gate: () => DriverGate,
++): Promise<ReceiveStep> {
++  const before = await ops.receiveStatus();
++  if (before.state === 'conflict')
++    return { kind: 'blocked', receivedThrough: before.receivedThrough, reason: 'conflict' };
++  if (gate() !== 'ready') return { kind: 'paused', receivedThrough: before.receivedThrough };
++  const result = await ops.receiveNext(token);
++  const after = await ops.receiveStatus();
++  if (after.receivedThrough < before.receivedThrough)
++    throw Error('Durable receive prefix regressed');
++  if (after.state === 'conflict')
++    return { kind: 'blocked', receivedThrough: after.receivedThrough, reason: 'conflict' };
++  return {
++    kind:
++      after.receivedThrough > before.receivedThrough
++        ? 'progress'
++        : result.kind === 'empty'
++          ? 'idle'
++          : gate() !== 'ready'
++            ? 'paused'
++            : 'unknown',
++    receivedThrough: after.receivedThrough,
++  };
++}
+diff --git a/test/account-receive-driver/browser.ts b/test/account-receive-driver/browser.ts
+new file mode 100644
+index 0000000..8183786
+--- /dev/null
++++ b/test/account-receive-driver/browser.ts
+@@ -0,0 +1,2 @@
++export * from '../account-receive-editor/browser';
++export { openOwnedPollingAccountWorkspace } from '../../src/crdt/accountReceive';
+diff --git a/test/account-receive-driver/controls.test.mjs b/test/account-receive-driver/controls.test.mjs
+new file mode 100644
+index 0000000..956636f
+--- /dev/null
++++ b/test/account-receive-driver/controls.test.mjs
+@@ -0,0 +1,141 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { readFileSync, writeFileSync, mkdtempSync, mkdirSync, rmSync } from 'node:fs';
++import { join, resolve } from 'node:path';
++import { pathToFileURL } from 'node:url';
++const flush = async () => {
++  for (let n = 0; n < 20; n++) await Promise.resolve();
++};
++async function load(t, mode) {
++  const dir = resolve('test-results/receive-scheduler-controls');
++  mkdirSync(dir, { recursive: true });
++  const temp = mkdtempSync(join(dir, 'case-'));
++  t.after(() => rmSync(temp, { recursive: true, force: true }));
++  let code = readFileSync('src/crdt/accountReceiveDriver.ts', 'utf8');
++  const changes = {
++    overlap: [
++      ['if (stopped || work || !ready()) return;', 'if (stopped || !ready()) return;'],
++      ['if (expedited && !work) {', 'if (expedited) {'],
++      ['if (!ready() || work || due === undefined) {', 'if (!ready() || due === undefined) {'],
++    ],
++    poll: [
++      [
++        'due = clock.now() + (expedited ? 0 : delay);',
++        "due = result.kind === 'idle' ? undefined : clock.now() + (expedited ? 0 : delay);",
++      ],
++    ],
++    halt: [
++      [
++        "if (cause === 'retry') halt = undefined;",
++        "if (cause === 'retry' || cause === 'online') halt = undefined;",
++      ],
++    ],
++    observer: [['if (!ready() || stopped) return;', 'void stopped;']],
++    resume: [
++      [
++        "phase = 'working';\n        if (!ready() || stopped) return;\n        due = undefined;",
++        "phase = 'working';\n        due = undefined;\n        if (!ready() || stopped) return;",
++      ],
++    ],
++  };
++  if (mode)
++    for (const [from, to] of changes[mode]) {
++      assert.equal(code.split(from).length, 2, 'Mutation anchor ' + mode);
++      code = code.replace(from, to);
++    }
++  const file = join(temp, 'scheduler.ts');
++  writeFileSync(file, code);
++  return import(pathToFileURL(file).href);
++}
++for (const mode of ['overlap', 'poll', 'halt', 'observer', 'resume'])
++  test(`actual ${mode} omission exposes prohibited scheduling`, async (t) => {
++    const observations = [];
++    for (const changed of [false, true]) {
++      const { createReceiveScheduler } = await load(t, changed ? mode : null),
++        controller = new AbortController();
++      let gate = 'ready';
++      let now = 0,
++        serial = 0,
++        calls = 0;
++      const timers = new Map(),
++        pending = [];
++      const s = createReceiveScheduler({
++        signal: controller.signal,
++        gate: () => gate,
++        detach() {},
++        clock: {
++          now: () => now,
++          set(fn, delay) {
++            timers.set(++serial, { fn, at: now + delay });
++            return serial;
++          },
++          clear(id) {
++            timers.delete(id);
++          },
++        },
++        step: () => {
++          calls++;
++          return new Promise((r) => pending.push(r));
++        },
++      });
++      const tick = async (ms) => {
++        now += ms;
++        for (const [id, timer] of [...timers])
++          if (timer.at <= now) {
++            timers.delete(id);
++            timer.fn();
++            await flush();
++          }
++      };
++      if (mode === 'observer')
++        s.onStatus((v) => {
++          if (v.phase === 'working') controller.abort();
++        });
++      let paused = false;
++      if (mode === 'resume')
++        s.onStatus((v) => {
++          if (v.phase === 'working' && !paused) {
++            paused = true;
++            gate = 'local-storage';
++            s.wake();
++          }
++        });
++      s.wake('start');
++      await tick(0);
++      if (mode === 'overlap') {
++        s.wake('retry');
++        await tick(0);
++        assert.equal(calls, changed ? 2 : 1);
++      }
++      if (mode === 'poll') {
++        pending.shift()({ kind: 'idle', receivedThrough: 0 });
++        await flush();
++        await tick(5000);
++        assert.equal(calls, changed ? 1 : 2);
++      }
++      if (mode === 'halt') {
++        pending.shift()({ kind: 'blocked', reason: 'conflict', receivedThrough: 0 });
++        await flush();
++        s.wake('online');
++        await tick(0);
++        assert.equal(calls, changed ? 2 : 1);
++      }
++      if (mode === 'observer') assert.equal(calls, changed ? 1 : 0);
++      if (mode === 'resume') {
++        assert.equal(calls, 0);
++        gate = 'ready';
++        s.wake();
++        await tick(0);
++        assert.equal(calls, changed ? 0 : 1);
++      }
++      observations.push({ changed, calls, timers: timers.size });
++      controller.abort();
++      for (const release of pending) release({ kind: 'idle', receivedThrough: 0 });
++      await s.dispose();
++    }
++    if (process.env.ACCOUNT_REPORT_DIR)
++      writeFileSync(
++        join(process.env.ACCOUNT_REPORT_DIR, 'control-' + mode + '.json'),
++        JSON.stringify({ mode, effective: true, observations }, null, 2) + '\n',
++      );
++  });
+diff --git a/test/account-receive-driver/fixtures.mjs b/test/account-receive-driver/fixtures.mjs
+new file mode 100644
+index 0000000..37ac52e
+--- /dev/null
++++ b/test/account-receive-driver/fixtures.mjs
+@@ -0,0 +1,96 @@
++import { build } from 'vite';
++import { resolve } from 'node:path';
++import * as Y from 'yjs';
++import {
++  native as base,
++  selected,
++  open,
++  close,
++  view,
++  envelope,
++  args,
++} from '../account-receive-transport/fixtures.mjs';
++export * from '../account-receive-transport/fixtures.mjs';
++export async function driverBundle(mode) {
++  let hits = 0;
++  const result = await build({
++    configFile: false,
++    logLevel: 'error',
++    plugins: mode
++      ? [
++          {
++            name: 'receive-dispatch-control',
++            enforce: 'pre',
++            transform(code, id) {
++              if (!id.endsWith('/src/crdt/accountReceive.ts')) return;
++              const anchor = 'page = canReceive()';
++              if (code.split(anchor).length !== 2) throw Error('Missing dispatch anchor');
++              hits++;
++              return code.replace(
++                anchor,
++                `page = (globalThis.receiveDispatchBoundary?.(), ${mode === 'dispatch' ? 'true' : 'canReceive()'})`,
++              );
++            },
++          },
++        ]
++      : [],
++    build: {
++      write: false,
++      minify: false,
++      lib: {
++        entry: resolve('test/account-receive-driver/browser.ts'),
++        name: 'Harness',
++        formats: ['iife'],
++      },
++    },
++  });
++  if (mode && hits !== 1) throw Error('Dispatch mutation not applied once');
++  return (Array.isArray(result) ? result[0] : result).output.find((f) => f.type === 'chunk').code;
++}
++const script = await driverBundle();
++export async function native(t) {
++  const f = await base(t),
++    setup = f.setup;
++  f.setup = async (page) => {
++    await setup(page);
++    await page.evaluate(script);
++    await configure(page, f.testOperatorToken);
++  };
++  await f.setup(f.page);
++  return f;
++}
++export const configure = (page, token) =>
++  page.evaluate((token) => {
++    window.openPoll = async (item) => {
++      window.opened = await Harness.openOwnedPollingAccountWorkspace(optionsFor(item), token);
++      window.editor = opened.workspace;
++      window.surface = editor.text({ kind: 'master' });
++      return editor.read();
++    };
++  }, token);
++export const polling = (page, item) => page.evaluate((item) => openPoll(item), args(item));
++export const driverStatus = (page) => page.evaluate(() => opened.receiver.status);
++export const retry = (page) => page.evaluate(() => opened.receiver.retry());
++export const online = (page, value) =>
++  page.evaluate((value) => {
++    Object.defineProperty(navigator, 'onLine', { configurable: true, get: () => value });
++    dispatchEvent(new Event(value ? 'online' : 'offline'));
++  }, value);
++export async function remote(t, id, count = 1) {
++  const f = await native(t),
++    item = await selected(f, id);
++  await open(f.page, item);
++  const initial = await view(f.page),
++    snapshot = await f.page.evaluate(() => [...editor.snapshot()]);
++  await close(f.page);
++  const d = new Y.Doc({ gc: false });
++  Y.applyUpdate(d, new Uint8Array(snapshot));
++  d.clientID = 8112051;
++  const updates = [];
++  d.on('update', (b) => updates.push([...b]));
++  for (let n = 0; n < count; n++) d.getText('master').insert(0, `REMOTE${n} `);
++  d.destroy();
++  const wires = [];
++  for (let n = 0; n < count; n++) wires.push(await envelope(f.page, item, n + 1, [updates[n]]));
++  return { f, item, initial, wires };
++}
+diff --git a/test/account-receive-driver/generated.test.mjs b/test/account-receive-driver/generated.test.mjs
+new file mode 100644
+index 0000000..2e4e215
+--- /dev/null
++++ b/test/account-receive-driver/generated.test.mjs
+@@ -0,0 +1,145 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import fc from 'fast-check';
++import { writeFileSync } from 'node:fs';
++import { join } from 'node:path';
++import {
++  remote,
++  polling,
++  close,
++  cold,
++  path,
++  answer,
++  driverStatus,
++  retry,
++  online,
++  waitPredicate,
++  view,
++  edit,
++  captures,
++} from './fixtures.mjs';
++test(
++  'generated native polling histories preserve authored text, durable progress and restart cursor',
++  { timeout: 240000 },
++  async (t) => {
++    const seed = 9112052,
++      histories = [],
++      coverage = {};
++    const save = () => {
++      if (process.env.ACCOUNT_REPORT_DIR)
++        writeFileSync(
++          join(process.env.ACCOUNT_REPORT_DIR, 'generated-native.json'),
++          JSON.stringify({ seed, histories, coverage }, null, 2) + '\n',
++        );
++    };
++    await fc.assert(
++      fc.asyncProperty(
++        fc.array(fc.constantFrom('publish', 'local', 'lost', 'offline', 'halt', 'restart'), {
++          minLength: 3,
++          maxLength: 5,
++        }),
++        async (generated) => {
++          const actions = [...generated, 'publish', 'restart'],
++            entry = { actions, completed: false };
++          histories.push(entry);
++          save();
++          const { f, item, initial, wires } = await remote(
++            t,
++            'poll-generated-' + histories.length,
++            actions.filter((x) => x === 'publish').length,
++          );
++          try {
++            let available = 0,
++              mode = 'good',
++              locals = 0;
++            const links = ['00'.repeat(32)],
++              queries = [];
++            await f.context.route(path(f), async (route) => {
++              const q = Buffer.from(route.request().postData()),
++                r = JSON.parse(q.toString()),
++                after = r[10];
++              queries.push(after);
++              const a = answer(
++                f,
++                item,
++                q,
++                after < available ? wires[after] : null,
++                links[after],
++                available,
++              );
++              if (after < available) links[after + 1] = a.link;
++              if (mode === 'lost') {
++                await route.abort();
++                return;
++              }
++              await route.fulfill({
++                status: 200,
++                contentType: 'application/octet-stream',
++                body: mode === 'halt' ? 'corrupt page' : a.bytes,
++              });
++            });
++            const idle = () => waitPredicate(f.page, () => opened.receiver.status.phase === 'idle');
++            await polling(f.page, item);
++            await idle();
++            const baseline = (await captures(f.page)).length;
++            for (const action of actions) {
++              coverage[action] = (coverage[action] ?? 0) + 1;
++              if (action === 'publish') {
++                available++;
++                await retry(f.page);
++                await waitPredicate(f.page, () => opened.receiver.status.phase === 'working');
++                await idle();
++              } else if (action === 'local') {
++                await edit(f.page, (await view(f.page)).length, 0, 'L');
++                locals++;
++              } else if (action === 'restart') {
++                await close(f.page);
++                await cold(f);
++                const before = queries.length;
++                await polling(f.page, item);
++                await idle();
++                assert.equal(queries[before], available);
++              } else if (action === 'offline') {
++                await online(f.page, false);
++                await retry(f.page);
++                assert.equal((await driverStatus(f.page)).phase, 'offline');
++                await online(f.page, true);
++                await waitPredicate(f.page, () => opened.receiver.status.phase === 'working');
++                await idle();
++              } else {
++                mode = action;
++                await retry(f.page);
++                await waitPredicate(f.page, () =>
++                  ['retrying', 'blocked'].includes(opened.receiver.status.phase),
++                );
++                assert.equal((await driverStatus(f.page)).receivedThrough, available);
++                mode = 'good';
++                await retry(f.page);
++                await waitPredicate(f.page, () => opened.receiver.status.phase === 'working');
++                await idle();
++              }
++              const expected =
++                Array.from({ length: available }, (_, i) => `REMOTE${available - 1 - i} `).join(
++                  '',
++                ) +
++                initial +
++                'L'.repeat(locals);
++              assert.equal(await view(f.page), expected);
++              assert.equal((await driverStatus(f.page)).receivedThrough, available);
++              assert.equal((await captures(f.page)).length, baseline + locals);
++            }
++            await close(f.page);
++            entry.completed = true;
++            save();
++          } finally {
++            await f.context.close();
++          }
++        },
++      ),
++      { seed, numRuns: 10, endOnFailure: true },
++    );
++    for (const action of ['publish', 'local', 'lost', 'offline', 'halt', 'restart'])
++      assert.ok(coverage[action] > 0, action);
++    save();
++  },
++);
+diff --git a/test/account-receive-driver/native-controls.test.mjs b/test/account-receive-driver/native-controls.test.mjs
+new file mode 100644
+index 0000000..fd415d8
+--- /dev/null
++++ b/test/account-receive-driver/native-controls.test.mjs
+@@ -0,0 +1,73 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { writeFileSync } from 'node:fs';
++import { join } from 'node:path';
++import {
++  native,
++  selected,
++  polling,
++  path,
++  driverBundle,
++  configure,
++  waitPredicate,
++  close,
++} from './fixtures.mjs';
++for (const gate of ['offline', 'pressure'])
++  test(
++    `final ${gate} dispatch guard prevents a queued poll from fetching`,
++    { timeout: 45000 },
++    async (t) => {
++      const observations = [];
++      for (const mode of ['baseline', 'dispatch']) {
++        const f = await native(t),
++          item = await selected(f, `poll-${gate}-${mode}`);
++        let calls = 0;
++        await f.context.route(path(f), (r) => {
++          calls++;
++          return r.continue();
++        });
++        await f.page.evaluate(await driverBundle(mode));
++        await configure(f.page, f.testOperatorToken);
++        await f.page.evaluate((gate) => {
++          window.hit = false;
++          window.receiveDispatchBoundary = () => {
++            window.hit = true;
++            if (gate === 'offline') {
++              Object.defineProperty(navigator, 'onLine', { configurable: true, get: () => false });
++              dispatchEvent(new Event('offline'));
++            } else {
++              // Test-owned quota pressure, through the real journal admission path.
++              Storage.prototype.setItem = function () {
++                throw new DOMException('fixture quota', 'QuotaExceededError');
++              };
++              IDBDatabase.prototype.transaction = function () {
++                throw new DOMException('fixture unavailable', 'InvalidStateError');
++              };
++              const n = editor.read().master.length;
++              window.localJob = surface
++                .input(
++                  { name: 'insert', text: 'BLOCKED' },
++                  { ranges: [{ anchor: n, head: n }], main: 0 },
++                )
++                .accepted.catch(() => {});
++            }
++          };
++        }, gate);
++        await polling(f.page, item);
++        await waitPredicate(f.page, () => hit);
++        // The marker read after HTTP may also refuse after the test-induced storage failure.
++        await waitPredicate(f.page, () =>
++          ['offline', 'blocked'].includes(opened.receiver.status.phase),
++        );
++        await close(f.page);
++        assert.equal(calls, mode === 'dispatch' ? 1 : 0);
++        observations.push({ mode, calls });
++        await f.context.close();
++      }
++      if (process.env.ACCOUNT_REPORT_DIR)
++        writeFileSync(
++          join(process.env.ACCOUNT_REPORT_DIR, `control-dispatch-${gate}.json`),
++          JSON.stringify({ effective: true, observations }, null, 2) + '\n',
++        );
++    },
++  );
+diff --git a/test/account-receive-driver/native.test.mjs b/test/account-receive-driver/native.test.mjs
+new file mode 100644
+index 0000000..f81d3cd
+--- /dev/null
++++ b/test/account-receive-driver/native.test.mjs
+@@ -0,0 +1,255 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {
++  native,
++  selected,
++  args,
++  close,
++  cold,
++  edit,
++  prepare,
++  submission,
++  polling,
++  path,
++  driverStatus,
++  retry,
++  online,
++  waitPredicate,
++  remote,
++  answer,
++  view,
++  captures,
++  receiveBoundary,
++} from './fixtures.mjs';
++const idle = (page) => waitPredicate(page, () => opened.receiver.status.phase === 'idle');
++
++test(
++  'actual service empty-to-later-data polling advances durable progress without a local wake',
++  { timeout: 45000 },
++  async (t) => {
++    const f = await native(t),
++      item = await selected(f, 'receive-poll-http');
++    await f.page.evaluate(async (item) => {
++      window.opened = await Harness.openOwnedAccountDeliveryWorkspace(optionsFor(item));
++      window.editor = opened.workspace;
++      window.surface = editor.text({ kind: 'master' });
++    }, args(item));
++    await prepare(f.page);
++    const w = await submission(f.page);
++    await close(f.page);
++    const queries = [];
++    await f.context.route(path(f), (route) => {
++      queries.push(JSON.parse(route.request().postData()));
++      return route.continue();
++    });
++    await polling(f.page, item);
++    await idle(f.page);
++    assert.equal((await driverStatus(f.page)).receivedThrough, 0);
++    const before = await captures(f.page),
++      initial = await view(f.page);
++    const r = await fetch(f.server.origin + '/account/delivery/submit', {
++      method: 'POST',
++      headers: {
++        Origin: f.server.origin,
++        'Content-Type': 'application/octet-stream',
++        Authorization: 'Bearer ' + f.testOperatorToken,
++      },
++      body: JSON.stringify([
++        'done/private-submit/v1',
++        1,
++        item.scope.workspaceId,
++        Buffer.from(w.bytes).toString('hex'),
++      ]),
++    });
++    assert.equal(r.status, 200);
++    await r.arrayBuffer();
++    await waitPredicate(f.page, () => opened.receiver.status.receivedThrough === 1);
++    await idle(f.page);
++    assert.deepEqual(
++      queries.slice(0, 3).map((q) => q[10]),
++      [0, 0, 1],
++    );
++    assert.equal(new Set(queries.map((q) => q[12])).size, queries.length);
++    assert.deepEqual(await captures(f.page), before);
++    assert.equal(await view(f.page), initial);
++    assert.deepEqual(
++      await f.page.evaluate(() =>
++        ['prepareRead', 'receiveNext', 'receivePage'].filter((k) => k in opened),
++      ),
++      [],
++    );
++    await close(f.page);
++    await cold(f);
++    await polling(f.page, item);
++    await idle(f.page);
++    assert.equal((await driverStatus(f.page)).receivedThrough, 1);
++    assert.equal(queries.at(-1)[10], 1);
++    await close(f.page);
++  },
++);
++
++test(
++  'lost replies back off at the unchanged cursor then catch up original remote text without recapture',
++  { timeout: 45000 },
++  async (t) => {
++    const { f, item, initial, wires } = await remote(t, 'receive-poll-lost', 2),
++      links = ['00'.repeat(32)],
++      queries = [];
++    let lose = true;
++    await f.context.route(path(f), async (route) => {
++      const q = Buffer.from(route.request().postData()),
++        r = JSON.parse(q.toString());
++      queries.push(r);
++      const a = answer(f, item, q, wires[r[10]], links[r[10]], 2);
++      if (wires[r[10]]) links[r[10] + 1] = a.link;
++      if (lose) {
++        lose = false;
++        await route.abort();
++        return;
++      }
++      await route.fulfill({ status: 200, contentType: 'application/octet-stream', body: a.bytes });
++    });
++    await polling(f.page, item);
++    await waitPredicate(f.page, () => opened.receiver.status.phase === 'retrying');
++    assert.equal((await driverStatus(f.page)).receivedThrough, 0);
++    await edit(f.page, (await view(f.page)).length, 0, 'LOCAL');
++    await waitPredicate(f.page, () => opened.receiver.status.receivedThrough === 2);
++    await idle(f.page);
++    assert.deepEqual(
++      queries.slice(0, 4).map((q) => q[10]),
++      [0, 0, 1, 2],
++    );
++    assert.notEqual(queries[0][12], queries[1][12]);
++    assert.equal(await view(f.page), 'REMOTE1 REMOTE0 ' + initial + 'LOCAL');
++    const count = (await captures(f.page)).length;
++    await close(f.page);
++    await cold(f);
++    await polling(f.page, item);
++    await idle(f.page);
++    assert.equal(await view(f.page), 'REMOTE1 REMOTE0 ' + initial + 'LOCAL');
++    assert.equal((await captures(f.page)).length, count);
++    await close(f.page);
++  },
++);
++
++test(
++  'invalid page halts across edits and offline/online, with an explicit retry rechecking durable state',
++  { timeout: 45000 },
++  async (t) => {
++    const { f, item, wires, initial } = await remote(t, 'receive-poll-halt');
++    let corrupt = true,
++      calls = 0;
++    await f.context.route(path(f), (route) => {
++      calls++;
++      const q = Buffer.from(route.request().postData());
++      return route.fulfill({
++        status: 200,
++        contentType: 'application/octet-stream',
++        body: corrupt
++          ? 'not a signed page'
++          : answer(f, item, q, JSON.parse(q.toString())[10] === 0 ? wires[0] : null).bytes,
++      });
++    });
++    await polling(f.page, item);
++    await waitPredicate(f.page, () => opened.receiver.status.reason === 'operation-failed');
++    assert.equal(calls, 1);
++    await edit(f.page, (await view(f.page)).length, 0, 'LOCAL');
++    await online(f.page, false);
++    await online(f.page, true);
++    corrupt = false;
++    // Advance past a complete healthy polling interval; connectivity must not clear the failure halt.
++    await new Promise((r) => setTimeout(r, 5200));
++    assert.equal(calls, 1);
++    assert.equal((await driverStatus(f.page)).receivedThrough, 0);
++    await retry(f.page);
++    await waitPredicate(f.page, () => opened.receiver.status.receivedThrough === 1);
++    await idle(f.page);
++    assert.equal(await view(f.page), 'REMOTE0 ' + initial + 'LOCAL');
++    await close(f.page);
++  },
++);
++
++test(
++  'native storage failure pauses the suffix and requires explicit driver retry after Local repair',
++  { timeout: 45000 },
++  async (t) => {
++    const { f, item, wires, initial } = await remote(t, 'receive-poll-pressure');
++    let available = true,
++      calls = 0;
++    await f.context.route(path(f), (route) => {
++      calls++;
++      const q = Buffer.from(route.request().postData());
++      return route.fulfill({
++        status: 200,
++        contentType: 'application/octet-stream',
++        body: answer(f, item, q, JSON.parse(q.toString())[10] === 0 && available ? wires[0] : null)
++          .bytes,
++      });
++    });
++    // Let the first attempt become a native blocked receive job; discard that uncommitted suffix.
++    await receiveBoundary(f.page, 'before');
++    await polling(f.page, item);
++    await waitPredicate(f.page, () => editor.status.state === 'blocked');
++    assert.equal(await view(f.page), initial);
++    assert.equal(calls, 1);
++    available = false;
++    await f.page.evaluate(() => editor.discardPending());
++    await waitPredicate(f.page, () => opened.receiver.status.reason === 'operation-failed');
++    await online(f.page, false);
++    await online(f.page, true);
++    assert.equal(calls, 1);
++    await retry(f.page);
++    await idle(f.page);
++    assert.equal(calls, 2);
++    assert.equal((await driverStatus(f.page)).receivedThrough, 0);
++    await close(f.page);
++  },
++);
++
++test(
++  'close aborts and drains the active poll before releasing exclusion; backoff closes promptly',
++  { timeout: 45000 },
++  async (t) => {
++    const { f, item } = await remote(t, 'receive-poll-close');
++    await f.page.evaluate(() => {
++      window.hit = false;
++      window.fetch = async (_url, init) => {
++        window.pollSignal = init.signal;
++        window.hit = true;
++        await new Promise((r) => {
++          window.release = r;
++        });
++        return new Response('late', { status: 409 });
++      };
++    });
++    await polling(f.page, item);
++    await waitPredicate(f.page, () => hit);
++    await f.page.evaluate((slot) => {
++      window.closed = false;
++      window.closing = editor.close().then(() => {
++        window.closed = true;
++      });
++      window.competed = false;
++      window.competitor = navigator.locks.request(Harness.slotPermitName(slot), () => {
++        window.competed = true;
++      });
++    }, item.slotId);
++    await waitPredicate(f.page, async () => (await navigator.locks.query()).pending.length > 0);
++    assert.equal(await f.page.evaluate(() => pollSignal.aborted), true);
++    assert.equal(await f.page.evaluate(() => closed || competed), false);
++    await f.page.evaluate(() => release());
++    await f.page.evaluate(() => closing);
++    await f.page.evaluate(() => competitor);
++    assert.equal((await driverStatus(f.page)).phase, 'closed');
++    await cold(f);
++    await f.context.route(path(f), (r) => r.abort());
++    await polling(f.page, item);
++    await waitPredicate(f.page, () => opened.receiver.status.phase === 'retrying');
++    const at = Date.now();
++    await close(f.page);
++    assert.ok(Date.now() - at < 1500);
++    await online(f.page, true);
++    await retry(f.page);
++    assert.equal((await driverStatus(f.page)).phase, 'closed');
++  },
++);
+diff --git a/test/accountReceiveDriver.test.ts b/test/accountReceiveDriver.test.ts
+new file mode 100644
+index 0000000..597647f
+--- /dev/null
++++ b/test/accountReceiveDriver.test.ts
+@@ -0,0 +1,490 @@
++// @vitest-environment node
++import { expect, it } from 'vitest';
++import fc from 'fast-check';
++import {
++  createReceiveScheduler,
++  driveReceiveStep,
++  type ReceiveStep,
++  type ReceiveDriverOperations,
++} from '../src/crdt/accountReceiveDriver';
++import type { DriverClock, DriverGate } from '../src/crdt/accountDriver';
++const flush = async () => {
++  for (let n = 0; n < 20; n++) await Promise.resolve();
++};
++function fixture() {
++  let now = 0,
++    serial = 0,
++    gate: DriverGate = 'ready',
++    active = 0,
++    maximum = 0,
++    detached = 0;
++  const controller = new AbortController(),
++    timers = new Map<number, { at: number; run: () => void }>();
++  const calls: { at: number; resolve: (r: ReceiveStep) => void; reject: () => void }[] = [];
++  const clock: DriverClock = {
++    now: () => now,
++    set(run, delay) {
++      timers.set(++serial, { at: now + delay, run });
++      return serial;
++    },
++    clear(id) {
++      timers.delete(id as number);
++    },
++  };
++  const scheduler = createReceiveScheduler({
++    signal: controller.signal,
++    gate: () => gate,
++    clock,
++    detach: () => {
++      detached++;
++    },
++    step: () => {
++      active++;
++      maximum = Math.max(maximum, active);
++      return new Promise<ReceiveStep>((yes, no) => {
++        calls.push({
++          at: now,
++          resolve: (r) => {
++            active--;
++            yes(r);
++          },
++          reject: () => {
++            active--;
++            no(Error('fixture storage failure'));
++          },
++        });
++      });
++    },
++  });
++  return {
++    scheduler,
++    controller,
++    calls,
++    timers,
++    setGate(value: DriverGate) {
++      gate = value;
++    },
++    get gate() {
++      return gate;
++    },
++    get now() {
++      return now;
++    },
++    get maximum() {
++      return maximum;
++    },
++    get active() {
++      return active;
++    },
++    get detached() {
++      return detached;
++    },
++    async tick(ms: number) {
++      const target = now + ms;
++      let budget = 100;
++      for (;;) {
++        const first = [...timers].sort((a, b) => a[1].at - b[1].at || a[0] - b[0])[0];
++        if (!first || first[1].at > target) break;
++        if (--budget < 0) throw Error('Timer spin');
++        now = first[1].at;
++        timers.delete(first[0]);
++        first[1].run();
++        await flush();
++      }
++      now = target;
++      await flush();
++    },
++  };
++}
++const result = (kind: 'idle' | 'progress' | 'unknown' | 'paused', position = 0): ReceiveStep => ({
++  kind,
++  receivedThrough: position,
++});
++it('polls five seconds after empty, yields 50ms between pages, and coalesces wakes including reentrant observers', async () => {
++  const f = fixture();
++  f.scheduler.wake('start');
++  await f.tick(0);
++  f.calls[0]!.resolve(result('idle'));
++  await flush();
++  for (let n = 0; n < 100; n++) f.scheduler.wake();
++  await f.tick(4999);
++  expect(f.calls).toHaveLength(1);
++  await f.tick(1);
++  expect(f.calls).toHaveLength(2);
++  f.calls[1]!.resolve(result('progress', 1));
++  await flush();
++  await f.tick(49);
++  expect(f.calls).toHaveLength(2);
++  await f.tick(1);
++  expect(f.calls).toHaveLength(3);
++  f.calls[2]!.resolve(result('idle', 1));
++  await flush();
++  let once = false;
++  f.scheduler.onStatus((s) => {
++    if (s.phase === 'idle' && !once) {
++      once = true;
++      f.scheduler.wake('retry');
++    }
++  });
++  f.scheduler.wake('retry');
++  expect(f.timers.size).toBe(1);
++  await f.tick(0);
++  f.calls[3]!.resolve(result('idle', 1));
++  await flush();
++  expect(f.timers.size).toBe(1);
++  expect(f.maximum).toBe(1);
++  await f.scheduler.dispose();
++  expect(f.timers.size).toBe(0);
++});
++it('caps unknown backoff, preserves its floor through Local pauses, and allows only explicit expedite', async () => {
++  const f = fixture();
++  f.scheduler.wake('start');
++  await f.tick(0);
++  for (const [i, delay] of [1000, 2000, 4000, 8000, 16000, 30000, 30000].entries()) {
++    f.calls[i]!.resolve(result('unknown'));
++    await flush();
++    expect(f.scheduler.status().nextAttemptAt).toBe(f.now + delay);
++    f.setGate('local-storage');
++    f.scheduler.wake();
++    f.setGate('ready');
++    f.scheduler.wake();
++    for (let j = 0; j < 100; j++) f.scheduler.wake();
++    await f.tick(delay - 1);
++    expect(f.calls).toHaveLength(i + 1);
++    await f.tick(1);
++    expect(f.calls).toHaveLength(i + 2);
++  }
++  f.calls.at(-1)!.resolve(result('unknown'));
++  await flush();
++  f.scheduler.wake('online');
++  await f.tick(0);
++  expect(f.calls).toHaveLength(9);
++  f.calls.at(-1)!.resolve(result('idle'));
++  await flush();
++  await f.scheduler.dispose();
++});
++it('offline and pressure pause timers without deleting a permanent halt, including failures while paused', async () => {
++  for (const paused of ['offline', 'local-storage'] as const)
++    for (const failure of ['error', 'conflict'] as const) {
++      const f = fixture();
++      f.scheduler.wake('start');
++      await f.tick(0);
++      f.setGate(paused);
++      f.scheduler.wake();
++      if (failure === 'error') f.calls[0]!.reject();
++      else f.calls[0]!.resolve({ kind: 'blocked', receivedThrough: 0, reason: 'conflict' });
++      await flush();
++      expect(f.timers.size).toBe(0);
++      f.setGate('ready');
++      f.scheduler.wake('online');
++      f.scheduler.wake();
++      await f.tick(60000);
++      expect(f.calls).toHaveLength(1);
++      expect(f.scheduler.status().reason).toBe(
++        failure === 'error' ? 'operation-failed' : 'conflict',
++      );
++      f.scheduler.wake('retry');
++      await f.tick(0);
++      expect(f.calls).toHaveLength(2);
++      f.calls[1]!.resolve(result('idle'));
++      await flush();
++      await f.scheduler.dispose();
++    }
++});
++it('close drains its pass and suppresses late notifications; synchronous observer closure prevents dispatch', async () => {
++  const f = fixture();
++  f.scheduler.wake('start');
++  await f.tick(0);
++  let drained = false;
++  const closing = f.scheduler.dispose().then(() => {
++    drained = true;
++  });
++  await flush();
++  expect(drained).toBe(false);
++  f.scheduler.wake('retry');
++  await f.tick(60000);
++  expect(f.calls).toHaveLength(1);
++  f.calls[0]!.resolve(result('progress', 1));
++  await closing;
++  expect(f.scheduler.status().receivedThrough).toBe(0);
++  expect(f.scheduler.status().phase).toBe('closed');
++  expect(f.detached).toBe(1);
++  expect(f.timers.size).toBe(0);
++  for (const action of ['close', 'offline'] as const) {
++    const g = fixture();
++    g.scheduler.onStatus((s) => {
++      if (s.phase === 'working') {
++        if (action === 'close') g.controller.abort();
++        else {
++          g.setGate('offline');
++          g.scheduler.wake();
++        }
++      }
++    });
++    g.scheduler.wake('start');
++    await g.tick(0);
++    expect(g.calls).toHaveLength(0);
++    await g.scheduler.dispose();
++  }
++});
++it('a gate transition during an unfinished pass cannot overlap work or lose polling after resume', async () => {
++  const f = fixture();
++  f.scheduler.wake('start');
++  await f.tick(0);
++  for (let i = 0; i < 100; i++) f.scheduler.wake('online');
++  await f.tick(20000);
++  expect(f.calls).toHaveLength(1);
++  f.setGate('offline');
++  f.scheduler.wake();
++  f.calls[0]!.resolve(result('idle'));
++  await flush();
++  expect(f.timers.size).toBe(0);
++  await f.tick(60000);
++  f.setGate('ready');
++  f.scheduler.wake('online');
++  await f.tick(0);
++  expect(f.calls).toHaveLength(2);
++  f.calls[1]!.resolve(result('idle'));
++  await flush();
++  expect(f.timers.size).toBe(1);
++  await f.scheduler.dispose();
++});
++it('400 generated deferred schedules obey an independent timer/deadline and halt oracle', async () => {
++  await fc.assert(
++    fc.asyncProperty(
++      fc.array(
++        fc.record({
++          op: fc.constantFrom(
++            'tick',
++            'wake',
++            'retry',
++            'online',
++            'offline',
++            'pause',
++            'restore',
++            'idle',
++            'unknown',
++            'paused',
++            'progress',
++            'error',
++            'conflict',
++            'close',
++          ),
++          ms: fc.integer({ min: 0, max: 35000 }),
++        }),
++        { minLength: 5, maxLength: 90 },
++      ),
++      async (commands) => {
++        const f = fixture();
++        let closed = false,
++          halted = false,
++          urgent = false,
++          gate: DriverGate = 'ready',
++          active = false,
++          cursor = 0,
++          failures = 0,
++          due: number | null = 0,
++          settled = 0,
++          seen = 0;
++        f.scheduler.wake('start');
++        for (const c of commands) {
++          if (c.op === 'tick') {
++            // The independent oracle predicts whether precisely one deferred invocation can start.
++            const expected =
++              !closed &&
++              !halted &&
++              gate === 'ready' &&
++              !active &&
++              due !== null &&
++              due <= f.now + c.ms;
++            const at = due === null ? 0 : Math.max(f.now, due);
++            await f.tick(c.ms);
++            expect(f.calls.length - seen).toBe(expected ? 1 : 0);
++            if (expected) {
++              expect(f.calls.at(-1)!.at).toBe(at);
++              active = true;
++              due = null;
++              seen++;
++            }
++          } else if (c.op === 'close') {
++            closed = true;
++            f.controller.abort();
++          } else if (['wake', 'retry', 'online', 'offline', 'pause', 'restore'].includes(c.op)) {
++            if (c.op === 'offline') gate = 'offline';
++            if (c.op === 'pause') gate = 'local-storage';
++            if (c.op === 'online' || c.op === 'restore') gate = 'ready';
++            f.setGate(gate);
++            if (!closed && (c.op === 'retry' || (c.op === 'online' && !halted))) {
++              if (c.op === 'retry') halted = false;
++              if (active) urgent = true;
++              else due = f.now;
++            }
++            f.scheduler.wake(c.op === 'retry' ? 'retry' : c.op === 'online' ? 'online' : 'gate');
++          } else if (active) {
++            active = false;
++            if (c.op === 'error') f.calls[settled++]!.reject();
++            else if (c.op === 'conflict')
++              f.calls[settled++]!.resolve({
++                kind: 'blocked',
++                receivedThrough: cursor,
++                reason: 'conflict',
++              });
++            else {
++              if (c.op === 'progress') cursor++;
++              f.calls[settled++]!.resolve(
++                result(c.op as 'idle' | 'progress' | 'unknown' | 'paused', cursor),
++              );
++            }
++            if (!closed) {
++              if (c.op === 'error' || c.op === 'conflict') {
++                halted = true;
++                due = null;
++                urgent = false;
++              } else {
++                failures =
++                  c.op === 'paused' ? failures : c.op === 'unknown' ? Math.min(failures + 1, 6) : 0;
++                due =
++                  f.now +
++                  (urgent
++                    ? 0
++                    : c.op === 'unknown'
++                      ? [1000, 2000, 4000, 8000, 16000, 30000][failures - 1]!
++                      : c.op === 'idle'
++                        ? 5000
++                        : 50);
++                urgent = false;
++              }
++            }
++            await flush();
++          }
++          expect(f.maximum).toBeLessThanOrEqual(1);
++          expect(f.timers.size).toBeLessThanOrEqual(1);
++          expect(f.timers.size).toBe(
++            !closed && !halted && gate === 'ready' && !active && due !== null ? 1 : 0,
++          );
++          if (closed) expect(f.scheduler.status().phase).toBe('closed');
++        }
++        const closing = f.scheduler.dispose();
++        if (active) f.calls[settled]!.resolve(result('idle'));
++        await closing;
++        expect(f.active).toBe(0);
++        expect(f.detached).toBe(1);
++      },
++    ),
++    { seed: 9112051, numRuns: 400 },
++  );
++});
++it('uses durable progress only and treats a verified empty result as polling idle', async () => {
++  let position = 0,
++    state: 'ready' | 'conflict' = 'ready',
++    response = 'received',
++    sent = 0;
++  const ops: ReceiveDriverOperations = {
++    receiveStatus: async () => ({ state, receivedThrough: position }),
++    receiveNext: async () => {
++      sent++;
++      return { kind: response };
++    },
++  };
++  expect((await driveReceiveStep(ops, 'token', () => 'ready')).kind).toBe('unknown');
++  response = 'empty';
++  expect((await driveReceiveStep(ops, 'token', () => 'ready')).kind).toBe('idle');
++  ops.receiveNext = async () => {
++    position++;
++    return { kind: 'unknown' };
++  };
++  expect((await driveReceiveStep(ops, 'token', () => 'ready')).kind).toBe('progress');
++  state = 'conflict';
++  expect((await driveReceiveStep(ops, 'token', () => 'ready')).kind).toBe('blocked');
++  expect(sent).toBe(2);
++  state = 'ready';
++  expect((await driveReceiveStep(ops, 'token', () => 'offline')).kind).toBe('paused');
++  ops.receiveNext = async () => {
++    position--;
++    return { kind: 'empty' };
++  };
++  await expect(driveReceiveStep(ops, 'token', () => 'ready')).rejects.toThrow('regressed');
++});
++
++it('resumes after reentrant Local pressure interrupts startup before the owned step begins', async () => {
++  const f = fixture();
++  let once = false;
++  f.scheduler.onStatus((s) => {
++    if (s.phase === 'working' && !once) {
++      once = true;
++      f.setGate('local-storage');
++      f.scheduler.wake();
++    }
++  });
++  f.scheduler.wake('start');
++  await f.tick(0);
++  expect(f.calls).toHaveLength(0);
++  expect(f.timers.size).toBe(0);
++  f.setGate('ready');
++  f.scheduler.wake();
++  await f.tick(0);
++  expect(f.calls).toHaveLength(1);
++  f.calls[0]!.resolve(result('idle'));
++  await flush();
++  await f.scheduler.dispose();
++});
++
++it('100 generated observer-pause durations resume the unstarted pass through an ordinary gate wake', async () => {
++  await fc.assert(
++    fc.asyncProperty(
++      fc.integer({ min: 0, max: 60000 }),
++      fc.constantFrom('offline', 'local-storage'),
++      async (delay, paused) => {
++        const f = fixture();
++        let once = false;
++        f.scheduler.onStatus((s) => {
++          if (s.phase === 'working' && !once) {
++            once = true;
++            f.setGate(paused as DriverGate);
++            f.scheduler.wake();
++          }
++        });
++        f.scheduler.wake('start');
++        await f.tick(delay);
++        expect(f.calls).toHaveLength(0);
++        f.setGate('ready');
++        f.scheduler.wake();
++        await f.tick(0);
++        expect(f.calls).toHaveLength(1);
++        expect(f.calls[0]!.at).toBe(delay);
++        f.calls[0]!.resolve(result('idle'));
++        await flush();
++        await f.scheduler.dispose();
++      },
++    ),
++    { seed: 9112053, numRuns: 100 },
++  );
++});
++
++it('a pass skipped for readiness neither claims a verified end nor resets the unknown streak', async () => {
++  const f = fixture();
++  f.scheduler.wake('start');
++  await f.tick(0);
++  f.calls[0]!.resolve(result('unknown'));
++  await flush();
++  await f.tick(1000);
++  f.calls[1]!.resolve({ kind: 'paused', receivedThrough: 0 });
++  await flush();
++  expect(f.scheduler.status().phase).toBe('working');
++  expect(f.scheduler.status().failures).toBe(1);
++  await f.tick(50);
++  f.calls[2]!.resolve(result('unknown'));
++  await flush();
++  expect(f.scheduler.status().nextAttemptAt).toBe(f.now + 2000);
++  await f.scheduler.dispose();
++  let calls = 0;
++  const ops: ReceiveDriverOperations = {
++    receiveStatus: async () => ({ state: 'ready', receivedThrough: 0 }),
++    receiveNext: async () => {
++      calls++;
++      return { kind: 'unknown' };
++    },
++  };
++  expect((await driveReceiveStep(ops, 'token', () => 'local-storage')).kind).toBe('paused');
++  expect(calls).toBe(0);
++});
