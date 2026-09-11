@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Active slice: Reservation durability and invocation accounting (`L-1`)
+## Active slice: Cross-account admission capability isolation (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: F-15 failure model and transaction inventory before persistence repair
+blocks_on: two-account capability/state inventory before conformance repair
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
@@ -58,60 +58,61 @@ updated: 2026-09-11
 Account remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), item 5's internal creating-member
 ciphertext round trip. Composition `6398e33`, bounds `4f71bac`, activation `2ba50aa`, prep `9cf5c98`,
 A `43b42b1`, B `e74fbaa`, C `a20e439`, D1 `32d4074`, D2 `437bc86`, D3 `10fef3d`, D4 `1500379`,
-D5 `ed1a930`, D6 `862a9d7`, D7 `5555238` and D8 `393ef43` are committed. All nine C/D1–D8 commits
-are signed; the signing reminder is paused and the original unsigned chain remains reachable under
-the [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
-The aggregate closure audit is complete, unstaged/uncommitted. No real Account receipt exists.
+D5 `ed1a930`, D6 `862a9d7`, D7 `5555238`, D8 `393ef43`, and aggregate audit `ec889d9` are committed.
+All ten C/D1–D8/audit signatures verify; the signing reminder is paused and the original unsigned chain
+remains under the [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
+No real Account receipt exists. The new F-15 work is complete, unstaged/uncommitted.
 
-**Completed boundary.** [Current review](./review/implementation/account-crypto-closure.md) closes
-F-05/F-06 for the private first-epoch Account protocol. Exact source/role/map/byte/vector joins now cover
-the live constructions; empty first-genesis heads and the 96-byte recovery payload/112-byte ciphertext
-are explicit and exercised. Imported claim/cleanup bytes remain live dependencies; four inherited
-Local/migration operation groups have pinned historical evidence and bounded native exclusion tests.
-This does not assert source absence, later-epoch support, total-loss recovery or whole-protocol closure.
-Stale checker status text was corrected; production code, formats, vectors and existing tests are unchanged.
+**Completed boundary.** [F-05/F-06](./review/implementation/account-crypto-closure.md) remain closed for the
+current private first-epoch byte contracts. [F-15](./review/implementation/reservation-durability.md) is now
+fixed under its explicit persistence assumptions. Before repair, a completed-but-unflushed grant could
+be lost after real AES: count 1 against 2 invocations. Custody writes and content allocation/final event
+commits now request strict; both transaction helpers require reported strict before the body. Existing
+strict promotion writes gain the same check. Refusal drains native settlement; network AES follows the
+retained attempt event/witness, not just the local sequence allocation. No cryptographic format changed.
 
-[Aggregate evidence](./account-conformance-runs/2026-09-11-account-crypto-audit.md): 71 stages pass,
-870 source pins match; 237 Node tests/36 files include all 27 registered files and
-100 tests in 11 native files. Slot-unlock/transport unit bridges and 30 vector commands
-pass. Eleven corpora contain 159 fixed cases, 4,332 input negatives and 4,106 encoded omissions, with
-primitive, parser and owner evidence distinguished. No new runtime defect was found. The current map
-has 80 entries/102 chains/19 homes; registry 78 specified/zero open/four inherited/one non-crypto;
-census unchanged 158 sources/89 labels/templates. Counts alone did not decide closure.
+[Evidence](./account-conformance-runs/2026-09-11-account-reservation-durability.md): 50 stages,
+855 matching source pins, 133 Node tests, 47 component cases, all 18 component fault controls detected,
+983 units, types, 30 vector commands, census/map/registry, lint and format pass. The 20 new tests include
+4,000 generated histories with shrinking and effective omitted-persistence/order controls. Native tests
+cover actual AES, strict options, unsupported reports, abort/completion drain and network abandonment.
+An independent candidate review found no concrete remaining bypass/regression; its error-shape prose
+observation was confirmed and corrected. Broad root `pnpm check` and the 71-stage audit were not rerun.
 
-**Next bounded phase — F-15 reservation durability, prep included.** Current content transactions request
-`relaxed` durability, while custody transactions have no explicit hint. AES invocation counters and network
-attempt grants must not be treated as power-loss-safe merely because the transaction completed.
+**Limits.** Strict API reporting cannot attest a physical flush. The argument needs accurate initial
+budgets, only corrected writers and a browser/storage implementation honoring strict semantics. Old
+undercounts, raw writable profile restores/clones and other platforms are not repaired or qualified.
+SC-01 local acknowledgement remains page/navigation-loss scope. General cryptographic lifecycle and
+independent release review remain separate.
 
-- Inventory every custody/content reservation and network-attempt grant, its persistence transaction,
-  encryption call and subsequent publication/abandonment. Distinguish allocation from retained ciphertext.
-- Write the supported failure model and required persistence boundary. Keep SC-01's page/navigation-loss
-  acknowledgment scope distinct from lifetime invocation-budget accounting, OS loss and restore/clone.
-- Specify strict-persistence behavior and unsupported-platform refusal before changing options. A silent
-  relaxed fallback cannot establish a stronger grant promise. Avoid a blanket unrelated storage rewrite.
-- Add meaningful generated schedules that can lose completed-but-unflushed writes after encryption, plus
-  native requested/reported-option, order, abort and lifetime controls. An omitted durability/order guard
-  must expose undercounting in the model; renderer death must not be labelled a power-cut experiment.
-- Implement only the resulting bounded repair, run affected owner/native/vector checks, preserve evidence,
-  append the outcome and replace only L-1. Broader platform/restore and performance work stays separate.
+**Next bounded phase — admission capability isolation and restart conformance (F-21.3), prep included.**
+The existing generated `wrong` command in `test/account-admission/core.test.mjs` uses an unknown retry
+key (`'A'.repeat(43)`), which does not demonstrate isolation between valid accounts.
 
-**Personal checkpoint.** All 21 saved hashes in root `dist/` and `.dev/releases/17d87c2/app`, 31 prior
-tracked vector files, historical review and L-2 are unchanged. Personal preview/relay remain stopped.
-No real browser, Account, factor, operator key, pin, origin or routing change occurred. Native fixtures
-were synthetic/disposable; bundles stayed in memory. Unrelated root files `done ` and
-`reviewpacket96a20401ceb88d.md` remain untouched. Host VM/policy research stays stopped. The actual old
-second device will adopt the first workspace with fresh custody/store/counters/credentials, without
-importing or merging its previous writing.
+- Inventory admission/recovery/activation capability bindings and durable state for two genuinely valid
+  concurrent accounts under the same service, including proposal, completion, retry and abandonment.
+- Add legitimate positive controls and swap real capabilities, requests and retained evidence. Assert
+  refusal cannot create, activate, abandon or mutate the other account. Distinguish unknown credentials
+  from valid authority belonging to a different account.
+- Add generated interleavings, lost replies and service restart with an independent per-account state
+  oracle. Require effective omission controls, preserve any counterexample, and repair only demonstrated
+  defects. Keep exact idempotent completion and the existing passkey/receipt binding.
+- Run the affected service/native/activation/vector checks, preserve evidence, archive the outcome before
+  replacing only L-1. This phase does not authorize real provisioning or user-device adoption.
 
-**Other gates.** F-15, salvage/diagnostics, remaining parser/service negatives, performance/maintenance,
-lock ordering and accepted review follow-ups remain. Passkey and workspace signing IDs are separate
-namespaces. General lineage advancement, successor checkpoint baselines/install/fallback, concurrent
-members, pruning/backlog scale, enrollment/device management, revocation/rotation, clear/delete,
-finalization/total-loss recovery, PRF enrollment, supported platforms, whole-profile residue,
-production deployment/restore and independent review remain separate. Histories must be unrewound and
-unbranched; fresh-salt/sender constructions require nonrepeating randomness. L-2's historical clean ref
-`d24732b` has no further service work to integrate. No real Account provisioning or personal server
-restart is authorized by this phase.
+**Personal checkpoint.** All 21 hashes in `dist/` and `.dev/releases/17d87c2/app`, all 31 prior vector
+files, historical review and L-2 are unchanged. Personal preview/relay remain stopped. No real browser,
+Account, factor, operator key, pin, origin or routing change occurred. Fixtures were disposable; new
+bundles stayed in memory. Unrelated root `done ` and `reviewpacket96a20401ceb88d.md` remain untouched.
+Host VM/policy research stays stopped. The actual old second device will adopt the first workspace
+with fresh custody/store/counters/credentials, without importing or merging its previous writing.
+
+**Other gates.** Service-issued refusal/conflict composition, remaining parser negatives, diagnostics/
+salvage, measured maintenance/performance and accepted review follow-ups remain. General lineage,
+successor checkpoints, concurrent membership, pruning/backlog scale, enrollment/device management,
+revocation/rotation, clear/delete, finalization/total-loss recovery, PRF enrollment, supported platforms,
+whole-profile residue, deployment/restore and independent review remain separate. L-2's historical ref
+`d24732b` has no further service work to integrate. No personal server restart is authorized here.
 
 The outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 

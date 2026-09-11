@@ -713,13 +713,15 @@ unreadable input; neither skipped records nor heads/outbound records count as co
 
 **The journal, and why it is the sharp edge.** Every update is first written synchronously to localStorage as one
 immutable, per-page, per-store journal entry. A reload replays those idempotent Yjs deltas. At the end of a short
-batching window the adapter writes every captured delta in one relaxed IndexedDB transaction, waits for its
+batching window the adapter reserves encryption invocations, then writes captured deltas in a strict
+IndexedDB transaction, waits for its
 `complete` event, and only then removes the corresponding journal entries. `whenDurable()` forces that batch
 immediately and resolves only after every update observed before the call has committed. Journal or batch failures
 remain observable and leave recoverable entries intact.
 
 The recovery boundary assumes intact completed carriers and a valid factor after page/navigation loss.
-Relaxed IndexedDB completion is not an OS/power-loss promise. Recovery includes all acknowledged
+Synchronous journal acknowledgement is not an OS/power-loss promise. The private implementation requires
+requested/reported strict reservation and content commits under the [F-15 platform assumptions](./account-reservation-durability.md). Recovery includes all acknowledged
 operations and their dependencies and may include a committed, not-yet-displayed suffix (SC-01).
 
 The journal is a short-lived write-ahead log, not a second document representation. It closes the browser

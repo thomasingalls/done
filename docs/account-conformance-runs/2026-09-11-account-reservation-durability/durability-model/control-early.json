@@ -1,0 +1,27 @@
+{
+  "seed": 150915,
+  "path": "13:2:0:1:2:2:6:6:6:6:3:3:3:3:3",
+  "counterexample": [
+    [
+      {
+        "op": "start",
+        "actor": 0,
+        "domain": 0,
+        "count": 1
+      },
+      {
+        "op": "invoke",
+        "actor": 0,
+        "domain": 0,
+        "count": 1
+      },
+      {
+        "op": "start",
+        "actor": 0,
+        "domain": 0,
+        "count": 1
+      }
+    ]
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: root undercount: 0 < 1"
+}

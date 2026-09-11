@@ -69,7 +69,7 @@ const summary = {
   startedAt: new Date().toISOString(),
   node: process.version,
   scope:
-    'D4 scoped content metadata KDF, initialization witness and counter v1/v2 MAC bytes, ownership and native races. Current relaxed durability is observed, not power-loss qualified. No production or personal state changes',
+    'D4 scoped content metadata KDF, initialization witness and counter v1/v2 MAC bytes, ownership and native races. Strict reservation/event durability is observed; physical power loss is not tested. No personal state changes',
   stages: [],
 };
 const save = () =>

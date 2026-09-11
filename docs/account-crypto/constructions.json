@@ -2883,7 +2883,7 @@
         {
           "path": "docs/account-crypto/content-counter.md",
           "section": "5",
-          "hash": "46b056613a26"
+          "hash": "89994beb8cea"
         }
       ],
       "vectorCases": ["content-metadata-key"],
@@ -2934,12 +2934,12 @@
         {
           "path": "docs/account-crypto/content-counter.md",
           "section": "4",
-          "hash": "b50f82193614"
+          "hash": "52fa837d1e07"
         },
         {
           "path": "docs/account-crypto/content-counter.md",
           "section": "5",
-          "hash": "46b056613a26"
+          "hash": "89994beb8cea"
         }
       ],
       "vectorCases": ["content-witness-creating", "content-witness-ready"],
@@ -3004,12 +3004,12 @@
         {
           "path": "docs/account-crypto/content-counter.md",
           "section": "4",
-          "hash": "b50f82193614"
+          "hash": "52fa837d1e07"
         },
         {
           "path": "docs/account-crypto/content-counter.md",
           "section": "5",
-          "hash": "46b056613a26"
+          "hash": "89994beb8cea"
         }
       ],
       "vectorCases": ["content-counter-v1-empty", "content-counter-v1-multigen"],
@@ -3078,12 +3078,12 @@
         {
           "path": "docs/account-crypto/content-counter.md",
           "section": "4",
-          "hash": "b50f82193614"
+          "hash": "52fa837d1e07"
         },
         {
           "path": "docs/account-crypto/content-counter.md",
           "section": "5",
-          "hash": "46b056613a26"
+          "hash": "89994beb8cea"
         }
       ],
       "vectorCases": [
@@ -3425,7 +3425,7 @@
         {
           "path": "docs/account-crypto/local-custody.md",
           "section": "5",
-          "hash": "013347c29113"
+          "hash": "51a1b0addeb4"
         },
         {
           "path": "docs/account-crypto/local-custody.md",
@@ -3492,7 +3492,7 @@
         {
           "path": "docs/account-crypto/local-custody.md",
           "section": "5",
-          "hash": "013347c29113"
+          "hash": "51a1b0addeb4"
         },
         {
           "path": "docs/account-crypto/local-custody.md",
@@ -3558,7 +3558,7 @@
         {
           "path": "docs/account-crypto/local-custody.md",
           "section": "5",
-          "hash": "013347c29113"
+          "hash": "51a1b0addeb4"
         },
         {
           "path": "docs/account-crypto/local-custody.md",
@@ -3612,7 +3612,7 @@
         {
           "path": "docs/account-crypto/local-custody.md",
           "section": "5",
-          "hash": "013347c29113"
+          "hash": "51a1b0addeb4"
         },
         {
           "path": "docs/account-crypto/local-custody.md",
@@ -3694,7 +3694,7 @@
         {
           "path": "docs/account-crypto/local-custody.md",
           "section": "5",
-          "hash": "013347c29113"
+          "hash": "51a1b0addeb4"
         },
         {
           "path": "docs/account-crypto/local-custody.md",

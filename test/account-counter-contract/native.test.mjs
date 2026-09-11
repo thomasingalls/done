@@ -218,7 +218,7 @@ test(
     assert.equal(committed.counter.next_seq, before.counter.next_seq + 2);
     const durability = await f.page.evaluate(() => durabilities);
     assert(durability.length > 0);
-    assert(durability.every((d) => d.requested === 'relaxed' && d.actual === 'relaxed'));
+    assert(durability.every((d) => d.requested === 'strict' && d.actual === 'strict'));
     report('native-atomic', {
       abortedReservation: 'burned',
       abortedEventAndWitness: 'absent',

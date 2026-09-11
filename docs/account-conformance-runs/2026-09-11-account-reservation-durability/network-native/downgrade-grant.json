@@ -1,0 +1,51 @@
+{
+  "trace": [
+    {
+      "kind": "downgrade",
+      "requested": "strict",
+      "reported": "default"
+    },
+    {
+      "kind": "grant",
+      "attempt": 1,
+      "requested": "strict",
+      "reported": "strict"
+    },
+    {
+      "kind": "invoke"
+    }
+  ],
+  "afterFault": {
+    "attempts": 0,
+    "positions": [
+      {
+        "position": 1,
+        "source": {
+          "id": "b02afe2028686885cfac8d84359c6a26",
+          "index": 0,
+          "hash": "fed3f31fdcf1b8885aee17b2cb62ef4e131736f0314f6e8eb90e8213494c163f"
+        },
+        "attempts": [],
+        "persisted": false
+      }
+    ]
+  },
+  "final": {
+    "attempts": 1,
+    "positions": [
+      {
+        "position": 1,
+        "source": {
+          "id": "b02afe2028686885cfac8d84359c6a26",
+          "index": 0,
+          "hash": "fed3f31fdcf1b8885aee17b2cb62ef4e131736f0314f6e8eb90e8213494c163f"
+        },
+        "attempts": [
+          1
+        ],
+        "persisted": true
+      }
+    ]
+  },
+  "invocations": 1
+}

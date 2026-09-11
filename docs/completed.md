@@ -2889,3 +2889,33 @@ unchanged source; this audit reruns the directly referenced unit bridges.
 Next is F-15 reservation durability, beginning with its failure model and transaction inventory, before
 any strict-persistence change. Page/renderer loss, power loss and restore/clone branching must remain
 distinct. Enrollment/adoption, later epochs, recovery/finalization and other review/release gates remain.
+
+
+## 2026-09-11 — Strict reservation persistence and invocation accounting (`L-1` seat)
+
+The aggregate F-05/F-06 audit was committed signed as `ec889d9`; all ten C/D1–D8/audit signatures verify.
+[F-15](./review/implementation/reservation-durability.md) now has a concrete grant inventory and supported
+failure model. A pre-repair owner/AES reproduction loses an unflushed completed grant: count 1 versus
+2 observed invocations. The repair requests strict persistence for custody writes and shared content
+allocation/final ledger commits, and both helpers verify reported strict before bodies run. Promotion's
+existing strict writes gain that check. Refusal drains native work, including a failed-abort race.
+Network attempts require the final encrypted event/witness commit before encryption. Stored bytes are unchanged.
+
+[Evidence](./account-conformance-runs/2026-09-11-account-reservation-durability.md): all 50 stages and
+855 source pins pass; 133 Node tests, 47 native storage component cases, 18 detected component mutants,
+983 units, type checking, 30 vector commands and targeted lint/format. The new 20 tests include 4,000
+generated loss/retry histories with effective durability/order controls, real custody/content AES,
+unsupported capability and native settlement, and outbound grant/abandonment tests. One fresh read-only
+candidate review found no concrete remaining bypass/regression; its construction-error documentation
+observation was confirmed and corrected. The original undercount no longer reproduces under modeled
+strict persistence, and normal owner regressions pass.
+
+F-15 is fixed at this private seam conditional on accurate initial budgets, corrected writers and storage
+honoring strict semantics. Browser reporting is not a physical flush measurement; past undercounts,
+restored/branched profiles and other platforms remain unqualified. SC-01 stays page/navigation scope.
+F-05/F-06 closure and all 31 prior vectors remain unchanged. The broad historical root check was not rerun.
+
+Next: F-21.3 cross-account admission-capability isolation and restart conformance with two valid accounts.
+All 21 personal package hashes, stopped personal servers, historical packet and L-2 are preserved. No
+real Account/factor/operator key/pin/origin/browser change. New F-15 work is unstaged/uncommitted.
+This outcome was appended before the L-1 rewrite.

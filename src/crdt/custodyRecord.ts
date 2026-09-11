@@ -326,7 +326,13 @@ export const transact = (
   new Promise((resolve, reject) => {
     let result: CustodyRecord | null = null;
     let failure: unknown;
-    const tx = task.step(() => db.transaction(CUSTODY_STORE, next ? 'readwrite' : 'readonly'));
+    const tx = task.step(() =>
+      db.transaction(
+        CUSTODY_STORE,
+        next ? 'readwrite' : 'readonly',
+        next ? { durability: 'strict' } : undefined,
+      ),
+    );
     const abort = () => {
       try {
         tx.abort();
@@ -338,7 +344,8 @@ export const transact = (
     const detach = () => task.signal.removeEventListener('abort', abort);
     tx.oncomplete = () => {
       detach();
-      resolve(result);
+      if (failure) reject(failure);
+      else resolve(result);
     };
     tx.onabort = () => {
       detach();
@@ -349,6 +356,17 @@ export const transact = (
           }),
       );
     };
+    if (next) {
+      try {
+        if (tx.durability !== 'strict') throw Error('Strict durability unavailable');
+      } catch (cause) {
+        failure = new CustodyError('storage-failed', 'Strict transaction durability is required.', {
+          cause,
+        });
+        abort();
+        return;
+      }
+    }
     const store = tx.objectStore(CUSTODY_STORE);
     const req = store.get(recordKey(scope));
     req.onsuccess = () => {

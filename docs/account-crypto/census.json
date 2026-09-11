@@ -1,10 +1,6 @@
 {
   "v": 1,
-  "scope": [
-    "account-protocol",
-    "account-service",
-    "src"
-  ],
+  "scope": ["account-protocol", "account-service", "src"],
   "exclusions": [
     "*.test.ts(x)",
     "*.spec.ts(x)",
@@ -221,7 +217,7 @@
     },
     {
       "path": "src/crdt/contentDatabase.ts",
-      "sha256": "23da81acfeca81946ed4dab3e42ea0106c5dc2b42faf8726fe54f5ad41097847"
+      "sha256": "d42d487e9b232af4fa980506123f825e5478fbaf3a8c388ebae16823b2da272d"
     },
     {
       "path": "src/crdt/contentRecord.ts",
@@ -229,7 +225,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "f2c000cce765e7187f0d6173dedc419c7c1b5bbd62dfbd3bdebfec0e966d6b53"
+      "sha256": "ff173f6fe2e33d4470a2b1095266af98bd71e53a22d41809f05e27ae9dda8d8f"
     },
     {
       "path": "src/crdt/custody.ts",
@@ -241,7 +237,7 @@
     },
     {
       "path": "src/crdt/custodyRecord.ts",
-      "sha256": "31745246dc22f422f6a9b5af733be52b99eba1f2caabe3ad94712f47aaf1f86f"
+      "sha256": "2f463ad0a882bca0c9395b3d36ac8bf4151dc4c3a0482b1745c4a51207234e63"
     },
     {
       "path": "src/crdt/days.ts",

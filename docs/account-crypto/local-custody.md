@@ -183,10 +183,12 @@ compares both the previous reconstructed tuple and exact MAC with the authentica
 record. The native control changes only the stored MAC before reservation commits: baseline refuses
 before root encryption, while omitting the MAC comparison overwrites the changed record and completes.
 
-Custody does not request an explicit IndexedDB durability hint. Transaction completion and renderer
-death tests do not establish OS/power-loss persistence of grants. F-15 and the unrewound, unbranched
-history assumption remain open; metadata MACs do not detect replay of older authentic state. Fresh
-factor salts/nonces and root nonces require nonrepeating randomness. No general rotation proof follows.
+F-15 now requires custody writes to request and report strict IndexedDB durability before executing
+the transaction body. Completion precedes root-key AES; unsupported capability refuses and drains native
+work. See [reservation persistence](../account-reservation-durability.md) for the exact platform/loss
+assumptions and tests. Browser-reported strict is not physical power-cut evidence. Accurate initial counts
+and an unrewound, unbranched history remain required; MACs do not detect replay of older authentic state.
+Fresh factor salts/nonces and root nonces require nonrepeating randomness. No general rotation proof follows.
 
 Guarded native crypto calls check lifetime ownership before each invocation. Closing invalidates work,
 drains tracked calls, clears owned raw buffers/key references and closes databases before releasing the

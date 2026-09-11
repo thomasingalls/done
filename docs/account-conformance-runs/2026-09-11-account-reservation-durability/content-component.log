@@ -1,0 +1,20 @@
+content C15.concurrent-allocation: pass
+content C15.reservation-abort: pass
+content C15.abandoned-seals: pass
+content C15.content-abort: pass
+content C15.ceiling: pass
+content C14.generation-fence: pass
+content C09.unreadable-load: pass
+content C09.metadata: pass
+content C09.immutable-record: pass
+content C10.content-initialization: pass
+content C04.content-close: pass
+content C01.byte-replay: pass
+content C07.full-snapshot: pass
+early-transaction-success C15.reservation-abort: fail
+skip-reservation C15.abandoned-seals: fail
+omit-generation-fence C14.generation-fence: fail
+swallow-unreadable-record C09.unreadable-load: fail
+allow-ceiling-equality C15.ceiling: fail
+Report: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-reservation-durability/2026-09-11T21-07-50.027Z/content-component-evidence/report.md
+Exit 0 (bounded content carrier)

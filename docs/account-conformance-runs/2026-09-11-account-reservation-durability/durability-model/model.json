@@ -1,0 +1,30 @@
+{
+  "seed": 150915,
+  "runs": 4000,
+  "maxCommands": 300,
+  "legitimate": {
+    "committed": [
+      16,
+      16,
+      16
+    ],
+    "flushed": [
+      16,
+      16,
+      16
+    ],
+    "invoked": [
+      16,
+      16,
+      16
+    ],
+    "retained": [
+      0,
+      0,
+      0
+    ],
+    "successes": 48,
+    "refused": 12
+  },
+  "assumption": "strict completion persists; native API reporting is tested separately, physical flush is not measured"
+}

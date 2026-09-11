@@ -118,14 +118,15 @@ is allowed only with an empty event ledger. Ordinary Local content readers refus
 Account capability. Account receipt/member/editor authority still belongs to the enclosing Account owner;
 these lower-level tests do not confer it.
 
-**Durability correction.** `contentTransaction` requests IndexedDB `durability: "relaxed"`, including
-reservation and final event/counter transactions. D3 and earlier Account-spool prose incorrectly called
-these strict. Native transaction completion and renderer-crash recovery establish the current bounded
-behavior. They do not establish that OS buffers survived power loss. Losing a committed grant after an
-AES invocation can undercount lifetime uses even with random nonces. F-15 remains open: its supported
-failure model and any strict-persistence repair require their own bounded work and evidence. Changing
-bytes or passing MAC tests cannot resolve it. Coordinated restore/rollback and writable profile branching
-also remain outside the unrewound, unbranched-history assumption.
+**F-15 persistence policy.** `compareAndWrite` now explicitly requests strict persistence for
+allocation, activation and final event/counter commits. The helper verifies reported strict durability
+before running the body and waits for native completion/abort, refusing unsupported implementations.
+The final encrypted attempt event plus witness is the network grant; the earlier local allocation alone
+cannot authorize network AES. Custody writes and promotion reservations follow the same policy.
+See [reservation persistence](../account-reservation-durability.md) for the grant inventory, loss model,
+platform refusal and evidence. The argument assumes accurate initial budgets, corrected writers and
+browser/storage compliance with strict semantics. It is not a physical power-loss measurement, a
+retrospective repair of old counts, or a restore/clone guarantee. SC-01 remains page/navigation scope.
 
 ## 5. Evidence and limits
 
@@ -138,7 +139,7 @@ integer ledger, then reparse, reauthenticate, reorder and tamper with retained m
 
 Native Chromium fixtures exercise actual factor-opened custody derivation, metadata MACs, activation,
 ordinary-reader refusal, correctly MACed false metadata, abort between reservation and final commit,
-and the actual relaxed durability option. Two source controls show that removing exact MAC comparison
+and requested/reported strict reservation and event durability. Two source controls show that removing exact MAC comparison
 overwrites metadata changed after authentication, and removing reservation persistence invokes AES before
 allocation even though a later rewind check still refuses. Neither forces a crypto success boolean.
 Native owner fixtures supply a synthetic slot/exclusion context and a real chain verifier; they are not

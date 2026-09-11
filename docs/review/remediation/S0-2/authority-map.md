@@ -512,7 +512,7 @@ guards: content
 verifies: the store subkey sealing every StoredRecord
 counted-by: SeqCounter.reserved[gen] — one key per counter: the derivation binds the store_id minted beside the counter (row 3 §§3–4), and the store rotates before the 2^32nd reservation, equality first disallowed; conditional on an unrewound, unbranched history (SC-09), not raw profile clones
 status: resolved
-pin: docs/TRD.md §6.1 b51be4528331
+pin: docs/TRD.md §6.1 80ffa103b92e
 pin: docs/selections/row-3-record-format.md dcefb99d3368
 ```
 
@@ -1042,8 +1042,8 @@ status: resolved
 pin: docs/account-crypto/content-counter.md §1 bf706ca4de43
 pin: docs/account-crypto/content-counter.md §2 d5670fb971b9
 pin: docs/account-crypto/content-counter.md §3 1ca2e196dbba
-pin: docs/account-crypto/content-counter.md §4 b50f82193614
-pin: docs/account-crypto/content-counter.md §5 46b056613a26
+pin: docs/account-crypto/content-counter.md §4 52fa837d1e07
+pin: docs/account-crypto/content-counter.md §5 89994beb8cea
 ```
 
 ```authority
@@ -1056,8 +1056,8 @@ status: resolved
 pin: docs/account-crypto/content-counter.md §1 bf706ca4de43
 pin: docs/account-crypto/content-counter.md §2 d5670fb971b9
 pin: docs/account-crypto/content-counter.md §3 1ca2e196dbba
-pin: docs/account-crypto/content-counter.md §4 b50f82193614
-pin: docs/account-crypto/content-counter.md §5 46b056613a26
+pin: docs/account-crypto/content-counter.md §4 52fa837d1e07
+pin: docs/account-crypto/content-counter.md §5 89994beb8cea
 ```
 
 ```authority
@@ -1071,8 +1071,8 @@ status: resolved
 pin: docs/account-crypto/content-counter.md §1 bf706ca4de43
 pin: docs/account-crypto/content-counter.md §2 d5670fb971b9
 pin: docs/account-crypto/content-counter.md §3 1ca2e196dbba
-pin: docs/account-crypto/content-counter.md §4 b50f82193614
-pin: docs/account-crypto/content-counter.md §5 46b056613a26
+pin: docs/account-crypto/content-counter.md §4 52fa837d1e07
+pin: docs/account-crypto/content-counter.md §5 89994beb8cea
 ```
 
 ## 14. Inherited store and journal byte bridges — group D5
@@ -1167,7 +1167,7 @@ pin: docs/account-crypto/local-custody.md §1 62718a2a9c61
 pin: docs/account-crypto/local-custody.md §2 13cf45cde8ef
 pin: docs/account-crypto/local-custody.md §3 e092a55a66e2
 pin: docs/account-crypto/local-custody.md §4 a4d785bf39e2
-pin: docs/account-crypto/local-custody.md §5 013347c29113
+pin: docs/account-crypto/local-custody.md §5 51a1b0addeb4
 pin: docs/account-crypto/local-custody.md §6 4517b014105e
 ```
 
@@ -1182,7 +1182,7 @@ pin: docs/account-crypto/local-custody.md §1 62718a2a9c61
 pin: docs/account-crypto/local-custody.md §2 13cf45cde8ef
 pin: docs/account-crypto/local-custody.md §3 e092a55a66e2
 pin: docs/account-crypto/local-custody.md §4 a4d785bf39e2
-pin: docs/account-crypto/local-custody.md §5 013347c29113
+pin: docs/account-crypto/local-custody.md §5 51a1b0addeb4
 pin: docs/account-crypto/local-custody.md §6 4517b014105e
 ```
 
@@ -1197,7 +1197,7 @@ pin: docs/account-crypto/local-custody.md §1 62718a2a9c61
 pin: docs/account-crypto/local-custody.md §2 13cf45cde8ef
 pin: docs/account-crypto/local-custody.md §3 e092a55a66e2
 pin: docs/account-crypto/local-custody.md §4 a4d785bf39e2
-pin: docs/account-crypto/local-custody.md §5 013347c29113
+pin: docs/account-crypto/local-custody.md §5 51a1b0addeb4
 pin: docs/account-crypto/local-custody.md §6 4517b014105e
 ```
 
@@ -1213,7 +1213,7 @@ pin: docs/account-crypto/local-custody.md §1 62718a2a9c61
 pin: docs/account-crypto/local-custody.md §2 13cf45cde8ef
 pin: docs/account-crypto/local-custody.md §3 e092a55a66e2
 pin: docs/account-crypto/local-custody.md §4 a4d785bf39e2
-pin: docs/account-crypto/local-custody.md §5 013347c29113
+pin: docs/account-crypto/local-custody.md §5 51a1b0addeb4
 pin: docs/account-crypto/local-custody.md §6 4517b014105e
 ```
 
@@ -1228,7 +1228,7 @@ pin: docs/account-crypto/local-custody.md §1 62718a2a9c61
 pin: docs/account-crypto/local-custody.md §2 13cf45cde8ef
 pin: docs/account-crypto/local-custody.md §3 e092a55a66e2
 pin: docs/account-crypto/local-custody.md §4 a4d785bf39e2
-pin: docs/account-crypto/local-custody.md §5 013347c29113
+pin: docs/account-crypto/local-custody.md §5 51a1b0addeb4
 pin: docs/account-crypto/local-custody.md §6 4517b014105e
 ```
 
@@ -1244,7 +1244,7 @@ pin: docs/account-crypto/local-custody.md §1 62718a2a9c61
 pin: docs/account-crypto/local-custody.md §2 13cf45cde8ef
 pin: docs/account-crypto/local-custody.md §3 e092a55a66e2
 pin: docs/account-crypto/local-custody.md §4 a4d785bf39e2
-pin: docs/account-crypto/local-custody.md §5 013347c29113
+pin: docs/account-crypto/local-custody.md §5 51a1b0addeb4
 pin: docs/account-crypto/local-custody.md §6 4517b014105e
 ```
 
@@ -1261,7 +1261,7 @@ pin: docs/account-crypto/local-custody.md §1 62718a2a9c61
 pin: docs/account-crypto/local-custody.md §2 13cf45cde8ef
 pin: docs/account-crypto/local-custody.md §3 e092a55a66e2
 pin: docs/account-crypto/local-custody.md §4 a4d785bf39e2
-pin: docs/account-crypto/local-custody.md §5 013347c29113
+pin: docs/account-crypto/local-custody.md §5 51a1b0addeb4
 pin: docs/account-crypto/local-custody.md §6 4517b014105e
 ```
 

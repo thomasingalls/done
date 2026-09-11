@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="all thirteen accepted stage/version carriers match independent bytes and WebCrypto MACs" time="0.055162" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/formats.test.mjs"/>
+	<testcase name="every input leaf is bound or rejected, including all nested signatures and empty arrays" time="1.834765" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/formats.test.mjs"/>
+	<testcase name="encoded omissions demonstrably remove each binding while real HMACs still run" time="1.392711" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/formats.test.mjs"/>
+	<testcase name="closed parser, version/stage matrix, credentials and handoff correspondence boundaries" time="0.099700" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/formats.test.mjs"/>
+	<testcase name="property order is canonical except the retained handoff destination; array order remains significant" time="0.069146" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/formats.test.mjs"/>
+	<testcase name="KDF context and deterministic names bind their exact fields without becoming authority" time="0.005402" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/formats.test.mjs"/>
+	<testcase name="200 shrinking-enabled generated authentication histories preserve the last accepted marker" time="1.756344" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/formats.test.mjs"/>
+	<testcase name="native reader authenticates every stage version against real Local custody; all tampered IDs refuse" time="1.188373" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/native.test.mjs"/>
+	<testcase name="correct MACs do not replace source, budget and credential collision checks; actual guard removal rescues each lie" time="1.548832" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/native.test.mjs"/>
+	<testcase name="native verifier message omissions rescue forged carrier bindings while WebCrypto verification still runs" time="0.635940" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/native.test.mjs"/>
+	<!-- tests 10 -->
+	<!-- suites 0 -->
+	<!-- pass 10 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 9785.716709 -->
+</testsuites>

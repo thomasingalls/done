@@ -1,0 +1,73 @@
+{
+  "count": 1,
+  "trace": [
+    {
+      "kind": "commit",
+      "domain": "root",
+      "count": 0,
+      "durability": "default"
+    },
+    {
+      "kind": "commit",
+      "domain": "root",
+      "count": 3,
+      "durability": "default"
+    },
+    {
+      "kind": "invoke",
+      "domain": "root"
+    },
+    {
+      "kind": "invoke",
+      "domain": "root"
+    },
+    {
+      "kind": "invoke",
+      "domain": "root"
+    },
+    {
+      "kind": "commit",
+      "domain": "root",
+      "count": 3,
+      "durability": "default"
+    },
+    {
+      "kind": "commit",
+      "domain": "store",
+      "count": 0,
+      "durability": "relaxed"
+    },
+    {
+      "kind": "commit",
+      "domain": "store",
+      "count": 1,
+      "durability": "relaxed"
+    },
+    {
+      "kind": "invoke",
+      "domain": "store"
+    },
+    {
+      "kind": "commit",
+      "domain": "store",
+      "count": 1,
+      "durability": "relaxed"
+    },
+    {
+      "kind": "commit",
+      "domain": "store",
+      "count": 2,
+      "durability": "relaxed"
+    },
+    {
+      "kind": "invoke",
+      "domain": "store"
+    },
+    {
+      "kind": "commit",
+      "domain": "store",
+      "count": 1,
+      "durability": "default"
+    }
+  ]
+}

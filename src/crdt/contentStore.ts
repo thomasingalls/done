@@ -200,6 +200,7 @@ export const createContentOwner = (
               result(true);
             });
         },
+        'strict',
       ),
     );
   const openSnapshot = async (task: SessionTask, snapshot: DiskState): Promise<OpenedRecord[]> => {

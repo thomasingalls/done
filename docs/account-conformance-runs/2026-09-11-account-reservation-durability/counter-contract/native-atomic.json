@@ -1,0 +1,24 @@
+{
+  "abortedReservation": "burned",
+  "abortedEventAndWitness": "absent",
+  "retry": "fresh reservation and one event",
+  "durability": [
+    {
+      "requested": "strict",
+      "actual": "strict"
+    },
+    {
+      "requested": "strict",
+      "actual": "strict"
+    },
+    {
+      "requested": "strict",
+      "actual": "strict"
+    },
+    {
+      "requested": "strict",
+      "actual": "strict"
+    }
+  ],
+  "powerLoss": "not established"
+}

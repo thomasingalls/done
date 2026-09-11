@@ -144,4 +144,4 @@ supported-platform/performance/independent-review evidence remains L-4 work.
 
 The current counter/witness metadata bytes and Account v2 bridge are pinned in
 [the D4 counter contract](./account-crypto/content-counter.md). The retained record-AEAD vectors do not
-cover those metadata MACs. The counter contract also states the current relaxed durability limitation.
+cover those metadata MACs. The counter contract links the F-15 strict-reservation policy and its explicit platform/loss limits.

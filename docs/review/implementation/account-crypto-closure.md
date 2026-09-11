@@ -137,19 +137,18 @@ The current registry and checker status messages were stale after D8. This phase
 and adds the aggregate runner; it does not change production code, valid stored bytes or any vector.
 Earlier evidence and phase-local status notes remain dated; their historical hashes are not rewritten.
 
-## 6. Remaining gates and next bounded work
+## 6. Subsequent work and remaining gates
 
-F-05/F-06 closure does not close F-15, parser/service/diagnostic follow-ups, scale/maintenance, platform
-qualification, whole-profile residue, general lineage/checkpoint evolution, enrollment/adoption,
-revocation/rotation, finalization, recovery replacement, total-loss recovery, deployment/restore or
-independent review. The personal installation remains Local; there is still no real Account receipt.
+The aggregate audit was committed signed as `ec889d9`. Its F-05/F-06 scope and historical execution
+remain as recorded above. The subsequent [F-15 disposition](./reservation-durability.md) separately repairs
+reservation persistence under explicit platform/history assumptions; it does not relabel this audit as
+power-loss evidence.
 
-**Next: F-15 reservation durability, beginning with its failure model and transaction inventory.** Trace
-custody/content reservations and durable network-attempt grants to the exact encryption invocations they
-authorize. Distinguish an issued grant from a retained final ciphertext and account for abandoned attempts.
-Specify the required persistence boundary and unsupported-platform refusal before changing transaction
-options. Add a model that can lose writes not yet flushed and native option/order/abort controls; do not
-present a renderer-kill test as proof of an OS flush. Restore/clone branching remains a separate assumption.
-This is a bounded correctness prerequisite for Account use, not a reason to restart the personal server
-or create real credentials. The next phase should preserve the current content-acknowledgment contract
-unless an explicit correction is necessary.
+Next is bounded cross-account admission-capability isolation (F-21.3): two valid concurrent accounts,
+real capability swaps, unchanged state on refusal, and legitimate retries through restart. The existing
+admission generated `wrong` command still supplies only an unknown key. Service-issued refusal/conflict
+composition and remaining parser/diagnostic/performance findings retain their separate obligations.
+
+Platform qualification, whole-profile residue, general lineage/checkpoint evolution, enrollment/adoption,
+revocation/rotation, finalization, recovery replacement, total-loss recovery, deployment/restore and
+independent review remain open. The personal installation remains Local; there is no real Account receipt.

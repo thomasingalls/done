@@ -1,0 +1,16 @@
+{
+  "events": [
+    {
+      "event": "request",
+      "requested": "strict"
+    },
+    {
+      "event": "complete"
+    },
+    {
+      "event": "settled"
+    }
+  ],
+  "bodyCalls": 1,
+  "error": null
+}

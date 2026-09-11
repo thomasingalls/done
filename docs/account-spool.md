@@ -131,6 +131,8 @@ Sources and exact envelopes remain retained for every result, including contradi
 The following [v8 delivery owner](./account-delivery.md) adds durable proofs and signed submissions to the
 same completeness witness. V7 remains a separate reader and refuses that activated format.
 
-D4 corrects the earlier strict-durability wording: content transactions request `relaxed` durability.
-Native completion and renderer-crash recovery do not establish power-loss persistence of invocation
-grants. F-15 remains open; see [counter ownership and crash model](./account-crypto/content-counter.md#4-allocation-ledger-coupling-and-crash-model).
+D4 recorded that the earlier implementation used relaxed content transactions. The subsequent
+[F-15 persistence repair](./account-reservation-durability.md) requires requested/reported strict completion
+for both content reservations and final attempt-event/witness commits before network AES. Unsupported
+capability refuses. Renderer recovery and API reporting still do not measure physical power-loss survival;
+accurate initial budgets and an unrewound, unbranched history remain assumptions.

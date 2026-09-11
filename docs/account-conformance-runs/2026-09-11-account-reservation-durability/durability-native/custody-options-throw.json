@@ -1,0 +1,16 @@
+{
+  "events": [
+    {
+      "event": "request",
+      "requested": "strict"
+    },
+    {
+      "event": "settled"
+    }
+  ],
+  "bodyCalls": 0,
+  "error": {
+    "code": null,
+    "message": "Error: Unsupported transaction options"
+  }
+}

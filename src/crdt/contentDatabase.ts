@@ -107,7 +107,8 @@ export const contentTransaction = <T>(
     const detach = () => task.signal.removeEventListener('abort', abort);
     tx.oncomplete = () => {
       detach();
-      resolve(value);
+      if (failure) reject(failure);
+      else resolve(value);
     };
     tx.onabort = () => {
       detach();
@@ -118,13 +119,24 @@ export const contentTransaction = <T>(
           }),
       );
     };
-    guard(() =>
+    guard(() => {
+      // Check only after settlement handlers are installed: unsupported native work
+      // must abort/drain before the enclosing lifecycle can release its permit.
+      if (durability === 'strict') {
+        try {
+          if (tx.durability !== 'strict') throw Error('Strict durability unavailable');
+        } catch (cause) {
+          throw new ContentError('storage-failed', 'Strict transaction durability is required.', {
+            cause,
+          });
+        }
+      }
       body(
         tx,
         (result) => {
           value = result;
         },
         guard,
-      ),
-    );
+      );
+    });
   });

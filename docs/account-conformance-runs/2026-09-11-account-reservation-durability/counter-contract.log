@@ -1,0 +1,18 @@
+✔ fixed metadata key, both initialization states and all counter variants agree with independent bytes (6.845875ms)
+✔ every specified metadata input binds or refuses; encoded omission witnesses preserve real HMAC checks (33.84875ms)
+✔ closed structured-clone parsers reject malformed counters without inferring missing allocation state (2.065542ms)
+✔ 200 generated allocation/restart histories match an independent integer budget and authenticate retained counters (316.6185ms)
+✔ actual source omissions lose root/state/spool MAC bindings and allocator guards; crypto remains operative (62.930334ms)
+✔ real custody metadata derivation, native HMAC bytes and v1 to v2 activation match independent construction (424.468416ms)
+✔ correctly MACed allocation and witness lies refuse at their owning boundary (430.501125ms)
+✔ native final abort preserves burned reservations but commits neither ledger event nor witness; observes actual durability (336.664791ms)
+✔ actual MAC comparison omission overwrites a counter changed after authentication; retained comparison refuses (603.072792ms)
+✔ actual reservation omission invokes AES before allocation even though the later rewind guard still refuses (590.468542ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3600.2775
