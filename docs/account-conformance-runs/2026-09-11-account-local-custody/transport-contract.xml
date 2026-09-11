@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="submission digest and parent omissions admit separately changed valid envelopes/refusals at the actual verifier boundary" time="0.007299" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/controls.test.mjs"/>
+	<testcase name="head-final and v1 page-through omissions rescue a changed claim, without pretending finalization or entry validation occurs here" time="0.002881" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/controls.test.mjs"/>
+	<testcase name="witness request-binding omission accepts a witness under a different held proposal scope" time="0.001015" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/controls.test.mjs"/>
+	<testcase name="controls retain their reviewed boundaries and evidence inventory" time="0.000590" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/controls.test.mjs"/>
+	<testcase name="37 fixed constructions agree with runtime; existing envelope vectors remain exact positives with v1 mint refused" time="0.052484" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/formats.test.mjs"/>
+	<testcase name="every declared encoded leaf has a changed-input negative and an effective omission control" time="0.037749" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/formats.test.mjs"/>
+	<testcase name="actual acceptance custody issues the fixed head, refusal, both pages and witness with their distinct purposes" time="0.003419" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/formats.test.mjs"/>
+	<testcase name="submissions bind exact envelope and authenticated parent, while parent identity excludes its signature bytes" time="0.007679" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/formats.test.mjs"/>
+	<testcase name="accepted leaf and previous link are independently reconstructed; valid service signatures are neither fresh membership nor arbitrary acceptance" time="0.004351" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/formats.test.mjs"/>
+	<testcase name="v1 pages bind exact signed request, extent and every nested byte; v2 keeps a separate namespace" time="0.002411" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/formats.test.mjs"/>
+	<testcase name="every truncated frame and trailing byte refuses; canonical JSON, versions, lengths and detached copies are checked" time="0.067941" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/formats.test.mjs"/>
+	<testcase name="service witness binds exact chain/count/scope and rejects stale, reordered, incomplete or modified rows" time="0.002295" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/formats.test.mjs"/>
+	<testcase name="200 shrinking-enabled signed histories preserve their prefix and exact nested pages under mutation" time="0.757369" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-transport-contract/formats.test.mjs"/>
+	<!-- tests 13 -->
+	<!-- suites 0 -->
+	<!-- pass 13 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 1153.454833 -->
+</testsuites>

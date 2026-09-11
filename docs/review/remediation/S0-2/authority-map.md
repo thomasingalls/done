@@ -491,7 +491,7 @@ entry: device-lock-custody
 kind: predicate
 guards: custody
 verifies: opening every persistent scoped custody entry from genesis and cold start
-resolves: L_lock sealed under the enrolled factors, the 125-bit code always among them, role and slot bound inside the PRF input -> root:factor
+resolves: current code-only custody requires factor opening, metadata authentication and retained-key correspondence; selected PRF enrollment remains separate -> via:private-local-custody-open
 status: resolved
 pin: docs/TRD.md §13.3 edf42ef40738
 ```
@@ -1149,4 +1149,118 @@ pin: docs/account-crypto/store-journal.md §2 bb602641986e
 pin: docs/account-crypto/store-journal.md §3 3c2014f935aa
 pin: docs/account-crypto/store-journal.md §4 5e2f7b117b1b
 pin: docs/account-crypto/store-journal.md §5 fc637722b527
+```
+
+## 15. Current factor custody and v2 credential/metadata bridge — D6
+
+Current owner predicates are distinct from selected future PRF, rotation and power-loss obligations.
+
+```authority
+entry: private-local-factor
+kind: predicate
+guards: custody
+verifies: held principal/workspace and confirmed generated code open the 32-byte custody root
+resolves: enrolled generated code, retained outside the copied-profile domain -> root:factor
+resolves: current scope, normalized code and closed single-code seal -> root:structural
+status: resolved
+pin: docs/account-crypto/local-custody.md §1 62718a2a9c61
+pin: docs/account-crypto/local-custody.md §2 13cf45cde8ef
+pin: docs/account-crypto/local-custody.md §3 e092a55a66e2
+pin: docs/account-crypto/local-custody.md §4 a4d785bf39e2
+pin: docs/account-crypto/local-custody.md §5 013347c29113
+pin: docs/account-crypto/local-custody.md §6 4517b014105e
+```
+
+```authority
+entry: private-local-factor-seal
+kind: aead
+guards: custody
+verifies: v1 factor KDF, AAD and root seal
+discipline: fresh 16-byte salt derives a per-seal AES key and a separate fresh 12-byte nonce seals one root; finite-use fresh-randomness assumption, no cloned/restored RNG qualification
+status: resolved
+pin: docs/account-crypto/local-custody.md §1 62718a2a9c61
+pin: docs/account-crypto/local-custody.md §2 13cf45cde8ef
+pin: docs/account-crypto/local-custody.md §3 e092a55a66e2
+pin: docs/account-crypto/local-custody.md §4 a4d785bf39e2
+pin: docs/account-crypto/local-custody.md §5 013347c29113
+pin: docs/account-crypto/local-custody.md §6 4517b014105e
+```
+
+```authority
+entry: private-local-root-seals
+kind: aead
+guards: custody
+verifies: v1 generation envelope and v2 operational credential seals under the same factor-opened root
+counted-by: authenticated custody seal_reserved grants all three root invocations before encryption; equality at 2^32 refuses. Default native durability and unrewound/unbranched history remain subject to F-15; no power-loss claim.
+status: resolved
+pin: docs/account-crypto/local-custody.md §1 62718a2a9c61
+pin: docs/account-crypto/local-custody.md §2 13cf45cde8ef
+pin: docs/account-crypto/local-custody.md §3 e092a55a66e2
+pin: docs/account-crypto/local-custody.md §4 a4d785bf39e2
+pin: docs/account-crypto/local-custody.md §5 013347c29113
+pin: docs/account-crypto/local-custody.md §6 4517b014105e
+```
+
+```authority
+entry: private-local-custody-metadata-key
+kind: predicate
+guards: keys
+verifies: purpose-separated metadata HKDF binds slot, principal, workspace and root identity
+resolves: factor-opened custody root -> via:private-local-factor
+resolves: exact scoped info and non-extractable HMAC usages -> root:structural
+status: resolved
+pin: docs/account-crypto/local-custody.md §1 62718a2a9c61
+pin: docs/account-crypto/local-custody.md §2 13cf45cde8ef
+pin: docs/account-crypto/local-custody.md §3 e092a55a66e2
+pin: docs/account-crypto/local-custody.md §4 a4d785bf39e2
+pin: docs/account-crypto/local-custody.md §5 013347c29113
+pin: docs/account-crypto/local-custody.md §6 4517b014105e
+```
+
+```authority
+entry: private-local-custody-metadata
+kind: verification
+guards: custody
+verifies: HMAC-SHA256 over the complete closed custody tuple and exact prior-MAC comparison before replacement
+resolves: scoped metadata key from the factor-opened root -> via:private-local-custody-metadata-key
+status: resolved
+pin: docs/account-crypto/local-custody.md §1 62718a2a9c61
+pin: docs/account-crypto/local-custody.md §2 13cf45cde8ef
+pin: docs/account-crypto/local-custody.md §3 e092a55a66e2
+pin: docs/account-crypto/local-custody.md §4 a4d785bf39e2
+pin: docs/account-crypto/local-custody.md §5 013347c29113
+pin: docs/account-crypto/local-custody.md §6 4517b014105e
+```
+
+```authority
+entry: private-local-custody-pairs
+kind: predicate
+guards: keys
+verifies: opened Ed25519/X25519 private credentials correspond to authenticated advertised keys before release
+resolves: roles, IDs and sealed/public bytes authenticated in custody metadata -> via:private-local-custody-metadata
+resolves: Ed25519 local challenge verification and ephemeral X25519 equality, not external membership authority -> root:structural
+status: resolved
+pin: docs/account-crypto/local-custody.md §1 62718a2a9c61
+pin: docs/account-crypto/local-custody.md §2 13cf45cde8ef
+pin: docs/account-crypto/local-custody.md §3 e092a55a66e2
+pin: docs/account-crypto/local-custody.md §4 a4d785bf39e2
+pin: docs/account-crypto/local-custody.md §5 013347c29113
+pin: docs/account-crypto/local-custody.md §6 4517b014105e
+```
+
+```authority
+entry: private-local-custody-open
+kind: predicate
+guards: custody
+verifies: strict parsed protected state, factor/metadata checks and all retained key openers before publishing a capability
+resolves: authenticated custody tuple from the factor-opened root -> via:private-local-custody-metadata
+resolves: private/public correspondence of both retained credentials -> via:private-local-custody-pairs
+resolves: strict primitive state, native comparison/commit order, current generation and lifetime ownership -> root:structural
+status: resolved
+pin: docs/account-crypto/local-custody.md §1 62718a2a9c61
+pin: docs/account-crypto/local-custody.md §2 13cf45cde8ef
+pin: docs/account-crypto/local-custody.md §3 e092a55a66e2
+pin: docs/account-crypto/local-custody.md §4 a4d785bf39e2
+pin: docs/account-crypto/local-custody.md §5 013347c29113
+pin: docs/account-crypto/local-custody.md §6 4517b014105e
 ```

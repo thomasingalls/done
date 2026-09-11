@@ -15,6 +15,65 @@ const baseline = () => ({
   entries: mapEntries(read('docs/review/remediation/S0-2/authority-map.md')),
 });
 
+test('D6 custody cannot drop correspondence, parser repair, native comparison or inherited byte obligations', () => {
+  const controls = [
+    ['native owner', 'custody-factor-v1', 'native-custody-owner'],
+    ['inherited envelope', 'custody-generation-envelope', 'inherited-byte-agreement'],
+    ['correspondence', 'custody-key-correspondence', 'credential-correspondence'],
+    ['private format', 'custody-credential-v2', 'private-format-cleanup'],
+    ['state counterexample', 'custody-metadata-v2', 'state-counterexample'],
+    ['native comparison', 'custody-metadata-v2', 'native-mac-comparison'],
+  ];
+  const evidence = [];
+  for (const [name, id, obligation] of controls) {
+    const o = baseline(),
+      r = o.document.constructions.find((r) => r.id === id);
+    r.requirements = r.requirements.filter((v) => v !== obligation);
+    assert(
+      checkConstructionRegistry(root, o).failures.some(
+        (f) => f.includes('missing evidence obligation') && f.includes(obligation),
+      ),
+    );
+    evidence.push({ name, caught: true });
+  }
+  for (const field of ['negatives', 'encodedBindingControls']) {
+    const o = baseline(),
+      c = o.document.additionalCorpora.find((c) => c.phase === 'D6'),
+      v = JSON.parse(read(c.vectorFile));
+    v.vectors.find((v) => v.id === 'custody-metadata-protected')[field] = [];
+    const changed = JSON.stringify(v);
+    c.vectorSha256 = digest(changed);
+    o.read = (p) => (p === c.vectorFile ? changed : read(p));
+    const result = checkConstructionRegistry(root, o);
+    assert(
+      result.failures.some((f) =>
+        f.includes(
+          field === 'negatives' ? 'missing vector/negative corpus' : 'missing MAC/omission corpus',
+        ),
+      ),
+    );
+    assert(!result.failures.some((f) => f.includes('stale additional vector file pin')));
+    evidence.push({ name: field, caught: true, aggregatePinUpdated: true });
+  }
+  const o = baseline();
+  o.document.constructions.find((r) => r.id === 'custody-metadata-v2').mapEntries = [
+    'private-local-custody-open',
+  ];
+  assert(
+    checkConstructionRegistry(root, o).failures.some((f) =>
+      f.includes('missing MAC custody authority entry'),
+    ),
+  );
+  evidence.push({ name: 'metadata MAC owner', caught: true });
+  if (process.env.ACCOUNT_REPORT_DIR) {
+    mkdirSync(process.env.ACCOUNT_REPORT_DIR, { recursive: true });
+    writeFileSync(
+      join(process.env.ACCOUNT_REPORT_DIR, 'local-custody-registry-controls.json'),
+      JSON.stringify({ controls: evidence.length, evidence }, null, 2) + '\n',
+    );
+  }
+});
+
 test('D5 bridges cannot lose native owners, inherited agreement, primitive roles or AEAD omission evidence', () => {
   const controls = [
     [
@@ -104,8 +163,8 @@ test('D5 bridges cannot lose native owners, inherited agreement, primitive roles
 test('registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups', () => {
   const result = checkConstructionRegistry(root);
   assert.deepEqual(result.failures, []);
-  assert.equal(result.specified, 67);
-  assert.equal(result.open, 3);
+  assert.equal(result.specified, 72);
+  assert.equal(result.open, 2);
   assert.equal(result.excluded, 1);
 });
 

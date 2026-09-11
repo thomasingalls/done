@@ -153,7 +153,7 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
   ]);
   if (
     r['v'] !== 2 ||
-    !['creating', 'protected'].includes(String(r['state'])) ||
+    (r['state'] !== 'creating' && r['state'] !== 'protected') ||
     r['rotation_owed'] !== false ||
     r['slot_id'] !== scope.slotId ||
     r['principal_id'] !== scope.principalId ||

@@ -241,7 +241,7 @@
     },
     {
       "path": "src/crdt/custodyRecord.ts",
-      "sha256": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730"
+      "sha256": "31745246dc22f422f6a9b5af733be52b99eba1f2caabe3ad94712f47aaf1f86f"
     },
     {
       "path": "src/crdt/days.ts",

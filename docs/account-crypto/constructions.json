@@ -3369,42 +3369,13 @@
       "blocker": null
     },
     {
-      "id": "remaining-shared-custody",
-      "phase": "D",
-      "status": "open",
-      "roles": ["kdf", "aead", "mac", "signature"],
-      "labels": [
-        "done/devicelock/v1",
-        "done/keyenv/v1",
-        "done/custody-credential/v2",
-        "done/custody-key-check/v2",
-        "done/custody-metadata/v2"
-      ],
+      "id": "custody-factor-v1",
+      "phase": "D6",
+      "status": "specified",
+      "roles": ["kdf", "aead", "predicate"],
+      "signer": null,
+      "labels": ["done/devicelock/v1"],
       "sourceSites": [
-        {
-          "path": "src/crdt/custodyCrypto.ts",
-          "line": 213,
-          "label": "done/custody-credential/v2",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/custodyCrypto.ts",
-          "line": 310,
-          "label": "done/custody-key-check/v2",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/custodyRecord.ts",
-          "line": 228,
-          "label": "done/custody-metadata/v2",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/custodyRecord.ts",
-          "line": 261,
-          "label": "done/custody-metadata/v2",
-          "kind": "literal"
-        },
         {
           "path": "src/crdt/custodyCrypto.ts",
           "line": 94,
@@ -3416,7 +3387,80 @@
           "line": 110,
           "label": "done/devicelock/v1",
           "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "factorKey"
         },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "sealAAD"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "sealFactor"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "openFactor"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "normalizeDeviceCode"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "generateDeviceCode"
+        }
+      ],
+      "mapEntries": ["private-local-factor", "private-local-factor-seal"],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "1",
+          "hash": "62718a2a9c61"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "5",
+          "hash": "013347c29113"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "6",
+          "hash": "4517b014105e"
+        }
+      ],
+      "vectorCases": [
+        "custody-factor-key-code",
+        "custody-factor-key-prf",
+        "custody-factor-seal-code",
+        "custody-factor-seal-prf",
+        "custody-generated-code"
+      ],
+      "tests": [
+        "test/account-local-custody/formats.test.mjs",
+        "test/account-local-custody/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-custody-owner",
+        "inherited-byte-agreement",
+        "encoded-field-omissions"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "custody-generation-envelope",
+      "phase": "D6",
+      "status": "specified",
+      "roles": ["aead"],
+      "signer": null,
+      "labels": ["done/keyenv/v1"],
+      "sourceSites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
           "line": 157,
@@ -3424,12 +3468,260 @@
           "kind": "literal"
         }
       ],
-      "entryPoints": [],
-      "mapEntries": [],
-      "home": "docs/custody.md",
-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "D: review actual runtime v2 credential/key checks and inherited custody entries",
-      "reason": null
+      "entryPoints": [
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "envelopeAAD"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "sealEnvelope"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "openEnvelope"
+        }
+      ],
+      "mapEntries": ["private-local-root-seals", "private-local-custody-open"],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "2",
+          "hash": "13cf45cde8ef"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "5",
+          "hash": "013347c29113"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "6",
+          "hash": "4517b014105e"
+        }
+      ],
+      "vectorCases": ["custody-envelope-1", "custody-envelope-2"],
+      "tests": [
+        "test/account-local-custody/formats.test.mjs",
+        "test/account-local-custody/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-custody-owner",
+        "inherited-byte-agreement",
+        "encoded-field-omissions"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "custody-credential-v2",
+      "phase": "D6",
+      "status": "specified",
+      "roles": ["aead", "carrier"],
+      "signer": null,
+      "labels": ["done/custody-credential/v2"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "line": 213,
+          "label": "done/custody-credential/v2",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "createCredential"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "openCredential"
+        }
+      ],
+      "mapEntries": [
+        "private-local-root-seals",
+        "private-local-custody-pairs",
+        "private-local-custody-open"
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "2",
+          "hash": "13cf45cde8ef"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "3",
+          "hash": "e092a55a66e2"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "5",
+          "hash": "013347c29113"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "6",
+          "hash": "4517b014105e"
+        }
+      ],
+      "vectorCases": ["custody-credential-wrapping", "custody-credential-signing"],
+      "tests": [
+        "test/account-local-custody/formats.test.mjs",
+        "test/account-local-custody/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-custody-owner",
+        "credential-correspondence",
+        "private-format-cleanup",
+        "encoded-field-omissions"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "custody-key-correspondence",
+      "phase": "D6",
+      "status": "specified",
+      "roles": ["predicate"],
+      "signer": null,
+      "labels": ["done/custody-key-check/v2"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "line": 310,
+          "label": "done/custody-key-check/v2",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "openCredential"
+        }
+      ],
+      "mapEntries": ["private-local-custody-pairs", "private-local-custody-open"],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "3",
+          "hash": "e092a55a66e2"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "5",
+          "hash": "013347c29113"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "6",
+          "hash": "4517b014105e"
+        }
+      ],
+      "vectorCases": ["custody-signing-correspondence", "custody-wrapping-correspondence"],
+      "tests": [
+        "test/account-local-custody/formats.test.mjs",
+        "test/account-local-custody/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-custody-owner",
+        "credential-correspondence"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "custody-metadata-v2",
+      "phase": "D6",
+      "status": "specified",
+      "roles": ["kdf", "mac", "predicate"],
+      "signer": null,
+      "labels": ["done/custody-metadata/v2"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "line": 228,
+          "label": "done/custody-metadata/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "line": 261,
+          "label": "done/custody-metadata/v2",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "name": "parseRecord"
+        },
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "name": "recordPayload"
+        },
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "name": "signRecord"
+        },
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "name": "authenticateRecord"
+        },
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "name": "recordEqual"
+        },
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "name": "transact"
+        }
+      ],
+      "mapEntries": [
+        "private-local-custody-metadata-key",
+        "private-local-custody-metadata",
+        "private-local-custody-open"
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "4",
+          "hash": "a4d785bf39e2"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "5",
+          "hash": "013347c29113"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "6",
+          "hash": "4517b014105e"
+        }
+      ],
+      "vectorCases": [
+        "custody-metadata-key",
+        "custody-metadata-creating",
+        "custody-metadata-reserved",
+        "custody-metadata-protected"
+      ],
+      "tests": [
+        "test/account-local-custody/formats.test.mjs",
+        "test/account-local-custody/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-custody-owner",
+        "structured-clone-negatives",
+        "state-counterexample",
+        "native-mac-comparison",
+        "encoded-field-omissions"
+      ],
+      "blocker": null
     },
     {
       "id": "remaining-local-provenance",
@@ -3977,6 +4269,11 @@
       "phase": "D5",
       "vectorFile": "test/vectors/account-store.json",
       "vectorSha256": "79bfaa9e90465f779d3a345bb98704e953cceb748e48819b7d3e1ca02dd5f607"
+    },
+    {
+      "phase": "D6",
+      "vectorFile": "test/vectors/account-local-custody.json",
+      "vectorSha256": "5bfae00faa516252408a1de6bd58e09ac888c340621c8d6c65df1a4dc4221f27"
     }
   ]
 }

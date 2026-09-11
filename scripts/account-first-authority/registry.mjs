@@ -54,7 +54,7 @@ export function checkConstructionRegistry(root, options = {}) {
   const corpusPhases = new Set(['A']);
   for (const corpus of additional) {
     if (
-      !['B', 'C', 'D1', 'D2', 'D3', 'D4', 'D5'].includes(corpus.phase) ||
+      !['B', 'C', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6'].includes(corpus.phase) ||
       corpusPhases.has(corpus.phase)
     )
       fail('unknown/duplicate additional corpus phase');
@@ -79,7 +79,9 @@ export function checkConstructionRegistry(root, options = {}) {
     ids.add(r.id);
     if (!['specified', 'open', 'excluded'].includes(r.status)) fail('unknown status ' + r.id);
     if (
-      !['A', 'B', 'C', 'D', 'D1', 'D2', 'D3', 'D4', 'D5', 'Local', 'non-crypto'].includes(r.phase)
+      !['A', 'B', 'C', 'D', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'Local', 'non-crypto'].includes(
+        r.phase,
+      )
     )
       fail('unknown phase ' + r.id);
     if (
@@ -182,6 +184,19 @@ export function checkConstructionRegistry(root, options = {}) {
     )
       fail('missing native counter/ledger dependency ' + r.id);
     const required = [
+      ...(r.phase === 'D6'
+        ? ['native-custody-owner', ...(r.roles.includes('aead') ? ['encoded-field-omissions'] : [])]
+        : []),
+      ...(['custody-factor-v1', 'custody-generation-envelope'].includes(r.id)
+        ? ['inherited-byte-agreement']
+        : []),
+      ...(['custody-credential-v2', 'custody-key-correspondence'].includes(r.id)
+        ? ['credential-correspondence']
+        : []),
+      ...(r.id === 'custody-credential-v2' ? ['private-format-cleanup'] : []),
+      ...(r.id === 'custody-metadata-v2'
+        ? ['structured-clone-negatives', 'state-counterexample', 'native-mac-comparison']
+        : []),
       'runtime-bytes',
       'input-mutations',
       ...(r.phase === 'D5'
@@ -226,7 +241,7 @@ export function checkConstructionRegistry(root, options = {}) {
         fail('digest vector misclassified ' + r.id);
       if (r.phase === 'D3' && v?.kind === 'carrier' && !v.encodedBindingControls?.length)
         fail('missing carrier omission corpus ' + r.id);
-      if (r.phase === 'D5' && v?.kind === 'aead' && !v.encodedBindingControls?.length)
+      if (['D5', 'D6'].includes(r.phase) && v?.kind === 'aead' && !v.encodedBindingControls?.length)
         fail('missing store/journal omission corpus ' + r.id);
       if (!v?.expected.messageHex || !v.expected.resultHex || !v.negatives?.length)
         fail('missing vector/negative corpus ' + r.id + ' -> ' + id);

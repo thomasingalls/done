@@ -10,6 +10,10 @@ owner for allocated encrypted writes and authenticated loading. The phase-two AP
 below retain their original scope; the [custody regression](./storage-conformance-runs/2026-09-08-content.md)
 reruns their browser controls after that refactor.
 
+**Current byte bridge:** [D6 factor and v2 custody contracts](./account-crypto/local-custody.md)
+pin the actual formats and owner checks, including the strict primitive-state parser correction.
+The historical phase-two execution below retains its original scope.
+
 ## Entry points and ownership
 
 `beginCustodyEnrollment(authority, options)` generates the selected 125-bit device-lock code: 25

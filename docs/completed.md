@@ -2738,3 +2738,47 @@ All 21 personal package hashes, 27 prior tracked vectors, production code, histo
 unrelated root files are preserved. No personal build/server, real Account/factor/operator secret or pin
 was provisioned. Logs, reports and five native mutant source files were copied exactly; a manifest lists
 omitted duplicate frozen source trees. Appended before replacing only L-1.
+
+
+## 2026-09-11 — Inherited factor custody and v2 credential/metadata byte bridges (`L-1` seat)
+
+D5 was committed unsigned as `add6fd7` at the user's request. The existing reminder now includes six
+unsigned commits: C `d098bd4`, D1 `d24ca66`, D2 `1897848`, D3 `24bc3a4`, D4 `837cd14` and D5.
+D6 is complete and remains unstaged/uncommitted. It pins v1 factor/generation-envelope bytes, v2
+private-credential seals, local Ed25519/X25519 correspondence and custody metadata KDF/MAC/ownership.
+
+A generated parser test reproduced a real contract defect: String(state) admitted arrays and boxed
+strings; boxed protected state also preserved the original valid metadata MAC. Fast-check shrank the
+case to boxed state with three reservations in one shrink. Ordinary open independently refused it with
+creation-pending, so no successful unlock, disclosure or authority bypass was reproduced. The one-line
+repair requires primitive state strings. Native structured-clone tests confirm repair-required at parsing,
+restore the old acceptance as a control, and retain the old owner's refusal. Valid formats are unchanged.
+
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-local-custody.md) records 46 passing
+stages and 835 matching input pins. Fifteen independent vectors and the unchanged three inherited factor
+seals/two generation envelopes agree with actual builders/openers. All 115 field mutations and 115
+encoded omission witnesses pass. There are 106 counted nested-parser refusals, six private-format
+failure cases and logical clearing tests. Ten helper source controls and native verification/comparison
+controls remain effective with real crypto operations. The original failing state property, fixture,
+production file and replay instructions are preserved separately from the passing campaign.
+
+After the fix, all 100 generated state cases pass, seed 5110920. Two hundred shrinking-enabled metadata
+histories, seed 5110921, cover 1,539 reservation/completion/reparse/tamper steps without another failure.
+Four native tests (six results including two nested comparison runs) verify real custody derivation,
+independent private/public correspondence, complete metadata MACs, cold opening, 17 cleared temporary
+buffers, valid-tag wrong-key refusal, state rejection and a changed prior-MAC race before root sealing.
+All 13 inherited custody cases and five mutants pass their detection criteria, including actual renderer
+death, concurrent creation, abort, scope, lifetime, cancellation and synthetic profile-copy probes.
+All 983 units in 88 files, typecheck, earlier A/B/C/D1–D5 contracts, 28 vector commands and lint/format pass.
+
+Five constructions replace remaining-shared-custody: 72 specified, two open and one exclusion. The map
+has 73 entries, 90 permitted-root chains and 17 swept documents; nine new registry controls enforce D6
+obligations. The runtime census remains 158 sources/89 labels, with only custodyRecord.ts's hash updated
+for the repair. D7 is the next bounded phase: Account genesis checkpoint and persisted-startup byte
+bridges. Local/migration provenance, PRF ceremonies, general rotation, default-durability/power-loss
+accounting, F-05/F-06, F-15 and broader Account/release gates remain open.
+
+All 21 personal package hashes, 28 prior tracked vector files, historical review, L-2 and unrelated root
+files are preserved. Production change is confined to the strict state guard. No personal build/server,
+real Account, factor, operator secret or pin was provisioned. The evidence manifest records selected
+exact copies and omitted duplicate source/profile material. Appended before replacing only L-1.

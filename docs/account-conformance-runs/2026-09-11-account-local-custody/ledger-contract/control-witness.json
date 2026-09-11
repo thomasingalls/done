@@ -1,0 +1,5 @@
+{
+  "countPrecheckOmitted": "still refused by final pair comparison",
+  "bothCountChecksOmitted": "accepted wrong count",
+  "hashCheckOmitted": "accepted wrong hash"
+}

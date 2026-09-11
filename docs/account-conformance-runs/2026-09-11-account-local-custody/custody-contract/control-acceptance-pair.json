@@ -1,0 +1,5 @@
+{
+  "baseline": "refused",
+  "mutant": "wrong seed passes actual custody callback",
+  "authenticatedPayload": true
+}
