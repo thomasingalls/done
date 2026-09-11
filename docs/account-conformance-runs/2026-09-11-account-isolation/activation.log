@@ -1,0 +1,45 @@
+(node:25277) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25277) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ omitting assertion admits a forbidden first activation (81.820167ms)
+✔ omitting expiry admits a forbidden first activation (64.138667ms)
+✔ omitting target admits a forbidden first activation (62.283458ms)
+✔ generated stale-proof invariant fails and shrinks when assertion verification is omitted (113.862416ms)
+(node:25280) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25280) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ fresh -8 assertion binds the exact completion; no-proof finish leaves every row unchanged (106.073042ms)
+✔ fresh -7 assertion binds the exact completion; no-proof finish leaves every row unchanged (90.734541ms)
+✔ real WebAuthn signatures with wrong purpose, origin, RP, user, presence, verification or credential refuse without consumption (97.014417ms)
+✔ expiry, renewal and a separately valid completion cannot reuse or replace the fixed challenge target (88.366416ms)
+✔ expiry advancing during verification is checked again inside the activation transaction (36.318125ms)
+✔ account/nonce swaps and completion changes cannot borrow another account assertion (88.207167ms)
+✔ closed context rejects aliases, noncanonical passkeys, extra fields and noninteger expiry (33.11625ms)
+✔ before-commit challenge failure has one cold-recoverable result (45.028375ms)
+✔ after-commit challenge failure has one cold-recoverable result (43.23ms)
+✔ schema 4 upgrade preserves pending work; v1 receipts and absent consumed records are retained but refused (53.375958ms)
+✔ 120 shrinking-enabled histories match an independent expiry/consumption/abandonment state machine (4737.966875ms)
+✔ concurrent challenges converge; competing valid proofs consume exactly one activation (51.524583ms)
+✔ challenge losing a race to same completion returns only its exact outcome (41.095167ms)
+✔ challenge losing a race to different completion returns only its exact outcome (38.426625ms)
+(node:25294) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25294) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ client rejects changed signature before prompting; omitted check actually prompts (1605.697166ms)
+✔ client rejects changed target before prompting; omitted check actually prompts (1695.448417ms)
+✔ cancelled assertion forwards abort and drains before a queued tab acquires the slot (1551.090125ms)
+✔ renderer death at prompt cold-recovers; committed result needs no new assertion (1876.844833ms)
+✔ renderer death at lost-finish cold-recovers; committed result needs no new assertion (1964.891375ms)
+(node:25334) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25334) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ SIGKILL before-commit challenge-promotion recovers one durable result (529.687959ms)
+✔ SIGKILL after-commit challenge-promotion recovers one durable result (478.560375ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17159.707708

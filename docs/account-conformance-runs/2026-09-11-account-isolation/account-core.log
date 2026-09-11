@@ -1,0 +1,48 @@
+(node:25345) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25345) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ replay control actually mints a second logical result when retirement guards are removed (52.51375ms)
+✔ wrong-operation proof control is accepted only with expected-challenge verification removed (39.43475ms)
+✔ substituted-key control grants proof only when a caller key replaces the retained verifier (40.104667ms)
+(node:25346) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25346) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ registration, confirmation, pending refusal and discoverable sign-in (-8) (20.718583ms)
+✔ registration policy negatives and attested-key identity (-8) (13.381208ms)
+✔ assertion policy, operation separation, substituted key and exact bytes (-8) (15.156417ms)
+✔ registration, confirmation, pending refusal and discoverable sign-in (-7) (11.379167ms)
+✔ registration policy negatives and attested-key identity (-7) (12.521834ms)
+✔ assertion policy, operation separation, substituted key and exact bytes (-7) (16.671458ms)
+✔ retry secret, operation binding, concurrent proof and conflicting replay (6.932375ms)
+✔ global credential uniqueness, key possession and account identity (8.450417ms)
+✔ expiry, cancellation and account change during verification recheck at commit (10.611333ms)
+✔ abort and lost response around every mutating ceremony commit (11.998292ms)
+✔ hostile wire input is refused and durable policy cannot be changed on restart (4.777333ms)
+✔ caller mutation cannot change the verified/committed request, and retained-key races refuse (9.199417ms)
+✔ a competing process completing confirmation between inspection and crypto returns the same receipt (215.4395ms)
+(node:25348) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25348) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ 160 generated durable ceremony histories against an independent acceptance ledger (2136.804667ms)
+✔ 80 generated sign-in histories preserve one receipt through abort, lost response, replay and restart (1539.090417ms)
+(node:25352) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25352) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ SIGKILL before-commit begin: cold process recovers one outcome (441.651042ms)
+✔ SIGKILL after-commit begin: cold process recovers one outcome (435.847208ms)
+✔ SIGKILL before-commit register: cold process recovers one outcome (423.745875ms)
+✔ SIGKILL after-commit register: cold process recovers one outcome (408.242ms)
+✔ SIGKILL before-commit confirm-registration: cold process recovers one outcome (420.711417ms)
+✔ SIGKILL after-commit confirm-registration: cold process recovers one outcome (443.733917ms)
+✔ SIGKILL before-commit authenticate: cold process recovers one outcome (439.582125ms)
+✔ SIGKILL after-commit authenticate: cold process recovers one outcome (455.946459ms)
+✔ SIGKILL before-commit cancel: cold process recovers one outcome (456.055375ms)
+✔ SIGKILL after-commit cancel: cold process recovers one outcome (433.8795ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9424.076417

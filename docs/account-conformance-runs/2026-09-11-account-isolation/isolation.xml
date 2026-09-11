@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="valid-but-unbound selector passes the old unknown-key negative but leaks a neighboring offer" time="0.089483" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/controls.test.mjs"/>
+	<testcase name="omitting explicit pending target binding makes a crossed request cancel its token owner" time="0.066772" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/controls.test.mjs"/>
+	<testcase name="generated full-row oracle shrinks a missing abandonment account predicate" time="0.995198" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/controls.test.mjs"/>
+	<testcase name="valid neighboring capabilities refuse mixed targets in both directions: pending" time="0.210106" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/core.test.mjs"/>
+	<testcase name="valid neighboring capabilities refuse mixed targets in both directions: offered" time="0.231736" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/core.test.mjs"/>
+	<testcase name="valid neighboring capabilities refuse mixed targets in both directions: challenged" time="0.273361" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/core.test.mjs"/>
+	<testcase name="valid neighboring capabilities refuse mixed targets in both directions: active" time="0.305403" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/core.test.mjs"/>
+	<testcase name="valid neighboring capabilities refuse mixed targets in both directions: cancelled" time="0.127844" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/core.test.mjs"/>
+	<testcase name="neighboring legal abandonment during asynchronous activation leaves the target account independent" time="0.069647" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/core.test.mjs"/>
+	<testcase name="cross-account reads after restart preserve exact offered authority" time="0.062895" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/core.test.mjs"/>
+	<testcase name="cross-account reads after restart preserve exact active authority" time="0.082038" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/core.test.mjs"/>
+	<testcase name="160 generated shared-service histories preserve per-account rows and exact authority across reply loss and restart" time="12.791548" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/generated.test.mjs"/>
+	<testcase name="directed complete histories exercise every before-commit loss with a live neighbor" time="0.163807" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/generated.test.mjs"/>
+	<testcase name="directed complete histories exercise every after-commit loss with a live neighbor" time="0.178906" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/generated.test.mjs"/>
+	<testcase name="live recovery ceremonies reject genuine neighboring capabilities and proofs before either confirmation" time="0.056980" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/recovery.test.mjs"/>
+	<testcase name="cancelling one live recovery ceremony leaves the other confirmable" time="0.024844" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/recovery.test.mjs"/>
+	<testcase name="two-account SIGKILL before-commit offer-promotion preserves the neighbor and exact retry" time="0.543178" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/restart.test.mjs"/>
+	<testcase name="two-account SIGKILL after-commit offer-promotion preserves the neighbor and exact retry" time="0.507164" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/restart.test.mjs"/>
+	<testcase name="two-account SIGKILL before-commit challenge-promotion preserves the neighbor and exact retry" time="0.521612" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/restart.test.mjs"/>
+	<testcase name="two-account SIGKILL after-commit challenge-promotion preserves the neighbor and exact retry" time="0.521020" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/restart.test.mjs"/>
+	<testcase name="two-account SIGKILL before-commit admit-promotion preserves the neighbor and exact retry" time="0.536428" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/restart.test.mjs"/>
+	<testcase name="two-account SIGKILL after-commit admit-promotion preserves the neighbor and exact retry" time="0.531441" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/restart.test.mjs"/>
+	<testcase name="two live service processes independently admit both accounts and reject crossed tokens" time="0.518634" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-isolation/restart.test.mjs"/>
+	<!-- tests 23 -->
+	<!-- suites 0 -->
+	<!-- pass 23 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 20606.839625 -->
+</testsuites>

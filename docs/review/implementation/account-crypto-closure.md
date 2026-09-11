@@ -144,10 +144,15 @@ remain as recorded above. The subsequent [F-15 disposition](./reservation-durabi
 reservation persistence under explicit platform/history assumptions; it does not relabel this audit as
 power-loss evidence.
 
-Next is bounded cross-account admission-capability isolation (F-21.3): two valid concurrent accounts,
-real capability swaps, unchanged state on refusal, and legitimate retries through restart. The existing
-admission generated `wrong` command still supplies only an unknown key. Service-issued refusal/conflict
-composition and remaining parser/diagnostic/performance findings retain their separate obligations.
+F-15 was committed signed as `c10dee3`. The subsequent
+[cross-account admission isolation campaign](./account-isolation.md) closes F-21.3 at the current
+private admission boundary: two recognized accounts in one service, real capability/proof swaps,
+full durable-state checks, generated interleavings and actual process restart. All three ownership
+omission controls are detected. No production defect was found or runtime code changed in that phase.
+
+Next is service-issued refusal/conflict composition (F-21.7) through the actual browser delivery owner,
+including lost replies and restart. Remaining parser, delivery-oracle, residue, diagnostic and performance
+findings retain their separate obligations; this conformance result does not close them.
 
 Platform qualification, whole-profile residue, general lineage/checkpoint evolution, enrollment/adoption,
 revocation/rotation, finalization, recovery replacement, total-loss recovery, deployment/restore and

@@ -2919,3 +2919,44 @@ Next: F-21.3 cross-account admission-capability isolation and restart conformanc
 All 21 personal package hashes, stopped personal servers, historical packet and L-2 are preserved. No
 real Account/factor/operator key/pin/origin/browser change. New F-15 work is unstaged/uncommitted.
 This outcome was appended before the L-1 rewrite.
+
+
+## 2026-09-11 — Cross-account admission capability isolation (`L-1` seat)
+
+F-15 was committed signed as `c10dee3`; all eleven C/D1–D8/audit/F-15 signatures verify `G`.
+The prior 855 source pins were rechecked after commit hooks with no drift. The current F-21.3 phase
+is complete and remains unstaged/uncommitted. No production code or valid protocol bytes changed.
+
+[Current disposition](./review/implementation/account-isolation.md): F-21.3 is closed for the private
+registration/recovery/admission capability boundary. The existing unknown-token generated command did
+not test recognized neighboring authority; the older activation swap fixture also used separate DBs.
+The new fixture has two valid accounts in one core/authority, with distinct workspace/lineage/signing
+identities and real Ed25519/ES256 passkeys, avoiding false isolation from uniqueness collisions.
+
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-isolation.md): 44 stages, 205 Node
+tests, 865 matching source pins, types, 30 vector commands, census/map/registry, lint and format pass.
+The 23 new tests cover 148 directed mixed requests, eight live-recovery swaps, 160 shrinking-enabled
+histories plus complete before/after-commit loss histories, six SIGKILL cases and two live service
+processes. Refusals preserve every logical service/authority row; legal actions preserve the neighbor
+and retain exact offers/challenges/receipts across retry. The state oracle predicts lifecycle, counters,
+activation proof hashes and receipt retention independently of core predicates, while observing and
+pinning first-issued random bytes. No production counterexample was found.
+
+All three omission controls are detected. A recognized-but-unbound token returns a neighboring signed
+offer while the original unknown token still refuses. Removing the explicit pending target accepts a
+crossed abandonment request. Removing the account predicate from proposal cancellation changes the
+neighbor; the generated control shrinks with seed `112104`, path `0:1:1:2:2:2`. Initial focused binding
+expectation/callback-return mistakes were harness-only and corrected before final execution.
+
+Affected admission, activation, account-core, recovery, handoff, bounds and service-delivery regressions
+pass, including selected native browser cases. The new service payloads are synthetic content-blind
+fixtures; inherited native checks exercise actual encrypted content/custody. Full Vitest, aggregate
+crypto audit and broad storage campaigns were not rerun for this test-only change. Process death does
+not establish power-loss behavior or qualify a platform. Other F-21 subfindings remain separately scoped.
+
+Next is F-21.7: real service-issued permanent refusal and competing-digest/conflict evidence through the
+actual browser delivery owner, including lost reply/restart and useful controls. Remaining parser,
+delivery-oracle, neutral-residue, diagnostic/performance and broader Account/release gates remain open.
+All 21 personal package hashes, 31 prior vector files, historical review and L-2 are preserved. Personal
+servers remain stopped; no real Account, browser, factor, operator key, pin, origin or routing change
+occurred. Unrelated root files remain untouched. Appended before replacing only L-1.

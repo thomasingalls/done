@@ -42,14 +42,15 @@ that is no longer active.
 
 ---
 
-## Active slice: Cross-account admission capability isolation (`L-1`)
+
+## Active slice: Service-issued refusal and conflict composition (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: two-account capability/state inventory before conformance repair
+blocks_on: service decision triggers and browser owner state inventory before conformance work
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
@@ -58,47 +59,56 @@ updated: 2026-09-11
 Account remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), item 5's internal creating-member
 ciphertext round trip. Composition `6398e33`, bounds `4f71bac`, activation `2ba50aa`, prep `9cf5c98`,
 A `43b42b1`, B `e74fbaa`, C `a20e439`, D1 `32d4074`, D2 `437bc86`, D3 `10fef3d`, D4 `1500379`,
-D5 `ed1a930`, D6 `862a9d7`, D7 `5555238`, D8 `393ef43`, and aggregate audit `ec889d9` are committed.
-All ten C/D1–D8/audit signatures verify; the signing reminder is paused and the original unsigned chain
-remains under the [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
-No real Account receipt exists. The new F-15 work is complete, unstaged/uncommitted.
+D5 `ed1a930`, D6 `862a9d7`, D7 `5555238`, D8 `393ef43`, aggregate audit `ec889d9` and F-15 `c10dee3`
+are committed signed. All eleven C/D1–D8/audit/F-15 signatures verify. The signing reminder is paused;
+the original unsigned chain remains under the
+[recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
+No real Account receipt exists. The new F-21.3 phase is complete, unstaged/uncommitted.
 
-**Completed boundary.** [F-05/F-06](./review/implementation/account-crypto-closure.md) remain closed for the
-current private first-epoch byte contracts. [F-15](./review/implementation/reservation-durability.md) is now
-fixed under its explicit persistence assumptions. Before repair, a completed-but-unflushed grant could
-be lost after real AES: count 1 against 2 invocations. Custody writes and content allocation/final event
-commits now request strict; both transaction helpers require reported strict before the body. Existing
-strict promotion writes gain the same check. Refusal drains native settlement; network AES follows the
-retained attempt event/witness, not just the local sequence allocation. No cryptographic format changed.
+**Completed boundary.** [F-05/F-06](./review/implementation/account-crypto-closure.md) remain closed for
+the current private first-epoch byte contracts. [F-15](./review/implementation/reservation-durability.md)
+is fixed under explicit persistence assumptions: strict reporting cannot attest physical flush or repair
+past undercounts, and writable profile restores/clones remain outside the argument.
 
-[Evidence](./account-conformance-runs/2026-09-11-account-reservation-durability.md): 50 stages,
-855 matching source pins, 133 Node tests, 47 component cases, all 18 component fault controls detected,
-983 units, types, 30 vector commands, census/map/registry, lint and format pass. The 20 new tests include
-4,000 generated histories with shrinking and effective omitted-persistence/order controls. Native tests
-cover actual AES, strict options, unsupported reports, abort/completion drain and network abandonment.
-An independent candidate review found no concrete remaining bypass/regression; its error-shape prose
-observation was confirmed and corrected. Broad root `pnpm check` and the 71-stage audit were not rerun.
+[F-21.3](./review/implementation/account-isolation.md) is now closed for the current private admission
+capability boundary. Two genuinely recognized accounts share one core/authority with distinct identities.
+Mixed tokens, requests, recovery proofs, challenges and completions refuse without changing any logical
+service/authority row. Legal retries, activation and binding readback work. Three real source omission
+controls expose the original unknown-token coverage gap, a missing explicit target check and unscoped
+proposal cancellation. No production defect was found and no production code or byte format changed.
 
-**Limits.** Strict API reporting cannot attest a physical flush. The argument needs accurate initial
-budgets, only corrected writers and a browser/storage implementation honoring strict semantics. Old
-undercounts, raw writable profile restores/clones and other platforms are not repaired or qualified.
-SC-01 local acknowledgement remains page/navigation-loss scope. General cryptographic lifecycle and
-independent release review remain separate.
+[Evidence](./account-conformance-runs/2026-09-11-account-isolation.md): 44 passing stages, 205 Node tests,
+865 matching source pins, types, 30 vector commands, census/map/registry, lint and format. The 23 new tests
+include 148 directed mixed requests, eight live-recovery swaps, 160 generated histories with shrinking,
+complete before/after-commit reply-loss histories, six SIGKILL cases and two simultaneous service processes.
+The generated control shrinks a neighboring-row mutation to a short history. Affected admission,
+activation, recovery, account-core, handoff, bounds and service-delivery regressions pass, including their
+selected native cases. Full Vitest, broad storage campaigns and the aggregate crypto audit were not rerun.
 
-**Next bounded phase — admission capability isolation and restart conformance (F-21.3), prep included.**
-The existing generated `wrong` command in `test/account-admission/core.test.mjs` uses an unknown retry
-key (`'A'.repeat(43)`), which does not demonstrate isolation between valid accounts.
+**Limits.** The new two-account requests are synthetic content-blind service fixtures; inherited native
+campaigns exercise real encrypted content and browser custody. The state oracle is independent of core
+predicates but observes random first-issued bytes before pinning them. It is not an independent crypto
+implementation. Process death is not power failure. This result does not close other F-21 subfindings,
+HTTP exposure, general recovery, enrollment, platform qualification or independent review.
 
-- Inventory admission/recovery/activation capability bindings and durable state for two genuinely valid
-  concurrent accounts under the same service, including proposal, completion, retry and abandonment.
-- Add legitimate positive controls and swap real capabilities, requests and retained evidence. Assert
-  refusal cannot create, activate, abandon or mutate the other account. Distinguish unknown credentials
-  from valid authority belonging to a different account.
-- Add generated interleavings, lost replies and service restart with an independent per-account state
-  oracle. Require effective omission controls, preserve any counterexample, and repair only demonstrated
-  defects. Keep exact idempotent completion and the existing passkey/receipt binding.
-- Run the affected service/native/activation/vector checks, preserve evidence, archive the outcome before
-  replacing only L-1. This phase does not authorize real provisioning or user-device adoption.
+**Next bounded phase — service-issued refusal/conflict composition (F-21.7), prep included.**
+`test/account-service-delivery/native.test.mjs` still covers actual service acceptance/lost acceptance
+only. Existing client refusal/conflict fixtures sign with `fixtureAcceptance`, bypassing actual service
+issuance. Those tests remain useful but do not prove issuer and client behavior together.
+
+- Inventory legitimate triggers for permanent refusal and competing-digest/head evidence, the service's
+  durable decision/witness state, and the real browser delivery/sync owner's required dispositions.
+  Distinguish a signed permanent decision from unsigned failure, temporary unavailability and unknown
+  commit outcome. Do not invent a client repair policy to make a fixture pass.
+- Exercise genuine `decideSubmission` issuance through the actual browser owner. Cover both ordinary
+  handling and loss of the service response, local persistence interruption and cold restart. Preserve
+  exact pending submission, source coverage, counters, retained decision bytes and visible writing as
+  required by the disposition; compare full durable propositions, not only a state label.
+- Add generated order/retry histories and effective omission controls for the new boundary. Preserve and
+  repair only demonstrated production counterexamples. Fixture keys must not directly mint the decision
+  under test. Keep current exact-retry, refusal and accepted-head contracts intact.
+- Run affected service/client/native/transport/vector checks, preserve evidence and archive the outcome
+  before replacing only L-1. No real provisioning or second-device adoption is part of this phase.
 
 **Personal checkpoint.** All 21 hashes in `dist/` and `.dev/releases/17d87c2/app`, all 31 prior vector
 files, historical review and L-2 are unchanged. Personal preview/relay remain stopped. No real browser,
@@ -107,7 +117,7 @@ bundles stayed in memory. Unrelated root `done ` and `reviewpacket96a20401ceb88d
 Host VM/policy research stays stopped. The actual old second device will adopt the first workspace
 with fresh custody/store/counters/credentials, without importing or merging its previous writing.
 
-**Other gates.** Service-issued refusal/conflict composition, remaining parser negatives, diagnostics/
+**Other gates.** Remaining parser negatives, delivery-oracle and neutral-residue evidence, diagnostics/
 salvage, measured maintenance/performance and accepted review follow-ups remain. General lineage,
 successor checkpoints, concurrent membership, pruning/backlog scale, enrollment/device management,
 revocation/rotation, clear/delete, finalization/total-loss recovery, PRF enrollment, supported platforms,

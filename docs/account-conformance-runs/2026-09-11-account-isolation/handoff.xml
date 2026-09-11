@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="binding is derived from the exact admitted credential, signed in row-12 bytes and stable across restart" time="0.080588" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/core.test.mjs"/>
+	<testcase name="pending, wrong-capability, forged SPKI and changed current eligibility refuse issuance" time="0.046762" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/core.test.mjs"/>
+	<testcase name="credential state changed after signing cannot return a binding from a stale observation" time="0.044360" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/core.test.mjs"/>
+	<testcase name="60 generated issuance histories preserve the independent active/pending eligibility ledger" time="3.177101" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/core.test.mjs"/>
+	<testcase name="credential-integrity control actually signs a substituted key only when the COSE/SPKI guard is disabled" time="0.070282" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/core.test.mjs"/>
+	<testcase name="200 generated OpenSSL DER signatures convert to valid WebCrypto/P1363 scalars; malformed DER refuses" time="0.030452" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/es256.test.mjs"/>
+	<testcase name="handoff selects exactly one Account route and cold classifies offline with passkey plus device factor" time="1.850835" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs"/>
+	<testcase name="real browser ES256 passkey assertion completes handoff and offline startup" time="1.911607" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs"/>
+	<testcase name="renderer interruption before handoff-prepared commit resumes exactly" time="2.213198" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs"/>
+	<testcase name="renderer interruption after handoff-prepared commit resumes exactly" time="2.540722" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs"/>
+	<testcase name="renderer interruption before index commit resumes exactly" time="2.326436" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs"/>
+	<testcase name="renderer interruption after index commit resumes exactly" time="2.534701" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs"/>
+	<testcase name="renderer interruption before handoff-selected commit resumes exactly" time="2.253202" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs"/>
+	<testcase name="renderer interruption after handoff-selected commit resumes exactly" time="2.568985" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs"/>
+	<testcase name="binding and passkey refusals precede any index mutation; replay cannot reopen a new attempt" time="1.929567" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs"/>
+	<testcase name="missing, closed and changed Account routes refuse without repair or Local fallback" time="1.822686" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs"/>
+	<testcase name="passkey fault control actually selects and classifies with an invalid assertion" time="1.861262" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs"/>
+	<testcase name="cancelled index acknowledgement retains the permit until the native commit drains" time="2.049265" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs"/>
+	<testcase name="24 generated handoff histories preserve independent writing and source inventory across aborted commits and restart" time="41.388969" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs"/>
+	<testcase name="actual previous reader and Local owners refuse the Account handoff carrier" time="1.965666" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs"/>
+	<testcase name="missing or damaged provenance refuses startup without creating or rewriting carriers" time="1.682830" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs"/>
+	<!-- tests 21 -->
+	<!-- suites 0 -->
+	<!-- pass 21 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 75648.4665 -->
+</testsuites>

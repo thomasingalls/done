@@ -64,14 +64,14 @@ export async function prepared(t, options = {}) {
     authority = options.authority ?? authorityFixture(t),
     account = await registered(f, options.alg);
   const scope = {
-    principalId: '11'.repeat(16),
-    workspaceId: '22'.repeat(16),
-    lineageId: '33'.repeat(32),
+    principalId: options.scope?.principalId ?? '11'.repeat(16),
+    workspaceId: options.scope?.workspaceId ?? '22'.repeat(16),
+    lineageId: options.scope?.lineageId ?? '33'.repeat(32),
     authRoot: authority.pin.authRoot,
   };
   const recovery = await generateRecovery(scope),
     view = await f.core.beginRecovery({ retryKey: account.retryKey, draft: recovery.draft });
-  const confirmation = await f.core.finishRecovery({
+  const recoveryInput = {
     retryKey: account.retryKey,
     recoveryId: view.recoveryId,
     recoveryProof: await confirmRecovery(
@@ -81,10 +81,12 @@ export async function prepared(t, options = {}) {
       view.draftDigest,
     ),
     response: account.key.assert(view),
-  });
+  };
+  const confirmation = await f.core.finishRecovery(recoveryInput);
   const s = generateKeyPairSync('ed25519'),
     w = generateKeyPairSync('x25519'),
     pub = (key) => key.export({ format: 'der', type: 'spki' }).subarray(-32).toString('hex');
+  const signer = options.signer ?? '55'.repeat(16);
   const candidate = parseGenesis({
     v: 1,
     kind: 'promotion-genesis-candidate',
@@ -93,8 +95,8 @@ export async function prepared(t, options = {}) {
     ...scope,
     generation: 1,
     proposedEpoch: 1,
-    signer: '55'.repeat(16),
-    actors: [{ id: scope.principalId, kind: 'human', credential: '55'.repeat(16) }],
+    signer,
+    actors: [{ id: scope.principalId, kind: 'human', credential: signer }],
     coverage: { derivation: 'yjs-13.6.31-snapshot-v1', snapshot: '0000', heads: [] },
     checkpoint: { v: 1, salt: '66'.repeat(16), nonce: '77'.repeat(12), ct: '88'.repeat(18) },
     wraps: [
@@ -182,6 +184,7 @@ export async function prepared(t, options = {}) {
     account,
     request,
     recovery,
+    recoveryInput,
     s,
     begin,
     completion,

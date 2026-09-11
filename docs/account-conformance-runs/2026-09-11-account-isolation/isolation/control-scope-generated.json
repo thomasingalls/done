@@ -1,0 +1,20 @@
+{
+  "seed": 112104,
+  "numRuns": 1,
+  "numShrinks": 5,
+  "path": "0:1:1:2:2:2",
+  "setup": "two offered accounts",
+  "counterexample": [
+    [
+      {
+        "account": 0,
+        "op": "abandon"
+      },
+      {
+        "account": 0,
+        "op": "offer"
+      }
+    ]
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: neighbor rows changed"
+}

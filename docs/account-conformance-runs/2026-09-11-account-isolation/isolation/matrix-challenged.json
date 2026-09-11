@@ -1,0 +1,189 @@
+{
+  "stage": "challenged",
+  "cases": [
+    {
+      "name": "0->1 offer valid foreign token",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 inspect foreign account",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 abandon foreign account",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 foreign recovery draft",
+      "refusal": "recovery-conflict",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 foreign recovery id",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 foreign recovery token",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 foreign recovery proof",
+      "refusal": "proof-conflict",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 foreign recovery assertion",
+      "refusal": "proof-conflict",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 challenge token",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 challenge digest",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 challenge completion",
+      "refusal": "invalid-proof",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 binding foreign token",
+      "refusal": "account-not-pending",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 finish token",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 finish digest",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 finish completion",
+      "refusal": "invalid-proof",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 finish proof",
+      "refusal": "invalid-proof",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 finish nonce",
+      "refusal": "invalid-proof",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "0->1 finish passkey",
+      "refusal": "invalid-proof",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 offer valid foreign token",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 inspect foreign account",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 abandon foreign account",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 foreign recovery draft",
+      "refusal": "recovery-conflict",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 foreign recovery id",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 foreign recovery token",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 foreign recovery proof",
+      "refusal": "proof-conflict",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 foreign recovery assertion",
+      "refusal": "proof-conflict",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 challenge token",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 challenge digest",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 challenge completion",
+      "refusal": "invalid-proof",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 binding foreign token",
+      "refusal": "account-not-pending",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 finish token",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 finish digest",
+      "refusal": "unknown-attempt",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 finish completion",
+      "refusal": "invalid-proof",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 finish proof",
+      "refusal": "invalid-proof",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 finish nonce",
+      "refusal": "invalid-proof",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    },
+    {
+      "name": "1->0 finish passkey",
+      "refusal": "invalid-proof",
+      "stateHash": "0115163bc795066dc0faebde11fd0c7b5885f6f123892f3fd3876e5d2b8db2d7"
+    }
+  ],
+  "accounts": [
+    "BSgXN_3DXdYAI45khe4iOAcdgJqYyqw81ZcRlG5ozyM",
+    "6lxhJcnf0rb-bfqJKebUGjBNITAEDmC0Pshw37_E1uk"
+  ]
+}

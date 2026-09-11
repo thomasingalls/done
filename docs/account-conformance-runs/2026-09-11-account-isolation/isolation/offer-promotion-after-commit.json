@@ -1,0 +1,8 @@
+{
+  "operation": "offer-promotion",
+  "side": "after-commit",
+  "signal": "SIGKILL",
+  "exactRetry": true,
+  "neighborUnchanged": true,
+  "bothCanActivate": true
+}
