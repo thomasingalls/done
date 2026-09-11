@@ -1,3 +1,12 @@
+import { randomBytes } from 'node:crypto';
+import {
+  ACTIVATION_LIFETIME_MS,
+  activationNonce,
+  activationMessage,
+  requireActivationTarget,
+  parseRetainedActivation,
+  type ActivationChallenge,
+} from '../account-protocol/activation.ts';
 import {
   decideSubmission,
   readAccepted,
@@ -14,6 +23,8 @@ import {
   verifyOffer,
   verifyCompletion,
   verifyReceipt,
+  verifySignature,
+  activationTarget,
   parseOffer,
   parseReceipt,
   parseCompletion,
@@ -91,6 +102,7 @@ interface PromotionRow {
   request: string;
   offer: string;
   acceptance_seal: string;
+  activation: string | null;
   state: 'proposed' | 'admitted' | 'cancelled';
   result: string | null;
 }
@@ -112,6 +124,7 @@ export class AccountCore {
       upgradeFromV1?: boolean;
       upgradeFromV2?: boolean;
       upgradeFromV3?: boolean;
+      upgradeFromV4?: boolean;
     } = {},
   ) {
     validatePolicy(policy);
@@ -147,7 +160,8 @@ export class AccountCore {
         `);
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
-        version !== 4 &&
+        version !== 5 &&
+        !(version === 4 && instrumentation.upgradeFromV4) &&
         !(version === 3 && instrumentation.upgradeFromV3) &&
         !(version === 2 && instrumentation.upgradeFromV2) &&
         !(version === 1 && instrumentation.upgradeFromV1)
@@ -183,6 +197,8 @@ export class AccountCore {
           CREATE UNIQUE INDEX delivery_accepted_position ON delivery_decisions(account_id,position) WHERE kind='accepted';
           PRAGMA user_version=4;`);
       }
+      if (version < 5)
+        this.#db.exec('ALTER TABLE promotions ADD COLUMN activation TEXT; PRAGMA user_version=5;');
       if (
         this.#db.prepare('SELECT value FROM policy WHERE id=1').get()?.value !==
         canonical(this.#policy)
@@ -541,15 +557,17 @@ export class AccountCore {
     retryKey: string,
     request: AdmissionRequest,
     issuer: PromotionIssuer,
-  ): { ok: true; state: PendingState; row?: PromotionRow } | { ok: false; refusal: Refusal } {
+  ):
+    | { ok: true; state: PendingState; credential: StoredCredential; row?: PromotionRow }
+    | { ok: false; refusal: Refusal } {
     const attempt = this.#attempt(retryKey),
       accountId = request.candidate.accountId;
     if (!attempt || attempt.mode !== 'register' || attempt.account_id !== accountId)
       return refuse('unknown-attempt');
     const account = this.#db.prepare('SELECT state FROM accounts WHERE id=?').get(accountId);
     const credential = this.#db
-      .prepare("SELECT id FROM credentials WHERE account_id=? AND state='confirmed'")
-      .get(accountId);
+      .prepare("SELECT * FROM credentials WHERE account_id=? AND state='confirmed'")
+      .get(accountId) as unknown as StoredCredential | undefined;
     const recovery = this.#recovery(attempt);
     const row = this.#db
       .prepare('SELECT * FROM promotions WHERE account_id=?')
@@ -563,10 +581,26 @@ export class AccountCore {
       (account?.state !== 'pending' && !(account?.state === 'active' && row?.state === 'admitted'))
     )
       return refuse('account-not-pending');
+    // A confirmed passkey must be the one in this completed registration, not a supplied member ID.
+    const registration = JSON.parse(attempt.result ?? 'null');
+    if (
+      !registration ||
+      registration.ok !== true ||
+      registration.stage !== 'credential-confirmed' ||
+      registration.attemptId !== attempt.id ||
+      registration.accountId !== accountId ||
+      registration.credentialId !== credential.id
+    )
+      return refuse('invalid-proof');
     if (row) {
       if (!same(parseAdmissionRequest(JSON.parse(row.request)), request))
         return refuse('proof-conflict');
       const offer = parseOffer(JSON.parse(row.offer));
+      if (row.state === 'admitted') {
+        const receipt = this.#promotionView(row) as AdmissionReceipt;
+        if (receipt.activation.context.credentialId !== credential.id)
+          return refuse('invalid-proof');
+      }
       issuer.check(
         JSON.parse(row.acceptance_seal),
         row.request_digest,
@@ -587,12 +621,21 @@ export class AccountCore {
         receiptId: receipt.receiptId,
       },
     });
-    return { ok: true, state, ...(row ? { row } : {}) };
+    return { ok: true, state, credential, ...(row ? { row } : {}) };
   }
   #promotionView(row: PromotionRow): AdmissionOffer | AdmissionReceipt {
-    return row.state === 'admitted'
-      ? parseReceipt(JSON.parse(row.result!))
-      : parseOffer(JSON.parse(row.offer));
+    if (row.state !== 'admitted') return parseOffer(JSON.parse(row.offer));
+    const receipt = parseReceipt(JSON.parse(row.result!));
+    const retained = parseRetainedActivation(JSON.parse(row.activation ?? 'null'));
+    if (
+      !retained.proofHash ||
+      !same(receipt.activation, {
+        context: retained.challenge.context,
+        proofHash: retained.proofHash,
+      })
+    )
+      throw Error('Activation record changed');
+    return receipt;
   }
   async beginPromotion(
     input: unknown,
@@ -620,7 +663,9 @@ export class AccountCore {
       if (request.candidate.authRoot !== issuer.pin.authRoot) return refuse('invalid-proof');
       if (before.row) {
         await verifyOffer(JSON.parse(before.row.offer), request, issuer.pin);
-        return this.#promotionView(before.row);
+        const result = this.#promotionView(before.row);
+        if (result.kind === 'promotion-receipt') await verifyReceipt(result, request, issuer.pin);
+        return result;
       }
       const proposed = await issuer.prepare(request);
       await verifyOffer(proposed.offer, request, issuer.pin);
@@ -659,16 +704,32 @@ export class AccountCore {
       return refuse('invalid-proof');
     }
   }
-  async finishPromotion(
+  challengePromotion(input: unknown, issuer: PromotionIssuer) {
+    return this.#completePromotion(input, issuer, true);
+  }
+  finishPromotion(input: unknown, issuer: PromotionIssuer) {
+    return this.#completePromotion(input, issuer, false);
+  }
+  async #completePromotion(
     input: unknown,
     issuer: PromotionIssuer,
-  ): Promise<AdmissionReceipt | { ok: false; refusal: Refusal }> {
+    challengeOnly: boolean,
+  ): Promise<AdmissionReceipt | ActivationChallenge | { ok: false; refusal: Refusal }> {
     let retryKey: string,
       id: string,
       completion: ReturnType<typeof parseCompletion>,
       request: AdmissionRequest;
+    let proof: { nonce: string; response: unknown } | undefined, proofHash: string | undefined;
     try {
-      if (!object(input) || !fields(input, ['retryKey', 'requestDigest', 'completion']))
+      if (
+        !object(input) ||
+        !fields(
+          input,
+          challengeOnly
+            ? ['retryKey', 'requestDigest', 'completion']
+            : ['retryKey', 'requestDigest', 'completion', 'activation'],
+        )
+      )
         return refuse('malformed');
       const raw = canonical(input);
       if (Buffer.byteLength(raw) > ADMISSION_LIMIT) return refuse('malformed');
@@ -678,6 +739,19 @@ export class AccountCore {
       id = copied.requestDigest;
       if (!/^[0-9a-f]{64}$/.test(id)) return refuse('malformed');
       completion = parseCompletion(copied.completion);
+      if (!challengeOnly) {
+        if (
+          !object(copied.activation) ||
+          !fields(copied.activation, ['nonce', 'response']) ||
+          typeof copied.activation.nonce !== 'string' ||
+          !/^[0-9a-f]{64}$/.test(copied.activation.nonce)
+        )
+          return refuse('malformed');
+        const rawProof = canonical(copied.activation.response);
+        if (Buffer.byteLength(rawProof) > 131072) return refuse('malformed');
+        proof = { nonce: copied.activation.nonce, response: copied.activation.response };
+        proofHash = hash(rawProof);
+      }
       const row = this.#db.prepare('SELECT request FROM promotions WHERE request_digest=?').get(id);
       if (!row) return refuse('unknown-attempt');
       request = parseAdmissionRequest(JSON.parse(row.request as string));
@@ -694,11 +768,101 @@ export class AccountCore {
       await verifyAdmissionRequest(request, before.state);
       const offer = await verifyOffer(JSON.parse(before.row.offer), request, issuer.pin);
       await verifyCompletion(completion, request, offer);
-      if (before.row.state === 'admitted') {
-        const receipt = parseReceipt(JSON.parse(before.row.result!));
-        return same(receipt.completion, completion) ? receipt : refuse('proof-conflict');
+      const target = await activationTarget(request, offer, completion);
+      const saved =
+        before.row.activation === null
+          ? null
+          : parseRetainedActivation(JSON.parse(before.row.activation));
+      if (saved) {
+        requireActivationTarget(saved.challenge.context, target, issuer.pin);
+        if (saved.challenge.context.credentialId !== before.credential.id)
+          return refuse('invalid-proof');
+        await verifySignature(
+          issuer.pin.authRoot,
+          saved.challenge.signature,
+          await activationMessage(saved.challenge.context),
+        );
       }
-      const receipt = await issuer.complete(offer, completion);
+      if (before.row.state === 'admitted') {
+        const receipt = await verifyReceipt(JSON.parse(before.row.result!), request, issuer.pin);
+        if (
+          !same(receipt.completion, completion) ||
+          !saved?.proofHash ||
+          !same(receipt.activation, {
+            context: saved.challenge.context,
+            proofHash: saved.proofHash,
+          })
+        )
+          return refuse('proof-conflict');
+        return challengeOnly ||
+          (proof!.nonce === saved.challenge.context.nonce && proofHash === saved.proofHash)
+          ? receipt
+          : refuse('proof-conflict');
+      }
+      if (saved?.proofHash) return refuse('proof-conflict');
+      if (challengeOnly) {
+        const challenge =
+          saved && this.#now() < saved.challenge.context.expiresAt
+            ? saved.challenge
+            : await issuer.challenge({
+                v: 1,
+                pin: issuer.pin,
+                ...target,
+                credentialId: before.credential.id,
+                nonce: randomBytes(32).toString('hex'),
+                expiresAt: this.#now() + ACTIVATION_LIFETIME_MS,
+              });
+        const result = this.#transaction('challenge-promotion', () => {
+          const now = this.#promotionCurrent(retryKey, request, issuer);
+          if (!now.ok) return now;
+          if (!now.row || canonical(now.credential) !== canonical(before.credential))
+            return refuse('proof-conflict');
+          if (now.row.state === 'admitted') {
+            const receipt = parseReceipt(JSON.parse(now.row.result!));
+            return same(receipt.completion, completion)
+              ? { ok: true as const, value: receipt }
+              : refuse('proof-conflict');
+          }
+          if (canonical(now.row) !== canonical(before.row)) {
+            const current =
+              now.row.activation === null
+                ? null
+                : parseRetainedActivation(JSON.parse(now.row.activation));
+            if (
+              current &&
+              !current.proofHash &&
+              same(
+                {
+                  ...current.challenge.context,
+                  nonce: challenge.context.nonce,
+                  expiresAt: challenge.context.expiresAt,
+                },
+                challenge.context,
+              ) &&
+              this.#now() < current.challenge.context.expiresAt
+            )
+              return { ok: true as const, value: current.challenge };
+            return refuse('proof-conflict');
+          }
+          if (this.#now() >= challenge.context.expiresAt) return refuse('expired');
+          if (!saved || !same(saved.challenge, challenge))
+            this.#db
+              .prepare('UPDATE promotions SET activation=? WHERE account_id=?')
+              .run(JSON.stringify({ challenge, proofHash: null }), target.accountId);
+          return { ok: true as const, value: challenge };
+        });
+        return result.ok ? result.value : result;
+      }
+      if (!saved || saved.challenge.context.nonce !== proof!.nonce) return refuse('invalid-proof');
+      if (this.#now() >= saved.challenge.context.expiresAt) return refuse('expired');
+      const counter = await assertion(
+        proof!.response,
+        await activationNonce(saved.challenge.context),
+        this.#policy,
+        before.credential,
+      );
+      const authorization = { context: saved.challenge.context, proofHash: proofHash! };
+      const receipt = await issuer.complete(offer, completion, authorization);
       this.#hook('after-verify', 'admit-promotion');
       const result = this.#transaction('admit-promotion', () => {
         const now = this.#promotionCurrent(retryKey, request, issuer);
@@ -706,21 +870,27 @@ export class AccountCore {
         if (!now.row) return refuse('unknown-attempt');
         if (now.row.state === 'admitted') {
           const existing = parseReceipt(JSON.parse(now.row.result!));
-          return same(existing.completion, completion)
+          return same(existing, receipt)
             ? { ok: true as const, value: existing }
             : refuse('proof-conflict');
         }
         if (
           canonical(now.row) !== canonical(before.row) ||
+          canonical(now.credential) !== canonical(before.credential) ||
           pendingBytes(now.state) !== pendingBytes(before.state)
         )
           return refuse('proof-conflict');
+        // Expiry is checked at the serialized activation boundary, after all asynchronous work.
+        if (this.#now() >= saved.challenge.context.expiresAt) return refuse('expired');
         this.#db
-          .prepare("UPDATE promotions SET state='admitted',result=? WHERE account_id=?")
-          .run(JSON.stringify(receipt), request.candidate.accountId);
+          .prepare(
+            "UPDATE promotions SET state='admitted',result=?,activation=? WHERE account_id=?",
+          )
+          .run(JSON.stringify(receipt), JSON.stringify({ ...saved, proofHash }), target.accountId);
         this.#db
-          .prepare("UPDATE accounts SET state='active' WHERE id=?")
-          .run(request.candidate.accountId);
+          .prepare('UPDATE credentials SET counter=? WHERE id=?')
+          .run(Math.max(counter, now.credential.counter), now.credential.id);
+        this.#db.prepare("UPDATE accounts SET state='active' WHERE id=?").run(target.accountId);
         return { ok: true as const, value: receipt };
       });
       return result.ok ? result.value : result;

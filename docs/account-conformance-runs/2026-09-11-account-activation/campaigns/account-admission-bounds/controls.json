@@ -1,0 +1,13 @@
+{
+  "semanticRederivation": [
+    "sv",
+    "ds"
+  ],
+  "omittedSignatureFields": [
+    "manifest.sv",
+    "manifest.ds",
+    "admission.derivedSv",
+    "admission.derivedDs"
+  ],
+  "genuineSignatures": true
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="client rejects changed signature before prompting; omitted check actually prompts" time="1.412798" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/native.test.mjs"/>
+	<testcase name="client rejects changed target before prompting; omitted check actually prompts" time="1.497718" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/native.test.mjs"/>
+	<testcase name="cancelled assertion forwards abort and drains before a queued tab acquires the slot" time="1.479559" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/native.test.mjs"/>
+	<testcase name="renderer death at prompt cold-recovers; committed result needs no new assertion" time="1.752270" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/native.test.mjs"/>
+	<testcase name="renderer death at lost-finish cold-recovers; committed result needs no new assertion" time="1.673998" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/native.test.mjs"/>
+	<!-- tests 5 -->
+	<!-- suites 0 -->
+	<!-- pass 5 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 8612.340209 -->
+</testsuites>

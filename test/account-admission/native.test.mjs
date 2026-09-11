@@ -87,6 +87,7 @@ for (const stage of ['admission-requested', 'admission-offered', 'admission-rece
           proveAuthority: prove,
           transport,
           admissionTransport,
+          assertActivation,
         }).then(
           (v) => v,
           (e) => String(e),
@@ -184,6 +185,11 @@ test(
     await f.page.evaluate(() => {
       const call = admissionTransport.begin;
       admissionTransport.begin = async (input) => (await call(input)).offer;
+      const challenge = admissionTransport.challenge;
+      admissionTransport.challenge = async (input) => ({
+        ...(await challenge(input)),
+        signature: '00'.repeat(64),
+      });
     });
     await f.page.evaluate(await admissionBundle('receipt'));
     const accepted = await admit(f.page, item);
@@ -219,6 +225,7 @@ test(
         proveAuthority: prove,
         transport,
         admissionTransport,
+        assertActivation,
         signal: abort.signal,
       }).then(
         (v) => v,
@@ -235,6 +242,7 @@ test(
         proveAuthority: prove,
         transport,
         admissionTransport,
+        assertActivation,
       }).then((v) => {
         finished = true;
         return v;
@@ -268,7 +276,14 @@ test(
     }, args(item));
     await f.page.waitForFunction(() => !!window.releaseLock);
     await f.page.evaluate((item) => {
-      const input = { ...item, pin, proveAuthority: prove, transport, admissionTransport };
+      const input = {
+        ...item,
+        pin,
+        proveAuthority: prove,
+        transport,
+        admissionTransport,
+        assertActivation,
+      };
       window.work = Harness.admitLocalPromotion(input);
       input.slotId = 'elsewhere';
       input.draft.authRoot = 'ff'.repeat(32);

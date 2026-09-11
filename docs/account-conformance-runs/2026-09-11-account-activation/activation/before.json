@@ -1,0 +1,11 @@
+{
+  "commit": "4f71bac",
+  "receiptVersion": 1,
+  "activatedWithoutFreshAssertion": true,
+  "newReaderRefusesActualOldReceipt": true,
+  "finishFields": [
+    "retryKey",
+    "requestDigest",
+    "completion"
+  ]
+}

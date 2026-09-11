@@ -62,7 +62,7 @@ export const semanticBytes = (a) =>
 export async function prepared(t, options = {}) {
   const f = options.fixture ?? fixture(t, options),
     authority = options.authority ?? authorityFixture(t),
-    account = await registered(f);
+    account = await registered(f, options.alg);
   const scope = {
     principalId: '11'.repeat(16),
     workspaceId: '22'.repeat(16),
@@ -152,11 +152,40 @@ export async function prepared(t, options = {}) {
     c.admission.signature = signing(s.privateKey, semanticBytes(c.admission));
     return c;
   };
-  const finish = async (offer) =>
-    authority.owner.finishPromotion(f.core, {
+  const activationInput = async (offer, c, owner = authority.owner, core = f.core) => {
+    const input = {
       retryKey: account.retryKey,
       requestDigest: offer.epoch.requestDigest,
-      completion: await completion(offer),
-    });
-  return { f, authority, account, request, recovery, s, begin, completion, finish };
+      completion: c ?? (await completion(offer)),
+    };
+    const challenge = await owner.challengePromotion(core, input);
+    if (challenge.kind !== 'promotion-activation-challenge') return { result: challenge };
+    const nonce = Buffer.from(
+      hash(lp('done/promotion-activation/v1', hash(JSON.stringify(challenge.context)))),
+      'hex',
+    ).toString('base64url');
+    return {
+      ...input,
+      activation: {
+        nonce: challenge.context.nonce,
+        response: account.key.assert({ options: { challenge: nonce } }),
+      },
+    };
+  };
+  const finish = async (offer, c) => {
+    const input = await activationInput(offer, c);
+    return input.result ?? authority.owner.finishPromotion(f.core, input);
+  };
+  return {
+    f,
+    authority,
+    account,
+    request,
+    recovery,
+    s,
+    begin,
+    completion,
+    activationInput,
+    finish,
+  };
 }

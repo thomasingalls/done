@@ -93,6 +93,7 @@ export async function verifyBindingProof(
     p.requestDigest !== receipt.offer.epoch.requestDigest ||
     p.epochHead !== receipt.offer.head ||
     b.accountId !== request.candidate.accountId ||
+    b.credId !== receipt.activation.context.credentialId ||
     b.principalId !== request.candidate.principalId ||
     b.rpId !== pin.rpId ||
     b.epoch !== receipt.offer.epoch.epoch

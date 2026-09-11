@@ -1,0 +1,90 @@
+{
+  "started": "2026-09-11T13:02:45.878Z",
+  "stages": [
+    {
+      "name": "unit",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "service-core",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "test/account-core/core.test.mjs",
+        "test/account-core/restart.test.mjs",
+        "test/account-core/controls.test.mjs",
+        "test/account-core/properties.test.mjs",
+        "test/account-recovery/core.test.mjs",
+        "test/account-recovery/restart.test.mjs",
+        "test/account-recovery/controls.test.mjs",
+        "test/account-recovery/properties.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "genesis",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-genesis/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "admission",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-admission/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "handoff",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-handoff/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "service-delivery",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-service-delivery/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "bounds",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-admission-bounds/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "sync",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-sync/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "status": "passed",
+  "finished": "2026-09-11T13:15:59.985Z"
+}

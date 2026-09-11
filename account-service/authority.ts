@@ -1,3 +1,4 @@
+import { activationMessage } from '../account-protocol/activation.ts';
 import type { ReadIssuer, InboundReadIssuer } from './delivery.ts';
 import type { ReadPage } from '../account-protocol/deliveryTransport.ts';
 import { bindingMessage } from '../account-protocol/slot.ts';
@@ -290,13 +291,20 @@ export class PrivateAuthority {
         offer.signature = signature(await offerMessage(offer));
         return { offer, seal };
       },
-      complete: async (offer, completion) => {
+      challenge: async (context) => ({
+        v: 1,
+        kind: 'promotion-activation-challenge',
+        context,
+        signature: signature(await activationMessage(context)),
+      }),
+      complete: async (offer, completion, activation) => {
         const receipt: AdmissionReceipt = {
-          v: 1,
+          v: 2,
           kind: 'promotion-receipt',
           offer,
           completion,
           epochSignature: signature(await epochMessage(offer.epoch)),
+          activation,
           signature: '00'.repeat(64),
         };
         receipt.signature = signature(await receiptMessage(receipt));
@@ -307,6 +315,9 @@ export class PrivateAuthority {
   }
   beginPromotion(core: AccountCore, input: unknown) {
     return core.beginPromotion(input, this.#issuer());
+  }
+  challengePromotion(core: AccountCore, input: unknown) {
+    return core.challengePromotion(input, this.#issuer());
   }
   finishPromotion(core: AccountCore, input: unknown) {
     return core.finishPromotion(input, this.#issuer());

@@ -1,0 +1,9 @@
+{
+  "v": 2,
+  "svBytes": 12,
+  "dsBytes": 39750,
+  "updateBytes": 215247,
+  "independentReplay": true,
+  "coldRetryExact": true,
+  "oldReaderRefused": true
+}

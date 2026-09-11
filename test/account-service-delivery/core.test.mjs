@@ -146,12 +146,14 @@ test('membership changes during verification prevent commit', async (t) => {
   assert.equal((await x.call(x.make())).kind, 'unknown');
   assert.equal(x.f.rows('delivery_decisions').length, 0);
 });
-test('schema 3 requires explicit offline upgrade and retains admission authority', async (t) => {
+test('schema 3 upgrade preserves historical rows but cannot invent fresh activation authority', async (t) => {
   const x = await ready(t),
-    before = x.f.rows('promotions').map(({ delivery_witness: _witness, ...r }) => r);
+    before = x.f
+      .rows('promotions')
+      .map(({ delivery_witness: _witness, activation: _activation, ...r }) => r);
   mutate(x, (db) =>
     db.exec(
-      'DROP TABLE delivery_decisions; ALTER TABLE promotions DROP COLUMN delivery_witness; PRAGMA user_version=3;',
+      'DROP TABLE delivery_decisions; ALTER TABLE promotions DROP COLUMN delivery_witness; ALTER TABLE promotions DROP COLUMN activation; PRAGMA user_version=3;',
     ),
   );
   assert.throws(
@@ -166,10 +168,13 @@ test('schema 3 requires explicit offline upgrade and retains admission authority
   upgraded.close();
   x.f.restart();
   assert.deepEqual(
-    x.f.rows('promotions').map(({ delivery_witness: _witness, ...r }) => r),
+    x.f
+      .rows('promotions')
+      .map(({ delivery_witness: _witness, activation: _activation, ...r }) => r),
     before,
   );
-  assert.equal((await x.call(x.make())).kind, 'decision');
+  assert.equal(x.f.rows('promotions')[0].activation, null);
+  assert.equal((await x.call(x.make())).kind, 'unknown');
 });
 test('a valid acceptance-key signature is insufficient without the service-issued closure record', async (t) => {
   const x = await ready(t);

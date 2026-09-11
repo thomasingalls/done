@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="fresh -8 assertion binds the exact completion; no-proof finish leaves every row unchanged" time="0.102520" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="fresh -7 assertion binds the exact completion; no-proof finish leaves every row unchanged" time="0.078760" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="real WebAuthn signatures with wrong purpose, origin, RP, user, presence, verification or credential refuse without consumption" time="0.092177" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="expiry, renewal and a separately valid completion cannot reuse or replace the fixed challenge target" time="0.081504" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="expiry advancing during verification is checked again inside the activation transaction" time="0.033357" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="account/nonce swaps and completion changes cannot borrow another account assertion" time="0.086189" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="closed context rejects aliases, noncanonical passkeys, extra fields and noninteger expiry" time="0.025126" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="before-commit challenge failure has one cold-recoverable result" time="0.040770" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="after-commit challenge failure has one cold-recoverable result" time="0.040935" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="schema 4 upgrade preserves pending work; v1 receipts and absent consumed records are retained but refused" time="0.044184" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="120 shrinking-enabled histories match an independent expiry/consumption/abandonment state machine" time="4.147222" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="concurrent challenges converge; competing valid proofs consume exactly one activation" time="0.046830" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="challenge losing a race to same completion returns only its exact outcome" time="0.035401" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<testcase name="challenge losing a race to different completion returns only its exact outcome" time="0.035849" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-activation/core.test.mjs"/>
+	<!-- tests 14 -->
+	<!-- suites 0 -->
+	<!-- pass 14 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 5115.763459 -->
+</testsuites>

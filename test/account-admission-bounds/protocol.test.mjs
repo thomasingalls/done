@@ -41,12 +41,7 @@ const signCompletion = (x, c, bytes = manifestBytes, semantic = semanticBytes) =
   c.admission.signature = signing(x.s.privateKey, semantic(c.admission));
   return c;
 };
-const finish = (x, o, c) =>
-  x.authority.owner.finishPromotion(x.f.core, {
-    retryKey: x.account.retryKey,
-    requestDigest: o.epoch.requestDigest,
-    completion: c,
-  });
+const finish = (x, o, c) => x.finish(o, c);
 
 test('v2 binds both decoded descriptors at old boundaries and generated sizes through independent OpenSSL bytes', async (t) => {
   const x = await prepared(t),

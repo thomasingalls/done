@@ -27,6 +27,14 @@ export function inspectReceipt(receipt, request, item, expectedText) {
     m = receipt.completion.manifest,
     a = receipt.completion.admission;
   assert.equal(receipt.offer.epoch.requestDigest, hash(JSON.stringify(request)));
+  assert.equal(receipt.v, 2);
+  const context = receipt.activation.context;
+  assert.equal(context.accountId, c.accountId);
+  assert.equal(context.requestDigest, hash(JSON.stringify(request)));
+  assert.equal(context.offerHead, receipt.offer.head);
+  assert.equal(context.completionDigest, hash(JSON.stringify(receipt.completion)));
+  assert.equal(context.credentialId, item.key.id);
+  assert.equal(context.pin.authRoot, item.draft.authRoot);
   const epochBytes = lp('done/first-epoch/v1', hash(JSON.stringify(receipt.offer.epoch)));
   assert.equal(receipt.offer.head, hash(epochBytes));
   signed(item.draft.authRoot, receipt.epochSignature, epochBytes);
@@ -38,7 +46,7 @@ export function inspectReceipt(receipt, request, item, expectedText) {
   signed(
     item.draft.authRoot,
     receipt.signature,
-    lp('done/promotion-receipt/v1', hash(JSON.stringify(unsigned(receipt)))),
+    lp('done/promotion-receipt/v2', hash(JSON.stringify(unsigned(receipt)))),
   );
   signed(
     item.draft.bootstrapSigner,

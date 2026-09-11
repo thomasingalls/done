@@ -2369,3 +2369,33 @@ The next bounded phase is an operation-bound fresh account assertion at first se
 Crypto registry/recovery alignment, invocation power-loss accounting and the other accepted review gates
 remain before real Account use. All 21 personal package hashes, stopped preview/relay, personal browser,
 historical review and L-2 remain unchanged. This phase is uncommitted. Appended before the L-1 rewrite.
+
+
+## 2026-09-11 — Fresh assertion bound to first activation (`L-1` seat)
+
+The descriptor phase was committed as `4f71bac`. [First-activation binding](./account-activation.md)
+now requires a fresh WebAuthn assertion over the exact pin/account/request/offer/completion and actual
+registration passkey, with a service nonce and expiry. The signed challenge is retained before prompting.
+Proof consumption, receipt v2, observed counter and activation share one FULL-synchronous transaction.
+Handoff and service delivery require the passkey identified in that receipt. Raw assertions are not stored.
+
+The private client owns its existing slot/custody permit through assertion UI and drains cancellation.
+A lost committed reply cold-recovers the same receipt with no second prompt. Expired pending challenges
+renew only for the retained completion; old receipts and missing consumed records refuse without
+rewriting history. Schema 5 requires explicit offline upgrade of v4. No real Account receipt exists.
+
+[Evidence](./account-conformance-runs/2026-09-11-account-activation.md) preserves the immutable missing-proof
+reproduction, independent ES256/Ed25519 and context/LP oracles, 120 shrinking-enabled service histories,
+effective service/client omissions and a shrunk stale-proof control, concurrent proofs, process SIGKILL,
+renderer death and deferred assertion cancellation. All 25 bounded tests pass. All 980 units, 49 selected
+registration/recovery checks, complete genesis/admission/handoff/service-delivery/descriptor campaigns,
+composed sync and isolated build/budget/origin/trace checks pass. The full historical aggregate was not
+rerun. A final deterministic race test exposed and repaired mismatched concurrent receipt readback; the client
+already refused it. Final activation/admission checks cover that repair; broader regressions preceded it.
+The passing generated histories established no additional defect.
+
+F-04 is closed at this private seam. Next is Account crypto-contract/vector prep: census actual runtime
+constructions and trust roots, pin durable root-signed encodings and genesis head-vector membership,
+and plan interoperable recovery/vector alignment. The invocation power-loss and other accepted review
+gates remain before real Account use. All 21 personal package hashes, stopped personal preview/relay,
+historical review and L-2 remain unchanged. New activation work remains uncommitted at this checkpoint.

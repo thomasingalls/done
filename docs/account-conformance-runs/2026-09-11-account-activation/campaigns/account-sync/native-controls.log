@@ -1,0 +1,16 @@
+(node:56926) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56926) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:56926) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual final offline submit dispatch control (17708.963583ms)
+✔ actual final pressure submit dispatch control (17461.460334ms)
+✔ omitting the union witness admits missing retained receive evidence on cold open (12708.488083ms)
+✔ self-stream byte binding refuses a different valid envelope from the same synthetic credential (26502.649375ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 76467.560042

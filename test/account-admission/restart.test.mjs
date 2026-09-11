@@ -54,11 +54,7 @@ for (const operation of ['offer-promotion', 'admit-promotion'])
           action = operation === 'offer-promotion' ? 'beginPromotion' : 'finishPromotion';
         const offer = operation === 'admit-promotion' ? await x.begin() : undefined;
         const input = offer
-          ? {
-              retryKey: x.account.retryKey,
-              requestDigest: offer.epoch.requestDigest,
-              completion: await x.completion(offer),
-            }
+          ? await x.activationInput(offer)
           : { retryKey: x.account.retryKey, request: x.request };
         const crash = await worker(t, x, side, operation),
           death = once(crash.child, 'exit');
@@ -88,11 +84,7 @@ test(
       b.call('beginPromotion', request),
     ]);
     assert.deepEqual(offers[0], offers[1]);
-    const input = {
-      retryKey: x.account.retryKey,
-      requestDigest: offers[0].epoch.requestDigest,
-      completion: await x.completion(offers[0]),
-    };
+    const input = await x.activationInput(offers[0]);
     const results = await Promise.all([
       a.call('finishPromotion', input),
       b.call('finishPromotion', input),

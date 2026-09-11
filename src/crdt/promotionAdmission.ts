@@ -1,7 +1,14 @@
+import {
+  parseActivationChallenge,
+  activationMessage,
+  activationOptions,
+  requireActivationTarget,
+} from '../../account-protocol/activation';
 /** Private admission owner. The Local index stays retained and excluded until a later handoff. */
 import {
   parseAdmissionRequest,
-  requestDigest,
+  activationTarget,
+  verifySignature,
   certificationMessage,
   originMessage,
   verifyAdmissionRequest,
@@ -28,14 +35,24 @@ import { signPromotion, writePromotion, type PromotionRecord } from './promotion
 import { hex, random } from './custodyCrypto';
 export interface AdmissionTransport {
   begin(input: { retryKey: string; request: AdmissionRequest }): Promise<unknown>;
-  finish(input: {
+  challenge(input: {
     retryKey: string;
     requestDigest: string;
     completion: AdmissionCompletion;
   }): Promise<unknown>;
+  finish(input: {
+    retryKey: string;
+    requestDigest: string;
+    completion: AdmissionCompletion;
+    activation: { nonce: string; response: unknown };
+  }): Promise<unknown>;
 }
 export interface PromotionAdmissionOptions extends PrepareGenesisOptions {
   admissionTransport: AdmissionTransport;
+  assertActivation: (
+    options: Awaited<ReturnType<typeof activationOptions>>,
+    signal: AbortSignal,
+  ) => Promise<unknown>;
 }
 export async function admitLocalPromotion(
   input: PromotionAdmissionOptions,
@@ -43,6 +60,7 @@ export async function admitLocalPromotion(
   const options = {
     ...ownGenesisOptions(input),
     admissionTransport: { ...input.admissionTransport },
+    assertActivation: input.assertActivation,
   };
   return withPromotionSlot(
     options.slotId,
@@ -137,14 +155,48 @@ export async function admitLocalPromotion(
             await save('admission-offered', { request, offer, completion, receipt: null });
           if (!same(marker.admission!.completion, completion))
             throw Error('Retained completion changed');
-          const answer = await task.wait(async () =>
-            options.admissionTransport.finish({
+          const target = await activationTarget(request, offer, completion);
+          const proposed = await task.wait(() =>
+            options.admissionTransport.challenge({
               retryKey: options.retryKey,
-              requestDigest: await requestDigest(request),
+              requestDigest: target.requestDigest,
               completion: structuredClone(completion),
             }),
           );
+          let answer: unknown;
+          let assertedContext: ReturnType<typeof parseActivationChallenge>['context'] | undefined;
+          if ((proposed as { kind?: unknown })?.kind === 'promotion-receipt') answer = proposed;
+          else {
+            const challenge = parseActivationChallenge(proposed);
+            requireActivationTarget(challenge.context, target, options.pin);
+            await task.wait(async () =>
+              verifySignature(
+                options.pin.authRoot,
+                challenge.signature,
+                await activationMessage(challenge.context),
+              ),
+            );
+            assertedContext = challenge.context;
+            const assertion = await task.wait(async () =>
+              structuredClone(
+                await options.assertActivation(
+                  await activationOptions(challenge.context),
+                  task.signal,
+                ),
+              ),
+            );
+            answer = await task.wait(() =>
+              options.admissionTransport.finish({
+                retryKey: options.retryKey,
+                requestDigest: target.requestDigest,
+                completion: structuredClone(completion),
+                activation: { nonce: challenge.context.nonce, response: assertion },
+              }),
+            );
+          }
           const receipt = await task.wait(() => verifyReceipt(answer, request, options.pin, parts));
+          if (assertedContext && !same(receipt.activation.context, assertedContext))
+            throw Error('Activation receipt changed');
           if (!same(receipt.offer, offer) || !same(receipt.completion, completion))
             throw Error('Admission receipt changed');
           await save('admission-receipted', { request, offer, completion, receipt });

@@ -43,12 +43,26 @@ const script = await admissionBundle();
 export async function native(t) {
   const f = await base(t),
     setup = f.setup;
+  const keys = new Map(),
+    ready = f.ready;
+  f.ready = async (...args) => {
+    const item = await ready(...args);
+    keys.set(item.key.id, item.key);
+    return item;
+  };
+  await f.context.exposeBinding('testActivationAssertion', (_source, options) => {
+    const key = keys.get(options.allowCredentials[0].id);
+    if (!key) throw Error('Unknown activation credential');
+    return key.assert({ options }, { client: { origin: f.server.origin } });
+  });
   f.setup = async (page) => {
     await setup(page);
     await page.evaluate(script);
     await page.evaluate(() => {
+      window.assertActivation = (options) => testActivationAssertion(options);
       window.admissionTransport = {
         begin: (input) => request('/account/promotion/begin', input),
+        challenge: (input) => request('/account/promotion/challenge', input),
         finish: (input) => request('/account/promotion/finish', input),
       };
     });
@@ -65,6 +79,7 @@ export const admit = (page, item) =>
         proveAuthority: prove,
         transport,
         admissionTransport,
+        assertActivation,
       }),
     args(item),
   );

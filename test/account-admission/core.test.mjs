@@ -47,7 +47,7 @@ test('certified first epoch and receipt bind exact recovery, recipients and sepa
   });
   for (const [object, label, sig] of [
     [r.offer.epoch, 'done/first-epoch/v1', r.epochSignature],
-    [r, 'done/promotion-receipt/v1', r.signature],
+    [r, 'done/promotion-receipt/v2', r.signature],
   ]) {
     const body = { ...object };
     delete body.signature;
@@ -107,7 +107,7 @@ test('proposal cannot be replayed as an epoch or completion; malformed and wrong
     mutate(c);
     assert.equal(
       (
-        await x.authority.owner.finishPromotion(x.f.core, {
+        await x.authority.owner.challengePromotion(x.f.core, {
           retryKey: x.account.retryKey,
           requestDigest: offer.epoch.requestDigest,
           completion: c,

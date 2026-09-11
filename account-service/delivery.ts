@@ -1,3 +1,4 @@
+import { parseRetainedActivation } from '../account-protocol/activation.ts';
 /** Private first-lineage service decisions and authenticated readback. No content decryption. */
 import {
   decodeReadRequest,
@@ -104,6 +105,7 @@ interface Promotion {
   acceptance_seal: string;
   state: string;
   delivery_witness: string | null;
+  activation: string | null;
 }
 interface Snapshot {
   promotion: Promotion;
@@ -208,6 +210,15 @@ async function authority(s: Snapshot, issuer: DeliveryIssuer) {
     });
   await verifyAdmissionRequest(request, state);
   await verifyReceipt(receipt, request, issuer.pin);
+  const activation = parseRetainedActivation(JSON.parse(p.activation ?? 'null'));
+  if (
+    !activation.proofHash ||
+    JSON.stringify(receipt.activation) !==
+      JSON.stringify({ context: activation.challenge.context, proofHash: activation.proofHash })
+  )
+    throw Error('Activation record changed');
+  if (receipt.activation.context.credentialId !== s.credential.id)
+    throw Error('Activation credential changed');
   const epoch = receipt.offer.epoch;
   if (
     p.workspace_id !== request.candidate.workspaceId ||

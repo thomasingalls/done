@@ -168,3 +168,10 @@ keeps its original restrictive CSP. No personal browser profile, origin data or 
 The bounded result does not certify filesystem power loss, malicious restore/rollback, a hostile
 administrator, production secret distribution, service-key rotation, the full device matrix or complete
 promotion. It adds no dependency, changes no ordinary app path and pays no whole-protocol debt.
+
+## Current first-activation assertion
+
+The later [first-activation contract](./account-activation.md) binds a fresh service-verified passkey
+assertion to the exact retained completion. The service signs the fixed-purpose challenge and receipt v2;
+challenge consumption and activation share one FULL-synchronous account transaction. These operations
+extend this earlier read/preparation phase; they do not add generic signing authority or real provisioning.

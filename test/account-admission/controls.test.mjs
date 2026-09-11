@@ -66,11 +66,10 @@ for (const gate of ['origin', 'certification'])
     assert.equal(offer.kind, 'promotion-offer');
     // Completion fields are independent of the changed approval signatures; the offered head is used exactly.
     const completion = await x.completion(offer);
-    const result = await owner.finishPromotion(core, {
-      retryKey: x.account.retryKey,
-      requestDigest: offer.epoch.requestDigest,
-      completion,
-    });
+    const result = await owner.finishPromotion(
+      core,
+      await x.activationInput(offer, completion, owner, core),
+    );
     assert.equal(result.kind, 'promotion-receipt');
     assert.equal(x.f.rows('accounts')[0].state, 'active');
     if (process.env.ACCOUNT_REPORT_DIR)

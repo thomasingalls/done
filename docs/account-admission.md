@@ -48,20 +48,23 @@ sentinel, and self_admitted is exactly 1 because the certified set contains only
 Signatures cannot prove truthful replay to the content-blind service: semantic authority here is the
 explicitly identified sole eligible client, and a receiver still must decrypt and rederive coverage.
 
-Finalization rechecks live pending registration, confirmed passkey, confirmed recovery, exact offer,
-client certification, manifest/admission signatures and the retained acceptance-key seal. A single
-SQLite FULL-synchronous transaction stores the complete receipt and marks the account active. Only
-then is the first epoch's root signature returned. The receipt also signs the exact completion; there
-is no digest cycle because the header binds the pre-existing candidate and certified set while the
-manifest binds the resulting header hash. The client verifies all bytes and independently rederived
-coverage before strict replacement to `admission-receipted`. No other Local carrier is changed.
+[Fresh first activation](./account-activation.md) adds a service-signed challenge after the client
+retains its exact completion. The challenge binds the pin, account, request, offered head, completion,
+actual registration passkey, nonce and expiry. The client verifies it before invoking the owned assertion
+callback. Finalization verifies that WebAuthn proof, live registration/recovery, exact offer and completion,
+and the retained acceptance-key seal. A single SQLite FULL-synchronous transaction rechecks expiry,
+consumes the proof, stores receipt **v2**, updates the observed counter and marks the account active.
+Only then is the first epoch's root signature returned. The receipt signs the exact completion and
+activation context/proof hash; it does not contain the raw assertion. The client verifies all bytes and
+independently rederived coverage before strict replacement to `admission-receipted`.
 
 ## Persistence, retries and custody
 
 Account schema 3 adds one promotion row per account and unique non-cancelled workspace/lineage. Cancelled rows retain audit evidence while permitting a new
 registration to propose the same retained workspace. Existing schema 2
 requires explicit offline upgrade. A fresh database creates the current schema. A proposal retains its
-exact request, offer, encrypted acceptance seed, state and optional final receipt. The seed is sealed
+exact request, offer, encrypted acceptance seed, state and optional final receipt. Current schema 5
+also retains the signed activation challenge and its consumed proof hash. The seed is sealed
 under a distinct operator-derived acceptance-custody key with a fresh 16-byte per-seal salt and 12-byte
 nonce; AAD binds the service pin, request digest and exact public key. It is never sent to the client or
 stored unsealed. Lost proposal replies recover the same key and offer. An unreadable seal refuses;
@@ -69,7 +72,9 @@ there is no replacement key. Randomness/rollback assumptions remain as in the pr
 
 Service proposal and finalization serialize through BEGIN IMMEDIATE. Checks performed around async
 signature verification are rechecked against the current rows inside the commit transaction. Exact
-retries return the stored result; altered requests/completions conflict. A cancelled pending attempt
+retries return the stored result; altered requests/completions conflict. An unconsumed challenge expires
+after ten minutes and can renew only for the exact retained completion. After consumption, exact begin/
+challenge readback recovers the existing receipt without a new assertion, including after expiry. A cancelled pending attempt
 cannot be admitted. Abandonment cancels any pending proposal with the registration/recovery in the same
 transaction; after admission it refuses. Consequently a lost final reply never authorizes unilateral
 Local rollback. Existing authenticated Local abandonment may remove the version-3 carrier only after
@@ -89,11 +94,16 @@ that object's signature. The epoch head is SHA256 of the epoch signing message. 
 the full closed request including candidate ciphertext, certification, recovery state and origin endorsement. Trusted callers compare full
 parsed objects as well as their digests; signatures never choose their own verification key.
 
-Private POST routes `/account/promotion/begin` and `/account/promotion/finish` keep exact Host/Origin,
-operator token, JSON and no-store rules. Only these ciphertext-bearing routes accept up to 72 MiB of
+Private POST routes `/account/promotion/begin`, `/account/promotion/challenge` and `/account/promotion/finish` keep exact Host/Origin,
+operator token, JSON and no-store rules. Only these admission routes accept up to 72 MiB of
 JSON; existing small ceremony routes retain 128 KiB. No plaintext document, factor, content key or device
-private key is in either request. No personal service is provisioned or started in this phase.
+private key is in these requests. The assertion response itself is capped at 128 KiB. No personal service is provisioned or started in this phase.
 
 The following [service decision phase](./account-service-delivery.md) advances the private service to
 schema 4 with an explicit offline v3 upgrade. It preserves these admission receipts and their original
 acceptance-key seals while adding permanent content-decision storage.
+
+[First-activation binding](./account-activation.md) advances the current schema to 5 with explicit offline
+v4 upgrade. Proposed rows can resume. Older receipt-v1 artifacts remain retained and refuse; upgrading
+does not fabricate past assertions. New receipt signatures use `done/promotion-receipt/v2`; offer,
+first-epoch and checkpoint encryption versions are unchanged.

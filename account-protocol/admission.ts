@@ -1,3 +1,8 @@
+import {
+  parseActivationAuthorization,
+  requireActivationTarget,
+  type ActivationAuthorization,
+} from './activation.ts';
 /** Private first-epoch admission. Client certification and row-7 semantic evidence remain separate
  * from the service's serialization authority. No transport-supplied verification key is trusted. */
 import { closed, parsePendingState, type PendingState } from './preparation.ts';
@@ -91,11 +96,12 @@ export interface AdmissionCompletion {
   admission: SemanticAdmission;
 }
 export interface AdmissionReceipt {
-  v: 1;
+  v: 2;
   kind: 'promotion-receipt';
   offer: AdmissionOffer;
   completion: AdmissionCompletion;
   epochSignature: string;
+  activation: ActivationAuthorization;
   signature: string;
 }
 export const json = (input: unknown) => new TextEncoder().encode(JSON.stringify(input));
@@ -508,22 +514,43 @@ export async function verifyCompletion(
   await verifySignature(key, c.admission.signature, await semanticMessage(c.admission));
   return c;
 }
+export async function activationTarget(
+  request: AdmissionRequest,
+  offer: AdmissionOffer,
+  completion: AdmissionCompletion,
+) {
+  return {
+    accountId: request.candidate.accountId,
+    requestDigest: await requestDigest(request),
+    offerHead: offer.head,
+    completionDigest: await digest(json(parseCompletion(completion))),
+  };
+}
 export function parseReceipt(input: unknown): AdmissionReceipt {
-  const r = closed(input, ['v', 'kind', 'offer', 'completion', 'epochSignature', 'signature']);
-  if (r['v'] !== 1 || r['kind'] !== 'promotion-receipt')
+  const r = closed(input, [
+    'v',
+    'kind',
+    'offer',
+    'completion',
+    'epochSignature',
+    'activation',
+    'signature',
+  ]);
+  if (r['v'] !== 2 || r['kind'] !== 'promotion-receipt')
     throw Error('Unsupported admission receipt');
   return {
-    v: 1,
+    v: 2,
     kind: 'promotion-receipt',
     offer: parseOffer(r['offer']),
     completion: parseCompletion(r['completion']),
     epochSignature: h(r['epochSignature'], 64),
+    activation: parseActivationAuthorization(r['activation']),
     signature: h(r['signature'], 64),
   };
 }
 export const receiptMessage = (receipt: AdmissionReceipt) => {
   const { signature: _s, ...body } = parseReceipt(receipt);
-  return domainMessage('done/promotion-receipt/v1', body);
+  return domainMessage('done/promotion-receipt/v2', body);
 };
 export async function verifyReceipt(
   input: unknown,
@@ -534,6 +561,11 @@ export async function verifyReceipt(
   const r = parseReceipt(input);
   await verifyOffer(r.offer, request, pin);
   await verifyCompletion(r.completion, request, r.offer, parts);
+  requireActivationTarget(
+    r.activation.context,
+    await activationTarget(request, r.offer, r.completion),
+    pin,
+  );
   await verifySignature(pin.authRoot, r.epochSignature, await epochMessage(r.offer.epoch));
   await verifySignature(pin.authRoot, r.signature, await receiptMessage(r));
   return r;

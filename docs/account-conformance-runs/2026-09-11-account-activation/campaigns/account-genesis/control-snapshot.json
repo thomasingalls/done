@@ -1,0 +1,57 @@
+{
+  "control": "snapshot",
+  "observed": "forged artifact accepted with semantic refusal disabled",
+  "candidate": {
+    "v": 1,
+    "kind": "promotion-genesis-candidate",
+    "preparation": "863201fb1dc0c58ac61e5b55165dcc4673fd63327a39074909eca8f3e37508d8",
+    "accountId": "-roNP3TLXq_HD5qy0WKlTU4Q4zTwJf4FxSRlXyc02Rk",
+    "principalId": "04f6b2e11d8b7a7b25b1925bf3f194e5",
+    "workspaceId": "57af25a21f00e49380b87c43c132c8c2",
+    "lineageId": "09c1f52e48d06557bb43bed2d907bba05bda8b7f5eb5825308b9528e6724b9a9",
+    "authRoot": "39b2431137184abdeacb6645e166ad68bf80df623e11ac12d5a31774e9506b11",
+    "generation": 1,
+    "proposedEpoch": 1,
+    "signer": "e058c2643b0687fe5e7074989a72c826",
+    "actors": [
+      {
+        "id": "04f6b2e11d8b7a7b25b1925bf3f194e5",
+        "kind": "human",
+        "credential": "e058c2643b0687fe5e7074989a72c826"
+      },
+      {
+        "id": "system",
+        "kind": "system",
+        "credential": "e058c2643b0687fe5e7074989a72c826"
+      }
+    ],
+    "coverage": {
+      "derivation": "yjs-13.6.31-snapshot-v1",
+      "snapshot": "01fe88bfd303022c014e0201fe88bfd30374",
+      "heads": []
+    },
+    "checkpoint": {
+      "v": 1,
+      "salt": "16c51af2efe1d754bb78bbfe7a88277a",
+      "nonce": "7598b20e6894b754b14fb8dc",
+      "ct": "f9bd39088c47a157ce542de9fb5e0b93726bfb93d6c8bc8cba4c19707e1591cfee221a8cf8718e6b4503485f9efbd42e0518fa65ddda764c37f49e10bf248a50221537c8af80411e0498164df637dc36d0077aa23c637155a9793e7f0ebc2639538f918761fbc5da1632f88173064d1ae87390054f58b714bb0eb91bc717910b39513631deb8c4bb612883d1703fc58e8e154af4f4a3409efdd4c8c42c05fbb3ab5a0937449e8125352e998c2547dd0367cfff4f951d6edd756943aaf3eb67ee0cd7a81f22c55e7bb858766ab2413679d2f94e4a76aa6277294838e18794803bbf6aade9e1ea5b7d10ad95a2d3ba2906a4f4fcc7e721414e788dc3d6c436e1bd981e6ae3f1c86f75d04478c585dc882951468793072e619b9b30f8681c28be72ae007b5d19ba1d461bd08c58e5b538b4eab89a31bd693d0af335d738421cff30b4277f7d14f662ef574af75bbd06c0e8cffe0559874dd6861b10a99315d6dff1df53fdd0d4ad655fe09aa8adb8894daf702102004a0ba7611b85495f82893d55b53f0119a25364fb7f3a05378c94af90f2d837522c82e4bf4587011c5fcfc484f8cb5a9f91d5fb8eb966bceb9296aadd7c6f386f8c65e88e3c2ffff0cbd59a7603efc3f531fd6e355e7e2742f662a460c7498c325827b74f2acb31d68d4bb964a1a2edae856df41d4f71df8451dd3f57aa8a4c15f390d4452eeada76ce10cbc48f6407e8c393bf813f27bc8e84fd98c525a52133eb0f3d7683b0e7c37ce7ebb7e653a8b1b277e3ecb8edf282b8d122989d4be8218b4aabfa9891b7b9c64dec0190a4eb708e8a5abc190eaccdd1c68a37f96df33408f959c8c4e75ac4c5a3a8cbb6f201cee89e80508342af823bd893053028cb2add27a3bc9bb27df276efdbe7dd97a342549543d0f52ed1f3e48cfd7c383bbac30d2f09ba7f8d3e211e8b2a2bf614a4b556ced48d85f2c5796360a792e25ac764627b287bf2a6405a057a06b38d2684e52f24fcd85d0d1d549d6bdb2ecc2ad19dcf0aac7d7c4e0ada3fcc427977cb91260a7d0cb52f5c40d8debbef7bdda3f7abd8ff1047895e4dd6eb1c7035dadb3a0bccc04af225f0d5eb865e99aa53fbc2fcd0a4f30cc4d91936d2d982fa9876db7e48832cbd9bcd06f877c5ed176cd14172dcfa8b4dc30d330b6cef070da8fc7e6a3dde635c7cf9ba3e02fbfdb22548862b6bf6f763d4aa72d13c3f96c8c7c5d7bf3bd8db1e9ebbabe31e545bd0d6cd9746178a46033a03e62449"
+    },
+    "wraps": [
+      {
+        "recipient": "device",
+        "id": "c47b7d5a8795a6e69dd6d67938fac115",
+        "publicKey": "6b63c13cdaf75098ab6459f676a6a1097db923b2f84cfd688d6091d707eb6c2b",
+        "enc": "178469c0edf1cba4929248f5c0dcac243050168995598b8808f647ea2f07dd32",
+        "ct": "17480eac221adb244c7fa8c010f5ff515d0e2a03b61d4053c792a249e5c4e49f39aa470939bc73419556ac6f01e5394f"
+      },
+      {
+        "recipient": "recovery",
+        "id": "oMFoiUFIleZdlD2g_R4T-ETRHoZVUahK5AJbvITqEgY",
+        "publicKey": "88c815ea420952bd71a9c40e905eae54f8b35125eeb8b685bb8dc24a45c33e14",
+        "enc": "08bbeb6afc52a93678048f1b1ad4e702e226ee8ad748983ee9844caf30253a01",
+        "ct": "3e436dadc27a21e0fc13273405c13f051b123aefb8ebf15267f5f8cc87e6cadf1000016c432c7f5926be6332f94dd3eb"
+      }
+    ],
+    "signature": "1971eb8ea89a3d1fa52c26511e4981ebf941462580c5cd814b2454b30d12cda3237427edd44d5309fa9d08f7fe532cab86f79ef0da293ab076f8279f9841a905"
+  }
+}

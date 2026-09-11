@@ -80,3 +80,8 @@ The verifier now converts strict canonical DER to the 64-byte WebCrypto represen
 negative, overlong, padded, truncated or trailing encodings. Slot binding and challenge bytes are
 unchanged. Tests use independent OpenSSL DER signatures and an actual navigator.credentials.get result;
 this is not evidence about the author's personal authenticator or the full platform matrix.
+
+The current [activation receipt v2](./account-activation.md) identifies the actual registration passkey.
+The slot-binding verifier requires that same passkey ID, in addition to its existing account/scope/key
+checks. This ID is distinct from the workspace signing credential. Old private receipt-v1 artifacts refuse
+without rewriting retained Local carriers.
