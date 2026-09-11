@@ -65,11 +65,11 @@
     },
     {
       "path": "account-service/acceptance.ts",
-      "sha256": "07814a62f2b19498791e445acef72e2045ca962dbae2a902bb913e6f9f3a2973"
+      "sha256": "f877d28c35cdf523f1e2ca50de2da95c90b833f821dba17c086bec84f3dbfc5c"
     },
     {
       "path": "account-service/authority.ts",
-      "sha256": "bf1514205e8f47005d66c9656745b216cbc11bd2bd5ca136ce51e2cc782c5d1f"
+      "sha256": "5dec866aec8030f1dcc195cf73fb65b3f127248acbef56efb1177dcf79827def"
     },
     {
       "path": "account-service/core.ts",
@@ -82,6 +82,10 @@
     {
       "path": "account-service/deliveryWitness.ts",
       "sha256": "6845df5169041b6766ff0d3680abce505ed28a06c93092a305452ad02fbe68d8"
+    },
+    {
+      "path": "account-service/keyEncoding.ts",
+      "sha256": "c226cbea9e72e38e9059541fbf17b8263cd6710daae4501f86986ae347303b4e"
     },
     {
       "path": "account-service/private-server.ts",
@@ -671,7 +675,7 @@
       "sites": [
         {
           "path": "account-service/acceptance.ts",
-          "line": 50
+          "line": 51
         }
       ]
     },
@@ -681,11 +685,11 @@
       "sites": [
         {
           "path": "account-service/acceptance.ts",
-          "line": 64
+          "line": 65
         },
         {
           "path": "account-service/acceptance.ts",
-          "line": 68
+          "line": 69
         }
       ]
     },
@@ -1535,7 +1539,7 @@
       "sites": [
         {
           "path": "account-service/authority.ts",
-          "line": 52
+          "line": 53
         }
       ]
     },

@@ -53,7 +53,7 @@ export function checkConstructionRegistry(root, options = {}) {
   const executed = vectors.vectors.map((v) => ({ ...v, phase: 'A' }));
   const corpusPhases = new Set(['A']);
   for (const corpus of additional) {
-    if (!['B', 'C'].includes(corpus.phase) || corpusPhases.has(corpus.phase))
+    if (!['B', 'C', 'D1'].includes(corpus.phase) || corpusPhases.has(corpus.phase))
       fail('unknown/duplicate additional corpus phase');
     corpusPhases.add(corpus.phase);
     if (digest(read(corpus.vectorFile)) !== corpus.vectorSha256)
@@ -75,7 +75,7 @@ export function checkConstructionRegistry(root, options = {}) {
     if (ids.has(r.id)) fail('duplicate construction ' + r.id);
     ids.add(r.id);
     if (!['specified', 'open', 'excluded'].includes(r.status)) fail('unknown status ' + r.id);
-    if (!['A', 'B', 'C', 'D', 'Local', 'non-crypto'].includes(r.phase))
+    if (!['A', 'B', 'C', 'D', 'D1', 'Local', 'non-crypto'].includes(r.phase))
       fail('unknown phase ' + r.id);
     if (
       !r.roles.length ||
@@ -102,7 +102,9 @@ export function checkConstructionRegistry(root, options = {}) {
       if (!current.sources.some((s) => s.path === e.path))
         fail('entrypoint outside reviewed source census ' + r.id);
       else if (
-        !new RegExp('export (?:async )?(?:function|const) ' + e.name + '\\b').test(read(e.path))
+        !new RegExp('export (?:async )?(?:function|const|class) ' + e.name + '\\b').test(
+          read(e.path),
+        )
       )
         fail('missing entrypoint ' + e.path + '::' + e.name);
     }
@@ -138,6 +140,8 @@ export function checkConstructionRegistry(root, options = {}) {
     for (const id of r.mapEntries)
       if (!entries.has(id) || entries.get(id).status !== 'resolved')
         fail('dangling/unresolved map dependency ' + r.id + ' -> ' + id);
+    if (r.roles.includes('aead') && !r.mapEntries.some((id) => entries.get(id)?.kind === 'aead'))
+      fail('missing AEAD authority entry ' + r.id);
     const signerEntry = {
       authority: ['private-first-service', 'availability'],
       device: ['private-creating-device', 'attribution'],

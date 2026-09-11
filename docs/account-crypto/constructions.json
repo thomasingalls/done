@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "status": "Groups A, B and C specified; group D and inherited Local bridges remain open",
+  "status": "A/B/C and service custody D1 specified; remaining D and inherited Local bridges open",
   "schemaSha256": "50800229da6b62f58d5376c27c844ef85cddb906164dd2b4854f11d3013ae09d",
   "vectorFile": "test/vectors/first-authority.json",
   "vectorSha256": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9",
@@ -847,47 +847,217 @@
       "blocker": null
     },
     {
-      "id": "remaining-service-custody",
-      "phase": "D",
-      "status": "open",
+      "id": "service-root-custody",
+      "phase": "D1",
+      "status": "specified",
       "roles": ["kdf", "aead"],
-      "labels": [
-        "done/service-authority-seal/v1",
-        "done/acceptance-custody/v1",
-        "done/acceptance-seal/v1"
+      "signer": null,
+      "labels": ["done/service-authority-seal/v1"],
+      "sourceSites": [
+        {
+          "path": "account-service/authority.ts",
+          "line": 53,
+          "label": "done/service-authority-seal/v1",
+          "kind": "literal"
+        }
       ],
+      "entryPoints": [
+        {
+          "path": "account-service/authority.ts",
+          "name": "PrivateAuthority"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "1",
+          "hash": "fc3af13356e9"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "2",
+          "hash": "516770c18caa"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "4",
+          "hash": "2b47c6c1e840"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "5",
+          "hash": "06d2aa51332b"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "6",
+          "hash": "1713a08e3b21"
+        }
+      ],
+      "mapEntries": ["private-service-custody-input", "private-service-root-seal"],
+      "vectorCases": ["service-root-key", "service-root-seal"],
+      "tests": [
+        "test/account-service-custody/formats.test.mjs",
+        "test/account-service-custody/exports.test.mjs",
+        "test/account-service-custody/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "service-acceptance-custody",
+      "phase": "D1",
+      "status": "specified",
+      "roles": ["kdf", "aead"],
+      "signer": null,
+      "labels": ["done/acceptance-custody/v1", "done/acceptance-seal/v1"],
       "sourceSites": [
         {
           "path": "account-service/acceptance.ts",
-          "line": 50,
+          "line": 51,
           "label": "done/acceptance-custody/v1",
           "kind": "literal"
         },
         {
           "path": "account-service/acceptance.ts",
-          "line": 64,
+          "line": 65,
           "label": "done/acceptance-seal/v1",
           "kind": "literal"
         },
         {
           "path": "account-service/acceptance.ts",
-          "line": 68,
+          "line": 69,
           "label": "done/acceptance-seal/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "account-service/authority.ts",
-          "line": 52,
-          "label": "done/service-authority-seal/v1",
           "kind": "literal"
         }
       ],
-      "entryPoints": [],
-      "mapEntries": [],
-      "home": "docs/account-admission.md",
-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "D: key schedule/seal vectors and operator-key authority entries",
-      "reason": null
+      "entryPoints": [
+        {
+          "path": "account-service/acceptance.ts",
+          "name": "AcceptanceCustody"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "1",
+          "hash": "fc3af13356e9"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "3",
+          "hash": "8ef023179a38"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "4",
+          "hash": "2b47c6c1e840"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "5",
+          "hash": "06d2aa51332b"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "6",
+          "hash": "1713a08e3b21"
+        }
+      ],
+      "mapEntries": ["private-service-custody-input", "private-service-acceptance-seal"],
+      "vectorCases": [
+        "service-acceptance-custody-key",
+        "service-acceptance-seal-key",
+        "service-acceptance-seal"
+      ],
+      "tests": [
+        "test/account-service-custody/formats.test.mjs",
+        "test/account-service-custody/exports.test.mjs",
+        "test/account-service-custody/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "service-key-exports",
+      "phase": "D1",
+      "status": "specified",
+      "roles": ["predicate", "carrier"],
+      "signer": null,
+      "labels": [],
+      "sourceSites": [],
+      "entryPoints": [
+        {
+          "path": "account-service/keyEncoding.ts",
+          "name": "assertEd25519SeedExport"
+        },
+        {
+          "path": "account-service/keyEncoding.ts",
+          "name": "ed25519PublicHex"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "4",
+          "hash": "2b47c6c1e840"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "6",
+          "hash": "1713a08e3b21"
+        }
+      ],
+      "mapEntries": ["private-service-custody-input"],
+      "vectorCases": ["service-seed-export", "service-public-export"],
+      "tests": [
+        "test/account-service-custody/formats.test.mjs",
+        "test/account-service-custody/exports.test.mjs",
+        "test/account-service-custody/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "service-acceptance-carrier",
+      "phase": "D1",
+      "status": "specified",
+      "roles": ["carrier"],
+      "signer": null,
+      "labels": [],
+      "sourceSites": [],
+      "entryPoints": [
+        {
+          "path": "account-service/acceptance.ts",
+          "name": "AcceptanceCustody"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "1",
+          "hash": "fc3af13356e9"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "3",
+          "hash": "8ef023179a38"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "6",
+          "hash": "1713a08e3b21"
+        }
+      ],
+      "mapEntries": ["private-service-custody-input"],
+      "vectorCases": ["service-acceptance-carrier"],
+      "tests": [
+        "test/account-service-custody/formats.test.mjs",
+        "test/account-service-custody/exports.test.mjs",
+        "test/account-service-custody/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
     },
     {
       "id": "remaining-local-promotion",
@@ -2903,6 +3073,11 @@
       "phase": "C",
       "vectorFile": "test/vectors/account-transport.json",
       "vectorSha256": "c58306bf01bf075ab335c96e785130c63a0c406cbee14548cf18e9387907bc41"
+    },
+    {
+      "phase": "D1",
+      "vectorFile": "test/vectors/account-service-custody.json",
+      "vectorSha256": "544cf328c0eacc87f25d61dff02511db3c66a9b93877e63ebcd0a159876df32c"
     }
   ]
 }

@@ -2534,3 +2534,41 @@ operator authority and tamper controls. Local promotion/capsules, counter-witnes
 startup bridges follow separately. All 21 personal package hashes, historical review, personal servers and
 L-2 remain untouched; no real Account/factor/operator key or pin was provisioned. No personal production
 build or historical aggregate was run. This phase remains uncommitted. Appended before replacing only L-1.
+
+
+## 2026-09-11 — Service root and acceptance-key custody contracts (`L-1` seat)
+
+The user requested staging, not committing: the completed group C transport phase is staged as 114 files.
+Its exact index patch hash was saved and remains unchanged. D1, the service-custody portion of group D,
+is now complete and unstaged. Exact root/acceptance KDF, AAD, seed, seal and provider-format contracts join
+four new construction records to the existing authority map; the remaining D/Local work stays open.
+
+Focused tests reproduced unchecked PKCS#8 algorithm bytes in both creators, key generation after
+acceptance custody had closed, and an exported acceptance seed retained when RNG failed before its
+cleanup block. The repair adds shared strict Ed25519 PKCS#8/SPKI export checks, checks close before
+creation and puts post-export operations inside cleanup. Existing valid stored bytes, versions and
+signatures are unchanged. These are provider-format correctness and bounded cleanup/lifecycle defects,
+not a demonstrated attacker-controlled provider or real-user-key disclosure.
+
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-service-custody.md) records all 39
+stages passing with 771 matching input pins: eight independent fixed cases, 39 input substitutions,
+24 encoded omissions, 19 primitive AEAD refusals, 16 provider-export mutations and eight effective
+production-source guard controls. Two hundred shrinking-enabled histories cold-open independently sealed
+roots from SQLite and reject authentically resealed wrong acceptance seeds. Actual creation, all three
+KDF layers, cold recovery and fixed-purpose signing match the vectors. No further runtime defect was
+found by the generated histories. An initially non-isolating empty-vs-zero HKDF salt mutation was corrected.
+
+All 14 authority regressions pass, including 160 generated and 40 native histories, initialization SIGKILL,
+competing setup and Local+journal preflight. All 69 service/transport/inbound regressions, 983 units,
+typecheck, retained A/B/C conformance, all 23 vector commands and targeted lint/format pass. Seven new
+registry controls prevent missing D1 corpus/owner/export/AEAD/negative obligations. The map has 52 entries,
+59 permitted-root chains and 12 swept documents; the registry has 51 specified records, six open and one
+non-crypto exclusion. The reviewed runtime census is 158 sources and the same 89 labels/templates.
+
+Next is D2: versioned local promotion authentication and deterministic lineage/attempt identities.
+Account capsules, spool/inbound/delivery, counter-witness coupling, checkpoint/startup and inherited
+Local/migration bridge disposition follow separately. F-05/F-06 remain open. Host randomness, unrewound/
+unbranched histories, operator secret distribution, rotation/restore and complete protocol correctness
+are not established by these bytes. All 21 personal package hashes, historical review, personal servers,
+L-2 and the staged transport patch remain unchanged; no real Account, factor, operator secret or pin
+was provisioned. D1 remains unstaged. Appended before replacing only L-1.

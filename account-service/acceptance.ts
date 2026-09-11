@@ -31,6 +31,7 @@ import {
 } from '../account-protocol/positionDecision.ts';
 import { witnessMessage, type WitnessScope, type DeliveryWitness } from './deliveryWitness.ts';
 import { closed } from '../account-protocol/preparation.ts';
+import { assertEd25519SeedExport, ed25519PublicHex } from './keyEncoding.ts';
 export interface AcceptanceSeal {
   v: 1;
   publicKey: string;
@@ -68,17 +69,17 @@ export class AcceptanceCustody {
     return Buffer.concat([pinBytes(this.#pin), lp('done/acceptance-seal/v1', id, pub)]);
   }
   create(id: string): AcceptanceSeal {
+    if (!this.#key) throw Error('Acceptance custody closed');
     unhex(id, 32);
     const pair = generateKeyPairSync('ed25519'),
       raw = pair.privateKey.export({ format: 'der', type: 'pkcs8' });
-    const publicKey = pair.publicKey
-        .export({ format: 'der', type: 'spki' })
-        .subarray(-32)
-        .toString('hex'),
-      salt = randomBytes(16).toString('hex'),
-      nonce = randomBytes(12).toString('hex');
-    const key = this.#derive(salt);
+    let key: Buffer | undefined;
     try {
+      assertEd25519SeedExport(raw);
+      const publicKey = ed25519PublicHex(pair.publicKey),
+        salt = randomBytes(16).toString('hex'),
+        nonce = randomBytes(12).toString('hex');
+      key = this.#derive(salt);
       const cipher = createCipheriv('aes-256-gcm', key, Buffer.from(nonce, 'hex'));
       cipher.setAAD(this.#aad(id, publicKey));
       return {
@@ -93,7 +94,7 @@ export class AcceptanceCustody {
         ]).toString('hex'),
       };
     } finally {
-      key.fill(0);
+      key?.fill(0);
       raw.fill(0);
     }
   }
@@ -112,12 +113,7 @@ export class AcceptanceCustody {
       raw = Buffer.concat([cipher.update(ct.subarray(0, -16)), cipher.final()]);
       encoded = Buffer.concat([Buffer.from('302e020100300506032b657004220420', 'hex'), raw]);
       const privateKey = createPrivateKey({ key: encoded, format: 'der', type: 'pkcs8' });
-      if (
-        createPublicKey(privateKey)
-          .export({ format: 'der', type: 'spki' })
-          .subarray(-32)
-          .toString('hex') !== pub
-      )
+      if (ed25519PublicHex(createPublicKey(privateKey)) !== pub)
         throw Error('Acceptance key mismatch');
       return use(privateKey);
     } finally {

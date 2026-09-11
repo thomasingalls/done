@@ -3,6 +3,7 @@ import type { ReadIssuer, InboundReadIssuer } from './delivery.ts';
 import type { ReadPage } from '../account-protocol/deliveryTransport.ts';
 import { bindingMessage } from '../account-protocol/slot.ts';
 import { AcceptanceCustody } from './acceptance.ts';
+import { assertEd25519SeedExport, ed25519PublicHex } from './keyEncoding.ts';
 import {
   firstEpoch,
   epochHead,
@@ -99,12 +100,7 @@ function unlock(row: SealedRoot, expected: AuthorityPin, operatorKey: Uint8Array
     if (raw.length !== 32) throw Error('Invalid authority scalar');
     encoded = Buffer.concat([seedPrefix, raw]);
     const signing = createPrivateKey({ key: encoded, format: 'der', type: 'pkcs8' });
-    if (
-      createPublicKey(signing)
-        .export({ format: 'der', type: 'spki' })
-        .subarray(-32)
-        .toString('hex') !== pin.authRoot
-    )
+    if (ed25519PublicHex(createPublicKey(signing)) !== pin.authRoot)
       throw Error('Authority private/public mismatch');
     return signing;
   } finally {
@@ -147,12 +143,10 @@ export class PrivateAuthority {
       const pin: AuthorityPin = {
         ...probe,
         serviceId: randomBytes(16).toString('hex'),
-        authRoot: pair.publicKey
-          .export({ format: 'der', type: 'spki' })
-          .subarray(-32)
-          .toString('hex'),
+        authRoot: ed25519PublicHex(pair.publicKey),
       };
       encoded = pair.privateKey.export({ format: 'der', type: 'pkcs8' });
+      assertEd25519SeedExport(encoded);
       const salt = randomBytes(16).toString('hex'),
         nonce = randomBytes(12).toString('hex');
       key = sealKey(operatorKey, pin, salt);

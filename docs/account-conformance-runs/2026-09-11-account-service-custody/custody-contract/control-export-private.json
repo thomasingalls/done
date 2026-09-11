@@ -1,0 +1,5 @@
+{
+  "baseline": "refused",
+  "mutant": "malformed provider OID accepted and root cold-opened",
+  "providerAssumption": true
+}

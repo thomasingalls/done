@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="actual reader omission produces a signed page forbidden by the baseline" time="0.105617" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs"/>
+	<testcase name="actual publisher omission produces a signed page forbidden by the baseline" time="0.086755" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs"/>
+	<testcase name="actual signature omission produces a signed page forbidden by the baseline" time="0.085249" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs"/>
+	<testcase name="actual current omission produces a signed page forbidden by the baseline" time="0.088194" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs"/>
+	<testcase name="actual registration omission produces a signed page forbidden by the baseline" time="0.080766" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs"/>
+	<testcase name="actual witness omission produces a signed page forbidden by the baseline" time="0.079379" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs"/>
+	<testcase name="actual expiry omission produces a signed page forbidden by the baseline" time="0.081321" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs"/>
+	<testcase name="actual custody omission produces a signed page forbidden by the baseline" time="0.081254" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs"/>
+	<testcase name="v2 returns exact bounded witnessed originals across restart; v1 remains a separate purpose" time="0.152676" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/core.test.mjs"/>
+	<testcase name="each role, pin field, signature, expiry and extent is checked with no service writes" time="0.091013" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/core.test.mjs"/>
+	<testcase name="maximum wire sizes still produce byte-bounded pages without losing a position" time="21.810161" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/core.test.mjs"/>
+	<testcase name="registration identity is checked in its own namespace; candidate/member mismatch and lost witness refuse" time="0.060561" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/core.test.mjs"/>
+	<testcase name="state change after verification refuses and four racing snapshots exhaust retries" time="0.055719" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/core.test.mjs"/>
+	<testcase name="caller bytes are copied and a concurrent append forces fresh census after crypto" time="0.048858" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/core.test.mjs"/>
+	<testcase name="expiry and custody loss on the far side of signing withhold every page byte" time="0.041243" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/core.test.mjs"/>
+	<testcase name="another service process cannot change membership during synchronous page signing" time="0.143609" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/core.test.mjs"/>
+	<testcase name="60 generated append/read/restart/replay/role/ledger histories preserve original prefixes" time="5.151592" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/generated.test.mjs"/>
+	<testcase name="owned browser request consumes original service v2 pages over HTTP and cold-replays them" time="7.402722" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/native.test.mjs"/>
+	<testcase name="service SIGKILL after verified read leaves no writes and retry returns originals" time="0.255219" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/restart.test.mjs"/>
+	<testcase name="service SIGKILL after signed read leaves no writes and retry returns originals" time="0.238461" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/restart.test.mjs"/>
+	<!-- tests 20 -->
+	<!-- suites 0 -->
+	<!-- pass 20 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 38485.620042 -->
+</testsuites>

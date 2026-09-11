@@ -1,0 +1,495 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-11T15:47:22.455Z",
+  "node": "v26.8.2",
+  "scope": "D1 service root and acceptance custody byte contracts, provider-format and creation cleanup repairs. Independent fixed vectors, authentic wrong-seed payloads, production guard controls, generated cold-open histories and native authority/transport regressions. No real Account or personal artifacts.",
+  "stages": [
+    {
+      "name": "inventory",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-crypto-prep/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "authority",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/check-authority-map.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "first-authority",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-service-custody/2026-09-11T15-47-22.340Z/first-authority.xml",
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "registry",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-service-custody/2026-09-11T15-47-22.340Z/registry.xml",
+        "test/account-first-authority/registry.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "prep-probes",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-service-custody/2026-09-11T15-47-22.340Z/prep-probes.xml",
+        "test/account-crypto-prep/contracts.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "recovery-contract",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-service-custody/2026-09-11T15-47-22.340Z/recovery-contract.xml",
+        "test/account-recovery-contract/formats.test.mjs",
+        "test/account-recovery-contract/exports.test.mjs",
+        "test/account-recovery-contract/controls.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "formats",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-service-custody/2026-09-11T15-47-22.340Z/formats.xml",
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "service-delivery",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-service-custody/2026-09-11T15-47-22.340Z/service-delivery.xml",
+        "test/account-service-delivery/core.test.mjs",
+        "test/account-service-delivery/generated.test.mjs",
+        "test/account-service-delivery/restart.test.mjs",
+        "test/account-service-delivery/controls.test.mjs",
+        "test/account-service-delivery/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "transport",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-service-custody/2026-09-11T15-47-22.340Z/transport.xml",
+        "test/account-transport/service.test.mjs",
+        "test/account-transport/generated.test.mjs",
+        "test/account-transport/controls.test.mjs",
+        "test/account-transport/native.test.mjs",
+        "test/account-transport/native-controls.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "service-inbound",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-service-custody/2026-09-11T15-47-22.340Z/service-inbound.xml",
+        "test/account-service-inbound/core.test.mjs",
+        "test/account-service-inbound/generated.test.mjs",
+        "test/account-service-inbound/restart.test.mjs",
+        "test/account-service-inbound/controls.test.mjs",
+        "test/account-service-inbound/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "custody-contract",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-service-custody/2026-09-11T15-47-22.340Z/custody-contract.xml",
+        "test/account-service-custody/formats.test.mjs",
+        "test/account-service-custody/exports.test.mjs",
+        "test/account-service-custody/controls.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "authority-regressions",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-service-custody/2026-09-11T15-47-22.340Z/authority-regressions.xml",
+        "test/account-authority/core.test.mjs",
+        "test/account-authority/controls.test.mjs",
+        "test/account-authority/properties.test.mjs",
+        "test/account-authority/restart.test.mjs",
+        "test/account-authority/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "typecheck",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "unit",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--maxWorkers=2"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-01",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-suite-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-02",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-record-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-03",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-journal-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-04",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-recovery-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-05",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-device-lock-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-06",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-finalization-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-07",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-enrollment-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-08",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-envelope-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-09",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-private-envelope-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-10",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-head-discovery-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-11",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-attribution-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-12",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-checkpoint-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-13",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-antireplay-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-14",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-package-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-15",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-account-credential-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-16",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-transition-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-17",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-baseline-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-18",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-admission-bounds/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-19",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-first-authority/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-20",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-recovery-contract/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-21",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-transport-contract/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-22",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-service-custody/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-23",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/check-aad-coverage.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "lint",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/oxlint/bin/oxlint",
+        "scripts/account-first-authority",
+        "scripts/account-transport-contract",
+        "scripts/account-service-custody",
+        "test/account-service-custody",
+        "account-service/authority.ts",
+        "account-service/acceptance.ts",
+        "account-service/keyEncoding.ts",
+        "test/account-transport-contract",
+        "test/account-first-authority",
+        "test/accountTransportContract.test.ts",
+        "test/account-service-inbound/controls.test.mjs",
+        "scripts/check-authority-map.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "format",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "scripts/account-first-authority",
+        "scripts/account-transport-contract",
+        "scripts/account-service-custody",
+        "test/account-service-custody",
+        "account-service/authority.ts",
+        "account-service/acceptance.ts",
+        "account-service/keyEncoding.ts",
+        "test/account-transport-contract",
+        "test/account-first-authority",
+        "test/accountTransportContract.test.ts",
+        "test/account-service-inbound/controls.test.mjs",
+        "scripts/check-authority-map.mjs",
+        "docs/account-crypto/constructions.json",
+        "package.json"
+      ],
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "sourcePinsVerified": 771,
+  "completedAt": "2026-09-11T15:50:58.041Z"
+}

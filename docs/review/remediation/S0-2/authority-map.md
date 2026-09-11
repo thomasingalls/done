@@ -872,3 +872,48 @@ pin: docs/account-crypto/transport.md §5 bb09e7a60319
 pin: docs/account-crypto/transport.md §7 f13da6f75166
 pin: docs/account-crypto/transport.md §8 381c3f07f8b3
 ```
+
+## 10. Private service key custody — group D1
+
+This qualifies the server seed seals and their owner inputs. Client factors and content/recipient
+authority remain independent; the rest of group D and inherited Local bridges remain open.
+
+```authority
+entry: private-service-custody-input
+kind: predicate
+guards: custody
+verifies: validated operator inputs, independent expected pin, exact seed/public exports, key correspondence and closed-owner lifetime
+resolves: the separately supplied operator wrapping secret authenticating the stored seed and scoped descriptor -> root:factor
+resolves: explicit expected-pin comparison and key-format/public-key rederivation; these structural checks grant no client authority -> root:structural
+status: resolved
+pin: docs/account-crypto/service-custody.md §1 fc3af13356e9
+pin: docs/account-crypto/service-custody.md §2 516770c18caa
+pin: docs/account-crypto/service-custody.md §3 8ef023179a38
+pin: docs/account-crypto/service-custody.md §4 2b47c6c1e840
+pin: docs/account-crypto/service-custody.md §5 06d2aa51332b
+pin: docs/account-crypto/service-custody.md §6 1713a08e3b21
+```
+
+```authority
+entry: private-service-root-seal
+kind: aead
+guards: custody
+verifies: the service root seed seal and exact pin-bound KDF/AAD
+discipline: one seed per fresh salt-derived key with a fresh random nonce; requires nonrepeating randomness and unrewound/unbranched histories across initialize/restore/clone; no counter or rotation qualification
+status: resolved
+pin: docs/account-crypto/service-custody.md §2 516770c18caa
+pin: docs/account-crypto/service-custody.md §5 06d2aa51332b
+pin: docs/account-crypto/service-custody.md §6 1713a08e3b21
+```
+
+```authority
+entry: private-service-acceptance-seal
+kind: aead
+guards: custody
+verifies: the two-layer acceptance key schedule, proposal/public-key AAD and seed seal
+discipline: one seed per fresh salt-derived key with a fresh random nonce, under the service-scoped custody root; requires nonrepeating randomness and unrewound/unbranched histories; no rotation/restore qualification
+status: resolved
+pin: docs/account-crypto/service-custody.md §3 8ef023179a38
+pin: docs/account-crypto/service-custody.md §5 06d2aa51332b
+pin: docs/account-crypto/service-custody.md §6 1713a08e3b21
+```

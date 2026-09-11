@@ -1,5 +1,8 @@
 # Private authorization root and Local promotion preflight
 
+Current service key schedules, seal bytes and export/cleanup checks are pinned in the
+[D1 service-custody contract](./account-crypto/service-custody.md). This document retains its phase context.
+
 This bounded slice follows signed `0f1a073` (recovery sealing/confirmation). It establishes a private
 service root owner, verification against an independently supplied pin, and a **read-only** Local
 promotion preflight. It does not issue an epoch, slot binding, account activation or recipient grant.

@@ -18,8 +18,8 @@ const baseline = () => ({
 test('registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups', () => {
   const result = checkConstructionRegistry(root);
   assert.deepEqual(result.failures, []);
-  assert.equal(result.specified, 47);
-  assert.equal(result.open, 7);
+  assert.equal(result.specified, 51);
+  assert.equal(result.open, 6);
   assert.equal(result.excluded, 1);
 });
 
@@ -312,6 +312,85 @@ test('transport coverage refuses missing bytes, misclassified carriers/hashes an
   if (process.env.ACCOUNT_REPORT_DIR)
     writeFileSync(
       join(process.env.ACCOUNT_REPORT_DIR, 'transport-registry-controls.json'),
+      JSON.stringify({ controls: evidence.length, evidence }, null, 2) + '\n',
+    );
+});
+
+test('D1 service custody cannot drop its corpus, owner, export predicate, AEAD discipline edge or negatives', () => {
+  const controls = [
+    [
+      'D1 corpus',
+      (o) =>
+        (o.document.additionalCorpora = o.document.additionalCorpora.filter(
+          (c) => c.phase !== 'D1',
+        )),
+      'specified phase/blocker mismatch',
+    ],
+    [
+      'duplicate D1',
+      (o) =>
+        o.document.additionalCorpora.push(
+          o.document.additionalCorpora.find((c) => c.phase === 'D1'),
+        ),
+      'unknown/duplicate additional corpus phase',
+    ],
+    [
+      'owner export',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'service-root-custody').entryPoints[0].name =
+          'MissingOwner'),
+      'missing entrypoint',
+    ],
+    [
+      'raw export predicate',
+      (o) =>
+        (o.document.constructions = o.document.constructions.filter(
+          (r) => r.id !== 'service-key-exports',
+        )),
+      'orphan executed vector',
+    ],
+    [
+      'AEAD authority edge',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'service-root-custody').mapEntries = [
+          'private-service-custody-input',
+        ]),
+      'missing AEAD authority entry',
+    ],
+    [
+      'carrier role',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'service-acceptance-carrier').roles = [
+          'predicate',
+        ]),
+      'carrier vector misclassified',
+    ],
+  ];
+  const evidence = [];
+  for (const [name, change, expected] of controls) {
+    const o = baseline();
+    change(o);
+    assert(
+      checkConstructionRegistry(root, o).failures.some((f) => f.includes(expected)),
+      name,
+    );
+    evidence.push({ name, expected, caught: true });
+  }
+  const o = baseline(),
+    corpus = o.document.additionalCorpora.find((c) => c.phase === 'D1'),
+    path = corpus.vectorFile,
+    vectors = JSON.parse(read(path));
+  vectors.vectors.find((v) => v.id === 'service-root-seal').negatives = [];
+  const changed = JSON.stringify(vectors);
+  corpus.vectorSha256 = digest(changed);
+  o.read = (p) => (p === path ? changed : read(p));
+  const result = checkConstructionRegistry(root, o);
+  assert(result.failures.some((f) => f.includes('missing vector/negative corpus')));
+  assert(!result.failures.some((f) => f.includes('stale additional vector file pin')));
+  evidence.push({ name: 'negative corpus', caught: true, aggregatePinUpdated: true });
+  if (process.env.ACCOUNT_REPORT_DIR)
+    writeFileSync(
+      join(process.env.ACCOUNT_REPORT_DIR, 'service-custody-registry-controls.json'),
       JSON.stringify({ controls: evidence.length, evidence }, null, 2) + '\n',
     );
 });
