@@ -119,7 +119,8 @@
     "account:local-provenance": "node scripts/account-local-provenance/run.mjs",
     "account:crypto-audit": "node scripts/account-crypto-audit/run.mjs",
     "account:reservation-durability": "node scripts/account-reservation-durability/run.mjs",
-    "account:isolation": "node scripts/account-isolation/run.mjs"
+    "account:isolation": "node scripts/account-isolation/run.mjs",
+    "account:decision-composition": "node scripts/account-decision-composition/run.mjs"
   },
   "dependencies": {
     "@codemirror/commands": "^6.10.4",

@@ -1,0 +1,21 @@
+{
+  "actualStatus": {
+    "state": "ready",
+    "acceptedThrough": 0,
+    "finalThrough": null,
+    "closed": [],
+    "submissions": [
+      1
+    ],
+    "responses": [
+      {
+        "position": 1,
+        "count": 1
+      }
+    ]
+  },
+  "expectedState": "conflict",
+  "falseDurableReturn": false,
+  "cryptoAndIssuerUnchanged": true,
+  "detected": true
+}

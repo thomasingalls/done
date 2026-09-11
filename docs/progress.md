@@ -43,86 +43,85 @@ that is no longer active.
 ---
 
 
-## Active slice: Service-issued refusal and conflict composition (`L-1`)
+## Active slice: Remaining closed-parser conformance (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: service decision triggers and browser owner state inventory before conformance work
+blocks_on: current parser/evidence inventory before deciding missing mutation coverage
 debts: consult docs/review/remediation/debts.json
-updated: 2026-09-11
+updated: 2026-09-12
 ```
 
 **Roadmap position.** Personal Local cutover, source cleanup and packaged offline upgrades are exercised.
 Account remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), item 5's internal creating-member
-ciphertext round trip. Composition `6398e33`, bounds `4f71bac`, activation `2ba50aa`, prep `9cf5c98`,
-A `43b42b1`, B `e74fbaa`, C `a20e439`, D1 `32d4074`, D2 `437bc86`, D3 `10fef3d`, D4 `1500379`,
-D5 `ed1a930`, D6 `862a9d7`, D7 `5555238`, D8 `393ef43`, aggregate audit `ec889d9` and F-15 `c10dee3`
-are committed signed. All eleven C/D1–D8/audit/F-15 signatures verify. The signing reminder is paused;
-the original unsigned chain remains under the
+ciphertext round trip. The byte-contract chain C/D1–D8, aggregate audit `ec889d9`, F-15 `c10dee3` and
+F-21.3 `2bbb4c6` are signed; all twelve signatures verify. The signing reminder is paused and the original
+unsigned chain remains under the
 [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
-No real Account receipt exists. The new F-21.3 phase is complete, unstaged/uncommitted.
+No real Account receipt exists. The new F-21.7 work is complete, unstaged/uncommitted.
 
 **Completed boundary.** [F-05/F-06](./review/implementation/account-crypto-closure.md) remain closed for
 the current private first-epoch byte contracts. [F-15](./review/implementation/reservation-durability.md)
-is fixed under explicit persistence assumptions: strict reporting cannot attest physical flush or repair
-past undercounts, and writable profile restores/clones remain outside the argument.
+is repaired under explicit strict-persistence/history assumptions; physical flush, past undercounts and
+writable profile restores/clones remain outside the result. [F-21.3](./review/implementation/account-isolation.md)
+is closed for shared-service admission capability isolation.
 
-[F-21.3](./review/implementation/account-isolation.md) is now closed for the current private admission
-capability boundary. Two genuinely recognized accounts share one core/authority with distinct identities.
-Mixed tokens, requests, recovery proofs, challenges and completions refuse without changing any logical
-service/authority row. Legal retries, activation and binding readback work. Three real source omission
-controls expose the original unknown-token coverage gap, a missing explicit target check and unscoped
-proposal cancellation. No production defect was found and no production code or byte format changed.
+[F-21.7](./review/implementation/account-decision-composition.md) is now closed for actual service-issued
+refusal/conflict handling through the browser's durable delivery, automatic sender and shared sync owners.
+Real service decisions survive lost HTTP replies, fresh service connections, service/renderer death,
+compaction and cold restart with original writing and exact evidence retained. No production defect
+was found and no production code or valid format changed.
 
-[Evidence](./account-conformance-runs/2026-09-11-account-isolation.md): 44 passing stages, 205 Node tests,
-865 matching source pins, types, 30 vector commands, census/map/registry, lint and format. The 23 new tests
-include 148 directed mixed requests, eight live-recovery swaps, 160 generated histories with shrinking,
-complete before/after-commit reply-loss histories, six SIGKILL cases and two simultaneous service processes.
-The generated control shrinks a neighboring-row mutation to a short history. Affected admission,
-activation, recovery, account-core, handoff, bounds and service-delivery regressions pass, including their
-selected native cases. Full Vitest, broad storage campaigns and the aggregate crypto audit were not rerun.
+[Evidence](./account-conformance-runs/2026-09-12-account-decision-composition.md): 47 passing stages,
+112 Node tests, 40 selected unit cases, 875 matching source pins, types, 30 vector commands,
+census/map/registry, lint and format. The 24 new tests include eight process/renderer commit cuts,
+16 generated retry/reopen histories and 12 generated refusal/successor arrival histories. Three source
+omission controls detect false durable return and incorrect readiness. Affected service/client/native
+regressions pass. Full Vitest, aggregate crypto audit, broad storage and inherited generated-sync
+campaigns were not rerun for this test-only patch.
 
-**Limits.** The new two-account requests are synthetic content-blind service fixtures; inherited native
-campaigns exercise real encrypted content and browser custody. The state oracle is independent of core
-predicates but observes random first-issued bytes before pinning them. It is not an independent crypto
-implementation. Process death is not power failure. This result does not close other F-21 subfindings,
-HTTP exposure, general recovery, enrollment, platform qualification or independent review.
+**Interpretation.** Fixture-only faulty/branched device requests make real service refusal and competing
+heads reachable; they do not implement cloning or a client successor owner. No fixture acceptance key
+mints the tested response. No-reseal checks begin after alternative fixture encryption. Arrival order
+legitimately changes the retained proof set: refusal-first keeps both, conflict-first keeps only the head.
+Send closure leaves receiving available; a competing self-stream is refused before inbound persistence
+with Local editing active and the existing `operation-failed` receive diagnostic. Reopen can append a
+canonical empty Yjs capture; every old capsule is required exactly. Native death is not power failure.
 
-**Next bounded phase — service-issued refusal/conflict composition (F-21.7), prep included.**
-`test/account-service-delivery/native.test.mjs` still covers actual service acceptance/lost acceptance
-only. Existing client refusal/conflict fixtures sign with `fixtureAcceptance`, bypassing actual service
-issuance. Those tests remain useful but do not prove issuer and client behavior together.
+**Next bounded phase — remaining parser coverage (F-21.1), inventory first.**
+The historical packet names `parsePromotion`, `parseAdmissionRequest`, `decodeSourceCapsule`,
+`decodeSpoolEntry`, `decodeDeliveryEntry` and `decodeSubmission`. D2/D3/group C and other later phases
+already add structured/parser negatives; the old blanket absence claim must not be treated as current.
 
-- Inventory legitimate triggers for permanent refusal and competing-digest/head evidence, the service's
-  durable decision/witness state, and the real browser delivery/sync owner's required dispositions.
-  Distinguish a signed permanent decision from unsigned failure, temporary unavailability and unknown
-  commit outcome. Do not invent a client repair policy to make a fixture pass.
-- Exercise genuine `decideSubmission` issuance through the actual browser owner. Cover both ordinary
-  handling and loss of the service response, local persistence interruption and cold restart. Preserve
-  exact pending submission, source coverage, counters, retained decision bytes and visible writing as
-  required by the disposition; compare full durable propositions, not only a state label.
-- Add generated order/retry histories and effective omission controls for the new boundary. Preserve and
-  repair only demonstrated production counterexamples. Fixture keys must not directly mint the decision
-  under test. Keep current exact-retry, refusal and accepted-head contracts intact.
-- Run affected service/client/native/transport/vector checks, preserve evidence and archive the outcome
-  before replacing only L-1. No real provisioning or second-device adoption is part of this phase.
+- Map each parser's current accepted versions, size/resource bounds, canonical encoding, owner entry
+  points and executed negative/property coverage. Credit existing evidence before selecting new cases.
+- Add only missing useful mutations around valid objects/wires: nested structure, numeric/length bounds,
+  truncation, canonical syntax, route/version substitutions and relevant hostile object shapes. Assert
+  bounded refusal or exact valid round-trip behavior without mistaking an encoder-only rejection for
+  execution of the parser under test.
+- Use independently specified expectations and effective omitted-check controls; preserve shrinking
+  seeds/paths for real failures. Repair only demonstrated defects, retaining compatibility and authority
+  boundaries. A byte parser does not establish cryptographic authority or lifecycle eligibility.
+- Run affected parser/owner/vector/type checks, preserve evidence and archive before replacing only L-1.
+  This phase does not authorize real provisioning, device adoption or a personal server restart.
 
 **Personal checkpoint.** All 21 hashes in `dist/` and `.dev/releases/17d87c2/app`, all 31 prior vector
 files, historical review and L-2 are unchanged. Personal preview/relay remain stopped. No real browser,
 Account, factor, operator key, pin, origin or routing change occurred. Fixtures were disposable; new
 bundles stayed in memory. Unrelated root `done ` and `reviewpacket96a20401ceb88d.md` remain untouched.
+A new root `review-packet-1ceb88d-393ef43.md` appeared during the run and was also left untouched.
 Host VM/policy research stays stopped. The actual old second device will adopt the first workspace
 with fresh custody/store/counters/credentials, without importing or merging its previous writing.
 
-**Other gates.** Remaining parser negatives, delivery-oracle and neutral-residue evidence, diagnostics/
-salvage, measured maintenance/performance and accepted review follow-ups remain. General lineage,
-successor checkpoints, concurrent membership, pruning/backlog scale, enrollment/device management,
-revocation/rotation, clear/delete, finalization/total-loss recovery, PRF enrollment, supported platforms,
+**Other gates.** F-21.6's named delivery-unit oracle, neutral-residue evidence, diagnostics/salvage,
+measured maintenance/performance and accepted review follow-ups remain. General lineage, successor
+checkpoints, concurrent membership, pruning/backlog scale, enrollment/device management, revocation/
+rotation, clear/delete, finalization/total-loss recovery, PRF enrollment, supported platforms,
 whole-profile residue, deployment/restore and independent review remain separate. L-2's historical ref
-`d24732b` has no further service work to integrate. No personal server restart is authorized here.
+`d24732b` has no further service work to integrate.
 
 The outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 

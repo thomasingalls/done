@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="40" failures="0" errors="0" time="1.923461793">
+    <testsuite name="test/accountDelivery.test.ts" timestamp="2026-09-11T22:17:24.008Z" hostname="Thomass-MacBook-Pro.local" tests="4" failures="0" errors="0" skipped="0" time="0.068401125">
+        <testcase classname="test/accountDelivery.test.ts" name="500 generated proof histories agree with independent prefix and closure propositions at every step" time="0.067366792">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="a later head contradicts an earlier closure in either delivery order (true)" time="0.00013875">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="a later head contradicts an earlier closure in either delivery order (false)" time="0.000129917">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="acceptance and closure duplicates are propositions, and conflict is irreversible" time="0.0001275">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/accountDriver.test.ts" timestamp="2026-09-11T22:17:24.009Z" hostname="Thomass-MacBook-Pro.local" tests="8" failures="0" errors="0" skipped="0" time="0.049930792">
+        <testcase classname="test/accountDriver.test.ts" name="owned delivery scheduling &gt; coalesces wake storms, keeps one pass, and does not lose an edit arriving during idle detection" time="0.001937042">
+        </testcase>
+        <testcase classname="test/accountDriver.test.ts" name="owned delivery scheduling &gt; unknown backoff caps at 30 seconds and ordinary edits cannot accelerate it" time="0.000810917">
+        </testcase>
+        <testcase classname="test/accountDriver.test.ts" name="owned delivery scheduling &gt; offline and Local pressure cancel timers, and restore/manual retry expedite work" time="0.000277875">
+        </testcase>
+        <testcase classname="test/accountDriver.test.ts" name="owned delivery scheduling &gt; permanent evidence and unexpected operation failures suppress automatic retries" time="0.000443125">
+        </testcase>
+        <testcase classname="test/accountDriver.test.ts" name="owned delivery scheduling &gt; abort clears backoff immediately and drains unfinished work; observers cannot start work after close" time="0.000362583">
+        </testcase>
+        <testcase classname="test/accountDriver.test.ts" name="owned delivery scheduling &gt; 200 generated deferred event histories preserve single ownership, bounded timers and the retry floor" time="0.044355">
+        </testcase>
+        <testcase classname="test/accountDriver.test.ts" name="owned delivery step &gt; resolves persisted wrappers before preparation and never reseals a persisted envelope on an unknown reply" time="0.000741917">
+        </testcase>
+        <testcase classname="test/accountDriver.test.ts" name="owned delivery step &gt; derives progress only from durable status and halts on owned publication evidence" time="0.000199667">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/accountReceiveDriver.test.ts" timestamp="2026-09-11T22:17:24.010Z" hostname="Thomass-MacBook-Pro.local" tests="10" failures="0" errors="0" skipped="0" time="0.11559925">
+        <testcase classname="test/accountReceiveDriver.test.ts" name="polls five seconds after empty, yields 50ms between pages, and coalesces wakes including reentrant observers" time="0.002141583">
+        </testcase>
+        <testcase classname="test/accountReceiveDriver.test.ts" name="caps unknown backoff, preserves its floor through Local pauses, and allows only explicit expedite" time="0.001223834">
+        </testcase>
+        <testcase classname="test/accountReceiveDriver.test.ts" name="offline and pressure pause timers without deleting a permanent halt, including failures while paused" time="0.000529625">
+        </testcase>
+        <testcase classname="test/accountReceiveDriver.test.ts" name="close drains its pass and suppresses late notifications; synchronous observer closure prevents dispatch" time="0.000375">
+        </testcase>
+        <testcase classname="test/accountReceiveDriver.test.ts" name="a gate transition during an unfinished pass cannot overlap work or lose polling after resume" time="0.000231958">
+        </testcase>
+        <testcase classname="test/accountReceiveDriver.test.ts" name="400 generated deferred schedules obey an independent timer/deadline and halt oracle" time="0.10206775">
+        </testcase>
+        <testcase classname="test/accountReceiveDriver.test.ts" name="uses durable progress only and treats a verified empty result as polling idle" time="0.000936458">
+        </testcase>
+        <testcase classname="test/accountReceiveDriver.test.ts" name="resumes after reentrant Local pressure interrupts startup before the owned step begins" time="0.000210875">
+        </testcase>
+        <testcase classname="test/accountReceiveDriver.test.ts" name="100 generated observer-pause durations resume the unstarted pass through an ordinary gate wake" time="0.006676083">
+        </testcase>
+        <testcase classname="test/accountReceiveDriver.test.ts" name="a pass skipped for readiness neither claims a verified end nor resets the unknown streak" time="0.000307416">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/accountSyncDriver.test.ts" timestamp="2026-09-11T22:17:24.011Z" hostname="Thomass-MacBook-Pro.local" tests="6" failures="0" errors="0" skipped="0" time="0.394339417">
+        <testcase classname="test/accountSyncDriver.test.ts" name="alternates ready lanes, keeps independent idle deadlines and wakes an idle sender" time="0.002110667">
+        </testcase>
+        <testcase classname="test/accountSyncDriver.test.ts" name="retains local wakes during send, but cannot accelerate unknown backoff or clear a halt" time="0.000474">
+        </testcase>
+        <testcase classname="test/accountSyncDriver.test.ts" name="observer pause before dispatch retains the startup deadline; observer close drains without dispatch" time="0.000366292">
+        </testcase>
+        <testcase classname="test/accountSyncDriver.test.ts" name="close waits for active work and cannot start the due opposite lane" time="0.000248833">
+        </testcase>
+        <testcase classname="test/accountSyncDriver.test.ts" name="outbound progress comes only from durable decisions and pending exact submissions bypass all sealing" time="0.000408292">
+        </testcase>
+        <testcase classname="test/accountSyncDriver.test.ts" name="400 generated deferred histories agree with an independent two-lane event model" time="0.389924417">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/positionDecision.test.ts" timestamp="2026-09-11T22:17:24.012Z" hostname="Thomass-MacBook-Pro.local" tests="12" failures="0" errors="0" skipped="0" time="1.295191209">
+        <testcase classname="test/positionDecision.test.ts" name="reads the selected refusal and link/head messages without changing their signed bytes" time="0.004002375">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="binds all five refusal subject fields, parent and the current externally held acceptance key" time="0.003006">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="authenticates a reconstructed link, distinguishes a proved conflicting leaf, and holds unanchored heads" time="0.003431541">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="keeps refusal IDs stable across acceptance-key rotation while requiring the current signature" time="0.001472417">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="rejects unknown, noncanonical, oversized, unsigned and malformed response bytes" time="0.001483208">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="200 generated signed chain histories distinguish exact evidence, conflicting leaves and foreign prefixes" time="0.94418175">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="signs a separate submission wrapper over exact v2 bytes and parent refusal ID" time="0.0034295">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="rejects swapping a valid parent proof, changing exact wire, skipping positions and stale proof keys" time="0.007861459">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="100 generated successor proofs bind parent bytes, original position and independent signing inputs" time="0.3212435">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="captures response, expected subject and authority before asynchronous verification" time="0.000672625">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="captures submission inputs and rejects malformed/trailing/oversized framing" time="0.001122792">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="re-signing the same permanent parent under the current key preserves wrapper verification" time="0.002320917">
+        </testcase>
+    </testsuite>
+</testsuites>

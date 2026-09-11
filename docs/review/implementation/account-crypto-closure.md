@@ -150,9 +150,15 @@ private admission boundary: two recognized accounts in one service, real capabil
 full durable-state checks, generated interleavings and actual process restart. All three ownership
 omission controls are detected. No production defect was found or runtime code changed in that phase.
 
-Next is service-issued refusal/conflict composition (F-21.7) through the actual browser delivery owner,
-including lost replies and restart. Remaining parser, delivery-oracle, residue, diagnostic and performance
-findings retain their separate obligations; this conformance result does not close them.
+F-21.3 was committed signed as `2bbb4c6`. The subsequent
+[service-issued decision composition](./account-decision-composition.md) closes F-21.7 at the current
+private first-epoch boundary. Real issuer responses survive HTTP reply loss, service/renderer death,
+compaction and generated arrival/retry histories in the actual browser owners. No runtime repair was
+needed. This does not close the separate F-21.6 unit-oracle assessment.
+
+Next is an inventory of remaining F-21.1 closed-parser coverage, crediting the structured negatives
+already added by the byte-contract phases before adding missing tests. Delivery-oracle, residue,
+diagnostic and performance findings retain their separate obligations.
 
 Platform qualification, whole-profile residue, general lineage/checkpoint evolution, enrollment/adoption,
 revocation/rotation, finalization, recovery replacement, total-loss recovery, deployment/restore and

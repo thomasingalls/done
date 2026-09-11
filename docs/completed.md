@@ -2960,3 +2960,44 @@ delivery-oracle, neutral-residue, diagnostic/performance and broader Account/rel
 All 21 personal package hashes, 31 prior vector files, historical review and L-2 are preserved. Personal
 servers remain stopped; no real Account, browser, factor, operator key, pin, origin or routing change
 occurred. Unrelated root files remain untouched. Appended before replacing only L-1.
+
+
+## 2026-09-12 — Service-issued refusal and conflict composition (`L-1` seat)
+
+F-21.3 was committed signed as `2bbb4c6`; all twelve C/D1–D8/audit/F-15/isolation signatures verify `G`.
+All 865 prior source pins matched after the commit hooks. The new F-21.7 phase is complete and remains
+unstaged/uncommitted. No production code, protocol bytes or vector changed.
+
+[Current disposition](./review/implementation/account-decision-composition.md) closes F-21.7 for the
+private first-epoch issuer/browser-owner boundary. Actual `decideSubmission` closes a synthetic device's
+signed generation-mismatch subject and returns that exact refusal to its original browser submission.
+A separate valid competing envelope obtains a real winning head. Neither response is minted by a
+fixture acceptance signer. The alternate device behavior is deliberately faulty/branched and does not
+establish a supported clone or successor API.
+
+[Preserved campaign](./account-conformance-runs/2026-09-12-account-decision-composition.md): 47
+stages, 112 Node tests, 40 selected unit cases, 875 matching source pins, types, 30 vector
+commands, census/map/registry, lint and format pass. All 24 new tests pass, including four service
+SIGKILL cuts, four renderer response-commit cuts, 16 generated retry/reopen histories and 12 generated
+refusal/successor arrival histories, with shrinking enabled. No production counterexample was found.
+
+The oracle compares exact retained source/envelope/submission/proof rows, counter monotonicity, spool
+positions, network invocation counts and visible writing. Refusal-first retains two proofs; conflict-first
+retains only the winning head. Both halt publication while Local writing remains available. All three
+source omission controls expose their predicted false durable return or incorrect publication readiness.
+Existing service, response-verifier, delivery, automatic sender and composed-sync regressions also pass.
+
+Initial focused failures were test assumptions: reopening may append a canonical empty Yjs capture,
+the sender hides its raw pending method, and send closure does not require a shared receive halt.
+Final checks require every old capsule exactly and permit only the precise same-route/actor no-op as
+an unexplained addition. A competing self-stream is refused before inbound persistence with Local
+editing active; the existing receive diagnostic remains `operation-failed`. No diagnostic repair is
+claimed. The initial log is retained as diagnostic evidence without a separately pinned initial source.
+
+Next is the remaining F-21.1 parser coverage inventory and targeted structured mutations, crediting
+D2/D3/group-C evidence already present. F-21.6's unit oracle, neutral residue scanning, diagnostics,
+maintenance and broader Account/release gates remain. Full Vitest, the aggregate crypto audit, broad
+storage and inherited generated-sync campaigns were not rerun for this test-only change. Native death
+is not power-loss qualification. All 21 personal package hashes, 31 prior vector files, historical
+review and L-2 are preserved. Personal servers and real Account/browser/secrets remain untouched.
+Appended before replacing only L-1.
