@@ -127,7 +127,7 @@ guards: keys
 verifies: sig over a RecoveryBootstrap when no eligible client survives
 resolves: the signer commitment inside recovery_state_digest -> the signer sealed beside R_priv under the recovery code -> root:factor
 status: resolved
-pin: docs/TRD.md §13.8 ef268347caad
+pin: docs/TRD.md §13.8 51dcd0675a51
 pin: docs/review/remediation/S0-2/A-schemas.md §2 78dea0956af7
 ```
 
@@ -319,10 +319,12 @@ pin: docs/review/remediation/S0-5/A-schemas.md §2 fa5ea81f2eec
 entry: recovery-envelope
 kind: predicate
 guards: custody
-verifies: opening the sealed R_priv ‖ RootCommitment envelope
+verifies: opening the sealed R_priv ‖ RootCommitment ‖ bootstrap seed envelope
 resolves: the 125-bit recovery code the user re-entered before the account existed -> root:factor
 status: resolved
-pin: docs/TRD.md §13.8 ef268347caad
+pin: docs/TRD.md §13.8 51dcd0675a51
+pin: docs/account-crypto/recovery-layout.md §1 88db6bbcf31b
+pin: docs/account-crypto/recovery-layout.md §5 c160491d235a
 ```
 
 ```authority
@@ -333,7 +335,7 @@ verifies: the three gates on replace-recovery
 resolves: content access proven by use — rewrapping opens every retained generation, and the required local factor opens the scoped custody entry -> root:factor
 resolves: an account-credential assertion over the nonce-bound, single-use challenge -> via:account-credential
 status: resolved
-pin: docs/TRD.md §13.8 ef268347caad
+pin: docs/TRD.md §13.8 51dcd0675a51
 ```
 
 ```authority
@@ -549,10 +551,12 @@ entry: k-code-sealed-envelopes
 kind: aead
 guards: custody
 verifies: the recovery envelope and the archive envelope
-discipline: one message per derived key — a fresh per-seal salt into HKDF of the code, so exactly one plaintext is ever sealed under each derived key and nonce reuse is structurally unreachable (§13.8, S0-6 §2)
+discipline: one message per derived key — a fresh per-seal salt into HKDF of the code; nonrepeating randomness across seals, including restored or cloned histories, is required (§13.8, S0-6 §2); vector agreement does not establish that host assumption
 status: resolved
-pin: docs/TRD.md §13.8 ef268347caad
+pin: docs/TRD.md §13.8 51dcd0675a51
 pin: docs/review/remediation/S0-6/A-schemas.md §2 faa19f8bc380
+pin: docs/account-crypto/recovery-layout.md §1 88db6bbcf31b
+pin: docs/account-crypto/recovery-layout.md §5 c160491d235a
 ```
 
 ```authority
@@ -730,4 +734,73 @@ pin: docs/account-crypto/first-authority.md §2 699db1bc3e59
 pin: docs/account-crypto/first-authority.md §4 166fcd729355
 pin: docs/account-crypto/first-authority.md §7 77691367bf63
 pin: docs/account-crypto/first-authority.md §8 e6fc9feaa990
+```
+
+## 8. Private initial recovery bytes — group B
+
+These entries specify current preparation bytes and their narrow powers. Replacement/total-loss
+recovery and the checkpoint/startup bridge remain separate. The construction registry retains those
+unfinished qualifications; resolving a byte home is not complete protocol validation.
+
+```authority
+entry: private-recovery-possession
+kind: verification
+guards: custody
+verifies: bootstrap-key correspondence check and initial saved-code possession confirmation; no account or total-loss grant
+resolves: the bootstrap seed and expected root authenticated together inside the factor-opened three-part payload -> root:factor
+status: resolved
+pin: docs/account-crypto/recovery-layout.md §1 88db6bbcf31b
+pin: docs/account-crypto/recovery-layout.md §2 e4cf66042858
+pin: docs/account-crypto/recovery-layout.md §3 04b998cb7371
+pin: docs/account-crypto/recovery-layout.md §5 c160491d235a
+```
+
+```authority
+entry: private-recovery-commitments
+kind: predicate
+guards: custody
+verifies: exact initial root, envelope, state and draft commitments; hashes alone are not authority
+resolves: fixed LP bytes and SHA256 recomputation -> root:structural
+resolves: the sealed commitment checked against the caller-established expected scope -> via:recovery-envelope
+status: resolved
+pin: docs/account-crypto/recovery-layout.md §1 88db6bbcf31b
+pin: docs/account-crypto/recovery-layout.md §2 e4cf66042858
+pin: docs/account-crypto/recovery-layout.md §5 c160491d235a
+```
+
+```authority
+entry: private-account-challenges
+kind: predicate
+guards: availability
+verifies: exact purpose, attempt, account, RP/origin and fresh service nonce for initial account/recovery challenges
+resolves: recomputed LP challenge bytes and operation-owned state -> root:structural
+resolves: the separately verified account assertion over that challenge -> via:account-credential
+status: resolved
+pin: docs/account-crypto/recovery-layout.md §2 e4cf66042858
+pin: docs/account-crypto/recovery-layout.md §3 04b998cb7371
+pin: docs/account-crypto/recovery-layout.md §5 c160491d235a
+```
+
+```authority
+entry: private-recovery-wrap
+kind: aead
+guards: keys
+verifies: base-mode HPKE generation seal, with no sender authority inferred from encryption
+discipline: one sequence-zero message per fresh X25519 sender context, fixed RFC 9180 suite 32/1/2 and empty AAD; requires nonrepeating sender randomness across seals/restores/clones
+status: resolved
+pin: docs/account-crypto/recovery-layout.md §4 54947337b7c1
+pin: docs/account-crypto/recovery-layout.md §5 c160491d235a
+```
+
+```authority
+entry: private-recovery-recipient
+kind: predicate
+guards: keys
+verifies: the recovery recipient and generation scope before HPKE unwrap
+resolves: the recipient key pair and root authenticated by the factor-opened payload -> via:recovery-envelope
+resolves: sender authority on the separate first candidate -> via:private-first-origin
+status: resolved
+pin: docs/account-crypto/recovery-layout.md §1 88db6bbcf31b
+pin: docs/account-crypto/recovery-layout.md §4 54947337b7c1
+pin: docs/account-crypto/recovery-layout.md §5 c160491d235a
 ```

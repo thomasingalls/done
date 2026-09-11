@@ -12,10 +12,13 @@ personal account, passkey, recovery code, content key, custody or workspace inde
 
 ## Cryptographic contract
 
-The authority is TRD §§13.8 and 14.2, row 14, and its S0-6/S0-2 amendments. The old row-14 generator
-still seals only the original scalar. Its 48-byte ciphertext is **not** this amended runtime payload.
-The runtime accepts exactly 112 ciphertext bytes, including the GCM tag, and tests an independent Node
-crypto reconstruction of all three protected objects. Historical vectors remain historical evidence.
+The authority is TRD §§13.8 and 14.2, row 14, and the
+[exact private recovery byte contract](./account-crypto/recovery-layout.md). Current row-14 vectors now
+seal all 96 payload bytes and agree with the runtime's strict 112-byte ciphertext. The original 48-byte
+scalar-only vector is retained under `test/vectors/historical/` and is rejected by the current reader.
+`pnpm account:recovery-contract` adds fixed construction, format/omission and generated checks alongside
+the existing service/restart/native recovery campaign. Recovery replacement and total-loss recovery
+remain outside this implemented preparation protocol.
 
 The app generates 25 random bytes and maps each low five bits to Crockford Base32, displaying five
 groups of five symbols. This is a generated 125-bit code, distinct from the device-lock code and account

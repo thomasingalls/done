@@ -628,6 +628,30 @@ const main = async () => {
 
   const rPriv = unhex(KEYPAIR_KAT.r_priv);
   const rPub = unhex(KEYPAIR_KAT.r_pub);
+  const workspace = 'workspace-recovery',
+    lineage = 'lineage-recovery',
+    authRoot = 'ab'.repeat(32);
+  const bootstrapSeed = unhex('9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60');
+  const bootstrapSigner = 'd75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a';
+  const root = new Uint8Array(
+    await crypto.subtle.digest(
+      'SHA-256',
+      concat(lp('done/pkg-root/v1'), lp(workspace), lp(lineage), lp(authRoot)),
+    ),
+  );
+  const payload = concat(rPriv, root, bootstrapSeed);
+  if (payload.length !== 96) throw Error('Recovery payload width');
+  const signer = createPublicKey(
+    createPrivateKey({
+      key: Buffer.from(ED25519_PKCS8_PREFIX + hex(bootstrapSeed), 'hex'),
+      format: 'der',
+      type: 'pkcs8',
+    }),
+  )
+    .export({ format: 'der', type: 'spki' })
+    .subarray(-32)
+    .toString('hex');
+  if (signer !== bootstrapSigner) throw Error('Bootstrap RFC 8032 key mismatch');
 
   // Encoding vectors, each re-encoded and checked against what is published.
   const encodingVectors = ENCODING_CASES.map((c) => {
@@ -705,7 +729,7 @@ const main = async () => {
   for (const c of sealCases) {
     const kRec = await deriveRecoveryKey(CODE, SALT, c.principal);
     const aad = aadFor(c.principal, ENVELOPE_VERSION, rPub);
-    const ct = await seal(kRec, NONCE, aad, rPriv);
+    const ct = await seal(kRec, NONCE, aad, payload);
     sealVectors.push({
       name: c.name,
       why: c.why,
@@ -718,6 +742,13 @@ const main = async () => {
         nonce: hex(NONCE),
         r_priv: hex(rPriv),
         r_pub: hex(rPub),
+        workspace_id: workspace,
+        lineage_id: lineage,
+        auth_root: authRoot,
+        root_commitment: hex(root),
+        bootstrap_seed: hex(bootstrapSeed),
+        bootstrap_signer: bootstrapSigner,
+        payload: hex(payload),
       },
       derived: {
         hkdf_info: hex(concat(lp(LABEL), lp(c.principal))),
@@ -734,7 +765,7 @@ const main = async () => {
       unhex(v.derived.aad),
       unhex(v.expected.ct),
     );
-    if (hex(got) !== v.inputs.r_priv)
+    if (got.length !== 96 || hex(got) !== v.inputs.payload)
       throw new Error(`Seal vector "${v.name}" does not round-trip.`);
   }
 
@@ -902,9 +933,9 @@ const main = async () => {
       aad: 'LP("done/recovery/v1") || LP(principal_id) || LP(decimal v) || LP(hex r_pub)',
       length_prefix: 'uint16be(byteLength) || utf8 — injective, so no field can shift another',
       envelope:
-        'RecoveryEnvelope = { v: 1, salt: 16 bytes, nonce: 12 bytes, ct: AES-256-GCM over the 32-byte X25519 scalar, tag included }',
+        'RecoveryEnvelope = { v: 1, salt: 16 bytes, nonce: 12 bytes, ct: AES-256-GCM over raw X25519 scalar[32] || binary root commitment[32] || raw Ed25519 bootstrap seed[32], 112 bytes including tag }',
       nonce_note:
-        'The salt is fresh per seal, so K_rec is fresh per seal and exactly one message is ever encrypted under it. Nonce reuse is structurally unreachable rather than avoided by discipline',
+        'A fresh random salt is required for every seal; one message per derived key assumes nonrepeating randomness, including across restores or clones. This vector does not establish that host assumption',
       step_up:
         'Replacement requires content access proven by use, plus a single-use service challenge SHA-256( LP("done/recovery-replace/v1") || LP(dec v) || LP(hex intent_id) || LP(hex nonce) ) answered by an assertion from the account credential. No freshness window: the challenge is bound to the operation. See step_up below',
       not_carried:

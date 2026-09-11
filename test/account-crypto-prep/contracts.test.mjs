@@ -135,7 +135,7 @@ test('prep probes: six declared message encodings, first-head distinction and ol
   assert.equal(completion.admission.headBaselineDigest, empty);
 
   const published = JSON.parse(
-    readFileSync(new URL('../vectors/recovery-code.json', import.meta.url)),
+    readFileSync(new URL('../vectors/historical/recovery-code.scalar-only.json', import.meta.url)),
   );
   const old = published.seal_vectors[0],
     i = old.inputs;

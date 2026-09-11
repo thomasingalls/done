@@ -2464,3 +2464,37 @@ are preserved, and no executable input changed after the final run. Runtime, all
 hashes, historical review, stopped personal preview/relay and L-2 remain unchanged; unrelated root files
 were left untouched. Next is B: current recovery payload/digest/challenge vectors and raw-export-prefix
 assertions, with row-14/TRD alignment. This phase remains uncommitted. Appended before replacing only L-1.
+
+
+## 2026-09-11 — Recovery payload, digest and challenge vector alignment (`L-1` seat)
+
+First-authority group A was committed as `43b42b1`. Group B now aligns TRD §13.8, row 14, the recovery
+byte home and executable vectors with the existing strict 96-byte payload / 112-byte ciphertext. The
+original scalar-only corpus and generator hashes are preserved as historical evidence; the current
+reader still refuses that layout. F-12's missing export assertion reproduced before repair. Generation
+now requires each algorithm's exact 48-byte PKCS#8 prefix/length before taking raw bytes, refuses before
+sealing, and clears its exported buffers. This is a portability/correctness check on provider exports,
+not a demonstrated attacker-input exploit. Existing valid runtime and signature bytes are unchanged.
+
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-recovery-contract.md) records all 35
+stages passing: 13 fixed constructions, 64 encoded substitutions and 64 omissions, authentic malformed
+payloads, four effective production guard removals, eight export-format refusals and their omission
+controls, and 200 shrinking-enabled root/scope/normalization/payload cases. The actual generator,
+opener, digest/challenge/confirmation functions and HPKE recipient bridge match independent encodings.
+No additional defect was found by the generated cases. Native recovery's 25 tests, 160 ledger histories,
+service SIGKILL, browser restart/renderer death and actual WebAuthn pass; the existing 100-case HPKE
+campaign, all 980 units, typecheck, admission/slot regressions, and all 21 vector commands also pass.
+
+First-authority's 17-vector/399-negative/333-omission corpus is retained byte-for-byte, including its
+200 reorderings. The map now joins 23 specified constructions, 13 open groups and one non-crypto
+exclusion through 45 entries and 53 chains. New registry controls prevent losing the recovery corpus,
+primitive role, negative evidence or factor guard. F-05/F-06 remain open. The first sandbox native bind
+was refused; the permitted disposable native run passed. A subsequent harness correction separated
+per-stage evidence files, and the final complete campaign passed with matching source pins.
+
+Next is group C: envelope/submission/read/response and service-witness byte contracts. Checkpoint/
+startup and service/local custody/ledger bridges remain group D. Total-loss recovery, replacement,
+rotation, enrollment, invocation power-loss accounting and broader Account readiness gates remain.
+No personal state or real Account changed; the 21 package hashes, historical review, stopped personal
+preview/relay and L-2 are preserved. No production build or historical aggregate was repeated. The
+new phase remains uncommitted. Appended before replacing only L-1.

@@ -1,6 +1,10 @@
 {
   "v": 1,
-  "scope": ["account-protocol", "account-service", "src"],
+  "scope": [
+    "account-protocol",
+    "account-service",
+    "src"
+  ],
   "exclusions": [
     "*.test.ts(x)",
     "*.spec.ts(x)",
@@ -113,7 +117,7 @@
     },
     {
       "path": "src/account/recovery.ts",
-      "sha256": "af9ff710341fa347e87f7edbaadeb4e8263d71ff7ee8e7992bd0b13ebb1f986d"
+      "sha256": "62b288238e64db88b8da1a784bac10856e803c142992a07ee46a7d93ed04e67f"
     },
     {
       "path": "src/account/recoveryOwner.ts",
@@ -1477,7 +1481,7 @@
       "sites": [
         {
           "path": "src/account/recovery.ts",
-          "line": 162
+          "line": 168
         }
       ]
     },
@@ -1497,11 +1501,11 @@
       "sites": [
         {
           "path": "src/account/recovery.ts",
-          "line": 55
+          "line": 61
         },
         {
           "path": "src/account/recovery.ts",
-          "line": 66
+          "line": 72
         }
       ]
     },

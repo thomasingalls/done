@@ -3020,8 +3020,14 @@ account exists**.
 The alphabet omits `I`, `L`, `O` and `U`, which is what lets the input field map `O` to `0` and `I`/`L` to `1`
 without collision — a correct transcription of a badly rendered code still opens the workspace. The envelope seals
 `R_priv`, **the recovery-bootstrap signing key (below)** and **§14.2's root commitment** under HKDF-SHA-256 of the
-code with a fresh per-seal salt, so exactly one
-message is ever encrypted under that key and nonce reuse is structurally unreachable. **The commitment and the
+code with a fresh per-seal salt. The private v1 plaintext is exactly **96 bytes**, in this order:
+raw X25519 scalar `[0,32)`, binary root commitment `[32,64)`, raw Ed25519 bootstrap seed `[64,96)`.
+AES-256-GCM adds a 16-byte tag, making exactly **112 ciphertext bytes**. The root segment is not hex text;
+the seed is not an expanded secret or PKCS#8. The current parser refuses the historical 48-byte scalar-only
+ciphertext. [The private recovery byte contract](./account-crypto/recovery-layout.md) pins KDF/AAD,
+digests, confirmation/challenge purpose and exact exported PKCS#8 prefixes/lengths before raw extraction.
+One message per derived key requires nonrepeating fresh salt randomness across seals, including restores
+and clones; a vector does not establish that host assumption. **The commitment and the
 signer ride here rather than in their own objects** because each must be protected by exactly what protects
 `R_priv` and must be available at exactly the moment `R_priv` is: one AEAD, one seal, and nothing further for the
 user to keep. **The no-stretching decision rests on the invariant in

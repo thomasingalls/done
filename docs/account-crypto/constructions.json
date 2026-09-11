@@ -890,159 +890,6 @@
       "reason": null
     },
     {
-      "id": "remaining-account-assertion",
-      "phase": "B",
-      "status": "open",
-      "roles": ["signature", "digest"],
-      "labels": ["done/account/${operation}/v1", "done/account/finalize-recovery/v1"],
-      "sourceSites": [
-        {
-          "path": "account-service/protocol.ts",
-          "line": 85,
-          "label": "done/account/${operation}/v1",
-          "kind": "template"
-        },
-        {
-          "path": "account-service/recovery.ts",
-          "line": 49,
-          "label": "done/account/finalize-recovery/v1",
-          "kind": "literal"
-        }
-      ],
-      "entryPoints": [],
-      "mapEntries": [],
-      "home": "docs/account-activation.md",
-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "A/B: exact challenge bindings; keep account authentication distinct from content authority",
-      "reason": null
-    },
-    {
-      "id": "remaining-recovery-factor",
-      "phase": "B",
-      "status": "open",
-      "roles": ["kdf", "aead", "signature"],
-      "labels": [
-        "done/recovery/v1",
-        "done/recovery-key-check/v1",
-        "done/account-recovery-confirm/v1"
-      ],
-      "sourceSites": [
-        {
-          "path": "account-protocol/recovery.ts",
-          "line": 128,
-          "label": "done/account-recovery-confirm/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/account/recovery.ts",
-          "line": 162,
-          "label": "done/recovery-key-check/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/account/recovery.ts",
-          "line": 55,
-          "label": "done/recovery/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/account/recovery.ts",
-          "line": 66,
-          "label": "done/recovery/v1",
-          "kind": "literal"
-        }
-      ],
-      "entryPoints": [],
-      "mapEntries": [],
-      "home": "docs/account-recovery.md",
-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "B: 96-byte payload, 112-byte ciphertext, amended row-14 vectors and prefix checks",
-      "reason": null
-    },
-    {
-      "id": "remaining-recovery-commitments",
-      "phase": "B",
-      "status": "open",
-      "roles": ["digest"],
-      "labels": [
-        "done/pkg-root/v1",
-        "done/recovery-envelope/v1",
-        "done/recovery-state/v1",
-        "done/account-recovery-draft/v1"
-      ],
-      "sourceSites": [
-        {
-          "path": "account-protocol/recovery.ts",
-          "line": 118,
-          "label": "done/account-recovery-draft/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "account-protocol/recovery.ts",
-          "line": 65,
-          "label": "done/pkg-root/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "account-protocol/recovery.ts",
-          "line": 98,
-          "label": "done/recovery-envelope/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "account-protocol/recovery.ts",
-          "line": 107,
-          "label": "done/recovery-state/v1",
-          "kind": "literal"
-        }
-      ],
-      "entryPoints": [],
-      "mapEntries": [],
-      "home": "docs/account-recovery.md",
-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "B: publish root/envelope/state/draft digest bytes and isolation cases",
-      "reason": null
-    },
-    {
-      "id": "remaining-genesis-encryption",
-      "phase": "B",
-      "status": "open",
-      "roles": ["kdf", "aead"],
-      "labels": ["done/gen-wrap/v1", "done/checkpoint/v1", "done/cp/v1"],
-      "sourceSites": [
-        {
-          "path": "src/crdt/accountStartup.ts",
-          "line": 114,
-          "label": "done/checkpoint/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/promotionGenesis.ts",
-          "line": 83,
-          "label": "done/checkpoint/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "account-protocol/genesis.ts",
-          "line": 153,
-          "label": "done/cp/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "account-protocol/genesis.ts",
-          "line": 150,
-          "label": "done/gen-wrap/v1",
-          "kind": "literal"
-        }
-      ],
-      "entryPoints": [],
-      "mapEntries": [],
-      "home": "docs/account-admission.md",
-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "B/D: bridge runtime HPKE/checkpoint to published suite vectors",
-      "reason": null
-    },
-    {
       "id": "remaining-local-promotion",
       "phase": "D",
       "status": "open",
@@ -1743,6 +1590,386 @@
       "blocker": null,
       "next": "retain as explicit non-crypto exclusions, not authority-map constructions",
       "reason": "no cryptographic authority; data still passes authenticated storage/admission owners"
+    },
+    {
+      "id": "recovery-factor-seal",
+      "phase": "B",
+      "status": "specified",
+      "roles": ["kdf", "aead", "predicate"],
+      "signer": null,
+      "labels": ["done/recovery/v1"],
+      "sourceSites": [
+        {
+          "path": "src/account/recovery.ts",
+          "line": 61,
+          "label": "done/recovery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/account/recovery.ts",
+          "line": 72,
+          "label": "done/recovery/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/account/recovery.ts",
+          "name": "generateRecovery"
+        },
+        {
+          "path": "src/account/recovery.ts",
+          "name": "withRecoveryKeys"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "1",
+          "hash": "88db6bbcf31b"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "5",
+          "hash": "c160491d235a"
+        }
+      ],
+      "mapEntries": ["recovery-envelope", "k-code-sealed-envelopes"],
+      "vectorCases": ["recovery-kdf", "recovery-seal"],
+      "tests": [
+        "test/account-recovery-contract/formats.test.mjs",
+        "test/account-recovery-contract/controls.test.mjs",
+        "test/account-recovery-contract/exports.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "recovery-key-correspondence",
+      "phase": "B",
+      "status": "specified",
+      "roles": ["signature"],
+      "signer": "recovery-bootstrap",
+      "labels": ["done/recovery-key-check/v1"],
+      "sourceSites": [
+        {
+          "path": "src/account/recovery.ts",
+          "line": 168,
+          "label": "done/recovery-key-check/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/account/recovery.ts",
+          "name": "withRecoveryKeys"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "1",
+          "hash": "88db6bbcf31b"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "5",
+          "hash": "c160491d235a"
+        }
+      ],
+      "mapEntries": ["private-recovery-possession"],
+      "vectorCases": ["recovery-key-check"],
+      "tests": [
+        "test/account-recovery-contract/formats.test.mjs",
+        "test/account-recovery-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "recovery-initial-confirmation",
+      "phase": "B",
+      "status": "specified",
+      "roles": ["signature"],
+      "signer": "recovery-bootstrap",
+      "labels": ["done/account-recovery-confirm/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/recovery.ts",
+          "line": 128,
+          "label": "done/account-recovery-confirm/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/recovery.ts",
+          "name": "confirmationBytes"
+        },
+        {
+          "path": "account-service/recovery.ts",
+          "name": "verifyRecoveryProof"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "2",
+          "hash": "e4cf66042858"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "3",
+          "hash": "04b998cb7371"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "5",
+          "hash": "c160491d235a"
+        }
+      ],
+      "mapEntries": ["private-recovery-possession", "private-account-challenges"],
+      "vectorCases": ["recovery-confirm"],
+      "tests": [
+        "test/account-recovery-contract/formats.test.mjs",
+        "test/account-recovery-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "recovery-commitments",
+      "phase": "B",
+      "status": "specified",
+      "roles": ["digest"],
+      "signer": null,
+      "labels": [
+        "done/pkg-root/v1",
+        "done/recovery-envelope/v1",
+        "done/recovery-state/v1",
+        "done/account-recovery-draft/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/recovery.ts",
+          "line": 118,
+          "label": "done/account-recovery-draft/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/recovery.ts",
+          "line": 65,
+          "label": "done/pkg-root/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/recovery.ts",
+          "line": 98,
+          "label": "done/recovery-envelope/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/recovery.ts",
+          "line": 107,
+          "label": "done/recovery-state/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/recovery.ts",
+          "name": "rootCommitment"
+        },
+        {
+          "path": "account-protocol/recovery.ts",
+          "name": "envelopeBytes"
+        },
+        {
+          "path": "account-protocol/recovery.ts",
+          "name": "recoveryStateDigest"
+        },
+        {
+          "path": "account-protocol/recovery.ts",
+          "name": "draftDigest"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "1",
+          "hash": "88db6bbcf31b"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "2",
+          "hash": "e4cf66042858"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "5",
+          "hash": "c160491d235a"
+        }
+      ],
+      "mapEntries": ["private-recovery-commitments"],
+      "vectorCases": ["recovery-root", "recovery-envelope", "recovery-state", "recovery-draft"],
+      "tests": [
+        "test/account-recovery-contract/formats.test.mjs",
+        "test/account-recovery-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "account-initial-challenges",
+      "phase": "B",
+      "status": "specified",
+      "roles": ["digest"],
+      "signer": null,
+      "labels": ["done/account/${operation}/v1", "done/account/finalize-recovery/v1"],
+      "sourceSites": [
+        {
+          "path": "account-service/protocol.ts",
+          "line": 85,
+          "label": "done/account/${operation}/v1",
+          "kind": "template"
+        },
+        {
+          "path": "account-service/recovery.ts",
+          "line": 49,
+          "label": "done/account/finalize-recovery/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-service/protocol.ts",
+          "name": "challenge"
+        },
+        {
+          "path": "account-service/recovery.ts",
+          "name": "recoveryChallenge"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "2",
+          "hash": "e4cf66042858"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "3",
+          "hash": "04b998cb7371"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "5",
+          "hash": "c160491d235a"
+        }
+      ],
+      "mapEntries": ["private-account-challenges"],
+      "vectorCases": [
+        "account-challenge-register",
+        "account-challenge-confirm-registration",
+        "account-challenge-authenticate",
+        "account-challenge-finalize"
+      ],
+      "tests": [
+        "test/account-recovery-contract/formats.test.mjs",
+        "test/account-recovery-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "recovery-generation-bridge",
+      "phase": "B",
+      "status": "specified",
+      "roles": ["aead", "kdf"],
+      "signer": null,
+      "labels": ["done/gen-wrap/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/genesis.ts",
+          "line": 150,
+          "label": "done/gen-wrap/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/genesis.ts",
+          "name": "generationInfo"
+        },
+        {
+          "path": "src/account/generationWrap.ts",
+          "name": "sealGeneration"
+        },
+        {
+          "path": "src/account/generationWrap.ts",
+          "name": "openGeneration"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "4",
+          "hash": "54947337b7c1"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "5",
+          "hash": "c160491d235a"
+        }
+      ],
+      "mapEntries": ["private-recovery-wrap", "private-recovery-recipient"],
+      "vectorCases": ["recovery-generation-wrap"],
+      "tests": [
+        "test/account-recovery-contract/formats.test.mjs",
+        "test/account-recovery-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "remaining-genesis-checkpoint",
+      "phase": "D",
+      "status": "open",
+      "roles": ["kdf", "aead"],
+      "labels": ["done/checkpoint/v1", "done/cp/v1"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/accountStartup.ts",
+          "line": 114,
+          "label": "done/checkpoint/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/promotionGenesis.ts",
+          "line": 83,
+          "label": "done/checkpoint/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/genesis.ts",
+          "line": 153,
+          "label": "done/cp/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/account-admission.md",
+      "blocker": "F-05/F-06: native startup/checkpoint qualification is not the recovery recipient bridge",
+      "next": "D: qualify checkpoint KDF/AAD and persisted Account startup against the existing published checkpoint suite",
+      "reason": null
+    }
+  ],
+  "additionalCorpora": [
+    {
+      "phase": "B",
+      "vectorFile": "test/vectors/account-recovery.json",
+      "vectorSha256": "05bd33eda96066ec7137bfe5d70353c02d325eabaa126b68d5df2af54b713e7a"
     }
   ]
 }

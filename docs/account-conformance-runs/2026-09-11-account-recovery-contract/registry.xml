@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups" time="0.232905" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="registration omission controls fail for the missing obligation, not just a stale aggregate hash" time="0.138359" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="recovery corpus cannot lose its phase, primitive role, negative corpus or factor authority under updated hashes" time="0.054012" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<!-- tests 3 -->
+	<!-- suites 0 -->
+	<!-- pass 3 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 557.147333 -->
+</testsuites>

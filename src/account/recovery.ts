@@ -29,6 +29,12 @@ const prefix = (kind: 'X25519' | 'Ed25519') =>
     kind === 'X25519' ? '302e020100300506032b656e04220420' : '302e020100300506032b657004220420',
     16,
   );
+function rawExport(bytes: Uint8Array, kind: 'X25519' | 'Ed25519'): Uint8Array {
+  const header = prefix(kind);
+  if (bytes.length !== 48 || !header.every((value, i) => bytes[i] === value))
+    throw Error(`Unexpected ${kind} PKCS#8 export`);
+  return bytes.subarray(16);
+}
 async function privateKey(raw: Uint8Array, kind: 'X25519' | 'Ed25519', subtle = crypto.subtle) {
   const pkcs8 = new Uint8Array([...prefix(kind), ...raw]);
   try {
@@ -92,9 +98,9 @@ export async function generateRecovery(
       envelope: { v: 1, salt: hex(random(16)), nonce: hex(random(12)), ct: '' },
     };
     // S0-6's R_priv || RootCommitment, followed by S0-2's bootstrap seed.
-    payload.set(rRaw.subarray(-32), 0);
+    payload.set(rawExport(rRaw, 'X25519'), 0);
     payload.set(unhex(draft.rootCommitment, 32), 32);
-    payload.set(sRaw.subarray(-32), 64);
+    payload.set(rawExport(sRaw, 'Ed25519'), 64);
     draft.envelope.ct = hex(
       new Uint8Array(
         await crypto.subtle.encrypt(

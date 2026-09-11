@@ -18,8 +18,8 @@ const baseline = () => ({
 test('registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups', () => {
   const result = checkConstructionRegistry(root);
   assert.deepEqual(result.failures, []);
-  assert.equal(result.specified, 17);
-  assert.equal(result.open, 16);
+  assert.equal(result.specified, 23);
+  assert.equal(result.open, 13);
   assert.equal(result.excluded, 1);
 });
 
@@ -141,5 +141,74 @@ test('registration omission controls fail for the missing obligation, not just a
       join(process.env.ACCOUNT_REPORT_DIR, 'registry-controls.json'),
       JSON.stringify({ controls: evidence.length, evidence }, null, 2) + '\n',
     );
+  }
+});
+
+test('recovery corpus cannot lose its phase, primitive role, negative corpus or factor authority under updated hashes', () => {
+  const controls = [
+    [
+      'corpus',
+      (o) => {
+        o.document.additionalCorpora = [];
+      },
+      'specified phase/blocker mismatch',
+    ],
+    [
+      'corpus pin',
+      (o) => {
+        o.document.additionalCorpora[0].vectorSha256 = '00'.repeat(32);
+      },
+      'stale additional vector file pin',
+    ],
+    [
+      'duplicate phase',
+      (o) => {
+        o.document.additionalCorpora.push(o.document.additionalCorpora[0]);
+      },
+      'unknown/duplicate additional corpus phase',
+    ],
+    [
+      'primitive role',
+      (o) => {
+        o.document.constructions.find((r) => r.id === 'recovery-factor-seal').roles = ['predicate'];
+      },
+      'primitive vector misclassified',
+    ],
+    [
+      'factor guard',
+      (o) => {
+        o.entries.get('private-recovery-possession').guards = 'availability';
+      },
+      'signer/authority guard mismatch',
+    ],
+  ];
+  for (const [name, change, expected] of controls) {
+    const o = baseline();
+    change(o);
+    assert(
+      checkConstructionRegistry(root, o).failures.some((f) => f.includes(expected)),
+      name,
+    );
+  }
+  for (const field of ['negatives', 'encodedBindingControls']) {
+    const o = baseline(),
+      corpus = o.document.additionalCorpora[0],
+      path = corpus.vectorFile;
+    const value = JSON.parse(read(path));
+    value.vectors.find((v) => v.kind === 'signature')[field] = [];
+    const changed = JSON.stringify(value);
+    corpus.vectorSha256 = digest(changed);
+    o.read = (p) => (p === path ? changed : read(p));
+    const result = checkConstructionRegistry(root, o);
+    assert(
+      result.failures.some((f) =>
+        f.includes(
+          field === 'negatives'
+            ? 'missing vector/negative corpus'
+            : 'missing signature/omission corpus',
+        ),
+      ),
+    );
+    assert(!result.failures.some((f) => f.includes('stale additional vector file pin')));
   }
 });

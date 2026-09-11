@@ -1,0 +1,41 @@
+{
+  "scope": "Production message builders and signature verifier under injected digest omission; not a bypass of every composite target/semantic predicate",
+  "results": [
+    {
+      "id": "candidate",
+      "path": "preparation",
+      "correctVerifierRefuses": true,
+      "productionDigestOmissionRescues": true
+    },
+    {
+      "id": "origin",
+      "path": "candidate.preparation",
+      "correctVerifierRefuses": true,
+      "productionDigestOmissionRescues": true
+    },
+    {
+      "id": "epoch",
+      "path": "requestDigest",
+      "correctVerifierRefuses": true,
+      "productionDigestOmissionRescues": true
+    },
+    {
+      "id": "offer",
+      "path": "head",
+      "correctVerifierRefuses": true,
+      "productionDigestOmissionRescues": true
+    },
+    {
+      "id": "receipt",
+      "path": "activation.proofHash",
+      "correctVerifierRefuses": true,
+      "productionDigestOmissionRescues": true
+    },
+    {
+      "id": "activation",
+      "path": "nonce",
+      "correctVerifierRefuses": true,
+      "productionDigestOmissionRescues": true
+    }
+  ]
+}

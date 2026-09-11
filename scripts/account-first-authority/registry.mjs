@@ -49,6 +49,19 @@ export function checkConstructionRegistry(root, options = {}) {
   const entries =
     options.entries ?? mapEntries(read('docs/review/remediation/S0-2/authority-map.md'));
   const vectors = JSON.parse(read(document.vectorFile));
+  const additional = document.additionalCorpora ?? [];
+  const executed = vectors.vectors.map((v) => ({ ...v, phase: 'A' }));
+  const corpusPhases = new Set(['A']);
+  for (const corpus of additional) {
+    if (corpus.phase !== 'B' || corpusPhases.has(corpus.phase))
+      fail('unknown/duplicate additional corpus phase');
+    corpusPhases.add(corpus.phase);
+    if (digest(read(corpus.vectorFile)) !== corpus.vectorSha256)
+      fail('stale additional vector file pin');
+    const value = JSON.parse(read(corpus.vectorFile));
+    if (value.v !== 1 || !value.vectors?.length) fail('invalid additional vector corpus');
+    executed.push(...value.vectors.map((v) => ({ ...v, phase: corpus.phase })));
+  }
   if (document.v !== 1) fail('unsupported registry version');
   if (document.schemaSha256 !== digest(read('docs/account-crypto/first-authority.json')))
     fail('stale field schema pin');
@@ -103,7 +116,8 @@ export function checkConstructionRegistry(root, options = {}) {
         fail('invalid non-cryptographic exclusion ' + r.id);
       continue;
     }
-    if (r.phase !== 'A' || r.blocker !== null) fail('specified phase/blocker mismatch ' + r.id);
+    if (!corpusPhases.has(r.phase) || r.blocker !== null)
+      fail('specified phase/blocker mismatch ' + r.id);
     if (!r.homePins.length || !r.mapEntries.length || !r.vectorCases.length || !r.tests.length)
       fail('incomplete specified construction ' + r.id);
     for (const pin of r.homePins) {
@@ -128,6 +142,7 @@ export function checkConstructionRegistry(root, options = {}) {
       authority: ['private-first-service', 'availability'],
       device: ['private-creating-device', 'attribution'],
       bootstrap: ['private-first-origin', 'keys'],
+      'recovery-bootstrap': ['private-recovery-possession', 'custody'],
     }[r.signer];
     if (
       r.roles.includes('signature') &&
@@ -149,10 +164,13 @@ export function checkConstructionRegistry(root, options = {}) {
     for (const id of r.vectorCases) {
       if (vectorOwners.has(id)) fail('vector assigned twice ' + id);
       vectorOwners.set(id, r.id);
-      const v = vectors.vectors.find((v) => v.id === id);
+      const v = executed.find((v) => v.id === id);
+      if (v && v.phase !== r.phase) fail('vector phase mismatch ' + r.id);
       if (v && v.signer !== (r.signer ?? null)) fail('vector signer mismatch ' + r.id);
       if (v?.kind === 'signature' && !r.roles.includes('signature'))
         fail('signature vector misclassified as non-signature ' + r.id);
+      if (['kdf', 'aead'].includes(v?.kind) && !r.roles.includes(v.kind))
+        fail('primitive vector misclassified ' + r.id);
       if (!v?.expected.messageHex || !v.expected.resultHex || !v.negatives?.length)
         fail('missing vector/negative corpus ' + r.id + ' -> ' + id);
       if (
@@ -164,8 +182,7 @@ export function checkConstructionRegistry(root, options = {}) {
   }
   for (const d of current.domains)
     if (!owners.has(d.label)) fail('unregistered source label ' + d.label);
-  for (const v of vectors.vectors)
-    if (!vectorOwners.has(v.id)) fail('orphan executed vector ' + v.id);
+  for (const v of executed) if (!vectorOwners.has(v.id)) fail('orphan executed vector ' + v.id);
   return {
     failures,
     specified: records.filter((r) => r.status === 'specified').length,
