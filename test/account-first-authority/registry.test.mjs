@@ -15,6 +15,96 @@ const baseline = () => ({
   entries: mapEntries(read('docs/review/remediation/S0-2/authority-map.md')),
 });
 
+test('D8 requires live claim evidence and cannot relabel it as inherited migration scope', () => {
+  const evidence = [];
+  for (const obligation of [
+    'native-claim-owner',
+    'initial-custody-authentication',
+    'retained-import-cleanup',
+    'shrinking-claim-histories',
+  ]) {
+    const o = baseline(),
+      r = o.document.constructions.find((r) => r.id === 'local-claim-progress');
+    r.requirements = r.requirements.filter((x) => x !== obligation);
+    assert(
+      checkConstructionRegistry(root, o).failures.some(
+        (f) => f.includes('missing evidence obligation') && f.includes(obligation),
+      ),
+    );
+    evidence.push({ obligation, caught: true });
+  }
+  for (const [name, change, expected] of [
+    [
+      'hide live claim',
+      (o) =>
+        Object.assign(
+          o.document.constructions.find((r) => r.id === 'local-claim-progress'),
+          {
+            status: 'inherited',
+            phase: 'Local',
+            scope: 'outside-account-acceptance',
+            reason: 'migration',
+            mapEntries: [],
+            vectorCases: [],
+          },
+        ),
+      'invalid inherited scope',
+    ],
+    [
+      'historical evidence',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'inherited-local-clear').evidencePins = []),
+      'incomplete inherited evidence',
+    ],
+    [
+      'native barrier',
+      (o) => {
+        const r = o.document.constructions.find((r) => r.id === 'inherited-preactive-import');
+        r.requirements = r.requirements.filter((x) => x !== 'native-exclusion-barriers');
+      },
+      'missing inherited obligation',
+    ],
+    [
+      'stale evidence',
+      (o) =>
+        (o.document.constructions.find(
+          (r) => r.id === 'inherited-legacy-observation',
+        ).evidencePins[0].sha256 = '0'.repeat(64)),
+      'stale inherited evidence',
+    ],
+    [
+      'primitive erasure',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'inherited-cleanup-fingerprints').roles = [
+          'name',
+        ]),
+      'inherited primitive roles changed',
+    ],
+    [
+      'noncrypto disguise',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'inherited-cleanup-fingerprints').status =
+          'excluded'),
+      'invalid non-cryptographic exclusion',
+    ],
+  ]) {
+    const o = baseline();
+    change(o);
+    assert(
+      checkConstructionRegistry(root, o).failures.some((f) => f.includes(expected)),
+      name,
+    );
+    evidence.push({ name, caught: true });
+  }
+  if (process.env.ACCOUNT_REPORT_DIR) {
+    mkdirSync(process.env.ACCOUNT_REPORT_DIR, { recursive: true });
+    writeFileSync(
+      join(process.env.ACCOUNT_REPORT_DIR, 'local-provenance-registry-controls.json'),
+      JSON.stringify(evidence, null, 2) + '\n',
+    );
+  }
+});
+
 test('D7 cannot discard native startup, genesis scope, shrinking or inherited cipher evidence', () => {
   const evidence = [];
   for (const obligation of [
@@ -200,9 +290,10 @@ test('D5 bridges cannot lose native owners, inherited agreement, primitive roles
 test('registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups', () => {
   const result = checkConstructionRegistry(root);
   assert.deepEqual(result.failures, []);
-  assert.equal(result.specified, 74);
-  assert.equal(result.open, 1);
+  assert.equal(result.specified, 78);
+  assert.equal(result.open, 0);
   assert.equal(result.excluded, 1);
+  assert.equal(result.inherited, 4);
 });
 
 test('registration omission controls fail for the missing obligation, not just a stale aggregate hash', () => {
@@ -280,7 +371,11 @@ test('registration omission controls fail for the missing obligation, not just a
     ],
     [
       'remaining blocker',
-      (o) => (o.document.constructions.find((r) => r.status === 'open').blocker = null),
+      (o) =>
+        Object.assign(
+          o.document.constructions.find((r) => r.status === 'inherited'),
+          { status: 'open', blocker: null, next: 'Requalify changed owner' },
+        ),
       'unfinished record lacks bounded disposition',
     ],
     [

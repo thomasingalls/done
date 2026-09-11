@@ -1,0 +1,16 @@
+(node:98140) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:98140) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:98140) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ native fresh/imported/cleanup claims retain exact authentication through full Account handoff and cold startup (5036.936416ms)
+✔ claim MAC refusal is effective before promotion; Account also binds the exact winning claim MAC (3068.841375ms)
+✔ preactive import and Local clear carriers only block Account open; scoped deletion never runs (2696.10175ms)
+✔ 20 shrinking-enabled imported-claim histories reject changed provenance and recover after exact restoration (24556.146542ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 36529.001834

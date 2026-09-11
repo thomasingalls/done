@@ -1328,3 +1328,52 @@ pin: docs/account-crypto/checkpoint.md §3 ea8cc350e5e1
 pin: docs/account-crypto/checkpoint.md §4 9aca2271994a
 pin: docs/account-crypto/checkpoint.md §5 6a17735630ce
 ```
+
+## 17. Retained Local claim and inherited migration scope — D8
+
+Account authenticates retained Local identity/provenance; legacy operation owners remain separately scoped.
+
+```authority
+entry: private-local-claim-key
+kind: predicate
+guards: keys
+verifies: scoped HMAC key derived from the factor-opened root after initial custody record authentication
+resolves: generated factor opens the custody root -> via:private-local-factor
+resolves: the initial creating custody tuple authenticates the identity plan -> via:private-local-custody-metadata
+resolves: exact claim key-info tuple and native slot lifetime -> root:structural
+status: resolved
+pin: docs/account-crypto/local-provenance.md §1 e567db12e74e
+pin: docs/account-crypto/local-provenance.md §2 f3c9de5314e1
+pin: docs/account-crypto/local-provenance.md §3 9c5ef2dadbe3
+pin: docs/account-crypto/local-provenance.md §4 e2e8dfc8556d
+pin: docs/account-crypto/local-provenance.md §5 a53f67dc86d0
+```
+
+```authority
+entry: private-local-claim-mac
+kind: verification
+guards: custody
+verifies: HMAC over exact fresh progress, selected-import provenance and optional cleanup wrapper v1/v2
+resolves: factor-owned scoped claim key -> via:private-local-claim-key
+status: resolved
+pin: docs/account-crypto/local-provenance.md §1 e567db12e74e
+pin: docs/account-crypto/local-provenance.md §2 f3c9de5314e1
+pin: docs/account-crypto/local-provenance.md §3 9c5ef2dadbe3
+pin: docs/account-crypto/local-provenance.md §4 e2e8dfc8556d
+pin: docs/account-crypto/local-provenance.md §5 a53f67dc86d0
+```
+
+```authority
+entry: private-account-local-anchor
+kind: predicate
+guards: custody
+verifies: ready Local claim verified before promotion or Account startup, matched to live custody and exact selected claimMac without restoring missing carriers
+resolves: authenticated retained claim and initial identity plan -> via:private-local-claim-mac
+resolves: stage, retained custody/route/witness/counter census and exact promotion claimMac; Local-clear/preactive-import rows can only refuse access -> root:structural
+status: resolved
+pin: docs/account-crypto/local-provenance.md §1 e567db12e74e
+pin: docs/account-crypto/local-provenance.md §2 f3c9de5314e1
+pin: docs/account-crypto/local-provenance.md §3 9c5ef2dadbe3
+pin: docs/account-crypto/local-provenance.md §4 e2e8dfc8556d
+pin: docs/account-crypto/local-provenance.md §5 a53f67dc86d0
+```

@@ -1,0 +1,151 @@
+{
+  "failed": false,
+  "interrupted": false,
+  "numRuns": 20,
+  "numSkips": 0,
+  "numShrinks": 0,
+  "seed": 5110941,
+  "counterexample": null,
+  "counterexamplePath": null,
+  "error": null,
+  "errorInstance": null,
+  "failures": [],
+  "executionSummary": [],
+  "verbose": 0,
+  "runConfiguration": {
+    "seed": 5110941,
+    "numRuns": 20,
+    "maxSkipsPerRun": 100,
+    "markInterruptAsFailure": false,
+    "skipEqualValues": false,
+    "ignoreEqualValues": false,
+    "path": "",
+    "unbiased": false,
+    "verbose": 0,
+    "examples": [],
+    "endOnFailure": false,
+    "includeErrorInReport": false
+  },
+  "histories": [
+    {
+      "version": 1,
+      "next": 0,
+      "field": "cleanupNext",
+      "refused": true
+    },
+    {
+      "version": 2,
+      "next": 0,
+      "field": "cleanupNext",
+      "refused": true
+    },
+    {
+      "version": 2,
+      "next": 0,
+      "field": "createdAt",
+      "refused": true
+    },
+    {
+      "version": 2,
+      "next": 1,
+      "field": "cleanupDigest",
+      "refused": true
+    },
+    {
+      "version": 1,
+      "next": 1,
+      "field": "createdAt",
+      "refused": true
+    },
+    {
+      "version": 2,
+      "next": 0,
+      "field": "createdAt",
+      "refused": true
+    },
+    {
+      "version": 1,
+      "next": 1,
+      "field": "createdAt",
+      "refused": true
+    },
+    {
+      "version": 2,
+      "next": 0,
+      "field": "createdAt",
+      "refused": true
+    },
+    {
+      "version": 1,
+      "next": 1,
+      "field": "createdAt",
+      "refused": true
+    },
+    {
+      "version": 2,
+      "next": 1,
+      "field": "sourceDigest",
+      "refused": true
+    },
+    {
+      "version": 1,
+      "next": 0,
+      "field": "createdAt",
+      "refused": true
+    },
+    {
+      "version": 2,
+      "next": 2,
+      "field": "cleanupNext",
+      "refused": true
+    },
+    {
+      "version": 1,
+      "next": 1,
+      "field": "createdAt",
+      "refused": true
+    },
+    {
+      "version": 1,
+      "next": 0,
+      "field": "sourceDigest",
+      "refused": true
+    },
+    {
+      "version": 1,
+      "next": 0,
+      "field": "cleanupDigest",
+      "refused": true
+    },
+    {
+      "version": 2,
+      "next": 0,
+      "field": "sourceDigest",
+      "refused": true
+    },
+    {
+      "version": 1,
+      "next": 1,
+      "field": "createdAt",
+      "refused": true
+    },
+    {
+      "version": 1,
+      "next": 0,
+      "field": "cleanupDigest",
+      "refused": true
+    },
+    {
+      "version": 1,
+      "next": 0,
+      "field": "cleanupNext",
+      "refused": true
+    },
+    {
+      "version": 1,
+      "next": 1,
+      "field": "cleanupNext",
+      "refused": true
+    }
+  ]
+}

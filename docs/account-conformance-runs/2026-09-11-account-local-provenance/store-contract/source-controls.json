@@ -1,0 +1,11 @@
+{
+  "caught": [
+    "principal",
+    "sequence",
+    "kind",
+    "journalWorkspace",
+    "journalGeneration",
+    "journalIdentity"
+  ],
+  "crypto": "operative; omission permits changed authenticated inputs"
+}

@@ -54,7 +54,7 @@ export function checkConstructionRegistry(root, options = {}) {
   const corpusPhases = new Set(['A']);
   for (const corpus of additional) {
     if (
-      !['B', 'C', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7'].includes(corpus.phase) ||
+      !['B', 'C', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8'].includes(corpus.phase) ||
       corpusPhases.has(corpus.phase)
     )
       fail('unknown/duplicate additional corpus phase');
@@ -77,7 +77,8 @@ export function checkConstructionRegistry(root, options = {}) {
   for (const r of records) {
     if (ids.has(r.id)) fail('duplicate construction ' + r.id);
     ids.add(r.id);
-    if (!['specified', 'open', 'excluded'].includes(r.status)) fail('unknown status ' + r.id);
+    if (!['specified', 'open', 'excluded', 'inherited'].includes(r.status))
+      fail('unknown status ' + r.id);
     if (
       ![
         'A',
@@ -91,6 +92,7 @@ export function checkConstructionRegistry(root, options = {}) {
         'D5',
         'D6',
         'D7',
+        'D8',
         'Local',
         'non-crypto',
       ].includes(r.phase)
@@ -130,6 +132,70 @@ export function checkConstructionRegistry(root, options = {}) {
     if (r.status === 'open') {
       if (!r.blocker || !r.next || r.phase === 'A')
         fail('unfinished record lacks bounded disposition ' + r.id);
+      continue;
+    }
+    if (r.status === 'inherited') {
+      const permitted = {
+        'inherited-local-clear': [
+          'done/local-clear-authentication/v1',
+          'done/local-clear-progress/v1',
+          'done/local-import-clear/v1',
+        ],
+        'inherited-preactive-import': [
+          'done/legacy-import-metadata/v1',
+          'done/legacy-import-progress/v1',
+        ],
+        'inherited-legacy-observation': ['done/legacy-source-observation/v1'],
+        'inherited-cleanup-fingerprints': [
+          'done/legacy-cleanup-fingerprint/v${version}',
+          'done/legacy-cleanup-entry',
+        ],
+      }[r.id];
+      const inheritedRoles = {
+        'inherited-local-clear': ['kdf', 'mac'],
+        'inherited-preactive-import': ['kdf', 'mac'],
+        'inherited-legacy-observation': ['digest'],
+        'inherited-cleanup-fingerprints': ['kdf', 'mac'],
+      }[r.id];
+      if (
+        inheritedRoles &&
+        JSON.stringify([...r.roles].sort()) !== JSON.stringify([...inheritedRoles].sort())
+      )
+        fail('inherited primitive roles changed ' + r.id);
+      if (
+        !permitted ||
+        JSON.stringify([...r.labels].sort()) !== JSON.stringify([...permitted].sort()) ||
+        r.phase !== 'Local' ||
+        r.scope !== 'outside-account-acceptance' ||
+        !r.reason ||
+        r.mapEntries.length ||
+        r.vectorCases?.length ||
+        r.blocker !== null
+      )
+        fail('invalid inherited scope disposition ' + r.id);
+      if (
+        !r.homePins?.length ||
+        !r.evidencePins?.length ||
+        !r.entryPoints.length ||
+        !r.tests?.length
+      )
+        fail('incomplete inherited evidence ' + r.id);
+      for (const pin of r.homePins ?? []) {
+        const body = section(read(pin.path), pin.section);
+        if (body === null || digest(body).slice(0, 12) !== pin.hash)
+          fail('stale inherited scope home ' + r.id);
+      }
+      for (const pin of r.evidencePins ?? [])
+        if (digest(read(pin.path)) !== pin.sha256) fail('stale inherited evidence ' + r.id);
+      for (const name of [
+        'outside-account-acceptance',
+        'native-exclusion-barriers',
+        'historical-evidence-only',
+      ])
+        if (!r.requirements?.includes(name))
+          fail('missing inherited obligation ' + r.id + ': ' + name);
+      for (const path of r.tests ?? [])
+        if (!read(path).includes('test(')) fail('missing inherited boundary test ' + r.id);
       continue;
     }
     if (r.status === 'excluded') {
@@ -196,6 +262,14 @@ export function checkConstructionRegistry(root, options = {}) {
     )
       fail('missing native counter/ledger dependency ' + r.id);
     const required = [
+      ...(r.phase === 'D8'
+        ? [
+            'native-claim-owner',
+            'initial-custody-authentication',
+            'retained-import-cleanup',
+            'shrinking-claim-histories',
+          ]
+        : []),
       ...(r.phase === 'D7'
         ? [
             'inherited-byte-agreement',
@@ -290,5 +364,6 @@ export function checkConstructionRegistry(root, options = {}) {
     specified: records.filter((r) => r.status === 'specified').length,
     open: records.filter((r) => r.status === 'open').length,
     excluded: records.filter((r) => r.status === 'excluded').length,
+    inherited: records.filter((r) => r.status === 'inherited').length,
   };
 }

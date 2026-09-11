@@ -3724,55 +3724,345 @@
       "blocker": null
     },
     {
-      "id": "remaining-local-provenance",
-      "phase": "Local",
-      "status": "open",
-      "roles": ["kdf", "mac", "digest", "carrier"],
-      "labels": [
-        "done/local-genesis-metadata/v1",
-        "done/local-genesis-progress/v1",
-        "done/local-import-selection/v1",
-        "done/local-import-cleanup",
-        "done/local-clear-authentication/v1",
-        "done/local-clear-progress/v1",
-        "done/local-import-clear/v1",
-        "done/legacy-source-observation/v1",
-        "done/legacy-import-progress/v1",
-        "done/legacy-import-metadata/v1",
-        "done/legacy-cleanup-entry",
-        "done/legacy-cleanup-fingerprint/v${version}"
+      "phase": "D8",
+      "status": "specified",
+      "signer": null,
+      "entryPoints": [
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "parseLocalClaim"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "signLocalClaim"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "verifyLocalClaim"
+        }
       ],
+      "mapEntries": [
+        "private-local-claim-key",
+        "private-local-claim-mac",
+        "private-account-local-anchor"
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "1",
+          "hash": "e567db12e74e"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "2",
+          "hash": "f3c9de5314e1"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "3",
+          "hash": "9c5ef2dadbe3"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "4",
+          "hash": "e2e8dfc8556d"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "5",
+          "hash": "a53f67dc86d0"
+        }
+      ],
+      "tests": [
+        "test/account-local-provenance/formats.test.mjs",
+        "test/account-local-provenance/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-claim-owner",
+        "initial-custody-authentication",
+        "retained-import-cleanup",
+        "shrinking-claim-histories"
+      ],
+      "blocker": null,
+      "id": "local-claim-key",
+      "labels": ["done/local-genesis-metadata/v1"],
+      "roles": ["kdf"],
       "sourceSites": [
         {
-          "path": "src/crdt/legacyCleanupRecord.ts",
-          "line": 116,
-          "label": "done/legacy-cleanup-entry",
+          "path": "src/crdt/localGenesisRecord.ts",
+          "line": 153,
+          "label": "done/local-genesis-metadata/v1",
           "kind": "literal"
+        }
+      ],
+      "vectorCases": ["local-claim-key"]
+    },
+    {
+      "phase": "D8",
+      "status": "specified",
+      "signer": null,
+      "entryPoints": [
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "parseLocalClaim"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "signLocalClaim"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "verifyLocalClaim"
+        }
+      ],
+      "mapEntries": [
+        "private-local-claim-key",
+        "private-local-claim-mac",
+        "private-account-local-anchor"
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "1",
+          "hash": "e567db12e74e"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "2",
+          "hash": "f3c9de5314e1"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "3",
+          "hash": "9c5ef2dadbe3"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "4",
+          "hash": "e2e8dfc8556d"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "5",
+          "hash": "a53f67dc86d0"
+        }
+      ],
+      "tests": [
+        "test/account-local-provenance/formats.test.mjs",
+        "test/account-local-provenance/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-claim-owner",
+        "initial-custody-authentication",
+        "retained-import-cleanup",
+        "shrinking-claim-histories",
+        "encoded-field-omissions"
+      ],
+      "blocker": null,
+      "id": "local-claim-progress",
+      "labels": ["done/local-genesis-progress/v1"],
+      "roles": ["mac"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "line": 180,
+          "label": "done/local-genesis-progress/v1",
+          "kind": "literal"
+        }
+      ],
+      "vectorCases": [
+        "local-claim-fresh-custody",
+        "local-claim-fresh-content",
+        "local-claim-fresh-ready"
+      ]
+    },
+    {
+      "phase": "D8",
+      "status": "specified",
+      "signer": null,
+      "entryPoints": [
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "parseLocalClaim"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "signLocalClaim"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "verifyLocalClaim"
+        }
+      ],
+      "mapEntries": [
+        "private-local-claim-key",
+        "private-local-claim-mac",
+        "private-account-local-anchor"
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "1",
+          "hash": "e567db12e74e"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "2",
+          "hash": "f3c9de5314e1"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "3",
+          "hash": "9c5ef2dadbe3"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "4",
+          "hash": "e2e8dfc8556d"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "5",
+          "hash": "a53f67dc86d0"
+        }
+      ],
+      "tests": [
+        "test/account-local-provenance/formats.test.mjs",
+        "test/account-local-provenance/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-claim-owner",
+        "initial-custody-authentication",
+        "retained-import-cleanup",
+        "shrinking-claim-histories",
+        "encoded-field-omissions"
+      ],
+      "blocker": null,
+      "id": "local-claim-selected-import",
+      "labels": ["done/local-import-selection/v1"],
+      "roles": ["mac"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "line": 167,
+          "label": "done/local-import-selection/v1",
+          "kind": "literal"
+        }
+      ],
+      "vectorCases": ["local-claim-imported"]
+    },
+    {
+      "phase": "D8",
+      "status": "specified",
+      "signer": null,
+      "entryPoints": [
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "parseLocalClaim"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "signLocalClaim"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "verifyLocalClaim"
         },
         {
           "path": "src/crdt/legacyCleanupRecord.ts",
-          "line": 102,
-          "label": "done/legacy-cleanup-fingerprint/v${version}",
-          "kind": "template"
+          "name": "cleanupPayload"
         },
         {
-          "path": "src/crdt/legacyImportRecord.ts",
-          "line": 126,
-          "label": "done/legacy-import-metadata/v1",
-          "kind": "literal"
+          "path": "src/crdt/legacyCleanupRecord.ts",
+          "name": "parseLegacyCleanup"
         },
         {
-          "path": "src/crdt/legacyImportRecord.ts",
-          "line": 56,
-          "label": "done/legacy-import-progress/v1",
-          "kind": "literal"
+          "path": "src/crdt/legacyCleanupEncoding.ts",
+          "name": "cleanupFields"
+        }
+      ],
+      "mapEntries": [
+        "private-local-claim-key",
+        "private-local-claim-mac",
+        "private-account-local-anchor"
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "1",
+          "hash": "e567db12e74e"
         },
         {
-          "path": "src/crdt/legacySource.ts",
-          "line": 177,
-          "label": "done/legacy-source-observation/v1",
-          "kind": "literal"
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "2",
+          "hash": "f3c9de5314e1"
         },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "3",
+          "hash": "9c5ef2dadbe3"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "4",
+          "hash": "e2e8dfc8556d"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "5",
+          "hash": "a53f67dc86d0"
+        }
+      ],
+      "tests": [
+        "test/account-local-provenance/formats.test.mjs",
+        "test/account-local-provenance/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-claim-owner",
+        "initial-custody-authentication",
+        "retained-import-cleanup",
+        "shrinking-claim-histories",
+        "encoded-field-omissions"
+      ],
+      "blocker": null,
+      "id": "local-claim-source-cleanup",
+      "labels": ["done/local-import-cleanup"],
+      "roles": ["mac", "carrier"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "line": 184,
+          "label": "done/local-import-cleanup",
+          "kind": "literal"
+        }
+      ],
+      "vectorCases": [
+        "local-claim-cleanup-v1",
+        "local-claim-cleanup-v2",
+        "local-claim-cleanup-v2-empty"
+      ]
+    },
+    {
+      "id": "inherited-local-clear",
+      "phase": "Local",
+      "status": "inherited",
+      "scope": "outside-account-acceptance",
+      "roles": ["kdf", "mac"],
+      "signer": null,
+      "labels": [
+        "done/local-clear-authentication/v1",
+        "done/local-clear-progress/v1",
+        "done/local-import-clear/v1"
+      ],
+      "sourceSites": [
         {
           "path": "src/crdt/localClearCrypto.ts",
           "line": 54,
@@ -3786,42 +4076,275 @@
           "kind": "literal"
         },
         {
-          "path": "src/crdt/localGenesisRecord.ts",
-          "line": 153,
-          "label": "done/local-genesis-metadata/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/localGenesisRecord.ts",
-          "line": 180,
-          "label": "done/local-genesis-progress/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/localGenesisRecord.ts",
-          "line": 184,
-          "label": "done/local-import-cleanup",
-          "kind": "literal"
-        },
-        {
           "path": "src/crdt/localClearCrypto.ts",
           "line": 32,
           "label": "done/local-import-clear/v1",
           "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/localClearCrypto.ts",
+          "name": "clearAuthenticator"
         },
         {
-          "path": "src/crdt/localGenesisRecord.ts",
-          "line": 167,
-          "label": "done/local-import-selection/v1",
+          "path": "src/crdt/localClearState.ts",
+          "name": "assertNoLocalClear"
+        }
+      ],
+      "reason": "Account only parses/refuses retained clear intent; authenticated deletion is Local-only.",
+      "mapEntries": [],
+      "vectorCases": [],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "3",
+          "hash": "9c5ef2dadbe3"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "4",
+          "hash": "e2e8dfc8556d"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "5",
+          "hash": "a53f67dc86d0"
+        }
+      ],
+      "evidencePins": [
+        {
+          "path": "docs/local-clear.md",
+          "sha256": "3dc7768cbafdab46e895948d8031adc2bb1ed2add270665a8cd92b07cc5ffd5a"
+        },
+        {
+          "path": "docs/storage-conformance-runs/2026-09-08-local-clear.md",
+          "sha256": "16eff9d8bee9387181d5386ddc50ea43c127a9517cdd0433e58e899bc8535d51"
+        },
+        {
+          "path": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup.md",
+          "sha256": "bd09c7dd26f82cdd7b55acb89fad7f3eb1a15308f7ba880e92fd6572c84eeb4b"
+        }
+      ],
+      "tests": ["test/account-local-provenance/native.test.mjs"],
+      "requirements": [
+        "outside-account-acceptance",
+        "native-exclusion-barriers",
+        "historical-evidence-only"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "inherited-preactive-import",
+      "phase": "Local",
+      "status": "inherited",
+      "scope": "outside-account-acceptance",
+      "roles": ["kdf", "mac"],
+      "signer": null,
+      "labels": ["done/legacy-import-metadata/v1", "done/legacy-import-progress/v1"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/legacyImportRecord.ts",
+          "line": 126,
+          "label": "done/legacy-import-metadata/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/legacyImportRecord.ts",
+          "line": 56,
+          "label": "done/legacy-import-progress/v1",
           "kind": "literal"
         }
       ],
-      "entryPoints": [],
+      "entryPoints": [
+        {
+          "path": "src/crdt/legacyImportRecord.ts",
+          "name": "verifyImportClaim"
+        },
+        {
+          "path": "src/crdt/legacyImportRecord.ts",
+          "name": "signImportClaim"
+        },
+        {
+          "path": "src/crdt/legacyImportState.ts",
+          "name": "assertNoPreactiveImport"
+        }
+      ],
+      "reason": "Presence blocks Account before claim verification; selected provenance uses the qualified Local wrapper, not this earlier MAC verifier.",
       "mapEntries": [],
-      "home": "docs/legacy-cleanup-preparation.md",
-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "bridge: preserve inherited Local/migration contracts; keep explicitly outside Account vector closure",
-      "reason": null
+      "vectorCases": [],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "3",
+          "hash": "9c5ef2dadbe3"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "4",
+          "hash": "e2e8dfc8556d"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "5",
+          "hash": "a53f67dc86d0"
+        }
+      ],
+      "evidencePins": [
+        {
+          "path": "docs/legacy-import-preparation.md",
+          "sha256": "0e89128f32b36909de3bd4bb241ca3aaa3f9bd41240b6e55160339a9d0e46c9f"
+        },
+        {
+          "path": "docs/legacy-selection-preparation.md",
+          "sha256": "b3c0cc35df772d68451b9751e34a54c8c55b2c9dd4cf6a71c3266cacb36c284d"
+        },
+        {
+          "path": "docs/storage-conformance-runs/2026-09-09-legacy-import.md",
+          "sha256": "44240d9190b81f4fbe7937533427c09c1560a9062b5668c83af88455e44109d9"
+        },
+        {
+          "path": "docs/storage-conformance-runs/2026-09-09-legacy-selection.md",
+          "sha256": "3d81b1bc08d128fcdb0dafa0db2c006296335b450c80f35fb4e4702f97c2b608"
+        }
+      ],
+      "tests": ["test/account-local-provenance/native.test.mjs"],
+      "requirements": [
+        "outside-account-acceptance",
+        "native-exclusion-barriers",
+        "historical-evidence-only"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "inherited-legacy-observation",
+      "phase": "Local",
+      "status": "inherited",
+      "scope": "outside-account-acceptance",
+      "roles": ["digest"],
+      "signer": null,
+      "labels": ["done/legacy-source-observation/v1"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/legacySource.ts",
+          "line": 177,
+          "label": "done/legacy-source-observation/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/legacySource.ts",
+          "name": "inspectLegacySource"
+        }
+      ],
+      "reason": "Unkeyed source change observation belongs to migration owners; Account does not enumerate/replay predecessor plaintext.",
+      "mapEntries": [],
+      "vectorCases": [],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "3",
+          "hash": "9c5ef2dadbe3"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "4",
+          "hash": "e2e8dfc8556d"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "5",
+          "hash": "a53f67dc86d0"
+        }
+      ],
+      "evidencePins": [
+        {
+          "path": "docs/legacy-import-preparation.md",
+          "sha256": "0e89128f32b36909de3bd4bb241ca3aaa3f9bd41240b6e55160339a9d0e46c9f"
+        },
+        {
+          "path": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup.md",
+          "sha256": "bd09c7dd26f82cdd7b55acb89fad7f3eb1a15308f7ba880e92fd6572c84eeb4b"
+        }
+      ],
+      "tests": ["test/account-local-provenance/native.test.mjs"],
+      "requirements": [
+        "outside-account-acceptance",
+        "native-exclusion-barriers",
+        "historical-evidence-only"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "inherited-cleanup-fingerprints",
+      "phase": "Local",
+      "status": "inherited",
+      "scope": "outside-account-acceptance",
+      "roles": ["kdf", "mac"],
+      "signer": null,
+      "labels": ["done/legacy-cleanup-fingerprint/v${version}", "done/legacy-cleanup-entry"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/legacyCleanupRecord.ts",
+          "line": 116,
+          "label": "done/legacy-cleanup-entry",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/legacyCleanupRecord.ts",
+          "line": 102,
+          "label": "done/legacy-cleanup-fingerprint/v${version}",
+          "kind": "template"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/legacyCleanupRecord.ts",
+          "name": "cleanupFingerprinter"
+        }
+      ],
+      "reason": "Source-value fingerprint comparison belongs to cleanup; Account authenticates the retained manifest via its Local claim without calling the fingerprinter.",
+      "mapEntries": [],
+      "vectorCases": [],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "3",
+          "hash": "9c5ef2dadbe3"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "4",
+          "hash": "e2e8dfc8556d"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "5",
+          "hash": "a53f67dc86d0"
+        }
+      ],
+      "evidencePins": [
+        {
+          "path": "docs/legacy-cleanup-preparation.md",
+          "sha256": "7617e7efa0c61a2be15fe703bed729dda00ad3f9421da6c4584cac7fd2438d04"
+        },
+        {
+          "path": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup.md",
+          "sha256": "bd09c7dd26f82cdd7b55acb89fad7f3eb1a15308f7ba880e92fd6572c84eeb4b"
+        },
+        {
+          "path": "docs/storage-conformance-runs/2026-09-10-app-upgrades.md",
+          "sha256": "6bdeae2a8e8fc5dae56ae7433e545a5e63dda6e4abae8165c0b5ccd7c01c48b4"
+        }
+      ],
+      "tests": ["test/account-local-provenance/native.test.mjs"],
+      "requirements": [
+        "outside-account-acceptance",
+        "native-exclusion-barriers",
+        "historical-evidence-only"
+      ],
+      "blocker": null
     },
     {
       "id": "remaining-coordination-names",
@@ -4413,6 +4936,11 @@
       "phase": "D7",
       "vectorFile": "test/vectors/account-checkpoint.json",
       "vectorSha256": "508f0fb9c7dc87f434ea0d624bb3490c20156fda9badfe2aedeb7ec71b367f03"
+    },
+    {
+      "phase": "D8",
+      "vectorFile": "test/vectors/account-local-provenance.json",
+      "vectorSha256": "a15f93629a0657756159db942e959ec9dc594b1b225b64082d9d030d2e08231d"
     }
   ]
 }

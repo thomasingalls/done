@@ -1,0 +1,11 @@
+genesis G03.kill-claim: pass
+genesis G06.kill-progress-content: pass
+genesis G10.kill-progress-ready: pass
+genesis G11.kill-index: pass
+genesis G12.abort: pass
+genesis G14.missing: pass
+genesis G15.auth: pass
+forget-completed-stage G14.missing: fail
+skip-progress-authentication G15.auth: fail
+Report: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-local-provenance/2026-09-11T19-54-07.896Z/local-genesis-native/native/report.md
+Exit 0 (bounded Local genesis integration)

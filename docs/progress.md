@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Active slice: Remaining Local/migration provenance disposition (`L-1`)
+## Active slice: Aggregate Account byte-contract closure review (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: explicit remaining Local provenance disposition before aggregate Account byte-contract closure
+blocks_on: aggregate evidence review before F-05/F-06 disposition
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
@@ -57,47 +57,47 @@ updated: 2026-09-11
 **Roadmap position.** Personal Local cutover, source cleanup and packaged offline upgrades are exercised.
 Account work remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), item 5's internal
 creating-member ciphertext round trip. Composition `6398e33`, descriptor bounds `4f71bac`, activation
-`2ba50aa`, prep `9cf5c98`, A `43b42b1`, B `e74fbaa`, C `d098bd4`, D1 `d24ca66`, D2 `1897848`,
-D3 `24bc3a4`, D4 `837cd14`, D5 `add6fd7` and D6 `3585a1b` are committed. C and D1–D6 are unsigned at
-the user's request; the existing reminder includes all seven. D7 is complete, unstaged/uncommitted.
-No real Account receipt exists; this is not Stage 4 completion or second-device enrollment.
+`2ba50aa`, prep `9cf5c98`, A `43b42b1`, B `e74fbaa`, C `a20e439`, D1 `32d4074`, D2 `437bc86`,
+D3 `10fef3d`, D4 `1500379`, D5 `ed1a930`, D6 `862a9d7` and D7 `5555238` are committed.
+All eight C/D1–D7 commits are signed; the signing reminder is paused. The
+[history mapping](./account-conformance-runs/2026-09-11-signed-contract-history.json) records the seven
+recreated commits, whose old objects remain reachable under the backup branch. D8 is complete,
+unstaged/uncommitted. No real Account receipt exists; this is not Stage 4 completion or enrollment.
 
-**Completed boundary.** [D7 checkpoint/startup contracts](./account-crypto/checkpoint.md) pin exact
-checkpoint key/AAD/cipher bytes and native persisted ownership. The inherited row-7 cipher matches;
-its generation 3, epoch 9, non-genesis identifier and prose plaintext qualify only byte agreement.
-Current parser support stays genesis at generation 1/epoch 1. Successful decryption does not establish
-service/member/lineage authority or replace recovery of the admitted content. No production change or
-new runtime defect was found. D6's strict state-parser repair remains intact.
+**Completed boundary.** [D8 Local provenance](./account-crypto/local-provenance.md) bridges the four
+claim key/progress/import-selection/cleanup labels actually consumed by Account promotion/startup.
+Eight other labels are four explicit inherited groups outside current Account acceptance. Exact
+primitive roles, historical evidence and tested boundaries remain required; the shared cleanup parser
+and payload stay inside live evidence. Account authenticates incomplete cleanup progress without
+claiming source absence or running deletion. No production change or defect was found. D6's strict
+state-parser repair and D7's genesis-only checkpoint/startup boundary remain intact.
 
-[Final evidence](./account-conformance-runs/2026-09-11-account-checkpoint-contract.md): 49 stages
-pass with 849 matching source pins. Six vectors, 48 mutations, 15 encoded omissions, 44 parser
-refusals and seven helper source controls pass. Shrinking-enabled properties cover 250 cipher cases,
-200 deletion/pending/reorder cases and 24 native cold-replay histories. Four native tests prove actual
-producer/startup byte agreement, no resealing on retained retry, offline read-only classification,
-later-edit recovery, authority refusals and missing database/journal refusal. Removing selected/active
-coverage checks accepts the damaged cases; removing startup workspace from KDF refuses valid state.
-Inherited genesis/handoff interruption campaigns, 983 units/88 files, typecheck, prior contracts and
-29 vector commands pass. Registry: 74 specified, one open, one exclusion. Map: 77 entries/96 permitted
-chains/18 swept homes. Census: unchanged 158 sources/89 labels/templates.
+[Final evidence](./account-conformance-runs/2026-09-11-account-local-provenance.md): 50 stages pass
+with 864 matching source pins. Eight fixed vectors, 51 mutations, 46 encoded omissions, 230 actual input
+mutations (190 parser/40 crypto refusals), seven source controls and ten registry controls pass.
+Shrinking-enabled tests cover 250 helper and 20 native histories, with no counterexample. Four native
+tests exercise fresh/imported/cleanup claim handoff, cold read-only startup, MAC omission/backstop,
+blocking clear/import rows and direct probes of four excluded-operation barriers. Seven selected
+inherited Local-genesis cases/two mutants, 983 units/88 files, typecheck, prior contracts and 30 vector
+commands pass. Registry: 78 specified, zero open, four inherited and one non-crypto exclusion.
+Map: 80 entries/102 chains/19 homes. Census: unchanged 158 sources/89 labels/templates.
 
-**Next bounded phase — D8: disposition of remaining Local/migration provenance.** Complete the last
-explicit group in [the construction registry](./account-crypto/constructions.json) under
-[group D's gate](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates):
+**Next bounded phase — aggregate A/B/C/D1–D8 closure review.** Review F-05/F-06 against
+[the construction registry](./account-crypto/constructions.json), [prep gates](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates)
+and the retained historical finding responses:
 
-- Trace the twelve remaining labels/templates through current Local claims, imported selection/cleanup,
-  clear and legacy-source/import carriers. Identify which authenticate a claim actually consumed by
-  Account promotion/startup versus carriers reachable only in legacy migration/Local deletion.
-- Bridge required live claim KDF/MAC/progress bytes to exact homes, current runtime and independent
-  vectors/meaningful negatives. Use existing native evidence where it establishes the same owner;
-  add a bounded check for any demonstrated gap. Do not classify a live dependency as an exclusion.
-- Give legacy-only carriers explicit, justified dispositions with retained source/home/evidence links
-  and limits. Do not rebuild migration machinery or turn this into a fresh whole-Local/WASM audit.
-- Preserve current valid formats; change runtime only for a reproduced defect or explicit correction.
-  Run the affected registry/vector/owner checks, preserve evidence, append the outcome, then replace
-  only L-1. Review aggregate F-05/F-06 closure separately; zero open labels alone is insufficient.
+- Reconcile the runtime census, primitive roles, permitted-root chains and exact byte homes with all
+  registered constructions, including the four inherited scope limits. Zero open groups is insufficient.
+- Audit executed vector fields, meaningful refusals and effective source controls against each finding's
+  actual acceptance requirement. Distinguish static registration, helper bytes, native owner tests and
+  dated inherited evidence. Do not infer protocol completeness from a passing checker.
+- Give each finding an explicit evidence-backed closed/remaining disposition in the current remediation
+  record, preserving the historical review. Repair a demonstrated gap within a bounded follow-up if needed.
+- Preserve the review evidence, append the outcome, then replace only L-1. Choose the next Account phase
+  from the remaining gates after this review; do not provision a real Account or resume personal servers.
 
 **Personal checkpoint.** All 21 saved package hashes in root `dist/` and
-`.dev/releases/17d87c2/app`, 29 prior tracked vector files, production sources, historical review and
+`.dev/releases/17d87c2/app`, 30 prior tracked vector files, production sources, historical review and
 L-2 are unchanged. Personal preview/relay remain stopped. No real browser interaction, Account, factor,
 operator key, pin, origin or routing change occurred. New bundles stayed in memory; native fixtures were
 disposable and synthetic. Unrelated root files `done ` and `reviewpacket96a20401ceb88d.md` remain untouched.

@@ -1,0 +1,13 @@
+{
+  "events": 8,
+  "witness": {
+    "events": 8,
+    "hash": "e3ac1038928a3bcb47a4ba4b2060ca454020c8fa3c082a29490aa52a4884851b"
+  },
+  "accepted": 1,
+  "received": 1,
+  "conflict": true,
+  "missingEventsRefused": 8,
+  "missingContentRefused": true,
+  "expiredStoredRequests": "reauthenticated"
+}

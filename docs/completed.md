@@ -2823,3 +2823,37 @@ migration tooling, real Account onboarding or deployment is authorized by that d
 successor epochs/checkpoints, second-device enrollment/adoption, broader Account/release gates and
 independent review remain open. All 21 personal hashes, 29 prior tracked vectors, historical review,
 L-2 and unrelated root files are preserved. Appended before replacing only L-1.
+
+
+## 2026-09-11 — Signed contract history and retained Local provenance (`L-1` seat)
+
+D7 was committed signed as `5555238`. The seven unsigned C/D1–D6 commits were recreated with verified
+signatures and unchanged trees, messages and author/committer metadata. The original chain remains at
+`codex/pre-sign-contract-history-2026-09-11`, preserving historical evidence references. The
+[mapping](./account-conformance-runs/2026-09-11-signed-contract-history.json) records old/new IDs.
+All eight signatures verify `G`; no push occurred and the signing reminder is paused.
+
+D8 is complete and remains unstaged/uncommitted. Its [contract](./account-crypto/local-provenance.md)
+specifies the four Local claim labels consumed by Account promotion/startup, including retained imported
+selection and cleanup bytes. Eight other labels have four explicit inherited Local/migration dispositions
+outside current Account acceptance, with exact label/primitive/scope and historical-evidence pins.
+The shared cleanup payload remains a live dependency. Native throwing barriers demonstrate the four
+excluded operations are not invoked on the tested Account paths; direct probes exercise each barrier.
+Incomplete authenticated cleanup progress does not assert source absence or invoke deletion on startup.
+
+[Final evidence](./account-conformance-runs/2026-09-11-account-local-provenance.md): 50 passing stages,
+864 matching source pins, eight independent fixed vectors, 51 field mutations, 46 encoded omissions,
+230 actual input mutations (190 parser/40 crypto refusals), seven source omission controls, 250
+shrinking-enabled helper histories and 20 native histories. Four native tests, seven selected inherited
+Local-genesis failure cases/two matching mutants, ten new registry controls, 983 units/88 files,
+typecheck, earlier contracts and 30 vector commands pass. No production counterexample was found;
+runtime and valid formats are unchanged. New native imported claims use synthetic authenticated
+provenance, not a fresh whole-migration ceremony.
+
+Registry: 78 specified, zero open, four inherited outside Account acceptance and one non-crypto
+exclusion. Map: 80 entries/102 chains/19 homes. Runtime census: unchanged 158 sources/89 labels/templates.
+All 21 saved package hashes, 30 prior tracked vectors, historical review and L-2 are preserved. Personal
+servers remain stopped; unrelated root files and real Account/browser/secrets are untouched.
+
+Next is the aggregate A/B/C/D1–D8 F-05/F-06 closure audit, including inherited limits. Zero open groups
+does not itself close those findings. F-15, remaining review and broader Account/release gates remain.
