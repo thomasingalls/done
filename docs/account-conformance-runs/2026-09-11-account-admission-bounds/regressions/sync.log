@@ -1,0 +1,129 @@
+Account composition evidence: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-sync/2026-09-11T12-28-10.164Z
+Starting types
+Starting units
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/ownedReceiveQueue.test.ts > holds local preparation behind owned commit and publishes originals without a local append 7ms
+ ✓ test/ownedReceiveQueue.test.ts > refuses invalid pages without blocking later edits and never accepts raw updates through the seam 2ms
+ ✓ test/ownedReceiveQueue.test.ts > close while commit is pending prevents promotion and late acknowledgement 1ms
+ ✓ test/ownedReceiveQueue.test.ts > capacity refusal happens before dispatch and capture owns all queued wire bytes 0ms
+ ✓ test/ownedReceiveQueue.test.ts > 200 generated interleavings recover authored text and preserve source counts 145ms
+ ✓ test/ownedReceiveQueue.test.ts > empty source lists cannot conceal a deletion with an unchanged state vector 2ms
+ ✓ test/accountSyncDriver.test.ts > alternates ready lanes, keeps independent idle deadlines and wakes an idle sender 2ms
+ ✓ test/accountSyncDriver.test.ts > retains local wakes during send, but cannot accelerate unknown backoff or clear a halt 0ms
+ ✓ test/accountSyncDriver.test.ts > observer pause before dispatch retains the startup deadline; observer close drains without dispatch 0ms
+ ✓ test/accountSyncDriver.test.ts > close waits for active work and cannot start the due opposite lane 0ms
+ ✓ test/accountSyncDriver.test.ts > outbound progress comes only from durable decisions and pending exact submissions bypass all sealing 0ms
+ ✓ test/accountSyncDriver.test.ts > 400 generated deferred histories agree with an independent two-lane event model 396ms
+ ✓ test/accountReceiveDriver.test.ts > polls five seconds after empty, yields 50ms between pages, and coalesces wakes including reentrant observers 2ms
+ ✓ test/accountReceiveDriver.test.ts > caps unknown backoff, preserves its floor through Local pauses, and allows only explicit expedite 1ms
+ ✓ test/accountReceiveDriver.test.ts > offline and pressure pause timers without deleting a permanent halt, including failures while paused 1ms
+ ✓ test/accountReceiveDriver.test.ts > close drains its pass and suppresses late notifications; synchronous observer closure prevents dispatch 0ms
+ ✓ test/accountReceiveDriver.test.ts > a gate transition during an unfinished pass cannot overlap work or lose polling after resume 0ms
+ ✓ test/accountReceiveDriver.test.ts > 400 generated deferred schedules obey an independent timer/deadline and halt oracle 100ms
+ ✓ test/accountReceiveDriver.test.ts > uses durable progress only and treats a verified empty result as polling idle 1ms
+ ✓ test/accountReceiveDriver.test.ts > resumes after reentrant Local pressure interrupts startup before the owned step begins 0ms
+ ✓ test/accountReceiveDriver.test.ts > 100 generated observer-pause durations resume the unstarted pass through an ordinary gate wake 7ms
+ ✓ test/accountReceiveDriver.test.ts > a pass skipped for readiness neither claims a verified end nor resets the unknown streak 0ms
+
+ Test Files  3 passed (3)
+      Tests  22 passed (22)
+   Start at  14:28:11
+   Duration  705ms (transform 165ms, setup 84ms, import 241ms, tests 671ms, environment 0ms)
+
+Starting native
+(node:50606) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50606) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:50606) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+native still running; see native.log
+✔ one owner sends and reads back actual service bytes, preserves sources through edits, compaction and cold replay (19205.708667ms)
+native still running; see native.log
+✔ lost submit answer can be received before delivery resolves; cold retry uses exact bytes without resealing (16814.679291ms)
+native still running; see native.log
+✔ native submission abort retains work for cold restart (11921.988ms)
+native still running; see native.log
+✔ native receive abort retains work for cold restart (12024.975167ms)
+✔ close drains a delayed send and prevents queued receive dispatch before releasing the shared permit (8274.382292ms)
+native still running; see native.log
+✔ local journal admission during an outbound seal is captured once and sent after readback gets a turn (10984.652083ms)
+native still running; see native.log
+✔ retained signed receive conflict halts both lanes without closing valid Local content (10507.405667ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 91613.83875
+Starting controls
+✔ effective composed fairness mutation (36.038458ms)
+✔ effective composed overlap mutation (4.705041ms)
+✔ effective composed halt mutation (4.785875ms)
+✔ effective composed resume mutation (4.441542ms)
+✔ effective composed wake mutation (4.826208ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 119.464625
+Starting native-controls
+(node:50840) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50840) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:50840) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+native-controls still running; see native-controls.log
+✔ actual final offline submit dispatch control (17210.41ms)
+native-controls still running; see native-controls.log
+✔ actual final pressure submit dispatch control (17217.162459ms)
+native-controls still running; see native-controls.log
+✔ omitting the union witness admits missing retained receive evidence on cold open (12251.224375ms)
+native-controls still running; see native-controls.log
+✔ self-stream byte binding refuses a different valid envelope from the same synthetic credential (25996.73275ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 74569.190375
+Starting generated
+(node:51000) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51000) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:51000) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+generated still running; see generated.log
+✔ generated actual-service histories preserve authored text, source identity, exact position retry and cold receive progress (288194.103708ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 290080.983708
+passed: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-sync/2026-09-11T12-28-10.164Z

@@ -1,0 +1,60 @@
+Account admission evidence: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-admission/2026-09-11T12-27-14.199Z
+(node:50401) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50401) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ removing origin verification actually admits an unapproved genesis (72.122083ms)
+✔ removing certification verification actually admits an unapproved genesis (59.638709ms)
+(node:50402) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50402) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ certified first epoch and receipt bind exact recovery, recipients and separate semantic bytes (70.197708ms)
+✔ validly signed changes of recovery, recipient and candidate cannot replace the offer (33.622541ms)
+✔ proposal cannot be replayed as an epoch or completion; malformed and wrong-purpose signatures refuse (40.550291ms)
+✔ abandonment during asynchronous verification wins before activation (31.112625ms)
+✔ unreadable acceptance custody refuses cold reopen without replacing its key (25.07575ms)
+✔ before-commit offer-promotion commit failure has one recoverable result (31.826584ms)
+✔ after-commit offer-promotion commit failure has one recoverable result (51.056375ms)
+✔ before-commit admit-promotion commit failure has one recoverable result (42.556042ms)
+✔ after-commit admit-promotion commit failure has one recoverable result (58.361042ms)
+✔ schema 2 upgrade is explicit and preserves all prior rows (17.394125ms)
+✔ 80 generated service histories match an independent pending/offered/active/cancelled ledger (2462.733541ms)
+✔ a cancelled proposal permits a fresh registration for the same retained workspace (38.890125ms)
+(node:50403) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50403) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ admission commits one verified first head and retains Local carriers through cold restart (1334.175625ms)
+✔ renderer interruption before admission-requested commit (1452.977375ms)
+✔ renderer interruption after admission-requested commit (1681.460125ms)
+✔ renderer interruption before admission-offered commit (1404.274625ms)
+✔ renderer interruption after admission-offered commit (1692.33475ms)
+✔ renderer interruption before admission-receipted commit (1419.174708ms)
+✔ renderer interruption after admission-receipted commit (1667.582167ms)
+✔ lost begin response resumes exact service outcome (1195.659333ms)
+✔ lost finish response resumes exact service outcome (1203.484583ms)
+Account admission campaign is still running; results stream to run.log.
+✔ abandonment after an offer removes only preparation, while a lost committed reply cannot roll back Local (1396.034625ms)
+✔ changed receipt signature is refused; disabling final verification actually retains it (1258.783292ms)
+✔ queued owner and cancellation retain the commit until native acknowledgement drains (1378.620334ms)
+(node:50403) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ caller mutation after queuing cannot change the owned slot or request (970.313291ms)
+Account admission campaign is still running; results stream to run.log.
+Account admission campaign is still running; results stream to run.log.
+✔ 30 generated delivery, admission interruption and retry histories preserve independent writing and coverage (35709.150209ms)
+✔ the committed version-2 reader and ordinary Local editor refuse a retained admission (1282.927333ms)
+(node:50404) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50404) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ SIGKILL before-commit offer-promotion recovers one durable result (507.565709ms)
+✔ SIGKILL after-commit offer-promotion recovers one durable result (470.165875ms)
+✔ SIGKILL before-commit admit-promotion recovers one durable result (465.964667ms)
+✔ SIGKILL after-commit admit-promotion recovers one durable result (474.091959ms)
+✔ two service processes converge on the exact offer and final receipt (472.382833ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 55863.088791
+Account admission campaign passed: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-admission/2026-09-11T12-27-14.199Z

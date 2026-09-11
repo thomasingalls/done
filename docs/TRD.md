@@ -1446,13 +1446,21 @@ K_cp = HKDF-SHA256(ikm = K_g, salt = cp_salt[16], info = LP("done/checkpoint/v1"
 cp_salt = 16 fresh random bytes per seal, carried in the clear beside the nonce and ciphertext
 AAD  = LP("done/cp/v1") || LP(dec v) || LP(workspace_id) || LP(dec gen) || LP(dec epoch)
 
-M    = Ed25519( producing credential ; LP("done/cp-manifest/v1") || LP(dec v)
+M    = Ed25519( producing credential ; LP("done/cp-manifest/v2") || LP("2")
        || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(dec gen)
-       || LP(hex checkpoint_digest) || LP(hex sv) || LP(hex ds)
+       || LP(hex checkpoint_digest) || LP(hex SHA-256(sv)) || LP(hex SHA-256(ds))
        || LP(hex head_vector_digest) || LP(producing_credential) )
 
 head_vector = for each credential ASCENDING BY ID: LP(credential_id) || LP(dec seq) || LP(hex link)
 ```
+
+
+**2026-09-11 encoding amendment.** Manifest and SemanticAdmission are v2; checkpoint cipher/AAD
+remains v1. The two descriptor fields bind separate SHA-256 hashes of decoded opaque bytes,
+while full raw descriptors remain required and are rederived by every restorer. The private
+adapter bounds each SV/DS pair to 16 MiB combined before hashing or admission progress.
+Private v1 completions/receipts and mixed versions refuse without rewriting retained state;
+pre-completion requests/offers may resume. See [the compatibility and bounds contract](./account-admission-bounds.md).
 
 `checkpoint_digest` is SHA-256 of the ciphertext, so the durable store validates it with no content key, exactly
 as the relay validates an envelope's (§7.2, §7.4). **`sv` and `ds` are bound separately and as opaque bytes** —

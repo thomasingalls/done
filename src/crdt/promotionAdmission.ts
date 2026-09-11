@@ -7,6 +7,7 @@ import {
   verifyAdmissionRequest,
   verifyOffer,
   completionBodies,
+  coverageParts,
   manifestMessage,
   semanticMessage,
   verifyCompletion,
@@ -83,9 +84,8 @@ export async function admitLocalPromotion(
           // Use the same closed, ordered representation in memory and in the retained carrier.
           request = parseAdmissionRequest(request);
           await verifyAdmissionRequest(request, marker.account);
-          // Validate row-7 LP bounds before writing a request that cannot be completed.
-          if (parts.sv.length > 65534 || parts.ds.length > 65534)
-            throw Error('Admission coverage exceeds LP bound');
+          // Validate raw-byte bounds before retaining or sending an admission request.
+          coverageParts(parts);
           const save = async (
             stage: PromotionRecord['stage'],
             admission: NonNullable<PromotionRecord['admission']>,
@@ -130,8 +130,8 @@ export async function admitLocalPromotion(
           if (marker.admission!.offer && !same(offer, marker.admission!.offer))
             throw Error('Retained offer changed');
           const completion = await completionBodies(request, offer, parts);
-          completion.manifest.signature = await sign(manifestMessage(completion.manifest));
-          completion.admission.signature = await sign(semanticMessage(completion.admission));
+          completion.manifest.signature = await sign(await manifestMessage(completion.manifest));
+          completion.admission.signature = await sign(await semanticMessage(completion.admission));
           await verifyCompletion(completion, request, offer, parts);
           if (marker.stage === 'admission-requested')
             await save('admission-offered', { request, offer, completion, receipt: null });

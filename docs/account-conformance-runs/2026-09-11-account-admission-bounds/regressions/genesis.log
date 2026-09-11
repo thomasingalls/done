@@ -1,0 +1,32 @@
+Account genesis evidence: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-genesis/2026-09-11T12-26-37.764Z
+✔ runtime and independent oracle open the published AES-256 HPKE generation vector (5.409ms)
+✔ 100 generated runtime seals interoperate with OpenSSL; info and ciphertext substitutions refuse (202.792542ms)
+✔ low-order recipients and malformed generation size refuse (0.635375ms)
+(node:50287) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50287) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ genesis preserves full database+journal state, attribution, source carriers and exact artifacts on restart (996.080833ms)
+✔ renderer restart before genesis commit (1012.236291ms)
+✔ renderer restart after genesis commit (1280.055291ms)
+✔ wrong factors, foreign owner and current service abandonment preserve preparation (789.828583ms)
+✔ unattestable actor refuses without rewriting content (646.4235ms)
+✔ unattestable card refuses without rewriting content (652.034458ms)
+✔ validly signed snapshot forgery is refused (1017.514709ms)
+✔ validly signed wrap forgery is refused (980.863ms)
+✔ validly signed coverage forgery is refused (720.677583ms)
+✔ validly signed recipient forgery is refused (712.457209ms)
+✔ validly signed actor forgery is refused (707.972458ms)
+✔ competing owners converge and cancellation drains before releasing the exclusive permit (979.26475ms)
+✔ previous version refuses the new carrier; malformed fields never gain an owner (1159.7655ms)
+Account genesis campaign is still running; results stream to run.log.
+Account genesis campaign is still running; results stream to run.log.
+✔ 40 generated delivery/interruption histories preserve independent text and full source state (23234.483833ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 36326.320166
+Account genesis campaign passed: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-genesis/2026-09-11T12-26-37.764Z

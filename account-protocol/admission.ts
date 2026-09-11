@@ -1,7 +1,7 @@
 /** Private first-epoch admission. Client certification and row-7 semantic evidence remain separate
  * from the service's serialization authority. No transport-supplied verification key is trusted. */
 import { closed, parsePendingState, type PendingState } from './preparation.ts';
-import { parseGenesis, genesisMessage, type GenesisCandidate } from './genesis.ts';
+import { parseGenesis, genesisMessage, GENESIS_LIMIT, type GenesisCandidate } from './genesis.ts';
 import { parseAuthorityPin, pinBytes, type AuthorityPin } from './authority.ts';
 import {
   unhex,
@@ -14,6 +14,8 @@ import {
   type RecoveryDraft,
 } from './recovery.ts';
 export const ADMISSION_LIMIT = 72 * 1024 * 1024;
+// Raw bytes in one SV/DS pair; four hex fields in completion fit ADMISSION_LIMIT.
+export const COVERAGE_LIMIT = GENESIS_LIMIT;
 export const ZERO_HEAD = '00'.repeat(32);
 export const DERIVATION = 'yjs-13.6.31-sv-ds-v1';
 type Member = { id: string; wPub: string; sPub: string };
@@ -60,7 +62,7 @@ export interface CoverageParts {
   ds: string;
 }
 export interface CheckpointManifest extends CoverageParts {
-  v: 1;
+  v: 2;
   workspaceId: string;
   epoch: 1;
   epochHead: string;
@@ -71,7 +73,7 @@ export interface CheckpointManifest extends CoverageParts {
   signature: string;
 }
 export interface SemanticAdmission {
-  v: 1;
+  v: 2;
   workspaceId: string;
   checkpointDigest: string;
   manifestDigest: string;
@@ -106,13 +108,25 @@ const opaque = (v: unknown): string => {
   if (
     typeof v !== 'string' ||
     !v.length ||
-    v.length > 65534 ||
+    v.length > 2 * COVERAGE_LIMIT ||
     v.length % 2 ||
     !/^[0-9a-f]+$/.test(v)
   )
     throw Error('Invalid coverage bytes');
   return v;
 };
+/** Validate before decoding/hashing, on both local and service paths. */
+export function coverageParts(input: CoverageParts): CoverageParts {
+  const sv = opaque(input.sv),
+    ds = opaque(input.ds);
+  if ((sv.length + ds.length) / 2 > COVERAGE_LIMIT)
+    throw Error('Admission coverage exceeds byte bound');
+  return { sv, ds };
+}
+async function coverageDigests(parts: CoverageParts) {
+  const { sv, ds } = coverageParts(parts);
+  return { sv: await digest(unhex(sv, sv.length / 2)), ds: await digest(unhex(ds, ds.length / 2)) };
+}
 function certification(input: unknown): Certification {
   const c = closed(input, ['members', 'recoveryStateDigest', 'approver', 'signature']);
   if (!Array.isArray(c['members']) || c['members'].length !== 1)
@@ -363,36 +377,38 @@ export function parseCompletion(input: unknown): AdmissionCompletion {
     'signature',
   ]);
   if (
-    m['v'] !== 1 ||
+    m['v'] !== 2 ||
     m['epoch'] !== 1 ||
     m['generation'] !== 1 ||
-    a['v'] !== 1 ||
+    a['v'] !== 2 ||
     a['derivation'] !== DERIVATION ||
     a['selfAdmitted'] !== 1 ||
     a['decisionParent'] !== ZERO_HEAD
   )
     throw Error('Unsupported semantic admission');
+  const mp = coverageParts({ sv: m['sv'] as string, ds: m['ds'] as string });
+  const ap = coverageParts({ sv: a['derivedSv'] as string, ds: a['derivedDs'] as string });
   return {
     manifest: {
-      v: 1,
+      v: 2,
       workspaceId: h(m['workspaceId'], 16),
       epoch: 1,
       epochHead: h(m['epochHead']),
       generation: 1,
       checkpointDigest: h(m['checkpointDigest']),
-      sv: opaque(m['sv']),
-      ds: opaque(m['ds']),
+      sv: mp.sv,
+      ds: mp.ds,
       headVectorDigest: h(m['headVectorDigest']),
       producer: h(m['producer'], 16),
       signature: h(m['signature'], 64),
     },
     admission: {
-      v: 1,
+      v: 2,
       workspaceId: h(a['workspaceId'], 16),
       checkpointDigest: h(a['checkpointDigest']),
       manifestDigest: h(a['manifestDigest']),
-      derivedSv: opaque(a['derivedSv']),
-      derivedDs: opaque(a['derivedDs']),
+      derivedSv: ap.sv,
+      derivedDs: ap.ds,
       headBaselineDigest: h(a['headBaselineDigest']),
       derivation: DERIVATION,
       admittingCredential: h(a['admittingCredential'], 16),
@@ -402,35 +418,41 @@ export function parseCompletion(input: unknown): AdmissionCompletion {
     },
   };
 }
-export const manifestMessage = (m: CheckpointManifest) =>
-  lp(
-    'done/cp-manifest/v1',
-    '1',
+export async function manifestMessage(m: CheckpointManifest) {
+  if (m.v !== 2) throw Error('Unsupported checkpoint manifest');
+  const hashes = await coverageDigests(m);
+  return lp(
+    'done/cp-manifest/v2',
+    String(m.v),
     m.workspaceId,
-    '1',
+    String(m.epoch),
     m.epochHead,
-    '1',
+    String(m.generation),
     m.checkpointDigest,
-    m.sv,
-    m.ds,
+    hashes.sv,
+    hashes.ds,
     m.headVectorDigest,
     m.producer,
   );
-export const semanticMessage = (a: SemanticAdmission) =>
-  lp(
-    'done/cp-admit/v1',
-    '1',
+}
+export async function semanticMessage(a: SemanticAdmission) {
+  if (a.v !== 2) throw Error('Unsupported semantic admission');
+  const hashes = await coverageDigests({ sv: a.derivedSv, ds: a.derivedDs });
+  return lp(
+    'done/cp-admit/v2',
+    String(a.v),
     a.workspaceId,
     a.checkpointDigest,
     a.manifestDigest,
-    a.derivedSv,
-    a.derivedDs,
+    hashes.sv,
+    hashes.ds,
     a.headBaselineDigest,
     a.derivation,
     a.admittingCredential,
-    '1',
+    String(a.selfAdmitted),
     a.decisionParent,
   );
+}
 export async function completionBodies(
   request: AdmissionRequest,
   offer: AdmissionOffer,
@@ -438,15 +460,16 @@ export async function completionBodies(
 ): Promise<AdmissionCompletion> {
   const c = request.candidate,
     head = await digest(lp('done/headvec/v1'));
+  const bounded = coverageParts(parts);
   const manifest: CheckpointManifest = {
-    v: 1,
+    v: 2,
     workspaceId: c.workspaceId,
     epoch: 1,
     epochHead: offer.head,
     generation: 1,
     checkpointDigest: await digest(unhex(c.checkpoint.ct, c.checkpoint.ct.length / 2)),
-    sv: opaque(parts.sv),
-    ds: opaque(parts.ds),
+    sv: bounded.sv,
+    ds: bounded.ds,
     headVectorDigest: head,
     producer: c.signer,
     signature: '00'.repeat(64),
@@ -454,10 +477,10 @@ export async function completionBodies(
   return {
     manifest,
     admission: {
-      v: 1,
+      v: 2,
       workspaceId: c.workspaceId,
       checkpointDigest: manifest.checkpointDigest,
-      manifestDigest: await digest(manifestMessage(manifest)),
+      manifestDigest: await digest(await manifestMessage(manifest)),
       derivedSv: manifest.sv,
       derivedDs: manifest.ds,
       headBaselineDigest: head,
@@ -481,8 +504,8 @@ export async function verifyCompletion(
   expected.admission.signature = c.admission.signature;
   if (!same(c, expected)) throw Error('Semantic coverage or manifest changed');
   const key = request.certification.members[0].sPub;
-  await verifySignature(key, c.manifest.signature, manifestMessage(c.manifest));
-  await verifySignature(key, c.admission.signature, semanticMessage(c.admission));
+  await verifySignature(key, c.manifest.signature, await manifestMessage(c.manifest));
+  await verifySignature(key, c.admission.signature, await semanticMessage(c.admission));
   return c;
 }
 export function parseReceipt(input: unknown): AdmissionReceipt {

@@ -1,0 +1,50 @@
+{
+  "personalPackages": {
+    "/Users/thomasingalls/.codex/worktrees/c030/done/dist": {
+      "assets/main-BBv1bmH8.css": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25",
+      "assets/main-CZBDGDKK.js": "3ac59f06a8feecd324d551ce7b64bac42f2bd4334aa6e11989582f7630d25b77",
+      "assets/main-CZBDGDKK.js.map": "22c4b0b24e48ccda6b6741e8c726a69b29b65bb85bd1bbffbf63f4a68dfa1cff",
+      "favicon.svg": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f",
+      "icon-192.png": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32",
+      "icon-512.png": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec",
+      "icon-maskable-512.png": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da",
+      "index.html": "b1c40d390f76787eb8f386b047d3412b0ee319a6e35a5b38974b70174f0ad244",
+      "local.html": "58f9fb240a2ca48aff5715341e4d4748502e2c7a28ae29b3762c64bcefc186b2",
+      "manifest.webmanifest": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3",
+      "sw.js": "73d09fb01e339e8fc6de34143facc71f167157eb51d9d83d37330e9849fe62cc"
+    },
+    "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app": {
+      "assets/main-BBv1bmH8.css": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25",
+      "assets/main-QtGIH--m.js": "3b588eb645d245e7a2cbbf2a200c714f8420ebfaaf7dc78e6986fe8eb7e07563",
+      "favicon.svg": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f",
+      "icon-192.png": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32",
+      "icon-512.png": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec",
+      "icon-maskable-512.png": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da",
+      "index.html": "d5017032fc4d2e3381caa20db7b25dc3b96d79196c25423817e552bd750106e8",
+      "local.html": "99e7ec751210d91ab39ee2e0483e2b6a5c38b66399e3a7543074457dc52b43f6",
+      "manifest.webmanifest": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3",
+      "sw.js": "65f527e9badb8eb4f803814cd0725ebe3e4594cbf19fc5fced68d5f18431834a"
+    }
+  },
+  "personalHashCount": 21,
+  "reviewSha256": "c48a517fd90c9dd0d06a799721a3fafc9b5680eee381d39900ccafad31f95dac",
+  "l2Unchanged": true,
+  "finalImplementationMatchesExecutedAndIsolatedBuild": [
+    "package.json",
+    "account-protocol/admission.ts",
+    "scripts/generate-checkpoint-vectors.mjs",
+    "src/crdt/promotionAdmission.ts",
+    "scripts/account-admission-bounds/reproduce.mjs",
+    "scripts/account-admission-bounds/run.mjs",
+    "scripts/account-admission-bounds/vectors.mjs",
+    "test/account-admission/core-fixtures.mjs",
+    "test/account-admission/oracle.mjs",
+    "test/vectors/checkpoint.json",
+    "test/vectors/admission-coverage.json",
+    "test/account-admission-bounds/histories.mjs",
+    "test/account-admission-bounds/protocol.test.mjs",
+    "test/account-admission-bounds/browser.ts",
+    "test/account-admission-bounds/fixtures.mjs",
+    "test/account-admission-bounds/native.test.mjs"
+  ]
+}

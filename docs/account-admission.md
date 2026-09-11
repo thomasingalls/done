@@ -5,6 +5,9 @@ admission and retains the verified result in the existing promotion carrier. Ind
 ordinary account UI, relay publication and device enrollment are subsequent owners. This API requires
 online authority availability; offline Account startup is not established by this component.
 
+The [2026-09-11 encoding amendment](./account-admission-bounds.md) governs descriptor sizes, v2
+manifest/admission signatures and explicit refusal of private v1 completions. Encryption stays v1.
+
 ## Commit boundary
 
 A client first replays Local database plus journal and reopens both generation wraps under both saved
@@ -36,8 +39,9 @@ recovery state before retaining the offer and completion in stage `admission-off
 The client derives separate opaque SV and DS from its reopened checkpoint/source verification. SV is
 Y.encodeStateVector(doc); DS is Y.encodeSnapshot(Y.createSnapshot(Y.snapshot(doc).ds, new Map())). The
 DS encoding includes an empty-vector suffix; `yjs-13.6.31-sv-ds-v1` pins that representation. Neither
-contains document text. Their hex LP fields must each fit the existing u16 bound; larger descriptors
-refuse before a request, without discarding Local data. The checkpoint plaintext remains bounded at 16 MiB.
+contains document text. Each raw SV/DS pair is bounded to 16 MiB combined; larger descriptors
+refuse before a request, without discarding Local data. Separate decoded-byte SHA-256 hashes
+replace the raw hex fields in both v2 signed messages. The checkpoint plaintext remains bounded at 16 MiB.
 The client signs row 7's exact manifest and SemanticAdmission bytes for the offered head. The accepted
 head baseline is SHA256(LP("done/headvec/v1")), the decision parent is the all-zero 32-byte genesis
 sentinel, and self_admitted is exactly 1 because the certified set contains only the creating client.
@@ -79,7 +83,7 @@ boundaries. No timer chooses a competing winner or expires a durable promotion o
 ## Encoding and transport
 
 `account-protocol/admission.ts` owns closed ordered objects, bounded fields and fixed-purpose bytes.
-Row-7 and CertifiedSet signatures retain their selected LP encodings. Private offer/first-epoch/receipt
+Row-7 signatures use the amended v2 encoding; CertifiedSet retains its selected LP encoding. Private offer/first-epoch/receipt
 objects use separate versioned LP domains over the SHA256 of their fixed-order JSON body, excluding only
 that object's signature. The epoch head is SHA256 of the epoch signing message. The request digest binds
 the full closed request including candidate ciphertext, certification, recovery state and origin endorsement. Trusted callers compare full

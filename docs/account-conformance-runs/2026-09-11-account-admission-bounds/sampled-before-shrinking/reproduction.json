@@ -1,0 +1,129 @@
+{
+  "commit": "6398e33",
+  "cases": [
+    {
+      "bytes": 32766,
+      "field": "sv",
+      "name": "manifest",
+      "error": null
+    },
+    {
+      "bytes": 32766,
+      "field": "sv",
+      "name": "admission",
+      "error": null
+    },
+    {
+      "bytes": 32766,
+      "field": "sv",
+      "name": "parser",
+      "error": null
+    },
+    {
+      "bytes": 32766,
+      "field": "ds",
+      "name": "manifest",
+      "error": null
+    },
+    {
+      "bytes": 32766,
+      "field": "ds",
+      "name": "admission",
+      "error": null
+    },
+    {
+      "bytes": 32766,
+      "field": "ds",
+      "name": "parser",
+      "error": null
+    },
+    {
+      "bytes": 32767,
+      "field": "sv",
+      "name": "manifest",
+      "error": null
+    },
+    {
+      "bytes": 32767,
+      "field": "sv",
+      "name": "admission",
+      "error": null
+    },
+    {
+      "bytes": 32767,
+      "field": "sv",
+      "name": "parser",
+      "error": null
+    },
+    {
+      "bytes": 32767,
+      "field": "ds",
+      "name": "manifest",
+      "error": null
+    },
+    {
+      "bytes": 32767,
+      "field": "ds",
+      "name": "admission",
+      "error": null
+    },
+    {
+      "bytes": 32767,
+      "field": "ds",
+      "name": "parser",
+      "error": null
+    },
+    {
+      "bytes": 32768,
+      "field": "sv",
+      "name": "manifest",
+      "error": "Protocol field too long"
+    },
+    {
+      "bytes": 32768,
+      "field": "sv",
+      "name": "admission",
+      "error": "Protocol field too long"
+    },
+    {
+      "bytes": 32768,
+      "field": "sv",
+      "name": "parser",
+      "error": "Invalid coverage bytes"
+    },
+    {
+      "bytes": 32768,
+      "field": "ds",
+      "name": "manifest",
+      "error": "Protocol field too long"
+    },
+    {
+      "bytes": 32768,
+      "field": "ds",
+      "name": "admission",
+      "error": "Protocol field too long"
+    },
+    {
+      "bytes": 32768,
+      "field": "ds",
+      "name": "parser",
+      "error": "Invalid coverage bytes"
+    },
+    {
+      "history": "sv",
+      "count": 12000,
+      "svBytes": 41618,
+      "dsBytes": 2,
+      "updateBytes": 131239,
+      "refusedBoth": true
+    },
+    {
+      "history": "ds",
+      "count": 12000,
+      "svBytes": 6,
+      "dsBytes": 39750,
+      "updateBytes": 215247,
+      "refusedBoth": true
+    }
+  ]
+}

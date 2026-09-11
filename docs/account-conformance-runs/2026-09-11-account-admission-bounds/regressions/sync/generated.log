@@ -1,0 +1,13 @@
+(node:51000) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51000) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:51000) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ generated actual-service histories preserve authored text, source identity, exact position retry and cold receive progress (288194.103708ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 290080.983708

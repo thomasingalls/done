@@ -2335,3 +2335,37 @@ and explicit versioning. Fresh activation assertion binding, crypto registry/rec
 invocation power-loss accounting, diagnostics, performance and the other accepted review gates remain.
 No whole-protocol debt is paid. All 21 personal package hashes, historical review, L-2 and stopped
 personal preview/relay are unchanged. New composition work remains uncommitted at this checkpoint.
+
+
+## 2026-09-11 — Admission coverage bounds and v2 signatures (`L-1` seat)
+
+Outbound composition was committed as `6398e33`. The bounded F-03 repair and descriptor portion of
+F-21 are complete: [contract](./account-admission-bounds.md), [preserved evidence](./account-conformance-runs/2026-09-11-account-admission-bounds.md).
+
+The immutable v1 reproduction establishes both raw-hex LP ceilings: 32,767 descriptor bytes fit;
+32,768 refuse. Real synthetic Yjs histories exceed that ceiling with checkpoints below 216 kB.
+Manifest and SemanticAdmission both advance to v2, signing separate SHA-256 hashes of decoded
+opaque descriptors. Raw bytes and local three-way rederivation remain mandatory. The combined
+16 MiB pair bound fits the existing service envelope limit; it is not a browser performance promise.
+Checkpoint encryption remains v1 and its ciphertext vector is unchanged.
+
+Old private completions/receipts, mixed and unknown versions refuse without rewriting authenticated
+client progress or admitted service rows. No real Account receipt exists. Pre-completion requests and
+service offers remain resumable. Neither silent signature reinterpretation nor automatic fixture
+reset is introduced. Larger, honestly signed coverage does not become semantic evidence by signature
+alone: correctly signed lies pass the content-blind service and fail client-derived coverage.
+
+Validation passes: five protocol tests with 80 shrinking-enabled generated cases plus exact boundaries,
+six native long-history/refusal/cold-replay cases, four independent implementation vectors and 92 field
+mutations, six effective descriptor/semantic omission probes, all 225 existing field-isolation checks,
+all 980 units, complete 17-test genesis and 34-test admission campaigns, and the full composed-sync
+campaign with its generated histories and controls. The isolated build/budget/origin/trace chain and
+type/lint/targeted-format/whitespace checks pass. Authority entries were reread and re-pinned. No full
+historical aggregate was rerun; no whole-protocol debt or performance gate is paid. Harness setup
+failures and the earlier sampled-property run remain separate from final passing evidence.
+
+The next bounded phase is an operation-bound fresh account assertion at first service activation
+(F-04), with prep for exact retries, expiration, cancellation and atomic consumption before implementation.
+Crypto registry/recovery alignment, invocation power-loss accounting and the other accepted review gates
+remain before real Account use. All 21 personal package hashes, stopped preview/relay, personal browser,
+historical review and L-2 remain unchanged. This phase is uncommitted. Appended before the L-1 rewrite.

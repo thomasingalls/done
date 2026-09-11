@@ -31,27 +31,27 @@ export const certMessage = (r) => {
 };
 export const manifestBytes = (m) =>
   lp(
-    'done/cp-manifest/v1',
-    '1',
+    'done/cp-manifest/v2',
+    '2',
     m.workspaceId,
     '1',
     m.epochHead,
     '1',
     m.checkpointDigest,
-    m.sv,
-    m.ds,
+    hash(Buffer.from(m.sv, 'hex')),
+    hash(Buffer.from(m.ds, 'hex')),
     m.headVectorDigest,
     m.producer,
   );
 export const semanticBytes = (a) =>
   lp(
-    'done/cp-admit/v1',
-    '1',
+    'done/cp-admit/v2',
+    '2',
     a.workspaceId,
     a.checkpointDigest,
     a.manifestDigest,
-    a.derivedSv,
-    a.derivedDs,
+    hash(Buffer.from(a.derivedSv, 'hex')),
+    hash(Buffer.from(a.derivedDs, 'hex')),
     a.headBaselineDigest,
     a.derivation,
     a.admittingCredential,

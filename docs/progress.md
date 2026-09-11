@@ -42,71 +42,68 @@ that is no longer active.
 
 ---
 
-## Active slice: Account admission descriptor bounds and explicit versioning (`L-1`)
+## Active slice: Fresh account assertion bound to first activation (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: bounded row-7/admission encoding prep first; real Account use remains gated below
+blocks_on: bounded activation-assertion contract prep first; real Account use remains gated below
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
 
-**Where we are on the roadmap.** Personal Local cutover, source cleanup and packaged offline upgrades
-have been exercised. Account work is at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service): the
-creating-member ciphertext round trip now runs through one private editor owner in synthetic fixtures.
-This is the internal seam around item 5, not completion of all of Stage 4. Actual second-device enrollment
-(item 6), device management, rotation/revocation/finalization and continuity remain later. No real Account
-receipt has been created for the personal installation.
+**Roadmap position.** Personal Local cutover, source cleanup and packaged offline upgrades have been
+exercised. Account work is at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), around item 5's
+internal creating-member ciphertext round trip. Outbound/receive composition is committed as `6398e33`.
+This is not completion of Stage 4: actual second-device enrollment, device management, rotation,
+revocation, finalization and continuity remain later. No real Account receipt exists.
 
-**Personal checkpoint.** The Local release remains `.dev/releases/17d87c2/app`; root `dist/` and all 21
-saved package hashes are unchanged. Preview/relay stay stopped. Origin/Tailscale routing, browser and
-factors are unchanged. No real Account, passkey, recovery code, operator key or authority pin is provisioned.
-The actual old second device will adopt this device's workspace with fresh custody, store, counters and
-credentials; its old writing will not be imported or merged.
+**Completed boundary.** [Admission descriptor bounds and explicit versioning](./account-admission-bounds.md)
+are implemented and uncommitted. Both signed objects use v2 domains and separate decoded-byte descriptor
+hashes; raw SV/DS pairs are bounded to 16 MiB combined and still rederived locally. Cipher/AAD stays v1.
+Private v1 completions/receipts refuse without rewriting retained state; unsent genesis and pre-completion
+requests/offers are unaffected. Native long-history admission and cold retry cross the previous 32,767-byte
+ceiling. Correctly signed descriptor lies fail client semantic comparison.
 
-**Completed boundary.** Native receive `f6e4cf4`, ordered editor `19586b6`, unchanged historical review
-`500630f`, aggregate validation-baseline repair `e835243`, private v2 service read `9598ca6`, receive HTTP
-`1ceb88d`, and receive polling/reconnect `83eed0b` are committed. [Outbound composition](./account-outbound-composition.md)
-is implemented and not yet committed. It uses one v9 owner, carrier, witness and ordered editor, preserving
-original source identities, grants and exact envelopes/submissions. One fair scheduler drives both lanes
-with independent retry/halts. The self-stream must match locally persisted envelopes; no copied or branched
-credential history is supported. Raw mutating primitives stay inside the private factory.
+[Evidence](./account-conformance-runs/2026-09-11-account-admission-bounds.md) retains exact boundaries,
+80 shrinking-enabled generated codec cases, six native cases, independent vectors, effective omissions,
+all 980 units, complete genesis/admission/composed-sync regressions and isolated build/trace checks.
+The maximum-size service/parser check does not establish browser performance at that limit. F-03 and
+F-21's descriptor gap are addressed; broader negative-test and whole-protocol gates remain.
 
-[Evidence](./account-conformance-runs/2026-09-11-account-sync.md) preserves seven directed native cases,
-eight generated native histories, 400 new clock/event schedules, ten effective controls, all 980 units,
-affected manual HTTP/v8 sender/spool/polling-receiver campaigns and isolated build/trace checks. The
-network-refusal classification defect and effective reproduction are archived. Only outer generated-test
-deadlines changed after its passing run; inputs and exact delta are retained. No whole-protocol debt is paid.
+**Next bounded build — F-04.** Require a fresh service-verified account assertion for the exact first
+activation, as the authority contract already requires:
 
-**Next small build.** Correct the capacity/versioning contract before any real Account receipt:
+- Write the bounded prep first. Specify the bytes binding the account, retained promotion request,
+  offered head and exact completion to a fresh challenge; use the actual registered passkey namespace.
+- Define challenge lifetime, exact retry after a lost reply, cancellation/abandonment, replay and
+  concurrent completion. Consumption and activation must share the service's serialization boundary.
+- Bind the client operation to its already retained completion. Preserve its custody/lifecycle ownership
+  across assertion UI, cancellation and cold restart. Handoff/open assertions remain separate checks.
+- Implement and test only this private first-activation seam, including validly signed changed-operation
+  negatives, expired/used assertions, process/renderer death and idempotent committed receipt recovery.
+  Do not add Account onboarding UI, enrollment, real provisioning or default-app activation in this phase.
 
-- Reproduce the current raw SV/DS hex length-prefix ceiling, including both row-7 manifest and semantic
-  admission bytes. Use generated synthetic long-history coverage and exact boundaries; do not inspect or
-  modify the personal browser to manufacture evidence.
-- Specify versioned signed encodings at both homes, preserve rederived semantic coverage and exact request/
-  receipt binding, and define the disposition of existing private v1 artifacts. Do not silently reinterpret
-  old signatures or update only the manifest.
-- Amend the selected row-7/TRD and Account contract homes together, implement the bounded client/service
-  path, regenerate interoperable positives and per-field negatives, and test old-reader/version refusal,
-  mismatched correctly signed descriptors and acceptance across the former ceiling.
-- Preserve private genesis/admission and composed send/receive regressions. This phase does not add Account
-  UI, enroll a device, provision production keys or activate the personal Account.
+**Personal checkpoint.** Root `dist/` and `.dev/releases/17d87c2/app` retain all 21 saved hashes.
+Preview/relay stay stopped; personal browser, factors and origin/Tailscale routing are unchanged.
+No real Account, passkey, recovery code, operator key or authority pin is provisioned. The actual old
+second device will adopt this device's workspace with fresh custody, store, counters and credentials;
+its old writing will not be imported or merged.
 
-**Other gates before real Account receipts/rollout.** Require an operation-bound fresh account assertion
-at first service activation; register/pin the exact Account crypto constructions with interoperable vectors;
-align recovery's 96-byte payload with row 14/TRD; resolve invocation-grant power-loss accounting. Keep
-salvage/diagnostics, parser/admission/service negatives, performance/maintenance, lock ordering and other
-accepted review follow-ups visible. The F-11 historical correction still applies: passkey and workspace
-signing credential IDs intentionally differ; service binding is to completed registration, not ID equality.
+**Other gates before real Account receipts/rollout.** Register and pin the exact Account crypto
+constructions with interoperable vectors; align recovery's 96-byte payload with row 14/TRD; resolve
+invocation-grant power-loss accounting. Keep salvage/diagnostics, parser/admission/service negatives,
+performance/maintenance, lock ordering and other accepted review follow-ups visible. F-11's correction
+still applies: passkey and workspace signing IDs are different namespaces; bind service access to the
+actual completed passkey registration, not equality with the signing credential ID.
 
 General lineage advancement, successor/checkpoint baselines, concurrent members, pruning/backlog scale,
 revocation/rotation, clear/delete, finalization/recovery, supported platforms, whole-profile residue,
 production provisioning/deployment/restore and independent review remain separate boundaries. L-2's
-historical clean ref `d24732b` has no further service work to integrate. Host VM/policy research stays stopped.
-Client credentials and service state still require unrewound, unbranched histories.
+historical clean ref `d24732b` has no further service work to integrate. Host VM/policy research stays
+stopped. Client credentials and service state require unrewound, unbranched histories.
 
 This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 

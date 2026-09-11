@@ -258,10 +258,10 @@ pin: docs/TRD.md §7.4 879970c40c7c
 entry: checkpoint-manifest
 kind: verification
 guards: content
-verifies: M — the producing credential's manifest over checkpoint digest, sv, ds and the head vector
+verifies: M v2 — the producing credential's manifest over checkpoint digest, separate SHA-256(sv) and SHA-256(ds), and the head vector
 resolves: the producing credential -> via:member-signing-keys
 status: resolved
-pin: docs/TRD.md §7.6 379e814fec88
+pin: docs/TRD.md §7.6 456e19fde83e
 ```
 
 ```authority
@@ -272,10 +272,15 @@ verifies: that a checkpoint means the accepted snapshot it claims — SemanticAd
 resolves: local re-derivation of {sv, ds} from the decrypted snapshot, compared three ways -> root:structural
 resolves: the admission signature and the admitting credential's eligibility at the manifest's epoch -> via:member-signing-keys
 status: resolved
-pin: docs/TRD.md §7.6 379e814fec88
-pin: docs/review/remediation/S0-5/A-schemas.md §1 c28c0a25fd1f
+pin: docs/TRD.md §7.6 456e19fde83e
+pin: docs/review/remediation/S0-5/A-schemas.md §1 87c7b6063c29
 pin: docs/review/remediation/S0-5/A-schemas.md §4 6fc9ec7ea390
 ```
+
+**Re-pinned 2026-09-11 for descriptor encoding v2.** The producing/admitting key paths and local
+three-way coverage comparison are unchanged; both signed messages bind separate decoded-byte
+descriptor hashes. Checkpoint encryption and its key authority are unchanged. The private v1 refusal
+and 16 MiB pair bound are recorded in [the amendment](../../../account-admission-bounds.md).
 
 **Flipped 2026-08-28 at the `S0-5` return** (`FU-11`, `ST-06`). The rule was always stated; what flipped it is
 that the evidence now exercises it with the authority as an input: the verifier resolves from the certified
@@ -578,8 +583,8 @@ guards: content
 verifies: the sealed checkpoint — K_cp over the full snapshot, an opener on every device
 discipline: one message per derived key — cp_salt is 16 fresh random bytes per seal into K_cp's HKDF, carried in the clear beside the nonce, so exactly one plaintext is ever sealed under each derived key and nonce reuse is structurally unreachable (§7.6, row 7); the key cannot narrow to a store because every device must open it and no single store could count the others' seals, so freshness rides the seal rather than a counter — §13.8's discipline at the fifth subkey
 status: resolved
-pin: docs/TRD.md §7.6 379e814fec88
-pin: docs/selections/row-7-checkpoint.md 7fee1deaff8a
+pin: docs/TRD.md §7.6 456e19fde83e
+pin: docs/selections/row-7-checkpoint.md f0ebd5feca31
 ```
 
 **The census's one declared absence, paid and struck at the `S0-5` return (2026-08-28).** From the `S0-3`

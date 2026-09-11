@@ -30,6 +30,14 @@ second-newest fallback installs through the same machine (TRD §7.6).
 
 ## The selection
 
+
+**2026-09-11 encoding amendment.** Manifest and SemanticAdmission are v2; checkpoint cipher/AAD
+remains v1. The two descriptor fields bind separate SHA-256 hashes of decoded opaque bytes,
+while full raw descriptors remain required and are rederived by every restorer. The private
+adapter bounds each SV/DS pair to 16 MiB combined before hashing or admission progress.
+Private v1 completions/receipts and mixed versions refuse without rewriting retained state;
+pre-completion requests/offers may resume. See [the compatibility and bounds contract](../account-admission-bounds.md).
+
 ```
 The checkpoint          one full snapshot, sealed under one generation
 
@@ -52,9 +60,9 @@ The checkpoint          one full snapshot, sealed under one generation
 
 The manifest            signed by the producing credential
 
-  M = LP("done/cp-manifest/v1") || LP(dec v) || LP(workspace_id)
+  M = LP("done/cp-manifest/v2") || LP("2") || LP(workspace_id)
       || LP(dec epoch) || LP(hex epoch_head) || LP(dec gen)
-      || LP(hex checkpoint_digest) || LP(hex sv) || LP(hex ds)
+      || LP(hex checkpoint_digest) || LP(hex SHA-256(sv)) || LP(hex SHA-256(ds))
       || LP(hex head_vector_digest) || LP(producing_credential)
 
   checkpoint_digest = SHA-256(ct)   — the durable store checks it with no key
@@ -65,9 +73,9 @@ The manifest            signed by the producing credential
 
 The admission           what the producer's signature does NOT say
 
-  A = LP("done/cp-admit/v1") || LP(dec v) || LP(workspace_id)
+  A = LP("done/cp-admit/v2") || LP("2") || LP(workspace_id)
       || LP(hex checkpoint_digest) || LP(hex manifest_digest)
-      || LP(hex derived_sv) || LP(hex derived_ds)
+      || LP(hex SHA-256(derived_sv)) || LP(hex SHA-256(derived_ds))
       || LP(hex head_baseline_digest) || LP(derivation_version)
       || LP(admitting_credential) || LP(dec self_admitted)
       || LP(hex decision_parent)
