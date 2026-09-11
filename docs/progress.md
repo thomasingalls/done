@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Active slice: Native inbound activation and atomic receive storage (`L-1`)
+## Active slice: Ordered remote editor integration (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: factor-owned v9 activation and complete authenticated receive replay
+blocks_on: editor admission and promotion under the native v9 receive owner
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
@@ -60,62 +60,57 @@ controls browser interaction and factors. No real Account, passkey, recovery cod
 pin is provisioned. The actual old second device will adopt this device's workspace with fresh custody,
 store, counters and credentials; its old writing will not be imported or merged.
 
-**Committed base.** `18ceb40` contains v2 outbound preparation, `7210b7d` source capture, `7082fa7` the
-witnessed spool, `81a4655` response verification, `2cb42a2` v8 delivery evidence, `96a2040` schema-4 service
-decisions, `e1a5029` private HTTP transport/readback, `8dd06fb` the owned delivery/reconnect driver and
-`ee42c45` inbound preparation. Exact source capsules, envelopes, wrappers and proof evidence survive
-restart/compaction; position and seal invocation grants remain separate. Edited v5 histories need a
-separately verified catch-up checkpoint.
+**Committed base.** `7210b7d` contains source capture, `7082fa7` the witnessed spool, `81a4655` response
+verification, `2cb42a2` v8 delivery, `96a2040` schema-4 service decisions, `e1a5029` private HTTP transport,
+`8dd06fb` the owned sender/reconnect driver, `ee42c45` inbound prep and `8378596` inbound formats/verifier.
+Exact sources, envelopes, wrappers and proof evidence survive restart/compaction. Position and seal
+invocation grants remain separate; edited v5 histories need a separately verified catch-up checkpoint.
 
-**Inbound bytes completed.** The [receive contract](./account-inbound.md) and
-[implemented verifier boundary](./account-inbound-verification.md) keep semantic genesis, reader membership,
-publisher authority, durable receipt and Yjs materialization separate. Closed v2 request/page and future
-inbound event codecs preserve original signed bytes alongside unchanged v1. The verifier checks held
-service/baseline/membership/prefix context, request/page signatures, acceptance, envelope decryption and
-actor, with detached original updates. Stored replay reauthenticates original wire and outer metadata even
-after request expiry. A context argument establishes no authority by itself. No production receive owner,
-v9 marker, service route or editor receive path is enabled yet.
+**Native receive completed.** The [private v9 store](./account-receive.md) now activates under the actual
+factor/passkey-owned Account lifetime, derives authority from admitted genesis, signs its own outstanding
+request, and commits original updates/event/witness together. Cold open reauthenticates the complete event
+census and original signatures, deriving received progress separately from outbound acceptance and checking
+actual content/deletion/pending coverage. Pending original frames survive compaction. Empty/duplicates grant
+no durable new knowledge; conflicting accepted evidence stops receipt without promoting conflicting content.
 
-[Evidence](./account-conformance-runs/2026-09-11-account-inbound-codecs.md): 34 codec/verifier cases, eight
-effective actual source-removal controls, 400 generated signed inputs, 500 wire mutations, 68 regressions
-(including the prior 300 model histories), all 948 unit tests, isolated build and 13 repository gates pass.
-A directed test found and fixed callback replacement during crypto bypassing closure; original lifetime
-callbacks are now bound once. The failing reproduction is preserved. Codec and regression generated logs
-have separate output directories. Synthetic authority and one-event reauthentication are not native
-witness/content coverage or enrollment evidence. No whole debt is paid.
+The factory exposes storage operations only. No editor, sender, service receive route or enrollment is
+attached; the v9 marker deliberately fences older editing factories. Default Local and personal data are
+unchanged. One creating credential at epoch 1/generation 1 is supported. Fresh readers/publishers and
+checkpoint baselines require their own admission owners.
 
-**Next bounded build.** Activate the planned v9 fence only through an explicit factor-owned private factory
-and exclusive permit. Earlier v8 readers must refuse before admission, while the default Local path remains
-unchanged. Derive the first receive context from actual verified promotion genesis/admission and held
-credential/lineage/generation state; neither a supplied response nor an in-memory verifier result can
-establish the baseline. Support the actual admitted owner's private self-stream first. Fresh readers and
-additional publishers remain synthetic until their enrollment/authority owner exists.
+[Evidence](./account-conformance-runs/2026-09-11-account-receive.md): 17 native tests with 12 generated
+histories, four effective native source controls, 45 primitive/property cases (including 200 new coverage
+histories), all 951 unit tests, isolated build and 13 repository gates pass. Existing v8 delivery passes
+four properties and 19 native tests. Its activation regressions caught an earlier v7/v8 refusal boundary
+change; the repair and exact failing source are preserved. New native polls explicitly await predicates.
+No whole debt is paid; generated tests found no additional counterexample.
 
-Build one checked native batch containing every original received update, its exact evidence event and the
-complete metadata witness. Existing one-record spool append is insufficient. The 255-update/512 KiB cap
-and actual 256-record/4 MiB check apply before any durable mutation. Commit received progress and original
-content together; aborted or unknown commits must be resolved by authenticated cold replay, not a writable
-cursor or a second seal. Conflicting accepted evidence halts that stream without promoting plaintext.
+**Next bounded build.** Compose the admitted editor with the same v9 owner and task queue. Reuse the current
+source-capture journal for local actions and the authenticated receive batch for remote actions. Received
+bytes must bypass source capture, and callers cannot inject a raw update into the accepted editor merely
+by claiming it was verified. The owning path must establish current authority, commit the receive batch,
+then hand original updates to ordered remote promotion. Do not expose the low-level context as authority.
 
-On cold open, authenticate the full retained event census, replay every original signed request/page and
-acceptance from independently reconstructed prefixes, and verify content coverage and witnessed completeness.
-Preserve original pending Yjs structs/deletions through restart and exact-coverage compaction. Received data
-cannot become a new local source capsule. Empty and exact-duplicate observations confer no durable new
-high-water knowledge. Keep editor remote promotion disabled until native storage evidence passes.
+Preserve the staging rule: a local action must not depend on a remote input before that input's durable
+commit. Test interleaved local edits, pending remote structs/deletions, pressure, refused suffixes, undo and
+close while receipt/promotion is queued. Durable received progress and visible Yjs materialization remain
+separate. If commit succeeds but promotion is interrupted, cold replay must recover the committed remote
+input without minting a source capsule or another network envelope. A conflict stops the affected stream
+while admitted Local editing remains available under its existing storage contract.
 
-Tests must exercise real IndexedDB abort/crash/lost-ack/cold-open boundaries, changed or missing evidence,
-content/event split controls, old-reader refusal, pressure, cancellation and permit ownership. Use independent
-content/receipt expectations and bounded generated histories. Native waits must explicitly await predicates;
-the earlier Playwright async-predicate bug cannot count as successful polling. Preserve source hashes and
-counterexamples before updating this checkpoint.
+Keep the remote promotion handoff inside the lifetime and avoid exposing mutable receipts as reusable
+capabilities. Recheck complete content/evidence on reopen and through compaction. Use native crash cuts,
+independent source/receipt/content oracles, bounded generated histories and effective early-promotion and
+source-relabel controls. The self-stream can exercise actual admitted ownership; fixture-only extra writers
+cannot stand in for real enrollment. Do not enable a default app or personal Account during this build.
 
-**Then:** ordered remote editor promotion; v2 service reader/publisher resolution and transport; Account
-UI/two-gate second-device adoption. General lineage advancement, successors, admitted checkpoint baselines,
-concurrent writers, pruning/backlog performance, revocation/rotation, clear/delete, finalization/recovery,
-supported platforms, whole-profile residue, production provisioning/deployment/restore and independent
-review remain following boundaries. L-2's historical clean ref `d24732b` has no further service work to
-integrate. Host VM/policy research stays stopped. Client credentials and service state still require
-unrewound, unbranched histories.
+**Then:** v2 service reader/publisher resolution and owned receive transport/reconnect; Account UI and
+real two-gate second-device adoption. General lineage advancement, successors, admitted checkpoint
+baselines, concurrent writers, pruning/backlog performance, revocation/rotation, clear/delete,
+finalization/recovery, supported platforms, whole-profile residue, production provisioning/deployment/
+restore and independent review remain following boundaries. L-2's historical clean ref `d24732b` has no
+further service work to integrate. Host VM/policy research stays stopped. Client credentials and service
+state still require unrewound, unbranched histories.
 
 This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 

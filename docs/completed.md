@@ -2099,3 +2099,49 @@ Next is native v9 reader-fence activation and an atomic original content/event/w
 factor-owned permit, with complete stored-wire replay and native abort/crash/lost-ack coverage. The private
 self-stream must derive its context from actual admitted genesis; fresh readers/publishers remain synthetic
 until enrollment exists. Remote editor promotion and v2 service integration follow their own checkpoints.
+
+
+### 2026-09-11 — Native inbound activation and atomic receive storage
+
+Committed the closed inbound formats/verifier as `8378596`. The [private v9 receive store](./account-receive.md)
+now derives its first-stream authority from actual factor/passkey-owned admission and semantic genesis,
+activates an authenticated reader fence, signs its own outstanding request and verifies returned pages.
+The factory exposes storage/status/close operations, with no editor, sender, transport route or enrollment.
+Default Local startup and the personal installation do not enter it.
+
+Each receive commits original Yjs updates, its exact signed event and the complete metadata witness in one
+native transaction. Reservation remains separate and is burned on abort. Before commit the owner rechecks
+promotion/custody authority, received state, request expiry and witness. Cold replay reauthenticates the
+entire retained event census and original signatures from the admitted baseline, separately checking actual
+content/deletion/pending coverage. Empty/duplicate replies grant no durable new progress. A conflicting
+accepted digest is retained without plaintext promotion and stops receipt.
+
+The existing compactor retains evidence and original pending frames until the disk union integrates. Remote
+input never enters the local source-capture journal. Closure drains work before permit/custody release;
+transient successful verifier plaintext is owned before the outer task's final check so cleanup can erase
+it even when closure wins that continuation.
+
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-receive.md): 17 native tests, including
+12 generated histories, cover activation/receive commit cuts, renderer death, lost acknowledgement, cold
+replay, missing or corrupted content/evidence, locally reauthenticated invalid signatures/baselines,
+pending dependency handoff, conflict, old readers, bounds/quota retry, authority changes and close draining.
+Four effective native source controls and eight retained primitive controls accompany 45 property/primitive
+tests, including 200 new generated coverage cases. The full suite passes 951 tests in 83 files; the existing
+v8 campaign passes four properties and 19 native cases, including eight generated histories. Isolated build,
+static checks and 13 repository gates accompany the result.
+
+The v8 regression found a compatibility defect: the new extension ceiling made the v7 factory refuse v8
+at an earlier boundary with a different error. The old factory still refused safely. Restoring the prior
+v8 ceiling for older factories, and allowing v9 only for its explicit owner, makes both original activation
+assertions pass. The failing campaign and exact source are preserved. The generated campaigns found no
+additional counterexample. New native waits explicitly await predicates; historical v8 waits are not
+credited as new polling-conformance evidence.
+
+Scope remains one actual admitted creating credential at epoch 1/generation 1. Arbitrary envelopes in the
+native fixture use disposable credentials and do not establish fresh-reader/writer issuance or safe cloning.
+General lineage/baseline/membership transitions, backlog performance, revocation, finalization and restore
+remain open. No whole pnpm check or whole debt payment is claimed. The v9 store has no editor yet and fences
+its older editing factory. Personal release/predecessor, browser/factors and server state are unchanged.
+
+Next is ordered remote editor promotion under this same lifetime, followed by v2 service/transport and
+real two-gate enrollment/adoption. This outcome is appended before replacing L-1 progress; L-2 is unchanged.

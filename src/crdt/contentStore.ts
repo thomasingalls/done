@@ -14,6 +14,7 @@ import {
   counterPayload,
   witnessPayload,
   equalCounter,
+  copyBatch,
   reserveCounter,
   recordStore,
   emptySpoolWitness,
@@ -420,6 +421,26 @@ export const createContentOwner = (
       },
     ) {
       await appendRecords(task, [input], transition);
+    },
+    /** Internal multi-record receive commit. One evidence event and its original content share the witness. */
+    async appendInbound(
+      task: SessionTask,
+      input: readonly ContentInput[],
+      transition: { before: SpoolWitness; after: SpoolWitness; beforeCommit: () => Promise<void> },
+    ): Promise<ContentReceipt> {
+      const copied = task.step(() => copyBatch(input));
+      try {
+        if (copied.at(-1)?.kind !== 'heads' || copied.slice(0, -1).some((r) => r.kind !== 'update'))
+          corrupt('Invalid receive batch shape');
+        const records = await appendRecords(task, copied, transition);
+        return Object.freeze({
+          storeId: scope.storeId,
+          generation,
+          sequences: Object.freeze(records.map((r) => r.seq)),
+        });
+      } finally {
+        for (const r of copied) r.bytes.fill(0);
+      }
     },
     async append(task: SessionTask, input: ContentInput[]): Promise<ContentReceipt> {
       const records = await appendRecords(task, input);

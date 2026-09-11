@@ -40,7 +40,7 @@ import type { AccountWorkspaceOptions } from './accountWorkspace';
 
 /** Internal composition hook; never supplied by application or transport callers. */
 export interface CaptureExtension {
-  version: 7 | 8;
+  version: 7 | 8 | 9;
   sourceRecords(records: readonly OpenedRecord[], route: CaptureRoute): OpenedRecord[];
   initialize(
     task: SessionTask,
@@ -57,7 +57,7 @@ export interface CaptureExtension {
 }
 export async function openAccountCaptureOwner(
   input: AccountStartupOptions,
-  principalId: string,
+  principalId: string | undefined,
   extension?: CaptureExtension,
 ) {
   const options = captureAccountOptions(input),
@@ -75,12 +75,15 @@ export async function openAccountCaptureOwner(
   const live = await openAccountWriteSession(options.slotId, options.code, {
     ...(options.signal ? { signal: options.signal } : {}),
     initialize: async (task) => {
-      const v = await verifyAccountUnderPermit(task, options);
+      const v = await verifyAccountUnderPermit(task, options, extension?.version === 9 ? 9 : 8);
       if (!extension && v.marker.v >= 7) throw Error('Account requires the spool owner');
       if (extension && v.marker.v !== extension.version - 1 && v.marker.v !== extension.version)
         throw Error('Spool requires verified source capture');
       if (v.marker.v === 5) throw Error('Edited v5 Account needs a verified catch-up checkpoint');
-      if (v.account.principalId !== principalId) throw Error('Account actor identity changed');
+      if (
+        principalId === undefined ? extension?.version !== 9 : v.account.principalId !== principalId
+      )
+        throw Error('Account actor identity changed');
       route = captureRoute(v.marker);
       account = v.account;
       const certified = v.marker.genesis!.actors;
@@ -117,7 +120,12 @@ export async function openAccountCaptureOwner(
               {
                 ...v.marker,
                 v: extension.version,
-                stage: extension.version === 8 ? 'account-delivering' : 'account-spooling',
+                stage:
+                  extension.version === 9
+                    ? 'account-receiving'
+                    : extension.version === 8
+                      ? 'account-delivering'
+                      : 'account-spooling',
               },
               subtle,
             );

@@ -1,3 +1,4 @@
+import { heldInboundContext, inspectInbound, verifyInboundLedger } from './inboundLedger';
 /** Private Account classification. No writer, network token or retained plaintext escapes this permit. */
 import { inspectDelivery, verifyDelivery } from './deliveryRecord';
 import { inspectSpool, verifySpool, verifySpoolWitness } from './spoolRecord';
@@ -31,16 +32,22 @@ export const captureAccountOptions = (input: AccountStartupOptions): AccountStar
   pin: parseAuthorityPin(input.pin),
 });
 /** Internal verification under the actual lifetime; no raw key or plaintext survives this call. */
-export async function verifyAccountUnderPermit(task: SessionTask, options: AccountStartupOptions) {
+export async function verifyAccountUnderPermit(
+  task: SessionTask,
+  options: AccountStartupOptions,
+  maxVersion = 8,
+) {
   const { claim, record, marker } = await readPromotion(task, options.slotId, options.code);
   if (
     !marker ||
+    marker.v > maxVersion ||
     !(
       (marker.v === 4 && marker.stage === 'handoff-selected') ||
       (marker.v === 5 && marker.stage === 'account-active') ||
       (marker.v === 6 && marker.stage === 'account-capturing') ||
       (marker.v === 7 && marker.stage === 'account-spooling') ||
-      (marker.v === 8 && marker.stage === 'account-delivering')
+      (marker.v === 8 && marker.stage === 'account-delivering') ||
+      (marker.v === 9 && marker.stage === 'account-receiving')
     )
   )
     throw Error('Account handoff needs resumption');
@@ -135,6 +142,7 @@ export async function verifyAccountUnderPermit(task: SessionTask, options: Accou
                 'verify',
               ])
             : undefined;
+        const inbound = marker.v === 9 ? await heldInboundContext(marker, key, subtle) : undefined;
         await withRecoveryUnderPermit(
           task,
           { ...scope, resolvePrincipal: () => scope.principalId },
@@ -145,11 +153,13 @@ export async function verifyAccountUnderPermit(task: SessionTask, options: Accou
             try {
               const route = captureRoute(marker);
               const spool =
-                marker.v === 8
-                  ? inspectDelivery(recovered.records, route, authority).spool
-                  : marker.v === 7
-                    ? inspectSpool(recovered.records, route)
-                    : undefined;
+                marker.v === 9
+                  ? inspectInbound(recovered.records, route, inbound!).delivery.spool
+                  : marker.v === 8
+                    ? inspectDelivery(recovered.records, route, authority).spool
+                    : marker.v === 7
+                      ? inspectSpool(recovered.records, route)
+                      : undefined;
               const recovery =
                 marker.v >= 6
                   ? capturedRecovery(
@@ -185,14 +195,25 @@ export async function verifyAccountUnderPermit(task: SessionTask, options: Accou
                 allowSpoolCounter: true,
                 validate: async (records, _task, counter) => {
                   const state =
-                    marker.v === 8
-                      ? inspectDelivery(records, route, authority).spool
-                      : inspectSpool(records, route);
+                    marker.v === 9
+                      ? inspectInbound(records, route, inbound!).delivery.spool
+                      : marker.v === 8
+                        ? inspectDelivery(records, route, authority).spool
+                        : inspectSpool(records, route);
                   await verifySpoolWitness(state, counter, subtle);
+                  if (marker.v === 9)
+                    await verifyInboundLedger(
+                      inspectInbound(records, route, inbound!),
+                      records,
+                      inbound!,
+                      { assertCurrent: () => task.step(() => {}) },
+                    );
                   await verifySpool(state, route, key, signer!, subtle);
-                  if (marker.v === 8)
+                  if (marker.v >= 8)
                     await verifyDelivery(
-                      inspectDelivery(records, route, authority),
+                      marker.v === 9
+                        ? inspectInbound(records, route, inbound!).delivery
+                        : inspectDelivery(records, route, authority),
                       route,
                       authority,
                       signer!,
