@@ -75,10 +75,10 @@ TypeScript, scoped lint/format and 13 existing gates pass. All final source inve
 account binding was caught during composition, fixed, and its exact failing source retained. No new
 counterexample appeared in the final generated runs. The AAD coverage audit is explicitly red.
 
-**Review dispositions.** The author requested static responses in the root review packet, with
-`resposnse` fences and no commit of that packet. All 25 findings, seven test-gap subitems and twelve
-resolved items have responses. Leave that file untracked/uncommitted unless separately authorized.
-The packet distinguishes current failures, latent boundaries, overstated claims and deferred product work;
+**Review dispositions.** The [annotated implementation review](./review/implementation/af8941e-96a2040.md)
+retains all 25 findings, seven test-gap subitems and twelve resolved items, with 45 `resposnse` blocks.
+The author authorized archiving and committing it separately after editor integration commit `19586b6`.
+It distinguishes current failures, latent boundaries, overstated claims and deferred product work;
 its suggested periodic projection check and early blocked-IDB release were rejected as unsafe shortcuts.
 
 **Next bounded repair.** Restore honest aggregate validation before layering on more service work:
