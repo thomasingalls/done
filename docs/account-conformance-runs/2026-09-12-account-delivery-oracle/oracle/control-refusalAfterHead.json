@@ -1,0 +1,23 @@
+{
+  "history": [
+    {
+      "kind": "accepted",
+      "position": 2,
+      "final": false,
+      "id": ""
+    },
+    {
+      "kind": "refused",
+      "position": 1,
+      "final": false,
+      "id": "r1"
+    }
+  ],
+  "detectedPrefixes": 1,
+  "oldOracleComparison": "not assessed for this control",
+  "oldOracleCommit": "77b0bb6239f7b7a48c4a52c74d3e3f39e39994a3",
+  "sourceChange": [
+    "n <= s.acceptedThrough ||",
+    "false ||"
+  ]
+}

@@ -3038,3 +3038,38 @@ rather than demanding false full-state permutation equality. Other review, Accou
 obligations remain separate. All 21 personal package hashes, 31 vectors, historical review and L-2
 are unchanged. No personal server, browser, Account, factor, operator key, pin, origin or routing change
 occurred. Unrelated root files remain untouched. Appended before replacing only L-1.
+
+
+## 2026-09-12 — Delivery evidence oracle strengthening (`L-1` seat)
+
+Parser conformance was committed signed as `77b0bb6`; its 884 source pins agree with committed/current
+files and all fourteen recent signatures verify `G`. This new F-21.6 phase is complete and remains
+unstaged/uncommitted. No production code, valid format, registry or vector changed.
+
+[Current disposition](./review/implementation/account-delivery-oracle.md) addresses the named delivery
+unit oracle and retained-evidence gap. A constraint-domain interpretation replaces the transition-like
+pairwise oracle and compares every `DeliveryState` field and publication status after every forward,
+reverse and shuffled prefix. First refusal IDs and final cutoffs are intentionally order-sensitive.
+Exact sentinel maps/references and evidence immutability are checked. Pure folding beyond conflict is
+separate from the owner's refusal of new proof writes after the first contradictory proof.
+
+[Preserved campaign](./account-conformance-runs/2026-09-12-account-delivery-oracle.md): 43 stages,
+79 Node tests, 24 selected unit cases, 893 matching source pins, types, 30 vector
+commands, census/map/registry, lint and format pass. The 500 generated unit histories produce 1,500
+orderings and 9168 prefix checks (seed 1121060, no counterexample/shrink). A separate finite
+interpretation agrees on all 2,197 triples against 80 concrete worlds. All twelve source controls are
+detected; four still match every field of the actual old oracle extracted from the signed baseline.
+
+Six new native tests cover both orders of contradictory refusal IDs/final cutoffs and two retention
+faults through compaction/cold restart, checking exact first values, proof/submission/source/envelope
+bytes and witness counts. Their synthetic acceptance signatures do not implement real finalization.
+Existing D3/C, the full native delivery suite and F-21.7's genuine service-issued order histories pass.
+No production defect or unexplained test failure was found. Full Vitest, aggregate crypto audit and
+broader Account/storage/platform campaigns were not rerun; this is not power-loss qualification.
+
+Next is F-21.2's remaining admission evidence inventory: credit A/D7/genesis/admission tests, distinguish
+current raw coverage bounds from obsolete LP-bound prose, and cover only missing client-owned
+coverage/size cases. Other review, privacy, Account and deployment gates remain. All 21 personal package
+hashes, 31 vectors, historical review and L-2 are preserved. No personal server, browser, Account,
+factor, operator key, pin, origin or routing changed. Unrelated root files remain untouched.
+Appended before replacing only L-1.

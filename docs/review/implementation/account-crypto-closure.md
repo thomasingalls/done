@@ -163,8 +163,15 @@ structural acceptance defects, repaired with strict strings and dense array trav
 reproduction, twelve effective omission controls and native IndexedDB readback preserve before/after
 evidence. Valid bytes and authority edges are unchanged; no authentication bypass is claimed.
 
-Next is F-21.6's named delivery-unit oracle, crediting D3/F-21.7 while specifying order-sensitive retained
-state. Remaining admission, residue, diagnostic and performance findings retain separate obligations.
+F-21.1 was committed signed as `77b0bb6`. The subsequent
+[delivery evidence oracle](./account-delivery-oracle.md) addresses F-21.6 with full per-order state
+comparison, a constraint model cross-checked by finite world enumeration, twelve effective source
+faults and exact native retained-evidence checks. Four faults still pass the original oracle. No
+production defect was found or runtime code changed. D3/C and genuine service-issued arrival-order
+regressions pass; model assumptions and real-owner admission limits remain explicit.
+
+Next is F-21.2's remaining admission coverage/size inventory, crediting A/D7 and later owner tests.
+Residue, diagnostic and performance findings retain separate obligations.
 
 Platform qualification, whole-profile residue, general lineage/checkpoint evolution, enrollment/adoption,
 revocation/rotation, finalization, recovery replacement, total-loss recovery, deployment/restore and

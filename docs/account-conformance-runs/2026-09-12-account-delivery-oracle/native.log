@@ -1,0 +1,17 @@
+(node:38300) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38300) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ refusals retain exact first evidence and proof bytes through compaction/restart; reversed=false (12951.036042ms)
+✔ refusals retain exact first evidence and proof bytes through compaction/restart; reversed=true (12509.537791ms)
+✔ finals retain exact first evidence and proof bytes through compaction/restart; reversed=false (12426.283667ms)
+✔ finals retain exact first evidence and proof bytes through compaction/restart; reversed=true (12402.560208ms)
+✔ native refusalId control preserves old status but fails full retained-state assertions (12629.694083ms)
+✔ native finalCutoff control preserves old status but fails full retained-state assertions (12641.620042ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 77162.446209

@@ -121,7 +121,8 @@
     "account:reservation-durability": "node scripts/account-reservation-durability/run.mjs",
     "account:isolation": "node scripts/account-isolation/run.mjs",
     "account:decision-composition": "node scripts/account-decision-composition/run.mjs",
-    "account:parser-conformance": "node scripts/account-parser-conformance/run.mjs"
+    "account:parser-conformance": "node scripts/account-parser-conformance/run.mjs",
+    "account:delivery-oracle": "node scripts/account-delivery-oracle/run.mjs"
   },
   "dependencies": {
     "@codemirror/commands": "^6.10.4",

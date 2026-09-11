@@ -1,0 +1,21 @@
+{
+  "commands": [
+    "refusal",
+    "restart",
+    "winner",
+    "retry-service",
+    "refusal",
+    "compact",
+    "restart"
+  ],
+  "retained": [
+    "refusal",
+    "winner"
+  ],
+  "conflict": true,
+  "closed": true,
+  "responseDigests": {
+    "refusal": "65cd3a6f3d2229d62b6df031f9bcd07866525e91de6315d9ef790144dd59b33f",
+    "winner": "cc22fb62d2f4406d421acacac8f1423154cebbfb1126873902cf5526746ee77e"
+  }
+}
