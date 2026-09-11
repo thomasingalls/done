@@ -2498,3 +2498,39 @@ rotation, enrollment, invocation power-loss accounting and broader Account readi
 No personal state or real Account changed; the 21 package hashes, historical review, stopped personal
 preview/relay and L-2 are preserved. No production build or historical aggregate was repeated. The
 new phase remains uncommitted. Appended before replacing only L-1.
+
+
+## 2026-09-11 — Encrypted transport, acceptance and service-witness byte contracts (`L-1` seat)
+
+Recovery group B was committed as `e74fbaa`. Group C is complete: current envelope v1/v2, submission,
+refusal/head/response, both read transports and service witness/chain now have exact ordered byte homes,
+source-site/map joins and independent fixed vectors. No production code, wire version or schema changed.
+Service signatures retain their availability bound; member attribution, held authority, prefix reconstruction,
+plaintext semantics and durable admission remain distinct obligations.
+
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-transport-contract.md) records all 36
+stages passing with 760 matching source pins: 37 fixed cases, nine reused envelope positives, 314 encoded
+substitutions and 314 omissions, 8,924 truncated carrier prefixes, six verification-message omission controls,
+and 200 shrinking-enabled independently encrypted/accepted histories. The actual v2 inbound verifier opens
+and replays the two fixed Yjs updates as AB. Actual service custody signs all fixed acceptance purposes;
+service chain/verifier bodies are exercised in a disposable source copy and through durable regressions.
+
+All 69 service/transport/inbound tests pass, including 200 retained generated histories, browser cold
+replay, lost HTTP replies, maximum-size pages, witness damage, process SIGKILL and competing decisions.
+The initial campaign found an obsolete registration-omission control: fresh activation's independent
+credential binding now blocks its original attack even with the older check removed. The repaired control
+retains that refusal and isolates changed registration provenance with current credential/activation intact.
+The failed evidence is retained. No runtime repair was necessary. All 983 units in 88 files, typecheck,
+retained A/B conformance tests, all 22 vector commands, targeted lint/format and map/registry checks pass.
+
+The registry now names 47 specified records, seven open and one non-crypto exclusion; the authority map
+has 49 entries and 57 permitted chains over 11 swept documents. Ten new controls enforce transport corpus,
+home, role, guard, signer and negative evidence obligations even with updated aggregate hashes. Existing
+A/B bytes and checks remain intact. F-05/F-06 stay open; byte agreement does not establish whole-protocol
+correctness, current membership, invocation power-loss accounting or coordinated-rollback resistance.
+
+Next is group D's bounded first part, D1: service root and acceptance-key custody KDF/seal/format contracts,
+operator authority and tamper controls. Local promotion/capsules, counter-witness coupling and checkpoint/
+startup bridges follow separately. All 21 personal package hashes, historical review, personal servers and
+L-2 remain untouched; no real Account/factor/operator key or pin was provisioned. No personal production
+build or historical aggregate was run. This phase remains uncommitted. Appended before replacing only L-1.

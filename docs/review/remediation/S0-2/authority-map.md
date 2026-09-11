@@ -544,6 +544,8 @@ status: resolved
 note: FU-10 still requires atomic position plus reserved-row identity. The 2026-09-10 preparation corrects the older model’s crash/successor undercount and v1 shared-key domain. Resolved here is the specified construction, not native implementation; account-outbound.md and its counterexamples retain that boundary.
 pin: docs/TRD.md §7.4 879970c40c7c
 pin: docs/review/remediation/S0-4/A-schemas.md §2 4eee344bd206
+pin: docs/account-crypto/transport.md §2 ff41202e59ad
+pin: docs/account-crypto/transport.md §8 381c3f07f8b3
 ```
 
 ```authority
@@ -803,4 +805,70 @@ status: resolved
 pin: docs/account-crypto/recovery-layout.md §1 88db6bbcf31b
 pin: docs/account-crypto/recovery-layout.md §4 54947337b7c1
 pin: docs/account-crypto/recovery-layout.md §5 c160491d235a
+```
+
+## 9. Private encrypted transport bytes — group C
+
+These fixed byte homes preserve the member/service authority separation and current versions.
+Group D custody and local witness bridges remain open; no real Account is provisioned by these tests.
+
+```authority
+entry: private-transport-member
+kind: verification
+guards: attribution
+verifies: envelope and wrapper attribution; v1 credential or v2 reader signatures with distinct publisher scope
+resolves: the named active workspace signing key resolved through the authenticated certified member set -> via:member-signing-keys
+status: resolved
+pin: docs/account-crypto/transport.md §1 175443c33e0e
+pin: docs/account-crypto/transport.md §2 ff41202e59ad
+pin: docs/account-crypto/transport.md §4 3d2d54df83c8
+pin: docs/account-crypto/transport.md §5 bb09e7a60319
+pin: docs/account-crypto/transport.md §6 1a7053699c06
+pin: docs/account-crypto/transport.md §8 381c3f07f8b3
+```
+
+```authority
+entry: private-transport-acceptance
+kind: verification
+guards: availability
+verifies: fixed-purpose refusal, accepted head, exact read page and service completeness witness
+resolves: the current acceptance key resolved from the held authenticated epoch, never from the response -> via:epoch-signature
+bound: Only §4 acceptance/closure evidence, §6 scoped read evidence and §7 ledger completeness; no member, recipient, plaintext-admission or factor authority.
+status: resolved
+pin: docs/account-crypto/transport.md §1 175443c33e0e
+pin: docs/account-crypto/transport.md §4 3d2d54df83c8
+pin: docs/account-crypto/transport.md §5 bb09e7a60319
+pin: docs/account-crypto/transport.md §6 1a7053699c06
+pin: docs/account-crypto/transport.md §7 f13da6f75166
+pin: docs/account-crypto/transport.md §8 381c3f07f8b3
+```
+
+```authority
+entry: private-transport-framing
+kind: predicate
+guards: content
+verifies: exact typed binary/JSON carriers and ordered nested bytes; parsing alone authenticates nothing
+resolves: bounded canonical decoding and exact byte reconstruction before the enclosing signature and owner checks -> root:structural
+status: resolved
+pin: docs/account-crypto/transport.md §1 175443c33e0e
+pin: docs/account-crypto/transport.md §3 4853b942c998
+pin: docs/account-crypto/transport.md §4 3d2d54df83c8
+pin: docs/account-crypto/transport.md §5 bb09e7a60319
+pin: docs/account-crypto/transport.md §6 1a7053699c06
+pin: docs/account-crypto/transport.md §8 381c3f07f8b3
+```
+
+```authority
+entry: private-transport-commitments
+kind: predicate
+guards: content
+verifies: ciphertext, refusal-ID, acceptance-link, exact signed-request and event-chain hashes; none is standalone authority
+resolves: SHA256 recomputation over the specified exact bytes, with enclosing signatures and held context checked separately -> root:structural
+status: resolved
+pin: docs/account-crypto/transport.md §1 175443c33e0e
+pin: docs/account-crypto/transport.md §2 ff41202e59ad
+pin: docs/account-crypto/transport.md §4 3d2d54df83c8
+pin: docs/account-crypto/transport.md §5 bb09e7a60319
+pin: docs/account-crypto/transport.md §7 f13da6f75166
+pin: docs/account-crypto/transport.md §8 381c3f07f8b3
 ```

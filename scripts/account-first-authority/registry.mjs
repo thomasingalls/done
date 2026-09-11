@@ -53,7 +53,7 @@ export function checkConstructionRegistry(root, options = {}) {
   const executed = vectors.vectors.map((v) => ({ ...v, phase: 'A' }));
   const corpusPhases = new Set(['A']);
   for (const corpus of additional) {
-    if (corpus.phase !== 'B' || corpusPhases.has(corpus.phase))
+    if (!['B', 'C'].includes(corpus.phase) || corpusPhases.has(corpus.phase))
       fail('unknown/duplicate additional corpus phase');
     corpusPhases.add(corpus.phase);
     if (digest(read(corpus.vectorFile)) !== corpus.vectorSha256)
@@ -143,6 +143,9 @@ export function checkConstructionRegistry(root, options = {}) {
       device: ['private-creating-device', 'attribution'],
       bootstrap: ['private-first-origin', 'keys'],
       'recovery-bootstrap': ['private-recovery-possession', 'custody'],
+      'transport-member': ['private-transport-member', 'attribution'],
+      'transport-reader': ['private-transport-member', 'attribution'],
+      'transport-acceptance': ['private-transport-acceptance', 'availability'],
     }[r.signer];
     if (
       r.roles.includes('signature') &&
@@ -171,6 +174,10 @@ export function checkConstructionRegistry(root, options = {}) {
         fail('signature vector misclassified as non-signature ' + r.id);
       if (['kdf', 'aead'].includes(v?.kind) && !r.roles.includes(v.kind))
         fail('primitive vector misclassified ' + r.id);
+      if (v?.kind === 'carrier' && !r.roles.includes('carrier'))
+        fail('carrier vector misclassified ' + r.id);
+      if (v?.kind === 'digest' && !r.roles.includes('digest'))
+        fail('digest vector misclassified ' + r.id);
       if (!v?.expected.messageHex || !v.expected.resultHex || !v.negatives?.length)
         fail('missing vector/negative corpus ' + r.id + ' -> ' + id);
       if (

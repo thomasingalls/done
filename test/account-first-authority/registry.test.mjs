@@ -18,8 +18,8 @@ const baseline = () => ({
 test('registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups', () => {
   const result = checkConstructionRegistry(root);
   assert.deepEqual(result.failures, []);
-  assert.equal(result.specified, 23);
-  assert.equal(result.open, 13);
+  assert.equal(result.specified, 47);
+  assert.equal(result.open, 7);
   assert.equal(result.excluded, 1);
 });
 
@@ -211,4 +211,107 @@ test('recovery corpus cannot lose its phase, primitive role, negative corpus or 
     );
     assert(!result.failures.some((f) => f.includes('stale additional vector file pin')));
   }
+});
+
+test('transport coverage refuses missing bytes, misclassified carriers/hashes and service authority over content', () => {
+  const controls = [
+    [
+      'missing C corpus',
+      (o) => {
+        o.document.additionalCorpora = o.document.additionalCorpora.filter((c) => c.phase !== 'C');
+      },
+      'specified phase/blocker mismatch',
+    ],
+    [
+      'duplicate C corpus',
+      (o) => {
+        o.document.additionalCorpora.push(
+          o.document.additionalCorpora.find((c) => c.phase === 'C'),
+        );
+      },
+      'unknown/duplicate additional corpus phase',
+    ],
+    [
+      'carrier role',
+      (o) => {
+        o.document.constructions.find((r) => r.id === 'transport-response-wire').roles = [
+          'predicate',
+        ];
+      },
+      'carrier vector misclassified',
+    ],
+    [
+      'digest role',
+      (o) => {
+        o.document.constructions.find((r) => r.id === 'transport-request-hash').roles = [
+          'predicate',
+        ];
+      },
+      'digest vector misclassified',
+    ],
+    [
+      'service guard',
+      (o) => {
+        o.entries.get('private-transport-acceptance').guards = 'content';
+      },
+      'signer/authority guard mismatch',
+    ],
+    [
+      'read namespace signer',
+      (o) => {
+        o.document.constructions.find((r) => r.id === 'transport-read-v2-signature').signer =
+          'transport-acceptance';
+      },
+      'vector signer mismatch',
+    ],
+    [
+      'exact service byte home',
+      (o) => {
+        o.document.constructions.find((r) => r.id === 'transport-service-witness').homePins = [];
+      },
+      'incomplete specified construction',
+    ],
+    [
+      'unlabelled request hash',
+      (o) => {
+        o.document.constructions = o.document.constructions.filter(
+          (r) => r.id !== 'transport-request-hash',
+        );
+      },
+      'orphan executed vector',
+    ],
+  ];
+  const evidence = [];
+  for (const [name, change, expected] of controls) {
+    const o = baseline();
+    change(o);
+    assert(
+      checkConstructionRegistry(root, o).failures.some((f) => f.includes(expected)),
+      name,
+    );
+    evidence.push({ name, expected, caught: true });
+  }
+  for (const field of ['negatives', 'encodedBindingControls']) {
+    const o = baseline(),
+      corpus = o.document.additionalCorpora.find((c) => c.phase === 'C');
+    const path = corpus.vectorFile,
+      vectors = JSON.parse(read(path));
+    vectors.vectors.find((v) => v.id === 'transport-service-witness')[field] = [];
+    const changed = JSON.stringify(vectors);
+    corpus.vectorSha256 = digest(changed);
+    o.read = (p) => (p === path ? changed : read(p));
+    const expected =
+      field === 'negatives'
+        ? 'missing vector/negative corpus'
+        : 'missing signature/omission corpus';
+    const result = checkConstructionRegistry(root, o);
+    assert(result.failures.some((f) => f.includes(expected)));
+    assert(!result.failures.some((f) => f.includes('stale additional vector file pin')));
+    evidence.push({ name: field, expected, caught: true, aggregatePinUpdated: true });
+  }
+  if (process.env.ACCOUNT_REPORT_DIR)
+    writeFileSync(
+      join(process.env.ACCOUNT_REPORT_DIR, 'transport-registry-controls.json'),
+      JSON.stringify({ controls: evidence.length, evidence }, null, 2) + '\n',
+    );
 });

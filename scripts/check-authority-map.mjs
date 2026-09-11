@@ -90,6 +90,7 @@ const SWEPT = [
   'docs/review/remediation/S0-7/A-schemas.md',
   'docs/account-crypto/first-authority.md',
   'docs/account-crypto/recovery-layout.md',
+  'docs/account-crypto/transport.md',
 ];
 
 const KINDS = new Set(['verification', 'predicate', 'aead']);

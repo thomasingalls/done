@@ -1,5 +1,8 @@
 # Owned v2 receive HTTP transport
 
+Current exact byte formats and their authority limits are pinned in the
+[group C transport contract](./account-crypto/transport.md). This document retains its phase context.
+
 `openOwnedReceivingAccountWorkspace` now exposes private `receiveNext(operatorToken)`. One call reads
 one page through `/account/delivery/read-v2` and waits for the existing ordered receive owner to verify,
 commit, reauthenticate and publish it. The caller supplies no cursor, signing key, publisher, authority or

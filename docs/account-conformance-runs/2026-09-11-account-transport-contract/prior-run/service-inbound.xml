@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="actual reader omission produces a signed page forbidden by the baseline" time="0.102841" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs"/>
+	<testcase name="actual publisher omission produces a signed page forbidden by the baseline" time="0.083774" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs"/>
+	<testcase name="actual signature omission produces a signed page forbidden by the baseline" time="0.081188" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs"/>
+	<testcase name="actual current omission produces a signed page forbidden by the baseline" time="0.083209" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs"/>
+	<testcase name="actual registration omission produces a signed page forbidden by the baseline" time="0.073945" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs" failure="{&amp;quot;kind&amp;quot;:&amp;quot;unknown&amp;quot;,&amp;quot;reason&amp;quot;:&amp;quot;unavailable&amp;quot;}&#10;+ actual - expected&#10;&#10;+ 'unknown'&#10;- 'decision'&#10;">
+		<failure type="testCodeFailure" message="{&amp;quot;kind&amp;quot;:&amp;quot;unknown&amp;quot;,&amp;quot;reason&amp;quot;:&amp;quot;unavailable&amp;quot;}&#10;+ actual - expected&#10;&#10;+ 'unknown'&#10;- 'decision'">
+[Error [ERR_TEST_FAILURE]: {"kind":"unknown","reason":"unavailable"}
++ actual - expected
+
++ 'unknown'
+- 'decision'
+] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: AssertionError [ERR_ASSERTION]: {"kind":"unknown","reason":"unavailable"}
+  + actual - expected
+  
+  + 'unknown'
+  - 'decision'
+  
+      at pageProof (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/oracle.mjs:29:10)
+      at TestContext.&lt;anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs:150:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'unknown',
+    expected: 'decision',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+}
+		</failure>
+	</testcase>
+	<testcase name="actual witness omission produces a signed page forbidden by the baseline" time="0.078996" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs"/>
+	<testcase name="actual expiry omission produces a signed page forbidden by the baseline" time="0.086844" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs"/>
+	<testcase name="actual custody omission produces a signed page forbidden by the baseline" time="0.081991" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/controls.test.mjs"/>
+	<testcase name="v2 returns exact bounded witnessed originals across restart; v1 remains a separate purpose" time="0.157352" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/core.test.mjs"/>
+	<testcase name="each role, pin field, signature, expiry and extent is checked with no service writes" time="0.093679" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/core.test.mjs"/>
+	<testcase name="maximum wire sizes still produce byte-bounded pages without losing a position" time="21.744070" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/core.test.mjs"/>
+	<testcase name="registration identity is checked in its own namespace; candidate/member mismatch and lost witness refuse" time="0.059718" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/core.test.mjs"/>
+	<testcase name="state change after verification refuses and four racing snapshots exhaust retries" time="0.055799" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/core.test.mjs"/>
+	<testcase name="caller bytes are copied and a concurrent append forces fresh census after crypto" time="0.045413" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/core.test.mjs"/>
+	<testcase name="expiry and custody loss on the far side of signing withhold every page byte" time="0.042066" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/core.test.mjs"/>
+	<testcase name="another service process cannot change membership during synchronous page signing" time="0.140595" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/core.test.mjs"/>
+	<testcase name="60 generated append/read/restart/replay/role/ledger histories preserve original prefixes" time="5.184385" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/generated.test.mjs"/>
+	<testcase name="owned browser request consumes original service v2 pages over HTTP and cold-replays them" time="7.423234" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/native.test.mjs"/>
+	<testcase name="service SIGKILL after verified read leaves no writes and retry returns originals" time="0.257633" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/restart.test.mjs"/>
+	<testcase name="service SIGKILL after signed read leaves no writes and retry returns originals" time="0.239608" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-inbound/restart.test.mjs"/>
+	<!-- tests 20 -->
+	<!-- suites 0 -->
+	<!-- pass 19 -->
+	<!-- fail 1 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 38500.994625 -->
+</testsuites>

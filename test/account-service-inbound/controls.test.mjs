@@ -111,8 +111,29 @@ for (const control of [
         control === 'reader' || control === 'publisher' ? { [control]: 'aa'.repeat(16) } : {},
         control === 'signature' ? generateKeyPairSync('ed25519').privateKey : x.s.privateKey,
       );
-      if (control === 'registration')
-        mutate(x, (db) => db.exec("UPDATE credentials SET id='replaced'"));
+      if (control === 'registration') {
+        let credential;
+        mutate(x, (db) => {
+          credential = db.prepare('SELECT id FROM credentials').get().id;
+          db.exec("UPDATE credentials SET id='replaced'");
+        });
+        // Fresh activation independently binds the real passkey. Removing the older
+        // registration check must no longer rescue a replaced current credential.
+        assert.equal((await read(x, q)).kind, 'unknown');
+        assert.equal((await owner.readInbound(core, q)).kind, 'unknown');
+        mutate(x, (db) => {
+          db.prepare('UPDATE credentials SET id=?').run(credential);
+          const row = db.prepare("SELECT id,result FROM attempts WHERE mode='register'").get();
+          const registration = JSON.parse(row.result);
+          registration.credentialId = 'replaced';
+          db.prepare('UPDATE attempts SET result=? WHERE id=?').run(
+            JSON.stringify(registration),
+            row.id,
+          );
+        });
+        // Isolate registration provenance while preserving the current credential and
+        // authenticated activation receipt; only this control's omitted guard differs.
+      }
       if (control === 'witness') mutate(x, (db) => db.exec('DELETE FROM delivery_decisions'));
       if (control === 'current') armed = true;
       const now = Date.now;
@@ -157,6 +178,14 @@ for (const control of [
               control,
               baseline: 'refused',
               mutant: 'signed page escaped',
+              ...(control === 'registration'
+                ? {
+                    isolatedFault:
+                      'retained registration credential differs; activation and current credential agree',
+                    replacedCurrentCredentialWithRegistrationCheckOmitted:
+                      'still refused by activation binding',
+                  }
+                : {}),
               request: Buffer.from(q).toString('hex'),
             },
             null,

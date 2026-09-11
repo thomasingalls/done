@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "status": "Phase A specified; other groups remain open. No whole-protocol closure.",
+  "status": "Groups A, B and C specified; group D and inherited Local bridges remain open",
   "schemaSha256": "50800229da6b62f58d5376c27c844ef85cddb906164dd2b4854f11d3013ae09d",
   "vectorFile": "test/vectors/first-authority.json",
   "vectorSha256": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9",
@@ -939,56 +939,13 @@
       "reason": null
     },
     {
-      "id": "remaining-envelope",
+      "id": "transport-envelope-key",
       "phase": "C",
-      "status": "open",
-      "roles": ["kdf", "aead", "signature", "carrier", "digest"],
-      "labels": [
-        "done/envelope/v1",
-        "done/envelope/v2",
-        "done/env/v${h.v}",
-        "done/env-sig/v${h.v}",
-        "done/env-body/v1",
-        "done/envelope-wire/v${e.v}",
-        "done/envelope-wire/v${version}"
-      ],
+      "status": "specified",
+      "roles": ["kdf"],
+      "signer": null,
+      "labels": ["done/envelope/v1", "done/envelope/v2"],
       "sourceSites": [
-        {
-          "path": "account-protocol/envelope.ts",
-          "line": 83,
-          "label": "done/env-body/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "account-protocol/envelope.ts",
-          "line": 130,
-          "label": "done/env-body/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "account-protocol/envelope.ts",
-          "line": 73,
-          "label": "done/env-sig/v${h.v}",
-          "kind": "template"
-        },
-        {
-          "path": "account-protocol/envelope.ts",
-          "line": 71,
-          "label": "done/env/v${h.v}",
-          "kind": "template"
-        },
-        {
-          "path": "account-protocol/envelope.ts",
-          "line": 156,
-          "label": "done/envelope-wire/v${e.v}",
-          "kind": "template"
-        },
-        {
-          "path": "account-protocol/envelope.ts",
-          "line": 169,
-          "label": "done/envelope-wire/v${version}",
-          "kind": "template"
-        },
         {
           "path": "account-protocol/envelope.ts",
           "line": 68,
@@ -1002,19 +959,306 @@
           "kind": "literal"
         }
       ],
-      "entryPoints": [],
-      "mapEntries": [],
-      "home": "docs/account-inbound.md",
-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "C: register v1/v2 envelope families and current implementation vectors",
-      "reason": null
+      "entryPoints": [
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "envelopeKeyInfo"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "2",
+          "hash": "ff41202e59ad"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["k-net"],
+      "vectorCases": ["transport-envelope-v1-kdf", "transport-envelope-v2-kdf"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
     },
     {
-      "id": "remaining-submission",
+      "id": "transport-envelope-encryption",
       "phase": "C",
-      "status": "open",
-      "roles": ["signature", "carrier"],
-      "labels": ["done/envelope-submission/v1", "done/envelope-submission-wire/v1"],
+      "status": "specified",
+      "roles": ["aead", "digest"],
+      "signer": null,
+      "labels": ["done/env/v${h.v}"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/envelope.ts",
+          "line": 71,
+          "label": "done/env/v${h.v}",
+          "kind": "template"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "envelopeAAD"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "sealNetworkEnvelope"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "openNetworkEnvelope"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "2",
+          "hash": "ff41202e59ad"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["k-net", "private-transport-commitments"],
+      "vectorCases": ["transport-envelope-v1-aad", "transport-envelope-v2-aad"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "transport-envelope-signature",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["signature"],
+      "signer": "transport-member",
+      "labels": ["done/env-sig/v${h.v}"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/envelope.ts",
+          "line": 73,
+          "label": "done/env-sig/v${h.v}",
+          "kind": "template"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "envelopeSignatureMessage"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "verifyNetworkEnvelope"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "2",
+          "hash": "ff41202e59ad"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-member"],
+      "vectorCases": ["transport-envelope-v1-signature", "transport-envelope-v2-signature"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "transport-body",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["carrier"],
+      "signer": null,
+      "labels": ["done/env-body/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/envelope.ts",
+          "line": 83,
+          "label": "done/env-body/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "line": 130,
+          "label": "done/env-body/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "encodeEnvelopeBody"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "decodeEnvelopeBody"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "3",
+          "hash": "4853b942c998"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-framing"],
+      "vectorCases": ["transport-envelope-body"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "transport-envelope-wire",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["carrier"],
+      "signer": null,
+      "labels": ["done/envelope-wire/v${e.v}", "done/envelope-wire/v${version}"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/envelope.ts",
+          "line": 156,
+          "label": "done/envelope-wire/v${e.v}",
+          "kind": "template"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "line": 169,
+          "label": "done/envelope-wire/v${version}",
+          "kind": "template"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "encodeNetworkEnvelope"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "decodeNetworkEnvelope"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "3",
+          "hash": "4853b942c998"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-framing"],
+      "vectorCases": ["transport-envelope-v1-wire", "transport-envelope-v2-wire"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "transport-wrapper-signature",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["signature", "digest"],
+      "signer": "transport-member",
+      "labels": ["done/envelope-submission/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/submission.ts",
+          "line": 103,
+          "label": "done/envelope-submission/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/submission.ts",
+          "name": "signSubmission"
+        },
+        {
+          "path": "account-protocol/submission.ts",
+          "name": "verifySubmission"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "4",
+          "hash": "3d2d54df83c8"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-member", "private-transport-commitments"],
+      "vectorCases": ["transport-submission-first", "transport-submission-successor"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "transport-wrapper-wire",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["carrier"],
+      "signer": null,
+      "labels": ["done/envelope-submission-wire/v1"],
       "sourceSites": [
         {
           "path": "account-protocol/submission.ts",
@@ -1027,51 +1271,241 @@
           "line": 79,
           "label": "done/envelope-submission-wire/v1",
           "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/submission.ts",
+          "name": "encodeSubmission"
         },
         {
           "path": "account-protocol/submission.ts",
-          "line": 103,
-          "label": "done/envelope-submission/v1",
+          "name": "decodeSubmission"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "3",
+          "hash": "4853b942c998"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-framing"],
+      "vectorCases": ["transport-submission-first-wire", "transport-submission-successor-wire"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "transport-refusal-signature",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["signature"],
+      "signer": "transport-acceptance",
+      "labels": ["done/position-refuse/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "line": 81,
+          "label": "done/position-refuse/v1",
           "kind": "literal"
         }
       ],
-      "entryPoints": [],
-      "mapEntries": [],
-      "home": "docs/account-decisions.md",
-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "C: wire/submission signing vectors and independent negative corpus",
-      "reason": null
+      "entryPoints": [
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "name": "refusalMessage"
+        },
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "name": "verifyRefusalClaim"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "4",
+          "hash": "3d2d54df83c8"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-acceptance"],
+      "vectorCases": ["transport-refusal"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
     },
     {
-      "id": "remaining-acceptance",
+      "id": "transport-refusal-id",
       "phase": "C",
-      "status": "open",
-      "roles": ["signature", "digest", "carrier"],
-      "labels": [
-        "done/accept/v1",
-        "done/accept-head/v1",
-        "done/position-refuse/v1",
-        "done/position-response/v1"
+      "status": "specified",
+      "roles": ["digest"],
+      "signer": null,
+      "labels": [],
+      "sourceSites": [],
+      "entryPoints": [
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "name": "refusalId"
+        }
       ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "4",
+          "hash": "3d2d54df83c8"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-commitments"],
+      "vectorCases": ["transport-refusal-id"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "transport-acceptance-link",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["digest"],
+      "signer": null,
+      "labels": ["done/accept/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "line": 114,
+          "label": "done/accept/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "name": "acceptanceLink"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "4",
+          "hash": "3d2d54df83c8"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-commitments"],
+      "vectorCases": ["transport-accepted-link"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "transport-head-signature",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["signature"],
+      "signer": "transport-acceptance",
+      "labels": ["done/accept-head/v1"],
       "sourceSites": [
         {
           "path": "account-protocol/positionDecision.ts",
           "line": 97,
           "label": "done/accept-head/v1",
           "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "name": "headMessage"
         },
         {
           "path": "account-protocol/positionDecision.ts",
-          "line": 114,
-          "label": "done/accept/v1",
-          "kind": "literal"
+          "name": "verifyPositionResponse"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
         },
         {
-          "path": "account-protocol/positionDecision.ts",
-          "line": 81,
-          "label": "done/position-refuse/v1",
-          "kind": "literal"
+          "path": "docs/account-crypto/transport.md",
+          "section": "4",
+          "hash": "3d2d54df83c8"
         },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-acceptance"],
+      "vectorCases": ["transport-accepted-head"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "transport-response-wire",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["carrier"],
+      "signer": null,
+      "labels": ["done/position-response/v1"],
+      "sourceSites": [
         {
           "path": "account-protocol/positionDecision.ts",
           "line": 156,
@@ -1085,24 +1519,146 @@
           "kind": "literal"
         }
       ],
-      "entryPoints": [],
-      "mapEntries": [],
-      "home": "docs/account-decisions.md",
-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "C: response/head/refusal vectors, field isolation and trust-root map",
-      "reason": null
+      "entryPoints": [
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "name": "encodePositionResponse"
+        },
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "name": "decodePositionResponse"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "4",
+          "hash": "3d2d54df83c8"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-framing"],
+      "vectorCases": ["transport-response-refused", "transport-response-accepted"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
     },
     {
-      "id": "remaining-transport-read",
+      "id": "transport-read-v1-signature",
       "phase": "C",
-      "status": "open",
+      "status": "specified",
       "roles": ["signature"],
-      "labels": [
-        "done/private-read/v1",
-        "done/private-read/v2",
-        "done/private-read-page/v1",
-        "done/private-read-page/v2"
+      "signer": "transport-member",
+      "labels": ["done/private-read/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "line": 72,
+          "label": "done/private-read/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "line": 95,
+          "label": "done/private-read/v1",
+          "kind": "literal"
+        }
       ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "readRequestMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "5",
+          "hash": "bb09e7a60319"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-member"],
+      "vectorCases": ["transport-read-v1"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "transport-read-v1-wire",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["carrier"],
+      "signer": null,
+      "labels": [],
+      "sourceSites": [],
+      "entryPoints": [
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "encodeReadRequest"
+        },
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "decodeReadRequest"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "5",
+          "hash": "bb09e7a60319"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-framing"],
+      "vectorCases": ["transport-read-v1-wire"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "transport-page-v1-signature",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["signature"],
+      "signer": "transport-acceptance",
+      "labels": ["done/private-read-page/v1"],
       "sourceSites": [
         {
           "path": "account-protocol/deliveryTransport.ts",
@@ -1115,31 +1671,92 @@
           "line": 161,
           "label": "done/private-read-page/v1",
           "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "readPageMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
         },
         {
-          "path": "account-protocol/inboundTransport.ts",
-          "line": 105,
-          "label": "done/private-read-page/v2",
-          "kind": "literal"
+          "path": "docs/account-crypto/transport.md",
+          "section": "6",
+          "hash": "1a7053699c06"
         },
         {
-          "path": "account-protocol/inboundTransport.ts",
-          "line": 132,
-          "label": "done/private-read-page/v2",
-          "kind": "literal"
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-acceptance"],
+      "vectorCases": ["transport-page-v1-empty", "transport-page-v1-full"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "transport-page-v1-wire",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["carrier"],
+      "signer": null,
+      "labels": [],
+      "sourceSites": [],
+      "entryPoints": [
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "encodeReadPage"
         },
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 72,
-          "label": "done/private-read/v1",
-          "kind": "literal"
+          "name": "decodeReadPage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
         },
         {
-          "path": "account-protocol/deliveryTransport.ts",
-          "line": 95,
-          "label": "done/private-read/v1",
-          "kind": "literal"
+          "path": "docs/account-crypto/transport.md",
+          "section": "6",
+          "hash": "1a7053699c06"
         },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-framing"],
+      "vectorCases": ["transport-page-v1-empty-wire", "transport-page-v1-full-wire"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "transport-read-v2-signature",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["signature"],
+      "signer": "transport-reader",
+      "labels": ["done/private-read/v2"],
+      "sourceSites": [
         {
           "path": "account-protocol/inboundTransport.ts",
           "line": 59,
@@ -1153,18 +1770,225 @@
           "kind": "literal"
         }
       ],
-      "entryPoints": [],
-      "mapEntries": [],
-      "home": "docs/account-receive-transport.md",
-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "C: separate v1/v2 request and page formats; exact canonical-byte policy",
-      "reason": null
+      "entryPoints": [
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "name": "inboundRequestMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "5",
+          "hash": "bb09e7a60319"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-member"],
+      "vectorCases": ["transport-read-v2"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
     },
     {
-      "id": "remaining-submit-carrier",
+      "id": "transport-read-v2-wire",
       "phase": "C",
-      "status": "open",
+      "status": "specified",
       "roles": ["carrier"],
+      "signer": null,
+      "labels": [],
+      "sourceSites": [],
+      "entryPoints": [
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "name": "encodeInboundRequest"
+        },
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "name": "decodeInboundRequest"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "5",
+          "hash": "bb09e7a60319"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-framing"],
+      "vectorCases": ["transport-read-v2-wire"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "transport-page-v2-signature",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["signature"],
+      "signer": "transport-acceptance",
+      "labels": ["done/private-read-page/v2"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "line": 105,
+          "label": "done/private-read-page/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "line": 132,
+          "label": "done/private-read-page/v2",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "name": "inboundPageMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "6",
+          "hash": "1a7053699c06"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-acceptance"],
+      "vectorCases": ["transport-page-v2-empty", "transport-page-v2-full"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "transport-page-v2-wire",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["carrier"],
+      "signer": null,
+      "labels": [],
+      "sourceSites": [],
+      "entryPoints": [
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "name": "encodeInboundPage"
+        },
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "name": "decodeInboundPage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "6",
+          "hash": "1a7053699c06"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-framing"],
+      "vectorCases": ["transport-page-v2-empty-wire", "transport-page-v2-full-wire"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "transport-request-hash",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["digest"],
+      "signer": null,
+      "labels": [],
+      "sourceSites": [],
+      "entryPoints": [
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "requestHash"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "5",
+          "hash": "bb09e7a60319"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-commitments"],
+      "vectorCases": ["transport-read-v1-hash", "transport-read-v2-hash"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "transport-submit-wire",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["carrier"],
+      "signer": null,
       "labels": ["done/private-submit/v1"],
       "sourceSites": [
         {
@@ -1180,26 +2004,105 @@
           "kind": "literal"
         }
       ],
-      "entryPoints": [],
-      "mapEntries": [],
-      "home": "docs/account-transport.md",
-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "C: document carrier versus signature and cover size/canonical decoding",
-      "reason": null
+      "entryPoints": [
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "encodeSubmit"
+        },
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "decodeSubmit"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "3",
+          "hash": "4853b942c998"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-framing"],
+      "vectorCases": ["transport-submit-carrier"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
     },
     {
-      "id": "remaining-service-ledger",
+      "id": "transport-service-chain",
       "phase": "C",
-      "status": "open",
-      "roles": ["signature", "digest"],
-      "labels": ["done/service-delivery-witness/v1", "done/service-delivery-chain/v1"],
+      "status": "specified",
+      "roles": ["digest"],
+      "signer": null,
+      "labels": ["done/service-delivery-chain/v1"],
       "sourceSites": [
         {
           "path": "account-service/delivery.ts",
           "line": 296,
           "label": "done/service-delivery-chain/v1",
           "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-service/delivery.ts",
+          "name": "decideSubmission"
         },
+        {
+          "path": "account-service/delivery.ts",
+          "name": "readAccepted"
+        },
+        {
+          "path": "account-service/delivery.ts",
+          "name": "readInbound"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "7",
+          "hash": "f13da6f75166"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-commitments"],
+      "vectorCases": ["transport-service-chain-1", "transport-service-chain-2"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "transport-service-witness",
+      "phase": "C",
+      "status": "specified",
+      "roles": ["signature"],
+      "signer": "transport-acceptance",
+      "labels": ["done/service-delivery-witness/v1"],
+      "sourceSites": [
         {
           "path": "account-service/deliveryWitness.ts",
           "line": 23,
@@ -1207,12 +2110,37 @@
           "kind": "literal"
         }
       ],
-      "entryPoints": [],
-      "mapEntries": [],
-      "home": "docs/account-service-delivery.md",
-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "C: witness/chain vectors and tamper/omission cases",
-      "reason": null
+      "entryPoints": [
+        {
+          "path": "account-service/deliveryWitness.ts",
+          "name": "witnessMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "7",
+          "hash": "f13da6f75166"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": ["private-transport-acceptance"],
+      "vectorCases": ["transport-service-witness"],
+      "tests": [
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
     },
     {
       "id": "remaining-local-account-ledger",
@@ -1970,6 +2898,11 @@
       "phase": "B",
       "vectorFile": "test/vectors/account-recovery.json",
       "vectorSha256": "05bd33eda96066ec7137bfe5d70353c02d325eabaa126b68d5df2af54b713e7a"
+    },
+    {
+      "phase": "C",
+      "vectorFile": "test/vectors/account-transport.json",
+      "vectorSha256": "c58306bf01bf075ab335c96e785130c63a0c406cbee14548cf18e9387907bc41"
     }
   ]
 }

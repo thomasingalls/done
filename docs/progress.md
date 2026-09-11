@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Active slice: Envelope, submission, read, response and service-witness formats (`L-1`)
+## Active slice: Service root and acceptance-key custody contracts (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: current transport/acceptance byte and vector agreement before real Account authority
+blocks_on: service custody byte/map/vector agreement before real Account authority
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
@@ -57,50 +57,50 @@ updated: 2026-09-11
 **Roadmap position.** Personal Local cutover, source cleanup and packaged offline upgrades are exercised.
 Account work is at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), around item 5's internal
 creating-member ciphertext round trip. Composition is `6398e33`, descriptor bounds/versioning `4f71bac`,
-fresh first activation `2ba50aa`, crypto prep `9cf5c98`, and first-authority group A `43b42b1`.
+fresh activation `2ba50aa`, crypto prep `9cf5c98`, first-authority A `43b42b1`, and recovery B `e74fbaa`.
 This is not Stage 4 completion or second-device enrollment. No real Account receipt exists.
 
-**Completed boundary.** [Recovery byte alignment](./account-crypto/recovery-layout.md), group B, is
-complete and uncommitted. TRD §13.8, row 14 and current vectors agree on raw X25519 scalar, binary root
-commitment and raw Ed25519 bootstrap seed in 32-byte segments; strict ciphertext remains 112 bytes.
-The historical scalar-only vector is preserved and refused. F-12's missing export check reproduced;
-both exact PKCS#8 prefixes/lengths are now asserted before raw extraction. No valid wire byte changed.
+**Completed boundary.** [Group C transport contracts](./account-crypto/transport.md) are complete and
+uncommitted. Exact envelope v1/v2, submission, refusal/head/response, both read transports and service
+witness/chain bytes now join source sites, authority roots and executable independent vectors. Runtime
+code and wire versions are unchanged. A stale registration mutation control was repaired: activation
+independently rejects a replaced current credential; the control now isolates registration provenance.
 
-[Final evidence](./account-conformance-runs/2026-09-11-account-recovery-contract.md) preserves 35 passing
-stages: 13 fixed constructions, 64 encoded substitutions/64 omissions, authentic wrong key/root payloads,
-four production guard controls, eight export-format cases and effective omission controls, 200 generated
-cases with shrinking. Actual runtime and independent recovery/challenge/HPKE constructions agree.
-All 25 recovery regressions (160 histories and native restart/kill/owner tests), 100 generated HPKE seals,
-980 units, typecheck, admission/slot regressions and the complete current vector chain pass. A's existing
-17 vectors/399 input negatives/333 omissions and 200 reorderings remain exercised. The checker reports
-23 specified records, 13 open groups and one exclusion. F-05/F-06 stay open for the remaining work.
+[Final evidence](./account-conformance-runs/2026-09-11-account-transport-contract.md): all 36 stages pass,
+with 760 matching source pins. There are 37 fixed cases, nine reused envelope positives, 314 field
+substitutions/314 omissions, 8,924 truncated prefixes, six effective verification-message controls and
+200 shrinking-enabled transport histories. The actual v2 inbound verifier opens and replays fixed Yjs
+updates as AB. All 69 service/transport/inbound regressions (including 200 generated histories and native
+restart/crash/race cases), 983 units, typecheck, retained A/B conformance and all 22 vector commands pass.
+The map joins 47 specified records, seven open and one exclusion through 49 entries/57 chains.
+F-05/F-06 remain open. Parsing, signatures, accepted history and current authority remain distinct.
 
-**Next bounded phase — C: encrypted transport and acceptance formats.** Follow the
-[prep's group C](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates):
+**Next bounded phase — D1: service key custody.** Start [group D](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates)
+with only `remaining-service-custody`; split its local/ledger bridges into later bounded phases:
 
-- Orient to the current envelope v1/v2, submission, accepted-head/refusal/response, both read transports,
-  service witness and chain code. Pin exact label/version/scope, ordered carrier/body, LP/JSON/hash,
-  signature/MAC/KDF/AAD bytes and the authority each actually derives from.
-- Reuse current private-envelope vectors where exact; preserve historical bytes explicitly. Fill the
-  submission/response/read/witness gaps with fixed inputs, intermediate wire hex and independent
-  reconstruction exercised against actual parsers and verifiers. Carrier parsing is not authentication;
-  accepted history is not fresh authority. Service serialization cannot authorize content or recipients.
-- Cover each bound field, versions/size/framing, genuine wrong-purpose/namespace signatures, arrays and
-  nested signatures; use effective omission controls and meaningful generated mutations. Register exact
-  source/map/vector joins without weakening A/B or silently closing group D/Local obligations.
-- Run affected regressions, preserve passing evidence and append the outcome before replacing L-1.
-  This phase does not authorize real provisioning, onboarding UI, a service rollout or second-device use.
+- Read the actual service root and acceptance custody owners, their operator/pin inputs, persisted seal
+  formats and fixed-purpose issuers. Record exact KDF inputs, salt/nonce, AAD concatenation, plaintext
+  key formats, ciphertext/tag widths and opening/correspondence checks. Verify raw export assumptions.
+- Publish synthetic fixed vectors and independent seal/open reconstruction exercised against the actual
+  owners. Isolate operator key, pin, proposal ID, public key, version, salt/nonce and ciphertext changes;
+  use genuine re-encryption for semantic faults and effective omission controls. Qualify lifecycle close,
+  wrong-key opening and fixed-purpose use within this boundary.
+- Extend the existing map/registry without permitting service authority over content or recipients. Keep
+  inherited Local records and the remaining D formats visibly open. Preserve current A/B/C byte evidence;
+  change runtime only where a reproduced defect or explicit contract correction warrants it.
+- Run affected custody/service regressions, preserve final evidence and append the outcome before
+  replacing L-1. This phase does not authorize real provisioning, onboarding UI or service rollout.
 
-Following group D owns service/local custody, checkpoint/startup and Account ledger/counter-witness
-bridges. The actual old second device will adopt the first workspace with fresh custody/store/counters/
-credentials; it will not import or merge its old writing. Total-loss recovery, replacement and rotation
-machines are not implied by recovery byte conformance.
+Following D work owns local promotion versions, encrypted Account capsules/spool/inbound/delivery,
+counter-v2 witness coupling, inherited custody/store/journal bridges and checkpoint/startup qualification.
+Migration-only scope needs an explicit disposition, not a silent claim of whole-Local requalification.
+The actual old second device will adopt the first workspace with fresh custody/store/counters/credentials;
+it will not import or merge its old writing. Recovery byte conformance is not a built total-loss machine.
 
 **Personal checkpoint.** Root `dist/` and `.dev/releases/17d87c2/app` retain all 21 saved hashes.
-Personal preview/relay, browser/factors, origin/routing, historical review and L-2 are unchanged. The native
-recovery bundle was built in memory. Host VM/policy research stays stopped. No real account, factor,
-operator key or pin was provisioned. Unrelated root files `done ` and `reviewpacket96a20401ceb88d.md`
-remain untouched.
+Personal preview/relay, browser/factors, origin/routing, historical review and L-2 are unchanged. Native
+bundles were built in memory. Host VM/policy research stays stopped. No real Account, factor, operator
+key or pin was provisioned. Unrelated root files `done ` and `reviewpacket96a20401ceb88d.md` remain untouched.
 
 **Other gates.** Invocation-grant power-loss accounting, salvage/diagnostics, parser/admission/service
 negatives, performance/maintenance, lock ordering and accepted review follow-ups remain. Passkey and

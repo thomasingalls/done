@@ -1,0 +1,163 @@
+{
+  "status": "failed",
+  "startedAt": "2026-09-11T15:19:19.528Z",
+  "node": "v26.8.2",
+  "scope": "Private envelope/submission/read/response/service-witness byte contracts; independent fixed vectors, actual verification-message omission controls, generated histories and native service/transport regressions. Retains A/B/map/vector checks. No runtime changes, real Account or personal artifacts.",
+  "stages": [
+    {
+      "name": "inventory",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-crypto-prep/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "authority",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/check-authority-map.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "first-authority",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-transport-contract/2026-09-11T15-19-19.418Z/first-authority.xml",
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "registry",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-transport-contract/2026-09-11T15-19-19.418Z/registry.xml",
+        "test/account-first-authority/registry.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "prep-probes",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-transport-contract/2026-09-11T15-19-19.418Z/prep-probes.xml",
+        "test/account-crypto-prep/contracts.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "recovery-contract",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-transport-contract/2026-09-11T15-19-19.418Z/recovery-contract.xml",
+        "test/account-recovery-contract/formats.test.mjs",
+        "test/account-recovery-contract/exports.test.mjs",
+        "test/account-recovery-contract/controls.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "formats",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-transport-contract/2026-09-11T15-19-19.418Z/formats.xml",
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "service-delivery",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-transport-contract/2026-09-11T15-19-19.418Z/service-delivery.xml",
+        "test/account-service-delivery/core.test.mjs",
+        "test/account-service-delivery/generated.test.mjs",
+        "test/account-service-delivery/restart.test.mjs",
+        "test/account-service-delivery/controls.test.mjs",
+        "test/account-service-delivery/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "transport",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-transport-contract/2026-09-11T15-19-19.418Z/transport.xml",
+        "test/account-transport/service.test.mjs",
+        "test/account-transport/generated.test.mjs",
+        "test/account-transport/controls.test.mjs",
+        "test/account-transport/native.test.mjs",
+        "test/account-transport/native-controls.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "service-inbound",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-transport-contract/2026-09-11T15-19-19.418Z/service-inbound.xml",
+        "test/account-service-inbound/core.test.mjs",
+        "test/account-service-inbound/generated.test.mjs",
+        "test/account-service-inbound/restart.test.mjs",
+        "test/account-service-inbound/controls.test.mjs",
+        "test/account-service-inbound/native.test.mjs"
+      ],
+      "code": 1,
+      "timedOut": false
+    }
+  ],
+  "error": "Error: service-inbound failed",
+  "completedAt": "2026-09-11T15:21:41.773Z"
+}

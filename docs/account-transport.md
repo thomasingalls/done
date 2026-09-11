@@ -1,5 +1,8 @@
 # Private Account submission transport and readback
 
+Current exact byte formats and their authority limits are pinned in the
+[group C transport contract](./account-crypto/transport.md). This document retains its phase context.
+
 This bounded phase composes the v8 lifecycle with the private loopback HTTP service. It does not
 mount routes in the personal application, provision an Account, apply inbound content, or advance
 the immutable first epoch. Existing v8 records and schema 4 are unchanged.

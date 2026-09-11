@@ -1,5 +1,8 @@
 # Private service acceptance and permanent refusal decisions
 
+Current exact byte formats and their authority limits are pinned in the
+[group C transport contract](./account-crypto/transport.md). This document retains its phase context.
+
 This bounded phase follows [the v8 delivery owner](./account-delivery.md). It adds the in-process
 `PrivateAuthority.decideSubmission(core, { workspaceId, bytes })` operation, with service-owned membership,
 fixed-purpose acceptance signing and durable ciphertext/response retention. There is no new HTTP route,

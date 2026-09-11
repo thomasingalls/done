@@ -1,5 +1,8 @@
 # Private Account outbound preparation
 
+Current exact byte formats and their authority limits are pinned in the
+[group C transport contract](./account-crypto/transport.md). This document retains its phase context.
+
 The following [source-capture phase](./account-source-capture.md) implements durable admission; this
 document retains the preceding preparation findings and the allocation boundary that follows capture.
 

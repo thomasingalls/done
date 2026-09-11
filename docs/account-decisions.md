@@ -1,5 +1,8 @@
 # Private Account response evidence and submission proofs
 
+Current exact byte formats and their authority limits are pinned in the
+[group C transport contract](./account-crypto/transport.md). This document retains its phase context.
+
 This bounded phase authenticates evidence and defines concrete transport bytes. It does not persist
 accepted/closed state, license an in-memory result to mutate a spool, mint successors, submit requests,
 issue service decisions or advance the authorization lineage. The existing v7 source/envelope ledger is
