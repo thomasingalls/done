@@ -2341,3 +2341,19 @@ compacted snapshot. No real Account exists yet, and the author's Local migration
 The [outbound contract](./account-outbound.md) records the concrete bytes, proposed transaction boundaries,
 remaining refusal-proof carrier and required native evidence. Public Account receive, relay publication,
 rotation and second-device enrollment remain disabled until their owned integrations exist.
+
+
+### 2026-09-11 — Pin private first-genesis bytes before expanding Account authority
+
+Keep the current private first-epoch genesis's accepted-head vector empty. Local writing enters via the
+checkpoint; no Account network position has been accepted. The certified member still exists, and the
+first envelope starts from zero link. A member/position-zero vector hashes differently and is not an
+alternate encoding. Apply the exception only to first genesis, with rows 5/7 and TRD amendments in the
+next format/vector phase; do not infer sparse-vector behavior for later epochs or existing streams.
+
+Preserve the current ordered first-authority JSON/LP/domain/hash bytes and receipt v2. Preserve the
+strict recovery v1 payload as raw X25519 scalar, binary root commitment and raw Ed25519 bootstrap seed,
+32 bytes each, sealed to exactly 112 bytes. The old scalar-only 48-byte vector is historical evidence,
+not an accepted alternate payload. Publish amended vectors and normative homes before treating these
+contracts as closed. No real Account receipt exists. The [prep](./account-crypto-prep.md) separates
+source-inventory coverage from authority-map and independent-vector completion, in four bounded groups.

@@ -42,52 +42,60 @@ that is no longer active.
 
 ---
 
-## Active slice: Account cryptographic contract and vector prep (`L-1`)
+
+## Active slice: First-authority formats, map and vectors (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: exact construction inventory and compatibility decisions before real Account authority
+blocks_on: exact mapped Account byte contracts before real durable authority
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
 
 **Roadmap position.** Personal Local cutover, source cleanup and packaged offline upgrades are exercised.
 Account work is at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), around item 5's internal
-creating-member ciphertext round trip. Composition is committed as `6398e33`; descriptor bounds/versioning
-as `4f71bac`. This is not completion of Stage 4 or second-device enrollment. No real Account receipt exists.
+creating-member ciphertext round trip. Composition is committed as `6398e33`, descriptor bounds/versioning
+as `4f71bac`, and fresh first activation as `2ba50aa`. This is not Stage 4 completion or second-device
+enrollment. No real Account receipt exists.
 
-**Completed boundary.** [Fresh first activation](./account-activation.md) is implemented and uncommitted.
-A signed challenge binds the exact retained completion and actual registration passkey. Consumption,
-receipt v2 and activation commit together; cancellation drains, and cold committed receipt recovery needs
-no second prompt. Schema 5 explicitly upgrades old pending service work; old receipt-v1 artifacts refuse.
-[Evidence](./account-conformance-runs/2026-09-11-account-activation.md) retains independent signatures,
-120 shrinking histories, effective omissions, native lifetime/restart checks, affected campaigns, all 980
-units and isolated build checks. F-04 is addressed at this private seam, without paying whole-protocol debt.
+**Completed boundary.** [Crypto-contract/vector prep](./account-crypto-prep.md) is complete and uncommitted.
+The source census pins 157 TS/TSX files and classifies 89 labels/templates in 22 groups, with explicit
+manual entrypoints and limits. Exact recursive first-authority field order, a first-genesis-only empty
+head vector and the current 96-byte recovery payload are selected. F-05/F-06 remain open until the
+normative homes, map and interoperable vectors agree. The old recovery vector is historical evidence.
 
-**Next bounded phase — F-05/F-06 prep.** Establish the exact Account crypto contract before more durable
-authority formats or real receipts:
+[Preserved prep evidence](./account-conformance-runs/2026-09-11-account-crypto-prep.md) records six focused
+tests, 300 shrinking-enabled scanner cases, classification/drift controls, six independently reconstructed
+signature messages and old/current recovery payload probes. Existing authority and vector-currentness
+checks pass via direct Node; pnpm launchers stalled before running their script bodies and were stopped.
+No runtime code changed, so full units/native/build/aggregate were not repeated.
 
-- Inventory current signature/MAC/AEAD/KDF/carrier constructions and actual trust-root resolution,
-  including the new activation challenge and receipt v2. Distinguish historical generic vectors from
-  the bytes the private runtime now emits; the existing authority-map sweep omits Account documents.
-- Choose and pin exact closed-field order, version/domain/hash/LP bytes for first epoch, offer, receipt,
-  and genesis head-vector membership. Specify compatibility rather than silently reinterpreting a label.
-- Identify executable runtime/independent-oracle vectors and per-field negative/omission obligations.
-  Register the actual homes so future Account constructions cannot silently fall outside the audit.
-- Plan the row-14/TRD recovery correction for the 96-byte payload and 112-byte ciphertext, including
-  bootstrap seed/root commitment and derivation/digest vectors. Divide the implementation into bounded
-  groups after the census; preserve historical evidence as evidence of the older construction.
+**Next bounded phase — A: first-authority formats/map/vectors.** Implement the first group in the prep:
 
-This prep is not onboarding UI, enrollment, default-app Account activation or production provisioning.
-The actual old second device will adopt the first device's workspace with fresh custody, store,
-counters and credentials; its old writing will not be imported or merged.
+- Register exact first-epoch/offer/receipt-v2/activation and bootstrap-observation encodings, with
+  candidate/certification/origin and slot-binding dependencies and their actual trust-root chains.
+  Connect source sites to construction records, mapped byte homes and required evidence; keep unfinished
+  groups explicitly open. Merely adding Account docs to the old literal-spelling sweep is insufficient.
+- Amend rows 5/7 and relevant TRD homes for the first-genesis-only empty accepted-head vector. Keep the
+  current v2 descriptor hashes and independent plaintext rederivation requirement.
+- Publish fixed input/body/LP/hash/signature vectors driven by runtime and an independent implementation.
+  Cover every bound field/nested signature, genuinely signed wrong-purpose and wrong-key-namespace
+  values, extra fields, property versus array order, version refusal and empty-versus-zero vectors.
+  Demonstrate effective omissions; preserve old evidence and make any byte change an explicit decision.
+
+Following groups are B: recovery layout/digests/challenges and raw-key export assertions (F-12);
+C: envelope/submission/read/response/witness formats; D: service/local custody and Account ledger/witness
+bridges. This does not authorize onboarding UI, public accounts, production pin provisioning or enrollment.
+The actual old second device will adopt the first device's workspace with fresh custody/store/counters/
+credentials; it will not import or merge its old writing.
 
 **Personal checkpoint.** Root `dist/` and `.dev/releases/17d87c2/app` retain all 21 saved hashes.
-Preview/relay, personal browser/factors, origin/routing, historical review and L-2 are unchanged. Host
-VM/policy research remains stopped. No real account, passkey, factor, operator key or pin was provisioned.
+Personal preview/relay, browser/factors, origin/routing, historical review and L-2 are unchanged. Host
+VM/policy research remains stopped. No real account, factor, operator key or pin was provisioned.
+Unrelated root files `done ` and `reviewpacket96a20401ceb88d.md` were left untouched.
 
 **Other gates.** Invocation-grant power-loss accounting, salvage/diagnostics, parser/admission/service
 negatives, performance/maintenance, lock ordering and accepted review follow-ups remain. Passkey and

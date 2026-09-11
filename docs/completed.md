@@ -2399,3 +2399,35 @@ constructions and trust roots, pin durable root-signed encodings and genesis hea
 and plan interoperable recovery/vector alignment. The invocation power-loss and other accepted review
 gates remain before real Account use. All 21 personal package hashes, stopped personal preview/relay,
 historical review and L-2 remain unchanged. New activation work remains uncommitted at this checkpoint.
+
+
+## 2026-09-11 — Account crypto-contract and vector prep (`L-1` seat)
+
+Fresh first activation was committed as `2ba50aa`. [Bounded F-05/F-06 prep](./account-crypto-prep.md)
+now pins the current private source inventory, first-authority field order and recovery payload decisions.
+[Evidence](./account-conformance-runs/2026-09-11-account-crypto-prep.md) records 157 source files, 89
+literal/template entries, 22 classified groups and six explicit manual entrypoints. A new aggregate gate
+checks source/classification drift without pretending that label coverage proves cryptographic soundness.
+
+The first-genesis accepted-head vector is selected as empty; member-at-zero is not an alternate encoding.
+Rows 5/7 and the TRD still need that explicit exception in phase A. First epoch, offer, receipt v2 and
+activation keep their current domain/LP/hash/recursive JSON order, including nested signatures. Recovery
+keeps raw X25519 scalar, binary root commitment and raw Ed25519 bootstrap seed in 32-byte segments,
+with exactly 112 ciphertext bytes. The old 48-byte vector remains historical and refused by the current
+parser. TRD §13.8 already requires all three ingredients; its missing exact layout and the stale vector
+are the remaining inconsistency. The historical review was not rewritten.
+
+Six focused tests pass, including 300 shrinking-enabled scanner cases and inventory omission/drift
+controls. Independent Node probes match six signed message formats, reordered nested properties, hash
+and nonce derivations, both genesis-head digests, and old/current recovery seals with public-key/root/
+digest correspondence. They are prep probes, not complete field negatives or published fixed vectors.
+The unchanged eight-document authority check and all 19 vector-currentness/coverage commands pass,
+as do targeted lint/format checks. Stalled pnpm launchers were stopped; the same checked script bodies
+ran directly via installed Node. Full units/native/build/aggregate were not repeated for a prep-only change.
+
+F-05/F-06 stay open. The implementation is divided into A: first-authority formats/map/vectors;
+B: recovery payload/digests/challenges and raw-export prefix; C: envelope/submission/read/response/witness;
+D: service/local custody and encrypted Account ledger/witness bridges. Next is A. Other review and real
+Account gates remain. Runtime code, all 21 personal package hashes, stopped personal preview/relay,
+historical review and L-2 are unchanged; unrelated root files were left untouched. New prep remains
+uncommitted. Appended before replacing only L-1.
