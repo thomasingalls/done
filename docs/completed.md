@@ -3001,3 +3001,40 @@ storage and inherited generated-sync campaigns were not rerun for this test-only
 is not power-loss qualification. All 21 personal package hashes, 31 prior vector files, historical
 review and L-2 are preserved. Personal servers and real Account/browser/secrets remain untouched.
 Appended before replacing only L-1.
+
+
+## 2026-09-12 — Remaining closed-parser conformance (`L-1` seat)
+
+F-21.7 was committed signed as `f0b6acd`; its 875 source pins agree with the committed files, and the
+13 signed C/D1–D8/audit/F-15/isolation/composition commits remain recorded. This new phase is complete
+and remains unstaged/uncommitted.
+
+[Current F-21.1 disposition](./review/implementation/account-parser-conformance.md) addresses the six
+named parsers at their current private first-epoch boundary. Inventory credited A/C/D2/D3's existing
+structured/framing/generated evidence before adding the missing cases. New mutations found string
+coercion in promotion stage, spool source hash and three Account index fields, plus sparse credential,
+genesis actor and genesis wrap arrays skipping validation. Five type predicates and three dense array
+traversals repair four production files. No valid byte format, version, key or authority edge changed.
+The census and six existing construction-site line locations are refreshed; prior vectors remain exact.
+
+[Preserved campaign](./account-conformance-runs/2026-09-12-account-parser-conformance.md): 46 stages,
+141 Node tests, 44 selected unit cases, 884 source pins, types, 30 vector commands,
+census/map/registry, lint and format pass. The 34 new tests include 14,491 incompatible nested-type
+cases, 3,350 generated cases and twelve effective omission controls. Frozen signed-baseline replay
+shrinks both generated coercion defects to one singleton array (seeds 112101/112104, path `0:0`).
+It also reproduces sparse/index acceptance before the repair. Native IndexedDB connection readback
+preserves holes and rejects the malformed records while valid records parse. Declared genesis size
+edges and a valid capsule at exactly 2 MiB are exercised directly through parsers.
+
+Existing A/C/D2/D3 contracts, service admission and native promotion/genesis/spool owners pass.
+One initial harness error supplied hex where Node verification required a KeyObject; corrected before
+final execution. Initial diagnostic logs are retained without inventing initial source provenance;
+final frozen-baseline controls provide pinned before/after evidence. Parsing is not authentication or
+eligibility, and native database reopening is not renderer death or power-loss qualification. Full
+Vitest, aggregate crypto audit and other broader owner/storage campaigns were not rerun.
+
+Next is F-21.6's named delivery unit oracle, crediting D3/F-21.7 and preserving order-sensitive evidence
+rather than demanding false full-state permutation equality. Other review, Account and deployment
+obligations remain separate. All 21 personal package hashes, 31 vectors, historical review and L-2
+are unchanged. No personal server, browser, Account, factor, operator key, pin, origin or routing change
+occurred. Unrelated root files remain untouched. Appended before replacing only L-1.

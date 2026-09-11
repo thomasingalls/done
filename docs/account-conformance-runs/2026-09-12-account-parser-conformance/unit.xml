@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="44" failures="0" errors="0" time="2.635660292">
+    <testsuite name="test/accountDelivery.test.ts" timestamp="2026-09-11T22:39:25.534Z" hostname="Thomass-MacBook-Pro.local" tests="4" failures="0" errors="0" skipped="0" time="0.070236958">
+        <testcase classname="test/accountDelivery.test.ts" name="500 generated proof histories agree with independent prefix and closure propositions at every step" time="0.069346042">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="a later head contradicts an earlier closure in either delivery order (true)" time="0.000143916">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="a later head contradicts an earlier closure in either delivery order (false)" time="0.000049625">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="acceptance and closure duplicates are propositions, and conflict is irreversible" time="0.000078458">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/ownedStartup.test.ts" timestamp="2026-09-11T22:39:25.535Z" hostname="Thomass-MacBook-Pro.local" tests="27" failures="0" errors="0" skipped="0" time="0.059836167">
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; reports absent carriers without persisting any database or enumerating databases" time="0.0067955">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; does not mistake a retained undefined-valued record for absence" time="0.003564542">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; refuses an orphan journal without custody or index" time="0.001286708">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; keeps unassigned legacy persistence on the migration path" time="0.001279625">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; does not invoke identity verification or open stores through a closed slot" time="0.001924666">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; requires independently verified identity before treating an index as authority" time="0.002473875">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; does not substitute a supplied principal for an Account binding" time="0.000911">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; does not substitute an Account binding for Local identity" time="0.00083625">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; refuses missing custody beside an indexed identity" time="0.001250625">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; refuses mismatched or duplicate routes rather than deriving around them" time="0.002085833">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; preserves an explicitly selected legacy route" time="0.001035792">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; reports structurally complete but unauthenticated carriers as needing unlock" time="0.002937708">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; refuses protected custody without a content creation witness" time="0.001697125">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; never recreates a missing initialized content database" time="0.002205917">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; refuses a counter belonging to another store instance" time="0.0029165">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; recognizes unfinished content without completing or consuming reservations" time="0.002923416">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; recognizes custody creation and refuses unrelated surviving content beside it" time="0.003159834">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; refuses a scoped clearing control without performing its action" time="0.003089166">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; refuses a scoped cleared control without performing its action" time="0.005239792">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; refuses a scoped migrating control without performing its action" time="0.00193375">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; refuses a scoped unknown control without performing its action" time="0.001849">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; finds unsupported scoped rows with array-valued key suffixes" time="0.001982167">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; does not classify unrelated custody rows as target material" time="0.001170833">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; refuses unknown database versions without upgrading them" time="0.001972">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; reports unavailable native storage rather than fresh" time="0.000331375">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; refuses unsupported coordination before inspecting persistence" time="0.000205167">
+        </testcase>
+        <testcase classname="test/ownedStartup.test.ts" name="owned startup preflight &gt; cancels a delayed identity read without returning an old classification" time="0.001754958">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/sourceCapture.test.ts" timestamp="2026-09-11T22:39:25.536Z" hostname="Thomass-MacBook-Pro.local" tests="7" failures="0" errors="0" skipped="0" time="1.07640475">
+        <testcase classname="test/sourceCapture.test.ts" name="Account source capsule conformance &gt; 250 generated transaction histories recover exact bytes, actors and independent text across carrier overlap and reverse delivery" time="1.035666958">
+        </testcase>
+        <testcase classname="test/sourceCapture.test.ts" name="Account source capsule conformance &gt; 200 generated route and actor substitutions refuse without accepting a different authority" time="0.019011458">
+        </testcase>
+        <testcase classname="test/sourceCapture.test.ts" name="Account source capsule conformance &gt; refuses noncanonical framing, unknown version, malformed CRDT, oversized payload and too many sources" time="0.000947583">
+        </testcase>
+        <testcase classname="test/sourceCapture.test.ts" name="Account source capsule conformance &gt; conflicting stable identity refuses journal/disk, disk/disk and journal/journal overlap" time="0.001486417">
+        </testcase>
+        <testcase classname="test/sourceCapture.test.ts" name="Account source capsule conformance &gt; requires original sources to cover all prepared state, including deletions" time="0.001476375">
+        </testcase>
+        <testcase classname="test/sourceCapture.test.ts" name="Account source capsule conformance &gt; private initialization retains system attribution and subsequent editing retains the human actor" time="0.012873708">
+            <system-out>
+[yjs] Changed the client-id because another client seems to be using it.
+
+[yjs] Changed the client-id because another client seems to be using it.
+
+            </system-out>
+        </testcase>
+        <testcase classname="test/sourceCapture.test.ts" name="Account source capsule conformance &gt; repeated oversized preparation does not accumulate capsule reservations or acknowledge input" time="0.004015542">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/spoolRecord.test.ts" timestamp="2026-09-11T22:39:25.537Z" hostname="Thomass-MacBook-Pro.local" tests="6" failures="0" errors="0" skipped="0" time="1.429182417">
+        <testcase classname="test/spoolRecord.test.ts" name="Account spool ledger conformance &gt; 150 generated real-wire histories retain exact source coverage and reject removed grant events" time="1.4141265">
+        </testcase>
+        <testcase classname="test/spoolRecord.test.ts" name="Account spool ledger conformance &gt; 150 generated authority substitutions reject a well-framed entry in the wrong domain" time="0.006091917">
+        </testcase>
+        <testcase classname="test/spoolRecord.test.ts" name="Account spool ledger conformance &gt; rejects gaps, duplicate coverage, missing source indexes and envelope-before-attempt transitions" time="0.00285375">
+        </testcase>
+        <testcase classname="test/spoolRecord.test.ts" name="Account spool ledger conformance &gt; verifies exact source hash, original actor/update, digest and prepared signature before exposure" time="0.003529875">
+        </testcase>
+        <testcase classname="test/spoolRecord.test.ts" name="Account spool ledger conformance &gt; rejects unknown versions, noncanonical bytes, unsafe positions, exhausted budgets and wrong physical placement" time="0.000575958">
+        </testcase>
+        <testcase classname="test/spoolRecord.test.ts" name="counter v2 is closed and authenticated separately while v1 bytes stay unchanged" time="0.00110375">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -77,6 +77,7 @@ export function encodeSpoolEntry(entry: SpoolEntry, route: CaptureRoute): Bytes 
       !Number.isSafeInteger(s.index) ||
       s.index < 0 ||
       s.index >= 64 ||
+      typeof s.hash !== 'string' ||
       !/^[0-9a-f]{64}$/.test(s.hash)
     )
       captureError('Invalid source reference');

@@ -1,0 +1,31 @@
+{
+  "baselineRef": "f0b6acd2e624d89034c88706d4053a830ab50cc6",
+  "failed": true,
+  "interrupted": false,
+  "numRuns": 1,
+  "numSkips": 0,
+  "numShrinks": 1,
+  "seed": 112101,
+  "counterexample": [
+    1
+  ],
+  "counterexamplePath": "0:0",
+  "errorInstance": "AssertionError [ERR_ASSERTION]: Missing expected exception.",
+  "failures": [],
+  "executionSummary": [],
+  "verbose": 0,
+  "runConfiguration": {
+    "seed": 112101,
+    "numRuns": 250,
+    "maxSkipsPerRun": 100,
+    "markInterruptAsFailure": false,
+    "skipEqualValues": false,
+    "ignoreEqualValues": false,
+    "path": "",
+    "unbiased": false,
+    "verbose": 0,
+    "examples": [],
+    "endOnFailure": false,
+    "includeErrorInReport": false
+  }
+}

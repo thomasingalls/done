@@ -115,6 +115,7 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
     'generation',
   ]);
   if (
+    typeof r['stage'] !== 'string' ||
     !(
       (r['v'] === 1 && ['reserved', 'prepared'].includes(String(r['stage']))) ||
       (r['v'] === 2 && r['stage'] === 'genesis-prepared') ||
@@ -166,7 +167,7 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
   if (r['stage'] !== 'reserved') {
     if (!Array.isArray(r['credentials']) || r['credentials'].length !== 2)
       throw Error('Missing prepared credentials');
-    credentials = r['credentials'].map((input: unknown, i: number) => {
+    credentials = Array.from(r['credentials']).map((input: unknown, i: number) => {
       const c = closed(input, ['role', 'id', 'publicKey', 'sealed']),
         e = closed(c['sealed'], ['v', 'nonce', 'ct']);
       const role = i === 0 ? 'wrapping' : 'signing';

@@ -72,7 +72,7 @@ export function parseGenesis(input: unknown): GenesisCandidate {
     signer = fixed(c['signer'], 16);
   if (!Array.isArray(c['actors']) || c['actors'].length < 1 || c['actors'].length > 2)
     throw Error('Invalid genesis actors');
-  const actors = c['actors'].map((value: unknown) => {
+  const actors = Array.from(c['actors']).map((value: unknown) => {
     const a = closed(value, ['id', 'kind', 'credential']);
     if (
       !(
@@ -97,7 +97,7 @@ export function parseGenesis(input: unknown): GenesisCandidate {
   if (cp['v'] !== 1) throw Error('Unsupported checkpoint');
   if (!Array.isArray(c['wraps']) || c['wraps'].length !== 2)
     throw Error('Genesis needs exact recipients');
-  const wraps = c['wraps'].map((value: unknown, i: number) => {
+  const wraps = Array.from(c['wraps']).map((value: unknown, i: number) => {
     const w = closed(value, ['recipient', 'id', 'publicKey', 'enc', 'ct']);
     const recipient = i === 0 ? ('device' as const) : ('recovery' as const);
     if (w['recipient'] !== recipient) throw Error('Genesis recipient order changed');

@@ -1069,13 +1069,13 @@
       "sourceSites": [
         {
           "path": "src/crdt/promotionRecord.ts",
-          "line": 225,
+          "line": 226,
           "label": "done/local-promotion/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/promotionRecord.ts",
-          "line": 266,
+          "line": 267,
           "label": "done/local-promotion/v1",
           "kind": "literal"
         }
@@ -2437,7 +2437,7 @@
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 180,
+          "line": 181,
           "label": "done/source-capture/v1",
           "kind": "literal"
         }
@@ -2508,13 +2508,13 @@
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 105,
+          "line": 106,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 130,
+          "line": 131,
           "label": "done/account-spool/v1",
           "kind": "literal"
         }
@@ -2765,7 +2765,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 271,
+          "line": 272,
           "label": "done/account-spool-chain/v1\u0000",
           "kind": "literal"
         }

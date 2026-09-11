@@ -81,6 +81,9 @@ export const parseSlot = (value: unknown, slotId: string): Slot | null => {
       !v.unlockBinding ||
       Object.keys(v.account).sort().join(',') !== 'epochHead,promotionId,requestDigest,v' ||
       v.account.v !== 1 ||
+      typeof v.account.promotionId !== 'string' ||
+      typeof v.account.requestDigest !== 'string' ||
+      typeof v.account.epochHead !== 'string' ||
       !/^[0-9a-f]{32}$/.test(v.account.promotionId) ||
       !/^[0-9a-f]{64}$/.test(v.account.requestDigest) ||
       !/^[0-9a-f]{64}$/.test(v.account.epochHead))

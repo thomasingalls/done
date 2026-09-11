@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="promotion original generated failure shrinks against the frozen signed baseline" time="0.004338" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/baseline.test.mjs"/>
+	<testcase name="spool original generated failure shrinks against the frozen signed baseline" time="0.001149" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/baseline.test.mjs"/>
+	<testcase name="frozen baseline accepts sparse credentials/genesis and coerced index metadata; current parser refuses" time="0.008215" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/baseline.test.mjs"/>
+	<testcase name="promotion omission control rescues its rejected malformed input" time="0.044105" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/controls.test.mjs"/>
+	<testcase name="admission omission control rescues its rejected malformed input" time="0.041432" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/controls.test.mjs"/>
+	<testcase name="source omission control rescues its rejected malformed input" time="0.044278" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/controls.test.mjs"/>
+	<testcase name="spool omission control rescues its rejected malformed input" time="0.041351" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/controls.test.mjs"/>
+	<testcase name="delivery omission control rescues its rejected malformed input" time="0.040734" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/controls.test.mjs"/>
+	<testcase name="submission omission control rescues its rejected malformed input" time="0.042390" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/controls.test.mjs"/>
+	<testcase name="credentials strictness repair has an effective omission control" time="0.042244" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/controls.test.mjs"/>
+	<testcase name="actors strictness repair has an effective omission control" time="0.044235" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/controls.test.mjs"/>
+	<testcase name="wraps strictness repair has an effective omission control" time="0.042240" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/controls.test.mjs"/>
+	<testcase name="promotionId strictness repair has an effective omission control" time="0.045700" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/controls.test.mjs"/>
+	<testcase name="requestDigest strictness repair has an effective omission control" time="0.045575" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/controls.test.mjs"/>
+	<testcase name="epochHead strictness repair has an effective omission control" time="0.040212" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/controls.test.mjs"/>
+	<testcase name="generated coercible stage values must be rejected by the promotion parser" time="0.007741" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/objects.test.mjs"/>
+	<testcase name="all nested data nodes reject incompatible types across thirteen promotions and admission" time="3.175353" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/objects.test.mjs"/>
+	<testcase name="sparse retained arrays cannot skip validation of credentials, actors or recipients" time="0.049380" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/objects.test.mjs"/>
+	<testcase name="direct admission omissions and extra keys, inherited-only fields and cyclic data refuse" time="0.015866" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/objects.test.mjs"/>
+	<testcase name="generated valid promotion budgets and detached credential bytes preserve independent payloads" time="0.197239" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/objects.test.mjs"/>
+	<testcase name="generated admission scalar corruptions execute the direct parser" time="0.013631" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/objects.test.mjs"/>
+	<testcase name="admission nested genesis limits are checked at the declared byte edges" time="0.043358" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/objects.test.mjs"/>
+	<testcase name="generated internal length-prefix changes refuse for first and successor submissions" time="0.007824" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/submission.test.mjs"/>
+	<testcase name="parent framing must be refusal and canonical; nested corruption cannot hide behind a valid outer frame" time="0.000813" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/submission.test.mjs"/>
+	<testcase name="generated detached signature bytes round-trip structurally without conferring signature authority" time="0.049692" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/submission.test.mjs"/>
+	<testcase name="generated coercible source hashes must be rejected by the spool decoder" time="0.005712" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/wires.test.mjs"/>
+	<testcase name="generated source nested type mutations reach the decoder" time="0.010353" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/wires.test.mjs"/>
+	<testcase name="generated spool nested type mutations reach the decoder" time="0.007245" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/wires.test.mjs"/>
+	<testcase name="generated delivery nested type mutations reach the decoder" time="0.006704" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/wires.test.mjs"/>
+	<testcase name="decoder numeric boundaries and nested response/submission damage refuse without encoder prechecks" time="0.003389" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/wires.test.mjs"/>
+	<testcase name="generated valid reference positions and invocation counts preserve exact independent wire bytes" time="0.015273" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/wires.test.mjs"/>
+	<testcase name="generated real Yjs updates and both actor kinds round-trip while malformed count and frame data refuse" time="0.096889" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/wires.test.mjs"/>
+	<testcase name="source wire limit accepts a real near-limit frame and refuses the first larger canonical wire" time="0.665073" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/wires.test.mjs"/>
+	<!-- tests 33 -->
+	<!-- suites 0 -->
+	<!-- pass 33 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 6216.664167 -->
+</testsuites>

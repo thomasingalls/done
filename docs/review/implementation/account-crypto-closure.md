@@ -156,9 +156,15 @@ private first-epoch boundary. Real issuer responses survive HTTP reply loss, ser
 compaction and generated arrival/retry histories in the actual browser owners. No runtime repair was
 needed. This does not close the separate F-21.6 unit-oracle assessment.
 
-Next is an inventory of remaining F-21.1 closed-parser coverage, crediting the structured negatives
-already added by the byte-contract phases before adding missing tests. Delivery-oracle, residue,
-diagnostic and performance findings retain their separate obligations.
+F-21.7 was committed signed as `f0b6acd`. The subsequent
+[remaining parser conformance](./account-parser-conformance.md) addresses F-21.1 at the six named
+current parsers, crediting the later byte-contract coverage. Generated/type/sparse-array checks found
+structural acceptance defects, repaired with strict strings and dense array traversal. Frozen-baseline
+reproduction, twelve effective omission controls and native IndexedDB readback preserve before/after
+evidence. Valid bytes and authority edges are unchanged; no authentication bypass is claimed.
+
+Next is F-21.6's named delivery-unit oracle, crediting D3/F-21.7 while specifying order-sensitive retained
+state. Remaining admission, residue, diagnostic and performance findings retain separate obligations.
 
 Platform qualification, whole-profile residue, general lineage/checkpoint evolution, enrollment/adoption,
 revocation/rotation, finalization, recovery replacement, total-loss recovery, deployment/restore and
