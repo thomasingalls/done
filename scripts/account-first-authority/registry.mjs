@@ -53,7 +53,7 @@ export function checkConstructionRegistry(root, options = {}) {
   const executed = vectors.vectors.map((v) => ({ ...v, phase: 'A' }));
   const corpusPhases = new Set(['A']);
   for (const corpus of additional) {
-    if (!['B', 'C', 'D1'].includes(corpus.phase) || corpusPhases.has(corpus.phase))
+    if (!['B', 'C', 'D1', 'D2'].includes(corpus.phase) || corpusPhases.has(corpus.phase))
       fail('unknown/duplicate additional corpus phase');
     corpusPhases.add(corpus.phase);
     if (digest(read(corpus.vectorFile)) !== corpus.vectorSha256)
@@ -75,7 +75,7 @@ export function checkConstructionRegistry(root, options = {}) {
     if (ids.has(r.id)) fail('duplicate construction ' + r.id);
     ids.add(r.id);
     if (!['specified', 'open', 'excluded'].includes(r.status)) fail('unknown status ' + r.id);
-    if (!['A', 'B', 'C', 'D', 'D1', 'Local', 'non-crypto'].includes(r.phase))
+    if (!['A', 'B', 'C', 'D', 'D1', 'D2', 'Local', 'non-crypto'].includes(r.phase))
       fail('unknown phase ' + r.id);
     if (
       !r.roles.length ||
@@ -142,6 +142,13 @@ export function checkConstructionRegistry(root, options = {}) {
         fail('dangling/unresolved map dependency ' + r.id + ' -> ' + id);
     if (r.roles.includes('aead') && !r.mapEntries.some((id) => entries.get(id)?.kind === 'aead'))
       fail('missing AEAD authority entry ' + r.id);
+    if (
+      r.roles.includes('mac') &&
+      !r.mapEntries.some(
+        (id) => entries.get(id)?.kind === 'verification' && entries.get(id)?.guards === 'custody',
+      )
+    )
+      fail('missing MAC custody authority entry ' + r.id);
     const signerEntry = {
       authority: ['private-first-service', 'availability'],
       device: ['private-creating-device', 'attribution'],
@@ -161,7 +168,9 @@ export function checkConstructionRegistry(root, options = {}) {
     const required = [
       'runtime-bytes',
       'input-mutations',
-      ...(r.roles.includes('signature') ? ['encoded-field-omissions'] : []),
+      ...(r.roles.includes('signature') || r.roles.includes('mac')
+        ? ['encoded-field-omissions']
+        : []),
     ];
     for (const obligation of required)
       if (!r.requirements.includes(obligation))
@@ -176,7 +185,7 @@ export function checkConstructionRegistry(root, options = {}) {
       if (v && v.signer !== (r.signer ?? null)) fail('vector signer mismatch ' + r.id);
       if (v?.kind === 'signature' && !r.roles.includes('signature'))
         fail('signature vector misclassified as non-signature ' + r.id);
-      if (['kdf', 'aead'].includes(v?.kind) && !r.roles.includes(v.kind))
+      if (['kdf', 'aead', 'mac'].includes(v?.kind) && !r.roles.includes(v.kind))
         fail('primitive vector misclassified ' + r.id);
       if (v?.kind === 'carrier' && !r.roles.includes('carrier'))
         fail('carrier vector misclassified ' + r.id);
@@ -184,6 +193,11 @@ export function checkConstructionRegistry(root, options = {}) {
         fail('digest vector misclassified ' + r.id);
       if (!v?.expected.messageHex || !v.expected.resultHex || !v.negatives?.length)
         fail('missing vector/negative corpus ' + r.id + ' -> ' + id);
+      if (
+        v?.kind === 'mac' &&
+        (!v.encodedBindingControls?.length || v.expected.resultHex?.length !== 64)
+      )
+        fail('missing MAC/omission corpus ' + r.id);
       if (
         r.roles.includes('signature') &&
         (!v?.expected.signature || !v.encodedBindingControls?.length)

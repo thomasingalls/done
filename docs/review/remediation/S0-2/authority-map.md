@@ -917,3 +917,38 @@ pin: docs/account-crypto/service-custody.md §3 8ef023179a38
 pin: docs/account-crypto/service-custody.md §5 06d2aa51332b
 pin: docs/account-crypto/service-custody.md §6 1713a08e3b21
 ```
+
+## 11. Local promotion MAC and deterministic identities — group D2
+
+Only retained promotion authentication is qualified here. Complete Account grants and remaining Local
+constructions require their separate owners and evidence.
+
+```authority
+entry: private-promotion-authentication
+kind: verification
+guards: custody
+verifies: HMAC-SHA256 over the versioned carrier under the factor-opened scoped Local custody root
+resolves: independently opened mandatory Local factor and authenticated current custody -> via:device-lock-custody
+status: resolved
+pin: docs/account-crypto/local-promotion.md §1 398c25ea71ac
+pin: docs/account-crypto/local-promotion.md §2 93d98c3adfca
+pin: docs/account-crypto/local-promotion.md §3 52d90cc03eb2
+pin: docs/account-crypto/local-promotion.md §4 689be8855dac
+pin: docs/account-crypto/local-promotion.md §6 fb4cccefd90c
+```
+
+```authority
+entry: private-promotion-context
+kind: predicate
+guards: custody
+verifies: closed version/stage shapes, exact current source, claim, custody, seal budget and credential collision checks; deterministic names confer no authority
+resolves: current authenticated source comparisons after MAC verification -> via:private-promotion-authentication
+resolves: byte-exact structural checks and proposal hash framing, not service eligibility or recipient admission -> root:structural
+status: resolved
+pin: docs/account-crypto/local-promotion.md §1 398c25ea71ac
+pin: docs/account-crypto/local-promotion.md §2 93d98c3adfca
+pin: docs/account-crypto/local-promotion.md §3 52d90cc03eb2
+pin: docs/account-crypto/local-promotion.md §4 689be8855dac
+pin: docs/account-crypto/local-promotion.md §5 27df81372cd2
+pin: docs/account-crypto/local-promotion.md §6 fb4cccefd90c
+```

@@ -1,0 +1,803 @@
+{
+  "seed": 9272026,
+  "histories": [
+    {
+      "ops": [
+        {
+          "at": 74,
+          "remove": 1,
+          "insert": "PtH\\?03",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "fault": "index",
+      "retries": 1,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 58,
+          "remove": 0,
+          "insert": "\"",
+          "disk": true
+        },
+        {
+          "at": 43,
+          "remove": 4,
+          "insert": "&",
+          "disk": true
+        },
+        {
+          "at": 55,
+          "remove": 4,
+          "insert": "q\"ylDi |#g",
+          "disk": false
+        },
+        {
+          "at": 40,
+          "remove": 3,
+          "insert": "%iZ",
+          "disk": false
+        },
+        {
+          "at": 12,
+          "remove": 0,
+          "insert": "c+Pg",
+          "disk": true
+        }
+      ],
+      "reverse": false,
+      "fault": "index",
+      "retries": 1,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 37,
+          "remove": 2,
+          "insert": "6N%! &u",
+          "disk": true
+        },
+        {
+          "at": 22,
+          "remove": 5,
+          "insert": "Wgp*0A1uX-",
+          "disk": false
+        },
+        {
+          "at": 6,
+          "remove": 0,
+          "insert": "q9pRc=]>",
+          "disk": true
+        },
+        {
+          "at": 5,
+          "remove": 3,
+          "insert": " +$?]zK",
+          "disk": false
+        },
+        {
+          "at": 23,
+          "remove": 0,
+          "insert": "xx #bin",
+          "disk": false
+        },
+        {
+          "at": 78,
+          "remove": 0,
+          "insert": "R",
+          "disk": false
+        },
+        {
+          "at": 11,
+          "remove": 5,
+          "insert": "-( 4",
+          "disk": true
+        }
+      ],
+      "reverse": true,
+      "fault": "lost-binding",
+      "retries": 2,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 17,
+          "remove": 2,
+          "insert": "f8",
+          "disk": false
+        },
+        {
+          "at": 2,
+          "remove": 3,
+          "insert": "wO>%Pr]",
+          "disk": true
+        },
+        {
+          "at": 67,
+          "remove": 4,
+          "insert": "VtLU9%",
+          "disk": true
+        }
+      ],
+      "reverse": false,
+      "fault": "bad-passkey",
+      "retries": 3,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 35,
+          "remove": 1,
+          "insert": "2:X|AL9,Lvrq",
+          "disk": false
+        },
+        {
+          "at": 44,
+          "remove": 3,
+          "insert": "4cFc",
+          "disk": true
+        },
+        {
+          "at": 16,
+          "remove": 3,
+          "insert": "Z}E*>#;1s17s",
+          "disk": true
+        },
+        {
+          "at": 22,
+          "remove": 5,
+          "insert": "0wR=0m-O#:E!",
+          "disk": false
+        },
+        {
+          "at": 50,
+          "remove": 5,
+          "insert": "2fa33p,SPR.",
+          "disk": false
+        },
+        {
+          "at": 35,
+          "remove": 0,
+          "insert": "_",
+          "disk": true
+        },
+        {
+          "at": 13,
+          "remove": 2,
+          "insert": "BbtC?Npn^gt_",
+          "disk": true
+        },
+        {
+          "at": 48,
+          "remove": 2,
+          "insert": "6#",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "fault": "bad-passkey",
+      "retries": 2,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 32,
+          "remove": 3,
+          "insert": "vx:9c>[",
+          "disk": true
+        },
+        {
+          "at": 3,
+          "remove": 2,
+          "insert": "meUI'~ilVkD",
+          "disk": true
+        },
+        {
+          "at": 49,
+          "remove": 3,
+          "insert": ",I<%S-{Ik:~b",
+          "disk": false
+        },
+        {
+          "at": 9,
+          "remove": 4,
+          "insert": "(HU:\"kZ",
+          "disk": false
+        },
+        {
+          "at": 42,
+          "remove": 5,
+          "insert": "|'V%%",
+          "disk": false
+        },
+        {
+          "at": 28,
+          "remove": 5,
+          "insert": "Fi`)\"]Tb~D",
+          "disk": true
+        },
+        {
+          "at": 33,
+          "remove": 2,
+          "insert": "0Y\"B>,<D}pkz",
+          "disk": true
+        },
+        {
+          "at": 8,
+          "remove": 2,
+          "insert": "h*[@",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "fault": "none",
+      "retries": 2,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 41,
+          "remove": 1,
+          "insert": "l<e6[V",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "fault": "lost-binding",
+      "retries": 3,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 53,
+          "remove": 3,
+          "insert": "+\\uZ#rP",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "fault": "index",
+      "retries": 1,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 31,
+          "remove": 2,
+          "insert": "(@mq\\V1",
+          "disk": true
+        },
+        {
+          "at": 10,
+          "remove": 1,
+          "insert": "t",
+          "disk": false
+        },
+        {
+          "at": 11,
+          "remove": 3,
+          "insert": "C%wxlg46",
+          "disk": true
+        },
+        {
+          "at": 56,
+          "remove": 2,
+          "insert": "U3C/ee<",
+          "disk": false
+        },
+        {
+          "at": 78,
+          "remove": 0,
+          "insert": "ub_nE1",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "fault": "index",
+      "retries": 1,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 0,
+          "remove": 2,
+          "insert": "#?s\\",
+          "disk": false
+        },
+        {
+          "at": 70,
+          "remove": 4,
+          "insert": "apply",
+          "disk": false
+        },
+        {
+          "at": 4,
+          "remove": 5,
+          "insert": " ",
+          "disk": true
+        }
+      ],
+      "reverse": true,
+      "fault": "lost-binding",
+      "retries": 2,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 74,
+          "remove": 0,
+          "insert": ")laRQm",
+          "disk": true
+        },
+        {
+          "at": 23,
+          "remove": 2,
+          "insert": "Iff&S",
+          "disk": false
+        },
+        {
+          "at": 0,
+          "remove": 1,
+          "insert": "m,T",
+          "disk": true
+        },
+        {
+          "at": 1,
+          "remove": 3,
+          "insert": "v&nfx+~BJD&",
+          "disk": true
+        },
+        {
+          "at": 1,
+          "remove": 1,
+          "insert": "`Br/(yC/:J",
+          "disk": true
+        },
+        {
+          "at": 70,
+          "remove": 1,
+          "insert": "OKc1k",
+          "disk": true
+        }
+      ],
+      "reverse": false,
+      "fault": "bad-passkey",
+      "retries": 2,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 2,
+          "remove": 2,
+          "insert": "Yl~",
+          "disk": true
+        },
+        {
+          "at": 66,
+          "remove": 2,
+          "insert": "(rqE'Et",
+          "disk": true
+        },
+        {
+          "at": 28,
+          "remove": 2,
+          "insert": "WPPF^.",
+          "disk": false
+        },
+        {
+          "at": 74,
+          "remove": 1,
+          "insert": "DiC]",
+          "disk": true
+        },
+        {
+          "at": 5,
+          "remove": 0,
+          "insert": "ENMq}zbQ(}wg",
+          "disk": false
+        },
+        {
+          "at": 34,
+          "remove": 1,
+          "insert": "r;g0F)",
+          "disk": true
+        },
+        {
+          "at": 21,
+          "remove": 0,
+          "insert": "$}!&b",
+          "disk": true
+        }
+      ],
+      "reverse": false,
+      "fault": "lost-binding",
+      "retries": 2,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 66,
+          "remove": 5,
+          "insert": "+-Ry6YjD<5",
+          "disk": true
+        },
+        {
+          "at": 2,
+          "remove": 0,
+          "insert": "ke4",
+          "disk": false
+        },
+        {
+          "at": 78,
+          "remove": 2,
+          "insert": "s[z0&n}}\"",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "fault": "handoff-selected",
+      "retries": 3,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 31,
+          "remove": 1,
+          "insert": "#OlMaZj>!",
+          "disk": true
+        },
+        {
+          "at": 38,
+          "remove": 1,
+          "insert": "#cv+-1",
+          "disk": true
+        }
+      ],
+      "reverse": true,
+      "fault": "bad-passkey",
+      "retries": 1,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 18,
+          "remove": 0,
+          "insert": ",`-",
+          "disk": true
+        },
+        {
+          "at": 12,
+          "remove": 0,
+          "insert": "$X-_48.",
+          "disk": false
+        },
+        {
+          "at": 1,
+          "remove": 2,
+          "insert": "3H8",
+          "disk": true
+        }
+      ],
+      "reverse": false,
+      "fault": "none",
+      "retries": 1,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 31,
+          "remove": 0,
+          "insert": "(+t3|#t",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "fault": "handoff-prepared",
+      "retries": 2,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 67,
+          "remove": 2,
+          "insert": "z+1WAh\\<",
+          "disk": false
+        },
+        {
+          "at": 11,
+          "remove": 1,
+          "insert": "$P:S?PVeNuWJ",
+          "disk": true
+        },
+        {
+          "at": 8,
+          "remove": 1,
+          "insert": "7",
+          "disk": true
+        },
+        {
+          "at": 37,
+          "remove": 1,
+          "insert": "b (;;",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "fault": "lost-binding",
+      "retries": 2,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 15,
+          "remove": 0,
+          "insert": "2z",
+          "disk": true
+        },
+        {
+          "at": 58,
+          "remove": 4,
+          "insert": "Wez.s",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "fault": "bad-passkey",
+      "retries": 2,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 66,
+          "remove": 4,
+          "insert": "0ZcH",
+          "disk": false
+        },
+        {
+          "at": 19,
+          "remove": 3,
+          "insert": "vF",
+          "disk": false
+        },
+        {
+          "at": 33,
+          "remove": 0,
+          "insert": "tXnHN-^",
+          "disk": false
+        },
+        {
+          "at": 52,
+          "remove": 3,
+          "insert": "{8=8f#]#{",
+          "disk": true
+        },
+        {
+          "at": 2,
+          "remove": 2,
+          "insert": "-8Q6;5(dV~kf",
+          "disk": false
+        }
+      ],
+      "reverse": false,
+      "fault": "bad-passkey",
+      "retries": 1,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 34,
+          "remove": 5,
+          "insert": "s:bq\"H; \\",
+          "disk": true
+        },
+        {
+          "at": 4,
+          "remove": 5,
+          "insert": "(Uk9HBs2`",
+          "disk": false
+        },
+        {
+          "at": 62,
+          "remove": 3,
+          "insert": "\"!A_\\A'W;,Sx",
+          "disk": true
+        },
+        {
+          "at": 50,
+          "remove": 2,
+          "insert": "^",
+          "disk": true
+        },
+        {
+          "at": 4,
+          "remove": 1,
+          "insert": "-X2",
+          "disk": false
+        },
+        {
+          "at": 74,
+          "remove": 5,
+          "insert": ".A*",
+          "disk": true
+        }
+      ],
+      "reverse": true,
+      "fault": "lost-binding",
+      "retries": 1,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 29,
+          "remove": 5,
+          "insert": "<7",
+          "disk": false
+        },
+        {
+          "at": 27,
+          "remove": 2,
+          "insert": ">",
+          "disk": true
+        },
+        {
+          "at": 34,
+          "remove": 3,
+          "insert": "\"bUN|-IzO:(",
+          "disk": false
+        },
+        {
+          "at": 20,
+          "remove": 5,
+          "insert": "*)",
+          "disk": true
+        }
+      ],
+      "reverse": false,
+      "fault": "handoff-prepared",
+      "retries": 3,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 1,
+          "remove": 3,
+          "insert": "bl",
+          "disk": false
+        },
+        {
+          "at": 77,
+          "remove": 0,
+          "insert": "}Q",
+          "disk": true
+        },
+        {
+          "at": 3,
+          "remove": 0,
+          "insert": "d~\\<$%%Ifg4\"",
+          "disk": true
+        },
+        {
+          "at": 68,
+          "remove": 1,
+          "insert": "?N:@{!.hx|",
+          "disk": false
+        },
+        {
+          "at": 9,
+          "remove": 3,
+          "insert": "$9G?|HK:E^;",
+          "disk": false
+        },
+        {
+          "at": 41,
+          "remove": 2,
+          "insert": "V",
+          "disk": true
+        },
+        {
+          "at": 60,
+          "remove": 2,
+          "insert": "kelez}Q",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "fault": "index",
+      "retries": 1,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 73,
+          "remove": 4,
+          "insert": "q&!I\"\"Y",
+          "disk": true
+        },
+        {
+          "at": 47,
+          "remove": 2,
+          "insert": "EL~0X7%\\U",
+          "disk": true
+        },
+        {
+          "at": 51,
+          "remove": 0,
+          "insert": "%%&9",
+          "disk": true
+        },
+        {
+          "at": 73,
+          "remove": 1,
+          "insert": "6callconstru",
+          "disk": false
+        },
+        {
+          "at": 56,
+          "remove": 0,
+          "insert": "(N?efL0\"~",
+          "disk": false
+        },
+        {
+          "at": 24,
+          "remove": 0,
+          "insert": "wSYu^Z05z#O",
+          "disk": true
+        }
+      ],
+      "reverse": true,
+      "fault": "lost-binding",
+      "retries": 2,
+      "status": "passed"
+    },
+    {
+      "ops": [
+        {
+          "at": 71,
+          "remove": 5,
+          "insert": "t~r'",
+          "disk": false
+        },
+        {
+          "at": 14,
+          "remove": 5,
+          "insert": "O?.vb-",
+          "disk": false
+        },
+        {
+          "at": 49,
+          "remove": 3,
+          "insert": ";'cr",
+          "disk": false
+        }
+      ],
+      "reverse": true,
+      "fault": "handoff-prepared",
+      "retries": 1,
+      "status": "passed"
+    }
+  ]
+}

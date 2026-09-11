@@ -18,8 +18,8 @@ const baseline = () => ({
 test('registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups', () => {
   const result = checkConstructionRegistry(root);
   assert.deepEqual(result.failures, []);
-  assert.equal(result.specified, 51);
-  assert.equal(result.open, 6);
+  assert.equal(result.specified, 53);
+  assert.equal(result.open, 5);
   assert.equal(result.excluded, 1);
 });
 
@@ -391,6 +391,92 @@ test('D1 service custody cannot drop its corpus, owner, export predicate, AEAD d
   if (process.env.ACCOUNT_REPORT_DIR)
     writeFileSync(
       join(process.env.ACCOUNT_REPORT_DIR, 'service-custody-registry-controls.json'),
+      JSON.stringify({ controls: evidence.length, evidence }, null, 2) + '\n',
+    );
+});
+
+test('D2 promotion cannot drop its MAC edge, role, version cases, omission evidence or identity source', () => {
+  const controls = [
+    [
+      'D2 corpus',
+      (o) =>
+        (o.document.additionalCorpora = o.document.additionalCorpora.filter(
+          (c) => c.phase !== 'D2',
+        )),
+      'specified phase/blocker mismatch',
+    ],
+    [
+      'MAC edge',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'local-promotion-mac').mapEntries = [
+          'private-promotion-context',
+        ]),
+      'missing MAC custody authority entry',
+    ],
+    [
+      'MAC guard',
+      (o) => (o.entries.get('private-promotion-authentication').guards = 'availability'),
+      'missing MAC custody authority entry',
+    ],
+    [
+      'MAC role',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'local-promotion-mac').roles = [
+          'kdf',
+          'carrier',
+        ]),
+      'primitive vector misclassified',
+    ],
+    [
+      'MAC omission obligation',
+      (o) =>
+        o.document.constructions.find((r) => r.id === 'local-promotion-mac').requirements.pop(),
+      'missing evidence obligation',
+    ],
+    [
+      'identity source',
+      (o) =>
+        o.document.constructions
+          .find((r) => r.id === 'local-promotion-identities')
+          .sourceSites.pop(),
+      'source-site census changed',
+    ],
+    [
+      'version case',
+      (o) =>
+        o.document.constructions.find((r) => r.id === 'local-promotion-mac').vectorCases.shift(),
+      'orphan executed vector',
+    ],
+  ];
+  const evidence = [];
+  for (const [name, change, expected] of controls) {
+    const o = baseline();
+    change(o);
+    assert(
+      checkConstructionRegistry(root, o).failures.some((f) => f.includes(expected)),
+      name,
+    );
+    evidence.push({ name, expected, caught: true });
+  }
+  for (const field of ['negatives', 'encodedBindingControls']) {
+    const o = baseline(),
+      corpus = o.document.additionalCorpora.find((c) => c.phase === 'D2'),
+      path = corpus.vectorFile,
+      vectors = JSON.parse(read(path));
+    vectors.vectors.find((v) => v.id === 'promotion-account-receiving')[field] = [];
+    const changed = JSON.stringify(vectors);
+    corpus.vectorSha256 = digest(changed);
+    o.read = (p) => (p === path ? changed : read(p));
+    const result = checkConstructionRegistry(root, o),
+      expected =
+        field === 'negatives' ? 'missing vector/negative corpus' : 'missing MAC/omission corpus';
+    assert(result.failures.some((f) => f.includes(expected)));
+    assert(!result.failures.some((f) => f.includes('stale additional vector file pin')));
+    evidence.push({ name: field, caught: true, aggregatePinUpdated: true });
+  }
+  if (process.env.ACCOUNT_REPORT_DIR)
+    writeFileSync(
+      join(process.env.ACCOUNT_REPORT_DIR, 'promotion-registry-controls.json'),
       JSON.stringify({ controls: evidence.length, evidence }, null, 2) + '\n',
     );
 });

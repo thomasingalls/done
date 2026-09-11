@@ -2572,3 +2572,43 @@ unbranched histories, operator secret distribution, rotation/restore and complet
 are not established by these bytes. All 21 personal package hashes, historical review, personal servers,
 L-2 and the staged transport patch remain unchanged; no real Account, factor, operator secret or pin
 was provisioned. D1 remains unstaged. Appended before replacing only L-1.
+
+
+## 2026-09-11 — Local promotion authentication and deterministic identities (`L-1` seat)
+
+At the user's request, group C transport was committed unsigned as `d098bd4` and D1 service custody
+unsigned as `d24ca66`, preserving their separate boundaries. A reminder to sign them later was scheduled.
+D2 is complete and remains unstaged/uncommitted. It specifies the current v1–v9 promotion carrier,
+13 stage combinations, scoped MAC key/payload, retained handoff property order and lineage/attempt hashes.
+No production code, valid stored bytes, versions or schema changed.
+
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-promotion-contract.md) records all
+41 stages passing with 781 matching input pins: 16 independent fixed vectors, 2,912 input mutations
+(1,841 parser refusals and 1,071 MAC refusals), 2,938 encoded omission witnesses and 449 additional parser
+refusals. Two hundred shrinking-enabled authentication histories perform 1,372 commit/reopen/tamper/
+reorder operations with no counterexample. Native tests authenticate all 13 carrier stages through real
+Local custody; ten authentic source/budget/collision lies refuse and are accepted only after removing
+the actual source guard. Three native verification-message controls accept altered omitted fields while
+WebCrypto HMAC verification remains operative. No runtime defect was reproduced in this bounded phase.
+
+The contract preserves several narrower compatibility rules: most objects reconstruct field order,
+but handoff destination order remains authenticated and unlock-binding reordering refuses; lineage uses
+ASCII LP even though Local custody permits Unicode slots; genesis actors must remain ordered. The old
+preparation narrative now accurately places complete parsing after the signing helper's MAC invocation
+and before retained-read verification. Valid MACs still grant no current service eligibility, nested
+signature validity, private-key correspondence, replay coverage or handoff permission.
+
+All 80 promotion/genesis/admission/handoff regressions pass, including 260 generated service histories,
+139 generated native histories and 200 ES256 conversion samples, interrupted commits, lost replies,
+renderer/process deaths, actual passkey/offline handoff and semantic forgery refusal. All 983 units,
+typecheck, retained A/B/C/D1 contracts, 24 vector commands and targeted lint/format pass. Nine registry
+controls enforce MAC authority, role, version/source coverage and negative/omission evidence. The map
+has 54 entries, 62 permitted-root chains and 13 swept documents; 53 constructions are specified,
+five remain open and one is excluded. Runtime census remains 158 sources/89 labels.
+
+Next is D3: Account capsule and ledger byte contracts, their hash chain and explicit counter-witness
+dependencies. Inherited Local custody/store/journal, checkpoint/startup and migration-only disposition
+follow separately. F-05/F-06 and wider readiness gates remain open. All 21 personal package hashes,
+24 prior vector files, production sources, historical review, L-2 and unrelated root files are preserved.
+Personal preview/relay remain stopped; no real Account/factor/operator secret or pin was provisioned.
+Appended before replacing only L-1.

@@ -1,0 +1,42 @@
+(node:76678) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:76678) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ certified first epoch and receipt bind exact recovery, recipients and separate semantic bytes (68.517375ms)
+✔ validly signed changes of recovery, recipient and candidate cannot replace the offer (29.218417ms)
+✔ proposal cannot be replayed as an epoch or completion; malformed and wrong-purpose signatures refuse (27.178583ms)
+✔ abandonment during asynchronous verification wins before activation (26.425833ms)
+✔ unreadable acceptance custody refuses cold reopen without replacing its key (19.2105ms)
+✔ before-commit offer-promotion commit failure has one recoverable result (26.213417ms)
+✔ after-commit offer-promotion commit failure has one recoverable result (22.886542ms)
+✔ before-commit admit-promotion commit failure has one recoverable result (44.380458ms)
+✔ after-commit admit-promotion commit failure has one recoverable result (42.797875ms)
+✔ schema 2 upgrade is explicit and preserves all prior rows (13.501ms)
+✔ 80 generated service histories match an independent pending/offered/active/cancelled ledger (1914.95125ms)
+✔ a cancelled proposal permits a fresh registration for the same retained workspace (36.547917ms)
+(node:76680) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:76680) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ admission commits one verified first head and retains Local carriers through cold restart (1161.977ms)
+✔ renderer interruption before admission-requested commit (1271.75975ms)
+✔ renderer interruption after admission-requested commit (1478.135125ms)
+✔ renderer interruption before admission-offered commit (1256.88875ms)
+✔ renderer interruption after admission-offered commit (1554.736334ms)
+✔ renderer interruption before admission-receipted commit (1255.327542ms)
+✔ renderer interruption after admission-receipted commit (1496.95225ms)
+✔ lost begin response resumes exact service outcome (1038.941875ms)
+✔ lost finish response resumes exact service outcome (1043.9395ms)
+✔ abandonment after an offer removes only preparation, while a lost committed reply cannot roll back Local (1186.552042ms)
+✔ changed receipt signature is refused; disabling final verification actually retains it (1082.105292ms)
+✔ queued owner and cancellation retain the commit until native acknowledgement drains (1202.156458ms)
+(node:76680) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ caller mutation after queuing cannot change the owned slot or request (854.649375ms)
+✔ 30 generated delivery, admission interruption and retry histories preserve independent writing and coverage (30968.297209ms)
+✔ the committed version-2 reader and ordinary Local editor refuse a retained admission (1124.587291ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 51233.194875

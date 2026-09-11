@@ -1,5 +1,9 @@
 # Private Local promotion preparation
 
+The current v1–v9 carrier bytes and compatibility constraints are specified in
+[Local promotion authentication](./account-crypto/local-promotion.md). The original phase narrative
+below describes v1 preparation; it does not replace the later version matrix.
+
 This bounded owner follows signed `e96107b` (private root and read-only preflight). It durably prepares
 fresh device signing/wrapping credentials while retaining the existing Local identity, custody root,
 content key, content store, generation, journal and index. It does not activate an account, issue an
@@ -81,7 +85,7 @@ The MAC key is HKDF-SHA256 of the existing custody root, empty salt and
 `fields("done/local-promotion/v1", slotId, principalId, workspaceId, rootId)`, producing HMAC-SHA256.
 `promotionPayload` encodes an ordered UTF-8 JSON array of every field except `mac`, with explicit ordered
 source, pin and credential tuples, lowercase hex for binary fields, and `pendingBytes(account)` as a
-string. Closed parsing happens before signing and on every open. The marker binds the exact current
+string. The signer parses its result after the MAC invocation; retained carriers are parsed before verification on every open. The marker binds the exact current
 custody MAC and seal budget. Missing/mismatched custody, stale reservation, changed claim or credential
 material refuses; completed counters are never recreated. Keys do not escape the owner; its result
 contains only source/account/intent identifiers and the prepared public credential descriptors.

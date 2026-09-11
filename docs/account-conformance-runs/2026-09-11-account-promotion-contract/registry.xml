@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups" time="0.250879" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="registration omission controls fail for the missing obligation, not just a stale aggregate hash" time="0.428649" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="recovery corpus cannot lose its phase, primitive role, negative corpus or factor authority under updated hashes" time="0.144536" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="transport coverage refuses missing bytes, misclassified carriers/hashes and service authority over content" time="0.214237" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="D1 service custody cannot drop its corpus, owner, export predicate, AEAD discipline edge or negatives" time="0.150686" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<testcase name="D2 promotion cannot drop its MAC edge, role, version cases, omission evidence or identity source" time="0.193346" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-first-authority/registry.test.mjs"/>
+	<!-- tests 6 -->
+	<!-- suites 0 -->
+	<!-- pass 6 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 1510.032875 -->
+</testsuites>

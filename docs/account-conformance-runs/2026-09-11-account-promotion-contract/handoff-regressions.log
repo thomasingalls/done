@@ -1,0 +1,35 @@
+(node:76818) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:76818) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ binding is derived from the exact admitted credential, signed in row-12 bytes and stable across restart (57.941458ms)
+✔ pending, wrong-capability, forged SPKI and changed current eligibility refuse issuance (28.766708ms)
+✔ credential state changed after signing cannot return a binding from a stale observation (31.615709ms)
+✔ 60 generated issuance histories preserve the independent active/pending eligibility ledger (2351.795833ms)
+✔ credential-integrity control actually signs a substituted key only when the COSE/SPKI guard is disabled (52.781208ms)
+✔ 200 generated OpenSSL DER signatures convert to valid WebCrypto/P1363 scalars; malformed DER refuses (27.510333ms)
+(node:76825) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:76825) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ handoff selects exactly one Account route and cold classifies offline with passkey plus device factor (1480.009ms)
+✔ real browser ES256 passkey assertion completes handoff and offline startup (1608.317833ms)
+✔ renderer interruption before handoff-prepared commit resumes exactly (1743.380291ms)
+✔ renderer interruption after handoff-prepared commit resumes exactly (1993.584166ms)
+✔ renderer interruption before index commit resumes exactly (1776.831041ms)
+✔ renderer interruption after index commit resumes exactly (2073.925625ms)
+✔ renderer interruption before handoff-selected commit resumes exactly (1750.430709ms)
+✔ renderer interruption after handoff-selected commit resumes exactly (2027.482833ms)
+✔ binding and passkey refusals precede any index mutation; replay cannot reopen a new attempt (1469.765459ms)
+✔ missing, closed and changed Account routes refuse without repair or Local fallback (1365.353667ms)
+✔ passkey fault control actually selects and classifies with an invalid assertion (1452.482792ms)
+✔ cancelled index acknowledgement retains the permit until the native commit drains (1621.0135ms)
+✔ 24 generated handoff histories preserve independent writing and source inventory across aborted commits and restart (32420.587042ms)
+✔ actual previous reader and Local owners refuse the Account handoff carrier (1509.829833ms)
+✔ missing or damaged provenance refuses startup without creating or rewriting carriers (1277.950792ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 59287.21775

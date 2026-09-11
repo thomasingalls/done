@@ -1,0 +1,32 @@
+[
+  {
+    "v": 1,
+    "stage": "prepared",
+    "omit": [
+      3
+    ],
+    "baseline": "refused",
+    "control": "native HMAC accepted omitted encoding"
+  },
+  {
+    "v": 3,
+    "stage": "admission-requested",
+    "omit": [
+      "pending"
+    ],
+    "baseline": "refused",
+    "control": "native HMAC accepted omitted encoding"
+  },
+  {
+    "v": 9,
+    "stage": "account-receiving",
+    "omit": [
+      16,
+      "destination",
+      "account",
+      "promotionId"
+    ],
+    "baseline": "refused",
+    "control": "native HMAC accepted omitted encoding"
+  }
+]

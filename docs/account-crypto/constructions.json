@@ -1060,15 +1060,12 @@
       "blocker": null
     },
     {
-      "id": "remaining-local-promotion",
-      "phase": "D",
-      "status": "open",
-      "roles": ["mac", "kdf", "digest"],
-      "labels": [
-        "done/local-promotion/v1",
-        "done/promotion-lineage/v1",
-        "done/promotion-attempt/v1"
-      ],
+      "id": "local-promotion-mac",
+      "phase": "D2",
+      "status": "specified",
+      "roles": ["mac", "kdf", "carrier", "predicate"],
+      "signer": null,
+      "labels": ["done/local-promotion/v1"],
       "sourceSites": [
         {
           "path": "src/crdt/promotionRecord.ts",
@@ -1081,7 +1078,85 @@
           "line": 266,
           "label": "done/local-promotion/v1",
           "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/promotionRecord.ts",
+          "name": "parsePromotion"
         },
+        {
+          "path": "src/crdt/promotionRecord.ts",
+          "name": "promotionPayload"
+        },
+        {
+          "path": "src/crdt/promotionRecord.ts",
+          "name": "signPromotion"
+        },
+        {
+          "path": "src/crdt/promotionRecord.ts",
+          "name": "readPromotion"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-promotion.md",
+          "section": "1",
+          "hash": "398c25ea71ac"
+        },
+        {
+          "path": "docs/account-crypto/local-promotion.md",
+          "section": "2",
+          "hash": "93d98c3adfca"
+        },
+        {
+          "path": "docs/account-crypto/local-promotion.md",
+          "section": "3",
+          "hash": "52d90cc03eb2"
+        },
+        {
+          "path": "docs/account-crypto/local-promotion.md",
+          "section": "4",
+          "hash": "689be8855dac"
+        },
+        {
+          "path": "docs/account-crypto/local-promotion.md",
+          "section": "6",
+          "hash": "fb4cccefd90c"
+        }
+      ],
+      "mapEntries": ["private-promotion-authentication", "private-promotion-context"],
+      "vectorCases": [
+        "promotion-reserved",
+        "promotion-prepared",
+        "promotion-genesis-prepared",
+        "promotion-admission-requested",
+        "promotion-admission-offered",
+        "promotion-admission-receipted",
+        "promotion-handoff-prepared",
+        "promotion-handoff-selected",
+        "promotion-account-active",
+        "promotion-account-capturing",
+        "promotion-account-spooling",
+        "promotion-account-delivering",
+        "promotion-account-receiving",
+        "promotion-mac-key"
+      ],
+      "tests": [
+        "test/account-promotion-contract/formats.test.mjs",
+        "test/account-promotion-contract/native.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "local-promotion-identities",
+      "phase": "D2",
+      "status": "specified",
+      "roles": ["digest"],
+      "signer": null,
+      "labels": ["done/promotion-lineage/v1", "done/promotion-attempt/v1"],
+      "sourceSites": [
         {
           "path": "src/crdt/promotionGenesis.ts",
           "line": 129,
@@ -1101,12 +1176,40 @@
           "kind": "literal"
         }
       ],
-      "entryPoints": [],
-      "mapEntries": [],
-      "home": "docs/account-promotion.md",
-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "D: versioned v1-v9 MAC payload and deterministic hash vectors",
-      "reason": null
+      "entryPoints": [
+        {
+          "path": "src/crdt/promotionPreparation.ts",
+          "name": "promotionLineage"
+        },
+        {
+          "path": "src/crdt/promotionOwner.ts",
+          "name": "prepareLocalPromotion"
+        },
+        {
+          "path": "src/crdt/promotionGenesis.ts",
+          "name": "withVerifiedGenesis"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-promotion.md",
+          "section": "5",
+          "hash": "27df81372cd2"
+        },
+        {
+          "path": "docs/account-crypto/local-promotion.md",
+          "section": "6",
+          "hash": "fb4cccefd90c"
+        }
+      ],
+      "mapEntries": ["private-promotion-context"],
+      "vectorCases": ["promotion-lineage", "promotion-attempt"],
+      "tests": [
+        "test/account-promotion-contract/formats.test.mjs",
+        "test/account-promotion-contract/native.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
     },
     {
       "id": "transport-envelope-key",
@@ -3078,6 +3181,11 @@
       "phase": "D1",
       "vectorFile": "test/vectors/account-service-custody.json",
       "vectorSha256": "544cf328c0eacc87f25d61dff02511db3c66a9b93877e63ebcd0a159876df32c"
+    },
+    {
+      "phase": "D2",
+      "vectorFile": "test/vectors/account-promotion.json",
+      "vectorSha256": "e4557d7786a687426d8fbf282a6745713eed091264d8a7cb2518665343428e34"
     }
   ]
 }

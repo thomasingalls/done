@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Active slice: Local promotion authentication and deterministic identities (`L-1`)
+## Active slice: Account capsule and ledger byte contracts (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: versioned promotion MAC/digest byte agreement before real Account authority
+blocks_on: capsule/ledger byte and witness agreement before real Account authority
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
@@ -57,56 +57,53 @@ updated: 2026-09-11
 **Roadmap position.** Personal Local cutover, source cleanup and packaged offline upgrades are exercised.
 Account work is at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), around item 5's internal
 creating-member ciphertext round trip. Composition is `6398e33`, descriptor bounds/versioning `4f71bac`,
-fresh activation `2ba50aa`, crypto prep `9cf5c98`, first-authority A `43b42b1`, and recovery B `e74fbaa`.
-Group C transport is staged, uncommitted. D1 service custody is complete, unstaged. No real Account receipt
-exists; this is not Stage 4 completion or second-device enrollment.
+fresh activation `2ba50aa`, crypto prep `9cf5c98`, first-authority A `43b42b1`, recovery B `e74fbaa`,
+transport C `d098bd4`, and service custody D1 `d24ca66`. C and D1 were committed **unsigned** at the user's
+request; a reminder is scheduled for tomorrow morning to sign them later. D2 is complete and remains
+unstaged/uncommitted. No real Account receipt exists; this is not Stage 4 completion or second-device enrollment.
 
-**Staging boundary.** The user's requested distinction is preserved: 114 group C files are staged,
-including evidence/checkpoint. D1 changes to shared files are unstaged on top. The exact staged patch
-hash is retained in [D1 evidence](./account-conformance-runs/2026-09-11-account-service-custody/staged-transport-boundary.json).
-Do not restage D1 or commit either phase without the next user instruction. Unrelated root files remain
-outside both phases.
+**Completed boundary.** [D2 local promotion](./account-crypto/local-promotion.md) pins all v1–v9 stage
+MACs, scoped key derivation and deterministic identities. It retains existing handoff property-order
+compatibility and distinguishes ASCII lineage framing from Unicode custody framing. No production runtime
+or persistent format changed. Correctly MACed source/budget substitutions still refuse; nested service
+and semantic authority remain separate checks.
 
-**Completed boundary.** [D1 service custody](./account-crypto/service-custody.md) pins the current root
-and acceptance key schedules, AAD, seals and provider key formats. Both creators now assert exact
-Ed25519 PKCS#8/SPKI exports. Acceptance creation checks close before generating a key and clears its
-export if public-key extraction, random draws or derivation fail. Focused failures reproduced before
-repair. Valid persisted bytes, signatures and versions remain unchanged.
+[Final evidence](./account-conformance-runs/2026-09-11-account-promotion-contract.md): all 41 stages pass,
+with 781 matching input pins. Sixteen fixed vectors, 2,912 input mutations, 2,938 encoded omissions,
+449 parser refusals, ten authentic source-guard controls, three native verification-message controls
+and 200 shrinking-enabled histories pass. All 13 reader stages authenticate through real Local custody.
+The 80 existing promotion/genesis/admission/handoff tests, 983 units, typecheck, retained A/B/C/D1 suites
+and all 24 vector commands pass. The map joins 53 specified records, five open and one exclusion through
+54 entries/62 chains. F-05/F-06 remain open. No runtime defect was reproduced in this bounded phase.
 
-[Final evidence](./account-conformance-runs/2026-09-11-account-service-custody.md): all 39 stages pass,
-with 771 matching input pins. Eight fixed cases, 39 substitutions/24 omissions, 19 AEAD refusals,
-16 export mutations, eight production guard controls and 200 shrinking-enabled cold-open histories pass.
-All 14 authority regressions (160 generated/40 native histories, SIGKILL/competing setup), 69 service/
-transport/inbound tests, 983 units, typecheck, retained A/B/C contracts and all 23 vector commands pass.
-The map joins 51 specified records, six open and one exclusion through 52 entries/59 chains. F-05/F-06
-remain open. Memory cleanup is a claim about owned buffers, not provider/GC erasure or host restore safety.
+**Next bounded phase — D3: Account capsule and ledger byte contracts.** Continue
+[group D](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates) with
+`remaining-local-account-ledger`:
 
-**Next bounded phase — D2: local promotion authentication and identities.** Continue
-[group D](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates) with only
-`remaining-local-promotion`:
+- Read source capture, spool position/attempt/envelope entries and hash chain, delivery and inbound
+  carrier encoders/decoders and their ordered reconstruction owners. Pin byte/size/version/array rules
+  from the actual runtime. Separate an unsigned payload's syntax from its enclosing record authentication.
+- Specify explicit dependencies on the authenticated content-counter/spool witness, including the
+  transition and replay checks that prohibit gaps, reuse or incomplete retained histories. Identify
+  which counter-v2 bytes require their own following bridge rather than silently qualifying all Local.
+- Publish independent fixed vectors and meaningful per-field negatives, genuine correctly encrypted
+  semantic lies, effective omission controls and shrinking-enabled generated ledger histories. Register
+  exact source/map/vector joins. Reuse existing envelope and counter evidence only where bytes agree.
+- Change runtime only for a reproduced defect or explicit contract correction. Run affected regressions,
+  preserve final evidence and append the result before replacing L-1. No real provisioning, onboarding
+  UI or deployment is authorized by this phase.
 
-- Read the actual v1–v9 promotion payloads and parsers, their MAC-key derivation, authenticated fields,
-  carrier ordering/canonicalization, source/slot/custody identities and deterministic lineage/attempt hashes.
-  Separate historical compatibility from the current writer. Do not infer new authority from a valid MAC.
-- Specify exact bytes and fill fixed-vector gaps with independent reconstruction against actual encoders,
-  parsers and authentication owners. Exercise every version/field, nested arrays and signatures, genuine
-  correctly authenticated semantic lies, property-order rules and effective omission controls.
-- Register exact source/map/vector joins without silently closing capsules, counter witnesses, startup
-  or all Local work. Retain A/B/C/D1 evidence and fix runtime only where a reproduced defect or explicit
-  contract correction warrants it. Keep this phase unstaged relative to the user's chosen boundary.
-- Run affected regressions, preserve final evidence and append the outcome before replacing L-1.
-  This phase does not authorize real provisioning, onboarding UI or deployment.
-
-Later D slices own encrypted Account capsules/spool/inbound/delivery, counter-v2 witness coupling,
-inherited custody/store/journal bridges and checkpoint/startup qualification. Migration-only scope needs
-an explicit disposition, not a silent claim of whole-Local requalification. The actual old second device
-will adopt the first workspace with fresh custody/store/counters/credentials; it will not import or merge
-its old writing. Recovery byte conformance is not a built total-loss machine.
+Later D slices own inherited custody/store/journal bridges, remaining counter-v2 qualification and
+checkpoint/startup contracts. Migration-only scope needs an explicit disposition, not a silent claim
+of whole-Local requalification. The actual old second device will adopt the first workspace with fresh
+custody/store/counters/credentials; it will not import or merge its old writing. Recovery byte conformance
+is not a built total-loss machine.
 
 **Personal checkpoint.** Root `dist/` and `.dev/releases/17d87c2/app` retain all 21 saved hashes.
-Personal preview/relay, browser/factors, origin/routing, historical review and L-2 are unchanged. Native
-bundles were built in memory. Host VM/policy research stays stopped. No real Account, factor, operator
-key or pin was provisioned. Unrelated root files `done ` and `reviewpacket96a20401ceb88d.md` remain untouched.
+All 24 prior vector files and production runtime sources are unchanged by D2. Personal preview/relay,
+browser/factors, origin/routing, historical review and L-2 are unchanged. Native bundles were built in
+memory. Host VM/policy research stays stopped. No real Account, factor, operator key or pin was provisioned.
+Unrelated root files `done ` and `reviewpacket96a20401ceb88d.md` remain untouched.
 
 **Other gates.** Invocation-grant power-loss accounting, salvage/diagnostics, parser/admission/service
 negatives, performance/maintenance, lock ordering and accepted review follow-ups remain. Passkey and
