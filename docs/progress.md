@@ -43,14 +43,14 @@ that is no longer active.
 ---
 
 
-## Active slice: First-authority formats, map and vectors (`L-1`)
+## Active slice: Recovery payload, digests and vector alignment (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: exact mapped Account byte contracts before real durable authority
+blocks_on: current recovery byte/vector agreement before real Account authority
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
@@ -58,44 +58,49 @@ updated: 2026-09-11
 **Roadmap position.** Personal Local cutover, source cleanup and packaged offline upgrades are exercised.
 Account work is at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), around item 5's internal
 creating-member ciphertext round trip. Composition is committed as `6398e33`, descriptor bounds/versioning
-as `4f71bac`, and fresh first activation as `2ba50aa`. This is not Stage 4 completion or second-device
-enrollment. No real Account receipt exists.
+as `4f71bac`, fresh first activation as `2ba50aa`, and crypto-contract prep as `9cf5c98`. This is not Stage 4
+completion or second-device enrollment. No real Account receipt exists.
 
-**Completed boundary.** [Crypto-contract/vector prep](./account-crypto-prep.md) is complete and uncommitted.
-The source census pins 157 TS/TSX files and classifies 89 labels/templates in 22 groups, with explicit
-manual entrypoints and limits. Exact recursive first-authority field order, a first-genesis-only empty
-head vector and the current 96-byte recovery payload are selected. F-05/F-06 remain open until the
-normative homes, map and interoperable vectors agree. The old recovery vector is historical evidence.
+**Completed boundary.** [First-authority formats/map/vectors](./account-first-authority.md), group A, are
+complete and uncommitted. Exact source sites, recursive field order, LP/hash/signature encodings and mapped
+authority dependencies join 17 specified constructions to their fixed corpus. TRD/rows 5/7 now state the
+first-genesis-only empty accepted-head vector; no runtime byte or version changed. The gate separately
+reports 16 unfinished B/C/D/Local groups and one non-crypto exclusion. F-05/F-06 are not closed wholesale.
 
-[Preserved prep evidence](./account-conformance-runs/2026-09-11-account-crypto-prep.md) records six focused
-tests, 300 shrinking-enabled scanner cases, classification/drift controls, six independently reconstructed
-signature messages and old/current recovery payload probes. Existing authority and vector-currentness
-checks pass via direct Node; pnpm launchers stalled before running their script bodies and were stopped.
-No runtime code changed, so full units/native/build/aggregate were not repeated.
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-first-authority.md) records 27 passing
+stages: 17 fixed vectors, 399 input negatives, 333 encoded-field controls, six production digest omissions,
+19 registry controls, eight new tests and 200 shrinking-enabled property reorderings. The 12 admission-core
+tests with 80 generated histories, all 28 slot-verifier tests, the vector/authority chain and targeted lint/
+format checks pass. The fixed assertion and genuine wrong-purpose/scope/key-namespace cases exercise
+actual verifiers. No full unit/native/build/aggregate campaign was repeated for a contract/tooling-only change.
 
-**Next bounded phase — A: first-authority formats/map/vectors.** Implement the first group in the prep:
+**Next bounded phase — B: recovery payload/digests/challenges.** Follow the
+[prep's group B](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates) and
+[exact payload decision](./account-crypto/recovery-layout.md):
 
-- Register exact first-epoch/offer/receipt-v2/activation and bootstrap-observation encodings, with
-  candidate/certification/origin and slot-binding dependencies and their actual trust-root chains.
-  Connect source sites to construction records, mapped byte homes and required evidence; keep unfinished
-  groups explicitly open. Merely adding Account docs to the old literal-spelling sweep is insufficient.
-- Amend rows 5/7 and relevant TRD homes for the first-genesis-only empty accepted-head vector. Keep the
-  current v2 descriptor hashes and independent plaintext rederivation requirement.
-- Publish fixed input/body/LP/hash/signature vectors driven by runtime and an independent implementation.
-  Cover every bound field/nested signature, genuinely signed wrong-purpose and wrong-key-namespace
-  values, extra fields, property versus array order, version refusal and empty-versus-zero vectors.
-  Demonstrate effective omissions; preserve old evidence and make any byte change an explicit decision.
+- Amend TRD §13.8, row 14, the recovery documentation and generator/current vector together. Preserve
+  raw X25519 scalar, binary root commitment and raw Ed25519 bootstrap seed in 32-byte segments, and the
+  strict 112-byte ciphertext. Keep the old 48-byte scalar-only vector as explicitly historical evidence;
+  do not accept both layouts under the private v1 reader or silently reinterpret old signatures.
+- Publish deterministic KDF/AAD/payload/seal/public-key/root/envelope/state/draft/confirmation/challenge
+  vectors, reconstructed independently and exercised against the actual runtime opener. Cover code
+  normalization, each binding, authentic wrong key pairs/resealed wrong roots, payload order/length,
+  purpose and exact scope. Keep existing step-up/normalization/primitive coverage with accurate claims.
+- Assert the exact PKCS#8 prefix and length before taking raw exported key bytes in generateRecovery
+  (F-12). Demonstrate effective omission/format controls; register the repaired constructions and their
+  actual map roots without dropping A's checks or silently marking other groups complete.
+- Bridge the current recipient-info/standard HPKE suite where group B requires it; keep total-loss
+  recovery, replacement/rotation machines and real provisioning outside this bounded repair.
 
-Following groups are B: recovery layout/digests/challenges and raw-key export assertions (F-12);
-C: envelope/submission/read/response/witness formats; D: service/local custody and Account ledger/witness
-bridges. This does not authorize onboarding UI, public accounts, production pin provisioning or enrollment.
-The actual old second device will adopt the first device's workspace with fresh custody/store/counters/
-credentials; it will not import or merge its old writing.
+Following groups are C: envelope/submission/read/response/witness formats; D: service/local custody and
+Account ledger/witness bridges. This does not authorize onboarding UI, public accounts, production pin
+provisioning or enrollment. The actual old second device will adopt the first device's workspace with
+fresh custody/store/counters/credentials; it will not import or merge its old writing.
 
 **Personal checkpoint.** Root `dist/` and `.dev/releases/17d87c2/app` retain all 21 saved hashes.
 Personal preview/relay, browser/factors, origin/routing, historical review and L-2 are unchanged. Host
 VM/policy research remains stopped. No real account, factor, operator key or pin was provisioned.
-Unrelated root files `done ` and `reviewpacket96a20401ceb88d.md` were left untouched.
+Unrelated root files `done ` and `reviewpacket96a20401ceb88d.md` remain untouched.
 
 **Other gates.** Invocation-grant power-loss accounting, salvage/diagnostics, parser/admission/service
 negatives, performance/maintenance, lock ordering and accepted review follow-ups remain. Passkey and

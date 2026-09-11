@@ -1385,6 +1385,12 @@ of the checkpoint (§7.5, §15 row 5). That is what lets a device starting from 
 forward from authenticated heads instead of replaying every chain from genesis, and it is the same field the
 epoch payload carries (§13.5). §7.5's third candidate shape was this composition; it is not a separate mechanism.
 
+**First-genesis exception.** Before any Account envelope has been accepted, both carriers use an empty
+vector, digest `SHA256(LP("done/headvec/v1"))`. Certification still includes the creating member; Local
+history is represented by the checkpoint. An explicit member-at-zero/zero-link entry is a different digest
+and is refused, while position one's predecessor remains zero link. This exception permits no dropping of
+existing streams in later epochs, successor baselines or pruning (§15 rows 5/7).
+
 **The coverage attestation must cover insertions *and* deletions, and a bare state vector cannot.** A Yjs state
 vector maps client to clock over insertions; deletions live separately in the `DeleteSet`. Two replicas can carry
 identical state vectors and disagree about what has been deleted, so "the checkpoint's state vector is dominated"
@@ -1451,7 +1457,7 @@ M    = Ed25519( producing credential ; LP("done/cp-manifest/v2") || LP("2")
        || LP(hex checkpoint_digest) || LP(hex SHA-256(sv)) || LP(hex SHA-256(ds))
        || LP(hex head_vector_digest) || LP(producing_credential) )
 
-head_vector = for each credential ASCENDING BY ID: LP(credential_id) || LP(dec seq) || LP(hex link)
+head_vector = empty at first genesis; otherwise for each credential ASCENDING BY ID: LP(credential_id) || LP(dec seq) || LP(hex link)
 ```
 
 
@@ -2609,6 +2615,15 @@ It must:
 current content-key generation, **the acceptance-signing key `K_accept` in force, and the accepted-head vector**
 — `(credential, position, link)` for every credential as of that epoch (§7.5, §15 row 5). **Generation is broader
 than membership**, because admitting a second device changes authorization without creating a second member.
+
+The first epoch before any Account acceptance uses §7.6's empty accepted-head vector, not an explicit
+position-zero entry. Its private initial encodings are pinned in
+[the first-authority byte contract](./account-crypto/first-authority.md) and
+[the construction registry](./account-crypto/constructions.json): candidate/certification/origin dependencies,
+ordered FirstEpoch, offer, receipt v2, activation context and slot binding. Input JSON property order is
+reconstructed recursively; arrays retain their order. K_auth serializes the proposal/commit and does not
+replace the factor-origin, creating-member or independently rederived coverage predicates. These private
+first-epoch formats do not define successor-epoch or second-device enrollment formats.
 
 **A service-signed epoch does not by itself license key delivery, and that is the correction §15 row 11 forced**
 (`S0-2`). The epoch is simultaneously the roster a rotator reads and a document only the service signs, which is

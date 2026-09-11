@@ -1,7 +1,7 @@
 # Private first-authority byte contract
 
-2026-09-11; current baseline `2ba50aa`. This records the implemented private formats to guide phase A's
-normative-home/authority-map amendments and interoperable vectors. It does not declare that gate closed.
+2026-09-11; runtime baseline `2ba50aa`, prep committed as `9cf5c98`. Phase A specifies these private
+formats and their bounded vector/map evidence. Broader Account construction groups remain open.
 The ordered schema is [first-authority.json](./first-authority.json); the prep probe reconstructs its bytes
 independently of the production parsers. Changing a field order or signed body requires a compatibility
 decision, not an automatic snapshot update.
@@ -86,8 +86,7 @@ Thus candidate coverage heads, FirstEpoch heads and the manifest/admission basel
 An explicit `(member, 0, zero link)` vector encodes a different digest and is **not** an accepted alternate
 serialization. The prep probe computes both digests and demonstrates the distinction.
 
-Rows 5/7 currently say "for every credential" without this initial exception. Phase A must amend those
-homes and the relevant TRD paragraphs together with the vector. Do not infer a general sparse-vector
+Rows 5/7 and the TRD state this initial exception alongside the general per-credential rule. Do not infer a general sparse-vector
 rule for successor epochs, retired members, nonempty accepted history or pruning. Those machines remain
 separate work; dropping an existing stream is not permitted by this genesis ruling.
 
@@ -98,9 +97,114 @@ extra fields, wrong scope, wrong key namespace and a substituted head-vector bas
 JSON property reordering must reconstruct identical bytes. Never silently relabel old signatures or
 rewrite historical fixtures as if they exercised v2. No real Account receipt exists.
 
-Phase A publishes fixed inputs and expected intermediate JSON/LP/hash/signature bytes, reproduced by
-runtime code and an independent implementation. Cover each included field, nested field and nested
+The phase-A corpus publishes fixed inputs and intermediate JSON/LP/hash/signature bytes, reproduced by
+runtime code and an independent implementation. Its required falsifiers include each field, nested field and nested
 signature; signature swapping among message purposes; genuinely signed wrong-operation values; empty
 versus zero-position vector; and old/current readers. A positive signature round trip alone is inadequate.
 An omitted bound field must cause a corresponding negative to be rescued, with exact identity of that
-field recorded. Current prep probes establish the selected baseline, not that complete field audit.
+field recorded. The evidence distinguishes encoded-field controls from composite verifier tests; §8 states their limits.
+
+## 5. Bootstrap observation and creating endorsement bytes
+
+The independent authority pin is configured before any service reply. Its exact LP bytes are
+`LP("done/service-authority-pin/v1", "1", serviceId, origin, rpId, authRoot)`; its fingerprint is the
+SHA-256 of those bytes. A fingerprint displayed by the same untrusted reply establishes no trust.
+Bootstrap signs `LP("done/service-authority-bootstrap/v1", "1", serviceId, origin, rpId, authRoot, nonce)`.
+Both nonce and key are 32-byte lowercase hex; serviceId is 16-byte hex. The closed proof carrier is
+`{v:1,pin,nonce,signature}`. Require the expected pin and fresh requested nonce before trusting the proof.
+
+Pending observation signs the following **unhashed** JSON-containing LP message:
+
+```
+LP("done/pending-account-observation/v1", hex(pinBytes), nonce, J_pendingState)
+pendingState = {v,accountId,attemptId,status,draft,confirmation}
+confirmation = null | {recoveryId,receiptId,draftDigest,recoveryStateDigest}
+draft = null | RecoveryDraft in first-authority.json's recovery order
+```
+
+`status` is `eligible` or `abandoned`. Eligible requires both draft and confirmation; confirmation requires
+its draft. The proof carrier is `{v:1,pin,nonce,state,signature}`. The client verifies the root signature,
+recomputed recovery root and draft/state digests. This observes one transaction; it reserves no future
+eligibility. The JSON state is inside one u16-length LP field; it does not use the digest-body format of §1.
+
+The creating set's exact bytes are:
+
+```
+member = LP("done/certified-members/v1", signingCredentialId, W_pub, S_pub)
+set = LP("done/certified-set/v1", "1", workspaceId, lineageId, "0", "1",
+         hex SHA256(member), recoveryStateDigest)
+approval = LP("done/certified-set-approval/v1", approvingSigningCredentialId) || set
+```
+
+The single member is the prepared device; approver equals that signing ID. The zero and one are parent
+and next epoch, not envelope counters. The device signs `approval` and the candidate; the factor-opened
+bootstrap signer endorses the complete origin request in §1. The service cannot introduce a recipient by
+changing only its own signature. Creating keys must also match the authenticated Local preparation; the
+standalone public parser cannot prove that local provenance. The recovery ciphertext and wraps embedded
+in these messages remain opaque to the root signer. Recovery/HPKE vector qualification is a later group.
+
+## 6. Initial checkpoint and structural digests
+
+First-epoch completion retains the separate manifest-v2 and SemanticAdmission-v2 bytes in
+[the descriptor contract](../account-admission-bounds.md) and [current implementation vectors](../../test/vectors/admission-coverage.json).
+The full opaque SV and DS remain present, subject to their combined 16 MiB bound. Hashing them in the
+signature lifts LP's hex-width ceiling; it does not make them self-authenticating coverage.
+
+`requestDigest` hashes UTF-8 of the complete `J_request`, including all three signatures. `completionDigest`
+hashes complete `J_completion`, including both signatures. These bare hashes are committed by the later
+root-signed objects; a bare digest is not an authority token. The manifest's checkpoint digest hashes the
+**decoded ciphertext bytes including the tag**, not JSON/hex text. Its own digest, used by SemanticAdmission,
+hashes `manifestMessage`, excluding the signature. The first head vector is §3's empty vector.
+
+A content-blind service may accept consistently signed SV/DS claims it cannot recompute. A consuming
+client must decrypt and independently derive both descriptors, then compare them with manifest and
+admission. Valid root/device signatures do not waive that comparison. Our byte fixture intentionally has
+opaque dummy checkpoint/wrap/recovery ciphertext and is not a Yjs or encryption known-answer test.
+
+## 7. Activation and slot-binding dependency
+
+The activation challenge carrier is `{v:1,kind:"promotion-activation-challenge",context,signature}`.
+Its context order, message, WebAuthn nonce and receipt proof hash are in §§1–2. Actual WebAuthn signed bytes
+are authenticatorData followed by SHA-256 of the **original clientDataJSON bytes**. Never reconstruct that
+JSON for signature verification. The separate proof hash uses recursively sorted-key JSON of the complete
+assertion response, as implemented by `account-service/protocol.ts::canonical`. A fixed valid Ed25519
+assertion is included in the new corpus; the existing activation campaign retains ES256, lifetime and
+atomic-consumption coverage. The account authenticator key is not a workspace signing key.
+
+Slot binding retains row 12's bytes:
+
+```
+LP("done/slotbind/v1", "1", accountId, principalId, rpId, "1", credentialId, hex SPKI)
+unlockNonce = SHA256(LP("done/slotunlock/v1", "1", principalId, credentialId, freshNonce))
+```
+
+The second one is the initial binding epoch. SPKI is exact Ed25519 or uncompressed P-256 encoding;
+credentialId is the actual registration WebAuthn ID. The root signs the binding. The closed proof carrier is
+`{v:1,kind:"promotion-slot-binding",requestDigest,epochHead,stored:{binding,bindingSignature}}`.
+Its outer routing fields are compared with the verified receipt; they are not extra fields inside the
+binding signature. The binding must name that receipt's activated registration credential. Unlock proves
+use of the bound account authenticator and still does not release the mandatory device-lock factor.
+Retain row 12's full ES256/Ed25519 slot-verifier vectors; this corpus adds the private handoff dependency.
+
+## 8. Authority-map edges and evidence limits
+
+The new Account map entries give K_auth **availability/serialization** powers under an independently
+configured pin. They do not relabel a service root as a client trust root. The factor-opened preparation
+and recovery-bootstrap signer ground the creating key; its candidate and certification are separate
+endorsements. Local coverage recomputation is structural. Platform assertion possession resolves to the
+account-credential factor entry. These checks compose; none can be replaced by a root-signed receipt alone.
+
+[constructions.json](./constructions.json) registers exact source sites, purpose/role, map entry IDs, pinned
+sections/schema, executable vector cases and evidence requirements. Its source census includes open B/C/D
+and inherited Local records rather than counting only completed work. A specified entry means its bytes
+and stated map dependencies have this bounded evidence, not that all protocol or lifecycle gates are paid.
+The source-hash check detects drift; manual review must still discover unlabelled primitives or new roots.
+
+[Published vectors](../../test/vectors/first-authority.json) contain fixed synthetic seeds/public keys,
+objects, intermediate JSON/LP fields/hashes and signatures. Generation compares each positive and accepted
+mutation against production encoders; parser-refused mutations are reported separately. Encoded-field
+omission controls act below value validation and do not claim a bypass of every composite predicate.
+Six digest omissions additionally exercise the real message builders and signature verifier. The separate
+integration tests exercise authentic wrong-purpose, root, owner and credential-namespace values, closed
+objects/versions/array order, a signed coverage lie, and the rejected zero-position baseline. The generated
+property campaign permutes nested input properties while retaining array order. No real account is minted.

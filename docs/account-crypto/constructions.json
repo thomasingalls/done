@@ -1,0 +1,1748 @@
+{
+  "v": 1,
+  "status": "Phase A specified; other groups remain open. No whole-protocol closure.",
+  "schemaSha256": "50800229da6b62f58d5376c27c844ef85cddb906164dd2b4854f11d3013ae09d",
+  "vectorFile": "test/vectors/first-authority.json",
+  "vectorSha256": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9",
+  "constructions": [
+    {
+      "id": "candidate",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["signature", "digest"],
+      "signer": "device",
+      "labels": ["done/promotion-genesis-candidate/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/genesis.ts",
+          "line": 146,
+          "label": "done/promotion-genesis-candidate/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/genesis.ts",
+          "name": "genesisMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "4",
+          "hash": "166fcd729355"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "5",
+          "hash": "57d1d3ddb251"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-creating-device"],
+      "vectorCases": ["candidate"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "origin",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["signature", "digest"],
+      "signer": "bootstrap",
+      "labels": ["done/genesis-origin/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/admission.ts",
+          "line": 221,
+          "label": "done/genesis-origin/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "originMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "4",
+          "hash": "166fcd729355"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "5",
+          "hash": "57d1d3ddb251"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-first-origin"],
+      "vectorCases": ["origin"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "epoch",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["signature", "digest"],
+      "signer": "authority",
+      "labels": ["done/first-epoch/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/admission.ts",
+          "line": 322,
+          "label": "done/first-epoch/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "epochMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "4",
+          "hash": "166fcd729355"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-first-service"],
+      "vectorCases": ["epoch"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "offer",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["signature", "digest"],
+      "signer": "authority",
+      "labels": ["done/promotion-offer/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/admission.ts",
+          "line": 337,
+          "label": "done/promotion-offer/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "offerMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "4",
+          "hash": "166fcd729355"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-first-service"],
+      "vectorCases": ["offer"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "receipt",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["signature", "digest"],
+      "signer": "authority",
+      "labels": ["done/promotion-receipt/v2"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/admission.ts",
+          "line": 553,
+          "label": "done/promotion-receipt/v2",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "receiptMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "4",
+          "hash": "166fcd729355"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "7",
+          "hash": "77691367bf63"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-first-service", "private-first-activation"],
+      "vectorCases": ["receipt"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "activation",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["signature", "digest"],
+      "signer": "authority",
+      "labels": ["done/promotion-activation-challenge/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/activation.ts",
+          "line": 110,
+          "label": "done/promotion-activation-challenge/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/activation.ts",
+          "name": "activationMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "4",
+          "hash": "166fcd729355"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "7",
+          "hash": "77691367bf63"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-first-service", "private-first-activation"],
+      "vectorCases": ["activation"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "pin",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["digest"],
+      "signer": null,
+      "labels": ["done/service-authority-pin/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/authority.ts",
+          "line": 50,
+          "label": "done/service-authority-pin/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/authority.ts",
+          "name": "pinBytes"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "5",
+          "hash": "57d1d3ddb251"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-first-hashes"],
+      "vectorCases": ["pin"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "bootstrap",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["signature", "digest"],
+      "signer": "authority",
+      "labels": ["done/service-authority-bootstrap/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/authority.ts",
+          "line": 56,
+          "label": "done/service-authority-bootstrap/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/authority.ts",
+          "name": "authorityMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "5",
+          "hash": "57d1d3ddb251"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-first-service"],
+      "vectorCases": ["bootstrap"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "pending",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["signature", "digest"],
+      "signer": "authority",
+      "labels": ["done/pending-account-observation/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/preparation.ts",
+          "line": 85,
+          "label": "done/pending-account-observation/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/preparation.ts",
+          "name": "pendingMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "5",
+          "hash": "57d1d3ddb251"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-first-service"],
+      "vectorCases": ["pending"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "certification",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["signature", "digest"],
+      "signer": "device",
+      "labels": [
+        "done/certified-members/v1",
+        "done/certified-set-approval/v1",
+        "done/certified-set/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/admission.ts",
+          "line": 174,
+          "label": "done/certified-members/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/admission.ts",
+          "line": 175,
+          "label": "done/certified-set-approval/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/admission.ts",
+          "line": 177,
+          "label": "done/certified-set/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "certificationMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "5",
+          "hash": "57d1d3ddb251"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-creating-device"],
+      "vectorCases": ["certification"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "manifest",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["signature", "digest"],
+      "signer": "device",
+      "labels": ["done/cp-manifest/v2", "done/headvec/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/admission.ts",
+          "line": 431,
+          "label": "done/cp-manifest/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/admission.ts",
+          "line": 468,
+          "label": "done/headvec/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "manifestMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "3",
+          "hash": "f14d0f566ff3"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "6",
+          "hash": "23edf4c7a828"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-creating-device", "private-first-coverage"],
+      "vectorCases": ["manifest"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "semantic",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["signature", "digest"],
+      "signer": "device",
+      "labels": ["done/cp-admit/v2"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/admission.ts",
+          "line": 448,
+          "label": "done/cp-admit/v2",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "semanticMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "3",
+          "hash": "f14d0f566ff3"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "6",
+          "hash": "23edf4c7a828"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-creating-device", "private-first-coverage"],
+      "vectorCases": ["semantic"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "binding",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["signature", "digest"],
+      "signer": "authority",
+      "labels": ["done/slotbind/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/slot.ts",
+          "line": 75,
+          "label": "done/slotbind/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/account/slotUnlock.ts",
+          "line": 54,
+          "label": "done/slotbind/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/slot.ts",
+          "name": "bindingMessage"
+        },
+        {
+          "path": "src/account/slotUnlock.ts",
+          "name": "slotBindingMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "7",
+          "hash": "77691367bf63"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-first-service", "private-first-activation"],
+      "vectorCases": ["binding"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "blocker": null
+    },
+    {
+      "id": "unlock",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["digest"],
+      "signer": null,
+      "labels": ["done/slotunlock/v1"],
+      "sourceSites": [
+        {
+          "path": "src/account/slotUnlock.ts",
+          "line": 55,
+          "label": "done/slotunlock/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/account/slotUnlock.ts",
+          "name": "slotUnlockChallenge"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "7",
+          "hash": "77691367bf63"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-first-activation"],
+      "vectorCases": ["unlock"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "activation-nonce",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["digest"],
+      "signer": null,
+      "labels": ["done/promotion-activation/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/activation.ts",
+          "line": 112,
+          "label": "done/promotion-activation/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/activation.ts",
+          "name": "activationNonce"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "7",
+          "hash": "77691367bf63"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-first-hashes", "private-first-activation"],
+      "vectorCases": ["activation-nonce"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "request-digest",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["digest"],
+      "signer": null,
+      "labels": [],
+      "sourceSites": [],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "requestDigest"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "6",
+          "hash": "23edf4c7a828"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-first-hashes"],
+      "vectorCases": ["request-digest"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "completion-digest",
+      "phase": "A",
+      "status": "specified",
+      "roles": ["digest"],
+      "signer": null,
+      "labels": [],
+      "sourceSites": [],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "activationTarget"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "6",
+          "hash": "23edf4c7a828"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": ["private-first-hashes"],
+      "vectorCases": ["completion-digest"],
+      "tests": ["test/account-first-authority/formats.test.mjs"],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
+    },
+    {
+      "id": "remaining-service-custody",
+      "phase": "D",
+      "status": "open",
+      "roles": ["kdf", "aead"],
+      "labels": [
+        "done/service-authority-seal/v1",
+        "done/acceptance-custody/v1",
+        "done/acceptance-seal/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-service/acceptance.ts",
+          "line": 50,
+          "label": "done/acceptance-custody/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-service/acceptance.ts",
+          "line": 64,
+          "label": "done/acceptance-seal/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-service/acceptance.ts",
+          "line": 68,
+          "label": "done/acceptance-seal/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-service/authority.ts",
+          "line": 52,
+          "label": "done/service-authority-seal/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/account-admission.md",
+      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+      "next": "D: key schedule/seal vectors and operator-key authority entries",
+      "reason": null
+    },
+    {
+      "id": "remaining-account-assertion",
+      "phase": "B",
+      "status": "open",
+      "roles": ["signature", "digest"],
+      "labels": ["done/account/${operation}/v1", "done/account/finalize-recovery/v1"],
+      "sourceSites": [
+        {
+          "path": "account-service/protocol.ts",
+          "line": 85,
+          "label": "done/account/${operation}/v1",
+          "kind": "template"
+        },
+        {
+          "path": "account-service/recovery.ts",
+          "line": 49,
+          "label": "done/account/finalize-recovery/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/account-activation.md",
+      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+      "next": "A/B: exact challenge bindings; keep account authentication distinct from content authority",
+      "reason": null
+    },
+    {
+      "id": "remaining-recovery-factor",
+      "phase": "B",
+      "status": "open",
+      "roles": ["kdf", "aead", "signature"],
+      "labels": [
+        "done/recovery/v1",
+        "done/recovery-key-check/v1",
+        "done/account-recovery-confirm/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/recovery.ts",
+          "line": 128,
+          "label": "done/account-recovery-confirm/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/account/recovery.ts",
+          "line": 162,
+          "label": "done/recovery-key-check/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/account/recovery.ts",
+          "line": 55,
+          "label": "done/recovery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/account/recovery.ts",
+          "line": 66,
+          "label": "done/recovery/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/account-recovery.md",
+      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+      "next": "B: 96-byte payload, 112-byte ciphertext, amended row-14 vectors and prefix checks",
+      "reason": null
+    },
+    {
+      "id": "remaining-recovery-commitments",
+      "phase": "B",
+      "status": "open",
+      "roles": ["digest"],
+      "labels": [
+        "done/pkg-root/v1",
+        "done/recovery-envelope/v1",
+        "done/recovery-state/v1",
+        "done/account-recovery-draft/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/recovery.ts",
+          "line": 118,
+          "label": "done/account-recovery-draft/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/recovery.ts",
+          "line": 65,
+          "label": "done/pkg-root/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/recovery.ts",
+          "line": 98,
+          "label": "done/recovery-envelope/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/recovery.ts",
+          "line": 107,
+          "label": "done/recovery-state/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/account-recovery.md",
+      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+      "next": "B: publish root/envelope/state/draft digest bytes and isolation cases",
+      "reason": null
+    },
+    {
+      "id": "remaining-genesis-encryption",
+      "phase": "B",
+      "status": "open",
+      "roles": ["kdf", "aead"],
+      "labels": ["done/gen-wrap/v1", "done/checkpoint/v1", "done/cp/v1"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/accountStartup.ts",
+          "line": 114,
+          "label": "done/checkpoint/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/promotionGenesis.ts",
+          "line": 83,
+          "label": "done/checkpoint/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/genesis.ts",
+          "line": 153,
+          "label": "done/cp/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/genesis.ts",
+          "line": 150,
+          "label": "done/gen-wrap/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/account-admission.md",
+      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+      "next": "B/D: bridge runtime HPKE/checkpoint to published suite vectors",
+      "reason": null
+    },
+    {
+      "id": "remaining-local-promotion",
+      "phase": "D",
+      "status": "open",
+      "roles": ["mac", "kdf", "digest"],
+      "labels": [
+        "done/local-promotion/v1",
+        "done/promotion-lineage/v1",
+        "done/promotion-attempt/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "src/crdt/promotionRecord.ts",
+          "line": 225,
+          "label": "done/local-promotion/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/promotionRecord.ts",
+          "line": 266,
+          "label": "done/local-promotion/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/promotionGenesis.ts",
+          "line": 129,
+          "label": "done/promotion-attempt/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/promotionOwner.ts",
+          "line": 42,
+          "label": "done/promotion-attempt/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/promotionPreparation.ts",
+          "line": 59,
+          "label": "done/promotion-lineage/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/account-promotion.md",
+      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+      "next": "D: versioned v1-v9 MAC payload and deterministic hash vectors",
+      "reason": null
+    },
+    {
+      "id": "remaining-envelope",
+      "phase": "C",
+      "status": "open",
+      "roles": ["kdf", "aead", "signature", "carrier", "digest"],
+      "labels": [
+        "done/envelope/v1",
+        "done/envelope/v2",
+        "done/env/v${h.v}",
+        "done/env-sig/v${h.v}",
+        "done/env-body/v1",
+        "done/envelope-wire/v${e.v}",
+        "done/envelope-wire/v${version}"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/envelope.ts",
+          "line": 83,
+          "label": "done/env-body/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "line": 130,
+          "label": "done/env-body/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "line": 73,
+          "label": "done/env-sig/v${h.v}",
+          "kind": "template"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "line": 71,
+          "label": "done/env/v${h.v}",
+          "kind": "template"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "line": 156,
+          "label": "done/envelope-wire/v${e.v}",
+          "kind": "template"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "line": 169,
+          "label": "done/envelope-wire/v${version}",
+          "kind": "template"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "line": 68,
+          "label": "done/envelope/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "line": 69,
+          "label": "done/envelope/v2",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/account-inbound.md",
+      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+      "next": "C: register v1/v2 envelope families and current implementation vectors",
+      "reason": null
+    },
+    {
+      "id": "remaining-submission",
+      "phase": "C",
+      "status": "open",
+      "roles": ["signature", "carrier"],
+      "labels": ["done/envelope-submission/v1", "done/envelope-submission-wire/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/submission.ts",
+          "line": 56,
+          "label": "done/envelope-submission-wire/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/submission.ts",
+          "line": 79,
+          "label": "done/envelope-submission-wire/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/submission.ts",
+          "line": 103,
+          "label": "done/envelope-submission/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/account-decisions.md",
+      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+      "next": "C: wire/submission signing vectors and independent negative corpus",
+      "reason": null
+    },
+    {
+      "id": "remaining-acceptance",
+      "phase": "C",
+      "status": "open",
+      "roles": ["signature", "digest", "carrier"],
+      "labels": [
+        "done/accept/v1",
+        "done/accept-head/v1",
+        "done/position-refuse/v1",
+        "done/position-response/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "line": 97,
+          "label": "done/accept-head/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "line": 114,
+          "label": "done/accept/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "line": 81,
+          "label": "done/position-refuse/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "line": 156,
+          "label": "done/position-response/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "line": 164,
+          "label": "done/position-response/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/account-decisions.md",
+      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+      "next": "C: response/head/refusal vectors, field isolation and trust-root map",
+      "reason": null
+    },
+    {
+      "id": "remaining-transport-read",
+      "phase": "C",
+      "status": "open",
+      "roles": ["signature"],
+      "labels": [
+        "done/private-read/v1",
+        "done/private-read/v2",
+        "done/private-read-page/v1",
+        "done/private-read-page/v2"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "line": 134,
+          "label": "done/private-read-page/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "line": 161,
+          "label": "done/private-read-page/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "line": 105,
+          "label": "done/private-read-page/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "line": 132,
+          "label": "done/private-read-page/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "line": 72,
+          "label": "done/private-read/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "line": 95,
+          "label": "done/private-read/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "line": 59,
+          "label": "done/private-read/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "line": 83,
+          "label": "done/private-read/v2",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/account-receive-transport.md",
+      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+      "next": "C: separate v1/v2 request and page formats; exact canonical-byte policy",
+      "reason": null
+    },
+    {
+      "id": "remaining-submit-carrier",
+      "phase": "C",
+      "status": "open",
+      "roles": ["carrier"],
+      "labels": ["done/private-submit/v1"],
+      "sourceSites": [
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "line": 56,
+          "label": "done/private-submit/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "line": 60,
+          "label": "done/private-submit/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/account-transport.md",
+      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+      "next": "C: document carrier versus signature and cover size/canonical decoding",
+      "reason": null
+    },
+    {
+      "id": "remaining-service-ledger",
+      "phase": "C",
+      "status": "open",
+      "roles": ["signature", "digest"],
+      "labels": ["done/service-delivery-witness/v1", "done/service-delivery-chain/v1"],
+      "sourceSites": [
+        {
+          "path": "account-service/delivery.ts",
+          "line": 296,
+          "label": "done/service-delivery-chain/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-service/deliveryWitness.ts",
+          "line": 23,
+          "label": "done/service-delivery-witness/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/account-service-delivery.md",
+      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+      "next": "C: witness/chain vectors and tamper/omission cases",
+      "reason": null
+    },
+    {
+      "id": "remaining-local-account-ledger",
+      "phase": "D",
+      "status": "open",
+      "roles": ["carrier", "digest"],
+      "labels": [
+        "done/source-capture/v1",
+        "done/account-spool/v1",
+        "done/account-spool-chain/v1\u0000",
+        "done/account-delivery/v1",
+        "done/account-inbound/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 94,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 121,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 157,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "line": 75,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 69,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 91,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 271,
+          "label": "done/account-spool-chain/v1\u0000",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 165,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 105,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 130,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "line": 71,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "line": 96,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 180,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/account-spool.md",
+      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+      "next": "D: capsule/spool/delivery/inbound formats and counter-witness coupling",
+      "reason": null
+    },
+    {
+      "id": "remaining-shared-store",
+      "phase": "D",
+      "status": "open",
+      "roles": ["kdf", "aead", "mac", "digest"],
+      "labels": [
+        "done/store/v1",
+        "done/store-name/v1",
+        "done/content-metadata/v1",
+        "done/content-witness/v1",
+        "done/content-counter/v1",
+        "done/content-counter/v2",
+        "done/journal/v1",
+        "done/jrnl/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "line": 238,
+          "label": "done/content-counter/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "line": 238,
+          "label": "done/content-counter/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/custody.ts",
+          "line": 238,
+          "label": "done/content-metadata/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "line": 234,
+          "label": "done/content-witness/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "line": 40,
+          "label": "done/journal/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "line": 27,
+          "label": "done/jrnl/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/storeName.ts",
+          "line": 13,
+          "label": "done/store-name/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "line": 121,
+          "label": "done/store/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/custody.ts",
+          "line": 226,
+          "label": "done/store/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/storage-conformance.md",
+      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+      "next": "D: bridge Account counter-v2/current storage to existing Local contracts without requalifying all Local work",
+      "reason": null
+    },
+    {
+      "id": "remaining-shared-custody",
+      "phase": "D",
+      "status": "open",
+      "roles": ["kdf", "aead", "mac", "signature"],
+      "labels": [
+        "done/devicelock/v1",
+        "done/keyenv/v1",
+        "done/custody-credential/v2",
+        "done/custody-key-check/v2",
+        "done/custody-metadata/v2"
+      ],
+      "sourceSites": [
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "line": 213,
+          "label": "done/custody-credential/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "line": 310,
+          "label": "done/custody-key-check/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "line": 228,
+          "label": "done/custody-metadata/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "line": 261,
+          "label": "done/custody-metadata/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "line": 94,
+          "label": "done/devicelock/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "line": 110,
+          "label": "done/devicelock/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "line": 157,
+          "label": "done/keyenv/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/custody.md",
+      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+      "next": "D: review actual runtime v2 credential/key checks and inherited custody entries",
+      "reason": null
+    },
+    {
+      "id": "remaining-local-provenance",
+      "phase": "Local",
+      "status": "open",
+      "roles": ["kdf", "mac", "digest", "carrier"],
+      "labels": [
+        "done/local-genesis-metadata/v1",
+        "done/local-genesis-progress/v1",
+        "done/local-import-selection/v1",
+        "done/local-import-cleanup",
+        "done/local-clear-authentication/v1",
+        "done/local-clear-progress/v1",
+        "done/local-import-clear/v1",
+        "done/legacy-source-observation/v1",
+        "done/legacy-import-progress/v1",
+        "done/legacy-import-metadata/v1",
+        "done/legacy-cleanup-entry",
+        "done/legacy-cleanup-fingerprint/v${version}"
+      ],
+      "sourceSites": [
+        {
+          "path": "src/crdt/legacyCleanupRecord.ts",
+          "line": 116,
+          "label": "done/legacy-cleanup-entry",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/legacyCleanupRecord.ts",
+          "line": 102,
+          "label": "done/legacy-cleanup-fingerprint/v${version}",
+          "kind": "template"
+        },
+        {
+          "path": "src/crdt/legacyImportRecord.ts",
+          "line": 126,
+          "label": "done/legacy-import-metadata/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/legacyImportRecord.ts",
+          "line": 56,
+          "label": "done/legacy-import-progress/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/legacySource.ts",
+          "line": 177,
+          "label": "done/legacy-source-observation/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localClearCrypto.ts",
+          "line": 54,
+          "label": "done/local-clear-authentication/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localClearCrypto.ts",
+          "line": 18,
+          "label": "done/local-clear-progress/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "line": 153,
+          "label": "done/local-genesis-metadata/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "line": 180,
+          "label": "done/local-genesis-progress/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "line": 184,
+          "label": "done/local-import-cleanup",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localClearCrypto.ts",
+          "line": 32,
+          "label": "done/local-import-clear/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "line": 167,
+          "label": "done/local-import-selection/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/legacy-cleanup-preparation.md",
+      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+      "next": "bridge: preserve inherited Local/migration contracts; keep explicitly outside Account vector closure",
+      "reason": null
+    },
+    {
+      "id": "remaining-coordination-names",
+      "phase": "non-crypto",
+      "status": "excluded",
+      "roles": ["name"],
+      "labels": [
+        "done/slot-writer/${JSON.stringify(slotId)}",
+        "done/accepted-workspace/v1/",
+        "done/accepted-text/v1/"
+      ],
+      "sourceSites": [
+        {
+          "path": "src/editor/textChannel.ts",
+          "line": 20,
+          "label": "done/accepted-text/v1/",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/workspaceChannel.ts",
+          "line": 24,
+          "label": "done/accepted-workspace/v1/",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/writeSession.ts",
+          "line": 37,
+          "label": "done/slot-writer/${JSON.stringify(slotId)}",
+          "kind": "template"
+        }
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "home": "docs/account-crypto-prep.md",
+      "blocker": null,
+      "next": "retain as explicit non-crypto exclusions, not authority-map constructions",
+      "reason": "no cryptographic authority; data still passes authenticated storage/admission owners"
+    }
+  ]
+}

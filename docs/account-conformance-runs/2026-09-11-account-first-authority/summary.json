@@ -1,0 +1,296 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-11T14:23:17.759Z",
+  "node": "v26.8.2",
+  "scope": "Private first-authority byte contracts and map integration; fixed vectors, generated input ordering, field/registration omissions, actual verifier boundaries. No runtime format change or real Account.",
+  "stages": [
+    {
+      "name": "inventory",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-crypto-prep/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "authority",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/check-authority-map.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "formats",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-first-authority/2026-09-11T14-23-17.714Z/formats.xml",
+        "test/account-first-authority/formats.test.mjs",
+        "test/account-first-authority/registry.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "admission-core",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-first-authority/2026-09-11T14-23-17.714Z/admission-core.xml",
+        "test/account-admission/core.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "slot-verifier",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/slotUnlock.test.ts",
+        "--maxWorkers=2"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-01",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-suite-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-02",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-record-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-03",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-journal-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-04",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-recovery-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-05",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-device-lock-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-06",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-finalization-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-07",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-enrollment-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-08",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-envelope-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-09",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-private-envelope-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-10",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-head-discovery-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-11",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-attribution-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-12",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-checkpoint-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-13",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-antireplay-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-14",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-package-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-15",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-account-credential-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-16",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-transition-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-17",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-baseline-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-18",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-admission-bounds/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-19",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-first-authority/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-20",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/check-aad-coverage.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "lint",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/oxlint/bin/oxlint",
+        "scripts/account-first-authority",
+        "test/account-first-authority",
+        "scripts/check-authority-map.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "format",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "scripts/account-first-authority",
+        "test/account-first-authority",
+        "scripts/check-authority-map.mjs",
+        "docs/account-crypto/constructions.json",
+        "package.json"
+      ],
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "completedAt": "2026-09-11T14:23:27.941Z"
+}

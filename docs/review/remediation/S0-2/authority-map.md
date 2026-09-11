@@ -96,7 +96,7 @@ resolves: the named signer's member entry (credential_id ‖ W_pub ‖ S_pub) in
 resolves: a bootstrap-minted replacement set -> via:bootstrap-signer
 status: resolved
 pin: docs/TRD.md §13.2 e20172edb4ea
-pin: docs/TRD.md §13.5 bfd84b3cbdd8
+pin: docs/TRD.md §13.5 fc07fa38364f
 pin: docs/review/remediation/S0-2/A-schemas.md §1 4863e06ab791
 ```
 
@@ -179,7 +179,7 @@ verifies: a successor epoch — roster, capabilities, generation, K_accept certi
 resolves: the service authorization key -> root:service
 bound: §13.5 — epochs are serialized, signed and ancestor-checked, so equivocation must fork the lineage rather than withhold; and per P-1 the epoch resolves no recipient-authority key — it carries the certified sets and vouches for none of them
 status: resolved
-pin: docs/TRD.md §13.5 bfd84b3cbdd8
+pin: docs/TRD.md §13.5 fc07fa38364f
 ```
 
 ```authority
@@ -190,7 +190,7 @@ verifies: the nonce-bound signed head assertion a brand-new or total-loss device
 resolves: K_auth's head assertion -> root:service
 bound: §13.5 — client_nonce separates a hostile relay from a hostile service; issued_at is displayed, never enforced; a stale self-consistent head degrades to a partition because a hidden revocation is a hidden generation, and the ancestor rule takes over after first contact
 status: resolved
-pin: docs/TRD.md §13.5 bfd84b3cbdd8
+pin: docs/TRD.md §13.5 fc07fa38364f
 ```
 
 ```authority
@@ -261,7 +261,7 @@ guards: content
 verifies: M v2 — the producing credential's manifest over checkpoint digest, separate SHA-256(sv) and SHA-256(ds), and the head vector
 resolves: the producing credential -> via:member-signing-keys
 status: resolved
-pin: docs/TRD.md §7.6 456e19fde83e
+pin: docs/TRD.md §7.6 95710d790858
 ```
 
 ```authority
@@ -272,7 +272,7 @@ verifies: that a checkpoint means the accepted snapshot it claims — SemanticAd
 resolves: local re-derivation of {sv, ds} from the decrypted snapshot, compared three ways -> root:structural
 resolves: the admission signature and the admitting credential's eligibility at the manifest's epoch -> via:member-signing-keys
 status: resolved
-pin: docs/TRD.md §7.6 456e19fde83e
+pin: docs/TRD.md §7.6 95710d790858
 pin: docs/review/remediation/S0-5/A-schemas.md §1 87c7b6063c29
 pin: docs/review/remediation/S0-5/A-schemas.md §4 6fc9ec7ea390
 ```
@@ -583,8 +583,8 @@ guards: content
 verifies: the sealed checkpoint — K_cp over the full snapshot, an opener on every device
 discipline: one message per derived key — cp_salt is 16 fresh random bytes per seal into K_cp's HKDF, carried in the clear beside the nonce, so exactly one plaintext is ever sealed under each derived key and nonce reuse is structurally unreachable (§7.6, row 7); the key cannot narrow to a store because every device must open it and no single store could count the others' seals, so freshness rides the seal rather than a counter — §13.8's discipline at the fifth subkey
 status: resolved
-pin: docs/TRD.md §7.6 456e19fde83e
-pin: docs/selections/row-7-checkpoint.md f0ebd5feca31
+pin: docs/TRD.md §7.6 95710d790858
+pin: docs/selections/row-7-checkpoint.md a6f8b4910ab8
 ```
 
 **The census's one declared absence, paid and struck at the `S0-5` return (2026-08-28).** From the `S0-3`
@@ -628,3 +628,106 @@ summary as the class-1 ledger, and `S0-10` consumes a map whose open count is ze
 falsifier 14 was discharged at the `S0-2` return: the member-key entries flipped, every chain still terminates
 at a permitted root for its guard, and the checker — not a review — is what refuses a dangling or service-only
 edge from here on.
+
+## 7. Private first-authority byte contracts (2026-09-11)
+
+These entries specify the current private first-epoch rules. `resolved` means their authority rule is
+stated at the pinned home, not that the entire Account protocol has been qualified. The executable
+[construction registry](../../../account-crypto/constructions.json) joins actual source sites to these
+entries and fixed-vector requirements. B/C/D and inherited Local gaps remain explicitly open there; an
+eight-document legacy sweep or zero open entries here cannot close the whole Account census.
+
+```authority
+entry: private-first-service
+kind: verification
+guards: availability
+verifies: independently pinned K_auth signatures over private first-epoch proposals, observations, activation contexts, receipts and slot bindings
+resolves: the exact configured service pin resolves K_auth -> root:service
+bound: Only fixed-purpose serialization/observation at §§2,5,7; cannot license recipients, plaintext coverage or device-factor release.
+status: resolved
+pin: docs/account-crypto/first-authority.md §1 34c623d42fe5
+pin: docs/account-crypto/first-authority.md §2 699db1bc3e59
+pin: docs/account-crypto/first-authority.md §4 166fcd729355
+pin: docs/account-crypto/first-authority.md §5 57d1d3ddb251
+pin: docs/account-crypto/first-authority.md §7 77691367bf63
+pin: docs/account-crypto/first-authority.md §8 e6fc9feaa990
+```
+
+```authority
+entry: private-first-origin
+kind: verification
+guards: keys
+verifies: the creating request origin endorsement, including candidate and certification signatures
+resolves: the bootstrap signer authenticated inside the factor-opened recovery state, with its root commitment checked -> root:factor
+status: resolved
+pin: docs/account-crypto/first-authority.md §1 34c623d42fe5
+pin: docs/account-crypto/first-authority.md §2 699db1bc3e59
+pin: docs/account-crypto/first-authority.md §4 166fcd729355
+pin: docs/account-crypto/first-authority.md §5 57d1d3ddb251
+pin: docs/account-crypto/first-authority.md §8 e6fc9feaa990
+```
+
+```authority
+entry: private-creating-device
+kind: verification
+guards: attribution
+verifies: candidate and certified-set approval by the exact prepared device signing key
+resolves: device signing key opened from the authenticated Local preparation under mandatory custody -> root:factor
+resolves: the complete request and prepared-key correspondence endorsed at creation -> via:private-first-origin
+status: resolved
+pin: docs/account-crypto/first-authority.md §1 34c623d42fe5
+pin: docs/account-crypto/first-authority.md §2 699db1bc3e59
+pin: docs/account-crypto/first-authority.md §4 166fcd729355
+pin: docs/account-crypto/first-authority.md §5 57d1d3ddb251
+pin: docs/account-crypto/first-authority.md §6 23edf4c7a828
+pin: docs/account-crypto/first-authority.md §8 e6fc9feaa990
+```
+
+```authority
+entry: private-first-hashes
+kind: predicate
+guards: content
+verifies: structural pin/request/completion/head digests; these name bytes and confer no authority by themselves
+resolves: recompute the exact domain, LP and ordered JSON bytes before consuming their enclosing authenticated object -> root:structural
+status: resolved
+pin: docs/account-crypto/first-authority.md §1 34c623d42fe5
+pin: docs/account-crypto/first-authority.md §2 699db1bc3e59
+pin: docs/account-crypto/first-authority.md §3 f14d0f566ff3
+pin: docs/account-crypto/first-authority.md §4 166fcd729355
+pin: docs/account-crypto/first-authority.md §5 57d1d3ddb251
+pin: docs/account-crypto/first-authority.md §6 23edf4c7a828
+pin: docs/account-crypto/first-authority.md §7 77691367bf63
+pin: docs/account-crypto/first-authority.md §8 e6fc9feaa990
+```
+
+```authority
+entry: private-first-coverage
+kind: predicate
+guards: content
+verifies: initial checkpoint manifest and admission with independent plaintext SV/DS rederivation and empty first-head baseline
+resolves: the decrypted snapshot locally rederived and compared to both descriptors -> root:structural
+resolves: the initial producing and admitting device signing key -> via:private-creating-device
+status: resolved
+pin: docs/account-crypto/first-authority.md §1 34c623d42fe5
+pin: docs/account-crypto/first-authority.md §2 699db1bc3e59
+pin: docs/account-crypto/first-authority.md §3 f14d0f566ff3
+pin: docs/account-crypto/first-authority.md §4 166fcd729355
+pin: docs/account-crypto/first-authority.md §6 23edf4c7a828
+pin: docs/account-crypto/first-authority.md §8 e6fc9feaa990
+```
+
+```authority
+entry: private-first-activation
+kind: predicate
+guards: availability
+verifies: fresh exact-completion assertion by the actual registered account credential; receipt and slot binding name that credential
+resolves: actual account authenticator assertion at the exact origin and RP -> via:account-credential
+resolves: fixed-purpose signed activation context and atomic consumed receipt decision -> via:private-first-service
+bound: Only the first account activation/slot-authentication boundary in §7; no content-key release or device-lock bypass.
+status: resolved
+pin: docs/account-crypto/first-authority.md §1 34c623d42fe5
+pin: docs/account-crypto/first-authority.md §2 699db1bc3e59
+pin: docs/account-crypto/first-authority.md §4 166fcd729355
+pin: docs/account-crypto/first-authority.md §7 77691367bf63
+pin: docs/account-crypto/first-authority.md §8 e6fc9feaa990
+```

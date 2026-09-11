@@ -106,7 +106,7 @@ The admission           what the producer's signature does NOT say
                     (the S0-5 return; the set and producer are published
                     vector inputs).
   decision_parent   incomparable proposals serialise here. NEVER by wall clock.
-  head_vector       = for each credential ASCENDING BY ID:
+  head_vector       = empty at first genesis; otherwise for each credential ASCENDING BY ID:
                         LP(credential_id) || LP(dec seq) || LP(hex link)
                       digest = SHA-256( LP("done/headvec/v1") || head_vector )
 
@@ -188,7 +188,9 @@ during Stage 4, and a manifest format that had to change with it would make that
 ## 3. The head vector, and the sort that is load-bearing
 
 The manifest carries [row 5](./row-5-finalization.md)'s accepted-head vector: for every credential, where its
-chain had got to. That is what lets a device starting from a checkpoint verify the suffix forward from
+chain had got to, with row 5 §9's first-genesis-only empty-vector exception. Certification still names the
+creating member; an explicit member-at-zero entry is not an alternate serialization. That is what lets
+a device starting from a checkpoint verify the suffix forward from
 authenticated heads instead of replaying every chain from genesis — the composition §7.5 predicted when it said
 the log shape _"composes with §7.6's manifest"_.
 

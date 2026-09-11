@@ -2431,3 +2431,36 @@ D: service/local custody and encrypted Account ledger/witness bridges. Next is A
 Account gates remain. Runtime code, all 21 personal package hashes, stopped personal preview/relay,
 historical review and L-2 are unchanged; unrelated root files were left untouched. New prep remains
 uncommitted. Appended before replacing only L-1.
+
+
+## 2026-09-11 — Private first-authority formats, map and vectors (`L-1` seat)
+
+Crypto-contract prep was committed as `9cf5c98`. [Phase A](./account-first-authority.md) is complete:
+existing first-epoch/candidate/certification/origin/offer/receipt-v2/activation/observation/slot bytes and
+structural digests now have an exact byte home, source-site construction records, map dependencies and
+fixed executable vectors. TRD §§7.6/13.5 and rows 5/7 state the first-genesis-only empty accepted-head
+exception; a member-at-zero entry is not an alternate encoding. No runtime message or version changed.
+
+The checker joins the production source census to 17 specified constructions, 16 visibly open B/C/D/Local
+groups and one non-cryptographic exclusion. Six added map entries keep service serialization under its
+availability bound, creating/origin keys factor-grounded, and coverage locally rederived. It checks 40
+entries, 46 chains and nine swept documents. Zero open map-rule entries no longer masks unfinished Account
+construction coverage; F-05/F-06 remain open for later groups. Relevant TRD/row-7 pins were reread; no
+AEAD discipline, root permission or whole-protocol debt was changed.
+
+[Final preserved evidence](./account-conformance-runs/2026-09-11-account-first-authority.md) records all 27
+campaign stages passing: 17 fixed vectors, 399 input negatives, 333 encoded-field omission controls, six
+production digest omissions, 19 registry controls and eight new tests. Two hundred shrinking-enabled
+recursive property reorderings pass. Genuine signed wrong-purpose/scope/key-namespace values and nested
+extra-field/version/array changes refuse. A signed descriptor lie still requires independent coverage;
+the signed zero-position baseline refuses. The fixed WebAuthn assertion verifies against its actual key.
+The related 12 admission-core tests (including 80 generated histories), all 28 existing slot-verifier tests,
+all 20 vector/coverage commands, and targeted lint/format checks pass. These probes found no new runtime
+defect. Harness review strengthened nested/domain controls before the final campaign.
+
+The fixture's checkpoint/wrap/recovery ciphertext is opaque dummy content, not encryption or Yjs coverage
+evidence. No full unit/native/build/historical aggregate was repeated. Exact command/results/source hashes
+are preserved, and no executable input changed after the final run. Runtime, all 21 personal package
+hashes, historical review, stopped personal preview/relay and L-2 remain unchanged; unrelated root files
+were left untouched. Next is B: current recovery payload/digest/challenge vectors and raw-export-prefix
+assertions, with row-14/TRD alignment. This phase remains uncommitted. Appended before replacing only L-1.
