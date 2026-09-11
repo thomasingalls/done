@@ -85,8 +85,8 @@ export const mutants = [
     file: 'custody.ts',
     case: 'C01.handoff-race',
     assertion: 'handoff-cannot-fall-between-reads',
-    from: 'records = await owner.carrier.load(task);',
-    to: 'records = await owner.carrier.load(task); eraseJournalSnapshot(snapshot); snapshot = owner.journal.snapshot();',
+    from: 'records = await owner.carrier.load(task);\n          return task.step(() => ({',
+    to: 'records = await owner.carrier.load(task); eraseJournalSnapshot(snapshot); snapshot = owner.journal.snapshot();\n          return task.step(() => ({',
   },
   {
     id: 'skip-wasm-disposal',

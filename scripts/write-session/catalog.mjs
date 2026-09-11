@@ -35,7 +35,7 @@ export const mutants = [
   {
     id: 'release-before-drain',
     case: 'C04.detached-work',
-    assertion: 'detached-work-blocks-exclusive',
+    assertion: 'detached-work-precedes-disposal',
     from: 'await drain();',
     to: 'void drain; // removed drain boundary',
   },

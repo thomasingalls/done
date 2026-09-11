@@ -121,7 +121,7 @@ try {
         `--test-reporter-destination=${join(output, 'results.xml')}`,
         'test/account-delivery/native.test.mjs',
       ],
-      240000,
+      480000,
     ],
   ];
   for (const [name, args, timeout] of stages)

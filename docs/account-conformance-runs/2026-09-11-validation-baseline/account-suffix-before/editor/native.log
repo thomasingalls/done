@@ -1,0 +1,49 @@
+(node:99735) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:99735) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:99735) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ owned remote publication bypasses source capture/undo/outgoing; startup and duplicates allocate no source (9756.801667ms)
+✔ ordered receive before commit crash leaves no early edit or local recapture (8374.279708ms)
+✔ ordered receive after commit crash leaves no early edit or local recapture (8369.54275ms)
+✔ a local command queued during receive is prepared only after commit and ordered publication (7977.029583ms)
+✖ invalid page and authenticated stream conflict preserve local editor availability (6343.4365ms)
+✔ pending remote deletion and structs survive compaction/cold open, then integrate without relabeling (9823.317166ms)
+✔ storage pressure holds the entire remote/local suffix and discard cannot acknowledge it (6431.978834ms)
+✔ close drains a committed receive before releasing the slot, with no late acknowledgement or source (9485.37825ms)
+✔ actual early source mutation violates the publication/source oracle (6906.914ms)
+✔ actual relabel source mutation violates the publication/source oracle (6716.482875ms)
+✔ 10 generated native histories preserve authored content, receive progress and exact local source counts (88809.514833ms)
+✔ close from a publication observer stops remaining promotion and cold replay restores the whole committed batch (8017.765916ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 11
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 178754.584667
+
+✖ failing tests:
+
+test at test/account-receive-editor/native.test.mjs:179:1
+✖ invalid page and authenticated stream conflict preserve local editor availability (6343.4365ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /refused/. Input:
+  
+  'Error: page.evaluate: AdmissionError: Error: Invalid canonical hex\n' +
+    '    at eval (eval at evaluate (:311:30), <anonymous>:47229:15)\n' +
+    '    at async eval (eval at evaluate (:311:30), <anonymous>:27687:20)'
+  
+      at async TestContext.<anonymous> (file:///private/tmp/done-validation-500630f/test/account-receive-editor/native.test.mjs:192:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: page.evaluate: AdmissionError: Error: Invalid canonical hex
+        at eval (eval at evaluate (:311:30), <anonymous>:47229:15)
+        at async eval (eval at evaluate (:311:30), <anonymous>:27687:20)
+        at receive (/private/tmp/done-validation-500630f/test/account-receive-editor/fixtures.mjs:79:8)
+        at TestContext.<anonymous> (/private/tmp/done-validation-500630f/test/account-receive-editor/native.test.mjs:192:26),
+    expected: /refused/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

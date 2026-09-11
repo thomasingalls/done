@@ -1,13 +1,22 @@
 import { test, expect, type Page } from '@playwright/test';
 const fixture = '/test/storage-compatibility/';
-const call = (page: Page, name: string, ...args: unknown[]) =>
-  page.evaluate(
+const call = async (page: Page, name: string, ...args: unknown[]) => {
+  // Module dependencies can still be evaluating after navigation completes.
+  await page.waitForFunction(
+    (name) =>
+      typeof (window as unknown as { compat?: Record<string, unknown> }).compat?.[name] ===
+      'function',
+    name,
+    { timeout: 10000 },
+  );
+  return page.evaluate(
     ({ name, args }) =>
       (window as unknown as { compat: Record<string, (...args: unknown[]) => unknown> }).compat[
         name
       ]!(...args),
     { name, args },
   );
+};
 const op = async (page: Page, id: string, state: string) =>
   expect
     .poll(async () => {
@@ -26,6 +35,32 @@ const seed = async (page: Page) => {
   await call(page, 'close', 'seed');
   return result;
 };
+
+test('fixture calls await a deliberately delayed module initialization', async ({ page }) => {
+  await page.route('**/test/storage-compatibility/browser.mjs', async (route) => {
+    const response = await route.fetch();
+    await route.fulfill({
+      response,
+      body:
+        'await new Promise(resolve => { window.releaseCompatibilityFixture = resolve; });\n' +
+        (await response.text()),
+    });
+  });
+  await page.goto(fixture);
+  expect(await page.evaluate(() => typeof (window as unknown as { compat?: unknown }).compat)).toBe(
+    'undefined',
+  );
+  const pending = call(page, 'state').then(
+    (value) => ({ ok: true, value }),
+    (error) => ({ ok: false, error: String(error) }),
+  );
+  await page.evaluate(() =>
+    (
+      window as unknown as { releaseCompatibilityFixture: () => void }
+    ).releaseCompatibilityFixture(),
+  );
+  expect(await pending).toMatchObject({ ok: true, value: { initializations: 0, operations: {} } });
+});
 
 test('two live writers block an upgrade; a queued opener rechecks before loading keys', async ({
   page,

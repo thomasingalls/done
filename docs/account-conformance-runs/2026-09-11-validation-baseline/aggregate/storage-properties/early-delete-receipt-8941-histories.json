@@ -1,0 +1,487 @@
+[
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "disk",
+          "ids": [
+            11,
+            7,
+            37
+          ]
+        },
+        {
+          "op": "disk",
+          "ids": [
+            5,
+            37
+          ]
+        },
+        {
+          "op": "quota",
+          "id": 1
+        },
+        {
+          "op": "journal",
+          "id": 1
+        },
+        {
+          "op": "disk",
+          "ids": [
+            37,
+            38
+          ]
+        },
+        {
+          "op": "journal",
+          "id": 10
+        },
+        {
+          "op": "remove-failure"
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            33,
+            27,
+            26
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "error": {
+        "type": "property",
+        "invariant": "aborted-operation-no-receipt",
+        "actual": true,
+        "expected": false,
+        "message": "aborted-operation-no-receipt: true !== false",
+        "stack": "Error: aborted-operation-no-receipt: true !== false\n    at equal (http://127.0.0.1:5186/test/storage-properties/oracle.ts:14:65)\n    at step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:347:7)\n    at async Object.step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:393:14)\n    at async <anonymous>:337:30"
+      },
+      "index": 7
+    }
+  },
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            33,
+            27,
+            26
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 4,
+        "abort-inapplicable": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 38,
+      "index": 0
+    }
+  },
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "journal",
+          "id": 1
+        },
+        {
+          "op": "disk",
+          "ids": [
+            37,
+            38
+          ]
+        },
+        {
+          "op": "journal",
+          "id": 10
+        },
+        {
+          "op": "remove-failure"
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            33,
+            27,
+            26
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "error": {
+        "type": "property",
+        "invariant": "aborted-operation-no-receipt",
+        "actual": true,
+        "expected": false,
+        "message": "aborted-operation-no-receipt: true !== false",
+        "stack": "Error: aborted-operation-no-receipt: true !== false\n    at equal (http://127.0.0.1:5186/test/storage-properties/oracle.ts:14:65)\n    at step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:347:7)\n    at async Object.step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:393:14)\n    at async <anonymous>:337:30"
+      },
+      "index": 4
+    }
+  },
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "journal",
+          "id": 10
+        },
+        {
+          "op": "remove-failure"
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            33,
+            27,
+            26
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "error": {
+        "type": "property",
+        "invariant": "aborted-operation-no-receipt",
+        "actual": true,
+        "expected": false,
+        "message": "aborted-operation-no-receipt: true !== false",
+        "stack": "Error: aborted-operation-no-receipt: true !== false\n    at equal (http://127.0.0.1:5186/test/storage-properties/oracle.ts:14:65)\n    at step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:347:7)\n    at async Object.step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:393:14)\n    at async <anonymous>:337:30"
+      },
+      "index": 2
+    }
+  },
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "remove-failure"
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            33,
+            27,
+            26
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 5,
+        "remove-failure": 1,
+        "abort-inapplicable": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 49,
+      "index": 1
+    }
+  },
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "journal",
+          "id": 0
+        },
+        {
+          "op": "remove-failure"
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            33,
+            27,
+            26
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "error": {
+        "type": "property",
+        "invariant": "aborted-operation-no-receipt",
+        "actual": true,
+        "expected": false,
+        "message": "aborted-operation-no-receipt: true !== false",
+        "stack": "Error: aborted-operation-no-receipt: true !== false\n    at equal (http://127.0.0.1:5186/test/storage-properties/oracle.ts:14:65)\n    at step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:347:7)\n    at async Object.step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:393:14)\n    at async <anonymous>:337:30"
+      },
+      "index": 2
+    }
+  },
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "remove-failure"
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            33,
+            27,
+            26
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 5,
+        "remove-failure": 1,
+        "abort-inapplicable": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 49,
+      "index": 1
+    }
+  },
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "journal",
+          "id": 0
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            33,
+            27,
+            26
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 5,
+        "journal": 1,
+        "abort-inapplicable": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 43,
+      "index": 1
+    }
+  },
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "journal",
+          "id": 0
+        },
+        {
+          "op": "remove-failure"
+        },
+        {
+          "op": "abort",
+          "at": "reserve",
+          "ids": [
+            33,
+            27,
+            26
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "error": {
+        "type": "property",
+        "invariant": "abort-is-storage-failure",
+        "actual": "repair-required",
+        "expected": "storage-failed",
+        "message": "abort-is-storage-failure: \"repair-required\" !== \"storage-failed\"",
+        "stack": "Error: abort-is-storage-failure: \"repair-required\" !== \"storage-failed\"\n    at equal (http://127.0.0.1:5186/test/storage-properties/oracle.ts:14:65)\n    at step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:348:7)\n    at async Object.step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:393:14)\n    at async <anonymous>:337:30"
+      },
+      "index": 2
+    }
+  },
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "remove-failure"
+        },
+        {
+          "op": "abort",
+          "at": "reserve",
+          "ids": [
+            33,
+            27,
+            26
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "error": {
+        "type": "property",
+        "invariant": "abort-is-storage-failure",
+        "actual": "repair-required",
+        "expected": "storage-failed",
+        "message": "abort-is-storage-failure: \"repair-required\" !== \"storage-failed\"",
+        "stack": "Error: abort-is-storage-failure: \"repair-required\" !== \"storage-failed\"\n    at equal (http://127.0.0.1:5186/test/storage-properties/oracle.ts:14:65)\n    at step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:348:7)\n    at async Object.step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:393:14)\n    at async <anonymous>:337:30"
+      },
+      "index": 1
+    }
+  },
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "abort",
+          "at": "reserve",
+          "ids": [
+            33,
+            27,
+            26
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "error": {
+        "type": "property",
+        "invariant": "abort-is-storage-failure",
+        "actual": "repair-required",
+        "expected": "storage-failed",
+        "message": "abort-is-storage-failure: \"repair-required\" !== \"storage-failed\"",
+        "stack": "Error: abort-is-storage-failure: \"repair-required\" !== \"storage-failed\"\n    at equal (http://127.0.0.1:5186/test/storage-properties/oracle.ts:14:65)\n    at step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:348:7)\n    at async Object.step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:393:14)\n    at async <anonymous>:337:30"
+      },
+      "index": 0
+    }
+  },
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "abort",
+          "at": "reserve",
+          "ids": [
+            26
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "error": {
+        "type": "property",
+        "invariant": "abort-is-storage-failure",
+        "actual": "repair-required",
+        "expected": "storage-failed",
+        "message": "abort-is-storage-failure: \"repair-required\" !== \"storage-failed\"",
+        "stack": "Error: abort-is-storage-failure: \"repair-required\" !== \"storage-failed\"\n    at equal (http://127.0.0.1:5186/test/storage-properties/oracle.ts:14:65)\n    at step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:348:7)\n    at async Object.step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:393:14)\n    at async <anonymous>:337:30"
+      },
+      "index": 0
+    }
+  },
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "abort",
+          "at": "reserve",
+          "ids": [
+            0
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "error": {
+        "type": "property",
+        "invariant": "abort-is-storage-failure",
+        "actual": "repair-required",
+        "expected": "storage-failed",
+        "message": "abort-is-storage-failure: \"repair-required\" !== \"storage-failed\"",
+        "stack": "Error: abort-is-storage-failure: \"repair-required\" !== \"storage-failed\"\n    at equal (http://127.0.0.1:5186/test/storage-properties/oracle.ts:14:65)\n    at step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:348:7)\n    at async Object.step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:393:14)\n    at async <anonymous>:337:30"
+      },
+      "index": 0
+    }
+  },
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "abort",
+          "at": "reserve",
+          "ids": [
+            0
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "error": {
+        "type": "property",
+        "invariant": "abort-is-storage-failure",
+        "actual": "repair-required",
+        "expected": "storage-failed",
+        "message": "abort-is-storage-failure: \"repair-required\" !== \"storage-failed\"",
+        "stack": "Error: abort-is-storage-failure: \"repair-required\" !== \"storage-failed\"\n    at equal (http://127.0.0.1:5186/test/storage-properties/oracle.ts:14:65)\n    at step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:348:7)\n    at async Object.step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:393:14)\n    at async <anonymous>:337:30"
+      },
+      "index": 0
+    }
+  },
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "abort",
+          "at": "reserve",
+          "ids": [
+            0
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "error": {
+        "type": "property",
+        "invariant": "abort-is-storage-failure",
+        "actual": "repair-required",
+        "expected": "storage-failed",
+        "message": "abort-is-storage-failure: \"repair-required\" !== \"storage-failed\"",
+        "stack": "Error: abort-is-storage-failure: \"repair-required\" !== \"storage-failed\"\n    at equal (http://127.0.0.1:5186/test/storage-properties/oracle.ts:14:65)\n    at step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:348:7)\n    at async Object.step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:393:14)\n    at async <anonymous>:337:30"
+      },
+      "index": 0
+    }
+  }
+]

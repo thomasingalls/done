@@ -1,0 +1,48 @@
+baseline replay /Users/thomasingalls/.codex/worktrees/c030/done/test/storage-properties/corpus/clear-journal-before-commit.json: PASS
+baseline replay /Users/thomasingalls/.codex/worktrees/c030/done/test/storage-properties/corpus/discard-pending-wire-bytes.json: PASS
+baseline replay /Users/thomasingalls/.codex/worktrees/c030/done/test/storage-properties/corpus/early-delete-receipt.json: PASS
+baseline replay /Users/thomasingalls/.codex/worktrees/c030/done/test/storage-properties/corpus/partial-cross-client-merge.json: PASS
+baseline replay /Users/thomasingalls/.codex/worktrees/c030/done/test/storage-properties/corpus/partial-disk-union.json: PASS
+baseline replay /Users/thomasingalls/.codex/worktrees/c030/done/test/storage-properties/corpus/range-delete.json: PASS
+baseline seed=8941 attempt=10: pass
+baseline seed=8941 attempt=20: pass
+baseline seed=8941 attempt=30: pass
+baseline seed=8941 attempt=40: pass
+baseline seed=8941: PASS 40 histories, 4034 recovery comparisons
+baseline seed=130003 attempt=10: pass
+baseline seed=130003 attempt=20: pass
+baseline seed=130003 attempt=30: pass
+baseline seed=130003 attempt=40: pass
+baseline seed=130003: PASS 40 histories, 3637 recovery comparisons
+baseline seed=991827 attempt=10: pass
+baseline seed=991827 attempt=20: pass
+baseline seed=991827 attempt=30: pass
+baseline seed=991827 attempt=40: pass
+baseline seed=991827: PASS 40 histories, 3790 recovery comparisons
+range-delete seed=8941 attempt=10: pass
+range-delete seed=8941 attempt=20: pass
+range-delete seed=8941 first failure: recovery-wire-structs: [["101:0","b"],["101:1","a"],["101:2","s"],["101:3","e"],["101:4","0"],["103:5","b"],["103:6","\n"]] !== [["101:0","b"],["101:1","a"],["101:2","s"],["101:3","e"],["101:4","0"],["101:5","é"],["101:6","\n"],["101:7","b"],["103:5","b"],["103:6","\n"]]
+range-delete seed=8941 attempt=30: pass
+range-delete seed=8941 attempt=40: recovery-wire-structs: [["103:0","b"],["103:1","a"],["103:2","s"],["103:3","e"],["103:4","2"]] !== [["101:0","b"],["101:1","a"],["101:2","s"],["101:3","e"],["101:4","0"],["103:0","b"],["103:1","a"],["103:2","s"],["103:3","e"],["103:4","2"]]
+range-delete seed=8941 attempt=50: pass
+range-delete seed=8941: FAIL property/recovery-wire-structs, 13 shrinks
+partial-disk-union seed=8941 first failure: recovery-wire-structs: [["103:0","b"],["103:1","a"],["103:2","s"],["103:3","e"],["103:4","2"]] !== [["101:0","b"],["101:1","a"],["101:2","s"],["101:3","e"],["101:4","0"],["102:0","b"],["102:1","a"],["102:2","s"],["102:3","e"],["102:4","1"],["103:0","b"],["103:1","a"],["103:2","s"],["103:3","e"],["103:4","2"]]
+partial-disk-union seed=8941: FAIL property/recovery-wire-structs, 6 shrinks
+early-delete-receipt seed=8941 first failure: aborted-operation-no-receipt: true !== false
+early-delete-receipt seed=8941 attempt=10: abort-is-storage-failure: "repair-required" !== "storage-failed"
+early-delete-receipt seed=8941: FAIL property/abort-is-storage-failure, 10 shrinks
+clear-journal-before-commit seed=8941 attempt=10: pass
+clear-journal-before-commit seed=8941 first failure: recovery-wire-structs: [["101:5"," "],["101:6","c"],["102:5","c"],["102:6","a"],["102:7","c"],["102:8","a"]] !== [["101:5"," "],["101:6","c"],["102:10","\n"],["102:11","a"],["102:12","c"],["102:13","a"],["102:5","c"],["102:6","a"],["102:7","c"],["102:8","a"],["102:9","c"]]
+clear-journal-before-commit seed=8941 attempt=20: recovery-wire-structs: [["101:5"," "],["101:6","c"],["102:5","c"],["102:6","a"],["102:7","c"],["102:8","a"]] !== [["101:5"," "],["101:6","c"],["102:10","\n"],["102:11","a"],["102:12","c"],["102:13","a"],["102:5","c"],["102:6","a"],["102:7","c"],["102:8","a"],["102:9","c"]]
+clear-journal-before-commit seed=8941 attempt=30: pass
+clear-journal-before-commit seed=8941 attempt=40: pass
+clear-journal-before-commit seed=8941 attempt=50: pass
+clear-journal-before-commit seed=8941 attempt=60: pass
+clear-journal-before-commit seed=8941 attempt=70: recovery-wire-structs: [] !== [["101:0","b"],["101:1","a"],["101:2","s"],["101:3","e"],["101:4","0"]]
+clear-journal-before-commit seed=8941 attempt=80: pass
+clear-journal-before-commit seed=8941 attempt=90: pass
+clear-journal-before-commit seed=8941 attempt=100: recovery-wire-structs: [] !== [["101:0","b"],["101:1","a"],["101:2","s"],["101:3","e"],["101:4","0"]]
+clear-journal-before-commit seed=8941 attempt=110: pass
+clear-journal-before-commit seed=8941: FAIL property/recovery-wire-structs, 20 shrinks
+Report: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/storage-properties/2026-09-11T06-29-56.135Z/report.json
+Exit 0

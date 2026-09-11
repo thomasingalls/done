@@ -1,0 +1,293 @@
+
+ RUN  v4.1.10 /private/tmp/done-validation-500630f
+
+ ✓ test/ownedReceiveQueue.test.ts > holds local preparation behind owned commit and publishes originals without a local append 6ms
+ ✓ test/ownedReceiveQueue.test.ts > refuses invalid pages without blocking later edits and never accepts raw updates through the seam 2ms
+ ✓ test/ownedReceiveQueue.test.ts > close while commit is pending prevents promotion and late acknowledgement 1ms
+ ✓ test/ownedReceiveQueue.test.ts > capacity refusal happens before dispatch and capture owns all queued wire bytes 0ms
+ ✓ test/ownedReceiveQueue.test.ts > 200 generated interleavings recover authored text and preserve source counts 140ms
+ ✓ test/ownedReceiveQueue.test.ts > empty source lists cannot conceal a deletion with an unchanged state vector 2ms
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > projects retained legacy archives as read-only bodies without creating live cards
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > admits device display labels into encrypted content and recovers them without changing identity
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > admits device display labels into encrypted content and recovers them without changing identity
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > preserves null business results without treating them as a storage failure
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > preserves null business results without treating them as a storage failure
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > keeps returned projections and submitted commands detached from the owner
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > keeps returned projections and submitted commands detached from the owner
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > keeps returned projections and submitted commands detached from the owner
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > follows local redone links when undoing an edit inside a restored parent
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > follows local redone links when undoing an edit inside a restored parent
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > follows local redone links when undoing an edit inside a restored parent
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > follows local redone links when undoing an edit inside a restored parent
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > follows local redone links when undoing an edit inside a restored parent
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > durably initializes the actor and schema without adding human undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > shares human history across Goals, cards and movement
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > shares human history across Goals, cards and movement
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > shares human history across Goals, cards and movement
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > shares human history across Goals, cards and movement
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > shares human history across Goals, cards and movement
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > shares human history across Goals, cards and movement
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > restores a deleted nested card and its text through undo, redo, and undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > restores a deleted nested card and its text through undo, redo, and undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > restores a deleted nested card and its text through undo, redo, and undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > restores a deleted nested card and its text through undo, redo, and undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not publish a failed move or advance its undo stack before forced retry
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not publish a failed move or advance its undo stack before forced retry
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not publish a failed move or advance its undo stack before forced retry
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not publish a failed move or advance its undo stack before forced retry
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retries refused undo without making its history authoritative
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retries refused undo without making its history authoritative
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > evaluates Next capacity at the head after earlier accepted commands
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > evaluates Next capacity at the head after earlier accepted commands
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > evaluates Next capacity at the head after earlier accepted commands
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > evaluates Next capacity at the head after earlier accepted commands
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > excludes bulk, settings and actor housekeeping from human content undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > excludes bulk, settings and actor housekeeping from human content undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > excludes bulk, settings and actor housekeeping from human content undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > excludes bulk, settings and actor housekeeping from human content undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > excludes bulk, settings and actor housekeeping from human content undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > keeps the day container and a remote card when undoing the first human card
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > keeps the day container and a remote card when undoing the first human card
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > keeps the day container and a remote card when undoing the first human card
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not undo a remote text insertion or remote location change
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not undo a remote text insertion or remote location change
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not undo a remote text insertion or remote location change
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not undo a remote text insertion or remote location change
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not undo a remote text insertion or remote location change
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > projects retained legacy archives as read-only bodies without creating live cards 14ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > admits device display labels into encrypted content and recovers them without changing identity 5ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > preserves null business results without treating them as a storage failure 8ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > refuses a future schema during initialization without modifying the source 1ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > keeps returned projections and submitted commands detached from the owner 5ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > follows local redone links when undoing an edit inside a restored parent 13ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > durably initializes the actor and schema without adding human undo 1ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > shares human history across Goals, cards and movement 11ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks 10ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > restores a deleted nested card and its text through undo, redo, and undo 6ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > does not publish a failed move or advance its undo stack before forced retry 5ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > retries refused undo without making its history authoritative 4ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > evaluates Next capacity at the head after earlier accepted commands 4ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > excludes bulk, settings and actor housekeeping from human content undo 4ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > keeps the day container and a remote card when undoing the first human card 5ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > does not undo a remote text insertion or remote location change 7ms
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > splits and merges through existing card rules and export
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > splits and merges through existing card rules and export
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > splits and merges through existing card rules and export
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > splits and merges through existing card rules and export
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > rechecks freeze while preserving Goals editing
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > rechecks freeze while preserving Goals editing
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > rechecks freeze while preserving Goals editing
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > slices Unicode text and groups the accepted paste in workspace history
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > slices Unicode text and groups the accepted paste in workspace history
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > slices Unicode text and groups the accepted paste in workspace history
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > slices Unicode text and groups the accepted paste in workspace history
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > slices Unicode text and groups the accepted paste in workspace history
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > discards an entire refused suffix and starts a fresh private candidate
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > discards an entire refused suffix and starts a fresh private candidate
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > discards an entire refused suffix and starts a fresh private candidate
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > discards an entire refused suffix and starts a fresh private candidate
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > drains close without late publication and does not persist runtime history
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > drains close without late publication and does not persist runtime history
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > drains close without late publication and does not persist runtime history
+[yjs] Changed the client-id because another client seems to be using it.
+
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > splits and merges through existing card rules and export 3ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > rechecks freeze while preserving Goals editing 3ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > slices Unicode text and groups the accepted paste in workspace history 7ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > discards an entire refused suffix and starts a fresh private candidate 5ms
+ ✓ test/workspaceAdmission.test.ts > admitted workspace commands and history > drains close without late publication and does not persist runtime history 3ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > accepts synchronous journal writes before return, with detached snapshots/events and stable local clocks 7ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > prepares a queued intent only after its refused predecessor commits 2ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > holds exact prepared bytes and forces content again on retry after a failed forced commit 2ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > commits remote bytes before preparation or publication of dependent local input 1ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > persists remote deletion and unresolved structs, including through a cold mixed-carrier replay 2ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > rejects invalid inbound bytes before storage and does not poison a following valid intent 1ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > withholds an invalid local command until its complete pending suffix is explicitly discarded 1ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > bounds queued bytes before copying and retains admitted input when capacity refuses 2ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > captures queued caller bytes and never lends canonical state to a retained draft 1ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > enforces prepared-update size before sealing, preserving a resumable pending input 1ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > commits each oversized-command slice before preparing or publishing its successor 2ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > places whenDurable after prior inputs and before later input, including a pending predecessor 1ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > makes flush failure observable and retains accepted journal bytes for explicit retry 1ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > automatically flushes after the 250 ms window 3ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > allows reentrant observers to queue later intent without changing the accepted event 1ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > closes admission immediately, drains outstanding work and refuses late promotion and tickets 2ms
+ ✓ test/admissionQueue.test.ts > ordered production admission owner over controlled carriers > refuses malformed persisted Yjs even when the byte carrier authenticated it 0ms
+ ✓ test/admissionQueue.test.ts > admission callback and writer boundaries > refuses asynchronous preparation and consumes its rejected promise without publishing 0ms
+ ✓ test/admissionQueue.test.ts > admission callback and writer boundaries > restarts a synchronous failed head when a status observer requests retry 1ms
+ ✓ test/admissionQueue.test.ts > admission callback and writer boundaries > uses a fresh local writer if a received update advances the current writer clock 1ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > 250 generated transaction histories recover exact bytes, actors and independent text across carrier overlap and reverse delivery 1016ms
+stdout | test/sourceCapture.test.ts > Account source capsule conformance > private initialization retains system attribution and subsequent editing retains the human actor
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/sourceCapture.test.ts > Account source capsule conformance > private initialization retains system attribution and subsequent editing retains the human actor
+[yjs] Changed the client-id because another client seems to be using it.
+
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > 200 generated route and actor substitutions refuse without accepting a different authority 16ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > refuses noncanonical framing, unknown version, malformed CRDT, oversized payload and too many sources 1ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > conflicting stable identity refuses journal/disk, disk/disk and journal/journal overlap 1ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > requires original sources to cover all prepared state, including deletions 1ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > private initialization retains system attribution and subsequent editing retains the human actor 13ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > repeated oversized preparation does not accumulate capsule reservations or acknowledge input 4ms
+
+ Test Files  4 passed (4)
+      Tests  54 passed (54)
+   Start at  09:55:07
+   Duration  1.48s (transform 279ms, setup 101ms, import 650ms, tests 1.36s, environment 0ms)
+

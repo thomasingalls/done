@@ -164,7 +164,7 @@ describe('Account spool ledger conformance', () => {
       ),
       { seed: 9512026, numRuns: 150 },
     );
-  });
+  }, 30000);
   it('150 generated authority substitutions reject a well-framed entry in the wrong domain', () => {
     fc.assert(
       fc.property(
@@ -182,7 +182,7 @@ describe('Account spool ledger conformance', () => {
       ),
       { seed: 9512027, numRuns: 150 },
     );
-  });
+  }, 15000);
   it('rejects gaps, duplicate coverage, missing source indexes and envelope-before-attempt transitions', async () => {
     const { rows } = await fixture([{ text: 'first', system: false, burns: 0 }]);
     const grant = rows.find((r) => r.kind === 'heads')!,

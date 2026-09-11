@@ -1,0 +1,17 @@
+{
+  "command": "pnpm check",
+  "cwd": "/private/tmp/done-validation-500630f",
+  "head": "500630fc85e270728b65d6a6e960def22af47ad2",
+  "patchSha256": "b78d13760ee798a0d516b301e3b2c0ac7839c6192f81f9bb056a4c2fd8bdb5f4",
+  "started": "2026-09-11T06:31:14.428Z",
+  "status": "superseded",
+  "timeoutMs": 7200000,
+  "env": {
+    "CI": "1"
+  },
+  "log": "check.log",
+  "code": 1,
+  "timedOut": false,
+  "finished": "2026-09-11T06:35:40.373Z",
+  "interruptionReason": "Stopped by the agent after the unit and early native gates passed; restart includes the Vite failed-start cleanup repair and its regression gate."
+}

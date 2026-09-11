@@ -1,0 +1,114 @@
+$ pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:harness && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm storage:legacy-cleanup:harness && pnpm storage:legacy-cleanup && pnpm storage:legacy-coordinator && pnpm storage:legacy-host:harness && pnpm storage:legacy-host && pnpm storage:private-migration && pnpm storage:app-startup && pnpm test:geometry && pnpm storage:app-startup:packaged && pnpm storage:app-upgrades && pnpm storage:compatibility && pnpm trace:check && pnpm account:core && pnpm account:recovery && pnpm account:authority && pnpm account:promotion && pnpm account:genesis && pnpm account:admission && pnpm account:handoff && pnpm account:editing && pnpm account:outbound && pnpm account:capture && pnpm account:spool && pnpm account:decisions && pnpm account:delivery && pnpm account:service-delivery && pnpm account:transport && pnpm account:driver && pnpm account:inbound-prep && pnpm account:inbound-codecs && pnpm account:receive && pnpm account:receive-editor
+$ tsc -b --noEmit
+$ node scripts/check-yjs-patch.mjs
+Yjs patch: source/ESM/CJS hashes, lock/workspace pins, four peer resolutions and both runtime regressions pass.
+$ node scripts/generate-suite-vectors.mjs --check && node scripts/generate-record-vectors.mjs --check && node scripts/generate-journal-vectors.mjs --check && node scripts/generate-recovery-vectors.mjs --check && node scripts/generate-device-lock-vectors.mjs --check && node scripts/generate-finalization-vectors.mjs --check && node scripts/generate-enrollment-vectors.mjs --check && node scripts/generate-envelope-vectors.mjs --check && node scripts/generate-private-envelope-vectors.mjs --check && node scripts/generate-head-discovery-vectors.mjs --check && node scripts/generate-attribution-vectors.mjs --check && node scripts/generate-checkpoint-vectors.mjs --check && node scripts/generate-antireplay-vectors.mjs --check && node scripts/generate-package-vectors.mjs --check && node scripts/generate-account-credential-vectors.mjs --check && node scripts/generate-transition-vectors.mjs --check && node scripts/generate-baseline-vectors.mjs --check && pnpm vectors:coverage
+algorithm-suite.json is current; primitive KATs and the §13.2 separation check pass.
+record-format.json is current, and every negative still fails to authenticate.
+journal-aead.json is current, and the primitive KAT passes.
+recovery-code.json is current; the alphabet and keypair checks pass.
+device-lock.json is current; the alphabet, row 3 and row 14 cross-checks pass.
+finalization.json is current, and every negative still fails.
+enrollment-ceremony.json is current, and every negative still fails.
+envelope.json is current, and every negative still fails.
+Private envelope vectors checked: five independent Node/OpenSSL cases and 20 isolating negatives.
+head-discovery.json is current, and every negative still fails.
+attribution.json is current, and every negative still fails.
+checkpoint.json is current, and every negative still fails.
+antireplay.json is current, and every negative still fails.
+package.json is current, and every negative still fails.
+account-credential.json is current; the keypair and row 1 cross-checks pass.
+transition.json is current; the keypair and row 1 cross-checks pass.
+web-security-baseline.json is current; 17 ASVS 5.0.0 chapters dispositioned.
+$ node scripts/check-aad-coverage.mjs
+  ok  scripts/generate-account-credential-vectors.mjs — slot binding (8), unlock challenge (5)
+  ok  scripts/generate-antireplay-vectors.mjs — heads record (7), position refusal (9)
+  ok  scripts/generate-attribution-vectors.mjs — attribution record (9)
+  ok  scripts/generate-baseline-vectors.mjs — no AAD
+  ok  scripts/generate-checkpoint-vectors.mjs — checkpoint aad (5), checkpoint manifest (11), checkpoint admission (12)
+  ok  scripts/generate-device-lock-vectors.mjs — lock seal (6)
+  ok  scripts/generate-enrollment-vectors.mjs — nonce commitment (3), enrollment transcript (11)
+  ok  scripts/generate-envelope-vectors.mjs — envelope aad (7), envelope signature (9)
+  ok  scripts/generate-finalization-vectors.mjs — accepted link (7), accepted head (7)
+  ok  scripts/generate-head-discovery-vectors.mjs — recovery bootstrap (14), head assertion (6)
+  ok  scripts/generate-journal-vectors.mjs — journal record (4)
+  ok  scripts/generate-package-vectors.mjs — generation wrap info (5), archive envelope (4), package manifest (10)
+  ok  scripts/generate-private-envelope-vectors.mjs — private envelope hkdf_info (4), private envelope aad (7), private envelope signature_message (9)
+  ok  scripts/generate-record-vectors.mjs — content record (8), key envelope (6)
+  ok  scripts/generate-recovery-vectors.mjs — recovery envelope (4), step-up challenge (4)
+  ok  scripts/generate-suite-vectors.mjs — no AAD
+  ok  scripts/generate-transition-vectors.mjs — certified set (8), transition intent (8), transition outcome (8)
+
+225 AAD fields, each isolated by a published negative.
+$ node scripts/check-retention.mjs
+retention: 12 months stated consistently across 6 anchors; every §16 unselected cell is bounded and open; §14.7's 6 states and 6 deletion classes match the executable model and stay disjoint from §13.7's 3 kinds and from §13.5's lineage words; the published deletion-authority domain, §14.7's table and the model agree on one six-class order with the boundary tokens stated in both; and 8 destructive-boundary homes carry the ratified sentences with the superseded ones refused (P-4 falsifiers 17 and 19 — byte rules; the boundary's execution semantics are the model tests' to prove).
+$ node scripts/check-selection-status.mjs
+selection status: 18 selected and 3 unselected rows, disjoint, and the stated counts match; 5 PRD sentences cite a row and none disagrees with its membership.
+  Membership and counts only: a construction cell describing a selected row as open is outside this scan (S0-9 E3/E4; row 3’s cell landed at the S0-3 return, and pnpm admission:check reads it).
+$ node scripts/check-update-limit.mjs
+update limit: 0.0476 µs/byte from 3 measurements; the budget is exhausted at 19.6 kB and §12's 4 extrapolated rows agree; the interim 16 kB is under it and under the module's guard.
+$ node scripts/check-authority-map.mjs
+authority map: 34 entries, 37 chains; every chain terminates at a permitted root for its guard, and every signature and AEAD construction in the 8 swept documents sits in a pinned section.
+  open at their own joint: 0
+  blocked through an open home: 0
+  This proves the rules resolve and their homes are pinned — not that the corpus implements them: each open entry flips only at its return, under that record's falsifiers. Class 1 closes when "open" reads zero.
+$ node scripts/check-recipient-authority.mjs
+recipient authority: the ratified formulas are stated at the named homes, the retired sentences appear in none of them, and the enrollment transcript, hash, wrap info and SAS reconstruct from published inputs alone.
+  Scope: byte rules over the named homes and one vector reconstruction — never construction soundness (the negatives and vectors:coverage own that) and never implementation (the authority map’s status lines own that).
+$ node scripts/check-write-admission.mjs
+write admission: the ratified scope, carrier and fence are stated at the named homes, the retired sentences appear in none of them, and the record vectors — two stores, two subkeys — reconstruct from published inputs alone.
+  Scope: byte rules over the named homes and two vector reconstructions — never construction soundness and never implementation. Vectors cover declared cases; production obligations remain in storage-conformance.md.
+$ node scripts/remediation-status.mjs --check
+remediation census: 48 documents (25 home · 21 record · 1 projection · 1 superseded), 21 pins current; 5 ratified · 3 decided; HANDOFF's dates, options and owed ranges agree in both directions.
+  Scope: standings, pins, readback existence, header/claim agreement, the S0-9 input rule and two named sentence negatives — byte rules, never an execution receipt (FU-14's receipts live at trace:check since the S0-8 regeneration; this stays byte rules).
+$ node scripts/check-debts.mjs --check
+debts: 9 registered (8 open · 1 paid · 0 waived), entries valid, pins current, gate-class census total, homes agree. Scope: the manifest and its byte rules, plus §10.11's evidence table held to the X25519 payment record in both directions — a gate arrival is evaluated by --gate, and blocking happens there.
+$ node scripts/check-wasm-seal.mjs
+journal seal: 28 checks pass — the published KAT, 4 composition vectors, authenticated open/tag refusal, disposal, the length guard in both directions, the key/nonce width guard, and the source↔blob binding (lib.rs, Cargo.toml, Cargo.lock hashes match the generated header — drift detection only; provenance attestation is the registered L-4 debt).
+$ vitest run
+
+ RUN  v4.1.10 /private/tmp/done-validation-500630f
+
+
+ Test Files  84 passed (84)
+      Tests  958 passed (958)
+   Start at  08:36:21
+   Duration  34.00s (transform 6.35s, setup 2.55s, import 17.70s, tests 141.13s, environment 25.68s)
+
+$ node --test test/storage-harness/lifecycle.node.mjs
+Storage harness lifecycle evidence: /private/tmp/done-validation-500630f/test-results/storage-harness/2026-09-11T06-36-57.793Z
+✔ custody: occupied test port exits with a harness error and releases Vite (1148.314042ms)
+✔ content: occupied test port exits with a harness error and releases Vite (748.16875ms)
+✔ journal: occupied test port exits with a harness error and releases Vite (763.417458ms)
+✔ storage-properties: occupied test port exits with a harness error and releases Vite (721.619916ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3438.441125
+$ node scripts/write-session/run.mjs
+write-session C04.shared-scope: pass
+write-session C04.freeze-barrier: pass
+write-session C04.drain-cleanup: pass
+write-session C04.detached-work: pass
+write-session C04.stale-task: pass
+write-session C04.cancel-queued: pass
+write-session C04.cancel-initialize: pass
+write-session C04.initialize-error: pass
+write-session C04.cleanup-error: pass
+write-session C04.renderer-death: pass
+write-session C04.worker-lifetime: pass
+write-session C04.exclusive-error: pass
+write-session C04.navigation: pass
+split-coordination-domain C04.freeze-barrier: fail
+ignore-session-invalidation C04.drain-cleanup: fail
+release-before-drain C04.detached-work: pass
+skip-cache-cleanup C04.drain-cleanup: fail
+reuse-finished-task C04.stale-task: fail
+Report: /private/tmp/done-validation-500630f/test-results/write-session/2026-09-11T06-37-03.329Z/report.md
+Exit 1 (bounded C04 component scope)
+[ELIFECYCLE] Command failed with exit code 1.
+[ELIFECYCLE] Command failed with exit code 1.

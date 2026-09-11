@@ -1,0 +1,12 @@
+[
+  {
+    "control": false,
+    "returned": false,
+    "persisted": 0
+  },
+  {
+    "control": true,
+    "returned": true,
+    "persisted": 1
+  }
+]

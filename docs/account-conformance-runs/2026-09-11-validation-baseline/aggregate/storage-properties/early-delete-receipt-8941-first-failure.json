@@ -1,0 +1,64 @@
+{
+  "history": {
+    "edits": [],
+    "steps": [
+      {
+        "op": "disk",
+        "ids": [
+          11,
+          7,
+          37
+        ]
+      },
+      {
+        "op": "disk",
+        "ids": [
+          5,
+          37
+        ]
+      },
+      {
+        "op": "quota",
+        "id": 1
+      },
+      {
+        "op": "journal",
+        "id": 1
+      },
+      {
+        "op": "disk",
+        "ids": [
+          37,
+          38
+        ]
+      },
+      {
+        "op": "journal",
+        "id": 10
+      },
+      {
+        "op": "remove-failure"
+      },
+      {
+        "op": "abort",
+        "at": "delete",
+        "ids": [
+          33,
+          27,
+          26
+        ]
+      }
+    ]
+  },
+  "outcome": {
+    "error": {
+      "type": "property",
+      "invariant": "aborted-operation-no-receipt",
+      "actual": true,
+      "expected": false,
+      "message": "aborted-operation-no-receipt: true !== false",
+      "stack": "Error: aborted-operation-no-receipt: true !== false\n    at equal (http://127.0.0.1:5186/test/storage-properties/oracle.ts:14:65)\n    at step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:347:7)\n    at async Object.step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:393:14)\n    at async <anonymous>:337:30"
+    },
+    "index": 7
+  }
+}

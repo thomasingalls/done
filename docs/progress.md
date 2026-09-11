@@ -42,67 +42,63 @@ that is no longer active.
 
 ---
 
-## Active slice: Restore the aggregate validation baseline (`L-1`)
+## Active slice: Private v2 service reader/publisher resolution (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: AAD vector audit and four stale storage harness source snapshots
+blocks_on: none for bounded private service work; real Account use remains gated below
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
 
-**Personal checkpoint.** The verified Local release remains `.dev/releases/17d87c2/app`, predecessor
-`dist/` intact. Preview/relay stay stopped; origin/Tailscale routing is unchanged. The author controls
-browser interaction and factors. No real Account, passkey, recovery code, operator key or authority pin is
-provisioned. The actual old second device will adopt this device's workspace with fresh custody, store,
-counters and credentials; its old writing will not be imported or merged.
+**Personal checkpoint.** The verified Local release remains `.dev/releases/17d87c2/app`; predecessor
+`dist/` is intact. Preview/relay stay stopped. Origin/Tailscale routing, personal browser and factors are
+unchanged. No real Account, passkey, recovery code, operator key or authority pin is provisioned. The
+actual old second device will adopt this device's workspace with fresh custody, store, counters and
+credentials; its old writing will not be imported or merged.
 
-**Completed boundary.** `f6e4cf4` commits the native v9 receive store. The subsequent
-[ordered remote editor](./account-receive-editor.md) now composes local source capture and verified receive
-under the same held lifetime. Original content/event/witness commit and authenticated readback precede
-canonical/projection publication. Pending dependencies, pressure, undo, close and cold replay preserve
-separate source and receive histories. Source-free v9 startup avoids empty capsules; older v6/v7/v8
-factories and retained sources remain unchanged. There is still no sender attached to v9, v2 service route,
-new-member enrollment, default app activation or personal Account.
+**Completed boundary.** Native receive is committed as `f6e4cf4`, and
+[ordered remote editor integration](./account-receive-editor.md) as `19586b6`. The v9 editor holds admission
+through original content/evidence/witness commit, authenticated readback and synchronous publication.
+Later local intent stays unprepared; received originals do not become source capsules or human undo.
+Source-free v9 startup avoids empty capture entries while preserving older factories and deletion updates.
 
-[Evidence](./account-conformance-runs/2026-09-11-account-receive-editor.md): 957 unit tests, 54 focused cases
-including 200 new queue histories, 12 native editor cases with ten generated histories and two effective
-source controls, 17 native storage receive and 19 native v8 delivery regressions pass. Isolated build,
-TypeScript, scoped lint/format and 13 existing gates pass. All final source inventories match. A missing
-account binding was caught during composition, fixed, and its exact failing source retained. No new
-counterexample appeared in the final generated runs. The AAD coverage audit is explicitly red.
+The annotated [implementation review](./review/implementation/af8941e-96a2040.md) was archived unchanged
+and committed separately as `500630f`. Its 45 assessment blocks retain their original date/scope.
+[Validation baseline repair](./validation-baseline.md) and
+[evidence](./account-conformance-runs/2026-09-11-validation-baseline.md) now address F-01, F-02 and F-20.
+The actual `pnpm check` passed in a disposable checkout, including 958 unit tests, all native stages and
+225 field elisions. Additional failed-start cleanup, lifecycle mutation-oracle, fixture readiness and
+refusal-assertion defects were caught and repaired. Complete source/personal bundle hashes were verified.
+This is execution evidence, not a claim
+that the full protocol or every historical oracle has been independently certified.
 
-**Review dispositions.** The [annotated implementation review](./review/implementation/af8941e-96a2040.md)
-retains all 25 findings, seven test-gap subitems and twelve resolved items, with 45 `resposnse` blocks.
-The author authorized archiving and committing it separately after editor integration commit `19586b6`.
-It distinguishes current failures, latent boundaries, overstated claims and deferred product work;
-its suggested periodic projection check and early blocked-IDB release were rejected as unsafe shortcuts.
+**Next bounded phase.** Add the private v2 service read route and explicit reader/publisher resolution:
 
-**Next bounded repair.** Restore honest aggregate validation before layering on more service work:
+- Reconstruct authenticated service admission and certified membership; require candidate credential and
+  certified member identities to agree. Resolve reader authorization and publisher stream separately.
+- Accept the already-defined bounded signed v2 request and return a request-bound signed page containing
+  original accepted envelopes/proofs. Recheck authority across asynchronous verification/signing and
+  preserve the service ledger's completeness witness and prefix rules.
+- Keep the first-epoch, generation-one creating-member limit explicit. Refuse unsupported or foreign
+  readers/publishers, changed membership, wrong request bindings, expiry and malformed/bounded input.
+  Synthetic multi-member fixtures do not establish production enrollment or writable profile cloning.
+- Preserve the closed v1 spool-reader contract. Add directed and generated service tests, actual omission
+  controls, restart/recheck cuts and byte interoperability against the existing v2 verifier.
 
-- F-01: register the private v2 envelope's actual AAD/KDF construction and publish isolating negatives;
-  include the private generator in the normal vector commands, regenerate and run the audit.
-- F-02: make custody/content/journal/property runners snapshot their complete source dependency closure,
-  preserving relative imports and source hashes. Repair the ambiguous journal mutation anchor. Require
-  each baseline and each effective mutation to execute meaningful assertions, not timeouts/import errors.
-- Check the known F-20 deadline margin while refreshing the harnesses; use explicit property deadlines
-  and bounded predicates. Run the actual aggregate command and record every red gate rather than describing
-  a selected subset as whole-repository validation. Do not broaden this into silent protocol changes.
+**Then:** owned receive transport/reconnect and composition with outbound delivery under v9; Account UI
+and real two-gate second-device adoption. The existing v1 read path and v8 driver do not gain v2 semantics
+implicitly. Do not weaken per-publication projection or complete cold-content verification for timing.
 
-**Then:** v2 service reader/publisher resolution with explicit credential/member identity agreement;
-owned receive transport/reconnect and composition with outbound delivery under v9; Account UI and real
-two-gate second-device adoption. The existing v1 read path and v8 driver do not gain v2 semantics implicitly.
-
-**Before real Account receipts/rollout:** amend the row-7 manifest AND admission descriptor bounds with
+**Before real Account receipts/rollout:** amend row-7 manifest AND admission descriptor bounds with
 explicit versioning; require an operation-bound fresh account assertion at first service activation;
 register and pin exact Account cryptographic constructions with interoperable vectors and align recovery's
 96-byte payload with row 14/TRD; resolve invocation-grant power-loss accounting. Keep diagnostics/salvage,
-parser/admission/service negative tests, performance/maintenance, lock ordering and other accepted packet
-follow-ups visible. Do not weaken per-publication projection or complete cold-content verification merely
-to improve timings.
+parser/admission/service negative tests, performance/maintenance, lock ordering and the other accepted
+review follow-ups visible.
 
 General lineage advancement, successor/checkpoint baselines, concurrent writers, pruning/backlog scale,
 revocation/rotation, clear/delete, finalization/recovery, supported platforms, whole-profile residue,

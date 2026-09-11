@@ -1,0 +1,13 @@
+
+ RUN  v4.1.10 /private/tmp/done-validation-500630f
+
+ ✓ test/accountDelivery.test.ts > 500 generated proof histories agree with independent prefix and closure propositions at every step 69ms
+ ✓ test/accountDelivery.test.ts > a later head contradicts an earlier closure in either delivery order (true) 0ms
+ ✓ test/accountDelivery.test.ts > a later head contradicts an earlier closure in either delivery order (false) 0ms
+ ✓ test/accountDelivery.test.ts > acceptance and closure duplicates are propositions, and conflict is irreversible 0ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  11:00:00
+   Duration  345ms (transform 80ms, setup 37ms, import 133ms, tests 70ms, environment 0ms)
+

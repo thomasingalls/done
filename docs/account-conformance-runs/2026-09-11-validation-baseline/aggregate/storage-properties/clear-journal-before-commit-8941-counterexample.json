@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "seed": 8941,
+  "path": "19:1:0:0:0:1:1:1:2:1:1:2:6:10:10:10:0:8:8:3:3",
+  "shrinks": 20,
+  "prunedTrailingSteps": 1,
+  "history": {
+    "edits": [],
+    "steps": [
+      {
+        "op": "journal",
+        "id": 0
+      },
+      {
+        "op": "overlap",
+        "background": "flush",
+        "boundary": "seal",
+        "ids": [
+          0
+        ],
+        "during": [
+          {
+            "op": "compact"
+          }
+        ],
+        "finish": "release"
+      }
+    ]
+  },
+  "error": {
+    "type": "property",
+    "invariant": "recovery-wire-structs",
+    "actual": [],
+    "expected": [
+      [
+        "101:0",
+        "b"
+      ],
+      [
+        "101:1",
+        "a"
+      ],
+      [
+        "101:2",
+        "s"
+      ],
+      [
+        "101:3",
+        "e"
+      ],
+      [
+        "101:4",
+        "0"
+      ]
+    ],
+    "message": "recovery-wire-structs: [] !== [[\"101:0\",\"b\"],[\"101:1\",\"a\"],[\"101:2\",\"s\"],[\"101:3\",\"e\"],[\"101:4\",\"0\"]]",
+    "stack": "Error: recovery-wire-structs: [] !== [[\"101:0\",\"b\"],[\"101:1\",\"a\"],[\"101:2\",\"s\"],[\"101:3\",\"e\"],[\"101:4\",\"0\"]]\n    at equal (http://127.0.0.1:5186/test/storage-properties/oracle.ts:14:65)\n    at checkRecovery (http://127.0.0.1:5186/test/storage-properties/oracle.ts:108:3)\n    at check (http://127.0.0.1:5186/test/storage-properties/browser.mjs:157:26)\n    at async overlap (http://127.0.0.1:5186/test/storage-properties/browser.mjs:266:3)\n    at async step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:300:15)\n    at async Object.step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:393:14)\n    at async <anonymous>:337:30"
+  }
+}

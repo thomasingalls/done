@@ -1,0 +1,9 @@
+{
+  "package": "playwright-core",
+  "version": "1.62.0",
+  "path": "/Users/thomasingalls/Code/done/node_modules/.pnpm/playwright-core@1.62.0/node_modules/playwright-core/lib/coreBundle.js",
+  "sha256": "3258d1cf334c6afc95f22aa9c292436cb976b391e0437f1359c83b84f0cb9d66",
+  "startLine": 23882,
+  "excerpt": "            const next = () => {\n              if (aborted)\n                return;\n              try {\n                const success = predicate();\n                if (success) {\n                  fulfill(success);\n                  return;\n                }\n                if (typeof polling !== \"number\")\n                  injected.utils.builtins.requestAnimationFrame(next);\n                else\n                  injected.utils.builtins.setTimeout(next, polling);\n              } catch (e) {\n                reject(e);",
+  "finding": "The page poll tests predicate() for truthiness before awaiting its result. An async predicate can therefore end polling with a false resolved value. The repaired Node-side loop awaits the boolean on every iteration."
+}

@@ -2,7 +2,7 @@
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
 import { chromium } from '@playwright/test';
@@ -35,37 +35,20 @@ if (existsSync(output)) throw Error('Refusing existing output: ' + output);
 mkdirSync(output, { recursive: true });
 const hash = (value) => createHash('sha256').update(value).digest('hex');
 const git = (...args) => execFileSync('git', ['-C', root, ...args], { encoding: 'utf8' }).trim();
-const sourceNames = [
-  'custody.ts',
-  'localClearState.ts',
-  'startupStorage.ts',
-  'startupState.ts',
-  'custodyCrypto.ts',
-  'custodyRecord.ts',
-  'writeSession.ts',
-  'storageCompatibility.ts',
-  'contentRecord.ts',
-  'contentDatabase.ts',
-  'contentStore.ts',
-  'contentCompaction.ts',
-  'yjs.ts',
-  'storeName.ts',
-  'journalCodec.ts',
-  'journalStore.ts',
-];
-const sources = Object.fromEntries(
-  sourceNames.map((n) => [n, readFileSync(join(root, 'src/crdt', n), 'utf8')]),
-);
-sources['seal.generated.ts'] = readFileSync(
-  join(root, 'wasm/journal-seal/seal.generated.ts'),
-  'utf8',
-);
 const tree = (dir) =>
   readdirSync(join(root, dir), { withFileTypes: true }).flatMap((e) =>
     e.isDirectory() ? tree(`${dir}/${e.name}`) : [`${dir}/${e.name}`],
   );
+const sourceNames = [...tree('src'), ...tree('account-protocol')];
+const sources = Object.fromEntries(
+  sourceNames.map((n) => [n, readFileSync(join(root, n), 'utf8')]),
+);
+sources['wasm/journal-seal/seal.generated.ts'] = readFileSync(
+  join(root, 'wasm/journal-seal/seal.generated.ts'),
+  'utf8',
+);
 const recorded = [
-  ...sourceNames.map((n) => 'src/crdt/' + n),
+  ...sourceNames,
   'wasm/journal-seal/seal.generated.ts',
   'package.json',
   'pnpm-lock.yaml',
@@ -110,16 +93,21 @@ async function historyRun(origin, history) {
   const load = async () => {
     page = await context.newPage();
     await page.goto(origin + '/test/storage-properties/index.html');
-    await page.waitForFunction(() => Boolean(window.properties), { timeout: 15000 });
+    await page.waitForFunction(() => Boolean(window.properties), undefined, { timeout: 15000 });
   };
-  const call = (method, value) =>
-    Promise.race([
-      page.evaluate(({ method, value }) => window.properties[method](value), { method, value }),
-      new Promise((_, reject) => {
-        const timer = setTimeout(() => reject(Error(`Harness timeout: ${method}`)), 20000);
-        timer.unref();
-      }),
-    ]);
+  const call = async (method, value) => {
+    let timer;
+    try {
+      return await Promise.race([
+        page.evaluate(({ method, value }) => window.properties[method](value), { method, value }),
+        new Promise((_, reject) => {
+          timer = setTimeout(() => reject(Error(`Harness timeout: ${method}`)), 20000);
+        }),
+      ]);
+    } finally {
+      clearTimeout(timer);
+    }
+  };
   let index = -1;
   try {
     await load();
@@ -249,11 +237,15 @@ async function withServer(mutation, action) {
   mkdirSync(folder, { recursive: true });
   const tested = { ...sources };
   if (mutation) {
-    if (tested[mutation.file].split(mutation.from).length !== 2)
+    const file = 'src/crdt/' + mutation.file;
+    if (tested[file].split(mutation.from).length !== 2)
       throw Error('Nonunique mutant anchor: ' + label);
-    tested[mutation.file] = tested[mutation.file].replace(mutation.from, mutation.to);
+    tested[file] = tested[file].replace(mutation.from, mutation.to);
   }
-  for (const [n, s] of Object.entries(tested)) writeFileSync(join(folder, n), s);
+  for (const [n, s] of Object.entries(tested)) {
+    mkdirSync(dirname(join(folder, n)), { recursive: true });
+    writeFileSync(join(folder, n), s);
+  }
   const server = await createServer({
     configFile: false,
     root,
@@ -261,18 +253,21 @@ async function withServer(mutation, action) {
     cacheDir: join(folder, 'vite-cache'),
     resolve: {
       alias: {
-        '../../wasm/journal-seal/seal.generated': join(folder, 'seal.generated.ts'),
-        '@custody': join(folder, 'custody.ts'),
-        '@store-name': join(folder, 'storeName.ts'),
+        '../../wasm/journal-seal/seal.generated': join(
+          folder,
+          'wasm/journal-seal/seal.generated.ts',
+        ),
+        '@custody': join(folder, 'src/crdt/custody.ts'),
+        '@store-name': join(folder, 'src/crdt/storeName.ts'),
       },
     },
     optimizeDeps: { noDiscovery: true },
     server: { host: '127.0.0.1', port: 5186, strictPort: true, fs: { allow: [root] } },
   });
-  await server.listen();
   try {
+    await server.listen();
     const result = await action(
-      'http://127.0.0.1:5186',
+      `http://127.0.0.1:${server.httpServer.address().port}`,
       Object.fromEntries(Object.entries(tested).map(([n, s]) => [n, hash(s)])),
     );
     for (const [n, s] of Object.entries(tested))

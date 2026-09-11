@@ -1,0 +1,10 @@
+{
+  "earlyReturn": {
+    "bytes": 475,
+    "persisted": 0
+  },
+  "missingClosure": {
+    "state": "ready",
+    "pending": 1
+  }
+}

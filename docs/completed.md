@@ -2178,3 +2178,31 @@ Next is the validation-baseline repair exposed by F-01/F-02, before v2 service r
 reader/publisher resolution. Exact Account encodings/vectors, admission capacity, fresh service activation
 assertion and the other accepted review follow-ups remain prerequisites to real Account use. No personal
 release, browser, factor, server, L-2 document or whole debt was changed/paid.
+
+
+## 2026-09-11 — Aggregate validation baseline restored (`L-1`)
+
+Committed ordered remote editor integration as `19586b6`, excluding the annotated review. Then archived
+that review unchanged under [implementation reviews](./review/implementation/README.md) and committed it
+separately as `500630f`, as authorized. Historical uncommitted-at-assessment notes remain historical.
+
+[Validation repair](./validation-baseline.md) closes this bounded F-01/F-02/F-20 phase. The private v2
+generator now participates in normal vector commands and the field-elision audit, with 20 isolated
+HKDF/AAD/signature negatives and unchanged positive wires. Four storage campaigns preserve their source
+import trees and hashes, and the journal mutation targets its actual snapshot. Property/stage deadlines
+are explicit. A startup resource leak, a timing-sensitive lifecycle mutation oracle, a compatibility
+fixture readiness race, and a message-dependent refusal assertion were found and repaired; failed evidence
+and the strengthened controls are retained.
+
+[The actual aggregate](./account-conformance-runs/2026-09-11-validation-baseline.md), `pnpm check`, passed
+in 73.2 minutes against the complete patch in an isolated checkout: 958 unit tests, 225 field elisions,
+all storage/migration/application/Account gates through ordered remote editor, four startup-error controls,
+and all required mutation controls. The repaired carrier property run covers six saved regressions,
+120 generated histories and 11,461 recovery comparisons. Earlier interrupted/failed attempts are
+not credited as passing. Source hashes and personal bundle hashes were checked after the run.
+
+No production protocol or personal installation changed, and no whole-protocol debt is paid. Other
+historical tests were exercised, not comprehensively audited for every possible weak oracle. The remaining
+accepted review findings still gate real Account use. Next is explicit v2 service reader/publisher
+resolution, followed by owned receive transport and v9 sender composition, then enrollment/adoption.
+This outcome is appended before replacing L-1 progress; L-2 is unchanged.

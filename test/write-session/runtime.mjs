@@ -172,6 +172,7 @@ export function fixture() {
       const resolve = gates.get(name);
       if (!resolve) throw Error('Gate was not reached: ' + name);
       gates.delete(name);
+      record('gate-release', { name });
       resolve();
     },
     snapshot() {

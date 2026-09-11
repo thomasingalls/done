@@ -1,4 +1,5 @@
 import { isDeepStrictEqual } from 'node:util';
+import { setTimeout as delay } from 'node:timers/promises';
 
 export async function runCase(definition, env) {
   const pageErrors = [];
@@ -68,14 +69,24 @@ export async function runCase(definition, env) {
     p.waitForFunction((name) => window.lifecycle.snapshot().gates.includes(name), name);
   const entered = async (p, id) =>
     p.waitForFunction((id) => window.lifecycle.snapshot().entries[id]?.entered, id);
-  const queuedOrEntered = async (p, id) =>
-    p.waitForFunction(async (id) => {
-      const locks = await navigator.locks.query();
-      return (
-        window.lifecycle.snapshot().entries[id]?.entered ||
-        locks.pending.some((l) => l.mode === 'exclusive')
-      );
-    }, id);
+  // Await the predicate itself. A Promise returned inside Playwright's page
+  // polling callback can be truthy before the native query has returned false.
+  const until = async (predicate) => {
+    const deadline = Date.now() + 8000;
+    do {
+      if (await predicate()) return;
+      await delay(10);
+    } while (Date.now() < deadline);
+    throw Error('Timed out waiting for native lock observation');
+  };
+  const queuedOrEntered = (p, id) =>
+    until(
+      async () =>
+        (await state(p, id)).entered ||
+        (await call(p, 'locks')).pending.some((l) => l.mode === 'exclusive'),
+    );
+  const sharedQueued = (p) =>
+    until(async () => (await call(p, 'locks')).pending.some((l) => l.mode === 'shared'));
   const crash = async (p) => {
     artifacts.push({
       point: 'before-renderer-crash',
@@ -141,9 +152,7 @@ export async function runCase(definition, env) {
         await close(a, 'a');
         await entered(b, 'x');
         await call(a, 'open', 'fresh');
-        await a.waitForFunction(async () =>
-          (await navigator.locks.query()).pending.some((l) => l.mode === 'shared'),
-        );
+        await sharedQueued(a);
         check('exclusive-blocks-key-initialization', (await state(a, 'fresh')).initializations, 0);
         await call(b, 'release', 'x:exclusive');
         await done(b, 'x', 'exclusive');
@@ -200,6 +209,17 @@ export async function runCase(definition, env) {
         await call(a, 'release', 'a:work');
         await done(a, 'a', 'close');
         await entered(b, 'x');
+        const snapshot = await call(a, 'snapshot');
+        const released = snapshot.events.findIndex(
+          (e) => e.kind === 'gate-release' && e.name === 'a:work',
+        );
+        const disposed = snapshot.events.findIndex(
+          (e) => e.kind === 'dispose-start' && e.id === 'a',
+        );
+        // The competing renderer can run late after an illegal release. This
+        // local event order detects skipped draining regardless of that delay.
+        check('detached-work-precedes-disposal', released >= 0 && disposed > released, true);
+        artifacts.push({ point: 'detached-work-drain-order', snapshot });
         check('detached-task-did-not-write', (await call(a, 'snapshot')).writes, []);
         schedule.push(
           'Task returns without awaiting a registered wait; close must still drain that wait',
@@ -231,9 +251,7 @@ export async function runCase(definition, env) {
         await call(b, 'exclusive', 'x', 'slot', { hold: true });
         await entered(b, 'x');
         await call(a, 'open', 'a');
-        await a.waitForFunction(async () =>
-          (await navigator.locks.query()).pending.some((l) => l.mode === 'shared'),
-        );
+        await sharedQueued(a);
         await call(a, 'abort', 'a');
         check(
           'queued-acquisition-cancelled',
@@ -326,18 +344,16 @@ export async function runCase(definition, env) {
           'Worker blocks tab-exclusive; graceful close releases; a second worker session releases only after termination',
         );
         await call(a, 'worker', 'open', 'worker');
-        await a.waitForFunction(
-          async () =>
-            (await window.lifecycle.worker('snapshot')).entries.worker?.state === 'active',
+        await until(
+          async () => (await call(a, 'worker', 'snapshot')).entries.worker?.state === 'active',
         );
         await call(b, 'exclusive', 'x');
         await queuedOrEntered(b, 'x');
         check('worker-blocks-tab-exclusive', (await state(b, 'x')).entered, false);
         await call(a, 'worker', 'close', 'worker');
         await done(b, 'x', 'exclusive');
-        await a.waitForFunction(
-          async () =>
-            (await window.lifecycle.worker('snapshot')).entries.worker?.state === 'closed',
+        await until(
+          async () => (await call(a, 'worker', 'snapshot')).entries.worker?.state === 'closed',
         );
         check(
           'worker-cleanup-clears-cache',
@@ -345,9 +361,8 @@ export async function runCase(definition, env) {
           false,
         );
         await call(a, 'worker', 'open', 'second');
-        await a.waitForFunction(
-          async () =>
-            (await window.lifecycle.worker('snapshot')).entries.second?.state === 'active',
+        await until(
+          async () => (await call(a, 'worker', 'snapshot')).entries.second?.state === 'active',
         );
         await call(b, 'exclusive', 'y');
         await queuedOrEntered(b, 'y');
@@ -368,9 +383,7 @@ export async function runCase(definition, env) {
         await call(a, 'exclusive', 'x', 'slot', { hold: true, fail: true });
         await entered(a, 'x');
         await call(b, 'open', 'b');
-        await b.waitForFunction(async () =>
-          (await navigator.locks.query()).pending.some((l) => l.mode === 'shared'),
-        );
+        await sharedQueued(b);
         check(
           'exclusive-error-case-blocks-initialization',
           (await state(b, 'b')).initializations,

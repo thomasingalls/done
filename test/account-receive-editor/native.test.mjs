@@ -187,10 +187,30 @@ test(
     await open(f.page, item);
     const q = await request(f.page),
       a = answer(f, item, q, wire),
-      bad = Buffer.from(a.bytes);
-    bad[bad.length - 5] ^= 1;
-    await assert.rejects(receive(f.page, bad), /refused/);
-    assert.equal(await view(f.page), initial);
+      original = JSON.parse(Buffer.from(a.bytes).toString('utf8')),
+      signature = original.at(-1),
+      before = await captures(f.page);
+    // Exercise both parsing and signature verification deliberately. XORing a
+    // random hex digit sometimes produced non-hex and changed the error message.
+    for (const altered of [
+      'g' + signature.slice(1),
+      (signature[0] === '0' ? '1' : '0') + signature.slice(1),
+    ]) {
+      const page = [...original];
+      page[page.length - 1] = altered;
+      const bad = [...Buffer.from(JSON.stringify(page))];
+      const refusal = await f.page.evaluate(async (bytes) => {
+        try {
+          await opened.receivePage(new Uint8Array(bytes));
+          return 'accepted';
+        } catch (cause) {
+          return cause.code;
+        }
+      }, bad);
+      assert.equal(refusal, 'receive-refused');
+      assert.equal(await view(f.page), initial);
+      assert.deepEqual(await captures(f.page), before);
+    }
     await receive(f.page, a.bytes);
     const conflict = answer(f, item, await request(f.page, 0), other);
     assert.equal((await receive(f.page, conflict.bytes)).kind, 'conflict');

@@ -110,6 +110,58 @@ function encrypted(plaintext: Uint8Array, aad = fields('done/env/v2', ...aadFiel
 }
 
 describe('row-4 envelope codec', () => {
+  it('rejects all 20 published private v2 binding substitutions with independent WebCrypto', async () => {
+    const root = await crypto.subtle.importKey('raw', key, 'HKDF', false, ['deriveKey']);
+    const derive = (info: Uint8Array<ArrayBuffer>) =>
+      crypto.subtle.deriveKey(
+        { name: 'HKDF', hash: 'SHA-256', salt: new Uint8Array(), info },
+        root,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['decrypt'],
+      );
+    const originalInfo = envelopeKeyInfo(h),
+      originalAAD = envelopeAAD(h);
+    const originalKey = await derive(originalInfo);
+    // Prove the fixture authenticates before interpreting any refusal as coverage.
+    await expect(
+      crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv: baseline.nonce, additionalData: originalAAD },
+        originalKey,
+        baseline.ct,
+      ),
+    ).resolves.toEqual(bytes(first.derived.body).buffer);
+    expect(
+      await crypto.subtle.verify(
+        'Ed25519',
+        verifier,
+        baseline.sig,
+        envelopeSignatureMessage(baseline, baseline.nonce, baseline.digest),
+      ),
+    ).toBe(true);
+    expect(vectors.must_fail).toHaveLength(20);
+    for (const negative of vectors.must_fail) {
+      const encoded = bytes(negative.encoded);
+      if (negative.construction === 'signature_message') {
+        expect(
+          await crypto.subtle.verify('Ed25519', verifier, baseline.sig, encoded),
+          negative.name,
+        ).toBe(false);
+      } else {
+        const changedKey =
+          negative.construction === 'hkdf_info' ? await derive(encoded) : originalKey;
+        const changedAAD = negative.construction === 'aad' ? encoded : originalAAD;
+        await expect(
+          crypto.subtle.decrypt(
+            { name: 'AES-GCM', iv: baseline.nonce, additionalData: changedAAD },
+            changedKey,
+            baseline.ct,
+          ),
+          negative.name,
+        ).rejects.toThrow();
+      }
+    }
+  });
   it('separates v2 keys by credential and generation and refuses v1 mint/downgrade', async () => {
     const base = envelopeKeyInfo(h);
     for (const other of [
