@@ -1,0 +1,15 @@
+✔ native creation and cold unlock use exact factor/envelope/credential/MAC bytes and dispose owned temporary key material (351.710917ms)
+✔ native owner refuses authentically sealed wrong key pairs and changed metadata; actual guard omissions expose each boundary (585.419791ms)
+✔ native structured-clone state counterexample is rejected at parsing; old coercion still cannot open the ordinary owner (471.077417ms)
+▶ native reservation comparison includes the prior MAC before any root encryption
+  ✔ base (290.042417ms)
+  ✔ equalMac (270.850584ms)
+✔ native reservation comparison includes the prior MAC before any root encryption (561.775084ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2636.18775

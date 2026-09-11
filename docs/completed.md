@@ -2857,3 +2857,35 @@ servers remain stopped; unrelated root files and real Account/browser/secrets ar
 
 Next is the aggregate A/B/C/D1–D8 F-05/F-06 closure audit, including inherited limits. Zero open groups
 does not itself close those findings. F-15, remaining review and broader Account/release gates remain.
+
+
+## 2026-09-11 — Aggregate Account crypto-contract closure (`L-1` seat)
+
+D8 is signed and committed as `393ef43`; all nine C/D1–D8 signatures verify `G`. The aggregate audit
+is complete and remains unstaged/uncommitted. The historical review and earlier receipts are unchanged.
+
+[Current dispositions](./review/implementation/account-crypto-closure.md) close F-05 and F-06 for the
+current private first-epoch Account protocol. F-05's source/map/byte/vector omissions are repaired across
+A/B/C/D1–D8, with the initial empty-head rule explicit and the four inherited Local/migration groups
+separately scoped. F-06's TRD/row-14/runtime/current vectors agree on the 96-byte payload/112-byte
+ciphertext; historical scalar-only bytes remain preserved and refused. Other findings and broader
+protocol/release obligations are not closed by these decisions.
+
+[Aggregate evidence](./account-conformance-runs/2026-09-11-account-crypto-audit.md): 71 stages,
+870 matching source pins, 237 Node tests/36 files including all 27 declared files
+and 100 tests/11 native files. The separate slot/transport unit bridges and 30 vector
+commands pass, with no skipped test or timeout. Eleven corpora contain 159 fixed cases, 4,332 published
+input negatives and 4,106 encoded omissions; their different evidence levels are explicitly recorded.
+The source/field assessment and six manual entrypoints supplement registry counts. Historical source
+comparison distinguishes intervening B/D1/D6 repairs from unchanged D6–D8 source. No new production
+defect was found. Stale checker/registry status text is corrected and a reproducible aggregate runner
+is exposed as `pnpm account:crypto-audit`.
+
+Production sources, existing tests, 31 prior tracked vector files, all 21 personal package hashes,
+historical review and L-2 are unchanged. Personal servers remain stopped, unrelated root files untouched,
+and no real Account/browser/secrets/routing changes occurred. The full D8 unit receipt remains valid at
+unchanged source; this audit reruns the directly referenced unit bridges.
+
+Next is F-15 reservation durability, beginning with its failure model and transaction inventory, before
+any strict-persistence change. Page/renderer loss, power loss and restore/clone branching must remain
+distinct. Enrollment/adoption, later epochs, recovery/finalization and other review/release gates remain.

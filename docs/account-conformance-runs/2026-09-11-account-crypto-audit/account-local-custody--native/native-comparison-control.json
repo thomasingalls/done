@@ -1,0 +1,15 @@
+{
+  "evidence": [
+    {
+      "control": "base",
+      "rootEncryptions": 0,
+      "result": "repair-required"
+    },
+    {
+      "control": "equalMac",
+      "rootEncryptions": 3,
+      "result": "completed"
+    }
+  ],
+  "crypto": "real native comparison race; changed stored MAC is not silently overwritten"
+}

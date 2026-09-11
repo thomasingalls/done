@@ -1,0 +1,12 @@
+{
+  "rootUses": 3,
+  "encryptions": 4,
+  "metadataDerivations": 4,
+  "temporaryBuffers": 17,
+  "logicalDisposal": true,
+  "scope": {
+    "slotId": "native-custody-slot",
+    "principalId": "native-custody-pr-é",
+    "workspaceId": "native-custody-ws-🙂"
+  }
+}

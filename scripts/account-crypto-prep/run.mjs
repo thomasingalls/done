@@ -27,6 +27,6 @@ if (failures.length) {
     `${args.includes('--record') ? 'Recorded reviewed' : 'Matched pinned'} runtime census: ${current.sources.length} sources, ${current.domains.length} labels/templates, ${registry.groups.length} groups; ${registry.unlabelled.length} manual entrypoints.`,
   );
   console.log(
-    'Inventory only: authority-map integration, complete byte vectors and field omissions remain open.',
+    'Inventory only: this command checks source classification, not byte contracts or finding closure. See docs/review/implementation/account-crypto-closure.md and run account:crypto-audit for aggregate evidence.',
   );
 }

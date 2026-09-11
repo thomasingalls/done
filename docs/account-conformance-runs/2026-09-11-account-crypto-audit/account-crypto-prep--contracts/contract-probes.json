@@ -1,0 +1,70 @@
+{
+  "status": "passed",
+  "scope": "Synthetic prep probes, not fixed interoperable vectors or complete field omission coverage",
+  "messages": [
+    {
+      "object": "candidate",
+      "label": "done/promotion-genesis-candidate/v1",
+      "messageHex": "0023646f6e652f70726f6d6f74696f6e2d67656e657369732d63616e6469646174652f7631004031333631646632303535346436393731623362326362333038616164663564643965336239383630666662373235383063666364613233613636643232623364",
+      "signatureVerified": true,
+      "propertyReorderingStable": true
+    },
+    {
+      "object": "request",
+      "label": "done/genesis-origin/v1",
+      "messageHex": "0016646f6e652f67656e657369732d6f726967696e2f7631004061313662643265376563353861396461303135363030306436636532376432353936633833323734373662346636653862633065393131323538616537666436",
+      "signatureVerified": true,
+      "propertyReorderingStable": true
+    },
+    {
+      "object": "epoch",
+      "label": "done/first-epoch/v1",
+      "messageHex": "0013646f6e652f66697273742d65706f63682f7631004064376363323265656236393731363639343836626532353663363837646565366139393262323434306138623536626532383439666164346139666132663634",
+      "signatureVerified": true,
+      "propertyReorderingStable": true
+    },
+    {
+      "object": "offer",
+      "label": "done/promotion-offer/v1",
+      "messageHex": "0017646f6e652f70726f6d6f74696f6e2d6f666665722f7631004032326663323561383364653439663162646533663464393363646336356138353364663632633233303037303862616236643563393435623431373932663166",
+      "signatureVerified": true,
+      "propertyReorderingStable": true
+    },
+    {
+      "object": "receipt",
+      "label": "done/promotion-receipt/v2",
+      "messageHex": "0019646f6e652f70726f6d6f74696f6e2d726563656970742f7632004038353337333538643236313033356433613633373931633733396162656538323536303763316161623730353433323730346236353561356564323562343835",
+      "signatureVerified": true,
+      "propertyReorderingStable": true
+    },
+    {
+      "object": "activationContext",
+      "label": "done/promotion-activation-challenge/v1",
+      "messageHex": "0026646f6e652f70726f6d6f74696f6e2d61637469766174696f6e2d6368616c6c656e67652f7631004036323333663966636566653736653163646134316436653233363764373738326334646236653066346138663964383335343965363963346231626465313637",
+      "signatureVerified": true,
+      "propertyReorderingStable": true
+    }
+  ],
+  "genesisHeads": {
+    "emptyDigest": "f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475",
+    "explicitZeroPositionDigest": "b7fc8fd676e0cd222bb19a7abb9a713f815f2903cac0996d3825f56a485e4121",
+    "selected": "empty only for first genesis"
+  },
+  "recovery": {
+    "historical": {
+      "ciphertextBytes": 48,
+      "payloadBytes": 32
+    },
+    "current": {
+      "ciphertextBytes": 112,
+      "payloadBytes": 96,
+      "segments": [
+        "X25519 scalar [0,32)",
+        "root commitment [32,64)",
+        "Ed25519 bootstrap seed [64,96)"
+      ]
+    },
+    "publicKeysAndDigestsMatched": true,
+    "historicalPayloadRejectedByCurrentParser": true
+  }
+}

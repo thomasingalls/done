@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="eight fixed cases reproduce runtime root/acceptance creation, intermediate key derivation, cold opening and seed formats" time="0.026846" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/formats.test.mjs"/>
+	<testcase name="all primitive inputs and encoded fields have independent isolating negatives and AAD omission controls" time="0.001763" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/formats.test.mjs"/>
+	<testcase name="root opening refuses altered expected pin and each stored field; genuine wrong-seed ciphertext reaches correspondence check" time="0.005309" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/formats.test.mjs"/>
+	<testcase name="acceptance opening binds operator, full pin, proposal and public key; valid tags do not excuse wrong seeds or invalid carriers" time="0.001817" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/formats.test.mjs"/>
+	<testcase name="each fixed-purpose acceptance method signs its reviewed bytes and every use refuses after close" time="0.009906" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/formats.test.mjs"/>
+	<testcase name="200 shrinking-enabled synthetic key/scope histories cold-open independently sealed roots and reject authentic wrong-key payloads" time="0.642383" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/formats.test.mjs"/>
+	<!-- tests 6 -->
+	<!-- suites 0 -->
+	<!-- pass 6 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 814.992 -->
+</testsuites>

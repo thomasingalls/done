@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "status": "A/B/C and service custody D1 specified; remaining D and inherited Local bridges open",
+  "status": "A/B/C/D1–D8 specified; four inherited groups outside Account acceptance. Aggregate finding dispositions are recorded separately in docs/review/implementation/account-crypto-closure.md.",
   "schemaSha256": "50800229da6b62f58d5376c27c844ef85cddb906164dd2b4854f11d3013ae09d",
   "vectorFile": "test/vectors/first-authority.json",
   "vectorSha256": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9",

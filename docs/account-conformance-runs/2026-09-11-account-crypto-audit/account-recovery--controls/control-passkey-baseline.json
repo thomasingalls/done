@@ -1,0 +1,40 @@
+{
+  "proof": {
+    "retryKey": "lc8eG9BnSVCqy6HXvEFOv4mguj5oCsUs8gyhWNhc3UE",
+    "recoveryId": "zVRQgPZh-OqfCm9RH4Kd9kN8bsdjSj6TJPqSaAEnjJI",
+    "response": {},
+    "recoveryProof": "7c11044420e11b42d700316e38f4f7d546b5236e77c8c5cae0237bf17f25fe6a24a6108ddbd4fdaf9b2c2d66e88f247d1ba26aba6381f5d205f8d4e1bd21180f"
+  },
+  "result": {
+    "ok": false,
+    "refusal": "invalid-proof"
+  },
+  "before": [
+    {
+      "account_id": "w2Oys2H8L20pkarehptpyvSyIQ_dDD53TPMkTRIlGTM",
+      "attempt_id": "ma4vZby_JR1zHRsooIkGjGXJMpD9qSgi-jqQqfYSCu4",
+      "id": "zVRQgPZh-OqfCm9RH4Kd9kN8bsdjSj6TJPqSaAEnjJI",
+      "draft": "{\"authRoot\":\"abababababababababababababababababababababababababababababababab\",\"bootstrapSigner\":\"5c5e391c65de76dbef910ca79173763eb70a43adcfb68529cca7c3ec7ea468bc\",\"envelope\":{\"ct\":\"8c2119d5301c23b860cbde25ea73bc1e74168ca91757b357d857834ae29e9bb56806de8332d8e5eb84a9457085c2566b90dd8c3ddd56bee047166e7bd149798fca3e5dfa26ca9727d5c93c7ee62860798bb40ea18f91af90677258ecfea7e7904ca699e5abf8051552cee171e11437a6\",\"nonce\":\"dd7204f5e507576dd111de36\",\"salt\":\"c03d7836092a62a6ea140a6feeb7aa40\",\"v\":1},\"lineageId\":\"never-admitted\",\"principalId\":\"local-principal\",\"rPub\":\"f072a03d07028eea2240cf46575452fad5dece95b003184be92a89d717895e4b\",\"rootCommitment\":\"7344781dad63a31c4e34c75a0aacf90aae9dcd9fa90db3dfa15a21dc9804a441\",\"v\":1,\"workspaceId\":\"local-workspace\"}",
+      "digest": "1fa86c158dd930fb2ba37650c972b093ec1b98bb2edc444f3016a8f5c7e4d773",
+      "challenge": "SMETeQ34Lsgeo_6EAChIt-ZyndcsN76ID0fngoMlNL4",
+      "expires": 1789160225088,
+      "state": "open",
+      "proof_hash": null,
+      "result": null
+    }
+  ],
+  "after": [
+    {
+      "account_id": "w2Oys2H8L20pkarehptpyvSyIQ_dDD53TPMkTRIlGTM",
+      "attempt_id": "ma4vZby_JR1zHRsooIkGjGXJMpD9qSgi-jqQqfYSCu4",
+      "id": "zVRQgPZh-OqfCm9RH4Kd9kN8bsdjSj6TJPqSaAEnjJI",
+      "draft": "{\"authRoot\":\"abababababababababababababababababababababababababababababababab\",\"bootstrapSigner\":\"5c5e391c65de76dbef910ca79173763eb70a43adcfb68529cca7c3ec7ea468bc\",\"envelope\":{\"ct\":\"8c2119d5301c23b860cbde25ea73bc1e74168ca91757b357d857834ae29e9bb56806de8332d8e5eb84a9457085c2566b90dd8c3ddd56bee047166e7bd149798fca3e5dfa26ca9727d5c93c7ee62860798bb40ea18f91af90677258ecfea7e7904ca699e5abf8051552cee171e11437a6\",\"nonce\":\"dd7204f5e507576dd111de36\",\"salt\":\"c03d7836092a62a6ea140a6feeb7aa40\",\"v\":1},\"lineageId\":\"never-admitted\",\"principalId\":\"local-principal\",\"rPub\":\"f072a03d07028eea2240cf46575452fad5dece95b003184be92a89d717895e4b\",\"rootCommitment\":\"7344781dad63a31c4e34c75a0aacf90aae9dcd9fa90db3dfa15a21dc9804a441\",\"v\":1,\"workspaceId\":\"local-workspace\"}",
+      "digest": "1fa86c158dd930fb2ba37650c972b093ec1b98bb2edc444f3016a8f5c7e4d773",
+      "challenge": "SMETeQ34Lsgeo_6EAChIt-ZyndcsN76ID0fngoMlNL4",
+      "expires": 1789160225088,
+      "state": "open",
+      "proof_hash": null,
+      "result": null
+    }
+  ]
+}

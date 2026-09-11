@@ -1,0 +1,6406 @@
+{
+  "counts": {
+    "failures": [],
+    "specified": 78,
+    "open": 0,
+    "excluded": 1,
+    "inherited": 4
+  },
+  "phases": [
+    {
+      "phase": "A",
+      "vectorFile": "test/vectors/first-authority.json",
+      "sha256": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9",
+      "constructions": [
+        "candidate",
+        "origin",
+        "epoch",
+        "offer",
+        "receipt",
+        "activation",
+        "pin",
+        "bootstrap",
+        "pending",
+        "certification",
+        "manifest",
+        "semantic",
+        "binding",
+        "unlock",
+        "activation-nonce",
+        "request-digest",
+        "completion-digest"
+      ],
+      "vectors": [
+        {
+          "id": "candidate",
+          "kind": "signature",
+          "inputNegatives": 34,
+          "encodedOmissions": 35
+        },
+        {
+          "id": "origin",
+          "kind": "signature",
+          "inputNegatives": 54,
+          "encodedOmissions": 55
+        },
+        {
+          "id": "epoch",
+          "kind": "signature",
+          "inputNegatives": 28,
+          "encodedOmissions": 29
+        },
+        {
+          "id": "offer",
+          "kind": "signature",
+          "inputNegatives": 31,
+          "encodedOmissions": 32
+        },
+        {
+          "id": "receipt",
+          "kind": "signature",
+          "inputNegatives": 72,
+          "encodedOmissions": 73
+        },
+        {
+          "id": "activation",
+          "kind": "signature",
+          "inputNegatives": 13,
+          "encodedOmissions": 14
+        },
+        {
+          "id": "pin",
+          "kind": "digest",
+          "inputNegatives": 5,
+          "encodedOmissions": 6
+        },
+        {
+          "id": "bootstrap",
+          "kind": "signature",
+          "inputNegatives": 6,
+          "encodedOmissions": 7
+        },
+        {
+          "id": "pending",
+          "kind": "signature",
+          "inputNegatives": 26,
+          "encodedOmissions": 30
+        },
+        {
+          "id": "certification",
+          "kind": "signature",
+          "inputNegatives": 7,
+          "encodedOmissions": 14
+        },
+        {
+          "id": "manifest",
+          "kind": "signature",
+          "inputNegatives": 10,
+          "encodedOmissions": 11
+        },
+        {
+          "id": "semantic",
+          "kind": "signature",
+          "inputNegatives": 11,
+          "encodedOmissions": 12
+        },
+        {
+          "id": "binding",
+          "kind": "signature",
+          "inputNegatives": 7,
+          "encodedOmissions": 8
+        },
+        {
+          "id": "unlock",
+          "kind": "digest",
+          "inputNegatives": 4,
+          "encodedOmissions": 5
+        },
+        {
+          "id": "activation-nonce",
+          "kind": "digest",
+          "inputNegatives": 13,
+          "encodedOmissions": 2
+        },
+        {
+          "id": "request-digest",
+          "kind": "digest",
+          "inputNegatives": 55,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "completion-digest",
+          "kind": "digest",
+          "inputNegatives": 23,
+          "encodedOmissions": 0
+        }
+      ]
+    },
+    {
+      "phase": "B",
+      "vectorFile": "test/vectors/account-recovery.json",
+      "sha256": "05bd33eda96066ec7137bfe5d70353c02d325eabaa126b68d5df2af54b713e7a",
+      "constructions": [
+        "recovery-factor-seal",
+        "recovery-key-correspondence",
+        "recovery-initial-confirmation",
+        "recovery-commitments",
+        "account-initial-challenges",
+        "recovery-generation-bridge"
+      ],
+      "vectors": [
+        {
+          "id": "recovery-kdf",
+          "kind": "kdf",
+          "inputNegatives": 2,
+          "encodedOmissions": 2
+        },
+        {
+          "id": "recovery-seal",
+          "kind": "aead",
+          "inputNegatives": 4,
+          "encodedOmissions": 4
+        },
+        {
+          "id": "recovery-root",
+          "kind": "digest",
+          "inputNegatives": 4,
+          "encodedOmissions": 4
+        },
+        {
+          "id": "recovery-envelope",
+          "kind": "digest",
+          "inputNegatives": 5,
+          "encodedOmissions": 5
+        },
+        {
+          "id": "recovery-state",
+          "kind": "digest",
+          "inputNegatives": 6,
+          "encodedOmissions": 6
+        },
+        {
+          "id": "recovery-draft",
+          "kind": "digest",
+          "inputNegatives": 7,
+          "encodedOmissions": 7
+        },
+        {
+          "id": "recovery-key-check",
+          "kind": "signature",
+          "inputNegatives": 2,
+          "encodedOmissions": 2
+        },
+        {
+          "id": "recovery-confirm",
+          "kind": "signature",
+          "inputNegatives": 3,
+          "encodedOmissions": 3
+        },
+        {
+          "id": "account-challenge-register",
+          "kind": "digest",
+          "inputNegatives": 6,
+          "encodedOmissions": 6
+        },
+        {
+          "id": "account-challenge-confirm-registration",
+          "kind": "digest",
+          "inputNegatives": 6,
+          "encodedOmissions": 6
+        },
+        {
+          "id": "account-challenge-authenticate",
+          "kind": "digest",
+          "inputNegatives": 6,
+          "encodedOmissions": 6
+        },
+        {
+          "id": "account-challenge-finalize",
+          "kind": "digest",
+          "inputNegatives": 8,
+          "encodedOmissions": 8
+        },
+        {
+          "id": "recovery-generation-wrap",
+          "kind": "aead",
+          "inputNegatives": 5,
+          "encodedOmissions": 5
+        }
+      ]
+    },
+    {
+      "phase": "C",
+      "vectorFile": "test/vectors/account-transport.json",
+      "sha256": "c58306bf01bf075ab335c96e785130c63a0c406cbee14548cf18e9387907bc41",
+      "constructions": [
+        "transport-envelope-key",
+        "transport-envelope-encryption",
+        "transport-envelope-signature",
+        "transport-body",
+        "transport-envelope-wire",
+        "transport-wrapper-signature",
+        "transport-wrapper-wire",
+        "transport-refusal-signature",
+        "transport-refusal-id",
+        "transport-acceptance-link",
+        "transport-head-signature",
+        "transport-response-wire",
+        "transport-read-v1-signature",
+        "transport-read-v1-wire",
+        "transport-page-v1-signature",
+        "transport-page-v1-wire",
+        "transport-read-v2-signature",
+        "transport-read-v2-wire",
+        "transport-page-v2-signature",
+        "transport-page-v2-wire",
+        "transport-request-hash",
+        "transport-submit-wire",
+        "transport-service-chain",
+        "transport-service-witness"
+      ],
+      "vectors": [
+        {
+          "id": "transport-envelope-body",
+          "kind": "carrier",
+          "inputNegatives": 8,
+          "encodedOmissions": 8
+        },
+        {
+          "id": "transport-envelope-v1-kdf",
+          "kind": "kdf",
+          "inputNegatives": 2,
+          "encodedOmissions": 2
+        },
+        {
+          "id": "transport-envelope-v1-aad",
+          "kind": "aead",
+          "inputNegatives": 7,
+          "encodedOmissions": 7
+        },
+        {
+          "id": "transport-envelope-v1-signature",
+          "kind": "signature",
+          "inputNegatives": 9,
+          "encodedOmissions": 9
+        },
+        {
+          "id": "transport-envelope-v1-wire",
+          "kind": "carrier",
+          "inputNegatives": 12,
+          "encodedOmissions": 12
+        },
+        {
+          "id": "transport-envelope-v2-kdf",
+          "kind": "kdf",
+          "inputNegatives": 4,
+          "encodedOmissions": 4
+        },
+        {
+          "id": "transport-envelope-v2-aad",
+          "kind": "aead",
+          "inputNegatives": 7,
+          "encodedOmissions": 7
+        },
+        {
+          "id": "transport-envelope-v2-signature",
+          "kind": "signature",
+          "inputNegatives": 9,
+          "encodedOmissions": 9
+        },
+        {
+          "id": "transport-envelope-v2-wire",
+          "kind": "carrier",
+          "inputNegatives": 12,
+          "encodedOmissions": 12
+        },
+        {
+          "id": "transport-refusal",
+          "kind": "signature",
+          "inputNegatives": 9,
+          "encodedOmissions": 9
+        },
+        {
+          "id": "transport-refusal-id",
+          "kind": "digest",
+          "inputNegatives": 9,
+          "encodedOmissions": 9
+        },
+        {
+          "id": "transport-accepted-link",
+          "kind": "digest",
+          "inputNegatives": 7,
+          "encodedOmissions": 7
+        },
+        {
+          "id": "transport-accepted-head",
+          "kind": "signature",
+          "inputNegatives": 7,
+          "encodedOmissions": 7
+        },
+        {
+          "id": "transport-response-refused",
+          "kind": "carrier",
+          "inputNegatives": 11,
+          "encodedOmissions": 11
+        },
+        {
+          "id": "transport-response-accepted",
+          "kind": "carrier",
+          "inputNegatives": 12,
+          "encodedOmissions": 12
+        },
+        {
+          "id": "transport-submission-first",
+          "kind": "signature",
+          "inputNegatives": 5,
+          "encodedOmissions": 5
+        },
+        {
+          "id": "transport-submission-first-wire",
+          "kind": "carrier",
+          "inputNegatives": 8,
+          "encodedOmissions": 8
+        },
+        {
+          "id": "transport-submission-successor",
+          "kind": "signature",
+          "inputNegatives": 5,
+          "encodedOmissions": 5
+        },
+        {
+          "id": "transport-submission-successor-wire",
+          "kind": "carrier",
+          "inputNegatives": 8,
+          "encodedOmissions": 8
+        },
+        {
+          "id": "transport-submit-carrier",
+          "kind": "carrier",
+          "inputNegatives": 4,
+          "encodedOmissions": 4
+        },
+        {
+          "id": "transport-read-v1",
+          "kind": "signature",
+          "inputNegatives": 13,
+          "encodedOmissions": 13
+        },
+        {
+          "id": "transport-read-v1-wire",
+          "kind": "carrier",
+          "inputNegatives": 14,
+          "encodedOmissions": 14
+        },
+        {
+          "id": "transport-read-v1-hash",
+          "kind": "digest",
+          "inputNegatives": 14,
+          "encodedOmissions": 14
+        },
+        {
+          "id": "transport-page-v1-empty",
+          "kind": "signature",
+          "inputNegatives": 6,
+          "encodedOmissions": 6
+        },
+        {
+          "id": "transport-page-v1-empty-wire",
+          "kind": "carrier",
+          "inputNegatives": 7,
+          "encodedOmissions": 7
+        },
+        {
+          "id": "transport-page-v1-full",
+          "kind": "signature",
+          "inputNegatives": 7,
+          "encodedOmissions": 7
+        },
+        {
+          "id": "transport-page-v1-full-wire",
+          "kind": "carrier",
+          "inputNegatives": 8,
+          "encodedOmissions": 8
+        },
+        {
+          "id": "transport-read-v2",
+          "kind": "signature",
+          "inputNegatives": 14,
+          "encodedOmissions": 14
+        },
+        {
+          "id": "transport-read-v2-wire",
+          "kind": "carrier",
+          "inputNegatives": 15,
+          "encodedOmissions": 15
+        },
+        {
+          "id": "transport-read-v2-hash",
+          "kind": "digest",
+          "inputNegatives": 15,
+          "encodedOmissions": 15
+        },
+        {
+          "id": "transport-page-v2-empty",
+          "kind": "signature",
+          "inputNegatives": 6,
+          "encodedOmissions": 6
+        },
+        {
+          "id": "transport-page-v2-empty-wire",
+          "kind": "carrier",
+          "inputNegatives": 7,
+          "encodedOmissions": 7
+        },
+        {
+          "id": "transport-page-v2-full",
+          "kind": "signature",
+          "inputNegatives": 7,
+          "encodedOmissions": 7
+        },
+        {
+          "id": "transport-page-v2-full-wire",
+          "kind": "carrier",
+          "inputNegatives": 8,
+          "encodedOmissions": 8
+        },
+        {
+          "id": "transport-service-chain-1",
+          "kind": "digest",
+          "inputNegatives": 5,
+          "encodedOmissions": 5
+        },
+        {
+          "id": "transport-service-chain-2",
+          "kind": "digest",
+          "inputNegatives": 5,
+          "encodedOmissions": 5
+        },
+        {
+          "id": "transport-service-witness",
+          "kind": "signature",
+          "inputNegatives": 8,
+          "encodedOmissions": 8
+        }
+      ]
+    },
+    {
+      "phase": "D1",
+      "vectorFile": "test/vectors/account-service-custody.json",
+      "sha256": "544cf328c0eacc87f25d61dff02511db3c66a9b93877e63ebcd0a159876df32c",
+      "constructions": [
+        "service-root-custody",
+        "service-acceptance-custody",
+        "service-key-exports",
+        "service-acceptance-carrier"
+      ],
+      "vectors": [
+        {
+          "id": "service-root-key",
+          "kind": "kdf",
+          "inputNegatives": 7,
+          "encodedOmissions": 5
+        },
+        {
+          "id": "service-root-seal",
+          "kind": "aead",
+          "inputNegatives": 9,
+          "encodedOmissions": 6
+        },
+        {
+          "id": "service-acceptance-custody-key",
+          "kind": "kdf",
+          "inputNegatives": 5,
+          "encodedOmissions": 3
+        },
+        {
+          "id": "service-acceptance-seal-key",
+          "kind": "kdf",
+          "inputNegatives": 3,
+          "encodedOmissions": 1
+        },
+        {
+          "id": "service-acceptance-seal",
+          "kind": "aead",
+          "inputNegatives": 12,
+          "encodedOmissions": 9
+        },
+        {
+          "id": "service-seed-export",
+          "kind": "carrier",
+          "inputNegatives": 1,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "service-public-export",
+          "kind": "carrier",
+          "inputNegatives": 1,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "service-acceptance-carrier",
+          "kind": "carrier",
+          "inputNegatives": 1,
+          "encodedOmissions": 0
+        }
+      ]
+    },
+    {
+      "phase": "D2",
+      "vectorFile": "test/vectors/account-promotion.json",
+      "sha256": "e4557d7786a687426d8fbf282a6745713eed091264d8a7cb2518665343428e34",
+      "constructions": [
+        "local-promotion-mac",
+        "local-promotion-identities"
+      ],
+      "vectors": [
+        {
+          "id": "promotion-reserved",
+          "kind": "mac",
+          "inputNegatives": 43,
+          "encodedOmissions": 45
+        },
+        {
+          "id": "promotion-prepared",
+          "kind": "mac",
+          "inputNegatives": 54,
+          "encodedOmissions": 56
+        },
+        {
+          "id": "promotion-genesis-prepared",
+          "kind": "mac",
+          "inputNegatives": 89,
+          "encodedOmissions": 91
+        },
+        {
+          "id": "promotion-admission-requested",
+          "kind": "mac",
+          "inputNegatives": 147,
+          "encodedOmissions": 149
+        },
+        {
+          "id": "promotion-admission-offered",
+          "kind": "mac",
+          "inputNegatives": 200,
+          "encodedOmissions": 202
+        },
+        {
+          "id": "promotion-admission-receipted",
+          "kind": "mac",
+          "inputNegatives": 272,
+          "encodedOmissions": 274
+        },
+        {
+          "id": "promotion-handoff-prepared",
+          "kind": "mac",
+          "inputNegatives": 301,
+          "encodedOmissions": 303
+        },
+        {
+          "id": "promotion-handoff-selected",
+          "kind": "mac",
+          "inputNegatives": 301,
+          "encodedOmissions": 303
+        },
+        {
+          "id": "promotion-account-active",
+          "kind": "mac",
+          "inputNegatives": 301,
+          "encodedOmissions": 303
+        },
+        {
+          "id": "promotion-account-capturing",
+          "kind": "mac",
+          "inputNegatives": 301,
+          "encodedOmissions": 303
+        },
+        {
+          "id": "promotion-account-spooling",
+          "kind": "mac",
+          "inputNegatives": 301,
+          "encodedOmissions": 303
+        },
+        {
+          "id": "promotion-account-delivering",
+          "kind": "mac",
+          "inputNegatives": 301,
+          "encodedOmissions": 303
+        },
+        {
+          "id": "promotion-account-receiving",
+          "kind": "mac",
+          "inputNegatives": 301,
+          "encodedOmissions": 303
+        },
+        {
+          "id": "promotion-mac-key",
+          "kind": "kdf",
+          "inputNegatives": 7,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "promotion-lineage",
+          "kind": "digest",
+          "inputNegatives": 10,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "promotion-attempt",
+          "kind": "digest",
+          "inputNegatives": 2,
+          "encodedOmissions": 0
+        }
+      ]
+    },
+    {
+      "phase": "D3",
+      "vectorFile": "test/vectors/account-ledger.json",
+      "sha256": "99f0df5547f7e82a4c578b3da306ccbb7807dec7a487a6655c651e9b8d538c6c",
+      "constructions": [
+        "account-source-capsule",
+        "account-spool-capsule",
+        "account-delivery-capsule",
+        "account-inbound-capsule",
+        "account-ledger-chain",
+        "account-inbound-baseline"
+      ],
+      "vectors": [
+        {
+          "id": "source-human",
+          "kind": "carrier",
+          "inputNegatives": 11,
+          "encodedOmissions": 11
+        },
+        {
+          "id": "source-mixed",
+          "kind": "carrier",
+          "inputNegatives": 14,
+          "encodedOmissions": 14
+        },
+        {
+          "id": "spool-position",
+          "kind": "carrier",
+          "inputNegatives": 12,
+          "encodedOmissions": 12
+        },
+        {
+          "id": "spool-attempt",
+          "kind": "carrier",
+          "inputNegatives": 10,
+          "encodedOmissions": 10
+        },
+        {
+          "id": "spool-retry",
+          "kind": "carrier",
+          "inputNegatives": 10,
+          "encodedOmissions": 10
+        },
+        {
+          "id": "spool-envelope",
+          "kind": "carrier",
+          "inputNegatives": 11,
+          "encodedOmissions": 11
+        },
+        {
+          "id": "delivery-submission",
+          "kind": "carrier",
+          "inputNegatives": 12,
+          "encodedOmissions": 12
+        },
+        {
+          "id": "delivery-response",
+          "kind": "carrier",
+          "inputNegatives": 12,
+          "encodedOmissions": 12
+        },
+        {
+          "id": "inbound-received",
+          "kind": "carrier",
+          "inputNegatives": 13,
+          "encodedOmissions": 13
+        },
+        {
+          "id": "inbound-conflict",
+          "kind": "carrier",
+          "inputNegatives": 13,
+          "encodedOmissions": 13
+        },
+        {
+          "id": "chain-spool-position",
+          "kind": "digest",
+          "inputNegatives": 4,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "chain-spool-attempt",
+          "kind": "digest",
+          "inputNegatives": 4,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "chain-spool-retry",
+          "kind": "digest",
+          "inputNegatives": 4,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "chain-spool-envelope",
+          "kind": "digest",
+          "inputNegatives": 4,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "chain-delivery-submission",
+          "kind": "digest",
+          "inputNegatives": 4,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "chain-delivery-response",
+          "kind": "digest",
+          "inputNegatives": 4,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "chain-inbound-received",
+          "kind": "digest",
+          "inputNegatives": 4,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "chain-inbound-conflict",
+          "kind": "digest",
+          "inputNegatives": 4,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "capture-source-digest",
+          "kind": "digest",
+          "inputNegatives": 11,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "inbound-baseline-digest",
+          "kind": "digest",
+          "inputNegatives": 73,
+          "encodedOmissions": 0
+        }
+      ]
+    },
+    {
+      "phase": "D4",
+      "vectorFile": "test/vectors/account-counter.json",
+      "sha256": "caba0c0bd82e9f73933b39b38e1b16e91fa538c2a2e2cc31c3928466a86f52df",
+      "constructions": [
+        "content-metadata-key",
+        "content-initialization-witness",
+        "content-counter-v1",
+        "content-counter-v2"
+      ],
+      "vectors": [
+        {
+          "id": "content-metadata-key",
+          "kind": "kdf",
+          "inputNegatives": 5,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "content-witness-creating",
+          "kind": "mac",
+          "inputNegatives": 8,
+          "encodedOmissions": 9
+        },
+        {
+          "id": "content-witness-ready",
+          "kind": "mac",
+          "inputNegatives": 8,
+          "encodedOmissions": 9
+        },
+        {
+          "id": "content-counter-v1-empty",
+          "kind": "mac",
+          "inputNegatives": 11,
+          "encodedOmissions": 13
+        },
+        {
+          "id": "content-counter-v1-multigen",
+          "kind": "mac",
+          "inputNegatives": 13,
+          "encodedOmissions": 17
+        },
+        {
+          "id": "content-counter-v2-empty",
+          "kind": "mac",
+          "inputNegatives": 13,
+          "encodedOmissions": 15
+        },
+        {
+          "id": "content-counter-v2-ledger",
+          "kind": "mac",
+          "inputNegatives": 13,
+          "encodedOmissions": 15
+        },
+        {
+          "id": "content-counter-v2-high-gen",
+          "kind": "mac",
+          "inputNegatives": 14,
+          "encodedOmissions": 17
+        }
+      ]
+    },
+    {
+      "phase": "D5",
+      "vectorFile": "test/vectors/account-store.json",
+      "sha256": "79bfaa9e90465f779d3a345bb98704e953cceb748e48819b7d3e1ca02dd5f607",
+      "constructions": [
+        "store-name-digest",
+        "store-record-aead",
+        "journal-key",
+        "journal-carrier-aead"
+      ],
+      "vectors": [
+        {
+          "id": "store-name-unicode",
+          "kind": "digest",
+          "inputNegatives": 2,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "store-name-boundary",
+          "kind": "digest",
+          "inputNegatives": 2,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "store-key",
+          "kind": "kdf",
+          "inputNegatives": 3,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "journal-key",
+          "kind": "kdf",
+          "inputNegatives": 2,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "store-record-update",
+          "kind": "aead",
+          "inputNegatives": 8,
+          "encodedOmissions": 8
+        },
+        {
+          "id": "store-record-state",
+          "kind": "aead",
+          "inputNegatives": 8,
+          "encodedOmissions": 8
+        },
+        {
+          "id": "store-record-heads",
+          "kind": "aead",
+          "inputNegatives": 8,
+          "encodedOmissions": 8
+        },
+        {
+          "id": "store-record-outbound",
+          "kind": "aead",
+          "inputNegatives": 8,
+          "encodedOmissions": 8
+        },
+        {
+          "id": "journal-carrier-1",
+          "kind": "aead",
+          "inputNegatives": 4,
+          "encodedOmissions": 4
+        },
+        {
+          "id": "journal-carrier-256",
+          "kind": "aead",
+          "inputNegatives": 4,
+          "encodedOmissions": 4
+        },
+        {
+          "id": "journal-carrier-4294967295",
+          "kind": "aead",
+          "inputNegatives": 4,
+          "encodedOmissions": 4
+        }
+      ]
+    },
+    {
+      "phase": "D6",
+      "vectorFile": "test/vectors/account-local-custody.json",
+      "sha256": "5bfae00faa516252408a1de6bd58e09ac888c340621c8d6c65df1a4dc4221f27",
+      "constructions": [
+        "custody-factor-v1",
+        "custody-generation-envelope",
+        "custody-credential-v2",
+        "custody-key-correspondence",
+        "custody-metadata-v2"
+      ],
+      "vectors": [
+        {
+          "id": "custody-factor-key-code",
+          "kind": "kdf",
+          "inputNegatives": 5,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "custody-factor-seal-code",
+          "kind": "aead",
+          "inputNegatives": 6,
+          "encodedOmissions": 6
+        },
+        {
+          "id": "custody-factor-key-prf",
+          "kind": "kdf",
+          "inputNegatives": 5,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "custody-factor-seal-prf",
+          "kind": "aead",
+          "inputNegatives": 6,
+          "encodedOmissions": 6
+        },
+        {
+          "id": "custody-generated-code",
+          "kind": "predicate",
+          "inputNegatives": 3,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "custody-envelope-1",
+          "kind": "aead",
+          "inputNegatives": 6,
+          "encodedOmissions": 6
+        },
+        {
+          "id": "custody-envelope-2",
+          "kind": "aead",
+          "inputNegatives": 6,
+          "encodedOmissions": 6
+        },
+        {
+          "id": "custody-credential-wrapping",
+          "kind": "aead",
+          "inputNegatives": 6,
+          "encodedOmissions": 6
+        },
+        {
+          "id": "custody-credential-signing",
+          "kind": "aead",
+          "inputNegatives": 6,
+          "encodedOmissions": 6
+        },
+        {
+          "id": "custody-signing-correspondence",
+          "kind": "predicate",
+          "inputNegatives": 1,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "custody-wrapping-correspondence",
+          "kind": "predicate",
+          "inputNegatives": 1,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "custody-metadata-key",
+          "kind": "kdf",
+          "inputNegatives": 5,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "custody-metadata-creating",
+          "kind": "mac",
+          "inputNegatives": 23,
+          "encodedOmissions": 23
+        },
+        {
+          "id": "custody-metadata-reserved",
+          "kind": "mac",
+          "inputNegatives": 23,
+          "encodedOmissions": 23
+        },
+        {
+          "id": "custody-metadata-protected",
+          "kind": "mac",
+          "inputNegatives": 33,
+          "encodedOmissions": 33
+        }
+      ]
+    },
+    {
+      "phase": "D7",
+      "vectorFile": "test/vectors/account-checkpoint.json",
+      "sha256": "508f0fb9c7dc87f434ea0d624bb3490c20156fda9badfe2aedeb7ec71b367f03",
+      "constructions": [
+        "genesis-checkpoint-key",
+        "genesis-checkpoint-seal"
+      ],
+      "vectors": [
+        {
+          "id": "checkpoint-key-genesis",
+          "kind": "kdf",
+          "inputNegatives": 4,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "checkpoint-seal-genesis",
+          "kind": "aead",
+          "inputNegatives": 5,
+          "encodedOmissions": 5
+        },
+        {
+          "id": "checkpoint-key-inherited",
+          "kind": "kdf",
+          "inputNegatives": 4,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "checkpoint-seal-inherited",
+          "kind": "aead",
+          "inputNegatives": 5,
+          "encodedOmissions": 5
+        },
+        {
+          "id": "checkpoint-key-decimal-helper",
+          "kind": "kdf",
+          "inputNegatives": 4,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "checkpoint-seal-decimal-helper",
+          "kind": "aead",
+          "inputNegatives": 5,
+          "encodedOmissions": 5
+        }
+      ]
+    },
+    {
+      "phase": "D8",
+      "vectorFile": "test/vectors/account-local-provenance.json",
+      "sha256": "a15f93629a0657756159db942e959ec9dc594b1b225b64082d9d030d2e08231d",
+      "constructions": [
+        "local-claim-key",
+        "local-claim-progress",
+        "local-claim-selected-import",
+        "local-claim-source-cleanup"
+      ],
+      "vectors": [
+        {
+          "id": "local-claim-key",
+          "kind": "kdf",
+          "inputNegatives": 5,
+          "encodedOmissions": 0
+        },
+        {
+          "id": "local-claim-fresh-custody",
+          "kind": "mac",
+          "inputNegatives": 3,
+          "encodedOmissions": 3
+        },
+        {
+          "id": "local-claim-fresh-content",
+          "kind": "mac",
+          "inputNegatives": 3,
+          "encodedOmissions": 3
+        },
+        {
+          "id": "local-claim-fresh-ready",
+          "kind": "mac",
+          "inputNegatives": 3,
+          "encodedOmissions": 3
+        },
+        {
+          "id": "local-claim-imported",
+          "kind": "mac",
+          "inputNegatives": 10,
+          "encodedOmissions": 10
+        },
+        {
+          "id": "local-claim-cleanup-v1",
+          "kind": "mac",
+          "inputNegatives": 10,
+          "encodedOmissions": 10
+        },
+        {
+          "id": "local-claim-cleanup-v2",
+          "kind": "mac",
+          "inputNegatives": 10,
+          "encodedOmissions": 10
+        },
+        {
+          "id": "local-claim-cleanup-v2-empty",
+          "kind": "mac",
+          "inputNegatives": 7,
+          "encodedOmissions": 7
+        }
+      ]
+    }
+  ],
+  "constructions": [
+    {
+      "id": "candidate",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "signature",
+        "digest"
+      ],
+      "labels": [
+        "done/promotion-genesis-candidate/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/genesis.ts",
+          "name": "genesisMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "4",
+          "hash": "166fcd729355"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "5",
+          "hash": "57d1d3ddb251"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-creating-device"
+      ],
+      "vectorCases": [
+        "candidate"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "origin",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "signature",
+        "digest"
+      ],
+      "labels": [
+        "done/genesis-origin/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "originMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "4",
+          "hash": "166fcd729355"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "5",
+          "hash": "57d1d3ddb251"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-first-origin"
+      ],
+      "vectorCases": [
+        "origin"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "epoch",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "signature",
+        "digest"
+      ],
+      "labels": [
+        "done/first-epoch/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "epochMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "4",
+          "hash": "166fcd729355"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-first-service"
+      ],
+      "vectorCases": [
+        "epoch"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "offer",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "signature",
+        "digest"
+      ],
+      "labels": [
+        "done/promotion-offer/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "offerMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "4",
+          "hash": "166fcd729355"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-first-service"
+      ],
+      "vectorCases": [
+        "offer"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "receipt",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "signature",
+        "digest"
+      ],
+      "labels": [
+        "done/promotion-receipt/v2"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "receiptMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "4",
+          "hash": "166fcd729355"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "7",
+          "hash": "77691367bf63"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-first-service",
+        "private-first-activation"
+      ],
+      "vectorCases": [
+        "receipt"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "activation",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "signature",
+        "digest"
+      ],
+      "labels": [
+        "done/promotion-activation-challenge/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/activation.ts",
+          "name": "activationMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "4",
+          "hash": "166fcd729355"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "7",
+          "hash": "77691367bf63"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-first-service",
+        "private-first-activation"
+      ],
+      "vectorCases": [
+        "activation"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "pin",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "digest"
+      ],
+      "labels": [
+        "done/service-authority-pin/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/authority.ts",
+          "name": "pinBytes"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "5",
+          "hash": "57d1d3ddb251"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-first-hashes"
+      ],
+      "vectorCases": [
+        "pin"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "bootstrap",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "signature",
+        "digest"
+      ],
+      "labels": [
+        "done/service-authority-bootstrap/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/authority.ts",
+          "name": "authorityMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "5",
+          "hash": "57d1d3ddb251"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-first-service"
+      ],
+      "vectorCases": [
+        "bootstrap"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "pending",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "signature",
+        "digest"
+      ],
+      "labels": [
+        "done/pending-account-observation/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/preparation.ts",
+          "name": "pendingMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "5",
+          "hash": "57d1d3ddb251"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-first-service"
+      ],
+      "vectorCases": [
+        "pending"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "certification",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "signature",
+        "digest"
+      ],
+      "labels": [
+        "done/certified-members/v1",
+        "done/certified-set-approval/v1",
+        "done/certified-set/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "certificationMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "5",
+          "hash": "57d1d3ddb251"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-creating-device"
+      ],
+      "vectorCases": [
+        "certification"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "manifest",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "signature",
+        "digest"
+      ],
+      "labels": [
+        "done/cp-manifest/v2",
+        "done/headvec/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "manifestMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "3",
+          "hash": "f14d0f566ff3"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "6",
+          "hash": "23edf4c7a828"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-creating-device",
+        "private-first-coverage"
+      ],
+      "vectorCases": [
+        "manifest"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "semantic",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "signature",
+        "digest"
+      ],
+      "labels": [
+        "done/cp-admit/v2"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "semanticMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "3",
+          "hash": "f14d0f566ff3"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "6",
+          "hash": "23edf4c7a828"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-creating-device",
+        "private-first-coverage"
+      ],
+      "vectorCases": [
+        "semantic"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "binding",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "signature",
+        "digest"
+      ],
+      "labels": [
+        "done/slotbind/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/slot.ts",
+          "name": "bindingMessage"
+        },
+        {
+          "path": "src/account/slotUnlock.ts",
+          "name": "slotBindingMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "7",
+          "hash": "77691367bf63"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-first-service",
+        "private-first-activation"
+      ],
+      "vectorCases": [
+        "binding"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "unlock",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "digest"
+      ],
+      "labels": [
+        "done/slotunlock/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/account/slotUnlock.ts",
+          "name": "slotUnlockChallenge"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "7",
+          "hash": "77691367bf63"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-first-activation"
+      ],
+      "vectorCases": [
+        "unlock"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "activation-nonce",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "digest"
+      ],
+      "labels": [
+        "done/promotion-activation/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/activation.ts",
+          "name": "activationNonce"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "7",
+          "hash": "77691367bf63"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-first-hashes",
+        "private-first-activation"
+      ],
+      "vectorCases": [
+        "activation-nonce"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "request-digest",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "digest"
+      ],
+      "labels": [],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "requestDigest"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "6",
+          "hash": "23edf4c7a828"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-first-hashes"
+      ],
+      "vectorCases": [
+        "request-digest"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "completion-digest",
+      "phase": "A",
+      "status": "specified",
+      "roles": [
+        "digest"
+      ],
+      "labels": [],
+      "entryPoints": [
+        {
+          "path": "account-protocol/admission.ts",
+          "name": "activationTarget"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "1",
+          "hash": "34c623d42fe5"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "2",
+          "hash": "699db1bc3e59"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "6",
+          "hash": "23edf4c7a828"
+        },
+        {
+          "path": "docs/account-crypto/first-authority.md",
+          "section": "8",
+          "hash": "e6fc9feaa990"
+        }
+      ],
+      "mapEntries": [
+        "private-first-hashes"
+      ],
+      "vectorCases": [
+        "completion-digest"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-first-authority/formats.test.mjs",
+          "sha256": "8fbe85d2756a139cae6c910ccde1863a7351a7945a3f70d0752d9eefbe9c57aa"
+        }
+      ]
+    },
+    {
+      "id": "service-root-custody",
+      "phase": "D1",
+      "status": "specified",
+      "roles": [
+        "kdf",
+        "aead"
+      ],
+      "labels": [
+        "done/service-authority-seal/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-service/authority.ts",
+          "name": "PrivateAuthority"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "1",
+          "hash": "fc3af13356e9"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "2",
+          "hash": "516770c18caa"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "4",
+          "hash": "2b47c6c1e840"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "5",
+          "hash": "06d2aa51332b"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "6",
+          "hash": "1713a08e3b21"
+        }
+      ],
+      "mapEntries": [
+        "private-service-custody-input",
+        "private-service-root-seal"
+      ],
+      "vectorCases": [
+        "service-root-key",
+        "service-root-seal"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-service-custody/formats.test.mjs",
+          "sha256": "1bb8a2012d1a38d225c334c7bfad2bbac005469ed38a22726dec45c0bebc123c"
+        },
+        {
+          "path": "test/account-service-custody/exports.test.mjs",
+          "sha256": "14ad944c36434302451cc1ab891d10138cd480cd168d0b64cecddb8b341ad319"
+        },
+        {
+          "path": "test/account-service-custody/controls.test.mjs",
+          "sha256": "689f646f799b16604e54e9b8f6a0a009db5218700a7f737fe8780cf328e51878"
+        }
+      ]
+    },
+    {
+      "id": "service-acceptance-custody",
+      "phase": "D1",
+      "status": "specified",
+      "roles": [
+        "kdf",
+        "aead"
+      ],
+      "labels": [
+        "done/acceptance-custody/v1",
+        "done/acceptance-seal/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-service/acceptance.ts",
+          "name": "AcceptanceCustody"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "1",
+          "hash": "fc3af13356e9"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "3",
+          "hash": "8ef023179a38"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "4",
+          "hash": "2b47c6c1e840"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "5",
+          "hash": "06d2aa51332b"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "6",
+          "hash": "1713a08e3b21"
+        }
+      ],
+      "mapEntries": [
+        "private-service-custody-input",
+        "private-service-acceptance-seal"
+      ],
+      "vectorCases": [
+        "service-acceptance-custody-key",
+        "service-acceptance-seal-key",
+        "service-acceptance-seal"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-service-custody/formats.test.mjs",
+          "sha256": "1bb8a2012d1a38d225c334c7bfad2bbac005469ed38a22726dec45c0bebc123c"
+        },
+        {
+          "path": "test/account-service-custody/exports.test.mjs",
+          "sha256": "14ad944c36434302451cc1ab891d10138cd480cd168d0b64cecddb8b341ad319"
+        },
+        {
+          "path": "test/account-service-custody/controls.test.mjs",
+          "sha256": "689f646f799b16604e54e9b8f6a0a009db5218700a7f737fe8780cf328e51878"
+        }
+      ]
+    },
+    {
+      "id": "service-key-exports",
+      "phase": "D1",
+      "status": "specified",
+      "roles": [
+        "predicate",
+        "carrier"
+      ],
+      "labels": [],
+      "entryPoints": [
+        {
+          "path": "account-service/keyEncoding.ts",
+          "name": "assertEd25519SeedExport"
+        },
+        {
+          "path": "account-service/keyEncoding.ts",
+          "name": "ed25519PublicHex"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "4",
+          "hash": "2b47c6c1e840"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "6",
+          "hash": "1713a08e3b21"
+        }
+      ],
+      "mapEntries": [
+        "private-service-custody-input"
+      ],
+      "vectorCases": [
+        "service-seed-export",
+        "service-public-export"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-service-custody/formats.test.mjs",
+          "sha256": "1bb8a2012d1a38d225c334c7bfad2bbac005469ed38a22726dec45c0bebc123c"
+        },
+        {
+          "path": "test/account-service-custody/exports.test.mjs",
+          "sha256": "14ad944c36434302451cc1ab891d10138cd480cd168d0b64cecddb8b341ad319"
+        },
+        {
+          "path": "test/account-service-custody/controls.test.mjs",
+          "sha256": "689f646f799b16604e54e9b8f6a0a009db5218700a7f737fe8780cf328e51878"
+        }
+      ]
+    },
+    {
+      "id": "service-acceptance-carrier",
+      "phase": "D1",
+      "status": "specified",
+      "roles": [
+        "carrier"
+      ],
+      "labels": [],
+      "entryPoints": [
+        {
+          "path": "account-service/acceptance.ts",
+          "name": "AcceptanceCustody"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "1",
+          "hash": "fc3af13356e9"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "3",
+          "hash": "8ef023179a38"
+        },
+        {
+          "path": "docs/account-crypto/service-custody.md",
+          "section": "6",
+          "hash": "1713a08e3b21"
+        }
+      ],
+      "mapEntries": [
+        "private-service-custody-input"
+      ],
+      "vectorCases": [
+        "service-acceptance-carrier"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-service-custody/formats.test.mjs",
+          "sha256": "1bb8a2012d1a38d225c334c7bfad2bbac005469ed38a22726dec45c0bebc123c"
+        },
+        {
+          "path": "test/account-service-custody/exports.test.mjs",
+          "sha256": "14ad944c36434302451cc1ab891d10138cd480cd168d0b64cecddb8b341ad319"
+        },
+        {
+          "path": "test/account-service-custody/controls.test.mjs",
+          "sha256": "689f646f799b16604e54e9b8f6a0a009db5218700a7f737fe8780cf328e51878"
+        }
+      ]
+    },
+    {
+      "id": "local-promotion-mac",
+      "phase": "D2",
+      "status": "specified",
+      "roles": [
+        "mac",
+        "kdf",
+        "carrier",
+        "predicate"
+      ],
+      "labels": [
+        "done/local-promotion/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/promotionRecord.ts",
+          "name": "parsePromotion"
+        },
+        {
+          "path": "src/crdt/promotionRecord.ts",
+          "name": "promotionPayload"
+        },
+        {
+          "path": "src/crdt/promotionRecord.ts",
+          "name": "signPromotion"
+        },
+        {
+          "path": "src/crdt/promotionRecord.ts",
+          "name": "readPromotion"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-promotion.md",
+          "section": "1",
+          "hash": "398c25ea71ac"
+        },
+        {
+          "path": "docs/account-crypto/local-promotion.md",
+          "section": "2",
+          "hash": "93d98c3adfca"
+        },
+        {
+          "path": "docs/account-crypto/local-promotion.md",
+          "section": "3",
+          "hash": "52d90cc03eb2"
+        },
+        {
+          "path": "docs/account-crypto/local-promotion.md",
+          "section": "4",
+          "hash": "689be8855dac"
+        },
+        {
+          "path": "docs/account-crypto/local-promotion.md",
+          "section": "6",
+          "hash": "fb4cccefd90c"
+        }
+      ],
+      "mapEntries": [
+        "private-promotion-authentication",
+        "private-promotion-context"
+      ],
+      "vectorCases": [
+        "promotion-reserved",
+        "promotion-prepared",
+        "promotion-genesis-prepared",
+        "promotion-admission-requested",
+        "promotion-admission-offered",
+        "promotion-admission-receipted",
+        "promotion-handoff-prepared",
+        "promotion-handoff-selected",
+        "promotion-account-active",
+        "promotion-account-capturing",
+        "promotion-account-spooling",
+        "promotion-account-delivering",
+        "promotion-account-receiving",
+        "promotion-mac-key"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-promotion-contract/formats.test.mjs",
+          "sha256": "f87a15f14421c5756169596e8f4eff353e08951e56350548c68f8df8b3f6aa37"
+        },
+        {
+          "path": "test/account-promotion-contract/native.test.mjs",
+          "sha256": "962fa55cf4051d37b2b3211ee3e399dd2ef7d0e5504d1441807460b9c9de4108"
+        }
+      ]
+    },
+    {
+      "id": "local-promotion-identities",
+      "phase": "D2",
+      "status": "specified",
+      "roles": [
+        "digest"
+      ],
+      "labels": [
+        "done/promotion-lineage/v1",
+        "done/promotion-attempt/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/promotionPreparation.ts",
+          "name": "promotionLineage"
+        },
+        {
+          "path": "src/crdt/promotionOwner.ts",
+          "name": "prepareLocalPromotion"
+        },
+        {
+          "path": "src/crdt/promotionGenesis.ts",
+          "name": "withVerifiedGenesis"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-promotion.md",
+          "section": "5",
+          "hash": "27df81372cd2"
+        },
+        {
+          "path": "docs/account-crypto/local-promotion.md",
+          "section": "6",
+          "hash": "fb4cccefd90c"
+        }
+      ],
+      "mapEntries": [
+        "private-promotion-context"
+      ],
+      "vectorCases": [
+        "promotion-lineage",
+        "promotion-attempt"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-promotion-contract/formats.test.mjs",
+          "sha256": "f87a15f14421c5756169596e8f4eff353e08951e56350548c68f8df8b3f6aa37"
+        },
+        {
+          "path": "test/account-promotion-contract/native.test.mjs",
+          "sha256": "962fa55cf4051d37b2b3211ee3e399dd2ef7d0e5504d1441807460b9c9de4108"
+        }
+      ]
+    },
+    {
+      "id": "transport-envelope-key",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "kdf"
+      ],
+      "labels": [
+        "done/envelope/v1",
+        "done/envelope/v2"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "envelopeKeyInfo"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "2",
+          "hash": "ff41202e59ad"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "k-net"
+      ],
+      "vectorCases": [
+        "transport-envelope-v1-kdf",
+        "transport-envelope-v2-kdf"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-envelope-encryption",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "aead",
+        "digest"
+      ],
+      "labels": [
+        "done/env/v${h.v}"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "envelopeAAD"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "sealNetworkEnvelope"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "openNetworkEnvelope"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "2",
+          "hash": "ff41202e59ad"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "k-net",
+        "private-transport-commitments"
+      ],
+      "vectorCases": [
+        "transport-envelope-v1-aad",
+        "transport-envelope-v2-aad"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-envelope-signature",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "signature"
+      ],
+      "labels": [
+        "done/env-sig/v${h.v}"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "envelopeSignatureMessage"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "verifyNetworkEnvelope"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "2",
+          "hash": "ff41202e59ad"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-member"
+      ],
+      "vectorCases": [
+        "transport-envelope-v1-signature",
+        "transport-envelope-v2-signature"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-body",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "carrier"
+      ],
+      "labels": [
+        "done/env-body/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "encodeEnvelopeBody"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "decodeEnvelopeBody"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "3",
+          "hash": "4853b942c998"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-envelope-body"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-envelope-wire",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "carrier"
+      ],
+      "labels": [
+        "done/envelope-wire/v${e.v}",
+        "done/envelope-wire/v${version}"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "encodeNetworkEnvelope"
+        },
+        {
+          "path": "account-protocol/envelope.ts",
+          "name": "decodeNetworkEnvelope"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "3",
+          "hash": "4853b942c998"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-envelope-v1-wire",
+        "transport-envelope-v2-wire"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-wrapper-signature",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "signature",
+        "digest"
+      ],
+      "labels": [
+        "done/envelope-submission/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/submission.ts",
+          "name": "signSubmission"
+        },
+        {
+          "path": "account-protocol/submission.ts",
+          "name": "verifySubmission"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "4",
+          "hash": "3d2d54df83c8"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-member",
+        "private-transport-commitments"
+      ],
+      "vectorCases": [
+        "transport-submission-first",
+        "transport-submission-successor"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-wrapper-wire",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "carrier"
+      ],
+      "labels": [
+        "done/envelope-submission-wire/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/submission.ts",
+          "name": "encodeSubmission"
+        },
+        {
+          "path": "account-protocol/submission.ts",
+          "name": "decodeSubmission"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "3",
+          "hash": "4853b942c998"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-submission-first-wire",
+        "transport-submission-successor-wire"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-refusal-signature",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "signature"
+      ],
+      "labels": [
+        "done/position-refuse/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "name": "refusalMessage"
+        },
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "name": "verifyRefusalClaim"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "4",
+          "hash": "3d2d54df83c8"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-acceptance"
+      ],
+      "vectorCases": [
+        "transport-refusal"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-refusal-id",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "digest"
+      ],
+      "labels": [],
+      "entryPoints": [
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "name": "refusalId"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "4",
+          "hash": "3d2d54df83c8"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-commitments"
+      ],
+      "vectorCases": [
+        "transport-refusal-id"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-acceptance-link",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "digest"
+      ],
+      "labels": [
+        "done/accept/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "name": "acceptanceLink"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "4",
+          "hash": "3d2d54df83c8"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-commitments"
+      ],
+      "vectorCases": [
+        "transport-accepted-link"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-head-signature",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "signature"
+      ],
+      "labels": [
+        "done/accept-head/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "name": "headMessage"
+        },
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "name": "verifyPositionResponse"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "4",
+          "hash": "3d2d54df83c8"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-acceptance"
+      ],
+      "vectorCases": [
+        "transport-accepted-head"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-response-wire",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "carrier"
+      ],
+      "labels": [
+        "done/position-response/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "name": "encodePositionResponse"
+        },
+        {
+          "path": "account-protocol/positionDecision.ts",
+          "name": "decodePositionResponse"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "4",
+          "hash": "3d2d54df83c8"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-response-refused",
+        "transport-response-accepted"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-read-v1-signature",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "signature"
+      ],
+      "labels": [
+        "done/private-read/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "readRequestMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "5",
+          "hash": "bb09e7a60319"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-member"
+      ],
+      "vectorCases": [
+        "transport-read-v1"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-read-v1-wire",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "carrier"
+      ],
+      "labels": [],
+      "entryPoints": [
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "encodeReadRequest"
+        },
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "decodeReadRequest"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "5",
+          "hash": "bb09e7a60319"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-read-v1-wire"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-page-v1-signature",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "signature"
+      ],
+      "labels": [
+        "done/private-read-page/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "readPageMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "6",
+          "hash": "1a7053699c06"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-acceptance"
+      ],
+      "vectorCases": [
+        "transport-page-v1-empty",
+        "transport-page-v1-full"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-page-v1-wire",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "carrier"
+      ],
+      "labels": [],
+      "entryPoints": [
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "encodeReadPage"
+        },
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "decodeReadPage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "6",
+          "hash": "1a7053699c06"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-page-v1-empty-wire",
+        "transport-page-v1-full-wire"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-read-v2-signature",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "signature"
+      ],
+      "labels": [
+        "done/private-read/v2"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "name": "inboundRequestMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "5",
+          "hash": "bb09e7a60319"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-member"
+      ],
+      "vectorCases": [
+        "transport-read-v2"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-read-v2-wire",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "carrier"
+      ],
+      "labels": [],
+      "entryPoints": [
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "name": "encodeInboundRequest"
+        },
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "name": "decodeInboundRequest"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "5",
+          "hash": "bb09e7a60319"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-read-v2-wire"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-page-v2-signature",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "signature"
+      ],
+      "labels": [
+        "done/private-read-page/v2"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "name": "inboundPageMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "6",
+          "hash": "1a7053699c06"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-acceptance"
+      ],
+      "vectorCases": [
+        "transport-page-v2-empty",
+        "transport-page-v2-full"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-page-v2-wire",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "carrier"
+      ],
+      "labels": [],
+      "entryPoints": [
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "name": "encodeInboundPage"
+        },
+        {
+          "path": "account-protocol/inboundTransport.ts",
+          "name": "decodeInboundPage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "6",
+          "hash": "1a7053699c06"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-page-v2-empty-wire",
+        "transport-page-v2-full-wire"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-request-hash",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "digest"
+      ],
+      "labels": [],
+      "entryPoints": [
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "requestHash"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "5",
+          "hash": "bb09e7a60319"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-commitments"
+      ],
+      "vectorCases": [
+        "transport-read-v1-hash",
+        "transport-read-v2-hash"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-submit-wire",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "carrier"
+      ],
+      "labels": [
+        "done/private-submit/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "encodeSubmit"
+        },
+        {
+          "path": "account-protocol/deliveryTransport.ts",
+          "name": "decodeSubmit"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "3",
+          "hash": "4853b942c998"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-submit-carrier"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-service-chain",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "digest"
+      ],
+      "labels": [
+        "done/service-delivery-chain/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-service/delivery.ts",
+          "name": "decideSubmission"
+        },
+        {
+          "path": "account-service/delivery.ts",
+          "name": "readAccepted"
+        },
+        {
+          "path": "account-service/delivery.ts",
+          "name": "readInbound"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "7",
+          "hash": "f13da6f75166"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-commitments"
+      ],
+      "vectorCases": [
+        "transport-service-chain-1",
+        "transport-service-chain-2"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "transport-service-witness",
+      "phase": "C",
+      "status": "specified",
+      "roles": [
+        "signature"
+      ],
+      "labels": [
+        "done/service-delivery-witness/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-service/deliveryWitness.ts",
+          "name": "witnessMessage"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "1",
+          "hash": "175443c33e0e"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "7",
+          "hash": "f13da6f75166"
+        },
+        {
+          "path": "docs/account-crypto/transport.md",
+          "section": "8",
+          "hash": "381c3f07f8b3"
+        }
+      ],
+      "mapEntries": [
+        "private-transport-acceptance"
+      ],
+      "vectorCases": [
+        "transport-service-witness"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-transport-contract/formats.test.mjs",
+          "sha256": "53c8a183cbd895a247da2669fabda582c1bcf0f0eaaa30578f191cddf0147b53"
+        },
+        {
+          "path": "test/account-transport-contract/controls.test.mjs",
+          "sha256": "060e37d60c3608269c12a33b19f1df98ad5c71411453cc6c6fac71de2af0d445"
+        }
+      ]
+    },
+    {
+      "id": "account-source-capsule",
+      "phase": "D3",
+      "status": "specified",
+      "roles": [
+        "carrier",
+        "digest",
+        "predicate"
+      ],
+      "labels": [
+        "done/source-capture/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "name": "encodeSourceCapsule"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "name": "decodeSourceCapsule"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "name": "captureCatalog"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "name": "capturedRecovery"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "1",
+          "hash": "73439e172173"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "2",
+          "hash": "5df20f1d1ba9"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "7",
+          "hash": "5e0caa8bc6a7"
+        }
+      ],
+      "mapEntries": [
+        "private-account-capsule-input",
+        "private-account-ledger-coverage"
+      ],
+      "vectorCases": [
+        "source-human",
+        "source-mixed",
+        "capture-source-digest"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "canonical-carrier-negatives",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-ledger-contract/formats.test.mjs",
+          "sha256": "26ebd3c737f368fd7f4f649e9df1b15f6bc51766e6bd6d9d3c7d9fe8835360d1"
+        },
+        {
+          "path": "test/account-ledger-contract/controls.test.mjs",
+          "sha256": "2c8b822386e9065067cd8a4b89478f78c71773f9359357d996a13f2d05e86fd4"
+        },
+        {
+          "path": "test/account-capture/native.test.mjs",
+          "sha256": "f18bbecdf17398591ff49e649b7e8dbc9a2cb2b8cdaf6cf0732e43a3084eb387"
+        }
+      ]
+    },
+    {
+      "id": "account-spool-capsule",
+      "phase": "D3",
+      "status": "specified",
+      "roles": [
+        "carrier",
+        "predicate"
+      ],
+      "labels": [
+        "done/account-spool/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "name": "encodeSpoolEntry"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "name": "decodeSpoolEntry"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "name": "inspectSpool"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "name": "verifySpool"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "1",
+          "hash": "73439e172173"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "3",
+          "hash": "c7933547450b"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "6",
+          "hash": "d788c391a6ac"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "7",
+          "hash": "5e0caa8bc6a7"
+        }
+      ],
+      "mapEntries": [
+        "private-account-capsule-input",
+        "private-account-ledger-completeness",
+        "private-account-ledger-coverage"
+      ],
+      "vectorCases": [
+        "spool-position",
+        "spool-attempt",
+        "spool-retry",
+        "spool-envelope"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "canonical-carrier-negatives",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-ledger-contract/formats.test.mjs",
+          "sha256": "26ebd3c737f368fd7f4f649e9df1b15f6bc51766e6bd6d9d3c7d9fe8835360d1"
+        },
+        {
+          "path": "test/account-ledger-contract/controls.test.mjs",
+          "sha256": "2c8b822386e9065067cd8a4b89478f78c71773f9359357d996a13f2d05e86fd4"
+        },
+        {
+          "path": "test/account-spool/native.test.mjs",
+          "sha256": "b98d2f8f05446009227c31540c772e8f35de54827b8018915d406871b0a0b415"
+        }
+      ]
+    },
+    {
+      "id": "account-delivery-capsule",
+      "phase": "D3",
+      "status": "specified",
+      "roles": [
+        "carrier",
+        "predicate"
+      ],
+      "labels": [
+        "done/account-delivery/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "name": "encodeDeliveryEntry"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "name": "decodeDeliveryEntry"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "name": "inspectDelivery"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "name": "verifyDelivery"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "1",
+          "hash": "73439e172173"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "4",
+          "hash": "c1ab5278aa37"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "6",
+          "hash": "d788c391a6ac"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "7",
+          "hash": "5e0caa8bc6a7"
+        }
+      ],
+      "mapEntries": [
+        "private-account-capsule-input",
+        "private-account-ledger-completeness",
+        "private-account-ledger-publication"
+      ],
+      "vectorCases": [
+        "delivery-submission",
+        "delivery-response"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "canonical-carrier-negatives",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-ledger-contract/formats.test.mjs",
+          "sha256": "26ebd3c737f368fd7f4f649e9df1b15f6bc51766e6bd6d9d3c7d9fe8835360d1"
+        },
+        {
+          "path": "test/account-ledger-contract/controls.test.mjs",
+          "sha256": "2c8b822386e9065067cd8a4b89478f78c71773f9359357d996a13f2d05e86fd4"
+        },
+        {
+          "path": "test/account-delivery/native.test.mjs",
+          "sha256": "11766927aab6ee64c5baf426aa141a52e3de715a560957242b51e7b4c21895a6"
+        }
+      ]
+    },
+    {
+      "id": "account-inbound-capsule",
+      "phase": "D3",
+      "status": "specified",
+      "roles": [
+        "carrier",
+        "predicate"
+      ],
+      "labels": [
+        "done/account-inbound/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "name": "encodeInboundRecord"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "name": "decodeInboundRecord"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "name": "inspectInbound"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "name": "verifyInboundCoverage"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "name": "verifyInboundLedger"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "1",
+          "hash": "73439e172173"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "5",
+          "hash": "3d81df0bac8b"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "6",
+          "hash": "d788c391a6ac"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "7",
+          "hash": "5e0caa8bc6a7"
+        }
+      ],
+      "mapEntries": [
+        "private-account-capsule-input",
+        "private-account-ledger-completeness",
+        "private-account-ledger-publication",
+        "private-account-ledger-coverage"
+      ],
+      "vectorCases": [
+        "inbound-received",
+        "inbound-conflict"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "canonical-carrier-negatives",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-ledger-contract/formats.test.mjs",
+          "sha256": "26ebd3c737f368fd7f4f649e9df1b15f6bc51766e6bd6d9d3c7d9fe8835360d1"
+        },
+        {
+          "path": "test/account-ledger-contract/controls.test.mjs",
+          "sha256": "2c8b822386e9065067cd8a4b89478f78c71773f9359357d996a13f2d05e86fd4"
+        },
+        {
+          "path": "test/account-receive/native.test.mjs",
+          "sha256": "d45def4ce2ba48d9ffa1580f32fbc730fd73823aed7f4bdeaa25a287839162ac"
+        }
+      ]
+    },
+    {
+      "id": "account-ledger-chain",
+      "phase": "D3",
+      "status": "specified",
+      "roles": [
+        "digest",
+        "predicate"
+      ],
+      "labels": [
+        "done/account-spool-chain/v1\u0000"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "name": "extendSpoolWitness"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "name": "verifySpoolWitness"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "6",
+          "hash": "d788c391a6ac"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "7",
+          "hash": "5e0caa8bc6a7"
+        }
+      ],
+      "mapEntries": [
+        "private-account-capsule-input",
+        "private-account-ledger-completeness"
+      ],
+      "vectorCases": [
+        "chain-spool-position",
+        "chain-spool-attempt",
+        "chain-spool-retry",
+        "chain-spool-envelope",
+        "chain-delivery-submission",
+        "chain-delivery-response",
+        "chain-inbound-received",
+        "chain-inbound-conflict"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "counter-witness-coupling"
+      ],
+      "tests": [
+        {
+          "path": "test/account-ledger-contract/formats.test.mjs",
+          "sha256": "26ebd3c737f368fd7f4f649e9df1b15f6bc51766e6bd6d9d3c7d9fe8835360d1"
+        },
+        {
+          "path": "test/account-ledger-contract/controls.test.mjs",
+          "sha256": "2c8b822386e9065067cd8a4b89478f78c71773f9359357d996a13f2d05e86fd4"
+        },
+        {
+          "path": "test/account-spool/native.test.mjs",
+          "sha256": "b98d2f8f05446009227c31540c772e8f35de54827b8018915d406871b0a0b415"
+        },
+        {
+          "path": "test/account-receive/native.test.mjs",
+          "sha256": "d45def4ce2ba48d9ffa1580f32fbc730fd73823aed7f4bdeaa25a287839162ac"
+        }
+      ]
+    },
+    {
+      "id": "account-inbound-baseline",
+      "phase": "D3",
+      "status": "specified",
+      "roles": [
+        "digest",
+        "predicate"
+      ],
+      "labels": [],
+      "entryPoints": [
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "name": "heldInboundContext"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "5",
+          "hash": "3d81df0bac8b"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "7",
+          "hash": "5e0caa8bc6a7"
+        }
+      ],
+      "mapEntries": [
+        "private-account-capsule-input",
+        "private-account-ledger-coverage"
+      ],
+      "vectorCases": [
+        "inbound-baseline-digest"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-ledger-contract/formats.test.mjs",
+          "sha256": "26ebd3c737f368fd7f4f649e9df1b15f6bc51766e6bd6d9d3c7d9fe8835360d1"
+        },
+        {
+          "path": "test/account-ledger-contract/controls.test.mjs",
+          "sha256": "2c8b822386e9065067cd8a4b89478f78c71773f9359357d996a13f2d05e86fd4"
+        },
+        {
+          "path": "test/account-receive/native.test.mjs",
+          "sha256": "d45def4ce2ba48d9ffa1580f32fbc730fd73823aed7f4bdeaa25a287839162ac"
+        }
+      ]
+    },
+    {
+      "id": "content-metadata-key",
+      "phase": "D4",
+      "status": "specified",
+      "roles": [
+        "kdf"
+      ],
+      "labels": [
+        "done/content-metadata/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "hkdf"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "fields"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "1",
+          "hash": "bf706ca4de43"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "5",
+          "hash": "46b056613a26"
+        }
+      ],
+      "mapEntries": [
+        "private-content-metadata-key"
+      ],
+      "vectorCases": [
+        "content-metadata-key"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-metadata-owner"
+      ],
+      "tests": [
+        {
+          "path": "test/account-counter-contract/formats.test.mjs",
+          "sha256": "e44862ea3aae2779a367bd4111a607ea2b1c2c7cd7889fce5214ff4c02df19b6"
+        },
+        {
+          "path": "test/account-counter-contract/native.test.mjs",
+          "sha256": "f30c8130e0db3300c4a361015dce0fbb4003b1b91d99db3ae477672a29063e20"
+        }
+      ]
+    },
+    {
+      "id": "content-initialization-witness",
+      "phase": "D4",
+      "status": "specified",
+      "roles": [
+        "mac",
+        "predicate"
+      ],
+      "labels": [
+        "done/content-witness/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "witnessPayload"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "parseWitness"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "1",
+          "hash": "bf706ca4de43"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "2",
+          "hash": "d5670fb971b9"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "4",
+          "hash": "b50f82193614"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "5",
+          "hash": "46b056613a26"
+        }
+      ],
+      "mapEntries": [
+        "private-content-metadata",
+        "private-content-counter-order"
+      ],
+      "vectorCases": [
+        "content-witness-creating",
+        "content-witness-ready"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-metadata-owner",
+        "encoded-field-omissions",
+        "structured-clone-negatives"
+      ],
+      "tests": [
+        {
+          "path": "test/account-counter-contract/formats.test.mjs",
+          "sha256": "e44862ea3aae2779a367bd4111a607ea2b1c2c7cd7889fce5214ff4c02df19b6"
+        },
+        {
+          "path": "test/account-counter-contract/native.test.mjs",
+          "sha256": "f30c8130e0db3300c4a361015dce0fbb4003b1b91d99db3ae477672a29063e20"
+        }
+      ]
+    },
+    {
+      "id": "content-counter-v1",
+      "phase": "D4",
+      "status": "specified",
+      "roles": [
+        "mac",
+        "predicate"
+      ],
+      "labels": [
+        "done/content-counter/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "counterPayload"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "parseCounter"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "equalCounter"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "reserveCounter"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "1",
+          "hash": "bf706ca4de43"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "3",
+          "hash": "1ca2e196dbba"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "4",
+          "hash": "b50f82193614"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "5",
+          "hash": "46b056613a26"
+        }
+      ],
+      "mapEntries": [
+        "private-content-metadata",
+        "private-content-counter-order"
+      ],
+      "vectorCases": [
+        "content-counter-v1-empty",
+        "content-counter-v1-multigen"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-metadata-owner",
+        "encoded-field-omissions",
+        "structured-clone-negatives"
+      ],
+      "tests": [
+        {
+          "path": "test/account-counter-contract/formats.test.mjs",
+          "sha256": "e44862ea3aae2779a367bd4111a607ea2b1c2c7cd7889fce5214ff4c02df19b6"
+        },
+        {
+          "path": "test/account-counter-contract/native.test.mjs",
+          "sha256": "f30c8130e0db3300c4a361015dce0fbb4003b1b91d99db3ae477672a29063e20"
+        }
+      ]
+    },
+    {
+      "id": "content-counter-v2",
+      "phase": "D4",
+      "status": "specified",
+      "roles": [
+        "mac",
+        "predicate"
+      ],
+      "labels": [
+        "done/content-counter/v2"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "counterPayload"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "parseCounter"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "equalCounter"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "reserveCounter"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "1",
+          "hash": "bf706ca4de43"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "3",
+          "hash": "1ca2e196dbba"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "4",
+          "hash": "b50f82193614"
+        },
+        {
+          "path": "docs/account-crypto/content-counter.md",
+          "section": "5",
+          "hash": "46b056613a26"
+        }
+      ],
+      "mapEntries": [
+        "private-content-metadata",
+        "private-content-counter-order",
+        "private-account-ledger-completeness"
+      ],
+      "vectorCases": [
+        "content-counter-v2-empty",
+        "content-counter-v2-ledger",
+        "content-counter-v2-high-gen"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-metadata-owner",
+        "encoded-field-omissions",
+        "structured-clone-negatives"
+      ],
+      "tests": [
+        {
+          "path": "test/account-counter-contract/formats.test.mjs",
+          "sha256": "e44862ea3aae2779a367bd4111a607ea2b1c2c7cd7889fce5214ff4c02df19b6"
+        },
+        {
+          "path": "test/account-counter-contract/native.test.mjs",
+          "sha256": "f30c8130e0db3300c4a361015dce0fbb4003b1b91d99db3ae477672a29063e20"
+        }
+      ]
+    },
+    {
+      "id": "store-name-digest",
+      "phase": "D5",
+      "status": "specified",
+      "roles": [
+        "digest"
+      ],
+      "labels": [
+        "done/store-name/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/storeName.ts",
+          "name": "deriveStoreName"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "1",
+          "hash": "3fe80ec5c29f"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "5",
+          "hash": "fc637722b527"
+        }
+      ],
+      "mapEntries": [
+        "private-store-name"
+      ],
+      "vectorCases": [
+        "store-name-unicode",
+        "store-name-boundary"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "inherited-byte-agreement",
+        "native-carrier-owner"
+      ],
+      "tests": [
+        {
+          "path": "test/account-store-contract/formats.test.mjs",
+          "sha256": "25523c083dd15964505f64eeaec9da0a37a09ea94e13038b102499164b25a79b"
+        },
+        {
+          "path": "test/account-store-contract/native.test.mjs",
+          "sha256": "7d4cae4215843026f6cda92ffe0bb0f28446008a2dd99e069d2d5a7209363318"
+        }
+      ]
+    },
+    {
+      "id": "store-record-aead",
+      "phase": "D5",
+      "status": "specified",
+      "roles": [
+        "kdf",
+        "aead",
+        "carrier"
+      ],
+      "labels": [
+        "done/store/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "recordAAD"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "parseStoredRecord"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "recordStore"
+        },
+        {
+          "path": "src/crdt/custody.ts",
+          "name": "openContentSession"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "1",
+          "hash": "3fe80ec5c29f"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "2",
+          "hash": "bb602641986e"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "4",
+          "hash": "5e2f7b117b1b"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "5",
+          "hash": "fc637722b527"
+        }
+      ],
+      "mapEntries": [
+        "private-store-key",
+        "private-store-record"
+      ],
+      "vectorCases": [
+        "store-key",
+        "store-record-update",
+        "store-record-state",
+        "store-record-heads",
+        "store-record-outbound"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "inherited-byte-agreement",
+        "native-carrier-owner",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-store-contract/formats.test.mjs",
+          "sha256": "25523c083dd15964505f64eeaec9da0a37a09ea94e13038b102499164b25a79b"
+        },
+        {
+          "path": "test/account-store-contract/native.test.mjs",
+          "sha256": "7d4cae4215843026f6cda92ffe0bb0f28446008a2dd99e069d2d5a7209363318"
+        }
+      ]
+    },
+    {
+      "id": "journal-key",
+      "phase": "D5",
+      "status": "specified",
+      "roles": [
+        "kdf"
+      ],
+      "labels": [
+        "done/journal/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "name": "deriveJournalKey"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "1",
+          "hash": "3fe80ec5c29f"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "3",
+          "hash": "3c2014f935aa"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "4",
+          "hash": "5e2f7b117b1b"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "5",
+          "hash": "fc637722b527"
+        }
+      ],
+      "mapEntries": [
+        "private-journal-key"
+      ],
+      "vectorCases": [
+        "journal-key"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "inherited-byte-agreement",
+        "native-carrier-owner"
+      ],
+      "tests": [
+        {
+          "path": "test/account-store-contract/formats.test.mjs",
+          "sha256": "25523c083dd15964505f64eeaec9da0a37a09ea94e13038b102499164b25a79b"
+        },
+        {
+          "path": "test/account-store-contract/native.test.mjs",
+          "sha256": "7d4cae4215843026f6cda92ffe0bb0f28446008a2dd99e069d2d5a7209363318"
+        }
+      ]
+    },
+    {
+      "id": "journal-carrier-aead",
+      "phase": "D5",
+      "status": "specified",
+      "roles": [
+        "aead",
+        "carrier"
+      ],
+      "labels": [
+        "done/jrnl/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "name": "journalAAD"
+        },
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "name": "encodeJournal"
+        },
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "name": "decodeJournal"
+        },
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "name": "createJournalCodec"
+        },
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "name": "journalPrefix"
+        },
+        {
+          "path": "src/crdt/journalStore.ts",
+          "name": "createJournalOwner"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "1",
+          "hash": "3fe80ec5c29f"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "3",
+          "hash": "3c2014f935aa"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "4",
+          "hash": "5e2f7b117b1b"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "5",
+          "hash": "fc637722b527"
+        }
+      ],
+      "mapEntries": [
+        "private-journal-carrier",
+        "private-journal-key"
+      ],
+      "vectorCases": [
+        "journal-carrier-1",
+        "journal-carrier-256",
+        "journal-carrier-4294967295"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "inherited-byte-agreement",
+        "native-carrier-owner",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-store-contract/formats.test.mjs",
+          "sha256": "25523c083dd15964505f64eeaec9da0a37a09ea94e13038b102499164b25a79b"
+        },
+        {
+          "path": "test/account-store-contract/native.test.mjs",
+          "sha256": "7d4cae4215843026f6cda92ffe0bb0f28446008a2dd99e069d2d5a7209363318"
+        }
+      ]
+    },
+    {
+      "id": "custody-factor-v1",
+      "phase": "D6",
+      "status": "specified",
+      "roles": [
+        "kdf",
+        "aead",
+        "predicate"
+      ],
+      "labels": [
+        "done/devicelock/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "factorKey"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "sealAAD"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "sealFactor"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "openFactor"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "normalizeDeviceCode"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "generateDeviceCode"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "1",
+          "hash": "62718a2a9c61"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "5",
+          "hash": "013347c29113"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "6",
+          "hash": "4517b014105e"
+        }
+      ],
+      "mapEntries": [
+        "private-local-factor",
+        "private-local-factor-seal"
+      ],
+      "vectorCases": [
+        "custody-factor-key-code",
+        "custody-factor-key-prf",
+        "custody-factor-seal-code",
+        "custody-factor-seal-prf",
+        "custody-generated-code"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-custody-owner",
+        "inherited-byte-agreement",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-local-custody/formats.test.mjs",
+          "sha256": "957576247be80992c87332b6cd9245822fddfa434da4b8f57903ff3f03f31705"
+        },
+        {
+          "path": "test/account-local-custody/native.test.mjs",
+          "sha256": "7c5ed67cf64583ec3f34726437f2fe9ae35af3ebe16f805938a943c9ab568caa"
+        }
+      ]
+    },
+    {
+      "id": "custody-generation-envelope",
+      "phase": "D6",
+      "status": "specified",
+      "roles": [
+        "aead"
+      ],
+      "labels": [
+        "done/keyenv/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "envelopeAAD"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "sealEnvelope"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "openEnvelope"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "2",
+          "hash": "13cf45cde8ef"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "5",
+          "hash": "013347c29113"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "6",
+          "hash": "4517b014105e"
+        }
+      ],
+      "mapEntries": [
+        "private-local-root-seals",
+        "private-local-custody-open"
+      ],
+      "vectorCases": [
+        "custody-envelope-1",
+        "custody-envelope-2"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-custody-owner",
+        "inherited-byte-agreement",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-local-custody/formats.test.mjs",
+          "sha256": "957576247be80992c87332b6cd9245822fddfa434da4b8f57903ff3f03f31705"
+        },
+        {
+          "path": "test/account-local-custody/native.test.mjs",
+          "sha256": "7c5ed67cf64583ec3f34726437f2fe9ae35af3ebe16f805938a943c9ab568caa"
+        }
+      ]
+    },
+    {
+      "id": "custody-credential-v2",
+      "phase": "D6",
+      "status": "specified",
+      "roles": [
+        "aead",
+        "carrier"
+      ],
+      "labels": [
+        "done/custody-credential/v2"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "createCredential"
+        },
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "openCredential"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "2",
+          "hash": "13cf45cde8ef"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "3",
+          "hash": "e092a55a66e2"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "5",
+          "hash": "013347c29113"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "6",
+          "hash": "4517b014105e"
+        }
+      ],
+      "mapEntries": [
+        "private-local-root-seals",
+        "private-local-custody-pairs",
+        "private-local-custody-open"
+      ],
+      "vectorCases": [
+        "custody-credential-wrapping",
+        "custody-credential-signing"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-custody-owner",
+        "credential-correspondence",
+        "private-format-cleanup",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-local-custody/formats.test.mjs",
+          "sha256": "957576247be80992c87332b6cd9245822fddfa434da4b8f57903ff3f03f31705"
+        },
+        {
+          "path": "test/account-local-custody/native.test.mjs",
+          "sha256": "7c5ed67cf64583ec3f34726437f2fe9ae35af3ebe16f805938a943c9ab568caa"
+        }
+      ]
+    },
+    {
+      "id": "custody-key-correspondence",
+      "phase": "D6",
+      "status": "specified",
+      "roles": [
+        "predicate"
+      ],
+      "labels": [
+        "done/custody-key-check/v2"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/custodyCrypto.ts",
+          "name": "openCredential"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "3",
+          "hash": "e092a55a66e2"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "5",
+          "hash": "013347c29113"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "6",
+          "hash": "4517b014105e"
+        }
+      ],
+      "mapEntries": [
+        "private-local-custody-pairs",
+        "private-local-custody-open"
+      ],
+      "vectorCases": [
+        "custody-signing-correspondence",
+        "custody-wrapping-correspondence"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-custody-owner",
+        "credential-correspondence"
+      ],
+      "tests": [
+        {
+          "path": "test/account-local-custody/formats.test.mjs",
+          "sha256": "957576247be80992c87332b6cd9245822fddfa434da4b8f57903ff3f03f31705"
+        },
+        {
+          "path": "test/account-local-custody/native.test.mjs",
+          "sha256": "7c5ed67cf64583ec3f34726437f2fe9ae35af3ebe16f805938a943c9ab568caa"
+        }
+      ]
+    },
+    {
+      "id": "custody-metadata-v2",
+      "phase": "D6",
+      "status": "specified",
+      "roles": [
+        "kdf",
+        "mac",
+        "predicate"
+      ],
+      "labels": [
+        "done/custody-metadata/v2"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "name": "parseRecord"
+        },
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "name": "recordPayload"
+        },
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "name": "signRecord"
+        },
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "name": "authenticateRecord"
+        },
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "name": "recordEqual"
+        },
+        {
+          "path": "src/crdt/custodyRecord.ts",
+          "name": "transact"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "4",
+          "hash": "a4d785bf39e2"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "5",
+          "hash": "013347c29113"
+        },
+        {
+          "path": "docs/account-crypto/local-custody.md",
+          "section": "6",
+          "hash": "4517b014105e"
+        }
+      ],
+      "mapEntries": [
+        "private-local-custody-metadata-key",
+        "private-local-custody-metadata",
+        "private-local-custody-open"
+      ],
+      "vectorCases": [
+        "custody-metadata-key",
+        "custody-metadata-creating",
+        "custody-metadata-reserved",
+        "custody-metadata-protected"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-custody-owner",
+        "structured-clone-negatives",
+        "state-counterexample",
+        "native-mac-comparison",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-local-custody/formats.test.mjs",
+          "sha256": "957576247be80992c87332b6cd9245822fddfa434da4b8f57903ff3f03f31705"
+        },
+        {
+          "path": "test/account-local-custody/native.test.mjs",
+          "sha256": "7c5ed67cf64583ec3f34726437f2fe9ae35af3ebe16f805938a943c9ab568caa"
+        }
+      ]
+    },
+    {
+      "id": "local-claim-key",
+      "phase": "D8",
+      "status": "specified",
+      "roles": [
+        "kdf"
+      ],
+      "labels": [
+        "done/local-genesis-metadata/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "parseLocalClaim"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "signLocalClaim"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "verifyLocalClaim"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "1",
+          "hash": "e567db12e74e"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "2",
+          "hash": "f3c9de5314e1"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "3",
+          "hash": "9c5ef2dadbe3"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "4",
+          "hash": "e2e8dfc8556d"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "5",
+          "hash": "a53f67dc86d0"
+        }
+      ],
+      "mapEntries": [
+        "private-local-claim-key",
+        "private-local-claim-mac",
+        "private-account-local-anchor"
+      ],
+      "vectorCases": [
+        "local-claim-key"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-claim-owner",
+        "initial-custody-authentication",
+        "retained-import-cleanup",
+        "shrinking-claim-histories"
+      ],
+      "tests": [
+        {
+          "path": "test/account-local-provenance/formats.test.mjs",
+          "sha256": "e838318e72911c24c6aa40502dd13e25e0fa4b36ae65318325026a6d40deb6e6"
+        },
+        {
+          "path": "test/account-local-provenance/native.test.mjs",
+          "sha256": "470c3246f49314f962cb58e138d851bbe65a7f7860376e0d322285e181965828"
+        }
+      ]
+    },
+    {
+      "id": "local-claim-progress",
+      "phase": "D8",
+      "status": "specified",
+      "roles": [
+        "mac"
+      ],
+      "labels": [
+        "done/local-genesis-progress/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "parseLocalClaim"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "signLocalClaim"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "verifyLocalClaim"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "1",
+          "hash": "e567db12e74e"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "2",
+          "hash": "f3c9de5314e1"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "3",
+          "hash": "9c5ef2dadbe3"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "4",
+          "hash": "e2e8dfc8556d"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "5",
+          "hash": "a53f67dc86d0"
+        }
+      ],
+      "mapEntries": [
+        "private-local-claim-key",
+        "private-local-claim-mac",
+        "private-account-local-anchor"
+      ],
+      "vectorCases": [
+        "local-claim-fresh-custody",
+        "local-claim-fresh-content",
+        "local-claim-fresh-ready"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-claim-owner",
+        "initial-custody-authentication",
+        "retained-import-cleanup",
+        "shrinking-claim-histories",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-local-provenance/formats.test.mjs",
+          "sha256": "e838318e72911c24c6aa40502dd13e25e0fa4b36ae65318325026a6d40deb6e6"
+        },
+        {
+          "path": "test/account-local-provenance/native.test.mjs",
+          "sha256": "470c3246f49314f962cb58e138d851bbe65a7f7860376e0d322285e181965828"
+        }
+      ]
+    },
+    {
+      "id": "local-claim-selected-import",
+      "phase": "D8",
+      "status": "specified",
+      "roles": [
+        "mac"
+      ],
+      "labels": [
+        "done/local-import-selection/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "parseLocalClaim"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "signLocalClaim"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "verifyLocalClaim"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "1",
+          "hash": "e567db12e74e"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "2",
+          "hash": "f3c9de5314e1"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "3",
+          "hash": "9c5ef2dadbe3"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "4",
+          "hash": "e2e8dfc8556d"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "5",
+          "hash": "a53f67dc86d0"
+        }
+      ],
+      "mapEntries": [
+        "private-local-claim-key",
+        "private-local-claim-mac",
+        "private-account-local-anchor"
+      ],
+      "vectorCases": [
+        "local-claim-imported"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-claim-owner",
+        "initial-custody-authentication",
+        "retained-import-cleanup",
+        "shrinking-claim-histories",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-local-provenance/formats.test.mjs",
+          "sha256": "e838318e72911c24c6aa40502dd13e25e0fa4b36ae65318325026a6d40deb6e6"
+        },
+        {
+          "path": "test/account-local-provenance/native.test.mjs",
+          "sha256": "470c3246f49314f962cb58e138d851bbe65a7f7860376e0d322285e181965828"
+        }
+      ]
+    },
+    {
+      "id": "local-claim-source-cleanup",
+      "phase": "D8",
+      "status": "specified",
+      "roles": [
+        "mac",
+        "carrier"
+      ],
+      "labels": [
+        "done/local-import-cleanup"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "parseLocalClaim"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "signLocalClaim"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "name": "verifyLocalClaim"
+        },
+        {
+          "path": "src/crdt/legacyCleanupRecord.ts",
+          "name": "cleanupPayload"
+        },
+        {
+          "path": "src/crdt/legacyCleanupRecord.ts",
+          "name": "parseLegacyCleanup"
+        },
+        {
+          "path": "src/crdt/legacyCleanupEncoding.ts",
+          "name": "cleanupFields"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "1",
+          "hash": "e567db12e74e"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "2",
+          "hash": "f3c9de5314e1"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "3",
+          "hash": "9c5ef2dadbe3"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "4",
+          "hash": "e2e8dfc8556d"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "5",
+          "hash": "a53f67dc86d0"
+        }
+      ],
+      "mapEntries": [
+        "private-local-claim-key",
+        "private-local-claim-mac",
+        "private-account-local-anchor"
+      ],
+      "vectorCases": [
+        "local-claim-cleanup-v1",
+        "local-claim-cleanup-v2",
+        "local-claim-cleanup-v2-empty"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-claim-owner",
+        "initial-custody-authentication",
+        "retained-import-cleanup",
+        "shrinking-claim-histories",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-local-provenance/formats.test.mjs",
+          "sha256": "e838318e72911c24c6aa40502dd13e25e0fa4b36ae65318325026a6d40deb6e6"
+        },
+        {
+          "path": "test/account-local-provenance/native.test.mjs",
+          "sha256": "470c3246f49314f962cb58e138d851bbe65a7f7860376e0d322285e181965828"
+        }
+      ]
+    },
+    {
+      "id": "inherited-local-clear",
+      "phase": "Local",
+      "status": "inherited",
+      "roles": [
+        "kdf",
+        "mac"
+      ],
+      "labels": [
+        "done/local-clear-authentication/v1",
+        "done/local-clear-progress/v1",
+        "done/local-import-clear/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/localClearCrypto.ts",
+          "name": "clearAuthenticator"
+        },
+        {
+          "path": "src/crdt/localClearState.ts",
+          "name": "assertNoLocalClear"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "3",
+          "hash": "9c5ef2dadbe3"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "4",
+          "hash": "e2e8dfc8556d"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "5",
+          "hash": "a53f67dc86d0"
+        }
+      ],
+      "mapEntries": [],
+      "vectorCases": [],
+      "requirements": [
+        "outside-account-acceptance",
+        "native-exclusion-barriers",
+        "historical-evidence-only"
+      ],
+      "tests": [
+        {
+          "path": "test/account-local-provenance/native.test.mjs",
+          "sha256": "470c3246f49314f962cb58e138d851bbe65a7f7860376e0d322285e181965828"
+        }
+      ],
+      "scope": "outside-account-acceptance",
+      "reason": "Account only parses/refuses retained clear intent; authenticated deletion is Local-only.",
+      "evidencePins": [
+        {
+          "path": "docs/local-clear.md",
+          "sha256": "3dc7768cbafdab46e895948d8031adc2bb1ed2add270665a8cd92b07cc5ffd5a"
+        },
+        {
+          "path": "docs/storage-conformance-runs/2026-09-08-local-clear.md",
+          "sha256": "16eff9d8bee9387181d5386ddc50ea43c127a9517cdd0433e58e899bc8535d51"
+        },
+        {
+          "path": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup.md",
+          "sha256": "bd09c7dd26f82cdd7b55acb89fad7f3eb1a15308f7ba880e92fd6572c84eeb4b"
+        }
+      ]
+    },
+    {
+      "id": "inherited-preactive-import",
+      "phase": "Local",
+      "status": "inherited",
+      "roles": [
+        "kdf",
+        "mac"
+      ],
+      "labels": [
+        "done/legacy-import-metadata/v1",
+        "done/legacy-import-progress/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/legacyImportRecord.ts",
+          "name": "verifyImportClaim"
+        },
+        {
+          "path": "src/crdt/legacyImportRecord.ts",
+          "name": "signImportClaim"
+        },
+        {
+          "path": "src/crdt/legacyImportState.ts",
+          "name": "assertNoPreactiveImport"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "3",
+          "hash": "9c5ef2dadbe3"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "4",
+          "hash": "e2e8dfc8556d"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "5",
+          "hash": "a53f67dc86d0"
+        }
+      ],
+      "mapEntries": [],
+      "vectorCases": [],
+      "requirements": [
+        "outside-account-acceptance",
+        "native-exclusion-barriers",
+        "historical-evidence-only"
+      ],
+      "tests": [
+        {
+          "path": "test/account-local-provenance/native.test.mjs",
+          "sha256": "470c3246f49314f962cb58e138d851bbe65a7f7860376e0d322285e181965828"
+        }
+      ],
+      "scope": "outside-account-acceptance",
+      "reason": "Presence blocks Account before claim verification; selected provenance uses the qualified Local wrapper, not this earlier MAC verifier.",
+      "evidencePins": [
+        {
+          "path": "docs/legacy-import-preparation.md",
+          "sha256": "0e89128f32b36909de3bd4bb241ca3aaa3f9bd41240b6e55160339a9d0e46c9f"
+        },
+        {
+          "path": "docs/legacy-selection-preparation.md",
+          "sha256": "b3c0cc35df772d68451b9751e34a54c8c55b2c9dd4cf6a71c3266cacb36c284d"
+        },
+        {
+          "path": "docs/storage-conformance-runs/2026-09-09-legacy-import.md",
+          "sha256": "44240d9190b81f4fbe7937533427c09c1560a9062b5668c83af88455e44109d9"
+        },
+        {
+          "path": "docs/storage-conformance-runs/2026-09-09-legacy-selection.md",
+          "sha256": "3d81b1bc08d128fcdb0dafa0db2c006296335b450c80f35fb4e4702f97c2b608"
+        }
+      ]
+    },
+    {
+      "id": "inherited-legacy-observation",
+      "phase": "Local",
+      "status": "inherited",
+      "roles": [
+        "digest"
+      ],
+      "labels": [
+        "done/legacy-source-observation/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/legacySource.ts",
+          "name": "inspectLegacySource"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "3",
+          "hash": "9c5ef2dadbe3"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "4",
+          "hash": "e2e8dfc8556d"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "5",
+          "hash": "a53f67dc86d0"
+        }
+      ],
+      "mapEntries": [],
+      "vectorCases": [],
+      "requirements": [
+        "outside-account-acceptance",
+        "native-exclusion-barriers",
+        "historical-evidence-only"
+      ],
+      "tests": [
+        {
+          "path": "test/account-local-provenance/native.test.mjs",
+          "sha256": "470c3246f49314f962cb58e138d851bbe65a7f7860376e0d322285e181965828"
+        }
+      ],
+      "scope": "outside-account-acceptance",
+      "reason": "Unkeyed source change observation belongs to migration owners; Account does not enumerate/replay predecessor plaintext.",
+      "evidencePins": [
+        {
+          "path": "docs/legacy-import-preparation.md",
+          "sha256": "0e89128f32b36909de3bd4bb241ca3aaa3f9bd41240b6e55160339a9d0e46c9f"
+        },
+        {
+          "path": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup.md",
+          "sha256": "bd09c7dd26f82cdd7b55acb89fad7f3eb1a15308f7ba880e92fd6572c84eeb4b"
+        }
+      ]
+    },
+    {
+      "id": "inherited-cleanup-fingerprints",
+      "phase": "Local",
+      "status": "inherited",
+      "roles": [
+        "kdf",
+        "mac"
+      ],
+      "labels": [
+        "done/legacy-cleanup-fingerprint/v${version}",
+        "done/legacy-cleanup-entry"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/legacyCleanupRecord.ts",
+          "name": "cleanupFingerprinter"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "3",
+          "hash": "9c5ef2dadbe3"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "4",
+          "hash": "e2e8dfc8556d"
+        },
+        {
+          "path": "docs/account-crypto/local-provenance.md",
+          "section": "5",
+          "hash": "a53f67dc86d0"
+        }
+      ],
+      "mapEntries": [],
+      "vectorCases": [],
+      "requirements": [
+        "outside-account-acceptance",
+        "native-exclusion-barriers",
+        "historical-evidence-only"
+      ],
+      "tests": [
+        {
+          "path": "test/account-local-provenance/native.test.mjs",
+          "sha256": "470c3246f49314f962cb58e138d851bbe65a7f7860376e0d322285e181965828"
+        }
+      ],
+      "scope": "outside-account-acceptance",
+      "reason": "Source-value fingerprint comparison belongs to cleanup; Account authenticates the retained manifest via its Local claim without calling the fingerprinter.",
+      "evidencePins": [
+        {
+          "path": "docs/legacy-cleanup-preparation.md",
+          "sha256": "7617e7efa0c61a2be15fe703bed729dda00ad3f9421da6c4584cac7fd2438d04"
+        },
+        {
+          "path": "docs/storage-conformance-runs/2026-09-09-legacy-cleanup.md",
+          "sha256": "bd09c7dd26f82cdd7b55acb89fad7f3eb1a15308f7ba880e92fd6572c84eeb4b"
+        },
+        {
+          "path": "docs/storage-conformance-runs/2026-09-10-app-upgrades.md",
+          "sha256": "6bdeae2a8e8fc5dae56ae7433e545a5e63dda6e4abae8165c0b5ccd7c01c48b4"
+        }
+      ]
+    },
+    {
+      "id": "remaining-coordination-names",
+      "phase": "non-crypto",
+      "status": "excluded",
+      "roles": [
+        "name"
+      ],
+      "labels": [
+        "done/slot-writer/${JSON.stringify(slotId)}",
+        "done/accepted-workspace/v1/",
+        "done/accepted-text/v1/"
+      ],
+      "entryPoints": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "requirements": [],
+      "tests": []
+    },
+    {
+      "id": "recovery-factor-seal",
+      "phase": "B",
+      "status": "specified",
+      "roles": [
+        "kdf",
+        "aead",
+        "predicate"
+      ],
+      "labels": [
+        "done/recovery/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/account/recovery.ts",
+          "name": "generateRecovery"
+        },
+        {
+          "path": "src/account/recovery.ts",
+          "name": "withRecoveryKeys"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "1",
+          "hash": "88db6bbcf31b"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "5",
+          "hash": "c160491d235a"
+        }
+      ],
+      "mapEntries": [
+        "recovery-envelope",
+        "k-code-sealed-envelopes"
+      ],
+      "vectorCases": [
+        "recovery-kdf",
+        "recovery-seal"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-recovery-contract/formats.test.mjs",
+          "sha256": "5bd7d22bd3bd71847e1e3bcebb5e38588601412e1b50b50c7d7211fda5162d6c"
+        },
+        {
+          "path": "test/account-recovery-contract/controls.test.mjs",
+          "sha256": "9da5f23a04e3c96cc39716a06fb31efa0380c1dcb730ec019ee2de763356c8ed"
+        },
+        {
+          "path": "test/account-recovery-contract/exports.test.mjs",
+          "sha256": "2c3e58037b5e87a90230d2dad4fd916a1d647db7474c9ff2c29daa57fcaf4535"
+        }
+      ]
+    },
+    {
+      "id": "recovery-key-correspondence",
+      "phase": "B",
+      "status": "specified",
+      "roles": [
+        "signature"
+      ],
+      "labels": [
+        "done/recovery-key-check/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/account/recovery.ts",
+          "name": "withRecoveryKeys"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "1",
+          "hash": "88db6bbcf31b"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "5",
+          "hash": "c160491d235a"
+        }
+      ],
+      "mapEntries": [
+        "private-recovery-possession"
+      ],
+      "vectorCases": [
+        "recovery-key-check"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-recovery-contract/formats.test.mjs",
+          "sha256": "5bd7d22bd3bd71847e1e3bcebb5e38588601412e1b50b50c7d7211fda5162d6c"
+        },
+        {
+          "path": "test/account-recovery-contract/controls.test.mjs",
+          "sha256": "9da5f23a04e3c96cc39716a06fb31efa0380c1dcb730ec019ee2de763356c8ed"
+        }
+      ]
+    },
+    {
+      "id": "recovery-initial-confirmation",
+      "phase": "B",
+      "status": "specified",
+      "roles": [
+        "signature"
+      ],
+      "labels": [
+        "done/account-recovery-confirm/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/recovery.ts",
+          "name": "confirmationBytes"
+        },
+        {
+          "path": "account-service/recovery.ts",
+          "name": "verifyRecoveryProof"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "2",
+          "hash": "e4cf66042858"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "3",
+          "hash": "04b998cb7371"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "5",
+          "hash": "c160491d235a"
+        }
+      ],
+      "mapEntries": [
+        "private-recovery-possession",
+        "private-account-challenges"
+      ],
+      "vectorCases": [
+        "recovery-confirm"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-recovery-contract/formats.test.mjs",
+          "sha256": "5bd7d22bd3bd71847e1e3bcebb5e38588601412e1b50b50c7d7211fda5162d6c"
+        },
+        {
+          "path": "test/account-recovery-contract/controls.test.mjs",
+          "sha256": "9da5f23a04e3c96cc39716a06fb31efa0380c1dcb730ec019ee2de763356c8ed"
+        }
+      ]
+    },
+    {
+      "id": "recovery-commitments",
+      "phase": "B",
+      "status": "specified",
+      "roles": [
+        "digest"
+      ],
+      "labels": [
+        "done/pkg-root/v1",
+        "done/recovery-envelope/v1",
+        "done/recovery-state/v1",
+        "done/account-recovery-draft/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/recovery.ts",
+          "name": "rootCommitment"
+        },
+        {
+          "path": "account-protocol/recovery.ts",
+          "name": "envelopeBytes"
+        },
+        {
+          "path": "account-protocol/recovery.ts",
+          "name": "recoveryStateDigest"
+        },
+        {
+          "path": "account-protocol/recovery.ts",
+          "name": "draftDigest"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "1",
+          "hash": "88db6bbcf31b"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "2",
+          "hash": "e4cf66042858"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "5",
+          "hash": "c160491d235a"
+        }
+      ],
+      "mapEntries": [
+        "private-recovery-commitments"
+      ],
+      "vectorCases": [
+        "recovery-root",
+        "recovery-envelope",
+        "recovery-state",
+        "recovery-draft"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-recovery-contract/formats.test.mjs",
+          "sha256": "5bd7d22bd3bd71847e1e3bcebb5e38588601412e1b50b50c7d7211fda5162d6c"
+        },
+        {
+          "path": "test/account-recovery-contract/controls.test.mjs",
+          "sha256": "9da5f23a04e3c96cc39716a06fb31efa0380c1dcb730ec019ee2de763356c8ed"
+        }
+      ]
+    },
+    {
+      "id": "account-initial-challenges",
+      "phase": "B",
+      "status": "specified",
+      "roles": [
+        "digest"
+      ],
+      "labels": [
+        "done/account/${operation}/v1",
+        "done/account/finalize-recovery/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-service/protocol.ts",
+          "name": "challenge"
+        },
+        {
+          "path": "account-service/recovery.ts",
+          "name": "recoveryChallenge"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "2",
+          "hash": "e4cf66042858"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "3",
+          "hash": "04b998cb7371"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "5",
+          "hash": "c160491d235a"
+        }
+      ],
+      "mapEntries": [
+        "private-account-challenges"
+      ],
+      "vectorCases": [
+        "account-challenge-register",
+        "account-challenge-confirm-registration",
+        "account-challenge-authenticate",
+        "account-challenge-finalize"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-recovery-contract/formats.test.mjs",
+          "sha256": "5bd7d22bd3bd71847e1e3bcebb5e38588601412e1b50b50c7d7211fda5162d6c"
+        },
+        {
+          "path": "test/account-recovery-contract/controls.test.mjs",
+          "sha256": "9da5f23a04e3c96cc39716a06fb31efa0380c1dcb730ec019ee2de763356c8ed"
+        }
+      ]
+    },
+    {
+      "id": "recovery-generation-bridge",
+      "phase": "B",
+      "status": "specified",
+      "roles": [
+        "aead",
+        "kdf"
+      ],
+      "labels": [
+        "done/gen-wrap/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/genesis.ts",
+          "name": "generationInfo"
+        },
+        {
+          "path": "src/account/generationWrap.ts",
+          "name": "sealGeneration"
+        },
+        {
+          "path": "src/account/generationWrap.ts",
+          "name": "openGeneration"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "4",
+          "hash": "54947337b7c1"
+        },
+        {
+          "path": "docs/account-crypto/recovery-layout.md",
+          "section": "5",
+          "hash": "c160491d235a"
+        }
+      ],
+      "mapEntries": [
+        "private-recovery-wrap",
+        "private-recovery-recipient"
+      ],
+      "vectorCases": [
+        "recovery-generation-wrap"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
+      "tests": [
+        {
+          "path": "test/account-recovery-contract/formats.test.mjs",
+          "sha256": "5bd7d22bd3bd71847e1e3bcebb5e38588601412e1b50b50c7d7211fda5162d6c"
+        },
+        {
+          "path": "test/account-recovery-contract/controls.test.mjs",
+          "sha256": "9da5f23a04e3c96cc39716a06fb31efa0380c1dcb730ec019ee2de763356c8ed"
+        }
+      ]
+    },
+    {
+      "id": "genesis-checkpoint-key",
+      "phase": "D7",
+      "status": "specified",
+      "roles": [
+        "kdf"
+      ],
+      "labels": [
+        "done/checkpoint/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/promotionGenesis.ts",
+          "name": "withVerifiedGenesis"
+        },
+        {
+          "path": "src/crdt/accountStartup.ts",
+          "name": "verifyAccountUnderPermit"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "1",
+          "hash": "1ba07b8d7606"
+        },
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "2",
+          "hash": "ff5de5a6b82d"
+        },
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "3",
+          "hash": "ea8cc350e5e1"
+        },
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "4",
+          "hash": "9aca2271994a"
+        },
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "5",
+          "hash": "6a17735630ce"
+        }
+      ],
+      "mapEntries": [
+        "private-checkpoint-key",
+        "private-checkpoint-startup",
+        "private-checkpoint-service-binding"
+      ],
+      "vectorCases": [
+        "checkpoint-key-genesis",
+        "checkpoint-key-inherited",
+        "checkpoint-key-decimal-helper"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "inherited-byte-agreement",
+        "native-checkpoint-owner",
+        "genesis-scope-disposition",
+        "shrinking-replay-histories"
+      ],
+      "tests": [
+        {
+          "path": "test/account-checkpoint-contract/formats.test.mjs",
+          "sha256": "4b1879f98a6c693812d6eda827b2b3ab66faa68aa6cecc55de5389f94ffc6d7a"
+        },
+        {
+          "path": "test/account-checkpoint-contract/native.test.mjs",
+          "sha256": "1c612f1d1c86c74583e224bb45e72894aa49f874bf7996fcf4f0e58ce59c20af"
+        }
+      ]
+    },
+    {
+      "id": "genesis-checkpoint-seal",
+      "phase": "D7",
+      "status": "specified",
+      "roles": [
+        "aead",
+        "predicate"
+      ],
+      "labels": [
+        "done/cp/v1"
+      ],
+      "entryPoints": [
+        {
+          "path": "account-protocol/genesis.ts",
+          "name": "checkpointAAD"
+        },
+        {
+          "path": "account-protocol/genesis.ts",
+          "name": "parseGenesis"
+        },
+        {
+          "path": "src/crdt/accountStartup.ts",
+          "name": "verifyAccountUnderPermit"
+        },
+        {
+          "path": "src/crdt/yjs.ts",
+          "name": "coversGenesis"
+        }
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "1",
+          "hash": "1ba07b8d7606"
+        },
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "2",
+          "hash": "ff5de5a6b82d"
+        },
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "3",
+          "hash": "ea8cc350e5e1"
+        },
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "4",
+          "hash": "9aca2271994a"
+        },
+        {
+          "path": "docs/account-crypto/checkpoint.md",
+          "section": "5",
+          "hash": "6a17735630ce"
+        }
+      ],
+      "mapEntries": [
+        "private-checkpoint-seal",
+        "private-checkpoint-startup",
+        "private-checkpoint-service-binding"
+      ],
+      "vectorCases": [
+        "checkpoint-seal-genesis",
+        "checkpoint-seal-inherited",
+        "checkpoint-seal-decimal-helper"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "inherited-byte-agreement",
+        "native-checkpoint-owner",
+        "genesis-scope-disposition",
+        "shrinking-replay-histories",
+        "encoded-field-omissions"
+      ],
+      "tests": [
+        {
+          "path": "test/account-checkpoint-contract/formats.test.mjs",
+          "sha256": "4b1879f98a6c693812d6eda827b2b3ab66faa68aa6cecc55de5389f94ffc6d7a"
+        },
+        {
+          "path": "test/account-checkpoint-contract/native.test.mjs",
+          "sha256": "1c612f1d1c86c74583e224bb45e72894aa49f874bf7996fcf4f0e58ce59c20af"
+        }
+      ]
+    }
+  ],
+  "interpretation": "Vector membership and test references are registered obligations. The runner executes every named test file; a reviewed source/field assessment is still required. Counts do not prove protocol completeness."
+}

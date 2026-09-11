@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="independent Node crypto opens the complete three-part payload and verifies confirmation bytes" time="0.011734" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/crypto.test.mjs"/>
+	<testcase name="sealed root, X25519 private/public and bootstrap private/public checks are independently necessary" time="0.006741" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/crypto.test.mjs"/>
+	<testcase name="normalization preserves the selected full-width alphabet and rejects non-codes" time="0.000276" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/crypto.test.mjs"/>
+	<!-- tests 3 -->
+	<!-- suites 0 -->
+	<!-- pass 3 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 342.087292 -->
+</testsuites>

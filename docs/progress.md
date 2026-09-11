@@ -42,78 +42,76 @@ that is no longer active.
 
 ---
 
-## Active slice: Aggregate Account byte-contract closure review (`L-1`)
+## Active slice: Reservation durability and invocation accounting (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: aggregate evidence review before F-05/F-06 disposition
+blocks_on: F-15 failure model and transaction inventory before persistence repair
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
 
 **Roadmap position.** Personal Local cutover, source cleanup and packaged offline upgrades are exercised.
-Account work remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), item 5's internal
-creating-member ciphertext round trip. Composition `6398e33`, descriptor bounds `4f71bac`, activation
-`2ba50aa`, prep `9cf5c98`, A `43b42b1`, B `e74fbaa`, C `a20e439`, D1 `32d4074`, D2 `437bc86`,
-D3 `10fef3d`, D4 `1500379`, D5 `ed1a930`, D6 `862a9d7` and D7 `5555238` are committed.
-All eight C/D1–D7 commits are signed; the signing reminder is paused. The
-[history mapping](./account-conformance-runs/2026-09-11-signed-contract-history.json) records the seven
-recreated commits, whose old objects remain reachable under the backup branch. D8 is complete,
-unstaged/uncommitted. No real Account receipt exists; this is not Stage 4 completion or enrollment.
+Account remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), item 5's internal creating-member
+ciphertext round trip. Composition `6398e33`, bounds `4f71bac`, activation `2ba50aa`, prep `9cf5c98`,
+A `43b42b1`, B `e74fbaa`, C `a20e439`, D1 `32d4074`, D2 `437bc86`, D3 `10fef3d`, D4 `1500379`,
+D5 `ed1a930`, D6 `862a9d7`, D7 `5555238` and D8 `393ef43` are committed. All nine C/D1–D8 commits
+are signed; the signing reminder is paused and the original unsigned chain remains reachable under
+the [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
+The aggregate closure audit is complete, unstaged/uncommitted. No real Account receipt exists.
 
-**Completed boundary.** [D8 Local provenance](./account-crypto/local-provenance.md) bridges the four
-claim key/progress/import-selection/cleanup labels actually consumed by Account promotion/startup.
-Eight other labels are four explicit inherited groups outside current Account acceptance. Exact
-primitive roles, historical evidence and tested boundaries remain required; the shared cleanup parser
-and payload stay inside live evidence. Account authenticates incomplete cleanup progress without
-claiming source absence or running deletion. No production change or defect was found. D6's strict
-state-parser repair and D7's genesis-only checkpoint/startup boundary remain intact.
+**Completed boundary.** [Current review](./review/implementation/account-crypto-closure.md) closes
+F-05/F-06 for the private first-epoch Account protocol. Exact source/role/map/byte/vector joins now cover
+the live constructions; empty first-genesis heads and the 96-byte recovery payload/112-byte ciphertext
+are explicit and exercised. Imported claim/cleanup bytes remain live dependencies; four inherited
+Local/migration operation groups have pinned historical evidence and bounded native exclusion tests.
+This does not assert source absence, later-epoch support, total-loss recovery or whole-protocol closure.
+Stale checker status text was corrected; production code, formats, vectors and existing tests are unchanged.
 
-[Final evidence](./account-conformance-runs/2026-09-11-account-local-provenance.md): 50 stages pass
-with 864 matching source pins. Eight fixed vectors, 51 mutations, 46 encoded omissions, 230 actual input
-mutations (190 parser/40 crypto refusals), seven source controls and ten registry controls pass.
-Shrinking-enabled tests cover 250 helper and 20 native histories, with no counterexample. Four native
-tests exercise fresh/imported/cleanup claim handoff, cold read-only startup, MAC omission/backstop,
-blocking clear/import rows and direct probes of four excluded-operation barriers. Seven selected
-inherited Local-genesis cases/two mutants, 983 units/88 files, typecheck, prior contracts and 30 vector
-commands pass. Registry: 78 specified, zero open, four inherited and one non-crypto exclusion.
-Map: 80 entries/102 chains/19 homes. Census: unchanged 158 sources/89 labels/templates.
+[Aggregate evidence](./account-conformance-runs/2026-09-11-account-crypto-audit.md): 71 stages pass,
+870 source pins match; 237 Node tests/36 files include all 27 registered files and
+100 tests in 11 native files. Slot-unlock/transport unit bridges and 30 vector commands
+pass. Eleven corpora contain 159 fixed cases, 4,332 input negatives and 4,106 encoded omissions, with
+primitive, parser and owner evidence distinguished. No new runtime defect was found. The current map
+has 80 entries/102 chains/19 homes; registry 78 specified/zero open/four inherited/one non-crypto;
+census unchanged 158 sources/89 labels/templates. Counts alone did not decide closure.
 
-**Next bounded phase — aggregate A/B/C/D1–D8 closure review.** Review F-05/F-06 against
-[the construction registry](./account-crypto/constructions.json), [prep gates](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates)
-and the retained historical finding responses:
+**Next bounded phase — F-15 reservation durability, prep included.** Current content transactions request
+`relaxed` durability, while custody transactions have no explicit hint. AES invocation counters and network
+attempt grants must not be treated as power-loss-safe merely because the transaction completed.
 
-- Reconcile the runtime census, primitive roles, permitted-root chains and exact byte homes with all
-  registered constructions, including the four inherited scope limits. Zero open groups is insufficient.
-- Audit executed vector fields, meaningful refusals and effective source controls against each finding's
-  actual acceptance requirement. Distinguish static registration, helper bytes, native owner tests and
-  dated inherited evidence. Do not infer protocol completeness from a passing checker.
-- Give each finding an explicit evidence-backed closed/remaining disposition in the current remediation
-  record, preserving the historical review. Repair a demonstrated gap within a bounded follow-up if needed.
-- Preserve the review evidence, append the outcome, then replace only L-1. Choose the next Account phase
-  from the remaining gates after this review; do not provision a real Account or resume personal servers.
+- Inventory every custody/content reservation and network-attempt grant, its persistence transaction,
+  encryption call and subsequent publication/abandonment. Distinguish allocation from retained ciphertext.
+- Write the supported failure model and required persistence boundary. Keep SC-01's page/navigation-loss
+  acknowledgment scope distinct from lifetime invocation-budget accounting, OS loss and restore/clone.
+- Specify strict-persistence behavior and unsupported-platform refusal before changing options. A silent
+  relaxed fallback cannot establish a stronger grant promise. Avoid a blanket unrelated storage rewrite.
+- Add meaningful generated schedules that can lose completed-but-unflushed writes after encryption, plus
+  native requested/reported-option, order, abort and lifetime controls. An omitted durability/order guard
+  must expose undercounting in the model; renderer death must not be labelled a power-cut experiment.
+- Implement only the resulting bounded repair, run affected owner/native/vector checks, preserve evidence,
+  append the outcome and replace only L-1. Broader platform/restore and performance work stays separate.
 
-**Personal checkpoint.** All 21 saved package hashes in root `dist/` and
-`.dev/releases/17d87c2/app`, 30 prior tracked vector files, production sources, historical review and
-L-2 are unchanged. Personal preview/relay remain stopped. No real browser interaction, Account, factor,
-operator key, pin, origin or routing change occurred. New bundles stayed in memory; native fixtures were
-disposable and synthetic. Unrelated root files `done ` and `reviewpacket96a20401ceb88d.md` remain untouched.
-Host VM/policy research stays stopped. The actual old second device will adopt the first workspace with
-fresh custody/store/counters/credentials, without importing or merging its old writing.
+**Personal checkpoint.** All 21 saved hashes in root `dist/` and `.dev/releases/17d87c2/app`, 31 prior
+tracked vector files, historical review and L-2 are unchanged. Personal preview/relay remain stopped.
+No real browser, Account, factor, operator key, pin, origin or routing change occurred. Native fixtures
+were synthetic/disposable; bundles stayed in memory. Unrelated root files `done ` and
+`reviewpacket96a20401ceb88d.md` remain untouched. Host VM/policy research stays stopped. The actual old
+second device will adopt the first workspace with fresh custody/store/counters/credentials, without
+importing or merging its previous writing.
 
-**Other gates.** F-15 invocation-grant power-loss accounting remains: content requests relaxed durability,
-custody no explicit hint; renderer death and transaction completion are not OS/power-loss evidence.
-F-05/F-06, salvage/diagnostics, parser/admission/service negatives, performance/maintenance, lock ordering
-and accepted review follow-ups remain. Passkey and workspace signing IDs are distinct namespaces.
-General lineage advancement, successor/checkpoint baselines/install/fallback, concurrent members,
-pruning/backlog scale, enrollment/device management, revocation/rotation, clear/delete,
+**Other gates.** F-15, salvage/diagnostics, remaining parser/service negatives, performance/maintenance,
+lock ordering and accepted review follow-ups remain. Passkey and workspace signing IDs are separate
+namespaces. General lineage advancement, successor checkpoint baselines/install/fallback, concurrent
+members, pruning/backlog scale, enrollment/device management, revocation/rotation, clear/delete,
 finalization/total-loss recovery, PRF enrollment, supported platforms, whole-profile residue,
-production deployment/restore and independent review remain separate. Client/service histories must
-be unrewound/unbranched; fresh-salt/sender constructions require nonrepeating randomness. L-2's historical
-clean ref `d24732b` has no further service work to integrate.
+production deployment/restore and independent review remain separate. Histories must be unrewound and
+unbranched; fresh-salt/sender constructions require nonrepeating randomness. L-2's historical clean ref
+`d24732b` has no further service work to integrate. No real Account provisioning or personal server
+restart is authorized by this phase.
 
 The outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 

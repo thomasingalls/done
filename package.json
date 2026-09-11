@@ -116,7 +116,8 @@
     "account:store-contract": "node scripts/account-store-contract/run.mjs",
     "account:local-custody": "node scripts/account-local-custody/run.mjs",
     "account:checkpoint-contract": "node scripts/account-checkpoint-contract/run.mjs",
-    "account:local-provenance": "node scripts/account-local-provenance/run.mjs"
+    "account:local-provenance": "node scripts/account-local-provenance/run.mjs",
+    "account:crypto-audit": "node scripts/account-crypto-audit/run.mjs"
   },
   "dependencies": {
     "@codemirror/commands": "^6.10.4",

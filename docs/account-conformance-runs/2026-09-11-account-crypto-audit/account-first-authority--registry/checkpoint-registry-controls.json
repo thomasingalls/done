@@ -1,0 +1,27 @@
+[
+  {
+    "obligation": "native-checkpoint-owner",
+    "caught": true
+  },
+  {
+    "obligation": "genesis-scope-disposition",
+    "caught": true
+  },
+  {
+    "obligation": "shrinking-replay-histories",
+    "caught": true
+  },
+  {
+    "obligation": "inherited-byte-agreement",
+    "caught": true
+  },
+  {
+    "obligation": "encoded-field-omissions",
+    "caught": true
+  },
+  {
+    "obligation": "omission vectors",
+    "caught": true,
+    "aggregatePinUpdated": true
+  }
+]

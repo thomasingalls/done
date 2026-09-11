@@ -1,0 +1,12 @@
+{
+  "controls": [
+    "submission.envelope-hash",
+    "submission.parent-id",
+    "head.final",
+    "read-page-v1.through",
+    "witness.request"
+  ],
+  "additionalControl": "read-page-v2.through in test/accountTransportContract.test.ts",
+  "method": "Remove one field from bytes passed to actual verification; independent signatures over omitted messages; never replace verification with true. Lower-level proof only, not every owner predicate.",
+  "runtimeSourceUnchanged": true
+}

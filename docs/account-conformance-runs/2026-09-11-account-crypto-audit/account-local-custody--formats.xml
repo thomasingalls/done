@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="generated states preserve the closed primitive state domain at the structured-clone parser" time="0.042306" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/formats.test.mjs"/>
+	<testcase name="fixed factor, envelope, credential, key-correspondence and metadata vectors match actual native primitives" time="0.023670" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/formats.test.mjs"/>
+	<testcase name="inherited factor and generation-envelope bytes agree without qualifying historical credential or PRF ceremonies" time="0.006774" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/formats.test.mjs"/>
+	<testcase name="each factor, envelope, credential and metadata field binds; encoded omissions retain real AES/HMAC checks" time="0.016975" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/formats.test.mjs"/>
+	<testcase name="closed custody parser rejects malformed nested carriers and owns every retained byte array" time="0.003213" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/formats.test.mjs"/>
+	<testcase name="200 shrinking-enabled reservation and completion histories authenticate exact metadata and reject one-leaf alterations" time="1.316233" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/formats.test.mjs"/>
+	<testcase name="authentic wrong private keys, relocated credentials and metadata omissions expose effective source controls" time="0.082458" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/formats.test.mjs"/>
+	<testcase name="credential export-format and failure cleanup guards execute before accepting keys or retaining temporary private bytes" time="0.046169" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-custody/formats.test.mjs"/>
+	<!-- tests 8 -->
+	<!-- suites 0 -->
+	<!-- pass 8 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 1719.595458 -->
+</testsuites>

@@ -550,5 +550,5 @@ console.log(
     "each open entry flips only at its return, under that record's falsifiers. Account construction coverage is reported separately below.",
 );
 console.log(
-  `  Account constructions: ${accountConstructions.specified} specified, ${accountConstructions.open} open, ${accountConstructions.inherited} inherited outside Account acceptance, ${accountConstructions.excluded} non-crypto exclusions. F-05/F-06 remain open; run the vector/runtime campaign to verify the registered evidence.`,
+  `  Account constructions: ${accountConstructions.specified} specified, ${accountConstructions.open} open, ${accountConstructions.inherited} inherited outside Account acceptance, ${accountConstructions.excluded} non-crypto exclusions. This is registration evidence, not a finding-closure decision. See docs/review/implementation/account-crypto-closure.md and run account:crypto-audit.`,
 );

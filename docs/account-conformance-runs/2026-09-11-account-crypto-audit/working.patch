@@ -1,0 +1,752 @@
+diff --git a/docs/account-crypto/constructions.json b/docs/account-crypto/constructions.json
+index 345bb5a..8dd8dd5 100644
+--- a/docs/account-crypto/constructions.json
++++ b/docs/account-crypto/constructions.json
+@@ -1,6 +1,6 @@
+ {
+   "v": 1,
+-  "status": "A/B/C and service custody D1 specified; remaining D and inherited Local bridges open",
++  "status": "A/B/C/D1–D8 specified; four inherited groups outside Account acceptance. Aggregate finding dispositions are recorded separately in docs/review/implementation/account-crypto-closure.md.",
+   "schemaSha256": "50800229da6b62f58d5376c27c844ef85cddb906164dd2b4854f11d3013ae09d",
+   "vectorFile": "test/vectors/first-authority.json",
+   "vectorSha256": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9",
+diff --git a/docs/completed.md b/docs/completed.md
+index 8212fe9..8d267a5 100644
+--- a/docs/completed.md
++++ b/docs/completed.md
+@@ -2857,3 +2857,35 @@ servers remain stopped; unrelated root files and real Account/browser/secrets ar
+ 
+ Next is the aggregate A/B/C/D1–D8 F-05/F-06 closure audit, including inherited limits. Zero open groups
+ does not itself close those findings. F-15, remaining review and broader Account/release gates remain.
++
++
++## 2026-09-11 — Aggregate Account crypto-contract closure (`L-1` seat)
++
++D8 is signed and committed as `393ef43`; all nine C/D1–D8 signatures verify `G`. The aggregate audit
++is complete and remains unstaged/uncommitted. The historical review and earlier receipts are unchanged.
++
++[Current dispositions](./review/implementation/account-crypto-closure.md) close F-05 and F-06 for the
++current private first-epoch Account protocol. F-05's source/map/byte/vector omissions are repaired across
++A/B/C/D1–D8, with the initial empty-head rule explicit and the four inherited Local/migration groups
++separately scoped. F-06's TRD/row-14/runtime/current vectors agree on the 96-byte payload/112-byte
++ciphertext; historical scalar-only bytes remain preserved and refused. Other findings and broader
++protocol/release obligations are not closed by these decisions.
++
++[Aggregate evidence](./account-conformance-runs/2026-09-11-account-crypto-audit.md): 71 stages,
++870 matching source pins, 237 Node tests/36 files including all 27 declared files
++and 100 tests/11 native files. The separate slot/transport unit bridges and 30 vector
++commands pass, with no skipped test or timeout. Eleven corpora contain 159 fixed cases, 4,332 published
++input negatives and 4,106 encoded omissions; their different evidence levels are explicitly recorded.
++The source/field assessment and six manual entrypoints supplement registry counts. Historical source
++comparison distinguishes intervening B/D1/D6 repairs from unchanged D6–D8 source. No new production
++defect was found. Stale checker/registry status text is corrected and a reproducible aggregate runner
++is exposed as `pnpm account:crypto-audit`.
++
++Production sources, existing tests, 31 prior tracked vector files, all 21 personal package hashes,
++historical review and L-2 are unchanged. Personal servers remain stopped, unrelated root files untouched,
++and no real Account/browser/secrets/routing changes occurred. The full D8 unit receipt remains valid at
++unchanged source; this audit reruns the directly referenced unit bridges.
++
++Next is F-15 reservation durability, beginning with its failure model and transaction inventory, before
++any strict-persistence change. Page/renderer loss, power loss and restore/clone branching must remain
++distinct. Enrollment/adoption, later epochs, recovery/finalization and other review/release gates remain.
+diff --git a/docs/progress.md b/docs/progress.md
+index 64def8f..c4f0c84 100644
+--- a/docs/progress.md
++++ b/docs/progress.md
+@@ -42,78 +42,76 @@ that is no longer active.
+ 
+ ---
+ 
+-## Active slice: Aggregate Account byte-contract closure review (`L-1`)
++## Active slice: Reservation durability and invocation accounting (`L-1`)
+ 
+ ```yaml
+ gate: L-1
+ seat: /Users/thomasingalls/.codex/worktrees/c030/done
+ branch: codex/encrypted-store-contract-corrections
+ status: not started
+-blocks_on: aggregate evidence review before F-05/F-06 disposition
++blocks_on: F-15 failure model and transaction inventory before persistence repair
+ debts: consult docs/review/remediation/debts.json
+ updated: 2026-09-11
+ ```
+ 
+ **Roadmap position.** Personal Local cutover, source cleanup and packaged offline upgrades are exercised.
+-Account work remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), item 5's internal
+-creating-member ciphertext round trip. Composition `6398e33`, descriptor bounds `4f71bac`, activation
+-`2ba50aa`, prep `9cf5c98`, A `43b42b1`, B `e74fbaa`, C `a20e439`, D1 `32d4074`, D2 `437bc86`,
+-D3 `10fef3d`, D4 `1500379`, D5 `ed1a930`, D6 `862a9d7` and D7 `5555238` are committed.
+-All eight C/D1–D7 commits are signed; the signing reminder is paused. The
+-[history mapping](./account-conformance-runs/2026-09-11-signed-contract-history.json) records the seven
+-recreated commits, whose old objects remain reachable under the backup branch. D8 is complete,
+-unstaged/uncommitted. No real Account receipt exists; this is not Stage 4 completion or enrollment.
++Account remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), item 5's internal creating-member
++ciphertext round trip. Composition `6398e33`, bounds `4f71bac`, activation `2ba50aa`, prep `9cf5c98`,
++A `43b42b1`, B `e74fbaa`, C `a20e439`, D1 `32d4074`, D2 `437bc86`, D3 `10fef3d`, D4 `1500379`,
++D5 `ed1a930`, D6 `862a9d7`, D7 `5555238` and D8 `393ef43` are committed. All nine C/D1–D8 commits
++are signed; the signing reminder is paused and the original unsigned chain remains reachable under
++the [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
++The aggregate closure audit is complete, unstaged/uncommitted. No real Account receipt exists.
+ 
+-**Completed boundary.** [D8 Local provenance](./account-crypto/local-provenance.md) bridges the four
+-claim key/progress/import-selection/cleanup labels actually consumed by Account promotion/startup.
+-Eight other labels are four explicit inherited groups outside current Account acceptance. Exact
+-primitive roles, historical evidence and tested boundaries remain required; the shared cleanup parser
+-and payload stay inside live evidence. Account authenticates incomplete cleanup progress without
+-claiming source absence or running deletion. No production change or defect was found. D6's strict
+-state-parser repair and D7's genesis-only checkpoint/startup boundary remain intact.
++**Completed boundary.** [Current review](./review/implementation/account-crypto-closure.md) closes
++F-05/F-06 for the private first-epoch Account protocol. Exact source/role/map/byte/vector joins now cover
++the live constructions; empty first-genesis heads and the 96-byte recovery payload/112-byte ciphertext
++are explicit and exercised. Imported claim/cleanup bytes remain live dependencies; four inherited
++Local/migration operation groups have pinned historical evidence and bounded native exclusion tests.
++This does not assert source absence, later-epoch support, total-loss recovery or whole-protocol closure.
++Stale checker status text was corrected; production code, formats, vectors and existing tests are unchanged.
+ 
+-[Final evidence](./account-conformance-runs/2026-09-11-account-local-provenance.md): 50 stages pass
+-with 864 matching source pins. Eight fixed vectors, 51 mutations, 46 encoded omissions, 230 actual input
+-mutations (190 parser/40 crypto refusals), seven source controls and ten registry controls pass.
+-Shrinking-enabled tests cover 250 helper and 20 native histories, with no counterexample. Four native
+-tests exercise fresh/imported/cleanup claim handoff, cold read-only startup, MAC omission/backstop,
+-blocking clear/import rows and direct probes of four excluded-operation barriers. Seven selected
+-inherited Local-genesis cases/two mutants, 983 units/88 files, typecheck, prior contracts and 30 vector
+-commands pass. Registry: 78 specified, zero open, four inherited and one non-crypto exclusion.
+-Map: 80 entries/102 chains/19 homes. Census: unchanged 158 sources/89 labels/templates.
++[Aggregate evidence](./account-conformance-runs/2026-09-11-account-crypto-audit.md): 71 stages pass,
++870 source pins match; 237 Node tests/36 files include all 27 registered files and
++100 tests in 11 native files. Slot-unlock/transport unit bridges and 30 vector commands
++pass. Eleven corpora contain 159 fixed cases, 4,332 input negatives and 4,106 encoded omissions, with
++primitive, parser and owner evidence distinguished. No new runtime defect was found. The current map
++has 80 entries/102 chains/19 homes; registry 78 specified/zero open/four inherited/one non-crypto;
++census unchanged 158 sources/89 labels/templates. Counts alone did not decide closure.
+ 
+-**Next bounded phase — aggregate A/B/C/D1–D8 closure review.** Review F-05/F-06 against
+-[the construction registry](./account-crypto/constructions.json), [prep gates](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates)
+-and the retained historical finding responses:
++**Next bounded phase — F-15 reservation durability, prep included.** Current content transactions request
++`relaxed` durability, while custody transactions have no explicit hint. AES invocation counters and network
++attempt grants must not be treated as power-loss-safe merely because the transaction completed.
+ 
+-- Reconcile the runtime census, primitive roles, permitted-root chains and exact byte homes with all
+-  registered constructions, including the four inherited scope limits. Zero open groups is insufficient.
+-- Audit executed vector fields, meaningful refusals and effective source controls against each finding's
+-  actual acceptance requirement. Distinguish static registration, helper bytes, native owner tests and
+-  dated inherited evidence. Do not infer protocol completeness from a passing checker.
+-- Give each finding an explicit evidence-backed closed/remaining disposition in the current remediation
+-  record, preserving the historical review. Repair a demonstrated gap within a bounded follow-up if needed.
+-- Preserve the review evidence, append the outcome, then replace only L-1. Choose the next Account phase
+-  from the remaining gates after this review; do not provision a real Account or resume personal servers.
++- Inventory every custody/content reservation and network-attempt grant, its persistence transaction,
++  encryption call and subsequent publication/abandonment. Distinguish allocation from retained ciphertext.
++- Write the supported failure model and required persistence boundary. Keep SC-01's page/navigation-loss
++  acknowledgment scope distinct from lifetime invocation-budget accounting, OS loss and restore/clone.
++- Specify strict-persistence behavior and unsupported-platform refusal before changing options. A silent
++  relaxed fallback cannot establish a stronger grant promise. Avoid a blanket unrelated storage rewrite.
++- Add meaningful generated schedules that can lose completed-but-unflushed writes after encryption, plus
++  native requested/reported-option, order, abort and lifetime controls. An omitted durability/order guard
++  must expose undercounting in the model; renderer death must not be labelled a power-cut experiment.
++- Implement only the resulting bounded repair, run affected owner/native/vector checks, preserve evidence,
++  append the outcome and replace only L-1. Broader platform/restore and performance work stays separate.
+ 
+-**Personal checkpoint.** All 21 saved package hashes in root `dist/` and
+-`.dev/releases/17d87c2/app`, 30 prior tracked vector files, production sources, historical review and
+-L-2 are unchanged. Personal preview/relay remain stopped. No real browser interaction, Account, factor,
+-operator key, pin, origin or routing change occurred. New bundles stayed in memory; native fixtures were
+-disposable and synthetic. Unrelated root files `done ` and `reviewpacket96a20401ceb88d.md` remain untouched.
+-Host VM/policy research stays stopped. The actual old second device will adopt the first workspace with
+-fresh custody/store/counters/credentials, without importing or merging its old writing.
++**Personal checkpoint.** All 21 saved hashes in root `dist/` and `.dev/releases/17d87c2/app`, 31 prior
++tracked vector files, historical review and L-2 are unchanged. Personal preview/relay remain stopped.
++No real browser, Account, factor, operator key, pin, origin or routing change occurred. Native fixtures
++were synthetic/disposable; bundles stayed in memory. Unrelated root files `done ` and
++`reviewpacket96a20401ceb88d.md` remain untouched. Host VM/policy research stays stopped. The actual old
++second device will adopt the first workspace with fresh custody/store/counters/credentials, without
++importing or merging its previous writing.
+ 
+-**Other gates.** F-15 invocation-grant power-loss accounting remains: content requests relaxed durability,
+-custody no explicit hint; renderer death and transaction completion are not OS/power-loss evidence.
+-F-05/F-06, salvage/diagnostics, parser/admission/service negatives, performance/maintenance, lock ordering
+-and accepted review follow-ups remain. Passkey and workspace signing IDs are distinct namespaces.
+-General lineage advancement, successor/checkpoint baselines/install/fallback, concurrent members,
+-pruning/backlog scale, enrollment/device management, revocation/rotation, clear/delete,
++**Other gates.** F-15, salvage/diagnostics, remaining parser/service negatives, performance/maintenance,
++lock ordering and accepted review follow-ups remain. Passkey and workspace signing IDs are separate
++namespaces. General lineage advancement, successor checkpoint baselines/install/fallback, concurrent
++members, pruning/backlog scale, enrollment/device management, revocation/rotation, clear/delete,
+ finalization/total-loss recovery, PRF enrollment, supported platforms, whole-profile residue,
+-production deployment/restore and independent review remain separate. Client/service histories must
+-be unrewound/unbranched; fresh-salt/sender constructions require nonrepeating randomness. L-2's historical
+-clean ref `d24732b` has no further service work to integrate.
++production deployment/restore and independent review remain separate. Histories must be unrewound and
++unbranched; fresh-salt/sender constructions require nonrepeating randomness. L-2's historical clean ref
++`d24732b` has no further service work to integrate. No real Account provisioning or personal server
++restart is authorized by this phase.
+ 
+ The outcome was appended to completed.md before this rewrite; L-2 is unchanged.
+ 
+diff --git a/docs/review/implementation/README.md b/docs/review/implementation/README.md
+index 3a95dd7..41088a1 100644
+--- a/docs/review/implementation/README.md
++++ b/docs/review/implementation/README.md
+@@ -10,3 +10,11 @@ The packet is preserved byte-for-byte, including its historical note that the re
+ at assessment time. The author subsequently requested this archive and its separate commit. Dispositions
+ state intent, not completed remediation. Follow-up outcomes belong in phase evidence and `completed.md`;
+ current work is tracked in `progress.md`.
++
++
++Current follow-up dispositions:
++
++- [Account byte-contract closure: F-05/F-06](./account-crypto-closure.md), 2026-09-11:
++  closes the two specification/vector findings for the current private first-epoch protocol, with
++  aggregate execution evidence and explicit inherited limits. This supersedes phase-local status notes;
++  it does not alter the historical packet or close other findings.
+diff --git a/package.json b/package.json
+index b6fda30..137ce38 100644
+--- a/package.json
++++ b/package.json
+@@ -116,7 +116,8 @@
+     "account:store-contract": "node scripts/account-store-contract/run.mjs",
+     "account:local-custody": "node scripts/account-local-custody/run.mjs",
+     "account:checkpoint-contract": "node scripts/account-checkpoint-contract/run.mjs",
+-    "account:local-provenance": "node scripts/account-local-provenance/run.mjs"
++    "account:local-provenance": "node scripts/account-local-provenance/run.mjs",
++    "account:crypto-audit": "node scripts/account-crypto-audit/run.mjs"
+   },
+   "dependencies": {
+     "@codemirror/commands": "^6.10.4",
+diff --git a/scripts/account-crypto-prep/run.mjs b/scripts/account-crypto-prep/run.mjs
+index b93859b..4b64c4f 100644
+--- a/scripts/account-crypto-prep/run.mjs
++++ b/scripts/account-crypto-prep/run.mjs
+@@ -27,6 +27,6 @@ if (failures.length) {
+     `${args.includes('--record') ? 'Recorded reviewed' : 'Matched pinned'} runtime census: ${current.sources.length} sources, ${current.domains.length} labels/templates, ${registry.groups.length} groups; ${registry.unlabelled.length} manual entrypoints.`,
+   );
+   console.log(
+-    'Inventory only: authority-map integration, complete byte vectors and field omissions remain open.',
++    'Inventory only: this command checks source classification, not byte contracts or finding closure. See docs/review/implementation/account-crypto-closure.md and run account:crypto-audit for aggregate evidence.',
+   );
+ }
+diff --git a/scripts/check-authority-map.mjs b/scripts/check-authority-map.mjs
+index 4c97dbb..53c4787 100644
+--- a/scripts/check-authority-map.mjs
++++ b/scripts/check-authority-map.mjs
+@@ -550,5 +550,5 @@ console.log(
+     "each open entry flips only at its return, under that record's falsifiers. Account construction coverage is reported separately below.",
+ );
+ console.log(
+-  `  Account constructions: ${accountConstructions.specified} specified, ${accountConstructions.open} open, ${accountConstructions.inherited} inherited outside Account acceptance, ${accountConstructions.excluded} non-crypto exclusions. F-05/F-06 remain open; run the vector/runtime campaign to verify the registered evidence.`,
++  `  Account constructions: ${accountConstructions.specified} specified, ${accountConstructions.open} open, ${accountConstructions.inherited} inherited outside Account acceptance, ${accountConstructions.excluded} non-crypto exclusions. This is registration evidence, not a finding-closure decision. See docs/review/implementation/account-crypto-closure.md and run account:crypto-audit.`,
+ );
+diff --git a/docs/account-conformance-runs/2026-09-11-account-crypto-audit.md b/docs/account-conformance-runs/2026-09-11-account-crypto-audit.md
+new file mode 100644
+index 0000000..793873b
+--- /dev/null
++++ b/docs/account-conformance-runs/2026-09-11-account-crypto-audit.md
+@@ -0,0 +1,89 @@
++# Aggregate Account byte-contract audit — 2026-09-11
++
++**F-05 and F-06 close for the current private first-epoch Account protocol.** The
++[review and individual dispositions](../review/implementation/account-crypto-closure.md) explain why,
++including the limits of inherited Local/migration evidence. D8 was committed signed as `393ef43`;
++all nine C/D1–D8 commits verify `G`. New audit work remains unstaged/uncommitted.
++
++[Summary](./2026-09-11-account-crypto-audit/summary.json),
++[construction/evidence crosswalk](./2026-09-11-account-crypto-audit/crosswalk.json),
++[source pins](./2026-09-11-account-crypto-audit/sources.json),
++[historical source comparison](./2026-09-11-account-crypto-audit/prior-evidence.json),
++[preservation](./2026-09-11-account-crypto-audit/preservation.json),
++[patch](./2026-09-11-account-crypto-audit/working.patch),
++[patch manifest](./2026-09-11-account-crypto-audit/patch.json).
++
++Execution: `node scripts/account-crypto-audit/run.mjs` (also exposed as `pnpm account:crypto-audit`),
++Node v26.8.2; 2026-09-11T20:33:41.153Z–2026-09-11T20:47:20.534Z.
++Run: `test-results/account-crypto-audit/2026-09-11T20-33-40.590Z`.
++All **71 stages pass**, with **870 matching source pins**, no timeouts or skipped tests.
++There are **237 Node tests in 36 files**, including all **27 registry-declared files**
++and **100 tests in 11 native files**. The separate slot-unlock/v2 transport unit bridges
++and all **30 vector commands** pass. The runner rejects empty/skipped/failed Node test reports and
++checks that every declared test file executed; those checks do not infer semantic coverage from counts.
++
++| Phase | Specified constructions | Fixed cases | Published input negatives | Encoded omission controls |
++| --- | --- | --- | --- | --- |
++| A | 17 | 17 | 399 | 333 |
++| B | 6 | 13 | 64 | 64 |
++| C | 24 | 37 | 314 | 314 |
++| D1 | 4 | 8 | 39 | 24 |
++| D2 | 2 | 16 | 2931 | 2938 |
++| D3 | 6 | 20 | 234 | 118 |
++| D4 | 4 | 8 | 85 | 95 |
++| D5 | 4 | 11 | 53 | 44 |
++| D6 | 5 | 15 | 135 | 115 |
++| D7 | 2 | 6 | 27 | 15 |
++| D8 | 4 | 8 | 51 | 46 |
++| Total | 78 | 159 | 4,332 | 4,106 |
++
++Corpus counts are heterogeneous: parser refusals, changed encodings and primitive omission controls
++are not all full-owner adversarial histories. The source review inspected the actual encoder/comparison
++loops, verifier tests and effective controls, with their reported boundaries. Independent encoders import
++no production byte builders; Node/OpenSSL and browser WebCrypto may share primitive implementations.
++The current registry has four separately inherited groups outside Account acceptance and one non-crypto
++exclusion in addition to these 78 specified constructions. Map: 80 entries/102 permitted-root chains/
++19 swept homes. Runtime census: unchanged 158 files/89 labels/templates/six manual entrypoints.
++
++The campaign freshly executes current byte, MAC/AEAD/signature, parser, genuine wrong-evidence,
++source-omission and generated tests across A/B/C/D1–D8. Native capture/spool/delivery/receive owners
++exercise their retained crash, aborted-commit, replay, journal/compaction, lifecycle and witness controls.
++Native D2/D4–D8 tests link the byte helpers to actual persisted owners. Recovery crypto/properties,
++service process restart, browser recovery and HPKE bridges also execute. Historical generated tests
++retain their existing seeds and shrinking settings; no claim that all inherited properties shrink is made.
++
++No runtime defect was found. Only stale construction/checker status reporting was corrected. The new
++aggregate runner and current disposition document make the closure evidence reproducible; the normal
++authority/inventory checkers report registration/classification without declaring a finding closed.
++Production code, stored formats, current vectors and all existing tests are unchanged.
++
++The [historical comparison](./2026-09-11-account-crypto-audit/prior-evidence.json) retains the prior
++successful summaries and lists source drift: B's recovery export check, D1's service export/custody
++repair and new keyEncoding helper, and D6's record-state parser. D6–D8 production pins match current
++source. Older receipts remain evidence at their original source; they are not rewritten after signing
++or relabelled as current execution. The D8 full suite receipt (983 tests/88 files) is retained; this
++audit reruns the directly referenced unit bridges, rather than repeating the unchanged full unit suite.
++
++The [manual primitive query](./2026-09-11-account-crypto-audit/primitive-sites.txt) supported navigation
++through sign/verify, KDF, AEAD and digest calls. It includes wrappers/imports and is not an exhaustive
++primitive census or call-graph proof. The review separately dispositions standard HPKE/WebAuthn,
++unlabelled hashes, Local custody/WASM and migration-only digest producers. Dependencies, other languages,
++future call paths and arbitrary string assembly are not qualified merely by the prefix scan.
++
++The retained Local cleanup MAC authenticates progress, not plaintext absence. The first-genesis-only
++head-vector and checkpoint rules do not define successor epochs. Recovery payload agreement does not
++implement replacement or total-loss recovery. No renderer-kill or logical clearing test establishes
++power-loss persistence or whole-profile erasure. F-15 and the other Account/release gates remain open.
++
++All 257 raw campaign files are preserved exactly in the
++[raw manifest](./2026-09-11-account-crypto-audit/raw-files.json). All 21 personal package hashes,
++31 prior tracked vector files, historical review and L-2 are preserved. Personal preview/relay remain
++stopped; no personal browser, Account, factor, operator key, pin, origin or routing change occurred.
++Unrelated root files remain untouched. Native fixtures use synthetic SQLite/Chromium/loopback contexts
++and in-memory bundles; the personal package was not built.
++
++**Next bounded phase: F-15 reservation durability, starting with the failure model and transaction
++inventory.** Identify which custody/content reservations and network-attempt grants must survive before
++encryption can execute; specify strict persistence/refusal and test lost-unflushed-grant schedules
++without treating native renderer death as an OS durability test. Restore/clone branching and general
++release qualification stay separate. No real Account provisioning is authorized by this audit.
+diff --git a/docs/review/implementation/account-crypto-closure.md b/docs/review/implementation/account-crypto-closure.md
+new file mode 100644
+index 0000000..f08ea71
+--- /dev/null
++++ b/docs/review/implementation/account-crypto-closure.md
+@@ -0,0 +1,155 @@
++# Account cryptographic contract closure review — F-05 and F-06
++
++2026-09-11. Reviewed against signed D8 commit `393ef435af72a5c0b8e2d19b410a5d932400f902`
++and the documentation/runner changes recorded in the accompanying patch. **F-05 and F-06 are closed within the scope below.**
++
++This is the current disposition of these two findings in the
++[historical implementation packet](./af8941e-96a2040.md#f-05-account-phase-constructions-are-outside-the-authority-maps-sweep-and-the-trd-three-durable-root-signed-encodings-appear-in-no-document).
++That packet and its original responses remain unchanged. This record supersedes the phase-local
++“F-05/F-06 remain open” status notes in A/B/C/D1–D8; their byte rules and recorded evidence limits remain.
++The review does not dispose of other packet findings or establish completion of Stage 4.
++
++## 1. Decisions and precise scope
++
++| Finding | Disposition | Importance and reasoning |
++| --- | --- | --- |
++| **F-05: unregistered and underspecified Account constructions** | **Closed** for the current private first-epoch Account protocol | High validation/interoperability importance, without a demonstrated encryption break. The runtime inventory now joins exact source sites and primitive roles to pinned byte homes, permitted authority chains, published vectors and executed tests. First-epoch/offer/receipt bytes and the initial empty-head rule are explicit. Retained Local claim dependencies are included. The four inherited migration/Local-operation groups have a separate, justified scope disposition. The original omission is repaired; the result does not qualify later epochs, enrollment or all reachable cryptography in every dependency. |
++| **F-06: scalar-only row-14 vector versus the 96-byte runtime payload** | **Closed** for the current private v1 recovery envelope | Medium-high interoperability importance. TRD §13.8, row 14, current vectors, generator and opener now agree on raw X25519 scalar, binary root commitment and raw Ed25519 seed, 32 bytes each, with a 112-byte ciphertext/tag. Historical 48-byte ciphertext is preserved separately and explicitly refused. Correctly authenticated wrong keys, roots, segment layouts and contexts exercise the real opener. This does not implement replacement or total-loss recovery. |
++
++Closing a documentation/vector finding does not require completing unrelated runtime state machines.
++Conversely, passing a label census or writing “tested” into a registry would not close either finding.
++The decisions above rest on the byte and owner evidence below, inspected at their actual boundaries.
++
++## 2. F-05: original allegations and their current evidence
++
++| Original gap | Current source, specification and execution |
++| --- | --- |
++| Account documents omitted from the authority sweep | `scripts/check-authority-map.mjs` now sweeps eleven exact Account crypto homes in addition to the original eight documents. `scripts/account-first-authority/registry.mjs` separately joins the source census to construction records, checking labels/sites, explicit roles, section pins, map entries, vector ownership, test references and required evidence. A glob over prose alone would still miss HMAC/KDF and unlabelled primitives. |
++| First epoch, offer and receipt encodings | [First-authority §§1–2](../../account-crypto/first-authority.md#1-primitive-encodings-and-nested-object-order) and its recursive JSON schema pin field order, exact signature exclusions, inner-signature retention, LP/domain/hash layers and offer-head derivation. Current receipt is v2 after the separately completed activation repair. TRD §13.5 links these private encodings; the old v1 receipt is not silently presented as the current protocol. Phase A executes all 17 fixed constructions and their 399 input negatives/333 encoded omissions. |
++| Empty versus member-at-position-zero genesis heads | First-authority §3, TRD §§7.6/13.5 and rows 5/7 select the empty accepted-head vector only before any Account acceptance. The independent digests differ; the genuine signed explicit-zero baseline refuses. Certification still names the member. This is not a sparse-vector rule for successor epochs. |
++| Bootstrap, pending observation, creating candidate/certification/origin and slot binding | A pins separate authority, member, bootstrap and account-authenticator dependencies. Real verifier tests use fixed valid signatures, wrong-purpose/root/owner/credential-namespace proofs and a real authenticator assertion. A signed descriptor lie remains acceptable to the content-blind verifier and is rejected only with independently supplied content coverage; the tests preserve that distinction. |
++| Envelopes, submissions, heads/refusals, responses, reads and service witness | [Transport §§2–7](../../account-crypto/transport.md#2-network-key-encryption-and-signature) specifies 37 fixed constructions and current v1/v2 distinctions. Tests execute wire bytes, signatures, exact signed-request hashes, ordered nested pages and witness chains. Carrier parsing, member attribution and acceptance/readback authority remain separate. A v1 reader compatibility vector does not authorize v1 minting. |
++| Service root and acceptance custody | [D1](../../account-crypto/service-custody.md) pins all three KDFs, both AES-GCM seals, pin/proposal AAD and exact DER exports. Actual SQLite creation/opening, authentic wrong-seed payloads, held-pin changes, closed-owner use and failure cleanup have effective source controls. Operator custody is not a client content trust root. |
++| Promotion, capsule, ledger and counter metadata | [D2](../../account-crypto/local-promotion.md), [D3](../../account-crypto/account-ledger.md) and [D4](../../account-crypto/content-counter.md) specify versioned MAC/carrier bytes, deterministic identities and witness coupling. Tests distinguish parser refusal, changed authenticated bytes, canonical carrier syntax, valid local re-encryption around false service evidence and ordered owner acceptance. MAC success alone is insufficient. |
++| Recovery key checks and digests | [B](../../account-crypto/recovery-layout.md) specifies the recovery key correspondence message, root/envelope/state/draft digests and initial challenges. The review table's generic “service HMAC” description was inaccurate: the relevant objects include SHA-256 commitments, factor-opened bootstrap signatures and root-signed observations. Registry roles follow the implementation. |
++| Remaining live Local dependencies | [D5](../../account-crypto/store-journal.md), [D6](../../account-crypto/local-custody.md), [D7](../../account-crypto/checkpoint.md) and [D8](../../account-crypto/local-provenance.md) tie the reused content/journal/custody/checkpoint/claim constructions to exact bytes and native owners. Imported selection and cleanup wrappers remain authenticated during Account promotion/startup; they are not removed from scope merely because migration is finished. |
++
++The map has **80 entries, 102 permitted-root chains and 19 swept homes**. The source census has
++**158 production files, 89 labels/templates and six manual entrypoints**. The construction registry
++has **78 specified records, zero open groups, four inherited groups and one non-crypto exclusion**.
++These are different units. A label can name a carrier or appear in several operations; none of these
++counts measures “percentage of the protocol proven.”
++
++The reviewed authority edges keep the service at serialization/availability roots. Client keys and
++content still require factor-opened custody, certified member/bootstrap endorsements and structural
++coverage checks. No permissive service-to-content root was added to make a checker pass.
++
++## 3. Unlabelled primitives and inherited limits
++
++The manual review read the six prep entrypoints and traced the nearby digest, sign/verify, derive and
++encrypt/decrypt call sites. The preserved source query is a navigation aid, not an exhaustive AST or
++reachability proof. The source hash gate catches drift but cannot decide whether a new operation is safe.
++
++| Boundary not established by a `done/` label | Disposition |
++| --- | --- |
++| `src/account/generationWrap.ts` standard HPKE schedule | B §4 and its published recipient vector use the standard suite labels and sequence-zero one-message schedule. Runtime sealer/opener and independent reconstruction are executed; generation-crypto tests cover changed info/ciphertext and low-order recipients. No sender-authentication claim is attached to HPKE base mode. |
++| `account-service/webauthn.ts` and `src/account/slotUnlock.ts` | The service supplies exact challenge, RP/origin, credential/account and UP/UV requirements to the retained verifier dependency; the slot verifier uses the original authenticator/client-data bytes and compiled Ed25519/ES256 encodings. A/B and the slot-verifier tests qualify this integration. This review is not a fresh audit of the dependency or browser authenticator implementation. |
++| Sorted proof JSON and decoded retry hashes in `account-service/protocol.ts` | B §3 describes these separately from ordered protocol JSON. Tests compare a nested proof's sorted encoding/hash and decoded 32-byte retry hash against independent values; challenge changes include actual fresh nonce changes. |
++| Unlabelled request/completion/ciphertext commitments in `account-protocol/admission.ts` | A §§2/6 and the descriptor corpus bind full signed objects or exact decoded ciphertext, as applicable. The activation nonce, completion digest, manifest digest and head hash retain distinct purposes. |
++| Custody raw-root opening and credential correspondence | D6 pins the raw root/envelope/credential schedules and exact exported formats; authentic wrong-private-key ciphertext reaches correspondence checks. The post-D6 strict state-parser repair remains present. |
++| Journal WASM and dependency primitives | D5 independently checks ciphertext/AAD/carrier bytes against the inherited journal implementation and native owner. The earlier WASM/storage evidence retains its original scope; this is not a new Rust/dependency/whole-Local security audit. |
++| Legacy export/import-plan unlabelled hashes | `legacyExport.ts` hashes exact recovery/Markdown packets and `legacyImportPlan.ts` hashes the import plan. Their producers belong to migration. Account treats retained digest strings as data authenticated by the D8 claim, and does not re-run those producers during open. Their historical migration qualification is not silently upgraded by this review. |
++
++The four explicit inherited groups are Local clear, pre-active import, legacy-source observation and
++cleanup fingerprints (eight labels total). D8 requires exact label/primitive/scope sets and pinned
++historical evidence. Native tests replace the four operational entrypoints with throwing barriers:
++fresh/imported/cleanup Account handoff and cold classification succeed, while direct probes hit every
++barrier. Clear/import rows can block access without invoking deletion or their authenticators.
++The shared cleanup parser and payload encoder remain inside live D8 evidence.
++
++These tests bound the actual tested Account paths, not all possible calls or future code. An authenticated
++incomplete cleanup cursor does not prove plaintext absence; Account opening does not run cleanup or
++assert completion. The Local-clear owner retains its separate completion/source-absence requirement.
++None of these dispositions restarts migration tooling or claims whole-profile erasure.
++
++## 4. F-06: exact recovery consistency
++
++Current private v1 recovery plaintext is:
++
++```
++[0,32)  raw X25519 private scalar
++[32,64) binary SHA-256 root commitment
++[64,96) raw Ed25519 bootstrap seed
++```
++
++The root is not hex text; the final segment is neither expanded Ed25519 secret material nor PKCS#8.
++Current AES-GCM appends one 16-byte tag, producing exactly 112 ciphertext bytes. The fixed code, salt,
++nonce, keys, root, KDF info/key, AAD, plaintext, ciphertext and derived public keys are published.
++
++`test/account-recovery-contract/formats.test.mjs` compares the amended row-14 primary seal with the
++independent current corpus, opens both principal fixtures and all normalization positives in the real
++opener, and drives the actual generator with deterministic test inputs. It reconstructs envelope/state/
++draft digests and the confirmation signature, then checks the service verifier. Both key pairs and the
++sealed root must correspond before the callback receives non-extractable handles.
++
++The independently authentic reseals with wrong private keys, root, segment order or size do not merely
++fail AEAD. They reach the appropriate parser or semantic check. Source controls remove context/root/
++X25519/Ed25519 checks and rescue their matching counterexamples. Separate exact PKCS#8 checks, introduced
++for F-12 during B, refuse malformed exports before sealing and clear observed temporary buffers.
++
++`test/vectors/historical/recovery-code.scalar-only.json` retains the former 48-byte ciphertext and its
++provenance. It independently opens to the old scalar but refuses as a current draft. Current vector
++generation never overwrites that history. Replacement step-up vector currentness does not demonstrate
++a built recovery-replacement or total-loss recovery machine.
++
++## 5. Aggregate execution and evidence interpretation
++
++[The preserved aggregate campaign](../../account-conformance-runs/2026-09-11-account-crypto-audit.md)
++passes all **71 stages** with **870 matching source pins**. It executes all **27
++registry-declared test files**, plus the prep/registry and recovery/HPKE bridges: **237 Node tests
++in 36 files**, including **100 tests in 11 native files**. The separate slot and
++v2 transport unit bridges and all 30 vector commands pass. Per-file logs/JUnit and the construction
++crosswalk preserve exact execution and counts. No test was skipped or stage timed out.
++
++The historical-source comparison identifies only the already-recorded recovery/export/custody repairs
++and D6 state-parser change since the earlier phase runs; D6–D8 runtime source pins match current code.
++Current execution is used for the declared tests, rather than relabelling those older receipts.
++No production defect was found in this bounded audit.
++
++The eleven phase corpora contain **159 fixed cases, 4,332 published input negatives and 4,106 encoded
++omission controls**. These counts describe corpus entries. They are not all full-owner adversarial
++histories: some isolate a primitive below parsing, some distinguish bytes, and some are parser refusals.
++The accompanying crosswalk lists each construction's cases, roles, homes, authority entries and test
++files. The review read the actual loops and verifier/control tests rather than inferring execution from
++the registry's nonempty-array checks.
++
++The test distinction matters. Independent encoders can expose a KDF field omission even when the same
++flawed producer/consumer still round-trips. Genuine signatures or valid local encryption around false
++semantic evidence test a different boundary. Source/crypto-input controls remove a real binding or guard;
++they do not establish that every composite owner would accept the same attack. Generated campaigns have
++their recorded seeds and scopes; no counterexample means none found in those bounded runs.
++
++Node/OpenSSL and browser WebCrypto may share underlying primitive implementations. The new byte oracles
++are independent of production serializers, not universally independent cryptographic implementations.
++Native renderer death is not power failure. Logical buffer clearing is not provider/GC/OS erasure.
++
++The current registry and checker status messages were stale after D8. This phase corrects that reporting
++and adds the aggregate runner; it does not change production code, valid stored bytes or any vector.
++Earlier evidence and phase-local status notes remain dated; their historical hashes are not rewritten.
++
++## 6. Remaining gates and next bounded work
++
++F-05/F-06 closure does not close F-15, parser/service/diagnostic follow-ups, scale/maintenance, platform
++qualification, whole-profile residue, general lineage/checkpoint evolution, enrollment/adoption,
++revocation/rotation, finalization, recovery replacement, total-loss recovery, deployment/restore or
++independent review. The personal installation remains Local; there is still no real Account receipt.
++
++**Next: F-15 reservation durability, beginning with its failure model and transaction inventory.** Trace
++custody/content reservations and durable network-attempt grants to the exact encryption invocations they
++authorize. Distinguish an issued grant from a retained final ciphertext and account for abandoned attempts.
++Specify the required persistence boundary and unsupported-platform refusal before changing transaction
++options. Add a model that can lose writes not yet flushed and native option/order/abort controls; do not
++present a renderer-kill test as proof of an OS flush. Restore/clone branching remains a separate assumption.
++This is a bounded correctness prerequisite for Account use, not a reason to restart the personal server
++or create real credentials. The next phase should preserve the current content-acknowledgment contract
++unless an explicit correction is necessary.
+diff --git a/scripts/account-crypto-audit/run.mjs b/scripts/account-crypto-audit/run.mjs
+new file mode 100644
+index 0000000..44188a2
+--- /dev/null
++++ b/scripts/account-crypto-audit/run.mjs
+@@ -0,0 +1,250 @@
++/** Aggregate execution evidence. Finding disposition remains a reviewed document, never a count. */
++import { spawn, execFileSync } from 'node:child_process';
++import { createHash } from 'node:crypto';
++import { mkdirSync, readdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
++import { join, resolve } from 'node:path';
++import assert from 'node:assert/strict';
++import { checkConstructionRegistry } from '../account-first-authority/registry.mjs';
++
++const output = resolve(
++  'test-results/account-crypto-audit',
++  new Date().toISOString().replaceAll(':', '-'),
++);
++mkdirSync(output, { recursive: true });
++console.log('Aggregate Account contract evidence: ' + output);
++const read = (path) => readFileSync(path, 'utf8');
++const json = (path) => JSON.parse(read(path));
++const hash = (path) => createHash('sha256').update(readFileSync(path)).digest('hex');
++const write = (name, value) =>
++  writeFileSync(join(output, name + '.json'), JSON.stringify(value, null, 2) + '\n');
++const registry = json('docs/account-crypto/constructions.json');
++const checked = checkConstructionRegistry(process.cwd());
++assert.deepEqual(checked.failures, []);
++assert.equal(checked.open, 0, 'An open construction requires review before this closure campaign');
++const corpora = [{ phase: 'A', vectorFile: registry.vectorFile }, ...registry.additionalCorpora];
++const vectorIds = new Set();
++const phases = corpora.map(({ phase, vectorFile }) => {
++  const { vectors } = json(vectorFile);
++  for (const v of vectors) {
++    assert(!vectorIds.has(v.id), 'Duplicate vector id: ' + v.id);
++    vectorIds.add(v.id);
++  }
++  return {
++    phase,
++    vectorFile,
++    sha256: hash(vectorFile),
++    constructions: registry.constructions.filter((c) => c.phase === phase).map((c) => c.id),
++    vectors: vectors.map((v) => ({
++      id: v.id,
++      kind: v.kind,
++      inputNegatives: v.negatives.length,
++      encodedOmissions: v.encodedBindingControls?.length ?? 0,
++    })),
++  };
++});
++const registeredTests = [...new Set(registry.constructions.flatMap((c) => c.tests ?? []))].sort();
++assert(registeredTests.every((p) => /^test\/[a-z0-9/-]+\.test\.mjs$/.test(p)));
++const tests = [
++  ...new Set([
++    'test/account-first-authority/registry.test.mjs',
++    'test/account-crypto-prep/contracts.test.mjs',
++    ...registeredTests,
++    ...['core', 'crypto', 'properties', 'restart', 'controls', 'native'].map(
++      (n) => `test/account-recovery/${n}.test.mjs`,
++    ),
++    'test/account-genesis/crypto.test.mjs',
++  ]),
++];
++const crosswalk = registry.constructions.map((c) => ({
++  id: c.id,
++  phase: c.phase,
++  status: c.status,
++  roles: c.roles,
++  labels: c.labels,
++  entryPoints: c.entryPoints,
++  homePins: c.homePins,
++  mapEntries: c.mapEntries,
++  vectorCases: c.vectorCases ?? [],
++  requirements: c.requirements ?? [],
++  tests: (c.tests ?? []).map((path) => ({ path, sha256: hash(path) })),
++  ...(c.status === 'inherited'
++    ? { scope: c.scope, reason: c.reason, evidencePins: c.evidencePins }
++    : {}),
++}));
++write('crosswalk', {
++  counts: checked,
++  phases,
++  constructions: crosswalk,
++  interpretation:
++    'Vector membership and test references are registered obligations. The runner executes every named test file; a reviewed source/field assessment is still required. Counts do not prove protocol completeness.',
++});
++const walk = (dir) =>
++  readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
++    e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)],
++  );
++const paths = [
++  ...new Set([
++    // Keep the previous full campaign scope, plus this runner and every registered historical home.
++    ...json('docs/account-conformance-runs/2026-09-11-account-local-provenance/sources.json').map(
++      (p) => p.path,
++    ),
++    ...walk('scripts/account-crypto-audit'),
++    ...registry.constructions.flatMap((c) => (c.evidencePins ?? []).map((p) => p.path)),
++  ]),
++].sort();
++const pins = paths.map((path) => ({ path, sha256: hash(path) }));
++write('sources', pins);
++const summary = {
++  status: 'running',
++  baseCommit: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
++  startedAt: new Date().toISOString(),
++  node: process.version,
++  scope:
++    'F-05/F-06 aggregate byte-contract execution, all registered helper/native files and recovery/HPKE bridges. No personal server/build, real Account or general release qualification.',
++  registeredTestFiles: registeredTests,
++  stages: [],
++};
++const save = () => write('summary', summary);
++save();
++async function run(name, args, timeout = 60000, testPath) {
++  console.log('Starting ' + name);
++  const log = createWriteStream(join(output, name + '.log'));
++  const reportDir = join(output, name);
++  mkdirSync(reportDir, { recursive: true });
++  const env = { ...process.env, ACCOUNT_REPORT_DIR: reportDir };
++  if (name === 'unit-bridges') delete env.ACCOUNT_REPORT_DIR;
++  const started = Date.now();
++  const child = spawn(process.execPath, args, {
++    detached: true,
++    stdio: ['ignore', 'pipe', 'pipe'],
++    env,
++  });
++  let timedOut = false,
++    forced,
++    error;
++  const kill = (signal) => {
++    try {
++      process.kill(-child.pid, signal);
++    } catch {}
++  };
++  const timer = setTimeout(() => {
++    timedOut = true;
++    kill('SIGTERM');
++    forced = setTimeout(() => kill('SIGKILL'), 5000);
++  }, timeout);
++  const heartbeat = setInterval(
++    () =>
++      console.log(
++        `${name} still running (${Math.round((Date.now() - started) / 1000)}s); see ${name}.log`,
++      ),
++    15000,
++  );
++  for (const stream of [child.stdout, child.stderr])
++    stream.on('data', (b) => {
++      process.stdout.write(b);
++      log.write(b);
++    });
++  const code = await new Promise((resolve) => {
++    child.once('error', (e) => {
++      error = String(e);
++      resolve(1);
++    });
++    child.once('close', (code) => resolve(code ?? 1));
++  });
++  clearTimeout(timer);
++  clearTimeout(forced);
++  clearInterval(heartbeat);
++  await new Promise((resolve) => log.end(resolve));
++  let executedTests;
++  if (testPath && code === 0) {
++    const xml = read(join(output, name + '.xml'));
++    executedTests = [...xml.matchAll(/<testcase\b/g)].length;
++    if (!executedTests || /<(?:skipped|failure|error)\b/.test(xml))
++      error = 'No executed tests or skipped/failed test present';
++  }
++  summary.stages.push({
++    name,
++    command: [process.execPath, ...args],
++    code,
++    timedOut,
++    durationMs: Date.now() - started,
++    ...(testPath ? { testPath, executedTests } : {}),
++    ...(error ? { error } : {}),
++  });
++  save();
++  if (code !== 0 || timedOut || error) throw Error('Failed stage: ' + name);
++}
++try {
++  await run('inventory', ['scripts/account-crypto-prep/run.mjs']);
++  await run('authority', ['scripts/check-authority-map.mjs']);
++  for (const path of tests) {
++    const name = path
++      .replace(/^test\//, '')
++      .replace(/\.test\.mjs$/, '')
++      .replaceAll('/', '--');
++    await run(
++      name,
++      [
++        '--test',
++        '--test-concurrency=1',
++        '--test-reporter=spec',
++        '--test-reporter-destination=stdout',
++        '--test-reporter=junit',
++        `--test-reporter-destination=${join(output, name + '.xml')}`,
++        path,
++      ],
++      600000,
++      path,
++    );
++  }
++  await run('unit-bridges', [
++    'node_modules/vitest/vitest.mjs',
++    'run',
++    'test/slotUnlock.test.ts',
++    'test/accountTransportContract.test.ts',
++    '--maxWorkers=2',
++  ]);
++  const pkg = json('package.json');
++  const commands = pkg.scripts['vectors:check']
++    .replace('pnpm vectors:coverage', pkg.scripts['vectors:coverage'])
++    .split(' && ');
++  for (const [i, command] of commands.entries()) {
++    const [exe, ...args] = command.split(' ');
++    assert.equal(exe, 'node', 'Review non-Node vector command before running');
++    await run('vectors-' + String(i + 1).padStart(2, '0'), args);
++  }
++  await run('lint', [
++    'node_modules/oxlint/bin/oxlint',
++    'scripts/account-crypto-audit',
++    'scripts/account-crypto-prep/run.mjs',
++    'scripts/check-authority-map.mjs',
++  ]);
++  await run('format', [
++    'node_modules/oxfmt/bin/oxfmt',
++    '--check',
++    'scripts/account-crypto-audit',
++    'scripts/account-crypto-prep/run.mjs',
++    'scripts/check-authority-map.mjs',
++    'docs/account-crypto/constructions.json',
++    'package.json',
++  ]);
++  const executed = new Set(
++    summary.stages.filter((s) => s.code === 0 && s.executedTests > 0).map((s) => s.testPath),
++  );
++  for (const p of registeredTests) assert(executed.has(p), 'Unexecuted registered test file: ' + p);
++  for (const p of pins)
++    assert.equal(hash(p.path), p.sha256, 'Source changed during campaign: ' + p.path);
++  summary.sourcePinsVerified = pins.length;
++  summary.registeredTestFilesExecuted = registeredTests.length;
++  summary.nodeTestFilesExecuted = executed.size;
++  summary.nodeTests = summary.stages.reduce((n, s) => n + (s.executedTests ?? 0), 0);
++  summary.status = 'passed';
++} catch (e) {
++  summary.status = 'failed';
++  summary.error = e.stack ?? String(e);
++  process.exitCode = 1;
++} finally {
++  summary.completedAt = new Date().toISOString();
++  save();
++  console.log(summary.status + ': ' + output);
++}

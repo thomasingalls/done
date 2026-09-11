@@ -1,0 +1,6 @@
+{
+  "refusals": 25,
+  "maximumPlaintext": 16384,
+  "base64Omission": "padding alias accepted only after canonicality guard removal",
+  "unicode": "identity guard rejects malformed scalar input before custody owner"
+}

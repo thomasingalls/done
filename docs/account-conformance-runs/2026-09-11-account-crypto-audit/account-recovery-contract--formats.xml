@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="fixed corpus independently reproduces; amended row 14 agrees and historical scalar-only ciphertext refuses" time="0.027808" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery-contract/formats.test.mjs"/>
+	<testcase name="actual generator and opener reproduce full deterministic payload, KDF/AAD, root and key checks" time="0.005457" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery-contract/formats.test.mjs"/>
+	<testcase name="actual service challenge encoders use exact operation, scope and fresh nonce; proof/retry hashes preserve their byte rules" time="0.001700" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery-contract/formats.test.mjs"/>
+	<testcase name="authenticated wrong private/public pairs, sealed roots, segment order and widths refuse before releasing keys" time="0.007002" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery-contract/formats.test.mjs"/>
+	<testcase name="every encoded field mutation and omission changes its independent result; signatures and AEAD reject valid wrong-purpose bytes" time="0.005260" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery-contract/formats.test.mjs"/>
+	<testcase name="recovery-opened key consumes fixed HPKE wrap with exact generation info; each binding and low-order recipient refuses" time="0.009997" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery-contract/formats.test.mjs"/>
+	<testcase name="200 generated contexts, normalized codes and authentic payload faults: runtime and independent oracle agree" time="0.369042" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery-contract/formats.test.mjs"/>
+	<!-- tests 7 -->
+	<!-- suites 0 -->
+	<!-- pass 7 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 539.027083 -->
+</testsuites>

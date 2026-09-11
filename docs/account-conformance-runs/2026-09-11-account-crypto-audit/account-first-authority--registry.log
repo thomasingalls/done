@@ -1,0 +1,20 @@
+✔ D8 requires live claim evidence and cannot relabel it as inherited migration scope (413.612833ms)
+✔ D7 cannot discard native startup, genesis scope, shrinking or inherited cipher evidence (216.892292ms)
+✔ D6 custody cannot drop correspondence, parser repair, native comparison or inherited byte obligations (321.132041ms)
+✔ D5 bridges cannot lose native owners, inherited agreement, primitive roles or AEAD omission evidence (283.861875ms)
+✔ registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups (269.229167ms)
+✔ registration omission controls fail for the missing obligation, not just a stale aggregate hash (649.452333ms)
+✔ recovery corpus cannot lose its phase, primitive role, negative corpus or factor authority under updated hashes (233.820583ms)
+✔ transport coverage refuses missing bytes, misclassified carriers/hashes and service authority over content (352.58625ms)
+✔ D1 service custody cannot drop its corpus, owner, export predicate, AEAD discipline edge or negatives (235.332625ms)
+✔ D2 promotion cannot drop its MAC edge, role, version cases, omission evidence or identity source (306.941834ms)
+✔ D3 ledger byte coverage cannot discard canonical negatives or its counter witness dependency (319.813167ms)
+✔ D4 metadata cannot drop its scoped MAC owner, native coupling or negative corpus (307.456958ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4060.956

@@ -1,0 +1,1560 @@
+{
+  "source": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-crypto-audit/2026-09-11T20-33-40.590Z",
+  "files": [
+    {
+      "path": "account-capture--native/controls.json",
+      "bytes": 167,
+      "sha256": "7625ada05a4b785dec69d89aff69e8914c2e7036f460a34dfe77a26cc9e88c48",
+      "preserved": true
+    },
+    {
+      "path": "account-capture--native/generated.json",
+      "bytes": 7115,
+      "sha256": "a0a7834b39801c6a37edeb2c9c8caba4f6be38c57e8a0887ebbd9a5f1ad7e450",
+      "preserved": true
+    },
+    {
+      "path": "account-capture--native.log",
+      "bytes": 5938,
+      "sha256": "2bdffabd08f6335ebc19eb147970ef7e30fd41162552467e5d91c999df5e9ab1",
+      "preserved": true
+    },
+    {
+      "path": "account-capture--native.xml",
+      "bytes": 3720,
+      "sha256": "b21a01e0e580f8cd553de82c56b4547eb374f88dc10253cf27ff5087487e724d",
+      "preserved": true
+    },
+    {
+      "path": "account-checkpoint-contract--formats/bindings.json",
+      "bytes": 38,
+      "sha256": "316b5f79dfb39f6757ea3190423253fc3966b680bb06a9843c48ba79536461f6",
+      "preserved": true
+    },
+    {
+      "path": "account-checkpoint-contract--formats/cipher-properties.json",
+      "bytes": 629,
+      "sha256": "ec860ef88b7977c6573da54566985fe2764abb827c3cc20bc78740d98a922b95",
+      "preserved": true
+    },
+    {
+      "path": "account-checkpoint-contract--formats/fixed.json",
+      "bytes": 1397,
+      "sha256": "a621c1ae88267690815abccbe79f16e52b812489ff9d4c5a7a92e64572879fc5",
+      "preserved": true
+    },
+    {
+      "path": "account-checkpoint-contract--formats/parser.json",
+      "bytes": 124,
+      "sha256": "143acc3bbff321bab25775bf7c98293a8250fd73ce753df4f87a5bcf7e39701f",
+      "preserved": true
+    },
+    {
+      "path": "account-checkpoint-contract--formats/replay-properties.json",
+      "bytes": 629,
+      "sha256": "dd700191ccb6765d18da8df72228cb804074dab798fc0c350cbc59b81179b33b",
+      "preserved": true
+    },
+    {
+      "path": "account-checkpoint-contract--formats/source-controls.json",
+      "bytes": 513,
+      "sha256": "cb4ddd0f233cbb2294a7ebecf8dfecc2bce1c380e9d9805919c482b7ddd953a2",
+      "preserved": true
+    },
+    {
+      "path": "account-checkpoint-contract--formats.log",
+      "bytes": 963,
+      "sha256": "e34aa106c2069e7e271a50cf4397f86eea65ffa3f09c8301bfe59610263badc4",
+      "preserved": true
+    },
+    {
+      "path": "account-checkpoint-contract--formats.xml",
+      "bytes": 1736,
+      "sha256": "ac6184fea11bf91f56c5f6e8fefbabed03afd91c01c6b922eef5df842dd0ecd2",
+      "preserved": true
+    },
+    {
+      "path": "account-checkpoint-contract--native/native-authority.json",
+      "bytes": 569,
+      "sha256": "3c8a338ee8249a171c7305737a203160af44245f62b9ac754ddbeac269571159",
+      "preserved": true
+    },
+    {
+      "path": "account-checkpoint-contract--native/native-bytes.json",
+      "bytes": 12124,
+      "sha256": "f3d7c6efe92d7e27590628c60f85f8e737291f29c2934ee31218bd537947583b",
+      "preserved": true
+    },
+    {
+      "path": "account-checkpoint-contract--native/native-coverage.json",
+      "bytes": 2896,
+      "sha256": "f81b764e48c77a50f7b7631f875fc572e07fea886a0f02ec08c8f04482f83785",
+      "preserved": true
+    },
+    {
+      "path": "account-checkpoint-contract--native/native-properties.json",
+      "bytes": 14638,
+      "sha256": "922607fc47a703c1f3b356955c62437843a802297fd3922a815ebf6783a379e3",
+      "preserved": true
+    },
+    {
+      "path": "account-checkpoint-contract--native.log",
+      "bytes": 1040,
+      "sha256": "540b2185738865c0b655d37c2088242dbd0282c02c76a218bd0c4815085d9d83",
+      "preserved": true
+    },
+    {
+      "path": "account-checkpoint-contract--native.xml",
+      "bytes": 1269,
+      "sha256": "b1f4a932953dffd5f0c573907f4c256aa3fd1ba983ba8133b543d77980f0a242",
+      "preserved": true
+    },
+    {
+      "path": "account-counter-contract--formats/bindings.json",
+      "bytes": 69,
+      "sha256": "83a6e6a580765763e24e8db38489d0bd90bbe3677d2c046e498246393bedc843",
+      "preserved": true
+    },
+    {
+      "path": "account-counter-contract--formats/controls.json",
+      "bytes": 549,
+      "sha256": "8f721ff7a2999e994abe0e489e51941f5e3c800ebd93a951b04bb016cfa2461e",
+      "preserved": true
+    },
+    {
+      "path": "account-counter-contract--formats/fixed.json",
+      "bytes": 372,
+      "sha256": "b1644eb422bf73d194cf260270176c1c157a61ccf64713bb0c386ef30aec9c54",
+      "preserved": true
+    },
+    {
+      "path": "account-counter-contract--formats/parsers.json",
+      "bytes": 121,
+      "sha256": "1578dffd5bfbb6cdd0d4275ef55d41f2c368ec81bbfc52f517b5843f944e20ea",
+      "preserved": true
+    },
+    {
+      "path": "account-counter-contract--formats/properties.json",
+      "bytes": 23196,
+      "sha256": "48c6b285fe3b80aee46b9281bfd0e43421a927bea2b5990ecf6d9d8c5d60625b",
+      "preserved": true
+    },
+    {
+      "path": "account-counter-contract--formats.log",
+      "bytes": 725,
+      "sha256": "124f93417e77823073ec8ce9925ad2659e219b1f43d9162fb7f4b20da3e2c872",
+      "preserved": true
+    },
+    {
+      "path": "account-counter-contract--formats.xml",
+      "bytes": 1528,
+      "sha256": "e3a9bcfbb9db93d6f0dbeab82df4039d2f446855d86445f764aea1d50a83b205",
+      "preserved": true
+    },
+    {
+      "path": "account-counter-contract--native/native-atomic.json",
+      "bytes": 453,
+      "sha256": "86d2cd83b3894cc036cd9c3d0c5d982c13e208c99d15e03dd03da8715d543f23",
+      "preserved": true
+    },
+    {
+      "path": "account-counter-contract--native/native-kdf.json",
+      "bytes": 445,
+      "sha256": "31f1abd5a3be3b0532f679f0bdc56e61f8e0e7286b215adc545f64adf0719382",
+      "preserved": true
+    },
+    {
+      "path": "account-counter-contract--native/native-race-control.json",
+      "bytes": 174,
+      "sha256": "81c997d4592c71b30430cb8e3312f8eeb90ad0b415200f2f3d8f0158752ea7d5",
+      "preserved": true
+    },
+    {
+      "path": "account-counter-contract--native/native-reservation-control.json",
+      "bytes": 380,
+      "sha256": "63c0ae9aec99626421c99d0477dfb753b9b411ccd5e9860c44fd04b451f51593",
+      "preserved": true
+    },
+    {
+      "path": "account-counter-contract--native/native-semantic.json",
+      "bytes": 657,
+      "sha256": "8eafedb4efe146f3b2415f82618e32449234af3724e56454423a273b188fc037",
+      "preserved": true
+    },
+    {
+      "path": "account-counter-contract--native.log",
+      "bytes": 731,
+      "sha256": "d823eb1248f109de841ead143e2f6630891c6609c870f2f034b66849986e882a",
+      "preserved": true
+    },
+    {
+      "path": "account-counter-contract--native.xml",
+      "bytes": 1522,
+      "sha256": "a0463a3babb01d3726886aaa469ba6e32a49dc34b5a61d32f7961e1277f598a8",
+      "preserved": true
+    },
+    {
+      "path": "account-crypto-prep--contracts/contract-probes.json",
+      "bytes": 3063,
+      "sha256": "f5e4dac48f038f8e8502a46b38ddd0b970818990369850dd62a142cf3cd34f03",
+      "preserved": true
+    },
+    {
+      "path": "account-crypto-prep--contracts.log",
+      "bytes": 1111,
+      "sha256": "2405b8c88c13e224f7585682cda8050a5fa2f5651fe098eb00498d08ada029f8",
+      "preserved": true
+    },
+    {
+      "path": "account-crypto-prep--contracts.xml",
+      "bytes": 1041,
+      "sha256": "6373860298f9a9d9098b4c839794f3e3267b6a1a1daa003e3b5726cb787bf7e4",
+      "preserved": true
+    },
+    {
+      "path": "account-delivery--native/authority-control.json",
+      "bytes": 147,
+      "sha256": "06e0a18d15135e0bdc66fafec486a276b5dddf32002a2526bdde74daf91e6512",
+      "preserved": true
+    },
+    {
+      "path": "account-delivery--native/controls.json",
+      "bytes": 130,
+      "sha256": "9d2ce12264f1d0d42b3d5baec2c277561e65152bdfa6e82833e2e4d72ee863ba",
+      "preserved": true
+    },
+    {
+      "path": "account-delivery--native/generated.json",
+      "bytes": 3053,
+      "sha256": "10d8f5c69840b24ec021f53773ce8c7a60aedddae429d2c45ab7f3cdba28ffa0",
+      "preserved": true
+    },
+    {
+      "path": "account-delivery--native/prefix-control.json",
+      "bytes": 162,
+      "sha256": "ecc1adf89bc5c540c78c610a2596711da496b348f30d8cce3f2f7e69255f9a85",
+      "preserved": true
+    },
+    {
+      "path": "account-delivery--native.log",
+      "bytes": 3978,
+      "sha256": "7398ceb770e8963ae57e6197663da3b3ebe817722aea8abe2a6c6d43161cfc47",
+      "preserved": true
+    },
+    {
+      "path": "account-delivery--native.xml",
+      "bytes": 4637,
+      "sha256": "ca023852673a3d1cda6c5929035fe7c3c45fe8655f37d928b2672d1cd28107e7",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--formats/parser-boundaries.json",
+      "bytes": 63,
+      "sha256": "cab3762204a6547ce8d85869f1ab9d208ddec94617135e1911274012fdf34612",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--formats/production-omissions.json",
+      "bytes": 1079,
+      "sha256": "afab5642e7823fc60d252f53926411cca6551e9c5601351050f453ddd704f007",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--formats/properties.json",
+      "bytes": 145,
+      "sha256": "ed56787b4a2fef332493c5d9e1a295a14308949c35749441eb63f384d34742d3",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--formats/semantic-boundary.json",
+      "bytes": 198,
+      "sha256": "d209b2c63ea0fef290ef087427ce8a1ed73ad8369aa23380f39aa299d4ddc881",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--formats/vectors.json",
+      "bytes": 192,
+      "sha256": "4ee26b14349674c99570baddc64533553c6d6dc5f174a2800c0d74602afe9727",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--formats/verifier-boundaries.json",
+      "bytes": 401,
+      "sha256": "e54e73f7d04849293ab79ac14bcf149a90ddd1dcac0f46ddb2aab999853f97fd",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--formats.log",
+      "bytes": 1116,
+      "sha256": "b66acf914ea2815adec1847c111d80a76681ad63dab8746bebc68852dae484c3",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--formats.xml",
+      "bytes": 1724,
+      "sha256": "2543cdb4ccface9d87a3183051f970392a2b283a253d7e32336e3cb14d64e903",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--registry/checkpoint-registry-controls.json",
+      "bytes": 473,
+      "sha256": "4164f59f00d1e944b81a10f2cf9aebc004e9ada9bfea6fe62c6f9e30067cb233",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--registry/counter-registry-controls.json",
+      "bytes": 1065,
+      "sha256": "4f60110df964a92848b32358b8f251d7931811b69af9a54d07b68c8161fb378b",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--registry/ledger-registry-controls.json",
+      "bytes": 1071,
+      "sha256": "51114a706a3e8a4d447ebe5ee8b0e6689e41f50f024415979c50c6fa26d3930d",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--registry/local-custody-registry-controls.json",
+      "bytes": 722,
+      "sha256": "0bed7143ec4ca73ab8ecb489071afe851ffc6be572fe9e8feeda1a18ed70317d",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--registry/local-provenance-registry-controls.json",
+      "bytes": 660,
+      "sha256": "7954aad335c4eb1ba6d8027c6c2919a9bce335a8218c7d7d4253bb3f7f9a4235",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--registry/promotion-registry-controls.json",
+      "bytes": 1054,
+      "sha256": "264d5408cb5f4e5442dae9bc5a985161f77bca4ad2209e37e028fad7ec823b74",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--registry/registry-controls.json",
+      "bytes": 2341,
+      "sha256": "f6fb95fd7c52fc485e7df8dd13b9d04d587efeab1de492f4849a416d13e5efae",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--registry/service-custody-registry-controls.json",
+      "bytes": 839,
+      "sha256": "ec691b8534d14d462d3daac2242cbe82018d92f056054be06b0c47ebf3e259b0",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--registry/store-registry-controls.json",
+      "bytes": 920,
+      "sha256": "794bee63ba510e9db4aef3787354fbf7d36356bffb71ab10b082cc2f36498432",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--registry/transport-registry-controls.json",
+      "bytes": 1318,
+      "sha256": "6d21b11c56e76318fc07fa9a0b3cbcd98ceb90e1d309078e2f4a68f5b5deb172",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--registry.log",
+      "bytes": 1518,
+      "sha256": "4e0f514705df1d69605ad8c7f549f73013eb4935b3d066c4c739197015c79589",
+      "preserved": true
+    },
+    {
+      "path": "account-first-authority--registry.xml",
+      "bytes": 3265,
+      "sha256": "5abb85d15f41549403614a5ad458be1128f5f8ce0c8228342d3e1e19a36cd784",
+      "preserved": true
+    },
+    {
+      "path": "account-genesis--crypto.log",
+      "bytes": 404,
+      "sha256": "55ad9659c94e0a1c765206396a6f1b33efe5ad904427aee49e251195e12bcdf2",
+      "preserved": true
+    },
+    {
+      "path": "account-genesis--crypto.xml",
+      "bytes": 899,
+      "sha256": "1406456285152aaaafcf59d37c48b18ae51ea7d813ea6e3a8eb5ee13ef15f49e",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--controls/control-chain.json",
+      "bytes": 281,
+      "sha256": "425b35fe1e7d824242a953b70140def5b9ad000ef06cfa8f84c91c9dacf4bd87",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--controls/control-semantic-order.json",
+      "bytes": 308,
+      "sha256": "61d3655afec41f58263ed169bb3cb5ac53d24c5c779180e801549f60c3ac5629",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--controls/control-source-authentication.json",
+      "bytes": 217,
+      "sha256": "a0cc8b4188ec92e8b669479b5524226f69075eff842ea366e78abd83db00f929",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--controls/control-source.json",
+      "bytes": 81,
+      "sha256": "72071e8cf6bcb7ad28afcd445686b53c7629844e5022b02bbd696df575aed786",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--controls/control-witness.json",
+      "bytes": 168,
+      "sha256": "596351b723ea392101970ebd7b93f94403db7d7e0182d6700a90796ac99bd095",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--controls.log",
+      "bytes": 891,
+      "sha256": "9fd8e622d91845eba6aade7f0695241231964672bd8928ed6fe78783cdf6549b",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--controls.xml",
+      "bytes": 1509,
+      "sha256": "46db37554268aa89e03ee4535b58ae2a99d65063146e83f57131357be8f19372",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--formats/baseline-bindings.json",
+      "bytes": 62,
+      "sha256": "ee0c4f99377d184fd5addc99aeca0b3fe3b2c919bd21acd10f928c43ac529e05",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--formats/bindings.json",
+      "bytes": 17945,
+      "sha256": "e9875f7573cf9f292f5054b410330dd8697702cf067ef6c9976f026a2f1eb256",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--formats/capture.json",
+      "bytes": 140,
+      "sha256": "4c19be69fcd32bbc79f8d91c7bf75fe844c1bf0a0566960a1171d80ebb0a51fe",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--formats/chain.json",
+      "bytes": 826,
+      "sha256": "237590df4260ce341db1d23af2a2859309aca80fa1e8462cd9fcfdc197c531b2",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--formats/fixed.json",
+      "bytes": 206,
+      "sha256": "1142b61e0b83809eea371a41e29fe6c3ffcd13cc32d48752741ac377ecf8355f",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--formats/framing.json",
+      "bytes": 42,
+      "sha256": "d9c0c0985357a31d3400e2f828795b97ba960241be2c62a308a5f47b9460c68d",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--formats/properties.json",
+      "bytes": 55139,
+      "sha256": "06ef92474b4ebe684f9933bb4a6627a80a4147a7074e8216a9186013148f92cf",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--formats/union.json",
+      "bytes": 296,
+      "sha256": "96ef2f61efcb06017d2f89b3834865886acb12dbe62077ac7860d6f7d6d252dc",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--formats.log",
+      "bytes": 1205,
+      "sha256": "92929c58851d8f3b4b029bb57755b45d4a78faa08b36af36236f5910e600dbed",
+      "preserved": true
+    },
+    {
+      "path": "account-ledger-contract--formats.xml",
+      "bytes": 2089,
+      "sha256": "b48c4f1c1bbe07898348ad4fd20092159ac5d7955e69ed88b881cc56216ced32",
+      "preserved": true
+    },
+    {
+      "path": "account-local-custody--formats/bindings.json",
+      "bytes": 39,
+      "sha256": "92d94278b90550b97b77c0e44a6679123e7cfcdaa833fe9aaee42c7e3a55a5d2",
+      "preserved": true
+    },
+    {
+      "path": "account-local-custody--formats/export-cleanup.json",
+      "bytes": 226,
+      "sha256": "0761d4a73ee303ac001e0c18cf2ec1a62c6a6a505df516d79d8c3b2fd5e3790c",
+      "preserved": true
+    },
+    {
+      "path": "account-local-custody--formats/fixed.json",
+      "bytes": 104,
+      "sha256": "5f3013f718ba93bb3f8e1d61bbfe1cc12cc87ce98ccba027b546d472d7018489",
+      "preserved": true
+    },
+    {
+      "path": "account-local-custody--formats/inherited.json",
+      "bytes": 450,
+      "sha256": "30ad1546a2bee78db9be3ed1d69f918d38a288f63c68cc4ff5c09ed2bfe0e25b",
+      "preserved": true
+    },
+    {
+      "path": "account-local-custody--formats/metadata-properties.json",
+      "bytes": 17551,
+      "sha256": "38ce5510fcbb958ce729df4adac01fa2fa8e16043ed29bfaaa346595572bc383",
+      "preserved": true
+    },
+    {
+      "path": "account-local-custody--formats/parsers.json",
+      "bytes": 163,
+      "sha256": "5863b4cdd37646212e2ab43290f7ac81f839253a7f862247769c36df7f7c6c4b",
+      "preserved": true
+    },
+    {
+      "path": "account-local-custody--formats/source-controls.json",
+      "bytes": 385,
+      "sha256": "ff4267623a4258405d16c3ce6505b02910007c1ffe0c93fb7e4ec6feb693375c",
+      "preserved": true
+    },
+    {
+      "path": "account-local-custody--formats/state-properties.json",
+      "bytes": 629,
+      "sha256": "54a6e2539cf93df9c2ecb548a7425038ba7691d89ed7b8557ea032b91dbf8cb4",
+      "preserved": true
+    },
+    {
+      "path": "account-local-custody--formats.log",
+      "bytes": 1110,
+      "sha256": "6fb20512271d2d60aeefea8203a0b7ddc3435c4a454838c374de5a8bcd307fa7",
+      "preserved": true
+    },
+    {
+      "path": "account-local-custody--formats.xml",
+      "bytes": 2299,
+      "sha256": "49ce17092483ae2f308280eb3c8221857176286c122958babbcdba45b6350bf6",
+      "preserved": true
+    },
+    {
+      "path": "account-local-custody--native/native-authentic-faults.json",
+      "bytes": 536,
+      "sha256": "d7a39f7b30aa28dc42bee68e856801885bab5b8dca38180665784695b7a9d5cc",
+      "preserved": true
+    },
+    {
+      "path": "account-local-custody--native/native-bytes.json",
+      "bytes": 263,
+      "sha256": "fa7d6f55296d42d13f8726c251dba88962f9448f4c938a2b0d7425c6e4fd537a",
+      "preserved": true
+    },
+    {
+      "path": "account-local-custody--native/native-comparison-control.json",
+      "bytes": 312,
+      "sha256": "99c34c01514e08eb1a98006b79b41909525812787f04a1e8c1a21dc88b046540",
+      "preserved": true
+    },
+    {
+      "path": "account-local-custody--native/native-state-fix.json",
+      "bytes": 149,
+      "sha256": "3ec592dcdd521bb2d6261c6de1991f271e00a9e035971c97cd7e8386ffcea59d",
+      "preserved": true
+    },
+    {
+      "path": "account-local-custody--native.log",
+      "bytes": 774,
+      "sha256": "2b55bc8875cdabbb378d86abc2674d71f914bdef85a971eb1ffbac03af828acb",
+      "preserved": true
+    },
+    {
+      "path": "account-local-custody--native.xml",
+      "bytes": 1776,
+      "sha256": "a93d845b3a1e12bbc41ed2ea35d1699a2ce3eb82649337ce0589d41295ce5347",
+      "preserved": true
+    },
+    {
+      "path": "account-local-provenance--formats/bindings.json",
+      "bytes": 41,
+      "sha256": "aea436da70c6911bf80587893efd9e0c748a7eca03381aee4fd12338f6d64c97",
+      "preserved": true
+    },
+    {
+      "path": "account-local-provenance--formats/fixed.json",
+      "bytes": 9517,
+      "sha256": "b710f6b280cfcdf781cce943f2c654e2807a36c88f732044077fca4f2c5e1913",
+      "preserved": true
+    },
+    {
+      "path": "account-local-provenance--formats/framing.json",
+      "bytes": 143,
+      "sha256": "fbc7ca3cf90c5f053cb8d7d06d632551ea186ab2611fc1166ca9de64857c0f34",
+      "preserved": true
+    },
+    {
+      "path": "account-local-provenance--formats/input-leaves.json",
+      "bytes": 32456,
+      "sha256": "be5d786422711d7d5c4a6aa46877e4d5fd6d18cbeb596896a183803357b4f0ef",
+      "preserved": true
+    },
+    {
+      "path": "account-local-provenance--formats/properties.json",
+      "bytes": 629,
+      "sha256": "84878912b44ff767434b90e61533973595ae3be8a55bbae2903e50ee8a5e2f33",
+      "preserved": true
+    },
+    {
+      "path": "account-local-provenance--formats/source-controls.json",
+      "bytes": 1011,
+      "sha256": "fbc29f070b90f7a7cc90d7e548610ac07a9c57c41e70f204f71564ed384a89cb",
+      "preserved": true
+    },
+    {
+      "path": "account-local-provenance--formats.log",
+      "bytes": 975,
+      "sha256": "6653f0359e19c6ef5e195f102be58a55e63e148402bec6eba1882cea1655417f",
+      "preserved": true
+    },
+    {
+      "path": "account-local-provenance--formats.xml",
+      "bytes": 1730,
+      "sha256": "4d5bc9083a59754cf7afb2c658248ee6f6039baa8cc39a458d454484ce290957",
+      "preserved": true
+    },
+    {
+      "path": "account-local-provenance--native/native-blockers.json",
+      "bytes": 245,
+      "sha256": "4402569e50b64a99e2a21c9c7cc61125b7daaff57dca0b06a73927e0660a472f",
+      "preserved": true
+    },
+    {
+      "path": "account-local-provenance--native/native-claims.json",
+      "bytes": 1047,
+      "sha256": "f6d5bf9afefd7759e419b5e9c014435075f05f66d656a9d7371bb186f090b2d4",
+      "preserved": true
+    },
+    {
+      "path": "account-local-provenance--native/native-mac-control.json",
+      "bytes": 225,
+      "sha256": "03c543ba740ff8f572d2861553d4782143a1658f7f87af4d1ca48b4027d5c13d",
+      "preserved": true
+    },
+    {
+      "path": "account-local-provenance--native/native-properties.json",
+      "bytes": 2661,
+      "sha256": "456ee3799649d67bf197a9eb6667bf8f2c96cbbdf8876c43fd738a820a75ffa6",
+      "preserved": true
+    },
+    {
+      "path": "account-local-provenance--native.log",
+      "bytes": 1038,
+      "sha256": "7fb676e7eebfa3abd23249b7bfc749a3fe44fe9abe89c3226b0eb3e62f852ffd",
+      "preserved": true
+    },
+    {
+      "path": "account-local-provenance--native.xml",
+      "bytes": 1257,
+      "sha256": "108d369033eeafbcd6b073cbef4043ce002ee9a9fdd98df94eb732af6a22f0c6",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/encoded-omissions.json",
+      "bytes": 84,
+      "sha256": "99dae529bfab711819322d9663258f97fcf8141246bb84e0a55530ab1580d011",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/fixed.json",
+      "bytes": 2059,
+      "sha256": "9e02bd9213f964023ff6214bf858f0f463d6f11014f8e5c5dd17e89b6906dc6a",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/identities.json",
+      "bytes": 645,
+      "sha256": "2e8a35568485466458d94af1fd638a5c6f20d451485601a4c22e181afd07c466",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/input-bindings.json",
+      "bytes": 56,
+      "sha256": "690c8d473a9128bed8c4bba574a10a95c87b5ccc8c37d80755bcce576125aeca",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/leaves-account-active.json",
+      "bytes": 39892,
+      "sha256": "a868354ed9791628e8d98fa553da12b12d2918367a0444b84d71403767d8c499",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/leaves-account-capturing.json",
+      "bytes": 39892,
+      "sha256": "a868354ed9791628e8d98fa553da12b12d2918367a0444b84d71403767d8c499",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/leaves-account-delivering.json",
+      "bytes": 39892,
+      "sha256": "a868354ed9791628e8d98fa553da12b12d2918367a0444b84d71403767d8c499",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/leaves-account-receiving.json",
+      "bytes": 39892,
+      "sha256": "a868354ed9791628e8d98fa553da12b12d2918367a0444b84d71403767d8c499",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/leaves-account-spooling.json",
+      "bytes": 39892,
+      "sha256": "a868354ed9791628e8d98fa553da12b12d2918367a0444b84d71403767d8c499",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/leaves-admission-offered.json",
+      "bytes": 24961,
+      "sha256": "91f0797bd34ffe783cd89020a4d98de4dde86e8a1eb0ebe15a2a92ee5af8d481",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/leaves-admission-receipted.json",
+      "bytes": 35885,
+      "sha256": "437e8566d1978fc7e2004b2821ace290d51bd3d25db19b0f83ffcd56538e1d68",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/leaves-admission-requested.json",
+      "bytes": 17632,
+      "sha256": "63252172a8ba892512eb7a5457143be3579fd5868648a2af4120393bee042f58",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/leaves-genesis-prepared.json",
+      "bytes": 9385,
+      "sha256": "0326714ea27ce3641571396091b82fd5a003529e3a9aa92790e433b25f6a9978",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/leaves-handoff-prepared.json",
+      "bytes": 39892,
+      "sha256": "a868354ed9791628e8d98fa553da12b12d2918367a0444b84d71403767d8c499",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/leaves-handoff-selected.json",
+      "bytes": 39892,
+      "sha256": "a868354ed9791628e8d98fa553da12b12d2918367a0444b84d71403767d8c499",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/leaves-prepared.json",
+      "bytes": 5547,
+      "sha256": "375e7a7eeafd42c3f1888223537dd3d348d1fa9e39fb5be8f9ae57b5b012cfaa",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/leaves-reserved.json",
+      "bytes": 4258,
+      "sha256": "1322b3ba9125d81decfca5bfd8f0e61e9023cc520bf70dcf675e54a83e722fd4",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/ordering.json",
+      "bytes": 1606,
+      "sha256": "24ed9282c314c930acc6d9f65547333277f68e071c426aa4d5c220101016f8b0",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/parser.json",
+      "bytes": 21,
+      "sha256": "910d3a51304c90bb22c8459e8885ae33a9cb55cb507fed3bd0acc00745bc60f0",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats/properties.json",
+      "bytes": 138962,
+      "sha256": "8c3888c62deda4f465b5446547966abd93ae2e94119211da6767b63119873d91",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats.log",
+      "bytes": 863,
+      "sha256": "3aeec563d0bcd38f97384dcdcd5fc2b1cf6a71bd4c569b0e2c82c875fc9e6adb",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--formats.xml",
+      "bytes": 1949,
+      "sha256": "1ac1a5b62bf2389b6caadeab7067d78b496d770c990d7c08a03b29bdea4a72ef",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--native/native-message-controls.json",
+      "bytes": 562,
+      "sha256": "15cab7f9cbcf6da2d4267f999f94592d5a68e9e07a86efdbe83f3de8524d47be",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--native/native-source-controls.json",
+      "bytes": 1474,
+      "sha256": "8faab7942cc6a634da8191b6d2040d85a06134c711116e0a51bac8234ffc6de7",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--native/native-versions.json",
+      "bytes": 1582,
+      "sha256": "81a61da08826aae3a4379e6276658e43ce4420ab0fcb7ee4fd647a7803980672",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--native.log",
+      "bytes": 818,
+      "sha256": "5b4a3cd9f6234637878e0bb460145fbfb279bac36e367abf227d432bb11656bf",
+      "preserved": true
+    },
+    {
+      "path": "account-promotion-contract--native.xml",
+      "bytes": 1017,
+      "sha256": "ad91bca57dd4c223fcfea1f6de78c0dc5e5d106a606c1437fd270c1b538d681f",
+      "preserved": true
+    },
+    {
+      "path": "account-receive--native/control-coverage.json",
+      "bytes": 115,
+      "sha256": "5db1834713eff8a5f4adcf3963d7d58a695b92c99cd995513d3bd05f6bec34b8",
+      "preserved": true
+    },
+    {
+      "path": "account-receive--native/control-split.json",
+      "bytes": 122,
+      "sha256": "396e3209f8ef79ba87e3d0d3eb6e80967056113d638b58154ef7b5132027c413",
+      "preserved": true
+    },
+    {
+      "path": "account-receive--native/control-stored-page.json",
+      "bytes": 130,
+      "sha256": "2993d728f1baff669f8c5acd595f72d82d3981d9db18e4bc9e626e90eed27b38",
+      "preserved": true
+    },
+    {
+      "path": "account-receive--native/control-witness.json",
+      "bytes": 121,
+      "sha256": "10192f395b1b292944acfc49dbdf988edc02ee03b1a6da18a7b937195dc16434",
+      "preserved": true
+    },
+    {
+      "path": "account-receive--native/generated-native.json",
+      "bytes": 2962,
+      "sha256": "3ce6d5656805e3b16925a5bd22660688d540aae90ce297817c18ab2d02aa7acf",
+      "preserved": true
+    },
+    {
+      "path": "account-receive--native.log",
+      "bytes": 2324,
+      "sha256": "c5c58e8374881c4da536591f8d1db5218f6ba199d0bb57709bc04c6831496ed1",
+      "preserved": true
+    },
+    {
+      "path": "account-receive--native.xml",
+      "bytes": 3904,
+      "sha256": "f38ac85f4190373284207427482df2879726b18c8d80436f7b73c93ca93b0d40",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--controls/control-passkey-baseline.json",
+      "bytes": 2966,
+      "sha256": "acd3d89b384e4e393bdaa8e97d0b3d70dd75671991658291f773a739ad04bfe7",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--controls/control-passkey-mutant.json",
+      "bytes": 3814,
+      "sha256": "f226b3b723e1ea351bce7cb35a8c081ed3d3f2941030479535b100cc68f07f0b",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--controls/control-recovery-baseline.json",
+      "bytes": 3672,
+      "sha256": "8d617881aee0d8c0d4f1682c02f480e18cec773051fab952f11a1ac2fee05805",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--controls/control-recovery-mutant.json",
+      "bytes": 4520,
+      "sha256": "c73fe1440c81e3b16b313273dd0187eb4a6eb3999fc1a2a7938ac282674606c3",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--controls/control-root.json",
+      "bytes": 6235,
+      "sha256": "5026265c8c504dd45840438f70f1be2f925fbf039f5348472231cada99a4ebe7",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--controls.log",
+      "bytes": 745,
+      "sha256": "2488e1a3c2d73987768e88dfee5bc9f6b27bdcc6ed025b5097f91e95b3b0d1b4",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--controls.xml",
+      "bytes": 925,
+      "sha256": "4e273825745b3a667f6afb3c34cd7233c6607fc5cad5354a473747d73934f954",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--core.log",
+      "bytes": 1319,
+      "sha256": "aa431c4efd2a2fe8e5c66462a57f4d230b66367929beeb673c2f6ee7053eb380",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--core.xml",
+      "bytes": 2495,
+      "sha256": "a7ef0f5988bd4eecaf3e20a5abda0196c074170eec0afa29f30f279d1f451605",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--crypto.log",
+      "bytes": 761,
+      "sha256": "1f413a9e234fa6fa76e61f463932f90dd606fc9bc20ffefaa5d4a24981c5c95d",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--crypto.xml",
+      "bytes": 939,
+      "sha256": "c9a934e86d64127962e92573c65928a6734e73df6079211f60faf0cb1745d5fd",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--native.log",
+      "bytes": 554,
+      "sha256": "463b9e7029e0685b32629361687da881dd63b290269d4e24cf3583e1d4abe185",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--native.xml",
+      "bytes": 472,
+      "sha256": "f10cd608d047462a9b3d2c518861c96867143a7ee2fc592f4b72612b0c48c591",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--properties.log",
+      "bytes": 536,
+      "sha256": "b304c7c49f1280374c28dce5cbca8213d89ec93af04dbea6f32990ce4cd3e230",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--properties.xml",
+      "bytes": 456,
+      "sha256": "23f7df0b92e8dcffb94ca387e3962c95c5535a364d2d0a98b271e9951c16a649",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--restart.log",
+      "bytes": 949,
+      "sha256": "ff351b0b9816a6cf7180bd4ac999c8d5fc0e84fbb6a02aa1abe6ed917ef2b6bb",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery--restart.xml",
+      "bytes": 1507,
+      "sha256": "1f1931bf71cb68b831045b5daa4d1f31e4995b5d1fbecfe292629f065a0330ba",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery-contract--controls/production-guard-controls.json",
+      "bytes": 403,
+      "sha256": "942c9132d0b434f3a61190d76b6218b105336d702c193a0321a7f310d965a9f4",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery-contract--controls.log",
+      "bytes": 515,
+      "sha256": "7f33010d65fdc151acf827f42c406d7a313d4ee111b2e908ee8855386f1c551d",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery-contract--controls.xml",
+      "bytes": 726,
+      "sha256": "58a0fda5c44e484934b5fe8e04283d09937b9dc4e4055aff701f6a4986f351df",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery-contract--exports.log",
+      "bytes": 265,
+      "sha256": "44742eb699e01e89243d4fef3c369b0707b4b768bd48dec5b80a6a9cef111d16",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery-contract--exports.xml",
+      "bytes": 517,
+      "sha256": "c3e27dc626633fb30724e92af6606aa4101e63f6a086e927cee858b2da0badc9",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery-contract--formats/challenge-bindings.json",
+      "bytes": 120,
+      "sha256": "f18ef22e1a0b98b2ecb2b5184b0bd89c460084b1b38a9d399db0cf5cc01ace99",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery-contract--formats/encoded-bindings.json",
+      "bytes": 215,
+      "sha256": "04a5acda32609444f69a64081fd7c4df9f3530df337068fc6fab667b69f4faba",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery-contract--formats/payload-refusals.json",
+      "bytes": 509,
+      "sha256": "55022c18266224ac5ad244404d5a14fed4f8a4cb0caf5897ab9cb40027442e39",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery-contract--formats/properties.json",
+      "bytes": 218,
+      "sha256": "ae1fe2be9a4e01a8c4dcb16952f800ac5da07e2d41e5f9c6dbde0c8fdafdf0c9",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery-contract--formats.log",
+      "bytes": 1024,
+      "sha256": "4cf28daab078874d313e930d63923c8f392c98b290281af870a1a0d395258319",
+      "preserved": true
+    },
+    {
+      "path": "account-recovery-contract--formats.xml",
+      "bytes": 2109,
+      "sha256": "f06fb3c06a95391b425082dce444c8921226eaf1cdc5ebeadd84c0e984722d26",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--controls/control-acceptance-pair.json",
+      "bytes": 117,
+      "sha256": "d6b2a75c782dbe6b8ece1a13dd48fbdd10e4cced15827b9375f90ae02983bbe7",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--controls/control-cleanup.json",
+      "bytes": 123,
+      "sha256": "10a4065fd4d46db4b2a3265ee684766d570f5abcaab138cfdbb21c8236d46215",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--controls/control-closed.json",
+      "bytes": 114,
+      "sha256": "75285edb5805cabb3d3156f214a9693dcea917da66661cd3765ad33919f7170c",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--controls/control-expected-pin.json",
+      "bytes": 149,
+      "sha256": "dad2b55358b4d41ab6c04f371878d721ebdf15a771225fcf8bcd26c20f713814",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--controls/control-export-private.json",
+      "bytes": 126,
+      "sha256": "6f6606464bcfbff1f76fd859db5dc66589a8b352e5f30cb769a3e2db863a4cee",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--controls/control-export-public.json",
+      "bytes": 126,
+      "sha256": "6f6606464bcfbff1f76fd859db5dc66589a8b352e5f30cb769a3e2db863a4cee",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--controls/control-proposal.json",
+      "bytes": 109,
+      "sha256": "3d552d545882c4d8bd1ff76ee50036a1af248563290323ae67e521b363934164",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--controls/control-root-pair.json",
+      "bytes": 137,
+      "sha256": "1318d8eaa04d351d637f384b73f007439a5ff53495460eefdadd156cc15cb345",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--controls.log",
+      "bytes": 1099,
+      "sha256": "a017a1a2262c58f7e4e8e84f085077a35f31febecaf455b22db59891bbd6ec58",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--controls.xml",
+      "bytes": 2130,
+      "sha256": "a46478f2ee0474816ee8d40d34a038eb31c712a438081a7d4a9aadf8afa17eb7",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--exports.log",
+      "bytes": 538,
+      "sha256": "72ab8cf4e035dac59a4c8dc99a655454325ce29a58f069c583bfa40cd1bf8130",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--exports.xml",
+      "bytes": 1199,
+      "sha256": "7d6f151703c59633540787ac4d13c2f6fc1cbdfb3d4ff5dfd017fc73569f41e6",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--formats/acceptance-refusals.json",
+      "bytes": 160,
+      "sha256": "86fa14fd096221bdabdbc827ea69d72414cd44df4400115323076e9b2758d71f",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--formats/bindings.json",
+      "bytes": 183,
+      "sha256": "ed8f92fc9a02c40d6d0d7601b7f218b191f2aed8bfd553b0c85c891b722c1533",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--formats/fixed.json",
+      "bytes": 148,
+      "sha256": "96934c4d0e24028c1e57a85ffde25d5361eff184ed337d770be9b12c30dec9c0",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--formats/properties.json",
+      "bytes": 132,
+      "sha256": "84023615d7569847c7ee50cc1048295970aaf471e702ce5845393dcd8cb9aec5",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--formats/root-refusals.json",
+      "bytes": 178,
+      "sha256": "9895886462df90235246dd918ee2bfe2d5a842daeddce213b3d5d4e01f7ef8e5",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--formats.log",
+      "bytes": 1098,
+      "sha256": "6876b9ee70276d6d35e29a0102d3f254aa2bf7fa602cd503d1f875877b9a8601",
+      "preserved": true
+    },
+    {
+      "path": "account-service-custody--formats.xml",
+      "bytes": 1850,
+      "sha256": "196ce5771cd14c196029db2c2ca71ee90375dab084ad774d3bfab173fb88974b",
+      "preserved": true
+    },
+    {
+      "path": "account-spool--native/controls.json",
+      "bytes": 152,
+      "sha256": "e20a973ba153046ee6ab967903d8900b74e358377a05c5c0ff69cc69ec42546e",
+      "preserved": true
+    },
+    {
+      "path": "account-spool--native/generated.json",
+      "bytes": 1982,
+      "sha256": "7b2a00e91a264e89940fefcb49256a59fd6dc13f2efa08531352292a21a40243",
+      "preserved": true
+    },
+    {
+      "path": "account-spool--native/missing-tail-control.json",
+      "bytes": 6379,
+      "sha256": "249b86f9d9a39f0f2dc4b76d0ecad3b62f2be0d25196cd42c1e06850d58c655d",
+      "preserved": true
+    },
+    {
+      "path": "account-spool--native.log",
+      "bytes": 4205,
+      "sha256": "9e4d7c0c9d7895631eb6cfee4587e50a9f6d8de751e93674403053496d1da74e",
+      "preserved": true
+    },
+    {
+      "path": "account-spool--native.xml",
+      "bytes": 5782,
+      "sha256": "a03a1520461b28951aedc81032f381ecc9d0f547025ce0ebaba72bbbe97eeb33",
+      "preserved": true
+    },
+    {
+      "path": "account-store-contract--formats/bindings.json",
+      "bytes": 37,
+      "sha256": "0036b9ea7309fe9b074da61737ae66e2eacfb9ba7e0a685dcf829b09a2699f9c",
+      "preserved": true
+    },
+    {
+      "path": "account-store-contract--formats/fixed.json",
+      "bytes": 76,
+      "sha256": "53d8bb92bf47e4bfb0c6115f3798603e92aaac85a11e5d1ba48e032aea05cfff",
+      "preserved": true
+    },
+    {
+      "path": "account-store-contract--formats/inherited.json",
+      "bytes": 423,
+      "sha256": "7ccf37a7d443a43e57ead907560a6ad680d8d6f3642b42c957b55fcf7127f2d0",
+      "preserved": true
+    },
+    {
+      "path": "account-store-contract--formats/parsers.json",
+      "bytes": 217,
+      "sha256": "cf3188c8b0b2f26c9a56636bb39f466af0739cfdf687da75e2a66a1d18ce8b55",
+      "preserved": true
+    },
+    {
+      "path": "account-store-contract--formats/properties.json",
+      "bytes": 14055,
+      "sha256": "9c5d4e36ad1dc899f1faf8e630443d086aa5a2ae9030ea83a56b046eaa39d1fe",
+      "preserved": true
+    },
+    {
+      "path": "account-store-contract--formats/source-controls.json",
+      "bytes": 210,
+      "sha256": "e35923d256bfcd9057309785050170422c03f6357d3695dc956bce80e545130e",
+      "preserved": true
+    },
+    {
+      "path": "account-store-contract--formats.log",
+      "bytes": 847,
+      "sha256": "4a5ff4ecb6480f37d3b7060fd99c869bbe9259c25520cee6e2091e270bed670d",
+      "preserved": true
+    },
+    {
+      "path": "account-store-contract--formats.xml",
+      "bytes": 1770,
+      "sha256": "e757cf4a3ce36b855eb0319d41be43149b0730d9e5231bdebb60f75e42782a5e",
+      "preserved": true
+    },
+    {
+      "path": "account-store-contract--native/native-bytes.json",
+      "bytes": 4581,
+      "sha256": "33fcb45151496cac101713cf4b84413978a819481f59e332c98f8d4d4bf7d8ec",
+      "preserved": true
+    },
+    {
+      "path": "account-store-contract--native/native-control.json",
+      "bytes": 181,
+      "sha256": "b8c8d55ec9d380df94707a517254a42edeb5454c6ff4465d42e2900ee8b81af9",
+      "preserved": true
+    },
+    {
+      "path": "account-store-contract--native/native-refusals.json",
+      "bytes": 143,
+      "sha256": "26a4f93783b8b4185e31483a1261d9b0850e1ba86746bbb86a30da6441043da1",
+      "preserved": true
+    },
+    {
+      "path": "account-store-contract--native.log",
+      "bytes": 553,
+      "sha256": "7f49e316232b5840fa34114c7b31960142935fbc7370f8a66d73262b6d4dff20",
+      "preserved": true
+    },
+    {
+      "path": "account-store-contract--native.xml",
+      "bytes": 1069,
+      "sha256": "5ce5ce8a7416ce4d92a9b0ccb92bdcb3a8fa9397b899774c764dbbea6da0c832",
+      "preserved": true
+    },
+    {
+      "path": "account-transport-contract--controls/verification-controls.json",
+      "bytes": 483,
+      "sha256": "591ec11d6ca02054f141aa27daffcb23ec9a3497c6f6da80a529521adee5dc6e",
+      "preserved": true
+    },
+    {
+      "path": "account-transport-contract--controls.log",
+      "bytes": 768,
+      "sha256": "5862c01918e8661debf37d1378889157298eb47c675df7c391d2a1bf65bc29c2",
+      "preserved": true
+    },
+    {
+      "path": "account-transport-contract--controls.xml",
+      "bytes": 1265,
+      "sha256": "28d2183a9c3257ec541923c760e219a994f0de22404ac7a9dd4a40db5c4df191",
+      "preserved": true
+    },
+    {
+      "path": "account-transport-contract--formats/encoded-bindings.json",
+      "bytes": 204,
+      "sha256": "746209a0b3473149baea636b552b05f2c8d59bea3cce57b07c94e503c7ba05fe",
+      "preserved": true
+    },
+    {
+      "path": "account-transport-contract--formats/fixed.json",
+      "bytes": 130,
+      "sha256": "efa2e52c8e0a0b72250132f522cbd6f04600630dfdd0ea48d3b1746c5e84531c",
+      "preserved": true
+    },
+    {
+      "path": "account-transport-contract--formats/framing.json",
+      "bytes": 112,
+      "sha256": "5e00a3903585c76d6466c731837067eca66e68450524990e4fae541e55b157fc",
+      "preserved": true
+    },
+    {
+      "path": "account-transport-contract--formats/properties.json",
+      "bytes": 271,
+      "sha256": "cb1d8623c4b985955c8a8c63969657e60bc7da8d1405763c520fa33eeaddea63",
+      "preserved": true
+    },
+    {
+      "path": "account-transport-contract--formats/witness.json",
+      "bytes": 315,
+      "sha256": "b7a65111f60d72c216bb9ce6d7b6af612772c847e0c390d5bfe4108862f5bcf4",
+      "preserved": true
+    },
+    {
+      "path": "account-transport-contract--formats.log",
+      "bytes": 1441,
+      "sha256": "40f7f989ef8d8c5575172bdfb323b3027278d6fc39a853f3f0f5cbefd4ffb57b",
+      "preserved": true
+    },
+    {
+      "path": "account-transport-contract--formats.xml",
+      "bytes": 2624,
+      "sha256": "95e231531910edfa59a27449377b1cd140b096a0d95cb6ccb39d144e914ae5ed",
+      "preserved": true
+    },
+    {
+      "path": "authority.log",
+      "bytes": 750,
+      "sha256": "9b9f19c04766bb0c43114e7b93e42311f625f676b14215eb3608583fbf0862b8",
+      "preserved": true
+    },
+    {
+      "path": "crosswalk.json",
+      "bytes": 167694,
+      "sha256": "79cc6f398db0f78fbb35f80131905ac219fc6dcbd54c24de5687be547cf43b22",
+      "preserved": true
+    },
+    {
+      "path": "format.log",
+      "bytes": 112,
+      "sha256": "bf252cdbbc6c0ba2338867b6333a495c4d3ee85c96948a1ce0be28a1e63ad277",
+      "preserved": true
+    },
+    {
+      "path": "inventory.log",
+      "bytes": 306,
+      "sha256": "5c14a94c741817283e6f9724962f58c0912f8a58c2d764a6984d0cbeacb48f49",
+      "preserved": true
+    },
+    {
+      "path": "lint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "preserved": true
+    },
+    {
+      "path": "sources.json",
+      "bytes": 120711,
+      "sha256": "c39ca86cdba055bdfb59cc5445ce7e06592eee15c000841156376dee95df0921",
+      "preserved": true
+    },
+    {
+      "path": "summary.json",
+      "bytes": 36380,
+      "sha256": "49cbf0fdd8869d21a4c5bfa6e5796c0e4eeda698e4322c6d300d43d6a25266b4",
+      "preserved": true
+    },
+    {
+      "path": "unit-bridges.log",
+      "bytes": 238,
+      "sha256": "1fe0c0a4052e9fb51bd0e266ed02fd068d8f43b89ea54534170132571bf73233",
+      "preserved": true
+    },
+    {
+      "path": "vectors-01.log",
+      "bytes": 86,
+      "sha256": "b666eb23c702ac6481e3e97203a6e2ff70d391ba3fa8629c4885412ff9578fc6",
+      "preserved": true
+    },
+    {
+      "path": "vectors-02.log",
+      "bytes": 79,
+      "sha256": "0c70170d97efba7b4555681672beaf1b735bcdeba65898ae3773a1209b782a23",
+      "preserved": true
+    },
+    {
+      "path": "vectors-03.log",
+      "bytes": 60,
+      "sha256": "af84288f8f3dfc2aa390b1ea0a8d91c49475575a371f26dfd40c890e95bcf956",
+      "preserved": true
+    },
+    {
+      "path": "vectors-04.log",
+      "bytes": 69,
+      "sha256": "ed1e5ea3122d43ee5fd15c80619d80edfefc5f1921b66044f700719b8b045c2f",
+      "preserved": true
+    },
+    {
+      "path": "vectors-05.log",
+      "bytes": 79,
+      "sha256": "25315be349006361789801db6feedb8ad26bf178d1e69212fcd3640e82b0fe36",
+      "preserved": true
+    },
+    {
+      "path": "vectors-06.log",
+      "bytes": 62,
+      "sha256": "8c61b7ed58851527b64f41ab6e80fac4b07d4c710982902113193e6344c2c3ea",
+      "preserved": true
+    },
+    {
+      "path": "vectors-07.log",
+      "bytes": 69,
+      "sha256": "bb138afdb06690ff276bcb2d2f70f82a561a2de54a6dc0808b59e6d4d770086a",
+      "preserved": true
+    },
+    {
+      "path": "vectors-08.log",
+      "bytes": 58,
+      "sha256": "775f09c3a00d80c978501b3bc6a925f8b26fdc934e3cfe38849f15c916173f36",
+      "preserved": true
+    },
+    {
+      "path": "vectors-09.log",
+      "bytes": 98,
+      "sha256": "ffb69e527b5f67fc1cb495c49a3daf568822f49289308817326e242eddc5d11f",
+      "preserved": true
+    },
+    {
+      "path": "vectors-10.log",
+      "bytes": 64,
+      "sha256": "d416285c890daad38b110ca7bc0480b8849ebd4fe0d3cf5f7155f175a4697578",
+      "preserved": true
+    },
+    {
+      "path": "vectors-11.log",
+      "bytes": 61,
+      "sha256": "e2333bd362f737d48ff7a8618cd86e251c1bc791cc249db5466dc3a9e5107426",
+      "preserved": true
+    },
+    {
+      "path": "vectors-12.log",
+      "bytes": 60,
+      "sha256": "2ddb6b1e2f9ac98312a044cee6f0ecabc3d34ab85e5d6dfc69e18c80b5a4bc70",
+      "preserved": true
+    },
+    {
+      "path": "vectors-13.log",
+      "bytes": 60,
+      "sha256": "4b686ccd5de879387bd05c79b9a07734d30d3a27f652973b40eadf8b5154e078",
+      "preserved": true
+    },
+    {
+      "path": "vectors-14.log",
+      "bytes": 57,
+      "sha256": "9f0285c868332ff7f355112ab5881b4079dc38697e355527e374006ec88160ca",
+      "preserved": true
+    },
+    {
+      "path": "vectors-15.log",
+      "bytes": 77,
+      "sha256": "83a37d9f2a4e6d48d74d702270bff92cffc2ee5483439c27a73c213caaa14181",
+      "preserved": true
+    },
+    {
+      "path": "vectors-16.log",
+      "bytes": 69,
+      "sha256": "5f6f32c2558c82542b189e8ebcc04d7f7d50c9337b95f1671e0b305982318b4a",
+      "preserved": true
+    },
+    {
+      "path": "vectors-17.log",
+      "bytes": 77,
+      "sha256": "83a1148603212dcb8fe244d3d2736893fcbd651828e432554aa5d725b6215bc1",
+      "preserved": true
+    },
+    {
+      "path": "vectors-18.log",
+      "bytes": 96,
+      "sha256": "c16db5dbfb3b667228f277469b8c3e22ddb9faa82b949c9eef6fe7bf7bd303c7",
+      "preserved": true
+    },
+    {
+      "path": "vectors-19.log",
+      "bytes": 115,
+      "sha256": "3eb2b09364f127c485fc95c892727474a32aedfe1abefc84c5b2e9e260f51bee",
+      "preserved": true
+    },
+    {
+      "path": "vectors-20.log",
+      "bytes": 49,
+      "sha256": "27456df496e3d23cdd6463620b349aa8955591759eff7fca90895c128f4196ba",
+      "preserved": true
+    },
+    {
+      "path": "vectors-21.log",
+      "bytes": 59,
+      "sha256": "0ba2ff45ab5f438e0a15fcfdddbb338c67ce3d6a960782585e93626bce951a1e",
+      "preserved": true
+    },
+    {
+      "path": "vectors-22.log",
+      "bytes": 47,
+      "sha256": "f20a38e0d389525e259aea792c520924543cad62aa0dd91dc22cb5e7f61bd17b",
+      "preserved": true
+    },
+    {
+      "path": "vectors-23.log",
+      "bytes": 1612,
+      "sha256": "61b078db785f0342cebfd7823644025a7a4fbe0bc0b5b4c4e12d886ee07306f4",
+      "preserved": true
+    },
+    {
+      "path": "vectors-24.log",
+      "bytes": 48,
+      "sha256": "5343fa0460f08399e8dccd765c3cd875bbaff2cf7866f4e116b23aa1087da454",
+      "preserved": true
+    },
+    {
+      "path": "vectors-25.log",
+      "bytes": 47,
+      "sha256": "436d8f7c32f6a58ecb52aaf240cb7890c10bb166d403b1f74cb23ef1fc713afc",
+      "preserved": true
+    },
+    {
+      "path": "vectors-26.log",
+      "bytes": 47,
+      "sha256": "8b6a50af3930cfa2e202bde4da7ba7d62c095ac8fb702bfe43c9fc86c00c7ffe",
+      "preserved": true
+    },
+    {
+      "path": "vectors-27.log",
+      "bytes": 53,
+      "sha256": "e70228d7ee38b252e3c4350653060000821a48b820883e8d9fe23cc6eaf0b45e",
+      "preserved": true
+    },
+    {
+      "path": "vectors-28.log",
+      "bytes": 54,
+      "sha256": "7ea91064299cf3e8430fc3c7477a213ea29bb06cebacd69062fb1a24246e7e12",
+      "preserved": true
+    },
+    {
+      "path": "vectors-29.log",
+      "bytes": 49,
+      "sha256": "6d472bc074b094d60a26b89e571ee77adedc578746736be991b61695bc367eef",
+      "preserved": true
+    },
+    {
+      "path": "vectors-30.log",
+      "bytes": 52,
+      "sha256": "92e07e648f25725decfae977a4ec0882e5642db84a2b0ce91abdd1b1b6f5483d",
+      "preserved": true
+    }
+  ],
+  "reviewSupplements": [
+    {
+      "path": "prior-evidence.json",
+      "source": "/private/tmp/done-aggregate-prior-evidence.json",
+      "sha256": "5e2abedeff201879b6e4bee3bfe6389b7a874157802213044972e506dbff9483"
+    },
+    {
+      "path": "primitive-sites.txt",
+      "source": "/private/tmp/done-closure-primitive-sites.txt",
+      "sha256": "65ada201c78f86078866842e36fa58ad8c710321496377a0bedcc763d43f3ae2"
+    }
+  ],
+  "scope": "All raw campaign files copied exactly. Supplemental historical-source comparison and manual navigation query are separately identified. No personal profile or credentials."
+}

@@ -1,0 +1,12 @@
+(node:6806) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ removing each production context/root/key-pair check rescues its separately authentic counterexample (20.637125ms)
+✔ omitting exact PKCS#8 format checks recreates acceptance of each malformed export (7.501541ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 128.953666

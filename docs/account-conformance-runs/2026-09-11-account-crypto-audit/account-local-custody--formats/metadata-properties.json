@@ -1,0 +1,1033 @@
+{
+  "failed": false,
+  "interrupted": false,
+  "numRuns": 200,
+  "numSkips": 0,
+  "numShrinks": 0,
+  "seed": 5110921,
+  "counterexample": null,
+  "counterexamplePath": null,
+  "error": null,
+  "errorInstance": null,
+  "failures": [],
+  "executionSummary": [],
+  "verbose": 0,
+  "runConfiguration": {
+    "seed": 5110921,
+    "numRuns": 200,
+    "maxSkipsPerRun": 100,
+    "markInterruptAsFailure": false,
+    "skipEqualValues": false,
+    "ignoreEqualValues": false,
+    "path": "",
+    "unbiased": false,
+    "verbose": 0,
+    "examples": [],
+    "endOnFailure": false,
+    "includeErrorInReport": false
+  },
+  "histories": 200,
+  "steps": 1539,
+  "traces": [
+    {
+      "operations": 4,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 5,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 14,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 3,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 5,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 3,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 12
+    },
+    {
+      "operations": 13,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 3,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 14,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 4,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 4,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 11,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 13,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 6,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 4,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 10,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 11,
+      "state": "protected",
+      "reserved": 12
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 14,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 5,
+      "state": "protected",
+      "reserved": 15
+    },
+    {
+      "operations": 14,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 10,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 3,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 10,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 12
+    },
+    {
+      "operations": 5,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 11,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 6,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 13,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 14,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 10,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 7,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 6,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 10,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 8,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 2,
+      "state": "creating",
+      "reserved": 6
+    },
+    {
+      "operations": 4,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 8,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 15
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 6,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 6,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 13,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 5,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 14,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 8,
+      "state": "protected",
+      "reserved": 12
+    },
+    {
+      "operations": 3,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 3,
+      "state": "creating",
+      "reserved": 9
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 5,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 7,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 5,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 6,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 2,
+      "state": "creating",
+      "reserved": 6
+    },
+    {
+      "operations": 10,
+      "state": "protected",
+      "reserved": 12
+    },
+    {
+      "operations": 13,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 14,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 4,
+      "state": "protected",
+      "reserved": 12
+    },
+    {
+      "operations": 13,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 3,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 3,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 13,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 4,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 6,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 3,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 11,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 7,
+      "state": "protected",
+      "reserved": 15
+    },
+    {
+      "operations": 5,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 13,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 3,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 6,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 4,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 10,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 4,
+      "state": "creating",
+      "reserved": 12
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 18
+    },
+    {
+      "operations": 8,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 3,
+      "state": "creating",
+      "reserved": 9
+    },
+    {
+      "operations": 8,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 2,
+      "state": "creating",
+      "reserved": 6
+    },
+    {
+      "operations": 14,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 2,
+      "state": "creating",
+      "reserved": 6
+    },
+    {
+      "operations": 8,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 8,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 3,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 4,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 3,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 6,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 18
+    },
+    {
+      "operations": 11,
+      "state": "protected",
+      "reserved": 12
+    },
+    {
+      "operations": 5,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 3,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 2,
+      "state": "creating",
+      "reserved": 6
+    },
+    {
+      "operations": 6,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 5,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 3,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 10,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 6,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 11,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 11,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 4,
+      "state": "protected",
+      "reserved": 12
+    },
+    {
+      "operations": 11,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 11,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 4,
+      "state": "creating",
+      "reserved": 12
+    },
+    {
+      "operations": 13,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 8,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 5,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 6,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 7,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 8,
+      "state": "protected",
+      "reserved": 15
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 4,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 4,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 8,
+      "state": "protected",
+      "reserved": 12
+    },
+    {
+      "operations": 5,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 13,
+      "state": "protected",
+      "reserved": 12
+    },
+    {
+      "operations": 7,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 14,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 7,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 13,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 7,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 5,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 14,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 8,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 14,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 13,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 8,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 2,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 4,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 3,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 10,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 12
+    },
+    {
+      "operations": 11,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 6,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 11,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 10,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 3,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 14,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 11,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 14,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 5,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 5,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 8,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 8,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 11,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 7,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 10,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 14,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 6,
+      "state": "protected",
+      "reserved": 12
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 10,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 12,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 11,
+      "state": "protected",
+      "reserved": 6
+    },
+    {
+      "operations": 6,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 14,
+      "state": "protected",
+      "reserved": 15
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 9,
+      "state": "protected",
+      "reserved": 18
+    },
+    {
+      "operations": 8,
+      "state": "protected",
+      "reserved": 9
+    },
+    {
+      "operations": 7,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 5,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 7,
+      "state": "protected",
+      "reserved": 3
+    },
+    {
+      "operations": 3,
+      "state": "protected",
+      "reserved": 6
+    }
+  ]
+}

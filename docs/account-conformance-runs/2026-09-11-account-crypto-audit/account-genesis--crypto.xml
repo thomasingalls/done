@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="runtime and independent oracle open the published AES-256 HPKE generation vector" time="0.013398" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/crypto.test.mjs"/>
+	<testcase name="100 generated runtime seals interoperate with OpenSSL; info and ciphertext substitutions refuse" time="0.366199" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/crypto.test.mjs"/>
+	<testcase name="low-order recipients and malformed generation size refuse" time="0.000586" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/crypto.test.mjs"/>
+	<!-- tests 3 -->
+	<!-- suites 0 -->
+	<!-- pass 3 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 550.993667 -->
+</testsuites>

@@ -1,0 +1,43 @@
+(node:6821) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6821) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ spool persists exact v2 envelopes with separate positions/attempts and retains sources through restart and compaction (4873.972083ms)
+✔ position before commit restarts with contiguous positions and counts every fresh invocation (4962.03ms)
+✔ position after commit restarts with contiguous positions and counts every fresh invocation (4989.873334ms)
+✔ attempt before commit restarts with contiguous positions and counts every fresh invocation (4980.832709ms)
+✔ attempt after commit restarts with contiguous positions and counts every fresh invocation (5053.152042ms)
+✔ envelope before commit restarts with contiguous positions and counts every fresh invocation (5086.199209ms)
+✔ envelope after commit restarts with contiguous positions and counts every fresh invocation (4961.349584ms)
+✔ v7 activation before commit fences old capture without exposing an editor (5373.995542ms)
+✔ v7 activation after commit fences old capture without exposing an editor (5662.870459ms)
+✔ prepared signer and each original actor bind the actual wire; stored sources remain after mixed work (4258.425833ms)
+✔ authenticated-at-rest source-missing corruption refuses restart without writes or new crypto (3543.546375ms)
+✔ authenticated-at-rest source-changed corruption refuses restart without writes or new crypto (4009.37ms)
+✔ authenticated-at-rest wire corruption refuses restart without writes or new crypto (3520.632375ms)
+✔ authenticated-at-rest attempt corruption refuses restart without writes or new crypto (3553.371958ms)
+✔ authenticated-at-rest ledger-missing corruption refuses restart without writes or new crypto (3670.402292ms)
+✔ close drains a paused encryption, withholds wire, and prevents stale and queued owners from reusing its grant (4494.603875ms)
+✔ a lowered budget fence refuses before the first prohibited encryption (3846.859875ms)
+✔ actual controls expose return-before-persistence and invocation-grant reuse after crash (8091.114334ms)
+✔ one mixed capsule maps to separate exact actor envelopes, including a pending frame and a large source (6103.955083ms)
+spool history 1/8: [{"text":"🙂","boundary":"position-before"},{"text":"x","boundary":"envelope-after"},{"text":"é","boundary":"position-before"}]
+spool history 2/8: [{"text":"🙂","boundary":"normal"},{"text":"🙂","boundary":"attempt-before"},{"text":"x","boundary":"attempt-before"}]
+spool history 3/8: [{"text":"é","boundary":"compact"},{"text":"🙂","boundary":"envelope-before"},{"text":"é","boundary":"envelope-before"}]
+spool history 4/8: [{"text":"🙂","boundary":"attempt-after"},{"text":"🙂","boundary":"envelope-after"},{"text":"é","boundary":"attempt-before"}]
+spool history 5/8: [{"text":"é","boundary":"envelope-after"},{"text":"é","boundary":"position-after"}]
+spool history 6/8: [{"text":"x","boundary":"envelope-after"},{"text":"é","boundary":"position-before"},{"text":"x","boundary":"position-before"},{"text":"é","boundary":"compact"}]
+spool history 7/8: [{"text":"🙂","boundary":"position-after"},{"text":"🙂","boundary":"position-before"},{"text":"x","boundary":"position-after"}]
+spool history 8/8: [{"text":"🙂","boundary":"attempt-before"},{"text":"x","boundary":"position-before"},{"text":"é","boundary":"attempt-before"}]
+✔ generated native crash histories preserve exact wire, source references and an external invocation bound (45595.132416ms)
+✔ missing final envelope refuses reopening a previously exposed position (3811.637208ms)
+✔ spool metadata activation before commit resumes before admission (5211.465083ms)
+✔ spool metadata activation after commit resumes before admission (4809.229084ms)
+✔ removing the actual witness check reproduces remint after a missing final row (3776.735834ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 155732.352167

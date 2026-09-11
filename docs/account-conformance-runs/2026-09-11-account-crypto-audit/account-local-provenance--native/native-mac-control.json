@@ -1,0 +1,11 @@
+{
+  "beforePromotion": {
+    "baseline": "refused",
+    "omission": "promotion-preflight"
+  },
+  "afterPromotion": {
+    "baseline": "refused",
+    "omission": "still refused by marker binding"
+  },
+  "restored": "account"
+}
