@@ -42,75 +42,73 @@ that is no longer active.
 
 ---
 
-## Active slice: Ordered remote editor integration (`L-1`)
+## Active slice: Restore the aggregate validation baseline (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: editor admission and promotion under the native v9 receive owner
+blocks_on: AAD vector audit and four stale storage harness source snapshots
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
 
 **Personal checkpoint.** The verified Local release remains `.dev/releases/17d87c2/app`, predecessor
-`dist/` intact. Personal preview/relay remain stopped; origin/Tailscale routing is unchanged. The author
-controls browser interaction and factors. No real Account, passkey, recovery code, operator key or authority
-pin is provisioned. The actual old second device will adopt this device's workspace with fresh custody,
-store, counters and credentials; its old writing will not be imported or merged.
+`dist/` intact. Preview/relay stay stopped; origin/Tailscale routing is unchanged. The author controls
+browser interaction and factors. No real Account, passkey, recovery code, operator key or authority pin is
+provisioned. The actual old second device will adopt this device's workspace with fresh custody, store,
+counters and credentials; its old writing will not be imported or merged.
 
-**Committed base.** `7210b7d` contains source capture, `7082fa7` the witnessed spool, `81a4655` response
-verification, `2cb42a2` v8 delivery, `96a2040` schema-4 service decisions, `e1a5029` private HTTP transport,
-`8dd06fb` the owned sender/reconnect driver, `ee42c45` inbound prep and `8378596` inbound formats/verifier.
-Exact sources, envelopes, wrappers and proof evidence survive restart/compaction. Position and seal
-invocation grants remain separate; edited v5 histories need a separately verified catch-up checkpoint.
+**Completed boundary.** `f6e4cf4` commits the native v9 receive store. The subsequent
+[ordered remote editor](./account-receive-editor.md) now composes local source capture and verified receive
+under the same held lifetime. Original content/event/witness commit and authenticated readback precede
+canonical/projection publication. Pending dependencies, pressure, undo, close and cold replay preserve
+separate source and receive histories. Source-free v9 startup avoids empty capsules; older v6/v7/v8
+factories and retained sources remain unchanged. There is still no sender attached to v9, v2 service route,
+new-member enrollment, default app activation or personal Account.
 
-**Native receive completed.** The [private v9 store](./account-receive.md) now activates under the actual
-factor/passkey-owned Account lifetime, derives authority from admitted genesis, signs its own outstanding
-request, and commits original updates/event/witness together. Cold open reauthenticates the complete event
-census and original signatures, deriving received progress separately from outbound acceptance and checking
-actual content/deletion/pending coverage. Pending original frames survive compaction. Empty/duplicates grant
-no durable new knowledge; conflicting accepted evidence stops receipt without promoting conflicting content.
+[Evidence](./account-conformance-runs/2026-09-11-account-receive-editor.md): 957 unit tests, 54 focused cases
+including 200 new queue histories, 12 native editor cases with ten generated histories and two effective
+source controls, 17 native storage receive and 19 native v8 delivery regressions pass. Isolated build,
+TypeScript, scoped lint/format and 13 existing gates pass. All final source inventories match. A missing
+account binding was caught during composition, fixed, and its exact failing source retained. No new
+counterexample appeared in the final generated runs. The AAD coverage audit is explicitly red.
 
-The factory exposes storage operations only. No editor, sender, service receive route or enrollment is
-attached; the v9 marker deliberately fences older editing factories. Default Local and personal data are
-unchanged. One creating credential at epoch 1/generation 1 is supported. Fresh readers/publishers and
-checkpoint baselines require their own admission owners.
+**Review dispositions.** The author requested static responses in the root review packet, with
+`resposnse` fences and no commit of that packet. All 25 findings, seven test-gap subitems and twelve
+resolved items have responses. Leave that file untracked/uncommitted unless separately authorized.
+The packet distinguishes current failures, latent boundaries, overstated claims and deferred product work;
+its suggested periodic projection check and early blocked-IDB release were rejected as unsafe shortcuts.
 
-[Evidence](./account-conformance-runs/2026-09-11-account-receive.md): 17 native tests with 12 generated
-histories, four effective native source controls, 45 primitive/property cases (including 200 new coverage
-histories), all 951 unit tests, isolated build and 13 repository gates pass. Existing v8 delivery passes
-four properties and 19 native tests. Its activation regressions caught an earlier v7/v8 refusal boundary
-change; the repair and exact failing source are preserved. New native polls explicitly await predicates.
-No whole debt is paid; generated tests found no additional counterexample.
+**Next bounded repair.** Restore honest aggregate validation before layering on more service work:
 
-**Next bounded build.** Compose the admitted editor with the same v9 owner and task queue. Reuse the current
-source-capture journal for local actions and the authenticated receive batch for remote actions. Received
-bytes must bypass source capture, and callers cannot inject a raw update into the accepted editor merely
-by claiming it was verified. The owning path must establish current authority, commit the receive batch,
-then hand original updates to ordered remote promotion. Do not expose the low-level context as authority.
+- F-01: register the private v2 envelope's actual AAD/KDF construction and publish isolating negatives;
+  include the private generator in the normal vector commands, regenerate and run the audit.
+- F-02: make custody/content/journal/property runners snapshot their complete source dependency closure,
+  preserving relative imports and source hashes. Repair the ambiguous journal mutation anchor. Require
+  each baseline and each effective mutation to execute meaningful assertions, not timeouts/import errors.
+- Check the known F-20 deadline margin while refreshing the harnesses; use explicit property deadlines
+  and bounded predicates. Run the actual aggregate command and record every red gate rather than describing
+  a selected subset as whole-repository validation. Do not broaden this into silent protocol changes.
 
-Preserve the staging rule: a local action must not depend on a remote input before that input's durable
-commit. Test interleaved local edits, pending remote structs/deletions, pressure, refused suffixes, undo and
-close while receipt/promotion is queued. Durable received progress and visible Yjs materialization remain
-separate. If commit succeeds but promotion is interrupted, cold replay must recover the committed remote
-input without minting a source capsule or another network envelope. A conflict stops the affected stream
-while admitted Local editing remains available under its existing storage contract.
+**Then:** v2 service reader/publisher resolution with explicit credential/member identity agreement;
+owned receive transport/reconnect and composition with outbound delivery under v9; Account UI and real
+two-gate second-device adoption. The existing v1 read path and v8 driver do not gain v2 semantics implicitly.
 
-Keep the remote promotion handoff inside the lifetime and avoid exposing mutable receipts as reusable
-capabilities. Recheck complete content/evidence on reopen and through compaction. Use native crash cuts,
-independent source/receipt/content oracles, bounded generated histories and effective early-promotion and
-source-relabel controls. The self-stream can exercise actual admitted ownership; fixture-only extra writers
-cannot stand in for real enrollment. Do not enable a default app or personal Account during this build.
+**Before real Account receipts/rollout:** amend the row-7 manifest AND admission descriptor bounds with
+explicit versioning; require an operation-bound fresh account assertion at first service activation;
+register and pin exact Account cryptographic constructions with interoperable vectors and align recovery's
+96-byte payload with row 14/TRD; resolve invocation-grant power-loss accounting. Keep diagnostics/salvage,
+parser/admission/service negative tests, performance/maintenance, lock ordering and other accepted packet
+follow-ups visible. Do not weaken per-publication projection or complete cold-content verification merely
+to improve timings.
 
-**Then:** v2 service reader/publisher resolution and owned receive transport/reconnect; Account UI and
-real two-gate second-device adoption. General lineage advancement, successors, admitted checkpoint
-baselines, concurrent writers, pruning/backlog performance, revocation/rotation, clear/delete,
-finalization/recovery, supported platforms, whole-profile residue, production provisioning/deployment/
-restore and independent review remain following boundaries. L-2's historical clean ref `d24732b` has no
-further service work to integrate. Host VM/policy research stays stopped. Client credentials and service
-state still require unrewound, unbranched histories.
+General lineage advancement, successor/checkpoint baselines, concurrent writers, pruning/backlog scale,
+revocation/rotation, clear/delete, finalization/recovery, supported platforms, whole-profile residue,
+production provisioning/deployment/restore and independent review remain later boundaries. L-2's historical
+clean ref `d24732b` has no further service work to integrate. Host VM/policy research stays stopped. Client
+credentials and service state still require unrewound, unbranched histories.
 
 This outcome was appended to completed.md before this rewrite; L-2 is unchanged.
 

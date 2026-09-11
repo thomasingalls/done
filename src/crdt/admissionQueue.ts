@@ -39,6 +39,12 @@ export interface AdmissionOptions {
   /** Transport-specific authority/shape validation, before persistence. Throw to refuse. */
   readonly validateReceive: (bytes: Bytes) => void;
 }
+/** Internal composition only. The operation owns verification, persistence and synchronous promotion.
+ * Neither this enqueue capability nor its promotion callback is exposed by an application workspace. */
+export type OwnedReceiveQueue = <T>(
+  bytes: Bytes,
+  commit: (bytes: Bytes, promote: (updates: readonly Bytes[]) => void) => Promise<T>,
+) => Promise<T>;
 export interface AdmissionReceipt {
   readonly id: number;
   readonly source: 'local' | 'remote';
@@ -106,6 +112,7 @@ type InputJob = {
   sliced: boolean;
   prepared?: Prepared | undefined;
   force?: string;
+  commit?: (bytes: Bytes, promote: (updates: readonly Bytes[]) => void) => Promise<void>;
   completion: ReturnType<typeof deferred<AdmissionReceipt>>;
 };
 type FlushJob = { kind: 'flush'; completion: ReturnType<typeof deferred<void>> };
@@ -125,6 +132,7 @@ const erase = (job: Job) => {
 export const createAdmissionOwner = async (
   carrier: JournalSession,
   options: AdmissionOptions,
+  bindOwnedReceive?: (enqueue: OwnedReceiveQueue) => void,
 ): Promise<AdmissionSession> => {
   const canonical = createDoc(),
     listeners = new Set<(e: AcceptedUpdate) => void>(),
@@ -365,6 +373,31 @@ export const createAdmissionOwner = async (
         notify();
       });
     if (job.kind === 'remote') {
+      if (job.commit) {
+        let promoted = false;
+        return job
+          .commit(job.input, (updates) => {
+            live();
+            if (promoted) throw Error('Owned receive promoted twice');
+            promoted = true;
+            // Preserve original frames and their delivery order, including pending buffers/deletions.
+            for (const update of updates) promote(job, update);
+          })
+          .then(() => {
+            live();
+            if (!promoted) throw Error('Owned receive omitted its ordered handoff');
+            completeInput(job);
+          })
+          .catch((error) => {
+            if (codeOf(error) !== 'receive-refused') throw error;
+            live();
+            if (queue[0] !== job) throw Error('Owned receive lost its queue head');
+            queue.shift();
+            erase(job);
+            job.completion.reject(error);
+            notify();
+          });
+      }
       // Invalid network input is rejected before persistence; it is not a storage failure.
       try {
         validateRemote(job.input);
@@ -391,7 +424,7 @@ export const createAdmissionOwner = async (
           MAX_JOURNAL_UPDATE,
           options.prepare,
         );
-        if (carrier.captureLocal)
+        if (carrier.captureLocal && job.prepared.sources?.length !== 0)
           job.prepared.carrierBytes = carrier.captureLocal(
             job.prepared.update,
             job.prepared.sources,
@@ -434,6 +467,18 @@ export const createAdmissionOwner = async (
           'The command adapter must prepare a smaller slice.',
         );
       }
+    }
+    // Empty source lists are checked against the complete draft by prepareIntent. Still publish the
+    // command's ordered history/selection transition, but allocate no journal capsule or network source.
+    if (
+      job.prepared.sources?.length === 0 &&
+      job.prepared.update.length === 2 &&
+      job.prepared.update[0] === 0 &&
+      job.prepared.update[1] === 0
+    ) {
+      promote(job, job.prepared.update);
+      completeInput(job);
+      return;
     }
     const attempt =
       job.force || job.sliced || job.prepared.remaining
@@ -481,7 +526,11 @@ export const createAdmissionOwner = async (
     if (state === 'active' && queue.length) queueMicrotask(pump);
     schedule();
   };
-  const enqueue = (kind: 'local' | 'remote', bytes: Bytes): AdmissionTicket => {
+  const enqueue = (
+    kind: 'local' | 'remote',
+    bytes: Bytes,
+    commit?: InputJob['commit'],
+  ): AdmissionTicket => {
     live();
     if (!(bytes instanceof Uint8Array) || !bytes.length)
       throw new AdmissionError('invalid-input', 'A nonempty byte input is required.');
@@ -509,12 +558,20 @@ export const createAdmissionOwner = async (
       slices: 0,
       sliced: false,
       completion,
+      ...(commit ? { commit } : {}),
     };
     queue.push(job);
     pump();
     notify();
     return Object.freeze({ id: job.id, accepted: completion.promise });
   };
+  bindOwnedReceive?.(<T>(bytes: Bytes, commit: Parameters<OwnedReceiveQueue>[1]) => {
+    let value: T;
+    const ticket = enqueue('remote', bytes, async (input, promote) => {
+      value = (await commit(input, promote)) as T;
+    });
+    return ticket.accepted.then(() => value);
+  });
   const barrier = (): Promise<void> => {
     try {
       live();

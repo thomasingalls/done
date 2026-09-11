@@ -1,0 +1,64 @@
+(node:65121) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65121) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:65121) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ owned remote publication bypasses source capture/undo/outgoing; startup and duplicates allocate no source (8764.152958ms)
+✔ ordered receive before commit crash leaves no early edit or local recapture (7456.656ms)
+✔ ordered receive after commit crash leaves no early edit or local recapture (7495.772958ms)
+✔ a local command queued during receive is prepared only after commit and ordered publication (7447.899125ms)
+✔ invalid page and authenticated stream conflict preserve local editor availability (7780.108292ms)
+✔ pending remote deletion and structs survive compaction/cold open, then integrate without relabeling (9472.256834ms)
+✔ storage pressure holds the entire remote/local suffix and discard cannot acknowledge it (6172.244833ms)
+✔ close drains a committed receive before releasing the slot, with no late acknowledgement or source (9128.203542ms)
+✔ actual early source mutation violates the publication/source oracle (6831.85775ms)
+✔ actual relabel source mutation violates the publication/source oracle (6495.000958ms)
+✖ 10 generated native histories preserve authored content, receive progress and exact local source counts (6170.238959ms)
+✔ close from a publication observer stops remaining promotion and cold replay restores the whole committed batch (7586.427458ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 11
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 92406.104166
+
+✖ failing tests:
+
+test at test/account-receive-editor/native.test.mjs:373:1
+✖ 10 generated native histories preserve authored content, receive progress and exact local source counts (6170.238959ms)
+  Error: Property failed after 1 tests
+  { seed: 9202026, path: "0", endOnFailure: true }
+  Counterexample: [["invalid","local","receive","local","compact"]]
+  Shrunk 0 time(s)
+  
+  Hint: Enable verbose mode in order to have the list of all failing values encountered during the run
+      at buildError (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2462:16)
+      at asyncThrowIfFailed (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2474:8) {
+    [cause]: AssertionError [ERR_ASSERTION]: The input did not match the regular expression /refused/. Input:
+    
+    'Error: page.evaluate: AdmissionError: No outstanding receive request\n' +
+      '    at eval (eval at evaluate (:311:30), <anonymous>:47217:31)\n' +
+      '    at async eval (eval at evaluate (:311:30), <anonymous>:27687:20)'
+    
+        at async file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:423:15
+        at async AsyncProperty.run (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1217:19)
+        at async asyncRunIt (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2516:15)
+        at async TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:379:5)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+      generatedMessage: true,
+      code: 'ERR_ASSERTION',
+      actual: page.evaluate: AdmissionError: No outstanding receive request
+          at eval (eval at evaluate (:311:30), <anonymous>:47217:31)
+          at async eval (eval at evaluate (:311:30), <anonymous>:27687:20)
+          at receive (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:79:8)
+          at /Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:423:36
+          at async AsyncProperty.run (/Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1217:19)
+          at async asyncRunIt (/Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2516:15)
+          at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:379:5),
+      expected: /refused/,
+      operator: 'rejects',
+      diff: 'simple'
+    }
+  }

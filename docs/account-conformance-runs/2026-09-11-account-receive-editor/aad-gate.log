@@ -1,0 +1,17 @@
+file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/check-aad-coverage.mjs:95
+    throw new Error(
+          ^
+
+Error: scripts/generate-private-envelope-vectors.mjs reported no AAD constructions.
+  Every scripts/generate-*-vectors.mjs must import reportAudit() from
+  scripts/lib/aad-coverage.mjs and call it after its last negative —
+  including generators with no AAD at all, which report an empty set.
+    at probe (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/check-aad-coverage.mjs:95:11)
+    at async auditGenerator (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/check-aad-coverage.mjs:125:50)
+    at async file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/check-aad-coverage.mjs:117:69
+    at async Promise.all (index 6)
+    at async pool (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/check-aad-coverage.mjs:119:3)
+    at async main (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/check-aad-coverage.mjs:201:18)
+    at async file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/check-aad-coverage.mjs:228:1
+
+Node.js v26.8.2

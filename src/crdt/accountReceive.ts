@@ -1,4 +1,4 @@
-/** Private storage-only receiver. No editor, transport route, caller-supplied authority or progress setter. */
+/** Private receive owners. Authority and original-update promotion stay inside the held lifetime. */
 import { openAccountCaptureOwner, type CaptureExtension } from './accountCapture';
 import { captureAccountOptions, type AccountStartupOptions } from './accountStartup';
 import { readPromotion, promotionPayload, withPromotionRoot } from './promotionRecord';
@@ -30,8 +30,11 @@ import { verifyDelivery } from './deliveryRecord';
 import { captureError, type CaptureRoute } from './sourceCapture';
 import type { SessionTask } from './writeSession';
 import type { prepareAccountCustody } from './custody';
+import { createAdmissionOwner, AdmissionError, type OwnedReceiveQueue } from './admissionQueue';
+import { createAdmittedWorkspace } from './admittedWorkspace';
+import type { AccountWorkspaceOptions } from './accountWorkspace';
 
-export async function openOwnedAccountReceiveStore(input: AccountStartupOptions) {
+async function openAccountReceiveOwner(input: AccountStartupOptions, principalId?: string) {
   const options = captureAccountOptions(input);
   let base!: InboundContext, signer: CryptoKey | undefined, publicKey!: CryptoKey;
   let expectedPayload = '',
@@ -96,9 +99,9 @@ export async function openOwnedAccountReceiveStore(input: AccountStartupOptions)
   };
   // The actor comes from the authenticated marker, not application identity. This read happens under
   // openAccountCaptureOwner's exclusive permit; the source principal is checked by its startup verifier.
-  const { account, carrier, runCaptureTask } = await openAccountCaptureOwner(
+  const { account, carrier, runCaptureTask, listCaptures } = await openAccountCaptureOwner(
     options,
-    undefined,
+    principalId,
     extension,
   );
   const state = async (
@@ -126,7 +129,7 @@ export async function openOwnedAccountReceiveStore(input: AccountStartupOptions)
       link: s.prefix.link,
       observedThrough: s.prefix.observedThrough,
     });
-  return Object.freeze({
+  const api = Object.freeze({
     ...account,
     close: () => carrier.close(),
     status: () =>
@@ -168,30 +171,40 @@ export async function openOwnedAccountReceiveStore(input: AccountStartupOptions)
           return outstanding.slice();
         });
       }),
-    receivePage: (input: Bytes) => {
+    receivePage: (input: Bytes, promote: (updates: readonly Bytes[]) => void = () => {}) => {
       if (!(input instanceof Uint8Array) || !input.length || input.length > READ_PAGE_LIMIT)
-        return Promise.reject(Error('Invalid receive page'));
+        return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive page'));
       const page = input.slice();
       return runCaptureTask(async (task, owner, route) => {
         const s = await state(task, owner, route);
-        if (s.conflict) throw Error('Inbound stream is conflicted');
-        if (!outstanding) throw Error('No outstanding receive request');
+        if (s.conflict) throw new AdmissionError('receive-refused', 'Inbound stream is conflicted');
+        if (!outstanding)
+          throw new AdmissionError('receive-refused', 'No outstanding receive request');
         const request = outstanding.slice();
         let result: Awaited<ReturnType<typeof verifyInboundPage>> | undefined;
+        let committed = false;
         try {
           const r = decodeInboundRequest(request);
           // Own successful plaintext before wait's final lifetime check can reject it.
-          await task.wait(async () => {
-            result = await verifyInboundPage(
-              contextAt(base, s, r.after),
-              request,
-              page,
-              lifetime(task),
-            );
-          });
+          try {
+            await task.wait(async () => {
+              result = await verifyInboundPage(
+                contextAt(base, s, r.after),
+                request,
+                page,
+                lifetime(task),
+              );
+            });
+          } catch (cause) {
+            task.step(() => {});
+            throw new AdmissionError('receive-refused', String(cause), { cause });
+          }
           if (!result) throw Error('Missing inbound verification result');
           if (!('record' in result))
-            return task.step(() => ({ kind: result!.kind, recorded: false, status: describe(s) }));
+            return task.step(() => {
+              promote([]);
+              return { kind: result!.kind, recorded: false, status: describe(s) };
+            });
           const evidence = result.record;
           const before = await owner.carrier.spoolWitness(task),
             after = await task.wait(() => extendSpoolWitness(before, evidence, subtleFor(task))),
@@ -206,7 +219,11 @@ export async function openOwnedAccountReceiveStore(input: AccountStartupOptions)
               before,
               after,
               beforeCommit: async () => {
-                if (r.expires <= Date.now()) throw Error('Receive request expired before commit');
+                if (r.expires <= Date.now())
+                  throw new AdmissionError(
+                    'receive-refused',
+                    'Receive request expired before commit',
+                  );
                 await assertCurrent(task);
                 const current = await state(task, owner, route);
                 if (JSON.stringify(describe(current)) !== JSON.stringify(describe(s)))
@@ -214,8 +231,18 @@ export async function openOwnedAccountReceiveStore(input: AccountStartupOptions)
               },
             },
           );
+          committed = true;
           const saved = await state(task, owner, route);
-          return task.step(() => ({ kind: result!.kind, recorded: true, status: describe(saved) }));
+          return task.step(() => {
+            // This is the sole content-to-editor handoff: after native commit AND authenticated readback.
+            promote(updates);
+            return { kind: result!.kind, recorded: true, status: describe(saved) };
+          });
+        } catch (cause) {
+          // If durable receive succeeded but publication/readback did not, only cold replay may resume
+          // editing. Never let a discarded pending suffix erase this now-durable dependency.
+          if (committed) void carrier.close().catch(() => {});
+          throw cause;
         } finally {
           request.fill(0);
           if (result && 'record' in result) result.record.fill(0);
@@ -225,4 +252,69 @@ export async function openOwnedAccountReceiveStore(input: AccountStartupOptions)
     },
     compactContent: () => carrier.compactContent(),
   });
+  return { api, account, carrier, listCaptures };
+}
+
+/** Storage-only surface retained for independent conformance and preparation. */
+export async function openOwnedAccountReceiveStore(input: AccountStartupOptions) {
+  const { api } = await openAccountReceiveOwner(input);
+  return Object.freeze({ ...api, receivePage: (bytes: Bytes) => api.receivePage(bytes) });
+}
+
+/** Private admitted editor and signed-page receive under one v9 permit. No sender or service route. */
+export async function openOwnedReceivingAccountWorkspace(input: AccountWorkspaceOptions) {
+  const options = {
+    ...captureAccountOptions(input),
+    identity: structuredClone(input.identity),
+    today: input.today,
+  };
+  const { api, account, carrier, listCaptures } = await openAccountReceiveOwner(
+    options,
+    options.identity.id,
+  );
+  let enqueue!: OwnedReceiveQueue;
+  try {
+    const workspace = await createAdmittedWorkspace(
+      (config) =>
+        createAdmissionOwner(carrier, config, (receive) => {
+          enqueue = receive;
+        }),
+      {
+        identity: options.identity,
+        captureSources: true,
+        suppressEmptySources: true,
+        validateReceive: () => {
+          throw Error('Use the owned signed-page receiver');
+        },
+        ...(options.today ? { today: options.today } : {}),
+        ...(options.signal ? { signal: options.signal } : {}),
+      },
+    );
+    if (options.signal?.aborted || workspace.status.state !== 'active') {
+      await workspace.close();
+      throw Error('Account opening was cancelled');
+    }
+    return Object.freeze({
+      ...account,
+      kind: 'ready' as const,
+      workspace,
+      receiveStatus: api.status,
+      prepareRead: api.prepareRead,
+      receivePage: (bytes: Bytes) => {
+        try {
+          return enqueue(bytes, (page, promote) => api.receivePage(page, promote));
+        } catch (cause) {
+          return Promise.reject(cause);
+        }
+      },
+      compactContent: async () => {
+        await workspace.whenDurable();
+        return carrier.compactContent();
+      },
+      listCaptures,
+    });
+  } catch (cause) {
+    await carrier.close();
+    throw cause;
+  }
 }

@@ -94,6 +94,8 @@ export interface AdmittedWorkspace {
 export interface WorkspaceOptions {
   /** Private Account source capture; preserve each actual transaction's actor and update bytes. */
   readonly captureSources?: boolean;
+  /** New Account owners omit truly source-free commands; legacy capture factories retain their format. */
+  readonly suppressEmptySources?: boolean;
   readonly identity: WorkspaceActorIdentity;
   readonly validateReceive: AdmissionOptions['validateReceive'];
   readonly today?: () => ISODate;
@@ -237,7 +239,7 @@ export const createAdmittedWorkspace = async (
               ...(result.remaining ? { remaining: encode(result.remaining) } : {}),
               ...(options.captureSources
                 ? {
-                    sources: (sources.length
+                    sources: (sources.length || options.suppressEmptySources
                       ? sources
                       : [
                           {
@@ -379,7 +381,15 @@ export const createAdmittedWorkspace = async (
         // Check every accepted transition, including later remote dependencies, before exposure.
         verifyProjection();
         emit();
-        if (event.source === 'local')
+        if (
+          event.source === 'local' &&
+          !(
+            options.suppressEmptySources &&
+            event.update.length === 2 &&
+            event.update[0] === 0 &&
+            event.update[1] === 0
+          )
+        )
           for (const send of [...senders]) {
             try {
               live();

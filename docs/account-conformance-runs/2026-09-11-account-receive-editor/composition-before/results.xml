@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="owned remote publication bypasses source capture/undo/outgoing; startup and duplicates allocate no source" time="5.617065" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs" failure="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+		<failure type="testCodeFailure" message="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+[Error [ERR_TEST_FAILURE]: page.evaluate: ReferenceError: account is not defined
+    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+    at async &lt;anonymous>:337:30] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+      at async &lt;anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.&lt;anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:77:44) {
+    log: []
+  }
+}
+		</failure>
+	</testcase>
+	<testcase name="ordered receive before commit crash leaves no early edit or local recapture" time="5.551940" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs" failure="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+		<failure type="testCodeFailure" message="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+[Error [ERR_TEST_FAILURE]: page.evaluate: ReferenceError: account is not defined
+    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+    at async &lt;anonymous>:337:30] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+      at async &lt;anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.&lt;anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:125:46) {
+    log: []
+  }
+}
+		</failure>
+	</testcase>
+	<testcase name="ordered receive after commit crash leaves no early edit or local recapture" time="5.561675" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs" failure="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+		<failure type="testCodeFailure" message="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+[Error [ERR_TEST_FAILURE]: page.evaluate: ReferenceError: account is not defined
+    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+    at async &lt;anonymous>:337:30] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+      at async &lt;anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.&lt;anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:125:46) {
+    log: []
+  }
+}
+		</failure>
+	</testcase>
+	<testcase name="a local command queued during receive is prepared only after commit and ordered publication" time="5.545024" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs" failure="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+		<failure type="testCodeFailure" message="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+[Error [ERR_TEST_FAILURE]: page.evaluate: ReferenceError: account is not defined
+    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+    at async &lt;anonymous>:337:30] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+      at async &lt;anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.&lt;anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:154:44) {
+    log: []
+  }
+}
+		</failure>
+	</testcase>
+	<testcase name="invalid page and authenticated stream conflict preserve local editor availability" time="5.531594" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs" failure="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+		<failure type="testCodeFailure" message="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+[Error [ERR_TEST_FAILURE]: page.evaluate: ReferenceError: account is not defined
+    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+    at async &lt;anonymous>:337:30] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+      at async &lt;anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.&lt;anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:183:44) {
+    log: []
+  }
+}
+		</failure>
+	</testcase>
+	<testcase name="pending remote deletion and structs survive compaction/cold open, then integrate without relabeling" time="5.546325" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs" failure="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+		<failure type="testCodeFailure" message="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+[Error [ERR_TEST_FAILURE]: page.evaluate: ReferenceError: account is not defined
+    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+    at async &lt;anonymous>:337:30] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+      at async &lt;anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.&lt;anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:213:44) {
+    log: []
+  }
+}
+		</failure>
+	</testcase>
+	<testcase name="storage pressure holds the entire remote/local suffix and discard cannot acknowledge it" time="5.546706" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs" failure="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+		<failure type="testCodeFailure" message="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+[Error [ERR_TEST_FAILURE]: page.evaluate: ReferenceError: account is not defined
+    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+    at async &lt;anonymous>:337:30] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+      at async &lt;anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.&lt;anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:249:44) {
+    log: []
+  }
+}
+		</failure>
+	</testcase>
+	<testcase name="close drains a committed receive before releasing the slot, with no late acknowledgement or source" time="5.549521" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs" failure="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+		<failure type="testCodeFailure" message="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+[Error [ERR_TEST_FAILURE]: page.evaluate: ReferenceError: account is not defined
+    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+    at async &lt;anonymous>:337:30] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+      at async &lt;anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.&lt;anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:292:44) {
+    log: []
+  }
+}
+		</failure>
+	</testcase>
+	<testcase name="actual early source mutation violates the publication/source oracle" time="5.874598" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs" failure="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+		<failure type="testCodeFailure" message="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+[Error [ERR_TEST_FAILURE]: page.evaluate: ReferenceError: account is not defined
+    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+    at async &lt;anonymous>:337:30] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+      at async &lt;anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.&lt;anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:337:46) {
+    log: []
+  }
+}
+		</failure>
+	</testcase>
+	<testcase name="actual relabel source mutation violates the publication/source oracle" time="5.825311" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs" failure="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+		<failure type="testCodeFailure" message="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+[Error [ERR_TEST_FAILURE]: page.evaluate: ReferenceError: account is not defined
+    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+    at async &lt;anonymous>:337:30] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+      at async &lt;anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.&lt;anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:337:46) {
+    log: []
+  }
+}
+		</failure>
+	</testcase>
+	<testcase name="10 generated native histories preserve authored content, receive progress and exact local source counts" time="5.851682" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs" failure="Property failed after 1 tests&#10;{ seed: 9202026, path: &amp;quot;0&amp;quot;, endOnFailure: true }&#10;Counterexample: [[&amp;quot;invalid&amp;quot;,&amp;quot;local&amp;quot;,&amp;quot;receive&amp;quot;,&amp;quot;local&amp;quot;,&amp;quot;compact&amp;quot;]]&#10;Shrunk 0 time(s)&#10;&#10;Hint: Enable verbose mode in order to have the list of all failing values encountered during the run">
+		<failure type="testCodeFailure" message="Property failed after 1 tests&#10;{ seed: 9202026, path: &amp;quot;0&amp;quot;, endOnFailure: true }&#10;Counterexample: [[&amp;quot;invalid&amp;quot;,&amp;quot;local&amp;quot;,&amp;quot;receive&amp;quot;,&amp;quot;local&amp;quot;,&amp;quot;compact&amp;quot;]]&#10;Shrunk 0 time(s)&#10;&#10;Hint: Enable verbose mode in order to have the list of all failing values encountered during the run">
+[Error [ERR_TEST_FAILURE]: Property failed after 1 tests
+{ seed: 9202026, path: "0", endOnFailure: true }
+Counterexample: [["invalid","local","receive","local","compact"]]
+Shrunk 0 time(s)
+
+Hint: Enable verbose mode in order to have the list of all failing values encountered during the run] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Property failed after 1 tests
+  { seed: 9202026, path: "0", endOnFailure: true }
+  Counterexample: [["invalid","local","receive","local","compact"]]
+  Shrunk 0 time(s)
+  
+  Hint: Enable verbose mode in order to have the list of all failing values encountered during the run
+      at buildError (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2462:16)
+      at asyncThrowIfFailed (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2474:8) {
+    [cause]: page.evaluate: ReferenceError: account is not defined
+        at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+        at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+        at async &lt;anonymous>:337:30
+        at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+        at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+        at async file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:387:50
+        at async AsyncProperty.run (/Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1217:19)
+        at async asyncRunIt (/Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2516:15)
+        at async TestContext.&lt;anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:377:5) {
+      log: []
+    }
+  }
+}
+		</failure>
+	</testcase>
+	<testcase name="close from a publication observer stops remaining promotion and cold replay restores the whole committed batch" time="5.811203" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs" failure="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+		<failure type="testCodeFailure" message="page.evaluate: ReferenceError: account is not defined&#10;    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)&#10;    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)&#10;    at async &lt;anonymous>:337:30">
+[Error [ERR_TEST_FAILURE]: page.evaluate: ReferenceError: account is not defined
+    at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+    at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+    at async &lt;anonymous>:337:30] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), &lt;anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), &lt;anonymous>:3:23)
+      at async &lt;anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.&lt;anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:466:44) {
+    log: []
+  }
+}
+		</failure>
+	</testcase>
+	<!-- tests 12 -->
+	<!-- suites 0 -->
+	<!-- pass 0 -->
+	<!-- fail 12 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 69379.164125 -->
+</testsuites>

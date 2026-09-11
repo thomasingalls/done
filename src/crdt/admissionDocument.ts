@@ -66,11 +66,7 @@ export const prepareIntent = (
       if (result.sources) {
         if (!Array.isArray(result.sources)) throw Error('Invalid source updates');
         sources = result.sources.map((s) => ({ ...s }));
-        if (
-          !sources.length ||
-          sources.length > 64 ||
-          sources.some((s) => !(s.bytes instanceof Uint8Array))
-        )
+        if (sources.length > 64 || sources.some((s) => !(s.bytes instanceof Uint8Array)))
           throw Error('Invalid source updates');
         const sourced = cloneDocument(canonical);
         try {

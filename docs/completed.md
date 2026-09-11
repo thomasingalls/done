@@ -2145,3 +2145,36 @@ its older editing factory. Personal release/predecessor, browser/factors and ser
 
 Next is ordered remote editor promotion under this same lifetime, followed by v2 service/transport and
 real two-gate enrollment/adoption. This outcome is appended before replacing L-1 progress; L-2 is unchanged.
+
+
+## 2026-09-11 — Ordered remote editor integration (`L-1`)
+
+Committed native receive as `f6e4cf4`. Assessed all 25 root-packet findings, seven test-gap subitems
+and twelve historical resolved items against the current repository. The requested `resposnse` blocks
+remain uncommitted in that packet. Scope and severity were qualified where a claim exceeded its evidence;
+F-01's red AAD gate was independently reproduced after the static assessment.
+
+The [private v9 editor](./account-receive-editor.md) now composes the actual admitted lifetime with an
+internal ordered receive handoff. Signed-page verification, original content/event/witness commit and
+authenticated readback precede synchronous canonical/projection publication. Later local intent remains
+unprepared; no raw editor receive or caller-held mutable receipt grants authority. Original pending
+structs/deletions survive replay/compaction. Conflicting evidence halts receipt while local editing remains
+available. Closure drains native work; a successful commit followed by failed readback/publication requires
+cold replay before editing. Original received frames never become local source capsules or human undo.
+
+New v9 startup/source-free commands avoid the F-08 empty-capsule overhead while preserving ordered
+history/selection transitions and deletion updates. Older capture/spool/delivery factories retain their
+historical behavior; existing sources are not pruned. No new marker version or network format was required.
+
+[Evidence](./account-conformance-runs/2026-09-11-account-receive-editor.md): 957 unit tests, 54 focused
+unit/property cases including 200 generated queue histories, 12 native editor cases including ten generated
+histories, two effective source controls, existing 17 native receive and 19 native delivery regressions,
+isolated app build, TypeScript/scoped lint/format and 13 repository gates pass. All final campaign hashes
+match. The AAD gate still fails; no full `pnpm check` pass is claimed. A missing returned account binding
+introduced during composition was caught, repaired and preserved with its exact failing source. The two
+native harness corrections and their logs are retained. Final generated runs found no additional defect.
+
+Next is the validation-baseline repair exposed by F-01/F-02, before v2 service receive transport and
+reader/publisher resolution. Exact Account encodings/vectors, admission capacity, fresh service activation
+assertion and the other accepted review follow-ups remain prerequisites to real Account use. No personal
+release, browser, factor, server, L-2 document or whole debt was changed/paid.
