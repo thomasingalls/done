@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Active slice: Private v2 service reader/publisher resolution (`L-1`)
+## Active slice: Owned v2 receive HTTP transport (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none for bounded private service work; real Account use remains gated below
+blocks_on: none for bounded private transport work; real Account use remains gated below
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
@@ -60,38 +60,39 @@ unchanged. No real Account, passkey, recovery code, operator key or authority pi
 actual old second device will adopt this device's workspace with fresh custody, store, counters and
 credentials; its old writing will not be imported or merged.
 
-**Completed boundary.** Native receive is committed as `f6e4cf4`, and
-[ordered remote editor integration](./account-receive-editor.md) as `19586b6`. The v9 editor holds admission
-through original content/evidence/witness commit, authenticated readback and synchronous publication.
-Later local intent stays unprepared; received originals do not become source capsules or human undo.
-Source-free v9 startup avoids empty capture entries while preserving older factories and deletion updates.
+**Completed boundary.** Native receive is committed as `f6e4cf4`, ordered remote editor integration as
+`19586b6`, the unchanged annotated review archive as `500630f`, and validation-baseline repair as `e835243`.
+The latter preserves the passing full aggregate; this new phase used targeted validation and full units.
 
-The annotated [implementation review](./review/implementation/af8941e-96a2040.md) was archived unchanged
-and committed separately as `500630f`. Its 45 assessment blocks retain their original date/scope.
-[Validation baseline repair](./validation-baseline.md) and
-[evidence](./account-conformance-runs/2026-09-11-validation-baseline.md) now address F-01, F-02 and F-20.
-The actual `pnpm check` passed in a disposable checkout, including 958 unit tests, all native stages and
-225 field elisions. Additional failed-start cleanup, lifecycle mutation-oracle, fixture readiness and
-refusal-assertion defects were caught and repaired. Complete source/personal bundle hashes were verified.
-This is execution evidence, not a claim
-that the full protocol or every historical oracle has been independently certified.
+[Private v2 service read](./account-service-inbound.md) is implemented and not yet committed. Separate
+reader/publisher lookups use verified admission; the creating member alone owns the schema-4 ledger.
+The v2 route signs request-bound pages of original witnessed envelopes/proofs, with fresh snapshot,
+expiry and custody checks under a short SQLite exclusion. It adds no durable read state and preserves
+v1 framing. [Evidence](./account-conformance-runs/2026-09-11-account-service-inbound.md) includes 19 service
+cases, 60 generated histories, eight effective omissions, two process-kill cuts, native HTTP/owned-receiver
+interoperability, 958 unit tests, affected regressions and isolated build/trace checks. All personal bundle
+hashes match; no whole-protocol debt is paid.
 
-**Next bounded phase.** Add the private v2 service read route and explicit reader/publisher resolution:
+**F-11 correction.** Passkey IDs and workspace signing credential IDs intentionally differ. The review's
+suggested equality was wrong. Existing candidate/member agreement remains enforced; the shared service
+snapshot now binds the passkey row to completed registration. The historical packet retains its original
+assessment, and the new phase document records this corrected disposition.
 
-- Reconstruct authenticated service admission and certified membership; require candidate credential and
-  certified member identities to agree. Resolve reader authorization and publisher stream separately.
-- Accept the already-defined bounded signed v2 request and return a request-bound signed page containing
-  original accepted envelopes/proofs. Recheck authority across asynchronous verification/signing and
-  preserve the service ledger's completeness witness and prefix rules.
-- Keep the first-epoch, generation-one creating-member limit explicit. Refuse unsupported or foreign
-  readers/publishers, changed membership, wrong request bindings, expiry and malformed/bounded input.
-  Synthetic multi-member fixtures do not establish production enrollment or writable profile cloning.
-- Preserve the closed v1 spool-reader contract. Add directed and generated service tests, actual omission
-  controls, restart/recheck cuts and byte interoperability against the existing v2 verifier.
+**Next small build.** Implement owned v2 receive HTTP transport, the first part of the remaining
+transport/reconnect/composition boundary:
 
-**Then:** owned receive transport/reconnect and composition with outbound delivery under v9; Account UI
-and real two-gate second-device adoption. The existing v1 read path and v8 driver do not gain v2 semantics
-implicitly. Do not weaken per-publication projection or complete cold-content verification for timing.
+- Capture an owner-signed request from current durable receive progress; use the explicit v2 service route
+  and private operator gate. Callers do not supply signing keys, trust roots, publisher membership or cursors.
+- Bound and detach response bytes, preserve the exact request binding, and route successful verification/
+  persistence through the existing ordered admission owner. Transport callbacks never publish directly.
+- Bind fetch/stream/verification work to the held lifetime; close aborts and drains pending work before
+  releasing exclusion, with no late acknowledgement or publication. Unknown/lost replies advance no cursor.
+- Test actual HTTP success, refusal, truncated/oversized response, lost reply, stale request, concurrent
+  local intent, close and cold retry, with effective omission controls. Preserve service/v1 regressions.
+
+Keep this first adapter bounded. Reconnect scheduling and composition with outbound delivery under v9
+follow, then Account UI and real two-gate second-device adoption. The v8 driver does not gain v9 semantics
+implicitly. Preserve per-publication projection and complete cold-content verification.
 
 **Before real Account receipts/rollout:** amend row-7 manifest AND admission descriptor bounds with
 explicit versioning; require an operation-bound fresh account assertion at first service activation;

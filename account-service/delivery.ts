@@ -8,6 +8,13 @@ import {
   READ_REQUEST_LIMIT,
   type ReadPage,
 } from '../account-protocol/deliveryTransport.ts';
+import {
+  decodeInboundRequest,
+  encodeInboundPage,
+  inboundRequestMessage,
+  type InboundReadRequest,
+  type InboundReadPage,
+} from '../account-protocol/inboundTransport.ts';
 import type { DatabaseSync } from 'node:sqlite';
 import { createHash } from 'node:crypto';
 import {
@@ -103,7 +110,7 @@ interface Snapshot {
   account: { id: string; state: string };
   credential: { id: string; state: string };
   recovery: { attempt_id: string; state: string; draft: string; result: string | null };
-  attempt: { id: string; account_id: string; mode: string; state: string };
+  attempt: { id: string; account_id: string; mode: string; state: string; result: string | null };
   rows: DecisionRow[];
 }
 function snapshot(db: DatabaseSync, workspace: string): Snapshot | null {
@@ -123,7 +130,7 @@ function snapshot(db: DatabaseSync, workspace: string): Snapshot | null {
   const attempt =
     recovery &&
     (db
-      .prepare('SELECT id,account_id,mode,state FROM attempts WHERE id=?')
+      .prepare('SELECT id,account_id,mode,state,result FROM attempts WHERE id=?')
       .get(recovery.attempt_id) as Snapshot['attempt']);
   if (
     promotion.state !== 'admitted' ||
@@ -135,6 +142,24 @@ function snapshot(db: DatabaseSync, workspace: string): Snapshot | null {
     attempt?.state !== 'done' ||
     attempt.mode !== 'register' ||
     attempt.account_id !== account.id
+  )
+    return null;
+  // This is a WebAuthn credential, not the workspace's certified signing member.
+  // Bind it to the completed registration that authorized this recovery/promotion.
+  const registration = closed(JSON.parse(attempt.result ?? 'null'), [
+    'ok',
+    'stage',
+    'attemptId',
+    'accountId',
+    'credentialId',
+    'receiptId',
+  ]);
+  if (
+    registration['ok'] !== true ||
+    registration['stage'] !== 'credential-confirmed' ||
+    registration['attemptId'] !== attempt.id ||
+    registration['accountId'] !== account.id ||
+    registration['credentialId'] !== credential.id
   )
     return null;
   const rows = db
@@ -212,7 +237,15 @@ async function authority(s: Snapshot, issuer: DeliveryIssuer) {
     head: a.head,
     request: p.request_digest,
   };
-  return { a, scope, key, seal, generation: epoch.generation, credential: member.id };
+  return {
+    a,
+    scope,
+    key,
+    seal,
+    generation: epoch.generation,
+    credential: member.id,
+    members: [{ id: member.id, key }],
+  };
 }
 type Authority = Awaited<ReturnType<typeof authority>>;
 async function verifyWire(bytes: Bytes, auth: Authority) {
@@ -485,6 +518,9 @@ export async function decideSubmission(
 export interface ReadIssuer extends DeliveryIssuer {
   page(seal: unknown, id: string, pub: string, value: ReadPage): Bytes;
 }
+export interface InboundReadIssuer extends DeliveryIssuer {
+  inboundPage(seal: unknown, id: string, pub: string, value: InboundReadPage): Bytes;
+}
 /** Reuses decision authority and the witnessed census; a workspace selector is never read authority. */
 export async function readAccepted(
   db: DatabaseSync,
@@ -556,6 +592,123 @@ export async function readAccepted(
       }
       issuer.check(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey);
       const answer = issuer.page(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey, page);
+      db.exec('COMMIT');
+      return { kind: 'decision', bytes: answer };
+    } catch {
+      if (db.isTransaction) db.exec('ROLLBACK');
+      return unknown('unavailable');
+    }
+  }
+  return unknown('state-changed');
+}
+
+function resolveInboundRoles(auth: Authority, request: InboundReadRequest) {
+  // Membership comes only from the verified admission/epoch. These are separate
+  // lookups even though the closed first epoch certifies only its creating member.
+  const reader = auth.members.find((member) => member.id === request.reader);
+  const publisher = auth.members.find((member) => member.id === request.publisher);
+  if (!reader || !publisher) throw Error('Unsupported inbound member');
+  return { reader, publisher };
+}
+
+/** V2 is a separate purpose and route; it cannot reinterpret a v1 spool read. */
+export async function readInbound(
+  db: DatabaseSync,
+  input: unknown,
+  issuer: InboundReadIssuer,
+  hook: DeliveryHook,
+): Promise<ServiceDeliveryResult> {
+  let bytes: Bytes, request: InboundReadRequest;
+  try {
+    if (!(input instanceof Uint8Array) || input.length > READ_REQUEST_LIMIT)
+      throw Error('Read bytes required');
+    bytes = new Uint8Array(input);
+    request = decodeInboundRequest(bytes);
+  } catch {
+    return unknown('invalid-request');
+  }
+  const live = () => {
+    const now = Date.now();
+    return request.expires > now && request.expires <= now + 60000;
+  };
+  for (let retry = 0; retry < 4; retry++) {
+    try {
+      const s = read(db, request.workspace);
+      if (!s) return unknown('unavailable');
+      const auth = await authority(s, issuer),
+        { reader, publisher } = resolveInboundRoles(auth, request);
+      if (
+        request.serviceId !== issuer.pin.serviceId ||
+        request.origin !== issuer.pin.origin ||
+        request.workspace !== auth.a.workspace ||
+        request.lineage !== auth.a.lineage ||
+        request.head !== auth.a.head ||
+        request.epoch !== auth.a.tip ||
+        auth.a.tip !== 1 ||
+        auth.generation !== 1 ||
+        !live() ||
+        !(await crypto.subtle.verify(
+          'Ed25519',
+          reader.key,
+          unhex(request.signature, 64),
+          inboundRequestMessage(request),
+        ))
+      )
+        return unknown('invalid-request');
+      // The current ledger belongs to exactly one certified publisher. Expanding
+      // membership requires a new ledger scope/schema, not selecting another key.
+      if (publisher.id !== auth.scope.credential) return unknown('unavailable');
+      const ledger = await census(s, auth);
+      if (request.after > ledger.through) return unknown('out-of-order');
+      const page: InboundReadPage = {
+        request: hash(bytes),
+        through: ledger.through,
+        next: request.after,
+        entries: [],
+        signature: '00'.repeat(64),
+      };
+      for (const row of s.rows) {
+        if (row.kind !== 'accepted' || row.position <= request.after) continue;
+        page.entries.push({
+          envelope: decodeSubmission(new Uint8Array(row.submission)).envelope,
+          proof: new Uint8Array(row.response),
+        });
+        page.next++;
+        try {
+          encodeInboundPage(page);
+        } catch {
+          page.entries.pop();
+          page.next--;
+          break;
+        }
+        if (page.entries.length === request.limit) break;
+      }
+      if (!page.entries.length && page.next < page.through) return unknown('unavailable');
+      hook('after-verify', 'read-inbound');
+      db.exec('BEGIN IMMEDIATE');
+      const current = snapshotBytes(snapshot(db, request.workspace)) === snapshotBytes(s);
+      if (!current) {
+        db.exec('ROLLBACK');
+        continue;
+      }
+      if (!live()) {
+        db.exec('ROLLBACK');
+        return unknown('invalid-request');
+      }
+      issuer.check(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey);
+      const answer = issuer.inboundPage(
+        auth.seal,
+        s.promotion.request_digest,
+        auth.a.acceptanceKey,
+        page,
+      );
+      // Fixed-purpose signing is synchronous; expiry/closed custody can still
+      // change during a slow signing call. Withhold bytes on its far side too.
+      issuer.check(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey);
+      if (!live()) {
+        db.exec('ROLLBACK');
+        return unknown('invalid-request');
+      }
       db.exec('COMMIT');
       return { kind: 'decision', bytes: answer };
     } catch {

@@ -49,7 +49,9 @@ export async function createPrivateAccountServer(options: {
       return;
     }
     const deliveryRoute =
-      request.url === '/account/delivery/submit' || request.url === '/account/delivery/read';
+      request.url === '/account/delivery/submit' ||
+      request.url === '/account/delivery/read' ||
+      request.url === '/account/delivery/read-v2';
     try {
       const supplied = request.headers.authorization?.replace(/^Bearer /, '');
       if (
@@ -90,7 +92,9 @@ export async function createPrivateAccountServer(options: {
         const result =
           request.url === '/account/delivery/submit'
             ? await authority?.decideSubmission(core, decodeSubmit(body))
-            : await authority?.readAccepted(core, body);
+            : request.url === '/account/delivery/read-v2'
+              ? await authority?.readInbound(core, body)
+              : await authority?.readAccepted(core, body);
         if (result?.kind === 'decision') {
           response.writeHead(200, { 'Content-Type': 'application/octet-stream' });
           response.end(result.bytes);

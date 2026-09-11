@@ -1,6 +1,8 @@
 import {
   decideSubmission,
   readAccepted,
+  readInbound,
+  type InboundReadIssuer,
   type ReadIssuer,
   type DeliveryIssuer,
 } from './delivery.ts';
@@ -197,6 +199,9 @@ export class AccountCore {
   /** Private service composition; transport cannot supply an issuer or authenticated membership. */
   readAccepted(input: unknown, issuer: ReadIssuer) {
     return readAccepted(this.#db, input, issuer, this.#hook);
+  }
+  readInbound(input: unknown, issuer: InboundReadIssuer) {
+    return readInbound(this.#db, input, issuer, this.#hook);
   }
   decideSubmission(input: unknown, issuer: DeliveryIssuer) {
     return decideSubmission(this.#db, input, issuer, this.#hook);

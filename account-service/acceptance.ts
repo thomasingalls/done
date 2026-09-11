@@ -3,6 +3,11 @@ import {
   readPageMessage,
   type ReadPage,
 } from '../account-protocol/deliveryTransport.ts';
+import {
+  encodeInboundPage,
+  inboundPageMessage,
+  type InboundReadPage,
+} from '../account-protocol/inboundTransport.ts';
 /** Private acceptance-seed custody. Fixed-purpose response and ledger-witness signing stays inside this owner. */
 import {
   sign,
@@ -170,6 +175,20 @@ export class AcceptanceCustody {
       encodeReadPage({
         ...value,
         signature: sign(null, readPageMessage(value), key).toString('hex'),
+      }),
+    );
+  }
+  inboundPage(
+    input: unknown,
+    id: string,
+    pub: string,
+    value: InboundReadPage,
+  ): Uint8Array<ArrayBuffer> {
+    encodeInboundPage(value);
+    return this.#withKey(input, id, pub, (key) =>
+      encodeInboundPage({
+        ...value,
+        signature: sign(null, inboundPageMessage(value), key).toString('hex'),
       }),
     );
   }

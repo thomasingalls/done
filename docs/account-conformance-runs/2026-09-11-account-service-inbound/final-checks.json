@@ -1,0 +1,9 @@
+{
+  "sourceCodeFilesMatchTestedBuild": 652,
+  "otherSeatUnchanged": true,
+  "reviewUnchanged": true,
+  "diffCheckExitCode": 0,
+  "lintExitCode": 0,
+  "formatExitCode": 0,
+  "staticResultSource": "Scoped tool invocations in this turn; formatting was applied after the final parser-test strengthening, and final lint passed."
+}

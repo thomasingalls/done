@@ -1,4 +1,4 @@
-import type { ReadIssuer } from './delivery.ts';
+import type { ReadIssuer, InboundReadIssuer } from './delivery.ts';
 import type { ReadPage } from '../account-protocol/deliveryTransport.ts';
 import { bindingMessage } from '../account-protocol/slot.ts';
 import { AcceptanceCustody } from './acceptance.ts';
@@ -314,7 +314,7 @@ export class PrivateAuthority {
   promotionBinding(core: AccountCore, input: unknown) {
     return core.promotionBinding(input, this.#issuer());
   }
-  #deliveryIssuer(): ReadIssuer {
+  #deliveryIssuer(): ReadIssuer & InboundReadIssuer {
     if (!this.#key) throw Error('Authority closed');
     return {
       pin: { ...this.#pin },
@@ -324,6 +324,8 @@ export class PrivateAuthority {
         this.#acceptance.witness(seal, id, pub, scope, value),
       page: (seal: unknown, id: string, pub: string, value: ReadPage) =>
         this.#acceptance.page(seal, id, pub, value),
+      inboundPage: (seal: unknown, id: string, pub: string, value: ReadPage) =>
+        this.#acceptance.inboundPage(seal, id, pub, value),
     };
   }
   decideSubmission(core: AccountCore, input: unknown) {
@@ -331,6 +333,9 @@ export class PrivateAuthority {
   }
   readAccepted(core: AccountCore, input: unknown) {
     return core.readAccepted(input, this.#deliveryIssuer());
+  }
+  readInbound(core: AccountCore, input: unknown) {
+    return core.readInbound(input, this.#deliveryIssuer());
   }
   close(): void {
     this.#key = null;

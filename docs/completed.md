@@ -2206,3 +2206,30 @@ historical tests were exercised, not comprehensively audited for every possible 
 accepted review findings still gate real Account use. Next is explicit v2 service reader/publisher
 resolution, followed by owned receive transport and v9 sender composition, then enrollment/adoption.
 This outcome is appended before replacing L-1 progress; L-2 is unchanged.
+
+
+## 2026-09-11 — Private v2 service reader/publisher resolution (`L-1`)
+
+Committed the completed validation-baseline repair and evidence as `e835243`. Built the next bounded
+[service read phase](./account-service-inbound.md): a separate private v2 HTTP route with role lookups in
+verified first-epoch membership, reader-signed request binding, exact original envelope/proof pages,
+complete witnessed census and current authority recheck under SQLite exclusion before fixed-purpose
+signing. Expiry and custody are checked on both sides of signing; reads add no persistent state. V1 remains
+closed and the first-epoch creating-member/schema-4 scope remains explicit.
+
+Corrected the prior F-11 disposition: the WebAuthn credential ID and certified workspace signing ID are
+different namespaces. Comparing them would reject valid users. The existing candidate/member binding
+stays; the shared service snapshot now binds the passkey row to its completed registration result. The
+historical review is unchanged, and the corrected explanation and negatives are in this phase's contract.
+
+[Evidence](./account-conformance-runs/2026-09-11-account-service-inbound.md): 19 service tests including
+60 generated histories, eight effective source omissions and two SIGKILL cuts; one actual owned browser
+HTTP/receive/cold-replay case; all 958 unit tests; affected service/v1-transport/inbound regressions; scoped
+static checks and a fresh isolated build/trace chain pass. The original trace failure due to stale root
+receipts is retained. Final review strengthened a parser negative and the complete new campaign was rerun.
+No generated counterexample was found. Source hashes and all 21 personal bundle files were checked.
+
+No full aggregate was rerun for this patch, and no whole-protocol debt, personal installation or historical
+L-2 state changed. The next small build is the owned v2 receive HTTP adapter under existing admission and
+lifetime; reconnect scheduling and v9 sender composition follow. Real enrollment/adoption, production
+activation and the remaining accepted review gates stay open. Appended before replacing L-1 progress.

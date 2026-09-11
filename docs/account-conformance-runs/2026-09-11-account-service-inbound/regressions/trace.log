@@ -1,0 +1,8 @@
+traceability: 6 failure(s)
+
+  - scripts/check-debts.mjs's receipt was written against another tree (f6e4cf4f9033…, 2026-09-11T06:13:35.333Z); the tree has changed since it ran. Re-run the gate so the credit is an execution against this state.
+  - scripts/check-origin-isolation.mjs's receipt was written against another tree (f6e4cf4f9033…, 2026-09-11T06:13:35.717Z); the tree has changed since it ran. Re-run the gate so the credit is an execution against this state.
+  - scripts/check-retention.mjs's receipt was written against another tree (f6e4cf4f9033…, 2026-09-11T06:13:34.541Z); the tree has changed since it ran. Re-run the gate so the credit is an execution against this state.
+  - scripts/check-selection-status.mjs's receipt was written against another tree (f6e4cf4f9033…, 2026-09-11T06:13:34.634Z); the tree has changed since it ran. Re-run the gate so the credit is an execution against this state.
+  - scripts/check-update-limit.mjs's receipt was written against another tree (f6e4cf4f9033…, 2026-09-11T06:13:34.722Z); the tree has changed since it ran. Re-run the gate so the credit is an execution against this state.
+  - scripts/check-wasm-seal.mjs's receipt was written against another tree (f6e4cf4f9033…, 2026-09-11T06:13:35.454Z); the tree has changed since it ran. Re-run the gate so the credit is an execution against this state.

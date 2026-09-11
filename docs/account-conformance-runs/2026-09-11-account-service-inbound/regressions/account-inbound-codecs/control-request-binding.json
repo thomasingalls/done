@@ -1,0 +1,10 @@
+{
+  "mode": "request-binding",
+  "changes": [
+    [
+      "if (p.request !== hex(new Uint8Array(await subtle.digest('SHA-256', request)))) fail('request');",
+      "void request;"
+    ]
+  ],
+  "outcome": "Page for a different request accepted."
+}
