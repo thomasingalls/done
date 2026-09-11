@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="all thirteen accepted stage/version carriers match independent bytes and WebCrypto MACs" time="0.039509" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/formats.test.mjs"/>
+	<testcase name="every input leaf is bound or rejected, including all nested signatures and empty arrays" time="1.454693" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/formats.test.mjs"/>
+	<testcase name="encoded omissions demonstrably remove each binding while real HMACs still run" time="1.183715" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/formats.test.mjs"/>
+	<testcase name="closed parser, version/stage matrix, credentials and handoff correspondence boundaries" time="0.081204" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/formats.test.mjs"/>
+	<testcase name="property order is canonical except the retained handoff destination; array order remains significant" time="0.055001" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/formats.test.mjs"/>
+	<testcase name="KDF context and deterministic names bind their exact fields without becoming authority" time="0.003288" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/formats.test.mjs"/>
+	<testcase name="200 shrinking-enabled generated authentication histories preserve the last accepted marker" time="1.340278" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-promotion-contract/formats.test.mjs"/>
+	<!-- tests 7 -->
+	<!-- suites 0 -->
+	<!-- pass 7 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 4402.958917 -->
+</testsuites>

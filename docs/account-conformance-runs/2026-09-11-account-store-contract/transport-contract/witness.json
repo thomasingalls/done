@@ -1,0 +1,13 @@
+{
+  "fixedEvents": 2,
+  "actualInternalSeams": true,
+  "nullOnlyAtZero": true,
+  "scopeBindings": [
+    "workspace",
+    "credential",
+    "lineage",
+    "head",
+    "request"
+  ],
+  "note": "Internal pure functions exposed in a disposable source copy; existing service tests separately exercise durable census."
+}

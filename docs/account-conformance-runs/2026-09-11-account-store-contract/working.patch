@@ -1,0 +1,3638 @@
+diff --git a/docs/account-crypto/constructions.json b/docs/account-crypto/constructions.json
+index 727d845..7baf8ab 100644
+--- a/docs/account-crypto/constructions.json
++++ b/docs/account-crypto/constructions.json
+@@ -3105,30 +3105,60 @@
+       "blocker": null
+     },
+     {
+-      "id": "remaining-shared-store",
+-      "phase": "D",
+-      "status": "open",
+-      "roles": ["kdf", "aead", "mac", "digest"],
+-      "labels": ["done/store/v1", "done/store-name/v1", "done/journal/v1", "done/jrnl/v1"],
++      "id": "store-name-digest",
++      "phase": "D5",
++      "status": "specified",
++      "roles": ["digest"],
++      "signer": null,
++      "labels": ["done/store-name/v1"],
+       "sourceSites": [
+-        {
+-          "path": "src/crdt/journalCodec.ts",
+-          "line": 40,
+-          "label": "done/journal/v1",
+-          "kind": "literal"
+-        },
+-        {
+-          "path": "src/crdt/journalCodec.ts",
+-          "line": 27,
+-          "label": "done/jrnl/v1",
+-          "kind": "literal"
+-        },
+         {
+           "path": "src/crdt/storeName.ts",
+           "line": 13,
+           "label": "done/store-name/v1",
+           "kind": "literal"
++        }
++      ],
++      "entryPoints": [
++        {
++          "path": "src/crdt/storeName.ts",
++          "name": "deriveStoreName"
++        }
++      ],
++      "mapEntries": ["private-store-name"],
++      "homePins": [
++        {
++          "path": "docs/account-crypto/store-journal.md",
++          "section": "1",
++          "hash": "3fe80ec5c29f"
+         },
++        {
++          "path": "docs/account-crypto/store-journal.md",
++          "section": "5",
++          "hash": "fc637722b527"
++        }
++      ],
++      "vectorCases": ["store-name-unicode", "store-name-boundary"],
++      "tests": [
++        "test/account-store-contract/formats.test.mjs",
++        "test/account-store-contract/native.test.mjs"
++      ],
++      "requirements": [
++        "runtime-bytes",
++        "input-mutations",
++        "inherited-byte-agreement",
++        "native-carrier-owner"
++      ],
++      "blocker": null
++    },
++    {
++      "id": "store-record-aead",
++      "phase": "D5",
++      "status": "specified",
++      "roles": ["kdf", "aead", "carrier"],
++      "signer": null,
++      "labels": ["done/store/v1"],
++      "sourceSites": [
+         {
+           "path": "src/crdt/contentRecord.ts",
+           "line": 121,
+@@ -3142,12 +3172,201 @@
+           "kind": "literal"
+         }
+       ],
+-      "entryPoints": [],
+-      "mapEntries": [],
+-      "home": "docs/storage-conformance.md",
+-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
+-      "next": "D5: inherited store-record, store-name and synchronous journal KDF/AAD bridges; metadata counters were qualified separately by D4",
+-      "reason": null
++      "entryPoints": [
++        {
++          "path": "src/crdt/contentRecord.ts",
++          "name": "recordAAD"
++        },
++        {
++          "path": "src/crdt/contentRecord.ts",
++          "name": "parseStoredRecord"
++        },
++        {
++          "path": "src/crdt/contentRecord.ts",
++          "name": "recordStore"
++        },
++        {
++          "path": "src/crdt/custody.ts",
++          "name": "openContentSession"
++        }
++      ],
++      "mapEntries": ["private-store-key", "private-store-record"],
++      "homePins": [
++        {
++          "path": "docs/account-crypto/store-journal.md",
++          "section": "1",
++          "hash": "3fe80ec5c29f"
++        },
++        {
++          "path": "docs/account-crypto/store-journal.md",
++          "section": "2",
++          "hash": "bb602641986e"
++        },
++        {
++          "path": "docs/account-crypto/store-journal.md",
++          "section": "4",
++          "hash": "5e2f7b117b1b"
++        },
++        {
++          "path": "docs/account-crypto/store-journal.md",
++          "section": "5",
++          "hash": "fc637722b527"
++        }
++      ],
++      "vectorCases": [
++        "store-key",
++        "store-record-update",
++        "store-record-state",
++        "store-record-heads",
++        "store-record-outbound"
++      ],
++      "tests": [
++        "test/account-store-contract/formats.test.mjs",
++        "test/account-store-contract/native.test.mjs"
++      ],
++      "requirements": [
++        "runtime-bytes",
++        "input-mutations",
++        "inherited-byte-agreement",
++        "native-carrier-owner",
++        "encoded-field-omissions"
++      ],
++      "blocker": null
++    },
++    {
++      "id": "journal-key",
++      "phase": "D5",
++      "status": "specified",
++      "roles": ["kdf"],
++      "signer": null,
++      "labels": ["done/journal/v1"],
++      "sourceSites": [
++        {
++          "path": "src/crdt/journalCodec.ts",
++          "line": 40,
++          "label": "done/journal/v1",
++          "kind": "literal"
++        }
++      ],
++      "entryPoints": [
++        {
++          "path": "src/crdt/journalCodec.ts",
++          "name": "deriveJournalKey"
++        }
++      ],
++      "mapEntries": ["private-journal-key"],
++      "homePins": [
++        {
++          "path": "docs/account-crypto/store-journal.md",
++          "section": "1",
++          "hash": "3fe80ec5c29f"
++        },
++        {
++          "path": "docs/account-crypto/store-journal.md",
++          "section": "3",
++          "hash": "3c2014f935aa"
++        },
++        {
++          "path": "docs/account-crypto/store-journal.md",
++          "section": "4",
++          "hash": "5e2f7b117b1b"
++        },
++        {
++          "path": "docs/account-crypto/store-journal.md",
++          "section": "5",
++          "hash": "fc637722b527"
++        }
++      ],
++      "vectorCases": ["journal-key"],
++      "tests": [
++        "test/account-store-contract/formats.test.mjs",
++        "test/account-store-contract/native.test.mjs"
++      ],
++      "requirements": [
++        "runtime-bytes",
++        "input-mutations",
++        "inherited-byte-agreement",
++        "native-carrier-owner"
++      ],
++      "blocker": null
++    },
++    {
++      "id": "journal-carrier-aead",
++      "phase": "D5",
++      "status": "specified",
++      "roles": ["aead", "carrier"],
++      "signer": null,
++      "labels": ["done/jrnl/v1"],
++      "sourceSites": [
++        {
++          "path": "src/crdt/journalCodec.ts",
++          "line": 27,
++          "label": "done/jrnl/v1",
++          "kind": "literal"
++        }
++      ],
++      "entryPoints": [
++        {
++          "path": "src/crdt/journalCodec.ts",
++          "name": "journalAAD"
++        },
++        {
++          "path": "src/crdt/journalCodec.ts",
++          "name": "encodeJournal"
++        },
++        {
++          "path": "src/crdt/journalCodec.ts",
++          "name": "decodeJournal"
++        },
++        {
++          "path": "src/crdt/journalCodec.ts",
++          "name": "createJournalCodec"
++        },
++        {
++          "path": "src/crdt/journalCodec.ts",
++          "name": "journalPrefix"
++        },
++        {
++          "path": "src/crdt/journalStore.ts",
++          "name": "createJournalOwner"
++        }
++      ],
++      "mapEntries": ["private-journal-carrier", "private-journal-key"],
++      "homePins": [
++        {
++          "path": "docs/account-crypto/store-journal.md",
++          "section": "1",
++          "hash": "3fe80ec5c29f"
++        },
++        {
++          "path": "docs/account-crypto/store-journal.md",
++          "section": "3",
++          "hash": "3c2014f935aa"
++        },
++        {
++          "path": "docs/account-crypto/store-journal.md",
++          "section": "4",
++          "hash": "5e2f7b117b1b"
++        },
++        {
++          "path": "docs/account-crypto/store-journal.md",
++          "section": "5",
++          "hash": "fc637722b527"
++        }
++      ],
++      "vectorCases": ["journal-carrier-1", "journal-carrier-256", "journal-carrier-4294967295"],
++      "tests": [
++        "test/account-store-contract/formats.test.mjs",
++        "test/account-store-contract/native.test.mjs"
++      ],
++      "requirements": [
++        "runtime-bytes",
++        "input-mutations",
++        "inherited-byte-agreement",
++        "native-carrier-owner",
++        "encoded-field-omissions"
++      ],
++      "blocker": null
+     },
+     {
+       "id": "remaining-shared-custody",
+@@ -3753,6 +3972,11 @@
+       "phase": "D4",
+       "vectorFile": "test/vectors/account-counter.json",
+       "vectorSha256": "caba0c0bd82e9f73933b39b38e1b16e91fa538c2a2e2cc31c3928466a86f52df"
++    },
++    {
++      "phase": "D5",
++      "vectorFile": "test/vectors/account-store.json",
++      "vectorSha256": "79bfaa9e90465f779d3a345bb98704e953cceb748e48819b7d3e1ca02dd5f607"
+     }
+   ]
+ }
+diff --git a/docs/completed.md b/docs/completed.md
+index 8a417e1..ee989e9 100644
+--- a/docs/completed.md
++++ b/docs/completed.md
+@@ -2696,3 +2696,45 @@ startup, migration provenance, F-05/F-06, F-15 and wider Account readiness remai
+ All 21 personal package hashes, 26 prior tracked vector files, production sources, historical review,
+ L-2 and unrelated root files are preserved. Personal preview/relay remain stopped. No real Account,
+ factor, operator secret or pin was provisioned. Appended before replacing only L-1.
++
++
++## 2026-09-11 — Inherited store and synchronous journal byte bridges (`L-1` seat)
++
++D4 was committed unsigned as `837cd14` at the user's request. The existing signing reminder now includes
++C `d098bd4`, D1 `d24ca66`, D2 `1897848`, D3 `24bc3a4` and D4. D5 is complete and remains unstaged/
++uncommitted. It specifies current store naming, store KDF/record AAD and synchronous journal KDF/AEAD/
++carrier ownership, preserving all production sources and existing valid stored formats.
++
++The inherited row-2 statement that nonce safety was unconditional was corrected to the finite-use
++collision bound and fresh-randomness assumption; flushing does not reset invocation count. Current
++factor custody rejects malformed Unicode before name derivation, while the typed low-level name helper
++itself aliases lone surrogates with U+FFFD. Neither finding requires changing current valid bytes.
++No new runtime defect was reproduced. Rotation, clone/restore assumptions, whole-WASM provenance and
++F-15's relaxed-durability/power-loss accounting remain separate.
++
++[Preserved evidence](./account-conformance-runs/2026-09-11-account-store-contract.md) records 46 passing
++stages with 823 matching input pins: eleven new independent vectors, six inherited stored-record cases,
++four inherited journal cases, 44 field mutations and 44 encoded omission witnesses. The generated byte
++histories cover 160 shrinking-enabled runs and 1,195 steps, seed 5110919, without a counterexample.
++Parser, maximum-size and Unicode checks pass. Six source binding omissions, one base64 canonicality
++omission and one actual custody KDF omission are detected with real cryptography still operative.
++
++Three native tests inspect actual factor-opened key derivation, raw carrier plaintext/bytes, writer and
++ordinal restart, exact flush payloads, and eight changed record/journal fields. The KDF control still
++reads its own ciphertext but fails the independent byte oracle. Two content and six journal inherited
++native cases pass; five matching source mutants are detected. All 28 existing WASM checks, 983 units
++in 88 files, typecheck, retained A/B/C/D1/D2/D3/D4 contracts, 27 vector commands and lint/format pass.
++The initial focused fixture's key-usage assumption was corrected for read-only enrollment derivation.
++A passing first full campaign was followed by stronger complete-plaintext assertions and a passing final
++campaign; the earlier summary/pins and native output are preserved with that explanation.
++
++Four constructions replace remaining-shared-store: 67 specified, three open and one exclusion; 66 map
++entries, 80 permitted-root chains, 16 swept documents. Eight registry controls enforce the new evidence
++obligations. Runtime census stays 158 sources/89 labels and templates. D6 will qualify inherited factor
++custody, envelopes and actual v2 credential/key-check/metadata bytes. Checkpoint/startup and Local/migration
++provenance remain separately open, as do F-05/F-06, F-15 and broader Account readiness.
++
++All 21 personal package hashes, 27 prior tracked vectors, production code, historical review, L-2 and
++unrelated root files are preserved. No personal build/server, real Account/factor/operator secret or pin
++was provisioned. Logs, reports and five native mutant source files were copied exactly; a manifest lists
++omitted duplicate frozen source trees. Appended before replacing only L-1.
+diff --git a/docs/progress.md b/docs/progress.md
+index 18360fe..bffaec0 100644
+--- a/docs/progress.md
++++ b/docs/progress.md
+@@ -42,14 +42,14 @@ that is no longer active.
+ 
+ ---
+ 
+-## Active slice: Inherited store and synchronous journal byte bridges (`L-1`)
++## Active slice: Inherited factor custody and v2 credential byte bridges (`L-1`)
+ 
+ ```yaml
+ gate: L-1
+ seat: /Users/thomasingalls/.codex/worktrees/c030/done
+ branch: codex/encrypted-store-contract-corrections
+ status: not started
+-blocks_on: remaining current Local store/journal byte agreement before real Account authority
++blocks_on: remaining custody and checkpoint byte agreement before real Account authority
+ debts: consult docs/review/remediation/debts.json
+ updated: 2026-09-11
+ ```
+@@ -58,58 +58,61 @@ updated: 2026-09-11
+ Account work is at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), around item 5's internal
+ creating-member ciphertext round trip. Composition is `6398e33`, descriptor bounds/versioning `4f71bac`,
+ fresh activation `2ba50aa`, crypto prep `9cf5c98`, first-authority A `43b42b1`, recovery B `e74fbaa`,
+-transport C `d098bd4`, service custody D1 `d24ca66`, local promotion D2 `1897848` and Account ledger D3
+-`24bc3a4`. C and D1–D3 were committed **unsigned** at the user's request; the existing reminder includes
+-all four for signing later. D4 is complete and remains unstaged/uncommitted. No real Account receipt
+-exists; this is not Stage 4 completion or second-device enrollment.
++transport C `d098bd4`, service custody D1 `d24ca66`, Local promotion D2 `1897848`, Account ledger D3
++`24bc3a4` and counters D4 `837cd14`. C and D1–D4 were committed **unsigned** at the user's request;
++the existing reminder includes all five for signing later. D5 is complete and remains unstaged/
++uncommitted. No real Account receipt exists; this is not Stage 4 completion or second-device enrollment.
+ 
+-**Completed boundary.** [D4 counter/witness contracts](./account-crypto/content-counter.md) pin the scoped
+-metadata KDF, creating/ready witnesses, counter v1/v2 payload/MAC, structured-clone parsing and native
+-reservation/event ownership. Root ID is intentionally omitted from key info and included in each payload.
+-No production code or valid stored format changed. Correctly MACed lies remain subject to allocation,
+-generation, initialization and ledger checks.
++**Completed boundary.** [D5 store/journal contracts](./account-crypto/store-journal.md) pin the current
++store-name digest, store-key KDF and record AAD/shape, journal KDF/header/AAD/canonical base64, and actual
++writer/ordinal carrier ownership. All six inherited stored-record and four inherited journal vectors
++agree with both current runtime and independent encoders. Production sources and valid stored bytes
++are unchanged. Key-envelope, custody, checkpoint and provenance work is not implied by this bridge.
+ 
+-**Durability correction.** D3 and earlier spool prose incorrectly said strict commits. The native helper
+-requests and reports `relaxed` durability. The current contracts now say so; historical evidence is
+-unchanged. F-15 remains open: completed transactions and renderer-crash tests do not establish persistence
+-of invocation grants through OS/power loss. No new runtime defect or strict-persistence repair is claimed.
++**Contract corrections.** The inherited row-2 nonce claim is now explicitly finite-use and conditional
++on fresh randomness; flushing does not reset lifetime q. Custody rejects malformed Unicode before name
++derivation, while the low-level name helper alone does not. D4's relaxed-durability correction remains:
++F-15 is open, and renderer-crash/transaction tests do not establish OS/power-loss persistence of grants.
++No new runtime defect, rotation protocol or whole-WASM provenance qualification was established in D5.
+ 
+-[Final evidence](./account-conformance-runs/2026-09-11-account-counter-contract.md): all 43 stages
+-pass with 806 matching input pins. Eight vectors, 80 input mutations, 95 encoded omission witnesses,
+-88 parser refusals and 200 shrinking-enabled histories (1,443 reservations, 13 ceiling refusals) pass.
+-Five new native tests verify real custody KDF/MAC bytes, correctly MACed lies, abort atomicity, the
+-post-authentication MAC race and reservation-before-AES boundary. All 41 existing spool/receive native
+-regressions, 983 units, typecheck, retained A/B/C/D1/D2/D3 contracts and 26 vector commands pass.
+-A missing-MAC fixture conversion was corrected to exercise the runtime parser; the interrupted first
+-campaign and passing final campaign are preserved. The registry has 63 specified, four open and one
+-exclusion; the map has 61 entries and 75 permitted-root chains. F-05/F-06 remain open.
++[Final evidence](./account-conformance-runs/2026-09-11-account-store-contract.md): 46 stages pass with
++823 matching pins. Eleven new vectors, 44 field mutations and 44 encoded omission witnesses pass.
++The 160 shrinking-enabled byte histories cover 1,195 steps with no counterexample. Eight new source
++controls are effective. Three new native tests verify actual custody derivation, exact raw/recovered
++plaintext, writer restart, flush and eight changed fields. Eight inherited content/journal native cases
++pass and detect five mutants; all 28 WASM checks, 983 units, typecheck, earlier contracts and 27 vector
++commands pass. The native fixture was corrected for decrypt-only enrollment, then strengthened to compare
++complete journal plaintexts; both full campaigns passed and the final one uses the strengthened fixture.
++The registry has 67 specified, three open and one exclusion; the map has 66 entries/80 permitted-root
++chains. F-05/F-06 remain open.
+ 
+-**Next bounded phase — D5: inherited store and synchronous journal byte bridges.** Continue
+-[group D](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates) with the remaining
+-`remaining-shared-store` constructions:
++**Next bounded phase — D6: inherited factor custody, envelopes and v2 credential/metadata bytes.**
++Continue [group D](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates) with
++`remaining-shared-custody`:
+ 
+-- Compare current store-name digest, store-key KDF and record AAD/framing with inherited row-3 vectors
+-  and their runtime consumers. Register exact byte/source/map joins and fill only demonstrated gaps.
+-- Pin journal key derivation and synchronous carrier header/AAD/nonce/tag bytes, including scope,
+-  generation, tab identity and native parser rules. Bridge existing WASM/vector evidence where exact;
+-  do not claim a fresh whole-WASM qualification from a matching wrapper.
+-- Use independent fixed vectors, meaningful per-field negatives, effective omission controls and
+-  shrinking-enabled tests around these byte boundaries. Keep lifecycle, invocation accounting and
+-  content coverage obligations explicit instead of deriving them from an AEAD tag.
+-- Change runtime only for a reproduced defect or explicit contract correction; preserve valid formats
+-  otherwise. Run affected checks, preserve evidence and append the outcome before replacing L-1.
+-  No real provisioning, personal build/server, onboarding UI or deployment is authorized by this phase.
++- Pin the actual factor lock-seal and generation-envelope KDF/AAD/plaintext formats and stored parser
++  boundaries, comparing inherited device-lock and row-3 key-envelope vectors to current consumers.
++- Qualify actual `done/custody-credential/v2`, `done/custody-key-check/v2` and
++  `done/custody-metadata/v2` messages, key correspondence, metadata authentication and custody ownership.
++  Distinguish scoped identity/factor authority from a valid tag or public key supplied by the carrier.
++- Add independent fixed vectors for demonstrated gaps, meaningful per-field negatives, effective source
++  omission controls and shrinking-enabled tests. Exercise actual native custody creation/open/failure
++  boundaries where helper agreement cannot establish the owner connection.
++- Preserve valid formats; change runtime only for a reproduced defect or explicit correction. Register
++  exact source/map/byte joins, run affected checks, preserve evidence and append the outcome before
++  replacing only L-1. No real provisioning, personal build/server, onboarding UI or deployment here.
+ 
+-Later D slices retain other custody primitives and checkpoint/startup contracts. Migration-only provenance
+-needs an explicit disposition, not silent whole-Local requalification. The actual old second device will
+-adopt the first workspace with fresh custody/store/counters/credentials, without importing or merging its
+-old writing. Recovery byte conformance is not a built total-loss machine.
++Later D work retains Account checkpoint/startup. Local/migration-only provenance needs an explicit
++bounded disposition, not silent whole-Local qualification. The actual old second device will adopt the
++first workspace with fresh custody/store/counters/credentials, without importing or merging its old
++writing. Recovery byte conformance is not a built total-loss machine.
+ 
+ **Personal checkpoint.** Root `dist/` and `.dev/releases/17d87c2/app` retain all 21 saved hashes.
+-All 26 prior tracked vector files and production sources are unchanged by D4. Personal preview/relay,
+-browser/factors, origin/routing, historical review and L-2 are unchanged. Native bundles stayed in memory.
+-Host VM/policy research stays stopped. No real Account, factor, operator key or pin was provisioned.
+-Unrelated root files `done ` and `reviewpacket96a20401ceb88d.md` remain untouched.
++All 27 prior tracked vector files and production sources are unchanged by D5. Personal preview/relay,
++browser/factors, origin/routing, historical review and L-2 are unchanged. New native bundles stayed in
++memory; inherited harnesses used only disposable loopback fixtures. Host VM/policy research stays
++stopped. No real Account, factor, operator key or pin was provisioned. Unrelated root files `done ` and
++`reviewpacket96a20401ceb88d.md` remain untouched.
+ 
+ **Other gates.** F-15 invocation-grant power-loss accounting, salvage/diagnostics, parser/admission/service
+ negatives, performance/maintenance, lock ordering and accepted review follow-ups remain. Passkey and
+diff --git a/docs/review/remediation/S0-2/authority-map.md b/docs/review/remediation/S0-2/authority-map.md
+index 637db2a..23deab2 100644
+--- a/docs/review/remediation/S0-2/authority-map.md
++++ b/docs/review/remediation/S0-2/authority-map.md
+@@ -529,9 +529,9 @@ entry: k-journal
+ kind: aead
+ guards: content
+ verifies: the synchronous journal subkey
+-discipline: 24 fresh random bytes per entry — XChaCha20-Poly1305's nonce space needs no invocation budget (row 2)
++discipline: 24 fresh independent random bytes per entry without an application nonce counter, subject to row 2's finite-use collision bound and fresh-randomness assumption; no unlimited-lifetime or clone/restore guarantee
+ status: resolved
+-pin: docs/selections/row-2-journal-aead.md f41b7842cee3
++pin: docs/selections/row-2-journal-aead.md d1b1d4616aad
+ ```
+ 
+ ```authority
+@@ -1074,3 +1074,79 @@ pin: docs/account-crypto/content-counter.md §3 1ca2e196dbba
+ pin: docs/account-crypto/content-counter.md §4 b50f82193614
+ pin: docs/account-crypto/content-counter.md §5 46b056613a26
+ ```
++
++## 14. Inherited store and journal byte bridges — group D5
++
++These entries qualify current scoped byte owners, not rotation or whole-WASM provenance.
++
++```authority
++entry: private-store-name
++kind: predicate
++guards: keys
++verifies: admitted Unicode identities and length-prefixed digest inputs; name is not authentication
++resolves: admitted scope and structural rediscovery naming -> root:structural
++status: resolved
++pin: docs/account-crypto/store-journal.md §1 3fe80ec5c29f
++pin: docs/account-crypto/store-journal.md §2 bb602641986e
++pin: docs/account-crypto/store-journal.md §3 3c2014f935aa
++pin: docs/account-crypto/store-journal.md §4 5e2f7b117b1b
++pin: docs/account-crypto/store-journal.md §5 fc637722b527
++```
++
++```authority
++entry: private-store-key
++kind: predicate
++guards: keys
++verifies: factor-opened generation secret, workspace/store KDF binding and native key usages
++resolves: generation secret opened through admitted factor custody -> via:device-lock-custody
++resolves: exact purpose-separated key info and non-extractable key parameters -> root:structural
++status: resolved
++pin: docs/account-crypto/store-journal.md §1 3fe80ec5c29f
++pin: docs/account-crypto/store-journal.md §2 bb602641986e
++pin: docs/account-crypto/store-journal.md §3 3c2014f935aa
++pin: docs/account-crypto/store-journal.md §4 5e2f7b117b1b
++pin: docs/account-crypto/store-journal.md §5 fc637722b527
++```
++
++```authority
++entry: private-store-record
++kind: aead
++guards: content
++verifies: AES-256-GCM scoped record AAD, header, tag and native placement
++counted-by: authenticated SeqCounter.reserved[gen], coupled to the storeId-derived key; equality at 2^32 refuses. F-15 remains open for relaxed durability and OS/power-loss accounting; no rollback/clone bound.
++status: resolved
++pin: docs/account-crypto/store-journal.md §1 3fe80ec5c29f
++pin: docs/account-crypto/store-journal.md §2 bb602641986e
++pin: docs/account-crypto/store-journal.md §3 3c2014f935aa
++pin: docs/account-crypto/store-journal.md §4 5e2f7b117b1b
++pin: docs/account-crypto/store-journal.md §5 fc637722b527
++```
++
++```authority
++entry: private-journal-key
++kind: predicate
++guards: keys
++verifies: generation secret, workspace-specific HKDF and exact 32-byte synchronous key
++resolves: generation secret opened through admitted factor custody -> via:device-lock-custody
++resolves: purpose-separated info and key width -> root:structural
++status: resolved
++pin: docs/account-crypto/store-journal.md §1 3fe80ec5c29f
++pin: docs/account-crypto/store-journal.md §2 bb602641986e
++pin: docs/account-crypto/store-journal.md §3 3c2014f935aa
++pin: docs/account-crypto/store-journal.md §4 5e2f7b117b1b
++pin: docs/account-crypto/store-journal.md §5 fc637722b527
++```
++
++```authority
++entry: private-journal-carrier
++kind: aead
++guards: content
++verifies: XChaCha20-Poly1305 workspace/generation/full-storage-identity AAD and canonical carrier
++discipline: 24 fresh independent random bytes per invocation, within the finite-use collision bound and no restored/cloned RNG assumption in the pinned D5 home; current generation-1 owner only.
++status: resolved
++pin: docs/account-crypto/store-journal.md §1 3fe80ec5c29f
++pin: docs/account-crypto/store-journal.md §2 bb602641986e
++pin: docs/account-crypto/store-journal.md §3 3c2014f935aa
++pin: docs/account-crypto/store-journal.md §4 5e2f7b117b1b
++pin: docs/account-crypto/store-journal.md §5 fc637722b527
++```
+diff --git a/docs/selections/row-2-journal-aead.md b/docs/selections/row-2-journal-aead.md
+index 339760f..29644b8 100644
+--- a/docs/selections/row-2-journal-aead.md
++++ b/docs/selections/row-2-journal-aead.md
+@@ -65,20 +65,19 @@ data that matters.
+ 
+ **Selected: 24 random bytes per record, from `crypto.getRandomValues()`.**
+ 
+-The argument is that a random nonce has no state, so there is nothing for a crash to lose. What makes it
+-_safe_ is the width. For q records the collision probability is about q²/2^193; at q = 2^64 — absurdly beyond
+-any journal, which is cleared every 250 ms — that is around 2^-65.
++A random nonce requires no application-persisted nonce counter. With independent uniform samples, the
++collision probability for q encryptions under one key is approximately q(q−1)/2^193 while q is far below
++2^96. At q = 2^64 it is about 2^-65. Deleting or flushing journal entries does not reset this lifetime q.
+ 
+-**The property worth insisting on is not the number, it is that the number is unconditional.** A 192-bit
+-random nonce is safe without reference to how many journal entries this app will ever write. A 96-bit nonce
+-would also be fine _at the volumes this journal actually sees_, and that is the problem: the safety argument
+-would then be a claim about application behaviour, which a reviewer has to verify and a later change can
+-silently invalidate. Nonce-reuse faults are retroactive and silent, so the assumption that rots is the worst
+-possible place to be carrying the guarantee.
++**D5 correction:** the earlier statement that this bound was “unconditional” was false. The wide nonce
++provides a large practical margin, but the bound still depends on invocation count and functioning fresh
++randomness. Cloned or restored RNG state is not covered by this calculation. Writable profile branching
++and raw rollback require their own safety assumptions; byte vectors do not establish them.
+ 
+-That is the whole reason to take XChaCha20-Poly1305 over RFC 8439 ChaCha20-Poly1305. It is not that the
+-extended nonce is faster or better studied; it is that it moves the safety argument off the application and
+-into the primitive.
++This margin is the reason to select XChaCha20-Poly1305 over the 96-bit-nonce construction for this
++synchronous path. The current carrier uses fresh 24-byte random nonces without a persisted nonce counter;
++it does not make an unlimited-lifetime guarantee. The current owner and byte-evidence boundary are pinned
++in [the D5 bridge](../account-crypto/store-journal.md).
+ 
+ ### Rejected — a fresh subkey per page session, with a counter
+ 
+diff --git a/package.json b/package.json
+index 783be90..086177c 100644
+--- a/package.json
++++ b/package.json
+@@ -14,7 +14,7 @@
+     "lint:fix": "oxlint --react-plugin --fix",
+     "format": "oxfmt --check .",
+     "format:fix": "oxfmt --write .",
+-    "check": "pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:harness && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm storage:legacy-cleanup:harness && pnpm storage:legacy-cleanup && pnpm storage:legacy-coordinator && pnpm storage:legacy-host:harness && pnpm storage:legacy-host && pnpm storage:private-migration && pnpm storage:app-startup && pnpm test:geometry && pnpm storage:app-startup:packaged && pnpm storage:app-upgrades && pnpm storage:compatibility && pnpm trace:check && pnpm account:core && pnpm account:recovery && pnpm account:authority && pnpm account:promotion && pnpm account:genesis && pnpm account:admission && pnpm account:handoff && pnpm account:editing && pnpm account:outbound && pnpm account:capture && pnpm account:spool && pnpm account:decisions && pnpm account:delivery && pnpm account:service-delivery && pnpm account:transport && pnpm account:driver && pnpm account:inbound-prep && pnpm account:inbound-codecs && pnpm account:receive && pnpm account:receive-editor && pnpm account:service-inbound && pnpm account:receive-transport && pnpm account:receive-driver && pnpm account:sync && pnpm account:admission-bounds && pnpm account:activation && pnpm account:crypto-prep && pnpm account:first-authority && pnpm account:recovery-contract && pnpm account:transport-contract && pnpm account:service-custody && pnpm account:promotion-contract && pnpm account:ledger-contract && pnpm account:counter-contract",
++    "check": "pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:harness && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm storage:legacy-cleanup:harness && pnpm storage:legacy-cleanup && pnpm storage:legacy-coordinator && pnpm storage:legacy-host:harness && pnpm storage:legacy-host && pnpm storage:private-migration && pnpm storage:app-startup && pnpm test:geometry && pnpm storage:app-startup:packaged && pnpm storage:app-upgrades && pnpm storage:compatibility && pnpm trace:check && pnpm account:core && pnpm account:recovery && pnpm account:authority && pnpm account:promotion && pnpm account:genesis && pnpm account:admission && pnpm account:handoff && pnpm account:editing && pnpm account:outbound && pnpm account:capture && pnpm account:spool && pnpm account:decisions && pnpm account:delivery && pnpm account:service-delivery && pnpm account:transport && pnpm account:driver && pnpm account:inbound-prep && pnpm account:inbound-codecs && pnpm account:receive && pnpm account:receive-editor && pnpm account:service-inbound && pnpm account:receive-transport && pnpm account:receive-driver && pnpm account:sync && pnpm account:admission-bounds && pnpm account:activation && pnpm account:crypto-prep && pnpm account:first-authority && pnpm account:recovery-contract && pnpm account:transport-contract && pnpm account:service-custody && pnpm account:promotion-contract && pnpm account:ledger-contract && pnpm account:counter-contract && pnpm account:store-contract",
+     "test": "vitest run",
+     "test:https": "pnpm build && pnpm --dir relay build && node scripts/test-https.mjs",
+     "test:watch": "vitest",
+@@ -28,7 +28,7 @@
+     "review:check": "node scripts/review-status.mjs --check",
+     "budget": "node scripts/check-budget.mjs",
+     "vectors": "node scripts/generate-suite-vectors.mjs && node scripts/generate-record-vectors.mjs && node scripts/generate-journal-vectors.mjs && node scripts/generate-recovery-vectors.mjs && node scripts/generate-device-lock-vectors.mjs && node scripts/generate-finalization-vectors.mjs && node scripts/generate-enrollment-vectors.mjs && node scripts/generate-envelope-vectors.mjs && node scripts/generate-private-envelope-vectors.mjs && node scripts/generate-head-discovery-vectors.mjs && node scripts/generate-attribution-vectors.mjs && node scripts/generate-checkpoint-vectors.mjs && node scripts/generate-antireplay-vectors.mjs && node scripts/generate-package-vectors.mjs && node scripts/generate-account-credential-vectors.mjs && node scripts/generate-transition-vectors.mjs && node scripts/generate-baseline-vectors.mjs && node scripts/account-admission-bounds/vectors.mjs && node scripts/account-first-authority/vectors.mjs && node scripts/account-recovery-contract/vectors.mjs && node scripts/account-transport-contract/vectors.mjs && node scripts/account-service-custody/vectors.mjs",
+-    "vectors:check": "node scripts/generate-suite-vectors.mjs --check && node scripts/generate-record-vectors.mjs --check && node scripts/generate-journal-vectors.mjs --check && node scripts/generate-recovery-vectors.mjs --check && node scripts/generate-device-lock-vectors.mjs --check && node scripts/generate-finalization-vectors.mjs --check && node scripts/generate-enrollment-vectors.mjs --check && node scripts/generate-envelope-vectors.mjs --check && node scripts/generate-private-envelope-vectors.mjs --check && node scripts/generate-head-discovery-vectors.mjs --check && node scripts/generate-attribution-vectors.mjs --check && node scripts/generate-checkpoint-vectors.mjs --check && node scripts/generate-antireplay-vectors.mjs --check && node scripts/generate-package-vectors.mjs --check && node scripts/generate-account-credential-vectors.mjs --check && node scripts/generate-transition-vectors.mjs --check && node scripts/generate-baseline-vectors.mjs --check && node scripts/account-admission-bounds/vectors.mjs --check && node scripts/account-first-authority/vectors.mjs --check && node scripts/account-recovery-contract/vectors.mjs --check && node scripts/account-transport-contract/vectors.mjs --check && node scripts/account-service-custody/vectors.mjs --check && pnpm vectors:coverage && node scripts/account-promotion-contract/vectors.mjs --check && node scripts/account-ledger-contract/vectors.mjs --check && node scripts/account-counter-contract/vectors.mjs --check",
++    "vectors:check": "node scripts/generate-suite-vectors.mjs --check && node scripts/generate-record-vectors.mjs --check && node scripts/generate-journal-vectors.mjs --check && node scripts/generate-recovery-vectors.mjs --check && node scripts/generate-device-lock-vectors.mjs --check && node scripts/generate-finalization-vectors.mjs --check && node scripts/generate-enrollment-vectors.mjs --check && node scripts/generate-envelope-vectors.mjs --check && node scripts/generate-private-envelope-vectors.mjs --check && node scripts/generate-head-discovery-vectors.mjs --check && node scripts/generate-attribution-vectors.mjs --check && node scripts/generate-checkpoint-vectors.mjs --check && node scripts/generate-antireplay-vectors.mjs --check && node scripts/generate-package-vectors.mjs --check && node scripts/generate-account-credential-vectors.mjs --check && node scripts/generate-transition-vectors.mjs --check && node scripts/generate-baseline-vectors.mjs --check && node scripts/account-admission-bounds/vectors.mjs --check && node scripts/account-first-authority/vectors.mjs --check && node scripts/account-recovery-contract/vectors.mjs --check && node scripts/account-transport-contract/vectors.mjs --check && node scripts/account-service-custody/vectors.mjs --check && pnpm vectors:coverage && node scripts/account-promotion-contract/vectors.mjs --check && node scripts/account-ledger-contract/vectors.mjs --check && node scripts/account-counter-contract/vectors.mjs --check && node scripts/account-store-contract/vectors.mjs --check",
+     "vectors:coverage": "node scripts/check-aad-coverage.mjs",
+     "retention:check": "node scripts/check-retention.mjs",
+     "status:check": "node scripts/check-selection-status.mjs",
+@@ -112,7 +112,8 @@
+     "account:service-custody": "node scripts/account-service-custody/run.mjs",
+     "account:promotion-contract": "node scripts/account-promotion-contract/run.mjs",
+     "account:ledger-contract": "node scripts/account-ledger-contract/run.mjs",
+-    "account:counter-contract": "node scripts/account-counter-contract/run.mjs"
++    "account:counter-contract": "node scripts/account-counter-contract/run.mjs",
++    "account:store-contract": "node scripts/account-store-contract/run.mjs"
+   },
+   "dependencies": {
+     "@codemirror/commands": "^6.10.4",
+diff --git a/scripts/account-first-authority/registry.mjs b/scripts/account-first-authority/registry.mjs
+index 59770fb..de83481 100644
+--- a/scripts/account-first-authority/registry.mjs
++++ b/scripts/account-first-authority/registry.mjs
+@@ -54,7 +54,7 @@ export function checkConstructionRegistry(root, options = {}) {
+   const corpusPhases = new Set(['A']);
+   for (const corpus of additional) {
+     if (
+-      !['B', 'C', 'D1', 'D2', 'D3', 'D4'].includes(corpus.phase) ||
++      !['B', 'C', 'D1', 'D2', 'D3', 'D4', 'D5'].includes(corpus.phase) ||
+       corpusPhases.has(corpus.phase)
+     )
+       fail('unknown/duplicate additional corpus phase');
+@@ -78,7 +78,9 @@ export function checkConstructionRegistry(root, options = {}) {
+     if (ids.has(r.id)) fail('duplicate construction ' + r.id);
+     ids.add(r.id);
+     if (!['specified', 'open', 'excluded'].includes(r.status)) fail('unknown status ' + r.id);
+-    if (!['A', 'B', 'C', 'D', 'D1', 'D2', 'D3', 'D4', 'Local', 'non-crypto'].includes(r.phase))
++    if (
++      !['A', 'B', 'C', 'D', 'D1', 'D2', 'D3', 'D4', 'D5', 'Local', 'non-crypto'].includes(r.phase)
++    )
+       fail('unknown phase ' + r.id);
+     if (
+       !r.roles.length ||
+@@ -182,6 +184,13 @@ export function checkConstructionRegistry(root, options = {}) {
+     const required = [
+       'runtime-bytes',
+       'input-mutations',
++      ...(r.phase === 'D5'
++        ? [
++            'inherited-byte-agreement',
++            'native-carrier-owner',
++            ...(r.roles.includes('aead') ? ['encoded-field-omissions'] : []),
++          ]
++        : []),
+       ...(r.phase === 'D4'
+         ? [
+             'native-metadata-owner',
+@@ -217,6 +226,8 @@ export function checkConstructionRegistry(root, options = {}) {
+         fail('digest vector misclassified ' + r.id);
+       if (r.phase === 'D3' && v?.kind === 'carrier' && !v.encodedBindingControls?.length)
+         fail('missing carrier omission corpus ' + r.id);
++      if (r.phase === 'D5' && v?.kind === 'aead' && !v.encodedBindingControls?.length)
++        fail('missing store/journal omission corpus ' + r.id);
+       if (!v?.expected.messageHex || !v.expected.resultHex || !v.negatives?.length)
+         fail('missing vector/negative corpus ' + r.id + ' -> ' + id);
+       if (
+diff --git a/scripts/check-authority-map.mjs b/scripts/check-authority-map.mjs
+index d6531ae..5516258 100644
+--- a/scripts/check-authority-map.mjs
++++ b/scripts/check-authority-map.mjs
+@@ -95,6 +95,7 @@ const SWEPT = [
+   'docs/account-crypto/local-promotion.md',
+   'docs/account-crypto/account-ledger.md',
+   'docs/account-crypto/content-counter.md',
++  'docs/account-crypto/store-journal.md',
+ ];
+ 
+ const KINDS = new Set(['verification', 'predicate', 'aead']);
+diff --git a/test/account-first-authority/registry.test.mjs b/test/account-first-authority/registry.test.mjs
+index 9c2bc66..b7f5a1b 100644
+--- a/test/account-first-authority/registry.test.mjs
++++ b/test/account-first-authority/registry.test.mjs
+@@ -15,11 +15,97 @@ const baseline = () => ({
+   entries: mapEntries(read('docs/review/remediation/S0-2/authority-map.md')),
+ });
+ 
++test('D5 bridges cannot lose native owners, inherited agreement, primitive roles or AEAD omission evidence', () => {
++  const controls = [
++    [
++      'native owner',
++      (o) =>
++        (o.document.constructions.find((r) => r.id === 'journal-carrier-aead').requirements = [
++          'runtime-bytes',
++          'input-mutations',
++        ]),
++      'missing evidence obligation',
++    ],
++    [
++      'inherited agreement',
++      (o) => {
++        const r = o.document.constructions.find((r) => r.id === 'store-record-aead');
++        r.requirements = r.requirements.filter((v) => v !== 'inherited-byte-agreement');
++      },
++      'missing evidence obligation',
++    ],
++    [
++      'AEAD entry',
++      (o) =>
++        (o.document.constructions.find((r) => r.id === 'store-record-aead').mapEntries = [
++          'private-store-key',
++        ]),
++      'missing AEAD authority entry',
++    ],
++    [
++      'digest role',
++      (o) =>
++        (o.document.constructions.find((r) => r.id === 'store-name-digest').roles = ['predicate']),
++      'digest vector misclassified',
++    ],
++    [
++      'KDF source',
++      (o) => (o.document.constructions.find((r) => r.id === 'journal-key').sourceSites = []),
++      'source-site census changed',
++    ],
++    [
++      'owner entrypoint',
++      (o) =>
++        (o.document.constructions.find((r) => r.id === 'journal-carrier-aead').entryPoints[0].name =
++          'missingOwner'),
++      'missing entrypoint',
++    ],
++  ];
++  const evidence = [];
++  for (const [name, change, expected] of controls) {
++    const o = baseline();
++    change(o);
++    assert(
++      checkConstructionRegistry(root, o).failures.some((f) => f.includes(expected)),
++      name,
++    );
++    evidence.push({ name, caught: true, expected });
++  }
++  for (const field of ['negatives', 'encodedBindingControls']) {
++    const o = baseline(),
++      c = o.document.additionalCorpora.find((c) => c.phase === 'D5'),
++      v = JSON.parse(read(c.vectorFile));
++    v.vectors.find((v) => v.id === 'journal-carrier-1')[field] = [];
++    const changed = JSON.stringify(v);
++    c.vectorSha256 = digest(changed);
++    o.read = (p) => (p === c.vectorFile ? changed : read(p));
++    const result = checkConstructionRegistry(root, o);
++    assert(
++      result.failures.some((f) =>
++        f.includes(
++          field === 'negatives'
++            ? 'missing vector/negative corpus'
++            : 'missing store/journal omission corpus',
++        ),
++      ),
++    );
++    assert(!result.failures.some((f) => f.includes('stale additional vector file pin')));
++    evidence.push({ name: field, caught: true, aggregatePinUpdated: true });
++  }
++  if (process.env.ACCOUNT_REPORT_DIR) {
++    mkdirSync(process.env.ACCOUNT_REPORT_DIR, { recursive: true });
++    writeFileSync(
++      join(process.env.ACCOUNT_REPORT_DIR, 'store-registry-controls.json'),
++      JSON.stringify({ controls: evidence.length, evidence }, null, 2) + '\n',
++    );
++  }
++});
++
+ test('registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups', () => {
+   const result = checkConstructionRegistry(root);
+   assert.deepEqual(result.failures, []);
+-  assert.equal(result.specified, 63);
+-  assert.equal(result.open, 4);
++  assert.equal(result.specified, 67);
++  assert.equal(result.open, 3);
+   assert.equal(result.excluded, 1);
+ });
+ 
+diff --git a/docs/account-conformance-runs/2026-09-11-account-store-contract.md b/docs/account-conformance-runs/2026-09-11-account-store-contract.md
+new file mode 100644
+index 0000000..b1c76fd
+--- /dev/null
++++ b/docs/account-conformance-runs/2026-09-11-account-store-contract.md
+@@ -0,0 +1,64 @@
++# Inherited store and synchronous journal byte bridges — 2026-09-11
++
++**Result: D5 complete; new work remains unstaged/uncommitted.** D4 was committed unsigned as
++`837cd14` and added to the existing signing reminder with C `d098bd4`, D1 `d24ca66`, D2 `1897848`
++and D3 `24bc3a4`. No production code, valid stored format or personal installation changed.
++
++[Contract](../account-crypto/store-journal.md), [vectors](../../test/vectors/account-store.json),
++[summary](./2026-09-11-account-store-contract/summary.json),
++[source pins](./2026-09-11-account-store-contract/sources.json),
++[preservation](./2026-09-11-account-store-contract/preservation.json),
++[patch](./2026-09-11-account-store-contract/working.patch),
++[patch manifest](./2026-09-11-account-store-contract/patch.json).
++
++Final execution: `node scripts/account-store-contract/run.mjs`, Node v26.8.2,
++`test-results/account-store-contract/2026-09-11T18-23-08.071Z`, 18:23:08–18:24:44 UTC.
++All **46 stages pass**, without timeout, with **823 matching input pins** after execution.
++The package entry is `pnpm account:store-contract`. Browser profiles and loopback servers are disposable;
++the new bundles use Vite write:false. The personal package was not rebuilt or served.
++
++The current store/journal byte construction agrees with inherited vectors. D5 corrects a documentation
++overclaim, not a runtime defect: row 2 called random nonce safety unconditional. Its corrected section
++states the finite-use collision bound and fresh-randomness assumption, and explains that flushing entries
++does not reset lifetime invocations. The affected authority entry was reread and repinned. General
++rotation, profile branching/restore, whole-WASM provenance and F-15's power-loss accounting remain open.
++
++| Evidence | Result |
++| --- | --- |
++| [Fixed bytes](./2026-09-11-account-store-contract/store-contract/fixed.json) | Eleven independent cases: two store names, store and journal KDFs, four record kinds and three journal generation headers. Actual WebCrypto and shipped WASM reproduce exact bytes. Name/KDF substitutions also execute the real helpers. |
++| [Inherited bridge](./2026-09-11-account-store-contract/store-contract/inherited.json) | All six row-3 stored-record cases and four row-2 journal cases agree with the independent oracle and current runtime. Inherited key-envelope cases remain outside D5. Both vector files are unchanged. |
++| [AAD bindings](./2026-09-11-account-store-contract/store-contract/bindings.json) | All 44 field mutations reject under held keys. Forty-four encoded omission witnesses show the binding disappears when that field is removed while real AES/WASM authentication stays operative. These are distinct from source mutants. |
++| [Parser boundaries](./2026-09-11-account-store-contract/store-contract/parsers.json) | 25 counted malformed shape/framing cases refuse, with additional nonce/tag/generation/placement, maximum-size and Unicode checks. A source control admits noncanonical base64 padding bits. Raw record buffers are detached. Custody rejects malformed Unicode before store-name derivation; the low-level name helper itself aliases lone surrogates with U+FFFD. |
++| [Generated histories](./2026-09-11-account-store-contract/store-contract/properties.json) | 160 histories, seed 5110919, 1,195 steps, shrinking enabled; no counterexample and no shrink. Unicode scope, four record kinds, generation headers, writer/ordinal identities, cold codec reopening and tampering agree with independent bytes. This is a byte model, not production rotation or concurrent-lifecycle qualification. |
++| [Source controls](./2026-09-11-account-store-contract/store-contract/source-controls.json) | Six real source omissions remove record principal/sequence/kind or journal workspace/generation/storage identity. The weakened paths accept changed inputs while baseline refuses; crypto results are not forced true. |
++| [Native bytes](./2026-09-11-account-store-contract/store-native/native-bytes.json) | Actual factor-opened store/journal KDF calls match independent info/key bytes and native usages. Four raw records and three raw journal entries decrypt to the exact supplied plaintext. Cold reopening preserves bytes; a new writer resets its ordinal without reusing identity; flush retains all seven exact plaintexts and removes committed journal entries. |
++| [Native refusal](./2026-09-11-account-store-contract/store-native/native-refusals.json) | Eight changed fields refuse: record sequence, generation, kind, nonce and tag, plus copied journal writer, ordinal and store identity. Failed recovery preserves the carriers; restoring the original bytes permits recovery. |
++| [Native KDF control](./2026-09-11-account-store-contract/store-native/native-control.json) | Removing storeId from the actual custody KDF still allows its own encrypted records to round-trip. Independent raw-byte validation detects the defect. Together with the six helper binding omissions and base64 control, eight new source changes have effective detection evidence. |
++| [Inherited content](./2026-09-11-account-store-contract/content-native/native/report.md) | Two directed native cases pass: unreadable/placement refusal and cold byte replay. The unreadable-record source mutant is detected. |
++| [Inherited journal](./2026-09-11-account-store-contract/journal-native/native/report.md) | Six directed native cases pass: synchronous renderer-crash recovery, unreadable journal, aborted flush, handoff race, close/disposal and concurrent writers. Four corresponding source mutants are detected: omitted append, premature cleanup, journal reread after content and omitted WASM disposal. A reported mutant-case failure is the expected detection result. |
++| [WASM bridge](./2026-09-11-account-store-contract/wasm-bridge.log) | All 28 existing checks pass: published KAT, composition bytes, tag refusal, disposal, length/width guards and source-to-generated-blob hash agreement. No Rust rebuild or new provenance attestation. |
++| [Registry](./2026-09-11-account-store-contract/registry/store-registry-controls.json) | Eight new controls enforce native/inherited evidence, AEAD authority, digest role, KDF source, owner entrypoint and negative/omission corpora even after updating aggregate hashes. |
++| [Units](./2026-09-11-account-store-contract/unit.log) and tools | All 983 units in 88 files, typecheck, retained A/B/C/D1/D2/D3/D4 contracts, all 27 vector commands and targeted lint/format pass. |
++
++Before the campaigns, the initial native test assumed every store derivation had encrypt permission.
++Enrollment also legitimately derives a decrypt-only key; the fixture now checks each usage mode and
++requires that the content owner also derives encrypt/decrypt. The first full campaign passed. Final
++inspection then strengthened the native assertion from journal plaintext length to its complete bytes,
++including all payloads after flush, and the complete final campaign was rerun. Earlier summary/pins and
++native output are [preserved with the explanation](./2026-09-11-account-store-contract/preliminary/readme.json).
++No production failure was concealed by either test refinement.
++
++The independent byte oracle imports no production encoder/parser/KDF. Node/OpenSSL supplies AES/HKDF;
++noble supplies XChaCha independently of RustCrypto WASM. This distinguishes byte reconstruction and
++the XChaCha implementations, not every cryptographic dependency. The synthetic native fixture shares
++D4's factor-custody setup and exercises real storage owners; it does not provision Account authority.
++
++Four constructions replace the open shared-store record: **67 specified, three open, one exclusion**.
++The map has 66 entries, 80 permitted-root chains and 16 swept documents. Runtime census remains
++158 sources and 89 labels/templates. F-05/F-06 retain custody, checkpoint and provenance work.
++
++All 21 personal package hashes, 27 prior tracked vector files, production sources, historical review,
++L-2 and unrelated root files are preserved. The raw evidence manifest records every raw file and which
++151 files were copied exactly. Duplicate frozen source trees are omitted from the document archive;
++base-commit production sources, input pins, five targeted native mutant sources and reports are retained.
++Next is **D6: inherited factor custody, key envelopes and v2 credential/metadata byte bridges**.
+diff --git a/docs/account-crypto/store-journal.md b/docs/account-crypto/store-journal.md
+new file mode 100644
+index 0000000..f62f100
+--- /dev/null
++++ b/docs/account-crypto/store-journal.md
+@@ -0,0 +1,151 @@
++# Inherited store and synchronous journal byte bridges
++
++D5 pins the current owners at `837cd14`. It qualifies store naming, store-record derivation/AAD and
++the synchronous journal KDF/AEAD/carrier connection. The inherited row-2 and row-3 stored-record vectors
++remain byte-identical. Key envelopes, other custody primitives, checkpoints and migration provenance
++retain their own unfinished construction records. No production format or implementation changes here.
++
++## 1. Store names and encoding domains
++
++```
++message = LP("done/store-name/v1") || LP(principalId) || LP(workspaceId)
++digest = SHA256(message)
++dbName = "done." || lowercaseHex(digest[0..16))
++```
++
++LP is uint16 big-endian UTF-8 **byte length**, then the bytes, with at most 65,535 bytes per field.
++There is no Unicode normalization, delimiter, salt, NUL terminator or hex intermediary. Slot ID, store
++ID and root ID are absent. This is a rediscovery name, not an authentication credential or secret.
++Someone with both identifiers can compute it; truncated digest collisions are possible. An assumed
++unpredictable principal, not hashing alone, supports any narrower workspace-only guessing claim.
++
++`deriveStoreName` is a typed low-level helper. Its private LP calls TextEncoder directly, so a lone
++surrogate and U+FFFD alias if a caller supplies malformed Unicode. The admitting custody `identity`
++guard rejects lone surrogates, empty strings and strings longer than 1,024 UTF-16 code units before
++owner derivation. Other callers must establish that same identity precondition; hashing alone does
++not validate it. Store/journal KDF/AAD helpers use `custodyCrypto.fields`, which also rejects lone
++surrogates before encoding. Canonically equivalent Unicode strings remain distinct. The vectors cover
++UTF-8 byte lengths, ambiguous concatenation boundaries and the native owner-derived name.
++
++## 2. Store key, record bytes and authentication
++
++Custody authenticates its retained record, factor-opens the root and unwraps a generation secret of
++exactly 32 bytes before deriving:
++
++```
++K_store = HKDF-SHA256(K_g[32], salt=empty,
++  info=LP("done/store/v1") || LP(workspaceId) || LP(storeId), length=32)
++AAD = LP("done/store/v1") || LP(principalId) || LP(workspaceId) || LP(storeId)
++   || LP(decimal(v)) || LP(decimal(gen)) || LP(decimal(seq)) || LP(kind)
++ct = AES-256-GCM(K_store, nonce[12], AAD, plaintext, tagBits=128)
++```
++
++The nonce is fresh `crypto.getRandomValues` output for each encryption. WebCrypto returns ciphertext
++followed by its 16-byte tag. The derived CryptoKey is non-extractable; content owners request
++encrypt/decrypt usages, read-only custody requests decrypt alone. Principal is an AAD field but not
++a KDF field. Slot and root IDs are in neither: their custody/metadata ownership checks are separate
++from this encryption. The active generation number is not KDF info; the generation secret selects
++the key. Non-extractability alone is not filesystem protection.
++
++The native carrier is a structured-clone **plain object**, not canonical JSON:
++`{v, gen, seq, kind, nonce, ct}` with exactly those keys. v=1; gen and seq are positive safe integers;
++kind is update/state/heads/outbound; nonce is Uint8Array[12]; ct is Uint8Array with at least 16 bytes.
++Arrays, unknown/missing properties, wrong prototypes and invalid widths refuse. The parser copies
++nonce/ct; property order is immaterial. It has no independent upper ciphertext size bound. Ordinary
++batch admission applies 1–256 records and at most 4 MiB total plaintext before allocating or sealing.
++Decimal numeric AAD fields are JavaScript `String` of validated positive safe integers, with no leading
++zeros or exponent notation. Payload helpers assume a parsed typed header, not arbitrary untrusted input.
++
++Update/state rows belong in `content`; heads in `heads`; outbound in `outbound`. The primary key is
++the row sequence. Native loading checks placement, allocated range, metadata authentication and current
++generation before accepting opened bytes. Ordinary custody currently has only the generation-1 opener
++and refuses other generations. The higher-generation vectors qualify byte syntax, not rotation support.
++AEAD success alone does not establish Yjs completeness, Account authorization or permission to trim.
++
++## 3. Journal key, AAD and canonical carrier
++
++At open, custody derives a raw byte key for the synchronous WASM owner:
++
++```
++K_journal = HKDF-SHA256(K_g[32], salt=empty,
++  info=LP("done/journal/v1") || LP(workspaceId), length=32)
++AAD = LP("done/jrnl/v1") || LP(workspaceId) || LP(decimal(gen)) || LP(storageKey)
++ct = XChaCha20-Poly1305(K_journal, nonce[24], AAD, plaintext)
++value = "2:" || standardBase64(u32be(gen) || nonce[24] || ct)
++```
++
++`deriveBits` produces 256 bits from non-extractable HKDF input. Store ID and principal are not KDF
++fields. The full storage key indirectly binds their selected database/store placement in the AAD.
++Generation is an unsigned nonzero 32-bit header, also authenticated as decimal text. Ciphertext ends
++with its 16-byte tag. Prefix `2:` is the only accepted suite; no fallback to legacy plaintext occurs.
++
++Decode requires canonical standard base64 with exact alphabet, padding, a length divisible by four,
++and equality after decode/re-encode. Whitespace, URL-safe spelling and nonzero unused padding bits
++refuse. Raw length is 44 through 16,428 bytes: four header bytes, 24 nonce bytes and 16 tag bytes plus
++0–16,384 plaintext bytes. The production codec rejects larger plaintext **before** WASM sealing.
++The low-level encoder has no upper size guard and is not the admission API. The decoder copies slices.
++
++Each codec holds one generation opener. A different header generation refuses even if some other
++opener could exist. Authentication then uses the decoded generation and exact supplied storage key.
++Native custody creates generation 1; vectors for 256 and 2^32−1 test big-endian framing only.
++Authentication/framing errors become repair-required, preserving unreadable storage for repair.
++
++The already shipped RustCrypto WASM wrapper enforces 32-byte keys, 24-byte nonces and its AAD/plaintext
++limits, returns detached outputs, clears staging buffers, and clears memory on disposal. D5 uses that
++exact generated blob and reruns its existing published KAT, composition and source-hash drift checks.
++This is a bridge to existing evidence, not a rebuild, provenance attestation or whole-WASM qualification.
++
++## 4. Storage identity, owner lifetime and safety assumptions
++
++```
++prefix = "done.pending-update." || encodeURIComponent(dbName) || "."
++writer = lowercaseHex(random[16])             // once per journal owner
++storageKey = prefix || storeId || "." || writer || "."
++           || String(++ordinal).padStart(16, "0")
++```
++
++Ordinal begins at zero, must remain a safe integer, and advances even if a later admission step refuses.
++It identifies an entry; it is **not** a nonce or allocation counter. The owner separately samples a fresh
++24-byte nonce for each seal. Existing entry identity refuses rather than overwrites. Append returns a
++journalled receipt only after synchronous localStorage.setItem succeeds. Pressure/quota refusal is not
++an acknowledgment. The one-million-character watermark counts observed UTF-16 key/value characters;
++it is advisory, and actual setItem refusal remains authoritative.
++
++The snapshot reader enumerates scoped prefix keys, opens all captured values, checks the same key set
++and rereads exact values. Concurrent addition/removal produces a bounded retry; immutable replacement
++poisons the owner. Recovery captures journal before content. Flush commits captured plaintext to the
++allocated encrypted database, then removes only each unchanged key/value. This depends on conforming
++writers using immutable, never-reused entry identities: localStorage has no atomic compare-and-delete.
++Content metadata provides additional scope/generation authority; it does not make journal operations
++part of an IndexedDB transaction. D5 does not qualify old-key retirement or general rotation.
++
++**Correction to the inherited row-2 wording:** 192-bit random nonce safety is not “unconditional.” With
++independent uniform samples, collision probability grows with invocations (approximately
++q(q−1)/2^193 for q much smaller than 2^96). Practical margin is large, but depends on functioning fresh
++randomness. Cloned/restored RNG state, writable profile branching and arbitrary rollback are not
++established safe by a byte test. Writer collisions have their own identity/refusal behavior and must
++not be confused with AEAD nonce collisions. Inherited AES lifetime accounting and relaxed IndexedDB
++durability retain D4's explicit F-15 limitation; renderer death is not an OS/power-loss test.
++
++## 5. Evidence and remaining gates
++
++`pnpm account:store-contract` checks eleven independently generated vectors, every encoded AAD field,
++the unchanged inherited row-2 and stored-record subset of row-3 corpus, parser boundaries, actual
++source omissions, and 160 shrinking-enabled generated byte histories. Node crypto implements the
++independent AES/HKDF oracle; noble implements the independent XChaCha oracle. Neither imports production
++encoders. Fixed nonces are test inputs, not a production discipline. Generated higher-generation syntax
++does not model production rotation or prove arbitrary concurrent histories.
++
++Native disposable Chromium fixtures inspect actual factor-opened custody derivations and raw persisted
++records/journal, reopen the owners, verify writer restart/ordinal identities, flush, and refuse changed
++headers, placement, tags and copied entries. A source control removes storeId from custody's real KDF:
++its local encrypt/decrypt round trip still works, while the independent expected-byte check fails.
++Helper source controls omit record principal/sequence/kind or journal workspace/generation/identity
++while preserving real cryptography; a parser control admits a padding alias. Existing content/journal
++native regressions retain crash, unreadable-load, abort, concurrent-writer, handoff and disposal evidence.
++
++Synthetic fixture identity/creation checks do not confer a real Account receipt or qualify onboarding.
++The production sources, personal build/server, prior vectors and historical review remain unchanged.
++F-05/F-06 remain open for the remaining custody/checkpoint/provenance constructions and broader gates;
++F-15 remains open for its failure model and persistence repair. No release-wide security or independent
++review claim follows from this bounded bridge.
+diff --git a/scripts/account-store-contract/run.mjs b/scripts/account-store-contract/run.mjs
+new file mode 100644
+index 0000000..ed8024d
+--- /dev/null
++++ b/scripts/account-store-contract/run.mjs
+@@ -0,0 +1,291 @@
++import { spawn } from 'node:child_process';
++import { createHash } from 'node:crypto';
++import { mkdirSync, readdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
++import { join, resolve } from 'node:path';
++const output = resolve(
++  'test-results/account-store-contract',
++  new Date().toISOString().replaceAll(':', '-'),
++);
++mkdirSync(output, { recursive: true });
++console.log(`Store/journal byte bridge evidence: ${output}`);
++const walk = (dir) =>
++  readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
++    e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)],
++  );
++const files = [
++  ...new Set([
++    ...[
++      'src',
++      'account-protocol',
++      'account-service',
++      'test',
++      'scripts',
++      'docs/account-crypto',
++    ].flatMap(walk),
++    'package.json',
++    'pnpm-lock.yaml',
++    'tsconfig.json',
++    'tsconfig.app.json',
++    'tsconfig.node.json',
++    'vite.config.ts',
++    'docs/TRD.md',
++    'docs/account-first-authority.md',
++    'docs/account-authority.md',
++    'docs/account-promotion.md',
++    'docs/account-source-capture.md',
++    'docs/account-spool.md',
++    'docs/content-store.md',
++    'docs/journal-store.md',
++    'docs/selections/row-2-journal-aead.md',
++    'docs/selections/row-3-record-format.md',
++    'wasm/journal-seal/seal.generated.ts',
++    'wasm/journal-seal/src/lib.rs',
++    'wasm/journal-seal/Cargo.toml',
++    'wasm/journal-seal/Cargo.lock',
++    'docs/account-delivery.md',
++    'docs/account-receive.md',
++    'docs/account-recovery.md',
++    'docs/account-crypto-prep.md',
++    'docs/account-outbound.md',
++    'docs/account-decisions.md',
++    'docs/account-transport.md',
++    'docs/account-service-delivery.md',
++    'docs/account-receive-transport.md',
++    'docs/review/remediation/S0-2/authority-map.md',
++    'docs/selections/row-5-finalization.md',
++    'docs/selections/row-7-checkpoint.md',
++    'docs/selections/row-14-recovery-code.md',
++    ...['S0-1/A-policies.md', ...[2, 3, 4, 5, 6, 7].map((n) => `S0-${n}/A-schemas.md`)].map(
++      (p) => 'docs/review/remediation/' + p,
++    ),
++  ]),
++].sort();
++writeFileSync(
++  join(output, 'sources.json'),
++  JSON.stringify(
++    files.map((path) => ({
++      path,
++      sha256: createHash('sha256').update(readFileSync(path)).digest('hex'),
++    })),
++    null,
++    2,
++  ) + '\n',
++);
++const summary = {
++  status: 'running',
++  startedAt: new Date().toISOString(),
++  node: process.version,
++  scope:
++    'D5 inherited store naming/KDF/AEAD and synchronous journal bytes, native carrier ownership and existing crash boundaries. No rotation, power-loss or whole-WASM qualification. No production or personal state changes',
++  stages: [],
++};
++const save = () =>
++  writeFileSync(join(output, 'summary.json'), JSON.stringify(summary, null, 2) + '\n');
++save();
++async function run(name, args, timeout = 60000) {
++  console.log('Starting ' + name);
++  const log = createWriteStream(join(output, name + '.log'));
++  const evidenceDir = join(output, name);
++  mkdirSync(evidenceDir, { recursive: true });
++  const env = { ...process.env };
++  if (name === 'unit') delete env.ACCOUNT_REPORT_DIR;
++  else env.ACCOUNT_REPORT_DIR = evidenceDir;
++  const child = spawn(process.execPath, args, {
++    detached: true,
++    stdio: ['ignore', 'pipe', 'pipe'],
++    env,
++  });
++  let timedOut = false,
++    forced,
++    error;
++  const kill = (signal) => {
++    try {
++      process.kill(-child.pid, signal);
++    } catch {}
++  };
++  const timer = setTimeout(() => {
++    timedOut = true;
++    kill('SIGTERM');
++    forced = setTimeout(() => kill('SIGKILL'), 5000);
++  }, timeout);
++  const heartbeat = setInterval(
++    () => console.log(name + ' still running; see ' + name + '.log'),
++    15000,
++  );
++  for (const stream of [child.stdout, child.stderr])
++    stream.on('data', (b) => {
++      process.stdout.write(b);
++      log.write(b);
++    });
++  const code = await new Promise((resolve) => {
++    child.once('error', (e) => {
++      error = String(e);
++      resolve(1);
++    });
++    child.once('close', (code) => resolve(code ?? 1));
++  });
++  clearTimeout(timer);
++  clearTimeout(forced);
++  clearInterval(heartbeat);
++  await new Promise((resolve) => log.end(resolve));
++  summary.stages.push({
++    name,
++    command: [process.execPath, ...args],
++    code,
++    timedOut,
++    ...(error ? { error } : {}),
++  });
++  save();
++  return code === 0 && !timedOut;
++}
++const testArgs = (name, paths) => [
++  '--test',
++  '--test-concurrency=1',
++  '--test-reporter=spec',
++  '--test-reporter-destination=stdout',
++  '--test-reporter=junit',
++  `--test-reporter-destination=${join(output, name + '.xml')}`,
++  ...paths,
++];
++try {
++  const pkg = JSON.parse(readFileSync('package.json'));
++  // Execute the checked Node-only vector chain directly; do not depend on package-manager provisioning.
++  const vectorCommands = pkg.scripts['vectors:check']
++    .replace('pnpm vectors:coverage', pkg.scripts['vectors:coverage'])
++    .split(' && ')
++    .map((command) => {
++      const [exe, ...args] = command.split(' ');
++      if (exe !== 'node') throw Error('Review non-Node vector command before running: ' + command);
++      return args;
++    });
++  const stages = [
++    ['inventory', ['scripts/account-crypto-prep/run.mjs']],
++    ['authority', ['scripts/check-authority-map.mjs']],
++    ['registry', testArgs('registry', ['test/account-first-authority/registry.test.mjs'])],
++    [
++      'first-authority',
++      testArgs('first-authority', ['test/account-first-authority/formats.test.mjs']),
++    ],
++    [
++      'recovery-contract',
++      testArgs(
++        'recovery-contract',
++        ['formats', 'exports', 'controls'].map(
++          (n) => 'test/account-recovery-contract/' + n + '.test.mjs',
++        ),
++      ),
++    ],
++    [
++      'transport-contract',
++      testArgs(
++        'transport-contract',
++        ['formats', 'controls'].map((n) => 'test/account-transport-contract/' + n + '.test.mjs'),
++      ),
++    ],
++    [
++      'custody-contract',
++      testArgs(
++        'custody-contract',
++        ['formats', 'exports', 'controls'].map(
++          (n) => 'test/account-service-custody/' + n + '.test.mjs',
++        ),
++      ),
++    ],
++    [
++      'promotion-contract',
++      testArgs('promotion-contract', ['test/account-promotion-contract/formats.test.mjs']),
++    ],
++    [
++      'ledger-contract',
++      testArgs(
++        'ledger-contract',
++        ['formats', 'controls'].map((n) => 'test/account-ledger-contract/' + n + '.test.mjs'),
++      ),
++    ],
++    [
++      'store-contract',
++      testArgs('store-contract', ['test/account-store-contract/formats.test.mjs']),
++    ],
++    ['store-native', testArgs('store-native', ['test/account-store-contract/native.test.mjs'])],
++    [
++      'counter-contract',
++      testArgs('counter-contract', ['test/account-counter-contract/formats.test.mjs']),
++    ],
++    ['wasm-bridge', ['scripts/check-wasm-seal.mjs']],
++    [
++      'content-native',
++      [
++        'scripts/content/run.mjs',
++        '--case',
++        'C01.byte-replay,C09.unreadable-load',
++        '--output',
++        join(output, 'content-native', 'native'),
++      ],
++    ],
++    [
++      'journal-native',
++      [
++        'scripts/journal/run.mjs',
++        '--case',
++        'C01.synchronous-crash,C09.unreadable,C11.abort-flush,C04.close-and-keys,C04.concurrent-writers,C01.handoff-race',
++        '--output',
++        join(output, 'journal-native', 'native'),
++      ],
++    ],
++    ['typecheck', ['node_modules/typescript/bin/tsc', '-b', '--noEmit']],
++    ['unit', ['node_modules/vitest/vitest.mjs', 'run', '--maxWorkers=2']],
++    ...vectorCommands.map((args, i) => ['vectors-' + String(i + 1).padStart(2, '0'), args]),
++    [
++      'lint',
++      [
++        'node_modules/oxlint/bin/oxlint',
++        'scripts/account-store-contract',
++        'test/account-store-contract',
++        'scripts/account-first-authority/registry.mjs',
++        'test/account-first-authority/registry.test.mjs',
++        'scripts/check-authority-map.mjs',
++      ],
++    ],
++    [
++      'format',
++      [
++        'node_modules/oxfmt/bin/oxfmt',
++        '--check',
++        'scripts/account-store-contract',
++        'test/account-store-contract',
++        'scripts/account-first-authority/registry.mjs',
++        'test/account-first-authority/registry.test.mjs',
++        'scripts/check-authority-map.mjs',
++        'docs/account-crypto/constructions.json',
++        'package.json',
++      ],
++    ],
++  ];
++  for (const [name, args] of stages)
++    if (
++      !(await run(
++        name,
++        args,
++        name.endsWith('-regressions') || name.endsWith('-native')
++          ? 300000
++          : name === 'unit'
++            ? 120000
++            : 60000,
++      ))
++    )
++      throw Error(name + ' failed');
++  const saved = JSON.parse(readFileSync(join(output, 'sources.json')));
++  for (const entry of saved)
++    if (createHash('sha256').update(readFileSync(entry.path)).digest('hex') !== entry.sha256)
++      throw Error('Source changed during campaign: ' + entry.path);
++  summary.sourcePinsVerified = saved.length;
++  summary.status = 'passed';
++} catch (e) {
++  summary.status = 'failed';
++  summary.error = String(e);
++  process.exitCode = 1;
++} finally {
++  summary.completedAt = new Date().toISOString();
++  save();
++  console.log(summary.status + ': ' + output);
++}
+diff --git a/scripts/account-store-contract/vectors.mjs b/scripts/account-store-contract/vectors.mjs
+new file mode 100644
+index 0000000..26b76d0
+--- /dev/null
++++ b/scripts/account-store-contract/vectors.mjs
+@@ -0,0 +1,8 @@
++import { readFileSync, writeFileSync } from 'node:fs';
++import assert from 'node:assert/strict';
++import { corpus } from '../../test/account-store-contract/oracle.mjs';
++const file = 'test/vectors/account-store.json',
++  value = corpus();
++if (process.argv.includes('--check')) assert.deepEqual(JSON.parse(readFileSync(file)), value);
++else writeFileSync(file, JSON.stringify(value, null, 2) + '\n');
++console.log(value.vectors.length + ' independent store/journal bridge vectors current.');
+diff --git a/test/account-store-contract/browser.ts b/test/account-store-contract/browser.ts
+new file mode 100644
+index 0000000..50e13e8
+--- /dev/null
++++ b/test/account-store-contract/browser.ts
+@@ -0,0 +1,12 @@
++export { fields, hkdf } from '../../src/crdt/custodyCrypto';
++export { identity } from '../../src/crdt/custodyRecord';
++export { deriveStoreName } from '../../src/crdt/storeName';
++export { parseStoredRecord, recordAAD, recordStore } from '../../src/crdt/contentRecord';
++export {
++  deriveJournalKey,
++  journalAAD,
++  journalPrefix,
++  encodeJournal,
++  decodeJournal,
++  createJournalCodec,
++} from '../../src/crdt/journalCodec';
+diff --git a/test/account-store-contract/formats.test.mjs b/test/account-store-contract/formats.test.mjs
+new file mode 100644
+index 0000000..4b7726e
+--- /dev/null
++++ b/test/account-store-contract/formats.test.mjs
+@@ -0,0 +1,463 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import fc from 'fast-check';
++import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
++import { join } from 'node:path';
++import { load } from './runtime.mjs';
++import {
++  corpus,
++  fixtures,
++  scope,
++  kg,
++  bytes,
++  hex,
++  lp,
++  key,
++  name,
++  storageKey,
++  recordAAD,
++  journalAAD,
++  aes,
++  xseal,
++  encode,
++} from './oracle.mjs';
++export const report = (name, value) => {
++  if (process.env.ACCOUNT_REPORT_DIR) {
++    mkdirSync(process.env.ACCOUNT_REPORT_DIR, { recursive: true });
++    writeFileSync(
++      join(process.env.ACCOUNT_REPORT_DIR, name + '.json'),
++      JSON.stringify(value, null, 2) + '\n',
++    );
++  }
++};
++const h = await load();
++const nativeKey = async (s, secret = kg) =>
++  h.hkdf(
++    bytes(secret),
++    new Uint8Array(),
++    h.fields('done/store/v1', s.workspaceId, s.storeId),
++    { name: 'AES-GCM', length: 256 },
++    ['encrypt', 'decrypt'],
++  );
++const crypt = async (mode, k, n, a, p) =>
++  new Uint8Array(
++    await crypto.subtle[mode]({ name: 'AES-GCM', iv: n, additionalData: a, tagLength: 128 }, k, p),
++  );
++
++test('independent fixed corpus agrees with names, HKDF, record AEAD and synchronous WASM carrier bytes', async () => {
++  const vectors = corpus().vectors;
++  for (const v of vectors) {
++    if (v.kind === 'digest') {
++      assert.equal(
++        await h.deriveStoreName(v.input.principalId, v.input.workspaceId),
++        v.expected.name,
++      );
++      for (const n of v.negatives) {
++        const actual = await h.deriveStoreName(n.scope.principalId, n.scope.workspaceId);
++        assert.equal(actual, n.name);
++        assert.notEqual(actual, v.expected.name);
++      }
++      continue;
++    }
++    if (v.kind === 'kdf') {
++      if (v.id === 'journal-key')
++        assert.equal(
++          hex(await h.deriveJournalKey(bytes(kg), scope.workspaceId)),
++          v.expected.resultHex,
++        );
++      else {
++        const k = await nativeKey(scope);
++        assert.equal(k.extractable, false);
++        assert.deepEqual(k.usages, ['encrypt', 'decrypt']);
++        assert.equal(
++          hex(await crypt('encrypt', k, new Uint8Array(12), new Uint8Array(), new Uint8Array())),
++          hex(aes(key(scope), new Uint8Array(12), new Uint8Array(), new Uint8Array())),
++        );
++      }
++      for (const n of v.negatives) {
++        assert.notEqual(n.resultHex, v.expected.resultHex);
++        if (v.id === 'journal-key')
++          assert.equal(
++            hex(await h.deriveJournalKey(bytes(n.kg), n.scope.workspaceId)),
++            n.resultHex,
++          );
++        else
++          assert.equal(
++            hex(
++              await crypt(
++                'encrypt',
++                await nativeKey(n.scope, n.kg),
++                new Uint8Array(12),
++                new Uint8Array(),
++                new Uint8Array(),
++              ),
++            ),
++            hex(aes(bytes(n.resultHex), new Uint8Array(12), new Uint8Array(), new Uint8Array())),
++          );
++      }
++      continue;
++    }
++    const f = v.input,
++      n = bytes(f.nonce),
++      p = bytes(f.plaintext);
++    if (f.family === 'record') {
++      const k = await nativeKey(f.scope, f.kg),
++        aad = h.recordAAD(f.scope, f.record);
++      assert.equal(hex(aad), v.expected.messageHex);
++      assert.equal(hex(await crypt('encrypt', k, n, aad, p)), v.expected.resultHex);
++      assert.equal(
++        hex(await crypt('decrypt', k, n, aad, bytes(v.expected.resultHex))),
++        f.plaintext,
++      );
++    } else {
++      assert.equal(
++        hex(h.journalAAD(f.scope.workspaceId, f.gen, f.storageKey)),
++        v.expected.messageHex,
++      );
++      const c = h.createJournalCodec(
++        f.scope.workspaceId,
++        f.gen,
++        await h.deriveJournalKey(bytes(f.kg), f.scope.workspaceId),
++      );
++      try {
++        assert.equal(c.seal(f.storageKey, n, p), v.expected.carrier);
++        assert.equal(hex(c.open(f.storageKey, v.expected.carrier).bytes), f.plaintext);
++      } finally {
++        c.dispose();
++      }
++    }
++  }
++  report('fixed', { vectors: vectors.length, productionExtractable: false, actualWasm: true });
++});
++
++test('unchanged inherited row 2 and stored-record subset of row 3 match the independent oracle and current runtime', async () => {
++  let records = 0,
++    journals = 0;
++  for (const v of JSON.parse(readFileSync('test/vectors/record-format.json')).vectors.filter(
++    (v) => v.expected.stored_record,
++  )) {
++    const i = v.inputs,
++      s = { principalId: i.principal_id, workspaceId: i.workspace_id, storeId: i.store_id },
++      r = { v: 1, gen: i.gen, seq: i.seq, kind: i.kind };
++    assert.equal(hex(recordAAD(s, r)), v.derived.aad);
++    assert.equal(hex(h.recordAAD(s, r)), v.derived.aad);
++    assert.equal(
++      hex(aes(key(s, i.k_g), bytes(i.nonce), recordAAD(s, r), bytes(i.plaintext))),
++      v.expected.ct,
++    );
++    assert.equal(
++      hex(
++        await crypt(
++          'encrypt',
++          await nativeKey(s, i.k_g),
++          bytes(i.nonce),
++          h.recordAAD(s, r),
++          bytes(i.plaintext),
++        ),
++      ),
++      v.expected.ct,
++    );
++    records++;
++  }
++  for (const v of JSON.parse(readFileSync('test/vectors/journal-aead.json')).vectors) {
++    const i = v.inputs,
++      s = { workspaceId: i.workspace_id },
++      k = key(s, i.k_g, true),
++      aad = journalAAD(s, i.gen, i.journal_storage_key);
++    assert.equal(hex(k), v.derived.k_journal);
++    assert.equal(hex(aad), v.derived.aad);
++    assert.equal(
++      encode(i.gen, bytes(i.nonce), xseal(k, bytes(i.nonce), aad, bytes(i.plaintext))),
++      v.expected.record,
++    );
++    const c = h.createJournalCodec(
++      i.workspace_id,
++      i.gen,
++      await h.deriveJournalKey(bytes(i.k_g), i.workspace_id),
++    );
++    try {
++      assert.equal(
++        c.seal(i.journal_storage_key, bytes(i.nonce), bytes(i.plaintext)),
++        v.expected.record,
++      );
++    } finally {
++      c.dispose();
++    }
++    journals++;
++  }
++  report('inherited', {
++    records,
++    journals,
++    sourcePins: corpus().inherited,
++    envelopes: 'deferred',
++    wasm: 'existing generated blob, no rebuild',
++  });
++});
++
++test('every AAD field binds with held keys; omission witnesses retain real authenticated encryption', async () => {
++  let bound = 0,
++    omissions = 0;
++  for (const v of corpus().vectors.filter((v) => v.kind === 'aead')) {
++    const f = v.input,
++      j = f.family === 'journal',
++      k = key(f.scope, f.kg, j),
++      nk = j ? null : await nativeKey(f.scope, f.kg),
++      n = bytes(f.nonce),
++      p = bytes(f.plaintext);
++    for (const m of v.negatives) {
++      if (j) {
++        // Use actual WASM directly via codec's production AAD seam. Keep key fixed to isolate AAD.
++        const fields = m.fields;
++        // Arbitrary label/version/decimal mutations are exercised with WebAssembly's primitive wrapper below.
++        const { createJournalSeal } = await import('../../wasm/journal-seal/seal.generated.ts');
++        const w = createJournalSeal();
++        try {
++          assert.throws(() => w.open(k, n, lp(...fields), bytes(v.expected.resultHex)));
++        } finally {
++          w.dispose();
++        }
++      } else
++        await assert.rejects(
++          crypt('decrypt', nk, n, bytes(m.messageHex), bytes(v.expected.resultHex)),
++        );
++      bound++;
++    }
++    for (const m of v.encodedBindingControls) {
++      assert.equal(m.omittedHex, m.changedOmittedHex);
++      const aad = bytes(m.omittedHex);
++      if (j) {
++        const { createJournalSeal } = await import('../../wasm/journal-seal/seal.generated.ts');
++        const w = createJournalSeal();
++        try {
++          const ct = w.seal(k, n, aad, p);
++          assert.equal(hex(w.open(k, n, bytes(m.changedOmittedHex), ct)), f.plaintext);
++          assert.throws(() => w.open(k, n, bytes(v.expected.messageHex), ct));
++        } finally {
++          w.dispose();
++        }
++      } else {
++        const ct = await crypt('encrypt', nk, n, aad, p);
++        assert.equal(
++          hex(await crypt('decrypt', nk, n, bytes(m.changedOmittedHex), ct)),
++          f.plaintext,
++        );
++        await assert.rejects(crypt('decrypt', nk, n, bytes(v.expected.messageHex), ct));
++      }
++      omissions++;
++    }
++  }
++  report('bindings', { bound, omissions });
++});
++
++test('carrier parsers enforce closed shape, safe integers, canonical base64 and maximum admitted plaintext', async () => {
++  const f = fixtures()[0],
++    r = { ...f.record, nonce: bytes(f.nonce), ct: new Uint8Array(16) };
++  let refusals = 0;
++  for (const field of Object.keys(r)) {
++    const m = { ...r };
++    delete m[field];
++    assert.throws(() => h.parseStoredRecord(m), { code: 'repair-required' });
++    refusals++;
++  }
++  for (const m of [
++    null,
++    [],
++    Object.create(null),
++    { ...r, extra: 1 },
++    { ...r, v: 2 },
++    { ...r, gen: 0 },
++    { ...r, seq: NaN },
++    { ...r, seq: 2 ** 53 },
++    { ...r, kind: 'unknown' },
++    { ...r, nonce: new Uint8Array(13) },
++    { ...r, ct: new Uint8Array(15) },
++  ]) {
++    assert.throws(() => h.parseStoredRecord(m), { code: 'repair-required' });
++    refusals++;
++  }
++  const parsed = h.parseStoredRecord(r);
++  r.nonce.fill(9);
++  r.ct.fill(9);
++  assert.notEqual(parsed.nonce[0], 9);
++  assert.notEqual(parsed.ct[0], 9);
++  const c = h.createJournalCodec(scope.workspaceId, 1, key(scope, kg, true)),
++    sk = storageKey(scope),
++    n = new Uint8Array(24),
++    v = c.seal(sk, n, new Uint8Array());
++  try {
++    const raw = Buffer.from(v.slice(2), 'base64'),
++      alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
++      at = v.length - 2,
++      alias = v.slice(0, at) + alphabet[alphabet.indexOf(v[at]) + 1] + v.slice(at + 1);
++    for (const m of [
++      null,
++      '1:' + v.slice(2),
++      v + '\n',
++      v.slice(0, -1),
++      alias,
++      '2:' + Buffer.concat([Buffer.alloc(4), raw.subarray(4)]).toString('base64'),
++      '2:' + Buffer.alloc(43).toString('base64'),
++      '2:' + Buffer.alloc(16429).toString('base64'),
++    ]) {
++      assert.throws(() => h.decodeJournal(m), { code: 'repair-required' });
++      refusals++;
++    }
++    assert.deepEqual(h.decodeJournal(v).nonce, n);
++    assert.equal(c.open(sk, c.seal(sk, n, new Uint8Array(16384))).bytes.length, 16384);
++    assert.throws(() => c.seal(sk, n, new Uint8Array(16385)), { code: 'invalid-input' });
++    assert.throws(() => c.open(sk + 'x', v), { code: 'repair-required' });
++    for (const offset of [4, 28, raw.length - 1]) {
++      const m = Buffer.from(raw);
++      m[offset] ^= 1;
++      assert.throws(() => c.open(sk, '2:' + m.toString('base64')), { code: 'repair-required' });
++    }
++    const m = Buffer.from(raw);
++    m.writeUInt32BE(2);
++    assert.throws(() => c.open(sk, '2:' + m.toString('base64')), { code: 'repair-required' });
++    assert.equal((await load('canonicalBase64')).decodeJournal(alias).generation, 1);
++  } finally {
++    c.dispose();
++  }
++  assert.throws(() => h.identity('\ud800'));
++  assert.throws(() => h.fields('\ud800'));
++  assert.throws(() => h.fields('x'.repeat(65536)));
++  // Name helper has a broader typed domain; admitted custody rejects malformed Unicode first.
++  assert.equal(await h.deriveStoreName('\ud800', 'w'), await h.deriveStoreName('\ufffd', 'w'));
++  assert.notEqual(await h.deriveStoreName('é', 'w'), await h.deriveStoreName('e\u0301', 'w'));
++  assert.notEqual(await h.deriveStoreName('ab', 'c'), await h.deriveStoreName('a', 'bc'));
++  assert.equal(h.journalPrefix('name./ 🙂'), 'done.pending-update.name.%2F%20%F0%9F%99%82.');
++  report('parsers', {
++    refusals,
++    maximumPlaintext: 16384,
++    base64Omission: 'padding alias accepted only after canonicality guard removal',
++    unicode: 'identity guard rejects malformed scalar input before custody owner',
++  });
++});
++
++test('160 shrinking-enabled generated byte histories preserve cold-open bytes and reject moved identities and corruption', async () => {
++  let histories = 0,
++    steps = 0;
++  const traces = [];
++  const result = await fc.check(
++    fc.asyncProperty(
++      fc
++        .array(fc.constantFrom('a', 'é', 'e\u0301', '🙂', '/', '.', '\u0000'), {
++          minLength: 1,
++          maxLength: 12,
++        })
++        .map((a) => a.join('')),
++      fc.array(
++        fc.record({
++          plain: fc.uint8Array({ maxLength: 256 }),
++          writer: fc.boolean(),
++          gen: fc.integer({ min: 1, max: 65536 }),
++          kind: fc.constantFrom('update', 'state', 'heads', 'outbound'),
++        }),
++        { minLength: 2, maxLength: 16 },
++      ),
++      async (ws, ops) => {
++        const s = { ...scope, workspaceId: ws };
++        assert.equal(await h.deriveStoreName(s.principalId, ws), name(s));
++        const k = await nativeKey(s),
++          jk = await h.deriveJournalKey(bytes(kg), ws);
++        assert.equal(hex(jk), hex(key(s, kg, true)));
++        for (const [i, op] of ops.entries()) {
++          const sk = storageKey(s, op.writer ? '56'.repeat(16) : '34'.repeat(16), i + 1),
++            n = new Uint8Array(24);
++          new DataView(n.buffer).setUint32(20, i + 1);
++          const c = h.createJournalCodec(ws, op.gen, jk),
++            wire = c.seal(sk, n, op.plain);
++          c.dispose();
++          assert.equal(wire, encode(op.gen, n, xseal(jk, n, journalAAD(s, op.gen, sk), op.plain)));
++          const cold = h.createJournalCodec(ws, op.gen, jk);
++          try {
++            assert.equal(hex(cold.open(sk, wire).bytes), hex(op.plain));
++            assert.throws(() => cold.open(sk + 'x', wire), { code: 'repair-required' });
++            const raw = Buffer.from(wire.slice(2), 'base64');
++            raw[raw.length - 1] ^= 1;
++            assert.throws(() => cold.open(sk, '2:' + raw.toString('base64')), {
++              code: 'repair-required',
++            });
++          } finally {
++            cold.dispose();
++          }
++          const r = { v: 1, gen: op.gen, seq: i + 1, kind: op.kind },
++            ct = await crypt('encrypt', k, n.slice(12), h.recordAAD(s, r), op.plain);
++          assert.equal(hex(ct), hex(aes(key(s), n.slice(12), recordAAD(s, r), op.plain)));
++          const parsed = h.parseStoredRecord({ ...r, nonce: n.slice(12), ct });
++          assert.equal(
++            hex(await crypt('decrypt', k, parsed.nonce, h.recordAAD(s, parsed), parsed.ct)),
++            hex(op.plain),
++          );
++          await assert.rejects(
++            crypt('decrypt', k, parsed.nonce, h.recordAAD(s, { ...r, seq: r.seq + 1 }), ct),
++          );
++          steps++;
++        }
++        histories++;
++        traces.push({ workspaceHex: hex(Buffer.from(ws)), operations: ops.length });
++      },
++    ),
++    { seed: 5110919, numRuns: 160 },
++  );
++  report('properties', {
++    ...result,
++    errorInstance: result.errorInstance ? String(result.errorInstance) : null,
++    histories,
++    steps,
++    traces,
++  });
++  assert.equal(result.failed, false, String(result.errorInstance));
++});
++
++test('source omissions lose record and journal bindings while real AES and WASM authentication remains operative', async () => {
++  const evidence = [],
++    f = fixtures()[1],
++    k = await nativeKey(scope),
++    n = bytes(f.nonce),
++    p = bytes(f.plaintext);
++  for (const control of ['principal', 'sequence', 'kind']) {
++    const m = await load(control),
++      s2 = control === 'principal' ? { ...scope, principalId: 'other' } : scope,
++      r2 = {
++        ...f.record,
++        ...(control === 'sequence' ? { seq: 1 } : control === 'kind' ? { kind: 'outbound' } : {}),
++      };
++    const original = await crypt('encrypt', k, n, h.recordAAD(scope, f.record), p);
++    await assert.rejects(crypt('decrypt', k, n, h.recordAAD(s2, r2), original));
++    const weakened = await crypt('encrypt', k, n, m.recordAAD(scope, f.record), p);
++    assert.equal(hex(await crypt('decrypt', k, n, m.recordAAD(s2, r2), weakened)), f.plaintext);
++    evidence.push(control);
++  }
++  for (const control of ['journalWorkspace', 'journalGeneration', 'journalIdentity']) {
++    const m = await load(control),
++      jk = key(scope, kg, true),
++      sk = storageKey(scope),
++      nonce = new Uint8Array(24),
++      ws2 = control === 'journalWorkspace' ? 'other' : scope.workspaceId,
++      gen2 = control === 'journalGeneration' ? 2 : 1,
++      sk2 = control === 'journalIdentity' ? sk + 'x' : sk;
++    for (const runtime of [h, m]) {
++      const a = runtime.createJournalCodec(scope.workspaceId, 1, jk),
++        b = runtime.createJournalCodec(ws2, gen2, jk);
++      try {
++        let wire = a.seal(sk, nonce, p);
++        if (gen2 !== 1) {
++          const raw = Buffer.from(wire.slice(2), 'base64');
++          raw.writeUInt32BE(gen2);
++          wire = '2:' + raw.toString('base64');
++        }
++        if (runtime === h) assert.throws(() => b.open(sk2, wire), { code: 'repair-required' });
++        else assert.equal(hex(b.open(sk2, wire).bytes), f.plaintext);
++      } finally {
++        a.dispose();
++        b.dispose();
++      }
++    }
++    evidence.push(control);
++  }
++  report('source-controls', {
++    caught: evidence,
++    crypto: 'operative; omission permits changed authenticated inputs',
++  });
++});
+diff --git a/test/account-store-contract/native-browser.ts b/test/account-store-contract/native-browser.ts
+new file mode 100644
+index 0000000..20205c8
+--- /dev/null
++++ b/test/account-store-contract/native-browser.ts
+@@ -0,0 +1,95 @@
++// Synthetic factor custody setup is shared with D4; all carrier operations below use D5's actual owners.
++import { setup as custodySetup } from '../account-counter-contract/native-browser';
++import { openJournalSession, type JournalSession } from '../../src/crdt/custody';
++import { deriveStoreName } from '../../src/crdt/storeName';
++import { hex, type Bytes } from '../../src/crdt/custodyCrypto';
++import { type RecordKind, type StoredRecord } from '../../src/crdt/contentRecord';
++let saved: Awaited<ReturnType<typeof custodySetup>>, session: JournalSession | undefined;
++export const configure = (value: typeof saved) => {
++  saved = value;
++};
++export async function setup() {
++  saved = await custodySetup('store-native-🙂');
++  return saved;
++}
++export async function open() {
++  session = await openJournalSession(
++    { ...saved.scope, resolvePrincipal: () => saved.scope.principalId },
++    saved.code,
++  );
++}
++export async function close() {
++  await session?.close();
++  session = undefined;
++}
++export async function append() {
++  await session!.appendBatch(
++    (['update', 'state', 'heads', 'outbound'] as RecordKind[]).map((kind, i) => ({
++      kind,
++      bytes: new Uint8Array([i, 0, 255, 1]),
++    })),
++  );
++  return [0, 1].map((i) => session!.appendLocal(new Uint8Array([20 + i, 0, 255])));
++}
++export const local = () => session!.appendLocal(new Uint8Array([22, 0, 255]));
++export const flush = () => session!.flushJournal();
++export async function recover() {
++  const r = await session!.loadRecovery();
++  return {
++    records: r.records.map((v) => ({ ...v, bytes: hex(v.bytes) })),
++    journal: r.journal.map((v) => ({ ...v, bytes: hex(v.bytes) })),
++  };
++}
++export async function raw<T>(
++  store: string,
++  mode: IDBTransactionMode,
++  op: (s: IDBObjectStore) => IDBRequest<T>,
++): Promise<T> {
++  const name = await deriveStoreName(saved.scope.principalId, saved.scope.workspaceId),
++    db = await new Promise<IDBDatabase>((res, rej) => {
++      const r = indexedDB.open(name);
++      r.onsuccess = () => res(r.result);
++      r.onerror = () => rej(r.error);
++    });
++  try {
++    return await new Promise<T>((res, rej) => {
++      const tx = db.transaction(store, mode),
++        r = op(tx.objectStore(store));
++      tx.oncomplete = () => res(r.result);
++      tx.onabort = () => rej(tx.error);
++    });
++  } finally {
++    db.close();
++  }
++}
++export async function snapshot() {
++  const rows = [];
++  for (const store of ['content', 'heads', 'outbound'])
++    for (const r of await raw<StoredRecord[]>(store, 'readonly', (s) => s.getAll()))
++      rows.push({ store, ...r, nonce: hex(r.nonce), ct: hex(r.ct) });
++  return {
++    name: await deriveStoreName(saved.scope.principalId, saved.scope.workspaceId),
++    rows,
++    journal: Object.entries(localStorage)
++      .filter(([k]) => k.startsWith('done.pending-update.'))
++      .sort(),
++  };
++}
++export async function setRow(
++  row: {
++    store: string;
++    v: 1;
++    gen: number;
++    seq: number;
++    kind: RecordKind;
++    nonce: string;
++    ct: string;
++  },
++  primary: number,
++) {
++  const unhex = (s: string): Bytes => new Uint8Array(s.match(/../g)!.map((v) => parseInt(v, 16))),
++    { store, ...r } = row;
++  await raw(store, 'readwrite', (s) =>
++    s.put({ ...r, nonce: unhex(row.nonce), ct: unhex(row.ct) }, primary),
++  );
++}
+diff --git a/test/account-store-contract/native.test.mjs b/test/account-store-contract/native.test.mjs
+new file mode 100644
+index 0000000..8b1f38d
+--- /dev/null
++++ b/test/account-store-contract/native.test.mjs
+@@ -0,0 +1,270 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { createServer } from 'node:http';
++import { mkdirSync, writeFileSync } from 'node:fs';
++import { join } from 'node:path';
++import { chromium } from '@playwright/test';
++import { bundle } from './runtime.mjs';
++import {
++  key,
++  keyInfo,
++  hex,
++  bytes,
++  name,
++  storageKey,
++  recordAAD,
++  journalAAD,
++  openAES,
++  xopen,
++} from './oracle.mjs';
++const scripts = {
++  base: await bundle(undefined, true),
++  custodyStore: await bundle('custodyStore', true),
++};
++const report = (n, v) => {
++  if (process.env.ACCOUNT_REPORT_DIR) {
++    mkdirSync(process.env.ACCOUNT_REPORT_DIR, { recursive: true });
++    writeFileSync(
++      join(process.env.ACCOUNT_REPORT_DIR, n + '.json'),
++      JSON.stringify(v, null, 2) + '\n',
++    );
++  }
++};
++async function fixture(t, control = 'base') {
++  const server = createServer((_req, res) => {
++    res.writeHead(200, { 'Content-Type': 'text/html' });
++    res.end('<!doctype html><title>Disposable store bridge</title>');
++  });
++  await new Promise((r, rej) => {
++    server.once('error', rej);
++    server.listen(0, '127.0.0.1', r);
++  });
++  t.after(() => new Promise((r) => server.close(r)));
++  const browser = await chromium.launch({
++    headless: true,
++    ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}),
++  });
++  t.after(() => browser.close());
++  const page = await browser.newPage(),
++    url = 'http://127.0.0.1:' + server.address().port;
++  const cold = async () => {
++    await page.goto(url);
++    await page.evaluate(scripts[control]);
++  };
++  await cold();
++  await page.evaluate(() => {
++    window.keyTraces = [];
++    for (const method of ['deriveKey', 'deriveBits']) {
++      const original = crypto.subtle[method].bind(crypto.subtle);
++      crypto.subtle[method] = async function (...args) {
++        const result = await original(...args),
++          alg = args[0],
++          info = alg.info && new TextDecoder().decode(alg.info);
++        if (info && (info.includes('done/store/v1') || info.includes('done/journal/v1')))
++          keyTraces.push({
++            method,
++            info: [...alg.info],
++            salt: [...alg.salt],
++            ...(method === 'deriveKey'
++              ? { extractable: result.extractable, usages: result.usages }
++              : { bits: [...new Uint8Array(result)] }),
++          });
++        return result;
++      };
++    }
++  });
++  const saved = await page.evaluate(() => StoreContract.setup());
++  return { page, cold, saved };
++}
++const invoke = (p, method) => p.evaluate((m) => StoreContract[m](), method);
++function checkRaw(saved, raw) {
++  assert.equal(raw.name, name(saved.scope));
++  const k = key(saved.scope, saved.generation),
++    jk = key(saved.scope, saved.generation, true);
++  for (const r of raw.rows)
++    assert.equal(
++      hex(openAES(k, bytes(r.nonce), recordAAD(saved.scope, r), bytes(r.ct))),
++      hex(new Uint8Array([['update', 'state', 'heads', 'outbound'].indexOf(r.kind), 0, 255, 1])),
++    );
++  const journalPlaintexts = [];
++  for (const [sk, wire] of raw.journal) {
++    const parts = sk.split('.'),
++      writer = parts.at(-2),
++      ordinal = Number(parts.at(-1));
++    assert.match(writer, /^[a-f0-9]{32}$/);
++    assert.equal(sk, storageKey(saved.scope, writer, ordinal));
++    const b = Buffer.from(wire.slice(2), 'base64'),
++      gen = b.readUInt32BE();
++    assert.equal(gen, 1);
++    journalPlaintexts.push(
++      hex(xopen(jk, b.subarray(4, 28), journalAAD(saved.scope, gen, sk), b.subarray(28))),
++    );
++  }
++  assert.deepEqual(
++    journalPlaintexts.sort(),
++    Array.from({ length: raw.journal.length }, (_, i) =>
++      hex(new Uint8Array([20 + i, 0, 255])),
++    ).sort(),
++  );
++}
++test(
++  'real factor-opened owners derive the specified keys and persist exact store and writer/ordinal journal bytes across reopen and flush',
++  { timeout: 40000 },
++  async (t) => {
++    const f = await fixture(t);
++    await invoke(f.page, 'open');
++    const receipts = await invoke(f.page, 'append');
++    assert(receipts.every((r) => r.status === 'journalled'));
++    const raw = await invoke(f.page, 'snapshot');
++    checkRaw(f.saved, raw);
++    assert.equal(raw.rows.length, 4);
++    assert.equal(raw.journal.length, 2);
++    const traces = await f.page.evaluate(() => keyTraces);
++    assert(traces.some((t) => t.method === 'deriveBits'));
++    assert(traces.some((t) => t.method === 'deriveKey'));
++    for (const x of traces) {
++      const j = x.method === 'deriveBits';
++      assert.equal(hex(x.info), hex(keyInfo(f.saved.scope, j)));
++      assert.deepEqual(x.salt, []);
++      if (j) assert.equal(hex(x.bits), hex(key(f.saved.scope, f.saved.generation, true)));
++      else {
++        assert.equal(x.extractable, false);
++        assert(['decrypt', 'encrypt,decrypt'].includes(x.usages.join(',')));
++      }
++    }
++    assert(traces.some((x) => x.usages?.join(',') === 'encrypt,decrypt'));
++    const before = await invoke(f.page, 'recover');
++    await invoke(f.page, 'close');
++    await f.cold();
++    await f.page.evaluate((s) => StoreContract.configure(s), f.saved);
++    await invoke(f.page, 'open');
++    assert.deepEqual(await invoke(f.page, 'recover'), before);
++    const third = await invoke(f.page, 'local');
++    assert.equal(third.status, 'journalled');
++    const after = await invoke(f.page, 'snapshot');
++    checkRaw(f.saved, after);
++    assert.equal(third.key.split('.').at(-1), '0000000000000001');
++    assert.notEqual(third.key.split('.').at(-2), receipts[0].key.split('.').at(-2));
++    const flushed = await invoke(f.page, 'flush');
++    const recovered = await invoke(f.page, 'recover');
++    assert.deepEqual(
++      recovered.records.map((r) => r.bytes).sort(),
++      [0, 1, 2, 3]
++        .map((i) => hex(new Uint8Array([i, 0, 255, 1])))
++        .concat([20, 21, 22].map((i) => hex(new Uint8Array([i, 0, 255]))))
++        .sort(),
++    );
++    assert.equal((await invoke(f.page, 'snapshot')).journal.length, 0);
++    await invoke(f.page, 'close');
++    report('native-bytes', {
++      records: raw.rows.length,
++      journalEntries: after.journal.length,
++      writerRestart: true,
++      traces,
++      flushed,
++      syntheticScope: f.saved.scope,
++    });
++  },
++);
++test(
++  'native cold recovery refuses changed record placement/header/tag and copied journal writer/ordinal/scope without deletion',
++  { timeout: 40000 },
++  async (t) => {
++    const f = await fixture(t);
++    await invoke(f.page, 'open');
++    await invoke(f.page, 'append');
++    await invoke(f.page, 'close');
++    const raw = await invoke(f.page, 'snapshot'),
++      r = raw.rows[0],
++      evidence = [];
++    for (const [field, value] of [
++      ['seq', 99],
++      ['gen', 2],
++      ['kind', 'state'],
++      ['nonce', 'ff'.repeat(12)],
++      ['ct', r.ct.slice(0, -2) + (r.ct.endsWith('00') ? '01' : '00')],
++    ]) {
++      await f.page.evaluate(
++        ({ r, field, value }) => StoreContract.setRow({ ...r, [field]: value }, r.seq),
++        { r, field, value },
++      );
++      const error = await f.page.evaluate(async () => {
++        try {
++          await StoreContract.open();
++          await StoreContract.recover();
++          return null;
++        } catch (e) {
++          return e.code;
++        } finally {
++          await StoreContract.close();
++        }
++      });
++      assert.equal(error, 'repair-required', field);
++      assert.equal((await invoke(f.page, 'snapshot')).rows.length, raw.rows.length);
++      await f.page.evaluate((r) => StoreContract.setRow(r, r.seq), r);
++      evidence.push(field);
++    }
++    const [sk, wire] = raw.journal[0],
++      parts = sk.split('.');
++    for (const [field, index, value] of [
++      ['writer', parts.length - 2, 'ff'.repeat(16)],
++      ['ordinal', parts.length - 1, '0000000000000042'],
++      ['storeId', parts.length - 3, 'ff'.repeat(16)],
++    ]) {
++      const moved = parts.with(index, value).join('.');
++      await f.page.evaluate(
++        ({ sk, moved, wire }) => {
++          localStorage.removeItem(sk);
++          localStorage.setItem(moved, wire);
++        },
++        { sk, moved, wire },
++      );
++      const error = await f.page.evaluate(async () => {
++        try {
++          await StoreContract.open();
++          await StoreContract.recover();
++          return null;
++        } catch (e) {
++          return e.code;
++        } finally {
++          await StoreContract.close();
++        }
++      });
++      assert.equal(error, 'repair-required', field);
++      assert.equal(await f.page.evaluate((k) => localStorage.getItem(k), moved), wire);
++      await f.page.evaluate(
++        ({ sk, moved, wire }) => {
++          localStorage.removeItem(moved);
++          localStorage.setItem(sk, wire);
++        },
++        { sk, moved, wire },
++      );
++      evidence.push(field);
++    }
++    await invoke(f.page, 'open');
++    assert.equal((await invoke(f.page, 'recover')).journal.length, 2);
++    await invoke(f.page, 'close');
++    report('native-refusals', { fields: evidence, preserved: true });
++  },
++);
++test(
++  'removing storeId from actual custody HKDF still makes locally usable ciphertext but the independent owner-byte check detects it',
++  { timeout: 40000 },
++  async (t) => {
++    const f = await fixture(t, 'custodyStore');
++    await invoke(f.page, 'open');
++    await invoke(f.page, 'append');
++    const raw = await invoke(f.page, 'snapshot');
++    assert.equal((await invoke(f.page, 'recover')).records.length, 4);
++    assert.throws(() => checkRaw(f.saved, raw), /authenticate|authenticat|Unsupported state/i);
++    const trace = (await f.page.evaluate(() => keyTraces)).find((t) => t.method === 'deriveKey');
++    assert.notEqual(hex(trace.info), hex(keyInfo(f.saved.scope)));
++    await invoke(f.page, 'close');
++    report('native-control', {
++      control: 'custodyStore',
++      localRoundTrip: 'passed',
++      independentByteContract: 'detected omitted storeId',
++      crypto: 'real factor, HKDF and AES; no success override',
++    });
++  },
++);
+diff --git a/test/account-store-contract/oracle.mjs b/test/account-store-contract/oracle.mjs
+new file mode 100644
+index 0000000..bef54f2
+--- /dev/null
++++ b/test/account-store-contract/oracle.mjs
+@@ -0,0 +1,170 @@
++// Independent Node crypto/noble oracle. No production encoders, parsers or key helpers.
++import { createHash, hkdfSync, createCipheriv, createDecipheriv } from 'node:crypto';
++import { readFileSync } from 'node:fs';
++import { xchacha20poly1305 } from '@noble/ciphers/chacha.js';
++export const bytes = (s) => new Uint8Array(Buffer.from(s, 'hex'));
++export const hex = (b) => Buffer.from(b).toString('hex');
++export const lp = (...values) =>
++  Buffer.concat(
++    values.map((s) => {
++      if (!s.isWellFormed()) throw Error('Invalid Unicode');
++      const b = Buffer.from(s, 'utf8'),
++        n = Buffer.alloc(2);
++      n.writeUInt16BE(b.length);
++      return Buffer.concat([n, b]);
++    }),
++  );
++export const digest = (b) => createHash('sha256').update(b).digest();
++export const scope = {
++  principalId: 'principal-é',
++  workspaceId: 'workspace-🙂',
++  storeId: '12'.repeat(16),
++};
++export const kg = 'a3'.repeat(32);
++export const keyInfo = (s, journal = false) =>
++  journal ? lp('done/journal/v1', s.workspaceId) : lp('done/store/v1', s.workspaceId, s.storeId);
++export const key = (s, secret = kg, journal = false) =>
++  new Uint8Array(hkdfSync('sha256', bytes(secret), Buffer.alloc(0), keyInfo(s, journal), 32));
++export const nameMessage = (s) => lp('done/store-name/v1', s.principalId, s.workspaceId);
++export const name = (s) => 'done.' + hex(digest(nameMessage(s)).subarray(0, 16));
++export const storageKey = (s, writer = '34'.repeat(16), ordinal = 1) =>
++  `done.pending-update.${encodeURIComponent(name(s))}.${s.storeId}.${writer}.${String(ordinal).padStart(16, '0')}`;
++export const recordFields = (s, r) => [
++  'done/store/v1',
++  s.principalId,
++  s.workspaceId,
++  s.storeId,
++  String(r.v),
++  String(r.gen),
++  String(r.seq),
++  r.kind,
++];
++export const recordAAD = (s, r) => lp(...recordFields(s, r));
++export const journalFields = (s, gen, sk) => ['done/jrnl/v1', s.workspaceId, String(gen), sk];
++export const journalAAD = (s, gen, sk) => lp(...journalFields(s, gen, sk));
++export function aes(k, nonce, aad, plain) {
++  const c = createCipheriv('aes-256-gcm', k, nonce);
++  c.setAAD(aad);
++  return Buffer.concat([c.update(plain), c.final(), c.getAuthTag()]);
++}
++export function openAES(k, nonce, aad, ct) {
++  const c = createDecipheriv('aes-256-gcm', k, nonce);
++  c.setAAD(aad);
++  c.setAuthTag(ct.subarray(-16));
++  return Buffer.concat([c.update(ct.subarray(0, -16)), c.final()]);
++}
++export const xseal = (k, nonce, aad, plain) => xchacha20poly1305(k, nonce, aad).encrypt(plain);
++export const xopen = (k, nonce, aad, ct) => xchacha20poly1305(k, nonce, aad).decrypt(ct);
++export const encode = (gen, nonce, ct) => {
++  const header = Buffer.alloc(4);
++  header.writeUInt32BE(gen);
++  return '2:' + Buffer.concat([header, nonce, ct]).toString('base64');
++};
++export const fixtures = () => [
++  ...['update', 'state', 'heads', 'outbound'].map((kind, i) => ({
++    id: 'store-record-' + kind,
++    kind: 'aead',
++    family: 'record',
++    scope,
++    kg,
++    record: { v: 1, gen: 1, seq: i ? Number.MAX_SAFE_INTEGER - i : 1, kind },
++    nonce: '02030405060708090a0b0c0d',
++    plaintext: i ? '00ff0123456789ab' : '',
++  })),
++  ...[1, 256, 0xffffffff].map((gen, i) => ({
++    id: 'journal-carrier-' + gen,
++    kind: 'aead',
++    family: 'journal',
++    scope,
++    kg,
++    gen,
++    storageKey: storageKey(scope, '34'.repeat(16), i + 1),
++    nonce: '00'.repeat(23) + '01',
++    plaintext: i ? '00ff0123456789ab' : '',
++  })),
++];
++export function corpus() {
++  const vectors = [];
++  for (const [id, s] of [
++    ['unicode', scope],
++    ['boundary', { ...scope, principalId: 'ab', workspaceId: 'c' }],
++  ]) {
++    const message = nameMessage(s);
++    vectors.push({
++      id: 'store-name-' + id,
++      kind: 'digest',
++      signer: null,
++      input: s,
++      expected: { messageHex: hex(message), resultHex: hex(digest(message)), name: name(s) },
++      negatives: ['principalId', 'workspaceId'].map((field) => ({
++        field,
++        scope: { ...s, [field]: s[field] + 'x' },
++        name: name({ ...s, [field]: s[field] + 'x' }),
++      })),
++    });
++  }
++  for (const journal of [false, true]) {
++    vectors.push({
++      id: journal ? 'journal-key' : 'store-key',
++      kind: 'kdf',
++      signer: null,
++      input: { scope, kg },
++      expected: {
++        messageHex: hex(keyInfo(scope, journal)),
++        resultHex: hex(key(scope, kg, journal)),
++      },
++      negatives: [...(journal ? ['workspaceId'] : ['workspaceId', 'storeId']), 'kg'].map(
++        (field) => {
++          const s = field === 'kg' ? scope : { ...scope, [field]: scope[field] + 'x' },
++            secret = field === 'kg' ? 'b4'.repeat(32) : kg;
++          return { field, scope: s, kg: secret, resultHex: hex(key(s, secret, journal)) };
++        },
++      ),
++    });
++  }
++  for (const f of fixtures()) {
++    const journal = f.family === 'journal',
++      values = journal
++        ? journalFields(f.scope, f.gen, f.storageKey)
++        : recordFields(f.scope, f.record),
++      k = key(f.scope, f.kg, journal),
++      n = bytes(f.nonce),
++      p = bytes(f.plaintext),
++      seal = journal ? xseal : aes,
++      message = lp(...values),
++      ct = seal(k, n, message, p);
++    vectors.push({
++      id: f.id,
++      kind: f.kind,
++      signer: null,
++      input: f,
++      expected: {
++        messageHex: hex(message),
++        resultHex: hex(ct),
++        ...(journal ? { carrier: encode(f.gen, n, ct) } : {}),
++      },
++      negatives: values.map((v, index) => {
++        const changed = values.with(index, v + 'x');
++        return { index, fields: changed, messageHex: hex(lp(...changed)) };
++      }),
++      encodedBindingControls: values.map((v, index) => {
++        const changed = values.with(index, v + 'x'),
++          without = (a) => a.filter((_, i) => i !== index);
++        return {
++          index,
++          omittedHex: hex(lp(...without(values))),
++          changedOmittedHex: hex(lp(...without(changed))),
++        };
++      }),
++    });
++  }
++  return {
++    v: 1,
++    scope: 'D5 store and journal bytes; inherited envelope/custody and WASM qualification excluded',
++    inherited: ['record-format', 'journal-aead'].map((n) => ({
++      path: `test/vectors/${n}.json`,
++      sha256: hex(digest(readFileSync(`test/vectors/${n}.json`))),
++    })),
++    vectors,
++  };
++}
+diff --git a/test/account-store-contract/runtime.mjs b/test/account-store-contract/runtime.mjs
+new file mode 100644
+index 0000000..fd65731
+--- /dev/null
++++ b/test/account-store-contract/runtime.mjs
+@@ -0,0 +1,65 @@
++import { build } from 'vite';
++import { resolve } from 'node:path';
++export const controls = {
++  principal: ['contentRecord.ts', '    scope.principalId,', ''],
++  sequence: ['contentRecord.ts', '    String(r.seq),', ''],
++  kind: ['contentRecord.ts', '    r.kind,', ''],
++  journalWorkspace: [
++    'journalCodec.ts',
++    "fields('done/jrnl/v1', workspaceId, String(generation), storageKey)",
++    "fields('done/jrnl/v1', String(generation), storageKey)",
++  ],
++  journalGeneration: [
++    'journalCodec.ts',
++    "fields('done/jrnl/v1', workspaceId, String(generation), storageKey)",
++    "fields('done/jrnl/v1', workspaceId, storageKey)",
++  ],
++  journalIdentity: [
++    'journalCodec.ts',
++    "fields('done/jrnl/v1', workspaceId, String(generation), storageKey)",
++    "fields('done/jrnl/v1', workspaceId, String(generation))",
++  ],
++  custodyStore: [
++    'custody.ts',
++    "fields('done/store/v1', scope.workspaceId, record.store_id)",
++    "fields('done/store/v1', scope.workspaceId)",
++  ],
++  canonicalBase64: ['journalCodec.ts', 'if (btoa(binary) !== encoded)', 'if (false)'],
++};
++export async function bundle(control, native = false) {
++  let hits = 0;
++  const r = await build({
++    configFile: false,
++    logLevel: 'error',
++    plugins: control
++      ? [
++          {
++            name: 'store-controls',
++            enforce: 'pre',
++            transform(code, id) {
++              const [file, from, to] = controls[control];
++              if (!id.endsWith('/src/crdt/' + file)) return;
++              if (code.split(from).length !== 2) throw Error('Moved control anchor: ' + control);
++              hits++;
++              return code.replace(from, to);
++            },
++          },
++        ]
++      : [],
++    build: {
++      write: false,
++      minify: false,
++      lib: {
++        entry: resolve(
++          'test/account-store-contract/' + (native ? 'native-browser.ts' : 'browser.ts'),
++        ),
++        name: 'StoreContract',
++        formats: ['iife'],
++      },
++    },
++  });
++  if (control && hits !== 1) throw Error('Control not exercised: ' + control);
++  return (Array.isArray(r) ? r[0] : r).output.find((f) => f.type === 'chunk').code;
++}
++export const load = async (control) =>
++  Function((await bundle(control)) + ';return StoreContract;')();
+diff --git a/test/vectors/account-store.json b/test/vectors/account-store.json
+new file mode 100644
+index 0000000..2f443fe
+--- /dev/null
++++ b/test/vectors/account-store.json
+@@ -0,0 +1,1177 @@
++{
++  "v": 1,
++  "scope": "D5 store and journal bytes; inherited envelope/custody and WASM qualification excluded",
++  "inherited": [
++    {
++      "path": "test/vectors/record-format.json",
++      "sha256": "922b4ce2ac33cf86a91aadba8cf298ba77510540ed3a4e5765737055eec7981f"
++    },
++    {
++      "path": "test/vectors/journal-aead.json",
++      "sha256": "640c6dbd45d66c0945100477c7be2d37d25045f51c42acdacd48a83722ebeef7"
++    }
++  ],
++  "vectors": [
++    {
++      "id": "store-name-unicode",
++      "kind": "digest",
++      "signer": null,
++      "input": {
++        "principalId": "principal-é",
++        "workspaceId": "workspace-🙂",
++        "storeId": "12121212121212121212121212121212"
++      },
++      "expected": {
++        "messageHex": "0012646f6e652f73746f72652d6e616d652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982",
++        "resultHex": "b330231c2f0c266d2f68ca54b6e7a8f2760842f680cd407570be38e9dbbb36fb",
++        "name": "done.b330231c2f0c266d2f68ca54b6e7a8f2"
++      },
++      "negatives": [
++        {
++          "field": "principalId",
++          "scope": {
++            "principalId": "principal-éx",
++            "workspaceId": "workspace-🙂",
++            "storeId": "12121212121212121212121212121212"
++          },
++          "name": "done.86722341189eaae996a71f6f5f6eb227"
++        },
++        {
++          "field": "workspaceId",
++          "scope": {
++            "principalId": "principal-é",
++            "workspaceId": "workspace-🙂x",
++            "storeId": "12121212121212121212121212121212"
++          },
++          "name": "done.beccb9c3cb8aa69816f86dd52d5f77ca"
++        }
++      ]
++    },
++    {
++      "id": "store-name-boundary",
++      "kind": "digest",
++      "signer": null,
++      "input": {
++        "principalId": "ab",
++        "workspaceId": "c",
++        "storeId": "12121212121212121212121212121212"
++      },
++      "expected": {
++        "messageHex": "0012646f6e652f73746f72652d6e616d652f763100026162000163",
++        "resultHex": "9e711d7dfbbdef6f99c3895f7a4d3ed5c70d5341e0c4000ac2637b5a4b242d97",
++        "name": "done.9e711d7dfbbdef6f99c3895f7a4d3ed5"
++      },
++      "negatives": [
++        {
++          "field": "principalId",
++          "scope": {
++            "principalId": "abx",
++            "workspaceId": "c",
++            "storeId": "12121212121212121212121212121212"
++          },
++          "name": "done.7a9f43986f19886fb9fb7ac15e7b71ce"
++        },
++        {
++          "field": "workspaceId",
++          "scope": {
++            "principalId": "ab",
++            "workspaceId": "cx",
++            "storeId": "12121212121212121212121212121212"
++          },
++          "name": "done.fa0f0f0394dd338e8efd6b7215cfe7a3"
++        }
++      ]
++    },
++    {
++      "id": "store-key",
++      "kind": "kdf",
++      "signer": null,
++      "input": {
++        "scope": {
++          "principalId": "principal-é",
++          "workspaceId": "workspace-🙂",
++          "storeId": "12121212121212121212121212121212"
++        },
++        "kg": "a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3"
++      },
++      "expected": {
++        "messageHex": "000d646f6e652f73746f72652f7631000e776f726b73706163652df09f998200203132313231323132313231323132313231323132313231323132313231323132",
++        "resultHex": "823b03340cde6c5c0393b8405cbbec541f056ba3a4529fe2005e81154f3f1264"
++      },
++      "negatives": [
++        {
++          "field": "workspaceId",
++          "scope": {
++            "principalId": "principal-é",
++            "workspaceId": "workspace-🙂x",
++            "storeId": "12121212121212121212121212121212"
++          },
++          "kg": "a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3",
++          "resultHex": "bb302f188ce22dc77d15552b95b853be500e6c4848b0bbedfdbcb37513c3bffd"
++        },
++        {
++          "field": "storeId",
++          "scope": {
++            "principalId": "principal-é",
++            "workspaceId": "workspace-🙂",
++            "storeId": "12121212121212121212121212121212x"
++          },
++          "kg": "a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3",
++          "resultHex": "6aff3279695c431f58a6c712509b7651bef092ed29291fc422d0f2812f7a6cf9"
++        },
++        {
++          "field": "kg",
++          "scope": {
++            "principalId": "principal-é",
++            "workspaceId": "workspace-🙂",
++            "storeId": "12121212121212121212121212121212"
++          },
++          "kg": "b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4",
++          "resultHex": "4e0b6c2fe2f5792f7e3b0371d1fd2832cbb77a0185f91b6f2769a9f66b397340"
++        }
++      ]
++    },
++    {
++      "id": "journal-key",
++      "kind": "kdf",
++      "signer": null,
++      "input": {
++        "scope": {
++          "principalId": "principal-é",
++          "workspaceId": "workspace-🙂",
++          "storeId": "12121212121212121212121212121212"
++        },
++        "kg": "a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3"
++      },
++      "expected": {
++        "messageHex": "000f646f6e652f6a6f75726e616c2f7631000e776f726b73706163652df09f9982",
++        "resultHex": "4d4f61740dce27caa82b1d656c9cd00d6f43a443a7b501a3419d7a03fc382343"
++      },
++      "negatives": [
++        {
++          "field": "workspaceId",
++          "scope": {
++            "principalId": "principal-é",
++            "workspaceId": "workspace-🙂x",
++            "storeId": "12121212121212121212121212121212"
++          },
++          "kg": "a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3",
++          "resultHex": "6b52fc6bc48a7b451f8ce81df042e959da0f9e5cf25083d9f353d213594c1e78"
++        },
++        {
++          "field": "kg",
++          "scope": {
++            "principalId": "principal-é",
++            "workspaceId": "workspace-🙂",
++            "storeId": "12121212121212121212121212121212"
++          },
++          "kg": "b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4",
++          "resultHex": "444305356891e4eb131066763922514e3e1d111a1ac29a028bf3793501803fd6"
++        }
++      ]
++    },
++    {
++      "id": "store-record-update",
++      "kind": "aead",
++      "signer": null,
++      "input": {
++        "id": "store-record-update",
++        "kind": "aead",
++        "family": "record",
++        "scope": {
++          "principalId": "principal-é",
++          "workspaceId": "workspace-🙂",
++          "storeId": "12121212121212121212121212121212"
++        },
++        "kg": "a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3",
++        "record": {
++          "v": 1,
++          "gen": 1,
++          "seq": 1,
++          "kind": "update"
++        },
++        "nonce": "02030405060708090a0b0c0d",
++        "plaintext": ""
++      },
++      "expected": {
++        "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310001310006757064617465",
++        "resultHex": "fe7942414a9baa146e1c2086cd528d92"
++      },
++      "negatives": [
++        {
++          "index": 0,
++          "fields": [
++            "done/store/v1x",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "1",
++            "update"
++          ],
++          "messageHex": "000e646f6e652f73746f72652f763178000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310001310006757064617465"
++        },
++        {
++          "index": 1,
++          "fields": [
++            "done/store/v1",
++            "principal-éx",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "1",
++            "update"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000d7072696e636970616c2dc3a978000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310001310006757064617465"
++        },
++        {
++          "index": 2,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂x",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "1",
++            "update"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000f776f726b73706163652df09f998278002031323132313231323132313231323132313231323132313231323132313231320001310001310001310006757064617465"
++        },
++        {
++          "index": 3,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212x",
++            "1",
++            "1",
++            "1",
++            "update"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200213132313231323132313231323132313231323132313231323132313231323132780001310001310001310006757064617465"
++        },
++        {
++          "index": 4,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1x",
++            "1",
++            "1",
++            "update"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200203132313231323132313231323132313231323132313231323132313231323132000231780001310001310006757064617465"
++        },
++        {
++          "index": 5,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1x",
++            "1",
++            "update"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200203132313231323132313231323132313231323132313231323132313231323132000131000231780001310006757064617465"
++        },
++        {
++          "index": 6,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "1x",
++            "update"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200203132313231323132313231323132313231323132313231323132313231323132000131000131000231780006757064617465"
++        },
++        {
++          "index": 7,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "1",
++            "updatex"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200203132313231323132313231323132313231323132313231323132313231323132000131000131000131000775706461746578"
++        }
++      ],
++      "encodedBindingControls": [
++        {
++          "index": 0,
++          "omittedHex": "000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310001310006757064617465",
++          "changedOmittedHex": "000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310001310006757064617465"
++        },
++        {
++          "index": 1,
++          "omittedHex": "000d646f6e652f73746f72652f7631000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310001310006757064617465",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310001310006757064617465"
++        },
++        {
++          "index": 2,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9002031323132313231323132313231323132313231323132313231323132313231320001310001310001310006757064617465",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9002031323132313231323132313231323132313231323132313231323132313231320001310001310001310006757064617465"
++        },
++        {
++          "index": 3,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820001310001310001310006757064617465",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820001310001310001310006757064617465"
++        },
++        {
++          "index": 4,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310006757064617465",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310006757064617465"
++        },
++        {
++          "index": 5,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310006757064617465",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310006757064617465"
++        },
++        {
++          "index": 6,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310006757064617465",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310006757064617465"
++        },
++        {
++          "index": 7,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200203132313231323132313231323132313231323132313231323132313231323132000131000131000131",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200203132313231323132313231323132313231323132313231323132313231323132000131000131000131"
++        }
++      ]
++    },
++    {
++      "id": "store-record-state",
++      "kind": "aead",
++      "signer": null,
++      "input": {
++        "id": "store-record-state",
++        "kind": "aead",
++        "family": "record",
++        "scope": {
++          "principalId": "principal-é",
++          "workspaceId": "workspace-🙂",
++          "storeId": "12121212121212121212121212121212"
++        },
++        "kg": "a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3",
++        "record": {
++          "v": 1,
++          "gen": 1,
++          "seq": 9007199254740990,
++          "kind": "state"
++        },
++        "nonce": "02030405060708090a0b0c0d",
++        "plaintext": "00ff0123456789ab"
++      },
++      "expected": {
++        "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039393000057374617465",
++        "resultHex": "0fed63da55413e5f07ac8d3ab12fe0170a8980d96b2b1b34"
++      },
++      "negatives": [
++        {
++          "index": 0,
++          "fields": [
++            "done/store/v1x",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "9007199254740990",
++            "state"
++          ],
++          "messageHex": "000e646f6e652f73746f72652f763178000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039393000057374617465"
++        },
++        {
++          "index": 1,
++          "fields": [
++            "done/store/v1",
++            "principal-éx",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "9007199254740990",
++            "state"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000d7072696e636970616c2dc3a978000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039393000057374617465"
++        },
++        {
++          "index": 2,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂x",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "9007199254740990",
++            "state"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000f776f726b73706163652df09f9982780020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039393000057374617465"
++        },
++        {
++          "index": 3,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212x",
++            "1",
++            "1",
++            "9007199254740990",
++            "state"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002131323132313231323132313231323132313231323132313231323132313231327800013100013100103930303731393932353437343039393000057374617465"
++        },
++        {
++          "index": 4,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1x",
++            "1",
++            "9007199254740990",
++            "state"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320002317800013100103930303731393932353437343039393000057374617465"
++        },
++        {
++          "index": 5,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1x",
++            "9007199254740990",
++            "state"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310002317800103930303731393932353437343039393000057374617465"
++        },
++        {
++          "index": 6,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "9007199254740990x",
++            "state"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310011393030373139393235343734303939307800057374617465"
++        },
++        {
++          "index": 7,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "9007199254740990",
++            "statex"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310010393030373139393235343734303939300006737461746578"
++        }
++      ],
++      "encodedBindingControls": [
++        {
++          "index": 0,
++          "omittedHex": "000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039393000057374617465",
++          "changedOmittedHex": "000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039393000057374617465"
++        },
++        {
++          "index": 1,
++          "omittedHex": "000d646f6e652f73746f72652f7631000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039393000057374617465",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039393000057374617465"
++        },
++        {
++          "index": 2,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a90020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039393000057374617465",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a90020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039393000057374617465"
++        },
++        {
++          "index": 3,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200013100013100103930303731393932353437343039393000057374617465",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200013100013100103930303731393932353437343039393000057374617465"
++        },
++        {
++          "index": 4,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100103930303731393932353437343039393000057374617465",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100103930303731393932353437343039393000057374617465"
++        },
++        {
++          "index": 5,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100103930303731393932353437343039393000057374617465",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100103930303731393932353437343039393000057374617465"
++        },
++        {
++          "index": 6,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100057374617465",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100057374617465"
++        },
++        {
++          "index": 7,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200203132313231323132313231323132313231323132313231323132313231323132000131000131001039303037313939323534373430393930",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200203132313231323132313231323132313231323132313231323132313231323132000131000131001039303037313939323534373430393930"
++        }
++      ]
++    },
++    {
++      "id": "store-record-heads",
++      "kind": "aead",
++      "signer": null,
++      "input": {
++        "id": "store-record-heads",
++        "kind": "aead",
++        "family": "record",
++        "scope": {
++          "principalId": "principal-é",
++          "workspaceId": "workspace-🙂",
++          "storeId": "12121212121212121212121212121212"
++        },
++        "kg": "a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3",
++        "record": {
++          "v": 1,
++          "gen": 1,
++          "seq": 9007199254740989,
++          "kind": "heads"
++        },
++        "nonce": "02030405060708090a0b0c0d",
++        "plaintext": "00ff0123456789ab"
++      },
++      "expected": {
++        "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383900056865616473",
++        "resultHex": "0fed63da55413e5f5b154ed98f95fdeca16a2ba6841a4bc0"
++      },
++      "negatives": [
++        {
++          "index": 0,
++          "fields": [
++            "done/store/v1x",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "9007199254740989",
++            "heads"
++          ],
++          "messageHex": "000e646f6e652f73746f72652f763178000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383900056865616473"
++        },
++        {
++          "index": 1,
++          "fields": [
++            "done/store/v1",
++            "principal-éx",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "9007199254740989",
++            "heads"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000d7072696e636970616c2dc3a978000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383900056865616473"
++        },
++        {
++          "index": 2,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂x",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "9007199254740989",
++            "heads"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000f776f726b73706163652df09f9982780020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383900056865616473"
++        },
++        {
++          "index": 3,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212x",
++            "1",
++            "1",
++            "9007199254740989",
++            "heads"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002131323132313231323132313231323132313231323132313231323132313231327800013100013100103930303731393932353437343039383900056865616473"
++        },
++        {
++          "index": 4,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1x",
++            "1",
++            "9007199254740989",
++            "heads"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320002317800013100103930303731393932353437343039383900056865616473"
++        },
++        {
++          "index": 5,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1x",
++            "9007199254740989",
++            "heads"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310002317800103930303731393932353437343039383900056865616473"
++        },
++        {
++          "index": 6,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "9007199254740989x",
++            "heads"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310011393030373139393235343734303938397800056865616473"
++        },
++        {
++          "index": 7,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "9007199254740989",
++            "headsx"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310010393030373139393235343734303938390006686561647378"
++        }
++      ],
++      "encodedBindingControls": [
++        {
++          "index": 0,
++          "omittedHex": "000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383900056865616473",
++          "changedOmittedHex": "000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383900056865616473"
++        },
++        {
++          "index": 1,
++          "omittedHex": "000d646f6e652f73746f72652f7631000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383900056865616473",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383900056865616473"
++        },
++        {
++          "index": 2,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a90020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383900056865616473",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a90020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383900056865616473"
++        },
++        {
++          "index": 3,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200013100013100103930303731393932353437343039383900056865616473",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200013100013100103930303731393932353437343039383900056865616473"
++        },
++        {
++          "index": 4,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100103930303731393932353437343039383900056865616473",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100103930303731393932353437343039383900056865616473"
++        },
++        {
++          "index": 5,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100103930303731393932353437343039383900056865616473",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100103930303731393932353437343039383900056865616473"
++        },
++        {
++          "index": 6,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100056865616473",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100056865616473"
++        },
++        {
++          "index": 7,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200203132313231323132313231323132313231323132313231323132313231323132000131000131001039303037313939323534373430393839",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200203132313231323132313231323132313231323132313231323132313231323132000131000131001039303037313939323534373430393839"
++        }
++      ]
++    },
++    {
++      "id": "store-record-outbound",
++      "kind": "aead",
++      "signer": null,
++      "input": {
++        "id": "store-record-outbound",
++        "kind": "aead",
++        "family": "record",
++        "scope": {
++          "principalId": "principal-é",
++          "workspaceId": "workspace-🙂",
++          "storeId": "12121212121212121212121212121212"
++        },
++        "kg": "a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3",
++        "record": {
++          "v": 1,
++          "gen": 1,
++          "seq": 9007199254740988,
++          "kind": "outbound"
++        },
++        "nonce": "02030405060708090a0b0c0d",
++        "plaintext": "00ff0123456789ab"
++      },
++      "expected": {
++        "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383800086f7574626f756e64",
++        "resultHex": "0fed63da55413e5f6a96726fa05b090cbc7a95ab92e814d4"
++      },
++      "negatives": [
++        {
++          "index": 0,
++          "fields": [
++            "done/store/v1x",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "9007199254740988",
++            "outbound"
++          ],
++          "messageHex": "000e646f6e652f73746f72652f763178000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383800086f7574626f756e64"
++        },
++        {
++          "index": 1,
++          "fields": [
++            "done/store/v1",
++            "principal-éx",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "9007199254740988",
++            "outbound"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000d7072696e636970616c2dc3a978000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383800086f7574626f756e64"
++        },
++        {
++          "index": 2,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂x",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "9007199254740988",
++            "outbound"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000f776f726b73706163652df09f9982780020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383800086f7574626f756e64"
++        },
++        {
++          "index": 3,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212x",
++            "1",
++            "1",
++            "9007199254740988",
++            "outbound"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002131323132313231323132313231323132313231323132313231323132313231327800013100013100103930303731393932353437343039383800086f7574626f756e64"
++        },
++        {
++          "index": 4,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1x",
++            "1",
++            "9007199254740988",
++            "outbound"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320002317800013100103930303731393932353437343039383800086f7574626f756e64"
++        },
++        {
++          "index": 5,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1x",
++            "9007199254740988",
++            "outbound"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310002317800103930303731393932353437343039383800086f7574626f756e64"
++        },
++        {
++          "index": 6,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "9007199254740988x",
++            "outbound"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f9982002031323132313231323132313231323132313231323132313231323132313231320001310001310011393030373139393235343734303938387800086f7574626f756e64"
++        },
++        {
++          "index": 7,
++          "fields": [
++            "done/store/v1",
++            "principal-é",
++            "workspace-🙂",
++            "12121212121212121212121212121212",
++            "1",
++            "1",
++            "9007199254740988",
++            "outboundx"
++          ],
++          "messageHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383800096f7574626f756e6478"
++        }
++      ],
++      "encodedBindingControls": [
++        {
++          "index": 0,
++          "omittedHex": "000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383800086f7574626f756e64",
++          "changedOmittedHex": "000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383800086f7574626f756e64"
++        },
++        {
++          "index": 1,
++          "omittedHex": "000d646f6e652f73746f72652f7631000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383800086f7574626f756e64",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383800086f7574626f756e64"
++        },
++        {
++          "index": 2,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a90020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383800086f7574626f756e64",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a90020313231323132313231323132313231323132313231323132313231323132313200013100013100103930303731393932353437343039383800086f7574626f756e64"
++        },
++        {
++          "index": 3,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200013100013100103930303731393932353437343039383800086f7574626f756e64",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200013100013100103930303731393932353437343039383800086f7574626f756e64"
++        },
++        {
++          "index": 4,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100103930303731393932353437343039383800086f7574626f756e64",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100103930303731393932353437343039383800086f7574626f756e64"
++        },
++        {
++          "index": 5,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100103930303731393932353437343039383800086f7574626f756e64",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100103930303731393932353437343039383800086f7574626f756e64"
++        },
++        {
++          "index": 6,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100086f7574626f756e64",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f99820020313231323132313231323132313231323132313231323132313231323132313200013100013100086f7574626f756e64"
++        },
++        {
++          "index": 7,
++          "omittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200203132313231323132313231323132313231323132313231323132313231323132000131000131001039303037313939323534373430393838",
++          "changedOmittedHex": "000d646f6e652f73746f72652f7631000c7072696e636970616c2dc3a9000e776f726b73706163652df09f998200203132313231323132313231323132313231323132313231323132313231323132000131000131001039303037313939323534373430393838"
++        }
++      ]
++    },
++    {
++      "id": "journal-carrier-1",
++      "kind": "aead",
++      "signer": null,
++      "input": {
++        "id": "journal-carrier-1",
++        "kind": "aead",
++        "family": "journal",
++        "scope": {
++          "principalId": "principal-é",
++          "workspaceId": "workspace-🙂",
++          "storeId": "12121212121212121212121212121212"
++        },
++        "kg": "a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3",
++        "gen": 1,
++        "storageKey": "done.pending-update.done.b330231c2f0c266d2f68ca54b6e7a8f2.12121212121212121212121212121212.34343434343434343434343434343434.0000000000000001",
++        "nonce": "000000000000000000000000000000000000000000000001",
++        "plaintext": ""
++      },
++      "expected": {
++        "messageHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f9982000131008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303031",
++        "resultHex": "006e78b8ad72cadb9897eae4ec4300c6",
++        "carrier": "2:AAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQBueLitcsrbmJfq5OxDAMY="
++      },
++      "negatives": [
++        {
++          "index": 0,
++          "fields": [
++            "done/jrnl/v1x",
++            "workspace-🙂",
++            "1",
++            "done.pending-update.done.b330231c2f0c266d2f68ca54b6e7a8f2.12121212121212121212121212121212.34343434343434343434343434343434.0000000000000001"
++          ],
++          "messageHex": "000d646f6e652f6a726e6c2f763178000e776f726b73706163652df09f9982000131008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303031"
++        },
++        {
++          "index": 1,
++          "fields": [
++            "done/jrnl/v1",
++            "workspace-🙂x",
++            "1",
++            "done.pending-update.done.b330231c2f0c266d2f68ca54b6e7a8f2.12121212121212121212121212121212.34343434343434343434343434343434.0000000000000001"
++          ],
++          "messageHex": "000c646f6e652f6a726e6c2f7631000f776f726b73706163652df09f998278000131008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303031"
++        },
++        {
++          "index": 2,
++          "fields": [
++            "done/jrnl/v1",
++            "workspace-🙂",
++            "1x",
++            "done.pending-update.done.b330231c2f0c266d2f68ca54b6e7a8f2.12121212121212121212121212121212.34343434343434343434343434343434.0000000000000001"
++          ],
++          "messageHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f998200023178008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303031"
++        },
++        {
++          "index": 3,
++          "fields": [
++            "done/jrnl/v1",
++            "workspace-🙂",
++            "1",
++            "done.pending-update.done.b330231c2f0c266d2f68ca54b6e7a8f2.12121212121212121212121212121212.34343434343434343434343434343434.0000000000000001x"
++          ],
++          "messageHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f9982000131008d646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e3030303030303030303030303030303178"
++        }
++      ],
++      "encodedBindingControls": [
++        {
++          "index": 0,
++          "omittedHex": "000e776f726b73706163652df09f9982000131008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303031",
++          "changedOmittedHex": "000e776f726b73706163652df09f9982000131008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303031"
++        },
++        {
++          "index": 1,
++          "omittedHex": "000c646f6e652f6a726e6c2f7631000131008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303031",
++          "changedOmittedHex": "000c646f6e652f6a726e6c2f7631000131008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303031"
++        },
++        {
++          "index": 2,
++          "omittedHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f9982008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303031",
++          "changedOmittedHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f9982008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303031"
++        },
++        {
++          "index": 3,
++          "omittedHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f9982000131",
++          "changedOmittedHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f9982000131"
++        }
++      ]
++    },
++    {
++      "id": "journal-carrier-256",
++      "kind": "aead",
++      "signer": null,
++      "input": {
++        "id": "journal-carrier-256",
++        "kind": "aead",
++        "family": "journal",
++        "scope": {
++          "principalId": "principal-é",
++          "workspaceId": "workspace-🙂",
++          "storeId": "12121212121212121212121212121212"
++        },
++        "kg": "a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3",
++        "gen": 256,
++        "storageKey": "done.pending-update.done.b330231c2f0c266d2f68ca54b6e7a8f2.12121212121212121212121212121212.34343434343434343434343434343434.0000000000000002",
++        "nonce": "000000000000000000000000000000000000000000000001",
++        "plaintext": "00ff0123456789ab"
++      },
++      "expected": {
++        "messageHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f99820003323536008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303032",
++        "resultHex": "6555b1e25dd25e425a1592ae39928473d2f3da4d9db8a402",
++        "carrier": "2:AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWVVseJd0l5CWhWSrjmShHPS89pNnbikAg=="
++      },
++      "negatives": [
++        {
++          "index": 0,
++          "fields": [
++            "done/jrnl/v1x",
++            "workspace-🙂",
++            "256",
++            "done.pending-update.done.b330231c2f0c266d2f68ca54b6e7a8f2.12121212121212121212121212121212.34343434343434343434343434343434.0000000000000002"
++          ],
++          "messageHex": "000d646f6e652f6a726e6c2f763178000e776f726b73706163652df09f99820003323536008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303032"
++        },
++        {
++          "index": 1,
++          "fields": [
++            "done/jrnl/v1",
++            "workspace-🙂x",
++            "256",
++            "done.pending-update.done.b330231c2f0c266d2f68ca54b6e7a8f2.12121212121212121212121212121212.34343434343434343434343434343434.0000000000000002"
++          ],
++          "messageHex": "000c646f6e652f6a726e6c2f7631000f776f726b73706163652df09f9982780003323536008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303032"
++        },
++        {
++          "index": 2,
++          "fields": [
++            "done/jrnl/v1",
++            "workspace-🙂",
++            "256x",
++            "done.pending-update.done.b330231c2f0c266d2f68ca54b6e7a8f2.12121212121212121212121212121212.34343434343434343434343434343434.0000000000000002"
++          ],
++          "messageHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f9982000432353678008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303032"
++        },
++        {
++          "index": 3,
++          "fields": [
++            "done/jrnl/v1",
++            "workspace-🙂",
++            "256",
++            "done.pending-update.done.b330231c2f0c266d2f68ca54b6e7a8f2.12121212121212121212121212121212.34343434343434343434343434343434.0000000000000002x"
++          ],
++          "messageHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f99820003323536008d646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e3030303030303030303030303030303278"
++        }
++      ],
++      "encodedBindingControls": [
++        {
++          "index": 0,
++          "omittedHex": "000e776f726b73706163652df09f99820003323536008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303032",
++          "changedOmittedHex": "000e776f726b73706163652df09f99820003323536008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303032"
++        },
++        {
++          "index": 1,
++          "omittedHex": "000c646f6e652f6a726e6c2f76310003323536008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303032",
++          "changedOmittedHex": "000c646f6e652f6a726e6c2f76310003323536008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303032"
++        },
++        {
++          "index": 2,
++          "omittedHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f9982008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303032",
++          "changedOmittedHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f9982008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303032"
++        },
++        {
++          "index": 3,
++          "omittedHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f99820003323536",
++          "changedOmittedHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f99820003323536"
++        }
++      ]
++    },
++    {
++      "id": "journal-carrier-4294967295",
++      "kind": "aead",
++      "signer": null,
++      "input": {
++        "id": "journal-carrier-4294967295",
++        "kind": "aead",
++        "family": "journal",
++        "scope": {
++          "principalId": "principal-é",
++          "workspaceId": "workspace-🙂",
++          "storeId": "12121212121212121212121212121212"
++        },
++        "kg": "a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3",
++        "gen": 4294967295,
++        "storageKey": "done.pending-update.done.b330231c2f0c266d2f68ca54b6e7a8f2.12121212121212121212121212121212.34343434343434343434343434343434.0000000000000003",
++        "nonce": "000000000000000000000000000000000000000000000001",
++        "plaintext": "00ff0123456789ab"
++      },
++      "expected": {
++        "messageHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f9982000a34323934393637323935008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303033",
++        "resultHex": "6555b1e25dd25e426abf76205cff7f85fcf615db3f109606",
++        "carrier": "2://///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWVVseJd0l5Car92IFz/f4X89hXbPxCWBg=="
++      },
++      "negatives": [
++        {
++          "index": 0,
++          "fields": [
++            "done/jrnl/v1x",
++            "workspace-🙂",
++            "4294967295",
++            "done.pending-update.done.b330231c2f0c266d2f68ca54b6e7a8f2.12121212121212121212121212121212.34343434343434343434343434343434.0000000000000003"
++          ],
++          "messageHex": "000d646f6e652f6a726e6c2f763178000e776f726b73706163652df09f9982000a34323934393637323935008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303033"
++        },
++        {
++          "index": 1,
++          "fields": [
++            "done/jrnl/v1",
++            "workspace-🙂x",
++            "4294967295",
++            "done.pending-update.done.b330231c2f0c266d2f68ca54b6e7a8f2.12121212121212121212121212121212.34343434343434343434343434343434.0000000000000003"
++          ],
++          "messageHex": "000c646f6e652f6a726e6c2f7631000f776f726b73706163652df09f998278000a34323934393637323935008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303033"
++        },
++        {
++          "index": 2,
++          "fields": [
++            "done/jrnl/v1",
++            "workspace-🙂",
++            "4294967295x",
++            "done.pending-update.done.b330231c2f0c266d2f68ca54b6e7a8f2.12121212121212121212121212121212.34343434343434343434343434343434.0000000000000003"
++          ],
++          "messageHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f9982000b3432393439363732393578008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303033"
++        },
++        {
++          "index": 3,
++          "fields": [
++            "done/jrnl/v1",
++            "workspace-🙂",
++            "4294967295",
++            "done.pending-update.done.b330231c2f0c266d2f68ca54b6e7a8f2.12121212121212121212121212121212.34343434343434343434343434343434.0000000000000003x"
++          ],
++          "messageHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f9982000a34323934393637323935008d646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e3030303030303030303030303030303378"
++        }
++      ],
++      "encodedBindingControls": [
++        {
++          "index": 0,
++          "omittedHex": "000e776f726b73706163652df09f9982000a34323934393637323935008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303033",
++          "changedOmittedHex": "000e776f726b73706163652df09f9982000a34323934393637323935008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303033"
++        },
++        {
++          "index": 1,
++          "omittedHex": "000c646f6e652f6a726e6c2f7631000a34323934393637323935008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303033",
++          "changedOmittedHex": "000c646f6e652f6a726e6c2f7631000a34323934393637323935008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303033"
++        },
++        {
++          "index": 2,
++          "omittedHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f9982008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303033",
++          "changedOmittedHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f9982008c646f6e652e70656e64696e672d7570646174652e646f6e652e62333330323331633266306332363664326636386361353462366537613866322e31323132313231323132313231323132313231323132313231323132313231322e33343334333433343334333433343334333433343334333433343334333433342e30303030303030303030303030303033"
++        },
++        {
++          "index": 3,
++          "omittedHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f9982000a34323934393637323935",
++          "changedOmittedHex": "000c646f6e652f6a726e6c2f7631000e776f726b73706163652df09f9982000a34323934393637323935"
++        }
++      ]
++    }
++  ]
++}

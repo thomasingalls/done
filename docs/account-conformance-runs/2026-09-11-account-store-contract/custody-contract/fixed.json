@@ -1,0 +1,7 @@
+{
+  "cases": 8,
+  "actualInitializers": true,
+  "actualKdfInputsAndOutputs": true,
+  "coldOpenAndProof": true,
+  "validStoredBytesChanged": false
+}

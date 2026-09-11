@@ -65,20 +65,19 @@ data that matters.
 
 **Selected: 24 random bytes per record, from `crypto.getRandomValues()`.**
 
-The argument is that a random nonce has no state, so there is nothing for a crash to lose. What makes it
-_safe_ is the width. For q records the collision probability is about q²/2^193; at q = 2^64 — absurdly beyond
-any journal, which is cleared every 250 ms — that is around 2^-65.
+A random nonce requires no application-persisted nonce counter. With independent uniform samples, the
+collision probability for q encryptions under one key is approximately q(q−1)/2^193 while q is far below
+2^96. At q = 2^64 it is about 2^-65. Deleting or flushing journal entries does not reset this lifetime q.
 
-**The property worth insisting on is not the number, it is that the number is unconditional.** A 192-bit
-random nonce is safe without reference to how many journal entries this app will ever write. A 96-bit nonce
-would also be fine _at the volumes this journal actually sees_, and that is the problem: the safety argument
-would then be a claim about application behaviour, which a reviewer has to verify and a later change can
-silently invalidate. Nonce-reuse faults are retroactive and silent, so the assumption that rots is the worst
-possible place to be carrying the guarantee.
+**D5 correction:** the earlier statement that this bound was “unconditional” was false. The wide nonce
+provides a large practical margin, but the bound still depends on invocation count and functioning fresh
+randomness. Cloned or restored RNG state is not covered by this calculation. Writable profile branching
+and raw rollback require their own safety assumptions; byte vectors do not establish them.
 
-That is the whole reason to take XChaCha20-Poly1305 over RFC 8439 ChaCha20-Poly1305. It is not that the
-extended nonce is faster or better studied; it is that it moves the safety argument off the application and
-into the primitive.
+This margin is the reason to select XChaCha20-Poly1305 over the 96-bit-nonce construction for this
+synchronous path. The current carrier uses fresh 24-byte random nonces without a persisted nonce counter;
+it does not make an unlimited-lifetime guarantee. The current owner and byte-evidence boundary are pinned
+in [the D5 bridge](../account-crypto/store-journal.md).
 
 ### Rejected — a fresh subkey per page session, with a counter
 

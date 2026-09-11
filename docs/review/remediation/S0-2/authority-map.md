@@ -529,9 +529,9 @@ entry: k-journal
 kind: aead
 guards: content
 verifies: the synchronous journal subkey
-discipline: 24 fresh random bytes per entry — XChaCha20-Poly1305's nonce space needs no invocation budget (row 2)
+discipline: 24 fresh independent random bytes per entry without an application nonce counter, subject to row 2's finite-use collision bound and fresh-randomness assumption; no unlimited-lifetime or clone/restore guarantee
 status: resolved
-pin: docs/selections/row-2-journal-aead.md f41b7842cee3
+pin: docs/selections/row-2-journal-aead.md d1b1d4616aad
 ```
 
 ```authority
@@ -1073,4 +1073,80 @@ pin: docs/account-crypto/content-counter.md §2 d5670fb971b9
 pin: docs/account-crypto/content-counter.md §3 1ca2e196dbba
 pin: docs/account-crypto/content-counter.md §4 b50f82193614
 pin: docs/account-crypto/content-counter.md §5 46b056613a26
+```
+
+## 14. Inherited store and journal byte bridges — group D5
+
+These entries qualify current scoped byte owners, not rotation or whole-WASM provenance.
+
+```authority
+entry: private-store-name
+kind: predicate
+guards: keys
+verifies: admitted Unicode identities and length-prefixed digest inputs; name is not authentication
+resolves: admitted scope and structural rediscovery naming -> root:structural
+status: resolved
+pin: docs/account-crypto/store-journal.md §1 3fe80ec5c29f
+pin: docs/account-crypto/store-journal.md §2 bb602641986e
+pin: docs/account-crypto/store-journal.md §3 3c2014f935aa
+pin: docs/account-crypto/store-journal.md §4 5e2f7b117b1b
+pin: docs/account-crypto/store-journal.md §5 fc637722b527
+```
+
+```authority
+entry: private-store-key
+kind: predicate
+guards: keys
+verifies: factor-opened generation secret, workspace/store KDF binding and native key usages
+resolves: generation secret opened through admitted factor custody -> via:device-lock-custody
+resolves: exact purpose-separated key info and non-extractable key parameters -> root:structural
+status: resolved
+pin: docs/account-crypto/store-journal.md §1 3fe80ec5c29f
+pin: docs/account-crypto/store-journal.md §2 bb602641986e
+pin: docs/account-crypto/store-journal.md §3 3c2014f935aa
+pin: docs/account-crypto/store-journal.md §4 5e2f7b117b1b
+pin: docs/account-crypto/store-journal.md §5 fc637722b527
+```
+
+```authority
+entry: private-store-record
+kind: aead
+guards: content
+verifies: AES-256-GCM scoped record AAD, header, tag and native placement
+counted-by: authenticated SeqCounter.reserved[gen], coupled to the storeId-derived key; equality at 2^32 refuses. F-15 remains open for relaxed durability and OS/power-loss accounting; no rollback/clone bound.
+status: resolved
+pin: docs/account-crypto/store-journal.md §1 3fe80ec5c29f
+pin: docs/account-crypto/store-journal.md §2 bb602641986e
+pin: docs/account-crypto/store-journal.md §3 3c2014f935aa
+pin: docs/account-crypto/store-journal.md §4 5e2f7b117b1b
+pin: docs/account-crypto/store-journal.md §5 fc637722b527
+```
+
+```authority
+entry: private-journal-key
+kind: predicate
+guards: keys
+verifies: generation secret, workspace-specific HKDF and exact 32-byte synchronous key
+resolves: generation secret opened through admitted factor custody -> via:device-lock-custody
+resolves: purpose-separated info and key width -> root:structural
+status: resolved
+pin: docs/account-crypto/store-journal.md §1 3fe80ec5c29f
+pin: docs/account-crypto/store-journal.md §2 bb602641986e
+pin: docs/account-crypto/store-journal.md §3 3c2014f935aa
+pin: docs/account-crypto/store-journal.md §4 5e2f7b117b1b
+pin: docs/account-crypto/store-journal.md §5 fc637722b527
+```
+
+```authority
+entry: private-journal-carrier
+kind: aead
+guards: content
+verifies: XChaCha20-Poly1305 workspace/generation/full-storage-identity AAD and canonical carrier
+discipline: 24 fresh independent random bytes per invocation, within the finite-use collision bound and no restored/cloned RNG assumption in the pinned D5 home; current generation-1 owner only.
+status: resolved
+pin: docs/account-crypto/store-journal.md §1 3fe80ec5c29f
+pin: docs/account-crypto/store-journal.md §2 bb602641986e
+pin: docs/account-crypto/store-journal.md §3 3c2014f935aa
+pin: docs/account-crypto/store-journal.md §4 5e2f7b117b1b
+pin: docs/account-crypto/store-journal.md §5 fc637722b527
 ```

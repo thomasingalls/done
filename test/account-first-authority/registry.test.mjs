@@ -15,11 +15,97 @@ const baseline = () => ({
   entries: mapEntries(read('docs/review/remediation/S0-2/authority-map.md')),
 });
 
+test('D5 bridges cannot lose native owners, inherited agreement, primitive roles or AEAD omission evidence', () => {
+  const controls = [
+    [
+      'native owner',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'journal-carrier-aead').requirements = [
+          'runtime-bytes',
+          'input-mutations',
+        ]),
+      'missing evidence obligation',
+    ],
+    [
+      'inherited agreement',
+      (o) => {
+        const r = o.document.constructions.find((r) => r.id === 'store-record-aead');
+        r.requirements = r.requirements.filter((v) => v !== 'inherited-byte-agreement');
+      },
+      'missing evidence obligation',
+    ],
+    [
+      'AEAD entry',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'store-record-aead').mapEntries = [
+          'private-store-key',
+        ]),
+      'missing AEAD authority entry',
+    ],
+    [
+      'digest role',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'store-name-digest').roles = ['predicate']),
+      'digest vector misclassified',
+    ],
+    [
+      'KDF source',
+      (o) => (o.document.constructions.find((r) => r.id === 'journal-key').sourceSites = []),
+      'source-site census changed',
+    ],
+    [
+      'owner entrypoint',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'journal-carrier-aead').entryPoints[0].name =
+          'missingOwner'),
+      'missing entrypoint',
+    ],
+  ];
+  const evidence = [];
+  for (const [name, change, expected] of controls) {
+    const o = baseline();
+    change(o);
+    assert(
+      checkConstructionRegistry(root, o).failures.some((f) => f.includes(expected)),
+      name,
+    );
+    evidence.push({ name, caught: true, expected });
+  }
+  for (const field of ['negatives', 'encodedBindingControls']) {
+    const o = baseline(),
+      c = o.document.additionalCorpora.find((c) => c.phase === 'D5'),
+      v = JSON.parse(read(c.vectorFile));
+    v.vectors.find((v) => v.id === 'journal-carrier-1')[field] = [];
+    const changed = JSON.stringify(v);
+    c.vectorSha256 = digest(changed);
+    o.read = (p) => (p === c.vectorFile ? changed : read(p));
+    const result = checkConstructionRegistry(root, o);
+    assert(
+      result.failures.some((f) =>
+        f.includes(
+          field === 'negatives'
+            ? 'missing vector/negative corpus'
+            : 'missing store/journal omission corpus',
+        ),
+      ),
+    );
+    assert(!result.failures.some((f) => f.includes('stale additional vector file pin')));
+    evidence.push({ name: field, caught: true, aggregatePinUpdated: true });
+  }
+  if (process.env.ACCOUNT_REPORT_DIR) {
+    mkdirSync(process.env.ACCOUNT_REPORT_DIR, { recursive: true });
+    writeFileSync(
+      join(process.env.ACCOUNT_REPORT_DIR, 'store-registry-controls.json'),
+      JSON.stringify({ controls: evidence.length, evidence }, null, 2) + '\n',
+    );
+  }
+});
+
 test('registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups', () => {
   const result = checkConstructionRegistry(root);
   assert.deepEqual(result.failures, []);
-  assert.equal(result.specified, 63);
-  assert.equal(result.open, 4);
+  assert.equal(result.specified, 67);
+  assert.equal(result.open, 3);
   assert.equal(result.excluded, 1);
 });
 

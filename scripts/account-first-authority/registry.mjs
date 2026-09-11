@@ -54,7 +54,7 @@ export function checkConstructionRegistry(root, options = {}) {
   const corpusPhases = new Set(['A']);
   for (const corpus of additional) {
     if (
-      !['B', 'C', 'D1', 'D2', 'D3', 'D4'].includes(corpus.phase) ||
+      !['B', 'C', 'D1', 'D2', 'D3', 'D4', 'D5'].includes(corpus.phase) ||
       corpusPhases.has(corpus.phase)
     )
       fail('unknown/duplicate additional corpus phase');
@@ -78,7 +78,9 @@ export function checkConstructionRegistry(root, options = {}) {
     if (ids.has(r.id)) fail('duplicate construction ' + r.id);
     ids.add(r.id);
     if (!['specified', 'open', 'excluded'].includes(r.status)) fail('unknown status ' + r.id);
-    if (!['A', 'B', 'C', 'D', 'D1', 'D2', 'D3', 'D4', 'Local', 'non-crypto'].includes(r.phase))
+    if (
+      !['A', 'B', 'C', 'D', 'D1', 'D2', 'D3', 'D4', 'D5', 'Local', 'non-crypto'].includes(r.phase)
+    )
       fail('unknown phase ' + r.id);
     if (
       !r.roles.length ||
@@ -182,6 +184,13 @@ export function checkConstructionRegistry(root, options = {}) {
     const required = [
       'runtime-bytes',
       'input-mutations',
+      ...(r.phase === 'D5'
+        ? [
+            'inherited-byte-agreement',
+            'native-carrier-owner',
+            ...(r.roles.includes('aead') ? ['encoded-field-omissions'] : []),
+          ]
+        : []),
       ...(r.phase === 'D4'
         ? [
             'native-metadata-owner',
@@ -217,6 +226,8 @@ export function checkConstructionRegistry(root, options = {}) {
         fail('digest vector misclassified ' + r.id);
       if (r.phase === 'D3' && v?.kind === 'carrier' && !v.encodedBindingControls?.length)
         fail('missing carrier omission corpus ' + r.id);
+      if (r.phase === 'D5' && v?.kind === 'aead' && !v.encodedBindingControls?.length)
+        fail('missing store/journal omission corpus ' + r.id);
       if (!v?.expected.messageHex || !v.expected.resultHex || !v.negatives?.length)
         fail('missing vector/negative corpus ' + r.id + ' -> ' + id);
       if (

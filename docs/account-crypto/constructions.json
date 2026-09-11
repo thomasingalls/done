@@ -3105,30 +3105,60 @@
       "blocker": null
     },
     {
-      "id": "remaining-shared-store",
-      "phase": "D",
-      "status": "open",
-      "roles": ["kdf", "aead", "mac", "digest"],
-      "labels": ["done/store/v1", "done/store-name/v1", "done/journal/v1", "done/jrnl/v1"],
+      "id": "store-name-digest",
+      "phase": "D5",
+      "status": "specified",
+      "roles": ["digest"],
+      "signer": null,
+      "labels": ["done/store-name/v1"],
       "sourceSites": [
-        {
-          "path": "src/crdt/journalCodec.ts",
-          "line": 40,
-          "label": "done/journal/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/journalCodec.ts",
-          "line": 27,
-          "label": "done/jrnl/v1",
-          "kind": "literal"
-        },
         {
           "path": "src/crdt/storeName.ts",
           "line": 13,
           "label": "done/store-name/v1",
           "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/storeName.ts",
+          "name": "deriveStoreName"
+        }
+      ],
+      "mapEntries": ["private-store-name"],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "1",
+          "hash": "3fe80ec5c29f"
         },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "5",
+          "hash": "fc637722b527"
+        }
+      ],
+      "vectorCases": ["store-name-unicode", "store-name-boundary"],
+      "tests": [
+        "test/account-store-contract/formats.test.mjs",
+        "test/account-store-contract/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "inherited-byte-agreement",
+        "native-carrier-owner"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "store-record-aead",
+      "phase": "D5",
+      "status": "specified",
+      "roles": ["kdf", "aead", "carrier"],
+      "signer": null,
+      "labels": ["done/store/v1"],
+      "sourceSites": [
         {
           "path": "src/crdt/contentRecord.ts",
           "line": 121,
@@ -3142,12 +3172,201 @@
           "kind": "literal"
         }
       ],
-      "entryPoints": [],
-      "mapEntries": [],
-      "home": "docs/storage-conformance.md",
-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "D5: inherited store-record, store-name and synchronous journal KDF/AAD bridges; metadata counters were qualified separately by D4",
-      "reason": null
+      "entryPoints": [
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "recordAAD"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "parseStoredRecord"
+        },
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "name": "recordStore"
+        },
+        {
+          "path": "src/crdt/custody.ts",
+          "name": "openContentSession"
+        }
+      ],
+      "mapEntries": ["private-store-key", "private-store-record"],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "1",
+          "hash": "3fe80ec5c29f"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "2",
+          "hash": "bb602641986e"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "4",
+          "hash": "5e2f7b117b1b"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "5",
+          "hash": "fc637722b527"
+        }
+      ],
+      "vectorCases": [
+        "store-key",
+        "store-record-update",
+        "store-record-state",
+        "store-record-heads",
+        "store-record-outbound"
+      ],
+      "tests": [
+        "test/account-store-contract/formats.test.mjs",
+        "test/account-store-contract/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "inherited-byte-agreement",
+        "native-carrier-owner",
+        "encoded-field-omissions"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "journal-key",
+      "phase": "D5",
+      "status": "specified",
+      "roles": ["kdf"],
+      "signer": null,
+      "labels": ["done/journal/v1"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "line": 40,
+          "label": "done/journal/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "name": "deriveJournalKey"
+        }
+      ],
+      "mapEntries": ["private-journal-key"],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "1",
+          "hash": "3fe80ec5c29f"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "3",
+          "hash": "3c2014f935aa"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "4",
+          "hash": "5e2f7b117b1b"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "5",
+          "hash": "fc637722b527"
+        }
+      ],
+      "vectorCases": ["journal-key"],
+      "tests": [
+        "test/account-store-contract/formats.test.mjs",
+        "test/account-store-contract/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "inherited-byte-agreement",
+        "native-carrier-owner"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "journal-carrier-aead",
+      "phase": "D5",
+      "status": "specified",
+      "roles": ["aead", "carrier"],
+      "signer": null,
+      "labels": ["done/jrnl/v1"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "line": 27,
+          "label": "done/jrnl/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "name": "journalAAD"
+        },
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "name": "encodeJournal"
+        },
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "name": "decodeJournal"
+        },
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "name": "createJournalCodec"
+        },
+        {
+          "path": "src/crdt/journalCodec.ts",
+          "name": "journalPrefix"
+        },
+        {
+          "path": "src/crdt/journalStore.ts",
+          "name": "createJournalOwner"
+        }
+      ],
+      "mapEntries": ["private-journal-carrier", "private-journal-key"],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "1",
+          "hash": "3fe80ec5c29f"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "3",
+          "hash": "3c2014f935aa"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "4",
+          "hash": "5e2f7b117b1b"
+        },
+        {
+          "path": "docs/account-crypto/store-journal.md",
+          "section": "5",
+          "hash": "fc637722b527"
+        }
+      ],
+      "vectorCases": ["journal-carrier-1", "journal-carrier-256", "journal-carrier-4294967295"],
+      "tests": [
+        "test/account-store-contract/formats.test.mjs",
+        "test/account-store-contract/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "inherited-byte-agreement",
+        "native-carrier-owner",
+        "encoded-field-omissions"
+      ],
+      "blocker": null
     },
     {
       "id": "remaining-shared-custody",
@@ -3753,6 +3972,11 @@
       "phase": "D4",
       "vectorFile": "test/vectors/account-counter.json",
       "vectorSha256": "caba0c0bd82e9f73933b39b38e1b16e91fa538c2a2e2cc31c3928466a86f52df"
+    },
+    {
+      "phase": "D5",
+      "vectorFile": "test/vectors/account-store.json",
+      "vectorSha256": "79bfaa9e90465f779d3a345bb98704e953cceb748e48819b7d3e1ca02dd5f607"
     }
   ]
 }

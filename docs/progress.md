@@ -42,14 +42,14 @@ that is no longer active.
 
 ---
 
-## Active slice: Inherited store and synchronous journal byte bridges (`L-1`)
+## Active slice: Inherited factor custody and v2 credential byte bridges (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: remaining current Local store/journal byte agreement before real Account authority
+blocks_on: remaining custody and checkpoint byte agreement before real Account authority
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
@@ -58,58 +58,61 @@ updated: 2026-09-11
 Account work is at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), around item 5's internal
 creating-member ciphertext round trip. Composition is `6398e33`, descriptor bounds/versioning `4f71bac`,
 fresh activation `2ba50aa`, crypto prep `9cf5c98`, first-authority A `43b42b1`, recovery B `e74fbaa`,
-transport C `d098bd4`, service custody D1 `d24ca66`, local promotion D2 `1897848` and Account ledger D3
-`24bc3a4`. C and D1–D3 were committed **unsigned** at the user's request; the existing reminder includes
-all four for signing later. D4 is complete and remains unstaged/uncommitted. No real Account receipt
-exists; this is not Stage 4 completion or second-device enrollment.
+transport C `d098bd4`, service custody D1 `d24ca66`, Local promotion D2 `1897848`, Account ledger D3
+`24bc3a4` and counters D4 `837cd14`. C and D1–D4 were committed **unsigned** at the user's request;
+the existing reminder includes all five for signing later. D5 is complete and remains unstaged/
+uncommitted. No real Account receipt exists; this is not Stage 4 completion or second-device enrollment.
 
-**Completed boundary.** [D4 counter/witness contracts](./account-crypto/content-counter.md) pin the scoped
-metadata KDF, creating/ready witnesses, counter v1/v2 payload/MAC, structured-clone parsing and native
-reservation/event ownership. Root ID is intentionally omitted from key info and included in each payload.
-No production code or valid stored format changed. Correctly MACed lies remain subject to allocation,
-generation, initialization and ledger checks.
+**Completed boundary.** [D5 store/journal contracts](./account-crypto/store-journal.md) pin the current
+store-name digest, store-key KDF and record AAD/shape, journal KDF/header/AAD/canonical base64, and actual
+writer/ordinal carrier ownership. All six inherited stored-record and four inherited journal vectors
+agree with both current runtime and independent encoders. Production sources and valid stored bytes
+are unchanged. Key-envelope, custody, checkpoint and provenance work is not implied by this bridge.
 
-**Durability correction.** D3 and earlier spool prose incorrectly said strict commits. The native helper
-requests and reports `relaxed` durability. The current contracts now say so; historical evidence is
-unchanged. F-15 remains open: completed transactions and renderer-crash tests do not establish persistence
-of invocation grants through OS/power loss. No new runtime defect or strict-persistence repair is claimed.
+**Contract corrections.** The inherited row-2 nonce claim is now explicitly finite-use and conditional
+on fresh randomness; flushing does not reset lifetime q. Custody rejects malformed Unicode before name
+derivation, while the low-level name helper alone does not. D4's relaxed-durability correction remains:
+F-15 is open, and renderer-crash/transaction tests do not establish OS/power-loss persistence of grants.
+No new runtime defect, rotation protocol or whole-WASM provenance qualification was established in D5.
 
-[Final evidence](./account-conformance-runs/2026-09-11-account-counter-contract.md): all 43 stages
-pass with 806 matching input pins. Eight vectors, 80 input mutations, 95 encoded omission witnesses,
-88 parser refusals and 200 shrinking-enabled histories (1,443 reservations, 13 ceiling refusals) pass.
-Five new native tests verify real custody KDF/MAC bytes, correctly MACed lies, abort atomicity, the
-post-authentication MAC race and reservation-before-AES boundary. All 41 existing spool/receive native
-regressions, 983 units, typecheck, retained A/B/C/D1/D2/D3 contracts and 26 vector commands pass.
-A missing-MAC fixture conversion was corrected to exercise the runtime parser; the interrupted first
-campaign and passing final campaign are preserved. The registry has 63 specified, four open and one
-exclusion; the map has 61 entries and 75 permitted-root chains. F-05/F-06 remain open.
+[Final evidence](./account-conformance-runs/2026-09-11-account-store-contract.md): 46 stages pass with
+823 matching pins. Eleven new vectors, 44 field mutations and 44 encoded omission witnesses pass.
+The 160 shrinking-enabled byte histories cover 1,195 steps with no counterexample. Eight new source
+controls are effective. Three new native tests verify actual custody derivation, exact raw/recovered
+plaintext, writer restart, flush and eight changed fields. Eight inherited content/journal native cases
+pass and detect five mutants; all 28 WASM checks, 983 units, typecheck, earlier contracts and 27 vector
+commands pass. The native fixture was corrected for decrypt-only enrollment, then strengthened to compare
+complete journal plaintexts; both full campaigns passed and the final one uses the strengthened fixture.
+The registry has 67 specified, three open and one exclusion; the map has 66 entries/80 permitted-root
+chains. F-05/F-06 remain open.
 
-**Next bounded phase — D5: inherited store and synchronous journal byte bridges.** Continue
-[group D](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates) with the remaining
-`remaining-shared-store` constructions:
+**Next bounded phase — D6: inherited factor custody, envelopes and v2 credential/metadata bytes.**
+Continue [group D](./account-crypto-prep.md#4-ordered-implementation-groups-and-acceptance-gates) with
+`remaining-shared-custody`:
 
-- Compare current store-name digest, store-key KDF and record AAD/framing with inherited row-3 vectors
-  and their runtime consumers. Register exact byte/source/map joins and fill only demonstrated gaps.
-- Pin journal key derivation and synchronous carrier header/AAD/nonce/tag bytes, including scope,
-  generation, tab identity and native parser rules. Bridge existing WASM/vector evidence where exact;
-  do not claim a fresh whole-WASM qualification from a matching wrapper.
-- Use independent fixed vectors, meaningful per-field negatives, effective omission controls and
-  shrinking-enabled tests around these byte boundaries. Keep lifecycle, invocation accounting and
-  content coverage obligations explicit instead of deriving them from an AEAD tag.
-- Change runtime only for a reproduced defect or explicit contract correction; preserve valid formats
-  otherwise. Run affected checks, preserve evidence and append the outcome before replacing L-1.
-  No real provisioning, personal build/server, onboarding UI or deployment is authorized by this phase.
+- Pin the actual factor lock-seal and generation-envelope KDF/AAD/plaintext formats and stored parser
+  boundaries, comparing inherited device-lock and row-3 key-envelope vectors to current consumers.
+- Qualify actual `done/custody-credential/v2`, `done/custody-key-check/v2` and
+  `done/custody-metadata/v2` messages, key correspondence, metadata authentication and custody ownership.
+  Distinguish scoped identity/factor authority from a valid tag or public key supplied by the carrier.
+- Add independent fixed vectors for demonstrated gaps, meaningful per-field negatives, effective source
+  omission controls and shrinking-enabled tests. Exercise actual native custody creation/open/failure
+  boundaries where helper agreement cannot establish the owner connection.
+- Preserve valid formats; change runtime only for a reproduced defect or explicit correction. Register
+  exact source/map/byte joins, run affected checks, preserve evidence and append the outcome before
+  replacing only L-1. No real provisioning, personal build/server, onboarding UI or deployment here.
 
-Later D slices retain other custody primitives and checkpoint/startup contracts. Migration-only provenance
-needs an explicit disposition, not silent whole-Local requalification. The actual old second device will
-adopt the first workspace with fresh custody/store/counters/credentials, without importing or merging its
-old writing. Recovery byte conformance is not a built total-loss machine.
+Later D work retains Account checkpoint/startup. Local/migration-only provenance needs an explicit
+bounded disposition, not silent whole-Local qualification. The actual old second device will adopt the
+first workspace with fresh custody/store/counters/credentials, without importing or merging its old
+writing. Recovery byte conformance is not a built total-loss machine.
 
 **Personal checkpoint.** Root `dist/` and `.dev/releases/17d87c2/app` retain all 21 saved hashes.
-All 26 prior tracked vector files and production sources are unchanged by D4. Personal preview/relay,
-browser/factors, origin/routing, historical review and L-2 are unchanged. Native bundles stayed in memory.
-Host VM/policy research stays stopped. No real Account, factor, operator key or pin was provisioned.
-Unrelated root files `done ` and `reviewpacket96a20401ceb88d.md` remain untouched.
+All 27 prior tracked vector files and production sources are unchanged by D5. Personal preview/relay,
+browser/factors, origin/routing, historical review and L-2 are unchanged. New native bundles stayed in
+memory; inherited harnesses used only disposable loopback fixtures. Host VM/policy research stays
+stopped. No real Account, factor, operator key or pin was provisioned. Unrelated root files `done ` and
+`reviewpacket96a20401ceb88d.md` remain untouched.
 
 **Other gates.** F-15 invocation-grant power-loss accounting, salvage/diagnostics, parser/admission/service
 negatives, performance/maintenance, lock ordering and accepted review follow-ups remain. Passkey and

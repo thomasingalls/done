@@ -1,0 +1,12 @@
+journal C01.synchronous-crash: pass
+journal C09.unreadable: pass
+journal C11.abort-flush: pass
+journal C01.handoff-race: pass
+journal C04.close-and-keys: pass
+journal C04.concurrent-writers: pass
+skip-storage-append C01.synchronous-crash: fail
+cleanup-before-commit C11.abort-flush: fail
+reread-journal-after-content C01.handoff-race: fail
+skip-wasm-disposal C04.close-and-keys: fail
+Report: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-store-contract/2026-09-11T18-23-08.071Z/journal-native/native/report.md
+Exit 0 (bounded journal carrier)
