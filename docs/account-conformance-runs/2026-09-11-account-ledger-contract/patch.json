@@ -1,0 +1,32 @@
+{
+  "baseCommit": "18978483cf4387ec4336c5ab9fef0785e3ec5922",
+  "sha256": "a6ccc8debc81463c1bbddeb2946d1287c560e469866edfb9329ada5b35258d60",
+  "bytes": 367534,
+  "paths": [
+    "docs/account-conformance-runs/2026-09-11-account-ledger-contract.md",
+    "docs/account-crypto/account-ledger.md",
+    "docs/account-crypto/constructions.json",
+    "docs/account-delivery.md",
+    "docs/account-receive.md",
+    "docs/account-source-capture.md",
+    "docs/account-spool.md",
+    "docs/completed.md",
+    "docs/progress.md",
+    "docs/review/remediation/S0-2/authority-map.md",
+    "package.json",
+    "scripts/account-first-authority/registry.mjs",
+    "scripts/account-ledger-contract/run.mjs",
+    "scripts/account-ledger-contract/vectors.mjs",
+    "scripts/check-authority-map.mjs",
+    "test/account-first-authority/registry.test.mjs",
+    "test/account-ledger-contract/browser.ts",
+    "test/account-ledger-contract/controls.test.mjs",
+    "test/account-ledger-contract/formats.test.mjs",
+    "test/account-ledger-contract/helpers.mjs",
+    "test/account-ledger-contract/oracle.mjs",
+    "test/account-ledger-contract/runtime.mjs",
+    "test/vectors/account-ledger.json"
+  ],
+  "scope": "D3 source, tests, vectors and narrative checkpoint diff against unsigned D2. Raw evidence and this patch/manifest excluded to avoid recursive packaging. No production runtime changes.",
+  "indexEmpty": true
+}

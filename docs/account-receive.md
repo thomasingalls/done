@@ -1,5 +1,9 @@
 # Private native inbound storage
 
+Current capsule, ledger and witness bytes are pinned in the
+[Account ledger contract](./account-crypto/account-ledger.md); this phase narrative retains its original scope.
+
+
 This phase attaches the [inbound verifier](./account-inbound-verification.md) to the existing factor-owned
 Account lifetime. `openOwnedAccountReceiveStore` is a private storage-only factory. It provides status,
 one owned read request, page receipt, compaction and close. It exposes no editor, outbound publisher,

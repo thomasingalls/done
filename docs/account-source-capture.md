@@ -1,5 +1,9 @@
 # Private Account source capture
 
+Current capsule, ledger and witness bytes are pinned in the
+[Account ledger contract](./account-crypto/account-ledger.md); this phase narrative retains its original scope.
+
+
 `openOwnedCapturedAccountWorkspace` adds durable source capture to the exclusive Account editing
 lifetime. An admitted slice retains its original transaction updates and their actors before it becomes
 visible. These retained sources survive journal flush, restart and content compaction. They are inputs

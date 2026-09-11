@@ -1,0 +1,7 @@
+{
+  "seed": 5110915,
+  "runs": 200,
+  "shrinkingEnabled": true,
+  "actualSqliteColdOpen": true,
+  "independentReencryption": true
+}

@@ -952,3 +952,77 @@ pin: docs/account-crypto/local-promotion.md §4 689be8855dac
 pin: docs/account-crypto/local-promotion.md §5 27df81372cd2
 pin: docs/account-crypto/local-promotion.md §6 fb4cccefd90c
 ```
+
+## 12. Account capsule and ledger contracts — group D3
+
+These entries preserve the distinction between enclosing authentication, completeness, publication
+evidence and plaintext coverage. Counter-v2 and inherited Local bridges remain open.
+
+```authority
+entry: private-account-capsule-input
+kind: predicate
+guards: content
+verifies: canonical carrier shape, held-route/type placement and exact source identity; plaintext payloads confer no authentication
+resolves: payload opened from scoped factor-protected Local custody before semantic use -> via:device-lock-custody
+resolves: canonical bytes and scoped structural predicates, without current service or member authority -> root:structural
+status: resolved
+pin: docs/account-crypto/account-ledger.md §1 73439e172173
+pin: docs/account-crypto/account-ledger.md §2 5df20f1d1ba9
+pin: docs/account-crypto/account-ledger.md §3 c7933547450b
+pin: docs/account-crypto/account-ledger.md §4 c1ab5278aa37
+pin: docs/account-crypto/account-ledger.md §5 3d81df0bac8b
+pin: docs/account-crypto/account-ledger.md §6 0edb9e0fe7fe
+pin: docs/account-crypto/account-ledger.md §7 7750cbe25e8f
+```
+
+```authority
+entry: private-account-ledger-completeness
+kind: predicate
+guards: custody
+verifies: the full ordered event union checked against the retained authenticated counter, with coupled final commit and no silent witness reset
+resolves: current counter authentication through scoped factor-opened custody, not a supplied public hash -> via:device-lock-custody
+resolves: exact ordered hash chain, event count and atomic compare-and-write predicates -> root:structural
+status: resolved
+pin: docs/account-crypto/account-ledger.md §1 73439e172173
+pin: docs/account-crypto/account-ledger.md §2 5df20f1d1ba9
+pin: docs/account-crypto/account-ledger.md §3 c7933547450b
+pin: docs/account-crypto/account-ledger.md §4 c1ab5278aa37
+pin: docs/account-crypto/account-ledger.md §5 3d81df0bac8b
+pin: docs/account-crypto/account-ledger.md §6 0edb9e0fe7fe
+pin: docs/account-crypto/account-ledger.md §7 7750cbe25e8f
+```
+
+```authority
+entry: private-account-ledger-publication
+kind: predicate
+guards: availability
+verifies: signed submission/response reconstruction under held member and acceptance authority and retained envelope order
+resolves: member signature checked against the held certified key -> via:private-transport-member
+resolves: acceptance evidence in its bounded purpose -> via:private-transport-acceptance
+bound: Only retained publication evidence; no membership, factor, recipient or plaintext-admission authority.
+status: resolved
+pin: docs/account-crypto/account-ledger.md §1 73439e172173
+pin: docs/account-crypto/account-ledger.md §2 5df20f1d1ba9
+pin: docs/account-crypto/account-ledger.md §3 c7933547450b
+pin: docs/account-crypto/account-ledger.md §4 c1ab5278aa37
+pin: docs/account-crypto/account-ledger.md §5 3d81df0bac8b
+pin: docs/account-crypto/account-ledger.md §6 0edb9e0fe7fe
+pin: docs/account-crypto/account-ledger.md §7 7750cbe25e8f
+```
+
+```authority
+entry: private-account-ledger-coverage
+kind: predicate
+guards: content
+verifies: exact decrypted original/source correspondence and received disk content coverage after independent evidence verification
+resolves: source and disk content protected by the opened local factor custody -> via:device-lock-custody
+resolves: recomputed original bytes and content/deletion/pending-state coverage; a service signature or hash alone cannot establish this -> root:structural
+status: resolved
+pin: docs/account-crypto/account-ledger.md §1 73439e172173
+pin: docs/account-crypto/account-ledger.md §2 5df20f1d1ba9
+pin: docs/account-crypto/account-ledger.md §3 c7933547450b
+pin: docs/account-crypto/account-ledger.md §4 c1ab5278aa37
+pin: docs/account-crypto/account-ledger.md §5 3d81df0bac8b
+pin: docs/account-crypto/account-ledger.md §6 0edb9e0fe7fe
+pin: docs/account-crypto/account-ledger.md §7 7750cbe25e8f
+```

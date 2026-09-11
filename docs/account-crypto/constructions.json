@@ -2416,78 +2416,13 @@
       "blocker": null
     },
     {
-      "id": "remaining-local-account-ledger",
-      "phase": "D",
-      "status": "open",
-      "roles": ["carrier", "digest"],
-      "labels": [
-        "done/source-capture/v1",
-        "done/account-spool/v1",
-        "done/account-spool-chain/v1\u0000",
-        "done/account-delivery/v1",
-        "done/account-inbound/v1"
-      ],
+      "id": "account-source-capsule",
+      "phase": "D3",
+      "status": "specified",
+      "roles": ["carrier", "digest", "predicate"],
+      "signer": null,
+      "labels": ["done/source-capture/v1"],
       "sourceSites": [
-        {
-          "path": "src/crdt/deliveryRecord.ts",
-          "line": 94,
-          "label": "done/account-delivery/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/deliveryRecord.ts",
-          "line": 121,
-          "label": "done/account-delivery/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/deliveryRecord.ts",
-          "line": 157,
-          "label": "done/account-delivery/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/inboundLedger.ts",
-          "line": 75,
-          "label": "done/account-inbound/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/inboundRecord.ts",
-          "line": 69,
-          "label": "done/account-inbound/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/inboundRecord.ts",
-          "line": 91,
-          "label": "done/account-inbound/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/spoolRecord.ts",
-          "line": 271,
-          "label": "done/account-spool-chain/v1\u0000",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/deliveryRecord.ts",
-          "line": 165,
-          "label": "done/account-spool/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/spoolRecord.ts",
-          "line": 105,
-          "label": "done/account-spool/v1",
-          "kind": "literal"
-        },
-        {
-          "path": "src/crdt/spoolRecord.ts",
-          "line": 130,
-          "label": "done/account-spool/v1",
-          "kind": "literal"
-        },
         {
           "path": "src/crdt/sourceCapture.ts",
           "line": 71,
@@ -2507,12 +2442,411 @@
           "kind": "literal"
         }
       ],
-      "entryPoints": [],
-      "mapEntries": [],
-      "home": "docs/account-spool.md",
-      "blocker": "F-05/F-06: current-byte map/vector coverage not yet complete; inherited Local evidence is not requalified here",
-      "next": "D: capsule/spool/delivery/inbound formats and counter-witness coupling",
-      "reason": null
+      "entryPoints": [
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "name": "encodeSourceCapsule"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "name": "decodeSourceCapsule"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "name": "captureCatalog"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "name": "capturedRecovery"
+        }
+      ],
+      "mapEntries": ["private-account-capsule-input", "private-account-ledger-coverage"],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "1",
+          "hash": "73439e172173"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "2",
+          "hash": "5df20f1d1ba9"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "7",
+          "hash": "7750cbe25e8f"
+        }
+      ],
+      "vectorCases": ["source-human", "source-mixed", "capture-source-digest"],
+      "tests": [
+        "test/account-ledger-contract/formats.test.mjs",
+        "test/account-ledger-contract/controls.test.mjs",
+        "test/account-capture/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "canonical-carrier-negatives",
+        "encoded-field-omissions"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "account-spool-capsule",
+      "phase": "D3",
+      "status": "specified",
+      "roles": ["carrier", "predicate"],
+      "signer": null,
+      "labels": ["done/account-spool/v1"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 165,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 105,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 130,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "name": "encodeSpoolEntry"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "name": "decodeSpoolEntry"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "name": "inspectSpool"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "name": "verifySpool"
+        }
+      ],
+      "mapEntries": [
+        "private-account-capsule-input",
+        "private-account-ledger-completeness",
+        "private-account-ledger-coverage"
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "1",
+          "hash": "73439e172173"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "3",
+          "hash": "c7933547450b"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "6",
+          "hash": "0edb9e0fe7fe"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "7",
+          "hash": "7750cbe25e8f"
+        }
+      ],
+      "vectorCases": ["spool-position", "spool-attempt", "spool-retry", "spool-envelope"],
+      "tests": [
+        "test/account-ledger-contract/formats.test.mjs",
+        "test/account-ledger-contract/controls.test.mjs",
+        "test/account-spool/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "canonical-carrier-negatives",
+        "encoded-field-omissions"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "account-delivery-capsule",
+      "phase": "D3",
+      "status": "specified",
+      "roles": ["carrier", "predicate"],
+      "signer": null,
+      "labels": ["done/account-delivery/v1"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 94,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 121,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 157,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "name": "encodeDeliveryEntry"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "name": "decodeDeliveryEntry"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "name": "inspectDelivery"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "name": "verifyDelivery"
+        }
+      ],
+      "mapEntries": [
+        "private-account-capsule-input",
+        "private-account-ledger-completeness",
+        "private-account-ledger-publication"
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "1",
+          "hash": "73439e172173"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "4",
+          "hash": "c1ab5278aa37"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "6",
+          "hash": "0edb9e0fe7fe"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "7",
+          "hash": "7750cbe25e8f"
+        }
+      ],
+      "vectorCases": ["delivery-submission", "delivery-response"],
+      "tests": [
+        "test/account-ledger-contract/formats.test.mjs",
+        "test/account-ledger-contract/controls.test.mjs",
+        "test/account-delivery/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "canonical-carrier-negatives",
+        "encoded-field-omissions"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "account-inbound-capsule",
+      "phase": "D3",
+      "status": "specified",
+      "roles": ["carrier", "predicate"],
+      "signer": null,
+      "labels": ["done/account-inbound/v1"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "line": 75,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 69,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 91,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "name": "encodeInboundRecord"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "name": "decodeInboundRecord"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "name": "inspectInbound"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "name": "verifyInboundCoverage"
+        },
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "name": "verifyInboundLedger"
+        }
+      ],
+      "mapEntries": [
+        "private-account-capsule-input",
+        "private-account-ledger-completeness",
+        "private-account-ledger-publication",
+        "private-account-ledger-coverage"
+      ],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "1",
+          "hash": "73439e172173"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "5",
+          "hash": "3d81df0bac8b"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "6",
+          "hash": "0edb9e0fe7fe"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "7",
+          "hash": "7750cbe25e8f"
+        }
+      ],
+      "vectorCases": ["inbound-received", "inbound-conflict"],
+      "tests": [
+        "test/account-ledger-contract/formats.test.mjs",
+        "test/account-ledger-contract/controls.test.mjs",
+        "test/account-receive/native.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "canonical-carrier-negatives",
+        "encoded-field-omissions"
+      ],
+      "blocker": null
+    },
+    {
+      "id": "account-ledger-chain",
+      "phase": "D3",
+      "status": "specified",
+      "roles": ["digest", "predicate"],
+      "signer": null,
+      "labels": ["done/account-spool-chain/v1\u0000"],
+      "sourceSites": [
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 271,
+          "label": "done/account-spool-chain/v1\u0000",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "name": "extendSpoolWitness"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "name": "verifySpoolWitness"
+        }
+      ],
+      "mapEntries": ["private-account-capsule-input", "private-account-ledger-completeness"],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "6",
+          "hash": "0edb9e0fe7fe"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "7",
+          "hash": "7750cbe25e8f"
+        }
+      ],
+      "vectorCases": [
+        "chain-spool-position",
+        "chain-spool-attempt",
+        "chain-spool-retry",
+        "chain-spool-envelope",
+        "chain-delivery-submission",
+        "chain-delivery-response",
+        "chain-inbound-received",
+        "chain-inbound-conflict"
+      ],
+      "tests": [
+        "test/account-ledger-contract/formats.test.mjs",
+        "test/account-ledger-contract/controls.test.mjs",
+        "test/account-spool/native.test.mjs",
+        "test/account-receive/native.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations", "counter-witness-coupling"],
+      "blocker": null
+    },
+    {
+      "id": "account-inbound-baseline",
+      "phase": "D3",
+      "status": "specified",
+      "roles": ["digest", "predicate"],
+      "signer": null,
+      "labels": [],
+      "sourceSites": [],
+      "entryPoints": [
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "name": "heldInboundContext"
+        }
+      ],
+      "mapEntries": ["private-account-capsule-input", "private-account-ledger-coverage"],
+      "homePins": [
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "5",
+          "hash": "3d81df0bac8b"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "7",
+          "hash": "7750cbe25e8f"
+        }
+      ],
+      "vectorCases": ["inbound-baseline-digest"],
+      "tests": [
+        "test/account-ledger-contract/formats.test.mjs",
+        "test/account-ledger-contract/controls.test.mjs",
+        "test/account-receive/native.test.mjs"
+      ],
+      "requirements": ["runtime-bytes", "input-mutations"],
+      "blocker": null
     },
     {
       "id": "remaining-shared-store",
@@ -3186,6 +3520,11 @@
       "phase": "D2",
       "vectorFile": "test/vectors/account-promotion.json",
       "vectorSha256": "e4557d7786a687426d8fbf282a6745713eed091264d8a7cb2518665343428e34"
+    },
+    {
+      "phase": "D3",
+      "vectorFile": "test/vectors/account-ledger.json",
+      "vectorSha256": "99f0df5547f7e82a4c578b3da306ccbb7807dec7a487a6655c651e9b8d538c6c"
     }
   ]
 }

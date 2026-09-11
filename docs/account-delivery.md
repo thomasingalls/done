@@ -1,5 +1,9 @@
 # Private Account durable delivery evidence
 
+Current capsule, ledger and witness bytes are pinned in the
+[Account ledger contract](./account-crypto/account-ledger.md); this phase narrative retains its original scope.
+
+
 This bounded phase follows [the v7 spool](./account-spool.md) and
 [response verification and submission framing](./account-decisions.md). The private
 `openOwnedAccountDeliveryWorkspace` owns exact signed first-attempt submissions and authenticated response

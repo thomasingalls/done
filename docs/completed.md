@@ -2612,3 +2612,43 @@ follow separately. F-05/F-06 and wider readiness gates remain open. All 21 perso
 24 prior vector files, production sources, historical review, L-2 and unrelated root files are preserved.
 Personal preview/relay remain stopped; no real Account/factor/operator secret or pin was provisioned.
 Appended before replacing only L-1.
+
+
+## 2026-09-11 — Account capsule and ledger byte contracts (`L-1` seat)
+
+D2 was committed unsigned as `1897848` at the user's request; the signing reminder now includes it
+alongside C `d098bd4` and D1 `d24ca66`. D3 is complete and remains unstaged/uncommitted. Source, spool,
+delivery and inbound carriers, whole-source and held-receipt hashes, the shared ledger chain and its
+authenticated counter dependency now have exact byte contracts. No production code or persistent
+format changed, and no runtime defect was reproduced in this bounded phase.
+
+[Preserved evidence](./account-conformance-runs/2026-09-11-account-ledger-contract.md) records all
+42 stages passing with 795 matching input pins. Twenty independent vectors cover ten carriers,
+eight chain extensions and two digests. All 118 carrier mutations are refused or change canonical bytes;
+118 encoded omissions, 13,876 truncated prefixes and 80 other framing cases refuse. All 73 receipt leaf
+mutations change the baseline hash or refuse. Two hundred shrinking-enabled generated ledger histories,
+seed 5110917, cover 2,563 events, retries, unfinished positions and missing records with no counterexample.
+Matching old ledger/witness prefixes remain accepted, explicitly preserving the rollback limitation.
+
+Eight effective weakening cases remove actual identity/digest/source, witness, ordering, coverage or
+digest-input checks while real cryptography remains operative. A separate defence control confirms that
+removing only the early count check still refuses through final pair equality. Correctly encrypted/signed
+different originals refuse before exposure. Existing native receive controls re-encrypt false service
+evidence with valid Local AEAD and a valid counter MAC; cold replay still reauthenticates and refuses it.
+
+All 75 native capture/spool/delivery/receive tests pass, including 44 generated browser histories,
+strict commit interruptions, missing tails, close/activation fences, journal/compaction preservation,
+pending dependency recovery and content/evidence atomicity. All 983 units in 88 files,
+typecheck, retained A/B/C/D1/D2 contracts, 25 vector commands and targeted lint/format pass. Nine new
+registry omission controls enforce corpus, witness, role, source and negative-evidence dependencies.
+Six specified D3 records replace the open Account-ledger record: the registry has 59 specified, four
+open and one exclusion; the map has 58 entries, 70 permitted-root chains and 14 swept documents.
+Runtime census remains 158 sources/89 labels and templates.
+
+Next is D4: authenticated counter and witness byte contracts, the bounded Account-to-Local bridge for
+v1/v2 counter payloads, scoped metadata keys/MACs and atomic counter/witness ownership. Inherited
+store/journal/custody, checkpoint/startup and migration-only disposition remain separate where not
+covered. F-05/F-06, wider readiness and invocation power-loss/rollback/clone assumptions remain open.
+All 21 personal package hashes, 25 prior tracked vector files, production sources, historical review,
+L-2 and unrelated root files are preserved. Personal preview/relay remain stopped; no real Account,
+factor, operator secret or pin was provisioned. Appended before replacing only L-1.

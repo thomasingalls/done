@@ -1,5 +1,9 @@
 # Private Account position allocation and persisted envelopes
 
+Current capsule, ledger and witness bytes are pinned in the
+[Account ledger contract](./account-crypto/account-ledger.md); this phase narrative retains its original scope.
+
+
 Implementation contract for the private v7 owner. Relay submission, acceptance and refusal/successor
 handling remain separate phases. This owner retains every source and every envelope.
 

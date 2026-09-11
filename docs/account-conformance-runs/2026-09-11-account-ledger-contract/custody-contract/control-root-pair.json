@@ -1,0 +1,5 @@
+{
+  "baseline": "refused",
+  "mutant": "wrong seed used for proof; client still rejects its signature",
+  "authenticatedPayload": true
+}

@@ -18,8 +18,8 @@ const baseline = () => ({
 test('registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups', () => {
   const result = checkConstructionRegistry(root);
   assert.deepEqual(result.failures, []);
-  assert.equal(result.specified, 53);
-  assert.equal(result.open, 5);
+  assert.equal(result.specified, 59);
+  assert.equal(result.open, 4);
   assert.equal(result.excluded, 1);
 });
 
@@ -477,6 +477,103 @@ test('D2 promotion cannot drop its MAC edge, role, version cases, omission evide
   if (process.env.ACCOUNT_REPORT_DIR)
     writeFileSync(
       join(process.env.ACCOUNT_REPORT_DIR, 'promotion-registry-controls.json'),
+      JSON.stringify({ controls: evidence.length, evidence }, null, 2) + '\n',
+    );
+});
+
+test('D3 ledger byte coverage cannot discard canonical negatives or its counter witness dependency', () => {
+  const controls = [
+    [
+      'D3 corpus',
+      (o) =>
+        (o.document.additionalCorpora = o.document.additionalCorpora.filter(
+          (c) => c.phase !== 'D3',
+        )),
+      'specified phase/blocker mismatch',
+    ],
+    [
+      'witness edge',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'account-ledger-chain').mapEntries = [
+          'private-account-capsule-input',
+        ]),
+      'missing counter witness dependency',
+    ],
+    [
+      'witness obligation',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'account-ledger-chain').requirements = [
+          'runtime-bytes',
+          'input-mutations',
+        ]),
+      'missing evidence obligation',
+    ],
+    [
+      'canonicality obligation',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'account-source-capsule').requirements = [
+          'runtime-bytes',
+          'input-mutations',
+          'encoded-field-omissions',
+        ]),
+      'missing evidence obligation',
+    ],
+    [
+      'unlabelled receipt hash',
+      (o) =>
+        (o.document.constructions = o.document.constructions.filter(
+          (r) => r.id !== 'account-inbound-baseline',
+        )),
+      'orphan executed vector',
+    ],
+    [
+      'nested source site',
+      (o) =>
+        o.document.constructions.find((r) => r.id === 'account-inbound-capsule').sourceSites.pop(),
+      'source-site census changed',
+    ],
+    [
+      'chain role',
+      (o) =>
+        (o.document.constructions.find((r) => r.id === 'account-ledger-chain').roles = ['carrier']),
+      'digest vector misclassified',
+    ],
+  ];
+  const evidence = [];
+  for (const [name, change, expected] of controls) {
+    const o = baseline();
+    change(o);
+    assert(
+      checkConstructionRegistry(root, o).failures.some((f) => f.includes(expected)),
+      name,
+    );
+    evidence.push({ name, caught: true, expected });
+  }
+  for (const field of ['negatives', 'encodedBindingControls']) {
+    const o = baseline(),
+      corpus = o.document.additionalCorpora.find((c) => c.phase === 'D3'),
+      path = corpus.vectorFile,
+      v = JSON.parse(read(path));
+    v.vectors.find((v) => v.id === 'inbound-received')[field] = [];
+    const changed = JSON.stringify(v);
+    corpus.vectorSha256 = digest(changed);
+    o.read = (p) => (p === path ? changed : read(p));
+    const result = checkConstructionRegistry(root, o);
+    assert(
+      result.failures.some((f) =>
+        f.includes(
+          field === 'negatives'
+            ? 'missing vector/negative corpus'
+            : 'missing carrier omission corpus',
+        ),
+      ),
+    );
+    assert(!result.failures.some((f) => f.includes('stale additional vector file pin')));
+    evidence.push({ name: field, caught: true, aggregatePinUpdated: true });
+  }
+  if (process.env.ACCOUNT_REPORT_DIR)
+    writeFileSync(
+      join(process.env.ACCOUNT_REPORT_DIR, 'ledger-registry-controls.json'),
       JSON.stringify({ controls: evidence.length, evidence }, null, 2) + '\n',
     );
 });

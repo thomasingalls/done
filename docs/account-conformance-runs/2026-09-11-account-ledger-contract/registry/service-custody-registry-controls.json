@@ -1,0 +1,40 @@
+{
+  "controls": 7,
+  "evidence": [
+    {
+      "name": "D1 corpus",
+      "expected": "specified phase/blocker mismatch",
+      "caught": true
+    },
+    {
+      "name": "duplicate D1",
+      "expected": "unknown/duplicate additional corpus phase",
+      "caught": true
+    },
+    {
+      "name": "owner export",
+      "expected": "missing entrypoint",
+      "caught": true
+    },
+    {
+      "name": "raw export predicate",
+      "expected": "orphan executed vector",
+      "caught": true
+    },
+    {
+      "name": "AEAD authority edge",
+      "expected": "missing AEAD authority entry",
+      "caught": true
+    },
+    {
+      "name": "carrier role",
+      "expected": "carrier vector misclassified",
+      "caught": true
+    },
+    {
+      "name": "negative corpus",
+      "caught": true,
+      "aggregatePinUpdated": true
+    }
+  ]
+}

@@ -53,7 +53,7 @@ export function checkConstructionRegistry(root, options = {}) {
   const executed = vectors.vectors.map((v) => ({ ...v, phase: 'A' }));
   const corpusPhases = new Set(['A']);
   for (const corpus of additional) {
-    if (!['B', 'C', 'D1', 'D2'].includes(corpus.phase) || corpusPhases.has(corpus.phase))
+    if (!['B', 'C', 'D1', 'D2', 'D3'].includes(corpus.phase) || corpusPhases.has(corpus.phase))
       fail('unknown/duplicate additional corpus phase');
     corpusPhases.add(corpus.phase);
     if (digest(read(corpus.vectorFile)) !== corpus.vectorSha256)
@@ -75,7 +75,7 @@ export function checkConstructionRegistry(root, options = {}) {
     if (ids.has(r.id)) fail('duplicate construction ' + r.id);
     ids.add(r.id);
     if (!['specified', 'open', 'excluded'].includes(r.status)) fail('unknown status ' + r.id);
-    if (!['A', 'B', 'C', 'D', 'D1', 'D2', 'Local', 'non-crypto'].includes(r.phase))
+    if (!['A', 'B', 'C', 'D', 'D1', 'D2', 'D3', 'Local', 'non-crypto'].includes(r.phase))
       fail('unknown phase ' + r.id);
     if (
       !r.roles.length ||
@@ -165,9 +165,18 @@ export function checkConstructionRegistry(root, options = {}) {
         entries.get(signerEntry[0])?.guards !== signerEntry[1])
     )
       fail('signer/authority guard mismatch ' + r.id);
+    if (
+      r.id === 'account-ledger-chain' &&
+      !r.mapEntries.includes('private-account-ledger-completeness')
+    )
+      fail('missing counter witness dependency ' + r.id);
     const required = [
       'runtime-bytes',
       'input-mutations',
+      ...(r.id === 'account-ledger-chain' ? ['counter-witness-coupling'] : []),
+      ...(r.phase === 'D3' && r.roles.includes('carrier')
+        ? ['canonical-carrier-negatives', 'encoded-field-omissions']
+        : []),
       ...(r.roles.includes('signature') || r.roles.includes('mac')
         ? ['encoded-field-omissions']
         : []),
@@ -191,6 +200,8 @@ export function checkConstructionRegistry(root, options = {}) {
         fail('carrier vector misclassified ' + r.id);
       if (v?.kind === 'digest' && !r.roles.includes('digest'))
         fail('digest vector misclassified ' + r.id);
+      if (r.phase === 'D3' && v?.kind === 'carrier' && !v.encodedBindingControls?.length)
+        fail('missing carrier omission corpus ' + r.id);
       if (!v?.expected.messageHex || !v.expected.resultHex || !v.negatives?.length)
         fail('missing vector/negative corpus ' + r.id + ' -> ' + id);
       if (

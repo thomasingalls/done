@@ -1,0 +1,5 @@
+authority map: 58 entries, 70 chains; every chain terminates at a permitted root for its guard, and every signature and AEAD construction in the 14 swept documents sits in a pinned section.
+  open at their own joint: 0
+  blocked through an open home: 0
+  This proves the rules resolve and their homes are pinned — not that the corpus implements them: each open entry flips only at its return, under that record's falsifiers. Account construction coverage is reported separately below.
+  Account constructions: 59 specified, 4 open, 1 non-crypto exclusions. F-05/F-06 remain open; run the vector/runtime campaign to verify the registered evidence.
