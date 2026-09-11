@@ -1,0 +1,21 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/privateDeliveryHttp.test.ts > uses the fixed v2 route, no ambient credentials or redirects, and refuses inactive dispatch 21ms
+ ✓ test/privateDeliveryHttp.test.ts > bounds actual streaming bytes independently of headers and cancels overrun 1ms
+ ✓ test/privateDeliveryHttp.test.ts > waits for stream cancellation to settle and cannot return partial bytes after close 1ms
+ ✓ test/privateDeliveryHttp.test.ts > cancels a late successful response from a fetch that ignores abort 0ms
+ ✓ test/privateDeliveryHttp.test.ts > enforces the deadline during a streaming body 1ms
+ ✓ test/privateDeliveryHttp.test.ts > generated stream partitions return detached exact bytes only for complete bounded responses 17ms
+ ✓ test/ownedReceiveQueue.test.ts > holds local preparation behind owned commit and publishes originals without a local append 7ms
+ ✓ test/ownedReceiveQueue.test.ts > refuses invalid pages without blocking later edits and never accepts raw updates through the seam 1ms
+ ✓ test/ownedReceiveQueue.test.ts > close while commit is pending prevents promotion and late acknowledgement 1ms
+ ✓ test/ownedReceiveQueue.test.ts > capacity refusal happens before dispatch and capture owns all queued wire bytes 0ms
+ ✓ test/ownedReceiveQueue.test.ts > 200 generated interleavings recover authored text and preserve source counts 150ms
+ ✓ test/ownedReceiveQueue.test.ts > empty source lists cannot conceal a deletion with an unchanged state vector 3ms
+
+ Test Files  2 passed (2)
+      Tests  12 passed (12)
+   Start at  12:31:25
+   Duration  498ms (transform 148ms, setup 76ms, import 226ms, tests 203ms, environment 0ms)
+

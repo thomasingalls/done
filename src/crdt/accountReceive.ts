@@ -9,6 +9,7 @@ import {
   inboundRequestMessage,
   decodeInboundRequest,
 } from '../../account-protocol/inboundTransport';
+import { privateDeliveryPost } from '../account/privateDeliveryHttp';
 import { READ_PAGE_LIMIT } from '../../account-protocol/deliveryTransport';
 import {
   hex,
@@ -30,7 +31,12 @@ import { verifyDelivery } from './deliveryRecord';
 import { captureError, type CaptureRoute } from './sourceCapture';
 import type { SessionTask } from './writeSession';
 import type { prepareAccountCustody } from './custody';
-import { createAdmissionOwner, AdmissionError, type OwnedReceiveQueue } from './admissionQueue';
+import {
+  createAdmissionOwner,
+  AdmissionError,
+  MAX_PENDING_BYTES,
+  type OwnedReceiveQueue,
+} from './admissionQueue';
 import { createAdmittedWorkspace } from './admittedWorkspace';
 import type { AccountWorkspaceOptions } from './accountWorkspace';
 
@@ -129,6 +135,73 @@ async function openAccountReceiveOwner(input: AccountStartupOptions, principalId
       link: s.prefix.link,
       observedThrough: s.prefix.observedThrough,
     });
+  const prepareRead = async (
+    task: SessionTask,
+    owner: ReturnType<typeof prepareAccountCustody>,
+    route: CaptureRoute,
+    after?: number,
+  ) => {
+    const s = await state(task, owner, route),
+      cursor = after ?? s.prefix.position;
+    if (s.conflict) throw Error('Inbound stream is conflicted');
+    if (!Number.isSafeInteger(cursor) || cursor < 0 || cursor > s.prefix.position)
+      throw Error('Invalid receive cursor');
+    const r = {
+      serviceId: base.service.id,
+      origin: base.service.origin,
+      workspace: base.authority.workspace,
+      reader: base.reader.id,
+      publisher: base.publisher.id,
+      lineage: base.authority.lineage,
+      head: base.authority.head,
+      epoch: 1,
+      after: cursor,
+      limit: 1,
+      nonce: hex(task.step(() => random(32))),
+      expires: Date.now() + 30000,
+      signature: '00'.repeat(64),
+    };
+    r.signature = hex(
+      new Uint8Array(
+        await task.wait(() => subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(r))),
+      ),
+    );
+    await assertCurrent(task);
+    return task.step(() => {
+      outstanding?.fill(0);
+      outstanding = encodeInboundRequest(r);
+      return outstanding.slice();
+    });
+  };
+  // Network work ends its carrier task before entering the admission FIFO. Waiting for receive
+  // within this task would deadlock the receive commit behind its own fetch.
+  const fetchPage = async (operatorToken: string) => {
+    // Keep ownership outside runCaptureTask too: its final lifetime check can reject after the
+    // operation produced a response. That rejection still has to erase both captured buffers.
+    let request: Bytes | undefined,
+      page: Bytes | null = null;
+    try {
+      return await runCaptureTask(async (task, owner, route) => {
+        const query = (request = await prepareRead(task, owner, route));
+        await task.wait(async () => {
+          page = await privateDeliveryPost(
+            options.pin,
+            operatorToken,
+            'read-v2',
+            query,
+            MAX_PENDING_BYTES,
+            task.signal,
+          );
+        });
+        await assertCurrent(task);
+        return task.step(() => ({ request: query, page }));
+      });
+    } catch (cause) {
+      request?.fill(0);
+      (page as Bytes | null)?.fill(0);
+      throw cause;
+    }
+  };
   const api = Object.freeze({
     ...account,
     close: () => carrier.close(),
@@ -136,42 +209,12 @@ async function openAccountReceiveOwner(input: AccountStartupOptions, principalId
       runCaptureTask(async (task, owner, route) => describe(await state(task, owner, route))),
     /** A single outstanding owner-signed request; retry old positions only against retained evidence. */
     prepareRead: (after?: number) =>
-      runCaptureTask(async (task, owner, route) => {
-        const s = await state(task, owner, route),
-          cursor = after ?? s.prefix.position;
-        if (s.conflict) throw Error('Inbound stream is conflicted');
-        if (!Number.isSafeInteger(cursor) || cursor < 0 || cursor > s.prefix.position)
-          throw Error('Invalid receive cursor');
-        const r = {
-          serviceId: base.service.id,
-          origin: base.service.origin,
-          workspace: base.authority.workspace,
-          reader: base.reader.id,
-          publisher: base.publisher.id,
-          lineage: base.authority.lineage,
-          head: base.authority.head,
-          epoch: 1,
-          after: cursor,
-          limit: 1,
-          nonce: hex(task.step(() => random(32))),
-          expires: Date.now() + 30000,
-          signature: '00'.repeat(64),
-        };
-        r.signature = hex(
-          new Uint8Array(
-            await task.wait(() =>
-              subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(r)),
-            ),
-          ),
-        );
-        await assertCurrent(task);
-        return task.step(() => {
-          outstanding?.fill(0);
-          outstanding = encodeInboundRequest(r);
-          return outstanding.slice();
-        });
-      }),
-    receivePage: (input: Bytes, promote: (updates: readonly Bytes[]) => void = () => {}) => {
+      runCaptureTask((task, owner, route) => prepareRead(task, owner, route, after)),
+    receivePage: (
+      input: Bytes,
+      promote: (updates: readonly Bytes[]) => void = () => {},
+      expectedRequest?: Bytes,
+    ) => {
       if (!(input instanceof Uint8Array) || !input.length || input.length > READ_PAGE_LIMIT)
         return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive page'));
       const page = input.slice();
@@ -180,6 +223,8 @@ async function openAccountReceiveOwner(input: AccountStartupOptions, principalId
         if (s.conflict) throw new AdmissionError('receive-refused', 'Inbound stream is conflicted');
         if (!outstanding)
           throw new AdmissionError('receive-refused', 'No outstanding receive request');
+        if (expectedRequest && hex(expectedRequest) !== hex(outstanding))
+          throw new AdmissionError('receive-refused', 'Receive request was superseded');
         const request = outstanding.slice();
         let result: Awaited<ReturnType<typeof verifyInboundPage>> | undefined;
         let committed = false;
@@ -252,7 +297,7 @@ async function openAccountReceiveOwner(input: AccountStartupOptions, principalId
     },
     compactContent: () => carrier.compactContent(),
   });
-  return { api, account, carrier, listCaptures };
+  return { api, account, carrier, listCaptures, fetchPage };
 }
 
 /** Storage-only surface retained for independent conformance and preparation. */
@@ -261,14 +306,14 @@ export async function openOwnedAccountReceiveStore(input: AccountStartupOptions)
   return Object.freeze({ ...api, receivePage: (bytes: Bytes) => api.receivePage(bytes) });
 }
 
-/** Private admitted editor and signed-page receive under one v9 permit. No sender or service route. */
+/** Private admitted editor and signed-page receive under one v9 permit. No sender or reconnect scheduler. */
 export async function openOwnedReceivingAccountWorkspace(input: AccountWorkspaceOptions) {
   const options = {
     ...captureAccountOptions(input),
     identity: structuredClone(input.identity),
     today: input.today,
   };
-  const { api, account, carrier, listCaptures } = await openAccountReceiveOwner(
+  const { api, account, carrier, listCaptures, fetchPage } = await openAccountReceiveOwner(
     options,
     options.identity.id,
   );
@@ -294,19 +339,49 @@ export async function openOwnedReceivingAccountWorkspace(input: AccountWorkspace
       await workspace.close();
       throw Error('Account opening was cancelled');
     }
+    const receivePage = (bytes: Bytes, request?: Bytes) => {
+      try {
+        return enqueue(bytes, (page, promote) => api.receivePage(page, promote, request));
+      } catch (cause) {
+        return Promise.reject(cause);
+      }
+    };
+    let flight: Promise<unknown> | undefined;
+    carrier.beforeRelease?.(async () => {
+      await flight?.catch(() => {});
+    });
+    const receiveNext = (operatorToken: string) => {
+      if (carrier.signal.aborted)
+        return Promise.reject(new AdmissionError('inactive-session', 'Receive owner is closed'));
+      if (flight) return Promise.resolve({ kind: 'busy' as const });
+      const work = (async () => {
+        const { request, page } = await fetchPage(operatorToken);
+        try {
+          if (carrier.signal.aborted)
+            throw new AdmissionError('inactive-session', 'Receive owner is closed');
+          if (!page) return { kind: 'unknown' as const, recorded: false };
+          // Only the ordered owner may verify, persist and publish this exact request's page.
+          return await receivePage(page, request);
+        } finally {
+          request.fill(0);
+          page?.fill(0);
+        }
+      })();
+      flight = work;
+      const settled = () => {
+        if (flight === work) flight = undefined;
+      };
+      void work.then(settled, settled);
+      return work;
+    };
     return Object.freeze({
       ...account,
       kind: 'ready' as const,
       workspace,
       receiveStatus: api.status,
       prepareRead: api.prepareRead,
-      receivePage: (bytes: Bytes) => {
-        try {
-          return enqueue(bytes, (page, promote) => api.receivePage(page, promote));
-        } catch (cause) {
-          return Promise.reject(cause);
-        }
-      },
+      receivePage: (bytes: Bytes) => receivePage(bytes),
+      receiveNext,
       compactContent: async () => {
         await workspace.whenDurable();
         return carrier.compactContent();

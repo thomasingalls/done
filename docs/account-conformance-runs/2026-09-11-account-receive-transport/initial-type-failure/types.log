@@ -1,0 +1,2 @@
+test/privateDeliveryHttp.test.ts(16,38): error TS2493: Tuple type '[]' of length '0' has no element at index '0'.
+test/privateDeliveryHttp.test.ts(17,31): error TS2493: Tuple type '[]' of length '0' has no element at index '1'.

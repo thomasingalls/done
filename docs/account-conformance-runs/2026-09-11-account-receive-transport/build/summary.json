@@ -1,0 +1,100 @@
+{
+  "head": "9598ca6d78eaa7bad831e46f62218da3d147a261",
+  "started": "2026-09-11T10:29:51.541201+00:00",
+  "stages": [
+    {
+      "command": [
+        "node",
+        "scripts/check-yjs-patch.mjs"
+      ],
+      "code": 0,
+      "log": "00.log"
+    },
+    {
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "-b"
+      ],
+      "code": 0,
+      "log": "01.log"
+    },
+    {
+      "command": [
+        "node",
+        "node_modules/vite/bin/vite.js",
+        "build"
+      ],
+      "code": 0,
+      "log": "02.log"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/check-budget.mjs"
+      ],
+      "code": 0,
+      "log": "03.log"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/check-origin-isolation.mjs"
+      ],
+      "code": 0,
+      "log": "04.log"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/check-debts.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "log": "05.log"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/check-retention.mjs"
+      ],
+      "code": 0,
+      "log": "06.log"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/check-selection-status.mjs"
+      ],
+      "code": 0,
+      "log": "07.log"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/check-update-limit.mjs"
+      ],
+      "code": 0,
+      "log": "08.log"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/check-wasm-seal.mjs"
+      ],
+      "code": 0,
+      "log": "09.log"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/check-traceability.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "log": "10.log"
+    }
+  ],
+  "status": "passed",
+  "finished": "2026-09-11T10:30:12.708802+00:00"
+}

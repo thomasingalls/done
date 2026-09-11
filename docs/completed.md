@@ -2233,3 +2233,36 @@ No full aggregate was rerun for this patch, and no whole-protocol debt, personal
 L-2 state changed. The next small build is the owned v2 receive HTTP adapter under existing admission and
 lifetime; reconnect scheduling and v9 sender composition follow. Real enrollment/adoption, production
 activation and the remaining accepted review gates stay open. Appended before replacing L-1 progress.
+
+
+## 2026-09-11 — Owned v2 receive HTTP transport (`L-1`)
+
+Committed private v2 service reader/publisher resolution and its evidence as `9598ca6`. The next bounded
+[receive HTTP adapter](./account-receive-transport.md) adds `receiveNext(operatorToken)` to the private v9
+ordered editor owner. It signs from authenticated durable progress, fetches one page on the explicit v2
+route, retains exact request binding and enqueues verification/commit/publication through admission.
+Overlapping calls return busy. Callers supply no cursor, signing keys, membership or promotion callback.
+
+The carrier fetch task ends before entry into the editor FIFO, avoiding a self-deadlock. Existing ordering
+preserves both local edits admitted while HTTP waits and later local intents queued behind receive.
+Shared HTTP streaming now checks actual byte bounds and complete declared lengths, aborts on close or
+deadline, and drains cancellation before releasing its reader and the owner's permit. Superseded or
+invalid pages refuse; lost replies advance no cursor. Response buffers stay owned even when the final
+lifetime check rejects. No new durable format, sender, reconnect loop, Account UI or enrollment is added.
+
+[Evidence](./account-conformance-runs/2026-09-11-account-receive-transport.md) includes nine native HTTP
+cases with before/after commit crashes, two cancellation/drain cuts and local ordering; 16 generated native
+histories; 200 generated stream partitions; 200 existing controlled queue interleavings; and four effective
+source omissions. All 964 unit tests and affected v1 transport, v2 service and ordered-editor campaigns pass.
+The isolated build, budget/origin and fresh prerequisite/trace chain pass. Initial test assertion/type/lint
+repairs are recorded. Generated histories found no counterexample; this is not another full aggregate run.
+
+An operational mistake ran a validation build in the root and replaced predecessor `dist/`. No server was
+started. It was restored from the saved upgrade-test copy and all eleven saved hashes match; all ten
+retained personal release files remain unchanged. The correct isolated build also passed. Restoration
+provenance is retained in the evidence rather than describing `dist/` as untouched throughout the turn.
+
+The historical review and L-2 checkpoint are unchanged. No real Account/factors, personal browser, routing,
+server, deployment or whole-protocol debt was activated/changed/paid. Next is bounded owned receive polling
+and reconnect, then explicit v9 outbound composition; all accepted review gates before real Account use
+remain open. This outcome is appended before replacing L-1 progress.

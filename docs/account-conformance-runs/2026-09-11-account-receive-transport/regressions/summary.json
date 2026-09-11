@@ -1,0 +1,44 @@
+{
+  "started": "2026-09-11T10:27:25.876Z",
+  "stages": [
+    {
+      "name": "unit",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/vitest/vitest.mjs",
+        "run"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "v1-transport",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-transport/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "service-inbound",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-service-inbound/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "receive-editor",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-receive-editor/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "status": "passed",
+  "finished": "2026-09-11T10:33:07.012Z"
+}

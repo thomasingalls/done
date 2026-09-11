@@ -1,0 +1,56 @@
+Account transport evidence: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-transport/2026-09-11T10-28-00.191Z
+Starting service
+(node:27966) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:27966) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual service signature mutation discloses a signed page to an unauthorized reader (102.445666ms)
+✔ actual service current mutation discloses a signed page to an unauthorized reader (74.029125ms)
+(node:27967) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:27967) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ 60 generated append/read/restart/replay histories retain exact bounded prefixes (6217.498584ms)
+service still running; see service.log
+(node:27968) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:27968) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ authenticated empty, count-bounded pages, exact ciphertext/proof, and cursor end across restart (175.123791ms)
+✔ byte-bounded page makes progress with maximum-size envelopes (21803.818958ms)
+✔ foreign signer, all foreign scope fields, expired/future requests, malformed framing and past-end cursors refuse without mutations (96.52475ms)
+✔ signed read authorization is rechecked after verification and a retained witness refuses missing rows (51.972583ms)
+✔ current membership is required on every replay, with no new durable nonce state (38.596125ms)
+✔ binary endpoint parsers reject oversize, noncanonical JSON, trailing bytes and unbounded hex (1.370542ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22433.028167
+Starting native
+(node:28006) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28006) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual request-binding mutation accepts a stale signed page for a fresh nonce (5983.838083ms)
+(node:28203) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28203) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+native still running; see native.log
+✔ actual HTTP send uses exact persisted bytes, readback is bounded and detached, and cold restart retains acceptance (7520.839709ms)
+✔ lost HTTP acceptance reply survives browser death and retries the same wrapper (6186.730209ms)
+✔ operator-only or malformed read requests and HTTP gate failures cannot disclose pages (4657.040375ms)
+native still running; see native.log
+✔ stale nonce, reordered entries, false end, and validly signed wrong-predecessor heads are refused without storage effects (5419.719542ms)
+✔ close aborts submit and drains a late fetch before releasing the slot permit (5704.099959ms)
+native still running; see native.log
+✔ close aborts read and drains a late fetch before releasing the slot permit (5745.432041ms)
+✔ malformed, oversized streaming, redirect and reordered submission replies preserve the next wrapper (5243.334833ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 50582.662667
+passed: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-transport/2026-09-11T10-28-00.191Z

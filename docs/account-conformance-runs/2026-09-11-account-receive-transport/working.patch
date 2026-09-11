@@ -1,0 +1,1768 @@
+diff --git a/docs/completed.md b/docs/completed.md
+index 831d448..68abd68 100644
+--- a/docs/completed.md
++++ b/docs/completed.md
+@@ -2233,3 +2233,36 @@ No full aggregate was rerun for this patch, and no whole-protocol debt, personal
+ L-2 state changed. The next small build is the owned v2 receive HTTP adapter under existing admission and
+ lifetime; reconnect scheduling and v9 sender composition follow. Real enrollment/adoption, production
+ activation and the remaining accepted review gates stay open. Appended before replacing L-1 progress.
++
++
++## 2026-09-11 — Owned v2 receive HTTP transport (`L-1`)
++
++Committed private v2 service reader/publisher resolution and its evidence as `9598ca6`. The next bounded
++[receive HTTP adapter](./account-receive-transport.md) adds `receiveNext(operatorToken)` to the private v9
++ordered editor owner. It signs from authenticated durable progress, fetches one page on the explicit v2
++route, retains exact request binding and enqueues verification/commit/publication through admission.
++Overlapping calls return busy. Callers supply no cursor, signing keys, membership or promotion callback.
++
++The carrier fetch task ends before entry into the editor FIFO, avoiding a self-deadlock. Existing ordering
++preserves both local edits admitted while HTTP waits and later local intents queued behind receive.
++Shared HTTP streaming now checks actual byte bounds and complete declared lengths, aborts on close or
++deadline, and drains cancellation before releasing its reader and the owner's permit. Superseded or
++invalid pages refuse; lost replies advance no cursor. Response buffers stay owned even when the final
++lifetime check rejects. No new durable format, sender, reconnect loop, Account UI or enrollment is added.
++
++[Evidence](./account-conformance-runs/2026-09-11-account-receive-transport.md) includes nine native HTTP
++cases with before/after commit crashes, two cancellation/drain cuts and local ordering; 16 generated native
++histories; 200 generated stream partitions; 200 existing controlled queue interleavings; and four effective
++source omissions. All 964 unit tests and affected v1 transport, v2 service and ordered-editor campaigns pass.
++The isolated build, budget/origin and fresh prerequisite/trace chain pass. Initial test assertion/type/lint
++repairs are recorded. Generated histories found no counterexample; this is not another full aggregate run.
++
++An operational mistake ran a validation build in the root and replaced predecessor `dist/`. No server was
++started. It was restored from the saved upgrade-test copy and all eleven saved hashes match; all ten
++retained personal release files remain unchanged. The correct isolated build also passed. Restoration
++provenance is retained in the evidence rather than describing `dist/` as untouched throughout the turn.
++
++The historical review and L-2 checkpoint are unchanged. No real Account/factors, personal browser, routing,
++server, deployment or whole-protocol debt was activated/changed/paid. Next is bounded owned receive polling
++and reconnect, then explicit v9 outbound composition; all accepted review gates before real Account use
++remain open. This outcome is appended before replacing L-1 progress.
+diff --git a/docs/progress.md b/docs/progress.md
+index 8240e22..67c1368 100644
+--- a/docs/progress.md
++++ b/docs/progress.md
+@@ -42,57 +42,68 @@ that is no longer active.
+ 
+ ---
+ 
+-## Active slice: Owned v2 receive HTTP transport (`L-1`)
++## Active slice: Owned receive polling and reconnect (`L-1`)
+ 
+ ```yaml
+ gate: L-1
+ seat: /Users/thomasingalls/.codex/worktrees/c030/done
+ branch: codex/encrypted-store-contract-corrections
+ status: not started
+-blocks_on: none for bounded private transport work; real Account use remains gated below
++blocks_on: none for bounded private receive scheduling; real Account use remains gated below
+ debts: consult docs/review/remediation/debts.json
+ updated: 2026-09-11
+ ```
+ 
+-**Personal checkpoint.** The verified Local release remains `.dev/releases/17d87c2/app`; predecessor
+-`dist/` is intact. Preview/relay stay stopped. Origin/Tailscale routing, personal browser and factors are
+-unchanged. No real Account, passkey, recovery code, operator key or authority pin is provisioned. The
+-actual old second device will adopt this device's workspace with fresh custody, store, counters and
+-credentials; its old writing will not be imported or merged.
++**Personal checkpoint.** The verified Local release remains `.dev/releases/17d87c2/app`. Predecessor
++`dist/` was accidentally rebuilt during this phase, then restored from the saved upgrade-test copy;
++all 21 saved package hashes match. Preview/relay stay stopped. Origin/Tailscale routing, personal browser
++and factors are unchanged. No real Account, passkey, recovery code, operator key or authority pin is
++provisioned. The actual old second device will adopt this device's workspace with fresh custody, store,
++counters and credentials; its old writing will not be imported or merged.
+ 
+-**Completed boundary.** Native receive is committed as `f6e4cf4`, ordered remote editor integration as
+-`19586b6`, the unchanged annotated review archive as `500630f`, and validation-baseline repair as `e835243`.
+-The latter preserves the passing full aggregate; this new phase used targeted validation and full units.
++**Completed boundary.** Native receive is `f6e4cf4`, ordered editor integration `19586b6`, the unchanged
++annotated review archive `500630f`, validation-baseline repair `e835243`, and private v2 service read
++`9598ca6`. The full aggregate is preserved with the validation-baseline repair; later phases use targeted
++native/regression campaigns and full units.
+ 
+-[Private v2 service read](./account-service-inbound.md) is implemented and not yet committed. Separate
+-reader/publisher lookups use verified admission; the creating member alone owns the schema-4 ledger.
+-The v2 route signs request-bound pages of original witnessed envelopes/proofs, with fresh snapshot,
+-expiry and custody checks under a short SQLite exclusion. It adds no durable read state and preserves
+-v1 framing. [Evidence](./account-conformance-runs/2026-09-11-account-service-inbound.md) includes 19 service
+-cases, 60 generated histories, eight effective omissions, two process-kill cuts, native HTTP/owned-receiver
+-interoperability, 958 unit tests, affected regressions and isolated build/trace checks. All personal bundle
+-hashes match; no whole-protocol debt is paid.
++[Owned v2 receive HTTP](./account-receive-transport.md) is implemented and not yet committed. The private
++v9 editor's `receiveNext(operatorToken)` derives a signed request from durable receive progress and routes
++its exact response through ordered admission. One in-flight call spans fetch through publication. Closing
++aborts and drains fetch, response stream, admission/native work and owned buffers before permit release.
++Lost/invalid/superseded replies never advance progress. Current private receiver envelope/batch limits
++remain; large service envelopes do not become supportable by splitting signed bytes.
+ 
+-**F-11 correction.** Passkey IDs and workspace signing credential IDs intentionally differ. The review's
+-suggested equality was wrong. Existing candidate/member agreement remains enforced; the shared service
+-snapshot now binds the passkey row to completed registration. The historical packet retains its original
+-assessment, and the new phase document records this corrected disposition.
++[Evidence](./account-conformance-runs/2026-09-11-account-receive-transport.md): nine directed native HTTP
++cases, 16 generated native histories, 200 generated stream partitions, 200 existing controlled queue
++interleavings, four effective source omissions, 964 unit tests, affected v1 transport/v2 service/ordered
++editor regressions, and isolated build/trace checks pass. No generated counterexample or whole-protocol
++debt payment is inferred beyond these checks. The build-directory mistake and verified restoration are
++explicitly preserved. Historical review and L-2 are unchanged.
+ 
+-**Next small build.** Implement owned v2 receive HTTP transport, the first part of the remaining
+-transport/reconnect/composition boundary:
++**F-11 correction still applies.** Passkey IDs and workspace signing credential IDs intentionally differ.
++The review's suggested equality was wrong. Existing candidate/member agreement remains enforced; the
++service snapshot binds the passkey row to completed registration. See the corrected service-phase contract.
+ 
+-- Capture an owner-signed request from current durable receive progress; use the explicit v2 service route
+-  and private operator gate. Callers do not supply signing keys, trust roots, publisher membership or cursors.
+-- Bound and detach response bytes, preserve the exact request binding, and route successful verification/
+-  persistence through the existing ordered admission owner. Transport callbacks never publish directly.
+-- Bind fetch/stream/verification work to the held lifetime; close aborts and drains pending work before
+-  releasing exclusion, with no late acknowledgement or publication. Unknown/lost replies advance no cursor.
+-- Test actual HTTP success, refusal, truncated/oversized response, lost reply, stale request, concurrent
+-  local intent, close and cold retry, with effective omission controls. Preserve service/v1 regressions.
++**Next small build.** Add an explicit private receive polling/reconnect factory around this owner:
+ 
+-Keep this first adapter bounded. Reconnect scheduling and composition with outbound delivery under v9
+-follow, then Account UI and real two-gate second-device adoption. The v8 driver does not gain v9 semantics
+-implicitly. Preserve per-publication projection and complete cold-content verification.
++- One pass and at most one timer; yield between pages, coalesce wakeups, and use bounded polling after a
++  verified end page so later remote work can be discovered without local edits. Specify the idle interval
++  and unknown-result backoff before implementing; no timer sleep may occupy the carrier task queue.
++- Read authenticated receive progress/conflict each pass; only verified durable advancement determines
++  progress. Never retain a cursor, response or runtime status as new authority. Unknown replies re-request
++  the unchanged durable position with a fresh nonce; no automatic repair/discard or authority installation.
++- Pause on offline hints and Local admission pressure; check the gate again immediately before actual
++  dispatch after queued verification. Manual retry/online events may expedite bounded backoff. Invalid
++  authenticated state and unexpected storage/crypto failures halt automatic work pending explicit retry.
++- Bind timers/listeners/operator-token references to the same lifetime. Close invalidates scheduling,
++  cancels timers, aborts/drains the current pass and cannot deadlock the receive owner's cleanup.
++- Test an independent clock/event model, wake storms, empty-to-later-content polling, backoff, offline and
++  storage-pressure transitions, late close, lost replies and cold restart. Include native HTTP and effective
++  omissions, preserving manual receive and v8 sender regressions.
++
++Keep that scheduler bounded. Explicit outbound v9 sender composition follows; the v8 driver does not gain
++v9 semantics implicitly. Then Account UI and real two-gate second-device adoption. Preserve per-publication
++projection and complete cold-content verification throughout.
+ 
+ **Before real Account receipts/rollout:** amend row-7 manifest AND admission descriptor bounds with
+ explicit versioning; require an operation-bound fresh account assertion at first service activation;
+diff --git a/package.json b/package.json
+index 2f0e260..f4c85e5 100644
+--- a/package.json
++++ b/package.json
+@@ -14,7 +14,7 @@
+     "lint:fix": "oxlint --react-plugin --fix",
+     "format": "oxfmt --check .",
+     "format:fix": "oxfmt --write .",
+-    "check": "pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:harness && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm storage:legacy-cleanup:harness && pnpm storage:legacy-cleanup && pnpm storage:legacy-coordinator && pnpm storage:legacy-host:harness && pnpm storage:legacy-host && pnpm storage:private-migration && pnpm storage:app-startup && pnpm test:geometry && pnpm storage:app-startup:packaged && pnpm storage:app-upgrades && pnpm storage:compatibility && pnpm trace:check && pnpm account:core && pnpm account:recovery && pnpm account:authority && pnpm account:promotion && pnpm account:genesis && pnpm account:admission && pnpm account:handoff && pnpm account:editing && pnpm account:outbound && pnpm account:capture && pnpm account:spool && pnpm account:decisions && pnpm account:delivery && pnpm account:service-delivery && pnpm account:transport && pnpm account:driver && pnpm account:inbound-prep && pnpm account:inbound-codecs && pnpm account:receive && pnpm account:receive-editor && pnpm account:service-inbound",
++    "check": "pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:harness && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm storage:legacy-cleanup:harness && pnpm storage:legacy-cleanup && pnpm storage:legacy-coordinator && pnpm storage:legacy-host:harness && pnpm storage:legacy-host && pnpm storage:private-migration && pnpm storage:app-startup && pnpm test:geometry && pnpm storage:app-startup:packaged && pnpm storage:app-upgrades && pnpm storage:compatibility && pnpm trace:check && pnpm account:core && pnpm account:recovery && pnpm account:authority && pnpm account:promotion && pnpm account:genesis && pnpm account:admission && pnpm account:handoff && pnpm account:editing && pnpm account:outbound && pnpm account:capture && pnpm account:spool && pnpm account:decisions && pnpm account:delivery && pnpm account:service-delivery && pnpm account:transport && pnpm account:driver && pnpm account:inbound-prep && pnpm account:inbound-codecs && pnpm account:receive && pnpm account:receive-editor && pnpm account:service-inbound && pnpm account:receive-transport",
+     "test": "vitest run",
+     "test:https": "pnpm build && pnpm --dir relay build && node scripts/test-https.mjs",
+     "test:watch": "vitest",
+@@ -99,7 +99,8 @@
+     "account:inbound-prep": "node scripts/account-inbound-prep/run.mjs",
+     "account:inbound-codecs": "node scripts/account-inbound-codecs/run.mjs",
+     "account:receive": "node scripts/account-receive/run.mjs",
+-    "account:receive-editor": "node scripts/account-receive-editor/run.mjs"
++    "account:receive-editor": "node scripts/account-receive-editor/run.mjs",
++    "account:receive-transport": "node scripts/account-receive-transport/run.mjs"
+   },
+   "dependencies": {
+     "@codemirror/commands": "^6.10.4",
+diff --git a/src/account/privateDeliveryHttp.ts b/src/account/privateDeliveryHttp.ts
+index a2aae39..a41eb33 100644
+--- a/src/account/privateDeliveryHttp.ts
++++ b/src/account/privateDeliveryHttp.ts
+@@ -4,13 +4,15 @@ import type { Bytes } from '../../account-protocol/positionDecision';
+ export async function privateDeliveryPost(
+   pin: AuthorityPin,
+   token: string,
+-  path: 'submit' | 'read',
++  path: 'submit' | 'read' | 'read-v2',
+   body: Bytes,
+   limit: number,
+   signal: AbortSignal,
+ ): Promise<Bytes | null> {
+   if (!/^[A-Za-z0-9_-]{43}$/.test(token)) return null;
++  const stopped = AbortSignal.any([signal, AbortSignal.timeout(10000)]);
+   try {
++    stopped.throwIfAborted();
+     const response = await fetch(new URL('/account/delivery/' + path, pin.origin), {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/octet-stream', Authorization: 'Bearer ' + token },
+@@ -18,9 +20,10 @@ export async function privateDeliveryPost(
+       credentials: 'omit',
+       cache: 'no-store',
+       redirect: 'error',
+-      signal: AbortSignal.any([signal, AbortSignal.timeout(10000)]),
++      signal: stopped,
+     });
+     if (
++      stopped.aborted ||
+       response.status !== 200 ||
+       response.headers.get('content-type') !== 'application/octet-stream' ||
+       !response.body
+@@ -36,27 +39,41 @@ export async function privateDeliveryPost(
+     const reader = response.body.getReader(),
+       chunks: Bytes[] = [];
+     let length = 0;
++    let cancellation: Promise<void> | undefined;
++    const cancel = () => {
++      cancellation ??= reader.cancel().catch(() => {});
++    };
++    stopped.addEventListener('abort', cancel, { once: true });
+     try {
+       for (;;) {
++        stopped.throwIfAborted();
+         const { done, value } = await reader.read();
++        stopped.throwIfAborted();
+         if (done) break;
+         length += value.length;
+         if (length > limit) {
+-          await reader.cancel();
++          cancel();
+           return null;
+         }
+         chunks.push(new Uint8Array(value));
+       }
++      if (declared !== null && Number(declared) !== length) return null;
++      const bytes = new Uint8Array(length);
++      let at = 0;
++      for (const chunk of chunks) {
++        bytes.set(chunk, at);
++        at += chunk.length;
++      }
++      return bytes;
++    } catch {
++      cancel();
++      return null;
+     } finally {
++      stopped.removeEventListener('abort', cancel);
++      await cancellation;
+       reader.releaseLock();
++      for (const chunk of chunks) chunk.fill(0);
+     }
+-    const bytes = new Uint8Array(length);
+-    let at = 0;
+-    for (const chunk of chunks) {
+-      bytes.set(chunk, at);
+-      at += chunk.length;
+-    }
+-    return bytes;
+   } catch {
+     return null;
+   }
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index a6e4c98..25c65ef 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -9,6 +9,7 @@ import {
+   inboundRequestMessage,
+   decodeInboundRequest,
+ } from '../../account-protocol/inboundTransport';
++import { privateDeliveryPost } from '../account/privateDeliveryHttp';
+ import { READ_PAGE_LIMIT } from '../../account-protocol/deliveryTransport';
+ import {
+   hex,
+@@ -30,7 +31,12 @@ import { verifyDelivery } from './deliveryRecord';
+ import { captureError, type CaptureRoute } from './sourceCapture';
+ import type { SessionTask } from './writeSession';
+ import type { prepareAccountCustody } from './custody';
+-import { createAdmissionOwner, AdmissionError, type OwnedReceiveQueue } from './admissionQueue';
++import {
++  createAdmissionOwner,
++  AdmissionError,
++  MAX_PENDING_BYTES,
++  type OwnedReceiveQueue,
++} from './admissionQueue';
+ import { createAdmittedWorkspace } from './admittedWorkspace';
+ import type { AccountWorkspaceOptions } from './accountWorkspace';
+ 
+@@ -129,6 +135,73 @@ async function openAccountReceiveOwner(input: AccountStartupOptions, principalId
+       link: s.prefix.link,
+       observedThrough: s.prefix.observedThrough,
+     });
++  const prepareRead = async (
++    task: SessionTask,
++    owner: ReturnType<typeof prepareAccountCustody>,
++    route: CaptureRoute,
++    after?: number,
++  ) => {
++    const s = await state(task, owner, route),
++      cursor = after ?? s.prefix.position;
++    if (s.conflict) throw Error('Inbound stream is conflicted');
++    if (!Number.isSafeInteger(cursor) || cursor < 0 || cursor > s.prefix.position)
++      throw Error('Invalid receive cursor');
++    const r = {
++      serviceId: base.service.id,
++      origin: base.service.origin,
++      workspace: base.authority.workspace,
++      reader: base.reader.id,
++      publisher: base.publisher.id,
++      lineage: base.authority.lineage,
++      head: base.authority.head,
++      epoch: 1,
++      after: cursor,
++      limit: 1,
++      nonce: hex(task.step(() => random(32))),
++      expires: Date.now() + 30000,
++      signature: '00'.repeat(64),
++    };
++    r.signature = hex(
++      new Uint8Array(
++        await task.wait(() => subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(r))),
++      ),
++    );
++    await assertCurrent(task);
++    return task.step(() => {
++      outstanding?.fill(0);
++      outstanding = encodeInboundRequest(r);
++      return outstanding.slice();
++    });
++  };
++  // Network work ends its carrier task before entering the admission FIFO. Waiting for receive
++  // within this task would deadlock the receive commit behind its own fetch.
++  const fetchPage = async (operatorToken: string) => {
++    // Keep ownership outside runCaptureTask too: its final lifetime check can reject after the
++    // operation produced a response. That rejection still has to erase both captured buffers.
++    let request: Bytes | undefined,
++      page: Bytes | null = null;
++    try {
++      return await runCaptureTask(async (task, owner, route) => {
++        const query = (request = await prepareRead(task, owner, route));
++        await task.wait(async () => {
++          page = await privateDeliveryPost(
++            options.pin,
++            operatorToken,
++            'read-v2',
++            query,
++            MAX_PENDING_BYTES,
++            task.signal,
++          );
++        });
++        await assertCurrent(task);
++        return task.step(() => ({ request: query, page }));
++      });
++    } catch (cause) {
++      request?.fill(0);
++      (page as Bytes | null)?.fill(0);
++      throw cause;
++    }
++  };
+   const api = Object.freeze({
+     ...account,
+     close: () => carrier.close(),
+@@ -136,42 +209,12 @@ async function openAccountReceiveOwner(input: AccountStartupOptions, principalId
+       runCaptureTask(async (task, owner, route) => describe(await state(task, owner, route))),
+     /** A single outstanding owner-signed request; retry old positions only against retained evidence. */
+     prepareRead: (after?: number) =>
+-      runCaptureTask(async (task, owner, route) => {
+-        const s = await state(task, owner, route),
+-          cursor = after ?? s.prefix.position;
+-        if (s.conflict) throw Error('Inbound stream is conflicted');
+-        if (!Number.isSafeInteger(cursor) || cursor < 0 || cursor > s.prefix.position)
+-          throw Error('Invalid receive cursor');
+-        const r = {
+-          serviceId: base.service.id,
+-          origin: base.service.origin,
+-          workspace: base.authority.workspace,
+-          reader: base.reader.id,
+-          publisher: base.publisher.id,
+-          lineage: base.authority.lineage,
+-          head: base.authority.head,
+-          epoch: 1,
+-          after: cursor,
+-          limit: 1,
+-          nonce: hex(task.step(() => random(32))),
+-          expires: Date.now() + 30000,
+-          signature: '00'.repeat(64),
+-        };
+-        r.signature = hex(
+-          new Uint8Array(
+-            await task.wait(() =>
+-              subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(r)),
+-            ),
+-          ),
+-        );
+-        await assertCurrent(task);
+-        return task.step(() => {
+-          outstanding?.fill(0);
+-          outstanding = encodeInboundRequest(r);
+-          return outstanding.slice();
+-        });
+-      }),
+-    receivePage: (input: Bytes, promote: (updates: readonly Bytes[]) => void = () => {}) => {
++      runCaptureTask((task, owner, route) => prepareRead(task, owner, route, after)),
++    receivePage: (
++      input: Bytes,
++      promote: (updates: readonly Bytes[]) => void = () => {},
++      expectedRequest?: Bytes,
++    ) => {
+       if (!(input instanceof Uint8Array) || !input.length || input.length > READ_PAGE_LIMIT)
+         return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive page'));
+       const page = input.slice();
+@@ -180,6 +223,8 @@ async function openAccountReceiveOwner(input: AccountStartupOptions, principalId
+         if (s.conflict) throw new AdmissionError('receive-refused', 'Inbound stream is conflicted');
+         if (!outstanding)
+           throw new AdmissionError('receive-refused', 'No outstanding receive request');
++        if (expectedRequest && hex(expectedRequest) !== hex(outstanding))
++          throw new AdmissionError('receive-refused', 'Receive request was superseded');
+         const request = outstanding.slice();
+         let result: Awaited<ReturnType<typeof verifyInboundPage>> | undefined;
+         let committed = false;
+@@ -252,7 +297,7 @@ async function openAccountReceiveOwner(input: AccountStartupOptions, principalId
+     },
+     compactContent: () => carrier.compactContent(),
+   });
+-  return { api, account, carrier, listCaptures };
++  return { api, account, carrier, listCaptures, fetchPage };
+ }
+ 
+ /** Storage-only surface retained for independent conformance and preparation. */
+@@ -261,14 +306,14 @@ export async function openOwnedAccountReceiveStore(input: AccountStartupOptions)
+   return Object.freeze({ ...api, receivePage: (bytes: Bytes) => api.receivePage(bytes) });
+ }
+ 
+-/** Private admitted editor and signed-page receive under one v9 permit. No sender or service route. */
++/** Private admitted editor and signed-page receive under one v9 permit. No sender or reconnect scheduler. */
+ export async function openOwnedReceivingAccountWorkspace(input: AccountWorkspaceOptions) {
+   const options = {
+     ...captureAccountOptions(input),
+     identity: structuredClone(input.identity),
+     today: input.today,
+   };
+-  const { api, account, carrier, listCaptures } = await openAccountReceiveOwner(
++  const { api, account, carrier, listCaptures, fetchPage } = await openAccountReceiveOwner(
+     options,
+     options.identity.id,
+   );
+@@ -294,19 +339,49 @@ export async function openOwnedReceivingAccountWorkspace(input: AccountWorkspace
+       await workspace.close();
+       throw Error('Account opening was cancelled');
+     }
++    const receivePage = (bytes: Bytes, request?: Bytes) => {
++      try {
++        return enqueue(bytes, (page, promote) => api.receivePage(page, promote, request));
++      } catch (cause) {
++        return Promise.reject(cause);
++      }
++    };
++    let flight: Promise<unknown> | undefined;
++    carrier.beforeRelease?.(async () => {
++      await flight?.catch(() => {});
++    });
++    const receiveNext = (operatorToken: string) => {
++      if (carrier.signal.aborted)
++        return Promise.reject(new AdmissionError('inactive-session', 'Receive owner is closed'));
++      if (flight) return Promise.resolve({ kind: 'busy' as const });
++      const work = (async () => {
++        const { request, page } = await fetchPage(operatorToken);
++        try {
++          if (carrier.signal.aborted)
++            throw new AdmissionError('inactive-session', 'Receive owner is closed');
++          if (!page) return { kind: 'unknown' as const, recorded: false };
++          // Only the ordered owner may verify, persist and publish this exact request's page.
++          return await receivePage(page, request);
++        } finally {
++          request.fill(0);
++          page?.fill(0);
++        }
++      })();
++      flight = work;
++      const settled = () => {
++        if (flight === work) flight = undefined;
++      };
++      void work.then(settled, settled);
++      return work;
++    };
+     return Object.freeze({
+       ...account,
+       kind: 'ready' as const,
+       workspace,
+       receiveStatus: api.status,
+       prepareRead: api.prepareRead,
+-      receivePage: (bytes: Bytes) => {
+-        try {
+-          return enqueue(bytes, (page, promote) => api.receivePage(page, promote));
+-        } catch (cause) {
+-          return Promise.reject(cause);
+-        }
+-      },
++      receivePage: (bytes: Bytes) => receivePage(bytes),
++      receiveNext,
+       compactContent: async () => {
+         await workspace.whenDurable();
+         return carrier.compactContent();
+diff --git a/docs/account-conformance-runs/2026-09-11-account-receive-transport.md b/docs/account-conformance-runs/2026-09-11-account-receive-transport.md
+new file mode 100644
+index 0000000..342108d
+--- /dev/null
++++ b/docs/account-conformance-runs/2026-09-11-account-receive-transport.md
+@@ -0,0 +1,59 @@
++# Owned receive HTTP evidence — 2026-09-11
++
++Private v2 service read was committed as `9598ca6`. The [recorded working patch](./2026-09-11-account-receive-transport/working.patch)
++adds the next bounded [owned receive HTTP phase](../account-receive-transport.md) against that commit.
++The new work remains uncommitted for review.
++
++| Check | Observed result |
++| --- | --- |
++| Directed native HTTP | Nine cases pass: actual service bytes, refusal/truncation/overflow/redirect/lost/stale responses, superseded request, concurrent calls and local edits, close/drain, before/after native commit crash and cold retry |
++| Generated native histories | 16 histories, seed 9112042; authored text, durable receive prefix and local source counts agree after each action and cold reopen |
++| Stream property | 200 partitions, seed 9112041; exact detached bytes only within the bound and with complete declared lengths |
++| Controlled admission regression | 200 generated interleavings plus directed ordering/close/capacity/source checks pass |
++| Effective omissions | Four controls expose queue bypass, overlapping receive calls, stream overflow and premature completion before cancellation settles |
++| Full units | 964 tests across 85 files pass |
++| Affected campaigns | V1 transport, private v2 service and ordered receive editor pass, including their generated/mutation/native cases |
++| Isolated build and trace | Yjs binding, TypeScript, Vite, budget, origin isolation and fresh prerequisite/trace chain pass; initial JS 329.6 KiB / 350 KiB, 101 claims, 28/28 named current-defect falsifiers, nine retained debts |
++| Scoped static checks | TypeScript, lint, formatting and diff checks pass |
++
++[Final campaign summary](./2026-09-11-account-receive-transport/campaign/summary.json),
++[native log](./2026-09-11-account-receive-transport/campaign/native.log),
++[generated histories](./2026-09-11-account-receive-transport/campaign/generated.json),
++[omission results](./2026-09-11-account-receive-transport/campaign/controls.log),
++[regressions](./2026-09-11-account-receive-transport/regressions/summary.json), and
++[isolated build](./2026-09-11-account-receive-transport/build/summary.json).
++
++The queue omission commits a receive position without publishing its remote text to the editor. The
++flight omission dispatches two overlapping calls where the baseline returns busy for the second. The
++stream bound omission returns 17 bytes against a 16-byte bound. The cancellation omission returns before
++the stream's delayed cancel callback settles. Each control first checks a passing baseline and then observes
++the forbidden result from the altered production source; no timeout or harness failure counts as detection.
++
++The first native run correctly refused a truncated response, but a test asserted the wrong error text.
++The initial campaign found a TypeScript mock-signature error; the failed run is retained. Static checks
++also prompted an unused-import removal and a Node/browser test-variable rename. Final source review moved
++response ownership outside the carrier task's final lifetime check so rejected late results still erase
++their captured buffers. The final campaign includes an additional local-edit-during-fetch case and exact
++final source hashes. Both complete generated campaigns found no counterexample. Earlier results and
++[findings](./2026-09-11-account-receive-transport/findings.json) are retained.
++
++**Build-directory incident.** A validation helper initially ran in the root and replaced predecessor
++`dist/`. No server was started. The predecessor was restored from
++`test-results/app-upgrades/2026-09-10T12-45-12.641Z/prior`; all eleven hashes match the saved pre-build
++manifest. The ten-file retained personal release was unchanged. [Restoration evidence](./2026-09-11-account-receive-transport/build-directory-incident/dist-restoration.json)
++records the source and comparisons. A separate complete build/trace chain then passed in
++`/private/tmp/done-receive-transport-9598ca6`. The accidental output remains only in ignored test results.
++Root trace receipts from that accidental build describe its temporary output; they do not validate restored
++predecessor `dist/`. The archived isolated receipts describe the actual tested candidate.
++
++[Verification](./2026-09-11-account-receive-transport/verification.json) compares final campaign code inputs
++and isolated runtime inputs with current files, and verifies the unchanged historical review and L-2
++checkpoint. Documentation was completed afterward. The earlier regression/build campaigns precede only
++an added transport-native test and documentation; production code matches. The patch and
++[artifact manifest](./2026-09-11-account-receive-transport/manifest.json) identify the retained evidence.
++
++This is targeted phase validation, not another full `pnpm check`. The new command
++`pnpm account:receive-transport` is appended to that aggregate. No personal browser, factors, Account,
++route, deployment, reconnect scheduler or v9 outbound composition was activated. The first-epoch creating
++publisher and existing receiver envelope/batch limits remain. No whole-protocol debt is paid; accepted
++review gates before real Account use remain visible in the checkpoint.
+diff --git a/docs/account-receive-transport.md b/docs/account-receive-transport.md
+new file mode 100644
+index 0000000..1d23950
+--- /dev/null
++++ b/docs/account-receive-transport.md
+@@ -0,0 +1,49 @@
++# Owned v2 receive HTTP transport
++
++`openOwnedReceivingAccountWorkspace` now exposes private `receiveNext(operatorToken)`. One call reads
++one page through `/account/delivery/read-v2` and waits for the existing ordered receive owner to verify,
++commit, reauthenticate and publish it. The caller supplies no cursor, signing key, publisher, authority or
++promotion callback. There is no automatic retry, reconnect loop, outbound sender, Account UI or deployment.
++The admitted first epoch, creating publisher, generation 1 and v9 storage formats remain unchanged.
++
++The held owner derives a limit-one signed request from authenticated durable receive progress. It uses
++the admitted/pinned service origin and the private operator gate with redirects, ambient credentials and
++caching disabled. The request's random nonce, thirty-second expiry and reader signature bind its full v2
++scope. The existing service resolves membership and returns witnessed original envelopes/proofs.
++
++The request and network response remain owned buffers. Fetch runs in the carrier task queue and ends
++before the response enters the editor's input FIFO; awaiting receive from inside that task would deadlock
++its eventual native commit. The response retains its exact request copy through the FIFO. A manual
++`prepareRead` that supersedes that request causes refusal. Only one `receiveNext` flight may exist across
++fetch, verification and ordered publication; overlapping calls return `busy` without signing or fetching.
++The existing explicit signed-page surface remains available for private conformance.
++
++The HTTP adapter caps streamed bytes at the editor's 4 MiB pending-input ceiling, independently of
++Content-Length. The FIFO can still refuse when other input occupies its budget. This cap is narrower
++than the service/page codec's 10 MiB ceiling; pages within the receiver's existing 512 KiB
++envelope cap fit. Larger service-accepted envelopes still exceed this private receiver's supported
++baseline and cannot be repaired by splitting a signed envelope. Wrong status/type,
++redirects, incomplete declared lengths, overrun and network failure yield `unknown` without advancing
++receive progress. A syntactically or cryptographically invalid page rejects through admission. Native
++storage failures retain the existing blocked suffix semantics. None of these results is remote-content
++acknowledgement; only the verified durable receive result supplies that evidence.
++
++The shared HTTP adapter gives fetch and streaming a ten-second deadline and cancels bodies on refusal
++or lifetime abort. It waits for stream cancellation to settle, including when a test stream delays its
++cancel callback, before releasing its reader. A fetch that ignores abort must settle before the owner
++can drain; it cannot return a late success. Close immediately invalidates admission and aborts the request,
++then drains native work, transport buffers and stream cleanup before releasing the permit. Ciphertext
++copies are detached and erased after use; this is not a forensic memory-zeroization guarantee.
++
++Local journal admission remains available while HTTP waits. Native flush and other carrier tasks wait
++behind that bounded fetch. When the page reaches the editor FIFO, earlier input runs first and later
++local intents stay behind receive commit/publication. Fetch callbacks never apply updates or publish.
++Remote originals do not become local source capsules. Closing after commit but before publication still
++recovers through authenticated cold replay; retry signs from that actual durable position. A lost reply
++has no receive effect and a later call creates a fresh nonce for the unchanged durable cursor.
++
++`account:receive-transport` covers native HTTP, stream lifetime, ordered local input, superseded requests,
++crash/cold retry, generated histories and effective source omissions. This phase does not establish
++second-device enrollment, restore safety, general membership, lineage advancement, backlog scale or real
++Account readiness. The review gates recorded in `progress.md` remain open. Next is bounded reconnect
++scheduling, followed by explicit composition with outbound v9 delivery.
+diff --git a/scripts/account-receive-transport/run.mjs b/scripts/account-receive-transport/run.mjs
+new file mode 100644
+index 0000000..2f1dc89
+--- /dev/null
++++ b/scripts/account-receive-transport/run.mjs
+@@ -0,0 +1,155 @@
++import { spawn } from 'node:child_process';
++import { createHash } from 'node:crypto';
++import { mkdirSync, readdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
++import { join, resolve } from 'node:path';
++
++const output = resolve(
++  'test-results/account-receive-transport',
++  new Date().toISOString().replaceAll(':', '-'),
++);
++mkdirSync(output, { recursive: true });
++console.log(`Account receive transport evidence: ${output}`);
++const walk = (dir) =>
++  readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
++    e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)],
++  );
++const files = [
++  ...new Set([
++    'package.json',
++    'pnpm-lock.yaml',
++    'tsconfig.app.json',
++    'tsconfig.node.json',
++    'vite.config.ts',
++    'docs/account-source-capture.md',
++    'docs/account-receive-transport.md',
++    'docs/account-inbound.md',
++    'docs/account-inbound-verification.md',
++    'docs/account-delivery.md',
++    'docs/account-admission.md',
++    'docs/account-decisions.md',
++    'docs/account-spool.md',
++    'docs/selections/row-5-finalization.md',
++    'docs/selections/row-6-antireplay-retention.md',
++    'docs/account-outbound.md',
++    'docs/TRD.md',
++    'docs/review/remediation/S0-4/A-schemas.md',
++    'docs/review/remediation/S0-2/authority-map.md',
++    'docs/selections/row-4-envelope-format.md',
++    'scripts/account-receive-transport/run.mjs',
++    'scripts/generate-private-envelope-vectors.mjs',
++    'scripts/generate-envelope-vectors.mjs',
++    'scripts/lib/aad-coverage.mjs',
++    ...['src', 'account-protocol', 'account-service', 'test', 'vite', 'wasm/journal-seal']
++      .flatMap(walk)
++      .filter((f) => /\.(ts|tsx|mjs|json|wasm)$/.test(f)),
++  ]),
++].sort();
++writeFileSync(
++  join(output, 'sources.json'),
++  JSON.stringify(
++    files.map((path) => ({
++      path,
++      sha256: createHash('sha256').update(readFileSync(path)).digest('hex'),
++    })),
++    null,
++    2,
++  ) + '\n',
++);
++const summary = {
++  status: 'running',
++  startedAt: new Date().toISOString(),
++  stages: [],
++  scope:
++    'Owned v2 receive HTTP under the ordered editor lifetime. Bounded streams, single outstanding flight, exact request binding, native cancellation and crash/cold retry, generated histories and effective omission controls. No reconnect scheduler, outbound v9 composition, enrollment or personal operations.',
++};
++const save = () =>
++  writeFileSync(join(output, 'summary.json'), JSON.stringify(summary, null, 2) + '\n');
++save();
++async function run(name, args, timeoutMs) {
++  console.log(`Starting ${name}`);
++  const log = createWriteStream(join(output, name + '.log'));
++  const child = spawn(process.execPath, args, {
++    detached: true,
++    stdio: ['ignore', 'pipe', 'pipe'],
++    env: { ...process.env, ACCOUNT_REPORT_DIR: output },
++  });
++  let timedOut = false,
++    forced,
++    launchError;
++  const kill = (signal) => {
++    try {
++      process.kill(-child.pid, signal);
++    } catch {}
++  };
++  const deadline = setTimeout(() => {
++    timedOut = true;
++    kill('SIGTERM');
++    forced = setTimeout(() => kill('SIGKILL'), 5000);
++  }, timeoutMs);
++  const heartbeat = setInterval(() => console.log(`${name} still running; see ${name}.log`), 15000);
++  for (const stream of [child.stdout, child.stderr])
++    stream.on('data', (b) => {
++      process.stdout.write(b);
++      log.write(b);
++    });
++  const code = await new Promise((resolve) => {
++    child.once('error', (e) => {
++      launchError = String(e);
++      resolve(1);
++    });
++    child.once('close', (code) => resolve(code ?? 1));
++  });
++  clearTimeout(deadline);
++  clearTimeout(forced);
++  clearInterval(heartbeat);
++  await new Promise((resolve) => log.end(resolve));
++  const result = { name, code, timedOut, ...(launchError ? { launchError } : {}) };
++  summary.stages.push(result);
++  save();
++  return code === 0 && !timedOut;
++}
++try {
++  const stages = [
++    ['types', ['node_modules/typescript/bin/tsc', '-b'], 60000],
++    [
++      'units',
++      [
++        'node_modules/vitest/vitest.mjs',
++        'run',
++        'test/privateDeliveryHttp.test.ts',
++        'test/ownedReceiveQueue.test.ts',
++        '--maxWorkers=2',
++        '--reporter=verbose',
++      ],
++      60000,
++    ],
++    ...[
++      ['native', 120000],
++      ['controls', 90000],
++      ['generated', 330000],
++    ].map(([name, deadline]) => [
++      name,
++      [
++        '--test',
++        '--test-concurrency=1',
++        '--test-reporter=spec',
++        '--test-reporter-destination=stdout',
++        '--test-reporter=junit',
++        `--test-reporter-destination=${join(output, name + '.xml')}`,
++        `test/account-receive-transport/${name}.test.mjs`,
++      ],
++      deadline,
++    ]),
++  ];
++  for (const [name, args, timeout] of stages)
++    if (!(await run(name, args, timeout))) throw Error(`${name} failed`);
++  summary.status = 'passed';
++} catch (e) {
++  summary.status = 'failed';
++  summary.error = String(e);
++  process.exitCode = 1;
++} finally {
++  summary.completedAt = new Date().toISOString();
++  save();
++  console.log(`${summary.status}: ${output}`);
++}
+diff --git a/test/account-receive-transport/controls.test.mjs b/test/account-receive-transport/controls.test.mjs
+new file mode 100644
+index 0000000..6a8ec39
+--- /dev/null
++++ b/test/account-receive-transport/controls.test.mjs
+@@ -0,0 +1,200 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { build } from 'vite';
++import { resolve, join } from 'node:path';
++import { writeFileSync } from 'node:fs';
++import {
++  remote,
++  path,
++  next,
++  answer,
++  close,
++  open,
++  view,
++  status,
++  controlBundle,
++  configure,
++  start,
++  waitPredicate,
++} from './fixtures.mjs';
++const record = (name, value) => {
++  if (process.env.ACCOUNT_REPORT_DIR)
++    writeFileSync(
++      join(process.env.ACCOUNT_REPORT_DIR, 'control-' + name + '.json'),
++      JSON.stringify(value, null, 2) + '\n',
++    );
++};
++for (const mutation of ['queue', 'flight'])
++  test(
++    `effective ${mutation} omission exposes the forbidden result`,
++    { timeout: 60000 },
++    async (t) => {
++      const observations = [];
++      for (const changed of [false, true]) {
++        const { f, item, wire, initial } = await remote(
++          t,
++          `transport-control-${mutation}-${changed}`,
++        );
++        if (changed) {
++          await close(f.page);
++          await f.page.evaluate(await controlBundle(mutation));
++          await configure(f.page);
++          await open(f.page, item);
++        }
++        if (mutation === 'queue') {
++          await f.context.route(path(f), (route) =>
++            route.fulfill({
++              status: 200,
++              contentType: 'application/octet-stream',
++              body: answer(f, item, Buffer.from(route.request().postData()), wire).bytes,
++            }),
++          );
++          const result = await next(f);
++          assert.equal(result.kind, 'received');
++          const through = (await status(f.page)).receivedThrough,
++            text = await view(f.page);
++          assert.equal(through, 1);
++          assert.equal(text, (changed ? '' : 'REMOTE ') + initial);
++          observations.push({ changed, through, published: text === 'REMOTE ' + initial });
++        } else {
++          await f.page.evaluate(() => {
++            window.calls = 0;
++            window.fetch = async () => {
++              calls++;
++              if (calls === 1)
++                await new Promise((r) => {
++                  window.release = r;
++                });
++              return new Response('refused', { status: 409 });
++            };
++          });
++          await start(f);
++          await waitPredicate(f.page, () => calls === 1);
++          await f.page.evaluate((token) => {
++            window.second = opened.receiveNext(token).catch((e) => ({ error: String(e) }));
++          }, f.testOperatorToken);
++          await f.page.evaluate(() => release());
++          await f.page.evaluate(() => work);
++          const result = await f.page.evaluate(() => second),
++            observedCalls = await f.page.evaluate(() => calls);
++          assert.equal(observedCalls, changed ? 2 : 1);
++          assert.equal(result.kind, changed ? 'unknown' : 'busy');
++          observations.push({ changed, calls: observedCalls, result });
++        }
++        await close(f.page);
++        await f.context.close();
++      }
++      record(mutation, { effective: true, observations });
++    },
++  );
++
++async function http(mutation) {
++  const target =
++    mutation === 'bound'
++      ? ['if (length > limit) {', 'if (false) {']
++      : ['await cancellation;', 'void cancellation;'];
++  let hits = 0;
++  const built = await build({
++    configFile: false,
++    logLevel: 'error',
++    plugins: mutation
++      ? [
++          {
++            name: 'http-omission',
++            enforce: 'pre',
++            transform(code, id) {
++              if (!id.endsWith('/src/account/privateDeliveryHttp.ts')) return;
++              if (code.split(target[0]).length !== 2) throw Error('Missing HTTP mutation');
++              hits++;
++              return code.replace(target[0], target[1]);
++            },
++          },
++        ]
++      : [],
++    build: {
++      write: false,
++      minify: false,
++      lib: { entry: resolve('src/account/privateDeliveryHttp.ts'), formats: ['es'] },
++    },
++  });
++  if (mutation && hits !== 1) throw Error('HTTP mutation not applied');
++  const code = (Array.isArray(built) ? built[0] : built).output.find(
++    (f) => f.type === 'chunk',
++  ).code;
++  return (await import('data:text/javascript;base64,' + Buffer.from(code).toString('base64')))
++    .privateDeliveryPost;
++}
++for (const mutation of ['bound', 'drain'])
++  test(
++    `effective HTTP ${mutation} omission exposes the forbidden result`,
++    { timeout: 15000 },
++    async () => {
++      const original = globalThis.fetch,
++        observations = [];
++      try {
++        for (const changed of [false, true]) {
++          const post = await http(changed ? mutation : null),
++            stopped = new AbortController();
++          let release,
++            pulled,
++            cancelled = false,
++            settled = false;
++          const hit = new Promise((r) => {
++            pulled = r;
++          });
++          globalThis.fetch = async () =>
++            new Response(
++              new ReadableStream(
++                mutation === 'bound'
++                  ? {
++                      start(c) {
++                        c.enqueue(new Uint8Array(17));
++                        c.close();
++                      },
++                    }
++                  : {
++                      pull() {
++                        pulled();
++                      },
++                      cancel() {
++                        cancelled = true;
++                        return new Promise((r) => {
++                          release = r;
++                        });
++                      },
++                    },
++              ),
++              { headers: { 'Content-Type': 'application/octet-stream' } },
++            );
++          const work = post(
++            { origin: 'http://127.0.0.1:1' },
++            'A'.repeat(43),
++            'read-v2',
++            new Uint8Array([1]),
++            16,
++            stopped.signal,
++          ).then((r) => {
++            settled = true;
++            return r;
++          });
++          if (mutation === 'bound') {
++            const result = await work;
++            assert.equal(result?.length ?? null, changed ? 17 : null);
++            observations.push({ changed, length: result?.length ?? null });
++          } else {
++            await hit;
++            stopped.abort();
++            await new Promise((r) => setImmediate(r));
++            assert.equal(cancelled, true);
++            assert.equal(settled, changed);
++            observations.push({ changed, cancelled, settledBeforeCancellationCompleted: settled });
++            release();
++            assert.equal(await work, null);
++          }
++        }
++      } finally {
++        globalThis.fetch = original;
++      }
++      record(mutation, { effective: true, observations });
++    },
++  );
+diff --git a/test/account-receive-transport/fixtures.mjs b/test/account-receive-transport/fixtures.mjs
+new file mode 100644
+index 0000000..c3e4f81
+--- /dev/null
++++ b/test/account-receive-transport/fixtures.mjs
+@@ -0,0 +1,87 @@
++import * as Y from 'yjs';
++import { build } from 'vite';
++import { resolve } from 'node:path';
++import { ready, envelope, open } from '../account-receive-editor/fixtures.mjs';
++export * from '../account-receive-editor/fixtures.mjs';
++export const path = (f) => f.server.origin + '/account/delivery/read-v2';
++export const next = (f, token = f.testOperatorToken) =>
++  f.page.evaluate((token) => opened.receiveNext(token), token);
++export const start = (f) =>
++  f.page.evaluate((token) => {
++    window.result = undefined;
++    window.work = opened.receiveNext(token).then(
++      (r) => (window.result = r),
++      (e) => (window.result = { error: String(e) }),
++    );
++  }, f.testOperatorToken);
++export async function remote(t, id) {
++  const r = await ready(t, id),
++    doc = new Y.Doc({ gc: false });
++  Y.applyUpdate(doc, new Uint8Array(r.snapshot));
++  doc.clientID = 8112041;
++  let update;
++  doc.on('update', (b) => {
++    update = [...b];
++  });
++  doc.getText('master').insert(0, 'REMOTE ');
++  doc.destroy();
++  r.wire = await envelope(r.f.page, r.item, 1, [update]);
++  await open(r.f.page, r.item);
++  return r;
++}
++export async function local(page, text = 'LATER') {
++  await page.evaluate((text) => {
++    const n = editor.read().master.length;
++    window.local = surface
++      .input({ name: 'insert', text }, { ranges: [{ anchor: n, head: n }], main: 0 })
++      .accepted.then(
++        () => true,
++        (e) => String(e),
++      );
++  }, text);
++}
++export async function controlBundle(control) {
++  const targets = {
++    queue: [
++      '/src/crdt/accountReceive.ts',
++      'return await receivePage(page, request);',
++      'return await api.receivePage(page, () => {}, request);',
++    ],
++    flight: [
++      '/src/crdt/accountReceive.ts',
++      "if (flight) return Promise.resolve({ kind: 'busy' as const });",
++      'void flight;',
++    ],
++    bound: ['/src/account/privateDeliveryHttp.ts', 'if (length > limit) {', 'if (false) {'],
++    drain: ['/src/account/privateDeliveryHttp.ts', 'await cancellation;', 'void cancellation;'],
++  };
++  const target = targets[control];
++  let hits = 0;
++  const result = await build({
++    configFile: false,
++    logLevel: 'error',
++    plugins: [
++      {
++        name: 'transport-omission',
++        enforce: 'pre',
++        transform(code, id) {
++          if (!id.endsWith(target[0])) return;
++          if (code.split(target[1]).length !== 2) throw Error('Missing control anchor: ' + control);
++          hits++;
++          return code.replace(target[1], target[2]);
++        },
++      },
++    ],
++    build: {
++      write: false,
++      minify: false,
++      lib: {
++        entry: resolve('test/account-receive-editor/browser.ts'),
++        name: 'Harness',
++        formats: ['iife'],
++      },
++    },
++  });
++  if (hits !== 1) throw Error('Mutation did not apply once');
++  return (Array.isArray(result) ? result[0] : result).output.find((f) => f.type === 'chunk').code;
++}
+diff --git a/test/account-receive-transport/generated.test.mjs b/test/account-receive-transport/generated.test.mjs
+new file mode 100644
+index 0000000..02493e6
+--- /dev/null
++++ b/test/account-receive-transport/generated.test.mjs
+@@ -0,0 +1,127 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import fc from 'fast-check';
++import * as Y from 'yjs';
++import { writeFileSync } from 'node:fs';
++import { join } from 'node:path';
++import {
++  ready,
++  envelope,
++  open,
++  close,
++  cold,
++  path,
++  next,
++  answer,
++  view,
++  status,
++  captures,
++  edit,
++} from './fixtures.mjs';
++test(
++  'generated HTTP histories agree on durable receive prefix, authored text and local source count',
++  { timeout: 300000 },
++  async (t) => {
++    const seed = 9112042,
++      histories = [],
++      coverage = {};
++    const save = () => {
++      if (process.env.ACCOUNT_REPORT_DIR)
++        writeFileSync(
++          join(process.env.ACCOUNT_REPORT_DIR, 'generated.json'),
++          JSON.stringify({ seed, histories, coverage }, null, 2) + '\n',
++        );
++    };
++    await fc.assert(
++      fc.asyncProperty(
++        fc.array(fc.constantFrom('receive', 'local', 'lost', 'corrupt', 'restart', 'compact'), {
++          minLength: 3,
++          maxLength: 6,
++        }),
++        async (generated) => {
++          const actions = ['lost', ...generated, 'receive', 'restart'],
++            entry = { actions, completed: false };
++          histories.push(entry);
++          save();
++          const { f, item, initial, snapshot } = await ready(
++            t,
++            'transport-generated-' + histories.length,
++          );
++          try {
++            const doc = new Y.Doc({ gc: false });
++            Y.applyUpdate(doc, new Uint8Array(snapshot));
++            doc.clientID = 8112042;
++            const updates = [],
++              wires = [],
++              links = ['00'.repeat(32)];
++            doc.on('update', (b) => {
++              updates.push([...b]);
++            });
++            const count = actions.filter((a) => a === 'receive').length;
++            for (let n = 0; n < count; n++) doc.getText('master').insert(0, `R${n} `);
++            doc.destroy();
++            for (let n = 0; n < count; n++)
++              wires.push(await envelope(f.page, item, n + 1, [updates[n]]));
++            await open(f.page, item);
++            const originalCount = (await captures(f.page)).length;
++            let mode = 'receive',
++              position = 0,
++              expected = initial,
++              locals = 0;
++            await f.context.route(path(f), async (route) => {
++              const q = Buffer.from(route.request().postData()),
++                after = JSON.parse(q.toString())[10];
++              assert.equal(after, position, 'request follows actual durable progress');
++              const page = answer(f, item, q, wires[after], links[after], count);
++              if (wires[after]) links[after + 1] = page.link;
++              if (mode === 'lost') {
++                await route.abort();
++                return;
++              }
++              await route.fulfill({
++                status: 200,
++                contentType: 'application/octet-stream',
++                body: mode === 'corrupt' ? Buffer.from('bad page') : page.bytes,
++              });
++            });
++            for (const action of actions) {
++              coverage[action] = (coverage[action] ?? 0) + 1;
++              mode = action;
++              if (['receive', 'lost', 'corrupt'].includes(action)) {
++                const r = await next(f).catch((e) => ({ error: String(e) }));
++                if (action === 'receive') {
++                  assert.equal(r.kind, 'received');
++                  expected = `R${position} ` + expected;
++                  position++;
++                } else if (action === 'lost') assert.equal(r.kind, 'unknown');
++                else assert.ok(r.error);
++              } else if (action === 'local') {
++                await edit(f.page, expected.length, 0, 'L');
++                expected += 'L';
++                locals++;
++              } else if (action === 'compact') await f.page.evaluate(() => opened.compactContent());
++              else {
++                await f.page.evaluate(() => editor.whenDurable());
++                await close(f.page);
++                await cold(f);
++                await open(f.page, item);
++              }
++              assert.equal(await view(f.page), expected);
++              assert.equal((await status(f.page)).receivedThrough, position);
++              assert.equal((await captures(f.page)).length, originalCount + locals);
++            }
++            await close(f.page);
++            entry.completed = true;
++            save();
++          } finally {
++            await f.context.close();
++          }
++        },
++      ),
++      { seed, numRuns: 16, endOnFailure: true },
++    );
++    for (const action of ['receive', 'local', 'lost', 'corrupt', 'restart', 'compact'])
++      assert.ok(coverage[action] > 0, action);
++    save();
++  },
++);
+diff --git a/test/account-receive-transport/native.test.mjs b/test/account-receive-transport/native.test.mjs
+new file mode 100644
+index 0000000..bcdfe3c
+--- /dev/null
++++ b/test/account-receive-transport/native.test.mjs
+@@ -0,0 +1,354 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {
++  native,
++  selected,
++  open,
++  close,
++  cold,
++  edit,
++  prepare,
++  submission,
++  args,
++  captures,
++  status,
++  view,
++  remote,
++  path,
++  next,
++  start,
++  answer,
++  waitPredicate,
++  receiveBoundary,
++  local,
++  crash,
++  inventory,
++} from './fixtures.mjs';
++
++test(
++  'actual v2 HTTP pages advance owned durable progress without local recapture, including cold end',
++  { timeout: 60000 },
++  async (t) => {
++    const f = await native(t),
++      item = await selected(f, 'receive-http-service');
++    await f.page.evaluate(async (item) => {
++      window.opened = await Harness.openOwnedAccountDeliveryWorkspace(optionsFor(item));
++      window.editor = opened.workspace;
++      window.surface = editor.text({ kind: 'master' });
++    }, args(item));
++    await edit(f.page, 0, 0, 'HTTP initial ');
++    for (let n = 1; n <= 2; n++) {
++      await prepare(f.page);
++      await submission(f.page, n);
++      assert.equal(
++        (await f.page.evaluate((token) => opened.submitPending(token), f.testOperatorToken)).kind,
++        'accepted',
++      );
++    }
++    await close(f.page);
++    await open(f.page, item);
++    const initial = await view(f.page),
++      before = await captures(f.page),
++      queries = [];
++    await f.context.route(path(f), async (route) => {
++      queries.push(JSON.parse(route.request().postData()));
++      await route.continue();
++    });
++    for (let n = 1; n <= 2; n++) {
++      const r = await next(f);
++      assert.equal(r.kind, 'received');
++      assert.equal(r.status.receivedThrough, n);
++      assert.equal(queries.at(-1)[10], n - 1);
++      assert.equal(queries.at(-1)[11], 1);
++    }
++    assert.equal((await next(f)).kind, 'empty');
++    assert.deepEqual(await captures(f.page), before);
++    assert.equal(await view(f.page), initial);
++    await close(f.page);
++    await cold(f);
++    await open(f.page, item);
++    assert.equal((await status(f.page)).receivedThrough, 2);
++    assert.equal((await next(f)).kind, 'empty');
++    assert.equal(await view(f.page), initial);
++    await close(f.page);
++  },
++);
++
++test(
++  'HTTP refusal, truncation, overflow, redirect, lost reply and stale signed page advance no cursor',
++  { timeout: 60000 },
++  async (t) => {
++    const { f, item, wire, initial } = await remote(t, 'receive-http-refusals');
++    const before = await inventory(f.page);
++    assert.equal((await next(f, 'B'.repeat(43))).kind, 'unknown');
++    let saved;
++    for (const mode of [
++      'status',
++      'type',
++      'truncated',
++      'oversized',
++      'redirect',
++      'lost',
++      'good',
++      'stale',
++    ]) {
++      await f.context.route(path(f), async (route) => {
++        const q = Buffer.from(route.request().postData());
++        const page = answer(f, item, q, wire).bytes;
++        if (mode === 'lost') {
++          saved = page;
++          await route.abort();
++          return;
++        }
++        await route.fulfill(
++          mode === 'redirect'
++            ? { status: 307, headers: { Location: path(f) } }
++            : {
++                status: mode === 'status' ? 409 : 200,
++                contentType: mode === 'type' ? 'application/json' : 'application/octet-stream',
++                body:
++                  mode === 'oversized'
++                    ? Buffer.alloc(4 * 1024 * 1024 + 1)
++                    : mode === 'truncated'
++                      ? page.subarray(0, -9)
++                      : mode === 'stale'
++                        ? saved
++                        : page,
++              },
++        );
++      });
++      const r = await next(f).catch((e) => ({ error: String(e) }));
++      if (mode === 'good') {
++        assert.equal(r.kind, 'received');
++        assert.equal(await view(f.page), 'REMOTE ' + initial);
++      } else
++        assert.ok(r.kind === 'unknown' || r.error?.includes('AdmissionError'), JSON.stringify(r));
++      assert.equal(
++        (await status(f.page)).receivedThrough,
++        ['good', 'stale'].includes(mode) ? 1 : 0,
++      );
++      if (!['good', 'stale'].includes(mode)) assert.equal(await inventory(f.page), before);
++      await f.context.unroute(path(f));
++    }
++    await close(f.page);
++    await cold(f);
++    await open(f.page, item);
++    assert.equal(await view(f.page), 'REMOTE ' + initial);
++    assert.equal((await status(f.page)).receivedThrough, 1);
++    await close(f.page);
++  },
++);
++
++test(
++  'fetch serializes outstanding reads; a manually superseding request refuses the older response',
++  { timeout: 45000 },
++  async (t) => {
++    const { f, item, wire, initial } = await remote(t, 'receive-http-superseded');
++    let release,
++      hit = false,
++      calls = 0;
++    await f.context.route(path(f), async (route) => {
++      calls++;
++      hit = true;
++      const q = Buffer.from(route.request().postData());
++      await new Promise((r) => {
++        release = r;
++      });
++      await route.fulfill({
++        status: 200,
++        contentType: 'application/octet-stream',
++        body: answer(f, item, q, wire).bytes,
++      });
++    });
++    await start(f);
++    const end = Date.now() + 10000;
++    while (!hit && Date.now() < end) await new Promise((r) => setTimeout(r, 10));
++    assert.equal(hit, true);
++    assert.equal((await next(f)).kind, 'busy');
++    assert.equal(calls, 1);
++    // Queued behind the fetch's task, but ahead of the eventual receive task.
++    await f.page.evaluate(() => {
++      window.superseding = opened.prepareRead();
++    });
++    release();
++    const r = await f.page.evaluate(() => work);
++    assert.match(r.error, /superseded/);
++    await f.page.evaluate(() => superseding);
++    assert.equal((await status(f.page)).receivedThrough, 0);
++    assert.equal(await view(f.page), initial);
++    await f.context.unroute(path(f));
++    await close(f.page);
++  },
++);
++
++test(
++  'remote native commit holds ordered publication and later local input through HTTP',
++  { timeout: 45000 },
++  async (t) => {
++    const { f, item, wire, initial } = await remote(t, 'receive-http-order');
++    await f.context.route(path(f), (route) =>
++      route.fulfill({
++        status: 200,
++        contentType: 'application/octet-stream',
++        body: answer(f, item, Buffer.from(route.request().postData()), wire).bytes,
++      }),
++    );
++    const before = (await captures(f.page)).length;
++    await receiveBoundary(f.page, 'after');
++    await start(f);
++    await waitPredicate(f.page, () => !!window.hit);
++    await local(f.page);
++    assert.equal(await view(f.page), initial);
++    assert.equal((await next(f)).kind, 'busy');
++    await f.page.evaluate(() => release());
++    assert.equal((await f.page.evaluate(() => work)).kind, 'received');
++    assert.equal(await f.page.evaluate(() => local), true);
++    await f.page.evaluate(() => editor.whenDurable());
++    assert.equal(await view(f.page), 'REMOTE ' + initial + 'LATER');
++    assert.equal((await captures(f.page)).length, before + 1);
++    await close(f.page);
++    await cold(f);
++    await open(f.page, item);
++    assert.equal(await view(f.page), 'REMOTE ' + initial + 'LATER');
++    assert.equal((await status(f.page)).receivedThrough, 1);
++    await close(f.page);
++  },
++);
++
++for (const mode of ['fetch', 'stream'])
++  test(
++    `close aborts and drains pending ${mode} before another owner acquires`,
++    { timeout: 45000 },
++    async (t) => {
++      const { f, item, initial } = await remote(t, 'receive-http-close-' + mode);
++      await f.page.evaluate((mode) => {
++        window.oldFetch = fetch;
++        window.hit = false;
++        window.cancelled = false;
++        window.fetch = async (_url, init) => {
++          window.fetchSignal = init.signal;
++          if (mode === 'fetch') {
++            window.hit = true;
++            await new Promise((r) => {
++              window.release = r;
++            });
++            return new Response(new Uint8Array([0]), {
++              headers: { 'Content-Type': 'application/octet-stream' },
++            });
++          }
++          return new Response(
++            new ReadableStream({
++              pull() {
++                window.hit = true;
++              },
++              cancel() {
++                window.cancelled = true;
++                return new Promise((r) => {
++                  window.release = r;
++                });
++              },
++            }),
++            { headers: { 'Content-Type': 'application/octet-stream' } },
++          );
++        };
++      }, mode);
++      await start(f);
++      await waitPredicate(f.page, () => hit);
++      await f.page.evaluate((slot) => {
++        window.closed = false;
++        window.closing = editor.close().then(() => {
++          window.closed = true;
++        });
++        window.competed = false;
++        window.competitor = navigator.locks.request(Harness.slotPermitName(slot), () => {
++          window.competed = true;
++        });
++      }, item.slotId);
++      await waitPredicate(f.page, async () => (await navigator.locks.query()).pending.length > 0);
++      assert.equal(await f.page.evaluate(() => fetchSignal.aborted), true);
++      assert.equal(await f.page.evaluate(() => competed || closed), false);
++      if (mode === 'stream') assert.equal(await f.page.evaluate(() => cancelled), true);
++      await f.page.evaluate(() => release());
++      assert.ok((await f.page.evaluate(() => work)).error);
++      await f.page.evaluate(() => closing);
++      await f.page.evaluate(() => competitor);
++      await cold(f);
++      await open(f.page, item);
++      assert.equal((await status(f.page)).receivedThrough, 0);
++      assert.equal(await view(f.page), initial);
++      await close(f.page);
++    },
++  );
++
++for (const side of ['before', 'after'])
++  test(
++    `HTTP receive ${side} native commit crash cold-retries from actual durable progress`,
++    { timeout: 45000 },
++    async (t) => {
++      const { f, item, wire, initial } = await remote(t, 'receive-http-crash-' + side);
++      await f.context.route(path(f), (route) => {
++        const q = Buffer.from(route.request().postData());
++        return route.fulfill({
++          status: 200,
++          contentType: 'application/octet-stream',
++          body: answer(f, item, q, JSON.parse(q.toString())[10] === 0 ? wire : null).bytes,
++        });
++      });
++      await receiveBoundary(f.page, side);
++      await start(f);
++      await waitPredicate(f.page, () => !!window.hit);
++      assert.equal(await view(f.page), initial);
++      if (side === 'before') await waitPredicate(f.page, () => editor.status.state === 'blocked');
++      await crash(f);
++      await cold(f);
++      await open(f.page, item);
++      assert.equal((await status(f.page)).receivedThrough, side === 'after' ? 1 : 0);
++      assert.equal((await next(f)).kind, side === 'after' ? 'empty' : 'received');
++      assert.equal(await view(f.page), 'REMOTE ' + initial);
++      await close(f.page);
++    },
++  );
++
++test(
++  'local journal admission remains responsive during fetch and the eventual page preserves that edit',
++  { timeout: 45000 },
++  async (t) => {
++    const { f, item, wire, initial } = await remote(t, 'receive-http-local-during-fetch');
++    await f.page.evaluate(() => {
++      window.originalFetch = fetch;
++      window.hit = false;
++      window.fetch = async (...args) => {
++        const response = await originalFetch(...args);
++        window.hit = true;
++        await new Promise((r) => {
++          window.release = r;
++        });
++        return response;
++      };
++    });
++    await f.context.route(path(f), (route) =>
++      route.fulfill({
++        status: 200,
++        contentType: 'application/octet-stream',
++        body: answer(f, item, Buffer.from(route.request().postData()), wire).bytes,
++      }),
++    );
++    const before = (await captures(f.page)).length;
++    await start(f);
++    await waitPredicate(f.page, () => hit);
++    await local(f.page, 'WHILE FETCHING');
++    // This awaits only journal admission, not a flush queued behind HTTP.
++    assert.equal(await f.page.evaluate(() => local), true);
++    assert.equal(await view(f.page), initial + 'WHILE FETCHING');
++    await f.page.evaluate(() => release());
++    assert.equal((await f.page.evaluate(() => work)).kind, 'received');
++    await f.page.evaluate(() => editor.whenDurable());
++    assert.equal(await view(f.page), 'REMOTE ' + initial + 'WHILE FETCHING');
++    assert.equal((await captures(f.page)).length, before + 1);
++    await close(f.page);
++    await cold(f);
++    await open(f.page, item);
++    assert.equal(await view(f.page), 'REMOTE ' + initial + 'WHILE FETCHING');
++    await close(f.page);
++  },
++);
+diff --git a/test/privateDeliveryHttp.test.ts b/test/privateDeliveryHttp.test.ts
+new file mode 100644
+index 0000000..ddff6c2
+--- /dev/null
++++ b/test/privateDeliveryHttp.test.ts
+@@ -0,0 +1,193 @@
++// @vitest-environment node
++import { afterEach, expect, it, vi } from 'vitest';
++import fc from 'fast-check';
++import { privateDeliveryPost } from '../src/account/privateDeliveryHttp';
++import type { AuthorityPin } from '../account-protocol/authority';
++const pin = { origin: 'http://127.0.0.1:12345' } as AuthorityPin;
++const headers = { 'Content-Type': 'application/octet-stream' };
++const token = 'A'.repeat(43);
++const send = (signal = new AbortController().signal, limit = 1024) =>
++  privateDeliveryPost(pin, token, 'read-v2', new Uint8Array([7]), limit, signal);
++afterEach(() => vi.unstubAllGlobals());
++it('uses the fixed v2 route, no ambient credentials or redirects, and refuses inactive dispatch', async () => {
++  const fetch = vi.fn(
++    async (_input: RequestInfo | URL, _init?: RequestInit) =>
++      new Response(new Uint8Array([8]), { headers }),
++  );
++  vi.stubGlobal('fetch', fetch);
++  expect(await send()).toEqual(new Uint8Array([8]));
++  expect(String(fetch.mock.calls[0]![0])).toBe(pin.origin + '/account/delivery/read-v2');
++  expect(fetch.mock.calls[0]![1]).toMatchObject({
++    method: 'POST',
++    credentials: 'omit',
++    redirect: 'error',
++    cache: 'no-store',
++    headers: { ...headers, Authorization: 'Bearer ' + token },
++  });
++  const controller = new AbortController();
++  controller.abort();
++  expect(await send(controller.signal)).toBeNull();
++  expect(fetch).toHaveBeenCalledTimes(1);
++});
++it('bounds actual streaming bytes independently of headers and cancels overrun', async () => {
++  let cancelled = false;
++  vi.stubGlobal(
++    'fetch',
++    async () =>
++      new Response(
++        new ReadableStream({
++          start(c) {
++            c.enqueue(new Uint8Array(1025));
++          },
++          cancel() {
++            cancelled = true;
++          },
++        }),
++        { headers },
++      ),
++  );
++  expect(await send()).toBeNull();
++  expect(cancelled).toBe(true);
++});
++it('waits for stream cancellation to settle and cannot return partial bytes after close', async () => {
++  let release!: () => void, pulled!: () => void;
++  const waiting = new Promise<void>((r) => {
++    pulled = r;
++  });
++  const controller = new AbortController();
++  let cancelled = false,
++    settled = false;
++  vi.stubGlobal(
++    'fetch',
++    async () =>
++      new Response(
++        new ReadableStream({
++          pull() {
++            pulled();
++          },
++          cancel() {
++            cancelled = true;
++            return new Promise<void>((r) => {
++              release = r;
++            });
++          },
++        }),
++        { headers },
++      ),
++  );
++  const work = send(controller.signal).then((r) => {
++    settled = true;
++    return r;
++  });
++  await waiting;
++  controller.abort();
++  await Promise.resolve();
++  await Promise.resolve();
++  expect(cancelled).toBe(true);
++  expect(settled).toBe(false);
++  release();
++  expect(await work).toBeNull();
++});
++it('cancels a late successful response from a fetch that ignores abort', async () => {
++  let release!: (r: Response) => void,
++    cancelled = false;
++  const controller = new AbortController();
++  vi.stubGlobal(
++    'fetch',
++    () =>
++      new Promise<Response>((r) => {
++        release = r;
++      }),
++  );
++  const work = send(controller.signal);
++  controller.abort();
++  release(
++    new Response(
++      new ReadableStream({
++        cancel() {
++          cancelled = true;
++        },
++      }),
++      { headers },
++    ),
++  );
++  expect(await work).toBeNull();
++  expect(cancelled).toBe(true);
++});
++it('enforces the deadline during a streaming body', async () => {
++  const controller = new AbortController();
++  const timeout = vi.spyOn(AbortSignal, 'timeout').mockReturnValue(controller.signal);
++  let release!: () => void,
++    cancelled = false;
++  const hit = new Promise<void>((r) => {
++    release = r;
++  });
++  vi.stubGlobal(
++    'fetch',
++    async () =>
++      new Response(
++        new ReadableStream({
++          pull() {
++            release();
++          },
++          cancel() {
++            cancelled = true;
++          },
++        }),
++        { headers },
++      ),
++  );
++  try {
++    const work = send();
++    await hit;
++    controller.abort();
++    expect(await work).toBeNull();
++    expect(timeout).toHaveBeenCalledWith(10000);
++    expect(cancelled).toBe(true);
++  } finally {
++    timeout.mockRestore();
++  }
++});
++it('generated stream partitions return detached exact bytes only for complete bounded responses', async () => {
++  await fc.assert(
++    fc.asyncProperty(
++      fc.uint8Array({ minLength: 1, maxLength: 160 }),
++      fc.integer({ min: 1, max: 30 }),
++      fc.constantFrom('exact', 'absent', 'short', 'long', 'invalid', 'limit'),
++      async (bytes, width, mode) => {
++        const data = new Uint8Array(bytes),
++          limit = mode === 'limit' ? data.length - 1 : 160;
++        const declared =
++          mode === 'absent' || mode === 'limit'
++            ? {}
++            : {
++                'Content-Length':
++                  mode === 'invalid'
++                    ? 'no'
++                    : String(data.length + (mode === 'short' ? -1 : mode === 'long' ? 1 : 0)),
++              };
++        vi.stubGlobal(
++          'fetch',
++          async () =>
++            new Response(
++              new ReadableStream({
++                start(c) {
++                  for (let i = 0; i < data.length; i += width)
++                    c.enqueue(data.subarray(i, i + width));
++                  c.close();
++                },
++              }),
++              { headers: { ...headers, ...declared } },
++            ),
++        );
++        const result = await send(undefined, limit);
++        if (mode === 'exact' || mode === 'absent') {
++          expect(result).toEqual(data);
++          data.fill(0);
++          expect(result).toEqual(bytes);
++        } else expect(result).toBeNull();
++      },
++    ),
++    { seed: 9112041, numRuns: 200 },
++  );
++});

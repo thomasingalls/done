@@ -42,57 +42,68 @@ that is no longer active.
 
 ---
 
-## Active slice: Owned v2 receive HTTP transport (`L-1`)
+## Active slice: Owned receive polling and reconnect (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none for bounded private transport work; real Account use remains gated below
+blocks_on: none for bounded private receive scheduling; real Account use remains gated below
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-11
 ```
 
-**Personal checkpoint.** The verified Local release remains `.dev/releases/17d87c2/app`; predecessor
-`dist/` is intact. Preview/relay stay stopped. Origin/Tailscale routing, personal browser and factors are
-unchanged. No real Account, passkey, recovery code, operator key or authority pin is provisioned. The
-actual old second device will adopt this device's workspace with fresh custody, store, counters and
-credentials; its old writing will not be imported or merged.
+**Personal checkpoint.** The verified Local release remains `.dev/releases/17d87c2/app`. Predecessor
+`dist/` was accidentally rebuilt during this phase, then restored from the saved upgrade-test copy;
+all 21 saved package hashes match. Preview/relay stay stopped. Origin/Tailscale routing, personal browser
+and factors are unchanged. No real Account, passkey, recovery code, operator key or authority pin is
+provisioned. The actual old second device will adopt this device's workspace with fresh custody, store,
+counters and credentials; its old writing will not be imported or merged.
 
-**Completed boundary.** Native receive is committed as `f6e4cf4`, ordered remote editor integration as
-`19586b6`, the unchanged annotated review archive as `500630f`, and validation-baseline repair as `e835243`.
-The latter preserves the passing full aggregate; this new phase used targeted validation and full units.
+**Completed boundary.** Native receive is `f6e4cf4`, ordered editor integration `19586b6`, the unchanged
+annotated review archive `500630f`, validation-baseline repair `e835243`, and private v2 service read
+`9598ca6`. The full aggregate is preserved with the validation-baseline repair; later phases use targeted
+native/regression campaigns and full units.
 
-[Private v2 service read](./account-service-inbound.md) is implemented and not yet committed. Separate
-reader/publisher lookups use verified admission; the creating member alone owns the schema-4 ledger.
-The v2 route signs request-bound pages of original witnessed envelopes/proofs, with fresh snapshot,
-expiry and custody checks under a short SQLite exclusion. It adds no durable read state and preserves
-v1 framing. [Evidence](./account-conformance-runs/2026-09-11-account-service-inbound.md) includes 19 service
-cases, 60 generated histories, eight effective omissions, two process-kill cuts, native HTTP/owned-receiver
-interoperability, 958 unit tests, affected regressions and isolated build/trace checks. All personal bundle
-hashes match; no whole-protocol debt is paid.
+[Owned v2 receive HTTP](./account-receive-transport.md) is implemented and not yet committed. The private
+v9 editor's `receiveNext(operatorToken)` derives a signed request from durable receive progress and routes
+its exact response through ordered admission. One in-flight call spans fetch through publication. Closing
+aborts and drains fetch, response stream, admission/native work and owned buffers before permit release.
+Lost/invalid/superseded replies never advance progress. Current private receiver envelope/batch limits
+remain; large service envelopes do not become supportable by splitting signed bytes.
 
-**F-11 correction.** Passkey IDs and workspace signing credential IDs intentionally differ. The review's
-suggested equality was wrong. Existing candidate/member agreement remains enforced; the shared service
-snapshot now binds the passkey row to completed registration. The historical packet retains its original
-assessment, and the new phase document records this corrected disposition.
+[Evidence](./account-conformance-runs/2026-09-11-account-receive-transport.md): nine directed native HTTP
+cases, 16 generated native histories, 200 generated stream partitions, 200 existing controlled queue
+interleavings, four effective source omissions, 964 unit tests, affected v1 transport/v2 service/ordered
+editor regressions, and isolated build/trace checks pass. No generated counterexample or whole-protocol
+debt payment is inferred beyond these checks. The build-directory mistake and verified restoration are
+explicitly preserved. Historical review and L-2 are unchanged.
 
-**Next small build.** Implement owned v2 receive HTTP transport, the first part of the remaining
-transport/reconnect/composition boundary:
+**F-11 correction still applies.** Passkey IDs and workspace signing credential IDs intentionally differ.
+The review's suggested equality was wrong. Existing candidate/member agreement remains enforced; the
+service snapshot binds the passkey row to completed registration. See the corrected service-phase contract.
 
-- Capture an owner-signed request from current durable receive progress; use the explicit v2 service route
-  and private operator gate. Callers do not supply signing keys, trust roots, publisher membership or cursors.
-- Bound and detach response bytes, preserve the exact request binding, and route successful verification/
-  persistence through the existing ordered admission owner. Transport callbacks never publish directly.
-- Bind fetch/stream/verification work to the held lifetime; close aborts and drains pending work before
-  releasing exclusion, with no late acknowledgement or publication. Unknown/lost replies advance no cursor.
-- Test actual HTTP success, refusal, truncated/oversized response, lost reply, stale request, concurrent
-  local intent, close and cold retry, with effective omission controls. Preserve service/v1 regressions.
+**Next small build.** Add an explicit private receive polling/reconnect factory around this owner:
 
-Keep this first adapter bounded. Reconnect scheduling and composition with outbound delivery under v9
-follow, then Account UI and real two-gate second-device adoption. The v8 driver does not gain v9 semantics
-implicitly. Preserve per-publication projection and complete cold-content verification.
+- One pass and at most one timer; yield between pages, coalesce wakeups, and use bounded polling after a
+  verified end page so later remote work can be discovered without local edits. Specify the idle interval
+  and unknown-result backoff before implementing; no timer sleep may occupy the carrier task queue.
+- Read authenticated receive progress/conflict each pass; only verified durable advancement determines
+  progress. Never retain a cursor, response or runtime status as new authority. Unknown replies re-request
+  the unchanged durable position with a fresh nonce; no automatic repair/discard or authority installation.
+- Pause on offline hints and Local admission pressure; check the gate again immediately before actual
+  dispatch after queued verification. Manual retry/online events may expedite bounded backoff. Invalid
+  authenticated state and unexpected storage/crypto failures halt automatic work pending explicit retry.
+- Bind timers/listeners/operator-token references to the same lifetime. Close invalidates scheduling,
+  cancels timers, aborts/drains the current pass and cannot deadlock the receive owner's cleanup.
+- Test an independent clock/event model, wake storms, empty-to-later-content polling, backoff, offline and
+  storage-pressure transitions, late close, lost replies and cold restart. Include native HTTP and effective
+  omissions, preserving manual receive and v8 sender regressions.
+
+Keep that scheduler bounded. Explicit outbound v9 sender composition follows; the v8 driver does not gain
+v9 semantics implicitly. Then Account UI and real two-gate second-device adoption. Preserve per-publication
+projection and complete cold-content verification throughout.
 
 **Before real Account receipts/rollout:** amend row-7 manifest AND admission descriptor bounds with
 explicit versioning; require an operation-bound fresh account assertion at first service activation;

@@ -1,0 +1,34 @@
+{
+  "implementation": [
+    "The new adapter must end its carrier fetch task before entering the admission FIFO to avoid self-deadlock.",
+    "Shared HTTP cleanup now drains cancellation even when a stream cancel callback delays settlement; completed declared lengths must agree with actual bytes.",
+    "Fetch response ownership sits outside runCaptureTask so rejection by its final lifetime check still erases request/response buffers."
+  ],
+  "testRepairs": [
+    {
+      "observation": "Initial native run passed 7 of 8 cases; truncated response was correctly refused but message-only assertion rejected the actual AdmissionError wrapping a JSON SyntaxError.",
+      "repair": "Assert the admission error category, then rerun the complete campaign. Initial direct output was streamed, not saved separately."
+    },
+    {
+      "observation": "Initial campaign type check found the fetch mock inferred a zero-argument tuple.",
+      "repair": "Explicit RequestInfo/RequestInit mock signature; failed run retained."
+    },
+    {
+      "observation": "Static check found an unused import and a browser-global calls name colliding lexically with a Node const.",
+      "repair": "Remove import and rename Node observation; final campaign contains exact corrected files."
+    }
+  ],
+  "generatedCounterexamples": [],
+  "controls": [
+    "queue bypass commits durable content without editor publication",
+    "single-flight omission dispatches two simultaneous calls instead of returning busy",
+    "stream-bound omission returns oversized bytes",
+    "cancel-drain omission settles before stream cancellation completes"
+  ],
+  "operationalIncident": "Validation helper initially ran in the root, overwriting predecessor dist. No server was started. Restored all 11 files from the exact prior upgrade-test copy and checked all saved hashes; retained 10-file personal release unchanged. Correct isolated build also passed.",
+  "limits": [
+    "Private first-epoch creating publisher and existing receiver size limits only",
+    "No reconnect scheduler, outbound v9 composition, personal Account, enrollment or deployment",
+    "No complete pnpm check rerun or whole-protocol debt payment"
+  ]
+}
