@@ -1,0 +1,1098 @@
+{
+  "schemaVersion": 1,
+  "kind": "implementation-review-addenda-intake",
+  "assessedAt": "2026-09-12",
+  "assessmentRevision": "27e5b6fcf46aa8ac596fcd0af6b5f366926398e6",
+  "method": "Static repository and existing evidence readback; no new runtime validation.",
+  "securityPolicy": "No applicable SECURITY.md; storage/Account contracts and private entrypoints provide scope.",
+  "packets": [
+    {
+      "originalPath": "reviewpacket96a20401ceb88d.md",
+      "archivedPath": "docs/review/implementation/96a2040-1ceb88d.md",
+      "reviewedTip": "1ceb88d",
+      "originalSha256": "152bf07655d6b31387c92cf735d5f1fecd6c6aa044bd3aad9826e7d02a147921",
+      "annotatedSha256": "958c4e0293716bd0097733328d365452483ff65880d2a798d04c896acb1f4b6c",
+      "responseIds": [
+        "F-01",
+        "F-02",
+        "F-03",
+        "F-04",
+        "F-05",
+        "F-06",
+        "F-07",
+        "F-08",
+        "F-09",
+        "F-10",
+        "F-11",
+        "F-12",
+        "F-13",
+        "F-14",
+        "F-15",
+        "F-16",
+        "F-17",
+        "F-18",
+        "F-19",
+        "F-20",
+        "F-21.1",
+        "F-21.2",
+        "F-21.3",
+        "F-21.4",
+        "F-21.5",
+        "F-21.6",
+        "F-21.7",
+        "F-22",
+        "F-23",
+        "F-24",
+        "F-25",
+        "N-01",
+        "N-02",
+        "N-03",
+        "N-04",
+        "N-05",
+        "N-06",
+        "N-07",
+        "N-08",
+        "N-09"
+      ],
+      "originalRecoveredByRemovingMarkedAdditions": true
+    },
+    {
+      "originalPath": "review-packet-1ceb88d-393ef43.md",
+      "archivedPath": "docs/review/implementation/1ceb88d-393ef43.md",
+      "reviewedTip": "393ef43",
+      "originalSha256": "cd3ac87564e6ba2c1cb2c2e2ce77b4cb302d1ecaea3767642a5e38a5f3479d0e",
+      "annotatedSha256": "6672dd3d853df579138726eb9119adf2b0e930d3f95c6725bafb552d16b24494",
+      "responseIds": [
+        "F-03",
+        "F-04",
+        "F-05",
+        "F-06",
+        "F-07",
+        "F-11",
+        "F-12",
+        "F-15",
+        "F-21.2",
+        "F-21.7",
+        "F-24",
+        "N-01",
+        "N-02",
+        "N-03",
+        "N-04",
+        "N-05",
+        "N-06",
+        "N-07",
+        "N-08",
+        "N-09",
+        "P-01",
+        "P-02",
+        "P-03",
+        "P-04",
+        "P-05",
+        "P-06",
+        "P-07"
+      ],
+      "originalRecoveredByRemovingMarkedAdditions": true
+    }
+  ],
+  "distinctLeafIds": 47,
+  "responseBlocks": 67,
+  "umbrella": "F-21 groups F-21.1 through F-21.7; not an extra leaf.",
+  "aliasMeaning": "Same implementation-review source and root work item; preserve every supplied ID. Not Stage 0 debt IDs.",
+  "findings": [
+    {
+      "id": "F-01",
+      "title": "Private-envelope AAD audit",
+      "status": "closed",
+      "importance": "high validation integrity",
+      "intent": "no further repair of the named omission",
+      "assessment": "e835243 added the private generator to both vector commands and its isolating audit. Later recorded vector execution supports closure. A fresh whole-repository check is separate (P-05).",
+      "evidence": [
+        "package.json:30",
+        "scripts/generate-private-envelope-vectors.mjs",
+        "docs/validation-baseline.md"
+      ],
+      "canonical": "F-01"
+    },
+    {
+      "id": "F-02",
+      "title": "Storage harness import closure",
+      "status": "closed",
+      "importance": "high regression coverage",
+      "intent": "no further repair of the four named runners",
+      "assessment": "e835243 repaired source snapshots, the unique journal control anchor and bounded port-failure handling. Preserved native/control results support the named closure; they do not make every later source revision fully revalidated.",
+      "evidence": [
+        "docs/validation-baseline.md",
+        "scripts/custody/run.mjs",
+        "scripts/content/run.mjs",
+        "scripts/journal/run.mjs",
+        "scripts/storage-properties/run.mjs"
+      ],
+      "canonical": "F-02"
+    },
+    {
+      "id": "F-03",
+      "title": "Descriptor LP capacity",
+      "status": "closed",
+      "importance": "high capacity/correctness",
+      "intent": "no new format change",
+      "assessment": "4f71bac replaced the raw descriptor LP construction with versioned decoded-byte hashes and explicit limits. F-21.2 subsequently adds client-owned coverage and exact-size evidence. Preserve v1 refusal and current v2 bytes.",
+      "evidence": [
+        "account-protocol/admission.ts",
+        "docs/account-admission-bounds.md",
+        "docs/review/implementation/account-admission-evidence.md"
+      ],
+      "canonical": "F-03"
+    },
+    {
+      "id": "F-04",
+      "title": "Fresh activation assertion",
+      "status": "closed",
+      "importance": "medium authorization contract",
+      "intent": "no new assertion mechanism",
+      "assessment": "2ba50aa binds a fresh WebAuthn assertion to the exact promotion and commits its consumption with activation. Exact committed retries remain idempotent. P-07 is a diagnostic defect, not an activation bypass.",
+      "evidence": [
+        "account-service/core.ts:856",
+        "docs/account-activation.md",
+        "test/account-activation/core.test.mjs"
+      ],
+      "canonical": "F-04"
+    },
+    {
+      "id": "F-05",
+      "title": "Construction ownership and byte contracts",
+      "status": "closed within recorded scope",
+      "importance": "high protocol assurance",
+      "intent": "no reopening of the original finding; treat P-06 separately",
+      "assessment": "A/B/C/D1-D8 and ec889d9 register the current private first-epoch constructions, pin their bytes and execute the declared bridges. N-07 is covered. Duplicate unswept phase prose remains P-06; later epochs and inherited platform limits remain outside this closure.",
+      "evidence": [
+        "docs/review/implementation/account-crypto-closure.md",
+        "scripts/check-authority-map.mjs:91",
+        "docs/account-crypto/constructions.json"
+      ],
+      "canonical": "F-05"
+    },
+    {
+      "id": "F-06",
+      "title": "Recovery payload vectors",
+      "status": "closed within recorded scope",
+      "importance": "medium-high interoperability",
+      "intent": "no further layout change",
+      "assessment": "e74fbaa aligns the 96-byte recovery payload and 112-byte ciphertext with current vectors and the real opener. Historical scalar-only ciphertext is retained and refused, not relabelled as current evidence. Total-loss recovery is not thereby implemented.",
+      "evidence": [
+        "docs/review/implementation/account-crypto-closure.md",
+        "docs/account-crypto/recovery-layout.md",
+        "test/account-recovery-contract/formats.test.mjs"
+      ],
+      "canonical": "F-06"
+    },
+    {
+      "id": "F-07",
+      "title": "Repeated full-history verification",
+      "status": "open; priority raised",
+      "importance": "high Account liveness",
+      "intent": "yes; measurement and safe incremental-verification design before usable Account sync",
+      "assessment": "N-01/N-02/P-01 extend this same defect. The current composed owner repeatedly loads, decrypts, verifies and replays retained history. This is no longer a minor deferred cost. A witness-only cache is insufficient: its event chain excludes content/source coverage inputs. Preserve cold verification and define complete in-lifetime invalidation before optimizing.",
+      "evidence": [
+        "src/crdt/accountReceive.ts:104",
+        "src/crdt/accountReceive.ts:133",
+        "src/crdt/inboundLedger.ts:107",
+        "src/crdt/spoolRecord.ts:167",
+        "src/crdt/contentStore.ts:206"
+      ],
+      "canonical": "F-07"
+    },
+    {
+      "id": "F-08",
+      "title": "Source-free reopen capsules",
+      "status": "partial; v8 sender remains",
+      "importance": "low waste/latency",
+      "intent": "yes for the retained v8 driven surface, or explicitly retire that surface",
+      "assessment": "v9 receiving/composed owners suppress truly source-free captures; the v8 sending factory still omits the option and can publish the no-op. Existing persisted capsules remain valid. State-vector neutrality alone cannot identify an empty update because deletions and pending data matter.",
+      "evidence": [
+        "src/crdt/accountReceive.ts:489",
+        "src/crdt/accountSpool.ts:171",
+        "src/crdt/admittedWorkspace.ts",
+        "docs/account-conformance-runs/2026-09-10-account-delivery/findings.json"
+      ],
+      "canonical": "F-08"
+    },
+    {
+      "id": "F-09",
+      "title": "Fail-closed diagnostics and salvage",
+      "status": "open",
+      "importance": "medium recoverability",
+      "intent": "yes to explicit diagnostics/export/salvage; no silent reset or automatic historical-schema conversion",
+      "assessment": "Unreadable retained state must still refuse. Recovery files provide an external path for this private installation, so permanent loss is not established. A labelled salvage flow must distinguish partial recovered writing from a verified complete workspace.",
+      "evidence": [
+        "docs/storage-contract.md",
+        "src/crdt/ownedStartup.ts",
+        "src/ui/LocalApp.tsx"
+      ],
+      "canonical": "F-09"
+    },
+    {
+      "id": "F-10",
+      "title": "Service and client error classification",
+      "status": "open",
+      "importance": "medium operations; low direct security impact",
+      "intent": "yes; include N-08 and P-07 in one diagnostic-contract phase",
+      "assessment": "Broad catches and transport collapse still discard useful causes. Preserve fail-closed unknown outcomes and signed-decision authority. Use bounded redacted internal diagnostics and explicitly specified client hints, never arbitrary caught objects, plaintext or factors.",
+      "evidence": [
+        "account-service/delivery.ts:608",
+        "account-service/private-server.ts:105",
+        "src/account/privateDeliveryHttp.ts:25",
+        "src/crdt/promotionAdmission.ts:170"
+      ],
+      "canonical": "F-10"
+    },
+    {
+      "id": "F-11",
+      "title": "Passkey registration binding",
+      "status": "closed; original suggested comparison rejected",
+      "importance": "medium authorization correctness",
+      "intent": "no further repair of this binding",
+      "assessment": "9598ca6 binds the passkey row to the completed registration; 2ba50aa also binds activation/receipt use. The passkey ID and certified workspace signing-member ID are different namespaces: comparing them would reject valid accounts. The addendum correctly retracts that proposed fix.",
+      "evidence": [
+        "account-service/delivery.ts:147",
+        "account-service/core.ts:583",
+        "test/account-service-inbound/core.test.mjs",
+        "test/account-service-inbound/controls.test.mjs"
+      ],
+      "canonical": "F-11"
+    },
+    {
+      "id": "F-12",
+      "title": "Unchecked PKCS#8 slicing",
+      "status": "closed",
+      "importance": "low portability/correctness",
+      "intent": "no further export-format repair",
+      "assessment": "e74fbaa checks client algorithm-specific lengths/prefixes before extraction, and signed D1 does the same for service exports. These are provider-output checks, not evidence of a formerly exploitable attacker-supplied-key path.",
+      "evidence": [
+        "src/account/recovery.ts:32",
+        "account-service/keyEncoding.ts",
+        "test/account-recovery-contract/exports.test.mjs"
+      ],
+      "canonical": "F-12"
+    },
+    {
+      "id": "F-13",
+      "title": "Blocked compatibility open",
+      "status": "open UX; ownership rule retained",
+      "importance": "low availability/UX",
+      "intent": "yes to blocked diagnostics; no early permit release",
+      "assessment": "The native open remains owned until settlement because IndexedDB open is not cancellable. A bare onblocked rejection would allow late native completion after ownership release. Any UI cancellation needs drain and late-close semantics.",
+      "evidence": [
+        "src/crdt/storageCompatibility.ts:17",
+        "src/crdt/writeSession.ts"
+      ],
+      "canonical": "F-13"
+    },
+    {
+      "id": "F-14",
+      "title": "Scoped custody row cap",
+      "status": "open capacity classification",
+      "importance": "low for current single-workspace scope",
+      "intent": "yes to an explicit capacity refusal; no arbitrary cap increase",
+      "assessment": "The bounded census remains. Rows used by promotion and cleanup make a simple rows-per-workspace capacity estimate misleading. Separate resource exhaustion from corrupt state when building supported multi-workspace behavior.",
+      "evidence": [
+        "src/crdt/startupStorage.ts",
+        "src/crdt/localClearStorage.ts",
+        "docs/review/implementation/af8941e-96a2040.md"
+      ],
+      "canonical": "F-14"
+    },
+    {
+      "id": "F-15",
+      "title": "Reservation persistence",
+      "status": "fixed under explicit strict-persistence assumptions",
+      "importance": "medium cryptographic accounting correctness",
+      "intent": "no further repair of the named relaxed-reservation path; retain platform/restore gates",
+      "assessment": "c10dee3 requires requested/reported strict completion for reservation-bearing writes and retained network invocation events. This addresses the undercount mechanism. It does not prove physical power-cut survival or authorize writable profile clones/restores.",
+      "evidence": [
+        "docs/review/implementation/reservation-durability.md",
+        "docs/account-reservation-durability.md",
+        "src/crdt/contentStore.ts:203"
+      ],
+      "canonical": "F-15"
+    },
+    {
+      "id": "F-16",
+      "title": "Content compaction scheduling",
+      "status": "open",
+      "importance": "medium storage/usability",
+      "intent": "yes in bounded maintenance work",
+      "assessment": "Explicit owned compaction exists, but no ordinary-app scheduler invokes it. Schedule behind admission with measured thresholds and pending-original preservation. Content compaction does not prune the Account proof ledger and cannot alone fix F-07.",
+      "evidence": [
+        "src/crdt/accountReceive.ts:551",
+        "src/crdt/contentCompaction.ts",
+        "docs/content-trim.md"
+      ],
+      "canonical": "F-16"
+    },
+    {
+      "id": "F-17",
+      "title": "Editor projection and fork cost",
+      "status": "open; measure before repair",
+      "importance": "medium, potentially high with large documents",
+      "intent": "yes to equivalent cheaper projections after profiling",
+      "assessment": "Forking and full-state comparison remain correctness guards that previously caught real divergence. Do not replace them with occasional checks. Distinguish editor admission latency from network acceptance/readback cost in F-07.",
+      "evidence": [
+        "src/crdt/admittedWorkspace.ts",
+        "src/crdt/admissionQueue.ts",
+        "docs/review/implementation/af8941e-96a2040.md"
+      ],
+      "canonical": "F-17"
+    },
+    {
+      "id": "F-18",
+      "title": "Origin-wide journal scans",
+      "status": "open; measure before repair",
+      "importance": "low",
+      "intent": "yes to measured scan reduction; no authoritative journal-key cache",
+      "assessment": "Origin-wide storage pressure and scoped entry authentication are different checks. A key cache can miss competing contexts, delayed events and restart state. Preserve fresh complete enumeration where the invariant requires it.",
+      "evidence": [
+        "src/crdt/journalStore.ts",
+        "docs/review/implementation/af8941e-96a2040.md"
+      ],
+      "canonical": "F-18"
+    },
+    {
+      "id": "F-19",
+      "title": "Promotion marker and request resource cost",
+      "status": "open",
+      "importance": "medium capacity/operations",
+      "intent": "yes to bounded versioned representations and measured cost",
+      "assessment": "Large retained candidates/completions and broad admission body bounds remain; delivery routes have smaller independent limits. This is private operator-gated resource exposure, not established unauthenticated public DoS. Preserve exact signed bytes when introducing digest references.",
+      "evidence": [
+        "src/crdt/promotionRecord.ts",
+        "account-protocol/admission.ts:16",
+        "account-service/private-server.ts:75"
+      ],
+      "canonical": "F-19"
+    },
+    {
+      "id": "F-20",
+      "title": "Validation deadlines and aggregate cost",
+      "status": "partial; wider load/aggregate work open",
+      "importance": "low-medium validation reliability",
+      "intent": "yes; combine N-06 and P-05 with validation orchestration",
+      "assessment": "e835243 repaired the named delivery/spool budgets. Other 30-second properties remain load-sensitive in the supplied report. A later 71-stage crypto audit is real evidence but is not a new full pnpm check. Preserve seeds and partial failures while sizing or isolating workloads.",
+      "evidence": [
+        "docs/validation-baseline.md",
+        "docs/account-conformance-runs/2026-09-11-account-crypto-audit.md",
+        "test/accountInboundPrep.test.ts:389",
+        "package.json:17"
+      ],
+      "canonical": "F-20"
+    },
+    {
+      "id": "F-21.1",
+      "title": "Remaining parser conformance",
+      "status": "addressed within recorded scope",
+      "importance": "medium assurance",
+      "intent": "no repeat of the completed six-parser phase",
+      "assessment": "77b0bb6 adds structured malformed-input generation and fixes coercion/sparse-array acceptance defects, with frozen-baseline reproduction and effective controls. This is bounded parser evidence, not proof of an authentication bypass or exhaustive fuzzing.",
+      "evidence": [
+        "docs/review/implementation/account-parser-conformance.md"
+      ],
+      "canonical": "F-21.1"
+    },
+    {
+      "id": "F-21.2",
+      "title": "Admission coverage and exact bounds",
+      "status": "addressed within recorded scope",
+      "importance": "medium-high assurance",
+      "intent": "no repeat of the completed admission phase",
+      "assessment": "4f71bac covered descriptor encoding bounds; f118127 additionally tests service-issued lying receipts against cold client replay and real snapshot size edges. Injected descriptor-limit checks are labelled and are not claimed as giant real Yjs histories.",
+      "evidence": [
+        "docs/review/implementation/account-admission-evidence.md"
+      ],
+      "canonical": "F-21.2"
+    },
+    {
+      "id": "F-21.3",
+      "title": "Recognized cross-account capabilities",
+      "status": "closed within recorded scope",
+      "importance": "medium authorization assurance",
+      "intent": "no repeat of the completed two-account campaign",
+      "assessment": "2bbb4c6 uses two recognized accounts in one service, real capability swaps, full-state checks, generated interleavings and process restarts. The unknown-token-only criticism no longer describes current coverage. No runtime capability-confusion defect was found.",
+      "evidence": [
+        "docs/review/implementation/account-isolation.md"
+      ],
+      "canonical": "F-21.3"
+    },
+    {
+      "id": "F-21.4",
+      "title": "Neutral plaintext-residue evidence",
+      "status": "partial; R1 complete, wider coverage open",
+      "importance": "high privacy assurance",
+      "intent": "yes; continue packaged/export/migration coverage, then physical/platform evidence",
+      "assessment": "27e5b6f adds calibrated neutral logical-carrier acquisition: 144 cells, 26 directed points, 24 generated histories and a detected real journal side-write control. The old no-scanner claim is obsolete; wider UI, cleanup, physical residue and copied-profile/opener claims remain unpaid.",
+      "evidence": [
+        "docs/review/implementation/account-residue-evidence.md",
+        "docs/account-conformance-runs/2026-09-12-account-residue.md"
+      ],
+      "canonical": "F-21.4"
+    },
+    {
+      "id": "F-21.5",
+      "title": "Unit lock doubles",
+      "status": "accepted; no defect established",
+      "importance": "informational",
+      "intent": "no replacement merely for using doubles",
+      "assessment": "Unit doubles isolate logic; the native campaigns exercise real Web Locks and lifecycle ownership. New lifetime paths still need native evidence. No claim that unit doubles establish browser exclusion is adopted.",
+      "evidence": [
+        "docs/review/implementation/af8941e-96a2040.md",
+        "test/write-session/runtime.mjs"
+      ],
+      "canonical": "F-21.5"
+    },
+    {
+      "id": "F-21.6",
+      "title": "Delivery oracle independence",
+      "status": "addressed within recorded scope",
+      "importance": "medium assurance",
+      "intent": "no repeat of the completed oracle phase",
+      "assessment": "3b0a1ba checks full per-order state and exact retained evidence; twelve effective faults include four missed by the original oracle. Independent finite-world enumeration tests the constraint oracle, while its protocol assumptions remain explicit.",
+      "evidence": [
+        "docs/review/implementation/account-delivery-oracle.md"
+      ],
+      "canonical": "F-21.6"
+    },
+    {
+      "id": "F-21.7",
+      "title": "Service-issued refusal/conflict composition",
+      "status": "closed within recorded scope",
+      "importance": "medium authorization/restart assurance",
+      "intent": "no repeat of the completed issuer-to-owner campaign",
+      "assessment": "f0b6acd exercises genuine issuer decisions through HTTP and v8/v9 owners, lost replies, service/renderer death, compaction and generated histories. Some older fixture tests remain useful; their existence does not negate the later real-service evidence.",
+      "evidence": [
+        "docs/review/implementation/account-decision-composition.md"
+      ],
+      "canonical": "F-21.7"
+    },
+    {
+      "id": "F-22",
+      "title": "Yjs upgrade seam evidence",
+      "status": "open upgrade obligation",
+      "importance": "low now; required at dependency upgrade",
+      "intent": "yes to pinned comparison and upgrade notes; no external filing in this intake",
+      "assessment": "The local seam and regression remain. The packets do not supply a current pinned upstream comparison, so claims about later Yjs versions are not adopted as facts. Preserve the repair and rerun relevant pending/delivery histories before upgrading.",
+      "evidence": [
+        "docs/yjs-delivery.md",
+        "docs/review/implementation/af8941e-96a2040.md"
+      ],
+      "canonical": "F-22"
+    },
+    {
+      "id": "F-23",
+      "title": "Recovery lock-order documentation",
+      "status": "open documentation",
+      "importance": "low preventive correctness",
+      "intent": "yes; document recovery-owner lock before slot permit",
+      "assessment": "The abandonment path still nests the slot permit inside the recovery owner. No reverse acquisition or present deadlock was established. Record and test ordering when those ownership paths change.",
+      "evidence": [
+        "src/account/recoveryOwner.ts:209",
+        "docs/account-recovery.md"
+      ],
+      "canonical": "F-23"
+    },
+    {
+      "id": "F-24",
+      "title": "Passkey prompt under exclusive ownership",
+      "status": "documented design; UX work deferred",
+      "importance": "low UX",
+      "intent": "no unconditional prompt relocation; reconsider with owned Account UI",
+      "assessment": "The activation contract now explicitly documents holding the permit across challenge, assertion and completion, and native tests cover the competing tab. Any future relocation must rebind and revalidate the exact operation and drain cancellation; repeated factor entry is not a demonstrated security defect.",
+      "evidence": [
+        "docs/account-activation.md",
+        "src/crdt/promotionAdmission.ts:158",
+        "test/account-activation/native.test.mjs"
+      ],
+      "canonical": "F-24"
+    },
+    {
+      "id": "F-25",
+      "title": "Hex-capsule journal overhead",
+      "status": "open; measure before repair",
+      "importance": "low-medium paste latency",
+      "intent": "yes to measured source-capture encoding work",
+      "assessment": "Hex framing reduces the synchronous journal capacity available to original updates. It is not independently established as the dominant paste bottleneck. A compact versioned encoding must preserve original updates, bounds and durable fallback.",
+      "evidence": [
+        "src/crdt/sourceCapture.ts",
+        "src/crdt/journalStore.ts",
+        "docs/review/implementation/af8941e-96a2040.md"
+      ],
+      "canonical": "F-25"
+    },
+    {
+      "id": "N-01",
+      "title": "Receive expiry coupled to full-history verification",
+      "status": "open; merged into F-07",
+      "importance": "high Account liveness",
+      "intent": "yes with F-07/P-01; not the proposed cache or expiry change verbatim",
+      "assessment": "The repeated state/load checks, 30-second signed request and beforeCommit expiry check remain. Expiry can halt the driver even with valid data. The reported timings/threshold are not rerun here; a permanent failure at a universal event count is unproven. The witness excludes content coverage inputs, and moving the expiry boundary changes a signed-request contract. First measure a controlled history; then define safe verified-snapshot invalidation and fresh-request retry semantics.",
+      "evidence": [
+        "src/crdt/accountReceive.ts:133",
+        "src/crdt/accountReceive.ts:181",
+        "src/crdt/accountReceive.ts:321",
+        "src/crdt/accountReceiveDriver.ts:148",
+        "src/crdt/inboundLedger.ts:82"
+      ],
+      "canonical": "F-07"
+    },
+    {
+      "id": "N-02",
+      "title": "Growing client/service verification multipliers",
+      "status": "open; merged into F-07",
+      "importance": "high in the current composition",
+      "intent": "yes with F-07/P-01",
+      "assessment": "Current client operations repeatedly invoke full validators; the service still rebuilds authority/census and serializes snapshots for read/submit comparisons. Per-operation work grows with history and cumulative work is worse; this is not a second independent defect. Measure client and service separately. Retain compare-before-write and authority checks when introducing reuse.",
+      "evidence": [
+        "src/crdt/accountDelivery.ts:62",
+        "src/crdt/accountReceive.ts:391",
+        "account-service/delivery.ts:172",
+        "account-service/delivery.ts:331"
+      ],
+      "canonical": "F-07"
+    },
+    {
+      "id": "N-03",
+      "title": "Fetch holds the serialized carrier task",
+      "status": "open; related to F-07",
+      "importance": "medium local responsiveness",
+      "intent": "yes in the sync-liveness phase",
+      "assessment": "Read-v2 and submit still await HTTP inside a carrier task, delaying flush/compaction behind the nominal ten-second timeout. Journal acknowledgement remains available until pressure, so this is not demonstrated acknowledged-data loss. Split verified request preparation from fetch and re-entry, while retaining the session/slot lifetime, exact request identity, cancellation/drain and stale-prefix checks. Signing is not the only operation needing ownership.",
+      "evidence": [
+        "src/crdt/accountReceive.ts:204",
+        "src/crdt/accountDelivery.ts:237",
+        "src/account/privateDeliveryHttp.ts:13",
+        "src/crdt/accountReceive.ts:519"
+      ],
+      "canonical": "N-03"
+    },
+    {
+      "id": "N-04",
+      "title": "v8 driven reopen capsule",
+      "status": "partial; merged into F-08",
+      "importance": "low",
+      "intent": "yes for the retained v8 factory or explicitly retire it; no v9 repair needed",
+      "assessment": "The v8 factory still captures a manufactured empty source; v9 explicitly suppresses source-free commands. The v8 exported sender remains in conformance use, so it is not fully obsolete. This does not justify discarding updates merely because their state vector is unchanged, or deleting already retained capsules.",
+      "evidence": [
+        "src/crdt/accountSpool.ts:171",
+        "src/crdt/accountSpool.ts:360",
+        "src/crdt/accountReceive.ts:489"
+      ],
+      "canonical": "F-08"
+    },
+    {
+      "id": "N-05",
+      "title": "Unspecified receipt baseline hash",
+      "status": "closed by byte-contract specification",
+      "importance": "low compatibility",
+      "intent": "no change to the current derivation",
+      "assessment": "Signed D3 (10fef3d) explicitly pins the whole reconstructed receipt, including signatures and nested property order. The fixed baseline and receipt-leaf mutations exercise the real helper; input object reordering is immaterial. Replacing this now with receiptMessage/signature hashing would change retained baseline identities without a compatibility plan. The original absence claim is obsolete.",
+      "evidence": [
+        "docs/account-crypto/account-ledger.md:141",
+        "src/crdt/inboundLedger.ts:19",
+        "test/account-ledger-contract/formats.test.mjs:44"
+      ],
+      "canonical": "N-05"
+    },
+    {
+      "id": "N-06",
+      "title": "Loaded-host generated-property timeouts",
+      "status": "open; merged into F-20",
+      "importance": "low validation reliability",
+      "intent": "yes to explicit load/budget policy and preserved failure artifacts",
+      "assessment": "The four explicit 30-second limits remain. The supplied failure and later passing rerun establish load sensitivity at the reviewed revisions, not a current product counterexample or a guaranteed failure under all concurrency. Isolate validation jobs and measure internal test parallelism/margins; preserve shrink progress and failing seeds before increasing budgets. No tests were rerun during this intake.",
+      "evidence": [
+        "test/accountInboundPrep.test.ts:389",
+        "test/legacyImport.test.ts:306",
+        "test/legacySelection.test.ts:305",
+        "test/legacyCleanup.test.ts:271"
+      ],
+      "canonical": "F-20"
+    },
+    {
+      "id": "N-07",
+      "title": "Unnamed transport constructions",
+      "status": "closed; covered by F-05",
+      "importance": "medium-high protocol assurance",
+      "intent": "no further registration repair for these labels",
+      "assessment": "C and D3 pin the v1/v2 read/submission and inbound-record constructions; the current registry, authority sweep and preserved aggregate execute their vector bridges. Phase prose duplication is the narrower P-06 follow-up. This is specification/vector closure, not a proof of every future reader or epoch.",
+      "evidence": [
+        "docs/account-crypto/transport.md",
+        "docs/account-crypto/account-ledger.md",
+        "docs/account-crypto/constructions.json",
+        "docs/review/implementation/account-crypto-closure.md"
+      ],
+      "canonical": "F-05"
+    },
+    {
+      "id": "N-08",
+      "title": "Read-route and HTTP reason collapse",
+      "status": "open; merged into F-10",
+      "importance": "medium operations; low direct security impact",
+      "intent": "yes to bounded redacted diagnostics and a defined client hint taxonomy",
+      "assessment": "The HTTP server still collapses non-decisions to 409 unknown, and the client discards non-200 bodies. The core does not literally collapse every failure: it already returns invalid-request/out-of-order/state-changed as well as unavailable. Catch causes are still lost. Do not log raw caught values or treat an unsigned transport hint as signed refusal/finality authority.",
+      "evidence": [
+        "account-service/delivery.ts:639",
+        "account-service/delivery.ts:727",
+        "account-service/private-server.ts:105",
+        "src/account/privateDeliveryHttp.ts:25"
+      ],
+      "canonical": "F-10"
+    },
+    {
+      "id": "N-09",
+      "title": "v8 offline event hides halt reason",
+      "status": "open for retained v8 driver",
+      "importance": "low diagnostics",
+      "intent": "yes to preserving the reason if v8 remains supported; no v9 change",
+      "assessment": "The v8 gate still publishes null for offline and can temporarily replace the blocked phase. The receive and composed schedulers instead prioritize retained halt state. The delivery owner rechecks durable evidence before publication, so this is not established publication after conflict. Keep a focused status-transition regression or retire the older factory explicitly.",
+      "evidence": [
+        "src/crdt/accountDriver.ts:80",
+        "src/crdt/accountDriver.ts:150",
+        "src/crdt/accountSyncDriver.ts:57",
+        "src/crdt/accountReceiveDriver.ts:83"
+      ],
+      "canonical": "N-09"
+    },
+    {
+      "id": "P-01",
+      "title": "Composed sync full-history cost and liveness cliff",
+      "status": "open; merged into F-07",
+      "importance": "high; highest implementation priority from this intake",
+      "intent": "yes; controlled scaling reproduction and invariant-preserving design first",
+      "assessment": "The repeated validation/replay paths remain; the reported 45/8 counts and timings are useful leads, not newly executed evidence. Two conclusions are overstated: polling is single-flight and schedules five seconds after completion, so it does not necessarily build an endless queue; the exact permanent cliff depends on content, load and retry time. One position per fixture input is not a universal character-level UI rule. This private Account owner is not mounted in the personal Local app. The proposed witness-only cache does not authenticate the complete content/source set and still invalidates on every new event; incremental verification and complete invalidation are needed to address growth safely.",
+      "evidence": [
+        "src/crdt/accountReceive.ts:104",
+        "src/crdt/accountReceive.ts:391",
+        "src/crdt/accountSyncDriver.ts:119",
+        "src/crdt/accountSyncDriver.ts:173",
+        "src/crdt/inboundLedger.ts:107",
+        "src/crdt/spoolRecord.ts:167"
+      ],
+      "canonical": "F-07"
+    },
+    {
+      "id": "P-02",
+      "title": "Send progress does not expedite receive",
+      "status": "open; related to F-07",
+      "importance": "low latency",
+      "intent": "yes within scheduler/liveness work",
+      "assessment": "A progress result schedules only the active lane, so a successful send can wait for the receive poll. The residue fixture explicitly calls receive retry and therefore does not close this production behavior. Wake receive only for durable accepted-prefix progress, preserving halt/offline/backoff and single-flight fairness; do not let repeated send progress postpone an earlier receive deadline.",
+      "evidence": [
+        "src/crdt/accountSyncDriver.ts:173",
+        "src/crdt/accountSyncDriver.ts:206",
+        "test/account-residue/lifecycle.mjs"
+      ],
+      "canonical": "P-02"
+    },
+    {
+      "id": "P-03",
+      "title": "Remote promotion unnecessarily wakes send",
+      "status": "open; related to F-07",
+      "importance": "low cost; compounds F-07",
+      "intent": "yes; use a local-acceptance/publication signal",
+      "assessment": "Every promoted job increments the shared revision and the composed subscriber calls wake(local) for any change. Remote readback can therefore start an empty send pass. Wake calls are coalesced, so an unconditional extra pass for every page is not guaranteed under all schedules. Preserve command-generated local sources and queued local edits when filtering by source.",
+      "evidence": [
+        "src/crdt/admissionQueue.ts:300",
+        "src/crdt/accountReceive.ts:575",
+        "src/crdt/accountSyncDriver.ts:206"
+      ],
+      "canonical": "P-03"
+    },
+    {
+      "id": "P-04",
+      "title": "Unsigned-to-signed history discoverability",
+      "status": "documentation navigation addressed in this intake",
+      "importance": "low record navigation",
+      "intent": "yes to linking the existing mapping in this review index; no historical rewrite or push",
+      "assessment": "All seven old/new trees are identical and their signed replacements are current ancestors; the mapping and backup ref already exist. completed.md also links the mapping in the later signing entry. The earlier unsigned statements are true historical records, not evidence of lost validation. The consolidated index supplies the missing nearby crosswalk. Remote publication or retention tags are not required to assess this finding and are outside this task.",
+      "evidence": [
+        "docs/account-conformance-runs/2026-09-11-signed-contract-history.json",
+        "docs/completed.md:2833"
+      ],
+      "canonical": "P-04"
+    },
+    {
+      "id": "P-05",
+      "title": "Aggregate validation freshness and repeated vectors",
+      "status": "partial; merged into F-20",
+      "importance": "medium validation cost/coverage",
+      "intent": "yes to explicit aggregate coverage and deduplicated orchestration",
+      "assessment": "ec889d9 later ran the 71-stage Account crypto aggregate, so no aggregate since e835243 is now too broad. It is not the full pnpm check, whose recorded baseline is older. Standalone contract runners still expand the entire current vectors:check list, so duplicate work remains. Share vector execution in an aggregate while retaining standalone dependencies and source-pinned receipts; do not simply delete prerequisite checks or relabel a partial chain as full validation.",
+      "evidence": [
+        "docs/account-conformance-runs/2026-09-11-account-crypto-audit.md",
+        "scripts/account-local-provenance/run.mjs:163",
+        "scripts/account-local-provenance/run.mjs:251",
+        "package.json:17"
+      ],
+      "canonical": "F-20"
+    },
+    {
+      "id": "P-06",
+      "title": "Duplicate unswept phase cryptographic prose",
+      "status": "open documentation residual; F-05 stays closed",
+      "importance": "low drift risk",
+      "intent": "yes; prefer links to the canonical byte homes over another normative copy",
+      "assessment": "The five phase documents still describe constructions outside SWEPT. Current registry/source pins cover the implemented constructions, so this is not renewed evidence of an unregistered runtime primitive. The substring census is incomplete for prose spelling too. Replace or clearly mark historical formulae and link the owned byte contracts in a docs-only follow-up, with appropriate pin refresh; do not create competing authority homes.",
+      "evidence": [
+        "scripts/check-authority-map.mjs:81",
+        "docs/account-promotion.md:40",
+        "docs/account-recovery.md:34",
+        "docs/account-authority.md:37",
+        "docs/account-outbound.md:43",
+        "docs/account-activation.md:18"
+      ],
+      "canonical": "P-06"
+    },
+    {
+      "id": "P-07",
+      "title": "Activation refusal parsed as a success object",
+      "status": "open; merged into F-10",
+      "importance": "low diagnostics; medium user recoverability at onboarding",
+      "intent": "yes for begin/challenge/finish response classification",
+      "assessment": "The owner still passes challenge/finish refusals into success parsers; begin has the analogous issue. The service distinguishes expiry/proof conflict/invalid proof, while the current owner can report a parser error. Fail-closed activation is intact. Validate a bounded refusal shape/reason before success parsing, preserve unsigned-hint versus authenticated-receipt authority, and never mutate retained success state on a refusal.",
+      "evidence": [
+        "src/crdt/promotionAdmission.ts:147",
+        "src/crdt/promotionAdmission.ts:170",
+        "src/crdt/promotionAdmission.ts:197",
+        "account-service/core.ts:856"
+      ],
+      "canonical": "F-10"
+    }
+  ],
+  "sourcePins": [
+    {
+      "path": "account-protocol/admission.ts",
+      "sha256": "efc0620a9cb8b209addbf6238c02e9e4a768016e71138fc4e4ba3757a681973f"
+    },
+    {
+      "path": "account-service/core.ts",
+      "sha256": "5cd81e2239345fb6cea913046715f936904d1645a069504b048e7aa602b6d1c1"
+    },
+    {
+      "path": "account-service/delivery.ts",
+      "sha256": "089e16c819e1368750be3d471e7e82a00a66d41204ca8908d27f710d1e57dfda"
+    },
+    {
+      "path": "account-service/keyEncoding.ts",
+      "sha256": "c226cbea9e72e38e9059541fbf17b8263cd6710daae4501f86986ae347303b4e"
+    },
+    {
+      "path": "account-service/private-server.ts",
+      "sha256": "940cff49b5bba8135f164985d19e7ea6a58e67c839ee5cdc0672448a6b0de803"
+    },
+    {
+      "path": "docs/account-activation.md",
+      "sha256": "795a06b76775c71e7819bffc2e41d45b9143c395df7fa065560dba8048bd6ba0"
+    },
+    {
+      "path": "docs/account-admission-bounds.md",
+      "sha256": "53d59cbbb7fd9ce102ea8465b224c7f376efbefd2a8b2ef6c4624a9b07ff8c2e"
+    },
+    {
+      "path": "docs/account-authority.md",
+      "sha256": "c0b6b1991ae2ae94006e2e773ebe5850af0a20044a7a363e3db3d69a1dd6af58"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-10-account-delivery/findings.json",
+      "sha256": "44df9cb1ecb5f7e7d8ce2338a85b485f8f32c1cddb095d4e80bcd1092d50216c"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-11-account-crypto-audit.md",
+      "sha256": "1d1c314646b8bf6ee5d6b32e7df31fd79de412a9466a59f483bc0a5a86dd371f"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-11-signed-contract-history.json",
+      "sha256": "c3a4334746adfb3937dc0ac1328fc2716de0af77e475a0d664500f8894da9267"
+    },
+    {
+      "path": "docs/account-conformance-runs/2026-09-12-account-residue.md",
+      "sha256": "e9109aa18347e03e44b0f0bec83792697b9014b89b48e68e28ef277534a015c8"
+    },
+    {
+      "path": "docs/account-crypto/account-ledger.md",
+      "sha256": "d3e8d6dafeec3f66b7b056364d79e4d37698a8e595ad0e049c0cecedd2b760e0"
+    },
+    {
+      "path": "docs/account-crypto/constructions.json",
+      "sha256": "009f19823ef7c8a9a8b5b249df27ab439b265109619e60981a3ecdd32b576dac"
+    },
+    {
+      "path": "docs/account-crypto/recovery-layout.md",
+      "sha256": "f555321bb75c2729f0ac9cab169d5b3150fcc7df52df5bdda67ca48276f23349"
+    },
+    {
+      "path": "docs/account-crypto/transport.md",
+      "sha256": "d58d87cd4f50f07d1f8c80692c1186f51a528e78de2755caa4f0416e79eacae8"
+    },
+    {
+      "path": "docs/account-outbound.md",
+      "sha256": "c94c801e1f306f30847b7bd5901c6e65541140d623fa6bd466ed69d5110e7eeb"
+    },
+    {
+      "path": "docs/account-promotion.md",
+      "sha256": "78815c5e216f7b5f7fedf5426e8cb4fe4809f5267517c3db11fcee6407f212a8"
+    },
+    {
+      "path": "docs/account-recovery.md",
+      "sha256": "52d9bfaaafca12620341a93264be849c7623712584b610d8a8ee01e2dc305bdb"
+    },
+    {
+      "path": "docs/account-reservation-durability.md",
+      "sha256": "e891d217a6d69790d83764ea2a874828e216e8a88d87a720a19e9f9289deec60"
+    },
+    {
+      "path": "docs/completed.md",
+      "sha256": "be49c387b7d85cc1fc4ce13f924e08ad7513e682af578dfc1f1e4e81e2c74492"
+    },
+    {
+      "path": "docs/content-trim.md",
+      "sha256": "1ecf15c98b99bed2141f2e16ac4aa772b9cb2ce992c8ce4f1e833b0d3ec0c926"
+    },
+    {
+      "path": "docs/review/implementation/account-admission-evidence.md",
+      "sha256": "4b0f030d7be79ebdd49fc929ebcb1cc29692152501ade3191a12bb2ca6208675"
+    },
+    {
+      "path": "docs/review/implementation/account-crypto-closure.md",
+      "sha256": "41626d029f2d8d812b8965c7088b89bb1f609b60c9d259d062b768708bcd6844"
+    },
+    {
+      "path": "docs/review/implementation/account-decision-composition.md",
+      "sha256": "ceb058c682c8e78a6b787c4a3c29ca9decc5c555d865c41504f3c841baadab1e"
+    },
+    {
+      "path": "docs/review/implementation/account-delivery-oracle.md",
+      "sha256": "9367e27e421a2c8229453c26c07f0667f83ba044a10ea469d01d34700d511868"
+    },
+    {
+      "path": "docs/review/implementation/account-isolation.md",
+      "sha256": "12716fedab91125a8bb3fdfd084046ba9b2ee3ae3df23621a9c8c1d17cd88b11"
+    },
+    {
+      "path": "docs/review/implementation/account-parser-conformance.md",
+      "sha256": "3539b99862d8ce466506b5c22458f080ec4d2f0cc29cec97c85fd8d0495d5a35"
+    },
+    {
+      "path": "docs/review/implementation/account-residue-evidence.md",
+      "sha256": "a9215a1c07e866481f2e643ab6a23f8f5287c23b29dec3dd19a4aebc3b10b7fc"
+    },
+    {
+      "path": "docs/review/implementation/af8941e-96a2040.md",
+      "sha256": "c48a517fd90c9dd0d06a799721a3fafc9b5680eee381d39900ccafad31f95dac"
+    },
+    {
+      "path": "docs/review/implementation/reservation-durability.md",
+      "sha256": "8772585f17867370b6e34068cbbfe29e50855e38a8017041c007a9b477f04673"
+    },
+    {
+      "path": "docs/storage-contract.md",
+      "sha256": "439b820e3258feafc5fdef8b42448cc2bbdb045615db3ae9e4494e00933a8e4f"
+    },
+    {
+      "path": "docs/validation-baseline.md",
+      "sha256": "aa6a79cd4c8f9a24f17957d743e1abb33c0dc8a198b4799ff2f5bb1fea09c128"
+    },
+    {
+      "path": "docs/yjs-delivery.md",
+      "sha256": "d18a67afad0a9912de889c747314f05d0ff8fb8a6f75769db001973e0dd7cb03"
+    },
+    {
+      "path": "package.json",
+      "sha256": "1d5c84a2e18698d0602abc1216ca2bcdc348e2ba0951c1a8605e88f13a3abf45"
+    },
+    {
+      "path": "scripts/account-local-provenance/run.mjs",
+      "sha256": "2cb0064456a16adff8c75fc849935394b9b8eea2420c46df7adbc6a1e3641701"
+    },
+    {
+      "path": "scripts/check-authority-map.mjs",
+      "sha256": "c903c3ed10b0c9d2c51ab77419f46fd71e44bfbe090495fd2fc6be513c8a5405"
+    },
+    {
+      "path": "scripts/content/run.mjs",
+      "sha256": "b3f70e1fffc986ad4005dbec632b625d5822103b50da3ff9575b46294538efec"
+    },
+    {
+      "path": "scripts/custody/run.mjs",
+      "sha256": "b5d8f674035e9b8ab8ca65195ee9e1f409e4dbbff52f42fce0839f1b6e5d5b76"
+    },
+    {
+      "path": "scripts/generate-private-envelope-vectors.mjs",
+      "sha256": "fef037fe61ae048c30b9af2d8eebf60725f3b9f91a0cfd7802552df904614045"
+    },
+    {
+      "path": "scripts/journal/run.mjs",
+      "sha256": "84773fcc44b403be2e4c746417dda7240dc97287fa0d131c890cc92d9559073f"
+    },
+    {
+      "path": "scripts/storage-properties/run.mjs",
+      "sha256": "a3e7c956737a0f542c14c5aa00fab231bd69405dc7606ec08393926268baa9e6"
+    },
+    {
+      "path": "src/account/privateDeliveryHttp.ts",
+      "sha256": "4b9dc0a95baa5fad8e82d49d19fbd0be9668b77fb907fdca08afd606960d41f1"
+    },
+    {
+      "path": "src/account/recovery.ts",
+      "sha256": "62b288238e64db88b8da1a784bac10856e803c142992a07ee46a7d93ed04e67f"
+    },
+    {
+      "path": "src/account/recoveryOwner.ts",
+      "sha256": "a65e8c4d27205e962a2f65e633d837d23049775b0693a33c4469b1455a6a0c65"
+    },
+    {
+      "path": "src/crdt/accountDelivery.ts",
+      "sha256": "9c62b19e81968e15770efabb0025c49b165d09f43f8d7691043916a75fdb8437"
+    },
+    {
+      "path": "src/crdt/accountDriver.ts",
+      "sha256": "d6684d2cd74be66a00aeeafa979fa8607121cd6e0323faa421734a361618ad7f"
+    },
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "e1c7c000af3970f60df3365ad8a0e3b5129e7badc2c504fb07af717b37b2ef85"
+    },
+    {
+      "path": "src/crdt/accountReceiveDriver.ts",
+      "sha256": "0c48ef5ae170791637054197c305f6643da93dea7be9827f37cc8e3fd3cb13cc"
+    },
+    {
+      "path": "src/crdt/accountSpool.ts",
+      "sha256": "afa26302e4d2737ed16f32788a8e1a12dc4e3b7cca9682a437986eb2c7bb07c8"
+    },
+    {
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "8deb9064f0d017d54e65686ec4e4ab0826ab7b6b9873658eb15ed6e897f34117"
+    },
+    {
+      "path": "src/crdt/admissionQueue.ts",
+      "sha256": "49b3f7d016b5b6fb64b5f0b70eb3dddb012f7922ec0370b97b2f5975efdb4e90"
+    },
+    {
+      "path": "src/crdt/admittedWorkspace.ts",
+      "sha256": "50e0fde0c2d465f037ba61c0dc878b925cd1900999c79f6170e88b8aae5bcc18"
+    },
+    {
+      "path": "src/crdt/contentCompaction.ts",
+      "sha256": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f"
+    },
+    {
+      "path": "src/crdt/contentStore.ts",
+      "sha256": "ff173f6fe2e33d4470a2b1095266af98bd71e53a22d41809f05e27ae9dda8d8f"
+    },
+    {
+      "path": "src/crdt/inboundLedger.ts",
+      "sha256": "1feaab8cd98752279488ea4e71d0a5ceadebc526944b708bcf7e3a8b877c6948"
+    },
+    {
+      "path": "src/crdt/journalStore.ts",
+      "sha256": "68c7c40cc153062472f3b3333d8eecd2a13555517a7e1d11d167836c98474a3c"
+    },
+    {
+      "path": "src/crdt/localClearStorage.ts",
+      "sha256": "6f9f5082088aa0be7a3ab88525c8c2eadfe894c64f57909b8bc831c110fc17b2"
+    },
+    {
+      "path": "src/crdt/ownedStartup.ts",
+      "sha256": "b73e5df0686f7e2460a80f030e04eadfc791e350320316e2913aacb5bb84a3db"
+    },
+    {
+      "path": "src/crdt/promotionAdmission.ts",
+      "sha256": "c937b1ea18f54f1609c7352d52409487bc2a54f4108c660a749434ac6c08b070"
+    },
+    {
+      "path": "src/crdt/promotionRecord.ts",
+      "sha256": "bd3f3b9408716c5fcf23a928645350242835b9a5c3a318a212bfa7e0ec9c77d3"
+    },
+    {
+      "path": "src/crdt/sourceCapture.ts",
+      "sha256": "74224ca301f2879359c1d98452aedd1712d47816245f3ae858cd9bb884c461e2"
+    },
+    {
+      "path": "src/crdt/spoolRecord.ts",
+      "sha256": "87ab2b1af6dbf3f6588e0f4bc5472046c9ed78203971dc6e3b459e49cb65b527"
+    },
+    {
+      "path": "src/crdt/startupStorage.ts",
+      "sha256": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4"
+    },
+    {
+      "path": "src/crdt/storageCompatibility.ts",
+      "sha256": "59cbc688eeb942b57b8b53a4332bf9cd4e1060de915a8ad9b9360e631f5329f4"
+    },
+    {
+      "path": "src/crdt/writeSession.ts",
+      "sha256": "1a9b95f6f74f526947e8186ff72a1b2face902b43f4470d9aba8cbd87b0462e5"
+    },
+    {
+      "path": "src/ui/LocalApp.tsx",
+      "sha256": "a6a78e805d9cd4d6888c601beada54b8d892412d04f2fee0caff763c7c6ff35d"
+    },
+    {
+      "path": "test/account-activation/core.test.mjs",
+      "sha256": "0b18d211f90ba8305124267a0645cb8f378f6ece68afd3ecde5330ec88e77fae"
+    },
+    {
+      "path": "test/account-activation/native.test.mjs",
+      "sha256": "8d671b18ac3aace47b085a63451a96b36fcb34e01369342a7986773f602f2cf1"
+    },
+    {
+      "path": "test/account-ledger-contract/formats.test.mjs",
+      "sha256": "26ebd3c737f368fd7f4f649e9df1b15f6bc51766e6bd6d9d3c7d9fe8835360d1"
+    },
+    {
+      "path": "test/account-recovery-contract/exports.test.mjs",
+      "sha256": "2c3e58037b5e87a90230d2dad4fd916a1d647db7474c9ff2c29daa57fcaf4535"
+    },
+    {
+      "path": "test/account-recovery-contract/formats.test.mjs",
+      "sha256": "5bd7d22bd3bd71847e1e3bcebb5e38588601412e1b50b50c7d7211fda5162d6c"
+    },
+    {
+      "path": "test/account-residue/lifecycle.mjs",
+      "sha256": "c69616f5cce4bca9cc364cd2f7810d53e1c89920225bd7540a56b6fce0e048c0"
+    },
+    {
+      "path": "test/account-service-inbound/controls.test.mjs",
+      "sha256": "39564c1dfa962e059464380e39c1c7b922368fe998dae889b57501cebd0a7bbc"
+    },
+    {
+      "path": "test/account-service-inbound/core.test.mjs",
+      "sha256": "5fe6a261976bf21e525b0e14bed821e7ea9249eba336f681b19eca95fe533bbd"
+    },
+    {
+      "path": "test/accountInboundPrep.test.ts",
+      "sha256": "af4bf61b20d70664906120a20c3e07628b8b8a21af12d0354591477f315816bf"
+    },
+    {
+      "path": "test/legacyCleanup.test.ts",
+      "sha256": "f96a60d420fda7f142b368d50ed26f22232d0ccf122b2d24a96c89a679f91e03"
+    },
+    {
+      "path": "test/legacyImport.test.ts",
+      "sha256": "21bb1bfd91086dba5a532b6266b91de6b3e3f039a146298c61eb4e87d0c645d8"
+    },
+    {
+      "path": "test/legacySelection.test.ts",
+      "sha256": "d4fe3937b7aea3997b8739be5a296a74f593ce32a7c6af95fff763e1ea1e0c09"
+    },
+    {
+      "path": "test/write-session/runtime.mjs",
+      "sha256": "dc976a55d97d96506d3d1b99ae9238e1b746e1d3e9b1af94a2bcafe5277c3481"
+    }
+  ],
+  "limitations": [
+    "No supplied benchmark was independently rerun.",
+    "No new exploit or runtime correctness reproduction.",
+    "No personal profile/server/Account changes.",
+    "Closed findings retain the scope/limits of their cited evidence."
+  ],
+  "sourcePinsRevision": "27e5b6fcf46aa8ac596fcd0af6b5f366926398e6",
+  "sourcePinScope": "Exact referenced files at the immutable assessment revision. The appended completed.md intake entry postdates these pins; runtime and historical evidence remain unchanged."
+}

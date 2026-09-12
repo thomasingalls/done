@@ -43,82 +43,79 @@ that is no longer active.
 ---
 
 
-## Active slice: Packaged and migration plaintext-residue evidence (`L-1`)
+## Active slice: Account sync-liveness measurement and design (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: explicit packaged/export and synthetic migration/clear observation points before extending R1
+blocks_on: controlled scaling/expiry evidence and complete invalidation rules before optimizing verification
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-12
 ```
 
-**Roadmap position.** Personal Local cutover, cleanup and packaged offline upgrades are exercised.
-Account remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), item 5's internal creating-member
-ciphertext round trip. C/D1–D8, aggregate audit `ec889d9`, F-15 `c10dee3`, F-21.3 `2bbb4c6`, F-21.7
-`f0b6acd`, F-21.1 `77b0bb6`, F-21.6 `3b0a1ba`, F-21.2 `f118127` and residue preparation `6a9c9c4` are
-signed. All seventeen recent signatures verify `G`. The signing reminder remains paused; the original
-unsigned chain remains under the [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
-No real Account receipt exists. R1 is complete, unstaged/uncommitted; F-21.4 remains open for wider scope.
+**Roadmap position.** Personal Local cutover, source cleanup and packaged offline upgrades are exercised.
+Account remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), item 5's private creating-member
+ciphertext round trip. The composed Account owner is not mounted in the personal Local app; no real
+Account receipt exists. The prior crypto, durability, parser, admission and decision/oracle evidence
+retains its exact scope, linked from the [current review index](./review/implementation/findings.md).
+Residue preparation is signed `6a9c9c4`; R1 is now signed `27e5b6f`. The signing reminder remains paused
+and the original unsigned chain remains under its [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
 
-**Completed boundary.** [F-05/F-06](./review/implementation/account-crypto-closure.md),
-[F-15](./review/implementation/reservation-durability.md),
-[F-21.3](./review/implementation/account-isolation.md),
-[F-21.7](./review/implementation/account-decision-composition.md),
-[F-21.1](./review/implementation/account-parser-conformance.md),
-[F-21.6](./review/implementation/account-delivery-oracle.md) and
-[F-21.2](./review/implementation/account-admission-evidence.md) retain their recorded scopes and limits.
+**Completed intake.** The two supplied root addenda are annotated and archived under
+[docs/review/implementation](./review/implementation/README.md). They retain their original F/N/P IDs:
+67 `resposnse` blocks cover 47 distinct leaf IDs, with nine aliases joining earlier work items.
+Original text is recoverable byte-for-byte; the historical F packet is unchanged. This assessment used
+current source and prior evidence only, without rerunning the review's measurements. Annotations,
+crosswalk and this checkpoint remain unstaged/uncommitted. No implementation changes were made.
 
-[R1](./account-residue-r1.md) implements the [prepared contract](./account-residue-testing.md) with an
-independent raw matcher and browser/SQL/diagnostic collectors. It enumerates unknown keys/stores,
-calibrates encodings and omissions, records incomplete observations, and keeps policy classification
-separate. Current actor/device labels are encrypted document metadata. The actual browser recovery
-owner retains sensitive retry capabilities at two named fields; those matches are reported separately.
-Known observer IPC fences remain in the scan. Opaque keys and physical backing files are not qualified.
+**Why priority changes.** F-07/N-01/N-02/P-01 is now high-priority Account liveness: repeated authenticated
+loads and full-history replay run in the composed owner, and expiry can halt receive. N-03's fetch
+holds a serialized carrier task; P-02/P-03 add avoidable scheduling delay/work. Supplied timings are
+leads, not fresh measurements. Single-flight polling schedules after completion, so inevitable idle
+queue accumulation and universal failure counts are not established. Personal Local remains separate.
 
-[Final campaign](./account-conformance-runs/2026-09-12-account-residue.md): 7 stages, 16 Node cases,
-144 calibration cells, 26 directed checkpoints and 24 generated histories; 871 source pins, types,
-scoped lint and format pass. No skips/timeouts. Seed `1121040`, 0 shrinks, no counterexample. There are
-155 checkpoint reports: 154 complete observations without prohibited matches and one detected deliberate
-journal side-write. Real Local/recovery/promotion/capture/spool/delivery and Account owners preserve
-introduced writing through cold readback. The real synchronous journal point, valid wrong factor,
-cancelled open, failed journal storage and lost HTTP replies are exercised. The archive preserves
-exact synthetic observations and needles. No runtime source changed or production defect was found.
+**Next bounded phase — measurement and contract preparation before a runtime repair.**
 
-The first focused generated run exhausted its budget without a per-history archive and is incomplete
-evidence. Fixture receive retry now wakes the actual receiver after publication; the budget stays
-270 seconds and the final generated stage completes in 223.7. Detector/fixture repairs and an earlier
-passing run are recorded separately. Logical, physical and copied-profile claims remain distinct.
+- Build a reproducible disposable Account history with representative edits, deletions and pending
+  dependencies. Record actual positions/sources, document sizes, workload and host load; distinguish
+  input-job granularity from a claimed position per UI character.
+- Count and time carrier loads, signatures/AEAD, content replay, service census, fetch wait and
+  scheduler delay at increasing history sizes. Test idle polling and sustained editing separately.
+  Preserve exact source pins and partial/timeout evidence, with independent expected writing/readback.
+- Reproduce request expiry with a controlled clock/delay rather than relying solely on a slow host.
+  Specify fresh retry versus permanent conflict/corruption, and distinguish request authorization time
+  from verified commit binding before changing the current signed-request rule.
+- Design one trusted in-lifetime verified state with complete invalidation. The spool witness covers
+  ledger events, not all content or source-capsule inputs. Cold open, content removal/change, compaction,
+  rollback, owner replacement, journal flush and new evidence must retain their appropriate checks.
+  A witness-only cache or fewer assertions is not an acceptable repair specification.
+- Specify splitting fetch from the serialized carrier task while retaining the owned session, exact
+  request bytes, stale-prefix revalidation, cancellation and drain. Define receive wake after durable
+  send progress and local-only publication wake without resetting halt/backoff or starving either lane.
 
-**Next bounded phase — extend R1 to actual packaged and migration flows, with prep first.**
+**Retained next work.** [F-21.4](./review/implementation/account-residue-evidence.md) remains open beyond
+R1's logical carrier campaign (144 calibration cells, 26 directed checkpoints, 24 generated histories).
+Continue actual packaged UI/generated service-worker flows, calibrated intentional-export/ZIP handling,
+and synthetic migration/selection/cleanup/Local-clear interruption points. Declare exact allowed
+pre-cleanup plaintext and required post-cleanup absence; no blanket export-file exception. Physical
+profile/SQLite/WAL/deleted-byte and supported-platform C13 opener evidence remain later obligations.
+Do not inspect personal exports or rerun personal cleanup to obtain those synthetic observations.
 
-- Map the actual packaged Local UI, generated service worker and export routes to explicit input and
-  observation points. Reuse independent acquisition/matching. A planted cache proves the collector;
-  a real installed worker and UI flow are still required. Build into disposable output roots only.
-- Define exact intentional-export exceptions and a separately calibrated ZIP/container reader for
-  those synthetic artifacts. Never exempt all files by extension or authorize a cache/log copy because
-  an export was requested. Keep the pre-scan raw-value and completeness rules.
-- Exercise synthetic legacy capture/import/selection, authenticated source cleanup and Local clear,
-  including their interrupted/restarted states. Identify expected predecessor plaintext before cleanup
-  and require its absence at the declared logical post-cleanup point. Preserve the encrypted destination
-  and independently verify expected writing. Do not inspect personal exports or rerun personal cleanup.
-- Credit existing packaged upgrade/private-migration/cleanup tests for their actual coverage; add
-  meaningful missing leak controls and generated histories without relabelling namespace checks as
-  forensic erasure. Declare each required surface and unreadable/unsupported representation.
-- Keep physical profile/SQLite/WAL/deleted-byte and supported-platform C13 evidence separate. No real
-  Account enrollment, personal-profile scanning, default-app cutover, deployment or host VM work.
+The [review index](./review/implementation/findings.md#priority-and-scope) also routes F-10/N-08/P-07
+diagnostics, F-20/N-06/P-05 validation orchestration, P-06 duplicate prose, retained v8 issues and
+maintenance/resource work. F-05/F-06 stays closed in its recorded scope; partial findings stay visible.
+Existing formal Stage 0 debts are unchanged; these implementation IDs are a separate namespace.
 
-**Personal checkpoint.** All 21 hashes in `dist/` and `.dev/releases/17d87c2/app`, 31 prior vector files,
-historical review and L-2 are unchanged. Personal preview/relay remain stopped. No personal browser,
-Account, factor, operator key, pin, origin or routing changed. Root `done `,
-`reviewpacket96a20401ceb88d.md` and `review-packet-1ceb88d-393ef43.md` remain untouched.
+**Personal checkpoint.** The retained 21 package files in `dist/` and `.dev/releases/17d87c2/app`, all
+31 prior vectors, historical F review and L-2 remain unchanged. Personal preview/relay remain stopped.
+No browser/profile, Account, factor, operator key, pin, origin or routing changed. The unrelated root
+`done ` is untouched; the two requested review packets were moved into the implementation review set.
 The actual old second device will adopt the first workspace with fresh custody/store/counters/
 credentials, without importing or merging its previous writing.
 
-**Other gates.** Diagnostics/salvage, measured maintenance/performance and accepted review follow-ups
-remain. General lineage, successor checkpoints, concurrent membership, pruning/backlog scale,
+General lineage, successor checkpoints, concurrent membership, proof pruning/backlog scale,
 enrollment/device management, revocation/rotation, clear/delete, finalization/total-loss recovery,
 PRF enrollment, supported platforms, deployment/restore and independent review remain separate.
 L-2's historical ref `d24732b` has no further service work to integrate.

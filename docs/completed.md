@@ -3181,3 +3181,46 @@ Vitest, aggregate crypto/vector execution or unrelated native campaign was rerun
 phase. All 21 personal package files, 31 vectors, historical review and L-2 are preserved. No personal
 browser/profile/recovery, server, real Account, factor, operator key, pin, origin or routing changed.
 Unrelated root files remain untouched. Appended before replacing only L-1.
+
+
+## 2026-09-12 — Same-source implementation review addenda reconciled (L-1 seat)
+
+R1 neutral logical-carrier residue evidence was committed signed as `27e5b6f`; its signature verifies
+`G`. The 144 calibration cells, 26 directed checkpoints and 24 generated histories retain the scope
+and source pins recorded in that commit. No implementation repair follows in this intake.
+
+The user requested assessment of the two root packets, with a brief `resposnse` block for each finding,
+followed by organization into the current implementation review set. The annotated
+[N packet](./review/implementation/96a2040-1ceb88d.md) and
+[P packet](./review/implementation/1ceb88d-393ef43.md) now live beside the original F packet.
+There are 67 response blocks covering 47 distinct leaf IDs: nine N and seven P findings plus the
+prior F status rows. Every original addendum byte is recoverable by removing marked additions;
+the original F archive remains unchanged. The [intake record](./review/implementation/addenda-2026-09-12.json)
+pins original/annotated packets, the assessment revision and 80 referenced evidence files.
+
+The [shared findings index](./review/implementation/findings.md) preserves F/N/P IDs and routes nine
+extensions into existing work items. F-21 remains an umbrella, not an extra finding. This implementation
+review namespace remains separate from the original Stage 0 work-item/debt registry. Later F-03/F-04,
+F-05/F-06, F-11/F-12, F-15 and F-21.1/2/3/6/7 outcomes are credited within their recorded limits;
+F-21.4 remains partial after R1. N-05's hash derivation is already pinned; N-07 is already registered.
+
+F-07/N-01/N-02/P-01 now has high Account-liveness priority, with N-03/P-02/P-03 as related task and
+scheduler work. Static code establishes repeated full-history verification/replay and expiry-to-halt;
+the reported timings and exact thresholds were not rerun. Polling schedules after completion and is
+single-flight, so the claimed inevitable infinite idle queue is overstated. The proposed witness-only
+cache omits content/source coverage inputs and does not remove new-event growth. The next bounded
+phase should measure and specify safe invalidation/expiry behavior before optimizing it. This moves
+ahead of the remaining packaged/export/migration residue extension without discarding that work.
+
+F-10/N-08/P-07 remains actionable diagnostics work without a shown activation bypass; F-20/N-06/P-05
+retains load/aggregate orchestration work despite the later passing crypto aggregate. P-06 is unswept
+duplicate phase prose, not reopening the original F-05 closure. F-08/N-04 and N-09 remain on retained
+v8 surfaces, while v9 has the relevant empty-source/halt-priority guards. P-04's navigation concern is
+addressed by the index's existing-history crosswalk: seven tree pairs and signed-replacement ancestry
+were checked; historical IDs/receipts and the local backup ref remain intact, with no push or tag.
+
+This was static repository and existing-artifact assessment, not new test execution, benchmarking,
+exploit validation or a whole-repository review. No production code, tests, formats, keys, counters,
+formal debts, personal files, server, Account, factor, origin or routing changed. New review documents
+remain unstaged/uncommitted. The unrelated root `done ` remains untouched. Appended before replacing
+only L-1 below; L-2 remains unchanged.
