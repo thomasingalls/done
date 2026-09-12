@@ -3106,3 +3106,36 @@ historical review and L-2 are unchanged. No personal server/browser/Account/fact
 changed; unrelated root files remain untouched. Next is F-21.4 neutral plaintext-residue preparation:
 carrier/representation inventory, permitted plaintext, lifecycle points and effective leak controls,
 with logical carrier and filesystem profile claims kept distinct. Appended before replacing only L-1.
+
+
+## 2026-09-12 — Neutral plaintext-residue preparation (`L-1` seat)
+
+Admission coverage/size work was committed signed as `f118127`; all sixteen recent signatures verify
+`G`. Its 898 source pins still match committed/current files. The new F-21.4 preparation is complete,
+unstaged/uncommitted. F-21.4 itself remains open; no scanner or runtime confidentiality test ran.
+
+The [contract](./account-residue-testing.md), [23-entry surface inventory](./account-residue-prep/surfaces.json)
+and [current disposition](./review/implementation/account-residue-evidence.md) distinguish logical
+browser/service carriers, physical profile/SQLite residue and copied-profile custody. Existing C13,
+known legacy cleanup and byte-contract evidence retain their actual scope. Source navigation has
+83 lexical matches and 71 pinned files; it is not a complete reachable-writer census.
+
+The first executable R1 phase requires independently collected values and matching before hashing,
+all discovered keys/stores, calibrated encodings and planted leaks per surface, incomplete results for
+missing coverage, and live/cold recovery checks separate from the scan. P0–P7 cover Local creation,
+journal-only admission, flush/compaction/lock/reopen, real browser recovery preparation, lost promotion
+reply, Account delivery and named failure branches. Twenty-four generated variations follow directed
+cases as an exploration budget. Fragmentation, compression and opaque key material limit a negative
+result. Packaged SW/export/migration/clear and physical residue remain subsequent phases.
+
+Current device labels use encrypted document metadata; the plaintext device helper is legacy.
+Recovery preparation retains a sensitive retry capability and exact finalization request, requiring
+separate reporting and actual browser-owner exercise. The native ready() helper alone misses that row.
+PRD acceptance item 13's promptless copied-profile expectation contradicted the already selected
+mandatory-factor contract; corrected without changing the historical review or claiming new evidence.
+No production code or protocol format changed.
+
+[Static prep evidence](./account-conformance-runs/2026-09-12-account-residue-prep.md) records source/link/
+JSON checks and preservation. All 21 personal package files, 31 vectors, historical review and L-2
+are unchanged. No personal browser/profile/recovery file, server, real Account, factor, operator key,
+pin, origin or routing changed. Unrelated root files remain untouched. Appended before replacing only L-1.

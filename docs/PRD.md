@@ -2453,9 +2453,11 @@ where it cannot test the whole claim, it names what covers the rest.
     use — every database, the journal, and any derived index — is inspected for recognizable content at genesis,
     at Local, at Account, and after deletion, expiry and migration. The journal is checked specifically for an
     unencrypted window between transaction and commit, and the synchronous AEAD against its latency budget on a
-    low-end device. **The complementary negative is asserted rather than omitted**: on the default custody tier
-    a restored profile executing the app's origin **does** open the workspace, and the test records that as
-    expected behaviour so the claim's scope is exercised rather than assumed.
+    low-end device. **Copied-profile custody is tested separately**: without its external factor, a restored
+    supported-browser profile executing the app's origin cannot open retained content or obtain successor keys;
+    with the factor, offline recovery succeeds. A deliberately planted promptless opener must make the attack
+    succeed, proving that the test detects that failure. A plaintext scan alone does not establish this property
+    (§7.2, TRD §11.1, SC-08).
 14. The web application is verified as part of the cryptographic boundary: no unreviewed third-party script
     executes in the key-holding origin; injection controls, CSP, Trusted Types where supported, dependency
     integrity, service-worker update integrity, cookie attributes and origin checks are tested. **Two halves,

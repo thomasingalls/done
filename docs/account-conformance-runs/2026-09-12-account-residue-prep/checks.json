@@ -1,0 +1,42 @@
+{
+  "status": "passed-static-only",
+  "checkedAt": "2026-09-11T23:55:38.777001+00:00",
+  "baseline": "f118127c3156de1bac44cc731e51ffc2296643f5",
+  "surfaceEntries": 23,
+  "sourceAnchors": 63,
+  "sourceQueryMatches": 83,
+  "sourcePins": 71,
+  "previousSourcePinsAgainstHeadAndWorkingTree": 898,
+  "relativeLinkTargetsChecked": 49,
+  "markdownFragmentTargetsChecked": false,
+  "recentSignaturesVerified": 16,
+  "personalFilesUnchanged": 21,
+  "priorVectorsUnchanged": 31,
+  "historicalReviewUnchanged": true,
+  "L2Unchanged": true,
+  "indexEmpty": true,
+  "diffWhitespaceCheck": "pass",
+  "runtimeTestsExecuted": 0,
+  "scannerExecuted": false,
+  "formatterScope": "JSON only; installed oxfmt ignores Markdown",
+  "environmentNote": "pnpm exec oxfmt and pnpm --version wrappers gave no output; stopped only those two task processes, used installed formatter via node. No application test was started.",
+  "jsonFormatCheck": {
+    "command": "node node_modules/oxfmt/bin/oxfmt --check docs/account-residue-prep/surfaces.json docs/account-conformance-runs/2026-09-12-account-residue-prep/*.json",
+    "exitCode": 0,
+    "matchedFiles": 5
+  },
+  "definitionPins": [
+    {
+      "path": "docs/account-residue-testing.md",
+      "sha256": "e14fc9382812af05ec1d4a24624e6effbf4ac3a0885ec720b7521a6425659922"
+    },
+    {
+      "path": "docs/account-residue-prep/surfaces.json",
+      "sha256": "1c6ad9d0b3cebbf93e7767fdb392b70e5fd406fb8ca947ae7366268c4470746e"
+    },
+    {
+      "path": "docs/review/implementation/account-residue-evidence.md",
+      "sha256": "338f0feac79aec86498025a9004fd6cac538f95015b6d129f805f6b3a4babe2c"
+    }
+  ]
+}

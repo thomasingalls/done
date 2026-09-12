@@ -177,10 +177,13 @@ receipt lies refuse against cold client replay. Real exact-size snapshots and ex
 coverage descriptors demonstrate pre-seal/pre-write/pre-send refusal, with effective source omissions.
 No production defect was found or runtime source changed.
 
-Next is F-21.4 neutral plaintext-residue preparation: declare carrier/representation coverage, permitted
-plaintext, lifecycle observation points and planted-leak controls before implementing the scanner.
-Logical-carrier and filesystem-profile claims remain distinct. Diagnostics and performance retain
-separate obligations.
+F-21.2 was committed signed as `f118127`. The subsequent
+[neutral plaintext-residue preparation](./account-residue-evidence.md) inventories current carriers
+and existing evidence, defines input classes, calibrated readers, lifecycle points and incomplete
+results, and corrects one stale PRD promptless-custody expectation. F-21.4 remains open: no new scanner
+or confidentiality result exists. Next is the bounded R1 logical-carrier scanner and owner histories;
+packaged/export/migration flows and physical residue follow separately. Diagnostics beyond the
+captured test streams and performance retain separate obligations.
 
 Platform qualification, whole-profile residue, general lineage/checkpoint evolution, enrollment/adoption,
 revocation/rotation, finalization, recovery replacement, total-loss recovery, deployment/restore and

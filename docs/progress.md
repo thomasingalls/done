@@ -43,14 +43,14 @@ that is no longer active.
 ---
 
 
-## Active slice: Neutral plaintext-residue evidence preparation (`L-1`)
+## Active slice: Neutral logical-carrier plaintext scanner (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: carrier/representation inventory and declared observation scope before scanner implementation
+blocks_on: calibrated independent collectors before claiming a negative result
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-12
 ```
@@ -58,56 +58,57 @@ updated: 2026-09-12
 **Roadmap position.** Personal Local cutover, cleanup and packaged offline upgrades are exercised.
 Account remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), item 5's internal creating-member
 ciphertext round trip. C/D1–D8, aggregate audit `ec889d9`, F-15 `c10dee3`, F-21.3 `2bbb4c6`, F-21.7
-`f0b6acd`, F-21.1 `77b0bb6` and F-21.6 `3b0a1ba` are signed. All fifteen recent signatures verify `G`.
-The signing reminder remains paused; the original unsigned chain remains under the
-[recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
-No real Account receipt exists. F-21.2 is complete, unstaged/uncommitted.
+`f0b6acd`, F-21.1 `77b0bb6`, F-21.6 `3b0a1ba` and F-21.2 `f118127` are signed. All sixteen recent
+signatures verify `G`. The signing reminder remains paused; the original unsigned chain remains under
+the [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
+No real Account receipt exists. F-21.4 preparation is complete, unstaged/uncommitted; the finding remains open.
 
 **Completed boundary.** [F-05/F-06](./review/implementation/account-crypto-closure.md),
 [F-15](./review/implementation/reservation-durability.md),
 [F-21.3](./review/implementation/account-isolation.md),
 [F-21.7](./review/implementation/account-decision-composition.md),
-[F-21.1](./review/implementation/account-parser-conformance.md) and
-[F-21.6](./review/implementation/account-delivery-oracle.md) retain their recorded scopes and limits.
+[F-21.1](./review/implementation/account-parser-conformance.md),
+[F-21.6](./review/implementation/account-delivery-oracle.md) and
+[F-21.2](./review/implementation/account-admission-evidence.md) retain their recorded scopes and limits.
+The last admission campaign's 44 stages, 75 Node tests and 898 source pins remain preserved.
 
-[F-21.2](./review/implementation/account-admission-evidence.md) now addresses the remaining client
-receipt and size evidence. The inventory credits previous long-history/limit/signed-offer tests and
-A/D7/genesis/admission/parser work. New native receipt cases use actual service issuance, independent
-signature/checkpoint rederivation and cold client replay. Three exact real snapshot boundaries and six
-explicitly injected coverage edges test refusal before seal/requested/send. Three distinct source
-omissions are detected; no production defect was found or runtime code changed.
+[F-21.4 preparation](./review/implementation/account-residue-evidence.md) credits existing known-opener
+custody, legacy namespace cleanup and crypto/replay evidence without calling them neutral byte scans.
+The [contract](./account-residue-testing.md) separates logical-carrier R1, physical-residue R2 and
+copied-profile C13 claims. It defines W/F/T markers, explicit metadata and export treatment, matching
+before redaction, calibrated representations, acquisition budgets and incomplete results. Current
+actor/device labels use encrypted document metadata. Browser recovery preparation retains sensitive
+retry capabilities and is bypassed by the ordinary native ready() helper; R1 must exercise that owner.
+One stale PRD copied-profile sentence was corrected to match mandatory factor custody.
 
-[Evidence](./account-conformance-runs/2026-09-12-account-admission-evidence.md): 44 passing stages,
-75 Node tests, 898 source pins, types, 30 vector commands, census/map/registry, lint and format.
-Twelve new cases include twelve generated receipt histories (seed 1121026, no counterexample).
-The final run has no skips/timeouts. The earlier closed-page setup failure is documented and fixed
-in the new harness. Lying receipted carriers and large descriptor injection are test seams, not
-normal owner behavior or huge Yjs coverage histories. The oversized-snapshot omission permits sealing
-but still hits a later parser guard. No full Vitest/aggregate crypto audit or platform qualification is
-implied. All personal/package/vector preservation checks pass.
+[Prep evidence](./account-conformance-runs/2026-09-12-account-residue-prep.md): 23 inventory entries,
+83 lexical source matches, 71 source pins and static reference/preservation checks. No scanner, browser
+campaign, root build or new confidentiality result. Production sources and vectors are unchanged.
 
-**Next bounded phase — F-21.4, preparation first.**
+**Next bounded phase — implement R1 from the contract.**
 
-- Read the existing custody catalog, residue tests, cleanup scans and current storage/network/diagnostic
-  producers. Credit the observation scopes they actually establish. Locate every current carrier for
-  writing, content metadata and factor/key material, including browser and service storage and deliberate
-  recovery/export artifacts. Do not inspect the user's personal profile or recovery files.
-- Define distinct claims for logical persisted carriers and copied filesystem profile bytes. Inventory
-  browser APIs, representation/encoding coverage, service SQLite/WAL/logs and unknown/unreadable surfaces.
-  A scan must report missing coverage rather than silently pass. Define allowed public/routing metadata
-  and deliberate exports separately from prohibited plaintext writing or factor secrets.
-- Select a bounded first executable slice: synthetic needles entering declared product input paths,
-  observation points across active/locked/cold states, and a planted-leak control per claimed surface.
-  Keep the scanner independent of encryption openers and producer-specific success flags. Record how
-  encoded, fragmented or compressed bytes and residue outside the inventory limit a negative result.
-- Write the contract/acceptance gates before building the scanner. This phase does not authorize real
-  Account enrollment, personal-profile scanning, stronger confidentiality claims or deployment. Keep
-  broader platform/whole-profile qualification explicit; no host VM/policy work resumes.
+- Build an independent matcher and collectors for all discovered IndexedDB, localStorage, each live
+  page's sessionStorage, CacheStorage, cookies, OPFS, current service/authority SQL and captured app/
+  service diagnostics. No product openers, parsers, slot-prefix census or success flags in acquisition.
+  Required unsupported/unreadable/truncated data is incomplete; opaque CryptoKey contents stay outside R1.
+- Calibrate every applicable surface × representation cell with clean and planted controls, unknown
+  keys/tables, nested/offset/binary/chunk cases, and source omissions in the collector. Add a test-bundle
+  journal side-write of actual plaintext update bytes; require a native write and detected W marker.
+- Run P0–P7 with synthetic inputs through actual Local, browser recovery, promotion/admission and
+  selected Account owners. Hold journal-only/finalization/lost-reply points using explicit barriers.
+  Observe active, locked and cold states; independently verify introduced content survives. Record
+  exact known retry-capability locations separately; they are not public metadata or content factors.
+- Add 24 recorded-seed variations after directed cases pass, retaining counterexamples and bounded
+  timeout/heartbeat evidence. Passing means zero prohibited matches, complete mandatory coverage,
+  effective controls and live/cold content recovery. No claimed general leak rate or broad key absence.
+- Preserve synthetic evidence and source/runtime pins. Packaged UI/SW/export and migration/clear trials
+  follow separately; filesystem profile/SQLite/WAL/deleted-byte scans and platform C13 remain later.
+  This phase does not authorize personal-profile inspection, real enrollment, deployment or host VM work.
 
 **Personal checkpoint.** All 21 hashes in `dist/` and `.dev/releases/17d87c2/app`, 31 prior vector files,
 historical review and L-2 are unchanged. Personal preview/relay remain stopped. No personal browser,
-Account, factor, operator key, pin, origin or routing changed. New test bundles stayed in memory. Root
-`done `, `reviewpacket96a20401ceb88d.md` and `review-packet-1ceb88d-393ef43.md` remain untouched.
+Account, factor, operator key, pin, origin or routing changed. Root `done `,
+`reviewpacket96a20401ceb88d.md` and `review-packet-1ceb88d-393ef43.md` remain untouched.
 The actual old second device will adopt the first workspace with fresh custody/store/counters/
 credentials, without importing or merging its previous writing.
 
