@@ -43,14 +43,14 @@ that is no longer active.
 ---
 
 
-## Active slice: Account sync-liveness measurement and design (`L-1`)
+## Active slice: Account sync-liveness repair — unchanged verified view (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: controlled scaling/expiry evidence and complete invalidation rules before optimizing verification
+blocks_on: complete view identity, ownership/invalidation and full-verifier negative controls before reuse
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-12
 ```
@@ -58,62 +58,65 @@ updated: 2026-09-12
 **Roadmap position.** Personal Local cutover, source cleanup and packaged offline upgrades are exercised.
 Account remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), item 5's private creating-member
 ciphertext round trip. The composed Account owner is not mounted in the personal Local app; no real
-Account receipt exists. The prior crypto, durability, parser, admission and decision/oracle evidence
-retains its exact scope, linked from the [current review index](./review/implementation/findings.md).
-Residue preparation is signed `6a9c9c4`; R1 is now signed `27e5b6f`. The signing reminder remains paused
-and the original unsigned chain remains under its [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
+Account receipt exists. Prior crypto/durability/admission/decision/parser/oracle evidence retains its
+exact scope in the [review index](./review/implementation/findings.md). Residue prep is signed `6a9c9c4`,
+R1 `27e5b6f`, and the reconciled review intake `1372c39`. The signing reminder remains paused and the
+old unsigned chain remains under its [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
 
-**Completed intake.** The two supplied root addenda are annotated and archived under
-[docs/review/implementation](./review/implementation/README.md). They retain their original F/N/P IDs:
-67 `resposnse` blocks cover 47 distinct leaf IDs, with nine aliases joining earlier work items.
-Original text is recoverable byte-for-byte; the historical F packet is unchanged. This assessment used
-current source and prior evidence only, without rerunning the review's measurements. Annotations,
-crosswalk and this checkpoint remain unstaged/uncommitted. No implementation changes were made.
+**Completed measurement/preparation.** The [report](./review/implementation/account-sync-liveness.md),
+[protocol and repair contract](./account-sync-liveness.md), and [raw archive](./account-conformance-runs/2026-09-12-account-liveness/README.md)
+record seven passing campaign stages, 883 source hashes, 40 generated coverage histories and disposable
+native growth/fault tests. At three to 35 source positions, median three-call status sets grew from
+91 to 1,388 ms and coverage rebuilds from 15 to 175. A single ordinary read invokes eight full inbound
+verifications. Held fetch blocks flush; final-commit expiry halts receive but fresh retry recovers.
+A witness-only cache accepts missing content which the real full verifier rejects. The preliminary
+idle-window error was corrected, with old observations retained and one actual read now asserted.
+The installed Yjs patch/runtime check also passes. No runtime optimization or full release-capacity
+claim follows. This measurement work and its checkpoint remain unstaged/uncommitted.
 
-**Why priority changes.** F-07/N-01/N-02/P-01 is now high-priority Account liveness: repeated authenticated
-loads and full-history replay run in the composed owner, and expiry can halt receive. N-03's fetch
-holds a serialized carrier task; P-02/P-03 add avoidable scheduling delay/work. Supplied timings are
-leads, not fresh measurements. Single-flight polling schedules after completion, so inevitable idle
-queue accumulation and universal failure counts are not established. Personal Local remains separate.
+**Explicit v8 disposition.** The user confirms the intermediate v8 Account paths have no customer or
+personal dogfood data and will not ship. F-08/N-04 and N-09 need no product hardening or backwards
+compatibility; internal v9 setup/test dependencies may remain temporarily. This is not the TRD's v8
+document version. Historical responses remain unchanged; the current review index and decision journal
+record non-shipment, not a claimed code fix or completed deletion.
 
-**Next bounded phase — measurement and contract preparation before a runtime repair.**
+**Next bounded implementation — one verified view of unchanged retained storage.**
 
-- Build a reproducible disposable Account history with representative edits, deletions and pending
-  dependencies. Record actual positions/sources, document sizes, workload and host load; distinguish
-  input-job granularity from a claimed position per UI character.
-- Count and time carrier loads, signatures/AEAD, content replay, service census, fetch wait and
-  scheduler delay at increasing history sizes. Test idle polling and sustained editing separately.
-  Preserve exact source pins and partial/timeout evidence, with independent expected writing/readback.
-- Reproduce request expiry with a controlled clock/delay rather than relying solely on a slow host.
-  Specify fresh retry versus permanent conflict/corruption, and distinguish request authorization time
-  from verified commit binding before changing the current signed-request rule.
-- Design one trusted in-lifetime verified state with complete invalidation. The spool witness covers
-  ledger events, not all content or source-capsule inputs. Cold open, content removal/change, compaction,
-  rollback, owner replacement, journal flush and new evidence must retain their appropriate checks.
-  A witness-only cache or fewer assertions is not an acceptable repair specification.
-- Specify splitting fetch from the serialized carrier task while retaining the owned session, exact
-  request bytes, stale-prefix revalidation, cancellation and drain. Define receive wake after durable
-  send progress and local-only publication wake without resetting halt/backoff or starving either lane.
+- Keep one private view under the factor/lifecycle owner. Identify the complete retained snapshot:
+  store/scope/generation, authenticated counter/witness, every row key/kind/sequence/nonce/ciphertext,
+  and all marker/authority inputs. A counter, next sequence, spool witness or caller revision alone
+  cannot authorize reuse. Preserve current projection/lifecycle checks and structural bounds.
+- Reuse only immutable internal verification results for exactly unchanged inputs. Return owned
+  copies where existing callers erase buffers. Do not publish unverified or stale candidate views.
+  Cold open and any changed/unknown view run the existing full verifier; retain at most the latest view.
+- Invalidate/erase on loss of owner, lock/close, failed verification and generation change. Content,
+  source, ledger, compaction, rollback and relevant journal/admission transitions retain their own
+  required checks. A disk-view cache does not validate a changed or pending editor projection.
+- Compare cached/full results and refusals with generated histories and deliberate missing-content,
+  missing-source, stale-owner, rollback, pending/deletion, compaction, aborted-commit and caller-erasure
+  controls. Re-run the same status workload and establish reduced work without weakening refusals.
 
-**Retained next work.** [F-21.4](./review/implementation/account-residue-evidence.md) remains open beyond
-R1's logical carrier campaign (144 calibration cells, 26 directed checkpoints, 24 generated histories).
-Continue actual packaged UI/generated service-worker flows, calibrated intentional-export/ZIP handling,
-and synthetic migration/selection/cleanup/Local-clear interruption points. Declare exact allowed
-pre-cleanup plaintext and required post-cleanup absence; no blanket export-file exception. Physical
-profile/SQLite/WAL/deleted-byte and supported-platform C13 opener evidence remain later obligations.
-Do not inspect personal exports or rerun personal cleanup to obtain those synthetic observations.
+This first repair removes redundant unchanged-view work; it does not solve every new-event growth cost.
+Incremental append verification and one reusable coverage reconstruction per content view follow as a
+separate boundary. Then split owned fetch from the carrier task while retaining cancellation/drain and
+exact request/prefix/authority checks; classify expiry for bounded fresh retry without swallowing generic
+verification failures. P-02/P-03 wake refinement must preserve halt/backoff, fairness and offline gates.
+All invariants and intended transition tests are in the repair contract; do not relax signed expiry or
+projection guards merely to improve timing. F-07 and N-03 remain open until implementation is verified.
 
-The [review index](./review/implementation/findings.md#priority-and-scope) also routes F-10/N-08/P-07
-diagnostics, F-20/N-06/P-05 validation orchestration, P-06 duplicate prose, retained v8 issues and
-maintenance/resource work. F-05/F-06 stays closed in its recorded scope; partial findings stay visible.
-Existing formal Stage 0 debts are unchanged; these implementation IDs are a separate namespace.
+**Retained work.** F-21.4 remains open beyond R1's logical carrier campaign. Resume packaged UI/generated
+service-worker/export/ZIP and synthetic migration/selection/cleanup/Local-clear interruptions after this
+liveness sequence. Declare exact permitted pre-cleanup plaintext and required post-cleanup absence.
+Physical profile/SQLite/WAL/deleted-byte and supported-platform C13 opener evidence remain separate;
+do not inspect personal exports or rerun personal cleanup for synthetic observations. F-10/N-08/P-07
+and F-09 diagnostics, F-20/N-06/P-05 aggregate validation, P-06 prose and remaining capacity/maintenance
+findings remain in the review index. Formal Stage 0 debts are unchanged.
 
-**Personal checkpoint.** The retained 21 package files in `dist/` and `.dev/releases/17d87c2/app`, all
-31 prior vectors, historical F review and L-2 remain unchanged. Personal preview/relay remain stopped.
-No browser/profile, Account, factor, operator key, pin, origin or routing changed. The unrelated root
-`done ` is untouched; the two requested review packets were moved into the implementation review set.
-The actual old second device will adopt the first workspace with fresh custody/store/counters/
-credentials, without importing or merging its previous writing.
+**Personal checkpoint.** All 21 package files in `dist/` and `.dev/releases/17d87c2/app`, all 31 prior
+vectors, historical review annotations and L-2 are unchanged. Personal preview/relay remain stopped;
+no personal browser/profile/recovery, Account, factor, operator key, pin, origin or routing changed.
+The unrelated root `done ` is untouched. The old second device will adopt the first workspace with
+fresh custody/store/counters/credentials, without importing or merging its earlier writing.
 
 General lineage, successor checkpoints, concurrent membership, proof pruning/backlog scale,
 enrollment/device management, revocation/rotation, clear/delete, finalization/total-loss recovery,

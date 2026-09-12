@@ -1,0 +1,27 @@
+[
+  {
+    "path": "wasm/journal-seal/.cargo/config.toml",
+    "sha256": "25be6491f5fbd26996a343f315cf58f9d6913b5a670abdbafb8eb717a64f59fb",
+    "matchesSignedBaseline": "1372c39"
+  },
+  {
+    "path": "wasm/journal-seal/Cargo.lock",
+    "sha256": "6339c5b066678ce11cb27f70e1bc7a31ffaa9f2ff4c416e45b67ff6344dc5998",
+    "matchesSignedBaseline": "1372c39"
+  },
+  {
+    "path": "wasm/journal-seal/Cargo.toml",
+    "sha256": "8f8c138c9ee1a8b3a7edf5371163d253c597b93bc374eadb0eb587a50d0706c9",
+    "matchesSignedBaseline": "1372c39"
+  },
+  {
+    "path": "wasm/journal-seal/seal.generated.ts",
+    "sha256": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265",
+    "matchesSignedBaseline": "1372c39"
+  },
+  {
+    "path": "wasm/journal-seal/src/lib.rs",
+    "sha256": "716be05c199b8796b654c8935b466f30c16ac4ac1fadb783ae4f597474218b78",
+    "matchesSignedBaseline": "1372c39"
+  }
+]

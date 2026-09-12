@@ -1,9 +1,13 @@
 # Encrypted-store and Account implementation findings
 
-Current assessment: **2026-09-12, signed `27e5b6f`**. This is the shared index for the same source's
+Intake assessment: **2026-09-12, signed `27e5b6f`**. This is the shared index for the same source's
 original packet and two addenda. It reconciles current implementation and recorded evidence; no new
 runtime tests, benchmarks or security probes were executed during this intake. Importance describes
 engineering priority in the current private development scope, not a demonstrated exploit severity.
+
+**Follow-up after signed `1372c39`:** the user retired v8 as a product target. The
+[sync-liveness measurement phase](./account-sync-liveness.md) is complete with fresh disposable native
+and generated evidence; the runtime repair remains open. Historical intake responses are unchanged.
 
 - [F packet: af8941e..96a2040](./af8941e-96a2040.md) retains its historical responses unchanged.
 - [N addendum: 96a2040..1ceb88d](./96a2040-1ceb88d.md) has current responses to all 31 F status rows and
@@ -21,11 +25,13 @@ These IDs belong to the implementation review and must not be inserted into the 
 
 ## Priority and scope
 
-1. **F-07 with N-01/N-02/P-01: high-priority Account liveness.** Prepare a controlled scaling and
-   request-expiry reproduction, separating client validation, Yjs replay, service census, network
-   wait and scheduler delay. Include N-03's serialized fetch and P-02/P-03's scheduler work. This
-   should precede the next residue extension and any usable Account sync rollout. The current Local
-   editor is separate; no personal server, migration or real Account is needed for this preparation.
+1. **F-07 with N-01/N-02/P-01: high-priority Account liveness.** Controlled measurement and repair
+   preparation are [complete](./account-sync-liveness.md). Repeated validation, N-01's final-commit
+   expiry halt and N-03's held-fetch flush stall are reproduced; no runtime repair is claimed.
+   Next implement an owner-scoped verified view for completely unchanged storage, retaining full
+   verification on cold open/change and complete invalidation controls. Incremental verification,
+   owned fetch separation, classified expiry retry and P-02/P-03 scheduling follow. This precedes the
+   next residue extension and usable Account rollout; the personal Local editor remains separate.
 2. **F-21.4: retain the unfinished privacy-evidence work.** R1 is now committed as `27e5b6f`.
    Packaged UI/service-worker/export and synthetic migration/clear trials are next within that work,
    followed by physical containers and platform/custody evidence. Logical marker absence is not
@@ -36,8 +42,9 @@ These IDs belong to the implementation review and must not be inserted into the 
 4. **F-20 with N-06/P-05:** make validation scheduling, time budgets and complete aggregate coverage
    explicit. Keep the existing crypto audit's narrower success; do not imply a recent full `pnpm check`.
    Consolidate repeated work without dropping standalone prerequisites or source-bound evidence.
-5. **P-06** is a small docs follow-up; **F-08/N-04 and N-09** apply to retained v8 surfaces and need
-   either a focused repair or explicit retirement. **F-16/F-17/F-18/F-19/F-25** remain measured
+5. **P-06** is a small docs follow-up. **F-08/N-04 and N-09** are disposed by the user’s explicit
+   decision not to ship or support the intermediate Account v8 product paths (2026-09-12).
+   **F-16/F-17/F-18/F-19/F-25** remain measured
    maintenance/resource work; content compaction is not Account proof-ledger pruning. **F-22** remains
    a dependency-upgrade obligation. No upstream report, push, remote deployment or platform work is
    authorized by this intake.
@@ -53,7 +60,18 @@ accepting an incremental design. Do not relax request expiry or remove projectio
 The supplied performance measurements are credible leads, but the fixed failure thresholds, universal
 per-character statement and claim that idle polling necessarily creates an endless queue are not
 established here. The scheduler is single-flight and schedules the next idle poll after completion.
-The existing code still establishes serious repeated work and an expiry-to-halt path worth reproducing.
+The [bounded follow-up](./account-sync-liveness.md) now reproduces repeated work and the final-commit
+expiry halt, without establishing those universal claims.
+
+## Account v8 product disposition (2026-09-12)
+
+The user confirms that the intermediate Account v8 paths have never held customer or personal dogfood
+data and will not ship. F-08/N-04 and N-09 therefore need no further product hardening or backwards
+compatibility work. This refers to the Account implementation stage, not the TRD document version.
+Some v8 preparation code remains an internal dependency of the current v9 setup and its tests; removing
+that scaffolding is separate cleanup. Shared code used by v9 still has to meet v9's requirements.
+This disposition does not claim the old driver was fixed or that its code has already been deleted.
+See the [decision journal](../../decisions.md#retire-the-intermediate-account-v8-product-paths).
 
 ## Current F dispositions
 
@@ -68,8 +86,8 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-04"></a>**F-04** Fresh activation assertion | closed; [assessment](./96a2040-1ceb88d.md#assessment-f-04) | medium authorization contract | —; [account-service/core.ts:856](../../../account-service/core.ts) |
 | <a id="f-05"></a>**F-05** Construction ownership and byte contracts | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-05) | high protocol assurance | [N-07](#n-07); [docs/review/implementation/account-crypto-closure.md](../../../docs/review/implementation/account-crypto-closure.md) |
 | <a id="f-06"></a>**F-06** Recovery payload vectors | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-06) | medium-high interoperability | —; [docs/review/implementation/account-crypto-closure.md](../../../docs/review/implementation/account-crypto-closure.md) |
-| <a id="f-07"></a>**F-07** Repeated full-history verification | open; priority raised; [assessment](./96a2040-1ceb88d.md#assessment-f-07) | high Account liveness | [N-01](#n-01), [N-02](#n-02), [P-01](#p-01); [src/crdt/accountReceive.ts:104](../../../src/crdt/accountReceive.ts) |
-| <a id="f-08"></a>**F-08** Source-free reopen capsules | partial; v8 sender remains; [assessment](./96a2040-1ceb88d.md#assessment-f-08) | low waste/latency | [N-04](#n-04); [src/crdt/accountReceive.ts:489](../../../src/crdt/accountReceive.ts) |
+| <a id="f-07"></a>**F-07** Repeated full-history verification | open repair; measured; [evidence](./account-sync-liveness.md); [assessment](./96a2040-1ceb88d.md#assessment-f-07) | high Account liveness | [N-01](#n-01), [N-02](#n-02), [P-01](#p-01); [src/crdt/accountReceive.ts:104](../../../src/crdt/accountReceive.ts) |
+| <a id="f-08"></a>**F-08** Source-free reopen capsules | product disposition: v8 retired; internal setup retained; [assessment](./96a2040-1ceb88d.md#assessment-f-08) | low waste/latency | [N-04](#n-04); [src/crdt/accountReceive.ts:489](../../../src/crdt/accountReceive.ts) |
 | <a id="f-09"></a>**F-09** Fail-closed diagnostics and salvage | open; [assessment](./96a2040-1ceb88d.md#assessment-f-09) | medium recoverability | —; [docs/storage-contract.md](../../../docs/storage-contract.md) |
 | <a id="f-10"></a>**F-10** Service and client error classification | open; [assessment](./96a2040-1ceb88d.md#assessment-f-10) | medium operations; low direct security impact | [N-08](#n-08), [P-07](#p-07); [account-service/delivery.ts:608](../../../account-service/delivery.ts) |
 | <a id="f-11"></a>**F-11** Passkey registration binding | closed; original suggested comparison rejected; [assessment](./96a2040-1ceb88d.md#assessment-f-11) | medium authorization correctness | —; [account-service/delivery.ts:147](../../../account-service/delivery.ts) |
@@ -101,16 +119,16 @@ Related items have distinct behavior or completion criteria and stay separately 
 
 | ID | Current disposition | Work item | Importance / current response |
 | --- | --- | --- | --- |
-| <a id="n-01"></a>**N-01** Receive expiry coupled to full-history verification | open; merged into F-07 | [F-07](#f-07) | high Account liveness; [assessment](./96a2040-1ceb88d.md#assessment-n-01) |
-| <a id="n-02"></a>**N-02** Growing client/service verification multipliers | open; merged into F-07 | [F-07](#f-07) | high in the current composition; [assessment](./96a2040-1ceb88d.md#assessment-n-02) |
-| <a id="n-03"></a>**N-03** Fetch holds the serialized carrier task | open; related to F-07 | distinct; related [F-07](#f-07) | medium local responsiveness; [assessment](./96a2040-1ceb88d.md#assessment-n-03) |
-| <a id="n-04"></a>**N-04** v8 driven reopen capsule | partial; merged into F-08 | [F-08](#f-08) | low; [assessment](./96a2040-1ceb88d.md#assessment-n-04) |
+| <a id="n-01"></a>**N-01** Receive expiry coupled to full-history verification | final-commit halt reproduced; repair open; merged into F-07 | [F-07](#f-07) | high Account liveness; [assessment](./96a2040-1ceb88d.md#assessment-n-01) |
+| <a id="n-02"></a>**N-02** Growing client/service verification multipliers | measured; repair open; merged into F-07 | [F-07](#f-07) | high in the current composition; [assessment](./96a2040-1ceb88d.md#assessment-n-02) |
+| <a id="n-03"></a>**N-03** Fetch holds the serialized carrier task | flush stall reproduced; repair open; related to F-07 | distinct; related [F-07](#f-07) | medium local responsiveness; [assessment](./96a2040-1ceb88d.md#assessment-n-03) |
+| <a id="n-04"></a>**N-04** v8 driven reopen capsule | product disposition: v8 retired; merged into F-08 | [F-08](#f-08) | low; [assessment](./96a2040-1ceb88d.md#assessment-n-04) |
 | <a id="n-05"></a>**N-05** Unspecified receipt baseline hash | closed by byte-contract specification | distinct | low compatibility; [assessment](./96a2040-1ceb88d.md#assessment-n-05) |
 | <a id="n-06"></a>**N-06** Loaded-host generated-property timeouts | open; merged into F-20 | [F-20](#f-20) | low validation reliability; [assessment](./96a2040-1ceb88d.md#assessment-n-06) |
 | <a id="n-07"></a>**N-07** Unnamed transport constructions | closed; covered by F-05 | [F-05](#f-05) | medium-high protocol assurance; [assessment](./96a2040-1ceb88d.md#assessment-n-07) |
 | <a id="n-08"></a>**N-08** Read-route and HTTP reason collapse | open; merged into F-10 | [F-10](#f-10) | medium operations; low direct security impact; [assessment](./96a2040-1ceb88d.md#assessment-n-08) |
-| <a id="n-09"></a>**N-09** v8 offline event hides halt reason | open for retained v8 driver | distinct | low diagnostics; [assessment](./96a2040-1ceb88d.md#assessment-n-09) |
-| <a id="p-01"></a>**P-01** Composed sync full-history cost and liveness cliff | open; merged into F-07 | [F-07](#f-07) | high; highest implementation priority from this intake; [assessment](./1ceb88d-393ef43.md#assessment-p-01) |
+| <a id="n-09"></a>**N-09** v8 offline event hides halt reason | product disposition: v8 driver retired | distinct | low diagnostics; [assessment](./96a2040-1ceb88d.md#assessment-n-09) |
+| <a id="p-01"></a>**P-01** Composed sync full-history cost and liveness cliff | bounded cost/expiry evidence; repair open; merged into F-07 | [F-07](#f-07) | high; highest implementation priority from this intake; [assessment](./1ceb88d-393ef43.md#assessment-p-01) |
 | <a id="p-02"></a>**P-02** Send progress does not expedite receive | open; related to F-07 | distinct; related [F-07](#f-07) | low latency; [assessment](./1ceb88d-393ef43.md#assessment-p-02) |
 | <a id="p-03"></a>**P-03** Remote promotion unnecessarily wakes send | open; related to F-07 | distinct; related [F-07](#f-07) | low cost; compounds F-07; [assessment](./1ceb88d-393ef43.md#assessment-p-03) |
 | <a id="p-04"></a>**P-04** Unsigned-to-signed history discoverability | documentation navigation addressed in this intake | distinct | low record navigation; [assessment](./1ceb88d-393ef43.md#assessment-p-04) |

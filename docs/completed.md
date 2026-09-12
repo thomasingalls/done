@@ -3224,3 +3224,47 @@ exploit validation or a whole-repository review. No production code, tests, form
 formal debts, personal files, server, Account, factor, origin or routing changed. New review documents
 remain unstaged/uncommitted. The unrelated root `done ` remains untouched. Appended before replacing
 only L-1 below; L-2 remains unchanged.
+
+
+## 2026-09-12 — Account sync-liveness measurements and repair contract (L-1 seat)
+
+The prior review intake is signed `1372c39`. The user explicitly retired intermediate Account v8
+product paths: no customer or personal dogfood data ever used them. F-08/N-04 and N-09 need no further
+product hardening. Internal preparation dependencies remain temporarily; shared v9 obligations remain.
+The decision journal and current index record this without rewriting historical responses.
+
+Added the [measurement protocol and first repair boundary](./account-sync-liveness.md), disposable
+Account/browser/service probes, held-fetch and expiry controls, and generated full-verifier coverage
+histories. The [assessment](./review/implementation/account-sync-liveness.md) and
+[raw archive](./account-conformance-runs/2026-09-12-account-liveness/README.md) retain final and preliminary
+evidence. This phase changes no production sync code and claims no performance repair or release capacity.
+
+The corrected `node scripts/account-liveness/run.mjs` campaign (also `pnpm account:liveness`) passes
+all seven stages, six top-level tests including 40 seeded coverage histories, and 883 source checks.
+It grows a genuine private v9 creating-member owner through 24 input jobs, including three deletions
+and an 8,400-byte paste; actual source/accepted/received positions grow from three to 35. Expected text
+survives cold opens in ordinary and instrumented bundles. Median three-call status sets grow from
+91 to 1,388 ms on this host, invoking five full inbound verifications and 15 to 175 coverage rebuilds.
+One ordinary idle read invokes eight inbound verifications; no inevitable queued-poll growth is claimed.
+
+A held genuine response blocks durable flush while an edit is acknowledged. A final-commit-only clock
+shift makes a genuine receive page halt at position four; fresh unshifted retry reaches five, and cold
+reopen preserves writing. The event witness still verifies when required content is removed; the full
+coverage verifier rejects it. Generated reordered/duplicate/deletion/snapshot cases and a faulty
+witness-only cache expose this missing-input problem, including an invisible pending original.
+
+Raw inspection of the preliminary passing campaign found two reads inside nominal one-poll windows.
+The corrected boundary explicitly awaits setup's working-to-idle transition and asserts one measured
+service read. Preliminary and earlier unfrozen pilot data remain labelled; no observations were silently
+discarded. Stage watchdogs preserve raw logs, and every admitted job now saves partial progress.
+The separate installed Yjs source/ESM/CJS, lock/workspace patch, peer-resolution and runtime check passes.
+No full `pnpm check`, independent security audit, physical-residue or platform qualification is claimed.
+
+Next implement the owner-scoped verified view for exactly unchanged retained storage; full cold/change
+verification and complete mutation/ownership/buffer-erasure controls remain mandatory. Incremental
+append/coverage verification, owned fetch separation, classified expiry retry and scheduling follow.
+F-07/N-01/N-02/P-01 and N-03 stay open for repair; P-02/P-03 retain their bounded design scope. Wider
+residue, Account, platform and release work remains. All 21 personal package files, 31 prior vectors,
+historical review packets and L-2 remain unchanged. Personal servers remain stopped; no personal
+browser/profile, Account, factor, operator key, pin or routing changed. New work is unstaged/uncommitted;
+unrelated root `done ` is untouched. Appended before replacing only L-1.

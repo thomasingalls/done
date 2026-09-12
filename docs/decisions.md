@@ -2357,3 +2357,19 @@ strict recovery v1 payload as raw X25519 scalar, binary root commitment and raw 
 not an accepted alternate payload. Publish amended vectors and normative homes before treating these
 contracts as closed. No real Account receipt exists. The [prep](./account-crypto-prep.md) separates
 source-inventory coverage from authority-map and independent-vector completion, in four bounded groups.
+
+
+### Retire the intermediate Account v8 product paths
+
+**Date:** 2026-09-12 · **Commit:** working tree after signed `1372c39` · **Against:** PRD v9 / TRD v8
+
+**Orientation.** Review findings F-08/N-04 and N-09 concern the intermediate Account v8 sender/driver.
+The user confirms that these paths have never held customer data or personal dogfood data and sees no
+reason to ship an intermediate implementation. The current composed owner is v9; its preparation/tests
+still use some v8 code. This stage number is unrelated to the TRD document's version.
+
+**Decision.** Do not ship or support the v8 product entry points or promise compatibility with their
+intermediate persisted workspace state. Dispose those v8-only findings by non-shipment, without further
+hardening. Retain setup/test dependencies temporarily where v9 needs them; remove that scaffolding in
+its own bounded cleanup. Requirements on code actually used by v9 remain in force. The historical review
+responses stay unchanged; the current findings index records this explicit product disposition.
