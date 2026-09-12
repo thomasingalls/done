@@ -27,7 +27,12 @@ export interface EnvelopePreparationContext {
   key(): Bytes;
   signer(): CryptoKey;
   whenDurable(): Promise<unknown>;
-  checkPublication(task: SessionTask, owner: Owner, route: CaptureRoute): Promise<void>;
+  checkPublication(
+    task: SessionTask,
+    owner: Owner,
+    route: CaptureRoute,
+    currentRecords?: readonly import('./contentRecord').OpenedRecord[],
+  ): Promise<void>;
   inspect(records: Awaited<ReturnType<Owner['carrier']['load']>>, route: CaptureRoute): SpoolState;
   run<T>(
     operation: (task: SessionTask, owner: Owner, route: CaptureRoute) => Promise<T>,
@@ -72,11 +77,12 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
     prepareNextEnvelope: async (): Promise<PersistedEnvelope | null> => {
       await context.whenDurable();
       return runCaptureTask(async (task, owner, route) => {
-        await context.checkPublication(task, owner, route);
         // Sources are now durable. New journal appends during this operation belong to a later grant.
         let { records, state } = await verified(task, owner, route);
         let wire: Bytes | undefined;
         try {
+          // Same just-loaded complete view; every append still obtains a fresh publication census.
+          await context.checkPublication(task, owner, route, records);
           let position = state.positions.at(-1);
           if (!position || position.wire) {
             const used = new Set(state.positions.map((p) => p.source.id + ':' + p.source.index));

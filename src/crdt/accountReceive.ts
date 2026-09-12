@@ -75,7 +75,7 @@ async function openAccountReceiveOwner(
     coverage = createInboundCoverage();
   const inspectCensus = (records: Parameters<typeof inspectInbound>[0], route: CaptureRoute) =>
     verified.matches(records)
-      ? verified.read(records).census
+      ? verified.read(records, (v) => v.census)
       : inspectInbound(records, route, base);
   let base!: InboundContext, signer: CryptoKey | undefined, publicKey!: CryptoKey;
   let expectedPayload = '',
@@ -196,7 +196,7 @@ async function openAccountReceiveOwner(
     await assertCurrent(task);
     const records = await owner.carrier.load(task);
     try {
-      return task.step(() => verified.read(records).inbound);
+      return task.step(() => verified.read(records, (v) => v.inbound));
     } finally {
       for (const r of records) r.bytes.fill(0);
     }
@@ -405,15 +405,18 @@ async function openAccountReceiveOwner(
       task: SessionTask,
       owner: ReturnType<typeof prepareAccountCustody>,
       _route: CaptureRoute,
+      currentRecords?: readonly import('./contentRecord').OpenedRecord[],
     ) => {
       await assertCurrent(task);
-      const records = await owner.carrier.load(task);
+      const records = currentRecords ?? (await owner.carrier.load(task));
       try {
-        const { inbound, delivery } = verified.read(records);
-        if (inbound.conflict || publicationState(delivery) !== 'ready')
-          throw Error('Publication is halted by retained evidence');
+        const halted = verified.read(
+          records,
+          ({ inbound, delivery }) => !!inbound.conflict || publicationState(delivery) !== 'ready',
+        );
+        if (halted) throw Error('Publication is halted by retained evidence');
       } finally {
-        for (const r of records) r.bytes.fill(0);
+        if (!currentRecords) for (const r of records) r.bytes.fill(0);
       }
     };
     const delivery = createDeliveryOperations({
@@ -423,16 +426,17 @@ async function openAccountReceiveOwner(
       publicKey: () => publicKey,
       assertCurrent,
       inspect,
-      verified: (records) => verified.read(records).delivery,
+      verified: (records) =>
+        verified.read(records, ({ inbound, delivery }) => {
+          if (inbound.conflict) throw Error('Publication halted by inbound conflict');
+          return delivery;
+        }),
       reuse: (task) => ({ memo, current: () => task.step(() => {}) }),
       network: runNetworkTask,
       canSubmit: canReceive,
-      run: (operation) =>
-        runCaptureTask(async (task, owner, route) => {
-          const inbound = await state(task, owner, route);
-          if (inbound.conflict) throw Error('Publication halted by inbound conflict');
-          return operation(task, owner, route);
-        }),
+      // withState validates the complete view (including inbound conflict) and current authority
+      // before each operation. Network replies re-enter withState and obtain a fresh load.
+      run: runCaptureTask,
     });
     return {
       ...delivery,
@@ -440,11 +444,10 @@ async function openAccountReceiveOwner(
         runCaptureTask(async (task, owner) => {
           const records = await owner.carrier.load(task);
           try {
-            const { inbound, delivery } = verified.read(records);
-            return {
+            return verified.read(records, ({ inbound, delivery }) => ({
               ...describeDelivery(delivery),
               state: inbound.conflict ? ('conflict' as const) : publicationState(delivery),
-            };
+            }));
           } finally {
             for (const row of records) row.bytes.fill(0);
           }

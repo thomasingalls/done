@@ -3462,3 +3462,14 @@ request; full authority, generation, predecessor, exact row bytes, witness and c
 failed attempts include a retired v8 native fixture blocked by sandbox localhost access and final
 census formatting corrected separately. Q-03 closes this cache context defect, not cache capacity,
 full-history costs or full release qualification. Q-02 follows. Personal artifacts and L-2 preserved.
+
+## 2026-09-12 — Q-02 carrier work and retained workload (`L-1`)
+
+After unsigned Q-03 `2dcd897`, reproduced the ordinary 80-edit/30-burst workload: thirty positions,
+112.7 seconds to drain, then 36 full loads for one instrumented edit. Bulk transactional row/key reads,
+selected verified-result copies and two duplicate-view reductions preserve current checks. The same
+[workload and regressions](./account-conformance-runs/2026-09-12-q02-carrier/README.md) pass; burst now
+90.1 seconds and still thirty positions, subsequent single edit 31 loads / 3.97 seconds. All eight
+stages pass, including 1,016 unit tests, complete content controls and 23 native ownership/tampering/
+held-network/abort tests. Cold replay matches. This closes the carrier subphase, not Q-02: bounded
+same-actor original-source batching follows. Full history/capacity and release qualification remain.

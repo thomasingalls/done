@@ -157,7 +157,7 @@
     },
     {
       "path": "src/crdt/accountEnvelopePreparation.ts",
-      "sha256": "5e63b0983e908cce2359cc88cdf6366eb8500db85974cd1b7a424fe27be2d8cf"
+      "sha256": "99498c4dba46d913b74a2816f5824f24c65ceafed61e5057b2f6085e4d93113f"
     },
     {
       "path": "src/crdt/accountInbound.ts",
@@ -169,7 +169,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "237c16de775a30fa1d82ef4a18d2ea28e4e237611a09c89f7c87cdd38434a636"
+      "sha256": "d83dcf7d4666dec365d507198221d8ace4e511fa298d9bd11c1aa78508f40237"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -237,7 +237,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "75f7dd6927bdea2af9ab34ada95f877aa61516de3c29eaa55d81369b73e7f50a"
+      "sha256": "2d8c9cfad710a72cc03b90204b30605ba421f64a82b3096d97f4a1d00740fb91"
     },
     {
       "path": "src/crdt/custody.ts",
@@ -461,7 +461,7 @@
     },
     {
       "path": "src/crdt/verifiedRecords.ts",
-      "sha256": "63828eb8b54d31f3d4b99fdf84f03e0c464c21e3a14d4e0005c0d7957de8fd1c"
+      "sha256": "8c1b759a16fc87ad382288ad88748eb0d4e900a0162411f501d3b88050e16678"
     },
     {
       "path": "src/crdt/workspaceChannel.ts",

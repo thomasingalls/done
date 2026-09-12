@@ -157,14 +157,17 @@ export const createContentOwner = (
             });
           if (all)
             for (const name of ['content', 'heads', 'outbound']) {
-              const scan = tx.objectStore(name).openCursor();
-              scan.onsuccess = () =>
+              // Both requests share this readonly transaction and complete in request order.
+              // Keep every physical key: bulk collection must not hide placement or missing-row damage.
+              const store = tx.objectStore(name),
+                values = store.getAll(),
+                keys = store.getAllKeys();
+              keys.onsuccess = () =>
                 guard(() => {
-                  const c = scan.result;
-                  if (c) {
-                    state.rows.push({ store: name, key: c.key, value: c.value });
-                    c.continue();
-                  }
+                  if (keys.result.length !== values.result.length)
+                    corrupt('Content census differs.');
+                  for (let i = 0; i < keys.result.length; i++)
+                    state.rows.push({ store: name, key: keys.result[i]!, value: values.result[i] });
                 });
             }
         },

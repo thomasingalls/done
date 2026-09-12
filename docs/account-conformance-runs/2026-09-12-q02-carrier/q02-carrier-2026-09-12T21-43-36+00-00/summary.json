@@ -1,0 +1,128 @@
+{
+  "phase": "q02-carrier",
+  "head": "2dcd89787fbd35f4454a0b1684f8226d36687c87",
+  "status": "passed",
+  "started": "2026-09-12T21:43:36.075779+00:00",
+  "node": "v26.8.2",
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "stages": [
+    {
+      "name": "units",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run"
+      ],
+      "timeoutSeconds": 120,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 36.601
+    },
+    {
+      "name": "content",
+      "command": [
+        "node",
+        "scripts/content/run.mjs",
+        "--output",
+        "test-results/liveness-followups/q02-carrier-content"
+      ],
+      "timeoutSeconds": 120,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 14.22
+    },
+    {
+      "name": "ownership",
+      "command": [
+        "node",
+        "--test",
+        "test/account-sync/native.test.mjs",
+        "test/account-sync/controls.test.mjs",
+        "test/account-receive-transport/native.test.mjs",
+        "test/account-liveness/controlled.test.mjs",
+        "test/account-liveness/view.test.mjs"
+      ],
+      "timeoutSeconds": 300,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 73.075,
+      "tests": 23
+    },
+    {
+      "name": "workload",
+      "command": [
+        "node",
+        "--test",
+        "test/account-liveness/workload.test.mjs"
+      ],
+      "timeoutSeconds": 750,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 235.343,
+      "tests": 1
+    },
+    {
+      "name": "types",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 0.146
+    },
+    {
+      "name": "inventory",
+      "command": [
+        "node",
+        "scripts/check-authority-map.mjs"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 0.617
+    },
+    {
+      "name": "lint",
+      "command": [
+        "node",
+        "node_modules/oxlint/bin/oxlint",
+        "src/crdt/contentStore.ts",
+        "src/crdt/verifiedRecords.ts",
+        "src/crdt/accountReceive.ts",
+        "src/crdt/accountEnvelopePreparation.ts",
+        "test/verifiedRecords.test.ts",
+        "test/account-liveness/workload.test.mjs"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 0.088
+    },
+    {
+      "name": "format",
+      "command": [
+        "node",
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "src/crdt/contentStore.ts",
+        "src/crdt/verifiedRecords.ts",
+        "src/crdt/accountReceive.ts",
+        "src/crdt/accountEnvelopePreparation.ts",
+        "test/verifiedRecords.test.ts",
+        "test/account-liveness/workload.test.mjs",
+        "docs/account-crypto/census.json"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 0.136
+    }
+  ],
+  "sourceCount": 935,
+  "pinsUnchanged": true,
+  "finished": "2026-09-12T21:49:36.459382+00:00"
+}

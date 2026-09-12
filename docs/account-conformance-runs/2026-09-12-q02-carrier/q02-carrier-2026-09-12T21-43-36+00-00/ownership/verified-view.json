@@ -1,0 +1,176 @@
+{
+  "status": "passed",
+  "oracleChecks": 46,
+  "warm": {
+    "name": "warm-view",
+    "milliseconds": 13.948957999999948,
+    "load": [
+      5.37060546875,
+      4.30126953125,
+      4.3583984375
+    ],
+    "value": {
+      "delivery": {
+        "state": "ready",
+        "acceptedThrough": 4,
+        "finalThrough": null,
+        "closed": [],
+        "submissions": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "responses": [
+          {
+            "position": 1,
+            "count": 1
+          },
+          {
+            "position": 2,
+            "count": 1
+          },
+          {
+            "position": 3,
+            "count": 1
+          },
+          {
+            "position": 4,
+            "count": 1
+          }
+        ]
+      },
+      "receive": {
+        "state": "ready",
+        "receivedThrough": 4,
+        "link": "a5256a41bda5c1cbb9d8b9e075d6f2b0b6b407e086fa2ef0a194f4625fe3b514",
+        "observedThrough": 4
+      },
+      "spool": {
+        "attempts": 4,
+        "positions": [
+          {
+            "position": 1,
+            "source": {
+              "id": "bfacb89d1c7f19a54776cd3b9219d519",
+              "index": 0,
+              "hash": "913c86611dc534034c9f108cafbae8b59d958b846829bb3eddde157781cddc55"
+            },
+            "attempts": [
+              1
+            ],
+            "persisted": true
+          },
+          {
+            "position": 2,
+            "source": {
+              "id": "d3f7476d236ff733b945aee6e5a42185",
+              "index": 0,
+              "hash": "dd2c49ec5ce797b09cb854790e71cffce2cd3369d81ae3a08c4721eb115be618"
+            },
+            "attempts": [
+              2
+            ],
+            "persisted": true
+          },
+          {
+            "position": 3,
+            "source": {
+              "id": "e9832257133065d8599a5149fad6e42f",
+              "index": 0,
+              "hash": "050ebb28ef8250ba4053768a42613ee91f73ef764a2893cf2e95289451f20240"
+            },
+            "attempts": [
+              3
+            ],
+            "persisted": true
+          },
+          {
+            "position": 4,
+            "source": {
+              "id": "494587da0e201772d95205d79731cead",
+              "index": 0,
+              "hash": "095e47cdef654fa21c86ade92565d33139336119604887338855786c15110988"
+            },
+            "attempts": [
+              4
+            ],
+            "persisted": true
+          }
+        ]
+      }
+    },
+    "client": {
+      "rows": {
+        "content.load": {
+          "calls": 3,
+          "milliseconds": 4.199999809265137,
+          "size": 0
+        },
+        "content.open": {
+          "calls": 3,
+          "milliseconds": 2.299999237060547,
+          "size": 114
+        },
+        "crypto.verify": {
+          "calls": 7,
+          "milliseconds": 0,
+          "size": 0
+        },
+        "receive.state": {
+          "calls": 1,
+          "milliseconds": 8.700000762939453,
+          "size": 0
+        },
+        "crypto.decrypt": {
+          "calls": 2,
+          "milliseconds": 0.09999942779541016,
+          "size": 0
+        }
+      },
+      "events": []
+    },
+    "service": {
+      "rows": {},
+      "events": []
+    }
+  },
+  "observations": [
+    {
+      "mode": "ciphertext",
+      "refused": true,
+      "coldRecovery": true
+    },
+    {
+      "mode": "nonce",
+      "refused": true,
+      "coldRecovery": true
+    },
+    {
+      "mode": "missing-content",
+      "refused": true,
+      "coldRecovery": true
+    },
+    {
+      "mode": "missing-source",
+      "refused": true,
+      "coldRecovery": true
+    },
+    {
+      "mode": "placement",
+      "refused": true,
+      "coldRecovery": true
+    },
+    {
+      "mode": "counter",
+      "refused": true,
+      "coldRecovery": true
+    },
+    {
+      "mode": "generation",
+      "refused": true,
+      "coldRecovery": true
+    }
+  ],
+  "compactionAndColdReplay": true
+}

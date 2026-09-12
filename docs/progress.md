@@ -71,13 +71,14 @@ each independently refuse; their joint omission exposes missing content. The ear
 repair attempt is retained. Fresh disposable build and actual current gate executions restore trace
 readback. No production behavior changed; complete release/contract aggregates were not rerun.
 
-**Current work.** Validation repair committed unsigned as `dceec5c`. Q-03 is complete: the
-[service context repair](./review/implementation/liveness-followups.md#q-03-result) preserves current
-authority and exact inputs while avoiding full request duplication. Both checkpoint-size regressions
-use 13 warm versus 118 cold verifications; affected generated service suites pass.
-Q-02 now needs a retained natural-scheduling workload, fewer repeated carrier loads/copies and safe
-bounded source batching. Q-05 follows with visible expiry classification and automatic fresh retry.
-Publication/commit checks remain current across writes and network waits.
+**Current work.** Validation repair is unsigned `dceec5c`; Q-03 is unsigned `2dcd897`. The
+[Q-02 carrier subphase](./review/implementation/liveness-followups.md#q-02-carrier-result) now passes.
+The independently reproduced thirty-edit burst falls from 112.7 to 90.1 seconds, and full carrier
+loads from 36 to 31 per measured edit. Complete rows, publication guards and network re-entry checks
+remain current. Eight stages pass, including 1,016 units and 23 native controls; cold replay matches.
+Q-02 now needs bounded original-source batching to reduce positions per burst. Q-05 follows with
+visible expiry classification and automatic fresh retry. All intermediate commits remain authorized
+unsigned; the reminder follows descendants of `1372c39`.
 
 **After those repairs.** F-20/N-06/P-05 complete graph/coverage/deadline work and P-06 prose precede
 an immutable release-validation result and explicit workload/platform/claim dispositions. Private

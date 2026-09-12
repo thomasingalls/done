@@ -33,10 +33,14 @@ export function createVerifiedRecords<T>() {
   return {
     clear,
     matches: (records: readonly OpenedRecord[]) => !!retained && sameRecords(retained, records),
-    read(records: readonly OpenedRecord[]): T {
+    /** Internal read-only projection; only the selected result is copied to the caller. */
+    read<R = T>(
+      records: readonly OpenedRecord[],
+      select: (value: Readonly<T>) => R = (v) => v as R,
+    ): R {
       if (!retained || !sameRecords(retained, records))
         throw Error('No verified view for these records');
-      return structuredClone(value!);
+      return structuredClone(select(value!));
     },
     async verify(
       records: readonly OpenedRecord[],

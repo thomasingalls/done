@@ -7,6 +7,35 @@ const current = () => {};
 const rows = (): OpenedRecord[] => [
   { kind: 'update', gen: 1, seq: 1, bytes: new Uint8Array([1, 2, 3]) },
 ];
+it('projects detached readback without copying unrelated retained history', async () => {
+  const cache = createVerifiedRecords<{ status: { through: number }; history: Uint8Array }>();
+  const input = rows();
+  await cache.verify(
+    input,
+    {},
+    async () => ({ status: { through: 7 }, history: new Uint8Array(65536) }),
+    current,
+  );
+  const clone = globalThis.structuredClone;
+  const seen: unknown[] = [];
+  globalThis.structuredClone = ((v: unknown) => {
+    seen.push(v);
+    return clone(v);
+  }) as typeof clone;
+  try {
+    const result = cache.read(input, (v) => v.status);
+    result.through = 99;
+    expect(cache.read(input, (v) => v.status)).toEqual({ through: 7 });
+    expect(seen).toEqual([{ through: 7 }, { through: 7 }]);
+    input[0]!.bytes[0]!++;
+    expect(() => cache.read(input, (v) => v.status)).toThrow(/No verified/);
+    cache.clear();
+    expect(() => cache.read(rows(), (v) => v.status)).toThrow(/No verified/);
+  } finally {
+    globalThis.structuredClone = clone;
+    cache.clear();
+  }
+});
 it('owns input/results across caller erasure and refuses stale completion after close', async () => {
   const cache = createVerifiedRecords<{ bytes: Uint8Array }>();
   const input = rows();

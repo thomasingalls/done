@@ -55,3 +55,35 @@ and live gate result are recorded separately from the passing functional stages.
 expression/comments changed in production; existing domains and construction sites are unchanged.
 Q-03 is complete within these bounds. Fresh authority verification, finite cache capacity, full ledger
 replay and commit comparisons still cost work. Q-02 is next.
+
+## Q-02 carrier subphase contract
+
+The retained ordinary-bundle baseline reaches 83 total positions after 80 individually settled edits.
+A thirty-edit burst then creates thirty positions and takes 112.7 seconds to drain (6.7 seconds local
+admission). The subsequent instrumented single edit makes 36 full carrier loads, consuming 3.67 of
+4.93 seconds in those loads. This independently reproduces the review's mechanism and magnitude;
+it is one synthetic run on this machine, not a portable percentile or extrapolated capacity promise.
+
+The first subphase changes collection and copying only. `getAll` plus `getAllKeys` runs inside the
+same readonly transaction and retains every key/value pair; full placement, metadata, ciphertext and
+coverage validation still follows. Internal read-only projections copy only their selected verified
+result. The composed delivery operation checks inbound conflict through its already loaded complete
+view instead of loading that view once more in its wrapper. Initial envelope preparation shares its
+just-loaded records with the publication check; every append still loads a fresh publication census.
+No snapshot crosses a write or network boundary, and no metadata-only check substitutes for full rows.
+
+Exit: rerun the same natural workload, detached-projection and generated verification tests, complete
+content carrier controls, warm-view tampering/compaction/cold-open tests and composed ownership/abort/
+held-network controls. Preserve observed counts/timings even if disappointing. Batching remains the
+next Q-02 subphase; this change does not alone close F-07 or the linear-history/capacity problem.
+
+## Q-02 carrier result
+
+[Baseline and carrier-only evidence](../../account-conformance-runs/2026-09-12-q02-carrier/README.md)
+passes all eight stages: 1,016 unit tests, complete content controls, 23 native ownership/tamper/HTTP
+tests, the natural workload, types, inventory and scoped lint/format. Tested inputs stayed unchanged.
+The final instrumented edit falls from 36 to 31 loads, 3.67 to 2.75 seconds inside loads and 4.93 to
+3.97 seconds overall. The ordinary thirty-edit burst falls from 112.7 to 90.1 seconds but still creates
+thirty positions. Final five individually settled edits fall from 3.61–4.09 to 2.76–2.91 seconds.
+Cold writing matches in both runs. These are paired runs, not a statistical performance guarantee.
+The reduction is useful but insufficient; Q-02 remains open for bounded source batching.
