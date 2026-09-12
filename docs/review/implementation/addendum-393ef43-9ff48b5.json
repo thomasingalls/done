@@ -1,0 +1,443 @@
+{
+  "schemaVersion": 1,
+  "kind": "implementation-review-addendum-intake",
+  "assessedAt": "2026-09-12",
+  "assessmentRevision": "9ff48b58edd63761884d9bae97ea00de9f1b1b63",
+  "method": "Source and archived-evidence readback; read-only registry function; synthetic in-memory cache probe; Git/file inventory. No browser campaign or full aggregate rerun.",
+  "originalPath": "review-packet-393ef43-9ff48b5.md",
+  "archivedPath": "docs/review/implementation/393ef43-9ff48b5.md",
+  "reviewedTip": "9ff48b58edd63761884d9bae97ea00de9f1b1b63",
+  "originalSha256": "8abc4a195cb3d07431dc38462cea03dace07ad3cb8e488affc34122027afc226",
+  "annotatedSha256": "35b32734aca388ae967dbd4c86e20c06b722622be24a621f52409c459c65b912",
+  "originalRecoveredByRemovingMarkedAdditions": true,
+  "responseBlocks": 38,
+  "responseIds": [
+    "F-07",
+    "N-01",
+    "N-02",
+    "P-01",
+    "N-03",
+    "P-02",
+    "P-03",
+    "F-10",
+    "N-08",
+    "P-07",
+    "F-09",
+    "F-15",
+    "F-16",
+    "F-17",
+    "F-19",
+    "F-21.1",
+    "F-21.2",
+    "F-21.3",
+    "F-21.6",
+    "F-21.7",
+    "F-21.4",
+    "F-05",
+    "F-20",
+    "N-06",
+    "P-05",
+    "P-04",
+    "P-06",
+    "F-08",
+    "N-04",
+    "N-09",
+    "Q-01",
+    "Q-02",
+    "Q-03",
+    "Q-04",
+    "Q-05",
+    "Q-06",
+    "Q-07",
+    "Q-08"
+  ],
+  "newLeafIds": ["Q-01", "Q-02", "Q-03", "Q-04", "Q-05", "Q-06", "Q-07", "Q-08"],
+  "totalImplementationLeafIds": 55,
+  "totalResponseBlocksAcrossAnnotatedAddenda": 105,
+  "priorIntake": "docs/review/implementation/addenda-2026-09-12.json",
+  "findings": {
+    "Q-01": {
+      "status": "confirmed current validation defect",
+      "intent": "yes, before aggregate validation",
+      "importance": "high validation integrity; no runtime exploit demonstrated",
+      "explanation": "The read-only registry check reproduces 158\u2192165 sources and all eight changed construction sites. Source-hash agreement within a phase is not a construction-census pass. Review/reclassify new files and changed sites before refreshing pins; add the gate to the relevant validation graph and regenerate stale receipts by running their checks. Do not automatically re-record. The reported trace failures were not rerun here, and package.json reaches storage:content before trace:check, contrary to the hypothetical stop order. Route to F-20 with a distinct F-05 maintenance obligation.",
+      "workItem": "F-20",
+      "relation": "distinct validation prerequisite",
+      "related": ["F-05", "N-06", "P-05"]
+    },
+    "Q-02": {
+      "status": "mechanism confirmed; reported timing magnitude awaits reproducible probe",
+      "intent": "yes, before practical Account cutover",
+      "importance": "high Account usability/liveness",
+      "explanation": "Current composed operations repeatedly call carrier.load, which enumerates/parses/compares/copies history; one envelope selects one captured source. The reviewer\u2019s 36 loads and 117-second burst are credible but not independently reproduced here; 40 seconds at 1,000 positions is an extrapolation, not a measurement. F-07 remains partial. First preserve a reproducible natural-scheduling workload, then reduce redundant loads within explicitly owned state revisions and design safe source batching. Do not drop publication/commit checks or reuse one view across writes/network re-entry without proving invalidation, exact retry, attribution and crash behavior.",
+      "workItem": "F-07",
+      "relation": "residual extension",
+      "related": ["N-01", "N-02", "P-01", "F-17"]
+    },
+    "Q-03": {
+      "status": "cache-size failure reproduced in isolation",
+      "intent": "yes, under F-07 with its own cache-size regression",
+      "importance": "medium performance; high priority before representative Account trials",
+      "explanation": "A fresh in-memory probe of createDeliveryVerification reproduces all 15 warm-pass counts in the table, using synthetic contexts and tiny inputs/results; it is not an end-to-end service benchmark. authority() already checks request_digest against the authenticated request, and auth.scope also contains that digest. Retain full authority/scope/generation/predecessor and exact row bytes, using the authenticated digest instead of repeated full JSON. Add realistic checkpoint/row-size and authority-change controls. Eviction is safe fallback, not a verification bypass; a digest does not remove the remaining bounded-cache or fresh-authority costs. The earlier 1 MiB profile was a chosen synthetic size, not a measured user distribution.",
+      "workItem": "F-07",
+      "relation": "residual extension; separate cache-size exit",
+      "related": ["N-02", "Q-02", "F-19"]
+    },
+    "Q-04": {
+      "status": "three stale controls confirmed by source readback",
+      "intent": "yes, before trusting the aggregate",
+      "importance": "high regression assurance; no present guard bypass established",
+      "explanation": "The coverage mutation still matches only the fallback branch; the v9 reuse branch enforces coverage. The HTTP and content-open anchors occur zero times. Restore controls against the executed paths and require exactly one intended mutation plus the forbidden-result observation; include both reuse/cold paths where applicable. Existing runners already fail on anchor misses, so the gap is actionable diagnostics and affected-suite execution, not silent passing. Native failures here are reviewer-reported, not freshly rerun. Track distinct control repairs under F-20/F-21 rather than reopening every dependent finding.",
+      "workItem": "F-20",
+      "relation": "distinct mutation-control prerequisite",
+      "related": ["F-21", "Q-01"]
+    },
+    "Q-05": {
+      "status": "classification gap confirmed; indefinite expiry is conditional",
+      "intent": "yes to a visible reason/diagnostic; no automatic hard halt as proposed",
+      "importance": "low-medium recovery diagnostics",
+      "explanation": "receiveNext returns expired but driveReceiveStep maps it to unknown; the test explicitly expects reason:null. DIAGNOSTIC_CODES already includes generic expired via PROMOTION_REFUSALS, but this receive path emits no expiry observation. Repeated expiry can keep retrying at capped backoff while the gate stays ready; the packet does not reproduce an intrinsically permanent expiry workload. Preserve fresh-request recovery, show a bounded explicit reason, and test consecutive expiry followed by recovery. A user-visible degraded state may be useful; a terminal halt solely from an expiry count requires a separate recovery policy. Related to N-01 and F-10, with a distinct exit criterion.",
+      "workItem": "Q-05",
+      "relation": "distinct observable expiry behavior",
+      "related": ["N-01", "F-10", "N-08", "P-07"]
+    },
+    "Q-06": {
+      "status": "intentional unsigned chain; documentation discoverability gap",
+      "intent": "yes to recording the boundary; no signing/rebase during this intake",
+      "importance": "low provenance/navigation",
+      "explanation": "All eleven commits lack gpgsig, as explicitly authorized by the user. The repository already records that authorization and baseline in the two cited phase documents, so \u201cnothing records that\u201d overstates the gap. The external reminder is active but is not repository evidence. This intake records all eleven IDs and trees plus the decision to sign later. Signing changes commit IDs, not necessarily source trees or the validity of original receipts; preserve originals and add a tree-checked crosswalk rather than rewriting every receipt. Related to P-04, not a new runtime security defect.",
+      "workItem": "Q-06",
+      "relation": "distinct current unsigned-chain record",
+      "related": ["P-04"]
+    },
+    "Q-07": {
+      "status": "confirmed; documentation correction made in this intake",
+      "intent": "yes, current index/navigation statements corrected now",
+      "importance": "low record accuracy",
+      "explanation": "README.md and findings.md describe intake committed in 1372c39 as uncommitted; the measurement record in account-sync-liveness.md was committed in 0e07fe4. Replace those current-facing statements with the commit IDs and distinguish the new intake. Keep append-only completed entries, prior annotated packets and their hashes intact. This is separate from P-06\u2019s cryptographic prose sweep.",
+      "workItem": "Q-07",
+      "relation": "distinct current documentation accuracy",
+      "related": ["P-06"]
+    },
+    "Q-08": {
+      "status": "archive growth and personal paths confirmed; projection overstated",
+      "intent": "yes, prospective artifact/publication policy; no deletion of evidence in this intake",
+      "importance": "low repository cost; medium privacy before public sharing",
+      "explanation": "Tracked archive bytes grow from 48,927,391 to 258,897,978 (46.66\u2192246.90 MiB), adding 8,182 files; 760 raw archive files contain the personal path prefix. Two-day doubling is an unsupported forecast, and no secret-key leak is shown. Normalize paths in future publishable outputs, budget/deduplicate artifacts, and retain failed histories, controls and reproducible raw evidence in a durable hash-addressed location before replacing repository copies. No external store is configured by this intake. Preserve existing hashes; sanitizing new files alone cannot remove paths from Git history. Related to F-20 evidence management, not F-21.4 product-ciphertext leakage.",
+      "workItem": "Q-08",
+      "relation": "distinct evidence retention/publication policy",
+      "related": ["F-20", "F-21.4"]
+    }
+  },
+  "sourcePins": [
+    {
+      "path": "account-service/deliveryVerification.ts",
+      "sha256": "3b86fad6a157858d950b0fc867c68ff70c2858b4519bc0caa4dce86558fac02d"
+    },
+    {
+      "path": "account-service/delivery.ts",
+      "sha256": "48b1ec4e695dba321486bc7b50ad8b310acbd375ca941fccc9f1ab39da378a6a"
+    },
+    {
+      "path": "src/crdt/verifiedRecords.ts",
+      "sha256": "63828eb8b54d31f3d4b99fdf84f03e0c464c21e3a14d4e0005c0d7957de8fd1c"
+    },
+    {
+      "path": "src/crdt/contentStore.ts",
+      "sha256": "75f7dd6927bdea2af9ab34ada95f877aa61516de3c29eaa55d81369b73e7f50a"
+    },
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "237c16de775a30fa1d82ef4a18d2ea28e4e237611a09c89f7c87cdd38434a636"
+    },
+    {
+      "path": "src/crdt/accountDelivery.ts",
+      "sha256": "0bfada4f07b28350351aea5361981101603b9c76b1b886f9ca8c6a84a3b1c4af"
+    },
+    {
+      "path": "src/crdt/accountEnvelopePreparation.ts",
+      "sha256": "5e63b0983e908cce2359cc88cdf6366eb8500db85974cd1b7a424fe27be2d8cf"
+    },
+    {
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "55e4951fbe8f882280ee73fcdd09c2d71c38d172a5492d753ca756aeca25a55e"
+    },
+    {
+      "path": "src/crdt/accountReceiveDriver.ts",
+      "sha256": "0c48ef5ae170791637054197c305f6643da93dea7be9827f37cc8e3fd3cb13cc"
+    },
+    {
+      "path": "src/crdt/inboundLedger.ts",
+      "sha256": "c5a14c7c9db94f078f60c005b34f76af297fa28c8722b2500e74618ff1a31144"
+    },
+    {
+      "path": "src/crdt/accountCapture.ts",
+      "sha256": "b83ed135376ce357232afca397de85ad97f4a042b1d601ad5af562eac6963a31"
+    },
+    {
+      "path": "src/account/privateDeliveryHttp.ts",
+      "sha256": "1128ab978b3c8c2efd0a05812321ccddbdeb3e2cc8270458379da4e0274cefb2"
+    },
+    {
+      "path": "account-protocol/diagnostics.ts",
+      "sha256": "bf36934c2e733002a9392984a844a6d8cb18f314e516f6666800d5e9faa9762f"
+    },
+    {
+      "path": "scripts/account-first-authority/registry.mjs",
+      "sha256": "a95efacc9777f7a243a0f0334ad17d3e743cb3f2ec48ddef58209b085db13a63"
+    },
+    {
+      "path": "scripts/account-crypto-prep/census.mjs",
+      "sha256": "db1546777d411b06d15d4b5d4671fe5d7987def6f973e09ca5e3f0ba689c2bdc"
+    },
+    {
+      "path": "scripts/account-crypto-prep/run.mjs",
+      "sha256": "7957173fd375afb9ec8147446a0e85e15d774cac2e706f0f18a9e92d24f8b10e"
+    },
+    {
+      "path": "docs/account-crypto/census.json",
+      "sha256": "49db7f1b3affaa727fb98d09e5583b7b8ea514d7bbc1263910f95e79d2f3fe09"
+    },
+    {
+      "path": "docs/account-crypto/constructions.json",
+      "sha256": "009f19823ef7c8a9a8b5b249df27ab439b265109619e60981a3ecdd32b576dac"
+    },
+    {
+      "path": "scripts/private-release/run.mjs",
+      "sha256": "fceafc3cbf3fa82ffaf2449c622728072616f10a5c59ffa3d03cebcf8ef551f0"
+    },
+    {
+      "path": "scripts/account-liveness/run.mjs",
+      "sha256": "dd16cc5210c8f063ed551f5ea9198759b89500bb36ed1f329d359b11fe52ea27"
+    },
+    {
+      "path": "scripts/account-residue/run.mjs",
+      "sha256": "9b4623321362e334e5429e93c39d3c9e917bae1e0c288a0ac548e3d8ce863564"
+    },
+    {
+      "path": "test/account-receive/fixtures.mjs",
+      "sha256": "11a28870537a1ab9160a496e15ab5878e62802645773bf3e8077078c5ddd8eb1"
+    },
+    {
+      "path": "test/account-receive/native.test.mjs",
+      "sha256": "d45def4ce2ba48d9ffa1580f32fbc730fd73823aed7f4bdeaa25a287839162ac"
+    },
+    {
+      "path": "test/account-receive-transport/controls.test.mjs",
+      "sha256": "3a8433e08828068e01f353df8a236f0788cbd4ffb1f53ff388ec41bac3f1f6ee"
+    },
+    {
+      "path": "scripts/content/catalog.mjs",
+      "sha256": "5d1af48e1272c6041358df357ec89b4966736e7995f3f7c43b809f6c30efe381"
+    },
+    {
+      "path": "scripts/content/run.mjs",
+      "sha256": "b3f70e1fffc986ad4005dbec632b625d5822103b50da3ff9575b46294538efec"
+    },
+    {
+      "path": "test/account-liveness/controlled.test.mjs",
+      "sha256": "d6c55273e2e4df55f714595ae10b3b9fbff48e3e90f002b1f919d55fa6b26944"
+    },
+    {
+      "path": "package.json",
+      "sha256": "06f3863cb07cdf4ecd30231614634790b4b71882166d25c478bf83fe5b69559e"
+    },
+    {
+      "path": "src/crdt/admissionQueue.ts",
+      "sha256": "fe88f1e2d02d28970f436983a226de9473d3d94fd5668a85a7a196571f7ace26"
+    },
+    {
+      "path": "src/crdt/contentDatabase.ts",
+      "sha256": "d42d487e9b232af4fa980506123f825e5478fbaf3a8c388ebae16823b2da272d"
+    },
+    {
+      "path": "src/crdt/custodyRecord.ts",
+      "sha256": "2f463ad0a882bca0c9395b3d36ac8bf4151dc4c3a0482b1745c4a51207234e63"
+    },
+    {
+      "path": "src/crdt/promotionRecord.ts",
+      "sha256": "2645e99185eedfafcdbe4297ab88f8f43f5879ad22a7034ef3d992825e0caa03"
+    },
+    {
+      "path": "src/crdt/yjs.ts",
+      "sha256": "08ffe1af47a28a951560685fa5cd2cdf05c225fcd8a36020063ebd17d35f4dc4"
+    },
+    {
+      "path": "src/crdt/archiveProjection.ts",
+      "sha256": "7bf20a357eac8ae4b8b9479ef130da04d452478e508694411c67059cac435040"
+    },
+    {
+      "path": "src/crdt/localRecovery.ts",
+      "sha256": "deb6761755736f5913f1243c52356b6f309d2a46f34e1c0c47a48309d9b57f3a"
+    },
+    {
+      "path": "src/ui/LocalRecovery.tsx",
+      "sha256": "0ed35551e620593efc71499463702059581105f9f7b77509893e48bb05fe0da3"
+    },
+    {
+      "path": "src/crdt/promotionAdmission.ts",
+      "sha256": "b63a9279b3761e41379ed1c2107c14e8cf5b5fbbdc48e050ab8e6c6314fb4f3f"
+    }
+  ],
+  "localChecks": {
+    "constructionRegistry": {
+      "invocation": "node --input-type=module: checkConstructionRegistry(process.cwd()); census(process.cwd())",
+      "oldSources": 158,
+      "currentSources": 165,
+      "failures": [
+        "Runtime census changed. Review source changes and classification, then explicitly run --record.",
+        "Account constructions: source-site census changed transport-service-chain",
+        "Account constructions: source-site census changed account-source-capsule",
+        "Account constructions: source-site census changed account-spool-capsule",
+        "Account constructions: source-site census changed account-delivery-capsule",
+        "Account constructions: source-site census changed account-inbound-capsule",
+        "Account constructions: source-site census changed account-ledger-chain",
+        "Account constructions: source-site census changed content-metadata-key",
+        "Account constructions: source-site census changed store-record-aead"
+      ],
+      "addedSources": [
+        "account-protocol/diagnostics.ts",
+        "account-service/deliveryVerification.ts",
+        "src/crdt/archiveProjection.ts",
+        "src/crdt/localRecovery.ts",
+        "src/crdt/verificationMemo.ts",
+        "src/crdt/verifiedRecords.ts",
+        "src/ui/LocalRecovery.tsx"
+      ]
+    },
+    "cacheProbe": {
+      "invocation": "node --input-type=module, stdin source below, from repository root",
+      "source": "import { createDeliveryVerification } from './account-service/deliveryVerification.ts';\nfor (const chars of [4096, 131072, 524288, 2097152, 8388608]) {\n const result={requestChars:chars,warmVerifications:{}};\n for(const rows of [4,35,200]) {\n  const cache=createDeliveryVerification(); let verifies=0;\n  for(let pass=0;pass<2;pass++) {\n   verifies=0;\n   for(let i=0;i<rows;i++) await cache.check('account:'+i,JSON.stringify([{}, {}, 1,'x'.repeat(chars)])+':'+'0'.repeat(64),[new Uint8Array([1,2]),new Uint8Array([3,4])],async()=>{verifies++;return {verified:true};});\n  }\n  result.warmVerifications[rows]=verifies;cache.clear();\n }\n console.log(JSON.stringify(result));\n}",
+      "node": "v26.8.2",
+      "results": [
+        {
+          "requestChars": 4096,
+          "warmVerifications": {
+            "4": 0,
+            "35": 0,
+            "200": 0
+          }
+        },
+        {
+          "requestChars": 131072,
+          "warmVerifications": {
+            "4": 0,
+            "35": 0,
+            "200": 200
+          }
+        },
+        {
+          "requestChars": 524288,
+          "warmVerifications": {
+            "4": 0,
+            "35": 35,
+            "200": 200
+          }
+        },
+        {
+          "requestChars": 2097152,
+          "warmVerifications": {
+            "4": 4,
+            "35": 35,
+            "200": 200
+          }
+        },
+        {
+          "requestChars": 8388608,
+          "warmVerifications": {
+            "4": 4,
+            "35": 35,
+            "200": 200
+          }
+        }
+      ],
+      "limits": "Uses actual cache with synthetic contexts, two-byte row inputs and tiny results. No cryptography, HTTP, browser timing, production SQL or maximum-capacity benchmark."
+    },
+    "aggregateOrder": {
+      "authorityCheck": 7,
+      "storageContent": 17,
+      "traceCheck": 45
+    },
+    "archiveInventory": {
+      "method": "git ls-tree -rl <revision> docs/account-conformance-runs/; raw tracked file substring census",
+      "baseline": "393ef43",
+      "baselineBytes": 48927391,
+      "baselineFiles": 3306,
+      "currentBytes": 258897978,
+      "currentFiles": 11488,
+      "rawFilesWithPersonalPathPrefix": 760
+    },
+    "mutationAnchors": {
+      "coverage": "Fallback anchor still present; v9 executes reuse.coverage.check.",
+      "httpBoundOccurrences": 0,
+      "contentOpenOccurrences": 0
+    }
+  },
+  "unsignedBoundary": {
+    "signedBaseline": "1372c39",
+    "commits": [
+      {
+        "commit": "0e07fe4a2e46247440c342a3a49c39aadb31c183",
+        "tree": "ba63de0a9a62f2441e946945135194bfff3447fc",
+        "containsCommitSignatureHeader": false
+      },
+      {
+        "commit": "280221eded8a3fe517310afbca069f8b58d76150",
+        "tree": "f6c256aa766f2043eca0e9418b2ef5c83ed9a862",
+        "containsCommitSignatureHeader": false
+      },
+      {
+        "commit": "879ce38509fd66f0a6e7e0cd4a69939b5186c2b1",
+        "tree": "9bbd181a2c91d12079cf48525bb61f1dde618645",
+        "containsCommitSignatureHeader": false
+      },
+      {
+        "commit": "902d3528b07055e0a1720ecd5c1f68da2989d80b",
+        "tree": "23e14a56547f7674339bee1ed68069e1bd975189",
+        "containsCommitSignatureHeader": false
+      },
+      {
+        "commit": "f42b4a70b4301ad76545f343bcf185f99c189857",
+        "tree": "9d9047568aadfc1622c0d1decb132f54c08c6a99",
+        "containsCommitSignatureHeader": false
+      },
+      {
+        "commit": "67304f345f0e852867a49c750858374eff1dce22",
+        "tree": "c931799dd20e8718618b27f9f4164019cb378ebc",
+        "containsCommitSignatureHeader": false
+      },
+      {
+        "commit": "8ebccfd7edf5e2a1c73068c7afa052c872114123",
+        "tree": "d12a34f45a8027f5d2788189b518530fe835fdf5",
+        "containsCommitSignatureHeader": false
+      },
+      {
+        "commit": "01b3036dffe09bcaeb0cca6652195cd3bc26afd4",
+        "tree": "d766861af29db0c863f6a36e41d6dc0d54dfc524",
+        "containsCommitSignatureHeader": false
+      },
+      {
+        "commit": "70e6d5bc132e30baf92baffbd7cffcedf903c7d0",
+        "tree": "b9b39d47a32a4899c66bbc3deaca3ea97773b8aa",
+        "containsCommitSignatureHeader": false
+      },
+      {
+        "commit": "063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6",
+        "tree": "58022622a09f914da0dce2636a5eedb0248b0ce5",
+        "containsCommitSignatureHeader": false
+      },
+      {
+        "commit": "9ff48b58edd63761884d9bae97ea00de9f1b1b63",
+        "tree": "337422a5cd7a300846a0e9eaee1204588c6eae02",
+        "containsCommitSignatureHeader": false
+      }
+    ],
+    "policy": "User-authorized intermediate unsigned commits; sign later with preserved original receipts and an old/new/tree crosswalk. No history rewrite in this intake."
+  },
+  "limitations": [
+    "Reviewer browser timing/probe files were not supplied; no independent 36-load/117-second measurement.",
+    "Reviewer command table includes reruns with locally refreshed metadata; no immutable whole-graph pass.",
+    "Trace receipts and native failures were not rerun here.",
+    "No runtime vulnerability inferred from missing or stale validation alone."
+  ]
+}

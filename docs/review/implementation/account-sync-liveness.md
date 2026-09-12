@@ -108,5 +108,6 @@ compiler-API mismatch and generic typed-array annotation errors; these were harn
 the final campaign. The corrected runs above do not validate a production liveness fix or release capacity.
 
 No production source, personal package, browser/profile/recovery, Account, server, factor, operator key,
-pin or routing changed. Historical review annotations and L-2 remain unchanged. The runtime repair and
-remaining residue/platform/release obligations stay open; this work remains unstaged/uncommitted.
+pin or routing changed. Historical review annotations and L-2 remain unchanged. This measurement/preparation was committed in `0e07fe4`; its runtime repair was subsequent work.
+The [current index](./findings.md) records those bounded reductions, Q-02/Q-03's remaining liveness
+costs, and the still-open platform/release obligations.

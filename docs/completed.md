@@ -3400,3 +3400,26 @@ prune proof history or bound all disk growth. [Release-validation prep](./privat
 is next: F-20/N-06/P-05 aggregate coverage/reliability and P-06 prose, then private Account cutover and
 second-device adoption/enrollment. Personal packages (21 files), prior vectors (31), historical reviews
 and L-2 are unchanged. The unsigned-signing reminder remains active. Appended before replacing L-1.
+
+## 2026-09-12 — L-1 Q review intake at 9ff48b5
+
+Assessed and archived the same source's [393ef43..9ff48b5 addendum](./review/implementation/393ef43-9ff48b5.md)
+with 38 `resposnse` blocks: all 30 prior status IDs and eight new Q findings. Original prose is
+recoverable byte-for-byte; the prior F/N/P packets and intake manifest are unchanged. The
+[shared index](./review/implementation/findings.md) now covers 55 leaf IDs and routes Q-02/Q-03 to
+F-07, Q-01/Q-04 into validation prerequisites, and Q-05–Q-08 to distinct follow-ups.
+
+Read-only registry execution confirms 158→165 sources and eight changed sites. An in-memory probe of
+the actual service cache reproduces all 15 request-size/row-count eviction results; its exact source
+and output are retained in the [intake record](./review/implementation/addendum-393ef43-9ff48b5.json).
+Static inspection confirms the three stale controls and receive-expiry reason collapse. Git/raw-file
+inventory confirms archive growth and personal path presence. Browser timings, native failures and
+the full aggregate were not rerun. No runtime vulnerability is inferred from red validation alone.
+
+F-07 is partial: earlier reductions stand, but practical carrier-load/copy and cache-size costs need
+further repair. Proposed removal of publication checks and count-only expiry halts are not accepted
+without their missing ownership/recovery contracts. Corrected current-facing committed/uncommitted
+statements (Q-07) and documented the authorized eleven-commit unsigned boundary (Q-06), preserving
+historical receipts. No production/harness code, source pins, cryptographic bytes, personal instance,
+service or Git history was changed. The intake is left uncommitted. Appended before updating L-1;
+L-2 remains unchanged. Implementation work is not started by this review intake.

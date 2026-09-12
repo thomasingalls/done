@@ -43,14 +43,14 @@ that is no longer active.
 ---
 
 
-## Active slice: Release validation prep (`L-1`)
+## Active slice: Validation and remaining liveness prep (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; bounded repair sequence complete, next phase specified
+blocks_on: none for prep; aggregate receipt awaits Q-01/Q-04, usable Account sync awaits Q-02/Q-03
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-12
 ```
@@ -61,33 +61,40 @@ mounted in the personal app and there is no real Account receipt. Milestones 5/6
 boundaries. The old second device will adopt the first workspace with fresh custody, store, counters
 and credentials, without importing or merging its previous writing.
 
-**Closed sequence.** Sync liveness ends at `f42b4a7`. The subsequent bounded phases are privacy
-`67304f3`, diagnostics `8ebccfd`, Local recovery `01b3036`, automatic maintenance `70e6d5b`, projection
-`063cd72`, and the retained-marker phase in this checkpoint. [Full record and evidence](./account-privacy-recovery-capacity.md).
-The latest fourteen-stage campaign passes 1,015 units and 64 Node cases, including 150 generated marker
-histories; all 917 source pins agree. The active signing reminder enumerates all unsigned descendants
-of signed baseline `1372c39`; signing/history rewriting has not been performed in this sequence.
+**Latest completed work.** The [Q review intake](./review/implementation/393ef43-9ff48b5.md) assesses
+the current `9ff48b5` tip, with 38 responses and no production/harness changes. The
+[current index](./review/implementation/findings.md) now tracks 55 leaf IDs. Prior sync reductions and
+the privacy, diagnostics, Local salvage, maintenance, projection and retained-marker phases remain
+evidenced within their bounds. Their phase source hashes do not establish a passing construction
+census or a fresh aggregate. Q-01 confirms census drift; Q-04 identifies three stale mutation controls.
+The latest marker campaign's 1,015 units, 64 Node cases and 917 matching source hashes remain its
+historical result, not a release receipt.
 
-**Limits remain explicit.** F-21.4 lacks wider platform/opener/opaque/fragmented evidence; legacy
-physical plaintext can remain after logical deletion. F-09 Local recovery is partial and requires
-intact custody; Account/key-loss/unsupported-schema recovery remains. F-16 retains pending originals
-and all proof history and gives advisory work triggers, not a hard disk bound. F-17 improves the
-100k-item controlled command median 190.2 → 121.2 ms but still needs large/deletion-heavy/device/paint
-qualification. F-19 halves the synthetic 1 MiB checkpoint's retained JSON and improves comparison
-684.6 → 46.4 ms, while repeated MAC/parsing, completion duplication and full-body capacity remain.
+**Liveness remains partial.** Q-02 identifies repeated carrier enumeration/copying per position. The
+reviewer reports a thirty-character burst at 80 positions taking 6.8 seconds to admit locally and 117
+seconds to accept/read back; the timings need a retained reproducible probe. Q-03's request-size cache
+eviction pattern was independently reproduced in memory. Restore validation prerequisites, repair
+the compact authenticated cache context, and design bounded revision-based load reuse and safe
+batching before practical Account cutover. Q-05 needs an explicit expiry reason while preserving
+fresh-request recovery; dropping commit checks or adding a count-only hard halt is not the plan.
 
-**Next.** [Release-validation prep](./private-release-validation-prep.md): F-20/N-06/P-05 required-case
-mapping, aggregate scheduling/deadlines, and fresh evidence at one immutable revision; P-06 prose
-sweep and explicit platform/workload/claim dispositions. These phase receipts do not constitute a new
-full `pnpm check`. After acceptable private validation, rehearse author Account cutover/recovery and
-build enrollment/second-device adoption. Membership/revocation/rotation/finalization, signout/remove/
-reset, continuity, service operations/deployment and public assurance gates remain later obligations.
+**Next proposed work.** [Validation/liveness prep](./private-release-validation-prep.md) now includes
+Q-01/Q-04 control and census repair, Q-03 then Q-02 liveness work, Q-05 observability, F-20/N-06/P-05
+complete case mapping and aggregate scheduling/deadlines, and P-06 prose. This review turn starts none
+of those implementation changes. After repairs and acceptable private validation, rehearse Account
+cutover/recovery and build enrollment/second-device adoption. Membership/revocation/rotation,
+signout/remove/reset, continuity, deployment/operations and public assurance gates remain later work.
 
-**Preservation.** Intermediate Account v8 will not ship; F-08/N-04/N-09 remain disposed by non-shipment.
-All 21 personal package files in `dist/` and `.dev/releases/17d87c2/app`, all 31 prior vectors, historical
-review annotations and L-2 are unchanged. No personal app/browser/profile/recovery files, Account,
-factor, key, pin, origin or routing changed, and no personal service was started. The unrelated root
-`done ` remains untouched. The completed outcome was appended before this rewrite; L-2 is unchanged.
+**Limits and records.** F-21.4 wider platform/opener evidence, F-09 Account/key-loss recovery and
+F-17/F-19 workload/device/admission qualification remain open. F-16 does not prune proof history or
+bound total disk growth. Q-08 adds evidence-retention and path-normalization work before public sharing.
+Q-07 current documentation is corrected; Q-06 records the eleven intentionally unsigned descendants
+of `1372c39`, with signing still outstanding and the external reminder active at intake.
+
+**Preservation.** Intermediate Account v8 remains retired. Personal packages, prior vectors, archived
+F/N/P annotations and the L-2 slice remain unchanged. No personal browser/profile/recovery files,
+Account, factor, key, server, origin, routing or Git history changed. The unrelated root `done ` is
+untouched. This intake remains uncommitted; its completed outcome was appended before this rewrite.
 
 ---
 

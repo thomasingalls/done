@@ -2373,3 +2373,21 @@ intermediate persisted workspace state. Dispose those v8-only findings by non-sh
 hardening. Retain setup/test dependencies temporarily where v9 needs them; remove that scaffolding in
 its own bounded cleanup. Requirements on code actually used by v9 remain in force. The historical review
 responses stay unchanged; the current findings index records this explicit product disposition.
+
+### Record the authorized unsigned phase boundary
+
+**Date:** 2026-09-12 · **Commit:** assessment of `9ff48b5` (documentation intake follows) · **Against:** PRD v9 / TRD v8
+
+**Orientation.** The user explicitly authorized successive unsigned commits through the sync-liveness,
+privacy, failures/recovery and storage/responsiveness phases, with phase summaries and a reminder to
+sign later. Q-06 asks that this intentional state be discoverable within the repository. The phase
+records already state the authorization; an external reminder is not a repository gate.
+
+**Decision.** Record the eleven unsigned commits after signed `1372c39`, from `0e07fe4` through
+`9ff48b5`, with full original commit/tree IDs in the [Q intake record](./review/implementation/addendum-393ef43-9ff48b5.json)
+and a readable [phase table](./review/implementation/findings.md#q-06-intentionally-unsigned-current-chain).
+This records the user's existing temporary authorization, not a permanent waiver or a new signing
+action. Signing remains outstanding. A later signing operation must preserve historical tested IDs,
+source hashes and receipts, then add an original/replacement/tree crosswalk like P-04. Rewriting commit
+metadata alone does not invalidate unchanged tested bytes; altered source trees need applicable fresh
+validation. No history rewrite or additional runtime work is performed by this review intake.

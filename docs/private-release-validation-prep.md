@@ -1,11 +1,35 @@
-# Next bounded phase: release validation
+# Next work: validation prerequisites and remaining liveness
 
-This is the next phase after the 2026-09-12 sync-liveness, privacy, failure/recovery and
-storage/responsiveness repairs. It is a validation plan, not a release receipt or authorization to
-change the author's running app. The current phase evidence and remaining limits live in
+This follows the bounded 2026-09-12 repair sequence and the Q review intake at `9ff48b5`.
+The Q findings add concrete validation prerequisites and further liveness work before practical
+Account cutover; the earlier sequence did not close F-07 in full. This is a work and validation plan,
+not a release receipt or authorization to change the author's running app. The current phase evidence
+and remaining limits live in
 [the repair record](./account-privacy-recovery-capacity.md) and [findings index](./review/implementation/findings.md).
 
-## First work package — F-20 / N-06 / P-05, with P-06
+## Prerequisites added by the Q review
+
+The [Q packet and responses](./review/implementation/393ef43-9ff48b5.md) and
+[current routing](./review/implementation/findings.md#q-addendum-routing-and-independent-exit-criteria)
+preserve each finding. This is a proposed work order; the intake changes documentation only.
+
+1. **Q-01/Q-04:** review the seven added census files and changed construction sites, then record
+   classifications/pins. Restore live coverage, HTTP-bound and unreadable-content controls on the
+   actual exercised paths, with clear anchor-miss failures. Map changed source to affected suites and
+   include the construction gate. Regenerate receipts through their actual checks. Do not refresh
+   every hash mechanically or reinterpret a passing phase as evidence those omitted suites ran.
+2. **Q-03:** replace repeated full request JSON in the service verification context with its freshly
+   authenticated compact binding, retaining scope/generation/predecessor and exact input bytes. Add
+   representative checkpoint/ledger-size and authority-change controls. Existing cache bounds remain.
+3. **Q-02:** retain a reproducible natural-scheduling burst/growth probe and an explicit workload
+   acceptance criterion, then reduce redundant carrier loads/copies within owned state revisions.
+   Source coalescing or multiple-source envelopes require a bounded design covering source identity,
+   attribution, durability, crash/retry and current protocol representation. A view from the start of
+   a scheduler pass cannot replace checks after writes or network waits without proving freshness.
+4. **Q-05:** expose receive expiry as a bounded reason/diagnostic and exercise repeated expiry then
+   recovery. Keep fresh requests and backoff; a count-only permanent halt is not an accepted repair.
+
+## Aggregate work package — F-20 / N-06 / P-05, with P-06
 
 1. Inventory the executable validation graph: current `package.json` checks, later standalone Account
    contract/audit/isolation/oracle campaigns, and the new private-release phase campaigns. Map every
@@ -37,6 +61,13 @@ No full `pnpm check`, broad platform qualification or public release is claimed 
 | Storage, F-16 | The scheduler is advisory: continuous work can postpone it, pending dependencies preserve original frames, a large state stays large, and Account proof history is not pruned. Establish a supported growth/reopen envelope. |
 | Responsiveness, F-17 | Profile browser input-to-paint on supported devices and dense/deletion/undo histories. Full fallback and forks still scale with history; the improved 100k-item Node sample still has noticeable latency. |
 | Retained markers, F-19 | Confirm native storage/resource costs and end-to-end admission/open capacity at the declared workload. Full MAC/parse work, completion duplication and the 72 MiB private promotion body ceiling remain; the microprofile is not maximum-body/concurrency qualification. |
+
+Q-06's intentional unsigned chain is recorded in the repository; eventual signing must preserve tested
+IDs/hashes and add a tree-checked crosswalk. Q-07's current documentation was corrected in the intake.
+Q-08 needs prospective artifact budgets/deduplication and normalized publishable paths. Preserve raw
+failed histories and reproducible evidence with durable hash-checked retrieval before relocating any
+archive; no external store or historical deletion has been selected. Public sharing also needs a
+decision about paths already present in Git history.
 
 A bounded author trial can explicitly accept a limited workload/device set. Broad user-facing promises
 require evidence for the set actually supported. More aggressive caches, incremental projections,
