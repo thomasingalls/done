@@ -1,4 +1,5 @@
-import { compactContent, type DiskState } from './contentCompaction';
+import { compactContent, equalStoredRecord, type DiskState } from './contentCompaction';
+import { copyRecords, eraseVerified } from './verifiedRecords';
 import { deriveStoreName } from './storeName';
 /** Internal carrier owner. Only custody constructs its crypto callbacks. No key or reservation escapes. */
 import { hex, random, type Bytes } from './custodyCrypto';
@@ -30,12 +31,15 @@ import {
 import type { SessionTask } from './writeSession';
 
 export interface ContentCrypto {
+  /** Only the private v9 owner opts into lifetime-local plaintext reuse. Validation still runs. */
+  reuseOpened?: true;
   /** Optional private carrier payload validation, including every compaction audit. */
   allowSpoolCounter?: true;
   validate?(
     records: readonly OpenedRecord[],
     task: SessionTask,
     counter: ContentCounter,
+    view?: object,
   ): void | Promise<void>;
   open(task: SessionTask, record: StoredRecord): Promise<Bytes>;
   seal(
@@ -71,6 +75,13 @@ export const createContentOwner = (
 ) => {
   let db: IDBDatabase | undefined, custodyDb: IDBDatabase | undefined;
   let witness!: ContentWitness;
+  let openedView:
+    | { counter: ContentCounter; sealed: StoredRecord[]; opened: OpenedRecord[]; id: object }
+    | undefined;
+  const clearView = () => {
+    eraseVerified(openedView);
+    openedView = undefined;
+  };
   const key = [...recordKey(scope), 'content-v1'];
   const verify = async (task: SessionTask, payload: Bytes, mac: Bytes) => {
     if (!(await crypt.verify(task, payload, mac)))
@@ -208,12 +219,13 @@ export const createContentOwner = (
     if (!counter)
       throw new ContentError('missing-content', 'The initialized content counter is missing.');
     if (counter.v === 2 && !crypt.allowSpoolCounter) corrupt('Content requires the spool owner.');
-    await verify(task, counterPayload(scope, counter), counter.mac);
-    if (counter.active_gen !== generation)
-      throw new ContentError('generation-changed', 'Reopen the current content generation.');
     const opened: OpenedRecord[] = [],
-      seen = new Set<number>();
+      seen = new Set<number>(),
+      sealed: StoredRecord[] = [];
     try {
+      await verify(task, counterPayload(scope, counter), counter.mac);
+      if (counter.active_gen !== generation)
+        throw new ContentError('generation-changed', 'Reopen the current content generation.');
       for (const row of snapshot.rows) {
         const r = parseStoredRecord(row.value);
         if (
@@ -226,17 +238,47 @@ export const createContentOwner = (
         )
           corrupt('Record placement or allocation is inconsistent.');
         seen.add(r.seq);
-        opened.push({ kind: r.kind, gen: r.gen, seq: r.seq, bytes: await crypt.open(task, r) });
+        sealed.push(r);
       }
-      if (crypt.validate) await task.wait(() => crypt.validate!(opened, task, counter));
+      sealed.sort((a, b) => a.seq - b.seq);
+      const reuse =
+        crypt.reuseOpened &&
+        openedView &&
+        equalCounter(scope, counter, openedView.counter) &&
+        sealed.length === openedView.sealed.length &&
+        sealed.every((r, i) => equalStoredRecord(r, openedView!.sealed[i]!));
+      if (reuse) opened.push(...copyRecords(openedView!.opened));
+      else {
+        clearView();
+        for (const r of sealed)
+          opened.push({ kind: r.kind, gen: r.gen, seq: r.seq, bytes: await crypt.open(task, r) });
+      }
+      const id = reuse ? openedView!.id : {};
+      if (crypt.validate) await task.wait(() => crypt.validate!(opened, task, counter, id));
+      if (crypt.reuseOpened && !reuse)
+        task.step(() => {
+          openedView = {
+            id,
+            counter: structuredClone(counter),
+            sealed: structuredClone(sealed),
+            opened: copyRecords(opened),
+          };
+        });
       return task.step(() => opened.sort((a, b) => a.seq - b.seq));
     } catch (cause) {
+      clearView();
       for (const r of opened) r.bytes.fill(0);
       throw cause;
     }
   };
-  const load = async (task: SessionTask): Promise<OpenedRecord[]> =>
-    openSnapshot(task, await read(task, true));
+  const load = async (task: SessionTask): Promise<OpenedRecord[]> => {
+    try {
+      return await openSnapshot(task, await read(task, true));
+    } catch (cause) {
+      clearView();
+      throw cause;
+    }
+  };
   const appendRecords = async (
     task: SessionTask,
     input: ContentInput[],
@@ -293,6 +335,7 @@ export const createContentOwner = (
   };
   return {
     dispose() {
+      clearView();
       db?.close();
       db = undefined;
       custodyDb?.close();

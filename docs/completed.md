@@ -3268,3 +3268,20 @@ residue, Account, platform and release work remains. All 21 personal package fil
 historical review packets and L-2 remain unchanged. Personal servers remain stopped; no personal
 browser/profile, Account, factor, operator key, pin or routing changed. New work is unstaged/uncommitted;
 unrelated root `done ` is untouched. Appended before replacing only L-1.
+
+
+## 2026-09-12 — Sync-liveness unchanged-view repair (L-1)
+
+Committed measurement/preparation unsigned as `0e07fe4` (including four generated evidence files under
+the ignored coverage directory). Reactivated the existing signing reminder for unsigned descendants of
+`1372c39`, excluding the already-signed old C–D6 chain. The user authorizes continued bounded unsigned
+commits until the sync-liveness tasks are complete.
+
+Completed the first [repair boundary](./account-sync-liveness-repairs.md): v9-only complete ciphertext
+view matching and detached verified inbound/delivery results, preserving cold/change/full validation,
+metadata, allocation, current-owner and projection checks. No format bytes changed. Full unit suite:
+995 tests pass. The [source-pinned campaign](./account-conformance-runs/2026-09-12-account-liveness-view/README.md)
+passes all eight stages, with native tampering/compaction/reopen and 40 coverage plus 60 invalidation
+histories. Growth took about 128 seconds on this host; unchanged status views perform no full inbound
+verification. Next is incremental event verification and reusable content coverage, before network and
+scheduler boundaries. No personal package/browser/server/Account or L-2 changes. Appended before L-1 update.

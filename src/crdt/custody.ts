@@ -589,6 +589,7 @@ const prepareCustody = (
   preactive = false,
   validateRecords?: ContentCrypto['validate'],
   allowSpoolCounter?: true,
+  reuseOpened?: true,
 ) => {
   const authority = captureAuthority(input),
     factor = codeBytes(code);
@@ -688,6 +689,7 @@ const prepareCustody = (
           {
             ...(validateRecords ? { validate: validateRecords } : {}),
             ...(allowSpoolCounter ? { allowSpoolCounter } : {}),
+            ...(reuseOpened ? { reuseOpened } : {}),
             open: openRecord,
             seal: (task, header, plaintext) =>
               task.wait(async () => {
@@ -1075,4 +1077,6 @@ export const prepareAccountCustody = (
   code: string,
   validateRecords?: ContentCrypto['validate'],
   allowSpoolCounter?: true,
-) => prepareCustody(input, code, true, true, false, validateRecords, allowSpoolCounter);
+  reuseOpened?: true,
+) =>
+  prepareCustody(input, code, true, true, false, validateRecords, allowSpoolCounter, reuseOpened);

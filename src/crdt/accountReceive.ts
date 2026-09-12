@@ -1,3 +1,6 @@
+import { createVerifiedRecords } from './verifiedRecords';
+import type { DeliveryState } from './deliveryRecord';
+import type { InboundState } from './inboundLedger';
 import { createEnvelopePreparation } from './accountEnvelopePreparation';
 import { createDeliveryOperations, describeDelivery } from './accountDelivery';
 import { publicationState } from './deliveryRecord';
@@ -55,6 +58,7 @@ async function openAccountReceiveOwner(
   composed = false,
 ) {
   const options = captureAccountOptions(input);
+  const verified = createVerifiedRecords<{ delivery: DeliveryState; inbound: InboundState }>();
   let base!: InboundContext, signer: CryptoKey | undefined, publicKey!: CryptoKey;
   let expectedPayload = '',
     expectedRecord: unknown,
@@ -101,22 +105,31 @@ async function openAccountReceiveOwner(
       });
     },
     activate: (task, owner) => owner.carrier.enableSpool(task),
-    async validate(task, records, route, counter) {
-      const census = inspectInbound(records, route, base),
-        subtle = subtleFor(task);
-      await verifySpoolWitness(census.delivery.spool, counter, subtle);
-      await verifySpool(census.delivery.spool, route, base.generationKey, publicKey, subtle);
-      const delivery = await verifyDelivery(
-        census.delivery,
-        route,
-        base.authority,
-        publicKey,
-        subtle,
+    async validate(task, records, route, counter, view) {
+      await verified.verify(
+        records,
+        view ?? {},
+        async (records) => {
+          const census = inspectInbound(records, route, base),
+            subtle = subtleFor(task);
+          await verifySpoolWitness(census.delivery.spool, counter, subtle);
+          await verifySpool(census.delivery.spool, route, base.generationKey, publicKey, subtle);
+          const delivery = await verifyDelivery(
+            census.delivery,
+            route,
+            base.authority,
+            publicKey,
+            subtle,
+          );
+          const inbound = await verifyInboundLedger(census, records, base, lifetime(task));
+          if (composed) verifySyncState(census.delivery, delivery, inbound);
+          return { delivery, inbound };
+        },
+        () => task.step(() => {}),
       );
-      const inbound = await verifyInboundLedger(census, records, base, lifetime(task));
-      if (composed) verifySyncState(census.delivery, delivery, inbound);
     },
     dispose() {
+      verified.clear();
       base?.generationKey.fill(0);
       signer = undefined;
       outstanding?.fill(0);
@@ -133,17 +146,12 @@ async function openAccountReceiveOwner(
   const state = async (
     task: SessionTask,
     owner: ReturnType<typeof prepareAccountCustody>,
-    route: CaptureRoute,
+    _route: CaptureRoute,
   ) => {
     await assertCurrent(task);
     const records = await owner.carrier.load(task);
     try {
-      return await verifyInboundLedger(
-        inspectInbound(records, route, base),
-        records,
-        base,
-        lifetime(task),
-      );
+      return task.step(() => verified.read(records).inbound);
     } finally {
       for (const r of records) r.bytes.fill(0);
     }
@@ -276,13 +284,7 @@ async function openAccountReceiveOwner(
             const rows = await owner.carrier.load(task);
             try {
               const census = inspectInbound(rows, route, base).delivery;
-              const delivery = await verifyDelivery(
-                census,
-                route,
-                base.authority,
-                publicKey,
-                subtleFor(task),
-              );
+              const delivery = verified.read(rows).delivery;
               try {
                 requireSelfEnvelope(
                   census,
@@ -360,20 +362,12 @@ async function openAccountReceiveOwner(
     const checkPublication = async (
       task: SessionTask,
       owner: ReturnType<typeof prepareAccountCustody>,
-      route: CaptureRoute,
+      _route: CaptureRoute,
     ) => {
       await assertCurrent(task);
       const records = await owner.carrier.load(task);
       try {
-        const census = inspectInbound(records, route, base);
-        const inbound = await verifyInboundLedger(census, records, base, lifetime(task));
-        const delivery = await verifyDelivery(
-          census.delivery,
-          route,
-          base.authority,
-          publicKey,
-          subtleFor(task),
-        );
+        const { inbound, delivery } = verified.read(records);
         if (inbound.conflict || publicationState(delivery) !== 'ready')
           throw Error('Publication is halted by retained evidence');
       } finally {
@@ -387,6 +381,7 @@ async function openAccountReceiveOwner(
       publicKey: () => publicKey,
       assertCurrent,
       inspect,
+      verified: (records) => verified.read(records).delivery,
       canSubmit: canReceive,
       run: (operation) =>
         runCaptureTask(async (task, owner, route) => {
@@ -398,18 +393,10 @@ async function openAccountReceiveOwner(
     return {
       ...delivery,
       deliveryStatus: () =>
-        runCaptureTask(async (task, owner, route) => {
+        runCaptureTask(async (task, owner) => {
           const records = await owner.carrier.load(task);
           try {
-            const census = inspectInbound(records, route, base);
-            const inbound = await verifyInboundLedger(census, records, base, lifetime(task));
-            const delivery = await verifyDelivery(
-              census.delivery,
-              route,
-              base.authority,
-              publicKey,
-              subtleFor(task),
-            );
+            const { inbound, delivery } = verified.read(records);
             return {
               ...describeDelivery(delivery),
               state: inbound.conflict ? ('conflict' as const) : publicationState(delivery),

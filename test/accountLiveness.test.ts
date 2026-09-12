@@ -3,6 +3,7 @@ import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, it } from 'vitest';
 import fc from 'fast-check';
+import { createVerifiedRecords } from '../src/crdt/verifiedRecords';
 import { Y, hasPendingUpdates } from '../src/crdt/yjs';
 import { verifyInboundCoverage, verifyInboundLedger } from '../src/crdt/inboundLedger';
 import { decodeInboundRecord } from '../src/crdt/inboundRecord';
@@ -99,6 +100,14 @@ it('generated delivery permutations, duplicate originals and complete snapshots 
           await expect(verifyInboundLedger(census, lost, context(B), live)).rejects.toThrow(
             /coverage/,
           );
+          const actual = createVerifiedRecords<Awaited<ReturnType<typeof verifyInboundLedger>>>();
+          const verify = (r: OpenedRecord[]) => verifyInboundLedger(census, r, context(B), live);
+          await actual.verify(retained, 'same witness', verify, live.assertCurrent);
+          await expect(
+            actual.verify(lost, 'same witness', verify, live.assertCurrent),
+          ).rejects.toThrow(/coverage/);
+          expect(() => actual.read(retained)).toThrow();
+          actual.clear();
           // Candidate optimization fault: actually verify the first view, then reuse it solely by
           // event identity. Its second call incorrectly accepts the independently rejected lost set.
           const cached = new Map<string, Awaited<ReturnType<typeof verifyInboundLedger>>>();

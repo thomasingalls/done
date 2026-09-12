@@ -1,3 +1,4 @@
+import type { OpenedRecord } from './contentRecord';
 import {
   encodeSubmit,
   encodeReadRequest,
@@ -37,6 +38,8 @@ export interface DeliveryContext {
   authority(): DecisionAuthority;
   /** Internal owner census; v8 stays strict, v9 accounts for the complete receive union. */
   inspect?: typeof inspectDelivery;
+  /** Detached result from the just-validated complete v9 view; never used for proposed transitions. */
+  verified?(records: readonly OpenedRecord[]): DeliveryState;
   pin(): AuthorityPin;
   canSubmit?(): boolean;
   signer(): CryptoKey;
@@ -59,6 +62,15 @@ export function describeDelivery(s: DeliveryState) {
 }
 export function createDeliveryOperations(context: DeliveryContext) {
   const inspect = context.inspect ?? inspectDelivery;
+  const validated = (
+    records: readonly OpenedRecord[],
+    c: ReturnType<typeof inspectDelivery>,
+    route: CaptureRoute,
+    task: SessionTask,
+  ) =>
+    context.verified
+      ? Promise.resolve(context.verified(records))
+      : verifyDelivery(c, route, context.authority(), context.publicKey(), subtleFor(task));
   const withState = <T>(
     operation: (
       task: SessionTask,
@@ -72,9 +84,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
       const records = await owner.carrier.load(task);
       try {
         const c = inspect(records, route, context.authority()),
-          s = await task.wait(() =>
-            verifyDelivery(c, route, context.authority(), context.publicKey(), subtleFor(task)),
-          );
+          s = await task.wait(() => validated(records, c, route, task));
         await context.assertCurrent(task);
         return await operation(task, owner, route, c, s);
       } finally {
@@ -156,13 +166,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
     const rows = await owner.carrier.load(task);
     try {
       const checked = await task.wait(() =>
-        verifyDelivery(
-          inspect(rows, route, context.authority()),
-          route,
-          context.authority(),
-          context.publicKey(),
-          subtleFor(task),
-        ),
+        validated(rows, inspect(rows, route, context.authority()), route, task),
       );
       return task.step(() => ({
         kind: evidence.kind,
@@ -208,13 +212,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
           const rows = await owner.carrier.load(task);
           try {
             const checked = await task.wait(() =>
-                verifyDelivery(
-                  inspect(rows, route, context.authority()),
-                  route,
-                  context.authority(),
-                  context.publicKey(),
-                  subtleFor(task),
-                ),
+                validated(rows, inspect(rows, route, context.authority()), route, task),
               ),
               saved = checked.submissions.get(position);
             if (!saved) captureError('Persisted submission missing');

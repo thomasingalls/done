@@ -1,0 +1,39 @@
+(node:83344) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83344) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+Admitted job 1: insert
+Admitted job 2: insert
+Admitted job 3: insert
+Admitted job 4: insert
+Admitted job 5: insert
+Admitted job 6: delete-tail
+Admitted job 7: insert
+Admitted job 8: insert
+Growing history: 8 jobs
+Admitted job 9: insert
+Admitted job 10: insert
+Admitted job 11: insert
+Admitted job 12: insert
+Admitted job 13: insert
+Admitted job 14: insert
+Admitted job 15: insert
+Admitted job 16: insert
+Growing history: 16 jobs
+Admitted job 17: insert
+Admitted job 18: delete-tail
+Admitted job 19: insert
+Admitted job 20: insert
+Admitted job 21: insert
+Admitted job 22: insert
+Admitted job 23: insert
+Admitted job 24: delete-tail
+Growing history: 24 jobs
+✔ growing genuine v9 history: counts, ordinary polling, burst and instrumentation control (128091.223ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 128604.874625

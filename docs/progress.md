@@ -43,14 +43,14 @@ that is no longer active.
 ---
 
 
-## Active slice: Account sync-liveness repair — unchanged verified view (`L-1`)
+## Active slice: Account sync-liveness repair — incremental events and coverage (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: complete view identity, ownership/invalidation and full-verifier negative controls before reuse
+blocks_on: incremental cryptographic results bound to exact events/context and complete content coverage
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-12
 ```
@@ -60,19 +60,17 @@ Account remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), ite
 ciphertext round trip. The composed Account owner is not mounted in the personal Local app; no real
 Account receipt exists. Prior crypto/durability/admission/decision/parser/oracle evidence retains its
 exact scope in the [review index](./review/implementation/findings.md). Residue prep is signed `6a9c9c4`,
-R1 `27e5b6f`, and the reconciled review intake `1372c39`. The signing reminder remains paused and the
+R1 `27e5b6f`, and the reconciled review intake `1372c39`. The signing reminder is active for the new unsigned sync-liveness commits and the
 old unsigned chain remains under its [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
 
-**Completed measurement/preparation.** The [report](./review/implementation/account-sync-liveness.md),
-[protocol and repair contract](./account-sync-liveness.md), and [raw archive](./account-conformance-runs/2026-09-12-account-liveness/README.md)
-record seven passing campaign stages, 883 source hashes, 40 generated coverage histories and disposable
-native growth/fault tests. At three to 35 source positions, median three-call status sets grew from
-91 to 1,388 ms and coverage rebuilds from 15 to 175. A single ordinary read invokes eight full inbound
-verifications. Held fetch blocks flush; final-commit expiry halts receive but fresh retry recovers.
-A witness-only cache accepts missing content which the real full verifier rejects. The preliminary
-idle-window error was corrected, with old observations retained and one actual read now asserted.
-The installed Yjs patch/runtime check also passes. No runtime optimization or full release-capacity
-claim follows. This measurement work and its checkpoint remain unstaged/uncommitted.
+**Current sequence.** Measurement/preparation is unsigned `0e07fe4`. The first unchanged-view runtime
+repair is verified and being committed unsigned. The user authorizes continuing through all remaining
+sync-liveness boundaries with an unsigned commit after each verified phase; no confirmation is needed
+between these phases. The [repair record](./account-sync-liveness-repairs.md) and
+[view campaign](./account-conformance-runs/2026-09-12-account-liveness-view/README.md) retain the evidence:
+995 unit tests, eight campaign stages, native tamper/compaction/reopen, and 40 coverage plus 60
+invalidation histories pass. Unchanged status views now perform no full inbound verification; the
+24-job growth run took about 128 seconds on this host, versus 256 seconds before repair.
 
 **Explicit v8 disposition.** The user confirms the intermediate v8 Account paths have no customer or
 personal dogfood data and will not ship. F-08/N-04 and N-09 need no product hardening or backwards
@@ -80,29 +78,21 @@ compatibility; internal v9 setup/test dependencies may remain temporarily. This 
 document version. Historical responses remain unchanged; the current review index and decision journal
 record non-shipment, not a claimed code fix or completed deletion.
 
-**Next bounded implementation — one verified view of unchanged retained storage.**
+**Next bounded implementation — incremental event verification and content coverage.**
 
-- Keep one private view under the factor/lifecycle owner. Identify the complete retained snapshot:
-  store/scope/generation, authenticated counter/witness, every row key/kind/sequence/nonce/ciphertext,
-  and all marker/authority inputs. A counter, next sequence, spool witness or caller revision alone
-  cannot authorize reuse. Preserve current projection/lifecycle checks and structural bounds.
-- Reuse only immutable internal verification results for exactly unchanged inputs. Return owned
-  copies where existing callers erase buffers. Do not publish unverified or stale candidate views.
-  Cold open and any changed/unknown view run the existing full verifier; retain at most the latest view.
-- Invalidate/erase on loss of owner, lock/close, failed verification and generation change. Content,
-  source, ledger, compaction, rollback and relevant journal/admission transitions retain their own
-  required checks. A disk-view cache does not validate a changed or pending editor projection.
-- Compare cached/full results and refusals with generated histories and deliberate missing-content,
-  missing-source, stale-owner, rollback, pending/deletion, compaction, aborted-commit and caller-erasure
-  controls. Re-run the same status workload and establish reduced work without weakening refusals.
+- Retain the full verification functions as oracles. Reuse a verified event only with exact bytes,
+  complete context/predecessor/authority binding, current task checks and owner-local lifetime.
+- Reconstruct current content once per exact content view; separately check every evidenced original,
+  including invisible pending data and deletion. Missing/changed content/source rows still refuse.
+- Reuse unchanged authenticated ciphertext records across appends without skipping metadata/placement
+  checks. Changed or removed inputs, failure, ownership replacement and compaction keep their checks.
+- Compare full/incremental results and refusals over generated histories and intentional missing-input
+  controls; rerun native growth, tampering, restart and lifecycle regression coverage before committing.
 
-This first repair removes redundant unchanged-view work; it does not solve every new-event growth cost.
-Incremental append verification and one reusable coverage reconstruction per content view follow as a
-separate boundary. Then split owned fetch from the carrier task while retaining cancellation/drain and
-exact request/prefix/authority checks; classify expiry for bounded fresh retry without swallowing generic
-verification failures. P-02/P-03 wake refinement must preserve halt/backoff, fairness and offline gates.
-All invariants and intended transition tests are in the repair contract; do not relax signed expiry or
-projection guards merely to improve timing. F-07 and N-03 remain open until implementation is verified.
+Then separate owned network wait from carrier tasks, classify expiry for bounded fresh retry without
+swallowing verification errors, and refine P-02/P-03 wakes with fairness/offline/halt/backoff intact.
+Complete the combined liveness verification and service cost assessment before closing these tasks.
+F-07/N-01/N-02/P-01 and N-03 remain open; the unchanged-view boundary alone does not close them.
 
 **Retained work.** F-21.4 remains open beyond R1's logical carrier campaign. Resume packaged UI/generated
 service-worker/export/ZIP and synthetic migration/selection/cleanup/Local-clear interruptions after this

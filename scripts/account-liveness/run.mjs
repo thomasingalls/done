@@ -146,8 +146,14 @@ async function run(name, args, timeout = 60000) {
 try {
   await run('types', ['node_modules/typescript/bin/tsc', '-b', '--noEmit']);
   await run('instrument', ['--test', 'test/account-liveness/instrument.test.mjs']);
-  await run('coverage', ['node_modules/vitest/vitest.mjs', 'run', 'test/accountLiveness.test.ts']);
+  await run('coverage', [
+    'node_modules/vitest/vitest.mjs',
+    'run',
+    'test/accountLiveness.test.ts',
+    'test/verifiedRecords.test.ts',
+  ]);
   await run('controlled', ['--test', 'test/account-liveness/controlled.test.mjs'], 200000);
+  await run('view', ['--test', 'test/account-liveness/view.test.mjs'], 180000);
   await run('growth', ['--test', 'test/account-liveness/native.test.mjs'], 930000);
   await run('lint', [
     'node_modules/oxlint/bin/oxlint',
@@ -170,6 +176,7 @@ try {
     expiry = read('controlled', 'expiry'),
     held = read('controlled', 'held-fetch'),
     generated = read('coverage', 'coverage-histories');
+  assert.equal(read('view', 'verified-view').status, 'passed');
   assert.equal(growth.status, 'passed');
   assert.equal(growth.history.length, 24);
   assert.equal(growth.controls.length, 6);

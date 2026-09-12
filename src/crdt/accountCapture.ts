@@ -52,6 +52,7 @@ export interface CaptureExtension {
     records: readonly OpenedRecord[],
     route: CaptureRoute,
     counter: ContentCounter,
+    view?: object,
   ): Promise<void>;
   dispose(): void;
 }
@@ -104,11 +105,12 @@ export async function openAccountCaptureOwner(
           resolvePrincipal: () => route.principal,
         },
         options.code,
-        (records, task, counter) => {
+        (records, task, counter, view) => {
           captureCatalog(sourceRecords(records), route);
-          return extension?.validate(task, records, route, counter);
+          return extension?.validate(task, records, route, counter, view);
         },
         extension ? true : undefined,
+        extension?.version === 9 ? true : undefined,
       );
       await extension?.initialize(task, v);
       await owner.initialize(task);

@@ -7,7 +7,8 @@ engineering priority in the current private development scope, not a demonstrate
 
 **Follow-up after signed `1372c39`:** the user retired v8 as a product target. The
 [sync-liveness measurement phase](./account-sync-liveness.md) is complete with fresh disposable native
-and generated evidence; the runtime repair remains open. Historical intake responses are unchanged.
+and generated evidence; the [first runtime boundary](../../account-sync-liveness-repairs.md) is verified; incremental/network/
+scheduler work remains open. Historical intake responses are unchanged.
 
 - [F packet: af8941e..96a2040](./af8941e-96a2040.md) retains its historical responses unchanged.
 - [N addendum: 96a2040..1ceb88d](./96a2040-1ceb88d.md) has current responses to all 31 F status rows and
