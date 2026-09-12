@@ -370,3 +370,64 @@ it.each(['unknown', 'blocked'] as const)(
     await f.scheduler.dispose();
   },
 );
+
+it('generated receive expiry streaks stay retryable across gates and local wakes, then recover without user action', async () => {
+  await fc.assert(
+    fc.asyncProperty(
+      fc.integer({ min: 1, max: 12 }),
+      fc.constantFrom('offline', 'local-storage'),
+      fc.constantFrom('idle', 'progress'),
+      async (count, gate, recovered) => {
+        const f = fixture();
+        f.scheduler.wake('start');
+        await f.tick(0);
+        f.calls.at(-1)!.finish('idle');
+        await flush();
+        await f.tick(0);
+        for (let i = 0; i < count; i++) {
+          expect(f.calls.at(-1)!.lane).toBe('receive');
+          f.calls.at(-1)!.finish('expired');
+          await flush();
+          const delay = [1000, 2000, 4000, 8000, 16000, 30000][Math.min(i, 5)]!;
+          const deadline = f.now + delay;
+          expect(f.scheduler.runtime.status.receive).toMatchObject({
+            phase: 'retrying',
+            failures: Math.min(i + 1, 6),
+            reason: 'request-expired',
+            nextAttemptAt: deadline,
+            receivedThrough: 0,
+          });
+          expect(f.scheduler.runtime.status.send.reason).toBeNull();
+          f.setGate(gate);
+          f.scheduler.wake('gate');
+          expect(f.scheduler.runtime.status.receive.reason).toBe(
+            gate === 'local-storage' ? 'local-storage' : 'request-expired',
+          );
+          expect(f.scheduler.runtime.status.receive.nextAttemptAt).toBeNull();
+          f.setGate('ready');
+          f.scheduler.wake('gate');
+          for (let n = 0; n < 20; n++) f.scheduler.wake('local');
+          await f.tick(50);
+          expect(f.calls.at(-1)!.lane).toBe('send');
+          f.calls.at(-1)!.finish('idle');
+          await flush();
+          expect(f.scheduler.runtime.status.receive.nextAttemptAt).toBe(deadline);
+          expect(f.scheduler.runtime.status.receive.reason).toBe('request-expired');
+          await f.tick(delay - 51);
+          expect(f.calls.filter((c) => c.lane === 'receive')).toHaveLength(i + 1);
+          await f.tick(1);
+          expect(f.calls.filter((c) => c.lane === 'receive')).toHaveLength(i + 2);
+          expect(f.calls.at(-1)!.at).toBe(deadline);
+        }
+        f.calls.at(-1)!.finish(recovered, recovered === 'progress' ? 1 : 0);
+        await flush();
+        expect(f.scheduler.runtime.status.receive).toMatchObject({ reason: null, failures: 0 });
+        expect(f.maximum).toBe(1);
+        await f.scheduler.dispose();
+        expect(f.scheduler.runtime.status.receive).toMatchObject({ phase: 'closed', reason: null });
+        expect(f.timers.size).toBe(0);
+      },
+    ),
+    { seed: 1209052, numRuns: 80 },
+  );
+});

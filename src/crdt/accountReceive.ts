@@ -22,7 +22,7 @@ import {
   decodeInboundRequest,
   decodeInboundPage,
 } from '../../account-protocol/inboundTransport';
-import { privateDeliveryPost } from '../account/privateDeliveryHttp';
+import { privateDeliveryPost, recordPrivateReceiveExpiry } from '../account/privateDeliveryHttp';
 import { READ_PAGE_LIMIT } from '../../account-protocol/deliveryTransport';
 import {
   hex,
@@ -573,8 +573,12 @@ async function openReceivingWorkspace(
               (cause instanceof AdmissionError &&
                 cause.cause instanceof InboundError &&
                 cause.cause.reason === 'expired')
-            )
+            ) {
+              recordPrivateReceiveExpiry(
+                cause instanceof ReceiveRequestExpired ? 'commit' : 'verify',
+              );
               return { kind: 'expired' as const, recorded: false };
+            }
             throw cause;
           }
         } finally {

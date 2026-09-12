@@ -3486,3 +3486,24 @@ separation. The original thirty-edit burst drains in 9.70 seconds / three positi
 thirty before Q-02. Cold writing/source coverage match. Individual edit cost remains linear in history
 (2.72–2.87 seconds near eighty positions); local admission loop remains 6.14 seconds. Capacity and
 responsiveness qualification remain explicit. Prior vectors, historical ledger sections and L-2 preserved.
+
+
+## 2026-09-13 — Q-05 observable receive expiry and automatic recovery (`L-1`)
+
+After unsigned Q-02 batching `7cbb063`, both receive schedulers retain `request-expired` separately
+from evidence halts, with capped fresh-request backoff. The receive owner emits closed verify/commit
+expiry observations into the existing 32-event non-persisted diagnostic buffer. Pressure still
+controls readiness, and durable progress/conflict remain authoritative.
+
+The [four-stage follow-up and 18-stage combined liveness evidence](./account-conformance-runs/2026-09-12-q05/README.md)
+passes with unchanged pins: all 1,022 unit tests, 160 generated expiry schedules, 100 diagnostic
+histories and three consecutive native commit expiries followed by automatic fresh recovery. Five
+distinct requests, exact bounded diagnostics, no expiry-time prefix advance and exact cold writing
+are observed. Current Q-03 cache, Q-02 batch, ownership/crash/tamper and growth cases pass again.
+
+Q-03 and Q-05 are repaired; Q-02's bounded carrier/burst repair is complete, with full-history capacity
+and responsiveness limits explicit under F-07/F-17/F-19. The next package is F-20/N-06/P-05 graph,
+coverage/deadline work and P-06 prose before an immutable release aggregate. No full release, Account
+cutover or public qualification is claimed. Personal files, prior vectors, historical packets/debts
+and L-2 remain unchanged. All intermediate commits are authorized unsigned and the existing reminder
+tracks their chain. Appended before replacing L-1.

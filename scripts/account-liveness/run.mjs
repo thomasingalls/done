@@ -160,6 +160,8 @@ try {
     'test/spoolRecord.test.ts',
     'test/spoolBatch.test.ts',
     'test/accountSyncDriver.test.ts',
+    'test/accountReceiveDriver.test.ts',
+    'test/privateDeliveryHttp.test.ts',
   ]);
   await run('controlled', ['--test', 'test/account-liveness/controlled.test.mjs'], 200000);
   await run(

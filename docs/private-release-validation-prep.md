@@ -1,4 +1,4 @@
-# Next work: validation prerequisites and remaining liveness
+# Next work: release-validation graph and qualification
 
 This follows the bounded 2026-09-12 repair sequence and the Q review intake at `9ff48b5`.
 The Q findings add concrete validation prerequisites and further liveness work before practical
@@ -13,7 +13,8 @@ The [Q packet and responses](./review/implementation/393ef43-9ff48b5.md) and
 [current routing](./review/implementation/findings.md#q-addendum-routing-and-independent-exit-criteria)
 preserve each finding. The intake was committed unsigned in `409fbd0`; the subsequent
 [validation-control repair](./review/implementation/validation-controls.md) completes item 1 below.
-Items 2–4 and aggregate qualification remain ahead.
+The [Q follow-up sequence](./review/implementation/liveness-followups.md) completes the bounded repairs
+in items 2–4. Full-history capacity and the aggregate qualification work remain ahead.
 
 1. **Q-01/Q-04 — bounded repair complete:** reviewed the seven added census files and changed
    construction sites, recorded classifications/pins, and restored coverage, HTTP-bound and
@@ -21,15 +22,19 @@ Items 2–4 and aggregate qualification remain ahead.
    current receipts come from the actual checks. Keep those checks current as the next phases change
    source; their passing result does not cover the complete release aggregate.
 2. **Q-03 — complete:** replaced repeated full request JSON in the service verification context with its freshly
-   authenticated compact binding, retaining scope/generation/predecessor and exact input bytes. Add
-   representative checkpoint/ledger-size and authority-change controls. Existing cache bounds remain.
-3. **Q-02:** retain a reproducible natural-scheduling burst/growth probe and an explicit workload
-   acceptance criterion, then reduce redundant carrier loads/copies within owned state revisions.
-   Source coalescing or multiple-source envelopes require a bounded design covering source identity,
-   attribution, durability, crash/retry and current protocol representation. A view from the start of
-   a scheduler pass cannot replace checks after writes or network waits without proving freshness.
-4. **Q-05:** expose receive expiry as a bounded reason/diagnostic and exercise repeated expiry then
-   recovery. Keep fresh requests and backoff; a count-only permanent halt is not an accepted repair.
+   authenticated compact binding, retaining scope/generation/predecessor and exact input bytes.
+   Both 64 KiB and 1 MiB checkpoints with 35 rows retain 13 warm versus 118 cold verifications;
+   authority-change controls pass. Existing cache bounds remain.
+3. **Q-02 — bounded repair complete; capacity remains:** retained a natural-scheduling 80-edit/30-burst
+   probe, reduced repeated carrier loads/copies and added an explicit private v9 original-source
+   batch contract. Source identity, attribution, durable allocation, exact retry, crash boundaries,
+   malformed batches and changed current views are checked. The burst falls from 112.7 seconds /
+   thirty positions to 9.7 seconds / three; single edits near eighty positions still take 2.7–2.9
+   seconds and the local admission loop takes 6.1 seconds in the batch campaign. Qualify the supported
+   workload/device set; publication and network re-entry checks remain current.
+4. **Q-05 — complete:** distinct receive expiry reason and bounded diagnostic, 160 generated scheduler
+   histories and three native consecutive expiries then automatic recovery. Fresh requests and
+   capped backoff remain; a count-only permanent halt was not added.
 
 ## Aggregate work package — F-20 / N-06 / P-05, with P-06
 

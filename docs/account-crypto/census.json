@@ -121,7 +121,7 @@
     },
     {
       "path": "src/account/privateDeliveryHttp.ts",
-      "sha256": "1128ab978b3c8c2efd0a05812321ccddbdeb3e2cc8270458379da4e0274cefb2"
+      "sha256": "a5dcde2c42ea8ef89c7afb51a8c69cc073f2914336b4f71e8c799e7363c4629c"
     },
     {
       "path": "src/account/recovery.ts",
@@ -169,11 +169,11 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "acc14b0b6559d919d6b13491455d4ff9ebe50f9c9a2fb3db4a7f3096746c517a"
+      "sha256": "abc0182eb6c138b27a2b96517e4d17becf883a0e55195c4cf183089738892b97"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
-      "sha256": "0c48ef5ae170791637054197c305f6643da93dea7be9827f37cc8e3fd3cb13cc"
+      "sha256": "971a6970223160cf3bd90f2efad87d0741a85f200a9e6dfdc6002f6fdb598ddf"
     },
     {
       "path": "src/crdt/accountSpool.ts",
@@ -185,7 +185,7 @@
     },
     {
       "path": "src/crdt/accountSyncDriver.ts",
-      "sha256": "55e4951fbe8f882280ee73fcdd09c2d71c38d172a5492d753ca756aeca25a55e"
+      "sha256": "34648555c7e3949cc87603151e7cef146b88538c661ba214dff2ffc900e884cb"
     },
     {
       "path": "src/crdt/accountSyncState.ts",

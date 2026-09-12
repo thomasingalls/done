@@ -5,6 +5,7 @@ import { privateDeliveryPost } from '../src/account/privateDeliveryHttp';
 import {
   clearPrivateTransportDiagnostics,
   readPrivateTransportDiagnostics,
+  recordPrivateReceiveExpiry,
 } from '../src/account/privateDeliveryHttp';
 import type { AuthorityPin } from '../account-protocol/authority';
 const pin = { origin: 'http://127.0.0.1:12345' } as AuthorityPin;
@@ -270,5 +271,27 @@ it('generated stream partitions return detached exact bytes only for complete bo
       },
     ),
     { seed: 9112041, numRuns: 200 },
+  );
+});
+
+it('generated expiry diagnostics retain only the last 32 closed observations and expose detached copies', () => {
+  fc.assert(
+    fc.property(
+      fc.array(fc.constantFrom('verify', 'commit'), { minLength: 1, maxLength: 80 }),
+      (phases) => {
+        clearPrivateTransportDiagnostics();
+        for (const phase of phases) recordPrivateReceiveExpiry(phase);
+        const expected = phases
+          .slice(-32)
+          .map((phase) => ({ operation: 'read-v2', phase, code: 'expired' }));
+        const observations = readPrivateTransportDiagnostics();
+        expect(observations).toEqual(expected);
+        observations[0]!.code = 'unexpected-failure';
+        expect(readPrivateTransportDiagnostics()).toEqual(expected);
+        clearPrivateTransportDiagnostics();
+        expect(readPrivateTransportDiagnostics()).toEqual([]);
+      },
+    ),
+    { seed: 1209053, numRuns: 100 },
   );
 });

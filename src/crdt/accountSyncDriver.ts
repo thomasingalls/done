@@ -10,7 +10,7 @@ export interface SyncLaneStatus {
   readonly phase: 'starting' | 'working' | 'idle' | 'retrying' | 'offline' | 'blocked' | 'closed';
   readonly failures: number;
   readonly nextAttemptAt: number | null;
-  readonly reason: SyncHalt | 'local-storage' | null;
+  readonly reason: SyncHalt | 'local-storage' | 'request-expired' | null;
 }
 export interface SyncStatus {
   readonly send: SyncLaneStatus & { readonly acceptedThrough: number };
@@ -22,6 +22,7 @@ interface Lane {
   failures: number;
   due?: number | undefined;
   halt?: SyncHalt | undefined;
+  retryReason?: 'request-expired' | undefined;
   expedite: boolean;
   dirty: boolean;
 }
@@ -70,7 +71,9 @@ export function createSyncScheduler(options: {
       failures: lane.failures,
       nextAttemptAt:
         !stopped && gate === 'ready' && !lane.halt && active !== name ? (lane.due ?? null) : null,
-      reason: stopped ? null : (lane.halt ?? (gate === 'local-storage' ? 'local-storage' : null)),
+      reason: stopped
+        ? null
+        : (lane.halt ?? (gate === 'local-storage' ? 'local-storage' : (lane.retryReason ?? null))),
     };
   };
   const snapshot = (): SyncStatus =>
@@ -178,17 +181,17 @@ export function createSyncScheduler(options: {
           lane.due = clock.now() + (lane.expedite ? 0 : 50);
           lane.expedite = false;
         } else {
-          lane.phase =
-            result.kind === 'unknown' ? 'retrying' : result.kind === 'idle' ? 'idle' : 'working';
-          lane.failures = result.kind === 'unknown' ? Math.min(lane.failures + 1, 6) : 0;
-          const delay =
-            result.kind === 'unknown'
-              ? Math.min(1000 * 2 ** (lane.failures - 1), 30000)
-              : result.kind === 'progress'
-                ? 50
-                : name === 'receive'
-                  ? 5000
-                  : undefined;
+          const retryable = result.kind === 'unknown' || result.kind === 'expired';
+          lane.retryReason = result.kind === 'expired' ? 'request-expired' : undefined;
+          lane.phase = retryable ? 'retrying' : result.kind === 'idle' ? 'idle' : 'working';
+          lane.failures = retryable ? Math.min(lane.failures + 1, 6) : 0;
+          const delay = retryable
+            ? Math.min(1000 * 2 ** (lane.failures - 1), 30000)
+            : result.kind === 'progress'
+              ? 50
+              : name === 'receive'
+                ? 5000
+                : undefined;
           lane.due = lane.expedite
             ? clock.now()
             : delay !== undefined

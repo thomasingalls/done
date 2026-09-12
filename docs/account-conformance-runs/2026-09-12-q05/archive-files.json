@@ -1,0 +1,861 @@
+{
+  "policy": "Normalize only the absolute workspace prefix; gzip is lossless over normalized bytes. Original hashes and local paths retained. No personal data or durable external archive claim.",
+  "files": [
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/format.log",
+      "archive": "q05-2026-09-12T22-20-23+00-00/format.log.gz",
+      "rawSha256": "603facdb9f06a1e64af5948fd759862803f24a8d2e9815ff43b20b61b465c2bd",
+      "normalizedSha256": "603facdb9f06a1e64af5948fd759862803f24a8d2e9815ff43b20b61b465c2bd",
+      "archiveSha256": "8e7f09687d992a51ed5468d1681c10702f19912c7bbdb3c687ceb9c04dfcf823",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/lint.log",
+      "archive": "q05-2026-09-12T22-20-23+00-00/lint.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archiveSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/liveness.log",
+      "archive": "q05-2026-09-12T22-20-23+00-00/liveness.log.gz",
+      "rawSha256": "3cee8babfe4321fe03c0ef09995cdc6b14bcc5df5e7f77e6820c80f8e8cd2d19",
+      "normalizedSha256": "92a9617cbdac22b90866b901712e8575de432a2322b6e7c560ad75cd17819f7c",
+      "archiveSha256": "77357b4c03e4e3ab2cc22b8dc2574e81a7c16e743e1a3bc1076d78806dff8493",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/protocol.tested.md",
+      "archive": "q05-2026-09-12T22-20-23+00-00/protocol.tested.md",
+      "rawSha256": "75c52a25ede4de491ce9471cb1bfd5b7da333416c3385da499f6a01c00c6c16f",
+      "normalizedSha256": "75c52a25ede4de491ce9471cb1bfd5b7da333416c3385da499f6a01c00c6c16f",
+      "archiveSha256": "75c52a25ede4de491ce9471cb1bfd5b7da333416c3385da499f6a01c00c6c16f",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/runner.py",
+      "archive": "q05-2026-09-12T22-20-23+00-00/runner.py",
+      "rawSha256": "24015f53b935c152bc10fcd1057d18dbebded8d7605f2bff00d07c2b2d873b43",
+      "normalizedSha256": "24015f53b935c152bc10fcd1057d18dbebded8d7605f2bff00d07c2b2d873b43",
+      "archiveSha256": "24015f53b935c152bc10fcd1057d18dbebded8d7605f2bff00d07c2b2d873b43",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/sources.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/sources.json.gz",
+      "rawSha256": "ea06d8b3f7b3f70c0dcc1c4917949725fba2537b6b413cb93920433095eba10b",
+      "normalizedSha256": "ea06d8b3f7b3f70c0dcc1c4917949725fba2537b6b413cb93920433095eba10b",
+      "archiveSha256": "3cf9b056f9382ad3ee0b631e63a5efd4e7180d0224ac2b9bf68cdff1bfec02d3",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/summary.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/summary.json",
+      "rawSha256": "66405589fa1da8cd59170aca5859ae81630e4fd910be7d6f1f3a15778c93f127",
+      "normalizedSha256": "66405589fa1da8cd59170aca5859ae81630e4fd910be7d6f1f3a15778c93f127",
+      "archiveSha256": "66405589fa1da8cd59170aca5859ae81630e4fd910be7d6f1f3a15778c93f127",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/control-actor.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/control-actor.json",
+      "rawSha256": "2e438990f17248b4c9358d753e2b9da47117947feadce7f28d41406ab28f84b3",
+      "normalizedSha256": "2e438990f17248b4c9358d753e2b9da47117947feadce7f28d41406ab28f84b3",
+      "archiveSha256": "2e438990f17248b4c9358d753e2b9da47117947feadce7f28d41406ab28f84b3",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/control-baseline.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/control-baseline.json",
+      "rawSha256": "7a145c67f0efc2f43d69c34aa07683f0f55252b3d7301b9a3a1ae9293f910735",
+      "normalizedSha256": "7a145c67f0efc2f43d69c34aa07683f0f55252b3d7301b9a3a1ae9293f910735",
+      "archiveSha256": "7a145c67f0efc2f43d69c34aa07683f0f55252b3d7301b9a3a1ae9293f910735",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/control-batch-count.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/control-batch-count.json",
+      "rawSha256": "8a578b3858550977726ee1b65dd159803adde99cda7734c3d698a36bdfd9d14b",
+      "normalizedSha256": "8a578b3858550977726ee1b65dd159803adde99cda7734c3d698a36bdfd9d14b",
+      "archiveSha256": "8a578b3858550977726ee1b65dd159803adde99cda7734c3d698a36bdfd9d14b",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/control-buffer-copy.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/control-buffer-copy.json",
+      "rawSha256": "e167693130d46f52575361f4d31badc593db06850506ca0b17b43052d430dcf2",
+      "normalizedSha256": "e167693130d46f52575361f4d31badc593db06850506ca0b17b43052d430dcf2",
+      "archiveSha256": "e167693130d46f52575361f4d31badc593db06850506ca0b17b43052d430dcf2",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/control-deletion-coverage.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/control-deletion-coverage.json",
+      "rawSha256": "fa54cddea38e6b16ef05596629eba62fe3c521a9a9f5515146d0457312b8e36d",
+      "normalizedSha256": "fa54cddea38e6b16ef05596629eba62fe3c521a9a9f5515146d0457312b8e36d",
+      "archiveSha256": "fa54cddea38e6b16ef05596629eba62fe3c521a9a9f5515146d0457312b8e36d",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/control-early-promotion.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/control-early-promotion.json",
+      "rawSha256": "9acf248e0b6bdc6b4d65990aeb40c61f3d3270008d267062cd6e8de8ce9009e4",
+      "normalizedSha256": "9acf248e0b6bdc6b4d65990aeb40c61f3d3270008d267062cd6e8de8ce9009e4",
+      "archiveSha256": "9acf248e0b6bdc6b4d65990aeb40c61f3d3270008d267062cd6e8de8ce9009e4",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/control-global-cursor.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/control-global-cursor.json",
+      "rawSha256": "30ebd1498f7e70cab98f0e50d24bfdc815eed5f4205b2ebad9a7f28cd9d6bfd5",
+      "normalizedSha256": "30ebd1498f7e70cab98f0e50d24bfdc815eed5f4205b2ebad9a7f28cd9d6bfd5",
+      "archiveSha256": "30ebd1498f7e70cab98f0e50d24bfdc815eed5f4205b2ebad9a7f28cd9d6bfd5",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/control-late-close.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/control-late-close.json",
+      "rawSha256": "bb6ab89b16d1017a89ca1b87e8d4dd760e07a753371d632a9f38ff4a94dd95e7",
+      "normalizedSha256": "bb6ab89b16d1017a89ca1b87e8d4dd760e07a753371d632a9f38ff4a94dd95e7",
+      "archiveSha256": "bb6ab89b16d1017a89ca1b87e8d4dd760e07a753371d632a9f38ff4a94dd95e7",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/control-page-signature.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/control-page-signature.json",
+      "rawSha256": "e09285f181ebd3ec8fa828d3b972b05be3dbcad9e7fcc878fac30fa7185b1e26",
+      "normalizedSha256": "e09285f181ebd3ec8fa828d3b972b05be3dbcad9e7fcc878fac30fa7185b1e26",
+      "archiveSha256": "e09285f181ebd3ec8fa828d3b972b05be3dbcad9e7fcc878fac30fa7185b1e26",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/control-pending.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/control-pending.json",
+      "rawSha256": "a21711798a1f5d8f9aa8805ef6be226f59effe5238a5ee684d1b974080780517",
+      "normalizedSha256": "a21711798a1f5d8f9aa8805ef6be226f59effe5238a5ee684d1b974080780517",
+      "archiveSha256": "a21711798a1f5d8f9aa8805ef6be226f59effe5238a5ee684d1b974080780517",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/control-prefix-proof.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/control-prefix-proof.json",
+      "rawSha256": "03f404aaf787cba33e66f184f5bc0c4ea9048d30ab37dde591ffc1657b7cd0f4",
+      "normalizedSha256": "03f404aaf787cba33e66f184f5bc0c4ea9048d30ab37dde591ffc1657b7cd0f4",
+      "archiveSha256": "03f404aaf787cba33e66f184f5bc0c4ea9048d30ab37dde591ffc1657b7cd0f4",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/control-record-binding.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/control-record-binding.json",
+      "rawSha256": "3f9aead792fedc3463e942c72040f233da73414f145a84757cd170f9c0831321",
+      "normalizedSha256": "3f9aead792fedc3463e942c72040f233da73414f145a84757cd170f9c0831321",
+      "archiveSha256": "3f9aead792fedc3463e942c72040f233da73414f145a84757cd170f9c0831321",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/control-relabel.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/control-relabel.json",
+      "rawSha256": "bb1697823ae108601b855ebfb9d0ebe1dd8bd225a9041e24ac40691ab433d833",
+      "normalizedSha256": "bb1697823ae108601b855ebfb9d0ebe1dd8bd225a9041e24ac40691ab433d833",
+      "archiveSha256": "bb1697823ae108601b855ebfb9d0ebe1dd8bd225a9041e24ac40691ab433d833",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/control-request-binding.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/control-request-binding.json",
+      "rawSha256": "7d2ba3f54e4eadb325490b51b90550ca93ce28641e8a23c1bd50d3d0662d0504",
+      "normalizedSha256": "7d2ba3f54e4eadb325490b51b90550ca93ce28641e8a23c1bd50d3d0662d0504",
+      "archiveSha256": "7d2ba3f54e4eadb325490b51b90550ca93ce28641e8a23c1bd50d3d0662d0504",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/control-split.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/control-split.json",
+      "rawSha256": "c898f6055dbc3a984124fb463191fae8116382dd3bc24920b00c8d0fadff0bdb",
+      "normalizedSha256": "c898f6055dbc3a984124fb463191fae8116382dd3bc24920b00c8d0fadff0bdb",
+      "archiveSha256": "c898f6055dbc3a984124fb463191fae8116382dd3bc24920b00c8d0fadff0bdb",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/coverage-histories.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/coverage-histories.json",
+      "rawSha256": "39d112a29986b0ca69d47bdcc9c70a36b830c0fe24049ac2478b49389af83c4f",
+      "normalizedSha256": "39d112a29986b0ca69d47bdcc9c70a36b830c0fe24049ac2478b49389af83c4f",
+      "archiveSha256": "39d112a29986b0ca69d47bdcc9c70a36b830c0fe24049ac2478b49389af83c4f",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/fixtures.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/fixtures.json.gz",
+      "rawSha256": "11588cb35877196269f564ae5f57789b3c9308531daea5299fdcb36b834190b8",
+      "normalizedSha256": "11588cb35877196269f564ae5f57789b3c9308531daea5299fdcb36b834190b8",
+      "archiveSha256": "ba029777710e0940dd2a28771545428f32719e58fc53c3b56b6e1e64a344dffd",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/generated.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/generated.json.gz",
+      "rawSha256": "86c1a6557717afb4e5c225ab79410a09bb7cedaedd7f808f44120607ad54a600",
+      "normalizedSha256": "86c1a6557717afb4e5c225ab79410a09bb7cedaedd7f808f44120607ad54a600",
+      "archiveSha256": "df2c30f6726373d9d85de60a2bf1bd53af57fd71520bed33070b162819b2bce5",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/independent-bytes.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/independent-bytes.json.gz",
+      "rawSha256": "32ec49d3910de173b4b868b4281a5f2e62aa6eec9d5475fa2752aab47671ad34",
+      "normalizedSha256": "32ec49d3910de173b4b868b4281a5f2e62aa6eec9d5475fa2752aab47671ad34",
+      "archiveSha256": "1bb2705021c93ba8a85fd39a4169b335c254e64e9f72f1754f1578120c690ab6",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/unit-histories.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/unit-histories.json",
+      "rawSha256": "2efededefb8faa32b169378cdbd8747c2ade20340a82a37472432c6d76ece5fa",
+      "normalizedSha256": "2efededefb8faa32b169378cdbd8747c2ade20340a82a37472432c6d76ece5fa",
+      "archiveSha256": "2efededefb8faa32b169378cdbd8747c2ade20340a82a37472432c6d76ece5fa",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units/witness-control.json",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units/witness-control.json",
+      "rawSha256": "1c1516c52eb9d7ab5e1e3ee37c9beaa281ead0f04d206e030cc8cd684c0be98e",
+      "normalizedSha256": "1c1516c52eb9d7ab5e1e3ee37c9beaa281ead0f04d206e030cc8cd684c0be98e",
+      "archiveSha256": "1c1516c52eb9d7ab5e1e3ee37c9beaa281ead0f04d206e030cc8cd684c0be98e",
+      "compression": null
+    },
+    {
+      "source": "test-results/liveness-followups/q05-2026-09-12T22-20-23+00-00/units.log",
+      "archive": "q05-2026-09-12T22-20-23+00-00/units.log.gz",
+      "rawSha256": "3cb0a6c724963eb7cc89ce71200eedf6ca0ac463baec5cb177f1561955f25317",
+      "normalizedSha256": "dbe1da809f3daecfe195332750fef3b5ef8ef545b988002342b31f3ce7441a5b",
+      "archiveSha256": "43685fda72a045c3584b630b63b10fdf7d5f3d2db1fef5edc9f07d2e0c67e1c4",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/construction-inventory.log",
+      "archive": "2026-09-12T22-20-58.735Z/construction-inventory.log.gz",
+      "rawSha256": "9b9f19c04766bb0c43114e7b93e42311f625f676b14215eb3608583fbf0862b8",
+      "normalizedSha256": "9b9f19c04766bb0c43114e7b93e42311f625f676b14215eb3608583fbf0862b8",
+      "archiveSha256": "0413e5616e5972b53f4bd42a80406f465a1bd5497bd50db962e10f51e9db6c4f",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/content-control/report.json",
+      "archive": "2026-09-12T22-20-58.735Z/content-control/report.json.gz",
+      "rawSha256": "a29b457b286b536836e790f94f980bcc3bbef42360b01d8fcad6a756af3ee64a",
+      "normalizedSha256": "a29b457b286b536836e790f94f980bcc3bbef42360b01d8fcad6a756af3ee64a",
+      "archiveSha256": "665ea7ad08208192e9fa4b7585c7f34d72fcc8c35d97d7fda144bbd391e624c5",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/content-control/report.md",
+      "archive": "2026-09-12T22-20-58.735Z/content-control/report.md",
+      "rawSha256": "e74897bf6d90933bca4dac80480bd96a6048b40d73f4ff57de88376c2351a426",
+      "normalizedSha256": "e74897bf6d90933bca4dac80480bd96a6048b40d73f4ff57de88376c2351a426",
+      "archiveSha256": "e74897bf6d90933bca4dac80480bd96a6048b40d73f4ff57de88376c2351a426",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/content-unreadable-control.log",
+      "archive": "2026-09-12T22-20-58.735Z/content-unreadable-control.log.gz",
+      "rawSha256": "c66dc1f551a3512516be8fac0c2c8e518c5b32a9a089438b12b44342e48facfa",
+      "normalizedSha256": "98a1446f3eb4e69dd8afd5f4314a2dd0349596cc8aa4e487a28807f1db660928",
+      "archiveSha256": "c78c1926af141280d68df5a0f5fc2c20203c673ed8f90629aa3492a1fc31342c",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/controlled/expiry.json",
+      "archive": "2026-09-12T22-20-58.735Z/controlled/expiry.json",
+      "rawSha256": "5989f05a0ca956686ace0004eec27c720cb0515aeb6d28e392ff1a20182f6e21",
+      "normalizedSha256": "5989f05a0ca956686ace0004eec27c720cb0515aeb6d28e392ff1a20182f6e21",
+      "archiveSha256": "5989f05a0ca956686ace0004eec27c720cb0515aeb6d28e392ff1a20182f6e21",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/controlled/held-fetch.json",
+      "archive": "2026-09-12T22-20-58.735Z/controlled/held-fetch.json",
+      "rawSha256": "64a9f4920dc64cdcac425dfc328173963e84beb5b2f25acc8eff4f71481b5840",
+      "normalizedSha256": "64a9f4920dc64cdcac425dfc328173963e84beb5b2f25acc8eff4f71481b5840",
+      "archiveSha256": "64a9f4920dc64cdcac425dfc328173963e84beb5b2f25acc8eff4f71481b5840",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/controlled/held-submit.json",
+      "archive": "2026-09-12T22-20-58.735Z/controlled/held-submit.json",
+      "rawSha256": "40ae964f1b959dd1991a9323ab5b838872c42b978ef4f423458466d8b4265c6a",
+      "normalizedSha256": "40ae964f1b959dd1991a9323ab5b838872c42b978ef4f423458466d8b4265c6a",
+      "archiveSha256": "40ae964f1b959dd1991a9323ab5b838872c42b978ef4f423458466d8b4265c6a",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/controlled.log",
+      "archive": "2026-09-12T22-20-58.735Z/controlled.log.gz",
+      "rawSha256": "384679eb1d7a034b331af86f20ec7645f0361b105aa6da6e7841256586f32227",
+      "normalizedSha256": "384679eb1d7a034b331af86f20ec7645f0361b105aa6da6e7841256586f32227",
+      "archiveSha256": "5f5b4699f420865bf016705eed9ac3cff454774619927d964f05a9996345b2a0",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/coverage/coverage-histories.json",
+      "archive": "2026-09-12T22-20-58.735Z/coverage/coverage-histories.json",
+      "rawSha256": "39d112a29986b0ca69d47bdcc9c70a36b830c0fe24049ac2478b49389af83c4f",
+      "normalizedSha256": "39d112a29986b0ca69d47bdcc9c70a36b830c0fe24049ac2478b49389af83c4f",
+      "archiveSha256": "39d112a29986b0ca69d47bdcc9c70a36b830c0fe24049ac2478b49389af83c4f",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/coverage/witness-control.json",
+      "archive": "2026-09-12T22-20-58.735Z/coverage/witness-control.json",
+      "rawSha256": "1c1516c52eb9d7ab5e1e3ee37c9beaa281ead0f04d206e030cc8cd684c0be98e",
+      "normalizedSha256": "1c1516c52eb9d7ab5e1e3ee37c9beaa281ead0f04d206e030cc8cd684c0be98e",
+      "archiveSha256": "1c1516c52eb9d7ab5e1e3ee37c9beaa281ead0f04d206e030cc8cd684c0be98e",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/coverage.log",
+      "archive": "2026-09-12T22-20-58.735Z/coverage.log.gz",
+      "rawSha256": "bd64b78017d6d320c6795db1ee0eb35ca2831773ae326aa61df51d57a22a80eb",
+      "normalizedSha256": "9ffacc47d34b0d5b987954e76b5122fb18a14bda1c64e3424e39d4d5c3dd3952",
+      "archiveSha256": "bf6cfaf0fb509679e2db4aecb0541e7e9f74881fda9b33f91666eaab6241d212",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/format.log",
+      "archive": "2026-09-12T22-20-58.735Z/format.log.gz",
+      "rawSha256": "8dad68b59580705a590ba550ec530ccfd9911e8f52a87bb0e7b0a18e8a065d6c",
+      "normalizedSha256": "8dad68b59580705a590ba550ec530ccfd9911e8f52a87bb0e7b0a18e8a065d6c",
+      "archiveSha256": "e05bf715af33d0736836ccb969909ed9c879ab14c223c03253050d6e40b55068",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/growth/growth.json",
+      "archive": "2026-09-12T22-20-58.735Z/growth/growth.json.gz",
+      "rawSha256": "9ff3a05291f4a66c125f4cba244c8a3604a143aed416935ac6b9e4a47ac86084",
+      "normalizedSha256": "9ff3a05291f4a66c125f4cba244c8a3604a143aed416935ac6b9e4a47ac86084",
+      "archiveSha256": "f39640177a95b8de35b44253964ada52722ba95fb3eb128003b0aefe95769407",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/growth.log",
+      "archive": "2026-09-12T22-20-58.735Z/growth.log.gz",
+      "rawSha256": "d1eb5f95c0396cfa2ded71f515ad6c95d6ff2fc5bc768ecd5e137aa44819af23",
+      "normalizedSha256": "d1eb5f95c0396cfa2ded71f515ad6c95d6ff2fc5bc768ecd5e137aa44819af23",
+      "archiveSha256": "793cdf8e113263734760b1a4765cd55e4bf2ea9f143019545d1369545350e69f",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/http-bound-control/control-bound.json",
+      "archive": "2026-09-12T22-20-58.735Z/http-bound-control/control-bound.json",
+      "rawSha256": "a0132dbc43db7811b60f8f2b973e56b70b6fa5abc386e6b6f1fc7658265e94e2",
+      "normalizedSha256": "a0132dbc43db7811b60f8f2b973e56b70b6fa5abc386e6b6f1fc7658265e94e2",
+      "archiveSha256": "a0132dbc43db7811b60f8f2b973e56b70b6fa5abc386e6b6f1fc7658265e94e2",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/http-bound-control.log",
+      "archive": "2026-09-12T22-20-58.735Z/http-bound-control.log.gz",
+      "rawSha256": "93f064dec580b2079d3f34f396c16aa3154cc7e09f7e7aeb99fd3a0f283de991",
+      "normalizedSha256": "93f064dec580b2079d3f34f396c16aa3154cc7e09f7e7aeb99fd3a0f283de991",
+      "archiveSha256": "22bc569d1e7b5a1152a47d75fa81de18d1c5f89435a5e485ee0d335445992584",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/instrument.log",
+      "archive": "2026-09-12T22-20-58.735Z/instrument.log.gz",
+      "rawSha256": "7bfab2b371c5b0ce64cefdf6cecc1259f0d66fb84635e5bdf97cbcd77caa6da0",
+      "normalizedSha256": "7bfab2b371c5b0ce64cefdf6cecc1259f0d66fb84635e5bdf97cbcd77caa6da0",
+      "archiveSha256": "6185dc435068460bbda3b231c1289efff79c82ee1a2fd532a7e7d6838169b345",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ledger-batches/baseline-bindings.json",
+      "archive": "2026-09-12T22-20-58.735Z/ledger-batches/baseline-bindings.json",
+      "rawSha256": "ee0c4f99377d184fd5addc99aeca0b3fe3b2c919bd21acd10f928c43ac529e05",
+      "normalizedSha256": "ee0c4f99377d184fd5addc99aeca0b3fe3b2c919bd21acd10f928c43ac529e05",
+      "archiveSha256": "ee0c4f99377d184fd5addc99aeca0b3fe3b2c919bd21acd10f928c43ac529e05",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ledger-batches/batch-allocation-controls.json",
+      "archive": "2026-09-12T22-20-58.735Z/ledger-batches/batch-allocation-controls.json",
+      "rawSha256": "99a37852292ce9c841aacd1fd3abe7cf17ebef0bc549a1da85fe9700774eed3e",
+      "normalizedSha256": "99a37852292ce9c841aacd1fd3abe7cf17ebef0bc549a1da85fe9700774eed3e",
+      "archiveSha256": "99a37852292ce9c841aacd1fd3abe7cf17ebef0bc549a1da85fe9700774eed3e",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ledger-batches/batch-vector.json",
+      "archive": "2026-09-12T22-20-58.735Z/ledger-batches/batch-vector.json",
+      "rawSha256": "43160465726c718fc94285213b93245cdd625ea95da855d959fcb73dedab2f1c",
+      "normalizedSha256": "43160465726c718fc94285213b93245cdd625ea95da855d959fcb73dedab2f1c",
+      "archiveSha256": "43160465726c718fc94285213b93245cdd625ea95da855d959fcb73dedab2f1c",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ledger-batches/bindings.json",
+      "archive": "2026-09-12T22-20-58.735Z/ledger-batches/bindings.json.gz",
+      "rawSha256": "e9875f7573cf9f292f5054b410330dd8697702cf067ef6c9976f026a2f1eb256",
+      "normalizedSha256": "e9875f7573cf9f292f5054b410330dd8697702cf067ef6c9976f026a2f1eb256",
+      "archiveSha256": "1712241ff47b23f2365599a9a0ad9b94bb49227e8e88542bf3e957aac991d98e",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ledger-batches/capture.json",
+      "archive": "2026-09-12T22-20-58.735Z/ledger-batches/capture.json",
+      "rawSha256": "4c19be69fcd32bbc79f8d91c7bf75fe844c1bf0a0566960a1171d80ebb0a51fe",
+      "normalizedSha256": "4c19be69fcd32bbc79f8d91c7bf75fe844c1bf0a0566960a1171d80ebb0a51fe",
+      "archiveSha256": "4c19be69fcd32bbc79f8d91c7bf75fe844c1bf0a0566960a1171d80ebb0a51fe",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ledger-batches/chain.json",
+      "archive": "2026-09-12T22-20-58.735Z/ledger-batches/chain.json",
+      "rawSha256": "237590df4260ce341db1d23af2a2859309aca80fa1e8462cd9fcfdc197c531b2",
+      "normalizedSha256": "237590df4260ce341db1d23af2a2859309aca80fa1e8462cd9fcfdc197c531b2",
+      "archiveSha256": "237590df4260ce341db1d23af2a2859309aca80fa1e8462cd9fcfdc197c531b2",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ledger-batches/control-chain.json",
+      "archive": "2026-09-12T22-20-58.735Z/ledger-batches/control-chain.json",
+      "rawSha256": "425b35fe1e7d824242a953b70140def5b9ad000ef06cfa8f84c91c9dacf4bd87",
+      "normalizedSha256": "425b35fe1e7d824242a953b70140def5b9ad000ef06cfa8f84c91c9dacf4bd87",
+      "archiveSha256": "425b35fe1e7d824242a953b70140def5b9ad000ef06cfa8f84c91c9dacf4bd87",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ledger-batches/control-semantic-order.json",
+      "archive": "2026-09-12T22-20-58.735Z/ledger-batches/control-semantic-order.json",
+      "rawSha256": "61d3655afec41f58263ed169bb3cb5ac53d24c5c779180e801549f60c3ac5629",
+      "normalizedSha256": "61d3655afec41f58263ed169bb3cb5ac53d24c5c779180e801549f60c3ac5629",
+      "archiveSha256": "61d3655afec41f58263ed169bb3cb5ac53d24c5c779180e801549f60c3ac5629",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ledger-batches/control-source-authentication.json",
+      "archive": "2026-09-12T22-20-58.735Z/ledger-batches/control-source-authentication.json",
+      "rawSha256": "a0cc8b4188ec92e8b669479b5524226f69075eff842ea366e78abd83db00f929",
+      "normalizedSha256": "a0cc8b4188ec92e8b669479b5524226f69075eff842ea366e78abd83db00f929",
+      "archiveSha256": "a0cc8b4188ec92e8b669479b5524226f69075eff842ea366e78abd83db00f929",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ledger-batches/control-source.json",
+      "archive": "2026-09-12T22-20-58.735Z/ledger-batches/control-source.json",
+      "rawSha256": "72071e8cf6bcb7ad28afcd445686b53c7629844e5022b02bbd696df575aed786",
+      "normalizedSha256": "72071e8cf6bcb7ad28afcd445686b53c7629844e5022b02bbd696df575aed786",
+      "archiveSha256": "72071e8cf6bcb7ad28afcd445686b53c7629844e5022b02bbd696df575aed786",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ledger-batches/control-witness.json",
+      "archive": "2026-09-12T22-20-58.735Z/ledger-batches/control-witness.json",
+      "rawSha256": "596351b723ea392101970ebd7b93f94403db7d7e0182d6700a90796ac99bd095",
+      "normalizedSha256": "596351b723ea392101970ebd7b93f94403db7d7e0182d6700a90796ac99bd095",
+      "archiveSha256": "596351b723ea392101970ebd7b93f94403db7d7e0182d6700a90796ac99bd095",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ledger-batches/fixed.json",
+      "archive": "2026-09-12T22-20-58.735Z/ledger-batches/fixed.json",
+      "rawSha256": "1142b61e0b83809eea371a41e29fe6c3ffcd13cc32d48752741ac377ecf8355f",
+      "normalizedSha256": "1142b61e0b83809eea371a41e29fe6c3ffcd13cc32d48752741ac377ecf8355f",
+      "archiveSha256": "1142b61e0b83809eea371a41e29fe6c3ffcd13cc32d48752741ac377ecf8355f",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ledger-batches/framing.json",
+      "archive": "2026-09-12T22-20-58.735Z/ledger-batches/framing.json",
+      "rawSha256": "d9c0c0985357a31d3400e2f828795b97ba960241be2c62a308a5f47b9460c68d",
+      "normalizedSha256": "d9c0c0985357a31d3400e2f828795b97ba960241be2c62a308a5f47b9460c68d",
+      "archiveSha256": "d9c0c0985357a31d3400e2f828795b97ba960241be2c62a308a5f47b9460c68d",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ledger-batches/properties.json",
+      "archive": "2026-09-12T22-20-58.735Z/ledger-batches/properties.json.gz",
+      "rawSha256": "06ef92474b4ebe684f9933bb4a6627a80a4147a7074e8216a9186013148f92cf",
+      "normalizedSha256": "06ef92474b4ebe684f9933bb4a6627a80a4147a7074e8216a9186013148f92cf",
+      "archiveSha256": "8dabc5b2eaeb5ef3855eee553fdc46cb36f520526bef97dd3f61edcc2e6ee0ab",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ledger-batches/union.json",
+      "archive": "2026-09-12T22-20-58.735Z/ledger-batches/union.json",
+      "rawSha256": "96ef2f61efcb06017d2f89b3834865886acb12dbe62077ac7860d6f7d6d252dc",
+      "normalizedSha256": "96ef2f61efcb06017d2f89b3834865886acb12dbe62077ac7860d6f7d6d252dc",
+      "archiveSha256": "96ef2f61efcb06017d2f89b3834865886acb12dbe62077ac7860d6f7d6d252dc",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ledger-batches.log",
+      "archive": "2026-09-12T22-20-58.735Z/ledger-batches.log.gz",
+      "rawSha256": "e33f8bde3daffb00d28869967fd3ac60d6c0217840592a4f74d4e666760c3c6b",
+      "normalizedSha256": "e33f8bde3daffb00d28869967fd3ac60d6c0217840592a4f74d4e666760c3c6b",
+      "archiveSha256": "59d147262a5c1ae6595585fac9fc4e3a4c5d95c1f77e75e0f137d86d5faaa5de",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/lint.log",
+      "archive": "2026-09-12T22-20-58.735Z/lint.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archiveSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ownership/batch-attempt-after.json",
+      "archive": "2026-09-12T22-20-58.735Z/ownership/batch-attempt-after.json",
+      "rawSha256": "f89719c8afe399872e976cfbd215f20e80ee3f4950a56d7591525a8c19f4dae4",
+      "normalizedSha256": "f89719c8afe399872e976cfbd215f20e80ee3f4950a56d7591525a8c19f4dae4",
+      "archiveSha256": "f89719c8afe399872e976cfbd215f20e80ee3f4950a56d7591525a8c19f4dae4",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ownership/batch-attempt-before.json",
+      "archive": "2026-09-12T22-20-58.735Z/ownership/batch-attempt-before.json",
+      "rawSha256": "eca7a5488e0c98e2590e07e6f8f25270093174599693f3c9bad64acf137ff432",
+      "normalizedSha256": "eca7a5488e0c98e2590e07e6f8f25270093174599693f3c9bad64acf137ff432",
+      "archiveSha256": "eca7a5488e0c98e2590e07e6f8f25270093174599693f3c9bad64acf137ff432",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ownership/batch-envelope-after.json",
+      "archive": "2026-09-12T22-20-58.735Z/ownership/batch-envelope-after.json",
+      "rawSha256": "eca7a5488e0c98e2590e07e6f8f25270093174599693f3c9bad64acf137ff432",
+      "normalizedSha256": "eca7a5488e0c98e2590e07e6f8f25270093174599693f3c9bad64acf137ff432",
+      "archiveSha256": "eca7a5488e0c98e2590e07e6f8f25270093174599693f3c9bad64acf137ff432",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ownership/batch-envelope-before.json",
+      "archive": "2026-09-12T22-20-58.735Z/ownership/batch-envelope-before.json",
+      "rawSha256": "2a564bfd72b5c7f49e005d50de21b8ee8ce0fd25e1521954b292ab11013c6f7d",
+      "normalizedSha256": "2a564bfd72b5c7f49e005d50de21b8ee8ce0fd25e1521954b292ab11013c6f7d",
+      "archiveSha256": "2a564bfd72b5c7f49e005d50de21b8ee8ce0fd25e1521954b292ab11013c6f7d",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ownership/batch-exact-retry.json",
+      "archive": "2026-09-12T22-20-58.735Z/ownership/batch-exact-retry.json",
+      "rawSha256": "16c59f27258266517e697ff1d8c3d211de75d0287e13b29b326d88a2b46a9b1a",
+      "normalizedSha256": "16c59f27258266517e697ff1d8c3d211de75d0287e13b29b326d88a2b46a9b1a",
+      "archiveSha256": "16c59f27258266517e697ff1d8c3d211de75d0287e13b29b326d88a2b46a9b1a",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ownership/batch-position-batch-after.json",
+      "archive": "2026-09-12T22-20-58.735Z/ownership/batch-position-batch-after.json",
+      "rawSha256": "eca7a5488e0c98e2590e07e6f8f25270093174599693f3c9bad64acf137ff432",
+      "normalizedSha256": "eca7a5488e0c98e2590e07e6f8f25270093174599693f3c9bad64acf137ff432",
+      "archiveSha256": "eca7a5488e0c98e2590e07e6f8f25270093174599693f3c9bad64acf137ff432",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ownership/batch-position-batch-before.json",
+      "archive": "2026-09-12T22-20-58.735Z/ownership/batch-position-batch-before.json",
+      "rawSha256": "eca7a5488e0c98e2590e07e6f8f25270093174599693f3c9bad64acf137ff432",
+      "normalizedSha256": "eca7a5488e0c98e2590e07e6f8f25270093174599693f3c9bad64acf137ff432",
+      "archiveSha256": "eca7a5488e0c98e2590e07e6f8f25270093174599693f3c9bad64acf137ff432",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ownership/control-fairness.json",
+      "archive": "2026-09-12T22-20-58.735Z/ownership/control-fairness.json",
+      "rawSha256": "1f77559287d9188d1830827255ca4606a5aede7eebefee68b2fa38da49cce22f",
+      "normalizedSha256": "1f77559287d9188d1830827255ca4606a5aede7eebefee68b2fa38da49cce22f",
+      "archiveSha256": "1f77559287d9188d1830827255ca4606a5aede7eebefee68b2fa38da49cce22f",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ownership/control-halt.json",
+      "archive": "2026-09-12T22-20-58.735Z/ownership/control-halt.json",
+      "rawSha256": "1f77559287d9188d1830827255ca4606a5aede7eebefee68b2fa38da49cce22f",
+      "normalizedSha256": "1f77559287d9188d1830827255ca4606a5aede7eebefee68b2fa38da49cce22f",
+      "archiveSha256": "1f77559287d9188d1830827255ca4606a5aede7eebefee68b2fa38da49cce22f",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ownership/control-overlap.json",
+      "archive": "2026-09-12T22-20-58.735Z/ownership/control-overlap.json",
+      "rawSha256": "10a244d4c4658a4a78df4e766795cc57ff4c49593781659105dbe7085d738f13",
+      "normalizedSha256": "10a244d4c4658a4a78df4e766795cc57ff4c49593781659105dbe7085d738f13",
+      "archiveSha256": "10a244d4c4658a4a78df4e766795cc57ff4c49593781659105dbe7085d738f13",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ownership/control-resume.json",
+      "archive": "2026-09-12T22-20-58.735Z/ownership/control-resume.json",
+      "rawSha256": "938da686770b1320c2d66a745296a3835cde6f8b0202ba3812e398ce9204feca",
+      "normalizedSha256": "938da686770b1320c2d66a745296a3835cde6f8b0202ba3812e398ce9204feca",
+      "archiveSha256": "938da686770b1320c2d66a745296a3835cde6f8b0202ba3812e398ce9204feca",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ownership/control-wake.json",
+      "archive": "2026-09-12T22-20-58.735Z/ownership/control-wake.json",
+      "rawSha256": "7d6163600ef4f89beee8147ca60a861dbd2a23b1c31c605dd042d19be661bcde",
+      "normalizedSha256": "7d6163600ef4f89beee8147ca60a861dbd2a23b1c31c605dd042d19be661bcde",
+      "archiveSha256": "7d6163600ef4f89beee8147ca60a861dbd2a23b1c31c605dd042d19be661bcde",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ownership/generated-native.json",
+      "archive": "2026-09-12T22-20-58.735Z/ownership/generated-native.json",
+      "rawSha256": "f66d27ccb3657272a75821314c264d514324224d55b142b0971c76700a736c47",
+      "normalizedSha256": "f66d27ccb3657272a75821314c264d514324224d55b142b0971c76700a736c47",
+      "archiveSha256": "f66d27ccb3657272a75821314c264d514324224d55b142b0971c76700a736c47",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/ownership.log",
+      "archive": "2026-09-12T22-20-58.735Z/ownership.log.gz",
+      "rawSha256": "b27a0946e7b9658f8491a579e4a31160d3d6037b513663135a0f7011d395a743",
+      "normalizedSha256": "b27a0946e7b9658f8491a579e4a31160d3d6037b513663135a0f7011d395a743",
+      "archiveSha256": "b7ac1d485fbbc9a244bcd8ab5c25c8065db949aebddc1b01d7c46f76629faac9",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/receive-coverage-control/control-coverage.json",
+      "archive": "2026-09-12T22-20-58.735Z/receive-coverage-control/control-coverage.json",
+      "rawSha256": "57e537b80bb3ead893e7a3c32f475f99f5d80e062f49a924281ed7f0cea0e01f",
+      "normalizedSha256": "57e537b80bb3ead893e7a3c32f475f99f5d80e062f49a924281ed7f0cea0e01f",
+      "archiveSha256": "57e537b80bb3ead893e7a3c32f475f99f5d80e062f49a924281ed7f0cea0e01f",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/receive-coverage-control.log",
+      "archive": "2026-09-12T22-20-58.735Z/receive-coverage-control.log.gz",
+      "rawSha256": "e5aa9dbc26cca5a4fac9552b45ede3723122d73e655a4772a5df38567915742a",
+      "normalizedSha256": "e5aa9dbc26cca5a4fac9552b45ede3723122d73e655a4772a5df38567915742a",
+      "archiveSha256": "b2c846eee08bea5b96bb0dd9662066a8c5b55a736f4ff168304fe949884297a7",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/scope.json",
+      "archive": "2026-09-12T22-20-58.735Z/scope.json",
+      "rawSha256": "b53d1a390eaf206b1b5c16ea8af27c4dc31c32da261e8d3287f10e8deda2ff92",
+      "normalizedSha256": "b53d1a390eaf206b1b5c16ea8af27c4dc31c32da261e8d3287f10e8deda2ff92",
+      "archiveSha256": "b53d1a390eaf206b1b5c16ea8af27c4dc31c32da261e8d3287f10e8deda2ff92",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-cache/service-cache.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-cache/service-cache.json",
+      "rawSha256": "789d351043bc749a83f39cc92878b6cf426c09c0d2d0e86cb042e1cb9d8e2a7c",
+      "normalizedSha256": "789d351043bc749a83f39cc92878b6cf426c09c0d2d0e86cb042e1cb9d8e2a7c",
+      "archiveSha256": "789d351043bc749a83f39cc92878b6cf426c09c0d2d0e86cb042e1cb9d8e2a7c",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-cache/service-context-1048576.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-cache/service-context-1048576.json",
+      "rawSha256": "268983d95d8250c0ac654ab5b32f96c1cde8e75eddaae312c1580edc30fe744c",
+      "normalizedSha256": "268983d95d8250c0ac654ab5b32f96c1cde8e75eddaae312c1580edc30fe744c",
+      "archiveSha256": "268983d95d8250c0ac654ab5b32f96c1cde8e75eddaae312c1580edc30fe744c",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-cache/service-context-65536.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-cache/service-context-65536.json",
+      "rawSha256": "2e4c9b7b3ad9cad4571ad1e176a97d40730f01c5bc0da76d6d5fc9b2bd1e9ff7",
+      "normalizedSha256": "2e4c9b7b3ad9cad4571ad1e176a97d40730f01c5bc0da76d6d5fc9b2bd1e9ff7",
+      "archiveSha256": "2e4c9b7b3ad9cad4571ad1e176a97d40730f01c5bc0da76d6d5fc9b2bd1e9ff7",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-cache.log",
+      "archive": "2026-09-12T22-20-58.735Z/service-cache.log.gz",
+      "rawSha256": "245d713dd4a89543c1b0e46e0df17d87507917d27b36ea65a77de92a37c49af4",
+      "normalizedSha256": "245d713dd4a89543c1b0e46e0df17d87507917d27b36ea65a77de92a37c49af4",
+      "archiveSha256": "2ed3a472a32d2aa0866fe5ea098521fb43f73327bc53bebf9987e5e1a64214f3",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-delivery/control-commit.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-delivery/control-commit.json",
+      "rawSha256": "ace2681e5c1df399c371a4fdc4466d10c8f4cba7357d5e13a26b34507314b73a",
+      "normalizedSha256": "ace2681e5c1df399c371a4fdc4466d10c8f4cba7357d5e13a26b34507314b73a",
+      "archiveSha256": "ace2681e5c1df399c371a4fdc4466d10c8f4cba7357d5e13a26b34507314b73a",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-delivery/control-current.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-delivery/control-current.json",
+      "rawSha256": "0cb9dfaceeb786c7032c5052bd5f9633fe3c311d5ea5b044165fe9a8d0101ad4",
+      "normalizedSha256": "0cb9dfaceeb786c7032c5052bd5f9633fe3c311d5ea5b044165fe9a8d0101ad4",
+      "archiveSha256": "0cb9dfaceeb786c7032c5052bd5f9633fe3c311d5ea5b044165fe9a8d0101ad4",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-delivery/control-generation.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-delivery/control-generation.json",
+      "rawSha256": "bfac1db4d8dbb2572661a664b19fd1e1e6dcc7de6dc1b6aef4f7c890dc33e0a9",
+      "normalizedSha256": "bfac1db4d8dbb2572661a664b19fd1e1e6dcc7de6dc1b6aef4f7c890dc33e0a9",
+      "archiveSha256": "bfac1db4d8dbb2572661a664b19fd1e1e6dcc7de6dc1b6aef4f7c890dc33e0a9",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-delivery/control-witness.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-delivery/control-witness.json",
+      "rawSha256": "ae17dfaed5967725cfbfb878c3f252552b815b2f482993eef7945c34be206008",
+      "normalizedSha256": "ae17dfaed5967725cfbfb878c3f252552b815b2f482993eef7945c34be206008",
+      "archiveSha256": "ae17dfaed5967725cfbfb878c3f252552b815b2f482993eef7945c34be206008",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-delivery/generated.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-delivery/generated.json.gz",
+      "rawSha256": "05d127eac00bbe0b7e195786d34fecc96e7a54b723c189d6485d320d284d587c",
+      "normalizedSha256": "05d127eac00bbe0b7e195786d34fecc96e7a54b723c189d6485d320d284d587c",
+      "archiveSha256": "a7dd70e91542462f1e665c86dfb54f8c327b5275ce7faea50603e9b84bda7570",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-delivery.log",
+      "archive": "2026-09-12T22-20-58.735Z/service-delivery.log.gz",
+      "rawSha256": "ed0da8bf204c45928adf9340394de21aff7923ae68592dd982dbcf8c460832dd",
+      "normalizedSha256": "ed0da8bf204c45928adf9340394de21aff7923ae68592dd982dbcf8c460832dd",
+      "archiveSha256": "80c8272ce56b2c71dfb7df47b691dfe35c16e52262a3fdfb268dba0184a0a030",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-inbound/control-current.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-inbound/control-current.json",
+      "rawSha256": "a069825dca0883af70a8cd34440094afeb898e075fed01f95623184440f2af1f",
+      "normalizedSha256": "a069825dca0883af70a8cd34440094afeb898e075fed01f95623184440f2af1f",
+      "archiveSha256": "a069825dca0883af70a8cd34440094afeb898e075fed01f95623184440f2af1f",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-inbound/control-custody.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-inbound/control-custody.json",
+      "rawSha256": "eaad6d9f76023d3f3457b6c98715fb9950caa5bb45f03e156c6deaa102154d59",
+      "normalizedSha256": "eaad6d9f76023d3f3457b6c98715fb9950caa5bb45f03e156c6deaa102154d59",
+      "archiveSha256": "eaad6d9f76023d3f3457b6c98715fb9950caa5bb45f03e156c6deaa102154d59",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-inbound/control-expiry.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-inbound/control-expiry.json",
+      "rawSha256": "27cd13b8453db005db6e1421717f31990ac34aa02966e12b6c90176ab0dee2e4",
+      "normalizedSha256": "27cd13b8453db005db6e1421717f31990ac34aa02966e12b6c90176ab0dee2e4",
+      "archiveSha256": "27cd13b8453db005db6e1421717f31990ac34aa02966e12b6c90176ab0dee2e4",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-inbound/control-publisher.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-inbound/control-publisher.json",
+      "rawSha256": "f6d7f63828431847be42cbc260b03528139d398e78253a9e16b815629f81d388",
+      "normalizedSha256": "f6d7f63828431847be42cbc260b03528139d398e78253a9e16b815629f81d388",
+      "archiveSha256": "f6d7f63828431847be42cbc260b03528139d398e78253a9e16b815629f81d388",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-inbound/control-reader.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-inbound/control-reader.json",
+      "rawSha256": "f71b23189e8dc5463dc3b1430f52865cb4ea95f37c3da34b6d8014dd1be8a2fe",
+      "normalizedSha256": "f71b23189e8dc5463dc3b1430f52865cb4ea95f37c3da34b6d8014dd1be8a2fe",
+      "archiveSha256": "f71b23189e8dc5463dc3b1430f52865cb4ea95f37c3da34b6d8014dd1be8a2fe",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-inbound/control-registration.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-inbound/control-registration.json",
+      "rawSha256": "d3143468117d42e94cc3d5277d84d2049b0fd1f8b1164eac701181e5954c615c",
+      "normalizedSha256": "d3143468117d42e94cc3d5277d84d2049b0fd1f8b1164eac701181e5954c615c",
+      "archiveSha256": "d3143468117d42e94cc3d5277d84d2049b0fd1f8b1164eac701181e5954c615c",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-inbound/control-signature.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-inbound/control-signature.json",
+      "rawSha256": "b036ce0d3b9cc06c8352a4cea1d6643ab6f7710252fb9698348628a55075936d",
+      "normalizedSha256": "b036ce0d3b9cc06c8352a4cea1d6643ab6f7710252fb9698348628a55075936d",
+      "archiveSha256": "b036ce0d3b9cc06c8352a4cea1d6643ab6f7710252fb9698348628a55075936d",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-inbound/control-witness.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-inbound/control-witness.json",
+      "rawSha256": "d435900d58bdbe4f9ed40981ea8104d131fbb7c94f3278f10d80f014f13c92ee",
+      "normalizedSha256": "d435900d58bdbe4f9ed40981ea8104d131fbb7c94f3278f10d80f014f13c92ee",
+      "archiveSha256": "d435900d58bdbe4f9ed40981ea8104d131fbb7c94f3278f10d80f014f13c92ee",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-inbound/generated.json",
+      "archive": "2026-09-12T22-20-58.735Z/service-inbound/generated.json.gz",
+      "rawSha256": "d1016e776511925a531f889a82333147d723d0dd4ec9b03ce559b6a462fbddec",
+      "normalizedSha256": "d1016e776511925a531f889a82333147d723d0dd4ec9b03ce559b6a462fbddec",
+      "archiveSha256": "61930251b6ba078c8991710d32751fa02ecb089f22fc8cc76d993f82cb51072d",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/service-inbound.log",
+      "archive": "2026-09-12T22-20-58.735Z/service-inbound.log.gz",
+      "rawSha256": "2713bfad511cef3cdaaa258d972e721d4ccbc21838aa0ba1c50e141d065af0ac",
+      "normalizedSha256": "2713bfad511cef3cdaaa258d972e721d4ccbc21838aa0ba1c50e141d065af0ac",
+      "archiveSha256": "736e96188103dc120ed4f0d3f47d820811e57d8ff0ce0bae20d98ef88c80f5ec",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/sources.json",
+      "archive": "2026-09-12T22-20-58.735Z/sources.json.gz",
+      "rawSha256": "567f81a27008aa11c7ac6d28befe7eb3c4401e908ea990d752fa675bc0602c1d",
+      "normalizedSha256": "567f81a27008aa11c7ac6d28befe7eb3c4401e908ea990d752fa675bc0602c1d",
+      "archiveSha256": "fe9e8678218d80000b163c917937a3aa119c6e3ad865fd26ed39bccdf4afa3af",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/summary.json",
+      "archive": "2026-09-12T22-20-58.735Z/summary.json",
+      "rawSha256": "ea4611e4ce640bc3f87907287aa5be7222bc2469c8705f3fbb8c75f706ba8466",
+      "normalizedSha256": "da642a98c13e8061435e93b456b0d927255f11a92bff8e70de1179b3bf23b3cd",
+      "archiveSha256": "da642a98c13e8061435e93b456b0d927255f11a92bff8e70de1179b3bf23b3cd",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/types.log",
+      "archive": "2026-09-12T22-20-58.735Z/types.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archiveSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/view/verified-view.json",
+      "archive": "2026-09-12T22-20-58.735Z/view/verified-view.json",
+      "rawSha256": "9a1c7cdbee55cad9e62271c06aa416497582bf0f683731968b5651958cbb8c64",
+      "normalizedSha256": "9a1c7cdbee55cad9e62271c06aa416497582bf0f683731968b5651958cbb8c64",
+      "archiveSha256": "9a1c7cdbee55cad9e62271c06aa416497582bf0f683731968b5651958cbb8c64",
+      "compression": null
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/view.log",
+      "archive": "2026-09-12T22-20-58.735Z/view.log.gz",
+      "rawSha256": "db9a6eb78b33b76da1c5b9ee547fe7bd92fd6c1213c3fc6c70484451fdf193f8",
+      "normalizedSha256": "db9a6eb78b33b76da1c5b9ee547fe7bd92fd6c1213c3fc6c70484451fdf193f8",
+      "archiveSha256": "8c5bcd08836a832df028846dc4077fa63df512ce40c784bc4d44a64bb481c916",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/workload/workload.json",
+      "archive": "2026-09-12T22-20-58.735Z/workload/workload.json.gz",
+      "rawSha256": "538742ea875b3d2cd5d46544d59bdd6d7ab60450b356a28ec4b7cf7ba6e45e2c",
+      "normalizedSha256": "538742ea875b3d2cd5d46544d59bdd6d7ab60450b356a28ec4b7cf7ba6e45e2c",
+      "archiveSha256": "12df18e59fcb949261ea5dd09684c6671c08acd905d3824d0c81fa69f60df2a3",
+      "compression": "gzip"
+    },
+    {
+      "source": "test-results/account-liveness/2026-09-12T22-20-58.735Z/workload.log",
+      "archive": "2026-09-12T22-20-58.735Z/workload.log.gz",
+      "rawSha256": "3b2551f7723bfb569a4ef983d9671a7df68f92463d8f31b5f6d9c8b6506d76b2",
+      "normalizedSha256": "3b2551f7723bfb569a4ef983d9671a7df68f92463d8f31b5f6d9c8b6506d76b2",
+      "archiveSha256": "33fe543022bff869ea0fb017d4dd5dd5ec67af89d2bef79fb7178088d3fc8ebf",
+      "compression": "gzip"
+    }
+  ]
+}

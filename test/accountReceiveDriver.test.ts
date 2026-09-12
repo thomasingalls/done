@@ -96,7 +96,10 @@ function fixture() {
     },
   };
 }
-const result = (kind: 'idle' | 'progress' | 'unknown' | 'paused', position = 0): ReceiveStep => ({
+const result = (
+  kind: 'idle' | 'progress' | 'unknown' | 'expired' | 'paused',
+  position = 0,
+): ReceiveStep => ({
   kind,
   receivedThrough: position,
 });
@@ -487,4 +490,75 @@ it('a pass skipped for readiness neither claims a verified end nor resets the un
   };
   expect((await driveReceiveStep(ops, 'token', () => 'local-storage')).kind).toBe('paused');
   expect(calls).toBe(0);
+});
+
+it('generated expiry streaks remain visible, obey capped deadlines through pauses, and recover automatically', async () => {
+  await fc.assert(
+    fc.asyncProperty(
+      fc.integer({ min: 1, max: 12 }),
+      fc.constantFrom('offline', 'local-storage'),
+      fc.constantFrom('idle', 'progress'),
+      async (count, gate, recovered) => {
+        const f = fixture();
+        f.scheduler.wake('start');
+        await f.tick(0);
+        for (let i = 0; i < count; i++) {
+          f.calls.at(-1)!.resolve(result('expired'));
+          await flush();
+          const delay = [1000, 2000, 4000, 8000, 16000, 30000][Math.min(i, 5)]!;
+          const deadline = f.now + delay;
+          expect(f.scheduler.status()).toMatchObject({
+            phase: 'retrying',
+            failures: Math.min(i + 1, 6),
+            reason: 'request-expired',
+            nextAttemptAt: deadline,
+            receivedThrough: 0,
+          });
+          f.setGate(gate);
+          f.scheduler.wake();
+          expect(f.scheduler.status().reason).toBe(
+            gate === 'local-storage' ? 'local-storage' : 'request-expired',
+          );
+          expect(f.scheduler.status().nextAttemptAt).toBeNull();
+          f.setGate('ready');
+          for (let n = 0; n < 20; n++) f.scheduler.wake();
+          expect(f.scheduler.status().reason).toBe('request-expired');
+          await f.tick(delay - 1);
+          expect(f.calls).toHaveLength(i + 1);
+          await f.tick(1);
+          expect(f.calls).toHaveLength(i + 2);
+          expect(f.calls.at(-1)!.at).toBe(deadline);
+        }
+        f.calls.at(-1)!.resolve(result(recovered, recovered === 'progress' ? 1 : 0));
+        await flush();
+        expect(f.scheduler.status()).toMatchObject({ reason: null, failures: 0 });
+        expect(f.maximum).toBe(1);
+        await f.scheduler.dispose();
+        expect(f.scheduler.status()).toMatchObject({ phase: 'closed', reason: null });
+        expect(f.timers.size).toBe(0);
+      },
+    ),
+    { seed: 1209051, numRuns: 80 },
+  );
+});
+
+it('classifies explicit expiry without giving it authority over durable progress, conflict or the Local gate', async () => {
+  for (const mode of ['expired', 'progress', 'conflict', 'paused'] as const) {
+    let after = false;
+    const ops: ReceiveDriverOperations = {
+      receiveStatus: async () => ({
+        state: after && mode === 'conflict' ? 'conflict' : 'ready',
+        receivedThrough: after && mode === 'progress' ? 1 : 0,
+      }),
+      receiveNext: async () => {
+        after = true;
+        return { kind: 'expired' };
+      },
+    };
+    const step = await driveReceiveStep(ops, 'token', () =>
+      after && mode === 'paused' ? 'local-storage' : 'ready',
+    );
+    expect(step.kind).toBe(mode === 'conflict' ? 'blocked' : mode);
+    expect(step.receivedThrough).toBe(mode === 'progress' ? 1 : 0);
+  }
 });

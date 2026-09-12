@@ -98,6 +98,7 @@ test(
     });
     const shifted = await sample(f, 'commit-expiry', async () => {
       await f.page.evaluate(() => {
+        Product.clearPrivateTransportDiagnostics();
         globalThis.livenessCommitClockShift = 60000;
       });
       expected += ' Late genuine page.';
@@ -109,16 +110,28 @@ test(
       );
       await f.page.evaluate(() => opened.sync.retry('receive'));
       await f.page.waitForFunction(
-        () => opened.sync.status.receive.phase === 'retrying',
+        () =>
+          opened.sync.status.receive.phase === 'retrying' &&
+          opened.sync.status.receive.failures === 3,
         {},
         { timeout: 30000 },
       );
       const state = await f.page.evaluate(() => ({
         status: opened.sync.status,
         expiredAtCommit: globalThis.livenessCommitExpiryObserved === true,
+        diagnostics: Product.readPrivateTransportDiagnostics(),
       }));
-      assert.equal(state.status.receive.reason, null);
-      assert.equal(state.status.receive.failures, 1);
+      assert.equal(state.status.receive.reason, 'request-expired');
+      const expiryNotes = state.diagnostics.filter(
+        (e) => e.operation === 'read-v2' && e.code === 'expired',
+      );
+      assert.equal(expiryNotes.length, 3);
+      assert(
+        expiryNotes.every(
+          (e) => e.phase === 'commit' && Object.keys(e).sort().join(',') === 'code,operation,phase',
+        ),
+      );
+      assert.equal(state.status.receive.failures, 3);
       assert(state.status.receive.nextAttemptAt !== null);
       assert.equal(state.status.receive.receivedThrough, initial);
       assert(state.expiredAtCommit);
@@ -128,7 +141,10 @@ test(
       await settle(f, initial + 1, false); // No manual retry or online wake after expiry.
       return state;
     });
-    assert(new Set(requests).size >= 2, 'Automatic retry signs a fresh request');
+    assert(new Set(requests).size >= 4, 'Each expiry and automatic recovery sign a fresh request');
+    const recoveredStatus = await f.page.evaluate(() => opened.sync.status.receive);
+    assert.equal(recoveredStatus.reason, null);
+    assert.equal(recoveredStatus.failures, 0);
     const through = await f.page.evaluate(() => opened.sync.status.receive.receivedThrough);
     assert.equal((await read(f)).master, expected);
     await close(f);

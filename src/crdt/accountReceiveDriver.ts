@@ -8,10 +8,10 @@ export interface ReceiveDriverStatus {
   readonly receivedThrough: number;
   readonly failures: number;
   readonly nextAttemptAt: number | null;
-  readonly reason: ReceiveHalt | 'local-storage' | null;
+  readonly reason: ReceiveHalt | 'local-storage' | 'request-expired' | null;
 }
 export type ReceiveStep =
-  | { kind: 'idle' | 'progress' | 'unknown' | 'paused'; receivedThrough: number }
+  | { kind: 'idle' | 'progress' | 'unknown' | 'expired' | 'paused'; receivedThrough: number }
   | { kind: 'blocked'; receivedThrough: number; reason: ReceiveHalt };
 export type ReceiveWake = 'start' | 'gate' | 'online' | 'retry';
 const realClock: DriverClock = {
@@ -43,6 +43,7 @@ export function createReceiveScheduler(options: {
     failures = 0;
   // Halt is separate from the temporary connectivity/admission gate: offline/online cannot erase it.
   let halt: ReceiveHalt | undefined, due: number | undefined;
+  let retryReason: 'request-expired' | undefined;
   let timer: unknown, work: Promise<void> | undefined;
   const publish = (next: ReceiveDriverStatus) => {
     if (Object.entries(next).every(([k, v]) => value[k as keyof ReceiveDriverStatus] === v)) return;
@@ -91,7 +92,7 @@ export function createReceiveScheduler(options: {
       receivedThrough,
       failures,
       nextAttemptAt: allowed && !work ? (due ?? null) : null,
-      reason: halt ?? (gate === 'local-storage' ? 'local-storage' : null),
+      reason: halt ?? (gate === 'local-storage' ? 'local-storage' : (retryReason ?? null)),
     });
     return !stopped && options.gate() === 'ready' && halt === undefined;
   };
@@ -131,15 +132,15 @@ export function createReceiveScheduler(options: {
           due = clock.now() + (expedited ? 0 : RECEIVE_YIELD_MS);
           expedited = false;
         } else {
-          phase =
-            result.kind === 'unknown' ? 'retrying' : result.kind === 'idle' ? 'idle' : 'working';
-          failures = result.kind === 'unknown' ? Math.min(failures + 1, 6) : 0;
-          const delay =
-            result.kind === 'unknown'
-              ? Math.min(1000 * 2 ** (failures - 1), 30000)
-              : result.kind === 'idle'
-                ? RECEIVE_POLL_MS
-                : RECEIVE_YIELD_MS;
+          const retryable = result.kind === 'unknown' || result.kind === 'expired';
+          retryReason = result.kind === 'expired' ? 'request-expired' : undefined;
+          phase = retryable ? 'retrying' : result.kind === 'idle' ? 'idle' : 'working';
+          failures = retryable ? Math.min(failures + 1, 6) : 0;
+          const delay = retryable
+            ? Math.min(1000 * 2 ** (failures - 1), 30000)
+            : result.kind === 'idle'
+              ? RECEIVE_POLL_MS
+              : RECEIVE_YIELD_MS;
           due = clock.now() + (expedited ? 0 : delay);
           expedited = false;
         }
@@ -213,7 +214,9 @@ export async function driveReceiveStep(
           ? 'idle'
           : gate() !== 'ready'
             ? 'paused'
-            : 'unknown',
+            : result.kind === 'expired'
+              ? 'expired'
+              : 'unknown',
     receivedThrough: after.receivedThrough,
   };
 }

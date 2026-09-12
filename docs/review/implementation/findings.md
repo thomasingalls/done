@@ -11,9 +11,11 @@ private development scope, not a demonstrated exploit severity.
 **Follow-up after signed `1372c39`:** the user retired v8 as a product target. The
 [bounded sync-liveness repair sequence](../../account-sync-liveness-repairs.md) improved private v9's
 creating-member composition, with [12-stage combined evidence](../../account-conformance-runs/2026-09-12-account-liveness-complete/README.md)
-and 999 passing unit tests. **F-07 remains partial:** Q-02 identifies repeated carrier loads/copies on
-each position and Q-03’s service-cache context defect is now repaired. Q-02 needs further
-repair before practical Account cutover. Historical evidence and intake responses remain unchanged.
+and 999 passing unit tests. The [Q follow-ups](./liveness-followups.md) now repair the large-request
+cache context, reduce redundant carrier work, add bounded original-source batching and expose receive
+expiry. The final campaign passes all 1,022 units and 18 liveness stages. **F-07 remains partial:**
+full-history costs and supported workload/device capacity still need qualification. Historical
+phase evidence and intake responses remain unchanged.
 
 - [F packet: af8941e..96a2040](./af8941e-96a2040.md) retains its historical responses unchanged.
 - [N addendum: 96a2040..1ceb88d](./96a2040-1ceb88d.md) has current responses to all 31 F status rows and
@@ -53,9 +55,11 @@ These IDs belong to the implementation review and must not be inserted into the 
    Individual edits near eighty positions still take 2.7–2.9 seconds; the admission loop is 6.1 seconds.
    Full history scans/comparisons, larger workloads and input-to-paint/capacity need qualification.
    Current publication, network re-entry, witness and commit checks remain; no unlimited liveness claim.
-3. **Q-05: expose receive expiry without losing recovery.** Preserve automatic fresh retry; add a
-   bounded visible reason/diagnostic and repeated-expiry→recovery tests. An arbitrary terminal halt
-   after several expiries is not accepted as the fix. F-10/N-08/P-07's completed refusal handling stands.
+3. **Q-05: repaired within the private receive lifecycle.** A distinct `request-expired` status and
+   closed 32-event diagnostics preserve capped automatic fresh retry. Two generated scheduler
+   campaigns and three native consecutive expiries followed by automatic recovery/cold replay pass.
+   See [result](./liveness-followups.md#q-05-result). No count-only terminal halt was added.
+   F-10/N-08/P-07's completed refusal handling stands.
 4. **F-20/N-06/P-05 aggregate validation and P-06 prose sweep remain next release preparation.**
    Map all required cases, prerequisites, controls and source identities; remove repeated work only
    when identities agree. Keep finite deadlines and complete failure/case reporting. After repairs,
@@ -84,8 +88,9 @@ the scheduler is single-flight and schedules idle polling after completion. The
 [initial follow-up](./account-sync-liveness.md) reproduced repeated work and the now-repaired expiry
 halt. Q-02 supplies a further finite-workload regression lead, not proof of those older universal
 claims. Its 1,000-position timing is extrapolated; the measured/reported burst already warrants repair.
-The precise 36-load and wall-clock results need a retained executable probe before being used as an
-acceptance threshold. Successful event reuse does not establish acceptable end-to-end typing capacity.
+The retained ordinary-bundle workload now reproduces the 36-load/burst mechanism and records the
+bounded repair's before/after results. Successful event reuse and faster burst drain do not establish
+acceptable end-to-end typing capacity at arbitrary history size.
 
 ## Account v8 product disposition (2026-09-12)
 
@@ -152,7 +157,7 @@ Related items have distinct behavior or completion criteria and stay separately 
 | <a id="n-07"></a>**N-07** Unnamed transport constructions | closed; covered by F-05 | [F-05](#f-05) | medium-high protocol assurance; [assessment](./96a2040-1ceb88d.md#assessment-n-07) |
 | <a id="n-08"></a>**N-08** Read-route and HTTP reason collapse | closed with F-10; bounded unsigned hints | [F-10](#f-10) | medium operations; low direct security impact; [assessment](./96a2040-1ceb88d.md#assessment-n-08) |
 | <a id="n-09"></a>**N-09** v8 offline event hides halt reason | product disposition: v8 driver retired | distinct | low diagnostics; [assessment](./96a2040-1ceb88d.md#assessment-n-09) |
-| <a id="p-01"></a>**P-01** Composed sync full-history cost and liveness cliff | partial; bounded reductions verified, practical load/copy and request-size costs remain; merged into F-07 | [F-07](#f-07) | high; highest implementation priority from this intake; [assessment](./1ceb88d-393ef43.md#assessment-p-01) |
+| <a id="p-01"></a>**P-01** Composed sync full-history cost and liveness cliff | partial; Q-02/Q-03 load/copy/burst and request-size repairs pass; full-history/workload qualification remains; merged into F-07 | [F-07](#f-07) | high; highest implementation priority from this intake; [assessment](./1ceb88d-393ef43.md#assessment-p-01) |
 | <a id="p-02"></a>**P-02** Send progress does not expedite receive | repaired; durable progress expedites idle receive, preserving backoff/halts | distinct; related [F-07](#f-07) | low latency; [assessment](./1ceb88d-393ef43.md#assessment-p-02) |
 | <a id="p-03"></a>**P-03** Remote promotion unnecessarily wakes send | repaired; native wakes match local admissions | distinct; related [F-07](#f-07) | low cost; compounds F-07; [assessment](./1ceb88d-393ef43.md#assessment-p-03) |
 | <a id="p-04"></a>**P-04** Unsigned-to-signed history discoverability | documentation navigation addressed in this intake | distinct | low record navigation; [assessment](./1ceb88d-393ef43.md#assessment-p-04) |
@@ -172,7 +177,7 @@ because sharing a neighborhood is not sharing a fix. Every supplied Q ID remains
 | <a id="q-02"></a>**Q-02** Repeated loads and per-source sync growth | bounded carrier/burst repair passes; full-history/capacity limits remain; [result](./liveness-followups.md#q-02-batching-result); [response](./393ef43-9ff48b5.md#assessment-q-02) | F-07/N-02/P-01: reproducible growing-history/burst case, measured load/copy reduction, supported capacity and batching contracts with crash/invalidation controls | high Account usability |
 | <a id="q-03"></a>**Q-03** Full request repeated in service-cache contexts | repaired; 64 KiB/1 MiB checkpoint warm/cold and authority-change controls pass; [result](./liveness-followups.md#q-03-result); [response](./393ef43-9ff48b5.md#assessment-q-03) | F-07: authenticated compact context, representative checkpoint/row sizes, warm/cold equivalence and authority-change refusal; related F-19 | medium performance, early repair |
 | <a id="q-04"></a>**Q-04** Three stale mutation controls | bounded repair complete; both coverage paths exercised; [evidence](./validation-controls.md); [response](./393ef43-9ff48b5.md#assessment-q-04) | F-20/F-21: executed-path controls actually expose forbidden outcomes, useful anchor failures, affected suites and downstream aggregate pass | high regression assurance |
-| <a id="q-05"></a>**Q-05** Receive expiry loses its reason | confirmed classification gap; fix observation, preserve retry; [response](./393ef43-9ff48b5.md#assessment-q-05) | distinct, related N-01/F-10: visible bounded reason and diagnostic, repeated expiry then recovery; no count-only terminal halt | low-medium operations |
+| <a id="q-05"></a>**Q-05** Receive expiry loses its reason | repaired: explicit retry reason, bounded diagnostics, generated backoff and native consecutive-expiry recovery pass; [result](./liveness-followups.md#q-05-result); [response](./393ef43-9ff48b5.md#assessment-q-05) | distinct, related N-01/F-10: visible bounded reason and diagnostic, repeated expiry then recovery; no count-only terminal halt | low-medium operations |
 | <a id="q-06"></a>**Q-06** Current unsigned-chain discoverability | documented in this intake; intentional signing debt remains; [response](./393ef43-9ff48b5.md#assessment-q-06) | distinct, related P-04: retained IDs/trees and authorization; future signing adds a crosswalk without rewriting receipts | low provenance |
 | <a id="q-07"></a>**Q-07** Committed work described as uncommitted | corrected in current navigation/measurement docs; [response](./393ef43-9ff48b5.md#assessment-q-07) | distinct from P-06; prior historical packets and completed entries preserved | low accuracy |
 | <a id="q-08"></a>**Q-08** Archive growth and absolute personal paths | confirmed; prospective policy work open; [response](./393ef43-9ff48b5.md#assessment-q-08) | distinct, related F-20: bounded/deduplicated retention and normalized publishable copies, durable hash-verified raw evidence before relocation, Git-history disclosure decision before public sharing | low cost; medium publication privacy |

@@ -11,6 +11,9 @@ import {
 const diagnostics = createDiagnostics();
 export const readPrivateTransportDiagnostics = diagnostics.read;
 export const clearPrivateTransportDiagnostics = diagnostics.clear;
+/** Closed, count-bounded observation from the receive owner; never request bytes or authority. */
+export const recordPrivateReceiveExpiry = (phase: 'verify' | 'commit'): void =>
+  reportDiagnostic(diagnostics.record, { operation: 'read-v2', phase, code: 'expired' });
 export async function privateDeliveryPost(
   pin: AuthorityPin,
   token: string,

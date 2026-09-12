@@ -21,7 +21,7 @@ export function fixture(factory = createSyncScheduler) {
     lane: SyncLane;
     at: number;
     finish: (
-      kind: 'idle' | 'progress' | 'unknown' | 'paused' | 'blocked' | 'error',
+      kind: 'idle' | 'progress' | 'unknown' | 'expired' | 'paused' | 'blocked' | 'error',
       position?: number,
     ) => void;
   }[] = [];
@@ -40,7 +40,10 @@ export function fixture(factory = createSyncScheduler) {
           }
           const progress =
             lane === 'send' ? { acceptedThrough: position } : { receivedThrough: position };
-          if (kind === 'blocked') yes({ kind, ...progress, reason: 'conflict' });
+          if (kind === 'expired') {
+            if (lane !== 'receive') throw Error('Expiry is a receive outcome');
+            yes({ kind, receivedThrough: position });
+          } else if (kind === 'blocked') yes({ kind, ...progress, reason: 'conflict' });
           else yes({ kind, ...progress });
         },
       });

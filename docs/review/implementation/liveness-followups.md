@@ -120,3 +120,45 @@ one position per source. All previous vector files and old ledger-home sections 
 the new §8 is explicitly pinned. This repairs the bounded burst/per-position multiplier under Q-02.
 Full retained-history scans, remaining synchronous comparison/copy work, capacity and input-to-paint
 qualification still belong to F-07/F-17/F-19; neither these runs nor Q-03 establish unlimited liveness.
+
+
+## Q-05 implementation and validation contract
+
+Both receive scheduler forms retain `request-expired` as an observation separate from terminal halt.
+Expiry follows the existing 1, 2, 4, 8, 16, 30-second capped retry sequence; count alone never halts.
+Local storage pressure overrides the displayed reason while paused, and an ordinary gate wake restores
+it without shortening the deadline. Local send wakes cannot erase receive backoff. A subsequent
+non-expiry outcome clears the expiry reason; verified progress/empty clears the failure count.
+Durable progress, conflict and Local readiness retain precedence over a transport outcome.
+
+The receive owner records only `{operation: read-v2, phase: verify|commit, code: expired}` into the
+existing non-persisted 32-event diagnostic buffer. No request, ciphertext, writing, identifier or raw
+exception is recorded. This is observation only, not authentication or a service authority hint.
+
+Two independent scheduler properties generate 80 expiry streaks each, including more than six
+successive expiries, pauses and automatic recovery. The native commit-clock case must observe three
+successive refusals without durable receive advancement, three closed commit diagnostics and at
+least four distinct requests before automatic recovery and exact cold replay. The full liveness
+campaign includes these cases, all units and the existing malformed/evidence refusal controls.
+
+
+## Q-05 result
+
+The [final follow-up campaign](../../account-conformance-runs/2026-09-12-q05/README.md) passes all four
+outer stages, 1,022 units and the updated 18-stage liveness runner with unchanged source pins. The
+native expiry case records three consecutive commit expiries, no receive-prefix advance, three exact
+closed diagnostics and five distinct requests over expiry/recovery. Removing the clock offset lets
+the existing scheduler recover without a manual retry or online wake; the reason/count clear and cold
+replay preserves exact writing. Both scheduler properties (80 histories each) cover capped backoff,
+pauses, local wakes and automatic recovery, and 100 diagnostic histories cover the 32-entry bound.
+
+Q-03's large-checkpoint controls and Q-02's batching, renderer-death, invalidation, exact retry,
+ordinary workload and growth regressions pass again in the combined runner. The source census remains
+165 files, 89 labels/templates, 22 groups and 10 manual entrypoints. No new cryptographic domain or
+wire change is part of Q-05. This closes the bounded Q-05 observation defect. F-07/F-17/F-19's history,
+workload and platform limits remain; complete release validation has not run.
+
+Next is the release-validation graph/case/deadline work (F-20/N-06/P-05), the current P-06 prose sweep
+and an immutable aggregate with explicit workload/platform/claim dispositions. Private Account
+cutover/recovery rehearsal and enrollment/adoption follow acceptable validation. The personal Local
+app and relay remain stopped, unchanged and outside these isolated campaigns.
