@@ -22,6 +22,8 @@ import {
   type EnvelopeRoute,
 } from '../../account-protocol/envelope';
 export const NET_SEAL_LIMIT = 2 ** 32;
+export const MAX_POSITION_SOURCES = 32;
+export const MAX_POSITION_BYTES = 64 * 1024;
 export interface SourceRef {
   id: string;
   index: number;
@@ -29,11 +31,14 @@ export interface SourceRef {
 }
 export type SpoolEntry =
   | { type: 'position'; position: number; source: SourceRef }
+  | { type: 'position-batch'; position: number; sources: SourceRef[] }
   | { type: 'attempt'; position: number; attempt: number }
   | { type: 'envelope'; position: number; attempt: number; wire: Bytes };
 export interface SpoolPosition {
   position: number;
   source: SourceRef;
+  /** Additional originals are fixed by the durable allocation, never added on a retry. */
+  additional?: SourceRef[];
   attempts: number[];
   wire?: Bytes;
 }
@@ -44,6 +49,10 @@ export interface SpoolState {
   sourceRecords: OpenedRecord[];
   events: Bytes[];
 }
+export const positionSources = (p: Pick<SpoolPosition, 'source' | 'additional'>): SourceRef[] => [
+  p.source,
+  ...(p.additional ?? []),
+];
 const id = (v: unknown): v is string => typeof v === 'string' && /^[0-9a-f]{32}$/.test(v);
 const positive = (v: unknown): v is number => Number.isSafeInteger(v) && Number(v) > 0;
 const hexValue = (v: unknown, max: number): Bytes => {
@@ -71,18 +80,29 @@ export function encodeSpoolEntry(entry: SpoolEntry, route: CaptureRoute): Bytes 
   )
     captureError('Invalid spool route/position');
   let detail: unknown;
-  if (entry.type === 'position') {
-    const s = entry.source;
+  if (entry.type === 'position' || entry.type === 'position-batch') {
+    const refs = entry.type === 'position' ? [entry.source] : entry.sources;
     if (
-      !id(s.id) ||
-      !Number.isSafeInteger(s.index) ||
-      s.index < 0 ||
-      s.index >= 64 ||
-      typeof s.hash !== 'string' ||
-      !/^[0-9a-f]{64}$/.test(s.hash)
+      !Array.isArray(refs) ||
+      !refs.length ||
+      refs.length > MAX_POSITION_SOURCES ||
+      (entry.type === 'position-batch' && refs.length < 2)
     )
-      captureError('Invalid source reference');
-    detail = [s.id, s.index, s.hash];
+      captureError('Invalid source batch');
+    for (const s of refs) {
+      if (
+        !s ||
+        !id(s.id) ||
+        !Number.isSafeInteger(s.index) ||
+        s.index < 0 ||
+        s.index >= 64 ||
+        typeof s.hash !== 'string' ||
+        !/^[0-9a-f]{64}$/.test(s.hash)
+      )
+        captureError('Invalid source reference');
+    }
+    const values = refs.map((s) => [s.id, s.index, s.hash]);
+    detail = entry.type === 'position' ? values[0] : values;
   } else {
     if (!positive(entry.attempt) || entry.attempt >= NET_SEAL_LIMIT)
       captureError('Invalid invocation count');
@@ -145,6 +165,18 @@ export function decodeSpoolEntry(bytes: Bytes, route: CaptureRoute): SpoolEntry 
         position: v[8],
         source: { id: v[9][0], index: v[9][1], hash: v[9][2] },
       };
+    else if (
+      v[7] === 'position-batch' &&
+      Array.isArray(v[9]) &&
+      v[9].length >= 2 &&
+      v[9].length <= MAX_POSITION_SOURCES &&
+      v[9].every((s: unknown) => Array.isArray(s) && s.length === 3)
+    )
+      result = {
+        type: 'position-batch',
+        position: v[8],
+        sources: v[9].map((s: [string, number, string]) => ({ id: s[0], index: s[1], hash: s[2] })),
+      };
     else if (v[7] === 'attempt') result = { type: 'attempt', position: v[8], attempt: v[9] };
     else if (v[7] === 'envelope' && Array.isArray(v[9]) && v[9].length === 2)
       result = {
@@ -187,6 +219,7 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
       events.push({ record, entry });
     }
   }
+  sourceRecords.sort((a, b) => a.seq - b.seq);
   const sources = captureCatalog(sourceRecords, route),
     positions: SpoolPosition[] = [],
     used = new Set<string>(),
@@ -200,21 +233,49 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
   let attempts = 0;
   for (const { record, entry: e } of events.sort((a, b) => a.record.seq - b.record.seq)) {
     const last = positions.at(-1);
-    if (e.type === 'position') {
+    if (e.type === 'position' || e.type === 'position-batch') {
       if (e.position !== positions.length + 1 || (last && !last.wire))
         captureError('Position sequence or unresolved predecessor');
-      const bytes = sources.get(e.source.id),
-        key = e.source.id + ':' + e.source.index;
-      if (!bytes || used.has(key) || sourceSequences.get(e.source.id)! >= record.seq)
-        captureError('Missing, repeated or late source');
-      const c = decodeSourceCapsule(bytes!, route);
-      try {
-        if (!c.sources[e.source.index]) captureError('Missing source index');
-      } finally {
-        eraseCapsule(c);
+      const refs = e.type === 'position' ? [e.source] : e.sources;
+      let previousSequence = -1,
+        previousIndex = -1,
+        total = 0,
+        actor = '',
+        kind = '';
+      for (const ref of refs) {
+        const bytes = sources.get(ref.id),
+          key = ref.id + ':' + ref.index,
+          sequence = sourceSequences.get(ref.id)!;
+        if (!bytes || used.has(key) || sequence >= record.seq)
+          captureError('Missing, repeated or late source');
+        if (
+          sequence < previousSequence ||
+          (sequence === previousSequence && ref.index <= previousIndex)
+        )
+          captureError('Source batch order changed');
+        const c = decodeSourceCapsule(bytes!, route);
+        try {
+          const source = c.sources[ref.index];
+          if (!source) captureError('Missing source index');
+          if (actor && (actor !== source!.actor || kind !== source!.kind))
+            captureError('Source batch actor changed');
+          actor = source!.actor;
+          kind = source!.kind;
+          total += source!.bytes.length;
+          if (refs.length > 1 && total > MAX_POSITION_BYTES) captureError('Source batch too large');
+        } finally {
+          eraseCapsule(c);
+        }
+        previousSequence = sequence;
+        previousIndex = ref.index;
+        used.add(key);
       }
-      used.add(key);
-      positions.push({ position: e.position, source: e.source, attempts: [] });
+      positions.push({
+        position: e.position,
+        source: refs[0]!,
+        ...(refs.length > 1 ? { additional: refs.slice(1) } : {}),
+        attempts: [],
+      });
     } else {
       if (!last || last.position !== e.position || last.wire)
         captureError('Spool transition without open position');
@@ -242,32 +303,47 @@ export async function verifySpool(
 ): Promise<void> {
   for (const p of state.positions) {
     const check = async () => {
-      const bytes = state.sources.get(p.source.id)!;
-      const digest = hex(new Uint8Array(await subtle.digest('SHA-256', bytes)));
-      if (digest !== p.source.hash) captureError('Referenced source changed');
-      if (!p.wire) return;
-      const c = decodeSourceCapsule(bytes, route);
+      const refs = positionSources(p),
+        originals: import('./sourceCapture').SourceUpdate[] = [];
       let body;
       try {
+        for (const ref of refs) {
+          const bytes = state.sources.get(ref.id)!;
+          const digest = hex(new Uint8Array(await subtle.digest('SHA-256', bytes)));
+          if (digest !== ref.hash) captureError('Referenced source changed');
+          const c = decodeSourceCapsule(bytes, route);
+          try {
+            const source = c.sources[ref.index]!;
+            originals.push({ ...source, bytes: source.bytes.slice() });
+          } finally {
+            eraseCapsule(c);
+          }
+        }
+        if (!p.wire) return;
         body = await openNetworkEnvelope(p.wire, networkRoute(route), signer, kg, subtle);
-        const source = c.sources[p.source.index]!;
         if (
-          body.actor_id !== source.actor ||
-          body.actor_kind !== source.kind ||
-          body.updates.length !== 1 ||
-          hex(body.updates[0]!) !== hex(source.bytes)
+          body.updates.length !== originals.length ||
+          originals.some(
+            (source, i) =>
+              body!.actor_id !== source.actor ||
+              body!.actor_kind !== source.kind ||
+              hex(body!.updates[i]!) !== hex(source.bytes),
+          )
         )
           captureError('Persisted envelope source differs');
       } finally {
-        eraseCapsule(c);
+        for (const source of originals) source.bytes.fill(0);
         for (const b of body?.updates ?? []) b.fill(0);
       }
     };
     if (reuse)
       await reuse.memo.check(
         'spool:' + p.position,
-        JSON.stringify([route, p.source]),
-        [state.sources.get(p.source.id)!, ...(p.wire ? [p.wire] : [])],
+        JSON.stringify([route, positionSources(p)]),
+        [
+          ...positionSources(p).map((ref) => state.sources.get(ref.id)!),
+          ...(p.wire ? [p.wire] : []),
+        ],
         check,
         reuse.current,
       );

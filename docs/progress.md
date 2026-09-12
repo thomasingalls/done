@@ -43,7 +43,7 @@ that is no longer active.
 ---
 
 
-## Active slice: Carrier workload and bounded source batching — Q-02 (`L-1`)
+## Active slice: Remaining carrier comparisons, then receive expiry — Q-02 / Q-05 (`L-1`)
 
 ```yaml
 gate: L-1
@@ -52,7 +52,7 @@ branch: codex/encrypted-store-contract-corrections
 status: in flight
 blocks_on: none; Q-03 cache-context repair complete
 debts: consult docs/review/remediation/debts.json
-updated: 2026-09-12
+updated: 2026-09-13
 ```
 
 **Roadmap position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
@@ -71,14 +71,14 @@ each independently refuse; their joint omission exposes missing content. The ear
 repair attempt is retained. Fresh disposable build and actual current gate executions restore trace
 readback. No production behavior changed; complete release/contract aggregates were not rerun.
 
-**Current work.** Validation repair is unsigned `dceec5c`; Q-03 is unsigned `2dcd897`. The
-[Q-02 carrier subphase](./review/implementation/liveness-followups.md#q-02-carrier-result) now passes.
-The independently reproduced thirty-edit burst falls from 112.7 to 90.1 seconds, and full carrier
-loads from 36 to 31 per measured edit. Complete rows, publication guards and network re-entry checks
-remain current. Eight stages pass, including 1,016 units and 23 native controls; cold replay matches.
-Q-02 now needs bounded original-source batching to reduce positions per burst. Q-05 follows with
-visible expiry classification and automatic fresh retry. All intermediate commits remain authorized
-unsigned; the reminder follows descendants of `1372c39`.
+**Current work.** Q-03 is unsigned `2dcd897`; Q-02 carrier work is unsigned `77a2753`. The
+[bounded source-batch phase](./review/implementation/liveness-followups.md#q-02-batching-result) now
+passes the full 18-stage liveness runner, 1,018 units and 34 parser tests. The thirty-edit burst falls
+from 112.7 seconds / thirty positions to 9.7 seconds / three positions. Complete source/attribution
+coverage and cold writing match. Six renderer-death boundaries and exact retry/later edits pass.
+Retained-history comparison costs remain in individual edits and local admission. Inspect that last
+small hot path before Q-05's visible expiry reason and automatic fresh retry. Intermediate commits
+remain authorized unsigned; the reminder follows descendants of `1372c39`.
 
 **After those repairs.** F-20/N-06/P-05 complete graph/coverage/deadline work and P-06 prose precede
 an immutable release-validation result and explicit workload/platform/claim dispositions. Private

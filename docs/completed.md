@@ -3473,3 +3473,16 @@ selected verified-result copies and two duplicate-view reductions preserve curre
 stages pass, including 1,016 unit tests, complete content controls and 23 native ownership/tampering/
 held-network/abort tests. Cold replay matches. This closes the carrier subphase, not Q-02: bounded
 same-actor original-source batching follows. Full history/capacity and release qualification remain.
+
+## 2026-09-13 — Q-02 bounded original-source batching (`L-1`)
+
+After unsigned carrier reduction `77a2753`, added the explicitly specified/pinned private v9
+`position-batch` allocation: 2–32 same-actor originals, at most 64 KiB, exact capsule/index/hash order
+and separate original envelope updates. Persisted allocations freeze membership; fresh grants and
+exact envelope retry retain their boundaries. [Evidence](./account-conformance-runs/2026-09-12-q02-batch/README.md)
+passes 1,018 units, 34 parser tests and the updated 18-stage liveness campaign, including 120 generated
+batch histories, semantic omission controls, six commit/renderer-death cases and lost-reply/later-edit
+separation. The original thirty-edit burst drains in 9.70 seconds / three positions versus 112.66 /
+thirty before Q-02. Cold writing/source coverage match. Individual edit cost remains linear in history
+(2.72–2.87 seconds near eighty positions); local admission loop remains 6.14 seconds. Capacity and
+responsiveness qualification remain explicit. Prior vectors, historical ledger sections and L-2 preserved.

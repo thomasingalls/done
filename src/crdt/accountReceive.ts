@@ -453,6 +453,7 @@ async function openAccountReceiveOwner(
           }
         }),
       ...createEnvelopePreparation({
+        batchSources: true,
         key: () => base.generationKey,
         signer: () => signer!,
         whenDurable,
@@ -470,6 +471,7 @@ async function openAccountReceiveOwner(
               positions: spool.positions.map((p) => ({
                 position: p.position,
                 source: { ...p.source },
+                ...(p.additional ? { additional: p.additional.map((s) => ({ ...s })) } : {}),
                 attempts: [...p.attempts],
                 persisted: !!p.wire,
               })),

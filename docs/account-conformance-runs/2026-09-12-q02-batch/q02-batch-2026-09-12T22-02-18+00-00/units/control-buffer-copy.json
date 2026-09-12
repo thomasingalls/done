@@ -1,0 +1,10 @@
+{
+  "mode": "buffer-copy",
+  "changes": [
+    [
+      "return bytes.slice();",
+      "return bytes;"
+    ]
+  ],
+  "outcome": "Retained caller-mutated request differs from verified bytes."
+}

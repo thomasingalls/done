@@ -47,15 +47,27 @@ test(
       report('growth', { metadata: f.metadata, status: 'running', rows, history, expected });
     const observe = async (jobs) => {
       await offline(f);
-      const shape = await f.page.evaluate(async () => ({
-        capsules: (await opened.listCaptures()).length,
-        delivery: await opened.deliveryStatus(),
-        spool: await opened.spoolStatus(),
-        receive: await opened.receiveStatus(),
-        documentBytes: new TextEncoder().encode(editor.read().master).length,
-      }));
-      assert.equal(shape.delivery.acceptedThrough, shape.capsules);
-      assert.equal(shape.receive.receivedThrough, shape.capsules);
+      const shape = await f.page.evaluate(async () => {
+        const captures = await opened.listCaptures();
+        const sourceRefs = captures.flatMap((c) => c.sources.map((_, index) => [c.id, index]));
+        for (const c of captures) for (const s of c.sources) s.bytes.fill(0);
+        return {
+          capsules: captures.length,
+          sourceRefs,
+          delivery: await opened.deliveryStatus(),
+          spool: await opened.spoolStatus(),
+          receive: await opened.receiveStatus(),
+          documentBytes: new TextEncoder().encode(editor.read().master).length,
+        };
+      });
+      assert.deepEqual(
+        shape.spool.positions.flatMap((p) =>
+          [p.source, ...(p.additional ?? [])].map((s) => [s.id, s.index]),
+        ),
+        shape.sourceRefs,
+      );
+      assert.equal(shape.delivery.acceptedThrough, shape.spool.positions.length);
+      assert.equal(shape.receive.receivedThrough, shape.spool.positions.length);
       for (let repeat = 0; repeat < 3; repeat++) {
         rows.push(
           await sample(f, `status-${jobs}-${repeat}`, () =>

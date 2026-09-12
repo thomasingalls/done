@@ -1,6 +1,7 @@
 # Account capsule and ledger byte contracts
 
-D3 pins the private runtime at `1897848`. This is the plaintext layout inside existing encrypted
+D3 pins the private runtime at `1897848`. Sections 1–7 retain that contract; §8 adds the later
+Q-02 private v9 batching extension. This is the plaintext layout inside existing encrypted
 carriers, not a new wire protocol or authority grant. Runtime bytes, versions and acceptance predicates
 are unchanged. Only `remaining-local-account-ledger` is closed here; counter-v2 key/MAC framing and the
 inherited Local custody/store/journal qualification remain the following bridge.
@@ -229,3 +230,45 @@ This is one creating stream with held first-epoch authority. It does not finish 
 advancement, successor baselines, general ledger compaction, backlog scaling, restore/clone support,
 additional-device issuance, finalization/recovery or independent review. Migration-only Local provenance
 needs its explicit later disposition. F-05/F-06 and the remaining D/Local records stay open.
+
+## 8. Private v9 bounded original-source allocation extension
+
+Q-02 adds one known spool type; all earlier source, singleton position, attempt, envelope, delivery
+and inbound encodings remain byte-identical. The outer spool tag/version, route and ten-item arity
+are unchanged. Only the composed v9 sender emits the extension; pre-batch readers reject its type.
+No personal Account is deployed, so this is a private protocol extension, not a silent deployed-data
+migration. An old bundle cannot open a workspace after this entry appears; it must use the new reader.
+
+```
+["done/account-spool/v1", 1, ...R, "position-batch", position,
+ [[capsuleId, sourceIndex, wholeCapsuleHash], ...]]
+```
+
+The `heads` record names 2–32 originals, with the same strict reference fields as §3. The writer
+selects the first contiguous unallocated run in physical capsule order and source-index order,
+stopping at an actor/kind boundary, 32 originals or 64 KiB total original bytes. Every original
+remains a separate envelope `updates` item, in allocation order; no Yjs merge or re-encoding occurs.
+A single original exceeding 64 KiB retains the existing singleton encoding and existing size limits.
+The 64 KiB bound applies to multi-original batches and is not a new singleton acceptance guarantee.
+
+Replay checks every reference exists before allocation, is in ascending physical/index order, has
+not already been allocated (including within this batch), and uses the same actor and kind. Batch
+original bytes total at most 64 KiB. The verifier authenticates every whole-capsule hash, includes
+every reference and exact capsule/wire byte input in verification reuse, and requires one matching
+envelope update per reference, in order, with that actor/kind. A different second original with valid
+member encryption/signature still refuses. The enclosing authenticated record and shared witness
+cover the complete allocation; the list alone grants no authority.
+
+One position and one fresh invocation grant cover the group. Once allocation commits, later local
+sources cannot join it. Interrupted sealing consumes its invocation; retry reserves another before
+sealing the same originals. A persisted envelope is reused byte-for-byte after a lost reply or cold
+restart. Publication, custody, current membership, spool-witness and native commit checks still apply.
+Inbound atomic promotion retains every original plus its evidence event and existing coverage checks.
+
+`test/spoolBatch.test.ts` supplies generated allocation/attribution/burn histories and byte/count/
+order/duplicate/late-source negatives. `test/account-ledger-contract/batch.test.mjs` independently
+constructs canonical bytes, checks old-reader refusal, and exercises actual semantic omissions for
+actor, order, size and signed second-update substitution. `test/account-sync/batch.test.mjs` kills
+the renderer around allocation/grant/envelope commits and exercises exact reply-loss retry with
+later edits. The natural workload is `test/account-liveness/workload.test.mjs`. Earlier D3 vectors
+remain unchanged; they do not by themselves qualify this new case or a complete release aggregate.

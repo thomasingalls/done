@@ -37,9 +37,11 @@ export const spoolValues = (r, e) => [
   e.position,
   e.type === 'position'
     ? [e.source.id, e.source.index, e.source.hash]
-    : e.type === 'attempt'
-      ? e.attempt
-      : [e.attempt, e.wire],
+    : e.type === 'position-batch'
+      ? e.sources.map((s) => [s.id, s.index, s.hash])
+      : e.type === 'attempt'
+        ? e.attempt
+        : [e.attempt, e.wire],
 ];
 export const deliveryValues = (r, a, e) => [
   'done/account-delivery/v1',

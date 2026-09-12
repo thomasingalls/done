@@ -57,7 +57,7 @@ test(
     await edit(f.page, initial.length, 0, ' COMPOSED');
     await settled(f.page);
     const c = await captures(f.page),
-      expected = c.reduce((n, c) => n + c.sources.length, 0);
+      expected = (await f.page.evaluate(() => opened.spoolStatus())).positions.length;
     assert.equal(c.length, baseline.length + 1);
     assert.equal(await view(f.page), initial + ' COMPOSED');
     assert.equal(maximum, 1);
@@ -70,8 +70,8 @@ test(
       decodeEnvelopeBody(new Uint8Array(b)),
     );
     assert.deepEqual(
-      bodies.map((b) => [b.actor_id, b.actor_kind, b.updates.map((b) => [...b])]),
-      c.flatMap((c) => c.sources.map((s) => [s.actor, s.kind, [s.bytes]])),
+      bodies.flatMap((b) => b.updates.map((u) => [b.actor_id, b.actor_kind, [...u]])),
+      c.flatMap((c) => c.sources.map((s) => [s.actor, s.kind, s.bytes])),
     );
     assert.equal((await syncStatus(f.page)).receive.receivedThrough, expected);
     assert.deepEqual(
@@ -92,7 +92,9 @@ test(
     );
     const spool = await f.page.evaluate(() => opened.spoolStatus());
     assert.deepEqual(
-      spool.positions.map((p) => [p.source.id, p.source.index]),
+      spool.positions.flatMap((p) =>
+        [p.source, ...(p.additional ?? [])].map((s) => [s.id, s.index]),
+      ),
       c.flatMap((c) => c.sources.map((_, i) => [c.id, i])),
     );
     await f.page.evaluate(() => opened.compactContent());
@@ -154,7 +156,10 @@ test(
     await syncing(f.page, item);
     await settled(f.page);
     assert.equal(sent[0], sent[1]);
-    assert.equal(f.invocations.length, count + c.reduce((n, c) => n + c.sources.length, 0) - 1);
+    assert.equal(
+      f.invocations.length,
+      count + (await f.page.evaluate(() => opened.spoolStatus())).positions.length - 1,
+    );
     assert.deepEqual(await captures(f.page), c);
     await close(f.page);
   },
@@ -258,8 +263,8 @@ test(
         decodeEnvelopeBody(new Uint8Array(b)),
       );
     assert.deepEqual(
-      bodies.map((b) => [b.actor_id, b.actor_kind, b.updates.map((b) => [...b])]),
-      c.flatMap((c) => c.sources.map((s) => [s.actor, s.kind, [s.bytes]])),
+      bodies.flatMap((b) => b.updates.map((u) => [b.actor_id, b.actor_kind, [...u]])),
+      c.flatMap((c) => c.sources.map((s) => [s.actor, s.kind, s.bytes])),
     );
     await close(f.page);
   },

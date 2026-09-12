@@ -158,6 +158,7 @@ try {
     'test/verifiedRecords.test.ts',
     'test/verificationMemo.test.ts',
     'test/spoolRecord.test.ts',
+    'test/spoolBatch.test.ts',
     'test/accountSyncDriver.test.ts',
   ]);
   await run('controlled', ['--test', 'test/account-liveness/controlled.test.mjs'], 200000);
@@ -167,6 +168,8 @@ try {
       '--test',
       'test/account-sync/native.test.mjs',
       'test/account-sync/controls.test.mjs',
+      'test/account-sync/batch.test.mjs',
+      'test/account-sync/generated.test.mjs',
       'test/account-receive-transport/native.test.mjs',
     ],
     300000,
@@ -194,6 +197,17 @@ try {
     ],
     240000,
   );
+  await run(
+    'ledger-batches',
+    [
+      '--test',
+      'test/account-ledger-contract/formats.test.mjs',
+      'test/account-ledger-contract/controls.test.mjs',
+      'test/account-ledger-contract/batch.test.mjs',
+    ],
+    90000,
+  );
+  await run('workload', ['--test', 'test/account-liveness/workload.test.mjs'], 750000);
   await run('view', ['--test', 'test/account-liveness/view.test.mjs'], 180000);
   await run('growth', ['--test', 'test/account-liveness/native.test.mjs'], 930000);
   await run('lint', [

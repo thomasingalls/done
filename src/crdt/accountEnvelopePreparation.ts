@@ -13,6 +13,10 @@ import {
   NET_SEAL_LIMIT,
   type SpoolEntry,
   type SpoolState,
+  type SourceRef,
+  positionSources,
+  MAX_POSITION_SOURCES,
+  MAX_POSITION_BYTES,
 } from './spoolRecord';
 import { sealNetworkEnvelope } from '../../account-protocol/envelope';
 import { ContentError } from './contentRecord';
@@ -24,6 +28,7 @@ export interface PersistedEnvelope {
 }
 type Owner = ReturnType<typeof prepareAccountCustody>;
 export interface EnvelopePreparationContext {
+  batchSources?: true;
   key(): Bytes;
   signer(): CryptoKey;
   whenDurable(): Promise<unknown>;
@@ -37,6 +42,47 @@ export interface EnvelopePreparationContext {
   run<T>(
     operation: (task: SessionTask, owner: Owner, route: CaptureRoute) => Promise<T>,
   ): Promise<T>;
+}
+/** Select a bounded contiguous run of still-unallocated originals; never merge their bytes. */
+export async function selectEnvelopeSources(
+  state: SpoolState,
+  route: CaptureRoute,
+  batch: boolean,
+  subtle: SubtleCrypto,
+): Promise<SourceRef[]> {
+  const used = new Set(
+    state.positions.flatMap((p) => positionSources(p).map((s) => s.id + ':' + s.index)),
+  );
+  const selected: SourceRef[] = [];
+  let actor = '',
+    kind = '',
+    total = 0;
+  for (const [id, bytes] of state.sources) {
+    const c = decodeSourceCapsule(bytes, route);
+    let hash: string | undefined;
+    try {
+      for (const [index, source] of c.sources.entries()) {
+        if (used.has(id + ':' + index)) continue;
+        if (
+          selected.length &&
+          (!batch ||
+            selected.length >= MAX_POSITION_SOURCES ||
+            source.actor !== actor ||
+            source.kind !== kind ||
+            total + source.bytes.length > MAX_POSITION_BYTES)
+        )
+          return selected;
+        hash ??= hex(new Uint8Array(await subtle.digest('SHA-256', bytes)));
+        selected.push({ id, index, hash });
+        actor = source.actor;
+        kind = source.kind;
+        total += source.bytes.length;
+      }
+    } finally {
+      eraseCapsule(c);
+    }
+  }
+  return selected;
 }
 export function createEnvelopePreparation(context: EnvelopePreparationContext) {
   const runCaptureTask = context.run;
@@ -85,34 +131,26 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
           await context.checkPublication(task, owner, route, records);
           let position = state.positions.at(-1);
           if (!position || position.wire) {
-            const used = new Set(state.positions.map((p) => p.source.id + ':' + p.source.index));
-            let selected;
-            for (const [id, bytes] of state.sources) {
-              const c = decodeSourceCapsule(bytes, route);
-              try {
-                const index = c.sources.findIndex((_, i) => !used.has(id + ':' + i));
-                if (index >= 0) {
-                  selected = {
-                    id,
-                    index,
-                    hash: hex(
-                      new Uint8Array(
-                        await task.wait(() => subtleFor(task).digest('SHA-256', bytes)),
-                      ),
-                    ),
-                  };
-                  break;
-                }
-              } finally {
-                eraseCapsule(c);
-              }
-            }
-            if (!selected) return null;
-            await append(task, owner, route, {
-              type: 'position',
-              position: state.positions.length + 1,
-              source: selected,
-            });
+            const selected = await task.wait(() =>
+              selectEnvelopeSources(state, route, context.batchSources === true, subtleFor(task)),
+            );
+            if (!selected.length) return null;
+            await append(
+              task,
+              owner,
+              route,
+              selected.length === 1
+                ? {
+                    type: 'position',
+                    position: state.positions.length + 1,
+                    source: selected[0]!,
+                  }
+                : {
+                    type: 'position-batch',
+                    position: state.positions.length + 1,
+                    sources: selected,
+                  },
+            );
             for (const r of records) r.bytes.fill(0);
             ({ records, state } = await verified(task, owner, route));
             position = state.positions.at(-1)!;
@@ -126,13 +164,26 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
             attempt,
           });
           // This acknowledged continuation owns exactly one invocation. No persisted grant is reusable.
-          const capsule = decodeSourceCapsule(state.sources.get(position.source.id)!, route);
+          const originals: import('./sourceCapture').SourceUpdate[] = [];
           try {
-            const source = capsule.sources[position.source.index]!;
+            for (const ref of positionSources(position)) {
+              const capsule = decodeSourceCapsule(state.sources.get(ref.id)!, route);
+              try {
+                const source = capsule.sources[ref.index]!;
+                originals.push({ ...source, bytes: source.bytes.slice() });
+              } finally {
+                eraseCapsule(capsule);
+              }
+            }
+            const first = originals[0]!;
             wire = await task.wait(() =>
               sealNetworkEnvelope(
                 { ...networkRoute(route), seq: position.position },
-                { actor_id: source.actor, actor_kind: source.kind, updates: [source.bytes] },
+                {
+                  actor_id: first.actor,
+                  actor_kind: first.kind,
+                  updates: originals.map((s) => s.bytes),
+                },
                 context.key(),
                 context.signer(),
                 task.step(() => random(12)),
@@ -140,7 +191,7 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
               ),
             );
           } finally {
-            eraseCapsule(capsule);
+            for (const source of originals) source.bytes.fill(0);
           }
           await append(task, owner, route, {
             type: 'envelope',

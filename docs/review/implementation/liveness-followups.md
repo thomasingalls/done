@@ -87,3 +87,36 @@ The final instrumented edit falls from 36 to 31 loads, 3.67 to 2.75 seconds insi
 thirty positions. Final five individually settled edits fall from 3.61–4.09 to 2.76–2.91 seconds.
 Cold writing matches in both runs. These are paired runs, not a statistical performance guarantee.
 The reduction is useful but insufficient; Q-02 remains open for bounded source batching.
+
+## Q-02 batching contract
+
+After carrier subphase `77a2753`, [ledger §8](../../account-crypto/account-ledger.md#8-private-v9-bounded-original-source-allocation-extension)
+defines the private v9 `position-batch` entry. It commits 2–32 same-actor originals totaling at most
+64 KiB; singleton encoding stays unchanged. All original bytes, capsule/index/hash identities, order,
+actor and kind are retained. Retry cannot add later sources. Existing grant budgets, publication and
+commit checks remain. Older readers refuse the new type; no deployed Account data needs migration.
+
+Exit: independent canonical bytes and old-reader refusal, effective actor/order/size/body-substitution
+omission controls, 120 generated actor/source/burn histories, native renderer death before/after
+allocation/attempt/envelope commits, lost reply followed by later edits, full current composed sync
+histories, ledger/parser regressions and the original natural workload. Preserve full source coverage
+in test assertions even though network position count is no longer source count. Rerun current
+construction classification and record the explicit extension without changing previous vector bytes.
+
+## Q-02 batching result
+
+[Batching evidence](../../account-conformance-runs/2026-09-12-q02-batch/README.md) passes all five outer
+stages, including 1,018 unit tests, 34 parser tests and the complete updated 18-stage liveness runner.
+The same thirty-edit burst now creates three positions and drains in 9.70 seconds (local admission
+loop 6.14 seconds), versus thirty positions / 112.66 seconds before either Q-02 subphase and thirty
+positions / 90.11 seconds after collection/projection alone. The final five individually settled
+edits remain 2.72–2.87 seconds near eighty positions. Final total positions differ because the startup
+sources themselves can now batch; complete source coverage and cold writing are checked in every run.
+
+120 generated source/actor/burn histories, independently built batch bytes, four effective semantic
+omissions, prior-reader refusal, six renderer-death commit boundaries and lost-reply/later-edit cases
+pass. The existing composed generated histories now check all original references instead of assuming
+one position per source. All previous vector files and old ledger-home sections remain unchanged;
+the new §8 is explicitly pinned. This repairs the bounded burst/per-position multiplier under Q-02.
+Full retained-history scans, remaining synchronous comparison/copy work, capacity and input-to-paint
+qualification still belong to F-07/F-17/F-19; neither these runs nor Q-03 establish unlimited liveness.

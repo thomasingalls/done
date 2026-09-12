@@ -112,15 +112,17 @@ test(
               assert.equal(await view(f.page), expected);
               const c = await captures(f.page);
               assert.equal(c.length, baseline.length + counter);
-              const n = c.reduce((n, c) => n + c.sources.length, 0),
+              const spool = await f.page.evaluate(() => opened.spoolStatus());
+              const n = spool.positions.length,
                 status = await syncStatus(f.page);
               assert.equal(status.send.acceptedThrough, n);
               assert.equal(status.receive.receivedThrough, n);
               assert.equal(wires.size, n);
               assert.equal(f.invocations.length, n);
-              const spool = await f.page.evaluate(() => opened.spoolStatus());
               assert.deepEqual(
-                spool.positions.map((p) => [p.source.id, p.source.index]),
+                spool.positions.flatMap((p) =>
+                  [p.source, ...(p.additional ?? [])].map((s) => [s.id, s.index]),
+                ),
                 c.flatMap((c) => c.sources.map((_, i) => [c.id, i])),
               );
             }

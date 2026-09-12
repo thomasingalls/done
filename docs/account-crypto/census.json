@@ -157,7 +157,7 @@
     },
     {
       "path": "src/crdt/accountEnvelopePreparation.ts",
-      "sha256": "99498c4dba46d913b74a2816f5824f24c65ceafed61e5057b2f6085e4d93113f"
+      "sha256": "15026708bb8961bca7df9045f8109aa8f0cdb3b726a285f389f20b0aefd82ee6"
     },
     {
       "path": "src/crdt/accountInbound.ts",
@@ -169,7 +169,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "d83dcf7d4666dec365d507198221d8ace4e511fa298d9bd11c1aa78508f40237"
+      "sha256": "acc14b0b6559d919d6b13491455d4ff9ebe50f9c9a2fb3db4a7f3096746c517a"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -429,7 +429,7 @@
     },
     {
       "path": "src/crdt/spoolRecord.ts",
-      "sha256": "8932f2863f33b409cceffa184241826146220a9e66117dd17d80672a9ea88321"
+      "sha256": "de111717ec3ab5492eac0dcfb340962735431a455d3a79af1cb96a0686786019"
     },
     {
       "path": "src/crdt/startupClassification.ts",
@@ -799,7 +799,7 @@
       "sites": [
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 285
+          "line": 361
         }
       ]
     },
@@ -813,11 +813,11 @@
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 107
+          "line": 127
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 132
+          "line": 152
         }
       ]
     },
@@ -1635,7 +1635,7 @@
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 182
+          "line": 214
         }
       ]
     },

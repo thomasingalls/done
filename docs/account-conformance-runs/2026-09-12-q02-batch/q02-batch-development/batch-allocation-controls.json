@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "controls": [
+    {
+      "name": "batchActor",
+      "baseline": "refused",
+      "guardOmitted": "accepted"
+    },
+    {
+      "name": "batchOrder",
+      "baseline": "refused",
+      "guardOmitted": "accepted"
+    },
+    {
+      "name": "batchBytes",
+      "baseline": "refused",
+      "guardOmitted": "accepted"
+    }
+  ]
+}

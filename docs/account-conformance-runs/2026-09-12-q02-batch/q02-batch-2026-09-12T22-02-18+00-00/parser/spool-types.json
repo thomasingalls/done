@@ -1,0 +1,29 @@
+{
+  "failed": false,
+  "interrupted": false,
+  "numRuns": 400,
+  "numSkips": 0,
+  "numShrinks": 0,
+  "seed": 112106,
+  "counterexample": null,
+  "counterexamplePath": null,
+  "error": null,
+  "errorInstance": null,
+  "failures": [],
+  "executionSummary": [],
+  "verbose": 0,
+  "runConfiguration": {
+    "seed": 112106,
+    "numRuns": 400,
+    "maxSkipsPerRun": 100,
+    "markInterruptAsFailure": false,
+    "skipEqualValues": false,
+    "ignoreEqualValues": false,
+    "path": "",
+    "unbiased": false,
+    "verbose": 0,
+    "examples": [],
+    "endOnFailure": false,
+    "includeErrorInReport": false
+  }
+}

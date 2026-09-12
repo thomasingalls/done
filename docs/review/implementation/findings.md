@@ -45,15 +45,14 @@ These IDs belong to the implementation review and must not be inserted into the 
    refuses; removing both startup/full and owner/reuse checks exposes the forbidden result. The
    review's reuse-only retarget suggestion was incomplete. Full contract/crypto/release aggregates
    remain separate F-20 work, and subsequent source edits require fresh applicable checks.
-2. **F-07 remains partial: Q-02 requires further liveness work before practical Account cutover.**
-   Verification reuse, owned HTTP waits, expiry retry and scheduler wakes are implemented. Repeated
-   full carrier loads/copies remain. The reviewer reports a thirty-character burst at 80 positions
-   admitted locally in 6.8 seconds and accepted/read back in 117 seconds; these precise timings are
-   not independently reproduced here. [Q-03 is repaired](./liveness-followups.md#q-03-result): large-checkpoint warm/cold service tests pass.
-   Preserve a repeatable growth/burst workload and design
-   revision-bound load reuse and safe batching (Q-02). Keep exact input identity, current publication
-   guards, network re-entry checks, durable source identity and cold-replay controls. Do not remove
-   checks merely because a scheduler pass began with a verified view.
+2. **F-07 remains partial: bounded Q-02/Q-03 repairs pass; retained-history/capacity costs remain.**
+   [Q-03](./liveness-followups.md#q-03-result) retains warm reuse with large checkpoints.
+   [Q-02](./liveness-followups.md#q-02-batching-result) reduces full loads from 36 to 31, then batches
+   exact same-actor originals. The reproduced thirty-edit burst falls from 112.7 seconds / thirty
+   positions to 9.7 seconds / three positions, with original coverage and cold writing intact.
+   Individual edits near eighty positions still take 2.7–2.9 seconds; the admission loop is 6.1 seconds.
+   Full history scans/comparisons, larger workloads and input-to-paint/capacity need qualification.
+   Current publication, network re-entry, witness and commit checks remain; no unlimited liveness claim.
 3. **Q-05: expose receive expiry without losing recovery.** Preserve automatic fresh retry; add a
    bounded visible reason/diagnostic and repeated-expiry→recovery tests. An arbitrary terminal halt
    after several expiries is not accepted as the fix. F-10/N-08/P-07's completed refusal handling stands.
@@ -111,7 +110,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-04"></a>**F-04** Fresh activation assertion | closed; [assessment](./96a2040-1ceb88d.md#assessment-f-04) | medium authorization contract | —; [account-service/core.ts:856](../../../account-service/core.ts) |
 | <a id="f-05"></a>**F-05** Construction ownership and byte contracts | historical closure retained; current census restored under [Q-01](#q-01); [assessment](./393ef43-9ff48b5.md#assessment-f-05) | high protocol assurance | [N-07](#n-07); [docs/review/implementation/account-crypto-closure.md](../../../docs/review/implementation/account-crypto-closure.md) |
 | <a id="f-06"></a>**F-06** Recovery payload vectors | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-06) | medium-high interoperability | —; [docs/review/implementation/account-crypto-closure.md](../../../docs/review/implementation/account-crypto-closure.md) |
-| <a id="f-07"></a>**F-07** Repeated full-history verification | partial; bounded reductions retained, repeated-load and cache-size residuals open; [Q-02](#q-02), [Q-03](#q-03); [assessment](./393ef43-9ff48b5.md#assessment-f-07) | high Account liveness | [N-01](#n-01), [N-02](#n-02), [P-01](#p-01); [src/crdt/accountReceive.ts:104](../../../src/crdt/accountReceive.ts) |
+| <a id="f-07"></a>**F-07** Repeated full-history verification | partial; bounded reductions retained, retained-history/capacity costs remain after Q-02/Q-03 repairs; [Q-02](#q-02), [Q-03](#q-03); [assessment](./393ef43-9ff48b5.md#assessment-f-07) | high Account liveness | [N-01](#n-01), [N-02](#n-02), [P-01](#p-01); [src/crdt/accountReceive.ts:104](../../../src/crdt/accountReceive.ts) |
 | <a id="f-08"></a>**F-08** Source-free reopen capsules | product disposition: v8 retired; internal setup retained; [assessment](./96a2040-1ceb88d.md#assessment-f-08) | low waste/latency | [N-04](#n-04); [src/crdt/accountReceive.ts:489](../../../src/crdt/accountReceive.ts) |
 | <a id="f-09"></a>**F-09** Fail-closed diagnostics and salvage | partial; current-format Local salvage complete, Account/key-loss scope remains; [assessment](./96a2040-1ceb88d.md#assessment-f-09) | medium recoverability | —; [docs/storage-contract.md](../../../docs/storage-contract.md) |
 | <a id="f-10"></a>**F-10** Service and client error classification | closed in bounded private composition; [evidence](../../account-conformance-runs/2026-09-12-failure-diagnostics/README.md); [assessment](./96a2040-1ceb88d.md#assessment-f-10) | medium operations; low direct security impact | [N-08](#n-08), [P-07](#p-07); [account-service/delivery.ts:608](../../../account-service/delivery.ts) |
@@ -145,7 +144,7 @@ Related items have distinct behavior or completion criteria and stay separately 
 | ID | Current disposition | Work item | Importance / current response |
 | --- | --- | --- | --- |
 | <a id="n-01"></a>**N-01** Receive expiry coupled to full-history verification | repaired: transaction expiry refusal and automatic fresh retry; merged into F-07 | [F-07](#f-07) | high Account liveness; [assessment](./96a2040-1ceb88d.md#assessment-n-01) |
-| <a id="n-02"></a>**N-02** Growing client/service verification multipliers | partial; verification reuse implemented, Q-02/Q-03 residuals open; merged into F-07 | [F-07](#f-07) | high in the current composition; [assessment](./96a2040-1ceb88d.md#assessment-n-02) |
+| <a id="n-02"></a>**N-02** Growing client/service verification multipliers | partial; verification reuse implemented, bounded Q-02/Q-03 repairs pass; full-history/capacity residuals remain; merged into F-07 | [F-07](#f-07) | high in the current composition; [assessment](./96a2040-1ceb88d.md#assessment-n-02) |
 | <a id="n-03"></a>**N-03** Fetch holds the serialized carrier task | repaired for supported v9 read and submission waits; close/drain/current checks retained | distinct; related [F-07](#f-07) | medium local responsiveness; [assessment](./96a2040-1ceb88d.md#assessment-n-03) |
 | <a id="n-04"></a>**N-04** v8 driven reopen capsule | product disposition: v8 retired; merged into F-08 | [F-08](#f-08) | low; [assessment](./96a2040-1ceb88d.md#assessment-n-04) |
 | <a id="n-05"></a>**N-05** Unspecified receipt baseline hash | closed by byte-contract specification | distinct | low compatibility; [assessment](./96a2040-1ceb88d.md#assessment-n-05) |
@@ -170,7 +169,7 @@ because sharing a neighborhood is not sharing a fix. Every supplied Q ID remains
 | ID | Assessment / intent | Work item and completion criterion | Importance |
 | --- | --- | --- | --- |
 | <a id="q-01"></a>**Q-01** Construction census and receipt drift | bounded repair complete; [evidence](./validation-controls.md); [response](./393ef43-9ff48b5.md#assessment-q-01) | F-20, related F-05: reviewed current classification/site pins, passing live gate, refreshed source-bound receipts and prerequisite coverage | high validation integrity |
-| <a id="q-02"></a>**Q-02** Repeated loads and per-source sync growth | mechanism confirmed; fix; timings reported; [response](./393ef43-9ff48b5.md#assessment-q-02) | F-07/N-02/P-01: reproducible growing-history/burst case, measured load/copy reduction, supported capacity and batching contracts with crash/invalidation controls | high Account usability |
+| <a id="q-02"></a>**Q-02** Repeated loads and per-source sync growth | bounded carrier/burst repair passes; full-history/capacity limits remain; [result](./liveness-followups.md#q-02-batching-result); [response](./393ef43-9ff48b5.md#assessment-q-02) | F-07/N-02/P-01: reproducible growing-history/burst case, measured load/copy reduction, supported capacity and batching contracts with crash/invalidation controls | high Account usability |
 | <a id="q-03"></a>**Q-03** Full request repeated in service-cache contexts | repaired; 64 KiB/1 MiB checkpoint warm/cold and authority-change controls pass; [result](./liveness-followups.md#q-03-result); [response](./393ef43-9ff48b5.md#assessment-q-03) | F-07: authenticated compact context, representative checkpoint/row sizes, warm/cold equivalence and authority-change refusal; related F-19 | medium performance, early repair |
 | <a id="q-04"></a>**Q-04** Three stale mutation controls | bounded repair complete; both coverage paths exercised; [evidence](./validation-controls.md); [response](./393ef43-9ff48b5.md#assessment-q-04) | F-20/F-21: executed-path controls actually expose forbidden outcomes, useful anchor failures, affected suites and downstream aggregate pass | high regression assurance |
 | <a id="q-05"></a>**Q-05** Receive expiry loses its reason | confirmed classification gap; fix observation, preserve retry; [response](./393ef43-9ff48b5.md#assessment-q-05) | distinct, related N-01/F-10: visible bounded reason and diagnostic, repeated expiry then recovery; no count-only terminal halt | low-medium operations |

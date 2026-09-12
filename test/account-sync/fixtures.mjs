@@ -106,12 +106,17 @@ export const settled = (page) =>
     async () => {
       if (opened.sync.status.send.phase !== 'idle') return false;
       const c = await opened.listCaptures();
-      const n = c.reduce((sum, c) => sum + c.sources.length, 0);
+      const expected = c.flatMap((c) => c.sources.map((_, index) => [c.id, index]));
       for (const item of c) Harness.eraseCapsule(item);
+      const spool = await opened.spoolStatus();
+      const refs = spool.positions.flatMap((p) =>
+        [p.source, ...(p.additional ?? [])].map((s) => [s.id, s.index]),
+      );
       return (
         opened.sync.status.send.phase === 'idle' &&
-        opened.sync.status.send.acceptedThrough === n &&
-        opened.sync.status.receive.receivedThrough === n
+        JSON.stringify(refs) === JSON.stringify(expected) &&
+        opened.sync.status.send.acceptedThrough === spool.positions.length &&
+        opened.sync.status.receive.receivedThrough === spool.positions.length
       );
     },
     30000,

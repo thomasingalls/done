@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "checkpointBytes": 65536,
+  "rows": 35,
+  "rowBodyBytes": 4096,
+  "warmVerifies": 13,
+  "coldVerifies": 118,
+  "sameColdResult": true,
+  "changedDigestRefused": true,
+  "changedRequestRefused": true
+}

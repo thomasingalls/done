@@ -973,6 +973,7 @@ pin: docs/account-crypto/account-ledger.md §4 c1ab5278aa37
 pin: docs/account-crypto/account-ledger.md §5 3d81df0bac8b
 pin: docs/account-crypto/account-ledger.md §6 d788c391a6ac
 pin: docs/account-crypto/account-ledger.md §7 5e0caa8bc6a7
+pin: docs/account-crypto/account-ledger.md §8 b89ae7ea85c8
 ```
 
 ```authority

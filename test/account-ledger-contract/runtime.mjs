@@ -1,11 +1,15 @@
 import { build } from 'vite';
 import { resolve } from 'node:path';
+import { execFileSync } from 'node:child_process';
 import * as Y from 'yjs';
 export const controls = {
+  batchActor: ['spoolRecord.ts', "captureError('Source batch actor changed');", 'void 0;'],
+  batchOrder: ['spoolRecord.ts', "captureError('Source batch order changed');", 'void 0;'],
+  batchBytes: ['spoolRecord.ts', "captureError('Source batch too large');", 'void 0;'],
   source: ['sourceCapture.ts', "captureError('Conflicting source capsule identity');", 'void 0;'],
   sourceHash: [
     'spoolRecord.ts',
-    "if (digest !== p.source.hash) captureError('Referenced source changed');",
+    "if (digest !== ref.hash) captureError('Referenced source changed');",
     'void digest;',
   ],
   envelopeSource: [
@@ -46,6 +50,13 @@ export async function load(control) {
             name: 'ledger-control',
             enforce: 'pre',
             transform(code, id) {
+              if (control === 'oldBatchReader') {
+                if (!id.endsWith('/src/crdt/spoolRecord.ts')) return;
+                hits++;
+                return execFileSync('git', ['show', '77a2753:src/crdt/spoolRecord.ts'], {
+                  encoding: 'utf8',
+                });
+              }
               const [file, from, to] = controls[control];
               if (!id.endsWith('/src/crdt/' + file)) return;
               if (code.split(from).length !== 2) throw Error('Missing control ' + control);

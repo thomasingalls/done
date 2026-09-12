@@ -1,0 +1,93 @@
+{
+  "phase": "q02-batch",
+  "head": "77a2753566fa2a51b0b8616687eafb946d8ed24e",
+  "status": "passed",
+  "started": "2026-09-12T22:02:18.407268+00:00",
+  "node": "v26.8.2",
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "stages": [
+    {
+      "name": "units",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run"
+      ],
+      "timeoutSeconds": 120,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 36.557
+    },
+    {
+      "name": "parser",
+      "command": [
+        "node",
+        "--test",
+        "test/account-parser-conformance/submission.test.mjs",
+        "test/account-parser-conformance/controls.test.mjs",
+        "test/account-parser-conformance/baseline.test.mjs",
+        "test/account-parser-conformance/objects.test.mjs",
+        "test/account-parser-conformance/wires.test.mjs",
+        "test/account-parser-conformance/native.test.mjs"
+      ],
+      "timeoutSeconds": 240,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 3.703,
+      "tests": 34
+    },
+    {
+      "name": "liveness",
+      "command": [
+        "node",
+        "scripts/account-liveness/run.mjs"
+      ],
+      "timeoutSeconds": 1800,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 367.373
+    },
+    {
+      "name": "lint",
+      "command": [
+        "node",
+        "node_modules/oxlint/bin/oxlint",
+        "src/crdt/spoolRecord.ts",
+        "src/crdt/accountEnvelopePreparation.ts",
+        "src/crdt/accountReceive.ts",
+        "test/spoolBatch.test.ts",
+        "test/account-sync",
+        "test/account-ledger-contract",
+        "scripts/account-liveness/run.mjs"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 0.087
+    },
+    {
+      "name": "format",
+      "command": [
+        "node",
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "src/crdt/spoolRecord.ts",
+        "src/crdt/accountEnvelopePreparation.ts",
+        "src/crdt/accountReceive.ts",
+        "test/spoolBatch.test.ts",
+        "test/account-sync",
+        "test/account-ledger-contract",
+        "scripts/account-liveness/run.mjs",
+        "docs/account-crypto/census.json",
+        "docs/account-crypto/constructions.json"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 0.137
+    }
+  ],
+  "sourceCount": 939,
+  "pinsUnchanged": true,
+  "finished": "2026-09-12T22:09:06.324969+00:00"
+}

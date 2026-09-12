@@ -1,0 +1,5 @@
+{
+  "identicalCapsule": "deduplicated",
+  "differentIdSameSource": "retained",
+  "persistedPlusJournal": "one uncopied identity replayed"
+}

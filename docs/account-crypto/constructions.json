@@ -2437,7 +2437,7 @@
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 182,
+          "line": 214,
           "label": "done/source-capture/v1",
           "kind": "literal"
         }
@@ -2508,13 +2508,13 @@
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 107,
+          "line": 127,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 132,
+          "line": 152,
           "label": "done/account-spool/v1",
           "kind": "literal"
         }
@@ -2535,6 +2535,10 @@
         {
           "path": "src/crdt/spoolRecord.ts",
           "name": "verifySpool"
+        },
+        {
+          "path": "src/crdt/accountEnvelopePreparation.ts",
+          "name": "selectEnvelopeSources"
         }
       ],
       "mapEntries": [
@@ -2562,13 +2566,20 @@
           "path": "docs/account-crypto/account-ledger.md",
           "section": "7",
           "hash": "5e0caa8bc6a7"
+        },
+        {
+          "path": "docs/account-crypto/account-ledger.md",
+          "section": "8",
+          "hash": "b89ae7ea85c8"
         }
       ],
       "vectorCases": ["spool-position", "spool-attempt", "spool-retry", "spool-envelope"],
       "tests": [
         "test/account-ledger-contract/formats.test.mjs",
         "test/account-ledger-contract/controls.test.mjs",
-        "test/account-spool/native.test.mjs"
+        "test/account-spool/native.test.mjs",
+        "test/account-ledger-contract/batch.test.mjs",
+        "test/account-sync/batch.test.mjs"
       ],
       "requirements": [
         "runtime-bytes",
@@ -2765,7 +2776,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 285,
+          "line": 361,
           "label": "done/account-spool-chain/v1\u0000",
           "kind": "literal"
         }
