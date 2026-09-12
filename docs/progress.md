@@ -82,8 +82,15 @@ packaged editor compacts 140 edits to one state and cold-replays exact writing. 
 Account proof history remain; thresholds are advisory. An incomplete grouped-deadline attempt is
 preserved and repaired with separate passing Account stages.
 
-Continue F-17/F-19 equivalent projection checks and bounded retained marker representation, using
-measured before/after evidence. Give a chat summary and unsigned commit at each verified boundary.
+F-17's equivalent full-byte comparison fast path and bounded derived archive memo are complete in
+this checkpoint. The [eleven-stage campaign](./account-conformance-runs/2026-09-12-editor-projection/README.md)
+passes 1,015 units, 150 differential/100 archive properties, 100 native pending and 100 native delivery
+histories and guard-removal controls. At 100k items, controlled command median is 190.2 → 121.2 ms;
+large-history/fallback/fork and supported-device input-to-paint qualification remain open.
+
+Continue F-19 versioned retained candidate representation and direct byte comparison, preserving
+exact signed/MACed bytes, current authentication and native commit guards. Then recap these categories
+and advance to release-validation prep. Give an unsigned commit and chat summary at the boundary.
 The signing reminder stays active.
 
 **After these categories.** Aggregate release validation F-20/N-06/P-05 and P-06 prose, with explicit

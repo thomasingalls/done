@@ -1,0 +1,25 @@
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+{"baseline":"70e6d5b","node":"v26.8.2","os":"25.5.0","cpu":"Apple M1 Pro","bundleSha256":"98c6ffcbcad8f4871fe5fd7bd27d46804706a01553c370cc643e7cccbf0af5c1","design":"one host, fixed 100k visible chars; 1 warmup +5 measured samples; inclusive synchronous command acceptance, in-memory durable carrier, no network","rows":[{"chars":100000,"items":1000,"samples":[{"forkMs":1.3902080000000012,"compareMs":4.617999999999995},{"forkMs":0.7930419999999856,"compareMs":3.081124999999986},{"forkMs":0.7376670000000161,"compareMs":3.199500000000029},{"forkMs":0.7775829999999928,"compareMs":3.088374999999985},{"forkMs":0.7225839999999835,"compareMs":3.162125000000003}],"admissionMs":[17.80404100000004,16.467083000000002,15.223165999999992,15.834584000000007,15.63775000000004]},{"chars":100000,"items":10000,"samples":[{"forkMs":5.3774589999999876,"compareMs":10.044375000000002},{"forkMs":3.242083999999977,"compareMs":10.828291999999976},{"forkMs":3.292333000000042,"compareMs":10.128791999999976},{"forkMs":4.057208000000003,"compareMs":9.777708000000018},{"forkMs":3.16112499999997,"compareMs":10.334292000000005}],"admissionMs":[28.21312499999999,28.367124999999987,28.59195800000009,28.148292000000083,27.861415999999963]},{"chars":100000,"items":100000,"samples":[{"forkMs":38.38470900000004,"compareMs":108.38420799999994},{"forkMs":34.28333299999986,"compareMs":89.7471660000001},{"forkMs":35.265707999999904,"compareMs":98.63800000000015},{"forkMs":35.27512499999989,"compareMs":90.34412500000008},{"forkMs":34.04833299999996,"compareMs":97.37354200000004}],"admissionMs":[190.24262499999986,195.0232500000002,185.45541700000012,176.59808299999986,198.25724999999966]}],"archives":{"days":300,"cards":1500,"readsMs":[1.4473750000001928,0.7371249999996508,0.5794580000001588,0.5343749999997272,0.5293329999999514,0.5593749999998181]}}
+(node:1091) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)

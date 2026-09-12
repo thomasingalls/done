@@ -75,14 +75,12 @@ export const forkDoc = (source: YDoc, gc = true): YDoc => {
 };
 const equalBytes = (a: Uint8Array | null, b: Uint8Array | null): boolean =>
   a === b || (a !== null && b !== null && a.length === b.length && a.every((v, i) => v === b[i]));
-const normalizedIntegratedState = (source: YDoc): Uint8Array => {
-  const doc = createDoc(),
-    bytes = encodeIntegratedState(source);
+const normalizedIntegratedState = (bytes: Uint8Array): Uint8Array => {
+  const doc = createDoc();
   try {
     Y.applyUpdate(doc, bytes);
     return encodeIntegratedState(doc);
   } finally {
-    bytes.fill(0);
     doc.destroy();
   }
 };
@@ -105,13 +103,19 @@ export const sameDocState = (a: YDoc, b: YDoc): boolean => {
   )
     return false;
   if (!equalBytes(a.store.pendingDs, b.store.pendingDs)) return false;
-  const aa = normalizedIntegratedState(a);
-  let bb: Uint8Array | undefined;
+  const rawA = encodeIntegratedState(a);
+  let rawB: Uint8Array | undefined, aa: Uint8Array | undefined, bb: Uint8Array | undefined;
   try {
-    bb = normalizedIntegratedState(b);
+    rawB = encodeIntegratedState(b);
+    // Exact full bytes are stronger than normalized equality. Pending/SV/DS checks still ran.
+    if (equalBytes(rawA, rawB)) return true;
+    aa = normalizedIntegratedState(rawA);
+    bb = normalizedIntegratedState(rawB);
     return equalBytes(aa, bb);
   } finally {
-    aa.fill(0);
+    rawA.fill(0);
+    rawB?.fill(0);
+    aa?.fill(0);
     bb?.fill(0);
   }
 };

@@ -1,0 +1,9 @@
+{
+  "baseline": "70e6d5bc132e30baf92baffbd7cffcedf903c7d0",
+  "phase": "projection",
+  "node": "v26.8.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "protocol": "docs/account-privacy-recovery-capacity.md",
+  "claim": "Equivalent complete projection comparison and bounded archive memo; single-host descriptive performance only"
+}

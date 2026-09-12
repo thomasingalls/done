@@ -1,0 +1,4 @@
+{
+  "beforeKill": "baseXlocal",
+  "coldWithoutRemoteCommit": "base"
+}

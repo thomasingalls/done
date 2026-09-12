@@ -1,0 +1,4 @@
+{
+  "detected": true,
+  "worker": "http://127.0.0.1:50594/sw.js"
+}

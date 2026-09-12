@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { createAdmittedWorkspace, type AdmittedWorkspace } from '../src/crdt/admittedWorkspace';
 import { createAdmissionOwner } from '../src/crdt/admissionQueue';
 import type { JournalSession } from '../src/crdt/custody';
-import { createDoc, applyUpdate, encodeState, newMap, newText } from '../src/crdt/yjs';
+import { createDoc, applyUpdate, encodeState, newMap, newText, newArray } from '../src/crdt/yjs';
 import { serializeCollections } from '../src/crdt/serialize';
 const identity = {
   id: 'human-one',
@@ -122,6 +122,48 @@ describe('admitted workspace commands and history', () => {
       expect(
         f.doc.exportEntries().find((entry) => entry.path === 'days/2026-08-01.md')?.content,
       ).toContain('old done');
+    } finally {
+      await f.doc.close();
+    }
+  });
+  it('archive projection refreshes content and membership without lending cached arrays to callers', async () => {
+    const seed = createDoc(),
+      day = newMap();
+    seed.getMap('days').set('2026-08-01', day);
+    day.set(
+      'archive',
+      newText(serializeCollections({ next: ['old'], scheduled: [], done: ['kept'] })),
+    );
+    const f = await fixture(new Uint8Array(encodeState(seed)));
+    seed.destroy();
+    const archive = () => f.doc.read().days.find((d) => d.date === '2026-08-01')!.archived!;
+    try {
+      (archive().next as string[]).push('caller mutation');
+      expect(archive().next).toEqual(['old']);
+      await f.doc.receive(
+        remote(f.doc, (d) => {
+          const day = d.getMap('days').get('2026-08-01') as ReturnType<typeof newMap>;
+          day.set('next', newArray());
+        }),
+      ).accepted;
+      expect(archive().next).toEqual([]);
+      await f.doc.receive(
+        remote(f.doc, (d) => {
+          const day = d.getMap('days').get('2026-08-01') as ReturnType<typeof newMap>;
+          day.delete('next');
+          day.set(
+            'archive',
+            newText(serializeCollections({ next: ['new'], scheduled: [], done: [] })),
+          );
+        }),
+      ).accepted;
+      expect(archive().next).toEqual(['new']);
+      await f.doc.receive(
+        remote(f.doc, (d) => {
+          (d.getMap('days').get('2026-08-01') as ReturnType<typeof newMap>).delete('archive');
+        }),
+      ).accepted;
+      expect(archive()).toBeUndefined();
     } finally {
       await f.doc.close();
     }

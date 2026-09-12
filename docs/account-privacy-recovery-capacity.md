@@ -140,3 +140,37 @@ The packaged 140-edit trial compacts to one state and cold-replays the input. F-
 scheduler is repaired; advisory thresholds, pending retention and proof-history limits remain as above.
 The incomplete shared-deadline attempt is retained; separate Account stages pass. This local runner
 repair does not close F-20's aggregate validation debt. F-17/F-19 profiling and equivalent reductions follow.
+
+## Projection trial, specified before the final campaign
+
+F-17's exploratory fixed-character profile confirmed item-count growth. Retained exploratory samples
+are descriptive and overlapped unrelated native validation; the final sequential before/after profile
+runs alone within its campaign. Baseline `70e6d5b` supplies only the prior Yjs/workspace source; every
+other dependency is shared. Measure 100,000 visible characters with 1k/10k/100k actual items, one warmup
+and five samples of fork, complete comparison and synchronous command acceptance with a controlled
+in-memory durable carrier. Measure six reads of 300 archived days/1,500 cards. Preserve individual
+samples, machine/runtime and bundle hashes. No browser input-paint, network, p99 or population claim.
+
+The optimized comparison first performs the existing SV/DS/pending checks, then compares full integrated
+bytes. Exact equality suffices; any byte difference still uses full GC-normalized comparison. No periodic
+guard or authoritative state cache is introduced. A separately bounded derived archive memo (512 days,
+2 Mi characters counting source and parsed strings) keys on exact current text, detaches arrays, masks
+live sections only after copying, drops absent dates and clears on close. Budget accounting is not a
+JavaScript heap ceiling.
+
+Decision rule: generated comparison against the always-normalizing reference, equal-clock unequal-text,
+pending/GC/split/undo/reordering controls and existing native publication guard mutations must pass.
+Archive replacement, caller mutation and changing membership must preserve uncached results. The native
+pending and delivery suites each keep their 100 generated histories. The fast path is useful only if
+its paired profile reduces comparison work without correctness regressions; large-history fork and
+fallback costs remain an explicit release-capacity qualification even if it improves this sample.
+
+## Projection result — 2026-09-12
+
+The [eleven-stage campaign](./account-conformance-runs/2026-09-12-editor-projection/README.md) passes
+1,015 units, new generated equivalence/archive cases, 100 native pending and 100 native delivery histories,
+plus deliberate guard-removal controls and packaged privacy regressions. All 914 source pins agree.
+At 100,000 items, sequential single-host median complete comparison is 97.4 → 23.8 ms; inclusive
+controlled command acceptance is 190.2 → 121.2 ms. Archive read cost is secondary. F-17 remains partial
+for large/deletion-heavy histories, full fallback, forks and supported-device input-to-paint capacity.
+F-19's retained marker representation and avoidable hexadecimal allocation follow.

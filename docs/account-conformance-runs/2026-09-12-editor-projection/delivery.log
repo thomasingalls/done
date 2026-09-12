@@ -1,0 +1,20 @@
+(node:1496) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+saved-original-order: passed
+pending-channel-initial: passed
+pending-channel-hello: passed
+pending-deletion-channel: passed
+snapshot-only-recovery-death: passed
+snapshot-pressure-retry: passed
+saved-ready-wakeup: passed
+generated handoffs: 10
+generated handoffs: 20
+generated handoffs: 30
+generated handoffs: 40
+generated handoffs: 50
+generated handoffs: 60
+generated handoffs: 70
+generated handoffs: 80
+generated handoffs: 90
+generated handoffs: 100
+generated-channel-handoffs: passed

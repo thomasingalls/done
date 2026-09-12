@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { mkdirSync, readdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
 import { join, resolve } from 'node:path';
 const phase = process.argv[2] ?? 'privacy';
-if (!['privacy', 'failures', 'recovery', 'maintenance'].includes(phase))
+if (!['privacy', 'failures', 'recovery', 'maintenance', 'projection'].includes(phase))
   throw Error('Unknown release phase');
 const output = resolve(
   'test-results/private-release-' + phase,
@@ -44,11 +44,13 @@ write('scope', {
   claim:
     phase === 'privacy'
       ? 'Bounded private Chromium privacy extension; legacy physical residue is separately reported, not a forensic-erasure promise'
-      : phase === 'maintenance'
-        ? 'Owned idle exact-coverage content maintenance; no Account proof pruning or hard disk bound'
-        : phase === 'recovery'
-          ? 'Authenticated read-only partial Local recovery; originals retained, no completeness claim'
-          : 'Private bounded diagnostics and refusal recovery; unsigned hints never authorize a decision',
+      : phase === 'projection'
+        ? 'Equivalent complete projection comparison and bounded archive memo; single-host descriptive performance only'
+        : phase === 'maintenance'
+          ? 'Owned idle exact-coverage content maintenance; no Account proof pruning or hard disk bound'
+          : phase === 'recovery'
+            ? 'Authenticated read-only partial Local recovery; originals retained, no completeness claim'
+            : 'Private bounded diagnostics and refusal recovery; unsigned hints never authorize a decision',
 });
 
 const summary = {
@@ -168,6 +170,66 @@ try {
     assert.equal(read('packaged', 'fresh-worker-control').detected, true);
     assert.equal(read('packaged', 'migration-outcome').logical, 'passed');
     assert.equal(read('service-files', 'service-files').verdict, 'complete-no-prohibited-match');
+  } else if (phase === 'projection') {
+    await run('types', ['node_modules/typescript/bin/tsc', '-b', '--noEmit']);
+    await run('unit', ['node_modules/vitest/vitest.mjs', 'run'], 120000);
+    await run('profile-before', [
+      'scripts/private-release/profile-editor.mjs',
+      join(output, 'profile-before/result.json'),
+      '70e6d5b',
+    ]);
+    await run('profile-after', [
+      'scripts/private-release/profile-editor.mjs',
+      join(output, 'profile-after/result.json'),
+    ]);
+    await run(
+      'pending',
+      ['scripts/pending-projection/run.mjs', '--output', join(output, 'pending/evidence')],
+      300000,
+    );
+    await run(
+      'content-control',
+      [
+        'scripts/pending-projection/run.mjs',
+        '--mutant',
+        'ignore-integrated-content',
+        '--output',
+        join(output, 'content-control/evidence'),
+      ],
+      60000,
+    );
+    await run(
+      'publication-control',
+      [
+        'scripts/pending-projection/run.mjs',
+        '--mutant',
+        'skip-workspace-check',
+        '--output',
+        join(output, 'publication-control/evidence'),
+      ],
+      60000,
+    );
+    await run(
+      'delivery',
+      ['scripts/yjs-delivery/run.mjs', '--output', join(output, 'delivery/evidence')],
+      300000,
+    );
+    await run(
+      'packaged',
+      ['--test', '--test-concurrency=1', 'test/account-residue/packaged.test.mjs'],
+      240000,
+    );
+    const paths = [
+      'src/crdt/yjs.ts',
+      'src/crdt/admittedWorkspace.ts',
+      'src/crdt/archiveProjection.ts',
+      'test/projectionEquality.test.ts',
+      'test/archiveProjection.test.ts',
+      'test/workspaceAdmission.test.ts',
+      'scripts/private-release',
+    ];
+    await run('lint', ['node_modules/oxlint/bin/oxlint', '--react-plugin', ...paths]);
+    await run('format', ['node_modules/oxfmt/bin/oxfmt', '--check', ...paths]);
   } else if (phase === 'maintenance') {
     await run('types', ['node_modules/typescript/bin/tsc', '-b', '--noEmit']);
     await run('unit', ['node_modules/vitest/vitest.mjs', 'run'], 120000);

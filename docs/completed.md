@@ -3371,3 +3371,14 @@ The [nine-stage campaign](./account-conformance-runs/2026-09-12-content-maintena
 editing reduces 140 updates to one state and cold-replays exact writing. An incomplete grouped-deadline
 attempt and test-double typecheck failure are retained. Separate Account stages pass with their existing
 deadlines. No hard storage bound or ledger pruning is claimed. Appended before advancing L-1.
+
+## 2026-09-12 — L-1 equivalent projection fast path and archive memo
+
+Following automatic maintenance `70e6d5b`, F-17 now avoids normalization when full integrated bytes
+are already identical, retaining every SV/DS/pending/content/publication guard and the full fallback.
+Derived archive caching is bounded, exact-text invalidated, detached and owner-cleared. The
+[eleven-stage campaign](./account-conformance-runs/2026-09-12-editor-projection/README.md) passes 1,015
+units, 150 differential and 100 archive generated histories, existing 500 fork cases, 100 native pending
+and 100 native delivery histories plus guard-removal controls. On one host at 100k items, comparison
+median improves 97.4 → 23.8 ms and controlled command acceptance 190.2 → 121.2 ms. Large-history and
+supported-device responsiveness remain qualification work. Appended before advancing L-1 to F-19.

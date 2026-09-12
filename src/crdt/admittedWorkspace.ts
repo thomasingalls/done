@@ -29,7 +29,7 @@ import {
   collectionOf,
   type Section,
 } from './days';
-import { parseCollections } from './serialize';
+import { createArchiveProjection } from './archiveProjection';
 import { currentDate, plainDate, type ISODate } from '../lib/date';
 import { exportArchive, exportEntries } from './export';
 import {
@@ -130,6 +130,7 @@ export const createAdmittedWorkspace = async (
   open: (options: AdmissionOptions) => Promise<AdmissionSession>,
   options: WorkspaceOptions,
 ): Promise<AdmittedWorkspace> => {
+  const archiveProjection = createArchiveProjection();
   const identity = structuredClone(options.identity);
   const human: Origin = Object.freeze({
     actor: identity.id,
@@ -285,6 +286,7 @@ export const createAdmittedWorkspace = async (
   let closing: Promise<void> | undefined,
     repairQueued = false;
   const teardown = () => {
+    archiveProjection.clear();
     dispose(pending);
     dispose(accepted);
     pending = accepted = undefined;
@@ -448,6 +450,7 @@ export const createAdmittedWorkspace = async (
     live();
     const history = accepted!.history,
       doc = history.doc;
+    archiveProjection.retain(new Set(listDays(doc).filter((date) => archiveOf(dayAt(doc, date)))));
     return {
       master: doc.getText('master').toString(),
       cards: [...doc.getMap('cards').keys()].sort().map((id) => {
@@ -469,7 +472,7 @@ export const createAdmittedWorkspace = async (
           ? {
               archived: (() => {
                 const day = dayAt(doc, date);
-                const parsed = parseCollections(archiveOf(day)!.toString());
+                const parsed = archiveProjection.read(date, archiveOf(day)!.toString());
                 for (const section of ['next', 'scheduled', 'done'] as const)
                   if (collectionOf(day, section)) parsed[section] = [];
                 return parsed;
