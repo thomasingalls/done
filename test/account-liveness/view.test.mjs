@@ -14,6 +14,12 @@ import {
   sample,
   report,
 } from './fixtures.mjs';
+const oracleSync = async (f, item, online = true) => {
+  await f.page.evaluate(() => {
+    globalThis.livenessVerificationOracle = true;
+  });
+  return sync(f, item, online);
+};
 const status = (f) =>
   f.page.evaluate(async () => ({
     delivery: await opened.deliveryStatus(),
@@ -31,7 +37,7 @@ test(
     await close(f);
     await prepareRecovery(f, item);
     await select(f, item);
-    await sync(f, item);
+    await oracleSync(f, item);
     const initial = await settle(f);
     await insert(f, ' Account delta.');
     await settle(f, initial + 1);
@@ -40,6 +46,8 @@ test(
       await editor.whenDurable();
       await opened.receiveStatus();
     });
+    const oracleChecks = await f.page.evaluate(() => globalThis.livenessOracleChecks);
+    assert(oracleChecks > 0);
     const expected = (await read(f)).master,
       observations = [];
     const warm = await sample(f, 'warm-view', () => status(f));
@@ -49,7 +57,7 @@ test(
     assert.equal((await read(f)).master, expected);
     await close(f);
     await f.cold();
-    await sync(f, item, false);
+    await oracleSync(f, item, false);
     assert.equal((await read(f)).master, expected);
     const modes = [
       'ciphertext',
@@ -149,7 +157,7 @@ test(
         }
       });
       await f.cold();
-      await sync(f, item, false);
+      await oracleSync(f, item, false);
       assert.equal((await read(f)).master, expected);
       observations.push({ mode, refused: true, coldRecovery: true });
     }
@@ -157,6 +165,7 @@ test(
     await assert.rejects(status(f));
     report('verified-view', {
       status: 'passed',
+      oracleChecks,
       warm,
       observations,
       compactionAndColdReplay: true,

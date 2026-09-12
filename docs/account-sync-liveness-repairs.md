@@ -27,10 +27,24 @@ The 24-job growing run took about 128 seconds versus the earlier 256-second run 
 three-call status sets perform no full inbound or delivery ledger verification. This is not a population
 speedup estimate, and growing-history work remains.
 
+## 2. Incremental events and content coverage — complete
+
+Phase 1 is unsigned `280221e`. Private v9 now reopens only changed ciphertext rows after authenticating
+all counter/placement/allocation fields. Owner-local memo entries bind exact input bytes to the full
+verification context/predecessor; keys are fixed for that owner. Every new view still parses its complete
+census, checks the completeness witness, and replays semantic ordering/conflict reducers. Successful
+crypto results are detached, erased on disposal/failure, overwritten when inputs change and pruned to
+the current census. Proposed delivery transitions reuse only crypto results, never commit authority.
+
+Inbound content is reconstructed once per exact current content set. Every evidenced original still
+must be present verbatim or leave the complete Yjs state unchanged, including pending/deletion data.
+A changed or missing content set rebuilds this coverage check. Full verification remains the default
+oracle; the [recorded differential/native/generated campaign](./account-conformance-runs/2026-09-12-account-liveness-incremental/README.md)
+passes. The 24-job workload took about 59 seconds. Native timing remains descriptive, and growing census
+parsing/replay and storage scans remain. Unchanged source-census reads also reuse detached parsed data.
+
 ## Remaining boundaries
 
-2. Reuse authenticated event results with exact bytes and predecessor/authority binding; build coverage
-   once per current content view, preserving pending/deletion originals and full-oracle negative controls.
 3. Separate owned fetch waiting from the carrier task, retaining cancellation/drain and stale-response
    checks. Classify actual expiry for bounded fresh retry; preserve corruption/conflict halts.
 4. Wake receive on durable send-prefix progress and avoid remote-only publication wakes, preserving

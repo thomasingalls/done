@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { it, expect, describe } from 'vitest';
 import fc from 'fast-check';
+import { createVerificationMemo } from '../src/crdt/verificationMemo';
 import {
   encodeSpoolEntry,
   decodeSpoolEntry,
@@ -117,6 +118,19 @@ describe('Account spool ledger conformance', () => {
           expect(state.attempts).toBe(attempts);
           expect(state.positions.map((p) => p.position)).toEqual(history.map((_, i) => i + 1));
           await verifySpool(state, route, kg, pair.publicKey, crypto.subtle);
+          const reuse = { memo: createVerificationMemo(), current() {} };
+          await verifySpool(state, route, kg, pair.publicKey, crypto.subtle, reuse);
+          await verifySpool(state, route, kg, pair.publicKey, crypto.subtle, reuse);
+          const changedSource = structuredClone(state);
+          changedSource.sources.get(state.positions[0]!.source.id)![10]! ^= 1;
+          await expect(
+            verifySpool(changedSource, route, kg, pair.publicKey, crypto.subtle, reuse),
+          ).rejects.toThrow();
+          const changedWire = structuredClone(state);
+          changedWire.positions[0]!.wire![10]! ^= 1;
+          await expect(
+            verifySpool(changedWire, route, kg, pair.publicKey, crypto.subtle, reuse),
+          ).rejects.toThrow();
           let spool = emptySpoolWitness();
           for (const bytes of state.events)
             spool = await extendSpoolWitness(spool, bytes, crypto.subtle);
@@ -131,6 +145,14 @@ describe('Account spool ledger conformance', () => {
             mac: new Uint8Array(32),
           };
           await verifySpoolWitness(state, counter, crypto.subtle);
+          await verifySpoolWitness(state, counter, crypto.subtle, reuse);
+          await verifySpoolWitness(state, counter, crypto.subtle, reuse);
+          const changedEvent = structuredClone(state);
+          changedEvent.events[0]![10]! ^= 1;
+          await expect(
+            verifySpoolWitness(changedEvent, counter, crypto.subtle, reuse),
+          ).rejects.toThrow();
+          reuse.memo.clear();
           // A legal prefix is no longer evidence that the last committed row never existed.
           const prefix = inspectSpool(rows.slice(0, -1), route);
           await expect(verifySpoolWitness(prefix, counter, crypto.subtle)).rejects.toThrow(

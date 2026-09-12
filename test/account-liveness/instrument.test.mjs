@@ -2,13 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { stripTypeScriptTypes } from 'node:module';
-import { instrument, clockSeam, targets } from './instrument.mjs';
+import { instrument, clockSeam, targets, verificationOracle } from './instrument.mjs';
 import { installProbe } from './probe.mjs';
 
 test('every current source anchor is exact; duplicate or missing anchors refuse', () => {
   const hits = {};
   for (const path of Object.keys(targets)) instrument(readFileSync('.' + path, 'utf8'), path, hits);
-  assert.equal(Object.keys(hits).length, 11);
+  assert.equal(Object.keys(hits).length, 12);
   assert(Object.values(hits).every((n) => n === 1));
   assert.throws(() => instrument('', '/src/crdt/contentStore.ts'));
   const code = readFileSync('src/crdt/contentStore.ts', 'utf8');
@@ -16,6 +16,11 @@ test('every current source anchor is exact; duplicate or missing anchors refuse'
     instrument(code + '\nconst load = async () => 1;', '/src/crdt/contentStore.ts'),
   );
   assert.throws(() => clockSeam('', '/src/crdt/accountReceive.ts'));
+  assert.throws(() => verificationOracle('', '/src/crdt/accountReceive.ts'));
+  verificationOracle(
+    readFileSync('src/crdt/accountReceive.ts', 'utf8'),
+    '/src/crdt/accountReceive.ts',
+  );
 });
 
 test('probe preserves async result, awaited work, throws and crypto; never retains arguments', async () => {

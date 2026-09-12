@@ -1,4 +1,6 @@
 import { createVerifiedRecords } from './verifiedRecords';
+import { createVerificationMemo } from './verificationMemo';
+import { createInboundCoverage } from './inboundLedger';
 import type { DeliveryState } from './deliveryRecord';
 import type { InboundState } from './inboundLedger';
 import { createEnvelopePreparation } from './accountEnvelopePreparation';
@@ -58,7 +60,18 @@ async function openAccountReceiveOwner(
   composed = false,
 ) {
   const options = captureAccountOptions(input);
-  const verified = createVerifiedRecords<{ delivery: DeliveryState; inbound: InboundState }>();
+  const verified = createVerifiedRecords<{
+    delivery: DeliveryState;
+    inbound: InboundState;
+    census: ReturnType<typeof inspectInbound>;
+  }>();
+  // Keys and authority are fixed for this owner. No memo crosses a close/replacement boundary.
+  const memo = createVerificationMemo(),
+    coverage = createInboundCoverage();
+  const inspectCensus = (records: Parameters<typeof inspectInbound>[0], route: CaptureRoute) =>
+    verified.matches(records)
+      ? verified.read(records).census
+      : inspectInbound(records, route, base);
   let base!: InboundContext, signer: CryptoKey | undefined, publicKey!: CryptoKey;
   let expectedPayload = '',
     expectedRecord: unknown,
@@ -76,8 +89,7 @@ async function openAccountReceiveOwner(
   };
   const extension: CaptureExtension = {
     version: 9,
-    sourceRecords: (records, route) =>
-      inspectInbound(records, route, base).delivery.spool.sourceRecords,
+    sourceRecords: (records, route) => inspectCensus(records, route).delivery.spool.sourceRecords,
     async initialize(task, v) {
       expectedPayload = hex(promotionPayload({ ...v.marker, v: 9, stage: 'account-receiving' }));
       expectedRecord = v.record;
@@ -106,30 +118,61 @@ async function openAccountReceiveOwner(
     },
     activate: (task, owner) => owner.carrier.enableSpool(task),
     async validate(task, records, route, counter, view) {
-      await verified.verify(
-        records,
-        view ?? {},
-        async (records) => {
-          const census = inspectInbound(records, route, base),
-            subtle = subtleFor(task);
-          await verifySpoolWitness(census.delivery.spool, counter, subtle);
-          await verifySpool(census.delivery.spool, route, base.generationKey, publicKey, subtle);
-          const delivery = await verifyDelivery(
-            census.delivery,
-            route,
-            base.authority,
-            publicKey,
-            subtle,
-          );
-          const inbound = await verifyInboundLedger(census, records, base, lifetime(task));
-          if (composed) verifySyncState(census.delivery, delivery, inbound);
-          return { delivery, inbound };
-        },
-        () => task.step(() => {}),
-      );
+      try {
+        await verified.verify(
+          records,
+          view ?? {},
+          async (records) => {
+            const census = inspectInbound(records, route, base),
+              subtle = subtleFor(task),
+              reuse = { memo, current: () => task.step(() => {}) };
+            await verifySpoolWitness(census.delivery.spool, counter, subtle, reuse);
+            await verifySpool(
+              census.delivery.spool,
+              route,
+              base.generationKey,
+              publicKey,
+              subtle,
+              reuse,
+            );
+            const delivery = await verifyDelivery(
+              census.delivery,
+              route,
+              base.authority,
+              publicKey,
+              subtle,
+              reuse,
+            );
+            const inbound = await verifyInboundLedger(census, records, base, lifetime(task), {
+              memo,
+              coverage,
+            });
+            if (composed) verifySyncState(census.delivery, delivery, inbound);
+            memo.retain(
+              new Set([
+                ...census.delivery.spool.positions.flatMap((p) => [
+                  'spool:' + p.position,
+                  'link:' + p.position,
+                ]),
+                ...census.delivery.spool.events.map((_, i) => 'witness:' + i),
+                ...census.delivery.entries.map((e) => 'delivery:' + e.record.seq),
+                ...census.entries.map((e) => 'inbound:' + e.record.seq),
+              ]),
+            );
+            return { delivery, inbound, census };
+          },
+          () => task.step(() => {}),
+        );
+      } catch (e) {
+        memo.clear();
+        coverage.clear();
+        throw e;
+      }
     },
     dispose() {
       verified.clear();
+      memo.clear();
+      coverage.clear();
       base?.generationKey.fill(0);
       signer = undefined;
       outstanding?.fill(0);
@@ -358,7 +401,7 @@ async function openAccountReceiveOwner(
     const inspect: NonNullable<Parameters<typeof createDeliveryOperations>[0]['inspect']> = (
       records,
       route,
-    ) => inspectInbound(records, route, base).delivery;
+    ) => inspectCensus(records, route).delivery;
     const checkPublication = async (
       task: SessionTask,
       owner: ReturnType<typeof prepareAccountCustody>,
@@ -382,6 +425,7 @@ async function openAccountReceiveOwner(
       assertCurrent,
       inspect,
       verified: (records) => verified.read(records).delivery,
+      reuse: (task) => ({ memo, current: () => task.step(() => {}) }),
       canSubmit: canReceive,
       run: (operation) =>
         runCaptureTask(async (task, owner, route) => {

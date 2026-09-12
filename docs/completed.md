@@ -3285,3 +3285,15 @@ passes all eight stages, with native tampering/compaction/reopen and 40 coverage
 histories. Growth took about 128 seconds on this host; unchanged status views perform no full inbound
 verification. Next is incremental event verification and reusable content coverage, before network and
 scheduler boundaries. No personal package/browser/server/Account or L-2 changes. Appended before L-1 update.
+
+
+## 2026-09-12 — L-1 sync-liveness: incremental event verification and coverage
+
+Following unsigned `280221e`, implemented private v9 exact-row decryption reuse, owner-local crypto
+memoization with context/predecessor binding, semantic replay on changed views, and one coverage
+reconstruction per exact content set. Full-oracle differential/native tamper/compaction/reopen and
+generated source/coverage mutation checks pass in the eight-stage
+[incremental campaign](./account-conformance-runs/2026-09-12-account-liveness-incremental/README.md).
+The unchanged 24-job run took 59,263 ms, descriptively versus 128,091 ms after phase 1. Protocol formats
+and personal package files remain unchanged. This closes boundary 2; owned network separation and
+expiry retry follow under the user's authorization for unsigned phase commits through liveness completion.

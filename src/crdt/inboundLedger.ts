@@ -10,6 +10,8 @@ import { inspectDelivery } from './deliveryRecord';
 import { decodeInboundRecord } from './inboundRecord';
 import { verifyStoredInbound, type InboundContext, type InboundLifetime } from './accountInbound';
 import { Y, forkDoc, sameDocState } from './yjs';
+import { copyRecords, sameRecords, eraseVerified } from './verifiedRecords';
+import type { VerificationMemo } from './verificationMemo';
 
 export async function heldInboundContext(
   marker: PromotionRecord,
@@ -104,51 +106,119 @@ export function contextAt(
   return { ...base, prefix: { ...state.prefix }, ...(retained ? { retained } : {}) };
 }
 /** A fork must be unchanged by each evidenced original; no vector-only or pending merge shortcut. */
-export function verifyInboundCoverage(
-  records: readonly OpenedRecord[],
-  updates: readonly Bytes[],
-): void {
-  const content = records.filter((r) => r.kind === 'update' || r.kind === 'state'),
-    doc = new Y.Doc({ gc: false });
+function contentCoverage(content: readonly OpenedRecord[]) {
+  const doc = new Y.Doc({ gc: false }),
+    originals = new Set(content.map((r) => hex(r.bytes)));
   try {
     for (const r of [...content].sort((a, b) => a.seq - b.seq)) {
       Y.decodeUpdate(r.bytes);
       Y.applyUpdate(doc, r.bytes);
     }
-    const originals = new Set(content.map((r) => hex(r.bytes)));
-    for (const update of updates) {
-      if (originals.has(hex(update))) continue;
-      const copy = forkDoc(doc, false);
-      try {
-        Y.applyUpdate(copy, update);
-        if (!sameDocState(doc, copy)) captureError('Inbound content coverage is missing');
-      } finally {
-        copy.destroy();
-      }
-    }
-  } finally {
+  } catch (e) {
     doc.destroy();
+    throw e;
   }
+  return {
+    clear() {
+      doc.destroy();
+      originals.clear();
+    },
+    check(updates: readonly Bytes[]) {
+      for (const update of updates) {
+        if (originals.has(hex(update))) continue;
+        const copy = forkDoc(doc, false);
+        try {
+          Y.applyUpdate(copy, update);
+          if (!sameDocState(doc, copy)) captureError('Inbound content coverage is missing');
+          originals.add(hex(update));
+        } finally {
+          copy.destroy();
+        }
+      }
+    },
+  };
+}
+export function verifyInboundCoverage(
+  records: readonly OpenedRecord[],
+  updates: readonly Bytes[],
+): void {
+  const coverage = contentCoverage(
+    records.filter((r) => r.kind === 'update' || r.kind === 'state'),
+  );
+  try {
+    coverage.check(updates);
+  } finally {
+    coverage.clear();
+  }
+}
+/** One reconstruction for the exact current content set, including invisible Yjs dependencies. */
+export function createInboundCoverage() {
+  let rows: OpenedRecord[] | undefined, coverage: ReturnType<typeof contentCoverage> | undefined;
+  const clear = () => {
+    eraseVerified(rows);
+    rows = undefined;
+    coverage?.clear();
+    coverage = undefined;
+  };
+  return {
+    clear,
+    check(records: readonly OpenedRecord[], updates: readonly Bytes[]) {
+      const content = records.filter((r) => r.kind === 'update' || r.kind === 'state');
+      if (!rows || !sameRecords(rows, content)) {
+        clear();
+        rows = copyRecords(content);
+        try {
+          coverage = contentCoverage(rows);
+        } catch (e) {
+          clear();
+          throw e;
+        }
+      }
+      try {
+        coverage!.check(updates);
+      } catch (e) {
+        clear();
+        throw e;
+      }
+    },
+  };
 }
 export async function verifyInboundLedger(
   census: ReturnType<typeof inspectInbound>,
   records: readonly OpenedRecord[],
   base: InboundContext,
   lifetime: InboundLifetime,
+  reuse?: { memo: VerificationMemo; coverage: ReturnType<typeof createInboundCoverage> },
 ): Promise<InboundState> {
   const state = emptyInbound();
   for (const { record, event } of census.entries) {
     if (state.conflict) captureError('Inbound event after stream conflict');
     const request = decodeInboundRequest(event.request);
-    const result = await verifyStoredInbound(
-      contextAt(base, state, request.after),
-      record.bytes,
-      lifetime,
-    );
+    const context = contextAt(base, state, request.after),
+      check = () => verifyStoredInbound(context, record.bytes, lifetime),
+      result = reuse
+        ? await reuse.memo.check(
+            'inbound:' + record.seq,
+            JSON.stringify({ ...context, generationKey: undefined, retained: undefined }),
+            [
+              record.bytes,
+              ...(context.retained
+                ? [
+                    utf8(context.retained.previous),
+                    context.retained.envelope,
+                    context.retained.proof,
+                  ]
+                : []),
+            ],
+            check,
+            lifetime.assertCurrent,
+          )
+        : await check();
     if (result.kind === 'conflict') state.conflict = true;
     else if (result.kind === 'received') {
       try {
-        verifyInboundCoverage(records, result.updates);
+        if (reuse) reuse.coverage.check(records, result.updates);
+        else verifyInboundCoverage(records, result.updates);
       } finally {
         for (const b of result.updates) b.fill(0);
       }

@@ -151,6 +151,8 @@ try {
     'run',
     'test/accountLiveness.test.ts',
     'test/verifiedRecords.test.ts',
+    'test/verificationMemo.test.ts',
+    'test/spoolRecord.test.ts',
   ]);
   await run('controlled', ['--test', 'test/account-liveness/controlled.test.mjs'], 200000);
   await run('view', ['--test', 'test/account-liveness/view.test.mjs'], 180000);

@@ -3,6 +3,7 @@ import { parseSync } from '@babel/core';
 export const targets = {
   '/src/crdt/inboundLedger.ts': {
     verifyInboundLedger: ['inbound.ledger', 'census.entries.length'],
+    contentCoverage: ['inbound.reconstruct', 'content.length'],
     verifyInboundCoverage: [
       'inbound.coverage',
       "records.filter(r => r.kind === 'update' || r.kind === 'state').length",
@@ -88,5 +89,27 @@ export function clockSeam(code, id) {
     if (expired) (globalThis as any).livenessCommitExpiryObserved = true;
     return expired;
   })())`,
+  );
+}
+
+/** Test-only differential oracle, enabled solely by the native verification control. */
+export function verificationOracle(code, id) {
+  if (!id.endsWith('/src/crdt/accountReceive.ts')) return code;
+  const anchor = 'if (composed) verifySyncState(census.delivery, delivery, inbound);';
+  assert.equal(code.split(anchor).length, 2);
+  return code.replace(
+    anchor,
+    anchor +
+      `
+    if ((globalThis as any).livenessVerificationOracle) {
+      await verifySpoolWitness(census.delivery.spool, counter, subtle);
+      await verifySpool(census.delivery.spool, route, base.generationKey, publicKey, subtle);
+      const fullDelivery = await verifyDelivery(census.delivery, route, base.authority, publicKey, subtle);
+      const fullInbound = await verifyInboundLedger(census, records, base, lifetime(task));
+      const render = (value: unknown) => JSON.stringify(value, (_k, v) => v instanceof Map ? [...v] : v);
+      if (render([delivery, inbound]) !== render([fullDelivery, fullInbound])) throw Error('Incremental verification differs from full oracle');
+      (globalThis as any).livenessOracleChecks = ((globalThis as any).livenessOracleChecks ?? 0) + 1;
+    }
+  `,
   );
 }

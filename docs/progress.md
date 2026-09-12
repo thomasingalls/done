@@ -43,14 +43,14 @@ that is no longer active.
 ---
 
 
-## Active slice: Account sync-liveness repair — incremental events and coverage (`L-1`)
+## Active slice: Account sync-liveness repair — owned network and expiry (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: not started
-blocks_on: incremental cryptographic results bound to exact events/context and complete content coverage
+status: in flight
+blocks_on: owned HTTP wait outside the serialized carrier task; bounded fresh retry for expiry
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-12
 ```
@@ -63,14 +63,15 @@ exact scope in the [review index](./review/implementation/findings.md). Residue 
 R1 `27e5b6f`, and the reconciled review intake `1372c39`. The signing reminder is active for the new unsigned sync-liveness commits and the
 old unsigned chain remains under its [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
 
-**Current sequence.** Measurement/preparation is unsigned `0e07fe4`. The first unchanged-view runtime
-repair is verified and being committed unsigned. The user authorizes continuing through all remaining
+**Current sequence.** Measurement/preparation is unsigned `0e07fe4`. Unchanged-view runtime repair is unsigned `280221e`; incremental verification/coverage is verified and being committed unsigned. The user authorizes continuing through all remaining
 sync-liveness boundaries with an unsigned commit after each verified phase; no confirmation is needed
 between these phases. The [repair record](./account-sync-liveness-repairs.md) and
 [view campaign](./account-conformance-runs/2026-09-12-account-liveness-view/README.md) retain the evidence:
 995 unit tests, eight campaign stages, native tamper/compaction/reopen, and 40 coverage plus 60
 invalidation histories pass. Unchanged status views now perform no full inbound verification; the
-24-job growth run took about 128 seconds on this host, versus 256 seconds before repair.
+24-job growth run took about 128 seconds on this host, versus 256 seconds before repair. Boundary 2
+adds full-oracle differential and generated mutation controls and reduces that run to about 59 seconds;
+its [evidence](./account-conformance-runs/2026-09-12-account-liveness-incremental/README.md) is retained.
 
 **Explicit v8 disposition.** The user confirms the intermediate v8 Account paths have no customer or
 personal dogfood data and will not ship. F-08/N-04 and N-09 need no product hardening or backwards
@@ -78,21 +79,15 @@ compatibility; internal v9 setup/test dependencies may remain temporarily. This 
 document version. Historical responses remain unchanged; the current review index and decision journal
 record non-shipment, not a claimed code fix or completed deletion.
 
-**Next bounded implementation — incremental event verification and content coverage.**
-
-- Retain the full verification functions as oracles. Reuse a verified event only with exact bytes,
-  complete context/predecessor/authority binding, current task checks and owner-local lifetime.
-- Reconstruct current content once per exact content view; separately check every evidenced original,
-  including invisible pending data and deletion. Missing/changed content/source rows still refuse.
-- Reuse unchanged authenticated ciphertext records across appends without skipping metadata/placement
-  checks. Changed or removed inputs, failure, ownership replacement and compaction keep their checks.
-- Compare full/incremental results and refusals over generated histories and intentional missing-input
-  controls; rerun native growth, tampering, restart and lifecycle regression coverage before committing.
-
-Then separate owned network wait from carrier tasks, classify expiry for bounded fresh retry without
-swallowing verification errors, and refine P-02/P-03 wakes with fairness/offline/halt/backoff intact.
-Complete the combined liveness verification and service cost assessment before closing these tasks.
-F-07/N-01/N-02/P-01 and N-03 remain open; the unchanged-view boundary alone does not close them.
+**Next bounded implementation — network wait and expiry.** Prepare requests/submissions under the
+serialized carrier task; retain the same lifetime permit while HTTP waits outside that queue; reenter
+ordered admission with current authority, request and prefix checks before commit. Close must cancel
+and drain every network job before erasing custody/releasing the permit. Give actual request expiry a
+distinct retry classification without swallowing corruption, conflicting evidence or stale ownership.
+Convert the held-read/expiry reproductions to regressions and check held submissions, closure and
+superseded requests. Then implement durable send-prefix receive wakes and local-only send wakes, and
+verify combined liveness and service costs. User authorized unsigned commits at each verified boundary
+and continuing through all these tasks; the signing reminder is active.
 
 **Retained work.** F-21.4 remains open beyond R1's logical carrier campaign. Resume packaged UI/generated
 service-worker/export/ZIP and synthetic migration/selection/cleanup/Local-clear interruptions after this

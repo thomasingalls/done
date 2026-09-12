@@ -1,0 +1,8 @@
+{
+  "status": "reproduced",
+  "acceptedMs": 4.1950409999999465,
+  "flushMs": 277.6357909999997,
+  "holdObservationMs": 250,
+  "settledWhileHeld": false,
+  "genuineResponseBytes": 236
+}

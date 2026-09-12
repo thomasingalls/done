@@ -1,5 +1,6 @@
 /** Private v7 append-only allocation ledger. Outer StoredRecord authenticates these bytes. */
 import { utf8, hex, type Bytes } from './custodyCrypto';
+import type { VerificationMemo } from './verificationMemo';
 import {
   MAX_BATCH_BYTES,
   emptySpoolWitness,
@@ -237,28 +238,40 @@ export async function verifySpool(
   kg: Bytes,
   signer: CryptoKey,
   subtle: SubtleCrypto,
+  reuse?: { memo: VerificationMemo; current(): void },
 ): Promise<void> {
   for (const p of state.positions) {
-    const bytes = state.sources.get(p.source.id)!;
-    const digest = hex(new Uint8Array(await subtle.digest('SHA-256', bytes)));
-    if (digest !== p.source.hash) captureError('Referenced source changed');
-    if (!p.wire) continue;
-    const c = decodeSourceCapsule(bytes, route);
-    let body;
-    try {
-      body = await openNetworkEnvelope(p.wire, networkRoute(route), signer, kg, subtle);
-      const source = c.sources[p.source.index]!;
-      if (
-        body.actor_id !== source.actor ||
-        body.actor_kind !== source.kind ||
-        body.updates.length !== 1 ||
-        hex(body.updates[0]!) !== hex(source.bytes)
-      )
-        captureError('Persisted envelope source differs');
-    } finally {
-      eraseCapsule(c);
-      for (const b of body?.updates ?? []) b.fill(0);
-    }
+    const check = async () => {
+      const bytes = state.sources.get(p.source.id)!;
+      const digest = hex(new Uint8Array(await subtle.digest('SHA-256', bytes)));
+      if (digest !== p.source.hash) captureError('Referenced source changed');
+      if (!p.wire) return;
+      const c = decodeSourceCapsule(bytes, route);
+      let body;
+      try {
+        body = await openNetworkEnvelope(p.wire, networkRoute(route), signer, kg, subtle);
+        const source = c.sources[p.source.index]!;
+        if (
+          body.actor_id !== source.actor ||
+          body.actor_kind !== source.kind ||
+          body.updates.length !== 1 ||
+          hex(body.updates[0]!) !== hex(source.bytes)
+        )
+          captureError('Persisted envelope source differs');
+      } finally {
+        eraseCapsule(c);
+        for (const b of body?.updates ?? []) b.fill(0);
+      }
+    };
+    if (reuse)
+      await reuse.memo.check(
+        'spool:' + p.position,
+        JSON.stringify([route, p.source]),
+        [state.sources.get(p.source.id)!, ...(p.wire ? [p.wire] : [])],
+        check,
+        reuse.current,
+      );
+    else await check();
   }
 }
 
@@ -289,6 +302,7 @@ export async function verifySpoolWitness(
   state: SpoolState,
   counter: ContentCounter,
   subtle: SubtleCrypto,
+  reuse?: { memo: VerificationMemo; current(): void },
 ): Promise<void> {
   if (counter.v === 1) {
     if (state.events.length) captureError('Spool records without activated metadata');
@@ -296,6 +310,18 @@ export async function verifySpoolWitness(
   }
   if (counter.spool.events !== state.events.length) captureError('Spool ledger is incomplete');
   let witness = emptySpoolWitness();
-  for (const bytes of state.events) witness = await extendSpoolWitness(witness, bytes, subtle);
+  for (const [index, bytes] of state.events.entries()) {
+    const before = witness,
+      check = () => extendSpoolWitness(before, bytes, subtle);
+    witness = reuse
+      ? await reuse.memo.check(
+          'witness:' + index,
+          JSON.stringify(before),
+          [bytes],
+          check,
+          reuse.current,
+        )
+      : await check();
+  }
   if (!sameSpoolWitness(witness, counter.spool)) captureError('Spool ledger commitment changed');
 }

@@ -32,6 +32,7 @@ export function createVerifiedRecords<T>() {
   };
   return {
     clear,
+    matches: (records: readonly OpenedRecord[]) => !!retained && sameRecords(retained, records),
     read(records: readonly OpenedRecord[]): T {
       if (!retained || !sameRecords(retained, records))
         throw Error('No verified view for these records');

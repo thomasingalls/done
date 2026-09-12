@@ -216,13 +216,13 @@ export const createContentOwner = (
     );
   const openSnapshot = async (task: SessionTask, snapshot: DiskState): Promise<OpenedRecord[]> => {
     const counter = snapshot.counter;
-    if (!counter)
-      throw new ContentError('missing-content', 'The initialized content counter is missing.');
-    if (counter.v === 2 && !crypt.allowSpoolCounter) corrupt('Content requires the spool owner.');
     const opened: OpenedRecord[] = [],
       seen = new Set<number>(),
       sealed: StoredRecord[] = [];
     try {
+      if (!counter)
+        throw new ContentError('missing-content', 'The initialized content counter is missing.');
+      if (counter.v === 2 && !crypt.allowSpoolCounter) corrupt('Content requires the spool owner.');
       await verify(task, counterPayload(scope, counter), counter.mac);
       if (counter.active_gen !== generation)
         throw new ContentError('generation-changed', 'Reopen the current content generation.');
@@ -249,14 +249,28 @@ export const createContentOwner = (
         sealed.every((r, i) => equalStoredRecord(r, openedView!.sealed[i]!));
       if (reuse) opened.push(...copyRecords(openedView!.opened));
       else {
-        clearView();
-        for (const r of sealed)
-          opened.push({ kind: r.kind, gen: r.gen, seq: r.seq, bytes: await crypt.open(task, r) });
+        const prior = new Map(
+          crypt.reuseOpened ? openedView?.sealed.map((r, i) => [r.seq, i]) : [],
+        );
+        for (const r of sealed) {
+          const index = prior.get(r.seq),
+            previous = index === undefined ? undefined : openedView!.sealed[index];
+          opened.push({
+            kind: r.kind,
+            gen: r.gen,
+            seq: r.seq,
+            bytes:
+              previous && equalStoredRecord(r, previous)
+                ? openedView!.opened[index!]!.bytes.slice()
+                : await crypt.open(task, r),
+          });
+        }
       }
       const id = reuse ? openedView!.id : {};
       if (crypt.validate) await task.wait(() => crypt.validate!(opened, task, counter, id));
       if (crypt.reuseOpened && !reuse)
         task.step(() => {
+          clearView();
           openedView = {
             id,
             counter: structuredClone(counter),

@@ -1,5 +1,6 @@
 /** Private v8 delivery ledger. Status is derived from authenticated proof bytes, never a stored setter. */
 import { hex, utf8, type Bytes } from './custodyCrypto';
+import type { VerificationMemo } from './verificationMemo';
 import { MAX_BATCH_BYTES, type OpenedRecord } from './contentRecord';
 import { captureError, type CaptureRoute } from './sourceCapture';
 import { inspectSpool, networkRoute, type SpoolState } from './spoolRecord';
@@ -193,10 +194,38 @@ export async function verifyDelivery(
   a: DecisionAuthority,
   publicKey: CryptoKey,
   subtle: SubtleCrypto,
+  reuse?: { memo: VerificationMemo; current(): void },
 ): Promise<DeliveryState> {
   const state = emptyDelivery(),
     entries = new Map(c.entries.map((e) => [e.record.seq, e.entry])),
     envelopes = new Map<number, number>();
+  const expectedPositions = new Map<
+    number,
+    NonNullable<Awaited<ReturnType<typeof expectedPosition>>>
+  >();
+  if (reuse) {
+    let previous = ZERO_REFUSAL;
+    for (const p of c.spool.positions) {
+      if (!p.wire) break;
+      const e = decodeNetworkEnvelope(p.wire),
+        subject = {
+          workspace: e.workspace_id,
+          credential: e.credential_id,
+          position: e.seq,
+          digest: hex(e.digest),
+          epoch: e.epoch,
+        },
+        before = previous;
+      expectedPositions.set(p.position, { ...subject, previous, parent: ZERO_REFUSAL });
+      previous = await reuse.memo.check(
+        'link:' + p.position,
+        JSON.stringify([subject, before]),
+        [],
+        () => acceptanceLink(subject, before, subtle),
+        reuse.current,
+      );
+    }
+  }
   for (const row of c.ledger) {
     const entry = entries.get(row.seq);
     if (!entry) {
@@ -215,15 +244,35 @@ export async function verifyDelivery(
         state.submissions.has(entry.position)
       )
         captureError('Submission order or eligibility changed');
-      const opened = await verifySubmission(entry.wire, networkRoute(r), publicKey, a, subtle);
+      const check = () => verifySubmission(entry.wire, networkRoute(r), publicKey, a, subtle),
+        opened = reuse
+          ? await reuse.memo.check(
+              'delivery:' + row.seq,
+              JSON.stringify([r, a, 'submission']),
+              [entry.wire],
+              check,
+              reuse.current,
+            )
+          : await check();
       if (opened.parent !== null || hex(opened.envelope) !== hex(p.wire!))
         captureError('Submission differs from persisted first attempt');
       state.submissions.set(entry.position, entry.wire);
     } else {
       if (state.conflict) captureError('New response after contradictory evidence');
-      const expected = await expectedPosition(c.spool, entry.position, subtle);
+      const expected = reuse
+        ? expectedPositions.get(entry.position)
+        : await expectedPosition(c.spool, entry.position, subtle);
       if (!expected) captureError('Response without envelope');
-      const evidence = await verifyPositionResponse(entry.wire, expected!, a, subtle);
+      const check = () => verifyPositionResponse(entry.wire, expected!, a, subtle),
+        evidence = reuse
+          ? await reuse.memo.check(
+              'delivery:' + row.seq,
+              JSON.stringify([expected, a, 'response']),
+              [entry.wire],
+              check,
+              reuse.current,
+            )
+          : await check();
       if (evidence.kind === 'unknown') captureError('Unverified persisted response');
       const prior = state.responses.get(entry.position) ?? [];
       if (prior.some((b) => hex(b) === hex(entry.wire)))

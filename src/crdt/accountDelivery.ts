@@ -1,3 +1,4 @@
+import type { VerificationMemo } from './verificationMemo';
 import type { OpenedRecord } from './contentRecord';
 import {
   encodeSubmit,
@@ -40,6 +41,7 @@ export interface DeliveryContext {
   inspect?: typeof inspectDelivery;
   /** Detached result from the just-validated complete v9 view; never used for proposed transitions. */
   verified?(records: readonly OpenedRecord[]): DeliveryState;
+  reuse?(task: SessionTask): { memo: VerificationMemo; current(): void };
   pin(): AuthorityPin;
   canSubmit?(): boolean;
   signer(): CryptoKey;
@@ -128,6 +130,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
                   context.authority(),
                   context.publicKey(),
                   subtleFor(task),
+                  context.reuse?.(task),
                 ),
               );
             } finally {

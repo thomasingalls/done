@@ -7,7 +7,7 @@ import { join, resolve } from 'node:path';
 import { chromium } from '@playwright/test';
 import { build } from 'vite';
 import { authenticator, finishRequest } from '../account-core/fixtures.mjs';
-import { instrument, clockSeam, targets } from './instrument.mjs';
+import { instrument, clockSeam, targets, verificationOracle } from './instrument.mjs';
 import { installProbe } from './probe.mjs';
 export { args } from '../account-residue/fixtures.mjs';
 export {
@@ -40,7 +40,7 @@ export async function bundle(measured) {
             name: 'liveness-measurement',
             enforce: 'pre',
             transform(code, id) {
-              return clockSeam(instrument(code, id, hits), id);
+              return clockSeam(verificationOracle(instrument(code, id, hits), id), id);
             },
           },
         ]

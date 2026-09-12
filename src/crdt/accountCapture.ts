@@ -106,7 +106,7 @@ export async function openAccountCaptureOwner(
         },
         options.code,
         (records, task, counter, view) => {
-          captureCatalog(sourceRecords(records), route);
+          if (extension?.version !== 9) captureCatalog(sourceRecords(records), route);
           return extension?.validate(task, records, route, counter, view);
         },
         extension ? true : undefined,
