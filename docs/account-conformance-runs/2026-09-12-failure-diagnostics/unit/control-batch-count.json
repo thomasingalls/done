@@ -1,0 +1,10 @@
+{
+  "mode": "batch-count",
+  "changes": [
+    [
+      "if (!fits) fail('size');",
+      "void fits;"
+    ]
+  ],
+  "outcome": "256 updates admitted, requiring 257 local records."
+}

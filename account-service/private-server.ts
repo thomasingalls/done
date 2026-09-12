@@ -1,3 +1,4 @@
+import { createDiagnostics, causeCode } from '../account-protocol/diagnostics.ts';
 import {
   decodeSubmit,
   SUBMIT_BODY_LIMIT,
@@ -21,6 +22,7 @@ export async function createPrivateAccountServer(options: {
   authority?: (policy: Policy) => PrivateAuthority;
 }) {
   const token = bytes(options.token, 32, 32);
+  const diagnostics = createDiagnostics();
   let core: AccountCore;
   let authority: PrivateAuthority | undefined;
   let origin: string;
@@ -102,7 +104,20 @@ export async function createPrivateAccountServer(options: {
         if (result?.kind === 'decision') {
           response.writeHead(200, { 'Content-Type': 'application/octet-stream' });
           response.end(result.bytes);
-        } else send(409, { kind: 'unknown' });
+        } else {
+          const reason = result?.reason ?? 'unavailable';
+          diagnostics.record({
+            operation:
+              request.url === '/account/delivery/submit'
+                ? 'submit'
+                : request.url === '/account/delivery/read-v2'
+                  ? 'read-v2'
+                  : 'read',
+            phase: 'response',
+            code: reason,
+          });
+          send(409, { v: 1, kind: 'unknown', reason });
+        }
         return;
       }
       const input: unknown = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(body));
@@ -148,7 +163,8 @@ export async function createPrivateAccountServer(options: {
         return;
       }
       send('ok' in result && !result.ok ? 409 : 200, result);
-    } catch {
+    } catch (cause) {
+      diagnostics.record({ operation: 'http', phase: 'request', code: causeCode(cause) });
       send(400, refuse('malformed'));
     }
   });
@@ -180,6 +196,7 @@ export async function createPrivateAccountServer(options: {
   return {
     origin,
     core,
+    diagnostics: () => ({ http: diagnostics.read(), core: core.diagnostics }),
     close: () =>
       new Promise<void>((resolve, reject) => {
         server.closeAllConnections();

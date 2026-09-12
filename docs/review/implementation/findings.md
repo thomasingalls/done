@@ -39,9 +39,10 @@ These IDs belong to the implementation review and must not be inserted into the 
    UI/worker/export, synthetic migration/restart/cleanup/clear and observable profile/SQL/WAL bytes.
    Logical cleanup passes; legacy plaintext remains in a physical LevelDB file. Supported-platform
    opener tests, opaque formats and fragmentation remain. Do not close the wider finding.
-3. **F-10 with N-08/P-07, and F-09:** define actionable refusal, diagnostics and recovery behavior
-   before onboarding. Preserve signed evidence versus unsigned hints; diagnostic logs must not become
-   a plaintext/factor carrier. F-13/F-14/F-23/F-24 belong to the relevant ownership/capacity/UI work.
+3. **F-10/N-08/P-07 bounded diagnostics complete; F-09 recovery next.** Typed unsigned hints
+   preserve reasons and resumable progress without receipt/decision authority. Fixed memory-only
+   operation/phase/code buffers omit sensitive values. [Evidence](../../account-conformance-runs/2026-09-12-failure-diagnostics/README.md).
+   F-09 still needs read-only recovery; F-13/F-14/F-23/F-24 retain their separate scope.
 4. **F-20 with N-06/P-05:** make validation scheduling, time budgets and complete aggregate coverage
    explicit. Keep the existing crypto audit's narrower success; do not imply a recent full `pnpm check`.
    Consolidate repeated work without dropping standalone prerequisites or source-bound evidence.
@@ -92,7 +93,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-07"></a>**F-07** Repeated full-history verification | repaired within bounded v9 scope; [evidence](../../account-sync-liveness-repairs.md); [assessment](./96a2040-1ceb88d.md#assessment-f-07) | high Account liveness | [N-01](#n-01), [N-02](#n-02), [P-01](#p-01); [src/crdt/accountReceive.ts:104](../../../src/crdt/accountReceive.ts) |
 | <a id="f-08"></a>**F-08** Source-free reopen capsules | product disposition: v8 retired; internal setup retained; [assessment](./96a2040-1ceb88d.md#assessment-f-08) | low waste/latency | [N-04](#n-04); [src/crdt/accountReceive.ts:489](../../../src/crdt/accountReceive.ts) |
 | <a id="f-09"></a>**F-09** Fail-closed diagnostics and salvage | open; [assessment](./96a2040-1ceb88d.md#assessment-f-09) | medium recoverability | —; [docs/storage-contract.md](../../../docs/storage-contract.md) |
-| <a id="f-10"></a>**F-10** Service and client error classification | open; [assessment](./96a2040-1ceb88d.md#assessment-f-10) | medium operations; low direct security impact | [N-08](#n-08), [P-07](#p-07); [account-service/delivery.ts:608](../../../account-service/delivery.ts) |
+| <a id="f-10"></a>**F-10** Service and client error classification | closed in bounded private composition; [evidence](../../account-conformance-runs/2026-09-12-failure-diagnostics/README.md); [assessment](./96a2040-1ceb88d.md#assessment-f-10) | medium operations; low direct security impact | [N-08](#n-08), [P-07](#p-07); [account-service/delivery.ts:608](../../../account-service/delivery.ts) |
 | <a id="f-11"></a>**F-11** Passkey registration binding | closed; original suggested comparison rejected; [assessment](./96a2040-1ceb88d.md#assessment-f-11) | medium authorization correctness | —; [account-service/delivery.ts:147](../../../account-service/delivery.ts) |
 | <a id="f-12"></a>**F-12** Unchecked PKCS#8 slicing | closed; [assessment](./96a2040-1ceb88d.md#assessment-f-12) | low portability/correctness | —; [src/account/recovery.ts:32](../../../src/account/recovery.ts) |
 | <a id="f-13"></a>**F-13** Blocked compatibility open | open UX; ownership rule retained; [assessment](./96a2040-1ceb88d.md#assessment-f-13) | low availability/UX | —; [src/crdt/storageCompatibility.ts:17](../../../src/crdt/storageCompatibility.ts) |
@@ -129,7 +130,7 @@ Related items have distinct behavior or completion criteria and stay separately 
 | <a id="n-05"></a>**N-05** Unspecified receipt baseline hash | closed by byte-contract specification | distinct | low compatibility; [assessment](./96a2040-1ceb88d.md#assessment-n-05) |
 | <a id="n-06"></a>**N-06** Loaded-host generated-property timeouts | open; merged into F-20 | [F-20](#f-20) | low validation reliability; [assessment](./96a2040-1ceb88d.md#assessment-n-06) |
 | <a id="n-07"></a>**N-07** Unnamed transport constructions | closed; covered by F-05 | [F-05](#f-05) | medium-high protocol assurance; [assessment](./96a2040-1ceb88d.md#assessment-n-07) |
-| <a id="n-08"></a>**N-08** Read-route and HTTP reason collapse | open; merged into F-10 | [F-10](#f-10) | medium operations; low direct security impact; [assessment](./96a2040-1ceb88d.md#assessment-n-08) |
+| <a id="n-08"></a>**N-08** Read-route and HTTP reason collapse | closed with F-10; bounded unsigned hints | [F-10](#f-10) | medium operations; low direct security impact; [assessment](./96a2040-1ceb88d.md#assessment-n-08) |
 | <a id="n-09"></a>**N-09** v8 offline event hides halt reason | product disposition: v8 driver retired | distinct | low diagnostics; [assessment](./96a2040-1ceb88d.md#assessment-n-09) |
 | <a id="p-01"></a>**P-01** Composed sync full-history cost and liveness cliff | bounded liveness repair verified; no universal capacity claim; merged into F-07 | [F-07](#f-07) | high; highest implementation priority from this intake; [assessment](./1ceb88d-393ef43.md#assessment-p-01) |
 | <a id="p-02"></a>**P-02** Send progress does not expedite receive | repaired; durable progress expedites idle receive, preserving backoff/halts | distinct; related [F-07](#f-07) | low latency; [assessment](./1ceb88d-393ef43.md#assessment-p-02) |
@@ -137,7 +138,7 @@ Related items have distinct behavior or completion criteria and stay separately 
 | <a id="p-04"></a>**P-04** Unsigned-to-signed history discoverability | documentation navigation addressed in this intake | distinct | low record navigation; [assessment](./1ceb88d-393ef43.md#assessment-p-04) |
 | <a id="p-05"></a>**P-05** Aggregate validation freshness and repeated vectors | partial; merged into F-20 | [F-20](#f-20) | medium validation cost/coverage; [assessment](./1ceb88d-393ef43.md#assessment-p-05) |
 | <a id="p-06"></a>**P-06** Duplicate unswept phase cryptographic prose | open documentation residual; F-05 stays closed | distinct; residual of closed [F-05](#f-05) | low drift risk; [assessment](./1ceb88d-393ef43.md#assessment-p-06) |
-| <a id="p-07"></a>**P-07** Activation refusal parsed as a success object | open; merged into F-10 | [F-10](#f-10) | low diagnostics; medium user recoverability at onboarding; [assessment](./1ceb88d-393ef43.md#assessment-p-07) |
+| <a id="p-07"></a>**P-07** Activation refusal parsed as a success object | closed with F-10; three-stage retry evidence | [F-10](#f-10) | low diagnostics; medium user recoverability at onboarding; [assessment](./1ceb88d-393ef43.md#assessment-p-07) |
 
 ## Existing closure records
 

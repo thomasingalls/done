@@ -1,3 +1,9 @@
+import {
+  causeCode,
+  reportDiagnostic,
+  type Diagnostic,
+  type DiagnosticSink,
+} from '../account-protocol/diagnostics.ts';
 import type { DeliveryVerification } from './deliveryVerification.ts';
 import { parseRetainedActivation } from '../account-protocol/activation.ts';
 /** Private first-lineage service decisions and authenticated readback. No content decryption. */
@@ -416,7 +422,11 @@ export async function decideSubmission(
   issuer: DeliveryIssuer,
   hook: DeliveryHook,
   reuse?: DeliveryVerification,
+  diagnostics?: DiagnosticSink,
 ): Promise<ServiceDeliveryResult> {
+  let phase: Diagnostic['phase'] = 'request';
+  const note = (cause: unknown) =>
+    reportDiagnostic(diagnostics, { operation: 'submit', phase, code: causeCode(cause) });
   let workspace: string, bytes: Bytes;
   try {
     const r = closed(input, ['workspaceId', 'bytes']);
@@ -426,23 +436,28 @@ export async function decideSubmission(
     workspace = r['workspaceId'] as string;
     bytes = new Uint8Array(r['bytes']);
     decodeSubmission(bytes);
-  } catch {
+  } catch (cause) {
+    note(cause);
     return unknown('invalid-request');
   }
   // Retries after a competing commit reread and reverify; no async work holds a SQL transaction.
   for (let retry = 0; retry < 4; retry++) {
     let s: Snapshot | null;
     try {
+      phase = 'storage';
       s = read(db, workspace);
-    } catch {
+    } catch (cause) {
+      note(cause);
       return unknown('storage-unavailable');
     }
     if (!s) return unknown('unavailable');
     let auth: Authority, ledger: Awaited<ReturnType<typeof census>>;
     try {
+      phase = 'verify';
       auth = await authority(s, issuer);
       ledger = await census(s, auth, reuse);
-    } catch {
+    } catch (cause) {
+      note(cause);
       reuse?.clear();
       return unknown('unavailable');
     }
@@ -451,7 +466,8 @@ export async function decideSubmission(
     let verified: Awaited<ReturnType<typeof verifyWire>>;
     try {
       verified = await verifyWire(bytes, auth);
-    } catch {
+    } catch (cause) {
+      note(cause);
       return unknown('invalid-request');
     }
     const { e, subject, submission } = verified;
@@ -493,6 +509,7 @@ export async function decideSubmission(
       result = unknown('storage-unavailable');
     }
     try {
+      phase = 'commit';
       hook('after-verify', 'decide-submission');
       db.exec('BEGIN IMMEDIATE');
       if (snapshotBytes(snapshot(db, workspace)) !== snapshotBytes(s)) {
@@ -532,11 +549,13 @@ export async function decideSubmission(
         );
         result = { kind: 'decision', bytes: response };
       }
+      phase = 'commit';
       hook('before-commit', 'decide-submission');
       db.exec('COMMIT');
       hook('after-commit', 'decide-submission');
       return result;
-    } catch {
+    } catch (cause) {
+      note(cause);
       reuse?.clear();
       if (db.isTransaction) db.exec('ROLLBACK');
       return unknown('storage-unavailable');
@@ -558,20 +577,27 @@ export async function readAccepted(
   issuer: ReadIssuer,
   hook: DeliveryHook,
   reuse?: DeliveryVerification,
+  diagnostics?: DiagnosticSink,
 ): Promise<ServiceDeliveryResult> {
+  let phase: Diagnostic['phase'] = 'request';
+  const note = (cause: unknown) =>
+    reportDiagnostic(diagnostics, { operation: 'read', phase, code: causeCode(cause) });
   let bytes: Bytes, request: ReturnType<typeof decodeReadRequest>;
   try {
     if (!(input instanceof Uint8Array) || input.length > READ_REQUEST_LIMIT)
       throw Error('Read bytes required');
     bytes = new Uint8Array(input);
     request = decodeReadRequest(bytes);
-  } catch {
+  } catch (cause) {
+    note(cause);
     return unknown('invalid-request');
   }
   for (let retry = 0; retry < 4; retry++) {
     try {
+      phase = 'storage';
       const s = read(db, request.workspace);
       if (!s) return unknown('unavailable');
+      phase = 'verify';
       const auth = await authority(s, issuer);
       if (
         !readScopeMatches(request, issuer.pin, auth.a, auth.credential) ||
@@ -611,6 +637,7 @@ export async function readAccepted(
         if (page.entries.length === request.limit) break;
       }
       if (page.next < page.through && !page.entries.length) return unknown('unavailable');
+      phase = 'commit';
       hook('after-verify', 'read-accepted');
       db.exec('BEGIN');
       if (snapshotBytes(s) !== snapshotBytes(snapshot(db, request.workspace))) {
@@ -625,7 +652,8 @@ export async function readAccepted(
       const answer = issuer.page(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey, page);
       db.exec('COMMIT');
       return { kind: 'decision', bytes: answer };
-    } catch {
+    } catch (cause) {
+      note(cause);
       reuse?.clear();
       if (db.isTransaction) db.exec('ROLLBACK');
       return unknown('unavailable');
@@ -650,14 +678,19 @@ export async function readInbound(
   issuer: InboundReadIssuer,
   hook: DeliveryHook,
   reuse?: DeliveryVerification,
+  diagnostics?: DiagnosticSink,
 ): Promise<ServiceDeliveryResult> {
+  let phase: Diagnostic['phase'] = 'request';
+  const note = (cause: unknown) =>
+    reportDiagnostic(diagnostics, { operation: 'read-v2', phase, code: causeCode(cause) });
   let bytes: Bytes, request: InboundReadRequest;
   try {
     if (!(input instanceof Uint8Array) || input.length > READ_REQUEST_LIMIT)
       throw Error('Read bytes required');
     bytes = new Uint8Array(input);
     request = decodeInboundRequest(bytes);
-  } catch {
+  } catch (cause) {
+    note(cause);
     return unknown('invalid-request');
   }
   const live = () => {
@@ -666,6 +699,7 @@ export async function readInbound(
   };
   for (let retry = 0; retry < 4; retry++) {
     try {
+      phase = 'storage';
       const s = read(db, request.workspace);
       if (!s) return unknown('unavailable');
       const auth = await authority(s, issuer),
@@ -717,6 +751,7 @@ export async function readInbound(
         if (page.entries.length === request.limit) break;
       }
       if (!page.entries.length && page.next < page.through) return unknown('unavailable');
+      phase = 'commit';
       hook('after-verify', 'read-inbound');
       db.exec('BEGIN IMMEDIATE');
       const current = snapshotBytes(snapshot(db, request.workspace)) === snapshotBytes(s);
@@ -744,7 +779,8 @@ export async function readInbound(
       }
       db.exec('COMMIT');
       return { kind: 'decision', bytes: answer };
-    } catch {
+    } catch (cause) {
+      note(cause);
       reuse?.clear();
       if (db.isTransaction) db.exec('ROLLBACK');
       return unknown('unavailable');

@@ -1,0 +1,33 @@
+(node:96255) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96255) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ fresh -8 assertion binds the exact completion; no-proof finish leaves every row unchanged (82.153792ms)
+✔ fresh -7 assertion binds the exact completion; no-proof finish leaves every row unchanged (64.377291ms)
+✔ real WebAuthn signatures with wrong purpose, origin, RP, user, presence, verification or credential refuse without consumption (71.028708ms)
+✔ expiry, renewal and a separately valid completion cannot reuse or replace the fixed challenge target (66.732292ms)
+✔ expiry advancing during verification is checked again inside the activation transaction (27.588292ms)
+✔ account/nonce swaps and completion changes cannot borrow another account assertion (67.674ms)
+✔ closed context rejects aliases, noncanonical passkeys, extra fields and noninteger expiry (20.852209ms)
+✔ before-commit challenge failure has one cold-recoverable result (32.07475ms)
+✔ after-commit challenge failure has one cold-recoverable result (32.295333ms)
+✔ schema 4 upgrade preserves pending work; v1 receipts and absent consumed records are retained but refused (33.402917ms)
+✔ 120 shrinking-enabled histories match an independent expiry/consumption/abandonment state machine (3383.876625ms)
+✔ concurrent challenges converge; competing valid proofs consume exactly one activation (40.945ms)
+✔ challenge losing a race to same completion returns only its exact outcome (29.410666ms)
+✔ challenge losing a race to different completion returns only its exact outcome (29.321416ms)
+(node:96257) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96257) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ client rejects changed signature before prompting; omitted check actually prompts (1153.485667ms)
+✔ client rejects changed target before prompting; omitted check actually prompts (1236.65775ms)
+✔ cancelled assertion forwards abort and drains before a queued tab acquires the slot (1244.379583ms)
+✔ renderer death at prompt cold-recovers; committed result needs no new assertion (1464.939167ms)
+✔ renderer death at lost-finish cold-recovers; committed result needs no new assertion (1476.303375ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11445.003166

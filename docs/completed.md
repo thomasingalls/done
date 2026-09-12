@@ -3341,3 +3341,14 @@ partial for wider platform/opener/opaque-format/fragmentation evidence. No produ
 All 21 personal package files, 31 prior vectors and L-2 remain unchanged; personal services stay stopped.
 The user authorizes continued unsigned phases through failure/recovery and storage/responsiveness.
 Appended before replacing L-1.
+
+
+## 2026-09-12 — L-1 bounded diagnostics and admission refusals
+
+Following unsigned privacy `67304f3`, F-10/N-08/P-07 are closed for the private composition by typed
+unsigned hints, closed bounded parsing and memory-only redacted operation/phase/code diagnostics.
+All three promotion refusal stages preserve progress and retry to a verified receipt. Unknown results
+still grant no decision/finality authority. The [ten-stage campaign](./account-conformance-runs/2026-09-12-failure-diagnostics/README.md)
+passes the full 1,003-test unit suite, 72 Node cases, generated activation/delivery/inbound and 150
+malformed-hint cases, with source pins verified. F-09 read-only recovery follows. Personal files,
+prior vectors, archived reviews and L-2 remain unchanged. Appended before advancing L-1.

@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+
+ Test Files  92 passed (92)
+      Tests  1003 passed (1003)
+   Start at  17:08:47
+   Duration  35.86s (transform 4.88s, setup 2.07s, import 13.32s, tests 114.84s, environment 18.01s)
+

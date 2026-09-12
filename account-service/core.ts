@@ -1,3 +1,4 @@
+import { createDiagnostics, causeCode } from '../account-protocol/diagnostics.ts';
 import { createDeliveryVerification } from './deliveryVerification.ts';
 import { randomBytes } from 'node:crypto';
 import {
@@ -113,6 +114,10 @@ type Hook = (point: 'before-commit' | 'after-commit' | 'after-verify', operation
 export class AccountCore {
   #db: DatabaseSync;
   #deliveryVerification = createDeliveryVerification();
+  #diagnostics = createDiagnostics();
+  get diagnostics() {
+    return this.#diagnostics.read();
+  }
   #policy: Policy;
   #now: () => number;
   #hook: Hook;
@@ -216,15 +221,37 @@ export class AccountCore {
 
   /** Private service composition; transport cannot supply an issuer or authenticated membership. */
   readAccepted(input: unknown, issuer: ReadIssuer) {
-    return readAccepted(this.#db, input, issuer, this.#hook, this.#deliveryVerification);
+    return readAccepted(
+      this.#db,
+      input,
+      issuer,
+      this.#hook,
+      this.#deliveryVerification,
+      this.#diagnostics.record,
+    );
   }
   readInbound(input: unknown, issuer: InboundReadIssuer) {
-    return readInbound(this.#db, input, issuer, this.#hook, this.#deliveryVerification);
+    return readInbound(
+      this.#db,
+      input,
+      issuer,
+      this.#hook,
+      this.#deliveryVerification,
+      this.#diagnostics.record,
+    );
   }
   decideSubmission(input: unknown, issuer: DeliveryIssuer) {
-    return decideSubmission(this.#db, input, issuer, this.#hook, this.#deliveryVerification);
+    return decideSubmission(
+      this.#db,
+      input,
+      issuer,
+      this.#hook,
+      this.#deliveryVerification,
+      this.#diagnostics.record,
+    );
   }
   close(): void {
+    this.#diagnostics.clear();
     this.#deliveryVerification.clear();
     this.#db.close();
   }
@@ -240,7 +267,12 @@ export class AccountCore {
       this.#db.exec('COMMIT');
       this.#hook('after-commit', operation);
       return result;
-    } catch {
+    } catch (cause) {
+      this.#diagnostics.record({
+        operation: 'account-transaction',
+        phase: 'commit',
+        code: causeCode(cause),
+      });
       if (this.#db.isTransaction) this.#db.exec('ROLLBACK');
       return refuse('storage-unavailable');
     }

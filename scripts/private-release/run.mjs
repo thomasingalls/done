@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { mkdirSync, readdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
 import { join, resolve } from 'node:path';
 const phase = process.argv[2] ?? 'privacy';
-if (phase !== 'privacy') throw Error('Unknown release phase');
+if (!['privacy', 'failures'].includes(phase)) throw Error('Unknown release phase');
 const output = resolve(
   'test-results/private-release-' + phase,
   new Date().toISOString().replaceAll(':', '-'),
@@ -41,7 +41,9 @@ write('scope', {
   arch: process.arch,
   protocol: 'docs/account-privacy-recovery-capacity.md',
   claim:
-    'Bounded private Chromium privacy extension; legacy physical residue is separately reported, not a forensic-erasure promise',
+    phase === 'privacy'
+      ? 'Bounded private Chromium privacy extension; legacy physical residue is separately reported, not a forensic-erasure promise'
+      : 'Private bounded diagnostics and refusal recovery; unsigned hints never authorize a decision',
 });
 
 const summary = {
@@ -128,38 +130,109 @@ async function run(name, args, timeout = 60000) {
   if (code !== 0 || timedOut || error) throw Error('Stage failed: ' + name);
 }
 try {
-  await run('types', ['node_modules/typescript/bin/tsc', '-b', '--noEmit']);
-  await run('neutral', [
-    '--test',
-    'test/account-residue/matcher.test.mjs',
-    'test/account-residue/extended.test.mjs',
-  ]);
-  await run(
-    'packaged',
-    ['--test', '--test-concurrency=1', 'test/account-residue/packaged.test.mjs'],
-    240000,
-  );
-  await run('service-files', ['--test', 'test/account-residue/service-files.test.mjs'], 240000);
-  await run('r1-calibration', ['--test', 'test/account-residue/calibration.test.mjs'], 180000);
-  await run('r1-lifecycle', ['--test', 'test/account-residue/lifecycle.test.mjs'], 300000);
-  await run('r1-generated', ['--test', 'test/account-residue/generated.test.mjs'], 360000);
-  await run('lint', [
-    'node_modules/oxlint/bin/oxlint',
-    '--react-plugin',
-    'test/account-residue',
-    'scripts/private-release',
-  ]);
-  await run('format', [
-    'node_modules/oxfmt/bin/oxfmt',
-    '--check',
-    'test/account-residue',
-    'scripts/private-release',
-  ]);
-  const read = (stage, name) => JSON.parse(readFileSync(join(output, stage, name + '.json')));
-  assert.equal(read('packaged', 'fresh-outcome').logical, 'passed');
-  assert.equal(read('packaged', 'fresh-worker-control').detected, true);
-  assert.equal(read('packaged', 'migration-outcome').logical, 'passed');
-  assert.equal(read('service-files', 'service-files').verdict, 'complete-no-prohibited-match');
+  if (phase === 'privacy') {
+    await run('types', ['node_modules/typescript/bin/tsc', '-b', '--noEmit']);
+    await run('neutral', [
+      '--test',
+      'test/account-residue/matcher.test.mjs',
+      'test/account-residue/extended.test.mjs',
+    ]);
+    await run(
+      'packaged',
+      ['--test', '--test-concurrency=1', 'test/account-residue/packaged.test.mjs'],
+      240000,
+    );
+    await run('service-files', ['--test', 'test/account-residue/service-files.test.mjs'], 240000);
+    await run('r1-calibration', ['--test', 'test/account-residue/calibration.test.mjs'], 180000);
+    await run('r1-lifecycle', ['--test', 'test/account-residue/lifecycle.test.mjs'], 300000);
+    await run('r1-generated', ['--test', 'test/account-residue/generated.test.mjs'], 360000);
+    await run('lint', [
+      'node_modules/oxlint/bin/oxlint',
+      '--react-plugin',
+      'test/account-residue',
+      'scripts/private-release',
+    ]);
+    await run('format', [
+      'node_modules/oxfmt/bin/oxfmt',
+      '--check',
+      'test/account-residue',
+      'scripts/private-release',
+    ]);
+    const read = (stage, name) => JSON.parse(readFileSync(join(output, stage, name + '.json')));
+    assert.equal(read('packaged', 'fresh-outcome').logical, 'passed');
+    assert.equal(read('packaged', 'fresh-worker-control').detected, true);
+    assert.equal(read('packaged', 'migration-outcome').logical, 'passed');
+    assert.equal(read('service-files', 'service-files').verdict, 'complete-no-prohibited-match');
+  } else {
+    await run('types', ['node_modules/typescript/bin/tsc', '-b', '--noEmit']);
+    await run('unit', ['node_modules/vitest/vitest.mjs', 'run'], 120000);
+    await run(
+      'native',
+      [
+        '--test',
+        '--test-concurrency=1',
+        'test/account-failures/native.test.mjs',
+        'test/account-failures/service.test.mjs',
+        'test/account-failures/http.test.mjs',
+      ],
+      120000,
+    );
+    await run(
+      'activation',
+      [
+        '--test',
+        '--test-concurrency=1',
+        'test/account-activation/core.test.mjs',
+        'test/account-activation/native.test.mjs',
+      ],
+      180000,
+    );
+    await run(
+      'service-delivery',
+      [
+        '--test',
+        '--test-concurrency=1',
+        'test/account-service-delivery/core.test.mjs',
+        'test/account-service-delivery/generated.test.mjs',
+      ],
+      180000,
+    );
+    await run(
+      'service-inbound',
+      [
+        '--test',
+        '--test-concurrency=1',
+        'test/account-service-inbound/core.test.mjs',
+        'test/account-service-inbound/generated.test.mjs',
+      ],
+      180000,
+    );
+    await run(
+      'transport',
+      [
+        '--test',
+        '--test-concurrency=1',
+        'test/account-receive-transport/native.test.mjs',
+        'test/account-sync/native.test.mjs',
+      ],
+      240000,
+    );
+    await run('privacy', ['--test', 'test/account-residue/lifecycle.test.mjs'], 180000);
+    const paths = [
+      'account-protocol/diagnostics.ts',
+      'account-service/core.ts',
+      'account-service/delivery.ts',
+      'account-service/private-server.ts',
+      'src/account/privateDeliveryHttp.ts',
+      'src/crdt/promotionAdmission.ts',
+      'test/diagnostics.test.ts',
+      'test/privateDeliveryHttp.test.ts',
+      'test/account-failures',
+      'scripts/private-release',
+    ];
+    await run('lint', ['node_modules/oxlint/bin/oxlint', '--react-plugin', ...paths]);
+    await run('format', ['node_modules/oxfmt/bin/oxfmt', '--check', ...paths]);
+  }
   for (const s of sources)
     assert.equal(hash(readFileSync(s.path)), s.sha256, 'Source changed: ' + s.path);
   summary.status = 'passed';

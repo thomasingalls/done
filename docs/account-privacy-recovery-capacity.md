@@ -73,3 +73,17 @@ cleanup and Local clear. Fresh packaged storage and observed service DB/WAL file
 sentinel matches. This finding supports the distinction between logical deletion and forensic erasure.
 F-21.4 stays partial for the platform/opener/opaque-format and fragmentation limits above. No production
 code changed in this phase. Next is the bounded failure/diagnostic contract, then read-only recovery.
+
+## Diagnostic result — 2026-09-12
+
+Following privacy commit `67304f3`, the [ten-stage diagnostic campaign](./account-conformance-runs/2026-09-12-failure-diagnostics/README.md)
+passes the full 1,003-test suite and 72 Node cases. F-10/N-08/P-07 are closed for the private composition:
+bounded unsigned hints preserve useful reasons without success authority; each admission stage retains
+progress and can retry to a verified receipt. Service/client memory-only buffers retain fixed classes
+and phases, never raw exceptions or sensitive values. The 150 generated malformed-hint checks and
+existing generated/native commit, activation, delivery, receive and privacy controls pass.
+
+F-09 follows as a separate read-only recovery boundary. It must require authenticated Local custody,
+exclude Account/unfinished-clear/unsupported-format state, preserve original carriers, label every
+salvage result partial, and preserve readable journal work as well as database records. Damaged or
+missing custody can still require external recovery files; diagnostics cannot reconstruct missing keys.

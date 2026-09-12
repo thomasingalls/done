@@ -69,11 +69,16 @@ evidence. Logical cleanup passes; a legacy writing sentinel remains in physical 
 F-21.4 remains partial for supported-platform/C13 opener/opaque-format/fragmentation qualification.
 No forensic-erasure claim follows from a logical clean scan. No production code changed in this phase.
 
-**Now.** Follow the [sequence contract](./account-privacy-recovery-capacity.md): F-10/N-08/P-07 bounded
-redacted diagnostics and typed unsigned hints, then F-09 read-only recovery without silent reset or
-claiming partial writing is a verified complete workspace. Preserve all receipt, authentication and
-commit guards. Then F-16/F-17/F-19 measured maintenance/projection/resource work. Give a chat summary
-and unsigned commit at each verified boundary without stopping for another approval.
+**Now.** F-10/N-08/P-07 diagnostics are complete in the commit containing this checkpoint.
+The [ten-stage campaign](./account-conformance-runs/2026-09-12-failure-diagnostics/README.md) passes
+1,003 unit tests and 72 Node cases, including actual hint delivery, three-stage admission retry,
+activation, commit, transport and privacy controls. The bounded buffers store fixed redacted classes
+in memory, and unsigned hints never grant protocol authority.
+
+Continue F-09 read-only Local recovery with authenticated custody, journal-inclusive partial export,
+no source mutation, no silent reset and no claim of complete recovery. Then complete the authorized
+F-16/F-17/F-19 maintenance/projection/resource work. Give a chat summary and unsigned commit at each
+verified boundary without another approval. The signing reminder remains active.
 
 **After these categories.** Aggregate release validation F-20/N-06/P-05 and P-06 prose, with explicit
 supported-platform and formal review gates. Private Account cutover and second-device adoption remain

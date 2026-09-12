@@ -33,6 +33,7 @@ import {
 } from './promotionGenesis';
 import { signPromotion, writePromotion, type PromotionRecord } from './promotionRecord';
 import { hex, random } from './custodyCrypto';
+import { checkPromotionRefusal } from '../../account-protocol/diagnostics';
 export interface AdmissionTransport {
   begin(input: { retryKey: string; request: AdmissionRequest }): Promise<unknown>;
   challenge(input: {
@@ -129,6 +130,7 @@ export async function admitLocalPromotion(
               request: structuredClone(request),
             }),
           );
+          checkPromotionRefusal(response, 'begin');
           if ((response as { kind?: unknown })?.kind === 'promotion-receipt') {
             // A final reply was lost. Only an already retained completion may recover an admitted result.
             const receipt = await task.wait(() =>
@@ -163,6 +165,7 @@ export async function admitLocalPromotion(
               completion: structuredClone(completion),
             }),
           );
+          checkPromotionRefusal(proposed, 'challenge');
           let answer: unknown;
           let assertedContext: ReturnType<typeof parseActivationChallenge>['context'] | undefined;
           if ((proposed as { kind?: unknown })?.kind === 'promotion-receipt') answer = proposed;
@@ -194,6 +197,7 @@ export async function admitLocalPromotion(
               }),
             );
           }
+          checkPromotionRefusal(answer, 'finish');
           const receipt = await task.wait(() => verifyReceipt(answer, request, options.pin, parts));
           if (assertedContext && !same(receipt.activation.context, assertedContext))
             throw Error('Activation receipt changed');

@@ -2,13 +2,94 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import fc from 'fast-check';
 import { privateDeliveryPost } from '../src/account/privateDeliveryHttp';
+import {
+  clearPrivateTransportDiagnostics,
+  readPrivateTransportDiagnostics,
+} from '../src/account/privateDeliveryHttp';
 import type { AuthorityPin } from '../account-protocol/authority';
 const pin = { origin: 'http://127.0.0.1:12345' } as AuthorityPin;
 const headers = { 'Content-Type': 'application/octet-stream' };
 const token = 'A'.repeat(43);
 const send = (signal = new AbortController().signal, limit = 1024) =>
   privateDeliveryPost(pin, token, 'read-v2', new Uint8Array([7]), limit, signal);
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  clearPrivateTransportDiagnostics();
+});
+it('preserves bounded service hints without returning authoritative bytes; ignores arbitrary error bodies', async () => {
+  for (const reason of ['storage-unavailable', 'state-changed', 'out-of-order']) {
+    vi.stubGlobal(
+      'fetch',
+      async () =>
+        new Response(JSON.stringify({ v: 1, kind: 'unknown', reason }), {
+          status: 409,
+          headers: { 'Content-Type': 'application/json' },
+        }),
+    );
+    expect(await send()).toBeNull();
+    expect(readPrivateTransportDiagnostics().at(-1)).toEqual({
+      operation: 'read-v2',
+      phase: 'response',
+      code: reason,
+    });
+  }
+  for (const body of [
+    'secret-writing-and-factor',
+    JSON.stringify({
+      v: 1,
+      kind: 'unknown',
+      reason: 'storage-unavailable',
+      extra: 'secret-writing-and-factor',
+    }),
+    'x'.repeat(513),
+  ]) {
+    vi.stubGlobal(
+      'fetch',
+      async () =>
+        new Response(body, { status: 409, headers: { 'Content-Type': 'application/json' } }),
+    );
+    expect(await send()).toBeNull();
+  }
+  expect(JSON.stringify(readPrivateTransportDiagnostics())).not.toContain('secret');
+  expect(readPrivateTransportDiagnostics().at(-1)?.code).toBe('response-too-large');
+  vi.stubGlobal('fetch', async () => {
+    throw Error('token-and-writing');
+  });
+  expect(await send()).toBeNull();
+  expect(readPrivateTransportDiagnostics().at(-1)?.code).toBe('network-unavailable');
+});
+it('a diagnostic observer failure does not alter the signed-byte transport', async () => {
+  vi.stubGlobal('fetch', async () => new Response(new Uint8Array([8]), { headers }));
+  expect(
+    await privateDeliveryPost(
+      pin,
+      token,
+      'submit',
+      new Uint8Array([1]),
+      1024,
+      new AbortController().signal,
+      () => {
+        throw Error('observer');
+      },
+    ),
+  ).toEqual(new Uint8Array([8]));
+  vi.stubGlobal('fetch', async () => {
+    throw Error('network');
+  });
+  expect(
+    await privateDeliveryPost(
+      pin,
+      token,
+      'submit',
+      new Uint8Array([1]),
+      1024,
+      new AbortController().signal,
+      () => {
+        throw Error('observer');
+      },
+    ),
+  ).toBeNull();
+});
 it('uses the fixed v2 route, no ambient credentials or redirects, and refuses inactive dispatch', async () => {
   const fetch = vi.fn(
     async (_input: RequestInfo | URL, _init?: RequestInit) =>
