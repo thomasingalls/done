@@ -12,7 +12,7 @@ private development scope, not a demonstrated exploit severity.
 [bounded sync-liveness repair sequence](../../account-sync-liveness-repairs.md) improved private v9's
 creating-member composition, with [12-stage combined evidence](../../account-conformance-runs/2026-09-12-account-liveness-complete/README.md)
 and 999 passing unit tests. **F-07 remains partial:** Q-02 identifies repeated carrier loads/copies on
-each position and Q-03 reproduces service-cache loss with larger request contexts. These need further
+each position and Q-03’s service-cache context defect is now repaired. Q-02 needs further
 repair before practical Account cutover. Historical evidence and intake responses remain unchanged.
 
 - [F packet: af8941e..96a2040](./af8941e-96a2040.md) retains its historical responses unchanged.
@@ -45,12 +45,12 @@ These IDs belong to the implementation review and must not be inserted into the 
    refuses; removing both startup/full and owner/reuse checks exposes the forbidden result. The
    review's reuse-only retarget suggestion was incomplete. Full contract/crypto/release aggregates
    remain separate F-20 work, and subsequent source edits require fresh applicable checks.
-2. **F-07 remains partial: Q-02/Q-03 require further liveness work before practical Account cutover.**
+2. **F-07 remains partial: Q-02 requires further liveness work before practical Account cutover.**
    Verification reuse, owned HTTP waits, expiry retry and scheduler wakes are implemented. Repeated
    full carrier loads/copies remain. The reviewer reports a thirty-character burst at 80 positions
    admitted locally in 6.8 seconds and accepted/read back in 117 seconds; these precise timings are
-   not independently reproduced here. The service-cache eviction pattern is reproduced in isolation.
-   Fix its repeated full-request context (Q-03); preserve a repeatable growth/burst workload and design
+   not independently reproduced here. [Q-03 is repaired](./liveness-followups.md#q-03-result): large-checkpoint warm/cold service tests pass.
+   Preserve a repeatable growth/burst workload and design
    revision-bound load reuse and safe batching (Q-02). Keep exact input identity, current publication
    guards, network re-entry checks, durable source identity and cold-replay controls. Do not remove
    checks merely because a scheduler pass began with a verified view.
@@ -171,7 +171,7 @@ because sharing a neighborhood is not sharing a fix. Every supplied Q ID remains
 | --- | --- | --- | --- |
 | <a id="q-01"></a>**Q-01** Construction census and receipt drift | bounded repair complete; [evidence](./validation-controls.md); [response](./393ef43-9ff48b5.md#assessment-q-01) | F-20, related F-05: reviewed current classification/site pins, passing live gate, refreshed source-bound receipts and prerequisite coverage | high validation integrity |
 | <a id="q-02"></a>**Q-02** Repeated loads and per-source sync growth | mechanism confirmed; fix; timings reported; [response](./393ef43-9ff48b5.md#assessment-q-02) | F-07/N-02/P-01: reproducible growing-history/burst case, measured load/copy reduction, supported capacity and batching contracts with crash/invalidation controls | high Account usability |
-| <a id="q-03"></a>**Q-03** Full request repeated in service-cache contexts | isolated eviction reproduced; fix; [response](./393ef43-9ff48b5.md#assessment-q-03) | F-07: authenticated compact context, representative checkpoint/row sizes, warm/cold equivalence and authority-change refusal; related F-19 | medium performance, early repair |
+| <a id="q-03"></a>**Q-03** Full request repeated in service-cache contexts | repaired; 64 KiB/1 MiB checkpoint warm/cold and authority-change controls pass; [result](./liveness-followups.md#q-03-result); [response](./393ef43-9ff48b5.md#assessment-q-03) | F-07: authenticated compact context, representative checkpoint/row sizes, warm/cold equivalence and authority-change refusal; related F-19 | medium performance, early repair |
 | <a id="q-04"></a>**Q-04** Three stale mutation controls | bounded repair complete; both coverage paths exercised; [evidence](./validation-controls.md); [response](./393ef43-9ff48b5.md#assessment-q-04) | F-20/F-21: executed-path controls actually expose forbidden outcomes, useful anchor failures, affected suites and downstream aggregate pass | high regression assurance |
 | <a id="q-05"></a>**Q-05** Receive expiry loses its reason | confirmed classification gap; fix observation, preserve retry; [response](./393ef43-9ff48b5.md#assessment-q-05) | distinct, related N-01/F-10: visible bounded reason and diagnostic, repeated expiry then recovery; no count-only terminal halt | low-medium operations |
 | <a id="q-06"></a>**Q-06** Current unsigned-chain discoverability | documented in this intake; intentional signing debt remains; [response](./393ef43-9ff48b5.md#assessment-q-06) | distinct, related P-04: retained IDs/trees and authorization; future signing adds a crosswalk without rewriting receipts | low provenance |

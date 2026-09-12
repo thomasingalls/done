@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "warmVerifies": 13,
+  "coldVerifies": 25,
+  "sameColdResult": true,
+  "changedSqlColumnsRefused": true,
+  "changedMembershipRefused": true,
+  "changedResponseRefused": true
+}

@@ -77,7 +77,7 @@
     },
     {
       "path": "account-service/delivery.ts",
-      "sha256": "48b1ec4e695dba321486bc7b50ad8b310acbd375ca941fccc9f1ab39da378a6a"
+      "sha256": "0756660148627462a89f6498096661ebebc8bdf43db67585685403bf817fff73"
     },
     {
       "path": "account-service/deliveryVerification.ts",

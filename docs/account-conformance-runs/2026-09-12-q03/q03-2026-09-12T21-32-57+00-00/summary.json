@@ -1,0 +1,112 @@
+{
+  "phase": "q03",
+  "head": "dceec5c40779ae80253a7fa31142e071bd95b558",
+  "status": "failed",
+  "started": "2026-09-12T21:32:57.753338+00:00",
+  "node": "v26.8.2",
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "stages": [
+    {
+      "name": "service-context",
+      "command": [
+        "node",
+        "--test",
+        "test/account-liveness/service-cache.test.mjs"
+      ],
+      "timeoutSeconds": 90,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 10.561,
+      "tests": 4
+    },
+    {
+      "name": "service-delivery",
+      "command": [
+        "node",
+        "--test",
+        "test/account-service-delivery/core.test.mjs",
+        "test/account-service-delivery/generated.test.mjs",
+        "test/account-service-delivery/controls.test.mjs",
+        "test/account-service-delivery/restart.test.mjs"
+      ],
+      "timeoutSeconds": 180,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 15.135,
+      "tests": 31
+    },
+    {
+      "name": "service-inbound",
+      "command": [
+        "node",
+        "--test",
+        "test/account-service-inbound/core.test.mjs",
+        "test/account-service-inbound/generated.test.mjs",
+        "test/account-service-inbound/controls.test.mjs",
+        "test/account-service-inbound/restart.test.mjs"
+      ],
+      "timeoutSeconds": 240,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 23.035,
+      "tests": 19
+    },
+    {
+      "name": "types",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 0.235
+    },
+    {
+      "name": "inventory",
+      "command": [
+        "node",
+        "scripts/check-authority-map.mjs"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 0.731
+    },
+    {
+      "name": "lint",
+      "command": [
+        "node",
+        "node_modules/oxlint/bin/oxlint",
+        "account-service/delivery.ts",
+        "test/account-admission/core-fixtures.mjs",
+        "test/account-liveness/service-cache.test.mjs"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 0.131
+    },
+    {
+      "name": "format",
+      "command": [
+        "node",
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "account-service/delivery.ts",
+        "test/account-admission/core-fixtures.mjs",
+        "test/account-liveness/service-cache.test.mjs",
+        "docs/account-crypto/census.json"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 1,
+      "timedOut": false,
+      "elapsedSeconds": 0.132
+    }
+  ],
+  "sourceCount": 934,
+  "error": "AssertionError(('format', PosixPath('test-results/liveness-followups/q03-2026-09-12T21-32-57+00-00/format.log')))",
+  "finished": "2026-09-12T21:33:47.790305+00:00"
+}

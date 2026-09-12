@@ -98,7 +98,12 @@ export async function prepared(t, options = {}) {
     signer,
     actors: [{ id: scope.principalId, kind: 'human', credential: signer }],
     coverage: { derivation: 'yjs-13.6.31-snapshot-v1', snapshot: '0000', heads: [] },
-    checkpoint: { v: 1, salt: '66'.repeat(16), nonce: '77'.repeat(12), ct: '88'.repeat(18) },
+    checkpoint: {
+      v: 1,
+      salt: '66'.repeat(16),
+      nonce: '77'.repeat(12),
+      ct: '88'.repeat(options.checkpointBytes ?? 18),
+    },
     wraps: [
       {
         recipient: 'device',

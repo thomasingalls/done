@@ -20,7 +20,7 @@ Items 2–4 and aggregate qualification remain ahead.
    unreadable-content controls on the actual paths. Phase runners now execute the shared prerequisites;
    current receipts come from the actual checks. Keep those checks current as the next phases change
    source; their passing result does not cover the complete release aggregate.
-2. **Q-03:** replace repeated full request JSON in the service verification context with its freshly
+2. **Q-03 — complete:** replaced repeated full request JSON in the service verification context with its freshly
    authenticated compact binding, retaining scope/generation/predecessor and exact input bytes. Add
    representative checkpoint/ledger-size and authority-change controls. Existing cache bounds remain.
 3. **Q-02:** retain a reproducible natural-scheduling burst/growth probe and an explicit workload

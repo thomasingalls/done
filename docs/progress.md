@@ -43,14 +43,14 @@ that is no longer active.
 ---
 
 
-## Active slice: Compact authenticated service-cache context — Q-03 (`L-1`)
+## Active slice: Carrier workload and bounded source batching — Q-02 (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: not started
-blocks_on: none; bounded Q-01/Q-04 validation repair complete
+status: in flight
+blocks_on: none; Q-03 cache-context repair complete
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-12
 ```
@@ -71,12 +71,13 @@ each independently refuse; their joint omission exposes missing content. The ear
 repair attempt is retained. Fresh disposable build and actual current gate executions restore trace
 readback. No production behavior changed; complete release/contract aggregates were not rerun.
 
-**Next proposed work.** Q-03: use the freshly authenticated compact request binding in the service
-verification-cache context, retaining scope/generation/predecessor and exact row inputs. Test
-representative checkpoint/ledger sizes, warm/cold equivalence and authority change. Q-02 then needs a
-retained natural-scheduling workload, fewer repeated carrier loads/copies and a safe batching contract;
-Q-05 needs a visible expiry reason while preserving fresh-request recovery. Publication/commit checks
-must remain current across writes and network waits. None of these runtime repairs started here.
+**Current work.** Validation repair committed unsigned as `dceec5c`. Q-03 is complete: the
+[service context repair](./review/implementation/liveness-followups.md#q-03-result) preserves current
+authority and exact inputs while avoiding full request duplication. Both checkpoint-size regressions
+use 13 warm versus 118 cold verifications; affected generated service suites pass.
+Q-02 now needs a retained natural-scheduling workload, fewer repeated carrier loads/copies and safe
+bounded source batching. Q-05 follows with visible expiry classification and automatic fresh retry.
+Publication/commit checks remain current across writes and network waits.
 
 **After those repairs.** F-20/N-06/P-05 complete graph/coverage/deadline work and P-06 prose precede
 an immutable release-validation result and explicit workload/platform/claim dispositions. Private
@@ -89,7 +90,7 @@ recovery, F-17/F-19 capacity and Q-08 evidence retention/history-publication rem
 vectors (31), historical F/N/P/Q annotations and L-2 are unchanged. No personal browser/profile,
 recovery files, Account, factor, key, service, origin, routing or Git history changed. The root `done `
 file is untouched. Review `409fbd0` and the preceding eleven commits are intentionally unsigned;
-the existing reminder tracks descendants of `1372c39`. This phase remains uncommitted. Its completed
+the existing reminder tracks descendants of `1372c39`. Intermediate follow-up commits are explicitly authorized unsigned. The completed
 outcome was appended before replacing this slice.
 
 ---

@@ -3449,3 +3449,16 @@ Q-01/Q-04 are complete within scope. Next is Q-03, then Q-02 and Q-05, before co
 qualification. Personal packages, vectors, historical packets and L-2 remain unchanged. The review
 commit and earlier chain remain intentionally unsigned; this phase's changes are left uncommitted.
 Appended before updating L-1.
+
+## 2026-09-12 — Q-03 compact authenticated service-cache context (`L-1`)
+
+After unsigned validation-control repair `dceec5c`, removed full promotion JSON from every service
+ledger cache entry's context. Freshly authenticated `auth.scope.request` already binds the complete
+request; full authority, generation, predecessor, exact row bytes, witness and commit checks remain.
+[Evidence](./account-conformance-runs/2026-09-12-q03/README.md) records the original 1 MiB failure
+(118 warm/cold verifies), then 13 warm versus 118 cold at both 64 KiB and 1 MiB checkpoints with 35
+4 KiB-body rows. Four cache tests, 31 current service-delivery tests including 80 generated histories,
+19 service-inbound tests, types, scoped lint/format and refreshed authority inventory pass. Retained
+failed attempts include a retired v8 native fixture blocked by sandbox localhost access and final
+census formatting corrected separately. Q-03 closes this cache context defect, not cache capacity,
+full-history costs or full release qualification. Q-02 follows. Personal artifacts and L-2 preserved.

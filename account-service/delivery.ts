@@ -348,9 +348,9 @@ async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerification
     s.promotion.delivery_witness === null
       ? null
       : parseWitness(JSON.parse(s.promotion.delivery_witness));
-  // Authority is freshly authenticated on every request. Bind cached signatures to that complete
-  // member request and predecessor; all SQL columns, ordering, parent issuance and witness still replay.
-  const scope = JSON.stringify([auth.a, auth.scope, auth.generation, s.promotion.request]);
+  // Authority freshly authenticates scope.request (the complete request digest) on every request.
+  // Bind generation and predecessor too; SQL columns, ordering, parent issuance and witness replay.
+  const scope = JSON.stringify([auth.a, auth.scope, auth.generation]);
   for (const row of s.rows) {
     const bytes = new Uint8Array(row.submission),
       response = new Uint8Array(row.response),

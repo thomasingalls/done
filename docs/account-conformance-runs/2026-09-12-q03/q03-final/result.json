@@ -1,0 +1,96 @@
+{
+  "status": "passed",
+  "functionalCampaign": "test-results/liveness-followups/q03-2026-09-12T21-32-57+00-00",
+  "functionalStages": [
+    {
+      "name": "service-context",
+      "command": [
+        "node",
+        "--test",
+        "test/account-liveness/service-cache.test.mjs"
+      ],
+      "timeoutSeconds": 90,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 10.561,
+      "tests": 4
+    },
+    {
+      "name": "service-delivery",
+      "command": [
+        "node",
+        "--test",
+        "test/account-service-delivery/core.test.mjs",
+        "test/account-service-delivery/generated.test.mjs",
+        "test/account-service-delivery/controls.test.mjs",
+        "test/account-service-delivery/restart.test.mjs"
+      ],
+      "timeoutSeconds": 180,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 15.135,
+      "tests": 31
+    },
+    {
+      "name": "service-inbound",
+      "command": [
+        "node",
+        "--test",
+        "test/account-service-inbound/core.test.mjs",
+        "test/account-service-inbound/generated.test.mjs",
+        "test/account-service-inbound/controls.test.mjs",
+        "test/account-service-inbound/restart.test.mjs"
+      ],
+      "timeoutSeconds": 240,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 23.035,
+      "tests": 19
+    },
+    {
+      "name": "types",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 0.235
+    },
+    {
+      "name": "inventory",
+      "command": [
+        "node",
+        "scripts/check-authority-map.mjs"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 0.731
+    },
+    {
+      "name": "lint",
+      "command": [
+        "node",
+        "node_modules/oxlint/bin/oxlint",
+        "account-service/delivery.ts",
+        "test/account-admission/core-fixtures.mjs",
+        "test/account-liveness/service-cache.test.mjs"
+      ],
+      "timeoutSeconds": 60,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 0.131
+    }
+  ],
+  "formatRepair": "Regenerated census whitespace only; current authority inventory and scoped formatting pass.",
+  "sourcePinsUnchangedExceptCensusFormatting": true,
+  "reviewedRuntimeChanges": [
+    "account-service/delivery.ts"
+  ],
+  "currentCensusSha256": "e6d4d08e8ac860522946cb26459e89ea29b50aaaa353795c894711acf68622ad",
+  "excludedRetiredCase": "First command accidentally included retired v8 native fixture; it could not bind localhost in sandbox. Intended current service core/generated/control/restart suites all pass."
+}
