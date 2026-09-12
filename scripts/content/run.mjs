@@ -107,8 +107,11 @@ async function run(mutation = null) {
   const tested = { ...sources };
   if (mutation) {
     const file = 'src/crdt/' + mutation.file;
-    if (tested[file].split(mutation.from).length !== 2)
-      throw Error('Mutation anchor is not unique: ' + label);
+    const matches = tested[file].split(mutation.from).length - 1;
+    if (matches !== 1)
+      throw Error(
+        `Mutation ${label}: expected one anchor in ${file}, found ${matches}: ${JSON.stringify(mutation.from)}`,
+      );
     tested[file] = tested[file].replace(mutation.from, mutation.to);
   }
   for (const [name, source] of Object.entries(tested)) {

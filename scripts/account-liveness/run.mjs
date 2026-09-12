@@ -3,6 +3,7 @@ import { spawn, execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { mkdirSync, readdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
 import { join, resolve } from 'node:path';
+import { validationControlStages } from '../validation-controls/preflight.mjs';
 const output = resolve(
   'test-results/account-liveness',
   new Date().toISOString().replaceAll(':', '-'),
@@ -18,6 +19,8 @@ const walk = (dir) =>
 const sources = [
   ...new Set([
     ...['src', 'account-protocol', 'account-service', 'test', 'scripts'].flatMap(walk),
+    ...walk('docs/account-crypto'),
+    'docs/review/remediation/S0-2/authority-map.md',
     ...execFileSync('git', ['ls-files', 'wasm'], { encoding: 'utf8' }).trim().split('\n'),
     'package.json',
     'pnpm-lock.yaml',
@@ -144,6 +147,8 @@ async function run(name, args, timeout = 60000) {
   if (code !== 0 || timedOut || error) throw Error('Stage failed: ' + name);
 }
 try {
+  for (const [name, args, timeout] of validationControlStages(output))
+    await run(name, args, timeout);
   await run('types', ['node_modules/typescript/bin/tsc', '-b', '--noEmit']);
   await run('instrument', ['--test', 'test/account-liveness/instrument.test.mjs']);
   await run('coverage', [

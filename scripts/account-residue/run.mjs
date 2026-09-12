@@ -2,6 +2,7 @@ import { spawn, execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { mkdirSync, readdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
 import { join, resolve } from 'node:path';
+import { validationControlStages } from '../validation-controls/preflight.mjs';
 import { LIMITS } from '../../test/account-residue/matcher.mjs';
 const output = resolve(
   'test-results/account-residue',
@@ -18,6 +19,8 @@ const walk = (dir) =>
 const files = [
   ...new Set([
     ...['src', 'account-protocol', 'account-service', 'test', 'scripts'].flatMap(walk),
+    ...walk('docs/account-crypto'),
+    'docs/review/remediation/S0-2/authority-map.md',
     'package.json',
     'pnpm-lock.yaml',
     'tsconfig.json',
@@ -166,6 +169,8 @@ async function run(name, args, timeout = 60000) {
   if (code !== 0 || timedOut || error) throw Error('Stage failed: ' + name);
 }
 try {
+  for (const [name, args, timeout] of validationControlStages(output))
+    await run(name, args, timeout);
   await run('types', ['node_modules/typescript/bin/tsc', '-b', '--noEmit']);
   await run('instrument', ['--test', 'test/account-residue/matcher.test.mjs']);
   await run('calibration', ['--test', 'test/account-residue/calibration.test.mjs'], 150000);

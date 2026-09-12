@@ -359,6 +359,22 @@
     {
       "path": "wasm/journal-seal",
       "review": "outside TS scan; inherited Local journal crypto remains under storage conformance, not qualified by this prep census"
+    },
+    {
+      "path": "src/crdt/verifiedRecords.ts",
+      "review": "Owner-local complete-record verification reuse; exact headers/bytes and private load identity, detached results and disposal invalidation. No standalone verification or commit authority. Reviewed in docs/review/implementation/validation-controls.md."
+    },
+    {
+      "path": "src/crdt/verificationMemo.ts",
+      "review": "Owner-local unlabelled verification-result memo; exact inputs/context, current lifetime and revision checks. Callers still authenticate completeness and replay semantic/commit checks. Reviewed in docs/review/implementation/validation-controls.md."
+    },
+    {
+      "path": "account-service/deliveryVerification.ts",
+      "review": "Core-local bounded verification-result reuse; authority and scope are supplied only after fresh service authentication, exact row bytes and predecessor remain bound. Eviction falls back to verification; Q-03 request-size inefficiency remains open. Reviewed in docs/review/implementation/validation-controls.md."
+    },
+    {
+      "path": "src/crdt/localRecovery.ts",
+      "review": "Explicit read-only partial Local salvage through factor-authenticated claim/custody and inherited record/journal openers. No allocation, seal, content write, admission or cleanup authority. Reviewed in docs/review/implementation/validation-controls.md."
     }
   ]
 }

@@ -6,8 +6,9 @@ namespaces; they are unrelated to the older `docs/review/work-items.tsv` IDs.
 
 **Start with the [current findings and remediation index](./findings.md).** It reconciles all 55 leaf
 IDs, routes duplicates/extensions to shared work and retains separate completion criteria. Current
-priority is restoring live validation prerequisites (Q-01/Q-04) and repairing remaining Account
-liveness costs (F-07/Q-02/Q-03), with explicit expiry diagnostics (Q-05), before release qualification.
+priority is repairing remaining Account liveness costs (F-07/Q-03, then Q-02), with explicit expiry
+diagnostics (Q-05), before release qualification. [Validation prerequisites Q-01/Q-04](./validation-controls.md)
+are restored within the bounded campaign; complete aggregate validation remains open.
 Prior bounded repairs and privacy/recovery/storage evidence keep their documented limits.
 
 - [F packet: af8941e..96a2040](./af8941e-96a2040.md): supplied review and 45 historical responses

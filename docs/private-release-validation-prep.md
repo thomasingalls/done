@@ -11,13 +11,15 @@ and remaining limits live in
 
 The [Q packet and responses](./review/implementation/393ef43-9ff48b5.md) and
 [current routing](./review/implementation/findings.md#q-addendum-routing-and-independent-exit-criteria)
-preserve each finding. This is a proposed work order; the intake changes documentation only.
+preserve each finding. The intake was committed unsigned in `409fbd0`; the subsequent
+[validation-control repair](./review/implementation/validation-controls.md) completes item 1 below.
+Items 2–4 and aggregate qualification remain ahead.
 
-1. **Q-01/Q-04:** review the seven added census files and changed construction sites, then record
-   classifications/pins. Restore live coverage, HTTP-bound and unreadable-content controls on the
-   actual exercised paths, with clear anchor-miss failures. Map changed source to affected suites and
-   include the construction gate. Regenerate receipts through their actual checks. Do not refresh
-   every hash mechanically or reinterpret a passing phase as evidence those omitted suites ran.
+1. **Q-01/Q-04 — bounded repair complete:** reviewed the seven added census files and changed
+   construction sites, recorded classifications/pins, and restored coverage, HTTP-bound and
+   unreadable-content controls on the actual paths. Phase runners now execute the shared prerequisites;
+   current receipts come from the actual checks. Keep those checks current as the next phases change
+   source; their passing result does not cover the complete release aggregate.
 2. **Q-03:** replace repeated full request JSON in the service verification context with its freshly
    authenticated compact binding, retaining scope/generation/predecessor and exact input bytes. Add
    representative checkpoint/ledger-size and authority-change controls. Existing cache bounds remain.

@@ -46,8 +46,8 @@ export const mutants = [
     file: 'contentStore.ts',
     case: 'C09.unreadable-load',
     assertion: 'tag-refuses-whole-load',
-    from: 'bytes: await crypt.open(task, r) }',
-    to: 'bytes: await crypt.open(task, r).catch(() => new Uint8Array()) }',
+    from: ': await crypt.open(task, r),',
+    to: ': await crypt.open(task, r).catch(() => new Uint8Array()),',
   },
   {
     id: 'allow-ceiling-equality',

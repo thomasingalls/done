@@ -1,0 +1,192 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-12T20:57:51.648Z",
+  "stages": [
+    {
+      "name": "construction-inventory",
+      "args": [
+        "scripts/check-authority-map.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 623
+    },
+    {
+      "name": "receive-coverage-control",
+      "args": [
+        "--test",
+        "--test-name-pattern=^cold replay refuses missing or changed content$",
+        "test/account-receive/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 10000
+    },
+    {
+      "name": "http-bound-control",
+      "args": [
+        "--test",
+        "--test-name-pattern=^effective HTTP bound omission exposes the forbidden result$",
+        "test/account-receive-transport/controls.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 1762
+    },
+    {
+      "name": "content-unreadable-control",
+      "args": [
+        "scripts/content/run.mjs",
+        "--case",
+        "C09.unreadable-load",
+        "--output",
+        "test-results/private-release-failures/2026-09-12T20-57-51.584Z/content-control"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 5569
+    },
+    {
+      "name": "types",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 105
+    },
+    {
+      "name": "unit",
+      "args": [
+        "node_modules/vitest/vitest.mjs",
+        "run"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 35337
+    },
+    {
+      "name": "native",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "test/account-failures/native.test.mjs",
+        "test/account-failures/service.test.mjs",
+        "test/account-failures/http.test.mjs"
+      ],
+      "code": 0,
+      "tests": 5,
+      "timedOut": false,
+      "elapsedMs": 5957
+    },
+    {
+      "name": "activation",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "test/account-activation/core.test.mjs",
+        "test/account-activation/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 19,
+      "timedOut": false,
+      "elapsedMs": 14139
+    },
+    {
+      "name": "service-delivery",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "test/account-service-delivery/core.test.mjs",
+        "test/account-service-delivery/generated.test.mjs"
+      ],
+      "code": 0,
+      "tests": 20,
+      "timedOut": false,
+      "elapsedMs": 16147
+    },
+    {
+      "name": "service-inbound",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "test/account-service-inbound/core.test.mjs",
+        "test/account-service-inbound/generated.test.mjs"
+      ],
+      "code": 0,
+      "tests": 9,
+      "timedOut": false,
+      "elapsedMs": 29201
+    },
+    {
+      "name": "transport",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "test/account-receive-transport/native.test.mjs",
+        "test/account-sync/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 16,
+      "timedOut": false,
+      "elapsedMs": 154295
+    },
+    {
+      "name": "privacy",
+      "args": [
+        "--test",
+        "test/account-residue/lifecycle.test.mjs"
+      ],
+      "code": 0,
+      "tests": 3,
+      "timedOut": false,
+      "elapsedMs": 14589
+    },
+    {
+      "name": "lint",
+      "args": [
+        "node_modules/oxlint/bin/oxlint",
+        "--react-plugin",
+        "account-protocol/diagnostics.ts",
+        "account-service/core.ts",
+        "account-service/delivery.ts",
+        "account-service/private-server.ts",
+        "src/account/privateDeliveryHttp.ts",
+        "src/crdt/promotionAdmission.ts",
+        "test/diagnostics.test.ts",
+        "test/privateDeliveryHttp.test.ts",
+        "test/account-failures",
+        "scripts/private-release"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 83
+    },
+    {
+      "name": "format",
+      "args": [
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "account-protocol/diagnostics.ts",
+        "account-service/core.ts",
+        "account-service/delivery.ts",
+        "account-service/private-server.ts",
+        "src/account/privateDeliveryHttp.ts",
+        "src/crdt/promotionAdmission.ts",
+        "test/diagnostics.test.ts",
+        "test/privateDeliveryHttp.test.ts",
+        "test/account-failures",
+        "scripts/private-release"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 95
+    }
+  ],
+  "sourcePins": 936,
+  "finishedAt": "2026-09-12T21:02:39.721Z"
+}

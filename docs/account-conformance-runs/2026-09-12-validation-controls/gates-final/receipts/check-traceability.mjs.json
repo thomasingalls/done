@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "script": "scripts/check-traceability.mjs",
+  "script_sha256": "d7a02acca4412bd5f0c53d72039303a99401da56810c7d7d670ec140a3bd0676",
+  "argv": [
+    "--check"
+  ],
+  "ok": true,
+  "exit": 0,
+  "started": "2026-09-12T21:11:50.924Z",
+  "finished": "2026-09-12T21:11:59.120Z",
+  "tree": {
+    "head": "409fbd09768561393431378d076bc71939f24ac3",
+    "dirty_sha256": "07976bda3ac64508708f1d885b1e7b74bb9ec013c041ab747eeb0e0fe43b637a"
+  }
+}

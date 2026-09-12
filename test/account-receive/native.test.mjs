@@ -154,12 +154,20 @@ for (const fault of ['content', 'event', 'ciphertext'])
       /coverage|incomplete|authentication|decrypt|operation|Operation/i,
     );
     if (fault === 'content') {
+      // Startup uses full verification before the receive owner uses reuse. Each guard alone must
+      // still reject; only their joint omission exposes the forbidden cold admission.
+      for (const branch of ['reuse', 'fallback']) {
+        await f.page.evaluate(await receiveBundle('coverage-without-' + branch));
+        await assert.rejects(openReceive(f.page, item), /coverage/i);
+      }
       await f.page.evaluate(await receiveBundle('coverage'));
       assert.equal((await openReceive(f.page, item)).receivedThrough, 1);
       await closeReceive(f.page);
       artifact('control-coverage.json', {
+        omitted: ['startup fallback', 'owner reuse'],
+        eachSingleOmissionStillRefuses: true,
         outcome:
-          'Removing the actual coverage check admits an event whose unique remote content row was deleted.',
+          'Removing both executed coverage checks admits an event whose unique remote content row was deleted.',
       });
     }
     if (fault === 'event') {

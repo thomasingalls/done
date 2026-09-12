@@ -1,9 +1,10 @@
 # Encrypted-store and Account implementation findings
 
 Original intake: **2026-09-12, signed `27e5b6f`**, committed in `1372c39`.
-Latest intake: **2026-09-12, `9ff48b5`**, matching the Q review tip. This shared index covers the same
-source's original packet and three addenda. The Q intake adds source/evidence readback, a read-only
-registry check, a synthetic in-memory cache probe and Git/file inventory; it does not rerun browser
+Latest intake: **2026-09-12, `9ff48b5`**, matching the Q review tip; committed unsigned in `409fbd0`.
+This shared index covers the same source's original packet and three addenda. The Q intake adds
+source/evidence readback, a read-only registry check, a synthetic in-memory cache probe and Git/file
+inventory; it does not rerun browser
 timings, native campaigns or an aggregate. Importance describes engineering priority in the current
 private development scope, not a demonstrated exploit severity.
 
@@ -36,11 +37,14 @@ These IDs belong to the implementation review and must not be inserted into the 
 
 ## Priority and scope
 
-1. **Restore validation prerequisites: Q-01/Q-04 under F-20, with F-05/F-21 obligations.**
-   Review/reclassify construction drift before recording pins; restore the three controls on executed
-   branches and include their suites in affected-phase validation. Refresh receipts by executing their
-   checks. Phase source-hash stability is not a current census pass. The old byte-contract closures
-   stand within their recorded scope, but the live aggregate cannot be claimed green.
+1. **Q-01/Q-04: bounded validation prerequisites restored.** The
+   [repair record](./validation-controls.md) and [13-stage evidence](../../account-conformance-runs/2026-09-12-validation-controls/README.md)
+   cover reviewed census/site pins, four manual verification/recovery entrypoints, effective omission
+   controls, full affected suites and their inclusion in liveness/residue/private-release runners.
+   Fresh gate execution restores traceability for the recorded tree. Each coverage guard alone still
+   refuses; removing both startup/full and owner/reuse checks exposes the forbidden result. The
+   review's reuse-only retarget suggestion was incomplete. Full contract/crypto/release aggregates
+   remain separate F-20 work, and subsequent source edits require fresh applicable checks.
 2. **F-07 remains partial: Q-02/Q-03 require further liveness work before practical Account cutover.**
    Verification reuse, owned HTTP waits, expiry retry and scheduler wakes are implemented. Repeated
    full carrier loads/copies remain. The reviewer reports a thirty-character burst at 80 positions
@@ -105,7 +109,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-02"></a>**F-02** Storage harness import closure | closed; [assessment](./96a2040-1ceb88d.md#assessment-f-02) | high regression coverage | —; [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
 | <a id="f-03"></a>**F-03** Descriptor LP capacity | closed; [assessment](./96a2040-1ceb88d.md#assessment-f-03) | high capacity/correctness | —; [account-protocol/admission.ts](../../../account-protocol/admission.ts) |
 | <a id="f-04"></a>**F-04** Fresh activation assertion | closed; [assessment](./96a2040-1ceb88d.md#assessment-f-04) | medium authorization contract | —; [account-service/core.ts:856](../../../account-service/core.ts) |
-| <a id="f-05"></a>**F-05** Construction ownership and byte contracts | historical closure retained; live census drift open under [Q-01](#q-01); [assessment](./393ef43-9ff48b5.md#assessment-f-05) | high protocol assurance | [N-07](#n-07); [docs/review/implementation/account-crypto-closure.md](../../../docs/review/implementation/account-crypto-closure.md) |
+| <a id="f-05"></a>**F-05** Construction ownership and byte contracts | historical closure retained; current census restored under [Q-01](#q-01); [assessment](./393ef43-9ff48b5.md#assessment-f-05) | high protocol assurance | [N-07](#n-07); [docs/review/implementation/account-crypto-closure.md](../../../docs/review/implementation/account-crypto-closure.md) |
 | <a id="f-06"></a>**F-06** Recovery payload vectors | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-06) | medium-high interoperability | —; [docs/review/implementation/account-crypto-closure.md](../../../docs/review/implementation/account-crypto-closure.md) |
 | <a id="f-07"></a>**F-07** Repeated full-history verification | partial; bounded reductions retained, repeated-load and cache-size residuals open; [Q-02](#q-02), [Q-03](#q-03); [assessment](./393ef43-9ff48b5.md#assessment-f-07) | high Account liveness | [N-01](#n-01), [N-02](#n-02), [P-01](#p-01); [src/crdt/accountReceive.ts:104](../../../src/crdt/accountReceive.ts) |
 | <a id="f-08"></a>**F-08** Source-free reopen capsules | product disposition: v8 retired; internal setup retained; [assessment](./96a2040-1ceb88d.md#assessment-f-08) | low waste/latency | [N-04](#n-04); [src/crdt/accountReceive.ts:489](../../../src/crdt/accountReceive.ts) |
@@ -120,7 +124,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-17"></a>**F-17** Editor projection and fork cost | partial; equivalent full-byte fast path and bounded archive memo complete, large-history/device capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-17) | medium, potentially high with large documents | —; [src/crdt/admittedWorkspace.ts](../../../src/crdt/admittedWorkspace.ts) |
 | <a id="f-18"></a>**F-18** Origin-wide journal scans | open; measure before repair; [assessment](./96a2040-1ceb88d.md#assessment-f-18) | low | —; [src/crdt/journalStore.ts](../../../src/crdt/journalStore.ts) |
 | <a id="f-19"></a>**F-19** Promotion marker and request resource cost | partial; retained encoding/direct byte comparison complete, full admission/open capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-19) | medium capacity/operations | —; [src/crdt/promotionRecord.ts](../../../src/crdt/promotionRecord.ts) |
-| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | open aggregate work; [Q-01](#q-01)/[Q-04](#q-04) prerequisites; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
+| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | open aggregate work; [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
 | <a id="f-21.1"></a>**F-21.1** Remaining parser conformance | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.1) | medium assurance | —; [docs/review/implementation/account-parser-conformance.md](../../../docs/review/implementation/account-parser-conformance.md) |
 | <a id="f-21.2"></a>**F-21.2** Admission coverage and exact bounds | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.2) | medium-high assurance | —; [docs/review/implementation/account-admission-evidence.md](../../../docs/review/implementation/account-admission-evidence.md) |
 | <a id="f-21.3"></a>**F-21.3** Recognized cross-account capabilities | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.3) | medium authorization assurance | —; [docs/review/implementation/account-isolation.md](../../../docs/review/implementation/account-isolation.md) |
@@ -165,10 +169,10 @@ because sharing a neighborhood is not sharing a fix. Every supplied Q ID remains
 
 | ID | Assessment / intent | Work item and completion criterion | Importance |
 | --- | --- | --- | --- |
-| <a id="q-01"></a>**Q-01** Construction census and receipt drift | confirmed; fix; [response](./393ef43-9ff48b5.md#assessment-q-01) | F-20, related F-05: reviewed current classification/site pins, passing live gate, refreshed source-bound receipts and prerequisite coverage | high validation integrity |
+| <a id="q-01"></a>**Q-01** Construction census and receipt drift | bounded repair complete; [evidence](./validation-controls.md); [response](./393ef43-9ff48b5.md#assessment-q-01) | F-20, related F-05: reviewed current classification/site pins, passing live gate, refreshed source-bound receipts and prerequisite coverage | high validation integrity |
 | <a id="q-02"></a>**Q-02** Repeated loads and per-source sync growth | mechanism confirmed; fix; timings reported; [response](./393ef43-9ff48b5.md#assessment-q-02) | F-07/N-02/P-01: reproducible growing-history/burst case, measured load/copy reduction, supported capacity and batching contracts with crash/invalidation controls | high Account usability |
 | <a id="q-03"></a>**Q-03** Full request repeated in service-cache contexts | isolated eviction reproduced; fix; [response](./393ef43-9ff48b5.md#assessment-q-03) | F-07: authenticated compact context, representative checkpoint/row sizes, warm/cold equivalence and authority-change refusal; related F-19 | medium performance, early repair |
-| <a id="q-04"></a>**Q-04** Three stale mutation controls | confirmed by source readback; fix; [response](./393ef43-9ff48b5.md#assessment-q-04) | F-20/F-21: executed-path controls actually expose forbidden outcomes, useful anchor failures, affected suites and downstream aggregate pass | high regression assurance |
+| <a id="q-04"></a>**Q-04** Three stale mutation controls | bounded repair complete; both coverage paths exercised; [evidence](./validation-controls.md); [response](./393ef43-9ff48b5.md#assessment-q-04) | F-20/F-21: executed-path controls actually expose forbidden outcomes, useful anchor failures, affected suites and downstream aggregate pass | high regression assurance |
 | <a id="q-05"></a>**Q-05** Receive expiry loses its reason | confirmed classification gap; fix observation, preserve retry; [response](./393ef43-9ff48b5.md#assessment-q-05) | distinct, related N-01/F-10: visible bounded reason and diagnostic, repeated expiry then recovery; no count-only terminal halt | low-medium operations |
 | <a id="q-06"></a>**Q-06** Current unsigned-chain discoverability | documented in this intake; intentional signing debt remains; [response](./393ef43-9ff48b5.md#assessment-q-06) | distinct, related P-04: retained IDs/trees and authorization; future signing adds a crosswalk without rewriting receipts | low provenance |
 | <a id="q-07"></a>**Q-07** Committed work described as uncommitted | corrected in current navigation/measurement docs; [response](./393ef43-9ff48b5.md#assessment-q-07) | distinct from P-06; prior historical packets and completed entries preserved | low accuracy |
@@ -215,7 +219,7 @@ The user explicitly authorized intermediate unsigned commits after signed `1372c
 records already state that policy; the [decision entry](../../decisions.md#record-the-authorized-unsigned-phase-boundary)
 and [Q provenance](./addendum-393ef43-9ff48b5.json) make its boundary and full commit/tree IDs local to
 the repository. The external signing reminder was observed ACTIVE during intake; it is a convenience,
-not a gate. No signing or history rewrite was requested or performed in this review.
+not a gate. No signing or history rewrite was performed; the user subsequently requested the unsigned intake commit.
 
 | Phase | Unsigned commit |
 | --- | --- |
@@ -231,9 +235,12 @@ not a gate. No signing or history rewrite was requested or performed in this rev
 | Projection reductions | `063cd72` |
 | Retained marker | `9ff48b5` |
 
-All eleven commit objects lack a signature header. Later signing must retain original evidence IDs
-and hashes and add old/new commit and identical-tree mapping, as for P-04. It does not automatically
-require rerunning or rewriting every source-bound receipt; a changed source tree does require fresh
+At Q intake, all eleven listed commit objects lacked a signature header. The review intake itself
+was subsequently committed unsigned as `409fbd0`, making twelve outstanding descendants at this
+checkpoint. The original Q manifest remains an unchanged snapshot of its eleven-commit boundary.
+Later signing must retain original evidence IDs and hashes and add old/new commit and identical-tree
+mapping, as for P-04. It does not automatically require rerunning or rewriting every source-bound
+receipt; a changed source tree does require fresh
 applicable validation. This record does not waive signing permanently or authorize signing new work.
 
 ## Original intake limits
@@ -256,4 +263,5 @@ Stage 0 gate debt was changed. That intake was committed in `1372c39`; the later
 - [F-17: measured equivalent projection evidence](../../account-conformance-runs/2026-09-12-editor-projection/README.md).
 
 - [F-19: retained marker encoding and profile evidence](../../account-conformance-runs/2026-09-12-retained-marker/README.md).
-- [Next work: validation prerequisites and remaining liveness before release qualification](../../private-release-validation-prep.md).
+- [Q-01/Q-04: restored validation controls](./validation-controls.md).
+- [Next work: remaining liveness before release qualification](../../private-release-validation-prep.md).

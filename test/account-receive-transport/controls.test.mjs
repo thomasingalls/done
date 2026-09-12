@@ -91,7 +91,7 @@ for (const mutation of ['queue', 'flight'])
 async function http(mutation) {
   const target =
     mutation === 'bound'
-      ? ['if (length > limit) {', 'if (false) {']
+      ? ['if (length > responseLimit) {', 'if (false) {']
       : ['await cancellation;', 'void cancellation;'];
   let hits = 0;
   const built = await build({
@@ -104,7 +104,11 @@ async function http(mutation) {
             enforce: 'pre',
             transform(code, id) {
               if (!id.endsWith('/src/account/privateDeliveryHttp.ts')) return;
-              if (code.split(target[0]).length !== 2) throw Error('Missing HTTP mutation');
+              const matches = code.split(target[0]).length - 1;
+              if (matches !== 1)
+                throw Error(
+                  `HTTP ${mutation}: expected one anchor in src/account/privateDeliveryHttp.ts, found ${matches}: ${JSON.stringify(target[0])}`,
+                );
               hits++;
               return code.replace(target[0], target[1]);
             },

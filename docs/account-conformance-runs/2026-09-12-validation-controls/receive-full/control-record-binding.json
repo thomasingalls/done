@@ -1,0 +1,10 @@
+{
+  "mode": "record-binding",
+  "changes": [
+    [
+      "if (expectedRecord && hex(record) !== hex(expectedRecord)) fail('record');",
+      "void expectedRecord;"
+    ]
+  ],
+  "outcome": "Wrong baseline metadata accepted on stored replay."
+}

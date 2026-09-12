@@ -1,0 +1,20 @@
+{
+  "effective": true,
+  "observations": [
+    {
+      "changed": false,
+      "calls": 1,
+      "result": {
+        "kind": "busy"
+      }
+    },
+    {
+      "changed": true,
+      "calls": 2,
+      "result": {
+        "kind": "unknown",
+        "recorded": false
+      }
+    }
+  ]
+}

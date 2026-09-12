@@ -1,0 +1,63 @@
+{
+  "claim": "R1 current private Local-to-Account logical carrier checkpoints; no physical residue or arbitrary key/opener/platform claim",
+  "limits": {
+    "decodeDepth": 8,
+    "cloneDepth": 64,
+    "valueBytes": 67108864,
+    "surfaceBytes": 268435456,
+    "checkpointBytes": 1073741824,
+    "collectorMs": 30000
+  },
+  "phases": [
+    "P0",
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5",
+    "P6",
+    "P7"
+  ],
+  "requiredCollectors": [
+    "indexedDB",
+    "localStorage",
+    "sessionStorage",
+    "cacheStorage",
+    "cookies",
+    "opfs",
+    "sql:core",
+    "sql:authority",
+    "diagnostics:page",
+    "diagnostics:service"
+  ],
+  "representation": [
+    "utf8",
+    "utf16le",
+    "utf16be",
+    "json strings/keys/byte-arrays",
+    "hex",
+    "base64/base64url padded/unpadded/prefixed",
+    "typed-view/Blob/File bytes"
+  ],
+  "knownCapabilities": "Only exact recovery preparation retryKey and finalization.retryKey fields are reported separately; other T matches fail",
+  "excluded": [
+    "physical profile/SQL/WAL/deleted bytes",
+    "HTTP disk cache",
+    "packaged UI/SW/export and migration/clear flow qualification",
+    "opaque CryptoKey contents",
+    "arbitrary transformations/compression/record fragmentation",
+    "other platforms",
+    "personal installation"
+  ],
+  "trialSeams": [
+    "test-bundle switch holds automatic Local journal flush; explicit durability call releases it",
+    "positive journal side-write copies actual update into localStorage in isolated leak bundle",
+    "fixture authenticator signs actual service challenges; no real Account",
+    "explicit receive retry after publication; polling cadence not measured"
+  ],
+  "rawArtifacts": "*.raw.json retain synthetic acquired values and controller-held needles; separate disclosure domain, not automatic app/service output",
+  "baseline": "409fbd09768561393431378d076bc71939f24ac3",
+  "node": "v26.8.2",
+  "platform": "darwin",
+  "arch": "arm64"
+}

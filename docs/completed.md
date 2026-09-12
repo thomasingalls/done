@@ -3423,3 +3423,29 @@ statements (Q-07) and documented the authorized eleven-commit unsigned boundary 
 historical receipts. No production/harness code, source pins, cryptographic bytes, personal instance,
 service or Git history was changed. The intake is left uncommitted. Appended before updating L-1;
 L-2 remains unchanged. Implementation work is not started by this review intake.
+
+## 2026-09-12 — L-1 restored construction inventory and live omission controls
+
+Committed the Q intake unsigned as `409fbd0`, then repaired Q-01/Q-04. Reviewed seven new and twenty
+changed runtime sources; domain labels/site paths/kinds are unchanged, eight site line positions are
+updated, and four unlabelled verification/recovery entrypoints are explicit. The source census and
+authority gate match current code. No production code or cryptographic bytes changed.
+
+The [13-stage campaign](./account-conformance-runs/2026-09-12-validation-controls/README.md) passes on
+936 unchanged source pins: all corrected controls, 18 registry/origin tests, the full content/receive/
+receive-transport suites, and shared preflight execution inside liveness, residue and private failure
+phases. The last includes all 1,015 unit tests. Content has 13 passing cases and five detected mutants;
+receive covers 12 native generated histories and transport covers 16. Source hashes, outcomes and
+unsuccessful attempts are retained in a bounded archive with declared workspace-path normalization.
+
+The first repair attempt disproved the review's reuse-only fix: startup also calls full coverage.
+Each guard now independently refuses the missing-content history; only their joint omission admits
+it. HTTP and content mutations target their actual guards and give precise anchor errors. The origin
+gate accepts a selected disposable build, preserving the personal offline package. Current origin,
+authority, retention, selection, update-limit, WASM, debt and trace checks pass; final receipt refresh
+follows checkpoint edits. This is not the full contract/crypto or release aggregate.
+
+Q-01/Q-04 are complete within scope. Next is Q-03, then Q-02 and Q-05, before complete release
+qualification. Personal packages, vectors, historical packets and L-2 remain unchanged. The review
+commit and earlier chain remain intentionally unsigned; this phase's changes are left uncommitted.
+Appended before updating L-1.

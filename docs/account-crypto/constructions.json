@@ -2323,7 +2323,7 @@
       "sourceSites": [
         {
           "path": "account-service/delivery.ts",
-          "line": 296,
+          "line": 303,
           "label": "done/service-delivery-chain/v1",
           "kind": "literal"
         }
@@ -2437,7 +2437,7 @@
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 181,
+          "line": 182,
           "label": "done/source-capture/v1",
           "kind": "literal"
         }
@@ -2502,19 +2502,19 @@
       "sourceSites": [
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 165,
+          "line": 166,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 106,
+          "line": 107,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 131,
+          "line": 132,
           "label": "done/account-spool/v1",
           "kind": "literal"
         }
@@ -2588,19 +2588,19 @@
       "sourceSites": [
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 94,
+          "line": 95,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 121,
+          "line": 122,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 157,
+          "line": 158,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         }
@@ -2674,7 +2674,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/inboundLedger.ts",
-          "line": 75,
+          "line": 77,
           "label": "done/account-inbound/v1",
           "kind": "literal"
         },
@@ -2765,7 +2765,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 272,
+          "line": 285,
           "label": "done/account-spool-chain/v1\u0000",
           "kind": "literal"
         }
@@ -2858,7 +2858,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/custody.ts",
-          "line": 238,
+          "line": 243,
           "label": "done/content-metadata/v1",
           "kind": "literal"
         }
@@ -3167,7 +3167,7 @@
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 226,
+          "line": 231,
           "label": "done/store/v1",
           "kind": "literal"
         }

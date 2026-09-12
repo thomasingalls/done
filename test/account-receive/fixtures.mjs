@@ -22,6 +22,16 @@ export async function receiveBundle(control) {
     ],
     coverage: [
       '/src/crdt/inboundLedger.ts',
+      'if (reuse) reuse.coverage.check(records, result.updates);\n        else verifyInboundCoverage(records, result.updates);',
+      'void records;',
+    ],
+    'coverage-without-reuse': [
+      '/src/crdt/inboundLedger.ts',
+      'reuse.coverage.check(records, result.updates);',
+      'void records;',
+    ],
+    'coverage-without-fallback': [
+      '/src/crdt/inboundLedger.ts',
       'verifyInboundCoverage(records, result.updates);',
       'void records;',
     ],
@@ -55,7 +65,11 @@ export async function receiveBundle(control) {
               }
               const t = targets[control];
               if (t && id.endsWith(t[0])) {
-                if (code.split(t[1]).length !== 2) throw Error('Missing control ' + control);
+                const matches = code.split(t[1]).length - 1;
+                if (matches !== 1)
+                  throw Error(
+                    `Control ${control}: expected one anchor in ${t[0]}, found ${matches}: ${JSON.stringify(t[1])}`,
+                  );
                 hits++;
                 return code.replace(t[1], t[2]);
               }

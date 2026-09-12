@@ -43,58 +43,54 @@ that is no longer active.
 ---
 
 
-## Active slice: Validation and remaining liveness prep (`L-1`)
+## Active slice: Compact authenticated service-cache context — Q-03 (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none for prep; aggregate receipt awaits Q-01/Q-04, usable Account sync awaits Q-02/Q-03
+blocks_on: none; bounded Q-01/Q-04 validation repair complete
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-12
 ```
 
-**Roadmap position.** Personal Local cutover, cleanup and packaged offline upgrades are exercised.
-Account remains the private creating-member ciphertext round trip at Stage 4 §3.5 item 5; it is not
-mounted in the personal app and there is no real Account receipt. Milestones 5/6 are not public ship
-boundaries. The old second device will adopt the first workspace with fresh custody, store, counters
-and credentials, without importing or merging its previous writing.
+**Roadmap position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
+the private creating-member ciphertext round trip, Stage 4 §3.5 item 5; it is not mounted in the
+personal app and there is no real Account receipt. First ciphertext and two-device convergence are
+not public ship boundaries. The author's old second device must adopt the first workspace with fresh
+custody, store, counters and credentials, without importing or merging its old writing.
 
-**Latest completed work.** The [Q review intake](./review/implementation/393ef43-9ff48b5.md) assesses
-the current `9ff48b5` tip, with 38 responses and no production/harness changes. The
-[current index](./review/implementation/findings.md) now tracks 55 leaf IDs. Prior sync reductions and
-the privacy, diagnostics, Local salvage, maintenance, projection and retained-marker phases remain
-evidenced within their bounds. Their phase source hashes do not establish a passing construction
-census or a fresh aggregate. Q-01 confirms census drift; Q-04 identifies three stale mutation controls.
-The latest marker campaign's 1,015 units, 64 Node cases and 917 matching source hashes remain its
-historical result, not a release receipt.
+**Just completed.** Review intake committed unsigned as `409fbd0`. The
+[Q-01/Q-04 repair](./review/implementation/validation-controls.md) restores the reviewed construction
+census, four manual entrypoints and three effective mutation controls. The
+[13-stage campaign](./account-conformance-runs/2026-09-12-validation-controls/README.md) passes on 936
+source pins, including full affected suites and integration into liveness/residue/private failure
+runners. The failure phase includes 1,015 passing unit tests. Startup/full and receive/reuse coverage
+each independently refuse; their joint omission exposes missing content. The earlier single-branch
+repair attempt is retained. Fresh disposable build and actual current gate executions restore trace
+readback. No production behavior changed; complete release/contract aggregates were not rerun.
 
-**Liveness remains partial.** Q-02 identifies repeated carrier enumeration/copying per position. The
-reviewer reports a thirty-character burst at 80 positions taking 6.8 seconds to admit locally and 117
-seconds to accept/read back; the timings need a retained reproducible probe. Q-03's request-size cache
-eviction pattern was independently reproduced in memory. Restore validation prerequisites, repair
-the compact authenticated cache context, and design bounded revision-based load reuse and safe
-batching before practical Account cutover. Q-05 needs an explicit expiry reason while preserving
-fresh-request recovery; dropping commit checks or adding a count-only hard halt is not the plan.
+**Next proposed work.** Q-03: use the freshly authenticated compact request binding in the service
+verification-cache context, retaining scope/generation/predecessor and exact row inputs. Test
+representative checkpoint/ledger sizes, warm/cold equivalence and authority change. Q-02 then needs a
+retained natural-scheduling workload, fewer repeated carrier loads/copies and a safe batching contract;
+Q-05 needs a visible expiry reason while preserving fresh-request recovery. Publication/commit checks
+must remain current across writes and network waits. None of these runtime repairs started here.
 
-**Next proposed work.** [Validation/liveness prep](./private-release-validation-prep.md) now includes
-Q-01/Q-04 control and census repair, Q-03 then Q-02 liveness work, Q-05 observability, F-20/N-06/P-05
-complete case mapping and aggregate scheduling/deadlines, and P-06 prose. This review turn starts none
-of those implementation changes. After repairs and acceptable private validation, rehearse Account
-cutover/recovery and build enrollment/second-device adoption. Membership/revocation/rotation,
-signout/remove/reset, continuity, deployment/operations and public assurance gates remain later work.
+**After those repairs.** F-20/N-06/P-05 complete graph/coverage/deadline work and P-06 prose precede
+an immutable release-validation result and explicit workload/platform/claim dispositions. Private
+Account cutover/recovery rehearsal and enrollment/second-device adoption follow acceptable validation.
+Membership/revocation/rotation, signout/remove/reset, continuity, service operations/deployment and
+public assurance gates remain later obligations. F-21.4 wider privacy evidence, F-09 Account/key-loss
+recovery, F-17/F-19 capacity and Q-08 evidence retention/history-publication remain open.
 
-**Limits and records.** F-21.4 wider platform/opener evidence, F-09 Account/key-loss recovery and
-F-17/F-19 workload/device/admission qualification remain open. F-16 does not prune proof history or
-bound total disk growth. Q-08 adds evidence-retention and path-normalization work before public sharing.
-Q-07 current documentation is corrected; Q-06 records the eleven intentionally unsigned descendants
-of `1372c39`, with signing still outstanding and the external reminder active at intake.
-
-**Preservation.** Intermediate Account v8 remains retired. Personal packages, prior vectors, archived
-F/N/P annotations and the L-2 slice remain unchanged. No personal browser/profile/recovery files,
-Account, factor, key, server, origin, routing or Git history changed. The unrelated root `done ` is
-untouched. This intake remains uncommitted; its completed outcome was appended before this rewrite.
+**Preservation and commits.** Intermediate v8 remains retired. Personal package files (21), prior
+vectors (31), historical F/N/P/Q annotations and L-2 are unchanged. No personal browser/profile,
+recovery files, Account, factor, key, service, origin, routing or Git history changed. The root `done `
+file is untouched. Review `409fbd0` and the preceding eleven commits are intentionally unsigned;
+the existing reminder tracks descendants of `1372c39`. This phase remains uncommitted. Its completed
+outcome was appended before replacing this slice.
 
 ---
 

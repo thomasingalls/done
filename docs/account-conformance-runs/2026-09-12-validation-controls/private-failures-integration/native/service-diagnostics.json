@@ -1,0 +1,13 @@
+{
+  "response": {
+    "kind": "unknown",
+    "reason": "storage-unavailable"
+  },
+  "events": [
+    {
+      "operation": "submit",
+      "phase": "commit",
+      "code": "unexpected-failure"
+    }
+  ]
+}
