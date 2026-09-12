@@ -79,6 +79,7 @@ export class InboundError extends Error {
       | 'authority'
       | 'scope'
       | 'request'
+      | 'expired'
       | 'prefix'
       | 'unverified'
       | 'unsupported'
@@ -210,13 +211,8 @@ async function verify(
       guard();
       if (!expectedRecord) {
         const time = now();
-        if (
-          !Number.isSafeInteger(time) ||
-          time < 0 ||
-          r.expires <= time ||
-          r.expires > time + 60000
-        )
-          fail('request');
+        if (!Number.isSafeInteger(time) || time < 0 || r.expires > time + 60000) fail('request');
+        if (r.expires <= time) fail('expired');
       }
     };
     current();

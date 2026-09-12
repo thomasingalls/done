@@ -155,6 +155,16 @@ try {
     'test/spoolRecord.test.ts',
   ]);
   await run('controlled', ['--test', 'test/account-liveness/controlled.test.mjs'], 200000);
+  await run(
+    'ownership',
+    [
+      '--test',
+      'test/account-sync/native.test.mjs',
+      'test/account-sync/controls.test.mjs',
+      'test/account-receive-transport/native.test.mjs',
+    ],
+    300000,
+  );
   await run('view', ['--test', 'test/account-liveness/view.test.mjs'], 180000);
   await run('growth', ['--test', 'test/account-liveness/native.test.mjs'], 930000);
   await run('lint', [
@@ -186,10 +196,11 @@ try {
   assert.equal(growth.rows.length, 17); // 12 status sets, 3 closed-loop editing bursts, 2 idle polls.
   for (const sample of growth.rows.filter((s) => s.name.startsWith('idle-poll-')))
     assert.equal(sample.service.rows['service.census'].calls, 1);
-  assert.equal(expiry.status, 'reproduced');
+  assert.equal(expiry.status, 'passed');
   assert(expiry.coldReopen);
-  assert.equal(held.status, 'reproduced');
-  assert.equal(held.settledWhileHeld, false);
+  assert.equal(held.status, 'passed');
+  assert.equal(read('controlled', 'held-submit').settledWhileHeld, true);
+  assert.equal(held.settledWhileHeld, true);
   assert.equal(generated.result.numRuns, 40);
   assert.equal(generated.result.failed, false);
   assert.equal(generated.histories.length, 40);
@@ -198,7 +209,7 @@ try {
     assert.equal(hash(readFileSync(s.path)), s.sha256, 'Source changed: ' + s.path);
   summary.status = 'passed';
   summary.generatedHistories = 40;
-  summary.nativeReproductions = 2;
+  summary.nativeLivenessRegressions = 3;
 } catch (e) {
   summary.status = 'failed';
   summary.error = e.stack;

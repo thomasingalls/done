@@ -43,14 +43,14 @@ that is no longer active.
 ---
 
 
-## Active slice: Account sync-liveness repair — owned network and expiry (`L-1`)
+## Active slice: Account sync-liveness repair — scheduler wakes and service verification (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-blocks_on: owned HTTP wait outside the serialized carrier task; bounded fresh retry for expiry
+blocks_on: durable send progress wake, local-only publication wake, service event reuse and combined validation
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-12
 ```
@@ -63,7 +63,7 @@ exact scope in the [review index](./review/implementation/findings.md). Residue 
 R1 `27e5b6f`, and the reconciled review intake `1372c39`. The signing reminder is active for the new unsigned sync-liveness commits and the
 old unsigned chain remains under its [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
 
-**Current sequence.** Measurement/preparation is unsigned `0e07fe4`. Unchanged-view runtime repair is unsigned `280221e`; incremental verification/coverage is verified and being committed unsigned. The user authorizes continuing through all remaining
+**Current sequence.** Measurement/preparation is unsigned `0e07fe4`. Unchanged-view runtime repair is unsigned `280221e`; incremental verification/coverage is unsigned `879ce38`. The user authorizes continuing through all remaining
 sync-liveness boundaries with an unsigned commit after each verified phase; no confirmation is needed
 between these phases. The [repair record](./account-sync-liveness-repairs.md) and
 [view campaign](./account-conformance-runs/2026-09-12-account-liveness-view/README.md) retain the evidence:
@@ -79,15 +79,18 @@ compatibility; internal v9 setup/test dependencies may remain temporarily. This 
 document version. Historical responses remain unchanged; the current review index and decision journal
 record non-shipment, not a claimed code fix or completed deletion.
 
-**Next bounded implementation — network wait and expiry.** Prepare requests/submissions under the
-serialized carrier task; retain the same lifetime permit while HTTP waits outside that queue; reenter
-ordered admission with current authority, request and prefix checks before commit. Close must cancel
-and drain every network job before erasing custody/releasing the permit. Give actual request expiry a
-distinct retry classification without swallowing corruption, conflicting evidence or stale ownership.
-Convert the held-read/expiry reproductions to regressions and check held submissions, closure and
-superseded requests. Then implement durable send-prefix receive wakes and local-only send wakes, and
-verify combined liveness and service costs. User authorized unsigned commits at each verified boundary
-and continuing through all these tasks; the signing reminder is active.
+**Next bounded implementation — scheduler wakes and service verification.** Network/expiry repair is
+verified and being committed unsigned; [recorded evidence](./account-conformance-runs/2026-09-12-account-liveness-network/README.md)
+passes nine stages, 21 ownership/mutation cases and 996 unit tests. Read/submission HTTP retains the
+same lifetime outside the carrier tail. Late expiry refuses at the native write guard and retries
+with a fresh request automatically. Unsigned prior phases: `0e07fe4`, `280221e`, `879ce38`.
+
+Wake receive on durable send-prefix progress without bypassing retry backoff or halts. Subscribe to
+successful local outgoing admissions instead of all document revisions for send wakes. Reduce repeated
+service event verification with bounded core-owned reuse, fresh SQL/authority checks and full semantic
+replay. Check generated histories, mutations, native liveness and service restart/corruption cases,
+then close the bounded liveness review tasks with their limits. User authorizes unsigned phase commits
+and continuation through completion; the signing reminder remains active.
 
 **Retained work.** F-21.4 remains open beyond R1's logical carrier campaign. Resume packaged UI/generated
 service-worker/export/ZIP and synthetic migration/selection/cleanup/Local-clear interruptions after this

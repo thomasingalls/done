@@ -43,10 +43,26 @@ oracle; the [recorded differential/native/generated campaign](./account-conforma
 passes. The 24-job workload took about 59 seconds. Native timing remains descriptive, and growing census
 parsing/replay and storage scans remain. Unchanged source-census reads also reuse detached parsed data.
 
+## 3. Owned network wait and classified expiry — complete
+
+Incremental verification is unsigned `879ce38`. V9 read/submission preparation runs in the serialized
+carrier task; HTTP waiting runs in a separate task registered with the **same** writer lifetime.
+Current authority, retained request/submission and prefix are checked again on ordered reentry. Closing
+invalidates, aborts and drains network work before permit release. The retired v8 adapter remains
+unchanged except for shared internal helpers. Transmitted buffers are erased on success/refusal/close.
+
+Actual expiry has a distinct internal classification. The final check runs synchronously in the native
+content transaction immediately before writes, after exact counter comparison. Expiry refuses that
+receive job and feeds the scheduler's existing bounded backoff; the next pass signs a fresh request.
+Other verification or lifecycle errors retain their halt. No clock tolerance was widened.
+
+The [nine-stage campaign](./account-conformance-runs/2026-09-12-account-liveness-network/README.md),
+21 ownership/mutation checks and full 996-test unit suite pass. Local flush completed while genuine
+read/submission responses were held; late expiry recovered without manual retry after the refusal.
+Cold replay, exact retry, conflicting evidence, cancellation/stream drain and tamper checks pass.
+
 ## Remaining boundaries
 
-3. Separate owned fetch waiting from the carrier task, retaining cancellation/drain and stale-response
-   checks. Classify actual expiry for bounded fresh retry; preserve corruption/conflict halts.
 4. Wake receive on durable send-prefix progress and avoid remote-only publication wakes, preserving
    fairness, backoff and offline/closure behavior. Verify the combined workload and service-side costs.
 

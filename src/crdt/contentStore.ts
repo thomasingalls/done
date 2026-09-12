@@ -185,6 +185,7 @@ export const createContentOwner = (
     expected: ContentCounter,
     next: ContentCounter | null,
     records: StoredRecord[] = [],
+    checkCommit?: () => void,
   ) =>
     task.wait(() =>
       contentTransaction<boolean>(
@@ -205,6 +206,7 @@ export const createContentOwner = (
                   'generation-changed',
                   'The content generation changed before commit.',
                 );
+              checkCommit?.();
               if (next) store.put(next, 'counter');
               for (const record of records)
                 tx.objectStore(recordStore(record.kind)).add(record, record.seq);
@@ -300,6 +302,7 @@ export const createContentOwner = (
       before: SpoolWitness;
       after: SpoolWitness;
       beforeCommit?: (records: readonly StoredRecord[]) => Promise<void>;
+      checkCommit?: () => void;
     },
   ): Promise<StoredRecord[]> => {
     let before!: ContentCounter;
@@ -343,7 +346,7 @@ export const createContentOwner = (
         next = { ...current, v: 2, spool: { ...spool.after } };
         next = { ...next, mac: await crypt.sign(task, counterPayload(scope, next)) };
       }
-      if (await compareAndWrite(task, current, next, records)) break;
+      if (await compareAndWrite(task, current, next, records, spool?.checkCommit)) break;
     }
     return records;
   };
@@ -484,7 +487,12 @@ export const createContentOwner = (
     async appendInbound(
       task: SessionTask,
       input: readonly ContentInput[],
-      transition: { before: SpoolWitness; after: SpoolWitness; beforeCommit: () => Promise<void> },
+      transition: {
+        before: SpoolWitness;
+        after: SpoolWitness;
+        beforeCommit: () => Promise<void>;
+        checkCommit?: () => void;
+      },
     ): Promise<ContentReceipt> {
       const copied = task.step(() => copyBatch(input));
       try {

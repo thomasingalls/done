@@ -362,6 +362,8 @@ export async function openAccountCaptureOwner(
   return {
     account,
     carrier,
+    // HTTP work keeps the same lifetime/permit without holding the serialized storage tail.
+    runNetworkTask: <T>(operation: (task: SessionTask) => Promise<T>) => live.run(operation),
     // Only the composed private owner receives task authority; wrappers below omit this capability.
     runCaptureTask: <T>(
       operation: (

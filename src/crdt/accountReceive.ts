@@ -32,7 +32,7 @@ import {
   random,
   type Bytes,
 } from './custodyCrypto';
-import { verifyInboundPage, type InboundContext } from './accountInbound';
+import { verifyInboundPage, InboundError, type InboundContext } from './accountInbound';
 import {
   heldInboundContext,
   inspectInbound,
@@ -53,6 +53,11 @@ import {
 import { createAdmittedWorkspace } from './admittedWorkspace';
 import type { AccountWorkspaceOptions } from './accountWorkspace';
 
+class ReceiveRequestExpired extends AdmissionError {
+  constructor() {
+    super('receive-refused', 'Receive request expired before commit');
+  }
+}
 async function openAccountReceiveOwner(
   input: AccountStartupOptions,
   principalId?: string,
@@ -181,11 +186,8 @@ async function openAccountReceiveOwner(
   };
   // The actor comes from the authenticated marker, not application identity. This read happens under
   // openAccountCaptureOwner's exclusive permit; the source principal is checked by its startup verifier.
-  const { account, carrier, runCaptureTask, listCaptures } = await openAccountCaptureOwner(
-    options,
-    principalId,
-    extension,
-  );
+  const { account, carrier, runCaptureTask, runNetworkTask, listCaptures } =
+    await openAccountCaptureOwner(options, principalId, extension);
   const state = async (
     task: SessionTask,
     owner: ReturnType<typeof prepareAccountCustody>,
@@ -244,17 +246,17 @@ async function openAccountReceiveOwner(
       return outstanding.slice();
     });
   };
-  // Network work ends its carrier task before entering the admission FIFO. Waiting for receive
-  // within this task would deadlock the receive commit behind its own fetch.
+  // Prepare in order, wait under the same lifetime outside the storage tail, then let the
+  // admission FIFO verify this exact request against fresh authority and prefix before commit.
   const fetchPage = async (operatorToken: string) => {
-    // Keep ownership outside runCaptureTask too: its final lifetime check can reject after the
-    // operation produced a response. That rejection still has to erase both captured buffers.
     let request: Bytes | undefined,
       page: Bytes | null = null;
     try {
-      return await runCaptureTask(async (task, owner, route) => {
-        const query = (request = await prepareRead(task, owner, route));
-        await task.wait(async () => {
+      return await runNetworkTask(async (network) => {
+        const query = (request = await runCaptureTask((task, owner, route) =>
+          prepareRead(task, owner, route),
+        ));
+        await network.wait(async () => {
           page = canReceive()
             ? await privateDeliveryPost(
                 options.pin,
@@ -262,12 +264,11 @@ async function openAccountReceiveOwner(
                 'read-v2',
                 query,
                 MAX_PENDING_BYTES,
-                task.signal,
+                network.signal,
               )
             : null;
         });
-        await assertCurrent(task);
-        return task.step(() => ({ request: query, page }));
+        return network.step(() => ({ request: query, page }));
       });
     } catch (cause) {
       request?.fill(0);
@@ -362,12 +363,10 @@ async function openAccountReceiveOwner(
             {
               before,
               after,
+              checkCommit: () => {
+                if (r.expires <= Date.now()) throw new ReceiveRequestExpired();
+              },
               beforeCommit: async () => {
-                if (r.expires <= Date.now())
-                  throw new AdmissionError(
-                    'receive-refused',
-                    'Receive request expired before commit',
-                  );
                 await assertCurrent(task);
                 const current = await state(task, owner, route);
                 if (JSON.stringify(describe(current)) !== JSON.stringify(describe(s)))
@@ -426,6 +425,7 @@ async function openAccountReceiveOwner(
       inspect,
       verified: (records) => verified.read(records).delivery,
       reuse: (task) => ({ memo, current: () => task.step(() => {}) }),
+      network: runNetworkTask,
       canSubmit: canReceive,
       run: (operation) =>
         runCaptureTask(async (task, owner, route) => {
@@ -558,7 +558,20 @@ async function openReceivingWorkspace(
             throw new AdmissionError('inactive-session', 'Receive owner is closed');
           if (!page) return { kind: 'unknown' as const, recorded: false };
           // Only the ordered owner may verify, persist and publish this exact request's page.
-          return await receivePage(page, request);
+          try {
+            return await receivePage(page, request);
+          } catch (cause) {
+            // Only an explicit expiry is transient. Invalid signatures, scope, prefix, or owner
+            // still reject and preserve the scheduler's diagnostic halt.
+            if (
+              cause instanceof ReceiveRequestExpired ||
+              (cause instanceof AdmissionError &&
+                cause.cause instanceof InboundError &&
+                cause.cause.reason === 'expired')
+            )
+              return { kind: 'expired' as const, recorded: false };
+            throw cause;
+          }
         } finally {
           request.fill(0);
           page?.fill(0);

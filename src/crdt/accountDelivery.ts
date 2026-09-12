@@ -44,6 +44,7 @@ export interface DeliveryContext {
   reuse?(task: SessionTask): { memo: VerificationMemo; current(): void };
   pin(): AuthorityPin;
   canSubmit?(): boolean;
+  network?<T>(operation: (task: SessionTask) => Promise<T>): Promise<T>;
   signer(): CryptoKey;
   publicKey(): CryptoKey;
   assertCurrent(task: SessionTask): Promise<void>;
@@ -64,6 +65,7 @@ export function describeDelivery(s: DeliveryState) {
 }
 export function createDeliveryOperations(context: DeliveryContext) {
   const inspect = context.inspect ?? inspectDelivery;
+  const submissionPaused = () => context.canSubmit?.() === false;
   const validated = (
     records: readonly OpenedRecord[],
     c: ReturnType<typeof inspectDelivery>,
@@ -180,6 +182,55 @@ export function createDeliveryOperations(context: DeliveryContext) {
       for (const r of rows) r.bytes.fill(0);
     }
   };
+  const submitOwned = (operatorToken: string) =>
+    context.network!(async (network) => {
+      const prepared = await withState(async (task, _owner, _route, _c, s) => {
+        if (publicationState(s) !== 'ready')
+          return { kind: 'blocked' as const, state: publicationState(s) };
+        const position = s.acceptedThrough + 1,
+          bytes = s.submissions.get(position);
+        if (!bytes) return { kind: 'idle' as const };
+        await context.assertCurrent(task);
+        return { kind: 'ready' as const, position, bytes: bytes.slice() };
+      });
+      if (prepared.kind !== 'ready') return prepared;
+      const payload = encodeSubmit(context.authority().workspace, prepared.bytes);
+      let answer: Bytes | null = null;
+      try {
+        await network.wait(async () => {
+          answer = submissionPaused()
+            ? null
+            : await privateDeliveryPost(
+                context.pin(),
+                operatorToken,
+                'submit',
+                payload,
+                RESPONSE_LIMIT,
+                network.signal,
+              );
+        });
+        if (!answer) return { kind: 'unknown' as const, recorded: false };
+        const response = answer;
+        return await withState(async (task, owner, route, c, s) => {
+          if (publicationState(s) !== 'ready')
+            return { kind: 'blocked' as const, state: publicationState(s) };
+          if (prepared.position <= s.acceptedThrough)
+            return { kind: 'accepted' as const, recorded: false };
+          const retained = s.submissions.get(prepared.position);
+          if (
+            prepared.position !== s.acceptedThrough + 1 ||
+            !retained ||
+            hex(retained) !== hex(prepared.bytes)
+          )
+            captureError('Pending submission changed during transport');
+          return record(task, owner, route, c, s, prepared.position, response);
+        });
+      } finally {
+        prepared.bytes.fill(0);
+        payload.fill(0);
+        (answer as Bytes | null)?.fill(0);
+      }
+    });
   return {
     deliveryStatus: () => withState(async (_task, _owner, _route, _c, s) => describeDelivery(s)),
     pendingSubmissions: () =>
@@ -228,29 +279,31 @@ export function createDeliveryOperations(context: DeliveryContext) {
         }
       }),
     submitPending: (operatorToken: string) =>
-      withState(async (task, owner, route, c, s) => {
-        if (publicationState(s) !== 'ready')
-          return { kind: 'blocked' as const, state: publicationState(s) };
-        const position = s.acceptedThrough + 1,
-          bytes = s.submissions.get(position);
-        if (!bytes) return { kind: 'idle' as const };
-        await context.assertCurrent(task);
-        const answer = await task.wait(() =>
-          context.canSubmit?.() === false
-            ? null
-            : privateDeliveryPost(
-                context.pin(),
-                operatorToken,
-                'submit',
-                encodeSubmit(context.authority().workspace, bytes),
-                RESPONSE_LIMIT,
-                task.signal,
-              ),
-        );
-        await context.assertCurrent(task);
-        if (!answer) return { kind: 'unknown' as const, recorded: false };
-        return record(task, owner, route, c, s, position, answer);
-      }),
+      context.network
+        ? submitOwned(operatorToken)
+        : withState(async (task, owner, route, c, s) => {
+            if (publicationState(s) !== 'ready')
+              return { kind: 'blocked' as const, state: publicationState(s) };
+            const position = s.acceptedThrough + 1,
+              bytes = s.submissions.get(position);
+            if (!bytes) return { kind: 'idle' as const };
+            await context.assertCurrent(task);
+            const answer = await task.wait(() =>
+              submissionPaused()
+                ? null
+                : privateDeliveryPost(
+                    context.pin(),
+                    operatorToken,
+                    'submit',
+                    encodeSubmit(context.authority().workspace, bytes),
+                    RESPONSE_LIMIT,
+                    task.signal,
+                  ),
+            );
+            await context.assertCurrent(task);
+            if (!answer) return { kind: 'unknown' as const, recorded: false };
+            return record(task, owner, route, c, s, position, answer);
+          }),
     readAcceptedPage: (operatorToken: string, after = 0, limit = 8) =>
       withState(async (task, _owner, route, c, s) => {
         if (!Number.isSafeInteger(after) || after < 0 || after > s.acceptedThrough)

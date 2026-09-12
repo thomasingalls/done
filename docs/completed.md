@@ -3297,3 +3297,14 @@ generated source/coverage mutation checks pass in the eight-stage
 The unchanged 24-job run took 59,263 ms, descriptively versus 128,091 ms after phase 1. Protocol formats
 and personal package files remain unchanged. This closes boundary 2; owned network separation and
 expiry retry follow under the user's authorization for unsigned phase commits through liveness completion.
+
+
+## 2026-09-12 — L-1 sync-liveness: owned HTTP and classified expiry
+
+Following unsigned `879ce38`, separated private v9 HTTP wait from serialized carrier work while retaining
+the same tracked writer lifetime. Ordered reentry rechecks authority and exact retained request or
+submission. Actual expiry is refused at the native write guard and enters automatic bounded fresh
+retry; other failures retain diagnostics. The [nine-stage campaign](./account-conformance-runs/2026-09-12-account-liveness-network/README.md),
+21 native ownership/mutation cases and full 996-test unit suite pass. Local flush finishes during held
+read/submission responses; close/stream drain retain the permit and invalid/superseded answers do not
+advance progress. Remaining liveness work is P-02/P-03 scheduling and service verification costs.

@@ -1,0 +1,135 @@
+{
+  "status": "passed",
+  "shifted": {
+    "name": "commit-expiry",
+    "milliseconds": 2092.2104579999996,
+    "load": [
+      9.9052734375,
+      6.48388671875,
+      5.59228515625
+    ],
+    "value": {
+      "status": {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "reason": null,
+          "acceptedThrough": 7
+        },
+        "receive": {
+          "phase": "retrying",
+          "failures": 1,
+          "nextAttemptAt": 1789221324947,
+          "reason": null,
+          "receivedThrough": 6
+        }
+      },
+      "expiredAtCommit": true
+    },
+    "client": {
+      "rows": {
+        "content.load": {
+          "calls": 46,
+          "milliseconds": 455.4000005722046,
+          "size": 0
+        },
+        "content.open": {
+          "calls": 46,
+          "milliseconds": 211.49999809265137,
+          "size": 2857
+        },
+        "crypto.verify": {
+          "calls": 234,
+          "milliseconds": 5.799997329711914,
+          "size": 0
+        },
+        "crypto.sign": {
+          "calls": 20,
+          "milliseconds": 0.29999828338623047,
+          "size": 0
+        },
+        "crypto.encrypt": {
+          "calls": 12,
+          "milliseconds": 0.5,
+          "size": 0
+        },
+        "crypto.decrypt": {
+          "calls": 85,
+          "milliseconds": 1.299997329711914,
+          "size": 0
+        },
+        "spool.witness": {
+          "calls": 13,
+          "milliseconds": 8.300000190734863,
+          "size": 507
+        },
+        "spool.verify": {
+          "calls": 13,
+          "milliseconds": 0.9000005722045898,
+          "size": 89
+        },
+        "delivery.verify": {
+          "calls": 15,
+          "milliseconds": 7.700000762939453,
+          "size": 497
+        },
+        "inbound.ledger": {
+          "calls": 13,
+          "milliseconds": 18.79999828338623,
+          "size": 79
+        },
+        "inbound.reconstruct": {
+          "calls": 2,
+          "milliseconds": 0.39999961853027344,
+          "size": 31
+        },
+        "crypto.digest": {
+          "calls": 40,
+          "milliseconds": 0.3000011444091797,
+          "size": 0
+        },
+        "receive.state": {
+          "calls": 18,
+          "milliseconds": 351.29999923706055,
+          "size": 0
+        }
+      },
+      "events": []
+    },
+    "service": {
+      "rows": {
+        "service.authority": {
+          "calls": 4,
+          "milliseconds": 48.52679200000057,
+          "size": 27
+        },
+        "crypto.digest": {
+          "calls": 204,
+          "milliseconds": 20.220664000000397,
+          "size": 0
+        },
+        "crypto.verify": {
+          "calls": 134,
+          "milliseconds": 26.377591999997094,
+          "size": 0
+        },
+        "service.census": {
+          "calls": 4,
+          "milliseconds": 32.63112500000261,
+          "size": 27
+        },
+        "service.snapshot": {
+          "calls": 8,
+          "milliseconds": 2.484665999999379,
+          "size": 54
+        }
+      },
+      "events": []
+    }
+  },
+  "automaticFreshRetryThrough": 7,
+  "distinctRequests": 3,
+  "coldReopen": true,
+  "expected": "Baseline. During held read-v2. Trigger held submission. During held submit. Late genuine page."
+}

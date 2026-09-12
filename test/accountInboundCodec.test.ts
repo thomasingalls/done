@@ -183,7 +183,7 @@ describe('first-epoch inbound evidence under independently held owner context', 
     if (result.kind !== 'received') throw Error();
     await expect(
       verifyInboundPage(context(), p.request, p.page, { ...live, now: () => 30000 }),
-    ).rejects.toThrow('request');
+    ).rejects.toThrow('expired');
     const cold = await verifyStoredInbound(context(), result.record, {
       ...live,
       now: () => {
@@ -454,7 +454,7 @@ describe('first-epoch inbound evidence under independently held owner context', 
     });
     await expect(
       verifyInboundPage(context(), p.request, p.page, { assertCurrent() {}, now: () => now }),
-    ).rejects.toThrow('request');
+    ).rejects.toThrow('expired');
     await expect(
       verifyInboundPage(context(), p.request, p.page, { assertCurrent: async () => {} }),
     ).rejects.toThrow('authority');
