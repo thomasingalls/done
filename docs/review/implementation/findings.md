@@ -99,7 +99,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-13"></a>**F-13** Blocked compatibility open | open UX; ownership rule retained; [assessment](./96a2040-1ceb88d.md#assessment-f-13) | low availability/UX | —; [src/crdt/storageCompatibility.ts:17](../../../src/crdt/storageCompatibility.ts) |
 | <a id="f-14"></a>**F-14** Scoped custody row cap | open capacity classification; [assessment](./96a2040-1ceb88d.md#assessment-f-14) | low for current single-workspace scope | —; [src/crdt/startupStorage.ts](../../../src/crdt/startupStorage.ts) |
 | <a id="f-15"></a>**F-15** Reservation persistence | fixed under explicit strict-persistence assumptions; [assessment](./96a2040-1ceb88d.md#assessment-f-15) | medium cryptographic accounting correctness | —; [docs/review/implementation/reservation-durability.md](../../../docs/review/implementation/reservation-durability.md) |
-| <a id="f-16"></a>**F-16** Content compaction scheduling | open; [assessment](./96a2040-1ceb88d.md#assessment-f-16) | medium storage/usability | —; [src/crdt/accountReceive.ts:551](../../../src/crdt/accountReceive.ts) |
+| <a id="f-16"></a>**F-16** Content compaction scheduling | bounded scheduler complete; pending/proof/large-state limits retained; [assessment](./96a2040-1ceb88d.md#assessment-f-16) | medium storage/usability | —; [src/crdt/accountReceive.ts:551](../../../src/crdt/accountReceive.ts) |
 | <a id="f-17"></a>**F-17** Editor projection and fork cost | open; measure before repair; [assessment](./96a2040-1ceb88d.md#assessment-f-17) | medium, potentially high with large documents | —; [src/crdt/admittedWorkspace.ts](../../../src/crdt/admittedWorkspace.ts) |
 | <a id="f-18"></a>**F-18** Origin-wide journal scans | open; measure before repair; [assessment](./96a2040-1ceb88d.md#assessment-f-18) | low | —; [src/crdt/journalStore.ts](../../../src/crdt/journalStore.ts) |
 | <a id="f-19"></a>**F-19** Promotion marker and request resource cost | open; [assessment](./96a2040-1ceb88d.md#assessment-f-19) | medium capacity/operations | —; [src/crdt/promotionRecord.ts](../../../src/crdt/promotionRecord.ts) |
@@ -189,3 +189,5 @@ No production code, tests, wire bytes, personal installation, server, factor, or
 Stage 0 gate debt was changed. The review intake remains unstaged/uncommitted.
 
 - [F-09: authenticated partial Local recovery evidence](../../account-conformance-runs/2026-09-12-local-recovery/README.md).
+
+- [F-16: automatic maintenance evidence](../../account-conformance-runs/2026-09-12-content-maintenance/README.md).

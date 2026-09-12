@@ -75,9 +75,16 @@ passes 1,007 unit tests, 30 generated damage/journal histories, packaged UI refu
 custody/trim controls and packaged migration/privacy regressions. Original carriers remain unchanged;
 every ZIP is partial. Account, custody-loss and unsupported-schema recovery remain separate.
 
-Continue the authorized F-16/F-17/F-19 work: owned automatic exact-coverage content compaction,
-measured editor projection/fork cost and retained marker resources. Keep every correctness guard.
-Give a chat summary and unsigned commit at each verified boundary. The signing reminder stays active.
+F-16's owned idle content scheduler is complete in the commit containing this checkpoint. Its
+[nine-stage campaign](./account-conformance-runs/2026-09-12-content-maintenance/README.md) passes
+1,011 units, 24 generated idle/flush schedules, 35 native cases and full trim controls. The ordinary
+packaged editor compacts 140 edits to one state and cold-replays exact writing. Pending originals and
+Account proof history remain; thresholds are advisory. An incomplete grouped-deadline attempt is
+preserved and repaired with separate passing Account stages.
+
+Continue F-17/F-19 equivalent projection checks and bounded retained marker representation, using
+measured before/after evidence. Give a chat summary and unsigned commit at each verified boundary.
+The signing reminder stays active.
 
 **After these categories.** Aggregate release validation F-20/N-06/P-05 and P-06 prose, with explicit
 supported-platform and formal review gates. Private Account cutover and second-device adoption remain

@@ -1,0 +1,419 @@
+{
+  "seed": 9322026,
+  "runs": 16,
+  "histories": [
+    [
+      {
+        "text": "abc",
+        "cut": false,
+        "boundary": "reopen"
+      },
+      {
+        "text": "x",
+        "cut": true,
+        "boundary": "compact"
+      },
+      {
+        "text": "abc",
+        "cut": true,
+        "boundary": "flush"
+      },
+      {
+        "text": "abc",
+        "cut": true,
+        "boundary": "reopen"
+      },
+      {
+        "text": "x",
+        "cut": false,
+        "boundary": "compact"
+      },
+      {
+        "text": "🙂",
+        "cut": true,
+        "boundary": "crash"
+      }
+    ],
+    [
+      {
+        "text": "é",
+        "cut": false,
+        "boundary": "compact"
+      },
+      {
+        "text": "abc",
+        "cut": true,
+        "boundary": "compact"
+      },
+      {
+        "text": "abc",
+        "cut": true,
+        "boundary": "compact"
+      }
+    ],
+    [
+      {
+        "text": "🙂",
+        "cut": false,
+        "boundary": "crash"
+      },
+      {
+        "text": "x",
+        "cut": false,
+        "boundary": "compact"
+      },
+      {
+        "text": "🙂",
+        "cut": true,
+        "boundary": "compact"
+      },
+      {
+        "text": "abc",
+        "cut": true,
+        "boundary": "crash"
+      },
+      {
+        "text": "abc",
+        "cut": false,
+        "boundary": "reopen"
+      }
+    ],
+    [
+      {
+        "text": "abc",
+        "cut": false,
+        "boundary": "compact"
+      },
+      {
+        "text": "abc",
+        "cut": true,
+        "boundary": "crash"
+      },
+      {
+        "text": "abc",
+        "cut": false,
+        "boundary": "flush"
+      },
+      {
+        "text": "🙂",
+        "cut": true,
+        "boundary": "compact"
+      },
+      {
+        "text": "x",
+        "cut": true,
+        "boundary": "crash"
+      },
+      {
+        "text": "🙂",
+        "cut": false,
+        "boundary": "flush"
+      }
+    ],
+    [
+      {
+        "text": "é",
+        "cut": false,
+        "boundary": "reopen"
+      },
+      {
+        "text": "abc",
+        "cut": false,
+        "boundary": "reopen"
+      },
+      {
+        "text": "é",
+        "cut": false,
+        "boundary": "compact"
+      },
+      {
+        "text": "abc",
+        "cut": false,
+        "boundary": "flush"
+      },
+      {
+        "text": "é",
+        "cut": true,
+        "boundary": "compact"
+      },
+      {
+        "text": "é",
+        "cut": true,
+        "boundary": "reopen"
+      }
+    ],
+    [
+      {
+        "text": "é",
+        "cut": false,
+        "boundary": "flush"
+      },
+      {
+        "text": "x",
+        "cut": true,
+        "boundary": "flush"
+      },
+      {
+        "text": "🙂",
+        "cut": true,
+        "boundary": "compact"
+      },
+      {
+        "text": "abc",
+        "cut": true,
+        "boundary": "reopen"
+      },
+      {
+        "text": "é",
+        "cut": true,
+        "boundary": "compact"
+      },
+      {
+        "text": "🙂",
+        "cut": false,
+        "boundary": "compact"
+      }
+    ],
+    [
+      {
+        "text": "abc",
+        "cut": true,
+        "boundary": "flush"
+      },
+      {
+        "text": "🙂",
+        "cut": false,
+        "boundary": "reopen"
+      },
+      {
+        "text": "x",
+        "cut": true,
+        "boundary": "reopen"
+      },
+      {
+        "text": "abc",
+        "cut": true,
+        "boundary": "compact"
+      },
+      {
+        "text": "🙂",
+        "cut": true,
+        "boundary": "flush"
+      }
+    ],
+    [
+      {
+        "text": "abc",
+        "cut": true,
+        "boundary": "crash"
+      },
+      {
+        "text": "x",
+        "cut": true,
+        "boundary": "crash"
+      },
+      {
+        "text": "é",
+        "cut": true,
+        "boundary": "reopen"
+      }
+    ],
+    [
+      {
+        "text": "é",
+        "cut": false,
+        "boundary": "reopen"
+      },
+      {
+        "text": "x",
+        "cut": true,
+        "boundary": "compact"
+      }
+    ],
+    [
+      {
+        "text": "🙂",
+        "cut": true,
+        "boundary": "compact"
+      },
+      {
+        "text": "é",
+        "cut": true,
+        "boundary": "reopen"
+      },
+      {
+        "text": "x",
+        "cut": false,
+        "boundary": "crash"
+      },
+      {
+        "text": "abc",
+        "cut": true,
+        "boundary": "compact"
+      },
+      {
+        "text": "é",
+        "cut": false,
+        "boundary": "reopen"
+      }
+    ],
+    [
+      {
+        "text": "abc",
+        "cut": false,
+        "boundary": "compact"
+      },
+      {
+        "text": "abc",
+        "cut": true,
+        "boundary": "crash"
+      },
+      {
+        "text": "abc",
+        "cut": false,
+        "boundary": "reopen"
+      },
+      {
+        "text": "é",
+        "cut": true,
+        "boundary": "crash"
+      }
+    ],
+    [
+      {
+        "text": "abc",
+        "cut": false,
+        "boundary": "flush"
+      },
+      {
+        "text": "🙂",
+        "cut": true,
+        "boundary": "crash"
+      },
+      {
+        "text": "abc",
+        "cut": false,
+        "boundary": "compact"
+      },
+      {
+        "text": "abc",
+        "cut": true,
+        "boundary": "reopen"
+      },
+      {
+        "text": "é",
+        "cut": true,
+        "boundary": "reopen"
+      }
+    ],
+    [
+      {
+        "text": "é",
+        "cut": true,
+        "boundary": "compact"
+      },
+      {
+        "text": "abc",
+        "cut": true,
+        "boundary": "compact"
+      },
+      {
+        "text": "x",
+        "cut": false,
+        "boundary": "flush"
+      },
+      {
+        "text": "abc",
+        "cut": false,
+        "boundary": "compact"
+      }
+    ],
+    [
+      {
+        "text": "abc",
+        "cut": true,
+        "boundary": "flush"
+      },
+      {
+        "text": "é",
+        "cut": false,
+        "boundary": "compact"
+      },
+      {
+        "text": "🙂",
+        "cut": true,
+        "boundary": "compact"
+      },
+      {
+        "text": "é",
+        "cut": true,
+        "boundary": "crash"
+      },
+      {
+        "text": "é",
+        "cut": true,
+        "boundary": "flush"
+      }
+    ],
+    [
+      {
+        "text": "x",
+        "cut": true,
+        "boundary": "crash"
+      },
+      {
+        "text": "é",
+        "cut": false,
+        "boundary": "reopen"
+      },
+      {
+        "text": "🙂",
+        "cut": false,
+        "boundary": "crash"
+      },
+      {
+        "text": "abc",
+        "cut": true,
+        "boundary": "compact"
+      },
+      {
+        "text": "abc",
+        "cut": false,
+        "boundary": "compact"
+      }
+    ],
+    [
+      {
+        "text": "🙂",
+        "cut": false,
+        "boundary": "flush"
+      },
+      {
+        "text": "🙂",
+        "cut": true,
+        "boundary": "crash"
+      },
+      {
+        "text": "🙂",
+        "cut": false,
+        "boundary": "crash"
+      },
+      {
+        "text": "🙂",
+        "cut": false,
+        "boundary": "flush"
+      },
+      {
+        "text": "abc",
+        "cut": false,
+        "boundary": "flush"
+      },
+      {
+        "text": "x",
+        "cut": false,
+        "boundary": "flush"
+      }
+    ]
+  ],
+  "status": "passed"
+}

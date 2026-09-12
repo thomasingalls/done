@@ -1,0 +1,91 @@
+{
+  "browser": "151.0.7922.34",
+  "control": "d413b68677f4bd2d094adcc4d8f51bf6a22208e890ddd8e9e3043f930c7a4ad4",
+  "utility": "89fa6228bc0bd0959b8427fbc943f41528f513203c9f7dbabb20d056d3fee796",
+  "cleanup": "89de6ce30d118ed9afba7702bc6066d976f9e30ed5b8331cfa1f083c3c73eafc",
+  "app": [
+    {
+      "path": [
+        "assets",
+        "main-4oTJNm_w.js"
+      ],
+      "sha256": "55734e7d981f96f7fd1dd1dfc2d2da63e5d902a700f7c782657a909fe2bc903c"
+    },
+    {
+      "path": [
+        "assets",
+        "main-4oTJNm_w.js.map"
+      ],
+      "sha256": "f7b1beafb1dfc021822f16cf50ddb6ced49f71fda8e1fdb26cc6cd6361e90628"
+    },
+    {
+      "path": [
+        "assets",
+        "main-BBv1bmH8.css"
+      ],
+      "sha256": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25"
+    },
+    {
+      "path": [
+        "assets",
+        "promotionRecord-BE3_g5Iy.js"
+      ],
+      "sha256": "16e78dc0cdc8d346bbe7334bb27266a3923f5b79b19e213df99a7378c0e5c3a0"
+    },
+    {
+      "path": [
+        "assets",
+        "promotionRecord-BE3_g5Iy.js.map"
+      ],
+      "sha256": "49683e61825a829b328f024fc050ce5d8492e2c1b44e40ac94d784b36c8db3f9"
+    },
+    {
+      "path": [
+        "favicon.svg"
+      ],
+      "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f"
+    },
+    {
+      "path": [
+        "icon-192.png"
+      ],
+      "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32"
+    },
+    {
+      "path": [
+        "icon-512.png"
+      ],
+      "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec"
+    },
+    {
+      "path": [
+        "icon-maskable-512.png"
+      ],
+      "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da"
+    },
+    {
+      "path": [
+        "index.html"
+      ],
+      "sha256": "d6544ef5b2f2934e416feb50f96021d0ca448b7aee0e1546f91debb2fdb4d550"
+    },
+    {
+      "path": [
+        "local.html"
+      ],
+      "sha256": "22ac75619f9b7b1853add19232e262063e0e0bf00b9f881043adab0195211f0f"
+    },
+    {
+      "path": [
+        "manifest.webmanifest"
+      ],
+      "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3"
+    },
+    {
+      "path": [
+        "sw.js"
+      ],
+      "sha256": "59f0ff63ae11e328a91185dcd4a9f5c90f925befd3aeda9641e9216e431072b8"
+    }
+  ]
+}

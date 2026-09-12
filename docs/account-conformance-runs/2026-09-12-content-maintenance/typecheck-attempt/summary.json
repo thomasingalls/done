@@ -1,0 +1,20 @@
+{
+  "status": "failed",
+  "startedAt": "2026-09-12T15:35:32.375Z",
+  "stages": [
+    {
+      "name": "types",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 1,
+      "timedOut": false,
+      "elapsedMs": 227
+    }
+  ],
+  "sourcePins": 910,
+  "error": "Error: Stage failed: types\n    at run (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/private-release/run.mjs:135:46)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/private-release/run.mjs:172:5",
+  "finishedAt": "2026-09-12T15:35:32.604Z"
+}

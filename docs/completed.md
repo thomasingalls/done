@@ -3361,3 +3361,13 @@ is partial; no repair/reset/nonce allocation occurs. The [eight-stage campaign](
 passes 1,007 units, 30 generated histories, packaged UI export/cancellation, custody/trim controls and
 packaged migration/privacy regressions; 909 source pins agree. Account/custody-loss/unsupported-schema
 recovery remains outside this boundary. Appended before advancing L-1 to storage/responsiveness.
+
+## 2026-09-12 — L-1 owned automatic content maintenance
+
+Following Local recovery `01b3036`, F-16's missing scheduler is repaired behind durable idle admission.
+Existing exact-coverage guards, pending originals, Account proof history and close/drain semantics remain.
+The [nine-stage campaign](./account-conformance-runs/2026-09-12-content-maintenance/README.md) passes
+1,011 units, 24 generated flush/idle schedules, 35 native cases and the trim controls. Real packaged
+editing reduces 140 updates to one state and cold-replays exact writing. An incomplete grouped-deadline
+attempt and test-double typecheck failure are retained. Separate Account stages pass with their existing
+deadlines. No hard storage bound or ledger pruning is claimed. Appended before advancing L-1.

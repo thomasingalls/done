@@ -115,3 +115,28 @@ F-09's missing Local salvage path is repaired within the authenticated current-f
 Account, missing custody and unsupported-schema recovery remain explicit later work. Every export
 stays partial; retaining originals is mandatory. Next is owned compaction and measured projection and
 promotion-marker resource work, without weakening correctness guards.
+
+## Maintenance trial, specified before execution
+
+F-16 uses advisory thresholds of 128 committed content changes or 1 MiB since the last attempt,
+including the authenticated startup content census (excluding a single state). After admission and its
+journal drain, wait 750 ms without new queued work. Run the existing exact-coverage compactor in the
+admission flight; later input waits and close invalidates/drains it. Pending originals stay retained.
+Unavailable/quota/oversize maintenance is deferred until new durable growth or a fresh open; corruption
+still refuses ordinary use. The existing receipt and journal/coverage deletion guards stay authoritative.
+
+The directed packaged trial makes 140 real UI edits, requires one state record and exact cold replay.
+Controlled and 24 seeded flush/idle schedules check preservation, ordering, closure, thresholds and no
+retry loop. Existing native trim fault controls and Account capture/ordered receive/sync regressions
+must pass. Record actual campaign durations. Thresholds are conservative work triggers, not measured
+optimal values or a hard disk bound: sustained activity may postpone maintenance, a large state is not
+reduced, unresolved dependencies retain originals, and Account evidence is never pruned here.
+
+## Maintenance result — 2026-09-12
+
+The [nine-stage campaign](./account-conformance-runs/2026-09-12-content-maintenance/README.md) passes
+1,011 units, 24 generated flush/idle schedules, 35 native Node cases and exact-coverage trim controls.
+The packaged 140-edit trial compacts to one state and cold-replays the input. F-16's absent ordinary
+scheduler is repaired; advisory thresholds, pending retention and proof-history limits remain as above.
+The incomplete shared-deadline attempt is retained; separate Account stages pass. This local runner
+repair does not close F-20's aggregate validation debt. F-17/F-19 profiling and equivalent reductions follow.

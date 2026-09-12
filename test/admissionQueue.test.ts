@@ -1,5 +1,6 @@
 // @vitest-environment node
 import { describe, it, expect, vi } from 'vitest';
+import fc from 'fast-check';
 import {
   createAdmissionOwner,
   AdmissionError,
@@ -515,4 +516,129 @@ describe('admission callback and writer boundaries', () => {
       await f.owner.close();
     }
   });
+});
+
+describe('automatic owned content maintenance', () => {
+  it('waits for durable idle, orders later input, and closes a running flight without further admission', async () => {
+    const f = await fixture();
+    vi.useFakeTimers();
+    const gate = wait();
+    const compact = vi.fn(async () => {
+      await gate.promise;
+      return {
+        status: 'compacted' as const,
+        removed: [],
+        storeId: 'store',
+        generation: 1,
+        stateSequence: 129,
+      };
+    });
+    f.carrier.compactContent = compact as JournalSession['compactContent'];
+    try {
+      for (let i = 0; i < 128; i++) await f.owner.submit(intent('x')).accepted;
+      await vi.advanceTimersByTimeAsync(249);
+      expect(compact).not.toHaveBeenCalled();
+      await f.owner.whenDurable();
+      await vi.advanceTimersByTimeAsync(749);
+      expect(compact).not.toHaveBeenCalled();
+      await vi.advanceTimersByTimeAsync(1);
+      expect(compact).toHaveBeenCalledTimes(1);
+      const later = f.owner.submit(intent('later'));
+      expect(view(f.owner.snapshot())).toBe('x'.repeat(128));
+      expect(f.owner.status.pendingItems).toBe(1);
+      const closing = f.owner.close();
+      await expect(later.accepted).rejects.toMatchObject({ code: 'inactive-session' });
+      gate.resolve();
+      await closing;
+      await vi.advanceTimersByTimeAsync(100000);
+      expect(compact).toHaveBeenCalledTimes(1);
+    } finally {
+      gate.resolve();
+      await f.owner.close();
+      vi.useRealTimers();
+    }
+  });
+  it.each(['retained', 'failure'] as const)(
+    'does not spin or block editing after %s; only new durable growth retries',
+    async (mode) => {
+      const f = await fixture();
+      vi.useFakeTimers();
+      const compact = vi.fn(async () => {
+        if (mode === 'failure') throw Error('quota');
+        return {
+          status: 'retained' as const,
+          removed: [],
+          storeId: 'store',
+          generation: 1,
+          stateSequence: null,
+        };
+      });
+      f.carrier.compactContent = compact as JournalSession['compactContent'];
+      try {
+        for (let cycle = 0; cycle < 2; cycle++) {
+          for (let i = 0; i < 128; i++) await f.owner.submit(intent('x')).accepted;
+          await f.owner.whenDurable();
+          await vi.advanceTimersByTimeAsync(100000);
+          expect(compact).toHaveBeenCalledTimes(cycle + 1);
+          expect(f.owner.status.state).toBe('active');
+          expect(f.owner.status.maintenance).toBe(mode === 'retained' ? 'retained' : 'deferred');
+        }
+        expect(view(f.owner.snapshot())).toBe('x'.repeat(256));
+      } finally {
+        await f.owner.close();
+        vi.useRealTimers();
+      }
+    },
+  );
+});
+
+it('generated flush/idle schedules preserve every admitted input and bound maintenance attempts', async () => {
+  vi.useFakeTimers();
+  try {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.array(
+          fc.record({
+            count: fc.integer({ min: 1, max: 70 }),
+            idle: fc.integer({ min: 0, max: 1100 }),
+            flush: fc.boolean(),
+          }),
+          { minLength: 1, maxLength: 5 },
+        ),
+        async (groups) => {
+          const f = await fixture();
+          const compact = vi.fn(async () => ({
+            status: 'compacted' as const,
+            removed: [],
+            storeId: 'store',
+            generation: 1,
+            stateSequence: 129,
+          }));
+          f.carrier.compactContent = compact as JournalSession['compactContent'];
+          let count = 0;
+          try {
+            for (const group of groups) {
+              for (let i = 0; i < group.count; i++) {
+                await f.owner.submit(intent('x')).accepted;
+                count++;
+              }
+              if (group.flush) await f.owner.whenDurable();
+              await vi.advanceTimersByTimeAsync(group.idle);
+              expect(view(f.owner.snapshot())).toBe('x'.repeat(count));
+              expect(compact.mock.calls.length).toBeLessThanOrEqual(Math.floor(count / 128));
+            }
+            await f.owner.whenDurable();
+            await vi.advanceTimersByTimeAsync(1000);
+            if (count >= 128) expect(compact).toHaveBeenCalled();
+            expect(f.owner.status.state).toBe('active');
+          } finally {
+            await f.owner.close();
+          }
+        },
+      ),
+      { seed: 120916, numRuns: 24 },
+    );
+  } finally {
+    vi.useRealTimers();
+  }
 });

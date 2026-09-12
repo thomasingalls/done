@@ -1,0 +1,9 @@
+{
+  "baseline": "01b3036dffe09bcaeb0cca6652195cd3bc26afd4",
+  "phase": "maintenance",
+  "node": "v26.8.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "protocol": "docs/account-privacy-recovery-capacity.md",
+  "claim": "Owned idle exact-coverage content maintenance; no Account proof pruning or hard disk bound"
+}

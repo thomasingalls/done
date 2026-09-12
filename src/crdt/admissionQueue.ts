@@ -13,6 +13,10 @@ import {
 export const MAX_PENDING_BYTES = 4 * 1024 * 1024;
 export const MAX_PENDING_ITEMS = 256;
 export const FLUSH_DELAY_MS = 250;
+/** Advisory work thresholds, not claims about total disk/proof size. */
+export const CONTENT_MAINTENANCE_RECORDS = 128;
+export const CONTENT_MAINTENANCE_BYTES = 1024 * 1024;
+export const CONTENT_MAINTENANCE_IDLE_MS = 750;
 export type AdmissionFailure =
   | 'invalid-input'
   | 'queue-full'
@@ -69,6 +73,7 @@ export interface AdmissionStatus {
   readonly reservedBytes: number;
   readonly durable: boolean;
   readonly pressure: Readonly<{ code: string; cause?: string }> | null;
+  readonly maintenance?: 'running' | 'retained' | 'deferred';
 }
 export interface AdmissionSession {
   /** Optional composed carrier hook; never an application cleanup or authority shortcut. */
@@ -148,6 +153,19 @@ export const createAdmissionOwner = async (
     busy = false;
   let timer: ReturnType<typeof setTimeout> | undefined, inFlight: Promise<void> | undefined;
   let closing: Promise<void> | undefined;
+  let maintenanceTimer: ReturnType<typeof setTimeout> | undefined;
+  let maintenance: AdmissionStatus['maintenance'];
+  let contentChanges = 0,
+    contentBytes = 0,
+    journalBytes = 0;
+  const changedContent = (count: number, bytes: number) => {
+    contentChanges += count;
+    contentBytes += bytes;
+  };
+  const clearMaintenanceTimer = () => {
+    if (maintenanceTimer !== undefined) clearTimeout(maintenanceTimer);
+    maintenanceTimer = undefined;
+  };
   let disposed = false;
   const dispose = () => {
     if (disposed) return;
@@ -191,6 +209,7 @@ export const createAdmissionOwner = async (
       reservedBytes: queue.reduce((n, j) => n + (j.kind === 'flush' ? 0 : j.reservation), 0),
       durable: state === 'active' && !queue.length && !journalDirty && pressure === null,
       pressure,
+      ...(maintenance ? { maintenance } : {}),
     });
   const notify = () => {
     const value = status();
@@ -218,6 +237,7 @@ export const createAdmissionOwner = async (
     if (state !== 'active') return;
     state = 'blocked';
     clearTimer();
+    clearMaintenanceTimer();
     repairRequired ||= codeOf(error) === 'repair-required';
     pressure = Object.freeze({ code: codeOf(error) });
     rejectBarriers(error);
@@ -229,6 +249,7 @@ export const createAdmissionOwner = async (
     closing = done.promise;
     state = 'closing';
     clearTimer();
+    clearMaintenanceTimer();
     carrier.signal.removeEventListener('abort', cancelled);
     const error = new AdmissionError(
       'inactive-session',
@@ -268,6 +289,14 @@ export const createAdmissionOwner = async (
         });
       }
       live();
+      const content = recovery.records.filter((r) => r.kind === 'state' || r.kind === 'update');
+      // A single large state cannot be made smaller by this maintenance operation.
+      if (content.length > 1)
+        changedContent(
+          content.length,
+          content.reduce((n, r) => n + r.bytes.length, 0),
+        );
+      journalBytes = recovery.journal.reduce((n, r) => n + r.bytes.length, 0);
       journalDirty = recovery.journal.length > 0;
     } finally {
       for (const r of [...recovery.records, ...recovery.journal]) r.bytes.fill(0);
@@ -350,6 +379,8 @@ export const createAdmissionOwner = async (
         'Content committed, but journal cleanup still needs retry.',
       );
     }
+    changedContent(receipt.removed ?? 0, journalBytes);
+    journalBytes = 0;
     journalDirty = false;
   };
   const forceLocal = async (job: InputJob) => {
@@ -359,6 +390,7 @@ export const createAdmissionOwner = async (
       { kind: 'update', bytes: job.prepared!.carrierBytes ?? job.prepared!.update },
     ]);
     live();
+    changedContent(1, (job.prepared!.carrierBytes ?? job.prepared!.update).length);
     promote(job, job.prepared!.update);
     completeInput(job);
   };
@@ -380,6 +412,10 @@ export const createAdmissionOwner = async (
             live();
             if (promoted) throw Error('Owned receive promoted twice');
             promoted = true;
+            changedContent(
+              updates.length,
+              updates.reduce((n, b) => n + b.length, 0),
+            );
             // Preserve original frames and their delivery order, including pending buffers/deletions.
             for (const update of updates) promote(job, update);
           })
@@ -411,6 +447,7 @@ export const createAdmissionOwner = async (
       live();
       return carrier.appendBatch([{ kind: 'update', bytes: job.input }]).then(() => {
         live();
+        changedContent(1, job.input.length);
         promote(job, job.input);
         completeInput(job);
       });
@@ -486,6 +523,7 @@ export const createAdmissionOwner = async (
         : carrier.appendLocal(job.prepared.carrierBytes ?? job.prepared.update);
     if (attempt.status === 'journalled') {
       journalDirty = true;
+      journalBytes += (job.prepared.carrierBytes ?? job.prepared.update).length;
       promote(job, job.prepared.update);
       completeInput(job);
       return;
@@ -496,7 +534,54 @@ export const createAdmissionOwner = async (
     live();
     return forceLocal(job);
   };
+  const scheduleMaintenance = () => {
+    if (
+      maintenanceTimer !== undefined ||
+      !carrier.compactContent ||
+      state !== 'active' ||
+      busy ||
+      queue.length ||
+      journalDirty
+    )
+      return;
+    if (contentChanges < CONTENT_MAINTENANCE_RECORDS && contentBytes < CONTENT_MAINTENANCE_BYTES)
+      return;
+    maintenanceTimer = setTimeout(() => {
+      maintenanceTimer = undefined;
+      if (state !== 'active' || busy || queue.length || journalDirty) return;
+      // This shares admission's owned flight. Later inputs wait behind native maintenance;
+      // close invalidates the carrier immediately and drains this flight before releasing it.
+      contentChanges = 0;
+      contentBytes = 0;
+      busy = true;
+      maintenance = 'running';
+      notify();
+      inFlight = Promise.resolve()
+        .then(() => {
+          live();
+          return carrier.compactContent();
+        })
+        .then((receipt) => {
+          if (state !== 'active') return;
+          maintenance = receipt.status === 'retained' ? 'retained' : undefined;
+        })
+        .catch((error) => {
+          if (state !== 'active') return;
+          maintenance = 'deferred';
+          if (['repair-required', 'generation-changed'].includes(codeOf(error))) block(error);
+          // Quota/budget/unavailable maintenance does not refuse already durable writing.
+          // New durable growth (or a fresh open) is required before another attempt.
+        })
+        .finally(() => {
+          busy = false;
+          inFlight = undefined;
+          notify();
+          pump();
+        });
+    }, CONTENT_MAINTENANCE_IDLE_MS);
+  };
   const schedule = () => {
+    scheduleMaintenance();
     if (state !== 'active' || !journalDirty || timer !== undefined) return;
     timer = setTimeout(() => {
       timer = undefined;
@@ -560,6 +645,7 @@ export const createAdmissionOwner = async (
       completion,
       ...(commit ? { commit } : {}),
     };
+    clearMaintenanceTimer();
     queue.push(job);
     pump();
     notify();
@@ -589,6 +675,7 @@ export const createAdmissionOwner = async (
           'The admission queue has no room for a flush barrier.',
         );
       const completion = deferred<void>();
+      clearMaintenanceTimer();
       queue.push({ kind: 'flush', completion });
       pump();
       notify();
