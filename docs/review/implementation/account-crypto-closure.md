@@ -177,13 +177,14 @@ receipt lies refuse against cold client replay. Real exact-size snapshots and ex
 coverage descriptors demonstrate pre-seal/pre-write/pre-send refusal, with effective source omissions.
 No production defect was found or runtime source changed.
 
-F-21.2 was committed signed as `f118127`. The subsequent
-[neutral plaintext-residue preparation](./account-residue-evidence.md) inventories current carriers
-and existing evidence, defines input classes, calibrated readers, lifecycle points and incomplete
-results, and corrects one stale PRD promptless-custody expectation. F-21.4 remains open: no new scanner
-or confidentiality result exists. Next is the bounded R1 logical-carrier scanner and owner histories;
-packaged/export/migration flows and physical residue follow separately. Diagnostics beyond the
-captured test streams and performance retain separate obligations.
+F-21.2 was committed signed as `f118127`, followed by residue preparation `6a9c9c4`. The subsequent
+[R1 neutral logical-carrier campaign](./account-residue-evidence.md) executes independent collection
+and matching at the named Local, browser recovery and Account owner paths. It passes 144 calibration
+cells, 26 directed checkpoints and 24 generated histories, including an effective actual journal
+side-write control and cold readback. No production defect was found or runtime code changed. F-21.4
+remains open for packaged UI/service-worker/export and synthetic migration/clear trials, then physical
+residue and platform obligations. Diagnostics beyond the captured test streams and performance remain
+separate work.
 
 Platform qualification, whole-profile residue, general lineage/checkpoint evolution, enrollment/adoption,
 revocation/rotation, finalization, recovery replacement, total-loss recovery, deployment/restore and

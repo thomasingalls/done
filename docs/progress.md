@@ -43,14 +43,14 @@ that is no longer active.
 ---
 
 
-## Active slice: Neutral logical-carrier plaintext scanner (`L-1`)
+## Active slice: Packaged and migration plaintext-residue evidence (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: calibrated independent collectors before claiming a negative result
+blocks_on: explicit packaged/export and synthetic migration/clear observation points before extending R1
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-12
 ```
@@ -58,10 +58,10 @@ updated: 2026-09-12
 **Roadmap position.** Personal Local cutover, cleanup and packaged offline upgrades are exercised.
 Account remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), item 5's internal creating-member
 ciphertext round trip. C/D1–D8, aggregate audit `ec889d9`, F-15 `c10dee3`, F-21.3 `2bbb4c6`, F-21.7
-`f0b6acd`, F-21.1 `77b0bb6`, F-21.6 `3b0a1ba` and F-21.2 `f118127` are signed. All sixteen recent
-signatures verify `G`. The signing reminder remains paused; the original unsigned chain remains under
-the [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
-No real Account receipt exists. F-21.4 preparation is complete, unstaged/uncommitted; the finding remains open.
+`f0b6acd`, F-21.1 `77b0bb6`, F-21.6 `3b0a1ba`, F-21.2 `f118127` and residue preparation `6a9c9c4` are
+signed. All seventeen recent signatures verify `G`. The signing reminder remains paused; the original
+unsigned chain remains under the [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
+No real Account receipt exists. R1 is complete, unstaged/uncommitted; F-21.4 remains open for wider scope.
 
 **Completed boundary.** [F-05/F-06](./review/implementation/account-crypto-closure.md),
 [F-15](./review/implementation/reservation-durability.md),
@@ -70,40 +70,45 @@ No real Account receipt exists. F-21.4 preparation is complete, unstaged/uncommi
 [F-21.1](./review/implementation/account-parser-conformance.md),
 [F-21.6](./review/implementation/account-delivery-oracle.md) and
 [F-21.2](./review/implementation/account-admission-evidence.md) retain their recorded scopes and limits.
-The last admission campaign's 44 stages, 75 Node tests and 898 source pins remain preserved.
 
-[F-21.4 preparation](./review/implementation/account-residue-evidence.md) credits existing known-opener
-custody, legacy namespace cleanup and crypto/replay evidence without calling them neutral byte scans.
-The [contract](./account-residue-testing.md) separates logical-carrier R1, physical-residue R2 and
-copied-profile C13 claims. It defines W/F/T markers, explicit metadata and export treatment, matching
-before redaction, calibrated representations, acquisition budgets and incomplete results. Current
-actor/device labels use encrypted document metadata. Browser recovery preparation retains sensitive
-retry capabilities and is bypassed by the ordinary native ready() helper; R1 must exercise that owner.
-One stale PRD copied-profile sentence was corrected to match mandatory factor custody.
+[R1](./account-residue-r1.md) implements the [prepared contract](./account-residue-testing.md) with an
+independent raw matcher and browser/SQL/diagnostic collectors. It enumerates unknown keys/stores,
+calibrates encodings and omissions, records incomplete observations, and keeps policy classification
+separate. Current actor/device labels are encrypted document metadata. The actual browser recovery
+owner retains sensitive retry capabilities at two named fields; those matches are reported separately.
+Known observer IPC fences remain in the scan. Opaque keys and physical backing files are not qualified.
 
-[Prep evidence](./account-conformance-runs/2026-09-12-account-residue-prep.md): 23 inventory entries,
-83 lexical source matches, 71 source pins and static reference/preservation checks. No scanner, browser
-campaign, root build or new confidentiality result. Production sources and vectors are unchanged.
+[Final campaign](./account-conformance-runs/2026-09-12-account-residue.md): 7 stages, 16 Node cases,
+144 calibration cells, 26 directed checkpoints and 24 generated histories; 871 source pins, types,
+scoped lint and format pass. No skips/timeouts. Seed `1121040`, 0 shrinks, no counterexample. There are
+155 checkpoint reports: 154 complete observations without prohibited matches and one detected deliberate
+journal side-write. Real Local/recovery/promotion/capture/spool/delivery and Account owners preserve
+introduced writing through cold readback. The real synchronous journal point, valid wrong factor,
+cancelled open, failed journal storage and lost HTTP replies are exercised. The archive preserves
+exact synthetic observations and needles. No runtime source changed or production defect was found.
 
-**Next bounded phase — implement R1 from the contract.**
+The first focused generated run exhausted its budget without a per-history archive and is incomplete
+evidence. Fixture receive retry now wakes the actual receiver after publication; the budget stays
+270 seconds and the final generated stage completes in 223.7. Detector/fixture repairs and an earlier
+passing run are recorded separately. Logical, physical and copied-profile claims remain distinct.
 
-- Build an independent matcher and collectors for all discovered IndexedDB, localStorage, each live
-  page's sessionStorage, CacheStorage, cookies, OPFS, current service/authority SQL and captured app/
-  service diagnostics. No product openers, parsers, slot-prefix census or success flags in acquisition.
-  Required unsupported/unreadable/truncated data is incomplete; opaque CryptoKey contents stay outside R1.
-- Calibrate every applicable surface × representation cell with clean and planted controls, unknown
-  keys/tables, nested/offset/binary/chunk cases, and source omissions in the collector. Add a test-bundle
-  journal side-write of actual plaintext update bytes; require a native write and detected W marker.
-- Run P0–P7 with synthetic inputs through actual Local, browser recovery, promotion/admission and
-  selected Account owners. Hold journal-only/finalization/lost-reply points using explicit barriers.
-  Observe active, locked and cold states; independently verify introduced content survives. Record
-  exact known retry-capability locations separately; they are not public metadata or content factors.
-- Add 24 recorded-seed variations after directed cases pass, retaining counterexamples and bounded
-  timeout/heartbeat evidence. Passing means zero prohibited matches, complete mandatory coverage,
-  effective controls and live/cold content recovery. No claimed general leak rate or broad key absence.
-- Preserve synthetic evidence and source/runtime pins. Packaged UI/SW/export and migration/clear trials
-  follow separately; filesystem profile/SQLite/WAL/deleted-byte scans and platform C13 remain later.
-  This phase does not authorize personal-profile inspection, real enrollment, deployment or host VM work.
+**Next bounded phase — extend R1 to actual packaged and migration flows, with prep first.**
+
+- Map the actual packaged Local UI, generated service worker and export routes to explicit input and
+  observation points. Reuse independent acquisition/matching. A planted cache proves the collector;
+  a real installed worker and UI flow are still required. Build into disposable output roots only.
+- Define exact intentional-export exceptions and a separately calibrated ZIP/container reader for
+  those synthetic artifacts. Never exempt all files by extension or authorize a cache/log copy because
+  an export was requested. Keep the pre-scan raw-value and completeness rules.
+- Exercise synthetic legacy capture/import/selection, authenticated source cleanup and Local clear,
+  including their interrupted/restarted states. Identify expected predecessor plaintext before cleanup
+  and require its absence at the declared logical post-cleanup point. Preserve the encrypted destination
+  and independently verify expected writing. Do not inspect personal exports or rerun personal cleanup.
+- Credit existing packaged upgrade/private-migration/cleanup tests for their actual coverage; add
+  meaningful missing leak controls and generated histories without relabelling namespace checks as
+  forensic erasure. Declare each required surface and unreadable/unsupported representation.
+- Keep physical profile/SQLite/WAL/deleted-byte and supported-platform C13 evidence separate. No real
+  Account enrollment, personal-profile scanning, default-app cutover, deployment or host VM work.
 
 **Personal checkpoint.** All 21 hashes in `dist/` and `.dev/releases/17d87c2/app`, 31 prior vector files,
 historical review and L-2 are unchanged. Personal preview/relay remain stopped. No personal browser,

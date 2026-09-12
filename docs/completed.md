@@ -3139,3 +3139,45 @@ No production code or protocol format changed.
 JSON checks and preservation. All 21 personal package files, 31 vectors, historical review and L-2
 are unchanged. No personal browser/profile/recovery file, server, real Account, factor, operator key,
 pin, origin or routing changed. Unrelated root files remain untouched. Appended before replacing only L-1.
+
+
+## 2026-09-12 — R1 neutral logical-carrier residue evidence (`L-1` seat)
+
+Residue preparation was committed signed as `6a9c9c4`; all seventeen recent signatures verify `G`.
+The new bounded R1 implementation is complete, unstaged/uncommitted. F-21.4 remains open for wider
+flows and physical/platform evidence. No production code, protocol format, dependency or vector changed.
+
+The [independent scanner](./account-residue-r1.md) enumerates unknown browser stores/keys, raw clone
+values, live-page session storage, CacheStorage, cookies, OPFS, all current service/authority SQL tables
+and captured page/service diagnostics. It matches before hashes/report redaction, handles calibrated
+encodings and reports missing/unreadable/budget-limited acquisition as incomplete. Opaque key contents
+and physical profile/SQLite/WAL/deleted bytes remain outside the claim. IPC fence bytes are scanned;
+only the separate stability comparison excludes the known observer frames.
+
+[Final evidence](./account-conformance-runs/2026-09-12-account-residue.md): 7 stages, 16 Node cases,
+144 calibration cells, 26 directed checkpoints, 24 generated histories, 871 matching source pins,
+types, scoped lint and format pass without skips or timeout. The seed is `1121040`, with 0 shrinks
+and no counterexample. The 155 checkpoint reports include 154 complete observations without prohibited
+matches and the deliberately planted native journal side-write, which is detected after an acknowledged
+edit. All collector/encoding omission controls are effective. Expected writing survives independent
+live/cold checks through real Local, recovery, promotion, capture/spool/delivery and Account owners.
+Recovery retry capability matches are reported at their two documented sensitive fields, not called
+public metadata. A valid incorrect factor, cancellation and failed journal storage exercise named
+failure paths. Generated schedules vary placement, flush/lock/reopen, compaction, reply loss and edits.
+
+Development found detector escape/diagnostic gaps and fixture setup mistakes, not a production defect.
+The first unarchived focused generated attempt exhausted 270 seconds; it is incomplete evidence.
+Explicit receive retry avoids waiting solely for the ordinary five-second poll. The budget remains
+270 seconds and the final generated stage finishes in 223.7 seconds. The runner now requires nonzero
+case/point evidence and records per-history progress. Earlier passing-run evidence is distinguished
+from the final diagnostic/factor refinements. All 482 original artifacts are indexed; a verified
+compressed archive preserves 472 JSON observations, including raw synthetic values and controller
+needle/factor manifests outside the tested app/service domain.
+
+Next is packaged UI/service-worker/export and synthetic migration/clear residue evidence using this
+instrument; physical containers and supported-platform custody remain later gates. Fragmented markers,
+arbitrary transformations and unknown key material cannot be qualified by this negative scan. No full
+Vitest, aggregate crypto/vector execution or unrelated native campaign was rerun for this harness-only
+phase. All 21 personal package files, 31 vectors, historical review and L-2 are preserved. No personal
+browser/profile/recovery, server, real Account, factor, operator key, pin, origin or routing changed.
+Unrelated root files remain untouched. Appended before replacing only L-1.

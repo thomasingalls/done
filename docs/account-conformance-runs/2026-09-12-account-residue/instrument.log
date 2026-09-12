@@ -1,0 +1,18 @@
+✔ all declared encodings, offsets and nested raw values detect independently generated Unicode (6.352209ms)
+✔ raw bytes match before hashing; exact views, properties and unknown SQL paths are not allowlisted (1.724667ms)
+✔ missing, unreadable, compressed and exhausted observations never become a clean negative (1.199625ms)
+✔ record fragmentation is a demonstrated unqualified representation, not a fabricated clean-history proof (0.369667ms)
+✔ explicit random 32-byte calibration needle, including encoded transport, is independent of text markers (0.277875ms)
+✔ empty or duplicate manifests cannot qualify an empty scan (0.252417ms)
+✔ a timed-out SQL worker yields incomplete coverage and terminates (6.357417ms)
+✔ unexpected fresh predecessor state is not accepted as harmless metadata (0.6215ms)
+✔ observer-looking fence bytes are still matched in the raw diagnostic stream (0.256709ms)
+✔ the acquisition/matching module graph has no product dependencies (0.433667ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 81.692083
