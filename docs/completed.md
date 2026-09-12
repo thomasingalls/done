@@ -3382,3 +3382,21 @@ units, 150 differential and 100 archive generated histories, existing 500 fork c
 and 100 native delivery histories plus guard-removal controls. On one host at 100k items, comparison
 median improves 97.4 → 23.8 ms and controlled command acceptance 190.2 → 121.2 ms. Large-history and
 supported-device responsiveness remain qualification work. Appended before advancing L-1 to F-19.
+
+## 2026-09-12 — L-1 retained marker resource repair and bounded sequence checkpoint
+
+Following projection `063cd72`, F-19 stores a single genesis candidate through a versioned retained
+reference while preserving original logical signed/MACed bytes and all current-state checks. Direct
+byte comparison removes expanded hex/string-array allocation. The [fourteen-stage campaign](./account-conformance-runs/2026-09-12-retained-marker/README.md)
+passes 1,015 units, 64 Node cases, 150 new generated histories and independent existing protocol,
+parser, long-admission, refusal, sync and privacy controls, with 917 unchanged source pins. A synthetic
+1 MiB checkpoint's median comparison is 684.6 → 46.4 ms and retained JSON is approximately halved.
+The generator's invalid-domain counterexample is retained; no product bound was relaxed.
+
+This closes the authorized bounded sequence from privacy through failure/recovery and storage/
+responsiveness. F-21.4 platform/opener/opaque evidence, Account/key-loss recovery, F-17 device/large-history
+responsiveness and F-19 full admission capacity remain explicitly partial. F-16's scheduler does not
+prune proof history or bound all disk growth. [Release-validation prep](./private-release-validation-prep.md)
+is next: F-20/N-06/P-05 aggregate coverage/reliability and P-06 prose, then private Account cutover and
+second-device adoption/enrollment. Personal packages (21 files), prior vectors (31), historical reviews
+and L-2 are unchanged. The unsigned-signing reminder remains active. Appended before replacing L-1.

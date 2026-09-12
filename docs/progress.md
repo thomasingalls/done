@@ -43,69 +43,51 @@ that is no longer active.
 ---
 
 
-## Active slice: Storage and responsiveness (`L-1`)
+## Active slice: Release validation prep (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight
-blocks_on: none; user authorizes unsigned phase commits through recovery and storage/responsiveness
+status: not started
+blocks_on: none; bounded repair sequence complete, next phase specified
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-12
 ```
 
 **Roadmap position.** Personal Local cutover, cleanup and packaged offline upgrades are exercised.
 Account remains the private creating-member ciphertext round trip at Stage 4 §3.5 item 5; it is not
-mounted in the personal app and no real Account receipt exists. Signed baseline `1372c39` precedes
-five unsigned sync-liveness commits ending `f42b4a7`. The privacy extension is the commit containing
-this checkpoint. The active reminder enumerates all unsigned descendants of that signed baseline.
+mounted in the personal app and there is no real Account receipt. Milestones 5/6 are not public ship
+boundaries. The old second device will adopt the first workspace with fresh custody, store, counters
+and credentials, without importing or merging its previous writing.
 
-**Closed boundary.** The [privacy extension](./account-conformance-runs/2026-09-12-privacy-extended/README.md)
-passes nine stages, 23 Node cases, 60 generated container and 24 R1 histories, and 899 source pins.
-It covers packaged UI/worker/export/offline restart, synthetic migration/restart/cleanup/clear and
-observable profile/service files. The generated ZIP-prefix instrument defect is repaired with retained
-evidence. Logical cleanup passes; a legacy writing sentinel remains in physical LevelDB after deletion.
-F-21.4 remains partial for supported-platform/C13 opener/opaque-format/fragmentation qualification.
-No forensic-erasure claim follows from a logical clean scan. No production code changed in this phase.
+**Closed sequence.** Sync liveness ends at `f42b4a7`. The subsequent bounded phases are privacy
+`67304f3`, diagnostics `8ebccfd`, Local recovery `01b3036`, automatic maintenance `70e6d5b`, projection
+`063cd72`, and the retained-marker phase in this checkpoint. [Full record and evidence](./account-privacy-recovery-capacity.md).
+The latest fourteen-stage campaign passes 1,015 units and 64 Node cases, including 150 generated marker
+histories; all 917 source pins agree. The active signing reminder enumerates all unsigned descendants
+of signed baseline `1372c39`; signing/history rewriting has not been performed in this sequence.
 
-**Now.** F-10/N-08/P-07 diagnostics are committed as `8ebccfd`. F-09 current-format Local salvage
-is complete in the commit containing this checkpoint. The [eight-stage campaign](./account-conformance-runs/2026-09-12-local-recovery/README.md)
-passes 1,007 unit tests, 30 generated damage/journal histories, packaged UI refusal/cancellation/export,
-custody/trim controls and packaged migration/privacy regressions. Original carriers remain unchanged;
-every ZIP is partial. Account, custody-loss and unsupported-schema recovery remain separate.
+**Limits remain explicit.** F-21.4 lacks wider platform/opener/opaque/fragmented evidence; legacy
+physical plaintext can remain after logical deletion. F-09 Local recovery is partial and requires
+intact custody; Account/key-loss/unsupported-schema recovery remains. F-16 retains pending originals
+and all proof history and gives advisory work triggers, not a hard disk bound. F-17 improves the
+100k-item controlled command median 190.2 → 121.2 ms but still needs large/deletion-heavy/device/paint
+qualification. F-19 halves the synthetic 1 MiB checkpoint's retained JSON and improves comparison
+684.6 → 46.4 ms, while repeated MAC/parsing, completion duplication and full-body capacity remain.
 
-F-16's owned idle content scheduler is complete in the commit containing this checkpoint. Its
-[nine-stage campaign](./account-conformance-runs/2026-09-12-content-maintenance/README.md) passes
-1,011 units, 24 generated idle/flush schedules, 35 native cases and full trim controls. The ordinary
-packaged editor compacts 140 edits to one state and cold-replays exact writing. Pending originals and
-Account proof history remain; thresholds are advisory. An incomplete grouped-deadline attempt is
-preserved and repaired with separate passing Account stages.
+**Next.** [Release-validation prep](./private-release-validation-prep.md): F-20/N-06/P-05 required-case
+mapping, aggregate scheduling/deadlines, and fresh evidence at one immutable revision; P-06 prose
+sweep and explicit platform/workload/claim dispositions. These phase receipts do not constitute a new
+full `pnpm check`. After acceptable private validation, rehearse author Account cutover/recovery and
+build enrollment/second-device adoption. Membership/revocation/rotation/finalization, signout/remove/
+reset, continuity, service operations/deployment and public assurance gates remain later obligations.
 
-F-17's equivalent full-byte comparison fast path and bounded derived archive memo are complete in
-this checkpoint. The [eleven-stage campaign](./account-conformance-runs/2026-09-12-editor-projection/README.md)
-passes 1,015 units, 150 differential/100 archive properties, 100 native pending and 100 native delivery
-histories and guard-removal controls. At 100k items, controlled command median is 190.2 → 121.2 ms;
-large-history/fallback/fork and supported-device input-to-paint qualification remain open.
-
-Continue F-19 versioned retained candidate representation and direct byte comparison, preserving
-exact signed/MACed bytes, current authentication and native commit guards. Then recap these categories
-and advance to release-validation prep. Give an unsigned commit and chat summary at the boundary.
-The signing reminder stays active.
-
-**After these categories.** Aggregate release validation F-20/N-06/P-05 and P-06 prose, with explicit
-supported-platform and formal review gates. Private Account cutover and second-device adoption remain
-separate from public shipping. Stage 4 enrollment, membership/revocation/rotation/finalization/recovery,
-platform custody and deployment obligations are not closed by the creating-member trial.
-
-**Preservation.** Intermediate Account v8 will not ship; F-08/N-04/N-09 are disposed by non-shipment.
-All 21 personal package files in `dist/` and `.dev/releases/17d87c2/app`, all 31 prior vectors, archived
-review annotations and L-2 remain unchanged. Personal preview/relay stay stopped. No personal browser,
-profile, recovery files, Account, factor, operator key, pin, origin or routing changed. The unrelated
-root `done ` remains untouched. The old second device will adopt the first workspace with fresh
-custody/store/counters/credentials, without importing its earlier writing.
-
-The completed outcome was appended before this rewrite; L-2 is unchanged.
+**Preservation.** Intermediate Account v8 will not ship; F-08/N-04/N-09 remain disposed by non-shipment.
+All 21 personal package files in `dist/` and `.dev/releases/17d87c2/app`, all 31 prior vectors, historical
+review annotations and L-2 are unchanged. No personal app/browser/profile/recovery files, Account,
+factor, key, pin, origin or routing changed, and no personal service was started. The unrelated root
+`done ` remains untouched. The completed outcome was appended before this rewrite; L-2 is unchanged.
 
 ---
 

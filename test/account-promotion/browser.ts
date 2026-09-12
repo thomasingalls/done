@@ -55,7 +55,24 @@ export async function snapshot(scope: CustodyScope) {
   const marker = all.find(
     (x) => JSON.stringify(x.key) === JSON.stringify([scope.slotId, 'application-upgrade']),
   )?.value;
-  return { record: r, marker };
+  // Preserve historical logical-shape assertions independently of the new retained codec.
+  // rows()/inventory() still expose exact native values; this is no authentication oracle.
+  let logical = marker;
+  if (marker && typeof marker === 'object' && 'retainedEncoding' in marker) {
+    const stored = structuredClone(marker) as Record<string, any>;
+    const reference = stored['admission']?.request?.candidate;
+    if (
+      stored['retainedEncoding'] !== 1 ||
+      reference?.v !== 1 ||
+      reference?.kind !== 'genesis-reference' ||
+      reference?.signature !== stored['genesis']?.signature
+    )
+      throw Error('Invalid fixture retained reference');
+    delete stored['retainedEncoding'];
+    stored['admission'].request.candidate = structuredClone(stored['genesis']);
+    logical = stored;
+  }
+  return { record: r, marker: logical };
 }
 import { withExclusiveSlot } from '../../src/crdt/writeSession';
 import { readPromotion, withPromotionRoot, signRecord } from '../../src/crdt/promotionRecord';

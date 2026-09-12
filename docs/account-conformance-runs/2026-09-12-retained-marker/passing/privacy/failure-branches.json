@@ -1,0 +1,7 @@
+{
+  "refused": {
+    "wrong": "unlock-failed",
+    "cancelled": "cancelled"
+  },
+  "journalStorageFailure": "observed; fallback persisted through cold reopen"
+}

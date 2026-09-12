@@ -1,0 +1,11 @@
+✔ every stage round-trips retained encoding with exact independent MAC and request bytes (53.701166ms)
+✔ unknown versions, malformed/extra references, accessors and conflicting candidates refuse (3.007041ms)
+✔ 150 generated retained histories preserve exact authentication and detect candidate substitution (669.472458ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1120.056125

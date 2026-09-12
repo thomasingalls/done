@@ -174,3 +174,56 @@ At 100,000 items, sequential single-host median complete comparison is 97.4 → 
 controlled command acceptance is 190.2 → 121.2 ms. Archive read cost is secondary. F-17 remains partial
 for large/deletion-heavy histories, full fallback, forks and supported-device input-to-paint capacity.
 F-19's retained marker representation and avoidable hexadecimal allocation follow.
+
+## Retained marker trial, specified before the final campaign
+
+F-19 adds a storage-only `retainedEncoding: 1` to logical promotion v3–v9. It retains one complete
+genesis candidate; `admission.request.candidate` is exactly `{v:1,kind:"genesis-reference",signature}`.
+The signature field is a locator checked against the retained candidate, **not an authentication grant**.
+Only exact canonical equality of the two old candidates permits packing. Decode before the unchanged
+logical parser/MAC/receipt/semantic checks and native comparison. The full reconstructed payload remains
+MACed, so substitution with an unchanged locator still fails authentication. Original signed request,
+receipt and MAC bytes are unchanged; no existing vectors are regenerated. Old logical parsers refuse
+the extra storage field. Current readers retain old canonical-format support; ordinary owned writes
+use the new encoding, with no eager rewrite. This is a positional authenticated reference, not a new
+hash-based protocol identity or trust in the locator alone.
+
+Direct byte comparison replaces `hex(payloadA) === hex(payloadB)` and erases its temporary byte buffers.
+It preserves exact equality but avoids per-byte string arrays and expanded hex strings. Do not introduce
+a marker-authentication cache: every existing owner/commit reread still authenticates current state.
+Stored-field budgets stay those of the unchanged logical parsers. The 72 MiB promotion wire bound and
+repeated full MAC/parse work remain separate capacity obligations; private operator gating is unchanged.
+
+Decision rule: all thirteen logical stages retain independent exact MAC/message/request bytes after
+packing; unknown/extended/accessor references refuse; 150 generated mutations distinguish locators from
+authentication. Native admission→v9 sync→cold restart must preserve writing and malformed-reference
+refusal must preserve carriers. Existing promotion/parser/long-admission/refusal/sync/privacy cases
+must pass. Profile structurally valid synthetic 4 KiB/64 KiB/1 MiB checkpoints with one warmup and three
+equality samples. Preserve raw times, serialized sizes and source hashes. V8-encoded sizes are a proxy,
+not physical IndexedDB file size, and this is not a complete service/maximum-body capacity experiment.
+
+An exploratory generator erroneously included 16-byte ciphertext below the existing 18-byte minimum;
+its shrunk counterexample and original test are retained. The valid generator now starts at 18, with
+16/17-byte directed refusal controls. Product bounds were not relaxed. Earlier profile probes remain
+separate from the final sequential measurements.
+
+## Retained marker result and sequence checkpoint — 2026-09-12
+
+The [fourteen-stage campaign](./account-conformance-runs/2026-09-12-retained-marker/README.md) passes
+1,015 units, 64 native/protocol Node cases, 150 generated retained-marker histories and existing
+independent authentication/parser/admission/sync/privacy controls. All 917 source pins agree. Exact
+signed and MACed bytes are unchanged. At a synthetic 1 MiB checkpoint, sequential single-host equality
+median is 684.6 → 46.4 ms and retained JSON is 4,212,050 → 2,113,394 bytes. F-19 remains partial for
+full repeated MAC/parsing, completion duplication and end-to-end maximum-body/concurrency capacity.
+
+The authorized bounded sequence is complete: privacy `67304f3`, diagnostics `8ebccfd`, Local recovery
+`01b3036`, maintenance `70e6d5b`, projection `063cd72`, then the commit containing this marker result.
+The [next bounded phase is release validation](./private-release-validation-prep.md): aggregate coverage,
+F-20/N-06/P-05 scheduling/deadlines, P-06 prose, and explicit platform/workload/claim qualification.
+There is no fresh whole-repository aggregate receipt yet. Personal packages, all 31 prior vectors,
+archived reviews and L-2 are unchanged; no personal services/browser/Account deployment was changed.
+The signing reminder is active for all unsigned descendants of signed `1372c39`.
+
+After acceptable private validation, rehearse author Account cutover and recovery, then enrollment and
+second-device adoption of the first workspace with fresh custody/store/counters/credentials. Broader
+Account lifecycle and public shipping keep their Stage 4/5 and independent review gates.

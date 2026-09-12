@@ -285,8 +285,82 @@ export const signPromotion = async (
       await subtle.sign('HMAC', await macKey(root, r, subtle), promotionPayload(r)),
     ),
   });
-export const equalPromotion = (a: PromotionRecord, b: PromotionRecord) =>
-  hex(a.mac) === hex(b.mac) && hex(promotionPayload(a)) === hex(promotionPayload(b));
+const sameBytes = (a: Bytes, b: Bytes): boolean =>
+  a.length === b.length && a.every((v, i) => v === b[i]);
+export const equalPromotion = (a: PromotionRecord, b: PromotionRecord) => {
+  if (!sameBytes(a.mac, b.mac)) return false;
+  const aa = promotionPayload(a);
+  let bb: Bytes | undefined;
+  try {
+    bb = promotionPayload(b);
+    return sameBytes(aa, bb);
+  } finally {
+    aa.fill(0);
+    bb?.fill(0);
+  }
+};
+/** Retained encoding v1 stores one candidate. The signature reference is a locator, never authority.
+ * Expand it before all existing parsing, MAC, request, receipt and semantic checks. */
+export const storePromotion = (input: PromotionRecord): unknown => {
+  const r = parsePromotion(input);
+  if (r.v < 3) return r;
+  const admission = r.admission!,
+    request = admission.request;
+  if (JSON.stringify(r.genesis) !== JSON.stringify(request.candidate))
+    throw Error('Retained admission candidate differs from genesis');
+  return {
+    ...r,
+    retainedEncoding: 1,
+    admission: {
+      ...admission,
+      request: {
+        ...request,
+        candidate: { v: 1, kind: 'genesis-reference', signature: r.genesis!.signature },
+      },
+    },
+  };
+};
+const storedFields = (input: unknown, keys: string[]) => {
+  if (
+    !input ||
+    typeof input !== 'object' ||
+    Object.getPrototypeOf(input) !== Object.prototype ||
+    Reflect.ownKeys(input).some(
+      (k) => typeof k !== 'string' || !('value' in Object.getOwnPropertyDescriptor(input, k)!),
+    )
+  )
+    throw Error('Malformed retained promotion data');
+  return closed(input, keys);
+};
+export const parseStoredPromotion = (input: unknown): PromotionRecord => {
+  if (!input || typeof input !== 'object' || !Object.hasOwn(input, 'retainedEncoding'))
+    return parsePromotion(input);
+  const outer = storedFields(input, Object.keys(input));
+  if (outer['retainedEncoding'] !== 1) throw Error('Unsupported retained promotion encoding');
+  const r = { ...outer };
+  delete r['retainedEncoding'];
+  const admission = storedFields(r['admission'], ['request', 'offer', 'completion', 'receipt']);
+  const request = storedFields(admission['request'], [
+    'v',
+    'candidate',
+    'certification',
+    'recovery',
+    'originSignature',
+  ]);
+  const reference = storedFields(request['candidate'], ['v', 'kind', 'signature']);
+  const genesis = parseGenesis(r['genesis']);
+  if (
+    reference['v'] !== 1 ||
+    reference['kind'] !== 'genesis-reference' ||
+    reference['signature'] !== genesis.signature
+  )
+    throw Error('Invalid retained genesis reference');
+  return parsePromotion({
+    ...r,
+    genesis,
+    admission: { ...admission, request: { ...request, candidate: genesis } },
+  });
+};
 /** Internal key scope. All production callers erase their raw buffers before this task settles. */
 export async function withPromotionRoot<T>(
   task: SessionTask,
@@ -320,7 +394,7 @@ export async function readPromotion(task: SessionTask, slotId: string, code: str
   matchLocalCustody(claim, record);
   if (record.state !== 'protected') throw Error('Promotion needs protected custody');
   const retained = rows.find((r) => indexedDB.cmp(r.key, storageUpgradeKey(slotId)) === 0);
-  const marker = retained ? parsePromotion(retained.value) : null;
+  const marker = retained ? parseStoredPromotion(retained.value) : null;
   await withPromotionRoot(task, claim, record, code, async (root, subtle) => {
     if (!marker) return;
     if (
@@ -371,6 +445,7 @@ export async function writePromotion(
   expected: PromotionRecord | null,
   marker: PromotionRecord | null,
 ) {
+  const stored = marker ? task.step(() => storePromotion(marker)) : null;
   const found = await probeDatabase(task, 'done.custody', (db) =>
     contentTransaction(
       db,
@@ -397,12 +472,12 @@ export async function writePromotion(
                 hex(currentClaim.mac) !== hex(claim.mac) ||
                 !recordEqual(current, old) ||
                 (expected
-                  ? !cursor || !equalPromotion(parsePromotion(cursor.value), expected)
+                  ? !cursor || !equalPromotion(parseStoredPromotion(cursor.value), expected)
                   : !!cursor)
               )
                 throw Error('Promotion compare changed');
               if (!recordEqual(old, next)) store.put(next, recordKey(claimScope(claim)));
-              if (marker) store.put(marker, storageUpgradeKey(old.slot_id));
+              if (stored) store.put(stored, storageUpgradeKey(old.slot_id));
               else store.delete(storageUpgradeKey(old.slot_id));
             });
       },

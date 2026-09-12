@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { mkdirSync, readdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
 import { join, resolve } from 'node:path';
 const phase = process.argv[2] ?? 'privacy';
-if (!['privacy', 'failures', 'recovery', 'maintenance', 'projection'].includes(phase))
+if (!['privacy', 'failures', 'recovery', 'maintenance', 'projection', 'marker'].includes(phase))
   throw Error('Unknown release phase');
 const output = resolve(
   'test-results/private-release-' + phase,
@@ -44,13 +44,15 @@ write('scope', {
   claim:
     phase === 'privacy'
       ? 'Bounded private Chromium privacy extension; legacy physical residue is separately reported, not a forensic-erasure promise'
-      : phase === 'projection'
-        ? 'Equivalent complete projection comparison and bounded archive memo; single-host descriptive performance only'
-        : phase === 'maintenance'
-          ? 'Owned idle exact-coverage content maintenance; no Account proof pruning or hard disk bound'
-          : phase === 'recovery'
-            ? 'Authenticated read-only partial Local recovery; originals retained, no completeness claim'
-            : 'Private bounded diagnostics and refusal recovery; unsigned hints never authorize a decision',
+      : phase === 'marker'
+        ? 'Versioned retained candidate reference with exact original signed and MACed bytes; resource reduction, not service capacity qualification'
+        : phase === 'projection'
+          ? 'Equivalent complete projection comparison and bounded archive memo; single-host descriptive performance only'
+          : phase === 'maintenance'
+            ? 'Owned idle exact-coverage content maintenance; no Account proof pruning or hard disk bound'
+            : phase === 'recovery'
+              ? 'Authenticated read-only partial Local recovery; originals retained, no completeness claim'
+              : 'Private bounded diagnostics and refusal recovery; unsigned hints never authorize a decision',
 });
 
 const summary = {
@@ -170,6 +172,55 @@ try {
     assert.equal(read('packaged', 'fresh-worker-control').detected, true);
     assert.equal(read('packaged', 'migration-outcome').logical, 'passed');
     assert.equal(read('service-files', 'service-files').verdict, 'complete-no-prohibited-match');
+  } else if (phase === 'marker') {
+    await run('types', ['node_modules/typescript/bin/tsc', '-b', '--noEmit']);
+    await run('unit', ['node_modules/vitest/vitest.mjs', 'run'], 120000);
+    await run('codec', ['--test', 'test/storage-capacity/marker.test.mjs']);
+    await run('native', ['--test', 'test/storage-capacity/marker-native.test.mjs'], 120000);
+    await run(
+      'promotion-contract',
+      ['--test', 'test/account-promotion-contract/formats.test.mjs'],
+      120000,
+    );
+    await run(
+      'parsers',
+      [
+        '--test',
+        '--test-concurrency=1',
+        'test/account-parser-conformance/baseline.test.mjs',
+        'test/account-parser-conformance/objects.test.mjs',
+        'test/account-parser-conformance/controls.test.mjs',
+        'test/account-parser-conformance/native.test.mjs',
+        'test/account-parser-conformance/wires.test.mjs',
+        'test/account-parser-conformance/submission.test.mjs',
+      ],
+      240000,
+    );
+    await run(
+      'admission-bounds',
+      ['--test', 'test/account-admission-bounds/native.test.mjs'],
+      180000,
+    );
+    await run('refusals', ['--test', 'test/account-failures/native.test.mjs'], 120000);
+    await run('sync', ['--test', 'test/account-sync/native.test.mjs'], 180000);
+    await run('privacy', ['--test', 'test/account-residue/lifecycle.test.mjs'], 180000);
+    await run('profile-before', [
+      'scripts/private-release/profile-marker.mjs',
+      join(output, 'profile-before/result.json'),
+      '063cd72',
+    ]);
+    await run('profile-after', [
+      'scripts/private-release/profile-marker.mjs',
+      join(output, 'profile-after/result.json'),
+    ]);
+    const paths = [
+      'src/crdt/promotionRecord.ts',
+      'test/account-promotion/browser.ts',
+      'test/storage-capacity',
+      'scripts/private-release',
+    ];
+    await run('lint', ['node_modules/oxlint/bin/oxlint', '--react-plugin', ...paths]);
+    await run('format', ['node_modules/oxfmt/bin/oxfmt', '--check', ...paths]);
   } else if (phase === 'projection') {
     await run('types', ['node_modules/typescript/bin/tsc', '-b', '--noEmit']);
     await run('unit', ['node_modules/vitest/vitest.mjs', 'run'], 120000);

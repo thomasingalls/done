@@ -48,8 +48,9 @@ These IDs belong to the implementation review and must not be inserted into the 
    Consolidate repeated work without dropping standalone prerequisites or source-bound evidence.
 5. **P-06** is a small docs follow-up. **F-08/N-04 and N-09** are disposed by the user’s explicit
    decision not to ship or support the intermediate Account v8 product paths (2026-09-12).
-   **F-16/F-17/F-18/F-19/F-25** remain measured
-   maintenance/resource work; content compaction is not Account proof-ledger pruning. **F-22** remains
+   **F-16** now has an owned automatic scheduler. **F-17/F-19** have measured equivalent reductions;
+   large-history/device/full-admission capacity remains partial. **F-18/F-25** remain separate measured
+   scan/capsule work; content compaction is not Account proof-ledger pruning. **F-22** remains
    a dependency-upgrade obligation. No upstream report, push, remote deployment or platform work is
    authorized by this intake.
 
@@ -102,7 +103,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-16"></a>**F-16** Content compaction scheduling | bounded scheduler complete; pending/proof/large-state limits retained; [assessment](./96a2040-1ceb88d.md#assessment-f-16) | medium storage/usability | —; [src/crdt/accountReceive.ts:551](../../../src/crdt/accountReceive.ts) |
 | <a id="f-17"></a>**F-17** Editor projection and fork cost | partial; equivalent full-byte fast path and bounded archive memo complete, large-history/device capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-17) | medium, potentially high with large documents | —; [src/crdt/admittedWorkspace.ts](../../../src/crdt/admittedWorkspace.ts) |
 | <a id="f-18"></a>**F-18** Origin-wide journal scans | open; measure before repair; [assessment](./96a2040-1ceb88d.md#assessment-f-18) | low | —; [src/crdt/journalStore.ts](../../../src/crdt/journalStore.ts) |
-| <a id="f-19"></a>**F-19** Promotion marker and request resource cost | open; [assessment](./96a2040-1ceb88d.md#assessment-f-19) | medium capacity/operations | —; [src/crdt/promotionRecord.ts](../../../src/crdt/promotionRecord.ts) |
+| <a id="f-19"></a>**F-19** Promotion marker and request resource cost | partial; retained encoding/direct byte comparison complete, full admission/open capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-19) | medium capacity/operations | —; [src/crdt/promotionRecord.ts](../../../src/crdt/promotionRecord.ts) |
 | <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | partial; wider load/aggregate work open; [assessment](./96a2040-1ceb88d.md#assessment-f-20) | low-medium validation reliability | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
 | <a id="f-21.1"></a>**F-21.1** Remaining parser conformance | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.1) | medium assurance | —; [docs/review/implementation/account-parser-conformance.md](../../../docs/review/implementation/account-parser-conformance.md) |
 | <a id="f-21.2"></a>**F-21.2** Admission coverage and exact bounds | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.2) | medium-high assurance | —; [docs/review/implementation/account-admission-evidence.md](../../../docs/review/implementation/account-admission-evidence.md) |
@@ -193,3 +194,6 @@ Stage 0 gate debt was changed. The review intake remains unstaged/uncommitted.
 - [F-16: automatic maintenance evidence](../../account-conformance-runs/2026-09-12-content-maintenance/README.md).
 
 - [F-17: measured equivalent projection evidence](../../account-conformance-runs/2026-09-12-editor-projection/README.md).
+
+- [F-19: retained marker encoding and profile evidence](../../account-conformance-runs/2026-09-12-retained-marker/README.md).
+- [Next bounded phase: release-validation prep](../../private-release-validation-prep.md).
