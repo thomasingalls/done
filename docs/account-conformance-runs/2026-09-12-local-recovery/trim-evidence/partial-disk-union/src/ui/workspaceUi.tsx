@@ -1,0 +1,198 @@
+/** Read projections and admitted commands for the application. No Y.Doc or legacy Store crosses this port. */
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import type { Extension } from '@codemirror/state';
+import { createAdmittedEditor } from '../editor/admittedEditor';
+import { masterLineSelection } from '../editor/masterLineSelection';
+import type {
+  AdmittedWorkspace,
+  TextTarget,
+  WorkspaceCommand,
+  WorkspaceSnapshot,
+} from '../crdt/admittedWorkspace';
+
+export interface WorkspaceUi {
+  workspace: AdmittedWorkspace;
+  snapshot: WorkspaceSnapshot;
+  actorId: string;
+  status: AdmittedWorkspace['status'];
+  error: string;
+  storage: string;
+  execute(command: WorkspaceCommand): Promise<unknown>;
+  removeMasterLines(lines: readonly number[]): void;
+  mountEditor(
+    parent: HTMLElement,
+    target: TextTarget,
+    extra?: readonly Extension[],
+    placeholder?: string,
+  ): ReturnType<typeof createAdmittedEditor>;
+  lock(): void;
+}
+const Context = createContext<WorkspaceUi | null>(null);
+export const useWorkspaceUi = (): WorkspaceUi => {
+  const value = useContext(Context);
+  if (!value) throw Error('The editor needs an owned Local workspace.');
+  return value;
+};
+
+export const WorkspaceUiProvider = ({
+  workspace,
+  actorId,
+  registerEditor,
+  onLock,
+  children,
+}: {
+  workspace: AdmittedWorkspace;
+  actorId: string;
+  registerEditor: (destroy: () => void) => () => void;
+  onLock: () => void;
+  children: React.ReactNode;
+}) => {
+  const [snapshot, setSnapshot] = useState(() => workspace.read());
+  const [status, setStatus] = useState(() => workspace.status);
+  const [error, setError] = useState('');
+  const [storage, setStorage] = useState('Unknown');
+  const firstRevision = useRef(workspace.status.revision);
+  const requestedPersistence = useRef(false);
+  useEffect(() => {
+    let live = true;
+    void navigator.storage
+      ?.persisted?.()
+      .then((value) => {
+        if (live) setStorage(value ? 'Persistent' : 'Best-effort');
+      })
+      .catch(() => {});
+    return () => {
+      live = false;
+    };
+  }, []);
+  useEffect(() => {
+    if (requestedPersistence.current || status.revision <= firstRevision.current) return;
+    requestedPersistence.current = true;
+    void navigator.storage
+      ?.persist?.()
+      .then((value) => setStorage(value ? 'Persistent' : 'Best-effort'))
+      .catch(() => {});
+  }, [status.revision]);
+  useLayoutEffect(() => {
+    const update = () => {
+      try {
+        setSnapshot(workspace.read());
+      } catch {
+        /* Startup owns invalidation and removal. */
+      }
+    };
+    const unsubscribe = workspace.subscribe(update);
+    const stopStatus = workspace.onStatus(setStatus);
+    update();
+    return () => {
+      unsubscribe();
+      stopStatus();
+    };
+  }, [workspace]);
+  const actions = useMemo(
+    () => ({
+      removeMasterLines(lines: readonly number[]) {
+        try {
+          const surface = workspace.text({ kind: 'master' });
+          const selection = masterLineSelection(surface.read().text, lines);
+          if (selection)
+            void surface.input({ name: 'insert', text: '' }, selection).accepted.catch(() => {
+              setError('The selected lines were not removed. Check storage and try again.');
+            });
+        } catch {
+          setError('The selected lines could not be removed. Reopen the workspace and try again.');
+        }
+      },
+      async execute(command: WorkspaceCommand) {
+        try {
+          setError('');
+          const result = await workspace.command(command).accepted;
+          if (result.value === false || result.value === null) {
+            setError(
+              'That action could not be applied. Check the destination and whether the day is frozen.',
+            );
+          }
+          return result.value;
+        } catch {
+          setError('That action was not saved. Check storage and try again.');
+          return false;
+        }
+      },
+      mountEditor(
+        parent: HTMLElement,
+        target: TextTarget,
+        extra: readonly Extension[] = [],
+        placeholder?: string,
+      ) {
+        const handle = createAdmittedEditor({
+          parent,
+          document: workspace.text(target),
+          extra,
+          surface: target.kind === 'card' ? 'card' : 'document',
+          ...(placeholder === undefined ? {} : { placeholder }),
+        });
+        let destroyed = false;
+        let unregister = () => {};
+        const destroy = () => {
+          if (destroyed) return;
+          destroyed = true;
+          unregister();
+          try {
+            handle.destroy();
+          } finally {
+            parent.replaceChildren();
+          }
+        };
+        unregister = registerEditor(destroy);
+        return { view: handle.view, destroy };
+      },
+    }),
+    [workspace, registerEditor],
+  );
+  const blocked = status.state === 'blocked';
+  const retry = () => {
+    try {
+      workspace.retry();
+      setError('');
+    } catch {
+      setError('Storage is still unavailable.');
+    }
+  };
+  const discard = () => {
+    try {
+      workspace.discardPending();
+      setError('');
+    } catch {
+      setError('Wait for the current storage operation before discarding.');
+    }
+  };
+  return (
+    <Context
+      value={{ workspace, snapshot, actorId, status, error, storage, ...actions, lock: onLock }}
+    >
+      {children}
+      {(blocked || error || status.pendingItems > 0) && (
+        <aside className="workspace-status" role="status">
+          <span>
+            {blocked ? 'Input is waiting for storage.' : error || 'Input is waiting to be saved.'}
+          </span>
+          {blocked && (
+            <>
+              <button onClick={retry}>Retry storage</button>
+              <button onClick={discard}>Discard pending input</button>
+            </>
+          )}
+          {error && !blocked && <button onClick={() => setError('')}>Dismiss</button>}
+        </aside>
+      )}
+    </Context>
+  );
+};

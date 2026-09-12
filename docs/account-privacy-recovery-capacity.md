@@ -87,3 +87,31 @@ F-09 follows as a separate read-only recovery boundary. It must require authenti
 exclude Account/unfinished-clear/unsupported-format state, preserve original carriers, label every
 salvage result partial, and preserve readable journal work as well as database records. Damaged or
 missing custody can still require external recovery files; diagnostics cannot reconstruct missing keys.
+
+## Read-only recovery trial, specified before execution
+
+Offer explicit partial Local ZIP salvage only after a refused open, with a valid factor and authenticated
+ready Local claim/custody. Never reserve counters, seal records, clear, repair or promote. Independently
+open retained content and journal records; skip unreadable records and report pending dependencies.
+Every result is incomplete by definition. Account, unsupported formats and absent custody refuse.
+Resource limits are 4,096 records and 16 MiB per census/decoded union, with a 60-second cooperative
+cancellation deadline; native operations still drain before releasing exclusion. These are salvage
+budgets, not new normal-store protocol maxima.
+
+The paired oracle is an independent input ledger plus exact logical storage before/after. Thirty
+seeded damage/journal histories vary missing bases and dependent edits. A packaged Chromium test
+must demonstrate ordinary open refusal, cancellation while waiting on another owner, actual UI ZIP
+download, independent Python ZIP decoding, unchanged original carriers and no persistent plaintext
+sentinel after export. Retain any failed campaign and freeze source pins. Existing custody/trim and
+packaged migration/privacy regressions cover shared code. This does not establish Account recovery,
+key-loss recovery, arbitrary historic schema interpretation or whole-profile forensic cleanliness.
+
+## Recovery result — 2026-09-12
+
+The [eight-stage recovery campaign](./account-conformance-runs/2026-09-12-local-recovery/README.md)
+passes 1,007 units, 30 generated damage/journal histories, actual packaged refusal/cancellation/export,
+custody/trim fault controls and packaged migration/privacy regressions, with 909 source pins unchanged.
+F-09's missing Local salvage path is repaired within the authenticated current-format scope above.
+Account, missing custody and unsupported-schema recovery remain explicit later work. Every export
+stays partial; retaining originals is mandatory. Next is owned compaction and measured projection and
+promotion-marker resource work, without weakening correctness guards.

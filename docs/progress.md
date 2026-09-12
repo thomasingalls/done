@@ -43,7 +43,7 @@ that is no longer active.
 ---
 
 
-## Active slice: Failure diagnostics and read-only recovery (`L-1`)
+## Active slice: Storage and responsiveness (`L-1`)
 
 ```yaml
 gate: L-1
@@ -69,16 +69,15 @@ evidence. Logical cleanup passes; a legacy writing sentinel remains in physical 
 F-21.4 remains partial for supported-platform/C13 opener/opaque-format/fragmentation qualification.
 No forensic-erasure claim follows from a logical clean scan. No production code changed in this phase.
 
-**Now.** F-10/N-08/P-07 diagnostics are complete in the commit containing this checkpoint.
-The [ten-stage campaign](./account-conformance-runs/2026-09-12-failure-diagnostics/README.md) passes
-1,003 unit tests and 72 Node cases, including actual hint delivery, three-stage admission retry,
-activation, commit, transport and privacy controls. The bounded buffers store fixed redacted classes
-in memory, and unsigned hints never grant protocol authority.
+**Now.** F-10/N-08/P-07 diagnostics are committed as `8ebccfd`. F-09 current-format Local salvage
+is complete in the commit containing this checkpoint. The [eight-stage campaign](./account-conformance-runs/2026-09-12-local-recovery/README.md)
+passes 1,007 unit tests, 30 generated damage/journal histories, packaged UI refusal/cancellation/export,
+custody/trim controls and packaged migration/privacy regressions. Original carriers remain unchanged;
+every ZIP is partial. Account, custody-loss and unsupported-schema recovery remain separate.
 
-Continue F-09 read-only Local recovery with authenticated custody, journal-inclusive partial export,
-no source mutation, no silent reset and no claim of complete recovery. Then complete the authorized
-F-16/F-17/F-19 maintenance/projection/resource work. Give a chat summary and unsigned commit at each
-verified boundary without another approval. The signing reminder remains active.
+Continue the authorized F-16/F-17/F-19 work: owned automatic exact-coverage content compaction,
+measured editor projection/fork cost and retained marker resources. Keep every correctness guard.
+Give a chat summary and unsigned commit at each verified boundary. The signing reminder stays active.
 
 **After these categories.** Aggregate release validation F-20/N-06/P-05 and P-06 prose, with explicit
 supported-platform and formal review gates. Private Account cutover and second-device adoption remain

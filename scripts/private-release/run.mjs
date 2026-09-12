@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { mkdirSync, readdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
 import { join, resolve } from 'node:path';
 const phase = process.argv[2] ?? 'privacy';
-if (!['privacy', 'failures'].includes(phase)) throw Error('Unknown release phase');
+if (!['privacy', 'failures', 'recovery'].includes(phase)) throw Error('Unknown release phase');
 const output = resolve(
   'test-results/private-release-' + phase,
   new Date().toISOString().replaceAll(':', '-'),
@@ -43,7 +43,9 @@ write('scope', {
   claim:
     phase === 'privacy'
       ? 'Bounded private Chromium privacy extension; legacy physical residue is separately reported, not a forensic-erasure promise'
-      : 'Private bounded diagnostics and refusal recovery; unsigned hints never authorize a decision',
+      : phase === 'recovery'
+        ? 'Authenticated read-only partial Local recovery; originals retained, no completeness claim'
+        : 'Private bounded diagnostics and refusal recovery; unsigned hints never authorize a decision',
 });
 
 const summary = {
@@ -54,7 +56,7 @@ const summary = {
 };
 const save = () => write('summary', summary);
 save();
-console.log('Private release ' + phase + '' + output);
+console.log('Private release ' + phase + ': ' + output);
 async function run(name, args, timeout = 60000) {
   const dir = join(output, name);
   mkdirSync(dir, { recursive: true });
@@ -163,6 +165,28 @@ try {
     assert.equal(read('packaged', 'fresh-worker-control').detected, true);
     assert.equal(read('packaged', 'migration-outcome').logical, 'passed');
     assert.equal(read('service-files', 'service-files').verdict, 'complete-no-prohibited-match');
+  } else if (phase === 'recovery') {
+    await run('types', ['node_modules/typescript/bin/tsc', '-b', '--noEmit']);
+    await run('unit', ['node_modules/vitest/vitest.mjs', 'run'], 120000);
+    await run('native', ['--test', 'test/local-recovery/native.test.mjs'], 120000);
+    await run('custody', ['scripts/custody/run.mjs'], 180000);
+    await run('trim', ['scripts/content-trim/run.mjs'], 180000);
+    await run(
+      'packaged',
+      ['--test', '--test-concurrency=1', 'test/account-residue/packaged.test.mjs'],
+      240000,
+    );
+    const paths = [
+      'src/crdt/localRecovery.ts',
+      'src/crdt/custody.ts',
+      'src/ui/LocalRecovery.tsx',
+      'src/ui/LocalApp.tsx',
+      'test/localRecovery.test.ts',
+      'test/local-recovery',
+      'scripts/private-release',
+    ];
+    await run('lint', ['node_modules/oxlint/bin/oxlint', '--react-plugin', ...paths]);
+    await run('format', ['node_modules/oxfmt/bin/oxfmt', '--check', ...paths]);
   } else {
     await run('types', ['node_modules/typescript/bin/tsc', '-b', '--noEmit']);
     await run('unit', ['node_modules/vitest/vitest.mjs', 'run'], 120000);

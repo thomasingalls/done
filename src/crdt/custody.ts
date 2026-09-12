@@ -8,7 +8,12 @@ import { assertNoPreactiveImport } from './legacyImportState';
 import { validateContentUpdates, type ContentCompactionReceipt } from './contentCompaction';
 export type { ContentCompactionReceipt } from './contentCompaction';
 import { deriveStoreName } from './storeName';
-import { deriveJournalKey, type JournalError } from './journalCodec';
+import {
+  deriveJournalKey,
+  createJournalCodec,
+  journalPrefix,
+  type JournalError,
+} from './journalCodec';
 import {
   createJournalOwner,
   eraseJournalSnapshot,
@@ -590,6 +595,7 @@ const prepareCustody = (
   validateRecords?: ContentCrypto['validate'],
   allowSpoolCounter?: true,
   reuseOpened?: true,
+  recoveryJournal = false,
 ) => {
   const authority = captureAuthority(input),
     factor = codeBytes(code);
@@ -598,6 +604,8 @@ const prepareCustody = (
   let scope!: CustodyScope, record!: CustodyRecord;
   let carrier: ReturnType<typeof createContentOwner> | undefined;
   let journal: ReturnType<typeof createJournalOwner> | undefined;
+  let recoveryCodec: ReturnType<typeof createJournalCodec> | undefined;
+  let recoveryPrefix = '';
   const openRecord = (task: SessionTask, inputRecord: StoredRecord): Promise<Bytes> => {
     const value = task.step(() => parseStoredRecord(inputRecord));
     if (value.gen !== 1)
@@ -634,6 +642,16 @@ const prepareCustody = (
       return carrier!;
     },
     openRecord,
+    openRecoveryJournal(task: SessionTask, key: string, value: string): Bytes {
+      return task.step(() => {
+        if (!recoveryCodec || !key.startsWith(recoveryPrefix))
+          throw new CustodyError(
+            'invalid-input',
+            'Recovery journal is outside this custody scope.',
+          );
+        return recoveryCodec.open(key, value).bytes;
+      });
+    },
     initialize: async (task: SessionTask, creation?: ContentCreationOptions) => {
       scope = await resolveScope(task, authority, preactive);
       await task.wait(async () => {
@@ -676,11 +694,18 @@ const prepareCustody = (
           guardedSubtle(() => task.step(() => {})),
         ),
       );
-      await loadKeys(task, scope, record, root!, keys, content, withJournal);
+      await loadKeys(task, scope, record, root!, keys, content, withJournal || recoveryJournal);
       root!.fill(0);
       root = undefined;
       db!.close();
       db = undefined;
+
+      if (recoveryJournal) {
+        recoveryPrefix = journalPrefix(
+          await task.wait(() => deriveStoreName(scope.principalId, scope.workspaceId)),
+        );
+        recoveryCodec = task.step(() => createJournalCodec(scope.workspaceId, 1, keys.journal!));
+      }
 
       if (content) {
         carrier = createContentOwner(
@@ -742,8 +767,47 @@ const prepareCustody = (
       db = undefined;
       carrier?.dispose();
       journal?.dispose();
+      recoveryCodec?.dispose();
     },
   };
+};
+
+/** Read-only salvage primitive. Caller owns exclusion and must authenticate its Local claim first.
+ * No content owner, reservation, journal writer, credential export or whole-workspace success result. */
+export const readRecoveryCustody = async <T>(
+  task: SessionTask,
+  authority: CustodyAuthority,
+  code: string,
+  read: (
+    reader: CustodyDescriptor & {
+      openRecord(record: StoredRecord): Promise<Bytes>;
+      openJournal(key: string, value: string): Bytes;
+    },
+  ) => Promise<T>,
+): Promise<T> => {
+  const owner = prepareCustody(
+    authority,
+    code,
+    false,
+    false,
+    false,
+    undefined,
+    undefined,
+    undefined,
+    true,
+  );
+  try {
+    await owner.initialize(task);
+    return await task.wait(() =>
+      read({
+        ...owner.describe(),
+        openRecord: (record) => owner.openRecord(task, record),
+        openJournal: (key, value) => owner.openRecoveryJournal(task, key, value),
+      }),
+    );
+  } finally {
+    owner.dispose();
+  }
 };
 
 export const openCustodySession = async (

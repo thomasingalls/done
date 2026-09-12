@@ -4,6 +4,7 @@ import type { StartupKind } from '../crdt/startupState';
 import { WorkspaceUiProvider } from './workspaceUi';
 import { App } from './App';
 import { AppUpdateNotice } from './AppUpdateNotice';
+import { LocalRecovery } from './LocalRecovery';
 
 const messages: Record<StartupKind, { title: string; detail: string }> = {
   'app-update-required': {
@@ -206,6 +207,9 @@ export const LocalApp = (): React.ReactElement => {
       <>
         <h1>{message.title}</h1>
         <p>{message.detail}</p>
+        {['repair-required', 'unlock-failed', 'unavailable'].includes(state.kind) && (
+          <LocalRecovery />
+        )}
         {state.kind === 'fresh' ? (
           <button onClick={() => owner?.begin()}>Create Local workspace</button>
         ) : ['unlock-required', 'creation-pending', 'unlock-failed'].includes(state.kind) ? (

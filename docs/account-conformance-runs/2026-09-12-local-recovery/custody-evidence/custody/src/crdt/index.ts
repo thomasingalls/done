@@ -1,0 +1,222 @@
+/**
+ * Assembles the local store: document tree, actor, undo, awareness, persistence,
+ * sync, and the one thing the app does to itself on every write — the membership
+ * repair.
+ *
+ * The sync controller is constructed unconditionally and constructs *nothing*
+ * unless an endpoint has been configured (TRD §7.1). Nothing below awaits it,
+ * and nothing below reads its state: the store is the same store whether the
+ * relay is reachable, unreachable, or has never been heard of.
+ */
+
+import {
+  Awareness,
+  createDoc,
+  createUndoManager,
+  type YDoc,
+  type YTransaction,
+  type YUndoManager,
+} from './yjs';
+import { resolveActor, type ActorContext } from './actors';
+import { openTree, readSettings, type DocumentTree, type Settings } from './doc';
+import { repairCardMemberships, transactionAffectsMembership } from './days';
+import { CONTENT_ROOT, STORE_OPEN, STORE_READY, mark } from '../lib/marks';
+import { createSync, type SyncController, type SyncOptions } from './sync';
+import {
+  LEGACY_STORE,
+  openLocalStore,
+  requestPersistenceOnFirstWrite,
+  type LocalStore,
+  type StoragePersistence,
+  type StoreHandle,
+} from './persistence';
+
+export * from './yjs';
+export * from './actors';
+export * from './doc';
+export * from './days';
+export * from './freeze';
+export * from './moves';
+export * from './serialize';
+export * from './compaction';
+export * from './export';
+export * from './persistence';
+export * from './slotIndex';
+export * from './writeSession';
+export * from './custody';
+export * from './admission';
+export * from './sync';
+
+export interface Store extends DocumentTree {
+  actor: ActorContext;
+  awareness: Awareness;
+  /**
+   * Scoped to the local human's origin (TRD §4.8), across every root. Undo
+   * follows the actor rather than the surface: a card move and a line of the
+   * master list are one history because one person made both. System-actor
+   * operations — compaction, the membership repair, bulk moves — are excluded
+   * by construction rather than by remembering to exclude them.
+   */
+  undo: YUndoManager;
+  local: LocalStore | null;
+  /**
+   * Disabled unless an endpoint has been configured, which is the state it is
+   * in for every test in the suite (TRD §11, "sync-absent").
+   */
+  sync: SyncController;
+  settings: Settings;
+  destroy: () => void;
+}
+
+export interface OpenStoreOptions {
+  doc?: YDoc;
+  /**
+   * Which local store to open (TRD §6.5). Omitted means `LEGACY_STORE` — the
+   * one store that exists before the slot index does. That fallback is the
+   * next item of Stage 1 to go: once §6.5's index supplies the handle, a store
+   * opened without one is a bug rather than a default.
+   */
+  store?: StoreHandle;
+  /** Off for tests that have no business touching IndexedDB. */
+  persist?: boolean;
+  onStoragePersistence?: (status: StoragePersistence) => void;
+  onLocalPersistenceError?: (error: Error) => void;
+  /** Injected by tests; the default opens a real websocket when configured. */
+  openWebsocket?: SyncOptions['open'];
+}
+
+/**
+ * Membership, repaired after the fact (TRD §4.2, and see
+ * `repairCardMemberships`).
+ *
+ * A card's identity is spread across three roots — the registry, the canonical
+ * location, and a day's ordered array — and concurrency can leave them
+ * disagreeing in both directions: an array holding an id whose location says
+ * somewhere else, and a located card no array holds. Neither is a mistake
+ * anybody made, and neither can be refused at the write path, so it is repaired
+ * here.
+ *
+ * The three-item cap is **not** among the things repaired. It is a rule about
+ * adding, enforced where adding happens; a Next that grew past three because
+ * two devices filled it while apart is kept as it is (PRD §3).
+ *
+ * Deferred to a microtask rather than run inside the observer, so the repair is
+ * its own transaction with its own (system) origin rather than an addition to
+ * whatever transaction happened to trip it.
+ */
+const watchMemberships = (doc: YDoc, context: ActorContext): (() => void) => {
+  let queued = false;
+
+  const schedule = (): void => {
+    if (queued) return;
+    queued = true;
+    queueMicrotask(() => {
+      queued = false;
+      repairCardMemberships(doc, context.systemOrigin);
+    });
+  };
+
+  const afterTransaction = (transaction: YTransaction): void => {
+    if (transactionAffectsMembership(doc, transaction)) schedule();
+  };
+
+  doc.on('afterTransaction', afterTransaction);
+  return () => {
+    doc.off('afterTransaction', afterTransaction);
+  };
+};
+
+/**
+ * Asynchronous on purpose, for two independent reasons. The second is the one
+ * that would still hold if the first were ever solved another way, so removing
+ * the `await` needs both answered.
+ *
+ * 1. Persisted state must be applied *before* the actor roster and `meta` are
+ *    initialised, or every reload would re-register the local actor against a
+ *    document that already knows it and overwrite the stored name and colour
+ *    with fresh defaults.
+ * 2. **No transport may be constructed until the disk read has landed**
+ *    (TRD §6.1). An empty Yjs document does not erase a populated peer when
+ *    merged. The ordering protects recovery classification and initialization:
+ *    transport must not expose a document before local recovery has succeeded.
+ *    Asserted in `test/sync.test.ts`, "load before connect".
+ */
+export const openStore = async (options: OpenStoreOptions = {}): Promise<Store> => {
+  mark(STORE_OPEN);
+  const doc = options.doc ?? createDoc();
+
+  const local =
+    options.persist === false
+      ? null
+      : openLocalStore(
+          doc,
+          options.store ?? LEGACY_STORE,
+          options.onLocalPersistenceError
+            ? { onPersistenceError: options.onLocalPersistenceError }
+            : {},
+        );
+  if (local) {
+    await local.whenSynced;
+    // Only when there is a store to read. With `persist: false` there is no
+    // content root to load, and marking it anyway would report a zero that
+    // looks like a very fast read (TRD §12).
+    mark(CONTENT_ROOT);
+  }
+
+  const actor = resolveActor(doc, doc.getMap('meta'));
+  const tree = openTree(doc, actor.systemOrigin);
+  repairCardMemberships(doc, actor.systemOrigin);
+
+  const awareness = new Awareness(doc);
+  awareness.setLocalStateField('user', {
+    name: actor.actor.name,
+    color: actor.actor.color,
+    colorLight: `${actor.actor.color}33`,
+  });
+  // Ephemeral, like everything in awareness, which is what lets a device
+  // announce itself without its identity entering the synced document
+  // (TRD §4.8). It is what the other end reads for "last synced from ⟨device⟩".
+  awareness.setLocalStateField('device', { id: actor.device.id, name: actor.device.name });
+
+  const undo = createUndoManager(
+    [
+      tree.master,
+      tree.days,
+      tree.cards as unknown as typeof tree.days,
+      tree.cardLocations as unknown as typeof tree.days,
+    ],
+    new Set([actor.origin]),
+  );
+
+  const stopWatchingMemberships = watchMemberships(doc, actor);
+  const stopPersistenceRequest = options.onStoragePersistence
+    ? requestPersistenceOnFirstWrite(doc, actor.origin, options.onStoragePersistence)
+    : () => {};
+
+  const sync = createSync({
+    doc,
+    awareness,
+    ...(options.openWebsocket ? { open: options.openWebsocket } : {}),
+  });
+
+  mark(STORE_READY);
+
+  return {
+    ...tree,
+    actor,
+    awareness,
+    undo,
+    local,
+    sync,
+    settings: readSettings(tree.meta),
+    destroy: () => {
+      stopWatchingMemberships();
+      stopPersistenceRequest();
+      sync.destroy();
+      undo.destroy();
+      awareness.destroy();
+      local?.destroy();
+      doc.destroy();
+    },
+  };
+};

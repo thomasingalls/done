@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "report": {
+    "kind": "partial-local-recovery",
+    "complete": false,
+    "authenticatedRecords": 2,
+    "unreadableRecords": 1,
+    "ignoredRecords": 0,
+    "pendingDependencies": false,
+    "missingDatabase": false,
+    "recoveredFiles": 1
+  },
+  "carriersUnchanged": true,
+  "independentZip": true
+}

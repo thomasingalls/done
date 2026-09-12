@@ -39,10 +39,10 @@ These IDs belong to the implementation review and must not be inserted into the 
    UI/worker/export, synthetic migration/restart/cleanup/clear and observable profile/SQL/WAL bytes.
    Logical cleanup passes; legacy plaintext remains in a physical LevelDB file. Supported-platform
    opener tests, opaque formats and fragmentation remain. Do not close the wider finding.
-3. **F-10/N-08/P-07 bounded diagnostics complete; F-09 recovery next.** Typed unsigned hints
+3. **F-10/N-08/P-07 diagnostics and bounded F-09 Local recovery complete.** Typed unsigned hints
    preserve reasons and resumable progress without receipt/decision authority. Fixed memory-only
    operation/phase/code buffers omit sensitive values. [Evidence](../../account-conformance-runs/2026-09-12-failure-diagnostics/README.md).
-   F-09 still needs read-only recovery; F-13/F-14/F-23/F-24 retain their separate scope.
+   F-09 now has authenticated partial Local ZIP salvage; Account/custody-loss recovery remains; F-13/F-14/F-23/F-24 retain their separate scope.
 4. **F-20 with N-06/P-05:** make validation scheduling, time budgets and complete aggregate coverage
    explicit. Keep the existing crypto audit's narrower success; do not imply a recent full `pnpm check`.
    Consolidate repeated work without dropping standalone prerequisites or source-bound evidence.
@@ -92,7 +92,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-06"></a>**F-06** Recovery payload vectors | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-06) | medium-high interoperability | —; [docs/review/implementation/account-crypto-closure.md](../../../docs/review/implementation/account-crypto-closure.md) |
 | <a id="f-07"></a>**F-07** Repeated full-history verification | repaired within bounded v9 scope; [evidence](../../account-sync-liveness-repairs.md); [assessment](./96a2040-1ceb88d.md#assessment-f-07) | high Account liveness | [N-01](#n-01), [N-02](#n-02), [P-01](#p-01); [src/crdt/accountReceive.ts:104](../../../src/crdt/accountReceive.ts) |
 | <a id="f-08"></a>**F-08** Source-free reopen capsules | product disposition: v8 retired; internal setup retained; [assessment](./96a2040-1ceb88d.md#assessment-f-08) | low waste/latency | [N-04](#n-04); [src/crdt/accountReceive.ts:489](../../../src/crdt/accountReceive.ts) |
-| <a id="f-09"></a>**F-09** Fail-closed diagnostics and salvage | open; [assessment](./96a2040-1ceb88d.md#assessment-f-09) | medium recoverability | —; [docs/storage-contract.md](../../../docs/storage-contract.md) |
+| <a id="f-09"></a>**F-09** Fail-closed diagnostics and salvage | partial; current-format Local salvage complete, Account/key-loss scope remains; [assessment](./96a2040-1ceb88d.md#assessment-f-09) | medium recoverability | —; [docs/storage-contract.md](../../../docs/storage-contract.md) |
 | <a id="f-10"></a>**F-10** Service and client error classification | closed in bounded private composition; [evidence](../../account-conformance-runs/2026-09-12-failure-diagnostics/README.md); [assessment](./96a2040-1ceb88d.md#assessment-f-10) | medium operations; low direct security impact | [N-08](#n-08), [P-07](#p-07); [account-service/delivery.ts:608](../../../account-service/delivery.ts) |
 | <a id="f-11"></a>**F-11** Passkey registration binding | closed; original suggested comparison rejected; [assessment](./96a2040-1ceb88d.md#assessment-f-11) | medium authorization correctness | —; [account-service/delivery.ts:147](../../../account-service/delivery.ts) |
 | <a id="f-12"></a>**F-12** Unchecked PKCS#8 slicing | closed; [assessment](./96a2040-1ceb88d.md#assessment-f-12) | low portability/correctness | —; [src/account/recovery.ts:32](../../../src/account/recovery.ts) |
@@ -187,3 +187,5 @@ existing source pins are unchanged; review documentation changes do not retroact
 The two root packets were moved here after annotation. The unrelated root file `done ` is untouched.
 No production code, tests, wire bytes, personal installation, server, factor, origin, routing or formal
 Stage 0 gate debt was changed. The review intake remains unstaged/uncommitted.
+
+- [F-09: authenticated partial Local recovery evidence](../../account-conformance-runs/2026-09-12-local-recovery/README.md).

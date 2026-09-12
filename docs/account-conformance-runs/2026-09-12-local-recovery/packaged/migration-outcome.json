@@ -1,0 +1,35 @@
+{
+  "logical": "passed",
+  "importRestart": true,
+  "postCleanupColdReplay": true,
+  "interruptedClear": true,
+  "physicalVerdict": "prohibited-match",
+  "physicalMatches": [
+    {
+      "surface": "profile",
+      "location": [
+        "Default",
+        "IndexedDB",
+        "http_127.0.0.1_63891.indexeddb.leveldb",
+        "000005.ldb"
+      ],
+      "needle": "source",
+      "representation": "raw/utf8",
+      "offset": 26783
+    },
+    {
+      "surface": "profile",
+      "location": [
+        "Default",
+        "IndexedDB",
+        "http_127.0.0.1_63891.indexeddb.leveldb",
+        "000005.ldb"
+      ],
+      "needle": "source",
+      "representation": "raw/json-escaped",
+      "offset": 26783
+    }
+  ],
+  "physicalIssues": [],
+  "meaning": "Legacy plaintext may remain in physical browser files after logical deletion; no forensic-erasure claim."
+}

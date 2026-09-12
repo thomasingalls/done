@@ -1,0 +1,9 @@
+{
+  "baseline": "8ebccfd7edf5e2a1c73068c7afa052c872114123",
+  "phase": "recovery",
+  "node": "v26.8.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "protocol": "docs/account-privacy-recovery-capacity.md",
+  "claim": "Authenticated read-only partial Local recovery; originals retained, no completeness claim"
+}

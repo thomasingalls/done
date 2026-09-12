@@ -1,0 +1,78 @@
+{
+  "diagnostics": [
+    {
+      "type": "log",
+      "text": "%c[yjs] %cChanged the client-id because another client seems to be using it. color:orange;font-weight:bold; color:red;font-weight:normal;",
+      "values": [
+        [
+          {
+            "location": [],
+            "raw": "JWNbeWpzXSAlY0NoYW5nZWQgdGhlIGNsaWVudC1pZCBiZWNhdXNlIGFub3RoZXIgY2xpZW50IHNlZW1zIHRvIGJlIHVzaW5nIGl0Lg=="
+          }
+        ],
+        [
+          {
+            "location": [],
+            "raw": "Y29sb3I6b3JhbmdlO2ZvbnQtd2VpZ2h0OmJvbGQ7"
+          }
+        ],
+        [
+          {
+            "location": [],
+            "raw": "Y29sb3I6cmVkO2ZvbnQtd2VpZ2h0Om5vcm1hbDs="
+          }
+        ]
+      ]
+    },
+    {
+      "type": "log",
+      "text": "%c[yjs] %cChanged the client-id because another client seems to be using it. color:orange;font-weight:bold; color:red;font-weight:normal;",
+      "values": [
+        [
+          {
+            "location": [],
+            "raw": "JWNbeWpzXSAlY0NoYW5nZWQgdGhlIGNsaWVudC1pZCBiZWNhdXNlIGFub3RoZXIgY2xpZW50IHNlZW1zIHRvIGJlIHVzaW5nIGl0Lg=="
+          }
+        ],
+        [
+          {
+            "location": [],
+            "raw": "Y29sb3I6b3JhbmdlO2ZvbnQtd2VpZ2h0OmJvbGQ7"
+          }
+        ],
+        [
+          {
+            "location": [],
+            "raw": "Y29sb3I6cmVkO2ZvbnQtd2VpZ2h0Om5vcm1hbDs="
+          }
+        ]
+      ]
+    },
+    {
+      "type": "log",
+      "text": "{unexpected: residue_worker-console_雪_2413724b99157a251cb555ebf6c9effa}",
+      "values": [
+        [
+          {
+            "location": [
+              "key",
+              "unexpected"
+            ],
+            "raw": "dW5leHBlY3RlZA=="
+          },
+          {
+            "location": [
+              "unexpected"
+            ],
+            "raw": "cmVzaWR1ZV93b3JrZXItY29uc29sZV/pm6pfMjQxMzcyNGI5OTE1N2EyNTFjYjU1NWViZjZjOWVmZmE="
+          }
+        ]
+      ]
+    }
+  ],
+  "errors": [],
+  "workers": [
+    "http://127.0.0.1:63886/sw.js",
+    "http://127.0.0.1:63886/sw.js"
+  ]
+}

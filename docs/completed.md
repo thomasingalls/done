@@ -3352,3 +3352,12 @@ still grant no decision/finality authority. The [ten-stage campaign](./account-c
 passes the full 1,003-test unit suite, 72 Node cases, generated activation/delivery/inbound and 150
 malformed-hint cases, with source pins verified. F-09 read-only recovery follows. Personal files,
 prior vectors, archived reviews and L-2 remain unchanged. Appended before advancing L-1.
+
+## 2026-09-12 — L-1 authenticated read-only partial Local recovery
+
+Following diagnostics `8ebccfd`, F-09 now offers a current-format Local salvage ZIP from refused startup,
+requiring authenticated claim/custody and preserving journal-inclusive original carriers. Every result
+is partial; no repair/reset/nonce allocation occurs. The [eight-stage campaign](./account-conformance-runs/2026-09-12-local-recovery/README.md)
+passes 1,007 units, 30 generated histories, packaged UI export/cancellation, custody/trim controls and
+packaged migration/privacy regressions; 909 source pins agree. Account/custody-loss/unsupported-schema
+recovery remains outside this boundary. Appended before advancing L-1 to storage/responsiveness.
