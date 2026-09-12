@@ -8,7 +8,7 @@ import { installProbe } from './probe.mjs';
 test('every current source anchor is exact; duplicate or missing anchors refuse', () => {
   const hits = {};
   for (const path of Object.keys(targets)) instrument(readFileSync('.' + path, 'utf8'), path, hits);
-  assert.equal(Object.keys(hits).length, 12);
+  assert.equal(Object.keys(hits).length, 13);
   assert(Object.values(hits).every((n) => n === 1));
   assert.throws(() => instrument('', '/src/crdt/contentStore.ts'));
   const code = readFileSync('src/crdt/contentStore.ts', 'utf8');

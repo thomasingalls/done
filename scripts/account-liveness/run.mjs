@@ -34,7 +34,7 @@ write('sources', sources);
 write('scope', {
   baseline: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
   claim:
-    'Mechanism measurements and controlled reproductions in disposable v9 Account; no runtime repair or release-capacity claim',
+    'Combined sync-liveness repair regressions in disposable v9 Account; no release-capacity claim',
   node: process.version,
   platform: process.platform,
   arch: process.arch,
@@ -153,6 +153,7 @@ try {
     'test/verifiedRecords.test.ts',
     'test/verificationMemo.test.ts',
     'test/spoolRecord.test.ts',
+    'test/accountSyncDriver.test.ts',
   ]);
   await run('controlled', ['--test', 'test/account-liveness/controlled.test.mjs'], 200000);
   await run(
@@ -165,11 +166,40 @@ try {
     ],
     300000,
   );
+  await run('service-cache', ['--test', 'test/account-liveness/service-cache.test.mjs']);
+  await run(
+    'service-delivery',
+    [
+      '--test',
+      'test/account-service-delivery/core.test.mjs',
+      'test/account-service-delivery/generated.test.mjs',
+      'test/account-service-delivery/controls.test.mjs',
+      'test/account-service-delivery/restart.test.mjs',
+    ],
+    180000,
+  );
+  await run(
+    'service-inbound',
+    [
+      '--test',
+      'test/account-service-inbound/core.test.mjs',
+      'test/account-service-inbound/generated.test.mjs',
+      'test/account-service-inbound/controls.test.mjs',
+      'test/account-service-inbound/restart.test.mjs',
+    ],
+    240000,
+  );
   await run('view', ['--test', 'test/account-liveness/view.test.mjs'], 180000);
   await run('growth', ['--test', 'test/account-liveness/native.test.mjs'], 930000);
   await run('lint', [
     'node_modules/oxlint/bin/oxlint',
     '--react-plugin',
+    'src/crdt/accountReceive.ts',
+    'src/crdt/accountSyncDriver.ts',
+    'account-service/core.ts',
+    'account-service/delivery.ts',
+    'account-service/deliveryVerification.ts',
+    'test/accountSyncDriver.test.ts',
     'test/account-liveness',
     'test/accountLiveness.test.ts',
     'scripts/account-liveness',
@@ -177,6 +207,12 @@ try {
   await run('format', [
     'node_modules/oxfmt/bin/oxfmt',
     '--check',
+    'src/crdt/accountReceive.ts',
+    'src/crdt/accountSyncDriver.ts',
+    'account-service/core.ts',
+    'account-service/delivery.ts',
+    'account-service/deliveryVerification.ts',
+    'test/accountSyncDriver.test.ts',
     'test/account-liveness',
     'test/accountLiveness.test.ts',
     'scripts/account-liveness',
@@ -189,6 +225,9 @@ try {
     held = read('controlled', 'held-fetch'),
     generated = read('coverage', 'coverage-histories');
   assert.equal(read('view', 'verified-view').status, 'passed');
+  assert.equal(read('service-cache', 'service-cache').status, 'passed');
+  for (const row of growth.rows.filter((r) => r.name.startsWith('eight-jobs-')))
+    assert.equal(row.client.rows['sync.wake'].size, row.value.localAdmissions);
   assert.equal(growth.status, 'passed');
   assert.equal(growth.history.length, 24);
   assert.equal(growth.controls.length, 6);

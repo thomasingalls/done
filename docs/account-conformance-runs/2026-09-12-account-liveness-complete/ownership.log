@@ -1,0 +1,37 @@
+(node:86745) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86745) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:86745) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual v2 HTTP pages advance owned durable progress without local recapture, including cold end (9235.760167ms)
+✔ HTTP refusal, truncation, overflow, redirect, lost reply and stale signed page advance no cursor (8681.949042ms)
+✔ fetch serializes outstanding reads; a manually superseding request refuses the older response (6692.572625ms)
+✔ remote native commit holds ordered publication and later local input through HTTP (8323.888375ms)
+✔ close aborts and drains pending fetch before another owner acquires (8263.732041ms)
+✔ close aborts and drains pending stream before another owner acquires (8267.352791ms)
+✔ HTTP receive before native commit crash cold-retries from actual durable progress (8763.279042ms)
+✔ HTTP receive after native commit crash cold-retries from actual durable progress (8724.811834ms)
+✔ local journal admission remains responsive during fetch and the eventual page preserves that edit (8363.309833ms)
+✔ effective composed fairness mutation (38.411917ms)
+✔ effective composed overlap mutation (5.140792ms)
+✔ effective composed halt mutation (5.405542ms)
+✔ effective composed resume mutation (4.694584ms)
+✔ effective composed wake mutation (5.060917ms)
+(node:86747) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86747) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:86747) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ one owner sends and reads back actual service bytes, preserves sources through edits, compaction and cold replay (13069.068958ms)
+✔ lost submit answer can be received before delivery resolves; cold retry uses exact bytes without resealing (11988.332917ms)
+✔ native submission abort retains work for cold restart (11502.013542ms)
+✔ native receive abort retains work for cold restart (11625.085792ms)
+✔ close drains a delayed send and prevents queued receive dispatch before releasing the shared permit (8709.703542ms)
+✔ local journal admission during an outbound seal is captured once and sent after readback gets a turn (10168.930334ms)
+✔ retained signed receive conflict halts both lanes without closing valid Local content (10820.6125ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 80013.156333

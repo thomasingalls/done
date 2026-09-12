@@ -123,6 +123,11 @@ test(
       const measured = await sample(f, `eight-jobs-${batch}`, async () => {
         await f.page.evaluate(() => {
           syncTimeline = [];
+          globalThis.localAdmissions = 0;
+          globalThis.detachLocalCounter = editor.outgoing((bytes) => {
+            bytes.fill(0);
+            globalThis.localAdmissions++;
+          });
           setOnline(true);
         });
         for (let n = 1; n <= 8; n++) {
@@ -156,13 +161,23 @@ test(
           console.log('Admitted job ' + job + ': ' + history.at(-1).operation);
         }
         const through = await settle(f, before + 1, false);
-        await f.page.evaluate(() => setOnline(false));
+        const localAdmissions = await f.page.evaluate(() => {
+          detachLocalCounter();
+          setOnline(false);
+          return globalThis.localAdmissions;
+        });
         return {
           through,
+          localAdmissions,
           timeline: await f.page.evaluate(() => syncTimeline),
           scheduler: await f.page.evaluate(() => opened.sync.status),
         };
       });
+      assert.equal(
+        measured.client.rows['sync.wake'].size,
+        measured.value.localAdmissions,
+        'Every send wake belongs to an actual local admission, not a remote promotion',
+      );
       rows.push(measured);
       save();
       console.log('Growing history: ' + (batch + 1) * 8 + ' jobs');

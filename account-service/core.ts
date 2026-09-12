@@ -1,3 +1,4 @@
+import { createDeliveryVerification } from './deliveryVerification.ts';
 import { randomBytes } from 'node:crypto';
 import {
   ACTIVATION_LIFETIME_MS,
@@ -111,6 +112,7 @@ type Hook = (point: 'before-commit' | 'after-commit' | 'after-verify', operation
 /** Private account and first-admission transactions. No plaintext content or relay. */
 export class AccountCore {
   #db: DatabaseSync;
+  #deliveryVerification = createDeliveryVerification();
   #policy: Policy;
   #now: () => number;
   #hook: Hook;
@@ -214,15 +216,16 @@ export class AccountCore {
 
   /** Private service composition; transport cannot supply an issuer or authenticated membership. */
   readAccepted(input: unknown, issuer: ReadIssuer) {
-    return readAccepted(this.#db, input, issuer, this.#hook);
+    return readAccepted(this.#db, input, issuer, this.#hook, this.#deliveryVerification);
   }
   readInbound(input: unknown, issuer: InboundReadIssuer) {
-    return readInbound(this.#db, input, issuer, this.#hook);
+    return readInbound(this.#db, input, issuer, this.#hook, this.#deliveryVerification);
   }
   decideSubmission(input: unknown, issuer: DeliveryIssuer) {
-    return decideSubmission(this.#db, input, issuer, this.#hook);
+    return decideSubmission(this.#db, input, issuer, this.#hook, this.#deliveryVerification);
   }
   close(): void {
+    this.#deliveryVerification.clear();
     this.#db.close();
   }
 

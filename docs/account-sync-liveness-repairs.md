@@ -61,10 +61,42 @@ The [nine-stage campaign](./account-conformance-runs/2026-09-12-account-liveness
 read/submission responses were held; late expiry recovered without manual retry after the refusal.
 Cold replay, exact retry, conflicting evidence, cancellation/stream drain and tamper checks pass.
 
-## Remaining boundaries
+## 4. Scheduler wakes and bounded service verification — complete
 
-4. Wake receive on durable send-prefix progress and avoid remote-only publication wakes, preserving
-   fairness, backoff and offline/closure behavior. Verify the combined workload and service-side costs.
+Network/expiry is unsigned `902d352`. Durable send-prefix progress expedites an idle receiver, retaining
+its backoff and evidence halt. Send wakes subscribe to successful, nonempty local outgoing admissions;
+remote-only promotion no longer wakes send. Lifecycle teardown removes both subscriptions.
 
-The broader residue/platform/Account-release work remains outside this sequence. Personal Local,
-historical packets, prior vectors and L-2 remain unchanged; v8-only product paths stay retired.
+The service core owns a bounded crypto-evidence cache (512 entries, 16 MiB of accounted retained data,
+not a measured heap bound). Each entry binds exact submission/response bytes to freshly authenticated
+authority/member request and predecessor. Fresh SQL reads, every row's structural/semantic conditions,
+parent issuance, completeness witness and final transaction/signing checks still run. Cache eviction,
+oversize or cold restart takes full crypto; closing drops the cache. It retains no private keys or
+content plaintext. Typed buffers are zeroed when discarded; this is not a forensic memory-erasure claim.
+
+The [combined 12-stage campaign](./account-conformance-runs/2026-09-12-account-liveness-complete/README.md)
+and 999-test full unit suite pass. It includes full/cached comparisons, generated histories, native
+HTTP/expiry/ownership/tamper controls, process death and service races. Send wakes equal actual local
+admissions in all three measured bursts, including the sliced large paste. At 35 positions the idle
+service census takes about 1.5 ms versus 25.8 ms in the preceding phase, with 13 versus 118 signature
+verifications in that request. The complete 24-job run takes about 61 seconds versus 256 seconds in
+the initial run; terminal status-set median is about 88 ms versus 1,388 ms. These are descriptive
+one-host observations with retained raw timings, not population estimates or capacity guarantees.
+
+## Disposition and retained limits
+
+The planned sync-liveness sequence is complete for the private v9 creating-member composition:
+F-07/N-02/P-01's repeated verification multipliers, N-01's expiry halt, N-03's network/storage ordering,
+and P-02/P-03's wake behavior are repaired within the recorded scope. Historical packet responses
+remain unchanged; [the current review index](./review/implementation/findings.md) records this outcome.
+
+This does not make the append-only Account proof ledger bounded or eliminate proportional scans,
+parsing, semantic replay, byte comparisons, cold verification or editor projection/fork costs. Cache
+bounds can reduce reuse on longer/larger histories. Long-history capacity, proof pruning, maintenance
+scheduling, whole-profile/privacy and supported-platform evidence, onboarding and release qualification
+remain separate. V8-only product paths stay retired. Personal Local and its packaged server are unchanged
+and stopped. Resume the unfinished F-21.4 privacy-evidence extension after this completed sequence.
+
+The signing reminder remains active and dynamically lists unsigned descendants of signed `1372c39`.
+The older C–D6 history is already signed; it is not outstanding work. No commits are signed or rewritten
+automatically by that reminder.

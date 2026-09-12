@@ -6,9 +6,10 @@ runtime tests, benchmarks or security probes were executed during this intake. I
 engineering priority in the current private development scope, not a demonstrated exploit severity.
 
 **Follow-up after signed `1372c39`:** the user retired v8 as a product target. The
-[sync-liveness measurement phase](./account-sync-liveness.md) is complete with fresh disposable native
-and generated evidence; the [view and incremental runtime boundaries](../../account-sync-liveness-repairs.md) are verified; network/
-scheduler work remains open. Historical intake responses are unchanged.
+[sync-liveness repair sequence](../../account-sync-liveness-repairs.md) is complete for private v9's
+creating-member composition, with [12-stage combined evidence](../../account-conformance-runs/2026-09-12-account-liveness-complete/README.md)
+and 999 passing unit tests. History capacity/pruning and release qualification remain separate.
+Historical intake responses are unchanged.
 
 - [F packet: af8941e..96a2040](./af8941e-96a2040.md) retains its historical responses unchanged.
 - [N addendum: 96a2040..1ceb88d](./96a2040-1ceb88d.md) has current responses to all 31 F status rows and
@@ -26,13 +27,13 @@ These IDs belong to the implementation review and must not be inserted into the 
 
 ## Priority and scope
 
-1. **F-07 with N-01/N-02/P-01: high-priority Account liveness.** Controlled measurement and repair
-   preparation are [complete](./account-sync-liveness.md). Repeated validation, N-01's final-commit
-   expiry halt and N-03's held-fetch flush stall are reproduced; no runtime repair is claimed.
-   Next implement an owner-scoped verified view for completely unchanged storage, retaining full
-   verification on cold open/change and complete invalidation controls. Incremental verification,
-   owned fetch separation, classified expiry retry and P-02/P-03 scheduling follow. This precedes the
-   next residue extension and usable Account rollout; the personal Local editor remains separate.
+1. **F-07 with N-01/N-02/P-01, plus N-03/P-02/P-03: bounded sync-liveness repair complete.**
+   The [repair/evidence record](../../account-sync-liveness-repairs.md) covers complete-view and exact
+   event reuse, shared coverage reconstruction, owned HTTP separation, classified automatic expiry
+   retry, local-only send wakes and durable send-progress receive wakes. Service event reuse retains
+   fresh authority/SQL/semantic/witness/commit checks. The measured workload improves without claiming
+   an unlimited-history threshold. Proof pruning, long-history capacity and projection/resource costs
+   remain outside this closure. The personal Local editor remains separate.
 2. **F-21.4: retain the unfinished privacy-evidence work.** R1 is now committed as `27e5b6f`.
    Packaged UI/service-worker/export and synthetic migration/clear trials are next within that work,
    followed by physical containers and platform/custody evidence. Logical marker absence is not
@@ -87,7 +88,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-04"></a>**F-04** Fresh activation assertion | closed; [assessment](./96a2040-1ceb88d.md#assessment-f-04) | medium authorization contract | —; [account-service/core.ts:856](../../../account-service/core.ts) |
 | <a id="f-05"></a>**F-05** Construction ownership and byte contracts | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-05) | high protocol assurance | [N-07](#n-07); [docs/review/implementation/account-crypto-closure.md](../../../docs/review/implementation/account-crypto-closure.md) |
 | <a id="f-06"></a>**F-06** Recovery payload vectors | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-06) | medium-high interoperability | —; [docs/review/implementation/account-crypto-closure.md](../../../docs/review/implementation/account-crypto-closure.md) |
-| <a id="f-07"></a>**F-07** Repeated full-history verification | open repair; measured; [evidence](./account-sync-liveness.md); [assessment](./96a2040-1ceb88d.md#assessment-f-07) | high Account liveness | [N-01](#n-01), [N-02](#n-02), [P-01](#p-01); [src/crdt/accountReceive.ts:104](../../../src/crdt/accountReceive.ts) |
+| <a id="f-07"></a>**F-07** Repeated full-history verification | repaired within bounded v9 scope; [evidence](../../account-sync-liveness-repairs.md); [assessment](./96a2040-1ceb88d.md#assessment-f-07) | high Account liveness | [N-01](#n-01), [N-02](#n-02), [P-01](#p-01); [src/crdt/accountReceive.ts:104](../../../src/crdt/accountReceive.ts) |
 | <a id="f-08"></a>**F-08** Source-free reopen capsules | product disposition: v8 retired; internal setup retained; [assessment](./96a2040-1ceb88d.md#assessment-f-08) | low waste/latency | [N-04](#n-04); [src/crdt/accountReceive.ts:489](../../../src/crdt/accountReceive.ts) |
 | <a id="f-09"></a>**F-09** Fail-closed diagnostics and salvage | open; [assessment](./96a2040-1ceb88d.md#assessment-f-09) | medium recoverability | —; [docs/storage-contract.md](../../../docs/storage-contract.md) |
 | <a id="f-10"></a>**F-10** Service and client error classification | open; [assessment](./96a2040-1ceb88d.md#assessment-f-10) | medium operations; low direct security impact | [N-08](#n-08), [P-07](#p-07); [account-service/delivery.ts:608](../../../account-service/delivery.ts) |
@@ -120,18 +121,18 @@ Related items have distinct behavior or completion criteria and stay separately 
 
 | ID | Current disposition | Work item | Importance / current response |
 | --- | --- | --- | --- |
-| <a id="n-01"></a>**N-01** Receive expiry coupled to full-history verification | final-commit halt reproduced; repair open; merged into F-07 | [F-07](#f-07) | high Account liveness; [assessment](./96a2040-1ceb88d.md#assessment-n-01) |
-| <a id="n-02"></a>**N-02** Growing client/service verification multipliers | measured; repair open; merged into F-07 | [F-07](#f-07) | high in the current composition; [assessment](./96a2040-1ceb88d.md#assessment-n-02) |
-| <a id="n-03"></a>**N-03** Fetch holds the serialized carrier task | flush stall reproduced; repair open; related to F-07 | distinct; related [F-07](#f-07) | medium local responsiveness; [assessment](./96a2040-1ceb88d.md#assessment-n-03) |
+| <a id="n-01"></a>**N-01** Receive expiry coupled to full-history verification | repaired: transaction expiry refusal and automatic fresh retry; merged into F-07 | [F-07](#f-07) | high Account liveness; [assessment](./96a2040-1ceb88d.md#assessment-n-01) |
+| <a id="n-02"></a>**N-02** Growing client/service verification multipliers | repaired client/service verification reuse; capacity remains separate; merged into F-07 | [F-07](#f-07) | high in the current composition; [assessment](./96a2040-1ceb88d.md#assessment-n-02) |
+| <a id="n-03"></a>**N-03** Fetch holds the serialized carrier task | repaired for supported v9 read and submission waits; close/drain/current checks retained | distinct; related [F-07](#f-07) | medium local responsiveness; [assessment](./96a2040-1ceb88d.md#assessment-n-03) |
 | <a id="n-04"></a>**N-04** v8 driven reopen capsule | product disposition: v8 retired; merged into F-08 | [F-08](#f-08) | low; [assessment](./96a2040-1ceb88d.md#assessment-n-04) |
 | <a id="n-05"></a>**N-05** Unspecified receipt baseline hash | closed by byte-contract specification | distinct | low compatibility; [assessment](./96a2040-1ceb88d.md#assessment-n-05) |
 | <a id="n-06"></a>**N-06** Loaded-host generated-property timeouts | open; merged into F-20 | [F-20](#f-20) | low validation reliability; [assessment](./96a2040-1ceb88d.md#assessment-n-06) |
 | <a id="n-07"></a>**N-07** Unnamed transport constructions | closed; covered by F-05 | [F-05](#f-05) | medium-high protocol assurance; [assessment](./96a2040-1ceb88d.md#assessment-n-07) |
 | <a id="n-08"></a>**N-08** Read-route and HTTP reason collapse | open; merged into F-10 | [F-10](#f-10) | medium operations; low direct security impact; [assessment](./96a2040-1ceb88d.md#assessment-n-08) |
 | <a id="n-09"></a>**N-09** v8 offline event hides halt reason | product disposition: v8 driver retired | distinct | low diagnostics; [assessment](./96a2040-1ceb88d.md#assessment-n-09) |
-| <a id="p-01"></a>**P-01** Composed sync full-history cost and liveness cliff | bounded cost/expiry evidence; repair open; merged into F-07 | [F-07](#f-07) | high; highest implementation priority from this intake; [assessment](./1ceb88d-393ef43.md#assessment-p-01) |
-| <a id="p-02"></a>**P-02** Send progress does not expedite receive | open; related to F-07 | distinct; related [F-07](#f-07) | low latency; [assessment](./1ceb88d-393ef43.md#assessment-p-02) |
-| <a id="p-03"></a>**P-03** Remote promotion unnecessarily wakes send | open; related to F-07 | distinct; related [F-07](#f-07) | low cost; compounds F-07; [assessment](./1ceb88d-393ef43.md#assessment-p-03) |
+| <a id="p-01"></a>**P-01** Composed sync full-history cost and liveness cliff | bounded liveness repair verified; no universal capacity claim; merged into F-07 | [F-07](#f-07) | high; highest implementation priority from this intake; [assessment](./1ceb88d-393ef43.md#assessment-p-01) |
+| <a id="p-02"></a>**P-02** Send progress does not expedite receive | repaired; durable progress expedites idle receive, preserving backoff/halts | distinct; related [F-07](#f-07) | low latency; [assessment](./1ceb88d-393ef43.md#assessment-p-02) |
+| <a id="p-03"></a>**P-03** Remote promotion unnecessarily wakes send | repaired; native wakes match local admissions | distinct; related [F-07](#f-07) | low cost; compounds F-07; [assessment](./1ceb88d-393ef43.md#assessment-p-03) |
 | <a id="p-04"></a>**P-04** Unsigned-to-signed history discoverability | documentation navigation addressed in this intake | distinct | low record navigation; [assessment](./1ceb88d-393ef43.md#assessment-p-04) |
 | <a id="p-05"></a>**P-05** Aggregate validation freshness and repeated vectors | partial; merged into F-20 | [F-20](#f-20) | medium validation cost/coverage; [assessment](./1ceb88d-393ef43.md#assessment-p-05) |
 | <a id="p-06"></a>**P-06** Duplicate unswept phase cryptographic prose | open documentation residual; F-05 stays closed | distinct; residual of closed [F-05](#f-05) | low drift risk; [assessment](./1ceb88d-393ef43.md#assessment-p-06) |

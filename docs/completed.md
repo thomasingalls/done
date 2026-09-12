@@ -3308,3 +3308,22 @@ retry; other failures retain diagnostics. The [nine-stage campaign](./account-co
 21 native ownership/mutation cases and full 996-test unit suite pass. Local flush finishes during held
 read/submission responses; close/stream drain retain the permit and invalid/superseded answers do not
 advance progress. Remaining liveness work is P-02/P-03 scheduling and service verification costs.
+
+
+## 2026-09-12 — L-1 sync-liveness sequence complete: scheduler and service reuse
+
+Following unsigned `902d352`, durable send progress now expedites idle receive without bypassing backoff
+or halts; only successful local outgoing admissions wake send. The service core reuses exact event
+crypto under fresh authority and predecessor binding while retaining every SQL/semantic/witness/commit
+check, with bounded cache ownership. The [combined campaign](./account-conformance-runs/2026-09-12-account-liveness-complete/README.md)
+passes all 12 stages and all 890 source pins. The full unit suite passes 999 tests in 91 files.
+Native bursts show send wakes exactly equal local admissions. Service restart, corruption, process death,
+concurrent writers, 80 decision and 60 inbound generated histories, coverage and lifecycle controls pass.
+The 24-job run takes 60,606 ms versus the initial 256,010 ms; terminal status-set median is 87.9 ms versus
+1,388 ms. One-host descriptive evidence closes F-07/N-01/N-02/P-01, N-03 and P-02/P-03 only within this
+private v9 composition, not general history capacity, proof pruning or release qualification.
+
+All 21 personal package files, 31 prior vectors, historical review packets and L-2 are unchanged;
+personal services remain stopped. The signing reminder is active for all unsigned descendants of signed
+`1372c39`; the older C–D6 chain is already signed. This completes the user's authorized automatic
+unsigned-commit liveness sequence. Next work is F-21.4's retained privacy-evidence extension.

@@ -1,0 +1,172 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-12T14:05:04.261Z",
+  "stages": [
+    {
+      "name": "types",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 103
+    },
+    {
+      "name": "instrument",
+      "args": [
+        "--test",
+        "test/account-liveness/instrument.test.mjs"
+      ],
+      "code": 0,
+      "tests": 2,
+      "timedOut": false,
+      "elapsedMs": 287
+    },
+    {
+      "name": "coverage",
+      "args": [
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/accountLiveness.test.ts",
+        "test/verifiedRecords.test.ts",
+        "test/verificationMemo.test.ts",
+        "test/spoolRecord.test.ts",
+        "test/accountSyncDriver.test.ts"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 2628
+    },
+    {
+      "name": "controlled",
+      "args": [
+        "--test",
+        "test/account-liveness/controlled.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 7598
+    },
+    {
+      "name": "ownership",
+      "args": [
+        "--test",
+        "test/account-sync/native.test.mjs",
+        "test/account-sync/controls.test.mjs",
+        "test/account-receive-transport/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 21,
+      "timedOut": false,
+      "elapsedMs": 80058
+    },
+    {
+      "name": "service-cache",
+      "args": [
+        "--test",
+        "test/account-liveness/service-cache.test.mjs"
+      ],
+      "code": 0,
+      "tests": 2,
+      "timedOut": false,
+      "elapsedMs": 891
+    },
+    {
+      "name": "service-delivery",
+      "args": [
+        "--test",
+        "test/account-service-delivery/core.test.mjs",
+        "test/account-service-delivery/generated.test.mjs",
+        "test/account-service-delivery/controls.test.mjs",
+        "test/account-service-delivery/restart.test.mjs"
+      ],
+      "code": 0,
+      "tests": 31,
+      "timedOut": false,
+      "elapsedMs": 15008
+    },
+    {
+      "name": "service-inbound",
+      "args": [
+        "--test",
+        "test/account-service-inbound/core.test.mjs",
+        "test/account-service-inbound/generated.test.mjs",
+        "test/account-service-inbound/controls.test.mjs",
+        "test/account-service-inbound/restart.test.mjs"
+      ],
+      "code": 0,
+      "tests": 19,
+      "timedOut": false,
+      "elapsedMs": 22947
+    },
+    {
+      "name": "view",
+      "args": [
+        "--test",
+        "test/account-liveness/view.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 8093
+    },
+    {
+      "name": "growth",
+      "args": [
+        "--test",
+        "test/account-liveness/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 61168
+    },
+    {
+      "name": "lint",
+      "args": [
+        "node_modules/oxlint/bin/oxlint",
+        "--react-plugin",
+        "src/crdt/accountReceive.ts",
+        "src/crdt/accountSyncDriver.ts",
+        "account-service/core.ts",
+        "account-service/delivery.ts",
+        "account-service/deliveryVerification.ts",
+        "test/accountSyncDriver.test.ts",
+        "test/account-liveness",
+        "test/accountLiveness.test.ts",
+        "scripts/account-liveness"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 87
+    },
+    {
+      "name": "format",
+      "args": [
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "src/crdt/accountReceive.ts",
+        "src/crdt/accountSyncDriver.ts",
+        "account-service/core.ts",
+        "account-service/delivery.ts",
+        "account-service/deliveryVerification.ts",
+        "test/accountSyncDriver.test.ts",
+        "test/account-liveness",
+        "test/accountLiveness.test.ts",
+        "scripts/account-liveness",
+        "docs/account-sync-liveness.md",
+        "package.json"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 100
+    }
+  ],
+  "sourcePins": 890,
+  "generatedHistories": 40,
+  "nativeLivenessRegressions": 3,
+  "finishedAt": "2026-09-12T14:08:23.402Z"
+}

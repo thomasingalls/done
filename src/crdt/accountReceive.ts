@@ -600,7 +600,7 @@ async function openReceivingWorkspace(
     });
     if (composed) {
       const outbound = createOutbound(() => workspace.whenDurable());
-      let unsubscribe: (() => void) | undefined;
+      let unsubscribe: (() => void) | undefined, unsubscribeLocal: (() => void) | undefined;
       const online = () => scheduler.wake('online'),
         offline = () => scheduler.wake('gate');
       const scheduler = createSyncScheduler({
@@ -611,18 +611,19 @@ async function openReceivingWorkspace(
         detach() {
           operatorToken = undefined;
           unsubscribe?.();
+          unsubscribeLocal?.();
           globalThis.removeEventListener?.('online', online);
           globalThis.removeEventListener?.('offline', offline);
         },
       });
       try {
-        let revision = workspace.status.revision,
-          previousGate = gate();
-        unsubscribe = workspace.onStatus((status) => {
-          const changed = status.revision !== revision,
-            current = gate();
-          revision = status.revision;
-          if (changed) scheduler.wake('local');
+        let previousGate = gate();
+        unsubscribeLocal = workspace.outgoing((bytes) => {
+          bytes.fill(0);
+          scheduler.wake('local');
+        });
+        unsubscribe = workspace.onStatus(() => {
+          const current = gate();
           if (current !== previousGate) {
             previousGate = current;
             scheduler.wake('gate');

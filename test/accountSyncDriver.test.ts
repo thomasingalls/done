@@ -323,3 +323,50 @@ it('400 generated deferred histories agree with an independent two-lane event mo
     { seed: 9112061, numRuns: 400, endOnFailure: true },
   );
 });
+
+it('durable send progress expedites an idle receiver; unchanged progress leaves its poll deadline alone', async () => {
+  const f = fixture();
+  f.scheduler.wake('start');
+  await f.tick(0);
+  f.calls[0]!.finish('idle');
+  await flush();
+  await f.tick(0);
+  f.calls[1]!.finish('idle');
+  await flush();
+  f.scheduler.wake('local');
+  await f.tick(50);
+  f.calls[2]!.finish('progress', 1);
+  await flush();
+  await f.tick(0);
+  expect(f.calls[3]!.lane).toBe('receive');
+  expect(f.calls[3]!.at).toBe(50);
+  f.calls[3]!.finish('idle', 1);
+  await flush();
+  await f.tick(50);
+  f.calls[4]!.finish('idle', 1);
+  await flush();
+  expect(f.scheduler.runtime.status.receive.nextAttemptAt).toBe(5050);
+  await f.scheduler.dispose();
+});
+it.each(['unknown', 'blocked'] as const)(
+  'send progress preserves a receiver %s backoff or halt',
+  async (kind) => {
+    const f = fixture();
+    f.scheduler.wake('start');
+    await f.tick(0);
+    f.calls[0]!.finish('idle');
+    await flush();
+    await f.tick(0);
+    f.calls[1]!.finish(kind);
+    await flush();
+    const deadline = f.scheduler.runtime.status.receive.nextAttemptAt;
+    f.scheduler.wake('local');
+    await f.tick(50);
+    f.calls[2]!.finish('progress', 1);
+    await flush();
+    expect(f.scheduler.runtime.status.receive.nextAttemptAt).toBe(deadline);
+    await f.tick(0);
+    expect(f.calls.length).toBe(3);
+    await f.scheduler.dispose();
+  },
+);

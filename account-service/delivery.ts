@@ -1,3 +1,4 @@
+import type { DeliveryVerification } from './deliveryVerification.ts';
 import { parseRetainedActivation } from '../account-protocol/activation.ts';
 /** Private first-lineage service decisions and authenticated readback. No content decryption. */
 import {
@@ -328,7 +329,7 @@ async function verifyLedgerWitness(
   }
   if (commitment !== (witness?.hash ?? ZERO_LEDGER)) throw Error('Delivery ledger commitment');
 }
-async function census(s: Snapshot, auth: Authority) {
+async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerification) {
   let count = 0,
     commitment = ZERO_LEDGER,
     through = 0,
@@ -341,10 +342,30 @@ async function census(s: Snapshot, auth: Authority) {
     s.promotion.delivery_witness === null
       ? null
       : parseWitness(JSON.parse(s.promotion.delivery_witness));
+  // Authority is freshly authenticated on every request. Bind cached signatures to that complete
+  // member request and predecessor; all SQL columns, ordering, parent issuance and witness still replay.
+  const scope = JSON.stringify([auth.a, auth.scope, auth.generation, s.promotion.request]);
   for (const row of s.rows) {
     const bytes = new Uint8Array(row.submission),
       response = new Uint8Array(row.response),
-      { e, submission, subject } = await verifyWire(bytes, auth);
+      before = previous;
+    const verify = async () => {
+      const opened = await verifyWire(bytes, auth);
+      const proof = await verifyPositionResponse(
+        response,
+        { ...opened.subject, previous: before, parent: opened.submission.parentId },
+        auth.a,
+      );
+      return { ...opened, proof };
+    };
+    const { e, submission, subject, proof } = reuse
+      ? await reuse.check(
+          s.account.id + ':' + row.ordinal,
+          scope + ':' + previous,
+          [bytes, response],
+          verify,
+        )
+      : await verify();
     if (
       row.account_id !== s.account.id ||
       row.ordinal !== count + 1 ||
@@ -360,11 +381,6 @@ async function census(s: Snapshot, auth: Authority) {
         : closedPositions.has(e.seq)
     )
       throw Error('Unissued ledger parent');
-    const proof = await verifyPositionResponse(
-      response,
-      { ...subject, previous, parent: submission.parentId },
-      auth.a,
-    );
     if (row.kind === 'accepted') {
       if (
         proof.kind !== 'accepted' ||
@@ -399,6 +415,7 @@ export async function decideSubmission(
   input: unknown,
   issuer: DeliveryIssuer,
   hook: DeliveryHook,
+  reuse?: DeliveryVerification,
 ): Promise<ServiceDeliveryResult> {
   let workspace: string, bytes: Bytes;
   try {
@@ -424,8 +441,9 @@ export async function decideSubmission(
     let auth: Authority, ledger: Awaited<ReturnType<typeof census>>;
     try {
       auth = await authority(s, issuer);
-      ledger = await census(s, auth);
+      ledger = await census(s, auth, reuse);
     } catch {
+      reuse?.clear();
       return unknown('unavailable');
     }
     const envelope = decodeNetworkEnvelope(decodeSubmission(bytes).envelope);
@@ -519,6 +537,7 @@ export async function decideSubmission(
       hook('after-commit', 'decide-submission');
       return result;
     } catch {
+      reuse?.clear();
       if (db.isTransaction) db.exec('ROLLBACK');
       return unknown('storage-unavailable');
     }
@@ -538,6 +557,7 @@ export async function readAccepted(
   input: unknown,
   issuer: ReadIssuer,
   hook: DeliveryHook,
+  reuse?: DeliveryVerification,
 ): Promise<ServiceDeliveryResult> {
   let bytes: Bytes, request: ReturnType<typeof decodeReadRequest>;
   try {
@@ -564,7 +584,7 @@ export async function readAccepted(
         ))
       )
         return unknown('invalid-request');
-      const ledger = await census(s, auth);
+      const ledger = await census(s, auth, reuse);
       if (request.after > ledger.through) return unknown('out-of-order');
       const page: ReadPage = {
         request: hash(bytes),
@@ -606,6 +626,7 @@ export async function readAccepted(
       db.exec('COMMIT');
       return { kind: 'decision', bytes: answer };
     } catch {
+      reuse?.clear();
       if (db.isTransaction) db.exec('ROLLBACK');
       return unknown('unavailable');
     }
@@ -628,6 +649,7 @@ export async function readInbound(
   input: unknown,
   issuer: InboundReadIssuer,
   hook: DeliveryHook,
+  reuse?: DeliveryVerification,
 ): Promise<ServiceDeliveryResult> {
   let bytes: Bytes, request: InboundReadRequest;
   try {
@@ -669,7 +691,7 @@ export async function readInbound(
       // The current ledger belongs to exactly one certified publisher. Expanding
       // membership requires a new ledger scope/schema, not selecting another key.
       if (publisher.id !== auth.scope.credential) return unknown('unavailable');
-      const ledger = await census(s, auth);
+      const ledger = await census(s, auth, reuse);
       if (request.after > ledger.through) return unknown('out-of-order');
       const page: InboundReadPage = {
         request: hash(bytes),
@@ -723,6 +745,7 @@ export async function readInbound(
       db.exec('COMMIT');
       return { kind: 'decision', bytes: answer };
     } catch {
+      reuse?.clear();
       if (db.isTransaction) db.exec('ROLLBACK');
       return unknown('unavailable');
     }

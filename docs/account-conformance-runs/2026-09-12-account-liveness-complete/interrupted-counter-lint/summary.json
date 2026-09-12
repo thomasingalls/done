@@ -1,0 +1,69 @@
+{
+  "status": "failed",
+  "startedAt": "2026-09-12T14:03:49.896Z",
+  "stages": [
+    {
+      "name": "types",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 76
+    },
+    {
+      "name": "instrument",
+      "args": [
+        "--test",
+        "test/account-liveness/instrument.test.mjs"
+      ],
+      "code": 0,
+      "tests": 2,
+      "timedOut": false,
+      "elapsedMs": 303
+    },
+    {
+      "name": "coverage",
+      "args": [
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/accountLiveness.test.ts",
+        "test/verifiedRecords.test.ts",
+        "test/verificationMemo.test.ts",
+        "test/spoolRecord.test.ts",
+        "test/accountSyncDriver.test.ts"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 5738
+    },
+    {
+      "name": "controlled",
+      "args": [
+        "--test",
+        "test/account-liveness/controlled.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 9932
+    },
+    {
+      "name": "ownership",
+      "args": [
+        "--test",
+        "test/account-sync/native.test.mjs",
+        "test/account-sync/controls.test.mjs",
+        "test/account-receive-transport/native.test.mjs"
+      ],
+      "code": 1,
+      "timedOut": false,
+      "elapsedMs": 37516
+    }
+  ],
+  "sourcePins": 890,
+  "error": "Error: Stage failed: ownership\n    at run (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/account-liveness/run.mjs:144:46)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/account-liveness/run.mjs:159:3",
+  "finishedAt": "2026-09-12T14:04:43.471Z"
+}

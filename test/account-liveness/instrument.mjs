@@ -18,6 +18,7 @@ export const targets = {
     load: ['content.load', '0'],
     openSnapshot: ['content.open', 'snapshot.rows.length'],
   },
+  '/src/crdt/accountSyncDriver.ts': { wake: ['sync.wake', "cause === 'local' ? 1 : 0"] },
   '/src/crdt/accountReceive.ts': { state: ['receive.state', '0'] },
   '/account-service/delivery.ts': {
     census: ['service.census', 's.rows.length'],

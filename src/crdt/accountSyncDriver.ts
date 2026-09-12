@@ -158,7 +158,18 @@ export function createSyncScheduler(options: {
         const position =
           'acceptedThrough' in result ? result.acceptedThrough : result.receivedThrough;
         if (position < lane.position) throw Error('Durable lane position regressed');
+        const advanced = position > lane.position;
         lane.position = position;
+        // Durable send progress makes a new read useful. Preserve receive backoff and evidence halts.
+        if (
+          name === 'send' &&
+          advanced &&
+          result.kind !== 'blocked' &&
+          position > lanes.receive.position &&
+          !lanes.receive.halt &&
+          lanes.receive.failures === 0
+        )
+          lanes.receive.due = Math.min(lanes.receive.due ?? clock.now(), clock.now());
         if (result.kind === 'blocked') {
           lane.halt = result.reason;
           lane.due = undefined;

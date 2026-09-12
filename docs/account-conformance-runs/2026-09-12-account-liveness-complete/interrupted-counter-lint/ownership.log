@@ -1,0 +1,44 @@
+(node:86516) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86516) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:86516) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual v2 HTTP pages advance owned durable progress without local recapture, including cold end (12053.070667ms)
+✔ HTTP refusal, truncation, overflow, redirect, lost reply and stale signed page advance no cursor (8802.411458ms)
+✔ fetch serializes outstanding reads; a manually superseding request refuses the older response (6731.593416ms)
+
+Interrupted while running:
+
+⚠ test/account-receive-transport/native.test.mjs (test/account-receive-transport/native.test.mjs:1:1)
+⚠ test/account-sync/controls.test.mjs (test/account-sync/controls.test.mjs:1:1)
+⚠ test/account-sync/native.test.mjs (test/account-sync/native.test.mjs:1:1)
+✖ test/account-receive-transport/native.test.mjs (37457.206375ms)
+✔ effective composed fairness mutation (46.670292ms)
+✔ effective composed overlap mutation (5.275959ms)
+✔ effective composed halt mutation (8.1145ms)
+✔ effective composed resume mutation (5.404708ms)
+✔ effective composed wake mutation (6.16175ms)
+(node:86518) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86518) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:86518) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ one owner sends and reads back actual service bytes, preserves sources through edits, compaction and cold replay (15475.3515ms)
+✔ lost submit answer can be received before delivery resolves; cold retry uses exact bytes without resealing (12005.882291ms)
+✖ test/account-sync/native.test.mjs (37453.60125ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 2
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 37456.760084
+
+✖ failing tests:
+
+test at test/account-receive-transport/native.test.mjs:1:1
+✖ test/account-receive-transport/native.test.mjs (37457.206375ms)
+  'Promise resolution is still pending but the event loop has already resolved'
+
+test at test/account-sync/native.test.mjs:1:1
+✖ test/account-sync/native.test.mjs (37453.60125ms)
+  'Promise resolution is still pending but the event loop has already resolved'

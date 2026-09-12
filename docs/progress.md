@@ -43,14 +43,14 @@ that is no longer active.
 ---
 
 
-## Active slice: Account sync-liveness repair — scheduler wakes and service verification (`L-1`)
+## Active slice: Account privacy-evidence extension after sync-liveness (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight
-blocks_on: durable send progress wake, local-only publication wake, service event reuse and combined validation
+status: not started
+blocks_on: resume F-21.4 packaged UI/export/migration/clear evidence with explicit residue scope
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-12
 ```
@@ -59,59 +59,49 @@ updated: 2026-09-12
 Account remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), item 5's private creating-member
 ciphertext round trip. The composed Account owner is not mounted in the personal Local app; no real
 Account receipt exists. Prior crypto/durability/admission/decision/parser/oracle evidence retains its
-exact scope in the [review index](./review/implementation/findings.md). Residue prep is signed `6a9c9c4`,
-R1 `27e5b6f`, and the reconciled review intake `1372c39`. The signing reminder is active for the new unsigned sync-liveness commits and the
-old unsigned chain remains under its [recorded backup](./account-conformance-runs/2026-09-11-signed-contract-history.json).
+scope in the [review index](./review/implementation/findings.md). Residue prep is signed `6a9c9c4`, R1
+`27e5b6f`, and the reconciled review intake `1372c39`.
 
-**Current sequence.** Measurement/preparation is unsigned `0e07fe4`. Unchanged-view runtime repair is unsigned `280221e`; incremental verification/coverage is unsigned `879ce38`. The user authorizes continuing through all remaining
-sync-liveness boundaries with an unsigned commit after each verified phase; no confirmation is needed
-between these phases. The [repair record](./account-sync-liveness-repairs.md) and
-[view campaign](./account-conformance-runs/2026-09-12-account-liveness-view/README.md) retain the evidence:
-995 unit tests, eight campaign stages, native tamper/compaction/reopen, and 40 coverage plus 60
-invalidation histories pass. Unchanged status views now perform no full inbound verification; the
-24-job growth run took about 128 seconds on this host, versus 256 seconds before repair. Boundary 2
-adds full-oracle differential and generated mutation controls and reduces that run to about 59 seconds;
-its [evidence](./account-conformance-runs/2026-09-12-account-liveness-incremental/README.md) is retained.
+**Closed sequence.** The [sync-liveness repair record](./account-sync-liveness-repairs.md) and
+[combined evidence](./account-conformance-runs/2026-09-12-account-liveness-complete/README.md) close the
+planned bounded private v9 repairs: complete views, incremental crypto and exact content coverage,
+owned network waits, automatic expiry retry, durable send-progress receive wakes, local-only send wakes,
+and bounded service verification reuse. All 12 campaign stages, 890 source pins and the separate full
+999-test unit suite pass. The 24-job run takes about 61 seconds versus the initial 256 seconds;
+terminal status-set median is about 88 ms versus 1,388 ms. This is descriptive one-host evidence,
+not an unlimited-history or release-capacity guarantee. F-07/N-01/N-02/P-01, N-03 and P-02/P-03 are
+closed within the documented scope. Append-only proof history, scans, cold verification and editor
+projection/fork costs remain; full `pnpm check` was not rerun.
 
-**Explicit v8 disposition.** The user confirms the intermediate v8 Account paths have no customer or
-personal dogfood data and will not ship. F-08/N-04 and N-09 need no product hardening or backwards
-compatibility; internal v9 setup/test dependencies may remain temporarily. This is not the TRD's v8
-document version. Historical responses remain unchanged; the current review index and decision journal
-record non-shipment, not a claimed code fix or completed deletion.
+Unsigned commits so far: measurement `0e07fe4`, view reuse `280221e`, incremental verification `879ce38`,
+network/expiry `902d352`. The final scheduler/service/evidence phase is the unsigned commit containing this checkpoint.
+The existing signing reminder is ACTIVE and dynamically enumerates unsigned descendants of `1372c39`.
+The older C–D6 chain was already signed and is not outstanding. No automatic signing/rewrite is enabled.
+The user's authorization to continue through the liveness sequence is fulfilled at this boundary.
 
-**Next bounded implementation — scheduler wakes and service verification.** Network/expiry repair is
-verified and being committed unsigned; [recorded evidence](./account-conformance-runs/2026-09-12-account-liveness-network/README.md)
-passes nine stages, 21 ownership/mutation cases and 996 unit tests. Read/submission HTTP retains the
-same lifetime outside the carrier tail. Late expiry refuses at the native write guard and retries
-with a fresh request automatically. Unsigned prior phases: `0e07fe4`, `280221e`, `879ce38`.
+**Next bounded work — F-21.4 privacy evidence.** R1's logical carrier campaign is complete. Resume packaged
+UI/service-worker/export/ZIP and synthetic migration/selection/cleanup/Local-clear interruptions.
+Declare permitted pre-cleanup plaintext and required post-cleanup absence. Logical marker absence is
+not copied-profile opener protection or forensic erasure. Physical profile/SQLite/WAL/deleted-byte and
+supported-platform C13 opener evidence remain separate. Do not inspect personal exports or rerun
+personal cleanup for synthetic observations. Define the next trial before starting it.
 
-Wake receive on durable send-prefix progress without bypassing retry backoff or halts. Subscribe to
-successful local outgoing admissions instead of all document revisions for send wakes. Reduce repeated
-service event verification with bounded core-owned reuse, fresh SQL/authority checks and full semantic
-replay. Check generated histories, mutations, native liveness and service restart/corruption cases,
-then close the bounded liveness review tasks with their limits. User authorizes unsigned phase commits
-and continuation through completion; the signing reminder remains active.
+**Other retained work.** F-10/N-08/P-07 and F-09 diagnostics/recovery behavior, F-20/N-06/P-05 aggregate
+validation, P-06 prose and remaining capacity/maintenance findings remain in the review index. Formal
+Stage 0 debts are unchanged. General lineage, successor checkpoints, membership/device management,
+revocation/rotation, clear/delete, finalization/total-loss recovery, PRF enrollment, deployment/restore,
+supported platforms and independent review remain separate.
 
-**Retained work.** F-21.4 remains open beyond R1's logical carrier campaign. Resume packaged UI/generated
-service-worker/export/ZIP and synthetic migration/selection/cleanup/Local-clear interruptions after this
-liveness sequence. Declare exact permitted pre-cleanup plaintext and required post-cleanup absence.
-Physical profile/SQLite/WAL/deleted-byte and supported-platform C13 opener evidence remain separate;
-do not inspect personal exports or rerun personal cleanup for synthetic observations. F-10/N-08/P-07
-and F-09 diagnostics, F-20/N-06/P-05 aggregate validation, P-06 prose and remaining capacity/maintenance
-findings remain in the review index. Formal Stage 0 debts are unchanged.
-
-**Personal checkpoint.** All 21 package files in `dist/` and `.dev/releases/17d87c2/app`, all 31 prior
-vectors, historical review annotations and L-2 are unchanged. Personal preview/relay remain stopped;
-no personal browser/profile/recovery, Account, factor, operator key, pin, origin or routing changed.
-The unrelated root `done ` is untouched. The old second device will adopt the first workspace with
-fresh custody/store/counters/credentials, without importing or merging its earlier writing.
-
-General lineage, successor checkpoints, concurrent membership, proof pruning/backlog scale,
-enrollment/device management, revocation/rotation, clear/delete, finalization/total-loss recovery,
-PRF enrollment, supported platforms, deployment/restore and independent review remain separate.
+**V8 and personal scope.** Intermediate Account v8 held no customer or personal dogfood data and will
+not ship; F-08/N-04 and N-09 are disposed by non-shipment, not claimed repair or deletion. Internal v9
+setup/test dependencies may remain. All 21 package files in `dist/` and `.dev/releases/17d87c2/app`, all
+31 prior vectors, historical review annotations and L-2 remain unchanged. Personal preview/relay remain
+stopped; no personal browser/profile/recovery, Account, factor, operator key, pin, origin or routing
+changed. The unrelated root `done ` is untouched. The old second device will adopt the first workspace
+with fresh custody/store/counters/credentials, without importing or merging its earlier writing.
 L-2's historical ref `d24732b` has no further service work to integrate.
 
-The outcome was appended to completed.md before this rewrite; L-2 is unchanged.
+The completed outcome was appended before this rewrite; L-2 is unchanged.
 
 ---
 
