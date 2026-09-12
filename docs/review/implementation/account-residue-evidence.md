@@ -2,7 +2,7 @@
 
 2026-09-12. Source baseline: signed `f118127c3156de1bac44cc731e51ffc2296643f5`.
 
-**F-21.4 remains open; preparation and the bounded R1 implementation are complete.** Importance: **high assurance**, because the
+**F-21.4 remains open; preparation, bounded R1 and the packaged/migration/observable-file extension are complete.** Importance: **high assurance**, because the
 confidentiality claim requires observation of plaintext carriers beyond the successful encryption path.
 This assessment does not demonstrate a current content leak. The original review's concern is valid,
 but existing custody and cleanup tests deserve their narrower credit.
@@ -58,3 +58,13 @@ not close the review's broader plaintext-residue requirement. Packaged UI/servic
 synthetic migration/clear trials are next. Physical files/WAL/deleted data, arbitrary transformations,
 fragmented content and opaque key/opener protection remain separate. No personal profile, recovery
 file, server or real Account participates in these tests.
+
+
+## Packaged and physical observation extension
+
+The [2026-09-12 extension](../../account-conformance-runs/2026-09-12-privacy-extended/README.md) passes
+its logical and detector-control contract. It adds actual UI exports, worker diagnostics, offline
+reopen, migration/cleanup/clear restart and raw profile/service files. It also directly observes
+legacy plaintext in a closed Chromium LevelDB file after logical cleanup and clear. This is evidence
+against a forensic-erasure claim, not a failure of encrypted destination replay. The wider platform,
+C13 opener, opaque-format and fragmentation qualifications remain open.

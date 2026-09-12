@@ -1,0 +1,294 @@
+{
+  "controls": [
+    "blob",
+    "view",
+    "truncate",
+    "key"
+  ],
+  "omission": "detected",
+  "budget": "incomplete",
+  "unsupportedClone": "incomplete",
+  "opaqueCryptoKey": "metadata observed; contents excluded",
+  "baselineMatches": [
+    {
+      "needle": "key",
+      "surface": "indexedDB",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "key",
+      "surface": "indexedDB",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "blob",
+      "surface": "indexedDB",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "blob",
+      "surface": "indexedDB",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "view",
+      "surface": "indexedDB",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "view",
+      "surface": "indexedDB",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "map",
+      "surface": "indexedDB",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "map",
+      "surface": "indexedDB",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "set",
+      "surface": "indexedDB",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "set",
+      "surface": "indexedDB",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "file",
+      "surface": "indexedDB",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "file",
+      "surface": "indexedDB",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "numeric",
+      "surface": "indexedDB",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "numeric",
+      "surface": "indexedDB",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "key",
+      "surface": "indexedDB",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "key",
+      "surface": "indexedDB",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "header",
+      "surface": "cacheStorage",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "header",
+      "surface": "cacheStorage",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "header",
+      "surface": "cacheStorage",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "header",
+      "surface": "cacheStorage",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "chunk",
+      "surface": "opfs",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "chunk",
+      "surface": "opfs",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "cookie",
+      "surface": "cookies",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "cookie",
+      "surface": "cookies",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "diagBlob",
+      "surface": "diagnostics:page",
+      "representation": "raw/base64/utf8"
+    },
+    {
+      "needle": "diagBlob",
+      "surface": "diagnostics:page",
+      "representation": "raw/base64/json-escaped"
+    },
+    {
+      "needle": "diagView",
+      "surface": "diagnostics:page",
+      "representation": "raw/base64/utf8"
+    },
+    {
+      "needle": "diagView",
+      "surface": "diagnostics:page",
+      "representation": "raw/base64/json-escaped"
+    },
+    {
+      "needle": "key",
+      "surface": "indexedDB",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "key",
+      "surface": "indexedDB",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "blob",
+      "surface": "indexedDB",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "blob",
+      "surface": "indexedDB",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "view",
+      "surface": "indexedDB",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "view",
+      "surface": "indexedDB",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "map",
+      "surface": "indexedDB",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "map",
+      "surface": "indexedDB",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "set",
+      "surface": "indexedDB",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "set",
+      "surface": "indexedDB",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "file",
+      "surface": "indexedDB",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "file",
+      "surface": "indexedDB",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "numeric",
+      "surface": "indexedDB",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "numeric",
+      "surface": "indexedDB",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "key",
+      "surface": "indexedDB",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "key",
+      "surface": "indexedDB",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "header",
+      "surface": "cacheStorage",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "header",
+      "surface": "cacheStorage",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "header",
+      "surface": "cacheStorage",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "header",
+      "surface": "cacheStorage",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "chunk",
+      "surface": "opfs",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "chunk",
+      "surface": "opfs",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "cookie",
+      "surface": "cookies",
+      "representation": "raw/utf8"
+    },
+    {
+      "needle": "cookie",
+      "surface": "cookies",
+      "representation": "raw/json-escaped"
+    },
+    {
+      "needle": "diagBlob",
+      "surface": "diagnostics:page",
+      "representation": "raw/base64/utf8"
+    },
+    {
+      "needle": "diagBlob",
+      "surface": "diagnostics:page",
+      "representation": "raw/base64/json-escaped"
+    },
+    {
+      "needle": "diagView",
+      "surface": "diagnostics:page",
+      "representation": "raw/base64/utf8"
+    },
+    {
+      "needle": "diagView",
+      "surface": "diagnostics:page",
+      "representation": "raw/base64/json-escaped"
+    }
+  ]
+}

@@ -34,10 +34,11 @@ These IDs belong to the implementation review and must not be inserted into the 
    fresh authority/SQL/semantic/witness/commit checks. The measured workload improves without claiming
    an unlimited-history threshold. Proof pruning, long-history capacity and projection/resource costs
    remain outside this closure. The personal Local editor remains separate.
-2. **F-21.4: retain the unfinished privacy-evidence work.** R1 is now committed as `27e5b6f`.
-   Packaged UI/service-worker/export and synthetic migration/clear trials are next within that work,
-   followed by physical containers and platform/custody evidence. Logical marker absence is not
-   copied-profile opener protection or forensic erasure. Do not close the wider finding.
+2. **F-21.4: bounded packaged/migration/file evidence complete; wider qualification remains.**
+   The [extension](../../account-conformance-runs/2026-09-12-privacy-extended/README.md) covers packaged
+   UI/worker/export, synthetic migration/restart/cleanup/clear and observable profile/SQL/WAL bytes.
+   Logical cleanup passes; legacy plaintext remains in a physical LevelDB file. Supported-platform
+   opener tests, opaque formats and fragmentation remain. Do not close the wider finding.
 3. **F-10 with N-08/P-07, and F-09:** define actionable refusal, diagnostics and recovery behavior
    before onboarding. Preserve signed evidence versus unsigned hints; diagnostic logs must not become
    a plaintext/factor carrier. F-13/F-14/F-23/F-24 belong to the relevant ownership/capacity/UI work.
@@ -105,7 +106,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-21.1"></a>**F-21.1** Remaining parser conformance | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.1) | medium assurance | —; [docs/review/implementation/account-parser-conformance.md](../../../docs/review/implementation/account-parser-conformance.md) |
 | <a id="f-21.2"></a>**F-21.2** Admission coverage and exact bounds | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.2) | medium-high assurance | —; [docs/review/implementation/account-admission-evidence.md](../../../docs/review/implementation/account-admission-evidence.md) |
 | <a id="f-21.3"></a>**F-21.3** Recognized cross-account capabilities | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.3) | medium authorization assurance | —; [docs/review/implementation/account-isolation.md](../../../docs/review/implementation/account-isolation.md) |
-| <a id="f-21.4"></a>**F-21.4** Neutral plaintext-residue evidence | partial; R1 complete, wider coverage open; [assessment](./96a2040-1ceb88d.md#assessment-f-21.4) | high privacy assurance | —; [docs/review/implementation/account-residue-evidence.md](../../../docs/review/implementation/account-residue-evidence.md) |
+| <a id="f-21.4"></a>**F-21.4** Neutral plaintext-residue evidence | partial; R1 and packaged/migration/observable-file extension complete, platform/opener scope open; [assessment](./96a2040-1ceb88d.md#assessment-f-21.4) | high privacy assurance | —; [docs/review/implementation/account-residue-evidence.md](../../../docs/review/implementation/account-residue-evidence.md) |
 | <a id="f-21.5"></a>**F-21.5** Unit lock doubles | accepted; no defect established; [assessment](./96a2040-1ceb88d.md#assessment-f-21.5) | informational | —; [docs/review/implementation/af8941e-96a2040.md](../../../docs/review/implementation/af8941e-96a2040.md) |
 | <a id="f-21.6"></a>**F-21.6** Delivery oracle independence | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.6) | medium assurance | —; [docs/review/implementation/account-delivery-oracle.md](../../../docs/review/implementation/account-delivery-oracle.md) |
 | <a id="f-21.7"></a>**F-21.7** Service-issued refusal/conflict composition | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.7) | medium authorization/restart assurance | —; [docs/review/implementation/account-decision-composition.md](../../../docs/review/implementation/account-decision-composition.md) |

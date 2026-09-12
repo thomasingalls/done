@@ -3327,3 +3327,17 @@ All 21 personal package files, 31 prior vectors, historical review packets and L
 personal services remain stopped. The signing reminder is active for all unsigned descendants of signed
 `1372c39`; the older C–D6 chain is already signed. This completes the user's authorized automatic
 unsigned-commit liveness sequence. Next work is F-21.4's retained privacy-evidence extension.
+
+
+## 2026-09-12 — L-1 bounded privacy extension after sync liveness
+
+The [extended campaign](./account-conformance-runs/2026-09-12-privacy-extended/README.md) passes nine
+stages, 23 Node cases, 60 generated container histories, 24 R1 histories and 899 source pins.
+Packaged UI/worker/ZIP/offline restart, synthetic migration/import restart/source cleanup/Local clear
+and observable profile/service DB/WAL bytes are covered. Generated testing found an overly broad ZIP
+signature detector; its exact counterexample and fixed replay are preserved. Logical source cleanup
+passes, while raw closed-profile LevelDB still contains legacy plaintext after deletion. F-21.4 remains
+partial for wider platform/opener/opaque-format/fragmentation evidence. No production code changed.
+All 21 personal package files, 31 prior vectors and L-2 remain unchanged; personal services stay stopped.
+The user authorizes continued unsigned phases through failure/recovery and storage/responsiveness.
+Appended before replacing L-1.

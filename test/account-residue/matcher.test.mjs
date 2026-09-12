@@ -141,6 +141,8 @@ test('the acquisition/matching module graph has no product dependencies', async 
     'node:sqlite',
     'node:fs',
     'node:worker_threads',
+    'node:zlib',
+    './containers.mjs',
     './matcher.mjs',
     './browser-collector.mjs',
     './node-collector.mjs',
@@ -150,6 +152,7 @@ test('the acquisition/matching module graph has no product dependencies', async 
     'browser-collector.mjs',
     'node-collector.mjs',
     'sql-worker.mjs',
+    'containers.mjs',
   ]) {
     const source = readFileSync(new URL(file, import.meta.url), 'utf8');
     for (const m of source.matchAll(/(?:from\s+|import\s*\()['"]([^'"]+)['"]/g))

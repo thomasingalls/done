@@ -1,0 +1,22 @@
+✔ a random ciphertext PK prefix is not a ZIP signature (1.606459ms)
+✔ 60 generated nested container histories preserve detection and refuse corrupt gzip (26.19725ms)
+✔ independent stored/deflated ZIP and gzip controls, nested encodings and malformed/budget refusals (257.983084ms)
+✔ raw files detect unknown carriers and deleted SQLite bytes missed by logical rows (6.798625ms)
+✔ all declared encodings, offsets and nested raw values detect independently generated Unicode (4.874667ms)
+✔ raw bytes match before hashing; exact views, properties and unknown SQL paths are not allowlisted (1.782542ms)
+✔ missing, unreadable, compressed and exhausted observations never become a clean negative (0.467625ms)
+✔ record fragmentation is a demonstrated unqualified representation, not a fabricated clean-history proof (0.299667ms)
+✔ explicit random 32-byte calibration needle, including encoded transport, is independent of text markers (0.640583ms)
+✔ empty or duplicate manifests cannot qualify an empty scan (0.262917ms)
+✔ a timed-out SQL worker yields incomplete coverage and terminates (5.047459ms)
+✔ unexpected fresh predecessor state is not accepted as harmless metadata (0.56425ms)
+✔ observer-looking fence bytes are still matched in the raw diagnostic stream (0.231209ms)
+✔ the acquisition/matching module graph has no product dependencies (0.457458ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 356.8575

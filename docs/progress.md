@@ -43,63 +43,49 @@ that is no longer active.
 ---
 
 
-## Active slice: Account privacy-evidence extension after sync-liveness (`L-1`)
+## Active slice: Failure diagnostics and read-only recovery (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: not started
-blocks_on: resume F-21.4 packaged UI/export/migration/clear evidence with explicit residue scope
+status: in flight
+blocks_on: none; user authorizes unsigned phase commits through recovery and storage/responsiveness
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-12
 ```
 
-**Roadmap position.** Personal Local cutover, source cleanup and packaged offline upgrades are exercised.
-Account remains at [Stage 4 §3.5](./sequencing.md#35-stage-4--the-service), item 5's private creating-member
-ciphertext round trip. The composed Account owner is not mounted in the personal Local app; no real
-Account receipt exists. Prior crypto/durability/admission/decision/parser/oracle evidence retains its
-scope in the [review index](./review/implementation/findings.md). Residue prep is signed `6a9c9c4`, R1
-`27e5b6f`, and the reconciled review intake `1372c39`.
+**Roadmap position.** Personal Local cutover, cleanup and packaged offline upgrades are exercised.
+Account remains the private creating-member ciphertext round trip at Stage 4 §3.5 item 5; it is not
+mounted in the personal app and no real Account receipt exists. Signed baseline `1372c39` precedes
+five unsigned sync-liveness commits ending `f42b4a7`. The privacy extension is the commit containing
+this checkpoint. The active reminder enumerates all unsigned descendants of that signed baseline.
 
-**Closed sequence.** The [sync-liveness repair record](./account-sync-liveness-repairs.md) and
-[combined evidence](./account-conformance-runs/2026-09-12-account-liveness-complete/README.md) close the
-planned bounded private v9 repairs: complete views, incremental crypto and exact content coverage,
-owned network waits, automatic expiry retry, durable send-progress receive wakes, local-only send wakes,
-and bounded service verification reuse. All 12 campaign stages, 890 source pins and the separate full
-999-test unit suite pass. The 24-job run takes about 61 seconds versus the initial 256 seconds;
-terminal status-set median is about 88 ms versus 1,388 ms. This is descriptive one-host evidence,
-not an unlimited-history or release-capacity guarantee. F-07/N-01/N-02/P-01, N-03 and P-02/P-03 are
-closed within the documented scope. Append-only proof history, scans, cold verification and editor
-projection/fork costs remain; full `pnpm check` was not rerun.
+**Closed boundary.** The [privacy extension](./account-conformance-runs/2026-09-12-privacy-extended/README.md)
+passes nine stages, 23 Node cases, 60 generated container and 24 R1 histories, and 899 source pins.
+It covers packaged UI/worker/export/offline restart, synthetic migration/restart/cleanup/clear and
+observable profile/service files. The generated ZIP-prefix instrument defect is repaired with retained
+evidence. Logical cleanup passes; a legacy writing sentinel remains in physical LevelDB after deletion.
+F-21.4 remains partial for supported-platform/C13 opener/opaque-format/fragmentation qualification.
+No forensic-erasure claim follows from a logical clean scan. No production code changed in this phase.
 
-Unsigned commits so far: measurement `0e07fe4`, view reuse `280221e`, incremental verification `879ce38`,
-network/expiry `902d352`. The final scheduler/service/evidence phase is the unsigned commit containing this checkpoint.
-The existing signing reminder is ACTIVE and dynamically enumerates unsigned descendants of `1372c39`.
-The older C–D6 chain was already signed and is not outstanding. No automatic signing/rewrite is enabled.
-The user's authorization to continue through the liveness sequence is fulfilled at this boundary.
+**Now.** Follow the [sequence contract](./account-privacy-recovery-capacity.md): F-10/N-08/P-07 bounded
+redacted diagnostics and typed unsigned hints, then F-09 read-only recovery without silent reset or
+claiming partial writing is a verified complete workspace. Preserve all receipt, authentication and
+commit guards. Then F-16/F-17/F-19 measured maintenance/projection/resource work. Give a chat summary
+and unsigned commit at each verified boundary without stopping for another approval.
 
-**Next bounded work — F-21.4 privacy evidence.** R1's logical carrier campaign is complete. Resume packaged
-UI/service-worker/export/ZIP and synthetic migration/selection/cleanup/Local-clear interruptions.
-Declare permitted pre-cleanup plaintext and required post-cleanup absence. Logical marker absence is
-not copied-profile opener protection or forensic erasure. Physical profile/SQLite/WAL/deleted-byte and
-supported-platform C13 opener evidence remain separate. Do not inspect personal exports or rerun
-personal cleanup for synthetic observations. Define the next trial before starting it.
+**After these categories.** Aggregate release validation F-20/N-06/P-05 and P-06 prose, with explicit
+supported-platform and formal review gates. Private Account cutover and second-device adoption remain
+separate from public shipping. Stage 4 enrollment, membership/revocation/rotation/finalization/recovery,
+platform custody and deployment obligations are not closed by the creating-member trial.
 
-**Other retained work.** F-10/N-08/P-07 and F-09 diagnostics/recovery behavior, F-20/N-06/P-05 aggregate
-validation, P-06 prose and remaining capacity/maintenance findings remain in the review index. Formal
-Stage 0 debts are unchanged. General lineage, successor checkpoints, membership/device management,
-revocation/rotation, clear/delete, finalization/total-loss recovery, PRF enrollment, deployment/restore,
-supported platforms and independent review remain separate.
-
-**V8 and personal scope.** Intermediate Account v8 held no customer or personal dogfood data and will
-not ship; F-08/N-04 and N-09 are disposed by non-shipment, not claimed repair or deletion. Internal v9
-setup/test dependencies may remain. All 21 package files in `dist/` and `.dev/releases/17d87c2/app`, all
-31 prior vectors, historical review annotations and L-2 remain unchanged. Personal preview/relay remain
-stopped; no personal browser/profile/recovery, Account, factor, operator key, pin, origin or routing
-changed. The unrelated root `done ` is untouched. The old second device will adopt the first workspace
-with fresh custody/store/counters/credentials, without importing or merging its earlier writing.
-L-2's historical ref `d24732b` has no further service work to integrate.
+**Preservation.** Intermediate Account v8 will not ship; F-08/N-04/N-09 are disposed by non-shipment.
+All 21 personal package files in `dist/` and `.dev/releases/17d87c2/app`, all 31 prior vectors, archived
+review annotations and L-2 remain unchanged. Personal preview/relay stay stopped. No personal browser,
+profile, recovery files, Account, factor, operator key, pin, origin or routing changed. The unrelated
+root `done ` remains untouched. The old second device will adopt the first workspace with fresh
+custody/store/counters/credentials, without importing its earlier writing.
 
 The completed outcome was appended before this rewrite; L-2 is unchanged.
 

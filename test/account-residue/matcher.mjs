@@ -1,5 +1,6 @@
 /** Neutral detector: no product imports, storage schema, authentication or decryption. */
 import { createHash } from 'node:crypto';
+import { containerParts } from './containers.mjs';
 export const LIMITS = Object.freeze({
   decodeDepth: 8,
   cloneDepth: 64,
@@ -82,11 +83,11 @@ export function matchBytes(input, needles, limits = LIMITS, fault = '', prepared
     const key = hash(bytes);
     if (seen.has(key)) return;
     seen.add(key);
-    if (
+    const compressed =
       (bytes[0] === 0x1f && bytes[1] === 0x8b && bytes[2] === 8) ||
-      bytes.subarray(0, 4).equals(Buffer.from([80, 75, 3, 4]))
-    )
-      issue('unsupported-compressed-container');
+      [0x04034b50, 0x06054b50, 0x08074b50].some(
+        (signature) => bytes.length >= 4 && bytes.readUInt32LE(0) === signature,
+      );
     const candidates = [];
     for (const encoding of ['utf-8', 'utf-16le', 'utf-16be']) {
       try {
@@ -103,6 +104,20 @@ export function matchBytes(input, needles, limits = LIMITS, fault = '', prepared
       }
       visit(next, depth + 1, route + '/' + label);
     };
+    if (compressed) {
+      if (!limits.containers) issue('unsupported-compressed-container');
+      else {
+        try {
+          for (const [i, part] of containerParts(
+            bytes,
+            Math.min(limits.valueBytes, limits.surfaceBytes - expanded),
+          ).entries())
+            descend(part, 'container-' + i);
+        } catch {
+          issue('invalid-unsupported-or-overbudget-container');
+        }
+      }
+    }
     for (const text of new Set(candidates)) {
       if (text.includes('\n'))
         for (const line of text.split('\n')) descend(Buffer.from(line), 'line');

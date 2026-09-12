@@ -1,0 +1,87 @@
+{
+  "status": "failed",
+  "startedAt": "2026-09-12T14:51:13.770Z",
+  "stages": [
+    {
+      "name": "types",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 118
+    },
+    {
+      "name": "neutral",
+      "args": [
+        "--test",
+        "test/account-residue/matcher.test.mjs",
+        "test/account-residue/extended.test.mjs"
+      ],
+      "code": 0,
+      "tests": 13,
+      "timedOut": false,
+      "elapsedMs": 531
+    },
+    {
+      "name": "packaged",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "test/account-residue/packaged.test.mjs"
+      ],
+      "code": 0,
+      "tests": 2,
+      "timedOut": false,
+      "elapsedMs": 14278
+    },
+    {
+      "name": "service-files",
+      "args": [
+        "--test",
+        "test/account-residue/service-files.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 3549
+    },
+    {
+      "name": "r1-calibration",
+      "args": [
+        "--test",
+        "test/account-residue/calibration.test.mjs"
+      ],
+      "code": 0,
+      "tests": 2,
+      "timedOut": false,
+      "elapsedMs": 6012
+    },
+    {
+      "name": "r1-lifecycle",
+      "args": [
+        "--test",
+        "test/account-residue/lifecycle.test.mjs"
+      ],
+      "code": 0,
+      "tests": 3,
+      "timedOut": false,
+      "elapsedMs": 12695
+    },
+    {
+      "name": "r1-generated",
+      "args": [
+        "--test",
+        "test/account-residue/generated.test.mjs"
+      ],
+      "code": 1,
+      "timedOut": false,
+      "elapsedMs": 124726
+    }
+  ],
+  "sourcePins": 899,
+  "error": "Error: Stage failed: r1-generated\n    at run (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/private-release/run.mjs:128:46)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/private-release/run.mjs:145:3",
+  "finishedAt": "2026-09-12T14:53:55.684Z"
+}

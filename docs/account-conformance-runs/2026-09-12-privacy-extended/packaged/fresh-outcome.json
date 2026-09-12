@@ -1,0 +1,7 @@
+{
+  "logical": "passed",
+  "coldReplay": true,
+  "explicitZip": true,
+  "physicalVerdict": "complete-no-prohibited-match",
+  "physicalIssues": []
+}
