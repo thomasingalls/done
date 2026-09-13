@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 122,
     "campaigns": 78,
-    "testFiles": 270,
-    "requiredTestFiles": 264,
+    "testFiles": 271,
+    "requiredTestFiles": 265,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 29,
@@ -4638,25 +4638,8 @@
       "packageCommands": [[["node", "scripts/owned-startup/run.mjs"], {}]],
       "extraCommands": [],
       "referencesVectorChain": false,
-      "runCallSites": [
-        {
-          "line": 190,
-          "form": "run",
-          "arguments": []
-        },
-        {
-          "line": 194,
-          "form": "run",
-          "arguments": ["spec"]
-        }
-      ],
-      "processCallSites": [
-        {
-          "line": 20,
-          "form": "execFileSync",
-          "arguments": ["'git'", "['-C', root, ...args]", "{ encoding: 'utf8' }"]
-        }
-      ]
+      "runCallSites": [],
+      "processCallSites": []
     },
     {
       "path": "scripts/pending-projection/run.mjs",
@@ -8846,6 +8829,26 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/release-validation/owned-startup.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/owned-startup.test.mjs"
+        ]
+      },
+      "declarations": 4,
+      "propertyFamilies": [
+        {
+          "line": 194,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/release-validation/stage.test.mjs",
       "status": "required",
       "invocation": {
@@ -11589,11 +11592,15 @@
     },
     {
       "path": "scripts/owned-startup/run.mjs",
-      "sha256": "529bf735acbdaadf519e7d42a3cdab0c8e9259f46fe03523156944a949149ddb"
+      "sha256": "e1a742c8d33f050bd6fcb71c5a74c944110f374e2e9a3696a0a0900b14fa67a9"
     },
     {
       "path": "scripts/owned-startup/scenarios.mjs",
       "sha256": "0f2450099a9fd24993ed9745b6aba9375dd3d71e77f9310b0e3fb8350ffdec7d"
+    },
+    {
+      "path": "scripts/owned-startup/worker.mjs",
+      "sha256": "3b70c709df81c351f2244525ef46124657b019f1e5b2c2c16040c9ee7316f656"
     },
     {
       "path": "scripts/pending-projection/run.mjs",
@@ -11629,7 +11636,7 @@
     },
     {
       "path": "scripts/release-validation/carrier-adapter.mjs",
-      "sha256": "5617e58e25b0de157cade3250421fc634775b3b63bbc5fc71b362355f6b1c013"
+      "sha256": "93a80e0dbd6ed66181a7754263549a02ebcf03f8bb990272d280699b3f65c0cc"
     },
     {
       "path": "scripts/release-validation/census.mjs",
@@ -11649,7 +11656,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "0d296483654c3f93384e950c6fc8c60635bdf83e6b404cc8b4de7786b1159302"
+      "sha256": "824a460c779d72f23c29ea2ce20828bf5ac97a4e7b29d2fdd82ad121d8c8a051"
     },
     {
       "path": "scripts/release-validation/identity.mjs",
@@ -11665,11 +11672,15 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "da1bbad0290cc02f8da02d3f308584b178a88b9b5afdacfda3489b67b9eac796"
+      "sha256": "d2ae3fb14062c2d02dbe61c8bc71f2454a9bb70571a7f5a910d02cd4acb2df15"
     },
     {
       "path": "scripts/release-validation/node-reporter.mjs",
       "sha256": "44d9688f07ac5b1698a9569cf68448cd87550cdc0ebb35c358f07a314d56adbd"
+    },
+    {
+      "path": "scripts/release-validation/owned-startup-adapter.mjs",
+      "sha256": "586752d7d23bee1f9ec998cd31228d53f7a362ff2b7550c3269e535433b13124"
     },
     {
       "path": "scripts/release-validation/plan.mjs",
@@ -11693,7 +11704,7 @@
     },
     {
       "path": "scripts/release-validation/stage.mjs",
-      "sha256": "d65ac05cb96af02d0eae52fab2163c6be360d40b80bd7e5044767001c4d56aad"
+      "sha256": "c9ad86070825e7c1b9bd1711f6f25a5e1db68925b4f41fa57f4cb347867c4fa2"
     },
     {
       "path": "scripts/release-validation/workspace-admission-adapter.mjs",
@@ -13474,6 +13485,10 @@
     {
       "path": "test/release-validation/manifest.test.mjs",
       "sha256": "f0fcfe4e75052c2cb1c9fc9dafba27ef48bc44f17c0df099afe182ad89e49b99"
+    },
+    {
+      "path": "test/release-validation/owned-startup.test.mjs",
+      "sha256": "a009c73d1b9b2e8d8c0f7de4f44e829962544e68e7be6dfff6974bc4feb7174f"
     },
     {
       "path": "test/release-validation/stage.test.mjs",

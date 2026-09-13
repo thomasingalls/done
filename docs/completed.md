@@ -3693,3 +3693,30 @@ The manifest has 600 obligations with 433 unresolved, covering 264 required test
 P-06 and immutable aggregate validation. No personal operation occurred; prior vectors, historical
 reviews/debts and L-2 are unchanged. This workspace-admission phase remains uncommitted.
 Appended before replacing L-1.
+
+
+## 2026-09-13 — Owned-startup catalogue execution adapter, phase 2g (`L-1`)
+
+Committed workspace-admission unsigned as `ddd77a3`, preserving review-tracked hashes. Connected the
+retained-workspace startup catalogue to the shared disposable owner: 15 baselines/96 assertions and
+three mutations pass. The explicit binding retains candidate `startup`, scope `owned-startup-browser`
+and full source paths. Probe side effects, orphan classification and reclassification after permit grant
+each require their own changed source bytes and specific failing assertion. Tagged evidence preserves
+zero mounted editors/channels and undefined writing/export values in refused or pending opens.
+Original scenarios, catalogue patches and production code are unchanged.
+
+The [bounded evidence](./account-conformance-runs/2026-09-13-owned-startup-adapter/README.md) retains the
+full native run, selected classification cases and all three mutations, baseline-only replay/cancel/
+renderer-restart cases, the nested workspace-history regression and seven native ownership controls.
+The full stage took 41.6 seconds inside its 120-second deadline; the command took 62.9 seconds including
+preparation/final checks. Four new tests include 160 generated startup selections, bringing non-native
+runner controls to 59 tests and 1,440 generated validation histories. Eleven disposable infrastructure
+stages pass 44 cases and two static checks. These are adapter controls and one-host observations, not
+additional product histories or complete startup/platform qualification.
+
+The manifest has 601 obligations with 430 unresolved, covering 265 required test files and the same
+163 catalogue cases/54 mutations. Five catalogue adapters remain (81 cases/27 mutations); Local genesis
+with 17 cases/four mutations is next. Remaining test families, wrapper postconditions and deadlines
+precede P-06 and immutable aggregate validation. No personal operation occurred; prior vectors,
+historical reviews/debts and L-2 are unchanged. This owned-startup phase remains uncommitted.
+Appended before replacing L-1.

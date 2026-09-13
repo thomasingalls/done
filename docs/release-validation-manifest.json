@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "inventoryDigest": "665d3084e7a8d6dfcc2eac6c2079e3ccc733a2382790e2135007341ed963c88e",
+  "inventoryDigest": "c25e459daf4d456a1c0a0c41b68234a8017b82cca97531ea1180e97a0953704a",
   "status": "blocked",
   "claim": "Execution obligations and certified bounded selections. No aggregate result. Blocked obligations cannot be credited.",
   "rows": [
@@ -2816,6 +2816,50 @@
       }
     },
     {
+      "id": "test:test/release-validation/owned-startup.test.mjs",
+      "kind": "test",
+      "path": "test/release-validation/owned-startup.test.mjs",
+      "stage": {
+        "id": "test:test/release-validation/owned-startup.test.mjs",
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "--test-reporter=./scripts/release-validation/node-reporter.mjs",
+          "test/release-validation/owned-startup.test.mjs"
+        ],
+        "env": {},
+        "variant": "current",
+        "expect": {
+          "kind": "cases",
+          "cases": [
+            {
+              "id": "test/release-validation/owned-startup.test.mjs::owned startup binds fifteen cases and three full-path mutations with distinct census and replay selections",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/owned-startup.test.mjs::startup probes and post-grant classification need their own changed source and specific failing assertion",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/owned-startup.test.mjs::startup refuses unbound reports and preserves no-exposure evidence through serialization",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/owned-startup.test.mjs::160 generated startup selections reject omitted probes and substituted refusal evidence",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 60000,
+        "graceMs": 1000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
+    },
+    {
       "id": "test:test/release-validation/stage.test.mjs",
       "kind": "test",
       "path": "test/release-validation/stage.test.mjs",
@@ -4102,7 +4146,81 @@
           "outcome": "detected"
         }
       ],
-      "blocked": "Exact catalogue cases and discriminating mutation assertions are resolved; native report and process ownership adapters remain."
+      "stage": {
+        "id": "catalogue:scripts/owned-startup/catalog.mjs",
+        "argv": [
+          "node",
+          "scripts/owned-startup/worker.mjs",
+          "--case",
+          "O01.absence,O02.orphan,O03.missing-content,O04.missing-custody,O05.routing,O06.legacy,O07.creation,O08.clear,O09.corrupt,O10.factor,O11.recheck,O12.replay,O13.init-death,O14.future,O15.scope"
+        ],
+        "env": {},
+        "variant": "owned-startup-8b3c02552b3387e11ffce41e8f895712dafbae75ebfc1e76a68a66963a0770e9",
+        "expect": {
+          "kind": "owned-startup",
+          "selection": {
+            "cases": [
+              { "id": "O01.absence", "outcome": "pass" },
+              { "id": "O02.orphan", "outcome": "pass" },
+              { "id": "O03.missing-content", "outcome": "pass" },
+              { "id": "O04.missing-custody", "outcome": "pass" },
+              { "id": "O05.routing", "outcome": "pass" },
+              { "id": "O06.legacy", "outcome": "pass" },
+              { "id": "O07.creation", "outcome": "pass" },
+              { "id": "O08.clear", "outcome": "pass" },
+              { "id": "O09.corrupt", "outcome": "pass" },
+              { "id": "O10.factor", "outcome": "pass" },
+              { "id": "O11.recheck", "outcome": "pass" },
+              { "id": "O12.replay", "outcome": "pass" },
+              { "id": "O13.init-death", "outcome": "pass" },
+              { "id": "O14.future", "outcome": "pass" },
+              { "id": "O15.scope", "outcome": "pass" }
+            ],
+            "mutants": [
+              {
+                "id": "probe-creates-database",
+                "case": "O01.absence",
+                "assertion": "preflight-no-database-side-effects",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/startupStorage.ts",
+                  "from": "request.transaction!.abort();",
+                  "to": ";"
+                }
+              },
+              {
+                "id": "orphan-is-fresh",
+                "case": "O02.orphan",
+                "assertion": "orphan-not-fresh",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/startupClassification.ts",
+                  "from": "if (rows.length || disk || journal)",
+                  "to": "if (false)"
+                }
+              },
+              {
+                "id": "skip-open-classification",
+                "case": "O11.recheck",
+                "assertion": "open-rechecks-after-grant",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/ownedStartup.ts",
+                  "from": "classified = await classifyUnderPermit(task, authority);",
+                  "to": "const verified = await authority.resolveIdentity(task, null); classified = {scope: {slotId: authority.slotId, workspaceId: authority.workspaceId, principalId: verified.principalId}, storeId: 'unverified', dbName: 'unverified'};"
+                }
+              }
+            ]
+          }
+        },
+        "fixture": { "kind": "chromium-cdp", "startupMs": 15000 },
+        "deadlineMs": 120000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 4194304,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     },
     {
       "id": "catalogue:scripts/workspace-admission/catalog.mjs",
@@ -5353,7 +5471,7 @@
       "argv": ["node", "scripts/owned-startup/run.mjs"],
       "env": {},
       "orderedAfter": ["command:check:53"],
-      "blocked": "Preserve this exact command/environment variant and its nested selections/postconditions; execution adapter not certified."
+      "requires": ["catalogue:scripts/owned-startup/catalog.mjs"]
     },
     {
       "id": "command:check:55",
@@ -7594,11 +7712,8 @@
       "id": "campaign:scripts/owned-startup/run.mjs",
       "kind": "campaign",
       "path": "scripts/owned-startup/run.mjs",
-      "callSites": [
-        { "line": 190, "form": "run", "arguments": [] },
-        { "line": 194, "form": "run", "arguments": ["spec"] }
-      ],
-      "blocked": "Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit."
+      "callSites": [],
+      "requires": ["catalogue:scripts/owned-startup/catalog.mjs"]
     },
     {
       "id": "campaign:scripts/pending-projection/run.mjs",
@@ -9697,7 +9812,6 @@
     "catalogue:scripts/custody/catalog.mjs",
     "catalogue:scripts/local-clear/catalog.mjs",
     "catalogue:scripts/local-genesis/catalog.mjs",
-    "catalogue:scripts/owned-startup/catalog.mjs",
     "catalogue:scripts/write-session/catalog.mjs",
     "command:build:0",
     "command:build:1",
@@ -9723,7 +9837,6 @@
     "command:check:51",
     "command:check:52",
     "command:check:53",
-    "command:check:54",
     "command:check:55",
     "command:check:56",
     "command:check:57",
@@ -9862,7 +9975,6 @@
     "campaign:scripts/legacy-source/run.mjs",
     "campaign:scripts/local-clear/run.mjs",
     "campaign:scripts/local-genesis/run.mjs",
-    "campaign:scripts/owned-startup/run.mjs",
     "campaign:scripts/pending-projection/run.mjs",
     "campaign:scripts/private-release/run.mjs",
     "campaign:scripts/storage-properties/run.mjs",
@@ -9880,6 +9992,7 @@
       "test:test/release-validation/inventory.test.mjs",
       "test:test/release-validation/journal.test.mjs",
       "test:test/release-validation/manifest.test.mjs",
+      "test:test/release-validation/owned-startup.test.mjs",
       "test:test/release-validation/workspace-admission.test.mjs",
       "command:check:35",
       "command:validation:inventory:0"
@@ -9921,6 +10034,7 @@
     "admission": ["catalogue:scripts/admission/catalog.mjs"],
     "editor-admission": ["catalogue:scripts/editor-admission/catalog.mjs"],
     "workspace-admission": ["catalogue:scripts/workspace-admission/catalog.mjs"],
+    "owned-startup": ["catalogue:scripts/owned-startup/catalog.mjs"],
     "release": [
       "test:test/account-activation/controls.test.mjs",
       "test:test/account-activation/core.test.mjs",
@@ -10148,6 +10262,7 @@
       "test:test/release-validation/inventory.test.mjs",
       "test:test/release-validation/journal.test.mjs",
       "test:test/release-validation/manifest.test.mjs",
+      "test:test/release-validation/owned-startup.test.mjs",
       "test:test/release-validation/stage.test.mjs",
       "test:test/release-validation/workspace-admission.test.mjs",
       "test:test/reorder.test.ts",

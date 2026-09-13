@@ -1,21 +1,21 @@
-# Release-validation execution — foundation and five catalogue adapters
+# Release-validation execution — foundation and six catalogue adapters
 
 The inventory is committed unsigned as `f13bdd1`, the foundation as `f14c68f`,
-content as `b9f0984`, journal as `1a86453`, admission as `4fc3af0` and editor-admission as `3f1afc5`.
+content as `b9f0984`, journal as `1a86453`, admission as `4fc3af0`, editor-admission as `3f1afc5` and workspace-admission as `ddd77a3`.
 The foundation supplies a finite obligation manifest,
 an exact-case Node adapter, a shared bounded stage runner and a disposable execution entrypoint.
 It **does not complete the release execution graph**. The original phase-2 proposal grouped the
 runner foundation and every native/wrapper adapter together; inspection showed that the latter
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
-The [manifest](./release-validation-manifest.json) now contains 600 obligations, including all 264 current
+The [manifest](./release-validation-manifest.json) now contains 601 obligations, including all 265 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**433 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**430 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -34,6 +34,7 @@ node scripts/release-validation/execute.mjs --selection journal
 node scripts/release-validation/execute.mjs --selection admission
 node scripts/release-validation/execute.mjs --selection editor-admission
 node scripts/release-validation/execute.mjs --selection workspace-admission
+node scripts/release-validation/execute.mjs --selection owned-startup
 ```
 
 The first two commands check reviewed snapshots. Planning may report `blocked` while the snapshot
@@ -42,8 +43,9 @@ nonzero. `execute.mjs --selection release` likewise refuses; it is not a partial
 After reviewing input or selection changes, explicitly regenerate the inventory with `check.mjs
 --record`, then the manifest with `plan.mjs --record`. Each artifact has a 700 kB ceiling.
 
-`infrastructure` runs ten stages: the identity, inventory, manifest, content-adapter, journal-adapter,
-admission-adapter, editor-admission-adapter and workspace-admission-adapter test files (40 exact cases),
+`infrastructure` runs eleven stages: the identity, inventory, manifest, content-adapter, journal-adapter,
+admission-adapter, editor-admission-adapter, workspace-admission-adapter and owned-startup-adapter test files
+(44 exact cases),
 the live authority/registry check and the inventory freshness check. It does not run the package
 `check` chain, traceability, native browsers, the crypto-audit campaign or the release aggregate.
 The process-control and native content-ownership test files run separately because they deliberately
@@ -310,13 +312,46 @@ and campaign alias resolve; passing a catalogue does not discharge the enclosing
 Full application startup/classification, migration, compaction, Account authority and native IME/device
 coverage remain outside the original workspace fixture. No production behavior was changed here.
 
+## Owned-startup catalogue adapter — phase 2g
+
+The retained-workspace startup catalogue passes **15 baseline cases, 96 assertions and three mutations**
+through the shared owner. Candidate `startup`, scope `owned-startup-browser` and full patch paths are
+explicit bindings. The worker copies the complete runtime source population, keeps overlays inside the
+disposable checkout and binds Vite to OS-assigned loopback ports. The original absence, orphan/missing/
+misrouted carrier, legacy route, interrupted creation, clear marker, corrupt ciphertext, factor,
+post-grant reclassification, cancelled replay, renderer restart, future schema and independent-workspace
+scenarios are unchanged. Fixture database enumeration detects side effects while production-path
+`indexedDB.databases()` remains disabled and asserted unused.
+
+The mutations create a database during a probe, misclassify surviving orphan material as fresh, and
+skip classification after acquiring the shared lifetime. Each must change its own pinned source and
+fail its specific previously passing assertion; another refusal or an earlier inspection cannot stand
+in for that evidence. Tagged reports retain zero mounts/channels and unavailable writing/export values
+through JSON serialization. Missing values, null and false substitutions refuse. Four new adapter tests
+include 160 generated subsets and evidence faults (seed 130909). All 59 non-native runner controls pass,
+including 1,440 generated validation histories.
+
+The [bounded evidence](./account-conformance-runs/2026-09-13-owned-startup-adapter/README.md) retains the
+full campaign, selected absence/orphan/recheck cases with all three mutations, baseline-only replay/
+restart and a selected nested workspace-history regression. Seven native ownership controls pass.
+Eleven infrastructure stages pass 44 exact cases and two static checks. The full stage took **41.6
+seconds** inside its 120-second deadline; the command took 62.9 seconds including preparation/final
+checks. These observations do not qualify a device population. Startup/drain/log/report bounds remain.
+
+Standalone case/no-mutant/output options and JSON/Markdown reports remain supported; browser overrides
+and existing outputs refuse. Default catalogue, exact package leaf and campaign alias resolve without
+crediting enclosing wrapper postconditions. Synthetic enrollment, Local identity/index installation and
+receive authority remain fixture boundaries. Creation/migration resumption, clear execution, default-app
+cutover, Account authority, OS/power-loss and native IME/device qualification remain outside this
+catalogue. No production behavior was changed here.
+
 ## Next bounded integration
 
-Integrate owned-startup's **15 baseline cases and three mutations**, reviewing classification,
-existing-store opening, refusal/repair and startup ownership assertions first. Then resolve remaining
-catalogue, Node, Vitest, Playwright and wrapper families with their postconditions and measured deadlines.
-Six catalogues (96 cases/30 mutations) still need adapters. Vector reuse becomes meaningful when consumers
-depend on the same successful identity.
+Integrate Local genesis's **17 baseline cases and four mutations**, reviewing factor confirmation,
+creator races, generated crash boundaries, authenticated resumption and index exclusion first. Then
+resolve remaining catalogue, Node, Vitest, Playwright and wrapper families with their postconditions and
+measured deadlines. Five catalogues (81 cases/27 mutations) still need adapters. Vector reuse becomes
+meaningful when consumers depend on the same successful identity.
 
 Only after every required obligation resolves should P-06's prose sweep and the complete selected
 immutable run proceed. No personal app/server/profile, release deployment or Account cutover is

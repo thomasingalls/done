@@ -1,0 +1,261 @@
+[
+  {
+    "label": "passing-full",
+    "selection": "standalone-owned-startup",
+    "source": "test-results/owned-startup/2026-09-13T11-50-50.078Z",
+    "status": "passed",
+    "input": "10cde272f290717a7c270ff8633433186ca8d843dadecbd3650574e4536ef00b",
+    "stageCases": [
+      18
+    ],
+    "stageElapsedMs": [
+      41588
+    ],
+    "totalMs": 62921,
+    "native": [
+      {
+        "scope": "owned-startup-browser",
+        "baselineAssertions": 96,
+        "baselines": 15,
+        "mutants": 3,
+        "mutations": [
+          {
+            "id": "probe-creates-database",
+            "assertion": "preflight-no-database-side-effects",
+            "status": "detected"
+          },
+          {
+            "id": "orphan-is-fresh",
+            "assertion": "orphan-not-fresh",
+            "status": "detected"
+          },
+          {
+            "id": "skip-open-classification",
+            "assertion": "open-rechecks-after-grant",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "startup",
+            "origin": "http://127.0.0.1:62557",
+            "closed": true
+          },
+          {
+            "variant": "probe-creates-database",
+            "origin": "http://127.0.0.1:62683",
+            "closed": true
+          },
+          {
+            "variant": "orphan-is-fresh",
+            "origin": "http://127.0.0.1:62690",
+            "closed": true
+          },
+          {
+            "variant": "skip-open-classification",
+            "origin": "http://127.0.0.1:62699",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/owned-startup/2026-09-13T11-50-50.078Z/stages/bfd9151866f81cf37257f23e82edeabc18320879285075023963b12cd46a9072/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-census",
+    "selection": "standalone-owned-startup",
+    "source": "test-results/owned-startup-adapter-selected-census",
+    "status": "passed",
+    "input": "10cde272f290717a7c270ff8633433186ca8d843dadecbd3650574e4536ef00b",
+    "stageCases": [
+      6
+    ],
+    "stageElapsedMs": [
+      22221
+    ],
+    "totalMs": 40974,
+    "native": [
+      {
+        "scope": "owned-startup-browser",
+        "baselineAssertions": 20,
+        "baselines": 3,
+        "mutants": 3,
+        "mutations": [
+          {
+            "id": "probe-creates-database",
+            "assertion": "preflight-no-database-side-effects",
+            "status": "detected"
+          },
+          {
+            "id": "orphan-is-fresh",
+            "assertion": "orphan-not-fresh",
+            "status": "detected"
+          },
+          {
+            "id": "skip-open-classification",
+            "assertion": "open-rechecks-after-grant",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "startup",
+            "origin": "http://127.0.0.1:62738",
+            "closed": true
+          },
+          {
+            "variant": "probe-creates-database",
+            "origin": "http://127.0.0.1:62768",
+            "closed": true
+          },
+          {
+            "variant": "orphan-is-fresh",
+            "origin": "http://127.0.0.1:62778",
+            "closed": true
+          },
+          {
+            "variant": "skip-open-classification",
+            "origin": "http://127.0.0.1:62786",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/owned-startup-adapter-selected-census/stages/4ece36620783dc70551f8276674638c667d2520a5ffb1bc0769840c0e55558b5/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-baseline",
+    "selection": "standalone-owned-startup",
+    "source": "test-results/owned-startup-adapter-baseline-replay",
+    "status": "passed",
+    "input": "10cde272f290717a7c270ff8633433186ca8d843dadecbd3650574e4536ef00b",
+    "stageCases": [
+      2
+    ],
+    "stageElapsedMs": [
+      17410
+    ],
+    "totalMs": 40309,
+    "native": [
+      {
+        "scope": "owned-startup-browser",
+        "baselineAssertions": 15,
+        "baselines": 2,
+        "mutants": 0,
+        "mutations": [],
+        "servers": [
+          {
+            "variant": "startup",
+            "origin": "http://127.0.0.1:62825",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/owned-startup-adapter-baseline-replay/stages/37763cd30198d686662ab9b705cc2cee57df6db3045d833f3749d1621787bd20/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "workspace-regression",
+    "selection": "standalone-workspace-admission",
+    "source": "test-results/owned-startup-adapter-workspace-regression",
+    "status": "passed",
+    "input": "10cde272f290717a7c270ff8633433186ca8d843dadecbd3650574e4536ef00b",
+    "stageCases": [
+      2
+    ],
+    "stageElapsedMs": [
+      10202
+    ],
+    "totalMs": 33930,
+    "native": [
+      {
+        "scope": "workspace-admission-browser",
+        "baselineAssertions": 9,
+        "baselines": 1,
+        "mutants": 1,
+        "mutations": [
+          {
+            "id": "lost-redone-links",
+            "assertion": "undo-edit-in-restored-card",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "workspace",
+            "origin": "http://127.0.0.1:62896",
+            "closed": true
+          },
+          {
+            "variant": "lost-redone-links",
+            "origin": "http://127.0.0.1:62917",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "passing-infrastructure",
+    "selection": "infrastructure",
+    "source": "test-results/release-validation/2026-09-13T11-54-25.611Z",
+    "status": "passed",
+    "input": "671e7b34e5578ce7a5bc0efe2520dd8671eaf286b90fb6163cae750f9b7de0b3",
+    "stageCases": [
+      4,
+      3,
+      5,
+      4,
+      10,
+      4,
+      6,
+      4,
+      4,
+      null,
+      null
+    ],
+    "stageElapsedMs": [
+      2155,
+      1930,
+      1979,
+      4297,
+      1754,
+      1937,
+      2008,
+      1957,
+      2007,
+      5602,
+      2150
+    ],
+    "totalMs": 56021,
+    "native": []
+  }
+]

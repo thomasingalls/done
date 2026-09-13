@@ -8,6 +8,7 @@ import { hash, digest } from './identity.mjs';
 
 // Candidate names and patch paths are protocol-specific, not derived from report labels.
 const bindings = Object.freeze({
+  'owned-startup': { scope: 'owned-startup-browser', candidate: 'startup', patchPrefix: '' },
   content: { scope: 'content-carrier-browser', candidate: 'content', patchPrefix: 'src/crdt/' },
   journal: { scope: 'journal-carrier-browser', candidate: 'journal', patchPrefix: 'src/crdt/' },
   admission: {
@@ -117,10 +118,10 @@ export function reconcileCarrier(family, selection, actual, { nonce, sources, ro
     )
     .sort();
   assert(sourcePaths.length, 'Missing independent carrier source pins');
-  if (['editor-admission', 'workspace-admission'].includes(family))
+  if (['editor-admission', 'workspace-admission', 'owned-startup'].includes(family))
     assert.equal(actual.evidenceEncoding, evidenceEncoding, 'Missing assertion encoding');
   const check = (report, ids, mutation = null) => {
-    if (['editor-admission', 'workspace-admission'].includes(family))
+    if (['editor-admission', 'workspace-admission', 'owned-startup'].includes(family))
       for (const row of report.cases)
         for (const a of row.assertions) {
           validateEvidence(a.actual);

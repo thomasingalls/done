@@ -10,6 +10,7 @@ import { journalStage } from './journal-adapter.mjs';
 import { admissionStage } from './admission-adapter.mjs';
 import { editorAdmissionStage } from './editor-admission-adapter.mjs';
 import { workspaceAdmissionStage } from './workspace-admission-adapter.mjs';
+import { ownedStartupStage } from './owned-startup-adapter.mjs';
 
 export const boundedStage = (id, argv, expect, extra = {}) => ({
   id,
@@ -90,6 +91,7 @@ export function compileManifest(root, inventory) {
     'test/release-validation/admission.test.mjs',
     'test/release-validation/editor-admission.test.mjs',
     'test/release-validation/workspace-admission.test.mjs',
+    'test/release-validation/owned-startup.test.mjs',
   ]);
   for (const t of inventory.tests) {
     if (t.status !== 'required') {
@@ -139,6 +141,7 @@ export function compileManifest(root, inventory) {
       ['scripts/admission/run.mjs', admissionStage],
       ['scripts/editor-admission/run.mjs', editorAdmissionStage],
       ['scripts/workspace-admission/run.mjs', workspaceAdmissionStage],
+      ['scripts/owned-startup/run.mjs', ownedStartupStage],
     ]).get(catalogue.runner);
     add({
       id: 'catalogue:' + catalogue.path,
@@ -206,6 +209,8 @@ export function compileManifest(root, inventory) {
       row.requires = ['catalogue:scripts/editor-admission/catalog.mjs'];
     else if (command.argv.join(' ') === 'node scripts/workspace-admission/run.mjs')
       row.requires = ['catalogue:scripts/workspace-admission/catalog.mjs'];
+    else if (command.argv.join(' ') === 'node scripts/owned-startup/run.mjs')
+      row.requires = ['catalogue:scripts/owned-startup/catalog.mjs'];
     else if (command.argv.join(' ') === 'node scripts/release-validation/check.mjs')
       row.stage = boundedStage(id, command.argv, { kind: 'exit', exitCodes: [0] });
     else if (command.argv.join(' ') === 'node scripts/check-authority-map.mjs')
@@ -230,6 +235,7 @@ export function compileManifest(root, inventory) {
         'scripts/admission/run.mjs',
         'scripts/editor-admission/run.mjs',
         'scripts/workspace-admission/run.mjs',
+        'scripts/owned-startup/run.mjs',
       ].includes(c.path)
         ? { requires: ['catalogue:' + c.path.replace('/run.mjs', '/catalog.mjs')] }
         : {
@@ -310,6 +316,9 @@ export function compileManifest(root, inventory) {
         : {}),
       ...(byId.has('catalogue:scripts/workspace-admission/catalog.mjs')
         ? { 'workspace-admission': ['catalogue:scripts/workspace-admission/catalog.mjs'] }
+        : {}),
+      ...(byId.has('catalogue:scripts/owned-startup/catalog.mjs')
+        ? { 'owned-startup': ['catalogue:scripts/owned-startup/catalog.mjs'] }
         : {}),
       release: rows.map((r) => r.id),
     },

@@ -62,6 +62,7 @@ export function validateStage(stage) {
       'admission',
       'editor-admission',
       'workspace-admission',
+      'owned-startup',
     ].includes(stage.expect?.kind),
     'Unresolved result adapter',
   );
@@ -91,9 +92,14 @@ export function validateStage(stage) {
     }
   }
   if (
-    ['content', 'journal', 'admission', 'editor-admission', 'workspace-admission'].includes(
-      stage.expect.kind,
-    )
+    [
+      'content',
+      'journal',
+      'admission',
+      'editor-admission',
+      'workspace-admission',
+      'owned-startup',
+    ].includes(stage.expect.kind)
   ) {
     assert.equal(
       stage.argv[1],
@@ -261,6 +267,7 @@ export function createStageRunner({
       RELEASE_ADMISSION_OUTPUT: join(workerOutput, 'admission'),
       RELEASE_EDITOR_ADMISSION_OUTPUT: join(workerOutput, 'editor-admission'),
       RELEASE_WORKSPACE_ADMISSION_OUTPUT: join(workerOutput, 'workspace-admission'),
+      RELEASE_OWNED_STARTUP_OUTPUT: join(workerOutput, 'owned-startup'),
     };
     const started = Date.now();
     let reason = signal?.aborted ? 'cancelled' : null,
@@ -431,9 +438,14 @@ export function createStageRunner({
         );
         const reported = JSON.parse(readFileSync(report, 'utf8'));
         if (
-          ['content', 'journal', 'admission', 'editor-admission', 'workspace-admission'].includes(
-            stage.expect.kind,
-          )
+          [
+            'content',
+            'journal',
+            'admission',
+            'editor-admission',
+            'workspace-admission',
+            'owned-startup',
+          ].includes(stage.expect.kind)
         ) {
           const cases = reconcileCarrier(stage.expect.kind, stage.expect.selection, reported, {
             nonce,
