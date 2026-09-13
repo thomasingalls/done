@@ -43,53 +43,62 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — browser receive-transport fixtures (`L-1`)
+## Active slice: General validation-runner integration — browser receive-driver fixtures (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; next bounded implementation reviews browser receive-transport fixtures and their ownership
+blocks_on: none; next bounded implementation reviews receive polling/reconnect fixtures and ownership
 debts: consult docs/review/remediation/debts.json
-updated: 2026-09-13
+updated: 2026-09-14
 ```
 
-**Just completed.** Delivery-oracle/parser fixtures are signed and verified as `a20e678`; preparation
-`950fe83`, contracts `8db2ee7`, ledger `54722df`, isolation `01c4447`, delivery/inbound `dbf5eb5`,
-service `95fa715`, Account `5334a7c`, generated registrations `f9111ea`, general adapters `38e4995`,
-properties `8acdee4`, R-01 `5872dc5`. [Shared transport service fixtures](./release-validation-execution.md#shared-transport-service-fixtures--phase-2x)
-add three files / ten cases. Their existing Node adapter needs no runtime change. A stale maximum-size
-fixture now distinguishes R-01 fresh admission from historical readback, with a pinned historical
-producer and an additional current admission-edge case. Product code and prior contracts are unchanged.
-This phase is uncommitted.
+**Commit boundary.** Transport service fixtures remain staged at tree `6abb609`; the SSH signing agent refused the requested commit. Signing is pending; new phase changes remain unstaged.
+Delivery-oracle/parser fixtures are signed `a20e678`; preparation `950fe83`, contracts `8db2ee7`,
+ledger `54722df`, isolation `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`,
+generated registrations `f9111ea`, general adapters `38e4995`, properties `8acdee4`, R-01 `5872dc5`.
 
-**Evidence.** The disposable selection passes in 89.377 seconds; every worker group drains.
-All 92 pure adapter tests, direct TypeScript, scoped style, planning and authority pass. The
-[packet](./account-conformance-runs/2026-09-13-transport-service-fixtures/README.md) preserves full
-receipts, exact patch, source/helper pins, the historical source, prior evidence and preservation.
-The sixty histories retain seed 9112026, endOnFailure:true and the 45-second timeout. Both authorization
-mutations remain effective. The first owned run exposed the stale size assumption; the expanded
-historical case then hit its old 40-second timeout. Its final 90 seconds matches the equivalent
-inbound fixture, with the outer three-minute bound unchanged. Both failures are retained. These
-fixtures exercise direct service calls and connection reopen, not HTTP/browser or process crashes.
-All 164 prior contracts / 1,403 identities retain earlier evidence. Unchanged owner/Vitest-process/
-native controls (23/5/12) retain their previous evidence; the relevant sources and logs are pinned.
+**Just completed.** [Browser receive-transport fixtures](./release-validation-execution.md#browser-receive-transport-fixtures--phase-2y)
+add three files / fourteen cases: controls 4, generated 1, native 9. Existing borrowed-CDP ownership
+suffices. Product code, controls/generated tests and all helpers are unchanged. The native overflow assertion
+now requires the exact R-01 refusal, retaining no-cursor/no-storage-change checks. Each file retains its existing
+90/330/120-second wrapper deadline, and generated histories retain all sixteen runs, seed 9112042,
+endOnFailure:true and the 300-second test bound. This new phase is uncommitted.
+
+**Evidence.** The selection passes in 411.739 seconds; every worker and browser group drains.
+All 92 pure controls, 12 native ownership controls, direct TypeScript, scoped style, planning and
+authority pass. The [packet](./account-conformance-runs/2026-09-13-receive-transport-fixtures/README.md) retains full receipts, browser/source identities, exact patch,
+prior contracts and preservation. Four source omissions remain effective. Directed cases exercise
+real HTTP, controlled failures, cancellation drain, ordered publication and renderer crash/cold
+retry; generated histories compare text, receive prefix and capture count at each step. Their signed
+fixture pages do not establish generated real-service/network histories. Reopen is a fresh page in
+the same context, not a browser or power-loss test. An initial new planning assertion named the
+nonexistent receive-polling path; corrected to the actual still-blocked receive-driver file, with
+failure log retained. The first owned run also exposed the stale native overflow assertion; eight
+other native cases passed and both groups drained. The exact-refusal repair passes in the final
+full selection within unchanged bounds. Full initial receipts are retained.
+
+All 167 prior contracts / 1,413 identities remain unchanged. Unchanged Node owner/Vitest-process
+controls (23/5) retain pinned earlier evidence. The execution retains its actual `a20e678`
+HEAD and full frozen source fingerprint, including the staged transport service work. It is not an
+immutable aggregate or a substitute for wrapper/output postconditions.
 
 **Open validation observation.** The ledger phase's first owner run reported orphaned-child on an
 expected-pass historical service-path control. Its log remains; teardown removed its first receipt.
 Cause remains unresolved despite later passes. Optional pre-cleanup capture retains later control
 receipts. Investigate at the owner/loaded-host reliability gate; this phase establishes no fix.
 
-**Next bounded phase.** Review `test/account-receive-transport/controls.test.mjs`, `generated.test.mjs`
-and `native.test.mjs`, their shared browser/service setup and owned lifetime. General selections now
-contain 167 files / 1,413 cases: all 96 Vitest and 71 Node files. There are 612 obligations / 250
-blocked rows: 91 test-file (75 Node, sixteen Playwright), 96 command, 63 campaign. These are integration
-obligations, not 250 product defects. The 627,361-byte manifest stays below 700 kB; all eleven catalogues
-remain resolved (163 cases / 54 mutations). Other Node/native/Playwright owners, nested owners and
-wrappers follow. Optional JSON exports require saved-output postconditions. Keep retired-v8 exclusions
-and resolve remaining wrapper calls without reviving support. R-04 style scopes/full checks and P-06
-prose precede the immutable aggregate, private Account prep and human adoption.
+**Next bounded phase.** Review `test/account-receive-driver/controls.test.mjs`, `generated.test.mjs`,
+`native-controls.test.mjs` and `native.test.mjs`, covering polling/reconnect and shared fixture lifetime.
+General selections now contain 170 files / 1,427 cases: all 96 Vitest and 74 Node files. There are
+612 obligations / 247 blocked rows: 88 test-file (72 Node, sixteen Playwright), 96 command, 63 campaign.
+These are integration obligations, not 247 product defects. The 630,760-byte manifest
+stays below 700 kB. All eleven catalogues remain resolved (163 cases / 54 mutations). Other Node/native/
+Playwright and nested owners, plus wrapper/output postconditions, follow. Keep retired-v8 exclusions
+and resolve remaining old wrapper calls without reviving support. R-04 style scopes/full checks and
+P-06 prose precede the immutable aggregate, private Account prep and human adoption.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;
@@ -101,8 +110,8 @@ F-07/F-17/F-19 workload capacity and Q-08 publication/evidence policy remain vis
 
 **Preservation.** All 21 pinned personal/package files, 31 prior vectors and L-2 remain byte-identical.
 Personal browser/profile/recovery/factor/key/service/origin/routing and root `done ` remain untouched.
-Historical review/intake/evidence bytes, formal debts and signing backups are unchanged. The signing
-sweep and normal subsequent signatures are complete; the aggregate needs its own signed revision.
+Historical review/intake/evidence bytes, formal debts and signing backups are unchanged. The earlier
+signing sweep remains complete; any pending phase commit above is separate from that sweep.
 
 ---
 

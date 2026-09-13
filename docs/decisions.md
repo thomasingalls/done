@@ -2629,3 +2629,19 @@ The historical fixture's added seeding and retry work needs the same finite 90-s
 already used by the equivalent inbound historical fixture. Retain its earlier 40-second timeout as
 failed evidence and keep the outer owner bound unchanged. Preserve the old wrapper/browser exclusions;
 shared service evidence does not revive support for the retired v8 product lifecycle.
+
+
+## 2026-09-14 — Receive-transport browser fixtures preserve their whole-file bounds
+
+The three receive-transport test files enter the existing inherited-group adapter with an owned
+Chromium/CDP fixture and an explicit selection. Preserve their original wrapper deadlines separately:
+controls 90 seconds, generated 330 seconds and native 120 seconds. The two previously integrated
+admission-evidence browser files retain six minutes. Browser ownership alone does not choose a
+uniform test deadline. Finite case identities, per-test bounds, populations and assertions stay intact.
+
+Reuse the reviewed promotion fixture's borrowed CDP connection and cleanup registered before setup.
+No historical input contract is inferred from dormant mutation branches in shared helpers; the
+selected calls do not use those branches and the owner clears ambient fixture-control variables.
+Optional JSON exports, original wrapper ordering/prerequisites and saved-output postconditions remain
+separate obligations. Distinguish real service HTTP, independently signed fixture pages, renderer
+crash and same-context page reopen when stating the evidence's scope.

@@ -4472,3 +4472,47 @@ has 61 files / 319 cases. The 627,361-byte manifest retains 612 obligations / 25
 resolved. This phase is uncommitted. Personal/package/vector pins, L-2, archives and debts are
 unchanged. Browser receive-transport fixtures are next; other owners, wrappers, R-04 and P-06 precede
 the immutable aggregate and human Account walkthrough.
+
+
+## 2026-09-14 — Browser receive-transport fixtures in the owned validation runner (`L-1`)
+
+Transport service fixtures remain staged at tree `6abb609`; the SSH signing agent refused the requested commit. Signing is pending; new phase changes remain unstaged.
+
+The `receive-transport-fixtures` selection integrates controls 4, generated 1 and native 9: three
+files / fourteen exact cases. Product source, controls/generated tests and shared helpers remain unchanged. The native
+overflow assertion now requires the exact R-01 response-too-large refusal. Existing owned-CDP support suffices. Complete-file deadlines retain the standalone
+wrapper's 90/330/120 seconds, with 15-second browser startup and five-second drain grace.
+The sixteen generated histories retain seed 9112042, endOnFailure:true and the 300-second test bound.
+
+All fourteen cases pass in 411.739 seconds including fingerprint work; every worker and browser
+group drains. Four exact omission controls remain effective. The real v2 HTTP case exercises two
+accepted positions and an empty cold tail; other native/generated responses use signed independent
+fixture pages or controlled fetch/stream failures. Nine directed cases include request supersession,
+ordered publication, local admission during fetch, cancellation drain, renderer crashes before/after
+IDB commit and cold retry. Generated histories compare writing, durable prefix and local source count
+after each of six to nine actions. Cold means a new page in the same context; renderer crash does not
+establish browser/process/power-loss persistence. No capacity or whole-wrapper claim follows.
+
+All 92 pure runner checks and 12 native ownership controls pass, alongside direct TypeScript,
+scoped style, planning and authority checks. The first new planning assertion used a nonexistent
+receive-polling filename; it now correctly checks the still-blocked receive-driver path. Its failure
+log is retained. The first owned run exposed a stale native overflow assertion: it expected unknown
+or AdmissionError where R-01 intentionally returns rejected/response-too-large/recorded:false. The
+repair requires that exact result and preserves no-cursor/no-storage-change assertions. All initial
+receipts are retained; the final full selection passes within unchanged deadlines. Unchanged
+Node owner/Vitest-process controls (23/5) retain pinned earlier evidence. The ledger phase's initial
+expected-positive orphan classification remains unresolved; this phase establishes no fix.
+
+All 167 prior general contracts / 1,413 identities retain their prior evidence unchanged. General
+selections now contain 170 files / 1,427 cases (96 Vitest, 74 Node), including 64 Account files /
+333 cases. Manifest: 612 obligations / 247 unresolved (88 test-file: 72 Node and sixteen Playwright;
+96 command; 63 campaign), 630,760 bytes. All eleven catalogues remain resolved.
+The [packet](./account-conformance-runs/2026-09-13-receive-transport-fixtures/README.md) preserves complete receipts, browser/input identities, exact source patch,
+source/helper pins, ownership evidence, prior contracts and preservation. The run's HEAD was
+`a20e678` with the staged prior phase present; its full frozen source identity
+is retained. This is bounded evidence, not an immutable aggregate. The new phase remains uncommitted.
+
+All 21 personal/package pins, 31 prior vectors and L-2 are byte-identical. Personal servers/profile,
+root build, recovery/factor files, root `done `, historical archives, formal debts and signing backups
+remain untouched. Next review the four browser receive-driver fixtures for polling and reconnect,
+then remaining native/Playwright/nested owners and wrappers before R-04, P-06 and the immutable run.

@@ -21,16 +21,16 @@ import { validateStage } from '../../scripts/release-validation/stage.mjs';
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('reviewed Vitest and Node selections preserve the 1413-case file denominator and separate wrapper obligations', () => {
+test('reviewed Vitest and Node selections preserve the 1427-case file denominator and separate wrapper obligations', () => {
   const p = generalTestPolicy(process.cwd()),
     m = compileManifest(process.cwd(), inventory());
   assert.equal(p.vitest.length, 77);
   assert.equal(p.node.length, 10);
   const general = selectStages(m, 'general-tests');
-  assert.equal(general.length, 167);
+  assert.equal(general.length, 170);
   assert.equal(
     general.reduce((n, s) => n + s.expect.cases.length, 0),
-    1413,
+    1427,
   );
   assert.equal(selectStages(m, 'vitest-reviewed').length, 96);
   assert.equal(
@@ -45,12 +45,13 @@ test('reviewed Vitest and Node selections preserve the 1413-case file denominato
     validateStage(s);
     assert.equal(
       s.deadlineMs,
-      [
-        'test/account-admission-evidence/receipt.test.mjs',
-        'test/account-admission-evidence/size.test.mjs',
-      ].includes(s.argv.at(-1))
-        ? 360000
-        : 180000,
+      {
+        'test/account-admission-evidence/receipt.test.mjs': 360000,
+        'test/account-admission-evidence/size.test.mjs': 360000,
+        'test/account-receive-transport/controls.test.mjs': 90000,
+        'test/account-receive-transport/generated.test.mjs': 330000,
+        'test/account-receive-transport/native.test.mjs': 120000,
+      }[s.argv.at(-1)] ?? 180000,
     );
   }
   assert(

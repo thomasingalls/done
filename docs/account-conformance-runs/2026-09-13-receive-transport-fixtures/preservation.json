@@ -1,0 +1,16 @@
+{
+  "preservationBaseline": "docs/account-conformance-runs/2026-09-12-account-residue/preservation.json",
+  "preservationBaselineSha256": "c9cf66e42d4b4f0291b28cdcc1556cebe6f8adcc92299d7a2125d4f57038d8fd",
+  "personalFilesMatched": 21,
+  "priorVectorFilesMatched": 31,
+  "L2Sha256": "e053bf287bb8020201d067e2b33e66189920efc9b4bae8e7b3d373266bf65b95",
+  "selectedSourcePinsMatched": true,
+  "sourcePatchReverseCheckPassed": true,
+  "productSourceUnchanged": true,
+  "sharedHelpersUnchanged": true,
+  "fixtureChanges": [
+    "test/account-receive-transport/native.test.mjs"
+  ],
+  "personalServersStarted": false,
+  "rootBuildWritten": false
+}

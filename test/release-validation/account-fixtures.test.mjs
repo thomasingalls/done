@@ -13,6 +13,7 @@ import {
   preparationFixtureFiles,
   oracleParserFixtureFiles,
   transportServiceFixtureFiles,
+  receiveTransportFixtureFiles,
   admissionEvidenceFiles,
 } from '../../scripts/release-validation/account-fixture-tests.mjs';
 import { assertGeneralTestPopulation } from '../../scripts/release-validation/general-tests.mjs';
@@ -27,21 +28,31 @@ import { openFixtureBrowser } from '../account-promotion/browser-owner.mjs';
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('Account fixture selection admits exactly 307 Node cases and 12 delivery cases while native and wrapper obligations stay blocked', () => {
+test('Account fixture selection admits exactly 321 Node cases and 12 delivery cases while native and wrapper obligations stay blocked', () => {
   const stages = accountFixtureFiles.node.map((f) => accountFixtureNodeStage(process.cwd(), f));
   assert.deepEqual(
     stages.map((s) => s.expect.cases.length),
     [
       3, 2, 10, 4, 2, 1, 3, 12, 2, 5, 3, 11, 3, 1, 6, 6, 4, 14, 2, 5, 1, 5, 20, 1, 6, 8, 9, 1, 2, 3,
       8, 3, 2, 7, 2, 5, 7, 2, 1, 4, 8, 4, 5, 3, 9, 5, 1, 12, 3, 5, 12, 1, 3, 12, 7, 3, 8, 2, 1, 7,
+      4, 1, 9,
     ],
   );
   for (const s of stages) {
     validateStage(s);
     assert.deepEqual(s.env, {});
     assert.equal(s.processPolicy, 'inherited-group-v1');
-    const browser = admissionEvidenceFiles.includes(s.argv.at(-1));
-    assert.equal(s.deadlineMs, browser ? 360000 : 180000);
+    const browser =
+      admissionEvidenceFiles.includes(s.argv.at(-1)) ||
+      receiveTransportFixtureFiles.includes(s.argv.at(-1));
+    assert.equal(
+      s.deadlineMs,
+      {
+        'test/account-receive-transport/controls.test.mjs': 90000,
+        'test/account-receive-transport/generated.test.mjs': 330000,
+        'test/account-receive-transport/native.test.mjs': 120000,
+      }[s.argv.at(-1)] ?? (browser ? 360000 : 180000),
+    );
     assert.deepEqual(s.fixture, browser ? { kind: 'chromium-cdp', startupMs: 15000 } : undefined);
     assert.equal(
       s.variant,
@@ -50,10 +61,10 @@ test('Account fixture selection admits exactly 307 Node cases and 12 delivery ca
   }
   const m = compileManifest(process.cwd(), inventory()),
     selected = selectStages(m, 'account-fixtures');
-  assert.equal(selected.length, 61);
+  assert.equal(selected.length, 64);
   assert.equal(
     selected.reduce((n, s) => n + s.expect.cases.length, 0),
-    319,
+    333,
   );
   const service = selectStages(m, 'service-fixtures');
   assert.deepEqual(service.map((s) => s.argv.at(-1)).sort(), [...serviceFixtureFiles].sort());
@@ -227,6 +238,28 @@ test('Account fixture selection admits exactly 307 Node cases and 12 delivery ca
   }
   assert(!m.rows.some((r) => r.id === 'campaign:scripts/account-transport/run.mjs'));
   assert(m.exclusions.some((r) => r.argv?.[1] === 'scripts/account-transport/run.mjs'));
+  const receive = selectStages(m, 'receive-transport-fixtures');
+  assert.deepEqual(
+    receive.map((s) => s.argv.at(-1)).sort(),
+    [...receiveTransportFixtureFiles].sort(),
+  );
+  assert.deepEqual(
+    receive.map((s) => s.expect.cases.length),
+    [4, 1, 9],
+  );
+  assert.deepEqual(
+    receive.map((s) => s.deadlineMs),
+    [90000, 330000, 120000],
+  );
+  assert(receive.every((s) => s.fixture && !s.expect.historyInputs && !s.expect.dataInputs));
+  for (const file of [
+    'test/account-receive/native.test.mjs',
+    'test/account-receive-editor/native.test.mjs',
+    'test/account-receive-driver/native.test.mjs',
+  ]) {
+    assert.throws(() => accountFixtureNodeStage(process.cwd(), file), /Unreviewed/);
+    assert(m.rows.find((r) => r.path === file).blocked);
+  }
   const oldBatch = ledger.filter((s) => s.expect.historyInputs);
   assert.deepEqual(
     oldBatch.map((s) => s.argv.at(-1)),
@@ -278,6 +311,7 @@ test('Account fixture selection admits exactly 307 Node cases and 12 delivery ca
     'account-outbound',
     'account-delivery-oracle',
     'account-parser-conformance',
+    'account-receive-transport',
   ])
     assert(m.rows.find((r) => r.id === `campaign:scripts/${runner}/run.mjs`).blocked);
   assert.throws(() => selectStages(m, 'release'), /Unresolved/);

@@ -43,19 +43,21 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-167 files / 1,413 cases: all 96 Vitest files and 71 Node files. Shared transport service fixtures add
-three files / ten cases. All pass with drained worker groups. A stale size test now distinguishes
-512 KiB fresh admission from historical large-envelope readback/retries; the historical producer is
-pinned and a current admission-edge case is added. Failed initial/timeout evidence is retained, with
-the expanded historical test using the established peer 90-second bound. Product code is unchanged.
-All 164 prior contracts / 1,403 identities retain earlier evidence. All 92 pure controls pass; unchanged
-Node owner/Vitest-process/native controls (23/5/12) retain pinned prior evidence. The ledger phase's
-initial orphan classification remains unresolved. The manifest retains 250 unresolved obligations:
-91 test-file (75 Node, sixteen Playwright), 96 command and 63 campaign. Browser receive-transport
-fixtures are next, then other owners/wrappers before R-04, P-06 and the immutable run. The retired v8
-transport wrapper/browser tests stay excluded; shared service readback remains required. Optional JSON
-exports need saved-output checks. Bounded direct-service receipts do not qualify HTTP/browser paths,
-whole commands, device capacity or a loaded-host aggregate. The manifest remains below 700 kB.
+170 files / 1,427 cases: all 96 Vitest files and 74 Node files. Browser receive-transport adds three
+files / fourteen cases, passing in 411.739 seconds with worker and browser groups drained. Product
+source and shared helpers stay unchanged. A stale native overflow assertion now requires the exact
+R-01 refusal, retaining cursor/storage checks. Initial failure receipts are saved. Existing CDP
+support retains each file's 90/330/120-
+second wrapper bound. Four omission controls and sixteen generated histories pass, with separate
+claims for actual service HTTP, signed fixture pages, renderer crash and same-context page reopen.
+All 167 prior contracts / 1,413 identities retain earlier evidence. All 92 pure and 12 native owner
+controls pass; unchanged Node owner/Vitest-process controls (23/5) retain pinned prior evidence.
+The ledger phase's initial orphan classification remains unresolved. The manifest retains 247
+unresolved obligations: 88 test-file (72 Node, sixteen Playwright), 96 command and 63 campaign.
+The four browser receive-driver fixtures for polling/reconnect are next, then other owners/wrappers
+before R-04, P-06 and the immutable run. Retired-v8 exclusions remain; optional JSON exports need
+saved-output checks. Bounded receipts do not qualify whole commands, device capacity or a loaded-host
+aggregate. The manifest remains below 700 kB. Transport service fixtures remain staged at tree `6abb609`; the SSH signing agent refused the requested commit. Signing is pending; new phase changes remain unstaged.
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded
 repair is signed `5872dc5`, with malicious-member recovery still explicit. The completed

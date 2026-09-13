@@ -121,7 +121,9 @@ test(
       if (mode === 'good') {
         assert.equal(r.kind, 'received');
         assert.equal(await view(f.page), 'REMOTE ' + initial);
-      } else
+      } else if (mode === 'oversized')
+        assert.deepEqual(r, { kind: 'rejected', reason: 'response-too-large', recorded: false });
+      else
         assert.ok(r.kind === 'unknown' || r.error?.includes('AdmissionError'), JSON.stringify(r));
       assert.equal(
         (await status(f.page)).receivedThrough,
