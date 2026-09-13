@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "inventoryDigest": "8f9e4be7126a1134e851bd7a62164ae4df774079d33263186437eae158b3a60b",
+  "inventoryDigest": "55d0a83a3fe9892e66b46c9ce32c9313e35c2dcc21bfc901dfea22ff95dfe7af",
   "status": "blocked",
   "claim": "Execution obligations and certified bounded selections. No aggregate result. Blocked obligations cannot be credited.",
   "rows": [
@@ -2764,6 +2764,50 @@
       }
     },
     {
+      "id": "test:test/release-validation/local-clear.test.mjs",
+      "kind": "test",
+      "path": "test/release-validation/local-clear.test.mjs",
+      "stage": {
+        "id": "test:test/release-validation/local-clear.test.mjs",
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "--test-reporter=./scripts/release-validation/node-reporter.mjs",
+          "test/release-validation/local-clear.test.mjs"
+        ],
+        "env": {},
+        "variant": "current",
+        "expect": {
+          "kind": "cases",
+          "cases": [
+            {
+              "id": "test/release-validation/local-clear.test.mjs::Local clear resolves seven deletion boundaries and exact blocked, ordering, factor and guard selections",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/local-clear.test.mjs::clear requires exact deletion and authentication mutation evidence and native crash labels",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/local-clear.test.mjs::clear report identity preserves unavailable component errors and nested retained inventories",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/local-clear.test.mjs::160 generated clear selections reject omitted work, substituted mutations and mislabeled deletion boundaries",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 60000,
+        "graceMs": 1000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
+    },
+    {
       "id": "test:test/release-validation/local-genesis.test.mjs",
       "kind": "test",
       "path": "test/release-validation/local-genesis.test.mjs",
@@ -4100,7 +4144,105 @@
           "outcome": "detected"
         }
       ],
-      "blocked": "Exact catalogue cases and discriminating mutation assertions are resolved; native report and process ownership adapters remain."
+      "stage": {
+        "id": "catalogue:scripts/local-clear/catalog.mjs",
+        "argv": [
+          "node",
+          "scripts/local-clear/worker.mjs",
+          "--case",
+          "L01.success,L02.blocked,L03.refused,L04.kill-intent,L05.kill-content-delete,L06.kill-stage-journal,L07.kill-stage-custody,L08.kill-stage-index,L09.kill-index-delete,L10.kill-stage-cleared,L11.journal,L12.aborts,L13.factor,L14.guards,L15.lifetime,L16.recheck,L17.cancel"
+        ],
+        "env": {},
+        "variant": "local-clear-b2bde56dd3215aa84013d2cab420396b0fb6999429aa6715b6deb553d661584f",
+        "expect": {
+          "kind": "local-clear",
+          "selection": {
+            "cases": [
+              { "id": "L01.success", "outcome": "pass" },
+              { "id": "L02.blocked", "outcome": "pass" },
+              { "id": "L03.refused", "outcome": "pass" },
+              { "id": "L04.kill-intent", "outcome": "pass" },
+              { "id": "L05.kill-content-delete", "outcome": "pass" },
+              { "id": "L06.kill-stage-journal", "outcome": "pass" },
+              { "id": "L07.kill-stage-custody", "outcome": "pass" },
+              { "id": "L08.kill-stage-index", "outcome": "pass" },
+              { "id": "L09.kill-index-delete", "outcome": "pass" },
+              { "id": "L10.kill-stage-cleared", "outcome": "pass" },
+              { "id": "L11.journal", "outcome": "pass" },
+              { "id": "L12.aborts", "outcome": "pass" },
+              { "id": "L13.factor", "outcome": "pass" },
+              { "id": "L14.guards", "outcome": "pass" },
+              { "id": "L15.lifetime", "outcome": "pass" },
+              { "id": "L16.recheck", "outcome": "pass" },
+              { "id": "L17.cancel", "outcome": "pass" }
+            ],
+            "mutants": [
+              {
+                "id": "blocked-as-success",
+                "case": "L02.blocked",
+                "assertion": "blocked-delete-not-complete",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/localClearStorage.ts",
+                  "from": "if (!task.signal.aborted) blocked();",
+                  "to": "if (!task.signal.aborted) blocked(); resolve();"
+                }
+              },
+              {
+                "id": "journal-before-content",
+                "case": "L03.refused",
+                "assertion": "delete-refusal-keeps-journal",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/localClear.ts",
+                  "from": "await deleteLocalContent(task, record.target, () => notify(options, 'content', true));",
+                  "to": "removeLocalJournal(task, record.target); await deleteLocalContent(task, record.target, () => notify(options, 'content', true));"
+                }
+              },
+              {
+                "id": "retain-genesis-opener",
+                "case": "L01.success",
+                "assertion": "terminal-has-no-content-openers",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/localClearStorage.ts",
+                  "from": "for (const row of remove) {",
+                  "to": "for (const row of remove.filter(r => !(Array.isArray(r.key) && r.key[1] === 'local-genesis-v1'))) {"
+                }
+              },
+              {
+                "id": "skip-resume-authentication",
+                "case": "L13.factor",
+                "assertion": "wrong-factor-cannot-finish-keyless-clear",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/localClear.ts",
+                  "from": "await auth.verify(record);",
+                  "to": ";"
+                }
+              },
+              {
+                "id": "allow-component-open",
+                "case": "L14.guards",
+                "assertion": "component-refuses-before-key-access",
+                "outcome": "detected",
+                "patch": {
+                  "file": "src/crdt/custody.ts",
+                  "from": "await assertNoLocalClear(task, a.slotId);",
+                  "to": ";"
+                }
+              }
+            ]
+          }
+        },
+        "fixture": { "kind": "chromium-cdp", "startupMs": 15000 },
+        "deadlineMs": 120000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 4194304,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     },
     {
       "id": "catalogue:scripts/local-genesis/catalog.mjs",
@@ -5624,7 +5766,7 @@
       "argv": ["node", "scripts/local-clear/run.mjs"],
       "env": {},
       "orderedAfter": ["command:check:55"],
-      "blocked": "Preserve this exact command/environment variant and its nested selections/postconditions; execution adapter not certified."
+      "requires": ["catalogue:scripts/local-clear/catalog.mjs"]
     },
     {
       "id": "command:check:57",
@@ -7827,11 +7969,8 @@
       "id": "campaign:scripts/local-clear/run.mjs",
       "kind": "campaign",
       "path": "scripts/local-clear/run.mjs",
-      "callSites": [
-        { "line": 192, "form": "run", "arguments": [] },
-        { "line": 196, "form": "run", "arguments": ["spec"] }
-      ],
-      "blocked": "Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit."
+      "callSites": [],
+      "requires": ["catalogue:scripts/local-clear/catalog.mjs"]
     },
     {
       "id": "campaign:scripts/local-genesis/run.mjs",
@@ -9942,7 +10081,6 @@
     "test:vite/precacheBuild.test.ts",
     "catalogue:scripts/content-trim/catalog.mjs",
     "catalogue:scripts/custody/catalog.mjs",
-    "catalogue:scripts/local-clear/catalog.mjs",
     "catalogue:scripts/write-session/catalog.mjs",
     "command:build:0",
     "command:build:1",
@@ -9968,7 +10106,6 @@
     "command:check:51",
     "command:check:52",
     "command:check:53",
-    "command:check:56",
     "command:check:57",
     "command:check:58",
     "command:check:59",
@@ -10103,7 +10240,6 @@
     "campaign:scripts/legacy-import/run.mjs",
     "campaign:scripts/legacy-selection/run.mjs",
     "campaign:scripts/legacy-source/run.mjs",
-    "campaign:scripts/local-clear/run.mjs",
     "campaign:scripts/pending-projection/run.mjs",
     "campaign:scripts/private-release/run.mjs",
     "campaign:scripts/storage-properties/run.mjs",
@@ -10120,6 +10256,7 @@
       "test:test/release-validation/identity.test.mjs",
       "test:test/release-validation/inventory.test.mjs",
       "test:test/release-validation/journal.test.mjs",
+      "test:test/release-validation/local-clear.test.mjs",
       "test:test/release-validation/local-genesis.test.mjs",
       "test:test/release-validation/manifest.test.mjs",
       "test:test/release-validation/owned-startup.test.mjs",
@@ -10166,6 +10303,7 @@
     "workspace-admission": ["catalogue:scripts/workspace-admission/catalog.mjs"],
     "owned-startup": ["catalogue:scripts/owned-startup/catalog.mjs"],
     "local-genesis": ["catalogue:scripts/local-genesis/catalog.mjs"],
+    "local-clear": ["catalogue:scripts/local-clear/catalog.mjs"],
     "release": [
       "test:test/account-activation/controls.test.mjs",
       "test:test/account-activation/core.test.mjs",
@@ -10392,6 +10530,7 @@
       "test:test/release-validation/identity.test.mjs",
       "test:test/release-validation/inventory.test.mjs",
       "test:test/release-validation/journal.test.mjs",
+      "test:test/release-validation/local-clear.test.mjs",
       "test:test/release-validation/local-genesis.test.mjs",
       "test:test/release-validation/manifest.test.mjs",
       "test:test/release-validation/owned-startup.test.mjs",

@@ -1,4 +1,4 @@
-# Release-validation execution — foundation and seven catalogue adapters
+# Release-validation execution — foundation and eight catalogue adapters
 
 The inventory is committed unsigned as `f13bdd1`, the foundation as `f14c68f`,
 content as `b9f0984`, journal as `1a86453`, admission as `4fc3af0`, editor-admission as `3f1afc5`, workspace-admission as `ddd77a3` and owned-startup as `6348b6c`.
@@ -8,14 +8,14 @@ It **does not complete the release execution graph**. The original phase-2 propo
 runner foundation and every native/wrapper adapter together; inspection showed that the latter
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
-The [manifest](./release-validation-manifest.json) now contains 602 obligations, including all 266 current
+The [manifest](./release-validation-manifest.json) now contains 603 obligations, including all 267 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**427 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**424 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -36,6 +36,7 @@ node scripts/release-validation/execute.mjs --selection editor-admission
 node scripts/release-validation/execute.mjs --selection workspace-admission
 node scripts/release-validation/execute.mjs --selection owned-startup
 node scripts/release-validation/execute.mjs --selection local-genesis
+node scripts/release-validation/execute.mjs --selection local-clear
 ```
 
 The first two commands check reviewed snapshots. Planning may report `blocked` while the snapshot
@@ -44,9 +45,9 @@ nonzero. `execute.mjs --selection release` likewise refuses; it is not a partial
 After reviewing input or selection changes, explicitly regenerate the inventory with `check.mjs
 --record`, then the manifest with `plan.mjs --record`. Each artifact has a 700 kB ceiling.
 
-`infrastructure` runs twelve stages: the identity, inventory, manifest, content-adapter, journal-adapter,
-admission-adapter, editor-admission-adapter, workspace-admission-adapter, owned-startup-adapter and Local-genesis-adapter
-test files (49 exact cases),
+`infrastructure` runs thirteen stages: the identity, inventory, manifest, content-adapter, journal-adapter,
+admission-adapter, editor-admission-adapter, workspace-admission-adapter, owned-startup-adapter Local-genesis-adapter and Local-clear-adapter
+test files (53 exact cases),
 the live authority/registry check and the inventory freshness check. It does not run the package
 `check` chain, traceability, native browsers, the crypto-audit campaign or the release aggregate.
 The process-control and native content-ownership test files run separately because they deliberately
@@ -384,15 +385,38 @@ wrapper retains its other prerequisites and postconditions; this selected regres
 campaign receipt. No personal genesis, Account onboarding, default-app cutover, physical power loss or
 raw profile-clone recovery was performed or qualified.
 
+## Local-clear catalogue adapter — phase 2i
+
+The Local-clear catalogue now uses the shared disposable owner. All **17 baseline cases, 172
+assertions and five intended mutations** pass. Seven generated crash cases have independently reviewed
+case-to-boundary bindings: intent, content deletion, journal stage, custody stage, index stage, index
+deletion and terminal clearing. A missing or substituted boundary refuses credit. Original scenarios,
+fixture hooks and production code are unchanged.
+
+The cases retain real blocked IndexedDB deletion, partial/refused journal removal, native transaction
+aborts, renderer death, factor-authenticated keyless resumption, low-level key-access guards, writer
+exclusion, target rechecks and cancellation while deletion remains pending. The mutations independently
+exercise blocked-as-success, journal-before-content, retained genesis opener, skipped resume
+verification and bypassed component guard. Each must change its pinned source and fail its specific
+previously passing assertion. Tagged evidence preserves nested inventories and unavailable error values.
+
+The [evidence packet](./account-conformance-runs/2026-09-13-local-clear-adapter/README.md) retains the full
+campaign, selected blocked/ordering/factor/guard controls, baseline-only index-stage restart, selected
+Local-genesis regression and seven native ownership controls. The full stage took **53.7 seconds**
+within its existing 120-second deadline. Selected runs and native ownership checks may overlap;
+these are host observations, not performance qualification. Four new tests include 160 generated
+selection/evidence faults (seed 130912), bringing non-native controls to 68 and generated validation
+histories to 1,920. Thirteen infrastructure stages pass 53 exact cases and two static checks.
+
+Default catalogue, exact package leaf and campaign alias resolve. Standalone case/no-mutant/output
+options and JSON/Markdown reports remain; custom browser overrides and existing output directories
+refuse. Account removal, service revocation, multi-workspace custody, partial genesis cleanup, default
+application cutover, physical power loss and forensic erasure remain outside this catalogue.
+
 ## Next bounded integration
 
-Integrate Local clear's **17 baseline cases and five mutations**, reviewing journal-inclusive inventory,
-authenticated deletion/resumption, lifecycle exclusion and generated crash boundaries first. Then resolve
-remaining catalogue, Node, Vitest, Playwright and wrapper families with their postconditions and measured
-deadlines. Four catalogues (64 cases/23 mutations) still need adapters. Vector reuse becomes meaningful
-when consumers depend on the same successful identity.
-
-Only after every required obligation resolves should P-06's prose sweep and the complete selected
-immutable run proceed. No personal app/server/profile, release deployment or Account cutover is
-part of this work. The [foundation evidence](./account-conformance-runs/2026-09-13-validation-runner/README.md)
-retains its earlier bounded scope.
+Complete content trim (21 cases/eight mutations), custody (13/five) and write-session (13/five),
+committing each unsigned. Then review general Node, Vitest, Playwright and wrapper adapters with their
+exact selections and postconditions. Only after every required obligation resolves should P-06 and
+the complete immutable selected run proceed. No personal app/server/profile or Account cutover is
+part of these catalogue adapters.

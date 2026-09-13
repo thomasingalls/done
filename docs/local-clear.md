@@ -85,7 +85,8 @@ This changes classification only, without renaming journals or deleting unrelate
 ## Evidence and boundaries
 
 `node scripts/local-clear/run.mjs` runs the actual production genesis, encrypted content/journal and clear
-owners in disposable Chromium contexts. `CHROMIUM_PATH` can select the installed browser. The fixture
+owners in disposable Chromium contexts under the shared release runner. The owner pins the installed
+Playwright Chromium; `CHROMIUM_PATH` overrides refuse. The fixture
 holds real native deletion open with a blocking connection, freezes a live writer, aborts native transactions
 after request success, injects deletion/removal refusals, and kills renderers at seven durable boundaries.
 Each schedule checks retained or removed scoped carriers. Inventory digests keep reports compact while

@@ -64,6 +64,7 @@ export function validateStage(stage) {
       'workspace-admission',
       'owned-startup',
       'local-genesis',
+      'local-clear',
     ].includes(stage.expect?.kind),
     'Unresolved result adapter',
   );
@@ -101,6 +102,7 @@ export function validateStage(stage) {
       'workspace-admission',
       'owned-startup',
       'local-genesis',
+      'local-clear',
     ].includes(stage.expect.kind)
   ) {
     assert.equal(
@@ -271,6 +273,7 @@ export function createStageRunner({
       RELEASE_WORKSPACE_ADMISSION_OUTPUT: join(workerOutput, 'workspace-admission'),
       RELEASE_OWNED_STARTUP_OUTPUT: join(workerOutput, 'owned-startup'),
       RELEASE_LOCAL_GENESIS_OUTPUT: join(workerOutput, 'local-genesis'),
+      RELEASE_LOCAL_CLEAR_OUTPUT: join(workerOutput, 'local-clear'),
     };
     const started = Date.now();
     let reason = signal?.aborted ? 'cancelled' : null,
@@ -449,6 +452,7 @@ export function createStageRunner({
             'workspace-admission',
             'owned-startup',
             'local-genesis',
+            'local-clear',
           ].includes(stage.expect.kind)
         ) {
           const cases = reconcileCarrier(stage.expect.kind, stage.expect.selection, reported, {

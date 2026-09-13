@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 122,
     "campaigns": 78,
-    "testFiles": 272,
-    "requiredTestFiles": 266,
+    "testFiles": 273,
+    "requiredTestFiles": 267,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 29,
@@ -4586,25 +4586,8 @@
       "packageCommands": [[["node", "scripts/local-clear/run.mjs"], {}]],
       "extraCommands": [],
       "referencesVectorChain": false,
-      "runCallSites": [
-        {
-          "line": 192,
-          "form": "run",
-          "arguments": []
-        },
-        {
-          "line": 196,
-          "form": "run",
-          "arguments": ["spec"]
-        }
-      ],
-      "processCallSites": [
-        {
-          "line": 20,
-          "form": "execFileSync",
-          "arguments": ["'git'", "['-C', root, ...args]", "{ encoding: 'utf8' }"]
-        }
-      ]
+      "runCallSites": [],
+      "processCallSites": []
     },
     {
       "path": "scripts/local-genesis/run.mjs",
@@ -8792,6 +8775,26 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/release-validation/local-clear.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/local-clear.test.mjs"
+        ]
+      },
+      "declarations": 4,
+      "propertyFamilies": [
+        {
+          "line": 233,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/release-validation/local-genesis.test.mjs",
       "status": "required",
       "invocation": {
@@ -10867,7 +10870,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "46a67bf779767780bedaf25b03916158fa3f2c62872e2f20660c3e827248179d"
+      "sha256": "7405b874c55692b975d3b14b35f9b2a5bb5c035648fd9356181392747521a825"
     },
     {
       "path": "package.json",
@@ -11575,11 +11578,15 @@
     },
     {
       "path": "scripts/local-clear/run.mjs",
-      "sha256": "23573938440c4397625ef3e20f7fe3ecc8b11df46c8f651a8cbe46276a13337f"
+      "sha256": "20343f711ca3e6a235a9e349d1300bc1377396fcf18707ee22f5f8e32612b4a5"
     },
     {
       "path": "scripts/local-clear/scenarios.mjs",
       "sha256": "c31d803ef53a25f4d99fa2ed1327dc1f251135ecbd35ebddfc4e01c5041b2d88"
+    },
+    {
+      "path": "scripts/local-clear/worker.mjs",
+      "sha256": "0eecb71bd04ee601d16a1bcb83803c60c5d8c0b74d1d237fb487616a91cbf5ea"
     },
     {
       "path": "scripts/local-genesis/catalog.mjs",
@@ -11647,7 +11654,7 @@
     },
     {
       "path": "scripts/release-validation/carrier-adapter.mjs",
-      "sha256": "8f332a7ba6dc485a1d1cbce0652d78dc8c983603903c1ea0d6c77a50267834f3"
+      "sha256": "3b19c8ab596b460d4ebaa8e48074f56ada7931d9cb988f715dccbe376465120d"
     },
     {
       "path": "scripts/release-validation/census.mjs",
@@ -11667,7 +11674,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "f4abe3065d8e85ab3ab30d0ea5d98f8608d153793243d5e1a1fc9c055db38af5"
+      "sha256": "7c8c5c4b0cefefbd9b2f8b787fec1b800348b88cfe3d8f5b7b27380df8769bb1"
     },
     {
       "path": "scripts/release-validation/identity.mjs",
@@ -11682,12 +11689,16 @@
       "sha256": "f85fe214843976fa46150730755d2287cb2386733e43bd9159b8a843066d7d6e"
     },
     {
+      "path": "scripts/release-validation/local-clear-adapter.mjs",
+      "sha256": "82158f40c93be6962a8748e9ac112301c845094eeeec27e08095f7fbbda0e0c7"
+    },
+    {
       "path": "scripts/release-validation/local-genesis-adapter.mjs",
       "sha256": "262fc68a8f8bd684d4d0d64ac7a575eb2a74c8e026feaf8f606457b37419a204"
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "092cb5494eccb28fd9ea86d635ee0856ab221e249e66bcd2942838b0f343f35c"
+      "sha256": "e1a4e750d429e368cd584c6a99ae0917e152cd850d0c5d595f9ebe2e6369fc38"
     },
     {
       "path": "scripts/release-validation/node-reporter.mjs",
@@ -11719,7 +11730,7 @@
     },
     {
       "path": "scripts/release-validation/stage.mjs",
-      "sha256": "49703b6649f8b55931bb3a8c54e3a873cebc74c42c7b8f16f7108b3f3b1057fb"
+      "sha256": "4a6a85f6a1a2b7cc9dd372539018d7ef1a9b2cfd16d9a4ac825af32dbc156625"
     },
     {
       "path": "scripts/release-validation/workspace-admission-adapter.mjs",
@@ -13496,6 +13507,10 @@
     {
       "path": "test/release-validation/journal.test.mjs",
       "sha256": "5da1af551723b85c7eb42dbe414f958fc6f9b5b1b37cee17ac621bd93c29beab"
+    },
+    {
+      "path": "test/release-validation/local-clear.test.mjs",
+      "sha256": "090284251b569b050f1b184b302fd643bb1c02a2d72b1819248da79a5a8159fe"
     },
     {
       "path": "test/release-validation/local-genesis.test.mjs",

@@ -3753,3 +3753,39 @@ The manifest has 602 obligations with 427 unresolved, covering 266 required test
 postconditions. Remaining test families, wrappers and deadlines precede P-06 and immutable aggregate
 validation. No personal operation occurred; prior vectors, historical reviews/debts and L-2 are unchanged.
 This Local-genesis phase remains uncommitted. Appended before replacing L-1.
+
+
+## 2026-09-13 — Local-clear catalogue adapter, phase 2i (`L-1`)
+
+Committed Local genesis unsigned as `be5d6a0`.
+
+The Local-clear catalogue now uses the shared disposable owner. All **17 baseline cases, 172
+assertions and five intended mutations** pass. Seven generated crash cases have independently reviewed
+case-to-boundary bindings: intent, content deletion, journal stage, custody stage, index stage, index
+deletion and terminal clearing. A missing or substituted boundary refuses credit. Original scenarios,
+fixture hooks and production code are unchanged.
+
+The cases retain real blocked IndexedDB deletion, partial/refused journal removal, native transaction
+aborts, renderer death, factor-authenticated keyless resumption, low-level key-access guards, writer
+exclusion, target rechecks and cancellation while deletion remains pending. The mutations independently
+exercise blocked-as-success, journal-before-content, retained genesis opener, skipped resume
+verification and bypassed component guard. Each must change its pinned source and fail its specific
+previously passing assertion. Tagged evidence preserves nested inventories and unavailable error values.
+
+The [evidence packet](./account-conformance-runs/2026-09-13-local-clear-adapter/README.md) retains the full
+campaign, selected blocked/ordering/factor/guard controls, baseline-only index-stage restart, selected
+Local-genesis regression and seven native ownership controls. The full stage took **53.7 seconds**
+within its existing 120-second deadline. Selected runs and native ownership checks may overlap;
+these are host observations, not performance qualification. Four new tests include 160 generated
+selection/evidence faults (seed 130912), bringing non-native controls to 68 and generated validation
+histories to 1,920. Thirteen infrastructure stages pass 53 exact cases and two static checks.
+
+Default catalogue, exact package leaf and campaign alias resolve. Standalone case/no-mutant/output
+options and JSON/Markdown reports remain; custom browser overrides and existing output directories
+refuse. Account removal, service revocation, multi-workspace custody, partial genesis cleanup, default
+application cutover, physical power loss and forensic erasure remain outside this catalogue.
+
+The manifest has 603 obligations, 424 unresolved and 267 required test files. Three catalogue
+adapters remain (47 cases/18 mutations): content trim, custody and write-session. No personal
+operation occurred; historical reviews, formal debts, prior vectors and L-2 are preserved. Appended
+before replacing L-1; this adapter is ready for its unsigned commit.

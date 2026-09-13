@@ -4126,7 +4126,7 @@
       "evidencePins": [
         {
           "path": "docs/local-clear.md",
-          "sha256": "3dc7768cbafdab46e895948d8031adc2bb1ed2add270665a8cd92b07cc5ffd5a"
+          "sha256": "aa65ab9b778dc7290a174156dbae64795107f3eea36ddaf6cd486b54e4d96f62"
         },
         {
           "path": "docs/storage-conformance-runs/2026-09-08-local-clear.md",

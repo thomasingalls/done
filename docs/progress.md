@@ -43,7 +43,7 @@ that is no longer active.
 ---
 
 
-## Active slice: Release-validation Local-clear catalogue adapter (`L-1`)
+## Active slice: Release-validation Content-trim catalogue adapter (`L-1`)
 
 ```yaml
 gate: L-1
@@ -61,29 +61,24 @@ There is no real Account admission receipt. The author's old second device must 
 workspace with fresh custody, store, counters and credentials, without importing or merging its old
 writing. First ciphertext and two-device convergence are not public ship boundaries.
 
-**Just completed.** Owned-startup is now unsigned `6348b6c`, following workspace-admission `ddd77a3`,
-editor-admission `3f1afc5`, admission `4fc3af0`, journal `1a86453`, content `b9f0984`, foundation `f14c68f`
-and inventory `f13bdd1`. The [Local-genesis catalogue adapter](./release-validation-execution.md#local-genesis-catalogue-adapter--phase-2h)
-passes 17 baseline cases/160 assertions and four discriminating mutations, with explicit identities for
-all nine generated crash boundaries. Native execution exposed a byte-array report-encoding gap, repaired
-with before/after and generated equality controls. The [evidence packet](./account-conformance-runs/2026-09-13-local-genesis-adapter/README.md)
-retains the failed/full/selected native runs, startup regression, seven native ownership controls and
-64 non-native tests with 1,760 generated validation histories. Twelve infrastructure stages pass 49 cases
-and two static checks. No production code or scenario assertion changed. Local genesis remains uncommitted.
+**Just completed.** Local genesis is unsigned `be5d6a0`. The
+[Local-clear adapter](./release-validation-execution.md#local-clear-catalogue-adapter--phase-2i)
+passes 17 baselines/172 assertions and five mutations. Seven native crash boundaries have explicit
+identity checks. Four new tests bring runner controls to 68 non-native tests and 1,920 generated
+histories; seven native ownership controls pass separately. Thirteen infrastructure stages pass
+53 exact cases and two static checks. Production code and scenario assertions are unchanged.
+[Bounded evidence](./account-conformance-runs/2026-09-13-local-clear-adapter/README.md) is retained.
 
-**The full phase-2 contract is not closed.** The manifest covers 266 required test files, all 163
-catalogue cases/54 mutations, 29 vector corpora and 83 registry entries. It retains 427 unresolved rows
-and refuses whole-release execution. Four catalogue adapters (64 cases/23 mutations), general test
-adapters, wrappers, selected postconditions and measured deadlines remain. The Account provenance's
-seven-case genesis selection passes independently; its enclosing wrapper is not thereby discharged.
-P-06 remains unswept; the complete vector chain and immutable aggregate have not run. The earlier silent
-package-manager attempt remains undiagnosed; exact Node commands work.
+**The full phase-2 contract is not closed.** The manifest covers 267 required test files, all 163
+catalogue cases/54 mutations, 29 vector corpora and 83 registry entries. Its 424 unresolved rows
+still refuse whole-release execution. Three catalogue adapters remain: content trim (21/8), custody
+(13/5) and write-session (13/5). General test adapters, wrapper selections/postconditions and measured
+deadlines remain after them. P-06, the complete vector chain and immutable aggregate have not run.
 
-**Next single phase.** Adapt Local clear's 17 cases and five mutations, independently reviewing its
-journal-inclusive inventory, authenticated deletion/resumption, lifecycle exclusion and generated crash
-boundaries before extending the owned boundary. Then resolve remaining catalogue, Node, Vitest,
-Playwright and wrapper selections/postconditions, with vector and traceability prerequisites as ordered
-receipts.
+**Current authorization.** Complete the remaining catalogue adapters sequentially and commit each
+unsigned, with an end-of-phase chat summary. Preserve all review-tracked hashes. Content trim is next:
+review exact disk coverage, late/concurrent records, pending Yjs dependencies, journal rechecks and
+native publication/deletion boundaries before adapting its 21 cases and eight mutations.
 
 **After that.** Sweep P-06 current cryptographic prose, run the immutable selected aggregate, and
 state workload/platform/claim dispositions. Acceptable validation precedes private Account cutover/

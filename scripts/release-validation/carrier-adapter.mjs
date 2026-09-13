@@ -8,6 +8,20 @@ import { hash, digest } from './identity.mjs';
 
 // Candidate names and patch paths are protocol-specific, not derived from report labels.
 const bindings = Object.freeze({
+  'local-clear': {
+    scope: 'local-clear-browser',
+    candidate: 'clear',
+    patchPrefix: '',
+    boundaryByCase: {
+      'L04.kill-intent': 'intent',
+      'L05.kill-content-delete': 'content-delete',
+      'L06.kill-stage-journal': 'stage-journal',
+      'L07.kill-stage-custody': 'stage-custody',
+      'L08.kill-stage-index': 'stage-index',
+      'L09.kill-index-delete': 'index-delete',
+      'L10.kill-stage-cleared': 'stage-cleared',
+    },
+  },
   'local-genesis': {
     scope: 'local-genesis-browser',
     candidate: 'genesis',
@@ -135,12 +149,24 @@ export function reconcileCarrier(family, selection, actual, { nonce, sources, ro
     .sort();
   assert(sourcePaths.length, 'Missing independent carrier source pins');
   if (
-    ['editor-admission', 'workspace-admission', 'owned-startup', 'local-genesis'].includes(family)
+    [
+      'editor-admission',
+      'workspace-admission',
+      'owned-startup',
+      'local-genesis',
+      'local-clear',
+    ].includes(family)
   )
     assert.equal(actual.evidenceEncoding, evidenceEncoding, 'Missing assertion encoding');
   const check = (report, ids, mutation = null) => {
     if (
-      ['editor-admission', 'workspace-admission', 'owned-startup', 'local-genesis'].includes(family)
+      [
+        'editor-admission',
+        'workspace-admission',
+        'owned-startup',
+        'local-genesis',
+        'local-clear',
+      ].includes(family)
     )
       for (const row of report.cases)
         for (const a of row.assertions) {
@@ -150,7 +176,7 @@ export function reconcileCarrier(family, selection, actual, { nonce, sources, ro
     validateReport(report, ids);
     if (boundaryByCase)
       for (const row of report.cases)
-        assert.equal(row.boundary, boundaryByCase[row.id], 'Genesis crash boundary changed');
+        assert.equal(row.boundary, boundaryByCase[row.id], 'Catalogue crash boundary changed');
     for (const row of report.cases)
       assert.equal(
         new Set(row.assertions.map((a) => a.id)).size,
