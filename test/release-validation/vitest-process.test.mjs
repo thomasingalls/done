@@ -181,6 +181,7 @@ test('actual generated Vitest registrations reconcile JSON data, nested suites, 
     for(const c of v.vectors.filter(c=>'stored' in c.expected)) it('vector '+c.name,()=>expect(c.expected.stored).toBeGreaterThan(0));
     it.each([undefined,null,false,'unicode 😀'])('nullable %s',()=>{});
     it.each([['one',1],['two',2]])('tuple %s',(label,n)=>expect(n).toBeGreaterThan(0));
+    it.each([['one',()=>[1,2]],['two',()=>[2,1]]])('builder %s',(_label,build)=>expect(build().sort()).toEqual([1,2]));
     it.each([{a:1,b:'x'},{a:2,b:'y'}])('object %j',()=>{});
   `;
   const f = fixture(t, text, { [path]: data });

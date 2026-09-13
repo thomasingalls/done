@@ -156,9 +156,9 @@ test('all reviewed generated files retain 222 cases and the compact manifest pre
   assert.equal(selectStages(restored, 'generated-tests').length, 14);
   assert.equal(
     selectStages(restored, 'general-tests').reduce((n, s) => n + s.expect.cases.length, 0),
-    1094,
+    1150,
   );
-  assert(manifest.rows.find((r) => r.path === 'test/accountDelivery.test.ts').blocked);
+  assert(manifest.rows.find((r) => r.path === 'test/accountDelivery.test.ts').stage);
   assert.throws(() => selectStages(restored, 'release'), /Unresolved/);
   assert(Buffer.byteLength(serialized) < 700000);
 });

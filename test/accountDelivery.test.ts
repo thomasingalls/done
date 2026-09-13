@@ -101,15 +101,16 @@ it('500 generated histories compare full state at every forward, reverse and shu
   expect(result.failed, String(result.errorInstance)).toBe(false);
 });
 it.each([
-  [no(1), yes(2)],
-  [yes(2), no(1)],
-  [yes(1, true), yes(2)],
-  [yes(2), yes(1, true)],
-  [yes(1, true), yes(2, true)],
-  [no(2, 'r1'), no(2, 'r2')],
-] as ProofEvent[][])(
-  'contradictory claims have no consistent outcome assignment: %j',
-  (...events: ProofEvent[]) => {
+  ['refusal before acceptance', () => [no(1), yes(2)]],
+  ['acceptance before refusal', () => [yes(2), no(1)]],
+  ['final prefix before later acceptance', () => [yes(1, true), yes(2)]],
+  ['later acceptance before final prefix', () => [yes(2), yes(1, true)]],
+  ['different final cutoffs', () => [yes(1, true), yes(2, true)]],
+  ['different refusal identities', () => [no(2, 'r1'), no(2, 'r2')]],
+] satisfies [string, () => ProofEvent[]][])(
+  'contradictory claims have no consistent outcome assignment: %s',
+  (_scenario, build) => {
+    const events = build();
     expect(check(events).conflict).toBe(true);
     expect(reference(events).publication).toBe('conflict');
   },

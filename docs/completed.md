@@ -4110,3 +4110,41 @@ partial receipts, controls, exact source patch and preservation evidence within 
 ceiling. Personal/package/vector bytes, historical reviews/evidence, formal debts, signing backups,
 root `done ` and L-2 remain untouched. No personal service, Account cutover or release qualification
 occurred.
+
+
+## 2026-09-13 — Account fixture and delivery-table adapters (L-1)
+
+The generated-registration phase is signed and verified as `f9111ea`. The next bounded selection
+adds ten Node files (44 cases) covering core ceremonies, authority and admission, plus the last
+Vitest file (twelve delivery cases). All eleven files / 56 cases pass in 75.339 seconds including
+snapshot work, with every process group drained. Existing product properties run 980 histories;
+no assertion, seed, history count or deadline was reduced. No product selection needed a retry.
+
+Six contradictory-delivery scenarios previously produced four distinct formatted titles. Stable
+scenario labels now give all six exact identities; helper construction moves into opaque test-body
+builders. AST comparison proves the six event expressions, two assertions and all code outside the
+table unchanged. The 500-history delivery oracle remains required. Node fixtures use synthetic
+credentials, temporary SQLite, copied-source mutants and inherited IPC crash workers; they do not
+open personal services or native browsers. Whole wrappers and optional artifact postconditions
+retain separate obligations.
+
+All 110 non-native runner/control tests pass with 3,040 generated control histories. A real IPC
+control passes after intentional worker death and refuses/drains a leaked fork despite its passing
+case report. Existing Vitest runtime controls now exercise labeled builders as well. Typecheck,
+scoped style, inventory/manifest, authority, signature and expected full-release refusal pass.
+Eleven native ownership controls retain prior evidence; no browser campaign reran.
+
+The general selections now contain 117 files / 1,150 cases: all 96 Vitest files and 21 Node files.
+All previous 106 stage rows/contracts and 1,094 identities are unchanged and retain earlier evidence;
+they were not rerun as a combined selection at this revision. The manifest has 612 obligations,
+300 unresolved: 141 test-file (125 Node, sixteen Playwright), 96 command, 63 campaign. Infrastructure
+has twenty stages: eighteen pure test files / 87 cases and two static checks. The manifest is
+565,549 bytes within its unchanged 700 kB ceiling. All eleven catalogue adapters stay resolved.
+
+The new phase remains uncommitted. The bounded packet at
+`docs/account-conformance-runs/2026-09-13-account-fixture-adapters/` retains exact reports, source patch,
+identity/history preservation, controls and timings within a prospective 150 kB ceiling. Its first
+packer check used a stale L-2 baseline; signed-HEAD/current-hash comparison confirmed L-2 unchanged.
+All personal/package/vector pins, prior archives, formal debts, signing backups and product runtime
+remain unchanged. Remaining Node service fixtures, native/Playwright ownership, exact wrappers and
+R-04 precede P-06 and the immutable aggregate; no Account cutover or release qualification occurred.

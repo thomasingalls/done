@@ -2493,3 +2493,17 @@ Use one complete manifest obligation per line, retaining the schema and every pa
 700 kB ceiling is unchanged; schema/coverage reduction is not a substitute for compact formatting.
 The generated layout belongs to the manifest writer; R-04 must retain that explicit formatting scope.
 Whole wrapper postconditions and historical partial-model limits remain separate from file receipts.
+
+
+## 2026-09-13 — Label ambiguous scenarios and explicitly admit synthetic service fixtures
+
+A tuple's first formatted value is not necessarily a unique case identity. Give distinct delivery
+histories stable scenario labels; retain their exact event construction and assertions in opaque
+builders executed only by the test. Do not broaden the planner into executing arbitrary helpers or
+collapse duplicate scenarios to make the case census pass.
+
+Temporary SQLite, synthetic credentials and copied-source mutants can use the ordinary Node file
+adapter after explicit fixture review. Inherited IPC crash workers must stay under the same bounded
+owner; an otherwise passing case with a leaked worker fails and drains. Parsing alone does not admit
+other fixture files, browser owners or wrappers. Optional campaign exports and wrapper postconditions
+keep separate obligations even after all their ordinary file cases have adapters.

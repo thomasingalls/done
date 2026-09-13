@@ -242,6 +242,45 @@ test('owned Node reporter rejects a real skipped case instead of crediting exit 
   assert.equal(passed.status, 'passed', passed.result.reason);
 });
 
+test('IPC crash workers drain on success and a passing case cannot hide a leaked fork', async (t) => {
+  const f = fixture(t, '');
+  f.write(
+    'worker.mjs',
+    `process.on('SIGTERM',()=>{}); process.on('message',()=>process.kill(process.pid,'SIGKILL'));process.send('ready');setInterval(()=>{},1000);`,
+  );
+  const text = `import test from 'node:test';import assert from 'node:assert/strict';import {fork} from 'node:child_process';import {once} from 'node:events';
+    test('crash worker',async()=>{
+      const child=fork('./worker.mjs',[],{stdio:['ignore','ignore','ignore','ipc']});
+      await once(child,'message');
+      if(process.env.LEAK==='yes'){child.disconnect();child.unref();return;}
+      const death=once(child,'exit');child.send('crash');
+      assert.deepEqual(await death,[null,'SIGKILL']);
+    });`;
+  f.write('subject.test.mjs', text);
+  const stage = {
+    ...f.stage,
+    argv: [
+      'node',
+      '--test',
+      '--test-concurrency=1',
+      '--test-reporter=./scripts/release-validation/node-reporter.mjs',
+      'subject.test.mjs',
+    ],
+    expect: { kind: 'cases', cases: [{ id: 'subject.test.mjs::crash worker', outcome: 'pass' }] },
+    deadlineMs: 5000,
+  };
+  const clean = await f.run(stage);
+  assert.equal(clean.status, 'passed', clean.result.reason);
+  assert.equal(clean.result.groupDrained, true);
+  const leaked = await f.run({ ...stage, env: { LEAK: 'yes' } });
+  assert.equal(leaked.status, 'failed');
+  assert.equal(leaked.result.reason, 'orphaned-child');
+  assert.equal(leaked.result.groupDrained, true);
+  const report = JSON.parse(readFileSync(join(f.output, leaked.key, 'cases.json')));
+  assert.deepEqual(report.cases, stage.expect.cases);
+  console.log('IPC ownership control: ' + JSON.stringify({ clean, leaked }));
+});
+
 test('160 generated actual-case omissions and mutations fail the exact independent census', () => {
   fc.assert(
     fc.property(

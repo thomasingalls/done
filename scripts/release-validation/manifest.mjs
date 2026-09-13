@@ -18,6 +18,7 @@ import { contentTrimStage } from './content-trim-adapter.mjs';
 import { localClearStage } from './local-clear-adapter.mjs';
 import { propertyFiles, vitestStage } from './vitest-adapter.mjs';
 import { generatedFiles, generatedNodeStage } from './generated-tests.mjs';
+import { accountFixtureFiles, accountFixtureNodeStage } from './account-fixture-tests.mjs';
 import {
   generalTestPolicy,
   assertGeneralTestPopulation,
@@ -107,12 +108,16 @@ export function compileManifest(root, inventory) {
   assertGeneralTestPopulation(general, inventory);
   const generated = general.vitest.length ? generatedFiles : { vitest: [], node: [] };
   assertGeneralTestPopulation(generated, inventory);
+  const account = general.vitest.length ? accountFixtureFiles : { vitest: [], node: [] };
+  assertGeneralTestPopulation(account, inventory);
   const reviewed = [
     ...propertyFiles,
     ...general.vitest,
     ...general.node,
     ...generated.vitest,
     ...generated.node,
+    ...account.vitest,
+    ...account.node,
   ];
   assert.equal(new Set(reviewed).size, reviewed.length, 'Duplicate reviewed file disposition');
   const supportedTests = new Set([
@@ -133,6 +138,7 @@ export function compileManifest(root, inventory) {
     'test/release-validation/vitest.test.mjs',
     'test/release-validation/general-tests.test.mjs',
     'test/release-validation/generated-tests.test.mjs',
+    'test/release-validation/account-fixtures.test.mjs',
   ]);
   for (const t of inventory.tests) {
     if (t.status !== 'required') {
@@ -161,13 +167,16 @@ export function compileManifest(root, inventory) {
     } else if (
       propertyFiles.includes(t.path) ||
       general.vitest.includes(t.path) ||
-      generated.vitest.includes(t.path)
+      generated.vitest.includes(t.path) ||
+      account.vitest.includes(t.path)
     ) {
       add({ id, kind: 'test', path: t.path, stage: vitestStage(root, t.path) });
     } else if (general.node.includes(t.path)) {
       add({ id, kind: 'test', path: t.path, stage: nodeProtocolStage(root, t.path) });
     } else if (generated.node.includes(t.path)) {
       add({ id, kind: 'test', path: t.path, stage: generatedNodeStage(root, t.path) });
+    } else if (account.node.includes(t.path)) {
+      add({ id, kind: 'test', path: t.path, stage: accountFixtureNodeStage(root, t.path) });
     } else
       add({
         id,
@@ -384,19 +393,24 @@ export function compileManifest(root, inventory) {
           (r) =>
             propertyFiles.includes(r.path) ||
             general.vitest.includes(r.path) ||
-            generated.vitest.includes(r.path),
+            generated.vitest.includes(r.path) ||
+            account.vitest.includes(r.path),
         )
         .map((r) => r.id),
       'node-protocol': rows.filter((r) => general.node.includes(r.path)).map((r) => r.id),
       'generated-tests': rows
         .filter((r) => generated.vitest.includes(r.path) || generated.node.includes(r.path))
         .map((r) => r.id),
+      'account-fixtures': rows
+        .filter((r) => account.vitest.includes(r.path) || account.node.includes(r.path))
+        .map((r) => r.id),
       'general-tests': rows
         .filter(
           (r) =>
             r.stage?.expect.kind === 'vitest' ||
             general.node.includes(r.path) ||
-            generated.node.includes(r.path),
+            generated.node.includes(r.path) ||
+            account.node.includes(r.path),
         )
         .map((r) => r.id),
       vectors: rows.filter((r) => r.kind === 'vector').map((r) => r.id),

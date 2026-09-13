@@ -1,0 +1,49 @@
+/** Reviewed synthetic SQLite fixtures, in-process mutants and inherited crash workers.
+ * No native browser fixture or wrapper evidence obligation is admitted by this list.
+ */
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { generatedNodeCensus } from './census.mjs';
+
+export const accountFixtureFiles = {
+  vitest: ['test/accountDelivery.test.ts'],
+  node: [
+    'test/account-core/controls.test.mjs',
+    'test/account-core/properties.test.mjs',
+    'test/account-core/restart.test.mjs',
+    'test/account-authority/core.test.mjs',
+    'test/account-authority/controls.test.mjs',
+    'test/account-authority/properties.test.mjs',
+    'test/account-authority/restart.test.mjs',
+    'test/account-admission/core.test.mjs',
+    'test/account-admission/controls.test.mjs',
+    'test/account-admission/restart.test.mjs',
+  ],
+};
+
+export function accountFixtureNodeStage(root, file) {
+  assert(accountFixtureFiles.node.includes(file), 'Unreviewed Account fixture file');
+  return {
+    id: 'test:' + file,
+    argv: [
+      'node',
+      '--test',
+      '--test-concurrency=1',
+      '--test-reporter=./scripts/release-validation/node-reporter.mjs',
+      file,
+    ],
+    env: {},
+    variant: 'node-account-fixture-file-v1',
+    expect: {
+      kind: 'cases',
+      cases: generatedNodeCensus(file, readFileSync(join(root, file), 'utf8')),
+    },
+    deadlineMs: 180000,
+    graceMs: 5000,
+    maxLogBytes: 4 * 1024 * 1024,
+    maxReportBytes: 1024 * 1024,
+    processPolicy: 'inherited-group-v1',
+    dependsOn: [],
+  };
+}
