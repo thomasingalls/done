@@ -43,42 +43,43 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — remaining service fixture adapters (`L-1`)
+## Active slice: General validation-runner integration — delivery and inbound service fixtures (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; next bounded implementation reviews recovery, promotion/activation and handoff service fixtures
+blocks_on: none; next bounded implementation reviews service delivery and inbound-read fixture ownership
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-13
 ```
 
-**Just completed.** Generated registrations are signed and verified as `f9111ea`; earlier general
-adapters are `38e4995`, property adapters `8acdee4`, R-01 `5872dc5`. [Account fixture adapters](./release-validation-execution.md#account-fixtures-and-delivery-identities--phase-2p)
-add ten Node files / 44 cases and the final Vitest file / twelve delivery cases. Six scenario labels
-replace ambiguous repeated titles while preserving exact event expressions, assertions and all code
-outside the table. The new implementation remains uncommitted.
+**Just completed.** The previous Account fixture phase is signed and verified as `5334a7c`;
+generated registrations are `f9111ea`, earlier general adapters `38e4995`, properties `8acdee4`,
+R-01 `5872dc5`. [Service fixtures](./release-validation-execution.md#recovery-promotion-activation-and-handoff-service-fixtures--phase-2q)
+add eleven Node files / 56 cases for recovery, promotion, activation and handoff. A finite boolean
+conditional handles two existing activation names. All product source/tests, titles, assertions,
+seeds, populations and deadlines are unchanged. This new implementation remains uncommitted.
 
-**Evidence.** All eleven newly selected files / 56 cases pass in 75.339 seconds with every group
-drained. Existing product properties run 980 histories. All 110 non-native runner/control tests pass,
-including 3,040 generated control histories and actual refusal/drain of a leaked IPC worker despite
-its passing case report. No product test assertion, seed, population or deadline was reduced; no
-selection retry was needed. Typecheck, scoped style, planning and authority checks pass. The [packet](./account-conformance-runs/2026-09-13-account-fixture-adapters/README.md)
-retains complete reports, exact source patch and history/preservation checks. Eleven native ownership
-controls retain prior evidence. All previous 106 stage rows/contracts and 1,094 identities are
-unchanged; their earlier receipts are not a fresh combined run at this revision.
+**Evidence.** Expanded Account passes 22 files / 112 cases in 127.643 seconds; generated regressions
+pass fourteen files / 222 cases in 129.785 seconds, at identical frozen inputs with every group drained.
+The eleven new files retain 660 passing property histories and the separate expected-failure shrink
+control. All 111 non-native runner/control tests pass with 3,200 generated histories. The initial
+negative-control error-capitalization mismatch is retained; no product selection needed repair,
+retry or a larger deadline. Typecheck, scoped style, planning and authority checks pass. The [packet](./account-conformance-runs/2026-09-13-service-fixture-adapters/README.md)
+retains both complete selection reports, controls, exact source patch and preservation pins. All
+117 prior general stage rows/contracts and 1,150 identities are unchanged; other 92 general files
+retain earlier evidence. Eleven native ownership controls retain prior evidence.
 
-**Next bounded phase.** Review remaining Node service fixture families, beginning with recovery,
-promotion/activation and handoff. General selections now contain 117 files / 1,150 cases: all 96 Vitest
-files and 21 Node files. There are 612 manifest obligations / 300 blocked rows: 141 test-file (125 Node,
-sixteen Playwright), 96 command and 63 campaign. The generated manifest is 565,549 bytes below its
-unchanged 700 kB ceiling. All eleven catalogue adapters remain resolved (163 cases/54 mutations).
-Native/Playwright, deliberate nested owners and exact wrapper variants/postconditions follow; file
-success does not credit a wrapper. R-04's explicit style scopes/full checks and P-06's remaining
-crypto prose precede the complete immutable aggregate, then private Account walkthrough preparation
-and human recovery/adoption work.
+**Next bounded phase.** Review service delivery and inbound-read core/generated/restart/control
+fixtures. General selections contain 128 files / 1,206 cases: all 96 Vitest and 32 Node files. There
+are 612 manifest obligations / 289 blocked rows: 130 test-file (114 Node, sixteen Playwright),
+96 command and 63 campaign. The 577,448-byte manifest stays below its unchanged 700 kB ceiling.
+All eleven catalogue adapters remain resolved (163 cases/54 mutations). Remaining Node/native/
+Playwright ownership, deliberate nested owners and exact wrapper postconditions follow. R-04's
+explicit style scopes/full checks and P-06's remaining prose precede the immutable aggregate, then
+private Account walkthrough preparation and human recovery/adoption work.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;

@@ -6,6 +6,20 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { generatedNodeCensus } from './census.mjs';
 
+export const serviceFixtureFiles = [
+  'test/account-recovery/controls.test.mjs',
+  'test/account-recovery/core.test.mjs',
+  'test/account-recovery/crypto.test.mjs',
+  'test/account-recovery/properties.test.mjs',
+  'test/account-recovery/restart.test.mjs',
+  'test/account-promotion/core.test.mjs',
+  'test/account-activation/controls.test.mjs',
+  'test/account-activation/core.test.mjs',
+  'test/account-activation/restart.test.mjs',
+  'test/account-handoff/core.test.mjs',
+  'test/account-handoff/es256.test.mjs',
+];
+
 export const accountFixtureFiles = {
   vitest: ['test/accountDelivery.test.ts'],
   node: [
@@ -19,6 +33,7 @@ export const accountFixtureFiles = {
     'test/account-admission/core.test.mjs',
     'test/account-admission/controls.test.mjs',
     'test/account-admission/restart.test.mjs',
+    ...serviceFixtureFiles,
   ],
 };
 

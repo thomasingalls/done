@@ -5,6 +5,7 @@ import * as fc from 'fast-check';
 import {
   accountFixtureFiles,
   accountFixtureNodeStage,
+  serviceFixtureFiles,
 } from '../../scripts/release-validation/account-fixture-tests.mjs';
 import { assertGeneralTestPopulation } from '../../scripts/release-validation/general-tests.mjs';
 import { buildInventory } from '../../scripts/release-validation/inventory.mjs';
@@ -16,11 +17,11 @@ import { validateStage } from '../../scripts/release-validation/stage.mjs';
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('Account fixture selection admits exactly 44 Node cases and 12 delivery cases while native and wrapper obligations stay blocked', () => {
+test('Account fixture selection admits exactly 100 Node cases and 12 delivery cases while native and wrapper obligations stay blocked', () => {
   const stages = accountFixtureFiles.node.map((f) => accountFixtureNodeStage(process.cwd(), f));
   assert.deepEqual(
     stages.map((s) => s.expect.cases.length),
-    [3, 2, 10, 4, 2, 1, 3, 12, 2, 5],
+    [3, 2, 10, 4, 2, 1, 3, 12, 2, 5, 3, 11, 3, 1, 6, 6, 4, 14, 2, 5, 1],
   );
   for (const s of stages) {
     validateStage(s);
@@ -30,20 +31,39 @@ test('Account fixture selection admits exactly 44 Node cases and 12 delivery cas
   }
   const m = compileManifest(process.cwd(), inventory()),
     selected = selectStages(m, 'account-fixtures');
-  assert.equal(selected.length, 11);
+  assert.equal(selected.length, 22);
   assert.equal(
     selected.reduce((n, s) => n + s.expect.cases.length, 0),
+    112,
+  );
+  const service = selectStages(m, 'service-fixtures');
+  assert.deepEqual(service.map((s) => s.argv.at(-1)).sort(), [...serviceFixtureFiles].sort());
+  assert.equal(service.length, 11);
+  assert.equal(
+    service.reduce((n, s) => n + s.expect.cases.length, 0),
     56,
   );
   for (const f of [
     'test/account-core/native.test.mjs',
     'test/account-authority/native.test.mjs',
     'test/account-admission/native.test.mjs',
+    'test/account-recovery/native.test.mjs',
+    'test/account-promotion/native.test.mjs',
+    'test/account-activation/native.test.mjs',
+    'test/account-handoff/native.test.mjs',
   ]) {
     assert.throws(() => accountFixtureNodeStage(process.cwd(), f), /Unreviewed/);
     assert(m.rows.find((r) => r.path === f).blocked);
   }
-  for (const runner of ['account-core', 'account-authority', 'account-admission'])
+  for (const runner of [
+    'account-core',
+    'account-authority',
+    'account-admission',
+    'account-recovery',
+    'account-promotion',
+    'account-activation',
+    'account-handoff',
+  ])
     assert(m.rows.find((r) => r.id === `campaign:scripts/${runner}/run.mjs`).blocked);
   assert.throws(() => selectStages(m, 'release'), /Unresolved/);
 });

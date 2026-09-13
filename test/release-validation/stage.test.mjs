@@ -236,7 +236,7 @@ test('owned Node reporter rejects a real skipped case instead of crediting exit 
   assert.equal((await f.run(stage)).status, 'failed');
   f.write(
     'subject.test.mjs',
-    "import test from 'node:test'; test('a', () => {}); test('b', () => {});",
+    "import test from 'node:test'; for (const flag of [false,true]) test(flag ? 'b' : 'a', () => {});",
   );
   const passed = await f.run(stage);
   assert.equal(passed.status, 'passed', passed.result.reason);

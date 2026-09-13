@@ -4148,3 +4148,40 @@ packer check used a stale L-2 baseline; signed-HEAD/current-hash comparison conf
 All personal/package/vector pins, prior archives, formal debts, signing backups and product runtime
 remain unchanged. Remaining Node service fixtures, native/Playwright ownership, exact wrappers and
 R-04 precede P-06 and the immutable aggregate; no Account cutover or release qualification occurred.
+
+
+## 2026-09-13 — Recovery, promotion, activation and handoff service adapters (L-1)
+
+The preceding Account fixture phase is signed and verified as `5334a7c`. Eleven further Node files
+add 56 cases: recovery 24, promotion 6, activation 20 and handoff 6. Their synthetic SQLite, recovery/
+passkey proofs, copied-source mutants and inherited IPC crash workers are explicitly reviewed.
+Native sibling fixtures and whole-wrapper artifacts retain separate obligations.
+
+The activation core uses a boolean conditional in two existing names. A five-line finite-reader
+extension admits boolean guards while refusing nonboolean truthiness, active helper calls and
+conditional registrations. All product source/test bodies, titles, assertions, seeds, populations
+and deadlines remain unchanged. The new positive properties retain 660 histories; the separate
+activation stale-proof control must fail and shrink at seed 9110402.
+
+The shared parser change was checked against both the expanded Account and previous generated
+selections at identical frozen inputs. Account passes 22 files / 112 cases in 127.643 seconds;
+generated registration passes fourteen files / 222 cases in 129.785 seconds, including snapshot work.
+All 36 files / 334 cases pass with every group drained. All 111 non-native runner/control tests pass
+with 3,200 generated histories. One new negative-control assertion initially used the wrong error
+capitalization; the actual refusal was correct, the expectation is corrected, and both logs remain.
+No product selection needed repair, retry, population reduction or a longer deadline.
+
+Typecheck, scoped style, planning, signature, authority and expected incomplete-release refusal
+pass. All previous 117 general rows/contracts and 1,150 identities are unchanged. General selections
+now contain 128 files / 1,206 cases: all 96 Vitest files and 32 Node files. Other 92 general files
+retain earlier evidence, not a fresh full run. The manifest retains 612 obligations / 289 unresolved:
+130 test-file (114 Node, sixteen Playwright), 96 command, 63 campaign. Infrastructure still has twenty
+stages: eighteen pure test files / 88 cases plus two checks. The manifest is 577,448 bytes under the
+unchanged 700 kB ceiling; all eleven catalogue adapters remain resolved.
+
+This phase is uncommitted. The compact evidence at
+`docs/account-conformance-runs/2026-09-13-service-fixture-adapters/` retains both full selection
+reports, controls, exact source patch and preservation pins within a prospective 150 kB ceiling.
+Personal/package/vector bytes, frozen L-2, prior evidence, formal debts and signing backups remain
+unchanged. Next review service delivery and inbound-read fixtures; other Node/native/Playwright
+ownership, exact wrappers, R-04 and P-06 still precede the immutable aggregate and human Account prep.

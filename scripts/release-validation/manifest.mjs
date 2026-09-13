@@ -18,7 +18,11 @@ import { contentTrimStage } from './content-trim-adapter.mjs';
 import { localClearStage } from './local-clear-adapter.mjs';
 import { propertyFiles, vitestStage } from './vitest-adapter.mjs';
 import { generatedFiles, generatedNodeStage } from './generated-tests.mjs';
-import { accountFixtureFiles, accountFixtureNodeStage } from './account-fixture-tests.mjs';
+import {
+  accountFixtureFiles,
+  accountFixtureNodeStage,
+  serviceFixtureFiles,
+} from './account-fixture-tests.mjs';
 import {
   generalTestPolicy,
   assertGeneralTestPopulation,
@@ -403,6 +407,9 @@ export function compileManifest(root, inventory) {
         .map((r) => r.id),
       'account-fixtures': rows
         .filter((r) => account.vitest.includes(r.path) || account.node.includes(r.path))
+        .map((r) => r.id),
+      'service-fixtures': rows
+        .filter((r) => account.node.includes(r.path) && serviceFixtureFiles.includes(r.path))
         .map((r) => r.id),
       'general-tests': rows
         .filter(

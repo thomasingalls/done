@@ -156,7 +156,7 @@ test('all reviewed generated files retain 222 cases and the compact manifest pre
   assert.equal(selectStages(restored, 'generated-tests').length, 14);
   assert.equal(
     selectStages(restored, 'general-tests').reduce((n, s) => n + s.expect.cases.length, 0),
-    1150,
+    1206,
   );
   assert(manifest.rows.find((r) => r.path === 'test/accountDelivery.test.ts').stage);
   assert.throws(() => selectStages(restored, 'release'), /Unresolved/);
@@ -218,5 +218,74 @@ test('registration data metadata cannot extend non-Vitest stages, and inherited-
   `),
       ),
     /Unresolved data predicate/,
+  );
+});
+
+test('160 generated boolean title branches preserve Node and Vitest identities without truthiness coercion or helper execution', () => {
+  fc.assert(
+    fc.property(
+      fc.uniqueArray(fc.integer({ min: 0, max: 1000 }), { minLength: 1, maxLength: 12 }),
+      fc.boolean(),
+      (ids, reverse) => {
+        const branches = reverse ? [true, false] : [false, true];
+        const body = `for(const id of ${JSON.stringify(ids)}) for(const changed of ${JSON.stringify(branches)}) test((changed ? 'different ' : 'same ')+id,()=>{});`;
+        const titles = ids.flatMap((id) =>
+          branches.map((changed) => (changed ? 'different ' : 'same ') + id),
+        );
+        assert.deepEqual(
+          generatedNodeCensus('test/a.test.mjs', "import test from 'node:test';" + body).map(
+            (c) => c.id,
+          ),
+          titles.map((t) => 'test/a.test.mjs::' + t),
+        );
+        assert.deepEqual(
+          names(vitestCensus(subject, "import {test} from 'vitest';" + body)),
+          titles.map((t) => [t]),
+        );
+      },
+    ),
+    { seed: 130923, numRuns: 160 },
+  );
+  for (const guard of [
+    '0',
+    '1',
+    "''",
+    "'false'",
+    'null',
+    'undefined',
+    '[]',
+    '{}',
+    '(()=>true)',
+    'unknown()',
+  ]) {
+    const body = `test(${guard} ? 'yes' : 'no',()=>{});`;
+    assert.throws(
+      () => generatedNodeCensus('test/a.test.mjs', "import test from 'node:test';" + body),
+      /Unresolved/,
+    );
+    assert.throws(() => vitestCensus(subject, "import {test} from 'vitest';" + body), /Unresolved/);
+  }
+  for (const body of [
+    "test(true ? unknown() : 'unused',()=>{});",
+    "for(const b of [false,true]) test(b ? 'same' : 'same',()=>{});",
+    "if(true)test('conditional registration',()=>{});",
+  ]) {
+    assert.throws(
+      () => generatedNodeCensus('test/a.test.mjs', "import test from 'node:test';" + body),
+      /Unresolved|duplicate/,
+    );
+    assert.throws(
+      () => vitestCensus(subject, "import {test} from 'vitest';" + body),
+      /Unresolved|duplicate/,
+    );
+  }
+  assert.deepEqual(
+    names(
+      vitestCensus(
+        subject,
+        "import {test} from 'vitest';test(false ? unknown() : 'known',()=>{});",
+      ),
+    ),
+    [['known']],
   );
 });

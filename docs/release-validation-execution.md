@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**300 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**289 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -39,6 +39,7 @@ node scripts/release-validation/execute.mjs --selection node-protocol
 node scripts/release-validation/execute.mjs --selection general-tests
 node scripts/release-validation/execute.mjs --selection generated-tests
 node scripts/release-validation/execute.mjs --selection account-fixtures
+node scripts/release-validation/execute.mjs --selection service-fixtures
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -60,7 +61,7 @@ After reviewing input or selection changes, explicitly regenerate the inventory 
 --record`, then the manifest with `plan.mjs --record`. Each artifact has a 700 kB ceiling.
 
 `infrastructure` runs twenty stages: eighteen identity, policy, census and adapter test files
-(87 exact cases), the live authority/registry check and the inventory freshness check. It does not run the package
+(88 exact cases), the live authority/registry check and the inventory freshness check. It does not run the package
 `check` chain, traceability, native browsers, the crypto-audit campaign or the release aggregate.
 The process-control (including Vitest) and native ownership test files run separately because they deliberately
 create additional runner owners to test their failure handling; they are not certified as nested
@@ -678,20 +679,47 @@ The evidence packer's stale L-2 hash was corrected against signed HEAD; L-2 was 
 The general selections now contain 117 files / 1,150 cases, including all 96 Vitest files and 21 Node
 files. The previous 106 file stages and 1,094 identities remain exactly unchanged and retain earlier
 evidence, not a fresh combined run at this revision. Whole Vitest/package invocations still have
-separate configuration, ordering and aggregate obligations. This new phase remains uncommitted.
+separate configuration, ordering and aggregate obligations. Phase 2p is signed and verified as `5334a7c`.
+
+## Recovery, promotion, activation and handoff service fixtures — phase 2q
+
+The `service-fixtures` subset adds eleven Node files / 56 cases. It uses the existing exact Node
+census and inherited group owner after explicit fixture review. Recovery contributes five files /
+24 cases, promotion one / six, activation three / twenty, handoff two / six. Temporary SQLite,
+synthetic credentials/recovery proofs, copied-source mutants and inherited IPC crash workers remain
+disposable. Native sibling fixtures and wrapper artifact obligations remain separate.
+
+The finite data reader now handles boolean conditional expressions used by two existing activation
+test names. It refuses nonboolean guards, active helper calls and conditional test registration;
+only the selected data branch is read. Product source and tests remain entirely unchanged, including
+titles, assertions, seeds, populations and deadlines. New passing properties run 660 histories; the
+activation stale-proof control must separately fail and shrink. Its optional wrapper export remains
+an independent obligation.
+
+The expanded `account-fixtures` selection passes 22 files / 112 cases in 127.643 seconds. The prior
+`generated-tests` selection passes fourteen files / 222 cases in 129.785 seconds. Both use identical
+frozen source/dependency/runtime inputs; every group drains. All 111 non-native runner/control tests
+pass with 3,200 generated histories, including 160 new boolean-name histories and actual Node/Vitest
+reporter checks. The initial control's error-capitalization mismatch is retained; no product test
+needed repair, retry or a longer deadline. Typecheck, scoped style, planning and authority checks pass.
+
+The [packet](./account-conformance-runs/2026-09-13-service-fixture-adapters/README.md) retains all
+36 file receipts / 334 cases, controls, exact patch and source/test preservation within 150 kB. All
+previous 117 general stage contracts and 1,150 identities remain unchanged. General selections now
+contain 128 files / 1,206 cases: 96 Vitest and 32 Node files. Other 92 general files retain earlier
+evidence, not a new combined run. This phase remains uncommitted and does not qualify an aggregate.
 
 ## Next bounded integration
 
 All eleven current catalogue adapters remain resolved: 163 cases and 54 mutations. The manifest has
-612 obligations / **300 blocked rows**: 141 test-file, 96 command and 63 campaign obligations.
-All Vitest files now have adapters; 125 Node and sixteen Playwright files remain. Next review the
-remaining synthetic service fixture families, beginning with recovery, promotion/activation and
-handoff. Parsable registrations alone do not grant execution credit. Native browsers, Playwright,
-deliberate nested owners and exact wrapper variants/postconditions follow. R-04 needs explicit
-immutable-archive and generated-layout scopes, live-source repairs and full style gate execution.
-Preserve ordered vector/traceability prerequisites and whole-wrapper checks.
+612 obligations / **289 blocked rows**: 130 test-file, 96 command and 63 campaign obligations.
+All Vitest files have adapters; 114 Node and sixteen Playwright files remain. Next review the service
+delivery and inbound-read core, generated, restart and control families. Other Node fixtures, native
+browsers, Playwright, deliberate nested owners and exact wrapper variants/postconditions follow.
+Parsable registrations alone do not grant execution credit. R-04 needs explicit archive/generated
+style scopes, live-source repairs and full checks. Preserve ordered vector/traceability prerequisites.
 
-Only after every required obligation resolves should P-06's current cryptographic prose sweep and
+Only after every required obligation resolves should P-06's remaining cryptographic prose sweep and
 the complete immutable selected run proceed. State workload/platform/claim dispositions before
 private Account app/service walkthrough prep and human passkey/recovery/adoption work. No personal
 app/server/profile or Account cutover occurred in this validation sequence.

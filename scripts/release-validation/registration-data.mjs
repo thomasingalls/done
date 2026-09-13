@@ -130,6 +130,11 @@ export function registrationData({ root, path, ast }) {
       );
       return left + right;
     }
+    if (n.type === 'ConditionalExpression') {
+      const condition = next(n.test);
+      assert(typeof condition === 'boolean', 'Unresolved nonboolean data condition');
+      return next(condition ? n.consequent : n.alternate);
+    }
     if (n.type === 'CallExpression' && n.callee.type === 'MemberExpression' && !n.callee.computed) {
       const c = n.callee,
         method = c.property.name;

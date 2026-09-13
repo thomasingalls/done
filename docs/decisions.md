@@ -2507,3 +2507,17 @@ adapter after explicit fixture review. Inherited IPC crash workers must stay und
 owner; an otherwise passing case with a leaked worker fails and drains. Parsing alone does not admit
 other fixture files, browser owners or wrappers. Optional campaign exports and wrapper postconditions
 keep separate obligations even after all their ordinary file cases have adapters.
+
+
+## 2026-09-13 — Boolean data branches preserve existing service-test identities
+
+Admit a conditional registration-data expression only when its guard resolves to a boolean under
+the finite reader. Select its corresponding data branch with ordinary lazy semantics. Do not coerce
+other values to truthiness or execute helpers. Conditional test registration itself remains outside
+the adapter. This retains the activation race test's existing names without changing product tests.
+
+Recovery, promotion, activation and handoff service files use the existing bounded inherited owner
+after explicit import/fixture review. Preserve independent wrapper artifacts and native obligations;
+passing an in-file mutation assertion does not grant its optional exported counterexample artifact.
+Shared reader changes warrant actual Node/Vitest controls and the existing generated registrations
+as regressions, while preserving every older stage contract and case identity.

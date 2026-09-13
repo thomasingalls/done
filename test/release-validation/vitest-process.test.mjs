@@ -182,6 +182,7 @@ test('actual generated Vitest registrations reconcile JSON data, nested suites, 
     it.each([undefined,null,false,'unicode 😀'])('nullable %s',()=>{});
     it.each([['one',1],['two',2]])('tuple %s',(label,n)=>expect(n).toBeGreaterThan(0));
     it.each([['one',()=>[1,2]],['two',()=>[2,1]]])('builder %s',(_label,build)=>expect(build().sort()).toEqual([1,2]));
+    for(const changed of [false,true]) it(changed ? 'different completion' : 'same completion',()=>expect(changed).toBeTypeOf('boolean'));
     it.each([{a:1,b:'x'},{a:2,b:'y'}])('object %j',()=>{});
   `;
   const f = fixture(t, text, { [path]: data });
