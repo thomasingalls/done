@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, realpathSync } from 'node:fs';
 import { dirname, resolve, relative } from 'node:path';
 import { hash } from './identity.mjs';
+import { registrationModule } from './registration-modules.mjs';
 
 export const untyped = (n) =>
   ['TSAsExpression', 'TSSatisfiesExpression', 'TSNonNullExpression'].includes(n?.type)
@@ -71,6 +72,11 @@ export function registrationData({ root, path, ast }) {
       const binding = lookup(n.name, env);
       if ('value' in binding) return binding.value;
       if (binding.import) {
+        if (!binding.import.endsWith('.json')) {
+          const { value, pin } = registrationModule(root, path, binding.import, binding.specifier);
+          inputs.set(pin.path, pin);
+          return value;
+        }
         assert(
           binding.specifier.type === 'ImportDefaultSpecifier' && binding.import.endsWith('.json'),
           'Unresolved data import',

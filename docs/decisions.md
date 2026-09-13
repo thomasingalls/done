@@ -2600,3 +2600,18 @@ signed boundary titles. Pin every historical source the protocol fixture reads, 
 protocol path, retaining prior stage contracts. Keep native descriptor injection, actual Yjs size
 edges, earlier outbound models, registry obligation checks and runtime cryptographic evidence
 separately described. None substitutes for the others or discharges a whole-wrapper obligation.
+
+
+## 2026-09-13 — Pin reviewed declaration modules and historical test oracles as inputs
+
+A test's expected case population may come from a helper, but planning must not execute that helper.
+Admit only the reviewed delivery-oracle controls export through a finite literal reader, pin its full
+bytes in the stage contract and verify them before launch/reuse and after execution. Changing only
+patch values still invalidates the receipt. Keep Node module metadata restricted to that explicit
+consumer/helper pair; this is not permission to import arbitrary registration modules.
+
+Historical test code can determine expected outcomes just as historical product code can determine
+runtime behavior. Pin the old delivery oracle test and every source in the parser baseline bundle.
+Retain exact reference/revision/path/hash tuples through normal historical drift checks. Distinguish
+expected-failure/shrinking controls, finite exhaustive model domains, structural parser acceptance
+and cryptographic authorization when reporting the resulting evidence.

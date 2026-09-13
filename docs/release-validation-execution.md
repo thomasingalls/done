@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**260 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**253 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -45,6 +45,7 @@ node scripts/release-validation/execute.mjs --selection isolation-fixtures
 node scripts/release-validation/execute.mjs --selection ledger-fixtures
 node scripts/release-validation/execute.mjs --selection contract-fixtures
 node scripts/release-validation/execute.mjs --selection preparation-fixtures
+node scripts/release-validation/execute.mjs --selection oracle-parser-fixtures
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -66,7 +67,7 @@ After reviewing input or selection changes, explicitly regenerate the inventory 
 --record`, then the manifest with `plan.mjs --record`. Each artifact has a 700 kB ceiling.
 
 `infrastructure` runs twenty stages: eighteen identity, policy, census and adapter test files
-(88 exact cases), the live authority/registry check and the inventory freshness check. It does not run the package
+(92 exact cases), the live authority/registry check and the inventory freshness check. It does not run the package
 `check` chain, traceability, native browsers, the crypto-audit campaign or the release aggregate.
 The process-control (including Vitest) and native ownership test files run separately because they deliberately
 create additional runner owners to test their failure handling; they are not certified as nested
@@ -868,19 +869,59 @@ All 149 prior general contracts / 1,314 identities remain unchanged. General sel
 157 files / 1,357 cases (96 Vitest, 61 Node), with 51 Account files / 263 cases. The
 [packet](./account-conformance-runs/2026-09-13-preparation-fixture-adapters/README.md) retains full
 receipts, 271 pins, historical/browser identities, exact patch and preservation within 150 kB.
-This phase remains uncommitted, not an immutable aggregate.
+Signed `950fe83` closes this bounded phase; it is not an immutable aggregate.
+
+## Delivery-oracle and parser-conformance fixtures — phase 2w
+
+Signed `950fe83` closes preparation/registry integration. `oracle-parser-fixtures` adds seven files /
+46 cases: delivery controls 12, finite oracle 1, parser baseline 3, controls 12, objects 7,
+submission 3 and wires 8. All selected test files, helpers, product sources, assertions, seeds,
+populations and per-test deadlines are unchanged. New Node stages keep the standard three-minute
+file bound and five-second drain grace. They use in-memory Vite builds, without native browsers.
+
+The delivery control titles use an imported table. A pre-change census refused it. The new reader
+accepts only the reviewed helper's named controls export and literal key/two-string patch pairs,
+without importing dependencies, executing its body or invoking functions. Its full bytes enter the
+contract. A 160-population property checks independent case order and identity; malformed, mutable,
+dynamic, unreviewed and symlink inputs refuse. Changes before launch/reuse or during execution
+refuse even if names stay identical; three captured owner receipts show two passes and one required
+refusal. Existing Vitest JSON inputs retain their path scope and now also receive an explicit final
+byte check, in addition to the complete source fingerprint.
+
+The old delivery oracle at `77b0bb6239f7b7a48c4a52c74d3e3f39e39994a3` and four parser baseline sources
+at `f0b6acd2e624d89034c88706d4053a830ab50cc6` enter two stage contracts. Four exact new historical
+locators are admitted. Twenty-one historical owner receipts cover seven locators: fourteen passes,
+seven required drift refusals, all drained. Older contracts retain their exact identities.
+
+The selection passes in 54.046 seconds including fingerprint work. It retains 3,350 seeded parser
+inputs, two historical properties that must fail and shrink, twelve delivery mutations and twelve
+parser mutations. The finite oracle cross-check covers 80 worlds / 2,197 three-proof histories over
+three positions; it grants no signature authority. Four mutations escape the old reduced oracle but
+fail full-state comparison. The submission mutation removes both redundant consumption/re-encoding
+guards. Real Yjs wire-boundary tests are not CPU/memory/workload qualification. The earlier 500
+full delivery histories retain their separate unchanged Vitest evidence; they were not rerun here.
+
+All 92 pure controls, 23 Node ownership checks, five Vitest process checks, direct TypeScript, scoped
+style, planning and authority pass. Twelve native ownership controls retain the preparation evidence.
+The ledger phase's initial expected-positive orphan classification remains unresolved despite later
+passes; these results establish no fix. All 157 prior general contracts / 1,357 identities remain
+unchanged. General selections now contain 164 files / 1,403 cases (96 Vitest, 68 Node), including
+58 Account files / 309 cases. The [packet](./account-conformance-runs/2026-09-13-oracle-parser-fixture-adapters/README.md)
+retains full receipts, exact patch, source/helper pins, historical/registration controls and preservation
+within 150 kB. This phase is uncommitted; no immutable aggregate or whole-wrapper credit is claimed.
 
 ## Next bounded integration
 
 All eleven current catalogue adapters remain resolved: 163 cases and 54 mutations. The manifest has
-612 obligations / **260 blocked rows**: 101 test-file, 96 command and 63 campaign obligations.
-All Vitest files have adapters; 85 Node and sixteen Playwright files remain. Next review delivery-
-oracle controls/oracle plus parser-conformance baseline, controls, objects, submission and wires.
-Review actual fixture effects and historical sources; filenames alone do not grant ownership credit.
-Other Node fixtures, native browsers, Playwright, nested owners and exact wrapper postconditions
-follow. Resolve retired-v8 wrapper invocations without reviving support. R-04 needs explicit archive/
-generated style scopes, live-source repairs and full checks. Preserve ordered vector/traceability
-prerequisites and the open owner/loaded-host reliability observation.
+612 obligations / **253 blocked rows**: 94 test-file, 96 command and 63 campaign obligations.
+All Vitest files have adapters; 78 Node and sixteen Playwright files remain. Next review the three
+transport service fixtures (controls, generated histories and service cases), then browser-backed
+receive fixtures. Review actual effects and historical sources; filenames alone do not grant
+ownership credit. Other Node fixtures, native browsers, Playwright, nested owners and exact wrapper
+postconditions follow. Optional ACCOUNT_REPORT_DIR exports remain disabled in these file selections.
+Resolve retired-v8 wrapper invocations without reviving support. R-04 needs explicit archive/generated
+style scopes, live-source repairs and full checks. Preserve ordered vector/traceability prerequisites
+and the open owner/loaded-host reliability observation.
 
 Only after every required obligation resolves should P-06's remaining cryptographic prose sweep and
 the complete immutable selected run proceed. State workload/platform/claim dispositions before

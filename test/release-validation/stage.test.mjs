@@ -27,6 +27,7 @@ import {
 import { startOwnedChromium } from '../../scripts/release-validation/browser.mjs';
 import { boundedStage } from '../../scripts/release-validation/manifest.mjs';
 import { digest, filePins } from '../../scripts/release-validation/identity.mjs';
+import { generatedNodeDeclarations } from '../../scripts/release-validation/census.mjs';
 
 function fixture(t, script) {
   const base = mkdtempSync(join(tmpdir(), 'done-stage-')),
@@ -70,6 +71,93 @@ function fixture(t, script) {
 }
 const reportScript = (cases, extra = '') => `import {writeFileSync} from 'node:fs'; ${extra}
 writeFileSync(process.env.RELEASE_CASE_REPORT, JSON.stringify({schema:1, nonce: process.env.RELEASE_RUN_NONCE, cases:${JSON.stringify(cases)}, errors:[]}));`;
+
+function registrationFixture(t, during = false) {
+  const cleanup = [],
+    f = fixture({ after: (fn) => cleanup.push(fn) }, '');
+  t.after(() => {
+    try {
+      if (process.env.REGISTRATION_CONTROL_OUTPUT) {
+        mkdirSync(process.env.REGISTRATION_CONTROL_OUTPUT, { recursive: true });
+        cpSync(f.output, join(process.env.REGISTRATION_CONTROL_OUTPUT, basename(f.base)), {
+          recursive: true,
+        });
+      }
+    } finally {
+      for (const fn of cleanup.reverse()) fn();
+    }
+  });
+  const path = 'test/account-delivery-oracle/helpers.mjs';
+  const consumer = 'test/account-delivery-oracle/controls.test.mjs';
+  const original = 'export const controls={one:["from","to"]};';
+  const changed = original + '\n// helper changed without changing its case names';
+  f.write(path, original);
+  const text = `import test from 'node:test';import {writeFileSync} from 'node:fs';
+    import {controls} from './helpers.mjs';for(const name of Object.keys(controls))test(name,()=>{
+      ${during ? `writeFileSync('${path}',${JSON.stringify(changed)});` : ''}
+    });`;
+  f.write(consumer, text);
+  const plan = () => ({
+    ...f.stage,
+    argv: [
+      'node',
+      '--test',
+      '--test-concurrency=1',
+      '--test-reporter=./scripts/release-validation/node-reporter.mjs',
+      consumer,
+    ],
+    variant: 'node-account-fixture-file-v1',
+    expect: { kind: 'cases', ...generatedNodeDeclarations(consumer, text, { root: f.root }) },
+    deadlineMs: 5000,
+  });
+  return {
+    ...f,
+    path,
+    plan,
+    change: () => f.write(path, changed),
+    reset: () => f.write(path, original),
+  };
+}
+
+test('exported registration bytes refuse before launch and reuse, and changed same-name tables need a fresh receipt', async (t) => {
+  const f = registrationFixture(t),
+    stage = f.plan(),
+    before = f.fingerprint();
+  f.change();
+  assert.deepEqual(
+    f.fingerprint(),
+    before,
+    'This synthetic fingerprint intentionally omits the nested helper',
+  );
+  await assert.rejects(() => f.run(stage), /Registration data changed after planning/);
+  assert.deepEqual(readdirSync(f.output), []);
+  f.reset();
+  const first = await f.run(stage);
+  assert.equal(first.status, 'passed', first.result.reason);
+  assert.equal((await f.run(stage)).reused, true);
+  f.change();
+  await assert.rejects(() => f.run(stage), /Registration data changed after planning/);
+  const replanned = f.plan();
+  assert.deepEqual(replanned.expect.cases, stage.expect.cases);
+  const second = await f.run(replanned);
+  assert.equal(second.status, 'passed', second.result.reason);
+  assert.notEqual(second.key, first.key);
+  assert.notEqual(second.reused, true);
+  console.log('Registration input reuse control: ' + JSON.stringify({ first, second }));
+});
+
+test('a passing Node case still refuses and drains when its registration module changes during execution', async (t) => {
+  const f = registrationFixture(t, true),
+    before = f.fingerprint();
+  const receipt = await f.run(f.plan());
+  assert.equal(receipt.status, 'failed');
+  assert.match(receipt.result.reason, /Registration data changed during execution/);
+  assert.equal(receipt.result.groupDrained, true);
+  assert.deepEqual(f.fingerprint(), before);
+  const report = JSON.parse(readFileSync(join(f.output, receipt.key, 'cases.json')));
+  assert.deepEqual(report.cases, f.plan().expect.cases);
+  console.log('Registration input drift control: ' + JSON.stringify(receipt));
+});
 
 function historicalFixture(t, path = 'account-service/core.ts', during = false) {
   const cleanup = [];
@@ -158,6 +246,10 @@ test('historical Git bytes are checked before launch and reuse and enter the rec
     'account-service/core.ts',
     'src/crdt/spoolRecord.ts',
     'account-protocol/admission.ts',
+    'test/accountDelivery.test.ts',
+    'src/crdt/promotionRecord.ts',
+    'src/crdt/startupClassification.ts',
+    'account-protocol/genesis.ts',
   ]) {
     const f = historicalFixture(t, path),
       before = f.fingerprint();
@@ -187,6 +279,10 @@ test('a passing historical fixture still fails and drains when Git bytes change 
     'account-service/core.ts',
     'src/crdt/spoolRecord.ts',
     'account-protocol/admission.ts',
+    'test/accountDelivery.test.ts',
+    'src/crdt/promotionRecord.ts',
+    'src/crdt/startupClassification.ts',
+    'account-protocol/genesis.ts',
   ]) {
     const f = historicalFixture(t, path, true),
       before = f.fingerprint();
@@ -210,8 +306,19 @@ test('historical metadata rejects malformed pins, unsupported adapters and 160 g
   };
   validateHistoricalInputs([pin]);
   validateHistoricalInputs([{ ...pin, path: 'src/crdt/spoolRecord.ts' }]);
-  validateHistoricalInputs([pin, { ...pin, path: 'account-protocol/admission.ts' }]);
+  validateHistoricalInputs([
+    pin,
+    ...[
+      'account-protocol/admission.ts',
+      'test/accountDelivery.test.ts',
+      'src/crdt/promotionRecord.ts',
+      'src/crdt/startupClassification.ts',
+      'account-protocol/genesis.ts',
+    ].map((path) => ({ ...pin, path })),
+  ]);
   for (const path of [
+    'test/other.test.ts',
+    'test/../accountDelivery.test.ts',
     'account-protocol/other.ts',
     'account-protocol/../admission.ts',
     'src/crdt/other.ts',

@@ -18,6 +18,8 @@ import { reconcileCarrier } from './carrier-adapter.mjs';
 import { reconcileVitest, vitestArgv } from './vitest-adapter.mjs';
 import { assertHistoricalInputs, validateHistoricalInputs } from './historical-inputs.mjs';
 
+import { registrationModulePath } from './registration-modules.mjs';
+
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export function validateStage(stage) {
@@ -99,10 +101,33 @@ export function validateStage(stage) {
         );
     }
   }
-  assert(
-    !Object.hasOwn(stage.expect, 'dataInputs') || stage.expect.kind === 'vitest',
-    'Registration data metadata is only defined for Vitest',
-  );
+  if (Object.hasOwn(stage.expect, 'dataInputs')) {
+    const module =
+      stage.expect.kind === 'cases' &&
+      stage.variant === 'node-account-fixture-file-v1' &&
+      stage.argv.includes('--test') &&
+      registrationModulePath(stage.argv.at(-1));
+    assert(stage.expect.kind === 'vitest' || module, 'Unreviewed registration data adapter');
+    const inputs = stage.expect.dataInputs;
+    assert(Array.isArray(inputs) && inputs.length, 'Invalid registration data inputs');
+    assert.equal(
+      new Set(inputs.map((i) => i.path)).size,
+      inputs.length,
+      'Duplicate registration input',
+    );
+    for (const i of inputs) {
+      assert(i && typeof i === 'object', 'Invalid registration data input');
+      assert.deepEqual(Object.keys(i).sort(), ['path', 'sha256']);
+      assert(
+        typeof i.path === 'string' &&
+          typeof i.sha256 === 'string' &&
+          (module ? i.path === module : /^test\/vectors\/[A-Za-z0-9_./-]+\.json$/.test(i.path)) &&
+          !i.path.split('/').includes('..') &&
+          /^[a-f0-9]{64}$/.test(i.sha256),
+        'Invalid registration data input',
+      );
+    }
+  }
   if (Object.hasOwn(stage.expect, 'historyInputs')) {
     assert.equal(stage.expect.kind, 'cases', 'Historical source metadata requires Node cases');
     assert(stage.argv.includes('--test'), 'Historical source metadata requires the Node reporter');
@@ -116,24 +141,6 @@ export function validateStage(stage) {
       stage.expect.cases.every((c) => c.outcome === 'pass'),
       'Vitest mutations need a separate adapter',
     );
-    if (stage.expect.dataInputs) {
-      assert(
-        Array.isArray(stage.expect.dataInputs) && stage.expect.dataInputs.length,
-        'Invalid registration data inputs',
-      );
-      assert.equal(
-        new Set(stage.expect.dataInputs.map((i) => i.path)).size,
-        stage.expect.dataInputs.length,
-        'Duplicate registration input',
-      );
-      for (const i of stage.expect.dataInputs)
-        assert(
-          /^test\/vectors\/[A-Za-z0-9_./-]+\.json$/.test(i.path) &&
-            !i.path.split('/').includes('..') &&
-            /^[a-f0-9]{64}$/.test(i.sha256),
-          'Invalid registration data input',
-        );
-    }
     assert(!stage.fixture, 'Native Vitest fixtures are not certified');
   }
   if (stage.argv[1] === 'node_modules/vitest/vitest.mjs')
@@ -543,6 +550,12 @@ export function createStageRunner({
         'Inputs changed during execution',
       );
       assertHistoricalInputs(root, stage.expect.historyInputs);
+      for (const i of stage.expect.dataInputs ?? [])
+        assert.equal(
+          hash(readFileSync(join(root, i.path))),
+          i.sha256,
+          'Registration data changed during execution: ' + i.path,
+        );
     } catch (e) {
       reason ??= String(e);
     }

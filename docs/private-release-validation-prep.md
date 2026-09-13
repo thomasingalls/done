@@ -43,20 +43,19 @@ records current package wiring, proposed required families, explicit exclusions 
 gaps. `pnpm validation:inventory` detects drift; it does not run the aggregate. The
 [execution foundation and all eleven catalogue adapters](./release-validation-execution.md) now
 supply owned execution for 163 catalogue cases and 54 mutations. General selections now contain
-157 files / 1,357 cases: all 96 Vitest files and 61 Node files. Protocol-preparation and registry
-fixtures add eight files / 43 cases, including two browser-backed files. All pass with drained
-worker/browser groups. The shared promotion fixture borrows owned CDP and closes each context;
-existing native campaign and per-test bounds remain. Static census adds finite numeric >= and
-admission-bounds pins both historical sources. Product sources and the eight test files are unchanged.
-All 149 prior contracts / 1,314 identities retain earlier evidence. All 90 pure, 21 Node owner and
-12 native owner controls pass; five Vitest process controls retain earlier evidence. The ledger
-phase's initial orphaned-child classification remains unresolved despite later passes; keep it for
-owner/loaded-host qualification. The manifest retains 260 unresolved obligations: 101 test-file
-(85 Node, sixteen Playwright), 96 command and 63 campaign. Delivery-oracle/parser-conformance
-fixtures are next; other owners and wrappers precede P-06 and the immutable run. Earlier models,
-real snapshot edges and injected coverage descriptors retain distinct claims. Optional JSON exports
-need saved-output checks. Retired-v8 wrapper calls require disposition without reviving support.
-The manifest stays within 700 kB; R-04's live/archive/generated scopes and full style checks remain.
+164 files / 1,403 cases: all 96 Vitest files and 68 Node files. Delivery-oracle/parser-conformance
+fixtures add seven files / 46 cases, all passing with drained worker groups. A static reader pins
+the exact reviewed helper export without executing it; five historical sources enter two contracts.
+Product sources, fixture helpers and all seven test files are unchanged. All 157 prior contracts /
+1,357 identities retain earlier evidence. All 92 pure, 23 Node owner and five Vitest process controls
+pass; twelve native ownership controls retain preparation evidence. The ledger phase's initial
+orphaned-child classification remains unresolved despite later passes; keep it for owner/loaded-host
+qualification. The manifest retains 253 unresolved obligations: 94 test-file (78 Node, sixteen
+Playwright), 96 command and 63 campaign. Transport service fixtures are next, followed by browser-
+backed receive fixtures; other owners and wrappers precede P-06 and the immutable run. Finite model,
+structural parser and authentication evidence retain distinct claims. Optional JSON exports need
+saved-output checks. Retired-v8 wrapper calls require disposition without reviving support. The
+manifest stays within 700 kB; R-04's live/archive/generated scopes and full style checks remain.
 Bounded receipts do not qualify whole commands or a loaded-host aggregate.
 The [R intake](./review/implementation/9ff48b5-d03e473.md) additionally
 requires R-01's service/receiver size contract repair before a durable Account cutover; that bounded

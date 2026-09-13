@@ -11,6 +11,7 @@ import {
   ledgerFixtureFiles,
   contractFixtureFiles,
   preparationFixtureFiles,
+  oracleParserFixtureFiles,
   admissionEvidenceFiles,
 } from '../../scripts/release-validation/account-fixture-tests.mjs';
 import { assertGeneralTestPopulation } from '../../scripts/release-validation/general-tests.mjs';
@@ -25,13 +26,13 @@ import { openFixtureBrowser } from '../account-promotion/browser-owner.mjs';
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('Account fixture selection admits exactly 251 Node cases and 12 delivery cases while native and wrapper obligations stay blocked', () => {
+test('Account fixture selection admits exactly 297 Node cases and 12 delivery cases while native and wrapper obligations stay blocked', () => {
   const stages = accountFixtureFiles.node.map((f) => accountFixtureNodeStage(process.cwd(), f));
   assert.deepEqual(
     stages.map((s) => s.expect.cases.length),
     [
       3, 2, 10, 4, 2, 1, 3, 12, 2, 5, 3, 11, 3, 1, 6, 6, 4, 14, 2, 5, 1, 5, 20, 1, 6, 8, 9, 1, 2, 3,
-      8, 3, 2, 7, 2, 5, 7, 2, 1, 4, 8, 4, 5, 3, 9, 5, 1, 12, 3, 5,
+      8, 3, 2, 7, 2, 5, 7, 2, 1, 4, 8, 4, 5, 3, 9, 5, 1, 12, 3, 5, 12, 1, 3, 12, 7, 3, 8,
     ],
   );
   for (const s of stages) {
@@ -48,10 +49,10 @@ test('Account fixture selection admits exactly 251 Node cases and 12 delivery ca
   }
   const m = compileManifest(process.cwd(), inventory()),
     selected = selectStages(m, 'account-fixtures');
-  assert.equal(selected.length, 51);
+  assert.equal(selected.length, 58);
   assert.equal(
     selected.reduce((n, s) => n + s.expect.cases.length, 0),
-    263,
+    309,
   );
   const service = selectStages(m, 'service-fixtures');
   assert.deepEqual(service.map((s) => s.argv.at(-1)).sort(), [...serviceFixtureFiles].sort());
@@ -126,6 +127,73 @@ test('Account fixture selection admits exactly 251 Node cases and 12 delivery ca
       .sort(),
     [...admissionEvidenceFiles].sort(),
   );
+  const parser = selectStages(m, 'oracle-parser-fixtures');
+  assert.deepEqual(parser.map((s) => s.argv.at(-1)).sort(), [...oracleParserFixtureFiles].sort());
+  assert.equal(parser.length, 7);
+  assert.equal(
+    parser.reduce((n, s) => n + s.expect.cases.length, 0),
+    46,
+  );
+  assert(parser.every((s) => !s.fixture));
+  const oracle = parser.find((s) => s.argv.at(-1).endsWith('delivery-oracle/controls.test.mjs'));
+  assert.deepEqual(
+    oracle.expect.historyInputs.map((p) => [p.reference, p.path]),
+    [['77b0bb6239f7b7a48c4a52c74d3e3f39e39994a3', 'test/accountDelivery.test.ts']],
+  );
+  assert(
+    readFileSync(oracle.argv.at(-1), 'utf8').includes(oracle.expect.historyInputs[0].reference),
+  );
+  assert.deepEqual(
+    oracle.expect.dataInputs.map((p) => p.path),
+    ['test/account-delivery-oracle/helpers.mjs'],
+  );
+  for (const change of [
+    (s) => {
+      s.variant = 'other';
+    },
+    (s) => {
+      s.argv[s.argv.length - 1] = 'test/other.test.mjs';
+    },
+    (s) => {
+      s.expect.dataInputs = [];
+    },
+    (s) => {
+      s.expect.dataInputs.push(s.expect.dataInputs[0]);
+    },
+    (s) => {
+      s.expect.dataInputs[0].path = 'test/account-parser-conformance/helpers.mjs';
+    },
+    (s) => {
+      s.expect.dataInputs[0].path = 'test/vectors/envelope.json';
+    },
+    (s) => {
+      s.expect.dataInputs[0].sha256 = 'bad';
+    },
+    (s) => {
+      s.expect.dataInputs[0].extra = true;
+    },
+  ]) {
+    const changed = structuredClone(oracle);
+    change(changed);
+    assert.throws(() => validateStage(changed));
+  }
+  const baseline = parser.find((s) => s.argv.at(-1).endsWith('/baseline.test.mjs'));
+  assert.deepEqual(
+    baseline.expect.historyInputs.map((p) => p.path),
+    [
+      'src/crdt/promotionRecord.ts',
+      'src/crdt/spoolRecord.ts',
+      'src/crdt/startupClassification.ts',
+      'account-protocol/genesis.ts',
+    ],
+  );
+  const helper = readFileSync('test/account-parser-conformance/helpers.mjs', 'utf8');
+  for (const pin of baseline.expect.historyInputs) {
+    assert.equal(pin.reference, 'f0b6acd2e624d89034c88706d4053a830ab50cc6');
+    assert(helper.includes(pin.reference) && helper.includes(pin.path));
+  }
+  assert.equal(parser.filter((s) => s.expect.historyInputs).length, 2);
+  assert.equal(parser.filter((s) => s.expect.dataInputs).length, 1);
   const oldBatch = ledger.filter((s) => s.expect.historyInputs);
   assert.deepEqual(
     oldBatch.map((s) => s.argv.at(-1)),
@@ -148,6 +216,8 @@ test('Account fixture selection admits exactly 251 Node cases and 12 delivery ca
     'test/account-activation/native.test.mjs',
     'test/account-handoff/native.test.mjs',
     'test/account-service-inbound/native.test.mjs',
+    'test/account-delivery-oracle/native.test.mjs',
+    'test/account-parser-conformance/native.test.mjs',
   ]) {
     assert.throws(() => accountFixtureNodeStage(process.cwd(), f), /Unreviewed/);
     assert(m.rows.find((r) => r.path === f).blocked);
@@ -173,6 +243,8 @@ test('Account fixture selection admits exactly 251 Node cases and 12 delivery ca
     'account-first-authority',
     'account-genesis',
     'account-outbound',
+    'account-delivery-oracle',
+    'account-parser-conformance',
   ])
     assert(m.rows.find((r) => r.id === `campaign:scripts/${runner}/run.mjs`).blocked);
   assert.throws(() => selectStages(m, 'release'), /Unresolved/);

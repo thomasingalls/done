@@ -8,7 +8,11 @@ import {
   vitestCensus,
   vitestDeclarations,
 } from '../../scripts/release-validation/vitest-census.mjs';
-import { generatedNodeCensus, directNodeCensus } from '../../scripts/release-validation/census.mjs';
+import {
+  generatedNodeDeclarations,
+  generatedNodeCensus,
+  directNodeCensus,
+} from '../../scripts/release-validation/census.mjs';
 import {
   generatedFiles,
   generatedNodeStage,
@@ -17,9 +21,96 @@ import { vitestStage } from '../../scripts/release-validation/vitest-adapter.mjs
 import { manifestSnapshot } from '../../scripts/release-validation/manifest-snapshot.mjs';
 import { compileManifest, selectStages } from '../../scripts/release-validation/manifest.mjs';
 import { buildInventory } from '../../scripts/release-validation/inventory.mjs';
+import { hash } from '../../scripts/release-validation/identity.mjs';
 const subject = 'test/subject.test.ts';
 const source = (s) => "import {it,describe} from 'vitest';" + s;
 const names = (cases) => cases.map((c) => JSON.parse(c.id.split('::')[1]));
+
+function moduleFixture(t) {
+  const root = mkdtempSync(join(tmpdir(), 'done-module-registration-'));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const consumer = 'test/account-delivery-oracle/controls.test.mjs';
+  const path = 'test/account-delivery-oracle/helpers.mjs';
+  mkdirSync(join(root, 'test/account-delivery-oracle'), { recursive: true });
+  const text =
+    "import test from 'node:test';import {controls as table} from './helpers.mjs';for(const name of Object.keys(table))test(name,()=>{});";
+  return {
+    root,
+    consumer,
+    path,
+    text,
+    write: (s) => writeFileSync(join(root, path), s),
+    read: (s = text, file = consumer) => generatedNodeDeclarations(file, s, { root }),
+  };
+}
+
+test('160 generated exported control tables preserve case order and pin all helper bytes without executing its imports or body', (t) => {
+  const f = moduleFixture(t);
+  fc.assert(
+    fc.property(
+      fc.uniqueArray(fc.integer({ min: 0, max: 1000 }), { minLength: 1, maxLength: 16 }),
+      (ids) => {
+        const entries = ids.map((n) => ['control' + n, ['from ' + n, 'to ' + n]]);
+        const source =
+          'import unavailable from "missing-package";throw Error("must not execute");export const controls=' +
+          JSON.stringify(Object.fromEntries(entries)) +
+          ';';
+        f.write(source);
+        const first = f.read();
+        assert.deepEqual(
+          first.cases,
+          ids.map((n) => ({ id: f.consumer + '::control' + n, outcome: 'pass' })),
+        );
+        assert.deepEqual(first.dataInputs, [{ path: f.path, sha256: hash(source) }]);
+        f.write(source + '\n// changed helper, same case names');
+        const changed = f.read();
+        assert.deepEqual(changed.cases, first.cases);
+        assert.notDeepEqual(changed.dataInputs, first.dataInputs);
+        f.write(
+          'export const controls=' + JSON.stringify(Object.fromEntries(entries.slice(0, -1))) + ';',
+        );
+        if (ids.length > 1) assert.deepEqual(f.read().cases, first.cases.slice(0, -1));
+        else assert.throws(() => f.read(), /Unresolved/);
+      },
+    ),
+    { seed: 130925, numRuns: 160 },
+  );
+});
+
+test('module registration refuses unreviewed consumers, imports, dynamic tables, mutable exports, invalid keys and symlinks', (t) => {
+  const f = moduleFixture(t);
+  for (const s of [
+    'export let controls={a:["x","y"]};',
+    'export {controls} from "./elsewhere.mjs";',
+    'export const controls=unknown();',
+    'export const controls={...other};',
+    'export const controls={["a"]:["x","y"]};',
+    'export const controls={a:["x","y"],a:["x","z"]};',
+    'export const controls={constructor:["x","y"]};',
+    'export const controls={__proto__:["x","y"]};',
+    'export const controls={a:["x",]};',
+    'export const controls={a:["x",unknown()]};',
+    'export const controls={a:["x",()=>"y"]};',
+    'export const controls={a:["x",""]};',
+  ]) {
+    f.write(s);
+    assert.throws(() => f.read(), /Unresolved|Invalid|Duplicate/);
+  }
+  f.write('export const controls={a:["x","y"]};');
+  for (const text of [
+    f.text.replace("'./helpers.mjs'", "'../account-delivery-oracle/helpers.mjs'"),
+    f.text.replace('controls as table', 'other as table'),
+    f.text.replace('{controls as table}', 'table'),
+    f.text.replace('{controls as table}', '* as table'),
+  ])
+    assert.throws(() => f.read(text), /Unreviewed/);
+  assert.throws(() => f.read(f.text, 'test/other.test.mjs'), /Unreviewed/);
+  assert.throws(() => generatedNodeCensus(f.consumer, f.text), /Unreviewed/);
+  rmSync(join(f.root, f.path));
+  writeFileSync(join(f.root, 'other.mjs'), 'export const controls={a:["x","y"]};');
+  symlinkSync(join(f.root, 'other.mjs'), join(f.root, f.path));
+  assert.throws(() => f.read(), /symlink/);
+});
 
 test('finite nested suite tables, literal loops, tuples, nullable scalars and object titles have independently computed identities', () => {
   assert.deepEqual(
@@ -156,7 +247,7 @@ test('all reviewed generated files retain 222 cases and the compact manifest pre
   assert.equal(selectStages(restored, 'generated-tests').length, 14);
   assert.equal(
     selectStages(restored, 'general-tests').reduce((n, s) => n + s.expect.cases.length, 0),
-    1357,
+    1403,
   );
   assert(manifest.rows.find((r) => r.path === 'test/accountDelivery.test.ts').stage);
   assert.throws(() => selectStages(restored, 'release'), /Unresolved/);
@@ -194,7 +285,7 @@ test('160 generated literal populations preserve tuple binding, loop order and s
   );
 });
 
-test('registration data metadata cannot extend non-Vitest stages, and inherited-key filters are outside the finite subset', async () => {
+test('registration data metadata cannot extend unreviewed Node stages, and inherited-key filters are outside the finite subset', async () => {
   const { validateStage } = await import('../../scripts/release-validation/stage.mjs');
   const node = generatedNodeStage(process.cwd(), generatedFiles.node[0]);
   assert.throws(

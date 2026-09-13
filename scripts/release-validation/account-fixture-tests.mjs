@@ -4,8 +4,18 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { generatedNodeCensus } from './census.mjs';
+import { generatedNodeDeclarations } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
+
+export const oracleParserFixtureFiles = [
+  'test/account-delivery-oracle/controls.test.mjs',
+  'test/account-delivery-oracle/oracle.test.mjs',
+  'test/account-parser-conformance/baseline.test.mjs',
+  'test/account-parser-conformance/controls.test.mjs',
+  'test/account-parser-conformance/objects.test.mjs',
+  'test/account-parser-conformance/submission.test.mjs',
+  'test/account-parser-conformance/wires.test.mjs',
+];
 
 export const preparationFixtureFiles = [
   'test/account-admission-bounds/protocol.test.mjs',
@@ -58,6 +68,15 @@ export const deliveryFixtureFiles = [
 ];
 
 const history = {
+  'test/account-delivery-oracle/controls.test.mjs': [
+    ['77b0bb6239f7b7a48c4a52c74d3e3f39e39994a3', 'test/accountDelivery.test.ts'],
+  ],
+  'test/account-parser-conformance/baseline.test.mjs': [
+    ['f0b6acd2e624d89034c88706d4053a830ab50cc6', 'src/crdt/promotionRecord.ts'],
+    ['f0b6acd2e624d89034c88706d4053a830ab50cc6', 'src/crdt/spoolRecord.ts'],
+    ['f0b6acd2e624d89034c88706d4053a830ab50cc6', 'src/crdt/startupClassification.ts'],
+    ['f0b6acd2e624d89034c88706d4053a830ab50cc6', 'account-protocol/genesis.ts'],
+  ],
   'test/account-ledger-contract/batch.test.mjs': [
     ['284a97a27dc3344fcb7c55a8757a2a41c74fe0b9', 'src/crdt/spoolRecord.ts'],
   ],
@@ -104,12 +123,16 @@ export const accountFixtureFiles = {
     ...ledgerFixtureFiles,
     ...contractFixtureFiles,
     ...preparationFixtureFiles,
+    ...oracleParserFixtureFiles,
   ],
 };
 
 export function accountFixtureNodeStage(root, file) {
   assert(accountFixtureFiles.node.includes(file), 'Unreviewed Account fixture file');
   const browser = admissionEvidenceFiles.includes(file);
+  const declarations = generatedNodeDeclarations(file, readFileSync(join(root, file), 'utf8'), {
+    root,
+  });
   return {
     id: 'test:' + file,
     argv: [
@@ -124,7 +147,8 @@ export function accountFixtureNodeStage(root, file) {
     ...(browser ? { fixture: { kind: 'chromium-cdp', startupMs: 15000 } } : {}),
     expect: {
       kind: 'cases',
-      cases: generatedNodeCensus(file, readFileSync(join(root, file), 'utf8')),
+      cases: declarations.cases,
+      ...(declarations.dataInputs.length ? { dataInputs: declarations.dataInputs } : {}),
       ...(history[file]
         ? { historyInputs: history[file].map((locator) => historicalInput(root, ...locator)) }
         : {}),

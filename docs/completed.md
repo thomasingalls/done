@@ -4380,3 +4380,50 @@ manifest retains 612 obligations / 260 unresolved: 101 test-file (85 Node, sixte
 wrappers are separate. This phase is uncommitted. All personal/package/vector pins, L-2, historical
 archives and formal debts remain unchanged. Next review delivery-oracle and parser-conformance
 fixtures; remaining owners, wrappers, R-04 and P-06 precede immutable aggregate validation.
+
+
+## 2026-09-13 — Delivery-oracle and parser-conformance fixture adapters (L-1)
+
+Protocol preparation and registry fixtures are signed and verified as `950fe83`. The new
+`oracle-parser-fixtures` selection adds seven files / 46 cases: delivery controls 12, finite oracle 1,
+parser baseline 3, controls 12, objects 7, submission 3 and wires 8. The seven test files, their
+helpers, product sources, assertions, seeds, populations and per-test deadlines are unchanged.
+
+The pre-change census refused the delivery controls' imported table. A narrow static reader now
+accepts only that reviewed helper's named controls export and literal key/two-string patch pairs.
+It pins the full helper bytes without importing dependencies, executing the helper or invoking
+functions. Unknown consumers/imports, dynamic tables, mutable exports, invalid keys and symlinks
+refuse. A 160-population property (seed 130925) checks independently derived order and identities;
+changing a patch without changing names changes its pin. Before-launch/reuse and postexecution
+controls retain two passing receipts and one required drift refusal, all drained.
+
+The old delivery oracle at `77b0bb6239f7b7a48c4a52c74d3e3f39e39994a3` and all four parser baseline
+sources at `f0b6acd2e624d89034c88706d4053a830ab50cc6` enter their two stage contracts. Historical
+validation adds four exact paths. Its seven synthetic locators retain 21 receipts: fourteen passes
+and seven required drift refusals. Neither helper nor Git changes can silently reuse an old receipt.
+
+The owned selection passes seven files / 46 cases in 54.046 seconds including fingerprint work;
+every group drains. It retains 3,350 parser inputs across eleven seeded properties, two historical
+properties that must fail and shrink, twelve delivery mutations and twelve parser mutations.
+The finite oracle cross-check covers 80 worlds / 2,197 three-proof histories over three positions.
+Four delivery faults still match the historical reduced oracle while failing full-state comparison.
+Parser positives establish structure and independent bytes, not signature authority. The submission
+mutation removes both redundant consumption/re-encoding guards. Real Yjs wire edges remain bounded
+resource observations, not complexity or workload qualification.
+
+All 92 pure adapter tests, 23 Node owner tests, five Vitest process controls, direct TypeScript,
+scoped style, planning and authority checks pass. Twelve unchanged native ownership controls retain
+the preparation packet evidence. The ledger phase's earlier expected-pass orphan classification
+remains unresolved despite later passes; this phase establishes no fix.
+
+The packet at `docs/account-conformance-runs/2026-09-13-oracle-parser-fixture-adapters/` retains full
+receipts, exact patch, source/helper pins, historical/registration controls and preservation within
+150 kB. All 157 prior general contracts / 1,357 identities remain unchanged and retain prior evidence.
+General selections contain 164 files / 1,403 cases: 96 Vitest and 68 Node; Account has 58 files /
+309 cases. The 624,464-byte manifest retains 612 obligations / 253 unresolved: 94 test-file
+(78 Node, sixteen Playwright), 96 command and 63 campaign. All eleven catalogues remain resolved.
+
+This phase is uncommitted. Optional JSON reports, native siblings and whole wrappers remain separate.
+All personal/package/vector pins, L-2, historical archives and formal debts remain unchanged.
+Next review the three transport service fixtures, followed by browser-backed receive fixtures and
+remaining owners/wrappers. R-04 and P-06 precede the immutable aggregate and human Account walkthrough.

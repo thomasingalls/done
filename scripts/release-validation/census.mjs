@@ -106,9 +106,11 @@ export function catalogueCensus(text, { patches = false, patchFile } = {}) {
  * Loops, nested tests, aliases used elsewhere and conditional registrations refuse. Other
  * families need a reviewed adapter, not a count learned from a supposedly passing run.
  */
-export const directNodeCensus = (path, text) => nodeCensus(path, text, false);
-export const generatedNodeCensus = (path, text) => nodeCensus(path, text, true);
-function nodeCensus(path, text, generated) {
+export const directNodeCensus = (path, text) => nodeCensus(path, text, false).cases;
+export const generatedNodeCensus = (path, text) => nodeCensus(path, text, true).cases;
+export const generatedNodeDeclarations = (path, text, { root } = {}) =>
+  nodeCensus(path, text, true, root);
+function nodeCensus(path, text, generated, root) {
   const ast = parse(text),
     aliases = new Set(),
     declarations = new Set(),
@@ -119,7 +121,7 @@ function nodeCensus(path, text, generated) {
         if (s.type === 'ImportDefaultSpecifier' || s.imported?.name === 'test')
           aliases.add(s.local.name);
   assert(aliases.size, 'No supported node:test import: ' + path);
-  const data = registrationData({ path, ast });
+  const data = registrationData({ root, path, ast });
   const scan = (body, env, depth = 0) => {
     assert(depth < 32, 'Node registration nesting limit');
     for (const n of body) {
@@ -180,5 +182,8 @@ function nodeCensus(path, text, generated) {
     cases.length && new Set(cases.map((c) => c.id)).size === cases.length,
     'Empty or duplicate test census: ' + path,
   );
-  return cases;
+  return {
+    cases,
+    dataInputs: [...data.inputs.values()].sort((a, b) => a.path.localeCompare(b.path)),
+  };
 }

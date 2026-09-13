@@ -43,50 +43,52 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — delivery oracle and parser conformance (`L-1`)
+## Active slice: General validation-runner integration — transport service fixtures (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; next bounded implementation reviews delivery-oracle and parser-conformance fixtures
+blocks_on: none; next bounded implementation reviews transport controls, generated histories and service fixtures
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-13
 ```
 
-**Just completed.** Contract fixtures are signed and verified as `8db2ee7`; ledger `54722df`,
-isolation `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated
-registrations `f9111ea`, general adapters `38e4995`, properties `8acdee4`, R-01 `5872dc5`.
-[Protocol preparation and registry fixtures](./release-validation-execution.md#protocol-preparation-and-registry-fixtures--phase-2v)
-add eight files / 43 cases. Two are browser-backed and now borrow owned CDP through the shared
-promotion helper. Cleanup starts before setup and closes each context. Product source, the eight
-test files, assertions, populations, seeds and per-test deadlines remain unchanged. This phase is
-uncommitted. Static census adds finite numeric >=; admission-bounds pins both historical sources.
+**Just completed.** Preparation/registry fixtures are signed and verified as `950fe83`; contracts
+`8db2ee7`, ledger `54722df`, isolation `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`,
+Account `5334a7c`, generated registrations `f9111ea`, general adapters `38e4995`, properties
+`8acdee4`, R-01 `5872dc5`. [Delivery-oracle and parser fixtures](./release-validation-execution.md#delivery-oracle-and-parser-conformance-fixtures--phase-2w)
+add seven files / 46 cases. The adapter statically reads and pins the one reviewed helper export;
+it pins the historical delivery oracle and four parser sources. Product source, all seven test files
+and their helpers, assertions, populations, seeds and per-test deadlines are unchanged. This phase
+is uncommitted.
 
-**Evidence.** The disposable selection passes in 308.094 seconds, with every worker/browser group
-drained. All 90 pure adapter checks, 21 Node owner tests, 12 native owner tests, direct TypeScript,
-scoped style, planning and authority pass. The [packet](./account-conformance-runs/2026-09-13-preparation-fixture-adapters/README.md)
-retains full receipts, exact patch, 271 source/helper/registry/vector pins, historical/browser
-identities and preservation. Generated populations remain 80 protocol, 12 receipt, 300 census,
-100 HPKE and 1,000 outbound-model inputs. Real snapshot bounds and injected coverage descriptors
-remain distinct. All 149 prior contracts / 1,314 identities retain earlier evidence unchanged;
-five Vitest process controls were not rerun. Native file bounds preserve the existing six minutes.
+**Evidence.** The disposable selection passes in 54.046 seconds, with every worker group drained.
+All 92 pure adapter tests, 23 Node owner tests, five Vitest process tests, direct TypeScript, scoped
+style, planning and authority pass. The [packet](./account-conformance-runs/2026-09-13-oracle-parser-fixture-adapters/README.md)
+retains full receipts, exact patch, source/helper pins, historical/registration controls and
+preservation. Parser properties retain 3,350 inputs; two additional historical properties must fail
+and shrink. Twelve delivery and twelve parser mutations remain effective. The oracle cross-check
+is exhaustive only over 80 worlds and 2,197 three-proof histories. Structural parsing grants no
+signature authority. All 157 prior contracts / 1,357 identities retain earlier evidence unchanged;
+twelve native ownership controls retain the preparation packet evidence and were not rerun.
 
 **Open validation observation.** The ledger phase's first owner run reported orphaned-child on an
 expected-pass historical service-path control. Its log remains; teardown removed its first receipt.
-Cause remains unresolved despite later passes. Optional pre-cleanup capture retains later historical
-control receipts. Investigate at the owner/loaded-host reliability gate; this phase establishes no fix.
+Cause remains unresolved despite later passes. Optional pre-cleanup capture retains later control
+receipts. Investigate at the owner/loaded-host reliability gate; this phase establishes no fix.
 
-**Next bounded phase.** Review delivery-oracle controls/oracle and parser-conformance baseline,
-controls, objects, submission and wires. Review actual runtime effects and historical sources before
-admission; filenames alone do not determine ownership. General selections contain 157 files /
-1,357 cases: all 96 Vitest and 61 Node files. There are 612 obligations / 260 blocked rows: 101
-test-file (85 Node, sixteen Playwright), 96 command, 63 campaign. The 613,242-byte manifest stays
-below 700 kB; all eleven catalogues remain resolved (163 cases / 54 mutations). Other Node/native/
-Playwright ownership, nested owners and wrappers follow. Optional JSON exports require saved-output
-postconditions. Resolve retired-v8 wrapper calls without reviving support. R-04 style scopes/full
-checks and P-06 prose precede the immutable aggregate, private Account prep and human adoption.
+**Next bounded phase.** Review `test/account-transport/controls.test.mjs`, `generated.test.mjs` and
+`service.test.mjs`, including actual fixture effects and exact source mutations. Browser-backed
+receive fixtures follow. General selections contain 164 files / 1,403 cases: all 96 Vitest and
+68 Node files. There are 612 obligations / 253 blocked rows: 94 test-file (78 Node, sixteen
+Playwright), 96 command, 63 campaign. These are integration obligations, not 253 product defects.
+The 624,464-byte manifest stays below 700 kB; all eleven catalogues remain resolved (163 cases /
+54 mutations). Other Node/native/Playwright ownership, nested owners and wrappers follow. Optional
+JSON exports require saved-output postconditions. Resolve retired-v8 wrapper calls without reviving
+support. R-04 style scopes/full checks and P-06 prose precede the immutable aggregate, private
+Account prep and human adoption.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;

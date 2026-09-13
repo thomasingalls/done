@@ -10,7 +10,11 @@ function validateLocator(reference, path) {
       typeof path === 'string' &&
       (/^account-service\/[a-z-]+\.ts$/.test(path) ||
         path === 'src/crdt/spoolRecord.ts' ||
-        path === 'account-protocol/admission.ts'),
+        path === 'account-protocol/admission.ts' ||
+        path === 'test/accountDelivery.test.ts' ||
+        path === 'src/crdt/promotionRecord.ts' ||
+        path === 'src/crdt/startupClassification.ts' ||
+        path === 'account-protocol/genesis.ts'),
     'Invalid historical source locator',
   );
 }

@@ -27,6 +27,7 @@ import {
   ledgerFixtureFiles,
   contractFixtureFiles,
   preparationFixtureFiles,
+  oracleParserFixtureFiles,
 } from './account-fixture-tests.mjs';
 import {
   generalTestPolicy,
@@ -430,6 +431,9 @@ export function compileManifest(root, inventory) {
         .map((r) => r.id),
       'preparation-fixtures': rows
         .filter((r) => account.node.includes(r.path) && preparationFixtureFiles.includes(r.path))
+        .map((r) => r.id),
+      'oracle-parser-fixtures': rows
+        .filter((r) => account.node.includes(r.path) && oracleParserFixtureFiles.includes(r.path))
         .map((r) => r.id),
       'general-tests': rows
         .filter(
