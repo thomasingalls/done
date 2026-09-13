@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 122,
     "campaigns": 78,
-    "testFiles": 267,
-    "requiredTestFiles": 261,
+    "testFiles": 268,
+    "requiredTestFiles": 262,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 29,
@@ -4206,25 +4206,8 @@
       "packageCommands": [[["node", "scripts/admission/run.mjs"], {}]],
       "extraCommands": [],
       "referencesVectorChain": false,
-      "runCallSites": [
-        {
-          "line": 191,
-          "form": "run",
-          "arguments": []
-        },
-        {
-          "line": 195,
-          "form": "run",
-          "arguments": ["spec"]
-        }
-      ],
-      "processCallSites": [
-        {
-          "line": 20,
-          "form": "execFileSync",
-          "arguments": ["'git'", "['-C', root, ...args]", "{ encoding: 'utf8' }"]
-        }
-      ]
+      "runCallSites": [],
+      "processCallSites": []
     },
     {
       "path": "scripts/app-upgrades/run.mjs",
@@ -8747,6 +8730,26 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/release-validation/admission.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/release-validation/admission.test.mjs"
+        ]
+      },
+      "declarations": 4,
+      "propertyFamilies": [
+        {
+          "line": 141,
+          "form": "fc.property"
+        }
+      ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/release-validation/content-native.test.mjs",
       "status": "required",
       "invocation": {
@@ -11144,11 +11147,15 @@
     },
     {
       "path": "scripts/admission/run.mjs",
-      "sha256": "9e279bf817a099afdbc8c411c95831a8766a0a5a4b1fc6db0656d541ec5fbf7c"
+      "sha256": "3ebae10e043f673d6e493602850818c4738848c136796ceb148ef25828b1aaaa"
     },
     {
       "path": "scripts/admission/scenarios.mjs",
       "sha256": "fdb90b4b68da2b2bc6bbea64be35f5e64155f55ac2a0ef7aee7eae3ded1652e0"
+    },
+    {
+      "path": "scripts/admission/worker.mjs",
+      "sha256": "2d20f6f35d0f0aba0374954e4f2dca1df3b8f07875f13ee4c5bb556a58eca63e"
     },
     {
       "path": "scripts/app-upgrades/run.mjs",
@@ -11599,12 +11606,16 @@
       "sha256": "9decb34cebd5f0ab75ef60c58ad991549c684882469d3ba6a076a201723e5f11"
     },
     {
+      "path": "scripts/release-validation/admission-adapter.mjs",
+      "sha256": "c39a5fb785d5bbd9084cc1e116ef612b9417543ccd0f0e5a02e2cfb370a9530f"
+    },
+    {
       "path": "scripts/release-validation/browser.mjs",
       "sha256": "5e56e2d318553e13f60db06bee1747b6e4481a6fda3c62d1f4913ea865a35573"
     },
     {
       "path": "scripts/release-validation/carrier-adapter.mjs",
-      "sha256": "dd00f6dddacdfe597e29eccd4607fb1b99f4490b6ebe2522f80c76f4e89f7136"
+      "sha256": "e98139ec0e87da9491892914f9b71872e9788b16bd5094906ff865bc446a10d6"
     },
     {
       "path": "scripts/release-validation/census.mjs",
@@ -11620,7 +11631,7 @@
     },
     {
       "path": "scripts/release-validation/execute.mjs",
-      "sha256": "a75ddc495de12cd4e32839baff9542c16c80934b0a05e857d52c7a7f3d099032"
+      "sha256": "1a05d0c4c3aae890f5071b53077d24d8c312023ce04d903c349a6e7ce73d00ca"
     },
     {
       "path": "scripts/release-validation/identity.mjs",
@@ -11636,7 +11647,7 @@
     },
     {
       "path": "scripts/release-validation/manifest.mjs",
-      "sha256": "00e00b31fd4b316eaf32aaa3ab3f3ff9fcddf8a3e3b75f875ba6d6b302440fd3"
+      "sha256": "e5d2ffd30efbb79089aaec4d0dad7d0dc1c5061d7b386eb28a0d9b38c9841955"
     },
     {
       "path": "scripts/release-validation/node-reporter.mjs",
@@ -11664,7 +11675,7 @@
     },
     {
       "path": "scripts/release-validation/stage.mjs",
-      "sha256": "5cfc621a02cd77b6eeb366bda3bd005159245fb5d0a9331613a4d14c98812700"
+      "sha256": "2857a3b19bd8c97a273973d356a7db499abd587c57d09d61ccf9b7675b60547f"
     },
     {
       "path": "scripts/remediation-status.mjs",
@@ -13403,8 +13414,12 @@
       "sha256": "d01eac729f0ed5a9e298b4f315aaf8c7458e6831fcd23bc9f7e612f4ac745fe3"
     },
     {
+      "path": "test/release-validation/admission.test.mjs",
+      "sha256": "ba4e5930c49d8b87481d1d1e8a80546a6fae9f3742c2b1a6af6d550e031fd195"
+    },
+    {
       "path": "test/release-validation/carrier-fixture.mjs",
-      "sha256": "dec931b3e1ec0afd8e0399e58a65902cea45f6743c410628278c9dc6bb307300"
+      "sha256": "3996f50a8994c476640dbb03f33809a7446cd0323c097c52a2b961b729e62a26"
     },
     {
       "path": "test/release-validation/content-native.test.mjs",

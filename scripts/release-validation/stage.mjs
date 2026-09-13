@@ -54,7 +54,7 @@ export function validateStage(stage) {
     'Invalid prerequisites',
   );
   assert(
-    ['exit', 'cases', 'content', 'journal'].includes(stage.expect?.kind),
+    ['exit', 'cases', 'content', 'journal', 'admission'].includes(stage.expect?.kind),
     'Unresolved result adapter',
   );
   if (stage.expect.kind === 'exit')
@@ -82,7 +82,7 @@ export function validateStage(stage) {
         );
     }
   }
-  if (['content', 'journal'].includes(stage.expect.kind)) {
+  if (['content', 'journal', 'admission'].includes(stage.expect.kind)) {
     assert.equal(
       stage.argv[1],
       `scripts/${stage.expect.kind}/worker.mjs`,
@@ -243,6 +243,7 @@ export function createStageRunner({
       RELEASE_RUN_NONCE: nonce,
       RELEASE_CONTENT_OUTPUT: join(dir, 'content'),
       RELEASE_JOURNAL_OUTPUT: join(dir, 'journal'),
+      RELEASE_ADMISSION_OUTPUT: join(dir, 'admission'),
     };
     const started = Date.now();
     let reason = signal?.aborted ? 'cancelled' : null,
@@ -412,7 +413,7 @@ export function createStageRunner({
           'Case report exceeded artifact bound',
         );
         actual = JSON.parse(readFileSync(report, 'utf8'));
-        if (['content', 'journal'].includes(stage.expect.kind)) {
+        if (['content', 'journal', 'admission'].includes(stage.expect.kind)) {
           const cases = reconcileCarrier(stage.expect.kind, stage.expect.selection, actual, {
             nonce,
             sources: before.sources,

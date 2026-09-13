@@ -43,7 +43,7 @@ that is no longer active.
 ---
 
 
-## Active slice: Release-validation admission catalogue adapter (`L-1`)
+## Active slice: Release-validation editor-admission catalogue adapter (`L-1`)
 
 ```yaml
 gate: L-1
@@ -61,28 +61,28 @@ There is no real Account admission receipt. The author's old second device must 
 workspace with fresh custody, store, counters and credentials, without importing or merging its old
 writing. First ciphertext and two-device convergence are not public ship boundaries.
 
-**Just completed.** Content is now unsigned `b9f0984`, following foundation `f14c68f` and inventory
-`f13bdd1`. The [journal catalogue adapter](./release-validation-execution.md#journal-catalogue-adapter--phase-2c)
-passes 17 baseline cases/93 assertions and six discriminating mutations. It shares exact report/source
-reconciliation with content, with explicit family identities and pinned, actually changed mutation
-sources. The real renderer-crash, quota, flush, handoff, concurrent/frozen writer and key-disposal cases
-remain intact. Default, selected and no-mutant standalone options/report files are exercised. The
-full content regression and six native ownership controls pass. The [evidence packet](./account-conformance-runs/2026-09-13-journal-adapter/README.md)
-retains the results and controls. No production storage code or existing scenario assertion changed.
-The journal adapter phase remains uncommitted.
+**Just completed.** Journal is now unsigned `1a86453`, following content `b9f0984`, foundation
+`f14c68f` and inventory `f13bdd1`. The [admission catalogue adapter](./release-validation-execution.md#admission-catalogue-adapter--phase-2d)
+passes 15 baseline cases/64 assertions and six discriminating mutations. Its ordered-admission report
+scope is explicit, and two mutations of the same refusal-order case each need their own detection.
+The native scenarios retain pending Yjs dependency recovery, ordered staging/retry, remote durability,
+barriers and cross-tab delivery. Default, selected and baseline-only options/report files are exercised.
+Selected content/journal regressions and six native ownership controls pass. The [evidence packet](./account-conformance-runs/2026-09-13-admission-adapter/README.md)
+retains these results and 43 non-native controls including 960 generated histories. No production code
+or existing scenario assertion changed. The admission adapter phase remains uncommitted.
 
-**The full phase-2 contract is not closed.** The manifest covers 261 required test files, all 163
-catalogue cases/54 mutants, 29 vector corpora and 83 registry entries. It retains 442 unresolved rows
-and refuses whole-release execution. Nine catalogue adapters (133 cases/43 mutations), general test
-adapters, wrappers, selected postconditions and measured deadlines remain. Running the store-contract
-wrapper's nested journal selection does not discharge that wrapper. P-06 remains unswept; the complete
-vector chain and immutable aggregate have not run. The earlier silent package-manager attempt remains
-undiagnosed; exact Node commands work.
+**The full phase-2 contract is not closed.** The manifest covers 262 required test files, all 163
+catalogue cases/54 mutations, 29 vector corpora and 83 registry entries. It retains 439 unresolved rows
+and refuses whole-release execution. Eight catalogue adapters (118 cases/37 mutations), general test
+adapters, wrappers, selected postconditions and measured deadlines remain. A nested catalogue result
+does not discharge its enclosing wrapper. P-06 remains unswept; the complete vector chain and immutable
+aggregate have not run. The earlier silent package-manager attempt remains undiagnosed; exact Node
+commands work.
 
-**Next single phase.** Adapt admission's 15 normal cases and six mutations, independently checking
-its report, source targets and admission-order assertions before extending the shared owned boundary.
-Then resolve remaining catalogue, Node, Vitest, Playwright and wrapper selections/postconditions, with
-vector and traceability prerequisites as ordered receipts.
+**Next single phase.** Adapt editor-admission's 12 cases and three mutations, independently reviewing
+its actual CodeMirror assertions, full source-path mutation targets and report before extending the
+shared owned boundary. Then resolve remaining catalogue, Node, Vitest, Playwright and wrapper
+selections/postconditions, with vector and traceability prerequisites as ordered receipts.
 
 **After that.** Sweep P-06 current cryptographic prose, run the immutable selected aggregate, and
 state workload/platform/claim dispositions. Acceptable validation precedes private Account cutover/

@@ -1,20 +1,21 @@
-# Release-validation execution — foundation, content and journal adapters
+# Release-validation execution — foundation and three catalogue adapters
 
-The inventory is committed unsigned as `f13bdd1`, the foundation as `f14c68f` and content as `b9f0984`.
+The inventory is committed unsigned as `f13bdd1`, the foundation as `f14c68f`,
+content as `b9f0984` and journal as `1a86453`.
 The foundation supplies a finite obligation manifest,
 an exact-case Node adapter, a shared bounded stage runner and a disposable execution entrypoint.
 It **does not complete the release execution graph**. The original phase-2 proposal grouped the
 runner foundation and every native/wrapper adapter together; inspection showed that the latter
 requires its own bounded integration phases. Keep that work ahead of P-06 and the immutable run.
 
-The [manifest](./release-validation-manifest.json) now contains 597 obligations, including all 261 current
+The [manifest](./release-validation-manifest.json) now contains 598 obligations, including all 262 current
 required test files, 11 current catalogues with **163 cases and 54 discriminating mutations**, 29
 vector corpora, 83 registry entries and exact selected package/phase command variants. Six retired
 v8 test files remain excluded. Registry entry `remaining-coordination-names` remains explicitly
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**442 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**439 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -30,6 +31,7 @@ node scripts/release-validation/execute.mjs --selection infrastructure
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
+node scripts/release-validation/execute.mjs --selection admission
 ```
 
 The first two commands check reviewed snapshots. Planning may report `blocked` while the snapshot
@@ -38,8 +40,8 @@ nonzero. `execute.mjs --selection release` likewise refuses; it is not a partial
 After reviewing input or selection changes, explicitly regenerate the inventory with `check.mjs
 --record`, then the manifest with `plan.mjs --record`. Each artifact has a 700 kB ceiling.
 
-`infrastructure` runs seven stages: the identity, inventory, manifest, content-adapter and journal-adapter
-test files (27 exact cases),
+`infrastructure` runs eight stages: the identity, inventory, manifest, content-adapter, journal-adapter
+and admission-adapter test files (31 exact cases),
 the live authority/registry check and the inventory freshness check. It does not run the package
 `check` chain, traceability, native browsers, the crypto-audit campaign or the release aggregate.
 The process-control and native content-ownership test files run separately because they deliberately
@@ -198,12 +200,45 @@ controls bring the runner/control total to 800 generated histories across 39 non
 native ownership tests separately verify failure cleanup. These are validation-infrastructure controls,
 not another 800 journal product histories.
 
+## Admission catalogue adapter — phase 2d
+
+The admission catalogue now uses the same owned browser/Vite boundary. The complete standalone
+campaign passes **15 baseline cases, 64 assertions and six discriminating mutations**. Unlike the two
+carrier reports, admission retains its existing `ordered-admission-browser` scope, bound explicitly
+along with its worker, candidate, catalogue and variant. The shared adapter allows exactly content,
+journal and admission. It does not infer support from a family name or generic report shape.
+
+The original assertions retain pending Yjs struct/delete recovery, synchronous journal receipt,
+private refused input, head-only preparation, forced retry, committed remote dependencies, slicing,
+byte capacity, durability barriers, close/key disposal, unreadable repair and cross-tab delivery.
+These use synthetic commands/projections; actual CodeMirror and transport integration remain a later
+catalogue. No production code, catalogue patch or scenario assertion changed.
+
+Two mutations of `C03.ordered-refusal` require separate detection: early publication and early queued
+preparation. The adapter verifies both exact changed source hashes and distinct assertion failures;
+one result, a duplicate or an unrelated failure cannot discharge both. Four new adapter tests include
+160 generated selections (seed 130906), bringing the non-native control suite to 43 tests and 960
+generated validation histories. Six native ownership controls separately pass; they deliberately
+exercise failure receipts and require stopped processes and listeners.
+
+The [admission evidence](./account-conformance-runs/2026-09-13-admission-adapter/README.md) retains the
+full run, the selected refusal-order case with both mutations, its explicit no-mutant variant and
+selected content/journal regressions. JSON/Markdown report publication and explicit output remain
+supported. Custom `CHROMIUM_PATH` overrides refuse because the owned runner pins the installed
+Playwright Chromium. Existing output refuses without changing its previous report.
+
+The full worker took **58.9 seconds**, within its 120-second deadline; the command took 81.9 seconds
+including preparation/final checks. Single-case workers retain a 90-second deadline, browser startup
+15 seconds, per-group TERM/KILL grace 5 seconds and log/report limits 4 MiB. These are host observations,
+not supported-population latency evidence. Default catalogue, package leaf and campaign alias are
+resolved; enclosing wrapper postconditions are not credited automatically.
+
 ## Next bounded integration
 
-Integrate the admission catalogue's **15 baseline cases and six mutations**, independently reviewing
-its report, source-patch targets and editor/admission ordering assertions before extending the shared
-adapter. Then resolve the remaining catalogue, Node, Vitest, Playwright and wrapper families with their
-postconditions and measured per-suite deadlines. Nine catalogues (133 cases/43 mutations) still need
+Integrate the editor-admission catalogue's **12 baseline cases and three mutations**, reviewing its
+actual CodeMirror assertions, full source-path patch targets and report before extending the shared
+adapter. Then resolve remaining catalogue, Node, Vitest, Playwright and wrapper families with their
+postconditions and measured per-suite deadlines. Eight catalogues (118 cases/37 mutations) still need
 adapters. Vector reuse becomes meaningful when consumers depend on the same successful identity.
 
 Only after every required obligation resolves should P-06's prose sweep and the complete selected

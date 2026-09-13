@@ -7,6 +7,7 @@ import { digest } from './identity.mjs';
 import { validateStage } from './stage.mjs';
 import { contentStage } from './content-adapter.mjs';
 import { journalStage } from './journal-adapter.mjs';
+import { admissionStage } from './admission-adapter.mjs';
 
 export const boundedStage = (id, argv, expect, extra = {}) => ({
   id,
@@ -84,6 +85,7 @@ export function compileManifest(root, inventory) {
     'test/release-validation/identity.test.mjs',
     'test/release-validation/content.test.mjs',
     'test/release-validation/journal.test.mjs',
+    'test/release-validation/admission.test.mjs',
   ]);
   for (const t of inventory.tests) {
     if (t.status !== 'required') {
@@ -130,6 +132,7 @@ export function compileManifest(root, inventory) {
     const factory = new Map([
       ['scripts/content/run.mjs', contentStage],
       ['scripts/journal/run.mjs', journalStage],
+      ['scripts/admission/run.mjs', admissionStage],
     ]).get(catalogue.runner);
     add({
       id: 'catalogue:' + catalogue.path,
@@ -191,6 +194,8 @@ export function compileManifest(root, inventory) {
       row.requires = ['catalogue:scripts/content/catalog.mjs'];
     else if (command.argv.join(' ') === 'node scripts/journal/run.mjs')
       row.requires = ['catalogue:scripts/journal/catalog.mjs'];
+    else if (command.argv.join(' ') === 'node scripts/admission/run.mjs')
+      row.requires = ['catalogue:scripts/admission/catalog.mjs'];
     else if (command.argv.join(' ') === 'node scripts/release-validation/check.mjs')
       row.stage = boundedStage(id, command.argv, { kind: 'exit', exitCodes: [0] });
     else if (command.argv.join(' ') === 'node scripts/check-authority-map.mjs')
@@ -209,7 +214,11 @@ export function compileManifest(root, inventory) {
       path: c.path,
       ...(c.parent ? { parent: 'campaign:' + c.parent } : {}),
       callSites: c.runCallSites,
-      ...(['scripts/content/run.mjs', 'scripts/journal/run.mjs'].includes(c.path)
+      ...([
+        'scripts/content/run.mjs',
+        'scripts/journal/run.mjs',
+        'scripts/admission/run.mjs',
+      ].includes(c.path)
         ? { requires: ['catalogue:' + c.path.replace('/run.mjs', '/catalog.mjs')] }
         : {
             blocked:
@@ -280,6 +289,9 @@ export function compileManifest(root, inventory) {
         : {}),
       ...(byId.has('catalogue:scripts/journal/catalog.mjs')
         ? { journal: ['catalogue:scripts/journal/catalog.mjs'] }
+        : {}),
+      ...(byId.has('catalogue:scripts/admission/catalog.mjs')
+        ? { admission: ['catalogue:scripts/admission/catalog.mjs'] }
         : {}),
       release: rows.map((r) => r.id),
     },

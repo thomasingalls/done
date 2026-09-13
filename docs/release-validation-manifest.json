@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "inventoryDigest": "d623aaab8e8e501fcad7c3142d028eba2597e3051335f4e73e84553f8297aab7",
+  "inventoryDigest": "132bef5f5fb774a27fccb8ea230c7eee0f65cc2c0b1b131042882af1b79c3ffb",
   "status": "blocked",
   "claim": "Execution obligations and certified bounded selections. No aggregate result. Blocked obligations cannot be credited.",
   "rows": [
@@ -2462,6 +2462,50 @@
       "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
     },
     {
+      "id": "test:test/release-validation/admission.test.mjs",
+      "kind": "test",
+      "path": "test/release-validation/admission.test.mjs",
+      "stage": {
+        "id": "test:test/release-validation/admission.test.mjs",
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "--test-reporter=./scripts/release-validation/node-reporter.mjs",
+          "test/release-validation/admission.test.mjs"
+        ],
+        "env": {},
+        "variant": "current",
+        "expect": {
+          "kind": "cases",
+          "cases": [
+            {
+              "id": "test/release-validation/admission.test.mjs::admission binds 15 cases and six distinct mutations including both refusal-order targets",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/admission.test.mjs::one detected admission mutation cannot stand in for the other mutation of the same case",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/admission.test.mjs::admission retains its ordered report scope and refuses incomplete or relabelled results",
+              "outcome": "pass"
+            },
+            {
+              "id": "test/release-validation/admission.test.mjs::160 generated admission subsets require both same-case mutations or the explicit baseline-only variant",
+              "outcome": "pass"
+            }
+          ]
+        },
+        "deadlineMs": 60000,
+        "graceMs": 1000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 1048576,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
+    },
+    {
       "id": "test:test/release-validation/content-native.test.mjs",
       "kind": "test",
       "path": "test/release-validation/content-native.test.mjs",
@@ -3146,7 +3190,114 @@
           "outcome": "detected"
         }
       ],
-      "blocked": "Exact catalogue cases and discriminating mutation assertions are resolved; native report and process ownership adapters remain."
+      "stage": {
+        "id": "catalogue:scripts/admission/catalog.mjs",
+        "argv": [
+          "node",
+          "scripts/admission/worker.mjs",
+          "--case",
+          "C01.pending-struct,C03.synchronous,C03.ordered-refusal,C03.retry,C01.remote-basis,C02.pending-delete,C03.slicing,C03.capacity,C03.barrier,C03.timer,C04.close,C09.persisted-yjs,C09.runtime-repair,C03.validation,C04.cross-tab"
+        ],
+        "env": {},
+        "variant": "admission-825aaebfde97995779a2b22a7aab3b0f8b967e798ede7717d067fcc24576d214",
+        "expect": {
+          "kind": "admission",
+          "selection": {
+            "cases": [
+              { "id": "C01.pending-struct", "outcome": "pass" },
+              { "id": "C03.synchronous", "outcome": "pass" },
+              { "id": "C03.ordered-refusal", "outcome": "pass" },
+              { "id": "C03.retry", "outcome": "pass" },
+              { "id": "C01.remote-basis", "outcome": "pass" },
+              { "id": "C02.pending-delete", "outcome": "pass" },
+              { "id": "C03.slicing", "outcome": "pass" },
+              { "id": "C03.capacity", "outcome": "pass" },
+              { "id": "C03.barrier", "outcome": "pass" },
+              { "id": "C03.timer", "outcome": "pass" },
+              { "id": "C04.close", "outcome": "pass" },
+              { "id": "C09.persisted-yjs", "outcome": "pass" },
+              { "id": "C09.runtime-repair", "outcome": "pass" },
+              { "id": "C03.validation", "outcome": "pass" },
+              { "id": "C04.cross-tab", "outcome": "pass" }
+            ],
+            "mutants": [
+              {
+                "id": "publish-before-forced-commit",
+                "case": "C03.ordered-refusal",
+                "assertion": "refused-prefix-is-private",
+                "outcome": "detected",
+                "patch": {
+                  "file": "admissionQueue.ts",
+                  "from": "const forceLocal = async (job: InputJob) => {",
+                  "to": "const forceLocal = async (job: InputJob) => { promote(job, job.prepared!.update);"
+                }
+              },
+              {
+                "id": "prepare-queued-input-early",
+                "case": "C03.ordered-refusal",
+                "assertion": "only-head-prepared",
+                "outcome": "detected",
+                "patch": {
+                  "file": "admissionQueue.ts",
+                  "from": "queue.push(job);",
+                  "to": "queue.push(job); if (busy && kind === \"local\") job.prepared = prepareIntent(canonical, writer, job.input, MAX_JOURNAL_UPDATE, options.prepare);"
+                }
+              },
+              {
+                "id": "publish-receive-before-commit",
+                "case": "C01.remote-basis",
+                "assertion": "remote-is-private-until-commit",
+                "outcome": "detected",
+                "patch": {
+                  "file": "admissionQueue.ts",
+                  "from": "return carrier.appendBatch([{ kind: 'update', bytes: job.input }]).then(() => {",
+                  "to": "promote(job, job.input); return carrier.appendBatch([{ kind: 'update', bytes: job.input }]).then(() => {"
+                }
+              },
+              {
+                "id": "retry-via-journal",
+                "case": "C03.retry",
+                "assertion": "retry-forces-second-content-invocation",
+                "outcome": "detected",
+                "patch": {
+                  "file": "admissionQueue.ts",
+                  "from": "job.force = attempt.reason;",
+                  "to": "void attempt.reason;"
+                }
+              },
+              {
+                "id": "early-durability-return",
+                "case": "C03.barrier",
+                "assertion": "barrier-waits-for-prior-input",
+                "outcome": "detected",
+                "patch": {
+                  "file": "admissionQueue.ts",
+                  "from": "const barrier = (): Promise<void> => {",
+                  "to": "const barrier = (): Promise<void> => { return Promise.resolve();"
+                }
+              },
+              {
+                "id": "ignore-byte-capacity",
+                "case": "C03.capacity",
+                "assertion": "byte-capacity-refuses",
+                "outcome": "detected",
+                "patch": {
+                  "file": "admissionQueue.ts",
+                  "from": "current.reservedBytes + reservation > MAX_PENDING_BYTES",
+                  "to": "false"
+                }
+              }
+            ]
+          }
+        },
+        "fixture": { "kind": "chromium-cdp", "startupMs": 15000 },
+        "deadlineMs": 120000,
+        "graceMs": 5000,
+        "maxLogBytes": 4194304,
+        "maxReportBytes": 4194304,
+        "processPolicy": "inherited-group-v1",
+        "dependsOn": []
+      }
     },
     {
       "id": "catalogue:scripts/content-trim/catalog.mjs",
@@ -4905,7 +5056,7 @@
       "argv": ["node", "scripts/admission/run.mjs"],
       "env": {},
       "orderedAfter": ["command:check:47"],
-      "blocked": "Preserve this exact command/environment variant and its nested selections/postconditions; execution adapter not certified."
+      "requires": ["catalogue:scripts/admission/catalog.mjs"]
     },
     {
       "id": "command:check:49",
@@ -7039,11 +7190,8 @@
       "id": "campaign:scripts/admission/run.mjs",
       "kind": "campaign",
       "path": "scripts/admission/run.mjs",
-      "callSites": [
-        { "line": 191, "form": "run", "arguments": [] },
-        { "line": 195, "form": "run", "arguments": ["spec"] }
-      ],
-      "blocked": "Nested dynamic stages, selected controls and report postconditions need reviewed expansion; source mentions are not execution credit."
+      "callSites": [],
+      "requires": ["catalogue:scripts/admission/catalog.mjs"]
     },
     {
       "id": "campaign:scripts/app-upgrades/run.mjs",
@@ -9308,7 +9456,6 @@
     "test:test/yjsDelivery.test.ts",
     "test:vite/appUpgradeProperties.test.ts",
     "test:vite/precacheBuild.test.ts",
-    "catalogue:scripts/admission/catalog.mjs",
     "catalogue:scripts/content-trim/catalog.mjs",
     "catalogue:scripts/custody/catalog.mjs",
     "catalogue:scripts/editor-admission/catalog.mjs",
@@ -9338,7 +9485,6 @@
     "command:check:43",
     "command:check:44",
     "command:check:47",
-    "command:check:48",
     "command:check:49",
     "command:check:50",
     "command:check:51",
@@ -9467,7 +9613,6 @@
     "campaign:scripts/account-store-contract/run.mjs",
     "campaign:scripts/account-sync/run.mjs",
     "campaign:scripts/account-transport-contract/run.mjs",
-    "campaign:scripts/admission/run.mjs",
     "campaign:scripts/app-upgrades/run.mjs",
     "campaign:scripts/content-trim/run.mjs",
     "campaign:scripts/custody/run.mjs",
@@ -9497,6 +9642,7 @@
   ],
   "selections": {
     "infrastructure": [
+      "test:test/release-validation/admission.test.mjs",
       "test:test/release-validation/content.test.mjs",
       "test:test/release-validation/identity.test.mjs",
       "test:test/release-validation/inventory.test.mjs",
@@ -9539,6 +9685,7 @@
     "content": ["catalogue:scripts/content/catalog.mjs"],
     "content-control": ["variant:content-unreadable"],
     "journal": ["catalogue:scripts/journal/catalog.mjs"],
+    "admission": ["catalogue:scripts/admission/catalog.mjs"],
     "release": [
       "test:test/account-activation/controls.test.mjs",
       "test:test/account-activation/core.test.mjs",
@@ -9758,6 +9905,7 @@
       "test:test/privateMigration.test.ts",
       "test:test/projectionEquality.test.ts",
       "test:test/relayAuth.test.ts",
+      "test:test/release-validation/admission.test.mjs",
       "test:test/release-validation/content-native.test.mjs",
       "test:test/release-validation/content.test.mjs",
       "test:test/release-validation/identity.test.mjs",

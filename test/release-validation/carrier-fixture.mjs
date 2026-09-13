@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { catalogueCensus } from '../../scripts/release-validation/census.mjs';
 import { hash } from '../../scripts/release-validation/identity.mjs';
 
-export function carrierEvidence(t, family) {
+export function carrierEvidence(t, family, scope = family + '-carrier-browser') {
   const root = mkdtempSync(join(tmpdir(), 'done-carrier-census-'));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   const catalogue = readFileSync(`scripts/${family}/catalog.mjs`, 'utf8');
@@ -36,7 +36,7 @@ export function carrierEvidence(t, family) {
   const actual = {
     schema: 1,
     releaseNonce: 'fresh',
-    scope: family + '-carrier-browser',
+    scope,
     finished: 'now',
     exitCode: 0,
     requestedCandidates: [family],

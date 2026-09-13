@@ -5,8 +5,13 @@ import { validateReport, mutationStatus } from '../storage-conformance/report.mj
 import { catalogueCensus } from './census.mjs';
 import { hash, digest } from './identity.mjs';
 
-const families = new Set(['content', 'journal']);
-const requireFamily = (family) => assert(families.has(family), 'Unreviewed carrier family');
+const scopes = Object.freeze({
+  content: 'content-carrier-browser',
+  journal: 'journal-carrier-browser',
+  admission: 'ordered-admission-browser',
+});
+const requireFamily = (family) =>
+  assert(Object.hasOwn(scopes, family), 'Unreviewed carrier family');
 
 export function carrierSelection(family, root, args = []) {
   requireFamily(family);
@@ -79,7 +84,7 @@ export function reconcileCarrier(family, selection, actual, { nonce, sources, ro
   requireFamily(family);
   assert.equal(actual.schema, 1);
   assert.equal(actual.releaseNonce, nonce, 'Stale carrier report');
-  assert.equal(actual.scope, family + '-carrier-browser');
+  assert.equal(actual.scope, scopes[family]);
   assert(!actual.fatal, 'Carrier campaign reported a fatal failure');
   assert.equal(actual.exitCode, 0, 'Carrier campaign did not finish successfully');
   assert(typeof actual.finished === 'string', 'Carrier campaign did not finish');

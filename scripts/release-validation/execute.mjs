@@ -158,7 +158,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   assert(
     args.length === 2 && args[0] === '--selection',
-    'Usage: node scripts/release-validation/execute.mjs --selection infrastructure|vectors|content|content-control|journal|release',
+    'Usage: node scripts/release-validation/execute.mjs --selection infrastructure|vectors|content|content-control|journal|admission|release',
   );
 
   const inventory = buildInventory(

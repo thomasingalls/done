@@ -3607,3 +3607,30 @@ The manifest has 597 obligations with 442 unresolved, covering 261 required test
 precede P-06 and the immutable aggregate. Personal package files, prior vectors, historical review
 records/debts and L-2 are preserved; no personal app/profile/service/build, recovery material, Account,
 factor or key was used. This journal phase remains uncommitted. Appended before replacing L-1.
+
+
+## 2026-09-13 — Admission catalogue execution adapter, phase 2d (`L-1`)
+
+Committed journal unsigned as `1a86453`, preserving the in-flight review's earlier hashes. Connected
+admission's 15 baseline cases/64 assertions and six mutations to the shared disposable owner. The
+adapter explicitly binds the existing `ordered-admission-browser` scope. Two distinct mutations of
+`C03.ordered-refusal` must each fail their own previously passing assertion; one detection cannot
+stand in for the other. All six mutation anchors match current source uniquely. Existing admission
+scenarios, catalogue patches and production code are unchanged.
+
+The [bounded evidence](./account-conformance-runs/2026-09-13-admission-adapter/README.md) retains the
+full native run, selected refusal-order case with both mutations, explicit baseline-only selection,
+selected content/journal regressions and six native ownership controls. The full worker completes in
+58.9 seconds inside its 120-second deadline (81.9 seconds including preparation/final checks). Four
+new tests include 160 generated subset/omission histories; the complete runner controls now include
+43 non-native tests and 960 generated histories. These are validation-infrastructure controls, not
+additional product histories or a supported-device performance claim.
+
+The manifest has 598 obligations with 439 unresolved, covering 262 required test files and the same
+163 catalogue cases/54 mutations. Eight catalogue adapters remain (118 cases/37 mutations); the
+editor-admission catalogue's 12 cases/three mutations is next. Its source targets and actual editor
+assertions require a separate review before extending the adapter. Remaining test families, wrapper
+postconditions and deadlines precede P-06 and immutable aggregate validation. Personal package files,
+prior vectors, historical reviews/debts and L-2 remain unchanged; no personal app/profile/service/build,
+recovery material, Account, factor or key was used. This admission phase remains uncommitted.
+Appended before replacing L-1.
