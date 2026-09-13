@@ -8,7 +8,9 @@ function validateLocator(reference, path) {
     typeof reference === 'string' &&
       /^[a-f0-9]{7,40}$/.test(reference) &&
       typeof path === 'string' &&
-      (/^account-service\/[a-z-]+\.ts$/.test(path) || path === 'src/crdt/spoolRecord.ts'),
+      (/^account-service\/[a-z-]+\.ts$/.test(path) ||
+        path === 'src/crdt/spoolRecord.ts' ||
+        path === 'account-protocol/admission.ts'),
     'Invalid historical source locator',
   );
 }

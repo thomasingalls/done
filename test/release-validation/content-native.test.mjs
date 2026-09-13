@@ -34,6 +34,7 @@ function fixture(t, mode, extra = {}) {
     join(root, 'scripts/release-validation/process-guard.mjs'),
   );
   copyFileSync('scripts/release-validation/server.mjs', join(root, 'listen.mjs'));
+  copyFileSync('test/account-promotion/browser-owner.mjs', join(root, 'browser-owner.mjs'));
   writeFileSync(join(root, 'index.html'), '<title>Owned fixture</title>');
   // Equal package bytes in two installations still create different browser class identities.
   for (const ancestor of [root, base]) {
@@ -53,6 +54,7 @@ function fixture(t, mode, extra = {}) {
     import { createServer } from ${JSON.stringify(vite)};
     import { createServer as createHttpServer } from 'node:http';
     import { listenEphemeralVite } from './listen.mjs';
+    import { openFixtureBrowser } from './browser-owner.mjs';
     import { mkdirSync, writeFileSync } from 'node:fs';
     const blocker = createHttpServer();
     await new Promise(r => blocker.listen(0, '127.0.0.1', r));
@@ -66,7 +68,7 @@ function fixture(t, mode, extra = {}) {
       writeFileSync(overlay + '/selection.js', 'export { Selection } from "owner-selection";');
       writeFileSync('identity.html', '<title>Owned fixture</title><script type="module">import {Selection as A} from "/fixture.js"; import {Selection as B} from "/@fs/' + overlay + '/selection.js"; window.sameSelection = A === B;</script>');
     }
-    const browser = await chromium.connectOverCDP(process.env.RELEASE_BROWSER_ENDPOINT);
+    const browser = process.env.MODE === 'account-fixture' ? await openFixtureBrowser(chromium) : await chromium.connectOverCDP(process.env.RELEASE_BROWSER_ENDPOINT);
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto(origin + (process.env.MODE === 'module-identity' ? '/identity.html' : '/'));
@@ -78,8 +80,18 @@ function fixture(t, mode, extra = {}) {
       console.log(JSON.stringify({moduleIdentity: sameSelection}));
       if (!sameSelection) throw Error('Overlay and fixture loaded separate dependency instances');
     }
-    if (['normal', 'module-identity'].includes(process.env.MODE)) {
-      await context.close(); await browser.close(); await server.close(); await new Promise(r => blocker.close(r));
+    if (['normal', 'module-identity', 'account-fixture'].includes(process.env.MODE)) {
+      if (process.env.MODE === 'account-fixture') await page.evaluate(() => localStorage.setItem('fixture', 'previous'));
+      await context.close(); await browser.close();
+      if (process.env.MODE === 'account-fixture') {
+        const again = await openFixtureBrowser(chromium);
+        const isolated = await again.newContext();
+        const fresh = await isolated.newPage();
+        await fresh.goto(origin);
+        if (await fresh.evaluate(() => localStorage.getItem('fixture')) !== null) throw Error('Account fixture context leaked');
+        await isolated.close(); await again.close();
+      }
+      await server.close(); await new Promise(r => blocker.close(r));
     } else if (process.env.MODE === 'death') process.exit(9);
     else { process.on('SIGTERM', () => {}); setInterval(() => {}, 100); }
   `,
@@ -103,6 +115,7 @@ function fixture(t, mode, extra = {}) {
       filePins(root, [
         'subject.mjs',
         'listen.mjs',
+        'browser-owner.mjs',
         'index.html',
         'scripts/release-validation/process-guard.mjs',
       ]),
@@ -266,4 +279,11 @@ test('source overlays and fixture imports share one dependency instance inside t
   await drained(f, receipt, await ready(f));
   assert(compared, 'Module comparison must actually execute');
   assert.equal(receipt.status, 'passed', receipt.result.reason);
+});
+
+test('Account fixture connections can close and reopen isolated contexts without stopping owned Chromium', async (t) => {
+  const f = fixture(t, 'account-fixture');
+  const receipt = await f.run(f.stage);
+  assert.equal(receipt.status, 'passed', receipt.result.reason);
+  await drained(f, receipt, await ready(f));
 });

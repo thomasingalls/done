@@ -20,7 +20,7 @@ v8 test files remain excluded. Registry entry `remaining-coordination-names` rem
 non-cryptographic: its disposition is checked by the live authority/registry check, not credited as
 a cryptographic test. Whole-wrapper obligations stay separate from direct test-file obligations.
 
-**268 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
+**260 obligations remain blocked.** This is a count of unresolved manifest rows, not defects or
 missing tests in the product. The compiler refuses release execution before making a checkout.
 Dynamic wrapper maps, before-source performance variants, conditional test selection, mutation
 postconditions and native process ownership have not been guessed from previous green summaries.
@@ -44,6 +44,7 @@ node scripts/release-validation/execute.mjs --selection delivery-fixtures
 node scripts/release-validation/execute.mjs --selection isolation-fixtures
 node scripts/release-validation/execute.mjs --selection ledger-fixtures
 node scripts/release-validation/execute.mjs --selection contract-fixtures
+node scripts/release-validation/execute.mjs --selection preparation-fixtures
 node scripts/release-validation/execute.mjs --selection content
 node scripts/release-validation/execute.mjs --selection content-control
 node scripts/release-validation/execute.mjs --selection journal
@@ -836,17 +837,50 @@ The three wrappers and their saved-output, ordered vector and native prerequisit
 blocked. The v2 page-extent sibling is referenced by source inventory, with prior Vitest execution
 evidence; it is not an additional runtime case in this selection.
 
+## Protocol preparation and registry fixtures — phase 2v
+
+Signed `8db2ee7` closes the preceding contract phase. The `preparation-fixtures` selection adds eight
+files / 43 cases: protocol 5, receipt 3, size 9, crypto census 5, crypto probes 1, registry 12,
+genesis crypto 3, outbound preparation 5. The eight test files and product sources are unchanged.
+
+Receipt and size fixtures use native Chromium and a temporary HTTP service. The shared promotion
+fixture now borrows owned CDP, closes each context and registers cleanup before setup; failed or
+missing owned connections cannot fall back to launch. Standalone campaigns keep their launch path.
+The native files retain their existing six-minute campaign bounds; other files use three minutes,
+with per-test deadlines and history populations unchanged. Browser startup/drain limits stay intact.
+
+Static census adds only finite numeric >= for the signed boundary title that previously refused.
+Admission-bounds pins both sources read at `6398e33`: account-protocol/admission.ts and
+account-service/authority.ts. The exact new protocol locator receives prelaunch/reuse/postexecution
+checks. Nine captured historical receipts cover the three locator families (six passes, three
+required drift refusals); older stage contracts are unchanged.
+
+The owned selection passes in 308.094 seconds with all groups drained. Generated populations are
+80 protocol inputs, 12 native receipt histories, 300 census inputs, 100 HPKE seals and 1,000 outbound
+model histories. Real Yjs snapshot edges and injected coverage descriptors retain distinct claims.
+Registry controls preserve required evidence rather than execute all referenced obligations; earlier
+outbound models do not validate the current writer. Optional JSON exports remain separate.
+
+All 90 pure adapter tests, 21 Node owner tests, 12 native owner tests, direct TypeScript, scoped
+style, planning and authority pass. Five Vitest process tests retain prior evidence. The ledger
+phase's initial orphan classification remains unresolved; later passes do not establish a fix.
+All 149 prior general contracts / 1,314 identities remain unchanged. General selections now include
+157 files / 1,357 cases (96 Vitest, 61 Node), with 51 Account files / 263 cases. The
+[packet](./account-conformance-runs/2026-09-13-preparation-fixture-adapters/README.md) retains full
+receipts, 271 pins, historical/browser identities, exact patch and preservation within 150 kB.
+This phase remains uncommitted, not an immutable aggregate.
+
 ## Next bounded integration
 
 All eleven current catalogue adapters remain resolved: 163 cases and 54 mutations. The manifest has
-612 obligations / **268 blocked rows**: 109 test-file, 96 command and 63 campaign obligations.
-All Vitest files have adapters; 93 Node and sixteen Playwright files remain. Next review eight
-protocol-preparation/registry fixtures: admission-bounds protocol, admission-evidence receipt/size,
-crypto-prep census/contracts, first-authority registry, genesis crypto and outbound preparation.
-Other Node fixtures, native browsers, Playwright, deliberate nested owners and exact wrapper
-variants/postconditions follow. Parsable registrations alone do not grant execution credit. Resolve
-retired-v8 wrapper invocations without reviving support. R-04 needs explicit archive/generated style
-scopes, live-source repairs and full checks. Preserve ordered vector/traceability prerequisites.
+612 obligations / **260 blocked rows**: 101 test-file, 96 command and 63 campaign obligations.
+All Vitest files have adapters; 85 Node and sixteen Playwright files remain. Next review delivery-
+oracle controls/oracle plus parser-conformance baseline, controls, objects, submission and wires.
+Review actual fixture effects and historical sources; filenames alone do not grant ownership credit.
+Other Node fixtures, native browsers, Playwright, nested owners and exact wrapper postconditions
+follow. Resolve retired-v8 wrapper invocations without reviving support. R-04 needs explicit archive/
+generated style scopes, live-source repairs and full checks. Preserve ordered vector/traceability
+prerequisites and the open owner/loaded-host reliability observation.
 
 Only after every required obligation resolves should P-06's remaining cryptographic prose sweep and
 the complete immutable selected run proceed. State workload/platform/claim dispositions before

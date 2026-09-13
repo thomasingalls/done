@@ -4338,3 +4338,45 @@ catalogues remain resolved. Whole wrappers and optional evidence exports retain 
 This phase is uncommitted. All personal/package/vector pins, L-2, prior archives and formal debts are
 unchanged. Next review the remaining protocol-preparation and registry fixtures, then other Node/
 native/Playwright owners and exact wrappers; R-04 and P-06 precede the immutable aggregate.
+
+
+## 2026-09-13 — Protocol preparation and registry fixture adapters (L-1)
+
+The preceding contract-control/export phase is signed and verified as `8db2ee7`. Eight files add
+43 cases: admission protocol 5, receipt 3, size 9, crypto census 5, crypto probes 1, registry 12,
+genesis crypto 3 and outbound preparation 5. All eight files and product sources are unchanged.
+
+Two files are browser-backed despite their names. The shared promotion fixture now borrows owned
+Chromium over CDP, closes each isolated context, and registers cleanup before setup. Pure controls
+reject missing/malformed endpoints and connection-to-launch fallback; a real native control closes
+and reconnects isolated contexts while the owned browser survives. Standalone launch behavior remains.
+The native files retain their existing campaign's six-minute bounds; other files use three minutes.
+Individual test timeouts, counts and seeds are unchanged. Builds stay in memory; HTTP services,
+profiles, SQLite stores, authenticators and keys are disposable.
+
+A pre-change census refusal exposed the numeric >= in the size test's signed boundary title.
+The finite declaration reader now supports only finite numeric comparisons of that operator,
+with 160 generated signed-title controls and coercion/helper/conditional-registration refusals.
+Both historical sources at `6398e33` enter admission-bounds' contract. The validator adds only
+account-protocol/admission.ts; existing historical checks enforce both sources. Nine captured
+historical control receipts cover all three locator families (six passes, three required refusals).
+
+The owned selection passes eight files / 43 cases in 308.094 seconds, including fingerprint work;
+all worker/browser groups drain. Generated populations remain 80 protocol inputs, 12 native receipt
+histories, 300 census inputs, 100 HPKE seals and 1,000 outbound-model histories. Snapshot size edges
+are real Yjs documents; coverage-size edges are explicitly injected descriptors. Outbound preparation
+is model evidence, and registry controls retain obligations rather than execute every referenced test.
+
+All 90 pure adapter checks, 21 Node owner tests, 12 native owner tests, direct TypeScript, scoped
+style, planning and authority pass. Five unchanged Vitest process tests retain prior evidence. The
+ledger phase's initial orphan classification remains unresolved; these passes establish no fix.
+The packet at `docs/account-conformance-runs/2026-09-13-preparation-fixture-adapters/` retains full
+receipts, exact patch, 271 pins, historical/browser identities and preservation within 150 kB.
+
+All 149 prior general contracts / 1,314 identities remain unchanged. General selections contain
+157 files / 1,357 cases: 96 Vitest and 61 Node. Account has 51 files / 263 cases. The 613,242-byte
+manifest retains 612 obligations / 260 unresolved: 101 test-file (85 Node, sixteen Playwright),
+96 command and 63 campaign. All eleven catalogues remain resolved. Optional exports and whole
+wrappers are separate. This phase is uncommitted. All personal/package/vector pins, L-2, historical
+archives and formal debts remain unchanged. Next review delivery-oracle and parser-conformance
+fixtures; remaining owners, wrappers, R-04 and P-06 precede immutable aggregate validation.

@@ -156,7 +156,7 @@ test('all reviewed generated files retain 222 cases and the compact manifest pre
   assert.equal(selectStages(restored, 'generated-tests').length, 14);
   assert.equal(
     selectStages(restored, 'general-tests').reduce((n, s) => n + s.expect.cases.length, 0),
-    1314,
+    1357,
   );
   assert(manifest.rows.find((r) => r.path === 'test/accountDelivery.test.ts').stage);
   assert.throws(() => selectStages(restored, 'release'), /Unresolved/);
@@ -287,5 +287,42 @@ test('160 generated boolean title branches preserve Node and Vitest identities w
       ),
     ),
     [['known']],
+  );
+});
+
+test('160 finite numeric comparisons retain exact signed titles without coercion or evaluating unused branches', () => {
+  fc.assert(
+    fc.property(fc.integer({ min: -100000, max: 100000 }), (delta) => {
+      const source = `import test from 'node:test';const delta=${delta};test(\`edge \${delta >= 0 ? '+' : ''}\${delta}\`,()=>{});`;
+      assert.deepEqual(generatedNodeCensus('subject.test.mjs', source), [
+        { id: 'subject.test.mjs::edge ' + (delta >= 0 ? '+' : '') + delta, outcome: 'pass' },
+      ]);
+    }),
+    { seed: 130924, numRuns: 160 },
+  );
+  for (const value of ['"0"', 'null', 'true', '[]', '()=>0', '1e400', 'unknown()']) {
+    assert.throws(
+      () =>
+        generatedNodeCensus(
+          'subject.test.mjs',
+          `import test from 'node:test';const x=${value};test(x >= 0 ? 'yes' : 'no',()=>{});`,
+        ),
+      /Unresolved|Nonfinite/,
+    );
+  }
+  assert.deepEqual(
+    generatedNodeCensus(
+      'subject.test.mjs',
+      "import test from 'node:test';test(1 >= 0 ? 'yes' : unknown(),()=>{});",
+    ),
+    [{ id: 'subject.test.mjs::yes', outcome: 'pass' }],
+  );
+  assert.throws(
+    () =>
+      generatedNodeCensus(
+        'subject.test.mjs',
+        "import test from 'node:test';if(1 >= 0) test('conditional registration',()=>{});",
+      ),
+    /Unresolved/,
   );
 });

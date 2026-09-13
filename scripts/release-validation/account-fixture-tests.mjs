@@ -1,11 +1,28 @@
 /** Reviewed synthetic fixtures, in-memory builds, mutants and inherited crash workers.
- * No native browser fixture or wrapper evidence obligation is admitted by this list.
+ * Browser fixtures need an explicit owned-CDP contract. Whole-wrapper credit remains separate.
  */
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { generatedNodeCensus } from './census.mjs';
 import { historicalInput } from './historical-inputs.mjs';
+
+export const preparationFixtureFiles = [
+  'test/account-admission-bounds/protocol.test.mjs',
+  'test/account-admission-evidence/receipt.test.mjs',
+  'test/account-admission-evidence/size.test.mjs',
+  'test/account-crypto-prep/census.test.mjs',
+  'test/account-crypto-prep/contracts.test.mjs',
+  'test/account-first-authority/registry.test.mjs',
+  'test/account-genesis/crypto.test.mjs',
+  'test/account-outbound/preparation.test.mjs',
+];
+
+// Preserve the six-minute wrapper bounds already declared for these complete native files.
+export const admissionEvidenceFiles = [
+  'test/account-admission-evidence/receipt.test.mjs',
+  'test/account-admission-evidence/size.test.mjs',
+];
 
 export const contractFixtureFiles = [
   'test/account-recovery-contract/controls.test.mjs',
@@ -42,13 +59,15 @@ export const deliveryFixtureFiles = [
 
 const history = {
   'test/account-ledger-contract/batch.test.mjs': [
-    '284a97a27dc3344fcb7c55a8757a2a41c74fe0b9',
-    'src/crdt/spoolRecord.ts',
+    ['284a97a27dc3344fcb7c55a8757a2a41c74fe0b9', 'src/crdt/spoolRecord.ts'],
   ],
-  'test/account-service-delivery/controls.test.mjs': ['2cb42a2', 'account-service/core.ts'],
+  'test/account-service-delivery/controls.test.mjs': [['2cb42a2', 'account-service/core.ts']],
   'test/account-service-inbound/core.test.mjs': [
-    '4bb09042f37f68ec31f0d82587af608f599eb096',
-    'account-service/delivery.ts',
+    ['4bb09042f37f68ec31f0d82587af608f599eb096', 'account-service/delivery.ts'],
+  ],
+  'test/account-admission-bounds/protocol.test.mjs': [
+    ['6398e33', 'account-protocol/admission.ts'],
+    ['6398e33', 'account-service/authority.ts'],
   ],
 };
 
@@ -84,11 +103,13 @@ export const accountFixtureFiles = {
     ...isolationFixtureFiles,
     ...ledgerFixtureFiles,
     ...contractFixtureFiles,
+    ...preparationFixtureFiles,
   ],
 };
 
 export function accountFixtureNodeStage(root, file) {
   assert(accountFixtureFiles.node.includes(file), 'Unreviewed Account fixture file');
+  const browser = admissionEvidenceFiles.includes(file);
   return {
     id: 'test:' + file,
     argv: [
@@ -99,13 +120,16 @@ export function accountFixtureNodeStage(root, file) {
       file,
     ],
     env: {},
-    variant: 'node-account-fixture-file-v1',
+    variant: browser ? 'node-account-browser-file-v1' : 'node-account-fixture-file-v1',
+    ...(browser ? { fixture: { kind: 'chromium-cdp', startupMs: 15000 } } : {}),
     expect: {
       kind: 'cases',
       cases: generatedNodeCensus(file, readFileSync(join(root, file), 'utf8')),
-      ...(history[file] ? { historyInputs: [historicalInput(root, ...history[file])] } : {}),
+      ...(history[file]
+        ? { historyInputs: history[file].map((locator) => historicalInput(root, ...locator)) }
+        : {}),
     },
-    deadlineMs: 180000,
+    deadlineMs: browser ? 360000 : 180000,
     graceMs: 5000,
     maxLogBytes: 4 * 1024 * 1024,
     maxReportBytes: 1024 * 1024,

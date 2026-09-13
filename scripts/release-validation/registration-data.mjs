@@ -130,6 +130,18 @@ export function registrationData({ root, path, ast }) {
       );
       return left + right;
     }
+    if (n.type === 'BinaryExpression' && n.operator === '>=') {
+      const left = next(n.left),
+        right = next(n.right);
+      assert(
+        typeof left === 'number' &&
+          Number.isFinite(left) &&
+          typeof right === 'number' &&
+          Number.isFinite(right),
+        'Unresolved numeric comparison',
+      );
+      return left >= right;
+    }
     if (n.type === 'ConditionalExpression') {
       const condition = next(n.test);
       assert(typeof condition === 'boolean', 'Unresolved nonboolean data condition');

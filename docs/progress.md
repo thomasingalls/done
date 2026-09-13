@@ -43,48 +43,50 @@ that is no longer active.
 ---
 
 
-## Active slice: General validation-runner integration — protocol preparation and registry fixtures (`L-1`)
+## Active slice: General validation-runner integration — delivery oracle and parser conformance (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: not started
-blocks_on: none; next bounded implementation reviews the remaining protocol-preparation and registry fixtures
+blocks_on: none; next bounded implementation reviews delivery-oracle and parser-conformance fixtures
 debts: consult docs/review/remediation/debts.json
 updated: 2026-09-13
 ```
 
-**Just completed.** Ledger fixtures are signed and verified as `54722df`; isolation `01c4447`,
-delivery/inbound `dbf5eb5`, earlier service `95fa715`, Account `5334a7c`, generated registrations
-`f9111ea`, general adapters `38e4995`, properties `8acdee4`, R-01 `5872dc5`.
-[Contract controls and export fixtures](./release-validation-execution.md#contract-controls-and-export-fixtures--phase-2u)
-add five files / nineteen cases. Product code/tests, names, assertions, vectors and deadlines are
-unchanged, as are the finite census, process owner and reporters. This phase remains uncommitted.
+**Just completed.** Contract fixtures are signed and verified as `8db2ee7`; ledger `54722df`,
+isolation `01c4447`, delivery/inbound `dbf5eb5`, service `95fa715`, Account `5334a7c`, generated
+registrations `f9111ea`, general adapters `38e4995`, properties `8acdee4`, R-01 `5872dc5`.
+[Protocol preparation and registry fixtures](./release-validation-execution.md#protocol-preparation-and-registry-fixtures--phase-2v)
+add eight files / 43 cases. Two are browser-backed and now borrow owned CDP through the shared
+promotion helper. Cleanup starts before setup and closes each context. Product source, the eight
+test files, assertions, populations, seeds and per-test deadlines remain unchanged. This phase is
+uncommitted. Static census adds finite numeric >=; admission-bounds pins both historical sources.
 
-**Evidence.** The disposable selection passes all five files / nineteen cases in 33.004 seconds,
-with every selected group drained. All 88 pure adapter checks, direct TypeScript, scoped style,
-planning and authority pass. The [packet](./account-conformance-runs/2026-09-13-contract-fixture-adapters/README.md)
-retains full receipts, exact patch, 51 source/helper/wrapper pins and preservation. All 144 prior
-general contracts / 1,295 identities retain earlier evidence unchanged. The 21 Node owner, five
-Vitest process and eleven native controls retain prior evidence and were not rerun. The existing
-160-history policy control includes these files; their product controls are fixed matrices.
+**Evidence.** The disposable selection passes in 308.094 seconds, with every worker/browser group
+drained. All 90 pure adapter checks, 21 Node owner tests, 12 native owner tests, direct TypeScript,
+scoped style, planning and authority pass. The [packet](./account-conformance-runs/2026-09-13-preparation-fixture-adapters/README.md)
+retains full receipts, exact patch, 271 source/helper/registry/vector pins, historical/browser
+identities and preservation. Generated populations remain 80 protocol, 12 receipt, 300 census,
+100 HPKE and 1,000 outbound-model inputs. Real snapshot bounds and injected coverage descriptors
+remain distinct. All 149 prior contracts / 1,314 identities retain earlier evidence unchanged;
+five Vitest process controls were not rerun. Native file bounds preserve the existing six minutes.
 
 **Open validation observation.** The ledger phase's first owner run reported orphaned-child on an
-expected-pass historical control using the existing service path. Its log remains; the first receipt
-was removed by teardown. Cause remains unresolved despite later focused/full passes. Optional
-pre-cleanup receipt capture retains later runs; no owner rules/bounds changed. Investigate at the
-owner/loaded-host aggregate reliability gate; this phase does not establish a fix.
+expected-pass historical service-path control. Its log remains; teardown removed its first receipt.
+Cause remains unresolved despite later passes. Optional pre-cleanup capture retains later historical
+control receipts. Investigate at the owner/loaded-host reliability gate; this phase establishes no fix.
 
-**Next bounded phase.** Review admission-bounds protocol; admission-evidence receipt/size; crypto-prep
-census/contracts; first-authority registry; genesis crypto; and outbound preparation fixtures.
-General selections contain 149 files / 1,314 cases: all 96 Vitest and 53 Node files. There are 612
-obligations / 268 blocked rows: 109 test-file (93 Node, sixteen Playwright), 96 command and 63 campaign.
-The 602,471-byte manifest stays below 700 kB; all eleven catalogues remain resolved (163 cases /
-54 mutations). Other Node/native/Playwright ownership, nested owners and exact wrappers follow.
-Crypto-provider export tests do not discharge wrapper JSON export postconditions. Resolve retired-v8
-wrapper invocations without reviving v8 support. R-04's explicit style scopes/full checks and P-06's
-remaining prose precede the immutable aggregate, private Account prep and human adoption.
+**Next bounded phase.** Review delivery-oracle controls/oracle and parser-conformance baseline,
+controls, objects, submission and wires. Review actual runtime effects and historical sources before
+admission; filenames alone do not determine ownership. General selections contain 157 files /
+1,357 cases: all 96 Vitest and 61 Node files. There are 612 obligations / 260 blocked rows: 101
+test-file (85 Node, sixteen Playwright), 96 command, 63 campaign. The 613,242-byte manifest stays
+below 700 kB; all eleven catalogues remain resolved (163 cases / 54 mutations). Other Node/native/
+Playwright ownership, nested owners and wrappers follow. Optional JSON exports require saved-output
+postconditions. Resolve retired-v8 wrapper calls without reviving support. R-04 style scopes/full
+checks and P-06 prose precede the immutable aggregate, private Account prep and human adoption.
 
 **Product position.** Personal Local cutover/cleanup/offline upgrades are exercised. Account remains
 the private creating-member ciphertext round trip, Stage 4 §3.5 item 5, unmounted in the personal app;

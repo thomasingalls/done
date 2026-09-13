@@ -154,7 +154,11 @@ function historicalFixture(t, path = 'account-service/core.ts', during = false) 
 }
 
 test('historical Git bytes are checked before launch and reuse and enter the receipt contract', async (t) => {
-  for (const path of ['account-service/core.ts', 'src/crdt/spoolRecord.ts']) {
+  for (const path of [
+    'account-service/core.ts',
+    'src/crdt/spoolRecord.ts',
+    'account-protocol/admission.ts',
+  ]) {
     const f = historicalFixture(t, path),
       before = f.fingerprint();
     f.replace();
@@ -179,7 +183,11 @@ test('historical Git bytes are checked before launch and reuse and enter the rec
 });
 
 test('a passing historical fixture still fails and drains when Git bytes change during execution', async (t) => {
-  for (const path of ['account-service/core.ts', 'src/crdt/spoolRecord.ts']) {
+  for (const path of [
+    'account-service/core.ts',
+    'src/crdt/spoolRecord.ts',
+    'account-protocol/admission.ts',
+  ]) {
     const f = historicalFixture(t, path, true),
       before = f.fingerprint();
     const receipt = await f.run(f.stage);
@@ -202,7 +210,10 @@ test('historical metadata rejects malformed pins, unsupported adapters and 160 g
   };
   validateHistoricalInputs([pin]);
   validateHistoricalInputs([{ ...pin, path: 'src/crdt/spoolRecord.ts' }]);
+  validateHistoricalInputs([pin, { ...pin, path: 'account-protocol/admission.ts' }]);
   for (const path of [
+    'account-protocol/other.ts',
+    'account-protocol/../admission.ts',
     'src/crdt/other.ts',
     'src/crdt/../spoolRecord.ts',
     'src/other/spoolRecord.ts',

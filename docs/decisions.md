@@ -2585,3 +2585,18 @@ output; optional ACCOUNT_REPORT_DIR JSON and wrapper evidence inventories need t
 postconditions and ordered prerequisites. Passing ordinary cases does not discharge those wrappers.
 Retain prior process-control evidence when the owner is unchanged, including the ledger phase's
 unresolved initial orphan classification; later passing file selections do not establish its repair.
+
+
+## 2026-09-13 — Review fixture effects independently of filenames and preserve existing bounds
+
+A Node filename does not imply a browser-free fixture. Admission receipt/size evidence must use
+stage-owned Chromium and temporary service ownership. Borrow the owned endpoint without fallback,
+close each context explicitly, and register cleanup before setup. Keep standalone campaign launches
+available when no release owner is active. Preserve existing six-minute campaign bounds and
+individual test deadlines; do not derive a new bound from a passing or failing timing observation.
+
+Extend static declaration evaluation only for the reviewed finite numeric >= comparison needed by
+signed boundary titles. Pin every historical source the protocol fixture reads, with an exact new
+protocol path, retaining prior stage contracts. Keep native descriptor injection, actual Yjs size
+edges, earlier outbound models, registry obligation checks and runtime cryptographic evidence
+separately described. None substitutes for the others or discharges a whole-wrapper obligation.

@@ -3,6 +3,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { randomBytes } from 'node:crypto';
 import { chromium } from '@playwright/test';
+import { openFixtureBrowser } from './browser-owner.mjs';
 import { build } from 'vite';
 import { PrivateAuthority } from '../../account-service/authority.ts';
 import { createPrivateAccountServer } from '../../account-service/private-server.ts';
@@ -45,8 +46,24 @@ export async function native(t) {
   const dir = mkdtempSync(join(tmpdir(), 'done-promotion-')),
     key = randomBytes(32),
     token = fresh();
-  let pin;
-  const server = await createPrivateAccountServer({
+  let pin, server, browser, context;
+  t.after(async () => {
+    try {
+      try {
+        await context?.close();
+      } finally {
+        await browser?.close();
+      }
+    } finally {
+      try {
+        await server?.close();
+      } finally {
+        key.fill(0);
+        rmSync(dir, { recursive: true, force: true });
+      }
+    }
+  });
+  server = await createPrivateAccountServer({
     path: join(dir, 'account.sqlite'),
     token,
     authority(policy) {
@@ -54,17 +71,8 @@ export async function native(t) {
       return PrivateAuthority.open(join(dir, 'root.sqlite'), pin, key);
     },
   });
-  const browser = await chromium.launch({
-    headless: true,
-    ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}),
-  });
-  t.after(async () => {
-    await browser.close();
-    await server.close();
-    key.fill(0);
-    rmSync(dir, { recursive: true, force: true });
-  });
-  const context = await browser.newContext();
+  browser = await openFixtureBrowser(chromium);
+  context = await browser.newContext();
   await context.route(server.origin + '/', (route) =>
     route.fulfill({
       status: 200,

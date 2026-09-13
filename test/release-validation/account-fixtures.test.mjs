@@ -10,6 +10,8 @@ import {
   isolationFixtureFiles,
   ledgerFixtureFiles,
   contractFixtureFiles,
+  preparationFixtureFiles,
+  admissionEvidenceFiles,
 } from '../../scripts/release-validation/account-fixture-tests.mjs';
 import { assertGeneralTestPopulation } from '../../scripts/release-validation/general-tests.mjs';
 import { buildInventory } from '../../scripts/release-validation/inventory.mjs';
@@ -18,30 +20,38 @@ import { vitestStage } from '../../scripts/release-validation/vitest-adapter.mjs
 import { vitestCensus } from '../../scripts/release-validation/vitest-census.mjs';
 import { validateStage } from '../../scripts/release-validation/stage.mjs';
 
+import { openFixtureBrowser } from '../account-promotion/browser-owner.mjs';
+
 const inventory = () =>
   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
 
-test('Account fixture selection admits exactly 208 Node cases and 12 delivery cases while native and wrapper obligations stay blocked', () => {
+test('Account fixture selection admits exactly 251 Node cases and 12 delivery cases while native and wrapper obligations stay blocked', () => {
   const stages = accountFixtureFiles.node.map((f) => accountFixtureNodeStage(process.cwd(), f));
   assert.deepEqual(
     stages.map((s) => s.expect.cases.length),
     [
       3, 2, 10, 4, 2, 1, 3, 12, 2, 5, 3, 11, 3, 1, 6, 6, 4, 14, 2, 5, 1, 5, 20, 1, 6, 8, 9, 1, 2, 3,
-      8, 3, 2, 7, 2, 5, 7, 2, 1, 4, 8, 4,
+      8, 3, 2, 7, 2, 5, 7, 2, 1, 4, 8, 4, 5, 3, 9, 5, 1, 12, 3, 5,
     ],
   );
   for (const s of stages) {
     validateStage(s);
     assert.deepEqual(s.env, {});
     assert.equal(s.processPolicy, 'inherited-group-v1');
-    assert.equal(s.deadlineMs, 180000);
+    const browser = admissionEvidenceFiles.includes(s.argv.at(-1));
+    assert.equal(s.deadlineMs, browser ? 360000 : 180000);
+    assert.deepEqual(s.fixture, browser ? { kind: 'chromium-cdp', startupMs: 15000 } : undefined);
+    assert.equal(
+      s.variant,
+      browser ? 'node-account-browser-file-v1' : 'node-account-fixture-file-v1',
+    );
   }
   const m = compileManifest(process.cwd(), inventory()),
     selected = selectStages(m, 'account-fixtures');
-  assert.equal(selected.length, 43);
+  assert.equal(selected.length, 51);
   assert.equal(
     selected.reduce((n, s) => n + s.expect.cases.length, 0),
-    220,
+    263,
   );
   const service = selectStages(m, 'service-fixtures');
   assert.deepEqual(service.map((s) => s.argv.at(-1)).sort(), [...serviceFixtureFiles].sort());
@@ -88,6 +98,34 @@ test('Account fixture selection admits exactly 208 Node cases and 12 delivery ca
     contracts.reduce((n, s) => n + s.expect.cases.length, 0),
     19,
   );
+  const preparation = selectStages(m, 'preparation-fixtures');
+  assert.deepEqual(
+    preparation.map((s) => s.argv.at(-1)).sort(),
+    [...preparationFixtureFiles].sort(),
+  );
+  assert.equal(preparation.length, 8);
+  assert.equal(
+    preparation.reduce((n, s) => n + s.expect.cases.length, 0),
+    43,
+  );
+  const bounds = preparation.find(
+    (s) => s.argv.at(-1) === 'test/account-admission-bounds/protocol.test.mjs',
+  );
+  assert.deepEqual(
+    bounds.expect.historyInputs.map((p) => p.path),
+    ['account-protocol/admission.ts', 'account-service/authority.ts'],
+  );
+  for (const pin of bounds.expect.historyInputs) {
+    assert.equal(pin.reference, '6398e33');
+    assert(readFileSync(bounds.argv.at(-1), 'utf8').includes(pin.reference + ':' + pin.path));
+  }
+  assert.deepEqual(
+    preparation
+      .filter((s) => s.fixture)
+      .map((s) => s.argv.at(-1))
+      .sort(),
+    [...admissionEvidenceFiles].sort(),
+  );
   const oldBatch = ledger.filter((s) => s.expect.historyInputs);
   assert.deepEqual(
     oldBatch.map((s) => s.argv.at(-1)),
@@ -129,6 +167,12 @@ test('Account fixture selection admits exactly 208 Node cases and 12 delivery ca
     'account-recovery-contract',
     'account-transport-contract',
     'account-service-custody',
+    'account-admission-bounds',
+    'account-admission-evidence',
+    'account-crypto-prep',
+    'account-first-authority',
+    'account-genesis',
+    'account-outbound',
   ])
     assert(m.rows.find((r) => r.id === `campaign:scripts/${runner}/run.mjs`).blocked);
   assert.throws(() => selectStages(m, 'release'), /Unresolved/);
@@ -186,4 +230,46 @@ test('160 generated policy changes cannot silently remove, retire or filter a re
     ),
     { seed: 130922, numRuns: 160 },
   );
+});
+
+test('Account browser fixtures require the owned endpoint and never fall back after connection refusal', async () => {
+  const calls = [];
+  const chromium = {
+    connectOverCDP: async (...args) => {
+      calls.push(['connect', ...args]);
+      throw Error('closed endpoint');
+    },
+    launch: async (options) => {
+      calls.push(['launch', options]);
+      return 'standalone';
+    },
+  };
+  for (const endpoint of [
+    undefined,
+    '',
+    'ws://example.invalid:1234/devtools/browser/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
+    'ws://127.0.0.1:1234/devtools/browser/a',
+  ]) {
+    assert.throws(
+      () =>
+        openFixtureBrowser(chromium, {
+          RELEASE_PROCESS_GUARD: 'owned',
+          RELEASE_BROWSER_ENDPOINT: endpoint,
+        }),
+      /endpoint/,
+    );
+  }
+  assert.deepEqual(calls, []);
+  const endpoint = 'ws://127.0.0.1:1234/devtools/browser/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
+  await assert.rejects(
+    openFixtureBrowser(chromium, {
+      RELEASE_PROCESS_GUARD: 'owned',
+      RELEASE_BROWSER_ENDPOINT: endpoint,
+      CHROMIUM_PATH: '/must-not-launch',
+    }),
+    /closed endpoint/,
+  );
+  assert.deepEqual(calls, [['connect', endpoint, { timeout: 15000 }]]);
+  assert.equal(await openFixtureBrowser(chromium, { CHROMIUM_PATH: '/standalone' }), 'standalone');
+  assert.deepEqual(calls.at(-1), ['launch', { headless: true, executablePath: '/standalone' }]);
 });

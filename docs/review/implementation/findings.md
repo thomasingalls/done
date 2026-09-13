@@ -81,17 +81,17 @@ Q-06/Q-07/P-04 signing navigation. Intent to repair is not a completed runtime c
    54 mutations. Catalogue phases preserve distinct source/selection/postcondition identities and
    include real browser mutation controls. Custody adds owned complete synthetic-profile copies;
    write-session repairs a BFCache load-event wait while retaining closed-capability checks. The general adapters
-   now cover 149 files / 1,314 cases: all 96 Vitest and 53 Node files. Contract control/export fixtures
-   add five files / nineteen cases, all passing with drained groups. All 144 prior contracts / 1,295
-   identities and product code/tests/vectors are unchanged. All 88 pure adapter checks pass. The
-   unchanged 21 Node owner, five Vitest process and eleven native controls retain prior evidence.
-   The ledger phase's first owner run reported orphaned-child on the old service-path control; cause
-   remains unresolved despite passing focused/full reruns. Preserve it for owner/loaded-host
-   qualification; later historical receipts are captured before cleanup. No fix is established here.
-   There are 268 unresolved rows: 109 test-file (93 Node, sixteen Playwright), 96 command, 63 campaign.
-   No catalogue rows remain. Protocol-preparation/registry fixtures are next; other Node/native/
-   Playwright owners and wrappers follow. Crypto-provider export tests do not discharge saved JSON
-   postconditions. Retired-v8 wrapper invocations need disposition without reviving support.
+   now cover 157 files / 1,357 cases: all 96 Vitest and 61 Node files. Protocol-preparation/registry
+   fixtures add eight files / 43 cases, including owned Chromium and temporary HTTP receipt/size
+   evidence. All pass with drained groups. Product sources, the eight test files and 149 prior
+   contracts / 1,314 identities are unchanged. Shared fixture helpers now support owned CDP and
+   explicit context cleanup. All 90 pure, 21 Node owner and 12 native controls pass; five Vitest
+   process checks retain earlier evidence. The ledger phase's initial orphan classification remains
+   unresolved despite later passes; preserve it for owner/loaded-host qualification.
+   There are 260 unresolved rows: 101 test-file (85 Node, sixteen Playwright), 96 command, 63 campaign.
+   No catalogue rows remain. Delivery-oracle/parser-conformance fixtures are next; other owners and
+   wrappers follow. Static census adds finite numeric >=; both historical admission sources are
+   pinned. Optional JSON outputs need their own checks; retired-v8 wrapper calls need disposition.
    R-03 and the four N-06 property deadlines are repaired within the owned selection; full aggregate
    load validation and R-04's correctly scoped whole-tree style gates remain. Earlier
    timing observations remain host-specific; complete package/traceability/vector chains are not
@@ -161,7 +161,7 @@ later committed evidence only in its documented scope. Historical annotations ar
 | <a id="f-17"></a>**F-17** Editor projection and fork cost | partial; equivalent full-byte fast path and bounded archive memo complete, large-history/device capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-17) | medium, potentially high with large documents | —; [src/crdt/admittedWorkspace.ts](../../../src/crdt/admittedWorkspace.ts) |
 | <a id="f-18"></a>**F-18** Origin-wide journal scans | open; measure before repair; [assessment](./96a2040-1ceb88d.md#assessment-f-18) | low | —; [src/crdt/journalStore.ts](../../../src/crdt/journalStore.ts) |
 | <a id="f-19"></a>**F-19** Promotion marker and request resource cost | partial; retained encoding/direct byte comparison complete, full admission/open capacity remains; [assessment](./96a2040-1ceb88d.md#assessment-f-19) | medium capacity/operations | —; [src/crdt/promotionRecord.ts](../../../src/crdt/promotionRecord.ts) |
-| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | inventory, bounded runner and all eleven catalogue adapters complete; 149 Vitest/Node files integrated, including all Vitest and contract control/export fixtures; initial owner orphan classification remains open; 268 test/command/campaign obligations and immutable aggregate remain; [graph](../../release-validation-graph.md); [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
+| <a id="f-20"></a>**F-20** Validation deadlines and aggregate cost | inventory, bounded runner and all eleven catalogue adapters complete; 157 Vitest/Node files integrated, including all Vitest and preparation/registry plus native admission evidence; initial owner orphan classification remains open; 260 test/command/campaign obligations and immutable aggregate remain; [graph](../../release-validation-graph.md); [Q-01](#q-01)/[Q-04](#q-04) prerequisites restored; [assessment](./393ef43-9ff48b5.md#assessment-f-20) | high before release validation | [N-06](#n-06), [P-05](#p-05); [docs/validation-baseline.md](../../../docs/validation-baseline.md) |
 | <a id="f-21.1"></a>**F-21.1** Remaining parser conformance | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.1) | medium assurance | —; [docs/review/implementation/account-parser-conformance.md](../../../docs/review/implementation/account-parser-conformance.md) |
 | <a id="f-21.2"></a>**F-21.2** Admission coverage and exact bounds | addressed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.2) | medium-high assurance | —; [docs/review/implementation/account-admission-evidence.md](../../../docs/review/implementation/account-admission-evidence.md) |
 | <a id="f-21.3"></a>**F-21.3** Recognized cross-account capabilities | closed within recorded scope; [assessment](./96a2040-1ceb88d.md#assessment-f-21.3) | medium authorization assurance | —; [docs/review/implementation/account-isolation.md](../../../docs/review/implementation/account-isolation.md) |
